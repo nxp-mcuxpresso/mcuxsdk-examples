@@ -10,7 +10,33 @@
 /*******************************************************************************
  * Defines
  ******************************************************************************/
-
+#define MC_SM_CTRL_PDM_CLK_SEL          0U   /*!< AON PDM clock sel */
+#define MC_SM_CTRL_MQS1_SETTINGS        1U   /*!< AON MQS settings */
+#define MC_SM_CTRL_MQS2_SETTINGS        2U   /*!< WAKE MQS settings */
+#define MC_SM_CTRL_SAI1_MCLK            3U   /*!< AON SAI1 MCLK */
+#define MC_SM_CTRL_SAI2_MCLK            4U   /*!< WAKE SAI2 MCLK */
+#define MC_SM_CTRL_SAI3_MCLK            5U   /*!< WAKE SAI3 MCLK */
+#define MC_SM_CTRL_SAI4_MCLK            6U   /*!< WAKE SAI4 MCLK */
+#define MC_SM_CTRL_ADC_TEST             7U   /*!< BBSM SNVS ADC enable */
+#define MC_SM_CTRL_GPT_MUX              8U   /*!< GPT mux */
+#define MC_SM_CTRL_XBAR_DIR_CTRL        9U   /*!< XBAR IO direction */
+#define MC_SM_CTRL_XBAR_TRIG_SYNC       10U  /*!< XBAR trigger sync ctrl1 */
+#define MC_SM_CTRL_ADC_TRIGGER          11U  /*!< ADC trigger */
+#define MC_SM_CTRL_HPF1_SYNC_SRC_CFG1   12U  /*!< Hiperface#1 sync src cfg#1 */
+#define MC_SM_CTRL_HPF1_SYNC_SRC_CFG2   13U  /*!< Hiperface#1 sync src cfg#2 */
+#define MC_SM_CTRL_HPF2_SYNC_SRC_CFG1   14U  /*!< Hiperface#2 sync src cfg#1 */
+#define MC_SM_CTRL_HPF2_SYNC_SRC_CFG2   15U  /*!< Hiperface#2 sync src cfg#2 */
+#define MC_SM_CTRL_HPF1_INTR_CTRL       16U  /*!< Hiperface#1 interrupt ctrl */
+#define MC_SM_CTRL_HPF2_INTR_CTRL       17U  /*!< Hiperface#2 interrupt ctrl */
+#define MC_SM_CTRL_ENDAT3_STATUS        18U  /*!< EnDat 3.0 status register */
+#define MC_SM_CTRL_ENC_DIAG_MUX_SEL     19U  /*!< Diagnostic bus mux sel reg */
+#define MC_SM_CTRL_HPF_SYNC_OUT_CTL     20U  /*!< Hiperface ext sync out ctrl */
+#define MC_SM_CTRL_ENDAT_STRETCH_CTRL   21U  /*!< ENDAT_STRETCHER_CTRL */
+#define MC_SM_CTRL_BISS1_PULSE_STR_CTL  22U  /*!< BISS#1 pulse stretch ctrl */
+#define MC_SM_CTRL_XBAR_TRIG_SYNC_2     23U  /*!< XBAR trigger sync ctrl#2  */
+#define MC_SM_CTRL_XBAR_TRIG_SYNC_3     24U  /*!< XBAR trigger sync ctrl#3  */
+#define MC_SM_CTRL_XBAR_TRIG_SYNC_4     25U  /*!< XBAR trigger sync ctrl#4  */
+#define MC_SM_CTRL_XBAR_DIR_CTRL_2      26U   /*!< XBAR IO direction ctrl#2 */
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -25,12 +51,20 @@ mcdrv_pwm3ph_pwma_t g_sM2Pwm3ph;
 mcdrv_endat3_t g_sM1Enc;
 #elif (M1_ENCODER == ENCODER_ENDAT2P2_2)
 mcdrv_endat2p2_t g_sM1Enc;
+#elif (M1_ENCODER == ENCODER_BISS)
+BISSC_Type g_sM1Enc = { .ui8DevDataLen = BISS_DEVICE_DATA_LEN, \
+                          .ui8DevSTLen = BISS_DEVICE_ST_LEN, \
+                          .ui8DevMTLen = BISS_DEVICE_MT_LEN};
 #endif
 
 #if (M2_ENCODER == ENCODER_ENDAT3)
 mcdrv_endat3_t g_sM2Enc;
 #elif (M2_ENCODER == ENCODER_ENDAT2P2_1)
 mcdrv_endat2p2_t g_sM2Enc;
+#elif (M2_ENCODER == ENCODER_BISS)
+BISSC_Type g_sM2Enc = { .ui8DevDataLen = BISS_DEVICE_DATA_LEN, \
+                          .ui8DevSTLen = BISS_DEVICE_ST_LEN, \
+                          .ui8DevMTLen = BISS_DEVICE_MT_LEN};
 #endif
 
 /* Structures for current and voltage measurement */
@@ -90,6 +124,10 @@ void MCDRV_Init(void)
 void InitEndat3(void)
 {
   status_t retVal;
+  int32_t SCMI_status = 0;
+  uint32_t blk_ctrl_size = 0;
+  uint32_t blk_ctrl_value = 0;
+  __attribute__((unused)) int32_t result;
 
   /* EnDat3.0 200MHz */
   clk_t endat3Clk_rxtx = {
@@ -106,8 +144,6 @@ void InitEndat3(void)
     .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
   };
 
-  BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
-
   CLOCK_SetParent(&endat3Clk_rxtx);
   CLOCK_SetRate(&endat3Clk_rxtx);
   CLOCK_EnableClock(endat3Clk_rxtx.clkId);
@@ -116,25 +152,88 @@ void InitEndat3(void)
   CLOCK_SetRate(&endat3Clk_sys);
   CLOCK_EnableClock(endat3Clk_sys.clkId);
 
-  /* Select top connector on the IMX94BB board */
+  /* DIAG_ENCODER_MUX_SEL will be updated */
+  SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* endat3 mux select configuration successful */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
 #if (M1_ENCODER == ENCODER_ENDAT3)
-  blk_base->DIAG_ENCODER_MUX_SEL = blk_base->DIAG_ENCODER_MUX_SEL |
-    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
-  /* Connect FlexPWM2_SM1_trig0 -> EnDat3_HW_Strobe trigger*/
+  /* Select endat3 for encoder2 */
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputEndat3HwStrobe);
-#elif ((M2_ENCODER == ENCODER_ENDAT3))
-  blk_base->DIAG_ENCODER_MUX_SEL = blk_base->DIAG_ENCODER_MUX_SEL |
-    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3);
-  /* Connect FlexPWM1_SM1_trig0 -> EnDat3_HW_Strobe trigger*/
+#elif (M2_ENCODER == ENCODER_ENDAT3)
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3);
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger1, kXBAR1_OutputEndat3HwStrobe);
 #endif
 
+  /* Update DIAG_ENCODER_MUX_SEL */
+  SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size, &blk_ctrl_value);
 
-  blk_base->ENDAT_STRETCHER_CTRL &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_MASK << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_SHIFT);
-  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value(ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER);
-  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl(1);
-  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en(1);
-  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel(1);
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* endat3 for encoder2 configuration successful */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+  /* ENDAT_STRETCHER_CTRL will be updated */
+  SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_ENDAT_STRETCH_CTRL, &blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+  /* Set values to be updated in the ENDAT_STRETCHER_CTRL register. */
+  blk_ctrl_value &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_MASK << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_SHIFT);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value(ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl(1);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en(1);
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel(1);
+
+  /* Update ENDAT_STRETCHER_CTRL register */
+  SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_ENDAT_STRETCH_CTRL, blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* ENDAT_STRETCHER_CTRL updated */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
 
   /* Set master clock to 12.5Mbps - the default data transfer rate of ECN1325 EnDat3 encoder */
   ENDAT3_RxTxClkConfig(ENDAT3, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS, 0);
@@ -193,6 +292,11 @@ void InitEndat3(void)
 void InitEndat2p2_1(void)
 {
     int data;
+    int32_t SCMI_status = 0;
+    uint32_t blk_ctrl_size = 0;
+    uint32_t blk_ctrl_value = 0;
+    __attribute__((unused)) int32_t result;
+
     endat2p2_dev_t *dev;
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
@@ -208,16 +312,154 @@ void InitEndat2p2_1(void)
     CLOCK_SetRate(&endat2p2Clk);
     CLOCK_EnableClock(endat2p2Clk.clkId);
 
-    blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
-                                     BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT2P2);
+    /* DIAG_ENCODER_MUX_SEL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
 
-    blk_ctrl->ENDAT_STRETCHER_CTRL =
-        BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_value(3) |
-        BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_ctrl(1);
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* endat2p2 mux select configuration successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
 
-    /* EXTENDED PWM to trigger EnDat StrN */
-    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(2U);
-    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH1(7U);
+    /* Select endat2p2 for encoder2 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT2P2);
+
+    /* Update DIAG_ENCODER_MUX_SEL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* endat2p2 for encoder2 configuration successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* XBAR_TRIG_SYNC_CTRL2 will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_2, &blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* XBAR_TRIG_SYNC_CTRL2 select successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* Trigger out synchronizer enable */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(2U);
+
+    /* Update XBAR_TRIG_SYNC_CTRL2 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_2, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* Trigger XBAR synchronizer enabled */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* XBAR_TRIG_SYNC_CTRL3 will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_3, &blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* XBAR_TRIG_SYNC_CTRL3 select successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* XBAR trigger synchronizer control - set pulse width */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH1(7U);
+
+    /* Update XBAR_TRIG_SYNC_CTRL3 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_3, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* XBAR trigger synchronizer control - pulse width set successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* ENDAT_STRETCHER_CTRL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_ENDAT_STRETCH_CTRL, &blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* ENDAT_STRETCHER_CTRL select successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* defines the number of cycle for the trigger signal coming from xbar */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_value(3) |
+      BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p1_nstr_ctrl(1);
+
+    /* Update ENDAT_STRETCHER_CTRL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_ENDAT_STRETCH_CTRL, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* number of cycle for the trigger signal set */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
 
     XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn1);
 
@@ -303,6 +545,10 @@ void InitEndat2p2_2(void)
 {
     int data;
     endat2p2_dev_t *dev;
+    int32_t SCMI_status = 0;
+    uint32_t blk_ctrl_size = 0;
+    uint32_t blk_ctrl_value = 0;
+    __attribute__((unused)) int32_t result;
 
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
@@ -312,22 +558,158 @@ void InitEndat2p2_2(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
-    BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
-
     CLOCK_SetParent(&endat2p2Clk);
     CLOCK_SetRate(&endat2p2Clk);
     CLOCK_EnableClock(endat2p2Clk.clkId);
- 
-    blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
-      BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT2P2);
 
-    blk_ctrl->ENDAT_STRETCHER_CTRL =
-    BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
-    BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
+    /* DIAG_ENCODER_MUX_SEL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
 
-    // /* EXTENDED PWM to trigger EnDat getsens */
-    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
-    BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* endat2p2 mux select configuration successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* Select endat2p2 for encoder2 */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT2P2);
+
+    /* Update DIAG_ENCODER_MUX_SEL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* endat2p2 for encoder2 configuration successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* XBAR_TRIG_SYNC_CTRL2 will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_2, &blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* XBAR_TRIG_SYNC_CTRL2 select successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* Trigger out synchronizer enable */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
+
+    /* Update XBAR_TRIG_SYNC_CTRL2 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_2, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* Trigger XBAR synchronizer enabled */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* XBAR_TRIG_SYNC_CTRL3 will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_3, &blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* XBAR_TRIG_SYNC_CTRL3 select successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+    /* XBAR trigger synchronizer control - set pulse width */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
+
+    /* Update XBAR_TRIG_SYNC_CTRL3 */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_3, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* XBAR trigger synchronizer control - pulse width set successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* ENDAT_STRETCHER_CTRL will be updated */
+    SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_ENDAT_STRETCH_CTRL, &blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* ENDAT_STRETCHER_CTRL select successful */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
+    /* defines the number of cycle for the trigger signal coming from xbar */
+    blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
+      BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
+
+    /* Update ENDAT_STRETCHER_CTRL */
+    SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_ENDAT_STRETCH_CTRL, blk_ctrl_size, &blk_ctrl_value);
+
+    if (SCMI_status == SCMI_ERR_SUCCESS)
+    {
+      /* number of cycle for the trigger signal set */
+      result = SCMI_ERR_SUCCESS;
+    }
+    else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+    {
+      result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+    }
+    else if(SCMI_status == SCMI_ERR_DENIED)
+    {
+      result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+    }
+
     XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);
     XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputEndat22StrN);
     dev = ENDAT2P2_InitMaster(ENDAT2P2_2, ENDAT2P2_CLK_48M);
@@ -401,6 +783,221 @@ void InitEndat2p2_2(void)
 }
 #endif
 
+#if (M1_ENCODER == ENCODER_BISS) || (M2_ENCODER == ENCODER_BISS)
+
+uint64_t BISS_ENC_GET_POSITION(biss_master_t *master)
+{
+  uint64_t position;
+  position = BISS_SLVGetSCDRawData(master, 0);
+  position = (position & (((uint64_t) 1 << (BISS_DEVICE_DATA_LEN)) - 1)) >> 2;
+  return position;
+}
+
+/*!
+ * @brief      Init BiSS master IP
+ *
+ * @param      void
+ *
+ * @return     none
+ */
+void InitBiSS1(void)
+{
+  xbar_control_config_t BissIRQxBARConfig;
+  int32_t SCMI_status = 0;
+  uint32_t blk_ctrl_size = 0;
+  uint32_t blk_ctrl_value = 0;
+  __attribute__((unused)) int32_t result;
+
+  /* BiSS 20MHz */
+  clk_t bissClk = {
+      .clkId = BISS_SYS_CLK_ROOT,
+      .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+      .rate = BISS_SYS_CLK_FREQ,
+      .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };
+
+  CLOCK_SetParent(&bissClk);
+  CLOCK_SetRate(&bissClk);
+  CLOCK_EnableClock(bissClk.clkId);
+
+  /* DIAG_ENCODER_MUX_SEL will be updated */
+  SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, &blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* endat2p2 mux select configuration successful */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+#if (M1_ENCODER == ENCODER_BISS)
+  /* Select biss for encoder2 */
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_BISS);
+#elif (M2_ENCODER == ENCODER_BISS)
+  /* Select biss for encoder1 */
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_BISS);
+#endif
+
+  /* Update DIAG_ENCODER_MUX_SEL */
+  SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_ENC_DIAG_MUX_SEL, blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* DIAG_ENCODER_MUX_SEL register successful set */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+  /* XBAR_TRIG_SYNC_CTRL2 will be updated */
+  SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_2, &blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* XBAR_TRIG_SYNC_CTRL2 select successful */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+  /* Trigger out synchronizer enable */
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
+
+  /* Update XBAR_TRIG_SYNC_CTRL2 */
+  SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_2, blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* XBAR_TRIG_SYNC_CTRL2 updated */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+  /* Update XBAR_TRIG_SYNC_CTRL3 */
+  SCMI_status = SCMI_MiscControlGet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_3, &blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* endat3 mux select configuration successful */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+  /* Pulse width control register of channel0 */
+  blk_ctrl_value |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
+
+  /* XBAR_TRIG_SYNC_CTRL3 will be updated */
+  SCMI_status = SCMI_MiscControlSet(SCMI_A2P, MC_SM_CTRL_XBAR_TRIG_SYNC_3, blk_ctrl_size, &blk_ctrl_value);
+
+  if (SCMI_status == SCMI_ERR_SUCCESS)
+  {
+    /* XBAR_TRIG_SYNC_CTRL3 updated */
+    result = SCMI_ERR_SUCCESS;
+  }
+  else if(SCMI_status == SCMI_ERR_NOT_FOUND)
+  {
+    result = SCMI_ERR_NOT_FOUND; /* does not point to a valid control */
+  }
+  else if(SCMI_status == SCMI_ERR_DENIED)
+  {
+    result = SCMI_ERR_DENIED; /* calling agent is not allowed to get this control */
+  }
+
+  /* EXTENDED PWM to trigger biss getsens */
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);
+  XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputBissGetsens);
+
+  /* Select Motor controller 1 */
+  BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+  SDK_DelayAtLeastUs(100U, SystemCoreClock);
+
+  /* BiSS driver initialization */
+  status_t status;
+  uint8_t slvID;
+  biss_slave_info_t *slv;
+  biss_master_t *master;
+
+  /* Disable XBAR1 interrupt 0/1 */
+  DisableIRQ(XBAR1_IRQn);
+
+  master = BISS_MasterInit(BISS1, BISS_SYS_CLK_FREQ, BISS_MA_CLK_FREQ, BISS_AGS_CLK_FREQ);
+
+  if (master == NULL)
+  {
+      return;
+  }
+  SDK_DelayAtLeastUs(100U, SystemCoreClock);
+
+  BISS_InitBissSequence(master);
+  SDK_DelayAtLeastUs(400U, SystemCoreClock);
+
+  /* Broadcast Active all slaves */
+  BISS_CMDProcess(master, BISS_CMD_IDS_BOARDCAST, BISS_CMD_BOARDCAST_CTRL_ACTIVATED);
+  SDK_DelayAtLeastUs(400U, SystemCoreClock);
+
+  status = BISS_SLVScan(master);
+  if (status != kStatus_Success)
+  {
+      return;
+  }
+
+  for (slvID = 0; slvID < master->slvCnt; slvID++)
+  {
+      slv = BISS_SLVGet(master, slvID);
+      if (slv->dataLen == 0)
+          slv->dataLen = BISS_DEVICE_DATA_LEN;
+      if (slv->crcLen == 0)
+          slv->crcLen = BISS_DEVICE_CRC_LEN;
+  }
+
+  /* Manually initialize the slaves */
+  BISS_SLVSetSCD(master, 0, BISS_DEVICE_DATA_LEN, BISS_DEVICE_CRC_LEN);
+  BISS_ChangeTriggerMode(master, BISS_PIN_TRIGGER);
+
+  /* Configure biss EOT interrupt to XBAR1_CH0 IRQ */
+  XBAR_SetSignalsConnection(kXBAR1_InputBissEot, kXBAR1_OutputEdma4IpdReq76);
+  BissIRQxBARConfig.activeEdge = kXBAR_EdgeRising;
+  BissIRQxBARConfig.requestType = kXBAR_RequestInterruptEnable;
+  XBAR_SetOutputSignalConfig(kXBAR1_OutputEdma4IpdReq76, &BissIRQxBARConfig);
+
+  /* Enable XBAR1 interrupt 0/1 */
+  EnableIRQ(XBAR1_IRQn);
+}       /* BiSS encoder is used. */
+#endif
+
 /*!
  * @brief      M1 encoder initialization
  *
@@ -417,6 +1014,14 @@ void M1_Encoder_init(void)
 #elif (M1_ENCODER == ENCODER_ENDAT3)
     InitEndat3();
     g_sM1Enc.pui32EnDat3BaseAddress = (ENDAT3_Type *)ENDAT3;
+#elif (M1_ENCODER == ENCODER_BISS)
+    InitBiSS1();
+    /* BISSC M1 structure */
+    g_sM1Enc.mt = 0U;
+    g_sM1Enc.st = 0U;
+    g_sM1Enc.mt_offset = 0U;
+    g_sM1Enc.st_offset = 0U;
+    g_sM1Enc.pMaster = BISS_GetMaster(BISS1);
 #endif
     g_sM1Enc.ui16Pp = M1_MOTOR_PP;
 }
@@ -436,6 +1041,14 @@ void M2_Encoder_init(void)
 #elif (M2_ENCODER == ENCODER_ENDAT3)
     InitEndat3();
     g_sM2Enc.pui32EnDat3BaseAddress = (ENDAT3_Type *)ENDAT3;
+#elif (M1_ENCODER == ENCODER_BISS)
+    InitBiSS1();
+    /* BISSC M1 structure */
+    g_sM2Enc.mt = 0U;
+    g_sM2Enc.st = 0U;
+    g_sM2Enc.mt_offset = 0U;
+    g_sM2Enc.st_offset = 0U;
+    g_sM2Enc.pMaster = BISS_GetMaster(BISS1);
 #endif
     g_sM2Enc.ui16Pp = M2_MOTOR_PP;
 }

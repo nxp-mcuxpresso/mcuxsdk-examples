@@ -310,6 +310,11 @@ void M1_ENCODER_IRQHandler(void)
     int32_t detal = 0;
     int32_t position;
 
+#if (M1_ENCODER == ENCODER_BISS)
+    /* clear BiSS EOT interrupt routed via XBAR */
+    XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
+#endif
+
     M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
     M1_MCDRV_ENCODER_GET(&g_sM1Enc);
     position = M1_MCDRV_ENC_GET_POSITION(&g_sM1Enc);
@@ -338,6 +343,12 @@ void M2_ENCODER_IRQHandler(void)
 {
     int32_t detal = 0;
     int32_t position;
+
+#if (M2_ENCODER == ENCODER_BISS)
+    /* clear BiSS EOT interrupt routed via XBAR */
+    XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
+#endif
+
     M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
     M2_MCDRV_ENCODER_GET(&g_sM2Enc);
     position = M2_MCDRV_ENC_GET_POSITION(&g_sM2Enc);

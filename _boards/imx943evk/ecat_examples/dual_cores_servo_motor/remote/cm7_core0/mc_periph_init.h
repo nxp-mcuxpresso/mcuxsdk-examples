@@ -14,12 +14,14 @@
 #include "fsl_xbar.h"
 #include "fsl_endat3.h"
 #include "fsl_endat2p2.h"
+#include "fsl_biss.h"
 
 #include "board.h"
 
 #include "mcdrv_pwm3ph_pwma.h"
 #include "mcdrv_endat3.h"
 #include "mcdrv_endat2p2.h"
+#include "mcdrv_bissc.h"
 #include "mcdrv_sinc.h"
 #include "m1_pmsm_appconfig.h"
 #include "m2_pmsm_appconfig.h"
@@ -30,8 +32,9 @@
 #define  ENCODER_ENDAT3     (1U)
 #define  ENCODER_ENDAT2P2_1 (2U)
 #define  ENCODER_ENDAT2P2_2 (3U)
+#define  ENCODER_BISS       (4U)
 
-#define M1_ENCODER ENCODER_ENDAT2P2_2
+#define M1_ENCODER ENCODER_BISS
 #define M2_ENCODER ENCODER_ENDAT3
 
 /* Structure used during clocks and modulo calculations */
@@ -126,6 +129,34 @@ typedef struct _clock_setup
 #define M1_MCDRV_ENC_GET_SPEED(par)
 #define M1_MCDRV_ENC_SET_DIRECTION(par)
 #define M1_MCDRV_ENC_SET_PULSES(par)
+
+#elif (M1_ENCODER == ENCODER_BISS)
+/* BLK_CTRL_WAKEUPMIX registers should not be accessible by CM7 core.
+ * BiSS EOT is routed to an XBAR input and used to trigger and XBAR output interrupt.
+ */
+#define BISS_SYS_CLK_ROOT       kCLOCK_Biss
+#define BISS_SYS_CLK_FREQ       20000000 /* 20MHz */
+#define BISS_MA_CLK_FREQ        10000000  /* 10MHz */
+#define BISS_AGS_CLK_FREQ       100000   /* 100KHz */
+#define BISS_DEVICE_WR_ER_LEN   2
+#define BISS_DEVICE_MT_LEN      12
+#define BISS_DEVICE_ST_LEN      16
+#define BISS_DEVICE_DATA_LEN    (BISS_DEVICE_MT_LEN + BISS_DEVICE_ST_LEN + BISS_DEVICE_WR_ER_LEN)
+#define BISS_DEVICE_CRC_LEN     6
+
+#define M1_MCDRV_ENC_CLEAR(par)         (MCDRV_BissCClear(par))
+#define XBAR1_IRQn              XBAR1_CH0_CH1_IRQn
+#define M1_ENCODER_IRQHandler      XBAR1_CH0_CH1_IRQHandler
+/* Common position/speed sensor defines */
+#define M1_MCDRV_ENCODER_PERIPH_INIT() M1_Encoder_init()
+#define M1_MCDRV_ENCODER_GET(par) (MCDRV_BissCDataRead(par))
+#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_BissCGetPositionFoc(par))
+#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_BissCGetPositionFullAndSpeed(par))
+#define M1_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_BissCSetOffset(par))
+#define M1_MCDRV_ENC_GET_POSITION(par)  (BISS_ENC_GET_POSITION(g_sM1Enc.pMaster))
+#define M1_MCDRV_ENC_GET_SPEED(par)
+#define M1_MCDRV_ENC_SET_DIRECTION(par)
+#define M1_MCDRV_ENC_SET_PULSES(par)
 #endif
 
 #if (M2_ENCODER == ENCODER_ENDAT2P2_1)
@@ -164,6 +195,33 @@ typedef struct _clock_setup
 #define M2_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat3Clear(par))
 #define M2_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat3SetOffset(par))
 #define M2_MCDRV_ENC_GET_POSITION(par)  ((ENDAT3_READ_HPF_DATA((par)->rsp.hpf.hpf64) & 0xFFFFFFFF) >> 7)  // convert to 25Bit
+#define M2_MCDRV_ENC_GET_SPEED(par)
+#define M2_MCDRV_ENC_SET_DIRECTION(par)
+#define M2_MCDRV_ENC_SET_PULSES(par)
+#elif (M2_ENCODER == ENCODER_BISS)
+/* BLK_CTRL_WAKEUPMIX registers should not be accessible by CM7 core.
+ * BiSS EOT is routed to an XBAR input and used to trigger and XBAR output interrupt.
+ */
+#define BISS_SYS_CLK_ROOT       kCLOCK_Biss
+#define BISS_SYS_CLK_FREQ       20000000 /* 20MHz */
+#define BISS_MA_CLK_FREQ        10000000  /* 10MHz */
+#define BISS_AGS_CLK_FREQ       100000   /* 100KHz */
+#define BISS_DEVICE_WR_ER_LEN   2
+#define BISS_DEVICE_MT_LEN      12
+#define BISS_DEVICE_ST_LEN      16
+#define BISS_DEVICE_DATA_LEN    (BISS_DEVICE_MT_LEN + BISS_DEVICE_ST_LEN + BISS_DEVICE_WR_ER_LEN)
+#define BISS_DEVICE_CRC_LEN     6
+
+#define M2_MCDRV_ENC_CLEAR(par)         (MCDRV_BissCClear(par))
+#define XBAR1_IRQn              XBAR1_CH0_CH1_IRQn
+#define M2_ENCODER_IRQHandler      XBAR1_CH0_CH1_IRQHandler
+/* Common position/speed sensor defines */
+#define M2_MCDRV_ENCODER_PERIPH_INIT() M2_Encoder_init()
+#define M2_MCDRV_ENCODER_GET(par) (MCDRV_BissCDataRead(par))
+#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_BissCGetPositionFoc(par))
+#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_BissCGetPositionFullAndSpeed(par))
+#define M2_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_BissCSetOffset(par))
+#define M2_MCDRV_ENC_GET_POSITION(par)  (BISS_ENC_GET_POSITION(g_sM2Enc.pMaster))
 #define M2_MCDRV_ENC_GET_SPEED(par)
 #define M2_MCDRV_ENC_SET_DIRECTION(par)
 #define M2_MCDRV_ENC_SET_PULSES(par)
@@ -290,12 +348,16 @@ extern mcdrv_pwm3ph_pwma_t g_sM2Pwm3ph;
 extern mcdrv_endat3_t g_sM1Enc;
 #elif (M1_ENCODER == ENCODER_ENDAT2P2_2)
 extern mcdrv_endat2p2_t g_sM1Enc;
+#elif (M1_ENCODER == ENCODER_BISS)
+extern BISSC_Type g_sM1Enc;
 #endif
 
 #if (M2_ENCODER == ENCODER_ENDAT3)
 extern mcdrv_endat3_t g_sM2Enc;
 #elif (M2_ENCODER == ENCODER_ENDAT2P2_1)
 extern mcdrv_endat2p2_t g_sM2Enc;
+#elif (M2_ENCODER == ENCODER_BISS)
+extern BISSC_Type g_sM2Enc;
 #endif
 
 extern mcdrv_sinc_t g_sM1Curr3phDcBus;
@@ -308,6 +370,10 @@ extern mcdrv_sinc_t g_sM2Curr3phDcBus;
 extern "C" {
 #endif
 
+#if (M1_ENCODER == ENCODER_BISS) || (M2_ENCODER == ENCODER_BISS)
+uint64_t BISS_ENC_GET_POSITION(biss_master_t *master);
+#endif
+
 void MCDRV_Init(void);
 void InitClock(void);
 void InitTMR1(void);
@@ -316,6 +382,7 @@ void M2_InitPWM(void);
 void InitEndat2p2_1(void);
 void InitEndat2p2_2(void);
 void InitEndat3(void);
+void InitBiSS1(void);
 void M1_Encoder_init(void);
 void M2_Encoder_init(void);
 void Sinc1_Init(void);
