@@ -34,7 +34,14 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
- static void BOARD_InitSysTick(void)
+
+static char getChar()
+{
+	int ret = GETCHAR();
+	return (char)(ret & 0xFF);
+}
+
+static void BOARD_InitSysTick(void)
 {
 	/* Initialize SysTick core timer to run free */
 	/* Set period to maximum value 2^24*/
@@ -60,9 +67,10 @@ int getValueAndEcho(int isHex)
 	int index = 0;
 	int v32 = 0;
 	char ch;
+	int ret = 0;
 
 	while (index < 15) {
-		ch = GETCHAR();
+		ch = getChar();
 		PRINTF("%c", ch);
 		if(ch == '\r' || ch == '\n')
 			break;
@@ -72,13 +80,15 @@ int getValueAndEcho(int isHex)
 	if (index > 0) {
 		str[16] = '\0';
 		if (isHex) {
-			sscanf(str, "%x", &v32);
+			ret = sscanf(str, "%x", &v32);
 		} else {
-			sscanf(str, "%d", &v32);
+			ret = sscanf(str, "%d", &v32);
 		}
 	}
 	PRINTF("\r\n");
-	return v32;
+	if (ret > 0)
+		return v32;
+	return ret;
 }
 
 static int PrintMainMenu(void)
@@ -364,7 +374,7 @@ void Endat3_DeviceInfoDump(endat3_mem_cache_t *mem_cache)
 	PRINTF("\tEL.deviceIdent : %6u-%c%c\r\n", (uint32_t)(ident>>16), (uint8_t)(ident >> 8) & 0xFF, (uint8_t)(ident & 0xFF));
 
 	memcpy(serial, (uint8_t *)&(mem_cache->cacheMem[ENDAT3_MEM_EL_DEVICESERIAL_OFFSET]), 6);
-	sn = (serial[4] << 24) + (serial[3] << 16) + (serial[2] << 8) +serial[1];
+	sn = (serial[4] << 24) | (serial[3] << 16) | (serial[2] << 8) | serial[1];
 	PRINTF("\tEL.deviceSerial : %c%u%c\r\n",serial[0], sn, serial[5]);
 
 	value_u16 = mem_cache->cacheMem[ENDAT3_MEM_EL_PROTOCOLFEATURES_OFFSET];
@@ -602,7 +612,7 @@ void ENDAT3_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_index
 		char ch;
 		index = 0;
 		while (index < 63) {
-			ch = GETCHAR();
+			ch = getChar();
 			PRINTF("%c", ch);
 			if(ch == '\r' || ch == '\n')
 				break;
@@ -928,7 +938,7 @@ void ENDAT3_DumpPostionInSync(ENDAT3_Type *base, uint8_t data_req)
 	EnableIRQ(DEMO_XBARA_IRQn);
 	ENDAT3_HW_Strobe_Enable(base);
 
-	GETCHAR();
+	getChar();
 	DisableIRQ(DEMO_XBARA_IRQn);
 	ENDAT3_HW_Strobe_Disable(base);
 }
@@ -946,7 +956,7 @@ void ENDAT3_Bus_DumpPostionInSync(ENDAT3_Type *base, uint8_t data_req)
 	EnableIRQ(DEMO_XBARA_IRQn);
 	ENDAT3_HW_Strobe_Enable(base);
 
-	GETCHAR();
+	getChar();
 	DisableIRQ(DEMO_XBARA_IRQn);
 	ENDAT3_HW_Strobe_Disable(base);
 }
@@ -998,19 +1008,19 @@ uint16_t PrintFgReqDataClear(void)
 	uint16_t v16 = 0;
 	char ch;
 	PRINTF("\tReset errors? please input <y/n>: ");
-	ch = GETCHAR();
+	ch = getChar();
 	PRINTF("%c\r\n", ch);
 	if (ch == 'y' || ch == 'Y')
 		v16 = 0x01;
 
 	PRINTF("\tReset the warning (W)? please input <y/n>: ");
-	ch = GETCHAR();
+	ch = getChar();
 	PRINTF("%c\r\n", ch);
 	if (ch == 'y' || ch == 'Y')
 		v16 |= 0x02;
 
 	PRINTF("\tClear the absolute value? please input <y/n>: ");
-	ch = GETCHAR();
+	ch = getChar();
 	PRINTF("%c\r\n", ch);
 	if (ch == 'y' || ch == 'Y')
 		v16 |= 0x04;
@@ -1110,7 +1120,7 @@ void Endat3_FG_REQ(ENDAT3_Type *base)
 	}
 }
 
-void Endat3_BUS_FG_REQ(ENDAT3_Type *base, int32_t bus_addr)
+void Endat3_BUS_FG_REQ(ENDAT3_Type *base, int8_t bus_addr)
 {
 	uint8_t req_code;
 	uint16_t req_data;
@@ -1158,7 +1168,7 @@ void getBGREQ_Write(uint32_t *address, uint16_t *word)
 	PRINTF("\tPlease input the address : 0x");
 	*address = getHexAndEcho();
 	PRINTF("\tPlease input the value : 0x");
-	*word = getHexAndEcho();
+	*word = (uint16_t)getHexAndEcho();
 }
 
 void getBGREQ_Auth_SetPass(uint16_t *usrlevel, uint16_t *pass)
@@ -1327,7 +1337,7 @@ void Endat3_BG_REQ(ENDAT3_Type *base)
 	}
 }
 
-void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
+void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int8_t bus_addr)
 {
 	uint8_t req_code;
 
@@ -1435,7 +1445,7 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 	}
 }
 
-void Endat3_LPF_Configuration(ENDAT3_Type *base, int32_t bus_addr, uint32_t mem_index)
+void Endat3_LPF_Configuration(ENDAT3_Type *base, int8_t bus_addr, uint32_t mem_index)
 {
 	uint32_t mem_base_array[2] = {ENDAT3_MEM_BASE_LPFSET, ENDAT3_MEM_BASE_LPFLIVE};
 	status_t status;
@@ -1498,7 +1508,7 @@ void Endat3_LPF_Configuration(ENDAT3_Type *base, int32_t bus_addr, uint32_t mem_
 	PRINTF("\tStart to LPF configuration ? please input <y/n>: ");
 	char ch;
 	uint8_t lpf[1024];
-	ch = GETCHAR();
+	ch = getChar();
 	if (ch == 'n' || ch == 'N')
 		return;
 	PRINTF("\r\n");
@@ -1581,7 +1591,7 @@ void Endat3_LPF_Configuration(ENDAT3_Type *base, int32_t bus_addr, uint32_t mem_
 	}
 
 	PRINTF("\tSave and active modified LPF configuration? please input <y/n>: ");
-	ch = GETCHAR();
+	ch = getChar();
 	if (ch == 'n' || ch == 'N')
 		return;
 
@@ -1614,7 +1624,7 @@ void Endat3_LPF_Configuration(ENDAT3_Type *base, int32_t bus_addr, uint32_t mem_
 	return;
 }
 
-void ENDAT3_dump_FID(ENDAT3_Type *base, int32_t bus_addr)
+void ENDAT3_dump_FID(ENDAT3_Type *base, int8_t bus_addr)
 {
 	uint8_t fid;
 	struct FID fid_mem;
@@ -1627,7 +1637,7 @@ void ENDAT3_dump_FID(ENDAT3_Type *base, int32_t bus_addr)
 	}
 }
 
-void ENDAT3_Safety_Packet(ENDAT3_Type *base, int32_t bus_addr)
+void ENDAT3_Safety_Packet(ENDAT3_Type *base, int8_t bus_addr)
 {
 	uint8_t collector, fid_sf, fid_sd2, fid_sd1, isHPF;
 	char ch;
@@ -1659,7 +1669,7 @@ void ENDAT3_Safety_Packet(ENDAT3_Type *base, int32_t bus_addr)
 		return;
 
 	PRINTF("\tIs FID_SD1 in the HPF? y/<n>: ");
-	ch = GETCHAR();
+	ch = getChar();
 	isHPF = 1;
 	if (ch == 'n' || ch == 'N') {
 		isHPF = 0;
@@ -1829,11 +1839,11 @@ int main(void)
 						break;
 					case 11:
 						ch = PrintSendlistSel();
-						ENDAT3_DumpPostionInIrq(endat3_base, ch);
+						ENDAT3_DumpPostionInIrq(endat3_base, (uint8_t)ch);
 						break;
 					case 12:
 						ch = PrintSendlistSel();
-						ENDAT3_DumpPostionInSync(endat3_base, ch);
+						ENDAT3_DumpPostionInSync(endat3_base, (uint8_t)ch);
 							break;
 					case 13:
 						running = 0;
@@ -1898,7 +1908,7 @@ int main(void)
 					case 7:
 						ch = PrintParticipantSel();
 						if (ch > 0) {
-							ENDAT3_DumpParticipantInfomation(endat3_base, ch);
+							ENDAT3_DumpParticipantInfomation(endat3_base, (uint8_t)ch);
 						}
 						break;
 					case 8:
@@ -1910,7 +1920,7 @@ int main(void)
 						if (memory_index < 0) {
 							PRINTF("invalid input: %d\r\n", memory_index);
 						} else {
-							ENDAT3_ModifyMemory(endat3_base, ch, memory_index);
+							ENDAT3_ModifyMemory(endat3_base, (uint8_t)ch, memory_index);
 						}
 						break;
 					case 9:
@@ -1918,14 +1928,14 @@ int main(void)
 						if (ch < 0) {
 							break;
 						}
-						Endat3_BUS_FG_REQ(endat3_base, ch);
+						Endat3_BUS_FG_REQ(endat3_base, (uint8_t)ch);
 						break;
 					case 10:
 						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
-						Endat3_BUS_BG_REQ(endat3_base, ch);
+						Endat3_BUS_BG_REQ(endat3_base, (uint8_t)ch);
 						break;
 					case 11:
 						ch = PrintParticipantSel();
@@ -1936,7 +1946,7 @@ int main(void)
 						if (memory_index < 0) {
 							PRINTF("\tinvalid input: %d\r\n", memory_index);
 						} else {
-							Endat3_LPF_Configuration(endat3_base, ch, memory_index);
+							Endat3_LPF_Configuration(endat3_base, (uint8_t)ch, memory_index);
 						}
 						break;
 					case 12:
@@ -1944,22 +1954,22 @@ int main(void)
 						if (ch < 0) {
 							break;
 						}
-						ENDAT3_dump_FID(endat3_base, ch);
+						ENDAT3_dump_FID(endat3_base, (uint8_t)ch);
 						break;
 					case 13:
 						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
-						ENDAT3_Safety_Packet(endat3_base, ch);
+						ENDAT3_Safety_Packet(endat3_base, (uint8_t)ch);
 						break;
 					case 16:
 						ch = PrintSendlistSel();
-						ENDAT3_Bus_DumpPostionInIrq(endat3_base, nodes_num, ch);
+						ENDAT3_Bus_DumpPostionInIrq(endat3_base, nodes_num, (uint8_t)ch);
 						break;
 					case 17:
 						ch = PrintSendlistSel();
-						ENDAT3_Bus_DumpPostionInSync(endat3_base, ch);
+						ENDAT3_Bus_DumpPostionInSync(endat3_base, (uint8_t)ch);
 						break;
 					case 18:
 						running = 0;
