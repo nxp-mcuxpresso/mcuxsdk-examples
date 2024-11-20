@@ -9,6 +9,12 @@ mcux_add_source(
             examples/_boards/${board}/FreeRTOSConfigBoard.h
 )
 
+mcux_add_source(
+    TOOLCHAINS mdk
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES middleware/vglite/vglite_sdk/example/misc/mdk/retarget.c
+)
+
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/vglite/vglite_sdk/example/vglite_window
