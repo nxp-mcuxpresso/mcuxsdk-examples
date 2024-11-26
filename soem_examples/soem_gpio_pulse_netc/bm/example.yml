@@ -7,10 +7,6 @@ soem_gpio_pulse_netc_bm:
       name: soem_gpio_pulse_bm${core_id_suffix_name}
       category: soem_examples
       brief: SOEM gpio pulse netc example
-      example_readme:
-      - examples/soem_examples/soem_gpio_pulse_netc/bm/readme.md
-      - ${board_root}/${board}/soem_examples/soem_gpio_pulse/bm/example_board_readme.md
-      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug
@@ -26,3 +22,6 @@ soem_gpio_pulse_netc_bm:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release

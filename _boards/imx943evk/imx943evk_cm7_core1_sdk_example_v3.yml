@@ -1,0 +1,5279 @@
+---
+# yaml-language-server: $schema=../../bin/generator/sdk_generator/data/sdk_data_schema/v3/software_set_and_project_schema.json
+
+__safe_load__:
+- bin/generator/records_v3/shared/project/sdk_example/common/lpc/component_examples_lpc.yml
+- boards/src/driver_examples/i3c/driver_example_lpc_v3.yml
+- middleware/multicore/example/multicore_examples/multicore_examples_kinetis_v3.yml
+- middleware/lwip/example/lwip_examples_kinetis_v3.yml
+- bin/generator/records_v3/shared/project/sdk_example/common/kinetis/component_examples.yml
+- bin/generator/records_v3/shared/project/sdk_example/common/kinetis/cmsis_driver_example.yml
+- bin/generator/records_v3/set/device/MIMX94398/index_cm7_core1.yml
+- bin/generator/records_v3/set/board/imx943evk/project_segment_imx943evk_cm7_core1.yml
+- middleware/voice_spot/sdk_examples/voice_spot_examples_v3.yml
+- bin/generator/records_v3/shared/project/sdk_example/common/kinetis/driver_example.yml
+- middleware/fatfs/example/fatfs_examples_kinetis_v3.yml
+- bin/generator/records_v3/shared/project/sdk_example/common/kinetis/demo_app.yml
+- middleware/mbedtls/example/mbedtls_examples_kinetis_v3.yml
+__variable__:
+  ConfigName_var: ConfigName
+__hierarchy__:
+  tmp_imx943evk_configurations_components:
+    section-type: application
+    belong_to: "set.board.${board}"
+    __remove__:
+      dependency:
+      - driver.port
+    dependency:
+    - component.sm_clock
+    - driver.clock
+    - driver.fract_pll
+    - driver.ccm
+    - driver.src1
+    - driver.reset
+    - driver.supply
+    - driver.power
+    - driver.cpu
+    - driver.elec_spec
+    - component.sm.imx943_cm7_core1
+    - component.hal_clock
+    - component.hal_clock.imx943
+    - component.sm_pinctrl
+    - driver.iomuxc
+    - component.hal_power
+    - component.hal_power.imx943
+    - component.hal_pinctrl
+    - component.hal_pinctrl.imx943
+    - component.sm.smt
+    - component.sm.crc
+    - component.sm.scmi
+    - driver.common
+    - "device.${platform_devices_soc_name}_CMSIS"
+    - utility.debug_console
+    - utility.assert
+    - component.lpuart_adapter
+    - component.serial_manager_uart
+    - component.serial_manager
+    - driver.lpuart
+    - component.lists
+    - "device.${platform_devices_soc_name}_startup"
+    - driver.rgpio
+    - driver.cache_armv7_m7
+    - driver.adp5585
+    - driver.pcal6524
+    - driver.pcal6408
+    - driver.pca6416a
+    - driver.irqsteer_1
+    - driver.irqsteer_soc.${multicore_foldername}
+    - driver.lpi2c
+    merge_segment:
+    - imx943evk_options
+    - config_nonsm
+    contents:
+      document:
+        platform_devices_soc_name: MIMX94398
+        board: imx943evk
+        core: cm7f
+        fpu: DP_FPU
+        core_id: cm7_core1
+        device_id: "${platform_devices_soc_name}"
+        compilers:
+        - armclang
+      configuration:
+        tools:
+          __remove__:
+            mdk:
+            dsmdk:
+          __common__:
+            binary-file: sdk20-app.bin
+            config:
+              __common__: {}
+          iar:
+            project-templates:
+            - bin/generator/templates/iar/app_jlinkswd_m7/generic.ewd
+            - bin/generator/templates/iar/app_jlinkswd_m7/generic.ewp
+            - bin/generator/templates/iar/general.eww
+          armgcc:
+          mcux:
+            ignore: 'true'
+      modules:
+        linker-file:
+          files:
+          - source: devices/MIMX94398/iar/MIMX94398_cm7_core1_ram.icf
+            attribute: linker-file
+            toolchains: iar
+            targets: "debug release"
+            project_path: MIMX94398/iar
+          - source: devices/MIMX94398/gcc/MIMX94398_cm7_core1_ram.ld
+            attribute: linker-file
+            toolchains: armgcc
+            targets: "debug release"
+            project_path: MIMX94398/gcc
+          - source: devices/MIMX94398/iar/MIMX94398_cm7_core1_flash.icf
+            attribute: linker-file
+            toolchains: iar
+            targets: "flash_debug flash_release"
+            project_path: MIMX94398/iar
+          - source: devices/MIMX94398/gcc/MIMX94398_cm7_core1_flash.ld
+            attribute: linker-file
+            toolchains: armgcc
+            targets: "flash_debug flash_release"
+            project_path: MIMX94398/gcc
+config_sm:
+  section-type: project_segment
+  belong_to: "set.board.${board}"
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL=1:
+    modules:
+      hal_config_sm:
+        cc-include:
+        - path: "boards/${board}/sm/"
+          project_path: boards/${board}/sm
+        files:
+        - source: boards/${board}/sm/hal_config.h
+          project_path: boards/${board}/sm
+config_nonsm:
+  internal: true
+  section-type: project_segment
+  belong_to: "set.board.${board}"
+  contents:
+    modules:
+      hal_config_nonsm:
+        cc-include:
+        - path: "boards/${board}/nonsm/"
+          project_path: boards/${board}/nonsm
+        files:
+        - source: boards/${board}/nonsm/hal_config.h
+          project_path: boards/${board}/nonsm
+
+app.srtm:
+  section-type: project_segment
+  belong_to: "set.board.${board}"
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+    modules:
+      app.srtm:
+        cc-include:
+        - path: components/srtm/channels
+          project_path: srtm/channels
+        - path: components/srtm/services
+          project_path: srtm/services
+        files:
+        - source: components/srtm/channels/srtm_rpmsg_endpoint.h
+          project_path: srtm/channels
+        - source: components/srtm/channels/srtm_rpmsg_endpoint.c
+          project_path: srtm/channels
+        - source: components/srtm/services/srtm_audio_service.h
+          project_path: srtm/services
+        - source: components/srtm/services/srtm_audio_service.c
+          project_path: srtm/services
+        - source: components/srtm/services/srtm_sai_edma_adapter.h
+          project_path: srtm/services
+        - source: components/srtm/services/srtm_sai_edma_adapter.c
+          project_path: srtm/services
+        - source: components/srtm/services/srtm_pdm_edma_adapter.h
+          project_path: srtm/services
+        - source: components/srtm/services/srtm_pdm_edma_adapter.c
+          project_path: srtm/services
+        - source: components/srtm/services/srtm_i2c_service.h
+          project_path: srtm/services
+        - source: components/srtm/services/srtm_i2c_service.c
+          project_path: srtm/services
+  dependency:
+  - driver.srtm.freertos
+  - driver.lpi2c
+  - driver.pdm_edma
+  - driver.sai_edma
+  - driver.mu1
+coremark:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.lptmr
+  contents:
+    document:
+      __replace__:
+      name: "coremark_${multicore_foldername}"
+coremark_sm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.lptmr
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  contents:
+    document:
+      __replace__:
+      name: "coremark_sm_${multicore_foldername}"
+rpmsg_lite_pingpong_rtos_linux_remote_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  - app.srtm
+  dependency:
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  - middleware.freertos-kernel.heap_4
+  - middleware.freertos-kernel.cm7_non_trustzone
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "rpmsg_lite_pingpong_rtos_linux_remote_sm_${multicore_foldername}"
+    configuration:
+      tools:
+        __common__:
+          binary-file: rpmsg_lite_pingpong_rtos_linux_remote_sm.bin
+        armgcc:
+          binary_packed: release
+    modules:
+      __remove__:
+        default-remoteproc-rsc-table:
+      example:
+        cc-include:
+        - path: "boards/${board}/${multicore_foldername}"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/linux_remote_sm/${multicore_foldername}"
+          project_path: source
+        files:
+        - source: "boards/${board}/srtm_config.h"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/linux_remote_sm/${multicore_foldername}"
+          project_path: source
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.c"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/linux_remote_sm/${multicore_foldername}"
+          project_path: source
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.h"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/linux_remote_sm/${multicore_foldername}"
+          project_path: source
+
+rpmsg_lite_str_echo_rtos_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  - app.srtm
+  dependency:
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  - middleware.freertos-kernel.heap_4
+  - middleware.freertos-kernel.cm7_non_trustzone
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          binary-file: rpmsg_lite_str_echo_rtos.bin
+        armgcc:
+          binary_packed: release
+    modules:
+      __remove__:
+        default-remoteproc-rsc-table:
+      example:
+        cc-include:
+        - path: "boards/${board}/${multicore_foldername}"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos_sm/${multicore_foldername}"
+          project_path: source
+        files:
+        - source: "boards/${board}/srtm_config.h"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos_sm/${multicore_foldername}"
+          project_path: source
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.c"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos_sm/${multicore_foldername}"
+          project_path: source
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.h"
+          package_path: "boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos_sm/${multicore_foldername}"
+          project_path: source
+    document:
+      __replace__:
+      name: "rpmsg_lite_str_echo_rtos_sm_${multicore_foldername}"
+rpmsg_lite_pingpong_rtos_primary_core:
+  section-type: application
+  required: true
+  internal: true
+  dependency:
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  contents:
+    document:
+      __replace__:
+        name: "rpmsg_lite_pingpong_rtos_primary_core_${multicore_foldername}"
+        readme:
+        - boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/board.readme
+        - middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/rpmsg_lite_pingpong_rtos.readme
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                __USE_SHMEM:
+    modules:
+      remoteproc-rsc-table:
+        required: true
+        cc-include:
+        - path: boards/${board}
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+          project_path: remoteproc
+        - path: middleware/multicore/remoteproc
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+          project_path: remoteproc
+        files:
+        - source: boards/${board}/rsc_table.c
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+          project_path: remoteproc
+        - source: boards/${board}/rsc_table.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+          project_path: remoteproc
+        - source: middleware/multicore/remoteproc/remoteproc.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+          project_path: remoteproc
+      __replace__:
+        rpmsg_lite_pingpong_rtos_primary_core:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: board
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          files:
+          - source: middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/main_master.c
+            merge-to-main: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}/pin_mux.c
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}/pin_mux.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/rpmsg_config.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+        freertos_config:
+          required: true
+          cc-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          as-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/FreeRTOSConfig.h
+            merge-to-freertosconfig: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/FreeRTOSConfigBoard.h
+            merge-to-freertosconfig: sub
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: source
+        pinset:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}"
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}/hardware_init.c
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}"
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}/app.h
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}"
+    __replace__:
+      project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/master/${multicore_foldername}/
+rpmsg_lite_pingpong_rtos_secondary_core:
+  section-type: application
+  required: true
+  internal: false
+  belong_to: "set.board.${board}"
+  dependency:
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    document:
+      __replace__:
+        name: "rpmsg_lite_pingpong_rtos_secondary_core_${multicore_foldername}"
+        readme:
+        - boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/board.readme
+        - middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/rpmsg_lite_pingpong_rtos.readme
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                __USE_SHMEM:
+        iar:
+          binary-file: rpmsg_lite_pingpong_rtos_cm7.bin
+    modules:
+      remoteproc-rsc-table:
+        required: true
+        cc-include:
+        - path: boards/${board}
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+          project_path: remoteproc
+        - path: middleware/multicore/remoteproc
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+          project_path: remoteproc
+        files:
+        - source: boards/${board}/rsc_table.c
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+          project_path: remoteproc
+        - source: boards/${board}/rsc_table.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+          project_path: remoteproc
+        - source: middleware/multicore/remoteproc/remoteproc.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+          project_path: remoteproc
+      __replace__:
+        rpmsg_lite_pingpong_rtos_cm0plus:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: board
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          files:
+          - source: middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/main_remote.c
+            merge-to-main: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}/pin_mux.c
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}/pin_mux.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/rpmsg_config.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+        freertos_config:
+          required: true
+          cc-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          as-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/FreeRTOSConfig.h
+            merge-to-freertosconfig: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/FreeRTOSConfigBoard.h
+            merge-to-freertosconfig: sub
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: source
+        pinset:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}"
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}/hardware_init.c
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}"
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}/app.h
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}"
+      __remove__:
+        default-remoteproc-rsc-table:
+    __replace__:
+      project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu/remote/${multicore_foldername}/
+rpmsg_lite_pingpong_rtos_primary_core_sm:
+  section-type: application
+  required: true
+  internal: false
+  dependency:
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  contents:
+    document:
+      __replace__:
+        name: "rpmsg_lite_pingpong_rtos_primary_core_sm_${multicore_foldername}"
+        readme:
+        - boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}/board.readme
+        - middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/rpmsg_lite_pingpong_rtos.readme
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                __USE_SHMEM:
+                RPMSG_M71_MASTER: 1
+    modules:
+      remoteproc-rsc-table:
+        required: true
+        cc-include:
+        - path: boards/${board}
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+          project_path: remoteproc
+        - path: middleware/multicore/remoteproc
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+          project_path: remoteproc
+        files:
+        - source: boards/${board}/rsc_table.c
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+          project_path: remoteproc
+        - source: boards/${board}/rsc_table.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+          project_path: remoteproc
+        - source: middleware/multicore/remoteproc/remoteproc.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+          project_path: remoteproc
+      __replace__:
+        rpmsg_lite_pingpong_rtos_primary_core_sm:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: board
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          files:
+          - source: middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/main_master.c
+            merge-to-main: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}/pin_mux.c
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}/pin_mux.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/rpmsg_config.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+        freertos_config:
+          required: true
+          cc-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          as-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/FreeRTOSConfig.h
+            merge-to-freertosconfig: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/FreeRTOSConfigBoard.h
+            merge-to-freertosconfig: sub
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: source
+        pinset:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}"
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}/hardware_init.c
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}"
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}/app.h
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}"
+    __replace__:
+      project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/master/${multicore_foldername}/
+rpmsg_lite_pingpong_rtos_secondary_core_sm:
+  section-type: application
+  required: true
+  internal: false
+  belong_to: "set.board.${board}"
+  dependency:
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    document:
+      __replace__:
+        name: "rpmsg_lite_pingpong_rtos_secondary_core_sm_${multicore_foldername}"
+        readme:
+        - boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}/board.readme
+        - middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/rpmsg_lite_pingpong_rtos.readme
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                __USE_SHMEM:
+                RPMSG_M71_REMOTE: 1
+        iar:
+          binary-file: rpmsg_lite_pingpong_rtos_cm7.bin
+    modules:
+      remoteproc-rsc-table:
+        required: true
+        cc-include:
+        - path: boards/${board}
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+          project_path: remoteproc
+        - path: middleware/multicore/remoteproc
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+          project_path: remoteproc
+        files:
+        - source: boards/${board}/rsc_table.c
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+          project_path: remoteproc
+        - source: boards/${board}/rsc_table.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+          project_path: remoteproc
+        - source: middleware/multicore/remoteproc/remoteproc.h
+          package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+          project_path: remoteproc
+      __replace__:
+        rpmsg_lite_pingpong_rtos_cm0plus_sm:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: board
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          files:
+          - source: middleware/multicore/example/multicore_examples/rpmsg_lite_pingpong_rtos/main_remote.c
+            merge-to-main: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}/pin_mux.c
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}/pin_mux.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: board
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/rpmsg_config.h
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+        freertos_config:
+          required: true
+          cc-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          as-include:
+          - path: boards/${board}/freertos_config_board/${multicore_foldername}
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/FreeRTOSConfig.h
+            merge-to-freertosconfig: main
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+          - source: boards/${board}/FreeRTOSConfigBoard.h
+            merge-to-freertosconfig: sub
+            package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: source
+        pinset:
+          required: true
+          cc-include:
+          - path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}"
+          files:
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}/hardware_init.c
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}"
+          - source: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}/app.h
+            merge-to-main: sub
+            project_path: "${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}"
+      __remove__:
+        default-remoteproc-rsc-table:
+    __replace__:
+      project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/mcu_sm/remote/${multicore_foldername}/
+hello_world:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  contents:
+    document:
+      __replace__:
+      name: "hello_world_${multicore_foldername}"
+hello_world_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  contents:
+    document:
+      __replace__:
+      name: "hello_world_sm_${multicore_foldername}"
+lpi2c_read_accel_value_transfer_sm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_read_accel_value_transfer_sm_${multicore_foldername}"
+lpi2c_interrupt_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_interrupt_b2b_transfer_master_sm_${multicore_foldername}"
+lpi2c_interrupt_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_interrupt_b2b_transfer_slave_sm_${multicore_foldername}"
+lpi2c_polling_b2b_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_polling_b2b_master_sm_${multicore_foldername}"
+lpi2c_polling_b2b_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_polling_b2b_slave_sm_${multicore_foldername}"
+lpi2c_edma_b2b_transfer_master:
+  internal: true
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.dma3
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_edma_b2b_transfer_master_${multicore_foldername}"
+lpi2c_edma_b2b_transfer_slave:
+  internal: true
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.dma3
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_edma_b2b_transfer_slave_${multicore_foldername}"
+edma3_memory_to_memory:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.edma4
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "edma3_memory_to_memory_${multicore_foldername}"
+edma3_memory_to_memory_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.edma4
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "edma3_memory_to_memory_sm_${multicore_foldername}"
+edma5_memory_to_memory:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.edma4
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "edma5_memory_to_memory_${multicore_foldername}"
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                MCUX_SDK_EDMA_USE_DMA5=1:
+edma5_memory_to_memory_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.edma4
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "edma5_memory_to_memory_sm_${multicore_foldername}"
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                MCUX_SDK_EDMA_USE_DMA5=1:
+lpit_single_channel:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpit_single_channel_${multicore_foldername}"
+lpit_single_channel_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpit_single_channel_sm_${multicore_foldername}"
+lpit_chained_channel:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpit_chained_channel_${multicore_foldername}"
+lpit_chained_channel_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpit_chained_channel_sm_${multicore_foldername}"
+tstmr:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tstmr_${multicore_foldername}"
+tstmr_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tstmr_sm_${multicore_foldername}"
+wdog32:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "wdog32_${multicore_foldername}"
+wdog32_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "wdog32_sm_${multicore_foldername}"
+sema42_uboot:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.trdc_1
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  internal: true
+  contents:
+    document:
+      __replace__:
+      name: "sema42_uboot_${multicore_foldername}"
+rgpio_led_output:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "rgpio_led_output_${multicore_foldername}"
+rgpio_led_output_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "rgpio_led_output_sm${multicore_foldername}"
+netc_txrx_transfer:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.phy-device-rtl8201
+  - driver.netc_imx943
+  - driver.msgintr
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+  contents:
+    document:
+      __replace__:
+      name: netc_txrx_transfer_${multicore_foldername}
+netc_txrx_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.phy-device-rtl8201
+  - driver.phy-device-aqr113c
+  - driver.netc_imx943
+  - driver.lpi2c
+  - driver.msgintr
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+                BOARD_USE_PCAL6524=1:
+    document:
+      __replace__:
+      name: netc_txrx_transfer_sm_${multicore_foldername}
+lpuart_edma_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.edma4
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpuart_edma_transfer_sm_${multicore_foldername}"
+lpuart_polling_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpuart_polling_sm_${multicore_foldername}"
+lpuart_interrupt_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpuart_interrupt_sm_${multicore_foldername}"
+lpuart_interrupt_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpuart_interrupt_transfer_sm_${multicore_foldername}"
+lpuart_interrupt_rb_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpuart_interrupt_rb_transfer_sm_${multicore_foldername}"
+lptmr_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lptmr_sm_${multicore_foldername}"
+tpm_combine_pwm_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tpm_combine_pwm_sm_${multicore_foldername}"
+tpm_dual_edge_capture_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tpm_dual_edge_capture_sm_${multicore_foldername}"
+tpm_input_capture_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tpm_input_capture_sm_${multicore_foldername}"
+tpm_output_compare_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tpm_output_compare_sm_${multicore_foldername}"
+tpm_pwm_twochannel_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tpm_pwm_twochannel_sm_${multicore_foldername}"
+tpm_simple_pwm_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tpm_simple_pwm_sm_${multicore_foldername}"
+tpm_timer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tpm_timer_sm_${multicore_foldername}"
+tmu_3_monitor_report:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                PRINTF_FLOAT_ENABLE: 1
+                PRINTF_ADVANCED_ENABLE: 1
+    document:
+      __replace__:
+      name: "tmu_3_monitor_report_${multicore_foldername}"
+lpspi_polling_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_polling_b2b_transfer_master_sm_${multicore_foldername}"
+lpspi_polling_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_polling_b2b_transfer_slave_sm_${multicore_foldername}"
+lpspi_interrupt_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_interrupt_b2b_transfer_master_sm_${multicore_foldername}"
+lpspi_interrupt_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_interrupt_b2b_transfer_slave_sm_${multicore_foldername}"
+lpspi_interrupt_b2b_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_interrupt_b2b_master_sm_${multicore_foldername}"
+lpspi_interrupt_b2b_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_interrupt_b2b_slave_sm_${multicore_foldername}"
+lpspi_edma_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.edma4
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_edma_b2b_transfer_master_sm_${multicore_foldername}"
+  internal: true
+lpspi_edma_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.edma4
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "lpspi_edma_b2b_transfer_slave_sm_${multicore_foldername}"
+flexio_i2c_interrupt_lpi2c_transfer:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        iar:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+        armgcc:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+    document:
+      __replace__:
+      name: "flexio_i2c_interrupt_lpi2c_transfer_${multicore_foldername}"
+flexio_i2c_interrupt_lpi2c_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        iar:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+        armgcc:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+    document:
+      __replace__:
+      name: "flexio_i2c_interrupt_lpi2c_transfer_sm_${multicore_foldername}"
+flexio_i2c_read_accel_value_transfer:
+  internal: true
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        iar:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+        armgcc:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+    document:
+      __replace__:
+      name: "flexio_i2c_read_accel_value_transfer_${multicore_foldername}"
+flexio_i2c_read_accel_value_transfer_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        iar:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+        armgcc:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+    document:
+      __replace__:
+      name: "flexio_i2c_read_accel_value_transfer_sm_${multicore_foldername}"
+flexio_spi_int_lpspi_transfer_master_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+        iar:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+        armgcc:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+    document:
+      __replace__:
+      name: "flexio_spi_int_lpspi_transfer_master_sm_${multicore_foldername}"
+flexio_spi_int_lpspi_transfer_slave_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+        iar:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+        armgcc:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+    document:
+      __replace__:
+      name: "flexio_spi_int_lpspi_transfer_slave_sm_${multicore_foldername}"
+flexio_pwm_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        iar:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+        armgcc:
+          config:
+            __remove__:
+              flash_debug:
+              flash_release:
+    document:
+      __replace__:
+      name: "flexio_pwm_sm_${multicore_foldername}"
+flexio_uart_polling_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexio_uart_polling_transfer_sm${multicore_foldername}"
+flexio_uart_interrupt_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexio_uart_interrupt_transfer_sm_${multicore_foldername}"
+flexio_uart_int_rb_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexio_uart_int_rb_transfer_sm_${multicore_foldername}"
+flexio_pin_led_output:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexio_pin_led_output_${multicore_foldername}"
+flexio_pin_led_output_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexio_pin_led_output_sm_${multicore_foldername}"
+flexcan_loopback_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexcan_loopback_sm_${multicore_foldername}"
+flexcan_loopback_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexcan_loopback_transfer_sm_${multicore_foldername}"
+flexcan_loopback_edma_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.edma4
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "flexcan_loopback_edma_transfer_sm_${multicore_foldername}"
+flexcan_interrupt_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.pca6416a
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCA6416A=1:
+    document:
+      __replace__:
+      name: "flexcan_interrupt_transfer_sm_${multicore_foldername}"
+flexcan_ping_pong_buffer_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "flexcan_ping_pong_buffer_transfer_${multicore_foldername}"
+flexcan_efifo_interrupt_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "flexcan_efifo_interrupt_transfer_${multicore_foldername}"
+flexcan_efifo_edma_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.edma4
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "flexcan_efifo_edma_transfer_${multicore_foldername}"
+  internal: true
+canfd_loopback:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "canfd_loopback_${multicore_foldername}"
+canfd_loopback_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "canfd_loopback_sm_${multicore_foldername}"
+canfd_loopback_transfer:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "canfd_loopback_transfer_${multicore_foldername}"
+
+canfd_loopback_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "canfd_loopback_sm_${multicore_foldername}"
+canfd_loopback_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "canfd_loopback_transfer_sm_${multicore_foldername}"
+canfd_ping_pong_buffer_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "canfd_ping_pong_buffer_transfer_${multicore_foldername}"
+canfd_interrupt_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "canfd_interrupt_transfer_${multicore_foldername}"
+canfd_interrupt_transfer_sm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.pca6416a
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+    document:
+      __replace__:
+      name: "canfd_interrupt_transfer_sm_${multicore_foldername}"
+sai_interrupt_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.lpi2c
+  - driver.wm8962
+  - component.wm8962_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "sai_interrupt_sm_${multicore_foldername}"
+sai_interrupt_transfer:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.rgpio
+  - driver.lpi2c
+  - driver.wm8962
+  - component.wm8962_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "sai_interrupt_transfer_${multicore_foldername}"
+sai_interrupt_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.lpi2c
+  - driver.wm8962
+  - component.wm8962_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "sai_interrupt_transfer_sm_${multicore_foldername}"
+sai_edma_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.lpi2c
+  - driver.wm8962
+  - component.wm8962_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+    - driver.edma
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "sai_edma_transfer_sm_${multicore_foldername}"
+pdm_interrupt:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "pdm_interrupt_${multicore_foldername}"
+pdm_interrupt_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "pdm_interrupt_sm_${multicore_foldername}"
+pdm_hwvad_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "pdm_hwvad_sm_${multicore_foldername}"
+pdm_sai_interrupt:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.wm8962
+  - component.wm8962_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "pdm_sai_interrupt_${multicore_foldername}"
+  internal: true
+pdm_sai_interrupt_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.wm8962
+  - component.wm8962_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "pdm_sai_interrupt_sm_${multicore_foldername}"
+pdm_sai_interrupt_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.wm8962
+  - component.wm8962_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "pdm_sai_interrupt_transfer_sm_${multicore_foldername}"
+pdm_edma_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.wm8960
+  - component.wm8960_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  - driver.edma4
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "pdm_edma_transfer_sm_${multicore_foldername}"
+pdm_sai_edma_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.rgpio
+  - driver.pdm
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - driver.wm8960
+  - component.wm8960_adapter
+  - driver.codec
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  - driver.dma3
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6408=1:
+    document:
+      __replace__:
+      name: "pdm_sai_edma_sm_${multicore_foldername}"
+trdc:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.trdc_1
+  - driver.trdc_soc
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+    - driver.trdc
+  contents:
+    document:
+      __replace__:
+      name: "trdc_${multicore_foldername}"
+lpi2c_polling_b2b_slave:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "lpi2c_polling_b2b_slave_${multicore_foldername}"
+enet_qos_txrx_ptp1588_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=0x1000
+                - __heap_size__=0x3000
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+        armgcc:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=0x1000"
+                - "-Xlinker --defsym=__heap_size__=0x3000"
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+    document:
+      __replace__:
+      name: "enet_qos_txrx_ptp1588_transfer_${multicore_foldername}"
+enet_qos_txrx_multiring_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=0x1000
+                - __heap_size__=0x8000
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+        armgcc:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=0x1000"
+                - "-Xlinker --defsym=__heap_size__=0x8000"
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+    document:
+      __replace__:
+      name: "enet_qos_txrx_multiring_transfer_${multicore_foldername}"
+lwip_dhcp_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+    document:
+      __replace__:
+      name: "lwip_dhcp_bm_${multicore_foldername}"
+lwip_dhcp_enet_qos_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+    document:
+      __replace__:
+      name: "lwip_dhcp_enet_qos_bm_${multicore_foldername}"
+lwip_dhcp_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+    document:
+      __replace__:
+      name: "lwip_dhcp_freertos_${multicore_foldername}"
+lwip_dhcp_enet_qos_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+    document:
+      __replace__:
+      name: "lwip_dhcp_enet_qos_freertos_${multicore_foldername}"
+lwip_mqtt_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - lwip_mqtt_freertos_id_otp
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+            __remove__:
+              debug:
+    document:
+      __replace__:
+      name: "lwip_mqtt_freertos_${multicore_foldername}"
+  internal: true
+lwip_mqtt_enet_qos_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - lwip_mqtt_enet_qos_freertos_id_otp
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        armgcc:
+          config:
+            __remove__:
+              debug:
+    document:
+      __replace__:
+      name: "lwip_mqtt_enet_qos_freertos_${multicore_foldername}"
+  internal: true
+lwip_httpsrv_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+            debug:
+              __remove__:
+                cc-flags:
+                - -O0
+              cc-flags:
+              - -O1
+    document:
+      __replace__:
+      name: "lwip_httpsrv_bm_${multicore_foldername}"
+lwip_httpsrv_enet_qos_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        armgcc:
+          config:
+            debug:
+              __remove__:
+                cc-flags:
+                - -O0
+              cc-flags:
+              - -O1
+    document:
+      __replace__:
+      name: "lwip_httpsrv_enet_qos_bm_${multicore_foldername}"
+lwip_httpsrv_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+            __remove__:
+              debug:
+              release:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+            __remove__:
+              debug:
+              release:
+    document:
+      __replace__:
+      name: "lwip_httpsrv_freertos_${multicore_foldername}"
+  internal: true
+lwip_httpsrv_enet_qos_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __remove__:
+              debug:
+              release:
+        armgcc:
+          config:
+            __remove__:
+              debug:
+              release:
+    document:
+      __replace__:
+      name: "lwip_httpsrv_enet_qos_freertos_${multicore_foldername}"
+  internal: true
+lwip_iperf_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+    document:
+      __replace__:
+      name: "lwip_iperf_bm_${multicore_foldername}"
+lwip_iperf_enet_qos_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        armgcc:
+          config:
+            debug:
+              __remove__:
+                cc-flags:
+                - -O0
+              cc-flags:
+              - -O1
+    document:
+      __replace__:
+      name: "lwip_iperf_enet_qos_bm_${multicore_foldername}"
+lwip_ping_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+    document:
+      __replace__:
+      name: "lwip_ping_bm_${multicore_foldername}"
+lwip_ping_enet_qos_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+    document:
+      __replace__:
+      name: "lwip_ping_enet_qos_bm_${multicore_foldername}"
+lwip_ping_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+        armgcc:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+            __remove__:
+              debug:
+    document:
+      __replace__:
+      name: "lwip_ping_freertos_${multicore_foldername}"
+lwip_ping_enet_qos_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        armgcc:
+          config:
+            __remove__:
+              debug:
+    document:
+      __replace__:
+      name: "lwip_ping_enet_qos_freertos_${multicore_foldername}"
+lwip_httpssrv_mbedTLS_bm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.caam
+  - middleware.mbedtls
+  - middleware.mbedtls.port.ksdk
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.mbedtls.default_heap_stack
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                MBEDTLS_SSL_CIPHERSUITES=MBEDTLS_TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=1000
+                - __heap_size__=50000
+            __remove__:
+              debug:
+              release:
+        armgcc:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=1000"
+                - "-Xlinker --defsym=__heap_size__=50000"
+            __remove__:
+              debug:
+              release:
+    document:
+      __replace__:
+      name: "lwip_httpssrv_mbedTLS_bm_${multicore_foldername}"
+  internal: true
+lwip_httpssrv_mbedTLS_freertos:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.caam
+  - middleware.mbedtls
+  - middleware.mbedtls.port.ksdk
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - driver.lpi2c
+  - driver.enet
+  - middleware.lwip.enet_ethernetif
+  - middleware.lwip
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - middleware.mbedtls.default_heap_stack
+  - middleware.lwip.default_heap_stack
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              __replace__:
+              cc-define:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+                LWIP_ENET_FLEXIBLE_CONFIGURATION:
+                MBEDTLS_SSL_CIPHERSUITES=MBEDTLS_TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __remove__:
+              debug:
+              release:
+        armgcc:
+          config:
+            __remove__:
+              debug:
+              release:
+    document:
+      __replace__:
+      name: "lwip_httpssrv_mbedTLS_freertos_${multicore_foldername}"
+  internal: true
+enet_txrx_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=0x1000
+                - __heap_size__=0x1000
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+                PHY_AUTONEGO_TIMEOUT_COUNT: 600000U
+        armgcc:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=0x1000"
+                - "-Xlinker --defsym=__heap_size__=0x1000"
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+                PHY_AUTONEGO_TIMEOUT_COUNT: 600000U
+    document:
+      __replace__:
+      name: "enet_txrx_transfer_${multicore_foldername}"
+enet_txrx_ptp1588_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  - component.silicon_id_imx943
+  - component.silicon_id
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=0x1000
+                - __heap_size__=0x1000
+              cc-define:
+                ENET_ENHANCEDBUFFERDESCRIPTOR_MODE:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+                PHY_STABILITY_DELAY_US: 500000U
+        armgcc:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=0x1000"
+                - "-Xlinker --defsym=__heap_size__=0x1000"
+              cc-define:
+                ENET_ENHANCEDBUFFERDESCRIPTOR_MODE:
+                FSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE:
+                PHY_STABILITY_DELAY_US: 500000U
+    document:
+      __replace__:
+      name: "enet_txrx_ptp1588_transfer_${multicore_foldername}"
+enet_txrx_multiring_transfer:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.phy-device-rtl8211f
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_PCAL6524=1:
+        iar:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - __stack_size__=0x1000
+                - __heap_size__=0x1000
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+        armgcc:
+          config:
+            __common__:
+              __replace__:
+                ad-flags:
+                - "-Xlinker --defsym=__stack_size__=0x1000"
+                - "-Xlinker --defsym=__heap_size__=0x1000"
+              cc-define:
+                PHY_STABILITY_DELAY_US: 500000U
+    document:
+      __replace__:
+      name: "enet_txrx_multiring_transfer_${multicore_foldername}"
+i3c_polling_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_polling_b2b_transfer_master_sm_${multicore_foldername}"
+i3c_polling_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_polling_b2b_transfer_slave_sm_${multicore_foldername}"
+i3c_interrupt_b2b_transfer_master:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_interrupt_b2b_transfer_master_${multicore_foldername}"
+i3c_interrupt_b2b_transfer_slave:
+  internal: true
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_interrupt_b2b_transfer_slave_${multicore_foldername}"
+i3c_interrupt_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_interrupt_b2b_transfer_master_sm_${multicore_foldername}"
+i3c_interrupt_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_interrupt_b2b_transfer_slave_sm_${multicore_foldername}"
+i3c_bus_master:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - component.i3c_bus_adapter
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_bus_master_${multicore_foldername}"
+  internal: true
+i3c_bus_slave:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - component.i3c_bus_adapter
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+    document:
+      __replace__:
+      name: "i3c_bus_slave_${multicore_foldername}"
+  internal: true
+i3c_master_read_sensor_lsm6dso:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.i3c
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__: {}
+    modules:
+      boardset:
+        required: true
+        cc-include:
+        - path: "boards/${board}"
+          package_path: "boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/${multicore_foldername}"
+          project_path: board
+        files:
+        - source: "boards/${board}/board.c"
+          package_path: "boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/${multicore_foldername}"
+          project_path: board
+        - source: "boards/${board}/board.h"
+          package_path: "boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/${multicore_foldername}"
+          project_path: board
+        - source: "boards/${board}/clock_config.c"
+          package_path: "boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/${multicore_foldername}"
+          project_path: board
+        - source: "boards/${board}/clock_config.h"
+          package_path: "boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/${multicore_foldername}"
+          project_path: board
+    document:
+      __replace__:
+      name: "i3c_master_read_sensor_lsm6dso_${multicore_foldername}"
+cmsis_lpuart_interrupt_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpuart_interrupt_transfer_sm_${multicore_foldername}"
+cmsis_lpuart_edma_transfer_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.dma3
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+    document:
+      __replace__:
+      name: "cmsis_lpuart_edma_transfer_sm_${multicore_foldername}"
+cmsis_lpi2c_edma_b2b_transfer_master:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpi2c_edma_b2b_transfer_master_${multicore_foldername}"
+cmsis_lpi2c_edma_b2b_transfer_slave:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpi2c_edma_b2b_transfer_slave_${multicore_foldername}"
+cmsis_lpi2c_edma_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpi2c_edma_b2b_transfer_master_sm_${multicore_foldername}"
+cmsis_lpi2c_edma_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpi2c_edma_b2b_transfer_slave_sm_${multicore_foldername}"
+cmsis_lpi2c_int_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpi2c_int_b2b_transfer_master_sm_${multicore_foldername}"
+cmsis_lpi2c_int_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpi2c_int_b2b_transfer_slave_sm_${multicore_foldername}"
+cmsis_lpspi_edma_b2b_transfer_master:
+  internal: true
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  internal: true
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpspi_edma_b2b_transfer_master_${multicore_foldername}"
+cmsis_lpspi_edma_b2b_transfer_slave:
+  internal: true
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  internal: true
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpspi_edma_b2b_transfer_slave_${multicore_foldername}"
+cmsis_lpspi_edma_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  internal: true
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpspi_edma_b2b_transfer_master_sm_${multicore_foldername}"
+cmsis_lpspi_edma_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  internal: true
+  contents:
+    document:
+      __replace__:
+      name: "cmsis_lpspi_edma_b2b_transfer_slave_sm_${multicore_foldername}"
+cmsis_lpspi_int_b2b_transfer_master_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "cmsis_lpspi_int_b2b_transfer_master_sm_${multicore_foldername}"
+cmsis_lpspi_int_b2b_transfer_slave_sm:
+  internal: true
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpi2c
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+    document:
+      __replace__:
+      name: "cmsis_lpspi_int_b2b_transfer_slave_sm_${multicore_foldername}"
+mbw:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpit
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "mbw_${multicore_foldername}"
+mbw_sm:
+  section-type: application
+  internal: true
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - driver.lpit
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "mbw_sm_${multicore_foldername}"
+power_mode_switch_rtos_imx943:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - component.lpi2c_adapter
+  - component.codec_i2c
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - middleware.freertos-kernel.heap_4
+  - driver.mu1
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  - driver.lptmr
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  __remove__:
+    dependency:
+    - driver.port
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+              as-define:
+                NO_CRP:
+        iar:
+          config:
+            __common__:
+              ad-flags:
+              - __stack_size__=0x400
+              - __heap_size__=0x400
+        armgcc:
+          binary_packed: release
+          config:
+            __common__:
+              ad-flags:
+              - "-Xlinker --defsym=__stack_size__=0x400"
+              - "-Xlinker --defsym=__heap_size__=0x400"
+    modules:
+      remoteproc-rsc-table:
+        required: true
+        cc-include:
+        - path: "boards/${board}"
+          package_path: "boards/${board}/demo_apps/power_mode_switch"
+          project_path: remoteproc
+        - path: middleware/multicore/remoteproc
+          package_path: "boards/${board}/demo_apps/power_mode_switch"
+          project_path: remoteproc
+        files:
+        - source: "boards/${board}/rsc_table.c"
+          package_path: "boards/${board}/demo_apps/power_mode_switch"
+          project_path: remoteproc
+        - source: "boards/${board}/rsc_table.h"
+          package_path: "boards/${board}/demo_apps/power_mode_switch"
+          project_path: remoteproc
+        - source: middleware/multicore/remoteproc/remoteproc.h
+          package_path: "boards/${board}/demo_apps/power_mode_switch"
+          project_path: remoteproc
+      rpmsg-config:
+        cc-include:
+        - path: "boards/${board}/demo_apps/power_mode_switch"
+          package_path: project-root-path
+          project_path: source
+        files:
+        - source: "boards/${board}/demo_apps/power_mode_switch/rpmsg_config.h"
+          package_path: project-root-path
+          project_path: source
+    document:
+      __replace__:
+      name: "power_mode_switch_rtos_imx943_${multicore_foldername}"
+low_power_wakeword:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  - middleware.voice_spot.cm7
+  - middleware.voice_seeker.cm7
+  - CMSIS_DSP_Source
+  - driver.igpio
+  - driver.iuart
+  - driver.gpc_2
+  - driver.gpt
+  - driver.lptmr
+  - driver.pdm_edma
+  - driver.sai_edma
+  - driver.adp5585
+  - driver.lpi2c
+  - driver.mu1
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  - middleware.freertos-kernel.heap_4
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+  merge_segment:
+  - app.srtm
+  contents:
+    configuration:
+      tools:
+        __common__:
+          binary-file: low_power_wakeword.bin
+          config:
+            __common__:
+              cc-define:
+                SRTM_DEBUG_MESSAGE_FUNC: DbgConsole_Printf
+                SRTM_DEBUG_VERBOSE_LEVEL: SRTM_DEBUG_VERBOSE_WARN
+                NOT_CONFIG_CLK_ROOT: 1
+                VOICE_ENGINE_CONFIG_VOICESEEKER_2MIC: 1
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+                USE_SRTM_PDM_EDMA:
+              as-define:
+                NO_CRP:
+                __PERFORMANCE_IMPLEMENTATION:
+        iar:
+          config:
+            __remove__:
+              ddr_debug:
+              ddr_release:
+              flash_debug:
+              flash_release:
+        armgcc:
+          binary_packed: release
+          config:
+            __remove__:
+              ddr_debug:
+              ddr_release:
+              flash_debug:
+              flash_release:
+    modules:
+      example:
+        cc-include:
+        - path: "boards/${board}/${multicore_foldername}"
+          package_path: "boards/${board}/demo_apps/low_power_wakeword/${multicore_foldername}"
+          project_path: source
+        files:
+        - source: "boards/${board}/srtm_config.h"
+          package_path: "boards/${board}/demo_apps/low_power_wakeword/${multicore_foldername}"
+          project_path: source
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.c"
+          package_path: "boards/${board}/demo_apps/low_power_wakeword/${multicore_foldername}"
+          project_path: source
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.h"
+          package_path: "boards/${board}/demo_apps/low_power_wakeword/${multicore_foldername}"
+          project_path: source
+        - source: "boards/${board}/demo_apps/low_power_wakeword/linker/MIMX94398_${multicore_foldername}_lpv_ram.ld"
+          attribute: linker-file
+          toolchains: armgcc
+          targets: "debug release"
+          project_path: "${board}/gcc"
+      __remove__:
+        linker-file:
+    document:
+      __replace__:
+      name: "low_power_wakeword_${multicore_foldername}"
+sai_low_power_audio_rtos_imx943:
+  section-type: application
+  required: true
+  internal: true
+  belong_to: "set.board.${board}"
+  dependency:
+  - driver.srtm
+  - driver.srtm.freertos
+  - driver.lptmr
+  - driver.pdm_edma
+  - driver.sai_edma
+  - driver.adp5585
+  - driver.lpi2c
+  - driver.mu1
+  - driver.wm8962
+  - driver.codec
+  - component.codec_i2c
+  - component.lpi2c_adapter
+  - component.wm8962_adapter
+  - middleware.freertos-kernel.cm7_nonsecure_port
+  - middleware.freertos-kernel.cm7_non_trustzone
+  - middleware.multicore.rpmsg_lite.imx943_m7_freertos
+  - middleware.multicore.rpmsg_lite.freertos
+  - middleware.multicore.rpmsg_lite
+  - middleware.freertos-kernel.heap_4
+  __remove__:
+    dependency:
+    - driver.port
+  merge_segment:
+  - app.srtm
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                SDK_I2C_BASED_COMPONENT_USED=1:
+                BOARD_USE_ADP5585=1:
+              as-define:
+                NO_CRP:
+        iar:
+          config:
+            __remove__:
+              ddr_debug:
+              ddr_release:
+              flash_debug:
+              flash_release:
+        armgcc:
+          binary_packed: release
+          config:
+            __remove__:
+              ddr_debug:
+              ddr_release:
+              flash_debug:
+              flash_release:
+    modules:
+      example:
+        cc-include:
+        - path: "boards/${board}/${multicore_foldername}"
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio/${multicore_foldername}"
+          project_path: source
+        files:
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.c"
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio/${multicore_foldername}"
+          project_path: "${board}"
+        - source: "boards/${board}/${multicore_foldername}/app_srtm.h"
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio/${multicore_foldername}"
+          project_path: "${board}"
+        - source: "boards/${board}/demo_apps/sai_low_power_audio/${multicore_foldername}/FreeRTOSConfig.h"
+          merge-to-freertosconfig: main
+          project_path: source
+        - source: "boards/${board}/FreeRTOSConfigBoard.h"
+          merge-to-freertosconfig: sub
+          project_path: source
+        - source: "boards/${board}/demo_apps/sai_low_power_audio/rpmsg_config.h"
+          project_path: source
+        - source: "boards/${board}/iar/MIMX94398_${multicore_foldername}_lpa_ram.icf"
+          attribute: linker-file
+          toolchains: iar
+          targets: "debug release"
+          project_path: "${board}/iar"
+        - source: "boards/${board}/gcc/MIMX94398_${multicore_foldername}_lpa_ram.ld"
+          attribute: linker-file
+          toolchains: armgcc
+          targets: "debug release"
+          project_path: "${board}/gcc"
+      remoteproc-rsc-table:
+        required: true
+        cc-include:
+        - path: "boards/${board}"
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio"
+          project_path: remoteproc
+        - path: middleware/multicore/remoteproc
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio"
+          project_path: remoteproc
+        files:
+        - source: "boards/${board}/rsc_table.c"
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio"
+          project_path: remoteproc
+        - source: "boards/${board}/rsc_table.h"
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio"
+          project_path: remoteproc
+        - source: middleware/multicore/remoteproc/remoteproc.h
+          package_path: "boards/${board}/demo_apps/sai_low_power_audio"
+          project_path: remoteproc
+      srtm-config:
+        cc-include:
+        - path: "boards/${board}/demo_apps/sai_low_power_audio"
+          package_path: project-root-path
+          project_path: source
+        files:
+        - source: "boards/${board}/demo_apps/sai_low_power_audio/srtm_config.h"
+          package_path: project-root-path
+          project_path: source
+      __remove__:
+        linker-file:
+    document:
+      __replace__:
+      name: "sai_low_power_audio_rtos_imx943_${multicore_foldername}"
+pwm:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  dependency:
+  - driver.xbar_1
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: pwm_${multicore_foldername}
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__: {}
+pwm_sm:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - driver.xbar_1
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: pwm_sm_${multicore_foldername}
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__: {}
+gpt_timer:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+  contents:
+    document:
+      __replace__:
+      name: gpt_timer_${multicore_foldername}
+gpt_timer_sm:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+  contents:
+    document:
+      __replace__:
+      name: gpt_timer_sm_${multicore_foldername}
+tempsensor_sm_1:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "tempsensor_sm_${multicore_foldername}"
+adc_polling_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "adc_polling_sm_${multicore_foldername}"
+adc_interrupt_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "adc_interrupt_sm_${multicore_foldername}"
+adc_watchdog_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "adc_watchdog_sm_${multicore_foldername}"
+adc_selftest_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "adc_selftest_sm_${multicore_foldername}"
+sema42_sm:
+  section-type: application
+  required: true
+  belong_to: "set.board.${board}"
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+    - driver.port
+  contents:
+    document:
+      __replace__:
+      name: "sema42_sm_${multicore_foldername}"
+qtmr_timer_sm:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+  contents:
+    document:
+      __replace__:
+      name: qtmr_timer_sm_${multicore_foldername}
+sinc_lpspi_sm:
+  section-type: application
+  belong_to: set.board.${board}
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+eqdc_basic_sm:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+  contents:
+    document:
+      __replace__:
+      name: eqdc_basic_sm_${multicore_foldername}
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__: {}
+eqdc_index_interrupt_sm:
+  section-type: application
+  required: true
+  belong_to: set.board.${board}
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - config_sm
+  dependency:
+  - utility.debug_console_lite
+  - utility.assert_lite
+  __remove__:
+    dependency:
+    - utility.debug_console
+    - utility.assert
+    - component.serial_manager
+    - component.serial_manager_uart
+  contents:
+    document:
+      __replace__:
+      name: eqdc_index_interrupt_sm_${multicore_foldername}
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__: {}

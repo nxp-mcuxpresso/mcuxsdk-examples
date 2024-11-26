@@ -1,0 +1,253 @@
+__safe_load__:
+- boards/src/freertos_examples/freertos_examples_index_v3.yml
+- bin/generator/records_v3/set/board/imx943evk/project_segment_imx943evk_cm33_core1.yml
+- bin/generator/records_v3/set/device/MIMX94398/index_cm33_core1.yml
+__variable__:
+  ConfigName_var: ConfigName
+__hierarchy__:
+  tmp_imx943evk_configurations_components:
+    section-type: application
+    belong_to: "set.board.${board}"
+    dependency:
+    - component.sm_clock
+    - driver.clock
+    - driver.fract_pll
+    - driver.ccm
+    - driver.src1
+    - driver.reset
+    - driver.supply
+    - driver.power
+    - driver.cpu
+    - driver.elec_spec
+    - component.sm.imx943_cm33_core1
+    - component.hal_clock
+    - component.hal_clock.imx943
+    - component.sm_pinctrl
+    - driver.iomuxc
+    - component.hal_pinctrl
+    - component.hal_pinctrl.imx943
+    - component.sm.smt
+    - component.sm.crc
+    - component.sm.scmi
+    - driver.common
+    - "device.${platform_devices_soc_name}_CMSIS"
+    - utility.debug_console
+    - utility.assert
+    - component.lpuart_adapter
+    - component.serial_manager_uart
+    - component.serial_manager
+    - driver.lpuart
+    - component.lists
+    - "device.${platform_devices_soc_name}_startup"
+    - driver.rgpio
+    - driver.cache_xcache
+    - driver.adp5585
+    - driver.pcal6524
+    - driver.pcal6408
+    - driver.pca6416a
+    - driver.irqsteer_1
+    - driver.irqsteer_soc.${multicore_foldername}
+    - driver.lpi2c
+    - middleware.freertos-kernel.cm33_non_trustzone
+    merge_segment:
+    - imx943evk_options
+    - config_nonsm
+    contents:
+      document:
+        platform_devices_soc_name: MIMX94398
+        board: imx943evk
+        core: cm33
+        fpu: SP_FPU
+        core_id: cm33_core1
+        device_id: "${platform_devices_soc_name}"
+        compilers:
+        - armclang
+      configuration:
+        tools:
+          __remove__:
+            mdk:
+            dsmdk:
+          __common__:
+            binary-file: sdk20-app.bin
+            config:
+              __common__: {}
+          iar:
+            project-templates:
+            - bin/generator/templates/iar/app_jlinkswd_m33/generic.ewd
+            - bin/generator/templates/iar/app_jlinkswd_m33/generic.ewp
+            - bin/generator/templates/iar/general.eww
+          armgcc:
+          mcux:
+            ignore: 'true'
+      modules:
+        linker-file:
+          files:
+          - source: devices/MIMX94398/iar/MIMX94398_cm33_core1_ram.icf
+            attribute: linker-file
+            toolchains: iar
+            targets: "debug release"
+            project_path: MIMX94398/iar
+          - source: devices/MIMX94398/gcc/MIMX94398_cm33_core1_ram.ld
+            attribute: linker-file
+            toolchains: armgcc
+            targets: "debug release"
+            project_path: MIMX94398/gcc
+          - source: devices/MIMX94398/iar/MIMX94398_cm33_core1_flash.icf
+            attribute: linker-file
+            toolchains: iar
+            targets: "flash_debug flash_release"
+            project_path: MIMX94398/iar
+          - source: devices/MIMX94398/gcc/MIMX94398_cm33_core1_flash.ld
+            attribute: linker-file
+            toolchains: armgcc
+            targets: "flash_debug flash_release"
+            project_path: MIMX94398/gcc
+config_nonsm:
+  section-type: project_segment
+  belong_to: "set.board.${board}"
+  contents:
+    modules:
+      hal_config_nonsm:
+        cc-include:
+        - path: "boards/${board}/nonsm/"
+          project_path: boards/${board}/nonsm
+        files:
+        - source: boards/${board}/nonsm/hal_config.h
+          project_path: boards/${board}/nonsm
+config_sm:
+  section-type: project_segment
+  belong_to: "set.board.${board}"
+  contents:
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL=1:
+    modules:
+      hal_config_sm:
+        cc-include:
+        - path: "boards/${board}/sm/"
+          project_path: boards/${board}/sm
+        files:
+        - source: boards/${board}/sm/hal_config.h
+          project_path: boards/${board}/sm
+freertos_hello_sm:
+  required: true
+  dependency:
+  - middleware.freertos-kernel
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - freertos_hello_postbuild_bin_axf_segment_sm
+  - freertos_hello_multi_core_sm
+  - config_sm
+
+freertos_swtimer_sm:
+  required: true
+  dependency:
+  - middleware.freertos-kernel
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - freertos_swtimer_postbuild_bin_axf_segment_sm
+  - freertos_swtimer_multi_core_sm
+  - config_sm
+
+freertos_generic_sm:
+  required: true
+  dependency:
+  - middleware.freertos-kernel
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - freertos_generic_postbuild_bin_axf_segment_sm
+  - freertos_generic_multi_core_sm
+  - config_sm
+
+freertos_event_sm:
+  required: true
+  dependency:
+  - middleware.freertos-kernel
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - freertos_event_postbuild_bin_axf_segment_sm
+  - freertos_event_multi_core_sm
+  - config_sm
+
+freertos_queue_sm:
+  required: true
+  dependency:
+  - middleware.freertos-kernel
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - freertos_queue_postbuild_bin_axf_segment_sm
+  - freertos_queue_multi_core_sm
+  - config_sm
+
+freertos_sem_sm:
+  required: true
+  dependency:
+  - middleware.freertos-kernel
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - freertos_sem_postbuild_bin_axf_segment_sm
+  - freertos_sem_multi_core_sm
+  - config_sm
+
+freertos_mutex_sm:
+  required: true
+  dependency:
+  - middleware.freertos-kernel
+  remove_segment:
+  - config_nonsm
+  merge_segment:
+  - freertos_mutex_postbuild_bin_axf_segment_sm
+  - freertos_mutex_multi_core_sm
+  - config_sm
+
+freertos_hello:
+  required: true
+  merge_segment:
+  - freertos_hello_postbuild_bin_axf_segment
+  - freertos_hello_multi_core
+
+freertos_swtimer:
+  required: true
+  merge_segment:
+  - freertos_swtimer_postbuild_bin_axf_segment
+  - freertos_swtimer_multi_core
+
+freertos_generic:
+  required: true
+  merge_segment:
+  - freertos_generic_postbuild_bin_axf_segment
+  - freertos_generic_multi_core
+
+freertos_event:
+  required: true
+  merge_segment:
+  - freertos_event_postbuild_bin_axf_segment
+  - freertos_event_multi_core
+
+freertos_queue:
+  required: true
+  merge_segment:
+  - freertos_queue_postbuild_bin_axf_segment
+  - freertos_queue_multi_core
+
+freertos_sem:
+  required: true
+  merge_segment:
+  - freertos_sem_postbuild_bin_axf_segment
+  - freertos_sem_multi_core
+
+freertos_mutex:
+  required: true
+  merge_segment:
+  - freertos_mutex_postbuild_bin_axf_segment
+  - freertos_mutex_multi_core

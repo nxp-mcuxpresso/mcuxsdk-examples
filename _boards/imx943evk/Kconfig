@@ -1,0 +1,36 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+rsource "${core_id}/Kconfig"
+
+config MCUX_HW_BOARD_imx943evk
+    bool
+    default y
+    imply MCUX_ABSTRACT_COMPONENT_component_expander
+    imply MCUX_COMPONENT_driver.pca6416a
+    imply MCUX_COMPONENT_driver.pcal6408
+    imply MCUX_COMPONENT_component.i2c_mux
+    imply MCUX_COMPONENT_component.i2c_mux_pca954x
+    imply MCUX_COMPONENT_component.enable_pca9544
+    imply MCUX_COMPONENT_component.enable_pca9548
+    imply MCUX_HW_DEVICE_MIMX94398
+    imply MCUX_COMPONENT_driver.wm8962
+
+config MCUX_COMPONENT_driver.sm_cfg
+    bool
+    default y
+
+config MCUX_COMPONENT_driver.non_sm_cfg
+    bool
+    default n
+
+config MCUX_COMPONENT_driver.srtm
+    bool
+    select MCUX_COMPONENT_driver.rpmsg_config
+    default n
+
+config MCUX_COMPONENT_driver.rpmsg_config
+    bool
+    default n

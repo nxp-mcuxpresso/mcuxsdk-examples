@@ -9,7 +9,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/ecat_examples/digital_io/digital_io.c
-    SOURCES examples/ecat_examples/digital_io/ecat_hw.c
     SOURCES examples/ecat_examples/digital_io/ecat_hw.h
     SOURCES examples/ecat_examples/digital_io/SSC/digital_io.xlsx
     SOURCES examples/ecat_examples/digital_io/SSC/digital_io.xml
