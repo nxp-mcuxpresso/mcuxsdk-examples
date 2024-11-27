@@ -4,6 +4,8 @@ mcux_add_source(
     SOURCES middleware/vglite/vglite_sdk/example/clock_freertos/clock_analog.h
             middleware/vglite/vglite_sdk/example/clock_freertos/hour_needle.h
             middleware/vglite/vglite_sdk/example/clock_freertos/minute_needle.h
+            middleware/vglite/vglite_sdk/example/clock_freertos/layer.h
+            middleware/vglite/vglite_sdk/example/clock_freertos/layer.c
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.c
             examples/_boards/${board}/vglite_examples/vglite_support/pin_mux.c
@@ -32,5 +34,6 @@ mcux_add_macro(
         -DBOARD_ENABLE_PSRAM_CACHE=0 \
         -DSSD1963_DATA_WITDH=8 \
         -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8 \
-        -DSDK_DEBUGCONSOLE_UART"
+        -DSDK_DEBUGCONSOLE_UART \
+        -DCUSTOM_VGLITE_MEMORY_CONFIG=1"
 )

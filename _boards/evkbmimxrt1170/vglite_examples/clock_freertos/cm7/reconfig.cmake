@@ -4,6 +4,8 @@ mcux_add_source(
     SOURCES middleware/vglite/vglite_sdk/example/clock_freertos/clock_analog.h
             middleware/vglite/vglite_sdk/example/clock_freertos/hour_needle.h
             middleware/vglite/vglite_sdk/example/clock_freertos/minute_needle.h
+            middleware/vglite/vglite_sdk/example/clock_freertos/layer.h
+            middleware/vglite/vglite_sdk/example/clock_freertos/layer.c
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.c
             examples/_boards/${board}/vglite_examples/vglite_support/pin_mux.c
