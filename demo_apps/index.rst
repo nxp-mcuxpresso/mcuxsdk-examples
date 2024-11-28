@@ -47,7 +47,6 @@ demo_apps
    led_matrix/readme.md
    lin_stack/index.rst
    low_power_display_imx8ulp/readme.md
-   low_power_wakeword/readme.md
    lpadc/index.rst
    lpdac_lpadc/readme.md
    lpi2c/index.rst
