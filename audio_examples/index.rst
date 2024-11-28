@@ -12,4 +12,3 @@ audio_examples
    maestro_sync/readme.md
    maestro_usb_mic/readme.md
    maestro_usb_speaker/readme.md
-   voice_spot_demo/readme.md

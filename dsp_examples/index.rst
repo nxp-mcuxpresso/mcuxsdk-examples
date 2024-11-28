@@ -14,7 +14,6 @@ dsp_examples
    naturedsp/readme.md
    pdm_sai/readme.md
    sema42/readme.md
-   voice_spot_demo/readme.md
    xaf_playback/readme.md
    xaf_record/readme.md
    xaf_usb_demo/readme.md
