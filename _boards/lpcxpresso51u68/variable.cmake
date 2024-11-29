@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 mcux_set_variable(board lpcxpresso51u68)
+mcux_set_variable(board_root examples/_boards)
 
 if (NOT DEFINED device)
     mcux_set_variable(device LPC51U68)

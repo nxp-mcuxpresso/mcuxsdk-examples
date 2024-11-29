@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 mcux_set_variable(board frdmk22f)
+mcux_set_variable(board_root examples/_boards)
 
 if (NOT DEFINED device)
     mcux_set_variable(device MK22F51212)
