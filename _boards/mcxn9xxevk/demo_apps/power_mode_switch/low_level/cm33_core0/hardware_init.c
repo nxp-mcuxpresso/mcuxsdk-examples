@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2022, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -32,6 +31,9 @@ void APP_InitDebugConsole(void)
     BOARD_InitPins();
     BOARD_BootClockFROHF48M();
     BOARD_InitDebugConsole();
+
+    /* Disable CPU1 clock. */
+    CLOCK_EnableCpu1Clock(SYSCON, false);
 }
 
 void APP_DeinitDebugConsole(void)

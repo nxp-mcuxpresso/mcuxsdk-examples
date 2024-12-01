@@ -1,6 +1,5 @@
 /*
  * Copyright 2024 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -44,6 +43,9 @@ void BOARD_InitHardware(void)
     CMC_ConfigFlashMode(CMC0, true, false);
     /* Disable LDO_CORE regulator. */
     SPC_EnableCoreLDORegulator(SPC0, false);
+    
+    /* Disable CPU1 clock. */
+    CLOCK_EnableCpu1Clock(SYSCON, false);
 
     if ((CMC_GetSystemResetStatus(CMC0) & kCMC_WakeUpReset) != 0UL)
     {
