@@ -1,0 +1,30 @@
+dev_composite_audio_multi_ch_unified_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_composite_audio_multi_ch_unified/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_device_composite_audio_multi_ch_unified/freertos/${multicore_foldername}
+    document:
+      name: dev_composite_audio_multi_ch_unified_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB Composite device application is a simple demonstration program
+        based on the MCUXpresso SDK. It is enumerated as a recording device. Users
+        can record the sound from this device via the "Sound Recorder" in the Windows
+        Accessories with an HID mouse device.
+      example_readme:
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_composite_audio_multi_ch_unified/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_audio_recorder_signal_enhancement.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_device_manager.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_recorder_advanced.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_recorder_change_level.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_recorder_default.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_recorder_property.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_right_click_icon.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_speaker_change_level.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_speaker_channel_location.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_speaker_default.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_speaker_property.jpg
+      - examples/usb_examples/usb_device_composite_audio_multi_ch_unified/usb_device_composite_audio_multi_ch_unified_start_log.jpg
+  boards:
+    mimxrt685audevk@cm33: []

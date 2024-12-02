@@ -1,0 +1,5 @@
+board.toolchains:
+- +xtensa@debug
+- +xtensa@release
+- +xcc@debug
+- +xcc@release

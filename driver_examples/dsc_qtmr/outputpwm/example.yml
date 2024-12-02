@@ -1,0 +1,16 @@
+qtmr_outputpwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_qtmr/outputpwm
+    project-root-path: boards/${board}/driver_examples/qtmr/outputpwm/${multicore_foldername}
+    document:
+      name: qtmr_outputpwm${core_id_suffix_name}
+      category: driver_examples
+      brief: The QTMR project is a demonstration program of the SDK QTMR driver's
+        output pwm feature by DMA. The example sets up one QTMR channel to output
+        pwm. The user should probe a 50Khz PWM signal output with50% dutycycle with
+        a oscilloscope.The user can enter a value to update the Duty cycle.
+      example_readme:
+      - examples/driver_examples/dsc_qtmr/outputpwm/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

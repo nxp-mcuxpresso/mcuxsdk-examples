@@ -1,0 +1,39 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/general.eww
+  config:
+    flexspi_nor_debug:
+      debugger_setting:
+        cmsisdap_resetlist: core
+    flexspi_nor_release:
+      debugger_setting:
+        cmsisdap_resetlist: core
+    flexspi_nor_debug:
+      debugger_setting:
+        cmsisdap_resetlist: core
+    flexspi_nor_release:
+      debugger_setting:
+        cmsisdap_resetlist: core
+
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_evkmimxrt1010/app_evkmimxrt1010.uvprojx
+  - scripts/guigenerator/templates/mdk/app_evkmimxrt1010/app_evkmimxrt1010.uvoptx
+
+initialization_file:
+  files:
+    - source: examples/_boards/evkmimxrt1010/evkmimxrt1010_flexspi_nor.ini
+      targets: flexspi_nor_debug flexspi_nor_release
+      attribute: initialization_file
+      toolchains: mdk
+    - source: examples/_boards/evkmimxrt1010/evkmimxrt1010_ram.ini
+      targets: debug release
+      attribute: initialization_file
+      toolchains: mdk
+    - source: examples/_boards/evkmimxrt1010/evkmimxrt1010_ram_0x1400.ini
+      targets: ram_0x1400_debug ram_0x1400_release
+      attribute: initialization_file
+      toolchains: mdk
+

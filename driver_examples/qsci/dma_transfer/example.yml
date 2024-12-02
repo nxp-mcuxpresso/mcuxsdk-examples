@@ -1,0 +1,15 @@
+qsci_dma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qsci/dma_transfer
+    project-root-path: boards/${board}/driver_examples/qsci/dma_transfer/${multicore_foldername}
+    document:
+      name: qsci_dma_transfer${core_id_suffix_name}
+      category: driver_examples/qsci
+      brief: 'The qsci_dma_transfer example shows how to use QSCI driver in DMA way:
+        In this example, one qsci instance is connected to PC, the board will send
+        back all characters that PC sends to the board.'
+      example_readme:
+      - examples/driver_examples/qsci/dma_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

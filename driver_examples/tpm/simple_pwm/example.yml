@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+tpm_simple_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tpm/simple_pwm
+    project-root-path: boards/${board}/driver_examples/tpm/simple_pwm/${multicore_foldername}
+    document:
+      name: tpm_simple_pwm${core_id_suffix_name}
+      category: driver_examples/tpm
+      brief: The TPM project is a simple demonstration program of the SDK TPM driver.
+        It sets up the TPMhardware block to output a center-aligned PWM signal. The
+        PWM dutycycle is manually updated.On boards that have an LED connected to
+        the TPM pins, the user will see a change in LEDbrightness if user enter different
+        values.
+      example_readme:
+      - examples/driver_examples/tpm/simple_pwm/readme.md
+      - examples/_boards/${board}/driver_examples/tpm/simple_pwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke02z40m: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []

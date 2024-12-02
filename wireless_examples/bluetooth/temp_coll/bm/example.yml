@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+temperature_collector_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/temp_coll/bm
+    project-root-path: boards/${board}/wireless_examples/bluetooth/temp_coll/bm/${multicore_foldername}
+    document:
+      name: temperature_collector_bm
+      category: wireless_examples/bluetooth/temp_coll/bm/
+      brief: The BLE temperature collector application is a simple demonstration program based
+        on the MCUXpresso SDK.The application implements a custom GATT based Temperature Profile.
+  boards:
+    kw45b41zevk: []
+    k32w148evk: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

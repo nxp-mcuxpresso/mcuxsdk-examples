@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+rpmsg_lite_pingpong_tzm_primary_core_s:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/multicore_examples/rpmsg_lite_pingpong_tzm/primary_s
+    project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${multicore_foldername}/s/
+    document:
+      name: rpmsg_lite_pingpong_tzm_primary_core_s
+      category: multicore_examples
+      brief: 'The Multicore RPMsg-Lite pingpong TZM project is a simple demonstration
+        program that uses the MCUXpresso SDK software and the RPMsg-Lite library and
+        shows how to implement the inter-core communication between cores in the TrustZone-M
+        (TZM) environment. The TZM is configured in the BOARD_InitTrustZone() function.
+        The secondary core is put into the secure domain as well as the shared memory
+        for rpmsg messages exchange. The primary core boots in the secure domain,
+        it releases the secondary core from the reset and then the inter-core communication
+        is established in the secure domain.
+
+        Once the RPMsg is initialized and the secure endpoint is created the message
+        exchange starts, incrementing a virtual counter that is part of the message
+        payload.
+
+        The message pingpong in the secure domain finishes when the counter reaches
+        the value of 50. Then the secure domain is kept running and the non-secure
+        portion of the application is started.
+
+        The non-secure RPMsg-Lite endpoint is created in the non-secure domain and
+        the new message pingpong is triggered, exchanging data between the secondary
+        core secure endpoint and the primary core non-secure endpoint. Veneer functions
+        defined in the secure project are called from the non-secure domain during
+        this process. This message pingpong finishes when the counter reaches the
+        value of 1050. Debug prints from the non-secure portion of the application
+        are routed into the secure domain using the dedicated veneer function.'
+      example_readme:
+      - examples/multicore_examples/rpmsg_lite_pingpong_tzm/readme.md
+      - examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

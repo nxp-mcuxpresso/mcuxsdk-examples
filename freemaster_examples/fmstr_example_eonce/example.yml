@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+fmstr_example_eonce:
+  section-type: application
+  contents:
+    document:
+      brief: FreeMASTER example using DSC JTAG-EOnCE Realtime Data Transfer unit to
+        communicate with target microcontroller. This example application demonstrates
+        use of FreeMASTER tool to visualize internal variables and to control the
+        application flow by modifying variables. The application also shows use of
+        advanced FreeMASTER features like TSA tables and Pipes. and Pipes.
+      category: FreeMASTER_examples
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_eonce/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_eonce/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      name: fmstr_example_eonce${core_id_suffix_name}
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_eonce/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_eonce/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+    meta_path: examples/freemaster_examples/fmstr_example_eonce
+    project-root-path: boards/${board}/freemaster_examples/fmstr_eonce/${multicore_foldername}
+  boards: {}

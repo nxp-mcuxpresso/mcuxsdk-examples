@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc_12b1msps_sar_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/adc_12b1msps_sar/interrupt_adc_12b1msps_sar
+    project-root-path: boards/${board}/driver_examples/adc/interrupt/${multicore_foldername}
+    document:
+      name: adc_12b1msps_sar_interrupt${core_id_suffix_name}
+      category: driver_examples/adc
+      brief: The adc_interrupt example shows how to use interrupt with adc driver.In
+        this example, user should indicate a channel to provide a voltage signal (can
+        be controlled by user) as the adc'ssample input. When running the project,
+        typing any key into debug console would trigger the conversion. ADC interrupt
+        would be asserted once the conversion is completed. In ADC ISR, the conversion
+        completed flag would be cleared by reading the conversion result value. Also,
+        the conversion result value is stored, and the ISR counter is increased. These
+        information would be printed when the execution return to the main loop.The
+        point is that the adc interrupt configuration is set when configuring the
+        adc's conversion channel. When in software trigger mode, the conversion would
+        be launched by the operation of configuring channel, just like writing aconversion
+        command. So if user wants to generate the interrupt every time the conversion
+        is completed, the channel's configuration with enabling interrupt setting
+        would be used for each conversion.
+      example_readme:
+      - examples/driver_examples/adc_12b1msps_sar/interrupt_adc_12b1msps_sar/readme.md
+      - examples/_boards/${board}/driver_examples/adc/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

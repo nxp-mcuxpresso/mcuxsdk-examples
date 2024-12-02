@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+fmeas:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/fmeas
+    project-root-path: boards/${board}/driver_examples/fmeas/${multicore_foldername}
+    document:
+      name: fmeas${core_id_suffix_name}
+      category: driver_examples/fmeas
+      brief: This example shows how to use SDK drivers to use the Frequency Measure
+        feature of SYSCON module on LPC devices.It shows how to measure a target frequency
+        using a (faster) reference frequency. The example uses the internal main clock
+        as the reference frequency to measure the frequencies of the RTC, watchdog
+        oscillator, and internal RC oscillator.
+      example_readme:
+      - examples/driver_examples/fmeas/readme.md
+      - examples/_boards/${board}/driver_examples/fmeas/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

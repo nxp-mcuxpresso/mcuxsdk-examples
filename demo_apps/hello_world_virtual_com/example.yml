@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+hello_world_virtual_com:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/hello_world_virtual_com
+    project-root-path: boards/${board}/demo_apps/hello_world_virtual_com/${multicore_foldername}
+    document:
+      name: hello_world_virtual_com${core_id_suffix_name}
+      category: demo_apps
+      brief: Hello World Virtual Com demonstrates the use of virtual com to print
+        the "Hello World" string to the terminal. Different with Hello World demo
+        (a HW UART peripheral is used to transmit data), the demo transmits data based
+        on a serial port simulated by the USB device stack on target board side via
+        USB peripheral. The purpose of this demo is to demonstrate how to use virtual
+        com and provide a simple project for debugging and further development.
+      example_readme:
+      - examples/demo_apps/hello_world_virtual_com/readme.md
+      - examples/_boards/${board}/demo_apps/hello_world_virtual_com/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ncp_device:
+  section-type: application
+  contents:
+    meta_path: examples/ncp_examples/ncp_device
+    project-root-path: boards/${board}/ncp_examples/ncp_device/${multicore_foldername}
+    document:
+      name: ncp_device${core_id_suffix_name}
+      category: ncp_examples/
+      brief: The ncp_device.
+      example_readme:
+      - examples/ncp_examples/ncp_device/readme.md
+      - examples/_boards/${board}/ncp_examples/ncp_device/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release

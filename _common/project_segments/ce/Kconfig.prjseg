@@ -1,0 +1,6 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.ce_support
+    bool "Use boards/_boards/${board}/ce_examples/ce_support[.c|.h]"

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdc_cursor:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_lcdc/lcdc_cursor
+    project-root-path: boards/${board}/driver_examples/lcdc/lcdc_cursor/${multicore_foldername}
+    document:
+      name: lcdc_cursor${core_id_suffix_name}
+      category: driver_examples/lcdc
+      brief: The lcdc_cursor example shows how to use LCD hardware cursor.In this
+        example, a 32x32 cursor is shown. The cursor's position is changed atthe end
+        of every frame.The background is:+++                                                ++                    Red                         ++                                                ++            +--+              ++            +                    +              ++            +      Blank         +              ++            +                    +              ++            +--+              ++                                                ++                                                ++                                                +++
+      example_readme:
+      - examples/driver_examples/lpc_lcdc/lcdc_cursor/readme.md
+      - examples/_boards/${board}/driver_examples/lcdc/lcdc_cursor/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

@@ -1,0 +1,15 @@
+qsci_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qsci/polling
+    project-root-path: boards/${board}/driver_examples/qsci/polling/${multicore_foldername}
+    document:
+      name: qsci_polling${core_id_suffix_name}
+      category: driver_examples/qsci
+      brief: 'The qsci_polling example shows how to use uart driver in polling way:
+        In this example, one uart instance is connected to PC, the board will send
+        back all characters that PC sends to the board.'
+      example_readme:
+      - examples/driver_examples/qsci/polling/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

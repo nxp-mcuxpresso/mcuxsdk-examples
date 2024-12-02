@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdifv3_rgb565:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdifv3/rgb565
+    project-root-path: boards/${board}/driver_examples/lcdifv3/rgb565/${multicore_foldername}
+    document:
+      name: lcdifv3_rgb565${core_id_suffix_name}
+      category: driver_examples/lcdifv3
+      brief: The RGB565 project shows how to drive the RGB interface LCD using LCDIF
+        driver.If this example runs correctly, a rectangle is moving in the screen,
+        and the colorchanges every time it reaches the edges of the screen.The rectangle
+        moving speed might be different with Debug target and Release target,because
+        these two targets spend different time to fill the frame buffer.
+      example_readme:
+      - examples/driver_examples/lcdifv3/rgb565/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

@@ -1,0 +1,17 @@
+dsc_i2c_polling_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_i2c/polling_b2b_transfer/master
+    project-root-path: boards/${board}/driver_examples/i2c/polling_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: dsc_i2c_polling_b2b_transfer_master${core_id_suffix_name}
+      category: driver_examples/i2c
+      brief: The i2c_polling_b2b_transfer_master example shows how to use i2c driver
+        as master to do board to board transfer using polling method:In this example,
+        one i2c instance as master and another i2c instance on the other board as
+        slave. Master sends a piece of data to slave, and receive a piece of data
+        from slave. This example checks if the data received from slave is correct.
+      example_readme:
+      - examples/driver_examples/dsc_i2c/polling_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

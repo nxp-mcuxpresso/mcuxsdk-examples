@@ -1,0 +1,56 @@
+Hardware requirements
+=====================
+- Mini/micro USB cable
+- MIMXRT1180-EVBD board
+- Personal Computer
+
+Board settings
+============
+
+Prepare the Demo
+===============
+1.  Connect a USB cable between the host PC and the UART port(J189) on the target board.
+2.  Connect a J-Link debuger between the host PC and the JTAG port(J205) on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Download the program to the target board.
+5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+===============
+When the example runs successfully, you can see the similar information from the terminal as below.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+FLEXSPI Follower(Root Clock: 400MHz, IO Mode: DDRx8, Leader Root Clock: 400000000Hz) example started!
+FLEXSPI follower is initialized!
+FLEXSPI leader is initialized!
+
+[Leader] The follower status: 0x3006
+[Leader] The follower AXI read/write access is allowed!
+
+[Leader] Waiting that the AXI bus write is idle...
+[Leader] Original string: [18:40:43] This string is used to verify the memory write!
+[Leader] Writing follower's memory...
+[Leader] Write finished!
+
+[Leader] Waiting that the follower mailbox is idle...
+[Leader] Sending a mailbox to the follower...
+[Follower] Mailbox data(interrupt): 256.
+[Leader] Send finished -- 0x100!
+
+[Leader] Waiting that the AXI bus read is idle...
+[Leader] Reading the data from the follower memory...
+[Leader] The read data: [18:40:43] This string is used to verify the memory write!
+
+[Leader] Original string(AHB): [18:40:43] Verified the memory write via the AHB bus!
+[Leader] Writing follower's memory via AHB bus...
+[Leader] Write finished(AHB)!
+
+[Leader] Reading the data from the follower memory via AHB bus...
+[Leader] The read data(AHB): [18:40:43] Verified the memory write via the AHB bus!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~

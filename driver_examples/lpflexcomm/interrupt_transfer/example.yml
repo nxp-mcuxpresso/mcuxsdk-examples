@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpflexcomm_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpflexcomm/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/lpflexcomm/interrupt_transfer/${multicore_foldername}
+    document:
+      name: lpflexcomm_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/lpflexcomm
+      brief: The lpflexcomm_interrupt_transfer example shows how to use lpi2c driver
+        and lpuart driver to build a interrupt based application.In this example,
+        lpi2c and lpuart use same lpflexcomm instance.
+      example_readme:
+      - examples/driver_examples/lpflexcomm/interrupt_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/lpflexcomm/interrupt_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

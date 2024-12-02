@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+fmstr_example_rtt:
+  section-type: application
+  contents:
+    document:
+      brief: FreeMASTER example using Segger RTT communication over J-Link interface.
+        This example application demonstrates use of FreeMASTER tool to visualize
+        internal variables and to control the application flow by modifying variables.
+        The application also shows use of advanced FreeMASTER features like TSA tables
+        and Pipes.
+      category: FreeMASTER_examples
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_rtt/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_rtt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      name: fmstr_example_rtt${core_id_suffix_name}
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_rtt/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_rtt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+    meta_path: examples/freemaster_examples/fmstr_example_rtt
+    project-root-path: boards/${board}/freemaster_examples/fmstr_rtt/${multicore_foldername}
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1180@cm33: []
+    frdmke17z512: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    lpcxpresso54628: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []
+    rdrw612bga: []

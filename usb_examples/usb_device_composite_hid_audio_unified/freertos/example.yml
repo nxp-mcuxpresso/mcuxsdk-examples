@@ -1,0 +1,80 @@
+dev_composite_hid_audio_unified_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_composite_hid_audio_unified/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_device_composite_hid_audio_unified/freertos/${multicore_foldername}
+    document:
+      name: dev_composite_hid_audio_unified_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB Composite device application is a simple demonstration program
+        based on the MCUXpresso SDK. It is enumerated as a recording device. Users
+        can record the sound from this device via the "Sound Recorder" in the Windows
+        Accessories with an HID mouse device.
+      example_readme:
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_composite_hid_audio_unified/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_audio_recorder_signal_enhancement.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_device_manager.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_right_click_icon.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_select_properties.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_set_default.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_recorder_change_level.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_recorder_default.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_recorder_property.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_speaker_change_level.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_speaker_control_log.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_speaker_default.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_speaker_property.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_unified_start_log.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

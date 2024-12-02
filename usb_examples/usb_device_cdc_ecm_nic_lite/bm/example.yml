@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+dev_cdc_ecm_nic_lite_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_cdc_ecm_nic_lite/bm
+    project-root-path: boards/${board}/usb_examples/usb_device_cdc_ecm_nic_lite/bm/${multicore_foldername}
+    document:
+      name: dev_cdc_ecm_nic_lite_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief:
+        The device CDC-ECM project is a simple demonstration program based on
+        the MCUXpresso SDK. It is enumerated as an Ethernet network adapter and
+        users can access the network using the adapter.
+  boards:
+    rdrw612bga: []

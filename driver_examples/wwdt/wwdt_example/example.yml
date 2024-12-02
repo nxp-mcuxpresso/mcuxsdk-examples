@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+wwdt_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/wwdt/wwdt_example
+    project-root-path: boards/${board}/driver_examples/wwdt/${multicore_foldername}
+    document:
+      name: wwdt_example${core_id_suffix_name}
+      category: driver_examples/wwdt/
+      brief: The WDOG Example project is to demonstrate usage of the KSDK wdog driver.In
+        this example,quick test is first implemented to test the wdog.And then after
+        5 times of refreshing the watchdog, a timeout reset is generated.
+      example_readme:
+      - examples/driver_examples/wwdt/wwdt_example/readme.md
+      - examples/_boards/${board}/driver_examples/wwdt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmrw612: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []

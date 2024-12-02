@@ -1,0 +1,9 @@
+# It is optional to provide example specific Kconfig.
+
+mainmenu "CE non blocking mode test"
+
+# Need to refer the root Kconfig.mcuxpreso to get all Kconfig data
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
+
+# Board example specific Kconfig can be linked in this way if needed
+osource "${SdkRootDirPath}/${project_board_port_path}/Kconfig"

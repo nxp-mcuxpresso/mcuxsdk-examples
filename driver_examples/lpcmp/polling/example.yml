@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpcmp_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpcmp/polling
+    project-root-path: boards/${board}/driver_examples/lpcmp/polling/${multicore_foldername}
+    document:
+      name: lpcmp_polling${core_id_suffix_name}
+      category: driver_examples/lpcmp
+      brief: The LPCMP polling Example shows the simplest way to use LPCMP driver
+        and help user with a quick start.In this example, user should indicate an
+        input channel to capture a voltage signal (can be controlled by user) as the
+        LPCMP's positive channel input. On the negative side, the internal DAC is
+        used to generate the fixed voltage abouthalf value of reference voltage.When
+        running the project, change the input voltage of user-defined channel, then
+        the comparator's output would changebetween logic one and zero when the user's
+        voltage crosses the internal DAC's value. The endless loop in main() functionwould
+        detect the logic value of comparator's output, and change the LED. The LED
+        would be turned on when the compareoutput is logic one, or turned off when
+        zero.
+      example_readme:
+      - examples/driver_examples/lpcmp/polling/readme.md
+      - examples/_boards/${board}/driver_examples/lpcmp/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+puf:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/puf
+    project-root-path: boards/${board}/driver_examples/puf/${multicore_foldername}
+    document:
+      name: puf${core_id_suffix_name}
+      category: driver_examples/puf
+      brief: This driver example project demonstrates how to use driver for the PUF
+        controller which provides a secure key storage.
+      example_readme:
+      - examples/driver_examples/puf/readme.md
+      - examples/_boards/${board}/driver_examples/puf/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []

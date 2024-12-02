@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdb_dac_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdb/dac_trigger
+    project-root-path: boards/${board}/driver_examples/pdb/dac_trigger/${multicore_foldername}
+    document:
+      name: pdb_dac_trigger${core_id_suffix_name}
+      category: driver_examples/pdb
+      brief: The pdb_dac_trigger example shows how to use the PDB to generate a DAC
+        trigger.Based on the basic counter, to use the DAC trigger, just to enable
+        the DAC trigger's "milestone" and set the user-defined value for it.The DAC's
+        "milestone" is called as "interval". Multiple DAC trigger intervals can be
+        included into one PDB counter's cycle.DAC trigger's counter would reset after
+        the trigger is created and start counting again to the interval value.In this
+        example, the DAC is configured with hardware buffer enabled in normal work
+        mode. Once it gets the trigger from the PDB, the buffer read pointer increases.
+      example_readme:
+      - examples/driver_examples/pdb/dac_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/pdb/dac_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []

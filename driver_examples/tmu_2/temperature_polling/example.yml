@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+tmu_2_temperature_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tmu_2/temperature_polling
+    project-root-path: boards/${board}/driver_examples/tmu/temperature_polling/${multicore_foldername}
+    document:
+      name: tmu_2_temperature_polling${core_id_suffix_name}
+      category: driver_examples/tmu
+      brief: The TMU example shows how to configure TMU register to monitor and report
+        the temperature from multiple temperature measurement sites strategically
+        located on the chip. It monitors these sites and outputs the immediate/average
+        temperature.
+      example_readme:
+      - examples/driver_examples/tmu_2/temperature_polling/readme.md
+      - examples/_boards/${board}/driver_examples/tmu/temperature_polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mp: []

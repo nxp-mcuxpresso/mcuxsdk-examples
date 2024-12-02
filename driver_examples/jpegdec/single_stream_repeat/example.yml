@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+jpegdec_single_stream_repeat:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/jpegdec/single_stream_repeat
+    project-root-path: boards/${board}/driver_examples/jpegdec/single_stream_repeat/${multicore_foldername}
+    document:
+      name: jpegdec_single_stream_repeat${core_id_suffix_name}
+      category: driver_examples
+      brief: The SD JPEG decoder example decodes a series of JPEG pictures stored
+        on SD card then shows them one by one on panel. Only one slot is used with
+        two descriptors linked with each other as ping-pong descriptors. After one
+        descriptor finishes the other will be loaded.
+      example_readme:
+      - examples/driver_examples/jpegdec/single_stream_repeat/readme.md
+      - examples/_boards/${board}/driver_examples/jpegdec/jpegdec_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

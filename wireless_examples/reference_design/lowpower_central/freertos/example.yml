@@ -1,0 +1,22 @@
+lp_refdes_ble_central_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/reference_design/lowpower_central/freertos
+    project-root-path: boards/${board}/wireless_examples/reference_design/lowpower_central/freertos/${multicore_foldername}
+    document:
+      name: Lowpower_reference_design_ble_central_freertos${core_id_suffix_name}
+      category: wireless_examples/reference_design/lowpower_central/freertos
+      brief: This application is based on a GATT Temperature Service and demonstrates power consumption optimization in BLE.
+  boards:
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zloc: []
+    frdmmcxw72@cm33_core0: []
+    kw47loc@cm33_core0: []

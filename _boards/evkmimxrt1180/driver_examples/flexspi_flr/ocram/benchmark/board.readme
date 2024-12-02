@@ -1,0 +1,67 @@
+Hardware requirements
+=====================
+- Mini/micro USB cable
+- MIMXRT1180-EVBD board
+- Personal Computer
+
+Board settings
+============
+
+Prepare the Demo
+===============
+1.  Connect a USB cable between the host PC and the UART port(J189) on the target board.
+2.  Connect a J-Link debuger between the host PC and the JTAG port(J205) on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Download the program to the target board.
+5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+===============
+When the example runs successfully, you can see the similar information from the terminal as below.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+FLEXSPI Follower(Root Clock: 400MHz, IO Mode: DDRx8, Leader Root Clock: 400000000Hz) example started!
+FLEXSPI follower is initialized!
+FLEXSPI leader is initialized!
+------GPT clock is 80000000Hz
+Testing bandwidth of OCRAM-RD
+read 500 MB in 3100 ms, bandwidth=161 MB per second
+read 500 MB in 3100 ms, bandwidth=161 MB per second
+read 500 MB in 3100 ms, bandwidth=161 MB per second
+Testing bandwidth of OCRAM-WR
+read 500 MB in 7369 ms, bandwidth=67 MB per second
+read 500 MB in 7369 ms, bandwidth=67 MB per second
+read 500 MB in 7369 ms, bandwidth=67 MB per second
+Testing bandwidth of OCRAM-FRD
+read 500 MB in 4544 ms, bandwidth=110 MB per second
+read 500 MB in 4544 ms, bandwidth=110 MB per second
+read 500 MB in 4544 ms, bandwidth=110 MB per second
+Testing bandwidth of OCRAM-FWR
+read 500 MB in 7551 ms, bandwidth=66 MB per second
+read 500 MB in 7551 ms, bandwidth=66 MB per second
+read 500 MB in 7551 ms, bandwidth=66 MB per second
+**************Testing End*************
+Testing bandwidth of Follower-RD
+read 500 MB in 3178 ms, bandwidth=157 MB per second
+read 500 MB in 3178 ms, bandwidth=157 MB per second
+read 500 MB in 3178 ms, bandwidth=157 MB per second
+Testing bandwidth of Follower-WR
+read 500 MB in 8892 ms, bandwidth=56 MB per second
+read 500 MB in 8892 ms, bandwidth=56 MB per second
+read 500 MB in 8892 ms, bandwidth=56 MB per second
+Testing bandwidth of Follower-FRD
+read 500 MB in 4562 ms, bandwidth=109 MB per second
+read 500 MB in 4562 ms, bandwidth=109 MB per second
+read 500 MB in 4562 ms, bandwidth=109 MB per second
+Testing bandwidth of Follower-FWR
+read 500 MB in 25653 ms, bandwidth=19 MB per second
+read 500 MB in 25651 ms, bandwidth=19 MB per second
+read 500 MB in 25653 ms, bandwidth=19 MB per second
+**************Testing End*************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~

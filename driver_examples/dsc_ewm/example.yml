@@ -1,0 +1,17 @@
+dsc_ewm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_ewm
+    project-root-path: boards/${board}/driver_examples/ewm/${multicore_foldername}
+    document:
+      name: dsc_ewm${core_id_suffix_name}
+      category: driver_examples
+      brief: The EWM Example project is to demonstrate usage of the KSDK EWM driver.In
+        the example, EWM counter is continuously refreshed until button is pressed.Once
+        the button is pressed, EWM counter will expire and interrupt will be generated.After
+        the first pressing, another interrupt can be triggered by pressing button
+        again.
+      example_readme:
+      - examples/driver_examples/dsc_ewm/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

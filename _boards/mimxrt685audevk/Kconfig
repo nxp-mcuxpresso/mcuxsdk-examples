@@ -1,0 +1,26 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "${core_id}/Kconfig"
+rsource "Kconfig.defconfig"
+rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
+rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/flexcomm_spi/Kconfig.lvgl_support"
+
+config MCUX_HW_BOARD_mimxrt685audevk
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MIMXRT685S
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.power if MCUX_HW_DEVICE_MIMXRT685S_CORE_ID_cm33
+    imply MCUX_COMPONENT_driver.flexspi if MCUX_HW_DEVICE_MIMXRT685S_CORE_ID_cm33
+    imply MCUX_COMPONENT_driver.cache_cache64 if MCUX_HW_DEVICE_MIMXRT685S_CORE_ID_cm33
+    imply MCUX_COMPONENT_driver.flexcomm_usart
+    imply MCUX_COMPONENT_driver.flash_config if MCUX_HW_DEVICE_MIMXRT685S_CORE_ID_cm33
+    imply MCUX_COMPONENT_driver.flexcomm
+    imply MCUX_COMPONENT_driver.lpc_iopctl
+    imply MCUX_COMPONENT_driver.lpc_gpio
+    imply MCUX_COMPONENT_driver.reset if MCUX_HW_DEVICE_MIMXRT685S_CORE_ID_cm33

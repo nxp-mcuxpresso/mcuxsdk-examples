@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ce_matevd_test:
+  section-type: application
+  contents:
+    meta_path: examples/ce_examples/matevd_test
+    project-root-path: boards/${board}/ce_examples/matevd_test/${multicore_foldername}
+    complete_cmake_data:
+      files:
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_comp_loc_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_comp_wgn_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_loc.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_loc_18.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_loc_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_rm_wgn_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_wgn_17.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_wgn_18.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/evd_input_wgn_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_T_loc_18.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_T_loc_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_T_wgn_17.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_T_wgn_18.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_T_wgn_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_U_loc_18.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_U_loc_40.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_U_wgn_17.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_U_wgn_18.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/matevd_test/qr_output_U_wgn_40.txt:
+          project_relative_path: ./
+          type: src
+    document:
+      name: ce_matevd_test${core_id_suffix_name}
+      category: ce_examples
+      brief: Sample application that tests the EVD functionality for a complex Hermitian
+        matrix.
+      example_readme:
+      - examples/ce_examples/matevd_test/readme.md
+      - examples/_boards/${board}/ce_examples/matevd_test/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    kw47loc@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

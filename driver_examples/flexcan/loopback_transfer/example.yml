@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexcan_loopback_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/loopback_transfer
+    project-root-path: boards/${board}/driver_examples/flexcan/loopback_transfer/${multicore_foldername}
+    document:
+      name: flexcan_loopback_transfer${core_id_suffix_name}
+      category: driver_examples/flexcan
+      brief: The flexcan_loopback example shows how to use the loopback test mode
+        to debug your CAN Bus design:To demonstrates this example, only one board
+        is needed. The example will config one FlexCAN MessageBuffer to Rx Message
+        Buffer and the other FlexCAN Message Buffer to Tx Message Buffer with same
+        ID.After that, the example will send a CAN Message from the Tx Message Buffer
+        to the Rx Message Bufferthrough internal loopback interconnect and print out
+        the Message payload to terminal.
+      example_readme:
+      - examples/driver_examples/flexcan/loopback_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexcan/loopback_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimx8mp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

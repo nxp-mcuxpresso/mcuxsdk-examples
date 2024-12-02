@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+acmp_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/acmp/interrupt
+    project-root-path: boards/${board}/driver_examples/acmp/interrupt/${multicore_foldername}
+    document:
+      name: acmp_interrupt${core_id_suffix_name}
+      category: driver_examples/acmp
+      brief: 'The ACMP Interrupt project is a simple demonstration program that uses
+        the SDK software. Itcompares the selected analog input with ACMP internal
+        DAC output continuously and toggle the LEDwhen the final comparison result
+        changed. The purpose of this demo is to show how to use theACMP driver in
+        SDK software by interrupt way. The ACMP can be configured based on defaultconfiguration
+        returned by the API ACMP_GetDefaultConfig(). The default configuration is:
+        highspeed is not enabled, invert output is not enabled, unfiltered output
+        is not enabled, pin outis not enabled, offset level is level 0, hysteresis
+        level is level 0.'
+      example_readme:
+      - examples/driver_examples/acmp/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/acmp/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

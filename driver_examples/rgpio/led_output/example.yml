@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+rgpio_led_output:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/rgpio/led_output
+    project-root-path: boards/${board}/driver_examples/rgpio/led_output/${multicore_foldername}
+    document:
+      name: rgpio_led_output${core_id_suffix_name}
+      category: driver_examples/rgpio
+      brief: The RGPIO Example project is a demonstration program that uses the SDK
+        software to manipulate the general-purposeoutputs.The example is supported
+        by the set, clear, and toggle write-only registers for each port output data
+        register. The example take turns to shine the LED.
+      example_readme:
+      - examples/driver_examples/rgpio/led_output/readme.md
+      - examples/_boards/${board}/driver_examples/rgpio/led_output/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []

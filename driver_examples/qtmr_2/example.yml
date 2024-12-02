@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+qtmr_2:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qtmr_2
+    project-root-path: boards/${board}/driver_examples/qtmr/${multicore_foldername}
+    document:
+      name: qtmr_2${core_id_suffix_name}
+      category: driver_examples/qtmr
+      brief: The QTMR project is a simple demonstration program of the SDK QTMR driver.The
+        quad-timer module provides four timer channels with a variety of controls
+        affecting both individualand multi-channel features. Specific features include
+        up/down count,cascading of counters, programmable modulo,count once/repeated,
+        counter preload, compare registers with preload, shared use of input signals,
+        prescaler controls,independent capture/compare, fault input control, programmable
+        input filters, and multichannel synchronization.
+      example_readme:
+      - examples/driver_examples/qtmr_2/readme.md
+      - examples/_boards/${board}/driver_examples/qtmr/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+eqdc_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/eqdc/basic
+    project-root-path: boards/${board}/driver_examples/eqdc/basic/${multicore_foldername}
+    document:
+      name: eqdc_basic${core_id_suffix_name}
+      category: driver_examples/eqdc
+      brief: The EQDC project shows how to sample the shaft position based on quadrature
+        signal (PHASEA and PHASEB).
+      example_readme:
+      - examples/driver_examples/eqdc/basic/readme.md
+      - examples/_boards/${board}/driver_examples/eqdc/basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []

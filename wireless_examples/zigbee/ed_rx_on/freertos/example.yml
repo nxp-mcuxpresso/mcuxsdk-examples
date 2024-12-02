@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+zigbee_ed_rx_on_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/zigbee/ed_rx_on/freertos
+    project-root-path: boards/${board}/wireless_examples/zigbee/ed_rx_on/freertos
+    document:
+      name: zigbee_ed_rx_on_freertos
+      category: wireless_examples/zigbee/ed_rx_on/freertos
+      brief: The zigbee_ed_rx_on example is a simple end device example on the MCUXpresso SDK.
+             The application implements a Zigbee end device RX on that will attempt to connect
+             to a Zigbee coordinator.
+  boards:
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    frdmrw612:
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release
+    rdrw612bga:
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release
+    frdmmcxw72@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release

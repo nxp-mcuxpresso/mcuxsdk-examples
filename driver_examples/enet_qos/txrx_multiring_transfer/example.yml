@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+enet_qos_txrx_multiring_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/enet_qos/txrx_multiring_transfer
+    project-root-path: boards/${board}/driver_examples/enet_qos/txrx_multiring_transfer/${multicore_foldername}
+    document:
+      name: enet_qos_txrx_multiring_transfer${core_id_suffix_name}
+      category: driver_examples/enet_qos
+      brief: The example shows the way to use ENET QOS driver to receive and transmit
+        frames supported multi-ring platforms. this example is only supported in multi-ring
+        platform. 1. This example shows how to initialize the ENET MAC. 2. How to
+        use ENET MAC to transmit frames in avb supported multiple-ring platforms.
+        The example transmits 20 number frames. For simple demo, we create frames
+        with some special definition. 1. Build transmission frames with broadcast
+        mac address. 2. Build frames with unicast mac address 3. Send broadcast frames
+        to ring 0 and unitcase frames to ring 1, then receive them back in associated
+        rings.
+      example_readme:
+      - examples/driver_examples/enet_qos/txrx_multiring_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/enet_qos/txrx_multiring_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    evkmimx8mp: []
+    mcimx93evk: []
+    mcimx93qsb: []

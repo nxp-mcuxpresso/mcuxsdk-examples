@@ -1,0 +1,99 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.display-rm68200
+    select MCUX_COMPONENT_driver.display-rm68191
+    select MCUX_COMPONENT_driver.display-hx8394
+    select MCUX_COMPONENT_driver.display-rm67162
+    select MCUX_COMPONENT_driver.display-co5300
+    select MCUX_COMPONENT_driver.display-rpi
+    select MCUX_COMPONENT_driver.ssd1963
+    select MCUX_COMPONENT_driver.dc-fb-dsi-cmd
+    select MCUX_COMPONENT_driver.dc-fb-lcdif
+    select MCUX_COMPONENT_driver.dc-fb-dbi
+    select MCUX_COMPONENT_driver.dbi_lcdif
+    select MCUX_COMPONENT_driver.dbi_flexio_edma
+    select MCUX_COMPONENT_driver.lpflexcomm_lpi2c
+    select MCUX_COMPONENT_driver.gpio
+    select MCUX_COMPONENT_driver.edma4
+
+if MCUX_PRJSEG_module.board.display_support
+
+    config DEMO_PANEL
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5
+        default 1 if MCUX_PRJSEG_module.board.display_support.RK055AHD091
+        default 2 if MCUX_PRJSEG_module.board.display_support.RK055IQH091
+        default 3 if MCUX_PRJSEG_module.board.display_support.G1120B0MIPI
+        default 4 if MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+        default 5 if MCUX_PRJSEG_module.board.display_support.RASPI_7INCH
+        default 6 if MCUX_PRJSEG_module.board.display_support.ZC143AC72MIPI
+        help
+            Panel selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.panel
+        prompt "Panel Selection"
+        default MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+
+        config MCUX_PRJSEG_module.board.display_support.RK055AHD091
+            bool "RK055AHD091-CTG"
+
+        config MCUX_PRJSEG_module.board.display_support.RK055IQH091
+            bool "RK055IQH091-CTG"
+
+        config MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+            bool "RK055MHD091A0-CTG"
+
+        config MCUX_PRJSEG_module.board.display_support.G1120B0MIPI
+            bool "MIPI Circular Display G1120B0MIPI"
+
+        config MCUX_PRJSEG_module.board.display_support.ZC143AC72MIPI
+            bool "MIPI Circular Display ZC143AC72MIPI"
+
+        config MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5
+            bool "MikroE TFT Proto 5 inch CAPACITIVE"
+
+        config MCUX_PRJSEG_module.board.display_support.RASPI_7INCH
+            bool "Raspberry Pi 7 inch"
+    endchoice
+
+    config SSD1963_DRIVEN_BY
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5_FLEXIO
+        default 1 if MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5_LCDIF
+        help
+            Driver selection for panel TFT_PROTO_5
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5_DRIVER
+        prompt "TFT_PROTO_5 driver Selection"
+        default MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5_LCDIF
+
+        config MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5_FLEXIO
+            bool "Use FLEXIO to drive TFT_PROTO_5"
+
+        config MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5_LCDIF
+            bool "Use LCDIF to drive TFT_PROTO_5"
+
+    endchoice
+
+    config RM67162_USE_LCDIF
+        bool
+        default y
+        help
+            Use LCDIF to drive RM67162
+            No prefix in generated macro
+
+    config CO5300_USE_LCDIF
+        bool
+        default y
+        help
+            Use LCDIF to drive CO5300
+            No prefix in generated macro
+
+endif

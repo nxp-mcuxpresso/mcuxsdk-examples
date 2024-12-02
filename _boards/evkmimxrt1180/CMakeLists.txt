@@ -1,0 +1,8 @@
+include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
+include(${SdkRootDirPath}/arch/arm/target/flexspi_nor.cmake)
+include(${SdkRootDirPath}/arch/arm/target/flexspi_nor_hyperram.cmake)
+include(${SdkRootDirPath}/arch/arm/target/hyperram.cmake)
+include(${SdkRootDirPath}/arch/arm/target/hyperram_txt.cmake)
+include(${SdkRootDirPath}/examples/_common/project_setting/RT1xxx.cmake)
+include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/tickless/prjseg.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/${core_id}/setting.cmake OPTIONAL)

@@ -1,0 +1,61 @@
+mdk:
+  project-templates:
+    - scripts/guigenerator/templates/mdk/app_evkbmimxrt1170/app_evkbmimxrt1170.uvprojx
+    - scripts/guigenerator/templates/mdk/app_evkbmimxrt1170/app_evkbmimxrt1170.uvoptx
+
+iar:
+  project-templates:
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+    - scripts/guigenerator/templates/iar/general.eww
+  config:
+    __common__:
+      debugger_setting:
+        cmsisdap_resetlist: software
+
+macro-file:
+  files:
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_connect_cm7.mac
+      attribute: macro-file
+      toolchains: iar
+      choose: true
+
+jlink_script_file:
+  files:
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_connect_cm4_cm7side.jlinkscript
+      attribute: jlink_script_file
+      toolchains: iar
+      choose: false
+
+initialization_file:
+  files:
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_ram.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: debug release
+
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_ram_0x1400.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: ram_0x1400_debug ram_0x1400_release
+
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_flexspi_nor.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: flexspi_nor_debug flexspi_nor_release
+
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_flexspi_nor_sdram.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: flexspi_nor_sdram_debug flexspi_nor_sdram_release
+
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_sdram_init.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: sdram_debug sdram_release
+
+    - source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_sdram_txt_init.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: sdram_txt_debug sdram_txt_release
+

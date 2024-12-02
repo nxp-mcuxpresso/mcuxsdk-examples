@@ -1,0 +1,32 @@
+/*
+ * Copyright 2021 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _APP_H_
+#define _APP_H_
+
+/*${header:start}*/
+#include "fsl_uart_cmsis.h"
+/*${header:end}*/
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define DEMO_USART                       Driver_USART1
+#define EXAMPLE_USART_DMAMUX_TX_BASEADDR DMAMUX1
+#define EXAMPLE_USART_DMAMUX_RX_BASEADDR DMAMUX2
+#define EXAMPLE_USART_DMA_BASEADDR       DMA0
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

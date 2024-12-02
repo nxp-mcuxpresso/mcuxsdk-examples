@@ -1,0 +1,36 @@
+NXP Software Content Register
+
+Package: mcuxsdk-examples
+Version: 24.12.00-pvw2
+Outgoing License: BSD-3-Clause
+License File: LICENSE
+Type of Content: source code, binary, project files, linker files
+Description and comments: SDK out of box examples to show how to use peripheral drivers and integrate middleware.
+Release Location: https://github.com/nxp-mcuxpresso/mcuxsdk-examples
+Origin: 
+      NXP (BSD-3-Clause)
+      FreeRTOS - Amazon (MIT) - https://github.com/FreeRTOS
+      cJSON - Dave Gamble and cJSON contributors (MIT) - https://github.com/DaveGamble/cJSON
+      base64 - Jouni Malinen (BSD) - https://web.mit.edu/freebsd/head/contrib/wpa/src/utils/base64.c
+      picohttpparser - Kazuho Oku, Tokuhiro Matsuno, Daisuke Murase, Shigeo Mitsunari (MIT) - https://github.com/h2o/picohttpparser
+      ML-KWS-for-MCU - ARM (Apache-2.0） - https://github.com/ARM-software/ML-KWS-for-MCU
+      Tensorflow - Google (Apache-2.0) - https://github.com/tensorflow/tensorflow
+      CMSIS-DSP - ARM (Apache-2.0) - https://github.com/ARM-software/CMSIS-DSP
+      Amazon FreeRTOS - Amazon (MIT) - https://github.com/aws/amazon-freertos
+      FreeRTOS Kernel - Amazon (MIT) - https://github.com/FreeRTOS/FreeRTOS-Kernel
+      PSA Certified API Specifications - ARM (Apache-2.0) - https://github.com/ARM-software/psa-api
+      iot-reference-nxp-rt1060- Amazon (MIT) - https://github.com/FreeRTOS/iot-reference-nxp-rt1060
+      lwIP TCP/IP Stack- Swedish Institute of Computer Science and community(BSD) - http://savannah.nongnu.org/projects/lwip
+      RangeHTTPServer - danvk (Apache-2.0) - https://github.com/danvk/RangeHTTPServer
+      segger_sysview - Segger(BSD-1-Clause) - https://www.segger.com/products/development-tools/systemview/
+      FatFS - Elm Chan (FatFs License) - http://elm-chan.org/fsw/ff/
+      Zephyr (Apache-2.0) - https://github.com/zephyrproject-rtos/zephyr
+      wslay - Tatsuhiro Tsujikawa (MIT) - https://github.com/tatsuhiro-t/wslay
+      jsmn - zserge (MIT) - https://github.com/zserge/jsmn
+      littlefs - ARM (BSD-3-Clause) - https://github.com/littlefs-project/littlefs/tree/master
+      mbedtls (Apache-2.0) - https://github.com/Mbed-TLS/mbedtls/tree/mbedtls-3.6.0
+      The Independent JPEG Group's software (IJG) - http://www.ijg.org/files/jpegsr9b.zip
+      lvgl (MIT) - https://github.com/lvgl/lvgl
+
+
+      

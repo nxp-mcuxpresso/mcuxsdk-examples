@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+tdet:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tdet
+    project-root-path: boards/${board}/driver_examples/tdet/${multicore_foldername}
+    document:
+      name: tdet${core_id_suffix_name}
+      category: driver_examples/tdet
+      brief: The TDET Example project is a demonstration program that uses the MCUX
+        SDK software to show funcionality of Digital Tamper (TDET) module.
+      example_readme:
+      - examples/driver_examples/tdet/readme.md
+      - examples/_boards/${board}/driver_examples/tdet/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

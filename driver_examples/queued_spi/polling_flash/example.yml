@@ -1,0 +1,14 @@
+queued_spi_polling_flash:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/queued_spi/polling_flash
+    project-root-path: boards/${board}/driver_examples/queued_spi/polling_flash/${multicore_foldername}
+    document:
+      name: queued_spi_polling_flash${core_id_suffix_name}
+      category: driver_examples/queued_spi
+      brief: The spi_interrupt example shows how to communicate with mx25l flash using
+        spi polling functional API.
+      example_readme:
+      - examples/driver_examples/queued_spi/polling_flash/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

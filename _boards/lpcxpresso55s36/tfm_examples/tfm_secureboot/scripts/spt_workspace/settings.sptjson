@@ -1,0 +1,263 @@
+{
+    "secure_provisioning_tool": "6.0",
+    "processor": "LPC55S36",
+    "boot_type": "prince_encrypted_signed",
+    "boot_device": {
+        "device_type": "onchip_memory",
+        "device_name": "internal flash",
+        "device_id": "Internal_Flash",
+        "device_producer": "NXP"
+    },
+    "trust_provisioning_type": "device_hsm",
+    "connection": {
+        "connection_type": "usb",
+        "usb_hid": {
+            "usbVid_int": "0x1FC9",
+            "usbPid_int": "0x0025"
+        },
+        "uart_port": "COM4",
+        "uart_speed": 57600
+    },
+    "build_image_settings": {
+        "source_image_path": "input/tfm_secureboot.bin",
+        "secured_firmware_version_int": "0x0001",
+        "non_secured_firmware_version_int": "0x0001",
+        "start_address_int": "0x10000000",
+        "dcd_type": "None",
+        "tz_enable": true,
+        "img_key_id": "ROT1",
+        "sbkek": "A239484E459662D86B7EB210377F958FCCF9B11D1211ABD5D7244B8ED63B7AEB",
+        "sb_userkey": "",
+        "sb_seed": "D43C8D0125FB4B9016CD8C30E1F2B20C",
+        "sb_key_source": "KeyStore",
+        "prince_configuration": {
+            "regions": [
+                {
+                    "enabled": true,
+                    "erase_check": false,
+                    "locked": false,
+                    "is_xom": false,
+                    "whole_image": false,
+                    "base_addr_int": "0",
+                    "start_ofs_int": "0",
+                    "end_ofs_int": "0x00037FFF"
+                },
+                {
+                    "enabled": false,
+                    "erase_check": false,
+                    "locked": false,
+                    "is_xom": false,
+                    "whole_image": false,
+                    "base_addr_int": "0",
+                    "start_ofs_int": "0",
+                    "end_ofs_int": "0x0003BFFF"
+                },
+                {
+                    "enabled": false,
+                    "erase_check": false,
+                    "locked": false,
+                    "is_xom": false,
+                    "whole_image": false,
+                    "base_addr_int": "0",
+                    "start_ofs_int": "0",
+                    "end_ofs_int": "0x0003BFFF"
+                }
+            ]
+        },
+        "iped_configuration": {
+            "regions": [
+                {
+                    "enabled": true,
+                    "erase_check": false,
+                    "locked": false,
+                    "is_xom": false,
+                    "whole_image": true,
+                    "base_addr_int": "0",
+                    "start_ofs_int": "0x08001000",
+                    "end_ofs_int": "0x080391FF"
+                },
+                {
+                    "enabled": false,
+                    "erase_check": false,
+                    "locked": false,
+                    "is_xom": false,
+                    "whole_image": false,
+                    "base_addr_int": "0",
+                    "start_ofs_int": "0x08100000",
+                    "end_ofs_int": "0x081FFFFF"
+                },
+                {
+                    "enabled": false,
+                    "erase_check": false,
+                    "locked": false,
+                    "is_xom": false,
+                    "whole_image": false,
+                    "base_addr_int": "0",
+                    "start_ofs_int": "0x08200000",
+                    "end_ofs_int": "0x082FFFFF"
+                },
+                {
+                    "enabled": false,
+                    "erase_check": false,
+                    "locked": false,
+                    "is_xom": false,
+                    "whole_image": false,
+                    "base_addr_int": "0",
+                    "start_ofs_int": "0x08300000",
+                    "end_ofs_int": "0x083FFFFF"
+                }
+            ]
+        },
+        "user_otp_configuration": {},
+        "user_pfr_configuration": {
+            "cfpa": {
+                "field000": "0x0000_0000",
+                "field004": "0xffff_ffff",
+                "field054": {
+                    "field054-bits0-15": "0x0000",
+                    "field054-bits16-31": "0xffff"
+                },
+                "field058": {
+                    "field058-bit0": "0b0",
+                    "field058-bit1": "0b0",
+                    "field058-bit2": "0b0",
+                    "field058-bit3": "0b0",
+                    "field058-bit6": "0b0",
+                    "field058-bit7": "0b0",
+                    "field058-bit8": "0b0",
+                    "field058-bit15": "0b0",
+                    "field058-bits16-31": "0xffff"
+                },
+                "field05C": {
+                    "field05C-bit0": "0b0",
+                    "field05C-bit1": "0b0",
+                    "field05C-bit2": "0b0",
+                    "field05C-bit3": "0b0",
+                    "field05C-bit6": "0b0",
+                    "field05C-bit7": "0b0",
+                    "field05C-bit8": "0b0",
+                    "field05C-bits16-31": "0xffff"
+                }
+            },
+            "cmpa": {
+                "field000": {
+                    "field000-bits0-2": "0b000",
+                    "field000-bits4-6": "0b000",
+                    "field000-bits7-8": "0b00",
+                    "field000-bits19-20": "0b00",
+                    "field000-bit21": "0b0",
+                    "field000-bit22": "0b0",
+                    "field000-bit23": "0b0",
+                    "field000-bits24-31": "0x00"
+                },
+                "field010": {
+                    "field010-bit0": "0b0",
+                    "field010-bit1": "0b0",
+                    "field010-bit2": "0b0",
+                    "field010-bit3": "0b0",
+                    "field010-bit6": "0b0",
+                    "field010-bit7": "0b0",
+                    "field010-bit8": "0b0",
+                    "field010-bit15": "0b0",
+                    "field010-bits16-31": "0xffff"
+                },
+                "field014": {
+                    "field014-bit0": "0b0",
+                    "field014-bit1": "0b0",
+                    "field014-bit2": "0b0",
+                    "field014-bit3": "0b0",
+                    "field014-bit6": "0b0",
+                    "field014-bit7": "0b0",
+                    "field014-bit8": "0b0",
+                    "field014-bits16-31": "0xffff"
+                },
+                "field01C": {
+                    "field01C-bits2-3": "0b00",
+                    "field01C-bits4-5": "0b00",
+                    "field01C-bits6-7": "0b01",
+                    "field01C-bits8-9": "0b00",
+                    "field01C-bits10-11": "0b00",
+                    "field01C-bits12-13": "0b00",
+                    "field01C-bits16-17": "0b00",
+                    "field01C-bits18-19": "0b00",
+                    "field01C-bits20-21": "0b00",
+                    "field01C-bits22-23": "0b00",
+                    "field01C-bits24-25": "0b00",
+                    "field01C-bits26-27": "0b00",
+                    "field01C-bits30-31": "0b10"
+                }
+            }
+        },
+        "script_updated": false,
+        "updated": false
+    },
+    "write_image_settings": {
+        "binary_image_path": "bootable_images/tfm_secureboot.sb",
+        "binary_image_reuse": true,
+        "updated": true
+    },
+    "keys_management_settings": {
+        "pki_tree": {
+            "ca": {
+                "key_id": "",
+                "key_path": ""
+            },
+            "srk_keys": [],
+            "rot_keys": [
+                {
+                    "key_id": "ROT1",
+                    "key_path": "keys/ROT1_p384.pem",
+                    "img_keys": [],
+                    "int_keys": []
+                },
+                {
+                    "key_id": "ROT2",
+                    "key_path": "keys/ROT2_p384.pem",
+                    "img_keys": [],
+                    "int_keys": []
+                },
+                {
+                    "key_id": "ROT3",
+                    "key_path": "keys/ROT3_p384.pem",
+                    "img_keys": [],
+                    "int_keys": []
+                },
+                {
+                    "key_id": "ROT4",
+                    "key_path": "keys/ROT4_p384.pem",
+                    "img_keys": [],
+                    "int_keys": []
+                }
+            ],
+            "certificate_signing_keys": [],
+            "production_audit_log_keys": [],
+            "debug_authentication_key": {
+                "key_id": "Debug_Authentication_Key_ECC",
+                "key_path": "keys/debug_authentication_key_ECC_384.pem"
+            },
+            "debug_authentication_certs": [
+                {
+                    "key_id": "debug_auth_cert.dc.zip",
+                    "key_path": "debug_auth/debug_auth_cert.dc.zip",
+                    "note": ""
+                }
+            ]
+        }
+    },
+    "keys_generation_settings": {
+        "public_keys_infrastructure_type": "ECC_ROT",
+        "num_certificates_in_chain": 1,
+        "serial": "0",
+        "certificate_authority": {
+            "mode": "generate_ca"
+        },
+        "public_key_infrastructure": {
+            "pki_type": "ECC",
+            "key_length": "p384",
+            "duration": 10
+        },
+        "root_keys": {
+            "count": 4
+        }
+    }
+}

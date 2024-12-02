@@ -1,0 +1,18 @@
+queued_spi_dma_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/queued_spi/dma_b2b_transfer/slave
+    project-root-path: boards/${board}/driver_examples/queued_spi/dma_b2b_transfer/slave/${multicore_foldername}
+    document:
+      name: queued_spi_dma_b2b_transfer_slave${core_id_suffix_name}
+      category: driver_examples/queued_spi
+      brief: The queued_spi_dma_b2b_transfer examples show how to use queued_spi driver
+        in dma way. In this example, we need two boards, one board is used as queued_spi
+        master and another board is used as queued_spi slave. The file 'queued_spi_dma_b2b_transfer_slave.c'
+        includes the queued_spi slave code. This example uses the transactional API
+        in queued_spi driver. queued_spi master sends/receives data to/from queued_spi
+        slave in dma. (queued_spi slave uses dma to receive/send the data)
+      example_readme:
+      - examples/driver_examples/queued_spi/dma_b2b_transfer/slave/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+aoi_input_mux:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/aoi/input_mux
+    project-root-path: boards/${board}/driver_examples/aoi/input_mux/${multicore_foldername}
+    document:
+      name: aoi_input_mux${core_id_suffix_name}
+      category: driver_examples/aoi/input_mux
+      brief: The AOI Example shows the simplest way to use AOI driver
+      example_readme:
+      - examples/driver_examples/aoi/input_mux/readme.md
+      - examples/_boards/${board}/driver_examples/aoi/input_mux/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []

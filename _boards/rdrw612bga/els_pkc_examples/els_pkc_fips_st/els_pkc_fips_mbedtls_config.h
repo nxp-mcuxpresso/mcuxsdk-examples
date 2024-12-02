@@ -1,0 +1,179 @@
+/*
+ *  Copyright The Mbed TLS Contributors
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+/* Copyright 2023 NXP
+ */
+
+#ifndef _ELS_PKC_FIPS_MBEDTLS_CONFIG_H_
+#define _ELS_PKC_FIPS_MBEDTLS_CONFIG_H_
+
+#if !defined(MBEDTLS_AES_C)
+#define MBEDTLS_AES_C
+#endif /* MBEDTLS_AES_C */
+
+#if !defined(MBEDTLS_CIPHER_C)
+#define MBEDTLS_CIPHER_C
+#endif /* MBEDTLS_CIPHER_C */
+
+#if !defined(MBEDTLS_NIST_KW_C)
+#define MBEDTLS_NIST_KW_C
+#endif /* MBEDTLS_NIST_KW_C */
+
+#if !defined(MBEDTLS_CMAC_C)
+#define MBEDTLS_CMAC_C
+#endif /* MBEDTLS_CMAC_C */
+
+#if !defined(MBEDTLS_BIGNUM_C)
+#define MBEDTLS_BIGNUM_C
+#endif /* MBEDTLS_BIGNUM_C */
+
+#if !defined(MBEDTLS_ECP_DP_SECP256R1_ENABLED)
+#define MBEDTLS_ECP_DP_SECP256R1_ENABLED
+#endif /* MBEDTLS_ECP_DP_SECP256R1_ENABLED */
+
+#if !defined(MBEDTLS_ECP_C)
+#define MBEDTLS_ECP_C
+#endif /* MBEDTLS_ECP_C */
+
+#if !defined(MBEDTLS_ECDH_C)
+#define MBEDTLS_ECDH_C
+#endif /* MBEDTLS_ECDH_C */
+
+#if defined(MBEDTLS_HAVE_TIME)
+#undef MBEDTLS_HAVE_TIME
+#endif /* MBEDTLS_HAVE_TIME */
+
+#if defined(MBEDTLS_HAVE_TIME_DATE)
+#undef MBEDTLS_HAVE_TIME_DATE
+#endif /* MBEDTLS_HAVE_TIME_DATE */
+
+#if defined(MBEDTLS_CIPHER_MODE_CBC)
+#undef MBEDTLS_CIPHER_MODE_CBC
+#endif /* MBEDTLS_CIPHER_MODE_CBC */
+
+#if defined(MBEDTLS_CIPHER_MODE_CFB)
+#undef MBEDTLS_CIPHER_MODE_CFB
+#endif /* MBEDTLS_CIPHER_MODE_CFB */
+
+#if defined(MBEDTLS_CIPHER_MODE_CTR)
+#undef MBEDTLS_CIPHER_MODE_CTR
+#endif /* MBEDTLS_CIPHER_MODE_CTR */
+
+#if defined(MBEDTLS_CIPHER_MODE_OFB)
+#undef MBEDTLS_CIPHER_MODE_OFB
+#endif /* MBEDTLS_CIPHER_MODE_OFB */
+
+#if defined(MBEDTLS_CIPHER_PADDING_PKCS7)
+#undef MBEDTLS_CIPHER_PADDING_PKCS7
+#endif /* MBEDTLS_CIPHER_PADDING_PKCS7*/
+
+#if defined(MBEDTLS_CIPHER_PADDING_ONE_AND_ZEROS)
+#undef MBEDTLS_CIPHER_PADDING_ONE_AND_ZEROS
+#endif /* MBEDTLS_CIPHER_PADDING_ONE_AND_ZEROS */
+
+#if defined(MBEDTLS_CIPHER_PADDING_ZEROS_AND_LEN)
+#undef MBEDTLS_CIPHER_PADDING_ZEROS_AND_LEN
+#endif /* MBEDTLS_CIPHER_PADDING_ZEROS_AND_LEN */
+
+#if defined(MBEDTLS_KEY_EXCHANGE_PSK_ENABLED)
+#undef MBEDTLS_KEY_EXCHANGE_PSK_ENABLED
+#endif /* MBEDTLS_KEY_EXCHANGE_PSK_ENABLED */
+
+#if defined(MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED)
+#undef MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED
+#endif /* MBEDTLS_KEY_EXCHANGE_DHE_PSK_ENABLED */
+
+#if defined(MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED)
+#undef MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED
+#endif /* MBEDTLS_KEY_EXCHANGE_ECDHE_PSK_ENABLED */
+
+#if defined(MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED)
+#undef MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+#endif /* MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED */
+
+#if defined(MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED)
+#undef MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED
+#endif /* MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED */
+
+#if defined(MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED)
+#undef MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED
+#endif /* MBEDTLS_KEY_EXCHANGE_ECDH_ECDSA_ENABLED */
+
+#if defined(MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED)
+#undef MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED
+#endif /* MBEDTLS_KEY_EXCHANGE_ECDH_RSA_ENABLED */
+
+#if defined(MBEDTLS_FS_IO)
+#undef MBEDTLS_FS_IO
+#endif /* MBEDTLS_FS_IO */
+
+#if defined(MBEDTLS_PKCS1_V15)
+#undef MBEDTLS_PKCS1_V15
+#endif /* MBEDTLS_PKCS1_V15 */
+
+#if defined(MBEDTLS_PK_RSA_ALT_SUPPORT)
+#undef MBEDTLS_PK_RSA_ALT_SUPPORT
+#endif /* MBEDTLS_PK_RSA_ALT_SUPPORT */
+
+#if defined(MBEDTLS_CHACHA20_C)
+#undef MBEDTLS_CHACHA20_C
+#endif /* MBEDTLS_CHACHA20_C */
+
+#if defined(MBEDTLS_CHACHAPOLY_C)
+#undef MBEDTLS_CHACHAPOLY_C
+#endif /* MBEDTLS_CHACHAPOLY_C */
+
+#if defined(MBEDTLS_ARIA_C)
+#undef MBEDTLS_ARIA_C
+#endif /* MBEDTLS_ARIA_C */
+
+#if defined(MBEDTLS_CAMELLIA_C)
+#undef MBEDTLS_CAMELLIA_C
+#endif /* MBEDTLS_CAMELLIA_C */
+
+#if defined(MBEDTLS_DHM_C)
+#undef MBEDTLS_DHM_C
+#endif /* MBEDTLS_DHM_C */
+
+#if defined(MBEDTLS_ECJPAKE_C)
+#undef MBEDTLS_ECJPAKE_C
+#endif /* MBEDTLS_ECJPAKE_C */
+
+#if defined(MBEDTLS_NET_C)
+#undef MBEDTLS_NET_C
+#endif /* MBEDTLS_NET_C */
+
+#if defined(MBEDTLS_PEM_PARSE_C)
+#undef MBEDTLS_PEM_PARSE_C
+#endif /* MBEDTLS_PEM_PARSE_C */
+
+#if defined(MBEDTLS_PKCS7_C)
+#undef MBEDTLS_PKCS7_C
+#endif /* MBEDTLS_PKCS7_C */
+
+#if defined(MBEDTLS_PSA_CRYPTO_STORAGE_C)
+#undef MBEDTLS_PSA_CRYPTO_STORAGE_C
+#endif /* MBEDTLS_PSA_CRYPTO_STORAGE_C */
+
+#if defined(MBEDTLS_PSA_ITS_FILE_C)
+#undef MBEDTLS_PSA_ITS_FILE_C
+#endif /* MBEDTLS_PSA_ITS_FILE_C */
+
+#if defined(MBEDTLS_RIPEMD160_C)
+#undef MBEDTLS_RIPEMD160_C
+#endif /* MBEDTLS_RIPEMD160_C */
+
+#endif /* _ELS_PKC_FIPS_MBEDTLS_CONFIG_H_ */

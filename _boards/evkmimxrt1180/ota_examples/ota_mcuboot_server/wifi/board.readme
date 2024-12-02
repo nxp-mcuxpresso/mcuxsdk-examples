@@ -1,0 +1,10 @@
+Hardware requirements
+===================
+- Mini/micro USB cable
+- MIMXRT1180-EVK board
+- Supported M.2 WiFi module
+- Personal Computer
+
+Board settings
+============
+J76 set to 2-3

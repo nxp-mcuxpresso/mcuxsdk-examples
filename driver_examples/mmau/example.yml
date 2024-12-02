@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+mmau:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mmau
+    project-root-path: boards/${board}/driver_examples/mmau/${multicore_foldername}
+    document:
+      name: mmau${core_id_suffix_name}
+      category: driver_examples/mmau
+      brief: The mmau project is a simple demonstration program that use the MMAU
+        driver:How to use calculate functions to create sine function for the arithmetic
+        computation.In this example, use calculate functions to compute sinusoidal
+        function for various angles.
+      example_readme:
+      - examples/driver_examples/mmau/readme.md
+      - examples/_boards/${board}/driver_examples/mmau/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z75m: []
+    twrkm35z75m: []

@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+secure_faults_s:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/trustzone_examples/secure_faults_s
+    project-root-path: boards/${board}/trustzone_examples/secure_faults/secure_faults_s/${multicore_foldername}
+    document:
+      name: secure_faults_s${core_id_suffix_name}
+      category: trustzone_examples
+      brief: The Secure Faults demo application demonstrates handling of different
+        secure faults. This application is based on application Hello World. In addition,
+        user can invoke different secure faults by setting testCaseNumber variable
+        (see source code). This is secure part of the application.
+      example_readme:
+      - examples/trustzone_examples/secure_faults_s/readme.md
+      - examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []

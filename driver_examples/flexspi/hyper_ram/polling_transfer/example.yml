@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexspi_hyper_ram_polling_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexspi/hyper_ram/polling_transfer
+    project-root-path: boards/${board}/driver_examples/flexspi/hyper_ram/polling_transfer/${multicore_foldername}
+    document:
+      name: flexspi_hyper_ram_polling_transfer${core_id_suffix_name}
+      category: driver_examples/flexspi
+      brief: The flexspi_hyper_ram_polling_transfer example shows how to use flexspi
+        driver with polling:In this example, flexspi will send data and operate the
+        external Hyper RAM connected with FLEXSPI. Some simple flash command willbe
+        executed, such as Read ID, Read Data and Write Data.Example will first Write
+        256 bytes of data from the start of Hyper ram, then read the data back. at
+        last check if the data in flash is correct.
+      example_readme:
+      - examples/driver_examples/flexspi/hyper_ram/polling_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexspi/hyper_ram/polling_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

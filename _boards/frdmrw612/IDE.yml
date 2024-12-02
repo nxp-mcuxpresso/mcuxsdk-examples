@@ -1,0 +1,18 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_dsp.ewp
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_frdmrw612/app_frdmrw612.uvprojx
+  - scripts/guigenerator/templates/mdk/app_frdmrw612/app_frdmrw612.uvoptx
+  - scripts/guigenerator/templates/mdk/app_frdmrw612/JLinkSettings.ini
+
+board-file:
+  files:
+  - attribute: board-file
+    package_path: project-root-path/iar
+    project_path: frdmrw612
+    source: examples/_boards/frdmrw612/FlashFRDMRW612_FLEXSPI.board
+    toolchains: iar

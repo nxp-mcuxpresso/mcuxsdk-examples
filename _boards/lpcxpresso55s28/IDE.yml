@@ -1,0 +1,11 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_xpresso55s28/app_xpresso55s28.uvprojx
+  - scripts/guigenerator/templates/mdk/app_xpresso55s28/app_xpresso55s28.uvoptx
+  - scripts/guigenerator/templates/mdk/app_xpresso55s28/JLinkSettings.JLinkScript
+  - scripts/guigenerator/templates/mdk/app_xpresso55s28/JLinkSettings.ini

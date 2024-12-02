@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+crc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/crc
+    project-root-path: boards/${board}/driver_examples/crc/${multicore_foldername}
+    document:
+      name: crc${core_id_suffix_name}
+      category: driver_examples/crc
+      brief: The CRC Example project is a demonstration program that uses the KSDK
+        software to generate checksumsfor an ASCII string. Several CRC protocols are
+        implemented using the CRC driver API.
+      example_readme:
+      - examples/driver_examples/crc/readme.md
+      - examples/_boards/${board}/driver_examples/crc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    lpcxpresso55s36: []
+    evkmcimx7ulp: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxc242: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []
+    mimxrt700evk@cm33_core0: []

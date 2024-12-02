@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lvgl_demo_stress:
+  section-type: application
+  contents:
+    meta_path: examples/lvgl_examples/lvgl_demo_stress/.
+    project-root-path: boards/${board}/lvgl_examples/lvgl_demo_stress/${multicore_foldername}
+    document:
+      name: lvgl_demo_stress${core_id_suffix_name}
+      category: lvgl_examples
+      brief: A demo for lvgl stress test. Many widgets are shown in the panel with
+        different behavior for stress test.
+      example_readme:
+      - examples/lvgl_examples/lvgl_demo_stress/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

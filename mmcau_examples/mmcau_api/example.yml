@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mmcau:
+  section-type: application
+  contents:
+    meta_path: examples/mmcau_examples/mmcau_api
+    project-root-path: boards/${board}/mmcau_examples/mmcau_api/${multicore_foldername}
+    document:
+      name: mmcau${core_id_suffix_name}
+      category: mmcau_examples
+      brief: Memory-Mapped Cryptographic Acceleration Unit (MMCAU)This project is
+        a demonstration program that uses the KSDK software for encryption/decryption
+        sampledata using AES-CBC, DES3-CBC and Hash algorithms MD5, SHA1 and SHA256.
+      example_readme:
+      - examples/mmcau_examples/mmcau_api/readme.md
+      - examples/_boards/${board}/mmcau_examples/mmcau_api/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkmcimx7ulp: []
+    evkmimxrt1160@cm4: []
+    frdmk32l2a4s: []
+    twrkm34z75m: []
+    twrkm35z75m: []

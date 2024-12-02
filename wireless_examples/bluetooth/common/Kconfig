@@ -1,0 +1,19 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.wireless.ble.app_common
+    bool "BLE Application Common layer"
+    select MCUX_COMPONENT_middleware.wireless.framework
+    select MCUX_COMPONENT_middleware.wireless.framework.seclib_rng
+    select MCUX_COMPONENT_middleware.wireless.framework.platform.ble
+    select MCUX_COMPONENT_middleware.wireless.framework.module_info #should be selected by ble_host used by ble_globals.c
+    select MCUX_COMPONENT_middleware.wireless.framework.lowpower
+    select MCUX_COMPONENT_middleware.wireless.framework.nvm
+    select MCUX_COMPONENT_middleware.wireless.framework.systicks if MCUX_COMPONENT_middleware.freertos-kernel
+    select MCUX_COMPONENT_middleware.wireless.framework.heap_mem_manager if MCUX_COMPONENT_middleware.freertos-kernel
+    select MCUX_PRJSEG_module.board.wireless.app_ble
+    select MCUX_COMPONENT_component.osa
+    select MCUX_COMPONENT_component.panic
+    select MCUX_COMPONENT_middleware.wireless.ble_host
+    select MCUX_COMPONENT_middleware.wireless.ble_hci_transport_rpmsg
+    select MCUX_COMPONENT_middleware.wireless.controller_api

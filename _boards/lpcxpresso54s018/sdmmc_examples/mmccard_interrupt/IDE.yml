@@ -1,0 +1,13 @@
+macro-file:
+  files:
+  - source: examples/_boards/${board}/jlink_qspi_plain_load.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: debug release
+    choose: false
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/jlink_sramx_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release

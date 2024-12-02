@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+temperature_measurement:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/temperature_measurement
+    project-root-path: boards/${board}/demo_apps/temperature_measurement/${multicore_foldername}
+    document:
+      name: temperature_measurement${core_id_suffix_name}
+      category: demo_apps
+      brief: The temperature measurement demo is used to measure the temperature,
+        note that this case just support RW61x platform at present.
+      example_readme:
+      - examples/demo_apps/temperature_measurement/readme.md
+      - examples/_boards/${board}/demo_apps/temperature_measurement/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

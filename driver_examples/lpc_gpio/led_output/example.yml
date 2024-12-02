@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpc_gpio_led_output:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_gpio/led_output
+    project-root-path: boards/${board}/driver_examples/gpio/led_output/${multicore_foldername}
+    document:
+      name: lpc_gpio_led_output${core_id_suffix_name}
+      category: driver_examples/gpio
+      brief: The GPIO Example project is a demonstration program that uses the KSDK
+        software to manipulate the general-purposeoutputs. The example use LEDs and
+        buttons to demonstrates GPIO API for port and pin manipulation (init, set,clear,
+        and toggle).
+      example_readme:
+      - examples/driver_examples/lpc_gpio/led_output/readme.md
+      - examples/_boards/${board}/driver_examples/gpio/led_output/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

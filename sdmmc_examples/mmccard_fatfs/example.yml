@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mmccard_fatfs:
+  section-type: application
+  contents:
+    meta_path: examples/sdmmc_examples/mmccard_fatfs
+    project-root-path: boards/${board}/sdmmc_examples/mmccard_fatfs/${multicore_foldername}
+    document:
+      name: mmccard_fatfs${core_id_suffix_name}
+      category: sdmmc_examples/mmccard_fatfs
+      brief: The MMCCARD FATFS project is a demonstration program that uses the SDK
+        software. Tt mounts a file system based on a MMC card then does "creat directory/read
+        directory/create file/write file/read file" operation. The file sdhc_config.h
+        has default SDHC configuration which can be adjusted to letcard driver has
+        different performance. The purpose of this example is to show how to use MMCCARD
+        driver based FATFS disk in SDK software.Note:User can use MMC plus card or
+        emmc(on board IC, but not recommand use emmc socket,due to high speed timing
+        restriction)
+      example_readme:
+      - examples/sdmmc_examples/mmccard_fatfs/readme.md
+      - examples/_boards/${board}/sdmmc_examples/mmccard_fatfs/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    mimxrt700evk@cm33_core0: []

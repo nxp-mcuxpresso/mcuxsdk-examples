@@ -1,0 +1,66 @@
+dev_audio_generator_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_audio_generator/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_audio_generator/bm/${multicore_foldername}
+    document:
+      name: dev_audio_generator_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB Audio Generator application is a simple demonstration program
+        based on the MCUXpresso SDK.It is enumerated as a recording device and users
+        can record the sound from this device via the "Sound Recorder" in the Windows
+        Accessories.
+      example_readme:
+      - examples/usb_examples/usb_device_audio_generator/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_audio_generator/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_audio_generator/usb_device_audio_generator_change_level.jpg
+      - examples/usb_examples/usb_device_audio_generator/usb_device_audio_generator_device_manager.jpg
+      - examples/usb_examples/usb_device_audio_generator/usb_device_audio_generator_right_click_icon.jpg
+      - examples/usb_examples/usb_device_audio_generator/usb_device_audio_generator_select_properties.jpg
+      - examples/usb_examples/usb_device_audio_generator/usb_device_audio_generator_set_default.jpg
+      - examples/usb_examples/usb_device_audio_generator/usb_device_audio_generator_start_log.jpg
+      - examples/usb_examples/usb_device_audio_generator/usb_device_audio_recorder_signal_enhancement.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -iar@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -iar@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

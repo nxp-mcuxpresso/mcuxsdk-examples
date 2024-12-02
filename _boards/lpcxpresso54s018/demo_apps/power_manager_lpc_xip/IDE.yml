@@ -1,0 +1,17 @@
+macro-file:
+  files:
+  - source: examples/_boards/${board}/jlink_qspi_plain_load.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: debug release
+    choose: false
+    package_path: boards/lpcxpresso54s018/demo_apps/power_manager_lpc_xip/./iar
+    project_path: lpcxpresso54s018
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/xip_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+    package_path: boards/lpcxpresso54s018/demo_apps/power_manager_lpc_xip/./mdk
+    project_path: lpcxpresso54s018

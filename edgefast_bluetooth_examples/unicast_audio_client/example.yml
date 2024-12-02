@@ -1,0 +1,13 @@
+unicast_audio_client:
+  section-type: application
+  contents:
+    meta_path: examples/edgefast_bluetooth_examples/unicast_audio_client
+    project-root-path: boards/${board}/edgefast_bluetooth_examples/unicast_audio_client/${multicore_foldername}
+    document:
+      name: unicast_audio_client${core_id_suffix_name}
+      category: edgefast_bluetooth_examples/
+      brief: The Edgefast Bluetooth pxm example with simplified application.
+      example_readme:
+      - examples/edgefast_bluetooth_examples/unicast_audio_client/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

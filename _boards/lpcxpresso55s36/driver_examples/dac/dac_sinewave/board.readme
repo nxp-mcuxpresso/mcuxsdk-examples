@@ -1,0 +1,35 @@
+Hardware requirements
+===================
+- Mini/Micro USB cable
+- LPCXpresso55S36 board
+- Personal Computer
+- Oscilloscope
+
+Board settings
+============
+DAC output pin: J12-4
+
+Prepare the Demo
+===============
+1.  Connect a USB cable between the PC host and the OpenSDA USB port on the board.
+2.  Open a serial terminal on PC for OpenSDA serial device with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+5.  A multimeter may be used to measure the DAC output voltage.
+
+Running the demo
+===============
+When the demo runs successfully, the log would be seen on the terminal like:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Dac sinewave example
+
+ Please input the sinewave frequency in Hz:50
+ Dac output sinewave frequency is 50 Hz
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Then user can use the oscilloscope to measure the sinewave.
+Please note the maximum sinewave frequency is 12000 Hz.

@@ -1,0 +1,18 @@
+dsc_flexcan_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_flexcan/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/flexcan/interrupt_transfer/${multicore_foldername}
+    document:
+      name: dsc_flexcan_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/dsc_flexcan
+      brief: The flexcan_interrupt example shows how to use FlexCAN driver in none-blocking
+        interrupt way:In this example, 2 boards are connected through CAN bus. Endpoint
+        A(board A) send a CAN Message toEndpoint B(board B) when user press space
+        key in terminal. Endpoint B receive the message, printthe message content
+        to terminal and echo back the message. Endpoint A will increase the receivedmessage
+        and waiting for the next transmission of the user initiated.
+      example_readme:
+      - examples/driver_examples/dsc_flexcan/interrupt_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

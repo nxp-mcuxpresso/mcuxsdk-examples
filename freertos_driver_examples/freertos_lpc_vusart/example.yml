@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpc_vusart:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpc_vusart
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpc_vusart/${multicore_foldername}
+    document:
+      name: freertos_lpc_vusart${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: FreeRTOS LPC VUSART driver.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpc_vusart/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

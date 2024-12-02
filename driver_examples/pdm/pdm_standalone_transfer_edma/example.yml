@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdm_standalone_transfer_edma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdm/pdm_standalone_transfer_edma
+    project-root-path: boards/${board}/driver_examples/pdm/pdm_standalone_transfer_edma/${multicore_foldername}
+    document:
+      name: pdm_standalone_transfer_edma${core_id_suffix_name}
+      category: driver_examples/pdm
+      brief: pdm_standalone_transfer_edma
+      example_readme:
+      - examples/driver_examples/pdm/pdm_standalone_transfer_edma/readme.md
+      - examples/_boards/${board}/driver_examples/pdm/pdm_standalone_transfer_edma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

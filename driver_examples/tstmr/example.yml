@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+tstmr:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tstmr
+    project-root-path: boards/${board}/driver_examples/tstmr/${multicore_foldername}
+    document:
+      name: tstmr${core_id_suffix_name}
+      category: driver_examples/tstmr
+      brief: The tstmr example shows the usage of TSTMR driver in application. The
+        TSTMR module is a free running incrementing counter that starts running after
+        system reset de-assertion and can be read at any time by the software for
+        determining the software ticks.The TSTMR runs off the 1 MHz clock and resets
+        on every system reset.In this example, it would output a time stamp information
+        when the application is ready. And then, delay for 1 second with TSTMR_DelayUs()
+        function. Before and after the delay, it would output the two time stamps
+        information again.
+      example_readme:
+      - examples/driver_examples/tstmr/readme.md
+      - examples/_boards/${board}/driver_examples/tstmr/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []

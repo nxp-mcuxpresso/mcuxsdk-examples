@@ -1,0 +1,8 @@
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/mimxrt685audevk_flash.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release flash_debug flash_release
+    package_path: boards/mimxrt685audevk/trustzone_examples/secure_faults/./secure_faults_ns/mdk
+    project_path: mimxrt685audevk

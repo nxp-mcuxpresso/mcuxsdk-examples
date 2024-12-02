@@ -1,0 +1,82 @@
+Hardware requirements
+=====================
+- Mini/micro USB cable
+- MIMXRT1170-EVKB board
+- Personal Computer
+
+Board settings
+==============
+This example project does not call for any special hardware configurations.
+Although not required, the recommendation is to leave the development board's jumper settings
+and configurations in default state when running this example.
+
+Prepare the Demo
+================
+1. Connect a USB cable between the PC host and the OpenSDA USB port on the board.
+2. Open a serial terminal with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3. Download the program to the target board.
+4. Either press the reset button on your board or launch the debugger in your IDE to begin running the example.
+
+Running the demo
+================
+When the demo runs successfully, the log would be seen on the terminal like:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+FLEXRAM ECC example.
+
+Allocate on-chip ram:
+
+   OCRAM bank numbers 8
+
+   DTCM  bank numbers 4
+
+   ITCM  bank numbers 4
+
+Allocate on-chip ram success
+
+OCRAM single error information: 0x43ac.
+
+OCRAM single-bit ECC error address: 0x0.
+
+OCRAM single-bit ECC error data LSB: 0xce.
+
+OCRAM single-bit ECC error data MSB: 0x4d4e5c6b.
+
+OCRAM expected data LSB: 0xcc.
+
+OCRAM access to 0x203c0000 boundary.
+
+DTCM single error information: 0x51214.
+
+DTCM single-bit ECC error address: 0x200.
+
+DTCM single-bit ECC error data: 0x2.
+
+DTCM real read data: 0x0.
+
+DTCM access to 0x20020000 boundary.
+
+ITCM single error information: 0x43216.
+
+ITCM single-bit ECC error address: 0x0.
+
+ITCM single-bit ECC error data LSB: 0x2.
+
+ITCM single-bit ECC error data MSB: 0x0.
+
+ITCM real read data: 0x0.
+
+ITCM access to 0x20000 boundary.
+
+FLEXRAM ECC example finished.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note: OCRAM ECC error injection needs to be fused MECC(840[2]) bit in fuse map like MECC example.

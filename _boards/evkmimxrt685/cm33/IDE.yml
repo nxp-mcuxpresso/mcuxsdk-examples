@@ -1,0 +1,19 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_dsp.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_evkmimxrt685/app_evkmimxrt685.uvoptx
+  - scripts/guigenerator/templates/mdk/app_evkmimxrt685/app_evkmimxrt685.uvprojx
+  - scripts/guigenerator/templates/mdk/app_evkmimxrt685/JLinkSettings.JLinkScript
+  - scripts/guigenerator/templates/mdk/app_evkmimxrt685/JLinkSettings.ini
+initialization_file:
+  files:
+  - attribute: initialization_file
+    package_path: project-root-path/mdk
+    project_path: evkmimxrt685
+    source: examples/_boards/evkmimxrt685/evkmimxrt685_flash.ini
+    targets: debug release flash_debug flash_release
+    toolchains: mdk

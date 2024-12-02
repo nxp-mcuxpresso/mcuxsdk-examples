@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cmsis_ecspi_sdma_loopback_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/ecspi/sdma_loopback_transfer
+    project-root-path: boards/${board}/cmsis_driver_examples/ecspi/sdma_loopback_transfer/${multicore_foldername}
+    document:
+      name: cmsis_ecspi_sdma_loopback_transfer${core_id_suffix_name}
+      category: cmsis_driver_examples/ecspi
+      brief: 'CMSIS-Driver defines generic peripheral driver interfaces for middleware
+        making it reusable across a wide range of supported microcontroller devices.
+        The API connects microcontroller peripherals with middleware that implements
+        for example communication stacks, file systems, or graphic user interfaces.
+        More information and usage methord please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.The
+        cmsis_ecspi_sdma_loopback_transfer example shows how to use CMSIS ECSPI driver
+        in SDMA way: In this example , ECSPI will do a loopback transfer in SDMA way,
+        so, there is no need to set up any pins.And we should set the ECSPIx->TESTREG[LBC]
+        bit, this bit is used in Master mode only. When this bit is set, the ECSPI
+        connects the transmitter and receiver sections internally, and the data shifted
+        out from the most-significant bit of the shift register is looped back into
+        the least-significant bit of the Shift register.In this way, a self-test of
+        the complete transmit/receive path can be made. The output pins are not affected,
+        and the input pins are ignored.'
+      example_readme:
+      - examples/cmsis_driver_examples/ecspi/sdma_loopback_transfer/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/ecspi/sdma_loopback_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mnddr3l:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mp:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release

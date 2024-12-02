@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+igpio_fast_gpio:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/igpio/fast_gpio
+    project-root-path: boards/${board}/driver_examples/gpio/fast_gpio/${multicore_foldername}
+    document:
+      name: igpio_fast_gpio${core_id_suffix_name}
+      category: driver_examples/gpio
+      brief: The Fast GPIO demos the CM7 fast GPIO usage and performance comparsion
+        with normal GPIO operation.
+      example_readme:
+      - examples/driver_examples/igpio/fast_gpio/readme.md
+      - examples/_boards/${board}/driver_examples/gpio/fast_gpio/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm7: []

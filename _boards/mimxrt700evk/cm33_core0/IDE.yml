@@ -1,0 +1,14 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_dsp.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+  config:
+    __common__:
+      debugger_setting:
+        cmsisdap_resetlist: system
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core0.uvoptx
+  - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core0.uvprojx
+  - scripts/guigenerator/templates/mdk/app_mimxrt700evk/JLinkSettings.ini

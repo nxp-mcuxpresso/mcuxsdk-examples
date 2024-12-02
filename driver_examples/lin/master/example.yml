@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lin_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lin/master
+    project-root-path: boards/${board}/driver_examples/lin/master/${multicore_foldername}
+    document:
+      name: lin_master${core_id_suffix_name}
+      category: driver_examples/lin
+      brief: The lin_master demo application demonstrates how to use LIN bus signal
+        transfer from master node.This demo application is expected to work with another
+        LIN instance implemented as slave node on the other board. Master node repeatedly
+        initializes transfer by generating frame header, master and slave then exchange
+        response as signal represented by the character array. This demo uses auto-baudrate
+        feature.
+      example_readme:
+      - examples/driver_examples/lin/master/readme.md
+      - examples/_boards/${board}/driver_examples/lin/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

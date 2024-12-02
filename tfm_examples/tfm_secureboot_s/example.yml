@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+tfm_secureboot_s:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/tfm_examples/tfm_secureboot_s
+    project-root-path: boards/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/${multicore_foldername}
+    document:
+      name: tfm_secureboot_s
+      category: tfm_examples
+      linked_project: tfm_secureboot_ns
+      brief: The Trusted Firmware M (TF-M) PSA Dev API test application provides verification
+        that secure service API behaviours are implemented correctly. This is secure
+        part of the application.
+      example_readme:
+      - examples/tfm_examples/tfm_secureboot_s/readme.md
+      - examples/_boards/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+#    frdmrw612:
+#    - -armgcc@flash_debug
+#    - -armgcc@flash_release
+#    - -iar@flash_debug
+#    - -iar@flash_release
+#    - -mdk@flash_debug
+#    - -mdk@flash_release
+#    rdrw612bga:
+#    - -armgcc@flash_debug
+#    - -armgcc@flash_release
+#    - -iar@flash_debug
+#    - -iar@flash_release
+#    - -mdk@flash_debug
+#    - -mdk@flash_release

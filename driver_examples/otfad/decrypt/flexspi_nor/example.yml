@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+otfad_decrypt_flexspi_nor:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/otfad/decrypt/flexspi_nor
+    project-root-path: boards/${board}/driver_examples/otfad/decrypt/${multicore_foldername}
+    document:
+      name: otfad_decrypt_flexspi_nor${core_id_suffix_name}
+      category: driver_examples/otfad/decrypt
+      brief: The OTFAD project is a simple demonstration program of the SDK OTFAD
+        driver. It support for on the fly AES decryption for the data stored in external
+        memories in an encrypted form.
+      example_readme:
+      - examples/driver_examples/otfad/decrypt/flexspi_nor/readme.md
+      - examples/_boards/${board}/driver_examples/otfad/decrypt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1010: []
+    mimxrt685audevk@cm33: []

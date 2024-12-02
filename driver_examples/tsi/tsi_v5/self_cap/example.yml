@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+tsi_v5_self_cap:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tsi/tsi_v5/self_cap
+    project-root-path: boards/${board}/driver_examples/tsi_v5/self_cap/${multicore_foldername}
+    document:
+      name: tsi_v5_self_cap${core_id_suffix_name}
+      category: driver_examples/tsi_v5
+      brief: The tsi_v5_self_cap example shows how to use TSI_V5 driver in self-cap
+        mode:In this example , we make use of the available electrodes on board to
+        show driver usage.1. Firstly, we get the non-touch calibration results as
+        baseline electrode counter;2. Then, we start the Software-Trigger scan using
+        polling method and interrupt method;3. Then, we start the Hardware-Trigger
+        scan using interrupt method.
+      example_readme:
+      - examples/driver_examples/tsi/tsi_v5/self_cap/readme.md
+      - examples/_boards/${board}/driver_examples/tsi_v5/self_cap/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

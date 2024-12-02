@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpuart_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpuart/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/lpuart/interrupt_transfer/${multicore_foldername}
+    document:
+      name: lpuart_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/lpuart
+      brief: The lpuart_interrupt Example project is to demonstrate usage of the KSDK
+        lpuart driver.In the example, you can send characters to the console back
+        and they will be printed out onto console in a group of 8 characters.
+      example_readme:
+      - examples/driver_examples/lpuart/interrupt_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/lpuart/interrupt_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    twrkm34z75m: []
+    twrkm35z75m: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []

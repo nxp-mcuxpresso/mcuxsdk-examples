@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_ecspi_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_ecspi_interrupt_transfer
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_ecspi_interrupt_transfer/${multicore_foldername}
+    document:
+      name: freertos_ecspi_interrupt_transfer${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: 'The freertos_ecspi example shows how to use ECSPI driver in FreeRTOS:In
+        this example , one ecspi instance is used as ECSPI master with blocking and
+        another ecspi instance is used as ECSPI slave.1. ECSPI master sends/receives
+        data using task blocking calls to/from ECSPI slave. (ECSPI Slave uses interrupt
+        to receive/sendthe data)The example supports board to board connection.With
+        board to board connection, one ECSPI instance on one board is used as ECSPI
+        master and the ECSPI instance on other board is used as ECSPI slave. Tasks
+        are created to run on each board to handle ECSPI communication.    File freertos_ecspi.c
+        should have following definitions:    #define EXAMPLE_CONNECT_ECSPI BOARD_TO_BOARD    For
+        board used as ECSPI master:        #define ECSPI_MASTER_SLAVE isMASTER    For
+        board used as ECSPI slave:        #define ECSPI_MASTER_SLAVE isSLAVE'
+      example_readme:
+      - examples/freertos_driver_examples/freertos_ecspi_interrupt_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+enet_txrx_rxpoll:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_enet/txrx_rxpoll
+    project-root-path: boards/${board}/driver_examples/enet/txrx_rxpoll/${multicore_foldername}
+    document:
+      name: enet_txrx_rxpoll${core_id_suffix_name}
+      category: driver_examples/enet
+      brief: The enet_rxtx_rxinterrupt example shows the simplest way to use ENET
+        functional tx/rx API for simple frame receive and transmit.1. This example
+        shows how to initialize the ENET.2. How to use ENET to receive frame in polling
+        and to transmit frame.The example transmits 20 number broadcast frame, print
+        the number and the mac address of the recieved frames.
+      example_readme:
+      - examples/driver_examples/lpc_enet/txrx_rxpoll/readme.md
+      - examples/_boards/${board}/driver_examples/enet/txrx_rxpoll/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

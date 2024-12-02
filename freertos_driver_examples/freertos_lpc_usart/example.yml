@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpc_usart:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpc_usart
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpc_usart/${multicore_foldername}
+    document:
+      name: freertos_lpc_usart${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The USART example for FreeRTOS demonstrates the possibility to use the
+        USART driver in the RTOS.The example uses single instance of USART IP and
+        writes string into, then reads back chars.After every 4B received, these are
+        sent back on USART.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpc_usart/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_lpc_usart/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69: []

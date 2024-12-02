@@ -1,0 +1,18 @@
+dsp_voice_spot_demo:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/voice_spot_demo/dsp
+    project-root-path: boards/${board}/dsp_examples/voice_spot_demo/${multicore_foldername}
+    document:
+      name: voice_spot_demo${core_id_suffix_name}
+      category: dsp_examples
+      brief: use voice_spot on the DSP to detect wakeword in data from PDM microphone.
+      example_readme:
+      - examples/dsp_examples/voice_spot_demo/readme.md
+      - examples/_boards/${board}/dsp_examples/voice_spot_demo/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8ulp@fusionf1:
+    - -xtensa@debug
+    - -xcc@debug

@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lwip_iperf_enet_qos_bm:
+  section-type: application
+  contents:
+    meta_path: examples/lwip_examples/lwip_iperf_enet_qos/bm/.
+    project-root-path: boards/${board}/lwip_examples/lwip_iperf_enet_qos/bm/${multicore_foldername}
+    document:
+      name: lwip_iperf_enet_qos_bm${core_id_suffix_name}
+      category: lwip_examples
+      brief: 'This is the IPerf server example to check your bandwidth using the network
+        performance measurement IPerf application on a PC as a client.It is currently
+        a minimal implementation providing an IPv4 TCP server only.Instead of the
+        command line IPerf application, for more convenience, it is recommended to
+        use the JPerf2 graphical tool, which can be downloaded here: https:/sourceforge.net/projects/iperf/files/jperf/jperf%202.0.0/jperf-2.0.0.zip/download'
+      example_readme:
+      - examples/lwip_examples/lwip_iperf_enet_qos/bm/readme.md
+      - examples/_boards/${board}/lwip_examples/lwip_iperf_enet_qos/bm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_debug
+    - +armgcc@sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_debug
+    - +mdk@sdram_release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    mcimx93evk: []
+    mcimx93qsb: []

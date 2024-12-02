@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+rtc_func:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/rtc/rtc_func
+    project-root-path: boards/${board}/demo_apps/rtc_func/${multicore_foldername}
+    document:
+      name: rtc_func${core_id_suffix_name}
+      category: demo_apps
+      brief: The RTC demo application demonstrates the important features of the RTC
+        Module by using the RTC Peripheral Driver.The RTC demo supports the following
+        features:- Calendar  + Get the current date time with Year, Month, Day, Hour,
+        Minute, and Second.  + Set the current date time with Year, Month, Day, Hour,
+        Minute, and Second.- Alarm  + Set the alarm based on the current time.  +
+        Application prints a notification when the alarm expires.- Seconds interrupt  +
+        Use second interrupt function to display a digital time blink every second.
+      example_readme:
+      - examples/demo_apps/rtc/rtc_func/readme.md
+      - examples/_boards/${board}/demo_apps/rtc_func/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+hashcrypt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/hashcrypt
+    project-root-path: boards/${board}/driver_examples/hashcrypt/${multicore_foldername}
+    document:
+      name: hashcrypt${core_id_suffix_name}
+      category: driver_examples/hashcrypt
+      brief: The hashcrypt Example project is a demonstration program that uses the
+        KSDK software to encrypt and hash data with hardware acceleration.
+      example_readme:
+      - examples/driver_examples/hashcrypt/readme.md
+      - examples/_boards/${board}/driver_examples/hashcrypt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []

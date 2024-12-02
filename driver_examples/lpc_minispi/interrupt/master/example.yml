@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+spi_interrupt_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_minispi/interrupt/master
+    project-root-path: boards/${board}/driver_examples/spi/interrupt/master/${multicore_foldername}
+    document:
+      name: spi_interrupt_master${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: 'The spi_interrupt_master example shows how to use spi functional API
+        to do interrupt transfer as a master:In this example, the spi instance as
+        master. Master sends a piece of data to slave, receive data from slave,and
+        check if the data master received is correct. This example needs to work with
+        spi_interrupt_slave example. '
+      example_readme:
+      - examples/driver_examples/lpc_minispi/interrupt/master/readme.md
+      - examples/_boards/${board}/driver_examples/spi/interrupt/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

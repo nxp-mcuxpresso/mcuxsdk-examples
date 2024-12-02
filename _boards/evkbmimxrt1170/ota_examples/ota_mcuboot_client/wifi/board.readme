@@ -1,0 +1,17 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- MIMXRT1170-EVKB board
+- Personal Computer
+
+
+Board settings
+==============
+Demo is setup to use M.2 WiFi module.
+
+Platform specific behavior
+--------------------------
+When an application programmatically performs software-induced reset while in a debugging session, the execution stalls in the ROM code. This is a feature.
+Your attention is needed at that moment: please perform reset manually by pressing the on-board hw reset button once you spot "SystemReset" message in the serial console.
+Manual reset is not needed while MCU is running freely without a debugger.
+

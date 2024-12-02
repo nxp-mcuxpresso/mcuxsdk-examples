@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexio_pin_input_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio/pin/input_interrupt
+    project-root-path: boards/${board}/driver_examples/flexio/pin/input_interrupt/${multicore_foldername}
+    document:
+      name: flexio_pin_input_interrupt${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The FLEXIO PIN Example project is a demonstration program that uses the
+        FLEXIO software to manipulate the flexio-pin as input function.The example
+        uses FLEXIO-PIN input to capture the edge of other gpio pin.
+      example_readme:
+      - examples/driver_examples/flexio/pin/input_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/flexio/pin/input_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

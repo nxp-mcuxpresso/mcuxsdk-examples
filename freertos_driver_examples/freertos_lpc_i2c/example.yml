@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpc_i2c:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpc_i2c
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpc_i2c/${multicore_foldername}
+    document:
+      name: freertos_lpc_i2c${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: 'The freertos_i2c example shows an application using RTOS tasks with
+        I2C driver:The example supports 2 different connections:On board connection
+        and board to board connection.With one board connection, 2 I2C instances of
+        the same board are used. One i2c instance used as I2C master and another I2C
+        instance used as I2C slave .    Default settings in freertos_i2c.c is applied.
+        Two tasks are created. One task is associated with an I2C master operation
+        and another task deals with I2C slave operation.    1. I2C master task sends
+        data to I2C slave task.    2. I2C master task reads data sent back from I2C
+        slave task.    The transmit data and the receive data of both I2C master task
+        and I2C slave task are printed out on terminal.With board to board connection,
+        one I2C instance on one board is used as I2C master and the I2C instance on
+        other board is used as I2C slave. Tasks are created to run on each board to
+        handle I2C communication.    File freertos_i2c.c should have following definitions:    #define
+        EXAMPLE_CONNECT_I2C BOARD_TO_BOARD    For board used as I2C master:        #define
+        I2C_MASTER_SLAVE isMASTER    For board used as I2C slave:        #define I2C_MASTER_SLAVE
+        isSLAVE'
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpc_i2c/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_lpc_i2c/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595: []
+    evkmimxrt685: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69: []

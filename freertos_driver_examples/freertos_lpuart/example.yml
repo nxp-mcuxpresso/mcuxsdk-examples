@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpuart:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpuart
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpuart/${multicore_foldername}
+    document:
+      name: freertos_lpuart${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The LPUART example for FreeRTOS demonstrates the possibility to use the
+        LPUART driver in the RTOS.The example uses single instance of LPUART IP and
+        writes string into, then reads back chars.After every 4B received, these are
+        sent back on LPUART.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpuart/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_lpuart/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160: []
+    evkmimxrt1180: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6: []
+    frdmke15z: []
+    frdmke17z: []
+    # k32w148evk:
+    # - -iar@debug
+    # - -iar@release
+    # kw45b41zevk:
+    # - -iar@debug
+    # - -iar@release
+    kw45b41zloc: []
+    kw47evk@cm33_core0: []
+    mcxn9xxevk: []
+    mcxw72evk@cm33_core0: []
+    twrkm34z75m: []
+    twrkm35z75m: []

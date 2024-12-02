@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+lpadc_sample_rate_count:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/lpadc/lpadc_high_sample_rate/sample_rate_count
+    project-root-path: boards/${board}/demo_apps/lpadc_high_sample_rate/sample_rate_count/${multicore_foldername}
+    document:
+      name: lpadc_sample_rate_count${core_id_suffix_name}
+      category: demo_apps
+      brief: The lpadc sample rate count demo application can be used to measure ADC's
+        sample rate roughly. The sample rate for an ADC is defined as the number of
+        output samples available per unit time, and is specified as samples per second(SPS).
+        The sample rate is the reciprocal of one sample total conversion time. Total
+        conversion time = sampling time + compare time In this demo, users can select
+        sample time, and the compare time is fixed to 17.5 ADC clock cycles. In this
+        demo the ADC conversion clock is configured as the maximum frequency(Please
+        refer the datasheet for the maximim value). So theoretically, sample rate
+        = maximum frequency / total conversion time.
+      example_readme:
+      - examples/demo_apps/lpadc/lpadc_high_sample_rate/sample_rate_count/readme.md
+      - examples/_boards/${board}/demo_apps/lpadc_high_sample_rate/sample_rate_count/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

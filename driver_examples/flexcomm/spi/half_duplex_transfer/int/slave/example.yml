@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../../../../scripts/data_schema/example_description_schema.json
+spi_half_duplex_int_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/spi/half_duplex_transfer/int/slave
+    project-root-path: boards/${board}/driver_examples/spi/half_duplex_transfer/int/slave/${multicore_foldername}
+    document:
+      name: spi_half_duplex_int_slave${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: 'The spi_half_duplex_int_transfer_slave example shows how to receive
+        and transmit data to master board.Notice: The SPI slave of this example uses
+        interrupt mode. The data transfer size(not buffer size) is twice ofthe master''s
+        transfer size. The first half of the transmission will receive data, and the
+        second half will senddata back to master, so the address of the receive buffer
+        is &rxDataPolling[64].In this example, one spi instance as slave and another
+        spi instance on the other board as master. Master sends a piece of data to
+        slave, and receive a piece of data from slave. This example checks if the
+        data received from master is correct. And slave will print what it received.'
+      example_readme:
+      - examples/driver_examples/flexcomm/spi/half_duplex_transfer/int/slave/readme.md
+      - examples/_boards/${board}/driver_examples/spi/half_duplex_transfer/int/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

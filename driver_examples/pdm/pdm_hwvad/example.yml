@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdm_hwvad:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdm/pdm_hwvad
+    project-root-path: boards/${board}/driver_examples/pdm/pdm_hwvad/${multicore_foldername}
+    document:
+      name: pdm_hwvad${core_id_suffix_name}
+      category: driver_examples/pdm
+      brief: The pdm_hwvad example shows how to use pdm driver with interrupt:In this
+        example, one pdm instance playbacks the audio data stored in flash using interrupt.
+      example_readme:
+      - examples/driver_examples/pdm/pdm_hwvad/readme.md
+      - examples/_boards/${board}/driver_examples/pdm/pdm_hwvad/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8ulp@cm33: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mimxrt700evk@cm33_core0: []

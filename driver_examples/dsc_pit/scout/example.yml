@@ -1,0 +1,20 @@
+pit_scout:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_pit/scout
+    project-root-path: boards/${board}/driver_examples/pit/scout/${multicore_foldername}
+    document:
+      name: pit_scout${core_id_suffix_name}
+      category: driver_examples
+      brief: The pit_scout project is a simple demonstration program of the SDK PIT
+        driver for synchronous output. It sets up the PIT hardware block to  a periodic
+        rate of 1 second. Synchronous output when PIT counter equals the modolus value.
+        Synchronous output is set to toggle mode. After reset, SYNC_OUT is low-level,
+        when PIT counter equals MODULO value firstly, SYNC_OUT toggles to high-level
+        and keep high-level until PIT counter equal MODULO value next time, SYNC_OUT
+        toggles to low-level. Use the Oscilloscope to measure the signal of XBARA_OUT10,
+        the sync_out waveform will be outputted.
+      example_readme:
+      - examples/driver_examples/dsc_pit/scout/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

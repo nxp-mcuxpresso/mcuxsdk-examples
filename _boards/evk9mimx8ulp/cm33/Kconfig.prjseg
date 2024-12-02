@@ -1,0 +1,9 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "../../../_common/project_segments/dsp/Kconfig.prjseg"
+
+config MCUX_PRJSEG_module.dsp_support
+    select MCUX_COMPONENT_driver.dsp

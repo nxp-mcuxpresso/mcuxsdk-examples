@@ -1,0 +1,16 @@
+ezhv_heartbeat_ezhv:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/heartbeat/ezhv
+    project-root-path: boards/${board}/ezhv_examples/heartbeat/${multicore_foldername}
+    document:
+      name: ezhv_heartbeat_ezhv
+      category: ezhv_examples
+      brief: This project shows how to use EZHV heartbeat.
+      example_readme:
+      - examples/ezhv_examples/heartbeat/readme.md
+      - examples/_boards/${board}/ezhv_examples/heartbeat/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@ezhv: []

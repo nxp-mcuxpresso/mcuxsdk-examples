@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+s3mu:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/s3mu
+    project-root-path: boards/${board}/driver_examples/s3mu/${multicore_foldername}
+    document:
+      name: s3mu${core_id_suffix_name}
+      category: driver_examples/s3mu
+      brief: The S3MU Example project is a demonstration program that uses the MCUX
+        SDK software to show basic communication with EdgeLock Enclave (ELE) and usage
+        of its services with direct use of S3MU driver.
+      example_readme:
+      - examples/driver_examples/s3mu/readme.md
+      - examples/_boards/${board}/driver_examples/s3mu/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []

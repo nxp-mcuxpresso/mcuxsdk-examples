@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ce_basic_test:
+  section-type: application
+  contents:
+    meta_path: examples/ce_examples/basic_test
+    project-root-path: boards/${board}/ce_examples/basic_test/${multicore_foldername}
+    document:
+      name: ce_basic_test${core_id_suffix_name}
+      category: ce_examples
+      brief: Sample application that tests the matrix add and the matrix element-wise
+        multiplication functionalities.
+      example_readme:
+      - examples/ce_examples/basic_test/readme.md
+      - examples/_boards/${board}/ce_examples/basic_test/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    kw47loc@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

@@ -1,0 +1,19 @@
+queued_spi_edma_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/queued_spi/edma_b2b_transfer/master
+    project-root-path: boards/${board}/driver_examples/queued_spi/edma_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: queued_spi_edma_b2b_transfer_master${core_id_suffix_name}
+      category: driver_examples/queued_spi
+      brief: The queued_spi_edma_b2b_transfer examples show how to use queued_spi
+        driver in edma way. In this example, we need two boards, one board is used
+        as queued_spi master and another board is used as queued_spi slave. The file
+        'queued_spi_edma_b2b_transfer_master.c' includes the queued_spi master code.
+        This example uses the transactional API in queued_spi driver. queued_spi master
+        sends/receives data to/from queued_spi slave in edma. (queued_spi slave uses
+        edma to receive/send the data)
+      example_readme:
+      - examples/driver_examples/queued_spi/edma_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

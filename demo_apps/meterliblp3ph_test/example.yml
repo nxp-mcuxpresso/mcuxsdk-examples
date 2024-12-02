@@ -1,0 +1,16 @@
+meterliblp3ph_test:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/meterliblp3ph_test
+    project-root-path: boards/${board}/demo_apps/meterliblp3ph_test/${multicore_foldername}
+    document:
+      name: meterliblp3ph_test${core_id_suffix_name}
+      category: demo_apps
+      brief: This example demonstrates use of the low power metering library in active
+        energy polyphase power meter application.
+      example_readme:
+      - examples/demo_apps/meterliblp3ph_test/readme.md
+      - examples/_boards/${board}/demo_apps/meterliblp3ph_test/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm35z75m: []

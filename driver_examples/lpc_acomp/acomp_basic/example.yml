@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+acomp_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_acomp/acomp_basic
+    project-root-path: boards/${board}/driver_examples/acomp/acomp_basic/${multicore_foldername}
+    document:
+      name: acomp_basic${core_id_suffix_name}
+      category: driver_examples/acomp
+      brief: The ACOMP Basic Example shows the simplest way to use ACOMP driver and
+        help user with a quick start.In this example, user should indicate an input
+        channel to capture a voltage signal (can be controlled by user) as the ACOMP's
+        negative channel input. On the postive side, the internal voltage ladder is
+        used to generate the fixed voltage abouthalf value of reference voltage.When
+        running the project, change the input voltage of user-defined channel, then
+        the comparator's output would changebetween logic one and zero when the user's
+        voltage crosses the internal ladder's output. The endless loop in main() functionwould
+        detect the logic value of comparator's output, and change the LED. The LED
+        would be turned on when the compareoutput is logic one, or turned off when
+        zero.
+      example_readme:
+      - examples/driver_examples/lpc_acomp/acomp_basic/readme.md
+      - examples/_boards/${board}/driver_examples/acomp/acomp_basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

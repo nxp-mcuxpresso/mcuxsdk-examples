@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+casper:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/casper
+    project-root-path: boards/${board}/driver_examples/casper/${multicore_foldername}
+    document:
+      name: casper${core_id_suffix_name}
+      category: driver_examples/casper
+      brief: The CASPER Example project is a demonstration program that uses the KSDK
+        software to calculate RSA.
+      example_readme:
+      - examples/driver_examples/casper/readme.md
+      - examples/_boards/${board}/driver_examples/casper/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []

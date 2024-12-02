@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sdcard_fatfs_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/sdmmc_examples/sdcard_fatfs_freertos
+    project-root-path: boards/${board}/sdmmc_examples/sdcard_fatfs_freertos/${multicore_foldername}
+    document:
+      name: sdcard_fatfs_freertos${core_id_suffix_name}
+      category: sdmmc_examples/sdcard_fatfs_freertos
+      brief: The SDCARD FATFS FREERTOS project is a demonstration program that uses
+        the SDK software. The purpose of this example is to show how to use SDCARD
+        with fatfs and freertos.
+      example_readme:
+      - examples/sdmmc_examples/sdcard_fatfs_freertos/readme.md
+      - examples/_boards/${board}/sdmmc_examples/sdcard_fatfs_freertos/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    evkmimxrt595@cm33: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

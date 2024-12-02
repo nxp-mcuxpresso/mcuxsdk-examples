@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+waketimer_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/waketimer
+    project-root-path: boards/${board}/driver_examples/waketimer/${multicore_foldername}
+    document:
+      name: waketimer_example${core_id_suffix_name}
+      category: driver_examples/waketimer
+      brief: The WAKETIMER project is a simple demonstration program of the SDK WAKETIMER
+        driver. WAKETIMER will trigger every 1 second.
+      example_readme:
+      - examples/driver_examples/waketimer/readme.md
+      - examples/_boards/${board}/driver_examples/waketimer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []

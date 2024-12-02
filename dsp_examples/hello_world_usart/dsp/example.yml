@@ -1,0 +1,37 @@
+dsp_hello_world_usart:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/hello_world_usart/dsp
+    project-root-path: boards/${board}/dsp_examples/hello_world_usart/${multicore_foldername}
+    document:
+      name: dsp_hello_world_usart${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_hello_world_usart demo application demonstrates starting DSP
+        core with DSP image.
+      example_readme:
+      - examples/dsp_examples/hello_world_usart/readme.md
+      - examples/_boards/${board}/dsp_examples/hello_world_usart/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@fusionf1:
+    - +xtensa@debug
+    - +xtensa@release
+    evkmimxrt685@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
+    mimxrt685audevk@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
+    mimxrt700evk@hifi1:
+    - +xtensa@debug
+    - +xtensa@release
+    mimxrt700evk@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
+    evkmimx8ulp@fusionf1:
+    - +xtensa@debug
+    - +xtensa@release
+    evk9mimx8ulp@fusionf1:
+    - +xtensa@debug
+    - +xtensa@release

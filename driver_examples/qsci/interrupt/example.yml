@@ -1,0 +1,15 @@
+qsci_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qsci/interrupt
+    project-root-path: boards/${board}/driver_examples/qsci/interrupt/${multicore_foldername}
+    document:
+      name: qsci_interrupt${core_id_suffix_name}
+      category: driver_examples/qsci
+      brief: 'The qsci_interrupt example shows how to use qsci driver functional API
+        to receive data in interrupt way: In this example, one qsci instance is connected
+        to PC, the board will send back all characters that PC sends to the board.'
+      example_readme:
+      - examples/driver_examples/qsci/interrupt/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

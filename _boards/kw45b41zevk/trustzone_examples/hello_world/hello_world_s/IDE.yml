@@ -1,0 +1,23 @@
+
+mdk:
+  shared-workspace: hello_world
+  sharing-workspace:
+  - ../../hello_world_ns/mdk/hello_world_ns
+
+iar:
+  shared-workspace: hello_world
+  sharing-workspace:
+  - ../../hello_world_ns/iar/hello_world_ns
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

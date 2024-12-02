@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_trigger_exception:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/trigger_exception
+    project-root-path: boards/${board}/driver_examples/lpadc/trigger_exception/${multicore_foldername}
+    document:
+      name: lpadc_trigger_exception${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpadc_trigger_exception example demonstrates the usage of trigger
+        exception feature.
+      example_readme:
+      - examples/driver_examples/lpadc/trigger_exception/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/trigger_exception/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []

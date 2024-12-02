@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+openvg_tiger_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/openvg_examples/openvg_tiger
+    project-root-path: boards/${board}/openvg_examples/openvg_tiger/${multicore_foldername}
+    document:
+      name: openvg_tiger_freertos${core_id_suffix_name}
+      category: openvg_examples
+      brief: This example shows how to use the OpenVG component. This application
+        draws a tiger on the screen.
+      example_readme:
+      - examples/openvg_examples/openvg_tiger/readme.md
+      - examples/_boards/${board}/openvg_examples/openvg_tiger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - +armgcc@sdram_debug
+    - +armgcc@sdram_release
+    - +iar@sdram_debug
+    - +iar@sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7:
+    - +armgcc@sdram_debug
+    - +armgcc@sdram_release
+    - +iar@sdram_debug
+    - +iar@sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    mimxrt700evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@debug
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release

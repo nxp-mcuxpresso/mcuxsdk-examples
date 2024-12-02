@@ -1,0 +1,6 @@
+
+mcux_add_macro(
+    CC "-DPHY_STABILITY_DELAY_US=500000U\
+       -DUSE_SDRAM\
+       -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+)

@@ -1,0 +1,17 @@
+dsc_lpi2c_edma_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_lpi2c/edma_b2b_transfer/master
+    project-root-path: boards/${board}/driver_examples/lpi2c/edma_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: dsc_lpi2c_edma_b2b_transfer_master${core_id_suffix_name}
+      category: driver_examples/lpi2c
+      brief: The lpi2c_edma_b2b_transfer_master example shows how to use lpi2c driver
+        as master to do board to board transfer with a EDMA master:In this example,
+        one lpi2c instance as master and another lpi2c instance on the other board
+        as slave. Master sends a piece of data to slave, and receive a piece of data
+        from slave. This example checks if the data received from slave is correct.
+      example_readme:
+      - examples/driver_examples/dsc_lpi2c/edma_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

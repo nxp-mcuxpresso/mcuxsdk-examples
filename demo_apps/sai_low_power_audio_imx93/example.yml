@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+sai_low_power_audio_rtos_imx93:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/sai_low_power_audio_imx93
+    project-root-path: boards/${board}/demo_apps/sai_low_power_audio/${multicore_foldername}
+    document:
+      name: sai_low_power_audio_rtos_imx93${core_id_suffix_name}
+      category: demo_apps
+      brief: 'In this demo, A core decoded music data and put it to DDR buffer and
+        informs M core with the related information. Then M core will take the ownership
+        of consuming the buffer, it will copy buffer from DDR to TCM, manipulating
+        SDMA to transfer the data to SAI and codec for playback. It gives DDR and
+        A core opportunity to do power saving for rather long time frame. M core will
+        also take ownership of codec initialization. SRTM(Simplified Real Time Messaging)
+        protocol is used to communicate between A core an M4 core. '
+      example_readme:
+      - examples/demo_apps/sai_low_power_audio_imx93/readme.md
+      - examples/_boards/${board}/demo_apps/sai_low_power_audio/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mcimx93evk: []
+    mcimx93qsb: []

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+puf_hashcrypt_crypto:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/puf/puf_hashcrypt_crypto
+    project-root-path: boards/${board}/demo_apps/puf_hashcrypt_crypto/${multicore_foldername}
+    document:
+      name: puf_hashcrypt_crypto${core_id_suffix_name}
+      category: demo_apps
+      brief: This demo application demonstrates how to use PUF controller which provides
+        a secure key storage and then sends secret key via dedicated HW bus directly
+        to Hashcrypt, which uses this key to encrypt data.
+      example_readme:
+      - examples/demo_apps/puf/puf_hashcrypt_crypto/readme.md
+      - examples/_boards/${board}/demo_apps/puf_hashcrypt_crypto/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s69@cm33_core0: []

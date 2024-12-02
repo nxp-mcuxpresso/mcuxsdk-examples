@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cmsis_enet_txrx_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/enet/txrx_transfer
+    project-root-path: boards/${board}/cmsis_driver_examples/enet/txrx_transfer/${multicore_foldername}
+    document:
+      name: cmsis_enet_txrx_transfer${core_id_suffix_name}
+      category: cmsis_driver_examples/enet
+      brief: "CMSIS-Driver defines generic peripheral driver interfaces for middleware\
+        \ making it reusable across a wide \nrange of supported microcontroller devices.\
+        \ The API connects microcontroller peripherals with middleware \nthat implements\
+        \ for example communication stacks, file systems, or graphic user interfaces.\
+        \ \nMore information and usage method please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.\n\
+        \nThe cmsis_enet_transfer example shows how to use CMSIS ENET driver:\n\n\
+        In this example, the ENET transmits 20 number broadcast frames and will print\
+        \ the received frame.\n\n"
+      example_readme:
+      - examples/cmsis_driver_examples/enet/txrx_transfer/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    evkcmimxrt1060: []
+    evkmimx8mm: []
+    evkmimx8mp: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release

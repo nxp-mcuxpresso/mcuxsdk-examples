@@ -1,0 +1,11 @@
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.cmsis_dspi
+    select MCUX_COMPONENT_driver.cmsis_i2c
+    select MCUX_COMPONENT_driver.dmamux
+    select MCUX_COMPONENT_driver.dspi
+    select MCUX_COMPONENT_driver.dspi_edma
+    select MCUX_COMPONENT_driver.edma
+    select MCUX_COMPONENT_driver.ft6x06
+    select MCUX_COMPONENT_driver.i2c
+    select MCUX_COMPONENT_driver.i2c_edma
+    select MCUX_COMPONENT_driver.ili9341

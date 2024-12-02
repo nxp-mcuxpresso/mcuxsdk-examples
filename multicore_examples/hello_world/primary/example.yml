@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+hello_world_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/multicore_examples/hello_world/primary
+    project-root-path: boards/${board}/multicore_examples/hello_world/${multicore_foldername}
+    document:
+      name: hello_world_primary_core
+      category: multicore_examples
+      brief: The Multicore Hello World demo application demonstrates how to set up
+        projects for individual cores on a multicore system. In this demo, the primary
+        core prints the "Hello World from the Primary Core!"string to the terminal
+        and then releases the secondary core from the reset. The secondary core toggles
+        an on-board LED indicating that the secondary core is running.
+      example_readme:
+      - examples/multicore_examples/hello_world/readme.md
+      - examples/_boards/${board}/multicore_examples/hello_world/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - -armgcc@release
+    - -iar@debug
+    - +iar@flash_debug
+    - +iar@flash_release
+    - -iar@release
+    - -mdk@debug
+    - +mdk@flash_debug
+    - +mdk@flash_release
+    - -mdk@release
+    evkmimxrt1160@cm7:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm33:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmk32l3a6@cm4: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    frdmmcxw72@cm33_core0: []

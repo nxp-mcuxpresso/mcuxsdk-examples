@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+secure_gpio_s:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/trustzone_examples/secure_gpio_s
+    project-root-path: boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s/${multicore_foldername}
+    document:
+      name: secure_gpio_s${core_id_suffix_name}
+      category: trustzone_examples
+      brief: The Secure GPIO demo application demonstrates using of secure GPIO peripheral
+        and GPIO mask feature in AHB secure controller. This is secure part of the
+        application.
+      example_readme:
+      - examples/trustzone_examples/secure_gpio_s/readme.md
+      - examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []

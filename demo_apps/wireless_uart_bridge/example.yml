@@ -1,0 +1,15 @@
+wireless_uart_bridge:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/wireless_uart_bridge
+    project-root-path: boards/${board}/demo_apps/wireless_uart_bridge/${multicore_foldername}
+    document:
+      name: wireless_uart_bridge
+      category: demo_apps
+      brief: The Wireless UART bridge demo implements both the GATT client and server
+        for the custom Wireless UART profile and services.
+      example_readme:
+      - examples/demo_apps/wireless_uart_bridge/readme.md
+      - examples/_boards/${board}/demo_apps/wireless_uart_bridge/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdif_cursor_argb:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdif/cursor_argb
+    project-root-path: boards/${board}/driver_examples/lcdif/cursor_argb/${multicore_foldername}
+    document:
+      name: lcdif_cursor_argb${core_id_suffix_name}
+      category: driver_examples/lcdif
+      brief: 'This example demonstrates how to use the LCDIF cursor in ARGB8888 mode.
+        In this exapmle, the screen is devided into two parts: red and blue. A cursor
+        is moving in the screen, the cursor alpha value changes during moving.'
+      example_readme:
+      - examples/driver_examples/lcdif/cursor_argb/readme.md
+      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt595@cm33: []
+    mimxrt700evk@cm33_core0: []

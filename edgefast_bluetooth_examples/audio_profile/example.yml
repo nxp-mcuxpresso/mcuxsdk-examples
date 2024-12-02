@@ -1,0 +1,44 @@
+audio_profile:
+  section-type: application
+  contents:
+    meta_path: examples/edgefast_bluetooth_examples/audio_profile
+    project-root-path: boards/${board}/edgefast_bluetooth_examples/audio_profile/${multicore_foldername}
+    document:
+      name: audio_profile${core_id_suffix_name}
+      category: edgefast_bluetooth_examples/
+      brief: The Edgefast Bluetooth audio demo with simplified application.
+      example_readme:
+      - examples/edgefast_bluetooth_examples/audio_profile/readme.md
+      - examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

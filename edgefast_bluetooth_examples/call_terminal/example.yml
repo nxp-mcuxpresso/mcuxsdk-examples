@@ -1,0 +1,47 @@
+call_terminal:
+  section-type: application
+  contents:
+    meta_path: examples/edgefast_bluetooth_examples/call_terminal
+    project-root-path: boards/${board}/edgefast_bluetooth_examples/call_terminal/${multicore_foldername}
+    document:
+      name: call_terminal${core_id_suffix_name}
+      category: edgefast_bluetooth_examples/
+      brief: The Edgefast Bluetooth call terminal example with simplified application.
+      example_readme:
+      - examples/edgefast_bluetooth_examples/call_terminal/readme.md
+      - examples/_boards/${board}/edgefast_bluetooth_examples/call_terminal/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

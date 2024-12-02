@@ -1,0 +1,16 @@
+cadc_expansion_mux_aux_opamp_err051396:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_cadc/expansion_mux_aux_opamp_err051396
+    project-root-path: boards/${board}/driver_examples/cadc/expansion_mux_aux_opamp_err051396/${multicore_foldername}
+    document:
+      name: cadc_expansion_mux_aux_opamp_err051396${core_id_suffix_name}
+      category: driver_examples/cadc
+      brief: The CADC expansion mux aux OPAMP errata err051396 application demonstrates
+        when ADC mux aux circle may stop by failure, and how to apply the workaround
+        to fix it. This application is based on CADC expansion mux aux OPAMP application,
+        please refer to it for additional information.
+      example_readme:
+      - examples/driver_examples/dsc_cadc/expansion_mux_aux_opamp_err051396/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dac14_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dac14/dac14_basic
+    project-root-path: boards/${board}/driver_examples/dac14/dac14_basic/${multicore_foldername}
+    document:
+      name: dac14_basic${core_id_suffix_name}
+      category: driver_examples/dac14
+      brief: The DAC14 basic example shows how to use the DAC module simply as the
+        general DAC converter. No support is needed to be triggered by DAC in the
+        example using the buffer mode. The value written into DAC data register will
+        be directly pushed to analog conversion.
+      example_readme:
+      - examples/driver_examples/dac14/dac14_basic/readme.md
+      - examples/_boards/${board}/driver_examples/dac14/dac14_basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

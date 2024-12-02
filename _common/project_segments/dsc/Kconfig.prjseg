@@ -1,0 +1,17 @@
+# enable the choice item in guiconfig
+config MCUX_HAS_PRJSEG_project.use_peripherals
+    bool "Use peripherals[.c|.h]"
+    default y
+    help
+        Use peripherals[.c|.h] in project.
+
+choice MCUX_PRJSEG_project.peripherals_sel
+    prompt "peripherals[.c|.h] selection"
+    depends on MCUX_HAS_PRJSEG_project.use_peripherals
+
+    config MCUX_PRJSEG_module.use_board_peripheral
+        bool "Use examples/_boards/${board}/peripherals/peripherals[.c|.h]"
+
+    config MCUX_PRJSEG_module.use_project_peripheral
+        bool "Use examples/_boards/${board}/<demo>/peripherals[.c|.h]"
+endchoice

@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sdcard_fatfs:
+  section-type: application
+  contents:
+    meta_path: examples/sdmmc_examples/sdcard_fatfs
+    project-root-path: boards/${board}/sdmmc_examples/sdcard_fatfs/${multicore_foldername}
+    document:
+      name: sdcard_fatfs${core_id_suffix_name}
+      category: sdmmc_examples/sdcard_fatfs
+      brief: The SDCARD FATFS project is a demonstration program that uses the SDK
+        software. Tt mounts a file system based on a SD card then does "creat directory/read
+        directory/create file/write file/read file"operation. The file sdhc_config.h
+        has default SDHC configuration which can be adjusted to let carddriver has
+        different performance. The purpose of this example is to show how to use SDCARD
+        driver based FATFS disk in SDK software.
+      example_readme:
+      - examples/sdmmc_examples/sdcard_fatfs/readme.md
+      - examples/_boards/${board}/sdmmc_examples/sdcard_fatfs/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

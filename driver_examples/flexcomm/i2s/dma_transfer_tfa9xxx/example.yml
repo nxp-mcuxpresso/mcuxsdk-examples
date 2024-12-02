@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i2s_dma_transfer_tfa9xxx:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/i2s/dma_transfer_tfa9xxx
+    project-root-path: boards/${board}/driver_examples/i2s/dma_transfer_tfa9xxx/${multicore_foldername}
+    document:
+      name: i2s_dma_transfer_tfa9xxx${core_id_suffix_name}
+      category: driver_examples/i2s
+      brief: The I2S example project uses one I2S interface to continuously record
+        input sound to a bufferand another I2S interface to playback the buffer to
+        output - digital loopback.It requires NXP Mic/Audio/Oled Shield with TFA9XXX
+        ampfilier (including TFA9892N1, TFA9894N1 and TFA9894N2). Jumpers need to
+        set so that TFA amplifier(s) can have I2S input.
+      example_readme:
+      - examples/driver_examples/flexcomm/i2s/dma_transfer_tfa9xxx/readme.md
+      - examples/_boards/${board}/driver_examples/i2s/dma_transfer_tfa9xxx/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt685@cm33: []

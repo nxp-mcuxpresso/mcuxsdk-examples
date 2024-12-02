@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+eatt_peripheral_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/eatt_peripheral/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/eatt_peripheral/freertos/${multicore_foldername}
+    document:
+      name: eatt_peripheral_freertos
+      category: wireless_examples/bluetooth/eatt_peripheral/freertos/
+      brief: This application implements 2 custom GATT based Services and sends data
+        for each profile on an enhanced ATT bearer.
+  boards:
+    kw45b41zevk: []
+    k32w148evk: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

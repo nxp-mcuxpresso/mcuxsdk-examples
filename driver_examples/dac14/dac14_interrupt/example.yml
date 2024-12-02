@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dac14_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dac14/dac14_interrupt
+    project-root-path: boards/${board}/driver_examples/dac14/dac14_interrupt/${multicore_foldername}
+    document:
+      name: dac14_interrupt${core_id_suffix_name}
+      category: driver_examples/dac14
+      brief: The DAC14 interrupt example shows how to use the DAC FIFO interrupt.
+        When the application starts to run, it will immediately enter the DAC ISR
+        and write data into the FIFO which is empty at first. Once the DAC FIFO is
+        triggered in the while loop, the data in it shall be read out; then the FIFO
+        becomes empty again, and get another round of feed in the DAC ISR.
+      example_readme:
+      - examples/driver_examples/dac14/dac14_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/dac14/dac14_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

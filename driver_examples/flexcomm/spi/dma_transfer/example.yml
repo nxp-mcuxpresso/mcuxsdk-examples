@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+spi_dma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/spi/dma_transfer
+    project-root-path: boards/${board}/driver_examples/spi/dma_transfer/${multicore_foldername}
+    document:
+      name: spi_dma_transfer${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: The spi_dma example shows how to use spi driver with DMA:In this example,
+        one spi instance as master and another spi instance as slave. Master sends
+        a piece of data to slave,and check if the data slave received is correct.
+      example_readme:
+      - examples/driver_examples/flexcomm/spi/dma_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/spi/dma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

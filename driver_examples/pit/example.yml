@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+pit:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pit
+    project-root-path: boards/${board}/driver_examples/pit/${multicore_foldername}
+    document:
+      name: pit${core_id_suffix_name}
+      category: driver_examples/pit
+      brief: The PIT project is a simple demonstration program of the SDK PIT driver.
+        It sets up the PIThardware block to trigger a periodic interrupt after every
+        1 second. When the PIT interrupt is triggereda message a printed on the UART
+        terminal and an LED is toggled on the board.
+      example_readme:
+      - examples/driver_examples/pit/readme.md
+      - examples/_boards/${board}/driver_examples/pit/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    frdmk22f: []
+    frdmk32l2b: []
+    frdmke02z40m: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

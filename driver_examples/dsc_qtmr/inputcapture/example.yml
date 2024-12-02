@@ -1,0 +1,16 @@
+qtmr_inputcapture:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_qtmr/inputcapture
+    project-root-path: boards/${board}/driver_examples/qtmr/inputcapture/${multicore_foldername}
+    document:
+      name: qtmr_inputcapture${core_id_suffix_name}
+      category: driver_examples
+      brief: The QTMR project is a demonstration program of the SDK QTMR driver's
+        input capture feature.The example sets up a QTMR channel for input capture.
+        Once the input signal is received,this example will enter interrupt and print
+        the capture value.
+      example_readme:
+      - examples/driver_examples/dsc_qtmr/inputcapture/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

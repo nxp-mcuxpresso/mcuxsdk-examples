@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+snvs_lp_srtc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/snvs_hp/snvs_lp_srtc
+    project-root-path: boards/${board}/driver_examples/snvs/snvs_lp_srtc/${multicore_foldername}
+    document:
+      name: snvs_lp_srtc${core_id_suffix_name}
+      category: driver_examples/snvs
+      brief: The SNVS LP SRTC project is a simple demonstration program of the SDK
+        SNVS LP driver. The test will set up secure RTC (SRTC) date and time to a
+        predefined value and starts the counter, then the SRTC counter value is synchronized
+        with non secure RTC (RTC). RTC then triggers an alarm after a user specified
+        time period. The alarm will be set with reference to this predefined dateand
+        time.
+      example_readme:
+      - examples/driver_examples/snvs_hp/snvs_lp_srtc/readme.md
+      - examples/_boards/${board}/driver_examples/snvs/snvs_lp_srtc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

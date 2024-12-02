@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+els_pkc_benchmark:
+  section-type: application
+  contents:
+    meta_path: examples/els_pkc_examples/els_pkc_benchmark/.
+    project-root-path: boards/${board}/els_pkc_examples/els_pkc_benchmark/${multicore_foldername}
+    document:
+      name: els_pkc_benchmark${core_id_suffix_name}
+      category: els_pkc_examples
+      brief: This benchmark is analyzing the performance of various symmetric and
+        asymmetric key cryptographic algorithms.
+      example_readme:
+      - examples/els_pkc_examples/els_pkc_benchmark/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

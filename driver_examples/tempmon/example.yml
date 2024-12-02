@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+temperaturemonitor:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tempmon
+    project-root-path: boards/${board}/driver_examples/tempmon/${multicore_foldername}
+    document:
+      name: temperaturemonitor${core_id_suffix_name}
+      category: driver_examples/temperaturemonitor
+      brief: The TEMPMON project is a simple demonstration program of the SDK TEMPMON
+        driver.The temperatue monitor (TEMPMON) module features alarm functions that
+        can raise independent interrupt signals if the temperature is above two high-temperature
+        thresholds and below a low temperature threshold, the system can then use
+        this module to monitor the on-die temperature and take appropriate actions
+        such as throttling back the core frequency when a the high temperature interrupt
+        is set.
+      example_readme:
+      - examples/driver_examples/tempmon/readme.md
+      - examples/_boards/${board}/driver_examples/tempmon/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

@@ -1,0 +1,45 @@
+dsp_xaf_record:
+  skip_build: true
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/xaf_record/cm
+    project-root-path: boards/${board}/dsp_examples/xaf_record/${multicore_foldername}
+    document:
+      name: dsp_xaf_record${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_xaf_record demo application demonstrates starting DSP core with
+        DSP image.
+      example_readme:
+      - examples/dsp_examples/xaf_record/readme.md
+      - examples/_boards/${board}/dsp_examples/xaf_record/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

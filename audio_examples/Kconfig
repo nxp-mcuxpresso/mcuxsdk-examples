@@ -1,0 +1,69 @@
+menu "Configs"
+    config MCUX_PRJSEG_module.audio_voice.default_config
+        bool "Default config"
+
+    config MCUX_PRJSEG_module.audio_voice.lpc_config
+        bool "LPC config"
+endmenu
+
+config MCUX_PRJSEG_MAESTRO_EXAMPLE_MAESTRO_LOGGING_ON
+    bool "Turns on logging of Maestro library"
+    default n
+
+menu "VIT model packs"
+    depends on MCUX_PRJSEG_middleware.audio_voice.components.vit
+
+    config MAESTRO_EXAMPLE_VIT_MODEL_ALL_ENABLE
+        bool "Enables all model packs"
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_EN_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_CN_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_DE_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_ES_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_FR_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_IT_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_JA_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_KO_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_PT_ENABLE
+        select MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_TR_ENABLE
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_EN_ENABLE
+        bool "Enables English model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_CN_ENABLE
+        bool "Enables Chinese model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_DE_ENABLE
+        bool "Enables Deutch model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_ES_ENABLE
+        bool "Enables Espanol model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_FR_ENABLE
+        bool "Enables French model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_IT_ENABLE
+        bool "Enables Italian model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_JA_ENABLE
+        bool "Enables Japaneese model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_KO_ENABLE
+        bool "Enables Korean model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_PT_ENABLE
+        bool "Enables Portuguese model pack"
+        default n
+
+    config MCUX_PRJSEG_MAESTRO_EXAMPLE_VIT_MODEL_TR_ENABLE
+        bool "Enables Turkish model pack"
+        default n
+endmenu

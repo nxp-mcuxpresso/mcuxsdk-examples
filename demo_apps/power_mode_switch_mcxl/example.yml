@@ -1,0 +1,13 @@
+power_mode_switch_mcxl:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_mcxl
+    project-root-path: boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}
+    document:
+      name: power_mode_switch_mcxl
+      category: demo_apps/power_mode_switch
+      brief: This example demonstrate features of low power modes.
+      example_readme:
+      - examples/demo_apps/power_mode_switch_mcxl/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

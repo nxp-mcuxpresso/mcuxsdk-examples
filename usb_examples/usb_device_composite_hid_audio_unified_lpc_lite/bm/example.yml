@@ -1,0 +1,29 @@
+dev_composite_hid_audio_unified_lpc_lite_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/bm/${multicore_foldername}
+    document:
+      name: dev_composite_hid_audio_unified_lpc_lite_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB Composite HID and Audio Unified application is a simple demonstration
+        program based on the MCUXpresso SDK. It is enumerated as a playback and recording
+        device. Users can record the sound from this device via the "Sound Recorder"
+        in the Windows Accessories and play music with the device.
+      example_readme:
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_right_click_icon.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_select_properties.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_set_default.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_unified_recorder_change_level.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_unified_recorder_default.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_unified_recorder_property.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_unified_speaker_change_level.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_unified_speaker_default.jpg
+      - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_unified_speaker_property.jpg
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

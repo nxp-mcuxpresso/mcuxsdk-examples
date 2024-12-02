@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+usart_transfer_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_miniusart/transfer_interrupt
+    project-root-path: boards/${board}/driver_examples/usart/transfer_interrupt/${multicore_foldername}
+    document:
+      name: usart_transfer_interrupt${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: usart_transfer_interrupt
+      example_readme:
+      - examples/driver_examples/lpc_miniusart/transfer_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/usart/transfer_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

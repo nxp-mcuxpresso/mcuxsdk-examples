@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexspi_octal_dma3_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexspi/octal/dma3_transfer
+    project-root-path: boards/${board}/driver_examples/flexspi/octal/edma_transfer/${multicore_foldername}
+    document:
+      name: flexspi_octal_dma3_transfer${core_id_suffix_name}
+      category: driver_examples/flexspi
+      brief: The flexspi_octal_dma3_transfer example shows how to use flexspi driver
+        with dma. In this example, flexspi will send data and operate the external
+        nor flash connected with FLEXSPI. Some simple flash command will be executed,
+        such as Write Enable, Erase sector, Program page.Example will first erase
+        the sector and program a page into the flash, at last check if the data in
+        flash is correct.
+      example_readme:
+      - examples/driver_examples/flexspi/octal/dma3_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexspi/octal/edma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

@@ -1,0 +1,31 @@
+/*
+ * Copyright 2021 NXP
+ * All rights reserved.
+ *
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+/* define instance */
+#define BOARD_TPM_BASEADDR       TPM0
+#define BOARD_FIRST_TPM_CHANNEL  kTPM_Chnl_0
+#define BOARD_SECOND_TPM_CHANNEL kTPM_Chnl_3
+
+/* Get source clock for TPM driver */
+#define TPM_SOURCE_CLOCK (CLOCK_GetTpmClkFreq(0))
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

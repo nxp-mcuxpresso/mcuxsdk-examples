@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+power_mode_switch_bm_pmic_rt1xxx_core1:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_rt1xxx/rt1170/bm_pmic/core1
+    project-root-path: boards/${board}/demo_apps/power_mode_switch/bm_pmic/core1
+    document:
+      name: power_mode_switch_bm_pmic_rt1xxx_core1
+      category: demo_apps
+      brief: 'The Power mode switch demo application demonstrates the use of power
+        modes and pf5020 in the KSDK. Different from power_mode_switch_bm_pmic demo,
+        this demo uses external PMIC(PF5020) as the power supply, so on-chip pmic
+        is disabled in this demo. The external PMIC support standby mode which can
+        work with chip PMIC_STBY_REQ signal to switch PMIC output in the hardware
+        method. '
+      example_readme:
+      - examples/demo_apps/power_mode_switch_rt1xxx/rt1170/bm_pmic/readme.md
+      - examples/_boards/${board}/demo_apps/power_mode_switch/bm_pmic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

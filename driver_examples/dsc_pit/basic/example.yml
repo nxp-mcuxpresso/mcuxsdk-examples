@@ -1,0 +1,16 @@
+pit_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_pit/basic
+    project-root-path: boards/${board}/driver_examples/pit/basic/${multicore_foldername}
+    document:
+      name: pit_basic${core_id_suffix_name}
+      category: driver_examples
+      brief: The pit_basic project is a simple demonstration program of the SDK PIT
+        driver. It sets up the PIT hardware block to trigger a periodic interrupt
+        after every 1 second. When the PIT interrupt is triggereda message a printed
+        on the UART terminal and an LED is toggled on the board.
+      example_readme:
+      - examples/driver_examples/dsc_pit/basic/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+edma_scatter_gather:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/edma/scatter_gather
+    project-root-path: boards/${board}/driver_examples/edma/scatter_gather/${multicore_foldername}
+    document:
+      name: edma_scatter_gather${core_id_suffix_name}
+      category: driver_examples/edma
+      brief: The EDMA memory to memory example is a simple demonstration program that
+        uses the SDK software.It excuates one shot transfer from source buffer to
+        destination buffer using the SDK EDMA drivers.The purpose of this example
+        is to show how to use the EDMA and to provide a simple example fordebugging
+        and further development.
+      example_readme:
+      - examples/driver_examples/edma/scatter_gather/readme.md
+      - examples/_boards/${board}/driver_examples/edma/scatter_gather/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke17z: []
+    frdmke17z512: []

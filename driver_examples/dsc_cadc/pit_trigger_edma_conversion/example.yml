@@ -1,0 +1,19 @@
+cadc_pit_trigger_edma_conversion:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_cadc/pit_trigger_edma_conversion
+    project-root-path: boards/${board}/driver_examples/cadc/pit_trigger_edma_conversion
+    document:
+      name: cadc_pit_trigger_edma_conversion${core_id_suffix_name}
+      category: driver_examples/cadc
+      brief: 'The PIT TRIGGER EDMA conversion demo application demonstrates how to
+        use PIT to trigger CADC conversion and configure xbara to connect PIT output
+        with CADC input. CADC performs data conversion after each count period of
+        PIT. The EDMA request will be set during any CADC conversion ready event recorded
+        when the ADC_STAT[EOSI0] flag is set. EDMA will transfer CADC results into
+        memory. Enter any key via terminal will start PIT to trigger CADC periodly,
+        and then the average value(16 times) of thermistor will be printed on terminal.  '
+      example_readme:
+      - examples/driver_examples/dsc_cadc/pit_trigger_edma_conversion/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

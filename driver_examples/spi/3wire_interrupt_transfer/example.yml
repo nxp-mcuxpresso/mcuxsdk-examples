@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+spi_3wire_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/spi/3wire_interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/spi/3wire_interrupt_transfer
+    document:
+      name: spi_3wire_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: The spi_3wire_interrupt_transfer example shows how to use spi driver
+        in 3-wire mode:In this example, one spi instance as master and another spi
+        instance as slave. Master sends a piece of data to slave,and check if the
+        data slave received is correct. Actually, spi 3-wire mode can also support
+        DMA transfer.
+      example_readme:
+      - examples/driver_examples/spi/3wire_interrupt_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/spi/3wire_interrupt_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxc242: []

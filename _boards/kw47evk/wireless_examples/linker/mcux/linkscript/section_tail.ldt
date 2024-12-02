@@ -1,0 +1,18 @@
+
+    .ceCtrl (NOLOAD) :
+    {
+        . = ALIGN(4);
+        *(ceCtrl)
+    } > ce_ctrl
+
+    .ceHeap_1 (NOLOAD) :
+    {
+        . = ALIGN(4);
+        *(ceHeap_1)
+    } > ce_data1
+
+    .ceHeap_2 (NOLOAD) :
+    {
+        . = ALIGN(4);
+        *(ceHeap_2)
+    } > ce_data2

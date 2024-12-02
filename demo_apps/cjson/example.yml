@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cjson_demo:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/cjson/.
+    project-root-path: boards/${board}/demo_apps/cjson/${multicore_foldername}
+    document:
+      name: cjson_demo${core_id_suffix_name}
+      category: demo_apps
+      brief: The cjson_construct example demonstrates how to construct and parse JSON
+        using cJSON. This example constructs a JSON stucture using cJSON and then
+        print it to string, then parses the string as JSON and checks whether the
+        data is correct.
+      example_readme:
+      - examples/demo_apps/cjson/readme.md
+      - examples/_boards/${board}/demo_apps/cjson/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

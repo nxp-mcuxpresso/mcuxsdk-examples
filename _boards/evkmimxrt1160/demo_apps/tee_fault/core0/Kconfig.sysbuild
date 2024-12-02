@@ -1,0 +1,11 @@
+
+config secondary_core_id
+    string
+    default "cm4"
+
+config secondary_config
+    string
+    default "debug"   if $(config) = "debug"
+    default "debug"   if $(config) = "flexspi_nor_debug"
+    default "release"   if $(config) = "release"
+    default "release"   if $(config) = "flexspi_nor_release"

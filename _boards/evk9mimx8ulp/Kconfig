@@ -1,0 +1,12 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_evk9mimx8ulp
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MIMX8UD5
+    imply MCUX_COMPONENT_driver.fusion if MCUX_HW_DEVICE_MIMX8ULP_CORE_ID_cm33

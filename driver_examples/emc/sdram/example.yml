@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+emc_sdram:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/emc/sdram
+    project-root-path: boards/${board}/driver_examples/emc/sdram/${multicore_foldername}
+    document:
+      name: emc_sdram${core_id_suffix_name}
+      category: driver_examples/emc
+      brief: The emc_sdram example shows how to access the SDRAM.In this example,
+        user shall initialize the EMC (external memory controller), initialize theEMC
+        dynamic memory controller before access the external SDRAM.If the sdram example
+        fails, please make sure to check the following points:1. Please take refer
+        to the board.readme to check the jumper settings on your board.2. Please take
+        refer to the EMC chapter in API RM to do the delay calibration to found the
+        best delay for your board, then update the delay to the EMC clock delay control
+        registers in the system configure module registers.
+      example_readme:
+      - examples/driver_examples/emc/sdram/readme.md
+      - examples/_boards/${board}/driver_examples/emc/sdram/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

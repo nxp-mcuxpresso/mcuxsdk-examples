@@ -1,0 +1,196 @@
+/*
+ * Copyright 2023 NXP
+ * All rights reserved.
+ *
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+/*${header:start}*/
+#include "pin_mux.h"
+#include "clock_config.h"
+#include "board.h"
+#include "fsl_common.h"
+#include "app.h"
+#include "fsl_flexspi.h"
+/*${header:end}*/
+
+/*${function:start}*/
+flexspi_device_config_t deviceconfig = {
+    .flexspiRootClk       = 0,
+    .flashSize            = MEMORY_SIZE,
+    .CSIntervalUnit       = kFLEXSPI_CsIntervalUnit1SckCycle,
+    .CSInterval           = 2,
+    .CSHoldTime           = 3,
+    .CSSetupTime          = 3,
+    .dataValidTime        = 2,
+    .columnspace          = 0,
+    .enableWordAddress    = 0,
+    .AWRSeqIndex          = FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(EXAMPLE_FLEXSPI_SLV_MODE),
+    .AWRSeqNumber         = 1,
+    .ARDSeqIndex          = FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(EXAMPLE_FLEXSPI_SLV_MODE),
+    .ARDSeqNumber         = 1,
+    .AHBWriteWaitUnit     = kFLEXSPI_AhbWriteWaitUnit2AhbCycle,
+    .AHBWriteWaitInterval = 0,
+};
+
+const uint32_t customLUT[CUSTOM_LUT_LENGTH] = {
+    /* Read status register - SDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_SDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_4PAD, 0x97, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_SDRx4) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_READ_SDR, kFLEXSPI_4PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_4PAD, 0),
+
+    /* Read memory -SDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_4PAD, 0x1F, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx4) + 1] = FLEXSPI_LUT_SEQ(
+        kFLEXSPI_Command_DUMMY_SDR, kFLEXSPI_4PAD, 0x14, kFLEXSPI_Command_READ_SDR, kFLEXSPI_4PAD, 0x04),
+
+    /* Send mailbox - SDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_SDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_4PAD, 0xA6, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_SDRx4) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_SDR, kFLEXSPI_4PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_4PAD, 0),
+
+    /* Write Memory - SDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_4PAD, 0x5B, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx4) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_SDR, kFLEXSPI_4PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_4PAD, 0),
+
+    /* Read status register - SDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_SDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x97, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_SDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_READ_SDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+
+    /* Read memory -SDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x1F, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_READ_SDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+
+    /* Send mailbox - SDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_SDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0xA6, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_SDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_SDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+
+    /* Write Memory - SDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x5B, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_SDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_SDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+
+    /* Read status register - DDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_DDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DDR, kFLEXSPI_4PAD, 0x97, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_DDRx4) + 1] = FLEXSPI_LUT_SEQ(
+        kFLEXSPI_Command_DUMMY_DDR, kFLEXSPI_4PAD, 0x14, kFLEXSPI_Command_READ_DDR, kFLEXSPI_4PAD, 0x04),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_DDRx4) + 2] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_STOP, kFLEXSPI_4PAD, 0, 0, 0, 0),
+
+    /* Read memory -DDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DDR, kFLEXSPI_4PAD, 0x1F, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx4) + 1] = FLEXSPI_LUT_SEQ(
+        kFLEXSPI_Command_DUMMY_DDR, kFLEXSPI_4PAD, 0x14, kFLEXSPI_Command_READ_DDR, kFLEXSPI_4PAD, 0x04),
+
+    /* Send mailbox - DDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_DDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DDR, kFLEXSPI_4PAD, 0xA6, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_DDRx4) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_DDR, kFLEXSPI_4PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_4PAD, 0),
+
+    /* Write Memory - DDRx4 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx4)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_DDR, kFLEXSPI_4PAD, 0x5B, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_4PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx4) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_DDR, kFLEXSPI_4PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_4PAD, 0),
+
+    /* Read status register - DDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_DDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x97, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(kFLEXSPI_SLV_IOMODE_DDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_READ_DDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+
+    /* Read memory -DDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x1F, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_READ_DDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+
+    /* Send mailbox - DDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_DDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0xA6, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(kFLEXSPI_SLV_IOMODE_DDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_DDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+
+    /* Write Memory - DDRx8 */
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx8)] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_8PAD, 0x5B, kFLEXSPI_Command_RADDR_DDR, kFLEXSPI_8PAD, 0x20),
+    [4 * FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(kFLEXSPI_SLV_IOMODE_DDRx8) + 1] =
+        FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_DDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_8PAD, 0),
+};
+
+uint32_t get_rootClock_freq_hz(clock_root_mux_source_t clk_name)
+{
+    switch (clk_name)
+    {
+        case kCLOCK_FLEXSPI1_ClockRoot_MuxOscRc24M:
+        {
+            return CLOCK_GetFreq(kCLOCK_OscRc24M) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+        }
+        case kCLOCK_FLEXSPI1_ClockRoot_MuxOscRc400M:
+        {
+            return CLOCK_GetFreq(kCLOCK_OscRc400M) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+        }
+        case kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll3Pfd0:
+        {
+            return CLOCK_GetFreq(kCLOCK_SysPll3Pfd0) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+        }
+        case kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll2Pfd0:
+        {
+            return CLOCK_GetFreq(kCLOCK_SysPll2Pfd0) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+        }
+        default:
+        {
+            return 0;
+        }
+    }
+}
+
+void Interrupt_callback(FLEXSPI_SLV_Type *base, flexspi_slv_handle_t *handle)
+{
+    uint32_t value;
+
+    if (handle->state != kFLEXSPI_SLV_InvalidInterruptFlag)
+    {
+        switch (handle->state)
+        {
+            case kFLEXSPI_SLV_Mail0InterruptFlag:
+            {
+                value = FLEXSPI_SLV_GetMailboxData(base, 0);
+                PRINTF("[Follower] Mailbox data(interrupt): %d.\r\n", FLEXSPI_SLV_MAILBOX_CMD(value));
+                break;
+            }
+
+            default:
+            {
+                break;
+            }
+        }
+
+        handle->state = kFLEXSPI_SLV_InvalidInterruptFlag;
+    }
+}
+
+void BOARD_InitHardware(void)
+{
+    BOARD_ConfigMPU();
+    BOARD_InitBootPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+}
+
+/*${function:end}*/

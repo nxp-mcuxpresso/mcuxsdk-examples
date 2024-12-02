@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/polling
+    project-root-path: boards/${board}/driver_examples/lpadc/polling/${multicore_foldername}
+    document:
+      name: lpadc_polling${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpadc_single_polling example shows the simplest way to use LPADC
+        driver.In this example, user should indicate a channel to provide a voltage
+        signal (can be controlled by user) as the LPADC'ssample input. When running
+        the project, typing any key into debug console would trigger the conversion.
+        The execution would check the FIFO valid flag in loop until the flag is asserted,
+        which means the conversion is completed. Then read the conversion result value
+        and print it to debug console.Note, the default setting of initialization
+        for the ADC converter is just an available configuration. User can changethe
+        configuration structure's setting in application to fit the special requirement.
+      example_readme:
+      - examples/driver_examples/lpadc/polling/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

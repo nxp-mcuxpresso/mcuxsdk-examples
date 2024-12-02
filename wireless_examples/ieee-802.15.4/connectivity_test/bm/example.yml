@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+15_4_connectivity_test_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/ieee-802.15.4/connectivity_test/bm
+    project-root-path: boards/${board}/wireless_examples/ieee-802.15.4/connectivity_test/bm
+    document:
+      name: 15_4_connectivity_test_bm
+      category: wireless_examples/ieee_802.15.4/connectivity_test/bm
+      brief: The connectivity test application is a test program based on the MCUXpresso SDK.
+        The application tests the low-level IEEE 802.15.4 radio mode.
+    modules:
+        linker-file:
+          files:
+          - source: examples/_boards/${board}/wireless_examples/linker/mcux/linkscript/end_text.ldt
+            toolchains: mcux
+            type: src
+            project_path: linkscripts
+            package_path: project-root-path/linkscripts
+          - source: examples/_boards/${board}/wireless_examples/linker/mcux/linkscript/main_text.ldt
+            toolchains: mcux
+            type: src
+            project_path: linkscripts
+            package_path: project-root-path/linkscripts
+          - source: examples/_boards/${board}/wireless_examples/linker/mcux/linkscript/symbols.ldt
+            toolchains: mcux
+            type: src
+            project_path: linkscripts
+            package_path: project-root-path/linkscripts
+
+  boards:
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    frdmmcxw72@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

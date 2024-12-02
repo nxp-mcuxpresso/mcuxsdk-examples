@@ -1,0 +1,18 @@
+
+iar:
+  shared-workspace: secure_faults_trdc
+  sharing-workspace:
+  - ../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns_cm33
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../secure_faults_trdc_ns/iar/secure_faults_trdc_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

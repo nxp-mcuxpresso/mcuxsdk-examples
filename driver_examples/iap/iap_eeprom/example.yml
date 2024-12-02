@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iap_eeprom:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iap/iap_eeprom
+    project-root-path: boards/${board}/driver_examples/iap/iap_eeprom/${multicore_foldername}
+    document:
+      name: iap_eeprom${core_id_suffix_name}
+      category: driver_examples/iap
+      brief: The IAP EEPROM project is a simple demonstration program of the SDK IAP
+        driver. It writes and reads the EEPROM page. A message a printed on the UART
+        terminal as EEPROM read and write operations are performed.
+      example_readme:
+      - examples/driver_examples/iap/iap_eeprom/readme.md
+      - examples/_boards/${board}/driver_examples/iap/iap_eeprom/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []

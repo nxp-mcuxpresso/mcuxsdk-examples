@@ -1,0 +1,5 @@
+Overview
+========
+The power_mode_comp_only demo application demonstrates how to change power modes in the SDK when only Compute CPUs are used, and CPU1 is not used by your application. 
+Since the SOC power states are determined by both SLEEPCON0, PMC0 from Compute and SLEEPCON1, PMC1 from Sense domain, even the CPU1 is not used, it should be booted
+and correctly configured to alow CPU0 switch between various power modes. 

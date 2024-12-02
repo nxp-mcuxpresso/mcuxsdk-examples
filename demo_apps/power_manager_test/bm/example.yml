@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+power_manager_test_bm:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_manager_test/bm
+    project-root-path: boards/${board}/demo_apps/power_manager_test/bm/${multicore_foldername}
+    document:
+      name: power_manager_test_bm${core_id_suffix_name}
+      category: demo_apps
+      brief: The power manager test application demonstrates the basic usage of power
+        manager framework without RTOS. The demo tests all features of power manager
+        framework, including notification manager, wakeup source manager and so on.
+      example_readme:
+      - examples/demo_apps/power_manager_test/bm/readme.md
+      - examples/_boards/${board}/demo_apps/power_manager_test/bm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    frdmrw612: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    rdrw612bga: []

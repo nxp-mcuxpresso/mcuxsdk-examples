@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iap_faim:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iap/iap_faim
+    project-root-path: boards/${board}/driver_examples/iap/iap_faim/${multicore_foldername}
+    document:
+      name: iap_faim${core_id_suffix_name}
+      category: driver_examples/iap
+      brief: The IAP FAIM project is a simple demonstration program of the SDK IAP
+        driver. It writes and reads the FAIM page. A message a printed on the UART
+        terminal as FAIM read and write operations are performed.
+      example_readme:
+      - examples/driver_examples/iap/iap_faim/readme.md
+      - examples/_boards/${board}/driver_examples/iap/iap_faim/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso845max: []

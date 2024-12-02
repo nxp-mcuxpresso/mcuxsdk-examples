@@ -1,0 +1,64 @@
+dev_cdc_vcom_lite_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_cdc_vcom_lite/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_cdc_vcom_lite/bm/${multicore_foldername}
+    document:
+      name: dev_cdc_vcom_lite_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The Virtual COM project enumerated as a COM port, which the users can
+        open using terminal tools, such as TeraTerm. The demo echoes back any character
+        it receives.
+      example_readme:
+      - examples/usb_examples/usb_device_cdc_vcom_lite/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_cdc_vcom_lite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_cdc_vcom_lite/cdc_driver_install_00.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/cdc_driver_install_01.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/cdc_driver_install_02.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/cdc_driver_install_03.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/cdc_driver_install_04.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/cdc_driver_install_05.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/cdc_driver_install_06.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/run_vcom.jpg
+      - examples/usb_examples/usb_device_cdc_vcom_lite/run_vcom_keepalive.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

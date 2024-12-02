@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+usart_transfer_ring_buffer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_miniusart/transfer_ring_buffer
+    project-root-path: boards/${board}/driver_examples/usart/transfer_ring_buffer/${multicore_foldername}
+    document:
+      name: usart_transfer_ring_buffer${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: 'The usart_interrupt_rb_transfer example shows how to use usart driver
+        in interrupt way withRX ring buffer enabled.In this example, one uart instance
+        connect to PC through, the board will send back all charactersthat PC send
+        to the board.Note: The example echo every 8 characters.'
+      example_readme:
+      - examples/driver_examples/lpc_miniusart/transfer_ring_buffer/readme.md
+      - examples/_boards/${board}/driver_examples/usart/transfer_ring_buffer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

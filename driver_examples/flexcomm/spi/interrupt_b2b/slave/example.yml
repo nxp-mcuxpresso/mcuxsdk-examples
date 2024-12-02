@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexcomm_spi_interrupt_b2b_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/spi/interrupt_b2b/slave
+    project-root-path: boards/${board}/driver_examples/spi/interrupt_b2b/slave/${multicore_foldername}
+    document:
+      name: flexcomm_spi_interrupt_b2b_slave${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: The spi_interrupt_b2b_slave example shows how to use spi functional API
+        to do interrupt transfer as a slave:In this example, the spi instance as slave.
+        Slave receives data froma master and send a peiece of data to master,and check
+        if the data slave received is correct. This example needs to work with spi_interrupt_b2b_master
+        example.
+      example_readme:
+      - examples/driver_examples/flexcomm/spi/interrupt_b2b/slave/readme.md
+      - examples/_boards/${board}/driver_examples/spi/interrupt_b2b/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

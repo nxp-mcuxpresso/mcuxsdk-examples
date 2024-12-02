@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+qtmr_inputcapture_outputpwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qtmr_1/inputcapture_outputpwm
+    project-root-path: boards/${board}/driver_examples/qtmr/inputcapture_outputpwm/${multicore_foldername}
+    document:
+      name: qtmr_inputcapture_outputpwm${core_id_suffix_name}
+      category: driver_examples/qtmr
+      brief: 'The QTMR project is a demonstration program of the SDK QTMR driver''s
+        input capture and output pwm feature.The example sets up a QTMR channel for
+        input capture. Once the input signal is received,this example will enter interrupt
+        and print the capture value.The example also sets up one QTMR channel to output
+        pwm. The user should probe a 50Khz PWM signal output with50% dutycycle with
+        a oscilloscope. '
+      example_readme:
+      - examples/driver_examples/qtmr_1/inputcapture_outputpwm/readme.md
+      - examples/_boards/${board}/driver_examples/qtmr/inputcapture_outputpwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

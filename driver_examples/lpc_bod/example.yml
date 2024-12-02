@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+lpc_bod:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_bod
+    project-root-path: boards/${board}/driver_examples/bod/${multicore_foldername}
+    document:
+      name: lpc_bod${core_id_suffix_name}
+      category: driver_examples/bod
+      brief: The bod example shows how to use LPC BOD(Brown-out detector) in the simplest
+        way. To run this example, user should remove the jumper for the power source
+        selector, and connect the adjustable input voltage to the MCU's Vin pin. If
+        the input voltage of the Vin pin is lower than the threshold voltage, the
+        BOD interrupt will be asserted.
+      example_readme:
+      - examples/driver_examples/lpc_bod/readme.md
+      - examples/_boards/${board}/driver_examples/bod/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

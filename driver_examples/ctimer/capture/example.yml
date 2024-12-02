@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ctimer_capture:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ctimer/capture
+    project-root-path: boards/${board}/driver_examples/ctimer/capture/${multicore_foldername}
+    document:
+      name: ctimer_capture${core_id_suffix_name}
+      category: driver_examples/ctimer
+      brief: This example shows how to use CTimer to capture the edge. In this example,
+        CTimer timer counter uses APB clock as clock source, and CTimer monitors capture
+        pin. When rising edge detected on the pin, CTimer saves the timer counter
+        value to capture register.
+      example_readme:
+      - examples/driver_examples/ctimer/capture/readme.md
+      - examples/_boards/${board}/driver_examples/ctimer/capture/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []
+    frdmmcxa276: []
+    frdmmcxa166: []

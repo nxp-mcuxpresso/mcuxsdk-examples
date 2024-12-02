@@ -1,0 +1,18 @@
+dsc_xbara:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_xbara
+    project-root-path: boards/${board}/driver_examples/xbara/${multicore_foldername}
+    document:
+      name: dsc_xbara${core_id_suffix_name}
+      category: driver_examples
+      brief: The Xbara project is a simple demonstration program of the SDK Xbara
+        driver.The intended applicationof this module is to provide a flexible crossbar
+        switch function that allows any input to beconnected to any output under user
+        control.It sets up the Xbara hardware block to trigger a periodicinterrupt
+        after every 1 second. When the Xbar interrupt is triggered a message a printed
+        on the UART terminal.
+      example_readme:
+      - examples/driver_examples/dsc_xbara/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+iled_blinky:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/iled_blinky
+    project-root-path: boards/${board}/demo_apps/led_blinky/${multicore_foldername}
+    document:
+      name: iled_blinky${core_id_suffix_name}
+      category: demo_apps
+      brief: The LED Blinky demo application provides a sanity check for the new SDK
+        build environments and board bring up. The LED Blinky demo uses the systick
+        interrupt to realize the function of timing delay. The example takes turns
+        to shine the LED. The purpose of this demo is to provide a simple project
+        for debugging and further development.
+      example_readme:
+      - examples/demo_apps/iled_blinky/readme.md
+      - examples/_boards/${board}/demo_apps/led_blinky/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

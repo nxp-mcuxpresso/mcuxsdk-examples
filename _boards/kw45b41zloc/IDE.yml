@@ -1,0 +1,8 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic_fixed_jlink_debug_speed.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_kw45b41zloc/app_kw45b41zloc.uvprojx

@@ -1,0 +1,11 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- evkmimxrt1060 board
+- Personal Computer
+
+
+Board settings
+==============
+Demo is setup to use uSD WiFi module.
+

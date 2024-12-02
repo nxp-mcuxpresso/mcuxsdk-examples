@@ -1,0 +1,28 @@
+peripheral_fmp:
+  section-type: application
+  contents:
+    meta_path: examples/edgefast_bluetooth_examples/peripheral_fmp
+    project-root-path: boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/${multicore_foldername}
+    document:
+      name: peripheral_fmp${core_id_suffix_name}
+      category: edgefast_bluetooth_examples/
+      brief: The Edgefast Bluetooth fmp example with simplified application.
+      example_readme:
+      - examples/edgefast_bluetooth_examples/peripheral_fmp/readme.md
+      - examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

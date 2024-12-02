@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdic_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdic/polling
+    project-root-path: boards/${board}/driver_examples/lcdic/polling/${multicore_foldername}
+    document:
+      name: lcdic_polling${core_id_suffix_name}
+      category: driver_examples/lcdic
+      brief: This example shows how to use the lcdic polling APIs.
+      example_readme:
+      - examples/driver_examples/lcdic/polling/readme.md
+      - examples/_boards/${board}/driver_examples/lcdic/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

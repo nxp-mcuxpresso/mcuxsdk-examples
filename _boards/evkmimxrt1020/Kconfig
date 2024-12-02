@@ -1,0 +1,25 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "xip/Kconfig"
+rsource "Kconfig.defconfig"
+rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
+rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/rt102x_lpspi/Kconfig.lvgl_support"
+
+config MCUX_HW_BOARD_evkmimxrt1020
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MIMXRT1021
+
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.igpio
+    imply MCUX_COMPONENT_driver.iomuxc
+    imply MCUX_COMPONENT_driver.dcdc_1
+    imply MCUX_COMPONENT_driver.gpc_1
+    imply MCUX_COMPONENT_driver.src
+    imply MCUX_COMPONENT_driver.pmu
+    select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_component.serial_manager_uart
+    select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_utility.debug_console_lite

@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+smscm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/smscm
+    project-root-path: boards/${board}/driver_examples/smscm/${multicore_foldername}
+    document:
+      name: smscm${core_id_suffix_name}
+      category: driver_examples/smscm
+      brief: The SMSCM project shows how to use the secure siscellaneous system control
+        module using smscm driver. In this example, you will use the security counter
+        register and change value in it with security counter plus x register and
+        security counter minus x register.
+      example_readme:
+      - examples/driver_examples/smscm/readme.md
+      - examples/_boards/${board}/driver_examples/smscm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

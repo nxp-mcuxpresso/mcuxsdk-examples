@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i3c_interrupt_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/interrupt_b2b_transfer/master
+    project-root-path: boards/${board}/driver_examples/i3c/interrupt_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: i3c_interrupt_b2b_transfer_master${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_interrupt_b2b_transfer_master example shows how to use i3c driver
+        as master to do board to board transfer using interrupt method. In this example,
+        one i3c instance as master and another i3c instance on the other board as
+        slave. Master will assign dynamic address to slave, then sends a piece of
+        data to slave, and receive a piece of data from slave. This example checks
+        if the data received from slave is correct.
+      example_readme:
+      - examples/driver_examples/i3c/interrupt_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/driver_examples/i3c/interrupt_b2b_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    lpcxpresso55s36: []
+    lpcxpresso860max: []
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core1: []

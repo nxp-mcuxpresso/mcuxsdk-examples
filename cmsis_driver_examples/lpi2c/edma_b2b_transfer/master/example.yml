@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+cmsis_lpi2c_edma_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/lpi2c/edma_b2b_transfer/master
+    project-root-path: boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: cmsis_lpi2c_edma_b2b_transfer_master${core_id_suffix_name}
+      category: cmsis_driver_examples/lpi2c
+      brief: CMSIS-Driver defines generic peripheral driver interfaces for middleware
+        making it reusable across a wide range of supported microcontroller devices.
+        The API connects microcontroller peripherals with middleware that implements
+        for example communication stacks, file systems, or graphic user interfaces.
+        More information and usage methord please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.The
+        cmsis_i2c_edma_b2b_transfer_master example shows how to use i2c driver as
+        master to do board to board transfer with EDMA:In this example, one i2c instance
+        as master and another i2c instance on the other board as slave. Master sends
+        a piece of data to slave, and receive a piece of data from slave. This example
+        checks if the data received from slave is correct.
+      example_readme:
+      - examples/cmsis_driver_examples/lpi2c/edma_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

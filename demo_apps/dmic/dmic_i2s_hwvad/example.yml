@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dmic_i2s_hwvad:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/dmic/dmic_i2s_hwvad
+    project-root-path: boards/${board}/demo_apps/dmic_i2s_hwvad/${multicore_foldername}
+    document:
+      name: dmic_i2s_hwvad${core_id_suffix_name}
+      category: demo_apps/dmic_i2s_hwvad
+      brief: Demonstrates the DMIC working together with I2S and sdcard. The case
+        support wakeup from voice events, then user can select record playback at
+        the same time or replay the wakeup voice piece that has stored in sdcard.
+      example_readme:
+      - examples/demo_apps/dmic/dmic_i2s_hwvad/readme.md
+      - examples/_boards/${board}/demo_apps/dmic_i2s_hwvad/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt685audevk@cm33: []

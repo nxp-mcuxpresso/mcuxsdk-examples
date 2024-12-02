@@ -1,0 +1,38 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+flash_programming_file:
+  files:
+  - source: examples/_boards/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/tfm_psatest_flashdownload.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug release
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/tfm_psatest_flashdebug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+mdk:
+  shared-workspace: tfm_psatest
+  sharing-workspace:
+  - ../../tfm_psatest_ns/mdk/tfm_psatest_ns_cm33_core0
+iar:
+  shared-workspace: tfm_psatest
+  sharing-workspace:
+  - ../../tfm_psatest_ns/iar/tfm_psatest_ns_cm33_core0
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../tfm_psatest_ns/iar/tfm_psatest_ns_cm33_core0.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../tfm_psatest_ns/iar/tfm_psatest_ns_cm33_core0.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

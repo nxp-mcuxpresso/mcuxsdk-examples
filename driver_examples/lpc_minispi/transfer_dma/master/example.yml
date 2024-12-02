@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+spi_transfer_dma_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_minispi/transfer_dma/master
+    project-root-path: boards/${board}/driver_examples/spi/transfer_dma/master/${multicore_foldername}
+    document:
+      name: spi_transfer_dma_master${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: 'The spi_dma_transfer_master example shows how to use driver API to transfer
+        in DMA way.  In this example, one spi instance as master and another spi instance
+        on the other board as slave. Master sends a piece of data to slave, and receive
+        a piece of data from slave. This example checksif the data received from slave
+        is correct. This example needs to work with spi_dma_transfer_slave example. '
+      example_readme:
+      - examples/driver_examples/lpc_minispi/transfer_dma/master/readme.md
+      - examples/_boards/${board}/driver_examples/spi/transfer_dma/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

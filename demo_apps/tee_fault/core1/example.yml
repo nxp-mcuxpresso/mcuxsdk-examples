@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+tee_fault_core1:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/tee_fault/core1
+    project-root-path: boards/${board}/demo_apps/tee_fault/core1
+    document:
+      name: tee_fault_core1
+      category: demo_apps/tee_fault
+      brief: This example shows how to use the MCUXpresso Config Tools TEE tool.
+      example_readme:
+      - examples/demo_apps/tee_fault/readme.md
+      - examples/_boards/${board}/demo_apps/tee_fault/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm4:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

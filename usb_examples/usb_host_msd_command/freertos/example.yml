@@ -1,0 +1,61 @@
+host_msd_command_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_host_msd_command/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_host_msd_command/freertos/${multicore_foldername}
+    document:
+      name: host_msd_command_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: This Host MSD example supports the UFI and SCSI U-disk device.  The application
+        prints the attached device information when the U-disk device is attached.The
+        application executes UFI commands to test the attached device.
+      example_readme:
+      - examples/usb_examples/usb_host_msd_command/readme.md
+      - examples/_boards/${board}/usb_examples/usb_host_msd_command/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_host_msd_command/host_msd_command_output.jpg
+      - examples/usb_examples/usb_host_msd_command/host_msd_command_throughput_output.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

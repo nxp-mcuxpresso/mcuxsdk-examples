@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexspi_psram_dma3_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexspi/psram/dma3_transfer
+    project-root-path: boards/${board}/driver_examples/flexspi/psram/edma_transfer/${multicore_foldername}
+    document:
+      name: flexspi_psram_dma3_transfer${core_id_suffix_name}
+      category: driver_examples/flexspi
+      brief: 'The flexspi_psram_edma_transfer example shows how to use flexspi driver
+        with dma: In this example, flexspi will send data and operate the external
+        PSRAM connected with FLEXSPI. Some simple flash command will be executed,
+        such as Read Data and Write Data.Example will write/read through the whole
+        chip, through IP command and AHB command.'
+      example_readme:
+      - examples/driver_examples/flexspi/psram/dma3_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexspi/psram/edma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []

@@ -1,0 +1,15 @@
+dsc_crc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_crc
+    project-root-path: boards/${board}/driver_examples/crc/${multicore_foldername}
+    document:
+      name: dsc_crc${core_id_suffix_name}
+      category: driver_examples
+      brief: The CRC Example project is a demonstration program that uses the KSDK
+        software to generate checksums for an ASCII string. Several CRC protocols
+        are implemented using the CRC driver API.
+      example_readme:
+      - examples/driver_examples/dsc_crc/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

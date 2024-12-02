@@ -1,0 +1,19 @@
+aws_shadow_wifi_serial:
+  section-type: application
+  contents:
+    meta_path: examples/aws_examples/shadow_wifi_serial
+    project-root-path: boards/${board}/aws_examples/shadow_wifi_serial/${multicore_foldername}
+    document:
+      name: aws_shadow_wifi_serial
+      category: aws_examples
+      brief: Demo for showing how to use the Device Shadow library's API.
+      example_readme:
+      - examples/aws_examples/shadow_wifi_serial/readme.md
+      - examples/_boards/${board}/aws_examples/shadow_wifi_serial/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []

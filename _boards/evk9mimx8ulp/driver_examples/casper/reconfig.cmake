@@ -1,0 +1,24 @@
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/_boards/evkmimx8ulp/driver_examples/casper/./hardware_init.c
+            examples/_boards/evkmimx8ulp/driver_examples/casper/./app.h
+            middleware/multicore/remoteproc/empty_rsc_table.c
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/driver_examples/casper
+             examples/_boards/evkmimx8ulp/driver_examples/casper
+             examples/_boards/evkmimx8ulp
+)
+
+mcux_add_iar_configuration(
+    LD "--config_def=__stack_size__=0x800"
+)
+mcux_add_mdk_configuration(
+    LD "--predefine=\"-D__stack_size__=0x800\""
+)
+mcux_add_armgcc_configuration(
+    LD "-Xlinker --defsym=__stack_size__=0x800"
+)

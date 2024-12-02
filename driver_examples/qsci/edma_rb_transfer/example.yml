@@ -1,0 +1,17 @@
+qsci_edma_rb_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qsci/edma_rb_transfer
+    project-root-path: boards/${board}/driver_examples/qsci/edma_rb_transfer/${multicore_foldername}
+    document:
+      name: qsci_edma_rb_transfer${core_id_suffix_name}
+      category: driver_examples/qsci
+      brief: The qsci_edma_rb_transfer example demonstrates the usage of the KSDK
+        QSCI EDMA driver. In this example, a ring buffer is used with EDMA enabled,
+        data received will be stored in ring buffer first, while IDLE line is detected,
+        the received characters will be read out, and echo them back to the terminal
+        using EDMA method.
+      example_readme:
+      - examples/driver_examples/qsci/edma_rb_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

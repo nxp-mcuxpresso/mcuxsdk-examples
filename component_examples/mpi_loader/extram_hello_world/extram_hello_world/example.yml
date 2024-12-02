@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+mpi_loader_extram_hello_world:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/mpi_loader/extram_hello_world/extram_hello_world
+    project-root-path: boards/${board}/component_examples/mpi_loader/extram_hello_world
+    document:
+      name: mpi_loader_extram_hello_world
+      category: component_examples/mpi_loader
+      brief: The mpi_loader_extram_hello_world example is a normal hello world example
+        running in on-board RAM.
+      example_readme:
+      - examples/component_examples/mpi_loader/extram_hello_world/extram_hello_world/readme.md
+      - examples/_boards/${board}/component_examples/mpi_loader/extram_hello_world/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    evkmimxrt685@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    mimxrt685audevk@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release

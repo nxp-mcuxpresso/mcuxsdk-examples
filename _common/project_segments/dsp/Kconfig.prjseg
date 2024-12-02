@@ -1,0 +1,8 @@
+config MCUX_PRJSEG_module.dsp_support
+    bool "Use boards/_boards/${board}/dsp_examples/dsp_support.c"
+
+config MCUX_PRJSEG_module.incbin
+    bool "Use boards/_boards/${board}/dsp_examples/incbin.S"
+
+config MCUX_PRJSEG_module.incbin_for_core
+    bool "Use boards/_boards/${board}/dsp_examples/incbin_${core_id}.S"

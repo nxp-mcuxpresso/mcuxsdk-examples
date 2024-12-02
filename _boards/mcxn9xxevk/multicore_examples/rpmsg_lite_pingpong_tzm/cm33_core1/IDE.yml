@@ -1,0 +1,7 @@
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/app_mcxnxxxevk_core1_bin_image_secure.uvprojx
+  - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/app_mcxnxxxevk_core1.uvoptx
+  - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/debug_CM33.ini
+  - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/JLinkSettings.JLinkScript
+  - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/JLinkSettings.ini

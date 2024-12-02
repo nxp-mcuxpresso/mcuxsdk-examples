@@ -1,0 +1,14 @@
+le_audio_sync_source:
+  section-type: application
+  contents:
+    meta_path: examples/edgefast_bluetooth_examples/le_audio_sync_source
+    project-root-path: boards/${board}/edgefast_bluetooth_examples/le_audio_sync_source/${multicore_foldername}
+    document:
+      name: le_audio_sync_source${core_id_suffix_name}
+      category: edgefast_bluetooth_examples/
+      brief: The le_audio_sync_source project used to verification the le audio sync
+        solution.
+      example_readme:
+      - examples/edgefast_bluetooth_examples/le_audio_sync_source/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

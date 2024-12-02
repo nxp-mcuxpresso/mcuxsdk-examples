@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+usart_dma_double_buffer_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/usart/dma_double_buffer_transfer
+    project-root-path: boards/${board}/driver_examples/usart/dma_double_buffer_transfer/${multicore_foldername}
+    document:
+      name: usart_dma_double_buffer_transfer${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: 'This example shows how to use the DMA driver to implement a double buffer
+        receive scheme from the USARTThe example shows the double buffer constructed
+        using two descriptors (g_pingpong_desc). These descriptors are cycled from
+        one to the other.Things to note- The descriptors of the ping pong transfer
+        need to be aligned to size 16- The inital transfer will perform the same job
+        as first descriptor of ping pong, so the first linkeage is to go to g_pingpong_desc[1]-
+        g_pingpong_desc[1] then chains the g_pingpong_desc[0] as the next descriptor-
+        The properties are set up such that g_pingpong_desc[0] (and the initial configuration
+        uses INTA to signal back to the callback)- g_pingpong_desc[1] uses INTB to
+        signal to the callback- The scheduled callback uses this information to know
+        which data was last writtenA note on PerformanceThe intent of this example
+        is to illustrate how a double-buffer scheme can be implemented using the dma.
+        The performance of this example will be limited to how quickly the echo printer
+        can read-out the data from the ping pong buffer and display it. This means
+        that the example will work well if characters are entered at a rate where
+        the DMA callback to echo the string can keep up with the input stream. Connecting
+        the USARTRX to a continuous fast speed will cause the DMA to fall behind. '
+      example_readme:
+      - examples/driver_examples/flexcomm/usart/dma_double_buffer_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/usart/dma_double_buffer_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

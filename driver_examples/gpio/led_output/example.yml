@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+gpio_led_output:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/gpio/led_output
+    project-root-path: boards/${board}/driver_examples/gpio/led_output/${multicore_foldername}
+    document:
+      name: gpio_led_output${core_id_suffix_name}
+      category: driver_examples/gpio
+      brief: The GPIO Example project is a demonstration program that uses the KSDK
+        software to manipulate the general-purposeoutputs.The example is supported
+        by the set, clear, and toggle write-only registers for each port output data
+        register. The example take turns to shine the LED.
+      example_readme:
+      - examples/driver_examples/gpio/led_output/readme.md
+      - examples/_boards/${board}/driver_examples/gpio/led_output/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []
+    mimxrt700evk@cm33_core0: []

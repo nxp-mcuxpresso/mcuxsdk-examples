@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+hello_world_s:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/trustzone_examples/hello_world_s
+    project-root-path: boards/${board}/trustzone_examples/hello_world/hello_world_s/${multicore_foldername}
+    document:
+      name: hello_world_s${core_id_suffix_name}
+      category: trustzone_examples
+      brief: The Hello World demo application provides a sanity check for the new
+        SDK build environments and board bring up. This demo application also utilizes
+        TrustZone, so it demonstrates basic techniques for TrustZone applications
+        development. This is secure part of the application.
+      example_readme:
+      - examples/trustzone_examples/hello_world_s/readme.md
+      - examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    evkmimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxw72evk@cm33_core0: []
+    kw47evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw45b41zloc: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcimx93autoevk@cm33:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcimx93evk@cm33:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcimx93qsb@cm33:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release

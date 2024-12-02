@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpuart_hardware_flow_control:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpuart/hardware_flow_control
+    project-root-path: boards/${board}/driver_examples/lpuart/hardware_flow_control
+    document:
+      name: lpuart_hardware_flow_control${core_id_suffix_name}
+      category: driver_examples/lpuart
+      brief: The lpuart_hardware_flow_control Example project is to demonstrate usage
+        of the hardware flow control function.This example will send data to itself(loopback),
+        and hardware flow control will be enabled in the example.The CTS(clear-to-send)
+        pin is for transmiter to check if receiver is ready, if the CTS pin is assert,
+        transmiter startto send data. The RTS(request-to-send) is a pin for receiver
+        to inform the transmiter if receiver is ready to receivedata. So, please connect
+        RTS to CTS pin directly.
+      example_readme:
+      - examples/driver_examples/lpuart/hardware_flow_control/readme.md
+      - examples/_boards/${board}/driver_examples/lpuart/hardware_flow_control/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mimxrt700evk@cm33_core0: []

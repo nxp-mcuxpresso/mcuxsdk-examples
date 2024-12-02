@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_light_sensor:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/light_sensor
+    project-root-path: boards/${board}/driver_examples/lpadc/light_sensor/${multicore_foldername}
+    document:
+      name: lpadc_light_sensor${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpadc_light_sensor example shows how to use the LPADC driver to measure
+        the voltage value in the circuit with a light sensor. In this example, the
+        specific ADC channel has been connected into the circuit by board design.
+        When running the project, typing any key into the debug console would trigger
+        the conversion. The execution would check the FIFO valid flag in a loop until
+        the flag is asserted, which means the conversion is completed. Then read the
+        conversion result value and print it to the debug console.
+      example_readme:
+      - examples/driver_examples/lpadc/light_sensor/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/light_sensor/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

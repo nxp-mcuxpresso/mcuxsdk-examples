@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flash_component_nor_flexspi:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/flash_component/nor/flexspi/
+    project-root-path: boards/${board}/component_examples/flash_component/flexspi_nor/
+    document:
+      name: flash_component_nor_flexspi${core_id_suffix_name}
+      category: component_examples/flash_component/flexspi_nor/
+      brief: nor flash demo shows the use of nor flash component to erase, program,
+        and read an external nor flash device.
+      example_readme:
+      - examples/component_examples/flash_component/nor/flexspi/readme.md
+      - examples/_boards/${board}/component_examples/flash_component/flexspi_nor/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmrw612: []
+    rdrw612bga: []

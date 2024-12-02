@@ -1,0 +1,22 @@
+./iar/lpspi_interrupt_b2b_transfer_master.ewp
+
+####################################################
+          Project: lpspi_interrupt_b2b_transfer_master
+
+####################################################
+          Target: debug
+
+     IAR Command Line Build Utility V9.2.2.10770
+     Copyright 2002-2023 IAR Systems AB.
+
+
+lpspi_interrupt_b2b_transfer_master - debug
+Reading project nodes...
+
+Build is up to date
+
+
+
+####################################################
+Total case: 1
+Failed case: 0

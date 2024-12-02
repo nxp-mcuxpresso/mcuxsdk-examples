@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flash_k4:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flash_k4/pflash
+    project-root-path: boards/${board}/driver_examples/flash/pflash/${multicore_foldername}
+    document:
+      name: flash_k4${core_id_suffix_name}
+      category: driver_examples/flash
+      brief: 'The pflash example shows how to use flash driver to operate program
+        flash:'
+      example_readme:
+      - examples/driver_examples/flash_k4/pflash/readme.md
+      - examples/_boards/${board}/driver_examples/flash/pflash/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

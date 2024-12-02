@@ -1,0 +1,5 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33/generic.ewp
+  - scripts/guigenerator/templates/iar/general.eww

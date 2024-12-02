@@ -1,0 +1,14 @@
+eqdc_position:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_eqdc/position
+    project-root-path: boards/${board}/driver_examples/eqdc/position/${multicore_foldername}
+    document:
+      name: eqdc_position${core_id_suffix_name}
+      category: driver_examples/eqdc
+      brief: This project shows how to sample the shaft position based on quadrature
+        signal (PHASEA and PHASEB).
+      example_readme:
+      - examples/driver_examples/dsc_eqdc/position/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

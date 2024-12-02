@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcx_opamp_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/opamp/opamp_basic
+    project-root-path: boards/${board}/driver_examples/opamp/opamp_basic/${multicore_foldername}
+    document:
+      name: mcx_opamp_basic${core_id_suffix_name}
+      category: driver_examples/opamp
+      brief: The OPAMP basic example demonstrates how to use the OPAMP driver. In
+        this example, the OPAMP works in the internal gain mode, connect the positive
+        terminal of the OPAMP to the external input source. The OPAMP output is 2X
+        of the external input voltage. When the input voltage changes, the OPAMP output
+        changes accordingly.
+      example_readme:
+      - examples/driver_examples/opamp/opamp_basic/readme.md
+      - examples/_boards/${board}/driver_examples/opamp/opamp_basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa156: []
+    frdmmcxn947@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

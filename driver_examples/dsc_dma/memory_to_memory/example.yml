@@ -1,0 +1,17 @@
+dsc_dma_memory_to_memory:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_dma/memory_to_memory
+    project-root-path: boards/${board}/driver_examples/dma/memory_to_memory/${multicore_foldername}
+    document:
+      name: dsc_dma_memory_to_memory${core_id_suffix_name}
+      category: driver_examples/dma
+      brief: The DMA memory to memory example is a simple demonstration program that
+        uses the SDK software.It executes one shot transfer from source buffer to
+        destination buffer using the SDK DMA drivers.The purpose of this example is
+        to show how to use the DMA and to provide a simple example fordebugging and
+        further development.
+      example_readme:
+      - examples/driver_examples/dsc_dma/memory_to_memory/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

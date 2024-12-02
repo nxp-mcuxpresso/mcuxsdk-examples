@@ -1,0 +1,42 @@
+Hardware requirements
+=====================
+- Type-C USB cable
+- FRDM-MCXW71 Board
+- Personal Computer
+
+Board settings
+============
+No special settings are required.
+
+Prepare the Demo
+================
+1.  Connect a USB cable between the host PC and the FRDM board J10.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+FlexIO I2C example read accelerometer value
+Found a FXLS8964 on board, the device address is 0x19.
+The accel values:
+x =    15 , y =   -88 , z =  1097
+x =    15 , y =   -88 , z =  1097
+x =    15 , y =   -88 , z =  1097
+x =    11 , y =   -50 , z =  1074
+x =    11 , y =   -50 , z =  1074
+x =    19 , y =   -73 , z =  1085
+x =    19 , y =   -73 , z =  1085
+x =     0 , y =   -84 , z =  1071
+x =     0 , y =   -84 , z =  1071
+x =     0 , y =   -84 , z =  1071
+
+End of I2C example.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

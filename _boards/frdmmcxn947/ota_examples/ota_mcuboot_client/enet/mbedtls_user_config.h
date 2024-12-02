@@ -1,0 +1,24 @@
+/*
+ * Copyright 2024 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#ifndef MBEDTLS_USER_CONFIG_H
+#define MBEDTLS_USER_CONFIG_H
+
+#undef MBEDTLS_DEBUG_C
+
+#define MBEDTLS_PLATFORM_MEMORY
+#define MBEDTLS_PLATFORM_STD_CALLOC pvPortCalloc
+#define MBEDTLS_PLATFORM_STD_FREE   vPortFree
+
+#define MBEDTLS_KEY_EXCHANGE_RSA_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECDHE_RSA_ENABLED
+#define MBEDTLS_KEY_EXCHANGE_ECDHE_ECDSA_ENABLED
+#define MBEDTLS_ECDH_C
+#define MBEDTLS_ECDSA_C
+#define MBEDTLS_ECP_C
+
+#endif /* MBEDTLS_USER_CONFIG_H */

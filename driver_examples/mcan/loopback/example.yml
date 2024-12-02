@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcan_loopback:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcan/loopback
+    project-root-path: boards/${board}/driver_examples/mcan/loopback/${multicore_foldername}
+    document:
+      name: mcan_loopback${core_id_suffix_name}
+      category: driver_examples/mcan
+      brief: The mcan_loopback example shows how to use the loopback test mode to
+        debug your CAN Bus design:To demonstrate this example, only one board is needed.
+        The example will config Tx Buffer to sendand Rx Fifo to receive. After that,
+        the example will send a CAN Message throuth internal loopbackinterconnect
+        and print out the Message payload to the terminal.
+      example_readme:
+      - examples/driver_examples/mcan/loopback/readme.md
+      - examples/_boards/${board}/driver_examples/mcan/loopback/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s36: []

@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dma_ring_buffer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dma/ring_buffer
+    project-root-path: boards/${board}/driver_examples/dma/ring_buffer/${multicore_foldername}
+    document:
+      name: dma_ring_buffer${core_id_suffix_name}
+      category: driver_examples/dma
+      brief: The DMA ring buffer example is a simple demonstration program that uses
+        the SDK software.It demostrates how to implement ring buffer using the SDK
+        DMA drivers.The purpose of this example is to show how to use the DMA and
+        to provide a simple example for debugging and further development.
+      example_readme:
+      - examples/driver_examples/dma/ring_buffer/readme.md
+      - examples/_boards/${board}/driver_examples/dma/ring_buffer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

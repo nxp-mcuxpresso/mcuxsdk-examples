@@ -1,0 +1,74 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- EVK-MIMXRT685 board
+- Personal Computer
+- UART - USB Bridge
+
+Board settings
+============
+No special settings are required.
+
+Overview
+========
+The mbdedTLS test suite program performs cryptographic algorithm testing, and prints results to the
+terminal. Its uses eRPC, Server side (board) recieved test data via eRPC from client side (PC), performs cryptographic alghoritm
+testing and then passes result to client.
+
+Prepare the Demo
+================
+Connect a serial cable from the debug UART port of the target board to the PC. 
+Start Terminal
+
+
+1. Start Terminal.
+
+2. Set the appropriate ttyXX port in /.../middleware/mbedtls/tests/suites/main_test.function file on line 230 
+   (Example transport = erpc_transport_serial_init("/dev/ttyUSB0", 115200) ) . 
+   The number is provided by the operating system, and could be different from computer to computer.
+   
+3. Go to dir /.../middleware/mbedtls/tests/ -> cd /.../middleware/mbedtls/tests/
+   Make test suites -> make test_suite_all
+	
+
+4. Run generated files, for test case run  test_suite_all executable, results are printed in terminal.
+
+Running the demo
+================
+When the test cases runs successfully, the terminal will display similar information like the following:
+
+AES-128-CBC Encrypt NIST KAT #1 ................................... PASS
+AES-128-CBC Encrypt NIST KAT #2 ................................... PASS
+AES-128-CBC Encrypt NIST KAT #3 ................................... PASS
+AES-128-CBC Encrypt NIST KAT #4 ................................... PASS
+.  
+.
+.
+.
+.
+SHA-256 Test Vector NIST CAVS #1 .................................. PASS
+SHA-256 Test Vector NIST CAVS #2 .................................. PASS
+SHA-256 Test Vector NIST CAVS #3 .................................. PASS
+SHA-256 Test Vector NIST CAVS #4 .................................. PASS
+SHA-256 Test Vector NIST CAVS #5 .................................. PASS
+SHA-256 Test Vector NIST CAVS #6 .................................. PASS
+SHA-384 Test Vector NIST CAVS #1 .................................. PASS
+SHA-384 Test Vector NIST CAVS #2 .................................. PASS
+SHA-384 Test Vector NIST CAVS #3 .................................. PASS
+SHA-384 Test Vector NIST CAVS #4 .................................. PASS
+SHA-512 Test Vector NIST CAVS #1 .................................. PASS
+SHA-512 Test Vector NIST CAVS #2 .................................. PASS
+SHA-512 Test Vector NIST CAVS #3 .................................. PASS
+SHA-512 Test Vector NIST CAVS #4 .................................. PASS
+SHA-512 Test Vector NIST CAVS #5 .................................. PASS
+SHA-512 Test Vector NIST CAVS #6 .................................. PASS
+SHA-512 Test Vector NIST CAVS #7 .................................. PASS
+SHA-1 Selftest .................................................... PASS
+SHA-256 Selftest .................................................. PASS
+SHA-512 Selftest .................................................. PASS
+
+----------------------------------------------------------------------------
+
+PASSED (400 / 400 tests (0 skipped))
+
+

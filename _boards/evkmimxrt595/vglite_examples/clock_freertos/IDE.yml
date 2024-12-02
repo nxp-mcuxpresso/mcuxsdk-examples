@@ -1,0 +1,8 @@
+initialization_file:
+  files:
+  - source: bin/generator/templates/mdk/app_${board}/flashdebug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release flash_debug flash_release
+    package_path: boards/evkmimxrt595/vglite_examples/clock_freertos/mdk
+    project_path: generator/templates/mdk/app_evkmimxrt595

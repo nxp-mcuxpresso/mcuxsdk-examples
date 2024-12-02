@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cns_adc_software_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cns_adc/software_trigger
+    project-root-path: boards/${board}/driver_examples/adc/software_trigger/${multicore_foldername}
+    document:
+      name: cns_adc_software_trigger${core_id_suffix_name}
+      category: driver_examples/adc
+      brief: The adc_software_trigger example shows how to software trigger ADC conversion.
+        In this example, ADC resolution is set as 16bit, the reference voltage is
+        selected as the internal 1.8V bandgap, and input gain is set as 1. So the
+        input voltage range is from 0 to 1.8V. Users can trigger ADC conversion by
+        press any key in the terminal. ADC interrupt will be asserted once the conversion
+        is completed.
+      example_readme:
+      - examples/driver_examples/cns_adc/software_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/adc/software_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

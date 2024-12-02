@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc12_continuous_edma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/adc12/continuous_edma
+    project-root-path: boards/${board}/driver_examples/adc12/continuous_edma
+    document:
+      name: adc12_continuous_edma${core_id_suffix_name}
+      category: driver_examples/adc12
+      brief: 'The ADC12 continuous EDMA demo application demonstrates the usage of
+        the ADC and EDMA peripheral while in a continuous mode. TheADC12 is first
+        set to continuous mode. In continuous convert configuration, only the initial
+        rising-edge to launch continuous conversions isobserved, and until conversion
+        is aborted, the ADC12 continues to do conversions on the same SCn register
+        that initiated the conversion. EDMA request will be asserted during an ADC12
+        conversion complete event noted when any of the SC1n[COCO] flags is asserted.
+        EDMA will transferADC12 results to memory and if users press any key, demo
+        will average ADC12 results stored in memory and print average on the terminal.  '
+      example_readme:
+      - examples/driver_examples/adc12/continuous_edma/readme.md
+      - examples/_boards/${board}/driver_examples/adc12/continuous_edma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke17z: []
+    frdmke17z512: []

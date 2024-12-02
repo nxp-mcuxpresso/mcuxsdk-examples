@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+igpio_input_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/igpio/input_interrupt
+    project-root-path: boards/${board}/driver_examples/gpio/input_interrupt/${multicore_foldername}
+    document:
+      name: igpio_input_interrupt${core_id_suffix_name}
+      category: driver_examples/gpio
+      brief: 'The GPIO Example project is a demonstration program that uses the KSDK
+        software to manipulate the general-purposeoutputs.The example is supported
+        by the set, clear registers for each GPIO pin output register. '
+      example_readme:
+      - examples/driver_examples/igpio/input_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/gpio/input_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

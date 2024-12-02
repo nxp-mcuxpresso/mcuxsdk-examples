@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+powerquad_fir_fast:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/powerquad/fir_fast
+    project-root-path: boards/${board}/driver_examples/powerquad/fir_fast/${multicore_foldername}
+    document:
+      name: powerquad_fir_fast${core_id_suffix_name}
+      category: driver_examples/powerquad
+      brief: The PowerQuad fetches data from system RAM and private RAM through different
+        path, for the calcutations which need data from two parts of memory, such
+        as FIR, convolve, correlate, and some matrix operations, place the input data
+        B in private RAM improves the performance. PowerQuad private RAM starts from
+        address 0xe0000000, the first 4KByte is used by PowerQuad driver, the RAM
+        starts from 0xe0001000 could be used by user for optimization. In this example,
+        the FIR taps, convolve input data B, and correlate input data B are not changed,
+        so they are converted to float format and saved to private RAM at the beginning.
+        If the example runs successfully, the performance using optimized method is
+        better than the nornal method.
+      example_readme:
+      - examples/driver_examples/powerquad/fir_fast/readme.md
+      - examples/_boards/${board}/driver_examples/powerquad/fir_fast/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

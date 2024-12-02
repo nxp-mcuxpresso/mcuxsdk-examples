@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_single_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/single_interrupt
+    project-root-path: boards/${board}/driver_examples/lpadc/single_interrupt/${multicore_foldername}
+    document:
+      name: lpadc_single_interrupt${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpadc_single_interrupt example shows how to use interrupt with LPADC
+        driver.In this example, user should indicate a channel to provide a voltage
+        signal (can be controlled by user) as the LPADC'ssample input. When running
+        the project, typing any key into debug console would trigger the conversion.
+        ADC watermark interrupt would be asserted once the number of datawords stored
+        in the ADC Result FIFO is greater than watermark value.In ADC ISR, the watermark
+        flag would be cleared by reading the conversion result value. Also, result
+        information wouldbe printed when the execution return to the main function.
+      example_readme:
+      - examples/driver_examples/lpadc/single_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/single_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mimxrt685audevk@cm33: []
