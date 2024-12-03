@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdif_color_key:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdif/color_key
+    project-root-path: boards/${board}/driver_examples/lcdif/color_key/${multicore_foldername}
+    document:
+      name: lcdif_color_key${core_id_suffix_name}
+      category: driver_examples/lcdif
+      brief: This example demonstrates how to use the LCDIF color key feature in ARGB8888
+        mode. In this exapmle, background layer is use as destination layer and video
+        layer is used as source layer. The gray rectangles in source layer fall into
+        the color key range and are replaced by background layer which is red when
+        the color key mode is on.
+      example_readme:
+      - examples/driver_examples/lcdif/color_key/readme.md
+      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

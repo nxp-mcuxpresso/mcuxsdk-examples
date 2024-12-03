@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+wireless_uart_genfsk_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/w_uart_genfsk/bm
+    project-root-path: boards/${board}/wireless_examples/bluetooth/w_uart_genfsk/bm/${multicore_foldername}
+    document:
+      name: wireless_uart_genfsk_bm
+      category: wireless_examples/bluetooth/w_uart_genfsk/bm/
+      brief: The Hybrid (Dual-Mode) Bluetooth Low Energy and Generic FSK application demonstrates 
+        Generic FSK transmission/reception and Bluetooth advertising/scanning/multiple connections 
+        coexistence.The Bluetooth LE part of this demo implements a modified version of the 
+        Wireless UART demo application, capable of multiple Bluetooth LE connections.Based on the 
+        Hardware link-layer implementation, the Bluetooth Low Energy has a higher priority than the 
+        Generic FSK protocol and as the effect, the Generic FSK communication is executed during the 
+        Idle states (inactive periods) of the Bluetooth LE. The coexistence of the two protocols is 
+        handled internally at the Controller level.
+  boards:
+    kw45b41zevk: []
+    kw45b41zloc: []

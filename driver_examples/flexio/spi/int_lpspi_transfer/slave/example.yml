@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexio_spi_int_lpspi_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio/spi/int_lpspi_transfer/slave
+    project-root-path: boards/${board}/driver_examples/flexio/spi/int_lpspi_transfer/slave/${multicore_foldername}
+    document:
+      name: flexio_spi_int_lpspi_transfer_slave${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The flexio_spi_slave_interrupt_lpspi_master example shows how to use
+        flexio spi slave driver in interrupt way. In this example, a flexio simulated
+        slave connect to a lpspi master.
+      example_readme:
+      - examples/driver_examples/flexio/spi/int_lpspi_transfer/slave/readme.md
+      - examples/_boards/${board}/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

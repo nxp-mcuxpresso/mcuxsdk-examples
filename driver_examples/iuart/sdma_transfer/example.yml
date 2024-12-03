@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iuart_sdma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iuart/sdma_transfer
+    project-root-path: boards/${board}/driver_examples/uart/sdma_transfer/${multicore_foldername}
+    document:
+      name: iuart_sdma_transfer${core_id_suffix_name}
+      category: driver_examples/uart
+      brief: 'The uart_sdma example shows how to use uart driver in sdma way:In this
+        example, one uart instance connect to PC through uart, the board willsend
+        back all characters that PC send to the board.Note: The example echo every
+        8 characters, so input 8 characters every time.'
+      example_readme:
+      - examples/driver_examples/iuart/sdma_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/uart/sdma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mnddr3l:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mp:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release

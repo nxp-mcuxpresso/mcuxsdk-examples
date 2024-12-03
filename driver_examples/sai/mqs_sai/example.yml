@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mqs_sai:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sai/mqs_sai
+    project-root-path: boards/${board}/driver_examples/sai/mqs_sai/${multicore_foldername}
+    document:
+      name: mqs_sai${core_id_suffix_name}
+      category: driver_examples/sai
+      brief: The mqs_sai example shows how to use sai and MQS driver with interrupt:In
+        this example, one sai instance playbacks the audio data stored in flash/SRAM
+        using interrupt.MQS will covert audio stream to PWM signals.
+      example_readme:
+      - examples/driver_examples/sai/mqs_sai/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

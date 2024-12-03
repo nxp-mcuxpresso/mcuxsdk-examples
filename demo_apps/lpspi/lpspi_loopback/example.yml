@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpspi_loopback:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/lpspi/lpspi_loopback
+    project-root-path: boards/${board}/demo_apps/lpspi_loopback/${multicore_foldername}
+    document:
+      name: lpspi_loopback${core_id_suffix_name}
+      category: demo_apps
+      brief: The lpspi_loopback demo shows how the lpspi do a loopback transfer, LPSPImaster
+        will transmit data to itself, so please connect the SOUT pin to SIN pin directly.
+      example_readme:
+      - examples/demo_apps/lpspi/lpspi_loopback/readme.md
+      - examples/_boards/${board}/demo_apps/lpspi_loopback/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

@@ -1,0 +1,19 @@
+opamp_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_opamp_1
+    project-root-path: boards/${board}/driver_examples/opamp/basic/${multicore_foldername}
+    document:
+      name: opamp_basic${core_id_suffix_name}
+      category: driver_examples
+      brief: This project shows how to use the OPAMP driver. In this example, the
+        OPAMP works in the internal gain mode, the positive terminal of the OPAMP
+        is connected to the external input source, and the OPAMP output comes from
+        2X of the external input voltage. When the input voltage changes, the OPAMP
+        output changes accordingly.
+      example_readme:
+      - examples/driver_examples/dsc_opamp_1/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []

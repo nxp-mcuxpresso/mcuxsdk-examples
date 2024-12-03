@@ -1,0 +1,21 @@
+host_lpm_hid_mouse_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_lpm_host_hid_mouse/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_lpm_host_hid_mouse/bm/${multicore_foldername}
+    document:
+      name: host_lpm_hid_mouse_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: This is one example support LPM(Link Power Management).
+      example_readme:
+      - examples/usb_examples/usb_lpm_host_hid_mouse/readme.md
+      - examples/_boards/${board}/usb_examples/usb_lpm_host_hid_mouse/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexcomm_cmsis_spi_dma_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/flexcomm/spi/dma_b2b_transfer/slave
+    project-root-path: boards/${board}/cmsis_driver_examples/spi/dma_b2b_transfer/slave/${multicore_foldername}
+    document:
+      name: flexcomm_cmsis_spi_dma_b2b_transfer_slave${core_id_suffix_name}
+      category: cmsis_driver_examples/spi
+      brief: CMSIS-Driver defines generic peripheral driver interfaces for middleware
+        making it reusable across a wide range of supported microcontroller devices.
+        The API connects microcontroller peripherals with middleware that implements
+        for example communication stacks, file systems, or graphic user interfaces.
+        More information and usage methord please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.The
+        cmsis_spi_dma_b2b_transfer_slave example shows how to use spi driver as master
+        to do board to board transfer with DMA:In this example, one spi instance as
+        master and another spi instance on the other board as slave. Master sends
+        a piece of data to slave, and receive a piece of data from slave. This example
+        checks if the data received from slave is correct.
+      example_readme:
+      - examples/cmsis_driver_examples/flexcomm/spi/dma_b2b_transfer/slave/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

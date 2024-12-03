@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+power_manager_test_asymmetric_multiCore_bm_core0:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_manager_test/asymmetric_multiCore_bm/core0
+    project-root-path: boards/${board}/demo_apps/power_manager_test/multiCore_bm/core0
+    document:
+      name: power_manager_test_asymmetric_multiCore_bm_core0
+      category: demo_apps
+      brief: This example demonstrates the basic usage of the Power Manager framework
+        for asymmetric multicore platforms.
+      example_readme:
+      - examples/demo_apps/power_manager_test/asymmetric_multiCore_bm/readme.md
+      - examples/_boards/${board}/demo_apps/power_manager_test/multiCore_bm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

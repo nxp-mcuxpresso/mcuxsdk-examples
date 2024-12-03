@@ -1,0 +1,103 @@
+#!armclang --target=arm-arm-none-eabi -march=armv8-m.main -E -x c
+/*
+** ###################################################################
+**     Processors:          LPC55S36JBD100
+**                          LPC55S36JHI48
+**
+**     Compiler:            Keil ARM C/C++ Compiler
+**     Reference manual:    LPC55S3x Reference Manual Rev. DraftG, 07/2021
+**     Version:             rev. 1.1, 2021-08-04
+**     Build:               b210826
+**
+**     Abstract:
+**         Linker file for the Keil ARM C/C++ Compiler
+**
+**     Copyright 2016 Freescale Semiconductor, Inc.
+**     Copyright 2016-2021 NXP
+**     All rights reserved.
+**
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+
+/* USB BDT size */
+#define usb_bdt_size                   0x0
+/* Sizes */
+#if (defined(__stack_size__))
+  #define Stack_Size                   __stack_size__
+#else
+  #define Stack_Size                   0x0400
+#endif
+
+#if (defined(__heap_size__))
+  #define Heap_Size                    __heap_size__
+#else
+  #define Heap_Size                    0x0400
+#endif
+
+#if (defined(__powerquad__))
+  #define powerquad_RAMsize            0x00004000  /* SRAM E(16K) reserved for powerquad */
+#else
+  #define powerquad_RAMsize            0x00000000
+#endif
+
+
+/* The first 64kB of FLASH is used as secure memory. The rest of FLASH memory is non-secure memory. */
+#define  m_interrupts_start            0x00010000
+#define  m_interrupts_size             0x00000400
+
+#define  priv_func_start               0x00010400
+#define  priv_func_size                0x00008000
+
+#define  sys_calls_start               0x00018400
+#define  sys_calls_size                0x00004000
+
+#define  m_text_start                  0x0001C400
+#define  m_text_size                   0x00021400
+
+#define  priv_data_start               0x20008000
+#define  priv_data_size                0x0000D000
+
+#define  m_data_start                  0x20015000
+#define  m_data_size                   0x00007000 - powerquad_RAMsize
+
+#define  m_sramx_start                 0x04000000
+#define  m_sramx_size                  0x00004000
+
+LR_m_text priv_func_start priv_func_size+sys_calls_size+m_text_size {   ; load region size_region
+
+  ER_priv_func priv_func_start FIXED priv_func_size { ; load address = execution address
+    * (InRoot$$Sections)
+    *(privileged_functions)
+  }
+
+  ER_sys_calls sys_calls_start FIXED sys_calls_size { ; load address = execution address
+    *(freertos_system_calls)
+  }
+
+  ER_m_text m_text_start FIXED m_text_size { ; load address = execution address
+    * (+RO)
+  }
+
+  RW_priv_data priv_data_start priv_data_size { ; privileged data
+    *(privileged_data)
+  }
+  RW_m_data m_data_start m_data_size-Stack_Size-Heap_Size { ; RW data
+    * (+RW +ZI)
+  }
+  ARM_LIB_HEAP +0 EMPTY Heap_Size {    ; Heap region growing up
+  }
+  ARM_LIB_STACK m_data_start+m_data_size EMPTY -Stack_Size { ; Stack region growing down
+  }
+}
+
+LR_m_interrupts m_interrupts_start m_interrupts_size {
+  VECTOR_ROM m_interrupts_start m_interrupts_size { ; load address = execution address
+    * (.isr_vector,+FIRST)
+  }
+}

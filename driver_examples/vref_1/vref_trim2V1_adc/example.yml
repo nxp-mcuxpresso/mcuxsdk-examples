@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+vref_1_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/vref_1/vref_trim2V1_adc
+    project-root-path: boards/${board}/driver_examples/vref_1/${multicore_foldername}
+    document:
+      name: vref_1_example${core_id_suffix_name}
+      category: driver_examples/vref_1
+      brief: In this example, the adc16 module is initialized and used to measure
+        the VREF output voltage. So, it cannot use internal VREF as the reference
+        voltage. Instead, it can use VDD_ANA or VREFH, for detailed information, please
+        refer to device datasheet. Then, user should configure the VREF output pin
+        as the ADC16's sample input. When running the project, it will measure the
+        VREF output voltage under different trim values.
+      example_readme:
+      - examples/driver_examples/vref_1/vref_trim2V1_adc/readme.md
+      - examples/_boards/${board}/driver_examples/vref_1/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

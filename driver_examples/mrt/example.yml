@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+mrt_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mrt
+    project-root-path: boards/${board}/driver_examples/mrt/${multicore_foldername}
+    document:
+      name: mrt_example${core_id_suffix_name}
+      category: driver_examples/mrt/
+      brief: The MRT project is a simple demonstration program of the SDK MRT driver.
+        It sets up the MRThardware block to trigger a periodic interrupt after every
+        250 milliseconds. When the PIT interrupt is triggereda message a printed on
+        the UART terminal and an LED is toggled on the board.
+      example_readme:
+      - examples/driver_examples/mrt/readme.md
+      - examples/_boards/${board}/driver_examples/mrt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []

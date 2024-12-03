@@ -1,0 +1,36 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- MIMX8MN6-EVK  board
+- J-Link Debug Probe
+- 12V power supply
+- Personal Computer
+
+Board settings
+============
+Please note only board to board connection is supported, on board connection is not supported.
+Transfer data from MASTER_BOARD to SLAVE_BOARD of I2C interface, I2C3 pins of MASTER_BOARD are connected with I2C3 pins of SLAVE_BOARD.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SLAVE_BOARD        CONNECTS TO          MASTER_BOARD
+Pin Name   Board Location     Pin Name   Board Location
+I2C3_SCL       J1003-5         I2C3_SCL      J1003-5 
+I2C3_SDA       J1003-3         I2C3_SDA      J1003-3
+GND            J1003-9         GND           J1003-9
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prepare the Demo
+================
+1.  Connect 12V power supply and J-Link Debug Probe to the board, switch SW101 to power on the board
+2.  Connect a USB cable between the host PC and the J901 USB port on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Download the program to the target board.
+5.  Launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+${ANCHOR}

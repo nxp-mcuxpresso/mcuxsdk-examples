@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dmic_i2s_dma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dmic/dmic_i2s_dma
+    project-root-path: boards/${board}/driver_examples/dmic/dmic_i2s_dma/${multicore_foldername}
+    document:
+      name: dmic_i2s_dma${core_id_suffix_name}
+      category: driver_examples/dmic
+      brief: Demonstrates the DMIC working with I2S. Audio is converted to samples
+        in the DMIC module.Then, the data is placed memory buffer. Last, it is send
+        data to the I2S buffer and send to the CODEC, then the audio data will be
+        output to Lineout of CODEC.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      example_readme:
+      - examples/driver_examples/dmic/dmic_i2s_dma/readme.md
+      - examples/_boards/${board}/driver_examples/dmic/dmic_i2s_dma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso54628: []
+    lpcxpresso55s36: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

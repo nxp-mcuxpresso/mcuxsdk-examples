@@ -1,0 +1,31 @@
+cadc_parallel_simultaneous_conversion:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_cadc/parallel_simultaneous_conversion
+    project-root-path: boards/${board}/driver_examples/cadc/parallel_simultaneous_conversion/${multicore_foldername}
+    document:
+      name: cadc_parallel_simultaneous_conversion${core_id_suffix_name}
+      category: driver_examples/cadc
+      brief: 'The cadc_parallel_simultaneous_conversion example shows how to use the
+        both converter parallel at the same time with CADC driver.In this example,
+        the CADC is configured as "kCADC_ScanModeTriggeredParallelSimultaneous" (default)
+        work mode. User should indicate 4 channel pairs to provide the differential
+        voltage signal (can be controlled by user) as the inputs for CADC sample slots.
+        These sample slots would be assembled into the two conversion sequence for
+        each converter. In "kCADC_ScanModeTriggeredParallelSimultaneous" mode, the
+        converter A converts sample 0 and sample 1 (sample 0-7 available) and the
+        converter B converts sample 8 and sample 9 (sample 8-15 are available). As
+        the "simultaneous mode" is enabled by default, the converter A''s control
+        logic can operate both the two converters, to start and stop together.When
+        running the project, typing any key into debug console would trigger the conversion.
+        And then, the conversion result data of the four sample slots (Sample 0, 1,
+        8, 9) would be displayed in the terminal. '
+      example_readme:
+      - examples/driver_examples/dsc_cadc/parallel_simultaneous_conversion/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

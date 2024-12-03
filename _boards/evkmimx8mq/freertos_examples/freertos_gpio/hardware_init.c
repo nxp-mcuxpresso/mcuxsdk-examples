@@ -1,0 +1,73 @@
+/*
+ * Copyright 2017 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+/*${header:start}*/
+#include "pin_mux.h"
+#include "clock_config.h"
+#include "board.h"
+#include "fsl_uart.h"
+#include "fsl_debug_console.h"
+#include "FreeRTOS.h"
+#include "app.h"
+#include "fsl_gpt.h"
+/*${header:end}*/
+
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    gpt_config_t gptConfig;
+    BOARD_InitBootPins();
+    BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
+    BOARD_InitMemory();
+
+    GPT_GetDefaultConfig(&gptConfig);
+
+    /* Initialize GPT module */
+    GPT_Init(GPT1, &gptConfig);
+
+    /* Divide GPT clock source frequency by 1 inside GPT module */
+    GPT_SetClockDivider(GPT1, 1);
+
+    /* Enable GPT Output Compare1 interrupt */
+    GPT_EnableInterrupts(GPT1, kGPT_OutputCompare1InterruptEnable);
+
+    /* Enable at the Interrupt */
+    EnableIRQ(GPT1_IRQn);
+}
+
+/*!
+ * @brief Interrupt service fuction of GPT timer.
+ *
+ * This function to call low power timer ISR
+ */
+void GPT1_IRQHandler(void)
+{
+    vPortGptIsr();
+}
+
+/*!
+ * @brief Fuction of GPT timer.
+ *
+ * This function to return GPT timer base address
+ */
+
+GPT_Type *vPortGetGptBase(void)
+{
+    return GPT1;
+}
+
+/*!
+ * @brief Fuction of GPT timer.
+ *
+ * This function to return GPT timer interrupt number
+ */
+
+IRQn_Type vPortGetGptIrqn(void)
+{
+    return GPT1_IRQn;
+}
+/*${function:end}*/

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+acmp_1_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/acmp_1/polling
+    project-root-path: boards/${board}/driver_examples/acmp/polling
+    document:
+      name: acmp_1_polling${core_id_suffix_name}
+      category: driver_examples/acmp
+      brief: 'The ACMP Polling project is a simple demonstration program that uses
+        the SDK software. It comparesthe selected analog input with ACMP internal
+        DAC output continuously and toggle the LED when thefinal comparison result
+        changed. The purpose of this demo is to show how to use the ACMP driverin
+        SDK software by polling way. The ACMP can be configured based on default configuration
+        returnedby the API ACMP_GetDefaultConfig(). '
+      example_readme:
+      - examples/driver_examples/acmp_1/polling/readme.md
+      - examples/_boards/${board}/driver_examples/acmp/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke02z40m: []

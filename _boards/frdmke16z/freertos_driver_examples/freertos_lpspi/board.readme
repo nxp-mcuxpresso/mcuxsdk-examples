@@ -1,0 +1,47 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- FRDM-KE16Z board
+- Personal Computer
+
+Board settings
+==============
+SPI two boards:
+Transfer data from one board's instance to another board's instance.
+SPI0 pins are connected with SPI0 pins of another board
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+INSTANCE(SPI0)     CONNECTS TO         INSTANCE(SPI0)
+Pin Name   Board Location    Pin Name    Board Location
+SOUT        J4 pin 7            SIN       J4 pin 5
+SIN         J4 pin 5            SOUT      J4 pin 7
+SCK         J4 pin 3            SCK       J4 pin 3
+PCS3        J4 pin 6            PCS3      J4 pin 6
+GND         J2 pin 14           GND       J2 pin 14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file freertos_lpspi.c, do following definition:
+            #define EXAMPLE_CONNECT_SPI BOARD_TO_BOARD
+            For master, use following definition
+                #define SPI_MASTER_SLAVE isMASTER
+                Build project.
+                Download the program to one target board (used as master board).
+            For slave, use following definition
+                #define SPI_MASTER_SLAVE isSLAVE
+                Build project.
+                Download the program to one target board (used as slave board). 
+            Note: Slave side should run before Master side.
+
+Prepare the Demo
+===============
+1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+${ANCHOR}

@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+mu_interrupt_secondary_core:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mu/interrupt/secondary
+    project-root-path: boards/${board}/driver_examples/mu/interrupt/${multicore_foldername}/
+    document:
+      name: mu_interrupt_secondary_core
+      category: driver_examples/mu
+      brief: The mu_interrupt example shows how to use MU driver in interrupt way:In
+        this example:1. Core 0 send message to Core 1 in interrupt mode via MU module.2.
+        Core 1 send message back to Core 0 in interrupt mode.3. Core 0 receive message
+        sent from Core 1 in interrupt mode.
+      example_readme:
+      - examples/driver_examples/mu/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/mu/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1160@cm4:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm4:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm7:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmk32l3a6@cm0plus: []
+    mimxrt700evk@cm33_core1: []

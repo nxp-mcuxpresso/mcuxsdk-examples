@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+capt_key:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/capt/capt_key
+    project-root-path: boards/${board}/driver_examples/capt/capt_key/${multicore_foldername}
+    document:
+      name: capt_key${core_id_suffix_name}
+      category: touch_examples
+      brief: This example shows how to use CAPT to detect key touch event. When the
+        key is touched, LED on the board is on accordingly.
+      example_readme:
+      - examples/driver_examples/capt/capt_key/readme.md
+      - examples/_boards/${board}/driver_examples/capt/capt_key/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso804: []

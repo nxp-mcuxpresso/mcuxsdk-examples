@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcg_fee_blpe:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcg/fee_blpe
+    project-root-path: boards/${board}/driver_examples/mcg/fee_blpe/${multicore_foldername}
+    document:
+      name: mcg_fee_blpe${core_id_suffix_name}
+      category: driver_examples/mcg
+      brief: 'The fee_bple example shows how to use MCG driver to change from FEE
+        mode to BLPE mode: 1. How to use the mode functions for MCG mode switch. 2.
+        How to use the frequency functions to get current MCG frequency. 3. Work flow    Boot
+        to Fee mode from default reset mode    Change from FEE -> FBE -> BLPE    Change
+        back BLPE -> FBE -> FEE    Get System clock in FEE mode to blink LEDIn this
+        example, because the debug console''s clock frequency may change,so the example
+        running information is not output from debug console. Here theLED blinks to
+        show that the example finished successfully.'
+      example_readme:
+      - examples/driver_examples/mcg/fee_blpe/readme.md
+      - examples/_boards/${board}/driver_examples/mcg/fee_blpe/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

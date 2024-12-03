@@ -1,0 +1,452 @@
+description:
+  # NXP RW61X Shadow registers configuration
+  device: rw61x  # The NXP device name.
+  version: 1.10.1 # The SPSDK Shadow register tool version.
+  author: NXP # The author of the configuration.
+  release: alpha # The SPSDK release.
+registers:
+  BOOT_CFG0:  # Boot configuration word0. Shadow register is present for this word thus SW could access the register directly to read contents.
+    bitfields:  # The register bitfields
+      PRIMARY_BOOT_SOURCE: ISP_PIN_BOOT  # Width: 4b, Description: Primary boot source. (a.k.a. Master boot source)
+      # - ISP_PIN_BOOT, (0): ISP pins will determine boot source.
+      # - FLEXSPI_BOOT, (1): Boot from Flex-SPI flash device using FlexSpi interface pins.
+      # - SDIO_BOOT, (3): Boot from SDIO(Serial) port.
+      # - SPI_BOOT, (4): Boot using SPI slave interface using master boot mode.
+      # - I2C_BOOT, (5): I2C boot mode.
+      # - UART_BOOT, (6): Boot using UART interface using master boot mode.
+      # - SPI_FC_BOOT, (7): Boot from 1-bit SPI flash device from FlexCom interface pins selected by REDUNDANT_SPI_PORT field. Only load-to-RAM images are supported in this mode.
+      # - USBHID_BOOT, (8): USB-HID boot mode
+      # - ISP_MODE, (9): Always enter ISP mode. DEFAULT_ISP_MODE field will determine the ISP interface.
+      # - Test_MODE, (10): Reserved
+      # - QSPI_FALLBACK_SPINOR_BOOT, (12): Boot from Octal/Quad SPI flash device using FlexSPI channel B interface pins. If image is not found check recovery boot using SPI-flash device through FlexComm.
+      DEFAULT_ISP_MODE: AUTO_ISP # Width: 3b, Description: ISP boot mode
+      # - AUTO_ISP, (0): Auto detect ISP mode. The RW61x/ probes the active peripheral from one of the below serial interfaces and download image from the probed peripherals:UART, I2C, SPI, USB-HID
+      # - USB_HID_ISP, (1): The USB HID class is used to download the image of the USB0 port
+      # - UART_ISP, (2): Support ISP command interface on UART port only.
+      # - SPI_ISP, (3): Support ISP command interface on SPI port only.
+      # - I2C_ISP, (4): Support ISP command interface on I2C port only.
+      # - DISABLE_ISP, (7): Disable ISP fall through when proper image is not found on primary boot device. 
+      BOOT_CLK_SPEED: '0x0' # Width: 1b, Description: Defines clock speeds during boot.
+      STOP_ON_FAILURE: '0x0' # Width: 1b, Description: If set, then enables GPIO Port and PIN information upon failure
+      TZM_IMAGE_TYPE: IGNORED # Width: 2b, Description: TrustZone-M mode
+      # - IGNORED, (0): Ignored
+      # - ENFORCE_PRESET_VALUE, (1): Enforce preset TZM data in image manifest.
+      # - ENFORCE_PRESET_VALUE, (2): Enforce preset TZM data in image manifest.
+      # - ENFORCE_PRESET_VALUE, (3): Enforce preset TZM data in image manifest.
+      REDUNDANT_SPI_PORT: FC0 # Width: 3b, Description: FlexComm port to use for redundant SPI flash boot. 
+      # - FC0, (0):  Use FlexCom0 pins P0_0 (SCK), P0_1 (MISO), P0_2 (MOSI), P0_3 (SEL)
+      # - FC1, (1):  Use FlexCom1 pins P0_7 (SCK), P0_8 (MISO), P0_9 (MOSI), P0_10 (SEL)
+      # - FC2, (2):  Use FlexCom2 pins P0_14 (SCK), P0_15 (MISO), P0_16 (MOSI), P0_17 (SEL)
+      # - FC3, (3):  Use FlexCom3 pins P0_21 (SCK), P0_22 (MISO), P0_23 (MOSI), P0_24 (SEL)
+      # - FC4, (4):  Use FlexCom4 pins P0_28 (SCK), P0_29 (MISO), P0_30 (MOSI), P0_31 (SEL)
+      # - FC5, (5):  Use FlexCom5 pins P1_3 (SCK), P1_4 (MISO), P1_5 (MOSI), P1_6 (SEL)
+      # - FC6, (6):  Use FlexCom6 pins P3_25 (SCK), P3_26 (MISO), P3_27 (MOSI), P3_28 (SEL)
+      # - FC7, (7):  Use FlexCom7 pins P4_0 (SCK), P4_1 (MISO), P4_2 (MOSI), P4_3 (SEL)
+      SECURE_BOOT_EN: ENABLED # Width: 2b, Description: Secure boot enable config
+      # - DISABLED, (0): Allow non-secure images with and without CRC. Used during development. 
+      # - DISABLED, (1): RFU
+      # - ENABLED, (2): Secure boot is enabled. Do complete ECDSA checking of signed images. (ECDSA signed)
+      # - ENABLED, (3): Secure boot is enabled. Do complete ECDSA checking of signed images. (ECDSA signed)
+      DICE_INC_OTP: NOT_INCLUDED # Width: 1b, Description: Include OTP fuses area in DICE computation
+      # - NOT_INCLUDED, (0): Not included.
+      # - INCLUDED, (1): Included.
+      DICE_SKIP: ENABLED # Width: 1b, Description: Skip DICE computation
+      # - ENABLED, (0): Enable DICE.
+      # - DISABLED, (1): Disable DICE.
+      BOOT_FAIL_PORT: '0x0' # Width: 3b, Description: GPIO port number to use for indicating boot failure.  Defines GPIO port number
+      BOOT_FAIL_PIN: '0x0' # Width: 5b, Description: Defines GPIO pin number.
+  BOOT_CFG1: # Boot configuration word specifying FlexSPI flash devices settings.
+    bitfields:  # The register bitfields
+      FLEXSPI_AUTO_PROBE_EN: FLASH_AUTO_PROBE  # Width: 1b, Description: Flash auto probe feature enable. Auto probing is enabled if the bit is 1.
+      # - FLASH_AUTO_PROBE, (0): , Boot ROM looks for a FCB on the Flash. Boot ROM reads a 512 byte FCB into on-chip SRAM and configures the FlexSPI controller accordingly.
+      # - FCB_FROM_FLASH, (1): the Boot ROM will perform Flash auto probe sequence using parameters from OTP fuse values for FLEXSPI_PROBE_TYPE, FLEXSPI_FLASH_TYPE, FLEXSPI_DUMMY_CYCLES, FLEXSPI_FREQUENCY
+      FLEXSPI_PROBE_TYPE: QSPI_NOR # Width: 3b, Description: Flash probe type
+      # - QSPI_NOR, (0): QuadSPI NOR
+      FLEXSPI_FLASH_TYPE: FLEXSPI_SDR_3B # Width: 3b, Description: Flash type. This field affects the default configuration of the Boot ROM Flash driver (before any input from Flash itself is available)
+      # - FLEXSPI_SDR_3B, (0): Device supports SDR and uses 3 byte addresses for read. In case of autoprobing, when generating an FCB from the SFDP information, commands for SRD operation are generated. In case of configuration from FCB, for reading of Flash memory, command 0x03 is used.
+      # - FLEXSPI_DDR_4B, (1): Device supports DDR and uses 4 byte addresses for read. In case of autoprobing, when generating an FCB from the SFDP information, the command set for DDR operation is used. In case of configuration from FCB, for reading of Flash memory, command 0x13 is used.
+      FLEXSPI_DUMMY_CYCLES: AUTO_PROB # Width: 4b, Description: Dummy cycles for read command
+      # - AUTO_PROB, (0): The dummy cycles are probed automatically.
+      FLEXSPI_FREQUENCY: FLEXSPI_100MHZ # Width: 3b, Description: Flash SPI clock frequency to use for auto probing.
+      # - FLEXSPI_100MHZ, (0): Use a clock frequency of 100 MHz.
+      # - FLEXSPI_120MHZ, (1): Use a clock frequency of 120 MHz
+      # - FLEXSPI_133MHZ, (2): Use a clock frequency of 133 MHz
+      # - FLEXSPI_166MHZ, (3): Use a clock frequency of 166 MHz
+      # - FLEXSPI_200MHZ, (4): Use a clock frequency of 200 MHz
+      # - FLEXSPI_80MHZ, (5): Use a clock frequency of 80 MHz
+      # - FLEXSPI_60MHZ, (6): Use a clock frequency of 60 MHz
+      # - FLEXSPI_50MHZ, (7): Use a clock frequency of 50 MHz
+      FLEXSPI_RST_SEQ: NO_RESET_PERFORMED # Width: 2b, Description: Select the Flash reset sequence to use for regular boot.
+      # - NO_RESET_PERFORMED, (0): Don't perform any reset.
+      # - JEDEC_RESET, (1): The Boot ROM performs a reset sequence according to the JEDEC specification.
+      # - RESET_COMMAND, (2): The Boot ROM sends commands for resetting the Flash. The sequence is fixed command byte 0x66 (enable reset) followed by command byte 0x99 (reset device) using SPI (single wire).
+      # - WAKEUP_COMMAND, (3): The Boot ROM sends a wakeup command to the Flash. The sequence is fixed command byte 0xAB using SPI (single wire). As the wakeup command is using SPI, it has to be ensured that the Flash is in a mode where it can accept SPI commands before the system is put to low-power mode.
+      FLEXSPI_RST_HOLD_TIME: NO_DELAY # Width: 4b, Description: Set the time to wait after reset sequence for regular boot.
+      # - NO_DELAY, (0): No additional delay.
+      # - 100US_DELAY, (1): Wait for 100 us.
+      # - 500US_DELAY, (2): Wait for 500 us.
+      # - 1MS_DELAY, (3): Wait for 1 ms.
+      # - 10MS_DELAY, (4): Wait for 10 ms.
+      # - 20MS_DELAY, (5): Wait for 20 ms.
+      # - 40MS_DELAY, (6): Wait for 40 ms.
+      # - 60MS_DELAY, (7): Wait for 60 ms.
+      # - 80MS_DELAY, (8): Wait for 80 ms.
+      # - 100MS_DELAY, (9): Wait for 100 ms.
+      # - 120MS_DELAY, (10): Wait for 120 ms.
+      # - 140MS_DELAY, (11): Wait for 140 ms.
+      # - 160MS_DELAY, (12): Wait for 160 ms.
+      # - 180MS_DELAY, (13): Wait for 180 ms.
+      # - 200MS_DELAY, (14): Wait for 200 ms.
+      # - 220MS_DELAY, (15): Wait for 220 ms.
+      FLEXSPI_WUP_SEQ: NO_RESET_PERFORMED # Width: 2b, Description: Select the Flash reset sequence to use for boot from low power mode.
+      # - NO_RESET_PERFORMED, (0): Don't perform any reset.
+      # - JEDEC_RESET, (1): The Boot ROM performs a reset sequence according to the JEDEC specification.
+      # - RESET_COMMAND, (2): The Boot ROM sends commands for resetting the Flash. The sequence is fixed command byte 0x66 (enable reset) followed by command byte 0x99 (reset device) using SPI (single wire).
+      # - WAKEUP_COMMAND, (3): The Boot ROM sends a wakeup command to the Flash. The sequence is fixed command byte 0xAB using SPI (single wire). As the wakeup command is using SPI, it has to be ensured that the Flash is in a mode where it can accept SPI commands before the system is put to low-power mode.
+      FLEXSPI_WUP_HOLD_TIME: NO_DELAY # Width: 4b, Description: Set the time to wait after reset sequence for boot from low power mode.
+      # - NO_DELAY, (0): No additional delay.
+      # - 100US_DELAY, (1): Wait for 100 us.
+      # - 500US_DELAY, (2): Wait for 500 us.
+      # - 1MS_DELAY, (3): Wait for 1 ms.
+      # - 10MS_DELAY, (4): Wait for 10 ms.
+      # - 20MS_DELAY, (5): Wait for 20 ms.
+      # - 40MS_DELAY, (6): Wait for 40 ms.
+      # - 60MS_DELAY, (7): Wait for 60 ms.
+      # - 80MS_DELAY, (8): Wait for 80 ms.
+      # - 100MS_DELAY, (9): Wait for 100 ms.
+      # - 120MS_DELAY, (10): Wait for 120 ms.
+      # - 140MS_DELAY, (11): Wait for 140 ms.
+      # - 160MS_DELAY, (12): Wait for 160 ms.
+      # - 180MS_DELAY, (13): Wait for 180 ms.
+      # - 200MS_DELAY, (14): Wait for 200 ms.
+      # - 220MS_DELAY, (15): Wait for 220 ms.
+      FLEXSPI_HOLD_TIME: NO_DELAY # Width: 2b, Description: Wait time before access to Serial Flash.
+      # - NO_DELAY, (0): No additional delay
+      # - 500US_DELAY, (1): Wait for 500 us.
+      # - 3MS_DELAY, (2): Wait for 3 ms.
+      # - 10MS_DELAY, (3): Wait for 10 ms.
+      FLEXSPI_PWR_HOLD_TIME: NO_DELAY # Width: 4b, Description: Delay after POR before accessing Quad/Octal-SPI flash devices in addition to delay defined by QSPI_HOLD TIME field.
+      # - NO_DELAY, (0): No additional delay.
+      # - 100US_DELAY, (1): Wait for 100 us.
+      # - 500US_DELAY, (2): Wait for 500 us.
+      # - 1MS_DELAY, (3): Wait for 1 ms.
+      # - 10MS_DELAY, (4): Wait for 10 ms.
+      # - 20MS_DELAY, (5): Wait for 20 ms.
+      # - 40MS_DELAY, (6): Wait for 40 ms.
+      # - 60MS_DELAY, (7): Wait for 60 ms.
+      # - 80MS_DELAY, (8): Wait for 80 ms.
+      # - 100MS_DELAY, (9): Wait for 100 ms.
+      # - 120MS_DELAY, (10): Wait for 120 ms.
+      # - 140MS_DELAY, (11): Wait for 140 ms.
+      # - 160MS_DELAY, (12): Wait for 160 ms.
+      # - 180MS_DELAY, (13): Wait for 180 ms.
+      # - 200MS_DELAY, (14): Wait for 200 ms.
+      # - 220MS_DELAY, (15): Wait for 220 ms.
+  BOOT_CFG2: # Boot configuration word specifiying settings for flexspi image
+    bitfields:  # The register bitfields
+      FLEXSPI_IMAGE_SIZE: SIZE_OFFSET  # Width: 4b, Description: The size of the Flash memory to use for a boot image
+      # - SIZE_OFFSET, (0): The size of the boot image is considered to be equal to the offset of the second image.
+      # - SIZE_1MB, (1): Size of remapped area is 1MByte.  
+      # - SIZE_2MB, (2): Size of remapped area is 2MByte. 
+      # - SIZE_3MB, (3): Size of remapped area is 3MByte. 
+      # - SIZE_4MB, (4): Size of remapped area is 4MByte. 
+      # - SIZE_5MB, (5): Size of remapped area is 5MByte. 
+      # - SIZE_6MB, (6): Size of remapped area is 6MByte. 
+      # - SIZE_7MB, (7): Size of remapped area is 7MByte. 
+      # - SIZE_8MB, (8): Size of remapped area is 8MByte. 
+      # - SIZE_9MB, (9): Size of remapped area is 9MByte. 
+      # - SIZE_10MB, (10): Size of remapped area is 10MByte. 
+      # - SIZE_11MB, (11): Size of remapped area is 11MByte. 
+      # - SIZE_12MB, (12): Size of remapped area is 12MByte. 
+      # - SIZE_256KB, (13): Size of remapped area is 256KByte. 
+      # - SIZE_512KB, (14): Size of remapped area is 512KByte. 
+      # - SIZE_768KB, (15): Size of remapped area is 768KByte.
+      FLEXSPI_DELAY_CELL_NUM: '0x0' # Width: 7b, Description: Delay cell numbers for Flash read sampling via DQS (either internal loopback or external DQS)
+      FLEXSPI_IMAGE_OFFSET: '0x00' # Width: 10b, Description: The offset in Flash memory where the second boot image starts. The offset to the second image is X * 256 KiB.
+  BOOT_CFG3: # Boot configuration word3. Shadow register is present for this word thus SW could access the register directly to read contents.
+    bitfields:  # The register bitfields
+      ROTK0_USAGE: DebugCA_ImageCA_FwCA_ImageKey_FwKey  # Width: 3b, Description: RoT key 0 usage properties. 
+      # - DebugCA_ImageCA_FwCA_ImageKey_FwKey, (0): Usable as debug CA, image CA, FW CA, image and FW key. 
+      # - DebugCA, (1): Usable as debug CA only.
+      # - ImageCA_FwCA, (2): Usable as image (boot and FW) CA only.
+      # - DebugCA_ImageCA_FwCA, (3): Usable as debug, boot and FW image CA.
+      # - ImageKey_FwKey, (4): Usable as image key and FW update key only. 
+      # - ImageKey, (5): Usable as boot image key only.
+      # - FwKey, (6): Usable as FW update image key only.
+      # - Unused, (7): Key slot is not used.
+      ROTK1_USAGE: DebugCA_ImageCA_FwCA_ImageKey_FwKey # Width: 3b, Description: RoT key 1 usage properties.
+      # - DebugCA_ImageCA_FwCA_ImageKey_FwKey, (0): Usable as debug CA, image CA, FW CA, image and FW key. 
+      # - DebugCA, (1): Usable as debug CA only.
+      # - ImageCA_FwCA, (2): Usable as image (boot and FW) CA only.
+      # - DebugCA_ImageCA_FwCA, (3): Usable as debug, boot and FW image CA.
+      # - ImageKey_FwKey, (4): Usable as image key and FW update key only. 
+      # - ImageKey, (5): Usable as boot image key only.
+      # - FwKey, (6): Usable as FW update image key only.
+      # - Unused, (7): Key slot is not used.
+      ROTK2_USAGE: DebugCA_ImageCA_FwCA_ImageKey_FwKey # Width: 3b, Description: RoT key 2 usage properties.
+      # - DebugCA_ImageCA_FwCA_ImageKey_FwKey, (0): Usable as debug CA, image CA, FW CA, image and FW key. 
+      # - DebugCA, (1): Usable as debug CA only.
+      # - ImageCA_FwCA, (2): Usable as image (boot and FW) CA only.
+      # - DebugCA_ImageCA_FwCA, (3): Usable as debug, boot and FW image CA.
+      # - ImageKey_FwKey, (4): Usable as image key and FW update key only. 
+      # - ImageKey, (5): Usable as boot image key only.
+      # - FwKey, (6): Usable as FW update image key only.
+      # - Unused, (7): Key slot is not used.
+      ROTK3_USAGE: DebugCA_ImageCA_FwCA_ImageKey_FwKey # Width: 3b, Description: RoT key 3 usage properties.
+      # - DebugCA_ImageCA_FwCA_ImageKey_FwKey, (0): Usable as debug CA, image CA, FW CA, image and FW key. 
+      # - DebugCA, (1): Usable as debug CA only.
+      # - ImageCA_FwCA, (2): Usable as image (boot and FW) CA only.
+      # - DebugCA_ImageCA_FwCA, (3): Usable as debug, boot and FW image CA.
+      # - ImageKey_FwKey, (4): Usable as image key and FW update key only. 
+      # - ImageKey, (5): Usable as boot image key only.
+      # - FwKey, (6): Usable as FW update image key only.
+      # - Unused, (7): Key slot is not used.
+      ENF_CNSA: P-256_KEY # Width: 2b, Description: Enforce CNSA (Commercial National Security Algorithm) suite keys
+      # - P-256_KEY, (0): ECC P-256 keys.
+      # - P-384_KEY, (1): ECC P-384 keys.
+      # - P-384_KEY, (2): ECC P-384 keys.
+      # - P-384_KEY, (3): ECC P-384 keys.
+      ENABLE_CRC_CHECK: '0x0' # Width: 2b, Description: Enable CRC checks over OTP words
+      FIPS_KDF_STEN: SKIP_SELF_TEEST_RUN # Width: 2b, Description: Enable self-test for CKDF block on power-up. Needed for FIPS certification. If this field is non-zero run self-test and log result in BOOT_STATE register.
+      # - SKIP_SELF_TEEST_RUN, (0): Self-tests run is skipped and results are not included. 
+      # - INCLUDE_SELF_TEST_RESULTS, (1): On failure continue to boot
+      FIPS_CMAC_STEN: SKIP_SELF_TEEST_RUN # Width: 2b, Description: Enable self-test for CMAC block on power-up. Needed for FIPS certification. If this field is non-zero run self-test and log result in BOOT_STATE register.
+      # - SKIP_SELF_TEEST_RUN, (0): Self-tests run is skipped and results are not included. 
+      # - INCLUDE_SELF_TEST_RESULTS, (1): On failure continue to boot
+      FIPS_DRBG_STEN: SKIP_SELF_TEEST_RUN # Width: 2b, Description: Enable self-test for DRBG block on power-up. Needed for FIPS certification. If this field is non-zero run self-test and log result in BOOT_STATE register.
+      # - SKIP_SELF_TEEST_RUN, (0): Self-tests run is skipped and results are not included. 
+      # - INCLUDE_SELF_TEST_RESULTS, (1): On failure continue to boot
+      FIPS_ECDSA_STEN: SKIP_SELF_TEEST_RUN # Width: 2b, Description: Enable self-test for ECDSA block on power-up. Needed for FIPS certification. If this field is non-zero run self-test and log result in BOOT_STATE register.
+      # - SKIP_SELF_TEEST_RUN, (0): Self-tests run is skipped and results are not included. 
+      # - INCLUDE_SELF_TEST_RESULTS, (1): On failure continue to boot
+      FIPS_AES_STEN: SKIP_SELF_TEEST_RUN # Width: 2b, Description: Enable self-test for AES block on power-up. Needed for FIPS certification. If this field is non-zero run self-test and log result in BOOT_STATE register.
+      # - SKIP_SELF_TEEST_RUN, (0): Self-tests run is skipped and results are not included. 
+      # - INCLUDE_SELF_TEST_RESULTS, (1): On failure continue to boot
+      FIPS_SHA_STEN: SKIP_SELF_TEEST_RUN # Width: 2b, Description: Enable self-test for SHA2 block on power-up. Needed for FIPS certification. If this field is non-zero run self-test and log result in BOOT_STATE register.
+      # - SKIP_SELF_TEEST_RUN, (0): Self-tests run is skipped and results are not included. 
+      # - INCLUDE_SELF_TEST_RESULTS, (1): On failure continue to boot
+      SKIP_PM_SIGN_VERIFCATION: '0x0' # Width: 2b, Description: On boot-up from PM3/PM4, do not run through ECDSA signature verification of the image
+  BOOT_CFG5: #  The USB VID and PID can be customized by writing the new VID to the usbVid field and the new PID to the usbPid field in this OTP
+    bitfields:  # The register bitfields
+      USB_VID: '0x0000'  # Width: 16b, Description: Value of USB VID
+      USB_PID: '0x0000' # Width: 16b, Description: Value of USB PID
+  BOOT_CFG6: #  the SDIO VID and PID can be customized by writing the new VID to the usbVid field and the new PID to the usbPid field in this OTP
+    bitfields:  # The register bitfields
+      SDIO_VID: '0x0000'  # Width: 16b, Description: Value of SDIO VID
+      SDIO_PID: '0x0000' # Width: 16b, Description: Value of SDIO PID
+  SEC_BOOT_CFG0: # Root key revocation
+    bitfields:  # The register bitfields
+      REVOKE_ROOTKEY0: ENABLED  # Width: 1b, Description: RoT Key 0 enable
+      # - ENABLED, (0): RoT Key is enabled 
+      # - ENABLED, (1): RoT Key is enabled
+      # - REVOKED, (2): RoT Key is revoked
+      # - REVOKED, (3): RoT Key is revoked
+      REVOKE_ROOTKEY1: ENABLED # Width: 1b, Description: RoT Key 1 enable
+      # - ENABLED, (0): RoT Key is enabled 
+      # - ENABLED, (1): RoT Key is enabled
+      # - REVOKED, (2): RoT Key is revoked
+      # - REVOKED, (3): RoT Key is revoked
+      REVOKE_ROOTKEY2: ENABLED # Width: 1b, Description: RoT Key 2 enable 
+      # - ENABLED, (0): RoT Key is enabled 
+      # - ENABLED, (1): RoT Key is enabled
+      # - REVOKED, (2): RoT Key is revoked
+      # - REVOKED, (3): RoT Key is revoked
+      REVOKE_ROOTKEY3: ENABLED # Width: 1b, Description: RoT Key 3 enable 
+      # - ENABLED, (0): RoT Key is enabled 
+      # - ENABLED, (1): RoT Key is enabled
+      # - REVOKED, (2): RoT Key is revoked
+      # - REVOKED, (3): RoT Key is revoked
+      FA_MODE_EN: '0x0' # Width: 1b, Description: Enable Fault Analysis mode.
+      # - When set ROM checks and Erase all KEYS and IVs in KEYSTORE Flash page.
+      # -Flush all temporary key registers.
+      # - Issues zeroized command to PUF
+      # - Blocks all HW routed OTP keys and set lock bits on those registers
+      # - Enables all debug ports and waits in loop for tester.
+      Redundancy: '0x0000' # Width: 16b, Description: None
+  SEC_BOOT_CFG1: # DAP Vendor Usage configurations fuse word
+    bitfields:  # The register bitfields
+      DAP_VENDOR_USAGE: '0x0000'  # Width: 16b, Description: Lower 16-bits of Vendor Usage field in Debug Credentials defined in NXP's Debug Authentication Protocol specifications Version 1.0.  
+      Redundancy: '0x0000' # Width: 16b, Description: The word is set in redundant mode.
+  SEC_BOOT_CFG2: # Lower 16-bits of revoke Image key configuration fuse word
+    bitfields:  # The register bitfields
+      REVOKE_IMG_KEY[15:0]: '0x0000'  # Width: 16b, Description: Image key revocation id
+      Redundancy: '0x0000' # Width: 16b, Description: The word is set with redundant value.
+  SEC_BOOT_CFG3: # Revoke Image key configuration fuse word
+    bitfields:  # The register bitfields
+      REVOKE_IMG_KEY[31:16]: '0x0000'  # Width: 16b, Description: Higher 16-bits of revoke Image key configuration fuse word
+      Redundancy: '0x0000' # Width: 16b, Description: The word is set with redundant value.
+  DCFG_CC_SOCU_NS: # With TZ-M, the part can be sold by level 1 customers (secure code developer) to level-2 customers who develops non-secure code only.
+#     - In this scenario,  or easy of development, Level-I customer releases the part to always allow non-secure debug. 
+#     - To allow level-2 customers to further seal the part  DCFG_CC_SOCU_NS is used.
+#     - ROM will use this word to further restrict the debug access.
+#     - Layout of this word is same as DCFG_CC_SOCU. 
+#       
+# 1. Pinned disabled state is assumed the highest level of restriction.  (PINNED_xxxEN = 1,  DFLT_xxxEN = 0) 
+# 2. Un-pinned PINNED_xxxEN = 0,  DFLT_xxxEN = 0 or 1)
+# 3. Pinned enabled state is the lowest level. PINNED_xxxEN = 1,  DFLT_xxxEN =1
+    bitfields:  # The register bitfields
+      CRC8_NS[7:0]: '0x14'  # Width: 8b, Description: CRC-8/ITU of upper 3 bytes (bits 8 to 31). Since these fields are security critical, they are constructed with built-in integrity protection to protect from side channel glitch attacks. The lower byte (0 to 7 bits) of these OTP words should be written with CRC-8/ITU of upper 3 bytes (bits 8 to 31). This construction makes the probability of a successful glitch attack to flip the exact control bits extremely difficult. The CRC8 calculation should be based on x8 + x2 + x + 1 polynomial. Polynomial=0x07, initial value= 0x00, XorOut=0x55
+      DFLT_NIDEN_NS: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_DBGEN_NS: ENABLED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_SPNIDEN_NS: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_SPIDEN_NS: ENABLED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_TAPEN_NS: ENABLED # Width: 1b, Description: Controls TAP (Test Access Point) controller used for structural integrity testing of silicon by NXP as part of Return Material Analysis (RMA)
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU1NIDEN_NS: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of CPU1.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU1DBGEN_NS: ENABLED # Width: 1b, Description: Controls invasive debugging of CPU1.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU2NIDEN_NS: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of CPU2.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU2DBGEN_NS: ENABLED # Width: 1b, Description: Controls invasive debugging of CPU2.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_ISPCMDEN_NS: ENABLED # Width: 1b, Description: Controls whether ISP boot flow DM-AP command (command code: 0x05) can be issued after authentication.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_FACMDEN_NS: ENABLED # Width: 1b, Description: Controls whether DM-AP Set FA Mode command (command code: 0x06) can be issued after authentication
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      PINNED_NIDEN_NS: FIXED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_DBGEN_NS: FIXED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_SPNIDEN_NS: FIXED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_SPIDEN_NS: FIXED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_TAPEN_NS: FIXED # Width: 1b, Description: Controls TAP (Test Access Point) controller used for structural integrity testing of silicon by NXP as part of Return Material Analysis (RMA)
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU1NIDEN_NS: FIXED # Width: 1b, Description: Controls non-Invasive debugging of CPU1
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU1DBGEN_NS: FIXED # Width: 1b, Description: Controls invasive debugging of CPU1.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU2NIDEN_NS: FIXED # Width: 1b, Description: Controls non-Invasive debugging of CPU2.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU2DBGEN_NS: FIXED # Width: 1b, Description: Controls invasive debugging of CPU2.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_ISPCMDEN_NS: FIXED # Width: 1b, Description: Controls whether ISP boot flow DM-AP command (command code: 0x05) can be issued after authentication.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_FACMDEN_NS: FIXED # Width: 1b, Description: Controls whether DM-AP Set FA Mode command (command code: 0x06) can be issued after authentication
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      FORCE_UUID_MATCH_NS: '0x0' # Width: 1b, Description: When set, debug authentication protocol only accepts "Debug Credential" certificates (DC) with matching UUID.
+  DCFG_CC_SOCU: # The DCFG_CC_SOCU configuration field specifies the debug access restrictions per debug domain.
+    bitfields:  # The register bitfields
+      CRC8[7:0]: '0x14'  # Width: 8b, Description: CRC-8/ITU of upper 3 bytes (bits 8 to 31). Since these fields are security critical, they are constructed with built-in integrity protection to protect from side channel glitch attacks. The lower byte (0 to 7 bits) of these OTP words should be written with CRC-8/ITU of upper 3 bytes (bits 8 to 31). This construction makes the probability of a successful glitch attack to flip the exact control bits extremely difficult. The CRC8 calculation should be based on x8 + x2 + x + 1 polynomial. Polynomial=0x07, initial value= 0x00, XorOut=0x55
+      DFLT_NIDEN: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_DBGEN: ENABLED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_SPNIDEN: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_SPIDEN: ENABLED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_TAPEN: ENABLED # Width: 1b, Description: Controls TAP (Test Access Point) controller used for structural integrity testing of silicon by NXP as part of Return Material Analysis (RMA)
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU1NIDEN: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of CPU1.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU1DBGEN: ENABLED # Width: 1b, Description: Controls invasive debugging of CPU1.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU2NIDEN: ENABLED # Width: 1b, Description: Controls non-Invasive debugging of CPU2.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_CPU2DBGEN: ENABLED # Width: 1b, Description: Controls invasive debugging of CPU2.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_ISPCMDEN: ENABLED # Width: 1b, Description: Controls whether ISP boot flow DM-AP command (command code: 0x05) can be issued after authentication.
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      DFLT_FACMDEN: ENABLED # Width: 1b, Description: Controls whether DM-AP Set FA Mode command (command code: 0x06) can be issued after authentication
+      # - DISABLED, (0): Disabled.
+      # - ENABLED, (1): Enabled.
+      PINNED_NIDEN: FIXED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_DBGEN: FIXED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined non-secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_SPNIDEN: FIXED # Width: 1b, Description: Controls non-Invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_SPIDEN: FIXED # Width: 1b, Description: Controls invasive debugging of TrustZone for Arm8-M defined secure domain of CPU0
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_TAPEN: FIXED # Width: 1b, Description: Controls TAP (Test Access Point) controller used for structural integrity testing of silicon by NXP as part of Return Material Analysis (RMA)
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU1NIDEN: FIXED # Width: 1b, Description: Controls non-Invasive debugging of CPU1
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU1DBGEN: FIXED # Width: 1b, Description: Controls invasive debugging of CPU1.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU2NIDEN: FIXED # Width: 1b, Description: Controls non-Invasive debugging of CPU2.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_CPU2DBGEN: FIXED # Width: 1b, Description: Controls invasive debugging of CPU2.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_ISPCMDEN: FIXED # Width: 1b, Description: Controls whether ISP boot flow DM-AP command (command code: 0x05) can be issued after authentication.
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      PINNED_FACMDEN: FIXED # Width: 1b, Description: Controls whether DM-AP Set FA Mode command (command code: 0x06) can be issued after authentication
+      # - DAR_CC, (0): Debug Authentication Response determines the state.
+      # - FIXED, (1): Enabled.
+      FORCE_UUID_MATCH: '0x0' # Width: 1b, Description: When set, debug authentication protocol only accepts "Debug Credential" certificates (DC) with matching UUID.
+  DCFG_CC_SOCU_AP: # Anti-pole (inverse) value of Debug Configuration word(DCFG_CC_SOCU). DCFG_CC_SOCU_AP should be programmed with the exact anti-pole (inverse value) value of DCFG_CC_SOCU. Any mismatch between DCFG_CC_SOCU and DCFG_CC_SOCU_AP is deemed as an attack and debug is disabled permanently
+    value: '0xC00000EB'  # The value width: 32b
+  LIFE_CYCLE_STATE: # Life cycle state of rw61x platfrom
+    bitfields:  # The register bitfields
+      LCS[7:0]: OEM_CLOSED  # Width: 8b, Description: Possible values of rw61x lifecycle states
+      # - NXP_BLANK, (0): Initial state in NXP factory
+      # - NXP_PROVISIONED, (1): Support ISP command interface on UART port only.
+      # - OEM_OPEN, (3): Initial customer development state after leaving NXP manufacturing.
+      # - OEM_SECURE, (7): Optional customer development state. Used for development of NS world code.
+      # - OEM_CLOSED, (15): In-field application state for end-customer use.
+      # - OEM_FIELD_RETURN, (31): Field return state.
+      # - NXP_FIELD_RETURN, (63): NXP field return state(CQC).
+      # - OEM_LOCKED, (207): Alternative in-field application state that prevents use of field return/failure analysis states. The rest of the behavior of the device is same as the In-field state.
+      # - SHREDDED, (255): Bricked state to prevent device use.
+      LCS_REDUNDANT[7:0]: OEM_CLOSED # Width: 8b, Description: Repeat values of lifecycle state due to a security
+      # - NXP_BLANK, (0): Initial state in NXP factory
+      # - NXP_PROVISIONED, (1): Support ISP command interface on UART port only.
+      # - OEM_OPEN, (3): Initial customer development state after leaving NXP manufacturing.
+      # - OEM_SECURE, (7): Optional customer development state. Used for development of NS world code.
+      # - OEM_CLOSED, (15): In-field application state for end-customer use.
+      # - OEM_FIELD_RETURN, (31): Field return state.
+      # - NXP_FIELD_RETURN, (63): NXP field return state(CQC).
+      # - OEM_LOCKED, (207): Alternative in-field application state that prevents use of field return/failure analysis states. The rest of the behavior of the device is same as the In-field state.
+      # - SHREDDED, (255): Bricked state to prevent device use.
+      Redundancy: '0x0000' # Width: 16b, Description: None
+  RKTH: # ROTKH field is compounded by 12 32-bit fields and contains Root key table hash. For ECC P-256 keys RKTH is a 32-bit SHA-256 digest of four SHA-256 digests computed over four OEM public keys (OEM has four private-public key pairs in case one of its private keys becomes compromised) or in case that ECC P-384 keys are used, RKTH is 48-bit SHA-384 digest.
+    value: 3F1F71CCD8DFCBCFF3E445C21F003A974F8C40CE9AA7D8C567416B9AB45D165500000000000000000000000000000000  # The value width: 384b

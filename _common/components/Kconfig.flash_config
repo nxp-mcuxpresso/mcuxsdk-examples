@@ -1,0 +1,4 @@
+menu "Board flash config"
+    config MCUX_COMPONENT_driver.flash_config
+        bool "Use flash_config in image"
+endmenu

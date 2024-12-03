@@ -1,0 +1,11 @@
+.. _examples__cmsis_driver_examples__dspi__int_b2b_transfer:
+
+int_b2b_transfer
+################
+
+.. toctree::
+   :maxdepth: 1
+
+
+   master/readme.md
+   slave/readme.md

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+romapi_runbootloader:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcxa_romapi/runbootloader
+    project-root-path: boards/${board}/driver_examples/romapi/runbootloader/${multicore_foldername}
+    document:
+      name: romapi_runbootloader${core_id_suffix_name}
+      category: driver_examples
+      brief: The runbootloader project is a simple demonstration which run into the
+        bootloader with the user parameter. The demo forces the device run into the
+        ISP mode with the specific peripheral.
+      example_readme:
+      - examples/driver_examples/mcxa_romapi/runbootloader/readme.md
+      - examples/_boards/${board}/driver_examples/romapi/runbootloader/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []

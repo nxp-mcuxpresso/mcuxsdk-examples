@@ -1,0 +1,10 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_dsp.ewp
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_rdrw612bga/app_rdrw612bga.uvprojx
+  - scripts/guigenerator/templates/mdk/app_rdrw612bga/app_rdrw612bga.uvoptx
+  - scripts/guigenerator/templates/mdk/app_rdrw612bga/JLinkSettings.ini

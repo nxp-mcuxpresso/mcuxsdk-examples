@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+freertos_tickless_rgpio:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_examples/freertos_tickless_rgpio
+    project-root-path: boards/${board}/freertos_examples/freertos_tickless_rgpio/${multicore_foldername}
+    document:
+      name: freertos_tickless_rgpio${core_id_suffix_name}
+      category: freertos_examples
+      brief: This document explains the freertos_tickless example. It shows the CPU
+        enter at sleep mode and then it is waked up by expired time delay that using
+        timer module.
+      example_readme:
+      - examples/freertos_examples/freertos_tickless_rgpio/readme.md
+      - examples/_boards/${board}/freertos_examples/freertos_tickless_rgpio/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

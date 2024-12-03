@@ -1,0 +1,50 @@
+maestro_usb_speaker:
+  section-type: application
+  contents:
+    meta_path: examples/audio_examples/maestro_usb_speaker
+    project-root-path: boards/${board}/audio_examples/maestro_usb_speaker/${multicore_foldername}
+    document:
+      name: maestro_usb_speaker
+      category: audio_examples
+      brief: Audio maestro framework USB speaker example.
+      example_readme:
+      - examples/audio_examples/maestro_usb_speaker/readme.md
+      - examples/_boards/${board}/audio_examples/maestro_usb_speaker/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    lpcxpresso55s69@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
+    mcxn5xxevk@cm33_core0:
+    - -mdk@debug
+    - -mdk@release

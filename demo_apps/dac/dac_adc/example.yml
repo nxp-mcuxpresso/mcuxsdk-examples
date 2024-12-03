@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dac_adc:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/dac/dac_adc
+    project-root-path: boards/${board}/demo_apps/dac_adc/${multicore_foldername}
+    document:
+      name: dac_adc${core_id_suffix_name}
+      category: demo_apps
+      brief: The DAC / ADC demo application demonstrates the use of the DAC and ADC
+        peripherals. This application demonstrates how toconfigure the DAC and set
+        the output on the DAC. This demo also demonstrates how to configure the ADC
+        in 'Blocking Mode'and how to read ADC values.
+      example_readme:
+      - examples/demo_apps/dac/dac_adc/readme.md
+      - examples/_boards/${board}/demo_apps/dac_adc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmmcxc444: []

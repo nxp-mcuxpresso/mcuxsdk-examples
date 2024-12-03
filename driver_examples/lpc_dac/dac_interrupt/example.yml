@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpc_dac_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_dac/dac_interrupt
+    project-root-path: boards/${board}/driver_examples/dac/lpc_dac_interrupt/${multicore_foldername}
+    document:
+      name: lpc_dac_interrupt${core_id_suffix_name}
+      category: driver_examples/dac
+      brief: The dac_interrupt example shows how to use DAC with interrupts and produce
+        an arbitrary, user-defined waveform ofselectable frequency.The output can
+        be observed with an oscilloscope. When the DAC's double-buffer feature is
+        enabled, any write to the CR register will only load the pre-buffer, whichshares
+        its register address with the CR register. The CR itself will be loaded from
+        the pre-buffer whenever the counter reaches zero and the interrupt would occur.
+        At the same time the counter is reloaded with the COUNTVALregister value.
+        In the DAC ISR, user-defined waveform array would be transfered to pre-buffer
+        in order.
+      example_readme:
+      - examples/driver_examples/lpc_dac/dac_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/dac/lpc_dac_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso804: []
+    lpcxpresso845max: []

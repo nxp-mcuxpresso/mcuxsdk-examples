@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpi2c_vlps:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/lpi2c/lpi2c_vlps
+    project-root-path: boards/${board}/demo_apps/lpi2c_vlps/${multicore_foldername}
+    document:
+      name: lpi2c_vlps${core_id_suffix_name}
+      category: demo_apps
+      brief: This example describes how to use kinetis SDK drivers to implement LPI2C
+        transmit and receive in the VLPS (very low power STOP mode) with async DMA.The
+        LPI2C module is designed to have ability to work under low power module like
+        STOP, VLPW and VLPS. It can use DMA to transmit the data from or to application
+        user buffer without CPU interaction.It uses LPI2C to access the on board accelerometer
+        sensor to read the Accelerometer X, Y, Z data every 500ms. CPU would keep
+        in VLPS low power mode, except for some trigger events and data output to
+        LPUART0.
+      example_readme:
+      - examples/demo_apps/lpi2c/lpi2c_vlps/readme.md
+      - examples/_boards/${board}/demo_apps/lpi2c_vlps/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp: []
+    frdmke15z: []
+    frdmke17z: []

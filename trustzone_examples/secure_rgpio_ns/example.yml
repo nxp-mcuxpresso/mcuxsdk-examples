@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+secure_rgpio_ns:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/trustzone_examples/secure_rgpio_ns
+    project-root-path: boards/${board}/trustzone_examples/secure_rgpio/secure_rgpio_ns/${multicore_foldername}
+    document:
+      name: secure_rgpio_ns${core_id_suffix_name}
+      category: trustzone_examples
+      brief: The Hello World demo application provides a sanity check for the new
+        SDK build environments and board bring up. This demo application also utilizes
+        TrustZone, so it demonstrates basic techniques for TrustZone applications
+        development. This is non-secure part of the application.
+  boards:
+    evk9mimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    evkmimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release

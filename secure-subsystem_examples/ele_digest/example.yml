@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_digest:
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_digest/.
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_digest/${multicore_foldername}
+    document:
+      name: ele_digest${core_id_suffix_name}
+      category: secure-subsystem_examples
+      brief: The ELE digest application provides example how to use SSSAPI to perform
+        digest cryptographic operations.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_digest/readme.md
+      - examples/_boards/${board}/secure-subsystem_examples/ele_digest/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release

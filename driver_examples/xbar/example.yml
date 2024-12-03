@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+xbar:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/xbar
+    project-root-path: boards/${board}/driver_examples/xbar/${multicore_foldername}
+    document:
+      name: xbar${core_id_suffix_name}
+      category: driver_examples/xbar
+      brief: The Xbar project is a simple demonstration program of the SDK Xbar driver.The
+        intended applicationof this module is to provide a flexible crossbar switch
+        function that allows any input to beconnected to any output under user control.It
+        sets up the Xbar hardware block to trigger a periodicinterrupt after every
+        1 second. When the Xbar interrupt is triggered a message a printed on the
+        UARTterminal.
+      example_readme:
+      - examples/driver_examples/xbar/readme.md
+      - examples/_boards/${board}/driver_examples/xbar/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

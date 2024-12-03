@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+tsi_v4_low_power_mode:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tsi/tsi_v4/low_power
+    project-root-path: boards/${board}/driver_examples/tsi_v4/low_power/${multicore_foldername}
+    document:
+      name: tsi_v4_low_power_mode${core_id_suffix_name}
+      category: driver_examples/tsi_v4
+      brief: 'The tsi_v4_low_power example shows how to use TSI_V4 driver in low power
+        modes:In this example , we make use of the available electrodes on board to
+        show driver usage.1. Firstly, we get the non-touch calibration results as
+        baseline electrode counter;2. Then, we start the Hardware-Trigger scan using
+        interrupt method to wakeup from low power   modes through pad touch;3. Note:
+        you can select which low power mode you want to enter into.'
+      example_readme:
+      - examples/driver_examples/tsi/tsi_v4/low_power/readme.md
+      - examples/_boards/${board}/driver_examples/tsi_v4/low_power/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2a4s: []

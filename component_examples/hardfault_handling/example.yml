@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+hardfault_handling:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/hardfault_handling/.
+    project-root-path: boards/${board}/component_examples/hardfault_handling/${multicore_foldername}
+    document:
+      name: hardfault_handling${core_id_suffix_name}
+      category: component_examples
+      brief: The Hardfault Handling demo is used to get excaption handling log. By
+        default, exception handling module will overwrite the following ISR as the
+        reference. "NMI_Handler, HardFault_Handler, MemManage_Handler, BusFault_Handler,
+        UsageFault_Handler". The users can refer to these ISRs to have their owner
+        ISRs to output the stack frame information.
+      example_readme:
+      - examples/component_examples/hardfault_handling/readme.md
+      - examples/_boards/${board}/component_examples/hardfault_handling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1020:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1024:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

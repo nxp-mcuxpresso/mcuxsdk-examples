@@ -1,0 +1,28 @@
+
+if MCUX_PRJSEG_module.board.lvgl
+
+    config BOARD_USE_FLEXIO_SMARTDMA
+        bool "Enable SMARTDMA for FLEXIO"
+        default y
+        depends on MCUX_HAS_COMPONENT_driver.flexio_mculcd_smartdma
+        help
+            No prefix in generated macro
+
+    config LVGL_SUPPORT_VDB_COUNT
+        int "LVGL virtual buffer count"
+        default 2
+        range 1 2
+
+endif
+
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.flexio_mculcd_edma if MCUX_HAS_COMPONENT_driver.flexio_mculcd_edma
+    select MCUX_COMPONENT_driver.dbi_flexio_edma if MCUX_HAS_COMPONENT_driver.flexio_mculcd_edma
+    select MCUX_COMPONENT_driver.flexio_mculcd_smartdma if MCUX_HAS_COMPONENT_driver.flexio_mculcd_smartdma
+    select MCUX_COMPONENT_driver.dbi_flexio_smartdma if MCUX_HAS_COMPONENT_driver.flexio_mculcd_smartdma
+    select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_driver.lpflexcomm_lpi2c if MCUX_HAS_COMPONENT_driver.lpflexcomm_lpi2c
+    select MCUX_COMPONENT_driver.lpflexcomm if MCUX_HAS_COMPONENT_driver.lpflexcomm
+    select MCUX_COMPONENT_driver.lpi2c if MCUX_HAS_COMPONENT_driver.lpi2c
+    select MCUX_COMPONENT_driver.st7796s
+    select MCUX_COMPONENT_driver.inputmux

@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+adv_ext_peripheral_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/adv_ext_peripheral/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/adv_ext_peripheral/freertos/${multicore_foldername}
+    document:
+      name: adv_ext_peripheral_freertos
+      category: wireless_examples/bluetooth/adv_ext_peripheral/freertos/
+      brief: The BLE ble adv ext peripheral application is a simple demonstration program based
+        on the MCUXpresso SDK.The application implements a Bluetooth Low Energy
+        extended advertising peripheral with a shell interface.
+  boards:
+    kw45b41zevk: []
+    k32w148evk: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

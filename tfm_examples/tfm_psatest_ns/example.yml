@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+tfm_psatest_ns:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/tfm_examples/tfm_psatest_ns
+    project-root-path: boards/${board}/tfm_examples/tfm_psatest/tfm_psatest_ns
+    document:
+      name: tfm_psatest_ns${core_id_suffix_name}
+      category: tfm_examples
+      linked_project: tfm_psatest_s
+      brief: The tfm_psatest non-secure example to showcase tfm working.
+  boards:
+    frdmrw612:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    rdrw612bga:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    mcxn9xxevk@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    frdmmcxn947@cm33_core0: []

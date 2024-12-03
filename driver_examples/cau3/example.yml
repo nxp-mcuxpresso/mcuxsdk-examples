@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+cau3:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cau3
+    project-root-path: boards/${board}/driver_examples/cau3/${multicore_foldername}
+    document:
+      name: cau3${core_id_suffix_name}
+      category: driver_examples/cau3
+      brief: The CAU3 Example project is a demonstration program that uses the KSDK
+        software implementseveral cryptography algorithms using the CAU3 software
+        driver.
+      example_readme:
+      - examples/driver_examples/cau3/readme.md
+      - examples/_boards/${board}/driver_examples/cau3/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []

@@ -1,0 +1,90 @@
+host_audio_speaker_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_host_audio_speaker/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_host_audio_speaker/bm/${multicore_foldername}
+    document:
+      name: host_audio_speaker_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The Host Audio example supports the audio speaker device. @n The application
+        prints the audio speaker information when the USB speaker device is attached.
+      example_readme:
+      - examples/usb_examples/usb_host_audio_speaker/readme.md
+      - examples/_boards/${board}/usb_examples/usb_host_audio_speaker/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_host_audio_speaker/audio10.jpg
+      - examples/usb_examples/usb_host_audio_speaker/audio20.jpg
+      - examples/usb_examples/usb_host_audio_speaker/host_audio_speaker_output.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmmcxn236: []
+    frdmrw612: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

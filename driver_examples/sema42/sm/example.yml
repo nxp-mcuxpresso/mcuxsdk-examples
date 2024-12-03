@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sema42_sm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sema42/sm
+    project-root-path: boards/${board}/driver_examples/sema42/sm/${multicore_foldername}
+    document:
+      name: sema42_sm${core_id_suffix_name}
+      category: driver_examples/sema42
+      brief: The sema42 sm example shows how to use SEMA42 driver to lock and unlock
+        a sema gate.This example should work together with SM(system manager). This
+        example runs on Cortex-M core.
+      example_readme:
+      - examples/driver_examples/sema42/sm/readme.md
+      - examples/_boards/${board}/driver_examples/sema42/sm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []

@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+gdma_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/gdma/basic
+    project-root-path: boards/${board}/driver_examples/gdma/basic/${multicore_foldername}
+    document:
+      name: gdma_basic${core_id_suffix_name}
+      category: driver_examples/gdma
+      brief: This example shows how to use GDMA functional APIs to do memory to memory
+        data copy.
+      example_readme:
+      - examples/driver_examples/gdma/basic/readme.md
+      - examples/_boards/${board}/driver_examples/gdma/basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

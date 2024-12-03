@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ocotp_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ocotp
+    project-root-path: boards/${board}/driver_examples/ocotp/${multicore_foldername}
+    document:
+      name: ocotp_example${core_id_suffix_name}
+      category: driver_examples/ocotp
+      brief: The ocotp driver example shows how to operation the OCOTP register with
+        driver API.
+      example_readme:
+      - examples/driver_examples/ocotp/readme.md
+      - examples/_boards/${board}/driver_examples/ocotp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcxromapi_flash_hiding:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcx_romapi/flashhiding
+    project-root-path: boards/${board}/driver_examples/romapi/flashhiding/${multicore_foldername}
+    document:
+      name: mcxromapi_flash_hiding${core_id_suffix_name}
+      category: driver_examples
+      brief: The FLASH_HIDING project is a simple demonstration program showing flash
+        hiding and customer defined proteted area (CDPA).
+      example_readme:
+      - examples/driver_examples/mcx_romapi/flashhiding/readme.md
+      - examples/_boards/${board}/driver_examples/romapi/flashhiding/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

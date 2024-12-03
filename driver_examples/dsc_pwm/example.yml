@@ -1,0 +1,23 @@
+dsc_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_pwm
+    project-root-path: boards/${board}/driver_examples/pwm/${multicore_foldername}
+    document:
+      name: dsc_pwm${core_id_suffix_name}
+      category: driver_examples
+      brief: The PWM project is a simple demonstration program of the SDK PWM driver.The
+        pulse width modulator (PWM) module contains PWM submodules, each of which
+        is set up to control a single half-bridge power stage.Fault channel support
+        is provided. This PWM module can generate various switching patterns, including
+        highly sophisticated waveforms.It can be used to control all known Switched
+        Mode Power Supplies (SMPS) topologies.
+      example_readme:
+      - examples/driver_examples/dsc_pwm/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

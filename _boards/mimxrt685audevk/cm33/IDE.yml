@@ -1,0 +1,26 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_dsp.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_mimxrt685audevk/app_mimxrt685audevk.uvoptx
+  - scripts/guigenerator/templates/mdk/app_mimxrt685audevk/app_mimxrt685audevk.uvprojx
+  - scripts/guigenerator/templates/mdk/app_mimxrt685audevk/JLinkSettings.JLinkScript
+  - scripts/guigenerator/templates/mdk/app_mimxrt685audevk/JLinkSettings.ini
+board-file:
+  files:
+  - attribute: board-file
+    package_path: project-root-path/iar
+    project_path: mimxrt685audevk
+    source: examples/_boards/mimxrt685audevk/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
+    toolchains: iar
+initialization_file:
+  files:
+  - attribute: initialization_file
+    package_path: project-root-path/mdk
+    project_path: mimxrt685audevk
+    source: examples/_boards/mimxrt685audevk/mimxrt685audevk_flash.ini
+    targets: debug release flash_debug flash_release
+    toolchains: mdk

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+cmsis_dspi_int_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/dspi/int_b2b_transfer/master
+    project-root-path: boards/${board}/cmsis_driver_examples/dspi/int_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: cmsis_dspi_int_b2b_transfer_master${core_id_suffix_name}
+      category: cmsis_driver_examples/dspi
+      brief: 'The dspi_int_b2b_transfer example shows how to use DSPI CMSIS driver
+        in interrupt way:In this example , we need two boards, one board used as DSPI
+        master and another board used as DSPI slave.The file ''dspi_int_b2b_transfer_master.c''
+        includes the DSPI master code.This example uses the transactional API in DSPI
+        driver.1. DSPI master send/received data to/from DSPI slave in interrupt . '
+      example_readme:
+      - examples/cmsis_driver_examples/dspi/int_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/dspi/int_b2b_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []

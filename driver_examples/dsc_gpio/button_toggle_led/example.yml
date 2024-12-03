@@ -1,0 +1,18 @@
+dsc_gpio_button_toggle_led:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_gpio/button_toggle_led
+    project-root-path: boards/${board}/driver_examples/gpio/button_toggle_led/${multicore_foldername}
+    document:
+      name: dsc_gpio_button_toggle_led${core_id_suffix_name}
+      category: driver_examples/gpio
+      brief: The GPIO Led Output example demonstrate toggle LED by GPIO.
+      example_readme:
+      - examples/driver_examples/dsc_gpio/button_toggle_led/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

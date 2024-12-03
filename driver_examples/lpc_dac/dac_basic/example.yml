@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpc_dac_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_dac/dac_basic
+    project-root-path: boards/${board}/driver_examples/dac/lpc_dac_basic/${multicore_foldername}
+    document:
+      name: lpc_dac_basic${core_id_suffix_name}
+      category: driver_examples/dac
+      brief: The dac_basic example shows how to use DAC module simply as the general
+        DAC converter.When the DAC's double-buffer feature is not enabled, the CR
+        register is used as the DAC output data register directly.The converter would
+        always output the value of the CR register. In this example, it gets the value
+        from terminal,outputs the DAC output voltage through DAC output pin.
+      example_readme:
+      - examples/driver_examples/lpc_dac/dac_basic/readme.md
+      - examples/_boards/${board}/driver_examples/dac/lpc_dac_basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso804: []
+    lpcxpresso845max: []

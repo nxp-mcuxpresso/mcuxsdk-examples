@@ -1,0 +1,50 @@
+usb_pd_sink_battery_bm_om13790host:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_pd_sink_battery_om13790host/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm/${multicore_foldername}
+    document:
+      name: usb_pd_sink_battery_bm_om13790host${core_id_suffix_name}
+      category: usb_examples/
+      brief: The application simulate battery product , it prints the battery percent
+        continually. The demo works as sink and get power from partner port
+      example_readme:
+      - examples/usb_examples/usb_pd_sink_battery_om13790host/readme.md
+      - examples/_boards/${board}/usb_examples/usb_pd_sink_battery_om13790host/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

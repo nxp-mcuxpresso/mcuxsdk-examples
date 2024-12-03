@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc_sample_rate_measurement:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sar_adc/sample_rate_measurement
+    project-root-path: boards/${board}/driver_examples/sar_adc/sample_rate_measurement/${multicore_foldername}
+    document:
+      name: adc_sample_rate_measurement${core_id_suffix_name}
+      category: driver_examples/sar_adc
+      brief: The SAR ADC sample rate measurement example shows how to measure SAR
+        ADC sample rate. In this demo, the ADC works at maximum clock frequency, after
+        presses any key on the keyboard, the ADC sample rate will be printed to the
+        serial terminal.
+      example_readme:
+      - examples/driver_examples/sar_adc/sample_rate_measurement/readme.md
+      - examples/_boards/${board}/driver_examples/sar_adc/sample_rate_measurement/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx95lpd5evk19@cm7: []

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexspi_xecc_single_error:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/xecc/flexspi/xecc_single_error
+    project-root-path: boards/${board}/driver_examples/xecc/flexspi/xecc_single_error/${multicore_foldername}
+    document:
+      name: flexspi_xecc_single_error${core_id_suffix_name}
+      category: driver_examples/xecc
+      brief: The XECC Single Error project is a simple demonstration program of the
+        SDK XECC driver. It supports Single Error Correction ECC function to provide
+        reliability for external memory ECC region access.
+      example_readme:
+      - examples/driver_examples/xecc/flexspi/xecc_single_error/readme.md
+      - examples/_boards/${board}/driver_examples/xecc/flexspi/xecc_single_error/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

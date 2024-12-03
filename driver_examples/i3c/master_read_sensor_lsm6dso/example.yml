@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+i3c_master_read_sensor_lsm6dso:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/master_read_sensor_lsm6dso
+    project-root-path: boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/${multicore_foldername}
+    document:
+      name: i3c_master_read_sensor_lsm6dso${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_master_read_sensor_lsm6dso example shows how to use i3c driver
+        as master to communicate with sensor LSM6DSO.
+      example_readme:
+      - examples/driver_examples/i3c/master_read_sensor_lsm6dso/readme.md
+      - examples/_boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []

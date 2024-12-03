@@ -1,0 +1,21 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+# FreeRTOS board config
+if MCUX_COMPONENT_middleware.freertos-kernel
+    config configENABLE_FPU
+        default n
+
+    config configENABLE_MPU
+        default n
+
+    config configENABLE_TRUSTZONE
+        default n
+
+    config configRUN_FREERTOS_SECURE_ONLY
+        default y
+endif
+
+config HAL_RPMSG_SELECT_ROLE
+    default n

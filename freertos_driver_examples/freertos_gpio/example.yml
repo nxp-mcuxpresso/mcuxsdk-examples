@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_gpio:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_gpio
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_gpio/${multicore_foldername}
+    document:
+      name: freertos_gpio${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: FreeRTOS GPIO driver example.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_gpio/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_gpio/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

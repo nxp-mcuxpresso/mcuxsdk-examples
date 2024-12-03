@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+psa_crypto_opaque_key_examples:
+  section-type: application
+  contents:
+    meta_path: examples/mbedtls3x_examples/psa_crypto_opaque_key_examples/
+    project-root-path: boards/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples/${core_id}
+    document:
+      name: psa_crypto_opaque_key_examples${core_id_suffix_name}
+      category: mbedtls3x_examples
+      brief: The PSA crypto examples demonstrating how to generate an opaque key and
+        use it.
+      example_readme:
+      - examples/mbedtls3x_examples/psa_crypto_opaque_key_examples/readme.md
+      - examples/_boards/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release

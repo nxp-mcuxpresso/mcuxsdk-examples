@@ -1,0 +1,16 @@
+ezhv_gpio_toggle_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/gpio_toggle/primary_core
+    project-root-path: boards/${board}/ezhv_examples/gpio_toggle/${multicore_foldername}
+    document:
+      name: ezhv_gpio_toggle_primary_core
+      category: ezhv_examples
+      brief: This project shows how to toggle GPIO to driver LED.
+      example_readme:
+      - examples/ezhv_examples/gpio_toggle/readme.md
+      - examples/_boards/${board}/ezhv_examples/gpio_toggle/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

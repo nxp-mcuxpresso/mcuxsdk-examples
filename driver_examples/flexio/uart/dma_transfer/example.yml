@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexio_uart_dma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio/uart/dma_transfer
+    project-root-path: boards/${board}/driver_examples/flexio/uart/dma_transfer/${multicore_foldername}
+    document:
+      name: flexio_uart_dma_transfer${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: 'The flexio_uart_dma example shows how to use flexio uart driver in dma
+        way:In this example, a flexio simulated uart connect to PC through USB-Serial,
+        the board will send back all charactersthat PC send to the board. Note: two
+        queued transfer in this example, so please input even number characters.'
+      example_readme:
+      - examples/driver_examples/flexio/uart/dma_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexio/uart/dma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    frdmmcxc444: []

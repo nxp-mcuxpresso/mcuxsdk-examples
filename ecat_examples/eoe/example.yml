@@ -1,0 +1,44 @@
+ecat_eoe:
+  section-type: application
+  contents:
+    meta_path: examples/ecat_examples/eoe
+    project-root-path: boards/${board}/ecat_examples/eoe/${multicore_foldername}
+    document:
+      name: ecat_eoe${core_id_suffix_name}
+      category: ecat_examples
+      brief: EtherCAT eoe example example
+      example_readme:
+      - examples/ecat_examples/eoe/readme.md
+      - examples/_boards/${board}/ecat_examples/eoe/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1180@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release

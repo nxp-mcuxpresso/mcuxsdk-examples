@@ -1,0 +1,63 @@
+dev_composite_cdc_msc_disk_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_composite_cdc_msc_disk/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_device_composite_cdc_msc_disk/freertos/${multicore_foldername}
+    document:
+      name: dev_composite_cdc_msc_disk_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: The Composite CDC_MSC project is a simple demonstration program based
+        on the MCUXpresso SDK.  It is enumerated as a COM port and a RAM disk, which
+        can be opened using terminal tools, such as TeraTerm. The demo echoes back
+        any character it receives. The RAM disk can be formatted.
+      example_readme:
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_composite_cdc_msc_disk/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/cdc_driver_install_00.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/cdc_driver_install_01.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/cdc_driver_install_02.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/cdc_driver_install_03.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/cdc_driver_install_04.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/cdc_driver_install_05.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/cdc_driver_install_06.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/run_vcom.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/sdcard_scan.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk/sd_card.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

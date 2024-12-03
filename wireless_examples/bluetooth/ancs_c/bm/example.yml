@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+ancs_client_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/ancs_c/bm
+    project-root-path: boards/${board}/wireless_examples/bluetooth/ancs_c/bm/${multicore_foldername}
+    document:
+      name: ancs_client_bm
+      category: wireless_examples/bluetooth/ancs_c/bm/
+      brief: The BLE ancs client application is a simple demonstration program based
+        on the MCUXpresso SDK.This application implements an ANCS Client.To test the
+        service/profile a GAP Central device is required which has the ANCS service
+        available.
+  boards:
+    kw45b41zevk: []
+    k32w148evk: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

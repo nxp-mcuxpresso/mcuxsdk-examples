@@ -1,0 +1,30 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+macro-file:
+  files:
+  - source: examples/_boards/${board}/evkbmimxrt1170_connect_cm4_sdram.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: sdram_debug sdram_release sdram_txt_debug sdram_txt_release
+    choose: true
+    package_path: boards/${board}/multicore_examples/hello_world/cm4/iar
+    project_path: evkbmimxrt1170
+  - source: examples/_boards/${board}/evkbmimxrt1170_connect_cm4.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: flexspi_nor_debug flexspi_nor_release
+    choose: true
+    package_path: boards/${board}/multicore_examples/hello_world/cm4/iar
+    project_path: evkbmimxrt1170
+jlink_script_file:
+  files:
+  - source: examples/_boards/${board}/evkbmimxrt1170_connect_cm4_cm4side.jlinkscript
+    attribute: jlink_script_file
+    type: other
+    toolchains: mcux
+    targets: debug release
+    package_path: boards/${board}/multicore_examples/hello_world/cm4/
+    project_path: evkbmimxrt1170

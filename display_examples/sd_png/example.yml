@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+sd_png:
+  section-type: application
+  contents:
+    meta_path: examples/display_examples/sd_png
+    project-root-path: boards/${board}/display_examples/sd_png/${multicore_foldername}
+    document:
+      name: sd_png${core_id_suffix_name}
+      category: display_examples
+      brief: The SD PNG Demo application reads the PNG pictures from the SD card,
+        decodesthem, and shows them in the LCD panel one by one.
+      example_readme:
+      - examples/display_examples/sd_png/readme.md
+      - examples/_boards/${board}/display_examples/sd_png/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1160@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

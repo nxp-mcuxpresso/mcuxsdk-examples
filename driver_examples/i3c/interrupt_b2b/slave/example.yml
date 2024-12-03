@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i3c_interrupt_b2b_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/interrupt_b2b/slave
+    project-root-path: boards/${board}/driver_examples/i3c/interrupt_b2b/slave/${multicore_foldername}
+    document:
+      name: i3c_interrupt_b2b_slave${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_interrupt_b2b_slave example shows how to use i3c driver as slave
+        to do board to board transfer with a interrupt master. In this example, one
+        i3c instance as slave and another i3c instance on the other board as master.
+        Master sends a piece of data to slave, and receive a piece of data from slave.
+        This example checks if the data received from slave is correct.
+      example_readme:
+      - examples/driver_examples/i3c/interrupt_b2b/slave/readme.md
+      - examples/_boards/${board}/driver_examples/i3c/interrupt_b2b/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso860max: []

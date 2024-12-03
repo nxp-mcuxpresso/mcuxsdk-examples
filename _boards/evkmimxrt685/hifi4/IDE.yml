@@ -1,0 +1,25 @@
+xtensa:
+  project-templates:
+    - scripts/guigenerator/templates/xtensa/hifi4/.cproject
+    - scripts/guigenerator/templates/xtensa/hifi4/.project
+    - scripts/guigenerator/templates/xtensa/hifi4/.xxproject
+    - scripts/guigenerator/templates/xtensa/hifi4/target.bts
+    - scripts/guigenerator/templates/xtensa/hifi4/debug jlink.launch
+xcc:
+  project-templates:
+    - scripts/guigenerator/templates/xclang/CMakeLists.txt
+    - ecosystem/tools/cmake_toolchain_files/xclang.cmake
+xtensa_build:
+  files:
+    - source: scripts/guigenerator/templates/xtensa/hifi4/post_build.bat
+      project_path: project-root-path
+      package_path: project-root-path
+      attribute: postbuild-file
+      toolchains: xtensa
+      targets: debug release
+    - source: scripts/guigenerator/templates/xtensa/hifi4/pre_clean.bat
+      project_path: project-root-path
+      package_path: project-root-path
+      attribute: preclean-file
+      toolchains: xtensa
+      targets: debug release

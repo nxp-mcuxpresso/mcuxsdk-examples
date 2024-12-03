@@ -1,0 +1,8 @@
+
+mcux_add_macro(
+    CC "-DPRINTF_ADVANCED_ENABLE=1\
+       -DSCANF_ADVANCED_ENABLE=1\
+       -DDEBUG_CONSOLE_PRINTF_MAX_LOG_LEN=200\
+       -DFRDM_KE16Z\
+       -DFREEDOM"
+)

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+ecspi_polling_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ecspi/polling_b2b_transfer/master
+    project-root-path: boards/${board}/driver_examples/ecspi/polling_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: ecspi_polling_b2b_transfer_master${core_id_suffix_name}
+      category: driver_examples/ecspi
+      brief: The ecspi_polling_b2b_transfer example shows how to use ECSPI driver
+        in polling way:In this example , we need two boards, one board used as ECSPI
+        master and another board used as ECSPI slave.The file 'ecspi_polling_b2b_transfer_master.c'
+        includes the ECSPI master code.1. ECSPI master send/received data to/from
+        ECSPI slave in polling . (ECSPI Slave using interrupt to receive/send the
+        data)
+      example_readme:
+      - examples/driver_examples/ecspi/polling_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/driver_examples/ecspi/polling_b2b_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []

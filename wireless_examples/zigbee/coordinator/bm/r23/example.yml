@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+zigbee_coordinator_bm_r23:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/zigbee/coordinator/bm/r23
+    project-root-path: boards/${board}/wireless_examples/zigbee/coordinator_r23/bm
+    document:
+      name: zigbee_coordinator_bm_r23
+      category: wireless_examples/zigbee/coordinator/bm
+      brief: The zigbee Coordinator example is a simple coordinator example on the MCUXpresso SDK.
+             The application implements a Zigbee coordinator that can form a network and steer it.
+  boards:
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release

@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+smartcard:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/smartcard
+    project-root-path: boards/${board}/driver_examples/smartcard/${multicore_foldername}
+    document:
+      name: smartcard${core_id_suffix_name}
+      category: driver_examples/smartcard
+      brief: This example demonstrates the SDK Peripheral drivers working with different
+        methods.This example demonstrates use of smartcard driver API to read GSM
+        sim card ICC-ID (Integrated circuit card identifier,which should be placed
+        on the card). Please be aware, that this example is just simple demonstration
+        of smartcard driver API. It may not work with all typesof GSM sim cards.
+      example_readme:
+      - examples/driver_examples/smartcard/readme.md
+      - examples/_boards/${board}/driver_examples/smartcard/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    rdrw612bga: []

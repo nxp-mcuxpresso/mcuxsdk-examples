@@ -1,0 +1,9 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+iar:
+  project_language: auto
+mcux:
+  project_language: cpp

@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+kpp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/kpp
+    project-root-path: boards/${board}/driver_examples/kpp/${multicore_foldername}
+    document:
+      name: kpp${core_id_suffix_name}
+      category: driver_examples/kpp
+      brief: The KPP Example project is a demonstration program that uses the KSDK
+        software to manipulate the Keypad MATRIX.The example is use the continuous
+        column and rows as 4*4 or 8*8 matrix to show the example.
+      example_readme:
+      - examples/driver_examples/kpp/readme.md
+      - examples/_boards/${board}/driver_examples/kpp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

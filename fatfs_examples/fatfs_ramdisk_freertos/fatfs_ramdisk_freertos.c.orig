@@ -1,0 +1,230 @@
+/*
+ * Copyright (c) 2015, Freescale Semiconductor, Inc.
+ * Copyright 2016-2024 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/* FreeRTOS kernel includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "timers.h"
+
+/* Freescale includes. */
+#include "fsl_device_registers.h"
+#include "fsl_debug_console.h"
+#include "board.h"
+#include "app.h"
+
+/* FatFs includes. */
+#include "ff.h"
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+#define NUM_WRITERS 3 /* Number of Writer Tasks */
+#define TASK_PRIO   (configMAX_PRIORITIES - 1)
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+static void read_task(void *pvParameters);
+static void write_task(void *pvParameters);
+
+/*******************************************************************************
+ * Globals
+ ******************************************************************************/
+<<<<<<< Updated upstream
+FATFS FatFs; /* Work area (file system object) for logical drive */
+FIL fil;     /* File object */
+=======
+FATFS FatFs;  /* Work area (file system object) for logical drive */
+FIL file;     /* File object */
+>>>>>>> Stashed changes
+
+/*******************************************************************************
+ * Code
+ ******************************************************************************/
+/*!
+ * @brief Main function
+ */
+int main(void)
+{
+
+    BOARD_InitHardware();
+
+    PRINTF("FatFs RAM disk FreeRTOS example.\r\n\r\n");
+
+    xTaskCreate(read_task, "READ_TASK", configMINIMAL_STACK_SIZE + 200, NULL, TASK_PRIO, NULL);
+
+    vTaskStartScheduler();
+    for (;;)
+        ;
+
+    return 0;
+}
+
+/*!
+ * @brief Task read_task.
+ */
+static void read_task(void *pvParameters)
+{
+    FRESULT res;
+    char line[82];
+    BYTE work[FF_MAX_SS];
+    uint32_t i;
+    uint32_t counter = 0;
+
+    res = f_mount(&FatFs, "", 0);
+    if (res != FR_OK)
+    {
+        PRINTF("READ_TASK: Volume mount failed.\r\n");
+    }
+
+    PRINTF("READ_TASK: Create an FAT volume on the RAM disk.\r\n");
+    res = f_mkfs("", 0, work, sizeof work);
+    if (res != FR_OK)
+    {
+        PRINTF("READ_TASK: File system registration failed.\r\n");
+    }
+
+<<<<<<< Updated upstream
+    PRINTF("READ_TASK: Creating text file.\r\n");
+    res = f_open(&fil, "message.txt", FA_CREATE_NEW | FA_WRITE);
+=======
+    PRINTF("Creating text file.\r\n");
+    res = f_open(&file, "message.txt", FA_CREATE_NEW | FA_WRITE);
+>>>>>>> Stashed changes
+    if (res != FR_OK)
+    {
+        PRINTF("READ_TASK: File opening failed.\r\n");
+    }
+    f_close(&fil);
+
+    for (i = 0; i < NUM_WRITERS; i++)
+    {
+<<<<<<< Updated upstream
+        if (xTaskCreate(write_task, "WRITE_TASK", configMINIMAL_STACK_SIZE + 200, (void *)i, TASK_PRIO, NULL) !=
+            pdPASS)
+=======
+        temp_parameter = (i);
+        xTaskCreate(write_task, "WRITE_TASK", 1024, (void *)temp_parameter, TASK_PRIO, NULL);
+        PRINTF("write_task %d created.\r\n", i);
+    }
+
+    while (1)
+    {
+        PRINTF("READ_TASK, Close file.\r\n");
+        result = f_close(&file);
+        if (result != FR_OK)
+        {
+            PRINTF("File closing failed.\r\n");
+        }
+
+
+        /* Open a text file */
+        PRINTF("READ_TASK, Opening file for read: ");
+        res = f_open(&file, "message.txt", FA_READ);
+        if (res != FR_OK)
+>>>>>>> Stashed changes
+        {
+            PRINTF("READ_TASK: WRITE_TASK %d creation failed!.\r\n", i);
+            vTaskSuspend(NULL);
+        }
+        else
+        {
+            PRINTF("READ_TASK: WRITE_TASK %d created.\r\n", i);
+        }
+    }
+    PRINTF("\r\n");
+
+    while (1)
+    {
+
+        PRINTF("READ_TASK: Opening file for read.\r\n");
+        res = f_open(&fil, "message.txt", FA_READ);
+        if (res != FR_OK)
+        {
+            PRINTF("READ_TASK: File opening failed.\r\n");
+        }
+        else
+        {
+            PRINTF("READ_TASK: File opened.\r\n");
+            /* Read all lines and display it */
+            while (f_gets(line, sizeof line, &file))
+            {
+                PRINTF(line);
+                counter++;
+            }
+            PRINTF("\r\n");
+        }
+<<<<<<< Updated upstream
+
+        PRINTF("READ_TASK: Closing file.\r\n");
+        /* Stop program after several reads */
+        if (counter >= 2)
+=======
+        PRINTF("WRITE_TASK: %d, Opening for write: ", pvParameters);
+        res = f_open(&file, "message.txt", FA_WRITE);
+        if (res != FR_OK)
+>>>>>>> Stashed changes
+        {
+            vTaskSuspendAll();
+        }
+        f_close(&fil);
+
+        PRINTF("\r\n");
+
+        taskYIELD();
+    }
+}
+
+/*!
+ * @brief Task write_task.
+ */
+static void write_task(void *pvParameters)
+{
+    FRESULT res; /* FatFs result code */
+    UINT  bw = 0;
+    char text[][6] = {"AAAAA", "BBBBB", "CCCCC"};
+
+    while (1)
+    {
+<<<<<<< Updated upstream
+
+        PRINTF("WRITE_TASK: %d: Opening for write.\r\n", pvParameters);
+        res = f_open(&fil, "message.txt", FA_OPEN_APPEND | FA_WRITE);
+=======
+        PRINTF("WRITE_TASK: %d, 1st Writing to text file: ", pvParameters);
+        res = f_write(&file, text[(uint32_t)pvParameters], strlen(text[(uint32_t)pvParameters]), &bw);
+>>>>>>> Stashed changes
+        if (res != FR_OK)
+        {
+            PRINTF("WRITE_TASK: %d: File opening failed.\r\n", pvParameters);
+        }
+        else
+        {
+            PRINTF("WRITE_TASK: %d: File opened.\r\n", pvParameters);
+        }
+
+        PRINTF("WRITE_TASK %d: Writing to text file.\r\n", pvParameters);
+        PRINTF("%s\r\n", text[(uint32_t)pvParameters]);
+        res = f_write(&fil, text[(uint32_t)pvParameters], strlen(text[(uint32_t)pvParameters]), &bw);
+        if (res != FR_OK)
+        {
+            PRINTF("WRITE_TASK %d: Writing failed.\r\n", pvParameters);
+        }
+        else
+        {
+            PRINTF("WRITE_TASK %d: Writing finished.\r\n", pvParameters);
+        }
+
+        PRINTF("WRITE_TASK %d: Close file.\r\n", pvParameters);
+        f_close(&fil);
+
+        PRINTF("\r\n");
+        taskYIELD();
+    }
+}

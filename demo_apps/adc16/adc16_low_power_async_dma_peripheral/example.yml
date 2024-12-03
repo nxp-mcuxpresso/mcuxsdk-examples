@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc16_low_power_async_dma_peripheral:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/adc16/adc16_low_power_async_dma_peripheral
+    project-root-path: boards/${board}/demo_apps/adc16_low_power_async_dma_peripheral/${multicore_foldername}
+    document:
+      name: adc16_low_power_async_dma_peripheral${core_id_suffix_name}
+      category: demo_apps
+      brief: The ADC Low Power Async DMA demo application demonstrates the usage of
+        the ADC and DMA peripheral while in a low power mode. Themicrocontroller is
+        first set to very low power stop (VLPS) mode. Every 100 ms, low power timer
+        trigger the ADC module convertvalue on ADC channel. After 16 times(1,6s) the
+        DMA transfer finish interrupt wake up the CPU to process sampled data, print
+        result touser and toggle LED.
+      example_readme:
+      - examples/demo_apps/adc16/adc16_low_power_async_dma_peripheral/readme.md
+      - examples/_boards/${board}/demo_apps/adc16_low_power_async_dma_peripheral/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxc242: []

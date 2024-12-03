@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+led_control_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/led_control/freertos/.
+    project-root-path: boards/${board}/component_examples/led_control/freertos/${multicore_foldername}
+    document:
+      name: led_control_freertos${core_id_suffix_name}
+      category: component_examples
+      brief: The LED demo is used to demonstrate how to use new components. The main
+        function of the demo is to control the led by using the shell or button. For
+        shell, please enter \"help\" to get the help information firstly. Turn on
+        LED by using command \"led on\". And turn off LED by using command \"led off\".
+        For button, please press the corresponding button to control LED. Turn on
+        LED when the button is pressed with long press or double click event. And
+        turn off LED when the button is pressed with short press or one click event.
+      example_readme:
+      - examples/component_examples/led_control/freertos/readme.md
+      - examples/_boards/${board}/component_examples/led_control/freertos/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmmcxc444: []
+    lpcxpresso54628: []

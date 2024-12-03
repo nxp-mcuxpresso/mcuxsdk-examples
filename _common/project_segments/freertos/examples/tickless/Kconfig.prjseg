@@ -1,0 +1,46 @@
+config MCUX_PRJSEG_freertos_tickless_lpc_rtc_segment
+    bool "freertos_tickless_gpt_igpio_segment"
+    default n
+    select MCUX_COMPONENT_driver.lpc_rtc
+
+config MCUX_PRJSEG_freertos_tickless_ostimer_segment
+    bool "freertos_tickless_ostimer_segment"
+    default n
+    select MCUX_COMPONENT_driver.ostimer
+
+config MCUX_PRJSEG_freertos_tickless_lptmr_portmax32_segment
+    bool "freertos_tickless_lptmr_portmax32_segment"
+    default n
+    select MCUX_COMPONENT_driver.lptmr
+
+config MCUX_PRJSEG_freertos_tickless_lptmr_segment
+    bool "freertos_tickless_lptmr_segment"
+    default n
+    select MCUX_COMPONENT_driver.lptmr
+
+config MCUX_PRJSEG_freertos_tickless_lpit_segment
+    bool "freertos_tickless_lpit_segment"
+    default n
+    select MCUX_COMPONENT_driver.lpit
+    select MCUX_COMPONENT_driver.irqsteer
+    select MCUX_COMPONENT_driver.igpio
+
+config MCUX_PRJSEG_freertos_tickless_gpt_igpio_segment
+    bool "freertos_tickless_gpt_igpio_segment"
+    default n
+    select MCUX_COMPONENT_driver.gpt
+    select MCUX_COMPONENT_driver.igpio
+
+config MCUX_PRJSEG_freertos_tickless_epit_segment
+    bool "freertos_tickless_epit_segment"
+    default n
+
+config MCUX_PRJSEG_freertos_tickless_qn_rtc_segment
+    bool "freertos_tickless_gpt_igpio_segment"
+    default n
+
+config MCUX_PRJSEG_freertos_tickless_rgpio_gpt_segment
+    bool "freertos_tickless_gpt_igpio_segment"
+    default n
+    select MCUX_COMPONENT_driver.gpt
+    select MCUX_COMPONENT_driver.rgpio

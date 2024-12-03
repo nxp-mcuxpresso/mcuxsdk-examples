@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dmic_multi_channel:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dmic/dmic_multi_channel
+    project-root-path: boards/${board}/driver_examples/dmic/dmic_multi_channel/${multicore_foldername}
+    document:
+      name: dmic_multi_channel${core_id_suffix_name}
+      category: driver_examples/dmic
+      brief: Demonstrates the DMIC multi channel working with I2S. Audio is converted
+        to samples in the DMIC module.Then, the data is placed memory buffer. Last,
+        it is send data to the I2S buffer and send to the CODEC, then the audio data
+        will be output to Lineout of CODEC.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      example_readme:
+      - examples/driver_examples/dmic/dmic_multi_channel/readme.md
+      - examples/_boards/${board}/driver_examples/dmic/dmic_multi_channel/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    mimxrt685audevk@cm33: []

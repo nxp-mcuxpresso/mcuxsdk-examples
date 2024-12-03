@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpuart_dma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpuart/dma_transfer
+    project-root-path: boards/${board}/driver_examples/lpuart/dma_transfer/${multicore_foldername}
+    document:
+      name: lpuart_dma_transfer${core_id_suffix_name}
+      category: driver_examples/lpuart
+      brief: The lpuart_dma Example project is to demonstrate usage of the KSDK lpuart
+        driver.In the example, you can send characters to the console back and they
+        will be printed out onto console in a group of 8 characters.
+      example_readme:
+      - examples/driver_examples/lpuart/dma_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/lpuart/dma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z75m: []
+    twrkm35z75m: []

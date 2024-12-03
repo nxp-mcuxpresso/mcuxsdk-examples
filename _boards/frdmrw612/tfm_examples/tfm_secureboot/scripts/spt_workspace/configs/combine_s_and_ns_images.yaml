@@ -1,0 +1,29 @@
+# ===========  Binary Image Configuration template.  ===========
+# ----------------------------------------------------------------------------------------------------
+#                                        == General Options ==                                        
+# ----------------------------------------------------------------------------------------------------
+name: Single tfm image  # [Optional], Image name, The optional image name used just during prints to console during merging.
+pattern: ones # [Required], Pattern defined as number or special values, The pattern that will be used to fill up gaps between defined regions.
+  # ----------------------------------------------------------------------------------------------------
+  #             == List of possible 2 options. Option types[['string', 'number'],string] ==             
+  # ----------------------------------------------------------------------------------------------------
+  #- 85  # [Example of possible configuration #0] Pattern defined as number, The pattern that will be used to fill up gaps between defined regions.
+  #- rand # [Example of possible configuration #1] Predefined patterns, The pattern that will be used to fill up gaps between defined regions., Possible options:['rand', 'zeros', 'ones', 'inc']
+# ----------------------------------------------------------------------------------------------------
+#                                     == Binary images to merge ==                                    
+# ----------------------------------------------------------------------------------------------------
+regions: # [Optional], Array of defined binary regions, The array of individual regions to merge into final image.
+    # ----------------------------------------------------------------------------------------------------
+    #                    == List of possible 2 options. Option types[object,object] ==                    
+    # ----------------------------------------------------------------------------------------------------
+  -  # [Example of possible configuration #0] 
+    binary_file:  # [Required], Binary file
+      name: secure image  # [Optional], Image name, The optional image name used just during prints to console during merging.
+      path: ../input/tfm_secureboot_s_stripped.bin # [Required], Binary file, The path to binary file to merge into final image
+      offset: 0x00 # [Required], Offset of image, The offset of image to be merge on. The offset could be also negative - for example to 'erase' security bit from address.
+
+  -  # MBI image
+    binary_file:  # [Required], Binary file
+      name: non-secure image  # [Optional], Image name, The optional image name used just during prints to console during merging.
+      path: input/tfm_secureboot_ns.bin # [Required], Binary file, The path to binary file to merge into final image
+      offset: 0x9F000 # [Required], Offset of image, The offset of image to be merge on.

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+hci_bb_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/ble_controller/hci_bb/bm
+    project-root-path: boards/${board}/wireless_examples/ble_controller/hci_bb/bm/${multicore_foldername}
+    document:
+      name: hci_bb_bm${core_id_suffix_name}
+      category: wireless_examples/ble_controller/hci_bb/bm/
+      brief: The BLE ble shell application is a simple demonstration program based
+        on the MCUXpresso SDK.The application implements a Bluetooth Low Energy Host
+        with a shell inteface.
+  boards:
+    frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
+    k32w148evk: []
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    kw45b41zevk: []
+    kw45b41zloc: []
+    mcxw72evk@cm33_core0: []

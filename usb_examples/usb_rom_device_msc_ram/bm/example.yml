@@ -1,0 +1,21 @@
+rom_dev_msc_ram_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_rom_device_msc_ram/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_rom_device_msc_ram/bm/${multicore_foldername}
+    document:
+      name: rom_dev_msc_ram_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The example shows how to use USBD ROM stack to create a RAM disk. When
+        the USB on J3 is connected to a PC, the host would recognize the USB connection
+        as a mass storage device. Note that the storage happens on the RAM and is
+        not a persistent storage..
+      example_readme:
+      - examples/usb_examples/usb_rom_device_msc_ram/bm/readme.md
+      - examples/_boards/${board}/usb_examples/usb_rom_device_msc_ram/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

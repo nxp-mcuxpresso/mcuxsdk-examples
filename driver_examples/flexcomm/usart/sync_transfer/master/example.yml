@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+usart_sync_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/usart/sync_transfer/master
+    project-root-path: boards/${board}/driver_examples/usart/sync_transfer/master/${multicore_foldername}
+    document:
+      name: usart_sync_transfer_master${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: The usart synchronous transfer example shows how to use usart driver
+        in synchronous way.
+      example_readme:
+      - examples/driver_examples/flexcomm/usart/sync_transfer/master/readme.md
+      - examples/_boards/${board}/driver_examples/usart/sync_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []

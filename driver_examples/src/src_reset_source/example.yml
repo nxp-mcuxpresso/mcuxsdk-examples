@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+src_reset_source:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/src/src_reset_source
+    project-root-path: boards/${board}/driver_examples/src/src_reset_source/${multicore_foldername}
+    document:
+      name: src_reset_source${core_id_suffix_name}
+      category: driver_examples
+      brief: The src_reset_source example shows how to check the reset source and
+        boot option with SRC driver.When run this example firstly on the board after
+        power up, the POR reset or IPP reset flag would be asserted. But when running
+        it again, the flag would be cleared, since it is no longer a reset.Usually,
+        the reset flags are used and cleared by ROM code or bootloader to check which
+        reset occurred. With the boot mode words, the initial boot code would go to
+        the right way to execute the start code. For example, when the SoC is waked
+        up from some low power mode, all necessary data are already staying in the
+        RAM, the CPU would not have to reload the program to RAM and execute the application
+        directly.
+      example_readme:
+      - examples/driver_examples/src/src_reset_source/readme.md
+      - examples/_boards/${board}/driver_examples/src/src_reset_source/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

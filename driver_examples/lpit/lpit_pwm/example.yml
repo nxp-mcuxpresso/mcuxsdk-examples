@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpit_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpit/lpit_pwm
+    project-root-path: boards/${board}/driver_examples/lpit/lpit_pwm/${multicore_foldername}
+    document:
+      name: lpit_pwm${core_id_suffix_name}
+      category: driver_examples/lpit
+      brief: This example show how to use SDK drivers to implement the PWM feature
+        by LPIT IP module in dualperiodcounter mode.You can set up PWM singal frequency
+        and duty in this example.Connect PWM singal output pin to oscilloscope, you
+        will see PWM wave.
+      example_readme:
+      - examples/driver_examples/lpit/lpit_pwm/readme.md
+      - examples/_boards/${board}/driver_examples/lpit/lpit_pwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

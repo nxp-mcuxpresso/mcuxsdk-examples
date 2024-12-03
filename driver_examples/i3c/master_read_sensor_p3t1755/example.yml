@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+i3c_master_read_sensor_p3t1755:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/master_read_sensor_p3t1755
+    project-root-path: boards/${board}/driver_examples/i3c/master_read_sensor_p3t1755/${multicore_foldername}
+    document:
+      name: i3c_master_read_sensor_p3t1755${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_master_read_sensor_p3t1755 example shows how to use i3c driver
+        as master to communicate with sensor P3T1755.
+      example_readme:
+      - examples/driver_examples/i3c/master_read_sensor_p3t1755/readme.md
+      - examples/_boards/${board}/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []

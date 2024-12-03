@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpspi_qspi_flash:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpspi/qspi_flash
+    project-root-path: boards/${board}/driver_examples/lpspi/qspi_flash/${multicore_foldername}
+    document:
+      name: lpspi_qspi_flash${core_id_suffix_name}
+      category: driver_examples/lpspi
+      brief: This example shows how to use LPSPI to control the QSPI flash, such as
+        erasing, programing, reading.
+      example_readme:
+      - examples/driver_examples/lpspi/qspi_flash/readme.md
+      - examples/_boards/${board}/driver_examples/lpspi/qspi_flash/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []

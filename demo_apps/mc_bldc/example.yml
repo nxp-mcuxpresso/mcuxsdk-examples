@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+mc_bldc:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/mc_bldc
+    project-root-path: boards/${board}/demo_apps/mc_bldc/${multicore_foldername}
+    document:
+      name: mc_bldc${core_id_suffix_name}
+      category: demo_apps
+      brief: This example demonstrates the control of the BLDC.
+      example_readme:
+      - examples/demo_apps/mc_bldc/readme.md
+      - examples/_boards/${board}/demo_apps/mc_bldc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7: []
+    lpcxpresso55s36: []

@@ -1,0 +1,10 @@
+
+config secondary_board
+    string
+    default "$(board)"
+
+config secondary_toolchain
+    string
+    default "$(toolchain)"
+
+source "${SdkRootDirPath}/examples/_boards/${board}/driver_examples/trdc/${core_id}/Kconfig.sysbuild"

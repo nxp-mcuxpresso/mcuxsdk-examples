@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+erpc_server_matrix_multiply_spi:
+  section-type: application
+  contents:
+    meta_path: examples/multiprocessor_examples/erpc_server_matrix_multiply_spi
+    project-root-path: boards/${board}/multiprocessor_examples/erpc_server_matrix_multiply_spi/${multicore_foldername}
+    document:
+      name: erpc_server_matrix_multiply_spi${core_id_suffix_name}
+      category: multiprocessor_examples
+      brief: 'This example demonstrates usage of eRPC between two boards using SPI
+        transport layer. One board acts like a server and the second as client. When
+        client starts, it generates two randommatrixes and sends them to server. Server
+        then performs matrix multiplication and sendsresult data back to client. Client
+        then prints the result matrix.eRPC documentation eRPC specific files are stored
+        in: middleware/multicore/erpc eRPC documentation is stored in: middleware/multicore/erpc/doc
+        eRPC is open-source project stored on github: https:/github.com/EmbeddedRPC/erpc
+        eRPC documentation can be also found in: http:/embeddedrpc.github.io'
+      example_readme:
+      - examples/multiprocessor_examples/erpc_server_matrix_multiply_spi/readme.md
+      - examples/_boards/${board}/multiprocessor_examples/erpc_server_matrix_multiply_spi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmk32l2b: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

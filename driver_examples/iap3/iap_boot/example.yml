@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iap3_boot:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iap3/iap_boot
+    project-root-path: boards/${board}/driver_examples/iap/iap_boot/${multicore_foldername}
+    document:
+      name: iap3_boot${core_id_suffix_name}
+      category: driver_examples/iap3
+      brief: The IAP project is a simple demonstration program of the SDK IAP driver.
+        It invokes into ROM with user specified parameter.
+      example_readme:
+      - examples/driver_examples/iap3/iap_boot/readme.md
+      - examples/_boards/${board}/driver_examples/iap/iap_boot/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    mimxrt685audevk@cm33: []

@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpit_single_channel:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpit/single_channel
+    project-root-path: boards/${board}/driver_examples/lpit/single_channel/${multicore_foldername}
+    document:
+      name: lpit_single_channel${core_id_suffix_name}
+      category: driver_examples/lpit
+      brief: The LPIT single channel project is a simple example of the SDK LPIT driver.
+        It sets up the LPIThardware block to trigger a periodic interrupt after every
+        1 second. When the LPIT interrupt is triggereda message a printed on the serial
+        terminal and an LED is toggled on the board.
+      example_readme:
+      - examples/driver_examples/lpit/single_channel/readme.md
+      - examples/_boards/${board}/driver_examples/lpit/single_channel/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []

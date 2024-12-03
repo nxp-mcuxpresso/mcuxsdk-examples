@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pint_pin_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pint/pin_interrupt
+    project-root-path: boards/${board}/driver_examples/pint/pin_interrupt/${multicore_foldername}
+    document:
+      name: pint_pin_interrupt${core_id_suffix_name}
+      category: driver_examples/pint
+      brief: This example shows how to use SDK drivers to use the Pin interrupt &
+        pattern match peripheral.
+      example_readme:
+      - examples/driver_examples/pint/pin_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/pint/pin_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []

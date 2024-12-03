@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpi2c:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpi2c
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpi2c/${multicore_foldername}
+    document:
+      name: freertos_lpi2c${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The LPI2C Example project is a demonstration program that uses the KSDK
+        software to manipulate the Low Power Inter-Integrated Circuit.The example
+        uses two instances of LPI2C, one in configured as master and the other one
+        as slave.The LPI2C master sends data to LPI2C slave. The slave will check
+        the data it receives and shows the log.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpi2c/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_lpi2c/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170: []
+    evkmimxrt1160: []
+    mcxn9xxevk: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

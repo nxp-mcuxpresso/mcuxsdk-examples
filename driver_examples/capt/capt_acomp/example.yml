@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+capt_acomp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/capt/capt_acomp
+    project-root-path: boards/${board}/driver_examples/capt/capt_acomp/${multicore_foldername}
+    document:
+      name: capt_acomp${core_id_suffix_name}
+      category: driver_examples/capt
+      brief: This example shows how to capture touch data using CAPT poll-now mode.
+        This example uses ACOMP instead of GPIO in measurement stage.
+      example_readme:
+      - examples/driver_examples/capt/capt_acomp/readme.md
+      - examples/_boards/${board}/driver_examples/capt/capt_acomp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso804: []

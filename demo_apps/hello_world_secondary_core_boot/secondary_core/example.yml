@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+hello_world_secondary_core_boot_secondary_core:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/hello_world_secondary_core_boot/secondary_core
+    project-root-path: boards/${board}/demo_apps/hello_world_secondary_core_boot/${multicore_foldername}
+    document:
+      name: hello_world_secondary_core_boot_secondary_core${core_id_suffix_name}
+      category: demo_apps
+      brief: The hello_world_secondary_core_boot demo use cm4 core to prints the "Hello
+        World" string to the terminal using the SDK UART drivers and repeat what user
+        input. The purpose of this demo is to show how to use cm7 core to kick off
+        cm4 core, and to provide developers a method cm4 core can be booted by POR
+        way.
+      example_readme:
+      - examples/demo_apps/hello_world_secondary_core_boot/readme.md
+      - examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm4:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

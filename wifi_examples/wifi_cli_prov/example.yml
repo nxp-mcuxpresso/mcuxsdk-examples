@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+wifi_cli_prov:
+  section-type: application
+  contents:
+    meta_path: examples/wifi_examples/wifi_cli_prov
+    project-root-path: boards/${board}/wifi_examples/wifi_cli_prov/${multicore_foldername}
+    document:
+      name: wifi_cli_prov${core_id_suffix_name}
+      category: wifi_examples
+      brief: wifi_cli_prov
+      example_readme:
+      - examples/wifi_examples/wifi_cli_prov/readme.md
+      - examples/_boards/${board}/wifi_examples/common/wifi_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

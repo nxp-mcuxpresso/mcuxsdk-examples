@@ -1,0 +1,23 @@
+Hardware requirements
+=====================
+- Mini USB cable
+- FRDM-K22F board
+- Personal Computer
+
+Board settings
+==============
+No special settings are required.
+
+Prepare the Demo
+================
+1.  Connect a USB cable between the host PC and the USB port on the target board.
+2.  Download the erpc_client_matrix_multiply_uart example to the target board.
+3.  Start server on PC first.
+4.  Then start execution of client example loaded in board to begin running the demo.
+
+For detailed instructions, see the appropriate board User's Guide.
+
+Running the demo
+================
+When the demo runs successfully, the log can be captured on the PC side (python console).
+The matrix multiplication can be issued repeatedly when pressing a SW board button.

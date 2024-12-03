@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+spifi_polling_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/spifi/polling_transfer
+    project-root-path: boards/${board}/driver_examples/spifi/polling_transfer/${multicore_foldername}
+    document:
+      name: spifi_polling_transfer${core_id_suffix_name}
+      category: driver_examples/spifi
+      brief: The SPIFI Polling Example project is a demonstration program that uses
+        the KSDK software to program external serialflash using polling and read through
+        AHB bus.
+      example_readme:
+      - examples/driver_examples/spifi/polling_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/spifi/polling_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

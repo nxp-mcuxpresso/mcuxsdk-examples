@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+hscmp_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/hscmp/polling
+    project-root-path: boards/${board}/driver_examples/hscmp/polling/${multicore_foldername}
+    document:
+      name: hscmp_polling${core_id_suffix_name}
+      category: driver_examples/hscmp
+      brief: The HSCMP polling Example shows the simplest way to use HSCMP driver
+        and help user with a quick start.In this example, user should indicate an
+        input channel to capture a voltage signal (can be controlled by user) as the
+        HSCMP's positive channel input. On the negative side, the internal 6-bit DAC
+        is used to generate the fixed voltage abouthalf value of reference voltage.When
+        running the project, change the input voltage of user-defined channel, then
+        the comparator's output would changebetween logic one and zero when the user's
+        voltage crosses the internal DAC's value. The endless loop in main() functionwould
+        detect the logic value of comparator's output, and change the LED. The LED
+        would be turned on when the compareoutput is logic one, or turned off when
+        zero.
+      example_readme:
+      - examples/driver_examples/hscmp/polling/readme.md
+      - examples/_boards/${board}/driver_examples/hscmp/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []

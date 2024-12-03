@@ -1,0 +1,19 @@
+meterlibFFT2ph_test:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/meterlibFFT2ph_test
+    project-root-path: boards/${board}/demo_apps/meterlibFFT2ph_test/${multicore_foldername}
+    document:
+      name: meterlibFFT2ph_test${core_id_suffix_name}
+      category: demo_apps
+      brief: This  example  demonstrates  use  of  the  FFT  metering  library  in  the  typical  two-phase  power  meter
+        application with derivative current sensor without the S/W phase shift correction.
+        AFE conversion mode (single/continuous) may be selected by the 'AFE_MODE'
+        constant. Number of the FFT samples is set to 64, number of output harmonics
+        is 32 then.
+      example_readme:
+      - examples/demo_apps/meterlibFFT2ph_test/readme.md
+      - examples/_boards/${board}/demo_apps/meterlibFFT2ph_test/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm35z75m: []

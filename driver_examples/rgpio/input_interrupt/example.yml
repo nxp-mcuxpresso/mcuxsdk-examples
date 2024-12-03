@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+rgpio_input_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/rgpio/input_interrupt
+    project-root-path: boards/${board}/driver_examples/rgpio/input_interrupt/${multicore_foldername}
+    document:
+      name: rgpio_input_interrupt${core_id_suffix_name}
+      category: driver_examples/rgpio
+      brief: The RGPIO Example project is a demonstration program that uses the KSDK
+        software to manipulate the general-purposeoutputs.The example is supported
+        by the set, clear, and toggle write-only registers for each port output data
+        register. The example uses the button to control/toggle the LED.
+      example_readme:
+      - examples/driver_examples/rgpio/input_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/rgpio/input_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

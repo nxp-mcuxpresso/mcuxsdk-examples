@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dpu_1_figure_display:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dpu_1/figure_display
+    project-root-path: boards/${board}/driver_examples/dpu/figure_display/${multicore_foldername}
+    document:
+      name: dpu_1_figure_display${core_id_suffix_name}
+      category: driver_examples/dpu
+      brief: 'The figure display function is used to show pictures on panel.
+
+        The picture file(*.png, jpeg...) must be converted to bitmap file(binary file:
+        xxx.bin) by using tool(such as:
+
+        https://lvgl.io/tools/imageconverter). The bitmap file is loaded by Jlink
+        to memory.
+
+        '
+      example_readme:
+      - examples/driver_examples/dpu_1/figure_display/readme.md
+      - examples/_boards/${board}/driver_examples/dpu/figure_display/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []

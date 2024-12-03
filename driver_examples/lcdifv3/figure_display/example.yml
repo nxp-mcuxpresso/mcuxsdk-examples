@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdifv3_figure_display:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdifv3/figure_display
+    project-root-path: boards/${board}/driver_examples/lcdifv3/figure_display/${multicore_foldername}
+    document:
+      name: lcdifv3_figure_display${core_id_suffix_name}
+      category: driver_examples/lcdifv3
+      brief: The figure display project shows how to display figure with LCDIFV3 and
+        MIPI DSI. If this example runs correctly, the expected figure will be output
+        on panel
+      example_readme:
+      - examples/driver_examples/lcdifv3/figure_display/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

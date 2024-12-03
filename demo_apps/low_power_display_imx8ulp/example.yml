@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+low_power_display_imx8ulp:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/low_power_display_imx8ulp
+    project-root-path: boards/${board}/demo_apps/low_power_display/${multicore_foldername}
+    document:
+      name: low_power_display_imx8ulp${core_id_suffix_name}
+      category: demo_apps
+      brief: 'low power display demo. '
+      example_readme:
+      - examples/demo_apps/low_power_display_imx8ulp/readme.md
+      - examples/_boards/${board}/demo_apps/low_power_display/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release

@@ -1,0 +1,38 @@
+mdk:
+  project-templates:
+    - scripts/guigenerator/templates/mdk/app_evkmimxrt1180/app_evkmimxrt1180.uvprojx
+    - scripts/guigenerator/templates/mdk/app_evkmimxrt1180/app_evkmimxrt1180.uvoptx
+
+iar:
+  project-templates:
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+    - scripts/guigenerator/templates/iar/general.eww
+  config:
+    __common__:
+      debugger_extra_options:
+      - --macro_param enable_core=1
+      debugger_setting:
+        cmsisdap_resetlist: software
+
+macro-file:
+  files:
+    - source: examples/_boards/evkmimxrt1180/evkmimxrt1180.mac
+      attribute: macro-file
+      toolchains: iar
+      choose: true
+
+initialization_file:
+  files:
+    - source: examples/_boards/evkmimxrt1180/evkmimxrt1180_ram_cm7.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: debug release
+               hyperram_debug hyperram_release
+
+    - source: examples/_boards/evkmimxrt1180/evkmimxrt1180_flexspi_nor_cm7.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: flexspi_nor_debug flexspi_nor_release
+               flexspi_nor_hyperram_debug flexspi_nor_hyperram_release
+

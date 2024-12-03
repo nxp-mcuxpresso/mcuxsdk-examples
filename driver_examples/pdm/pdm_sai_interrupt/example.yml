@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdm_sai_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdm/pdm_sai_interrupt
+    project-root-path: boards/${board}/driver_examples/pdm/pdm_sai_interrupt/${multicore_foldername}
+    document:
+      name: pdm_sai_interrupt${core_id_suffix_name}
+      category: driver_examples/pdm
+      brief: The pdm_sdma_transfer example shows how to use pdm driver with interrupt:In
+        this example, one sai instance loopback the audio data that recieve from PDM.
+      example_readme:
+      - examples/driver_examples/pdm/pdm_sai_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/pdm/pdm_sai_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimx8mm: []
+    evkmimx8mn:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mnddr3l:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_release
+    - -iar@hyperram_release
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7: []
+    frdmmcxn236: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcxn5xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

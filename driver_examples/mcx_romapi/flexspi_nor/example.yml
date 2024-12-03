@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcxromapi_flexspi_nor:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcx_romapi/flexspi_nor
+    project-root-path: boards/${board}/driver_examples/romapi/flexspi_nor/${multicore_foldername}
+    document:
+      name: mcxromapi_flexspi_nor${core_id_suffix_name}
+      category: driver_examples
+      brief: The FLASIAP NOR project is a simple demonstration program of the SDK
+        FLASIAP NOR driver. It erases and programs a portion of external Nor flash
+        connected with FLEXSPI. Some simple flash command willbe executed,such as
+        Write Enable, Erase sector, Program page. Example will first erase the sector
+        and program a page into the flash, at last check if the data in flash is correct.
+      example_readme:
+      - examples/driver_examples/mcx_romapi/flexspi_nor/readme.md
+      - examples/_boards/${board}/driver_examples/romapi/flexspi_nor/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

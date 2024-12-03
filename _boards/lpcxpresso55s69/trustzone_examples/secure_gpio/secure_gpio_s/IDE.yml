@@ -1,0 +1,49 @@
+
+flash_programming_file:
+  files:
+  - source: examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s/secure_gpio_flashdownload_debug.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug
+  - source: examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s/secure_gpio_flashdownload_release.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: release
+
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s/secure_gpio_flashdebug_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug
+    package_path: boards/${board}/trustzone_examples/secure_gpio/cm33_core0/secure_gpio_s/mdk
+    project_path: _boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s
+  - source: examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s/secure_gpio_flashdebug_release.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: release
+    package_path: boards/${board}/trustzone_examples/secure_gpio/cm33_core0/secure_gpio_s/mdk
+    project_path: _boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s
+
+mdk:
+  shared-workspace: secure_gpio
+  sharing-workspace:
+  - ../../secure_gpio_ns/mdk/secure_gpio_ns_${core_id}
+
+iar:
+  shared-workspace: secure_gpio
+  sharing-workspace:
+  - ../../secure_gpio_ns/iar/secure_gpio_ns_${core_id}
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../secure_gpio_ns/iar/debug/secure_gpio_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../secure_gpio_ns/iar/release/secure_gpio_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexio_spi_dma_spi_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio/spi/dma_spi_transfer/master
+    project-root-path: boards/${board}/driver_examples/flexio/spi/dma_spi_transfer/master/${multicore_foldername}
+    document:
+      name: flexio_spi_dma_spi_transfer_master${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The flexio_spi_master_dma_spi_slave example shows how to use flexio spi
+        master driver in dma way:In this example, a flexio simulated master connect
+        to a spi slave .
+      example_readme:
+      - examples/driver_examples/flexio/spi/dma_spi_transfer/master/readme.md
+      - examples/_boards/${board}/driver_examples/flexio/spi/dma_spi_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    frdmmcxc444: []

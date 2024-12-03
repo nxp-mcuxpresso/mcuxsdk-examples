@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+temperature_measurement_1:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/temperature_measurement_1
+    project-root-path: boards/${board}/demo_apps/temperature_measurement/${multicore_foldername}
+    document:
+      name: temperature_measurement_1${core_id_suffix_name}
+      category: demo_apps
+      brief: The temperature measurement demo is used to measure the temperature,
+        note that this case just support iMX95 platform at present.
+      example_readme:
+      - examples/demo_apps/temperature_measurement_1/readme.md
+      - examples/_boards/${board}/demo_apps/temperature_measurement/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx95lpd5evk19@cm7: []

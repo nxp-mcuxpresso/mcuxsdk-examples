@@ -1,0 +1,57 @@
+{
+    "device": "lpc55s3x",
+    "type": "cfpa",
+    "settings": {
+        "HEADER": "0x0000_0000",
+        "CFPA_PAGE_VERSION": "0xffff_ffff",
+        "S_FW_Version": "0x0000_0000",
+        "NS_FW_Version": "0x0000_0000",
+        "IMAGE_KEY_REVOKE": "0x0000_0000",
+        "MCTR_INT_IV_CTR0": "0xFFFF_FFFF",
+        "MCTR_CUST_CTR0": "0x0000_0000",
+        "MCTR_CUST_CTR1": "0x0000_0000",
+        "MCTR_CUST_CTR2": "0x0000_0000",
+        "MCTR_CUST_CTR3": "0x0000_0000",
+        "MCTR_CUST_CTR4": "0x0000_0000",
+        "MCTR_CUST_CTR5": "0x0000_0000",
+        "MCTR_CUST_CTR6": "0x0000_0000",
+        "MCTR_CUST_CTR7": "0x0000_0000",
+        "ROTKH_REVOKE": {
+            "RoTK0_EN": "0b00",
+            "RoTK1_EN": "0b00",
+            "RoTK2_EN": "0b00",
+            "RoTK3_EN": "0b00",
+            "DICE_SKIP_CSR": "0b00"
+        },
+        "VENDOR_USAGE": {
+            "DBG_VENDOR_USAGE": "0x0000",
+            "INVERSE_VALUE": "0xffff"
+        },
+        "DCFG_CC_SOCU_NS_PIN": {
+            "NIDEN": "0b0",
+            "DBGEN": "0b0",
+            "SPNIDEN": "0b0",
+            "SPIDEN": "0b0",
+            "ISP_CMD_EN": "0b0",
+            "FA_CMD_EN": "0b0",
+            "ME_CMD_EN": "0b0",
+            "UUID_CHECK": "0b0",
+            "INVERSE_VALUE": "0xffff"
+        },
+        "DCFG_CC_SOCU_NS_DFLT": {
+            "NIDEN": "0b0",
+            "DBGEN": "0b0",
+            "SPNIDEN": "0b0",
+            "SPIDEN": "0b0",
+            "ISP_CMD_EN": "0b0",
+            "FA_CMD_EN": "0b0",
+            "ME_CMD_EN": "0b0",
+            "INVERSE_VALUE": "0xffff"
+        },
+        "ENABLE_FA_MODE": "0x0000_0000",
+        "CMAC_UPD": {
+            "IMG_UPD": "0b00",
+            "CMPA_UPD": "0b000"
+        }
+    }
+}

@@ -1,0 +1,54 @@
+dev_dfu_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_dfu/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_device_dfu/freertos/${multicore_foldername}
+    document:
+      name: dev_dfu_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: The DFU project is a simple demonstration program based on the MCUXpresso
+        SDK.  It is enumerated as a compoiste dfu device, users can download one firmware
+        to the dfu device with the tool called "dfu-util". the dfu example write the
+        firmware content to flash and will check the CRC32 which stored in the last
+        4 byte of the firmware.if the CRC32 check is right, then the dfu example will
+        run the new firmware.Generally speaking, the firmware doesn't have CRC32.
+        sothe following content will introduce how to add CRC32 to the firmware.
+      example_readme:
+      - examples/usb_examples/usb_device_dfu/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_dfu/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_dfu/build_result.jpg
+      - examples/usb_examples/usb_device_dfu/crc32.jpg
+      - examples/usb_examples/usb_device_dfu/crc_checkok.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_00.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_01.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_02.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_03.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_04.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_05.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_06.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_driver_install_07.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_suffix.jpg
+      - examples/usb_examples/usb_device_dfu/dfu_util.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

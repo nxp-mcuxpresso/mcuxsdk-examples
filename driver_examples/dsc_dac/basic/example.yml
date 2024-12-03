@@ -1,0 +1,21 @@
+dsc_dac_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_dac/basic
+    project-root-path: boards/${board}/driver_examples/dac/basic/${multicore_foldername}
+    document:
+      name: dsc_dac_basic${core_id_suffix_name}
+      category: driver_examples/dsc_dac
+      brief: The dsc_dac_basic example shows how to use DAC module simply as the general
+        DAC converter. When the DAC's synchronous conversion mode is not selected,
+        when the digital value is written to the DAC's buffered data register, the
+        data can be immediately presented to the DAC and converted to an analog output.
+        The DAC output voltage can be measured on DAC output pin.
+      example_readme:
+      - examples/driver_examples/dsc_dac/basic/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

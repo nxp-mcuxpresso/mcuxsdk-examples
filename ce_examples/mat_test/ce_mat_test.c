@@ -1,0 +1,166 @@
+/*
+ * Copyright 2024 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#include "fsl_device_registers.h"
+#include "fsl_debug_console.h"
+#include "board.h"
+#include "app.h"
+#include "fsl_lpuart.h"
+#include "fsl_mu.h"
+#include "fsl_ce.h"
+#include "fsl_ce_cmd.h"
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+#if (defined(__ICCARM__))
+uint32_t cmd_buffer[256] @ "dspvA";
+uint32_t status_buffer[128 + 6] @ "dspvB";
+
+float matA[3600] @ "dspvC";
+float matB[3600] @ "dspvC";
+float matC[3600] @ "dspvC";
+#elif (defined(__CC_ARM) || defined(__ARMCC_VERSION))
+__attribute__((section("dspvA"), zero_init)) uint32_t cmd_buffer[256];
+__attribute__((section("dspvB"), zero_init)) uint32_t status_buffer[128 + 6];
+
+__attribute__((section("dspvC"), zero_init)) float matA[3600];
+__attribute__((section("dspvC"), zero_init)) float matB[3600];
+__attribute__((section("dspvC"), zero_init)) float matC[3600];
+#elif (defined(__GNUC__))
+__attribute__((section(".dspvA,\"aw\",%nobits @"))) uint32_t cmd_buffer[256];
+__attribute__((section(".dspvB,\"aw\",%nobits @"))) uint32_t status_buffer[128 + 6];
+
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float matA[3600];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float matB[3600];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float matC[3600];
+#endif
+
+float refOut[3600];
+
+int inputA[3600] = {
+#include "mat_mult_input_A.txt"
+};
+
+int inputB[3600] = {
+#include "mat_mult_input_B.txt"
+};
+
+int outputC_ref[3600] = {
+#include "mat_multf32_60x60x60_C_ref.txt"
+};
+
+int outputC2_ref[3600] = {
+#include "mat_multcf32_40x40x40_C_ref.txt"
+};
+
+ce_cmdbuffer_t ce_cmd_buffer;
+
+/*******************************************************************************
+ * Code
+ ******************************************************************************/
+
+/*!
+ * @brief Main function
+ */
+int main(void)
+{
+    int status, i;
+    double copyerr = 0;
+    int M, N, P;
+    float *temp;
+
+    BOARD_InitHardware();
+
+    CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneBlocking);
+
+    status = CE_NullCmd();
+    PRINTF("Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+
+    // F32 A[60x60] * B[60x60]
+    M = 60;
+    N = 60;
+    P = 60;
+    for (i = 0; i < M * N; i++)
+    {
+        temp    = (float *)&inputA[i];
+        matA[i] = *temp;
+    }
+
+    for (i = 0; i < N * P; i++)
+    {
+        temp    = (float *)&inputB[i];
+        matB[i] = *temp;
+    }
+
+    for (i = 0; i < M * P; i++)
+    {
+        temp      = (float *)&outputC_ref[i];
+        refOut[i] = *temp;
+    }
+
+    status = CE_MatrixMul_F32(matC, matA, matB, M, N, P);
+
+    copyerr = 0;
+    for (i = 0; i < M * P; i++)
+    {
+        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+    }
+
+    if (copyerr > 1e-10)
+        PRINTF("F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    else
+        PRINTF("F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+
+    // CF32 A[40x40] * B[40x40]
+    M = 40;
+    N = 40;
+    P = 40;
+    for (i = 0; i < M * N * 2; i++)
+    {
+        temp    = (float *)&inputA[i];
+        matA[i] = *temp;
+    }
+
+    for (i = 0; i < N * P * 2; i++)
+    {
+        temp    = (float *)&inputB[i];
+        matB[i] = *temp;
+    }
+
+    for (i = 0; i < M * P * 2; i++)
+    {
+        temp      = (float *)&outputC2_ref[i];
+        refOut[i] = *temp;
+    }
+
+    status = CE_MatrixMul_CF32(matC, matA, matB, M, N, P);
+
+    copyerr = 0;
+    for (i = 0; i < M * P * 2; i++)
+    {
+        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+    }
+
+    if (copyerr > 1e-10)
+        PRINTF("CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    else
+        PRINTF("CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+
+    while (1)
+    {
+        // just hang out
+    }
+}

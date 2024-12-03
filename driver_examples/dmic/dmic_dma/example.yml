@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dmic_dma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dmic/dmic_dma
+    project-root-path: boards/${board}/driver_examples/dmic/dmic_dma/${multicore_foldername}
+    document:
+      name: dmic_dma${core_id_suffix_name}
+      category: driver_examples/dmic
+      brief: This example shows how to use DMA to transfer data from DMIC to memory.
+      example_readme:
+      - examples/driver_examples/dmic/dmic_dma/readme.md
+      - examples/_boards/${board}/driver_examples/dmic/dmic_dma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s36: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_edma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/edma
+    project-root-path: boards/${board}/driver_examples/lpadc/edma/${multicore_foldername}
+    document:
+      name: lpadc_edma${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpadc_edma example shows how to use ADC to trigger a DMA transfer.
+        In this example, user should indicate a channel to provide a voltage signal(can
+        be controlled by user) as the LPADC's sample input and active the low power
+        timer to trigger the ADC conversion upon the set Time reached(can be changed
+        by user). A programmable watermark threshold supports configurable notification
+        of data availability. When FCTRLn[FCOUNT] is greater than FCTRLn[FWMARK],
+        the associated RDY flag is asserted which would generate a DMA request and
+        trigger the eDMA to move the ADC conversion result from ADC result FIFO to
+        user indicated memory. Then the major loop waits for the transfer to be done.
+        The results would be printed on terminal when any key pressed.
+      example_readme:
+      - examples/driver_examples/lpadc/edma/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/edma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

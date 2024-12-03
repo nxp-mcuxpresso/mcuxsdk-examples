@@ -1,0 +1,20 @@
+dsc_mscan_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_mscan/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/mscan/interrupt_transfer/${multicore_foldername}
+    document:
+      name: dsc_mscan_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/dsc_mscan
+      brief: The mscan_interrupt_transfer example shows how to use MSCAN driver in
+        none-blocking interrupt way:To demonstrates this example, In this example,
+        2 boards are connected through CAN bus. Endpoint A(board A) send a CAN Message
+        to Endpoint B(board B) when user press space key in terminal. Endpoint B receive
+        the message, print the message content to terminal and echo back the message.
+        Endpoint A will increase the received message and waiting for the next transmission
+        of the user initiated.
+      example_readme:
+      - examples/driver_examples/dsc_mscan/interrupt_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    twrmc56f8200: []

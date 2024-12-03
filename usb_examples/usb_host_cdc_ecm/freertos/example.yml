@@ -1,0 +1,23 @@
+host_cdc_ecm_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_host_cdc_ecm/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_host_cdc_ecm/freertos/${multicore_foldername}
+    document:
+      name: host_cdc_ecm_freertos
+      category: usb_examples
+      brief: The host CDC-ECM project is a simple demonstration program based on the
+        MCUXpresso SDK. It demonstrates Ping and UDP echo server, it also join into
+        a multicast group. The application periodically sends the ICMP echo request
+        to a PC and processes the PC reply and always forwarding UDP message on echo
+        port.
+      example_readme:
+      - examples/usb_examples/usb_host_cdc_ecm/readme.md
+      - examples/_boards/${board}/usb_examples/usb_host_cdc_ecm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    rdrw612bga: []

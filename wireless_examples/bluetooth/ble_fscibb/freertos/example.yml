@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+ble_fsci_black_box_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/ble_fscibb/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/ble_fscibb/freertos/${multicore_foldername}
+    document:
+      name: ble_fsci_black_box_freertos
+      category: wireless_examples/bluetooth/ble_fscibb/freertos/
+      brief: The BLE ble fsci black box application is a simple demonstration program
+        based on the MCUXpresso SDK.This application implements a Bluetooth Low Energy
+        Host Black Box which can communicate using the FSCI protocol over a serial
+        interface.To use the pplication Test Tool 12 or any other application which
+        supports the FSCI protocol is required.
+  boards:
+    kw45b41zevk: []
+    k32w148evk: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sinc_lpspi:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sinc/lpspi
+    project-root-path: boards/${board}/driver_examples/sinc/lpspi/${multicore_foldername}
+    document:
+      name: sinc_lpspi${core_id_suffix_name}
+      category: driver_examples/sinc
+      brief: The sinc lpspi example shows how to use SINC driver to configure SINC
+        module as single conversion mode to work with on-chip lpspi.
+      example_readme:
+      - examples/driver_examples/sinc/lpspi/readme.md
+      - examples/_boards/${board}/driver_examples/sinc/lpspi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

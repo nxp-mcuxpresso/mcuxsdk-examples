@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+power_mode_switch_k4:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_k4
+    project-root-path: boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}
+    document:
+      name: power_mode_switch_k4${core_id_suffix_name}
+      category: demo_apps
+      brief: wait for adding.
+      example_readme:
+      - examples/demo_apps/power_mode_switch_k4/readme.md
+      - examples/_boards/${board}/demo_apps/power_mode_switch/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw47loc@cm33_core0: []

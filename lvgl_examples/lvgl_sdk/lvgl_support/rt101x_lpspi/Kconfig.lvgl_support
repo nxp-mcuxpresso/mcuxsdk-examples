@@ -1,0 +1,11 @@
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.cache_armv7_m7
+    select MCUX_COMPONENT_driver.cmsis_lpi2c
+    select MCUX_COMPONENT_driver.cmsis_lpspi
+    select MCUX_COMPONENT_driver.dmamux
+    select MCUX_COMPONENT_driver.edma
+    select MCUX_COMPONENT_driver.ft6x06
+    select MCUX_COMPONENT_driver.ili9341
+    select MCUX_COMPONENT_driver.lpi2c
+    select MCUX_COMPONENT_driver.lpi2c_edma
+    select MCUX_COMPONENT_driver.lpspi_edma

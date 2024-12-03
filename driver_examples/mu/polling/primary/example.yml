@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+mu_polling_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mu/polling/primary
+    project-root-path: boards/${board}/driver_examples/mu/polling/${multicore_foldername}/
+    document:
+      name: mu_polling_primary_core
+      category: driver_examples/mu
+      brief: The mu_polling example shows how to use MU driver in polling way:In this
+        example:1. Core 0 send message to Core 1 in polling mode via MU module.2.
+        Core 1 send message back to Core 0 in polling mode.3. Core 0 receive message
+        sent from Core 1 in polling mode.
+      example_readme:
+      - examples/driver_examples/mu/polling/readme.md
+      - examples/_boards/${board}/driver_examples/mu/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1160@cm7:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm33:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmk32l3a6@cm4: []
+    mimxrt700evk@cm33_core0: []

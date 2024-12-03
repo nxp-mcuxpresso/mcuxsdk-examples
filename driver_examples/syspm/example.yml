@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+syspm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/syspm
+    project-root-path: boards/${board}/driver_examples/syspm/${multicore_foldername}
+    document:
+      name: syspm${core_id_suffix_name}
+      category: driver_examples/syspm
+      brief: The System Performance Monitor (SYSPM) is a memory mapped peripheral
+        that enables the user to monitor system and/or CPU events. This demo project
+        obtains the event count value through the system performance monitor, and
+        prints three values.
+      example_readme:
+      - examples/driver_examples/syspm/readme.md
+      - examples/_boards/${board}/driver_examples/syspm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []
+    evkmimxrt1180@cm33: []

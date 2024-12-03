@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+freertos_fpu:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_examples/freertos_fpu
+    project-root-path: boards/${board}/freertos_examples/freertos_fpu/${multicore_foldername}
+    document:
+      name: freertos_fpu${core_id_suffix_name}
+      category: freertos_examples
+      brief: The freertos_fpu example shows an application using RTOS tasks with FPU
+        count to test FPU contextsave/restore support in FreeRTOS.Example could be
+        devided in two parts. First part is FPU count. It contain two tasks:sin_task()....Do
+        sin() count and judge the result. It will print the error number if result
+        error.cos_task()....Do cos() count and judge the result. It will print the
+        error number if result error.This two task have equal priority and the RTOS
+        scheduler will switch between these two tasks on every RTOS tick interrupt.Second
+        part is a periodic interrupt handle of gtp timer. This interrupt will do a
+        single FPU count andwill make sin_task/cos_task appear error if without FPU
+        context save/restore.
+      example_readme:
+      - examples/freertos_examples/freertos_fpu/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

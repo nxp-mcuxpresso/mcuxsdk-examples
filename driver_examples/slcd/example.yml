@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+slcd:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/slcd
+    project-root-path: boards/${board}/driver_examples/slcd/${multicore_foldername}
+    document:
+      name: slcd${core_id_suffix_name}
+      category: driver_examples/slcd
+      brief: The SLCD example shows how to use SLCD driver.
+      example_readme:
+      - examples/driver_examples/slcd/readme.md
+      - examples/_boards/${board}/driver_examples/slcd/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

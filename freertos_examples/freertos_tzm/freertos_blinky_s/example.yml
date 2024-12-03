@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+freertos_blinky_s:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_examples/freertos_tzm/freertos_blinky_s
+    project-root-path: boards/${board}/freertos_examples/freertos_mpu/freertos_blinky_s/${multicore_foldername}
+    document:
+      name: freertos_blinky_s${core_id_suffix_name}
+      category: freertos_examples
+      brief: The blinky example for FreeRTOS demonstrates the possibility to use the
+        trust-zone features of FreeRTOS.
+      example_readme:
+      - examples/freertos_examples/freertos_tzm/freertos_blinky_s/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

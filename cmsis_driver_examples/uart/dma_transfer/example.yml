@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cmsis_uart_dma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/uart/dma_transfer
+    project-root-path: boards/${board}/cmsis_driver_examples/uart/dma_transfer/${multicore_foldername}
+    document:
+      name: cmsis_uart_dma_transfer${core_id_suffix_name}
+      category: cmsis_driver_examples/uart
+      brief: 'CMSIS-Driver defines generic peripheral driver interfaces for middleware
+        making it reusable across a wide range of supported microcontroller devices.
+        The API connects microcontroller peripherals with middleware that implements
+        for example communication stacks, file systems, or graphic user interfaces.
+        More information and usage methord please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.The
+        cmsis_uart_edma_transfer example shows how to use uart cmsis  driver with
+        EDMA:In this example, one uart instance connect to PC through uart, the board
+        willsend back all characters that PC send to the board.Note: The example echo
+        every 8 characters, so input 8 characters every time.'
+      example_readme:
+      - examples/cmsis_driver_examples/uart/dma_transfer/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/uart/dma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

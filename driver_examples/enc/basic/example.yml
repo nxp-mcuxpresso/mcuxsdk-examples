@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+enc_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/enc/basic
+    project-root-path: boards/${board}/driver_examples/enc/basic/${multicore_foldername}
+    document:
+      name: enc_basic${core_id_suffix_name}
+      category: driver_examples/enc
+      brief: The enc_basic example shows how to quickly start using ENC driver.In
+        this example, user needs to connect a real encoder to the board. Actually,
+        only PHASE A and PHASE B are enough for the basic application. When running
+        the project, user can turn the encoder so that ENC module can monitor the
+        position change. Then, the internal counter would also count for the position.
+        User can also type keys into terminal, and the current position values recorded
+        by ENC would display. The ENC hardware is created with a special synchronize
+        mechanism. There are actually 4 counters (the 32-bit position counter is combined
+        with the two 16-bit counter registers) for position with responding hold registers.
+        When any of the counter registers is read, the contents of each counter register
+        is written to the corresponding hold register. Taking a snapshot of the counters'
+        values provides a consistent view of a system position and a velocity to be
+        attained.
+      example_readme:
+      - examples/driver_examples/enc/basic/readme.md
+      - examples/_boards/${board}/driver_examples/enc/basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    lpcxpresso55s36: []

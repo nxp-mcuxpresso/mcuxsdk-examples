@@ -1,0 +1,48 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+rpmsg_lite_str_echo_rtos_remote_core:
+  contents:
+    meta_path: examples/multicore_examples/rpmsg_lite_str_echo_rtos/remote
+    project-root-path: boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/${multicore_foldername}/
+    document:
+      name: rpmsg_lite_str_echo_rtos_remote_core
+      category: multicore_examples/
+      brief: "The Multicore RPMsg-Lite string echo project is a simple demonstration\
+        \ program that uses the MCUXpresso SDK software and the RPMsg-Lite library\
+        \ and shows how to implement the inter-core communication between cores of\
+        \ the multicore system.\nIt works with Linux RPMsg master peer to transfer\
+        \ string content back and forth. The name service handshake is performed first\
+        \ to create the communication channels. Next, Linux OS waits for user input\
+        \ to the RPMsg virtual tty. Anything which is received is sent to Cortex-M.\
+        \ Cortex-M displays what is received, and echoes back the same message as\
+        \ an acknowledgement. The tty reader on the Linux side can get the message,\
+        \ and start another transaction. The demo demonstrates RPMsg\u2019s ability\
+        \ to send arbitrary content back and forth. Note - The maximum message length\
+        \ supported by RPMsg is 496 bytes. String longer than 496 will be divided\
+        \ by virtual tty into several messages.\nShared memory usage\nThis multicore\
+        \ example uses the shared memory for data exchange. The shared memory region\
+        \ is defined and the size can be adjustable in the linker file. The shared\
+        \ memory region start address and the size have to be defined in linker file\
+        \ for each core equally. The shared memory start address is then exported\
+        \ from the linker to the application."
+      example_readme:
+      - examples/multicore_examples/rpmsg_lite_str_echo_rtos/remote/readme.md
+      - examples/_boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp:
+    - -armgcc@debug
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcimx93autoevk: []
+    evkmimx8ulp@cm33: []
+    evk9mimx8ulp@cm33: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []

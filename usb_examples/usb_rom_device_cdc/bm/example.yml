@@ -1,0 +1,20 @@
+rom_dev_cdc_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_rom_device_cdc/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_rom_device_cdc/bm/${multicore_foldername}
+    document:
+      name: rom_dev_cdc_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The example shows how to use USBD ROM stack to create a virtual comm
+        port. When the USB on J3 is connected to a PC, the host would recognize the
+        USB connection as a new serial port.
+      example_readme:
+      - examples/usb_examples/usb_rom_device_cdc/bm/readme.md
+      - examples/_boards/${board}/usb_examples/usb_rom_device_cdc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

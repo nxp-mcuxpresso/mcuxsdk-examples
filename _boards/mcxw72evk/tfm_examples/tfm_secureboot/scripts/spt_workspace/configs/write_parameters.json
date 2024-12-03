@@ -1,0 +1,114 @@
+{
+    "fuses": {
+        "preset_mode": "otp_fuses",
+        "groups": [
+            {
+                "id": "LC_STATE",
+                "description": "LC state configuration",
+                "script_parameter": "burn_LC_state",
+                "registers": [
+                    {
+                        "id": "fuse10",
+                        "value_int": "0x0007",
+                        "mask_int": "0x00FF"
+                    }
+                ]
+            },
+            {
+                "id": "ROT_KEY_TABLE_HASH",
+                "description": "Root of Trust Key Table Hash (RoTKTH)",
+                "script_parameter": "burn_rotkth",
+                "registers": [
+                    {
+                        "id": "fuse31_0",
+                        "value_int": "0xB3B8161A",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse31_1",
+                        "value_int": "0x7FE8007F",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse31_2",
+                        "value_int": "0x06FA0BC0",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse31_3",
+                        "value_int": "0xB69582FD",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse31_4",
+                        "value_int": "0x22B98147",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse31_5",
+                        "value_int": "0xA12D8A3E",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse31_6",
+                        "value_int": "0x7AF29F07",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse31_7",
+                        "value_int": "0x97800D65",
+                        "mask_int": "0xFFFFFFFF"
+                    }
+                ]
+            },
+            {
+                "id": "SB3_KDK",
+                "description": "SB3 Key Derivation Key",
+                "script_parameter": "burn_SB3_KDK",
+                "registers": [
+                    {
+                        "id": "fuse32_0",
+                        "value_int": "0xD1227744",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse32_1",
+                        "value_int": "0xCDAD1DC7",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse32_2",
+                        "value_int": "0x33277F21",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse32_3",
+                        "value_int": "0x1135DF01",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse32_4",
+                        "value_int": "0x532226AB",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse32_5",
+                        "value_int": "0x7D83B857",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse32_6",
+                        "value_int": "0x1256B313",
+                        "mask_int": "0xFFFFFFFF"
+                    },
+                    {
+                        "id": "fuse32_7",
+                        "value_int": "0x98EFA77A",
+                        "mask_int": "0xFFFFFFFF"
+                    }
+                ]
+            }
+        ]
+    },
+    "is_ifr_romcfg": true
+}

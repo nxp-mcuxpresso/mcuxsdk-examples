@@ -1,0 +1,20 @@
+qsci_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qsci/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/qsci/interrupt_transfer/${multicore_foldername}
+    document:
+      name: qsci_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/qsci
+      brief: 'The qsci_interrupt example shows how to use qsci driver in interrupt
+        way: In this example, one uart instance is connected to PC, the board will
+        send back all characters that PC sends to the board.'
+      example_readme:
+      - examples/driver_examples/qsci/interrupt_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

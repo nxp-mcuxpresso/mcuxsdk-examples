@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpc_spi:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpc_spi
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpc_spi/${multicore_foldername}
+    document:
+      name: freertos_lpc_spi${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The freertos_spi example shows how to use SPI driver in FreeRTOS:In this
+        example , one spi instance is used as SPI master with blocking and another
+        spi instance is used as SPI slave.1. SPI master sends/receives data using
+        task blocking calls to/from SPI slave. (SPI Slave uses interrupt to receive/sendthe
+        data)
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpc_spi/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69: []

@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+tsi_v4_normal_mode:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tsi/tsi_v4/normal
+    project-root-path: boards/${board}/driver_examples/tsi_v4/normal/${multicore_foldername}
+    document:
+      name: tsi_v4_normal_mode${core_id_suffix_name}
+      category: driver_examples/tsi_v4
+      brief: The tsi_v4_normal example shows how to use TSI_V4 driver in normal modes:In
+        this example , we make use of the available electrodes on board to show driver
+        usage.1. Firstly, we get the non-touch calibration results as baseline electrode
+        counter;2. Then, we start the Software-Trigger scan using polling method and
+        interrupt method;3. Then, we start the Hardware-Trigger scan using interrupt
+        method.
+      example_readme:
+      - examples/driver_examples/tsi/tsi_v4/normal/readme.md
+      - examples/_boards/${board}/driver_examples/tsi_v4/normal/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2a4s: []

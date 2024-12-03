@@ -1,0 +1,11 @@
+NXP Software Content Register
+
+Package:                    freemaster_examples
+
+Outgoing License:           BSD-3-Clause
+License File:               COPYING-BSD-3
+Description and comments:   FreeMASTER Example Code
+Release Location:           https://github.com/nxp-mcuxpresso/mcux-sdk-examples/<board>/freemaster_examples
+Origin:                     NXP (BSD-3-Clause)
+                            SEGGER RTT configuration file version 7.22b (public use permitted) https://www.segger.com/products/debug-probes/j-link/technology/about-real-time-transfer
+                            Bernii gauge.js component (MIT) http://bernii.github.io/gauge.js

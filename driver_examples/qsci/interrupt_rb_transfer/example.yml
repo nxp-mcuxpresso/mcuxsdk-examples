@@ -1,0 +1,21 @@
+qsci_interrupt_rb_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qsci/interrupt_rb_transfer
+    project-root-path: boards/${board}/driver_examples/qsci/interrupt_rb_transfer/${multicore_foldername}
+    document:
+      name: qsci_interrupt_rb_transfer${core_id_suffix_name}
+      category: driver_examples/qsci
+      brief: The qsci_interrupt_rb_transfer example shows how to use qsci driver in
+        interrupt way with RX ring buffer enabled. In this example, one qsci instance
+        is connected to PC, the board will send back all characters that PC sends
+        to the board.
+      example_readme:
+      - examples/driver_examples/qsci/interrupt_rb_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+otp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/otp
+    project-root-path: boards/${board}/driver_examples/otp/${multicore_foldername}
+    document:
+      name: otp${core_id_suffix_name}
+      category: driver_examples/otp
+      brief: The OTP example project is a demonstration program that uses the KSDK
+        software to access OTP ROM API.It just prints the version of API at the moment.
+      example_readme:
+      - examples/driver_examples/otp/readme.md
+      - examples/_boards/${board}/driver_examples/otp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

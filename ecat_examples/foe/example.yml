@@ -1,0 +1,27 @@
+ecat_foe:
+  section-type: application
+  contents:
+    meta_path: examples/ecat_examples/foe
+    project-root-path: boards/${board}/ecat_examples/foe/${multicore_foldername}
+    document:
+      name: ecat_foe${core_id_suffix_name}
+      category: ecat_examples
+      brief: EtherCAT FoE example example
+      example_readme:
+      - examples/ecat_examples/foe/readme.md
+      - examples/_boards/${board}/ecat_examples/foe/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

@@ -1,0 +1,33 @@
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.elcdif
+    select MCUX_COMPONENT_driver.ft5406_rt
+    select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_driver.lpi2c
+    select MCUX_COMPONENT_driver.pxp
+    select MCUX_COMPONENT_driver.cache_armv7_m7
+    select MCUX_COMPONENT_driver.video-common
+
+
+if MCUX_PRJSEG_module.board.lvgl
+
+    config LVGL_PANEL
+        int
+        default 0 if MCUX_PRJSEG_module.board.lvgl.RK043FN02H
+        default 1 if MCUX_PRJSEG_module.board.lvgl.RK043FN66HS
+        help
+            Panel selection for LVGL
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.lvgl.panel
+        prompt "Panel Selection"
+        default MCUX_PRJSEG_module.board.lvgl.RK043FN66HS
+
+        config MCUX_PRJSEG_module.board.lvgl.RK043FN02H
+            bool "RK043FN02H-CT"
+
+        config MCUX_PRJSEG_module.board.lvgl.RK043FN66HS
+            bool "RK043FN66HS-CTG"
+
+    endchoice
+
+endif

@@ -1,0 +1,27 @@
+mdk:
+  shared-workspace: el2go_import_blob
+  sharing-workspace:
+  - ../../el2go_import_blob_ns/mdk/el2go_import_blob_ns${core_id_suffix_name}
+flash_programming_file:
+  files:
+  - source: examples/_boards/${board}/el2go_examples/el2go_import_blob/el2go_import_blob_s/el2go_import_blob_flashdownload.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug release
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/el2go_examples/el2go_import_blob/el2go_import_blob_s/el2go_import_blob_flashdebug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+iar:
+  shared-workspace: el2go_import_blob
+  sharing-workspace:
+  - ../../el2go_import_blob_ns/iar/el2go_import_blob_ns${core_id_suffix_name}
+  config:
+    __common__:
+      download-extra-image:
+      - path: "../../el2go_import_blob_ns/iar/el2go_import_blob_ns${core_id_suffix_name}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

@@ -1,0 +1,101 @@
+
+menuconfig MCUX_COMPONENT_middleware.lvgl
+    bool "LVGL"
+    imply MCUX_COMPONENT_middleware.lvgl.template
+
+if MCUX_COMPONENT_middleware.lvgl
+
+    # For MCUX SDK integration.
+    # In MCUX SDK, the Kconfig string is translate macro with no quote,
+    # to generate macro with quote, the Kconfig string value should be
+    # set as \""string\"".
+    config LV_OS_CUSTOM_INCLUDE
+        default "\"stdint.h\""
+
+    config LV_DRAW_SW_ASM_CUSTOM_INCLUDE
+        default "\"\""
+
+    config LV_ASSERT_HANDLER_INCLUDE
+        default "\"assert.h\""
+
+    config LV_GLOBAL_CUSTOM_INCLUDE
+        default "\"lv_global.h\""
+
+    config LV_TXT_BREAK_CHARS
+        default "\" ,.;:-_)}\""
+
+    config LV_PROFILER_INCLUDE
+        default "\"lvgl/src/misc/lv_profiler_builtin.h\""
+
+    osource "${SdkRootDirPath}/middleware/lvgl/Kconfig"
+
+endif
+
+# Template
+config MCUX_COMPONENT_middleware.lvgl.template
+    bool "LVGL project template"
+
+config MCUX_COMPONENT_middleware.lvgl.demo.common
+    bool "LVGL demo common"
+    imply MCUX_COMPONENT_middleware.lvgl
+
+config MCUX_COMPONENT_middleware.lvgl.demo.transform
+    bool "LVGL demo transform"
+    imply MCUX_COMPONENT_middleware.lvgl
+
+config MCUX_COMPONENT_middleware.lvgl.demo.multilang
+    bool "LVGL demo multilang"
+    imply MCUX_COMPONENT_middleware.lvgl
+
+config MCUX_COMPONENT_middleware.lvgl.demo.flex_layout
+    bool "LVGL demo flex_layout"
+    imply MCUX_COMPONENT_middleware.lvgl
+
+config MCUX_COMPONENT_middleware.lvgl.demo.scroll
+    bool "LVGL demo scroll"
+    imply MCUX_COMPONENT_middleware.lvgl
+
+config MCUX_COMPONENT_middleware.lvgl.demo.music
+    bool "LVGL demo music"
+    imply MCUX_COMPONENT_middleware.lvgl
+
+config MCUX_COMPONENT_middleware.lvgl.demo.keypad_encoder
+    bool "LVGL demo keypad_encoder"
+    imply MCUX_COMPONENT_middleware.lvgl
+# Demos
+config MCUX_COMPONENT_middleware.lvgl.demo.benchmark
+    bool "LVGL demo benchmark"
+    imply MCUX_COMPONENT_middleware.lvgl
+    imply MCUX_COMPONENT_middleware.lvgl.demo.transform
+    imply MCUX_COMPONENT_middleware.lvgl.demo.widgets
+    imply MCUX_COMPONENT_middleware.lvgl.demo.common
+
+config MCUX_COMPONENT_middleware.lvgl.demo.stress
+    bool "LVGL demo stress"
+    imply MCUX_COMPONENT_middleware.lvgl
+    imply MCUX_COMPONENT_middleware.lvgl.demo.common
+
+config MCUX_COMPONENT_middleware.lvgl.demo.widgets
+    bool "LVGL demo widgets"
+    imply MCUX_COMPONENT_middleware.lvgl
+    imply MCUX_COMPONENT_middleware.lvgl.demo.common
+
+
+config LV_ATTRIBUTE_MEM_ALIGN
+    string "Will be added where memories needs to be aligned (with -Os data might not be aligned to boundary by default)."
+    default ""
+    help
+    E.g. __attribute__((aligned(LV_ATTRIBUTE_MEM_ALIGN_SIZE)))
+
+config LV_ATTRIBUTE_LARGE_CONST
+    string "Attribute to mark large constant arrays for example font's bitmaps"
+    default ""
+    help
+    E.g. __attribute__((section("DataQuickAccess")))
+config LV_SYSMON_GET_IDLE
+    string "Get the idle percentage."
+    depends on LV_USE_SYSMON
+    default "lv_timer_get_idle"
+    help
+    E.g. uint32_t my_get_idle(void);
+

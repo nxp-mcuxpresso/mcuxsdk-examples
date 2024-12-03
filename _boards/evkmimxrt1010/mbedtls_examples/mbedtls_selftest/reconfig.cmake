@@ -1,0 +1,33 @@
+
+mcux_add_macro(
+    CC "-DFREESCALE_KSDK_BM\
+       -DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\""
+)
+
+mcux_remove_linker_symbol(
+    SYMBOLS "__heap_size__=0x8000"
+)
+
+mcux_add_linker_symbol(
+    SYMBOLS "__heap_size__=0x4000"
+)
+
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-O1"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_debug
+    CC "-Os"
+)
+
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-O1"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Os"
+)

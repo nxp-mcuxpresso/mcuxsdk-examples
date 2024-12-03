@@ -1,0 +1,82 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.board.wireless.app_services
+    bool "Wireless Application Services"
+    depends on MCUX_PRJSEG_module.board.wireless.board
+    help
+      This is a collection of APP helpers used in wireless examples to abstract the initialization flow of
+      some software components acting like services. This is a template for demo purpose and doesn't aim to
+      always support all use cases.
+
+config MCUX_PRJSEG_module.board.wireless.app_ble
+    bool "Wireless BLE Application"
+    depends on MCUX_PRJSEG_module.board.wireless.board
+    help
+      This is a collection of APP helpers used in wireless examples to abstract the initialization flow of
+      NXP BLE software components.
+
+config MCUX_PRJSEG_module.board.wireless.app_lce
+    bool "Wireless Localization Compute Engine"
+    select MCUX_COMPONENT_driver.ce
+    select MCUX_COMPONENT_driver.mu1
+    depends on MCUX_PRJSEG_module.board.wireless.board
+    help
+      This is the initialization module for the DSP-V (Localization Compute Engine).
+
+menuconfig MCUX_PRJSEG_module.board.wireless.board
+    bool "wireless connectivity board files"
+    select MCUX_COMPONENT_middleware.wireless.framework
+    select MCUX_COMPONENT_middleware.wireless.framework.platform
+    depends on !MCUX_PRJSEG_module.board.boardfile
+    help
+      This is a customized implementation of board file used in wireless examples.
+
+if MCUX_PRJSEG_module.board.wireless.board
+  config MCUX_PRJSEG_module.board.wireless.board.components
+      bool "Components: Serial Manager, LED, Button"
+      default y
+      select MCUX_COMPONENT_component.led
+      select MCUX_COMPONENT_component.button
+      select MCUX_COMPONENT_component.serial_manager
+      select MCUX_COMPONENT_component.timer_manager
+      select MCUX_COMPONENT_component.gpio_adapter
+    help
+      This is a wireless implementation of board file used in wireless examples for components usage such as Serial Manager, LED, Button
+
+  config MCUX_PRJSEG_module.board.wireless.board.dcdc
+      bool "DCDC"
+      default y
+      select MCUX_COMPONENT_driver.spc
+
+  config MCUX_PRJSEG_module.board.wireless.board.debug
+      bool "Debug"
+
+  config MCUX_PRJSEG_module.board.wireless.board.extflash
+      bool "External flash"
+      select MCUX_COMPONENT_component.flash_nor_lpspi
+
+  config MCUX_PRJSEG_module.board.wireless.board.lowpower
+      bool "Lowpower"
+      select MCUX_COMPONENT_middleware.wireless.framework.platform.lowpower
+      select MCUX_COMPONENT_middleware.wireless.framework.seclib_rng
+      select MCUX_COMPONENT_component.timer_manager
+      select MCUX_COMPONENT_component.power_manager_framework
+endif
+
+config MCUX_PRJSEG_module.board.wireless.clock
+    bool "Wireless Clock Config"
+    select MCUX_COMPONENT_driver.spc
+    select MCUX_COMPONENT_driver.ccm32k
+    depends on !MCUX_PRJSEG_module.board.clock
+    help
+      This is a customized implementation of clock config file used in wireless examples.
+
+config MCUX_PRJSEG_module.board.wireless.hw_app
+    bool "Specific HW init and app common for wireless applications"
+    depends on MCUX_COMPONENT_middleware.wireless.framework
+    depends on MCUX_PRJSEG_project.hw_app_customize_folder
+    help
+      This is a customized implementation of hardware init used in wireless examples.
+
+orsource "../../../../_boards/${board}/project_segments/wireless/Kconfig.prjseg"

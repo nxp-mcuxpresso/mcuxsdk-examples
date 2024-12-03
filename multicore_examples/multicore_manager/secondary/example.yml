@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+multicore_manager_secondary_core:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/multicore_examples/multicore_manager/secondary
+    project-root-path: boards/${board}/multicore_examples/multicore_manager/${multicore_foldername}/
+    document:
+      name: multicore_manager_secondary_core
+      category: multicore_examples
+      brief: 'The Multicore Manager example application demonstrates advanced features
+        of the MCMGR component. In this demo, the primary core prints the "Hello World
+        from the Primary Core!" string to the terminal and then releases the secondary
+        core from the reset. The secondary core toggles an on-board LED indicating
+        that the secondary core is running.
+
+        It is also possible to stop/start the secondary core during the runtime by
+        pressing on-board buttons. The on-board LED then indicates the change, it
+        stops/starts toggling accordingly.
+
+        This application also shows how to use the Multicore Manager for remote core
+        monitoring and handling of events such as application, CoreUp, CoreDown and
+        exception events.
+
+        Application-specific callback functions for events are registered by the MCMGR_RegisterEvent()
+        API on the primary core. Triggering these events is done using the MCMGR_TriggerEvent()
+        API on the secondary core. While CoreUp, CoreDown events are triggered from
+        startup and MCMGR code, the application event is triggered from the application.
+
+        The exception event is triggered in the secondary application after 100 LED
+        toggles by trying to write to flash. This raises the exception on the secondary
+        core and triggers theRemoteExceptionEvent on the primary core.'
+      example_readme:
+      - examples/multicore_examples/multicore_manager/readme.md
+      - examples/_boards/${board}/multicore_examples/multicore_manager/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm7:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmk32l3a6@cm0plus: []
+    frdmmcxn947@cm33_core1: []
+    lpcxpresso55s69@cm33_core1: []
+    mcxn5xxevk@cm33_core1: []
+    mcxn9xxevk@cm33_core1: []

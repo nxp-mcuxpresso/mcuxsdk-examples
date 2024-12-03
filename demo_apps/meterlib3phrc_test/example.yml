@@ -1,0 +1,16 @@
+meterlib3phrc_test:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/meterlib3phrc_test
+    project-root-path: boards/${board}/demo_apps/meterlib3phrc_test/${multicore_foldername}
+    document:
+      name: meterlib3phrc_test${core_id_suffix_name}
+      category: demo_apps
+      brief: This example demonstrates use of the metering library in typical polyphase
+        power meter application with Rogowski coil sensor.
+      example_readme:
+      - examples/demo_apps/meterlib3phrc_test/readme.md
+      - examples/_boards/${board}/demo_apps/meterlib3phrc_test/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm35z75m: []

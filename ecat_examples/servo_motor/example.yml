@@ -1,0 +1,21 @@
+ecat_servo_motor:
+  section-type: application
+  contents:
+    meta_path: examples/ecat_examples/servo_motor
+    project-root-path: boards/${board}/ecat_examples/servo_motor/${multicore_foldername}
+    document:
+      name: ecat_servo_motor${core_id_suffix_name}
+      category: ecat_examples
+      brief: EtherCAT servo motor example example
+      example_readme:
+      - examples/ecat_examples/servo_motor/readme.md
+      - examples/_boards/${board}/ecat_examples/servo_motor/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm7:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

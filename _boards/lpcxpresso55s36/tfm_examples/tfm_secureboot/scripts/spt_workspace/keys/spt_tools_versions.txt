@@ -1,0 +1,5 @@
+This file contains version of the tools used for keys generation: 
+ 
+Key set generated using: 
+MCUX Secure Provisioning Tool version 5.0.b220907 
+nxpkeygen, version 1.7.1

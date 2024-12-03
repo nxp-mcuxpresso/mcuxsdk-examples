@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpit_chained_channel:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpit/chained_channel
+    project-root-path: boards/${board}/driver_examples/lpit/chained_channel/${multicore_foldername}
+    document:
+      name: lpit_chained_channel${core_id_suffix_name}
+      category: driver_examples/lpit
+      brief: The LPIT chained channel project is a simple example of the SDK LPIT
+        driver. It sets up the LPIT hardware block to trigger a periodic interrupt
+        after every 1 second in the channel No.0, the channel No.1 chained with channel
+        No.0, if LPIT contain more than two channels, the channel No.2 chained with
+        channel No.1....the channel No.N chained with Channel No.N-1. When the LPIT
+        interrupt is triggered.
+      example_readme:
+      - examples/driver_examples/lpit/chained_channel/readme.md
+      - examples/_boards/${board}/driver_examples/lpit/chained_channel/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []

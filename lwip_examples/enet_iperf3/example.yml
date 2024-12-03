@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lwip_enet_iperf3:
+  section-type: application
+  contents:
+    meta_path: examples/lwip_examples/enet_iperf3/.
+    project-root-path: boards/${board}/lwip_examples/enet_iperf3/${multicore_foldername}
+    document:
+      name: lwip_enet_iperf3${core_id_suffix_name}
+      category: lwip_examples
+      brief: The enet_iperf3 measures performance.
+      example_readme:
+      - examples/lwip_examples/enet_iperf3/readme.md
+      - examples/_boards/${board}/lwip_examples/enet_iperf3/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

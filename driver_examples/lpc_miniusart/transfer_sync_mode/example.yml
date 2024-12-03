@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+usart_transfer_sync_mode:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_miniusart/transfer_sync_mode
+    project-root-path: boards/${board}/driver_examples/usart/transfer_sync_mode/${multicore_foldername}
+    document:
+      name: usart_transfer_sync_mode${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: The usart_interrupt_sync_transfer example shows how to use usart API
+        in synchronous mode:In this example, one usart instance will be selected as
+        master ,and another as slave. The master will send data to slave in polling
+        way, and slave will receive data in nonblocking way.After all data has been
+        received by slave, info will be printed by debug console.
+      example_readme:
+      - examples/driver_examples/lpc_miniusart/transfer_sync_mode/readme.md
+      - examples/_boards/${board}/driver_examples/usart/transfer_sync_mode/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

@@ -1,0 +1,45 @@
+dsp_xaf_usb_demo:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/xaf_usb_demo/cm
+    project-root-path: boards/${board}/dsp_examples/xaf_usb_demo/${core_id}
+    document:
+      name: dsp_xaf_usb_demo${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_xaf_usb_demo demo application demonstrates starting DSP core
+        with DSP image. The purpose of this example is to show how to transfer data
+        from a USB host via M33 to a DSP and from a DSP via M33 to a USB host.
+      example_readme:
+      - examples/dsp_examples/xaf_usb_demo/readme.md
+      - examples/_boards/${board}/dsp_examples/xaf_usb_demo/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

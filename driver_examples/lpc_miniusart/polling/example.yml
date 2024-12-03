@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+usart_polling_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_miniusart/polling
+    project-root-path: boards/${board}/driver_examples/usart/polling/${multicore_foldername}
+    document:
+      name: usart_polling_example${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: 'The uart_polling example shows how to use uart driver in polling way:In
+        this example, one uart instance connect to PC, the board will send back all
+        characters that PCsend to the board. '
+      example_readme:
+      - examples/driver_examples/lpc_miniusart/polling/readme.md
+      - examples/_boards/${board}/driver_examples/usart/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

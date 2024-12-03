@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_common:
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_common
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_common/${core_id}
+    document:
+      name: ele_common${core_id_suffix_name}
+      category: secure-subsystem_examples
+      brief: The secure-subsystem demo application upload loadable FW into EdgeLock
+        Secure Enclave.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_common/readme.md
+      - examples/_boards/${board}/secure-subsystem_examples/ele_common/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release

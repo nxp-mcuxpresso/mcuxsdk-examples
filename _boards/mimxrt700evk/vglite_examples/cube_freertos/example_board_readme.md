@@ -1,0 +1,49 @@
+Hardware requirements
+===================
+- Micro USB cable
+- TFT Proto 5" CAPACITIVE board HW REV 1.01 by Mikroelektronika. (Named as SSD1963 panel in project. Not necessary if use MIPI panel)
+- MIMXRT700-EVK
+- Personal Computer
+- RK055AHD091 MIPI panel (Not necessary if use other panel)
+- RK055IQH091 MIPI panel (Not necessary if use other panel)
+- RK055MHD091 MIPI panel (Not necessary if use other panel)
+- RM67162 smart MIPI panel (Not necessary if use other panel)
+- RaspberryPi Panel (Not necessary if use other panel)
+
+Board settings
+============
+To use SSD1963 panel:
+Connect SSD1963 panel to J4. Make sure to connect JP7 2&3 to use 3.3v FLEXIO interface.
+
+To use MIPI panel:
+Connect MIPI panel to J52.
+
+To use Raspberry panel:
+Connect the panel to J8. Then connect the panel's 5V pin to JP43-1, GND pin to JP43-2.
+Make sure the R75, R76, R79, R80 are connected.
+
+Prepare the Demo
+===============
+The demo use MIPI RK055MHD091 panel by default.
+To use MIPI RK055AHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055AHD091 in display_support.h.
+To use MIPI RK055IQH091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055IQH091 in display_support.h.
+To use RM67162 MIPI smart panel, change the macro DEMO_PANEL to DEMO_PANEL_RM67162 and set the macro RM67162_USE_LCDIF to 0 in display_support.h.
+To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055MHD091 in display_support.h.
+To use RaspberryPi, change the macro DEMO_PANEL to DEMO_PANEL_RASPI_7INCH in display_support.h.
+To use SSD1963 DBI panel, change the macro DEMO_PANEL to DEMO_PANEL_TFT_PROTO_5 in display_support.h.
+
+1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+===============
+When the example runs, you can see a cube object with each face having high render quality.
+The cube face assets are rendered from VG paths.
+The cube has a moving effect done using isometric projection.

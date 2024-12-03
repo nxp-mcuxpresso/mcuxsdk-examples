@@ -1,0 +1,6 @@
+initialization_file:
+  files:
+  - attribute: initialization_file
+    source: scripts/guigenerator/templates/mdk/app_frdmrw612/flashdebug.ini
+    targets: debug release flash_debug flash_release
+    toolchains: mdk

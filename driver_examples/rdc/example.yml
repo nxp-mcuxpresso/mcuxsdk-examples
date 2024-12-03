@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+rdc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/rdc
+    project-root-path: boards/${board}/driver_examples/rdc/${multicore_foldername}
+    document:
+      name: rdc${core_id_suffix_name}
+      category: driver_examples/rdc
+      brief: The RDC example shows how to control the peripheral and memory regionasscess
+        policy using RDC and RDC_SEMA42
+      example_readme:
+      - examples/driver_examples/rdc/readme.md
+      - examples/_boards/${board}/driver_examples/rdc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimx8mm: []
+    evkmimx8mn:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mnddr3l:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mp:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mq: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

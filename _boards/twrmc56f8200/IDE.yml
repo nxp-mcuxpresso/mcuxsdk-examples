@@ -1,0 +1,19 @@
+codewarrior:
+  project-templates:
+    - scripts/guigenerator/templates/codewarrior/cproject_v11_2/.cproject
+    - scripts/guigenerator/templates/codewarrior/cproject_v11_2/.project
+    - scripts/guigenerator/templates/codewarrior/cproject_v11_2/ReferencedRSESystems.xml
+    - scripts/guigenerator/templates/codewarrior/cproject_v11_2/OSJTAG.launch
+    - scripts/guigenerator/templates/codewarrior/cproject_v11_2/PnE U-MultiLink.launch
+target_initialization_file:
+  files:
+    - source: devices/${soc_portfolio}/${soc_series}/${device}/codewarrior/${device}.tcl
+      toolchains: codewarrior
+      attribute: target_initialization_file
+      project_path: "${device}/codewarrior"
+memory_config_file:
+  files:
+    - source: devices/${soc_portfolio}/${soc_series}/${device}/codewarrior/${device}.mem
+      toolchains: codewarrior
+      attribute: memory_config_file
+      project_path: "${device}/codewarrior"

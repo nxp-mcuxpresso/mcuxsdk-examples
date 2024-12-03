@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lib_jpeg_hw_accel:
+  section-type: application
+  contents:
+    meta_path: examples/display_examples/lib_jpeg_hw_accel
+    project-root-path: boards/${board}/display_examples/lib_jpeg_hw_accel/${multicore_foldername}
+    document:
+      name: lib_jpeg_hw_accel${core_id_suffix_name}
+      category: display_examples
+      brief: The lib jpeg with hardware acceleration demo decodes the JPEG picture
+        using the JPEG decoder hardware, and shows them in the LCD panel. Since not
+        all JPEG formats are supported by the hardware, when macro LIB_JPEG_USE_HW_ACCEL
+        is on, the lib jpeg will parse the header first, if the format is supported,
+        it will use the hardware to accelerate, otherwise will use the old software
+        way.
+      example_readme:
+      - examples/display_examples/lib_jpeg_hw_accel/readme.md
+      - examples/_boards/${board}/display_examples/lib_jpeg_hw_accel/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

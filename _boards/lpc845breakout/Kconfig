@@ -1,0 +1,31 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_lpc845breakout
+    bool
+    default y
+    imply MCUX_HW_DEVICE_LPC845
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.lpc_gpio
+    imply MCUX_COMPONENT_driver.lpc_iocon_lite
+    imply MCUX_COMPONENT_driver.lpc_miniusart
+    imply MCUX_COMPONENT_driver.power_no_lib
+    imply MCUX_COMPONENT_driver.reset
+    imply MCUX_COMPONENT_driver.swm
+    imply MCUX_COMPONENT_driver.syscon
+    imply MCUX_COMPONENT_driver.inputmux
+    imply MCUX_COMPONENT_driver.inputmux_connections
+
+    ## Board project segment dependency data
+
+    select MCUX_COMPONENT_driver.lpc_iocon_lite if MCUX_PRJSEG_module.board.pinmux
+    select MCUX_COMPONENT_driver.lpc_gpio if MCUX_PRJSEG_module.board.pinmux
+    select MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock    
+    select MCUX_COMPONENT_driver.power if MCUX_PRJSEG_module.board.clock
+    select MCUX_COMPONENT_component.miniusart_adapter if MCUX_PRJSEG_module.board.console_lite
+    select MCUX_COMPONENT_driver.miniusart if MCUX_PRJSEG_module.board.console_lite

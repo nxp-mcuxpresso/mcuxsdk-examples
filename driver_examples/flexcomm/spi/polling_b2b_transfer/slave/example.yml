@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexcomm_spi_polling_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/spi/polling_b2b_transfer/slave
+    project-root-path: boards/${board}/driver_examples/spi/polling_b2b_transfer/slave/${multicore_foldername}
+    document:
+      name: flexcomm_spi_polling_b2b_transfer_slave${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: 'The spi_polling_board2board_slave example shows how to use spi driver
+        as slave to do board to board transfer withpolling:Notice: The SPI slave of
+        this example uses interrupt mode, as there is no polling mode for SPI slave.In
+        this example, one spi instance as slave and another spi instance on other
+        board as master. Master sends a piece ofdata to slave, and receive a piece
+        of data from slave. This example checks if the data received from master is
+        correct.'
+      example_readme:
+      - examples/driver_examples/flexcomm/spi/polling_b2b_transfer/slave/readme.md
+      - examples/_boards/${board}/driver_examples/spi/polling_b2b_transfer/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

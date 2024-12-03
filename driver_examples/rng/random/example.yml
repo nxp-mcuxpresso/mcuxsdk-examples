@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+rng_random:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/rng/random
+    project-root-path: boards/${board}/driver_examples/rng/random/${multicore_foldername}
+    document:
+      name: rng_random${core_id_suffix_name}
+      category: driver_examples/rng
+      brief: The RNG example project is a demonstration program that uses the KSDK
+        software to generate random numbersand prints them to the terminal. 32 32-bit
+        numbers are read and skipped per one 32-bit number read and used.This is to
+        get a better entropy as suggested by user manual.
+      example_readme:
+      - examples/driver_examples/rng/random/readme.md
+      - examples/_boards/${board}/driver_examples/rng/random/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

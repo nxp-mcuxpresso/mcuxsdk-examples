@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+rpmsg_lite_pingpong_secondary_core:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/multicore_examples/rpmsg_lite_pingpong/secondary
+    project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong/${multicore_foldername}/
+    document:
+      name: rpmsg_lite_pingpong_secondary_core
+      category: multicore_examples
+      brief: 'The Multicore RPMsg-Lite pingpong project is a simple demonstration
+        program that uses theMCUXpresso SDK software and the RPMsg-Lite library and
+        shows how to implement the inter-core communication between cores of the multicore
+        system. The primary core releases the secondary core from the reset and then
+        the inter-core communication is established. Once the RPMsg is initialized
+        and endpoints are created the message exchange starts, incrementing a virtual
+        counter that is part of the message payload. The message pingpong finishes
+        when the counter reaches the value of 100.
+
+        Then the RPMsg-Lite is deinitialized and the procedure of the data exchange
+        is repeated again.
+
+        Shared memory usage.
+
+        This multicore example uses the shared memory for data exchange. The shared
+        memory region is defined and the size can be adjustable in the linker file.
+        The shared memory region start address and the size have to be defined in
+        linker file for each core equally. The shared memory start address is then
+        exported from the linker to the application.'
+      example_readme:
+      - examples/multicore_examples/rpmsg_lite_pingpong/readme.md
+      - examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core1: []
+    evkmimxrt1160@cm4:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm4:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm7:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmk32l3a6@cm0plus: []
+    frdmmcxn947@cm33_core1: []
+    lpcxpresso55s69@cm33_core1: []
+    mcxn5xxevk@cm33_core1: []
+    mcxn9xxevk@cm33_core1: []
+    kw47evk@cm33_core1: []
+    mcxw72evk@cm33_core1: []
+    kw47loc@cm33_core1: []
+    frdmmcxw72@cm33_core1: []

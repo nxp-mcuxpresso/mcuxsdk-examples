@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sx1502_led_control:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/sx1502_led_control/.
+    project-root-path: boards/${board}/component_examples/sx1502_led_control/${multicore_foldername}
+    document:
+      name: sx1502_led_control${core_id_suffix_name}
+      category: component_examples
+      brief: The sx1502_led_control demo is used to demonstrate how to use sx1502_led_control
+        component. The main function of the demo is to control the LED of external
+        DMIC board on or off.
+      example_readme:
+      - examples/component_examples/sx1502_led_control/readme.md
+      - examples/_boards/${board}/component_examples/sx1502_led_control/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt685audevk@cm33: []

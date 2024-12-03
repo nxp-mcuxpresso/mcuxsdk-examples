@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+usart_wakeup_deepsleep:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/usart/wakeup_deepsleep
+    project-root-path: boards/${board}/driver_examples/usart/wakeup_deepsleep/${multicore_foldername}
+    document:
+      name: usart_wakeup_deepsleep${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: The usart_wakeup_deepsleep example shows how to use usart driver in 32kHz
+        clocking mode to wake up soc from deep sleep. In this example, one usart instance
+        connect to PC, the board will enter deep sleep mode and wake up according
+        to user input.
+      example_readme:
+      - examples/driver_examples/flexcomm/usart/wakeup_deepsleep/readme.md
+      - examples/_boards/${board}/driver_examples/usart/wakeup_deepsleep/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []

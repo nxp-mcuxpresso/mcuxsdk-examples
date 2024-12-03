@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+tmu_monitor_report:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tmu/tmu_monitor_report
+    project-root-path: boards/${board}/driver_examples/tmu/tmu_monitor_report/${multicore_foldername}
+    document:
+      name: tmu_monitor_report${core_id_suffix_name}
+      category: driver_examples/tmu
+      brief: 'The TMU example shows how to configure TMU register to monitor and report
+        the temperature from one ormore remote temperature measurement sites located
+        on the chip.TMU has access to multiple temperature measurement sites strategically
+        located on thechip. It monitors these sites and can signal an alarm if a programmed
+        threshold is everexceeded.Note: Before monitoring the temperature, we must
+        programming the calibration table.'
+      example_readme:
+      - examples/driver_examples/tmu/tmu_monitor_report/readme.md
+      - examples/_boards/${board}/driver_examples/tmu/tmu_monitor_report/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mq: []

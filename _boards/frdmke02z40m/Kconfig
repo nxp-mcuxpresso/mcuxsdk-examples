@@ -1,0 +1,16 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+
+config MCUX_HW_BOARD_frdmke02z40m
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MKE02Z4
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.uart
+    imply MCUX_COMPONENT_driver.port_ke02
+    imply MCUX_COMPONENT_driver.gpio_1

@@ -1,0 +1,44 @@
+config secondary_config
+    string
+    default "debug" if $(config) = "debug"
+    default "release" if $(config) = "release"
+    default "debug" if $(config) = "flash_debug"
+    default "release" if $(config) = "flash_release"
+
+config secondary_core_id
+    string
+    default "cm33_core1" if $(core_id) = "cm33_core0"
+
+config secondary_board
+    string
+    default "$(board)"
+
+config secondary_toolchain
+    string
+    default "$(toolchain)"
+
+config dsp_config
+    string
+    default "debug" if $(config) = "debug"
+    default "release" if $(config) = "release"
+    default "debug" if $(config) = "flash_debug"
+    default "release" if $(config) = "flash_release"
+
+config primary_dsp_core_id
+    string
+    default "hifi4"
+
+config secondary_dsp_core_id
+    string
+    default "hifi1"
+
+config ezhv_core_id
+    string
+    default "ezhv"
+
+config ezhv_config
+    string
+    default "debug" if $(config) = "debug"
+    default "release" if $(config) = "release"
+    default "debug" if $(config) = "flash_debug"
+    default "release" if $(config) = "flash_release"

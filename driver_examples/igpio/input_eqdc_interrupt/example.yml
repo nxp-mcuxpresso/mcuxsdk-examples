@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+igpio_input_eqdc_signal:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/igpio/input_eqdc_interrupt
+    project-root-path: boards/${board}/driver_examples/gpio/input_eqdc_signal/${multicore_foldername}
+    document:
+      name: igpio_input_eqdc_signal${core_id_suffix_name}
+      category: driver_examples/gpio
+      brief: The GPIO Example project is a program functioning as an encoder which
+        outputs two quadrature signals and one interrupt signal. The example is supported
+        by the set, clear registers, and toggle write-only registers for each port
+        output data register.
+      example_readme:
+      - examples/driver_examples/igpio/input_eqdc_interrupt/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

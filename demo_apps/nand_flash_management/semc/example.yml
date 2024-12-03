@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+nand_flash_management:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/nand_flash_management/semc/.
+    project-root-path: boards/${board}/demo_apps/nand_flash_management/semc/${multicore_foldername}
+    document:
+      name: nand_flash_management${core_id_suffix_name}
+      category: demo_apps/nand_flash_management/semc/
+      brief: nand flash management
+      example_readme:
+      - examples/demo_apps/nand_flash_management/semc/readme.md
+      - examples/_boards/${board}/demo_apps/nand_flash_management/semc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1064: []
+    evkbmimxrt1170@cm4:
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

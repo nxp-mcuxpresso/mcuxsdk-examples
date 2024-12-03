@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpuart_9bit_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpuart/9bit_transfer
+    project-root-path: boards/${board}/driver_examples/lpuart/9bit_transfer/${multicore_foldername}
+    document:
+      name: lpuart_9bit_transfer${core_id_suffix_name}
+      category: driver_examples/lpuart
+      brief: The lpuart_9bit_transfer example shows how to use lpuart driver in 9-bit
+        mode. Only 9bit data sent can be received by itself.
+      example_readme:
+      - examples/driver_examples/lpuart/9bit_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/lpuart/9bit_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

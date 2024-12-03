@@ -1,0 +1,16 @@
+mdk:
+  config:
+    __common__:
+      cp-define:
+        ${CONFIG_MCUX_TOOLCHAIN_MDK_CPU_IDENTIFIER}: NXP
+      periodic_update: true
+iar:
+  config:
+    __common__:
+      cp-define:
+        ${CONFIG_MCUX_TOOLCHAIN_IAR_CPU_IDENTIFIER}: NXP ${CONFIG_MCUX_TOOLCHAIN_IAR_CPU_IDENTIFIER}
+codewarrior:
+  config:
+    __common__:
+      cp-define:
+        ${CONFIG_MCUX_TOOLCHAIN_CODEWARRIOR_CPU_IDENTIFIER}: ${CONFIG_MCUX_HW_DEVICE_ID}

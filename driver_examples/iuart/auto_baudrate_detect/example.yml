@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iuart_auto_baudrate_detect:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iuart/auto_baudrate_detect
+    project-root-path: boards/${board}/driver_examples/uart/auto_baudrate_detect/${multicore_foldername}
+    document:
+      name: iuart_auto_baudrate_detect${core_id_suffix_name}
+      category: driver_examples/uart
+      brief: The uart_auto_baudrate_detect example shows how to use uart auto baud
+        rate detect feature:In this example, one uart instance connect to PC through
+        uart. First, we should send characters a or A to board. The boars will set
+        baud rate automatic. After baud rate has set, the board will send back all
+        characters that PCsend to the board.
+      example_readme:
+      - examples/driver_examples/iuart/auto_baudrate_detect/readme.md
+      - examples/_boards/${board}/driver_examples/uart/auto_baudrate_detect/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []

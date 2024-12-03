@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcan_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcan/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/mcan/interrupt_transfer/${multicore_foldername}
+    document:
+      name: mcan_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/mcan
+      brief: The mcan_interrupt example shows how to use MCAN driver in none-blocking
+        interrupt way:In this example, 2 boards are connected through CAN bus. Endpoint
+        A(board A) send a CAN Message toEndpoint B(board B) when users press space
+        key in terminal. Endpoint B receives the message, printsthe message content
+        to terminal and echoes back the message. Endpoint A will increase the receivedmessage
+        and wait for the next transmission the users initiate.
+      example_readme:
+      - examples/driver_examples/mcan/interrupt_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/mcan/interrupt_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s36: []

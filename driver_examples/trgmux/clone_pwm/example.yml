@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+trgmux_clone_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/trgmux/clone_pwm
+    project-root-path: boards/${board}/driver_examples/trgmux/clone_pwm/${multicore_foldername}
+    document:
+      name: trgmux_clone_pwm${core_id_suffix_name}
+      category: driver_examples/trgmux
+      brief: The TRGMUX project is a simple demonstration program of the SDK TRGMUX
+        driver. It generatesa 10KHz PWM by LPIT0 CH0, and clone by TRGMUX to output
+        this PWM to eight TRGMUX_OUTx pins.
+      example_readme:
+      - examples/driver_examples/trgmux/clone_pwm/readme.md
+      - examples/_boards/${board}/driver_examples/trgmux/clone_pwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

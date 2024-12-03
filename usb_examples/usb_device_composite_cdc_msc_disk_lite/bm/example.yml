@@ -1,0 +1,50 @@
+dev_composite_cdc_msc_disk_lite_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_composite_cdc_msc_disk_lite/bm/${multicore_foldername}
+    document:
+      name: dev_composite_cdc_msc_disk_lite_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The Composite CDC_MSC project is a simple demonstration program based
+        on the MCUXpresso SDK.  It is enumerated as a COM port and a U-disk. The COM  port
+        can be opened using terminal tools, such as TeraTerm. The demo echoes back
+        any character it receives. The U-disk can be read and write as a standard
+        SD card.
+      example_readme:
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_composite_cdc_msc_disk_lite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/cdc_driver_install_00.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/cdc_driver_install_01.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/cdc_driver_install_02.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/cdc_driver_install_03.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/cdc_driver_install_04.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/cdc_driver_install_05.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/cdc_driver_install_06.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/run_vcom.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/sdcard_scan.jpg
+      - examples/usb_examples/usb_device_composite_cdc_msc_disk_lite/sd_card.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

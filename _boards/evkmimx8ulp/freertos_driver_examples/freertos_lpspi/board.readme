@@ -1,0 +1,45 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- MIMX8ULP-EVK/EVK9 board
+- 5V power supply
+- Personal Computer
+
+Board settings
+==============
+please connect between LPSPI1 pins and LPSPI0 pins
+The connection should be set as following:
+- A1, D6 connected
+- A2, D7 connected
+- A3, D5 connected
+- D14, D4 connected
+
+#### Please note this application can't support running with Linux BSP! ####
+
+#### Please note there's some limitation if running this application in QSPI flash in place.
+If run it in QSPI flash, there's high latency when instruction cache miss. As two boards can't share
+the cache line to reduce the numbers of cache miss times so it may cannot adapt to the cache miss latency under board to board mode.
+So when running in QSPI flash with board to board connections, please reduce the TRANSFER_BAUDRATE value to avoid data loss issue.####
+
+Note
+~~~~~~~~~~~~~~
+Because of the LPSPI signal pin allocating issue, you can not restart this demo/example by press the ResetButton(SW3):
+The LPSPI1_SIN, LPSPI1_SOUT, LPSPI1_SCK and LPSPI0_SOUT pins is connected to PTA16, PTA17, PTA18 and PTA19 pins.
+These signals is driven by LPSPI0 pins(PTA20, PTA21, PTA22 and PTA23), when user press ResetButton. 
+
+Prepare the Demo
+================
+1.  Connect 5V power supply and J-Link Debug Probe to the board, switch SW10 to power on the board.
+2.  Connect a micro USB cable between the host PC and the J17 USB port on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Download the program to the target board.
+5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the example.
+
+Running the demo
+================
+${ANCHOR}

@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+elemu:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/elemu
+    project-root-path: boards/${board}/driver_examples/elemu/${multicore_foldername}
+    document:
+      name: elemu${core_id_suffix_name}
+      category: driver_examples/elemu
+      brief: The ELEMU Example project is a demonstration program that uses the KSDK
+        software to show basic communication with Security Sub-System (SSS) and usage
+        of SSS services to encrypt data by AES CBC with direct use of ELEMU driver.
+      example_readme:
+      - examples/driver_examples/elemu/readme.md
+      - examples/_boards/${board}/driver_examples/elemu/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

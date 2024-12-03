@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+wdog8:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/wdog8
+    project-root-path: boards/${board}/driver_examples/wdog8/${multicore_foldername}
+    document:
+      name: wdog8${core_id_suffix_name}
+      category: driver_examples/wdog8
+      brief: The WDOG8 Example project is to demonstrate usage of the wdog8 driver.In
+        this example, fast testing is first implemented to test the wdog8.After this,
+        refreshing the watchdog in None-window mode and window mode is executed.Note
+        wdog8 is disabled in SystemInit function which means wdog8 is disabledafter
+        chip emerges from reset.
+      example_readme:
+      - examples/driver_examples/wdog8/readme.md
+      - examples/_boards/${board}/driver_examples/wdog8/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke02z40m: []

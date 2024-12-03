@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sinc_adc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sinc/adc
+    project-root-path: boards/${board}/driver_examples/sinc/adc/${multicore_foldername}
+    document:
+      name: sinc_adc${core_id_suffix_name}
+      category: driver_examples/sinc
+      brief: The sinc adc example shows how to use SINC driver to configure SINC module
+        as single conversion mode.
+      example_readme:
+      - examples/driver_examples/sinc/adc/readme.md
+      - examples/_boards/${board}/driver_examples/sinc/adc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

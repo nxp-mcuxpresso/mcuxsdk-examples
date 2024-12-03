@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_spake2plus:
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_spake2plus
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_spake2plus/${multicore_foldername}
+    document:
+      name: ele_spake2plus${core_id_suffix_name}
+      category: secure-subsystem_examples
+      brief: The ELE SPAKE2+ application provides an example how to use SSSAPI to
+        derive a shared secret using the SPAKE2+ protocol.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_spake2plus/readme.md
+      - examples/_boards/${board}/secure-subsystem_examples/ele_spake2plus/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release

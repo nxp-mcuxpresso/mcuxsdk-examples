@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+scg:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/scg
+    project-root-path: boards/${board}/driver_examples/scg/${multicore_foldername}
+    document:
+      name: scg${core_id_suffix_name}
+      category: driver_examples/scg
+      brief: 'The SCG example shows how to use SCG driver: 1. How to setup the SCG
+        clock source. 2. How to use SCG clock while power mode switch. 3. How to use
+        SCG APIs to get clock frequency.This example prints the clock frequency through
+        the terminal using the SDK driver.'
+      example_readme:
+      - examples/driver_examples/scg/readme.md
+      - examples/_boards/${board}/driver_examples/scg/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2a4s: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

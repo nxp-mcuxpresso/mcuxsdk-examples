@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+trgmux_lptmr_trigger_lpit:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/trgmux/lptmr_trigger_lpit
+    project-root-path: boards/${board}/driver_examples/trgmux/lptmr_trigger_lpit/${multicore_foldername}
+    document:
+      name: trgmux_lptmr_trigger_lpit${core_id_suffix_name}
+      category: driver_examples/trgmux
+      brief: The TRGMUX project is a simple demonstration program of the SDK TRGMUX
+        driver. It generatesa 10KHz PWM by LPIT0 CH0, and clone by TRGMUX to output
+        this PWM to eight TRGMUX_OUTx pins.
+      example_readme:
+      - examples/driver_examples/trgmux/lptmr_trigger_lpit/readme.md
+      - examples/_boards/${board}/driver_examples/trgmux/lptmr_trigger_lpit/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp: []

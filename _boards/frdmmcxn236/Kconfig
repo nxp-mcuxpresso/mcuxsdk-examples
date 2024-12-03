@@ -1,0 +1,35 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
+rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/mcx_flexio/Kconfig.lvgl_support"
+
+config MCUX_HW_BOARD_frdmmcxn236
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MCXN236
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.reset
+    imply MCUX_COMPONENT_driver.gpio
+    imply MCUX_COMPONENT_driver.port
+    imply MCUX_COMPONENT_driver.lpflexcomm
+    imply MCUX_COMPONENT_driver.lpflexcomm_lpuart
+    imply MCUX_COMPONENT_driver.mcx_spc
+
+
+    ## Board project segment dependency data
+
+    select MCUX_COMPONENT_driver.port if MCUX_PRJSEG_module.board.pinmux
+    select MCUX_COMPONENT_driver.gpio if MCUX_PRJSEG_module.board.pinmux
+    select MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock    
+    select MCUX_COMPONENT_driver.reset if MCUX_PRJSEG_module.board.clock
+    select MCUX_COMPONENT_component.lpuart_adapter if MCUX_PRJSEG_module.board.console_lite
+    select MCUX_COMPONENT_driver.lpflexcomm if MCUX_PRJSEG_module.board.console_lite
+    select MCUX_COMPONENT_driver.lpflexcomm_lpuart if MCUX_PRJSEG_module.board.console_lite
+    select MCUX_COMPONENT_driver.dbi_flexio_edma if MCUX_COMPONENT_middleware.emwin
+    select MCUX_COMPONENT_driver.dbi_flexio_edma if MCUX_COMPONENT_middleware.lvgl

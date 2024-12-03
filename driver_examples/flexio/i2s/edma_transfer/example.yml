@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexio_i2s_edma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio/i2s/edma_transfer
+    project-root-path: boards/${board}/driver_examples/flexio/i2s/edma_transfer/${multicore_foldername}
+    document:
+      name: flexio_i2s_edma_transfer${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The flexio_i2s_EDMA example shows how to use flexio_i2s driver with EDMA:In
+        this example, flexio acts as I2S module to record data from line-in line and
+        playbacks the recorded data at the same time using EDMA.
+      example_readme:
+      - examples/driver_examples/flexio/i2s/edma_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexio/i2s/edma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -iar@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+aoi_io_and:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/aoi/io_and
+    project-root-path: boards/${board}/driver_examples/aoi/io_and/${multicore_foldername}
+    document:
+      name: aoi_io_and${core_id_suffix_name}
+      category: driver_examples/aoi/io_and
+      brief: This example demos the AOI uses two IO, the AOI_OUT = (IO0 & IO1).
+      example_readme:
+      - examples/driver_examples/aoi/io_and/readme.md
+      - examples/_boards/${board}/driver_examples/aoi/io_and/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []

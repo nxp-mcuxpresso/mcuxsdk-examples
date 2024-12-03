@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdm_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdm/pdm_interrupt
+    project-root-path: boards/${board}/driver_examples/pdm/pdm_interrupt/${multicore_foldername}
+    document:
+      name: pdm_interrupt${core_id_suffix_name}
+      category: driver_examples/pdm
+      brief: The pdm_interrupt example shows how to use pdm driver with interrupt:In
+        this example, one pdm instance playbacks the audio data stored in flash using
+        interrupt.
+      example_readme:
+      - examples/driver_examples/pdm/pdm_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/pdm/pdm_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+freertos_message_buffers_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/multicore_examples/freertos_message_buffers/primary
+    project-root-path: boards/${board}/multicore_examples/freertos_message_buffers/${multicore_foldername}/
+    document:
+      name: freertos_message_buffers_primary_core
+      category: multicore_examples
+      brief: 'The FreeRTOS Message Buffers multicore project is a simple demonstration
+        program that uses the MCUXpresso SDK software and the Message Buffers component
+        of FreeRTOS. It shows how to implement lightweight core to core communication
+        using FreeRTOS Message Buffers, which are lockless circular buffers that can
+        pass data packets of varying sizes from a single sender to a single receiver.
+
+        The primary core releases the secondary core from the reset and then the inter-core
+        communication is established.
+
+        Once the Message Buffers are initialized on both cores the message exchange
+        starts, incrementing a virtual counter, that is part of the message payload.
+
+        The message pingpong finishes when the counter reaches the value of 100. The
+        Message Buffer is deinitialized at the end.
+
+        NXP Multicore Manager (MCMGR) component is used for several purposes in this
+        example: - it releases the secondary core from the reset (starts the secondary
+        code) - it registers and use the application event for init handshaking (the
+        secondary core application signals to the primary core it is ready to communicate)
+        - it registers and use the FreeRtosMessageBuffersEvent for inter-core interrupts
+        triggering and interrupts handling.
+
+        Shared memory usage:
+
+        This multicore example uses the shared memory for data exchange. The shared
+        memory region is defined and the size can be adjustable in the linker file.
+        The shared memory region start address and the size have to be defined in
+        linker file for each core equally. The shared memory start address is then
+        exported from the linker to the application to allow placing FreeRTOS Message
+        Buffers at a fixed location that is then known for both cores.'
+      example_readme:
+      - examples/multicore_examples/freertos_message_buffers/readme.md
+      - examples/_boards/${board}/multicore_examples/freertos_message_buffers/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1160@cm7:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm33:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    frdmk32l3a6@cm4: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

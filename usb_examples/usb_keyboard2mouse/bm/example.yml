@@ -1,0 +1,28 @@
+keyboard2mouse_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_keyboard2mouse/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_keyboard2mouse/bm/${multicore_foldername}
+    document:
+      name: keyboard2mouse_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: This example implements the host and the device, where the one controller
+        works as a host and the other controller works as a device.
+      example_readme:
+      - examples/usb_examples/usb_keyboard2mouse/readme.md
+      - examples/_boards/${board}/usb_examples/usb_keyboard2mouse/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []

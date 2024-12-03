@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdif_rotate_flip:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdif/rotate_flip
+    project-root-path: boards/${board}/driver_examples/lcdif/rotate_flip/${multicore_foldername}
+    document:
+      name: lcdif_rotate_flip${core_id_suffix_name}
+      category: driver_examples/lcdif
+      brief: This example demonstrates how to use the LCDIF rotate/flip feature. In
+        this example, you will see a square with three color(red, green and blue).
+        The rotate/flip mode is changing.
+      example_readme:
+      - examples/driver_examples/lcdif/rotate_flip/readme.md
+      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pwm_fault:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/pwm/pwm_fault
+    project-root-path: boards/${board}/demo_apps/pwm_fault/${multicore_foldername}
+    document:
+      name: pwm_fault${core_id_suffix_name}
+      category: demo_apps
+      brief: This demo application demonstrates the EflexPWM fault demo.This application
+        demonstrates the pulse with modulation function of EflexPWM module. It outputs
+        thePWM to control the intensity of the LED. PWM shut down when a fault signal
+        is detected on the CMPoutput. One input of CMP, other input is from internal
+        DAC.
+      example_readme:
+      - examples/demo_apps/pwm/pwm_fault/readme.md
+      - examples/_boards/${board}/demo_apps/pwm_fault/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

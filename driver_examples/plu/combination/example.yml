@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+plu_combination:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/plu/combination
+    project-root-path: boards/${board}/driver_examples/plu/combination/${multicore_foldername}
+    document:
+      name: plu_combination${core_id_suffix_name}
+      category: driver_examples/plu/
+      brief: The PLU combination project is a simple demonstration program of the
+        SDK PLU driver. In this example, a number of GPIO pins are connected to PLU
+        inputs and the LED is used to monitor the PLU outputs to demonstrate the configuration
+        and use of the Programmable Logic Unit (PLU) to construct a combinational
+        logic network.
+      example_readme:
+      - examples/driver_examples/plu/combination/readme.md
+      - examples/_boards/${board}/driver_examples/plu/combination/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso804: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

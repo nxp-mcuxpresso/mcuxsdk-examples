@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+uart_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/uart/polling
+    project-root-path: boards/${board}/driver_examples/uart/polling/${multicore_foldername}
+    document:
+      name: uart_polling${core_id_suffix_name}
+      category: driver_examples/uart
+      brief: The uart_polling example shows how to use uart driver in polling way:In
+        this example, one uart instance connect to PC through uart, the board will
+        send back all characters that PCsend to the board.
+      example_readme:
+      - examples/driver_examples/uart/polling/readme.md
+      - examples/_boards/${board}/driver_examples/uart/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmk32l2b: []
+    frdmke02z40m: []
+    frdmke17z512: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

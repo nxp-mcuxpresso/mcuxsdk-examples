@@ -1,0 +1,14 @@
+initialization_file:
+  files:
+  - attribute: initialization_file
+    source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_ram.ini
+    targets: debug release
+    toolchains: mdk
+  - attribute: initialization_file
+    source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_sdram_init.ini
+    targets: sdram_debug sdram_release
+    toolchains: mdk
+  - attribute: initialization_file
+    source: examples/_boards/evkbmimxrt1170/evkbmimxrt1170_flexspi_nor.ini
+    targets: flexspi_nor_debug flexspi_nor_release
+    toolchains: mdk

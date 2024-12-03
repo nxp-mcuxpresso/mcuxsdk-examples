@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sai_edma_multi_channel_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sai/edma_multi_channel_transfer
+    project-root-path: boards/${board}/driver_examples/sai/edma_multi_channel_transfer/${multicore_foldername}
+    document:
+      name: sai_edma_multi_channel_transfer${core_id_suffix_name}
+      category: driver_examples/sai
+      brief: The sai_edma_multi_channel_transfer example shows how to use sai driver
+        with EDMA:In this example, one sai instance playbacks the audio data stored
+        in flash/SRAM using EDMA channel.
+      example_readme:
+      - examples/driver_examples/sai/edma_multi_channel_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/sai/edma_multi_channel_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm4:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

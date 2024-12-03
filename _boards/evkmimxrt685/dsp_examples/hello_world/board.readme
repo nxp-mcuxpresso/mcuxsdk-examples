@@ -1,0 +1,20 @@
+Hardware requirements
+=====================
+- Personal Computer
+
+Board settings
+==============
+
+Prepare the Demo
+===============
+1. Build the application using the 'sim' target for simluator with Xtensa IDE or
+xcc project.
+2. Launch the application using Xtensa simulator from Xtena IDE or with 'xt-run
+sim_debug/dsp_hello_world_hifi4.elf' on the command-line.
+
+Running the demo DSP
+===============
+When the demo runs successfully, the terminal will display the following:
+
+    Hello World running on core nxp_rt600_RI2020_5_newlib
+

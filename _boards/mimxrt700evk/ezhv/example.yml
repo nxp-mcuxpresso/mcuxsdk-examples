@@ -1,0 +1,3 @@
+board.toolchains:
+- +riscvllvm@debug
+- +riscvllvm@release

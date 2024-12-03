@@ -1,0 +1,44 @@
+dev_msc_disk_lite_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_msc_disk_lite/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_msc_disk_lite/bm/${multicore_foldername}
+    document:
+      name: dev_msc_disk_lite_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB MSC RAM disk application is a simple demonstration program based
+        on the MCUXpresso SDK.It is enumerated as a U-disk. Users can read and write
+        the SD card or MMC as a standard U-disk.
+      example_readme:
+      - examples/usb_examples/usb_device_msc_disk_lite/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_msc_disk_lite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_msc_disk_lite/bm_timing.jpg
+      - examples/usb_examples/usb_device_msc_disk_lite/freertos_optimization_timing.jpg
+      - examples/usb_examples/usb_device_msc_disk_lite/freertos_timing.jpg
+      - examples/usb_examples/usb_device_msc_disk_lite/IAR_setting.jpg
+      - examples/usb_examples/usb_device_msc_disk_lite/sdcard_scan.jpg
+      - examples/usb_examples/usb_device_msc_disk_lite/sd_card.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dma_channel_link:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dma/channel_link
+    project-root-path: boards/${board}/driver_examples/dma/channel_link/${multicore_foldername}
+    document:
+      name: dma_channel_link${core_id_suffix_name}
+      category: driver_examples/dma
+      brief: The DMA wrap transfer example is a simple demonstration program that
+        uses the SDK software.It executes wrap transfer from source buffer to destination
+        buffer using the SDK DMA drivers.The purpose of this example is to show how
+        to use the DMA and to provide a simple example for debugging and further development.
+      example_readme:
+      - examples/driver_examples/dma/channel_link/readme.md
+      - examples/_boards/${board}/driver_examples/dma/channel_link/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

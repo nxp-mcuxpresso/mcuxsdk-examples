@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcg_pei_blpi:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcg/pei_blpi
+    project-root-path: boards/${board}/driver_examples/mcg/pei_blpi/${multicore_foldername}
+    document:
+      name: mcg_pei_blpi${core_id_suffix_name}
+      category: driver_examples/mcg
+      brief: 'The pei_bpli example shows how to use MCG driver to change from PEI
+        mode to BLPI mode: 1. How to use the mode functions for MCG mode switch. 2.
+        How to use the frequency functions to get current MCG frequency. 3. Work flow    Boot
+        to PEI mode from default reset mode    Change mode PEI -> FBI -> BLPI    Change
+        back BLPI -> FBI -> PEI    Get System clock in PEI mode to blink LEDIn this
+        example, because the debug console''s clock frequency may change,so the example
+        running information is not output from debug console. Here theLED blinks to
+        show that the example finished successfully.'
+      example_readme:
+      - examples/driver_examples/mcg/pei_blpi/readme.md
+      - examples/_boards/${board}/driver_examples/mcg/pei_blpi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

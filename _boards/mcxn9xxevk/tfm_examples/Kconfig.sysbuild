@@ -1,0 +1,8 @@
+config secondary_config
+    string
+    default "debug" if $(config) = "debug"
+    default "release" if $(config) = "release"
+
+config secondary_core_id
+    string
+    default "cm33_core0"

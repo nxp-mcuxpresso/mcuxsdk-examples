@@ -1,0 +1,5 @@
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/ota_examples/mcuboot_opensource/app_support/evkcmimxrt1060_flexspi_nor_mcubootable.ini
+    attribute: initialization_file
+    toolchains: mdk

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdc_tft:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_lcdc/lcdc_tft
+    project-root-path: boards/${board}/driver_examples/lcdc/lcdc_tft/${multicore_foldername}
+    document:
+      name: lcdc_tft${core_id_suffix_name}
+      category: driver_examples/lcdc
+      brief: The lcdc_tft example shows how to use LCD driver to drive TFT panel.In
+        this example, the cursor palette is used. A rectangle is shown in the panel,its
+        color and position are changed every frame.
+      example_readme:
+      - examples/driver_examples/lpc_lcdc/lcdc_tft/readme.md
+      - examples/_boards/${board}/driver_examples/lcdc/lcdc_tft/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

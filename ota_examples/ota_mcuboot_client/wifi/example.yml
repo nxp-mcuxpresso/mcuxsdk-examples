@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ota_mcuboot_client_wifi:
+  section-type: application
+  contents:
+    meta_path: examples/ota_examples/ota_mcuboot_client/wifi
+    project-root-path: boards/${board}/ota_examples/ota_mcuboot_client/wifi/${multicore_foldername}
+    document:
+      name: ota_mcuboot_client_wifi${core_id_suffix_name}
+      category: ota_examples
+      brief: The ota_mcuboot_client demo application demonstrates an HTTPS OTA client
+        using FreeRTOS + LWIP + MbedTLS + CoreHTTP. The client connects to a HTTPS
+        server and requests an OTA binary for download and subsequent installation
+        by MCUBoot.
+      example_readme:
+      - examples/ota_examples/ota_mcuboot_client/wifi/readme.md
+      - examples/_boards/${board}/ota_examples/ota_mcuboot_client/wifi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

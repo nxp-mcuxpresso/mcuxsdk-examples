@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+k4w1_romapi_lpspi:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/fsl_romapi/romapi_lpspi
+    project-root-path: boards/${board}/driver_examples/fsl_romapi/romapi_lpspi/${multicore_foldername}
+    document:
+      name: k4w1_romapi_lpspi${core_id_suffix_name}
+      category: driver_examples/fsl_romapi/romapi_lpspi
+      brief: The fsl_romapi example shows how to use rom api In this example; (1)The
+        pflash example shows how to use interal flash driver to operate program (2)LPSPI
+        api shows how operate the external flash connected with LPSPI. (3)nboot Image
+        authentication api. (4)bootloader api
+      example_readme:
+      - examples/driver_examples/fsl_romapi/romapi_lpspi/readme.md
+      - examples/_boards/${board}/driver_examples/fsl_romapi/romapi_lpspi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxw72evk@cm33_core0: []
+    kw47evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

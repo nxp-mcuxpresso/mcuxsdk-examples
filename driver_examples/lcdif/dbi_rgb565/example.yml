@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdif_dbi_rgb565:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdif/dbi_rgb565
+    project-root-path: boards/${board}/driver_examples/lcdif/dbi_rgb565/${multicore_foldername}
+    document:
+      name: lcdif_dbi_rgb565${core_id_suffix_name}
+      category: driver_examples/lcdif
+      brief: This example demonstrates how to use the LCDIF driver to show the dbi_rgb565
+        format frame buffer. When the example runs, a rectangle is moving in the screen,
+        and its color changes when touch border.
+      example_readme:
+      - examples/driver_examples/lcdif/dbi_rgb565/readme.md
+      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcx_opamp_dac_lpadc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/opamp/opamp_dac_lpadc
+    project-root-path: boards/${board}/driver_examples/opamp/opamp_dac_lpadc/${multicore_foldername}
+    document:
+      name: mcx_opamp_dac_lpadc${core_id_suffix_name}
+      category: driver_examples/opamp
+      brief: The OPAMP DAC LPADC example demonstrates how to use the OPAMP driver.
+        In this example, the OUTSW, BUFFEN, ADCSW1, and ADCSW2 are enabled, and the
+        user can use the ADC to measure the OPAMPx_INT voltage and the OPAMPx_OBS
+        voltage. The user needs to connect the OPAMP positive input port and negative
+        input port to GND. The positive (OPAMPx_INP0) reference voltage is set to
+        the DAC output, the user selects the OPAMP negative gain by using the PC keyboard,
+        and the positive gain is fixed to 1x, So, the OPAMP output voltage is equal
+        to ((1 + Ngain) / 2)Vpref.
+      example_readme:
+      - examples/driver_examples/opamp/opamp_dac_lpadc/readme.md
+      - examples/_boards/${board}/driver_examples/opamp/opamp_dac_lpadc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa156: []

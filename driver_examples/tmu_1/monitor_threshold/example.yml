@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+tmu_1_monitor_threshold:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tmu_1/monitor_threshold
+    project-root-path: boards/${board}/driver_examples/tmu/monitor_threshold/${multicore_foldername}
+    document:
+      name: tmu_1_monitor_threshold${core_id_suffix_name}
+      category: driver_examples/tmu
+      brief: The TMU example shows how to configure TMU register to monitor and report
+        the temperature from temperature measurement site located on the chip. It
+        monitors the site and signals an alarm if a programmed threshold is ever exceeded.
+      example_readme:
+      - examples/driver_examples/tmu_1/monitor_threshold/readme.md
+      - examples/_boards/${board}/driver_examples/tmu/monitor_threshold/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []

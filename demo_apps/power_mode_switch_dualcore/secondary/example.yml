@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+power_mode_switch_secondary:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_dualcore/secondary
+    project-root-path: boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}
+    document:
+      name: power_mode_switch_secondary
+      category: demo_apps
+      brief: This demo is used to show all the power modes. With this demo, user can
+        navigate all the power modes that are existing in primary core. In typical
+        use case, the primary core is running the main control logic, while the slave
+        core is used to run the protocol or other complex mid-ware independently.
+        Then the slave core prepares the resource (data, message, etc) into the somewhere,
+        so that the master core would fetch when necessary. In some other cases, master
+        core would send the some kinds of message to the slave core, and ask the slave
+        core to enter indicated power mode. This demo download the image to both cores,
+        also provides the reference code to enter any power mode.
+      example_readme:
+      - examples/demo_apps/power_mode_switch_dualcore/readme.md
+      - examples/_boards/${board}/demo_apps/power_mode_switch/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l3a6@cm0plus: []
+    mimxrt700evk@cm33_core1: []

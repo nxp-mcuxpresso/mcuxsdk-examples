@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+fmstr_example_wifi:
+  section-type: application
+  contents:
+    document:
+      brief: FreeMASTER example using WiFi network and TCP/UDP socket communication
+        with the target microcontroller. This example application demonstrates use
+        of FreeMASTER tool to visualize internal variables and to control the application
+        flow by modifying variables. The application also shows use of advanced FreeMASTER
+        features like TSA tables and Pipes.
+      category: FreeMASTER_examples
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_wifi/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_wifi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      name: fmstr_example_wifi${core_id_suffix_name}
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_wifi/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_wifi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+    meta_path: examples/freemaster_examples/fmstr_example_wifi
+    project-root-path: boards/${board}/freemaster_examples/fmstr_wifi/${multicore_foldername}
+  boards:
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

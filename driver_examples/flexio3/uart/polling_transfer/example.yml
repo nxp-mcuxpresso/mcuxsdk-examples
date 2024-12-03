@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flexio3_uart_polling_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio3/uart/polling_transfer
+    project-root-path: boards/${board}/driver_examples/flexio3/uart/polling_transfer/${multicore_foldername}
+    document:
+      name: flexio3_uart_polling_transfer${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The flexio3_uart_polling example shows how to use flexio uart driver
+        in polling way:In this example, a flexio simulated uart connect to PC through
+        USB-Serial, the board will send backall characters that PC send to the board.
+      example_readme:
+      - examples/driver_examples/flexio3/uart/polling_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexio3/uart/polling_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

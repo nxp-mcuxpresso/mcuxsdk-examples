@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+intm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/intm
+    project-root-path: boards/${board}/driver_examples/intm/${multicore_foldername}
+    document:
+      name: intm${core_id_suffix_name}
+      category: driver_examples/intm
+      brief: The INTM project is a simple demonstration of the SDK INTM driver. The
+        role of INTM is to monitor the interrupt response. The main monitoring is
+        whether the interrupt has timed out from the request to the response. Up to
+        4 interrupts can be monitored simultaneously. This example is to detect the
+        key interrupt, verify the function of INTM by delaying the time from the trigger
+        to the response of the key interrupt, and confirm the interrupt timeout by
+        the flag bit one.
+      example_readme:
+      - examples/driver_examples/intm/readme.md
+      - examples/_boards/${board}/driver_examples/intm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc12_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/adc12/polling
+    project-root-path: boards/${board}/driver_examples/adc12/polling/${multicore_foldername}
+    document:
+      name: adc12_polling${core_id_suffix_name}
+      category: driver_examples/adc12
+      brief: The adc12_polling example shows the simplest way to use ADC12 driver.In
+        this example, user should indicate a channel to provide a voltage signal (can
+        be controlled by user) as the ADC12's sample input.When running the project,
+        typing any key into debug console would trigger the conversion. The execution
+        would check the conversion completed flag in loop until the flag is asserted,
+        which means the conversion is completed. Then read the conversion result value
+        and print it to debug console.Note, the default setting of initialization
+        for the ADC converter is just an available configuration. User can change
+        theconfiguration structure's setting in application to fit the special requirement.The
+        auto-calibration is not essential but strongly recommended. It can help to
+        adjust the converter itself and improve theADC12's performance.
+      example_readme:
+      - examples/driver_examples/adc12/polling/readme.md
+      - examples/_boards/${board}/driver_examples/adc12/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

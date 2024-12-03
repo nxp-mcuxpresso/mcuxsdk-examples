@@ -1,0 +1,6 @@
+board-file:
+  files:
+  - attribute: board-file
+    source: examples/_boards/frdmmcxc444/FlashKLxx256KROM_with_config_write_enabled.board
+    targets: debug release
+    toolchains: iar

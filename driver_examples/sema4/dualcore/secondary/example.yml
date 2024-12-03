@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+sema4_dualcore_secondary_core:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sema4/dualcore/secondary
+    project-root-path: boards/${board}/driver_examples/sema4/dualcore/${multicore_foldername}/
+    document:
+      name: sema4_dualcore_secondary_core
+      category: driver_examples/sema4
+      brief: This example shows how to use the SEMA4 gate lock and unlock, and the
+        gate notify feature. In this example, core 0 sends command to core 1 through
+        MU. According to the commands, core 1 locks and unlocks the specific SEMA4
+        gate at the proper time. If core 0 trys to lock a SEMA4 gate which has been
+        locked by core 1, the opeartion fails, and core 0 is notified when the SEMA4
+        gate is unlocked by core 1. This example demonstrates this feature.
+      example_readme:
+      - examples/driver_examples/sema4/dualcore/readme.md
+      - examples/_boards/${board}/driver_examples/sema4/dualcore/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1160@cm4:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm4:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

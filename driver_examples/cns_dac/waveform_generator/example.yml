@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cns_dac_waveform_generator:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cns_dac/waveform_generator
+    project-root-path: boards/${board}/driver_examples/dac/waveform_generator/${multicore_foldername}
+    document:
+      name: cns_dac_waveform_generator${core_id_suffix_name}
+      category: driver_examples/dac
+      brief: The DAC waveform generator driver example demonstrates how to use the
+        DAC module to generate different types of waveforms (including triangle waveform,
+        sawtooth waveform, sine waveform, and noise). After starting this example,
+        user can select the waveform type based on the log, and then the selected
+        waveform will be output from  DAC channel pin.
+      example_readme:
+      - examples/driver_examples/cns_dac/waveform_generator/readme.md
+      - examples/_boards/${board}/driver_examples/dac/waveform_generator/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

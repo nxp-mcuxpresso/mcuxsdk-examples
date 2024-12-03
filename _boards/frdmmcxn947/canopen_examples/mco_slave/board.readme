@@ -1,0 +1,71 @@
+NOTE: For generic step-by-step instructions, please see the User's Manual for the
+EmSA CANopen (FD) Libraries for NXP SDKs, chapter "Getting Started"
+
+Hardware requirements
+=====================
+- Type-C USB cable
+- FRDM-MCXN947 Board
+- Personal Computer
+
+Board settings
+==============
+The example requires 2 sets of boards, each of them is mounted with the base board.
+To make example work, connections needed to be as follows on each base board:
+
+Board to board connections needed to be as follows:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Node A           connect to      Node B
+Pin Name   Board Location         Pin Name    Board Location
+CANH       J10-1                  CANH        J10-1
+CANL       J10-2                  CANL        J10-2
+GND        J10-4                  GND         J10-4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prepare the Demo
+===============
+1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board. 
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+1. First press the reset button on the board with the mco_slave example
+2. Second press the reset button on the board with the mco_manager example
+
+~~~~~~~~~~~~~~~~~~~~~
+The terminal connected to the mco_manager example displays similar like that:
+
+Starting CANopen Library manager example
+Provided by EmSA - www.em-sa.com/nxp
+
+CANopen Library Event - Reset Communication, bitrate 500kbps, node id 1
+CANopen Library Event - NMT Change: 0x 0 boot
+CANopen Library Event - NMT Change: 0x 5 operational
+CANopen Manager Event - Node Status Change: 3, 0x 0 booted
+CANopen Manager Event - Node Status Change: 3, 0x81 emergency over / reset
+CANopen Manager Event - Node Status Change: 3, 0xA0 scan complete
+ [1000,00]:     191 [1018,01]:AF0002DC [1018,02]:C0DE0010
+CANopen Manager Event - Node Status Change: 3, 0x 5 operational
+CANopen Manager Event - Node Status Change: 3, 0x90 heartbeat monitoring active
+CANopen Manager Client SDO Complete: node 3
+ [1008,00]:CANopenLibNXPSDK CiA401 Example
+ 
+
+The terminal connected to the mco_slave example displays similar like that:
+
+Starting CANopen Library slave example
+Provided by EmSA - www.em-sa.com/nxp
+
+CANopen Library Event - Reset Communication, bitrate 500kbps, node id 3
+CANopen Library Event - NMT Change: 0x 0 boot
+CANopen Library Event - NMT Change: 0x7F pre-operational
+CANopen Library Event - NMT Change: 0x7F pre-operational
+CANopen Library Event - NMT Change: 0x 5 operational
+~~~~~~~~~~~~~~~~~~~~~

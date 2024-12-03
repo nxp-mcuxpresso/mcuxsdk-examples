@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+isi_dwc_mipi_csi2_rgb565:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/isi/dwc_mipi_csi2/rgb565
+    project-root-path: boards/${board}/driver_examples/isi/dwc_mipi_csi2/rgb565/${multicore_foldername}
+    document:
+      name: isi_dwc_mipi_csi2_rgb565${core_id_suffix_name}
+      category: driver_examples/isi
+      brief: 'This example shows how to use ISI to receive camera frame through MIPI
+        CSI2.
+
+        In this example, the camera input frame is RGB565 format. The output frame
+        is shown in the screen.'
+      example_readme:
+      - examples/driver_examples/isi/dwc_mipi_csi2/rgb565/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

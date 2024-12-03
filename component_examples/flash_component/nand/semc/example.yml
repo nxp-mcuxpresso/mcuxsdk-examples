@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flash_component_nand_semc:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/flash_component/nand/semc/
+    project-root-path: boards/${board}/component_examples/flash_component/semc_nand/${multicore_foldername}
+    document:
+      name: flash_component_nand_semc${core_id_suffix_name}
+      category: component_examples/flash_component/semc_nand/
+      brief: nand flash demo shows the use of nand flash component to erase, program,
+        and read anexternal nand flash device.
+      example_readme:
+      - examples/component_examples/flash_component/nand/semc/readme.md
+      - examples/_boards/${board}/component_examples/flash_component/semc_nand/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4:
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

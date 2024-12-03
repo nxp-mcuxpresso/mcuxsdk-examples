@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+slcd_guessnum:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/slcd_guessnum
+    project-root-path: boards/${board}/demo_apps/slcd_guessnum/${multicore_foldername}
+    document:
+      name: slcd_guessnum${core_id_suffix_name}
+      category: demo_apps
+      brief: The SLCD number guess demo application demonstrates the use of the SLCD
+        peripheral and driver.The SLCD number guess demo has two demo displays:1.
+        The first demo is a basic SLCD test, where all numbers and icons are shown
+        one by one on the screen.2. The second demo is the "Number Guess" game. This
+        demo asks the user to input a number. The demo then providesclues to the user
+        to help the user guess the correct number."Great, xxx you has GOT it!" will
+        be shown on the console, and the victory will be displayed on the LCD screen
+        when theuser successfully guesses the correct number.
+      example_readme:
+      - examples/demo_apps/slcd_guessnum/readme.md
+      - examples/_boards/${board}/demo_apps/slcd_guessnum/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

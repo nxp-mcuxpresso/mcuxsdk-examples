@@ -1,0 +1,13 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mdk:
+  shared-workspace: power_mode_switch_dualcore
+  sharing-workspace:
+  - ../../power_mode_switch_secondary/mdk/power_mode_switch_secondary_cm0plus
+iar:
+  shared-workspace: power_mode_switch_dualcore
+  sharing-workspace:
+  - ../../power_mode_switch_secondary/iar/power_mode_switch_secondary_cm0plus

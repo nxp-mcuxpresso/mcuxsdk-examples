@@ -1,0 +1,34 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
+rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/flexcomm_spi/Kconfig.lvgl_support"
+
+config MCUX_HW_BOARD_lpcxpresso55s36
+    bool
+    default y
+    imply MCUX_HW_DEVICE_LPC55S36
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.flexcomm_i2c
+    imply MCUX_COMPONENT_driver.flexcomm_spi
+    imply MCUX_COMPONENT_driver.flexcomm_usart
+    imply MCUX_COMPONENT_driver.lpc_gpio
+    imply MCUX_COMPONENT_driver.lpc_iocon
+    imply MCUX_COMPONENT_driver.power
+    imply MCUX_COMPONENT_driver.reset
+    imply MCUX_COMPONENT_driver.flexcomm
+
+    ## Board project segment dependency data
+
+    select MCUX_COMPONENT_driver.lpc_iocon if MCUX_PRJSEG_module.board.pinmux
+    select MCUX_COMPONENT_driver.lpc_gpio if MCUX_PRJSEG_module.board.pinmux
+    select MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock    
+    select MCUX_COMPONENT_driver.power if MCUX_PRJSEG_module.board.clock
+    select MCUX_COMPONENT_component.usart_adapter if MCUX_PRJSEG_module.board.console_lite
+    select MCUX_COMPONENT_driver.flexcomm if MCUX_PRJSEG_module.board.console_lite
+    select MCUX_COMPONENT_driver.flexcomm_usart if MCUX_PRJSEG_module.board.console_lite

@@ -1,0 +1,17 @@
+ezhv_arm2ezhv_int_chan_ezhv:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/arm2ezhv_int_chan/ezhv
+    project-root-path: boards/${board}/ezhv_examples/arm2ezhv_int_chan/${multicore_foldername}
+    document:
+      name: ezhv_arm2ezhv_int_chan_ezhv
+      category: ezhv_examples
+      brief: This project shows how to use ARM send interrupt request to EZHV core,
+        the interrupt request will wakeup EZHV core from wait state.
+      example_readme:
+      - examples/ezhv_examples/arm2ezhv_int_chan/readme.md
+      - examples/_boards/${board}/ezhv_examples/arm2ezhv_int_chan/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@ezhv: []

@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+acmp_round_robin:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/acmp/round_robin
+    project-root-path: boards/${board}/driver_examples/acmp/round_robin/${multicore_foldername}
+    document:
+      name: acmp_round_robin${core_id_suffix_name}
+      category: driver_examples/acmp
+      brief: The ACMP Round-Robin project is a simple demonstration program that uses
+        the SDK software. Usermust set the round-robin mode trigger in specific board
+        properly according to the board resourcebefore running the example. When the
+        example running, it sets positive port as fixed channel andinternal DAC output
+        as comparison reference in positive port and sets the channels input by useras
+        round-robin checker channel. The example will enter stop mode and wait user
+        to change the voltageof round-robin checker channel. It will exit stop mode
+        after the voltage of round-robin checkerchannel changed by user.
+      example_readme:
+      - examples/driver_examples/acmp/round_robin/readme.md
+      - examples/_boards/${board}/driver_examples/acmp/round_robin/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    mimxrt685audevk@cm33: []

@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc12_lpit_trgmux:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/adc12/lpit_trgmux
+    project-root-path: boards/${board}/driver_examples/adc12/lpit_trgmux/${multicore_foldername}
+    document:
+      name: adc12_lpit_trgmux${core_id_suffix_name}
+      category: driver_examples/adc12
+      brief: The adc12_lpit_trgmux example shows how to use the LPIT and TRGMUX to
+        generate a ADC trigger.In this example, user should indicate a channel to
+        provide a voltage signal (can be controlled by user) as the ADC12'ssample
+        input. When run the example, the ADC is triggered by TRGMUX and gets the ADC
+        conversion result in the ADCConversion Complete (COCO) Interrupt. The LPIT
+        is configured as periodic counter which will output pre-trigger andtigger
+        signal to TRGMUX periodically.
+      example_readme:
+      - examples/driver_examples/adc12/lpit_trgmux/readme.md
+      - examples/_boards/${board}/driver_examples/adc12/lpit_trgmux/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+sha:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sha
+    project-root-path: boards/${board}/driver_examples/sha/${multicore_foldername}
+    document:
+      name: sha${core_id_suffix_name}
+      category: driver_examples/sha
+      brief: The SHA Example project is a demonstration program that uses the KSDK
+        software to generate SHA checksums.
+      example_readme:
+      - examples/driver_examples/sha/readme.md
+      - examples/_boards/${board}/driver_examples/sha/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

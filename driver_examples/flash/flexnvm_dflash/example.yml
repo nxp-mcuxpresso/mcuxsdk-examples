@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexnvm_dflash:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flash/flexnvm_dflash
+    project-root-path: boards/${board}/driver_examples/flash/flexnvm_dflash/${multicore_foldername}
+    document:
+      name: flexnvm_dflash${core_id_suffix_name}
+      category: driver_examples/flash
+      brief: 'The flexnvm_dflash example shows how to use flash driver to operate
+        data flash:'
+      example_readme:
+      - examples/driver_examples/flash/flexnvm_dflash/readme.md
+      - examples/_boards/${board}/driver_examples/flash/flexnvm_dflash/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []

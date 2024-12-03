@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+edma3_scatter_gather:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/edma3/scatter_gather
+    project-root-path: boards/${board}/driver_examples/edma3/scatter_gather/${multicore_foldername}
+    document:
+      name: edma3_scatter_gather${core_id_suffix_name}
+      category: driver_examples/edma3
+      brief: The EDMA3 scatter gather example is a simple demonstration program that
+        uses the SDK software.It executes one shot transfer from source buffer to
+        destination buffer using the SDK EDMA3 drivers.The purpose of this example
+        is to show how to use the EDMA4 and to provide a simple example for debugging
+        and further development.
+      example_readme:
+      - examples/driver_examples/edma3/scatter_gather/readme.md
+      - examples/_boards/${board}/driver_examples/edma3/scatter_gather/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

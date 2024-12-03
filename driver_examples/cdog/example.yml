@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+cdog:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cdog
+    project-root-path: boards/${board}/driver_examples/cdog/${multicore_foldername}
+    document:
+      name: cdog${core_id_suffix_name}
+      category: driver_examples/cdog
+      brief: The CDOG Example project is a demonstration program that uses the KSDK
+        software to show funcionality of Code Watchdog Timer.
+      example_readme:
+      - examples/driver_examples/cdog/readme.md
+      - examples/_boards/${board}/driver_examples/cdog/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm7: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []

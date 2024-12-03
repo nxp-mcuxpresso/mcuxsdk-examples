@@ -1,0 +1,26 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "Kconfig.defconfig"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
+
+config MCUX_HW_BOARD_frdmmcxc242
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MCXC242
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.gpio
+    imply MCUX_COMPONENT_driver.lpuart
+    imply MCUX_COMPONENT_driver.port
+    imply MCUX_COMPONENT_driver.smc
+
+    ## Board project segment dependency data
+
+    imply MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock
+    imply MCUX_COMPONENT_driver.smc if MCUX_PRJSEG_module.board.clock
+    imply MCUX_COMPONENT_driver.lpuart if MCUX_PRJSEG_module.board.console_lite
+    imply MCUX_COMPONENT_driver.smc if MCUX_PRJSEG_module.board.console_lite
+    imply MCUX_COMPONENT_component.lpuart_adapter if MCUX_PRJSEG_module.board.console_lite

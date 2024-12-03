@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cmsis_i2c_read_accel_value_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/i2c/read_accel_value_transfer
+    project-root-path: boards/${board}/cmsis_driver_examples/i2c/read_accel_value_transfer/${multicore_foldername}
+    document:
+      name: cmsis_i2c_read_accel_value_transfer${core_id_suffix_name}
+      category: cmsis_driver_examples/i2c
+      brief: 'CMSIS-Driver defines generic peripheral driver interfaces for middleware
+        making it reusable across a wide range of supported microcontroller devices.
+        The API connects microcontroller peripherals with middleware that implements
+        for example communication stacks, file systems, or graphic user interfaces.
+        More information and usage methord please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.The
+        cmsis_i2c_read_accel_value example shows how to use CMSIS I2C driver to communicate
+        with an i2c device: 1. How to use the i2c driver to read a i2c device who_am_I
+        register. 2. How to use the i2c driver to write/read the device registers.In
+        this example, the values of three-axis accelerometer print to the serial terminal
+        on PC throughthe virtual serial port on board.'
+      example_readme:
+      - examples/cmsis_driver_examples/i2c/read_accel_value_transfer/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/i2c/read_accel_value_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmk32l2b: []
+    frdmke02z40m: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+tsi_v5_mutualmode:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/tsi/tsi_v5/tsi_v5_mutualmode
+    project-root-path: boards/${board}/demo_apps/tsi_v5/tsi_v5_mutualmode/${multicore_foldername}
+    document:
+      name: tsi_v5_mutualmode${core_id_suffix_name}
+      category: demo_apps/tsi_v5
+      brief: The tsi_v5_mutualmode demo shows how to use TSI_V5 driver in mutual-cap
+        mode:In this example , available electrodes on FRDM-TOUCH board are used to
+        show how to realize touch key.1. Firstly, get the non-touch calibration results
+        as baseline electrode counter;2. Then, start the periodical Software-Trigger
+        scan using polling method to detect finger touch;3. Wait for the electrodes
+        touched and deal with the event.
+      example_readme:
+      - examples/demo_apps/tsi/tsi_v5/tsi_v5_mutualmode/readme.md
+      - examples/_boards/${board}/demo_apps/tsi_v5/tsi_v5_mutualmode/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []

@@ -1,0 +1,72 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- Personal Computer
+- MCX-W72-EVK board
+
+Board settings
+==============
+No special settings are required.
+
+Prepare the Demo
+================
+1. Connect a USB cable between the host PC and the EVK board J14.
+2. Open a serial terminal on PC for the serial device with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3. Download the program to the target board.
+4. Either press the reset button on your board or launch the debugger in your IDE to begin running
+   the demo.
+
+Running the demo
+================
+The following lines are printed to the serial terminal when the demo program is executed.
+-------------------------------------------
+  MD5                      :       3485 KiB/s,         26 cycles/byte
+  SHA-1                    :       1851 KiB/s,         50 cycles/byte
+  SHA-256                  :       3852 KiB/s,         24 cycles/byte
+  SHA-512                  :       3553 KiB/s,         26 cycles/byte
+  3DES                     :        341 KiB/s,        275 cycles/byte
+  DES                      :        790 KiB/s,        118 cycles/byte
+  3DES-CMAC                :        316 KiB/s,        298 cycles/byte
+  AES-CBC-128              :       1025 KiB/s,         91 cycles/byte
+  AES-CBC-192              :        896 KiB/s,        104 cycles/byte
+  AES-CBC-256              :        795 KiB/s,        118 cycles/byte
+  AES-GCM-128              :        532 KiB/s,        176 cycles/byte
+  AES-GCM-192              :        495 KiB/s,        189 cycles/byte
+  AES-GCM-256              :        462 KiB/s,        203 cycles/byte
+  AES-CCM-128              :       1337 KiB/s,         70 cycles/byte
+  AES-CCM-192              :       1332 KiB/s,         70 cycles/byte
+  AES-CCM-256              :       1330 KiB/s,         70 cycles/byte
+  ChaCha20-Poly1305        :        885 KiB/s,        106 cycles/byte
+  AES-CMAC-128             :        956 KiB/s,         98 cycles/byte
+  AES-CMAC-192             :        841 KiB/s,        111 cycles/byte
+  AES-CMAC-256             :        749 KiB/s,        125 cycles/byte
+  AES-CMAC-PRF-128         :        954 KiB/s,         98 cycles/byte
+  CAMELLIA-CBC-128         :        838 KiB/s,        111 cycles/byte
+  CAMELLIA-CBC-192         :        659 KiB/s,        142 cycles/byte
+  CAMELLIA-CBC-256         :        659 KiB/s,        142 cycles/byte
+  ChaCha20                 :       1055 KiB/s,         88 cycles/byte
+  Poly1305                 :       8129 KiB/s,         11 cycles/byte
+  CTR_DRBG (NOPR)          :        796 KiB/s,        117 cycles/byte
+  CTR_DRBG (PR)            :        582 KiB/s,        161 cycles/byte
+  HMAC_DRBG SHA-1 (NOPR)   :        133 KiB/s,        711 cycles/byte
+  HMAC_DRBG SHA-1 (PR)     :        124 KiB/s,        766 cycles/byte
+  HMAC_DRBG SHA-256 (NOPR) :         47 KiB/s,       2071 cycles/byte
+  HMAC_DRBG SHA-256 (PR)   :         47 KiB/s,       2071 cycles/byte
+  RSA-1024                 :       0  public/s
+  RSA-1024                 :       0 private/s
+  DHE-2048                 :       0 handshake/s
+  DH-2048                  :       0 handshake/s
+  DHE-3072                 :       0 handshake/s
+  DH-3072                  :       0 handshake/s
+  ECDSA-secp256r1          :      84 sign/s
+  ECDSA-secp256r1          :      71 verify/s
+  ECDHE-secp256r1          :      46 handshake/s
+  ECDH-secp256r1           :      78 handshake/s
+  ECDHE-secp256r1          :       4 full handshake/s
+
+[END]

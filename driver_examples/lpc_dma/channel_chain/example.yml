@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dma_channel_chain:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_dma/channel_chain
+    project-root-path: boards/${board}/driver_examples/dma/channel_chain/${multicore_foldername}
+    document:
+      name: dma_channel_chain${core_id_suffix_name}
+      category: driver_examples/dma
+      brief: The DMA channel chain example is a simple demonstration program that
+        uses the SDK software.The purpose of this example is to show how to use the
+        DMA channel chain feature.
+      example_readme:
+      - examples/driver_examples/lpc_dma/channel_chain/readme.md
+      - examples/_boards/${board}/driver_examples/dma/channel_chain/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

@@ -1,0 +1,18 @@
+dsc_i2c_edma_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_i2c/edma_b2b_transfer/slave
+    project-root-path: boards/${board}/driver_examples/i2c/edma_b2b_transfer/slave
+    document:
+      name: dsc_i2c_edma_b2b_transfer_slave${core_id_suffix_name}
+      category: driver_examples/i2c
+      brief: The i2c_edma_b2b_transfer_slave example shows how to use i2c driver as
+        slave to do board to board transfer with a EDMA master:In this example, one
+        i2c instance as slave and another i2c instance on the other board as master.
+        Master sends a piece of data to slave, and receive a piece of data from slave.
+        This example checks if the data received from slave is correct.
+      example_readme:
+      - examples/driver_examples/dsc_i2c/edma_b2b_transfer/slave/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f83000evk: []

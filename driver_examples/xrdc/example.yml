@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+xrdc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/xrdc
+    project-root-path: boards/${board}/driver_examples/xrdc/${multicore_foldername}
+    document:
+      name: xrdc${core_id_suffix_name}
+      category: driver_examples/xrdc
+      brief: The xrdc example shows how to control the memory and peripheral accesspolicy
+        using XRDC.In this example, one peripheral and a memory region are set to
+        unaccessible, thenthe hardfault occurs.
+      example_readme:
+      - examples/driver_examples/xrdc/readme.md
+      - examples/_boards/${board}/driver_examples/xrdc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []

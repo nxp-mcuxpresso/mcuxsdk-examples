@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+eeprom:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/eeprom
+    project-root-path: boards/${board}/driver_examples/eeprom/${multicore_foldername}
+    document:
+      name: eeprom${core_id_suffix_name}
+      category: driver_examples/eeprom
+      brief: The EEPROM Example project is a demonstration program that uses the KSDK
+        software to program eeprom memoryand verify the program.
+      example_readme:
+      - examples/driver_examples/eeprom/readme.md
+      - examples/_boards/${board}/driver_examples/eeprom/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []

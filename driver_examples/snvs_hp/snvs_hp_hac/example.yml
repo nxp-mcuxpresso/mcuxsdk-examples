@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+snvs_hp_hac:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/snvs_hp/snvs_hp_hac
+    project-root-path: boards/${board}/driver_examples/snvs/snvs_hp_hac/${multicore_foldername}
+    document:
+      name: snvs_hp_hac${core_id_suffix_name}
+      category: driver_examples/snvs
+      brief: The SNVS HP HAC project shows how to use the High Assurance Counter (HAC)
+        based on SDK SNVS HP driver. In this example, The HAC is enabled and set a
+        initial value. Software fatal security violation is triggered, and the SSM
+        switches to soft fail mode. In soft fail mode, software stops the HAC counter,
+        and clear the HAC to make SSM switch to hard fail mode. The system resets
+        when enters hard fail mode.
+      example_readme:
+      - examples/driver_examples/snvs_hp/snvs_hp_hac/readme.md
+      - examples/_boards/${board}/driver_examples/snvs/snvs_hp_hac/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

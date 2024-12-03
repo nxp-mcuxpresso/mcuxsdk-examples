@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+gpio_1_led_output:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/gpio_1/led_output
+    project-root-path: boards/${board}/driver_examples/gpio_1/led_output/${multicore_foldername}
+    document:
+      name: gpio_1_led_output${core_id_suffix_name}
+      category: driver_examples/gpio_1
+      brief: The GPIO Example project is a demonstration program that uses the KSDK
+        software to manipulate the general-purposeoutputs.The example is supported
+        by the set, clear, and toggle write-only registers for each port output data
+        register. The example take turns to shine the LED.
+      example_readme:
+      - examples/driver_examples/gpio_1/led_output/readme.md
+      - examples/_boards/${board}/driver_examples/gpio_1/led_output/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke02z40m: []

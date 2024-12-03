@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iap3_flash:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iap3/iap_flash
+    project-root-path: boards/${board}/driver_examples/iap/iap_flash/${multicore_foldername}
+    document:
+      name: iap3_flash${core_id_suffix_name}
+      category: driver_examples/iap3
+      brief: The IAP flash project is a simple demonstration program of the SDK IAP
+        driver. It provides some flash operations with ROM API, such as automatically
+        detect flash configuration, erase sectors and program pages. All operations
+        are followed by flash memory check to ensure the data operated are successful.
+      example_readme:
+      - examples/driver_examples/iap3/iap_flash/readme.md
+      - examples/_boards/${board}/driver_examples/iap/iap_flash/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    mimxrt685audevk@cm33: []

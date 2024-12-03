@@ -1,0 +1,21 @@
+dsc_flexcan_loopback_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_flexcan/loopback_transfer
+    project-root-path: boards/${board}/driver_examples/flexcan/loopback_transfer/${multicore_foldername}
+    document:
+      name: dsc_flexcan_loopback_transfer${core_id_suffix_name}
+      category: driver_examples/dsc_flexcan
+      brief: The flexcan_loopback example shows how to use the loopback test mode
+        to debug your CAN Bus design:To demonstrates this example, only one board
+        is needed. The example will config one FlexCAN MessageBuffer to Rx Message
+        Buffer and the other FlexCAN Message Buffer to Tx Message Buffer with same
+        ID.After that, the example will send a CAN Message from the Tx Message Buffer
+        to the Rx Message Bufferthrough internal loopback interconnect and print out
+        the Message payload to terminal.
+      example_readme:
+      - examples/driver_examples/dsc_flexcan/loopback_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f83000evk: []
+    twrmc56f8400: []

@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sai_edma_record_playback:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sai/edma_record_playback
+    project-root-path: boards/${board}/driver_examples/sai/edma_record_playback/${multicore_foldername}
+    document:
+      name: sai_edma_record_playback${core_id_suffix_name}
+      category: driver_examples/sai
+      brief: 'The sai_edma_record_playback example shows how to use sai driver with
+        EDMA: In this example, one sai instance record the audio data from input and
+        playbacks the audio data.'
+      example_readme:
+      - examples/driver_examples/sai/edma_record_playback/readme.md
+      - examples/_boards/${board}/driver_examples/sai/edma_record_playback/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxn236: []
+    mcxn5xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

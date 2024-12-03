@@ -1,0 +1,7 @@
+# spi_interrupt
+
+## Overview
+The spi_interrupt example shows how to use spi functional API to do interrupt transfer:
+
+In this example, one spi instance as master and another spi instance as slave. Master sends a piece of data to slave,
+and check if the data slave received is correct.

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+dspi_interrupt_b2b_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dspi/interrupt_b2b/slave
+    project-root-path: boards/${board}/driver_examples/dspi/interrupt_b2b/slave/${multicore_foldername}
+    document:
+      name: dspi_interrupt_b2b_slave${core_id_suffix_name}
+      category: driver_examples/dspi
+      brief: The dspi_interrupt_b2b example shows how to use DSPI driver in interrupt
+        way:In this example , we need two boards , one board used as DSPI master and
+        another board used as DSPI slave.The file 'dspi_interrupt_b2b_slave.c' includes
+        the DSPI slave code.This example does not use the transactional API in DSPI
+        driver. It's a demonstration that how to use the interrupt in KSDK driver.1.
+        DSPI master send/received data to/from DSPI slave in interrupt . (DSPI Slave
+        using interrupt to receive/send the data)
+      example_readme:
+      - examples/driver_examples/dspi/interrupt_b2b/slave/readme.md
+      - examples/_boards/${board}/driver_examples/dspi/interrupt_b2b/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []

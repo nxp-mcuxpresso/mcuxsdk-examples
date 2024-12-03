@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+rit_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_rit
+    project-root-path: boards/${board}/driver_examples/rit/${multicore_foldername}
+    document:
+      name: rit_example${core_id_suffix_name}
+      category: driver_examples/rit/
+      brief: The RIT project is a simple demonstration program of the SDK RIT driver.
+        It sets up the RIThardware block to trigger a periodic interrupt at 1 second
+        period interval to toggel a specifiedLED on board.
+      example_readme:
+      - examples/driver_examples/lpc_rit/readme.md
+      - examples/_boards/${board}/driver_examples/rit/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

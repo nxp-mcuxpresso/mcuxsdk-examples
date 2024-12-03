@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+freertos_tickless_lpc:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_examples/freertos_tickless_lpc
+    project-root-path: boards/${board}/freertos_examples/freertos_tickless_lpc/${multicore_foldername}
+    document:
+      name: freertos_tickless_lpc${core_id_suffix_name}
+      category: freertos_examples
+      brief: This document explains the freertos_tickless example. It shows the CPU
+        enter at sleep mode and then it is waked up by expired time delay that using
+        timer module.
+      example_readme:
+      - examples/freertos_examples/freertos_tickless_lpc/readme.md
+      - examples/_boards/${board}/freertos_examples/freertos_tickless_lpc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso860max: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core1: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

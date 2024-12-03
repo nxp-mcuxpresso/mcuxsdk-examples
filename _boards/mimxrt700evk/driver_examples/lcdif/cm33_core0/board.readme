@@ -1,0 +1,36 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- MIMXRT700-EVK
+- Personal Computer
+- RK055AHD091 MIPI panel (Not necessary if use other panel)
+- RK055MHD091 MIPI panel (Not necessary if use other panel)
+- RM67162 smart MIPI panel (Not necessary if use other panel)(Not supported yet.)
+- RaspberryPi Panel (Not necessary if use other panel) Not Supported Yet
+
+Board settings
+============
+To use MIPI panel:
+Connect MIPI panel to J52.
+
+To use Raspberry panel:
+Connect the panel to J8. Then connect the panel's 5V pin to JP43-1, GND pin to JP43-2.
+
+Prepare the Demo
+===============
+1.  Connect a micro USB cable between the PC host and the CMSIS DAP USB port (J54) on the board
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Build the project, this project uses RK055MHD091 panel by default, to use the RK055AHD091 panel,
+    change #define USE_MIPI_PANEL MIPI_PANEL_RK055MHD091 to #define USE_MIPI_PANEL MIPI_PANEL_RK055AHD091
+    in lcdif_support.h.
+4.  Download the program to the target board.
+5.  Launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+When the example runs, the screen shows what described in overview.

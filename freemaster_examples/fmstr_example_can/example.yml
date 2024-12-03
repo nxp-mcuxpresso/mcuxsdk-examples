@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+fmstr_example_can:
+  section-type: application
+  contents:
+    document:
+      brief: FreeMASTER example using the CAN bus to communicate with target microcontroller.
+        This example application demonstrates use of FreeMASTER tool to visualize
+        internal variables and to control the application flow by modifying variables.
+        The application also shows use of advanced FreeMASTER features like TSA tables
+        and Pipes.
+      category: FreeMASTER_examples
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_can/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_can/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      name: fmstr_example_can${core_id_suffix_name}
+    meta_path: examples/freemaster_examples/fmstr_example_can
+    project-root-path: boards/${board}/freemaster_examples/fmstr_can/${multicore_foldername}
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmke16z: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s36: []
+    mc56f83000evk: []
+    mcxn9xxevk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    twrmc56f8200: []
+    twrmc56f8400: []

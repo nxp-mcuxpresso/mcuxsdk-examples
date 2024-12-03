@@ -1,0 +1,28 @@
+tflm_cifar10_hifi4:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/eiq_examples/tflm_cifar10_hifi4/cm
+    project-root-path: boards/${board}/eiq_examples/tflm_cifar10_hifi4/${multicore_foldername}
+    document:
+      name: tflm_cifar10_hifi4${core_id_suffix_name}
+      category: eiq_examples
+      brief: The tflm_cifar10_hifi4 demo application demonstrates starting DSP
+        core with DSP image.
+      example_readme:
+      - examples/eiq_examples/tflm_cifar10_hifi4/hifi4/readme.md
+  boards:
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - +iar@flash_debug
+    - +iar@flash_release
+    - +mdk@flash_debug
+    - +mdk@flash_release
+

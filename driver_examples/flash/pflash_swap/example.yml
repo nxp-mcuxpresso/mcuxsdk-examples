@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pflash_swap:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flash/pflash_swap
+    project-root-path: boards/${board}/driver_examples/flash/pflash_swap/${multicore_foldername}
+    document:
+      name: pflash_swap${core_id_suffix_name}
+      category: driver_examples/flash
+      brief: 'The flash_swap example shows how to use flash swap feature:'
+      example_readme:
+      - examples/driver_examples/flash/pflash_swap/readme.md
+      - examples/_boards/${board}/driver_examples/flash/pflash_swap/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke17z512: []

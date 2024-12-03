@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i3c_bus_master_read_icm42688p:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/i3c_bus/read_sensor/.
+    project-root-path: boards/${board}/component_examples/i3c_bus/read_sensor/${multicore_foldername}
+    document:
+      name: i3c_bus_master_read_icm42688p${core_id_suffix_name}
+      category: component_examples/i3c
+      brief: The i3c_bus_master_read_icm42688p example shows how to use i3c_bus component
+        to create I3C bus and i3c master, then use bus master to communicate with
+        slave.
+      example_readme:
+      - examples/component_examples/i3c_bus/read_sensor/readme.md
+      - examples/_boards/${board}/component_examples/i3c_bus/read_sensor/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt685audevk@cm33: []

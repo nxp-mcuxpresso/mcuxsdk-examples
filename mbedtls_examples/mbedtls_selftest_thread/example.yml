@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mbedtls_selftest_thread:
+  section-type: application
+  contents:
+    meta_path: examples/mbedtls_examples/mbedtls_selftest_thread/.
+    project-root-path: boards/${board}/mbedtls_examples/mbedtls_selftest_thread/${multicore_foldername}
+    document:
+      name: mbedtls_selftest_thread${core_id_suffix_name}
+      category: mbedtls_examples
+      brief: The mbedTLS SelfTest Thread program contains two threads that performs
+        cryptographic algorithm testing and prints results to the terminal in parallel.
+      example_readme:
+      - examples/mbedtls_examples/mbedtls_selftest_thread/readme.md
+      - examples/_boards/${board}/mbedtls_examples/mbedtls_selftest_thread/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

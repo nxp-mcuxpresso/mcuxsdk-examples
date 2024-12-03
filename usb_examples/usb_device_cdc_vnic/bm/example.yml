@@ -1,0 +1,46 @@
+dev_cdc_vnic_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_cdc_vnic/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_cdc_vnic/bm/${multicore_foldername}
+    document:
+      name: dev_cdc_vnic_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The Virtual NIC project is enumerated as a network adapter. Users can
+        access the network by properly configuring this network adapter.
+      example_readme:
+      - examples/usb_examples/usb_device_cdc_vnic/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_cdc_vnic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_00.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_01.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_02.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_03.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_04.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_05.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_06.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/test_pc_ip_config.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/vnic_config.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/vnic_device_manager.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/vnic_device_manager_win10.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/vnic_network_connection.jpg
+      - examples/usb_examples/usb_device_cdc_vnic/vnic_ping_windows.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    rdrw612bga: []

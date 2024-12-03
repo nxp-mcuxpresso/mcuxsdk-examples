@@ -1,0 +1,10 @@
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/_boards/${board}/mbedtls_examples/mbedtls_selftest
+)
+
+mcux_add_macro(
+    CC "-DFREESCALE_KSDK_BM\
+       -DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\""
+)

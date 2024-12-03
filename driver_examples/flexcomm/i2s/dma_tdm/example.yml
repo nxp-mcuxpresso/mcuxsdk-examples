@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i2s_dma_tdm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/i2s/dma_tdm
+    project-root-path: boards/${board}/driver_examples/i2s/dma_tdm/${multicore_foldername}
+    document:
+      name: i2s_dma_tdm${core_id_suffix_name}
+      category: driver_examples/i2s
+      brief: The i2s_dma_tdm example shows how to use i2s driver to generate TDM format
+        with DMA:In this example, one i2s instance playbacks the audio data stored
+        in sdcard.
+      example_readme:
+      - examples/driver_examples/flexcomm/i2s/dma_tdm/readme.md
+      - examples/_boards/${board}/driver_examples/i2s/dma_tdm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt685audevk@cm33: []

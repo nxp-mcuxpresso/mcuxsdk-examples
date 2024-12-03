@@ -1,0 +1,9 @@
+board.toolchains:
+- +armgcc@ddr_debug
+- +armgcc@ddr_release
+- +armgcc@debug
+- +armgcc@release
+- +iar@ddr_debug
+- +iar@ddr_release
+- +iar@debug
+- +iar@release

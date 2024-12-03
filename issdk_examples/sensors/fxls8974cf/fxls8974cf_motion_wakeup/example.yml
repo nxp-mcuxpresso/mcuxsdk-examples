@@ -1,0 +1,22 @@
+fxls8974cf_motion_wakeup:
+  section-type: application
+  contents:
+    meta_path: examples/issdk_examples/sensors/fxls8974cf/fxls8974cf_motion_wakeup
+    project-root-path: boards/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_motion_wakeup/${multicore_foldername}
+    document:
+      name: fxls8974cf_motion_wakeup${core_id_suffix_name}
+      category: issdk/sensors
+      brief: The FXLS8974CF motion wakeup example demonstrates motion detection using
+        SDCD block and Auto-Wake/Sleep features. This example demonstrated configuration
+        of FXLS8974CF SDCD block to detect motion and wake up from SLEEP mode to ACTIVE
+        mode. Also the auto-wake/sleep feature configuration demonstrates how sensor
+        can autonomously switch back to SLEEP mode on no-motion detection for configured
+        ASLP counter.
+      example_readme:
+      - examples/issdk_examples/sensors/fxls8974cf/fxls8974cf_motion_wakeup/readme.md
+      - examples/_boards/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_motion_wakeup/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []
+  shields:
+    a8974: []

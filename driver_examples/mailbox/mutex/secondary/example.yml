@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+mailbox_mutex_secondary_core:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mailbox/mutex/secondary
+    project-root-path: boards/${board}/driver_examples/mailbox/mutex/${multicore_foldername}/
+    document:
+      name: mailbox_mutex_secondary_core
+      category: driver_examples/mailbox
+      brief: The mailbox_mutex example shows how to use mailbox mutex.In this example:The
+        core 0 sends address of shared variable to core 1 by mailbox.Both cores trying
+        to get mutex in while loop, after that updates shared variableand sets mutex,
+        to allow access other core to shared variable.
+      example_readme:
+      - examples/driver_examples/mailbox/mutex/readme.md
+      - examples/_boards/${board}/driver_examples/mailbox/mutex/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core1: []
+    lpcxpresso55s69@cm33_core1: []
+    mcxn5xxevk@cm33_core1: []
+    mcxn9xxevk@cm33_core1: []

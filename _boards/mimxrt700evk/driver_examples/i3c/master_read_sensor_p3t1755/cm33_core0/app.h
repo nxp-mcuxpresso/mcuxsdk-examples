@@ -1,0 +1,28 @@
+/*
+ * Copyright 2023 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define EXAMPLE_MASTER             I3C1
+#define SENSOR_SLAVE_ADDR          0x49U
+
+#define I3C_MASTER_CLOCK_FREQUENCY 24000000
+
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

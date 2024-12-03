@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+els_hash:
+  section-type: application
+  contents:
+    meta_path: examples/els_pkc_examples/els_hash/.
+    project-root-path: boards/${board}/els_pkc_examples/els_hash/${multicore_foldername}
+    document:
+      name: els_hash${core_id_suffix_name}
+      category: els_pkc_examples
+      brief: The ELS PKC application provides examples which demonstrate usage of
+        hash algorithms and a crypto library lightweight testing.
+      example_readme:
+      - examples/els_pkc_examples/els_hash/readme.md
+      - examples/_boards/${board}/els_pkc_examples/els_hash/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []

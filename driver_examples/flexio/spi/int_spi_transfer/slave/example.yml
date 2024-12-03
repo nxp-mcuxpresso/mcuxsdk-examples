@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexio_spi_int_spi_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio/spi/int_spi_transfer/slave
+    project-root-path: boards/${board}/driver_examples/flexio/spi/int_spi_transfer/slave/${multicore_foldername}
+    document:
+      name: flexio_spi_int_spi_transfer_slave${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The flexio_spi_slave_interrupt_spi_master example shows how to use flexio
+        spi slave driver in interrupt way:In this example, a flexio simulated slave
+        connect to a spi master.
+      example_readme:
+      - examples/driver_examples/flexio/spi/int_spi_transfer/slave/readme.md
+      - examples/_boards/${board}/driver_examples/flexio/spi/int_spi_transfer/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    frdmmcxc444: []

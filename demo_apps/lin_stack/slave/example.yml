@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+lin_stack_slave:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/lin_stack/slave/.
+    project-root-path: boards/${board}/demo_apps/lin_stack/slave/${multicore_foldername}
+    document:
+      name: lin_stack_slave${core_id_suffix_name}
+      category: demo_apps
+      brief: The lin_stack_slave demo is used to demonstrate how to use the lin stack
+        as slave node.
+      example_readme:
+      - examples/demo_apps/lin_stack/slave/readme.md
+      - examples/_boards/${board}/demo_apps/lin_stack/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

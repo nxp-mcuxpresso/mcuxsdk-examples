@@ -1,0 +1,20 @@
+host_hid_mouse_dual_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_host_hid_mouse_dual/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_host_hid_mouse_dual/bm/${multicore_foldername}
+    document:
+      name: host_hid_mouse_dual_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The application supports the mouse device. It prints the mouse operation
+        when the mouse device is attached.
+      example_readme:
+      - examples/usb_examples/usb_host_hid_mouse_dual/readme.md
+      - examples/_boards/${board}/usb_examples/usb_host_hid_mouse_dual/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_host_hid_mouse_dual/host_hid_mouse_output.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1064: []

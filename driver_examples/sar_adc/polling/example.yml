@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sar_adc/polling
+    project-root-path: boards/${board}/driver_examples/sar_adc/polling/${multicore_foldername}
+    document:
+      name: adc_polling${core_id_suffix_name}
+      category: driver_examples/sar_adc
+      brief: The SAR ADC polling example shows the simplest way to use the SAR ADC
+        driver. In this example, three channels (channel 0, 1, and 2) are used to
+        form a conversion chain, these three channels are executed in the normal conversion
+        one-shot mode. The end-of-channel interrupt, pre-sample, DMA transfer, and
+        watchdog features of each channel in the conversion chain are disabled. The
+        user should provide a voltage signal to each conversion channel. When running
+        the project, type any key into the debug console to start the conversion.
+        After the conversion is completed, the ADC will enter the IDLE state. Then
+        poll to access the result register of the corresponding channel, if the result
+        of the channel conversion is valid, it will be printed to the debug console.
+      example_readme:
+      - examples/driver_examples/sar_adc/polling/readme.md
+      - examples/_boards/${board}/driver_examples/sar_adc/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []

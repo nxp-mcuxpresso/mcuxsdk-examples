@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+trdc_flw:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/trdc/flw
+    project-root-path: boards/${board}/driver_examples/trdc/flw/${multicore_foldername}
+    document:
+      name: trdc_flw${core_id_suffix_name}
+      category: driver_examples/trdc
+      brief: The trdc flw example shows how to use the trdc flash logical window funtion.
+        In this example, flash logical window is configured and enabled. First memory
+        outside the window is touched and the hardfault occurs, then enlarge the window
+        size to make the access legal. Next the data mapping between the physical
+        address and programmable flash address is checked.
+      example_readme:
+      - examples/driver_examples/trdc/flw/readme.md
+      - examples/_boards/${board}/driver_examples/trdc/flw/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxw72evk@cm33_core0: []
+    kw47evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

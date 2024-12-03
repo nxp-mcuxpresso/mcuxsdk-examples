@@ -1,0 +1,5 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_jlinkswd_m33/mcimx93evk.ewd
+  - scripts/guigenerator/templates/iar/app_jlinkswd_m33/generic_trustzone.ewp
+  - scripts/guigenerator/templates/iar/general.eww

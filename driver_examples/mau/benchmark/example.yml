@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mau_benchmark:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mau/benchmark
+    project-root-path: boards/${board}/driver_examples/mau/benchmark/${multicore_foldername}
+    document:
+      name: mau_benchmark${core_id_suffix_name}
+      category: driver_examples/mau
+      brief: This example shows the SIN,COS,ATAN performance for MAU and CMSIS-DSP.
+        changes accordingly.
+      example_readme:
+      - examples/driver_examples/mau/benchmark/readme.md
+      - examples/_boards/${board}/driver_examples/mau/benchmark/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa166: []
+    frdmmcxa276: []

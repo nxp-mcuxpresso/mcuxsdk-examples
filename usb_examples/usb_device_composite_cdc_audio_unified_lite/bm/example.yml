@@ -1,0 +1,31 @@
+dev_composite_cdc_audio_unified_lite_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_composite_cdc_audio_unified_lite/bm/${multicore_foldername}
+    document:
+      name: dev_composite_cdc_audio_unified_lite_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB Composite device application is a simple demonstration program
+        based on the MCUXpresso SDK. It is enumerated as a recording device. Users
+        can record the sound from this device via the "Sound Recorder" in the Windows
+        Accessories with an CDC VCOM device.
+      example_readme:
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_composite_cdc_audio_unified_lite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/run_vcom.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_audio_recorder_signal_enhancement.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_change_microphone_volume.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_change_speaker_volume.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_enumeration.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_microphone.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_microphone_set_default.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_speaker.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_speaker_set_default.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_unified_start_log.jpg
+      - examples/usb_examples/usb_device_composite_cdc_audio_unified_lite/usb_device_composite_cdc_audio_vcom_type.jpg
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    mimxrt685audevk@cm33: []

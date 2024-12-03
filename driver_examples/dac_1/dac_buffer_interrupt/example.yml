@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dac_1_buffer_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dac_1/dac_buffer_interrupt
+    project-root-path: boards/${board}/driver_examples/dac/dac_buffer_interrupt/${multicore_foldername}
+    document:
+      name: dac_1_buffer_interrupt${core_id_suffix_name}
+      category: driver_examples/dac
+      brief: The dac_buffer_interrupt example shows how to use DAC FIFO interrupt.When
+        the DAC FIFO empty interrupt is enabled firstly, the application would enter
+        the DAC ISR immediately, since the FIFO is actually empty. Then the FIFO would
+        be feed inside the ISR. Then the DAC interrupt could be restrained. Once the
+        DAC FIFO is triggered in while loop, the data in FIFO is read out, then it
+        becomes empty, so the FIFO would be feed again in DAC ISR. With this example,
+        user can define the DAC output array to generate the different wave output.
+        Also the software trigger can be called in some timer ISR so that the DAC
+        would output the analog signal in indicated period. Or even use the hardware
+        trigger to release the CPU.
+      example_readme:
+      - examples/driver_examples/dac_1/dac_buffer_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpspi:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpspi
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpspi/${multicore_foldername}
+    document:
+      name: freertos_lpspi${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The lpspi_interrupt example shows how to use LPSPI driver in interrupt
+        way:In this example , one lpspi instance used as LPSPI master and another
+        lpspi instance used as LPSPI slave.1. LPSPI master send/received data to/from
+        LPSPI slave in interrupt . (LPSPI Slave using interrupt to receive/send the
+        data)
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpspi/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_lpspi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160: []
+    frdmk32l2a4s: []
+    frdmk32l3a6: []
+    frdmke15z: []
+    mcxn9xxevk: []

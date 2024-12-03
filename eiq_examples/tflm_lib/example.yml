@@ -1,0 +1,26 @@
+tflm_lib:
+  section-type: library
+  contents:
+    meta_path: examples/eiq_examples/tflm_lib
+    project-root-path: boards/${board}/eiq_examples/tflm_lib/${core_id}
+    document:
+      name: tflm_lib${core_id_suffix_name}
+      category: eiq_examples
+      brief: Library build project for TensorFlow Lite Micro
+      example_readme:
+      - examples/eiq_examples/tflm_lib/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - +mdk@debug
+    - +mdk@release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release

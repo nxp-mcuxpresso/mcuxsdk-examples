@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+bootloader:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/dsc_bootloader
+    project-root-path: boards/${board}/demo_apps/bootloader/${multicore_foldername}
+    document:
+      name: bootloader${core_id_suffix_name}
+      category: demo_apps
+      brief: The Bootloader demo application provides a demo to switch between bootloader
+        and normal flash application at various circumstance.
+      example_readme:
+      - examples/demo_apps/dsc_bootloader/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f83000evk: []

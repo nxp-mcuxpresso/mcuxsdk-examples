@@ -1,0 +1,8 @@
+initialization_file:
+  files:
+  - source: middleware/safety_iec60730b/boards/${board}/core0/linker/mdk/debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug
+    package_path: boards/mcxn9xxevk/demo_apps/safety_iec60730b/cm33_core0/mdk
+    project_path: ./

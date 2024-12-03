@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+otap_client_l2cap_credit_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/otac_l2cap/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/otac_l2cap/freertos/${multicore_foldername}
+    document:
+      name: otap_client_l2cap_credit_freertos
+      category: wireless_examples/bluetooth/otac_l2cap/freertos/
+      brief: The BLE otap client l2cap credit application is a simple demonstration
+        program based on the MCUXpresso SDK.The application implements a custom GATT
+        based OTAP Service.To test the service/profile the Kinetis BLE Toolbox application
+        can be used which is available for both Android and iOS.
+  boards:
+    kw45b41zevk: []
+    k32w148evk: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

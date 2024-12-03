@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_dual_single_ended_conversion:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/dual_single_ended_conversion
+    project-root-path: boards/${board}/driver_examples/lpadc/dual_single_ended_conversion/${multicore_foldername}
+    document:
+      name: lpadc_dual_single_ended_conversion${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpadc_dual_single_ended_conversion example shows how to use two channel
+        with LPADC driver. In this example, user should indicate two channel to provide
+        a voltage signal (can be controlled by user) as the LPADC's sample input,
+        Channel B does not need to be paired with Channel A, Channel B is user selectable.When
+        running the project, typing any key into debug console would trigger the conversion.
+        The execution would check the FIFO valid flag in loop until the flag is asserted,
+        which means the conversion is completed. Then read the conversion result value
+        and print it to debug console.
+      example_readme:
+      - examples/driver_examples/lpadc/dual_single_ended_conversion/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/dual_single_ended_conversion/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    mimxrt700evk@cm33_core0: []

@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexnvm_eeprom:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flash/flexnvm_eeprom
+    project-root-path: boards/${board}/driver_examples/flash/flexnvm_eeprom/${multicore_foldername}
+    document:
+      name: flexnvm_eeprom${core_id_suffix_name}
+      category: driver_examples/flash
+      brief: 'The flexnvm_eeprom example shows how to use flash driver to operate
+        eeprom:'
+      example_readme:
+      - examples/driver_examples/flash/flexnvm_eeprom/readme.md
+      - examples/_boards/${board}/driver_examples/flash/flexnvm_eeprom/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []

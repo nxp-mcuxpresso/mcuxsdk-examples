@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mau_calculation:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mau/calculation
+    project-root-path: boards/${board}/driver_examples/mau/calculation/${multicore_foldername}
+    document:
+      name: mau_calculation${core_id_suffix_name}
+      category: driver_examples/mau
+      brief: This example shows the usage of all the MAU functions. changes accordingly.
+      example_readme:
+      - examples/driver_examples/mau/calculation/readme.md
+      - examples/_boards/${board}/driver_examples/mau/calculation/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa166: []
+    frdmmcxa276: []

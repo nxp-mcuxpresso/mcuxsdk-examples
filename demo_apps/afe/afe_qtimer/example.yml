@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+afe_qtimer:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/afe/afe_qtimer
+    project-root-path: boards/${board}/demo_apps/afe_qtimer/${multicore_foldername}
+    document:
+      name: afe_qtimer${core_id_suffix_name}
+      category: demo_apps
+      brief: The AFE Example project is a demonstration program that uses the KSDK
+        software.In this case the example provide two functions. Measure the voltage
+        difference two pin of thechannel 2 and 3. And monitor AC frequency on two
+        pins of channel 2.
+      example_readme:
+      - examples/demo_apps/afe/afe_qtimer/readme.md
+      - examples/_boards/${board}/demo_apps/afe_qtimer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

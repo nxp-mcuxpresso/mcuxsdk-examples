@@ -1,0 +1,10 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_xpresso845max/xpresso845max.uvprojx
+  - scripts/guigenerator/templates/mdk/app_xpresso845max/xpresso845max.uvoptx
+  - scripts/guigenerator/templates/mdk/app_xpresso845max/JLinkSettings.ini

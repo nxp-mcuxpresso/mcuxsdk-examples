@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+trdc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/trdc/basic
+    project-root-path: boards/${board}/driver_examples/trdc/${multicore_foldername}
+    document:
+      name: trdc${core_id_suffix_name}
+      category: driver_examples/trdc
+      brief: The trdc example shows how to control the memory block checker(MBC) and
+        memory region checker(MRC) access policy using TRDC. In this example, a MRC
+        memory region and a MBC memory block are set to unaccessible, then the hardfault
+        occurs.
+      example_readme:
+      - examples/driver_examples/trdc/basic/readme.md
+      - examples/_boards/${board}/driver_examples/trdc/basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxw72evk@cm33_core0: []
+    kw47evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

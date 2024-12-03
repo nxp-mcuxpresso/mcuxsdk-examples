@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ftm_combine_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ftm/combine_pwm
+    project-root-path: boards/${board}/driver_examples/ftm/combine_pwm/${multicore_foldername}
+    document:
+      name: ftm_combine_pwm${core_id_suffix_name}
+      category: driver_examples/ftm
+      brief: The FTM project is a demonstration program of generating a combined PWM
+        signal by the SDK FTM driver. It sets up the FTMhardware block to output PWM
+        signals on two TPM channels. The example also shows the complementary mode
+        of operationand deadtime insertion.On boards that have 2 LEDs connected to
+        the FTM pins, the user will see a change in LED brightness.And if the board
+        do not support LEDs to show, the outputs can be observed by oscilloscope.
+      example_readme:
+      - examples/driver_examples/ftm/combine_pwm/readme.md
+      - examples/_boards/${board}/driver_examples/ftm/combine_pwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmke02z40m: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    lpcxpresso860max: []

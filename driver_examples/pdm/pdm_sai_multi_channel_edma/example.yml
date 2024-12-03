@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdm_sai_multi_channel_edma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdm/pdm_sai_multi_channel_edma
+    project-root-path: boards/${board}/driver_examples/pdm/pdm_sai_multi_channel_edma/${multicore_foldername}
+    document:
+      name: pdm_sai_multi_channel_edma${core_id_suffix_name}
+      category: driver_examples/pdm
+      brief: The pdm_sai_multi_channel_edma example shows how to use pdm edma driver
+        to record multi channel data together with sai edma driver
+      example_readme:
+      - examples/driver_examples/pdm/pdm_sai_multi_channel_edma/readme.md
+      - examples/_boards/${board}/driver_examples/pdm/pdm_sai_multi_channel_edma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    mimxrt700evk@cm33_core0: []

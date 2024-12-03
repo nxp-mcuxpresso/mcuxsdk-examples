@@ -1,0 +1,22 @@
+dsp_sema42:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/sema42/cm
+    project-root-path: boards/${board}/dsp_examples/sema42/${core_id}
+    document:
+      name: dsp_sema42${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_sema42 demo application demonstrates starting DSP core with DSP
+        image.
+      example_readme:
+      - examples/dsp_examples/sema42/readme.md
+      - examples/_boards/${board}/dsp_examples/sema42/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt685@cm33: []
+    mimxrt685audevk@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimx8ulp@cm33: []
+    evk9mimx8ulp@cm33: []
+    mimxrt700evk@cm33_core0: []

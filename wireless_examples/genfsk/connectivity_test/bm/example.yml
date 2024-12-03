@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+connectivity_test_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/genfsk/connectivity_test/bm
+    project-root-path: boards/${board}/wireless_examples/genfsk/connectivity_test/bm
+    document:
+      name: connectivity_test_bm
+      category: wireless_examples/genfsk/connectivity_test/bm
+      brief: The connectivity test application is a simple test program based
+        on the MCUXpresso SDK.The application test GENFSK functionnality.
+  boards:
+    frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
+    k32w148evk: []
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
+    kw45b41zevk: []
+    kw45b41zloc: []
+    mcxw72evk@cm33_core0: []

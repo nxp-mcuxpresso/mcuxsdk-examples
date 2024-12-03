@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sai_edma_ping_pong_buffer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sai/edma_ping_pong_buffer
+    project-root-path: boards/${board}/driver_examples/sai/edma_ping_pong_buffer/${multicore_foldername}
+    document:
+      name: sai_edma_ping_pong_buffer${core_id_suffix_name}
+      category: driver_examples/sai
+      brief: The sai_edma_ping_pong_buffer example shows how to use sai driver with
+        EDMA:In this example, one sai instance playbacks the audio data stored in
+        flash/SRAM using EDMA channel.
+      example_readme:
+      - examples/driver_examples/sai/edma_ping_pong_buffer/readme.md
+      - examples/_boards/${board}/driver_examples/sai/edma_ping_pong_buffer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -mdk@debug
+    evkmimxrt1015:
+    - -iar@debug
+    - -mdk@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

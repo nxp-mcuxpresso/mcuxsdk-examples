@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ccm_clockout:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ccm_clockout
+    project-root-path: boards/${board}/driver_examples/clockout/${multicore_foldername}
+    document:
+      name: ccm_clockout${core_id_suffix_name}
+      category: driver_examples/ccm
+      brief: The ccm_clockout driver example shows how to output the internal clock
+        signal. In this driver example, users can choose the clock signal to be outputted,
+        and the divider of the output clock signal. By probing the output pin, users
+        can observe the selected internal clock signal.
+      example_readme:
+      - examples/driver_examples/ccm_clockout/readme.md
+      - examples/_boards/${board}/driver_examples/clockout/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sfa_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sfa/interrupt
+    project-root-path: boards/${board}/driver_examples/sfa/interrupt/${multicore_foldername}
+    document:
+      name: sfa_interrupt${core_id_suffix_name}
+      category: driver_examples/sfa
+      brief: The sfa_interrupt example shows how to use sfa driver in interrupt way:In
+        this example, sfa is used to measure frequency in interrupt mode.
+      example_readme:
+      - examples/driver_examples/sfa/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/sfa/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

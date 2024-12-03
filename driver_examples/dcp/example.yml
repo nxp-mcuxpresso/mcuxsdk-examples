@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+dcp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcp
+    project-root-path: boards/${board}/driver_examples/dcp/${multicore_foldername}
+    document:
+      name: dcp${core_id_suffix_name}
+      category: driver_examples/dcp
+      brief: The DCP Example project is a demonstration program that uses the KSDK
+        software implementseveral cryptography algorithms using the DCP software driver.
+      example_readme:
+      - examples/driver_examples/dcp/readme.md
+      - examples/_boards/${board}/driver_examples/dcp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

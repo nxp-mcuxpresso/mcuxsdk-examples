@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sema42_uboot:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sema42/uboot
+    project-root-path: boards/${board}/driver_examples/sema42/uboot/${multicore_foldername}
+    document:
+      name: sema42_uboot${core_id_suffix_name}
+      category: driver_examples/sema42
+      brief: The sema42 uboot example shows how to use SEMA42 driver to lock and unlock
+        a sema gate.This example should work together with uboot. This example runs
+        on Cortex-M core,the uboot runs on the Cortex-A core.
+      example_readme:
+      - examples/driver_examples/sema42/uboot/readme.md
+      - examples/_boards/${board}/driver_examples/sema42/uboot/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []

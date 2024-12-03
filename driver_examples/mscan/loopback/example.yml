@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mscan_loopback:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mscan/loopback
+    project-root-path: boards/${board}/driver_examples/mscan/loopback/${multicore_foldername}
+    document:
+      name: mscan_loopback${core_id_suffix_name}
+      category: driver_examples/mscan
+      brief: The mscan_loopback_functional example shows how to use the loopback test
+        mode to debug your CAN Bus design:To demonstrates this example, only one board
+        is needed. The example will configure one MSCAN Message Txbuffer and Rx buffer
+        with same ID.After that, the example will send a CAN Message from the Tx Buffer
+        to the Rx Bufferthrouth internal loopback interconnect and print out the Message
+        payload to terminal.
+      example_readme:
+      - examples/driver_examples/mscan/loopback/readme.md
+      - examples/_boards/${board}/driver_examples/mscan/loopback/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke16z: []

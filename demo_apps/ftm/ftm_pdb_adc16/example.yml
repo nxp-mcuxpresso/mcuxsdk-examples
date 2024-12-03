@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ftm_pdb_adc16:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/ftm/ftm_pdb_adc16
+    project-root-path: boards/${board}/demo_apps/ftm_pdb_adc16/${multicore_foldername}
+    document:
+      name: ftm_pdb_adc16${core_id_suffix_name}
+      category: demo_apps
+      brief: "The FTM / PDB demo application demonstrates how to use the FTM external\
+        \ trigger to start the ADC conversion using thePDB. FTM0 is configured as\
+        \ a complementary combined mode, and each channel output frequency is 16 KHz.\
+        \ The complementarychannel dead time is 1 \xB5s. The PDB pre-trigger works\
+        \ in back-to-back mode. The ADC0 and ADC1 work in single-end mode.The ADC0\
+        \ uses channel 1 and channel 5, and ADC1 uses channel 1 and channel 7."
+      example_readme:
+      - examples/demo_apps/ftm/ftm_pdb_adc16/readme.md
+      - examples/_boards/${board}/demo_apps/ftm_pdb_adc16/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []

@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpsci:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpsci
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpsci/${multicore_foldername}
+    document:
+      name: freertos_lpsci${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: FreeRTOS LPSCI driver example.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpsci/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

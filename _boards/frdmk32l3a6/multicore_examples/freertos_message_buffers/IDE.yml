@@ -1,0 +1,11 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_frdmk32l3a6_m0p/frdmk32l3a6_m0p_bin_image.uvprojx
+  - scripts/guigenerator/templates/mdk/app_frdmk32l3a6_m0p/frdmk32l3a6_m0p_bin_image.uvoptx
+  - scripts/guigenerator/templates/mdk/app_frdmk32l3a6_m0p/debug_CM0plus.ini
+  - scripts/guigenerator/templates/mdk/general.uvmpw

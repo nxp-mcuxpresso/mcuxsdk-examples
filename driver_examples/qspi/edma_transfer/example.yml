@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+qspi_edma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qspi/edma_transfer
+    project-root-path: boards/${board}/driver_examples/qspi/edma_transfer/${multicore_foldername}
+    document:
+      name: qspi_edma_transfer${core_id_suffix_name}
+      category: driver_examples/qspi
+      brief: The qspi_edma example shows how to use qspi driver with EDMA:In this
+        example, qspi will send data and operate the external flash connected with
+        QSPI. Some simple flash command willbe executed, such as Write Enable, Erase
+        sector, Program page.Example will first erase the sector and programe a page
+        into the flash, at last check if the data in flash is correct.
+      example_readme:
+      - examples/driver_examples/qspi/edma_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/qspi/edma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release

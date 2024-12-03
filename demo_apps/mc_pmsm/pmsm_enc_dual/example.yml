@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+mc_pmsm_enc_dual:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/mc_pmsm/pmsm_enc_dual/.
+    project-root-path: boards/${board}/demo_apps/mc_pmsm/pmsm_enc_dual/${multicore_foldername}
+    document:
+      name: mc_pmsm_enc_dual${core_id_suffix_name}
+      category: demo_apps
+      brief: This example demonstrates the dual control of the PMSM.
+      example_readme:
+      - examples/demo_apps/mc_pmsm/pmsm_enc_dual/readme.md
+      - examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_enc_dual/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []

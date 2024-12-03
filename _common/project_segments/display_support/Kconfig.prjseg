@@ -1,0 +1,9 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.board.display_support
+    bool "Enable Display Support"
+
+orsource "../../../_boards/${board}/project_segments/display_support/Kconfig.prjseg"

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sai_edma_tdm_record_playback:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sai/edma_tdm_record_playback
+    project-root-path: boards/${board}/driver_examples/sai/edma_tdm_record_playback/${multicore_foldername}
+    document:
+      name: sai_edma_tdm_record_playback${core_id_suffix_name}
+      category: driver_examples/sai
+      brief: The sai_edma_tdm_record_plyback example shows how to use sai driver to
+        generate TDM format with EDMA:In this example, one sai instance record and
+        playbacks the audio data in TDM format.
+      example_readme:
+      - examples/driver_examples/sai/edma_tdm_record_playback/readme.md
+      - examples/_boards/${board}/driver_examples/sai/edma_tdm_record_playback/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1040: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

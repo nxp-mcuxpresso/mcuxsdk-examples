@@ -1,0 +1,19 @@
+board.toolchains:
+- +armgcc@debug
+- +armgcc@flexspi_nor_debug
+- +armgcc@flexspi_nor_release
+- +armgcc@release
+- +armgcc@sdram_debug
+- +armgcc@sdram_release
+- +iar@debug
+- +iar@flexspi_nor_debug
+- +iar@flexspi_nor_release
+- +iar@release
+- +iar@sdram_debug
+- +iar@sdram_release
+- +mdk@debug
+- +mdk@flexspi_nor_debug
+- +mdk@flexspi_nor_release
+- +mdk@release
+- +mdk@sdram_debug
+- +mdk@sdram_release

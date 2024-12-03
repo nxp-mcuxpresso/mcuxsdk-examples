@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+flash_component_nor_lpspi:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/flash_component/nor/lpspi/
+    project-root-path: boards/${board}/component_examples/flash_component/lpspi_nor/
+    document:
+      name: flash_component_nor_lpspi${core_id_suffix_name}
+      category: component_examples/flash_component/lpspi_nor/
+      brief: nor flash demo shows the use of nor flash component to erase, program,
+        and read an external nor flash device.
+      example_readme:
+      - examples/component_examples/flash_component/nor/lpspi/readme.md
+      - examples/_boards/${board}/component_examples/flash_component/lpspi_nor/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxw72evk@cm33_core0: []
+    kw47evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

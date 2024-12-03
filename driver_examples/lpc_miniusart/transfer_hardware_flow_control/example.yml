@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+usart_transfer_hardware_flow_control:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_miniusart/transfer_hardware_flow_control
+    project-root-path: boards/${board}/driver_examples/usart/transfer_hardware_flow_control/${multicore_foldername}
+    document:
+      name: usart_transfer_hardware_flow_control${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: The usart_transfer_hardware_flow_control example project demonstrates
+        the usage of the hardware flow control function. This example sends data to
+        itself(loopback), and hardware flow control is enabled in the example. The
+        CTS(clear-to-send) pin is for transmiter to check if receiver is ready, if
+        the CTS pin is asserted, transmiter starts to send data. The RTS(request-to-send)
+        pin is for receiver to inform the transmiter if receiver is ready to receive
+        data. So, please connect RTS to CTS pin directly.
+      example_readme:
+      - examples/driver_examples/lpc_miniusart/transfer_hardware_flow_control/readme.md
+      - examples/_boards/${board}/driver_examples/usart/transfer_hardware_flow_control/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso845max: []
+    lpcxpresso860max: []

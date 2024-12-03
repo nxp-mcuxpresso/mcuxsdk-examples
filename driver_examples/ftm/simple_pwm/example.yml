@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ftm_simple_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ftm/simple_pwm
+    project-root-path: boards/${board}/driver_examples/ftm/simple_pwm/${multicore_foldername}
+    document:
+      name: ftm_simple_pwm${core_id_suffix_name}
+      category: driver_examples/ftm
+      brief: The FTM project is a simple demonstration program of the SDK FTM driver.
+        It sets up the FTMhardware block to output a center-aligned PWM signal. The
+        PWM dutycycle is periodically updated.On boards that have an LED connected
+        to the FTM pins, the user will see a change in LED brightness.
+      example_readme:
+      - examples/driver_examples/ftm/simple_pwm/readme.md
+      - examples/_boards/${board}/driver_examples/ftm/simple_pwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmke02z40m: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    lpcxpresso860max: []

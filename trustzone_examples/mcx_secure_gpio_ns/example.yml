@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+mcx_secure_gpio_ns:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/trustzone_examples/mcx_secure_gpio_ns
+    project-root-path: boards/${board}/trustzone_examples/secure_gpio/secure_gpio_ns/${multicore_foldername}
+    document:
+      name: mcx_secure_gpio_ns${core_id_suffix_name}
+      category: trustzone_examples
+      brief: Secure GPIO demo application demonstrates using GPIO which restrict usage
+        of GPIO pins in nonsecure world. This is non-secure part of the application.
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

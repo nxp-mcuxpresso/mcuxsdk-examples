@@ -1,0 +1,19 @@
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.flexio_mculcd_edma
+    select MCUX_COMPONENT_driver.dbi_flexio_edma
+    select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_driver.lpflexcomm_lpi2c
+    select MCUX_COMPONENT_driver.lpflexcomm
+    select MCUX_COMPONENT_driver.ft5406_rt
+    select MCUX_COMPONENT_driver.ssd1963
+    select MCUX_COMPONENT_driver.inputmux
+    select MCUX_COMPONENT_driver.dbi_lcdif
+    select MCUX_COMPONENT_driver.edma4
+    select MCUX_COMPONENT_driver.dc-fb-dbi
+    select MCUX_COMPONENT_driver.dbi
+    select MCUX_COMPONENT_driver.dbi_flexio_edma
+    select MCUX_COMPONENT_driver.dc-fb-lcdif
+    select MCUX_COMPONENT_driver.lcdif
+    select MCUX_COMPONENT_driver.ft3267
+    select MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.tma525b

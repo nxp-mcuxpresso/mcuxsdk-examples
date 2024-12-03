@@ -1,0 +1,102 @@
+// Application will not be able to use a button
+$lp_test_withoutbutton
+#define gAppButtonCnt_c                                0
+
+// Application will not be able to use serial console
+$lp_test_withoutserialconsole
+#define gAppUseSerialManager_c                         0
+
+// Application will not be able to use non volatile memory, pairing has to be done on each connection, the peer device needs the same configuration
+$lp_test_withoutNVM
+#define gAppUseNvm_d                                   0
+#define gAppUsePrivacy_d                               0
+#define gAppUseBonding_d                               0
+
+// Application will not be able to use non volatile memory and lowpower will be disabled, pairing has to be done on each connection, the peer device needs the same configuration
+$lp_test_withoutIdletask
+#define gAppUseNvm_d                                   0
+#define gAppLowpowerEnabled_d                          0
+#define gAppUseBonding_d                               0
+#define gAppUsePrivacy_d                               0
+
+// Change in app behavior : privacy disabled, the MAC adress is no longer changing, the peer device needs the same configuration
+$lp_test_disable_privacy
+#define gAppUsePrivacy_d                               0
+
+// Change in app behavior : privacy disable, pairing has to be done on each connection, the peer device needs the same configuration
+$lp_test_disable_privacy_bonding
+#define gAppUsePrivacy_d                               0
+#define gAppUseBonding_d                               0
+
+// Change in app behavior : no security, the peer device needs the same configuration
+$lp_test_disable_privacy_bonding_pairing
+#define gAppUsePrivacy_d                               0
+#define gAppUseBonding_d                               0
+#define gAppUsePairing_d                               0
+
+// No change in app behavior, we disable lowpower on CM3
+$lp_test_NBU_lowpower_disable
+#define gPLATFORM_DisableNbuLowpower_d  1
+
+// No change in app behavior, the CM33 will go in deep sleep when advertising
+$lp_test_deepsleep_advertising
+#define gAppLowPowerConstraintInAdvertising_c          2
+
+// The app will not print wake up from RAMOFF on the wakeup, the CM33 will go in power down when no ble activity (only for A1)
+$lp_test_powerdown_nobleactivity
+#define gAppLowPowerConstraintInNoBleActivity_c        3
+
+// The app will not print wake up from RAMOFF on the wakeup, the CM33 will go in deep sleep when no ble activity
+$lp_test_deepsleep_nobleactivity
+#define gAppLowPowerConstraintInAdvertising_c          2
+#define gAppLowPowerConstraintInNoBleActivity_c        2
+
+// The Core frequency is set to 96Mhz , the core voltage to 1.1v
+$lp_test_High_System_Clock_Frequency
+#define gAppHighSystemClockFrequency_d                 1
+
+// Change in app behavior only for freertos application, no timeout when entering in lowpower
+$lp_test_task_timeout_forever
+#define gAppTaskWaitTimeout_ms_c                       osaWaitForever_c
+
+// No change in app behavior,  the advertising interval will be 30 msec
+$lp_test_adv_interval_30ms
+#define gAppAdvertisingInterval                        0x0030
+
+// No change in app behavior,  the advertising interval will be 10 sec, we increase the advertising timeout to let enough time to connect
+$lp_test_adv_interval_10sec
+#define gAppAdvertisingInterval                        0x3E80
+#define gAppAdvTimeout_c                               60
+
+// No change in app behavior,  the 32k clock source will be the fro32k instead of osc32k need clock accuracy to be 500ppm
+$lp_test_fro32k
+#define gBoardUseFro32k_d                              1
+#define BOARD_32KHZ_SRC_CLK_ACCURACY                   0
+
+// No change in app behavior, the app core will go in powerdown when connected
+$lp_test_powerdown_connected
+#define gAppLowPowerConstraintInConnected_c            3
+
+// No change in app behavior, HWParameter will be stored in PROD_DATA 
+$lp_test_hwparam_to_prod_data
+#define gHwParamsProdDataPlacement_c                   0
+
+// No change in app behavior, HWParameter will be copy from PROD_DATA and stored in IFR
+$lp_test_hwparam_from_prod_data_to_ifr
+#define gHwParamsProdDataPlacement_c                   1
+
+// No change in app behavior, HWParameter will be stored in IFR
+$lp_test_hwparam_to_ifr
+#define gHwParamsProdDataPlacement_c                   2
+
+// App will be able to connect with two central at the same time
+//$lp_test_peripheral_can_connect_to_two_central
+//#define gAppMaxConnections_c            2
+//#define gAppDisconnectOnTimeoutOnly_s   1
+//#define gAppConnectionTimeoutInSecs_c   30
+
+// The app core will go in sleep mode during advertising, connecion and no ble activity. Not functional on KW45
+$lp_test_sleep_mode
+#define gAppLowPowerConstraintInAdvertising_c          1
+#define gAppLowPowerConstraintInNoBleActivity_c        1
+#define gAppLowPowerConstraintInNoBleActivity_c        1

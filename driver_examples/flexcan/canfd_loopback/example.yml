@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+canfd_loopback:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/canfd_loopback
+    project-root-path: boards/${board}/driver_examples/canfd/loopback/${multicore_foldername}
+    document:
+      name: canfd_loopback${core_id_suffix_name}
+      category: driver_examples/canfd
+      brief: The canfd_loopback_functional example shows how to use the loopback test
+        mode to debug your CAN Bus design:To demonstrates this example, only one board
+        is needed. The example will config one FlexCAN MessageBuffer to Rx Message
+        Buffer and the other FlexCAN Message Buffer to Tx Message Buffer with same
+        ID.After that, the example will send a CAN Message from the Tx Message Buffer
+        to the Rx Message Bufferthrouth internal loopback interconnect and print out
+        the Message payload to terminal.
+      example_readme:
+      - examples/driver_examples/flexcan/canfd_loopback/readme.md
+      - examples/_boards/${board}/driver_examples/canfd/loopback/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []

@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+cache:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cache
+    project-root-path: boards/${board}/driver_examples/cache/${multicore_foldername}
+    document:
+      name: cache${core_id_suffix_name}
+      category: driver_examples/cache
+      brief: The cache example shows how to use memory cache driver.In this example,
+        many memory (such as SDRAM, etc) and DMA will be used to show the example.Those
+        memory is both accessible for cpu and DMA. For the memory data alignment,
+        cache driver should be used rightly. For cache enabled case, the cache invalidate
+        operation should be done before cpu access the memory. The cache clean opeartion
+        should be done after CPU verify the memorymemory and before DMA access the
+        memory.
+      example_readme:
+      - examples/driver_examples/cache/readme.md
+      - examples/_boards/${board}/driver_examples/cache/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4:
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4:
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

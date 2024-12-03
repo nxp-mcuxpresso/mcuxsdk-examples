@@ -1,0 +1,17 @@
+dsp_mu_interrupt:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/mu_interrupt/cm_core1
+    project-root-path: boards/${board}/dsp_examples/mu_interrupt/${core_id}
+    document:
+      name: dsp_mu_interrupt${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_mu_interrupt demo application demonstrates starting DSP core
+        with DSP image.
+      example_readme:
+      - examples/dsp_examples/mu_interrupt/readme.md
+      - examples/_boards/${board}/dsp_examples/mu_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core1: []

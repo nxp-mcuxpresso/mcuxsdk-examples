@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+tee_fault_core0:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/tee_fault/core0
+    project-root-path: boards/${board}/demo_apps/tee_fault/core0
+    document:
+      name: tee_fault_core0
+      category: demo_apps/tee_fault
+      brief: This example shows how to use the MCUXpresso Config Tools TEE tool.
+      example_readme:
+      - examples/demo_apps/tee_fault/readme.md
+      - examples/_boards/${board}/demo_apps/tee_fault/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release

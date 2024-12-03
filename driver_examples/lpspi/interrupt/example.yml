@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpspi_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpspi/interrupt
+    project-root-path: boards/${board}/driver_examples/lpspi/interrupt/${multicore_foldername}
+    document:
+      name: lpspi_interrupt${core_id_suffix_name}
+      category: driver_examples/lpspi
+      brief: The lpspi_functional_interrupt example shows how to use LPSPI driver
+        in interrupt way:In this example , one lpspi instance used as LPSPI master
+        and another lpspi instance used as LPSPI slave .1. LPSPI master send/received
+        data to/from LPSPI slave in interrupt . (LPSPI Slave using interrupt to receive/send
+        the data)
+      example_readme:
+      - examples/driver_examples/lpspi/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/lpspi/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

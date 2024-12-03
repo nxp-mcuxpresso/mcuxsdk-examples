@@ -1,0 +1,248 @@
+/*
+** ###################################################################
+**     Processors:          MCXW727CAFTA_cm33_core1
+**                          MCXW727AAFTA_cm33_core1
+**                          MCXW727DAFTA_cm33_core1
+**
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM
+**
+**     Copyright 2024 NXP
+**
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+if (!isdefinedsymbol(gEnableCoverage_d)) {
+    define symbol gEnableCoverage_d = 0;
+}
+
+
+/* Stack and Heap Sizes */
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__        = __stack_size__;
+} else {
+  define symbol __size_cstack__        = 0x0400;
+}
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__          = __heap_size__;
+} else {
+  define symbol __size_heap__          = 0x000;  /*Memory manager is not used. */
+}
+
+/* The addition of SMU size and the DMEM size is a constant but the sharing can change (see SMU_MEM_SEL)*/
+define symbol smu_and_dmem_size                = 0x00027FFE;
+
+/* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
+define symbol m_dmem_size                      = 0x00013FFF;
+define symbol m_dmem_start                     = 0x00140000;
+define symbol m_dmem_end                       = m_dmem_start + m_dmem_size;
+
+define symbol m_flash_start                    = 0x00000000;
+define symbol m_flash_end                      = 0x0007FFFF;
+
+define symbol m_interrupts_start               = m_flash_start;
+define symbol m_interrupts_end                 = 0x000003FF;
+
+define symbol m_text_start                     = 0x00000400;
+define symbol m_text_end                       = m_flash_end;
+
+define symbol m_data0_start                     = 0x00100000;
+define symbol m_data0_end                       = 0x001007FF;
+
+define symbol m_data1_start                     = 0x00140000;
+define symbol m_data1_end                       = (m_dmem_end-__size_heap__) - __size_cstack__;
+
+define symbol m_stack_start                     = (m_dmem_end-__size_heap__+1) - __size_cstack__;
+define symbol m_stack_end                       = (m_dmem_end-__size_heap__);
+
+define exported symbol __HEAP_start__           = m_stack_end + 1;
+define exported symbol __HEAP_end__             = __HEAP_start__ + __size_heap__;
+
+/* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
+define symbol m_shared_ram_size                 = smu_and_dmem_size - m_dmem_size;
+define symbol m_shared_ram_start                = 0xB0000000;
+define symbol m_shared_ram_end                  = 0xB0013FFF;
+
+define symbol m_lowpower_flag_size              = 0x04;
+define exported symbol m_lowpower_flag_start    = 0xB000007C;
+define symbol m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
+
+//define symbol m_sqram_btblesqbuf_start          = 0xB0000000;
+define symbol m_sqram_btblesqbuf_size           = 0x3400;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
+                                                                 /*Increased from 0x5400 to 0x6300 to hold 12 additionnal TX data buffers to support 24 connections (pairing)*/
+//define symbol m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
+
+/* Last reserved word of the debug section used for the sfc module */
+define exported symbol m_sfc_log_start = 0xB0000078;
+
+//if (gEnableCoverage_d) {
+//define symbol m_sqram_coverage_start               = m_sqram_btblesqbuf_end + 1;
+//define symbol m_sqram_coverage_size                = 0x4;
+//define symbol m_sqram_coverage_end                 = m_sqram_coverage_start + m_sqram_coverage_size -1;
+//}
+
+//if (gEnableCoverage_d) {
+//  define exported symbol dbg_ext_logging_start    = m_sqram_coverage_end + 1;
+//  define exported symbol dbg_ext_logging_size     = 0x00;       /* was 0xB00 but was reduced for coverage. */
+//} else {
+//  define exported symbol dbg_ext_logging_start    = m_sqram_btblesqbuf_end + 1;
+//  define exported symbol dbg_ext_logging_size     = 0x200;       /* was 0xB00 but was reduced to 0x200 to increase btbleaesqbuf section. */
+//}
+//define exported symbol dbg_ext_logging_end      = dbg_ext_logging_start + dbg_ext_logging_size - 1;
+
+//define symbol m_sqram_btbuf_start               = dbg_ext_logging_end + 1;
+/* Classic BT buffers, should not be needed, reduce it to 1k for now */
+//define symbol m_sqram_btbuf_size                = 0x00;       /* was 0x200 but was reduced to 0x0 as not needed. */
+//define symbol m_sqram_btbuf_end                 = m_sqram_btbuf_start + m_sqram_btbuf_size -1;
+
+//define symbol m_sqram_btbleaesqbuf_start        = m_sqram_btbuf_end + 1;
+//if (gEnableCoverage_d) {
+//  define symbol m_sqram_btbleaesqbuf_size         = 0xF20;       /* was 0x2804 but was reduced for coverage. */
+//} else {
+//  define symbol m_sqram_btbleaesqbuf_size         = 0x18c8;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
+                                                                  /*Reduced from 0x2804 to 0x18c8 to allow holding 12 additionnal TX data buffers to support 24 connections.
+                                                                  As a consequence, max adv data len will be reduced from 1650 bytes to 1000 bytes in LL.*/
+//}
+//define symbol m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
+
+//define symbol m_sqram_start                     = m_sqram_btbleaesqbuf_end + 1;
+/* Nothing placed in sqram region, reduce it to 1k for now */
+//define symbol m_sqram_size                      = 0x00;       /* was 0x400 but was reduced to 0x0 as not needed. */
+//define symbol m_sqram_end                       = m_sqram_start + m_sqram_size -1;
+
+//define symbol m_sqram_bkup_start                = m_sqram_end + 1;
+/* Nothing placed in sqram bkup region, reduce it to 1k for now */
+//define symbol m_sqram_bkup_size                 = 0x00;       /* was 0x400 but was reduced to 0x0 as not needed. */
+//define symbol m_sqram_bkup_end                  = m_sqram_bkup_start + m_sqram_bkup_size -1;
+
+//define symbol m_sqram_rldat_ae_start            = m_sqram_bkup_end + 1;
+//if (gEnableCoverage_d) {
+//define symbol m_sqram_rldat_ae_size             = 0x00158;
+//} else {
+//define symbol m_sqram_rldat_ae_size             = 0x00258;
+//}
+//define symbol m_sqram_rldat_ae_end              = m_sqram_rldat_ae_start + m_sqram_rldat_ae_size -1;
+
+//define symbol m_sqram_rldat_start               = m_sqram_rldat_ae_end + 1;
+if (gEnableCoverage_d) {
+define symbol m_sqram_rldat_size                = 0x00100;
+} else {
+define symbol m_sqram_rldat_size                = 0x00080;  /*to hold 24 connection contexts*/
+}
+//define symbol m_sqram_rldat_end                 = m_sqram_rldat_start + m_sqram_rldat_size -1;
+
+define exported symbol rpmsg_sh_mem_end         = 0xB0009FFF;
+define exported symbol rpmsg_sh_mem_size        = 0x1800;
+define exported symbol rpmsg_sh_mem_start       = rpmsg_sh_mem_end - rpmsg_sh_mem_size + 1;
+
+define symbol m_sqram_rldat_end                 = rpmsg_sh_mem_start - 1;
+define symbol m_sqram_rldat_start               = m_sqram_rldat_end - m_sqram_rldat_size - 1;
+
+define symbol m_sqram_btblesqbuf_end            = m_sqram_rldat_start -1;
+define symbol m_sqram_btblesqbuf_start          = m_sqram_btblesqbuf_end - m_sqram_btblesqbuf_size - 1;
+
+define symbol m_free_data_start                 = m_lowpower_flag_end + 1;
+define symbol m_free_data_end                   = m_sqram_btblesqbuf_end-1;
+//define symbol m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
+//define symbol m_free_data_end                   = rpmsg_sh_mem_start - 1;
+
+//if (m_sqram_rldat_end > rpmsg_sh_mem_start)
+//{
+//  error "Total allocated sections in shared ram do not fit in available shared ram!";
+//}
+
+define memory mem with size = 4G;
+
+define region TEXT_region             = mem:[from m_interrupts_start to m_interrupts_end]
+                                      | mem:[from m_text_start to m_text_end];
+define region DATA_region             = mem:[from m_data0_start to m_data0_end]
+                                      | mem:[from m_data1_start to m_data1_end]
+                                      | mem:[from __HEAP_start__ to __HEAP_end__]
+                                      | mem:[from m_free_data_start to m_free_data_end];
+define region CSTACK_region           = mem:[from m_stack_start to m_stack_end];
+
+define region sqram_btblesqbuf_region           = mem:[from m_sqram_btblesqbuf_start      to m_sqram_btblesqbuf_end];
+define region lowpower_flag_region              = mem:[from m_lowpower_flag_start       to m_lowpower_flag_end];
+//define region sqram_btbuf_region                = mem:[from m_sqram_btbuf_start         to m_sqram_btbuf_end];
+//define region sqram_btbleaesqbuf_region         = mem:[from m_sqram_btbleaesqbuf_start  to m_sqram_btbleaesqbuf_end];
+//define region sqram_region                      = mem:[from m_sqram_start               to m_sqram_end];
+//define region sqram_bkup_region                 = mem:[from m_sqram_bkup_start          to m_sqram_bkup_end];
+//define region sqram_rldat_ae_region             = mem:[from m_sqram_rldat_ae_start      to m_sqram_rldat_ae_end];
+define region sqram_rldat_region                = mem:[from m_sqram_rldat_start         to m_sqram_rldat_end];
+if (gEnableCoverage_d) {
+define region sqram_coverage_region             = mem:[from m_sqram_coverage_start      to m_sqram_coverage_end];
+}
+
+/* Logging section appended at the end of the nbu binary (not flashed into the device)*/
+define symbol logging_start                     = 0x80000;
+define symbol logging_end                       = 0x90000;
+define region logging                           = mem:[from logging_start               to logging_end];
+define region rpmsg_sh_mem_region               = mem:[from rpmsg_sh_mem_start          to rpmsg_sh_mem_end];
+
+define block CSTACK    with alignment = 8, size = __size_cstack__   { };
+define block RW        { readwrite };
+define block ZI        { zi };
+
+initialize by copy { readwrite, section .textrw };
+
+if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
+{
+  /* Required in a multi-threaded application */
+  initialize by copy with packing = none { section __DLIB_PERTHREAD };
+}
+
+do not initialize  { section .noinit };
+do not initialize  { section .heap };
+
+place at address mem: m_interrupts_start    { readonly section .intvec };
+place in TEXT_region                        { readonly };
+place in DATA_region                        { block RW };
+place in DATA_region                        { block ZI };
+place in DATA_region                        { last section .heap };
+place in CSTACK_region                      { block CSTACK };
+
+place in sqram_btblesqbuf_region                  { readwrite section .btblesqbuf } ;
+//place in sqram_btbuf_region
+//{
+//    readwrite section .btrxsqbuf,
+//    readwrite section .btscosqbuf
+//};
+//place in sqram_btbleaesqbuf_region              { readwrite section .btbleaesqbuf } ;
+//place in sqram_region                           { readwrite section .sqbuf } ;
+//place in sqram_bkup_region                      { readwrite section .sqbuf object btble_debug.o } ;
+//place in sqram_rldat_ae_region                  { readwrite section .rl_ae } ;
+place in sqram_rldat_region                     { readwrite section .rl_conn } ;
+if (gEnableCoverage_d) {
+place in sqram_coverage_region                     { readwrite section .coverage } ;
+}
+
+place in DATA_region
+{
+    readwrite section .btstk,
+    readwrite section .dtcm,
+    readwrite section .wlandatapath,
+    readwrite section .lm_memory_manager_rw,
+    readwrite section .mem_sw object interCpuComm.o,
+    readwrite section .bss object ble_os_buf.o,
+    readwrite section +RW object ble_os_buf.o,
+    readwrite section +ZI object ble_os_buf.o,
+    readwrite section +RW object hcitl*.o,
+    readwrite section +ZI object hcitl*.o,
+    readwrite section .bss object idleMain.o,
+};
+
+place in rpmsg_sh_mem_region                    { section rpmsg_sh_mem_section };
+
+place in  logging    { readonly section .logging };
+
+/*
+    INFO: original scatter file used from marvell code:
+    helper_scat_fpga_V0.scf
+*/

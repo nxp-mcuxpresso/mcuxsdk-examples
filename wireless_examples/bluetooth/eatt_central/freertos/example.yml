@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+eatt_central_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/eatt_central/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/eatt_central/freertos/${multicore_foldername}
+    document:
+      name: eatt_central_freertos
+      category: wireless_examples/bluetooth/eatt_central/freertos/
+      brief: This application implements a central device which receives data from
+        2 custom GATT services on 2 enhanced ATT bearers.
+  boards:
+    kw45b41zevk: []
+    k32w148evk: []
+    frdmmcxw71: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

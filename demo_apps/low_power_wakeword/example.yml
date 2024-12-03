@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+low_power_wakeword:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/low_power_wakeword/.
+    project-root-path: boards/${board}/demo_apps/low_power_wakeword/${multicore_foldername}
+    document:
+      name: low_power_wakeword${core_id_suffix_name}
+      category: demo_apps
+      brief: 'In this demo, M core receives audio from microphones and provide them
+        to Linux on Cortex A in DDR and notifies it through RPMSG protocol. If Linux
+        is suspended, the audio is processed locally with wakeword detection algorithm.
+        When voice algorithms triggers, then A core is resumed and audio streaming
+        from M core to A core restarts. When Cortex A is running, music playback from
+        A core can also be sent to M core through DDR and RPMSG protocol but no playback
+        is supported when M core only is running. '
+      example_readme:
+      - examples/demo_apps/low_power_wakeword/readme.md
+      - examples/_boards/${board}/demo_apps/low_power_wakeword/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@debug
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@debug
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -iar@release
+    evkmimx8mp:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@debug
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@debug
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -iar@release
+    mcimx93evk:
+    - -armgcc@debug
+    - -iar@debug
+    - -iar@release
+    mcimx93qsb:
+    - -armgcc@debug
+    - -iar@debug
+    - -iar@release
+    imx95lpd5evk19@cm7:
+    - -armgcc@debug
+    - -iar@debug
+    - -iar@release
+    imx95lp4xevk15@cm7:
+    - -armgcc@debug
+    - -iar@debug
+    - -iar@release

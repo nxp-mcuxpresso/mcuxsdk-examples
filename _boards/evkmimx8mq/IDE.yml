@@ -1,0 +1,5 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_jlinkswd/generic_binary.ewp
+  - scripts/guigenerator/templates/iar/app_jlinkswd/generic_no_flashloader.ewd
+  - scripts/guigenerator/templates/iar/general.eww

@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexio_spi_edma_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio/spi/edma_b2b_transfer/slave
+    project-root-path: boards/${board}/driver_examples/flexio/spi/edma_b2b_transfer/slave/${multicore_foldername}
+    document:
+      name: flexio_spi_edma_b2b_transfer_slave${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The flexio_spi_slave_edma example shows how to use flexio spi slave  driver
+        in dma way:In this example, a flexio simulated slave connect to a flexio simulated
+        spi master.
+      example_readme:
+      - examples/driver_examples/flexio/spi/edma_b2b_transfer/slave/readme.md
+      - examples/_boards/${board}/driver_examples/flexio/spi/edma_b2b_transfer/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

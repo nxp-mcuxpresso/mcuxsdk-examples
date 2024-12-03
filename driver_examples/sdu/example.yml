@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+sdu_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sdu
+    project-root-path: boards/${board}/driver_examples/sdu/${multicore_foldername}
+    document:
+      name: sdu_example${core_id_suffix_name}
+      category: driver_examples/sdu
+      brief: The sdu example shows how to use sdu driver to exchange command/data
+        with host driver.
+      example_readme:
+      - examples/driver_examples/sdu/readme.md
+      - examples/_boards/${board}/driver_examples/sdu/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    rdrw612bga: []

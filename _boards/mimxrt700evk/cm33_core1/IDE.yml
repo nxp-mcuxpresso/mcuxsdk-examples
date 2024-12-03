@@ -1,0 +1,23 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_no_flashloader.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_dsp.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+  config:
+    __common__:
+      debugger_setting:
+        cmsisdap_resetlist: system
+      debugger_extra_options:
+      - --macro_param _enableCore1=1
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core1.uvoptx
+  - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core1.uvprojx
+  - scripts/guigenerator/templates/mdk/app_mimxrt700evk/cm33_core1/JLinkSettings.ini
+
+initialization_file:
+  files:
+    - source: scripts/guigenerator/templates/mdk/app_mimxrt700evk/cm33_core1/ramdebug.ini
+      attribute: initialization_file
+      toolchains: mdk
+      targets: debug release

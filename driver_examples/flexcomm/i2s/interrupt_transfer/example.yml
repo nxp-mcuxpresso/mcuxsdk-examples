@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i2s_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/i2s/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/i2s/interrupt_transfer/${multicore_foldername}
+    document:
+      name: i2s_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/i2s
+      brief: The I2S example project uses one I2S interface to continuously record
+        input sound to a bufferand another I2S interface to playback the buffer to
+        output - digital loopback.It requires NXP Mic/Audio/Oled Shield with WM8904
+        codec.It needs to have 1-2 connected on JP3.
+      example_readme:
+      - examples/driver_examples/flexcomm/i2s/interrupt_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/i2s/interrupt_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

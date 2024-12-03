@@ -1,0 +1,158 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+hello_world_swo:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/hello_world_swo
+    project-root-path: boards/${board}/demo_apps/hello_world_swo/${multicore_foldername}
+    document:
+      name: hello_world_swo${core_id_suffix_name}
+      category: demo_apps
+      brief: 'The Hello World SWO demo prints the "SWO: Hello World" string to the
+        SWO viewer. The purpose of this demo is to show how to use the swo, and to
+        provide a simple project for debugging and further development.'
+      example_readme:
+      - examples/demo_apps/hello_world_swo/readme.md
+      - examples/_boards/${board}/demo_apps/hello_world_swo/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkbmimxrt1060:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkcmimxrt1060:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1010:
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    evkmimxrt1015:
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    evkmimxrt1020:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1024:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1040:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1064:
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@ram_0x1400_debug
+    - +iar@ram_0x1400_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@ram_0x1400_debug
+    - +mdk@ram_0x1400_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw45b41zloc: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []

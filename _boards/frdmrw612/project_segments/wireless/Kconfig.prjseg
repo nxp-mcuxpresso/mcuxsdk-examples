@@ -1,0 +1,8 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.board.wireless.board_comp
+    select MCUX_COMPONENT_component.led
+    select MCUX_COMPONENT_component.button

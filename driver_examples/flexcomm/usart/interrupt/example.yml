@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+usart_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcomm/usart/interrupt
+    project-root-path: boards/${board}/driver_examples/usart/interrupt/${multicore_foldername}
+    document:
+      name: usart_interrupt${core_id_suffix_name}
+      category: driver_examples/usart
+      brief: The uart_functioncal_interrupt example shows how to use uart driver functionalAPI
+        to receive data with interrupt method:In this example, one uart instance connect
+        to PC through uart, the board willsend back all characters that PC send to
+        the board.
+      example_readme:
+      - examples/driver_examples/flexcomm/usart/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/usart/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

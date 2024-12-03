@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcxromapi_mem_interface:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcx_romapi/mem_interface
+    project-root-path: boards/${board}/driver_examples/romapi/mem_interface/${multicore_foldername}
+    document:
+      name: mcxromapi_mem_interface${core_id_suffix_name}
+      category: driver_examples
+      brief: The mem_interface project is a simple demonstration program of the SDK
+        IAP driver. It erases and programs a portion of internal and external flash
+        memory. A message a printed on the UART terminal as various operations on
+        flash memory are performed.
+      example_readme:
+      - examples/driver_examples/mcx_romapi/mem_interface/readme.md
+      - examples/_boards/${board}/driver_examples/romapi/mem_interface/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

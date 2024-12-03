@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mcx_opamp_dac_adc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/opamp/opamp_dac_adc
+    project-root-path: boards/${board}/driver_examples/opamp/opamp_dac_adc/${multicore_foldername}
+    document:
+      name: mcx_opamp_dac_adc${core_id_suffix_name}
+      category: driver_examples/opamp
+      brief: The OPAMP DAC ADC example shows how to use OPAMP PGA mode. in this example,
+        both positive input and negative input should be connected to GND,the positive
+        reference voltage is set as DAC output, the OPAMP output is 1X of DAC output.
+        When DAC output changes, the OPAMP changes accordingly. In PGA mode, the OPAMP
+        output pin does not support direct measurement. Only the ADC is supported
+        to sample the OPAMP output voltage, and the output range of the OPAMP positive
+        reference voltage is 0 to VDDA-0.8V.
+      example_readme:
+      - examples/driver_examples/opamp/opamp_dac_adc/readme.md
+      - examples/_boards/${board}/driver_examples/opamp/opamp_dac_adc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

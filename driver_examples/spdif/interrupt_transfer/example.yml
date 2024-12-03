@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+spdif_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/spdif/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/spdif/interrupt_transfer/${multicore_foldername}
+    document:
+      name: spdif_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/spdif
+      brief: 'The spdif_interrupt_transfer example shows how to use spdif driver with
+        interrupt:In this example, one spdif instance playbacks the audio data recorded
+        by the same spdif instance using interrupt.Notice: Please use 48KHz sample
+        rate for PC playback and set SPDIF output device to 48KHz.'
+      example_readme:
+      - examples/driver_examples/spdif/interrupt_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/spdif/interrupt_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

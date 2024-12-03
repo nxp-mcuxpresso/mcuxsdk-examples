@@ -1,0 +1,10 @@
+config dsp_config
+    string
+    default "debug" if $(config) = "debug"
+    default "release" if $(config) = "release"
+    default "debug" if $(config) = "flash_debug"
+    default "release" if $(config) = "flash_release"
+
+config dsp_core_id
+    string
+    default "fusionf1" if $(core_id) = "cm33"

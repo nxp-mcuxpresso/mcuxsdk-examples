@@ -1,0 +1,44 @@
+macro-file:
+  files:
+  - source: examples/_boards/${board}/evkbimxrt1050.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: debug release
+    choose: true
+    package_path: boards/evkbimxrt1050/littlefs_examples/littlefs_shell/./iar
+    project_path: evkbimxrt1050
+  - source: examples/_boards/${board}/evkbimxrt1050_sdram_init.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: sdram_debug sdram_release
+    choose: true
+    package_path: boards/evkbimxrt1050/littlefs_examples/littlefs_shell/./iar
+    project_path: evkbimxrt1050
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/evkbimxrt1050_ram.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+    package_path: boards/evkbimxrt1050/littlefs_examples/littlefs_shell/./mdk
+    project_path: evkbimxrt1050
+  - source: examples/_boards/${board}/evkbimxrt1050_sdram_init.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: sdram_debug sdram_release
+    package_path: boards/evkbimxrt1050/littlefs_examples/littlefs_shell/./mdk
+    project_path: evkbimxrt1050
+  - source: examples/_boards/${board}/evkbimxrt1050_flexspi_nor.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flexspi_nor_debug flexspi_nor_release
+    package_path: boards/evkbimxrt1050/littlefs_examples/littlefs_shell/./mdk
+    project_path: evkbimxrt1050
+jlink_script_file:
+  files:
+  - source: examples/_boards/${board}/evkbimxrt1050_sdram_init.jlinkscript
+    attribute: jlink_script_file
+    toolchains: armgcc
+    targets: sdram_debug sdram_release
+    package_path: boards/evkbimxrt1050/littlefs_examples/littlefs_shell/.
+    project_path: evkbimxrt1050

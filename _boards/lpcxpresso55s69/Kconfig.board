@@ -1,0 +1,9 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config BOARD_lpcxpresso55s69
+    bool "Board lpcxpresso55s69"
+    select DEVICE_LPC55S69
+    select MCUX_HW_DEVICE_ID_LPC55S69

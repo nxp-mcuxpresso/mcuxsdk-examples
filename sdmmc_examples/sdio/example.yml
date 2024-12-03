@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sdio:
+  section-type: application
+  contents:
+    meta_path: examples/sdmmc_examples/sdio
+    project-root-path: boards/${board}/sdmmc_examples/sdio/${multicore_foldername}
+    document:
+      name: sdio${core_id_suffix_name}
+      category: sdmmc_examples
+      brief: The SDIO project is a demonstration program that uses the SDK software.
+        It reads/writes the SDIO card reigister. The purpose of this example is to
+        show how to use SDio driver and this is a very simple example.
+      example_readme:
+      - examples/sdmmc_examples/sdio/readme.md
+      - examples/_boards/${board}/sdmmc_examples/sdio/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

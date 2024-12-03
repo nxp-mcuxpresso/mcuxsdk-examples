@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc16_potentiometer:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/adc16/adc16_potentiometer
+    project-root-path: boards/${board}/demo_apps/adc16_potentiometer/${multicore_foldername}
+    document:
+      name: adc16_potentiometer${core_id_suffix_name}
+      category: demo_apps
+      brief: The ADC potentiometer demo application demonstrates how to read the analog
+        value from a hardware potentiometer via theADC peripheral.
+      example_readme:
+      - examples/demo_apps/adc16/adc16_potentiometer/readme.md
+      - examples/_boards/${board}/demo_apps/adc16_potentiometer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

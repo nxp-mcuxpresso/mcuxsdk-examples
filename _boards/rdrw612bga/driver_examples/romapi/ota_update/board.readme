@@ -1,0 +1,190 @@
+Overview
+========
+
+This ROM API project demonstrates the usage of the ROM API for performing OTA
+updates using the dual image boot feature of the ROM bootloader.
+
+The source of the OTA update is typically from a network. In order to keep the
+example simple and decouple from the dependency on a network connection, it
+takes the update image from a Flash location.
+
+The resulting binary can be downloaded to a target board. It will look at a
+particular location in flash for a OTA update file. The OTA update file can be
+either a masterboot image or an SB3 container.
+
+In case a masterboot image is found, it is installed in the other part of flash
+in a dual image boot configuration. In case a SB3 container is found, it is
+processed by ROM API. Typically the SB3 container would contain the
+instructions to install a masterboot image in the other part of flash.
+
+The following flash layout is used:
+
+    0x08000000: boot header of image 0
+    0x08001000: executable code of image 0
+    0x08040000: image 0 picks up an OTA image from that location
+    -------------
+    0x08400000: boot header of image 1
+    0x08401000: executable code of image 1
+    0x08440000: image 1 picks up an OTA image from that location
+
+In case IPED is used, the executable code regions of both images are encrypted.
+The following regions are used:
+
+    image 0: region 0: start 0x08001000, end (logical) 0x08033400, end (physical) 0x0803FD00
+    image 1: region 4: start 0x08401000, end (logical) 0x08433400, end (physical) 0x0843FD00
+
+Examples for generating suitable SB3 files for OTA update are provided in the
+"scripts" directory. The idea is, that the binary of this project itself is
+encapsulated in an update. This way a ping-pong between the two images of the
+dual image boot can be experienced and experimentation with different OTA
+configurations is easy.
+
+The following (commented) example configurations are provided in
+scripts/spt_workspace/config:
+    
+    * cert_block.yaml: All signing of masterboot and SB3 files is using the
+      same set of keys. This file contains the configuration of signing
+      operation. The key files themselves are contained in
+      scripts/spt_workspace/keys. In order to be able to accept the signature,
+      the RKTH corresponding to the configuration has to be provisioned to the
+      device.
+
+    * cust_mk_sk.txt: For encryption of the SB3 files, this key is used. The
+      same key has to be provisioned into the device so the SB3 files can be
+      decrypted and processed on the device.
+
+    * mbi_config.yaml: This configuration is used to sign a masterboot image.
+
+    * sb3_config_update_image0.yaml: This configuration is used to create an
+      SB3 file that is usable to update image0 (if currently image1 is active).
+      It writes the signed masterboot image to the expected location in the
+      region of image0. A detailed command description can be found in the yaml
+      file itself.
+
+    * sb3_config_update_image1.yaml: This configuration is used to create an
+      SB3 file that is usable to update image1 (if currently image0 is active).
+      It basically is the same configuraten as sb3_config_update_image0.yaml
+      but with destination addresses replaced for the other image location.
+
+    * sb3_config_update_image0_iped.yaml: This configuration is used to create
+      an SB3 file that is usable to update image0 (if currently image1 is
+      active). It sets up an IPED region for the expected location for the code
+      in image 0 and writes the signed masterboot image to the IPED region. The
+      masterboot image gets encrypted during the programming. Finally the IPED
+      configuration is programmed to Flash too, so the bootloader can pick it
+      up upon reboot.
+
+    * sb3_config_update_image1_iped.yaml: Analog to
+      sb3_config_update_image0_iped.yaml, but with replaced addresses for the
+      other image location.
+
+
+Without action, no OTA update file is loaded to the board. The following steps
+can be used to create OTA update files:
+
+* Copy the binary that shall be written to the device to
+  scripts/spt_workspace/input/sdk20-app.bin. The binary is expected to include
+  a boot configuration header, the actual executable code is expected to start
+  at an offset of 0x1000 bytes into the file (this is the default for flash
+  builds of the SDK).
+* Change directory to "scripts" in a shell (bash is recommended) and execute 
+  ./create_ota_files.sh 
+  Several bin files have been created in the scripts/spt_workspace/output
+  directory.
+* Flash one of the bin files to the board, after the next reset the update will
+  be applied. To help with flashing, use e.g. to update image 1 while 
+  executing image 0:
+  ./flash_ota_file.sh 0 spt_workspace/output/sdk20-app.mb.bin
+
+
+
+Board settings / prerequisites
+============
+
+* This example makes use of dual image boot. Therefore the correct image offset
+  has to be programmed to OTP. 
+* For processing signed and encrypted SB3 files, the
+  correct RKTH and CUST_MK_SK (FW encryption key) has to be provisioned.
+
+
+Prepare the Demo
+===============
+1.  Connect a micro USB cable between the PC host and the MCU-Link USB port (J7) on the board
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Launch the debugger in your IDE to begin running the demo.
+
+
+Running the demo
+================
+Example will print version, perform various memory interface operations (program, erase, flush).
+When the example runs successfully, the following message is displayed in the terminal.
+
+```
+INFO: OTA update example
+
+
+INFO: Running from image 0 (remapped to 0x       0).
+INFO: Image version: 1.
+
+The source of the OTA update is typically from a network. In order to
+keep the example simpler and decouple from the dependency on a network
+connection, it takes the update image from a Flash location.
+An update image is expected at location 0x 8040000.
+Please download an image (e.g. using JLINK) to that location before
+running this example.
+
+ERROR: No OTA image was found at location 0x 8040000 (memory is erased).
+       Please download an image and reset the board.
+```
+
+After downloading an image to the expected address e.g. using
+    bash flash_ota_file.sh 0 spt_workspace/output/update_image1.sb.bin
+
+the board resets, processes the update and boots to the other image. The
+following output is displayed in the terminal.
+
+```
+INFO: OTA update example
+
+
+INFO: Running from image 0 (remapped to 0x       0).
+INFO: Image version: 1.
+
+The source of the OTA update is typically from a network. In order to
+keep the example simpler and decouple from the dependency on a network
+connection, it takes the update image from a Flash location.
+An update image is expected at location 0x 8040000.
+Please download an image (e.g. using JLINK) to that location before
+running this example.
+
+INFO: Found sb3 image with size 0x    6384
+INFO: Starting updating from SB3 file at location 0x 8040000, size: 0x    6384
+INFO: Programming incremented image version.
+INFO: Erasing OTA image
+INFO: Image was updated, rebooting...
+---------------------------------------------
+
+
+INFO: OTA update example
+
+
+INFO: Running from image 1 (remapped to 0x  400000).
+INFO: Image version: 2.
+
+The source of the OTA update is typically from a network. In order to
+keep the example simpler and decouple from the dependency on a network
+connection, it takes the update image from a Flash location.
+An update image is expected at location 0x 8440000.
+Please download an image (e.g. using JLINK) to that location before
+running this example.
+
+ERROR: No OTA image was found at location 0x 8440000 (memory is erased).
+       Please download an image and reset the board.
+```
+

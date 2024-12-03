@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+touch_sensing:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/touch_sensing
+    project-root-path: boards/${board}/demo_apps/touch_sensing/${multicore_foldername}
+    document:
+      name: touch_sensing${core_id_suffix_name}
+      category: demo_apps
+      brief: This example demonstrates the NXP Touch sensing library usage.
+      example_readme:
+      - examples/demo_apps/touch_sensing/readme.md
+      - examples/_boards/${board}/demo_apps/touch_sensing/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2a4s: []
+    frdmke15z: []
+    frdmke16z:
+    - -armgcc@debug
+    - -iar@debug
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

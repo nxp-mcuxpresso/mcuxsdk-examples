@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flashiap1:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iap1/iap1_flash
+    project-root-path: boards/${board}/driver_examples/flashiap/${multicore_foldername}
+    document:
+      name: flashiap1${core_id_suffix_name}
+      category: driver_examples/flashiap1
+      brief: The FLASIAP project is a simple demonstration program of the SDK FLASIAP
+        driver. It erases and programs a portion of on-chip flash memory. A message
+        a printed on the UART terminal as various operations on flash memory are performed.
+      example_readme:
+      - examples/driver_examples/iap1/iap1_flash/readme.md
+      - examples/_boards/${board}/driver_examples/flashiap/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []

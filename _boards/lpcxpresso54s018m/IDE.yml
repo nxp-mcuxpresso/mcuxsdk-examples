@@ -1,0 +1,10 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap_reset_core/generic_sysreset.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap_reset_core/generic_sysreset.ewp
+  - scripts/guigenerator/templates/iar/app_cmsisdap_reset_core/generic_sysreset.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_xpresso54018m/xpresso54018m.uvprojx
+  - scripts/guigenerator/templates/mdk/app_xpresso54018m/xpresso54018m.uvoptx
+  - scripts/guigenerator/templates/mdk/app_xpresso54018m/JLinkSettings.ini

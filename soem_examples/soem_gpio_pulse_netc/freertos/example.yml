@@ -1,0 +1,28 @@
+soem_gpio_pulse_netc_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/soem_examples/soem_gpio_pulse_netc/freertos
+    project-root-path: boards/${board}/soem_examples/soem_gpio_pulse/freertos/${multicore_foldername}
+    document:
+      name: soem_gpio_pulse_freertos${core_id_suffix_name}
+      category: soem_examples
+      brief: SOEM gpio pulse netc example
+      example_readme:
+      - examples/soem_examples/soem_gpio_pulse_netc/freertos/readme.md
+      - examples/_boards/${board}/soem_examples/soem_gpio_pulse/freertos/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

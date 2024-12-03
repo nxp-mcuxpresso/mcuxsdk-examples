@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dac12_fifo_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dac12/fifo_interrupt
+    project-root-path: boards/${board}/driver_examples/dac12/fifo_interrupt/${multicore_foldername}
+    document:
+      name: dac12_fifo_interrupt${core_id_suffix_name}
+      category: driver_examples/dac12
+      brief: The dac12_fifo_interrupt example shows how to use DAC12 FIFO interrupt.When
+        the DAC12 FIFO watermark interrupt is enabled firstly, the application would
+        enter the DAC12 ISR immediately, since remaining FIFO data is less than the
+        watermark. Then the FIFO would be feed inside the ISR. Then the DAC12 interrupt
+        could be restrained. Once the DAC12 FIFO is triggered in while loop, the data
+        in FIFO is read out, then it becomes less than the watermark, so the FIFO
+        would be feed again in DAC12 ISR. With this example, user can define the DAC12
+        output array to generate the different wave output. Also the software trigger
+        can be called in some timer ISR so that the DAC12 would output the analog
+        signal in indicated period. Or even use the hardware trigger to release the
+        CPU.
+      example_readme:
+      - examples/driver_examples/dac12/fifo_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/dac12/fifo_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

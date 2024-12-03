@@ -1,0 +1,20 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "../../../_common/project_segments/dsp/Kconfig.prjseg"
+rsource "../../../_common/project_segments/multicore/Kconfig.prjseg"
+rsource "../../../_common/project_segments/pmic/Kconfig.prjseg"
+rsource "../../../_common/project_segments/display_support/Kconfig.prjseg"
+rsource "../../../_common/project_segments/ezhv/Kconfig.prjseg"
+rsource "../../../_common/project_segments/vglite_support/Kconfig.prjseg"
+rsource "../../../_common/project_segments/lvgl/Kconfig.prjseg"
+
+config MCUX_PRJSEG_module.dsp_support
+    select MCUX_COMPONENT_driver.dsp
+
+config MCUX_PRJSEG_module.pmic_support
+    select MCUX_COMPONENT_driver.pca9422
+
+config MCUX_PRJSEG_module.core1_support
+    select MCUX_COMPONENT_driver.xcache

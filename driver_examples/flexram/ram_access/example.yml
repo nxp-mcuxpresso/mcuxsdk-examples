@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexram_ram_access:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexram/ram_access
+    project-root-path: boards/${board}/driver_examples/flexram/ram_access/${multicore_foldername}
+    document:
+      name: flexram_ram_access${core_id_suffix_name}
+      category: driver_examples/flexram
+      brief: The FLEXRAM project is a simple demonstration program of the SDK FLEXRAM
+        driver. It allocate the on-chip ram and then access the OCRAM to demo magic
+        address and access error interrupt.
+      example_readme:
+      - examples/driver_examples/flexram/ram_access/readme.md
+      - examples/_boards/${board}/driver_examples/flexram/ram_access/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []

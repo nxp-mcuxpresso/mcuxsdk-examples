@@ -1,0 +1,9 @@
+Hardware requirements
+=====================
+- Mini/micro USB cable
+- LPCXpresso51U68 board
+- Personal Computer
+
+Board settings
+==============
+To make usart_freertos example work, keep default configuration.

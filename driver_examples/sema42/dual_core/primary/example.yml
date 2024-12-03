@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+sema42_dualcore_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sema42/dual_core/primary
+    project-root-path: boards/${board}/driver_examples/sema42/dual_core/${multicore_foldername}/
+    document:
+      name: sema42_dualcore_primary_core
+      category: driver_examples/sema42
+      brief: The sema42 example shows how to use SEMA42 driver to lock and unlock
+        a sema gate:In this example:1. Firstly, Core 0 turn on LED  and lock a sema
+        gate then boot up Core 1 wake up.2. Core 1 must be wait until Core 0 unlocks
+        this sema gate to lock it.3. After user press any key in terminal window,
+        the sema gate will be unlocked by core 0,then core 1 will lock it and turn
+        off the LEDIf the board does not have LED to show the status, then core 1
+        will send a flagto core 0 when core 1 has locked the sema gate. Core 0 outputs
+        the success logafter it received the flag.
+      example_readme:
+      - examples/driver_examples/sema42/dual_core/readme.md
+      - examples/_boards/${board}/driver_examples/sema42/dual_core/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l3a6@cm4: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []
+    evkmimxrt1180@cm33:
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

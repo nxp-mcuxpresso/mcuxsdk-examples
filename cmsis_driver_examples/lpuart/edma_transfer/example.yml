@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cmsis_lpuart_edma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/lpuart/edma_transfer
+    project-root-path: boards/${board}/cmsis_driver_examples/lpuart/edma_transfer/${multicore_foldername}
+    document:
+      name: cmsis_lpuart_edma_transfer${core_id_suffix_name}
+      category: cmsis_driver_examples/lpuart
+      brief: 'CMSIS-Driver defines generic peripheral driver interfaces for middleware
+        making it reusable across a wide range of supported microcontroller devices.
+        The API connects microcontroller peripherals with middleware that implements
+        for example communication stacks, file systems, or graphic user interfaces.
+        More information and usage methord please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.The
+        cmsis_uart_edma_transfer example shows how to use uart cmsis  driver with
+        EDMA:In this example, one uart instance connect to PC through uart, the board
+        willsend back all characters that PC send to the board.Note: The example echo
+        every 8 characters, so input 8 characters every time.'
+      example_readme:
+      - examples/cmsis_driver_examples/lpuart/edma_transfer/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []

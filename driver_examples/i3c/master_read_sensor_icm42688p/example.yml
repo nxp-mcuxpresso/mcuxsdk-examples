@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+i3c_master_read_sensor_icm42688p:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/master_read_sensor_icm42688p
+    project-root-path: boards/${board}/driver_examples/i3c/master_read_sensor_icm42688p/${multicore_foldername}
+    document:
+      name: i3c_master_read_sensor_icm42688p${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_master_read_sensor_icm42688p example shows how to use i3c driver
+        as master to communicate with sensor ICM-42688P.
+      example_readme:
+      - examples/driver_examples/i3c/master_read_sensor_icm42688p/readme.md
+      - examples/_boards/${board}/driver_examples/i3c/master_read_sensor_icm42688p/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []
+    lpcxpresso860max: []
+    mimxrt685audevk@cm33: []

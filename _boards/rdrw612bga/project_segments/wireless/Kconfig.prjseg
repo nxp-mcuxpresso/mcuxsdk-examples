@@ -1,0 +1,14 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.board.wireless.board_comp
+    select MCUX_COMPONENT_component.button
+
+config MCUX_PRJSEG_module.board.wireless.linker_script.zb_mcuboot
+    bool "Connectivity linker script for Zigbee with MCUBoot"
+    help
+      Use the linker script provided by the Connectivity Framework for the current platform in case of zigbee examples
+      using MCUBoot as a bootloader.
+      This should be left disabled if the user wants to use a custom linker script.

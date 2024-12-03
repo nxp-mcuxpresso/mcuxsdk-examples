@@ -1,0 +1,58 @@
+dev_suspend_resume_hid_mouse_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_suspend_resume_device_hid_mouse/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_suspend_resume_device_hid_mouse/bm/${multicore_foldername}
+    document:
+      name: dev_suspend_resume_hid_mouse_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: the application is enumerated as a mouse. When host releases the USB
+        Bus, the device will enter into low power mode. The device can be waked up
+        when resume signal is detected on the bus. Or the device can remote wake-up
+        the host by delivering the resume signal when the remote wake-up is enabled
+        by the host.
+      example_readme:
+      - examples/usb_examples/usb_suspend_resume_device_hid_mouse/readme.md
+      - examples/_boards/${board}/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -iar@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -iar@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

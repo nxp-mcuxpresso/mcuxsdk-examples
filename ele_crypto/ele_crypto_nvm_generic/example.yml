@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_crypto_nvm_generic:
+  section-type: application
+  contents:
+    meta_path: examples/ele_crypto/ele_crypto_nvm_generic
+    project-root-path: boards/${board}/ele_crypto/ele_crypto_nvm_generic/${multicore_foldername}
+    document:
+      name: ele_crypto_nvm_generic${core_id_suffix_name}
+      category: ele_crypto
+      brief: The ELE Crypto NVM Example project is a demonstration program that uses
+        the MCUX SDK software to perform non volatile memory (flash) operations with
+        EdgeLock Enclave (ELE) and usage of its services with direct use of Messaging
+        Unit driver.
+      example_readme:
+      - examples/ele_crypto/ele_crypto_nvm_generic/readme.md
+      - examples/_boards/${board}/ele_crypto/ele_crypto_nvm_generic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

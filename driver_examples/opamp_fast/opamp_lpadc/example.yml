@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+opamp_fast_lpadc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/opamp_fast/opamp_lpadc
+    project-root-path: boards/${board}/driver_examples/opamp/opamp_lpadc/${multicore_foldername}
+    document:
+      name: opamp_lpadc${core_id_suffix_name}
+      category: driver_examples/opamp
+      brief: The OPAMP lpadc example demonstrates how to use the OPAMP driver. In
+        this example, the reference voltage (Vref) of the OPAMP1 non-inverting input
+        port comes from the output port of OPAMP0, which needs to be connected to
+        an LPADC channel, the OPAMP1 non-inverting input port needs to be connected
+        to a voltage source and an LPADC channel, the OPAMP1 inverting input port
+        needs to be connected to GND, and the OPAMP1 output port needs to be connected
+        to an LPADC channel. When this example runs successfully, the terminal will
+        print the OPAMP0 output port voltage value, the OPAMP1 non-inverting input
+        port voltage value, the OPAMP1 output voltage value measured using lpadc,
+        and the theoretical OPAMP1 output value.
+      example_readme:
+      - examples/driver_examples/opamp_fast/opamp_lpadc/readme.md
+      - examples/_boards/${board}/driver_examples/opamp/opamp_lpadc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa166: []
+    frdmmcxa276: []

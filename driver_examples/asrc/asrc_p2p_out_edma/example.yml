@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+asrc_p2p_out_edma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/asrc/asrc_p2p_out_edma
+    project-root-path: boards/${board}/driver_examples/asrc/asrc_p2p_out_edma/${multicore_foldername}
+    document:
+      name: asrc_p2p_out_edma${core_id_suffix_name}
+      category: driver_examples/asrc
+      brief: The asrc_p2p_out_edma example shows how to use asrc driver with edma:In
+        this example, one sai instance playbacks the audio data conveted by asrc.
+      example_readme:
+      - examples/driver_examples/asrc/asrc_p2p_out_edma/readme.md
+      - examples/_boards/${board}/driver_examples/asrc/asrc_p2p_out_edma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    evkmimxrt1180@cm7: []

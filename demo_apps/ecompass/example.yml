@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ecompass:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/ecompass
+    project-root-path: boards/${board}/demo_apps/ecompass/${multicore_foldername}
+    document:
+      name: ecompass${core_id_suffix_name}
+      category: demo_apps
+      brief: The E-Compass demo application demonstrates the use of the FXOS8700 sensor.
+        The tilt-compensated algorithm calculatesall three angles (pitch, roll, and
+        yaw or compass heading).
+      example_readme:
+      - examples/demo_apps/ecompass/readme.md
+      - examples/_boards/${board}/demo_apps/ecompass/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkmcimx7ulp: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    frdmk32l2a4s: []
+    frdmke16z: []

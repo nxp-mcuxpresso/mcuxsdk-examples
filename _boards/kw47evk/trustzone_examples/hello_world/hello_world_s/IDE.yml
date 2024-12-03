@@ -1,0 +1,18 @@
+
+iar:
+  shared-workspace: hello_world
+  sharing-workspace:
+  - ../../hello_world_ns/iar/hello_world_ns_${core_id}
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

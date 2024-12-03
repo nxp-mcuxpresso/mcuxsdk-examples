@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+opamp_vref_adc:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/opamp/opamp_vref_adc
+    project-root-path: boards/${board}/demo_apps/opamp_vref_adc/${multicore_foldername}
+    document:
+      name: opamp_vref_adc${core_id_suffix_name}
+      category: demo_apps
+      brief: This project shows how to use ADC sampling opamp out vaule.In the example
+        opamp,the positive reference voltage is set as VREF output.The OPAMP output
+        is 1X of VREF out.When VREF out change, the OPAMP changes accordingly.
+      example_readme:
+      - examples/demo_apps/opamp/opamp_vref_adc/readme.md
+      - examples/_boards/${board}/demo_apps/opamp_vref_adc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []

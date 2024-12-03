@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_dma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/dma
+    project-root-path: boards/${board}/driver_examples/lpadc/dma/${multicore_foldername}
+    document:
+      name: lpadc_dma${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpdc_dma example shows how to use ADC to trigger a DMA transfer.
+        In this example, user should indicate a channel to provide a voltage signal
+        (can be controlled by user) as the LPADC's sample input. When running the
+        project, typing any key into debug console would trigger the conversion, the
+        software trigger API is called to start the conversion. When the ADC conversion
+        is completed, it would trigger the DMA in ping-pong transfer mode to move
+        the ADC conversion result from ADC conversion data register to user indicated
+        memory. Then the main loop waits for the transfer to be done and print the
+        result to terminal.
+      example_readme:
+      - examples/driver_examples/lpadc/dma/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/dma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []

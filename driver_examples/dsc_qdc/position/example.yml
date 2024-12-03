@@ -1,0 +1,16 @@
+qdc_position:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_qdc/position
+    project-root-path: boards/${board}/driver_examples/qdc/position/${multicore_foldername}
+    document:
+      name: qdc_position${core_id_suffix_name}
+      category: driver_examples/qdc
+      brief: This project shows how to sample the shaft position based on quadrature
+        signal (PHASEA and PHASEB).
+      example_readme:
+      - examples/driver_examples/dsc_qdc/position/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f81000evk: []
+    twrmc56f8400: []

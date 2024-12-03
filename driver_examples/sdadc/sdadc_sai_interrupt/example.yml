@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sdadc_sai_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sdadc/sdadc_sai_interrupt
+    project-root-path: boards/${board}/driver_examples/sdadc/sdadc_sai_interrupt/${multicore_foldername}
+    document:
+      name: sdadc_sai_interrupt${core_id_suffix_name}
+      category: driver_examples/sdadc
+      brief: The sdadc sai interrupt example shows how to use sdadc driver with interrupt.
+        In this example, sdadc gathers analog data from the microphone, and uses the
+        sai to send the digital data to the codec. The user can hear the sound from
+        the microphone and see the log on the terminal.
+      example_readme:
+      - examples/driver_examples/sdadc/sdadc_sai_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/sdadc/sdadc_sai_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

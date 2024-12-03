@@ -1,0 +1,13 @@
+board.toolchains:
+- +armgcc@debug
+- +armgcc@flexspi_nor_debug
+- +armgcc@flexspi_nor_release
+- +armgcc@release
+- +iar@debug
+- +iar@flexspi_nor_debug
+- +iar@flexspi_nor_release
+- +iar@release
+- +mdk@debug
+- +mdk@flexspi_nor_debug
+- +mdk@flexspi_nor_release
+- +mdk@release

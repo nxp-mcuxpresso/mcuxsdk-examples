@@ -1,0 +1,3 @@
+config MCUX_PRJSEG_module.core1_support
+    bool "Use boards/${board}/core1_support.c"
+

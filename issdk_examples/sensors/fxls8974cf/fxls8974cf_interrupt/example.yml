@@ -1,0 +1,21 @@
+fxls8974cf_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/issdk_examples/sensors/fxls8974cf/fxls8974cf_interrupt
+    project-root-path: boards/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_interrupt/${multicore_foldername}
+    document:
+      name: fxls8974cf_interrupt${core_id_suffix_name}
+      category: issdk/sensors
+      brief: The FXLS8974CF POLL example application demonstrates configuring FXLS8974CF
+        sensor in interrupt Mode using I2C interface.The example demonstrates configuration
+        sensor registers reguired to put the sensor in Interrupt mode, wait for data
+        ready event and read out samples. The dataready event is routed to INT pin
+        when samples are available sensor reads samples.
+      example_readme:
+      - examples/issdk_examples/sensors/fxls8974cf/fxls8974cf_interrupt/readme.md
+      - examples/_boards/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []
+  shields:
+    a8974: []

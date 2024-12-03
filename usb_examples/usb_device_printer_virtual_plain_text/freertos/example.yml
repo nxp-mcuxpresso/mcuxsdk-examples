@@ -1,0 +1,70 @@
+dev_printer_virtual_plain_text_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_printer_virtual_plain_text/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_device_printer_virtual_plain_text/freertos/${multicore_foldername}
+    document:
+      name: dev_printer_virtual_plain_text_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB virtual printer application is a simple application to demonstrate
+        a virtual printer functionality.Because there is no printer language parsing,
+        the received raw data is output directly in the debug console.As a result,
+        only plain text is suitable for testing. For other printer language support,
+        such as postscript, implement the corresponding parser.
+      example_readme:
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_printer_virtual_plain_text/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_add_printer_1.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_add_printer_2.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_dev&printer.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_devmgmt.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_devmgmt_install1.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_devmgmt_win10.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_example_text.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_example_text_output.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_find_port.jpg
+      - examples/usb_examples/usb_device_printer_virtual_plain_text/device_printer_install_driver_auto.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

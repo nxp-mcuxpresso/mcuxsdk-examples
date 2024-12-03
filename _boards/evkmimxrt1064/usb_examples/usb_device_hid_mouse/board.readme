@@ -1,0 +1,14 @@
+# Overview
+
+The USB Device Charger Detection(DCD) function is integrated with this example and based on Battery Charging Specification, the example will print the charger type.
+# Getting Started
+> By default, the USB_DEVICE_CONFIG_DETACH_ENABLE and USB_DEVICE_CONFIG_CHARGER_DETECT is enabled to enable the Device Charger Detection function.
+
+## Hardware Settings
+
+# Run the example
+
+-After step 1,the example will show the following log. the detection type is decided by whether the host is CDP/SDP or DCP.
+<br>
+<br>![DCD Detection Result](dcd_detection.jpg "DCD Detection Result")
+

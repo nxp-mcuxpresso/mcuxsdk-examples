@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ftm_dual_edge_capture:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ftm/dual_edge_capture
+    project-root-path: boards/${board}/driver_examples/ftm/dual_edge_capture/${multicore_foldername}
+    document:
+      name: ftm_dual_edge_capture${core_id_suffix_name}
+      category: driver_examples/ftm
+      brief: The FTM project is a demonstration program of the SDK FTM driver's dual-edge
+        capture feature.This feature is available only on certain SoC's.The example
+        sets up a FTM channel-pair for dual-edge capture. Once the input signal is
+        received,this example will print the capture values and period of the input
+        signal on the terminal window.
+      example_readme:
+      - examples/driver_examples/ftm/dual_edge_capture/readme.md
+      - examples/_boards/${board}/driver_examples/ftm/dual_edge_capture/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmke02z40m: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    lpcxpresso860max: []

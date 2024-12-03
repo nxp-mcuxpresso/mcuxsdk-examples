@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+romapi_otp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/romapi/otp/.
+    project-root-path: boards/${board}/driver_examples/romapi/otp/${multicore_foldername}
+    document:
+      name: romapi_otp${core_id_suffix_name}
+      category: driver_examples/romapi/otp
+      brief: Rom API driver example for OCOTP interface.
+      example_readme:
+      - examples/driver_examples/romapi/otp/readme.md
+      - examples/_boards/${board}/driver_examples/romapi/otp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

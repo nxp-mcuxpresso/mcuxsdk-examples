@@ -1,0 +1,10 @@
+
+mcux_add_macro(
+    CC "-DSDK_I2C_BASED_COMPONENT_USED=1\
+       -DBOARD_USE_PCAL6524=1"
+)
+mcux_add_macro(
+    TOOLCHAINS armgcc iar
+    CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
+       -DPHY_STABILITY_DELAY_US=500000U"
+)

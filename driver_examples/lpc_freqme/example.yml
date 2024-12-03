@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freqme_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_freqme
+    project-root-path: boards/${board}/driver_examples/freqme/${multicore_foldername}
+    document:
+      name: freqme_interrupt${core_id_suffix_name}
+      category: driver_examples/freqme/
+      brief: The freqme_interrupt is a demonstration program of the SDK LPC_FREQME
+        driver's features. The example demostrate the usage of frequency measurement
+        operate mode and pulse width measurement operate mode.
+      example_readme:
+      - examples/driver_examples/lpc_freqme/readme.md
+      - examples/_boards/${board}/driver_examples/freqme/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

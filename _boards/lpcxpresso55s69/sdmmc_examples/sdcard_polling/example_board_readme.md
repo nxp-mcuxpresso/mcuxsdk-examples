@@ -1,0 +1,60 @@
+Hardware requirements
+===================
+- Micro USB cable
+- LPCXpresso55s69 board
+- Personal Computer
+
+Board settings
+============
+Insert the card into card slot
+
+Prepare the Demo
+===============
+Note: MCUXpresso IDE project default debug console is semihost
+1.  Connect a micro USB cable between the PC host and the LPC-Link USB port (P6) on the board.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Reset the SoC and run the project.
+    Note:Do not try to use DATA3 to detect card, the demo board pull up the DATA3 pin, but DATA3 should be pull down when used as card detect pin.
+
+Running the demo
+===============
+When the demo runs successfully, the log would be seen on the terminal like:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SDCARD polling example.
+
+Please insert a card into board.
+
+Card inserted.
+
+Card size 15523840 * 512 bytes
+
+Working condition:
+
+  Voltage : 3.3V
+
+  Timing mode: High Speed
+
+  Freq : 12000000 HZ
+
+Read/Write/Erase the card continuously until encounter error......
+
+Write/read one data block......
+Compare the read/write content......
+The read/write content is consistent.
+Write/read multiple data blocks......
+Compare the read/write content......
+The read/write content is consistent.
+Erase multiple data blocks......
+
+Input 'q' to quit read/write/erase process.                
+Input other char to read/write/erase data blocks again.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

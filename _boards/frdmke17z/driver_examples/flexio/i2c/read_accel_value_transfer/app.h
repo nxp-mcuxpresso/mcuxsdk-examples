@@ -1,0 +1,34 @@
+/*
+ * Copyright (c) 2016, Freescale Semiconductor, Inc.
+ * Copyright 2016-2017 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define BOARD_FLEXIO_BASE      FLEXIO
+#define FLEXIO_CLOCK_FREQUENCY CLOCK_GetIpFreq(kCLOCK_Flexio0)
+
+#define FLEXIO_I2C_SDA_PIN 1U
+#define FLEXIO_I2C_SCL_PIN 4U
+
+/* Accelerometer Reset PIN */
+#define BOARD_ACCEL_RESET_GPIO GPIOB
+#define BOARD_ACCEL_RESET_PIN  9U
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+void BOARD_ACCEL_Reset(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

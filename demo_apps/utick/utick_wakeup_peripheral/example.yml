@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+utick_wakeup_peripheral:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/utick/utick_wakeup_peripheral
+    project-root-path: boards/${board}/demo_apps/utick_wakeup_peripheral/${multicore_foldername}
+    document:
+      name: utick_wakeup_peripheral${core_id_suffix_name}
+      category: demo_apps
+      brief: 'The purpose of this demo is to show wakeup from deep sleep mode using
+        MicroTick timer.The demo sets the MicroTick Timer as a wake up source and
+        puts the device in deep-sleep mode. The MicroTick timer wakes up the device. '
+      example_readme:
+      - examples/demo_apps/utick/utick_wakeup_peripheral/readme.md
+      - examples/_boards/${board}/demo_apps/utick_wakeup_peripheral/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []

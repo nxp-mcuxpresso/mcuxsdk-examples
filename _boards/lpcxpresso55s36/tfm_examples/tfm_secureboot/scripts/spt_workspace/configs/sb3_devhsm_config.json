@@ -1,0 +1,51 @@
+{
+    "family": "lpc55s3x",
+    "description": "LPC55S36 SB3",
+    "commands": [
+        {
+            "load": {
+                "address": "0x0003E200",
+                "file": "configs/cmpa.bin"
+            }
+        },
+        {
+            "fillMemory": {
+                "address": "0x2000BF00",
+                "pattern": "0x50000000",
+                "size": "4"
+            }
+        },
+        {
+            "fillMemory": {
+                "address": "0x2000BF04",
+                "pattern": "0x00000000",
+                "size": "4"
+            }
+        },
+        {
+            "fillMemory": {
+                "address": "0x2000BF08",
+                "pattern": "0x00038000",
+                "size": "4"
+            }
+        },
+        {
+            "configureMemory": {
+                "configAddress": "0x2000BF00",
+                "memoryId": "0"
+            }
+        },
+        {
+            "erase": {
+                "address": "0x10000000",
+                "size": "0x00038000"
+            }
+        },
+        {
+            "load": {
+                "address": "0x10000000",
+                "file": "../bootable_images/tfm_secureboot.bin"
+            }
+        }
+    ],
+}

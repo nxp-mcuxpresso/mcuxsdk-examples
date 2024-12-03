@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+trng_random:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/trng/random
+    project-root-path: boards/${board}/driver_examples/trng/random/${multicore_foldername}
+    document:
+      name: trng_random${core_id_suffix_name}
+      category: driver_examples/trng
+      brief: The True Random Number Generator (TRNG) is a hardware accelerator module
+        that generates a 512-bitentropy as needed by an entropy consuming module or
+        by other post processing functions. The TRNGExample project is a demonstration
+        program that uses the KSDK software to generate random numbersand prints them
+        to the terminal.
+      example_readme:
+      - examples/driver_examples/trng/random/readme.md
+      - examples/_boards/${board}/driver_examples/trng/random/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmrw612:
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release
+    mimxrt685audevk@cm33: []
+    rdrw612bga:
+    - -mdk@debug
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    - -mdk@release
+    mimxrt700evk@cm33_core0: []

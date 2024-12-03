@@ -1,0 +1,13 @@
+initialization_file:
+  files:
+  - attribute: initialization_file
+    source: examples/_boards/lpcxpresso54s018m/jlink_sramx_debug.ini
+    targets: debug release
+    toolchains: mdk
+macro-file:
+  files:
+  - attribute: macro-file
+    choose: false
+    source: examples/_boards/lpcxpresso54s018m/jlink_qspi_plain_load.mac
+    targets: debug release
+    toolchains: iar

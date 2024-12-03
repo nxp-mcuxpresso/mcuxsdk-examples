@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+aes:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/aes
+    project-root-path: boards/${board}/driver_examples/aes/${multicore_foldername}
+    document:
+      name: aes${core_id_suffix_name}
+      category: driver_examples/aes
+      brief: The AES Example project is a demonstration program that uses the KSDK
+        software to encrypt plain textand decrypt it back using AES algorithm. CBC
+        and GCM modes are demonstrated.
+      example_readme:
+      - examples/driver_examples/aes/readme.md
+      - examples/_boards/${board}/driver_examples/aes/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
