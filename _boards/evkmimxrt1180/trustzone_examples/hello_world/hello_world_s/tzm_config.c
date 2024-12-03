@@ -29,7 +29,7 @@ toolOptions:
  **********************************************************************************************************************/
 #include "fsl_common.h"
 #include "tzm_config.h"
-#include "fsl_ele_base_api.h"
+#include "board.h"
 
 /***********************************************************************************************************************
  * Definitions
@@ -60,26 +60,6 @@ toolOptions:
 #define SAU_REGION_3_END 0x204FFFFFU
 #define SAU_REGION_4_BASE 0x28800000U
 #define SAU_REGION_4_END 0x28FFFFFFU
-#endif
-
-#define ELE_TRDC_AON_ID    0x74
-#define ELE_TRDC_WAKEUP_ID 0x78
-#define ELE_TRDC_MEGA_ID   0x82
-#define ELE_CORE_CM33_ID   0x1
-#define ELE_CORE_CM7_ID    0x2
-
-/*
- * Set ELE_STICK_FAILED_STS to 0 when ELE status check is not required,
- * which is useful when debug reset, where the core has already get the
- * TRDC ownership at first time and ELE is not able to release TRDC
- * ownership again for the following TRDC ownership request.
- */
-#define ELE_STICK_FAILED_STS 1
-
-#if ELE_STICK_FAILED_STS
-#define ELE_IS_FAILED(x) (x != kStatus_Success)
-#else
-#define ELE_IS_FAILED(x) false
 #endif
 
 /* clang-format off */
@@ -3766,31 +3746,7 @@ void BOARD_InitTRDC()
  **********************************************************************************************************************/
 void BOARD_InitTrustZone()
 {
-    status_t sts;
-    /* Get ELE FW status */
-    do
-    {
-        uint32_t ele_fw_sts;
-        sts = ELE_BaseAPI_GetFwStatus(MU_RT_S3MUA, &ele_fw_sts);
-    } while (sts != kStatus_Success);
-
-    /* Release TRDC A to CM33 core */
-    do
-    {
-        sts = ELE_BaseAPI_ReleaseRDC(MU_RT_S3MUA, ELE_TRDC_AON_ID, ELE_CORE_CM33_ID);
-    } while (ELE_IS_FAILED(sts));
-
-    /* Release TRDC M to CM33 core */
-    do
-    {
-        sts = ELE_BaseAPI_ReleaseRDC(MU_RT_S3MUA, ELE_TRDC_MEGA_ID, ELE_CORE_CM33_ID);
-    } while (ELE_IS_FAILED(sts));
-
-    /* Release TRDC W to CM33 core */
-    do
-    {
-        sts = ELE_BaseAPI_ReleaseRDC(MU_RT_S3MUA, ELE_TRDC_WAKEUP_ID, ELE_CORE_CM33_ID);
-    } while (ELE_IS_FAILED(sts));
+    BOARD_RequestTRDC(true, true, true);
 
     BOARD_InitTEE();
 }
