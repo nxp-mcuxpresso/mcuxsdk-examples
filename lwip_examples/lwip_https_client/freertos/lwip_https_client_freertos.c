@@ -48,7 +48,7 @@
 
 #ifndef EXAMPLE_HOST
 /*! @brief Host name of the HTTPS server to download data from. */
-#define EXAMPLE_HOST "http.minori.work"
+#define EXAMPLE_HOST "httpbin.org"
 #endif /* EXAMPLE_HOST */
 
 #ifndef EXAMPLE_PORT

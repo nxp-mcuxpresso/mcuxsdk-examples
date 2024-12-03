@@ -1,4 +1,6 @@
 # Add additional configuration
 mcux_add_macro(
-    CC "-DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\""
+    TOOLCHAINS iar mdk armgcc mcux
+    CC "-DMBEDTLS_SSL_CIPHERSUITES=MBEDTLS_TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,MBEDTLS_TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,MBEDTLS_TLS_RSA_WITH_AES_256_GCM_SHA384\
+        -DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\""
 )
