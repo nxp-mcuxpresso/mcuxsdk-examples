@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lwip_httpssrv_mbedTLS_enet_qos_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/lwip_examples/lwip_httpssrv_mbedTLS_enet_qos/freertos/.
+    project-root-path: boards/${board}/lwip_examples/lwip_httpssrv_mbedTLS_enet_qos/freertos/${multicore_foldername}
+    document:
+      name: lwip_httpssrv_mbedTLS_enet_qos_freertos${core_id_suffix_name}
+      category: lwip_examples
+      brief: The lwip_httpsrv_mbedTLS demo application demonstrates an HTTPServer
+        set up on lwIP TCP/IP and the MbedTLS stack withFreeRTOS. The user uses an
+        Internet browser to send an https request for connection. The board acts as
+        an HTTP serverand sends a Web page back to the PC.
+      example_readme:
+      - examples/lwip_examples/lwip_httpssrv_mbedTLS_enet_qos/freertos/readme.md
+      - examples/_boards/${board}/lwip_examples/lwip_httpssrv_mbedTLS_enet_qos/freertos/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

@@ -1,0 +1,35 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- LPCXpresso54628 board
+- Personal Computer
+
+Board settings
+============
+No special settings are required.
+
+Prepare the Demo
+===============
+1.  Connect a micro USB cable between the host PC and the LPC-Link USB port (J8) on the target board.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+The log below shows example output of the SCTimer multi-state demo in the terminal window:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SCTimer example to output edge-aligned PWM signal
+
+When user presses a switch the PWM signal will be seen from Out 2
+When user presses the switch again PWM signal on Out 2 will turn off
+The PWM signal from Out 4 will remain active all the time
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Use a Digital osc probe on J13_5(Out 4) and J13_16(Out 2) to watch the PWM.
+- When press sw2 the PWM signal will be seen from J13_16.
+- When press sw2 again the PWM signal will turn off from J13_16. 

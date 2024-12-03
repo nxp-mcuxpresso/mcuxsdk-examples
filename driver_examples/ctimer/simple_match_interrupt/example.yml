@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ctimer_match_interrupt_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ctimer/simple_match_interrupt
+    project-root-path: boards/${board}/driver_examples/ctimer/simple_match_interrupt/${multicore_foldername}
+    document:
+      name: ctimer_match_interrupt_example${core_id_suffix_name}
+      category: driver_examples/ctimer
+      brief: The Simple Match Interrupt project is to demonstrate usage of the SDK
+        CTimer driver with interrupt callback functionsIn this example the upon match
+        and IO pin connected to the LED is toggled and the timer is reset, so it would
+        generate a square wave.With an interrupt callback the match value is changed
+        frequently in such a way that the frequency of the output square wave is increased
+        gradually.
+      example_readme:
+      - examples/driver_examples/ctimer/simple_match_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/ctimer/simple_match_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso845max: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []

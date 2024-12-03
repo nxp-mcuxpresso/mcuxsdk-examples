@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+asrc_m2m_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/asrc/asrc_m2m_interrupt
+    project-root-path: boards/${board}/driver_examples/asrc/asrc_m2m_interrupt/${multicore_foldername}
+    document:
+      name: asrc_m2m_interrupt${core_id_suffix_name}
+      category: driver_examples/asrc
+      brief: The asrc_m2m_interrupt example shows how to use asrc driver with interrupt:In
+        this example, one sai instance playbacks the audio data conveted by asrc.
+      example_readme:
+      - examples/driver_examples/asrc/asrc_m2m_interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/asrc/asrc_m2m_interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm7: []

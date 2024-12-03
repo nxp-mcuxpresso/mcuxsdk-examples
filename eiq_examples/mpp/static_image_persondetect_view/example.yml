@@ -1,0 +1,38 @@
+static_image_persondetect_view:
+  section-type: application
+  contents:
+    meta_path: examples/eiq_examples/mpp/static_image_persondetect_view
+    project-root-path: boards/${board}/eiq_examples/mpp/static_image_persondetect_view
+    document:
+      name: static_image_persondetect_view
+      category: eiq_examples
+      brief: Vision Pipeline example using Fastestdet model
+      example_readme:
+      - examples/eiq_examples/mpp/static_image_persondetect_view/static_image_persondetect_view.readme
+      - middleware/eiq/mpp/${board}/board.readme
+      - middleware/eiq/mpp/README.md
+    configuration:
+      tools:
+        __common__:
+          config:
+            __common__:
+              cc-define:
+                HAL_LOG_LEVEL: 0 
+              cx-define:
+                HAL_LOG_LEVEL: 0 
+        mcux:
+          ignore: true
+  boards:
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - +armgcc@flash_debug
+    - +armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release

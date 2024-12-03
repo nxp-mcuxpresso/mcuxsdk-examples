@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ota_mcuboot_basic_psa:
+  section-type: application
+  contents:
+    meta_path: examples/ota_examples/ota_mcuboot_basic_psa
+    project-root-path: boards/${board}/ota_examples/ota_mcuboot_basic_psa/${multicore_foldername}
+    document:
+      name: ota_mcuboot_basic_psa${core_id_suffix_name}
+      category: ota_examples
+      brief: This projects gives an example of a basic application bootable by MCUBoot
+        using PSA API
+      example_readme:
+      - examples/ota_examples/ota_mcuboot_basic_psa/readme.md
+      - examples/_boards/${board}/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

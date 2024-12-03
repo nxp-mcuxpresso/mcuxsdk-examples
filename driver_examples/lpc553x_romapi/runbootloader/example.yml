@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+niobe4analog_runbootloader:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc553x_romapi/runbootloader
+    project-root-path: boards/${board}/driver_examples/runbootloader/${multicore_foldername}
+    document:
+      name: niobe4analog_runbootloader${core_id_suffix_name}
+      category: driver_examples
+      brief: The runbootloader project is a simple demonstration which run into the
+        bootloader with the user parameter. The demo forces the device run into the
+        ISP mode with the specific peripheral.
+      example_readme:
+      - examples/driver_examples/lpc553x_romapi/runbootloader/readme.md
+      - examples/_boards/${board}/driver_examples/runbootloader/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []

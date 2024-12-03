@@ -1,0 +1,15 @@
+# lpspi_3wire_edma_transfer_slave
+
+## Overview
+The lpspi_3wire_edma_transfer example shows how to use LPSPI's 3-wire mode in edma way:
+
+In this example , we need two boards, one board used as LPSPI master and another board used as LPSPI slave.
+The file 'lpspi_3wire_edma_transfer_slave.c' includes the LPSPI slave code.
+
+1. LPSPI master send/received data to/from LPSPI slave in edma . (LPSPI Slave using edma to receive/send the data)
+2. LPSPI master will use SOUT pin as input/output pin, and slave will use SIN pin as input/output pin.
+
+## Supported Boards
+- [FRDM-KE15Z](../../../../../_boards/frdmke15z/driver_examples/lpspi/3wire_transfer/edma_transfer/slave/example_board_readme.md)
+- [FRDM-KE17Z](../../../../../_boards/frdmke17z/driver_examples/lpspi/3wire_transfer/edma_transfer/slave/example_board_readme.md)
+- [FRDM-KE17Z512](../../../../../_boards/frdmke17z512/driver_examples/lpspi/3wire_transfer/edma_transfer/slave/example_board_readme.md)

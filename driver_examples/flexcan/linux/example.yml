@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexcan_linux:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/linux
+    project-root-path: boards/${board}/driver_examples/flexcan/linux/${multicore_foldername}
+    document:
+      name: flexcan_linux${core_id_suffix_name}
+      category: driver_examples/flexcan
+      brief: The flexcan_linux example shows how to use FlexCAN driver in none-blocking
+        interrupt way, communicating with another FlexCAN from LINUX
+      example_readme:
+      - examples/driver_examples/flexcan/linux/readme.md
+      - examples/_boards/${board}/driver_examples/flexcan/linux/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx95lpd5evk19@cm7: []

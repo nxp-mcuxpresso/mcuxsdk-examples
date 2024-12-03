@@ -1,0 +1,20 @@
+dsc_edma_scatter_gather:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_edma/scatter_gather
+    project-root-path: boards/${board}/driver_examples/edma/scatter_gather/${multicore_foldername}
+    document:
+      name: dsc_edma_scatter_gather${core_id_suffix_name}
+      category: driver_examples/edma
+      brief: The EDMA memory to memory example is a simple demonstration program that
+        uses the SDK software.It excuates one shot transfer from source buffer to
+        destination buffer using the SDK EDMA drivers.The purpose of this example
+        is to show how to use the EDMA and to provide a simple example fordebugging
+        and further development.
+      example_readme:
+      - examples/driver_examples/dsc_edma/scatter_gather/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []

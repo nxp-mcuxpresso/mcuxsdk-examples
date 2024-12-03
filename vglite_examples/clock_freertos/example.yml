@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+clock_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/vglite_examples/clock_freertos
+    project-root-path: boards/${board}/vglite_examples/clock_freertos/${core_id}
+    document:
+      name: clock_freertos${core_id_suffix_name}
+      category: vglite_examples
+      brief: This example shows how to use the vglite component. This application
+        draws a clock on the screen.
+      example_readme:
+      - examples/vglite_examples/clock_freertos/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: null

@@ -1,0 +1,26 @@
+dsp_audio_demo_bm:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/audio_demo_bm/dsp
+    project-root-path: boards/${board}/dsp_examples/audio_demo_bm/${core_id}
+    document:
+      name: dsp_audio_demo_bm${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_audio_demo_bm demo application demonstrates starting DSP core
+        with DSP image.
+      example_readme:
+      - examples/dsp_examples/audio_demo_bm/dsp/readme.md
+      - examples/_boards/${board}/dsp_examples/audio_demo_bm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@fusionf1:
+    - +xtensa@debug
+    - +xtensa@release
+    evkmimxrt685@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
+    mimxrt685audevk@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
+    mimxrt700evk@hifi4: []

@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+hello_world_hybrid:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/hello_world_hybrid
+    project-root-path: boards/${board}/demo_apps/hello_world_hybrid/${multicore_foldername}
+    document:
+      name: hello_world_hybrid${core_id_suffix_name}
+      category: demo_apps
+      brief: The HelloWorldHybrid demo prints the "hello world" string to the terminal
+        using the SDK UART drivers and repeat what user input. The purpose of this
+        demo is to show how to boot from the external flash into the internal SRAM
+        and the remaining code that resides in the flash is fetched/executed directly(XIP).
+      example_readme:
+      - examples/demo_apps/hello_world_hybrid/readme.md
+      - examples/_boards/${board}/demo_apps/hello_world_hybrid/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    evkmimxrt685@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    mimxrt685audevk@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release

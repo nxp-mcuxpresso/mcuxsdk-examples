@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+littlefs_shell_onchip_flash:
+  section-type: application
+  contents:
+    meta_path: examples/littlefs_examples/littlefs_shell_onchip_flash
+    project-root-path: boards/${board}/littlefs_examples/littlefs_shell_onchip_flash/${multicore_foldername}
+    document:
+      name: littlefs_shell_onchip_flash${core_id_suffix_name}
+      category: littlefs_examples
+      brief: Demonstrates littlefs functionality by commands executed from shell.
+      example_readme:
+      - examples/littlefs_examples/littlefs_shell_onchip_flash/readme.md
+      - examples/_boards/${board}/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+power_manager_test_bm_dualcore_secondary:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_manager_test/bm_dualcore/secondary
+    project-root-path: boards/${board}/demo_apps/power_manager_test/bm/${multicore_foldername}
+    document:
+      name: power_manager_test_bm_dualcore_secondary
+      category: demo_apps
+      brief: The power manager test application demonstrates the basic usage of power
+        manager framework without RTOS. The demo tests all features of power manager
+        framework, including notification manager, wakeup source manager and so on.
+      example_readme:
+      - examples/demo_apps/power_manager_test/bm_dualcore/readme.md
+      - examples/_boards/${board}/demo_apps/power_manager_test/bm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core1: []

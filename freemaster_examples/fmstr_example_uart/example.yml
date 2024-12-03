@@ -1,0 +1,242 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+fmstr_example_uart:
+  section-type: application
+  contents:
+    document:
+      brief: FreeMASTER example using Serial-UART communication with the target microcontroller.
+        This example application demonstrates use of FreeMASTER tool to visualize
+        internal variables and to control the application flow by modifying variables.
+        The application also shows use of advanced FreeMASTER features like TSA tables
+        and Pipes.
+      category: FreeMASTER_examples
+      example_readme:
+      - examples/freemaster_examples/fmstr_example_uart/readme.md
+      - examples/_boards/${board}/freemaster_examples/fmstr_uart/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      name: fmstr_example_uart${core_id_suffix_name}
+    meta_path: examples/freemaster_examples/fmstr_example_uart
+    project-root-path: boards/${board}/freemaster_examples/fmstr_uart/${multicore_foldername}
+  boards:
+    evkbimxrt1050:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkbmimxrt1060:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkbmimxrt1170@cm4:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkcmimxrt1060:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1024:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1040:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1064:
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1160@cm4:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1160@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +armgcc@sdram_txt_debug
+    - +armgcc@sdram_txt_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +iar@sdram_txt_debug
+    - +iar@sdram_txt_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - +mdk@sdram_txt_debug
+    - +mdk@sdram_txt_release
+    evkmimxrt1180@cm33:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +armgcc@hyperram_txt_debug
+    - +armgcc@hyperram_txt_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +iar@hyperram_txt_debug
+    - +iar@hyperram_txt_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
+    - +mdk@hyperram_txt_debug
+    - +mdk@hyperram_txt_release
+    evkmimxrt1180@cm7:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    frdmrw612: []
+    kw47evk@cm33_core0: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []
+    rdrw612bga: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []
+    twrmc56f8200: []
+    twrmc56f8400: []

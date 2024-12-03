@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+wdog:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/wdog
+    project-root-path: boards/${board}/driver_examples/wdog/${multicore_foldername}
+    document:
+      name: wdog${core_id_suffix_name}
+      category: driver_examples/wdog
+      brief: The WDOG Example project is to demonstrate usage of the KSDK wdog driver.In
+        this example,quick test is first implemented to test the wdog.And then after
+        10 times of refreshing the watchdog in None-window mode, a timeout reset is
+        generated.We also try to refresh out of window to trigger reset after 10 times
+        of refreshing in Window mode.
+      example_readme:
+      - examples/driver_examples/wdog/readme.md
+      - examples/_boards/${board}/driver_examples/wdog/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

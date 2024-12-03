@@ -1,0 +1,51 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.display-rm68200
+    select MCUX_COMPONENT_driver.display-rm68191
+    select MCUX_COMPONENT_driver.display-hx8394
+    select MCUX_COMPONENT_driver.display-rm67162
+    select MCUX_COMPONENT_driver.dc-fb-lcdif
+    select MCUX_COMPONENT_driver.dc-fb-dsi-cmd
+    select MCUX_COMPONENT_driver.dc-fb-ssd1963
+    select MCUX_COMPONENT_driver.mipi_dsi_smartdma
+    select MCUX_COMPONENT_driver.flexio_mculcd_smartdma
+
+if MCUX_PRJSEG_module.board.display_support
+
+    config DEMO_PANEL
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5
+        default 1 if MCUX_PRJSEG_module.board.display_support.RK055AHD091
+        default 2 if MCUX_PRJSEG_module.board.display_support.RK055IQH091
+        default 3 if MCUX_PRJSEG_module.board.display_support.G1120B0MIPI
+        default 4 if MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+        help
+            Panel selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.panel
+        prompt "Panel Selection"
+        default MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+
+        config MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5
+            bool "MikroE TFT Proto 5 inch CAPACITIVE"
+
+        config MCUX_PRJSEG_module.board.display_support.RK055AHD091
+            bool "RK055AHD091-CTG"
+
+        config MCUX_PRJSEG_module.board.display_support.RK055IQH091
+            bool "RK055IQH091-CTG"
+
+        config MCUX_PRJSEG_module.board.display_support.G1120B0MIPI
+            bool "MIPI Circular Display"
+
+        config MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+            bool "RK055MHD091A0-CTG"
+
+    endchoice
+endif

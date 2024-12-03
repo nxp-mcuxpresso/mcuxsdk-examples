@@ -1,0 +1,8 @@
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/evkmimxrt1010_ram.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+    package_path: boards/evkmimxrt1010/freertos_driver_examples/freertos_lpspi_b2b/slave/./mdk
+    project_path: evkmimxrt1010

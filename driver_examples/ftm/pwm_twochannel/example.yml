@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ftm_pwm_twochannel:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ftm/pwm_twochannel
+    project-root-path: boards/${board}/driver_examples/ftm/pwm_twochannel/${multicore_foldername}
+    document:
+      name: ftm_pwm_twochannel${core_id_suffix_name}
+      category: driver_examples/ftm
+      brief: The FTM pwm two channel Example project is a demonstration program that
+        uses the KSDK software to generate a square pulse PWM on 2 channel to control
+        the LED brightness.- FTM generates a PWM with the increasing and decreasing
+        duty cycle.- LED brightness is increasing and then dimming. This is a continuous
+        process.
+      example_readme:
+      - examples/driver_examples/ftm/pwm_twochannel/readme.md
+      - examples/_boards/${board}/driver_examples/ftm/pwm_twochannel/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmke02z40m: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    lpcxpresso860max: []

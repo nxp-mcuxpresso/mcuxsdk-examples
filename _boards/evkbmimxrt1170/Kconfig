@@ -1,0 +1,30 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "${core_id}/Kconfig"
+rsource "Kconfig.defconfig"
+rsource "../../_common/project_segments/display_support/Kconfig.prjseg"
+rsource "../../_common/project_segments/vglite_support/Kconfig.prjseg"
+rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
+rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/rt11xx/Kconfig.lvgl_support"
+
+config MCUX_HW_BOARD_evkbmimxrt1170
+    bool
+    default y
+    imply MCUX_HW_DEVICE_MIMXRT1176
+
+    imply MCUX_COMPONENT_driver.clock
+    imply MCUX_COMPONENT_driver.igpio
+    imply MCUX_COMPONENT_driver.iomuxc
+    imply MCUX_COMPONENT_driver.anatop_ai
+    imply MCUX_COMPONENT_driver.memory
+    imply MCUX_COMPONENT_driver.dcdc_2
+    imply MCUX_COMPONENT_driver.gpc_xxx_ctrl
+    imply MCUX_COMPONENT_driver.pgmc
+    imply MCUX_COMPONENT_driver.anadig_pmu
+    imply MCUX_COMPONENT_driver.src_2
+    select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_component.serial_manager_uart
+    select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_utility.debug_console_lite

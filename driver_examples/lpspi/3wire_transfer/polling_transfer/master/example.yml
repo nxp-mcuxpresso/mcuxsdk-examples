@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+lpspi_3wire_polling_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpspi/3wire_transfer/polling_transfer/master
+    project-root-path: boards/${board}/driver_examples/lpspi/3wire_transfer/polling_transfer/master/${multicore_foldername}
+    document:
+      name: lpspi_3wire_polling_transfer_master${core_id_suffix_name}
+      category: driver_examples/lpspi
+      brief: The lpspi_3wire_polling_transfer example shows how to use LPSPI's 3-wire
+        mode in polling way:In this example , we need two boards, one board used as
+        LPSPI master and another board used as LPSPI slave.The file 'lpspi_3wire_polling_transfer_master.c'
+        includes the LPSPI master code.1. LPSPI master send/received data to/from
+        LPSPI slave in polling . (LPSPI Slave using interrupt to receive/send the
+        data)2. LPSPI master will use SOUT pin as input/output pin, and slave will
+        use SIN pin as input/output pin.
+      example_readme:
+      - examples/driver_examples/lpspi/3wire_transfer/polling_transfer/master/readme.md
+      - examples/_boards/${board}/driver_examples/lpspi/3wire_transfer/polling_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    frdmke15z: []
+    frdmke17z: []
+    frdmke17z512: []

@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+voice_spot_demo:
+  section-type: application
+  contents:
+    meta_path: examples/audio_examples/voice_spot_demo/.
+    project-root-path: boards/${board}/audio_examples/voice_spot_demo/${multicore_foldername}
+    document:
+      name: voice_spot_demo${core_id_suffix_name}
+      category: audio_examples
+      brief: Audio voice_spot_demo example.
+      example_readme:
+      - examples/audio_examples/voice_spot_demo/readme.md
+      - examples/_boards/${board}/audio_examples/voice_spot_demo/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@debug
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -iar@release

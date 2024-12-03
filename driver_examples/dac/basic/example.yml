@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dac_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dac/basic
+    project-root-path: boards/${board}/driver_examples/dac/basic/${multicore_foldername}
+    document:
+      name: dac_basic${core_id_suffix_name}
+      category: driver_examples/dac
+      brief: The dac_basic example shows how to use DAC module simply as the general
+        DAC converter.When the DAC's buffer feature is not enabled, the first item
+        of the buffer is used as the DAC output data register.The converter would
+        always output the value of the first item. In this example, it gets the value
+        from terminal,outputs the DAC output voltage through DAC output pin.
+      example_readme:
+      - examples/driver_examples/dac/basic/readme.md
+      - examples/_boards/${board}/driver_examples/dac/basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmmcxc444: []

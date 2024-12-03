@@ -1,0 +1,96 @@
+Hardware requirements
+=====================
+- Mini/micro USB cable
+- LPCXpresso55s69 board
+- Personal Computer
+- CMWC1ZZABR-107-EVB by muRata
+- OM- SE050ARD or OM- SE051ARD
+
+Board settings
+==============
+Jumper settings for OM- SE050ARD & OM- SE051ARD:
+    -J14 3-4 (Default): EdgeLock SE05x_VCC pin routed to SE05X_VOUT pin
+    -J15 3-4 (Default): I2C target SDA connection
+    -J17 3-4 (Default): I2C target SCL connection
+
+Prerequisites
+==============
+- Active IBM Watson account
+- The Plug & Trust MW package can be downloaded from
+https://www.nxp.com/products/security-and-authentication/authentication/edgelock-se050-plug-and-trust-secure-element-family-enhanced-iot-security-with-high-flexibility:SE050#design-resources
+- Any Serial communicator
+- Flash VCOM binary on the device. VCOM binary se05x_vcom-T1oI2C-<board>.bin can found in Plug & Trust MW package :simw-top\binaries\MCU folder.
+
+Creating and updating device keys and certificates to SE
+=========================================================
+
+1. Check the vcom port number
+2. Go to the EdgeLock SE05x Plug & Trust middleware ..\simw-top\binaries\PCWindows\ssscli folder and call:
+   
+    Provision_IBM.exe <COMxx>
+    note: 
+    <COMxx> is detected vcom port
+3. Certificates and Keys are generated at `simw-top/binaries/PCWindows/ssscli/ibm`
+
+Setting up IBM Watson IoT Platform
+=========================================
+
+1. Create an IBM ID which enables you to create an service instance for
+   the Watson IoT platform (https://idaas.iam.ibm.com/idaas/mtfim/sps/authsvc?PolicyId=urn:ibm:security:authentication:asf:basicldapuser)
+
+2.  Create an instance of Internet of Things Platform in the Watson IoT after logging in.
+3.  Register the Root CA certificate (and Intermediate CA certificates if applicable) by following the below link
+    https://console.bluemix.net/docs/services/IoT/reference/security/set_up_certificates.html#set_up_certificates
+
+     Click on 'Launch' button to access to the IoT dashboard
+     Click on 'Settings' tab
+     Click on 'CA Certificates'
+     Click on 'Add Certificate'
+     A new pop-up appears. Click on 'Select a file' option and select the certificate
+     Click on 'Save'
+
+4.  Configure the security policies of the service by following steps
+
+     Click on 'Security' tab
+     Click on the pencil of 'Connection Security' to edit the preferences
+     A new window is loaded, 'Connection Security'. In the Security Level field, select 'TLS with Client Certificate Authentication'.
+     click on 'Save'
+
+5.  Register Device type
+
+     In the service, Click on 'Devices' tab and 'Device Types'
+     Click on 'Add device type.
+     Select the 'Device' type and write a name. Device type shall be registered
+       as 'NXP-SE050-EC-D' and Optionally, add a description.
+     Click 'Next'
+     Optionally, add information to the rest of the fields.
+       In this guide all the fields have been intentionally left empty. Finally, click 'Done'.
+     For more information, refer to https://console.bluemix.net/docs/services/IoT/
+       iotplatform_task.html#iotplatform_task
+
+6.  Register device
+
+     Click on 'Devices' tab.
+     Click on 'Add Device'
+     In the 'Identity' tab, select as 'Device Type' the one created in 'Register Device type' and
+       the 'Device ID' the one retrieved using the pycli tool (UID of the device)
+     Click on 'Next' button
+     Click Done button to create the device
+
+7.  Configure the application.
+
+     In the '<PROJECT>\source\ibm_watson_iot_config.h' file, update the org details in the macro
+       "WATSONIOT_MQTT_BROKER_ENDPOINT" which we get from the URL of the dashboard
+       https://org_id.internetofthings.ibmcloud.com/dashboard/#/overview
+     update the org details and UID of the device in the macro 'WatsonechoCLIENT_ID'
+       which is available in 'ibm_watson_iot_config.h'
+
+Running the Demo
+================
+
+1. In the '<PROJECT>\source\ibm_watson_iot_config.h' file, update the org details in the macro "WATSONIOT_MQTT_BROKER_ENDPOINT" which we get from the URL of the dashboard
+   https://org_id.internetofthings.ibmcloud.com/dashboard/#/overview
+2. Update the org details and UID of the device in the macro 'WatsonechoCLIENT_ID' which is available in 'watson_iot_config.h'
+3. Connect your board to open network
+4. Update ``clientcredentialWIFI_SSID`` and ``clientcredentialWIFI_PASSWORD`` in ``<PROJECT>\se_hostlib\demos\ksdk\common\wifi_config.h`` with your wifi credentials.
+5. Build the project and flash the binary on board.

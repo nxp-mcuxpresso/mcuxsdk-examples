@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+hello_world_secondary_core_boot_primary_core:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/hello_world_secondary_core_boot/primary_core
+    project-root-path: boards/${board}/demo_apps/hello_world_secondary_core_boot/${multicore_foldername}
+    document:
+      name: hello_world_secondary_core_boot_primary_core${core_id_suffix_name}
+      category: demo_apps
+      brief: The hello_world_secondary_core_boot demo use cm7 core to wake up cm4
+        core to prints the "Hello World" string to the terminal on dual XIP way(CM7
+        core boot from flash, then wake up cm4 core, boot cm4 image from flash address).
+        Case shows how to make CM4 core available from flash boot on the default CM7
+        boot chip, so that users can run cm4 code stored in flash using POR way.
+      example_readme:
+      - examples/demo_apps/hello_world_secondary_core_boot/readme.md
+      - examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

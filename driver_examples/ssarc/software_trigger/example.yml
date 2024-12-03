@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ssarc_software_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ssarc/software_trigger
+    project-root-path: boards/${board}/driver_examples/ssarc/software_trigger/${multicore_foldername}
+    document:
+      name: ssarc_software_trigger${core_id_suffix_name}
+      category: driver_examples/ssarc
+      brief: The ssarc_software_trigger project is a simple demonstration program
+        of the SDK SSARC driver. It save the memory contains and restore the memory
+        contains based on software method.
+      example_readme:
+      - examples/driver_examples/ssarc/software_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/ssarc/software_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

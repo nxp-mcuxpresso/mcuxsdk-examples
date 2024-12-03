@@ -1,0 +1,23 @@
+dev_audio_speaker_lpc_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_audio_speaker_lpc/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_device_audio_speaker_lpc/freertos/${multicore_foldername}
+    document:
+      name: dev_audio_speaker_lpc_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB Audio Speaker application is a simple demonstration program based
+        on the MCUXpresso SDK. It is enumerated as a playback device and users can
+        play music using the device.
+      example_readme:
+      - examples/usb_examples/usb_device_audio_speaker_lpc/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_audio_speaker_lpc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_audio_speaker_lpc/usb_device_audio_speaker_change_level.jpg
+      - examples/usb_examples/usb_device_audio_speaker_lpc/usb_device_audio_speaker_right_click_icon.jpg
+      - examples/usb_examples/usb_device_audio_speaker_lpc/usb_device_audio_speaker_select_properties.jpg
+      - examples/usb_examples/usb_device_audio_speaker_lpc/usb_device_audio_speaker_set_default.jpg
+  boards:
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

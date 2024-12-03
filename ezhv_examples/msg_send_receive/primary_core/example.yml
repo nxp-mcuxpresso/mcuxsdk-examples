@@ -1,0 +1,16 @@
+ezhv_msg_send_receive_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/msg_send_receive/primary_core
+    project-root-path: boards/${board}/ezhv_examples/msg_send_receive/${multicore_foldername}
+    document:
+      name: ezhv_msg_send_receive_primary_core
+      category: ezhv_examples
+      brief: This project shows how to use EZHV message send and receive feature with event manager.
+      example_readme:
+      - examples/ezhv_examples/msg_send_receive/readme.md
+      - examples/_boards/${board}/ezhv_examples/msg_send_receive/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

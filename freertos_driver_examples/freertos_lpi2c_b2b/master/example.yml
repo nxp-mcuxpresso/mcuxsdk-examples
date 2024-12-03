@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_lpi2c_b2b_master:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_lpi2c_b2b/master
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_lpi2c_b2b/master/${multicore_foldername}
+    document:
+      name: freertos_lpi2c_b2b_master${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The freertos_lpi2c_b2b_master example project is a demonstration program
+        that uses the MCUXpresso SDK software to manipulate the Low Power Inter-Integrated
+        Circuit.The example uses two instances of LPI2C, one in configured as master
+        and the other one as slave.The LPI2C master sends data to LPI2C slave. The
+        slave will check the data it receives and shows the log.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_lpi2c_b2b/master/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_lpi2c_b2b/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []

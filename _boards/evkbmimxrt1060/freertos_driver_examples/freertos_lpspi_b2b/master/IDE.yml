@@ -1,0 +1,44 @@
+macro-file:
+  files:
+  - source: examples/_boards/${board}/evkbmimxrt1060.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: debug release
+    choose: true
+    package_path: boards/evkbmimxrt1060/freertos_driver_examples/freertos_lpspi_b2b/master/./iar
+    project_path: evkbmimxrt1060
+  - source: examples/_boards/${board}/evkbmimxrt1060_sdram_init.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: sdram_debug sdram_release
+    choose: true
+    package_path: boards/evkbmimxrt1060/freertos_driver_examples/freertos_lpspi_b2b/master/./iar
+    project_path: evkbmimxrt1060
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/evkbmimxrt1060_ram.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+    package_path: boards/evkbmimxrt1060/freertos_driver_examples/freertos_lpspi_b2b/master/./mdk
+    project_path: evkbmimxrt1060
+  - source: examples/_boards/${board}/evkbmimxrt1060_sdram_init.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: sdram_debug sdram_release
+    package_path: boards/evkbmimxrt1060/freertos_driver_examples/freertos_lpspi_b2b/master/./mdk
+    project_path: evkbmimxrt1060
+  - source: examples/_boards/${board}/evkbmimxrt1060_flexspi_nor.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flexspi_nor_debug flexspi_nor_release
+    package_path: boards/evkbmimxrt1060/freertos_driver_examples/freertos_lpspi_b2b/master/./mdk
+    project_path: evkbmimxrt1060
+jlink_script_file:
+  files:
+  - source: examples/_boards/${board}/evkbmimxrt1060_sdram_init.jlinkscript
+    attribute: jlink_script_file
+    toolchains: armgcc
+    targets: sdram_debug sdram_release
+    package_path: boards/evkbmimxrt1060/freertos_driver_examples/freertos_lpspi_b2b/master/.
+    project_path: evkbmimxrt1060

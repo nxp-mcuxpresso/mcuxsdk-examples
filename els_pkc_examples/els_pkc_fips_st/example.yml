@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+els_pkc_fips_st:
+  section-type: application
+  contents:
+    meta_path: examples/els_pkc_examples/els_pkc_fips_st/.
+    project-root-path: boards/${board}/els_pkc_examples/els_pkc_fips_st/${multicore_foldername}
+    document:
+      name: els_pkc_fips_st${core_id_suffix_name}
+      category: els_pkc_examples
+      brief: This application is executing tests using els_pkc crypto library on RW61x
+        board w.r.t. the NIST Cryptographic Algorithm Validation Program (CAVP).
+      example_readme:
+      - examples/els_pkc_examples/els_pkc_fips_st/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: null

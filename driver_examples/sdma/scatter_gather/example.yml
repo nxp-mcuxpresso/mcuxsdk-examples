@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sdma_scatter_gather:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sdma/scatter_gather
+    project-root-path: boards/${board}/driver_examples/sdma/scatter_gather/${multicore_foldername}
+    document:
+      name: sdma_scatter_gather${core_id_suffix_name}
+      category: driver_examples/sdma/scatter_gather/
+      brief: The SDMA scatter gather example is a simple demonstration program that
+        uses the SDK software.It excuates several shots transfer from source buffer
+        to destination buffer using the SDK SDMA drivers.The purpose of this example
+        is to show how to use the SDMA and to provide a scatter gather example fordebugging
+        and further development.
+      example_readme:
+      - examples/driver_examples/sdma/scatter_gather/readme.md
+      - examples/_boards/${board}/driver_examples/sdma/scatter_gather/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []

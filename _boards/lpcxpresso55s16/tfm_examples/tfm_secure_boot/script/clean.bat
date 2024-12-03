@@ -1,0 +1,3 @@
+rem @echo off
+echo Deleting the output directory...
+rmdir /q /s output

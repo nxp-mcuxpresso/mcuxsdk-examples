@@ -1,0 +1,24 @@
+dsc_qtmr_timer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_qtmr/timer
+    project-root-path: boards/${board}/driver_examples/qtmr/timer/${multicore_foldername}
+    document:
+      name: dsc_qtmr_timer${core_id_suffix_name}
+      category: driver_examples
+      brief: The qtmr_timer project is a simple demonstration program of the SDK QTMR
+        driver to use QTMR as a timer.The quad-timer module provides four timer channels
+        with a variety of controls affecting both individualand multi-channel features.
+        It sets up the QTMR hardware block to trigger an interrupt every 50 millisecond.When
+        chaining the first channel and the second channel, Timer interrupt occur every
+        10 second.When the QTMR interrupt is triggered a message a printed on the
+        UART terminal.
+      example_readme:
+      - examples/driver_examples/dsc_qtmr/timer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

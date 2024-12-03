@@ -1,0 +1,41 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.st7796s
+    select MCUX_COMPONENT_driver.ili9341
+    select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_driver.ft6x06
+    select MCUX_COMPONENT_driver.dc-fb-dbi
+    select MCUX_COMPONENT_driver.dbi_lcdic_dma
+    select MCUX_COMPONENT_driver.dbi_lpc_spi_dma
+    select MCUX_COMPONENT_driver.inputmux
+    select MCUX_COMPONENT_driver.flexcomm_i2c
+    select ILI9341_USE_DBI_IFACE
+    select FT6X06_USE_SIMPLE_I2C_API
+
+if MCUX_PRJSEG_module.board.display_support
+
+    config DEMO_PANEL
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.ADAFRUIT_2_8
+        default 1 if MCUX_PRJSEG_module.board.display_support.LCD_PAR_S035
+        help
+            Panel selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.panel
+        prompt "Panel Selection"
+        default MCUX_PRJSEG_module.board.display_support.LCD_PAR_S035
+
+        config MCUX_PRJSEG_module.board.display_support.ADAFRUIT_2_8
+            bool "Adafruit 2.8 inch captative panel"
+
+        config MCUX_PRJSEG_module.board.display_support.LCD_PAR_S035
+            bool "LCD_PAR_S035 panel"
+
+    endchoice
+endif

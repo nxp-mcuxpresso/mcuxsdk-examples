@@ -1,0 +1,146 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+littlefs_shell:
+  section-type: application
+  contents:
+    meta_path: examples/littlefs_examples/littlefs_shell
+    project-root-path: boards/${board}/littlefs_examples/littlefs_shell/${multicore_foldername}
+    document:
+      name: littlefs_shell${core_id_suffix_name}
+      category: littlefs_examples
+      brief: Demonstrates littlefs functionality by commands executed from shell.
+      example_readme:
+      - examples/littlefs_examples/littlefs_shell/readme.md
+      - examples/_boards/${board}/littlefs_examples/littlefs_shell/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1020:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    evkmimxrt1024:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    evkmimxrt1040:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkbimxrt1050:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkbmimxrt1060:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkbmimxrt1170@cm4:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkcmimxrt1060:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1064:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1160@cm4:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1160@cm7:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1180@cm33:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1180@cm7:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -armgcc@hyperram_release
+    - -armgcc@hyperram_debug
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@hyperram_release
+    - -iar@hyperram_release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - -armgcc@hyperram_release
+    - -iar@hyperram_release
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

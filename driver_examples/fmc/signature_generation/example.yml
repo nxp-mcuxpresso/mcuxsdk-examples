@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+fmc_signature_generation:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/fmc/signature_generation
+    project-root-path: boards/${board}/driver_examples/fmc/signature_generation/${multicore_foldername}
+    document:
+      name: fmc_signature_generation${core_id_suffix_name}
+      category: driver_examples/fmc
+      brief: The fmc example project is a demonstration program that uses the KSDK
+        software to generate flash signaturefor a specified flash address range and
+        prints them to the terminal. This example also implements the softwaresignature
+        algorithm, compares the hardware signature result and software signature result.
+        This is to verify flash contents as suggested by user manual.
+      example_readme:
+      - examples/driver_examples/fmc/signature_generation/readme.md
+      - examples/_boards/${board}/driver_examples/fmc/signature_generation/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso54628: []

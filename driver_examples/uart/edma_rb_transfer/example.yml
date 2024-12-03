@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+uart_edma_rb_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/uart/edma_rb_transfer
+    project-root-path: boards/${board}/driver_examples/uart/edma_rb_transfer/${multicore_foldername}
+    document:
+      name: uart_edma_rb_transfer${core_id_suffix_name}
+      category: driver_examples/uart
+      brief: The uart_edma ring buffer example shows how to use uart driver with EDMA:In
+        this example, one uart instance connect to PC through uart, the board willsend
+        back all characters that PC send to the board.
+      example_readme:
+      - examples/driver_examples/uart/edma_rb_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/uart/edma_rb_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke17z512: []

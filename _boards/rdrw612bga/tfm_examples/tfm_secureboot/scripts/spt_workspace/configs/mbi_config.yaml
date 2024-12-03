@@ -1,0 +1,35 @@
+# ===========  Master Boot Image Configuration template for rw61x, Plain Signed XIP Image.  ===========
+# ----------------------------------------------------------------------------------------------------
+#                                         == Basic Settings ==
+# ----------------------------------------------------------------------------------------------------
+family: rw61x  # [Required], MCU family, MCU family name., Possible options:['rw61x']
+outputImageExecutionTarget: External flash (XIP) # [Required], Application target, Definition if application is Execute in Place(XiP) or loaded to RAM during reset sequence., Possible options:['Internal flash (XIP)', 'External flash (XIP)', 'Internal Flash (XIP)', 'External Flash (XIP)', 'RAM', 'ram', 'xip']
+outputImageAuthenticationType: Signed # [Required], Type of boot image authentication, Specification of final master boot image authentication., Possible options:['Plain', 'CRC', 'Signed', 'Encrypted + Signed', 'encrypted', 'signed', 'crc']
+masterBootOutputFile: "../bootable_images/tfm_secureboot.bin" # [Required], Master Boot Image name, The file for Master Boot Image result file.
+inputImageFile: "../input/tfm_secureboot.bin" # [Required], Plain application image, The input application image to by modified to Master Boot Image.
+firmwareVersion: 0x01 # [Optional], Firmware version., Version of application image firmware.
+outputImageExecutionAddress: 0x08001000 # [Required], Loading address of application, Application loading address in RAM if not XiP, otherwise address of load in XiP.
+# ----------------------------------------------------------------------------------------------------
+#                                   == Certificate V3.1 Settings ==
+# ----------------------------------------------------------------------------------------------------
+useIsk: true # [Required], Use ISK for signature certification, Enable ISK type of signature certification
+signingCertificatePrivateKeyFile: "../keys/ec_pk_secp256r1_sign_cert.pem" #[Conditionally required], ISK Certificate private key, ISK Certificate private key used to sign certificate. It can be replaced by signProvider key.
+mainRootCertPrivateKeyFile:  "../keys/ec_pk_secp256r1_cert0.pem" # [Conditionally required], Main root Certification Private Key, Path to Main root Certification Private Key
+signingCertificateFile: "../keys/ec_secp256r1_sign_cert.pem" # [Conditionally required], Signing Certificate, Path to Signing Certificate
+signingCertificateConstraint: 0 # [Optional], Signing certificate constrain, Signing certificate constrain number
+signCertData: "" # [Optional], Signing Certificate data, Path to Signing Certificate data
+manifestSigningHashLength: 32 # [Optional], Manifest signing hash length, Optional Manifest signing hash length to create Certificate v3.1 Manifest., Possible options:[0, 32, 48, 64]
+
+# ----------------------------------------------------------------------------------------------------
+#                                      == Certificate Settings ==
+# ----------------------------------------------------------------------------------------------------
+rootCertificate0File: "../keys/ROT1_p256.pub" # [Required], Root Certificate File 0, Root certificate file index 0.
+rootCertificate1File: "../keys/ROT2_p256.pub" # [Optional], Root Certificate File 1, Root certificate file index 1.
+rootCertificate2File: "../keys/ROT3_p256.pub" # [Optional], Root Certificate File 2, Root certificate file index 2.
+rootCertificate3File: "../keys/ROT4_p256.pub" # [Optional], Root Certificate File 3, Root certificate file index 3.
+mainRootCertId: 0 # [Conditionally required], Main Certificate Index, Index of certificate that is used as a main. If not defined, the certificate matching private key will be selected.
+# ----------------------------------------------------------------------------------------------------
+#                                      == Trust Zone Settings ==
+# ----------------------------------------------------------------------------------------------------
+enableTrustZone: true # [Optional], TrustZone enable option, If not specified, the Trust zone is disabled.
+trustZonePresetFile: "" # [Optional], TrustZone Customization file, If not specified, but TrustZone is enabled(enableTrustZone) the default values are used.

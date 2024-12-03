@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+romapi_bootloader:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/romapi/bootloader/.
+    project-root-path: boards/${board}/driver_examples/romapi/bootloader/${multicore_foldername}
+    document:
+      name: romapi_bootloader${core_id_suffix_name}
+      category: driver_examples/romapi/bootloader
+      brief: Rom API driver example for bootloader functions.
+      example_readme:
+      - examples/driver_examples/romapi/bootloader/readme.md
+      - examples/_boards/${board}/driver_examples/romapi/bootloader/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

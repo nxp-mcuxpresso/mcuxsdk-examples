@@ -1,0 +1,162 @@
+config MCUX_PRJSEG_module.board.boardfile
+    bool "Use examples/<board>/board.c"
+    if MCUX_PRJSEG_module.board.boardfile
+    endif
+
+config MCUX_PRJSEG_module.board.board_core_file
+    bool "Use examples/<board>/board_<core_id>.c"
+    if MCUX_PRJSEG_module.board.board_core_file
+    endif
+
+config MCUX_PRJSEG_module.board.console_lite
+    bool "Use debug console_lite files"
+    default y
+    imply MCUX_COMPONENT_utility.debug_console_lite
+    imply MCUX_COMPONENT_utility.assert_lite
+    if MCUX_PRJSEG_module.board.console_lite
+    endif
+
+config MCUX_PRJSEG_module.board.console
+    bool "Use debug console files"
+    imply MCUX_COMPONENT_utility.debug_console
+    imply MCUX_COMPONENT_utility.assert
+    imply MCUX_COMPONENT_component.serial_manager
+    imply MCUX_COMPONENT_component.lists
+    imply MCUX_COMPONENT_component.serial_manager_uart
+
+    if MCUX_PRJSEG_module.board.console
+    endif
+
+config MCUX_PRJSEG_module.board.suite
+    bool "Use default board suite"
+    default y
+    imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_device.CMSIS
+    imply MCUX_COMPONENT_device.startup
+
+# clock
+config MCUX_PRJSEG_module.board.use_board_clock
+    bool "Use provided board clock_config"
+    default y
+    help
+        Use provided board clock_config
+
+choice MCUX_PRJSEG_module.board.clock_sel
+    prompt "clock_config selection"
+    depends on MCUX_PRJSEG_module.board.use_board_clock
+    default MCUX_PRJSEG_module.board.clock
+
+    config MCUX_PRJSEG_module.board.clock
+        bool "Use examples/<board>/clock_config.c"
+        help
+            Use examples/<board>/clock_config.c
+
+    config MCUX_PRJSEG_module.board.clock_board_folder
+        bool "Use examples/<board>/common/clock/clock_config.c"
+        help
+            Use examples/<board>/common/clock/clock_config.c
+
+    config MCUX_PRJSEG_module.board.clock_board_core_folder
+        bool "Use examples/<board>/common/clock/<core_id>/clock_config.c"
+        help
+            Use examples/<board>/common/clock/<core_id>/clock_config.c
+
+    config MCUX_PRJSEG_module.board.clock_customize_folder
+        bool "Use clock_config.c in project customized folder"
+
+endchoice
+
+config MCUX_HAS_PRJSEG_module.board.pinmux_sel
+    bool "Use provided board pinmux"
+    default y
+    help
+        Use provided board pinmux under examples folder
+
+choice MCUX_PRJSEG_module.board.pinmux_sel
+    bool "pin_mux file selection"
+    depends on MCUX_HAS_PRJSEG_module.board.pinmux_sel
+    default MCUX_PRJSEG_module.board.pinmux_project_folder
+
+    config MCUX_PRJSEG_module.board.pinmux_board_folder
+        bool "Use examples/<board>/common/pin_mux/pin_mux.c"
+        select MCUX_DEPENDENCY_PINMUX
+        help
+            Use examples/<board>/common/pinmux/pin_mux.c
+
+    config MCUX_PRJSEG_module.board.pinmux_board_core_folder
+        bool "Use examples/<board>/common/pin_mux/<core_id>/pin_mux.c"
+        select MCUX_DEPENDENCY_PINMUX
+        help
+            Use examples/<board>/common/pin_mux/<core_id>/pin_mux.c
+
+    config MCUX_PRJSEG_module.board.pinmux_project_folder
+        bool "Use <project_board_port_path>/pin_mux.c"
+        select MCUX_DEPENDENCY_PINMUX
+        help
+            Use pinmux in project board port folder:
+            examples/<board>/<project_category>/<project>/pinmux.c
+
+    config MCUX_PRJSEG_module.board.pinmux_project_core_folder
+        bool "Use <project_board_port_path>/<core>/pin_mux.c"
+        select MCUX_DEPENDENCY_PINMUX
+        help
+            Use pinmux in project board port folder by core:
+            examples/<board>/<project_category>/<project>/<core>/pinmux.c
+
+    config MCUX_PRJSEG_module.board.pinmux_customize_folder
+        bool "Use pinmux in project customized folder"
+        select MCUX_DEPENDENCY_PINMUX
+
+endchoice
+
+config MCUX_HAS_PRJSEG_project.use_hw_app
+    bool "Use app.h & hardware_init.c"
+    default y
+    help
+        Use app.h and hardware_init.c in project.
+
+choice MCUX_PRJSEG_project.hw_app_sel
+    prompt "app.h & hardware_init.c selection"
+    depends on MCUX_HAS_PRJSEG_project.use_hw_app
+    default MCUX_PRJSEG_project.hw_app_project_core_folder
+
+    config MCUX_PRJSEG_project.hw_app_project_core_folder
+        bool "Use <project>/<core>/hardware_init"
+        help
+            Use app.h and hardware_init.c in folder:
+            examples/<board>/<project_category>/<project>/<core>
+
+    config MCUX_PRJSEG_project.hw_app_project_folder
+        bool "Use <project>/hardware_init"
+        help
+            Use app.h and hardware_init.c in folder:
+            examples/<board>/<project_category>/<project>/
+
+    config MCUX_PRJSEG_project.hw_app_core0
+        bool "Use default hardware_init_core0.c and app_core0.h"
+
+    config MCUX_PRJSEG_project.hw_app_core1
+        bool "Use default hardware_init_core1.c and app_core1.h"
+
+    config MCUX_PRJSEG_project.hw_project_core_folder
+        bool "Use <project>/<core>/hardware_init"
+        help
+            Use only hardware_init.c in folder:
+            examples/<board>/<project_category>/<project>/<core>
+
+    config MCUX_PRJSEG_project.hw_project_folder
+        bool "Use <project>/hardware_init"
+        help
+            Use only hardware_init.c in folder:
+            examples/<board>/<project_category>/<project>/
+
+    config MCUX_PRJSEG_project.hw_core0
+        bool "Use only hardware_init_core0.c"
+
+    config MCUX_PRJSEG_project.hw_core1
+        bool "Use only hardware_init_core1.c"
+
+    config MCUX_PRJSEG_project.hw_app_customize_folder
+        bool "Use files in customized folder"
+
+endchoice

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ftm_quad_decoder:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/ftm/ftm_quad_decoder
+    project-root-path: boards/${board}/demo_apps/ftm_quad_decoder/${multicore_foldername}
+    document:
+      name: ftm_quad_decoder${core_id_suffix_name}
+      category: demo_apps
+      brief: This demo describes the usage of Quad Decoder feature in FTM module,
+        which can be used to count the position of decoder.An external decoder is
+        used to generate the PHA and PHB's signal. These two signals are feed to the
+        FTM pins with Quad Decoder feature (FTMx_QD_PHA and FTMx_QD_PHB). Then, the
+        counter value and direction would be displayed in terminal window predically.
+      example_readme:
+      - examples/demo_apps/ftm/ftm_quad_decoder/readme.md
+      - examples/_boards/${board}/demo_apps/ftm_quad_decoder/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []

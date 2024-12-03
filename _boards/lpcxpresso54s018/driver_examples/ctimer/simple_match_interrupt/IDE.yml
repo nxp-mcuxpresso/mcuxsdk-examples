@@ -1,0 +1,17 @@
+macro-file:
+  files:
+  - source: examples/_boards/${board}/jlink_qspi_plain_load.mac
+    attribute: macro-file
+    toolchains: iar
+    targets: debug release
+    choose: false
+    package_path: boards/lpcxpresso54s018/driver_examples/ctimer/simple_match_interrupt/./iar
+    project_path: lpcxpresso54s018
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/jlink_sramx_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+    package_path: boards/lpcxpresso54s018/driver_examples/ctimer/simple_match_interrupt/./mdk
+    project_path: lpcxpresso54s018

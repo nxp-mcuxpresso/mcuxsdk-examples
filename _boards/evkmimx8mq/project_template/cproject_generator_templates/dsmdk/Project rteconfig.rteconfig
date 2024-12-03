@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration xmlns:xs="http://www.w3.org/2001/XMLSchema-instance">
+<packages/>
+<device Dcore="" DcoreVersion="" Dendian="" Dfamily="" Dfpu="" Dmpu="" Dname="" DsubFamily="" Dvendor="NXP:11" Pname="">
+<url>http://mcuxpresso.nxp.com/cmsis_pack/repo/</url>
+<package name="" url="http://mcuxpresso.nxp.com/cmsis_pack/repo/" vendor="NXP" version="2.3.0"/>
+</device>
+<toolchain Tcompiler="ARMCC" Toutput="exe"/>
+<components/>
+<apis/>
+</configuration>
+

@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ncp_host:
+  section-type: application
+  contents:
+    meta_path: examples/ncp_examples/ncp_host
+    project-root-path: boards/${board}/ncp_examples/ncp_host/${multicore_foldername}
+    document:
+      name: ncp_host${core_id_suffix_name}
+      category: ncp_examples
+      brief: ncp_host
+      example_readme:
+      - examples/ncp_examples/ncp_host/readme.md
+      - examples/_boards/${board}/ncp_examples/ncp_host/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

@@ -1,0 +1,34 @@
+{
+    "regions": [
+        {
+            "enabled": true,
+            "erase_check": false,
+            "locked": false,
+            "is_xom": false,
+            "whole_image": false,
+            "base_addr_int": "0",
+            "start_ofs_int": "0",
+            "end_ofs_int": "0x00037FFF"
+        },
+        {
+            "enabled": false,
+            "erase_check": false,
+            "locked": false,
+            "is_xom": false,
+            "whole_image": false,
+            "base_addr_int": "0",
+            "start_ofs_int": "0",
+            "end_ofs_int": "0x0003BFFF"
+        },
+        {
+            "enabled": false,
+            "erase_check": false,
+            "locked": false,
+            "is_xom": false,
+            "whole_image": false,
+            "base_addr_int": "0",
+            "start_ofs_int": "0",
+            "end_ofs_int": "0x0003BFFF"
+        }
+    ]
+}

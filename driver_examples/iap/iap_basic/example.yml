@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iap_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iap/iap_basic
+    project-root-path: boards/${board}/driver_examples/iap/iap_basic/${multicore_foldername}
+    document:
+      name: iap_basic${core_id_suffix_name}
+      category: driver_examples/iap
+      brief: The IAP project is a simple demonstration program of the SDK IAP driver.
+        It reads part id, boot code version, unique id and reinvoke ISP. A message
+        a printed on the UART terminal as various bascial iap operations are performed.
+      example_readme:
+      - examples/driver_examples/iap/iap_basic/readme.md
+      - examples/_boards/${board}/driver_examples/iap/iap_basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

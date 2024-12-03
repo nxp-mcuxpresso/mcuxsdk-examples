@@ -1,0 +1,17 @@
+dsc_pdb_adc16_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_pdb/adc16_trigger
+    project-root-path: boards/${board}/driver_examples/pdb/adc16_trigger/${multicore_foldername}
+    document:
+      name: dsc_pdb_adc16_trigger${core_id_suffix_name}
+      category: driver_examples/pdb
+      brief: The pdb_adc16_trigger example show how to use the PDB as a general programmable
+        interrupt timer.The PDB is triggered by software, and other external triggers
+        are generated from PDB in this project,so that user can see just a general
+        counter is working with interrupt.
+      example_readme:
+      - examples/driver_examples/dsc_pdb/adc16_trigger/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    twrmc56f8400: []

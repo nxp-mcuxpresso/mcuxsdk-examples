@@ -1,0 +1,80 @@
+/*
+ * Copyright 2023 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/*${header:start}*/
+#include "pin_mux.h"
+#include "fsl_iomuxc.h"
+#include "fsl_lpuart.h"
+#include "fsl_debug_console.h"
+#include "board.h"
+#include "app.h"
+#include "app_srtm.h"
+#include "fsl_mu.h"
+#include "rsc_table.h"
+#include "fsl_edma.h"
+#include "fsl_sai.h"
+#include "fsl_sema42.h"
+/*${header:end}*/
+
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    /* clang-format off */
+    /* 250MHz DMA clock */
+    const clock_root_config_t dmaClkCfg = {
+        .clockOff = false,
+	.mux = kCLOCK_WAKEUPAXI_ClockRoot_MuxSysPll1Pfd0, // 1000MHz
+	.div = 4
+    };
+    const clock_root_config_t lpi2cClkCfg = {
+        .clockOff = false,
+	.mux = 0, // 24MHz oscillator source
+	.div = 1
+    };
+    const clock_root_config_t saiClkCfg = {
+        .clockOff = false,
+        .mux = 1, // select audiopll1out source(393216000 Hz)
+        .div = 32 // output 12288000 Hz
+    };
+    const clock_root_config_t pdmClkCfg = {
+        .clockOff = false,
+        .mux = 1,
+        .div = 32
+    };
+
+    sai_master_clock_t saiMasterCfg = {
+        .mclkOutputEnable = true,
+     };
+
+    BOARD_InitBootPins();
+    BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
+
+    CLOCK_SetRootClock(kCLOCK_Root_WakeupAxi, &dmaClkCfg);
+    CLOCK_SetRootClock(kCLOCK_Root_Pdm, &pdmClkCfg);
+    CLOCK_SetRootClock(kCLOCK_Root_Lpi2c1, &lpi2cClkCfg);
+    CLOCK_SetRootClock(kCLOCK_Root_Sai3, &saiClkCfg);
+
+    /* select MCLK direction(Enable MCLK clock) */
+    saiMasterCfg.mclkSourceClkHz = CLOCK_GetIpFreq(kCLOCK_Root_Sai3);  /* setup source clock for MCLK */
+    saiMasterCfg.mclkHz          = saiMasterCfg.mclkSourceClkHz;       /* setup target clock of MCLK */
+    SAI_SetMasterClockConfig(SAI3, &saiMasterCfg);
+
+    timing_info = (struct dram_timing_info *)(SAVED_DRAM_DATA_BASE_ADDR);
+
+    /* Init SEMA42 clock and reset all gates */
+    SEMA42_Init(APP_SEMA42);
+    SEMA42_ResetAllGates(APP_SEMA42);
+
+    /* Default request ATF to let DDR active when Cortex-A is suspended */
+    *((uint32_t *)M33_ACTIVE_FLAG) = M33_ACTIVE;
+
+    /* copy resource table to destination address(TCM) */
+    copyResourceTable();
+
+    APP_SRTM_Init();
+    APP_SRTM_StartCommunication();
+}

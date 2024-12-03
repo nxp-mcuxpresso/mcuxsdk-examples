@@ -1,0 +1,39 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- MIMX8ULP-EVK/EVK9 board
+- J-Link Debug Probe
+- 5V power supply
+- Personal Computer
+
+Board settings
+============
+
+
+Prepare the Demo
+===============
+The DSP images are built into CM33 image with default project configuration.
+To build the CM33 image, the DSP images dsp_reset_release.bin, dsp_text_release.bin, dsp_data_release.bin should be built firstly.
+
+1.  Connect 5V power supply and J-Link Debug Probe to the board, switch SW10 to power on the board.
+2.  Connect a micro USB cable between the host PC and the J17 USB port on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Download the program to the target board.
+5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the example.
+
+Running the demo
+================
+This example shows two cores communicating using MU. Both M33 and DSP core run at the same time!
+
+When the demo runs successfully, the log would be seen on the M33's debug terminal like as below, 
+
+~~~~~~~~~~~~~~~~~~~~~~~
+Hello World running on core 'Cortex-M33'
+
+Hello World running on DSP core 'fusion_nxp02_dsp_prod'
+~~~~~~~~~~~~~~~~~~~~~~~

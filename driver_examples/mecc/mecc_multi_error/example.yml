@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mecc_multi_error:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mecc/mecc_multi_error
+    project-root-path: boards/${board}/driver_examples/mecc/mecc_multi_error/${multicore_foldername}
+    document:
+      name: mecc_multi_error${core_id_suffix_name}
+      category: driver_examples/mecc
+      brief: The MECC Multi Error project is a simple demonstration program of the
+        SDK MECC driver. It supports Double Error Detection(SECDED) ECC function to
+        provide reliability for 4 banks On-Chip RAM(OCRAM) access.
+      example_readme:
+      - examples/driver_examples/mecc/mecc_multi_error/readme.md
+      - examples/_boards/${board}/driver_examples/mecc/mecc_multi_error/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

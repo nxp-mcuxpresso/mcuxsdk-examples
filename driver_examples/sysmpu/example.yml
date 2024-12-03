@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+sysmpu:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sysmpu
+    project-root-path: boards/${board}/driver_examples/sysmpu/${multicore_foldername}
+    document:
+      name: sysmpu${core_id_suffix_name}
+      category: driver_examples/sysmpu
+      brief: The SYSMPU example defines protected/unprotected memory region for the
+        core access.First, the SYSMPU will capture the hardware information and show
+        it on theterminal. Then, a memory region is configured as the non-writable
+        region. Thebus fault interrupt is enabled to report the memory protection
+        interrupt eventfor this non-writable region. If an operation writes to this
+        region, the busfault interrupt happens. Then the bus fault interrupt handler
+        provides aprevention alert by outputting a message on terminal, then the write
+        rightswill be given to this region for core access. After the write access
+        enabled,the writing to the region becomes successful. When the bus fault happen,
+        thedetails of the error information will be captured and printed on the terminal.This
+        example provides the terminal input control to give the example show for several
+        regions access test. Just press any key to the terminal when theterminal show
+        "Press any key to continue".
+      example_readme:
+      - examples/driver_examples/sysmpu/readme.md
+      - examples/_boards/${board}/driver_examples/sysmpu/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+wifi_mqtt:
+  section-type: application
+  contents:
+    meta_path: examples/wifi_examples/wifi_mqtt
+    project-root-path: boards/${board}/wifi_examples/wifi_mqtt/${multicore_foldername}
+    document:
+      name: wifi_mqtt${core_id_suffix_name}
+      category: wifi_examples
+      brief: The wifi_mqtt demo application demonstrates an MQTT client on the lwIP
+        TCP/IP stack with FreeRTOS over wi-fi. The board connects to the broker and
+        sends few messages.
+      example_readme:
+      - examples/wifi_examples/wifi_mqtt/readme.md
+      - examples/_boards/${board}/wifi_examples/common/wifi_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1064:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

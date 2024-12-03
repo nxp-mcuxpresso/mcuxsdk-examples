@@ -1,0 +1,20 @@
+rom_dev_audio_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_rom_device_audio/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_rom_device_audio/bm/${multicore_foldername}
+    document:
+      name: rom_dev_audio_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The example shows how to use USBD ROM stack to create and USB AUDIO class
+        device. This device supports 2 channel audio in (MIC/LINE_IN) and 2 channel
+        audio out (SPEAKERS/HEADPHONE).
+      example_readme:
+      - examples/usb_examples/usb_rom_device_audio/bm/readme.md
+      - examples/_boards/${board}/usb_examples/usb_rom_device_audio/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []

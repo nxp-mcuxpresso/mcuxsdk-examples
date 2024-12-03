@@ -1,0 +1,103 @@
+# ===========  Secure Binary v3.1 Configuration template for rw61x.  ===========
+# ----------------------------------------------------------------------------------------------------
+#                                         == Basic Settings ==
+# ----------------------------------------------------------------------------------------------------
+firmwareVersion: 0  # [Optional], Firmware version., Version of application image firmware.
+family: rw61x # [Required], MCU family, MCU family name., Possible options:['k32w1xx', 'kw45xx', 'lpc55s3x', 'mcxn9xx', 'rw61x']
+containerOutputFile: "../bootable_images/tfm_secureboot.sb3" #my_new.sb3 # [Required], SB3 filename, Generated SB3 container filename.
+# ----------------------------------------------------------------------------------------------------
+#                                   == Certificate V3.1 Settings ==
+# ----------------------------------------------------------------------------------------------------
+signingCertificatePrivateKeyFile: "../keys/ec_pk_secp256r1_sign_cert.pem" #[Conditionally required], ISK Certificate private key, ISK Certificate private key used to sign certificate. It can be replaced by signProvider key.
+rootCertificateEllipticCurve: secp256r1 # [Conditionally required], Type of elliptic curve of root key, Elliptic curve type used for root key., Possible options:['secp256r1', 'secp384r1']
+iskCertificateEllipticCurve: secp256r1 # [Conditionally required], Type of elliptic curve of ISK key, Elliptic curve type used for ISK key., Possible options:['secp256r1', 'secp384r1']
+useIsk: false # [Required], Use ISK for signature certification, Enable ISK type of signature certification
+mainRootCertPrivateKeyFile:  "../keys/ec_pk_secp256r1_cert0.pem" # [Conditionally required], Main root Certification Private Key, Path to Main root Certification Private Key
+signingCertificateFile: "../keys/ec_secp256r1_sign_cert.pem" # [Conditionally required], Signing Certificate, Path to Signing Certificate
+signingCertificateConstraint: 0 # [Optional], Signing certificate constrain, Signing certificate constrain number
+signCertData: "" # [Optional], Signing Certificate data, Path to Signing Certificate data
+# ----------------------------------------------------------------------------------------------------
+#                                      == Certificate Settings ==
+# ----------------------------------------------------------------------------------------------------
+rootCertificate0File: "../keys/ROT1_p256.pub" #my_certificate0.pub #[Required], Root Certificate File 0, Root certificate file index 0.
+rootCertificate1File: "../keys/ROT2_p256.pub" #my_certificate1.pub # [Optional], Root Certificate File 1, Root certificate file index 1.
+rootCertificate2File: "../keys/ROT3_p256.pub" #my_certificate2.pub # [Optional], Root Certificate File 2, Root certificate file index 2.
+rootCertificate3File: "../keys/ROT4_p256.pub" #my_certificate3.pub # [Optional], Root Certificate File 3, Root certificate file index 3.
+mainRootCertId: 0 # [Conditionally required], Main Certificate Index, Index of certificate that is used as a main. If not defined, the certificate matching private key will be selected.
+# ----------------------------------------------------------------------------------------------------
+#                                  == Secure Binary v3.1 Settings ==
+# ----------------------------------------------------------------------------------------------------
+containerKeyBlobEncryptionKey: "cust_mk_sk.txt" # [Optional], Part Common Key, Path to PCK/NPK key in plain hex string format.
+isNxpContainer: false # [Optional], Enable NXP Container format, Internal usage only, used for generating SB files with NXP content e.g. provisioning firmware, sentinel firmware...
+kdkAccessRights: 0 # [Optional], KDK access rights, Accepted values are 0, 1, 2 and 3. Value used as key properties for key derivation process, more details can be found in CSSv2 manual., Possible options:[0, 1, 2, 3]
+containerConfigurationWord: 0x00 # [Optional], Container configuration word, Flag value in SB3.1 manifest, not used by silicons with LPC55S3x ROM. Value can be kept 0, or it can be removed from the configuration file.
+description: This is description of generated SB file. sb3_256 based file. # [Optional], Description, Description up to 16 characters, longer will be truncated. Stored in SB3.1 manifest.
+# ----------------------------------------------------------------------------------------------------
+#                              == Secure Binary v3.1 Commands Settings ==
+# ----------------------------------------------------------------------------------------------------
+commands: # [Required], SB3.1 Commands, Secure Binary v3.1 commands block, list of all possible options - Modify it according to your application
+    # ----------------------------------------------------------------------------------------------------
+    #  == List of possible 12 options. Option types[object,object,object,object,object,object,object,object,object,object,object,object] ==
+    # ----------------------------------------------------------------------------------------------------
+  - # [Example of possible configuration #1]
+    load: # [Required], Load, If set, then the data to write immediately follows the range header. The length field contains the actual data length
+      address: 0x20001000 # [Required], Address, Address of memory block to be loaded.
+      memoryId: 0 # [Optional], Memory ID, ID of memory block to be loaded.
+      values: '0xC0000004' # [Optional], Binary values., Binary values delimited by comma to be loaded.
+      authentication: 'none' # [Optional], Authentication, If authentication is not used, just omit this option or set 'none'., Possible options:['none', 'cmac', 'hashlocking']
+  - # [Example of possible configuration #9]
+    configureMemory:  # [Required], Configure memory, Configure memory.
+      configAddress: 0x20001000  # [Required], Address, Configuration address.
+      memoryId: 0x09 # [Optional], Memory ID, ID of memory block to be configured.
+  - erase: # [Required], Erase, Performs a flash erase of the given address range. The erase will be rounded up to the sector size.
+      address: 0x08000000  # [Required], Address, Address of memory block to be erased.
+      size: 0x200000 # [Required], Size, Size of memory block to be erased.
+      memoryId: 0x09 # [Optional], Memory ID, ID of memory block to be erased.
+  - # [Example of possible configuration #1]
+    load: # [Required], Load, If set, then the data to write immediately follows the range header. The length field contains the actual data length
+      address: 0x20001000 # [Required], Address, Address of memory block to be loaded.
+      memoryId: 0 # [Optional], Memory ID, ID of memory block to be loaded.
+      # IPED Configs: NOTE ABOUT END ADDRESS: There are two constraints: 
+      # 1- The application must fit into the region
+      # 2- The size of the region must be an integer multiple of 4 flash pages = 0x400 bytes
+      # So, Following needs to be done: Take last address from bootable_images\tfm_secureboot.bin, then round off the result via 0x400 and add the start IPED start address.
+      # e.g: in working example: last address: 0xC7F40, round off via ox400 => 0xC8000 + 0x08001000(Flash start address) = 0x080C9000
+      values: "0xA0000001,0x00000000,0x08001000,0x080C9000,0x00000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0" # [Optional], Binary values., Binary values #delimited by comma to be loaded.
+      authentication: 'none' # [Optional], Authentication, If authentication is not used, just omit this option or set 'none'., Possible options:['none', #'cmac', 'hashlocking']
+  - # [Example of possible configuration #9]
+    configureMemory:  # [Required], Configure memory, Configure memory.
+      configAddress: 0x20001000  # [Required], Address, Configuration address.
+      memoryId: 0x09 # [Optional], Memory ID, ID of memory block to be configured.
+  - # [Example of possible configuration #1]
+    load: # [Required], Load, If set, then the data to write immediately follows the range header. The length field contains the actual data length
+      address: 0x20001000 # [Required], Address, Address of memory block to be loaded.
+      memoryId: 0 # [Optional], Memory ID, ID of memory block to be loaded.
+      values: '0xAA000001,0x08000000' # [Optional], Binary values., Binary values delimited by comma to be loaded.
+      authentication: 'none' # [Optional], Authentication, If authentication is not used, just omit this option or set 'none'., Possible options:['none', 'cmac', 'hashlocking']
+  - # [Example of possible configuration #9]
+    configureMemory:  # [Required], Configure memory, Configure memory.
+      configAddress: 0x20001000  # [Required], Address, Configuration address.
+      memoryId: 0x09 # [Optional], Memory ID, ID of memory block to be configured.
+  - # [Example of possible configuration #1]
+    load: # [Required], Load, If set, then the data to write immediately follows the range header. The length field contains the actual data length
+      address: 0x20001000 # [Required], Address, Address of memory block to be loaded.
+      memoryId: 0 # [Optional], Memory ID, ID of memory block to be loaded.
+      values: '0xB0000000,0x08000400' # [Optional], Binary values., Binary values delimited by comma to be loaded.
+      authentication: 'none' # [Optional], Authentication, If authentication is not used, just omit this option or set 'none'., Possible options:['none', 'cmac', 'hashlocking']
+  - # [Example of possible configuration #9]
+    configureMemory:  # [Required], Configure memory, Configure memory.
+      configAddress: 0x20001000  # [Required], Address, Configuration address.
+      memoryId: 0x09 # [Optional], Memory ID, ID of memory block to be configured.
+  - # [Example of possible configuration #1]
+    load: # [Required], Load, If set, then the data to write immediately follows the range header. The length field contains the actual data length
+      address: 0x08000600 # [Required], Address, Address of memory block to be loaded.
+      memoryId: 0 # [Optional], Memory ID, ID of memory block to be loaded.
+      values: '0xFFFE0001' # [Optional], Binary values., Binary values delimited by comma to be loaded.
+      authentication: 'none' # [Optional], Authentication, If authentication is not used, just omit this option or set 'none'., Possible options:['none', 'cmac', 'hashlocking']
+  - # [Example of possible configuration #1]
+    load: # [Required], Load, If set, then the data to write immediately follows the range header. The length field contains the actual data length
+      address: 0x8001000 # [Required], Address, Address of memory block to be loaded.
+      memoryId: 0 # [Optional], Memory ID, ID of memory block to be loaded.
+      file: "../bootable_images/tfm_secureboot.bin" # [Optional], Binary file., Binary file to be loaded.
+      values: "" # [Optional], Binary values., Binary values delimited by comma to be loaded.
+      authentication: 'none' # [Optional], Authentication, If authentication is not used, just omit this option or set 'none'., Possible options:['none', 'cmac', 'hashlocking']

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+dcdc_framework:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/dcdc_framework
+    project-root-path: boards/${board}/demo_apps/dcdc_framework
+    document:
+      name: dcdc_framework
+      category: demo_apps
+      brief: This demo is used to show a kind of usage of DCDC function. In this case,
+        the DCDC is used as the voltage regulator instead of on-chip LDOs. For the
+        condition that DCDC input voltage is not so stable, as the battery's voltage
+        decrease after a few working time, a timer is used to trigger the adjustment
+        by sampling the ADC value of bandgap/battery input voltage, calculating them
+        and setting the result into the DCDC module, so that the output of DCDC would
+        be adjusted and kepted constant as much as possible. Actually, this use case
+        is usually used in the connectivity application, and the period of adjust
+        (configured by the timer's timeout period) is also setup according to requirement.
+      example_readme:
+      - examples/demo_apps/dcdc_framework/readme.md
+      - examples/_boards/${board}/demo_apps/dcdc_framework/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l3a6@cm4: []

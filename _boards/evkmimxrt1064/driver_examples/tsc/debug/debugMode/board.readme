@@ -1,0 +1,45 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- X-IMXRT512-EVB board
+- JLink Plus
+- 5V power supply
+- MCIMX28LCD Seiko 4.3" WVGA-Rev B
+- Personal Computer
+
+Board settings
+============
+Move the following resisters to 2-3 (1-2 by default)
+ - R106, R116, R473, R478, R484
+
+Prepare the Demo
+================
+1.  Connect 5V power supply (J1) and JLink Plus (J62) to the board, switch SW1 to power on the board.
+2.  Connect a USB cable between the host PC and the J92 USB port on the target board.
+3.  Connect MCIMX28LCD Seiko 4.3" WVGA-Rev B to the J84 LCD expansion port connector.
+4.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Download the program to the target board.
+
+Running the demo
+================
+When the demo runs successfully, the following message is displayed in the terminal:
+
+TSC DebugMode Example Start!
+ADC_DoAutoCalibration() Done.
+Please touch screen!
+x = 234, y = 3655
+x = 239, y = 3715
+x = 236, y = 3708
+x = 236, y = 3667
+x = 236, y = 3653
+x = 236, y = 3628
+x = 233, y = 3637
+x = 236, y = 3680
+...
+
+

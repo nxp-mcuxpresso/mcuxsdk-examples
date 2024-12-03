@@ -1,0 +1,18 @@
+dsc_dac_ext_triggered_waveform:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_dac/ext_triggered_waveform
+    project-root-path: boards/${board}/driver_examples/dac/ext_triggered_waveform/${multicore_foldername}
+    document:
+      name: dsc_dac_ext_triggered_waveform${core_id_suffix_name}
+      category: driver_examples/dsc_dac
+      brief: The dsc_dac_ext_triggered_waveform example shows how to use DAC module
+        simply as the waveform generator. DAC's synchronous conversion mode is selected,
+        and the data in buffered data register will be refreshed every cycle of the
+        input signal. The sawtooth waveform can be measured on DAC output pin.
+      example_readme:
+      - examples/driver_examples/dsc_dac/ext_triggered_waveform/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    twrmc56f8200: []
+    twrmc56f8400: []

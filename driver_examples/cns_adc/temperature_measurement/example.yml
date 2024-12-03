@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cns_adc_temperature_measurement:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cns_adc/temperature_measurement
+    project-root-path: boards/${board}/driver_examples/adc/temperature_measurement/${multicore_foldername}
+    document:
+      name: cns_adc_temperature_measurement${core_id_suffix_name}
+      category: driver_examples/adc
+      brief: The adc_temperature_measurement examples shows how to measure internal
+        temperature sensor.
+      example_readme:
+      - examples/driver_examples/cns_adc/temperature_measurement/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

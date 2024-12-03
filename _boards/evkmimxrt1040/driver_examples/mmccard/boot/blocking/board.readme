@@ -1,0 +1,61 @@
+Hardware requirements
+===================
+- Mini/micro USB cable
+- MIMXRT1040-EVK board
+- Personal Computer
+- SD card
+
+Board settings
+============
+Please insert the SDCARD into card slot(J26)
+Note: 
+If you want to use a SD3.0 card with SD3.0 protocol,you should check below setting:
+1. check you SD card power supply, If power come from the NVCC_SD, you should cut it off and connect to another stable 3.3V power
+2. make sure the SD1_VSELECT connet to PTF14
+3. Install jumper on J18 between 5 & 6
+
+
+Prepare the Demo
+===============
+1.  Connect a micro USB cable between the PC host and the OpenSDA USB port on the board.
+2.  Open a serial terminal on PC for OpenSDA serial device with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Insert SD card to card slot 
+4.  Download the program to the target board.
+5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+===============
+When the demo runs successfully, the log would be seen on the terminal like:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MMCCARD Boot example.
+
+Card user partition size xxxx bytes
+
+Working condition:
+
+  Voltage: VCC - xxxx  VCCQ - xxxx
+
+  Timing mode: xxxx
+
+  Bus width: xxxx
+
+  Freq : xxxx HZ
+
+Switch to boot partition first
+
+Boot Image store finish, reset device power.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MMCCARD Boot example.
+
+Image header recieve successful
+
+Load image successful.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

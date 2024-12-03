@@ -1,0 +1,18 @@
+
+iar:
+  shared-workspace: secure_rgpio
+  sharing-workspace:
+  - ../../secure_rgpio_ns/iar/secure_rgpio_ns_cm33
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../secure_rgpio_ns/iar/secure_rgpio_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../secure_rgpio_ns/iar/secure_rgpio_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

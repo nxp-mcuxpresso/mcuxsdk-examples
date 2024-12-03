@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+powerquad_benchmark_sw_fft:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/powerquad/benchmark_sw_fft
+    project-root-path: boards/${board}/driver_examples/powerquad/benchmark_sw_fft/${multicore_foldername}
+    document:
+      name: powerquad_benchmark_sw_fft${core_id_suffix_name}
+      category: driver_examples/powerquad
+      brief: This example shows the official CMSIS DSP function performance. It could
+        be compared with the project powerquad_benckmark_fft to show the PowerQuad
+        performance improvement.
+      example_readme:
+      - examples/driver_examples/powerquad/benchmark_sw_fft/readme.md
+      - examples/_boards/${board}/driver_examples/powerquad/benchmark_sw_fft/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    evkmimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

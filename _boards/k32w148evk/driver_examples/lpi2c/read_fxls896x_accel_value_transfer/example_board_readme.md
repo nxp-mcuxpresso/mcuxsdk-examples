@@ -1,0 +1,42 @@
+Hardware requirements
+===================
+- Mini/micro USB cable
+- K32W148-EVK Board
+- Personal Computer
+
+Board settings
+============
+No special is needed.
+
+Prepare the Demo
+===============
+1.  Connect a mini USB cable between the PC host and the OpenSDA USB port on the board.
+2.  Open a serial terminal on PC for OpenSDA serial device with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+5.  Please note, this example could only run on the EVK board.
+
+Running the demo
+===============
+When the example runs successfully, you can see the similar information from the terminal as below.
+
+LPI2C example -- Read Accelerometer Value
+Found an FXLS8965 on board , the device address is 0x18.
+The accel values:
+x =  -125 , y =    12 , z =   976
+x =  -125 , y =    12 , z =   976
+x =  -125 , y =    12 , z =   976
+x =  -125 , y =    24 , z =   976
+x =  -125 , y =    24 , z =   976
+x =  -134 , y =    16 , z =   984
+x =  -134 , y =    16 , z =   984
+x =  -134 , y =     4 , z =   976
+x =  -134 , y =     4 , z =   976
+x =  -134 , y =     4 , z =   976
+
+End of LPI2C example.

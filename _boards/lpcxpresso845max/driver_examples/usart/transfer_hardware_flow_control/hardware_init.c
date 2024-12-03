@@ -1,0 +1,26 @@
+/*
+ * Copyright 2020 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+/*${header:start}*/
+#include "pin_mux.h"
+#include "board.h"
+#include "app.h"
+#include <stdbool.h>
+/*${header:end}*/
+
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    /* Select the main clock as source clock of USART0 (debug console) */
+    CLOCK_Select(BOARD_DEBUG_USART_CLK_ATTACH);
+    /* Select the main clock as source clock of USART2 (demo instance) */
+    CLOCK_Select(kUART2_Clk_From_MainClk);
+
+    BOARD_InitBootPins();
+    BOARD_BootClockFRO30M();
+    BOARD_InitDebugConsole();
+}
+/*${function:end}*/

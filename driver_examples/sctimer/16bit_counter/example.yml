@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sctimer_16bit_counter:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sctimer/16bit_counter
+    project-root-path: boards/${board}/driver_examples/sctimer/16bit_counter/${multicore_foldername}
+    document:
+      name: sctimer_16bit_counter${core_id_suffix_name}
+      category: driver_examples/sctimer
+      brief: The SCTimer 16-bit counter project is a demonstration program of the
+        SDK SCTimer driver operation when using the SCTimer counteras two 16-bit counters.The
+        example toggles an output per counter when a match occurs.
+      example_readme:
+      - examples/driver_examples/sctimer/16bit_counter/readme.md
+      - examples/_boards/${board}/driver_examples/sctimer/16bit_counter/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []

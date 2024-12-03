@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+spi_interrupt_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_minispi/interrupt/slave
+    project-root-path: boards/${board}/driver_examples/spi/interrupt/slave/${multicore_foldername}
+    document:
+      name: spi_interrupt_slave${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: 'The spi_interrupt_slave example shows how to use spi driver as slave
+        to receive data from master.In this example, one spi instance as slave and
+        another spi instance on other board as master. Master sends a piece of data
+        to slave, and receive a piece of data from slave. This example checks if the
+        data received from master is correct. This example should work with spi_interrupt_master
+        example. And this example should start first. '
+      example_readme:
+      - examples/driver_examples/lpc_minispi/interrupt/slave/readme.md
+      - examples/_boards/${board}/driver_examples/spi/interrupt/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

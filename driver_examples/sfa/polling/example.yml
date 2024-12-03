@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sfa_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sfa/polling
+    project-root-path: boards/${board}/driver_examples/sfa/polling/${multicore_foldername}
+    document:
+      name: sfa_polling${core_id_suffix_name}
+      category: driver_examples/sfa
+      brief: The sfa_polling example shows how to use sfa driver in polling way:In
+        this example, sfa is used to measure frequency in polling mode.
+      example_readme:
+      - examples/driver_examples/sfa/polling/readme.md
+      - examples/_boards/${board}/driver_examples/sfa/polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+spi_dma_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/spi/dma_b2b_transfer/slave
+    project-root-path: boards/${board}/driver_examples/spi/dma_b2b_transfer/slave/${multicore_foldername}
+    document:
+      name: spi_dma_b2b_transfer_slave${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: The spi_dma_board2board_slave example shows how to use spi driver as
+        slave to do board to board transfer with DMA:In this example, one spi instance
+        as slave and another spi instance on other board as master. Master sends a
+        piece of data to slave, and receive a piece of data from slave. This example
+        checks if the data received from master is correct.
+      example_readme:
+      - examples/driver_examples/spi/dma_b2b_transfer/slave/readme.md
+      - examples/_boards/${board}/driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

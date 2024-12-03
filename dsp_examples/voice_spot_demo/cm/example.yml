@@ -1,0 +1,23 @@
+dsp_voice_spot_demo:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/voice_spot_demo/cm
+    project-root-path: boards/${board}/dsp_examples/voice_spot_demo/${core_id}
+    document:
+      name: dsp_voice_spot_demo${core_id_suffix_name}
+      category: dsp_examples
+      brief: starts DSP core to run voice_spot example on it.
+      example_readme:
+      - examples/dsp_examples/voice_spot_demo/readme.md
+      - examples/_boards/${board}/dsp_examples/voice_spot_demo/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@debug
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -iar@release

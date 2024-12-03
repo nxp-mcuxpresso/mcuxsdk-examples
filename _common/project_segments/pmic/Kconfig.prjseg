@@ -1,0 +1,2 @@
+config MCUX_PRJSEG_module.pmic_support
+    bool "Use boards/${board}/pmic_support.c"

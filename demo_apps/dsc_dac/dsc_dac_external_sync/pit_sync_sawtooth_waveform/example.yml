@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+dsc_dac_pit_sync_sawtooth_waveform:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/dsc_dac/dsc_dac_external_sync/pit_sync_sawtooth_waveform
+    project-root-path: boards/${board}/demo_apps/dac_external_sync/pit_sync_sawtooth_waveform/${multicore_foldername}
+    document:
+      name: dsc_dac_pit_sync_sawtooth_waveform${core_id_suffix_name}
+      category: demo_apps
+      brief: The dsc_dac_pit_sync_sawtooth_waveform demo application demonstrates
+        the usage of DAC synchronous conversion mode. In this demo, users can select
+        on-board switch or pit to as the synchronous source to update the waveform.
+      example_readme:
+      - examples/demo_apps/dsc_dac/dsc_dac_external_sync/pit_sync_sawtooth_waveform/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f81000evk: []
+    mc56f83000evk: []

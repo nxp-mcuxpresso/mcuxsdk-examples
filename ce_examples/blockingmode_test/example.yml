@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ce_blockingmode_test:
+  section-type: application
+  contents:
+    meta_path: examples/ce_examples/blockingmode_test
+    project-root-path: boards/${board}/ce_examples/blockingmode_test/${multicore_foldername}
+    complete_cmake_data:
+      files:
+        examples/_boards/${board}/ce_examples/blockingmode_test/mat_mult_input_A.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/blockingmode_test/mat_mult_input_B.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/blockingmode_test/mat_multcf32_40x40x40_C_ref.txt:
+          project_relative_path: ./
+          type: src
+        examples/_boards/${board}/ce_examples/blockingmode_test/mat_multf32_60x60x60_C_ref.txt:
+          project_relative_path: ./
+          type: src
+    document:
+      name: ce_blockingmode_test${core_id_suffix_name}
+      category: ce_examples
+      brief: Sample application that tests the blocking mode operation of ZV2117 in
+        both single and multi-command settings.
+      example_readme:
+      - examples/ce_examples/blockingmode_test/readme.md
+      - examples/_boards/${board}/ce_examples/blockingmode_test/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    kw47loc@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    frdmmcxw72@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

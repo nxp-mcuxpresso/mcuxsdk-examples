@@ -1,0 +1,7 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "../../../_common/components/Kconfig.flash_config"
+rsource "../../../lvgl_examples/lvgl_sdk/lvgl_support/rt700/Kconfig.lvgl_support"

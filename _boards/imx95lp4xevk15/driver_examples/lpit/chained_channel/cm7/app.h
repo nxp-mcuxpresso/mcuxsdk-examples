@@ -1,0 +1,31 @@
+/*
+ * Copyright 2024 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define DEMO_LPIT_BASE       LPIT1
+#define DEMO_LPIT_IRQn       LPIT1_IRQn
+#define DEMO_LPIT_IRQHandler LPIT1_IRQHandler
+/* Get source clock for LPIT driver */
+#define LPIT_MASTER_CLOCK_ROOT hal_clock_tstmr1
+#define LPIT_SOURCECLOCK       HAL_ClockGetIpFreq(LPIT_MASTER_CLOCK_ROOT)
+#define LED_INIT()
+#define LED_TOGGLE()
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

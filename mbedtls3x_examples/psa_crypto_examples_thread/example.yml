@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+psa_crypto_examples_thread:
+  section-type: application
+  contents:
+    meta_path: examples/mbedtls3x_examples/psa_crypto_examples_thread
+    project-root-path: boards/${board}/mbedtls3x_examples/psa_crypto_examples_thread/${core_id}
+    document:
+      name: psa_crypto_examples_thread${core_id_suffix_name}
+      category: mbedtls3x_examples
+      brief: The mbedTLS PSA Crypto example thread program performs PSA API testing
+        within Multi threaded environment and prints results to the terminal.
+      example_readme:
+      - examples/mbedtls3x_examples/psa_crypto_examples_thread/readme.md
+      - examples/_boards/${board}/mbedtls3x_examples/psa_crypto_examples_thread/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

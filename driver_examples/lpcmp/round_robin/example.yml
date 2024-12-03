@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpcmp_round_robin:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpcmp/round_robin
+    project-root-path: boards/${board}/driver_examples/lpcmp/round_robin/${multicore_foldername}
+    document:
+      name: lpcmp_round_robin${core_id_suffix_name}
+      category: driver_examples/lpcmp
+      brief: The LPCMP round robin example is a simple demonstration program to use
+        the LPCMP driver and help user with a quick start.In this example, user needs
+        to specify which port and channel to fixed, users also need to specify one
+        or more checker channels. Before doing the comparison, it is necessary to
+        preset the comparison result of each checker channel with the fixed channel.
+        Change the input voltage of checker channels, if the output results of the
+        comparator is different from the preset value, an interrupt will be triggered,
+        and the triggered channel's information will be printed on the terminal.
+      example_readme:
+      - examples/driver_examples/lpcmp/round_robin/readme.md
+      - examples/_boards/${board}/driver_examples/lpcmp/round_robin/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

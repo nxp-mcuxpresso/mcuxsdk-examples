@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cns_acomp_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cns_acomp/basic
+    project-root-path: boards/${board}/driver_examples/acomp/basic/${multicore_foldername}
+    document:
+      name: cns_acomp_basic${core_id_suffix_name}
+      category: driver_examples/acomp
+      brief: The acomp basic driver example demostrates the basic usage of the ACOMP
+        module. This example compares the user input analog signal with interanl reference
+        voltage(VDDIO_3 * 0.5) and toggle the LED when the result changed. The purpose
+        of this demo is to show how to use the ACOMP driver in SDK software.
+      example_readme:
+      - examples/driver_examples/cns_acomp/basic/readme.md
+      - examples/_boards/${board}/driver_examples/acomp/basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

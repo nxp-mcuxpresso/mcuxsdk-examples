@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+jpegdec_single_stream_single_frame_config:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/jpegdec/single_stream_single_frame/config
+    project-root-path: boards/${board}/driver_examples/jpegdec/single_stream_single_frame/config/${multicore_foldername}
+    document:
+      name: jpegdec_single_stream_single_frame_config${core_id_suffix_name}
+      category: driver_examples
+      brief: The JPEG decoder example decodes one JPEG picture using slot 0 then shows
+        it on panel. First we configure the decoder configuration then starts the
+        decoder. After decoding complete the picture will be shown on panel.
+      example_readme:
+      - examples/driver_examples/jpegdec/single_stream_single_frame/config/readme.md
+      - examples/_boards/${board}/driver_examples/jpegdec/jpegdec_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

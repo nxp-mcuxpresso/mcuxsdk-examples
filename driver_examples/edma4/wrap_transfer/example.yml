@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+edma4_wrap_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/edma4/wrap_transfer
+    project-root-path: boards/${board}/driver_examples/edma4/wrap_transfer/${multicore_foldername}
+    document:
+      name: edma4_wrap_transfer${core_id_suffix_name}
+      category: driver_examples/edma4
+      brief: The EDMA4 wrap transfer example is a simple demonstration program that
+        uses the SDK software.The purpose of this example is to show how to use the
+        EDMA4 and to provide a simple example for debugging and further development.
+      example_readme:
+      - examples/driver_examples/edma4/wrap_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/edma4/wrap_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []

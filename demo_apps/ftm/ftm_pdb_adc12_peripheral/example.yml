@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ftm_pdb_adc12_peripheral:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/ftm/ftm_pdb_adc12_peripheral
+    project-root-path: boards/${board}/demo_apps/ftm_pdb_adc12_peripheral/${multicore_foldername}
+    document:
+      name: ftm_pdb_adc12_peripheral${core_id_suffix_name}
+      category: demo_apps
+      brief: This application demonstrates how to use the trigger signal generated
+        by FTM to trigger the ADCconversion through PDB module.For instance, the FTM0
+        is configured to work in PWM mode. And its channel 0 monitors the FTM counterand
+        compares with the channel value. Once the FTM counter matches the channel
+        value, an externaltrigger would be generated. TRGMUX would capture this trigger
+        and route it to PDB module. When thePDB is triggered, the PDB counter increase.
+        Once the PDB matches the ADC pre-trigger value, a triggersignal would generated
+        and sent to ADC module. Finally, the ADC gets the trigger signal and start
+        theconversion.You can open the mex file with MCUXpresso Config Tool to do
+        further configuration of pin, clock and peripheral.
+      example_readme:
+      - examples/demo_apps/ftm/ftm_pdb_adc12_peripheral/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+adc12_low_power_peripheral:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/adc12/adc12_low_power_peripheral
+    project-root-path: boards/${board}/demo_apps/adc12_low_power_peripheral/${multicore_foldername}
+    document:
+      name: adc12_low_power_peripheral${core_id_suffix_name}
+      category: demo_apps
+      brief: The ADC Low Power Demo project is a demonstration program that uses the
+        KSDK software. Themicrocontroller is set to a very low power stop (VLPS) mode,
+        and every 500 ms an interrupt wakes upthe ADC module and takes the current
+        temperature sensor value of the microcontroller. While the temperature remains
+        within boundaries, both LEDs are on. If the temperature is higher or lower
+        thanaverage, a led comes off. This demo provides an example to show how ADC
+        works during a VLPS mode anda simple debugging.
+      example_readme:
+      - examples/demo_apps/adc12/adc12_low_power_peripheral/readme.md
+      - examples/_boards/${board}/demo_apps/adc12_low_power_peripheral/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmke15z: []
+    frdmke17z: []
+    frdmke17z512: []

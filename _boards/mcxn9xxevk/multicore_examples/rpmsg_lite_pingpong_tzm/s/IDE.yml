@@ -1,0 +1,57 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+flash_programming_file:
+  files:
+  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdebug_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug
+  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdebug_release.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: release
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdownload_debug.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug
+  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdownload_release.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: release
+mdk:
+  shared-workspace: rpmsg_lite_pingpong_tzm_shared_ws
+  sharing-workspace:
+  - ../../primary_ns/mdk/rpmsg_lite_pingpong_tzm_primary_core_ns_${core_id}
+  - ../../rpmsg_lite_pingpong_tzm_secondary_core_s/mdk/rpmsg_lite_pingpong_tzm_secondary_core_s_cm33_core1
+iar:
+  shared-workspace: rpmsg_lite_pingpong_tzm_shared_ws
+  sharing-workspace:
+  - ../../primary_ns/iar/rpmsg_lite_pingpong_tzm_primary_core_ns_${core_id}
+  - ../../rpmsg_lite_pingpong_tzm_secondary_core_s/iar/rpmsg_lite_pingpong_tzm_secondary_core_s_cm33_core1
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../rpmsg_lite_pingpong_tzm_secondary_core_s/iar/rpmsg_lite_pingpong_tzm_secondary_core_s_cm33_core1.eww"
+        slave-project: rpmsg_lite_pingpong_tzm_secondary_core_s_cm33_core1
+    debug:
+      download-extra-image:
+      - path: "../../rpmsg_lite_pingpong_tzm_primary_core_ns/iar/debug/rpmsg_lite_pingpong_tzm_primary_core_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+      asym-multicore-debugger:
+        slave-configuration: debug
+    release:
+      download-extra-image:
+      - path: "../../rpmsg_lite_pingpong_tzm_primary_core_ns/iar/release/rpmsg_lite_pingpong_tzm_primary_core_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+      asym-multicore-debugger:
+        slave-configuration: release

@@ -1,0 +1,29 @@
+
+mcux_add_macro(
+    CC "-DGENERIC_LIST_LIGHT=1\
+       -DFSL_PM_SUPPORT_ALWAYS_ON_SECTION=1"
+)
+
+
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER devices/MCX/MCXW/MCXW716C/iar/mcxw716_flash.icf
+)
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER devices/MCX/MCXW/MCXW716C/gcc/mcxw716_flash.ld
+)
+
+
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER devices/MCX/MCXW/MCXW716C/iar/mcxw716_flash_rom_boot.icf
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER devices/MCX/MCXW/MCXW716C/gcc/mcxw716_flash_rom_boot.ld
+)

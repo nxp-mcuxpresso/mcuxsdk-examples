@@ -1,0 +1,33 @@
+/*
+ * Copyright 2023 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef _APP_H_
+#define _APP_H_
+
+/*${header:start}*/
+#include "hal_clock.h"
+/*${header:end}*/
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define EXAMPLE_LPSPI_SLAVE_BASEADDR         LPSPI1
+#define EXAMPLE_LPSPI_SLAVE_IRQN             LPSPI1_IRQn
+#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     kLPSPI_Pcs0
+#define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER kLPSPI_SlavePcs0
+
+#define LPSPI_SLAVE_CLOCK_ROOT         hal_clock_lpspi1
+#define EXAMPLE_LPSPI_SLAVE_CLOCK_NAME (LPSPI_SLAVE_CLOCK_ROOT)
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

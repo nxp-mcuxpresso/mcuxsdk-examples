@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+csi_mipi_yuv:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/csi/mipi_yuv
+    project-root-path: boards/${board}/driver_examples/csi/mipi_yuv/${multicore_foldername}
+    document:
+      name: csi_mipi_yuv${core_id_suffix_name}
+      category: driver_examples/csi
+      brief: This project shows how to use the CSI with MIPI_CSI. In this example,
+        the camera device output pixel format is YUYV, the MIPI_CSI converts it to
+        YUV internally and sends to CSI. In other words, the CSI input data bus width
+        is 24-bit. The CSI saves the frame as 32-bit format XYUV8888. PXP is used
+        to convert the XYUV to RGB565 and show in the LCD panel.
+      example_readme:
+      - examples/driver_examples/csi/mipi_yuv/readme.md
+      - examples/_boards/${board}/driver_examples/csi/mipi_yuv/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    evkbmimxrt1170@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    evkmimxrt1160@cm4:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release
+    evkmimxrt1160@cm7:
+    - +armgcc@flexspi_nor_sdram_debug
+    - +armgcc@flexspi_nor_sdram_release
+    - +iar@flexspi_nor_sdram_debug
+    - +iar@flexspi_nor_sdram_release
+    - +mdk@flexspi_nor_sdram_debug
+    - +mdk@flexspi_nor_sdram_release
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@release

@@ -1,0 +1,50 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- MCIMX93-EVK board
+- J-Link Debug Probe
+- 12V~20V power supply
+- Personal Computer
+- M_IMX8_DSI_OLED1 panel
+
+Board settings
+============
+Connect MX8_DSI_OLED1 panel to J701 MINI SRS port
+
+Prepare the Demo
+===============
+1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW301 to power on the board.
+2.  Connect a micro USB cable between the host PC and the J1401 USB port on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Boot Linux BSP to u-boot, and load RGB565 binary and M core image from SD card to run. (Put the image into SD card before.)
+    => dcache off;load mmc 1:1 0xa6de9000 pic_binary.bin;mw 0xa6de9040 1 1
+    => load mmc 1:1 0x80000000 sdk20-app.bin
+    => cp.b 0x80000000 0x201e0000 0x20000
+    => bootaux 0x1ffe0000 0
+
+Running the demo
+================
+When the example runs successfully, you can see the similar information from the terminal as below.
+
+~~~~~~~~~~~~~~~~~~~~~
+LCDIFV3 FIGURE DISPLAY example start...
+The bitmap address of picture(s_pictureBitmapAddr[0]) is 0xa6de9000
+The bitmap address of picture(s_pictureBitmapAddr[1]) is 0xa7dbb000
+The framebuffer address (s_frameBufferAddr[0)] is 0xa6600000
+The framebuffer address (s_frameBufferAddr[1)] is 0xa69f4800
+The flag address (s_updatePicFlagAddr[0]) is 0xa8d8d000
+The flag address (s_updatePicFlagAddr[1]) is 0xa8d8d020
+Please use the uboot command to load picture binary to the bitmap address of picture: s_pictureBitmapAddr[0~1], and set a flag(s_updatePicFlagAddr[0~1]) in memory to notify mcu to update the picture
+For example:
+load mmc 1:1 0xa6de9000 /pic0.bin
+load mmc 1:1 0xa7dbb000 /pic1.bin
+mw 0xa8d8d000 0x1 1
+mw 0xa8d8d020 0x1 1
+LCDIFV3 init...
+The figure is displaying on panel
+~~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,10 @@
+menu "Maestro record"
+    osource "examples/audio_examples/Kconfig"
+
+    # Board example specific Kconfig can be linked in this way if needed
+    osource "${SdkRootDirPath}/${project_board_port_path}/Kconfig"
+
+endmenu
+
+# Need to refer the root Kconfig.mcuxpreso to get all Kconfig data
+source "Kconfig"

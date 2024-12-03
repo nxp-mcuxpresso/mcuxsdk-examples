@@ -1,0 +1,69 @@
+Hardware requirements
+=====================
+- USB Type-C cable
+- MCIMX93-EVK board
+- J-Link Debug Probe
+- 5V power supply
+- Personal Computer
+
+Board settings
+============
+No special settings are required.
+
+Prepare the Demo
+===============
+1.  Connect 5V power supply and J-Link Debug Probe to the board, switch SW10 to power on the board.
+2.  Connect a USB Type-C cable between the host PC and the J17 USB port on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Stop in uboot command line(A Core), M Core not initialize ddr, so need A Core running into uboot spl to initialize ddr.
+5.  Download the program to the target board.
+    - Either press the reset button on your board or launch the debugger in your IDE to begin running the example.
+
+Running the demo
+================
+The log below shows the output of the mbw demo in the terminal window:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Start----------Memory(DRAM, range: 0x80000000 ~ 0x80080000) Bandwidth Benchmark(MCore freq: 160000000)----------
+Long uses 4 bytes. Allocating 2*131072 elements = 1048576 bytes of memory.
+Using 1024 bytes as blocks for memcpy block copy test.
+Getting down to business... Doing 10 runs per test.
+0	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.658 MiB/s
+1	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.659 MiB/s
+2	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.659 MiB/s
+3	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.660 MiB/s
+4	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.659 MiB/s
+5	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.658 MiB/s
+6	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.659 MiB/s
+7	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.658 MiB/s
+8	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.659 MiB/s
+9	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.659 MiB/s
+AVG	Method: MEMCPY	Elapsed: 0.04691	MiB: 0.50000	Copy: 10.659 MiB/s
+0	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+1	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+2	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+3	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+4	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+5	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+6	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+7	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+8	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+9	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+AVG	Method: DUMB	Elapsed: 0.05803	MiB: 0.50000	Copy: 8.616 MiB/s
+0	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+1	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+2	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.652 MiB/s
+3	Method: MCBLOCK	Elapsed: 0.04695	MiB: 0.50000	Copy: 10.651 MiB/s
+4	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+5	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+6	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+7	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+8	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+9	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+AVG	Method: MCBLOCK	Elapsed: 0.04694	MiB: 0.50000	Copy: 10.651 MiB/s
+End------------Memory(DRAM, range: 0x80000000 ~ 0x80080000) Bandwidth Benchmark(MCore freq: 160000000)----------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

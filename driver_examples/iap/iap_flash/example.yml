@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iap_flash:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iap/iap_flash
+    project-root-path: boards/${board}/driver_examples/iap/iap_flash/${multicore_foldername}
+    document:
+      name: iap_flash${core_id_suffix_name}
+      category: driver_examples/iap
+      brief: The IAP Flash project is a simple demonstration program of the SDK IAP
+        driver. It erases and programs a portion of on-chip flash memory. A message
+        a printed on the UART terminal as various operations on flash memory are performed.
+      example_readme:
+      - examples/driver_examples/iap/iap_flash/readme.md
+      - examples/_boards/${board}/driver_examples/iap/iap_flash/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

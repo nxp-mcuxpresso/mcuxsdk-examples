@@ -1,0 +1,12 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "_boards/${board}/Kconfig"
+rsource "_common/Kconfig.interfaces"
+
+menu "Project Segmemts"
+rsource  "./_common/project_segments/common/Kconfig.prjseg"
+orsource "./_boards/${board}/Kconfig.prjseg"
+endmenu

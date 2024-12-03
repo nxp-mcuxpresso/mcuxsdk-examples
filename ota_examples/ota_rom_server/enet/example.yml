@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ota_rom_server_enet:
+  section-type: application
+  contents:
+    meta_path: examples/ota_examples/ota_rom_server/enet
+    project-root-path: boards/${board}/ota_examples/ota_rom_server/enet/${multicore_foldername}
+    document:
+      name: ota_rom_server_enet${core_id_suffix_name}
+      category: ota_examples
+      brief: This application example demonstrates an OTA update using the ROM API
+        and SB image format. File transfer is done using a simple HTTP server running
+        on the board.
+      example_readme:
+      - examples/ota_examples/ota_rom_server/enet/readme.md
+      - examples/_boards/${board}/ota_examples/ota_rom_server/enet/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

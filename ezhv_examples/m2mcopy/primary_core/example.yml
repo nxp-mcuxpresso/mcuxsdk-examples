@@ -1,0 +1,16 @@
+ezhv_m2mcopy_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/m2mcopy/primary_core
+    project-root-path: boards/${board}/ezhv_examples/m2mcopy/${multicore_foldername}
+    document:
+      name: ezhv_m2mcopy_primary_core
+      category: ezhv_examples
+      brief: This project shows how to use EZHV to copy memory between DTCM and SRAM.
+      example_readme:
+      - examples/ezhv_examples/m2mcopy/readme.md
+      - examples/_boards/${board}/ezhv_examples/m2mcopy/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

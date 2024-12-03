@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+edma3_memory_to_memory_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/edma3/memory_to_memory_transfer
+    project-root-path: boards/${board}/driver_examples/edma3/memory_to_memory_transfer/${multicore_foldername}
+    document:
+      name: edma3_memory_to_memory_transfer${core_id_suffix_name}
+      category: driver_examples/edma3
+      brief: The EDMA3 memory to memory transfer example is a simple demonstration
+        program that uses the SDK software.It executes one shot transfer from source
+        buffer to destination buffer using the SDK EDMA3 drivers.The purpose of this
+        example is to show how to use the EDMA3 and to provide a simple example for
+        debugging and further development.
+      example_readme:
+      - examples/driver_examples/edma3/memory_to_memory_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/edma3/memory_to_memory_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

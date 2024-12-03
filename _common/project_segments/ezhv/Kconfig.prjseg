@@ -1,0 +1,9 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.ezhv_support
+    bool "Use examples/_boards/${board}/ezhv_examples/ezhv_support[.c|.h]"
+
+config MCUX_PRJSEG_module.incbin.ezhv
+    bool "Use examples/_boards/${board}/ezhv_examples/incbin_ezhv.S"

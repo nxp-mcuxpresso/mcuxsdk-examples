@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+pdm_sai_sdma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pdm/pdm_sai_sdma
+    project-root-path: boards/${board}/driver_examples/pdm/pdm_sai_sdma/${multicore_foldername}
+    document:
+      name: pdm_sai_sdma${core_id_suffix_name}
+      category: driver_examples/pdm
+      brief: The pdm_sai_sdma example shows how to use pdm sdma driver together with
+        sai sdma driver
+      example_readme:
+      - examples/driver_examples/pdm/pdm_sai_sdma/readme.md
+      - examples/_boards/${board}/driver_examples/pdm/pdm_sai_sdma/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mn:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mnddr3l:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mp: []

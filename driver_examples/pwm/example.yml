@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pwm
+    project-root-path: boards/${board}/driver_examples/pwm/${multicore_foldername}
+    document:
+      name: pwm${core_id_suffix_name}
+      category: driver_examples/pwm
+      brief: The PWM project is a simple demonstration program of the SDK PWM driver.The
+        pulse width modulator (PWM) module contains PWM submodules, each of which
+        is set up to control a single half-bridge power stage.Fault channel support
+        is provided. This PWM module can generate various switching patterns, including
+        highly sophisticated waveforms.It can be used to control all known Switched
+        Mode Power Supplies (SMPS) topologies.
+      example_readme:
+      - examples/driver_examples/pwm/readme.md
+      - examples/_boards/${board}/driver_examples/pwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn9xxevk@cm33_core0: []

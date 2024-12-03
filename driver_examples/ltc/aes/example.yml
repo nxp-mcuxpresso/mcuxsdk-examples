@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ltc_aes:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ltc/aes
+    project-root-path: boards/${board}/driver_examples/ltc/aes/${multicore_foldername}
+    document:
+      name: ltc_aes${core_id_suffix_name}
+      category: driver_examples/ltc
+      brief: This project is a demonstration program that uses the KSDK software for
+        encryption/decryption sampledata using AES-CBC, AES-CCM, and XCBC-MAC algorithm.
+      example_readme:
+      - examples/driver_examples/ltc/aes/readme.md
+      - examples/_boards/${board}/driver_examples/ltc/aes/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

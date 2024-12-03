@@ -1,0 +1,46 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- EVK-MIMX8ULP board
+- Personal Computer
+
+Board settings
+============
+Populate J23 for two boards
+Populate 1K resistance between J23-1 and J23-5 for two boards
+I3C one board:
+  + Transfer data from MASTER_BOARD to SLAVE_BOARD of I3C interface, I3C0 pins of MASTER_BOARD are connected with
+    I3C0 pins of SLAVE_BOARD
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MASTER_BOARD        CONNECTS TO         SLAVE_BOARD
+Pin Name   Board Location     Pin Name   Board Location
+I3C0_CLK       J23-6           I3C0_CLK      J23-6
+I3C0_SDA       J23-1           I3C0_SDA      J23-1
+GND            J11-5           GND           J11-5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prepare the Demo
+===============
+1.  Connect 5V power supply and JLink Plus to the board, switch SW10 to power on the board
+2.  Connect a micro USB cable between the host PC and the J17 USB port on the target board.
+3.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+4.  Download the program to the target board.
+5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+The following message shows in the terminal if the example runs successfully.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+I3C bus master example.
+
+I3C bus master creates.
+
+I3C bus mastership handoff.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~

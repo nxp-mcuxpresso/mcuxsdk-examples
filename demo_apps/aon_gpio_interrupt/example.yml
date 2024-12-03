@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+aon_gpio_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/aon_gpio_interrupt
+    project-root-path: boards/${board}/demo_apps/aon_gpio_interrupt/aon_gpio_interrupt/${core_id}
+    document:
+      name: aon_gpio_interrupt${core_id_suffix_name}
+      category: demo_apps
+      brief: The GPIO Example project is a demonstration program that uses the KSDK
+        software to manipulate the general-purposeoutputs.The example is supported
+        by the init, set, and get  for each port pin output data register.
+  boards: {}

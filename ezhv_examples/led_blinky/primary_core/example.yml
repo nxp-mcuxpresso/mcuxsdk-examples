@@ -1,0 +1,16 @@
+ezhv_led_blinky_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/led_blinky/primary_core
+    project-root-path: boards/${board}/ezhv_examples/led_blinky/${multicore_foldername}
+    document:
+      name: ezhv_led_blinky_primary_core
+      category: ezhv_examples
+      brief: This project shows how to toggle GPIO to driver LED.
+      example_readme:
+      - examples/ezhv_examples/led_blinky/readme.md
+      - examples/_boards/${board}/ezhv_examples/led_blinky/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

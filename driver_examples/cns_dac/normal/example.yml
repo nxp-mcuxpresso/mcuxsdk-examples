@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cns_dac_normal:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cns_dac/normal
+    project-root-path: boards/${board}/driver_examples/dac/normal/${multicore_foldername}
+    document:
+      name: cns_dac_normal${core_id_suffix_name}
+      category: driver_examples/dac
+      brief: The DAC normal driver example demostrates the basic useage of DAC module.
+        In this example, users input value from the terminal, and then the related
+        voltage will be output through DAC output pin.
+      example_readme:
+      - examples/driver_examples/cns_dac/normal/readme.md
+      - examples/_boards/${board}/driver_examples/dac/normal/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

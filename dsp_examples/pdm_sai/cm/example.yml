@@ -1,0 +1,18 @@
+dsp_pdm_sai:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/pdm_sai/cm
+    project-root-path: boards/${board}/dsp_examples/pdm_sai/${core_id}
+    document:
+      name: dsp_pdm_sai${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_pdm_sai demo application demonstrates starting DSP core with
+        DSP image.
+      example_readme:
+      - examples/dsp_examples/pdm_sai/readme.md
+      - examples/_boards/${board}/dsp_examples/pdm_sai/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8ulp@cm33: []
+    evk9mimx8ulp@cm33: []

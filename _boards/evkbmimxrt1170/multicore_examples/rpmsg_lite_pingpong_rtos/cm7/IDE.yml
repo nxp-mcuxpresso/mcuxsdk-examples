@@ -1,0 +1,33 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+macro-file:
+  files:
+  - source: examples/_boards/${board}/evkbmimxrt1170_connect_cm7.mac
+    attribute: macro-file
+    toolchains: iar
+    choose: true
+    package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/cm7/iar
+    project_path: evkbmimxrt1170
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/evkbmimxrt1170_ram.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+    package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/cm7/mdk
+    project_path: evkbmimxrt1170
+  - source: examples/_boards/${board}/evkbmimxrt1170_sdram_init.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: sdram_debug sdram_release
+    package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/cm7/mdk
+    project_path: evkbmimxrt1170
+  - source: examples/_boards/${board}/evkbmimxrt1170_flexspi_nor.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flexspi_nor_debug flexspi_nor_release
+    package_path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/cm7/mdk
+    project_path: evkbmimxrt1170

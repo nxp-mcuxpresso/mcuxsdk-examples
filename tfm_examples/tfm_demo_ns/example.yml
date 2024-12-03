@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+tfm_demo_ns:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/tfm_examples/tfm_demo_ns
+    project-root-path: boards/${board}/tfm_examples/tfm_demo/tfm_demo_ns
+    document:
+      name: tfm_demo_ns${core_id_suffix_name}
+      category: tfm_examples
+      brief: The Trusted Firmware M (TF-M) demo application provides a sanity check
+        for the TF-M core and RoT services. It can be used as a template for a new
+        application which requires functionality of the TF-M Secure Services. This
+        is non-secure part of the application.
+  boards:
+    frdmrw612:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    rdrw612bga:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    mcxn9xxevk@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    frdmmcxn947@cm33_core0: []

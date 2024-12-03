@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ota_mcuboot_server_wifi:
+  section-type: application
+  contents:
+    meta_path: examples/ota_examples/ota_mcuboot_server/wifi
+    project-root-path: boards/${board}/ota_examples/ota_mcuboot_server/wifi/${multicore_foldername}
+    document:
+      name: ota_mcuboot_server_wifi${core_id_suffix_name}
+      category: ota_examples
+      brief: This ota_mcuboot_server application demonstrates OTA using an HTTP server
+        based on lwIP TCP/IP stack with FreeRTOS. The user uses an Internet browser
+        to upload new update package to reprogram application running on the board.
+      example_readme:
+      - examples/ota_examples/ota_mcuboot_server/wifi/readme.md
+      - examples/_boards/${board}/ota_examples/ota_mcuboot_server/wifi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

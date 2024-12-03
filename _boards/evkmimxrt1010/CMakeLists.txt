@@ -1,0 +1,7 @@
+include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
+include(${SdkRootDirPath}/arch/arm/target/flexspi_nor.cmake)
+mcux_add_cmakelists(${CMAKE_CURRENT_LIST_DIR}/xip)
+include(${SdkRootDirPath}/examples/_common/project_setting/RT1xxx.cmake)
+include(${SdkRootDirPath}/examples/_common/project_segments/lvgl/prjseg.cmake)
+include(${SdkRootDirPath}/examples/lvgl_examples/lvgl_sdk/lvgl_support/rt101x_lpspi/lvgl_support.cmake)
+include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/tickless/prjseg.cmake)

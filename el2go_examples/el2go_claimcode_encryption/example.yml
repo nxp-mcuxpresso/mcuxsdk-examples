@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+el2go_claimcode_encryption:
+  section-type: application
+  contents:
+    meta_path: examples/el2go_examples/el2go_claimcode_encryption
+    project-root-path: boards/${board}/el2go_examples/el2go_claimcode_encryption
+    document:
+      name: el2go_claimcode_encryption
+      category: el2go_examples
+      brief: The EdgeLock 2GO claimcode encryption demo demonstrates how to encrypt
+        a claimcode for onboarding a device with the EdgeLock 2GO cloud service.
+      example_readme:
+      - examples/el2go_examples/el2go_claimcode_encryption/readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

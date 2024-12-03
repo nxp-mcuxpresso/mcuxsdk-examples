@@ -1,0 +1,70 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.display-rm68200
+    select MCUX_COMPONENT_driver.display-rm68191
+    select MCUX_COMPONENT_driver.display-hx8394
+    select MCUX_COMPONENT_driver.dc-fb-elcdif
+    select MCUX_COMPONENT_driver.dc-fb-lcdifv2
+
+if MCUX_PRJSEG_module.board.display_support
+
+    config DEMO_PANEL
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.RK055AHD091
+        default 1 if MCUX_PRJSEG_module.board.display_support.RK055IQH091
+        default 2 if MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+        help
+            Panel selection for display support
+            No prefix in generated macro
+
+    config DEMO_DISPLAY_CONTROLLER
+        int
+        default 0 if MCUX_PRJSEG_module.board.display_support.elcdif
+        default 1 if MCUX_PRJSEG_module.board.display_support.lcdifv2
+        help
+            Panel driver selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.panel
+        prompt "Panel Selection"
+        default MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+
+        config MCUX_PRJSEG_module.board.display_support.RK055AHD091
+            bool "RK055AHD091-CTG"
+
+        config MCUX_PRJSEG_module.board.display_support.RK055IQH091
+            bool "RK055IQH091-CTG"
+
+        config MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
+            bool "RK055MHD091A0-CTG"
+
+    endchoice
+
+    choice MCUX_PRJSEG_module.board.display_support.display_controller
+        prompt "Display Controller Selection"
+        default MCUX_PRJSEG_module.board.display_support.lcdifv2
+
+        config MCUX_PRJSEG_module.board.display_support.elcdif
+            bool "eLCDIF"
+
+        config MCUX_PRJSEG_module.board.display_support.lcdifv2
+            bool "LCDIFv2"
+
+    endchoice
+
+    config DEMO_USE_XRGB8888
+        bool "Use XRGB8888 pixel format"
+        help
+            No prefix in generated macro
+
+    config DEMO_USE_LUT8
+        bool "Use LUT 8 pixel format"
+        help
+            No prefix in generated macro
+
+endif

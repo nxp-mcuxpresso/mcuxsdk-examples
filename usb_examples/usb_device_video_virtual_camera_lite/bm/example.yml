@@ -1,0 +1,93 @@
+dev_video_virtual_camera_lite_bm:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_device_video_virtual_camera_lite/bm/.
+    project-root-path: boards/${board}/usb_examples/usb_device_video_virtual_camera_lite/bm/${multicore_foldername}
+    document:
+      name: dev_video_virtual_camera_lite_bm${core_id_suffix_name}
+      category: usb_examples/
+      brief: The USB video virtual camera application is a simple demonstration program
+        based on the MCUXpresso SDK.It is enumerated as a camera and users can see
+        the video of the device by using a PC test tool.
+      example_readme:
+      - examples/usb_examples/usb_device_video_virtual_camera_lite/readme.md
+      - examples/_boards/${board}/usb_examples/usb_device_video_virtual_camera_lite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_device_video_virtual_camera_lite/usb_device_video_test_tool_attached.jpg
+      - examples/usb_examples/usb_device_video_virtual_camera_lite/usb_device_video_test_tool_web.jpg
+      - examples/usb_examples/usb_device_video_virtual_camera_lite/usb_device_video_test_tool_windows.jpg
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

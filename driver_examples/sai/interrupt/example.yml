@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sai_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sai/interrupt
+    project-root-path: boards/${board}/driver_examples/sai/interrupt/${multicore_foldername}
+    document:
+      name: sai_interrupt${core_id_suffix_name}
+      category: driver_examples/sai
+      brief: The sai_interrupt example shows how to use sai functional API to implement
+        interrupt playback:In this example, one sai instance playbacks the audio data
+        stored in flash/SRAM using interrupt.
+      example_readme:
+      - examples/driver_examples/sai/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/sai/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -iar@debug
+    - -iar@sdram_debug
+    - -mdk@debug
+    - -mdk@sdram_debug
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxn236: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []

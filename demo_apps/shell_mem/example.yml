@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+shell_mem:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/shell_mem
+    project-root-path: boards/${board}/demo_apps/shell_mem/${multicore_foldername}
+    document:
+      name: shell_mem${core_id_suffix_name}
+      category: demo_apps
+      brief: The Shell Demo application demonstrates ram and flash memory access commands.
+      example_readme:
+      - examples/demo_apps/shell_mem/readme.md
+      - examples/_boards/${board}/demo_apps/shell_mem/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release

@@ -1,0 +1,46 @@
+Hardware requirements
+=====================
+- Micro USB cable
+- FRDM-KE16Z board
+- Personal Computer
+
+Board settings
+==============
+LPI2C two boards:
+Transfer data from one board's instance to another board's instance.
+LPI2C0 pins are connected with LPI2C0 pins of another board.
+To make this example work, connections needed to be as follows:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+INSTANCE(LPI2C0)    connected to   INSTANCE (LPI2C0)
+Pin Name   Board Location        Pin Name    Board Location
+LPI2C0_SCL   J2-20              LPI2C0_SCL   J2-20
+LPI2C0_SDA   J2-18              LPI2C0_SDA   J2-18
+GND          J2-14              GND          J2-14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file freertos_lpi2c.c, do following definition:
+            #define EXAMPLE_CONNECT_I2C BOARD_TO_BOARD
+            For master, use following definition
+                #define I2C_MASTER_SLAVE isMASTER
+                Build project.
+                Download the program to one target board (used as master board).
+            For slave, use following definition
+                #define I2C_MASTER_SLAVE isSLAVE
+                Build project.
+                Download the program to one target board (used as slave board). 
+            Note: Slave side should run before Master side.
+            
+Prepare the Demo
+===============
+1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+${ANCHOR}

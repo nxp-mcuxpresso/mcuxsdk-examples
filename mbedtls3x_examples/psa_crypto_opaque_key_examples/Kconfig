@@ -1,0 +1,11 @@
+# It is optional to provide example specific Kconfig.
+
+rsource "${SdkRootDirPath}/Kconfig.mcuxpresso"
+
+mainmenu "PSA Crypto Opaque Key example Configuration"
+
+config TEST_KEY_LOCATION
+    default 0x0
+    hex "The key location to be used for test"
+    help
+        No prefix in generated macro

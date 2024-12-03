@@ -1,0 +1,15 @@
+ezhv_linear2tiledYUV_ezhv:
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/linear2tiledYUV/ezhv
+    project-root-path: boards/${board}/ezhv_examples/linear2tiledYUV/${multicore_foldername}
+    document:
+      name: ezhv_linear2tiledYUV_ezhv
+      category: ezhv_examples
+      brief: This project shows how to enable EZH-V to conver linearYUV to tiledYUV.
+      example_readme:
+      - examples/ezhv_examples/linear2tiledYUV/readme.md
+      - examples/_boards/${board}/ezhv_examples/linear2tiledYUV/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@ezhv: []

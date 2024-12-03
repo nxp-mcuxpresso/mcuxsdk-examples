@@ -1,0 +1,20 @@
+dsc_cop:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_cop
+    project-root-path: boards/${board}/driver_examples/cop/${multicore_foldername}
+    document:
+      name: dsc_cop${core_id_suffix_name}
+      category: driver_examples
+      brief: The COP Example project is to demonstrate usage of the cop driver.In
+        this example, after 5 times of refreshing in interrupt routine, interrupt
+        will be disabled, thus the COP is not serviced, then a timeout reset is generated.
+      example_readme:
+      - examples/driver_examples/dsc_cop/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

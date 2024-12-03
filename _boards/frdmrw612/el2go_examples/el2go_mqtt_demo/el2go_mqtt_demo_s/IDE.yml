@@ -1,0 +1,27 @@
+mdk:
+  shared-workspace: el2go_mqtt_demo
+  sharing-workspace:
+  - ../../el2go_mqtt_demo_ns/mdk/el2go_mqtt_demo_ns
+flash_programming_file:
+  files:
+  - source: examples/_boards/${board}/el2go_examples/el2go_mqtt_demo/el2go_mqtt_demo_s/el2go_mqtt_demo_flashdownload.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug release
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/el2go_examples/el2go_mqtt_demo/el2go_mqtt_demo_s/el2go_mqtt_demo_flashdebug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug release
+iar:
+  shared-workspace: el2go_mqtt_demo
+  sharing-workspace:
+  - ../../el2go_mqtt_demo_ns/iar/el2go_mqtt_demo_ns
+  config:
+    __common__:
+      download-extra-image:
+      - path: "../../el2go_mqtt_demo_ns/iar/el2go_mqtt_demo_ns.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_decrypt_sb3:
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_decrypt_sb3
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_decrypt_sb3/${multicore_foldername}
+    document:
+      name: ele_decrypt_sb3${core_id_suffix_name}
+      category: secure-subsystem_examples
+      brief: This example showing how to read fuse, check it value and if its match
+        expected value decrypt SB3 file.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_decrypt_sb3/readme.md
+      - examples/_boards/${board}/secure-subsystem_examples/ele_decrypt_sb3/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release

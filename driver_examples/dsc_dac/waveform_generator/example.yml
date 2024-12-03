@@ -1,0 +1,19 @@
+dsc_dac_waveform_generator:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_dac/waveform_generator
+    project-root-path: boards/${board}/driver_examples/dac/waveform_generator/${multicore_foldername}
+    document:
+      name: dsc_dac_waveform_generator${core_id_suffix_name}
+      category: driver_examples/dsc_dac
+      brief: The dsc_dac_waveform_generator example shows how to use DAC module simply
+        as the waveform generator. When the DAC's synchronous conversion mode is not
+        selected, when the buffered value is written to the DAC's buffered register,
+        the data can be immediately presented to the DAC and converted to an analog
+        output. The desired waveform can be measured on DAC output pin.
+      example_readme:
+      - examples/driver_examples/dsc_dac/waveform_generator/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f81000evk: []
+    mc56f83000evk: []

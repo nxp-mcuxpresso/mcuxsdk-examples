@@ -1,0 +1,15 @@
+ezhv_flexio_dvp_ezhv:
+  section-type: application
+  contents:
+    meta_path: examples/ezhv_examples/flexio_dvp/ezhv
+    project-root-path: boards/${board}/ezhv_examples/flexio_dvp/${multicore_foldername}
+    document:
+      name: ezhv_flexio_dvp_ezhv
+      category: ezhv_examples
+      brief: This project shows how to enable display video port.
+      example_readme:
+      - examples/ezhv_examples/flexio_dvp/readme.md
+      - examples/_boards/${board}/ezhv_examples/flexio_dvp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@ezhv: []

@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+mcglite:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mcglite
+    project-root-path: boards/${board}/driver_examples/mcglite/${multicore_foldername}
+    document:
+      name: mcglite${core_id_suffix_name}
+      category: driver_examples/mcglite
+      brief: 'The MCG_Lite example shows how to use MCG_Lite driver: 1. How to use
+        the mode functions for MCG_Lite mode switch. 2. How to use the frequency functions
+        to get current MCG_Lite frequency. 3. Work flow  Reset mode --> LIRC8M    LIRC8M
+        --> HIRC    HIRC   --> LIRC2M    LIRC2M --> EXT    EXT    --> HIRC    HIRC   -->
+        LIRC8M    LIRC8M --> EXT    EXT    --> LIRC2M    LIRC2M --> HIRC    HIRC   -->
+        EXT    EXT    --> LIRC8M    LIRC8M --> LIRC2M    LIRC2M --> LIRC8MIn this
+        example, because the debug console''s clock frequency may change,so the example
+        running information is not output from debug console. Here theLED blinks to
+        show that the example finished successfully.'
+      example_readme:
+      - examples/driver_examples/mcglite/readme.md
+      - examples/_boards/${board}/driver_examples/mcglite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []

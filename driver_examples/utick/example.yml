@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+utick_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/utick
+    project-root-path: boards/${board}/driver_examples/utick/${multicore_foldername}
+    document:
+      name: utick_example${core_id_suffix_name}
+      category: driver_examples/utick
+      brief: The utick project is a simple demonstration program of the SDK utick
+        driver. It sets up the utick hardware block to trigger a periodic interrupt
+        after every 1 second. When the utick interrupt is triggered a message is printed
+        on the UART terminal.
+      example_readme:
+      - examples/driver_examples/utick/readme.md
+      - examples/_boards/${board}/driver_examples/utick/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []
+    mimxrt700evk@cm33_core0: []

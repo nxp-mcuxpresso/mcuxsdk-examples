@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ecompass_peripheral:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/ecompass_peripheral
+    project-root-path: boards/${board}/demo_apps/ecompass_peripheral/${multicore_foldername}
+    document:
+      name: ecompass_peripheral${core_id_suffix_name}
+      category: demo_apps
+      brief: The E-Compass demo application demonstrates the use of the FXOS8700 sensor.
+        The tilt-compensated algorithm calculatesall three angles (pitch, roll, and
+        yaw or compass heading). You can open the mex file with MCUXpresso Config
+        Tool to do further configuration of pin, clock and peripheral.
+      example_readme:
+      - examples/demo_apps/ecompass_peripheral/readme.md
+      - examples/_boards/${board}/demo_apps/ecompass_peripheral/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmke15z: []
+    frdmke17z: []

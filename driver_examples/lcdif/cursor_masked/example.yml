@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdif_cursor_masked:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdif/cursor_masked
+    project-root-path: boards/${board}/driver_examples/lcdif/cursor_masked/${multicore_foldername}
+    document:
+      name: lcdif_cursor_masked${core_id_suffix_name}
+      category: driver_examples/lcdif
+      brief: This example demonstrates how to use the LCDIF cursor in masked mode.
+      example_readme:
+      - examples/driver_examples/lcdif/cursor_masked/readme.md
+      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    mimxrt700evk@cm33_core0: []

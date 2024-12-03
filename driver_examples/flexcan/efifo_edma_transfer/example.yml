@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexcan_efifo_edma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/efifo_edma_transfer
+    project-root-path: boards/${board}/driver_examples/flexcan/efifo_edma_transfer/${multicore_foldername}
+    document:
+      name: flexcan_efifo_edma_transfer${core_id_suffix_name}
+      category: driver_examples/flexcan
+      brief: The flexcan_efifo_edma_transfer example shows how to use the EDMA version
+        transactional driver to receive CAN FD Message from Enhanced Rx FIFO:In this
+        example, when set ENABLE_LOOPBACK macro, only one board is needed. The example
+        will config one FlexCAN Message Buffer to Tx Message Buffer and setup Enhanced
+        Rx FIFO. After that, the example will send 4 CAN FD Messages from Tx Message
+        Buffer to Enhanced Rx FIFO through internal loopback interconnect and read
+        them out using EDMA version FlexCAN transactional driver. The send and received
+        message will be print out to terminal. When not define ENABLE_LOOPBACK, need
+        2 boards are connected through CAN bus. Endpoint A(board A) send a CAN Message
+        to Endpoint B(board B) when user press space key in terminal. Endpoint B receive
+        the message by Enhanced Rx FIFO and read them out using EDMA version FlexCAN
+        transactional driver. The send and received message will be print out to terminal.
+      example_readme:
+      - examples/driver_examples/flexcan/efifo_edma_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxw71: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release

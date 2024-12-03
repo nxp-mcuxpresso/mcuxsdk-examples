@@ -1,0 +1,10 @@
+rsource "${SdkRootDirPath}/Kconfig.mcuxpresso"
+
+mainmenu "EL2GO Blob Test Configuration"
+
+config RUN_VERIFIED_ONLY
+    default y
+    bool "Only run testcases that are expected to pass"
+
+config LARGE_BLOBS_ENABLED
+    bool "Enable testing of blobs with a key size larger than 2783 bytes"

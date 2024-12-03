@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexcan_ping_pong_buffer_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexcan/ping_pong_buffer_transfer
+    project-root-path: boards/${board}/driver_examples/flexcan/ping_pong_buffer_transfer/${multicore_foldername}
+    document:
+      name: flexcan_ping_pong_buffer_transfer${core_id_suffix_name}
+      category: driver_examples/flexcan
+      brief: The flexcan_ping_pong_buffer_transfer example shows how to use the FlexCAN
+        queue feature to create 2 simulate FIFOs that can receive CAN frames:In this
+        example, 2 boards are connected through CAN bus. Endpoint A(board A) send
+        CAN messages to Endpoint B(board B) when user input the number of CAN messages
+        to be send in terminal. Endpoint B uses two receiving queues to receive messages
+        in turn, and prints the message content and the receiving queue number to
+        the terminal after any queue is full.
+      example_readme:
+      - examples/driver_examples/flexcan/ping_pong_buffer_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/flexcan/ping_pong_buffer_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimx8mp: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcimx93autoevk: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn9xxevk@cm33_core0: []

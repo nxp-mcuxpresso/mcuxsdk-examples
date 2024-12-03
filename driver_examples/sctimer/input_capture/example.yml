@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sctimer_input_capture:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sctimer/input_capture
+    project-root-path: boards/${board}/driver_examples/sctimer/input_capture/${multicore_foldername}
+    document:
+      name: sctimer_input_capture${core_id_suffix_name}
+      category: driver_examples/sctimer
+      brief: The SCTimer project is a demonstration program of the SDK SCTimer driver's
+        input capture feature.
+      example_readme:
+      - examples/driver_examples/sctimer/input_capture/readme.md
+      - examples/_boards/${board}/driver_examples/sctimer/input_capture/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612: []
+    rdrw612bga: []

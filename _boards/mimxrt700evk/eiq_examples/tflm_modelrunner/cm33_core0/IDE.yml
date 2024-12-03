@@ -1,0 +1,14 @@
+armgcc:
+  project_language: cpp
+mdk:
+  project_language: cpp
+  project-templates:
+    - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core0.uvprojx
+    - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core0.uvoptx
+
+iar:
+  project_language: auto
+  project-templates:
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
+    - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+    - scripts/guigenerator/templates/iar/general.eww

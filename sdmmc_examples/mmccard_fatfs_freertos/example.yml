@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mmccard_fatfs_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/sdmmc_examples/mmccard_fatfs_freertos
+    project-root-path: boards/${board}/sdmmc_examples/mmccard_fatfs_freertos/${multicore_foldername}
+    document:
+      name: mmccard_fatfs_freertos${core_id_suffix_name}
+      category: sdmmc_examples/mmccard_fatfs_freertos
+      brief: The mmccard FATFS FREERTOS project is a demonstration program that uses
+        the SDK software. The purpose of this example is to show how to use mmccard
+        with fatfs and freertos.
+      example_readme:
+      - examples/sdmmc_examples/mmccard_fatfs_freertos/readme.md
+      - examples/_boards/${board}/sdmmc_examples/mmccard_fatfs_freertos/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    mimxrt700evk@cm33_core0: []

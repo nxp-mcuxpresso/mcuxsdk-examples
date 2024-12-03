@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_uart:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_uart
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_uart/${multicore_foldername}
+    document:
+      name: freertos_uart${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The UART example for FreeRTOS demonstrates the possibility to use the
+        UART driver in the RTOS.The example uses single instance of UART IP and writes
+        string into, then reads back chars.After every 4B received, these are sent
+        back on UART.
+      example_readme:
+      - examples/freertos_driver_examples/freertos_uart/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_uart/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []
+    frdmk32l2b: []
+    mimxrt685audevk: []

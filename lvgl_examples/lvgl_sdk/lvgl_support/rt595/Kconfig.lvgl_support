@@ -1,0 +1,7 @@
+config MCUX_PRJSEG_module.board.lvgl
+    select MCUX_COMPONENT_driver.flexcomm_i2c
+    select MCUX_COMPONENT_driver.ft3267
+    select MCUX_COMPONENT_driver.ft5406
+    select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_middleware.vglite if MCUX_COMPONENT_middleware.freertos-kernel
+    select MCUX_PRJSEG_module.board.display_support

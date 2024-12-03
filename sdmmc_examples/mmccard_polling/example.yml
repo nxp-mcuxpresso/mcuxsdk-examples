@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mmccard_polling:
+  section-type: application
+  contents:
+    meta_path: examples/sdmmc_examples/mmccard_polling
+    project-root-path: boards/${board}/sdmmc_examples/mmccard_polling/${multicore_foldername}
+    document:
+      name: mmccard_polling${core_id_suffix_name}
+      category: sdmmc_examples/mmccard_polling
+      brief: The MMCCARD Polling project is a demonstration program that uses the
+        SDK software. It reads/writes/erases the MMC card continusly. The purpose
+        of this example is to show how to use MMCCARD driver andshow how to use polling
+        based transfer API in SDK software driver to access MMC card.Note:User can
+        use MMC plus card or emmc(on board IC, but not recommand use emmc socket,due
+        to high speed timing restriction)
+      example_readme:
+      - examples/sdmmc_examples/mmccard_polling/readme.md
+      - examples/_boards/${board}/sdmmc_examples/mmccard_polling/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    mimxrt700evk@cm33_core0: []

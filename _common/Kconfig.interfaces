@@ -1,0 +1,27 @@
+# Copyright 2024 NXP
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+# Configuration related to board-level interfaces, sockets, connectors and similar
+# hardware. These should be selected by concrete board, and shouldn't be modified by user
+# from application conf or guiconfig.
+
+menu "Board interfaces"
+
+visible if 0
+
+config MCUX_HW_BOARD_interface.has_m2_socket
+    bool
+    default n
+    help
+        This symbol is y if the board has an M.2 socket, which can be used to inferface
+        with Wi-Fi/BT external modules.
+
+config MCUX_HW_BOARD_interface.has_sd_slot
+    bool
+    default n
+    help
+        This symbol is y if the board has an SD card slot.
+
+endmenu

@@ -1,0 +1,14 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config dsp_board
+    string
+    default "$(board)"
+
+config dsp_toolchain
+    string
+    default "xtensa"
+
+source "${SdkRootDirPath}/examples/_boards/${board}/Kconfig.sysbuild"

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+prince:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/prince
+    project-root-path: boards/${board}/driver_examples/prince/${multicore_foldername}
+    document:
+      name: prince${core_id_suffix_name}
+      category: driver_examples/prince
+      brief: This driver example demonstrates how to setup PRINCE driver for the on-the-fly
+        encryption/decryption of data stored in the internal flash memory. It shows
+        how to enable encryption/decryption for specified flash memory address range,
+        how to generate new IV code and how to load the IV code into the PRINCE bus
+        encryption engine. The example also shows how to correctly perform PRINCE
+        region erase and write operations with dummy data.
+      example_readme:
+      - examples/driver_examples/prince/readme.md
+      - examples/_boards/${board}/driver_examples/prince/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []

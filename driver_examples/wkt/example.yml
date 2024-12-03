@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+wkt_example:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/wkt
+    project-root-path: boards/${board}/driver_examples/wkt/${multicore_foldername}
+    document:
+      name: wkt_example${core_id_suffix_name}
+      category: driver_examples/wkt/
+      brief: The WKT project is a simple demonstration program of the SDK WKT driver.
+        It sets up the WKT hardware block to trigger a periodic interrupt after loading
+        a counter value and counting down to 0. When the WKT interrupt is triggered
+        a message printed on the UART terminal and the LED is toggled on the board.Depending
+        on the clock source, the WKT can be used for waking up the part from any low
+        power mode or for general-purposetiming.
+      example_readme:
+      - examples/driver_examples/wkt/readme.md
+      - examples/_boards/${board}/driver_examples/wkt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpc845breakout: []
+    lpcxpresso802: []
+    lpcxpresso804: []
+    lpcxpresso824max: []
+    lpcxpresso845max: []
+    lpcxpresso860max: []

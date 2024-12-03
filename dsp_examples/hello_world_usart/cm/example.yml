@@ -1,0 +1,22 @@
+dsp_hello_world_usart:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/dsp_examples/hello_world_usart/cm
+    project-root-path: boards/${board}/dsp_examples/hello_world_usart/${core_id}
+    document:
+      name: dsp_hello_world_usart${core_id_suffix_name}
+      category: dsp_examples
+      brief: The dsp_hello_world_usart demo application demonstrates starting DSP
+        core with DSP image.
+      example_readme:
+      - examples/dsp_examples/hello_world_usart/readme.md
+      - examples/_boards/${board}/dsp_examples/hello_world_usart/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt685@cm33: []
+    mimxrt685audevk@cm33: []
+    evkmimxrt595@cm33: []
+    evkmimx8ulp@cm33: []
+    evk9mimx8ulp@cm33: []
+    mimxrt700evk@cm33_core0: []

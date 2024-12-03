@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+zigbee_coprocessor_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/zigbee/coprocessor/bm
+    project-root-path: boards/${board}/wireless_examples/zigbee/coprocessor/bm
+    document:
+      name: zigbee_coprocessor_bm
+      category: wireless_examples/zigbee/coprocessor/bm
+      brief: The zigbee_coprocessor application is a simple demonstration program based on the MCUXpresso SDK.
+             This application implements a zigbee coprocessor features.
+  boards:
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release

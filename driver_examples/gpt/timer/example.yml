@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+gpt_timer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/gpt/timer
+    project-root-path: boards/${board}/driver_examples/gpt/timer/${multicore_foldername}
+    document:
+      name: gpt_timer${core_id_suffix_name}
+      category: driver_examples/gpt
+      brief: The gpt_timer project is a simple demonstration program of the SDK GPT
+        driver. It sets up the GPThardware block to trigger a periodic interrupt after
+        every 1 second. When the GPT interrupt is triggereda message a printed on
+        the UART terminal.
+      example_readme:
+      - examples/driver_examples/gpt/timer/readme.md
+      - examples/_boards/${board}/driver_examples/gpt/timer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

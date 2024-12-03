@@ -1,0 +1,29 @@
+cadc_sequential_conversion:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dsc_cadc/sequential_conversion
+    project-root-path: boards/${board}/driver_examples/cadc/sequential_conversion/${multicore_foldername}
+    document:
+      name: cadc_sequential_conversion${core_id_suffix_name}
+      category: driver_examples/cadc
+      brief: 'The cadc_sequential_conversion example shows how to use a long conversion
+        sequence (can include as many as all the 16 sample slots) with CADC driver.In
+        this example, the CADC is configured as "kCADC_DualConverterWorkAsTriggeredSequential"
+        work mode. User should indicate 4 channel pairs to provide the differential
+        voltage signal (can be controlled by user) as the inputs for CADCsample slots.
+        These sample slots would be assembled into a long conversion sequence.In "kCADC_DualConverterWorkAsTriggeredSequential"
+        mode, all the sample slots are organized as a long conversion sequence. The
+        converter A''s control logic would be used to operate this long conversion
+        sequence. It can start and stopthe sequence.When running the project, typing
+        any key into debug console would trigger the conversion. And then, the conversion
+        result data of the four sample slots (Sample 0, 1, 2, 3) would be displayed
+        in the terminal. '
+      example_readme:
+      - examples/driver_examples/dsc_cadc/sequential_conversion/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8200: []
+    twrmc56f8400: []

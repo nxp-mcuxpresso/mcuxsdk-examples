@@ -1,0 +1,41 @@
+/*********************************************************************
+*               SEGGER MICROCONTROLLER GmbH & Co KG                  *
+*       Solutions for real time microcontroller applications         *
+**********************************************************************
+*                                                                    *
+*       (c) 2017-2017   SEGGER Microcontroller GmbH & Co KG          *
+*                                                                    *
+*       www.segger.com     Support: support@segger.com               *
+*                                                                    *
+**********************************************************************
+
+----------------------------------------------------------------------
+File    : LPC54S018_SRAMX.mac
+Purpose : Macro file for SRAMX debug configurations
+--------  END-OF-HEADER  ---------------------------------------------
+*/
+
+__var ImgId;
+
+/*********************************************************************
+*
+*       execUserReset()
+*/
+execUserReset() {
+  __message "execUserReset()";
+  //
+  // It seems like the bootloader of the LPC540xx changes the SRAMX, thus we have to re-download the application image
+  // after performing a reset (which includes a halt after bootloader)
+  //
+  __unloadImage(ImgId);
+  ImgId = __loadImage("$TARGET_PATH$", 0, 0);
+}
+
+/*********************************************************************
+*
+*       execUserPreload()
+*/
+execUserPreload() {
+  __message "UserPreload()";
+  ImgId = 1;
+}

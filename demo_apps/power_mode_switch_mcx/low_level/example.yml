@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+power_mode_switch_ll:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_mcx/low_level
+    project-root-path: boards/${board}/demo_apps/power_mode_switch/low_level/${multicore_foldername}
+    document:
+      name: power_mode_switch_ll${core_id_suffix_name}
+      category: demo_apps
+      brief: The power_mode_switch_ll demo application demonstrates the usage of low
+        level power-related drivers(SPC, CMC, VBAT, WUU, and so on) to enter/exit
+        different power modes.
+      example_readme:
+      - examples/demo_apps/power_mode_switch_mcx/low_level/readme.md
+      - examples/_boards/${board}/demo_apps/power_mode_switch/low_level/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

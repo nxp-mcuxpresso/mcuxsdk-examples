@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+gpt_capture:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/gpt/capture
+    project-root-path: boards/${board}/driver_examples/gpt/capture/${multicore_foldername}
+    document:
+      name: gpt_capture${core_id_suffix_name}
+      category: driver_examples/gpt
+      brief: The gpt_capture project is a simple demonstration program of the SDK
+        GPT driver's input capture feature.The example sets up a GPT channel for rise-edge
+        capture. Once the input signal is received,this example will print the capture
+        value.
+      example_readme:
+      - examples/driver_examples/gpt/capture/readme.md
+      - examples/_boards/${board}/driver_examples/gpt/capture/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []

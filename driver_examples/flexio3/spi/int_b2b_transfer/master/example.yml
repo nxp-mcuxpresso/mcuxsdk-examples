@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+flexio3_spi_int_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexio3/spi/int_b2b_transfer/master
+    project-root-path: boards/${board}/driver_examples/flexio3/spi/int_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: flexio3_spi_int_b2b_transfer_master${core_id_suffix_name}
+      category: driver_examples/flexio
+      brief: The flexio3_spi_int_b2b_transfer_master example shows how to use flexio
+        spi driver as master in interrupt way. In this example, a flexio simulated
+        master is connected to a flexio simulated spi slave on another board.
+      example_readme:
+      - examples/driver_examples/flexio3/spi/int_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/driver_examples/flexio3/spi/int_b2b_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []

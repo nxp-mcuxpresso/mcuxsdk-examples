@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+mmdvsq:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mmdvsq
+    project-root-path: boards/${board}/driver_examples/mmdvsq/${multicore_foldername}
+    document:
+      name: mmdvsq${core_id_suffix_name}
+      category: driver_examples/mmdvsq
+      brief: The MMDVSQ Example project is a demonstration program that uses the KSDK
+        software to Calculation square root and QuotientMMDVSQ Peripheral Driver ExampleStart
+        MMDVSQ ExampleCalculation square root, please enter radicandSquare root of
+        9 is 3Calculation division to get remainder and quotientEnter dividend and
+        divisorRemainder of 10 and 5 is 0Quotient of 10 and 5 is 2
+      example_readme:
+      - examples/driver_examples/mmdvsq/readme.md
+      - examples/_boards/${board}/driver_examples/mmdvsq/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2a4s: []
+    frdmk32l3a6@cm0plus: []
+    frdmke15z: []
+    frdmke16z: []

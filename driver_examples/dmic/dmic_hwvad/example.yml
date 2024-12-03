@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dmic_hwvad:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dmic/dmic_hwvad
+    project-root-path: boards/${board}/driver_examples/dmic/dmic_hwvad/${multicore_foldername}
+    document:
+      name: dmic_hwvad${core_id_suffix_name}
+      category: driver_examples/dmic
+      brief: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~This demo explains how built in HWVAD(
+        HW voice activity detector) in LPC5411x can be used towake up the device from
+        sleep mode
+      example_readme:
+      - examples/driver_examples/dmic/dmic_hwvad/readme.md
+      - examples/_boards/${board}/driver_examples/dmic/dmic_hwvad/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    lpcxpresso55s36: []
+    mimxrt685audevk@cm33: []
+    rdrw612bga: []

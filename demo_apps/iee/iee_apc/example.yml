@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iee_apc:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/iee/iee_apc
+    project-root-path: boards/${board}/demo_apps/iee_apc/${multicore_foldername}
+    document:
+      name: iee_apc${core_id_suffix_name}
+      category: demo_apps
+      brief: The IEE APC demo application demonstrates usage of the IEE and IEE APC
+        driver. The Inline Encryption Engine (IEE) together with IEE APC provides
+        a means to perform inline encryption and decryption of information transferred
+        over memory interfaces. This demo application configures region 0 to perform
+        AES XTS encryption and decryption while region 1 to perform AES-CTR decryption
+        from external QSPI FLASH memory. Then data are written into RAM memory (region
+        0), after that encryption is disabled and encrypted data read. After the successful
+        read, encryption is enabled and memory read again to see that data matches
+        the original written value. Another encrypted data are programmed into FLASH
+        memory (region 1) and after encryption is enabled data are read and compared
+        with expected data.
+      example_readme:
+      - examples/demo_apps/iee/iee_apc/readme.md
+      - examples/_boards/${board}/demo_apps/iee_apc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []

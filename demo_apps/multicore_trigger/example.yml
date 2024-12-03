@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+multicore_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/multicore_trigger
+    project-root-path: boards/${board}/demo_apps/multicore_trigger/${multicore_foldername}
+    document:
+      name: multicore_trigger${core_id_suffix_name}
+      category: demo_apps
+      brief: The multicore trigger demo is enabled only for primary core on multicore
+        soc, to trigger other subordinative core to boot.
+      example_readme:
+      - examples/demo_apps/multicore_trigger/readme.md
+      - examples/_boards/${board}/demo_apps/multicore_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +armgcc@hyperram_txt_debug
+    - +armgcc@hyperram_txt_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +iar@hyperram_txt_debug
+    - +iar@hyperram_txt_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
+    - +mdk@hyperram_txt_debug
+    - +mdk@hyperram_txt_release

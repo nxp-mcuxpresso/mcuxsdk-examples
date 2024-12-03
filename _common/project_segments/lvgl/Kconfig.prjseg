@@ -1,0 +1,9 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menuconfig MCUX_PRJSEG_module.board.lvgl
+    bool "Enable LVGL Support"
+    select MCUX_COMPONENT_middleware.lvgl
+
+orsource "../../../_boards/${board}/project_segments/lvgl/Kconfig.prjseg"

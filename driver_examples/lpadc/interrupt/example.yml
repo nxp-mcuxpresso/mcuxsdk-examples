@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpadc_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpadc/interrupt
+    project-root-path: boards/${board}/driver_examples/lpadc/interrupt/${multicore_foldername}
+    document:
+      name: lpadc_interrupt${core_id_suffix_name}
+      category: driver_examples/lpadc
+      brief: The lpdc_single_interrupt example shows how to use interrupt with LPADC
+        driver.In this example, user should indicate a channel to provide a voltage
+        signal (can be controlled by user) as the LPADC'ssample input. When running
+        the project, typing any key into debug console would trigger the conversion.
+        ADC watermark interrupt would be asserted once the number of datawords stored
+        in the ADC Result FIFO is greater than watermark value.In ADC ISR, the watermark
+        flag would be cleared by reading the conversion result value. Also, result
+        information wouldbe printed when the execution return to the main function.
+      example_readme:
+      - examples/driver_examples/lpadc/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/lpadc/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s36: []
+    lpcxpresso55s69@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0: []

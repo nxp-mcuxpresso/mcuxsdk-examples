@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mbedtls_test_suite:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/mbedtls/mbedtls_test_suite
+    project-root-path: boards/${board}/mbedtls_examples/mbedtls_test_suite/${multicore_foldername}
+    document:
+      name: mbedtls_test_suite${core_id_suffix_name}
+      category: mbedtls_examples
+      brief: The mbdedTLS test suite program performs cryptographic algorithm testing,
+        and prints results to the terminal. Its uses eRPC, Server side (board) recieved
+        test data via eRPC from client side (PC), performs cryptographic alghoritm
+        testing and then passes result to client.
+      example_readme:
+      - examples/demo_apps/mbedtls/mbedtls_test_suite/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}

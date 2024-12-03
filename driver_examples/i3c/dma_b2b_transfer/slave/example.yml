@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+i3c_dma_b2b_transfer_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/i3c/dma_b2b_transfer/slave
+    project-root-path: boards/${board}/driver_examples/i3c/dma_b2b_transfer/slave/${multicore_foldername}
+    document:
+      name: i3c_dma_b2b_transfer_slave${core_id_suffix_name}
+      category: driver_examples/i3c
+      brief: The i3c_dma_b2b_transfer_slave example shows how to use i3c driver as
+        slave to do board to board transfer with a dma master. In this example, one
+        i3c instance as slave and another i3c instance on the other board as master.
+        Master sends a piece of data to slave, and receive a piece of data from slave.
+        This example checks if the data received from slave is correct.
+      example_readme:
+      - examples/driver_examples/i3c/dma_b2b_transfer/slave/readme.md
+      - examples/_boards/${board}/driver_examples/i3c/dma_b2b_transfer/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []
+    lpcxpresso860max: []

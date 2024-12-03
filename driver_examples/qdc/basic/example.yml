@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+qdc_basic:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qdc/basic
+    project-root-path: boards/${board}/driver_examples/qdc/basic/${multicore_foldername}
+    document:
+      name: qdc_basic${core_id_suffix_name}
+      category: driver_examples/qdc
+      brief: The qdc_basic example shows how to quickly start using QDC driver.In
+        this example, user needs to connect a real encoder to the board. Actually,
+        only PHASE A and PHASE B are enough for the basic application. When running
+        the project, user can turn the encoder so that QDC module can monitor the
+        position change. Then, the internal counter would also count for the position.
+        User can also type keys into terminal, and the current position values recorded
+        by QDC would display. The QDC hardware is created with a special synchronize
+        mechanism. There are actually 4 counters (the 32-bit position counter is combined
+        with the two 16-bit counter registers) for position with responding hold registers.
+        When any of the counter registers is read, the contents of each counter register
+        is written to the corresponding hold register. Taking a snapshot of the counters'
+        values provides a consistent view of a system position and a velocity to be
+        attained.
+      example_readme:
+      - examples/driver_examples/qdc/basic/readme.md
+      - examples/_boards/${board}/driver_examples/qdc/basic/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []

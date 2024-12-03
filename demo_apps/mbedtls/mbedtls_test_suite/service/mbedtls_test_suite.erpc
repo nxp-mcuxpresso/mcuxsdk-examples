@@ -1,0 +1,167 @@
+//Copyright below will be added into all generated files.
+/*!
+ * Copyright (c) 2014-2016, Freescale Semiconductor, Inc.
+ * Copyright 2016 NXP
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice, this list
+ *   of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following disclaimer in the documentation and/or
+ *   other materials provided with the distribution.
+ *
+ * o Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+program mbedtls_test_suite
+
+const uint8 StringMaxSize = 11
+
+struct data_t
+{
+    list<int8> x @length(len)
+    int32 len
+}
+
+interface test_suite
+{
+    board_get_name(out string name @max_length(StringMaxSize)) -> void
+
+    /*! AES */
+    board_aes_encrypt_ecb( in data_t key_str,
+						in data_t src_str,
+						in data_t hex_dst_string,
+						int32 setkey_result) -> int32
+
+	board_aes_decrypt_ecb( in data_t key_str,
+						in data_t src_str,
+						in data_t hex_dst_string,
+						int32 setkey_result) -> int32
+
+	board_aes_encrypt_cbc(	in data_t key_str,
+						in data_t  iv_str,
+						in data_t  src_str,
+						in data_t  hex_dst_string,
+						int32 cbc_result) -> int32
+						
+	board_aes_decrypt_cbc( in data_t key_str,
+						in data_t iv_str,
+						in data_t src_str,
+						in data_t hex_dst_string,
+						int32 cbc_result ) -> int32
+						
+	board_aes_encrypt_cfb128( in data_t key_str,
+						in data_t iv_str,
+						in data_t src_str,
+						in data_t hex_dst_string ) -> int32
+						
+	board_aes_decrypt_cfb128( in data_t key_str,
+						in data_t iv_str,
+						in data_t src_str,
+						in data_t hex_dst_string ) -> int32
+						
+	board_aes_encrypt_cfb8( in data_t key_str,
+						in data_t iv_str,
+						in data_t src_str,
+						in data_t hex_dst_string ) -> int32
+
+	board_aes_decrypt_cfb8( in data_t key_str,
+						in data_t iv_str,
+						in data_t src_str,
+						in data_t hex_dst_string ) -> int32
+
+	board_mbedtls_aes_self_test(int32 verbose) ->int32
+
+    /*! DES */
+    board_des_check_weak( in data_t key,
+                          int32 ret) -> int32
+
+    board_des_encrypt_ecb(  in data_t hex_key,
+                            in data_t hex_src,
+                            in data_t hex_dst ) -> int32
+
+    board_des_decrypt_ecb(  in data_t hex_key,
+                            in data_t hex_src,
+                            in data_t hex_dst ) -> int32
+
+    board_des_encrypt_cbc(  in data_t hex_key, 
+                            in data_t hex_iv,
+                            in data_t hex_src,
+                            in data_t hex_dst,
+                            int32 cbc_result ) -> int32
+
+    board_des_decrypt_cbc(  in data_t hex_key,
+                            in data_t hex_iv,
+                            in data_t hex_src,
+                            in data_t hex_dst,
+                            int32 cbc_result) -> int32
+
+    board_des3_encrypt_ecb( int32 key_count,
+                            in data_t hex_key,
+                            in data_t hex_src,
+                            in data_t hex_dst ) -> int32
+
+    board_des3_decrypt_ecb( int32 key_count,
+                            in data_t hex_key,
+                            in data_t hex_src,
+                            in data_t hex_dst ) -> int32
+
+    board_des3_encrypt_cbc( int32 key_count,
+                            in data_t hex_key,
+                            in data_t hex_iv,
+                            in data_t hex_src,
+                            in data_t hex_dst,
+                            int32 cbc_result) -> int32
+
+    board_des3_decrypt_cbc( int32 key_count,
+                            in data_t hex_key,
+                            in data_t hex_iv,
+                            in data_t hex_src,
+                            in data_t hex_dst,
+                            int32 cbc_result) -> int32
+
+	board_des_key_parity_run() -> int32
+	
+	board_mbedtls_des_self_test(int32 verbose) ->int32						
+
+		/*! SHAX */
+    board_mbedtls_sha1(in data_t src_str,
+							in data_t hex_hash_string) -> int32
+
+    board_sha224(in data_t src_str,
+							in data_t hex_hash_string) -> int32
+
+    board_mbedtls_sha256(in data_t src_str,
+							in data_t hex_hash_string) -> int32
+
+    board_sha384(in data_t src_str,
+							in data_t hex_hash_string) -> int32
+
+    board_mbedtls_sha512(in data_t src_str,
+							in data_t hex_hash_string) -> int32
+							
+	board_sha1_selftest(int32 verbose) ->int32													
+							
+	board_sha256_selftest(int32 verbose) ->int32													
+
+	board_sha512_selftest(int32 verbose) ->int32
+
+					
+}

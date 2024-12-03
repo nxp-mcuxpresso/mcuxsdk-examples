@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpc_opamp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/opamp/opamp_lpc
+    project-root-path: boards/${board}/driver_examples/opamp/${multicore_foldername}
+    document:
+      name: lpc_opamp${core_id_suffix_name}
+      category: driver_examples/opamp
+      brief: This project shows how to use the OPAMP driver. In this example, the
+        positive reference voltage is set as DAC output, the OPAMP output is 1X of
+        DAC output. When DAC output changes, the OPAMP changes accordingly.
+      example_readme:
+      - examples/driver_examples/opamp/opamp_lpc/readme.md
+      - examples/_boards/${board}/driver_examples/opamp/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36: []

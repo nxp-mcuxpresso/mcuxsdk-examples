@@ -1,0 +1,8 @@
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/evkmimxrt1160_ram_0x1400.ini
+    targets: ram_0x1400_debug ram_0x1400_release
+    attribute: initialization_file
+    toolchains: mdk
+    package_path: boards/evkmimxrt1160/demo_apps/hello_world/cm4/mdk
+    project_path: evkmimxrt1160

@@ -1,0 +1,18 @@
+qsci_edma_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qsci/edma_transfer
+    project-root-path: boards/${board}/driver_examples/qsci/edma_transfer/${multicore_foldername}
+    document:
+      name: qsci_edma_transfer${core_id_suffix_name}
+      category: driver_examples/qsci
+      brief: 'The qsci_edma_transfer example shows how to use QSCI driver in EDMA
+        way: In this example, one qsci instance is connected to PC, the board will
+        send back all characters that PC sends to the board.'
+      example_readme:
+      - examples/driver_examples/qsci/edma_transfer/readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: 
+    mc56f80000evk: []
+    mc56f81000evk: []
+    mc56f83000evk: []

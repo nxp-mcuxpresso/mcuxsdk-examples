@@ -1,0 +1,29 @@
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/hardware_init.c
+            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/pin_mux.c
+            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/pin_mux.h
+            examples/_boards/${board}/peripherals/peripherals.c
+            examples/_boards/${board}/peripherals/peripherals.h
+            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/pd_board_config.h
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_app_demo.c
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_app.h
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_command_app.c
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_command_interface.c
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_command_interface.h
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_power_app.c
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_power_interface.c
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_power_interface.h
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_power_nx20p3483.c
+            middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_power_nx20p3483.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm
+)
+
+mcux_add_macro(
+    CC "-DI2C_RETRY_TIMES=40000"
+)

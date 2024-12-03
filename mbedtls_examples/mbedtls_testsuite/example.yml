@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mbedtls_testsuite:
+  section-type: application
+  contents:
+    meta_path: examples/mbedtls_examples/mbedtls_testsuite/.
+    project-root-path: boards/${board}/mbedtls_examples/mbedtls_testsuite/${multicore_foldername}
+    document:
+      name: mbedtls_testsuite${core_id_suffix_name}
+      category: mbedtls_examples
+      brief: The mbedTLS testsuite demo application performs cryptographic algorithm
+        and prints results to the terminal.
+      example_readme:
+      - examples/mbedtls_examples/mbedtls_testsuite/readme.md
+      - examples/_boards/${board}/mbedtls_examples/mbedtls_testsuite/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards: {}
+  # boards:
+    # Commenting out due to examples folder location change; TODO: move original files to example repo and fix build
+    # frdmrw612:
+    # - -iar@debug
+    # - -iar@flash_debug
+    # - -iar@flash_release
+    # - -iar@release
+    # - -mdk@debug
+    # - -mdk@flash_debug
+    # - -mdk@flash_release
+    # - -mdk@release
+    # rdrw612bga:
+    # - -iar@debug
+    # - -iar@flash_debug
+    # - -iar@flash_release
+    # - -iar@release
+    # - -mdk@debug
+    # - -mdk@flash_debug
+    # - -mdk@flash_release
+    # - -mdk@release

@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+netc_psi_vsi_message_secondary_core:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/netc/psi_vsi_message/secondary_core
+    project-root-path: boards/${board}/driver_examples/netc/psi_vsi_message/${multicore_foldername}/
+    document:
+      name: netc_psi_vsi_message_secondary_core${core_id_suffix_name}
+      category: driver_examples
+      brief: The Multicore NETC PSI-VSI demo application demonstrates how to set up
+        projects for individual cores on a multicore system. In this demo, the primary
+        core use NETC PSI to send/receive frames. It also releases the secondary core
+        from the reset. The secondary core toggles an on-board LED indicating that
+        the secondary core is running and uses NETC VSI to send/receive frames.
+      example_readme:
+      - examples/driver_examples/netc/psi_vsi_message/readme.md
+      - examples/_boards/${board}/driver_examples/netc/psi_vsi_message/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm7:
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

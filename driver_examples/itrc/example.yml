@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+itrc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/itrc
+    project-root-path: boards/${board}/driver_examples/itrc/${multicore_foldername}
+    document:
+      name: itrc${core_id_suffix_name}
+      category: driver_examples/itrc
+      brief: The ITRC Example project is a demonstration program that uses the MCUX
+        SDK software to show funcionality of Intrusion and Tamper Response Controller.
+      example_readme:
+      - examples/driver_examples/itrc/readme.md
+      - examples/_boards/${board}/driver_examples/itrc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

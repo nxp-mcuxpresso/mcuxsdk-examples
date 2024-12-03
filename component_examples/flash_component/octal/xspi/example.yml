@@ -1,0 +1,22 @@
+flash_component_octal_xspi:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/flash_component/octal/xspi/
+    project-root-path: boards/${board}/component_examples/flash_component/xspi_octal/${core_id}
+    document:
+      name: flash_component_octal_xspi${core_id_suffix_name}
+      category: component_examples/flash_component/xspi_nor
+      brief: octal flash demo shows the use of nor flash component to erase, program,
+        and read an external serial nor flash device.
+      example_readme:
+      - examples/component_examples/flash_component/octal/xspi/readme.md
+      - examples/_boards/${board}/component_examples/flash_component/xspi_octal/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release

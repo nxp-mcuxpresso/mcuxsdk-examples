@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+mc_pmsm_enc:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/mc_pmsm/pmsm_enc
+    project-root-path: boards/${board}/demo_apps/mc_pmsm/pmsm_enc/${multicore_foldername}
+    document:
+      name: mc_pmsm_enc${core_id_suffix_name}
+      category: demo_apps
+      brief: This example demonstrates the control of the PMSM.
+      example_readme:
+      - examples/demo_apps/mc_pmsm/pmsm_enc/readme.md
+      - examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm7: []
+    evkbmimxrt1170@cm7: []
+    frdmmcxa153: []
+    frdmmcxa156:
+    - -armgcc@release
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mc56f81000evk: []
+    mc56f83000evk: []
+    twrmc56f8400: []

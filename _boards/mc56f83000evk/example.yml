@@ -1,0 +1,5 @@
+board.toolchains:
+- +codewarrior@flash_sdm_lpm_debug
+- +codewarrior@flash_sdm_lpm_release
+- +codewarrior@flash_ldm_lpm_debug
+- +codewarrior@flash_ldm_lpm_release

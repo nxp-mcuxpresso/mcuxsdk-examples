@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_crypto_generic_rsa:
+  section-type: application
+  contents:
+    meta_path: examples/ele_crypto/ele_crypto_generic_rsa
+    project-root-path: boards/${board}/ele_crypto/ele_crypto_generic_rsa/${multicore_foldername}
+    document:
+      name: ele_crypto_generic_rsa${core_id_suffix_name}
+      category: ele_crypto
+      brief: The ELE Crypto Generic Example project is a demonstration program that
+        uses the MCUX SDK software to perform generic crypto operations usign plaintext
+        key with EdgeLock Enclave (ELE).
+      example_readme:
+      - examples/ele_crypto/ele_crypto_generic_rsa/readme.md
+      - examples/_boards/${board}/ele_crypto/ele_crypto_generic_rsa/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []

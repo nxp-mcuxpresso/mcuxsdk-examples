@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+snvs_sw_zmk:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/snvs_hp/snvs_sw_zmk
+    project-root-path: boards/${board}/driver_examples/snvs/snvs_sw_zmk/${multicore_foldername}
+    document:
+      name: snvs_sw_zmk${core_id_suffix_name}
+      category: driver_examples/snvs
+      brief: The SNVS SW ZMK project shows how to provision the zeroizable master
+        key (ZMK) by software based on SDK SNVS driver. In this example, ZMK key value
+        is set and ECC is enabled. When change the ZMK key value, violation detected
+        and ZMK key is zeroized.
+      example_readme:
+      - examples/driver_examples/snvs_hp/snvs_sw_zmk/readme.md
+      - examples/_boards/${board}/driver_examples/snvs/snvs_sw_zmk/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

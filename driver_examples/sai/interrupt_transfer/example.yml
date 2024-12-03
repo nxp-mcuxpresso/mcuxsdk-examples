@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sai_interrupt_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sai/interrupt_transfer
+    project-root-path: boards/${board}/driver_examples/sai/interrupt_transfer/${multicore_foldername}
+    document:
+      name: sai_interrupt_transfer${core_id_suffix_name}
+      category: driver_examples/sai
+      brief: The sai_interrupt_transfer example shows how to use sai driver with interrupt:In
+        this example, one sai instance playbacks the audio data stored in flash/SRAM
+        using interrupt.
+      example_readme:
+      - examples/driver_examples/sai/interrupt_transfer/readme.md
+      - examples/_boards/${board}/driver_examples/sai/interrupt_transfer/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -iar@debug
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@sdram_debug
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
+    - -iar@debug
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@sdram_debug
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    frdmmcxn236: []
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
+    mcimx93evk: []
+    mcimx93qsb: []
+    mcxn5xxevk@cm33_core0: []
+    mimxrt700evk@cm33_core0: []

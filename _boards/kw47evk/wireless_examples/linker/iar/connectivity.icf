@@ -1,0 +1,542 @@
+/*
+** ###################################################################
+**     Processors:          KW47B42Z83AFTA_cm33_core0
+**                          KW47B42Z96FTA_cm33_core0
+**                          KW47B42Z97AFTA_cm33_core0
+**                          KW47B42ZB2AFTA_cm33_core0
+**                          KW47B42ZB3AFTA_cm33_core0
+**                          KW47B42ZB6AFTA_cm33_core0
+**                          KW47B42ZB7AFTA_cm33_core0
+**                          MCXW727CAFTA_cm33_core0
+**                          MCXW727AAFTA_cm33_core0
+**                          MCXW727DAFTA_cm33_core0
+**
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM for Connectivity Demo Applications
+**
+**     Copyright 2024 NXP
+**
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+/* Linker script for BLE or/and OpenThread applications
+ * This is a generic layout with optional region that could be needed for BLE or OpenThread applications.
+ * This Linker file can be used for BLE/OT combo applications. */
+
+/*************************** FLASH LAYOUT ***********************************
+
+                             0x001F_FFFF    m_flash_end
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_fsl_prodInfo_end
+                          |               |
+                          | Product Info  | Enable with gUseProdInfoMainFlashMode_d=1
+                          |               |
+                          |               | m_fsl_prodInfo_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_ot_settings_end
+                          |  OpenThread   |
+                          |   Settings*   | Enable with gUseOtSettingsStorage_d=1
+                          |               |
+                          |               | m_ot_settings_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | NV_STORAGE_END_ADDRESS
+                          |  NV_STORAGE*  |
+                          |               | Enable with gUseNVMLink_d=1
+                          |               |
+                          |               | NV_STORAGE_START_ADDRESS
+                    - - - +---------------+ - - - - - - - -
+                          |               | SECURE_BOOT_END
+                          |  Secure Boot  |
+                          |  Reserved*    | Enable with gUseSecureBoot_d=1
+                          |               |
+                          |               | SECURE_BOOT_START
+                    - - - +---------------+ - - - - - - - -
+                          |               | INT_STORAGE_END
+                          |               |
+                          |               |
+                          |               |
+                          | OTAP Internal | Enable with gUseInternalStorageLink_d=1
+                          |      Storage* |
+                          |               |
+                          |               |
+                          |               |
+                          |               | INT_STORAGE_START
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_text_end
+                          |               |
+                          |               |
+                          |               |
+                          | Application** |
+                          |               |
+                          |               |
+                          |               |
+                          |               | m_text_start
+                    - - - +---------------+ - - - - - - - -
+                          |   Interrupt   | m_interrupts_end
+                          |    Vectors    |
+                          |               | m_interrupts_start
+                    - - - +---------------+ - - - - - - - -
+                             0x0000_0000
+
+        * - These sections are optional for certain applications
+       ** - Application will occupy all the free space available
+*****************************************************************************/
+
+/* Symbols Flash checks */
+
+if (!isdefinedsymbol(gUseNVMLink_d)) {
+    define symbol gUseNVMLink_d = 0;
+}
+
+if (!isdefinedsymbol(gEraseNVMLink_d)) {
+    define symbol gEraseNVMLink_d = 0;
+}
+
+if (!isdefinedsymbol(gUseInternalStorageLink_d)) {
+    define symbol gUseInternalStorageLink_d = 0;
+}
+
+if (!isdefinedsymbol(gUseSecureBoot_d)) {
+    define symbol gUseSecureBoot_d = 0;
+}
+
+if (!isdefinedsymbol(gUseOtSettingsStorage_d)) {
+    define symbol gUseOtSettingsStorage_d = 0;
+}
+
+if (!isdefinedsymbol(gFlashNbuImage_d)) {
+    define symbol gFlashNbuImage_d = 0;
+}
+
+/* By default, gFlashNbuLogging_d is not used. */
+if (!isdefinedsymbol(gFlashNbuLogging_d)) {
+    define symbol gFlashNbuLogging_d = 0;
+}
+
+if (!isdefinedsymbol(gEnableCoverage_d)) {
+    define symbol gEnableCoverage_d = 0;
+}
+
+if (!isdefinedsymbol(gUseProdInfoMainFlashMode_d)) {
+    define symbol gUseProdInfoMainFlashMode_d = 0;
+}
+
+/* Symbols RAM checks */
+
+
+/* Enable this flag to move application data to 0x2004000, second SRAM bank except HADM buffer
+     and warmboot stack. The first SRAM bank is used by ROM code on cold or warm boot  */
+if (!isdefinedsymbol(gLowpowerPowerDownEnable_d)) {
+    define exported symbol gLowpowerPowerDownEnable_d = 0;
+}
+else {
+    export symbol gLowpowerPowerDownEnable_d;
+}
+
+if (!isdefinedsymbol(gReserveCeRam_d)) {
+    define exported symbol gReserveCeRam_d = 0;
+}
+
+/********************************************** FLASH **********************************************/
+
+/* Flash defines */
+define symbol m_flash_start                             = 0x00000000;
+define symbol m_flash_size                              = 0x200000;
+define symbol m_flash_end                               = m_flash_start + m_flash_size - 1;
+define symbol m_sector_size                             = 0x2000;
+define symbol m_vector_table_size                       = 0x400;   /* define is used for warmboot stack size too */
+
+/* interrupt vectors region */
+define symbol m_interrupts_start                        = m_flash_start;
+define symbol m_interrupts_end                          = m_interrupts_start + m_vector_table_size - 1;
+define exported symbol __VECTOR_TABLE                   = m_interrupts_start;
+
+/* This section is not enabled by default but you need it if gHwParamsProdDataPlacement_c is defined to
+ * gHwParamsProdDataMainFlashMode_c or gHwParamsProdDataMainFlash2IfrMode_c in your project */
+/*
+ * if(gUseProdInfoMainFlashMode_d){
+ * define symbol m_fsl_prodInfo_size                       = m_sector_size;
+ * }
+ * else{
+ * define symbol  m_fsl_prodInfo_size                      = 0;
+ * }
+ */
+
+define symbol m_fsl_prodInfo_size                       = m_sector_size;
+
+/* product info  (starting from end of flash) */
+define symbol m_fsl_prodInfo_end                        = m_flash_end;
+define symbol m_fsl_prodInfo_start                      = m_fsl_prodInfo_end - m_fsl_prodInfo_size + 1;
+
+define exported symbol PROD_DATA_BASE_ADDR              = m_fsl_prodInfo_start;
+
+/* OpenThread settings */
+define exported symbol m_ot_settings_page_size          = m_sector_size;
+if(gUseOtSettingsStorage_d) {
+    define exported symbol m_ot_settings_page_count     = 2;
+    define exported symbol m_ot_settings_size           = m_ot_settings_page_size * m_ot_settings_page_count;
+}
+else {
+    define exported symbol m_ot_settings_page_count     = 0;
+    define exported symbol m_ot_settings_size           = 0;
+}
+define exported symbol m_ot_settings_start              = m_fsl_prodInfo_start - m_ot_settings_size;
+define exported symbol m_ot_settings_end                = m_fsl_prodInfo_start - 1;
+
+/* NVM storage */
+if ( gUseNVMLink_d ) {
+    if (isdefinedsymbol(gNVMSectorCountLink_d)) {
+        define exported symbol NV_STORAGE_MAX_SECTORS   = gNVMSectorCountLink_d;
+    }
+    else {
+        define exported symbol NV_STORAGE_MAX_SECTORS   = 4;
+    }
+}
+else {
+    define exported symbol NV_STORAGE_MAX_SECTORS       = 0;
+}
+define exported symbol NV_STORAGE_SECTOR_SIZE           = m_sector_size;
+define exported symbol NV_STORAGE_END_ADDRESS           = m_ot_settings_start - 1;
+define exported symbol NV_STORAGE_SIZE                  = (NV_STORAGE_MAX_SECTORS * NV_STORAGE_SECTOR_SIZE);
+define exported symbol NV_STORAGE_START_ADDRESS         = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;
+
+if(gUseSecureBoot_d) {
+    define symbol SECURE_BOOT_SIZE = 1024; // TODO: Determine max secure boot signature size KFOURWONE-2620
+}
+else {
+    define symbol SECURE_BOOT_SIZE = 0;
+}
+
+/* Signing an image will increase its size.
+   If the raw image size is large enough, the resulting signed image could overflow to the NVM address range.
+   In such case, NVM operations would corrupt the signature data, resulting in incapability to boot. */
+define exported symbol SECURE_BOOT_END   = NV_STORAGE_START_ADDRESS - 1;
+define exported symbol SECURE_BOOT_START = SECURE_BOOT_END - SECURE_BOOT_SIZE + 1;
+
+/* OTA */
+define exported symbol INT_STORAGE_END                  = SECURE_BOOT_START - 1;
+if (gUseInternalStorageLink_d) {
+    define exported symbol INT_STORAGE_SIZE             = m_sector_size * ( ((INT_STORAGE_END + 1 - m_interrupts_start)/2)/m_sector_size +1);
+}
+else {
+    define exported symbol INT_STORAGE_SIZE             = 0;
+}
+define exported symbol INT_STORAGE_START                = INT_STORAGE_END - INT_STORAGE_SIZE + 1;
+define exported symbol INT_STORAGE_SECTOR_SIZE          = m_sector_size;
+
+/* firmware region */
+define exported symbol m_text_start                     = m_interrupts_end  + 1;
+define exported symbol m_text_end                       = INT_STORAGE_START - 1;
+
+/*************************** RAM LAYOUT ***********************************
+Default address values are indicated between brackets they can be overridden if necessary by linker flags
+
+              0x20039FFF                    m_ram1_end
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_data1_unused_end
+                          |               |
+                          |               | Enable with gReserveCeRam_d=1 
+                          |               |
+                          |               | m_data1_unused_start
+                    - - - +---------------+ - - - - - - - -
+            (0x20037FFF)  |               | m_ce_data_reserved_end
+                          |               |
+                          |               | Enable with gReserveCeRam_d=1
+                          |               |
+            (0x20037000)  |               | m_ce_data_reserved_start
+                    - - - +---------------+ - - - - - - - -
+            (0x20036FFF)  |               | m_ce_data2_end
+                          |               |
+                          |               | Enable with gReserveCeRam_d=1
+                          |               |
+            (0x20030000)  |               | m_ce_data2_start
+                    - - - +---------------+ - - - - - - - -
+            (0x2002FFFF)  |               | m_ce_data1_end
+                          |               |
+                          |               | Enable with gReserveCeRam_d=1
+                          |               |
+            (0x20028640)  |               | m_ce_data1_start
+                    - - - +---------------+ - - - - - - - -
+            (0x2002863F)  |               | m_ce_ctrl_end
+                          |               |
+                          |               | Enable with gReserveCeRam_d=1
+                          |               |
+            (0x20028000)  |               | m_ce_ctrl_start
+                    - - - +---------------+ - - - - - - - -
+            (0x20027FFF)  |               | m_ce_image_end
+                          |               |
+                          |               | Enable with gReserveCeRam_d=1
+                          |               |
+            (0x20020000)  |               | m_ce_image_start
+                    - - - +---------------+ - - - - - - - -
+              m_data1_end |     HEAP      | __HEAP_end__
+                          |               |
+                          |               |
+                          |...............| __HEAP_start__
+                          |               |
+                          .     Data1     .
+                          .               .
+            m_data1_start |               |
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_interrupts_ram_end
+                          | vector table  |
+                          |               |
+            (0x20004E00)  |               | m_interrupts_ram_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_cstack_end
+                          |    CStack     |
+            (0x20004400)  |               | m_cstack_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_warmboot_stack_end
+                          |   Warm stack  |
+            (0x20004000)  |               | m_warmboot_stack_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_ram1_reserved_end
+                          |    Reserved   |
+                          |               | m_ram1_reserved_start
+                    - - - +---------------+ - - - - - - - -
+              0x20000000  |               | m_ram1_start
+
+
+/********************************************** RAM **********************************************/
+
+/* RAM defines */
+define symbol m_ram0_start                              = 0x14000000;
+define symbol m_ram0_end                                = 0x14007FFF;
+define symbol m_ram1_start                              = 0x20000000;
+define symbol m_ram1_end                                = 0x20039FFF;
+
+/* This region is used by bootrom when exiting power down modes */
+define symbol m_ram1_reserved_start                     = m_ram1_start;
+define symbol m_ram_vector_table_size                   = m_vector_table_size;
+
+if (!isdefinedsymbol(m_ram1_reserved_end))
+{
+    define symbol m_ram1_reserved_end                       = 0x20003FFF;
+}
+
+if (!isdefinedsymbol(__stack_size__))
+{
+    define symbol __stack_size__                        = 0x0A00;
+}
+
+if (!isdefinedsymbol(__heap_size__))
+{
+    define symbol __heap_size__                         = 0x0A00;
+}
+
+/* data0 region */
+define symbol m_data0_start                             = m_ram0_start;
+define symbol m_data0_end                               = m_ram0_end;
+
+/* warmboot stack region */
+if (gLowpowerPowerDownEnable_d) {
+  define symbol m_warmboot_stack_size                   = 0x400;
+  define symbol m_warmboot_stack_start                  = m_ram1_reserved_end + 1;
+}
+else
+{
+  /* In case PowerDown is not enabled, the warmboot stack is not used
+   * and the bootrom won't used the Reserved RAM region */
+  define symbol m_warmboot_stack_size                   = 0;
+  define symbol m_warmboot_stack_start                  = m_ram1_start;
+}
+
+define exported symbol m_warmboot_stack_end             = m_warmboot_stack_start + m_warmboot_stack_size - 1;
+
+/* stack region */
+if (!isdefinedsymbol(m_cstack_start))
+{
+    define exported symbol m_cstack_start                   = m_warmboot_stack_end + 1;
+}
+define exported symbol m_cstack_end                     = m_cstack_start + __stack_size__ - 1;
+
+/* Ram vector table */
+define symbol m_interrupts_ram_start                    = m_cstack_end + 1;
+define symbol m_interrupts_ram_end                      = m_interrupts_ram_start + m_ram_vector_table_size - 1;
+define exported symbol __VECTOR_RAM                     = m_interrupts_ram_start;
+define exported symbol __RAM_VECTOR_TABLE_SIZE          = m_ram_vector_table_size;
+
+/* Data region Size for Compute Engine (CE) */
+if (gReserveCeRam_d)
+{
+    define symbol m_ce_data_size                        = 0x1A000;
+}
+else
+{
+    define symbol m_ce_data_size                        = 0x0;
+}
+
+/* data1 region */
+define symbol m_data1_start                             = m_interrupts_ram_end + 1;
+/* data1 region will end before CE data region if not null, Otherwise, use up to ram1 end */
+define symbol m_data1_end                               = m_ram1_end - m_ce_data_size;
+
+/* Heap region start and end address symbols used by usual memory allocator (malloc(), free())
+   Not used by fsl_component_memory_manager_light component, __heap_size__ can be NULL */
+define exported symbol __HEAP_start__                   = m_data1_end - __heap_size__;
+define exported symbol __HEAP_end__                     = m_data1_end;
+
+define exported symbol firmware_ram_upper_limit         = m_ram1_end;
+define exported symbol firmware_ram_lower_limit         = m_cstack_start;
+
+/* The layout of the RAM and the region of each section have been reorganized in order
+ * to optimize the RAM banks in retention. The heap at the top, we do not need to retain
+ * banks upper of the last address used by the heap. */
+
+/********************************************** PLACEMENT **********************************************/
+
+/* define all regions */
+define region VECT_region               = mem:[from m_interrupts_start to m_interrupts_end];
+define region TEXT_region               = mem:[from m_text_start to m_text_end];
+define region PROD_INFO_region          = mem:[from m_fsl_prodInfo_start to m_fsl_prodInfo_end];
+define region DATA0_region              = mem:[from m_data0_start to m_data0_end];
+define region DATA1_region              = mem:[from m_data1_start to m_data1_end];
+define region CSTACK_region             = mem:[from m_cstack_start to m_cstack_end];
+
+/* define blocks */
+define block VECT                                                   { readonly section .intvec };
+define block TEXT                                                   { readonly };
+define block PROD_INFO                                              { readonly section .PROD_DATA };
+
+/* Use DATA1_region for all connectivity code - DATA0_Region is 32K, can be used for customer specific code */
+define block DATA0                                                  {  };
+define block DATA1                                                  { readwrite, zi, last section .heap };
+define block CSTACK    with alignment = 8, size = __stack_size__    { };
+
+initialize by copy { readwrite, section .textrw };
+
+if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
+{
+  /* Required in a multi-threaded application */
+  initialize by copy with packing = none { section __DLIB_PERTHREAD };
+}
+
+do not initialize  { section .noinit };
+do not initialize  { section .heap };
+
+place in VECT_region                            { block VECT };
+place in TEXT_region                            { block TEXT };
+place in PROD_INFO_region                       { block PROD_INFO };
+place in DATA0_region                           { block DATA0 };
+place in DATA1_region                           { block DATA1 };
+place in CSTACK_region                          { block CSTACK };
+
+if (gUseNVMLink_d) {
+    define symbol NV_VIRTUAL_PAGE_BOUND = NV_STORAGE_END_ADDRESS - (NV_STORAGE_MAX_SECTORS/2 * NV_STORAGE_SECTOR_SIZE);
+    define region sNVM_region           = mem:[from  NV_VIRTUAL_PAGE_BOUND+1 to NV_STORAGE_END_ADDRESS];
+    define region fNVM_region           = mem:[from  NV_STORAGE_START_ADDRESS to NV_VIRTUAL_PAGE_BOUND];
+    if(gEraseNVMLink_d)
+    {
+        place in fNVM_region              {readonly section fEraseNVM };
+        place in sNVM_region              {readonly section sEraseNVM };
+    }
+}
+
+if (gUseInternalStorageLink_d) {
+    define region InternalStorage       = mem:[from INT_STORAGE_START to INT_STORAGE_END];
+}
+
+if(gUseOtSettingsStorage_d) {
+    define region OT_SETTINGS_region    = mem:[from m_ot_settings_start to m_ot_settings_end];
+}
+
+/********************************************** NBU Memory **********************************************/
+
+/* Do not change shall be aligned with nbu firmware image*/
+define symbol m_sqram_debug_size                = 0x7C;  /*New section allowing to share debug info to CM33 (LL error/warnings).*/
+define symbol m_lowpower_flag_size              = 0x04;  /* Section used to share a flag on both cores for lowpower purpose */
+define exported symbol m_lowpower_flag_start    = 0x489C0000 + m_sqram_debug_size;
+define symbol m_sqram_btblebuf_size             = 0x5400;
+define symbol m_sqram_btblebuf_end              = m_lowpower_flag_start + m_lowpower_flag_size + m_sqram_btblebuf_size - 1;
+define exported symbol rpmsg_sh_mem_size        = 0x1800;
+define exported symbol rpmsg_sh_mem_end         = 0x489C9FFF;
+define exported symbol rpmsg_sh_mem_start       = rpmsg_sh_mem_end - rpmsg_sh_mem_size + 1;
+
+define exported symbol m_sfc_log_start          = 0x489C0078; /* Last reserved word of the debug section used for the sfc module */
+
+if (gEnableCoverage_d) {
+define exported symbol sh_mem_coverage_size     = 0x4;
+define exported symbol sh_mem_coverage_start    = m_sqram_btblebuf_end + 1;
+define exported symbol sh_mem_coverage_end      = sh_mem_coverage_start + sh_mem_coverage_size -1;
+}
+
+if (gEnableCoverage_d) {
+define exported symbol dbg_ext_logging_size     = 0x000;
+define exported symbol dbg_ext_logging_start    = sh_mem_coverage_end + 1;
+} else {
+define exported symbol dbg_ext_logging_size     = 0x200;
+define exported symbol dbg_ext_logging_start    = m_sqram_btblebuf_end + 1;
+}
+define exported symbol dbg_ext_logging_end      = dbg_ext_logging_start + dbg_ext_logging_size;
+
+define region rpmsg_sh_mem_region               = mem:[from rpmsg_sh_mem_start to rpmsg_sh_mem_end];
+if (gEnableCoverage_d) {
+define region sh_mem_coverage_region            = mem:[from sh_mem_coverage_start to sh_mem_coverage_end];
+place in sh_mem_coverage_region                 { section .coverage };
+}
+place in rpmsg_sh_mem_region                    { section rpmsg_sh_mem_section };
+
+if(gFlashNbuImage_d) {
+    /* WARNING: the range here has to be consistent with symbol logging_start from nbu_flash_connectivity.icf */
+    define exported symbol nbu_flash_image_start    = 0x48800000;
+    define exported symbol nbu_flash_image_end      = 0x4887FFFF; /* nbu_flash_image_start+logging_start */
+
+    define region nbu_flash_region                  = mem:[from nbu_flash_image_start to nbu_flash_image_end];
+    define block NBU_FLASH_IMAGE_BLOCK              { section  __nbu_flash };
+
+    place in nbu_flash_region                       { block NBU_FLASH_IMAGE_BLOCK };
+}
+
+/********************************************** Computeur Engine (CE) Memory **********************************************/
+if (gReserveCeRam_d)
+{
+    define symbol m_ce_image_start                = m_data1_end + 1;
+    define symbol m_ce_image_size                 = 0x8000;
+    define symbol m_ce_image_end                  = m_ce_image_start + m_ce_image_size - 1;
+    define symbol m_ce_ctrl_start                 = m_ce_image_end + 1;
+    define symbol m_ce_ctrl_size                  = 0x640;
+    define symbol m_ce_ctrl_end                   = m_ce_ctrl_start + m_ce_ctrl_size -1;
+    define symbol m_ce_data1_start                = m_ce_ctrl_end + 1;
+    define symbol m_ce_data1_size                 = 0x79C0;
+    define symbol m_ce_data1_end                  = m_ce_data1_start + m_ce_data1_size -1;
+    define symbol m_ce_data2_start                = m_ce_data1_end + 1;
+    define symbol m_ce_data2_size                 = 0x7000;
+    define symbol m_ce_data2_end                  = m_ce_data2_start + m_ce_data2_size -1;
+    define symbol m_ce_data_reserved_start        = m_ce_data2_end + 1;
+    define symbol m_ce_data_reserved_size         = 0x1000;
+    define symbol m_ce_data_reserved_end          = m_ce_data_reserved_start + m_ce_data_reserved_size -1;
+    define symbol m_data1_unused_start            = m_ce_data_reserved_end + 1;
+    define symbol m_data1_unused_end              = m_ram1_end;
+
+    define region CE_CTRL_region            = mem:[from m_ce_ctrl_start to m_ce_ctrl_end];
+    define region CE_DATA1_region           = mem:[from m_ce_data1_start to m_ce_data1_end];
+    define region CE_DATA2_region           = mem:[from m_ce_data2_start to m_ce_data2_end];
+    define region CE_DATA_RESERVED_region   = mem:[from m_ce_data_reserved_start to m_ce_data_reserved_end];
+    define region DATA1_unused_region       = mem:[from m_data1_unused_start to m_data1_unused_end];
+
+    define block ce_ctrl_blk        { section ceCtrl };
+    define block ce_data1_blk       { section ceHeap_1 };
+    define block ce_data2_blk       { section ceHeap_2 };
+
+/*  DATA1_unused_region is 8K, can be used for customer specific code */
+    define block DATA1_unused_blk   {  };
+
+    place in CE_CTRL_region         { block ce_ctrl_blk };
+    place in CE_DATA1_region        { block ce_data1_blk };
+    place in CE_DATA2_region        { block ce_data2_blk };
+    place in DATA1_unused_region    { block DATA1_unused_blk };
+
+    define exported symbol __CE_MEM_HEAP1_end__            = m_ce_data1_end;
+    define exported symbol __CE_MEM_HEAP2_end__            = m_ce_data2_end;
+
+/*  ce image will be loaded here in initialization stage */
+    define region ce_image_region  = mem:[from m_ce_image_start to m_ce_image_end];
+}

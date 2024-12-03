@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+cmp_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cmp/interrupt
+    project-root-path: boards/${board}/driver_examples/cmp/interrupt/${multicore_foldername}
+    document:
+      name: cmp_interrupt${core_id_suffix_name}
+      category: driver_examples/cmp
+      brief: The CMP interrupt Example shows how to use interrupt with CMP driver.In
+        this example, user should indicate an input channel to capture a voltage signal
+        (can be controlled by user) as the CMP's positive channel input. On the negative
+        side, the internal 6-bit DAC is used to generate the fixed voltage abouthalf
+        value of reference voltage.When running the project, change the input voltage
+        of user-defined channel, then the comparator's output would changebetween
+        logic one and zero when the user-defined channel's voltage crosses the internal
+        DAC's value. The change ofcomparator's output would generate the falling and
+        rising edge events with their interrupts enabled. When any CMP interrupt happens,
+        the CMP's ISR would turn on the LED light if detecting the output's rising
+        edge, or turn off it whendetecting the output's falling edge.
+      example_readme:
+      - examples/driver_examples/cmp/interrupt/readme.md
+      - examples/_boards/${board}/driver_examples/cmp/interrupt/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkcmimxrt1060: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

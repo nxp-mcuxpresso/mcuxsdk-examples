@@ -1,0 +1,81 @@
+
+flash_programming_file:
+  files:
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_debug.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_flash_debug.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: flash_debug
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_release.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: release
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_flash_release.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: flash_release
+
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug
+    package_path: boards/${board}/trustzone_examples/hello_world/./hello_world_s/mdk
+    project_path: _boards/${board}/trustzone_examples/hello_world/hello_world_s
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_flash_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flash_debug
+    package_path: boards/${board}/trustzone_examples/hello_world/./hello_world_s/mdk
+    project_path: _boards/${board}/trustzone_examples/hello_world/hello_world_s
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_release.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: release
+    package_path: boards/${board}/trustzone_examples/hello_world/./hello_world_s/mdk
+    project_path: _boards/${board}/trustzone_examples/hello_world/hello_world_s
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_flash_release.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flash_release
+    package_path: boards/${board}/trustzone_examples/hello_world/./hello_world_s/mdk
+    project_path: _boards/${board}/trustzone_examples/hello_world/hello_world_s
+
+mdk:
+  shared-workspace: hello_world
+  sharing-workspace:
+  - ../../hello_world_ns/mdk/hello_world_ns_cm33
+
+iar:
+  shared-workspace: hello_world
+  sharing-workspace:
+  - ../../hello_world_ns/iar/hello_world_ns_cm33
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    flash_debug:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    flash_release:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

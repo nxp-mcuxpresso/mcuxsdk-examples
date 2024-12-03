@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+freertos_dspi:
+  section-type: application
+  contents:
+    meta_path: examples/freertos_driver_examples/freertos_dspi
+    project-root-path: boards/${board}/freertos_driver_examples/freertos_dspi/${multicore_foldername}
+    document:
+      name: freertos_dspi${core_id_suffix_name}
+      category: freertos_driver_examples
+      brief: The freertos_dspi example shows how to use DSPI driver in FreeRTOS:In
+        this example , one dspi instance used as DSPI master with blocking and another
+        dspi instance used as DSPI slave .1. DSPI master sends/receives data using
+        task blocking calls to/from DSPI slave. (DSPI Slave uses interrupt to receive/send
+        the data)
+      example_readme:
+      - examples/freertos_driver_examples/freertos_dspi/readme.md
+      - examples/_boards/${board}/freertos_driver_examples/freertos_dspi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk22f: []

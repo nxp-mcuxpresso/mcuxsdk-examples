@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+nbu_ble:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/ble_controller/nbu_ble/
+    project-root-path: boards/${board}/wireless_examples/ble_controller/nbu_ble/
+    document:
+      name: nbu_ble
+      category: wireless_examples/ble_controller/nbu_ble
+      brief: The BLE controller application is a program based
+        on the MCUXpresso SDK.The application implements a Bluetooth Low Energy
+        Controller with HCI interface.
+  boards:
+    kw47evk@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
+    mcxw72evk@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
+    frdmmcxw72@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release

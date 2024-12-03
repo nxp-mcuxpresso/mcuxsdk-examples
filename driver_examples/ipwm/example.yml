@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ipwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ipwm
+    project-root-path: boards/${board}/driver_examples/pwm/${multicore_foldername}
+    document:
+      name: ipwm${core_id_suffix_name}
+      category: driver_examples/pwm/
+      brief: The PWM project is a simple demonstration program of the SDK PWM driver.
+        It sets up the PWM hardwareblock to output PWM signals on one PWM channel.
+        The example also shows PWM duty cycle is increase or decrease.The FIFO empty
+        interrupt is provided. A new value will be loaded into FIFO when FIFO empty
+        status bit is set. The PWM will run at the last set duty-cycle setting if
+        all the values of the FIFO has been utilized, until the FIFO is reloaded or
+        the PWM is disabled. When a new value is written, the duty cycle changes after
+        the current period is over.The outputs can be observed by oscilloscope.
+      example_readme:
+      - examples/driver_examples/ipwm/readme.md
+      - examples/_boards/${board}/driver_examples/pwm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []

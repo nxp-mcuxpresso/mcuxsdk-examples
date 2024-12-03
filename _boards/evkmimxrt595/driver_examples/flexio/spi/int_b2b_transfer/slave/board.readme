@@ -1,0 +1,42 @@
+Hardware requirements
+=====================
+- Mini/micro USB cable
+- EVK-MIMXRT595 board
+- Personal Computer
+
+Board settings
+============
+To make the example work, connections needed to be as follows between two boards:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ SLAVE(EVK-MIMXRT595) connect to      MASTER(EVK-MIMXRT595)
+Pin Name   Board Location     Pin Name    Board Location
+MOSI       J28-4               MOSI       J28-4
+MISO       J28-5               MISO       J28-5
+SCK        J28-6               SCK        J28-6
+PCS0       J28-3               PCS0       J28-3
+GND        J28-7               GND        J28-7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prepare the Demo
+===============
+1. Connect a mini USB cable between the PC host and the OpenSDA USB port on the board.
+2. Open a serial terminal on PC for OpenSDA serial device with these settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3. Download the program to the target board.
+4. Either press the reset button on your board or launch the debugger in your IDE to begin running
+   the demo.
+
+Running the demo
+===============
+When the demo runs successfully, the log would be seen on the terminal:
+
+~~~~~~~~~~~~~~~~~~~~~
+FlexIO SPI interrupt example
+Slave is working...
+
+Slave runs successfully!
+~~~~~~~~~~~~~~~~~~~~~

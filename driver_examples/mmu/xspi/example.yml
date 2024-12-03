@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+mmu_xspi:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mmu/xspi
+    project-root-path: boards/${board}/driver_examples/mmu/xspi/${multicore_foldername}
+    document:
+      name: mmu_xspi
+      category: driver_examples
+      brief: The mmu xspi example shows how to use MMU driver to configure MMU module.
+      example_readme:
+      - examples/driver_examples/mmu/xspi/readme.md
+      - examples/_boards/${board}/driver_examples/mmu/xspi/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

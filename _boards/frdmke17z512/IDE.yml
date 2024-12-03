@@ -1,0 +1,16 @@
+iar:
+  debugger-config:
+    mcu: MKE17Z512xxx9
+    mcu_vendor: NXP
+    pne: KE17Z512M9
+    jlink: MKE17Z512xxx9
+    osjtag: NXP_KEx_KE17Z512M9
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
+  - scripts/guigenerator/templates/iar/app_peswd/generic.dni
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_frdmke17z512/frdmke17z512.uvprojx
+  - scripts/guigenerator/templates/mdk/app_frdmke17z512/frdmke17z512.uvoptx

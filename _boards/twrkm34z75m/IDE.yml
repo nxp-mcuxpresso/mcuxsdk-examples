@@ -1,0 +1,17 @@
+iar:
+  debugger-config:
+    mcu: MKM34Z256xxx7
+    mcu_vendor: NXP
+    pne: KM34Z256M7
+    jlink: MKM34Z256xxx7
+    osjtag: NXP_KMx_KM34Z256M7
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_peswd/generic.ewd
+  - scripts/guigenerator/templates/iar/app_peswd/generic.ewp
+  - scripts/guigenerator/templates/iar/app_peswd/generic.dni
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_twrkm34z75m/twrkm34z75m.uvprojx
+  - scripts/guigenerator/templates/mdk/app_twrkm34z75m/twrkm34z75m.uvoptx
+  - scripts/guigenerator/templates/mdk/app_twrkm34z75m/pemicro_connection_settings.ini

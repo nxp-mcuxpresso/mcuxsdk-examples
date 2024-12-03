@@ -1,0 +1,45 @@
+
+flash_programming_file:
+  files:
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdownload_debug.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: debug
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdownload_release.ini
+    attribute: flash_programming_file
+    toolchains: mdk
+    targets: release
+
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdebug_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: debug
+  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdebug_release.ini
+    attribute: initialization_file
+    toolchains: mdk
+    targets: release
+
+mdk:
+  shared-workspace: hello_world
+  sharing-workspace:
+  - ../../hello_world_ns/mdk/hello_world_ns_${core_id}
+
+iar:
+  shared-workspace: hello_world
+  sharing-workspace:
+  - ../../hello_world_ns/iar/hello_world_ns_${core_id}
+  config:
+    debug:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/debug/hello_world_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false
+    release:
+      download-extra-image:
+      - path: "../../hello_world_ns/iar/release/hello_world_ns_${core_id}.out"
+        item: 1
+        offset: 0
+        debug_info_only: false

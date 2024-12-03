@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+bubble:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/bubble/.
+    project-root-path: boards/${board}/demo_apps/bubble/${multicore_foldername}
+    document:
+      name: bubble${core_id_suffix_name}
+      category: demo_apps
+      brief: The bubble level demo demonstrates basic usage of the on-board accelerometer
+        to implement a bubble level. A bubble level utilizes two axes to visually
+        show deviation from a level plane (0 degrees) on a given axis.
+      example_readme:
+      - examples/demo_apps/bubble/readme.md
+      - examples/_boards/${board}/demo_apps/bubble/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmcimx7ulp: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke16z: []
+    frdmmcxc041: []
+    frdmmcxc444: []
+    frdmmcxn236: []

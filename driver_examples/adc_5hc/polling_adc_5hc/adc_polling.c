@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2013 - 2016, Freescale Semiconductor, Inc.
+ * Copyright 2016-2018, 2021 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#include "fsl_debug_console.h"
+#include "board.h"
+#include "app.h"
+#include "fsl_adc_5hc.h"
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+const uint32_t g_Adc_12bitFullRange = 4096U;
+
+/*******************************************************************************
+ * Code
+ ******************************************************************************/
+void Hello(void)
+{
+    PRINTF("HELLO\r\n");
+    TSC->INT_STATUS |= TSC_INT_STATUS_IDLE_SW_MASK;
+}
+/*!
+ * @brief Main function
+ */
+int main(void)
+{
+    adc_5hc_config_t adcConfigStruct;
+    adc_5hc_channel_config_t adcChannelConfigStruct;
+
+    BOARD_InitHardware();
+
+    PRINTF("\r\nADC_5HC polling Example.\r\n");
+
+    /*
+     *  config->enableAsynchronousClockOutput = true;
+     *  config->enableOverWrite =               false;
+     *  config->enableContinuousConversion =    false;
+     *  config->enableHighSpeed =               false;
+     *  config->enableLowPower =                false;
+     *  config->enableLongSample =              false;
+     *  config->referenceVoltageSource =        kADC_5HC_ReferenceVoltageSourceVref;
+     *  config->samplePeriodMode =              kADC_5HC_SamplePeriod2or12Clocks;
+     *  config->clockSource =                   kADC_5HC_ClockSourceAD;
+     *  config->clockDriver =                   kADC_5HC_ClockDriver1;
+     *  config->resolution =                    kADC_5HC_Resolution12Bit;
+     */
+    ADC_5HC_GetDefaultConfig(&adcConfigStruct);
+    ADC_5HC_Init(DEMO_ADC_5HC_BASE, &adcConfigStruct);
+    ADC_5HC_EnableHardwareTrigger(DEMO_ADC_5HC_BASE, false);
+
+    /* Do auto hardware calibration. */
+    if (kStatus_Success == ADC_5HC_DoAutoCalibration(DEMO_ADC_5HC_BASE))
+    {
+        PRINTF("ADC_5HC_DoAutoCalibration() Done.\r\n");
+    }
+    else
+    {
+        PRINTF("ADC_5HC_DoAutoCalibration() Failed.\r\n");
+    }
+
+    /* Configure the user channel and interrupt. */
+    adcChannelConfigStruct.channelNumber                        = DEMO_ADC_5HC_USER_CHANNEL;
+    adcChannelConfigStruct.enableInterruptOnConversionCompleted = false;
+
+    PRINTF("ADC Full Range: %d\r\n", g_Adc_12bitFullRange);
+    while (1)
+    {
+        PRINTF("Press any key to get user channel's ADC_5HC value.\r\n");
+        GETCHAR();
+        /*
+         When in software trigger mode, each conversion would be launched once calling the "ADC_5HC_ChannelConfigure()"
+         function, which works like writing a conversion command and executing it. For another channel's conversion,
+         just to change the "channelNumber" field in channel's configuration structure, and call the
+         "ADC_5HC_ChannelConfigure() again.
+        */
+        ADC_5HC_SetChannelConfig(DEMO_ADC_5HC_BASE, DEMO_ADC_5HC_CHANNEL_GROUP, &adcChannelConfigStruct);
+        while (0U == ADC_5HC_GetChannelStatusFlags(DEMO_ADC_5HC_BASE, DEMO_ADC_5HC_CHANNEL_GROUP))
+        {
+        }
+        PRINTF("ADC_5HC Value: %d\r\n",
+               ADC_5HC_GetChannelConversionValue(DEMO_ADC_5HC_BASE, DEMO_ADC_5HC_CHANNEL_GROUP));
+    }
+}

@@ -1,0 +1,34 @@
+soem_servo_motor_bm:
+  section-type: application
+  contents:
+    meta_path: examples/soem_examples/soem_servo_motor/bm
+    project-root-path: boards/${board}/soem_examples/soem_servo_motor/bm/${multicore_foldername}
+    document:
+      name: soem_servo_motor${core_id_suffix_name}
+      category: soem_examples
+      brief: SOEM servo motor netc example
+      example_readme:
+      - examples/soem_examples/soem_servo_motor/bm/readme.md
+      - examples/_boards/${board}/soem_examples/soem_servo_motor/bm/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

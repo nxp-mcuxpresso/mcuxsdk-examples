@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+cmsis_spi_interrupt_b2b_transfer_master:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/spi/interrupt_b2b_transfer/master
+    project-root-path: boards/${board}/cmsis_driver_examples/spi/interrupt_b2b_transfer/master/${multicore_foldername}
+    document:
+      name: cmsis_spi_interrupt_b2b_transfer_master${core_id_suffix_name}
+      category: cmsis_driver_examples/spi
+      brief: 'The spi_interrupt_b2b_transfer example shows how to use spi CMSIS driver
+        in interrupt way:In this example , we need two boards, one board used as spi
+        master and another board used as spi slave.The file ''spi_interrupt_b2b_transfer_master.c''
+        includes the spi master code.This example uses the transactional API in spi
+        driver.1. spi master send/received data to/from spi slave in interrupt . '
+      example_readme:
+      - examples/cmsis_driver_examples/spi/interrupt_b2b_transfer/master/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/spi/interrupt_b2b_transfer/master/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmke02z40m: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

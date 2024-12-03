@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lcdif_gamma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lcdif/gamma
+    project-root-path: boards/${board}/driver_examples/lcdif/gamma/${multicore_foldername}
+    document:
+      name: lcdif_gamma${core_id_suffix_name}
+      category: driver_examples/lcdif
+      brief: This example demonstrates how to use the LCDIF gamma correction feature.
+        In this example, the gamma corretion table is set to invert the original picture.
+        The original picture is gradual changed gray bars, the gamma correction is
+        continuously enabled and disabled, so you can see the screen switch between
+        the original picture and the inverted picture.
+      example_readme:
+      - examples/driver_examples/lcdif/gamma/readme.md
+      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33: []
+    evkmimxrt595@cm33: []
+    mimxrt700evk@cm33_core0: []

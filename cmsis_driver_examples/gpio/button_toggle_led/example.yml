@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+cmsis_button_toggle_led:
+  section-type: application
+  contents:
+    meta_path: examples/cmsis_driver_examples/gpio/button_toggle_led
+    project-root-path: boards/${board}/cmsis_driver_examples/gpio/button_toggle_led
+    document:
+      name: cmsis_button_toggle_led${core_id_suffix_name}
+      category: cmsis_driver_examples/gpio
+      brief: CMSIS-Driver defines generic peripheral driver interfaces for middleware
+        making it reusable across a wide range of supported microcontroller devices.
+        The API connects microcontroller peripherals with middleware that implements
+        for example communication stacks, file systems, or graphic user interfaces.
+        More information and usage methord please refer to http:/www.keil.com/pack/doc/cmsis/Driver/html/index.html.The
+        cmsis_button_toggle_led example shows how to use gpio driver control gpio pin as input and output.
+        :In this example, gpio driver will set up and config button,led pins. and check button press event.
+        then trigger gpio interrupt, the callback will be use for led toggle.
+      example_readme:
+      - examples/cmsis_driver_examples/gpio/button_toggle_led/readme.md
+      - examples/_boards/${board}/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn947@cm33_core0: []
+    frdmmcxn236: []
+    frdmmcxa153: []
+    frdmmcxa156: []
+    frdmmcxa166: []
+    frdmmcxa276: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxw71: []
+    frdmmcxw72: []

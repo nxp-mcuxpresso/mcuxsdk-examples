@@ -1,0 +1,10 @@
+iar:
+  project_language: auto
+  project-templates:
+  - scripts/guigenerator/templates/iar/lib_generic_arm/libgeneric.ewp
+  - scripts/guigenerator/templates/iar/lib_generic_arm/libgeneric.eww
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+mdk:
+  project_language: cpp
+  project-templates:
+  - scripts/guigenerator/templates/mdk/lib_generic_arm/libgeneric_armcc_v6_cpp_fpsp.uvprojx

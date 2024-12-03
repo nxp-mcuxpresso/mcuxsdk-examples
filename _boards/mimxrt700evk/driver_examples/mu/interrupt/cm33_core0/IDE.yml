@@ -1,0 +1,23 @@
+#
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+iar:
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../mu_interrupt_secondary_core/iar/mu_interrupt_secondary_core_cm33_core1.eww"
+        slave-project: mu_interrupt_secondary_core_cm33_core1
+    debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    release:
+      asym-multicore-debugger:
+        slave-configuration: release
+    flash_debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    flash_release:
+      asym-multicore-debugger:
+        slave-configuration: release

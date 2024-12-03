@@ -1,0 +1,7 @@
+macro-file:
+  files:
+  - source: examples/_boards/${board}/openvg_examples/openvg_tiger/openvg_tiger_evkmimxrt1160_connect_cm7.mac
+    attribute: macro-file
+    toolchains: iar
+    choose: true
+    project_path: evkmimxrt1160

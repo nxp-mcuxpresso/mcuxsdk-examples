@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+spi_interrupt_b2b_slave:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/spi/interrupt_b2b/slave
+    project-root-path: boards/${board}/driver_examples/spi/interrupt_b2b/slave/${multicore_foldername}
+    document:
+      name: spi_interrupt_b2b_slave${core_id_suffix_name}
+      category: driver_examples/spi
+      brief: The spi_interrupt_b2b_slave example shows how to use spi functional API
+        to do interrupt transfer as a slave:In this example, the spi instance as slave.
+        Slave receives data froma master and send a peiece of data to master,and check
+        if the data slave received is correct. This example needs to work with spi_interrupt_b2b_master
+        example.
+      example_readme:
+      - examples/driver_examples/spi/interrupt_b2b/slave/readme.md
+      - examples/_boards/${board}/driver_examples/spi/interrupt_b2b/slave/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmk32l2b: []
+    frdmke02z40m: []
+    frdmmcxc041: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []

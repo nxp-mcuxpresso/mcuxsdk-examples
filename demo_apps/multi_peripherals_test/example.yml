@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+multi_peripherals_test:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/multi_peripherals_test
+    project-root-path: boards/${board}/demo_apps/multi_peripherals_test/${multicore_foldername}
+    document:
+      name: multi_peripherals_test${core_id_suffix_name}
+      category: demo_apps
+      brief: The multi-peripherals-test demo application does the basic peripheral
+        test on board. This demo will test audio, usb, led, button, sdcard, accelerometer
+        and rtc. To test audio function, connect an audio source, for example from
+        a mobile phone or PC, to Line-IN connector, connect a headphone or speaker
+        to Line-Out connector. Then the input audio can be heared in the headphone
+        or speaker. To test usb, connect a USB cable between the PC and board's high
+        speed connector, the cursor on the PC will move in a square pattern. To test
+        sdcard function, insert a uSD memory card in to the connector, then the test
+        result will be printed, please make sure the message is not a failed message.
+        Please verify the green LED in the RGB-LED flashed with a 1Hz rate. This indicates
+        that the RTC crystal works.
+      example_readme:
+      - examples/demo_apps/multi_peripherals_test/readme.md
+      - examples/_boards/${board}/demo_apps/multi_peripherals_test/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []

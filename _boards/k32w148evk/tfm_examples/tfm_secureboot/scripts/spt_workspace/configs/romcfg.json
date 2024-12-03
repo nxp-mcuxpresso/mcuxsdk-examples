@@ -1,0 +1,72 @@
+{
+    "device": "k32w1xx",
+    "type": "romcfg",
+    "settings": {
+        "FLW_Configuration": {
+            "RESTORE_FLW_FLAG": "0b1"
+        },
+        "FLW_REGION_ABASE": "0xffff_ffff",
+        "FLW_REGION_BCNT": "0xffff_ffff",
+        "CONFIGURE_NPX_FOR_NORMAL_BOOT": {
+            "USE_PRINCE": "0b0",
+            "GLOBAL_CLOCK": "0b1",
+            "SYSTEM_CLOCK": "0b1",
+            "GLOBAL_DECRYPTION": "0b0",
+            "GLOBAL_ENCRYPTION": "0b0"
+        },
+        "STICKY": {
+            "CONFIGURE_NPX_REQUIRED": "0b1"
+        },
+        "NPX_REGIONS_VALID": "0x0000_3824",
+        "NPX_REGIONS_COUNT": "0x0000_0001",
+        "NPX_REGION_0_VALID": "0x0000_3824",
+        "NPX_REGION_0_START_ADDRESS": "0x0000_0000",
+        "NPX_REGION_0_END_ADDRESS": "0x000b_01ff",
+        "NPX_REGION_1_VALID": "0xffff_ffff",
+        "NPX_REGION_1_START_ADDRESS": "0xffff_ffff",
+        "NPX_REGION_1_END_ADDRESS": "0xffff_ffff",
+        "NPX_REGION_2_VALID": "0xffff_ffff",
+        "NPX_REGION_2_START_ADDRESS": "0xffff_ffff",
+        "NPX_REGION_2_END_ADDRESS": "0xffff_ffff",
+        "NPX_REGION_3_VALID": "0xffff_ffff",
+        "NPX_REGION_3_START_ADDRESS": "0xffff_ffff",
+        "NPX_REGION_3_END_ADDRESS": "0xffff_ffff",
+        "BOOT_CONFIGURATION": {
+            "ENABLE_ISP_OR_NOT": "0b1",
+            "BOOT_SPEED": "0b11"
+        },
+        "SECURE_BOOT_OPTIONS": {
+            "SECURE_BOOT_MODE": "0b1",
+            "SECURE_BOOT_FAILURE_ALERT_PIN": "0b1"
+        },
+        "SECURE_BOOT_FAILURE_ALERT_PIN_SELECTION": {
+            "PIN_SELECTION": "0b1_1111",
+            "PORT_SELECTION": "0b111"
+        },
+        "BOOT_IMAGE_BASE_ADDRESS0": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS1": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS2": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS3": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS4": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS5": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS6": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS7": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS8": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS9": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS10": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS11": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS12": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS13": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS14": "0xffff_ffff",
+        "BOOT_IMAGE_BASE_ADDRESS15": "0xffff_ffff",
+        "PERIPHERALS_ENABLE": {
+            "LPUART1_PERIPHERAL_FOR_ISP": "0b1",
+            "LPI2C1_PERIPHERAL_FOR_ISP": "0b1",
+            "LPSPI1_PERIPHERAL_FOR_ISP": "0b1"
+        },
+        "PERIPHERAL_DETECTION_TIMEOUT": "0xffff",
+        "I2C_SLAVE_ADDRESS": "0xff",
+        "SSS_LOADABLE_FW_ENTRY_ADDRESS": "0xffff_ffff",
+        "SECURE_HASH_BASED_IMAGE_VERIFICATION": "0xffff_ffff"
+    }
+}

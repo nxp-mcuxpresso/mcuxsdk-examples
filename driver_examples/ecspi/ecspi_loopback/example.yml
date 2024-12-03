@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ecspi_loopback:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ecspi/ecspi_loopback
+    project-root-path: boards/${board}/driver_examples/ecspi/ecspi_loopback/${multicore_foldername}
+    document:
+      name: ecspi_loopback${core_id_suffix_name}
+      category: driver_examples/ecspi
+      brief: The ecspi_loopback demo shows how the ecspi do a loopback transfer internally.The
+        ECSPI connects the transmitter and receiver sections internally, and the data
+        shifted out from the most-significant bit of the shift register is looped
+        back into the least-significant bit of the Shift register. In this way, a
+        self-test of the complete transmit/receive path can be made. The output pins
+        are not affected, and the input pins are ignored.
+      example_readme:
+      - examples/driver_examples/ecspi/ecspi_loopback/readme.md
+      - examples/_boards/${board}/driver_examples/ecspi/ecspi_loopback/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []

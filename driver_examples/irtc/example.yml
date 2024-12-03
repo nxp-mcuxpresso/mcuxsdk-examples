@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+irtc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/irtc
+    project-root-path: boards/${board}/driver_examples/irtc/${multicore_foldername}
+    document:
+      name: irtc${core_id_suffix_name}
+      category: driver_examples/irtc
+      brief: The IRTC project is a simple demonstration program of the SDK IRTC driver.This
+        example is a low power module that provides time keeping and calendaring functions
+        and additionally providesprotection against tampering, protection against
+        spurious memory/register updates and battery operation.
+      example_readme:
+      - examples/driver_examples/irtc/readme.md
+      - examples/_boards/${board}/driver_examples/irtc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    lpcxpresso55s36: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []
+    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core1: []

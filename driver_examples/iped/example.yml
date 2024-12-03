@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+iped:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iped
+    project-root-path: boards/${board}/driver_examples/iped/${multicore_foldername}
+    document:
+      name: iped${core_id_suffix_name}
+      category: driver_examples/iped
+      brief: The IPED Example project is a demonstration program that uses the MCUX
+        SDK software to show funcionality of Inline Prince Encryption Decryption.
+      example_readme:
+      - examples/driver_examples/iped/readme.md
+      - examples/_boards/${board}/driver_examples/iped/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    lpcxpresso55s36:
+    - -armgcc@debug

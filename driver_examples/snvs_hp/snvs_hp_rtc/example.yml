@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+snvs_hp_rtc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/snvs_hp/snvs_hp_rtc
+    project-root-path: boards/${board}/driver_examples/snvs/snvs_hp_rtc/${multicore_foldername}
+    document:
+      name: snvs_hp_rtc${core_id_suffix_name}
+      category: driver_examples/snvs
+      brief: The SNVS HP RTC project is a simple demonstration program of the SDK
+        SNVS HP driver. The test will set up RTC date and time to a predefined value
+        and starts the counter. RTC then triggers an alarm after a user specified
+        time period. The alarm will be set with reference to this predefined date
+        and time.
+      example_readme:
+      - examples/driver_examples/snvs_hp/snvs_hp_rtc/readme.md
+      - examples/_boards/${board}/driver_examples/snvs/snvs_hp_rtc/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4: []
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimxrt1010: []
+    evkmimxrt1015: []
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []

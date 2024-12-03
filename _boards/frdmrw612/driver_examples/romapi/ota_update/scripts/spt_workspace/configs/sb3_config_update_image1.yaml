@@ -1,0 +1,95 @@
+# ===============================  Secure Binary v3.1 Configuration template for rw61x.  ===============================
+
+# ======================================================================================================================
+#                                                  == Basic Settings ==
+# ======================================================================================================================
+# ---------------------------------------===== Firmware version. [Optional] =====---------------------------------------
+# Description: Value compared with Secure_FW_Version monotonic counter value stored in PFR/IFR. If value is lower than
+# value in PFR/IFR, then is image rejected (rollback protection)..
+firmwareVersion: 0
+# ------------------------------------------===== MCU family [Required] =====-------------------------------------------
+# Description: MCU family name.
+# Possible options: <k32w1xx, kw45xx, lpc55s3x, mcxn9xx, rw61x>
+family: rw61x
+# -----------------------------------------===== SB3 filename [Required] =====------------------------------------------
+# Description: Generated SB3 container filename.
+containerOutputFile:  "../output/update_image1.sb.bin"
+# ======================================================================================================================
+#                                              == Image Signing Settings ==
+# ======================================================================================================================
+# --------------------------===== Main Certificate private key [Conditionally required] =====---------------------------
+# Description: Main Certificate private key used to sign certificate. It can be replaced by signProvider key.
+signPrivateKey: ../keys/ROT1_p256.pem
+# -------------------------------===== Signature Provider [Conditionally required] =====--------------------------------
+# Description: Signature provider configuration in format 'type=<sp_type>;<key1>=<value1>;<key2>=<value2>".
+#signProvider: type=file;file_path=my_prv_key.pem
+# ======================================================================================================================
+#                                              == Certificate Block V2.1 ==
+# ======================================================================================================================
+# -----------------------------===== Certificate Block binary/config file [Required] =====------------------------------
+# Description: Path to certificate block binary or config file.
+certBlock: ./cert_block.yaml
+# ======================================================================================================================
+#                                           == Secure Binary v3.1 Settings ==
+# ======================================================================================================================
+# ----------------------------------------===== Part Common Key [Optional] =====----------------------------------------
+# Description: Path to PCK/NPK 256 or 128 bit key in plain hex string format or path to binary file or hex string.
+containerKeyBlobEncryptionKey: cust_mk_sk.txt
+# ----------------------------------===== Enable NXP Container format [Optional] =====----------------------------------
+# Description: Internal usage only, used for generating SB files with NXP content e.g. provisioning firmware, etc...
+isNxpContainer: false
+# ---------------------------------------===== KDK access rights [Optional] =====---------------------------------------
+# Description: Accepted values are 0, 1, 2 and 3. Value used as key properties for key derivation process, more details
+# can be found in CSSv2 manual.
+# Possible options: <0, 1, 2, 3>
+kdkAccessRights: 0
+# ---------------------------------===== Container configuration word [Optional] =====----------------------------------
+# Description: Flag value in SB3.1 manifest, not used by silicons with LPC55S3x ROM. Value can be kept 0, or it can be
+# removed from the configuration file.
+containerConfigurationWord: 0
+# ------------------------------------------===== Description [Optional] =====------------------------------------------
+# Description: Description up to 16 characters, longer will be truncated. Stored in SB3.1 manifest.
+description: This is description of generated SB file.
+# ======================================================================================================================
+#                                       == Secure Binary v3.1 Commands Settings ==
+# ======================================================================================================================
+# ----------------------------------------===== SB3.1 Commands [Required] =====-----------------------------------------
+# Description: Secure Binary v3.1 commands block, list of all possible options - Modify it according to your application
+
+# Update commands if current image is 1 and the destination image is 0
+# The image offset that is used throughout this example is 4MB (0x00400000)
+commands:
+  # Configure the Flash driver from the FCB of the currently running image.
+  - configureMemory:
+      configAddress: '0x08000400'
+      memoryId: 9
+
+  # Erase the destination
+  - erase:
+      address: '0x08400000'
+      memoryId: 9
+      size: '0x00040000'
+
+  # Program the application to Flash
+  - load:
+      address: '0x08401000'
+      memoryId: 9
+      file: ../output/sdk20-app.mb.bin
+
+  # Write the currently used FCB to the destination
+  - load:
+      address: '0x20100000'
+      memoryId: '0x00'
+      values: 0xB0000000,0x08400400
+  - configureMemory:
+      configAddress: '0x20100000'
+      memoryId: '0x09'
+
+  # Write an image_version field to Flash
+  # In a deployment scenario an update of the image version field could also be included
+  # in the sb3 container. In this example image version is incremented from the application
+  # that controls the update to allow consecutive updates.
+  # - load:
+  #     address: '0x08400600'
+  #     memoryId: '0x09'
+  #     values: '0xFFe0001F'

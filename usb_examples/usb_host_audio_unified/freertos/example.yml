@@ -1,0 +1,22 @@
+host_audio_unified_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/usb_examples/usb_host_audio_unified/freertos/.
+    project-root-path: boards/${board}/usb_examples/usb_host_audio_unified/freertos/${multicore_foldername}
+    document:
+      name: host_audio_unified_freertos${core_id_suffix_name}
+      category: usb_examples/
+      brief: The Host Audio example supports the audio unified device. @n The application
+        prints the audio unified information when the USB unified device is attached.
+      example_readme:
+      - examples/usb_examples/usb_host_audio_unified/readme.md
+      - examples/_boards/${board}/usb_examples/usb_host_audio_unified/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+      - examples/usb_examples/usb_host_audio_unified/audio10.jpg
+      - examples/usb_examples/usb_host_audio_unified/audio20.jpg
+      - examples/usb_examples/usb_host_audio_unified/device_manager.jpg
+      - examples/usb_examples/usb_host_audio_unified/open_uart.jpg
+  boards:
+    evkmimxrt1064: []
+    lpcxpresso55s16: []
+    mimxrt685audevk@cm33: []
