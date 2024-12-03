@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+coex_edgefast_zigbee_coordinator_r23:
+  section-type: application
+  contents:
+    meta_path: examples/coex_examples/coex_zigbee/coordinator/freertos/r23
+    project-root-path: boards/${board}/coex_examples/coex_zigbee/zigbee/coordinator_r23/freertos
+    document:
+      name: coex_edgefast_zigbee_coordinator_r23
+      category: coex_examples/coex_zigbee/zigbee/coordinator/freertos
+      brief: The coex edgefast zigbee Coordinator example is a simple edgefast-coordinator example on the MCUXpresso SDK.
+             The application implements a edgefast-Zigbee coordinator that can form a network and steer it.
+  boards:
