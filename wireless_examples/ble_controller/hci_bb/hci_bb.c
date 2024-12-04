@@ -12,6 +12,7 @@
 * Include
 *************************************************************************************
 ************************************************************************************/
+
 #include "fsl_component_mem_manager.h"
 #include "fsl_component_serial_manager.h"
 
@@ -35,8 +36,13 @@
 // list of HCI commands to process in hci_bb app
 #define HCI_CTRL_API_OPCODE                    0xFDAEU
 #define HCI_HW_RESET_OPCODE                    0xFDAFU
+#define HCI_IDENTIFY_DEV_OPCODE                0xFDB0U
 
-#if defined(HCI_CTRL_API_OPCODE) || defined(HCI_HW_RESET_OPCODE)
+#ifndef BOARD_NAME_STR
+#define BOARD_NAME_STR "None"
+#endif
+
+#if defined(HCI_CTRL_API_OPCODE) || defined(HCI_HW_RESET_OPCODE) || defined(HCI_IDENTIFY_DEV_OPCODE)
 #define ENABLE_HCI_CMD_HOOK
 #endif
 
@@ -213,6 +219,9 @@ static void Hcit_SendMessageToController(void)
 #endif
 #ifdef HCI_HW_RESET_OPCODE
              opcode == HCI_HW_RESET_OPCODE ||
+#endif
+#ifdef HCI_IDENTIFY_DEV_OPCODE
+             opcode == HCI_IDENTIFY_DEV_OPCODE ||
 #endif
              0))
         {
@@ -558,6 +567,44 @@ void main_task(uint32_t param)
     if( maPendingHciCmd[0] == gHciCommandPacket_c )
     {
         uint16_t opcode = maPendingHciCmd[1]+maPendingHciCmd[2]*256;
+#ifdef HCI_IDENTIFY_DEV_OPCODE
+        if(opcode == HCI_IDENTIFY_DEV_OPCODE)
+        {
+            uint32_t nb_returns;
+            uint16_t event_len;
+            uint8_t i = 0;
+            uint8_t status = 0x00U;
+            uint8_t id_info = maPendingHciCmd[4];
+            uint8_t len_data_info = 0;
+            uint8_t event[6+NBU_API_MAX_RETURN_PARAM_LENGTH]={0xA5};
+
+            if(id_info == 0)
+              {
+                const char * board_name_str = BOARD_NAME_STR;
+                len_data_info = (uint8_t)strlen(board_name_str);
+                nb_returns = 2 + len_data_info;
+                for(i=0; i<len_data_info; i++)
+                  {
+                    event[7+i] = board_name_str[i];
+                  }
+              }
+            else
+              {
+              }
+
+            event[0] = 0x0E; // command complete
+            event[1] = 0x04+nb_returns; // payloadlength
+            event[2] = 0x01; // nb commands
+            event[3] = maPendingHciCmd[1]; // opcode
+            event[4] = maPendingHciCmd[2]; // opcode
+            event[5] = status;
+            event[6] = len_data_info;
+
+            event_len = 6 + nb_returns;
+            HCI_AppControllerRxCallback(0x04, event, event_len);
+        }
+        else
+#endif // HCI_IDENTIFY_DEV_OPCODE
 #ifdef HCI_HW_RESET_OPCODE
         if(opcode == HCI_HW_RESET_OPCODE)
         {
