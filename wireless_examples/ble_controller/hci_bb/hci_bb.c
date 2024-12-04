@@ -24,7 +24,9 @@
 #include "controller_api.h"
 #include "fwk_platform_ics.h"
 
-#include "FunctionLib.h"
+#if defined(gAppEnableHybridGenfsk_d) && (gAppEnableHybridGenfsk_d!=0)
+#include "hybrid_gfsk.h"
+#endif
 
 #include "ble_general.h"
 #define PKT_THRESHOLD_TO_DROP_ADV_REPORT 64U
@@ -540,6 +542,10 @@ void main_task(uint32_t param)
 
         Controller_SetTxPowerLevelDbm(mAdvertisingDefaultTxPower_c, gAdvTxChannel_c);
         Controller_SetTxPowerLevelDbm(mConnectionDefaultTxPower_c, gConnTxChannel_c);
+
+#if defined(gAppEnableHybridGenfsk_d) && (gAppEnableHybridGenfsk_d!=0)
+        hybrid_gfsk_init();
+#endif
     }
 
 #ifdef ENABLE_HCI_CMD_HOOK
