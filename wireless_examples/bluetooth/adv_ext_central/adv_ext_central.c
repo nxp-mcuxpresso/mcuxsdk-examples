@@ -61,7 +61,12 @@
 
 #define App_ExtractTwoByteValue(buf) \
     (((uint16_t)(*(buf))) | ( ((uint16_t)((buf)[1])) << 8U) )
-      
+#if (gAppPAWRSupport_d == TRUE)
+#define mPAWR_NumSyncSubevents_c                   2U
+#define mPAWR_SyncSubevents_c                      {0U, 3U}
+#define mPARV2_NoSubevents_c                       0xFF
+#endif /* (gAppPAWRSupport_d == TRUE) */
+
 /************************************************************************************
 *************************************************************************************
 * Private type definitions
@@ -107,6 +112,14 @@ typedef struct extAdvListElement_tag
     uint32_t perDataCRC;
     uint16_t periodicAdvInterval;
     uint16_t syncHandle;
+#if (gAppPAWRSupport_d == TRUE)
+    uint8_t numSubevents;
+    uint8_t subeventInterval;
+    uint8_t responseSlotDelay;
+    uint8_t responseSlotSpacing;
+    uint8_t responseSlot;
+    uint16_t numResponses;
+#endif /* (gAppPAWRSupport_d == TRUE) */
 }extAdvListElement_t;
 
 typedef struct perAdvListElement_tag
@@ -180,6 +193,19 @@ static appScanningParams_t mAppScanParams = {
     gGapScanPeriodicDisabled_d
 };
 
+#if (gAppPAWRSupport_d == TRUE)
+/* In case of PAWR this structure configures the subevents to sync on */
+static struct
+{
+    uint16_t perAdvProperties; /*!< Bit 6: Include TxPower in the advertising PDU */
+    uint8_t  numSubevents;     /*!< Number of subevents. */
+    uint8_t  aSubevents[mPAWR_NumSyncSubevents_c];    /*!< List of subevents */
+} mPeriodicSyncSubeventParameters = {.perAdvProperties = (uint16_t)gAdvIncludeTxPower_c,
+                                     .numSubevents = mPAWR_NumSyncSubevents_c,
+                                     .aSubevents = mPAWR_SyncSubevents_c};
+static gapRole_t   maGapRole[gAppMaxConnections_c];
+static uint8_t mResponseSlot;
+#endif /* (gAppPAWRSupport_d == TRUE) */
 /************************************************************************************
 *************************************************************************************
 * Private functions prototypes
@@ -206,6 +232,9 @@ static void AppPrintLePhyEvent(gapPhyEvent_t* pPhyEvent);
 static void AppPrintDec(uint32_t nb);
 static void AppPrintHexLe( uint8_t *pHex, uint8_t len);
 static bool_t CheckForAEPeripheralDevice(uint8_t* pData, uint16_t dataLength);
+#if (gAppPAWRSupport_d == TRUE)
+static bool_t CheckForPAWRPeripheralDevice(uint8_t* pData, uint16_t dataLength);
+#endif /* (gAppPAWRSupport_d == TRUE) */
 static void AppHandleExtAdvEvent( gapExtScannedDevice_t* pExtScannedDevice);
 static void AppHandlePeriodicDeviceScanEvent( gapPeriodicScannedDevice_t* pGapPeriodicScannedDevice);
 void AppTerminatePeriodicAdvSync(void);
@@ -214,7 +243,13 @@ static void BleApp_SerialInit(void);
 static void BleApp_HandleScanStateChanged(void);
 static void BleApp_HandleDeviceScanned(gapScanningEvent_t* pScanningEvent);
 static void BleApp_HandleExtDeviceScanned(gapScanningEvent_t* pScanningEvent);
-
+static void BleApp_HandlePeriodicSyncEstablished(gapSyncEstbEventData_t* pSyncEstb);
+#if (gAppPAWRSupport_d == TRUE)
+static extAdvListElement_t * BleApp_GetExtAdvElement(uint16_t syncHandle);
+static void BleApp_PrintPeriodicDeviceScannedV2(gapPeriodicScannedDeviceV2_t* pPeriodicScannedDeviceV2);
+static void BleApp_HandlePAWRDeviceScanned(gapPeriodicScannedDeviceV2_t* pPeriodicScannedDevice);
+static void BleApp_HandlePeriodicDeviceScannedV2(gapScanningEvent_t* pScanningEvent);
+#endif /* (gAppPAWRSupport_d == TRUE) */
 static void BleApp_HandleIdleState(deviceId_t peerDeviceId, appEvent_t event);
 static void BleApp_HandleExchangeMtuState(deviceId_t peerDeviceId, appEvent_t event);
 static void BleApp_HandleServiceDiscState(deviceId_t peerDeviceId, appEvent_t event);
@@ -407,6 +442,18 @@ static void BluetoothLEHost_GenericCallback (gapGenericEvent_t* pGenericEvent)
         BleApp_Start();
         break;
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+#if (gAppPAWRSupport_d == TRUE)
+    case gPeriodicAdvSetResponseDataComplete_c:
+        AppPrintString("\n\rPeriodic Adv Set Response Data Complete ");
+        break;
+    case gInternalError_c:
+        if (pGenericEvent->eventData.internalError.errorSource == gLeSetPeriodicAdvResponseData_c)
+        {
+            AppPrintString("\n\rPeriodic Adv Set Response Data Failed ");
+        }
+        break;
+#endif /* (gAppPAWRSupport_d == TRUE) */
+
     default:
         {
             ; /* No action required */
@@ -446,7 +493,14 @@ static void BluetoothLEHost_Initialized(void)
     AppPrintString("\r\nPress WAKESW to Start Active Scanning!");
     AppPrintString("\r\nPress WAKESW Long to Start Passive Scanning!\r\n");
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
-
+#if (gAppPAWRSupport_d == TRUE)
+    BluetoothLEHost_SetConnectionCallback(BleApp_ConnectionCallback);
+#ifdef gUserDefinedResponseSlot_c
+    mResponseSlot = (uint8_t)gUserDefinedResponseSlot_c;
+#else
+    (void)RNG_GetPseudoRandomData (&mResponseSlot, 1U, NULL);
+#endif
+#endif /* (gAppPAWRSupport_d == TRUE) */
     LedStopFlashingAllLeds();
     Led1On();
     Led2On();
@@ -489,21 +543,12 @@ static void BleApp_ScanningCallback (gapScanningEvent_t* pScanningEvent)
         break;
     case gPeriodicDeviceScanned_c:
         {
-#if mAE_CentralDebug_c
-            AppPrintString("\r\nPeriodic Advertising Found");
-#endif
             AppHandlePeriodicDeviceScanEvent(&pScanningEvent->eventData.periodicScannedDevice);
         }
         break;
     case gPeriodicAdvSyncEstablished_c:
         {
-            AppPrintString("\r\nPeriodic Adv Sync Established");
-            if((mPerExtAdvIndexPending != mPeriodicExtAdvInvalidIndex_c) && (mPerExtAdvIndexPending < mAppExtAdvListIndex))
-            {
-                maAppExtAdvList[mPerExtAdvIndexPending].syncHandle = pScanningEvent->eventData.syncEstb.syncHandle;
-                maAppExtAdvList[mPerExtAdvIndexPending].perDataCRC = 0;
-            }
-            mPerExtAdvIndexPending = mPeriodicExtAdvInvalidIndex_c;
+            BleApp_HandlePeriodicSyncEstablished(&pScanningEvent->eventData.syncEstb);
         }
         break;
     case gPeriodicAdvSyncLost_c:
@@ -534,6 +579,13 @@ static void BleApp_ScanningCallback (gapScanningEvent_t* pScanningEvent)
             AppTerminatePeriodicAdvSync();
         }
         break;
+#if (gAppPAWRSupport_d == TRUE)
+    case gPeriodicDeviceScannedV2_c:
+        {
+            BleApp_HandlePeriodicDeviceScannedV2(pScanningEvent);
+        }
+        break;
+#endif /* (gAppPAWRSupport_d == TRUE) */
     default:
         {
             ; /* No action required */
@@ -550,13 +602,18 @@ static void BleApp_ScanningCallback (gapScanningEvent_t* pScanningEvent)
 ********************************************************************************** */
 static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEvent_t* pConnectionEvent)
 {
+#if (gAppPAWRSupport_d == FALSE)
     /* Connection Manager to handle Host Stack interactions */
     BleConnManager_GapCentralEvent(peerDeviceId, pConnectionEvent);
-
+#endif /* (gAppPAWRSupport_d == FALSE) */
     switch (pConnectionEvent->eventType)
     {
     case gConnEvtConnected_c:
         {
+#if (gAppPAWRSupport_d == TRUE)
+            /* When connected over PAWR the connection role will be peripheral */
+            maGapRole[peerDeviceId] = (pConnectionEvent->eventData.connectedEvent.connectionRole == gBleLlConnectionPeripheral_c)? gGapPeripheral_c : gGapCentral_c;
+#endif /* (gAppPAWRSupport_d == TRUE) */
             AppPrintString("\r\nConnected!\r\n");
             mPeerInformation.deviceId = peerDeviceId;
             mPeerInformation.isBonded = FALSE;
@@ -577,8 +634,13 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
                 (gBleSuccess_c == Gap_LoadCustomPeerInformation(peerDeviceId, (void*) &mPeerInformation.customInfo, 0U, (uint16_t)sizeof (appCustomInfo_t))))
             {
                 mRestoringBondedLink = TRUE;
-                /* Restored custom connection information. Encrypt link */
-                (void)Gap_EncryptLink(peerDeviceId);
+#if (gAppPAWRSupport_d == TRUE)
+                if (maGapRole[peerDeviceId] == gGapCentral_c)
+#endif /* (gAppPAWRSupport_d == TRUE) */
+                {
+                    /* Restored custom connection information. Encrypt link */
+                    (void)Gap_EncryptLink(peerDeviceId);
+                }
             }
             else
             {
@@ -663,9 +725,14 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
 
     case gConnEvtAuthenticationRejected_c:
         {
-            mAuthRejected = TRUE;
-            /* Start Pairing Procedure */
-            (void)Gap_Pair(peerDeviceId, &gPairingParameters);
+#if (gAppPAWRSupport_d == TRUE)
+            if (maGapRole[peerDeviceId] == gGapCentral_c)
+#endif /* (gAppPAWRSupport_d == TRUE) */
+            {
+                mAuthRejected = TRUE;
+                /* Start Pairing Procedure */
+                (void)Gap_Pair(peerDeviceId, &gPairingParameters);
+            }
         }
         break;
 #endif /* gAppUseBonding_d */
@@ -675,6 +742,17 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
         ; /* No action required */
         break;
     }
+#if (gAppPAWRSupport_d == TRUE)
+    /* Connection Manager to handle Host Stack interactions */
+    if (maGapRole[peerDeviceId] == gGapPeripheral_c)
+    {
+        BleConnManager_GapPeripheralEvent(peerDeviceId, pConnectionEvent);
+    }
+    else
+    {
+        BleConnManager_GapCentralEvent(peerDeviceId, pConnectionEvent);
+    }
+#endif /* (gAppPAWRSupport_d == TRUE) */
 }
 
 /*! *********************************************************************************
@@ -843,7 +921,12 @@ bleResult_t             error
             {
 #if (defined(gAppUsePairing_d) && (gAppUsePairing_d == 1U))
                 /* Start Pairing Procedure */
-                (void)Gap_Pair(serverDeviceId, &gPairingParameters);
+#if (gAppPAWRSupport_d == TRUE)
+                if (maGapRole[serverDeviceId] == gGapCentral_c)
+#endif /* (gAppPAWRSupport_d == TRUE) */
+                {
+                    (void)Gap_Pair(serverDeviceId, &gPairingParameters);
+                }
 #endif /* gAppUsePairing_d */
             }
 
@@ -1046,6 +1129,45 @@ static bool_t CheckForAEPeripheralDevice(uint8_t* pData, uint16_t dataLength)
     return foundMatch;
 }
 
+#if (gAppPAWRSupport_d == TRUE)
+/*! *********************************************************************************
+* \brief        Process gPeriodicDeviceScannedV2_c events to search for the "\n\rPAWR" marker.
+*               This function is called from the scanning callback.
+*
+* \param[in]    pData                   Pointer to advertising data.
+*
+* \param[in]    dataLength              the length of advertising data.
+*
+* \return       TRUE if the scanned device contains "\n\rPAWR" marker,
+                FALSE otherwise
+********************************************************************************** */
+static bool_t CheckForPAWRPeripheralDevice(uint8_t* pData, uint16_t dataLength)
+{
+    uint32_t index = 0;
+    uint8_t pawrLength = 0;
+    bool_t foundMatch = FALSE;
+    uint8_t aPawrString[] = "\n\rPAWR";
+    while (index < dataLength)
+    {
+        gapAdStructure_t adElement;
+        adElement.length = pData[index];
+        adElement.adType = (gapAdType_t)pData[index + 1U];
+        adElement.aData = &pData[index + 2U];
+        pawrLength = sizeof(aPawrString) - 1U;
+        if ( (adElement.adType == gAdManufacturerSpecificData_c ) && (adElement.length >= pawrLength) )
+        {
+            foundMatch =  FLib_MemCmp (adElement.aData, aPawrString, pawrLength);
+            if(foundMatch)
+            {
+                break;
+            }
+        }
+        /* Move on to the next AD element type */
+        index += (uint32_t)adElement.length + sizeof(uint8_t);
+    }
+    return foundMatch;
+}
+#endif /* (gAppPAWRSupport_d == TRUE) */
 /*! *********************************************************************************
 * \brief        State machine handler of the Temperature Collector application.
 *
@@ -1377,6 +1499,9 @@ static void AppHandlePeriodicDeviceScanEvent( gapPeriodicScannedDevice_t* pGapPe
     bool_t perAdvDataChanged = FALSE;
     uint8_t advIndex;
     uint32_t advCRC = AppCalculateAdvDataCRC(pGapPeriodicScannedDevice->pData, pGapPeriodicScannedDevice->dataLength);
+#if mAE_CentralDebug_c
+    AppPrintString("\r\nPeriodic Advertising Found");
+#endif
     if(mAppExtAdvListIndex != 0U)
     {
         for( advIndex=0 ; advIndex < mAppExtAdvListIndex ; advIndex++)
@@ -1543,6 +1668,222 @@ static void BleApp_HandleExtDeviceScanned(gapScanningEvent_t* pScanningEvent)
         }
     }
 }
+
+/*! *********************************************************************************
+* \brief        Process gPeriodicAdvSyncEstablished_c events in BleApp_ScanningCallback.
+*               This function is called from the scanning callback.
+*
+* \param[in]    pSyncEstb                   Pointer to pScanningEvent->eventData.syncEstb.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_HandlePeriodicSyncEstablished(gapSyncEstbEventData_t* pSyncEstb)
+{
+    AppPrintString("\r\nPeriodic Adv Sync Established");
+    if ((mPerExtAdvIndexPending != mPeriodicExtAdvInvalidIndex_c) && (mPerExtAdvIndexPending < mAppExtAdvListIndex))
+    {
+        maAppExtAdvList[mPerExtAdvIndexPending].syncHandle = pSyncEstb->syncHandle;
+        maAppExtAdvList[mPerExtAdvIndexPending].perDataCRC = 0;
+#if (gAppPAWRSupport_d == TRUE)
+        maAppExtAdvList[mPerExtAdvIndexPending].numSubevents = pSyncEstb->numSubevents;
+        maAppExtAdvList[mPerExtAdvIndexPending].subeventInterval = pSyncEstb->subeventInterval;
+        maAppExtAdvList[mPerExtAdvIndexPending].responseSlotDelay = pSyncEstb->responseSlotDelay;
+        maAppExtAdvList[mPerExtAdvIndexPending].responseSlotSpacing = pSyncEstb->responseSlotSpacing;
+        /* Check for PAWR and update the number of responses */
+        if ((pSyncEstb->numSubevents == 0U)
+            || (pSyncEstb->subeventInterval == 0U)
+                || (pSyncEstb->responseSlotDelay == 0U)
+                    || (pSyncEstb->responseSlotSpacing == 0U)
+                        ||(pSyncEstb->responseSlotDelay >= pSyncEstb->subeventInterval))
+        {
+            maAppExtAdvList[mPerExtAdvIndexPending].numResponses = 0U;
+        }
+        else
+        {
+            maAppExtAdvList[mPerExtAdvIndexPending].numResponses = (uint16_t)maAppExtAdvList[mPerExtAdvIndexPending].subeventInterval - (uint16_t)maAppExtAdvList[mPerExtAdvIndexPending].responseSlotDelay;
+            maAppExtAdvList[mPerExtAdvIndexPending].numResponses = (maAppExtAdvList[mPerExtAdvIndexPending].numResponses * 10U)/ maAppExtAdvList[mPerExtAdvIndexPending].responseSlotSpacing;
+            maAppExtAdvList[mPerExtAdvIndexPending].responseSlot = mResponseSlot % ((uint8_t)maAppExtAdvList[mPerExtAdvIndexPending].numResponses);
+        }
+        if (pSyncEstb->numSubevents != 0U)
+        {
+            /* In case of PAWR check if there are compatible subevents to sync on*/
+            bool_t syncOnSubevents = TRUE;
+            for (uint8_t subNo = 0U; subNo < mPeriodicSyncSubeventParameters.numSubevents; subNo++)
+            {
+                if (mPeriodicSyncSubeventParameters.aSubevents[subNo] > (pSyncEstb->numSubevents - 1U))
+                {
+                    syncOnSubevents = FALSE;
+                    break;
+                }
+            }
+            if (syncOnSubevents)
+            {
+                /* Sync on the configured subevents */
+                if (gBleSuccess_c != Gap_SetPeriodicSyncSubevent(pSyncEstb->syncHandle
+                                                                 , (gapPeriodicSyncSubeventParameters_t*)(void*)&mPeriodicSyncSubeventParameters))
+                {
+                    AppPrintString("\r\nGap_SetPeriodicSyncSubevent Failed");
+                }
+                else
+                {
+                    AppPrintString("\r\nGap_SetPeriodicSyncSubevent Succeded");
+                }
+            }
+        }
+#endif /* (gAppPAWRSupport_d == TRUE) */
+    }
+    mPerExtAdvIndexPending = mPeriodicExtAdvInvalidIndex_c;
+}
+
+#if (gAppPAWRSupport_d == TRUE)
+/*! *********************************************************************************
+* \brief        Returns the element in the maAppExtAdvList whose sync handle matches with the parameter.
+*
+* \param[in]    syncHandle                   sync handle to look for.
+*
+* \return       pointer to the element in maAppExtAdvList.
+*               NULL    if there is no elemnt whose sync matches the parameter.
+********************************************************************************** */
+static extAdvListElement_t * BleApp_GetExtAdvElement(uint16_t syncHandle)
+{
+    extAdvListElement_t *pExtAdv = NULL;
+    for ( uint8_t i = 0 ; i<mAppExtAdvListIndex ; i++)
+    {
+        if (maAppExtAdvList[i].syncHandle == syncHandle)
+        {
+            pExtAdv = &maAppExtAdvList[i];
+            break;
+        }
+    }
+    return pExtAdv;
+}
+
+/*! *********************************************************************************
+* \brief        Prints the parameters of the PAWR device scanned.
+*
+* \param[in]    pPeriodicScannedDeviceV2                   Pointer to pScanningEvent->eventData.periodicScannedDeviceV2.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_PrintPeriodicDeviceScannedV2(gapPeriodicScannedDeviceV2_t* pPeriodicScannedDeviceV2)
+{
+    AppPrintString("\n\rPAWR received");
+    AppPrintString("\n\rSync Handle: ");
+    AppPrintHexLe((uint8_t*)&pPeriodicScannedDeviceV2->syncHandle, (uint8_t)sizeof(pPeriodicScannedDeviceV2->syncHandle));
+    AppPrintString("\n\rEvent Counter: ");
+    AppPrintHexLe((uint8_t*)&pPeriodicScannedDeviceV2->periodicEventCounter, (uint8_t)sizeof(pPeriodicScannedDeviceV2->periodicEventCounter));
+    AppPrintString("\n\rSubevent: ");
+    AppPrintDec((uint32_t)pPeriodicScannedDeviceV2->subevent);
+    AppPrintString("\n\rSubevent data: ");
+    uint16_t  dataLength = 0;
+    uint8_t* pData = pPeriodicScannedDeviceV2->pData;
+    pData = pPeriodicScannedDeviceV2->pData;
+    while ( dataLength < pPeriodicScannedDeviceV2->dataLength )
+    {
+        dataLength += ((uint16_t)*pData + 1U);
+        if (pData[1] == (uint8_t)gAdManufacturerSpecificData_c)
+        {
+            AppPrintString((char *)&pData[2]);
+        }
+        pData =  &pPeriodicScannedDeviceV2->pData[dataLength];
+    }
+}
+/*! *********************************************************************************
+* \brief        Handles the PAWR device scanned event received.
+*
+* \param[in]    pPeriodicScannedDeviceV2                   Pointer to pScanningEvent->eventData.periodicScannedDeviceV2.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_HandlePAWRDeviceScanned(gapPeriodicScannedDeviceV2_t* pPeriodicScannedDevice)
+{
+    /* checks for PAWR with data*/
+    if ( (pPeriodicScannedDevice->subevent != (uint8_t)mPARV2_NoSubevents_c)
+        && (pPeriodicScannedDevice->dataLength != 0U) 
+            &&(pPeriodicScannedDevice->pData != NULL))
+    {
+        /* search for the "\n\rPAWR" marker */
+        if (CheckForPAWRPeripheralDevice(pPeriodicScannedDevice->pData, pPeriodicScannedDevice->dataLength))
+        {
+            /* Prints the parameters of the PAWR device scanned. */
+            BleApp_PrintPeriodicDeviceScannedV2(pPeriodicScannedDevice);
+            extAdvListElement_t *pExtAdv = BleApp_GetExtAdvElement(pPeriodicScannedDevice->syncHandle);
+            /* Check if responses are supported*/
+            if ((pExtAdv != NULL) && pExtAdv->numResponses != 0U)
+            {
+                /*Generate a RPA like data for response to be recognized by a previously bonded advertiser.*/
+                uint8_t aPawrResponseData[gcBleDeviceAddressSize_c];
+                (void)RNG_GetPseudoRandomData (&aPawrResponseData[3], 3, NULL);
+                if (gSecSuccess_c == SecLib_VerifyBluetoothAh (aPawrResponseData, gSmpKeys.aIrk, &aPawrResponseData[3]))
+                {
+                    gapAdStructure_t data[] = 
+                    {
+                        {
+                            .length = (uint8_t)NumberOfElements(aPawrResponseData) + 1U,
+                            .adType = gAdManufacturerSpecificData_c,
+                            .aData = (uint8_t*)aPawrResponseData
+                        }
+                    };
+                    gapAdvertisingData_t responseData = 
+                    {
+                        NumberOfElements(data),
+                        (void *)data
+                    };
+                    gapPeriodicAdvertisingResponseData_t pawrResponseData = {0U};
+                    pawrResponseData.pResponseData = &responseData;
+                    pawrResponseData.requestEvent = pPeriodicScannedDevice->periodicEventCounter;
+                    pawrResponseData.requestSubevent = pPeriodicScannedDevice->subevent;
+                    pawrResponseData.responseSubevent = pPeriodicScannedDevice->subevent;
+                    pawrResponseData.responseSlot = pExtAdv->responseSlot;
+                    /* Send the sesponse and signal it wants to connect*/
+                    if (gBleSuccess_c !=  Gap_SetPeriodicAdvResponseData(
+                                                                         pPeriodicScannedDevice->syncHandle,
+                                                                         &pawrResponseData))
+                    {
+                        AppPrintString("\r\nGap_SetPeriodicAdvResponseData Failed");
+                    }
+                    else
+                    {
+                        AppPrintString("\r\nGap_SetPeriodicAdvResponseData Succeded");
+                    }
+                }
+            }
+        }
+    }
+}
+/*! *********************************************************************************
+* \brief        Handles the gPeriodicDeviceScannedV2_c event received.
+*
+* \param[in]    pPeriodicScannedDeviceV2                   Pointer to pScanningEvent->eventData.periodicScannedDeviceV2.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_HandlePeriodicDeviceScannedV2(gapScanningEvent_t* pScanningEvent)
+{
+    extAdvListElement_t *pExtAdv = BleApp_GetExtAdvElement(pScanningEvent->eventData.periodicScannedDeviceV2.syncHandle);
+    if (pExtAdv != NULL)
+    {
+        /*Check for PAWR */
+        if (pExtAdv->numSubevents == 0U)
+        {
+            /* No PAWR. Convert the gPeriodicDeviceScannedV2_c into gPeriodicDeviceScanned_c to handle regular periodic adv*/
+            gapPeriodicScannedDevice_t gapPeriodicScannedDevice;
+            gapPeriodicScannedDevice.syncHandle = pScanningEvent->eventData.periodicScannedDeviceV2.syncHandle;
+            gapPeriodicScannedDevice.txPower = pScanningEvent->eventData.periodicScannedDeviceV2.txPower;
+            gapPeriodicScannedDevice.rssi = pScanningEvent->eventData.periodicScannedDeviceV2.rssi;
+            gapPeriodicScannedDevice.cteType = pScanningEvent->eventData.periodicScannedDeviceV2.cteType;
+            gapPeriodicScannedDevice.dataLength = pScanningEvent->eventData.periodicScannedDeviceV2.dataLength;
+            gapPeriodicScannedDevice.pData = pScanningEvent->eventData.periodicScannedDeviceV2.pData;
+            AppHandlePeriodicDeviceScanEvent(&gapPeriodicScannedDevice);
+        }
+        else
+        {
+            /* Handle PAWR.*/
+            BleApp_HandlePAWRDeviceScanned(&pScanningEvent->eventData.periodicScannedDeviceV2);
+        }
+    }
+}
+#endif /* (gAppPAWRSupport_d == TRUE) */
 
 static void BleApp_HandleIdleState(deviceId_t peerDeviceId, appEvent_t event)
 {

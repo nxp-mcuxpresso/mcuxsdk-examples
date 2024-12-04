@@ -29,6 +29,9 @@
 #define gAppDeepSleepMode_c            1
 #endif
 
+#ifndef gAppPAWRSupport_d
+#define gAppPAWRSupport_d FALSE
+#endif
 /************************************************************************************
 *************************************************************************************
 * Public memory declarations
