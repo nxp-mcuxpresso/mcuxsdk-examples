@@ -2,8 +2,6 @@
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
-include(${SdkRootDirPath}/examples/_common/project_setting/arm_common.cmake)
-include(${SdkRootDirPath}/examples/_common/components/flash_config.cmake)
 mcux_add_cmakelists(${SdkRootDirPath}/examples/_boards/mimxrt685audevk/${core_id} OPTIONAL)
 include(${SdkRootDirPath}/examples/_boards/mimxrt685audevk/${core_id}/setting.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/lvgl/prjseg.cmake)
