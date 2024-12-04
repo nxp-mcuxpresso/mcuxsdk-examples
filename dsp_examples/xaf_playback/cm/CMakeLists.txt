@@ -47,8 +47,7 @@ mcux_add_macro(
        -DXA_PCM_GAIN=1\
        -DXA_SRC_PP_FX=1\
        -DXA_RENDERER=1\
-       -DDSP_IMAGE_COPY_TO_RAM=1\
-       -DSD_ENABLED"
+       -DDSP_IMAGE_COPY_TO_RAM=1"
     AS "-DDSP_IMAGE_COPY_TO_RAM=1"
 )
 
