@@ -74,7 +74,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
-    BOARD_InitDebugConsoleForCM7WithSM();
+    BOARD_InitDebugConsole();
     flexspi_clock_init();
 }
 

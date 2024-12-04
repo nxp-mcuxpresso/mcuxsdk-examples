@@ -27,6 +27,7 @@
  ******************************************************************************/
 
 /* Initialize debug console. */
+#if 0
 void BOARD_InitDebugConsoleWithArgs(unsigned int uart_instance, unsigned int uart_clk_freq, hal_clk_t *p_hal_clk)
 {
     HAL_ClockSetRootClk(p_hal_clk);
@@ -71,24 +72,22 @@ void BOARD_InitDebugConsoleForCM7WithoutSM(void)
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE_FOR_CM7_WITHOUT_SM, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE,
                     BOARD_DEBUG_UART_CLK_FREQ_FOR_CM7_WITHOUT_SM);
 }
+#endif
 
 void BOARD_InitDebugConsole(void)
 {
     /* clang-format off */
     hal_clk_t hal_clk = {
         .clk_id = BOARD_DEBUG_UART_CLOCK_ROOT,
-	.pclk_id = hal_clock_osc24m,
-	.div = 1,
-	.enable_clk = true,
 	.clk_round_opt = hal_clk_round_auto,
+	.rate = 24000000UL,
     };
     /* clang-format on */
 
-    //BOARD_InitDebugConsoleWithArgs(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_CLK_FREQ, &hal_clk);
-    /* Don't know why the demo's uart is not workable when call BOARD_InitDebugConsoleWithArgs directly on zebu for cortex-m7  */
-    HAL_ClockSetRootClk(&hal_clk);
+    HAL_ClockSetRate(&hal_clk);
+    HAL_ClockEnable(&hal_clk);
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE,
-                    BOARD_DEBUG_UART_CLK_FREQ);
+                    HAL_ClockGetRate(hal_clk.clk_id));
 }
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED

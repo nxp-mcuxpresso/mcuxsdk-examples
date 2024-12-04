@@ -94,7 +94,7 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_lpi2c7ClkCfg);
 
     /* Console init */
-    BOARD_InitDebugConsoleForCM7WithSM();
+    BOARD_InitDebugConsole();
 
     /* Protocol configure */
     BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000522;
