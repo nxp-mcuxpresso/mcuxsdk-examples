@@ -27,7 +27,7 @@ void BOARD_InitHardware(void)
     SM_Platform_Init();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
-    BOARD_InitDebugConsoleForCM7WithSM();
+    BOARD_InitDebugConsole();
 
     HAL_ClockSetRootClk(&hal_flexcanclk);
 }

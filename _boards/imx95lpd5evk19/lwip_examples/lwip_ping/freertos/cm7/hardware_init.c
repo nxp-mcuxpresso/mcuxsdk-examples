@@ -248,7 +248,7 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_lpi2c7ClkCfg);
 
     /* Console init */
-    BOARD_InitDebugConsoleForCM7WithSM();
+    BOARD_InitDebugConsole();
 
     /* Enable 156.25MHz clock to 10G ETH_CLKIN_P/ETH_CLKIN_N */
     BOARD_InitPCAL6524(&handle1);
