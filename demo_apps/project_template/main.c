@@ -8,12 +8,8 @@
  */
 
 #include "fsl_device_registers.h"
-
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "peripherals.h"
-
 #include "board.h"
+#include "app.h"
 
 /*******************************************************************************
  * Definitions
@@ -33,13 +29,7 @@
 int main(void)
 {
     /* Init board hardware. */
-    BOARD_InitBootPins();
-    BOARD_InitBootClocks();
-    BOARD_InitBootPeripherals();
-
-    /* Add user initialization code */
-
-    __EI(0);
+    BOARD_InitHardware();
 
     /* Add user custom codes below */
 
