@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
 include(${SdkRootDirPath}/arch/arm/target/ext_flash.cmake)
+include(${SdkRootDirPath}/examples/_common/project_setting/arm_common.cmake)
 include(${SdkRootDirPath}/examples/_common/components/flash_config.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/display_support/prjseg.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/wireless/rw61x/prjseg.cmake)
