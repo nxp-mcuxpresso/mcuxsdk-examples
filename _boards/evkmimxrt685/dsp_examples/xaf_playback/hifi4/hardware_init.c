@@ -66,16 +66,6 @@ static void XOS_Init(void)
 
 void BOARD_InitHardware(void)
 {
-    /* Disable DSP cache for RPMsg-Lite shared memory. */
-    xthal_set_region_attribute((void *)RPMSG_LITE_SHMEM_BASE, RPMSG_LITE_SHMEM_SIZE, XCHAL_CA_BYPASS, 0);
-
-    /* Disable DSP cache for noncacheable sections. */
-    xthal_set_region_attribute((uint32_t *)&NonCacheable_start,
-                               (uint32_t)&NonCacheable_end - (uint32_t)&NonCacheable_start, XCHAL_CA_BYPASS, 0);
-    xthal_set_region_attribute((uint32_t *)&NonCacheable_init_start,
-                               (uint32_t)&NonCacheable_init_end - (uint32_t)&NonCacheable_init_start, XCHAL_CA_BYPASS,
-                               0);
-
     XOS_Init();
     BOARD_InitBootPins();
     BOARD_InitDebugConsole();
