@@ -77,12 +77,25 @@ int main(void)
 
     PLATFORM_InitBle();
 #if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0)) && (!defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0))
-/* Temporaryly disable RF_GPO & DTEST settings if FEM or COEX is configured */
-#if (!defined(gAppConfigureFEM) || (gAppConfigureFEM == 0)) && \
-    (!defined(gAppConfigureCOEX) || (gAppConfigureCOEX == 0))
     PLATFORM_InitLcl();
 #endif
-#endif
+    {
+        /* Customized configuration: see default_COEX_config[] for details. Be careful ! */
+//        uint8_t COEX_config[24U] = {
+//            0x01,0x01,0x01,0x05,0x01, 0x01, 0x01,0x00,0x00,0x00,0x00, 0x04,0x01, 0x37,0x5D,0x5A, 0x00,0x00, 0x5A, 0x5A,0x5A,0x00, 0x01,0x01};
+//        uint8_t COEX_status = PLATFORM_InitCOEX(COEX_config, sizeof(COEX_config));
+//        uint8_t COEX_status = PLATFORM_InitCOEX(NULL, 0U /*N/A*/);   /* use default configuration */
+//        assert(COEX_status==0U);
+    }
+    {
+        /* Customized configuration: see default_FEM_config[] for details. Be careful ! */
+//        uint8_t FEM_config[16U] = {
+//            1U/*dual mode*/, 0U/*Disabled*/, 1U/*Enabled*/, 0U/*Disabled*/, 0U/*Disabled*/, 0U/*TSM GPIO*/, 0U/*TSM GPIO*/,
+//            0U/*TSM GPIO*/, 0U/*TSM GPIO*/, 0U/*?*/, 0U/*MUST=0*/, 0U/*?*/, 0U/*MUST=0*/, 0U/*HIGH*/, 0U/*HIGH*/, 5U/*RF_GPO[11:8]*/};
+//        uint8_t FEM_status = PLATFORM_InitFEM(FEM_config, sizeof(FEM_config));
+//        uint8_t FEM_status = PLATFORM_InitFEM(NULL, 0U /*N/A*/);   /* use default configuration */
+//        assert(FEM_status==0U);
+    }
 
     APP_InitServices();
 

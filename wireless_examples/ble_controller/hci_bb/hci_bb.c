@@ -538,27 +538,6 @@ void main_task(uint32_t param)
         }
 #endif /*(!defined(gAppUseDtm2Wire) || (gAppUseDtm2Wire == 0))*/
 
-#if defined(gAppConfigureFEM) && (gAppConfigureFEM == 1)
-    {
-        extern osa_status_t Controller_ConfigureFEM(const uint8_t *config_ptr, uint8_t config_len);
-//        uint8_t FEM_config[16U] = {               /* see default_FEM_config for details */
-//          1U/*dual mode*/, 0U/*Disabled*/, 1U/*Enabled*/, 0U/*Disabled*/, 0U/*Disabled*/, 0U/*TSM GPIO*/, 0U/*TSM GPIO*/,
-//          0U/*TSM GPIO*/, 0U/*TSM GPIO*/, 0U/*?*/, 0U/*MUST=0*/, 0U/*?*/, 0U/*MUST=0*/, 0U/*HIGH*/, 0U/*HIGH*/, 0U/*RF_GPO[3:0]*/};
-//        osa_status_t FEM_status = Controller_ConfigureFEM(FEM_config, sizeof(FEM_config));
-        osa_status_t FEM_status = Controller_ConfigureFEM(NULL, 0U /*N/A*/);   /* use default configuration */
-        assert(FEM_status==KOSA_StatusSuccess);
-    }
-#endif
-#if defined(gAppConfigureCOEX) && (gAppConfigureCOEX == 1)
-    {
-        extern osa_status_t Controller_ConfigureCOEX(const uint8_t *config_ptr, uint8_t config_len);
-//        uint8_t COEX_config[16U] = {               /* see default_COEX_config for details */
-//            0x01,0x01,0x01,0x00,0x01, 0x01, 0x00,0x00,0x00,0x00,0x00, 0x01,0x01, 0x96,0x64,0x59, 0x00,0x00, 0x59, 0x59,0x59,0x00, 0x01,0x01};
-//        osa_status_t COEX_status = Controller_ConfigureCOEX(COEX_config, sizeof(COEX_config));
-        osa_status_t COEX_status = Controller_ConfigureCOEX(NULL, 0U /*N/A*/);   /* use default configuration */
-        assert(COEX_status==KOSA_StatusSuccess);
-    }
-#endif
         Controller_SetTxPowerLevelDbm(mAdvertisingDefaultTxPower_c, gAdvTxChannel_c);
         Controller_SetTxPowerLevelDbm(mConnectionDefaultTxPower_c, gConnTxChannel_c);
     }
