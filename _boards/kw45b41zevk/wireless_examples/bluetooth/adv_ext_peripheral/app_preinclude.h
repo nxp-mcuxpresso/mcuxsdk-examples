@@ -125,6 +125,7 @@
 
 /* See documentation on how to enable DBAF */
 #define gBLE60_DecisionBasedAdvertisingFilteringSupport_d FALSE
+#define gAppPAWRSupport_d                                 FALSE
 /*! *********************************************************************************
  *  Auto Configuration
  ********************************************************************************** */

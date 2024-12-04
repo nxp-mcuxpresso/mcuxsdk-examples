@@ -64,20 +64,80 @@
 #ifndef mAE_PeripheralDebug_c
 #define mAE_PeripheralDebug_c   (0)
 #endif
-
+#define mLegacyAdvMenuOption_c                          1
+#define mExtAdvScannMenuOption_c                        2
+#define mExtAdvConnMenuOption_c                         3
+#define mExtAdvNonConnNonScanMenuOption_c               4
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
-#define mChangePerAdvDataOption_c                   (10U)
-#define mChangeDbafNonConnNonScannAdvDataOption_c   (9U)
-#define mChangeNonConnNonScannAdvDataOption_c       (8U)
-#else
-#define mChangePerAdvDataOption_c              (6U)
-#define mChangeNonConnNonScannAdvDataOption_c  (5U)
+#define mDbafAdvScannMenuOption_c                       5
+#define mDbafAdvConnMenuOption_c                        6
+#define mDbafAdvNonConnNonScanMenuOption_c              7
+#define mPeriodicAdvMenuOption_c                        8
+
+#if (gAppPAWRSupport_d == TRUE)
+#define mPAWRMenuOption_c                               9
+#define mChangeNonConnNonScannAdvDataMenuOption_c       10
+#define mChangeDbafNonConnNonScannAdvDataMenuOption_c   11
+#define mChangePerAdvDataMenuOption_c                   12
+#define mMenuOptionInit_c                               "\r 1 ","\r 2 ", "\r 3 ", "\r 4 ", "\r 5 ", "\r 6 ", "\r 7 ", "\r 8 ", "\r 9 ", "\r 10", "\r 11", "\r 12"
+
+#define mChangeNonConnNonScannAdvDataIndex_c           (9U)
+#define mChangeDbafNonConnNonScannAdvDataIndex_c       (10U)
+#define mChangePerAdvDataIndex_c                       (11U)
+
+#else /* (gAppPAWRSupport_d == TRUE) */
+
+#define mChangeNonConnNonScannAdvDataMenuOption_c       9
+#define mChangeDbafNonConnNonScannAdvDataMenuOption_c   10
+#define mChangePerAdvDataMenuOption_c                   11
+#define mMenuOptionInit_c                               "\r 1 ","\r 2 ", "\r 3 ", "\r 4 ", "\r 5 ", "\r 6 ", "\r 7 ", "\r 8 ", "\r 9 ", "\r 10", "\r 11", "\r 11"
+
+#define mChangeNonConnNonScannAdvDataIndex_c           (8U)
+#define mChangeDbafNonConnNonScannAdvDataIndex_c       (9U)
+#define mChangePerAdvDataIndex_c                       (10U)
+#endif /* (gAppPAWRSupport_d == TRUE) */
+
+#else /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+
+#define mPeriodicAdvMenuOption_c                        5
+
+#if (gAppPAWRSupport_d == TRUE)
+
+#define mPAWRMenuOption_c                               6
+#define mChangeNonConnNonScannAdvDataMenuOption_c       7
+#define mChangePerAdvDataMenuOption_c                   8
+#define mMenuOptionInit_c                               "\r 1 ","\r 2 ", "\r 3 ", "\r 4 ", "\r 5 ", "\r 6 ", "\r 7 ", "\r 8 "
+
+#define mChangeNonConnNonScannAdvDataIndex_c           (6U)
+#define mChangePerAdvDataIndex_c                       (7U)
+
+#else /* (gAppPAWRSupport_d == TRUE) */
+
+#define mChangeNonConnNonScannAdvDataMenuOption_c       6
+#define mChangePerAdvDataMenuOption_c                   7
+#define mMenuOptionInit_c                               "\r 1 ","\r 2 ", "\r 3 ", "\r 4 ", "\r 5 ", "\r 6 ", "\r 7 "
+
+#define mChangeNonConnNonScannAdvDataIndex_c           (5U)
+#define mChangePerAdvDataIndex_c                       (6U)
+#endif /* (gAppPAWRSupport_d == TRUE) */
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+
+#define mbmValidOption_c                                ((((uint16_t)1U)<<mChangeNonConnNonScannAdvDataIndex_c) - 1U)
 
 #define Serial_Print(a,b,c)     (void)SerialManager_WriteBlocking((serial_write_handle_t)s_writeHandle, (uint8_t *)&(b)[0], strlen(b))
 #define Serial_PrintDec(a,b)    (void)SerialManager_WriteBlocking((serial_write_handle_t)s_writeHandle, FORMAT_Dec2Str(b), strlen((char const *)FORMAT_Dec2Str(b)))
 #define AppPrintString(b)       (void)SerialManager_WriteBlocking((serial_write_handle_t)s_writeHandle, (uint8_t *)&(b)[0], strlen(b))
 
+#define concat_strings_3(a,b,c)      a##b##c
+#define ConcatStrings3(a,b,c)        concat_strings_3(a,b,c)
+#define concat_strings_5(a,b,c,d,e)  a##b##c##d##e
+#define ConcatStrings5(a,b,c,d,e)    concat_strings_5(a,b,c,d,e)
+#define strng(a)                     #a
+#define xstrng(a)                    strng(a)
+#if (gAppPAWRSupport_d == TRUE)
+/* The data are transmitted  once in mAppPAWR_SubeventDataFrequency_c periodic events events*/
+#define mAppPAWR_SubeventDataFrequency_c   3U
+#endif /* (gAppPAWRSupport_d == TRUE) */
 /************************************************************************************
 *************************************************************************************
 * Private type definitions
@@ -108,6 +168,9 @@ typedef enum
     mDbafAdvNonConnNonScanIndex_c,
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
     mPeriodicAdvIndex_c,
+#if defined(gAppPAWRSupport_d) && (gAppPAWRSupport_d == TRUE)
+    mPAWRIndex_c,
+#endif /* defined(gAppPAWRSupport_d) && (gAppPAWRSupport_d == TRUE) */
     mAdvIndexMax_c
 }advIndex_t;
 
@@ -149,61 +212,79 @@ static tmsConfig_t tmsServiceConfig = {(uint16_t)service_temperature, 0};
 
 /* Application specific data*/
 static appPeerDevice_t maPeerDeviceId[gAppMaxConnections_c];
-
+#if (gAppPAWRSupport_d == TRUE)
+static gapRole_t   maGapRole[gAppMaxConnections_c];
+#endif /* (gAppPAWRSupport_d == TRUE) */
 #if (defined(gAppButtonCnt_c) && (gAppButtonCnt_c > 0))
 static switch2Status_t switch2Status = mSS_PrintMenu_c;
 static uint8_t menuOption = 0;
-static char* legacyAdvStrings[] = {"\n\r 1. Start Legacy Advertising",\
-                                         "\n\r 1. Stop Legacy Advertising",
+
+static char* legacyAdvStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mLegacyAdvMenuOption_c,_Start Legacy Advertising)),\
+                                         xstrng(ConcatStrings3(\n\r\x20\x20\b,mLegacyAdvMenuOption_c,_Stop Legacy Advertising)),
                                          "\n\rConnected"};
-static char* extAdvScannStrings[] = {"\n\r 2. Start Extended Scannable Advertising",\
-                                           "\n\r 2. Stop Extended Scannable Advertising"};
-static char* extAdvConnStrings[] = {"\n\r 3. Start Extended Connectable Advertising",\
-                                          "\n\r 3. Stop Extended Connectable Advertising",
+static char* extAdvScannStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mExtAdvScannMenuOption_c,_Start Extended Scannable Advertising)),\
+                                           xstrng(ConcatStrings3(\n\r\x20\x20\b,mExtAdvScannMenuOption_c,_Stop Extended Scannable Advertising))};
+static char* extAdvConnStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mExtAdvConnMenuOption_c,_Start Extended Connectable Advertising)),\
+                                          xstrng(ConcatStrings3(\n\r\x20\x20\b,mExtAdvConnMenuOption_c,_Stop Extended Connectable Advertising)),
                                           "\n\rConnected"};
+static char* extAdvNonConnNonScanStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mExtAdvNonConnNonScanMenuOption_c,_Start Extended Non Connectable Non Scannable Advertising)),\
+        xstrng(ConcatStrings5(\n\r\x20\x20\b,mExtAdvNonConnNonScanMenuOption_c,_Stop Extended Non Connectable Non Scannable Advertising \n\r\x20\x20\b,mChangeNonConnNonScannAdvDataMenuOption_c,_Change Data for Non Connectable Non Scannable Advertising))};
+
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
-static char* extAdvNonConnNonScanStrings[] = {"\n\r 4. Start Extended Non Connectable Non Scannable Advertising",\
-        "\n\r 4. Stop Extended Non Connectable Non Scannable Advertising \n\r 9. Change Data for Non Connectable Non Scannable Advertising"};
-
-static char* dbafAdvScannStrings[] = {"\n\r 5. Start DBAF Scannable Advertising",\
-                                           "\n\r 5. Stop DBAF Scannable Advertising"};
-
-static char* dbafAdvConnStrings[] = {"\n\r 6. Start DBAF Connectable Advertising",\
-                                          "\n\r 6. Stop DBAF Connectable Advertising",
-                                          "\n\rConnected"};
-
-static char* dbafAdvNonConnNonScanStrings[] = {"\n\r 7. Start DBAF Non Connectable Non Scannable Advertising",\
-        "\n\r 7. Stop DBAF Non Connectable Non Scannable Advertising \n\r 10. Change Data for DBAF Non Connectable Non Scannable Advertising"};
-
-static char* periodicAdvStrings[] = {"\n\r 8. Start Periodic Advertising",\
-        "\n\r 8. Stop Periodic Advertising \n\r 11. Change Data for Periodic Advertising"};
-
-static char** maMenu[]= {legacyAdvStrings, extAdvScannStrings, extAdvConnStrings, extAdvNonConnNonScanStrings, dbafAdvScannStrings, dbafAdvConnStrings, dbafAdvNonConnNonScanStrings, periodicAdvStrings};
-static char* menuOptions[] ={"\r 1 ","\r 2 ", "\r 3 ", "\r 4 ", "\r 5 ", "\r 6 ", "\r 7 ", "\r 8 ", "\r 9 ", "\r 10", "\r 11"};
-#else
-static char* extAdvNonConnNonScanStrings[] = {"\n\r 4. Start Extended Non Connectable Non Scannable Advertising",\
-        "\n\r 4. Stop Extended Non Connectable Non Scannable Advertising \n\r 6. Change Data for Non Connectable Non Scannable Advertising"};
-
-static char* periodicAdvStrings[] = {"\n\r 5. Start Periodic Advertising",\
-        "\n\r 5. Stop Periodic Advertising \n\r 7. Change Data for Periodic Advertising"};
-
-static char** maMenu[]= {legacyAdvStrings, extAdvScannStrings, extAdvConnStrings, extAdvNonConnNonScanStrings, periodicAdvStrings};
-static char* menuOptions[] ={"\r 1","\r 2", "\r 3", "\r 4", "\r 5", "\r 6", "\r 7"};
+static char* dbafAdvScannStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mDbafAdvScannMenuOption_c,_Start DBAF Scannable Advertising)),\
+                                      xstrng(ConcatStrings3(\n\r\x20\x20\b,mDbafAdvScannMenuOption_c,_Stop DBAF Scannable Advertising))};
+static char* dbafAdvConnStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mDbafAdvConnMenuOption_c,_Start DBAF Connectable Advertising)),\
+                                     xstrng(ConcatStrings3(\n\r\x20\x20\b,mDbafAdvConnMenuOption_c,_Stop DBAF Connectable Advertising)),
+                                     "\n\rConnected"};
+static char* dbafAdvNonConnNonScanStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mDbafAdvNonConnNonScanMenuOption_c,_Start DBAF Non Connectable Non Scannable Advertising)),\
+        xstrng(ConcatStrings5(\n\r\x20\x20\b,mDbafAdvNonConnNonScanMenuOption_c,_Stop DBAF Non Connectable Non Scannable Advertising \n\r\x20\x20\b,mChangeDbafNonConnNonScannAdvDataMenuOption_c,_Change Data for DBAF Non Connectable Non Scannable Advertising))};
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+static char* periodicAdvStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mPeriodicAdvMenuOption_c,_Start Periodic Advertising)),\
+        xstrng(ConcatStrings5(\n\r\x20\x20\b,mPeriodicAdvMenuOption_c,_Stop Periodic Advertising \n\r\x20\x20\b,mChangePerAdvDataMenuOption_c,_Change Data for Periodic Advertising))};
+#if (gAppPAWRSupport_d == TRUE)
+static char* pawrStrings[] = {xstrng(ConcatStrings3(\n\r\x20\x20\b,mPAWRMenuOption_c,_Start PAWR)),\
+             xstrng(ConcatStrings3(\n\r\x20\x20\b,mPAWRMenuOption_c,_Stop PAWR))};
+#endif /* (gAppPAWRSupport_d == TRUE)*/
+
+static char** maMenu[]= 
+{
+    legacyAdvStrings, extAdvScannStrings, extAdvConnStrings, extAdvNonConnNonScanStrings,
+#if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
+    dbafAdvScannStrings, dbafAdvConnStrings, dbafAdvNonConnNonScanStrings,
+#endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+    periodicAdvStrings
+#if (gAppPAWRSupport_d == TRUE)
+    ,pawrStrings
+#endif /* (gAppPAWRSupport_d == TRUE)*/
+};
+static char* menuOptions[] ={mMenuOptionInit_c};
 #endif /*gAppButtonCnt_c > 0*/
 static advHandleStatus_t maAdvHandle[mNumberOfAdvHandles_c] = {madvHandle_Available_c, madvHandle_Available_c};
 static advIndex_t maLastAdvIndexForThisHandle[mNumberOfAdvHandles_c]={ mAdvIndexMax_c, mAdvIndexMax_c};
+static gapExtAdvertisingParameters_t* maPExtAdvParam[] = 
+{
+    &gExtAdvParamsLegacy, &gExtAdvParamsScannable, &gExtAdvParamsConnectable, &gExtAdvParamsNonConnNonScann
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
-static gapExtAdvertisingParameters_t* maPExtAdvParam[] = {&gExtAdvParamsLegacy, &gExtAdvParamsScannable, &gExtAdvParamsConnectable, &gExtAdvParamsNonConnNonScann, &gDbafParamsScannable, &gDbafParamsConnectable, &gDbafParamsNonConnNonScann };
-
-static gapAdvertisingData_t* maPExtAdvData[] = {&gAppAdvertisingData , NULL, &gAppExtAdvDataConnectable, &gAppExtAdvDataId1NonConnNonScan, NULL, &gAppExtAdvDataConnectable, &gAppExtAdvDataId1NonConnNonScan };
-static gapAdvertisingData_t* maPExtScanData[] = {&gAppScanRspData , &gAppExtAdvDataScannable, NULL, &gAppScanRspData, &gAppExtAdvDataScannable, NULL, &gAppScanRspData };
-#else
-static gapExtAdvertisingParameters_t* maPExtAdvParam[] = {&gExtAdvParamsLegacy, &gExtAdvParamsScannable, &gExtAdvParamsConnectable, &gExtAdvParamsNonConnNonScann };
-
-static gapAdvertisingData_t* maPExtAdvData[] = {&gAppAdvertisingData , NULL, &gAppExtAdvDataConnectable, &gAppExtAdvDataId1NonConnNonScan };
-static gapAdvertisingData_t* maPExtScanData[] = {&gAppScanRspData , &gAppExtAdvDataScannable, NULL, &gAppScanRspData };
+    , &gDbafParamsScannable, &gDbafParamsConnectable, &gDbafParamsNonConnNonScann
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+};
+
+static gapAdvertisingData_t* maPExtAdvData[] = 
+{
+    &gAppAdvertisingData , NULL, &gAppExtAdvDataConnectable, &gAppExtAdvDataId1NonConnNonScan
+#if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
+    , NULL, &gAppExtAdvDataConnectable, &gAppExtAdvDataId1NonConnNonScan
+#endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+};
+
+static gapAdvertisingData_t* maPExtScanData[] = 
+{
+    &gAppScanRspData , &gAppExtAdvDataScannable, NULL, &gAppScanRspData
+#if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
+    , &gAppExtAdvDataScannable, NULL, &gAppScanRspData
+#endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+};
+
 static gapAdvertisingData_t* maPPeriodicAdvData[] = {&gAppExtAdvDataId1Periodic, &gAppExtAdvDataId2Periodic};
 static gapAdvertisingData_t* maPExtAdvDataNonConnNonScan[] = {&gAppExtAdvDataId1NonConnNonScan, &gAppExtAdvDataId2NonConnNonScan};
 static uint8_t mPeriodicAdvDataIndex = 0;
@@ -221,7 +302,11 @@ static char* advTypeStrings[] = {"\n\rLegacy Advertising",\
                                        "\n\rDBAF Connectable Advertising",\
                                        "\n\rDBAF Non Connectable Non Scanable Advertising",
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
-                                       "\n\rExtended Periodic Advertising"};
+                                       "\n\rExtended Periodic Advertising"
+#if (gAppPAWRSupport_d == TRUE)
+                                       ,"\n\rPAWR"
+#endif /* (gAppPAWRSupport_d == TRUE)*/
+};
 
 #if mAE_PeripheralDebug_c
 static char* genericCBCKStrings[] = {\
@@ -321,6 +406,13 @@ static void BleApp_SerialInit(void);
 
 static void BleApp_HandleExtAdvNonConnNonScannMode(uint8_t mode);
 static void BleApp_HandlePeriodicAdvMode(uint8_t mode);
+#if (gAppPAWRSupport_d == TRUE)
+static void BleApp_CheckPAWRConnect(uint8_t *pResponseData, uint8_t advHandle, uint8_t subevent );
+static void AppPrintHexLe( uint8_t *pHex, uint8_t len);
+static void BleApp_HandlePAWRMode(uint8_t mode);
+static void BleApp_HandlePeriodicAdvertisingResponse(gapPerAdvResponse_t *pAdvResponse);
+static void BleApp_HandlePerAdvSubeventDataRequest(gapPerAdvSubeventDataRequest_t *pSubeventDataRequest);
+#endif /* (gAppPAWRSupport_d == TRUE) */
 static void BleApp_HandleChangePerAdvDataMode(void);
 static void BleApp_HandleChangeNonConnNonScannAdvDataMode(void);
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
@@ -375,16 +467,20 @@ void BleApp_Start(uint8_t mode)
     case (uint8_t)mPeriodicAdvIndex_c:
         BleApp_HandlePeriodicAdvMode(mode);
         break;
-
-    case mChangePerAdvDataOption_c:
+#if defined(gAppPAWRSupport_d) && (gAppPAWRSupport_d == TRUE)
+    case (uint8_t)mPAWRIndex_c:
+        BleApp_HandlePAWRMode(mode);
+        break;
+#endif /* defined(gAppPAWRSupport_d) && (gAppPAWRSupport_d == TRUE) */
+    case mChangePerAdvDataIndex_c:
         BleApp_HandleChangePerAdvDataMode();
         break;
 
-    case mChangeNonConnNonScannAdvDataOption_c:
+    case mChangeNonConnNonScannAdvDataIndex_c:
         BleApp_HandleChangeNonConnNonScannAdvDataMode();
         break;
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
-    case mChangeDbafNonConnNonScannAdvDataOption_c:
+    case mChangeDbafNonConnNonScannAdvDataIndex_c:
         BleApp_HandleChangeDbafNonConnNonScannAdvDataMode();
         break;
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
@@ -410,16 +506,13 @@ button_status_t BleApp_HandleKeys0(void *buttonHandle, button_callback_message_t
     case kBUTTON_EventShortPress:
     case kBUTTON_EventLongPress:
         {
+            uint16_t bmValidOption = mbmValidOption_c |
+                (((maAdvStatus[mExtAdvNonConnNonScanIndex_c] == mAdvStatus_On_c)? (uint16_t)1:(uint16_t)0)<<mChangeNonConnNonScannAdvDataIndex_c) |
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
-            uint16_t bmValidOption = (uint16_t)0x00ffU |
-                (((maAdvStatus[mExtAdvNonConnNonScanIndex_c] == mAdvStatus_On_c)? (uint8_t)1:(uint8_t)0)<<8) |
-                    (((maAdvStatus[mDbafAdvNonConnNonScanIndex_c] == mAdvStatus_On_c)? (uint8_t)1:(uint8_t)0)<<9) |
-                    (((maAdvStatus[mPeriodicAdvIndex_c] == mAdvStatus_On_c)? (uint8_t)1:(uint8_t)0)<<10);
-#else
-            uint16_t bmValidOption = (uint16_t)0x001fU |
-                (((maAdvStatus[mExtAdvNonConnNonScanIndex_c] == mAdvStatus_On_c)? (uint8_t)1:(uint8_t)0)<<5) |
-                    (((maAdvStatus[mPeriodicAdvIndex_c] == mAdvStatus_On_c)? (uint8_t)1:(uint8_t)0)<<6);
+                (((maAdvStatus[mDbafAdvNonConnNonScanIndex_c] == mAdvStatus_On_c)? (uint16_t)1:(uint16_t)0)<<mChangeDbafNonConnNonScannAdvDataIndex_c) |
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+                (((maAdvStatus[mPeriodicAdvIndex_c] == mAdvStatus_On_c)? (uint16_t)1:(uint16_t)0)<<mChangePerAdvDataIndex_c);
+
             do
             {
                 menuOption = (menuOption + 1U)%NumberOfElements(menuOptions);
@@ -564,12 +657,27 @@ static void BluetoothLEHost_GenericCallback (gapGenericEvent_t* pGenericEvent)
       break;
     case gPeriodicAdvParamSetupComplete_c:
         {
-            bleResult = Gap_SetPeriodicAdvertisingData(gPeriodicAdvParams.handle, maPPeriodicAdvData[mPeriodicAdvDataIndex], FALSE);
-            if(gBleSuccess_c != bleResult)
+#if (gAppPAWRSupport_d == TRUE)
+            if (mExtAdvAPIOwner == mPeriodicAdvIndex_c)
             {
-                AppPrintString("\n\r Gap_SetPeriodicAdvertisingData Failed");
-                EndSequence();
+#endif /* (gAppPAWRSupport_d == TRUE) */
+                bleResult = Gap_SetPeriodicAdvertisingData(gPeriodicAdvParams.handle, maPPeriodicAdvData[mPeriodicAdvDataIndex], FALSE);
+                if (gBleSuccess_c != bleResult)
+                {
+                    AppPrintString("\n\r Gap_SetPeriodicAdvertisingData Failed");
+                    EndSequence();
+                }
+#if (gAppPAWRSupport_d == TRUE)
             }
+            else
+            {
+                if (gBleSuccess_c != Gap_StartPeriodicAdvertising(gPAWRParams.handle, FALSE))
+                {
+                    AppPrintString("\n\r Gap_StartPeriodicAdvertising Failed");
+                    EndSequence();
+                }
+            }
+#endif /* (gAppPAWRSupport_d == TRUE) */
         }
         break;
     case gPeriodicAdvDataSetupComplete_c:
@@ -583,6 +691,7 @@ static void BluetoothLEHost_GenericCallback (gapGenericEvent_t* pGenericEvent)
         break;
     case gAdvertisingSetupFailed_c:
         EndSequence();
+        AppPrintString("\n\rAdvertising Setup Failed");
         break;
     case gExtAdvertisingSetRemoveComplete_c:
         AppPrintString(advTypeStrings[maLastAdvIndexForThisHandle[maPExtAdvParam[mExtAdvAPIOwner]->handle]]);
@@ -641,6 +750,13 @@ static void BluetoothLEHost_GenericCallback (gapGenericEvent_t* pGenericEvent)
             EndSequence();
         }
         break;
+#if (gAppPAWRSupport_d == TRUE)
+    case gPeriodicAdvSetSubeventDataComplete_c:
+        {
+            AppPrintString("\n\rPAWR Set Subevent Data Complete");
+        }
+    break;
+#endif /* (gAppPAWRSupport_d == TRUE) */
     default:
         {
             ; /* No action required */
@@ -741,6 +857,20 @@ static void BleApp_AdvertisingCallback (gapAdvertisingEvent_t* pAdvertisingEvent
             }
         }
         break;
+#if (gAppPAWRSupport_d == TRUE)
+    case gPerAdvSubeventDataRequest_c:
+        {
+            BleApp_HandlePerAdvSubeventDataRequest(&pAdvertisingEvent->eventData.subeventDataRequest);
+        }
+        break;
+#endif /* (gAppPAWRSupport_d == TRUE) */
+#if (gAppPAWRSupport_d == TRUE)
+    case gPerAdvResponse_c:
+    {
+        BleApp_HandlePeriodicAdvertisingResponse(&pAdvertisingEvent->eventData.perAdvResponse);
+    }
+        break;
+#endif /* (gAppPAWRSupport_d == TRUE) */
     default:
         {
             ; /* No action required */
@@ -757,15 +887,32 @@ static void BleApp_AdvertisingCallback (gapAdvertisingEvent_t* pAdvertisingEvent
 ********************************************************************************** */
 static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEvent_t* pConnectionEvent)
 {
+#if (gAppPAWRSupport_d == FALSE)
     /* Connection Manager to handle Host Stack interactions */
     BleConnManager_GapPeripheralEvent(peerDeviceId, pConnectionEvent);
-
+#endif /* (gAppPAWRSupport_d == FALSE) */
     switch (pConnectionEvent->eventType)
     {
     case gConnEvtConnected_c:
         {
             /* Advertising stops when connected */
             /* Subscribe client*/
+#if (gAppPAWRSupport_d == TRUE)
+            /*When connected over PAWR the connection role will be central.*/
+            {
+                maGapRole[peerDeviceId] = (pConnectionEvent->eventData.connectedEvent.connectionRole == gBleLlConnectionPeripheral_c)? gGapPeripheral_c : gGapCentral_c;
+                if (maGapRole[peerDeviceId] == gGapCentral_c)
+                {
+                    bool_t isBonded = FALSE;
+                    (void)Gap_CheckIfBonded(peerDeviceId, &isBonded, NULL);
+                    if (isBonded)
+                    {
+                        /* Encrypt link */
+                        (void)Gap_EncryptLink(peerDeviceId);
+                    }
+                }
+            }
+#endif /* (gAppPAWRSupport_d == TRUE) */
             (void)Add_PeerDevice(peerDeviceId);
             (void)Bas_Subscribe(&basServiceConfig, peerDeviceId);
             (void)Tms_Subscribe(peerDeviceId);
@@ -800,6 +947,17 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
             }
         }
         break;
+#if (gAppPAWRSupport_d == TRUE)
+    case gConnEvtAuthenticationRejected_c:
+        {
+            if (maGapRole[peerDeviceId] == gGapCentral_c)
+            {
+                /* Start Pairing Procedure */
+                (void)Gap_Pair(peerDeviceId, &gPairingParameters);
+            }
+        }
+        break;
+#endif /* (gAppPAWRSupport_d == TRUE) */
 
     case gConnEvtEncryptionChanged_c:   /* Fall-through */
     default:
@@ -808,6 +966,17 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
         }
         break;
     }
+#if (gAppPAWRSupport_d == TRUE)
+    /* Connection Manager to handle Host Stack interactions */
+    if (maGapRole[peerDeviceId] == gGapPeripheral_c)
+    {
+        BleConnManager_GapPeripheralEvent(peerDeviceId, pConnectionEvent);
+    }
+    else
+    {
+        BleConnManager_GapCentralEvent(peerDeviceId, pConnectionEvent);
+    }
+#endif /* (gAppPAWRSupport_d == TRUE) */
 }
 
 /*! *********************************************************************************
@@ -1339,6 +1508,226 @@ static void BleApp_HandlePeriodicAdvMode(uint8_t mode)
         }
     }
 }
+#if (gAppPAWRSupport_d == TRUE)
+/*! *********************************************************************************
+* \brief        Prints a len octets number in hexadecimal.
+*
+* \param[in]    pHex                Pointer to the number.
+* \param[in]    len                 Number length.
+********************************************************************************** */
+static void AppPrintHexLe( uint8_t *pHex, uint8_t len)
+{
+    for(uint8_t i = len; i > 0U; i-- )
+    {
+        (void)SerialManager_WriteBlocking((serial_write_handle_t)s_writeHandle,
+                                    FORMAT_Hex2Ascii(pHex[i - 1U]),
+                                    2U);
+    }
+}
+
+/*! *********************************************************************************
+* \brief        Handle the PAWR choice from the menu.
+*
+* \param[in]    mode                indicates the PAWR index.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_HandlePAWRMode(uint8_t mode)
+{
+    if (maAdvStatus[mExtAdvNonConnNonScanIndex_c] !=  mAdvStatus_On_c)
+    {
+        AppPrintString("\n\rThis Option Requires Extended Non Connectable Non Scanable Advertising to be On   ");
+    }
+    else
+    {
+        if (ExtAdvAPIRequest((advIndex_t)mode) == gApiReq_Denied_c)
+        {
+            AppPrintString("\n\rAnother Advertising Operation in Progress. Try later...");
+        }
+        else
+        {
+            if ((maAdvStatus[mode] ==  mAdvStatus_Off_c) && (maAdvStatus[mPeriodicAdvIndex_c] ==  mAdvStatus_Off_c))
+            {
+                gPAWRParams.handle = gExtAdvParamsNonConnNonScann.handle;
+                if (Gap_SetPeriodicAdvParametersV2(&gPAWRParams) == gBleSuccess_c )
+                {
+                    mExtAdvSequence = mExtAdvSeq_Start_c;
+                }
+                else
+                {
+                    AppPrintString("\n\rGap_SetPeriodicAdvParametersV2 failed");
+                    FreeExtAdvAPI();
+                }
+            }
+            else if (maAdvStatus[mode] ==  mAdvStatus_On_c)
+            {
+                if (Gap_StopPeriodicAdvertising(gPAWRParams.handle) != gBleSuccess_c )
+                {
+                    AppPrintString("\n\rGap_StopPeriodicAdvertising failed");
+                    FreeExtAdvAPI();
+                }
+                else
+                {
+                    mExtAdvSequence = mExtAdvSeq_Stop_c;
+                }
+            }
+            else
+            {
+                 AppPrintString("\n\rPeriodic Advertising already started");
+                FreeExtAdvAPI();
+            }
+        }
+    }
+}
+
+/*! *********************************************************************************
+* \brief        Check whether the response received is from a device eligible to connect and proceed to connect in case it is.
+*
+* \param[in]    pResponseData                pointer to response data.
+*
+* \param[in]    advHandle                    the handle of the advertising which received the response.
+*
+* \param[in]    subevent                     the subevent the response was received on.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_CheckPAWRConnect(uint8_t *pResponseData, uint8_t advHandle, uint8_t subevent )
+{
+
+    uint8_t                  identitiesCount = 0;
+    bleResult_t              result = gBleSuccess_c;
+    gapIdentityInformation_t *pOutIdentityAddresses = (gapIdentityInformation_t *)MEM_BufferAlloc(
+                                                                                                  (uint32_t)gMaxBondedDevices_c *
+                                                                                                   sizeof(gapIdentityInformation_t));
+    if ( NULL != pOutIdentityAddresses )
+    {
+        result = Gap_GetBondedDevicesIdentityInformation(pOutIdentityAddresses,
+                                                         gMaxBondedDevices_c,
+                                                         &identitiesCount);
+        if ((gBleSuccess_c == result) && (identitiesCount > 0U ))
+        {
+            /* Check whether the response is from a previously bonded device*/
+            uint8_t iCount;
+            uint8_t tempHash[3];
+            for (iCount = 0; iCount < identitiesCount ; iCount++)
+            {
+                /* Hash over the random part of the response using the bonded device IRK.*/
+                if (gSecSuccess_c == SecLib_VerifyBluetoothAh (tempHash, pOutIdentityAddresses[iCount].irk, &pResponseData[3]))
+                {
+                    if (FLib_MemCmp((uint8_t*)tempHash, pResponseData, 3U))
+                    {
+                        /* The responding device was identified.*/
+                        /* Connect over PAWR using identity address unless already connected.*/
+                        bool_t alreadyConnected = FALSE;
+                        result  = Gap_CheckIfConnected
+                            (
+                             pOutIdentityAddresses[iCount].identityAddress.idAddressType,
+                             pOutIdentityAddresses[iCount].identityAddress.idAddress,
+                             TRUE,
+                             &alreadyConnected);
+                        if ((gBleSuccess_c == result) && (alreadyConnected == FALSE ))
+                        {
+                            gConnFromPAWRReqParams.advHandle = advHandle;
+                            gConnFromPAWRReqParams.subevent = subevent;
+                            gConnFromPAWRReqParams.initiatingPHYs = gExtAdvParamsNonConnNonScann.secondaryPHY;
+                            gConnFromPAWRReqParams.peerAddressType = pOutIdentityAddresses[iCount].identityAddress.idAddressType;
+                            FLib_MemCpy(gConnFromPAWRReqParams.peerAddress, pOutIdentityAddresses[iCount].identityAddress.idAddress, sizeof(bleDeviceAddress_t));
+                            gConnFromPAWRReqParams.usePeerIdentityAddress = TRUE;
+                            if (gBleSuccess_c ==  Gap_ConnectFromPawr( &gConnFromPAWRReqParams, App_ConnectionCallback))
+                            {
+                                AppPrintString("\n\r Gap_ConnectFromPawr Succeeded");
+                            }
+                            else
+                            {
+                                AppPrintString("\n\r Gap_ConnectFromPawr Failed");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+/*! *********************************************************************************
+* \brief        Handle the gPerAdvResponse_c event received in BleApp_AdvertisingCallback.
+*
+* \param[in]    pAdvResponse                pointer to pAdvertisingEvent->eventData.perAdvResponse.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_HandlePeriodicAdvertisingResponse(gapPerAdvResponse_t *pAdvResponse)
+{
+    /* Print the response. */
+    AppPrintString("\n\rPeriodic advertising response received");
+    AppPrintString("\n\rAdv Handle: ");
+    AppPrintDec((uint32_t)pAdvResponse->advHandle);
+    AppPrintString("\n\rSubevent: ");
+    AppPrintDec((uint32_t)pAdvResponse->subevent);
+    AppPrintString("\n\rResponse slot: ");
+    AppPrintDec((uint32_t)pAdvResponse->responseSlot);
+    AppPrintString("\n\rResponse data: ");
+    {
+         uint8_t  dataLength = 0U;
+         uint8_t* pData = pAdvResponse->aData;
+         while ( dataLength < pAdvResponse->dataLength )
+         {
+             dataLength += (pData[0] + 1U);
+             /* Check whether the response has the format eligilbe for connect.*/
+             if ((pData[1] == (uint8_t)gAdManufacturerSpecificData_c)  && ( dataLength == (gcBleDeviceAddressSize_c + 2U)))
+             {
+                 AppPrintHexLe((uint8_t *)&pData[2], gcBleDeviceAddressSize_c);
+                 /* Check whether the response received is from a device eligible to connect and proceed to connect in case it is. */
+                 BleApp_CheckPAWRConnect(&pData[2], pAdvResponse->advHandle, pAdvResponse->subevent);
+             }
+             else
+             {
+                 AppPrintString((char *)&pData[2]);
+             }
+             pData =  &pAdvResponse->aData[dataLength];
+         }
+     }
+}
+/*! *********************************************************************************
+* \brief        Handle the gPerAdvSubeventDataRequest_c event received in BleApp_AdvertisingCallback.
+*
+* \param[in]    pSubeventDataRequest                pointer to pAdvertisingEvent->eventData.subeventDataRequest.
+*
+* \return       void.
+********************************************************************************** */
+static void BleApp_HandlePerAdvSubeventDataRequest(gapPerAdvSubeventDataRequest_t *pSubeventDataRequest)
+{
+    uint8_t minSubevent = pSubeventDataRequest->subeventStart;
+    uint8_t maxSubevent = minSubevent + pSubeventDataRequest->subeventDataCount - 1U;
+    bool_t setSubeventData = FALSE;
+    static uint8_t cDataSendCounter = 0U;
+    if ((gAppPAWRSubeventsData.aSubeventDataStructures!= NULL) && (gAppPAWRSubeventsData.cNumSubevents != 0U))
+    {
+        setSubeventData = TRUE;
+        for (uint8_t i = 0 ; i< gAppPAWRSubeventsData.cNumSubevents; i++)
+        {
+            if ((gAppPAWRSubeventsData.aSubeventDataStructures[i].pAdvertisingData == NULL)
+               ||(minSubevent > gAppPAWRSubeventsData.aSubeventDataStructures[i].subevent)
+                   ||(maxSubevent < gAppPAWRSubeventsData.aSubeventDataStructures[i].subevent))
+            {
+                setSubeventData = FALSE;
+                break;
+            }
+        }
+    }
+    if (setSubeventData == TRUE)
+    {
+        /* Set PAWR Data*/
+        if(cDataSendCounter == 0U)
+        {
+            if (gBleSuccess_c != Gap_SetPeriodicAdvSubeventData(gPAWRParams.handle, &gAppPAWRSubeventsData))
+            {
+                AppPrintString("\n\rGap_SetPeriodicAdvSubeventData failed");
+            }
+        }
+        cDataSendCounter = (cDataSendCounter + 1U) % mAppPAWR_SubeventDataFrequency_c;
+    }
+}
+#endif /* (gAppPAWRSupport_d == TRUE) */
 
 static void BleApp_HandleChangePerAdvDataMode(void)
 {

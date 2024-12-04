@@ -36,6 +36,16 @@
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
 #define mcDbafEncryptionKeySize_c 16
 #endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
+#if (gAppPAWRSupport_d == TRUE)
+/*Default PAWR Parameters */
+#define mPAWRParamsMinInterval_c        1600U  /* 2 s */
+#define mPAWRParamsMaxInterval_c        3200U  /* 4 s */
+#define mPAWRParamsNumSubevents_c          5U
+#define mPAWRParamsSubeventInterval_c     200U  /* 250ms */
+#define mPAWRParamsResponseSlotDelay_c    100U  /* 125ms */
+#define mPAWRParamsResponseSlotSpacing_c  200U  /* 25 ms*/
+#define mPAWRParamsNumResponseSlots_c       5U
+#endif /* (gAppPAWRSupport_d == TRUE)*/
 /************************************************************************************
 *************************************************************************************
 * Private type definitions
@@ -468,10 +478,100 @@ gapPeriodicAdvParameters_t gPeriodicAdvParams =
 {
     /* handle */                    0xff, \
     /* addTxPowerInAdv*/            TRUE, \
-    /* minInterval */               1600 /* 1 s */, \
-    /* maxInterval */               3200 /* 2 s */, \
-
+    /* minInterval */               1600 /* 2 s */, \
+    /* maxInterval */               3200 /* 4 s */, \
 };
+#if (gAppPAWRSupport_d == TRUE)
+/*Default PAWR Parameters */
+
+gapPeriodicAdvParametersV2_t gPAWRParams =
+{
+    .handle = 0xffU,
+    .addTxPowerInAdv = TRUE,
+    .minInterval = mPAWRParamsMinInterval_c,
+    .maxInterval =  mPAWRParamsMaxInterval_c,
+    .numSubevents = mPAWRParamsNumSubevents_c,
+    .subeventInterval = mPAWRParamsSubeventInterval_c,
+    .responseSlotDelay = mPAWRParamsResponseSlotDelay_c,
+    .responseSlotSpacing = mPAWRParamsResponseSlotSpacing_c,
+    .numResponseSlots = mPAWRParamsNumResponseSlots_c
+};
+#define pawrSubevent0Data0 "\n\rPAWR Data0 For Subevent 0"
+#define pawrSubevent0Data1 "\n\rPAWR Data1 For Subevent 0"
+
+static gapAdStructure_t pawrSubevent0Data[] = {
+  {
+    .length = NumberOfElements(pawrSubevent0Data0) + 1,
+    .adType = gAdManufacturerSpecificData_c,
+    .aData = (uint8_t*)pawrSubevent0Data0
+  },
+  {
+    .length = NumberOfElements(pawrSubevent0Data1) + 1,
+    .adType = gAdManufacturerSpecificData_c,
+    .aData = (uint8_t*)pawrSubevent0Data1
+  }
+};
+static gapAdvertisingData_t gAppPAWRSubevent0Data =
+{
+    NumberOfElements(pawrSubevent0Data),
+    (void *)pawrSubevent0Data
+};
+
+#define pawrSubevent3Data0 "\n\rPAWR Data0 For Subevent 3"
+#define pawrSubevent3Data1 "\n\rPAWR Data1 For Subevent 3"
+
+static gapAdStructure_t pawrSubevent3Data[] = {
+  {
+    .length = NumberOfElements(pawrSubevent3Data0) + 1,
+    .adType = gAdManufacturerSpecificData_c,
+    .aData = (uint8_t*)pawrSubevent3Data0
+  },
+  {
+    .length = NumberOfElements(pawrSubevent3Data1) + 1,
+    .adType = gAdManufacturerSpecificData_c,
+    .aData = (uint8_t*)pawrSubevent3Data1
+  }
+};
+static gapAdvertisingData_t gAppPAWRSubevent3Data =
+{
+    NumberOfElements(pawrSubevent3Data),
+    (void *)pawrSubevent3Data
+};
+
+static gapSubeventDataStructure_t gaAppPAWRSubeventsDataArray[] =
+{
+    {
+        .subevent = 0U,
+        .responseSlotStart = 0,
+        .responseSlotCount = mPAWRParamsNumResponseSlots_c,
+        .pAdvertisingData = &gAppPAWRSubevent0Data
+    },
+    {
+        .subevent = 3U,
+        .responseSlotStart = 0,
+        .responseSlotCount = mPAWRParamsNumResponseSlots_c,
+        .pAdvertisingData = &gAppPAWRSubevent3Data
+    }
+};
+
+gapPeriodicAdvertisingSubeventData_t gAppPAWRSubeventsData =
+{
+    NumberOfElements(gaAppPAWRSubeventsDataArray),
+    gaAppPAWRSubeventsDataArray
+};
+
+/* Default Connection Request Parameters */
+gapConnectionFromPawrParameters_t gConnFromPAWRReqParams =
+{
+    .ownAddressType = gBleAddrTypePublic_c,
+    .connIntervalMin = gcConnectionIntervalMinDefault_c,
+    .connIntervalMax = gcConnectionIntervalMinDefault_c,
+    .connLatency = 0,
+    .supervisionTimeout = 0x03E8,
+    .connEventLengthMin = 0,
+    .connEventLengthMax = 0xFFFF,
+};
+#endif /* (gAppPAWRSupport_d == TRUE) */
 #define extAdvPeriodicDataId1_0 "\
 \n\rEA Periodic Data Id1 01 EA Periodic Data Id1 02 EA Periodic Data Id1 03 EA Periodic Data Id1 04\
 \n\rEA Periodic Data Id1 05 EA Periodic Data Id1 06 EA Periodic Data Id1 07 EA Periodic Data Id1 08"
@@ -527,7 +627,7 @@ static gapAdStructure_t extAdvPeriodicDataId1[] = {
     .adType = gAdManufacturerSpecificData_c,
     .aData = (uint8_t*)extAdvPeriodicDataId1_5
   }
-};  
+};
 gapAdvertisingData_t gAppExtAdvDataId1Periodic =
 {
     NumberOfElements(extAdvPeriodicDataId1),

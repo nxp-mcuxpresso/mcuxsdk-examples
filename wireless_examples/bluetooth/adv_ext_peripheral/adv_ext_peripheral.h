@@ -40,6 +40,9 @@
 #define gAppDeepSleepMode_c 1
 #endif
 
+#ifndef gAppPAWRSupport_d
+#define gAppPAWRSupport_d FALSE
+#endif
 /************************************************************************************
 *************************************************************************************
 * Public memory declarations
@@ -59,8 +62,8 @@ extern gapExtAdvertisingParameters_t gDbafParamsScannable;
 /* DBAF Connectable Advertising Parameters */
 extern gapExtAdvertisingParameters_t gDbafParamsConnectable;
 /* DBAF Non Connectable Non Scannable Advertising Parameters */
-#endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
 extern gapExtAdvertisingParameters_t gDbafParamsNonConnNonScann;
+#endif /* defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE) */
 extern gapAdvertisingData_t          gAppExtAdvDataScannable;
 extern gapAdvertisingData_t          gAppExtAdvDataConnectable;
 extern gapAdvertisingData_t          gAppExtAdvDataId1NonConnNonScan;
@@ -75,6 +78,12 @@ extern gapAdvertisingData_t          gAppAdvertisingData;
 extern gapScanResponseData_t         gAppScanRspData;
 /* Periodic advertising parameters */
 extern gapPeriodicAdvParameters_t    gPeriodicAdvParams;
+#if (gAppPAWRSupport_d == TRUE)
+/* PAWR Parameters */
+extern gapPeriodicAdvParametersV2_t         gPAWRParams;
+extern gapPeriodicAdvertisingSubeventData_t gAppPAWRSubeventsData;
+extern gapConnectionFromPawrParameters_t gConnFromPAWRReqParams;
+#endif /* (gAppPAWRSupport_d == TRUE) */
 #if defined(gBLE60_DecisionBasedAdvertisingFilteringSupport_d) && (gBLE60_DecisionBasedAdvertisingFilteringSupport_d == TRUE)
 /* DBAF Decision Data Parameters */
 extern gapAdvertisingDecisionData_t gAdvDecisionData;
