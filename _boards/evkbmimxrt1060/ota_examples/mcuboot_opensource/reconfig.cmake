@@ -2,6 +2,9 @@
 
 
 # Add additional configuration
+mcux_add_macro(
+    CC "-DENCRYPTED_XIP_BEE"
+)
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
