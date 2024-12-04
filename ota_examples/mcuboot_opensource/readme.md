@@ -65,6 +65,8 @@ List of boards with projects supporting encrypted XIP:
 - MIMXRT1060-EVKB (BEE)
 - MIMXRT1060-EVKC (BEE)
 - MIMXRT1064-EVK  (BEE)
+- RDRW612BGA      (IPED)
+- FRDMRW612       (IPED)
 
 Signing the application image
 -----------------------------

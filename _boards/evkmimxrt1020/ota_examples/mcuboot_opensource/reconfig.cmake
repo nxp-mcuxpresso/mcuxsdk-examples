@@ -3,6 +3,9 @@
 
 # Add additional configuration
 mcux_add_macro(
+    CC "-DENCRYPTED_XIP_BEE"
+)
+mcux_add_macro(
     CC "-DSKIP_SYSCLK_INIT\
        -DXIP_BOOT_HEADER_DCD_ENABLE=1"
 )

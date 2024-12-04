@@ -11,7 +11,7 @@
 
 /* MCUBoot Flash Config */
 
-#define CONFIG_MCUBOOT_MAX_IMG_SECTORS 1088u
+#define CONFIG_MCUBOOT_MAX_IMG_SECTORS 1090u
 
 /*
  * Number of image pairs is 1 in the case of the monolithic application.
@@ -25,6 +25,7 @@
  * The default MCUBoot configuration is to use swap mechanism. In case the flash
  * remapping functionality is supported by processor the alternative mechanism
  * using direct-xip mode can be used and evaluated by user.
+ * Comment this to enable swap mode or to enable encrypted XIP extension.
  */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
 
@@ -32,6 +33,46 @@
 #define FLASH_REMAP_START_REG           0x40134420      /* RW61x flash remap start address register */
 #define FLASH_REMAP_END_REG             0x40134424      /* RW61x flash remap end address register */
 #define FLASH_REMAP_OFFSET_REG          0x40134428      /* RW61x flash remap offset register */
+
+/* Encrypted XIP support config */
+
+/*
+ * Enable extension utilizing on-the-fly decryption of encrypted image.
+ * For more information please see readme file.
+ */
+//#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
+
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && !defined(MBEDTLS_MCUX_DISABLE_HW_ALT)
+#error "There is currently an issue with hardware acceleration in mbedTLS when IPED\
+ is enabled on RW61x, please add global define MBEDTLS_MCUX_DISABLE_HW_ALT to build."
+#endif
+
+/*
+ * Optional:
+ * Use simpler OVERWRITE_ONLY mode instead of three slot configuration.
+ */
+//#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
+
+/*
+ * The PRINCE variant used in RW61x is based on AES in Galois/Counter Mode (GCM)
+ * Algortihm of encryption unit consumes 1.25 (5/4) time of physical memory.
+ * Also we need to take into account one sector for mcuboot trailer.
+ * Calculation: 
+ * 4.25MB~4352kB slot size = 1088 sectors
+ * 1088 sectors - 1 trailer sector = 1087 sectors
+ * Aligning down to 1085 sectors what can be divided by 5
+ * 1085 sectors / 1.25 = 868 sectors ~ 3472 kB is then size of IPED region
+ * 3472kB of plaintext generates 868kB of IPED tags. Both values suits
+ * the boundaries of pages, sectors and the boundaries of encryption alignment
+ */
+#define CONFIG_ENCRYPT_XIP_IPED_REGION_SIZE  0x364000  
+
+/*
+ * Size of write buffer used for overwrite-only mode has to be adjusted when IPED
+ * encryption unit is used so size of data chunks written to flash are always
+ * a multiple of 4 pages in size.
+ */
+#define CONFIG_ENCRYPT_XIP_OVERWRITE_ONLY_BUF_SIZE      (4*256)
 
 /* Crypto Config */
 // #define CONFIG_BOOT_OTA_TEST
