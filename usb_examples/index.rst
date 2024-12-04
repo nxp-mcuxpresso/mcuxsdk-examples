@@ -13,6 +13,8 @@ usb_examples
    usb_device_audio_speaker_lite/readme.md
    usb_device_audio_speaker_lpc/readme.md
    usb_device_audio_speaker_lpc_lite/readme.md
+   usb_device_cdc_ecm_nic/readme.md
+   usb_device_cdc_ecm_nic_lite/readme.md
    usb_device_cdc_vcom/readme.md
    usb_device_cdc_vcom_lite/readme.md
    usb_device_cdc_vnic/readme.md
