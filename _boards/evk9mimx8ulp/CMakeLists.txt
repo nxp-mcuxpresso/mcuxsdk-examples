@@ -5,3 +5,5 @@
 include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
 include(${SdkRootDirPath}/arch/arm/target/ext_flash.cmake)
 include(${SdkRootDirPath}/examples/_boards/evk9mimx8ulp/${core_id}/setting.cmake)
+include(${SdkRootDirPath}/examples/_boards/evkmimx8ulp/project_segments/display_support/prjseg.cmake)
+
