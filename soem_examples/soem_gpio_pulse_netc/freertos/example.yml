@@ -9,8 +9,8 @@ soem_gpio_pulse_netc_freertos:
       brief: SOEM gpio pulse netc example
       example_readme:
       - examples/soem_examples/soem_gpio_pulse_netc/freertos/readme.md
-      - examples/_boards/${board}/soem_examples/soem_gpio_pulse/freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/soem_examples/soem_gpio_pulse/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug

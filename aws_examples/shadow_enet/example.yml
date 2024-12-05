@@ -9,8 +9,8 @@ aws_shadow_enet:
       brief: Demo for showing how to use the Device Shadow library's API.
       example_readme:
       - examples/aws_examples/shadow_enet/readme.md
-      - examples/_boards/${board}/aws_examples/shadow_enet/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/aws_examples/shadow_enet/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

@@ -14,8 +14,8 @@ dma_m2m_polling:
         and further development.
       example_readme:
       - examples/driver_examples/lpc_dma/m2m_polling/readme.md
-      - examples/_boards/${board}/driver_examples/dma/m2m_polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dma/m2m_polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso51u68: []

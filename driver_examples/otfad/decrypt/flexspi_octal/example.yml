@@ -12,8 +12,8 @@ otfad_decrypt_flexspi_octal:
         memories in an encrypted form.
       example_readme:
       - examples/driver_examples/otfad/decrypt/flexspi_octal/readme.md
-      - examples/_boards/${board}/driver_examples/otfad/decrypt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/otfad/decrypt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

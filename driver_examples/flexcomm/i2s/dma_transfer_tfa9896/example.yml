@@ -13,7 +13,7 @@ i2s_dma_transfer_tfa9896:
         codec. It needs to have 1-2 connected on JP3.
       example_readme:
       - examples/driver_examples/flexcomm/i2s/dma_transfer_tfa9896/readme.md
-      - examples/_boards/${board}/driver_examples/i2s/dma_transfer_tfa9896/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/i2s/dma_transfer_tfa9896/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []

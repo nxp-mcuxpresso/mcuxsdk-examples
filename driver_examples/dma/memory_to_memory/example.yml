@@ -14,8 +14,8 @@ dma_memory_to_memory:
         further development.
       example_readme:
       - examples/driver_examples/dma/memory_to_memory/readme.md
-      - examples/_boards/${board}/driver_examples/dma/memory_to_memory/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dma/memory_to_memory/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc242: []

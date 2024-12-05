@@ -10,7 +10,7 @@ mc_pmsm_enc_dual:
       brief: This example demonstrates the dual control of the PMSM.
       example_readme:
       - examples/demo_apps/mc_pmsm/pmsm_enc_dual/readme.md
-      - examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_enc_dual/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc_dual/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []

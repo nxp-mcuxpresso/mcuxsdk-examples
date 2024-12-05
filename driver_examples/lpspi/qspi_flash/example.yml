@@ -11,7 +11,7 @@ lpspi_qspi_flash:
         erasing, programing, reading.
       example_readme:
       - examples/driver_examples/lpspi/qspi_flash/readme.md
-      - examples/_boards/${board}/driver_examples/lpspi/qspi_flash/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpspi/qspi_flash/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []

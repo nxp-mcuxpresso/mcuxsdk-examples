@@ -11,8 +11,8 @@ ele_spake2plus:
         derive a shared secret using the SPAKE2+ protocol.
       example_readme:
       - examples/secure-subsystem_examples/ele_spake2plus/readme.md
-      - examples/_boards/${board}/secure-subsystem_examples/ele_spake2plus/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/secure-subsystem_examples/ele_spake2plus/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mcxw72evk@cm33_core0:
     - +armgcc@debug

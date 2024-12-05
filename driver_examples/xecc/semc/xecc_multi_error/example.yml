@@ -12,8 +12,8 @@ semc_xecc_multi_error:
         provide reliability for external memory ECC region access.
       example_readme:
       - examples/driver_examples/xecc/semc/xecc_multi_error/readme.md
-      - examples/_boards/${board}/driver_examples/xecc/semc/xecc_multi_error/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/xecc/semc/xecc_multi_error/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - -armgcc@sdram_debug

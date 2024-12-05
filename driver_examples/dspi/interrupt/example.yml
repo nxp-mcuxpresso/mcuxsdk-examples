@@ -15,7 +15,7 @@ dspi_interrupt:
         in interrupt . (DSPI Slave using interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/dspi/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/dspi/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dspi/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

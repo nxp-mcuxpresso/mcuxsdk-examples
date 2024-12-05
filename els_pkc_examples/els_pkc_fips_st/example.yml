@@ -11,5 +11,5 @@ els_pkc_fips_st:
         board w.r.t. the NIST Cryptographic Algorithm Validation Program (CAVP).
       example_readme:
       - examples/els_pkc_examples/els_pkc_fips_st/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: null

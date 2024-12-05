@@ -11,8 +11,8 @@ adc16_potentiometer:
         value from a hardware potentiometer via theADC peripheral.
       example_readme:
       - examples/demo_apps/adc16/adc16_potentiometer/readme.md
-      - examples/_boards/${board}/demo_apps/adc16_potentiometer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/adc16_potentiometer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     twrkm34z50mv3: []
     twrkm34z75m: []

@@ -13,8 +13,8 @@ utick_example:
         on the UART terminal.
       example_readme:
       - examples/driver_examples/utick/readme.md
-      - examples/_boards/${board}/driver_examples/utick/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/utick/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

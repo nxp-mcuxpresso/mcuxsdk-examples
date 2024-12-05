@@ -11,8 +11,8 @@ pdm_hwvad:
         example, one pdm instance playbacks the audio data stored in flash using interrupt.
       example_readme:
       - examples/driver_examples/pdm/pdm_hwvad/readme.md
-      - examples/_boards/${board}/driver_examples/pdm/pdm_hwvad/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pdm/pdm_hwvad/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbmimxrt1170@cm4: []

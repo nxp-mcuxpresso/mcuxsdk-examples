@@ -17,8 +17,8 @@ cmsis_button_toggle_led:
         then trigger gpio interrupt, the callback will be use for led toggle.
       example_readme:
       - examples/cmsis_driver_examples/gpio/button_toggle_led/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/gpio/button_toggle_led/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     frdmmcxn236: []

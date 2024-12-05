@@ -12,8 +12,8 @@ flexio_pin_input_interrupt:
         uses FLEXIO-PIN input to capture the edge of other gpio pin.
       example_readme:
       - examples/driver_examples/flexio/pin/input_interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/pin/input_interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/pin/input_interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []

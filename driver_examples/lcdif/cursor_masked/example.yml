@@ -10,8 +10,8 @@ lcdif_cursor_masked:
       brief: This example demonstrates how to use the LCDIF cursor in masked mode.
       example_readme:
       - examples/driver_examples/lcdif/cursor_masked/readme.md
-      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     mimxrt700evk@cm33_core0: []

@@ -14,6 +14,6 @@ initialization_file:
   - attribute: initialization_file
     package_path: project-root-path/mdk
     project_path: evkmimxrt685
-    source: examples/_boards/evkmimxrt685/evkmimxrt685_flash.ini
+    source: ${board_root}/evkmimxrt685/evkmimxrt685_flash.ini
     targets: debug release flash_debug flash_release
     toolchains: mdk

@@ -16,8 +16,8 @@ tpm_combine_pwm:
         by oscilloscope.
       example_readme:
       - examples/driver_examples/tpm/combine_pwm/readme.md
-      - examples/_boards/${board}/driver_examples/tpm/combine_pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tpm/combine_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmcimx7ulp: []

@@ -15,8 +15,8 @@ ftm_combine_pwm:
         do not support LEDs to show, the outputs can be observed by oscilloscope.
       example_readme:
       - examples/driver_examples/ftm/combine_pwm/readme.md
-      - examples/_boards/${board}/driver_examples/ftm/combine_pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ftm/combine_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmke02z40m: []

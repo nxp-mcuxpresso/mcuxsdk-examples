@@ -12,8 +12,8 @@ host_phdc_manager_bm:
         scale device is attached.
       example_readme:
       - examples/usb_examples/usb_host_phdc_manager/readme.md
-      - examples/_boards/${board}/usb_examples/usb_host_phdc_manager/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_host_phdc_manager/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_host_phdc_manager/host_phdc_weighscale_output.jpg
   boards:
     evkbimxrt1050: []

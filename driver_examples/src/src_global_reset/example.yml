@@ -11,8 +11,8 @@ src_global_reset:
         software.s
       example_readme:
       - examples/driver_examples/src/src_global_reset/readme.md
-      - examples/_boards/${board}/driver_examples/src/src_global_reset/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/src/src_global_reset/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - -armgcc@debug

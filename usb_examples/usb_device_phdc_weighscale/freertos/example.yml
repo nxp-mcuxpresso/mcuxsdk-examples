@@ -12,8 +12,8 @@ dev_phdc_weighscale_freertos:
         personal weight scale data, such as body mass and body mass index.
       example_readme:
       - examples/usb_examples/usb_device_phdc_weighscale/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_phdc_weighscale/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_phdc_weighscale/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_phdc_weighscale/healthlink_operation.jpg
   boards:
     evkbimxrt1050: []

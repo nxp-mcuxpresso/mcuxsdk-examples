@@ -13,8 +13,8 @@ snvs_sw_zmk:
         and ZMK key is zeroized.
       example_readme:
       - examples/driver_examples/snvs_hp/snvs_sw_zmk/readme.md
-      - examples/_boards/${board}/driver_examples/snvs/snvs_sw_zmk/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/snvs/snvs_sw_zmk/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

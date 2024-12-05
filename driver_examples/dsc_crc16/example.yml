@@ -11,6 +11,6 @@ crc16:
         are implemented using the CRC driver API.
       example_readme:
       - examples/driver_examples/dsc_crc16/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8200: []

@@ -13,8 +13,8 @@ spdif_edma_transfer:
         and set SPDIF output device to 48KHz.'
       example_readme:
       - examples/driver_examples/spdif/edma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/spdif/edma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spdif/edma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

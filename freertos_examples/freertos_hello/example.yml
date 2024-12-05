@@ -19,8 +19,8 @@ freertos_hello:
         itself.
       example_readme:
       - examples/freertos_examples/freertos_hello/readme.md
-      - examples/_boards/${board}/freertos_examples/freertos_hello/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_hello/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

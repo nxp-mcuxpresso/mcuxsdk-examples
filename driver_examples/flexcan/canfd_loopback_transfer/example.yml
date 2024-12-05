@@ -16,8 +16,8 @@ canfd_loopback_transfer:
         Message payload to terminal.
       example_readme:
       - examples/driver_examples/flexcan/canfd_loopback_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/canfd/loopback_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/canfd/loopback_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbmimxrt1060: []

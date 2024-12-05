@@ -15,7 +15,7 @@ dspi_half_duplex_edma_master:
         in EDMA way. '
       example_readme:
       - examples/driver_examples/dspi/half_duplex_transfer/edma/master/readme.md
-      - examples/_boards/${board}/driver_examples/dspi/half_duplex_transfer/edma/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dspi/half_duplex_transfer/edma/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

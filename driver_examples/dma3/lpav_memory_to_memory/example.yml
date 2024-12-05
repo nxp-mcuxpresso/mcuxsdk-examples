@@ -14,7 +14,7 @@ dma3_lpav_memory_to_memory:
         and further development.
       example_readme:
       - examples/driver_examples/dma3/lpav_memory_to_memory/readme.md
-      - examples/_boards/${board}/driver_examples/edma/lpav_memory_to_memory/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/edma/lpav_memory_to_memory/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8ulp@cm33: []

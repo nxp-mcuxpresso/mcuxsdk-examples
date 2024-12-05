@@ -14,8 +14,8 @@ wdog:
         of refreshing in Window mode.
       example_readme:
       - examples/driver_examples/wdog/readme.md
-      - examples/_boards/${board}/driver_examples/wdog/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/wdog/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     twrkm34z50mv3: []

@@ -10,8 +10,8 @@ voice_spot_demo:
       brief: Audio voice_spot_demo example.
       example_readme:
       - examples/audio_examples/voice_spot_demo/readme.md
-      - examples/_boards/${board}/audio_examples/voice_spot_demo/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/audio_examples/voice_spot_demo/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8ulp@cm33:
     - -armgcc@debug

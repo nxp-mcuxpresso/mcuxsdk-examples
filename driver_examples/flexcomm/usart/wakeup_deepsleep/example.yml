@@ -13,8 +13,8 @@ usart_wakeup_deepsleep:
         to user input.
       example_readme:
       - examples/driver_examples/flexcomm/usart/wakeup_deepsleep/readme.md
-      - examples/_boards/${board}/driver_examples/usart/wakeup_deepsleep/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/usart/wakeup_deepsleep/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

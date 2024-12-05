@@ -6,16 +6,16 @@ ce_nonblockingmode_test:
     project-root-path: boards/${board}/ce_examples/nonblockingmode_test/${multicore_foldername}
     complete_cmake_data:
       files:
-        examples/_boards/${board}/ce_examples/nonblockingmode_test/mat_mult_input_A.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_mult_input_A.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/nonblockingmode_test/mat_mult_input_B.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_mult_input_B.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/nonblockingmode_test/mat_multcf32_40x40x40_C_ref.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_multcf32_40x40x40_C_ref.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/nonblockingmode_test/mat_multf32_60x60x60_C_ref.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_multf32_60x60x60_C_ref.txt:
           project_relative_path: ./
           type: src
     document:
@@ -25,8 +25,8 @@ ce_nonblockingmode_test:
         in both single and multi-command settings.
       example_readme:
       - examples/ce_examples/nonblockingmode_test/readme.md
-      - examples/_boards/${board}/ce_examples/nonblockingmode_test/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ce_examples/nonblockingmode_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     kw47evk@cm33_core0:
     - +armgcc@debug

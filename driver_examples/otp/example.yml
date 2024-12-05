@@ -11,8 +11,8 @@ otp:
         software to access OTP ROM API.It just prints the version of API at the moment.
       example_readme:
       - examples/driver_examples/otp/readme.md
-      - examples/_boards/${board}/driver_examples/otp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/otp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []
     lpcxpresso54s018: []

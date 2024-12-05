@@ -13,8 +13,8 @@ csi_rgb565:
         LCDpanel, so part of the LCD panel might be blank.
       example_readme:
       - examples/driver_examples/csi/rgb565/readme.md
-      - examples/_boards/${board}/driver_examples/csi/rgb565/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/csi/rgb565/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - +armgcc@flexspi_nor_sdram_debug

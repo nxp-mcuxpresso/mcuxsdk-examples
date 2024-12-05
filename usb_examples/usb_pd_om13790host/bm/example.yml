@@ -12,8 +12,8 @@ usb_pd_bm_om13790host:
         or sink.
       example_readme:
       - examples/usb_examples/usb_pd_om13790host/readme.md
-      - examples/_boards/${board}/usb_examples/usb_pd_om13790host/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_pd_om13790host/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_pd_om13790host/demo_menu.jpg
       - examples/usb_examples/usb_pd_om13790host/demo_menu_nonsw.jpg
   boards:

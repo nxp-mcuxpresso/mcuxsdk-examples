@@ -12,8 +12,8 @@ sai_edma_tdm_record_playback:
         playbacks the audio data in TDM format.
       example_readme:
       - examples/driver_examples/sai/edma_tdm_record_playback/readme.md
-      - examples/_boards/${board}/driver_examples/sai/edma_tdm_record_playback/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sai/edma_tdm_record_playback/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm4: []

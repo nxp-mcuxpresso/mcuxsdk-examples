@@ -16,8 +16,8 @@ sai_low_power_audio_rtos_imx95:
         protocol is used to communicate between A core an M4 core. '
       example_readme:
       - examples/demo_apps/sai_low_power_audio_imx95/readme.md
-      - examples/_boards/${board}/demo_apps/sai_low_power_audio/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/sai_low_power_audio/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

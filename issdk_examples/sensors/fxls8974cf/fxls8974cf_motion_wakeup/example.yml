@@ -14,8 +14,8 @@ fxls8974cf_motion_wakeup:
         ASLP counter.
       example_readme:
       - examples/issdk_examples/sensors/fxls8974cf/fxls8974cf_motion_wakeup/readme.md
-      - examples/_boards/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_motion_wakeup/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_motion_wakeup/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []
   shields:

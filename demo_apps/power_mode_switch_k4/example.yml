@@ -10,8 +10,8 @@ power_mode_switch_k4:
       brief: wait for adding.
       example_readme:
       - examples/demo_apps/power_mode_switch_k4/readme.md
-      - examples/_boards/${board}/demo_apps/power_mode_switch/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_switch/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
     frdmmcxw72@cm33_core0: []

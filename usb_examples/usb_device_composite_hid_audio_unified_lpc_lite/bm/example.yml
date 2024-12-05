@@ -12,8 +12,8 @@ dev_composite_hid_audio_unified_lpc_lite_bm:
         in the Windows Accessories and play music with the device.
       example_readme:
       - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_right_click_icon.jpg
       - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_select_properties.jpg
       - examples/usb_examples/usb_device_composite_hid_audio_unified_lpc_lite/usb_device_composite_hid_audio_set_default.jpg

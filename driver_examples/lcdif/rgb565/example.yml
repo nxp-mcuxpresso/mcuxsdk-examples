@@ -12,8 +12,8 @@ lcdif_rgb565:
         and its color changes when touch border.
       example_readme:
       - examples/driver_examples/lcdif/rgb565/readme.md
-      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

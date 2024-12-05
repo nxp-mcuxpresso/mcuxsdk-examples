@@ -23,8 +23,8 @@ adc_12b1msps_sar_interrupt:
         would be used for each conversion.
       example_readme:
       - examples/driver_examples/adc_12b1msps_sar/interrupt_adc_12b1msps_sar/readme.md
-      - examples/_boards/${board}/driver_examples/adc/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

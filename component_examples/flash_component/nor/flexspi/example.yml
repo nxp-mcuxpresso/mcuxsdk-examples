@@ -11,8 +11,8 @@ flash_component_nor_flexspi:
         and read an external nor flash device.
       example_readme:
       - examples/component_examples/flash_component/nor/flexspi/readme.md
-      - examples/_boards/${board}/component_examples/flash_component/flexspi_nor/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/flash_component/flexspi_nor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@flexspi_nor_debug

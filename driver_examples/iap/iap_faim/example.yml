@@ -12,8 +12,8 @@ iap_faim:
         terminal as FAIM read and write operations are performed.
       example_readme:
       - examples/driver_examples/iap/iap_faim/readme.md
-      - examples/_boards/${board}/driver_examples/iap/iap_faim/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/iap/iap_faim/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso845max: []

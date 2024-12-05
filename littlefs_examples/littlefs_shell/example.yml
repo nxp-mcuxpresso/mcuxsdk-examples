@@ -10,8 +10,8 @@ littlefs_shell:
       brief: Demonstrates littlefs functionality by commands executed from shell.
       example_readme:
       - examples/littlefs_examples/littlefs_shell/readme.md
-      - examples/_boards/${board}/littlefs_examples/littlefs_shell/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/littlefs_examples/littlefs_shell/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1020:
     - -armgcc@flexspi_nor_debug

@@ -12,8 +12,8 @@ iap_basic:
         a printed on the UART terminal as various bascial iap operations are performed.
       example_readme:
       - examples/driver_examples/iap/iap_basic/readme.md
-      - examples/_boards/${board}/driver_examples/iap/iap_basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/iap/iap_basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso54628: []

@@ -15,7 +15,7 @@ mscan_loopback:
         payload to terminal.
       example_readme:
       - examples/driver_examples/mscan/loopback/readme.md
-      - examples/_boards/${board}/driver_examples/mscan/loopback/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mscan/loopback/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke16z: []

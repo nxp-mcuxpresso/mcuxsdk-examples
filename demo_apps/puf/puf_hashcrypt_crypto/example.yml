@@ -12,8 +12,8 @@ puf_hashcrypt_crypto:
         to Hashcrypt, which uses this key to encrypt data.
       example_readme:
       - examples/demo_apps/puf/puf_hashcrypt_crypto/readme.md
-      - examples/_boards/${board}/demo_apps/puf_hashcrypt_crypto/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/puf_hashcrypt_crypto/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s06: []
     lpcxpresso55s16: []

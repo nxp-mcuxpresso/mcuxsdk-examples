@@ -14,8 +14,8 @@ edma4_memory_to_memory:
         and further development.
       example_readme:
       - examples/driver_examples/edma4/memory_to_memory/readme.md
-      - examples/_boards/${board}/driver_examples/edma4/memory_to_memory/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/edma4/memory_to_memory/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []

@@ -11,8 +11,8 @@ mcxromapi_flash_hiding:
         hiding and customer defined proteted area (CDPA).
       example_readme:
       - examples/driver_examples/mcx_romapi/flashhiding/readme.md
-      - examples/_boards/${board}/driver_examples/romapi/flashhiding/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/romapi/flashhiding/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

@@ -14,5 +14,5 @@ board-file:
   - attribute: board-file
     package_path: project-root-path/iar
     project_path: frdmrw612
-    source: examples/_boards/frdmrw612/FlashFRDMRW612_FLEXSPI.board
+    source: ${board_root}/frdmrw612/FlashFRDMRW612_FLEXSPI.board
     toolchains: iar

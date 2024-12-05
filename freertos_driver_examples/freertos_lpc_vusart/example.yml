@@ -10,5 +10,5 @@ freertos_lpc_vusart:
       brief: FreeRTOS LPC VUSART driver.
       example_readme:
       - examples/freertos_driver_examples/freertos_lpc_vusart/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

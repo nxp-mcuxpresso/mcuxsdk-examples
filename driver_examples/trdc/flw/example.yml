@@ -14,8 +14,8 @@ trdc_flw:
         address and programmable flash address is checked.
       example_readme:
       - examples/driver_examples/trdc/flw/readme.md
-      - examples/_boards/${board}/driver_examples/trdc/flw/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/trdc/flw/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
     k32w148evk:

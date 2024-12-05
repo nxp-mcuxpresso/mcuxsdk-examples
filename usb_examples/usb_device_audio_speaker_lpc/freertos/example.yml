@@ -11,8 +11,8 @@ dev_audio_speaker_lpc_freertos:
         play music using the device.
       example_readme:
       - examples/usb_examples/usb_device_audio_speaker_lpc/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_audio_speaker_lpc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_audio_speaker_lpc/usb_device_audio_speaker_change_level.jpg
       - examples/usb_examples/usb_device_audio_speaker_lpc/usb_device_audio_speaker_right_click_icon.jpg
       - examples/usb_examples/usb_device_audio_speaker_lpc/usb_device_audio_speaker_select_properties.jpg

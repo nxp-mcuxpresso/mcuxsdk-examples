@@ -14,8 +14,8 @@ iuart_idle_detect_sdma_transfer:
         will generate, and abort the SDMA receive operation, and send out the receivedcharacters.
       example_readme:
       - examples/driver_examples/iuart/idle_detect_sdma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/uart/idle_detect_sdma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/uart/idle_detect_sdma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn:

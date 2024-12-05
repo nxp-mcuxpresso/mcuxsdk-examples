@@ -11,8 +11,8 @@ iped:
         SDK software to show funcionality of Inline Prince Encryption Decryption.
       example_readme:
       - examples/driver_examples/iped/readme.md
-      - examples/_boards/${board}/driver_examples/iped/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/iped/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36:
     - -armgcc@debug

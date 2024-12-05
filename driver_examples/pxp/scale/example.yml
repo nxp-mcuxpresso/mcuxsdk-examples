@@ -12,8 +12,8 @@ pxp_scale:
         blue).The square size is changing.
       example_readme:
       - examples/driver_examples/pxp/scale/readme.md
-      - examples/_boards/${board}/driver_examples/pxp/scale/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pxp/scale/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050:

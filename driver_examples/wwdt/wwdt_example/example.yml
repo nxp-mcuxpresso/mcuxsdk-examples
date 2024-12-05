@@ -12,8 +12,8 @@ wwdt_example:
         5 times of refreshing the watchdog, a timeout reset is generated.
       example_readme:
       - examples/driver_examples/wwdt/wwdt_example/readme.md
-      - examples/_boards/${board}/driver_examples/wwdt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/wwdt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

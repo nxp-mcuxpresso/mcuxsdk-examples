@@ -20,8 +20,8 @@ iee_apc:
         with expected data.
       example_readme:
       - examples/demo_apps/iee/iee_apc/readme.md
-      - examples/_boards/${board}/demo_apps/iee_apc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/iee_apc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

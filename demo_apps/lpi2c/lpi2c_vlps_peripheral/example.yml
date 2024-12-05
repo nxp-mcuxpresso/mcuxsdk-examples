@@ -17,8 +17,8 @@ lpi2c_vlps_peripheral:
         LPUART0.
       example_readme:
       - examples/demo_apps/lpi2c/lpi2c_vlps_peripheral/readme.md
-      - examples/_boards/${board}/demo_apps/lpi2c_vlps_peripheral/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/lpi2c_vlps_peripheral/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
     frdmke17z: []

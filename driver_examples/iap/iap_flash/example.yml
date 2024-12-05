@@ -12,8 +12,8 @@ iap_flash:
         a printed on the UART terminal as various operations on flash memory are performed.
       example_readme:
       - examples/driver_examples/iap/iap_flash/readme.md
-      - examples/_boards/${board}/driver_examples/iap/iap_flash/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/iap/iap_flash/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso51u68: []

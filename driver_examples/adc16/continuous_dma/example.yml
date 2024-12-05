@@ -18,8 +18,8 @@ adc16_continuous_dma:
         will average ADC16 results stored in memory and print average on the terminal.  '
       example_readme:
       - examples/driver_examples/adc16/continuous_dma/readme.md
-      - examples/_boards/${board}/driver_examples/adc16/continuous_dma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc16/continuous_dma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc242: []

@@ -9,8 +9,8 @@ tflm_modelrunner:
       brief: ModelRunner for TFlite
       example_readme:
       - examples/eiq_examples/tflm_modelrunner/readme.md
-      - examples/_boards/${board}/eiq_examples/tflm_modelrunner/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/eiq_examples/tflm_modelrunner/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0:
     - -armgcc@debug

@@ -15,7 +15,7 @@ flexspi_octal_power_down:
         flash is correct.
       example_readme:
       - examples/driver_examples/flexspi/octal/power_down/readme.md
-      - examples/_boards/${board}/driver_examples/flexspi/octal/power_down/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexspi/octal/power_down/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []

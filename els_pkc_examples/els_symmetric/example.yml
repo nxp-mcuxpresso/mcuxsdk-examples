@@ -11,8 +11,8 @@ els_symmetric:
         symmetric algorithms and a crypto library lightweight testing.
       example_readme:
       - examples/els_pkc_examples/els_symmetric/readme.md
-      - examples/_boards/${board}/els_pkc_examples/els_symmetric/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/els_pkc_examples/els_symmetric/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

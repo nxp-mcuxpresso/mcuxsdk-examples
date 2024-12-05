@@ -10,8 +10,8 @@ capt_basic:
       brief: This example shows how to capture touch data using CAPT poll-now mode.
       example_readme:
       - examples/driver_examples/capt/capt_basic/readme.md
-      - examples/_boards/${board}/driver_examples/capt/capt_basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/capt/capt_basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso804: []

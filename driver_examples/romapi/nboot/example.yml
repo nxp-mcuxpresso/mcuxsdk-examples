@@ -10,8 +10,8 @@ romapi_nboot:
       brief: Rom API driver example for NBOOT interface.
       example_readme:
       - examples/driver_examples/romapi/nboot/readme.md
-      - examples/_boards/${board}/driver_examples/romapi/nboot/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/romapi/nboot/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

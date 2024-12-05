@@ -10,8 +10,8 @@ slcd:
       brief: The SLCD example shows how to use SLCD driver.
       example_readme:
       - examples/driver_examples/slcd/readme.md
-      - examples/_boards/${board}/driver_examples/slcd/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/slcd/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc444: []

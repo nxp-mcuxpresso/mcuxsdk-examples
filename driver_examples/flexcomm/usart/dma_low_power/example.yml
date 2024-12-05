@@ -15,8 +15,8 @@ usart_dma_low_power:
         were received, system will be woken up and echo the characters to PC.
       example_readme:
       - examples/driver_examples/flexcomm/usart/dma_low_power/readme.md
-      - examples/_boards/${board}/driver_examples/usart/dma_low_power/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/usart/dma_low_power/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

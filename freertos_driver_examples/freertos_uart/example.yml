@@ -13,8 +13,8 @@ freertos_uart:
         back on UART.
       example_readme:
       - examples/freertos_driver_examples/freertos_uart/readme.md
-      - examples/_boards/${board}/freertos_driver_examples/freertos_uart/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_driver_examples/freertos_uart/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2b: []

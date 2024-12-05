@@ -15,5 +15,5 @@ freertos_debug_console:
         use the Debug console in the RTOS.
       example_readme:
       - examples/freertos_examples/freertos_debug_console/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

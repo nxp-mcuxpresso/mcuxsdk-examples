@@ -12,8 +12,8 @@ rom_dev_msc_ram_bm:
         not a persistent storage..
       example_readme:
       - examples/usb_examples/usb_rom_device_msc_ram/bm/readme.md
-      - examples/_boards/${board}/usb_examples/usb_rom_device_msc_ram/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_rom_device_msc_ram/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

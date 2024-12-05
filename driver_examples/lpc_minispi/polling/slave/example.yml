@@ -15,8 +15,8 @@ spi_polling_slave:
         spi_polling_transfer_master example. And this example should start first.
       example_readme:
       - examples/driver_examples/lpc_minispi/polling/slave/readme.md
-      - examples/_boards/${board}/driver_examples/spi/polling/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spi/polling/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso802: []

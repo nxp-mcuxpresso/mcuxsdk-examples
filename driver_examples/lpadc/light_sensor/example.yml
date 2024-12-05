@@ -16,8 +16,8 @@ lpadc_light_sensor:
         conversion result value and print it to the debug console.
       example_readme:
       - examples/driver_examples/lpadc/light_sensor/readme.md
-      - examples/_boards/${board}/driver_examples/lpadc/light_sensor/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpadc/light_sensor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
     frdmmcxw72@cm33_core0: []

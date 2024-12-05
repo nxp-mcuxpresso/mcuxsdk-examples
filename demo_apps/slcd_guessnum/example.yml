@@ -17,8 +17,8 @@ slcd_guessnum:
         when theuser successfully guesses the correct number.
       example_readme:
       - examples/demo_apps/slcd_guessnum/readme.md
-      - examples/_boards/${board}/demo_apps/slcd_guessnum/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/slcd_guessnum/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     twrkm34z50mv3: []
     twrkm34z75m: []

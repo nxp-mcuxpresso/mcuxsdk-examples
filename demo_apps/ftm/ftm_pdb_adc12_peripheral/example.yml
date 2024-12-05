@@ -19,5 +19,5 @@ ftm_pdb_adc12_peripheral:
         further configuration of pin, clock and peripheral.
       example_readme:
       - examples/demo_apps/ftm/ftm_pdb_adc12_peripheral/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

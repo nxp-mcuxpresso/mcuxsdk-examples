@@ -13,7 +13,7 @@ xspi_octal_edma_transfer:
         and program a page into the flash, at last check if the data in flash is correct.
       example_readme:
       - examples/driver_examples/xspi/octal/edma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/xspi/octal/edma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/xspi/octal/edma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

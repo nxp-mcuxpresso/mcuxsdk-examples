@@ -11,8 +11,8 @@ sctimer_simple_pwm:
         driver capabiltiy to generate PWM signals.
       example_readme:
       - examples/driver_examples/sctimer/simple_pwm/readme.md
-      - examples/_boards/${board}/driver_examples/sctimer/simple_pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sctimer/simple_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

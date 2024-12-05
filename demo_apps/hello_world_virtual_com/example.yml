@@ -15,8 +15,8 @@ hello_world_virtual_com:
         com and provide a simple project for debugging and further development.
       example_readme:
       - examples/demo_apps/hello_world_virtual_com/readme.md
-      - examples/_boards/${board}/demo_apps/hello_world_virtual_com/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/hello_world_virtual_com/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

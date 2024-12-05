@@ -10,8 +10,8 @@ uart_wifi_bridge:
       brief: uart_wifi_bridge
       example_readme:
       - examples/wifi_examples/uart_wifi_bridge/readme.md
-      - examples/_boards/${board}/wifi_examples/common/wifi_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/wifi_examples/common/wifi_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060:
     - -armgcc@debug

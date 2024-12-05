@@ -10,8 +10,8 @@ pdm_edma_transfer:
       brief: pdm_edma_transfer
       example_readme:
       - examples/driver_examples/pdm/pdm_edma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pdm/pdm_edma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbmimxrt1170@cm4: []

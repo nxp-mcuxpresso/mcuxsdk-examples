@@ -9,8 +9,8 @@ maestro_usb_mic:
       brief: Audio maestro framework USB microphone example.
       example_readme:
       - examples/audio_examples/maestro_usb_mic/readme.md
-      - examples/_boards/${board}/audio_examples/maestro_usb_mic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/audio_examples/maestro_usb_mic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - -iar@debug

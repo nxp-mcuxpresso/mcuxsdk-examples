@@ -11,8 +11,8 @@ i3c_master_read_sensor_icm42688p:
         as master to communicate with sensor ICM-42688P.
       example_readme:
       - examples/driver_examples/i3c/master_read_sensor_icm42688p/readme.md
-      - examples/_boards/${board}/driver_examples/i3c/master_read_sensor_icm42688p/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/i3c/master_read_sensor_icm42688p/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []
     lpcxpresso860max: []

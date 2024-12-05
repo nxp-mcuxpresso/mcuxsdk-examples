@@ -15,8 +15,8 @@ lpit_chained_channel:
         interrupt is triggered.
       example_readme:
       - examples/driver_examples/lpit/chained_channel/readme.md
-      - examples/_boards/${board}/driver_examples/lpit/chained_channel/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpit/chained_channel/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2a4s: []
     frdmk32l3a6@cm0plus: []

@@ -11,8 +11,8 @@ ocotp_example:
         driver API.
       example_readme:
       - examples/driver_examples/ocotp/readme.md
-      - examples/_boards/${board}/driver_examples/ocotp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ocotp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

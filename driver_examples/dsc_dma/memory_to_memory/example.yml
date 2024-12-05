@@ -13,7 +13,7 @@ dsc_dma_memory_to_memory:
         further development.
       example_readme:
       - examples/driver_examples/dsc_dma/memory_to_memory/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8200: []
     twrmc56f8400: []

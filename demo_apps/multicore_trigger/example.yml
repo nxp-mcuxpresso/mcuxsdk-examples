@@ -11,8 +11,8 @@ multicore_trigger:
         soc, to trigger other subordinative core to boot.
       example_readme:
       - examples/demo_apps/multicore_trigger/readme.md
-      - examples/_boards/${board}/demo_apps/multicore_trigger/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/multicore_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - +armgcc@flexspi_nor_hyperram_debug

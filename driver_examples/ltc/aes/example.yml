@@ -11,8 +11,8 @@ ltc_aes:
         encryption/decryption sampledata using AES-CBC, AES-CCM, and XCBC-MAC algorithm.
       example_readme:
       - examples/driver_examples/ltc/aes/readme.md
-      - examples/_boards/${board}/driver_examples/ltc/aes/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ltc/aes/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []
     frdmmcxw71: []

@@ -10,8 +10,8 @@ soem_gpio_pulse_freertos:
       brief: An EtherCAT example with freertos using SOEM.
       example_readme:
       - examples/soem_examples/soem_gpio_pulse/freertos/readme.md
-      - examples/_boards/${board}/soem_examples/soem_gpio_pulse/freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/soem_examples/soem_gpio_pulse/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@sdram_debug

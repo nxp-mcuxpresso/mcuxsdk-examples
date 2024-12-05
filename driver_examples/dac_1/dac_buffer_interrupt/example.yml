@@ -19,8 +19,8 @@ dac_1_buffer_interrupt:
         trigger to release the CPU.
       example_readme:
       - examples/driver_examples/dac_1/dac_buffer_interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l3a6@cm0plus: []
     frdmk32l3a6@cm4: []

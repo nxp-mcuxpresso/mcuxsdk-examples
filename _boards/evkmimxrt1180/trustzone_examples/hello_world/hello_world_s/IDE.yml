@@ -1,24 +1,24 @@
 
 flash_programming_file:
   files:
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_ram_debug.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_ram_debug.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: debug
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_ram_release.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_download_ram_release.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: release
 
 initialization_file:
   files:
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_ram_debug.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_ram_debug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug
     package_path: boards/${board}/trustzone_examples/hello_world/./hello_world_s/mdk
     project_path: _boards/${board}/trustzone_examples/hello_world/hello_world_s
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_ram_release.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_debug_ram_release.ini
     attribute: initialization_file
     toolchains: mdk
     targets: release

@@ -15,7 +15,7 @@ lib_jpeg_hw_accel:
         way.
       example_readme:
       - examples/display_examples/lib_jpeg_hw_accel/readme.md
-      - examples/_boards/${board}/display_examples/lib_jpeg_hw_accel/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/display_examples/lib_jpeg_hw_accel/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

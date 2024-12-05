@@ -14,8 +14,8 @@ lin_slave:
         represented by the character array. This demo uses auto-baudrate feature.
       example_readme:
       - examples/driver_examples/lin/slave/readme.md
-      - examples/_boards/${board}/driver_examples/lin/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lin/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     kw47evk@cm33_core0: []
     kw45b41zevk:

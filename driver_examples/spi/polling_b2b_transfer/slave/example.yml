@@ -16,8 +16,8 @@ spi_polling_b2b_transfer_slave:
         correct.'
       example_readme:
       - examples/driver_examples/spi/polling_b2b_transfer/slave/readme.md
-      - examples/_boards/${board}/driver_examples/spi/polling_b2b_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spi/polling_b2b_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc041: []

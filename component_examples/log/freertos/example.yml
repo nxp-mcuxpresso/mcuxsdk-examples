@@ -12,8 +12,8 @@ log_freertos:
         input log level command.
       example_readme:
       - examples/component_examples/log/freertos/readme.md
-      - examples/_boards/${board}/component_examples/log/freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/log/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

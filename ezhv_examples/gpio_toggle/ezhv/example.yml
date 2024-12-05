@@ -10,7 +10,7 @@ ezhv_gpio_toggle_ezhv:
       brief: This project shows how to toggle gpio by sending a message way.
       example_readme:
       - examples/ezhv_examples/gpio_toggle/readme.md
-      - examples/_boards/${board}/ezhv_examples/gpio_toggle/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ezhv_examples/gpio_toggle/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@ezhv: []

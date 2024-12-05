@@ -19,8 +19,8 @@ cmsis_lpi2c_int_b2b_transfer_slave:
         This example checks if the data received from slave is correct.
       example_readme:
       - examples/cmsis_driver_examples/lpi2c/int_b2b_transfer/slave/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/lpi2c/int_b2b_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/lpi2c/int_b2b_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

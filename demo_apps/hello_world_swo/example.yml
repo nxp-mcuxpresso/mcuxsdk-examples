@@ -12,8 +12,8 @@ hello_world_swo:
         provide a simple project for debugging and further development.'
       example_readme:
       - examples/demo_apps/hello_world_swo/readme.md
-      - examples/_boards/${board}/demo_apps/hello_world_swo/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/hello_world_swo/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - +armgcc@flexspi_nor_sdram_debug

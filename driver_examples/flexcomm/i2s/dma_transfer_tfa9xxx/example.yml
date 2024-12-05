@@ -14,7 +14,7 @@ i2s_dma_transfer_tfa9xxx:
         set so that TFA amplifier(s) can have I2S input.
       example_readme:
       - examples/driver_examples/flexcomm/i2s/dma_transfer_tfa9xxx/readme.md
-      - examples/_boards/${board}/driver_examples/i2s/dma_transfer_tfa9xxx/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/i2s/dma_transfer_tfa9xxx/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt685@cm33: []

@@ -10,8 +10,8 @@ pmc_temperature_sensor:
       brief: The demo shows how to measure the temperature within the PMC module.
       example_readme:
       - examples/demo_apps/pmc_temperature_sensor/readme.md
-      - examples/_boards/${board}/demo_apps/pmc_temperature_sensor/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/pmc_temperature_sensor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []
     evkmimxrt595@cm33: []

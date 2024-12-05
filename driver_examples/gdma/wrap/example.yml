@@ -10,8 +10,8 @@ gdma_wrap:
       brief: This project shows how to use GDMA functional APIs to do the wrap transfer.
       example_readme:
       - examples/driver_examples/gdma/wrap/readme.md
-      - examples/_boards/${board}/driver_examples/gdma/wrap/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gdma/wrap/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

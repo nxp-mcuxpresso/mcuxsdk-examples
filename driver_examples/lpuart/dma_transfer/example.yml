@@ -12,8 +12,8 @@ lpuart_dma_transfer:
         will be printed out onto console in a group of 8 characters.
       example_readme:
       - examples/driver_examples/lpuart/dma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/lpuart/dma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpuart/dma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc242: []

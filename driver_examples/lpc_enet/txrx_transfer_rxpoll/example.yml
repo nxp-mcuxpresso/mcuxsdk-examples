@@ -14,8 +14,8 @@ enet_txrx_transfer_rxpoll:
         the number and the mac address of the recieved frames.
       example_readme:
       - examples/driver_examples/lpc_enet/txrx_transfer_rxpoll/readme.md
-      - examples/_boards/${board}/driver_examples/enet/txrx_transfer_rxpoll/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/enet/txrx_transfer_rxpoll/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []
     lpcxpresso54s018: []

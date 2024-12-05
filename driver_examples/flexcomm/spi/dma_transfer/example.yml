@@ -12,8 +12,8 @@ spi_dma_transfer:
         a piece of data to slave,and check if the data slave received is correct.
       example_readme:
       - examples/driver_examples/flexcomm/spi/dma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/spi/dma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spi/dma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54s018: []

@@ -20,5 +20,5 @@ freertos_ecspi_interrupt_transfer:
         board used as ECSPI slave:        #define ECSPI_MASTER_SLAVE isSLAVE'
       example_readme:
       - examples/freertos_driver_examples/freertos_ecspi_interrupt_transfer/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

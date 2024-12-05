@@ -11,8 +11,8 @@ tee_fault_core0:
       brief: This example shows how to use the MCUXpresso Config Tools TEE tool.
       example_readme:
       - examples/demo_apps/tee_fault/readme.md
-      - examples/_boards/${board}/demo_apps/tee_fault/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/tee_fault/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - -armgcc@debug

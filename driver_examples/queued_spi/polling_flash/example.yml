@@ -10,7 +10,7 @@ queued_spi_polling_flash:
         spi polling functional API.
       example_readme:
       - examples/driver_examples/queued_spi/polling_flash/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []
     mc56f81000evk: []

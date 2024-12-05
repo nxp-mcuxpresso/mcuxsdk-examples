@@ -11,7 +11,7 @@ pngdec:
         of NXP logo and shows it in the LCD panel.
       example_readme:
       - examples/driver_examples/pngdec/readme.md
-      - examples/_boards/${board}/driver_examples/pngdec/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pngdec/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

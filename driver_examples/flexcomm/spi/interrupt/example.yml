@@ -13,8 +13,8 @@ flexcomm_spi_interrupt:
         received is correct.
       example_readme:
       - examples/driver_examples/flexcomm/spi/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/spi/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spi/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

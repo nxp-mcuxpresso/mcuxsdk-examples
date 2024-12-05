@@ -10,8 +10,8 @@ ota_mcuboot_basic:
       brief: This projects gives an example of a basic application bootable by MCUBoot
       example_readme:
       - examples/ota_examples/ota_mcuboot_basic/readme.md
-      - examples/_boards/${board}/ota_examples/ota_mcuboot_basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ota_examples/ota_mcuboot_basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

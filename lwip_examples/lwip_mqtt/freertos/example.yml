@@ -16,8 +16,8 @@ lwip_mqtt_freertos:
         to receive messages published to the subscribed topics from other clients.
       example_readme:
       - examples/lwip_examples/lwip_mqtt/freertos/readme.md
-      - examples/_boards/${board}/lwip_examples/lwip_mqtt/freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/lwip_examples/lwip_mqtt/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

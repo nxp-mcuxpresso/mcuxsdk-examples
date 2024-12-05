@@ -14,8 +14,8 @@ pxp_blend:
         and alpha surface.
       example_readme:
       - examples/driver_examples/pxp/blend/readme.md
-      - examples/_boards/${board}/driver_examples/pxp/blend/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pxp/blend/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050:

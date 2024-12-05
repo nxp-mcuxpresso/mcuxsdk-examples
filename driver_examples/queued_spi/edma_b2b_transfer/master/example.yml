@@ -15,7 +15,7 @@ queued_spi_edma_b2b_transfer_master:
         edma to receive/send the data)
       example_readme:
       - examples/driver_examples/queued_spi/edma_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []
     mc56f81000evk: []

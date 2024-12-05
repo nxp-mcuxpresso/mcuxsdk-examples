@@ -13,7 +13,7 @@ gpio_1_led_output:
         register. The example take turns to shine the LED.
       example_readme:
       - examples/driver_examples/gpio_1/led_output/readme.md
-      - examples/_boards/${board}/driver_examples/gpio_1/led_output/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gpio_1/led_output/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke02z40m: []

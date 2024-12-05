@@ -19,7 +19,7 @@ dspi_half_duplex_edma_slave:
         received.'
       example_readme:
       - examples/driver_examples/dspi/half_duplex_transfer/edma/slave/readme.md
-      - examples/_boards/${board}/driver_examples/dspi/half_duplex_transfer/edma/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dspi/half_duplex_transfer/edma/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

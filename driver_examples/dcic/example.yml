@@ -10,8 +10,8 @@ dcic:
       brief: This example shows how to use DCIC to monitor the display content integrity.
       example_readme:
       - examples/driver_examples/dcic/readme.md
-      - examples/_boards/${board}/driver_examples/dcic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dcic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - +armgcc@flexspi_nor_sdram_debug

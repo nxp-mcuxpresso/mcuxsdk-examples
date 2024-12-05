@@ -13,8 +13,8 @@ lwip_dhcp_enet_qos_bm:
         DHCP server, address information is printed.
       example_readme:
       - examples/lwip_examples/lwip_dhcp_enet_qos/bm/readme.md
-      - examples/_boards/${board}/lwip_examples/lwip_dhcp_enet_qos/bm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/lwip_examples/lwip_dhcp_enet_qos/bm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - -armgcc@debug

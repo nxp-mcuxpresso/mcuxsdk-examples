@@ -14,8 +14,8 @@ pwt_example:
         overflow flag status, positive pulse width and negative pulse width.
       example_readme:
       - examples/driver_examples/pwt/readme.md
-      - examples/_boards/${board}/driver_examples/pwt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pwt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
     frdmke16z: []

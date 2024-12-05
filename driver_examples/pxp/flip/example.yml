@@ -12,8 +12,8 @@ pxp_flip:
         blue).The flip mode is changing.
       example_readme:
       - examples/driver_examples/pxp/flip/readme.md
-      - examples/_boards/${board}/driver_examples/pxp/flip/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pxp/flip/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050:

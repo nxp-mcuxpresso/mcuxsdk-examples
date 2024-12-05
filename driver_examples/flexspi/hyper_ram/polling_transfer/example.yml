@@ -15,8 +15,8 @@ flexspi_hyper_ram_polling_transfer:
         last check if the data in flash is correct.
       example_readme:
       - examples/driver_examples/flexspi/hyper_ram/polling_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexspi/hyper_ram/polling_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexspi/hyper_ram/polling_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug

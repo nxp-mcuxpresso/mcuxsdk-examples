@@ -16,8 +16,8 @@ intm:
         the flag bit one.
       example_readme:
       - examples/driver_examples/intm/readme.md
-      - examples/_boards/${board}/driver_examples/intm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/intm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

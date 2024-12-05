@@ -13,8 +13,8 @@ ota_mcuboot_client_enet:
         by MCUBoot.
       example_readme:
       - examples/ota_examples/ota_mcuboot_client/enet/readme.md
-      - examples/_boards/${board}/ota_examples/ota_mcuboot_client/enet/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ota_examples/ota_mcuboot_client/enet/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

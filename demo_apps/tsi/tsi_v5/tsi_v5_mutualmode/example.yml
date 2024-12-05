@@ -15,8 +15,8 @@ tsi_v5_mutualmode:
         touched and deal with the event.
       example_readme:
       - examples/demo_apps/tsi/tsi_v5/tsi_v5_mutualmode/readme.md
-      - examples/_boards/${board}/demo_apps/tsi_v5/tsi_v5_mutualmode/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/tsi_v5/tsi_v5_mutualmode/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
     frdmke16z: []

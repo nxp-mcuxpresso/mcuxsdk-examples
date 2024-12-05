@@ -19,7 +19,7 @@ cmsis_i2c_edma_b2b_transfer_master:
         checks if the data received from slave is correct.
       example_readme:
       - examples/cmsis_driver_examples/i2c/edma_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/i2c/edma_b2b_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/i2c/edma_b2b_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

@@ -14,8 +14,8 @@ ftm_dual_edge_capture:
         signal on the terminal window.
       example_readme:
       - examples/driver_examples/ftm/dual_edge_capture/readme.md
-      - examples/_boards/${board}/driver_examples/ftm/dual_edge_capture/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ftm/dual_edge_capture/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmke02z40m: []

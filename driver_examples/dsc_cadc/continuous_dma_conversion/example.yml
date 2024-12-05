@@ -18,7 +18,7 @@ cadc_continuous_dma_conversion:
         the terminal. '
       example_readme:
       - examples/driver_examples/dsc_cadc/continuous_dma_conversion/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8200: []
     twrmc56f8400: []

@@ -13,7 +13,7 @@ dac_adc_peripheral:
         in 'Blocking Mode'and how to read ADC values.
       example_readme:
       - examples/demo_apps/dac/dac_adc_peripheral/readme.md
-      - examples/_boards/${board}/demo_apps/dac_adc_peripheral/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/dac_adc_peripheral/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

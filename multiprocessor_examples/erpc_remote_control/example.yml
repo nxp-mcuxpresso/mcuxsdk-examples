@@ -20,8 +20,8 @@ erpc_remote_control:
         http:/embeddedrpc.github.io'
       example_readme:
       - examples/multiprocessor_examples/erpc_remote_control/readme.md
-      - examples/_boards/${board}/multiprocessor_examples/erpc_remote_control/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multiprocessor_examples/erpc_remote_control/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2b: []

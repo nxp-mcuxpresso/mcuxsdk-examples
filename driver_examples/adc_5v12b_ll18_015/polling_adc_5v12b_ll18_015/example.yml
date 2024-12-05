@@ -16,7 +16,7 @@ adc_5v12b_ll18_015_polling:
         print it to debug console.
       example_readme:
       - examples/driver_examples/adc_5v12b_ll18_015/polling_adc_5v12b_ll18_015/readme.md
-      - examples/_boards/${board}/driver_examples/adc/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke02z40m: []

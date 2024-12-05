@@ -16,8 +16,8 @@ lpspi_interrupt_b2b_master:
         . (LPSPI Slave using interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/lpspi/interrupt_b2b/master/readme.md
-      - examples/_boards/${board}/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

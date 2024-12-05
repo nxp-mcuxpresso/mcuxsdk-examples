@@ -18,8 +18,8 @@ lpadc_sample_rate_count:
         = maximum frequency / total conversion time.
       example_readme:
       - examples/demo_apps/lpadc/lpadc_high_sample_rate/sample_rate_count/readme.md
-      - examples/_boards/${board}/demo_apps/lpadc_high_sample_rate/sample_rate_count/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/lpadc_high_sample_rate/sample_rate_count/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

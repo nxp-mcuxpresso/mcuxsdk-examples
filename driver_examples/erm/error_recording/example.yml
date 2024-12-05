@@ -11,8 +11,8 @@ error_recording:
         SDK ERM driver. It shows how to show error events using the ERM driver.
       example_readme:
       - examples/driver_examples/erm/error_recording/readme.md
-      - examples/_boards/${board}/driver_examples/erm/error_recording/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/erm/error_recording/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa153: []
     frdmmcxa156: []

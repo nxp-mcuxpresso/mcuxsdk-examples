@@ -12,8 +12,8 @@ sdio:
         show how to use SDio driver and this is a very simple example.
       example_readme:
       - examples/sdmmc_examples/sdio/readme.md
-      - examples/_boards/${board}/sdmmc_examples/sdio/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/sdmmc_examples/sdio/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

@@ -16,8 +16,8 @@ adc12_low_power:
         works during a VLPS mode anda simple debugging.
       example_readme:
       - examples/demo_apps/adc12/adc12_low_power/readme.md
-      - examples/_boards/${board}/demo_apps/adc12_low_power/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/adc12_low_power/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
     frdmke16z: []

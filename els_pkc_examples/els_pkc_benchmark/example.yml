@@ -11,5 +11,5 @@ els_pkc_benchmark:
         asymmetric key cryptographic algorithms.
       example_readme:
       - examples/els_pkc_examples/els_pkc_benchmark/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

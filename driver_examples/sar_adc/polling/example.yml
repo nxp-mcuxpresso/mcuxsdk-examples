@@ -19,8 +19,8 @@ adc_polling:
         of the channel conversion is valid, it will be printed to the debug console.
       example_readme:
       - examples/driver_examples/sar_adc/polling/readme.md
-      - examples/_boards/${board}/driver_examples/sar_adc/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sar_adc/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

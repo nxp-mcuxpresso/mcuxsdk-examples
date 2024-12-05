@@ -11,5 +11,5 @@ flash_component_nand_flexspi:
         and read anexternal nand flash device.
       example_readme:
       - examples/component_examples/flash_component/nand/flexspi/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

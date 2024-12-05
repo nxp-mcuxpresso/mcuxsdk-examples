@@ -29,8 +29,8 @@ power_mode_switch:
         to disable related pins or disconnect them. '
       example_readme:
       - examples/demo_apps/power_mode_switch/readme.md
-      - examples/_boards/${board}/demo_apps/power_mode_switch/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_switch/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp:
     - -armgcc@debug

@@ -12,8 +12,8 @@ evtg:
         intersection of PWM0 and PWM1.
       example_readme:
       - examples/driver_examples/evtg/readme.md
-      - examples/_boards/${board}/driver_examples/evtg/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/evtg/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

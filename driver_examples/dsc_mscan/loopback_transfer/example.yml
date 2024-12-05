@@ -15,6 +15,6 @@ dsc_mscan_loopback_transfer:
         print out the Message payload to terminal.
       example_readme:
       - examples/driver_examples/dsc_mscan/loopback_transfer/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8200: []

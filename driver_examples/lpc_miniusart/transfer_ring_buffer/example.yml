@@ -13,8 +13,8 @@ usart_transfer_ring_buffer:
         to the board.Note: The example echo every 8 characters.'
       example_readme:
       - examples/driver_examples/lpc_miniusart/transfer_ring_buffer/readme.md
-      - examples/_boards/${board}/driver_examples/usart/transfer_ring_buffer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/usart/transfer_ring_buffer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso802: []

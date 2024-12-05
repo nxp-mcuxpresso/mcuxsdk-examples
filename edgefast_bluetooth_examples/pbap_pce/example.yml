@@ -9,8 +9,8 @@ pbap_pce:
       brief: The Edgefast Bluetooth audio source with simplified application.
       example_readme:
       - examples/edgefast_bluetooth_examples/pbap_pce/readme.md
-      - examples/_boards/${board}/edgefast_bluetooth_examples/pbap_pce/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/edgefast_bluetooth_examples/pbap_pce/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - -armgcc@debug

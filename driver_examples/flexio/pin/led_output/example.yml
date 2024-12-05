@@ -13,8 +13,8 @@ flexio_pin_led_output:
         The example take turns to shine the LED.
       example_readme:
       - examples/driver_examples/flexio/pin/led_output/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/pin/led_output/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/pin/led_output/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []

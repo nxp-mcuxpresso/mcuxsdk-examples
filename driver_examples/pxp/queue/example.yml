@@ -13,8 +13,8 @@ pxp_queue:
         is changing.
       example_readme:
       - examples/driver_examples/pxp/queue/readme.md
-      - examples/_boards/${board}/driver_examples/pxp/queue/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pxp/queue/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - +armgcc@flexspi_nor_sdram_debug

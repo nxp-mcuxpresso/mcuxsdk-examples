@@ -11,8 +11,8 @@ pin_detect_hid_mouse_bm:
         in to the PC host.
       example_readme:
       - examples/usb_examples/usb_pin_detect_hid_mouse/readme.md
-      - examples/_boards/${board}/usb_examples/usb_pin_detect_hid_mouse/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_pin_detect_hid_mouse/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_pin_detect_hid_mouse/pin_detect.jpg
   boards:
     evkbimxrt1050: []

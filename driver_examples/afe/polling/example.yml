@@ -12,8 +12,8 @@ afe_polling:
         the EXT_SD_ADP0 and EXT_SD_ADM0 pins.
       example_readme:
       - examples/driver_examples/afe/polling/readme.md
-      - examples/_boards/${board}/driver_examples/afe/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/afe/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     twrkm34z50mv3: []
     twrkm34z75m: []

@@ -15,7 +15,7 @@ dsc_qtmr_timer:
         UART terminal.
       example_readme:
       - examples/driver_examples/dsc_qtmr/timer/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []
     mc56f81000evk: []

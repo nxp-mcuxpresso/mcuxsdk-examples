@@ -14,8 +14,8 @@ ecspi_polling_b2b_transfer_slave:
         slave in polling . (ECSPI Slave using interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/ecspi/polling_b2b_transfer/slave/readme.md
-      - examples/_boards/${board}/driver_examples/ecspi/polling_b2b_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ecspi/polling_b2b_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn: []

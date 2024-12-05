@@ -12,8 +12,8 @@ tmu_1_temperature_polling:
         monitors the site and outputs the immediate/average temperature.
       example_readme:
       - examples/driver_examples/tmu_1/temperature_polling/readme.md
-      - examples/_boards/${board}/driver_examples/tmu/temperature_polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tmu/temperature_polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn: []

@@ -10,8 +10,8 @@ cmp_1_polling:
       brief: The CMP polling Example shows the simplest way to use CMP driver
       example_readme:
       - examples/driver_examples/cmp_1/polling/readme.md
-      - examples/_boards/${board}/driver_examples/cmp/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/cmp/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s06: []
     lpcxpresso55s16: []

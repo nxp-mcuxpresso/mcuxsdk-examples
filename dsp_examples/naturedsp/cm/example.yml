@@ -11,8 +11,8 @@ dsp_naturedsp:
         DSP image.
       example_readme:
       - examples/dsp_examples/naturedsp/readme.md
-      - examples/_boards/${board}/dsp_examples/naturedsp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/dsp_examples/naturedsp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt685@cm33: []
     mimxrt685audevk@cm33: []

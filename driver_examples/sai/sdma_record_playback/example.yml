@@ -12,7 +12,7 @@ sai_sdma_record_playback:
         flash/SRAM/DDR using SDMA channel.
       example_readme:
       - examples/driver_examples/sai/sdma_record_playback/readme.md
-      - examples/_boards/${board}/driver_examples/sai/sdma_record_playback/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sai/sdma_record_playback/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mp: []

@@ -15,7 +15,7 @@ dsc_i2c_interrupt:
         is OK between master and slave, so there's NO error handling code.
       example_readme:
       - examples/driver_examples/dsc_i2c/interrupt/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f83000evk: []
     twrmc56f8400: []

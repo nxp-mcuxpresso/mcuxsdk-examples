@@ -14,8 +14,8 @@ dac_basic:
         from terminal,outputs the DAC output voltage through DAC output pin.
       example_readme:
       - examples/driver_examples/dac/basic/readme.md
-      - examples/_boards/${board}/driver_examples/dac/basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2a4s: []

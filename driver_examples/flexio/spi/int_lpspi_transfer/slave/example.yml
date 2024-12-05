@@ -12,8 +12,8 @@ flexio_spi_int_lpspi_transfer_slave:
         slave connect to a lpspi master.
       example_readme:
       - examples/driver_examples/flexio/spi/int_lpspi_transfer/slave/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33:
     - -armgcc@flash_debug

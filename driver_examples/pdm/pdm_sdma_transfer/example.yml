@@ -10,8 +10,8 @@ pdm_sdma_transfer:
       brief: The pdm_sdma_transfer example shows how to use pdm driver with SDMA
       example_readme:
       - examples/driver_examples/pdm/pdm_sdma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/pdm/pdm_sdma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pdm/pdm_sdma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm:
     - -armgcc@flash_debug

@@ -17,7 +17,7 @@ power_manager_test_bm_dualcore_primary:
         framework, including notification manager, wakeup source manager and so on.
       example_readme:
       - examples/demo_apps/power_manager_test/bm_dualcore/readme.md
-      - examples/_boards/${board}/demo_apps/power_manager_test/bm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_manager_test/bm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

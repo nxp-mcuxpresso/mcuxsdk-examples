@@ -18,7 +18,7 @@ dcdc_framework:
         (configured by the timer's timeout period) is also setup according to requirement.
       example_readme:
       - examples/demo_apps/dcdc_framework/readme.md
-      - examples/_boards/${board}/demo_apps/dcdc_framework/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/dcdc_framework/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l3a6@cm4: []

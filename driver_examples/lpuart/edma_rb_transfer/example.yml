@@ -11,8 +11,8 @@ lpuart_edma_rb_transfer:
         the KSDK lpuart driver.
       example_readme:
       - examples/driver_examples/lpuart/edma_rb_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

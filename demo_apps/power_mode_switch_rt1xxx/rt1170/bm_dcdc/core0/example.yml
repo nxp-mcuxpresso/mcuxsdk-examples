@@ -30,8 +30,8 @@ power_mode_switch_bm_dcdc_rt1xxx_core0:
         to disable related pins or disconnect them. '
       example_readme:
       - examples/demo_apps/power_mode_switch_rt1xxx/rt1170/bm_dcdc/readme.md
-      - examples/_boards/${board}/demo_apps/power_mode_switch/bm_dcdc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_switch/bm_dcdc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - -armgcc@sdram_debug

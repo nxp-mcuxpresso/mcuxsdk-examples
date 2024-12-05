@@ -15,8 +15,8 @@ lpadc_high_sample_rate_sample_signal:
         as EXCEL to recover the input signal based on those printed data.
       example_readme:
       - examples/demo_apps/lpadc/lpadc_high_sample_rate/sample_signal/readme.md
-      - examples/_boards/${board}/demo_apps/lpadc_high_sample_rate/sample_signal/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/lpadc_high_sample_rate/sample_signal/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

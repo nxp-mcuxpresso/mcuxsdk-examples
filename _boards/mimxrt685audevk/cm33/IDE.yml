@@ -14,13 +14,13 @@ board-file:
   - attribute: board-file
     package_path: project-root-path/iar
     project_path: mimxrt685audevk
-    source: examples/_boards/mimxrt685audevk/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
+    source: ${board_root}/mimxrt685audevk/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
     toolchains: iar
 initialization_file:
   files:
   - attribute: initialization_file
     package_path: project-root-path/mdk
     project_path: mimxrt685audevk
-    source: examples/_boards/mimxrt685audevk/mimxrt685audevk_flash.ini
+    source: ${board_root}/mimxrt685audevk/mimxrt685audevk_flash.ini
     targets: debug release flash_debug flash_release
     toolchains: mdk

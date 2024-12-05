@@ -11,7 +11,7 @@ touch_haptic:
         library.
       example_readme:
       - examples/demo_apps/touch_haptic/readme.md
-      - examples/_boards/${board}/demo_apps/touch_haptic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/touch_haptic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []

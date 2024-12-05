@@ -11,8 +11,8 @@ lcdifv2_multi_layer_alpha:
         alpha based on desired blended alpha, for the multi-layer blend case.
       example_readme:
       - examples/driver_examples/lcdifv2/multi_layer_alpha/readme.md
-      - examples/_boards/${board}/driver_examples/lcdifv2/lcdifv2_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lcdifv2/lcdifv2_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - +armgcc@flexspi_nor_sdram_debug

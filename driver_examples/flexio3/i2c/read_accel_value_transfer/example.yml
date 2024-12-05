@@ -15,5 +15,5 @@ flexio3_i2c_read_accel_value_transfer:
         virtual serial port on board.'
       example_readme:
       - examples/driver_examples/flexio3/i2c/read_accel_value_transfer/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

@@ -14,8 +14,8 @@ spi_transfer_dma_master:
         is correct. This example needs to work with spi_dma_transfer_slave example. '
       example_readme:
       - examples/driver_examples/lpc_minispi/transfer_dma/master/readme.md
-      - examples/_boards/${board}/driver_examples/spi/transfer_dma/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spi/transfer_dma/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso824max: []

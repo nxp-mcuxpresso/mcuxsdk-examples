@@ -44,8 +44,8 @@ freertos_message_buffers_primary_core:
         Buffers at a fixed location that is then known for both cores.'
       example_readme:
       - examples/multicore_examples/freertos_message_buffers/readme.md
-      - examples/_boards/${board}/multicore_examples/freertos_message_buffers/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/freertos_message_buffers/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1160@cm7:
     - +armgcc@flexspi_nor_debug

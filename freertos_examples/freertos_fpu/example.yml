@@ -23,5 +23,5 @@ freertos_fpu:
         context save/restore.
       example_readme:
       - examples/freertos_examples/freertos_fpu/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

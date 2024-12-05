@@ -25,8 +25,8 @@ freertos_mutex:
         write_task_2 is executed.
       example_readme:
       - examples/freertos_examples/freertos_mutex/readme.md
-      - examples/_boards/${board}/freertos_examples/freertos_mutex/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_mutex/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

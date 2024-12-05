@@ -12,8 +12,8 @@ flexio_i2s_interrupt_transfer:
         line and playbacks the recorded data at the same time using interrupt.
       example_readme:
       - examples/driver_examples/flexio/i2s/interrupt_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/i2s/interrupt_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/i2s/interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

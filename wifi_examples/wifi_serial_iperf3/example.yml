@@ -10,8 +10,8 @@ wifi_serial_iperf3:
       brief: The wifi_serial_iperf3 measures performance.
       example_readme:
       - examples/wifi_examples/wifi_serial_iperf3/readme.md
-      - examples/_boards/${board}/wifi_examples/common/wifi_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/wifi_examples/common/wifi_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1010:
     - -armgcc@debug

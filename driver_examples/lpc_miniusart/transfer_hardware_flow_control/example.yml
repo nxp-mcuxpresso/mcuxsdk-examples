@@ -16,8 +16,8 @@ usart_transfer_hardware_flow_control:
         data. So, please connect RTS to CTS pin directly.
       example_readme:
       - examples/driver_examples/lpc_miniusart/transfer_hardware_flow_control/readme.md
-      - examples/_boards/${board}/driver_examples/usart/transfer_hardware_flow_control/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/usart/transfer_hardware_flow_control/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso845max: []
     lpcxpresso860max: []

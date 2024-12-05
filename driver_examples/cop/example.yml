@@ -18,8 +18,8 @@ cop:
         to 0 so the startup code will skip the disable COP WDOG operation.
       example_readme:
       - examples/driver_examples/cop/readme.md
-      - examples/_boards/${board}/driver_examples/cop/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/cop/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc041: []

@@ -10,8 +10,8 @@ rom_dev_audio_dmic_bm:
         device. This device supports 2 channels audio in.
       example_readme:
       - examples/usb_examples/usb_rom_device_audio_dmic/bm/readme.md
-      - examples/_boards/${board}/usb_examples/usb_rom_device_audio_dmic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_rom_device_audio_dmic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []
     lpcxpresso54s018: []

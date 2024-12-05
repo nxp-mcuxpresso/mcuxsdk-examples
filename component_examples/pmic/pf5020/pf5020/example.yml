@@ -14,8 +14,8 @@ pf5020:
         voltage to set will not cause hardware damage.
       example_readme:
       - examples/component_examples/pmic/pf5020/pf5020/readme.md
-      - examples/_boards/${board}/driver_examples/pf5020/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pf5020/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7:

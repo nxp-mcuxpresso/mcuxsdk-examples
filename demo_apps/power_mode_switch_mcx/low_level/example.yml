@@ -12,8 +12,8 @@ power_mode_switch_ll:
         different power modes.
       example_readme:
       - examples/demo_apps/power_mode_switch_mcx/low_level/readme.md
-      - examples/_boards/${board}/demo_apps/power_mode_switch/low_level/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_switch/low_level/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

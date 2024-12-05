@@ -12,8 +12,8 @@ ota_mcuboot_server_enet:
         to upload new update package to reprogram application running on the board.
       example_readme:
       - examples/ota_examples/ota_mcuboot_server/enet/readme.md
-      - examples/_boards/${board}/ota_examples/ota_mcuboot_server/enet/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ota_examples/ota_mcuboot_server/enet/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

@@ -10,8 +10,8 @@ mipi_dsi_compliant_test:
       brief: This project is used for MIPI DSI compliant test.
       example_readme:
       - examples/display_examples/mipi_dsi_compliant_test/readme.md
-      - examples/_boards/${board}/display_examples/mipi_dsi_compliant_test/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/display_examples/mipi_dsi_compliant_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - +armgcc@flexspi_nor_sdram_debug

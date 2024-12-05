@@ -10,8 +10,8 @@ dev_cdc_vnic_bm:
         access the network by properly configuring this network adapter.
       example_readme:
       - examples/usb_examples/usb_device_cdc_vnic/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_cdc_vnic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_cdc_vnic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_00.jpg
       - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_01.jpg
       - examples/usb_examples/usb_device_cdc_vnic/rndis_driver_install_02.jpg

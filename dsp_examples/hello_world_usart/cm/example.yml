@@ -11,8 +11,8 @@ dsp_hello_world_usart:
         core with DSP image.
       example_readme:
       - examples/dsp_examples/hello_world_usart/readme.md
-      - examples/_boards/${board}/dsp_examples/hello_world_usart/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/dsp_examples/hello_world_usart/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt685@cm33: []
     mimxrt685audevk@cm33: []

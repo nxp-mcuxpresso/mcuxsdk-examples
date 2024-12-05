@@ -9,8 +9,8 @@ tflm_kws:
       brief: Keyword spotting example for TensorFlow Lite Micro
       example_readme:
       - examples/eiq_examples/tflm_kws/readme.md
-      - examples/_boards/${board}/eiq_examples/tflm_kws/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/eiq_examples/tflm_kws/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0:
     - -armgcc@debug

@@ -17,8 +17,8 @@ cmsis_enet_txrx_transfer:
         \ the received frame.\n\n"
       example_readme:
       - examples/cmsis_driver_examples/enet/txrx_transfer/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

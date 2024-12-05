@@ -11,8 +11,8 @@ psa_crypto_examples_thread:
         within Multi threaded environment and prints results to the terminal.
       example_readme:
       - examples/mbedtls3x_examples/psa_crypto_examples_thread/readme.md
-      - examples/_boards/${board}/mbedtls3x_examples/psa_crypto_examples_thread/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/mbedtls3x_examples/psa_crypto_examples_thread/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

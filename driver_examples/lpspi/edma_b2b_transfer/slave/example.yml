@@ -14,8 +14,8 @@ lpspi_edma_b2b_transfer_slave:
         slave in edma . (LPSPI Slave using edma to receive/send the data)
       example_readme:
       - examples/driver_examples/lpspi/edma_b2b_transfer/slave/readme.md
-      - examples/_boards/${board}/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

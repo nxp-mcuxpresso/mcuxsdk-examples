@@ -12,8 +12,8 @@ rit_example:
         period interval to toggel a specifiedLED on board.
       example_readme:
       - examples/driver_examples/lpc_rit/readme.md
-      - examples/_boards/${board}/driver_examples/rit/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/rit/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []
     lpcxpresso54s018: []

@@ -9,8 +9,8 @@ tflm_label_image_ext_mem:
       brief: Label image external memory example for TensorFlow Lite Micro
       example_readme:
       - examples/eiq_examples/tflm_label_image_ext_mem/readme.md
-      - examples/_boards/${board}/eiq_examples/tflm_label_image_ext_mem/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0:
     - -armgcc@debug

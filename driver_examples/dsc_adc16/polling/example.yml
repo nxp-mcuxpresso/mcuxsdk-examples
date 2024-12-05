@@ -19,6 +19,6 @@ dsc_adc16_polling:
         adjust the converter itself and improvethe ADC16's performance.
       example_readme:
       - examples/driver_examples/dsc_adc16/polling/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8400: []

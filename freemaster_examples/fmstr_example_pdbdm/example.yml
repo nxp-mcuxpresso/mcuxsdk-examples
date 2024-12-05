@@ -11,8 +11,8 @@ fmstr_example_pdbdm:
       category: FreeMASTER_examples
       example_readme:
       - examples/freemaster_examples/fmstr_example_pdbdm/readme.md
-      - examples/_boards/${board}/freemaster_examples/fmstr_pdbdm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freemaster_examples/fmstr_pdbdm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       name: fmstr_example_pdbdm${core_id_suffix_name}
     meta_path: examples/freemaster_examples/fmstr_example_pdbdm
     project-root-path: boards/${board}/freemaster_examples/fmstr_pdbdm/${multicore_foldername}

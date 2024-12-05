@@ -17,8 +17,8 @@ pdb_adc16_trigger:
         then the ISR would be executed.
       example_readme:
       - examples/driver_examples/pdb/adc16_trigger/readme.md
-      - examples/_boards/${board}/driver_examples/pdb/adc16_trigger/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pdb/adc16_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     twrkm34z75m: []

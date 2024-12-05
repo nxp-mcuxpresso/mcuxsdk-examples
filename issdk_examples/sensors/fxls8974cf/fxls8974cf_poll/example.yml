@@ -12,8 +12,8 @@ fxls8974cf_poll:
         The polls for dataready and when samples are available sensor reads samples.
       example_readme:
       - examples/issdk_examples/sensors/fxls8974cf/fxls8974cf_poll/readme.md
-      - examples/_boards/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_poll/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_poll/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []
   shields:

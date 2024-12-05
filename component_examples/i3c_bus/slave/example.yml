@@ -11,8 +11,8 @@ i3c_bus_slave:
         as i3c bus slave.
       example_readme:
       - examples/component_examples/i3c_bus/slave/readme.md
-      - examples/_boards/${board}/component_examples/i3c_bus/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/i3c_bus/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

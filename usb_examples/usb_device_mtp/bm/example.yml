@@ -11,8 +11,8 @@ dev_mtp_bm:
         and write the SD card or MMC by MTP operations.
       example_readme:
       - examples/usb_examples/usb_device_mtp/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_mtp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_mtp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_mtp/portable_device.jpg
       - examples/usb_examples/usb_device_mtp/portable_device_storage.jpg
   boards:

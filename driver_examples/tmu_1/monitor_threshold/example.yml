@@ -12,8 +12,8 @@ tmu_1_monitor_threshold:
         monitors the site and signals an alarm if a programmed threshold is ever exceeded.
       example_readme:
       - examples/driver_examples/tmu_1/monitor_threshold/readme.md
-      - examples/_boards/${board}/driver_examples/tmu/monitor_threshold/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tmu/monitor_threshold/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn: []

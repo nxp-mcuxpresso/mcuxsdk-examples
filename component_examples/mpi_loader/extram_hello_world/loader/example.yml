@@ -23,8 +23,8 @@ mpi_loader_extram_hello_world_loader:
         and blhost tool can be downloaded from nxp.com.
       example_readme:
       - examples/component_examples/mpi_loader/extram_hello_world/loader/readme.md
-      - examples/_boards/${board}/component_examples/mpi_loader/extram_loader/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/mpi_loader/extram_loader/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33:
     - -armgcc@flash_debug

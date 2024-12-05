@@ -10,5 +10,5 @@ freertos_lpsci:
       brief: FreeRTOS LPSCI driver example.
       example_readme:
       - examples/freertos_driver_examples/freertos_lpsci/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

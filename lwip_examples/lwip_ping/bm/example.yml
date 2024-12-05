@@ -14,8 +14,8 @@ lwip_ping_bm:
         stack sends the ICMP echo reply back to thePC.
       example_readme:
       - examples/lwip_examples/lwip_ping/bm/readme.md
-      - examples/_boards/${board}/lwip_examples/lwip_ping/bm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/lwip_examples/lwip_ping/bm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

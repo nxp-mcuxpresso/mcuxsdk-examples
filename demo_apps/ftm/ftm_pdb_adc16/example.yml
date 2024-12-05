@@ -15,7 +15,7 @@ ftm_pdb_adc16:
         \ uses channel 1 and channel 5, and ADC1 uses channel 1 and channel 7."
       example_readme:
       - examples/demo_apps/ftm/ftm_pdb_adc16/readme.md
-      - examples/_boards/${board}/demo_apps/ftm_pdb_adc16/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/ftm_pdb_adc16/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

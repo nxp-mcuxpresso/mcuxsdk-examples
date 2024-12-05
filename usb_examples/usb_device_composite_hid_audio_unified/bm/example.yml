@@ -12,8 +12,8 @@ dev_composite_hid_audio_unified_bm:
         Accessories with an HID mouse device.
       example_readme:
       - examples/usb_examples/usb_device_composite_hid_audio_unified/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_composite_hid_audio_unified/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_composite_hid_audio_unified/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_audio_recorder_signal_enhancement.jpg
       - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_device_manager.jpg
       - examples/usb_examples/usb_device_composite_hid_audio_unified/usb_device_composite_hid_audio_right_click_icon.jpg

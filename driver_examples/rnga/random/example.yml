@@ -12,8 +12,8 @@ rnga_random:
         the KSDK software to generate random numbersand prints them to the terminal.
       example_readme:
       - examples/driver_examples/rnga/random/readme.md
-      - examples/_boards/${board}/driver_examples/rnga/random/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/rnga/random/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     twrkm34z50mv3: []

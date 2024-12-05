@@ -13,8 +13,8 @@ anactrl_measure_frequency:
         according to the reference clock frequency.
       example_readme:
       - examples/driver_examples/anactrl/measure_frequency/readme.md
-      - examples/_boards/${board}/driver_examples/anactrl/measure_frequency/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/anactrl/measure_frequency/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s06: []
     lpcxpresso55s16: []

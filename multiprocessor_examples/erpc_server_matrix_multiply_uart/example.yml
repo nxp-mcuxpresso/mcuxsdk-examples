@@ -28,8 +28,8 @@ erpc_server_matrix_multiply_uart:
         --client --port COM3"'
       example_readme:
       - examples/multiprocessor_examples/erpc_server_matrix_multiply_uart/readme.md
-      - examples/_boards/${board}/multiprocessor_examples/erpc_server_matrix_multiply_uart/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multiprocessor_examples/erpc_server_matrix_multiply_uart/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7: []
     evkmimxrt1180@cm33: []

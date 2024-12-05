@@ -16,7 +16,7 @@ netc_share:
         state even as the link state changes. Those link state changes are also printed.
       example_readme:
       - examples/demo_apps/netc_share/readme.md
-      - examples/_boards/${board}/demo_apps/netc_share/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/netc_share/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []

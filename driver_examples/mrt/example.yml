@@ -13,8 +13,8 @@ mrt_example:
         the UART terminal and an LED is toggled on the board.
       example_readme:
       - examples/driver_examples/mrt/readme.md
-      - examples/_boards/${board}/driver_examples/mrt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mrt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

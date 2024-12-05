@@ -10,8 +10,8 @@ low_power_display_imx8ulp:
       brief: 'low power display demo. '
       example_readme:
       - examples/demo_apps/low_power_display_imx8ulp/readme.md
-      - examples/_boards/${board}/demo_apps/low_power_display/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/low_power_display/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8ulp@cm33:
     - -armgcc@flash_debug

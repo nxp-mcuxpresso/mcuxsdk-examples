@@ -21,8 +21,8 @@ freertos_queue:
         andwrite_task_2 print 5 messages into log.
       example_readme:
       - examples/freertos_examples/freertos_queue/readme.md
-      - examples/_boards/${board}/freertos_examples/freertos_queue/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_queue/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

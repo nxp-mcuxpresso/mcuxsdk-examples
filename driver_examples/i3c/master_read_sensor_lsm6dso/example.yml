@@ -11,8 +11,8 @@ i3c_master_read_sensor_lsm6dso:
         as master to communicate with sensor LSM6DSO.
       example_readme:
       - examples/driver_examples/i3c/master_read_sensor_lsm6dso/readme.md
-      - examples/_boards/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/i3c/master_read_sensor_lsm6dso/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

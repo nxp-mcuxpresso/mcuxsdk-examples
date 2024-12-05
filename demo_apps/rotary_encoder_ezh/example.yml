@@ -15,8 +15,8 @@ rotary_encoder_ezh:
         rotation, LED lights in different positions can be lit.
       example_readme:
       - examples/demo_apps/rotary_encoder_ezh/readme.md
-      - examples/_boards/${board}/demo_apps/rotary_encoder_ezh/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/rotary_encoder_ezh/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s28:
     - -armgcc@debug

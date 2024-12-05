@@ -18,8 +18,8 @@ cmsis_uart_interrupt_transfer:
         example echo every 8 characters, so input 8 characters every time.'
       example_readme:
       - examples/cmsis_driver_examples/uart/interrupt_transfer/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/uart/interrupt_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/uart/interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2b: []

@@ -14,8 +14,8 @@ lwip_ipv4_ipv6_echo_enet_qos_freertos:
         to test whether a TCP or UDP is available.
       example_readme:
       - examples/lwip_examples/lwip_ipv4_ipv6_echo_enet_qos/freertos/readme.md
-      - examples/_boards/${board}/lwip_examples/lwip_ipv4_ipv6_echo_enet_qos/freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/lwip_examples/lwip_ipv4_ipv6_echo_enet_qos/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - -armgcc@debug

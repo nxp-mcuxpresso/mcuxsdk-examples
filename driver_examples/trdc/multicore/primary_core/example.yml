@@ -29,8 +29,8 @@ trdc_primary_core:
         is secure access only.
       example_readme:
       - examples/driver_examples/trdc/multicore/readme.md
-      - examples/_boards/${board}/driver_examples/trdc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/trdc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@debug

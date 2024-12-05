@@ -12,8 +12,8 @@ mmccard_fatfs_freertos:
         with fatfs and freertos.
       example_readme:
       - examples/sdmmc_examples/mmccard_fatfs_freertos/readme.md
-      - examples/_boards/${board}/sdmmc_examples/mmccard_fatfs_freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/sdmmc_examples/mmccard_fatfs_freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     mimxrt700evk@cm33_core0: []

@@ -11,8 +11,8 @@ cdog:
         software to show funcionality of Code Watchdog Timer.
       example_readme:
       - examples/driver_examples/cdog/readme.md
-      - examples/_boards/${board}/driver_examples/cdog/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/cdog/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7: []
     evkmimxrt1160@cm7: []

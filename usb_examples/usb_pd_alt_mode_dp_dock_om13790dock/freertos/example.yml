@@ -12,7 +12,7 @@ usb_pd_alt_mode_dp_dock_freertos_om13790dock:
         "Type-C to DisplayPort" or "Type-C to HDMI"), and drive the adapter to work.
       example_readme:
       - examples/usb_examples/usb_pd_alt_mode_dp_dock_om13790dock/readme.md
-      - examples/_boards/${board}/usb_examples/usb_pd_alt_mode_dp_dock_om13790dock/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_pd_alt_mode_dp_dock_om13790dock/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s69@cm33_core0: []

@@ -11,8 +11,8 @@ mbedtls_selftest:
         and prints results to the terminal.
       example_readme:
       - examples/mbedtls_examples/mbedtls_selftest/readme.md
-      - examples/_boards/${board}/mbedtls_examples/mbedtls_selftest/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/mbedtls_examples/mbedtls_selftest/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33:
     - -armgcc@debug

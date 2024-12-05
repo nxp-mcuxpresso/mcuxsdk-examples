@@ -11,8 +11,8 @@ flash_component_octal_flexspi:
         and read an external serial nor flash device.
       example_readme:
       - examples/component_examples/flash_component/octal/flexspi/readme.md
-      - examples/_boards/${board}/component_examples/flash_component/flexspi_octal/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/flash_component/flexspi_octal/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@flexspi_nor_debug

@@ -11,8 +11,8 @@ mbedtls_testsuite:
         and prints results to the terminal.
       example_readme:
       - examples/mbedtls_examples/mbedtls_testsuite/readme.md
-      - examples/_boards/${board}/mbedtls_examples/mbedtls_testsuite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/mbedtls_examples/mbedtls_testsuite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612:
     - -iar@debug

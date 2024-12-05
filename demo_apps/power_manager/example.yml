@@ -31,8 +31,8 @@ power_manager:
         1 to the GPIO CLR register to drive the outputs LOW. 4. All peripherals disabled.'
       example_readme:
       - examples/demo_apps/power_manager/readme.md
-      - examples/_boards/${board}/demo_apps/power_manager/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_manager/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

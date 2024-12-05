@@ -9,8 +9,8 @@ wifi_cli_over_ble_wu:
       brief: wifi_cli_over_ble_wu
       example_readme:
       - examples/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/readme.md
-      - examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - -armgcc@debug

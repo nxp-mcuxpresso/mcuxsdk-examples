@@ -16,8 +16,8 @@ mcx_opamp_dac_adc:
         reference voltage is 0 to VDDA-0.8V.
       example_readme:
       - examples/driver_examples/opamp/opamp_dac_adc/readme.md
-      - examples/_boards/${board}/driver_examples/opamp/opamp_dac_adc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/opamp/opamp_dac_adc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

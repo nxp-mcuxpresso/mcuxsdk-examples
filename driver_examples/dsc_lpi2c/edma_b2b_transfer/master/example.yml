@@ -13,7 +13,7 @@ dsc_lpi2c_edma_b2b_transfer_master:
         from slave. This example checks if the data received from slave is correct.
       example_readme:
       - examples/driver_examples/dsc_lpi2c/edma_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []
     mc56f81000evk: []

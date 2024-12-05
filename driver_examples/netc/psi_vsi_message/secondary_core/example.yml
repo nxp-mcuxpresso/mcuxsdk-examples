@@ -14,8 +14,8 @@ netc_psi_vsi_message_secondary_core:
         the secondary core is running and uses NETC VSI to send/receive frames.
       example_readme:
       - examples/driver_examples/netc/psi_vsi_message/readme.md
-      - examples/_boards/${board}/driver_examples/netc/psi_vsi_message/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/netc/psi_vsi_message/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm7:
     - -armgcc@flexspi_nor_debug

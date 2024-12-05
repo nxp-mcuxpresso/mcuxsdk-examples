@@ -9,8 +9,8 @@ host_hid_mouse_keyboard_freertos:
       brief: This example supports the mouse device and the keyboard device.
       example_readme:
       - examples/usb_examples/usb_host_hid_mouse_keyboard/readme.md
-      - examples/_boards/${board}/usb_examples/usb_host_hid_mouse_keyboard/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_host_hid_mouse_keyboard/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_host_hid_mouse_keyboard/host_hid_mouse_keyboard_output.jpg
   boards:
     evkbimxrt1050: []

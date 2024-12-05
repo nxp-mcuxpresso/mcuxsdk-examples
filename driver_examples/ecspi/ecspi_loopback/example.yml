@@ -15,8 +15,8 @@ ecspi_loopback:
         are not affected, and the input pins are ignored.
       example_readme:
       - examples/driver_examples/ecspi/ecspi_loopback/readme.md
-      - examples/_boards/${board}/driver_examples/ecspi/ecspi_loopback/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ecspi/ecspi_loopback/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn: []

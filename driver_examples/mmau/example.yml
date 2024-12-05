@@ -13,8 +13,8 @@ mmau:
         function for various angles.
       example_readme:
       - examples/driver_examples/mmau/readme.md
-      - examples/_boards/${board}/driver_examples/mmau/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mmau/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     twrkm34z75m: []
     twrkm35z75m: []

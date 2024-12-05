@@ -10,8 +10,8 @@ freertos_gpio:
       brief: FreeRTOS GPIO driver example.
       example_readme:
       - examples/freertos_driver_examples/freertos_gpio/readme.md
-      - examples/_boards/${board}/freertos_driver_examples/freertos_gpio/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_driver_examples/freertos_gpio/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []

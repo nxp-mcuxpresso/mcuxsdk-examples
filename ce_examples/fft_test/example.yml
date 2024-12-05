@@ -6,28 +6,28 @@ ce_fft_test:
     project-root-path: boards/${board}/ce_examples/fft_test/${multicore_foldername}
     complete_cmake_data:
       files:
-        examples/_boards/${board}/ce_examples/fft_test/fft32_cf16_input.txt:
+        ${board_root}/${board}/ce_examples/fft_test/fft32_cf16_input.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/fft_test/fft32_cf16_ref_output.txt:
+        ${board_root}/${board}/ce_examples/fft_test/fft32_cf16_ref_output.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/fft_test/fft512_cf32_input.txt:
+        ${board_root}/${board}/ce_examples/fft_test/fft512_cf32_input.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/fft_test/fft512_cf32_ref_output.txt:
+        ${board_root}/${board}/ce_examples/fft_test/fft512_cf32_ref_output.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/fft_test/ifft1024_cf16_input.txt:
+        ${board_root}/${board}/ce_examples/fft_test/ifft1024_cf16_input.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/fft_test/ifft1024_cf16_ref_output.txt:
+        ${board_root}/${board}/ce_examples/fft_test/ifft1024_cf16_ref_output.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/fft_test/ifft256_cf32_input.txt:
+        ${board_root}/${board}/ce_examples/fft_test/ifft256_cf32_input.txt:
           project_relative_path: ./
           type: src
-        examples/_boards/${board}/ce_examples/fft_test/ifft256_cf32_ref_output.txt:
+        ${board_root}/${board}/ce_examples/fft_test/ifft256_cf32_ref_output.txt:
           project_relative_path: ./
           type: src
     document:
@@ -36,8 +36,8 @@ ce_fft_test:
       brief: Sample application that tests 16-bit and 32-bit FFT and IFFT functionalities.
       example_readme:
       - examples/ce_examples/fft_test/readme.md
-      - examples/_boards/${board}/ce_examples/fft_test/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ce_examples/fft_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     kw47evk@cm33_core0:
     - +armgcc@debug

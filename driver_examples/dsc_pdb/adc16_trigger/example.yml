@@ -12,6 +12,6 @@ dsc_pdb_adc16_trigger:
         counter is working with interrupt.
       example_readme:
       - examples/driver_examples/dsc_pdb/adc16_trigger/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8400: []

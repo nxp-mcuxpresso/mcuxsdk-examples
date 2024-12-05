@@ -11,8 +11,8 @@ igpio_fast_gpio:
         with normal GPIO operation.
       example_readme:
       - examples/driver_examples/igpio/fast_gpio/readme.md
-      - examples/_boards/${board}/driver_examples/gpio/fast_gpio/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gpio/fast_gpio/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7: []
     evkmimxrt1160@cm7: []

@@ -14,7 +14,7 @@ lcdif_color_key:
         the color key mode is on.
       example_readme:
       - examples/driver_examples/lcdif/color_key/readme.md
-      - examples/_boards/${board}/driver_examples/lcdif/lcdif_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lcdif/lcdif_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

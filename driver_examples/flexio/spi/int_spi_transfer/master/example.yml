@@ -12,8 +12,8 @@ flexio_spi_int_spi_transfer_master:
         connect to a spi slave .
       example_readme:
       - examples/driver_examples/flexio/spi/int_spi_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/spi/int_spi_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/spi/int_spi_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     frdmk32l2b: []

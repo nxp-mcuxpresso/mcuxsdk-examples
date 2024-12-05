@@ -11,8 +11,8 @@ pin_detect_hid_msd_freertos:
         when the U-disk is attached or is plugged into the PC host.
       example_readme:
       - examples/usb_examples/usb_pin_detect_hid_msd/readme.md
-      - examples/_boards/${board}/usb_examples/usb_pin_detect_hid_msd/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_pin_detect_hid_msd/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_pin_detect_hid_msd/pin_detect.jpg
   boards:
     evkbimxrt1050: []

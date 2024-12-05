@@ -10,8 +10,8 @@ host_cdc_bm:
         SDK. It enumerates a COM port and echoes back the data from the UART.
       example_readme:
       - examples/usb_examples/usb_host_cdc/readme.md
-      - examples/_boards/${board}/usb_examples/usb_host_cdc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_host_cdc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_host_cdc/host_cdc.jpg
   boards:
     evkbimxrt1050: []

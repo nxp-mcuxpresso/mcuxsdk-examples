@@ -11,6 +11,6 @@ bootloader:
         and normal flash application at various circumstance.
       example_readme:
       - examples/demo_apps/dsc_bootloader/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f83000evk: []

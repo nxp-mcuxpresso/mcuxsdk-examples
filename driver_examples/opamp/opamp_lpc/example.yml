@@ -12,7 +12,7 @@ lpc_opamp:
         DAC output. When DAC output changes, the OPAMP changes accordingly.
       example_readme:
       - examples/driver_examples/opamp/opamp_lpc/readme.md
-      - examples/_boards/${board}/driver_examples/opamp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/opamp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []

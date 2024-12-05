@@ -18,8 +18,8 @@ mu_polling_primary_core:
         sent from Core 1 in polling mode.
       example_readme:
       - examples/driver_examples/mu/polling/readme.md
-      - examples/_boards/${board}/driver_examples/mu/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mu/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1160@cm7:
     - +armgcc@flexspi_nor_debug

@@ -22,5 +22,5 @@ freertos_percepio_snapshot:
         When it's done you have to reset the board once more.
       example_readme:
       - examples/freertos_examples/visualization/freertos_percepio_snapshot/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

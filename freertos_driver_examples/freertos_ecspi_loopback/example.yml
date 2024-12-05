@@ -15,5 +15,5 @@ freertos_ecspi_loopback:
         be made. The output pins are not affected, and the input pins are ignored.
       example_readme:
       - examples/freertos_driver_examples/freertos_ecspi_loopback/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: null

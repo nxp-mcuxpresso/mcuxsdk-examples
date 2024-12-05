@@ -15,8 +15,8 @@ cns_adc_software_trigger:
         is completed.
       example_readme:
       - examples/driver_examples/cns_adc/software_trigger/readme.md
-      - examples/_boards/${board}/driver_examples/adc/software_trigger/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc/software_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

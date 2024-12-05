@@ -13,8 +13,8 @@ ftm_output_compare:
         oscilloscope to see the signal toggling.
       example_readme:
       - examples/driver_examples/ftm/output_compare/readme.md
-      - examples/_boards/${board}/driver_examples/ftm/output_compare/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ftm/output_compare/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmke02z40m: []

@@ -12,8 +12,8 @@ mmcau:
         sampledata using AES-CBC, DES3-CBC and Hash algorithms MD5, SHA1 and SHA256.
       example_readme:
       - examples/mmcau_examples/mmcau_api/readme.md
-      - examples/_boards/${board}/mmcau_examples/mmcau_api/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/mmcau_examples/mmcau_api/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkmcimx7ulp: []

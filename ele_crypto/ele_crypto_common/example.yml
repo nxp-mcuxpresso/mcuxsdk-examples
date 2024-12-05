@@ -12,8 +12,8 @@ ele_crypto_common:
         key with EdgeLock Enclave (ELE).
       example_readme:
       - examples/ele_crypto/ele_crypto_common/readme.md
-      - examples/_boards/${board}/ele_crypto/ele_crypto_common/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ele_crypto/ele_crypto_common/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []

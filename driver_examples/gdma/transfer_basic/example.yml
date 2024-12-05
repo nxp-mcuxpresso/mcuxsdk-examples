@@ -11,8 +11,8 @@ gdma_transfer_basic:
         memory data copy.
       example_readme:
       - examples/driver_examples/gdma/transfer_basic/readme.md
-      - examples/_boards/${board}/driver_examples/gdma/transfer_basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gdma/transfer_basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

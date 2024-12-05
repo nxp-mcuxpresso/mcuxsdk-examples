@@ -17,8 +17,8 @@ lpadc_dual_single_ended_conversion:
         and print it to debug console.
       example_readme:
       - examples/driver_examples/lpadc/dual_single_ended_conversion/readme.md
-      - examples/_boards/${board}/driver_examples/lpadc/dual_single_ended_conversion/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpadc/dual_single_ended_conversion/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []

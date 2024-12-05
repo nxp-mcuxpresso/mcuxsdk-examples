@@ -20,8 +20,8 @@ mailbox_interrupt_primary_core:
         mailbox register for the secondary core again.
       example_readme:
       - examples/driver_examples/mailbox/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/mailbox/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mailbox/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     lpcxpresso55s69@cm33_core0: []

@@ -12,8 +12,8 @@ freqme_interrupt:
         operate mode and pulse width measurement operate mode.
       example_readme:
       - examples/driver_examples/lpc_freqme/readme.md
-      - examples/_boards/${board}/driver_examples/freqme/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/freqme/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa153: []
     frdmmcxa156: []

@@ -11,8 +11,8 @@ pxp_copy_pic:
         one buffer to another buffer.
       example_readme:
       - examples/driver_examples/pxp/copy_pic/readme.md
-      - examples/_boards/${board}/driver_examples/pxp/copy_pic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pxp/copy_pic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050:

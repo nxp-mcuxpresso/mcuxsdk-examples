@@ -9,8 +9,8 @@ dev_lpm_hid_mouse_lite_bm:
       brief: This is one example support LPM(Link Power Management).
       example_readme:
       - examples/usb_examples/usb_lpm_device_hid_mouse_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_lpm_device_hid_mouse_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_lpm_device_hid_mouse_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

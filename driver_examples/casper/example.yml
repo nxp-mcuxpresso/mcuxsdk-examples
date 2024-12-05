@@ -11,8 +11,8 @@ casper:
         software to calculate RSA.
       example_readme:
       - examples/driver_examples/casper/readme.md
-      - examples/_boards/${board}/driver_examples/casper/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/casper/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

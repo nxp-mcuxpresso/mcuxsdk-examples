@@ -10,5 +10,5 @@ mbw:
       brief: Memory Bandwidth Benchmark.
       example_readme:
       - examples/demo_apps/mbw/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

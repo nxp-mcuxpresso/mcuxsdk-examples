@@ -15,8 +15,8 @@ i3c_dma_b2b_transfer_master:
         data received from slave is correct.
       example_readme:
       - examples/driver_examples/i3c/dma_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/i3c/dma_b2b_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/i3c/dma_b2b_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []
     lpcxpresso860max: []

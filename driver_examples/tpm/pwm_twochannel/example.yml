@@ -14,8 +14,8 @@ tpm_pwm_twochannel:
         if user enter different values.
       example_readme:
       - examples/driver_examples/tpm/pwm_twochannel/readme.md
-      - examples/_boards/${board}/driver_examples/tpm/pwm_twochannel/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tpm/pwm_twochannel/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmcimx7ulp: []

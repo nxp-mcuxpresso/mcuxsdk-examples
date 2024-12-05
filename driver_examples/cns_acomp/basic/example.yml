@@ -13,8 +13,8 @@ cns_acomp_basic:
         of this demo is to show how to use the ACOMP driver in SDK software.
       example_readme:
       - examples/driver_examples/cns_acomp/basic/readme.md
-      - examples/_boards/${board}/driver_examples/acomp/basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/acomp/basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

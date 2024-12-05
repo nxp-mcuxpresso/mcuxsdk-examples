@@ -11,8 +11,8 @@ flexio_mculcd_edma_transfer:
         edma driver to drive MCU LCD panel.
       example_readme:
       - examples/driver_examples/flexio/mculcd/edma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa156: []
     frdmmcxa276: []

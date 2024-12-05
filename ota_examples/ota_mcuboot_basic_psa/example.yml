@@ -11,8 +11,8 @@ ota_mcuboot_basic_psa:
         using PSA API
       example_readme:
       - examples/ota_examples/ota_mcuboot_basic_psa/readme.md
-      - examples/_boards/${board}/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ota_examples/ota_mcuboot_basic_psa/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060:
     - -armgcc@debug

@@ -10,8 +10,8 @@ capt_basic_continuous:
       brief: This example shows how to capture touch data using CAPT continuous mode.
       example_readme:
       - examples/driver_examples/capt/capt_basic_continuous/readme.md
-      - examples/_boards/${board}/driver_examples/capt/capt_basic_continuous/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/capt/capt_basic_continuous/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso804: []

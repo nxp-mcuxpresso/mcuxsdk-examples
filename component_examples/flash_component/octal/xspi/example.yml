@@ -10,8 +10,8 @@ flash_component_octal_xspi:
         and read an external serial nor flash device.
       example_readme:
       - examples/component_examples/flash_component/octal/xspi/readme.md
-      - examples/_boards/${board}/component_examples/flash_component/xspi_octal/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/flash_component/xspi_octal/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0:
     - -armgcc@flash_debug

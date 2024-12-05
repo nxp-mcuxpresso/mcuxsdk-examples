@@ -9,8 +9,8 @@ ecat_servo_motor:
       brief: EtherCAT servo motor example example
       example_readme:
       - examples/ecat_examples/servo_motor/readme.md
-      - examples/_boards/${board}/ecat_examples/servo_motor/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ecat_examples/servo_motor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm7:
     - -armgcc@hyperram_debug

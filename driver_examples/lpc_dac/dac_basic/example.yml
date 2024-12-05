@@ -14,8 +14,8 @@ lpc_dac_basic:
         from terminal,outputs the DAC output voltage through DAC output pin.
       example_readme:
       - examples/driver_examples/lpc_dac/dac_basic/readme.md
-      - examples/_boards/${board}/driver_examples/dac/lpc_dac_basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/lpc_dac_basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso804: []

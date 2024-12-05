@@ -17,8 +17,8 @@ lpadc_interrupt:
         information wouldbe printed when the execution return to the main function.
       example_readme:
       - examples/driver_examples/lpadc/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/lpadc/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpadc/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbmimxrt1170@cm4: []

@@ -15,7 +15,7 @@ dsc_flexcan_loopback_transfer:
         the Message payload to terminal.
       example_readme:
       - examples/driver_examples/dsc_flexcan/loopback_transfer/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f83000evk: []
     twrmc56f8400: []

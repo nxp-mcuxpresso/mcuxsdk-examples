@@ -33,8 +33,8 @@ rpmsg_lite_pingpong_secondary_core:
         exported from the linker to the application.'
       example_readme:
       - examples/multicore_examples/rpmsg_lite_pingpong/readme.md
-      - examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core1: []
     evkmimxrt1160@cm4:

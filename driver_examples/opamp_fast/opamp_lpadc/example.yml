@@ -19,8 +19,8 @@ opamp_fast_lpadc:
         and the theoretical OPAMP1 output value.
       example_readme:
       - examples/driver_examples/opamp_fast/opamp_lpadc/readme.md
-      - examples/_boards/${board}/driver_examples/opamp/opamp_lpadc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/opamp/opamp_lpadc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa166: []
     frdmmcxa276: []

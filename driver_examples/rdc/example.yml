@@ -11,8 +11,8 @@ rdc:
         policy using RDC and RDC_SEMA42
       example_readme:
       - examples/driver_examples/rdc/readme.md
-      - examples/_boards/${board}/driver_examples/rdc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/rdc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

@@ -18,8 +18,8 @@ mpi_loader_dsp_hello_world_loader:
         cores then execute in parallel.
       example_readme:
       - examples/component_examples/mpi_loader/dsp_hello_world/loader/readme.md
-      - examples/_boards/${board}/component_examples/mpi_loader/dsp_hello_world/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/mpi_loader/dsp_hello_world/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

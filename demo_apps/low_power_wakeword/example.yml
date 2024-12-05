@@ -16,8 +16,8 @@ low_power_wakeword:
         is supported when M core only is running. '
       example_readme:
       - examples/demo_apps/low_power_wakeword/readme.md
-      - examples/_boards/${board}/demo_apps/low_power_wakeword/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/low_power_wakeword/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm:
     - -armgcc@ddr_debug

@@ -30,5 +30,5 @@ rpmsg_lite_pingpong_rtos_master_core:
         address have to be defined in app.h.'
       example_readme:
       - examples/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

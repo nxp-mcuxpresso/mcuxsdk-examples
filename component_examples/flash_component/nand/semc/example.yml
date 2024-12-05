@@ -11,8 +11,8 @@ flash_component_nand_semc:
         and read anexternal nand flash device.
       example_readme:
       - examples/component_examples/flash_component/nand/semc/readme.md
-      - examples/_boards/${board}/component_examples/flash_component/semc_nand/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/flash_component/semc_nand/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - -armgcc@sdram_debug

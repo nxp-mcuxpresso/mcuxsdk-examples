@@ -20,8 +20,8 @@ acomp_basic:
         zero.
       example_readme:
       - examples/driver_examples/lpc_acomp/acomp_basic/readme.md
-      - examples/_boards/${board}/driver_examples/acomp/acomp_basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/acomp/acomp_basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso802: []

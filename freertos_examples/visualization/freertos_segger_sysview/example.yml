@@ -22,8 +22,8 @@ freertos_segger_sysview:
         the device. When it''s done you have to reset the board once more.'
       example_readme:
       - examples/freertos_examples/visualization/freertos_segger_sysview/readme.md
-      - examples/_boards/${board}/freertos_examples/visualization/freertos_segger_sysview/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/visualization/freertos_segger_sysview/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1010:
     - -armgcc@debug

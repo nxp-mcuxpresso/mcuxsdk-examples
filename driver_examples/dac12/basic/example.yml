@@ -14,8 +14,8 @@ dac12_basic:
         terminal,outputs the DAC12 output voltage through DAC12 output pin.
       example_readme:
       - examples/driver_examples/dac12/basic/readme.md
-      - examples/_boards/${board}/driver_examples/dac12/basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac12/basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbmimxrt1170@cm4: []

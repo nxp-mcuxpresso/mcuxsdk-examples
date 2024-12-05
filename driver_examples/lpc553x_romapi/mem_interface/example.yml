@@ -13,7 +13,7 @@ niobe4analog_mem_interface:
         flash memory are performed.
       example_readme:
       - examples/driver_examples/lpc553x_romapi/mem_interface/readme.md
-      - examples/_boards/${board}/driver_examples/mem_interface/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mem_interface/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []

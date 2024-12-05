@@ -14,8 +14,8 @@ spi_dma_b2b_transfer_slave:
         checks if the data received from master is correct.
       example_readme:
       - examples/driver_examples/spi/dma_b2b_transfer/slave/readme.md
-      - examples/_boards/${board}/driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc242: []

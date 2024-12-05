@@ -15,8 +15,8 @@ wkt_example:
         power mode or for general-purposetiming.
       example_readme:
       - examples/driver_examples/wkt/readme.md
-      - examples/_boards/${board}/driver_examples/wkt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/wkt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso802: []

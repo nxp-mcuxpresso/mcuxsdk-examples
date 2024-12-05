@@ -10,8 +10,8 @@ ncp_host:
       brief: ncp_host
       example_readme:
       - examples/ncp_examples/ncp_host/readme.md
-      - examples/_boards/${board}/ncp_examples/ncp_host/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ncp_examples/ncp_host/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060:
     - -armgcc@debug

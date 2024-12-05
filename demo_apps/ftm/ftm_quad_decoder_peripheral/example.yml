@@ -16,7 +16,7 @@ ftm_quad_decoder_peripheral:
         of pin, clock and peripheral.
       example_readme:
       - examples/demo_apps/ftm/ftm_quad_decoder_peripheral/readme.md
-      - examples/_boards/${board}/demo_apps/ftm_quad_decoder_peripheral/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/ftm_quad_decoder_peripheral/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

@@ -12,8 +12,8 @@ power_manager_test_asymmetric_multiCore_bm_core0:
         for asymmetric multicore platforms.
       example_readme:
       - examples/demo_apps/power_manager_test/asymmetric_multiCore_bm/readme.md
-      - examples/_boards/${board}/demo_apps/power_manager_test/multiCore_bm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_manager_test/multiCore_bm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - -armgcc@debug

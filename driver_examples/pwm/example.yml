@@ -15,8 +15,8 @@ pwm:
         Mode Power Supplies (SMPS) topologies.
       example_readme:
       - examples/driver_examples/pwm/readme.md
-      - examples/_boards/${board}/driver_examples/pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

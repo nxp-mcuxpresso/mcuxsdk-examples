@@ -15,8 +15,8 @@ tmu_3_monitor_report:
         the calibration table.'
       example_readme:
       - examples/driver_examples/tmu_3/tmu_monitor_report/readme.md
-      - examples/_boards/${board}/driver_examples/tmu/tmu_monitor_report/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tmu/tmu_monitor_report/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mcimx93autoevk: []
     mcimx93evk: []

@@ -10,7 +10,7 @@ meterlib3phkwh_test:
         application.
       example_readme:
       - examples/demo_apps/meterlib3phkwh_test/readme.md
-      - examples/_boards/${board}/demo_apps/meterlib3phkwh_test/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/meterlib3phkwh_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     twrkm35z75m: []

@@ -11,8 +11,8 @@ hashcrypt:
         KSDK software to encrypt and hash data with hardware acceleration.
       example_readme:
       - examples/driver_examples/hashcrypt/readme.md
-      - examples/_boards/${board}/driver_examples/hashcrypt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/hashcrypt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

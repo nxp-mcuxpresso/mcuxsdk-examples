@@ -38,8 +38,8 @@ rpmsg_lite_pingpong_tzm_primary_core_ns:
         are routed into the secure domain using the dedicated veneer function.'
       example_readme:
       - examples/multicore_examples/rpmsg_lite_pingpong_tzm/readme.md
-      - examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     lpcxpresso55s69@cm33_core0: []

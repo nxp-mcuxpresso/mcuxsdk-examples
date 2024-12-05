@@ -13,8 +13,8 @@ ctimer_capture:
         value to capture register.
       example_readme:
       - examples/driver_examples/ctimer/capture/readme.md
-      - examples/_boards/${board}/driver_examples/ctimer/capture/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ctimer/capture/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

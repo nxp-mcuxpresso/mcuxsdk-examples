@@ -13,8 +13,8 @@ rng_1_random:
         get a better entropy as suggested by user manual.
       example_readme:
       - examples/driver_examples/rng_1/random/readme.md
-      - examples/_boards/${board}/driver_examples/rng/random/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/rng/random/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s06: []
     lpcxpresso55s16: []

@@ -10,8 +10,8 @@ mc_pmsm_snsless:
       brief: This example demonstrates the control of the PMSM.
       example_readme:
       - examples/demo_apps/mc_pmsm/pmsm_snsless/readme.md
-      - examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_snsless/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_snsless/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s69@cm33_core0: []
     lpcxpresso860max:

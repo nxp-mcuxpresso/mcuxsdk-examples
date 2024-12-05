@@ -13,8 +13,8 @@ ftm_simple_pwm:
         to the FTM pins, the user will see a change in LED brightness.
       example_readme:
       - examples/driver_examples/ftm/simple_pwm/readme.md
-      - examples/_boards/${board}/driver_examples/ftm/simple_pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ftm/simple_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmke02z40m: []

@@ -12,7 +12,7 @@ dsc_dac_pin_sync_triangle_waveform:
         on-board switch or pit to as the synchronous source to update the waveform.
       example_readme:
       - examples/demo_apps/dsc_dac/dsc_dac_external_sync/pin_sync_triangle_waveform/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f81000evk: []
     mc56f83000evk: []

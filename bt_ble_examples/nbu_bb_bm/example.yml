@@ -9,8 +9,8 @@ nbu_bb_bm:
       brief: The nbu_bb_bm.
       example_readme:
       - examples/bt_ble_examples/nbu_bb_bm/readme.md
-      - examples/_boards/${board}/bt_ble_examples/nbu_bb_bm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/bt_ble_examples/nbu_bb_bm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612:
     - -armgcc@debug

@@ -22,8 +22,8 @@ sysmpu:
         "Press any key to continue".
       example_readme:
       - examples/driver_examples/sysmpu/readme.md
-      - examples/_boards/${board}/driver_examples/sysmpu/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sysmpu/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     twrkm34z50mv3: []
     twrkm34z75m: []

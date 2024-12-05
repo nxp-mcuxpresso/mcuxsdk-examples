@@ -1,6 +1,6 @@
 initialization_file:
   files:
-  - source: examples/_boards/${board}/evkmimxrt1160_ram_0x1400.ini
+  - source: ${board_root}/${board}/evkmimxrt1160_ram_0x1400.ini
     targets: ram_0x1400_debug ram_0x1400_release
     attribute: initialization_file
     toolchains: mdk

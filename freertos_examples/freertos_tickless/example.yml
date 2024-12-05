@@ -16,8 +16,8 @@ freertos_tickless:
         timer module.
       example_readme:
       - examples/freertos_examples/freertos_tickless/readme.md
-      - examples/_boards/${board}/freertos_examples/freertos_tickless/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_tickless/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

@@ -12,8 +12,8 @@ trgmux_clone_pwm:
         this PWM to eight TRGMUX_OUTx pins.
       example_readme:
       - examples/driver_examples/trgmux/clone_pwm/readme.md
-      - examples/_boards/${board}/driver_examples/trgmux/clone_pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/trgmux/clone_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
     frdmke16z: []

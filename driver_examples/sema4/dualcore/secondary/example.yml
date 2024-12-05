@@ -20,8 +20,8 @@ sema4_dualcore_secondary_core:
         gate is unlocked by core 1. This example demonstrates this feature.
       example_readme:
       - examples/driver_examples/sema4/dualcore/readme.md
-      - examples/_boards/${board}/driver_examples/sema4/dualcore/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sema4/dualcore/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1160@cm4:
     - +armgcc@debug

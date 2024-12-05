@@ -15,8 +15,8 @@ prince:
         region erase and write operations with dummy data.
       example_readme:
       - examples/driver_examples/prince/readme.md
-      - examples/_boards/${board}/driver_examples/prince/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/prince/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s06: []
     lpcxpresso55s16: []

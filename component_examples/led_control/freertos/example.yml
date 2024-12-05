@@ -16,8 +16,8 @@ led_control_freertos:
         turn off LED when the button is pressed with short press or one click event.
       example_readme:
       - examples/component_examples/led_control/freertos/readme.md
-      - examples/_boards/${board}/component_examples/led_control/freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/led_control/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2a4s: []

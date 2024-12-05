@@ -12,8 +12,8 @@ elemu:
         of SSS services to encrypt data by AES CBC with direct use of ELEMU driver.
       example_readme:
       - examples/driver_examples/elemu/readme.md
-      - examples/_boards/${board}/driver_examples/elemu/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/elemu/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
     k32w148evk:

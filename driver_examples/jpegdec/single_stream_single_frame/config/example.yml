@@ -12,7 +12,7 @@ jpegdec_single_stream_single_frame_config:
         decoder. After decoding complete the picture will be shown on panel.
       example_readme:
       - examples/driver_examples/jpegdec/single_stream_single_frame/config/readme.md
-      - examples/_boards/${board}/driver_examples/jpegdec/jpegdec_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/jpegdec/jpegdec_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

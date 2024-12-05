@@ -19,8 +19,8 @@ lpc_enet_txrx_ptp1588_transfer:
         send the ptp message). '
       example_readme:
       - examples/driver_examples/lpc_enet/txrx_ptp1588_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []
     lpcxpresso54s018: []

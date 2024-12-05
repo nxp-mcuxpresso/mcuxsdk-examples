@@ -13,7 +13,7 @@ jpegdec_single_stream_repeat:
         descriptor finishes the other will be loaded.
       example_readme:
       - examples/driver_examples/jpegdec/single_stream_repeat/readme.md
-      - examples/_boards/${board}/driver_examples/jpegdec/jpegdec_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/jpegdec/jpegdec_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

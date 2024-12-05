@@ -11,8 +11,8 @@ capt_key:
         key is touched, LED on the board is on accordingly.
       example_readme:
       - examples/driver_examples/capt/capt_key/readme.md
-      - examples/_boards/${board}/driver_examples/capt/capt_key/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/capt/capt_key/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso804: []

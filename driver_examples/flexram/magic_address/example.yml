@@ -12,8 +12,8 @@ flexram_magic_address:
         address and access error interrupt.
       example_readme:
       - examples/driver_examples/flexram/magic_address/readme.md
-      - examples/_boards/${board}/driver_examples/flexram/magic_address/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexram/magic_address/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7: []
     evkmimxrt1010: []

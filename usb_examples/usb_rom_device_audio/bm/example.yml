@@ -11,8 +11,8 @@ rom_dev_audio_bm:
         audio out (SPEAKERS/HEADPHONE).
       example_readme:
       - examples/usb_examples/usb_rom_device_audio/bm/readme.md
-      - examples/_boards/${board}/usb_examples/usb_rom_device_audio/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_rom_device_audio/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

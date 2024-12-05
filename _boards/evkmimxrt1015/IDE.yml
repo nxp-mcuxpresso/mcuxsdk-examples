@@ -24,15 +24,15 @@ mdk:
 
 initialization_file:
   files:
-    - source: examples/_boards/evkmimxrt1015/evkmimxrt1015_flexspi_nor.ini
+    - source: ${board_root}/evkmimxrt1015/evkmimxrt1015_flexspi_nor.ini
       targets: flexspi_nor_debug flexspi_nor_release
       attribute: initialization_file
       toolchains: mdk
-    - source: examples/_boards/evkmimxrt1015/evkmimxrt1015_ram.ini
+    - source: ${board_root}/evkmimxrt1015/evkmimxrt1015_ram.ini
       targets: debug release
       attribute: initialization_file
       toolchains: mdk
-    - source: examples/_boards/evkmimxrt1015/evkmimxrt1015_ram_0x1400.ini
+    - source: ${board_root}/evkmimxrt1015/evkmimxrt1015_ram_0x1400.ini
       targets: ram_0x1400_debug ram_0x1400_release
       attribute: initialization_file
       toolchains: mdk

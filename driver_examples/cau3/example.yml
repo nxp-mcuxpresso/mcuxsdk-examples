@@ -12,8 +12,8 @@ cau3:
         driver.
       example_readme:
       - examples/driver_examples/cau3/readme.md
-      - examples/_boards/${board}/driver_examples/cau3/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/cau3/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l3a6@cm0plus: []
     frdmk32l3a6@cm4: []

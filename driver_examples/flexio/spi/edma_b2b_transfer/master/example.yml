@@ -12,8 +12,8 @@ flexio_spi_edma_b2b_transfer_master:
         simulated spi slave .
       example_readme:
       - examples/driver_examples/flexio/spi/edma_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/spi/edma_b2b_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/spi/edma_b2b_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

@@ -11,8 +11,8 @@ pca9420:
         Or switch mode group; Or dump PCA9420 register content;
       example_readme:
       - examples/component_examples/pmic/pca9420/pca9420/readme.md
-      - examples/_boards/${board}/driver_examples/pca9420/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pca9420/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

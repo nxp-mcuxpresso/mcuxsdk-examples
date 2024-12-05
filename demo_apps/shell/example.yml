@@ -10,8 +10,8 @@ shell:
       brief: The Shell Demo application demonstrates to control Leds by commands.
       example_readme:
       - examples/demo_apps/shell/readme.md
-      - examples/_boards/${board}/demo_apps/shell/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/shell/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

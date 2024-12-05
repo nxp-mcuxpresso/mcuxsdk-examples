@@ -13,8 +13,8 @@ tfm_secureboot_s:
         part of the application.
       example_readme:
       - examples/tfm_examples/tfm_secureboot_s/readme.md
-      - examples/_boards/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612:
     - -armgcc@flash_debug

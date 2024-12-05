@@ -32,8 +32,8 @@ power_manager_lpc:
         \ to drive the outputs LOW. \u9225?All peripherals disabled."
       example_readme:
       - examples/demo_apps/power_manager_lpc/readme.md
-      - examples/_boards/${board}/demo_apps/power_manager_lpc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_manager_lpc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

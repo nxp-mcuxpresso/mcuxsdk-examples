@@ -14,8 +14,8 @@ lpspi_interrupt:
         the data)
       example_readme:
       - examples/driver_examples/lpspi/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/lpspi/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpspi/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkmimxrt1020: []

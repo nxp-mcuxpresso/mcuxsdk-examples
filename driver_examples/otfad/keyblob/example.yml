@@ -12,7 +12,7 @@ otfad_keyblob:
         memories in an encrypted form.
       example_readme:
       - examples/driver_examples/otfad/keyblob/readme.md
-      - examples/_boards/${board}/driver_examples/otfad/keyblob/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/otfad/keyblob/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1010: []

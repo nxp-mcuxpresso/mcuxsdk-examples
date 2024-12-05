@@ -12,7 +12,7 @@ niobe4analog_runbootloader:
         ISP mode with the specific peripheral.
       example_readme:
       - examples/driver_examples/lpc553x_romapi/runbootloader/readme.md
-      - examples/_boards/${board}/driver_examples/runbootloader/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/runbootloader/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []

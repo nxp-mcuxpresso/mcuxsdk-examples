@@ -14,8 +14,8 @@ flexio_spi_edma_lpspi_transfer_slave_dynamic:
         know.
       example_readme:
       - examples/driver_examples/flexio/spi/edma_lpspi_transfer/slave_dynamic/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/spi/edma_lpspi_transfer/slave_dynamic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/spi/edma_lpspi_transfer/slave_dynamic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

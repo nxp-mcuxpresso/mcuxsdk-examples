@@ -18,8 +18,8 @@ ftm_lpit_adc12:
         the trigger signal and start theconversion.
       example_readme:
       - examples/demo_apps/ftm/ftm_lpit_adc12/readme.md
-      - examples/_boards/${board}/demo_apps/ftm_lpit_adc12/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/ftm_lpit_adc12/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke17z: []
     frdmke17z512: []

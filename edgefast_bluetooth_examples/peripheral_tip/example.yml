@@ -9,8 +9,8 @@ peripheral_tip:
       brief: The Edgefast Bluetooth tip example with simplified application.
       example_readme:
       - examples/edgefast_bluetooth_examples/peripheral_tip/readme.md
-      - examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_tip/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/edgefast_bluetooth_examples/peripheral_tip/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612:
     - -armgcc@debug

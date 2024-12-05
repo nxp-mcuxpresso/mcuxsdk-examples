@@ -20,8 +20,8 @@ adc_12b1msps_sar_polling:
         itself and improvethe adc's performance.
       example_readme:
       - examples/driver_examples/adc_12b1msps_sar/polling_adc_12b1msps_sar/readme.md
-      - examples/_boards/${board}/driver_examples/adc/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

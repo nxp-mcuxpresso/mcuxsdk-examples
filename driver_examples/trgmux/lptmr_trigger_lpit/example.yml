@@ -12,7 +12,7 @@ trgmux_lptmr_trigger_lpit:
         this PWM to eight TRGMUX_OUTx pins.
       example_readme:
       - examples/driver_examples/trgmux/lptmr_trigger_lpit/readme.md
-      - examples/_boards/${board}/driver_examples/trgmux/lptmr_trigger_lpit/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/trgmux/lptmr_trigger_lpit/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []

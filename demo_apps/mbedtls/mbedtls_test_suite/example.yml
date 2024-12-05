@@ -13,5 +13,5 @@ mbedtls_test_suite:
         testing and then passes result to client.
       example_readme:
       - examples/demo_apps/mbedtls/mbedtls_test_suite/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

@@ -12,8 +12,8 @@ wwdt_qspi_xip:
         5 times of refreshing the watchdog, a timeout reset is generated.
       example_readme:
       - examples/driver_examples/wwdt/wwdt_qspi_xip/readme.md
-      - examples/_boards/${board}/driver_examples/wwdt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/wwdt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54s018: []
     lpcxpresso54s018m: []

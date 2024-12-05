@@ -13,8 +13,8 @@ lwip_httpsrv_freertos:
         a Webpage back to the PC.
       example_readme:
       - examples/lwip_examples/lwip_httpsrv/freertos/readme.md
-      - examples/_boards/${board}/lwip_examples/lwip_httpsrv/freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/lwip_examples/lwip_httpsrv/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

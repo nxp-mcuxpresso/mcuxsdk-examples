@@ -10,8 +10,8 @@ host_audio_speaker_freertos:
         prints the audio speaker information when the USB speaker device is attached.
       example_readme:
       - examples/usb_examples/usb_host_audio_speaker/readme.md
-      - examples/_boards/${board}/usb_examples/usb_host_audio_speaker/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_host_audio_speaker/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_host_audio_speaker/audio10.jpg
       - examples/usb_examples/usb_host_audio_speaker/audio20.jpg
       - examples/usb_examples/usb_host_audio_speaker/host_audio_speaker_output.jpg

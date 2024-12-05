@@ -15,7 +15,7 @@ tmu_monitor_report:
         programming the calibration table.'
       example_readme:
       - examples/driver_examples/tmu/tmu_monitor_report/readme.md
-      - examples/_boards/${board}/driver_examples/tmu/tmu_monitor_report/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tmu/tmu_monitor_report/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mq: []

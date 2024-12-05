@@ -15,7 +15,7 @@ tsi_v4_normal_mode:
         method.
       example_readme:
       - examples/driver_examples/tsi/tsi_v4/normal/readme.md
-      - examples/_boards/${board}/driver_examples/tsi_v4/normal/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tsi_v4/normal/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2a4s: []

@@ -12,8 +12,8 @@ flexio3_spi_int_lpspi_transfer_master:
         master connect to a lpspi slave .
       example_readme:
       - examples/driver_examples/flexio3/spi/int_lpspi_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/flexio3/spi/int_lpspi_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio3/spi/int_lpspi_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1040: []
     evkmimxrt1064: []

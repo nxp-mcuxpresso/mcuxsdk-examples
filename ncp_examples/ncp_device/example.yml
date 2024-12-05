@@ -10,8 +10,8 @@ ncp_device:
       brief: The ncp_device.
       example_readme:
       - examples/ncp_examples/ncp_device/readme.md
-      - examples/_boards/${board}/ncp_examples/ncp_device/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ncp_examples/ncp_device/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     rdrw612bga:
     - -armgcc@debug

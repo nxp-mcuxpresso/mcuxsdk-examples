@@ -15,7 +15,7 @@ iuart_hardware_flow_control:
         if receiver is ready to receive data. So, please connect RTS to CTS pin directly.
       example_readme:
       - examples/driver_examples/iuart/hardware_flow_control/readme.md
-      - examples/_boards/${board}/driver_examples/uart/hardware_flow_control/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/uart/hardware_flow_control/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []

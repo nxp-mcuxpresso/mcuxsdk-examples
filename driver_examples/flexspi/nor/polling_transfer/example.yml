@@ -15,8 +15,8 @@ flexspi_nor_polling_transfer:
         flash is correct.
       example_readme:
       - examples/driver_examples/flexspi/nor/polling_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexspi/nor/polling_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexspi/nor/polling_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@flexspi_nor_debug

@@ -18,8 +18,8 @@ enet_qos_txrx_multiring_transfer:
         rings.
       example_readme:
       - examples/driver_examples/enet_qos/txrx_multiring_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/enet_qos/txrx_multiring_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/enet_qos/txrx_multiring_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7:

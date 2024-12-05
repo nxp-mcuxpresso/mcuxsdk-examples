@@ -17,8 +17,8 @@ mcg_pee_blpe:
         show that the example finished successfully.'
       example_readme:
       - examples/driver_examples/mcg/pee_blpe/readme.md
-      - examples/_boards/${board}/driver_examples/mcg/pee_blpe/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mcg/pee_blpe/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     twrkm34z50mv3: []

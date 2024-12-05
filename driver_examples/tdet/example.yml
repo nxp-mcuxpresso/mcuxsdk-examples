@@ -11,8 +11,8 @@ tdet:
         SDK software to show funcionality of Digital Tamper (TDET) module.
       example_readme:
       - examples/driver_examples/tdet/readme.md
-      - examples/_boards/${board}/driver_examples/tdet/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tdet/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

@@ -20,8 +20,8 @@ dac12_fifo_interrupt:
         CPU.
       example_readme:
       - examples/driver_examples/dac12/fifo_interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/dac12/fifo_interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac12/fifo_interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbmimxrt1170@cm4: []

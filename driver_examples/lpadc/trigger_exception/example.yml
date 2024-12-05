@@ -11,8 +11,8 @@ lpadc_trigger_exception:
         exception feature.
       example_readme:
       - examples/driver_examples/lpadc/trigger_exception/readme.md
-      - examples/_boards/${board}/driver_examples/lpadc/trigger_exception/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpadc/trigger_exception/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa153: []
     frdmmcxa156: []

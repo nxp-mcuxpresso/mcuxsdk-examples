@@ -16,8 +16,8 @@ adc_etc_edma:
         see the ADC conversion result.
       example_readme:
       - examples/driver_examples/adc_etc/adc_etc_edma/readme.md
-      - examples/_boards/${board}/driver_examples/adc_etc/adc_etc_edma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc_etc/adc_etc_edma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

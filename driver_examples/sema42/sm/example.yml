@@ -12,8 +12,8 @@ sema42_sm:
         example runs on Cortex-M core.
       example_readme:
       - examples/driver_examples/sema42/sm/readme.md
-      - examples/_boards/${board}/driver_examples/sema42/sm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sema42/sm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

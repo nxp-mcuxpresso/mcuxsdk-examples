@@ -33,7 +33,7 @@ power_mode_with_hifi_secondary:
         to drive the outputs LOW. 4. All peripherals disabled.'
       example_readme:
       - examples/demo_apps/power_mode_with_hifi/readme.md
-      - examples/_boards/${board}/demo_apps/power_mode_with_hifi/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_with_hifi/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core1: []

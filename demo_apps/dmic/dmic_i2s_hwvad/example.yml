@@ -12,7 +12,7 @@ dmic_i2s_hwvad:
         the same time or replay the wakeup voice piece that has stored in sdcard.
       example_readme:
       - examples/demo_apps/dmic/dmic_i2s_hwvad/readme.md
-      - examples/_boards/${board}/demo_apps/dmic_i2s_hwvad/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/dmic_i2s_hwvad/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt685audevk@cm33: []

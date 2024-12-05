@@ -18,8 +18,8 @@ adc12_continuous_edma:
         will average ADC12 results stored in memory and print average on the terminal.  '
       example_readme:
       - examples/driver_examples/adc12/continuous_edma/readme.md
-      - examples/_boards/${board}/driver_examples/adc12/continuous_edma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc12/continuous_edma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
     frdmke17z: []

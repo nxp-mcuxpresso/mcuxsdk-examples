@@ -14,8 +14,8 @@ cns_dac_waveform_generator:
         waveform will be output from  DAC channel pin.
       example_readme:
       - examples/driver_examples/cns_dac/waveform_generator/readme.md
-      - examples/_boards/${board}/driver_examples/dac/waveform_generator/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/waveform_generator/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

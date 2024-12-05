@@ -14,7 +14,7 @@ dspi_polling_b2b_transfer_master:
         slave in polling . (DSPI Slave using interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/dspi/polling_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/dspi/polling_b2b_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dspi/polling_b2b_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

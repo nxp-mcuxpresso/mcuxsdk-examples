@@ -9,8 +9,8 @@ ecat_eoe:
       brief: EtherCAT eoe example example
       example_readme:
       - examples/ecat_examples/eoe/readme.md
-      - examples/_boards/${board}/ecat_examples/eoe/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ecat_examples/eoe/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@debug

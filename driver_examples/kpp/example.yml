@@ -12,8 +12,8 @@ kpp:
         column and rows as 4*4 or 8*8 matrix to show the example.
       example_readme:
       - examples/driver_examples/kpp/readme.md
-      - examples/_boards/${board}/driver_examples/kpp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/kpp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

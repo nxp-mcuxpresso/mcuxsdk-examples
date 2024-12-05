@@ -10,8 +10,8 @@ keyboard2mouse_bm:
         works as a host and the other controller works as a device.
       example_readme:
       - examples/usb_examples/usb_keyboard2mouse/readme.md
-      - examples/_boards/${board}/usb_examples/usb_keyboard2mouse/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_keyboard2mouse/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

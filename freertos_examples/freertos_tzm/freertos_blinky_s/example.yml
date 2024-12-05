@@ -15,5 +15,5 @@ freertos_blinky_s:
         trust-zone features of FreeRTOS.
       example_readme:
       - examples/freertos_examples/freertos_tzm/freertos_blinky_s/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

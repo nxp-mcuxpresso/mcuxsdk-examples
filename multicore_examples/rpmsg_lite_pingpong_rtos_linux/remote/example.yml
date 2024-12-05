@@ -30,8 +30,8 @@ rpmsg_lite_pingpong_rtos_remote_core:
         must match with the config of DeviceTree of Linux.'
       example_readme:
       - examples/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/readme.md
-      - examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp:
     - -armgcc@debug

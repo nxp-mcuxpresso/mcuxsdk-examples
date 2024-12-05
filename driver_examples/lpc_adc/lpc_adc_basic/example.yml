@@ -47,8 +47,8 @@ lpc_adc_basic:
         printf result information to terminal.'
       example_readme:
       - examples/driver_examples/lpc_adc/lpc_adc_basic/readme.md
-      - examples/_boards/${board}/driver_examples/adc/lpc_adc_basic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/adc/lpc_adc_basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso51u68: []

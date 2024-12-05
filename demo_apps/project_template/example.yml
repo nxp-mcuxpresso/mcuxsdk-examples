@@ -11,8 +11,8 @@ project_template:
         well. User can clone his/her project from this project in MCUXpresso CFG tool.
       example_readme:
       - examples/demo_apps/project_template/readme.md
-      - examples/_boards/${board}/demo_apps/project_template/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/project_template/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mc56f80000evk: []
     mc56f81000evk: []

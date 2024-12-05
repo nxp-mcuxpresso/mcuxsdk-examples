@@ -33,8 +33,8 @@ power_mode_switch_lpc:
         \ disabled."
       example_readme:
       - examples/demo_apps/power_mode_switch_lpc/readme.md
-      - examples/_boards/${board}/demo_apps/power_mode_switch_lpc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_switch_lpc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso802: []

@@ -13,8 +13,8 @@ dev_suspend_resume_hid_mouse_bm:
         by the host.
       example_readme:
       - examples/usb_examples/usb_suspend_resume_device_hid_mouse/readme.md
-      - examples/_boards/${board}/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_suspend_resume_device_hid_mouse/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

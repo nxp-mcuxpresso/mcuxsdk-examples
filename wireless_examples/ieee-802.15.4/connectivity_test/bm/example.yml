@@ -12,17 +12,17 @@
     modules:
         linker-file:
           files:
-          - source: examples/_boards/${board}/wireless_examples/linker/mcux/linkscript/end_text.ldt
+          - source: ${board_root}/${board}/wireless_examples/linker/mcux/linkscript/end_text.ldt
             toolchains: mcux
             type: src
             project_path: linkscripts
             package_path: project-root-path/linkscripts
-          - source: examples/_boards/${board}/wireless_examples/linker/mcux/linkscript/main_text.ldt
+          - source: ${board_root}/${board}/wireless_examples/linker/mcux/linkscript/main_text.ldt
             toolchains: mcux
             type: src
             project_path: linkscripts
             package_path: project-root-path/linkscripts
-          - source: examples/_boards/${board}/wireless_examples/linker/mcux/linkscript/symbols.ldt
+          - source: ${board_root}/${board}/wireless_examples/linker/mcux/linkscript/symbols.ldt
             toolchains: mcux
             type: src
             project_path: linkscripts

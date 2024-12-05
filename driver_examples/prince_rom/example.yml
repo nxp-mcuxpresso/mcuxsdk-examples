@@ -15,8 +15,8 @@ prince_rom:
         region erase and write operations with dummy data.
       example_readme:
       - examples/driver_examples/prince_rom/readme.md
-      - examples/_boards/${board}/driver_examples/prince_rom/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/prince_rom/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36:
     - -armgcc@debug

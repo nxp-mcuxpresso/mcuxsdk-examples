@@ -10,8 +10,8 @@ nand_flash_management:
       brief: nand flash management
       example_readme:
       - examples/demo_apps/nand_flash_management/semc/readme.md
-      - examples/_boards/${board}/demo_apps/nand_flash_management/semc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/nand_flash_management/semc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

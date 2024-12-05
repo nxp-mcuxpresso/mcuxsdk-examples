@@ -12,8 +12,8 @@ iuart_polling:
         send back all characters that PCsend to the board.
       example_readme:
       - examples/driver_examples/iuart/polling/readme.md
-      - examples/_boards/${board}/driver_examples/uart/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/uart/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn: []

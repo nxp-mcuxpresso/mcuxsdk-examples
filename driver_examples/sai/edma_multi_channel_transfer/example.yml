@@ -12,8 +12,8 @@ sai_edma_multi_channel_transfer:
         in flash/SRAM using EDMA channel.
       example_readme:
       - examples/driver_examples/sai/edma_multi_channel_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/sai/edma_multi_channel_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sai/edma_multi_channel_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060:
     - -armgcc@debug

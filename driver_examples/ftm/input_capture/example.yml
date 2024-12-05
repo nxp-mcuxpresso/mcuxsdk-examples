@@ -12,8 +12,8 @@ ftm_input_capture:
         the input signal is received,this example will print the capture value.
       example_readme:
       - examples/driver_examples/ftm/input_capture/readme.md
-      - examples/_boards/${board}/driver_examples/ftm/input_capture/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ftm/input_capture/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmke02z40m: []

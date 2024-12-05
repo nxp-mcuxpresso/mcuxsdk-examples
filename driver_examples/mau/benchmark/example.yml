@@ -11,8 +11,8 @@ mau_benchmark:
         changes accordingly.
       example_readme:
       - examples/driver_examples/mau/benchmark/readme.md
-      - examples/_boards/${board}/driver_examples/mau/benchmark/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mau/benchmark/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa166: []
     frdmmcxa276: []

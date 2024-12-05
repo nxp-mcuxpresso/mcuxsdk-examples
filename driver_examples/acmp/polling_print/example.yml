@@ -18,8 +18,8 @@ acmp_polling_print:
         level is level 0.'
       example_readme:
       - examples/driver_examples/acmp/polling_print/readme.md
-      - examples/_boards/${board}/driver_examples/acmp/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/acmp/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

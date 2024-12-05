@@ -10,8 +10,8 @@ wifi_test_mode:
       brief: wifi_test_mode
       example_readme:
       - examples/wifi_examples/wifi_test_mode/readme.md
-      - examples/_boards/${board}/wifi_examples/common/wifi_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/wifi_examples/common/wifi_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

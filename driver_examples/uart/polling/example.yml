@@ -12,8 +12,8 @@ uart_polling:
         send back all characters that PCsend to the board.
       example_readme:
       - examples/driver_examples/uart/polling/readme.md
-      - examples/_boards/${board}/driver_examples/uart/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/uart/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2b: []

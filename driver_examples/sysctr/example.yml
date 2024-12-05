@@ -10,8 +10,8 @@ sysctr:
       brief: The sysctr example shows the usage of System Counter driver in application.
       example_readme:
       - examples/driver_examples/sysctr/readme.md
-      - examples/_boards/${board}/driver_examples/sysctr/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sysctr/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []

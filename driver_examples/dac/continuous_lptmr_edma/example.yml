@@ -18,7 +18,7 @@ dac_continuous_lptmr_edma:
         output with a oscilloscope to see the Half-sine signal.
       example_readme:
       - examples/driver_examples/dac/continuous_lptmr_edma/readme.md
-      - examples/_boards/${board}/driver_examples/dac/continuous_lptmr_edma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/continuous_lptmr_edma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2a4s: []

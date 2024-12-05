@@ -15,8 +15,8 @@ dev_dfu_bm:
         sothe following content will introduce how to add CRC32 to the firmware.
       example_readme:
       - examples/usb_examples/usb_device_dfu/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_dfu/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_dfu/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_dfu/build_result.jpg
       - examples/usb_examples/usb_device_dfu/crc32.jpg
       - examples/usb_examples/usb_device_dfu/crc_checkok.jpg

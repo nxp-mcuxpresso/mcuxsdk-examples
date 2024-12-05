@@ -18,8 +18,8 @@ mu_interrupt_primary_core:
         sent from Core 1 in interrupt mode.
       example_readme:
       - examples/driver_examples/mu/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/mu/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mu/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1160@cm7:
     - +armgcc@flexspi_nor_debug

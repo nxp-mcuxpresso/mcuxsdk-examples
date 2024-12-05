@@ -14,8 +14,8 @@ lpc_bod:
         BOD interrupt will be asserted.
       example_readme:
       - examples/driver_examples/lpc_bod/readme.md
-      - examples/_boards/${board}/driver_examples/bod/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/bod/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

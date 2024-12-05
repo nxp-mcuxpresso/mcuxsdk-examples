@@ -13,8 +13,8 @@ dma_wrap_transfer:
         to use the DMA and to provide a simple example for debugging and further development.
       example_readme:
       - examples/driver_examples/dma/wrap_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/dma/wrap_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dma/wrap_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc242: []

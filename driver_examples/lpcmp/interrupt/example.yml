@@ -20,8 +20,8 @@ lpcmp_interrupt:
         rising edge, or turn off it whendetecting the output's falling edge.
       example_readme:
       - examples/driver_examples/lpcmp/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/lpcmp/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpcmp/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l3a6@cm0plus: []
     frdmk32l3a6@cm4: []

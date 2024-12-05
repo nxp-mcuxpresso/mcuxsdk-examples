@@ -11,8 +11,8 @@ sd_jpeg:
         decodesthem, and shows them in the LCD panel one by one.
       example_readme:
       - examples/display_examples/sd_jpeg/readme.md
-      - examples/_boards/${board}/display_examples/sd_jpeg/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/display_examples/sd_jpeg/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - +armgcc@flexspi_nor_sdram_debug

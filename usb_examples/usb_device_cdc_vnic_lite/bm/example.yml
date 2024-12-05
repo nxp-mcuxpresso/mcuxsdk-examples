@@ -11,8 +11,8 @@ dev_cdc_vnic_lite_bm:
         network by properly configuring this network adapter.
       example_readme:
       - examples/usb_examples/usb_device_cdc_vnic_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_cdc_vnic_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_cdc_vnic_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_cdc_vnic_lite/rndis_driver_install_00.jpg
       - examples/usb_examples/usb_device_cdc_vnic_lite/rndis_driver_install_01.jpg
       - examples/usb_examples/usb_device_cdc_vnic_lite/rndis_driver_install_02.jpg

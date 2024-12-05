@@ -20,8 +20,8 @@ multi_peripherals_test:
         that the RTC crystal works.
       example_readme:
       - examples/demo_apps/multi_peripherals_test/readme.md
-      - examples/_boards/${board}/demo_apps/multi_peripherals_test/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/multi_peripherals_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s16: []
     lpcxpresso55s28: []

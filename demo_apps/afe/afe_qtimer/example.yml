@@ -13,8 +13,8 @@ afe_qtimer:
         pins of channel 2.
       example_readme:
       - examples/demo_apps/afe/afe_qtimer/readme.md
-      - examples/_boards/${board}/demo_apps/afe_qtimer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/afe_qtimer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     twrkm34z50mv3: []
     twrkm34z75m: []

@@ -12,8 +12,8 @@ sdio_freertos:
         is to show how to use SDio driver with freertos.
       example_readme:
       - examples/sdmmc_examples/sdio_freertos/readme.md
-      - examples/_boards/${board}/sdmmc_examples/sdio_freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/sdmmc_examples/sdio_freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkmimxrt595@cm33: []

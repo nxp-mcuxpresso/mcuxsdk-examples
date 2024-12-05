@@ -5,13 +5,13 @@
 
 flash_programming_file:
   files:
-  - source: examples/_boards/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/tfm_psatest_flashdownload.ini
+  - source: ${board_root}/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/tfm_psatest_flashdownload.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: debug release
 initialization_file:
   files:
-  - source: examples/_boards/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/tfm_psatest_flashdebug.ini
+  - source: ${board_root}/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/tfm_psatest_flashdebug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug release

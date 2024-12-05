@@ -11,8 +11,8 @@ i3c_master_read_sensor_p3t1755:
         as master to communicate with sensor P3T1755.
       example_readme:
       - examples/driver_examples/i3c/master_read_sensor_p3t1755/readme.md
-      - examples/_boards/${board}/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/i3c/master_read_sensor_p3t1755/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa153: []
     frdmmcxa156: []

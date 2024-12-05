@@ -9,8 +9,8 @@ spp:
       brief: The Bluetooth BR SPP example.
       example_readme:
       - examples/edgefast_bluetooth_examples/spp/readme.md
-      - examples/_boards/${board}/edgefast_bluetooth_examples/spp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/edgefast_bluetooth_examples/spp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

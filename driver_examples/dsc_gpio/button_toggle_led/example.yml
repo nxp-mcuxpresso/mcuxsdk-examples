@@ -9,7 +9,7 @@ dsc_gpio_button_toggle_led:
       brief: The GPIO Led Output example demonstrate toggle LED by GPIO.
       example_readme:
       - examples/driver_examples/dsc_gpio/button_toggle_led/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []
     mc56f81000evk: []

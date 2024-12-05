@@ -13,8 +13,8 @@ lpc_gpio_led_output:
         and toggle).
       example_readme:
       - examples/driver_examples/lpc_gpio/led_output/readme.md
-      - examples/_boards/${board}/driver_examples/gpio/led_output/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gpio/led_output/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

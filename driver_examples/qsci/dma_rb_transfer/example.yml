@@ -13,7 +13,7 @@ qsci_dma_rb_transfer:
         using DMA method.
       example_readme:
       - examples/driver_examples/qsci/dma_rb_transfer/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8200: []
     twrmc56f8400: []

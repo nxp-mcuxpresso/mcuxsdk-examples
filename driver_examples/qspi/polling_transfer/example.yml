@@ -20,8 +20,8 @@ qspi_polling_transfer:
         is 48MHz * 4 = 192MHz.'
       example_readme:
       - examples/driver_examples/qspi/polling_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/qspi/polling_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/qspi/polling_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp:
     - -armgcc@flash_debug

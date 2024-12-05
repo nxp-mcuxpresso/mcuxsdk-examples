@@ -11,8 +11,8 @@ gdma_transfer_lli:
         to memory data transfer with link list feature.
       example_readme:
       - examples/driver_examples/gdma/transfer_lli/readme.md
-      - examples/_boards/${board}/driver_examples/gdma/transfer_lli/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gdma/transfer_lli/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

@@ -13,8 +13,8 @@ dev_printer_virtual_plain_text_lite_bm:
         such as postscript, implement the corresponding parser.
       example_readme:
       - examples/usb_examples/usb_device_printer_virtual_plain_text_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_printer_virtual_plain_text_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_printer_virtual_plain_text_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_printer_virtual_plain_text_lite/device_printer_add_printer_1.jpg
       - examples/usb_examples/usb_device_printer_virtual_plain_text_lite/device_printer_add_printer_2.jpg
       - examples/usb_examples/usb_device_printer_virtual_plain_text_lite/device_printer_dev&printer.jpg

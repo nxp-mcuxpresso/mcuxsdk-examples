@@ -15,8 +15,8 @@ ecspi_interrupt_b2b_transfer_master:
         . (ECSPI Slave using interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/ecspi/interrupt_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/ecspi/interrupt_b2b_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ecspi/interrupt_b2b_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn: []

@@ -5,13 +5,13 @@
 
 flash_programming_file:
   files:
-  - source: examples/_boards/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/tfm_secureboot_flashdownload.ini
+  - source: ${board_root}/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/tfm_secureboot_flashdownload.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: debug release
 initialization_file:
   files:
-  - source: examples/_boards/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/tfm_secureboot_flashdebug.ini
+  - source: ${board_root}/${board}/tfm_examples/tfm_secureboot/tfm_secureboot_s/tfm_secureboot_flashdebug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug release

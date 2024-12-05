@@ -18,8 +18,8 @@ enet_txrx_transfer:
         PHY.
       example_readme:
       - examples/driver_examples/enet/txrx_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/enet/txrx_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/enet/txrx_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

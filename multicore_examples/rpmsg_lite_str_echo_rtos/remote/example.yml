@@ -28,8 +28,8 @@ rpmsg_lite_str_echo_rtos_remote_core:
         \ from the linker to the application."
       example_readme:
       - examples/multicore_examples/rpmsg_lite_str_echo_rtos/remote/readme.md
-      - examples/_boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp:
     - -armgcc@debug

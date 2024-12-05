@@ -13,8 +13,8 @@ secure_gpio_s:
         application.
       example_readme:
       - examples/trustzone_examples/secure_gpio_s/readme.md
-      - examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_s/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/trustzone_examples/secure_gpio/secure_gpio_s/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

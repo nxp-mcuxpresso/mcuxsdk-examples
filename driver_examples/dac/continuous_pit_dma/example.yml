@@ -18,8 +18,8 @@ dac_continuous_pit_dma:
         output with a oscilloscope to see the Half-sine signal.
       example_readme:
       - examples/driver_examples/dac/continuous_pit_dma/readme.md
-      - examples/_boards/${board}/driver_examples/dac/continuous_pit_dma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/continuous_pit_dma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc444: []

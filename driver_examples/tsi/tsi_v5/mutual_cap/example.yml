@@ -15,8 +15,8 @@ tsi_v5_mutual_cap:
         scan using interrupt method.
       example_readme:
       - examples/driver_examples/tsi/tsi_v5/mutual_cap/readme.md
-      - examples/_boards/${board}/driver_examples/tsi_v5/mutual_cap/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tsi_v5/mutual_cap/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
     frdmke16z: []

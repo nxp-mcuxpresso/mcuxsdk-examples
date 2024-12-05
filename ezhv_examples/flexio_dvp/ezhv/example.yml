@@ -9,7 +9,7 @@ ezhv_flexio_dvp_ezhv:
       brief: This project shows how to enable display video port.
       example_readme:
       - examples/ezhv_examples/flexio_dvp/readme.md
-      - examples/_boards/${board}/ezhv_examples/flexio_dvp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ezhv_examples/flexio_dvp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@ezhv: []

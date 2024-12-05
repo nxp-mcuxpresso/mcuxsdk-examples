@@ -11,8 +11,8 @@ flash_component_nor_lpspi:
         and read an external nor flash device.
       example_readme:
       - examples/component_examples/flash_component/nor/lpspi/readme.md
-      - examples/_boards/${board}/component_examples/flash_component/lpspi_nor/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/flash_component/lpspi_nor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
     k32w148evk:

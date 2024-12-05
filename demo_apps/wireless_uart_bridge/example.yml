@@ -10,8 +10,8 @@ wireless_uart_bridge:
         for the custom Wireless UART profile and services.
       example_readme:
       - examples/demo_apps/wireless_uart_bridge/readme.md
-      - examples/_boards/${board}/demo_apps/wireless_uart_bridge/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/wireless_uart_bridge/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp:
     - -armgcc@debug

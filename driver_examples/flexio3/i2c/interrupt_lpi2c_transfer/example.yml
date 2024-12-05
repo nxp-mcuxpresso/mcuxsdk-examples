@@ -12,8 +12,8 @@ flexio3_i2c_interrupt_lpi2c_transfer:
         a LPI2C slave
       example_readme:
       - examples/driver_examples/flexio3/i2c/interrupt_lpi2c_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexio3/i2c/interrupt_lpi2c_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio3/i2c/interrupt_lpi2c_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060: []
     evkcmimxrt1060: []

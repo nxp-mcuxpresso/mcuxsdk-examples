@@ -15,8 +15,8 @@ qtmr_inputcapture_outputpwm:
         a oscilloscope. '
       example_readme:
       - examples/driver_examples/qtmr_1/inputcapture_outputpwm/readme.md
-      - examples/_boards/${board}/driver_examples/qtmr/inputcapture_outputpwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/qtmr/inputcapture_outputpwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

@@ -11,8 +11,8 @@ ele_symmetric:
         with SSS APIs using EdgeLock Secure Enclave.
       example_readme:
       - examples/secure-subsystem_examples/ele_symmetric/readme.md
-      - examples/_boards/${board}/secure-subsystem_examples/ele_symmetric/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/secure-subsystem_examples/ele_symmetric/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     kw45b41zevk:
     - +armgcc@debug

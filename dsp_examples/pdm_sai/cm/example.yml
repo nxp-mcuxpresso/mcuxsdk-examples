@@ -11,8 +11,8 @@ dsp_pdm_sai:
         DSP image.
       example_readme:
       - examples/dsp_examples/pdm_sai/readme.md
-      - examples/_boards/${board}/dsp_examples/pdm_sai/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/dsp_examples/pdm_sai/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8ulp@cm33: []
     evk9mimx8ulp@cm33: []

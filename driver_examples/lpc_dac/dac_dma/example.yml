@@ -17,8 +17,8 @@ lpc_dac_dma:
         waveform array would be transfered to pre-buffer in order by DMA.
       example_readme:
       - examples/driver_examples/lpc_dac/dac_dma/readme.md
-      - examples/_boards/${board}/driver_examples/dac/lpc_dac_dma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/lpc_dac_dma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso845max: []

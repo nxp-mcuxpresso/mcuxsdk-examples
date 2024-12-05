@@ -11,8 +11,8 @@ dev_hid_generic_lite_bm:
         can be used to exchange data with the device.
       example_readme:
       - examples/usb_examples/usb_device_hid_generic_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_hid_generic_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_hid_generic_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_hid_generic_lite/cpu_platform.jpg
       - examples/usb_examples/usb_device_hid_generic_lite/usb_device_hid_generic_test_tool_open.jpg
       - examples/usb_examples/usb_device_hid_generic_lite/usb_device_hid_generic_test_tool_send.jpg

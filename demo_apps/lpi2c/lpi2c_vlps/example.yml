@@ -17,8 +17,8 @@ lpi2c_vlps:
         LPUART0.
       example_readme:
       - examples/demo_apps/lpi2c/lpi2c_vlps/readme.md
-      - examples/_boards/${board}/demo_apps/lpi2c_vlps/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/lpi2c_vlps/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []
     frdmke15z: []

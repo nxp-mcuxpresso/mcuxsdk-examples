@@ -12,8 +12,8 @@ utick_wakeup_peripheral:
         puts the device in deep-sleep mode. The MicroTick timer wakes up the device. '
       example_readme:
       - examples/demo_apps/utick/utick_wakeup_peripheral/readme.md
-      - examples/_boards/${board}/demo_apps/utick_wakeup_peripheral/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/utick_wakeup_peripheral/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

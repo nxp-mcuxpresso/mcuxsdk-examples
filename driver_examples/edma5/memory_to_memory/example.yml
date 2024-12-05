@@ -14,8 +14,8 @@ edma5_memory_to_memory:
         and further development.
       example_readme:
       - examples/driver_examples/edma5/memory_to_memory/readme.md
-      - examples/_boards/${board}/driver_examples/edma5/memory_to_memory/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/edma5/memory_to_memory/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

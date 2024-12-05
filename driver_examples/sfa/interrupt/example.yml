@@ -11,8 +11,8 @@ sfa_interrupt:
         this example, sfa is used to measure frequency in interrupt mode.
       example_readme:
       - examples/driver_examples/sfa/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/sfa/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sfa/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
     k32w148evk:

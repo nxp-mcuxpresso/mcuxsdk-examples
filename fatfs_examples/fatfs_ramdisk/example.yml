@@ -13,8 +13,8 @@ fatfs_ramdisk:
       brief: The fatfs_ramdisk project is showing creation and usage of RAM allocated filesystem.
       example_readme:
       - examples/fatfs_examples/fatfs_ramdisk/readme.md
-      - examples/_boards/${board}/fatfs_examples/fatfs_ramdisk/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/fatfs_examples/fatfs_ramdisk/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     lpcxpresso54s018m: []

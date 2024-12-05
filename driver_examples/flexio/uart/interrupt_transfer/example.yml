@@ -13,8 +13,8 @@ flexio_uart_interrupt_transfer:
         Note: two queued transfer in this example, so please input even number characters.'
       example_readme:
       - examples/driver_examples/flexio/uart/interrupt_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

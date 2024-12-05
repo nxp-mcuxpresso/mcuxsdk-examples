@@ -15,7 +15,7 @@ i3c_interrupt_b2b_master:
         data received from slave is correct.
       example_readme:
       - examples/driver_examples/i3c/interrupt_b2b/master/readme.md
-      - examples/_boards/${board}/driver_examples/i3c/interrupt_b2b/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/i3c/interrupt_b2b/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso860max: []

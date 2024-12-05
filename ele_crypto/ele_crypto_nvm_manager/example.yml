@@ -13,7 +13,7 @@ ele_crypto_nvm_manager:
         Unit driver.
       example_readme:
       - examples/ele_crypto/ele_crypto_nvm_manager/readme.md
-      - examples/_boards/${board}/ele_crypto/ele_crypto_nvm_manager/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ele_crypto/ele_crypto_nvm_manager/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []

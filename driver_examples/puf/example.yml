@@ -11,8 +11,8 @@ puf:
         controller which provides a secure key storage.
       example_readme:
       - examples/driver_examples/puf/readme.md
-      - examples/_boards/${board}/driver_examples/puf/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/puf/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

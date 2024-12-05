@@ -9,7 +9,7 @@ ezhv_linear2tiledYUV_ezhv:
       brief: This project shows how to enable EZH-V to conver linearYUV to tiledYUV.
       example_readme:
       - examples/ezhv_examples/linear2tiledYUV/readme.md
-      - examples/_boards/${board}/ezhv_examples/linear2tiledYUV/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ezhv_examples/linear2tiledYUV/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@ezhv: []

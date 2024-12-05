@@ -10,8 +10,8 @@ powerquad_transform:
       brief: This example shows how to use powerquad driver transform functions.
       example_readme:
       - examples/driver_examples/powerquad/transform/readme.md
-      - examples/_boards/${board}/driver_examples/powerquad/transform/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/powerquad/transform/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

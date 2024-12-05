@@ -12,8 +12,8 @@ touch_cursor:
         position is changed in reaction to detected touch.
       example_readme:
       - examples/demo_apps/touch_cursor/readme.md
-      - examples/_boards/${board}/demo_apps/touch_cursor/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/touch_cursor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []
     lpcxpresso54s018: []

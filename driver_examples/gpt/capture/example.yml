@@ -13,8 +13,8 @@ gpt_capture:
         value.
       example_readme:
       - examples/driver_examples/gpt/capture/readme.md
-      - examples/_boards/${board}/driver_examples/gpt/capture/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gpt/capture/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060: []
     evkcmimxrt1060: []

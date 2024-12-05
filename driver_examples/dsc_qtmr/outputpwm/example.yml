@@ -12,7 +12,7 @@ qtmr_outputpwm:
         a oscilloscope.The user can enter a value to update the Duty cycle.
       example_readme:
       - examples/driver_examples/dsc_qtmr/outputpwm/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []
     mc56f81000evk: []

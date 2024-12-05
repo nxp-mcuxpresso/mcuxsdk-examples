@@ -13,7 +13,7 @@ sdadc_sai_interrupt:
         the microphone and see the log on the terminal.
       example_readme:
       - examples/driver_examples/sdadc/sdadc_sai_interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/sdadc/sdadc_sai_interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sdadc/sdadc_sai_interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0: []

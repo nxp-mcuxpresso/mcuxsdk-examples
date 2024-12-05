@@ -21,8 +21,8 @@ flexcan_efifo_edma_transfer:
         transactional driver. The send and received message will be print out to terminal.
       example_readme:
       - examples/driver_examples/flexcan/efifo_edma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

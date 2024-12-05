@@ -21,8 +21,8 @@ freertos_sem:
         and producer must be prepared to enable transaction.
       example_readme:
       - examples/freertos_examples/freertos_sem/readme.md
-      - examples/_boards/${board}/freertos_examples/freertos_sem/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_sem/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

@@ -12,8 +12,8 @@ cns_dac_normal:
         voltage will be output through DAC output pin.
       example_readme:
       - examples/driver_examples/cns_dac/normal/readme.md
-      - examples/_boards/${board}/driver_examples/dac/normal/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac/normal/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

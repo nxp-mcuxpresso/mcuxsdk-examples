@@ -22,5 +22,5 @@ mmccard_boot_blocking:
         board IC, but not recommand use emmc socket,due to high speed timing restriction)'
       example_readme:
       - examples/driver_examples/mmccard/boot/blocking/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

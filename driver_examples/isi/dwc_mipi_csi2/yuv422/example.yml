@@ -14,8 +14,8 @@ isi_dwc_mipi_csi2_yuv422:
         is RGB565 format. The output frame is shown in the screen.'
       example_readme:
       - examples/driver_examples/isi/dwc_mipi_csi2/yuv422/readme.md
-      - examples/_boards/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

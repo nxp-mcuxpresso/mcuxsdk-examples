@@ -16,8 +16,8 @@ uart_9bit_interrupt_transfer:
         after the address can be received by itself.
       example_readme:
       - examples/driver_examples/uart/9bit_interrupt_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/uart/9bit_interrupt_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/uart/9bit_interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2b: []

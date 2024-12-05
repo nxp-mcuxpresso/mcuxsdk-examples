@@ -10,8 +10,8 @@ lcdic_dma:
       brief: This example shows how to use the lcdic DMA APIs.
       example_readme:
       - examples/driver_examples/lcdic/dma/readme.md
-      - examples/_boards/${board}/driver_examples/lcdic/dma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lcdic/dma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

@@ -10,8 +10,8 @@ cmp_1_interrupt:
       brief: The CMP interrupt Example shows how to use interrupt with CMP driver.
       example_readme:
       - examples/driver_examples/cmp_1/interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/cmp/interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/cmp/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s06: []
     lpcxpresso55s16: []

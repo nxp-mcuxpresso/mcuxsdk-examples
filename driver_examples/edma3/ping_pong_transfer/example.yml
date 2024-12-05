@@ -12,8 +12,8 @@ edma3_ping_pong_transfer:
         the EDMA3 and to provide a simple example for debugging and further development.
       example_readme:
       - examples/driver_examples/edma3/ping_pong_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/edma3/ping_pong_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/edma3/ping_pong_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa153: []
     frdmmcxa156: []

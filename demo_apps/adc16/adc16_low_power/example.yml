@@ -15,8 +15,8 @@ adc16_low_power:
         or lower than average, the LEDs change state respectively.
       example_readme:
       - examples/demo_apps/adc16/adc16_low_power/readme.md
-      - examples/_boards/${board}/demo_apps/adc16_low_power/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/adc16_low_power/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2a4s: []
     frdmk32l2b: []

@@ -1,22 +1,22 @@
 
 flash_programming_file:
   files:
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdownload_debug.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdownload_debug.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: debug
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdownload_release.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdownload_release.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: release
 
 initialization_file:
   files:
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdebug_debug.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdebug_debug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug
-  - source: examples/_boards/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdebug_release.ini
+  - source: ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/hello_world_flashdebug_release.ini
     attribute: initialization_file
     toolchains: mdk
     targets: release

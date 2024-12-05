@@ -11,8 +11,8 @@ i3c_bus_master:
         I3C bus and i3c master on bus.
       example_readme:
       - examples/component_examples/i3c_bus/master/readme.md
-      - examples/_boards/${board}/component_examples/i3c_bus/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/i3c_bus/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

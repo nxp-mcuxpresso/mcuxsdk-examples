@@ -14,8 +14,8 @@ cmsis_spi_interrupt_b2b_transfer_slave:
         driver.1. SPI master send/received data to/from SPI slave in interrupt . '
       example_readme:
       - examples/cmsis_driver_examples/spi/interrupt_b2b_transfer/slave/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/spi/interrupt_b2b_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/spi/interrupt_b2b_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmke02z40m: []

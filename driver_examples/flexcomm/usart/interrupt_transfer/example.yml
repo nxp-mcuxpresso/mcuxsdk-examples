@@ -13,8 +13,8 @@ usart_interrupt_transfer:
         every 8 characters, so input 8 characters every time.'
       example_readme:
       - examples/driver_examples/flexcomm/usart/interrupt_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/usart/interrupt_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/usart/interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

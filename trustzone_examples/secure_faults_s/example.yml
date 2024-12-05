@@ -14,8 +14,8 @@ secure_faults_s:
         (see source code). This is secure part of the application.
       example_readme:
       - examples/trustzone_examples/secure_faults_s/readme.md
-      - examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

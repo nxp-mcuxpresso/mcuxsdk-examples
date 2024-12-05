@@ -11,8 +11,8 @@ h264_freertos:
         frames in LCD panel.
       example_readme:
       - examples/display_examples/h264_freertos/readme.md
-      - examples/_boards/${board}/display_examples/h264_freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/display_examples/h264_freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - +armgcc@flexspi_nor_sdram_debug

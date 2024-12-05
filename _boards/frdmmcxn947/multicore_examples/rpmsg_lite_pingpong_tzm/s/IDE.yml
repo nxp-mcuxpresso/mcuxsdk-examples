@@ -5,21 +5,21 @@
 
 flash_programming_file:
   files:
-  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdebug_debug.ini
+  - source: ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdebug_debug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug
-  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdebug_release.ini
+  - source: ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdebug_release.ini
     attribute: initialization_file
     toolchains: mdk
     targets: release
 initialization_file:
   files:
-  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdownload_debug.ini
+  - source: ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdownload_debug.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: debug
-  - source: examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdownload_release.ini
+  - source: ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/rpmsg_lite_pingpong_tzm_flashdownload_release.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: release

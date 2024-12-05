@@ -12,8 +12,8 @@ host_hid_generic_bm:
         the string and prints it.
       example_readme:
       - examples/usb_examples/usb_host_hid_generic/readme.md
-      - examples/_boards/${board}/usb_examples/usb_host_hid_generic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_host_hid_generic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_host_hid_generic/host_hid_generic_output.jpg
   boards:
     evkbimxrt1050: []

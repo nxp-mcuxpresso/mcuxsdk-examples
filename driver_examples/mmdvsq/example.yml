@@ -14,8 +14,8 @@ mmdvsq:
         divisorRemainder of 10 and 5 is 0Quotient of 10 and 5 is 2
       example_readme:
       - examples/driver_examples/mmdvsq/readme.md
-      - examples/_boards/${board}/driver_examples/mmdvsq/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mmdvsq/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2a4s: []
     frdmk32l3a6@cm0plus: []

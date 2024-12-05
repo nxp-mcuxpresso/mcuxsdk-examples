@@ -14,8 +14,8 @@ csi_mipi_yuv:
         to convert the XYUV to RGB565 and show in the LCD panel.
       example_readme:
       - examples/driver_examples/csi/mipi_yuv/readme.md
-      - examples/_boards/${board}/driver_examples/csi/mipi_yuv/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/csi/mipi_yuv/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - +armgcc@flexspi_nor_sdram_debug

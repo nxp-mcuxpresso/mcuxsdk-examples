@@ -17,7 +17,7 @@ pdb_dac_trigger:
         mode. Once it gets the trigger from the PDB, the buffer read pointer increases.
       example_readme:
       - examples/driver_examples/pdb/dac_trigger/readme.md
-      - examples/_boards/${board}/driver_examples/pdb/dac_trigger/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pdb/dac_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

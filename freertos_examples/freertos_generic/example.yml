@@ -23,8 +23,8 @@ freertos_generic:
         vApplicationMallocFailedHook
       example_readme:
       - examples/freertos_examples/freertos_generic/readme.md
-      - examples/_boards/${board}/freertos_examples/freertos_generic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_generic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

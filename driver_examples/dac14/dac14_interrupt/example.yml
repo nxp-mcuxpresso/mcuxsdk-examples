@@ -14,8 +14,8 @@ dac14_interrupt:
         becomes empty again, and get another round of feed in the DAC ISR.
       example_readme:
       - examples/driver_examples/dac14/dac14_interrupt/readme.md
-      - examples/_boards/${board}/driver_examples/dac14/dac14_interrupt/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dac14/dac14_interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

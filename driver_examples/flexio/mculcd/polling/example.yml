@@ -11,8 +11,8 @@ flexio_mculcd_polling:
         polling APIs to drive MCU LCD panel.
       example_readme:
       - examples/driver_examples/flexio/mculcd/polling/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/mculcd/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/mculcd/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa156: []
     frdmmcxa276: []

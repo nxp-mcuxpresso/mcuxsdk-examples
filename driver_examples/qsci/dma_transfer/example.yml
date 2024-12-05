@@ -11,7 +11,7 @@ qsci_dma_transfer:
         back all characters that PC sends to the board.'
       example_readme:
       - examples/driver_examples/qsci/dma_transfer/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8200: []
     twrmc56f8400: []

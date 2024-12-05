@@ -36,8 +36,8 @@ multicore_manager_secondary_core:
         core and triggers theRemoteExceptionEvent on the primary core.'
       example_readme:
       - examples/multicore_examples/multicore_manager/readme.md
-      - examples/_boards/${board}/multicore_examples/multicore_manager/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/multicore_manager/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm7:
     - +armgcc@debug

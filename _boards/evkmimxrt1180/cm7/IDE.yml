@@ -17,20 +17,20 @@ iar:
 
 macro-file:
   files:
-    - source: examples/_boards/evkmimxrt1180/evkmimxrt1180.mac
+    - source: ${board_root}/evkmimxrt1180/evkmimxrt1180.mac
       attribute: macro-file
       toolchains: iar
       choose: true
 
 initialization_file:
   files:
-    - source: examples/_boards/evkmimxrt1180/evkmimxrt1180_ram_cm7.ini
+    - source: ${board_root}/evkmimxrt1180/evkmimxrt1180_ram_cm7.ini
       attribute: initialization_file
       toolchains: mdk
       targets: debug release
                hyperram_debug hyperram_release
 
-    - source: examples/_boards/evkmimxrt1180/evkmimxrt1180_flexspi_nor_cm7.ini
+    - source: ${board_root}/evkmimxrt1180/evkmimxrt1180_flexspi_nor_cm7.ini
       attribute: initialization_file
       toolchains: mdk
       targets: flexspi_nor_debug flexspi_nor_release

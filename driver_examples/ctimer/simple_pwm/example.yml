@@ -11,8 +11,8 @@ ctimer_pwm_example:
         driver.In this example, CTimer is used to generate a PWM signal.
       example_readme:
       - examples/driver_examples/ctimer/simple_pwm/readme.md
-      - examples/_boards/${board}/driver_examples/ctimer/simple_pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/ctimer/simple_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

@@ -12,8 +12,8 @@ gpt_compare:
         in GPT_CNT, output compare timer pin is toggled.
       example_readme:
       - examples/driver_examples/gpt/compare/readme.md
-      - examples/_boards/${board}/driver_examples/gpt/compare/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gpt/compare/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

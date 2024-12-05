@@ -14,7 +14,7 @@ freertos_dspi:
         the data)
       example_readme:
       - examples/freertos_driver_examples/freertos_dspi/readme.md
-      - examples/_boards/${board}/freertos_driver_examples/freertos_dspi/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_driver_examples/freertos_dspi/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

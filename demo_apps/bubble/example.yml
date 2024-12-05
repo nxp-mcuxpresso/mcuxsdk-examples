@@ -12,8 +12,8 @@ bubble:
         show deviation from a level plane (0 degrees) on a given axis.
       example_readme:
       - examples/demo_apps/bubble/readme.md
-      - examples/_boards/${board}/demo_apps/bubble/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/bubble/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []
     frdmk32l2a4s: []

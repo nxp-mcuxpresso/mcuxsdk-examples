@@ -10,8 +10,8 @@ mc_pmsm_enc:
       brief: This example demonstrates the control of the PMSM.
       example_readme:
       - examples/demo_apps/mc_pmsm/pmsm_enc/readme.md
-      - examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm7: []
     evkbmimxrt1170@cm7: []

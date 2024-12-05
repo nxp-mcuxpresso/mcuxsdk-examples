@@ -12,8 +12,8 @@ flexio_i2c_interrupt_i2c_transfer:
         an I2C slave.
       example_readme:
       - examples/driver_examples/flexio/i2c/interrupt_i2c_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/i2c/interrupt_i2c_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/i2c/interrupt_i2c_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmmcxc242: []

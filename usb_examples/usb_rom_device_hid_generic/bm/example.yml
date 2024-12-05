@@ -11,8 +11,8 @@ rom_dev_hid_generic_bm:
         message..
       example_readme:
       - examples/usb_examples/usb_rom_device_hid_generic/bm/readme.md
-      - examples/_boards/${board}/usb_examples/usb_rom_device_hid_generic/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_rom_device_hid_generic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []
     lpcxpresso54s018: []

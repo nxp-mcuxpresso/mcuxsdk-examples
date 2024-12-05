@@ -13,7 +13,7 @@ adc_sample_rate_measurement:
         serial terminal.
       example_readme:
       - examples/driver_examples/sar_adc/sample_rate_measurement/readme.md
-      - examples/_boards/${board}/driver_examples/sar_adc/sample_rate_measurement/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sar_adc/sample_rate_measurement/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []

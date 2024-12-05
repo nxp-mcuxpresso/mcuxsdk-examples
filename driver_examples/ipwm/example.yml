@@ -17,8 +17,8 @@ ipwm:
         the current period is over.The outputs can be observed by oscilloscope.
       example_readme:
       - examples/driver_examples/ipwm/readme.md
-      - examples/_boards/${board}/driver_examples/pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn: []

@@ -17,8 +17,8 @@ lpspi_3wire_int_transfer_master:
         pin.
       example_readme:
       - examples/driver_examples/lpspi/3wire_transfer/int_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/lpspi/3wire_transfer/int_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpspi/3wire_transfer/int_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1015: []
     evkmimxrt1020: []

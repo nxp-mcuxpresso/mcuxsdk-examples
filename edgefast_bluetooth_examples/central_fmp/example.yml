@@ -9,8 +9,8 @@ central_fmp:
       brief: The Edgefast Bluetooth pxm example with simplified application.
       example_readme:
       - examples/edgefast_bluetooth_examples/central_fmp/readme.md
-      - examples/_boards/${board}/edgefast_bluetooth_examples/central_fmp/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/edgefast_bluetooth_examples/central_fmp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612:
     - -armgcc@debug

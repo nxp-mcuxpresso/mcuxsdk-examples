@@ -11,8 +11,8 @@ lpspi_loopback:
         will transmit data to itself, so please connect the SOUT pin to SIN pin directly.
       example_readme:
       - examples/demo_apps/lpspi/lpspi_loopback/readme.md
-      - examples/_boards/${board}/demo_apps/lpspi_loopback/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/lpspi_loopback/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

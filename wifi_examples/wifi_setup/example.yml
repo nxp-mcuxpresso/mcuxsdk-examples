@@ -13,8 +13,8 @@ wifi_setup:
         task that will test the connection.
       example_readme:
       - examples/wifi_examples/wifi_setup/readme.md
-      - examples/_boards/${board}/wifi_examples/common/wifi_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/wifi_examples/common/wifi_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

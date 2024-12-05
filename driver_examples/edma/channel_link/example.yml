@@ -14,8 +14,8 @@ edma_channel_link:
         and further development.
       example_readme:
       - examples/driver_examples/edma/channel_link/readme.md
-      - examples/_boards/${board}/driver_examples/edma/channel_link/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/edma/channel_link/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

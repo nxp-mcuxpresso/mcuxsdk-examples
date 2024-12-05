@@ -29,8 +29,8 @@ power_mode_switch_rtos_rt10xx:
         to disable related pins or disconnect them. '
       example_readme:
       - examples/demo_apps/power_mode_switch_rt10xx/rtos/readme.md
-      - examples/_boards/${board}/demo_apps/power_mode_switch/rtos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_switch/rtos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@sdram_debug

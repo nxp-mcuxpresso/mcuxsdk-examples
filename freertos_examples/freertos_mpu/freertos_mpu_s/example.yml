@@ -12,8 +12,8 @@ freertos_mpu_s:
         use the trust-zone features of FreeRTOS.
       example_readme:
       - examples/freertos_examples/freertos_mpu/readme.md
-      - examples/_boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

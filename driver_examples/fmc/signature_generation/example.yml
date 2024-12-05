@@ -14,7 +14,7 @@ fmc_signature_generation:
         This is to verify flash contents as suggested by user manual.
       example_readme:
       - examples/driver_examples/fmc/signature_generation/readme.md
-      - examples/_boards/${board}/driver_examples/fmc/signature_generation/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/fmc/signature_generation/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso54628: []

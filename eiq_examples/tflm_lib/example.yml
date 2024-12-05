@@ -9,7 +9,7 @@ tflm_lib:
       brief: Library build project for TensorFlow Lite Micro
       example_readme:
       - examples/eiq_examples/tflm_lib/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0:
     - +armgcc@debug

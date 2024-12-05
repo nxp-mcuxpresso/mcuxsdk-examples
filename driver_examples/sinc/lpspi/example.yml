@@ -11,8 +11,8 @@ sinc_lpspi:
         module as single conversion mode to work with on-chip lpspi.
       example_readme:
       - examples/driver_examples/sinc/lpspi/readme.md
-      - examples/_boards/${board}/driver_examples/sinc/lpspi/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sinc/lpspi/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

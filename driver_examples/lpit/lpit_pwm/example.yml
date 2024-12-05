@@ -13,8 +13,8 @@ lpit_pwm:
         will see PWM wave.
       example_readme:
       - examples/driver_examples/lpit/lpit_pwm/readme.md
-      - examples/_boards/${board}/driver_examples/lpit/lpit_pwm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lpit/lpit_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []

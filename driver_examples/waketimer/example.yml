@@ -11,8 +11,8 @@ waketimer_example:
         driver. WAKETIMER will trigger every 1 second.
       example_readme:
       - examples/driver_examples/waketimer/readme.md
-      - examples/_boards/${board}/driver_examples/waketimer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/waketimer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa153: []
     frdmmcxa156: []

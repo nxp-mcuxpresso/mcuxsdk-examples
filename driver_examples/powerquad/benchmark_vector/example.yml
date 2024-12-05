@@ -10,8 +10,8 @@ powerquad_benchmark_vector:
       brief: This example shows the PowerQuad based CMSIS DSP function performance.
       example_readme:
       - examples/driver_examples/powerquad/benchmark_vector/readme.md
-      - examples/_boards/${board}/driver_examples/powerquad/benchmark_vector/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/powerquad/benchmark_vector/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

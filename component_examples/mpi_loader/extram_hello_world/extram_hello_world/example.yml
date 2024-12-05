@@ -16,8 +16,8 @@ mpi_loader_extram_hello_world:
         running in on-board RAM.
       example_readme:
       - examples/component_examples/mpi_loader/extram_hello_world/extram_hello_world/readme.md
-      - examples/_boards/${board}/component_examples/mpi_loader/extram_hello_world/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/mpi_loader/extram_hello_world/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33:
     - -armgcc@flash_debug

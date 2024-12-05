@@ -14,8 +14,8 @@ hello_world_secondary_core_boot_secondary_core:
         way.
       example_readme:
       - examples/demo_apps/hello_world_secondary_core_boot/readme.md
-      - examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/hello_world_secondary_core_boot/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - +armgcc@flexspi_nor_sdram_debug

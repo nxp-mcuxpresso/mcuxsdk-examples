@@ -11,8 +11,8 @@ dev_msc_ramdisk_lite_bm:
         to as a normal U-disk .
       example_readme:
       - examples/usb_examples/usb_device_msc_ramdisk_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_msc_ramdisk_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_msc_ramdisk_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_msc_ramdisk_lite/10k.jpg
       - examples/usb_examples/usb_device_msc_ramdisk_lite/bm_timing.jpg
       - examples/usb_examples/usb_device_msc_ramdisk_lite/device_ram_disk_format.jpg

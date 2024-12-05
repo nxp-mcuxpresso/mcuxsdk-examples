@@ -10,8 +10,8 @@ coex_wifi_edgefast:
       brief: coex_wifi_edgefast
       example_readme:
       - examples/coex_examples/coex_wifi_edgefast/readme.md
-      - examples/_boards/${board}/coex_examples/coex_wifi_edgefast/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/coex_examples/coex_wifi_edgefast/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     rdrw612bga:
     - -armgcc@debug

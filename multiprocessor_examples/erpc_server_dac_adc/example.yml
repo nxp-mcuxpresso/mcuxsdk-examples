@@ -30,8 +30,8 @@ erpc_server_dac_adc:
         -b <BAUDRATE>, to run the example'
       example_readme:
       - examples/multiprocessor_examples/erpc_server_dac_adc/readme.md
-      - examples/_boards/${board}/multiprocessor_examples/erpc_server_dac_adc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multiprocessor_examples/erpc_server_dac_adc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2b: []

@@ -12,8 +12,8 @@ flexio_spi_edma_lpspi_transfer_slave:
         to a lpspi master.
       example_readme:
       - examples/driver_examples/flexio/spi/edma_lpspi_transfer/slave/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/spi/edma_lpspi_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

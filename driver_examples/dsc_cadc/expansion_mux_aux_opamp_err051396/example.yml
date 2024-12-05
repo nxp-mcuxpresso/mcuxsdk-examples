@@ -12,6 +12,6 @@ cadc_expansion_mux_aux_opamp_err051396:
         please refer to it for additional information.
       example_readme:
       - examples/driver_examples/dsc_cadc/expansion_mux_aux_opamp_err051396/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

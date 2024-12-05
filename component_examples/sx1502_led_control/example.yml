@@ -12,7 +12,7 @@ sx1502_led_control:
         DMIC board on or off.
       example_readme:
       - examples/component_examples/sx1502_led_control/readme.md
-      - examples/_boards/${board}/component_examples/sx1502_led_control/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/sx1502_led_control/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt685audevk@cm33: []

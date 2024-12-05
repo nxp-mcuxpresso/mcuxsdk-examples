@@ -12,8 +12,8 @@ tiled_freertos:
         using blit.
       example_readme:
       - examples/vglite_examples/tiled_freertos/readme.md
-      - examples/_boards/${board}/vglite_examples/tiled_freertos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/vglite_examples/tiled_freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - +armgcc@sdram_debug

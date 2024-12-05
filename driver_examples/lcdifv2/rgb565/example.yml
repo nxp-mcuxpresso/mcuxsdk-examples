@@ -14,8 +14,8 @@ lcdifv2_rgb565:
         these two targets spend different time to fill the frame buffer.
       example_readme:
       - examples/driver_examples/lcdifv2/rgb565/readme.md
-      - examples/_boards/${board}/driver_examples/lcdifv2/lcdifv2_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/lcdifv2/lcdifv2_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4:
     - +armgcc@flexspi_nor_sdram_debug

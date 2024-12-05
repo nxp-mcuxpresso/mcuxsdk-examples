@@ -11,7 +11,7 @@ clock_freertos:
         draws a clock on the screen.
       example_readme:
       - examples/vglite_examples/clock_freertos/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - +armgcc@sdram_debug

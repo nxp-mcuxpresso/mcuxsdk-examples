@@ -9,8 +9,8 @@ peripheral_hps:
       brief: The Edgefast Bluetooth hps example with simplified application.
       example_readme:
       - examples/edgefast_bluetooth_examples/peripheral_hps/readme.md
-      - examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_hps/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/edgefast_bluetooth_examples/peripheral_hps/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

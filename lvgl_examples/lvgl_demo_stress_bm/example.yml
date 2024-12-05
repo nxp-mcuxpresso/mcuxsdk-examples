@@ -11,5 +11,5 @@ lvgl_demo_stress_bm:
         different behavior for stress test.
       example_readme:
       - examples/lvgl_examples/lvgl_demo_stress_bm/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

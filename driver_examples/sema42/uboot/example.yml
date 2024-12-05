@@ -12,8 +12,8 @@ sema42_uboot:
         on Cortex-M core,the uboot runs on the Cortex-A core.
       example_readme:
       - examples/driver_examples/sema42/uboot/readme.md
-      - examples/_boards/${board}/driver_examples/sema42/uboot/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sema42/uboot/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmcimx7ulp: []

@@ -13,8 +13,8 @@ dmic_i2s_dma:
         output to Lineout of CODEC.~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       example_readme:
       - examples/driver_examples/dmic/dmic_i2s_dma/readme.md
-      - examples/_boards/${board}/driver_examples/dmic/dmic_i2s_dma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dmic/dmic_i2s_dma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

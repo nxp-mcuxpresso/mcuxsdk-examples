@@ -4,13 +4,13 @@ mdk:
   - ../../el2go_blob_test_ns/mdk/el2go_blob_test_ns
 flash_programming_file:
   files:
-  - source: examples/_boards/${board}/el2go_examples/el2go_blob_test/el2go_blob_test_s/el2go_blob_test_flashdownload.ini
+  - source: ${board_root}/${board}/el2go_examples/el2go_blob_test/el2go_blob_test_s/el2go_blob_test_flashdownload.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: debug release
 initialization_file:
   files:
-  - source: examples/_boards/${board}/el2go_examples/el2go_blob_test/el2go_blob_test_s/el2go_blob_test_flashdebug.ini
+  - source: ${board_root}/${board}/el2go_examples/el2go_blob_test/el2go_blob_test_s/el2go_blob_test_flashdebug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug release

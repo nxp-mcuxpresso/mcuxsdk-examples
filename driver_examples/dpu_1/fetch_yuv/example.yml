@@ -13,8 +13,8 @@ dpu_1_fetch_yuv:
         runs success, rectangles will move in the screen.
       example_readme:
       - examples/driver_examples/dpu_1/fetch_yuv/readme.md
-      - examples/_boards/${board}/driver_examples/dpu/fetch_yuv/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/dpu/fetch_yuv/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

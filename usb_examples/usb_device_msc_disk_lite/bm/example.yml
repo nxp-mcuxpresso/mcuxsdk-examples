@@ -11,8 +11,8 @@ dev_msc_disk_lite_bm:
         the SD card or MMC as a standard U-disk.
       example_readme:
       - examples/usb_examples/usb_device_msc_disk_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_msc_disk_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_msc_disk_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_msc_disk_lite/bm_timing.jpg
       - examples/usb_examples/usb_device_msc_disk_lite/freertos_optimization_timing.jpg
       - examples/usb_examples/usb_device_msc_disk_lite/freertos_timing.jpg

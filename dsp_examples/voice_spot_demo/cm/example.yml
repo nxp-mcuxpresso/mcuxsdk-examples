@@ -10,8 +10,8 @@ dsp_voice_spot_demo:
       brief: starts DSP core to run voice_spot example on it.
       example_readme:
       - examples/dsp_examples/voice_spot_demo/readme.md
-      - examples/_boards/${board}/dsp_examples/voice_spot_demo/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/dsp_examples/voice_spot_demo/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8ulp@cm33:
     - -armgcc@debug

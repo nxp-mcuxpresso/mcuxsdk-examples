@@ -15,7 +15,7 @@ mscan_interrupt_transfer:
         the received message and waiting for the next transmission of the user initiated.
       example_readme:
       - examples/driver_examples/mscan/interrupt_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/mscan/interrupt_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/mscan/interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke16z: []

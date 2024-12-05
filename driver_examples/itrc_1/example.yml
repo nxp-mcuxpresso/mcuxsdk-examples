@@ -11,8 +11,8 @@ itrc_1:
         SDK software to show funcionality of Intrusion and Tamper Response Controller.
       example_readme:
       - examples/driver_examples/itrc_1/readme.md
-      - examples/_boards/${board}/driver_examples/itrc/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/itrc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
     rdrw612bga: []

@@ -1,6 +1,6 @@
 macro-file:
   files:
-  - source: examples/_boards/${board}/jlink_qspi_plain_load.mac
+  - source: ${board_root}/${board}/jlink_qspi_plain_load.mac
     attribute: macro-file
     toolchains: iar
     targets: debug release
@@ -9,7 +9,7 @@ macro-file:
     project_path: lpcxpresso54s018
 initialization_file:
   files:
-  - source: examples/_boards/${board}/xip_debug.ini
+  - source: ${board_root}/${board}/xip_debug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug release

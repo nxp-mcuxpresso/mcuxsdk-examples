@@ -11,8 +11,8 @@ openvg_tiger_freertos:
         draws a tiger on the screen.
       example_readme:
       - examples/openvg_examples/openvg_tiger/readme.md
-      - examples/_boards/${board}/openvg_examples/openvg_tiger/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/openvg_examples/openvg_tiger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm7:
     - +armgcc@sdram_debug

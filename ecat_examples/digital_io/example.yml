@@ -9,8 +9,8 @@ ecat_digital_io:
       brief: EtherCAT digital io example example
       example_readme:
       - examples/ecat_examples/digital_io/readme.md
-      - examples/_boards/${board}/ecat_examples/digital_io/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ecat_examples/digital_io/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug

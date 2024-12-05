@@ -14,8 +14,8 @@ hardfault_handling:
         ISRs to output the stack frame information.
       example_readme:
       - examples/component_examples/hardfault_handling/readme.md
-      - examples/_boards/${board}/component_examples/hardfault_handling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/hardfault_handling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1020:
     - -armgcc@flexspi_nor_debug

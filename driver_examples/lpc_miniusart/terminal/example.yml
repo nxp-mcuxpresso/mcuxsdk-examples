@@ -14,8 +14,8 @@ usart_terminal:
         \ press [Enter] key.\n"
       example_readme:
       - examples/driver_examples/lpc_miniusart/terminal/readme.md
-      - examples/_boards/${board}/driver_examples/usart/terminal/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/usart/terminal/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpc845breakout: []
     lpcxpresso802: []

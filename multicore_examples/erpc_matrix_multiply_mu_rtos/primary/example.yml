@@ -24,8 +24,8 @@ erpc_matrix_multiply_mu_rtos_primary_core:
         layer is used in this example application.
       example_readme:
       - examples/multicore_examples/erpc_matrix_multiply_mu_rtos/readme.md
-      - examples/_boards/${board}/multicore_examples/erpc_matrix_multiply_mu_rtos/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/erpc_matrix_multiply_mu_rtos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0:
     - -armgcc@debug

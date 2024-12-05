@@ -19,8 +19,8 @@ hello_world_primary_core:
         an on-board LED indicating that the secondary core is running.
       example_readme:
       - examples/multicore_examples/hello_world/readme.md
-      - examples/_boards/${board}/multicore_examples/hello_world/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/multicore_examples/hello_world/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core0:
     - -armgcc@debug

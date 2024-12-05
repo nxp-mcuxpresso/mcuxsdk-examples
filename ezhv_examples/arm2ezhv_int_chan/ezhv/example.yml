@@ -11,7 +11,7 @@ ezhv_arm2ezhv_int_chan_ezhv:
         the interrupt request will wakeup EZHV core from wait state.
       example_readme:
       - examples/ezhv_examples/arm2ezhv_int_chan/readme.md
-      - examples/_boards/${board}/ezhv_examples/arm2ezhv_int_chan/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/ezhv_examples/arm2ezhv_int_chan/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@ezhv: []

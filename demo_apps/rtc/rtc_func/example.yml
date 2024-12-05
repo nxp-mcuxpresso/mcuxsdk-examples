@@ -16,8 +16,8 @@ rtc_func:
         Use second interrupt function to display a digital time blink every second.
       example_readme:
       - examples/demo_apps/rtc/rtc_func/readme.md
-      - examples/_boards/${board}/demo_apps/rtc_func/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/rtc_func/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2a4s: []

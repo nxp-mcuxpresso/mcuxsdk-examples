@@ -17,5 +17,5 @@ ftm_pdb_adc16_peripheral:
         \ of pin, clock and peripheral."
       example_readme:
       - examples/demo_apps/ftm/ftm_pdb_adc16_peripheral/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

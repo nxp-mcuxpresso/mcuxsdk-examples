@@ -11,8 +11,8 @@ dev_audio_speaker_bm:
         play music using the device.
       example_readme:
       - examples/usb_examples/usb_device_audio_speaker/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_audio_speaker/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_audio_speaker/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_audio_speaker/usb_device_audio_speaker_change_level.jpg
       - examples/usb_examples/usb_device_audio_speaker/usb_device_audio_speaker_control_log.jpg
       - examples/usb_examples/usb_device_audio_speaker/usb_device_audio_speaker_device_manager.jpg

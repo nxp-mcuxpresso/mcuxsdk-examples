@@ -14,7 +14,7 @@ queued_spi_dma_b2b_transfer_master:
         slave in dma. (queued_spi slave uses dma to receive/send the data)
       example_readme:
       - examples/driver_examples/queued_spi/dma_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8200: []
     twrmc56f8400: []

@@ -11,7 +11,7 @@ temperature_measurement_1:
         note that this case just support iMX95 platform at present.
       example_readme:
       - examples/demo_apps/temperature_measurement_1/readme.md
-      - examples/_boards/${board}/demo_apps/temperature_measurement/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/temperature_measurement/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []

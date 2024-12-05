@@ -15,7 +15,7 @@ adc16_low_power_async_edma_peripheral:
         result touser and toggle LED.
       example_readme:
       - examples/demo_apps/adc16/adc16_low_power_async_edma_peripheral/readme.md
-      - examples/_boards/${board}/demo_apps/adc16_low_power_async_edma_peripheral/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/demo_apps/adc16_low_power_async_edma_peripheral/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []

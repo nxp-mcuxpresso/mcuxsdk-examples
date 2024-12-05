@@ -23,8 +23,8 @@ cmsis_ecspi_sdma_loopback_transfer:
         and the input pins are ignored.'
       example_readme:
       - examples/cmsis_driver_examples/ecspi/sdma_loopback_transfer/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/ecspi/sdma_loopback_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/ecspi/sdma_loopback_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mm: []
     evkmimx8mn:

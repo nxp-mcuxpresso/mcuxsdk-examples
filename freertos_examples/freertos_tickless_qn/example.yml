@@ -16,5 +16,5 @@ freertos_tickless_qn:
         timer module.
       example_readme:
       - examples/freertos_examples/freertos_tickless_qn/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

@@ -15,8 +15,8 @@ mmccard_polling:
         to high speed timing restriction)
       example_readme:
       - examples/sdmmc_examples/mmccard_polling/readme.md
-      - examples/_boards/${board}/sdmmc_examples/mmccard_polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/sdmmc_examples/mmccard_polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     lpcxpresso54628: []

@@ -19,8 +19,8 @@ cmsis_i2c_read_accel_value_transfer:
         on PC throughthe virtual serial port on board.'
       example_readme:
       - examples/cmsis_driver_examples/i2c/read_accel_value_transfer/readme.md
-      - examples/_boards/${board}/cmsis_driver_examples/i2c/read_accel_value_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/cmsis_driver_examples/i2c/read_accel_value_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk22f: []
     frdmk32l2b: []

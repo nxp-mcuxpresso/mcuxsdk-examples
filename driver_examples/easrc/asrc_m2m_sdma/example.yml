@@ -12,8 +12,8 @@ easrc_m2m_sdma:
         channel.
       example_readme:
       - examples/driver_examples/easrc/asrc_m2m_sdma/readme.md
-      - examples/_boards/${board}/driver_examples/asrc/asrc_m2m_sdma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/asrc/asrc_m2m_sdma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mn:
     - -armgcc@debug

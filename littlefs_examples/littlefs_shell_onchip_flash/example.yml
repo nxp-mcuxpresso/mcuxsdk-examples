@@ -10,8 +10,8 @@ littlefs_shell_onchip_flash:
       brief: Demonstrates littlefs functionality by commands executed from shell.
       example_readme:
       - examples/littlefs_examples/littlefs_shell_onchip_flash/readme.md
-      - examples/_boards/${board}/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa156: []
     frdmmcxa166: []

@@ -11,8 +11,8 @@ fmstr_example_net:
       category: FreeMASTER_examples
       example_readme:
       - examples/freemaster_examples/fmstr_example_net/readme.md
-      - examples/_boards/${board}/freemaster_examples/fmstr_net/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/freemaster_examples/fmstr_net/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       name: fmstr_example_net${core_id_suffix_name}
     meta_path: examples/freemaster_examples/fmstr_example_net
     project-root-path: boards/${board}/freemaster_examples/fmstr_net/${multicore_foldername}

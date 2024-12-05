@@ -11,5 +11,5 @@ cns_adc_temperature_measurement:
         temperature sensor.
       example_readme:
       - examples/driver_examples/cns_adc/temperature_measurement/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

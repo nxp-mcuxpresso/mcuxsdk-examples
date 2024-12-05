@@ -14,8 +14,8 @@ spi_interrupt_b2b_transfer_master:
         example checks if the data received from slave is correct.
       example_readme:
       - examples/driver_examples/spi/interrupt_b2b_transfer/master/readme.md
-      - examples/_boards/${board}/driver_examples/spi/interrupt_b2b_transfer/master/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/spi/interrupt_b2b_transfer/master/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l2b: []
     frdmke02z40m: []

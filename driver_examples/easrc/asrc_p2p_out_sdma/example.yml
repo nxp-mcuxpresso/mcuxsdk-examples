@@ -11,8 +11,8 @@ easrc_p2p_out_sdma:
         :In this example, one asrc instance convert audio data and push to sai directly.
       example_readme:
       - examples/driver_examples/easrc/asrc_p2p_out_sdma/readme.md
-      - examples/_boards/${board}/driver_examples/asrc/asrc_p2p_out_sdma/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/asrc/asrc_p2p_out_sdma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimx8mn:
     - -armgcc@debug

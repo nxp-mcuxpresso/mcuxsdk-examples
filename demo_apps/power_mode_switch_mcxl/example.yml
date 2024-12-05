@@ -9,5 +9,5 @@ power_mode_switch_mcxl:
       brief: This example demonstrate features of low power modes.
       example_readme:
       - examples/demo_apps/power_mode_switch_mcxl/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

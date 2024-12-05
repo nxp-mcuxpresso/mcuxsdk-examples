@@ -12,8 +12,8 @@ sai_edma_record_playback:
         playbacks the audio data.'
       example_readme:
       - examples/driver_examples/sai/edma_record_playback/readme.md
-      - examples/_boards/${board}/driver_examples/sai/edma_record_playback/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sai/edma_record_playback/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []

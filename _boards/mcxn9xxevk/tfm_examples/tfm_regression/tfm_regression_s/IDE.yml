@@ -5,13 +5,13 @@
 
 flash_programming_file:
   files:
-  - source: examples/_boards/${board}/tfm_examples/tfm_regression/tfm_regression_s/tfm_regression_flashdownload.ini
+  - source: ${board_root}/${board}/tfm_examples/tfm_regression/tfm_regression_s/tfm_regression_flashdownload.ini
     attribute: flash_programming_file
     toolchains: mdk
     targets: debug release
 initialization_file:
   files:
-  - source: examples/_boards/${board}/tfm_examples/tfm_regression/tfm_regression_s/tfm_regression_flashdebug.ini
+  - source: ${board_root}/${board}/tfm_examples/tfm_regression/tfm_regression_s/tfm_regression_flashdebug.ini
     attribute: initialization_file
     toolchains: mdk
     targets: debug release

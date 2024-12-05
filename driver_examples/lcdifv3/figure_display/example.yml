@@ -12,5 +12,5 @@ lcdifv3_figure_display:
         on panel
       example_readme:
       - examples/driver_examples/lcdifv3/figure_display/readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

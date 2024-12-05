@@ -11,8 +11,8 @@ dev_video_virtual_camera_lite_bm:
         the video of the device by using a PC test tool.
       example_readme:
       - examples/usb_examples/usb_device_video_virtual_camera_lite/readme.md
-      - examples/_boards/${board}/usb_examples/usb_device_video_virtual_camera_lite/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_device_video_virtual_camera_lite/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_device_video_virtual_camera_lite/usb_device_video_test_tool_attached.jpg
       - examples/usb_examples/usb_device_video_virtual_camera_lite/usb_device_video_test_tool_web.jpg
       - examples/usb_examples/usb_device_video_virtual_camera_lite/usb_device_video_test_tool_windows.jpg

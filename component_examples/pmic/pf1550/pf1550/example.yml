@@ -16,7 +16,7 @@ pf1550:
         sure that the battery is not over-charged.
       example_readme:
       - examples/component_examples/pmic/pf1550/pf1550/readme.md
-      - examples/_boards/${board}/driver_examples/pf1550/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/pf1550/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []

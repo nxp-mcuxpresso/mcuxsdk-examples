@@ -11,7 +11,7 @@ dsp_mu_polling:
         DSP image.
       example_readme:
       - examples/dsp_examples/mu_polling/readme.md
-      - examples/_boards/${board}/dsp_examples/mu_polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/dsp_examples/mu_polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core1: []

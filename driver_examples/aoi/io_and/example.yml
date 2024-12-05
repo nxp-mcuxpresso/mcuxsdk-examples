@@ -10,8 +10,8 @@ aoi_io_and:
       brief: This example demos the AOI uses two IO, the AOI_OUT = (IO0 & IO1).
       example_readme:
       - examples/driver_examples/aoi/io_and/readme.md
-      - examples/_boards/${board}/driver_examples/aoi/io_and/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/aoi/io_and/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa153: []
     frdmmcxa156: []

@@ -15,8 +15,8 @@ tsi_v6_mutual_cap:
         scan using interrupt method.
       example_readme:
       - examples/driver_examples/tsi/tsi_v6/mutual_cap/readme.md
-      - examples/_boards/${board}/driver_examples/tsi_v6/mutual_cap/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/tsi_v6/mutual_cap/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

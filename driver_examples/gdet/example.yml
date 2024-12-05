@@ -11,8 +11,8 @@ gdet:
         SDK software to show funcionality of Glitch Detect (GDET) module.
       example_readme:
       - examples/driver_examples/gdet/readme.md
-      - examples/_boards/${board}/driver_examples/gdet/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/gdet/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []

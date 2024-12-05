@@ -22,8 +22,8 @@ sema42_dualcore_secondary_core:
         the success logafter it received the flag.
       example_readme:
       - examples/driver_examples/sema42/dual_core/readme.md
-      - examples/_boards/${board}/driver_examples/sema42/dual_core/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/sema42/dual_core/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmk32l3a6@cm0plus: []
     frdmmcxn947@cm33_core1: []

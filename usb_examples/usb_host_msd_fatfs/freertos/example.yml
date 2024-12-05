@@ -11,8 +11,8 @@ host_msd_fatfs_freertos:
         application executes some FatFs APIs to test the attached device.
       example_readme:
       - examples/usb_examples/usb_host_msd_fatfs/readme.md
-      - examples/_boards/${board}/usb_examples/usb_host_msd_fatfs/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_host_msd_fatfs/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
       - examples/usb_examples/usb_host_msd_fatfs/host_msd_fatfs_output.jpg
       - examples/usb_examples/usb_host_msd_fatfs/host_msd_fatfs_throughput_output.jpg
   boards:

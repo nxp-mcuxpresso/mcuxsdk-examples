@@ -13,8 +13,8 @@ k4w1_romapi_flash:
         authentication api. (4)bootloader api
       example_readme:
       - examples/driver_examples/fsl_romapi/romapi_flash/readme.md
-      - examples/_boards/${board}/driver_examples/fsl_romapi/romapi_flash/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/fsl_romapi/romapi_flash/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
     k32w148evk:

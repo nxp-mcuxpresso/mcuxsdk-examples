@@ -14,8 +14,8 @@ dma3_scatter_gather:
         and further development.
       example_readme:
       - examples/driver_examples/dma3/scatter_gather/readme.md
-      - examples/_boards/${board}/driver_examples/edma/scatter_gather/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/edma/scatter_gather/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

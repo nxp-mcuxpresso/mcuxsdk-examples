@@ -9,8 +9,8 @@ soem_servo_motor_bm:
       brief: SOEM servo motor netc example
       example_readme:
       - examples/soem_examples/soem_servo_motor/bm/readme.md
-      - examples/_boards/${board}/soem_examples/soem_servo_motor/bm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/soem_examples/soem_servo_motor/bm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@debug

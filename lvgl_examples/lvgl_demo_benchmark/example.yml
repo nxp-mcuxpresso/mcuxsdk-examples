@@ -10,8 +10,8 @@ lvgl_demo_benchmark:
       brief: A demo application runs different functions for benchmark test.
       example_readme:
       - examples/lvgl_examples/lvgl_demo_benchmark/readme.md
-      - examples/_boards/${board}/lvgl_examples/lvgl_examples_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/lvgl_examples/lvgl_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050:
     - +armgcc@flexspi_nor_sdram_debug

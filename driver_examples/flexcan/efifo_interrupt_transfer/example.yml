@@ -20,8 +20,8 @@ flexcan_efifo_interrupt_transfer:
         4 CAN FD messages.
       example_readme:
       - examples/driver_examples/flexcan/efifo_interrupt_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexcan/efifo_interrupt_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []

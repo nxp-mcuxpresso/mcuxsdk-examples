@@ -20,7 +20,7 @@ hscmp_polling:
         zero.
       example_readme:
       - examples/driver_examples/hscmp/polling/readme.md
-      - examples/_boards/${board}/driver_examples/hscmp/polling/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/hscmp/polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso55s36: []

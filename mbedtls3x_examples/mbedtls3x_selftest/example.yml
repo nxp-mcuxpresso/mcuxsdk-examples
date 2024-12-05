@@ -11,8 +11,8 @@ mbedtls3x_selftest:
         testing and prints results to the terminal.
       example_readme:
       - examples/mbedtls3x_examples/mbedtls3x_selftest/readme.md
-      - examples/_boards/${board}/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33:
     - -armgcc@debug

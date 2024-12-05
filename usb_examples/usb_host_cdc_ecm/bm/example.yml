@@ -13,8 +13,8 @@ host_cdc_ecm_bm:
         port.
       example_readme:
       - examples/usb_examples/usb_host_cdc_ecm/readme.md
-      - examples/_boards/${board}/usb_examples/usb_host_cdc_ecm/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/usb_examples/usb_host_cdc_ecm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn947@cm33_core0: []
     frdmrw612: []

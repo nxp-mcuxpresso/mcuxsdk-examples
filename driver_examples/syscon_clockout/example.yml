@@ -13,8 +13,8 @@ syscon_clockout:
         can observe the selected internal clock signal.
       example_readme:
       - examples/driver_examples/syscon_clockout/readme.md
-      - examples/_boards/${board}/driver_examples/clockout/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/clockout/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []

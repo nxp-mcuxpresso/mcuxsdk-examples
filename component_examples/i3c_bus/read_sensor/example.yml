@@ -12,7 +12,7 @@ i3c_bus_master_read_icm42688p:
         slave.
       example_readme:
       - examples/component_examples/i3c_bus/read_sensor/readme.md
-      - examples/_boards/${board}/component_examples/i3c_bus/read_sensor/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/component_examples/i3c_bus/read_sensor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt685audevk@cm33: []

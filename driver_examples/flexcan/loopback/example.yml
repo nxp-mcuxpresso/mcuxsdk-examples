@@ -16,8 +16,8 @@ flexcan_loopback:
         print out the Message payload to terminal.
       example_readme:
       - examples/driver_examples/flexcan/loopback/readme.md
-      - examples/_boards/${board}/driver_examples/flexcan/loopback/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexcan/loopback/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evk9mimx8ulp@cm33: []
     evkbimxrt1050: []

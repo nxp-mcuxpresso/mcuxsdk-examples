@@ -12,8 +12,8 @@ xrdc2:
         unaccessible, thenthe hardfault occurs.
       example_readme:
       - examples/driver_examples/xrdc2/readme.md
-      - examples/_boards/${board}/driver_examples/xrdc2/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/xrdc2/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
     evkbmimxrt1170@cm7: []

@@ -11,8 +11,8 @@ usart_sync_transfer_slave:
         in synchronous way.
       example_readme:
       - examples/driver_examples/flexcomm/usart/sync_transfer/slave/readme.md
-      - examples/_boards/${board}/driver_examples/usart/sync_transfer/slave/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/usart/sync_transfer/slave/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     lpcxpresso51u68: []
     lpcxpresso54628: []

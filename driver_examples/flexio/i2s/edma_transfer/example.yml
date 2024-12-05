@@ -12,8 +12,8 @@ flexio_i2s_edma_transfer:
         playbacks the recorded data at the same time using EDMA.
       example_readme:
       - examples/driver_examples/flexio/i2s/edma_transfer/readme.md
-      - examples/_boards/${board}/driver_examples/flexio/i2s/edma_transfer/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/driver_examples/flexio/i2s/edma_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
     evkbmimxrt1060: []
