@@ -15,5 +15,5 @@ mcux_add_include(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/i.MX/i.MX8ULP/MIMX8UD5/iar/MIMX8UD5xxx08_flash.icf
+    LINKER ${device_root}/i.MX/i.MX8ULP/MIMX8UD5/iar/MIMX8UD5xxx08_flash.icf
 )

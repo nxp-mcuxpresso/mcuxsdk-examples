@@ -21,13 +21,13 @@ mcux_add_linker_symbol(
 mcux_remove_armgcc_linker_script(
     TARGETS flash_debug flash_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
 
 mcux_remove_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram.ld
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram.ld
 )
 
 mcux_add_armgcc_linker_script(

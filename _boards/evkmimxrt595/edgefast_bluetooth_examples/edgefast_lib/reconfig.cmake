@@ -63,21 +63,21 @@ mcux_add_mdk_configuration(
 )
 mcux_remove_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/RT/RT500/MIMXRT595S/iar/MIMXRT595Sxxxx_cm33_flash.icf
+  LINKER ${device_root}/RT/RT500/MIMXRT595S/iar/MIMXRT595Sxxxx_cm33_flash.icf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_remove_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/RT/RT500/MIMXRT595S/arm/MIMXRT595Sxxxx_cm33_flash.scf
+  LINKER ${device_root}/RT/RT500/MIMXRT595S/arm/MIMXRT595Sxxxx_cm33_flash.scf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_remove_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/RT/RT500/MIMXRT595S/gcc/MIMXRT595Sxxxx_cm33_flash.ld
+  LINKER ${device_root}/RT/RT500/MIMXRT595S/gcc/MIMXRT595Sxxxx_cm33_flash.ld
   TARGETS
     flash_debug
     flash_release

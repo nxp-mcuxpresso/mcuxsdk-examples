@@ -104,7 +104,7 @@ mcux_add_source(
 
 mcux_remove_armgcc_linker_script(
   BASE_PATH "${SdkRootDirPath}"
-  LINKER "devices/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_sdram.ld"
+  LINKER "${device_root}/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_sdram.ld"
   TARGETS
     "sdram_debug"
     "sdram_release"

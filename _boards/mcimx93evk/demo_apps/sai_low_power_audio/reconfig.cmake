@@ -30,12 +30,12 @@ mcux_add_macro(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/i.MX/i.MX93/MIMX9352/iar/MIMX9352xxxxM_ram.icf
+    LINKER ${device_root}/i.MX/i.MX93/MIMX9352/iar/MIMX9352xxxxM_ram.icf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/i.MX/i.MX93/MIMX9352/gcc/MIMX9352xxxxM_ram.ld
+    LINKER ${device_root}/i.MX/i.MX93/MIMX9352/gcc/MIMX9352xxxxM_ram.ld
 )
 
 # Add or remove Linker File Configurations

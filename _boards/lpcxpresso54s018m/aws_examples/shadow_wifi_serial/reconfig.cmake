@@ -36,15 +36,15 @@ mcux_remove_armgcc_configuration(
 
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/LPC/LPC54000/LPC54S018M/gcc/LPC54S018J4M_spifi_flash.ld
+    LINKER ${device_root}/LPC/LPC54000/LPC54S018M/gcc/LPC54S018J4M_spifi_flash.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/LPC/LPC54000/LPC54S018M/iar/LPC54S018J4M_spifi_flash.icf
+    LINKER ${device_root}/LPC/LPC54000/LPC54S018M/iar/LPC54S018J4M_spifi_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/LPC/LPC54000/LPC54S018M/arm/LPC54S018J4M_spifi_flash.scf
+    LINKER ${device_root}/LPC/LPC54000/LPC54S018M/arm/LPC54S018J4M_spifi_flash.scf
 )
 
 

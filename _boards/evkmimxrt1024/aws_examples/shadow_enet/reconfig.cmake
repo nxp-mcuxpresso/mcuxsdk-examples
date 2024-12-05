@@ -26,17 +26,17 @@ mcux_remove_armgcc_configuration(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER devices/RT/RT1020/MIMXRT1024/iar/MIMXRT1024xxxxx_flexspi_nor_sdram.icf
+    LINKER ${device_root}/RT/RT1020/MIMXRT1024/iar/MIMXRT1024xxxxx_flexspi_nor_sdram.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER devices/RT/RT1020/MIMXRT1024/arm/MIMXRT1024xxxxx_flexspi_nor_sdram.scf
+    LINKER ${device_root}/RT/RT1020/MIMXRT1024/arm/MIMXRT1024xxxxx_flexspi_nor_sdram.scf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER devices/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_flexspi_nor_sdram.ld
+    LINKER ${device_root}/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_flexspi_nor_sdram.ld
 )
 
 

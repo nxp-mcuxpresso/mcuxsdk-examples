@@ -101,12 +101,12 @@ mcux_remove_iar_configuration(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug
-    LINKER devices/LPC/LPC5500/LPC55S36/iar/LPC55S36_flash.icf
+    LINKER ${device_root}/LPC/LPC5500/LPC55S36/iar/LPC55S36_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug
-    LINKER devices/LPC/LPC5500/LPC55S36/arm/LPC55S36_flash.scf
+    LINKER ${device_root}/LPC/LPC5500/LPC55S36/arm/LPC55S36_flash.scf
 )
 
 # Add or remove Linker File Configurations

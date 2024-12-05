@@ -7,13 +7,13 @@ mcux_add_include(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device}
+    BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}
     SOURCES gcc/startup_${device}.S
 )
 
-mcux_add_source(BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device} SOURCES ${device}.h)
-mcux_add_source(BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}.h)
-mcux_add_source(BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}.c)
+mcux_add_source(BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device} SOURCES ${device}.h)
+mcux_add_source(BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}.h)
+mcux_add_source(BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}.c)
 
 mcux_add_source(BASE_PATH ${SdkRootDirPath}/middleware/wireless/zigbee/platform/${CONFIG_ZB_PLATFORM}
                 SOURCES FreeRTOSConfig.h)

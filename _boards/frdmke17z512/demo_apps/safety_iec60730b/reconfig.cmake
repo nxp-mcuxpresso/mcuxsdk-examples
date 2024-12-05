@@ -94,12 +94,12 @@ mcux_remove_iar_configuration(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug
-    LINKER devices/Kinetis/KE/MKE17Z9/iar/MKE17Z512xxx9_flash.icf
+    LINKER ${device_root}/Kinetis/KE/MKE17Z9/iar/MKE17Z512xxx9_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug
-    LINKER devices/Kinetis/KE/MKE17Z9/arm/MKE17Z512xxx9_flash.scf
+    LINKER ${device_root}/Kinetis/KE/MKE17Z9/arm/MKE17Z512xxx9_flash.scf
 )
 
 # Add or remove Linker File Configurations

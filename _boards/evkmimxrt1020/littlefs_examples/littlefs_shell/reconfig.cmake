@@ -24,13 +24,13 @@ mcux_add_mdk_configuration(
 mcux_remove_armgcc_linker_script(
 		TARGETS debug release sdram_debug sdram_release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices/RT/RT1020/MIMXRT1021/gcc/MIMXRT1021xxxxx_flexspi_nor.ld
+        LINKER ${device_root}/RT/RT1020/MIMXRT1021/gcc/MIMXRT1021xxxxx_flexspi_nor.ld
 )
 
 mcux_remove_armgcc_linker_script(
 		TARGETS debug release sdram_debug sdram_release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices/RT/RT1020/MIMXRT1021/gcc/MIMXRT1021xxxxx_ram.ld
+        LINKER ${device_root}/RT/RT1020/MIMXRT1021/gcc/MIMXRT1021xxxxx_ram.ld
 )
 
 mcux_add_armgcc_linker_script(

@@ -61,7 +61,7 @@ mcux_remove_macro(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug
-    LINKER devices/Wireless/RW/RW612/iar/RW612_ram.icf
+    LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_ram.icf
 )
 
 # Add or remove Linker File Configurations

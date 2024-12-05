@@ -77,32 +77,32 @@ mcux_remove_macro(
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/Wireless/RW/RW612/gcc/RW612_ram.ld
+    LINKER ${device_root}/Wireless/RW/RW612/gcc/RW612_ram.ld
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER devices/Wireless/RW/RW612/gcc/RW612_flash.ld
+    LINKER ${device_root}/Wireless/RW/RW612/gcc/RW612_flash.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/Wireless/RW/RW612/iar/RW612_ram.icf
+    LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_ram.icf
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER devices/Wireless/RW/RW612/iar/RW612_flash.icf
+    LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/Wireless/RW/RW612/arm/RW612_ram.scf
+    LINKER ${device_root}/Wireless/RW/RW612/arm/RW612_ram.scf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER devices/Wireless/RW/RW612/arm/RW612_flash.scf
+    LINKER ${device_root}/Wireless/RW/RW612/arm/RW612_flash.scf
 )
 
 # Add or remove Linker File Configurations

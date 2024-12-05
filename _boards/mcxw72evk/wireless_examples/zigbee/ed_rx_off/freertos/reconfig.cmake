@@ -7,13 +7,13 @@ mcux_add_include(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device}
+    BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}
     SOURCES gcc/startup_${device}_cm33_core0.S
 )
 
-mcux_add_source(BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device} SOURCES ${device}_cm33_core0.h)
-mcux_add_source(BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}_cm33_core0.h)
-mcux_add_source(BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}_cm33_core0.c)
+mcux_add_source(BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device} SOURCES ${device}_cm33_core0.h)
+mcux_add_source(BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}_cm33_core0.h)
+mcux_add_source(BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device} SOURCES system_${device}_cm33_core0.c)
 
 #zigbee applications defines
 mcux_add_configuration(

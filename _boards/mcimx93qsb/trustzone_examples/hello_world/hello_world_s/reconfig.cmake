@@ -6,13 +6,13 @@
 mcux_add_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_${core_id}_ram_s.ld
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_${core_id}_ram_s.ld
 )
 
 mcux_add_iar_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER devices/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_${core_id}_ram_s.icf
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_${core_id}_ram_s.icf
 )
 
 mcux_add_source(

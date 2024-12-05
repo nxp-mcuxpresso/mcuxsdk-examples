@@ -19,31 +19,31 @@ mcux_add_include(
 mcux_add_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram_s.ld
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram_s.ld
 )
 
 mcux_add_mdk_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram_s.scf
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram_s.scf
 )
 
 mcux_add_iar_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram_s.icf
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram_s.icf
 )
 
 mcux_add_armgcc_linker_script(
     TARGETS flexspi_nor_debug flexspi_nor_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor_s.ld
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor_s.ld
 )
 
 mcux_add_iar_linker_script(
     TARGETS flexspi_nor_debug flexspi_nor_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor_s.icf
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flexspi_nor_s.icf
 )
 
 mcux_add_macro(

@@ -11,36 +11,36 @@ if (CONFIG_MCUX_PRJSEG_module.board.suite)
     mcux_remove_iar_linker_script(
             TARGETS debug release
             BASE_PATH ${SdkRootDirPath}
-            LINKER devices/LPC/LPC54000/LPC54S018/iar/LPC54S018_flash.icf
+            LINKER ${device_root}/LPC/LPC54000/LPC54S018/iar/LPC54S018_flash.icf
     )
 
     mcux_remove_armgcc_linker_script(
             TARGETS debug release
             BASE_PATH ${SdkRootDirPath}
-            LINKER devices/LPC/LPC54000/LPC54S018/gcc/LPC54S018_flash.ld
+            LINKER ${device_root}/LPC/LPC54000/LPC54S018/gcc/LPC54S018_flash.ld
     )
 
     mcux_remove_mdk_linker_script(
             TARGETS debug release
             BASE_PATH ${SdkRootDirPath}
-            LINKER devices/LPC/LPC54000/LPC54S018/arm/LPC54S018_flash.scf
+            LINKER ${device_root}/LPC/LPC54000/LPC54S018/arm/LPC54S018_flash.scf
     )
 
     mcux_add_iar_linker_script(
             TARGETS debug release
             BASE_PATH ${SdkRootDirPath}
-            LINKER devices/LPC/LPC54000/LPC54S018/iar/LPC54S018_spifi_flash.icf
+            LINKER ${device_root}/LPC/LPC54000/LPC54S018/iar/LPC54S018_spifi_flash.icf
     )
 
     mcux_add_armgcc_linker_script(
             TARGETS debug release
             BASE_PATH ${SdkRootDirPath}
-            LINKER devices/LPC/LPC54000/LPC54S018/gcc/LPC54S018_spifi_flash.ld
+            LINKER ${device_root}/LPC/LPC54000/LPC54S018/gcc/LPC54S018_spifi_flash.ld
     )
 
     mcux_add_mdk_linker_script(
             TARGETS debug release
             BASE_PATH ${SdkRootDirPath}
-            LINKER devices/LPC/LPC54000/LPC54S018/arm/LPC54S018_spifi_flash.scf
+            LINKER ${device_root}/LPC/LPC54000/LPC54S018/arm/LPC54S018_spifi_flash.scf
     )
 endif()

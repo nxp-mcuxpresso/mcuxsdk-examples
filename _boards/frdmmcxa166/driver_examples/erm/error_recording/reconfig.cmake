@@ -3,17 +3,17 @@
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXA/MCXA166/iar/MCXA166_flash.icf
+    LINKER ${device_root}/MCX/MCXA/MCXA166/iar/MCXA166_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXA/MCXA166/arm/MCXA166_flash.scf
+    LINKER ${device_root}/MCX/MCXA/MCXA166/arm/MCXA166_flash.scf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXA/MCXA166/gcc/MCXA166_flash.ld
+    LINKER ${device_root}/MCX/MCXA/MCXA166/gcc/MCXA166_flash.ld
 )
 
 # Add or remove Linker File Configurations

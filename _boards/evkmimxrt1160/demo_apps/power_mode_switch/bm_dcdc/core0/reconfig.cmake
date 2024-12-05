@@ -3,17 +3,17 @@
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/RT/RT1160/MIMXRT1166/iar/MIMXRT1166xxxxx_cm7_ram.icf
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/iar/MIMXRT1166xxxxx_cm7_ram.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/RT/RT1160/MIMXRT1166/arm/MIMXRT1166xxxxx_cm7_ram.scf
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/arm/MIMXRT1166xxxxx_cm7_ram.scf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/RT/RT1160/MIMXRT1166/gcc/MIMXRT1166xxxxx_cm7_ram.ld
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/gcc/MIMXRT1166xxxxx_cm7_ram.ld
 )
 
 # Add or remove Linker File Configurations

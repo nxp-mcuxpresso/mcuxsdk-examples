@@ -64,17 +64,17 @@ mcux_remove_macro(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS sdram_txt_debug sdram_txt_release
-    LINKER devices/RT/RT1060/MIMXRT1062/iar/MIMXRT1062xxxxx_sdram_txt.icf
+    LINKER ${device_root}/RT/RT1060/MIMXRT1062/iar/MIMXRT1062xxxxx_sdram_txt.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS sdram_txt_debug sdram_txt_release
-    LINKER devices/RT/RT1060/MIMXRT1062/arm/MIMXRT1062xxxxx_sdram_txt.scf
+    LINKER ${device_root}/RT/RT1060/MIMXRT1062/arm/MIMXRT1062xxxxx_sdram_txt.scf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS sdram_txt_debug sdram_txt_release
-    LINKER devices/RT/RT1060/MIMXRT1062/gcc/MIMXRT1062xxxxx_sdram_txt.ld
+    LINKER ${device_root}/RT/RT1060/MIMXRT1062/gcc/MIMXRT1062xxxxx_sdram_txt.ld
 )
 
 # Add or remove Linker File Configurations

@@ -35,17 +35,17 @@ mcux_remove_armgcc_configuration(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXN/MCXN547/iar/MCXN547_cm33_core0_flash.icf
+    LINKER ${device_root}/MCX/MCXN/MCXN547/iar/MCXN547_cm33_core0_flash.icf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXN/MCXN547/gcc/MCXN547_cm33_core0_flash.ld
+    LINKER ${device_root}/MCX/MCXN/MCXN547/gcc/MCXN547_cm33_core0_flash.ld
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXN/MCXN547/arm/MCXN547_cm33_core0_flash.scf
+    LINKER ${device_root}/MCX/MCXN/MCXN547/arm/MCXN547_cm33_core0_flash.scf
 )
 
 mcux_add_iar_linker_script(

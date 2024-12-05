@@ -36,7 +36,7 @@ mcux_add_macro(ECC_RAM_STCM8_INIT=1)
 #mcux_remove_iar_linker_script(
 #        TARGETS debug release
 #        BASE_PATH ${SdkRootDirPath}
-#        LINKER devices/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+#        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
 #)
 
 #mcux_add_iar_linker_script(

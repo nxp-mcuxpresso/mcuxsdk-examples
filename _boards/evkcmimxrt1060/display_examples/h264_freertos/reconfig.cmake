@@ -44,17 +44,17 @@ mcux_remove_armgcc_configuration(
 mcux_remove_iar_linker_script(
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/RT/RT1060/MIMXRT1062/iar/MIMXRT1062xxxxx_flexspi_nor_sdram.icf
+    LINKER ${device_root}/RT/RT1060/MIMXRT1062/iar/MIMXRT1062xxxxx_flexspi_nor_sdram.icf
 )
 mcux_remove_mdk_linker_script(
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/RT/RT1060/MIMXRT1062/arm/MIMXRT1062xxxxx_flexspi_nor_sdram.scf
+    LINKER ${device_root}/RT/RT1060/MIMXRT1062/arm/MIMXRT1062xxxxx_flexspi_nor_sdram.scf
 )
 mcux_remove_armgcc_linker_script(
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/RT/RT1060/MIMXRT1062/gcc/MIMXRT1062xxxxx_flexspi_nor_sdram.ld
+    LINKER ${device_root}/RT/RT1060/MIMXRT1062/gcc/MIMXRT1062xxxxx_flexspi_nor_sdram.ld
 )
 
 # Add or remove Linker File Configurations

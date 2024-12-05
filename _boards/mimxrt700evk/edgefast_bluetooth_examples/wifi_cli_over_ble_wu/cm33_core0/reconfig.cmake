@@ -57,21 +57,21 @@ mcux_add_mdk_linker_script(
 )
 mcux_remove_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/RT/RT700/MIMXRT798S/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
+  LINKER ${device_root}/RT/RT700/MIMXRT798S/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
   TARGETS
     flash_debug
     flash_release
 )
 mcux_remove_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/RT/RT700/MIMXRT798S/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
+  LINKER ${device_root}/RT/RT700/MIMXRT798S/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_remove_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/RT/RT700/MIMXRT798S/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
+  LINKER ${device_root}/RT/RT700/MIMXRT798S/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
   TARGETS
     flash_debug
     flash_release

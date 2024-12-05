@@ -42,7 +42,7 @@ mcux_add_macro(
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER devices/Wireless/RW/RW612/gcc/RW612_flash.ld
+    LINKER ${device_root}/Wireless/RW/RW612/gcc/RW612_flash.ld
 )
 
 # Add or remove Linker File Configurations

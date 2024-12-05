@@ -70,17 +70,17 @@ mcux_add_macro(
 mcux_remove_iar_linker_script(
        TARGETS flash_debug flash_release
        BASE_PATH ${SdkRootDirPath}
-       LINKER devices/${soc_portfolio}/${soc_series}/${device}/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
+       LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
 )
 mcux_remove_mdk_linker_script(
        TARGETS flash_debug flash_release
        BASE_PATH ${SdkRootDirPath}
-       LINKER devices/${soc_portfolio}/${soc_series}/${device}/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
+       LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
 )
 mcux_remove_armgcc_linker_script(
        TARGETS flash_debug flash_release
        BASE_PATH ${SdkRootDirPath}
-       LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
+       LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
 )
 
 mcux_add_iar_linker_script(

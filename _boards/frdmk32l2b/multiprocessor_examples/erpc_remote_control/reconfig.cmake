@@ -6,13 +6,13 @@
 # Here example requires to use the RTE_Device.h header file in this folder.
 # Remove the automaticaly added RTE_Device.h by device and add new one bellow remove statements.
 mcux_project_remove_source(
-    BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device}/template
+    BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}/template
     SOURCES RTE_Device.h
     CONFIG true
 )
 
 mcux_project_remove_include(
-    BASE_PATH ${SdkRootDirPath}/devices/${soc_portfolio}/${soc_series}/${device}/template
+    BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}/template
     TARGET_FILES RTE_Device.h
     INCLUDES .
 )

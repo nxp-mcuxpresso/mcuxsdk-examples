@@ -18,7 +18,7 @@ mcux_remove_iar_configuration(
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S69/gcc/LPC55S69_cm33_core0_flash.ld
+    LINKER ${device_root}/LPC/LPC5500/LPC55S69/gcc/LPC55S69_cm33_core0_flash.ld
 )
 
 # Add or remove Linker File Configurations

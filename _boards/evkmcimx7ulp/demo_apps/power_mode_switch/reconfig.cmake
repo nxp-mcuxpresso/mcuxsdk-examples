@@ -62,22 +62,22 @@ mcux_add_macro(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/i.MX/i.MX7ULP/MCIMX7U5/iar/MCIMX7U5xxxxx_ram.icf
+    LINKER ${device_root}/i.MX/i.MX7ULP/MCIMX7U5/iar/MCIMX7U5xxxxx_ram.icf
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER devices/i.MX/i.MX7ULP/MCIMX7U5/iar/MCIMX7U5xxxxx_flash.icf
+    LINKER ${device_root}/i.MX/i.MX7ULP/MCIMX7U5/iar/MCIMX7U5xxxxx_flash.icf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/i.MX/i.MX7ULP/MCIMX7U5/gcc/MCIMX7U5xxxxx_ram.ld
+    LINKER ${device_root}/i.MX/i.MX7ULP/MCIMX7U5/gcc/MCIMX7U5xxxxx_ram.ld
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER devices/i.MX/i.MX7ULP/MCIMX7U5/gcc/MCIMX7U5xxxxx_flash.ld
+    LINKER ${device_root}/i.MX/i.MX7ULP/MCIMX7U5/gcc/MCIMX7U5xxxxx_flash.ld
 )
 
 # Add or remove Linker File Configurations

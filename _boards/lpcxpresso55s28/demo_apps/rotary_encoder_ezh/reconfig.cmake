@@ -22,7 +22,7 @@ mcux_add_macro(
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S28/arm/LPC55S28_flash.scf
+    LINKER ${device_root}/LPC/LPC5500/LPC55S28/arm/LPC55S28_flash.scf
 )
 
 # Add or remove Linker File Configurations

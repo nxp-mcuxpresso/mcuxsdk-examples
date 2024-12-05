@@ -51,21 +51,21 @@ mcux_add_mdk_configuration(
 )
 mcux_remove_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/Wireless/RW/RW612/iar/RW612_flash.icf
+  LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_flash.icf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_remove_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/Wireless/RW/RW612/arm/RW612_flash.scf
+  LINKER ${device_root}/Wireless/RW/RW612/arm/RW612_flash.scf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_remove_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER devices/Wireless/RW/RW612/gcc/RW612_flash.ld
+  LINKER ${device_root}/Wireless/RW/RW612/gcc/RW612_flash.ld
   TARGETS
     flash_debug
     flash_release

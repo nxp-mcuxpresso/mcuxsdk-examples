@@ -62,17 +62,17 @@ mcux_convert_binary(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S69/iar/LPC55S69_cm33_core0_flash.icf
+    LINKER ${device_root}/LPC/LPC5500/LPC55S69/iar/LPC55S69_cm33_core0_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S69/arm/LPC55S69_cm33_core0_flash.scf
+    LINKER ${device_root}/LPC/LPC5500/LPC55S69/arm/LPC55S69_cm33_core0_flash.scf
 )
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S69/gcc/LPC55S69_cm33_core0_flash.ld
+    LINKER ${device_root}/LPC/LPC5500/LPC55S69/gcc/LPC55S69_cm33_core0_flash.ld
 )
 
 
@@ -80,15 +80,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S69/iar/LPC55S69_cm33_core0_flash_s.icf
+    LINKER ${device_root}/LPC/LPC5500/LPC55S69/iar/LPC55S69_cm33_core0_flash_s.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S69/gcc/LPC55S69_cm33_core0_flash_s.ld
+    LINKER ${device_root}/LPC/LPC5500/LPC55S69/gcc/LPC55S69_cm33_core0_flash_s.ld
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/LPC/LPC5500/LPC55S69/arm/LPC55S69_cm33_core0_flash_s.scf
+    LINKER ${device_root}/LPC/LPC5500/LPC55S69/arm/LPC55S69_cm33_core0_flash_s.scf
 )

@@ -8,19 +8,19 @@ mcux_add_mdk_configuration(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXA/MCXA153/iar/MCXA153_flash.icf
+    LINKER ${device_root}/MCX/MCXA/MCXA153/iar/MCXA153_flash.icf
 )
 
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXA/MCXA153/gcc/MCXA153_flash.ld
+    LINKER ${device_root}/MCX/MCXA/MCXA153/gcc/MCXA153_flash.ld
 )
 
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER devices/MCX/MCXA/MCXA153/arm/MCXA153_flash.csf
+    LINKER ${device_root}/MCX/MCXA/MCXA153/arm/MCXA153_flash.csf
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}

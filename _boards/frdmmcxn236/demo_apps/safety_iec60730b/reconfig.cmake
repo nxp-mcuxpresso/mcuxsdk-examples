@@ -102,12 +102,12 @@ mcux_remove_iar_configuration(
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug
-    LINKER devices/MCX/MCXN/MCXN236/iar/MCXN236_flash.icf
+    LINKER ${device_root}/MCX/MCXN/MCXN236/iar/MCXN236_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug
-    LINKER devices/MCX/MCXN/MCXN236/arm/MCXN236_flash.scf
+    LINKER ${device_root}/MCX/MCXN/MCXN236/arm/MCXN236_flash.scf
 )
 
 # Add or remove Linker File Configurations
