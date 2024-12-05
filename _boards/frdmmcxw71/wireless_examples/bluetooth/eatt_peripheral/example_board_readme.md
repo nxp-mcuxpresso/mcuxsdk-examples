@@ -6,7 +6,7 @@ Toolchain supported
 
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- Type-C USB cable
 - FRDM-MCXW71 Board
 - Personal Computer
 

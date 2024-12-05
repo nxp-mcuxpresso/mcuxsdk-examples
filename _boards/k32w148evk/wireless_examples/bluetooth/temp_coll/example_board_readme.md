@@ -23,7 +23,7 @@ To flash the board in case the sensor is put in deep sleep, press **WAKESW** or 
 
 Prepare the Demo
 ================
-1.  Connect a mini/micro USB cable between the PC host and the OpenSDA USB port on the board.
+1.  Connect a USB cable between the PC host and the OpenSDA USB port on the board.
 3.  Download the program to the target board.
 4.  Press the reset button on your board to begin running the demo.
 5.  Open a serial terminal application and use the following settings with the detected serial device:
