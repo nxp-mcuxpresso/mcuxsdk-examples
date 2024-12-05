@@ -6,7 +6,7 @@ include(${SdkRootDirPath}/arch/arm/target/ram.cmake)
 include(${SdkRootDirPath}/arch/arm/target/ext_flash.cmake)
 include(${SdkRootDirPath}/examples/_common/project_setting/arm_common.cmake)
 include(${SdkRootDirPath}/examples/_boards/imx95lp4xevk15/${core_id}/setting.cmake)
-
+include(${SdkRootDirPath}/examples/_common/project_segments/display_support/prjseg.cmake)
 
 # common sm hal configuration
 if (CONFIG_MCUX_PRJSEG_module.board.suite)

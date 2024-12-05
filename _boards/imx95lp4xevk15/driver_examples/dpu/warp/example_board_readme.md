@@ -25,13 +25,26 @@ Prepare the Demo
 4.  Download the program to the target board.
 5.  Launch the debugger in your IDE to begin running the example.
 
+Steps to configure the panels
+===============
+Default panel is MIPI DSI panel, default port is DPU_DI_MIPI, default setting for APP_DISPLAY_EXTERNAL_CONVERTOR is disabled
 Tips: The APP_DISPLAY_EXTERNAL_CONVERTOR can be set as 1 when you are using MIPI2HDMI card(ADV7535) only.
 
-In this function, the default port is MIPI DSI port. If you want to change panel, please change as below in dpu_example.h
-#define DPU_DI_MIPI     1
-#define DPU_DI_LVDS     0
-#define DPU_EXAMPLE_DI DPU_DI_MIPI
-#define MX8_DSI_OLED2   1 (for MIPI DSI panel) or #define MIPI2HDMI   1 (for ADV7535)
+When Kconfig is used
+----------------
+Below setting is for kconfig, you can fix below settings in dpu/warp/cm7/prj.conf
+For default MIPI DSI panel, you do not need to change anything.
+For MIPI2HDMI card(1920*1080):
+CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI=y
+CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
+CONFIG_MCUX_PRJSEG_module.board.display_support.MIPI2HDMI=y
+
+When package is used
+----------------
+Below setting is for mcux_config.h.
+Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMI card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
+And you also need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
+For default MIPI DSI panel, you do not need to change anything.
 
 Running the demo
 ================

@@ -35,7 +35,7 @@ Default panel is LCD SPEC panel, default port is DPU_DI_LVDS, default setting fo
 Tips: The APP_DISPLAY_EXTERNAL_CONVERTOR can be set as 1 when you are using MIPI2HDMI card(ADV7535) or LVDS2HDMI card(IT6263) only.
 When Kconfig is used
 ----------------
-Below setting is for kconfig, you can fix below settings in dpu/rop/cm7/prj.conf
+Below setting is for kconfig, you can fix below settings in dpu/wap/cm7/prj.conf
 For default LCD_SPEC panel, you do not need to change anything.
 For DUAL LVDS panel(1920*1200):
 CONFIG_MCUX_PRJSEG_module.board.display_support.LVDS_DUAL_PANEL=y
@@ -56,7 +56,7 @@ Below setting is for mcux_config.h.
 Setting DEMO_PANEL to LVDS_DUAL_PANEL to DUAL LVDS panel(1920*1200). You also need to set LDB_DUAL_PANEL to 1.
 Setting DEMO_PANEL to LVDS2HDMI to use LVDS2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
 Setting DEMO_PANEL to MX8_DSI_OLED2 to use MIPI DSI panel(1080*2340), you also need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
-Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMIi card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
+Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMI card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
 And you also need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
 For default LCD_SPEC panel, you do not need to change anything.
 

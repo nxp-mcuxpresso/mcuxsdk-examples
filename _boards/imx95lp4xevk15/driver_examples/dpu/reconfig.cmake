@@ -3,11 +3,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 mcux_add_include(
-    INCLUDES .
+    INCLUDES ../../
 )
 
 mcux_add_source(
-    SOURCES dpu_board.c
+    SOURCES ../../display_support.c
 )
 
 mcux_add_configuration(

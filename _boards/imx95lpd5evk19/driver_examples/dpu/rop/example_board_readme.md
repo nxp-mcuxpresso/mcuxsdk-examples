@@ -56,7 +56,7 @@ Below setting is for mcux_config.h.
 Setting DEMO_PANEL to LVDS_DUAL_PANEL to DUAL LVDS panel(1920*1200). You also need to set LDB_DUAL_PANEL to 1.
 Setting DEMO_PANEL to LVDS2HDMI to use LVDS2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
 Setting DEMO_PANEL to MX8_DSI_OLED2 to use MIPI DSI panel(1080*2340), you also need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
-Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMIi card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
+Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMI card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
 And you also need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
 For default LCD_SPEC panel, you do not need to change anything.
 

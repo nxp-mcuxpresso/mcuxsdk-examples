@@ -10,7 +10,7 @@
 #include "clock_config.h"
 #include "hal_power.h"
 #include "hal_clock.h"
-#include "dpu_example.h"
+#include "display_support.h"
 #include "sm_platform.h"
 #include "fsl_debug_console.h"
 /*${header:end}*/
