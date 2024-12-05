@@ -24,3 +24,25 @@ tflm_lib:
     - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmmcxn947@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - +mdk@debug
+    - +mdk@release
+    mcxn5xxevk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - +mdk@debug
+    - +mdk@release
+    mcxn9xxevk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - +mdk@debug
+    - +mdk@release
+

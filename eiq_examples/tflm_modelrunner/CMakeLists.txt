@@ -10,6 +10,7 @@ mcux_add_include(
              examples/eiq_examples/tflm_modelrunner/cJSON/
              examples/eiq_examples/tflm_modelrunner/base64
              examples/eiq_examples/tflm_modelrunner/base64
+             examples/eiq_examples/tflm_modelrunner/picohttpparser
              examples/_boards/${board}/eiq_examples/tflm_modelrunner/
 )
 
@@ -48,6 +49,9 @@ mcux_add_source(
 	    examples/eiq_examples/tflm_modelrunner/scripts/requirements.txt   
 )
 
+mcux_add_mdk_configuration(
+  CC "-std=gnu++17"
+)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/tflm_modelrunner/reconfig.cmake OPTIONAL)

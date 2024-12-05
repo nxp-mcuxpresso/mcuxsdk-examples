@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tflm_lib LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/eiq_examples/tflm_lib PROJECT_TYPE LIBRARY)
+project(tflm_lib LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/eiq_examples/tflm_lib PROJECT_TYPE LIBRARY)
 
 mcux_add_cmakelists(${SdkRootDirPath}/middleware/eiq/tensorflow-lite OPTIONAL)
 
