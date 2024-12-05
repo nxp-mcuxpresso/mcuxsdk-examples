@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2023 NXP
+ * Copyright 2016-2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -173,6 +173,11 @@ int main(void)
     uint8_t *buffer;
     void *buff;
 
+    /* Hardware Initialization. */
+    BOARD_InitHardware();
+
+    PRINTF("\r\nENET example start.\r\n");
+
     for (index = 0; index < ENET_RXBD_NUM; index++)
     {
         /* This is for Rx buffers, static alloc and dynamic alloc both ok. use as your wish. */
@@ -199,11 +204,6 @@ int main(void)
         &rxbuffer[0],
         ENET_BuffSizeAlign(ENET_RXBUFF_SIZE),
     }};
-
-    /* Hardware Initialization. */
-    BOARD_InitHardware();
-
-    PRINTF("\r\nENET example start.\r\n");
 
     phyConfig.phyAddr  = EXAMPLE_PHY_ADDRESS;
     phyConfig.ops      = EXAMPLE_PHY_OPS;
