@@ -13,7 +13,7 @@ mcux_add_source(
             examples/_boards/${board}/ota_examples/ota_mcuboot_server/wifi/network_cfg.h
             examples/ota_examples/ota_mcuboot_server/network_wifi_nxp/init_wifi.c
             examples/ota_examples/ota_mcuboot_server/network_wifi_nxp/lwipopts.h
-            examples/ota_examples/ota_mcuboot_client/network_wifi_nxp/wifi_config.h
+            examples/ota_examples/ota_mcuboot_server/network_wifi_nxp/wifi_config.h
             examples/ota_examples/ota_mcuboot_server/httpsrv_fs_data.c
             examples/ota_examples/ota_mcuboot_server/FreeRTOSConfig.h
             examples/_boards/${board}/FreeRTOSConfigBoard.h
@@ -43,7 +43,6 @@ mcux_add_source(
             examples/_boards/${board}/ota_examples/mcuboot_opensource/sblconfig.h
             examples/_boards/${board}/wifi_examples/common/app_config/app_config.h
 )
-
 
 mcux_add_armgcc_configuration(
     TARGETS debug
@@ -79,6 +78,18 @@ mcux_remove_armgcc_configuration(
 mcux_remove_mdk_configuration(
     TARGETS flexspi_nor_release
     CC "-Oz"
+)
+
+mcux_add_iar_configuration(
+    LD "--config_def=__stack_size__=0x1000 --config_def=__heap_size__=0x20000"
+)
+
+mcux_add_mdk_configuration(
+    LD "--predefine=\"-D__stack_size__=0x1000\" --predefine=\"-D__heap_size__=0x20000\""
+)
+
+mcux_add_armgcc_configuration(
+    LD "-Xlinker --defsym=__stack_size__=0x1000 -Xlinker --defsym=__heap_size__=0x20000"
 )
 
 include(${SdkRootDirPath}/examples/_boards/${board}/ota_examples/ota_mcuboot_server/wifi/reconfig.cmake OPTIONAL)
