@@ -16,4 +16,5 @@ dev_cdc_ecm_nic_lite_bm:
       - examples/_boards/${board}/usb_examples/usb_device_cdc_ecm_nic_lite/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
+    frdmrw612: []
     rdrw612bga: []
