@@ -33,18 +33,17 @@ mcux_remove_armgcc_configuration(
 
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
+    TARGETS debug release
     LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.ld
 )
-
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
+    TARGETS debug release
     LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
+    TARGETS debug release
     LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.scf
 )
 
@@ -53,7 +52,6 @@ mcux_remove_armgcc_linker_script(
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
     LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_webconfig.ld
 )
-
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
@@ -65,20 +63,19 @@ mcux_remove_mdk_linker_script(
     LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_webconfig.scf
 )
 
-
 # Remove all default linker files
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
+    TARGETS debug release
     LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
+    TARGETS debug release
     LINKER devices/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
+    TARGETS debug release
     LINKER devices/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
 )

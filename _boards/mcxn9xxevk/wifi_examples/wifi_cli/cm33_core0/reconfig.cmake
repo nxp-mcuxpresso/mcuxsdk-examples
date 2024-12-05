@@ -49,6 +49,39 @@ mcux_remove_armgcc_configuration(
     CC "-O0"
 )
 
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.ld
+)
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.icf
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.scf
+)
+
+# Remove all default linker files
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+)
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+)
+
 mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
         -Xlinker --defsym=__heap_size__=0x400"
