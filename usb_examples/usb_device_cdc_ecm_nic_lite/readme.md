@@ -44,5 +44,6 @@ Set the hardware jumpers (Tower system/base module) to default settings.
 
 ## Supported Boards
 
+- FRDM-RW612
 - [RD-RW612-BGA](../../_boards/rdrw612bga/usb_examples/usb_device_cdc_ecm_nic_lite/example_board_readme.md)
 
