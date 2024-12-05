@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_derive_key:
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_derive_key/.
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_derive_key/${multicore_foldername}
+    document:
+      name: ele_derive_key${core_id_suffix_name}
+      category: secure-subsystem_examples
+      brief: The ELE derive key application provides example how to use SSSAPI to derive keys by
+              utilising the HKDF functionality, as well as how to derive keys for an Elliptic Curve
+              Diffie-Hellman key exchange operation.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_derive_key/readme.md
+      - examples/_boards/${board}/secure-subsystem_examples/ele_derive_key/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
