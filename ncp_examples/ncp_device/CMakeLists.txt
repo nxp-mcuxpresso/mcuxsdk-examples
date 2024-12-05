@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ncp_device LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ncp_examples/ncp_device)
+project(ncp_device LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ncp_examples/ncp_device)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -150,6 +150,6 @@ mcux_add_include(
         common/uap_prov
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ncp_examples/ncp_device/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_device/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

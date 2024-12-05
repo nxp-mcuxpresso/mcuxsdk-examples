@@ -35,15 +35,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/lwip_examples/linker/MIMXRT1176xxxxx_cm4_flexspi_nor_ocram.icf
+    LINKER ${board_root}/${board}/lwip_examples/linker/MIMXRT1176xxxxx_cm4_flexspi_nor_ocram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/lwip_examples/linker/MIMXRT1176xxxxx_cm4_flexspi_nor_ocram.scf
+    LINKER ${board_root}/${board}/lwip_examples/linker/MIMXRT1176xxxxx_cm4_flexspi_nor_ocram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/lwip_examples/linker/MIMXRT1176xxxxx_cm4_flexspi_nor_ocram.ld
+    LINKER ${board_root}/${board}/lwip_examples/linker/MIMXRT1176xxxxx_cm4_flexspi_nor_ocram.ld
 )

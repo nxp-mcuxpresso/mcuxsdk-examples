@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tflm_cifar10_hifi4 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/eiq_examples/tflm_cifar10_hifi4)
+project(tflm_cifar10_hifi4 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -15,12 +15,12 @@ mcux_add_source(
   )
 
 mcux_add_source(
-  BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/tflm_cifar10_hifi4
+  BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4
   SOURCES dsp_config.h
   )
 
 mcux_add_include(
-  BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/tflm_cifar10_hifi4
+  BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4
   INCLUDES ./
   )
 
@@ -38,6 +38,6 @@ mcux_add_macro(
   CC "-DDSP_IMAGE_COPY_TO_RAM=1"
   )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/tflm_cifar10_hifi4/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

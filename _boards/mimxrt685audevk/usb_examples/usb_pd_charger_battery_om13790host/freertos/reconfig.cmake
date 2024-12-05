@@ -15,7 +15,7 @@ mcux_add_source(
             middleware/usb/example/usb_pd_charger_battery_om13790host/freertos/pd_power_interface.h
             middleware/usb/example/usb_pd_charger_battery_om13790host/freertos/pd_power_nx20p3483.c
             middleware/usb/example/usb_pd_charger_battery_om13790host/freertos/pd_power_nx20p3483.h
-            examples/_boards/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
+            ${board_root}/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
 )
 
 mcux_add_include(

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(powerquad_matrix LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/driver_examples/powerquad/matrix)
+project(powerquad_matrix LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/powerquad/matrix)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -12,8 +12,8 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/driver_examples/powerquad/matrix/${core_id}
-             examples/_boards/${board}/driver_examples/powerquad/matrix
+    INCLUDES ${board_root}/${board}/driver_examples/powerquad/matrix/${core_id}
+             ${board_root}/${board}/driver_examples/powerquad/matrix
 )
 
 mcux_add_armgcc_configuration(
@@ -26,6 +26,6 @@ mcux_add_mdk_configuration(
     LD "--predefine=\"-D__stack_size__=0x8000\""
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/powerquad/matrix/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/powerquad/matrix/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

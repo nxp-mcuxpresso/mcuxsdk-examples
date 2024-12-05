@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ezhv_flexio_dvp_primary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ezhv_examples/flexio_dvp)
+project(ezhv_flexio_dvp_primary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ezhv_examples/flexio_dvp)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -31,7 +31,7 @@ mcux_add_include(
     TOOLCHAINS mdk armgcc
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ezhv_examples/flexio_dvp/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/flexio_dvp/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 

@@ -31,13 +31,13 @@ mcux_add_armgcc_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/power_manager_test/bm/${core_id}/clock_config.c
-            examples/_boards/${board}/demo_apps/power_manager_test/bm/${core_id}/clock_config.h
-            examples/_boards/${board}/demo_apps/power_manager_test/bm/power_demo_config.h
+    SOURCES ${board_root}/${board}/demo_apps/power_manager_test/bm/${core_id}/clock_config.c
+            ${board_root}/${board}/demo_apps/power_manager_test/bm/${core_id}/clock_config.h
+            ${board_root}/${board}/demo_apps/power_manager_test/bm/power_demo_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/power_manager_test/bm/${core_id}
-             examples/_boards/${board}/demo_apps/power_manager_test/bm
+    INCLUDES ${board_root}/${board}/demo_apps/power_manager_test/bm/${core_id}
+             ${board_root}/${board}/demo_apps/power_manager_test/bm
 )

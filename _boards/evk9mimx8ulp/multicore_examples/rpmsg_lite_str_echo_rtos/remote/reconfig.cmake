@@ -22,29 +22,29 @@ mcux_add_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/evkmimx8ulp/rsc_table.c
-            examples/_boards/evkmimx8ulp/rsc_table.h
+    SOURCES ${board_root}/evkmimx8ulp/rsc_table.c
+            ${board_root}/evkmimx8ulp/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/evkmimx8ulp/srtm_config.h
-            examples/_boards/evkmimx8ulp/drivers/lpi2c/fsl_lpi2c_freertos.c
-            examples/_boards/evkmimx8ulp/drivers/lpi2c/fsl_lpi2c_freertos.h
-            examples/_boards/evk9mimx8ulp/FreeRTOSConfigBoard.h
-            examples/_boards/evkmimx8ulp/app_srtm.c
-            examples/_boards/evkmimx8ulp/app_srtm.h
-	    examples/_boards/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/hardware_init.c
-	    examples/_boards/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/app.h
-	    examples/_boards/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/rpmsg_config.h
-	    examples/_boards/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/FreeRTOSConfig.h
+            ${board_root}/evkmimx8ulp/srtm_config.h
+            ${board_root}/evkmimx8ulp/drivers/lpi2c/fsl_lpi2c_freertos.c
+            ${board_root}/evkmimx8ulp/drivers/lpi2c/fsl_lpi2c_freertos.h
+            ${board_root}/evk9mimx8ulp/FreeRTOSConfigBoard.h
+            ${board_root}/evkmimx8ulp/app_srtm.c
+            ${board_root}/evkmimx8ulp/app_srtm.h
+	    ${board_root}/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/hardware_init.c
+	    ${board_root}/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/app.h
+	    ${board_root}/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/remote/rpmsg_config.h
+	    ${board_root}/evkmimx8ulp/multicore_examples/rpmsg_lite_str_echo_rtos/FreeRTOSConfig.h
 
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8ulp
+    INCLUDES ${board_root}/evkmimx8ulp
              middleware/multicore/remoteproc
-             examples/_boards/evkmimx8ulp/drivers/lpi2c
-	     examples/_boards/evkmimx8ulp/multicore_examples/rpmsg_lite_pingpong_rtos_linux
-	     examples/_boards/evkmimx8ulp/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
+             ${board_root}/evkmimx8ulp/drivers/lpi2c
+	     ${board_root}/evkmimx8ulp/multicore_examples/rpmsg_lite_pingpong_rtos_linux
+	     ${board_root}/evkmimx8ulp/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
 )
 
 mcux_add_macro(

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(mbedtls3x_psatest LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/mbedtls3x_examples/mbedtls3x_psatest)
+project(mbedtls3x_psatest LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/mbedtls3x_examples/mbedtls3x_psatest)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -19,7 +19,7 @@ mcux_add_macro(
     "-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psatest_config.h\\\""
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/mbedtls3x_examples/mbedtls3x_psatest/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/mbedtls3x_examples/mbedtls3x_psatest/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 

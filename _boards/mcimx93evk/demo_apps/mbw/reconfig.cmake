@@ -6,7 +6,7 @@ mcux_add_source(
             examples/demo_apps/mbw/mbw_utils.c
             examples/demo_apps/mbw/mbw_port.c
             examples/demo_apps/mbw/mbw.h
-            examples/_boards/${board}/demo_apps/mbw/mbw_def.h
+            ${board_root}/${board}/demo_apps/mbw/mbw_def.h
 )
 
 mcux_add_include(

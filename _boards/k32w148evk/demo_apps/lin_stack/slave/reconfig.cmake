@@ -2,15 +2,15 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/demo_apps/lin_stack/slave/lin_stack_slave.c
-            examples/_boards/kw45b41zevk/demo_apps/lin_stack/slave/lin_cfg.c
-            examples/_boards/kw45b41zevk/demo_apps/lin_stack/slave/lin_cfg.h
-            examples/_boards/kw45b41zevk/demo_apps/lin_stack/slave/hardware_init.c
-            examples/_boards/kw45b41zevk/demo_apps/lin_stack/slave/app.h
+            ${board_root}/kw45b41zevk/demo_apps/lin_stack/slave/lin_cfg.c
+            ${board_root}/kw45b41zevk/demo_apps/lin_stack/slave/lin_cfg.h
+            ${board_root}/kw45b41zevk/demo_apps/lin_stack/slave/hardware_init.c
+            ${board_root}/kw45b41zevk/demo_apps/lin_stack/slave/app.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/kw45b41zevk/demo_apps/lin_stack/slave
+    INCLUDES ${board_root}/kw45b41zevk/demo_apps/lin_stack/slave
 )
 
 mcux_add_macro(

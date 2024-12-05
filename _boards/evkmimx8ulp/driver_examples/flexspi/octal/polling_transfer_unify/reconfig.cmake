@@ -39,10 +39,10 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/driver_examples/flexspi/octal/polling_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.icf
+    LINKER ${board_root}/${board}/driver_examples/flexspi/octal/polling_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/driver_examples/flexspi/octal/polling_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.ld
+    LINKER ${board_root}/${board}/driver_examples/flexspi/octal/polling_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.ld
 )

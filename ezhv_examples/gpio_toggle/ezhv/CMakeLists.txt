@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ezhv_gpio_toggle_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ezhv_examples/gpio_toggle)
+project(ezhv_gpio_toggle_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ezhv_examples/gpio_toggle)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -14,7 +14,7 @@ mcux_add_source(
     SOURCES gpio_toggle_ezhv.c
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ezhv_examples/gpio_toggle/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/gpio_toggle/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/ezhv_image.bin TOOLCHAINS riscvllvm)
 

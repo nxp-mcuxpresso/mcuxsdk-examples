@@ -6,27 +6,27 @@ mcux_add_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/power_mode_switch/cm7/rpmsg_config.h
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+    SOURCES ${board_root}/${board}/demo_apps/power_mode_switch/cm7/rpmsg_config.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/${board}/srtm_config.h
+            ${board_root}/${board}/srtm_config.h
             examples/demo_apps/power_mode_switch_imx95/power_mode_switch.h
             examples/demo_apps/power_mode_switch_imx95/lpm.c
             examples/demo_apps/power_mode_switch_imx95/lpm.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
             middleware/multicore/remoteproc/empty_rsc_table.c
-            examples/_boards/${board}/cm7/app_srtm.c
-            examples/_boards/${board}/cm7/app_srtm.h
+            ${board_root}/${board}/cm7/app_srtm.c
+            ${board_root}/${board}/cm7/app_srtm.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/multicore/remoteproc
              examples/demo_apps/power_mode_switch_imx95
-             examples/_boards/${board}/cm7
-             examples/_boards/${board}/demo_apps/power_mode_switch
+             ${board_root}/${board}/cm7
+             ${board_root}/${board}/demo_apps/power_mode_switch
 )
 
 mcux_add_macro(

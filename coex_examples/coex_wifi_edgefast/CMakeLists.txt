@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(coex_wifi_edgefast LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/coex_examples/coex_wifi_edgefast)
+project(coex_wifi_edgefast LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/coex_examples/coex_wifi_edgefast)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -16,6 +16,6 @@ mcux_add_include(
     INCLUDES middleware/wireless/coex/examples/coex_app
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/coex_examples/coex_wifi_edgefast/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/coex_examples/coex_wifi_edgefast/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(low_power_wakeword LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/demo_apps/low_power_wakeword)
+project(low_power_wakeword LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/demo_apps/low_power_wakeword)
 
 mcux_add_source(
     SOURCES low_power_wakeword.c
@@ -13,6 +13,6 @@ mcux_add_source(
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/demo_apps/low_power_wakeword/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/low_power_wakeword/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

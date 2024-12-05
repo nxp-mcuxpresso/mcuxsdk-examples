@@ -103,17 +103,17 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/eiq_examples/tflm_modelrunner/cm33_core0/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+    LINKER ${board_root}/${board}/eiq_examples/tflm_modelrunner/cm33_core0/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/eiq_examples/tflm_modelrunner/cm33_core0/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+    LINKER ${board_root}/${board}/eiq_examples/tflm_modelrunner/cm33_core0/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/eiq_examples/tflm_modelrunner/cm33_core0/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+    LINKER ${board_root}/${board}/eiq_examples/tflm_modelrunner/cm33_core0/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
 
 mcux_add_iar_configuration(

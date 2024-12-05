@@ -8,7 +8,7 @@ project(
     "ASM"
     "C"
     "CXX"
-  PROJECT_BOARD_PORT_PATH "examples/_boards/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm"
+  PROJECT_BOARD_PORT_PATH "${board_root}/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm"
 )
 
 include("${SdkRootDirPath}/CMakeLists.txt")
@@ -47,7 +47,7 @@ mcux_add_source(
     "middleware/usb/example/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/usb_device_hid.h"
 )
 
-include("${SdkRootDirPath}/examples/_boards/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/reconfig.cmake" OPTIONAL)
+include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/reconfig.cmake" OPTIONAL)
 
 mcux_convert_binary(
   BINARY "${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin"

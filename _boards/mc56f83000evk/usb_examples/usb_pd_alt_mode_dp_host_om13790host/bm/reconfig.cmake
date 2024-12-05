@@ -4,8 +4,8 @@ mcux_add_source(
     SOURCES middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_alt_mode_dp_host/bm/hardware_init.c
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_alt_mode_dp_host/bm/pin_mux.c
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_alt_mode_dp_host/bm/pin_mux.h
-            examples/_boards/${board}/peripherals/peripherals.c
-            examples/_boards/${board}/peripherals/peripherals.h
+            ${board_root}/${board}/peripherals/peripherals.c
+            ${board_root}/${board}/peripherals/peripherals.h
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_alt_mode_dp_host/bm/VIF/displayport_host.xml
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_alt_mode_dp_host/bm/pd_board_config.h
             middleware/usb/example/usb_pd_alt_mode_dp_host_om13790host/bm/pd_app.h

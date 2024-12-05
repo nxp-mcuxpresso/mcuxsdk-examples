@@ -7,8 +7,8 @@ mcux_add_include(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "examples/_boards/${board}/peripherals/peripherals.c"
-    "examples/_boards/${board}/peripherals/peripherals.h"
+    "${board_root}/${board}/peripherals/peripherals.c"
+    "${board_root}/${board}/peripherals/peripherals.h"
     "middleware/usb/example/boards/${board}/usb_device_hid_mouse/bm/hardware_init.c"
     "middleware/usb/example/boards/${board}/usb_device_hid_mouse/bm/pin_mux.c"
     "middleware/usb/example/boards/${board}/usb_device_hid_mouse/bm/pin_mux.h"

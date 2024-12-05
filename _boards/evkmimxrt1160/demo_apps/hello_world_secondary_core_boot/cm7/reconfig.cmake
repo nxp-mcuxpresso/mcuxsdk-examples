@@ -35,30 +35,30 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.icf
+    LINKER ${board_root}/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.scf
+    LINKER ${board_root}/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.ld
+    LINKER ${board_root}/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor.icf
+    LINKER ${board_root}/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor.scf
+    LINKER ${board_root}/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor.ld
+    LINKER ${board_root}/${board}/demo_apps/hello_world_secondary_core_boot/linker/MIMXRT1166xxxxx_cm7_flexspi_nor.ld
 )

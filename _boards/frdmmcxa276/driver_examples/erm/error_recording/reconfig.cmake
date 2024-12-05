@@ -20,15 +20,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/driver_examples/erm/error_recording/linkscripts/MCXA276_flash.icf
+    LINKER ${board_root}/${board}/driver_examples/erm/error_recording/linkscripts/MCXA276_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/driver_examples/erm/error_recording/linkscripts/MCXA276_flash.scf
+    LINKER ${board_root}/${board}/driver_examples/erm/error_recording/linkscripts/MCXA276_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/driver_examples/erm/error_recording/linkscripts/MCXA276_flash.ld
+    LINKER ${board_root}/${board}/driver_examples/erm/error_recording/linkscripts/MCXA276_flash.ld
 )

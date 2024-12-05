@@ -61,4 +61,4 @@ if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm4" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm4
   )
 endif()
 
-include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/tflm_lib/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_lib/reconfig.cmake OPTIONAL)

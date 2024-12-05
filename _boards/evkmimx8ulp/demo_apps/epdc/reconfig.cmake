@@ -1,10 +1,10 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/epdc/epdc_support.h
-            examples/_boards/${board}/demo_apps/epdc/epdc_support.c
-            examples/_boards/${board}/demo_apps/epdc/panel_data.h
-            examples/_boards/${board}/demo_apps/epdc/panel_data.c
+    SOURCES ${board_root}/${board}/demo_apps/epdc/epdc_support.h
+            ${board_root}/${board}/demo_apps/epdc/epdc_support.c
+            ${board_root}/${board}/demo_apps/epdc/panel_data.h
+            ${board_root}/${board}/demo_apps/epdc/panel_data.c
             middleware/multicore/remoteproc/empty_rsc_table.c
 )
 
@@ -32,10 +32,10 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/iar/MIMX8UD7xxxxx_cm33_place_noncacaheable_section_to_dram_flash.icf
+    LINKER ${board_root}/${board}/iar/MIMX8UD7xxxxx_cm33_place_noncacaheable_section_to_dram_flash.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/gcc/MIMX8UD7xxxxx_cm33_place_noncacaheable_section_to_dram_flash.ld
+    LINKER ${board_root}/${board}/gcc/MIMX8UD7xxxxx_cm33_place_noncacaheable_section_to_dram_flash.ld
 )

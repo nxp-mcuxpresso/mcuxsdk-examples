@@ -2,7 +2,7 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/soem_examples/soem_gpio_pulse_netc/freertos/soem_gpio_pulse.c
             examples/soem_examples/soem_gpio_pulse_netc/freertos/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 

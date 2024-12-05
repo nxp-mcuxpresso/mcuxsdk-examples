@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(littlefs_shell_onchip_flash LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/littlefs_examples/littlefs_shell_onchip_flash)
+project(littlefs_shell_onchip_flash LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/littlefs_examples/littlefs_shell_onchip_flash)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -22,8 +22,8 @@ mcux_add_source(
     SOURCES middleware/littlefs/example/littlefs_shell/littlefs_shell.c
             examples/littlefs_examples/littlefs_shell/lfs_mflash.c
             examples/littlefs_examples/littlefs_shell/lfs_mflash.h
-            examples/_boards/${board}/littlefs_examples/littlefs_shell_onchip_flash/peripherals.c
-            examples/_boards/${board}/littlefs_examples/littlefs_shell_onchip_flash/peripherals.h
+            ${board_root}/${board}/littlefs_examples/littlefs_shell_onchip_flash/peripherals.c
+            ${board_root}/${board}/littlefs_examples/littlefs_shell_onchip_flash/peripherals.h
 )
 
 mcux_add_include(
@@ -43,6 +43,6 @@ mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x1000 -Xlinker --defsym=__heap_size__=0x1000"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/littlefs_examples/littlefs_shell_onchip_flash/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/littlefs_examples/littlefs_shell_onchip_flash/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

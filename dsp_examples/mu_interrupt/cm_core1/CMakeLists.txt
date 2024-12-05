@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(dsp_mu_interrupt LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/dsp_examples/mu_interrupt)
+project(dsp_mu_interrupt LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/dsp_examples/mu_interrupt)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -15,12 +15,12 @@ mcux_add_source(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/mu_interrupt
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/dsp_examples/mu_interrupt
     SOURCES dsp_config.h
 )
 
 mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/mu_interrupt
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/dsp_examples/mu_interrupt
     INCLUDES ./
 )
 
@@ -29,7 +29,7 @@ mcux_add_macro(
     CC "-DDSP_IMAGE_COPY_TO_RAM=1"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/mu_interrupt/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/dsp_examples/mu_interrupt/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar

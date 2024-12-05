@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(flexspi_octal_polling_transfer_unify LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/driver_examples/flexspi/octal/polling_transfer_unify)
+project(flexspi_octal_polling_transfer_unify LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/flexspi/octal/polling_transfer_unify)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -20,10 +20,10 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/driver_examples/flexspi/common
-             examples/_boards/${board}/driver_examples/flexspi
-             examples/_boards/${board}/driver_examples/flexspi/octal/polling_transfer_unify/${core_id}
+             ${board_root}/${board}/driver_examples/flexspi
+             ${board_root}/${board}/driver_examples/flexspi/octal/polling_transfer_unify/${core_id}
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/flexspi/octal/polling_transfer_unify/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/flexspi/octal/polling_transfer_unify/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

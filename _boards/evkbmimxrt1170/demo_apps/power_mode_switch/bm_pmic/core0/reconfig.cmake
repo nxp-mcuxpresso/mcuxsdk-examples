@@ -20,17 +20,17 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/bm_pmic/linker/MIMXRT1176xxxxx_cm7_ram.icf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/bm_pmic/linker/MIMXRT1176xxxxx_cm7_ram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/bm_pmic/linker/MIMXRT1176xxxxx_cm7_ram.scf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/bm_pmic/linker/MIMXRT1176xxxxx_cm7_ram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/bm_pmic/linker/MIMXRT1176xxxxx_cm7_ram.ld
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/bm_pmic/linker/MIMXRT1176xxxxx_cm7_ram.ld
 )
 
 mcux_remove_configuration(

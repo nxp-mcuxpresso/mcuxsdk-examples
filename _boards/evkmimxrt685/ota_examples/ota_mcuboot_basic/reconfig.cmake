@@ -33,15 +33,15 @@ mcux_remove_mdk_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_basic/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_basic/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_basic/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_basic/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_basic/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_basic/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.ld
 )

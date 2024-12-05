@@ -10,5 +10,5 @@ mcux_remove_iar_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/driver_examples/lcdc/lcdc_tft/linker/LPC54608_flash.icf
+    LINKER ${board_root}/${board}/driver_examples/lcdc/lcdc_tft/linker/LPC54608_flash.icf
 )

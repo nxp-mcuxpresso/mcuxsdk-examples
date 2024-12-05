@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(wifi_cli LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/wifi_examples/wifi_cli)
+project(wifi_cli LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wifi_examples/wifi_cli)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -27,6 +27,6 @@ mcux_add_iar_configuration(
 	LD "--semihosting"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wifi_examples/wifi_cli/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wifi_examples/wifi_cli/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

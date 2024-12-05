@@ -16,15 +16,15 @@ endif()
 
 # boardfile
 if(CONFIG_MCUX_PRJSEG_module.board.boardfile)
-    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES examples/_boards/${board}/board.h examples/_boards/${board}/board.c)
+    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES ${board_root}/${board}/board.h ${board_root}/${board}/board.c)
 
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/${board})
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board})
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.board_core_file)
-    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES examples/_boards/${board}/board_${core_id}.h examples/_boards/${board}/board_${core_id}.c)
+    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES ${board_root}/${board}/board_${core_id}.h ${board_root}/${board}/board_${core_id}.c)
 
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/${board})
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board})
 endif()
 
 if (CONFIG_MCUX_PRJSEG_module.board.use_board_clock)
@@ -33,18 +33,18 @@ endif()
 # clock
 # Use <board>/clock_config
 if(CONFIG_MCUX_PRJSEG_module.board.clock)
-    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES examples/_boards/${board}/clock_config.h examples/_boards/${board}/clock_config.c)
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/${board})
+    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES ${board_root}/${board}/clock_config.h ${board_root}/${board}/clock_config.c)
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board})
 endif()
 # Use <board>/common/clock/clock_config
 if(CONFIG_MCUX_PRJSEG_module.board.clock_board_folder)
-    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES examples/_boards/${board}/common/clock/clock_config.h examples/_boards/${board}/common/clock/clock_config.c)
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/${board}/common/clock)
+    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES ${board_root}/${board}/common/clock/clock_config.h ${board_root}/${board}/common/clock/clock_config.c)
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board}/common/clock)
 endif()
 # Use <board>/common/clock/<core>/clock_config
 if(CONFIG_MCUX_PRJSEG_module.board.clock_board_core_folder)
-    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES examples/_boards/${board}/common/clock/${core_id}/clock_config.h examples/_boards/${board}/common/clock/${core_id}/clock_config.c)
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/${board}/common/clock/${core_id})
+    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES ${board_root}/${board}/common/clock/${core_id}/clock_config.h ${board_root}/${board}/common/clock/${core_id}/clock_config.c)
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board}/common/clock/${core_id})
 endif()
 
 #common_pinmux
@@ -53,10 +53,10 @@ if(CONFIG_MCUX_PRJSEG_module.board.pinmux_board_folder)
     mcux_add_source(
       BASE_PATH ${SdkRootDirPath}
       SOURCES
-        examples/_boards/${board}/common/pin_mux/pin_mux.h
-        examples/_boards/${board}/common/pin_mux/pin_mux.c
+        ${board_root}/${board}/common/pin_mux/pin_mux.h
+        ${board_root}/${board}/common/pin_mux/pin_mux.c
     )
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/${board}/common/pin_mux)
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board}/common/pin_mux)
 endif()
 
 # Use <board>/common/pinmux/<core>
@@ -64,10 +64,10 @@ if(CONFIG_MCUX_PRJSEG_module.board.pinmux_board_core_folder)
     mcux_add_source(
       BASE_PATH ${SdkRootDirPath}
       SOURCES
-        examples/_boards/${board}/common/pin_mux/${core_id}/pin_mux.h
-        examples/_boards/${board}/common/pin_mux/${core_id}/pin_mux.c
+        ${board_root}/${board}/common/pin_mux/${core_id}/pin_mux.h
+        ${board_root}/${board}/common/pin_mux/${core_id}/pin_mux.c
     )
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/${board}/common/pin_mux/${core_id})
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/${board}/common/pin_mux/${core_id})
 endif()
 
 # Use <project>/<core>/pinmux

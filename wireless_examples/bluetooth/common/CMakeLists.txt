@@ -19,8 +19,8 @@ if(CONFIG_MCUX_PRJSEG_module.wireless.ble.app_common)
     )
 
     mcux_add_source(
-        BASE_PATH ${SdkRootDirPath}/examples
-        SOURCES _boards/${board}/wireless_examples/app_preinclude_common.h
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES ${board_root}/${board}/wireless_examples/app_preinclude_common.h
     )
 
     mcux_add_configuration(

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ecat_servo_motor LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ecat_examples/servo_motor)
+project(ecat_servo_motor LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ecat_examples/servo_motor)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -49,6 +49,6 @@ mcux_add_include(
     INCLUDES examples/ecat_examples/servo_motor/SSC/Src
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ecat_examples/servo_motor/${multicore_foldername}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ecat_examples/servo_motor/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

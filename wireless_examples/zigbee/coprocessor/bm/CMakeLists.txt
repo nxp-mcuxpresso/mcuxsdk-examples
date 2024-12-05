@@ -4,10 +4,10 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(zigbee_coprocessor_bm LANGUAGES C CXX ASM
     PROJECT_BOARD_PORT_PATH
-        examples/_boards/${board}/wireless_examples
+        ${board_root}/${board}/wireless_examples
     CUSTOM_PRJ_CONF_PATH
-        examples/_boards/${board}/wireless_examples/zigbee
-        examples/_boards/${board}/wireless_examples/zigbee/coprocessor/bm
+        ${board_root}/${board}/wireless_examples/zigbee
+        ${board_root}/${board}/wireless_examples/zigbee/coprocessor/bm
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
@@ -21,7 +21,7 @@ mcux_set_variable(CONFIG_ZB_COORD_SINGLE_CHANNEL "12")
 mcux_set_variable(CONFIG_ZB_COORD_TRACE_APP 1)
 mcux_set_variable(CONFIG_ZB_COORD_TRACE_ZCL 1)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/zigbee/coprocessor/bm/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/zigbee/coprocessor/bm/reconfig.cmake OPTIONAL)
 
 mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL.a)
 mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK.a)

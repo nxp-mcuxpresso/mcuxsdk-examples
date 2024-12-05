@@ -10,7 +10,7 @@ include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/ti
 
 if(CONFIG_MCUX_PRJSEG_module.board.suite)
 
-    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES examples/_boards/evkmimx8mn/clock_config.h examples/_boards/evkmimx8mn/clock_config.c)
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/evkmimx8mn)
+    mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES ${board_root}/evkmimx8mn/clock_config.h ${board_root}/evkmimx8mn/clock_config.c)
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/evkmimx8mn)
 
 endif()

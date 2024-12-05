@@ -17,16 +17,16 @@ mcux_add_armgcc_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/power_mode_switch/${core_id}/clock_config.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/${core_id}/clock_config.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/power_demo_config.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/power_mode_switch.c
+    SOURCES ${board_root}/${board}/demo_apps/power_mode_switch/${core_id}/clock_config.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/${core_id}/clock_config.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/power_demo_config.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/power_mode_switch.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/power_mode_switch/${core_id}
-             examples/_boards/${board}/demo_apps/power_mode_switch/
+    INCLUDES ${board_root}/${board}/demo_apps/power_mode_switch/${core_id}
+             ${board_root}/${board}/demo_apps/power_mode_switch/
 )
 
 # Use demo specific linker
@@ -50,15 +50,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}/linker/MIMXRT798Sxxxx_cm33_core1_ram.icf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/${multicore_foldername}/linker/MIMXRT798Sxxxx_cm33_core1_ram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}/linker/MIMXRT798Sxxxx_cm33_core1_ram.scf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/${multicore_foldername}/linker/MIMXRT798Sxxxx_cm33_core1_ram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/${multicore_foldername}/linker/MIMXRT798Sxxxx_cm33_core1_ram.ld
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/${multicore_foldername}/linker/MIMXRT798Sxxxx_cm33_core1_ram.ld
 )

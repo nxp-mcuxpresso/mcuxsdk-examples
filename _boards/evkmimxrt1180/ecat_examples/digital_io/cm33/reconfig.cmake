@@ -7,7 +7,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/ecat_examples/digital_io
-    INCLUDES examples/_boards/${board}/ecat_examples/digital_io/${core_id}
+    INCLUDES ${board_root}/${board}/ecat_examples/digital_io/${core_id}
 )
 
 

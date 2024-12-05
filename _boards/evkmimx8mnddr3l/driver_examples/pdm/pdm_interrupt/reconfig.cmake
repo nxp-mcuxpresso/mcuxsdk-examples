@@ -1,17 +1,17 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/evkmimx8mn/driver_examples/pdm/pdm_interrupt/pin_mux.c
-            examples/_boards/evkmimx8mn/driver_examples/pdm/pdm_interrupt/pin_mux.h
-            examples/_boards/evkmimx8mn/driver_examples/pdm/pdm_interrupt/./app.h
-            examples/_boards/evkmimx8mn/driver_examples/pdm/pdm_interrupt/./hardware_init.c
+    SOURCES ${board_root}/evkmimx8mn/driver_examples/pdm/pdm_interrupt/pin_mux.c
+            ${board_root}/evkmimx8mn/driver_examples/pdm/pdm_interrupt/pin_mux.h
+            ${board_root}/evkmimx8mn/driver_examples/pdm/pdm_interrupt/./app.h
+            ${board_root}/evkmimx8mn/driver_examples/pdm/pdm_interrupt/./hardware_init.c
             middleware/multicore/remoteproc/empty_rsc_table.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8mn/driver_examples/pdm/pdm_interrupt
-             examples/_boards/evkmimx8mn
+    INCLUDES ${board_root}/evkmimx8mn/driver_examples/pdm/pdm_interrupt
+             ${board_root}/evkmimx8mn
 )
 
 mcux_add_macro(

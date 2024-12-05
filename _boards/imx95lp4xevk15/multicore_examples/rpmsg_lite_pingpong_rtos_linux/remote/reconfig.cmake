@@ -6,25 +6,25 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/FreeRTOSConfig.h
-            examples/_boards/${board}/srtm_config.h
-	    examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7/rpmsg_config.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/FreeRTOSConfig.h
+            ${board_root}/${board}/srtm_config.h
+	    ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7/rpmsg_config.h
             middleware/multicore/remoteproc/empty_rsc_table.c
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
-            examples/_boards/${board}/cm7/app_srtm.c
-            examples/_boards/${board}/cm7/app_srtm.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
+            ${board_root}/${board}/cm7/app_srtm.c
+            ${board_root}/${board}/cm7/app_srtm.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/imx95lp4xevk15
+    INCLUDES ${board_root}/imx95lp4xevk15
              middleware/multicore/remoteproc
-	     examples/_boards/imx95lp4xevk15/cm7
-             examples/_boards/imx95lp4xevk15/multicore_examples/rpmsg_lite_pingpong_rtos_linux
-             examples/_boards/imx95lp4xevk15/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
-	     examples/_boards/imx95lp4xevk15/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7
+	     ${board_root}/imx95lp4xevk15/cm7
+             ${board_root}/imx95lp4xevk15/multicore_examples/rpmsg_lite_pingpong_rtos_linux
+             ${board_root}/imx95lp4xevk15/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
+	     ${board_root}/imx95lp4xevk15/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7
 )
 
 mcux_add_iar_configuration(

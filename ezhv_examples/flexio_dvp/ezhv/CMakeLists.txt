@@ -6,9 +6,9 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ezhv_flexio_dvp_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ezhv_examples/flexio_dvp)
+project(ezhv_flexio_dvp_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ezhv_examples/flexio_dvp)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ezhv_examples/flexio_dvp/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/flexio_dvp/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

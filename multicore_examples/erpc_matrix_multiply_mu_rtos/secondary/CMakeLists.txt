@@ -7,11 +7,11 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(erpc_matrix_multiply_mu_rtos_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/multicore_examples/erpc_matrix_multiply_mu_rtos)
+project(erpc_matrix_multiply_mu_rtos_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/erpc_matrix_multiply_mu_rtos)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-# This will point to: ${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/reconfig.cmake
+# This will point to: ${SdkRootDirPath}/${board_root}/${board}/multicore_examples/reconfig.cmake
 # where common board multicore properties are set.
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
 

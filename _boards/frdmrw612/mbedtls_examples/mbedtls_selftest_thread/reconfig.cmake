@@ -6,7 +6,7 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/mbedtls/example/mbedtls_selftest_thread/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_iar_configuration(

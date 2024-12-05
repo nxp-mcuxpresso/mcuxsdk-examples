@@ -1,13 +1,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/evkmimxrt1180/demo_apps/iee_apc/ele_fw_baseline.h
+    SOURCES ${board_root}/evkmimxrt1180/demo_apps/iee_apc/ele_fw_baseline.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/iee_apc/
-             examples/_boards/evkmimxrt1180/demo_apps/iee_apc/${core_id}
+    INCLUDES ${board_root}/${board}/demo_apps/iee_apc/
+             ${board_root}/evkmimxrt1180/demo_apps/iee_apc/${core_id}
 )
 
 mcux_add_macro(

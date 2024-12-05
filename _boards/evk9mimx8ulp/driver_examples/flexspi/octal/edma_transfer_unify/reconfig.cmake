@@ -2,16 +2,16 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/flexspi/common/nor_flash_macronix.c
-            examples/_boards/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/./app.h
-            examples/_boards/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/./hardware_init.c
+            ${board_root}/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/./app.h
+            ${board_root}/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/./hardware_init.c
             middleware/multicore/remoteproc/empty_rsc_table.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/.
+    INCLUDES ${board_root}/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/.
              examples/driver_examples/flexspi/octal/edma_transfer_unify
-             examples/_boards/evkmimx8ulp
+             ${board_root}/evkmimx8ulp
 )
 
 mcux_add_macro(
@@ -41,10 +41,10 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.icf
+    LINKER ${board_root}/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.ld
+    LINKER ${board_root}/evkmimx8ulp/driver_examples/flexspi/octal/edma_transfer_unify/linker/MIMX8UD7xxxxx_cm33_flexspi_nor.ld
 )

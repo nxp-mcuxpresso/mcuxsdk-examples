@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(dpu_1_fetch_yuv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/driver_examples/dpu/fetch_yuv)
+project(dpu_1_fetch_yuv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/dpu/fetch_yuv)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -15,6 +15,6 @@ mcux_add_source(
     SOURCES dpu_fetch_yuv.c
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/dpu/fetch_yuv/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/dpu/fetch_yuv/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(dsp_audio_demo_bm LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/dsp_examples/audio_demo_bm)
+project(dsp_audio_demo_bm LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/dsp_examples/audio_demo_bm)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -15,15 +15,15 @@ mcux_add_source(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/audio_demo_bm
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/dsp_examples/audio_demo_bm
     SOURCES dsp_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/dsp_examples/audio_demo_bm
+    INCLUDES ${board_root}/${board}/dsp_examples/audio_demo_bm
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/audio_demo_bm/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/dsp_examples/audio_demo_bm/${core_id}/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/examples/dsp_examples/${core_id}.cmake)

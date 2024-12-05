@@ -15,13 +15,13 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER examples/_boards/imx95verdinevk/demo_apps/sai_low_power_audio/linker/MIMX9596_cm7_lpa_ram.ld
+        LINKER ${board_root}/imx95verdinevk/demo_apps/sai_low_power_audio/linker/MIMX9596_cm7_lpa_ram.ld
 )
 
 mcux_add_iar_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER examples/_boards/imx95verdinevk/demo_apps/sai_low_power_audio/linker/MIMX9596_cm7_lpa_ram.icf
+        LINKER ${board_root}/imx95verdinevk/demo_apps/sai_low_power_audio/linker/MIMX9596_cm7_lpa_ram.icf
 
 )
 

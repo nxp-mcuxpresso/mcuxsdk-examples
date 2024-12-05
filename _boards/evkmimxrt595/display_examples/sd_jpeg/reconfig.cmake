@@ -1,6 +1,6 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/display_examples/sd_jpeg/libjpeg_user_config.h
+    SOURCES ${board_root}/${board}/display_examples/sd_jpeg/libjpeg_user_config.h
 )
 
 mcux_add_macro(

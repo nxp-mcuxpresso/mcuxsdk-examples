@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.30.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(el2go_import_blob_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/el2go_examples/el2go_import_blob/el2go_import_blob_ns)
+project(el2go_import_blob_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/el2go_examples/el2go_import_blob/el2go_import_blob_ns)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/el2go_import_blob/el2go_import_blob_ns/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/el2go_import_blob/el2go_import_blob_ns/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}

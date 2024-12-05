@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(usb_pd_sink_battery_bm_om13790host LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm)
+project(usb_pd_sink_battery_bm_om13790host LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -15,6 +15,6 @@ mcux_add_include(
     INCLUDES middleware/usb/example/usb_pd_sink_battery_om13790host/bm
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

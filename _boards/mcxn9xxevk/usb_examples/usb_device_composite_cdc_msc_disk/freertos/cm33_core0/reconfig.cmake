@@ -30,8 +30,8 @@ mcux_add_include(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "examples/_boards/${board}/sdmmc_config.c"
-    "examples/_boards/${board}/sdmmc_config.h"
+    "${board_root}/${board}/sdmmc_config.c"
+    "${board_root}/${board}/sdmmc_config.h"
     "middleware/usb/example/boards/${board}/usb_device_composite_cdc_msc_disk/freertos/hardware_init.c"
     "middleware/usb/example/boards/${board}/usb_device_composite_cdc_msc_disk/freertos/pin_mux.c"
     "middleware/usb/example/boards/${board}/usb_device_composite_cdc_msc_disk/freertos/pin_mux.h"

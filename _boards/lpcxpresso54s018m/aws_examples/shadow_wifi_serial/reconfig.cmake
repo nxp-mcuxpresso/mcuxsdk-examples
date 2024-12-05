@@ -51,13 +51,13 @@ mcux_remove_mdk_linker_script(
 # Add or remove Linker File Configurations
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.icf
+    LINKER ${board_root}/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.scf
+    LINKER ${board_root}/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.ld
+    LINKER ${board_root}/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.ld
 )

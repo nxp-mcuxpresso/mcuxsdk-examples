@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.22.0)
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(otap_client_att_bm LANGUAGES C CXX ASM
-    PROJECT_BOARD_PORT_PATH examples/_boards/${board}/wireless_examples
-    CUSTOM_PRJ_CONF_PATH examples/_boards/${board}/wireless_examples/bluetooth/
-    examples/_boards/${board}/wireless_examples/bluetooth/otac_att/${core_id}/bm
+    PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
+    CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/bluetooth/
+    ${board_root}/${board}/wireless_examples/bluetooth/otac_att/${core_id}/bm
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
@@ -29,7 +29,7 @@ mcux_add_source(
            ../gatt_uuid128.h
            ../otap_client_att.c
            ../otap_client_att.h
-           ../../../../_boards/${board}/wireless_examples/bluetooth/otac_att/example_board_readme.md
+           ../../../../../${board_root}/${board}/wireless_examples/bluetooth/otac_att/example_board_readme.md
            ../readme.md
 )
 
@@ -40,7 +40,7 @@ mcux_add_include(
              ../../../../wireless_examples/bluetooth/common/otap_client
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/bluetooth/otac_att/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/otac_att/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)
 
 mcux_add_linker_symbol(SYMBOLS "gUseInternalStorageLink_d=1")
 

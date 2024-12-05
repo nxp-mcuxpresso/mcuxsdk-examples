@@ -7,4 +7,4 @@ config secondary_toolchain
     string
     default "$(toolchain)"
 
-source "${SdkRootDirPath}/examples/_boards/${board}/demo_apps/tee_fault/core0/Kconfig.sysbuild"
+source "${SdkRootDirPath}/${board_root}/${board}/demo_apps/tee_fault/core0/Kconfig.sysbuild"

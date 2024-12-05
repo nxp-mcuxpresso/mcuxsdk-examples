@@ -7,11 +7,11 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tfm_psatest_s LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/tfm_examples/tfm_psatest/tfm_psatest_s)
+project(tfm_psatest_s LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/tfm_examples/tfm_psatest/tfm_psatest_s)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/tfm_examples/tfm_psatest/tfm_psatest_s/reconfig.cmake OPTIONAL)
 
 #add cc-define for all tfm_psatest_s examples 
 mcux_add_macro(

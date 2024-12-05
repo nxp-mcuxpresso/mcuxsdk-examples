@@ -2,20 +2,20 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(psa_crypto_examples_thread LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/mbedtls3x_examples/psa_crypto_examples_thread)
+project(psa_crypto_examples_thread LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/mbedtls3x_examples/psa_crypto_examples_thread)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/mbedtls3x_examples/psa_crypto_examples_thread/psa_crypto_examples_thread.c
             examples/mbedtls3x_examples/psa_crypto_examples_thread/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/mbedtls3x_examples/psa_crypto_examples_thread
-    examples/_boards/${board}
+    ${board_root}/${board}
 )
 
 #add cc-define for all psa_crypto_examples_thread 
@@ -51,6 +51,6 @@ mcux_add_linker_symbol(
 )
 
 
-include(${SdkRootDirPath}/examples/_boards/${board}/mbedtls3x_examples/psa_crypto_examples_thread/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/mbedtls3x_examples/psa_crypto_examples_thread/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

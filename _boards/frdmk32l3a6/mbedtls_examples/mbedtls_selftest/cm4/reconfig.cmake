@@ -1,7 +1,7 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/mbedtls_examples/mbedtls_selftest
+    INCLUDES ${board_root}/${board}/mbedtls_examples/mbedtls_selftest
 )
 
 mcux_add_macro(

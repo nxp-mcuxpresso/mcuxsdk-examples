@@ -7,10 +7,10 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(freertos_mpu_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_ns)
+project(freertos_mpu_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_ns)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_ns/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_ns/reconfig.cmake OPTIONAL)
 
 
 mcux_add_source(
@@ -20,12 +20,12 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES  examples/_boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_s
+    INCLUDES  ${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_s
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/nsc_functions.h
+    SOURCES ${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/nsc_functions.h
 )
 
 mcux_add_source(

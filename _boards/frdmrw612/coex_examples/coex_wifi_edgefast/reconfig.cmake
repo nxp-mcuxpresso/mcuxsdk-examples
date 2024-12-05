@@ -6,8 +6,8 @@ mcux_add_source(
             middleware/wireless/coex/build/${board}/common/hardware_init.c
             middleware/wireless/coex/build/${board}/common/peripherals.c
             middleware/wireless/coex/build/${board}/common/peripherals.h
-            examples/_boards/${board}/coex_examples/coex_wifi_edgefast/pin_mux.c
-            examples/_boards/${board}/coex_examples/coex_wifi_edgefast/pin_mux.h
+            ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.c
+            ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.h
             middleware/wireless/coex/src/configs/rw61x/wifi/wifi_config.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwipopts.h
             middleware/wireless/coex/src/edgefast/coex_shell.c
@@ -18,7 +18,7 @@ mcux_add_source(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     PREINCLUDE TRUE
-    SOURCES examples/_boards/${board}/coex_examples/coex_wifi_edgefast/app_config.h
+    SOURCES ${board_root}/${board}/coex_examples/coex_wifi_edgefast/app_config.h
 )
 
 mcux_add_source(
@@ -31,7 +31,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/wireless/coex/build/${board}/common
-             examples/_boards/${board}/coex_examples/coex_wifi_edgefast
+             ${board_root}/${board}/coex_examples/coex_wifi_edgefast
              middleware/wireless/coex/src/configs/rw61x/edgefast
              middleware/wireless/coex/src/configs/rw61x/wifi
              middleware/wireless/coex/src/configs/rw61x/lwip

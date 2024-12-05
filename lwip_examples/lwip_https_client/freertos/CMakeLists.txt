@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(lwip_https_client_freertos LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/lwip_examples/lwip_https_client/freertos)
+project(lwip_https_client_freertos LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/lwip_examples/lwip_https_client/freertos)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -41,6 +41,6 @@ mcux_add_linker_symbol(
              __heap_size__=0x18000"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/lwip_examples/lwip_https_client/freertos/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/lwip_examples/lwip_https_client/freertos/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

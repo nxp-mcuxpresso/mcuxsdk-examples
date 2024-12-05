@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(flexspi_nor_dma_transfer LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/driver_examples/flexspi/nor/dma_transfer)
+project(flexspi_nor_dma_transfer LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/flexspi/nor/dma_transfer)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -13,10 +13,10 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/driver_examples/flexspi/nor/dma_transfer/${core_id}
-             examples/_boards/${board}/driver_examples/flexspi/nor/dma_transfer
+    INCLUDES ${board_root}/${board}/driver_examples/flexspi/nor/dma_transfer/${core_id}
+             ${board_root}/${board}/driver_examples/flexspi/nor/dma_transfer
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/flexspi/nor/dma_transfer/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/flexspi/nor/dma_transfer/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

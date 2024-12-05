@@ -23,4 +23,4 @@ config MCUX_PRJSEG_module.board.wireless.board.lowpower
       This is a collection of BOARD helpers used in wireless examples to handle low power entry/exit at board level.
       This is a template for demo purpose and doesn't aim to always support all use cases.
 
-orsource "../../../../_boards/${board}/project_segments/wireless/Kconfig.prjseg"
+orsource "../../../../../${board_root}/${board}/project_segments/wireless/Kconfig.prjseg"

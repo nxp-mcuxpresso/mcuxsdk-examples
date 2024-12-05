@@ -7,13 +7,13 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-        examples/_boards/${board}/wifi_examples/common/hardware_init.c
-        examples/_boards/${board}/wifi_examples/common/app.h
+        ${board_root}/${board}/wifi_examples/common/hardware_init.c
+        ${board_root}/${board}/wifi_examples/common/app.h
 )
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES
-        examples/_boards/${board}/wifi_examples/common
+        ${board_root}/${board}/wifi_examples/common
 )
 
 mcux_add_iar_configuration(
@@ -27,32 +27,32 @@ mcux_add_iar_configuration(
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/RW612_webconfig.ld
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/RW612_webconfig.ld
 )
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/RW612_webconfig.icf
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/RW612_webconfig.icf
 )
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/RW612_webconfig.scf
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/RW612_webconfig.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/RW610_flash.ld
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/RW610_flash.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/RW610_flash.icf
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/RW610_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/wifi_webconfig/linker/RW610_flash.scf
+    LINKER ${board_root}/${board}/wifi_examples/wifi_webconfig/linker/RW610_flash.scf
 )
 
 

@@ -5,12 +5,12 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.clock)
     mcux_add_source(
         BASE_PATH ${SdkRootDirPath}
         SOURCES
-            examples/_boards/${board}/wireless_examples/clock_config.c
-            examples/_boards/${board}/wireless_examples/clock_config.h
+            ${board_root}/${board}/wireless_examples/clock_config.c
+            ${board_root}/${board}/wireless_examples/clock_config.h
     )
     mcux_add_include(
         BASE_PATH ${SdkRootDirPath}
-        INCLUDES examples/_boards/${board}/wireless_examples
+        INCLUDES ${board_root}/${board}/wireless_examples
     )
 endif()
 
@@ -20,8 +20,8 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board)
         SOURCES
             examples/_common/project_segments/wireless/wireless_mcu/board.c
             examples/_common/project_segments/wireless/wireless_mcu/board.h
-            examples/_boards/${board}/wireless_examples/board_platform.h
-            examples/_boards/${board}/wireless_examples/pin_mux_lp.h
+            ${board_root}/${board}/wireless_examples/board_platform.h
+            ${board_root}/${board}/wireless_examples/pin_mux_lp.h
     )
     mcux_add_include(
         BASE_PATH ${SdkRootDirPath}
@@ -140,7 +140,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.hw_app)
     )
 endif()
 
-include(${SdkRootDirPath}/examples/_boards/${board}/project_segments/wireless/prjseg.cmake)
+include(${SdkRootDirPath}/${board_root}/${board}/project_segments/wireless/prjseg.cmake)
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script)
     mcux_remove_armgcc_linker_script(
@@ -152,7 +152,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script)
     mcux_add_armgcc_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER examples/_boards/${board}/wireless_examples/linker/gcc/${gcc_wireless_linker_file}
+        LINKER ${board_root}/${board}/wireless_examples/linker/gcc/${gcc_wireless_linker_file}
     )
 
     mcux_remove_iar_linker_script(
@@ -164,7 +164,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script)
     mcux_add_iar_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER examples/_boards/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
+        LINKER ${board_root}/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
     )
 endif()
 
@@ -176,7 +176,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
     )
 
     mcux_add_armgcc_linker_script(
-        BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/wireless_examples
+        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
         TARGETS debug release
         LINKER linker/gcc/${gcc_wireless_linker_file_ble}
     )
@@ -188,7 +188,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
     )
 
     mcux_add_iar_linker_script(
-        BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/wireless_examples
+        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
         TARGETS debug release
         LINKER linker/iar/${iar_wireless_linker_file}
     )
@@ -204,7 +204,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.core_linker_script)
     mcux_add_armgcc_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER examples/_boards/${board}/wireless_examples/linker/${core_id}/gcc/${gcc_wireless_linker_file}
+        LINKER ${board_root}/${board}/wireless_examples/linker/${core_id}/gcc/${gcc_wireless_linker_file}
     )
 
     mcux_remove_iar_linker_script(
@@ -216,6 +216,6 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.core_linker_script)
     mcux_add_iar_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER examples/_boards/${board}/wireless_examples/linker/iar/${core_id}/${iar_wireless_linker_file}
+        LINKER ${board_root}/${board}/wireless_examples/linker/iar/${core_id}/${iar_wireless_linker_file}
     )
 endif()

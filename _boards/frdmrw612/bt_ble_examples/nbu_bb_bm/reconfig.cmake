@@ -1,5 +1,5 @@
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/bt_ble_examples/nbu_bb_bm
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/bt_ble_examples/nbu_bb_bm
     SOURCES hardware_init.c
             pin_mux.c
             pin_mux.h
@@ -11,14 +11,14 @@ mcux_add_source(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}
     PREINCLUDE TRUE
     SOURCES monolithic_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/bt_ble_examples/nbu_bb_bm
+    INCLUDES ${board_root}/${board}/bt_ble_examples/nbu_bb_bm
 )
 
 
@@ -67,10 +67,10 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/bt_ble_examples/nbu_bb_bm/linker/RW61x_flash.icf
+    LINKER ${board_root}/${board}/bt_ble_examples/nbu_bb_bm/linker/RW61x_flash.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/bt_ble_examples/nbu_bb_bm/linker/RW61x_flash.ld
+    LINKER ${board_root}/${board}/bt_ble_examples/nbu_bb_bm/linker/RW61x_flash.ld
 )

@@ -6,29 +6,29 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/wifi_examples/common/pin_mux.c
-            examples/_boards/${board}/wifi_examples/common/pin_mux.h
+    SOURCES ${board_root}/${board}/wifi_examples/common/pin_mux.c
+            ${board_root}/${board}/wifi_examples/common/pin_mux.h
             middleware/wifi_nxp/example/wifi_cli/lwippools.h
             middleware/wifi_nxp/example/wifi_cli/lwiphooks.h
             middleware/wifi_nxp/example/wifi_cli/FreeRTOSConfig.h
             middleware/wifi_nxp/example/wifi_cli/lwipopts.h
             middleware/wifi_nxp/example/wifi_cli/wifi_config/wifi_config.h
-            examples/_boards/${board}/wifi_examples/common/cm33_core0/hardware_init.c
-            examples/_boards/${board}/wifi_examples/common/cm33_core0/app.h
-            examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/wifi_bt_config.c
-            examples/_boards/${board}/wifi_bt_config.h
-            examples/_boards/${board}/wifi_examples/common/app_config/app_config.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/wifi_examples/common/cm33_core0/hardware_init.c
+            ${board_root}/${board}/wifi_examples/common/cm33_core0/app.h
+            ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/wifi_bt_config.c
+            ${board_root}/${board}/wifi_bt_config.h
+            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/wifi_examples/common
-             examples/_boards/${board}/wifi_examples/common/cm33_core0
+    INCLUDES ${board_root}/${board}/wifi_examples/common
+             ${board_root}/${board}/wifi_examples/common/cm33_core0
              middleware/wifi_nxp/example/wifi_cli/wifi_config
-             examples/_boards/${board}/wifi_examples/common/app_config
+             ${board_root}/${board}/wifi_examples/common/app_config
 )
 
 mcux_add_iar_configuration(
@@ -57,17 +57,17 @@ mcux_add_mdk_configuration(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.ld
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.icf
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.scf
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.scf
 )
 
 mcux_remove_armgcc_linker_script(

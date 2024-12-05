@@ -1,11 +1,11 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/power_mode_switch/clock_scg.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/peripherals.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/peripherals.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/power_mode_switch.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/power_mode_switch.h
+    SOURCES ${board_root}/${board}/demo_apps/power_mode_switch/clock_scg.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/peripherals.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/peripherals.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/power_mode_switch.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/power_mode_switch.h
 )
 
 mcux_add_macro(

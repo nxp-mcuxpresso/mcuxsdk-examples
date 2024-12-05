@@ -228,14 +228,14 @@ mcux_add_armgcc_configuration(
 )
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/le_audio_sync_source/linker/MIMXRT1176xxxxx_cm7_ram_0x1400.icf
+  LINKER ${board_root}/${board}/edgefast_bluetooth_examples/le_audio_sync_source/linker/MIMXRT1176xxxxx_cm7_ram_0x1400.icf
   TARGETS
     ram_0x1400_debug
     ram_0x1400_release
 )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/le_audio_sync_source/linker/MIMXRT1176xxxxx_cm7_ram_0x1400.scf
+  LINKER ${board_root}/${board}/edgefast_bluetooth_examples/le_audio_sync_source/linker/MIMXRT1176xxxxx_cm7_ram_0x1400.scf
   TARGETS
     ram_0x1400_debug
     ram_0x1400_release

@@ -4,17 +4,17 @@ mcux_add_source(
     SOURCES examples/demo_apps/power_mode_switch_rt10xx/bm/power_mode_switch.h
             examples/demo_apps/power_mode_switch_rt10xx/bm/lpm.c
             examples/demo_apps/power_mode_switch_rt10xx/bm/lpm.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/specific.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/specific.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/pin_mux.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/pin_mux.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/peripherals.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/peripherals.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/specific.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/specific.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/pin_mux.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/pin_mux.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/peripherals.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/peripherals.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/power_mode_switch
+    INCLUDES ${board_root}/${board}/demo_apps/power_mode_switch
              examples/demo_apps/power_mode_switch_rt10xx/bm
 )
 

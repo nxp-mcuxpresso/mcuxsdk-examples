@@ -58,7 +58,7 @@ mcux_add_include(
 	INCLUDES ../../../../../middleware/wireless/ble_controller/lib/threadx_inc
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/ble_controller/nbu_ble/${multicore_foldername}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/nbu_ble/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar

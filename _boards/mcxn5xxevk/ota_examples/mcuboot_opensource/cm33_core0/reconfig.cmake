@@ -2,13 +2,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/ota_examples/mcuboot_opensource/mbedtls_user_config.h
+    SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/mbedtls_user_config.h
 )
 
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/ota_examples/mcuboot_opensource
+    INCLUDES ${board_root}/${board}/ota_examples/mcuboot_opensource
 )
 
 
@@ -51,15 +51,15 @@ mcux_remove_mdk_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.icf
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.ld
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.ld
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.scf
+    LINKER ${board_root}/${board}/ota_examples/mcuboot_opensource/linker/mcxn10_cm33_flash.scf
 )

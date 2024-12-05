@@ -49,6 +49,6 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/RW612_flash.ld
+    LINKER ${board_root}/${board}/audio_examples/common/linker/RW612_flash.ld
 )
 

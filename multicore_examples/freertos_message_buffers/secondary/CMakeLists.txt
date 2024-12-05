@@ -7,16 +7,16 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(freertos_message_buffers_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/multicore_examples/freertos_message_buffers)
+project(freertos_message_buffers_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/freertos_message_buffers)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-# This will point to: ${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/reconfig.cmake
+# This will point to: ${SdkRootDirPath}/${board_root}/${board}/multicore_examples/reconfig.cmake
 # where common board multicore properties are set.
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/freertos_message_buffers/${core_id}/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/freertos_message_buffers/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/freertos_message_buffers/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/freertos_message_buffers/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES main.c

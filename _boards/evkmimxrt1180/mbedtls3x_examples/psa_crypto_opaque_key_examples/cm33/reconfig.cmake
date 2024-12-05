@@ -3,13 +3,13 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/mbedtls3x_examples/psa_crypto_opaque_key_examples/ffconf.h
             examples/mbedtls3x_examples/psa_crypto_opaque_key_examples/mcux_mbedtls_psa_crypto_opaque_config.h
-            examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
+            ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples
+    INCLUDES ${board_root}/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples
              middleware/mbedtls3x/port
 )
 

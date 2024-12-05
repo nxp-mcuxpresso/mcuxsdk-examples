@@ -14,4 +14,4 @@ if (CONFIG_MCUX_PRJSEG_module.board.lvgl)
     )
 endif()
 
-include(${SdkRootDirPath}/examples/_boards/${board}/project_segments/lvgl/prjseg.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/project_segments/lvgl/prjseg.cmake OPTIONAL)

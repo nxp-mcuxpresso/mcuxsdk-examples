@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(els_pkc_fips_st LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/els_pkc_examples/els_pkc_fips_st)
+project(els_pkc_fips_st LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/els_pkc_examples/els_pkc_fips_st)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -39,6 +39,6 @@ mcux_add_include(
              examples/els_pkc_examples/els_pkc_fips_st/inc/test_vectors
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/els_pkc_examples/els_pkc_fips_st/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/els_pkc_examples/els_pkc_fips_st/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

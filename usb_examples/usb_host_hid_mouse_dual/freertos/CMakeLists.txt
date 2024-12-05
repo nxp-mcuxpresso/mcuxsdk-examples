@@ -8,7 +8,7 @@ project(
     "ASM"
     "C"
     "CXX"
-  PROJECT_BOARD_PORT_PATH "examples/_boards/${board}/usb_examples/usb_host_hid_mouse_dual/freertos"
+  PROJECT_BOARD_PORT_PATH "${board_root}/${board}/usb_examples/usb_host_hid_mouse_dual/freertos"
 )
 
 include("${SdkRootDirPath}/CMakeLists.txt")
@@ -42,7 +42,7 @@ mcux_add_source(
     "middleware/usb/example/usb_host_hid_mouse_dual/freertos/host_mouse_usb2.h"
 )
 
-include("${SdkRootDirPath}/examples/_boards/${board}/usb_examples/usb_host_hid_mouse_dual/freertos/reconfig.cmake" OPTIONAL)
+include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_host_hid_mouse_dual/freertos/reconfig.cmake" OPTIONAL)
 
 mcux_convert_binary(
   BINARY "${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin"

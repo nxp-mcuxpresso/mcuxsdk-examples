@@ -5,7 +5,7 @@ mcux_add_macro(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     PREINCLUDE TRUE
-    SOURCES examples/_boards/${board}/el2go_examples/common/wifi/app_config.h
+    SOURCES ${board_root}/${board}/el2go_examples/common/wifi/app_config.h
 )
 
 mcux_add_source(
@@ -27,8 +27,8 @@ mcux_add_custom_command(
     BUILD_COMMAND ${TOOLCHAIN_DIR}/bin/arm-none-eabi-gcc -E -P -xc
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
-    ${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns.ld
-    -o ${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns_pre.ld
+    ${SdkRootDirPath}/${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns.ld
+    -o ${SdkRootDirPath}/${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns_pre.ld
 )
 
 mcux_add_custom_command(
@@ -37,8 +37,8 @@ mcux_add_custom_command(
     BUILD_COMMAND ${CC}
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
-    ${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns.icf
-    --silent --preprocess=ns ${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns_pre.icf
+    ${SdkRootDirPath}/${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns.icf
+    --silent --preprocess=ns ${SdkRootDirPath}/${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns_pre.icf
 )
 
 mcux_add_custom_command(
@@ -47,25 +47,25 @@ mcux_add_custom_command(
     BUILD_COMMAND ${CC} --target=arm-arm-none-eabi -march=armv8-m.main -E -P -xc
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/target/nxp/${board}/partition
     -I ${SdkRootDirPath}/middleware/tfm/tf-m/platform/ext/common
-    ${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns.sct
-    -o ${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns_pre.sct
+    ${SdkRootDirPath}/${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns.sct
+    -o ${SdkRootDirPath}/${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns_pre.sct
 )
 
 # Add preprocessed TF-M linker files
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns_pre.ld
+    LINKER ${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns_pre.ld
 )
 
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns_pre.icf
+    LINKER ${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns_pre.icf
 )
 
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/el2go_examples/common/linker/tfm_common_ns_pre.sct
+    LINKER ${board_root}/${board}/el2go_examples/common/linker/tfm_common_ns_pre.sct
 )

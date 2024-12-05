@@ -1,7 +1,7 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
+    SOURCES ${board_root}/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
 )
 
 # Add or remove Linker File Configurations
@@ -25,15 +25,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_hybrid/iar/MIMXRT685Sxxxx_cm33_hybrid.icf
+    LINKER ${board_root}/${board}/demo_apps/hello_world_hybrid/iar/MIMXRT685Sxxxx_cm33_hybrid.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_hybrid/mdk/MIMXRT685Sxxxx_cm33_hybrid.scf
+    LINKER ${board_root}/${board}/demo_apps/hello_world_hybrid/mdk/MIMXRT685Sxxxx_cm33_hybrid.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/hello_world_hybrid/gcc/MIMXRT685Sxxxx_cm33_hybrid.ld
+    LINKER ${board_root}/${board}/demo_apps/hello_world_hybrid/gcc/MIMXRT685Sxxxx_cm33_hybrid.ld
 )

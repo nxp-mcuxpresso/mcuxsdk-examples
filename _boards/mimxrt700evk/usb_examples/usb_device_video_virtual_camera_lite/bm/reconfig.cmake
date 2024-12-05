@@ -17,7 +17,7 @@ mcux_add_macro(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "examples/_boards/${board}/usb_examples/usb_device_video_virtual_camera_lite/bm"
+    "${board_root}/${board}/usb_examples/usb_device_video_virtual_camera_lite/bm"
     "middleware/usb/example/boards/${board}/usb_device_video_virtual_camera_lite/bm"
     "middleware/usb/example/boards/${board}/usb_device_video_virtual_camera_lite/bm/${core_id}"
 )

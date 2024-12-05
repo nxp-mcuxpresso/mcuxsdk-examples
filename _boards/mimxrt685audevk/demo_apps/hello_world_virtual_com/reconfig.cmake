@@ -1,8 +1,8 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/hello_world_virtual_com/usb_device_board_config.h
-            examples/_boards/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
+    SOURCES ${board_root}/${board}/demo_apps/hello_world_virtual_com/usb_device_board_config.h
+            ${board_root}/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
 )
 
 mcux_add_armgcc_configuration(

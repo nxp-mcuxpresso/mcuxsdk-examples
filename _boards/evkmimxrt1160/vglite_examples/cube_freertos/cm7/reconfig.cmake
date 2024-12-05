@@ -13,9 +13,9 @@ mcux_add_source(
             middleware/vglite/vglite_sdk/example/cube_freertos/clock_paths/s_paths.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.c
-            examples/_boards/${board}/vglite_examples/vglite_support/pin_mux.c
-            examples/_boards/${board}/vglite_examples/vglite_support/pin_mux.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/vglite_examples/vglite_support/pin_mux.c
+            ${board_root}/${board}/vglite_examples/vglite_support/pin_mux.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(

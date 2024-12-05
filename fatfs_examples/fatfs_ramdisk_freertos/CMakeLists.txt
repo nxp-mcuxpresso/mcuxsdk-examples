@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(fatfs_ramdisk_freertos LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/fatfs_examples/fatfs_ramdisk_freertos)
+project(fatfs_ramdisk_freertos LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/fatfs_examples/fatfs_ramdisk_freertos)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

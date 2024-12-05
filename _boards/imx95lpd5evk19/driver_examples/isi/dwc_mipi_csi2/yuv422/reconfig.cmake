@@ -5,12 +5,12 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/cm7/dpu_example.h
-            examples/_boards/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/cm7/isi_config.h
+    SOURCES ${board_root}/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/cm7/dpu_example.h
+            ${board_root}/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/cm7/isi_config.h
 )
 
 mcux_add_include(
-    INCLUDES examples/_boards/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/cm7/
+    INCLUDES ${board_root}/${board}/driver_examples/isi/dwc_mipi_csi2/yuv422/cm7/
 )
 
-include(${SdkRootDirPath}/examples/_boards/imx95lpd5evk19/driver_examples/isi/dwc_mipi_csi2/reconfig.cmake)
+include(${SdkRootDirPath}/${board_root}/imx95lpd5evk19/driver_examples/isi/dwc_mipi_csi2/reconfig.cmake)

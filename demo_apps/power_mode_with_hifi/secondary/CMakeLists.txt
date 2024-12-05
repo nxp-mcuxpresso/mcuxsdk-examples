@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(power_mode_with_hifi_secondary LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/demo_apps/power_mode_with_hifi/)
+project(power_mode_with_hifi_secondary LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/demo_apps/power_mode_with_hifi/)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_with_hifi/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_image.bin)

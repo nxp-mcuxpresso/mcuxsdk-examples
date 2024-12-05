@@ -7,10 +7,10 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(freertos_mpu_s LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_s)
+project(freertos_mpu_s LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_s)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/freertos_examples/freertos_mpu/freertos_mpu_s/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES main_s.c

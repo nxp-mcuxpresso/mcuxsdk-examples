@@ -5,21 +5,21 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/freertos_config_board/${core_id}/FreeRTOSConfigBoard.h
+    SOURCES ${board_root}/${board}/freertos_config_board/${core_id}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/freertos_config_board/${core_id}/
+    INCLUDES ${board_root}/${board}/freertos_config_board/${core_id}/
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/board.h
-            examples/_boards/${board}/board.c
+    SOURCES ${board_root}/${board}/board.h
+            ${board_root}/${board}/board.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}
+    INCLUDES ${board_root}/${board}
 )

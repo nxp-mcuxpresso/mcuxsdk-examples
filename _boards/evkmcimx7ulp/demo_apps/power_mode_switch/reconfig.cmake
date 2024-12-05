@@ -1,20 +1,20 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/lpm.c
-            examples/_boards/${board}/lpm.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/rpmsg_config.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/clock_scg.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/power_mode_switch.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/power_mode_switch.h
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+    SOURCES ${board_root}/${board}/lpm.c
+            ${board_root}/${board}/lpm.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/rpmsg_config.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/clock_scg.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/power_mode_switch.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/power_mode_switch.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/${board}/srtm_config.h
-            examples/_boards/${board}/app_srtm.c
-            examples/_boards/${board}/app_srtm.h
+            ${board_root}/${board}/srtm_config.h
+            ${board_root}/${board}/app_srtm.c
+            ${board_root}/${board}/app_srtm.h
             middleware/issdk/algorithms/pedometer/include/libinclude/KeynetikPedometer.h
             middleware/issdk/algorithms/pedometer/source/pedometer.c
             middleware/issdk/algorithms/pedometer/include/pedometer.h
@@ -35,13 +35,13 @@ mcux_add_library(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     TOOLCHAINS armgcc
-    SOURCES examples/_boards/${board}/gcc/lpm_asm.S
+    SOURCES ${board_root}/${board}/gcc/lpm_asm.S
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     TOOLCHAINS iar
-    SOURCES examples/_boards/${board}/iar/lpm_asm.s
+    SOURCES ${board_root}/${board}/iar/lpm_asm.s
 )
 
 mcux_add_include(
@@ -84,22 +84,22 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/iar/MCIMX7U5xxxxx_cm4_lpm_ram.icf
+    LINKER ${board_root}/${board}/iar/MCIMX7U5xxxxx_cm4_lpm_ram.icf
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/iar/MCIMX7U5xxxxx_cm4_lpm_flash.icf
+    LINKER ${board_root}/${board}/iar/MCIMX7U5xxxxx_cm4_lpm_flash.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/gcc/MCIMX7U5xxxxx_cm4_lpm_ram.ld
+    LINKER ${board_root}/${board}/gcc/MCIMX7U5xxxxx_cm4_lpm_ram.ld
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/gcc/MCIMX7U5xxxxx_cm4_lpm_flash.ld
+    LINKER ${board_root}/${board}/gcc/MCIMX7U5xxxxx_cm4_lpm_flash.ld
 )
 
 mcux_add_iar_configuration(

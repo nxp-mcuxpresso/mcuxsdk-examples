@@ -4,14 +4,14 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(zigbee_ed_rx_on_freertos LANGUAGES C CXX ASM
     PROJECT_BOARD_PORT_PATH
-        examples/_boards/${board}/wireless_examples
+        ${board_root}/${board}/wireless_examples
     CUSTOM_PRJ_CONF_PATH
-        examples/_boards/${board}/wireless_examples/zigbee
-        examples/_boards/${board}/wireless_examples/zigbee/ed_rx_on/freertos
+        ${board_root}/${board}/wireless_examples/zigbee
+        ${board_root}/${board}/wireless_examples/zigbee/ed_rx_on/freertos
 )
 
 include(variable.cmake)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/zigbee/ed_rx_on/freertos/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/zigbee/ed_rx_on/freertos/reconfig.cmake OPTIONAL)
 
 include(ed_rx_on.cmake)

@@ -1,10 +1,10 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/driver_examples/romapi/common/pin_mux.c
-            examples/_boards/${board}/driver_examples/romapi/common/pin_mux.h
-            examples/_boards/${board}/driver_examples/romapi/common/hardware_init.c
-            examples/_boards/${board}/driver_examples/romapi/common/app.h
+    SOURCES ${board_root}/${board}/driver_examples/romapi/common/pin_mux.c
+            ${board_root}/${board}/driver_examples/romapi/common/pin_mux.h
+            ${board_root}/${board}/driver_examples/romapi/common/hardware_init.c
+            ${board_root}/${board}/driver_examples/romapi/common/app.h
 )
 
 mcux_add_armgcc_configuration(

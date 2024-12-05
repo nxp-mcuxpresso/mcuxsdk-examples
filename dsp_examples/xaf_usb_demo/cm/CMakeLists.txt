@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(dsp_xaf_usb_demo LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/dsp_examples/xaf_usb_demo)
+project(dsp_xaf_usb_demo LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/dsp_examples/xaf_usb_demo)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -18,10 +18,10 @@ mcux_add_source(
             examples/dsp_examples/xaf_usb_demo/cm/cmd.h
             examples/dsp_examples/common/mcu/dsp_ipc.c
             examples/dsp_examples/common/mcu/dsp_ipc.h
-            examples/_boards/${board}/dsp_examples/xaf_usb_demo/dsp_config.h
-            examples/_boards/${board}/dsp_examples/srtm_config.h
-            examples/_boards/${board}/dsp_examples/srtm_config_audio.h
-            examples/_boards/${board}/dsp_examples/rpmsg_config.h
+            ${board_root}/${board}/dsp_examples/xaf_usb_demo/dsp_config.h
+            ${board_root}/${board}/dsp_examples/srtm_config.h
+            ${board_root}/${board}/dsp_examples/srtm_config_audio.h
+            ${board_root}/${board}/dsp_examples/rpmsg_config.h
             examples/dsp_examples/xaf_usb_demo/cm/usb_device_descriptor.h
             examples/dsp_examples/xaf_usb_demo/cm/usb_device_descriptor.c
             examples/dsp_examples/xaf_usb_demo/cm/usb_device_config.h
@@ -30,8 +30,8 @@ mcux_add_source(
             examples/dsp_examples/xaf_usb_demo/cm/composite.c
             examples/dsp_examples/xaf_usb_demo/cm/audio_unified.h
             examples/dsp_examples/xaf_usb_demo/cm/audio_unified.c
-            examples/_boards/${board}/dsp_examples/dsp_support.c
-            examples/_boards/${board}/dsp_examples/dsp_support.h
+            ${board_root}/${board}/dsp_examples/dsp_support.c
+            ${board_root}/${board}/dsp_examples/dsp_support.h
 )
 
 mcux_add_include(
@@ -39,11 +39,11 @@ mcux_add_include(
     INCLUDES examples/dsp_examples/common/mcu
              examples/dsp_examples/common
              examples/dsp_examples/xaf_usb_demo/cm
-             examples/_boards/${board}/dsp_examples/xaf_usb_demo
-             examples/_boards/${board}/dsp_examples
-             examples/_boards/${board}/dsp_examples/common/${core_id}
-             examples/_boards/${board}/dsp_examples/xaf_usb_demo/${core_id}
-             examples/_boards/${board}
+             ${board_root}/${board}/dsp_examples/xaf_usb_demo
+             ${board_root}/${board}/dsp_examples
+             ${board_root}/${board}/dsp_examples/common/${core_id}
+             ${board_root}/${board}/dsp_examples/xaf_usb_demo/${core_id}
+             ${board_root}/${board}
 )
 
 
@@ -63,6 +63,6 @@ mcux_add_armgcc_configuration(
     CC "-mno-unaligned-access"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/xaf_usb_demo/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/dsp_examples/xaf_usb_demo/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

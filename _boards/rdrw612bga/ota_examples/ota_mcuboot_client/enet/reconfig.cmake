@@ -1,11 +1,11 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
+    SOURCES ${board_root}/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/ota_examples/ota_mcuboot_client
+    INCLUDES ${board_root}/${board}/ota_examples/ota_mcuboot_client
 )
 
 mcux_add_mdk_configuration(
@@ -42,15 +42,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_client/linker/RW610_flash.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/RW610_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_client/linker/RW610_flash.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/RW610_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_client/linker/RW610_flash.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/RW610_flash.ld
 )

@@ -2,13 +2,13 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/demo_apps/sai/sai_peripheral/recordtoSdcard.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/sdmmc_config.c
             examples/demo_apps/sai/sai_peripheral/sai.h
             examples/demo_apps/sai/sai_peripheral/recordPlayback.c
             examples/demo_apps/sai/sai_peripheral/playbackSineWave.c
-            examples/_boards/${board}/demo_apps/sai_peripheral/peripherals.c
-            examples/_boards/${board}/demo_apps/sai_peripheral/peripherals.h
+            ${board_root}/${board}/demo_apps/sai_peripheral/peripherals.c
+            ${board_root}/${board}/demo_apps/sai_peripheral/peripherals.h
 )
 
 mcux_add_include(

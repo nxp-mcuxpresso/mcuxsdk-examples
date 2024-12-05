@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ezhv_examples/heartbeat/${core_id}/sysbuild.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/heartbeat/${core_id}/sysbuild.cmake OPTIONAL)
 
 ExternalZephyrProject_Add(
         APPLICATION ezhv_heartbeat_ezhv

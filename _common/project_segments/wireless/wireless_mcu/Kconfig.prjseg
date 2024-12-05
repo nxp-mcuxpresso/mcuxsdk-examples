@@ -79,4 +79,4 @@ config MCUX_PRJSEG_module.board.wireless.hw_app
     help
       This is a customized implementation of hardware init used in wireless examples.
 
-orsource "../../../../_boards/${board}/project_segments/wireless/Kconfig.prjseg"
+orsource "../../../../../${board_root}/${board}/project_segments/wireless/Kconfig.prjseg"

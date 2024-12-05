@@ -10,4 +10,4 @@ config ezhv_toolchain
     string
     default "riscvllvm"
 
-source "${SdkRootDirPath}/examples/_boards/${board}/Kconfig.sysbuild"
+source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"

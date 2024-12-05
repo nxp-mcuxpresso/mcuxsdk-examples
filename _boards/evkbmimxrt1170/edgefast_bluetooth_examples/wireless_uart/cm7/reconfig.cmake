@@ -2,11 +2,11 @@ mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
     components/wifi_bt_module/incl/wifi_bt_module_config.h
-    examples/_boards/${board}/FreeRTOSConfigBoard.h
-    examples/_boards/${board}/sdmmc_config.c
-    examples/_boards/${board}/sdmmc_config.h
-    examples/_boards/${board}/wifi_bt_config.c
-    examples/_boards/${board}/wifi_bt_config.h
+    ${board_root}/${board}/FreeRTOSConfigBoard.h
+    ${board_root}/${board}/sdmmc_config.c
+    ${board_root}/${board}/sdmmc_config.h
+    ${board_root}/${board}/wifi_bt_config.c
+    ${board_root}/${board}/wifi_bt_config.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wireless_uart/${core_id}/hardware_init.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wireless_uart/${core_id}/pin_mux.c
@@ -18,7 +18,7 @@ mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
     components/wifi_bt_module/incl
-    examples/_boards/${board}
+    ${board_root}/${board}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wireless_uart/${core_id}
     middleware/edgefast_bluetooth/output/templates/config

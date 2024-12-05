@@ -7,7 +7,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/ecat_examples/servo_motor
-    INCLUDES examples/_boards/${board}/ecat_examples/servo_motor/${core_id}
+    INCLUDES ${board_root}/${board}/ecat_examples/servo_motor/${core_id}
 )
 
 

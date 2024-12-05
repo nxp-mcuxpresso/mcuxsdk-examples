@@ -5,13 +5,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/driver_examples/isi/dpu_board.c
-            examples/_boards/${board}/isi_board.c
-            examples/_boards/${board}/isi_example.h
+    SOURCES ${board_root}/${board}/driver_examples/isi/dpu_board.c
+            ${board_root}/${board}/isi_board.c
+            ${board_root}/${board}/isi_example.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/driver_examples/isi
-             examples/_boards/${board}
+    INCLUDES ${board_root}/${board}/driver_examples/isi
+             ${board_root}/${board}
 )

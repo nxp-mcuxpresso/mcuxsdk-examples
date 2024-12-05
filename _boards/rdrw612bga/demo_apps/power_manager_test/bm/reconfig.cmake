@@ -39,30 +39,30 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/iar/RW612_ram.icf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/iar/RW612_ram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/mdk/RW612_ram.scf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/mdk/RW612_ram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/armgcc/RW612_ram.ld
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/armgcc/RW612_ram.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/iar/RW612_flash.icf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/iar/RW612_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/mdk/RW612_flash.scf
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/mdk/RW612_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/demo_apps/power_mode_switch/armgcc/RW612_flash.ld
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/armgcc/RW612_flash.ld
 )

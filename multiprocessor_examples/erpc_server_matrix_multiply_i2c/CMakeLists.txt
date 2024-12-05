@@ -7,11 +7,11 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(erpc_server_matrix_multiply_i2c LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/multiprocessor_examples/erpc_server_matrix_multiply_i2c)
+project(erpc_server_matrix_multiply_i2c LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multiprocessor_examples/erpc_server_matrix_multiply_i2c)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/multiprocessor_examples/erpc_server_matrix_multiply_i2c/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multiprocessor_examples/erpc_server_matrix_multiply_i2c/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES main_server.c

@@ -1,9 +1,9 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/wifi_bt_config.c
-            examples/_boards/${board}/wifi_bt_config.h
+    SOURCES ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/wifi_bt_config.c
+            ${board_root}/${board}/wifi_bt_config.h
 )
 
 mcux_add_mdk_configuration(
@@ -41,15 +41,15 @@ mcux_remove_mdk_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT595Sxxxx_cm33_flash.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT595Sxxxx_cm33_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT595Sxxxx_cm33_flash.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT595Sxxxx_cm33_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT595Sxxxx_cm33_flash.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT595Sxxxx_cm33_flash.ld
 )

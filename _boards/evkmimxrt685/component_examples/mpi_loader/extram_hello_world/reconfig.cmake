@@ -19,15 +19,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/component_examples/mpi_loader/extram_hello_world/iar/MIMXRT685Sxxxx_cm33_psram.icf
+    LINKER ${board_root}/${board}/component_examples/mpi_loader/extram_hello_world/iar/MIMXRT685Sxxxx_cm33_psram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/component_examples/mpi_loader/extram_hello_world/mdk/MIMXRT685Sxxxx_cm33_psram.scf
+    LINKER ${board_root}/${board}/component_examples/mpi_loader/extram_hello_world/mdk/MIMXRT685Sxxxx_cm33_psram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/component_examples/mpi_loader/extram_hello_world/armgcc/MIMXRT685Sxxxx_cm33_psram.ld
+    LINKER ${board_root}/${board}/component_examples/mpi_loader/extram_hello_world/armgcc/MIMXRT685Sxxxx_cm33_psram.ld
 )

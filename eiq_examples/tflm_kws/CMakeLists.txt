@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tflm_kws LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/eiq_examples/tflm_kws)
+project(tflm_kws LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/tflm_kws)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/tflm_kws/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_kws/reconfig.cmake OPTIONAL)
 
 mcux_add_include(
   INCLUDES .

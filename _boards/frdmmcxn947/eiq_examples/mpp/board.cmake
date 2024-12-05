@@ -1,12 +1,12 @@
 # lists board specific files for SDK
 
 mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/mpp
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp
     INCLUDES inc
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/mpp
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp
     SOURCES src/pin_mux.c
             src/hardware_init.c
             src/board.c
@@ -38,6 +38,6 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_linker_script(
     TARGETS flash_debug flash_release
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/mpp
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp
     LINKER MCXN947_cm33_core0_flash.ld
 )

@@ -1,17 +1,17 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/low_power_wakeword/lpm.c
-            examples/_boards/${board}/demo_apps/low_power_wakeword/lpm.h
-            examples/_boards/${board}/demo_apps/low_power_wakeword/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/demo_apps/low_power_wakeword/rpmsg_config.h
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+    SOURCES ${board_root}/${board}/demo_apps/low_power_wakeword/lpm.c
+            ${board_root}/${board}/demo_apps/low_power_wakeword/lpm.h
+            ${board_root}/${board}/demo_apps/low_power_wakeword/FreeRTOSConfig.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/low_power_wakeword/rpmsg_config.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/${board}/app_srtm.c
-            examples/_boards/${board}/app_srtm.h
-            examples/_boards/${board}/srtm_config.h
+            ${board_root}/${board}/app_srtm.c
+            ${board_root}/${board}/app_srtm.h
+            ${board_root}/${board}/srtm_config.h
 )
 
 mcux_add_include(
@@ -45,7 +45,7 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS release
-    LINKER examples/_boards/${board}/demo_apps/low_power_wakeword/linker/MIMX8MM6xxxxx_cm4_lpv_ram.ld
+    LINKER ${board_root}/${board}/demo_apps/low_power_wakeword/linker/MIMX8MM6xxxxx_cm4_lpv_ram.ld
 )
 
 mcux_add_armgcc_configuration(

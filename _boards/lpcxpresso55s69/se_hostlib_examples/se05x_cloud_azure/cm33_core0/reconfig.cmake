@@ -24,5 +24,5 @@ mcux_remove_armgcc_linker_script(
 # Add or remove Linker File Configurations
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/se_hostlib_examples/se05x_cloud_azure/linker/LPC55S69_cm33_core0_flash.ld
+    LINKER ${board_root}/${board}/se_hostlib_examples/se05x_cloud_azure/linker/LPC55S69_cm33_core0_flash.ld
 )

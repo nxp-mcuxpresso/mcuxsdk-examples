@@ -32,9 +32,9 @@ mcux_remove_configuration(
 
 mcux_add_xtensa_configuration(
     TARGETS debug
-    LD "-mlsp=${SdkRootDirPath}/examples/_boards/mimxrt700evk/dsp_examples/linker/hifi4/gdbio"
+    LD "-mlsp=${SdkRootDirPath}/${board_root}/mimxrt700evk/dsp_examples/linker/hifi4/gdbio"
 )
 mcux_add_xtensa_configuration(
     TARGETS release
-    LD "-mlsp=${SdkRootDirPath}/examples/_boards/mimxrt700evk/dsp_examples/linker/hifi4/min-rt"
+    LD "-mlsp=${SdkRootDirPath}/${board_root}/mimxrt700evk/dsp_examples/linker/hifi4/min-rt"
 )

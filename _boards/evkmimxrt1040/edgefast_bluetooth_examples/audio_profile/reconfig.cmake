@@ -2,11 +2,11 @@ mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
     components/wifi_bt_module/incl/wifi_bt_module_config.h
-    examples/_boards/${board}/FreeRTOSConfigBoard.h
-    examples/_boards/${board}/sdmmc_config.c
-    examples/_boards/${board}/sdmmc_config.h
-    examples/_boards/${board}/wifi_bt_config.c
-    examples/_boards/${board}/wifi_bt_config.h
+    ${board_root}/${board}/FreeRTOSConfigBoard.h
+    ${board_root}/${board}/sdmmc_config.c
+    ${board_root}/${board}/sdmmc_config.h
+    ${board_root}/${board}/wifi_bt_config.c
+    ${board_root}/${board}/wifi_bt_config.h
     examples/aws_examples/common/aws_mbedtls_config.h
     examples/aws_examples/common/config_files_wifi_nxp/wifi_config.h
     examples/aws_examples/common/dev_mode_key_provisioning/include/aws_dev_mode_key_provisioning.h
@@ -22,7 +22,7 @@ mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
     components/wifi_bt_module/incl
-    examples/_boards/${board}
+    ${board_root}/${board}
     examples/aws_examples/common
     examples/aws_examples/common/config_files_wifi_nxp
     examples/aws_examples/common/dev_mode_key_provisioning/include

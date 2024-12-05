@@ -25,7 +25,7 @@ mcux_add_source(
             middleware/usb/example/usb_pd_alt_mode_dp_host_om13790host/bm/pd_dp_hpd_driver.c
             middleware/usb/example/usb_pd_alt_mode_dp_host_om13790host/bm/pd_power_nx20p3483.h
             middleware/usb/example/usb_pd_alt_mode_dp_host_om13790host/bm/pd_power_nx20p3483.c
-            examples/_boards/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
+            ${board_root}/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
 )
 
 mcux_add_include(

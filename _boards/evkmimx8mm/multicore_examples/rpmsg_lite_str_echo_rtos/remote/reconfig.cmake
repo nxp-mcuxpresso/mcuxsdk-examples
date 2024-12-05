@@ -6,18 +6,18 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/evkmimx8mm/FreeRTOSConfigBoard.h
-            examples/_boards/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos/FreeRTOSConfig.h
-	    examples/_boards/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos/remote/rpmsg_config.h
-            examples/_boards/evkmimx8mm/srtm_config.h
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+            ${board_root}/evkmimx8mm/FreeRTOSConfigBoard.h
+            ${board_root}/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos/FreeRTOSConfig.h
+	    ${board_root}/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos/remote/rpmsg_config.h
+            ${board_root}/evkmimx8mm/srtm_config.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8mm
+    INCLUDES ${board_root}/evkmimx8mm
              middleware/multicore/remoteproc
-             examples/_boards/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos
-             examples/_boards/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos/remote
+             ${board_root}/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos
+             ${board_root}/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos/remote
 )

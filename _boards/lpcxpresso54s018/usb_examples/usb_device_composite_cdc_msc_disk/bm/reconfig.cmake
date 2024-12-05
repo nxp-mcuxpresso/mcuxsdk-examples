@@ -22,8 +22,8 @@ mcux_add_macro(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "examples/_boards/${board}/sdmmc_config.c"
-    "examples/_boards/${board}/sdmmc_config.h"
+    "${board_root}/${board}/sdmmc_config.c"
+    "${board_root}/${board}/sdmmc_config.h"
     "middleware/usb/example/boards/${board}/usb_device_composite_cdc_msc_disk/bm/hardware_init.c"
     "middleware/usb/example/boards/${board}/usb_device_composite_cdc_msc_disk/bm/pin_mux.c"
     "middleware/usb/example/boards/${board}/usb_device_composite_cdc_msc_disk/bm/pin_mux.h"

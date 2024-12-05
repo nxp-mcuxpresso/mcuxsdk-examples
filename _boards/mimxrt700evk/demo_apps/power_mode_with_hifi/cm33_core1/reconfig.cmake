@@ -17,29 +17,29 @@ mcux_add_armgcc_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.c
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/power_demo_config.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/power_mode_with_hifi.c
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/dsp_support.c
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/dsp_support.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/dsp_config.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/*.bin
+    SOURCES ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.c
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/power_demo_config.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/power_mode_with_hifi.c
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_support.c
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_support.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_config.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/*.bin
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/power_mode_with_hifi/${core_id}
-             examples/_boards/${board}/demo_apps/power_mode_with_hifi/
-             examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/
+    INCLUDES ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}
+             ${board_root}/${board}/demo_apps/power_mode_with_hifi/
+             ${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/
 )
 
 mcux_add_iar_configuration(
-    LD "--image_input=${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/dsp_vector_release.bin,__dsp_vector_bin,__dsp_vector_section,4\
+    LD "--image_input=${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/dsp_vector_release.bin,__dsp_vector_bin,__dsp_vector_section,4\
         --keep=__dsp_vector_bin\
-        --image_input=${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/dsp_text_release.bin,__dsp_text_bin,__dsp_text_section,4\
+        --image_input=${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/dsp_text_release.bin,__dsp_text_bin,__dsp_text_section,4\
         --keep=__dsp_text_bin\
-        --image_input=${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/dsp_data_release.bin,__dsp_data_bin,__dsp_data_section,4\
+        --image_input=${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi1/binary/dsp_data_release.bin,__dsp_data_bin,__dsp_data_section,4\
         --keep=__dsp_data_bin"
 )
 

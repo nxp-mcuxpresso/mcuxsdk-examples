@@ -16,22 +16,22 @@ mcux_add_linker_symbol(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-    examples/_boards/${board}/FreeRTOSConfigBoard.h
-    examples/_boards/${board}/demo_apps/netc_share/cm7/app_srtm.c
-    examples/_boards/${board}/demo_apps/netc_share/cm7/app_srtm.h
-    examples/_boards/${board}/demo_apps/netc_share/cm7/rpmsg_config.h
-    examples/_boards/${board}/demo_apps/netc_share/cm7/lwip_netc_port.h
-    examples/_boards/${board}/rsc_table.c
-    examples/_boards/${board}/rsc_table.h
-    examples/_boards/${board}/srtm_config.h
+    ${board_root}/${board}/FreeRTOSConfigBoard.h
+    ${board_root}/${board}/demo_apps/netc_share/cm7/app_srtm.c
+    ${board_root}/${board}/demo_apps/netc_share/cm7/app_srtm.h
+    ${board_root}/${board}/demo_apps/netc_share/cm7/rpmsg_config.h
+    ${board_root}/${board}/demo_apps/netc_share/cm7/lwip_netc_port.h
+    ${board_root}/${board}/rsc_table.c
+    ${board_root}/${board}/rsc_table.h
+    ${board_root}/${board}/srtm_config.h
     middleware/multicore/remoteproc/remoteproc.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES
-    examples/_boards/${board}/demo_apps/netc_share/cm7
-    examples/_boards/${board}/
+    ${board_root}/${board}/demo_apps/netc_share/cm7
+    ${board_root}/${board}/
     middleware/multicore/remoteproc
 )
 
@@ -51,10 +51,10 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/imx95lpd5evk19/iar/MIMX9596_cm7_lwip_ram.icf
+    LINKER ${board_root}/imx95lpd5evk19/iar/MIMX9596_cm7_lwip_ram.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/imx95lpd5evk19/gcc/MIMX9596_cm7_lwip_ram.ld
+    LINKER ${board_root}/imx95lpd5evk19/gcc/MIMX9596_cm7_lwip_ram.ld
 )

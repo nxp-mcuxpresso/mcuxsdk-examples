@@ -41,15 +41,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT1042xxxxx_flexspi_nor.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT1042xxxxx_flexspi_nor.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT1042xxxxx_flexspi_nor.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT1042xxxxx_flexspi_nor.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT1042xxxxx_flexspi_nor.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT1042xxxxx_flexspi_nor.ld
 )

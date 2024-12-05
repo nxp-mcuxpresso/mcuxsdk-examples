@@ -7,11 +7,11 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tfm_regression_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/tfm_examples/tfm_regression/tfm_regression_ns)
+project(tfm_regression_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/tfm_examples/tfm_regression/tfm_regression_ns)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 # Include reconfigure for Non Secure Project
-include(${SdkRootDirPath}/examples/_boards/${board}/tfm_examples/tfm_regression/tfm_regression_ns/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/tfm_examples/tfm_regression/tfm_regression_ns/reconfig.cmake OPTIONAL)
 
 mcux_add_macro(
      CC "-DOS_DYNAMIC_MEM_SIZE=7168\

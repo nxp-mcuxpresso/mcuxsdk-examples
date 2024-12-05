@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tee_fault_core0 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/demo_apps/tee_fault/core0)
+project(tee_fault_core0 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/demo_apps/tee_fault/core0)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -15,7 +15,7 @@ mcux_add_include(
     INCLUDES examples/demo_apps/tee_fault
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/demo_apps/tee_fault/core0/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/tee_fault/core0/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 # Settings to link to secondary core project

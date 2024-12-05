@@ -30,7 +30,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/usb/example/boards/lpcxpresso55s69_om13790host/usb_pd_alt_mode_dp_host/bm
-             examples/_boards/lpcxpresso55s69_om13790host/usb_examples/usb_pd_alt_mode_dp_host/bm/${core_id}/..
+             ${board_root}/lpcxpresso55s69_om13790host/usb_examples/usb_pd_alt_mode_dp_host/bm/${core_id}/..
 )
 
 mcux_add_macro(

@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ezhv_m2mcopy_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ezhv_examples/m2mcopy)
+project(ezhv_m2mcopy_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ezhv_examples/m2mcopy)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -14,7 +14,7 @@ mcux_add_source(
     SOURCES m2mcopy_ezhv.c
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ezhv_examples/m2mcopy/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/m2mcopy/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/ezhv_image.bin TOOLCHAINS riscvllvm)
 

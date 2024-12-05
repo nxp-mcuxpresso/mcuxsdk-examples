@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(freertos_lpspi_b2b_master LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/freertos_driver_examples/freertos_lpspi_b2b/master)
+project(freertos_lpspi_b2b_master LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/freertos_driver_examples/freertos_lpspi_b2b/master)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

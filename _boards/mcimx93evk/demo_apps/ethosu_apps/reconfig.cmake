@@ -6,7 +6,7 @@ mcux_add_source(
             middleware/ethos-u-core-software/boards/${board}/pin_mux.c
             middleware/ethos-u-core-software/boards/${board}/pin_mux.h
             middleware/ethos-u-core-software/boards/${board}/rpmsg_config.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
             middleware/ethos-u-core-software/boards/${board}/FreeRTOSConfig.h
             middleware/ethos-u-core-software/include/ethosu_core_interface.h
             middleware/ethos-u-core-software/boards/${board}/hardware_init.c

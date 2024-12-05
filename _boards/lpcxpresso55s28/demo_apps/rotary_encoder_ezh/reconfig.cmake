@@ -6,7 +6,7 @@ mcux_add_source(
 
 mcux_add_library(
     BASE_PATH ${SdkRootDirPath}
-    LIBS examples/_boards/${board}/demo_apps/rotary_encoder_ezh/lpc5500_qei_lib.lib
+    LIBS ${board_root}/${board}/demo_apps/rotary_encoder_ezh/lpc5500_qei_lib.lib
 )
 
 mcux_add_include(
@@ -29,5 +29,5 @@ mcux_remove_mdk_linker_script(
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/rotary_encoder_ezh/LPC55S28_flash.scf
+    LINKER ${board_root}/${board}/demo_apps/rotary_encoder_ezh/LPC55S28_flash.scf
 )

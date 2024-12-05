@@ -11,8 +11,8 @@ mcux_add_include(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
+    SOURCES ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
 )
 
 mcux_add_source(
@@ -43,5 +43,5 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/MIMXRT1062xxxxx_flexspi_nor.ld
+    LINKER ${board_root}/${board}/audio_examples/common/linker/MIMXRT1062xxxxx_flexspi_nor.ld
 )

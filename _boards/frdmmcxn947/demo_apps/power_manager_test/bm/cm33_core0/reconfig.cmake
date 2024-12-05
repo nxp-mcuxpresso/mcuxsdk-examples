@@ -1,7 +1,7 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/power_manager_test/bm
+    INCLUDES ${board_root}/${board}/demo_apps/power_manager_test/bm
 )
 
 mcux_add_macro(
@@ -29,15 +29,15 @@ mcux_remove_mdk_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_manager_test/linker/MCXN947_cm33_core0_flash_for_power_manager.icf
+    LINKER ${board_root}/${board}/demo_apps/power_manager_test/linker/MCXN947_cm33_core0_flash_for_power_manager.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_manager_test/linker/MCXN947_cm33_core0_flash_for_power_manager.ld
+    LINKER ${board_root}/${board}/demo_apps/power_manager_test/linker/MCXN947_cm33_core0_flash_for_power_manager.ld
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/demo_apps/power_manager_test/linker/MCXN947_cm33_core0_flash_for_power_manager.scf
+    LINKER ${board_root}/${board}/demo_apps/power_manager_test/linker/MCXN947_cm33_core0_flash_for_power_manager.scf
 )

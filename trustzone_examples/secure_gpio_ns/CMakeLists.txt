@@ -7,13 +7,13 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(secure_gpio_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_ns)
+project(secure_gpio_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/trustzone_examples/secure_gpio/secure_gpio_ns)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/trustzone_examples/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/trustzone_examples/secure_gpio/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/trustzone_examples/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/trustzone_examples/secure_gpio/reconfig.cmake OPTIONAL)
 # Include reconfigure for Non Secure Project
-include(${SdkRootDirPath}/examples/_boards/${board}/trustzone_examples/secure_gpio/secure_gpio_ns/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/trustzone_examples/secure_gpio/secure_gpio_ns/reconfig.cmake OPTIONAL)
 
 mcux_remove_iar_configuration(
         AS "--fpu=VFPv5_sp"

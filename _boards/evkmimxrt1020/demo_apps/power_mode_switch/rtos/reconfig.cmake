@@ -4,22 +4,22 @@ mcux_add_source(
     SOURCES examples/demo_apps/power_mode_switch_rt10xx/rtos/power_mode_switch.h
             examples/demo_apps/power_mode_switch_rt10xx/rtos/lpm.c
             examples/demo_apps/power_mode_switch_rt10xx/rtos/lpm.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/specific.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/specific.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/pin_mux.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/pin_mux.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/peripherals.c
-            examples/_boards/${board}/demo_apps/power_mode_switch/peripherals.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/specific.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/specific.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/pin_mux.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/pin_mux.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/peripherals.c
+            ${board_root}/${board}/demo_apps/power_mode_switch/peripherals.h
             examples/demo_apps/power_mode_switch_rt10xx/rtos/fsl_tickless_gpt.c
             examples/demo_apps/power_mode_switch_rt10xx/rtos/fsl_tickless_gpt.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/rtos/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/rtos/FreeRTOSConfig.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/demo_apps/power_mode_switch_rt10xx/rtos
-             examples/_boards/${board}/demo_apps/power_mode_switch
+             ${board_root}/${board}/demo_apps/power_mode_switch
 )
 
 mcux_remove_iar_configuration(

@@ -1,12 +1,12 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/els_pkc_examples/els_pkc_fips_st/els_pkc_fips_mbedtls_config.h
+    SOURCES ${board_root}/${board}/els_pkc_examples/els_pkc_fips_st/els_pkc_fips_mbedtls_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/els_pkc_examples/els_pkc_fips_st
+    INCLUDES ${board_root}/${board}/els_pkc_examples/els_pkc_fips_st
 )
 
 mcux_add_iar_configuration(

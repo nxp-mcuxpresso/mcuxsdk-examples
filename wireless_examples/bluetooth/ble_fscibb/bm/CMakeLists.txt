@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.22.0)
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(ble_fsci_black_box_bm LANGUAGES C CXX ASM
-    PROJECT_BOARD_PORT_PATH examples/_boards/${board}/wireless_examples
-    CUSTOM_PRJ_CONF_PATH examples/_boards/${board}/wireless_examples/bluetooth/
-        examples/_boards/${board}/wireless_examples/bluetooth/ble_fscibb/${core_id}/bm
+    PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
+    CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/bluetooth/
+        ${board_root}/${board}/wireless_examples/bluetooth/ble_fscibb/${core_id}/bm
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
@@ -21,7 +21,7 @@ mcux_add_source(
            ../../../../wireless_examples/bluetooth/common/ble_init.h
            ../ble_fsci_black_box.c
            ../ble_fsci_black_box.h
-           ../../../../_boards/${board}/wireless_examples/bluetooth/ble_fscibb/example_board_readme.md
+           ../../../../../${board_root}/${board}/wireless_examples/bluetooth/ble_fscibb/example_board_readme.md
            ../readme.md
 )
 
@@ -31,7 +31,7 @@ mcux_add_include(
              ../../common
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/bluetooth/ble_fscibb/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/ble_fscibb/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
         TOOLCHAINS armgcc iar

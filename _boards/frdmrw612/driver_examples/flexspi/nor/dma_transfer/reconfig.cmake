@@ -47,15 +47,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/driver_examples/flexspi/nor/dma_transfer/iar/RW612_flash.icf
+    LINKER ${board_root}/${board}/driver_examples/flexspi/nor/dma_transfer/iar/RW612_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/driver_examples/flexspi/nor/dma_transfer/mdk/RW612_flash.scf
+    LINKER ${board_root}/${board}/driver_examples/flexspi/nor/dma_transfer/mdk/RW612_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/driver_examples/flexspi/nor/dma_transfer/armgcc/RW612_flash.ld
+    LINKER ${board_root}/${board}/driver_examples/flexspi/nor/dma_transfer/armgcc/RW612_flash.ld
 )

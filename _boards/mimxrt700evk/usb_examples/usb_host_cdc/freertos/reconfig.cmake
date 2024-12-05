@@ -29,7 +29,7 @@ mcux_add_macro(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "examples/_boards/${board}/usb_examples/usb_host_cdc/freertos"
+    "${board_root}/${board}/usb_examples/usb_host_cdc/freertos"
     "middleware/usb/example/boards/${board}/usb_host_cdc/freertos"
     "middleware/usb/example/boards/${board}/usb_host_cdc/freertos/${core_id}"
 )

@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(wifi_ipv4_ipv6_echo LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/wifi_examples/wifi_ipv4_ipv6_echo)
+project(wifi_ipv4_ipv6_echo LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wifi_examples/wifi_ipv4_ipv6_echo)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/lwip_examples/ipv4_ipv6_echo_common/CMakeLists.txt)
@@ -22,10 +22,10 @@ mcux_add_source(
         examples/wifi_examples/wifi_ipv4_ipv6_echo/wifi_config/wifi_config.h
         examples/wifi_examples/wifi_ipv4_ipv6_echo/FreeRTOSConfig.h
 
-        examples/_boards/${board}/FreeRTOSConfigBoard.h
-        examples/_boards/${board}/wifi_examples/common/app_config/app_config.h
-        examples/_boards/${board}/wifi_examples/common/pin_mux.c
-        examples/_boards/${board}/wifi_examples/common/pin_mux.h
+        ${board_root}/${board}/FreeRTOSConfigBoard.h
+        ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
+        ${board_root}/${board}/wifi_examples/common/pin_mux.c
+        ${board_root}/${board}/wifi_examples/common/pin_mux.h
 )
 
 mcux_add_include(
@@ -33,8 +33,8 @@ mcux_add_include(
     INCLUDES 
         examples/wifi_examples/wifi_ipv4_ipv6_echo
         examples/wifi_examples/wifi_ipv4_ipv6_echo/wifi_config
-        examples/_boards/${board}/wifi_examples/common/app_config
-        examples/_boards/${board}/wifi_examples/common
+        ${board_root}/${board}/wifi_examples/common/app_config
+        ${board_root}/${board}/wifi_examples/common
 )
 
 # Add additional configuration
@@ -68,20 +68,20 @@ mcux_add_armgcc_configuration(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.ld
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.ld
 )
 
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.icf
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release flexspi_nor_debug flexspi_nor_release flash_debug flash_release
-    LINKER examples/_boards/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.scf
+    LINKER ${board_root}/${board}/wifi_examples/common/linker/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_wifi.scf
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wifi_examples/wifi_ipv4_ipv6_echo/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wifi_examples/wifi_ipv4_ipv6_echo/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

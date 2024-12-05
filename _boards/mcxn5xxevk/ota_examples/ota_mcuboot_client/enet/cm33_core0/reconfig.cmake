@@ -1,7 +1,7 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/ota_examples/ota_mcuboot_client/enet/mbedtls_user_config.h
+    SOURCES ${board_root}/${board}/ota_examples/ota_mcuboot_client/enet/mbedtls_user_config.h
 )
 
 
@@ -28,4 +28,4 @@ mcux_remove_armgcc_configuration(
 )
 
 # Linker file reconfiguration
-include(${SdkRootDirPath}/examples/_boards/${board}/ota_examples/linker_common_ifr/linker_reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/linker_common_ifr/linker_reconfig.cmake OPTIONAL)

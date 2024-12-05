@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(power_mode_switch_bm_pmic_rt1xxx_core0 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/demo_apps/power_mode_switch/bm_pmic/core0)
+project(power_mode_switch_bm_pmic_rt1xxx_core0 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/demo_apps/power_mode_switch/bm_pmic/core0)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -20,7 +20,7 @@ mcux_add_include(
     INCLUDES examples/demo_apps/power_mode_switch_rt1xxx/rt1170
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_switch/bm_pmic/core0/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_switch/bm_pmic/core0/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 # Settings to link to secondary core project

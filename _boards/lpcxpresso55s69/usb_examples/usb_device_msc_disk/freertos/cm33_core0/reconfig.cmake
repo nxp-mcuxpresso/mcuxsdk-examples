@@ -39,7 +39,7 @@ mcux_add_mdk_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "examples/_boards/${board}/usb_examples/usb_device_msc_disk/freertos"
+    "${board_root}/${board}/usb_examples/usb_device_msc_disk/freertos"
     "middleware/usb/example/boards/${board}/usb_device_msc_disk/freertos"
 )
 
@@ -50,8 +50,8 @@ mcux_add_macro(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "examples/_boards/${board}/sdmmc_config.c"
-    "examples/_boards/${board}/sdmmc_config.h"
+    "${board_root}/${board}/sdmmc_config.c"
+    "${board_root}/${board}/sdmmc_config.h"
     "middleware/usb/example/boards/${board}/usb_device_msc_disk/freertos/hardware_init.c"
     "middleware/usb/example/boards/${board}/usb_device_msc_disk/freertos/pin_mux.c"
     "middleware/usb/example/boards/${board}/usb_device_msc_disk/freertos/pin_mux.h"

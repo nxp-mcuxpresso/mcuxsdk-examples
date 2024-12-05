@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.0)
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(hci_bb_bm LANGUAGES C CXX ASM 
-    PROJECT_BOARD_PORT_PATH examples/_boards/${board}/wireless_examples
+    PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
@@ -42,5 +42,5 @@ mcux_add_include(
     INCLUDES ../../../../../../middleware/wireless/bluetooth/host/interface
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/ble_controller/hci_bb/bm/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/ble_controller/hci_bb/bm/${multicore_foldername}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/${multicore_foldername}/reconfig.cmake OPTIONAL)

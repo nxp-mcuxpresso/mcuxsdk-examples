@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(freertos_lpc_i2c LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/freertos_driver_examples/freertos_lpc_i2c)
+project(freertos_lpc_i2c LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/freertos_driver_examples/freertos_lpc_i2c)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

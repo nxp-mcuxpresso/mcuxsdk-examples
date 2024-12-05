@@ -3,9 +3,9 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/sdmmc/example/sdcard_fatfs_freertos/ffconf.h
-            examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 

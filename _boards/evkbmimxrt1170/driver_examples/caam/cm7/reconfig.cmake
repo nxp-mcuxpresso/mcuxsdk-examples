@@ -40,30 +40,30 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_ram_ocram.icf
+    LINKER ${board_root}/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_ram_ocram.icf
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_ocram.icf
+    LINKER ${board_root}/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_ocram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_ram_ocram.scf
+    LINKER ${board_root}/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_ram_ocram.scf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_ocram.scf
+    LINKER ${board_root}/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_ocram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_ram_ocram.ld
+    LINKER ${board_root}/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_ram_ocram.ld
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_ocram.ld
+    LINKER ${board_root}/${board}/driver_examples/caam/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_ocram.ld
 )

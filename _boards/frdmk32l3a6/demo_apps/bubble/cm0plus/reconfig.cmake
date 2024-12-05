@@ -1,12 +1,12 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/bubble/bubble.c
+    SOURCES ${board_root}/${board}/demo_apps/bubble/bubble.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/bubble
+    INCLUDES ${board_root}/${board}/demo_apps/bubble
 )
 
 mcux_add_macro(

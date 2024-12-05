@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tflm_label_image_hifi4 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/eiq_examples/tflm_label_image_hifi4)
+project(tflm_label_image_hifi4 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/tflm_label_image_hifi4)
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_include(
@@ -43,6 +43,6 @@ mcux_add_source(
   examples/eiq_examples/common/tflm/model/output_postproc.cpp
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/tflm_label_image_hifi4/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_label_image_hifi4/${core_id}/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/examples/eiq_examples/${core_id}.cmake)

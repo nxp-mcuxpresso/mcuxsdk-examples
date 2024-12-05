@@ -4,17 +4,17 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_debug.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_flash_debug.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_flash_release.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_release.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_debug.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_flash_debug.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_flash_release.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_release.ini
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/tzm_config.c
-            examples/_boards/${board}/trustzone_examples/secure_faults/secure_faults_s/tzm_config.h
-            examples/_boards/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
+    SOURCES ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_debug.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_flash_debug.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_flash_release.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_debug_release.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_debug.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_flash_debug.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_flash_release.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/secure_faults_download_release.ini
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/tzm_config.c
+            ${board_root}/${board}/trustzone_examples/secure_faults/secure_faults_s/tzm_config.h
+            ${board_root}/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
 )
 
 mcux_add_include(

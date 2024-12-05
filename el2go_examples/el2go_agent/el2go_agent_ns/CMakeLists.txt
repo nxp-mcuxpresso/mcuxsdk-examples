@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.30.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(el2go_agent_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/el2go_examples/el2go_agent/el2go_agent_ns)
+project(el2go_agent_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/el2go_examples/el2go_agent/el2go_agent_ns)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/el2go_examples/el2go_agent/el2go_agent_ns/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/el2go_agent/el2go_agent_ns/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
@@ -21,7 +21,7 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}
+    INCLUDES ${board_root}/${board}
              examples/el2go_examples/common/freertos
              examples/el2go_examples/common/wifi
              middleware/nxp_iot_agent/port

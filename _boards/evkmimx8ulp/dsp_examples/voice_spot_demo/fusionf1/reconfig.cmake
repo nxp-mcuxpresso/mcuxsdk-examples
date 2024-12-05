@@ -1,10 +1,10 @@
 mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/voice_spot_demo
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/dsp_examples/voice_spot_demo
     INCLUDES ./
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/voice_spot_demo/
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/dsp_examples/voice_spot_demo/
     SOURCES dsp_config.h
 )
 

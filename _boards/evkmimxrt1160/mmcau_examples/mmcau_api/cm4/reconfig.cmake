@@ -1,7 +1,7 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/mmcau_examples/mmcau_api
+    INCLUDES ${board_root}/${board}/mmcau_examples/mmcau_api
 )
 
 mcux_add_mdk_configuration(

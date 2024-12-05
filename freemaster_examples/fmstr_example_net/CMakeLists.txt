@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(fmstr_example_net LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/freemaster_examples/fmstr_net)
+project(fmstr_example_net LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/freemaster_examples/fmstr_net)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 # Include optional board specific configuration cmake file
-include(${SdkRootDirPath}/examples/_boards/${board}/freemaster_examples/fmstr_net/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/freemaster_examples/fmstr_net/reconfig.cmake OPTIONAL)
 
 # Load common source files
 include(../common/CMakeLists.txt)
@@ -24,7 +24,7 @@ mcux_add_source(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-        examples/_boards/${board}/FreeRTOSConfigBoard.h
+        ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 # Add example NETC source files

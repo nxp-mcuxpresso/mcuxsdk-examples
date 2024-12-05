@@ -4,8 +4,8 @@ mcux_add_source(
     SOURCES middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/hardware_init.c
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/pin_mux.c
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/pin_mux.h
-            examples/_boards/${board}/peripherals/peripherals.c
-            examples/_boards/${board}/peripherals/peripherals.h
+            ${board_root}/${board}/peripherals/peripherals.c
+            ${board_root}/${board}/peripherals/peripherals.h
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd_sink_battery/bm/pd_board_config.h
             middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_app_demo.c
             middleware/usb/example/usb_pd_sink_battery_om13790host/bm/pd_app.h

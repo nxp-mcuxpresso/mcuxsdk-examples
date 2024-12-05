@@ -10,7 +10,7 @@ mcux_add_source(
             middleware/sigfox/boards/${board}/board.h
             middleware/sigfox/boards/${board}/clock_config.c
             middleware/sigfox/boards/${board}/clock_config.h
-            examples/_boards/${board}/FlashKLxx256KROM_with_config_write_enabled.board
+            ${board_root}/${board}/FlashKLxx256KROM_with_config_write_enabled.board
 )
 
 mcux_add_include(

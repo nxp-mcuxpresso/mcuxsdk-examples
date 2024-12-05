@@ -13,4 +13,4 @@ mcux_remove_mdk_configuration(
 )
 
 # Linker file reconfiguration
-include(${SdkRootDirPath}/examples/_boards/${board}/ota_examples/linker_common_ifr/linker_reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/linker_common_ifr/linker_reconfig.cmake OPTIONAL)

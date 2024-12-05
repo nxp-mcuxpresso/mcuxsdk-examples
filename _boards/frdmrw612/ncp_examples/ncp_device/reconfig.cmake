@@ -1,12 +1,12 @@
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/
     SOURCES ncp_examples/ncp_device/FreeRTOSConfig.h
             FreeRTOSConfigBoard.h
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/ncp_examples/ncp_device/
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_device/
     PREINCLUDE TRUE
     SOURCES app_config.h
 )
@@ -84,17 +84,17 @@ mcux_remove_mdk_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ncp_examples/ncp_device/linker/RW610_flash.ld
+    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ncp_examples/ncp_device/linker/RW610_flash.icf
+    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ncp_examples/ncp_device/linker/RW610_flash.scf
+    LINKER ${board_root}/${board}/ncp_examples/ncp_device/linker/RW610_flash.scf
 )
 
 mcux_add_iar_configuration(

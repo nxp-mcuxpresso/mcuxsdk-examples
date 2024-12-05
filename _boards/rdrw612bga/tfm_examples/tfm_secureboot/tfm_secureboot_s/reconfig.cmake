@@ -3,10 +3,10 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-include(${SdkRootDirPath}/examples/_boards/${board}/tfm_examples/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/tfm_examples/reconfig.cmake OPTIONAL)
 	
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/tfm_examples/tfm_secureboot
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/tfm_examples/tfm_secureboot
     SOURCES 
 	        README.txt
 			scripts/*.*

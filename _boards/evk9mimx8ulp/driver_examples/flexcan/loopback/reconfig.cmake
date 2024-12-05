@@ -1,15 +1,15 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/evkmimx8ulp/driver_examples/flexcan/loopback/./hardware_init.c
-            examples/_boards/evkmimx8ulp/driver_examples/flexcan/loopback/./app.h
+    SOURCES ${board_root}/evkmimx8ulp/driver_examples/flexcan/loopback/./hardware_init.c
+            ${board_root}/evkmimx8ulp/driver_examples/flexcan/loopback/./app.h
             middleware/multicore/remoteproc/empty_rsc_table.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8ulp/driver_examples/flexcan/loopback/.
-             examples/_boards/evkmimx8ulp
+    INCLUDES ${board_root}/evkmimx8ulp/driver_examples/flexcan/loopback/.
+             ${board_root}/evkmimx8ulp
 )
 
 mcux_add_macro(

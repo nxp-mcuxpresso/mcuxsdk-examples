@@ -25,7 +25,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/usb/example/boards/evkmimxrt1160_om13790host/usb_pd/bm
-             examples/_boards/evkmimxrt1160_om13790host/usb_examples/usb_pd/bm/${core_id}/..
+             ${board_root}/evkmimxrt1160_om13790host/usb_examples/usb_pd/bm/${core_id}/..
 )
 
 mcux_add_macro(

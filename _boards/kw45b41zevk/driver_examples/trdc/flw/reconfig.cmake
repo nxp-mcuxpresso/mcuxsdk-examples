@@ -1,11 +1,11 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/driver_examples/trdc/basic/pin_mux.c
-            examples/_boards/${board}/driver_examples/trdc/basic/pin_mux.h
+    SOURCES ${board_root}/${board}/driver_examples/trdc/basic/pin_mux.c
+            ${board_root}/${board}/driver_examples/trdc/basic/pin_mux.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/driver_examples/trdc/basic
+    INCLUDES ${board_root}/${board}/driver_examples/trdc/basic
 )

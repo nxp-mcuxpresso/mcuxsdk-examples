@@ -12,7 +12,7 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER examples/_boards/imx95lpd5evk19/driver_examples/isi/dwc_mipi_csi2/linker/MIMX9596_cm7_isi_ram.ld
+        LINKER ${board_root}/imx95lpd5evk19/driver_examples/isi/dwc_mipi_csi2/linker/MIMX9596_cm7_isi_ram.ld
 )
 
 mcux_remove_iar_linker_script(
@@ -24,8 +24,8 @@ mcux_remove_iar_linker_script(
 mcux_add_iar_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER examples/_boards/imx95lpd5evk19/driver_examples/isi/dwc_mipi_csi2/linker/MIMX9596_cm7_isi_ram.icf
+        LINKER ${board_root}/imx95lpd5evk19/driver_examples/isi/dwc_mipi_csi2/linker/MIMX9596_cm7_isi_ram.icf
 )
 
 # include ISI example file
-include(${SdkRootDirPath}/examples/_boards/imx95lpd5evk19/driver_examples/isi/reconfig.cmake)
+include(${SdkRootDirPath}/${board_root}/imx95lpd5evk19/driver_examples/isi/reconfig.cmake)

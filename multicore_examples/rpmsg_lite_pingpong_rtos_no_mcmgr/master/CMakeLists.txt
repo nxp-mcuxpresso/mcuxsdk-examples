@@ -7,17 +7,17 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(rpmsg_lite_pingpong_rtos_master_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master)
+project(rpmsg_lite_pingpong_rtos_master_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-# This will point to: ${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/reconfig.cmake
+# This will point to: ${SdkRootDirPath}/${board_root}/${board}/multicore_examples/reconfig.cmake
 # where common board multicore properties are set.
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES ../../rpmsg_lite_pingpong_rtos/primary/main.c

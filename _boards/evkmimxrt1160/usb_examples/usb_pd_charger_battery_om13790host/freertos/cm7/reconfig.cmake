@@ -20,7 +20,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/usb/example/boards/evkmimxrt1160_om13790host/usb_pd_charger_battery/freertos
-             examples/_boards/evkmimxrt1160_om13790host/usb_examples/usb_pd_charger_battery/freertos/${core_id}/..
+             ${board_root}/evkmimxrt1160_om13790host/usb_examples/usb_pd_charger_battery/freertos/${core_id}/..
              middleware/usb/config/freertos
 )
 

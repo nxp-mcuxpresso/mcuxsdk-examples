@@ -41,7 +41,7 @@ mcux_add_macro(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "examples/_boards/${board}/usb_examples/usb_lpm_host_hid_mouse/bm"
+    "${board_root}/${board}/usb_examples/usb_lpm_host_hid_mouse/bm"
     "middleware/usb/example/boards/${board}/usb_lpm_host_hid_mouse/bm"
     "middleware/usb/example/boards/${board}/usb_lpm_host_hid_mouse/bm/${core_id}"
 )

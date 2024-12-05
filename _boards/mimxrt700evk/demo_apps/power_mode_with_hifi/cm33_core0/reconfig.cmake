@@ -21,37 +21,37 @@ mcux_add_armgcc_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.c
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/power_mode_with_hifi.c
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/power_demo_config.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/dsp_support.c
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/dsp_support.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/dsp_config.h
-            examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/*.bin
+    SOURCES ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.c
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/power_mode_with_hifi.c
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/power_demo_config.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_support.c
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_support.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_config.h
+            ${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/*.bin
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     EXCLUDE TRUE
-    SOURCES examples/_boards/${board}/demo_apps/power_mode_with_hifi/main_dsp.c
+    SOURCES ${board_root}/${board}/demo_apps/power_mode_with_hifi/main_dsp.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/demo_apps/power_mode_with_hifi/${core_id}
-             examples/_boards/${board}/demo_apps/power_mode_with_hifi/
-             examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/
+    INCLUDES ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}
+             ${board_root}/${board}/demo_apps/power_mode_with_hifi/
+             ${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/
 )
 
 mcux_add_iar_configuration(
     LD "--image_input=${APPLICATION_BINARY_DIR}/../power_mode_with_hifi_secondary/iar/core1_image.bin,_core1_image,__core1_image,4\
         --keep=_core1_image\
-        --image_input=${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/dsp_literal_release.bin,__dsp_literal_bin,__dsp_literal_section,4\
+        --image_input=${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/dsp_literal_release.bin,__dsp_literal_bin,__dsp_literal_section,4\
         --keep=__dsp_literal_bin\
-        --image_input=${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/dsp_text_release.bin,__dsp_text_bin,__dsp_text_section,4\
+        --image_input=${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/dsp_text_release.bin,__dsp_text_bin,__dsp_text_section,4\
         --keep=__dsp_text_bin\
-        --image_input=${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/dsp_data_release.bin,__dsp_data_bin,__dsp_data_section,4\
+        --image_input=${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/dsp_data_release.bin,__dsp_data_bin,__dsp_data_section,4\
         --keep=__dsp_data_bin"
 )
 

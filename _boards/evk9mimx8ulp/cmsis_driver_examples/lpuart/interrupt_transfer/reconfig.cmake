@@ -1,18 +1,18 @@
 mcux_project_remove_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/cmsis_driver_examples/lpuart/interrupt_transfer/RTE_Device.h
+    SOURCES ${board_root}/${board}/cmsis_driver_examples/lpuart/interrupt_transfer/RTE_Device.h
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer/hardware_init.c
-            examples/_boards/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer/app.h
-            examples/_boards/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer/RTE_Device.h
+    SOURCES ${board_root}/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer/hardware_init.c
+            ${board_root}/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer/app.h
+            ${board_root}/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer/RTE_Device.h
             middleware/multicore/remoteproc/empty_rsc_table.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer
-             examples/_boards/evkmimx8ulp
+    INCLUDES ${board_root}/evkmimx8ulp/cmsis_driver_examples/lpuart/interrupt_transfer
+             ${board_root}/evkmimx8ulp
 )

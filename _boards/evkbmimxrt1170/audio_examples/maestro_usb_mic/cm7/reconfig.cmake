@@ -7,7 +7,7 @@ mcux_add_source(
 mcux_add_source(
     TOOLCHAINS armgcc
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/audio_examples/common/linker/startup_armgcc.c
+    SOURCES ${board_root}/${board}/audio_examples/common/linker/startup_armgcc.c
 )
 
 mcux_add_include(
@@ -64,15 +64,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/MIMXRT1176xxxxx_cm7_flexspi_nor.icf
+    LINKER ${board_root}/${board}/audio_examples/common/linker/MIMXRT1176xxxxx_cm7_flexspi_nor.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/MIMXRT1176xxxxx_cm7_flexspi_nor.scf
+    LINKER ${board_root}/${board}/audio_examples/common/linker/MIMXRT1176xxxxx_cm7_flexspi_nor.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/MIMXRT1176xxxxx_cm7_flexspi_nor.ld
+    LINKER ${board_root}/${board}/audio_examples/common/linker/MIMXRT1176xxxxx_cm7_flexspi_nor.ld
 )

@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 if(CONFIG_MCUX_PRJSEG_module.shield.a8974.common)
-    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES examples/_boards/mimxrt700evk/shields/a8974)
+    mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/mimxrt700evk/shields/a8974)
     mcux_add_source(
-        BASE_PATH ${SdkRootDirPath}/examples/_boards/mimxrt700evk/shields/a8974
+        BASE_PATH ${SdkRootDirPath}/${board_root}/mimxrt700evk/shields/a8974
         SOURCES 
             mimxrt700evk.h 
             RTE_Device.h

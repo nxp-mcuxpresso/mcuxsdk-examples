@@ -1,15 +1,15 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+    SOURCES ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/rpmsg_config.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/rpmsg_config.h
             examples/demo_apps/power_mode_switch_imx93/power_mode_switch.h
             examples/demo_apps/power_mode_switch_imx93/lpm.c
             examples/demo_apps/power_mode_switch_imx93/lpm.h
-            examples/_boards/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(

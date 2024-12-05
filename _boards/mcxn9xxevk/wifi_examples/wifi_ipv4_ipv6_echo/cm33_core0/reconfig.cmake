@@ -7,18 +7,18 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-        examples/_boards/${board}/wifi_bt_config.c
-        examples/_boards/${board}/wifi_bt_config.h
-        examples/_boards/${board}/sdmmc_config.c
-        examples/_boards/${board}/sdmmc_config.h
-        examples/_boards/${board}/wifi_examples/common/cm33_core0/hardware_init.c
-        examples/_boards/${board}/wifi_examples/common/cm33_core0/app.h
+        ${board_root}/${board}/wifi_bt_config.c
+        ${board_root}/${board}/wifi_bt_config.h
+        ${board_root}/${board}/sdmmc_config.c
+        ${board_root}/${board}/sdmmc_config.h
+        ${board_root}/${board}/wifi_examples/common/cm33_core0/hardware_init.c
+        ${board_root}/${board}/wifi_examples/common/cm33_core0/app.h
 )
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES
-        examples/_boards/${board}
-        examples/_boards/${board}/wifi_examples/common/cm33_core0
+        ${board_root}/${board}
+        ${board_root}/${board}/wifi_examples/common/cm33_core0
 )
 
 mcux_add_armgcc_configuration(

@@ -1,7 +1,7 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/multicore_examples
+    INCLUDES ${board_root}/${board}/multicore_examples
 )
 
 mcux_add_macro(

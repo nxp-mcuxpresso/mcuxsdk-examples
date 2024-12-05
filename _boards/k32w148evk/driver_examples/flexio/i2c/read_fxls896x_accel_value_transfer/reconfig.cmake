@@ -1,11 +1,11 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/kw45b41zevk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/./hardware_init.c
-            examples/_boards/kw45b41zevk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/./app.h
+    SOURCES ${board_root}/kw45b41zevk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/./hardware_init.c
+            ${board_root}/kw45b41zevk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/./app.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/kw45b41zevk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/.
+    INCLUDES ${board_root}/kw45b41zevk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/.
 )

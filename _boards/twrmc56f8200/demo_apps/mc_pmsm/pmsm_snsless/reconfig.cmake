@@ -7,6 +7,6 @@ mcux_add_macro(
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-      examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_snsless/${multicore_foldername}/Flash_config.h
-      examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_snsless/${multicore_foldername}/startup_clock_mode_config.h
+      ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_snsless/${multicore_foldername}/Flash_config.h
+      ${board_root}/${board}/demo_apps/mc_pmsm/pmsm_snsless/${multicore_foldername}/startup_clock_mode_config.h
 )

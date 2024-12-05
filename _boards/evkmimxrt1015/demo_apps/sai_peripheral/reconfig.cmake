@@ -4,8 +4,8 @@ mcux_add_source(
     SOURCES examples/demo_apps/sai/sai_peripheral/sai.h
             examples/demo_apps/sai/sai_peripheral/recordPlayback.c
             examples/demo_apps/sai/sai_peripheral/playbackSineWave.c
-            examples/_boards/${board}/demo_apps/sai_peripheral/peripherals.c
-            examples/_boards/${board}/demo_apps/sai_peripheral/peripherals.h
+            ${board_root}/${board}/demo_apps/sai_peripheral/peripherals.c
+            ${board_root}/${board}/demo_apps/sai_peripheral/peripherals.h
 )
 
 mcux_add_include(

@@ -11,10 +11,10 @@ mcux_add_source(
             examples/demo_apps/multi_peripherals_test/sdcard.c
             examples/demo_apps/multi_peripherals_test/usb_device_descriptor.c
             examples/demo_apps/multi_peripherals_test/usb_device_descriptor.h
-            examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/demo_apps/multi_peripherals_test/demo_config.h
+            ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/multi_peripherals_test/demo_config.h
 )
 
 mcux_add_include(

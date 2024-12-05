@@ -3,13 +3,13 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
             middleware/edgefast_bluetooth/output/templates/config/app_config.h
 #           middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/app_bluetooth_config.h
-            examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/wifi_bt_config.c
-            examples/_boards/${board}/wifi_bt_config.h
+            ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/wifi_bt_config.c
+            ${board_root}/${board}/wifi_bt_config.h
             middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/hardware_init.c
             middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/pin_mux.c
             middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/pin_mux.h

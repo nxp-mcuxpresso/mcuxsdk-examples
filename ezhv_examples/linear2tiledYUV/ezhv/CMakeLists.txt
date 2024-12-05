@@ -6,9 +6,9 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ezhv_linear2tiledYUV_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ezhv_examples/linear2tiledYUV)
+project(ezhv_linear2tiledYUV_ezhv LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ezhv_examples/linear2tiledYUV)
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ezhv_examples/linear2tiledYUV/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/linear2tiledYUV/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

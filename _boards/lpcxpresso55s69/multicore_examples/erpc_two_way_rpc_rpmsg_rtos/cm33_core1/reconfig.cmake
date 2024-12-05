@@ -25,17 +25,17 @@ mcux_remove_mdk_linker_script(
 mcux_add_iar_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/multicore_examples/erpc_two_way_rpc_rpmsg_rtos/cm33_core1/linker/LPC55S69_cm33_core1_ram.icf
+    LINKER ${board_root}/${board}/multicore_examples/erpc_two_way_rpc_rpmsg_rtos/cm33_core1/linker/LPC55S69_cm33_core1_ram.icf
 )
 
 mcux_add_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/multicore_examples/erpc_two_way_rpc_rpmsg_rtos/cm33_core1/linker/LPC55S69_cm33_core1_ram.ld
+    LINKER ${board_root}/${board}/multicore_examples/erpc_two_way_rpc_rpmsg_rtos/cm33_core1/linker/LPC55S69_cm33_core1_ram.ld
 )
 
 mcux_add_mdk_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/multicore_examples/erpc_two_way_rpc_rpmsg_rtos/cm33_core1/linker/LPC55S69_cm33_core1_ram.scf
+    LINKER ${board_root}/${board}/multicore_examples/erpc_two_way_rpc_rpmsg_rtos/cm33_core1/linker/LPC55S69_cm33_core1_ram.scf
 )

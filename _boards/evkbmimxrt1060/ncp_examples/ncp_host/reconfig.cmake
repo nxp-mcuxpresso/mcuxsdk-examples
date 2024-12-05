@@ -1,6 +1,6 @@
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/
     SOURCES FreeRTOSConfigBoard.h
             sdmmc_config.c
             sdmmc_config.h
@@ -56,17 +56,17 @@ mcux_remove_mdk_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/ncp_examples/ncp_host/linker/MIMXRT1062xxxxx_flexspi_nor.ld
+    LINKER ${board_root}/${board}/ncp_examples/ncp_host/linker/MIMXRT1062xxxxx_flexspi_nor.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/ncp_examples/ncp_host/linker/MIMXRT1062xxxxx_flexspi_nor.icf
+    LINKER ${board_root}/${board}/ncp_examples/ncp_host/linker/MIMXRT1062xxxxx_flexspi_nor.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/ncp_examples/ncp_host/linker/MIMXRT1062xxxxx_flexspi_nor.scf
+    LINKER ${board_root}/${board}/ncp_examples/ncp_host/linker/MIMXRT1062xxxxx_flexspi_nor.scf
 )
 
 mcux_add_iar_configuration(

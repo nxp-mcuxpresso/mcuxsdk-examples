@@ -13,7 +13,7 @@ mcux_add_mdk_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "examples/_boards/${board}/usb_examples/usb_device_audio_speaker/bm"
+    "${board_root}/${board}/usb_examples/usb_device_audio_speaker/bm"
     "middleware/usb/example/boards/${board}/usb_device_audio_speaker/bm"
     "middleware/usb/example/boards/${board}/usb_device_audio_speaker/bm/${core_id}"
 )

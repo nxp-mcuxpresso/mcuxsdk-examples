@@ -1,11 +1,11 @@
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES  examples/_boards/${board}/eiq_examples/tflm_kws/npu
+  INCLUDES  ${board_root}/${board}/eiq_examples/tflm_kws/npu
   )
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
-  SOURCES examples/_boards/${board}/eiq_examples/tflm_kws/npu/model_ds_cnn_ops_npu.cpp
-  examples/_boards/${board}/eiq_examples/tflm_kws/npu/model_data.h
+  SOURCES ${board_root}/${board}/eiq_examples/tflm_kws/npu/model_ds_cnn_ops_npu.cpp
+  ${board_root}/${board}/eiq_examples/tflm_kws/npu/model_data.h
   )
 
 # Add or remove Linker File Configurations
@@ -29,17 +29,17 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
   TARGETS flash_debug flash_release
-  LINKER examples/_boards/${board}/eiq_examples/tflm_kws/cm33_core0/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+  LINKER ${board_root}/${board}/eiq_examples/tflm_kws/cm33_core0/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
   )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
   TARGETS flash_debug flash_release
-  LINKER examples/_boards/${board}/eiq_examples/tflm_kws/cm33_core0/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+  LINKER ${board_root}/${board}/eiq_examples/tflm_kws/cm33_core0/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
   )
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
   TARGETS flash_debug flash_release
-  LINKER examples/_boards/${board}/eiq_examples/tflm_kws/cm33_core0/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+  LINKER ${board_root}/${board}/eiq_examples/tflm_kws/cm33_core0/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
   )
 
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(log_freertos LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/component_examples/log/freertos)
+project(log_freertos LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/component_examples/log/freertos)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -10,6 +10,6 @@ mcux_add_source(
     SOURCES components/log/example/freertos/log_main.c
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/component_examples/log/freertos/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/component_examples/log/freertos/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

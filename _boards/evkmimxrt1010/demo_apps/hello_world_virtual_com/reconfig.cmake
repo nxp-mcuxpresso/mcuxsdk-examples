@@ -1,7 +1,7 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/demo_apps/hello_world_virtual_com/usb_device_board_config.h
+    SOURCES ${board_root}/${board}/demo_apps/hello_world_virtual_com/usb_device_board_config.h
 )
 
 mcux_add_mdk_configuration(

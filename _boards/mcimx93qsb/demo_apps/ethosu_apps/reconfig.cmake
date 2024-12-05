@@ -6,7 +6,7 @@ mcux_add_source(
             middleware/ethos-u-core-software/boards/${board}/pin_mux.c
             middleware/ethos-u-core-software/boards/${board}/pin_mux.h
             middleware/ethos-u-core-software/boards/${board}/rpmsg_config.h
-            examples/_boards/mcimx93evk/FreeRTOSConfigBoard.h
+            ${board_root}/mcimx93evk/FreeRTOSConfigBoard.h
             middleware/ethos-u-core-software/boards/${board}/FreeRTOSConfig.h
             middleware/ethos-u-core-software/include/ethosu_core_interface.h
             middleware/ethos-u-core-software/boards/${board}/hardware_init.c
@@ -20,7 +20,7 @@ mcux_add_include(
     INCLUDES middleware/ethos-u-core-software/include
              middleware/ethos-u-core-software/boards/mcimx93qsb
              middleware/ethos-u-core-software/examples/ethosu_apps
-             examples/_boards/mcimx93evk
+             ${board_root}/mcimx93evk
              middleware/ethos-u-core-software/board/mcimx93qsb
 )
 

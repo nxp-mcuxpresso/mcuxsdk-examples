@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ota_mcuboot_client_enet LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ota_examples/ota_mcuboot_client/enet)
+project(ota_mcuboot_client_enet LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ota_examples/ota_mcuboot_client/enet)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -11,7 +11,7 @@ mcux_add_source(
             examples/ota_examples/ota_mcuboot_client/flash_helper.h
             examples/ota_examples/ota_mcuboot_client/flash_helper.c
             examples/ota_examples/ota_mcuboot_client/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
             examples/ota_examples/ota_mcuboot_client/httpsclient.c
             examples/ota_examples/ota_mcuboot_client/httpsclient.h
             examples/ota_examples/ota_mcuboot_client/ota_http.c
@@ -22,7 +22,7 @@ mcux_add_source(
             examples/ota_examples/ota_mcuboot_client/network_enet/network_cfg.h
             examples/ota_examples/ota_mcuboot_client/network_enet/init_enet.c
             examples/ota_examples/ota_mcuboot_client/network_enet/lwipopts.h
-            examples/_boards/${board}/ota_examples/ota_mcuboot_client/enet/network_board_cfg.h
+            ${board_root}/${board}/ota_examples/ota_mcuboot_client/enet/network_board_cfg.h
 )
 
 ## common mbedtls config file for KSDK port
@@ -38,19 +38,19 @@ mcux_add_source(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
-            examples/_boards/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.c
-            examples/_boards/${board}/ota_examples/mcuboot_opensource/sblconfig.h
+    SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
+            ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.c
+            ${board_root}/${board}/ota_examples/mcuboot_opensource/sblconfig.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/ota_examples/ota_mcuboot_client/network_enet
              examples/ota_examples/ota_mcuboot_client
-             examples/_boards/${board}/ota_examples/ota_mcuboot_client/enet
-             examples/_boards/${board}/ota_examples/mcuboot_opensource/flash_partitioning
-             examples/_boards/${board}/ota_examples/mcuboot_opensource
-             examples/_boards/${board}
+             ${board_root}/${board}/ota_examples/ota_mcuboot_client/enet
+             ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning
+             ${board_root}/${board}/ota_examples/mcuboot_opensource
+             ${board_root}/${board}
 )
 
 
@@ -108,6 +108,6 @@ mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x2000 -Xlinker --defsym=__heap_size__=0x2000"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ota_examples/ota_mcuboot_client/enet/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/ota_mcuboot_client/enet/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

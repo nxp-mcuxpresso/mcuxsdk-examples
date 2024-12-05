@@ -9,7 +9,7 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 # the application you may want to choose between secure/non-secure port, but the port also depends on the platform
 # core, so this is where we need to be able to define those overrides.
 project(lp_refdes_ble_peripheral_bm LANGUAGES C CXX ASM
-    PROJECT_BOARD_PORT_PATH examples/_boards/${board}/wireless_examples
+    PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)

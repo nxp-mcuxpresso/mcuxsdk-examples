@@ -3,4 +3,4 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-include(${SdkRootDirPath}/examples/_boards/${board}/multicore_examples/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/reconfig.cmake OPTIONAL)

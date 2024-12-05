@@ -1,11 +1,11 @@
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES  examples/_boards/${board}/eiq_examples/tflm_kws/npu
+  INCLUDES  ${board_root}/${board}/eiq_examples/tflm_kws/npu
   )
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
-  SOURCES examples/_boards/${board}/eiq_examples/tflm_kws/npu/model_ds_cnn_ops_npu.cpp
-  examples/_boards/${board}/eiq_examples/tflm_kws/npu/model_data.h
+  SOURCES ${board_root}/${board}/eiq_examples/tflm_kws/npu/model_ds_cnn_ops_npu.cpp
+  ${board_root}/${board}/eiq_examples/tflm_kws/npu/model_data.h
   )
 
 mcux_remove_iar_linker_script(
@@ -42,32 +42,32 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
   TARGETS debug release
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/gcc/MIMXRT798Sxxxx_cm33_core0_ram.ld
+  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/gcc/MIMXRT798Sxxxx_cm33_core0_ram.ld
   )
 mcux_add_armgcc_linker_script(
   TARGETS flash_debug flash_release
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
+  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
   )
 mcux_add_mdk_linker_script(
   TARGETS debug release
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/arm/MIMXRT798Sxxxx_cm33_core0_ram.scf
+  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/arm/MIMXRT798Sxxxx_cm33_core0_ram.scf
   )
 mcux_add_mdk_linker_script(
   TARGETS flash_debug flash_release
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
+  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
   )
 mcux_add_iar_linker_script(
   TARGETS debug release
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/iar/MIMXRT798Sxxxx_cm33_core0_ram.icf
+  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/iar/MIMXRT798Sxxxx_cm33_core0_ram.icf
   )
 mcux_add_iar_linker_script(
   TARGETS flash_debug flash_release
   BASE_PATH ${SdkRootDirPath}
-  LINKER examples/_boards/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
+  LINKER ${board_root}/mimxrt700evk/eiq_examples/tflm_kws/cm33_core0/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
   )
 
 mcux_add_iar_configuration(

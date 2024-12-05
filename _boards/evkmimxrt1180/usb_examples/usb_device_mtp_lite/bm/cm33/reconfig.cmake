@@ -57,8 +57,8 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "examples/_boards/${board}/sdmmc_config.c"
-    "examples/_boards/${board}/sdmmc_config.h"
+    "${board_root}/${board}/sdmmc_config.c"
+    "${board_root}/${board}/sdmmc_config.h"
     "middleware/usb/example/boards/${board}/usb_device_mtp_lite/bm/${core_id}/hardware_init.c"
     "middleware/usb/example/boards/${board}/usb_device_mtp_lite/bm/${core_id}/pin_mux.c"
     "middleware/usb/example/boards/${board}/usb_device_mtp_lite/bm/${core_id}/pin_mux.h"

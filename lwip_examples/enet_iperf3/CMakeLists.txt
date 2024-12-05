@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(lwip_enet_iperf3 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/lwip_examples/enet_iperf3)
+project(lwip_enet_iperf3 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/lwip_examples/enet_iperf3)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -38,6 +38,6 @@ mcux_add_macro(
        -DLWIP_NETIF_API=1"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/lwip_examples/enet_iperf3/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/lwip_examples/enet_iperf3/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

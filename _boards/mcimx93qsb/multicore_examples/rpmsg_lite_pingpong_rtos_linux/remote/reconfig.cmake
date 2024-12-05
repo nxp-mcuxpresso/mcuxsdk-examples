@@ -6,19 +6,19 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/mcimx93qsb/FreeRTOSConfigBoard.h
-            examples/_boards/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux/FreeRTOSConfig.h
-            examples/_boards/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/rpmsg_config.h
-            examples/_boards/mcimx93qsb/srtm_config.h
+            ${board_root}/mcimx93qsb/FreeRTOSConfigBoard.h
+            ${board_root}/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux/FreeRTOSConfig.h
+            ${board_root}/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/rpmsg_config.h
+            ${board_root}/mcimx93qsb/srtm_config.h
             middleware/multicore/remoteproc/empty_rsc_table.c
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/mcimx93qsb
+    INCLUDES ${board_root}/mcimx93qsb
              middleware/multicore/remoteproc
-             examples/_boards/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux
-             examples/_boards/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
+             ${board_root}/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux
+             ${board_root}/mcimx93qsb/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
 )

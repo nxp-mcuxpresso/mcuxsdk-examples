@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.22.0)
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(temperature_collector_freertos LANGUAGES C CXX ASM
-    PROJECT_BOARD_PORT_PATH examples/_boards/${board}/wireless_examples
-    CUSTOM_PRJ_CONF_PATH examples/_boards/${board}/wireless_examples/bluetooth/
-        examples/_boards/${board}/wireless_examples/freertos
-        examples/_boards/${board}/wireless_examples/bluetooth/temp_coll/${core_id}/freertos
+    PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
+    CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/bluetooth/
+        ${board_root}/${board}/wireless_examples/freertos
+        ${board_root}/${board}/wireless_examples/bluetooth/temp_coll/${core_id}/freertos
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
@@ -30,7 +30,7 @@ mcux_add_source(
            ../gatt_uuid128.h
            ../temperature_collector.c
            ../temperature_collector.h
-           ../../../../_boards/${board}/wireless_examples/bluetooth/temp_coll/example_board_readme.md
+           ../../../../../${board_root}/${board}/wireless_examples/bluetooth/temp_coll/example_board_readme.md
            ../readme.md
 )
 
@@ -47,7 +47,7 @@ mcux_add_include(
              ../../common
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/bluetooth/temp_coll/${multicore_foldername}/freertos/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/temp_coll/${multicore_foldername}/freertos/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
         TOOLCHAINS armgcc iar

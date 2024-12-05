@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(psa_crypto_opaque_key_examples LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples)
+project(psa_crypto_opaque_key_examples LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -15,7 +15,7 @@ mcux_add_include(
     INCLUDES examples/mbedtls3x_examples/psa_crypto_opaque_key_examples
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples/reconfig.cmake OPTIONAL)
 
 mcux_add_macro(
     CC "-DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_psa_crypto_opaque_config.h\\\""

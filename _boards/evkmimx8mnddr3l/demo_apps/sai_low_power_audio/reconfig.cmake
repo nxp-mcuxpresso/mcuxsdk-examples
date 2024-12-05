@@ -2,28 +2,28 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/demo_apps/sai_low_power_audio/FreeRTOSConfig.h
-            examples/_boards/evkmimx8mn/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/sai_low_power_audio.c
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/sai_low_power_audio.h
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/pin_mux.c
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/pin_mux.h
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/rpmsg_config.h
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/lpm.c
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/lpm.h
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/hardware_init.c
-            examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio/app.h
-            examples/_boards/evkmimx8mn/rsc_table.c
-            examples/_boards/evkmimx8mn/rsc_table.h
+            ${board_root}/evkmimx8mn/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/sai_low_power_audio.c
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/sai_low_power_audio.h
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/pin_mux.c
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/pin_mux.h
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/rpmsg_config.h
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/lpm.c
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/lpm.h
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/hardware_init.c
+            ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio/app.h
+            ${board_root}/evkmimx8mn/rsc_table.c
+            ${board_root}/evkmimx8mn/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/evkmimx8mn/app_srtm.c
-            examples/_boards/evkmimx8mn/app_srtm.h
-            examples/_boards/evkmimx8mn/srtm_config.h
+            ${board_root}/evkmimx8mn/app_srtm.c
+            ${board_root}/evkmimx8mn/app_srtm.h
+            ${board_root}/evkmimx8mn/srtm_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8mn
-             examples/_boards/evkmimx8mn/demo_apps/sai_low_power_audio
+    INCLUDES ${board_root}/evkmimx8mn
+             ${board_root}/evkmimx8mn/demo_apps/sai_low_power_audio
              examples/demo_apps/sai_low_power_audio
              middleware/multicore/remoteproc
 )
@@ -51,10 +51,10 @@ mcux_remove_iar_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/gcc/MIMX8MN6xxxxx_cm7_lpa_ram_ddr3l.ld
+    LINKER ${board_root}/${board}/gcc/MIMX8MN6xxxxx_cm7_lpa_ram_ddr3l.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/iar/MIMX8MN6xxxxx_cm7_lpa_ram_ddr3l.icf
+    LINKER ${board_root}/${board}/iar/MIMX8MN6xxxxx_cm7_lpa_ram_ddr3l.icf
 )

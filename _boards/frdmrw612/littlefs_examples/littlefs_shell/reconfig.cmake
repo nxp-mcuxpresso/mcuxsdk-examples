@@ -1,8 +1,8 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/littlefs_examples/littlefs_shell/peripherals.c
-            examples/_boards/${board}/littlefs_examples/littlefs_shell/peripherals.h
+    SOURCES ${board_root}/${board}/littlefs_examples/littlefs_shell/peripherals.c
+            ${board_root}/${board}/littlefs_examples/littlefs_shell/peripherals.h
 )
 
 mcux_add_macro(
@@ -36,15 +36,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/littlefs_examples/littlefs_shell/iar/RW612_flash.icf
+    LINKER ${board_root}/${board}/littlefs_examples/littlefs_shell/iar/RW612_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/littlefs_examples/littlefs_shell/mdk/RW612_flash.scf
+    LINKER ${board_root}/${board}/littlefs_examples/littlefs_shell/mdk/RW612_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/littlefs_examples/littlefs_shell/armgcc/RW612_flash.ld
+    LINKER ${board_root}/${board}/littlefs_examples/littlefs_shell/armgcc/RW612_flash.ld
 )

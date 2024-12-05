@@ -1,15 +1,15 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/kw45b41zevk/littlefs_examples/littlefs_shell/hardware_init.c
-            examples/_boards/kw45b41zevk/littlefs_examples/littlefs_shell/app.h
-            examples/_boards/${board}/littlefs_examples/littlefs_shell/peripherals.c
-            examples/_boards/${board}/littlefs_examples/littlefs_shell/peripherals.h
+    SOURCES ${board_root}/kw45b41zevk/littlefs_examples/littlefs_shell/hardware_init.c
+            ${board_root}/kw45b41zevk/littlefs_examples/littlefs_shell/app.h
+            ${board_root}/${board}/littlefs_examples/littlefs_shell/peripherals.c
+            ${board_root}/${board}/littlefs_examples/littlefs_shell/peripherals.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/kw45b41zevk/littlefs_examples/littlefs_shell
+    INCLUDES ${board_root}/kw45b41zevk/littlefs_examples/littlefs_shell
 )
 
 mcux_add_macro(
@@ -25,5 +25,5 @@ mcux_add_macro(
 mcux_add_armgcc_linker_script(
 	TARGETS sdram_debug sdram_release debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/littlefs_examples/littlefs_shell/linker/K32W1480xxxA_ram.ld
+    LINKER ${board_root}/${board}/littlefs_examples/littlefs_shell/linker/K32W1480xxxA_ram.ld
 )

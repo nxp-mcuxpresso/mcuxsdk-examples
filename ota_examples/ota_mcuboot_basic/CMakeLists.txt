@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ota_mcuboot_basic LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ota_examples/ota_mcuboot_basic)
+project(ota_mcuboot_basic LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ota_examples/ota_mcuboot_basic)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -12,24 +12,24 @@ mcux_add_source(
     SOURCES examples/ota_examples/ota_mcuboot_basic/ota_mcuboot_basic.c
             examples/ota_examples/ota_mcuboot_basic/xmodem.c
             examples/ota_examples/ota_mcuboot_basic/xmodem.h
-            examples/_boards/${board}/ota_examples/ota_mcuboot_basic/platform_bindings.c
-            examples/_boards/${board}/ota_examples/ota_mcuboot_basic/platform_bindings.h
+            ${board_root}/${board}/ota_examples/ota_mcuboot_basic/platform_bindings.c
+            ${board_root}/${board}/ota_examples/ota_mcuboot_basic/platform_bindings.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/ota_examples/ota_mcuboot_basic
-             examples/_boards/${board}
-             examples/_boards/${board}/ota_examples/mcuboot_opensource
-             examples/_boards/${board}/ota_examples/mcuboot_opensource/flash_partitioning
+    INCLUDES ${board_root}/${board}/ota_examples/ota_mcuboot_basic
+             ${board_root}/${board}
+             ${board_root}/${board}/ota_examples/mcuboot_opensource
+             ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning
              examples/ota_examples/ota_mcuboot_basic
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
-            examples/_boards/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.c
-            examples/_boards/${board}/ota_examples/mcuboot_opensource/sblconfig.h
+    SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
+            ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.c
+            ${board_root}/${board}/ota_examples/mcuboot_opensource/sblconfig.h
 )
 
 
@@ -65,6 +65,6 @@ mcux_add_armgcc_configuration(
 )
 
 include(${SdkRootDirPath}/middleware/mcuboot_opensource/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/ota_examples/ota_mcuboot_basic/${multicore_foldername}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/ota_mcuboot_basic/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ce_blockingmode_test LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ce_examples/blockingmode_test)
+project(ce_blockingmode_test LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ce_examples/blockingmode_test)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -12,12 +12,12 @@ mcux_add_source(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/ce_examples/blockingmode_test/mat_mult_input_A.txt
-    SOURCES examples/_boards/${board}/ce_examples/blockingmode_test/mat_mult_input_B.txt
-    SOURCES examples/_boards/${board}/ce_examples/blockingmode_test/mat_multcf32_40x40x40_C_ref.txt
-    SOURCES examples/_boards/${board}/ce_examples/blockingmode_test/mat_multf32_60x60x60_C_ref.txt
+    SOURCES ${board_root}/${board}/ce_examples/blockingmode_test/mat_mult_input_A.txt
+    SOURCES ${board_root}/${board}/ce_examples/blockingmode_test/mat_mult_input_B.txt
+    SOURCES ${board_root}/${board}/ce_examples/blockingmode_test/mat_multcf32_40x40x40_C_ref.txt
+    SOURCES ${board_root}/${board}/ce_examples/blockingmode_test/mat_multf32_60x60x60_C_ref.txt
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ce_examples/blockingmode_test/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ce_examples/blockingmode_test/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ncp_host LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ncp_examples/ncp_host)
+project(ncp_host LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ncp_examples/ncp_host)
 
 
 include(${SdkRootDirPath}/CMakeLists.txt)
@@ -95,6 +95,6 @@ mcux_add_include(
              common/ncp_adapter/ncp_intf
              common/ncp_adapter/ncp_intf/uart
 )
-include(${SdkRootDirPath}/examples/_boards/${board}/ncp_examples/ncp_host/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_host/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

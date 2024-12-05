@@ -1,19 +1,19 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/openvg_examples/openvg_support/pin_mux.c
-            examples/_boards/${board}/openvg_examples/openvg_support/pin_mux.h
-            examples/_boards/${board}/openvg_examples/openvg_tiger/vglite_support.c
-            examples/_boards/${board}/openvg_examples/openvg_tiger/vglite_support.h
-            examples/_boards/${board}/display_support.h
-            examples/_boards/${board}/display_support.c
+    SOURCES ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/openvg_examples/openvg_support/pin_mux.c
+            ${board_root}/${board}/openvg_examples/openvg_support/pin_mux.h
+            ${board_root}/${board}/openvg_examples/openvg_tiger/vglite_support.c
+            ${board_root}/${board}/openvg_examples/openvg_tiger/vglite_support.h
+            ${board_root}/${board}/display_support.h
+            ${board_root}/${board}/display_support.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/openvg_examples/openvg_tiger
-             examples/_boards/${board}/openvg_examples
-             examples/_boards/${board}/openvg_examples/openvg_support
+    INCLUDES ${board_root}/${board}/openvg_examples/openvg_tiger
+             ${board_root}/${board}/openvg_examples
+             ${board_root}/${board}/openvg_examples/openvg_support
 )
 
 mcux_add_iar_configuration(
@@ -62,12 +62,12 @@ mcux_remove_iar_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/openvg_examples/openvg_tiger/MIMXRT798Sxxxx_cm33_core0_psram.ld
+    LINKER ${board_root}/${board}/openvg_examples/openvg_tiger/MIMXRT798Sxxxx_cm33_core0_psram.ld
 )
 
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/openvg_examples/openvg_tiger/MIMXRT798Sxxxx_cm33_core0_psram.icf
+    LINKER ${board_root}/${board}/openvg_examples/openvg_tiger/MIMXRT798Sxxxx_cm33_core0_psram.icf
 )
 

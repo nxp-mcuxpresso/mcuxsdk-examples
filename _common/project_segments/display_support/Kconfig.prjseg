@@ -6,4 +6,4 @@
 config MCUX_PRJSEG_module.board.display_support
     bool "Enable Display Support"
 
-orsource "../../../_boards/${board}/project_segments/display_support/Kconfig.prjseg"
+orsource "../../../../${board_root}/${board}/project_segments/display_support/Kconfig.prjseg"

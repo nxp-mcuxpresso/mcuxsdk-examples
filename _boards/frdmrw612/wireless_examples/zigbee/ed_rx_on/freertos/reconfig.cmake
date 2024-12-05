@@ -43,7 +43,7 @@ mcux_remove_armgcc_linker_script(
 
 mcux_add_armgcc_linker_script(
     TARGETS debug release flash_debug flash_release
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/wireless_examples
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
     LINKER linker/gcc/RW61x_flash_zb_mcuboot.ld
 )
 

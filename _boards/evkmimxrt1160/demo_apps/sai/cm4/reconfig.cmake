@@ -5,14 +5,14 @@ mcux_add_source(
             examples/demo_apps/sai/sai/sai.h
             examples/demo_apps/sai/sai/recordPlayback.c
             examples/demo_apps/sai/sai/playbackSineWave.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/sdmmc_config.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/demo_apps/sai/sai
-             examples/_boards/${board}/demo_apps/sai
+             ${board_root}/${board}/demo_apps/sai
 )
 
 mcux_add_armgcc_configuration(

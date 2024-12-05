@@ -25,4 +25,4 @@ mcux_add_include(
     INCLUDES .
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/genfsk/connectivity_test/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/genfsk/connectivity_test/reconfig.cmake OPTIONAL)

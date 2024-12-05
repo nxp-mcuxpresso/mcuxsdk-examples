@@ -26,7 +26,7 @@ mcux_add_armgcc_configuration(
     CC "-Werror"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/reference_design/lowpower_peripheral/reconfig.cmake)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/reference_design/lowpower_peripheral/reconfig.cmake)
 
 mcux_add_include(
     INCLUDES

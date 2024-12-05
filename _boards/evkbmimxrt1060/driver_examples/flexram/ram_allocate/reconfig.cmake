@@ -85,15 +85,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS sdram_txt_debug sdram_txt_release
-    LINKER examples/_boards/${board}/driver_examples/flexram/ram_allocate/linker/iar/evkbmimxrt1060_flexram_ram_allocate.icf
+    LINKER ${board_root}/${board}/driver_examples/flexram/ram_allocate/linker/iar/evkbmimxrt1060_flexram_ram_allocate.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS sdram_txt_debug sdram_txt_release
-    LINKER examples/_boards/${board}/driver_examples/flexram/ram_allocate/linker/mdk/evkbmimxrt1060_flexram_ram_allocate.scf
+    LINKER ${board_root}/${board}/driver_examples/flexram/ram_allocate/linker/mdk/evkbmimxrt1060_flexram_ram_allocate.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS sdram_txt_debug sdram_txt_release
-    LINKER examples/_boards/${board}/driver_examples/flexram/ram_allocate/linker/armgcc/evkbmimxrt1060_flexram_ram_allocate.ld
+    LINKER ${board_root}/${board}/driver_examples/flexram/ram_allocate/linker/armgcc/evkbmimxrt1060_flexram_ram_allocate.ld
 )

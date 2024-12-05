@@ -1,13 +1,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/kw45b41zevk/mbedtls_examples/mbedtls_benchmark/hardware_init.c
-            examples/_boards/kw45b41zevk/mbedtls_examples/mbedtls_benchmark/app.h
+    SOURCES ${board_root}/kw45b41zevk/mbedtls_examples/mbedtls_benchmark/hardware_init.c
+            ${board_root}/kw45b41zevk/mbedtls_examples/mbedtls_benchmark/app.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/kw45b41zevk/mbedtls_examples/mbedtls_benchmark
+    INCLUDES ${board_root}/kw45b41zevk/mbedtls_examples/mbedtls_benchmark
 )
 
 mcux_add_mdk_configuration(

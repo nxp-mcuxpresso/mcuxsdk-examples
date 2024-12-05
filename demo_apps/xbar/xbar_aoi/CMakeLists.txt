@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(xbar_aoi LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/demo_apps/xbar_aoi)
+project(xbar_aoi LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/demo_apps/xbar_aoi)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -10,6 +10,6 @@ mcux_add_source(
     SOURCES examples/demo_apps/xbar/xbar_aoi/xbar_aoi.c
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/demo_apps/xbar_aoi/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/xbar_aoi/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

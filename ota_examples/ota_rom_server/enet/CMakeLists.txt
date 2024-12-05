@@ -2,29 +2,29 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(ota_rom_server_enet LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ota_examples/ota_rom_server/enet)
+project(ota_rom_server_enet LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ota_examples/ota_rom_server/enet)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/ota_examples/ota_rom_server/ota_rom_server.c
-            examples/_boards/${board}/ota_examples/ota_rom_server/enet/network_cfg.h
+            ${board_root}/${board}/ota_examples/ota_rom_server/enet/network_cfg.h
             examples/ota_examples/ota_rom_server/network_enet/init_enet.c
             examples/ota_examples/ota_rom_server/network_enet/lwipopts.h
             examples/ota_examples/ota_rom_server/httpsrv_multipart.c
             examples/ota_examples/ota_rom_server/httpsrv_multipart.h
             examples/ota_examples/ota_rom_server/httpsrv_fs_data.c
             examples/ota_examples/ota_rom_server/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/ota_examples/ota_rom_server/enet/${core_id}
+    INCLUDES ${board_root}/${board}/ota_examples/ota_rom_server/enet/${core_id}
              examples/ota_examples/ota_rom_server/network_enet
-             examples/_boards/${board}/ota_examples/ota_rom_server
-             examples/_boards/${board}/ota_examples/ota_rom_server/enet
-             examples/_boards/${board}
+             ${board_root}/${board}/ota_examples/ota_rom_server
+             ${board_root}/${board}/ota_examples/ota_rom_server/enet
+             ${board_root}/${board}
 )
 
 mcux_add_include(
@@ -72,6 +72,6 @@ mcux_add_armgcc_configuration(
 )
 
 
-include(${SdkRootDirPath}/examples/_boards/${board}/ota_examples/ota_rom_server/enet/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/ota_rom_server/enet/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

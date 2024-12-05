@@ -1,7 +1,7 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
+    SOURCES ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
 )
 
 # Add additional configuration
@@ -54,15 +54,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/LPC55S69_cm33_core0_flash.icf
+    LINKER ${board_root}/${board}/audio_examples/common/linker/LPC55S69_cm33_core0_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/LPC55S69_cm33_core0_flash.scf
+    LINKER ${board_root}/${board}/audio_examples/common/linker/LPC55S69_cm33_core0_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/audio_examples/common/linker/LPC55S69_cm33_core0_flash.ld
+    LINKER ${board_root}/${board}/audio_examples/common/linker/LPC55S69_cm33_core0_flash.ld
 )

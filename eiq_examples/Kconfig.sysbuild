@@ -11,4 +11,4 @@ config dsp_toolchain
     string
     default "xtensa"
 
-source "${SdkRootDirPath}/examples/_boards/${board}/Kconfig.sysbuild"
+source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"

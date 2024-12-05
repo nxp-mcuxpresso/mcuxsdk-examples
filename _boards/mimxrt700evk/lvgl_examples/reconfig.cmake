@@ -32,17 +32,17 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/lvgl_examples/linker/MIMXRT798Sxxxx_cm33_core0_ram.icf
+    LINKER ${board_root}/${board}/lvgl_examples/linker/MIMXRT798Sxxxx_cm33_core0_ram.icf
 )
 
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/lvgl_examples/linker/MIMXRT798Sxxxx_cm33_core0_ram.scf
+    LINKER ${board_root}/${board}/lvgl_examples/linker/MIMXRT798Sxxxx_cm33_core0_ram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/lvgl_examples/linker/MIMXRT798Sxxxx_cm33_core0_ram.ld
+    LINKER ${board_root}/${board}/lvgl_examples/linker/MIMXRT798Sxxxx_cm33_core0_ram.ld
 )
 

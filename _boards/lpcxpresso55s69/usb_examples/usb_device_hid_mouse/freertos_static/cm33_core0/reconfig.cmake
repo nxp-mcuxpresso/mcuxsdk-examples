@@ -39,7 +39,7 @@ mcux_add_mdk_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "examples/_boards/${board}/usb_examples/usb_device_hid_mouse/freertos_static"
+    "${board_root}/${board}/usb_examples/usb_device_hid_mouse/freertos_static"
     "middleware/usb/example/boards/${board}/usb_device_hid_mouse/freertos_static"
 )
 

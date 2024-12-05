@@ -35,30 +35,30 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_ram.icf
+    LINKER ${board_root}/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_ram.icf
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_flexspi_nor.icf
+    LINKER ${board_root}/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_flexspi_nor.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_ram.scf
+    LINKER ${board_root}/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_ram.scf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_flexspi_nor.scf
+    LINKER ${board_root}/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_flexspi_nor.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_ram.ld
+    LINKER ${board_root}/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_ram.ld
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER examples/_boards/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_flexspi_nor.ld
+    LINKER ${board_root}/${board}/cmsis_driver_examples/lpi2c/edma_b2b_transfer/linker/MIMXRT1166xxxxx_cm4_flexspi_nor.ld
 )

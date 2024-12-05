@@ -30,8 +30,8 @@ mcux_add_include(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "examples/_boards/${board}/lpm.c"
-    "examples/_boards/${board}/lpm.h"
+    "${board_root}/${board}/lpm.c"
+    "${board_root}/${board}/lpm.h"
     "middleware/usb/example/boards/${board}/usb_suspend_resume_device_hid_mouse/bm/hardware_init.c"
     "middleware/usb/example/boards/${board}/usb_suspend_resume_device_hid_mouse/bm/pin_mux.c"
     "middleware/usb/example/boards/${board}/usb_suspend_resume_device_hid_mouse/bm/pin_mux.h"

@@ -8,12 +8,12 @@ mcux_add_source(
             middleware/vglite/vglite_sdk/example/clock_freertos/layer.c
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.c
-            examples/_boards/${board}/vglite_examples/vglite_support/pin_mux.c
-            examples/_boards/${board}/vglite_examples/vglite_support/pin_mux.h
+            ${board_root}/${board}/vglite_examples/vglite_support/pin_mux.c
+            ${board_root}/${board}/vglite_examples/vglite_support/pin_mux.h
             middleware/vglite/vglite_sdk/example/clock_freertos/resources/ClockAnalogOrange.svg
             middleware/vglite/vglite_sdk/example/clock_freertos/resources/HourNeedle.svg
             middleware/vglite/vglite_sdk/example/clock_freertos/resources/MinuteNeedle.svg
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(

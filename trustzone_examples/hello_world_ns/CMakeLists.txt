@@ -7,13 +7,13 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(hello_world_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/trustzone_examples/hello_world/hello_world_ns)
+project(hello_world_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/trustzone_examples/hello_world/hello_world_ns)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/examples/_boards/${board}/trustzone_examples/reconfig.cmake OPTIONAL)
-include(${SdkRootDirPath}/examples/_boards/${board}/trustzone_examples/hello_world/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/trustzone_examples/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/trustzone_examples/hello_world/reconfig.cmake OPTIONAL)
 # Include reconfigure for Non Secure Project
-include(${SdkRootDirPath}/examples/_boards/${board}/trustzone_examples/hello_world/hello_world_ns/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/trustzone_examples/hello_world/hello_world_ns/reconfig.cmake OPTIONAL)
 
 mcux_remove_iar_configuration(
         AS "--fpu=VFPv5_sp"

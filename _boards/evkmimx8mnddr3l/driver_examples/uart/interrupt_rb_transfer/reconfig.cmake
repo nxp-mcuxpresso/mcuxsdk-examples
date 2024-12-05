@@ -1,15 +1,15 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/pin_mux.c
-            examples/_boards/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/pin_mux.h
-            examples/_boards/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/./hardware_init.c
-            examples/_boards/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/./app.h
+    SOURCES ${board_root}/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/pin_mux.c
+            ${board_root}/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/pin_mux.h
+            ${board_root}/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/./hardware_init.c
+            ${board_root}/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer/./app.h
             middleware/multicore/remoteproc/empty_rsc_table.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer
-             examples/_boards/evkmimx8mn
+    INCLUDES ${board_root}/evkmimx8mn/driver_examples/uart/interrupt_rb_transfer
+             ${board_root}/evkmimx8mn
 )

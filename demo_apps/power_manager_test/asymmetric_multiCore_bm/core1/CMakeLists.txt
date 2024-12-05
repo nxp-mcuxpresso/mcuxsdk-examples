@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(power_manager_test_asymmetric_multiCore_bm_core1 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/demo_apps/power_manager_test/multiCore_bm/core1)
+project(power_manager_test_asymmetric_multiCore_bm_core1 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/demo_apps/power_manager_test/multiCore_bm/core1)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -15,7 +15,7 @@ mcux_add_include(
     INCLUDES examples/demo_apps/power_manager_test/asymmetric_multiCore_bm
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/demo_apps/power_manager_test/multiCore_bm/core1/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_manager_test/multiCore_bm/core1/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar

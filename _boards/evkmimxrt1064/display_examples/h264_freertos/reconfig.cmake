@@ -63,15 +63,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/display_examples/h264_freertos/linker/MIMXRT1064xxxxx_flexspi_nor_sdram.icf
+    LINKER ${board_root}/${board}/display_examples/h264_freertos/linker/MIMXRT1064xxxxx_flexspi_nor_sdram.icf
 )
 mcux_add_mdk_linker_script(
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/display_examples/h264_freertos/linker/MIMXRT1064xxxxx_flexspi_nor_sdram.scf
+    LINKER ${board_root}/${board}/display_examples/h264_freertos/linker/MIMXRT1064xxxxx_flexspi_nor_sdram.scf
 )
 mcux_add_armgcc_linker_script(
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/display_examples/h264_freertos/linker/MIMXRT1064xxxxx_flexspi_nor_sdram.ld
+    LINKER ${board_root}/${board}/display_examples/h264_freertos/linker/MIMXRT1064xxxxx_flexspi_nor_sdram.ld
 )

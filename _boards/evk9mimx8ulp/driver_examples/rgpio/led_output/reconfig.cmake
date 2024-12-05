@@ -6,5 +6,5 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/evkmimx8ulp
+    INCLUDES ${board_root}/evkmimx8ulp
 )

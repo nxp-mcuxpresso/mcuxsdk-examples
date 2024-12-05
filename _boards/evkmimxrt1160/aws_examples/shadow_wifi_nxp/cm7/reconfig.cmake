@@ -2,15 +2,15 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/sdmmc_config.c
-            examples/_boards/${board}/sdmmc_config.h
-            examples/_boards/${board}/wifi_bt_config.c
-            examples/_boards/${board}/wifi_bt_config.h
+    SOURCES ${board_root}/${board}/sdmmc_config.c
+            ${board_root}/${board}/sdmmc_config.h
+            ${board_root}/${board}/wifi_bt_config.c
+            ${board_root}/${board}/wifi_bt_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}
+    INCLUDES ${board_root}/${board}
 )
 
 
@@ -77,15 +77,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER examples/_boards/${board}/aws_examples/common/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.icf
+    LINKER ${board_root}/${board}/aws_examples/common/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER examples/_boards/${board}/aws_examples/common/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.scf
+    LINKER ${board_root}/${board}/aws_examples/common/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
-    LINKER examples/_boards/${board}/aws_examples/common/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.ld
+    LINKER ${board_root}/${board}/aws_examples/common/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_sdram.ld
 )

@@ -1,16 +1,16 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/_boards/${board}/app_srtm.c
-            examples/_boards/${board}/app_srtm.h
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/rpmsg_config.h
+    SOURCES ${board_root}/${board}/app_srtm.c
+            ${board_root}/${board}/app_srtm.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/FreeRTOSConfig.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/rpmsg_config.h
             examples/demo_apps/sai_low_power_audio_imx93/sai_low_power_audio.h
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/srtm_config.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/srtm_config.h
 )
 
 mcux_add_include(
@@ -42,10 +42,10 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/iar/MIMX9352_cm33_lpa_ram.icf
+    LINKER ${board_root}/${board}/iar/MIMX9352_cm33_lpa_ram.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/gcc/MIMX9352_cm33_lpa_ram.ld
+    LINKER ${board_root}/${board}/gcc/MIMX9352_cm33_lpa_ram.ld
 )

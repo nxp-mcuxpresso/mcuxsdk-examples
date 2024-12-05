@@ -2,18 +2,18 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/demo_apps/sai_low_power_audio/FreeRTOSConfig.h
-            examples/_boards/${board}/FreeRTOSConfigBoard.h
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/rpmsg_config.h
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/lpm.c
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/lpm.h
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/sai_low_power_audio.c
-            examples/_boards/${board}/demo_apps/sai_low_power_audio/sai_low_power_audio.h
-            examples/_boards/${board}/rsc_table.c
-            examples/_boards/${board}/rsc_table.h
+            ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/rpmsg_config.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/lpm.c
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/lpm.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/sai_low_power_audio.c
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/sai_low_power_audio.h
+            ${board_root}/${board}/rsc_table.c
+            ${board_root}/${board}/rsc_table.h
             middleware/multicore/remoteproc/remoteproc.h
-            examples/_boards/${board}/app_srtm.c
-            examples/_boards/${board}/app_srtm.h
-            examples/_boards/${board}/srtm_config.h
+            ${board_root}/${board}/app_srtm.c
+            ${board_root}/${board}/app_srtm.h
+            ${board_root}/${board}/srtm_config.h
 )
 
 mcux_add_include(
@@ -45,10 +45,10 @@ mcux_remove_iar_linker_script(
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/gcc/MIMX8MN6xxxxx_cm7_lpa_ram.ld
+    LINKER ${board_root}/${board}/gcc/MIMX8MN6xxxxx_cm7_lpa_ram.ld
 )
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER examples/_boards/${board}/iar/MIMX8MN6xxxxx_cm7_lpa_ram.icf
+    LINKER ${board_root}/${board}/iar/MIMX8MN6xxxxx_cm7_lpa_ram.icf
 )

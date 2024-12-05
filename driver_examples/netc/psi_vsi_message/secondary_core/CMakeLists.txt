@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(netc_psi_vsi_message_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/driver_examples/netc/psi_vsi_message/)
+project(netc_psi_vsi_message_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/netc/psi_vsi_message/)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
@@ -12,7 +12,7 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/_boards/${board}/driver_examples/netc/psi_vsi_message/${core_id}
+    INCLUDES ${board_root}/${board}/driver_examples/netc/psi_vsi_message/${core_id}
 )
 
 mcux_add_macro(
@@ -20,7 +20,7 @@ mcux_add_macro(
        -D__SEMIHOST_HARDFAULT_DISABLE=1"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/netc/psi_vsi_message//reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/netc/psi_vsi_message//reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar
