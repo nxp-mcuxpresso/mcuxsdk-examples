@@ -5,7 +5,7 @@ Hardware requirements
 - J-Link Debug Probe
 - 12V~20V power supply
 - Personal Computer
-- DUAL LVDS panel
+- LCD SPEC panel
 
 Board settings
 ==============
@@ -28,7 +28,7 @@ Prepare the Demo
     - No flow control
 4.  Download the program to the target board.
 5.  Launch the debugger in your IDE to begin running the example.
-6.  Load the figure binary file by using Jlink command "loadbin xxx.bin 0x80000000" and "loadbin xxx.bin 0x808ca000"(default DUAL LVDS panel).
+6.  Load the figure binary file by using Jlink command "loadbin xxx.bin 0x80000000" and "loadbin xxx.bin 0x803e8000"(default LCD SPEC panel).
 
    ------------------------------------------------------------
    | panel name   | buffer address 1 |   buffer address 2     |
@@ -44,23 +44,36 @@ Prepare the Demo
    | LVDS2HDMI    |   0x80000000     |       0x807e9000       |
    ------------------------------------------------------------
 
+Steps to configure the panels
+===============
+Default panel is LCD SPEC panel, default port is DPU_DI_LVDS, default setting for APP_DISPLAY_EXTERNAL_CONVERTOR is disabled
 Tips: The APP_DISPLAY_EXTERNAL_CONVERTOR can be set as 1 when you are using MIPI2HDMI card(ADV7535) or LVDS2HDMI card(IT6263) only.
-
-In this function, the default port is LVDS port. If you want to use DPU_DI_MIPI, please change as below in dpu_example.h
-#define DPU_DI_MIPI     1
-#define DPU_DI_LVDS     0
-#define LVDS_DUAL_PANEL 0
-#define DPU_EXAMPLE_DI  DPU_DI_MIPI
-#define MX8_DSI_OLED2   1 (for MIPI DSI panel) or #define MIPI2HDMI   1 (for ADV7535)
-
-In this function, the default panel is DUAL LVDS panel. If you want to use LCD SPEC panel, please change as below in dpu_example.h
-#define LVDS_DUAL_PANEL 0
-#define LCD_SPEC        1
-#define DPU_LVDS_PANEL  LCD_SPEC
-If you want to use LVDS2HDMI card(IT6263), please change as below in dpu_example.h
-#define LVDS_DUAL_PANEL 0
-#define LVDS2HDMI       1
-#define DPU_LVDS_PANEL  LVDS2HDMI
+When Kconfig is used
+----------------
+Below setting is for kconfig, you can fix below settings in dpu/rop/cm7/prj.conf
+For default LCD_SPEC panel, you do not need to change anything.
+For DUAL LVDS panel(1920*1200):
+CONFIG_MCUX_PRJSEG_module.board.display_support.LVDS_DUAL_PANEL=y
+CONFIG_MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE=y
+For LVDS2HDMI card(1920*1080):
+CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
+CONFIG_MCUX_PRJSEG_module.board.display_support.LVDS2HDMI=y
+For MIPI DSI panel(1080*2340):
+CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI=y
+CONFIG_MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2=y
+For MIPI2HDMI card(1920*1080):
+CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI=y
+CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
+CONFIG_MCUX_PRJSEG_module.board.display_support.MIPI2HDMI=y
+When package is used
+----------------
+Below setting is for mcux_config.h.
+Setting DEMO_PANEL to LVDS_DUAL_PANEL to DUAL LVDS panel(1920*1200). You also need to set LDB_DUAL_PANEL to 1.
+Setting DEMO_PANEL to LVDS2HDMI to use LVDS2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
+Setting DEMO_PANEL to MX8_DSI_OLED2 to use MIPI DSI panel(1080*2340), you also need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
+Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMIi card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
+And you also need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
+For default LCD_SPEC panel, you do not need to change anything.
 
 Running the demo
 ================

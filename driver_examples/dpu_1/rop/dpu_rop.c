@@ -5,7 +5,7 @@
  */
 
 #include "fsl_dpu.h"
-#include "dpu_example.h"
+#include "display_support.h"
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "app.h"
