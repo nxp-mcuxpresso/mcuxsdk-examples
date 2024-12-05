@@ -1,0 +1,86 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+config MCUX_PRJSEG_module.board.display_support
+    select MCUX_COMPONENT_driver.display-rm692c9
+    select MCUX_COMPONENT_driver.display-sn65dsi83
+    select MCUX_COMPONENT_driver.display-adv7535
+    select MCUX_COMPONENT_driver.display-it6263
+    select MCUX_COMPONENT_driver.lpi2c
+
+if MCUX_PRJSEG_module.board.display_support
+
+    config DPU_EXAMPLE_DI
+        string
+        default DPU_DI_MIPI if MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
+        default DPU_DI_LVDS if MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
+        help
+            Port selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.port
+        prompt "port Selection"
+        default MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
+
+        config MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI
+            bool "DPU_DI_MIPI port"
+
+        config MCUX_PRJSEG_module.board.display_support.DPU_DI_LVDS
+            bool "DPU_DI_LVDS port"
+    endchoice
+
+
+    config DEMO_PANEL
+        string
+	default CAP_TOUCH_LVDS if MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_LVDS
+	default CAP_TOUCH_DSI if MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_DSI
+        default MX8_DSI_OLED2 if MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
+        default MIPI2HDMI if MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
+        help
+            Panel selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.panel
+        prompt "panel Selection"
+        default MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
+
+        config MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_LVDS
+            bool "CAP_TOUCH_LVDS panel"
+
+        config MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_DSI
+            bool "CAP_TOUCH_DSI panel"
+
+        config MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
+            bool "MX8_DSI_OLED2 panel"
+
+        config MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
+            bool "MIPI2HDMI convertor card"
+
+    endchoice
+
+    config APP_DISPLAY_EXTERNAL_CONVERTOR
+        bool "MIPI or LVDS to HDMI convertor card"
+        help
+            No prefix in generated macro
+
+    config LDB_DUAL_PANEL
+        int
+	default 0 if MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+	default 1 if MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE
+	help
+            Ldb dual panel setting selection for display support
+            No prefix in generated macro
+
+    choice MCUX_PRJSEG_module.board.display_support.ldb
+        prompt "dual panel Selection"
+	default MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+
+	config MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_DISABLE
+            bool "Disable DUAL panel setting for LDB"
+
+        config MCUX_PRJSEG_module.board.display_support.LDB_DUAL_PANEL_ENABLE
+            bool "Enable DUAL panel setting for LDB"
+     endchoice
+endif

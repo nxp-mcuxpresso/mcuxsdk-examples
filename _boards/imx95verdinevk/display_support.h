@@ -9,28 +9,30 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
-#define DPU_DI_MIPI     1
 #define DPU_DI_LVDS     0
-#define LVDS_DUAL_PANEL 0
-#define CAP_TOUCH_LVDS  0
-#define CAP_TOUCH_DSI   0
-#define MX8_DSI_OLED2   1
-#define MIPI2HDMI       0
+#define DPU_DI_MIPI     1
+#define LVDS_DUAL_PANEL 2 
+#define CAP_TOUCH_LVDS  3
+#define CAP_TOUCH_DSI   4
+#define MX8_DSI_OLED2   5
+#define MIPI2HDMI       6
 
-/* Whether use external convertor such as MIPI2HDMI convertor (ADV7535) */
-#ifndef APP_DISPLAY_EXTERNAL_CONVERTOR
-#define APP_DISPLAY_EXTERNAL_CONVERTOR 0
-#endif
-
-/* Use the LVDS interface. */
+/* Use the MIPI interface. */
 #ifndef DPU_EXAMPLE_DI
 #define DPU_EXAMPLE_DI DPU_DI_MIPI
 #endif
 
-/* Choose LVDS panel */
-#ifndef DPU_LVDS_PANEL
-#define DPU_LVDS_PANEL CAP_TOUCH_LVDS
+#ifndef DEMO_PANEL
+#define DEMO_PANEL  MX8_DSI_OLED2
+#endif
+
+#ifndef LDB_DUAL_PANEL
+#define LDB_DUAL_PANEL  0
+#endif
+
+/* Whether use external convertor such as MIPI2HDMI convertor (ADV7535) */
+#ifndef APP_DISPLAY_EXTERNAL_CONVERTOR
+#define APP_DISPLAY_EXTERNAL_CONVERTOR 0
 #endif
 
 #if (DPU_EXAMPLE_DI == DPU_DI_LVDS)
@@ -65,7 +67,7 @@
 
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (MX8_DSI_OLED2 == 1)
+#if (DEMO_PANEL == MX8_DSI_OLED2)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (2340 + 4 + 10 + 10) * (1080 + 4 + 12 + 8) * x 60Hz = 2364 * 1104 * x 60Hz = 2,609,856 x 57 = 148,761,792 Hz
@@ -80,7 +82,7 @@
 #define APP_VBP          10
 #endif
 
-#if (CAP_TOUCH_DSI == 1)
+#if (DEMO_PANEL == CAP_TOUCH_DSI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (800 + 8 + 8 + 24) * (1280 + 24 + 16 + 64) * x 60 = 840 * 1384 * x 60Hz = 69,753,600 Hz
@@ -99,7 +101,7 @@
 #endif
 
 
-#if (CAP_TOUCH_LVDS == 1)
+#if (DEMO_PANEL == CAP_TOUCH_LVDS)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (800 + 6 + 2 + 15) * (1280 + 32 + 48 + 80) * x 60 = 823 * 1440 * x 60Hz = 71107200 Hz
@@ -117,7 +119,7 @@
 
 #else
 
-#if (MIPI2HDMI == 1)
+#if (DEMO_PANEL == MIPI2HDMI)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (1080 + 4 + 36 + 5) * (1920 + 88 + 148 + 44) * x 60 = 1125 * 2200 * x 60Hz = 148500000 Hz
