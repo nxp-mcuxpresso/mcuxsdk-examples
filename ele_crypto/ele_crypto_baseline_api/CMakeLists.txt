@@ -20,6 +20,12 @@ mcux_add_source(
     SOURCES examples/_boards/${board}/ele_crypto/ele_crypto_baseline_api/ele_fw_baseline.h
 )
 
+# Modify stack and heap sizes for all IDEs
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x800\
+             __heap_size__=0x600"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/ele_crypto/ele_crypto_baseline_api/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
