@@ -9,7 +9,7 @@ mcux_add_source(
   )
 
 mcux_add_iar_configuration(
-  CC "--diag_suppress Pe260,Pe1031"
+  CC "--diag_suppress=Pe260,Pe1031"
   )
 
 mcux_remove_iar_configuration(

@@ -10,8 +10,8 @@ mcux_add_mdk_configuration(
 mcux_add_iar_configuration(
     CC "--dlib_config full\
        -Ohs\
-       --diag_suppress Pe068,Pa025\
-       --diag_suppress Pe260,Pe1031"
+       --diag_suppress=Pe068,Pa025\
+       --diag_suppress=Pe260,Pe1031"
     LD "--redirect _Printf=_PrintfFull"
 )
 mcux_add_mdk_configuration(
