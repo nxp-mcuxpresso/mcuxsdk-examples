@@ -21,9 +21,6 @@ Prepare the Demo
     - One stop bit
     - No flow control
 4.  Build example to generate sdk20-app.bin
-Note: 
-  RK055MHD091 panel is used by default, to use the RK055AHD091 panel, modifications as below:
-    - change "#define DEMO_PANEL DEMO_PANEL_RK055MHD091" to "#define DEMO_PANEL MIPI_PANEL_RK055AHD091" in display_support.h
 5.  Generate flash.bin with imx-mkimage and download it according to Getting Started doc
 6.  Open two serials lines provided at J17 USB port.
     (e.g. /dev/ttyUSB0~3, /dev/ttyUSB2 for A Core, /dev/ttyUSB3 for M Core)
@@ -31,6 +28,23 @@ Note:
     => setenv video_off yes;saveenv
     then re-power on the board
 8.  Let Stop in Uboot.
+
+Steps to configure the panels
+===============
+RK055MHD091 panel is used by default and the default setting for APP_DISPLAY_EXTERNAL_CONVERTOR is disabled.
+
+When Kconfig is used
+----------------
+Below setting is for kconfig, you can fix below settings in prj.conf under example folder
+For default panel, you do not need to change anything.
+For RK055AHD091(rm68200) panel:
+CONFIG_MCUX_PRJSEG_module.board.display_support.RK055AHD091=y
+
+When package is used
+----------------
+Below setting is for mcux_config.h.
+For RK055AHD091(rm68200) panel:
+Setting DEMO_PANEL to 0 to choose RK055AHD091 panel.
 
 Running the demo
 ================
