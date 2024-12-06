@@ -1,11 +1,3 @@
-# MCUX-70408 There is currently an issue with hw acceleration when IPED is enabled. These defines are enabled by default in config file and can be disabled with MBEDTLS_MCUX_DISABLE_HW_ALT
-mcux_remove_macro(
-    CC "-DMBEDTLS_MCUX_USE_ELS"
-)
-mcux_remove_macro(
-    CC "-DMBEDTLS_MCUX_USE_PKC"
-)
-
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/_boards/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
