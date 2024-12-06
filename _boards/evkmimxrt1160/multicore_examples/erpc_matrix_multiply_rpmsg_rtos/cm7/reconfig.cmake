@@ -14,4 +14,5 @@ mcux_add_iar_configuration(
 
 mcux_add_armgcc_configuration(
         CC "-DCORE1_IMAGE_COPY_TO_RAM"
+        CX "-DCORE1_IMAGE_COPY_TO_RAM"
 )
