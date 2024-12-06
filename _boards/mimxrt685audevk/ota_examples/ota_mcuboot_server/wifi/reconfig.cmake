@@ -13,14 +13,14 @@ mcux_add_mdk_configuration(
 mcux_add_macro(
     CC "-DXIP_IMAGE\
        -DXIP_EXTERNAL_FLASH\
-       -DHIGH_SPEED_SDIO_CLOCK\
-       -DMBEDTLS_CCM_ALT"
+       -DHIGH_SPEED_SDIO_CLOCK"
 )
 
 mcux_remove_mdk_configuration(
     TARGETS flash_release
     CC "-Oz"
 )
+
 
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
@@ -44,15 +44,15 @@ mcux_remove_mdk_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.icf
+    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT685Sxxxx_cm33_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.scf
+    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT685Sxxxx_cm33_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT685Sxxxx_cm33_flash_mcuboot.ld
+    LINKER examples/_boards/${board}/ota_examples/ota_mcuboot_server/linker/MIMXRT685Sxxxx_cm33_flash.ld
 )
