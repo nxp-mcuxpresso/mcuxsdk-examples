@@ -19,10 +19,6 @@ mcux_add_macro(
 )
 
 mcux_add_macro(
-    CC  "PSA_CRYPTO_DRIVER_ELE_S2XX"
-)
-
-mcux_add_macro(
     CC "PSA_WANT_ALG_GCM\
         PSA_WANT_ALG_SHA_1"
 )

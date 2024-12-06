@@ -18,12 +18,11 @@ mcux_add_include(
     ${board_root}/${board}
 )
 
-#add cc-define for all psa_crypto_examples_thread 
+#add cc-define for all psa_crypto_examples_thread
 mcux_add_macro(
      CC "-DMBEDTLS_PLATFORM_MEMORY\
         -DMBEDTLS_THREADING_ALT\
         -DMBEDTLS_THREADING_C\
-        -DPSA_CRYPTO_DRIVER_THREAD_EN\
         -DFREESCALE_KSDK_BM"
 )
 

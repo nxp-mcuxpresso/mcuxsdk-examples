@@ -11,8 +11,3 @@ mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x4000\
         -Xlinker --defsym=__heap_size__=0x8000"
 )
-
-
-    mcux_add_macro(
-        CC  "PSA_CRYPTO_DRIVER_ELE_S2XX"
-    )
