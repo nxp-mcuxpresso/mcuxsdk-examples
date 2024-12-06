@@ -45,3 +45,6 @@ usb_pd_alt_mode_dp_host_bm_om13790host:
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
+    mc56f83000evk:
+    - -codewarrior@flash_sdm_lpm_debug
+    - -codewarrior@flash_sdm_lpm_release
