@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2021, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -25,7 +24,7 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
     lpadc_conv_result_t convResultStruct;
 
     float Vtemp              = 0.0f;
-    uint32_t convResultShift = 0U;
+    uint32_t convResultShift = 3U;
     float temperature        = -273.15f; /* Absolute zero degree as the incorrect return value. */
 
     if (true == LPADC_GetConvResult(base, &convResultStruct))
