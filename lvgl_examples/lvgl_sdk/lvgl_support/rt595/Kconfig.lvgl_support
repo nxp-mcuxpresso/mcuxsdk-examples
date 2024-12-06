@@ -3,5 +3,20 @@ config MCUX_PRJSEG_module.board.lvgl
     select MCUX_COMPONENT_driver.ft3267
     select MCUX_COMPONENT_driver.ft5406
     select MCUX_COMPONENT_driver.gt911
+    select MCUX_COMPONENT_driver.dbi_flexio_smartdma
+    select MCUX_COMPONENT_driver.lpc_dma
+    select MCUX_COMPONENT_driver.inputmux
+    select MCUX_COMPONENT_driver.ssd1963
+    select MCUX_COMPONENT_driver.dbi
+    select MCUX_COMPONENT_driver.dc-fb-ssd1963
+    select MCUX_COMPONENT_driver.flexio_mculcd_smartdma
+    select MCUX_COMPONENT_driver.dc-fb-lcdif
+    select MCUX_COMPONENT_driver.mipi_dsi
+    select MCUX_COMPONENT_driver.lcdif
+    select MCUX_COMPONENT_driver.dc-fb-dsi-cmd
+    select MCUX_COMPONENT_driver.mipi_dsi_smartdma
+    select MCUX_COMPONENT_driver.flexio
+    select MCUX_COMPONENT_driver.flexio_mculcd
+    select MCUX_COMPONENT_driver.flexio_mculcd_dma
     select MCUX_COMPONENT_middleware.vglite if MCUX_COMPONENT_middleware.freertos-kernel
     select MCUX_PRJSEG_module.board.display_support

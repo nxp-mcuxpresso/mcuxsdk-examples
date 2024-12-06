@@ -180,7 +180,11 @@ void lv_port_disp_init(void)
     fbInfo.strideBytes = DEMO_BUFFER_STRIDE_BYTE;
     g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo);
 
-    g_dc.ops->setCallback(&g_dc, 0, DEMO_BufferSwitchOffCallback, &disp_drv);
+    /*------------------------------------
+     * Create a display and set a flush_cb
+     * -----------------------------------*/
+    disp_drv = lv_display_create(LVGL_BUFFER_WIDTH, LVGL_BUFFER_HEIGHT);
+    g_dc.ops->setCallback(&g_dc, 0, DEMO_BufferSwitchOffCallback, disp_drv);
 
 #if defined(SDK_OS_FREE_RTOS)
     s_transferDone = xSemaphoreCreateBinary();
@@ -200,6 +204,7 @@ void lv_port_disp_init(void)
 
     /* Clear initial frame. */
     /* lvgl starts render in frame buffer 0, so show frame buffer 1 first. */
+
     memset((void *)DEMO_BUFFER1_ADDR, 0, DEMO_BUFFER_STRIDE_BYTE * DEMO_BUFFER_HEIGHT);
     g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)DEMO_BUFFER1_ADDR);
 
@@ -211,7 +216,12 @@ void lv_port_disp_init(void)
 
     g_dc.ops->enableLayer(&g_dc, 0);
 
-    disp_drv = lv_display_create(LVGL_BUFFER_WIDTH, LVGL_BUFFER_HEIGHT);
+    /*-----------------------------------
+     * Register the display in LittlevGL
+     *----------------------------------*/
+
+    /*Set up the functions to access to your display*/
+    lv_display_set_flush_cb(disp_drv, DEMO_FlushDisplay);
 
 #if DEMO_DISPLAY_USE_PARTIAL_REFRESH
     /* In partial refresh mode, buffer 0 is lvgl working area, it should be larger than
@@ -219,19 +229,17 @@ void lv_port_disp_init(void)
      * full screen buffer. LVGL updated areas will first be merge and updated in buffer 1,
      * then the dirty region in buffer 1 will be sent to LCD controller at the right time.
      */
-    lv_display_set_buffers(disp_drv, (void *)DEMO_BUFFER0_ADDR, NULL, DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT, LV_DISPLAY_RENDER_MODE_PARTIAL);
+    lv_display_set_buffers(disp_drv, (void *)DEMO_BUFFER0_ADDR, NULL, DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT * DEMO_BUFFER_BYTE_PER_PIXEL, LV_DISPLAY_RENDER_MODE_PARTIAL);
 #else /* DEMO_DISPLAY_USE_PARTIAL_REFRESH */
 
 #if DEMO_USE_ROTATE
-    lv_display_set_buffers(disp_drv, (void *)LVGL_BUFFER_ADDR, NULL, DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT, LV_DISPLAY_RENDER_MODE_FULL);
+    lv_display_set_buffers(disp_drv, (void *)LVGL_BUFFER_ADDR, NULL, DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT * DEMO_BUFFER_BYTE_PER_PIXEL, LV_DISPLAY_RENDER_MODE_FULL);
 #else
     lv_display_set_buffers(disp_drv, (void *)DEMO_BUFFER0_ADDR, (void *)DEMO_BUFFER1_ADDR,
-                          DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT, LV_DISPLAY_RENDER_MODE_FULL);
+                          DEMO_BUFFER_WIDTH * DEMO_BUFFER_HEIGHT * DEMO_BUFFER_BYTE_PER_PIXEL, LV_DISPLAY_RENDER_MODE_FULL);
 #endif
 
 #endif /* DEMO_DISPLAY_USE_PARTIAL_REFRESH */
-
-    lv_display_set_flush_cb(disp_drv, DEMO_FlushDisplay);
 
 #if LV_USE_DRAW_VGLITE
     if (vg_lite_init(DEFAULT_VG_LITE_TW_WIDTH, DEFAULT_VG_LITE_TW_HEIGHT) != VG_LITE_SUCCESS)
@@ -259,7 +267,7 @@ static void DEMO_BufferSwitchOffCallback(void *param, void *switchOffBuffer)
 
     /* IMPORTANT!!!
      * Inform the graphics library that you are ready with the flushing*/
-    lv_disp_flush_ready(disp_drv);
+    lv_display_flush_ready(disp_drv);
 #endif
 
 #if defined(SDK_OS_FREE_RTOS)
@@ -293,18 +301,21 @@ static void DEMO_WaitBufferSwitchOff(void)
 }
 
 #if DEMO_DISPLAY_USE_PARTIAL_REFRESH
-static void copy_area(const lv_area_t *area, lv_color_t *color_p, uint8_t *fb, uint32_t fbStrideBytes)
+static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint32_t fbStrideBytes)
 {
     uint32_t y;
     uint32_t areaWidth = lv_area_get_width(area);
+    uint32_t value;
 
-    fb += (area->y1 * fbStrideBytes + area->x1 * sizeof(lv_color_t));
+    fb += (area->y1 * fbStrideBytes + area->x1 * DEMO_BUFFER_BYTE_PER_PIXEL);
 
     for (y = area->y1; y <= area->y2; y++)
     {
-        memcpy(fb, color_p, areaWidth * sizeof(lv_color_t));
+        memcpy(fb, color_p, areaWidth * DEMO_BUFFER_BYTE_PER_PIXEL);
+        /* Round up to get correct value to match alignment */
         fb += fbStrideBytes;
-        color_p += areaWidth;
+        value = (areaWidth * DEMO_BUFFER_BYTE_PER_PIXEL) / LV_DRAW_BUF_STRIDE_ALIGN + ((((areaWidth * DEMO_BUFFER_BYTE_PER_PIXEL) % LV_DRAW_BUF_STRIDE_ALIGN) != 0) ? 1 :0);
+        color_p += value * LV_DRAW_BUF_STRIDE_ALIGN;
     }
 }
 
@@ -375,7 +386,7 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 
         /* IMPORTANT!!!
          * Inform the graphics library that you are ready with the flushing*/
-        lv_disp_flush_ready(disp_drv);
+        lv_display_flush_ready(disp_drv);
     }
 }
 #else
@@ -421,7 +432,7 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 
     /* IMPORTANT!!!
      * Inform the graphics library that you are ready with the flushing*/
-    lv_disp_flush_ready(disp_drv);
+    lv_display_flush_ready(disp_drv);
 
 #else  /* DEMO_USE_ROTATE */
 
@@ -431,7 +442,7 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 
     /* IMPORTANT!!!
      * Inform the graphics library that you are ready with the flushing*/
-    lv_disp_flush_ready(disp_drv);
+    lv_display_flush_ready(disp_drv);
 #endif /* DEMO_USE_ROTATE */
 }
 #endif
