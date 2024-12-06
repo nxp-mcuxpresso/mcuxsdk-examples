@@ -1,0 +1,6 @@
+initialization_file:
+  files:
+  - source: examples/_boards/${board}/ota_examples/mcuboot_opensource/app_support/mimxrt685audevk_flash_mcubootable
+    attribute: initialization_file
+    toolchains: mdk
+    targets: flash_debug flash_release
