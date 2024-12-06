@@ -69,3 +69,6 @@ dev_msc_ramdisk_bm:
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
+    mc56f83000evk:
+    - -codewarrior@flash_sdm_lpm_debug
+    - -codewarrior@flash_sdm_lpm_release
