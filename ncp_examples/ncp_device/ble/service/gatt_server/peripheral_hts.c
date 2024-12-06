@@ -129,9 +129,7 @@ static void indicate_cb(struct bt_conn *conn,
 static void bt_hts_indicate(void)
 {
     /* Temperature measurements simulation */
-    static double temperature = 20U;
-    uint32_t mantissa;
-	uint8_t exponent;
+    static uint8_t temperature = 20U;
     static uint8_t temp_type = hts_no_temp_type;
     struct temp_measurement temp_measurement;
 
@@ -146,18 +144,15 @@ static void bt_hts_indicate(void)
 #if defined(APP_USE_SENSORS) && (APP_USE_SENSORS > 0)
         SENSORS_TriggerTemperatureMeasurement();
         SENSORS_RefreshTemperatureValue();
-        temperature = (double)SENSORS_GetTemperature();
+        temperature = (uint8_t)SENSORS_GetTemperature();
 #endif /* APP_USE_SENSORS */
 
-        PRINTF("temperature is %gC\n", temperature);
-        mantissa = (uint32_t)(temperature * 100);
-		exponent = (uint8_t)-2;
+        PRINTF("temperature is %d C\n", temperature);
 
         temp_measurement.flags = hts_unit_celsius_c;
         temp_measurement.flags += hts_include_temp_type;
         temp_measurement.type = temp_type;
-        sys_put_le32(mantissa, temp_measurement.temperature);
-        temp_measurement.temperature[3] = exponent;
+        sys_put_le32((uint32_t)temperature, temp_measurement.temperature);
 
         ind_params.attr = &hts_svc.attrs[2];
         ind_params.func = indicate_cb;

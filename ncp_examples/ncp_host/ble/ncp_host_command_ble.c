@@ -3132,24 +3132,22 @@ static double pow(double x, double y)
 static void htc_central_notify(uint8_t *data)
 {
     struct temp_measurement temp_measurement;
-    double temperature;                                                          
-    uint32_t mantissa;                                             
-    int8_t exponent;                     
+    uint8_t temperature;
+    uint32_t mantissa;
                                              
     /* temperature value display */          
     temp_measurement = *(struct temp_measurement*)data;
-    mantissa = sys_get_le24(temp_measurement.temperature);
-    exponent = temp_measurement.temperature[3];           
-    temperature = (double)mantissa * pow(10, exponent);
-                                                            
+    mantissa = sys_get_le32(temp_measurement.temperature);
+    temperature = (uint8_t)mantissa;
+
     if ((temp_measurement.flags & 0x01) == hts_unit_celsius_c)
-    {                                                         
-        printf("Temperature %g degrees Celsius \n", temperature);
-    }                                                            
-    else                                                         
-    {                                                            
-        printf("Temperature %g degrees Fahrenheit \n", temperature);
-    }                                      
+    {
+        PRINTF("Temperature %d degrees Celsius \n", temperature);
+    }
+    else
+    {
+        PRINTF("Temperature %d degrees Fahrenheit \n", temperature);
+    }
 }
 
 static void hrc_central_notify(uint8_t *data)
