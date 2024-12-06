@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2024 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -25,7 +25,7 @@
  * The default MCUBoot configuration is to use swap mechanism. In case the flash
  * remapping functionality is supported by processor the alternative mechanism
  * using direct-xip mode can be used and evaluated by user.
- * Comment this to enable swap mode or to enable encrypted XIP extension.
+ * Comment this to enable swap mode or when encrypted XIP extension is enabled.
  */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
 
@@ -37,19 +37,24 @@
 /* Encrypted XIP support config */
 
 /*
- * Enable extension utilizing on-the-fly decryption of encrypted image.
- * For more information please see readme file.
+ * Uncomment to enable extension utilizing on-the-fly decryption of encrypted image.
+ * Note: Flash remap feature has to be disabled.
+ * For more information please see readme file of mcuboot_opensource example.
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
 
-#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && !defined(MBEDTLS_MCUX_DISABLE_HW_ALT)
-#error "There is currently an issue with hardware acceleration in mbedTLS when IPED\
- is enabled on RW61x, please add global define MBEDTLS_MCUX_DISABLE_HW_ALT to build."
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
+    (!defined(MBEDTLS_MCUX_DISABLE_HW_ALT) || \
+      defined(MBEDTLS_MCUX_USE_ELS) ||        \
+      defined(MBEDTLS_MCUX_USE_PKC))
+#error "There is currently an issue in mbedTLS if hardware acceleration and IPED \
+are enabled on RW61x, please remove global defines MBEDTLS_MCUX_USE_ELS and \
+MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
 #endif
 
 /*
  * Optional:
- * Use simpler OVERWRITE_ONLY mode instead of three slot configuration.
+ * Uncomment to use simpler OVERWRITE_ONLY mode instead of three slot configuration.
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
 
@@ -60,15 +65,15 @@
  * Calculation: 
  * 4.25MB~4352kB slot size = 1088 sectors
  * 1088 sectors - 1 trailer sector = 1087 sectors
- * Aligning down to 1085 sectors what can be divided by 5
+ * Aligning down to 1085 sectors so value is a multiple of 5 sectors in size
  * 1085 sectors / 1.25 = 868 sectors ~ 3472 kB is then size of IPED region
  * 3472kB of plaintext generates 868kB of IPED tags. Both values suits
  * the boundaries of pages, sectors and the boundaries of encryption alignment
  */
-#define CONFIG_ENCRYPT_XIP_IPED_REGION_SIZE  0x364000   
+#define CONFIG_ENCRYPT_XIP_IPED_REGION_SIZE  0x364000
 
 /*
- * Size of write buffer used for overwrite-only mode has to be adjusted when IPED
+ * Size of write buffer used for overwrite-only mode has to be adjusted if IPED
  * encryption unit is used so size of data chunks written to flash are always
  * a multiple of 4 pages in size.
  */
