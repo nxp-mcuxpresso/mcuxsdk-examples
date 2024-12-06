@@ -95,6 +95,12 @@
 #define configUSE_TRACE_FACILITY             1
 #define configUSE_STATS_FORMATTING_FUNCTIONS 1
 
+#if (configUSE_TICKLESS_IDLE != 0)
+/* Set the minimum sleep time to be greater than g_devicePMOption.exitLatency (PM3),
+ * to prevent the ncp device from entering PM2 when the Power Mode is configured as PM3. */
+#define configEXPECTED_IDLE_TIME_BEFORE_SLEEP   8
+#endif
+
 /*
  *Disable default, enable when you want to get cpu task info by adding marco CONFIG_CPU_TASK_STATUS
  *

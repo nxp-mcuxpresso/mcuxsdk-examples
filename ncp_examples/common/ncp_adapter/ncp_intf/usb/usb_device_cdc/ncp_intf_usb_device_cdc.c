@@ -81,7 +81,7 @@ int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
 
     ncp_adap_d("usb transfer_size :%d!\r\n", data_len);
 
-    while (s_cdcVcom.suspend != kStatus_Idle)
+    while ((s_cdcVcom.suspend != kStatus_Idle) || (!NCP_INTF_STATUS_CHECK(ready)))
     {
       OSA_TimeDelay(1);
     }
@@ -149,6 +149,7 @@ static int ncp_usb_device_pm_enter(int32_t pm_state)
             ncp_adap_e("Failed to deinit USB interface");
             return NCP_STATUS_ERROR;
         }
+        NCP_INTF_STATUS_CLEAR(ready);
     }
     return NCP_STATUS_SUCCESS;
 }
