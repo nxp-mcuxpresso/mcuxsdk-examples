@@ -64,7 +64,9 @@ mcux_add_iar_configuration(
 )
 
 mcux_add_macro(
-    CC "-DCORE1_IMAGE_COPY_TO_RAM=1"
+    CC "-DCORE1_IMAGE_COPY_TO_RAM=1\
+        -DBOARD_SDMMC_NEED_MANUAL_TUNING\
+        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
 )
 
 mcux_remove_iar_linker_script(
