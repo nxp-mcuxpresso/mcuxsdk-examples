@@ -77,11 +77,27 @@
 
 #define gMaxNumDecisionInstructions_c     8U
 
-/* Increase shell buffer size & task stack size to allow longer commands */
-#define SHELL_BUFFER_SIZE       128U
-#define SHELL_TASK_STACK_SIZE   1200U
-
 #endif /* BLE_SHELL_DBAF_SUPPORT */
+
+/* Enable Periodic Advertising with Responses shell commands */
+#define BLE_SHELL_PAWR_SUPPORT          0
+
+#if (defined BLE_SHELL_PAWR_SUPPORT) && (BLE_SHELL_PAWR_SUPPORT == 1)
+
+#define gBLE54_PawrSupport_d            TRUE
+
+#define SHELL_PER_ADV_MAX_NUM_SUBEVENTS         3U
+#define SHELL_EXT_ADV_DATA_MAX_AD_STRUCTURES    5U
+
+#endif /* (defined BLE_SHELL_PAWR_SUPPORT) && (BLE_SHELL_PAWR_SUPPORT == 1) */
+
+#if (((defined BLE_SHELL_PAWR_SUPPORT) && (BLE_SHELL_PAWR_SUPPORT == 1)) || \
+     ((defined BLE_SHELL_DBAF_SUPPORT) && (BLE_SHELL_DBAF_SUPPORT == 1)))
+/* Increase shell buffer size & task stack size to allow longer commands */
+#define SHELL_BUFFER_SIZE                       128U
+#define SHELL_TASK_STACK_SIZE                   1200U
+#endif /* (((defined BLE_SHELL_PAWR_SUPPORT) && (BLE_SHELL_PAWR_SUPPORT == 1)) ||
+           ((defined BLE_SHELL_DBAF_SUPPORT) && (BLE_SHELL_DBAF_SUPPORT == 1))) */
 
 /*! *********************************************************************************
  *     Framework Configuration

@@ -278,6 +278,28 @@ bleResult_t BluetoothLEHost_Connect
 );
 
 /*! *********************************************************************************
+*\fn           bleResult_t BluetoothLEHost_ConnectFromPawr(
+*                  gapConnectionFromPawrParameters_t   *pParameters,
+*                  gapConnectionCallback_t             connCallback
+*              )
+*\brief        Start connection using the connection parameters specified with
+*              support for initiation from Period Advertising with Responses.
+*
+*\param  [in]  pParameters     Pointer to the connection parameters.
+*\param  [in]  connCallback    Callback used to receive connection events.
+*
+*\return       bleResult_t     Result of the operation.
+*
+*\remarks      This function should be used by the application if the callback
+*              should be executed in the context of the Application Task.
+********************************************************************************** */
+bleResult_t BluetoothLEHost_ConnectFromPawr
+(
+    gapConnectionFromPawrParameters_t   *pParameters,
+    gapConnectionCallback_t             connCallback
+);
+
+/*! *********************************************************************************
 *\fn           void BluetoothLEHost_SetConnectionCallback(
 *                  gapConnectionCallback_t             connCallback
 *              )
