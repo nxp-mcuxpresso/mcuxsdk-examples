@@ -3,4 +3,4 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-include(${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/audio_demo_bm/${core_id}/sysbuild.cmake)
+include(${SdkRootDirPath}/${board_root}/${board}/dsp_examples/audio_demo_bm/${core_id}/sysbuild.cmake)
