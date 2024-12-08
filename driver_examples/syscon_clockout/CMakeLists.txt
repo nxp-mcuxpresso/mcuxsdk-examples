@@ -16,6 +16,10 @@ mcux_add_include(
              ${board_root}/${board}/driver_examples/clockout/${core_id}
 )
 
-include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/clockout/reconfig.cmake OPTIONAL)
+mcux_add_macro(
+    CC "-DPRINTF_ADVANCED_ENABLE=1"
+)
+
+include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/clockout/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
