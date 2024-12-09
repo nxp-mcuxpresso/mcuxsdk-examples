@@ -19,7 +19,7 @@
 #include "fsl_lcdc.h"
 #include "fsl_gpio.h"
 #include "fsl_i2c.h"
-#if (LVGL_PANEL == DEMO_PANEL_RK043FN66HS)
+#if (LVGL_PANEL == LVGL_PANEL_RK043FN66HS)
 #include "fsl_gt911.h"
 #else
 #include "fsl_ft5406.h"
@@ -38,7 +38,7 @@
 /* Port Me. End */
 
 #define LCD_PANEL_CLK 9000000
-#if (LVGL_PANEL == DEMO_PANEL_RK043FN66HS)
+#if (LVGL_PANEL == LVGL_PANEL_RK043FN66HS)
 
 #define LCD_HSW 4
 #define LCD_HFP 8
@@ -109,7 +109,7 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data);
 static void DEMO_SetLcdColorPalette(void);
 #endif
 
-#if (LVGL_PANEL == DEMO_PANEL_RK043FN66HS)
+#if (LVGL_PANEL == LVGL_PANEL_RK043FN66HS)
 static void BOARD_PullTouchResetPin(bool pullUp);
 
 static void BOARD_ConfigTouchIntPin(gt911_int_pin_mode_t mode);
@@ -123,7 +123,7 @@ static volatile bool s_framePending;
 static SemaphoreHandle_t s_frameSema;
 #endif
 
-#if (LVGL_PANEL == DEMO_PANEL_RK043FN66HS)
+#if (LVGL_PANEL == LVGL_PANEL_RK043FN66HS)
 static gt911_handle_t s_touchHandle;
 static const gt911_config_t s_touchConfig = {
     .I2C_SendFunc     = BOARD_Touch_I2C_Send,
@@ -159,7 +159,7 @@ void lv_port_disp_init(void)
 
     disp_drv = lv_display_create(LCD_WIDTH, LCD_HEIGHT);
 
-    lv_display_set_buffers(disp_drv, (void*)DEMO_BUFFER0_ADDR, (void*)DEMO_BUFFER1_ADDR, LCD_WIDTH * LCD_HEIGHT, LV_DISPLAY_RENDER_MODE_FULL);
+    lv_display_set_buffers(disp_drv, (void*)DEMO_BUFFER0_ADDR, (void*)DEMO_BUFFER1_ADDR, LCD_WIDTH * LCD_HEIGHT * LCD_FB_BYTE_PER_PIXEL, LV_DISPLAY_RENDER_MODE_FULL);
     lv_display_set_flush_cb(disp_drv, DEMO_FlushDisplay);
 }
 
@@ -370,7 +370,7 @@ void lv_port_indev_init(void)
     lv_indev_set_read_cb(indev, DEMO_ReadTouch);
 }
 
-#if (LVGL_PANEL == DEMO_PANEL_RK043FN66HS)
+#if (LVGL_PANEL == LVGL_PANEL_RK043FN66HS)
 static void BOARD_PullTouchResetPin(bool pullUp)
 {
     if (pullUp)
