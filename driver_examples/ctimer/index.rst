@@ -8,6 +8,7 @@ ctimer
 
 
    capture/readme.md
+   dma_trigger/readme.md
    simple_match/readme.md
    simple_match_interrupt/readme.md
    simple_pwm/readme.md

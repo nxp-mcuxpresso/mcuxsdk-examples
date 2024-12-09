@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ctimer_dma_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ctimer/dma_trigger
+    project-root-path: boards/${board}/driver_examples/ctimer/dma_trigger/${multicore_foldername}
+    document:
+      name: ctimer_match_example${core_id_suffix_name}
+      category: driver_examples/ctimer
+      brief: This example shows how to use CTimer to trigger DMA transfer by match feature.
+        DMA requests are generated when the value of Timer Counter (TC) matches match register.
+        In this example, CTimer match event occurs every 1 second and then trigger DMA transfer.
+        After DMA transfer two times, that is 2 seconds later, CTimer counter stops and DMA will
+        not be triggered. This example do not generate external outputs.
+      example_readme:
+      - examples/driver_examples/ctimer/dma_trigger/readme.md
+      - ${board_root}/${board}/driver_examples/ctimer/dma_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa156: []
+    frdmmcxa276: []
+    frdmrw612: []
