@@ -1,4 +1,5 @@
 ezhv_flexio_dvp_ezhv:
+  skip_build: true
   section-type: application
   contents:
     meta_path: examples/ezhv_examples/flexio_dvp/ezhv

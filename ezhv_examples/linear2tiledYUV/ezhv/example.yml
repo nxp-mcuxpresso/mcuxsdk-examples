@@ -1,4 +1,5 @@
 ezhv_linear2tiledYUV_ezhv:
+  skip_build: true
   section-type: application
   contents:
     meta_path: examples/ezhv_examples/linear2tiledYUV/ezhv
