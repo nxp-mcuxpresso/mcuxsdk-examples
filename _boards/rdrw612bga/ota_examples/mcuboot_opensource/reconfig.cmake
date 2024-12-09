@@ -17,7 +17,16 @@ mcux_add_iar_configuration(
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
+mcux_add_armgcc_configuration(
+    TARGETS flash_debug
+    CC "-Og"
+)
 
+# Remove additional configuration
+mcux_remove_armgcc_configuration(
+    TARGETS flash_debug
+    CC "-O0"
+)
 
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
