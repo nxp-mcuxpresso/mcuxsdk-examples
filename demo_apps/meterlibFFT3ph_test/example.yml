@@ -17,3 +17,8 @@ meterlibFFT3ph_test:
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
     twrkm35z75m: []
+    lpcxpresso55s36:
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
