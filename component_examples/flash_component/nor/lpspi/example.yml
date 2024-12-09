@@ -3,7 +3,7 @@ flash_component_nor_lpspi:
   section-type: application
   contents:
     meta_path: examples/component_examples/flash_component/nor/lpspi/
-    project-root-path: boards/${board}/component_examples/flash_component/lpspi_nor/
+    project-root-path: boards/${board}/component_examples/flash_component/lpspi_nor/${multicore_foldername}
     document:
       name: flash_component_nor_lpspi${core_id_suffix_name}
       category: component_examples/flash_component/lpspi_nor/
@@ -23,17 +23,5 @@ flash_component_nor_lpspi:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
-    evkmimxrt1180@cm33:
-    - -armgcc@hyperram_debug
-    - -armgcc@hyperram_release
-    - -iar@hyperram_debug
-    - -iar@hyperram_release
-    - -mdk@hyperram_debug
-    - -mdk@hyperram_release
-    evkmimxrt1180@cm7:
-    - -armgcc@hyperram_debug
-    - -armgcc@hyperram_release
-    - -iar@hyperram_debug
-    - -iar@hyperram_release
-    - -mdk@hyperram_debug
-    - -mdk@hyperram_release
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
