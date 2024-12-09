@@ -262,7 +262,7 @@
 /* Scanning not supported on peripheral */
 //#define gAppLowPowerConstraintInScanning_c             2
 #define gAppLowPowerConstraintInConnected_c            2
-#define gAppLowPowerConstraintInNoBleActivity_c        2
+#define gAppLowPowerConstraintInNoBleActivity_c        4
 
 /**********************************************************************************
  *     RTOS Configuration
