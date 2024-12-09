@@ -27,6 +27,13 @@ mcux_add_iar_configuration(
     CX "--diag_suppress Pa082,Pa050,Pa084,Pa205,Pe128,Pe186,Pe546,Pe940,Pe550,Pa167,Pe161,Pe170,Pe188"
 )
 
+#--------------------------
+# add mdk configurations
+#--------------------------
+mcux_add_mdk_configuration(
+    CC "-Wno-nan-infinity-disabled"
+)
+
 #add pre build commands for linker file
 mcux_add_custom_command(
         TARGETS debug release
