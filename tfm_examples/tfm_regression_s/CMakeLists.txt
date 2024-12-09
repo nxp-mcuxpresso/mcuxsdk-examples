@@ -47,7 +47,7 @@ mcux_add_custom_command(
 # add armgcc configurations
 #--------------------------
 mcux_add_armgcc_configuration(
-    CC "-mcmse -Wno-unused-variable -Wno-unused-value -Wno-unused-function -Wno-unused-but-set-variable -Wno-return-type -Wno-bool-operation -Wno-maybe-uninitialized"
+    CC "-mcmse -Wno-unused-variable -Wno-unused-value -Wno-unused-function -Wno-unused-but-set-variable -Wno-return-type -Wno-bool-operation -Wno-maybe-uninitialized -Wno-format"
     CX "-mcmse"
     LD "-Wl,--cmse-implib \
         -Wl,--out-implib=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/tfm_regression_s${core_id_suffix_name}_CMSE_lib.o"
