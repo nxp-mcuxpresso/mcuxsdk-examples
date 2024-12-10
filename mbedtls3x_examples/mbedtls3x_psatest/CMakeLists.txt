@@ -24,7 +24,7 @@ include(${SdkRootDirPath}/examples/_boards/${board}/mbedtls3x_examples/mbedtls3x
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 
 mcux_add_linker_symbol(
-    SYMBOLS "__stack_size__=0x2000\
+    SYMBOLS "__stack_size__=0x4000\
              __heap_size__=0x8000"
 )
 

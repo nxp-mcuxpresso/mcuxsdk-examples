@@ -17,6 +17,11 @@ mcux_add_include(
     INCLUDES /.
 )
 
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x2000\
+             __heap_size__=0x4000"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/els_pkc_examples/els_pkc_asymmetric/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
