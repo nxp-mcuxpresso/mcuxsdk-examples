@@ -132,9 +132,9 @@ static void BOARD_PullTouchResetPin(bool pullUp);
 static void BOARD_ConfigTouchIntPin(gt911_int_pin_mode_t mode);
 #endif
 
-#if ((LV_COLOR_DEPTH == 8) || (LV_COLOR_DEPTH == 1))
+#if (LV_COLOR_DEPTH == 8)
 /*
- * To support 8 color depth and 1 color depth with this board, color palette is
+ * To support 8 color depth with this board, color palette is
  * used to map 256 color to 2^16 color.
  */
 static void DEMO_SetLcdColorPalette(void);
@@ -262,65 +262,17 @@ static void DEMO_InitLcdBackLight(void)
 }
 
 #if (LV_COLOR_DEPTH == 8)
-typedef union
-{
-    struct
-    {
-      uint8_t B : 2;
-      uint8_t G : 3;
-      uint8_t R : 3;
-      uint8_t : 1;
-    } ch;
-    uint8_t color;
-} color_t;
-#endif
-
-#if ((LV_COLOR_DEPTH == 8) || (LV_COLOR_DEPTH == 1))
 static void DEMO_SetLcdColorPalette(void)
 {
-    /*
-     * To support 8 color depth and 1 color depth with this board, color palette is
-     * used to map 256 color to 2^16 color.
-     *
-     * LVGL 1-bit color depth still uses 8-bit per pixel, so the palette size is the
-     * same with 8-bit color depth.
-     *
-     * Use ELCDIF_UpdateLut to set color palette, for better performance,
-     * an color palette array(LUT) can be defined and filled first, then call
-     * ELCDIF_UpdateLut to set one time. Here use another way, call ELCDIF_UpdateLut
-     * many times, and update only one item each time, then the array is not necessary,
-     * for smaller stack usage.
-     */
-    uint32_t palette;
+    /* For 8 bit format , LVGL uses the luminance of a color. */
+    uint32_t palette[256];
 
-#if (LV_COLOR_DEPTH == 8)
-    color_t color;
-    color.color = 0U;
-
-    /* RGB332 map to RGB565 */
-    for (int i = 0; i < 256U; i++)
+    for (uint32_t i = 0; i < 256U; i++)
     {
-        palette = ((uint32_t)color.ch.B << 3U) | ((uint32_t)color.ch.G << 8U) | ((uint32_t)color.ch.R << 13U);
-        color.color++;
-        ELCDIF_UpdateLut(LCDIF, kELCDIF_Lut0, i, &palette, 1);
+        palette[i] = (i << 16U) | (i << 8U) | (i << 0U);
     }
-#elif (LV_COLOR_DEPTH == 1)
-    for (int i = 0; i < 256U;)
-    {
-        /*
-         * Pixel map:
-         * 0bXXXXXXX1 -> 0xFFFF
-         * 0bXXXXXXX0 -> 0x0000
-         */
-        palette = 0x0000U;
-        ELCDIF_UpdateLut(LCDIF, kELCDIF_Lut0, i, &palette, 1);
-        i++;
-        palette = 0xFFFFU;
-        ELCDIF_UpdateLut(LCDIF, kELCDIF_Lut0, i, &palette, 1);
-        i++;
-    }
-#endif
 
+    ELCDIF_UpdateLut(LCDIF, kELCDIF_Lut0, 0, palette, 256);
     ELCDIF_EnableLut(LCDIF, true);
 }
 #endif
@@ -366,7 +318,7 @@ static void DEMO_InitLcd(void)
 
     ELCDIF_RgbModeInit(LCDIF, &config);
 
-#if ((LV_COLOR_DEPTH == 8) || (LV_COLOR_DEPTH == 1))
+#if (LV_COLOR_DEPTH == 8)
     DEMO_SetLcdColorPalette();
 #endif
 

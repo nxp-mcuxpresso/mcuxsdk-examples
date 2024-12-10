@@ -108,7 +108,7 @@ static void BOARD_ConfigMIPIPanelTouchIntPin(gt911_int_pin_mode_t mode);
 #endif
 static void DEMO_WaitBufferSwitchOff(void);
 
-#if ((LV_COLOR_DEPTH == 8) || (LV_COLOR_DEPTH == 1))
+#if (LV_COLOR_DEPTH == 8)
 /*
  * To support 8 color depth and 1 color depth with this board, color palette is
  * used to map 256 color to 2^16 color.
@@ -161,58 +161,17 @@ static int s_touchResolutionY;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#if (LV_COLOR_DEPTH == 8)
-typedef union
-{
-    struct
-    {
-      uint8_t B : 2;
-      uint8_t G : 3;
-      uint8_t R : 3;
-      uint8_t : 1;
-    } ch;
-    uint8_t color;
-} color_t;
-#endif
 
-#if ((LV_COLOR_DEPTH == 8) || (LV_COLOR_DEPTH == 1))
+#if (LV_COLOR_DEPTH == 8)
 static void DEMO_SetLcdColorPalette(void)
 {
-    /*
-     * To support 8 color depth and 1 color depth with this board, color palette is
-     * used to map 256 color to 2^16 color.
-     *
-     * LVGL 1-bit color depth still uses 8-bit per pixel, so the palette size is the
-     * same with 8-bit color depth.
-     */
+    /* For 8 bit format , LVGL uses the luminance of a color. */
     uint32_t palette[256];
 
-#if (LV_COLOR_DEPTH == 8)
-    color_t color;
-    color.color = 0U;
-
-    /* RGB332 map to RGB888 */
-    for (int i = 0; i < 256U; i++)
+    for (uint32_t i = 0; i < 256U; i++)
     {
-        palette[i] =
-            ((uint32_t)color.ch.B << 6U) | ((uint32_t)color.ch.G << 13U) | ((uint32_t)color.ch.R << 21U);
-        color.color++;
+        palette[i] = (i << 16U) | (i << 8U) | (i << 0U);
     }
-
-#elif (LV_COLOR_DEPTH == 1)
-    for (int i = 0; i < 256U;)
-    {
-        /*
-         * Pixel map:
-         * 0bXXXXXXX1 -> 0xFFFFFF
-         * 0bXXXXXXX0 -> 0x000000
-         */
-        palette[i] = 0x000000U;
-        i++;
-        palette[i] = 0xFFFFFFU;
-        i++;
-    }
-#endif
 
 #if (DEMO_DISPLAY_CONTROLLER == DEMO_DISPLAY_CONTROLLER_ELCDIF)
     ELCDIF_UpdateLut(LCDIF, kELCDIF_Lut0, 0, palette, 256);
@@ -246,7 +205,7 @@ void lv_port_disp_init(void)
         assert(0);
     }
 
-#if ((LV_COLOR_DEPTH == 8) || (LV_COLOR_DEPTH == 1))
+#if (LV_COLOR_DEPTH == 8)
     DEMO_SetLcdColorPalette();
 #endif
 
