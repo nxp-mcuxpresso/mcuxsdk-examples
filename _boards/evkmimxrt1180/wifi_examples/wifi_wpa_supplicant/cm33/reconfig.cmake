@@ -58,6 +58,16 @@ mcux_remove_armgcc_configuration(
     CC "-O0"
 )
 
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Os"
+)
+
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Oz"
+)
+
 # Add or remove Linker File Configurations
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
