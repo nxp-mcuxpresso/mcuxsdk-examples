@@ -1,0 +1,15 @@
+board.hardware_data:
+  section-type: manifest_content
+  contents:
+    total_memory:
+      ram_size_kb: 16384
+    memory:
+      memoryBlock:
+      - id: BOARD_SDRAM_lpcxpresso54s018m
+        name: BOARD_SDRAM
+        addr: 2684354560
+        size: 33554432
+        type: RAM
+        access: RW
+    cc-define:
+      XIP_IMAGE:

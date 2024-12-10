@@ -1,0 +1,11 @@
+board.hardware_data:
+  section-type: manifest_content
+  contents:
+    memory:
+      memoryBlock:
+      - id: QSPI_FLASH_${board}
+        name: QSPI_FLASH
+        addr: 134217728
+        size: 8388608
+        type: ExtFlash
+        access: RO

@@ -1,0 +1,28 @@
+board.hardware_data:
+  section-type: manifest_content
+  contents:
+    total_memory:
+      flash_size_kb: 0x01000000
+      ram_size_kb: 0x00800000
+    memory:
+      memoryBlock:
+      - id: BOARD_FLASH_${board}
+        name: BOARD_FLASH
+        type: ExtFlash
+        access: RO
+        startup: true
+        addr: 0x28000000
+        size: 0x01000000
+      - id: BOARD_HYPERRAM_${board}
+        name: BOARD_HYPERRAM
+        type: RAM
+        access: RW
+        addr: 0x04000000
+        size: 0x00600000
+      - id: NCACHE_REGION_${board}
+        name: NCACHE_REGION
+        type: RAM
+        access: RW
+        addr: 0x04600000
+        size: 0x00200000
+

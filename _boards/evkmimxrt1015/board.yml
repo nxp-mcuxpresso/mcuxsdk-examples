@@ -1,0 +1,16 @@
+board.hardware_data:
+  section-type: manifest_content
+  contents:
+    total_memory:
+      flash_size_kb: 0x01000000
+      ram_size_kb: 0x0
+    memory:
+      memoryBlock:
+      - id: BOARD_FLASH_${board}
+        name: BOARD_FLASH
+        type: ExtFlash
+        access: RO
+        startup: true
+        addr: 0x60000000
+        size: 0x01000000
+
