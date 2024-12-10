@@ -32,6 +32,10 @@ mcux_add_iar_configuration(
        --redirect __iar_sh_stdout=__iar_sh_stdout_swo"
 )
 
+mcux_add_mdk_configuration(
+    LD "--library_type=microlib"
+)
+
 mcux_add_macro(
     CC "-DGCID_REV_CID=gc355/0x0_1216 \
         -DCUSTOM_VGLITE_MEMORY_CONFIG=1"

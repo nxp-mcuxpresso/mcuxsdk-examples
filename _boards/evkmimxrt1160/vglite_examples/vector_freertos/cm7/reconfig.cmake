@@ -24,6 +24,10 @@ mcux_add_iar_configuration(
        --redirect __iar_sh_stdout=__iar_sh_stdout_swo"
 )
 
+mcux_add_mdk_configuration(
+    LD "--library_type=microlib"
+)
+
 mcux_add_macro(
     CC "-DXIP_BOOT_HEADER_DCD_ENABLE=0 \
         -DGCID_REV_CID=gc355/0x0_1216"
