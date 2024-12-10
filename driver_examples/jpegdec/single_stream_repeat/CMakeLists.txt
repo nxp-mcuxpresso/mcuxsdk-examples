@@ -9,6 +9,8 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/jpegdec/single_stream_repeat/single_stream_repeat.c
+            examples/_boards/${board}/sdmmc_config.h
+            examples/_boards/${board}/sdmmc_config.c
             examples/_boards/${board}/driver_examples/jpegdec/pin_mux.c
             examples/_boards/${board}/driver_examples/jpegdec/pin_mux.h
             examples/_boards/${board}/driver_examples/jpegdec/${multicore_foldername}/hardware_init.c
