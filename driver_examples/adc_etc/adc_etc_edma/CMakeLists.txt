@@ -16,6 +16,11 @@ mcux_add_include(
              examples/_boards/${board}/driver_examples/adc_etc/adc_etc_edma/${core_id}
 )
 
+mcux_add_macro(
+    CC "-DPRINTF_ADVANCED_ENABLE=1\
+       -DPRINTF_FLOAT_ENABLE=1"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/adc_etc/adc_etc_edma/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
