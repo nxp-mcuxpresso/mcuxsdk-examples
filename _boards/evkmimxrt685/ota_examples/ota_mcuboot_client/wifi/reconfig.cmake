@@ -6,6 +6,16 @@ mcux_add_source(
             examples/_boards/${board}/wifi_bt_config.h
 )
 
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/_boards/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/_boards/${board}/ota_examples/ota_mcuboot_client
+)
+
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
@@ -14,6 +24,7 @@ mcux_add_macro(
     CC "-DXIP_IMAGE\
        -DXIP_EXTERNAL_FLASH\
        -DHIGH_SPEED_SDIO_CLOCK\
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
        -DMBEDTLS_CCM_ALT"
 )
 

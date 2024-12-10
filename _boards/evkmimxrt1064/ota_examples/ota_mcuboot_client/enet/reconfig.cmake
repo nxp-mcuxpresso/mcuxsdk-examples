@@ -1,3 +1,12 @@
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/_boards/${board}/ota_examples/ota_mcuboot_client/mbedtls_user_config.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/_boards/${board}/ota_examples/ota_mcuboot_client
+)
 
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
@@ -5,7 +14,8 @@ mcux_add_mdk_configuration(
 
 mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
-       -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+        -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
+        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
 )
 mcux_add_macro(
     TOOLCHAINS iar
