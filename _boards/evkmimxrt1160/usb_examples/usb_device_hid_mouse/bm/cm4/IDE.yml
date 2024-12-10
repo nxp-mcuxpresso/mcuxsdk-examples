@@ -1,6 +1,0 @@
-initialization_file:
-  files:
-  - attribute: initialization_file
-    source: ${board_root}/evkmimxrt1160/evkmimxrt1160_flexspi_nor.ini
-    targets: flexspi_nor_debug flexspi_nor_release
-    toolchains: mdk
