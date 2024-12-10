@@ -633,3 +633,15 @@ void ncp_notify_host_gpio_output(void)
     /* Toggle GPIO to notify usb host that device is ready for re-enumeration */
     GPIO_PortToggle(GPIO, 0, NCP_NOTIFY_HOST_GPIO_MASK);
 }
+
+int ncp_is_pm3_mode(int powerState)
+{
+#ifdef CONFIG_NCP_USB
+    if (global_power_config.is_manual == false)
+    {
+        if (global_power_config.wake_mode == WAKE_MODE_GPIO && powerState == PM_LP_STATE_PM2)
+            return 0;
+    }
+#endif
+    return 1;
+}
