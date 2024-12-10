@@ -38,14 +38,14 @@ The project uses RGB565 pixel format by default.
 When Kconfig is used
 ----------------
 Select color depth in "Middleware->LVGL Configuration -> Color Settings -> Color depth",
-32-bit, 16-bit, 8-bit, and 1-bit are supported.
+32-bit, 16-bit, 8-bit are supported.
 
 When package is used
 ----------------
-Modify the mcux_config.h change `CONFIG_LV_COLOR_DEPTH` to 32, 16, 8, or 1.
+Modify the mcux_config.h change `CONFIG_LV_COLOR_DEPTH` to 32, 16, 8.
 
 Note:
-1. PXP doesn't support 1-bit and 8-bit, unselect `LV_USE_PXP`
+1. PXP doesn't support 8-bit, unselect `LV_USE_PXP`
 in Kconfig, or modify mcux_config.h like:
 ```
 #define CONFIG_LV_USE_PXP 0

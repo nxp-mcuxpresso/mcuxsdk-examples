@@ -45,9 +45,6 @@ When Kconfig is used
 ----------------
 To use XRGB8888, select "Use XRGB8888 pixel format".
 
-To use 1-bit color depth, unselect "Use XRGB8888 pixel format", select "Use LUT 8 pixel format",
-then select "1 byte per pixel" in "Middleware->LVGL Configuration -> Color Settings -> Color depth"
-
 To use 8-bit color depth, unselect "Use XRGB8888 pixel format", select "Use LUT 8 pixel format",
 then select RGB232 in "Middleware->LVGL Configuration -> Color Settings -> Color depth"
 
@@ -57,26 +54,22 @@ Modify the mcux_config.h.
 
 To use XRGB8888, change like `#define DEMO_USE_XRGB8888 1`.
 
-To use 1-bit color depth, change like
-```
-#define DEMO_USE_XRGB8888 0
-#define DEMO_USE_LUT8 1
-#define CONFIG_LV_COLOR_DEPTH 1
-```
-
 To use 8-bit color depth, change like
 ```
 #define DEMO_USE_XRGB8888 0
 #define DEMO_USE_LUT8 1
 #define CONFIG_LV_COLOR_DEPTH 8
+#define CONFIG_LV_COLOR_DEPTH_8 1
 ```
 
 Note:
-1. GPU and PXP don't support 1-bit and 8-bit, unselect `LV_USE_DRAW_VGLITE` and `LV_USE_PXP`
+1. GPU and PXP don't support 8-bit, unselect `LV_USE_DRAW_VGLITE` and `LV_USE_PXP`
 in Kconfig, or modify mcux_config.h like:
 ```
 #define CONFIG_LV_USE_DRAW_VGLITE 0
 #define CONFIG_LV_USE_PXP 0
+#define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE 1
+#define CONFIG_LV_DRAW_SW_DRAW_UNIT_CNT 1
 ```
 2. When RGB565 or XRGB8888 is selected, changing `LV_COLOR_DEPTH` in Kconfig or mcux_config.h
 doesn't affect the real pixel format.
