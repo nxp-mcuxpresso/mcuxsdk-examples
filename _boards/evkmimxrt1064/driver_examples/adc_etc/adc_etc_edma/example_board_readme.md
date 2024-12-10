@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-ADC0_IN15 is settings to ADC input, please sample voltage by J33-1 pin.
+ADC0_IN15 is settings to ADC input, please sample voltage by J23-1 pin.
 
 Prepare the Demo
 ===============
@@ -22,7 +22,7 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows the output of the hello world demo in the terminal window:
+The log below shows the output of the adc etc edma demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  Adc AutoCalibration Succeed.
  Adc Edma Transfer Example Start.

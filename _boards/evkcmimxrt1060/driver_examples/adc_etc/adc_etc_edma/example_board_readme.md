@@ -22,7 +22,7 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows the output of the hello world demo in the terminal window:
+The log below shows the output of the adc etc edma demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  Adc AutoCalibration Succeed.
  Adc Edma Transfer Example Start.
