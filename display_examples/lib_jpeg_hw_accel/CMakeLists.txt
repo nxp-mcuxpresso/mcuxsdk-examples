@@ -28,6 +28,10 @@ mcux_add_macro(
         -DLIB_JPEG_USE_HW_ACCEL=1"
 )
 
+mcux_add_linker_symbol(
+      SYMBOLS "__stack_size__=0x1000 __heap_size__=0x20000"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/display_examples/lib_jpeg_hw_accel/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
