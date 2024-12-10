@@ -230,7 +230,8 @@ int32_t MU7_B_IRQHandler(void)
     {
         MU_ClearStatusFlags(RPMSG_LITE_MU, (uint32_t)kMU_OtherSideEnterPowerDownInterruptFlag);
 
-        uint32_t runMode, sleepMode, velow, vehigh;
+        uint32_t runMode, velow, vehigh;
+        uint32_t sleepMode = 0;
         int32_t status = SCMI_ERR_SUCCESS;
         status = SCMI_CpuInfoGet(SCMI_A2P, AP_DOMAIN_LD, &runMode, &sleepMode, &velow, &vehigh);
         if (status != SCMI_ERR_SUCCESS)
