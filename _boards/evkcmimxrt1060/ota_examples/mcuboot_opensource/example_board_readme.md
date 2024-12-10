@@ -12,8 +12,8 @@ Board settings
 | Region         | From       | To         | Size   |
 |----------------|------------|------------|--------|
 | MCUboot code   | 0x60000000 | 0x6003FFFF | 256kB  |
-| Primary slot   | 0x60040000 | 0x6023FFFF | 2024kB |
-| Secondary slot | 0x60240000 | 0x6043FFFF | 2024kB |
+| Primary slot   | 0x60040000 | 0x6023FFFF | 4096kB |
+| Secondary slot | 0x60440000 | 0x6083FFFF | 4096kB |
 
 - MCUBoot header size is set to 1024 bytes
 - Signing algorithm is RSA-2048
@@ -27,7 +27,7 @@ Board settings
     imgtool sign   --key sign-rsa2048-priv.pem
                    --align 4
                    --version 1.1
-                   --slot-size 0x200000
+                   --slot-size 0x400000
                    --header-size 0x400
                    --pad-header
                    ota_mcuboot_basic.bin
