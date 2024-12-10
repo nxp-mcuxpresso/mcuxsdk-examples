@@ -69,4 +69,5 @@ void ncp_gpio_init(void);
 int hostsleep_init(void);
 void ncp_notify_host_gpio_init(void);
 void ncp_notify_host_gpio_output(void);
+int ncp_is_pm3_mode(int powerState);
 #endif /*_HOST_SLEEP_H_*/
