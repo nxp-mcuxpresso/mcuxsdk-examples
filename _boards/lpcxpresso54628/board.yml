@@ -1,0 +1,20 @@
+board.hardware_data:
+  section-type: manifest_content
+  contents:
+    total_memory:
+      ram_size_kb: 16384
+      flash_size_kb: 16384
+    memory:
+      memoryBlock:
+      - id: BOARD_FLASH_lpcxpresso54628
+        name: BOARD_FLASH
+        addr: 268435456
+        size: 16777216
+        type: SPIFI
+        access: RO
+      - id: BOARD_SDRAM_lpcxpresso54628
+        name: BOARD_SDRAM
+        addr: 2684354560
+        size: 16777216
+        type: RAM
+        access: RW

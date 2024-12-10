@@ -1,0 +1,34 @@
+board.hardware_data:
+  section-type: manifest_content
+  contents:
+    total_memory:
+      flash_size_kb: 0x00400000
+      ram_size_kb: 0x02000000
+    memory:
+      memoryBlock:
+      - id: PROGRAM_FLASH_${board}
+        name: PROGRAM_FLASH
+        type: Flash
+        access: RO
+        startup: true
+        addr: 0x60000000
+        size: 0x00400000
+      - id: BOARD_SDRAM_${board}
+        name: BOARD_SDRAM
+        type: RAM
+        access: RW
+        addr: 0x80000000
+        size: 0x01E00000
+        aliases:
+        - name: BOARD_SDRAM_${board}_alias
+          type: RAM
+          access: RW
+          addr: 0x10000000
+          size: 0x01E00000
+      - id: NCACHE_REGION_${board}
+        name: NCACHE_REGION
+        type: RAM
+        access: RW
+        addr: 0x81E00000
+        size: 0x00200000
+

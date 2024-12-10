@@ -1,0 +1,11 @@
+board.hardware_data:
+  contents:
+    memory:
+      memoryBlock:
+      - access: RO
+        addr: 671088640
+        id: OCTAL_FLASH_${board}
+        name: OCTAL_FLASH
+        size: 8388608
+        type: ExtFlash
+  section-type: manifest_content
