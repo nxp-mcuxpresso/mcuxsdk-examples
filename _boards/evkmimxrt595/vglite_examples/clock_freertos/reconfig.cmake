@@ -29,6 +29,10 @@ mcux_add_iar_configuration(
        --redirect __iar_sh_stdout=__iar_sh_stdout_swo"
 )
 
+mcux_add_mdk_configuration(
+    LD "--library_type=microlib"
+)
+
 mcux_add_macro(
     CC "-DGCID_REV_CID=gc255/0x40A \
         -DBOARD_ENABLE_PSRAM_CACHE=0 \

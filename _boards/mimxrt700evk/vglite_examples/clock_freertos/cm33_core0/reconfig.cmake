@@ -13,12 +13,6 @@ mcux_add_source(
             examples/_boards/${board}/FreeRTOSConfigBoard.h
 )
 
-mcux_add_source(
-    TOOLCHAINS mdk
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/vglite/vglite_sdk/example/misc/mdk/retarget.c
-)
-
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/vglite/vglite_sdk/example/vglite_window
@@ -33,6 +27,10 @@ mcux_add_iar_configuration(
     TARGETS debug release flash_debug flash_release
     LD "--semihosting\
        --redirect __iar_sh_stdout=__iar_sh_stdout_swo"
+)
+
+mcux_add_mdk_configuration(
+    LD "--library_type=microlib"
 )
 
 mcux_add_macro(

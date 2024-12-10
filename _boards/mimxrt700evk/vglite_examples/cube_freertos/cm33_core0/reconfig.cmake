@@ -35,6 +35,10 @@ mcux_add_iar_configuration(
        --redirect __iar_sh_stdout=__iar_sh_stdout_swo"
 )
 
+mcux_add_mdk_configuration(
+    LD "--library_type=microlib"
+)
+
 mcux_add_macro(
     CC "-DGCID_REV_CID=gc555/0x423_ECO \
         -DMCUX_DBI_LEGACY=0 \
