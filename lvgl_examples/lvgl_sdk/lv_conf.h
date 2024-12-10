@@ -31,19 +31,5 @@
 
 #endif /* defined(DEMO_BUFFER_BYTE_PER_PIXEL) */
 
-/*
- * BUFFER ALIGNMENT
- */
-
-#if defined(LVGL_FB_ALIGN)
-
-/*Align the stride of all layers and images to this bytes*/
-#define LV_DRAW_BUF_STRIDE_ALIGN                LVGL_FB_ALIGN
-
-/*Align the start address of draw_buf addresses to this bytes*/
-#define LV_DRAW_BUF_ALIGN                       LVGL_FB_ALIGN
-
-#endif
-
 /* clang-format on */
 #endif /*LV_CONF_H*/
