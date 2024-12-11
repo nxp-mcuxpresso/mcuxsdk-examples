@@ -13,7 +13,8 @@ mcux_add_macro(
 
 mcux_add_macro(
     CC "-DPLATFORM_ID=LVM_LPC55\
-        -DMAX_SAMPLE_SIZE=576"
+        -DMAX_SAMPLE_SIZE=576\
+        -DI2S_NUM_BUFFERS=3"
 )
 
 mcux_add_iar_configuration(

@@ -396,22 +396,19 @@ app_error_code_t seek()
         return kAppCodeError;
     }
 
-    if (query1.value32u >= 0U)
+    if (((uint32_t)get_app_data()->seek_time > query1.value32u) && (query1.value32u != 0))
     {
-        if (((uint32_t)get_app_data()->seek_time > query1.value32u) && (query1.value32u != 0))
-        {
-            PRINTF(
-                "[SEEK STREAMER] No seek was performed because the seek time is longer than the duration of the audio "
-                "track.\r\n");
-            return kAppCodeOk;
-        }
+        PRINTF(
+            "[SEEK STREAMER] No seek was performed because the seek time is longer than the duration of the audio "
+            "track.\r\n");
+        return kAppCodeOk;
+    }
 
-        if (streamer_seek_pipeline(streamer, 0, get_app_data()->seek_time, true) == 0)
-        {
-            PRINTF("[CMD] The seek audio track to %u milliseconds was performed successfully.\r\n",
-                   get_app_data()->seek_time);
-            return kAppCodeOk;
-        }
+    if (streamer_seek_pipeline(streamer, 0, get_app_data()->seek_time, true) == 0)
+    {
+        PRINTF("[CMD] The seek audio track to %u milliseconds was performed successfully.\r\n",
+            get_app_data()->seek_time);
+        return kAppCodeOk;
     }
 
     return kAppCodeError;
