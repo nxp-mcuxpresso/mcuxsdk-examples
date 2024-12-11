@@ -32,6 +32,6 @@ mcux_add_macro(
 )
 
 
-include(${SdkRootDirPath}/examples/_boards/${board}/wifi_examples/wifi_serial_iperf3/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/examples/_boards/${board}/wifi_examples/wifi_serial_iperf3/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
