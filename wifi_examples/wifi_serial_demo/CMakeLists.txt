@@ -24,6 +24,6 @@ mcux_add_macro(
        -DSDK_DEBUGCONSOLE=1"
 )
 
-include(${SdkRootDirPath}/${board_root}/${board}/wifi_examples/wifi_serial_demo/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/wifi_examples/wifi_serial_demo/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
