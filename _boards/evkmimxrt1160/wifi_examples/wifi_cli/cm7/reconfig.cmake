@@ -26,6 +26,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/_boards/${board}/wifi_examples/common
+             examples/_boards/${board}/wifi_examples/wifi_cli
              examples/_boards/${board}/wifi_examples/common/${core_id}
              middleware/wifi_nxp/example/wifi_cli/wifi_config
              examples/_boards/${board}/wifi_examples/common/app_config
