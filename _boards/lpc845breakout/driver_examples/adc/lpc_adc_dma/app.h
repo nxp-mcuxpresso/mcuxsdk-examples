@@ -1,6 +1,5 @@
 /*
- * Copyright  2019 NXP
- * All rights reserved.
+ * Copyright 2019, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +16,8 @@
 #define DEMO_ADC_CLOCK_SOURCE          kCLOCK_Fro
 #define kINPUTMUX_Adc0SeqaIrqToDma     kINPUTMUX_AdcASeqaIrqToDma
 #define DEMO_ADC_CLOCK_DIVIDER         1U
+
+#define DEMO_ADC_CLOCK_MODE kADC_ClockAsynchronousMode
 /*${macro:end}*/
 
 /*******************************************************************************

@@ -1,6 +1,5 @@
 /*
- * Copyright 2018 NXP
- * Copyright 2017-2018 NXP
+ * Copyright 2017-2018, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +16,8 @@
 #define DEMO_ADC_IRQ_HANDLER_FUNC      ADC0_SEQA_IRQHandler
 #define DEMO_ADC_CLOCK_SOURCE          kCLOCK_Fro
 #define DEMO_ADC_CLOCK_DIVIDER         1U
+
+#define DEMO_ADC_CLOCK_MODE kADC_ClockSynchronousMode
 /*${macro:end}*/
 
 /*******************************************************************************

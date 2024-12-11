@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
- * All rights reserved.
+ * Copyright 2016-2019, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +16,8 @@
 #define DEMO_ADC_IRQ_ID                ADC0_SEQA_IRQn
 #define DEMO_ADC_IRQ_HANDLER_FUNC      ADC0_SEQA_IRQHandler
 #define DEMO_ADC_CLOCK_DIVIDER         29U
+
+#define DEMO_ADC_CLOCK_MODE kADC_ClockSynchronousMode
 /*${macro:end}*/
 
 /*******************************************************************************

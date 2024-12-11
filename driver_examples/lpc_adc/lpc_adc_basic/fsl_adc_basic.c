@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2019, 2022, 2024 NXP
- * All rights reserved.
+ * Copyright 2016-2018, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -72,8 +71,8 @@ static void ADC_Configuration(void)
 
 /* Configure the converter. */
 #if defined(FSL_FEATURE_ADC_HAS_CTRL_ASYNMODE) & FSL_FEATURE_ADC_HAS_CTRL_ASYNMODE
-    adcConfigStruct.clockMode = kADC_ClockSynchronousMode; /* Using sync clock source. */
-#endif                                                     /* FSL_FEATURE_ADC_HAS_CTRL_ASYNMODE */
+    adcConfigStruct.clockMode = DEMO_ADC_CLOCK_MODE;
+#endif /* FSL_FEATURE_ADC_HAS_CTRL_ASYNMODE */
     adcConfigStruct.clockDividerNumber = DEMO_ADC_CLOCK_DIVIDER;
 #if defined(FSL_FEATURE_ADC_HAS_CTRL_RESOL) & FSL_FEATURE_ADC_HAS_CTRL_RESOL
     adcConfigStruct.resolution = kADC_Resolution12bit;
@@ -84,6 +83,9 @@ static void ADC_Configuration(void)
 #if defined(FSL_FEATURE_ADC_HAS_CTRL_TSAMP) & FSL_FEATURE_ADC_HAS_CTRL_TSAMP
     adcConfigStruct.sampleTimeNumber = 0U;
 #endif /* FSL_FEATURE_ADC_HAS_CTRL_TSAMP */
+#if (defined(FSL_FEATURE_ADC_HAS_GPADC_CTRL0_GPADC_TSAMP) && FSL_FEATURE_ADC_HAS_GPADC_CTRL0_GPADC_TSAMP)
+    adcConfigStruct.extendSampleTimeNumber = kADC_ExtendSampleTimeNotUsed;
+#endif /* FSL_FEATURE_ADC_HAS_GPADC_CTRL0_GPADC_TSAMP */
 #if defined(FSL_FEATURE_ADC_HAS_CTRL_LPWRMODE) & FSL_FEATURE_ADC_HAS_CTRL_LPWRMODE
     adcConfigStruct.enableLowPowerMode = false;
 #endif /* FSL_FEATURE_ADC_HAS_CTRL_LPWRMODE */

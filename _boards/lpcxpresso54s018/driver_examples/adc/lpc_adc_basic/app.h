@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
- * All rights reserved.
+ * Copyright 2016-2019, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,6 +14,8 @@
 #define DEMO_ADC_BASE                  ADC0
 #define DEMO_ADC_SAMPLE_CHANNEL_NUMBER 4U
 #define DEMO_ADC_CLOCK_DIVIDER         2U
+
+#define DEMO_ADC_CLOCK_MODE kADC_ClockSynchronousMode
 /*${macro:end}*/
 
 /*******************************************************************************
