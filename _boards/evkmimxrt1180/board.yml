@@ -2,8 +2,8 @@ board.hardware_data:
   section-type: manifest_content
   contents:
     total_memory:
-      flash_size_kb: 0x01000000
-      ram_size_kb: 0x00800000
+      flash_size_kb: 0x00004000
+      ram_size_kb: 0x00002000
     memory:
       memoryBlock:
       - id: BOARD_FLASH_${board}
