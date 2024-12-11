@@ -1,0 +1,5 @@
+# Copyright 2024 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/mcx_flexio/Kconfig.lvgl_support"

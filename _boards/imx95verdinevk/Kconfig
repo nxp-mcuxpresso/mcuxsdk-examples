@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 rsource "Kconfig.defconfig"
-rsource "../../_common/project_segments/display_support/Kconfig.prjseg"
 
 config MCUX_HW_BOARD_imx95verdinevk
     bool
