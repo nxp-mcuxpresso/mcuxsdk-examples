@@ -42,3 +42,13 @@ mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
         -Xlinker --defsym=__heap_size__=0x400"
 )
+
+mcux_remove_iar_configuration(
+  TARGETS flash_release
+  CC "-Oh"
+)
+
+mcux_add_iar_configuration(
+    TARGETS flash_release
+    CC "-Ohs"
+)
