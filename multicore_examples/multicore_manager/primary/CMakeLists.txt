@@ -25,7 +25,7 @@ mcux_add_include(
 )
 
 mcux_add_configuration(
-    CC "-D__USE_SHMEM"
+    CC "-D__USE_SHMEM -DMCMGR_HANDLE_EXCEPTIONS -D__SEMIHOST_HARDFAULT_DISABLE"
 )
 
 mcux_add_linker_symbol(
