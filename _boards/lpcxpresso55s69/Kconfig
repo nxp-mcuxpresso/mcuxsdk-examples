@@ -1,12 +1,8 @@
 # Copyright 2024 NXP
-# All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
 rsource "Kconfig.defconfig"
-rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
-rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
-rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/flexcomm_spi/Kconfig.lvgl_support"
 
 config MCUX_HW_BOARD_lpcxpresso55s69
     bool

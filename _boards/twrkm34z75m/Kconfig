@@ -1,10 +1,8 @@
 # Copyright 2024 NXP
-# All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
 rsource "Kconfig.defconfig"
-rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
 
 config MCUX_HW_BOARD_twrkm34z75m
     bool

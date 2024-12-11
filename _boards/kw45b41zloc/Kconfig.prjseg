@@ -4,3 +4,4 @@
 rsource "../../_common/project_segments/wireless/Kconfig.prjseg"
 rsource "../../_common/project_segments/wireless/wireless_mcu/Kconfig.prjseg"
 rsource "../../wireless_examples/bluetooth/common/Kconfig"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"

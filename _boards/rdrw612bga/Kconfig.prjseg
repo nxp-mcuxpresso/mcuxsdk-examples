@@ -3,3 +3,8 @@
 
 rsource "../../_common/project_segments/wireless/Kconfig.prjseg"
 rsource "../../_common/project_segments/wireless/rw61x/Kconfig.prjseg"
+rsource "../../_common/components/Kconfig.flash_config"
+rsource "../../_common/project_segments/display_support/Kconfig.prjseg"
+rsource "../../_common/project_segments/lvgl/Kconfig.prjseg"
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"
+rsource "../../lvgl_examples/lvgl_sdk/lvgl_support/rw61x/Kconfig.lvgl_support"
