@@ -17,6 +17,5 @@ config MCUX_PRJSEG_module.board.lvgl
     select MCUX_COMPONENT_driver.mipi_dsi_smartdma
     select MCUX_COMPONENT_driver.flexio
     select MCUX_COMPONENT_driver.flexio_mculcd
-    select MCUX_COMPONENT_driver.flexio_mculcd_dma
     select MCUX_COMPONENT_middleware.vglite if MCUX_COMPONENT_middleware.freertos-kernel
     select MCUX_PRJSEG_module.board.display_support
