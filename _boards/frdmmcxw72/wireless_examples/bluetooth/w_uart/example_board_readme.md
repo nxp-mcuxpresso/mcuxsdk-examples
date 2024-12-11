@@ -12,7 +12,7 @@ Hardware requirements
 Hardware references
 =====================
 
-| Platform                 | SCANSW      | CONNLED   | ROLESW  |
+| Board                    | SCANSW      | CONNLED   | ROLESW  |
 | ------------------------ | ----------- | --------  | ------- |
 | FRDM-MCXW72              | SW2         | Blue LED  | SW4     |
 
