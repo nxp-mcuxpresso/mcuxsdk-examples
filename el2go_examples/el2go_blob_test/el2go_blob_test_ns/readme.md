@@ -42,7 +42,7 @@ Workspace structure:
             ```
     - **[MCXN]** Memory mode:
         1. Create a device group in EdgeLock 2GO containing the desired blobs for your board
-        2. Provision the blobs to your board via the `el2go-host` app from SPSDK (set the `additional_data_address` property of the config file to `0x001C0000`):
+        2. Provision the blobs to your board via the `el2go-host` app from SPSDK (set the `secure_objects_address` property of the config file to `0x001C0000`):
             ```sh
             el2go-host provision-device -p [COM_PORT] --config [CONFIG_PATH] --workspace [WORKSPACE_PATH]
             ```
