@@ -10,6 +10,7 @@ Board settings
 ============
 Make sure R113 is welded on MIMXRT1060-EVKB board.
 Insert AUDIO board into J23.
+Uninstall J41
 
 Prepare the Demo
 ===============
@@ -23,8 +24,8 @@ Note: The demo support CS42448 codec only.
     - One stop bit
     - No flow control
 3.  Download the program to the target board.
-4. Insert the headphones into the headphone jack J6 or J7 on the audio board.
-5. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+4.  Insert the headphones into the headphone jack J6 or J7 on the audio board.
+5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
 ===============

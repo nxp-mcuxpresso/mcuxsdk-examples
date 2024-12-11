@@ -9,7 +9,8 @@ Hardware requirements
 
 Board settings
 ============
-Insert AUDIO board into J23
+Insert the CS42448 audio board into J23
+Uninstall J41
 
 Prepare the Demo
 ===============
@@ -21,10 +22,9 @@ Prepare the Demo
     - One stop bit
     - No flow control
 3.  Download the program to the target board.
-4.  Insert the CS42448 audio board into J23.
-5.  Insert the headphones into the headphone jack of CS42448 audio board line output.
-6.  Connect the audio input source to the CS42448 audio board by line in line.
-7.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+4.  Insert the headphones into the headphone jack of CS42448 audio board line output.
+5.  Connect the audio input source to the CS42448 audio board by line in line.
+6.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
 ===============

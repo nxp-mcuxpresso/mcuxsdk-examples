@@ -10,6 +10,8 @@ Hardware requirements
 Board settings
 ============
 Make sure resistors R368/R347/R349/R365/R363 are removed.
+Insert the CS42448 audio board into J23
+Uninstall J41
 
 Prepare the Demo
 ===============
@@ -21,10 +23,9 @@ Prepare the Demo
     - One stop bit
     - No flow control
 3.  Download the program to the target board.
-4.  Insert the CS42448 audio board into J23.
-5.  Insert the headphones into the headphone jack of CS42448 audio board line output.
-6.  Prepare a FAT32 format sdcard and copy the 8_TDM.wav into sdcard and then Insert the sdcard into J22.
-7.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+4.  Insert the headphones into the headphone jack of CS42448 audio board line output.
+5.  Prepare a FAT32 format sdcard and copy the 8_TDM.wav into sdcard and then Insert the sdcard into J22.
+6.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
 ===============
