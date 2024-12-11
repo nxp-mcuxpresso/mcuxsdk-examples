@@ -152,9 +152,10 @@ void BOARD_RdcInit(void)
     CLOCK_EnableClock(kCLOCK_Ipmux3);
     CLOCK_EnableClock(kCLOCK_Ipmux4);
 
-#if defined(FLASH_TARGET)
-    CLOCK_EnableClock(kCLOCK_Qspi);
-#endif
+    if (BOARD_IS_XIP_FLEXSPI())
+    {
+        CLOCK_EnableClock(kCLOCK_Qspi);
+    }
 
     CLOCK_ControlGate(kCLOCK_SysPll1Gate, kCLOCK_ClockNeededAll);   /* Enable the CCGR gate for SysPLL1 in Domain 1 */
     CLOCK_ControlGate(kCLOCK_SysPll2Gate, kCLOCK_ClockNeededAll);   /* Enable the CCGR gate for SysPLL2 in Domain 1 */

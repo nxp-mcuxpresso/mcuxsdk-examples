@@ -1,6 +1,5 @@
 /*
- * Copyright 2018-2021 NXP
- * All rights reserved.
+ * Copyright 2018-2021,2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -39,6 +38,9 @@
 /* Shared memory base for RPMsg communication. */
 #define VDEV0_VRING_BASE      (0xB8000000U)
 #define RESOURCE_TABLE_OFFSET (0xFF000)
+
+#define BOARD_IS_XIP_FLEXSPI()                                                                                 \
+    (((uint32_t)BOARD_InitDebugConsole >= 0x08000000U) && ((uint32_t)BOARD_InitDebugConsole < 0x10000000U))
 
 #if defined(__cplusplus)
 extern "C" {
