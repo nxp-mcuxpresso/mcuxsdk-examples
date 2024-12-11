@@ -50,14 +50,6 @@ mcux_add_mdk_configuration(
   LD "--predefine=\"-D__stack_size__=0x2000\""
 )
 
-mcux_add_armgcc_linker_script(
-  BASE_PATH "${SdkRootDirPath}"
-  LINKER "middleware/usb/example/boards/${board}/usb_device_dfu/freertos/linker/gcc/MIMXRT1024xxxxx_sdram.ld"
-  TARGETS
-    "sdram_debug"
-    "sdram_release"
-)
-
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES "middleware/usb/example/boards/${board}/usb_device_dfu/freertos"
@@ -100,12 +92,4 @@ mcux_add_source(
     "middleware/usb/example/boards/${board}/usb_device_dfu/freertos/usb_device_dfu_config.h"
     "middleware/usb/utility/usb_dfu_ram.c"
     "middleware/usb/utility/usb_flash.h"
-)
-
-mcux_remove_armgcc_linker_script(
-  BASE_PATH "${SdkRootDirPath}"
-  LINKER "devices/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_sdram.ld"
-  TARGETS
-    "sdram_debug"
-    "sdram_release"
 )
