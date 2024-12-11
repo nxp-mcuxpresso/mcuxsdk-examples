@@ -21,14 +21,20 @@ mcux_add_macro(
 )
 
 mcux_add_armgcc_configuration(
-    TARGETS debug flexspi_nor_debug
+    TARGETS debug flexspi_nor_debug release flexspi_nor_release
     LD "-Xlinker --defsym=__stack_size__=0x2000 -Xlinker --defsym=__heap_size__=0x10000"
 )
 
 mcux_add_armgcc_configuration(
     TARGETS release flexspi_nor_release
-    LD "-Xlinker --defsym=__stack_size__=0x2000 -Xlinker --defsym=__heap_size__=0x10000"
     CC "-O0"
+    CX "-O0"
+)
+
+mcux_remove_armgcc_configuration(
+    TARGETS release flexspi_nor_release
+    CC "-Os"
+    CX "-Os"
 )
 
 mcux_add_iar_configuration(
@@ -36,28 +42,31 @@ mcux_add_iar_configuration(
     LD "--config_def=__stack_size__=0x2000 --config_def=__heap_size__=0x10000"
 )
 
+mcux_add_iar_configuration(
+    TARGETS release flexspi_nor_release
+    CC "-On"
+    CX "-On"
+)
+
+mcux_remove_iar_configuration(
+    TARGETS release flexspi_nor_release
+    CC "-Oh"
+    CX "-Oh"
+)
+
 mcux_add_mdk_configuration(
-    TARGETS debug flexspi_nor_debug
+    TARGETS debug flexspi_nor_debug release flexspi_nor_release
     LD "--predefine=\"-D__stack_size__=0x2000\" --predefine=\"-D__heap_size__=0x10000\""
 )
 
 mcux_add_mdk_configuration(
     TARGETS release flexspi_nor_release
-    LD "--predefine=\"-D__stack_size__=0x2000\" --predefine=\"-D__heap_size__=0x10000\""
-    CC "-O0"
+    CC "-O1"
+    CX "-O1"
 )
 
-# mcux_remove_iar_configuration(
-#     TARGETS release
-#     CC "-Oh"
-# )
-
-# mcux_remove_iar_configuration(
-#     TARGETS flexspi_nor_release
-#     CC "-Om"
-# )
-
-# mcux_add_iar_configuration(
-#     TARGETS release flexspi_nor_release
-#     CC "-On"
-# )
+mcux_remove_mdk_configuration(
+    TARGETS release flexspi_nor_release
+    CC "-Oz"
+    CX "-Oz"
+)
