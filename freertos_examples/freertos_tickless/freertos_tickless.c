@@ -80,6 +80,12 @@ int main(void)
 #endif
 #endif
 
+#if defined(__CORTEX_M)
+    NVIC_SetPriority(BOARD_SW_IRQ, SW_NVIC_PRIO);
+#else
+    GIC_SetPriority(BOARD_SW_IRQ, BOARD_SW_GIC_PRIO);
+#endif
+
     EnableIRQ(BOARD_SW_IRQ);
     GPIO_PinInit(BOARD_SW_GPIO, BOARD_SW_GPIO_PIN, &sw_config);
 #if defined(FSL_FEATURE_SOC_IGPIO_COUNT) && (FSL_FEATURE_SOC_IGPIO_COUNT > 0)
