@@ -11,6 +11,10 @@ mcux_add_include(
     INCLUDES middleware/vglite/vglite_sdk/example/vglite_window
 )
 
+mcux_add_mdk_configuration(
+LD "--library_type=microlib"
+)
+
 mcux_add_iar_configuration(
     CC "--diag_suppress Pa082,Pa050,Pa092"
     CX "--diag_suppress Pa082,Pa050,Pa092"
