@@ -93,6 +93,7 @@ initialize by copy {
   object mflash_drv.o,
   object fsl_flexspi.o,
   object fsl_cache.o,
+  object fsl_reset.o,
   object bignum.o,
   object bl_api.o,
   section .textrw,
