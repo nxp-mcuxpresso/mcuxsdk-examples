@@ -10,6 +10,9 @@ Board settings
 ============
 For Audio board:
 1.Insert AUDIO board into J23 if on board codec is not used
+2.Uninstall J41
+For on board codec:
+2.Make sure J41 is installed
 
 Prepare the Demo
 ===============
