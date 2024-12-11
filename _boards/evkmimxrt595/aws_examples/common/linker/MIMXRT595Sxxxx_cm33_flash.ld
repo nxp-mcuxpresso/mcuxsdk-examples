@@ -76,6 +76,7 @@ SECTIONS
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
         */fsl_cache.c.obj
+        */fsl_reset.c.obj
         */bignum.c.obj
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
@@ -83,6 +84,7 @@ SECTIONS
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
         */fsl_cache.c.obj
+        */fsl_reset.c.obj
         */bignum.c.obj
     ) .text*)                /* .text* sections (code) */
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
@@ -193,6 +195,7 @@ SECTIONS
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     */fsl_cache.c.obj(.text .text* .rodata .rodata*)
+    */fsl_reset.c.obj(.text .text* .rodata .rodata*)
     */bignum.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
