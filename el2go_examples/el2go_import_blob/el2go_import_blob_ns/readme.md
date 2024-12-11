@@ -10,10 +10,10 @@ Workspace structure:
 
 - Any serial communicator
 - EdgeLock 2GO secure object blobs stored in the devices flash memory
-  - This can be achieved via the [SPSDK](https://www.nxp.com/design/design-center/software/development-software/secure-provisioning-sdk-spsdk:SPSDK) (`el2go-host` tool, `provision-device` command)
-  - You can specify the flash location where the EdgeLock 2GO blobs should be stored in the template file of `el2go-host` via the `additional_data_address` property:
-    - **[RW61X]** Default location: `0x084B0000`
-    - **[MCXN]** Default location: `0x001C0000`
+  - This can be achieved via the [SPSDK](https://www.nxp.com/design/design-center/software/development-software/secure-provisioning-sdk-spsdk:SPSDK)
+  - The following default flash location should be used to store the EdgeLock 2GO blobs:
+    - **[RW61X]** `0x084B0000`
+    - **[MCXN]** `0x001C0000`
 
 ## Hardware requirements
 
