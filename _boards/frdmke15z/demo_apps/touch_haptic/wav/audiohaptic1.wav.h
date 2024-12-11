@@ -1,3 +1,9 @@
+/*
+ * Copyright 2024 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 #ifndef AUDIOHAPTIC1_WAV_H
 #define AUDIOHAPTIC1_WAV_H
 

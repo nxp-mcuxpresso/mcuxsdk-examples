@@ -1,3 +1,9 @@
+/*
+ * Copyright 2024 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 #ifndef INTRO_WAV_H
 #define INTRO_WAV_H
 
