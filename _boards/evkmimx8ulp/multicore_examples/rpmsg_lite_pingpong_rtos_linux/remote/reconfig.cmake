@@ -48,3 +48,13 @@ mcux_add_macro(
        -DBOARD_USE_PCA6416A=1"
     AS "-DNO_CRP"
 )
+
+mcux_remove_iar_configuration(
+  TARGETS flash_release
+  CC "-Oh"
+)
+
+mcux_add_iar_configuration(
+    TARGETS flash_release
+    CC "-Ohs"
+)
