@@ -1,3 +1,9 @@
+/*
+ * Copyright 2024 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 /*--------------------------------------- Multiple Inclusion Protection */
 #ifndef _FIX_LIB_
 #define _FIX_LIB_
