@@ -16,6 +16,7 @@ mcux_add_include(
 mcux_add_macro(
     CC "-DSDK_DEBUGCONSOLE_UART\
         -DSERIAL_PORT_TYPE_UART=1\
+        -DEC_MAXSLAVE=32\
        -DPRINTF_ADVANCED_ENABLE=1"
 )
 
