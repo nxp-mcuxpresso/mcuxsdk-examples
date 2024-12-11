@@ -6,7 +6,9 @@
  */
 
 /* @TEST_ANCHOR */
+#ifndef WIFI_BOARD_RW610
 #define WIFI_BOARD_RW610
+#endif
 /* @END_TEST_ANCHOR */
 
 #if defined(WIFI_BOARD_RW610)
