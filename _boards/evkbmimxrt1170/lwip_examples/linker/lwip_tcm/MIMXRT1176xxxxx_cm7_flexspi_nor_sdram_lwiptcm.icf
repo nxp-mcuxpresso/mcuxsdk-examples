@@ -100,31 +100,32 @@ define block QACCESS_CODE  { section CodeQuickAccess };
 define block QACCESS_DATA  { section DataQuickAccess };
 
 initialize by copy { 
-	readwrite, 
-	section .textrw, 
-	section CodeQuickAccess, 
-	section DataQuickAccess,
-	
-	object fsl_enet_qos.o,
-	
-	object enet_ethernetif.o,
-	object enet_ethernetif_qos.o,
-	object ethernetif.o,
-	
-	object ip4.o,
-	object ip4_addr.o,
-	object ip4_frag.o,
-	
-	object inet_chksum.o,
-	object mem.o,
-	object memp.o,
-	object netif.o,
-	object pbuf.o,
-	object tcp.o,
-	object tcp_in.o,
-	object tcp_out.o,
-	object timeouts.o,
-	object udp.o
+    readwrite, 
+    section .textrw, 
+    section CodeQuickAccess, 
+    section DataQuickAccess,
+
+    object fsl_enet_qos.o,
+    object fsl_enet.o,
+    object enet_ethernetif.o,
+    object enet_ethernetif_qos.o,
+    object enet_ethernetif_kinetis.o,
+    object ethernetif.o,
+    object ethernetif_mmac.o,
+    object ip4.o,
+    object ip4_addr.o,
+    object ip4_frag.o,
+    object inet_chksum.o,
+    object ip.o,
+    object mem.o,
+    object memp.o,
+    object netif.o,
+    object pbuf.o,
+    object tcp.o,
+    object tcp_in.o,
+    object tcp_out.o,
+    object timeouts.o,
+    object udp.o
 };
 do not initialize  { section .noinit };
 
