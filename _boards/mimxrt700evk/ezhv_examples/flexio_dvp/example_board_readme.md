@@ -5,6 +5,7 @@ Hardware requirements
 - Personal Computer
 - RK055AHD091 MIPI panel (Not necessary if use other panel)
 - RK055MHD091 MIPI panel (Not necessary if use other panel)
+- OV7670 module
 Board settings
 ============ 
 To use MIPI panel:
