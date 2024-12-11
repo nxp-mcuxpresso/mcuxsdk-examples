@@ -333,7 +333,6 @@ Average bitrate: 389 kbps
 
 ### 4. Decision-Based Advertising Filtering feature
 The Bluetooth LE Shell application also supports the Decision-Based Advertising Filtering feature, which can be enabled by performing the following steps:
-- Flash the experimental NBU found in _middleware/wireless/ble_controller/bin/experimental_.
 - Update the application project so that it uses the experimental Bluetooth LE Host library, _middleware/wireless/bluetooth/host/lib_exp/lib_ble_OPT_host_cm33_iar.a_.
 - In `app_preinclude.h` file, set `BLE_SHELL_DBAF_SUPPORT` to `1`.
 
