@@ -5,8 +5,6 @@
  */
 
 /* This Monolithic config */
-/** Monolithic feature default disabled, if set gPlatformMonolithicApp_d to 1, enable monolithic feature for loading CPU2 FW automatically */
-#define gPlatformMonolithicApp_d        0
 
 #if (defined(gPlatformMonolithicApp_d) && (gPlatformMonolithicApp_d > 0))
 
@@ -15,10 +13,17 @@
 #endif
 
 #define CONFIG_SOC_SERIES_RW6XX_REVISION_A2     1
-#define CONFIG_MONOLITHIC_BLE                   1
 
-/** these macro are added to avoid build error (Error[Li006]) when using IAR compiler */
-#define WIFI_FW_ADDRESS  0
+#ifndef CONFIG_MONOLITHIC_BLE
+#define BLE_FW_ADDRESS 0
+#endif // CONFIG_MONOLITHIC_BLE
+
+#ifndef CONFIG_MONOLITHIC_BLE_15_4
 #define COMBO_FW_ADDRESS 0
+#endif // CONFIG_MONOLITHIC_BLE_15_4
+
+#ifndef CONFIG_MONOLITHIC_WIFI
+#define WIFI_FW_ADDRESS 0
+#endif // CONFIG_MONOLITHIC_WIFI
 
 #endif /* gPlatformMonolithicApp_d */
