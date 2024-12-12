@@ -337,17 +337,15 @@ SECTIONS
   .fEraseNVM :
   {
     . = ALIGN(m_sector_size);
-    *(.fEraseNVM)
+    KEEP(*(fEraseNVM))
     FILL(0xFFFFFFFF)
-    . += NV_VIRTUAL_PAGE_LAST_OFFSET;
   } > fNVM_region
 
   .sEraseNVM :
   {
     . = ALIGN(m_sector_size);
-    *(.sEraseNVM*)
+    KEEP(*(sEraseNVM))
     FILL(0xFFFFFFFF)
-    . += NV_VIRTUAL_PAGE_LAST_OFFSET;
   } > sNVM_region
 
   .data : AT(__DATA_ROM)

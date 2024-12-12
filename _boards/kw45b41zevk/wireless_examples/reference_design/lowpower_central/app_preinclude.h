@@ -67,6 +67,11 @@
       or gControllerPreserveXcvrDacTrimValue_d are set */
 #define gAppUseNvm_d                    1
 
+/*! Erase NVM pages at download(armgcc only) */
+#if ((defined gAppUseNvm_d) && (gAppUseNvm_d != 0)) && defined(__GNUC__)
+#define gNvmErasePartitionWhenFlashing_c 1U
+#endif
+
 /*! Enable Serial Console with external device or host using the LPUART
     Define the Number of Serial Manager interfaces - typical value is 0 or 1
       Lowpower does not support more than 1 serial interface
