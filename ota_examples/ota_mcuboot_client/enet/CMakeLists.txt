@@ -66,11 +66,11 @@ mcux_add_armgcc_configuration(
 )
 
 mcux_remove_mdk_configuration(
-    TARGETS flexspi_nor_release
+    TARGETS flexspi_nor_release flash_release release
     CC "-Oz"
 )
 mcux_add_mdk_configuration(
-    TARGETS flexspi_nor_release
+    TARGETS flexspi_nor_release flash_release release
     CC "-Os"
 )
 

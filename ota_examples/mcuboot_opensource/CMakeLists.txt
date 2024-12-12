@@ -40,6 +40,16 @@ mcux_remove_iar_configuration(
     CC "--use_c++_inline"
 )
 
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_release flash_release release
+    CC "-Oz"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_release flash_release release
+    CC "-Os"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/ota_examples/mcuboot_opensource/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
