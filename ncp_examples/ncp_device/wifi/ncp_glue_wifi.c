@@ -894,6 +894,78 @@ static int wlan_ncp_add(void *tlv)
                             info.security3++;
                         }
                         break;
+                    case WLAN_SECURITY_WILDCARD:
+                        network->security.type = WLAN_SECURITY_WILDCARD;
+                        unsigned int count            = 0;
+                        int i                         = 0;
+                        struct wifi_scan_result2 *res = NULL;
+                        ret                           = wifi_get_scan_result_count(&count);
+                        if (ret != 0)
+                           count = 0;
+                        
+                        for (i = 0; i < count; i++)
+                        {
+                            ret = wifi_get_scan_result(i, &res);
+                            if (ret == WM_SUCCESS && (memcmp(network->ssid, (char *)res->ssid, strlen(network->ssid)) == 0) && (res->ssid_len == strlen(network->ssid)))
+                            {
+                                if (res->WPA_WPA2_WEP.wepStatic || res->WPA_WPA2_WEP.wpa || res->WPA_WPA2_WEP.wpa2 || res->WPA_WPA2_WEP.wpa2_sha256 || res->WPA_WPA2_WEP.wpa3_sae)
+                                   break;
+                            }
+                        }
+                        if (i == count)
+                        {
+                            uap_prov_e("do_sta_add_network: Could not find a proper AP with secure mode.");
+                            ret = -WM_FAIL;
+                            goto done;
+                        }
+                        if (res->WPA_WPA2_WEP.wepStatic || res->WPA_WPA2_WEP.wpa || res->WPA_WPA2_WEP.wpa2 || res->WPA_WPA2_WEP.wpa2_sha256)
+                        {
+                            network->security.psk_len = security_tlv->password_len;
+                            strncpy(network->security.psk, security_tlv->password, security_tlv->password_len);
+                        }
+                        if (res->WPA_WPA2_WEP.wpa3_sae)
+                        {
+                            network->security.password_len = security_tlv->password_len;
+                            strncpy(network->security.password, security_tlv->password, security_tlv->password_len);
+                        }
+                        if (network->security.type == WLAN_SECURITY_WILDCARD)
+                        {
+                         /* Wildcard: If wildcard security is specified, copy the highest
+                          * security available in the scan result to the configuration
+                          * structure
+                          */
+                            enum wlan_security_type t;
+                            if ((res->WPA_WPA2_WEP.wpa3_sae != 0U) && (res->WPA_WPA2_WEP.wpa2 != 0U))
+                                t = WLAN_SECURITY_WPA2_WPA3_SAE_MIXED;
+                            else if (res->WPA_WPA2_WEP.wpa3_sae != 0U)
+                                t = WLAN_SECURITY_WPA3_SAE;
+                            else if (res->WPA_WPA2_WEP.wpa2 != 0U)
+                                t = WLAN_SECURITY_WPA2;
+                            /* Delete temporary
+                               else if (res->WPA_WPA2_WEP.wpa2_sha256!= 0U)
+                               t = WLAN_SECURITY_WPA2_SHA256;
+                            */
+                            else if (res->WPA_WPA2_WEP.wpa != 0U)
+                                t = WLAN_SECURITY_WPA_WPA2_MIXED;
+                            else if (res->WPA_WPA2_WEP.wepStatic != 0U)
+                                t = WLAN_SECURITY_WEP_OPEN;
+#if CONFIG_DRIVER_OWE
+                            else if (res->WPA_WPA2_WEP.wpa2 && res->WPA_WPA2_WEP.owe)
+                                t = WLAN_SECURITY_OWE_ONLY;
+#endif
+                            else
+                                t = WLAN_SECURITY_NONE;
+                                network->security.type = t;
+                        }
+                        if (res->wpa_mcstCipher.tkip || res->rsn_mcstCipher.tkip)
+                            network->security.group_cipher |= BIT(3); /*WPA_CIPHER_TKIP*/
+                        if (res->wpa_mcstCipher.ccmp || res->rsn_mcstCipher.ccmp)
+                            network->security.group_cipher |= BIT(4); /*WPA_CIPHER_CCMP*/
+                        if (res->wpa_ucstCipher.tkip || res->rsn_ucstCipher.tkip)
+                            network->security.pairwise_cipher |= BIT(3); /*WPA_CIPHER_TKIP*/
+                        if (res->wpa_ucstCipher.ccmp || res->rsn_ucstCipher.ccmp)
+                            network->security.pairwise_cipher |= BIT(4); /*WPA_CIPHER_CCMP*/
+                        break;
 #if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
 #if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
                     case WLAN_SECURITY_EAP_TLS:
