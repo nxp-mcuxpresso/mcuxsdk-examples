@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+flashloader_loader:
+  section-type: application
+  contents:
+    meta_path: examples/bootloader_examples/flashloader_loader
+    project-root-path: boards/_boards/${board}/bootloader_examples/flashloader_loader/${multicore_foldername}
+    document:
+      name: flashloader_loader${core_id_suffix_name}
+      category: bootloader_examples
+      brief: The flashloader_loader is a bootstrap loader that executes from flash
+        memory on either the Freedom or Tower platform. This loader copies an image
+        of the flashloader into RAM, then executes the flashloader from RAM. The flashloader_loader
+        project uses the output of the flashloader build to create the flashloader
+        image to load into RAM. Therefore, the flashloader project must be built before
+        building the flashloader_loader project. Also, install Python27 for successful
+        flashloader image generation.
+  boards:
+    frdmk22f: []
+    frdmke17z: []
+    frdmke17z512: []

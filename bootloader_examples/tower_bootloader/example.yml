@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+tower_bootloader:
+  section-type: application
+  contents:
+    meta_path: examples/bootloader_examples/tower_bootloader
+    project-root-path: boards/_boards/${board}/bootloader_examples/tower_bootloader/${multicore_foldername}
+    document:
+      name: tower_bootloader${core_id_suffix_name}
+      category: bootloader_examples
+      brief: The tower_bootloader is a bootloader that executes from target flash
+        memory on the Tower platform. The bootloader is a configurable flash programming
+        utility that operates over a serial connection on MCU devices. It enables
+        quick and easy programming of MCU devices through the entire product life
+        cycle, including application development, final product manufacturing, and
+        more.Host-side command line and GUI tools are available to communicate with
+        the bootloader. Users can utilize host tools to upload and/or download application
+        code via the bootloader.
+  boards:
+    twrkm35z75m: []
