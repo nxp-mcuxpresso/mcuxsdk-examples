@@ -16,6 +16,10 @@ mcux_add_iar_configuration(
     CX "--diag_suppress Pa082,Pa050,Pa092"
 )
 
+mcux_add_mdk_configuration(
+    LD "--library_type=microlib"
+)
+
 mcux_add_iar_configuration(
     TARGETS debug release flash_debug flash_release
     LD "--semihosting\
