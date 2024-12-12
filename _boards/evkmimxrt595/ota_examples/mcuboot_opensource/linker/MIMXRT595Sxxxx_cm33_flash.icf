@@ -88,6 +88,7 @@ define region USB_SRAM_region = mem:[from m_usb_sram_start + usb_bdt_size to m_u
 initialize by copy {
   object mflash_drv.o,
   object fsl_flexspi.o,
+  object fsl_reset.o
 };
 
 initialize by copy { readwrite, section .textrw, section CodeQuickAccess, section DataQuickAccess};
