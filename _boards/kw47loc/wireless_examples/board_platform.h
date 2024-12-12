@@ -26,7 +26,7 @@
 */
 //#define BOARD_32KHZ_XTAL_CLOAD_DEFAULT 4U
 
-/*! \brief Default coarse adjustement config for 32KHz crystal,
+/*! \brief Default coarse adjustment config for 32KHz crystal,
       Values must be adjusted depending the equivalent series resistance (ESR) of the crystal on the board
 */
 //#define BOARD_32KHZ_XTAL_COARSE_ADJ_DEFAULT 3U
@@ -115,5 +115,18 @@
      (defined(BOARD_DBG_SWO_CORE_FUNNEL) && (BOARD_DBG_SWO_CORE_FUNNEL == 0)))
 #error "BOARD_DBG_SWO_CORE_FUNNEL needs to be enabled when using BOARD_DBG_SWO_PIN_ENABLE."
 #endif
+
+/* KW47-LOC is fitted with Macronix MX25R6435FM2IL0 SPI flash */
+#define BOARD_EXFLASH_IS_MX25R6435FM2IL0 1
+
+/* KW47LOC Ext Flash Chip Select is PCS0  */
+#define BOARD_EXTFLASH_CS_GPIO BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_GPIO
+#define BOARD_EXTFLASH_CS_PIN BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_PIN
+
+#define BOARD_EXTFLASH_WP_GPIO BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_GPIO
+#define BOARD_EXTFLASH_WP_PIN BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_PIN
+
+#define BOARD_EXTFLASH_RST_GPIO BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO
+#define BOARD_EXTFLASH_RST_PIN BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN
 
 #endif /* _BOARD_PLATFORM_H_ */

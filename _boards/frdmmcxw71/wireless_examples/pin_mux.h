@@ -337,17 +337,30 @@ void BOARD_UnInitPinLED4(void);
 #define BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_PIN_MASK (1U << 0U)      /*!<@brief PORT pin mask */
                                                                     /* @} */
 
-/*! @name PORTB4 (number 2), LPSPI1_PCS3
+/*! @name PORTC1 (number 38), LPSPI1_PCS3
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO GPIOB               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO_PIN_MASK (1U << 4U) /*!<@brief GPIO pin mask */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PORT PORTB               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN 4U                   /*!<@brief PORT pin number */
-#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN_MASK (1U << 4U)      /*!<@brief PORT pin mask */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                                    /* @} */
+
+/*! @name PORTC0 (number 37), LPSPI1_PCS2 - ext flash write protect WP
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_GPIO_PIN_MASK (1U << 0U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_PIN 0U                   /*!<@brief PORT pin number */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_PIN_MASK (1U << 0U)      /*!<@brief PORT pin mask */
                                                                     /* @} */
 
 /*!
@@ -368,18 +381,30 @@ void BOARD_InitExtFlashPins(void);
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_PIN 0U                   /*!<@brief PORT pin number */
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_PIN_MASK (1U << 0U)      /*!<@brief PORT pin mask */
                                                                       /* @} */
-
-/*! @name PORTB4 (number 2), LPSPI1_PCS3
+/*! @name PORTC1 (number 38), LPSPI1_PCS3
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_GPIO GPIOB               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_GPIO_PIN_MASK (1U << 4U) /*!<@brief GPIO pin mask */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PORT PORTB               /*!<@brief PORT peripheral base pointer */
-#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN 4U                   /*!<@brief PORT pin number */
-#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN_MASK (1U << 4U)      /*!<@brief PORT pin mask */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                                      /* @} */
+
+/*! @name PORTC0 (number 37), LPSPI1_PCS2 - ext flash write protect WP
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_GPIO_PIN_MASK (1U << 0U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_PIN 0U                   /*!<@brief PORT pin number */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_PIN_MASK (1U << 0U)      /*!<@brief PORT pin mask */
                                                                       /* @} */
 
 /*!
