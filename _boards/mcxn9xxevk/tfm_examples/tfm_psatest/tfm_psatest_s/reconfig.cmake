@@ -35,7 +35,16 @@ mcux_add_macro(
     TARGETS debug
     CC "-DNDEBUG"
 )
-
+mcux_remove_armgcc_configuration(
+    TARGETS debug
+    CC "-O0"
+    CX "-O0"
+)
+mcux_add_armgcc_configuration(
+    TARGETS debug
+    CC "-Os"
+    CX "-Os"
+)
 
 #iar configurations
 mcux_remove_iar_configuration(
