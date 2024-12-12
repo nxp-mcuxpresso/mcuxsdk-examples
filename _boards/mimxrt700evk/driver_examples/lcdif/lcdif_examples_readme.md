@@ -5,9 +5,10 @@ Hardware requirements
 - Personal Computer
 - RK055AHD091 MIPI panel (Not necessary if use other panel. Not used in lcdif_dbi_rgb565 project)
 - RK055MHD091 MIPI panel (Not necessary if use other panel. Not used in lcdif_dbi_rgb565 project)
-- TFT Proto 5" CAPACITIVE board HW REV 1.01 by Mikroelektronika. (Named as SSD1963 panel in project. Not necessary if use MIPI panel. Only used in lcdif_dbi_rgb565 project.)
-- RM67162 smart MIPI panel (Not necessary if use other panel. Only used in lcdif_dbi_rgb565 project.)
+- TFT Proto 5" CAPACITIVE board HW REV 1.01 by Mikroelektronika. (Named as SSD1963 panel in project. Not necessary if use MIPI panel. Only used in lcdif_dbi_rgb565 project)
+- RM67162 smart MIPI panel (Not necessary if use other panel. Only used in lcdif_dbi_rgb565 project)
 - RaspberryPi Panel (Not necessary if use other panel. Not used in lcdif_dbi_rgb565 project)
+- CO5300 smart MIPI Panel (Not necessary if use other panel. Only used in lcdif_dbi_rgb565 project)
 
 Board settings
 ============
