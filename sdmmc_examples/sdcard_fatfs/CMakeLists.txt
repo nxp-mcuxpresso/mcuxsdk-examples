@@ -16,6 +16,10 @@ mcux_add_include(
     INCLUDES middleware/sdmmc/example/sdcard_fatfs
 )
 
+mcux_add_linker_symbol(
+      SYMBOLS "__stack_size__=0x1000 __heap_size__=0x1000"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/sdmmc_examples/sdcard_fatfs/${core_id}/reconfig.cmake OPTIONAL)
 include(${SdkRootDirPath}/${board_root}/${board}/sdmmc_examples/sdcard_fatfs/reconfig.cmake OPTIONAL)
 
