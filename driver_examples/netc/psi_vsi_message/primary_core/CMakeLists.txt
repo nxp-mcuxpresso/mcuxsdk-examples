@@ -29,6 +29,10 @@ mcux_add_iar_configuration(
     LD "--image_input=${APPLICATION_BINARY_DIR}/../netc_psi_vsi_message_secondary_core/iar/core1_image.bin,_core1_image,__core1_image,4 "
 )
 
+mcux_add_linker_symbol(
+    SYMBOLS "__multicore__=1"
+)
+
 mcux_add_include(
     TOOLCHAINS mdk armgcc
     BASE_PATH ${APPLICATION_BINARY_DIR}
