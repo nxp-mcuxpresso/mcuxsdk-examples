@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -151,9 +151,6 @@ int main(void)
     /* Configure LED */
     LED_INIT();
 
-    /* FIXME: Wait for MCMGR fixing that MCMGR_GetStartupData may return success when master doesn't start core. */
-    SDK_DelayAtLeastUs(4000000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
     /* Get the startup data */
     do
     {
@@ -164,7 +161,7 @@ int main(void)
     /* Use startup parameter from the master core... */
     for (i = 0; i < startupData; i++)
     {
-        SDK_DelayAtLeastUs(1000000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        SDK_DelayAtLeastUs(1000000U, CLOCK_GetFreq(kCLOCK_CpuClk));
     }
 
     for (uint8_t index = 0U; index < EXAMPLE_EP_RXBD_NUM; index++)

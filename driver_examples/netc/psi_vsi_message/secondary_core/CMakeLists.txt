@@ -20,6 +20,10 @@ mcux_add_macro(
        -D__SEMIHOST_HARDFAULT_DISABLE=1"
 )
 
+mcux_add_linker_symbol(
+    SYMBOLS "__multicore__=1"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/netc/psi_vsi_message//reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
