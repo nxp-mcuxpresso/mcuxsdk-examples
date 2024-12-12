@@ -51,6 +51,8 @@ mcux_add_macro(
 )
 
 mcux_add_iar_configuration(
+    CC "--no_inline"
+    CX "--no_clustering"
     LD "--semihosting"
 )
 

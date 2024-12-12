@@ -115,7 +115,3 @@ mcux_add_macro(
   TARGETS flash_release
   TOOLCHAINS armgcc
 )
-mcux_add_iar_configuration(
-    LD "--semihosting"
-    CX "--no_clustering"
-)

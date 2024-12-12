@@ -25,10 +25,6 @@ mcux_add_include(
     middleware/edgefast_bluetooth/output/templates/config
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls
 )
-mcux_add_iar_configuration(
-    LD "--semihosting"
-    CX "--no_clustering"
-)
 mcux_add_macro(
   CC "-DFILE=void"
   TOOLCHAINS iar
