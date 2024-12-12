@@ -45,14 +45,6 @@ mcux_add_macro(
   CC "-DFILE=void"
   TOOLCHAINS iar
 )
-mcux_add_iar_configuration(
-    LD "--semihosting"
-    CX "--no_clustering"
-)
-mcux_add_iar_configuration(
-    TARGETS flash_release
-    CC "--no_inline"
-)
 mcux_add_mdk_configuration(
     LD "--keep=*(._bt_*)\
        --keep=*(._net_buf_pool*)\

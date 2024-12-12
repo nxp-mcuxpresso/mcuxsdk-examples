@@ -66,10 +66,6 @@ mcux_add_macro(
   TARGETS flexspi_nor_release
   TOOLCHAINS armgcc
 )
-mcux_add_iar_configuration(
-    LD "--semihosting"
-    CX "--no_clustering"
-)
 mcux_add_mdk_configuration(
     LD "--keep=*(._bt_*)\
        --keep=*(._net_buf_pool*)\
