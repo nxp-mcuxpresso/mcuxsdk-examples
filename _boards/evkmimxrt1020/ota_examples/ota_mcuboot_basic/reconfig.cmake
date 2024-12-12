@@ -3,29 +3,13 @@
 
 # Add additional configuration
 mcux_add_macro(
-    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+    CC "-DSKIP_SYSCLK_INIT\
+       -DXIP_BOOT_HEADER_DCD_ENABLE=1"
 )
-mcux_add_iar_configuration(
-)
-mcux_add_macro(
-    TOOLCHAINS iar
-    CC "-DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ\
-       -DSKIP_SYSCLK_INIT"
-)
+
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
-mcux_add_macro(
-    TOOLCHAINS mdk
-    CC "-DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ\
-       -DSKIP_SYSCLK_INIT"
-)
-mcux_add_macro(
-    TOOLCHAINS armgcc
-    CC "-DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ\
-       -DSKIP_SYSCLK_INIT"
-)
-
 
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
