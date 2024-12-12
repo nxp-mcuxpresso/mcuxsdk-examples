@@ -36,7 +36,11 @@
 #define BOARD_MU_IRQ_NUM   MU_M7_IRQn
 
 /* Shared memory base for RPMsg communication. */
+#if board==evkmimx8mnddr3l
+#define VDEV0_VRING_BASE      (0x78000000U)
+#else
 #define VDEV0_VRING_BASE      (0xB8000000U)
+#endif
 #define RESOURCE_TABLE_OFFSET (0xFF000)
 
 #define BOARD_IS_XIP_FLEXSPI()                                                                                 \
