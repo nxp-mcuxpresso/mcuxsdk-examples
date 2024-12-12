@@ -64,5 +64,11 @@ Prepare the Demo
 
 Detailed User Guide
 ================
-- [MIMXRT1180-EVK](./eCAT_digital_io_example.md)
-
+- [Introduction](./topics/introduction.md)
+- [Hardware Setup](./topics/hardware_setup.md)
+- [Mcuxpresso SDK Download](./topics/mcuxpresso_sdk_download.md)
+- [SSC Source Code Generate](./topics/ssc_source_code_generate.md)
+- [Compile and Download](./topics/compile_and_download_the_image_to_rt1180.md)
+- [Install TwinCAT](./topics/download_and_install_the_twincat_software.md)
+- [TwinCAT Project Setup](./topics/twincat_project_setup.md)
+- [Note](./topics/note_about_the_source_code_in_the_document.md)
