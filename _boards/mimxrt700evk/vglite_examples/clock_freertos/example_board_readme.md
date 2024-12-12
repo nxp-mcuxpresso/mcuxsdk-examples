@@ -9,6 +9,7 @@ Hardware requirements
 - RK055MHD091 MIPI panel (Not necessary if use other panel)
 - RM67162 smart MIPI panel (Not necessary if use other panel)
 - RaspberryPi Panel (Not necessary if use other panel)
+- ZC143AC72MIPI DBI panel (Not necessary if use other panel)
 
 Board settings
 ============
@@ -24,14 +25,6 @@ Make sure the R75, R76, R79, R80 are connected.
 
 Prepare the Demo
 ===============
-The demo use MIPI RK055MHD091 panel by default.
-To use MIPI RK055AHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055AHD091 in display_support.h.
-To use MIPI RK055IQH091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055IQH091 in display_support.h.
-To use RM67162 MIPI smart panel, change the macro DEMO_PANEL to DEMO_PANEL_RM67162 and set the macro RM67162_USE_LCDIF to 0 in display_support.h.
-To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055MHD091 in display_support.h.
-To use RaspberryPi, change the macro DEMO_PANEL to DEMO_PANEL_RASPI_7INCH in display_support.h.
-To use SSD1963 DBI panel, change the macro DEMO_PANEL to DEMO_PANEL_TFT_PROTO_5 in display_support.h.
-
 1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -41,6 +34,18 @@ To use SSD1963 DBI panel, change the macro DEMO_PANEL to DEMO_PANEL_TFT_PROTO_5 
     - No flow control
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Steps to configure the panels
+===============
+The demo use MIPI RK055MHD091 panel by default.
+If Kconfig is used, select the panel in Kconfig "Panel Selection".
+To use SSD1963 DBI panel, change the macro DEMO_PANEL to 0 in mcux_config.h.
+To use MIPI RK055AHD091 panel, change the macro DEMO_PANEL to 1 in mcux_config.h.
+To use MIPI RK055IQH091 panel, change the macro DEMO_PANEL to 2 in mcux_config.h.
+To use RM67162 MIPI smart DBI panel, change the macro DEMO_PANEL to 3 in mcux_config.h.
+To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to 4 in mcux_config.h(default).
+To use RaspberryPi, change the macro DEMO_PANEL to 5 in mcux_config.h.
+To use ZC143AC72MIPI DBI panel, change the macro DEMO_PANEL to 6 in mcux_config.h.
 
 Running the demo
 ===============
