@@ -13,15 +13,12 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: MCXW727CxxxA
 package_id: MCXW727CMFTA
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2412.30
 pin_labels:
-- {pin_num: '14', pin_signal: CMP1_IN0/PTA19/WUU0_P4/LPSPI0_SCK/LPUART0_RTS_b/LPI2C0_SCL/TPM0_CH2/RF_GPO_1, label: LED_GREEN, identifier: LED_GREEN}
-- {pin_num: '18', pin_signal: ADC0_A15/CMP0_IN2/PTA21/WUU0_P5/LPSPI0_PCS3/LPUART0_RX/EWM0_OUT_b/TPM0_CH0/RF_GPO_3/RF_GPO_7/FLEXIO0_D8/RF_GPO_10, label: LED_RED, identifier: LED_RED}
-- {pin_num: '17', pin_signal: ADC0_A14/CMP0_IN3/PTA20/LPSPI0_PCS2/LPUART0_TX/EWM0_IN/TPM0_CH1/RF_GPO_2/FLEXIO0_D7, label: LED_BLUE, identifier: LED_BLUE}
 - {pin_num: '26', pin_signal: ADC0_B6/PTD3/LPTMR1_ALT3/TAMPER1/RF_GPO_6/TPM2_CH1/TRGMUX0_IN2/RF_UART_CTS_b, label: LED2_BLUE, identifier: LED2_BLUE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -29,6 +26,7 @@ pin_labels:
 
 #include "fsl_common.h"
 #include "fsl_port.h"
+#include "fsl_gpio.h"
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
@@ -49,7 +47,7 @@ BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '26', peripheral: GPIOD, signal: 'GPIO, 3', pin_signal: ADC0_B6/PTD3/LPTMR1_ALT3/TAMPER1/RF_GPO_6/TPM2_CH1/TRGMUX0_IN2/RF_UART_CTS_b, direction: OUTPUT,
-    eft_interrupt: disable, pull_select: down, pull_enable: disable, pull_value: low, passive_filter: disable, open_drain: disable}
+    gpio_init_state: 'false', pull_select: down, pull_enable: disable, pull_value: low, passive_filter: disable, open_drain: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -63,29 +61,33 @@ BOARD_InitPins:
 void BOARD_InitPins(void)
 {
 
-    /* EFT detect interrupts configuration on PORTD */
-    PORT_DisableEFTDetectInterrupts(PORTD, 0x08u);
+    gpio_pin_config_t LED2_BLUE_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTD3 (pin 26)  */
+    GPIO_PinInit(BOARD_INITPINS_LED2_BLUE_GPIO, BOARD_INITPINS_LED2_BLUE_PIN, &LED2_BLUE_config);
 
     const port_pin_config_t LED2_BLUE = {/* Internal pull-up/down resistor is disabled */
-                                         (uint16_t)kPORT_PullDisable,
+                                         .pullSelect = (uint16_t)kPORT_PullDisable,
                                          /* Low internal pull resistor value is selected. */
-                                         (uint16_t)kPORT_LowPullResistor,
+                                         .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                          /* Fast slew rate is configured */
-                                         (uint16_t)kPORT_FastSlewRate,
+                                         .slewRate = (uint16_t)kPORT_FastSlewRate,
                                          /* Passive input filter is disabled */
-                                         (uint16_t)kPORT_PassiveFilterDisable,
+                                         .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
                                          /* Open drain output is disabled */
-                                         (uint16_t)kPORT_OpenDrainDisable,
+                                         .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
                                          /* Low drive strength is configured */
-                                         (uint16_t)kPORT_LowDriveStrength,
+                                         .driveStrength = (uint16_t)kPORT_LowDriveStrength,
                                          /* Normal drive strength is configured */
-                                         (uint16_t)kPORT_NormalDriveStrength,
+                                         .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
                                          /* Pin is configured as PTD3 */
-                                         (uint16_t)kPORT_MuxAsGpio,
-                                         /* Does not invert */
-                                         (uint16_t)kPORT_InputNormal,
+                                         .mux = (uint16_t)kPORT_MuxAsGpio,
+                                         /* Digital input is not inverted */
+                                         .invertInput = (uint16_t)kPORT_InputNormal,
                                          /* Pin Control Register fields [15:0] are not locked */
-                                         (uint16_t)kPORT_UnlockRegister};
+                                         .lockRegister = (uint16_t)kPORT_UnlockRegister};
     /* PORTD3 (pin 26) is configured as PTD3 */
     PORT_SetPinConfig(BOARD_INITPINS_LED2_BLUE_PORT, BOARD_INITPINS_LED2_BLUE_PIN, &LED2_BLUE);
 }
