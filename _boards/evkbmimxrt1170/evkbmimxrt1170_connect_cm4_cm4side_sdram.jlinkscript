@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2023 NXP
+ * Copyright 2019-2024 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -427,9 +427,4 @@ void ResetTarget()
 void AfterResetTarget(void) {
     SetSemcClock();
     SDRAMInit();
-}
-
-int HandleBeforeFlashProg(void) {
- JLINK_ExecCommand("SetFlashDLNoRMWThreshold = 0xffffffff"); 
- return 0;
 }
