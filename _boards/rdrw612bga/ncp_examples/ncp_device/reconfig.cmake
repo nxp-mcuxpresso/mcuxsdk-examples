@@ -114,3 +114,12 @@ mcux_add_mdk_configuration(
     LD "--predefine=\"-D__stack_size__=0x400\"\
         --predefine=\"-D__heap_size__=0x400\""
 )
+if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
+if(EXISTS "${SdkRootDirPath}/middleware/mbedtls/library/bignum.c")
+set_source_files_properties(
+    ${SdkRootDirPath}/middleware/mbedtls/library/bignum.c
+    PROPERTIES
+    COMPILE_FLAGS "-O2"
+)
+endif()
+endif()

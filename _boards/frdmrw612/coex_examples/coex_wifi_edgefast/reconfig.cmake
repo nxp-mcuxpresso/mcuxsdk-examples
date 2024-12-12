@@ -143,3 +143,12 @@ mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
         -Xlinker --defsym=__heap_size__=0x400"
 )
+if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
+if(EXISTS "${SdkRootDirPath}/middleware/mbedtls/library/bignum.c")
+set_source_files_properties(
+    ${SdkRootDirPath}/middleware/mbedtls/library/bignum.c
+    PROPERTIES
+    COMPILE_FLAGS "-O2"
+)
+endif()
+endif()
