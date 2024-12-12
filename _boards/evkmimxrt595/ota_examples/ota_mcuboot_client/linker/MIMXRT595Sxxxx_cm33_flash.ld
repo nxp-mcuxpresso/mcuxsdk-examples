@@ -66,6 +66,7 @@ SECTIONS
         /* Exclude flash and frequently executed functions from XIP */
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
+        */fsl_reset.c.obj
         */fsl_cache.c.obj
         */bignum.c.obj
     ) .text)                 /* .text sections (code) */
@@ -73,6 +74,7 @@ SECTIONS
         /* Exclude flash and frequently executed functions from XIP */
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
+        */fsl_reset.c.obj
         */fsl_cache.c.obj
         */bignum.c.obj
     ) .text*)                /* .text* sections (code) */
