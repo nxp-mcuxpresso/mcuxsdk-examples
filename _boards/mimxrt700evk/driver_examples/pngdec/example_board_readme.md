@@ -21,11 +21,9 @@ Connect the panel to J8. Then connect the panel's 5V pin to JP43-1, GND pin to J
 
 Prepare the Demo
 ===============
-The demo use SSD1963 panel by default, to use MIPI RK055AHD091 panel, change the macro
-DEMO_PANEL to DEMO_PANEL_RK055AHD091 in display_support.h.
-To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055MHD091
-in display_support.h. To use RaspberryPi, change the macro DEMO_PANEL to
-DEMO_PANEL_RASPI_7INCH in display_support.h.
+The demo use SSD1963 panel by default, to use other panel,
+change the macro DEMO_PANEL in mcux_config.h. Which number represents which panel
+can be found in display_support.h.
 
 1.  Connect a micro USB cable between the PC host and the CMSIS DAP USB port (J54) on the board
 2.  Open a serial terminal with the following settings:
