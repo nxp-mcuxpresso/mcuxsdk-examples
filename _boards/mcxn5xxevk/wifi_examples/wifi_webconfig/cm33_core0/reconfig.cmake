@@ -31,6 +31,14 @@ mcux_remove_armgcc_configuration(
     CC "-O0"
 )
 
+mcux_remove_macro(
+    "-DMFLASH_FILE_BASEADDR=131072"
+)
+
+mcux_add_macro(
+    "-DMFLASH_FILE_BASEADDR=2064384"
+)
+
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
