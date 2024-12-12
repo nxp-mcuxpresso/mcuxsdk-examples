@@ -259,6 +259,7 @@ static void InitAdc1(void)
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
     lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
+    lpadcConfig.FIFO0Watermark = 2U;
 
     /* Set clocks */
     CLOCK_SetClkDiv(pCurrentInitData->ClockDivName, pCurrentInitData->u32ClockDivider);
@@ -291,15 +292,14 @@ static void InitAdc1(void)
     lpadcCommandConfig.chainedNextCommandNumber = 0U;
     LPADC_SetConvCommandConfig( ADC1, 4U, &lpadcCommandConfig );
     
-    
     /* Init triggers (use trigger 0). */
     LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
     lpadcTriggerConfig.targetCommandId = 1U;
     lpadcTriggerConfig.enableHardwareTrigger = true;
     LPADC_SetConvTriggerConfig(ADC1, 0U, &lpadcTriggerConfig);
     
-    /* Enable TCOMP interrupt. */
-    LPADC_EnableInterrupts(ADC1, ADC_IE_TCOMP_IE(0xFU));
+    /* Enable the watermark interrupt. */
+    LPADC_EnableInterrupts(ADC1, kLPADC_FIFO0WatermarkInterruptEnable);
     NVIC_SetPriority(ADC1_IRQn, 0U);
     NVIC_EnableIRQ(ADC1_IRQn);
     

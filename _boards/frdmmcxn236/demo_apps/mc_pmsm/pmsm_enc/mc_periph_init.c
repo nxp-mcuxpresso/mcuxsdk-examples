@@ -252,6 +252,7 @@ static void InitAdc0(void)
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
     lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
+    lpadcConfig.FIFO0Watermark = 2U;
 
     /* Set clocks */
     CLOCK_SetClkDiv(pCurrentInitData->ClockDivName, pCurrentInitData->u32ClockDivider);
@@ -265,8 +266,7 @@ static void InitAdc0(void)
     LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
     lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideB;
     lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionStandard;
-    lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
-    
+    lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3; 
     
     /* Init ADC channels. */
     lpadcCommandConfig.channelNumber = CUR_A_CHANNEL_NUMBER;
@@ -293,8 +293,8 @@ static void InitAdc0(void)
     LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);
         
        
-    /* Enable TCOMP interrupt. */
-    LPADC_EnableInterrupts(ADC0, kLPADC_Trigger0CompletionInterruptEnable);
+    /* Enable the watermark interrupt. */
+    LPADC_EnableInterrupts(ADC0, kLPADC_FIFO0WatermarkInterruptEnable);
     NVIC_SetPriority(ADC0_IRQn, 0U);
     NVIC_EnableIRQ(ADC0_IRQn);
     

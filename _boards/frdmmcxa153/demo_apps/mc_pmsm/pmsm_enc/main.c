@@ -135,6 +135,9 @@ int main(void)
     /* Enable interrupts  */
     EnableGlobalIRQ(ui32PrimaskReg);
 
+    /* Start PWM */
+    g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);
+    
     /* Infinite loop */
     while (1)
     {
@@ -177,8 +180,8 @@ void ADC0_IRQHandler(void) {
     /* Call FreeMASTER recorder */
     FMSTR_Recorder(0);
 
-    /* Clear the TCOMP INT flag */
-    ADC0->STAT |= (uint32_t)(1U << 9);
+    /* Clear the Result FIFO 0 Overflow Flag */
+    ADC0->STAT |= (uint32_t)(1U << 1U);
 
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;

@@ -219,15 +219,11 @@ static void InitPWM(void)
     /* PWM fault filter - 5 Fast peripheral clocks sample rate, 5 agreeing samples to activate */
     PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_PER_MASK) | PWM_FFILT_FILT_PER(5);
     PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_CNT_MASK) | PWM_FFILT_FILT_CNT(5);
-    
-    /* Enable A&B PWM outputs for submodules zero, one and two */
-    PWMBase->OUTEN = (PWMBase->OUTEN & ~PWM_OUTEN_PWMA_EN_MASK) | PWM_OUTEN_PWMA_EN(0xF);
-    PWMBase->OUTEN = (PWMBase->OUTEN & ~PWM_OUTEN_PWMB_EN_MASK) | PWM_OUTEN_PWMB_EN(0xF);
        
     /* Start PWMs (set load OK flags and run) */
     PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0xF);
     PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0xF);
-    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0xF);
+    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x0);   
 
     /* Initialize MC driver */
     g_sM1Pwm3ph.pui32PwmBaseAddress = (PWM_Type *)PWMBase;
@@ -263,6 +259,7 @@ static void InitADC(void)
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
     lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
+    lpadcConfig.FIFOWatermark = 2U;
     
     /* Attach peripheral clock (24MHz) */
     CLOCK_SetClockDiv(kCLOCK_DivADC0, 4u);
@@ -302,7 +299,7 @@ static void InitADC(void)
     LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);
         
     /* Enable TCOMP interrupt. */
-    LPADC_EnableInterrupts(ADC0, kLPADC_Trigger0CompletionInterruptEnable);
+    LPADC_EnableInterrupts(ADC0, kLPADC_FIFOWatermarkInterruptEnable);
     NVIC_SetPriority(ADC0_IRQn, 0U);
     NVIC_EnableIRQ(ADC0_IRQn);
     

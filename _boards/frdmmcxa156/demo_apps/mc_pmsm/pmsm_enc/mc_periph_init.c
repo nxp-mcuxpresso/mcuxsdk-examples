@@ -268,18 +268,14 @@ static void InitADC(void)
     lpadcConfig.enableAnalogPreliminary = true;
     lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
     lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
-    
+    lpadcConfig.FIFOWatermark = 2U;
+	
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
-    RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
     
     /* Attach peripheral clock (24MHz) */
     CLOCK_SetClockDiv(kCLOCK_DivADC0, 4u);
     CLOCK_AttachClk(kFRO_HF_to_ADC0);
-    
-    /* Attach peripheral clock (24MHz) */
-    CLOCK_SetClockDiv(kCLOCK_DivADC1, 4u);
-    CLOCK_AttachClk(kFRO_HF_to_ADC1);
 
     LPADC_Init(ADC0, &lpadcConfig);
 
@@ -315,7 +311,7 @@ static void InitADC(void)
     LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);
         
     /* Enable TCOMP interrupt. */
-    LPADC_EnableInterrupts(ADC0, kLPADC_Trigger0CompletionInterruptEnable);
+    LPADC_EnableInterrupts(ADC0, kLPADC_FIFOWatermarkInterruptEnable);
     NVIC_SetPriority(ADC0_IRQn, 0U);
     NVIC_EnableIRQ(ADC0_IRQn);
     
