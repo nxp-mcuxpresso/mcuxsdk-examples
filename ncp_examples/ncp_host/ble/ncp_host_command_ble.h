@@ -17,6 +17,19 @@
 #include "ncp_host_command.h"
 #include "ncp_cmd_ble.h"
 
+typedef struct _stats_set_profile_cmd
+{
+    /* set to 1, complete command sending, set to 2, cmd run successfully */
+    uint8_t cmd_run_status;
+} stats_set_profile_cmd_t;
+
+extern stats_set_profile_cmd_t set_profile_cmd;
+
+#define NCP_PROFILE_CMD_SEND_COMPLETE(x) (set_profile_cmd.x = 1)
+#define NCP_PROFILE_CMD_RUN_SUCCESS(x) (set_profile_cmd.x = 2)
+#define NCP_PROFILE_CMD_STATUS_CLEAR(x) (set_profile_cmd.x = 0)
+#define NCP_PROFILE_CMD_STATUS_CHECK(x) (set_profile_cmd.x)
+
 /** 
  * This API is used to set Bluetooth LE advertising data
  * 

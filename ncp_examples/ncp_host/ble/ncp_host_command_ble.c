@@ -25,6 +25,7 @@ extern uint8_t mcu_tlv_command_buff[NCP_HOST_COMMAND_LEN];
 
 static uint8_t reg_serv[MAX_SUPPORT_SERVICE] = {0};
 
+stats_set_profile_cmd_t set_profile_cmd;
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -144,7 +145,11 @@ int ble_start_adv_command(int argc, char **argv)
 {
     MCU_NCPCmd_DS_BLE_COMMAND *start_adv_command = ncp_host_get_cmd_buffer_ble();
     (void)memset((uint8_t *)start_adv_command, 0, NCP_HOST_COMMAND_LEN);
-
+    if (NCP_PROFILE_CMD_STATUS_CHECK(cmd_run_status) == 2)
+    {
+        printf("Error: can not input this cmd after use the profile related cmd\r\n");
+        return NCP_STATUS_ERROR;
+    }
     start_adv_command->header.cmd      = NCP_CMD_BLE_GAP_START_ADV;
     start_adv_command->header.size     = NCP_CMD_HEADER_LEN;
     start_adv_command->header.result   = NCP_CMD_RESULT_OK;
@@ -202,6 +207,12 @@ int ble_stop_adv_command(int argc, char **argv)
     MCU_NCPCmd_DS_BLE_COMMAND *stop_adv_command = ncp_host_get_cmd_buffer_ble();
     (void)memset((uint8_t *)stop_adv_command, 0, NCP_HOST_COMMAND_LEN);
 
+    if (NCP_PROFILE_CMD_STATUS_CHECK(cmd_run_status) == 2)
+    {
+        printf("Error: can not input this cmd after use the profile related cmd\r\n");
+        return NCP_STATUS_ERROR;
+    }
+
     stop_adv_command->header.cmd      = NCP_CMD_BLE_GAP_STOP_ADV;
     stop_adv_command->header.size     = NCP_CMD_HEADER_LEN;
     stop_adv_command->header.result   = NCP_CMD_RESULT_OK;
@@ -252,6 +263,12 @@ int ble_start_scan_command(int argc, char **argv)
     MCU_NCPCmd_DS_BLE_COMMAND *start_scan_command = ncp_host_get_cmd_buffer_ble();
     (void)memset((uint8_t *)start_scan_command, 0, NCP_HOST_COMMAND_LEN);
 
+    if (NCP_PROFILE_CMD_STATUS_CHECK(cmd_run_status) == 2)
+    {
+        printf("Error: can not input this cmd after use the profile related cmd\r\n");
+        return NCP_STATUS_ERROR;
+    }
+
     if(argc != 2 || (atoi(argv[1]) != 0 && atoi(argv[1]) != 1))
     {
         printf("Error: invalid number of arguments\r\n");
@@ -288,6 +305,12 @@ int ble_stop_scan_command(int argc, char **argv)
 {
     MCU_NCPCmd_DS_BLE_COMMAND *stop_scan_command = ncp_host_get_cmd_buffer_ble();
     (void)memset((uint8_t *)stop_scan_command, 0, NCP_HOST_COMMAND_LEN);
+
+    if (NCP_PROFILE_CMD_STATUS_CHECK(cmd_run_status) == 2)
+    {
+        printf("Error: can not input this cmd after use the profile related cmd\r\n");
+        return NCP_STATUS_ERROR;
+    }
 
     stop_scan_command->header.cmd      = NCP_CMD_BLE_GAP_STOP_SCAN;
     stop_scan_command->header.size     = NCP_CMD_HEADER_LEN;
@@ -866,6 +889,7 @@ int ble_register_service_command(int argc, char **argv)
     register_service->svc_length = service_len;
 
     register_service_command->header.size += (register_service->svc_length + 1);
+    NCP_PROFILE_CMD_SEND_COMPLETE(cmd_run_status);
     return NCP_STATUS_SUCCESS;
 }
 
@@ -1197,7 +1221,8 @@ int ble_start_service_command(int argc, char **argv)
         {
             if (host_service_list[i].svc_start)
             {
-                host_service_list[i].svc_start(); 
+                host_service_list[i].svc_start();
+                NCP_PROFILE_CMD_SEND_COMPLETE(cmd_run_status);
                 return NCP_STATUS_SUCCESS;
             }
         }
@@ -2616,6 +2641,8 @@ static int ble_process_start_adv_response(uint8_t *res)
     MCU_NCPCmd_DS_BLE_COMMAND *cmd_res = (MCU_NCPCmd_DS_BLE_COMMAND *)res;
     if (cmd_res->header.result == NCP_CMD_RESULT_OK) {
         printf("Start advertising successfully.\r\n");
+        if (NCP_PROFILE_CMD_STATUS_CHECK(cmd_run_status) == 1)
+            NCP_PROFILE_CMD_RUN_SUCCESS(cmd_run_status);
     }
     else
         printf("Error: Failed to start advertising.\r\n");
@@ -2698,6 +2725,8 @@ static int ble_process_start_scan_response(uint8_t *res)
     if (cmd_res->header.result == NCP_CMD_RESULT_OK)
     {
         printf("Start scan successfully\r\n");
+        if (NCP_PROFILE_CMD_STATUS_CHECK(cmd_run_status) == 1)
+            NCP_PROFILE_CMD_RUN_SUCCESS(cmd_run_status);
     }
     else
     {
@@ -3341,7 +3370,7 @@ int ncp_host_ble_command_init()
     if (ncp_host_cli_register_commands(ncp_host_app_cli_commands_ble,
                                        sizeof(ncp_host_app_cli_commands_ble) / sizeof(struct ncp_host_cli_command)) != 0)
         return -NCP_STATUS_ERROR;
-
+    NCP_PROFILE_CMD_STATUS_CLEAR(cmd_run_status);
     return NCP_STATUS_SUCCESS;
 }
 
