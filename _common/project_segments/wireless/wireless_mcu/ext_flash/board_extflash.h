@@ -15,6 +15,7 @@
 
 #include "fsl_common.h"
 #include "fsl_lpspi_mem_adapter.h"
+#include "fsl_lpspi_nor_flash.h"
 
 /* -------------------------------------------------------------------------- */
 /*                                Public macros                               */
@@ -103,5 +104,12 @@ void BOARD_DisableExternalFlashWriteProtect(void);
  *
  */
 void BOARD_EnableExternalFlashWriteProtect(void);
+
+/**
+ * @brief Retrieve pointer on external flash configuration description.
+ *
+ */
+const nor_config_t * BOARD_GetExtFlashConfig(void);
+
 
 #endif /* _BOARD_EXTFLASH_H_ */

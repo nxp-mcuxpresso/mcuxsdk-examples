@@ -775,6 +775,11 @@ void BOARD_InitExtFlashPins(void)
     /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_PortB);
 
+    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_GpioC);
+    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_PortC);
+
     gpio_pin_config_t LPSPI1_PCS0_config = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 1U
@@ -928,6 +933,12 @@ void BOARD_DeinitExtFlashPins(void)
     CLOCK_EnableClock(kCLOCK_GpioB);
     /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_PortB);
+
+    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_GpioC);
+    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_PortC);
+
 
     gpio_pin_config_t LPSPI1_PCS0_config = {
         .pinDirection = kGPIO_DigitalOutput,

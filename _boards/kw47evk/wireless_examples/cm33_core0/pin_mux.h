@@ -60,6 +60,7 @@ void BOARD_InitPinButton0(void);
 #define BOARD_INITPINBUTTON1_SW3_PIN 6U                   /*!<@brief PORT pin number */
 #define BOARD_INITPINBUTTON1_SW3_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
                                                           /* @} */
+
 /* Symbols to be used in board_comp.h initialization(s) */
 #define BOARD_INITPINBUTTON1_PORT BOARD_INITPINBUTTON1_SW3_PORT
 #define BOARD_INITPINBUTTON1_PIN BOARD_INITPINBUTTON1_SW3_PIN
@@ -349,6 +350,19 @@ void BOARD_UnInitPinLED4(void);
 #define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_PIN_MASK (1U << 4U)      /*!<@brief PORT pin mask */
                                                                     /* @} */
 
+/*! @name PORTB5 (number 3), LPSPI1_PCS2
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_GPIO GPIOB               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_GPIO_PIN_MASK (1U << 5U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_PORT PORTB               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_PIN 5U                   /*!<@brief PORT pin number */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS2_PIN_MASK (1U << 5U)      /*!<@brief PORT pin mask */
+                                                                    /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -379,6 +393,19 @@ void BOARD_InitExtFlashPins(void);
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PORT PORTB               /*!<@brief PORT peripheral base pointer */
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN 4U                   /*!<@brief PORT pin number */
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_PIN_MASK (1U << 4U)      /*!<@brief PORT pin mask */
+                                                                      /* @} */
+
+/*! @name PORTB5 (number 3), LPSPI1_PCS2
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_GPIO GPIOB               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_GPIO_PIN_MASK (1U << 5U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_PORT PORTB               /*!<@brief PORT peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_PIN 5U                   /*!<@brief PORT pin number */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS2_PIN_MASK (1U << 5U)      /*!<@brief PORT pin mask */
                                                                       /* @} */
 
 /*!

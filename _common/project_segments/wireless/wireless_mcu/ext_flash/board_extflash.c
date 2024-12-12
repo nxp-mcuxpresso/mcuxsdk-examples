@@ -13,6 +13,8 @@
 #include "fsl_clock.h"
 #include "fsl_gpio.h"
 #include "fsl_port.h"
+#include "board_platform.h"
+#include "fsl_lpspi_nor_flash.h"
 
 /* -------------------------------------------------------------------------- */
 /*                              Public functions                              */
@@ -48,7 +50,7 @@ LPSPI_Type *BOARD_GetLpspiForNorFlash(void)
 
 void BOARD_LpspiPcsPinControl(bool isSelected)
 {
-    GPIO_PinWrite(BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_GPIO, BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_PIN,
+    GPIO_PinWrite(BOARD_EXTFLASH_CS_GPIO, BOARD_EXTFLASH_CS_PIN,
                   isSelected ? 0U : 1U);
 }
 
@@ -76,28 +78,92 @@ uint32_t BOARD_GetNorFlashBaudrate(void)
 
 void BOARD_InitExternalFlashWriteProtect(void)
 {
+    PORT_Type * port;
     gpio_pin_config_t config;
     config.pinDirection = kGPIO_DigitalOutput;
     config.outputLogic  = 0;
 
-    CLOCK_EnableClock(kCLOCK_GpioB);
-    CLOCK_EnableClock(kCLOCK_PortB);
+    if (BOARD_EXTFLASH_WP_GPIO == GPIOB) /* KW45EVK - KW47EVK - MCXW72EVK case*/
+    {
+        CLOCK_EnableClock(kCLOCK_GpioB);
+        CLOCK_EnableClock(kCLOCK_PortB);
+        port = PORTB;
 
-    PORT_SetPinMux(PORTB, 5, kPORT_MuxAsGpio);
-    GPIO_PinInit(GPIOB, 5, &config);
+    }
+    else if (BOARD_EXTFLASH_WP_GPIO == GPIOC) /* FRDM-MCXW7x case */
+    {
+        CLOCK_EnableClock(kCLOCK_GpioC);
+        CLOCK_EnableClock(kCLOCK_PortC);
+        port = PORTC;
+
+    }
+
+    PORT_SetPinMux(port, BOARD_EXTFLASH_WP_PIN, kPORT_MuxAsGpio);
+    GPIO_PinInit(BOARD_EXTFLASH_WP_GPIO, BOARD_EXTFLASH_WP_PIN, &config);
 }
 
 void BOARD_UninitExternalFlashWriteProtect(void)
 {
-    PORT_SetPinMux(PORTB, 5, kPORT_PinDisabledOrAnalog);
+    PORT_Type * port;
+    if (BOARD_EXTFLASH_WP_GPIO == GPIOB) /* KW45EVK - KW47EVK - MCXW72EVK case*/
+    {
+        CLOCK_EnableClock(kCLOCK_GpioB);
+        CLOCK_EnableClock(kCLOCK_PortB);
+        port = PORTB;
+    }
+    else if (BOARD_EXTFLASH_WP_GPIO == GPIOC) /* FRDM-MCXW7x case */
+    {
+        CLOCK_EnableClock(kCLOCK_GpioC);
+        CLOCK_EnableClock(kCLOCK_PortC);
+        port = PORTC;
+    }
+
+    PORT_SetPinMux(port, BOARD_EXTFLASH_WP_PIN, kPORT_PinDisabledOrAnalog);
 }
 
 void BOARD_DisableExternalFlashWriteProtect(void)
 {
-    GPIO_PinWrite(GPIOB, 5, 1U);
+    GPIO_PinWrite(BOARD_EXTFLASH_WP_GPIO, BOARD_EXTFLASH_WP_PIN, 1U);
 }
 
 void BOARD_EnableExternalFlashWriteProtect(void)
 {
-    GPIO_PinWrite(GPIOB, 5, 0U);
+    GPIO_PinWrite(BOARD_EXTFLASH_WP_GPIO, BOARD_EXTFLASH_WP_PIN, 0U);
+}
+
+
+#if defined BOARD_EXFLASH_IS_MX25R6435FM2IL0 && (BOARD_EXFLASH_IS_MX25R6435FM2IL0 >0)
+const lpspi_memory_config_t MX25R6435FM2IL0Config = {
+    .bytesInPageSize   = 256UL,    /* 256Byte */
+    .bytesInSectorSize = 4096UL,   /* 4KByte */
+    .bytesInMemorySize = 0x800000, /*8MByte, 64 MBit*/
+};
+
+const nor_config_t norConfig = {
+    .memControlConfig = (void*)&MX25R6435FM2IL0Config,
+    .driverBaseAddr = (void*)BOARD_EEPROM_LPSPI_BASEADDR,
+};
+#elif defined BOARD_EXFLASH_IS_AT25XE161D && (BOARD_EXFLASH_IS_AT25XE161D > 0)
+
+const lpspi_memory_config_t AT25XE161DConfig = {
+    .bytesInPageSize   = 256UL,    /* 256Byte */
+    .bytesInSectorSize = 4096UL,   /* 4KByte */
+    .bytesInMemorySize = 0x200000, /*2MByte, 16 MBit*/
+};
+
+const nor_config_t norConfig = {
+    .memControlConfig = (void*)&AT25XE161DConfig,
+    .driverBaseAddr = (void*)BOARD_EEPROM_LPSPI_BASEADDR,
+};
+#endif
+
+const nor_config_t * BOARD_GetExtFlashConfig(void)
+{
+#if ((defined BOARD_EXFLASH_IS_MX25R6435FM2IL0 && (BOARD_EXFLASH_IS_MX25R6435FM2IL0 > 0)) || \
+    (defined BOARD_EXFLASH_IS_AT25XE161D && (BOARD_EXFLASH_IS_AT25XE161D > 0)))
+    return &norConfig;
+#else
+    return NULL;
+#endif
+
 }
