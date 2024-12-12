@@ -28,12 +28,7 @@ Prepare the Demo
 3.  Build the project, the project uses RK055MHD091 by default, to use other panels,
     change
     #define DEMO_PANEL 2
-    to
-    #define DEMO_PANEL 0
-    or
-    #define DEMO_PANEL 1
-    or
-    #define USE_MIPI_PANEL 3 in mcux_config.h
+    to other panel in mcux_config.h.
     Which number represent which panel can be found in display_support.h.
 3.	Insert SD card to card slot
 4.  Download the program to the target board.
