@@ -25,12 +25,8 @@ Make sure the R75, R76, R79, R80 are connected.
 Prepare the Demo
 ===============
 The demo use MIPI RK055MHD091 panel by default.
-To use MIPI RK055AHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055AHD091 in display_support.h.
-To use MIPI RK055IQH091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055IQH091 in display_support.h.
-To use RM67162 MIPI smart panel, change the macro DEMO_PANEL to DEMO_PANEL_RM67162 and set the macro RM67162_USE_LCDIF to 0 in display_support.h.
-To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055MHD091 in display_support.h.
-To use RaspberryPi, change the macro DEMO_PANEL to DEMO_PANEL_RASPI_7INCH in display_support.h.
-To use SSD1963 DBI panel, change the macro DEMO_PANEL to DEMO_PANEL_TFT_PROTO_5 in display_support.h.
+To use other panel, change the macro DEMO_PANEL in mcux_config.h.
+Which number represents which panel can be found in display_support.h.
 
 1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
 2.  Open a serial terminal with the following settings:

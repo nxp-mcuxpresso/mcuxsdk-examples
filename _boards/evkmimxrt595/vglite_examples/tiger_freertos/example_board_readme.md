@@ -18,11 +18,8 @@ Connect MIPI panel to J44.
 
 Prepare the Demo
 ===============
-The demo use SSD1963 panel by default, to use MIPI RK055AHD091 panel, change the macro
-DEMO_PANEL to DEMO_PANEL_RK055AHD091 in display_support.h. To use RM67162 MIPI
-smart panel, change the macro DEMO_PANEL to DEMO_PANEL_RM67162 in display_support.h.
-To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to DEMO_PANEL_RK055AHD091
-in display_support.h.
+The demo use SSD1963 panel by default, to use other, change the macro DEMO_PANEL in
+mcux_config.h. Which number represents which panel can be found in display_support.h.
 
 1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
 2.  Open a serial terminal with the following settings:
