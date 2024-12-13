@@ -15,8 +15,8 @@
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Pins v15.0
-processor: KW47B42ZB7xxxA
-package_id: KW47B42ZB7AFTA
+processor: MCXW727CxxxA
+package_id: MCXW727CMFTA
 mcu_data: ksdk2_0
 processor_version: 0.0.0
 pin_labels:
