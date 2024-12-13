@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2022, 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,7 +10,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_PINT_PIN_INT0_SRC kINPUTMUX_GpioPort0Pin25ToPintsel /* SW2 */
+#define DEMO_PINT_PIN_INT0_SRC kINPUTMUX_GpioPort0Pin14ToPintsel /* SW2 */
 #define DEMO_PIN_NUM           1
 /*${macro:end}*/
 /*******************************************************************************

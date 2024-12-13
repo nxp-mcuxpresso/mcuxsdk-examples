@@ -13,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v15.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGFOA
 mcu_data: ksdk2_0
-processor_version: 0.2412.10
+processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -45,7 +45,8 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: N4, peripheral: LP_FLEXCOMM0, signal: P0, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0, input_buffer: enable}
   - {pin_num: N5, peripheral: LP_FLEXCOMM0, signal: P1, pin_signal: PIO1_0/LP_FLEXCOMM0_P1/SCT0_OUT9/CTIMER4_MAT1}
-  - {pin_num: L7, peripheral: GPIO0, signal: 'GPIO, 9', pin_signal: PIO0_9/LP_FLEXCOMM4_P6/SCT0_GPIN1/SCT0_OUT1/CTIMER0_MAT0/LP_FLEXCOMM1_P5, pull_select: up, pull_enable: enable}
+  - {pin_num: L7, peripheral: GPIO0, signal: 'GPIO, 9', pin_signal: PIO0_9/LP_FLEXCOMM4_P6/SCT0_GPIN1/SCT0_OUT1/CTIMER0_MAT0/LP_FLEXCOMM1_P5, input_buffer: enable,
+    pull_select: up, pull_enable: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -79,21 +80,21 @@ void BOARD_InitPins(void)
     /* PORT0 PIN31 (coords: N4) is configured as LP_FLEXCOMM0_P0 */
     IOPCTL_PinMuxSet(0U, 31U, port0_pin31_config);
 
-    const uint32_t port0_pin9_config = (/* Pin is configured as PIO0_9 */
+    const uint32_t port0_pin9_config = (/* Pin is configured as GPIO0_GPIO9 */
                                         IOPCTL_PIO_FUNC0 |
                                         /* Enable pull-up / pull-down function */
                                         IOPCTL_PIO_PUPD_EN |
                                         /* Enable pull-up function */
                                         IOPCTL_PIO_PULLUP_EN |
-                                        /* Disable input buffer function */
-                                        IOPCTL_PIO_INBUF_DI |
+                                        /* Enables input buffer function */
+                                        IOPCTL_PIO_INBUF_EN |
                                         /* Pseudo Output Drain is disabled */
                                         IOPCTL_PIO_PSEDRAIN_DI |
                                         /* Input function is not inverted */
                                         IOPCTL_PIO_INV_DI |
                                         /* Selects transmitter current drive 100ohm */
                                         IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT0 PIN9 (coords: L7) is configured as PIO0_9 */
+    /* PORT0 PIN9 (coords: L7) is configured as GPIO0_GPIO9 */
     IOPCTL_PinMuxSet(0U, 9U, port0_pin9_config);
 
     const uint32_t port1_pin0_config = (/* Pin is configured as LP_FLEXCOMM0_P1 */

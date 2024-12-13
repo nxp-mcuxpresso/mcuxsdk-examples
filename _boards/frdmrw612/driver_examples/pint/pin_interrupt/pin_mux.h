@@ -1,6 +1,5 @@
 /*
  * Copyright 2024 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -33,7 +32,7 @@ extern "C" {
 void BOARD_InitBootPins(void);
 
 /*!
- * @brief 
+ * @brief
  *
  */
 void BOARD_InitPins(void); /* Function assigned for the Cortex-M33 */
