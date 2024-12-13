@@ -7,12 +7,12 @@ project(mmcau LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/mmcau/example/mmcau_api/mmcau_api.c
+    SOURCES examples/mmcau_examples/mmcau_api/mmcau_api.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/mmcau/example/mmcau_api
+    INCLUDES examples/mmcau_examples/mmcau_api/
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/mmcau_examples/mmcau_api/reconfig.cmake OPTIONAL)
