@@ -64,7 +64,6 @@ NV_STORAGE_START_ADDRESS            = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE +
 NV_VIRTUAL_PAGE_SZ                  = NV_STORAGE_SIZE / 2;
 NV_F_VIRTUAL_PAGE_START             = NV_STORAGE_START_ADDRESS;
 NV_S_VIRTUAL_PAGE_START             = NV_F_VIRTUAL_PAGE_START + NV_VIRTUAL_PAGE_SZ;
-NV_VIRTUAL_PAGE_LAST_OFFSET         = DEFINED(gUseNVMLink_d) ? NV_VIRTUAL_PAGE_SZ - 5 : 0;
 SECURE_BOOT_SIZE                    = DEFINED(gUseSecureBoot_d) ? 1024 : 0;
 /* Signing an image will increase its size.
    If the raw image size is large enough, the resulting signed image could overflow to the NVM address range.
