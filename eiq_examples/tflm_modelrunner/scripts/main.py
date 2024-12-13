@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright 2024 NXP
+# All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause
 
 from flask import Flask, request, Response, make_response
 import base64
