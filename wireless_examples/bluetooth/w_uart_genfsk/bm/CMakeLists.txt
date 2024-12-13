@@ -40,6 +40,7 @@ mcux_add_include(
     INCLUDES
         bluetooth/examples/w_uart_genfsk/
         ../../examples/wireless_examples/bluetooth/common/
+        ../../examples/wireless_examples/bluetooth/common/genfsk_app
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/w_uart_genfsk/${multicore_foldername}/reconfig.cmake OPTIONAL)

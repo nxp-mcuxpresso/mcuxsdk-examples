@@ -82,14 +82,15 @@ typedef enum
 static TIMER_MANAGER_HANDLE_DEFINE(mAppGenfskTmr);
 
 /* Variables used to keep state of the Tx/Rx Genfsk Procedures */
-static bool_t mbAppGenfskRxOn = FALSE;
-static bool_t mbAppGenfskTxOn = FALSE;
-
-/* Counter used in packet to keep track of packet loss */
-static uint8_t localTxCounter = 0;
+static bool_t mbAppGenfskRxOn           = FALSE;
+static bool_t mbAppGenfskTxPending      = FALSE;
+static bool_t mbAppGenfskPeriodicTxOn   = FALSE;
 
 /* Pointer function used to communicate events to the application */
 static gfskAppEventHandler_t mpfGfskAppEventCallback = NULL;
+
+/* Data structure used for the periodic transmit demo */
+static appGfskTransmitPacket_t *mpGfskTransmitPacket = NULL;
 
 /************************************************************************************
 *************************************************************************************
@@ -122,37 +123,24 @@ static bool_t hciGenfskEventHook
 /*! *********************************************************************************
 * \fn           void GfskApp_TimerCallback(void *pParam)
 *
-* \brief        Timer callback function used tot switch to application task
+* \brief        Timer callback function used to switch to application task
 *
 * \param[in]    pParam                 callback function parameter.
 *
 * \return       void
 *
 ********************************************************************************** */
-static void GfskApp_TimerCallback(void *pParam);
-
-/*! *********************************************************************************
-* \fn           void GfskApp_Tx(void *payload)
-*
-* \brief        Controller to Host interface function. The function builds the HCI Command Complete Event
-*               from the HCI packet received for Genfsk Commands.
-*
-* \param[in]    payload                 the address of data payload to be used in the genfsk packet.
-*
-* \return       void
-*
-********************************************************************************** */
-static void GfskApp_Tx
+static void GfskApp_TimerCallback
 (
-    void *payload
+    void *pParam
 );
 
 /*! *********************************************************************************
 * \fn           void GfskApp_EventHandler(void *pGfskAppData)
 *
-* \brief        Handle the Genfsk application events recieved from Host
+* \brief        Handle the Genfsk application events received from Host
 *
-* \param[in]    pGfskAppData            pointer to stucture of type pGfskAppData
+* \param[in]    pGfskAppData            pointer to structure of type pGfskAppData
 *                                       containing event and event data.
 *
 * \return       void
@@ -174,7 +162,7 @@ static void GfskApp_EventHandler
 *
 * \brief        Initialize GFSK module
 *
-* \param[in]    pfGfskAppEventCallback  pointer to function to be called by Genfsk module
+* \param[in]    pfGfskAppEventCallback  Pointer to function to be called by Genfsk module
 *                                       to handle an application event.
 *
 * \return       void
@@ -182,55 +170,142 @@ static void GfskApp_EventHandler
 ********************************************************************************** */
 void GfskApp_Init(gfskAppEventHandler_t pfGfskAppEventCallback)
 {
-    /* init pointer function for handling the genfsk events */
+    /* Initialize pointer function for handling the genfsk events */
     (void)Hcit_RegisterGfskEventCallback(hciGenfskEventHook);
 
     /* Enable or disable hybrid GENFSK module */
     hybrid_gfsk_init();
 
-    /* initialise the callback function for the application */
+    /* Initialize the callback function for the application */
     if(mpfGfskAppEventCallback == NULL)
     {
         mpfGfskAppEventCallback = pfGfskAppEventCallback;
     }
 
-    /* initialise the Tx timer */
+    /* Initialize the Tx timer */
     (void)TM_Open(mAppGenfskTmr);
 }
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StartTx(void)
+* \fn           void GfskApp_StartPeriodicTx(void)
 *
-* \brief          Start GFSK App timer for periodic TX.
+* \brief        Start GFSK App timer for periodic TX.
 *
-* \return         void
+* \return       void
 *
 ********************************************************************************** */
-void GfskApp_StartTx(void)
+void GfskApp_StartPeriodicTx(void)
 {
-    (void)TM_InstallCallback((timer_handle_t)mAppGenfskTmr, (timer_callback_t)GfskApp_TimerCallback, NULL);
-    (void)TM_Start((timer_handle_t)mAppGenfskTmr, (uint8_t)kTimerModeIntervalTimer, gGenFskApp_TxInterval_c);
+    /* Demo payload */
+    uint8_t aMessage[] = {
+        gGenFSK_NetworkAddress_c, /* Network address used. */
+        gGenFSK_H0Value_c,        /* H0 Value.*/
+        0x00,                     /* Payload Length */
+        gGenFSK_Identifier_c,     /* Identifier Address */
+        0x02, 0x01, 0x06, 0x09, 0x08, 0x47, 0x46, 0x53, 0x4B, 0x5F, 0x41, 0x44,
+                                  /* Raw data: flags, device name (GFSK_AD) */
+        0x00                      /* One counter octet to keep track of packet loss */
+    };
 
-    mbAppGenfskTxOn = TRUE;
+    /* Alloc packet only if not allocated previously */
+    if (mpGfskTransmitPacket == NULL)
+    {
+        mpGfskTransmitPacket = (appGfskTransmitPacket_t*)MEM_BufferAlloc(sizeof(appGfskTransmitPacket_t) + 
+                                                                         sizeof(aMessage));
+    }
+
+    if (mpGfskTransmitPacket != NULL)
+    {
+        /* Subtract the header to obtain the message length */
+        aMessage[5] = sizeof(aMessage) - gGenFSK_TxHeaderSize_c;
+
+        mpGfskTransmitPacket->payloadLength = (uint8_t)sizeof(aMessage);
+        FLib_MemCpy(mpGfskTransmitPacket->payload, aMessage, sizeof(aMessage));
+
+        (void)TM_InstallCallback((timer_handle_t)mAppGenfskTmr, (timer_callback_t)GfskApp_TimerCallback, mpGfskTransmitPacket);
+        (void)TM_Start((timer_handle_t)mAppGenfskTmr, (uint8_t)kTimerModeIntervalTimer, gGenFskApp_TxInterval_c);
+
+        mbAppGenfskPeriodicTxOn = TRUE;
+    }
 }
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StopTx(void)
+* \fn           void GfskApp_Tx(void *pPacket)
 *
-* \brief          Cancel GFSK Tx Procedure.
+* \brief        Application to HCI interface function. The function builds the HCI Command
+*               for Genfsk transmit. HCI packet is constructed and data from input parameters
+*               are copied.
 *
-* \return         void
+* \param[in]    pPacket                 Pointer to data of type appGfskTransmitPacket_t, function will
+*                                       check for NULL, access and copy appGfskTransmitPacket_t members.
+*
+* \return       void
+*
+********************************************************************************** */
+void GfskApp_Tx(void *pPacket)
+{
+    if((mbAppGenfskTxPending == FALSE) && (pPacket != NULL))
+    {
+        union
+        {
+            appGfskTransmitPacket_t *pGfskTransmitPacket;
+            void                    *pPkt;
+        } genfskPacket;
+
+        genfskPacket.pPkt = pPacket;
+
+        uint8_t *aMessage = genfskPacket.pGfskTransmitPacket->payload;
+        uint8_t msgSize = genfskPacket.pGfskTransmitPacket->payloadLength;
+
+        /* Send packet via HCI */
+        uint8_t pHciPacket[mHciVendorLeGenfskTransmitCommandLength_c + gGenFSK_MaxPayloadSize_c + gHciCommandPacketHeaderLength_c];
+        uint8_t *pPacketData = (uint8_t *)&pHciPacket[3];
+
+        uint16_t temp = HciCommand(gHciVendorSpecificDebugCommands_c, mHciVendorLeGenfskTransmitCommand_c);
+        FLib_MemCpy((void *)pHciPacket, (const void *)&temp, 2U);
+        pHciPacket[2] = (uint8_t)mHciVendorLeGenfskTransmitCommandLength_c + msgSize;
+
+        FLib_MemCpy(pPacketData, aMessage, msgSize);
+
+        (void)Hci_CommandPacket(pHciPacket, (uint16_t)pHciPacket[2]);
+    }
+    else
+    {
+        gfskAppEventData_t appData = {.appEvent = gGfskEvt_AppEvtTransmitPending_c};
+
+        if (mpfGfskAppEventCallback != NULL)
+        {
+            mpfGfskAppEventCallback(&appData);
+        }
+    }
+}
+
+/*! *********************************************************************************
+* \fn           void GfskApp_StopTx(void)
+*
+* \brief        Cancel GFSK Tx Procedure. Can be used for both Periodic Tx or single pending Tx.
+*
+* \return       void
 *
 ********************************************************************************** */
 void GfskApp_StopTx(void)
 {
-    if (TRUE == mbAppGenfskTxOn)
+    if (TRUE == mbAppGenfskPeriodicTxOn)
     {
+        /* Stop periodic transmit timer */
         (void)TM_Stop(mAppGenfskTmr);
 
-        mbAppGenfskTxOn = FALSE;
+        /* Change the state to not running */
+        mbAppGenfskPeriodicTxOn = FALSE;
 
-        /* send command via HCI */
+        /* Buffer is no longer used */
+        (void)MEM_BufferFree(mpGfskTransmitPacket);
+        mpGfskTransmitPacket = NULL;
+    }
+    
+    if (TRUE == mbAppGenfskTxPending)
+    {
+        /* Send command via HCI */
         hciCommandPacket_t  hciPacket =
         {
             HciCommand(gHciVendorSpecificDebugCommands_c, mHciVendorLeGenfskCancelCommand_c),
@@ -242,16 +317,16 @@ void GfskApp_StopTx(void)
 }
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StartRx(void)
+* \fn           void GfskApp_StartRx(void)
 *
-* \brief          Start GFSK RX procedure
+* \brief        Start GFSK RX procedure
 *
-* \return         void
+* \return       void
 *
 ********************************************************************************** */
 void GfskApp_StartRx(void)
 {
-    /* send command via HCI */
+    /* Send command via HCI */
     hciCommandPacket_t  hciPacket =
     {
         HciCommand(gHciVendorSpecificDebugCommands_c, mHciVendorLeGenfskReceiveCommand_c),
@@ -262,18 +337,18 @@ void GfskApp_StartRx(void)
 }
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StopRx(void)
+* \fn           void GfskApp_StopRx(void)
 *
-* \brief          Stop GFSK RX procedure
+* \brief        Stop GFSK RX procedure
 *
-* \return         void
+* \return       void
 *
 ********************************************************************************** */
 void GfskApp_StopRx(void)
 {
     mbAppGenfskRxOn = FALSE;
 
-    /* send command via HCI */
+    /* Send command via HCI */
     hciCommandPacket_t  hciPacket =
     {
         HciCommand(gHciVendorSpecificDebugCommands_c, mHciVendorLeGenfskCancelCommand_c),
@@ -441,14 +516,14 @@ static bool_t hciGenfskEventHook
                         {
                             pAppData->appEvent = gGfskEvt_MetaEventReceiveComplete_c;
 
-                            pAppData->eventData.transmitCompleteData.status = *pPacket;
+                            pAppData->eventData.receiveCompleteData.status = *pPacket;
                             pPacket++;
-                            pAppData->eventData.transmitCompleteData.RSSI = *pPacket;
+                            pAppData->eventData.receiveCompleteData.RSSI = *pPacket;
                             pPacket++;
-                            pAppData->eventData.transmitCompleteData.payloadLength = 
+                            pAppData->eventData.receiveCompleteData.payloadLength = 
                                 parLength - 3U; /* Substract Event Code; Param total Length; Subevent Code */
 
-                            FLib_MemCpy(pAppData->eventData.transmitCompleteData.payload, pPacket, (uint32_t)parLength - 3U);
+                            FLib_MemCpy(pAppData->eventData.receiveCompleteData.payload, pPacket, (uint32_t)parLength - 3U);
                         }
 
                         (void)App_PostCallbackMessage(GfskApp_EventHandler, (void*)pAppData);
@@ -482,7 +557,7 @@ static bool_t hciGenfskEventHook
 /*! *********************************************************************************
 * \fn           void GfskApp_TimerCallback(void *pParam)
 *
-* \brief        Timer callback function used tot switch to application task
+* \brief        Timer callback function used to switch to application task
 *
 * \param[in]    pParam                 callback function parameter.
 *
@@ -496,58 +571,11 @@ static void GfskApp_TimerCallback(void *pParam)
 }
 
 /*! *********************************************************************************
-* \fn           void GfskApp_Tx(void *payload)
-*
-* \brief        Controller to Host interface function. The function builds the HCI Command Complete Event
-*               from the HCI packet received for Genfsk Commands.
-*
-* \param[in]    payload                 the address of data payload to be used in the genfsk packet.
-* \param[in]    payloadLength           the length of the payload.
-*
-* \return       void
-*
-********************************************************************************** */
-static void GfskApp_Tx(void *payload)
-{
-    /* Not used. The demo will send the packet from bellow */
-    (void)payload;
-
-    /* Dummy packet */
-    uint8_t aMessage[] = {
-        gGenFSK_NetworkAddress_c, /* Network address used. */
-        gGenFSK_H0Value_c,        /* H0 Value.*/
-        0x00,                     /* Payload Length */
-        gGenFSK_Identifier_c,     /* Identifier Address */
-        0x02, 0x01, 0x06, 0x09, 0x08, 0x47, 0x46, 0x53, 0x4B, 0x5F, 0x41, 0x44,
-                                  /* Raw data: flags, device name (GFSK_AD) */
-        0x00                      /* One dynamic octet counter */
-    };
-
-    /* Subtract the header to obtain the payload length */
-    aMessage[5] = sizeof(aMessage) - gGenFSK_TxHeaderSize_c;
-
-    /* Include a counter at the end to monitor the packet number at rx */
-    aMessage[sizeof(aMessage) - 1U] = localTxCounter++;
-
-    /* Send packet via HCI */
-    uint8_t pHciPacket[mHciVendorLeGenfskTransmitCommandLength_c + sizeof(aMessage) + gHciCommandPacketHeaderLength_c];
-    uint8_t *pPacketData = (uint8_t *)&pHciPacket[3];
-
-    uint16_t temp = HciCommand(gHciVendorSpecificDebugCommands_c, mHciVendorLeGenfskTransmitCommand_c);
-    FLib_MemCpy((void *)pHciPacket, (const void *)&temp, 2U);
-    pHciPacket[2] = (uint8_t)mHciVendorLeGenfskTransmitCommandLength_c + sizeof(aMessage);
-
-    FLib_MemCpy(pPacketData, aMessage, sizeof(aMessage));
-
-    (void)Hci_CommandPacket(pHciPacket, (uint16_t)pHciPacket[2]);
-}
-
-/*! *********************************************************************************
 * \fn           void GfskApp_EventHandler(void *pGfskAppData)
 *
-* \brief        Handle the Genfsk application events recieved from Host
+* \brief        Handle the Genfsk application events received from Host
 *
-* \param[in]    pGfskAppData            pointer to stucture of type pGfskAppData
+* \param[in]    pGfskAppData            pointer to structure of type pGfskAppData
 *                                       containing event and event data.
 *
 * \return       void
@@ -563,7 +591,14 @@ static void GfskApp_EventHandler(void *pGfskAppData)
         {
             case gGfskEvt_MetaEventTransmitComplete_c:
             {
-                /* No internal action needed */
+                /* Mark no transmit is pending */
+                mbAppGenfskTxPending = FALSE;
+
+                if (mbAppGenfskPeriodicTxOn)
+                {
+                    /* Increase the counter at the end to monitor the packet number at rx */
+                    mpGfskTransmitPacket->payload[mpGfskTransmitPacket->payloadLength - 1U] += 1U;
+                }
             }
             break;
 
@@ -579,7 +614,11 @@ static void GfskApp_EventHandler(void *pGfskAppData)
 
             case gGfskEvt_CommandCompleteTransmit_c:
             {
-                /* No internal action needed */
+                /* Mark transmit is pending, as controller buffered command */
+                if (gHciSuccess_c == pAppData->eventData.cmdStatus)
+                {
+                    mbAppGenfskTxPending = TRUE;
+                }
             }
             break;
 
@@ -598,7 +637,11 @@ static void GfskApp_EventHandler(void *pGfskAppData)
 
             case gGfskEvt_CommandCompleteCancel_c:
             {
-                /* No internal action needed */
+                if (gHciSuccess_c == pAppData->eventData.cmdStatus)
+                {
+                    /* Cancel command is universal for both TX and RX commands */
+                    mbAppGenfskTxPending = FALSE;
+                }
             }
             break;
 

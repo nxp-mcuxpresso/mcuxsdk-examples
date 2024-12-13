@@ -35,10 +35,15 @@
 #define gGenFSK_H0Value_c                               0x42
 #define gGenFSK_Identifier_c                            0x09, 0x09, 0x09, 0x09, 0x09, 0x09
 
-#define gGenFSK_TxHeaderSize_c                          (6U) /* Network Addres(4 bytes); H0Value(1 byte); Size value itself (1 byte)*/
+#define gGenFSK_TxHeaderSize_c                          (6U) /* Network Address(4 bytes); H0Value(1 byte); Size value itself (1 byte)*/
 #define gGenFSK_RxHeaderSize_c                          (2U) /* H0Value(1 byte); Size value itself (1 byte)*/
 
-#define gGenFskApp_TxInterval_c                         (1000U) /* [ms] */
+#define gGenFSK_MaxPayloadSize_c                        (252U) /* The Maximum allowed payload length for genfsk */
+
+#define gGenFskApp_TxInterval_c                         (1007U) /* [ms] */
+
+#define gGenFskApp_InvalidCrcBit_c                      0x01U /* Bit set if CRC of packet is invalid */
+#define gGenFskApp_InvalidLengthBit_c                   0x02U /* Bit set if length of packet is invalid */
 
 /************************************************************************************
 *************************************************************************************
@@ -51,23 +56,30 @@ typedef enum gfskAppEvent_tag{
     gGfskEvt_CommandCompleteTransmit_c,
     gGfskEvt_CommandCompleteReceive_c,
     gGfskEvt_CommandCompleteCancel_c,
+    gGfskEvt_AppEvtTransmitPending_c,
     gGfskEvt_Unknown_c,
 } gfskAppEvent_t;
 
-typedef struct appGfskTransmitCompleteEvent_tag
+typedef struct appGfskReceiveCompleteEvent_tag
 {
     uint8_t status;                     /*!< Genfsk Status, bit 0: 0/1 for CRC valid/error, bit 1: 0/1 for length valid/error */
     uint8_t RSSI;                       /*!< Genfsk RSSI */
     uint8_t payloadLength;              /*!< Genfsk payload length, max 252 */
     uint8_t payload[1];                 /*!< Genfsk payload, max payload length 252 bytes*/
-} appGfskTransmitCompleteEvent_t;
+} appGfskReceiveCompleteEvent_t;
+
+typedef struct appGfskTransmitPacket_tag
+{
+    uint8_t payloadLength;              /*!< Genfsk payload length, max 252 */
+    uint8_t payload[1];                 /*!< Genfsk payload, max payload length 252 bytes*/
+} appGfskTransmitPacket_t;
 
 typedef struct gfskAppEventData_tag
 {
     gfskAppEvent_t      appEvent;                                       /*!< Event type. */
     union {
         bleResult_t                     cmdStatus;
-        appGfskTransmitCompleteEvent_t  transmitCompleteData;
+        appGfskReceiveCompleteEvent_t   receiveCompleteData;
     } eventData;                        /*!< Event data, selected according to event type. */
 } gfskAppEventData_t;
 
@@ -96,7 +108,7 @@ extern bleResult_t Ble_HciSend(hciPacketType_t packetType, void* pPacket, uint16
 *
 * \brief        Initialize GFSK module
 *
-* \param[in]    pfGfskAppEventCallback  pointer to function to be called by Genfsk module
+* \param[in]    pfGfskAppEventCallback  Pointer to function to be called by Genfsk module
 *                                       to handle an application event.
 *
 * \return       void
@@ -105,41 +117,56 @@ extern bleResult_t Ble_HciSend(hciPacketType_t packetType, void* pPacket, uint16
 void GfskApp_Init(gfskAppEventHandler_t pfGfskAppEventCallback);
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StartTx(void)
+* \fn           void GfskApp_StartPeriodicTx(void)
 *
-* \brief          Start GFSK App timer for periodic TX.
+* \brief        Start GFSK App timer for periodic TX.
 *
-* \return         void
+* \return       void
 *
 ********************************************************************************** */
-void GfskApp_StartTx(void);
+void GfskApp_StartPeriodicTx(void);
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StopTx(void)
+* \fn           void GfskApp_Tx(void *pPacket)
 *
-* \brief          Cancel GFSK Tx Procedure.
+* \brief        Application to HCI interface function. The function builds the HCI Command
+*               for Genfsk transmit. HCI packet is constructed and data from input parameters
+*               are copied.
 *
-* \return         void
+* \param[in]    pPacket                 Pointer to data of type appGfskTransmitPacket_t, function will
+*                                       check for NULL, access and copy appGfskTransmitPacket_t members.
+*
+* \return       void
+*
+********************************************************************************** */
+void GfskApp_Tx(void *pPacket);
+
+/*! *********************************************************************************
+* \fn           void GfskApp_StopTx(void)
+*
+* \brief        Cancel GFSK Tx Procedure. Can be used for both Periodic Tx or single pending Tx.
+*
+* \return       void
 *
 ********************************************************************************** */
 void GfskApp_StopTx(void);
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StartRx(void)
+* \fn           void GfskApp_StartRx(void)
 *
-* \brief          Start GFSK RX procedure
+* \brief        Start GFSK RX procedure
 *
-* \return         void
+* \return       void
 *
 ********************************************************************************** */
 void GfskApp_StartRx(void);
 
 /*! *********************************************************************************
-* \fn             void GfskApp_StopRx(void)
+* \fn           void GfskApp_StopRx(void)
 *
-* \brief          Stop GFSK RX procedure
+* \brief        Stop GFSK RX procedure
 *
-* \return         void
+* \return       void
 *
 ********************************************************************************** */
 void GfskApp_StopRx(void);
