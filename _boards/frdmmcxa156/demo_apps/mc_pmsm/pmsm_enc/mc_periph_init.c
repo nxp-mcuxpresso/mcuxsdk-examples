@@ -103,7 +103,7 @@ void InitClock(void)
     uint32_t ui32CyclesNumber = 0U;
 
     /* Calculate clock dependant variables for PMSM control algorithm */
-    g_sClockSetup.ui32FastPeripheralClock = CLOCK_GetFreq(kCLOCK_BusClk);
+    g_sClockSetup.ui32FastPeripheralClock = CLOCK_GetFreq(kCLOCK_MainClk);
     g_sClockSetup.ui32CpuFrequency = CLOCK_GetFreq(kCLOCK_CoreSysClk);
 
     /* Parameters for motor M1 */
