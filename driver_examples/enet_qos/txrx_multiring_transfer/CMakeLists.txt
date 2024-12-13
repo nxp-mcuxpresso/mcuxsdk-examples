@@ -16,6 +16,11 @@ mcux_add_include(
              examples/_boards/${board}/driver_examples/enet_qos/txrx_multiring_transfer/${core_id}
 )
 
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x1000\
+             __heap_size__=0x8000"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/enet_qos/txrx_multiring_transfer/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
