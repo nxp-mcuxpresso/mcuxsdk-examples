@@ -5,6 +5,7 @@ mcux_add_source(
             examples/mbedtls3x_examples/psa_crypto_opaque_key_examples/mcux_mbedtls_psa_crypto_opaque_config.h
             examples/_boards/${board}/sdmmc_config.c
             examples/_boards/${board}/sdmmc_config.h
+            examples/_boards/${board}/mbedtls3x_examples/psa_crypto_opaque_key_examples/mbedtls_user_config.h
 )
 
 mcux_add_include(
