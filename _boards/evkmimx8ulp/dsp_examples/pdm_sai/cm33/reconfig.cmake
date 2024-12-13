@@ -12,10 +12,10 @@ mcux_add_include(
 )
 
 mcux_add_iar_configuration(
-    LD "--image_input=${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/hello_world_usart/fusionf1/binary/dsp_reset_release.bin,__dsp_reset_bin,__dsp_reset_section,4\
+    LD "--image_input=${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/pdm_sai/fusionf1/binary/dsp_reset_release.bin,__dsp_reset_bin,__dsp_reset_section,4\
         --keep=__dsp_reset_bin\
-        --image_input=${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/hello_world_usart/fusionf1/binary/dsp_text_release.bin,__dsp_text_bin,__dsp_text_section,4\
+        --image_input=${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/pdm_sai/fusionf1/binary/dsp_text_release.bin,__dsp_text_bin,__dsp_text_section,4\
         --keep=__dsp_text_bin\
-        --image_input=${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/hello_world_usart/fusionf1/binary/dsp_data_release.bin,__dsp_data_bin,__dsp_data_section,4\
+        --image_input=${SdkRootDirPath}/examples/_boards/${board}/dsp_examples/pdm_sai/fusionf1/binary/dsp_data_release.bin,__dsp_data_bin,__dsp_data_section,4\
         --keep=__dsp_data_bin"
 )
