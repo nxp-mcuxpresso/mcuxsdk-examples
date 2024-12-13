@@ -17,6 +17,14 @@ dsp_sema42:
     evkmimxrt685@cm33: []
     mimxrt685audevk@cm33: []
     evkmimxrt595@cm33: []
-    evkmimx8ulp@cm33: []
-    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    evk9mimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
     mimxrt700evk@cm33_core0: []

@@ -14,5 +14,13 @@ dsp_pdm_sai:
       - ${board_root}/${board}/dsp_examples/pdm_sai/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8ulp@cm33: []
-    evk9mimx8ulp@cm33: []
+    evkmimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    evk9mimx8ulp@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
