@@ -1,3 +1,9 @@
+/*
+* Copyright 2024 NXP
+* All rights reserved.
+*
+* SPDX-License-Identifier: BSD-3-Clause
+*/
 #ifndef _CHGUI_H_
 #define _CHGUI_H_
 

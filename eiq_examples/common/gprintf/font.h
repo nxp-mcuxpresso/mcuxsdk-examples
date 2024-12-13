@@ -1,3 +1,9 @@
+/*
+* Copyright 2024 NXP
+* All rights reserved.
+*
+* SPDX-License-Identifier: BSD-3-Clause
+*/
 #ifndef __FONT_H__
 #define __FONT_H__
 
