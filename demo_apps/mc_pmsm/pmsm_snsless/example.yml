@@ -13,8 +13,15 @@ mc_pmsm_snsless:
       - examples/_boards/${board}/demo_apps/mc_pmsm/pmsm_snsless/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
-    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso55s69@cm33_core0:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
     lpcxpresso860max:
     - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
     mc56f80000evk: []
     twrmc56f8200: []

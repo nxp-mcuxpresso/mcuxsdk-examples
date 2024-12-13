@@ -15,11 +15,26 @@ mc_pmsm_enc:
   boards:
     evkmimxrt1180@cm7: []
     evkbmimxrt1170@cm7: []
-    frdmmcxa153: []
+    frdmmcxa153:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
     frdmmcxa156:
     - -armgcc@release
-    frdmmcxn236: []
-    frdmmcxn947@cm33_core0: []
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
+    frdmmcxn236:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
+    frdmmcxn947@cm33_core0:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
     lpcxpresso55s36: []
     mc56f81000evk: []
     mc56f83000evk: []
