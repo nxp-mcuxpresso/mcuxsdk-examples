@@ -30,7 +30,7 @@ mcux_add_iar_configuration(
 )
 
 mcux_add_mdk_configuration(
-    LD "--keep='*(*core1_code)'"
+    LD "--keep=*(*core1_code)"
 )
 
 mcux_add_include(
