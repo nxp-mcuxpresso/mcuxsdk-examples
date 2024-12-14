@@ -38,3 +38,8 @@ mcux_add_mdk_linker_script(
         BASE_PATH ${SdkRootDirPath}
         LINKER devices/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram_s.scf
 )
+
+# Add additional configuration
+mcux_add_macro(
+    CC "-DCPU1_IS_SECURE_MASTER"
+)
