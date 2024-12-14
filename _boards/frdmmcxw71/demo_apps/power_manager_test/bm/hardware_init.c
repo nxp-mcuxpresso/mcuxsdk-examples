@@ -31,6 +31,12 @@ AT_ALWAYS_ON_DATA_INIT(pm_notify_element_t g_notify1) = {
     .data           = NULL,
 };
 
+#ifndef APP_BYPASS_ECC_INIT
+AT_ALWAYS_ON_DATA_INIT(pm_notify_element_t g_notify2) = {
+    .notifyCallback = APP_EccReInitCallback,
+    .data           = NULL,
+};
+#endif
 
 AT_ALWAYS_ON_DATA(pm_wakeup_source_t g_lptmr0WakeupSource);
 
@@ -47,6 +53,28 @@ void BOARD_InitHardware(void)
 
     CMC_EnableDebugOperation(CMC0, false);
 }
+
+#ifndef APP_BYPASS_ECC_INIT
+status_t APP_EccReInitCallback(pm_event_type_t eventType, uint8_t powerState, void *data)
+{
+    if ((eventType == kPM_EventExitingSleep) && (powerState == PM_LP_STATE_DEEP_POWER_DOWN))
+    {
+        uint32_t ramAddress = 0x4000000UL;
+        while (ramAddress < 0x4004000UL)
+        {
+            memset((void *)(uint32_t *)ramAddress, 0UL, sizeof(uint32_t));
+            ramAddress = ramAddress + 4UL;
+        }
+        ramAddress = 0x20000000;
+        while (ramAddress < 0x20010000)
+        {
+            memset((void *)(uint32_t *)ramAddress, 0UL, sizeof(uint32_t));
+            ramAddress = ramAddress + 4UL;
+        }
+    }
+    return kStatus_Success;
+}
+#endif
 
 status_t APP_UartControlCallback(pm_event_type_t eventType, uint8_t powerState, void *data)
 {
@@ -148,6 +176,9 @@ uint32_t APP_GetWakeupTimeout(void)
 void APP_RegisterNotify(void)
 {
     PM_RegisterNotify(kPM_NotifyGroup0, &g_notify1);
+#ifndef APP_BYPASS_ECC_INIT
+    PM_RegisterNotify(kPM_NotifyGroup2, &g_notify2);
+#endif
 }
 
 void APP_SetConstraints(uint8_t powerMode)
