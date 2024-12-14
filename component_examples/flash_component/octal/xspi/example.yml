@@ -2,7 +2,7 @@ flash_component_octal_xspi:
   section-type: application
   contents:
     meta_path: examples/component_examples/flash_component/octal/xspi/
-    project-root-path: boards/${board}/component_examples/flash_component/xspi_octal/${core_id}
+    project-root-path: boards/${board}/component_examples/flash_component/xspi_octal/${multicore_foldername}
     document:
       name: flash_component_octal_xspi${core_id_suffix_name}
       category: component_examples/flash_component/xspi_nor
