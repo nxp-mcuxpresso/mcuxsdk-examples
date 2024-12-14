@@ -40,7 +40,6 @@ mcux_add_mdk_linker_script(
 )
 
 # Add additional configuration
-# mcux_add_macro(
-#     AS "-DNO_CRP"
-#     CC "-DCPU1_IS_SECURE_MASTER"
-# )
+mcux_add_macro(
+    CC "-DCPU1_IS_SECURE_MASTER"
+)
