@@ -3,7 +3,7 @@ flash_component_nand_flexspi:
   section-type: application
   contents:
     meta_path: examples/component_examples/flash_component/nand/flexspi/
-    project-root-path: boards/${board}/component_examples/flash_component/flexspi_nand/
+    project-root-path: boards/${board}/component_examples/flash_component/flexspi_nand/${multicore_foldername}
     document:
       name: flash_component_nand_flexspi${core_id_suffix_name}
       category: component_examples/flash_component/flexspi_nand/
