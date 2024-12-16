@@ -16,3 +16,5 @@ mc_pmsm_snsless:
     lpcxpresso55s69@cm33_core0: []
     lpcxpresso860max:
     - -armgcc@debug
+    mc56f80000evk: []
+    twrmc56f8200: []
