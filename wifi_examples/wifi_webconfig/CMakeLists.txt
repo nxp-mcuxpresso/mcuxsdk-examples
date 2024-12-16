@@ -30,13 +30,6 @@ mcux_add_source(
         ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
         ${board_root}/${board}/wifi_examples/common/pin_mux.c
         ${board_root}/${board}/wifi_examples/common/pin_mux.h
-
-        # WebUI files
-        # components/edgefast_wifi/example/wifi_webconfig/webui/favicon.ico
-        # components/edgefast_wifi/example/wifi_webconfig/webui/index.html
-        # components/edgefast_wifi/example/wifi_webconfig/webui/NXP_logo.png
-        # components/edgefast_wifi/example/wifi_webconfig/webui/webconfig.css
-        # components/edgefast_wifi/example/wifi_webconfig/webui/webconfig.js
 )
 
 mcux_add_include(

@@ -21,7 +21,7 @@ For more information about Wi-Fi module connection see:
     - No parity
     - One stop bit
     - No flow control
-3.  Connect the Wi-Fi module.
+3.  Connect the Wi-Fi module. Refer to readme_modules.txt and the [Supported boards](#supported-boards) section.
 4.  Prior building of example you may want to set following symbols:
 	- WIFI_SSID and WIFI_PASSWORD according settings of your AP.
 	- EXAMPLE_MQTT_SERVER_HOST and EXAMPLE_MQTT_SERVER_PORT to aim to your broker.

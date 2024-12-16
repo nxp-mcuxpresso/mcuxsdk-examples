@@ -21,7 +21,7 @@ For more information about Wi-Fi module connection see:
     - No parity
     - One stop bit
     - No flow control
-3.  Connect the Wi-Fi module.
+3.  Connect the Wi-Fi module. Refer to readme_modules.txt and the [Supported boards](#supported-boards) section.
 4.  Download the program to the target board.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
