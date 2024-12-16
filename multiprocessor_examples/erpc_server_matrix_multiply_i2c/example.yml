@@ -25,4 +25,4 @@ erpc_server_matrix_multiply_i2c:
     frdmmcxn947@cm33_core0: []
     lpcxpresso55s36: []
     mcxn9xxevk@cm33_core0: []
-    mimxrt700evk@cm33_core0: []
+#    mimxrt700evk@cm33_core0: []
