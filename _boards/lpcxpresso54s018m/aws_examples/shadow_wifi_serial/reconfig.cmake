@@ -35,14 +35,17 @@ mcux_remove_armgcc_configuration(
 )
 
 mcux_remove_armgcc_linker_script(
+    TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
     LINKER devices/LPC/LPC54000/LPC54S018M/gcc/LPC54S018J4M_spifi_flash.ld
 )
 mcux_remove_iar_linker_script(
+    TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
     LINKER devices/LPC/LPC54000/LPC54S018M/iar/LPC54S018J4M_spifi_flash.icf
 )
 mcux_remove_mdk_linker_script(
+    TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
     LINKER devices/LPC/LPC54000/LPC54S018M/arm/LPC54S018J4M_spifi_flash.scf
 )
@@ -50,14 +53,17 @@ mcux_remove_mdk_linker_script(
 
 # Add or remove Linker File Configurations
 mcux_add_iar_linker_script(
+    TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
     LINKER examples/_boards/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.icf
 )
 mcux_add_mdk_linker_script(
+    TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
     LINKER examples/_boards/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.scf
 )
 mcux_add_armgcc_linker_script(
+    TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
     LINKER examples/_boards/${board}/aws_examples/common/linker/LPC54S018M_spifi_flash.ld
 )
