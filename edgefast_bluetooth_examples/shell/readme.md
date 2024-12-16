@@ -752,7 +752,7 @@ Here is an example of run PSE, and PCE is a board running a shell project.
    PBAP connection also can be disconnected by inputting "pbap.pce.disconnect" on PCE side.
 
 Note:
-1. This example acting as PSE doesn't supports all application parameters and only supports to parse/send the part of application parameters from/to PCE.
+1. This example acting as PSE doesn't support all application parameters and only supports to parse/send the part of application parameters from/to PCE.
 
 ## Running BR/EDR MAP
 Note: Only 1 MAP MAS and MNS connection is supported in shell project.
@@ -959,8 +959,15 @@ Here is an example of run MSE, and MCE is a board running a shell project.
 
 Note:
 1. Due to the memory size limitation, some boards don't enable MSE function, such as MIMXRT1170-EVKB.
-   If users wants to enable MSE function, please set the macro of CONFIG_BT_MAP_MSE to 1 and set the macro of RAM_DISK_ENABLE to 1.
-2. This example acting as MSE doesn't supports all application parameters and only supports to parse/send the part of application parameters from/to MCE.
+   If users wants to enable MSE function, please set the following macros.
+   - CONFIG_BT_MAP_MSE = 1
+   - CONFIG_BT_MAP_MSE_MAS_NUM_INSTANCES = 2
+   - CONFIG_BT_MAP_MSE_MNS_NUM_INSTANCES = 1
+   - CONFIG_BT_MAP_MSE_MAS_MAX_PKT_LEN = 1790
+   - CONFIG_BT_MAP_MSE_MNS_MAX_PKT_LEN = 512
+   - CONFIG_BT_MAP_MSE_MNS_SUPPORTED_FEATURES = 0x0077FFFF
+   - RAM_DISK_ENABLE = 1
+2. This example acting as MSE doesn't support all application parameters and only supports to parse/send the part of application parameters from/to MCE.
 3. This example acting as MSE is based on FatFs RAM disk. There is a limited memory to store the incoming message from MCE.
 
 ## Supported Boards
