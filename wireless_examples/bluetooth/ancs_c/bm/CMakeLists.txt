@@ -12,31 +12,33 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 
 mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     SOURCES
-           ../../../../wireless_examples/bluetooth/common/bm/main.c
-           ../../../../wireless_examples/bluetooth/common/app_conn.c
-           ../../../../wireless_examples/bluetooth/common/app_conn.h
-           ../../../../wireless_examples/bluetooth/common/ble_init.c
-           ../../../../wireless_examples/bluetooth/common/ble_init.h
-           ../../../../wireless_examples/bluetooth/common/app_advertiser.c
-           ../../../../wireless_examples/bluetooth/common/app_advertiser.h
-           ../../../../wireless_examples/bluetooth/common/app_connection.c
-           ../../../../wireless_examples/bluetooth/common/app_scanner.c
-           ../../../../wireless_examples/bluetooth/common/app_scanner.h
-           ../../../../wireless_examples/bluetooth/common/app_nvm.c
-           ../app_config.c
-           ../gatt_db.h
-           ../gatt_uuid128.h
-           ../ancs_client.c
-           ../ancs_client.h
-           ../../../../../${board_root}/${board}/wireless_examples/bluetooth/ancs_c/example_board_readme.md
-           ../readme.md
+           ../../examples/wireless_examples/bluetooth/common/bm/main.c
+           ../../examples/wireless_examples/bluetooth/common/app_conn.c
+           ../../examples/wireless_examples/bluetooth/common/app_conn.h
+           ../../examples/wireless_examples/bluetooth/common/ble_init.c
+           ../../examples/wireless_examples/bluetooth/common/ble_init.h
+           ../../examples/wireless_examples/bluetooth/common/app_advertiser.c
+           ../../examples/wireless_examples/bluetooth/common/app_advertiser.h
+           ../../examples/wireless_examples/bluetooth/common/app_connection.c
+           ../../examples/wireless_examples/bluetooth/common/app_scanner.c
+           ../../examples/wireless_examples/bluetooth/common/app_scanner.h
+           ../../examples/wireless_examples/bluetooth/common/app_nvm.c
+           bluetooth/examples/ancs_c/app_config.c
+           bluetooth/examples/ancs_c/gatt_db.h
+           bluetooth/examples/ancs_c/gatt_uuid128.h
+           bluetooth/examples/ancs_c/ancs_client.c
+           bluetooth/examples/ancs_c/ancs_client.h
+           bluetooth/examples/ancs_c/readme.md
+           ../../${board_root}/${board}/wireless_examples/bluetooth/ancs_c/example_board_readme.md
 )
 
 mcux_add_include(
-    INCLUDES .
-             ../
-             ../../common
+    BASE_PATH ${SdkRootDirPath}/middleware/wireless/
+    INCLUDES
+        bluetooth/examples/ancs_c/
+        ../../examples/wireless_examples/bluetooth/common/
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/ancs_c/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)

@@ -13,37 +13,33 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 
 mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     SOURCES
-           ../../../../wireless_examples/bluetooth/common/freertos/main.c
-           ../../../../wireless_examples/bluetooth/common/freertos/FreeRTOSConfig.h
-           ../../../../wireless_examples/bluetooth/common/app_conn.c
-           ../../../../wireless_examples/bluetooth/common/app_conn.h
-           ../../../../wireless_examples/bluetooth/common/ble_init.c
-           ../../../../wireless_examples/bluetooth/common/ble_init.h
-           ../../../../wireless_examples/bluetooth/common/app_advertiser.c
-           ../../../../wireless_examples/bluetooth/common/app_advertiser.h
-           ../../../../wireless_examples/bluetooth/common/app_nvm.c
-           ../../../../wireless_examples/bluetooth/common/app_low_power.c
-           ../app_config.c
-           ../gatt_db.h
-           ../gatt_uuid128.h
-           ../beacon.c
-           ../beacon.h
-           ../../../../../${board_root}/${board}/wireless_examples/bluetooth/beacon/example_board_readme.md
-           ../readme.md
+           ../../examples/wireless_examples/bluetooth/common/freertos/main.c
+           ../../examples/wireless_examples/bluetooth/common/freertos/FreeRTOSConfig.h
+           ../../examples/wireless_examples/bluetooth/common/app_conn.c
+           ../../examples/wireless_examples/bluetooth/common/app_conn.h
+           ../../examples/wireless_examples/bluetooth/common/ble_init.c
+           ../../examples/wireless_examples/bluetooth/common/ble_init.h
+           ../../examples/wireless_examples/bluetooth/common/app_advertiser.c
+           ../../examples/wireless_examples/bluetooth/common/app_advertiser.h
+           ../../examples/wireless_examples/bluetooth/common/app_nvm.c
+           ../../examples/wireless_examples/bluetooth/common/app_low_power.c
+           bluetooth/examples/beacon/app_config.c
+           bluetooth/examples/beacon/gatt_db.h
+           bluetooth/examples/beacon/gatt_uuid128.h
+           bluetooth/examples/beacon/beacon.c
+           bluetooth/examples/beacon/beacon.h
+           bluetooth/examples/beacon/readme.md
+           ../../${board_root}/${board}/wireless_examples/bluetooth/beacon/example_board_readme.md
 )
 
-# workaround
 mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     INCLUDES
-            ../../../../wireless_examples/bluetooth/common/freertos/
-)
-# end workaround
-
-mcux_add_include(
-    INCLUDES .
-             ../
-             ../../common
+        bluetooth/examples/beacon/
+        ../../examples/wireless_examples/bluetooth/common/freertos
+        ../../examples/wireless_examples/bluetooth/common/
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/beacon/${multicore_foldername}/freertos/reconfig.cmake OPTIONAL)
