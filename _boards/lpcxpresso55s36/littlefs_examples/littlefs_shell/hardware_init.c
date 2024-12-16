@@ -24,7 +24,7 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
 
     BOARD_InitPins();
-    BOARD_BootClockPLL150M();
+    BOARD_BootClockPLL100M();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
