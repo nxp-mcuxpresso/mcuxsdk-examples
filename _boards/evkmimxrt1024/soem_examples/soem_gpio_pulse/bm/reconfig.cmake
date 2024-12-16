@@ -16,6 +16,7 @@ mcux_add_include(
 mcux_add_macro(
     CC "-DSDK_DEBUGCONSOLE_UART\
         -DSERIAL_PORT_TYPE_UART=1\
+        -DEC_MAXSLAVE=32\
         -DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
        -DPRINTF_ADVANCED_ENABLE=1"
 )
