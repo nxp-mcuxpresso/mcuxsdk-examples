@@ -10,7 +10,7 @@ mcux_add_source(
     lowpower_peripheral.h
     gatt_db.h
     gatt_uuid128.h
-    ../README.md
+    ../readme.md
     ../pics/fig3.PNG
 )
 
