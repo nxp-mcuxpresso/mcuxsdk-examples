@@ -9,7 +9,6 @@ Board settings
 1. To wakeup the chip via VBAT, please press SW5, and the falling edge will wakeup the chip.
 2. To test PowerSwitchOff(Smart power switch) mode, cut the SH9 trace between P3V3_DUT and VDD_REG, then populate a
 0-ed ohm resistor in SH9 to connect VDD_REG and VOUT_SWITCH nodes.
-3. The data of power consumption is measured on FRDM-MCXW72 RevD JP5(3-4) which is in DCDC mode. 
 
 Prepare the Demo
 ===============
