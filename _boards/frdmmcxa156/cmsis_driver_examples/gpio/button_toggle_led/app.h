@@ -10,8 +10,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_BUTTON_GPIO_INTERFACE  Driver_GPIO_PORT3
-#define EXAMPLE_LED_GPIO_INTERFACE     Driver_GPIO_PORT1
+#define EXAMPLE_BUTTON_GPIO_INTERFACE  Driver_GPIO_PORT1
+#define EXAMPLE_LED_GPIO_INTERFACE     Driver_GPIO_PORT3
 #define EXAMPLE_BUTTON_PIN             BOARD_SW2_GPIO_PIN
 #define EXAMPLE_LED_PIN                BOARD_LED_RED_GPIO_PIN
 /*${macro:end}*/
