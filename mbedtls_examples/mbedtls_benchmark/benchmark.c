@@ -333,9 +333,9 @@ void ecp_clear_precomputed(mbedtls_ecp_group *grp)
 
 /* NXP: Move buffer to NON-CACHED memory because of HW accel */
 #if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    AT_NONCACHEABLE_SECTION_INIT(static unsigned char buf[BUFSIZE]);
+    SDK_ALIGN(AT_NONCACHEABLE_SECTION_INIT(static unsigned char buf[BUFSIZE]), 32u);
 #else
-    unsigned char buf[BUFSIZE];
+    SDK_ALIGN(unsigned char buf[BUFSIZE], 32u);
 #endif /* DCACHE */
 
 #if defined(MBEDTLS_ECP_C)
