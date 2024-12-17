@@ -18,9 +18,6 @@ Connect MIPI panel to J44.
 
 Prepare the Demo
 ===============
-The demo use SSD1963 panel by default, to use other, change the macro DEMO_PANEL in
-mcux_config.h. Which number represents which panel can be found in display_support.h.
-
 1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -30,6 +27,16 @@ mcux_config.h. Which number represents which panel can be found in display_suppo
     - No flow control
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Steps to configure the panels
+===============
+The demo use MIPI RK055MHD091 panel by default.
+If Kconfig is used, select the panel in Kconfig "Panel Selection".
+To use SSD1963 DBI panel, change the macro DEMO_PANEL to 0 in mcux_config.h (default).
+To use MIPI RK055AHD091 panel, change the macro DEMO_PANEL to 1 in mcux_config.h.
+To use MIPI RK055IQH091 panel, change the macro DEMO_PANEL to 2 in mcux_config.h.
+To use RM67162 MIPI smart DBI panel, change the macro DEMO_PANEL to 3 in mcux_config.h.
+To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to 4 in mcux_config.h.
 
 Running the demo
 ===============
