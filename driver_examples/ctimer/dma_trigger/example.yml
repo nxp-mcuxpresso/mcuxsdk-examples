@@ -5,7 +5,7 @@ ctimer_dma_trigger:
     meta_path: examples/driver_examples/ctimer/dma_trigger
     project-root-path: boards/${board}/driver_examples/ctimer/dma_trigger/${multicore_foldername}
     document:
-      name: ctimer_match_example${core_id_suffix_name}
+      name: ctimer_dma_trigger${core_id_suffix_name}
       category: driver_examples/ctimer
       brief: This example shows how to use CTimer to trigger DMA transfer by match feature.
         DMA requests are generated when the value of Timer Counter (TC) matches match register.
