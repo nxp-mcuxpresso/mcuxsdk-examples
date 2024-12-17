@@ -325,7 +325,7 @@ static void InitINPUTMUX(void)
     /* PWM0_SM0_OUT_TRIG0 is selected as trigger input for ADC0 channel 0 */
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Pwm0Sm0OutTrig0ToAdc0Trigger);
     /* CMP0_OUT is selected as trigger inp);ut for FlexPWM0 FAULT channel 0 */
-    INPUTMUX_AttachSignal(INPUTMUX0, 0U, 0x3C000006);
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Cmp0OutToFlexPwm0Fault);
   
 }
 
