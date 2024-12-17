@@ -28,3 +28,15 @@ mcux_add_macro(
     CC "-DFSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1"
     AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
 )
+
+mcux_remove_iar_configuration(
+    TOOLCHAINS iar
+    TARGETS flexspi_nor_release
+    CC "-Oh"
+)
+
+mcux_add_iar_configuration(
+    TOOLCHAINS iar
+    TARGETS flexspi_nor_release
+    CC "-Ohs"
+)
