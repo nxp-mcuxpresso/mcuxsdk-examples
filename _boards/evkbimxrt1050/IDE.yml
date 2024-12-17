@@ -21,6 +21,15 @@ mdk:
   project-templates:
   - scripts/guigenerator/templates/mdk/app_evkbimxrt1050_m7/app_evkbimxrt1050_m7.uvprojx
   - scripts/guigenerator/templates/mdk/app_evkbimxrt1050_m7/app_evkbimxrt1050_m7.uvoptx
+  config:
+    flexspi_nor_debug:
+      update-before-debug: true
+    flexspi_nor_release:
+      update-before-debug: true
+    flexspi_nor_sdram_debug:
+      update-before-debug: true
+    flexspi_nor_sdram_release:
+      update-before-debug: true
 
 macro-file:
   files:

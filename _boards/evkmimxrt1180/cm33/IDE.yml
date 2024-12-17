@@ -2,6 +2,15 @@ mdk:
   project-templates:
     - scripts/guigenerator/templates/mdk/app_evkmimxrt1180/app_evkmimxrt1180_cm33.uvprojx
     - scripts/guigenerator/templates/mdk/app_evkmimxrt1180/app_evkmimxrt1180_cm33.uvoptx
+  config:
+    flexspi_nor_debug:
+      update-before-debug: true
+    flexspi_nor_release:
+      update-before-debug: true
+    flexspi_nor_hyperram_debug:
+      update-before-debug: true
+    flexspi_nor_hyperram_release:
+      update-before-debug: true
 
 iar:
   project-templates:
