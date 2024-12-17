@@ -391,6 +391,7 @@ void InitTarget(void) {
 
 void ResetTarget(void) {
     unsigned int r;
+    JLINK_TARGET_Halt();
     ResetPeripherals();
     ResetCM7();
     r = JLINK_TARGET_IsHalted();
