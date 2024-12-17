@@ -28,6 +28,17 @@ mcux_add_linker_symbol(
 )
 
 
+mcux_remove_mdk_configuration(
+    TARGETS flash_release
+    CC "-Oz"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS flash_release
+    CC "-Os"
+)
+
+
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
