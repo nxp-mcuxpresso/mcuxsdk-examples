@@ -42,6 +42,6 @@ mcux_add_macro(
        -DDISABLE_LOGGING"
 )
 
-include(${SdkRootDirPath}/examples/_boards/${board}/aws_examples/shadow_wifi_serial/${multicore_foldername}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/examples/_boards/${board}/aws_examples/shadow_wifi_serial/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
