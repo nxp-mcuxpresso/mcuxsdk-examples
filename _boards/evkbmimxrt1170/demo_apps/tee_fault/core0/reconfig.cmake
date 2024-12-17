@@ -1,23 +1,4 @@
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/demo_apps/tee_fault/core0/resource_config.h
-            ${board_root}/${board}/demo_apps/tee_fault/core0/resource_config.c
-            examples/demo_apps/tee_fault/tee_fault_common.h
-)
-
-mcux_add_mdk_configuration(
-    LD "--keep=*(*core1_code)"
-)
-
-mcux_add_macro(
-    CC "-D__SEMIHOST_HARDFAULT_DISABLE=1"
-)
-mcux_add_macro(
-    TOOLCHAINS armgcc iar mdk
-    CC "-DCORE1_IMAGE_COPY_TO_RAM"
-)
-
 mcux_add_asm_include(
     BASE_PATH ${SdkRootDirPath}
     TOOLCHAINS armgcc

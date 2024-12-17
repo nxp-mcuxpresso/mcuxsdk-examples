@@ -8,6 +8,9 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/demo_apps/tee_fault/tee_fault_core0.c
+            examples/demo_apps/tee_fault/tee_fault_common.h
+            ${board_root}/${board}/demo_apps/tee_fault/core0/resource_config.h
+            ${board_root}/${board}/demo_apps/tee_fault/core0/resource_config.c
 )
 
 mcux_add_include(
@@ -22,6 +25,19 @@ mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bi
 mcux_add_iar_configuration(
     LD "--image_input=${APPLICATION_BINARY_DIR}/../tee_fault_core1/iar/core1_image.bin,_core1_image,__core1_image,4 \
         --keep _core1_image"
+)
+
+mcux_add_mdk_configuration(
+    LD "--keep=*(*core1_code)"
+)
+
+mcux_add_macro(
+    CC "-D__SEMIHOST_HARDFAULT_DISABLE=1"
+)
+
+mcux_add_macro(
+    TOOLCHAINS armgcc iar mdk
+    CC "-DCORE1_IMAGE_COPY_TO_RAM"
 )
 
 mcux_add_include(
