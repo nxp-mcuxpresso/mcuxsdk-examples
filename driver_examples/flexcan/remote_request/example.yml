@@ -13,5 +13,9 @@ flexcan_remote_request:
         mailbox as transmit mailbox. Board B receive remote frame and send response message automatically,
         but do not save remote frame. After successful response, board B will increase response message
         and wait for next remote request.
+      example_readme:
+      - examples/driver_examples/flexcan/remote_request/readme.md
+      - ${board_root}/${board}/driver_examples/flexcan/remote_request/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060: []
