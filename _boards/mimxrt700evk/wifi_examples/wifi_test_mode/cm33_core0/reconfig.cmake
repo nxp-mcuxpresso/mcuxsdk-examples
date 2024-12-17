@@ -40,6 +40,15 @@ mcux_add_macro(
        -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
 )
 
+mcux_add_mdk_configuration(
+    TARGETS flash_release
+    CC "-Os"
+)
+mcux_remove_mdk_configuration(
+    TARGETS flash_release
+    CC "-Oz"
+)
+
 mcux_add_iar_configuration(
     LD "--config_def=__stack_size__=0x400\
         --config_def=__heap_size__=0x400"
