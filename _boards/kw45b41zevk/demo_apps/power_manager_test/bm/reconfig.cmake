@@ -4,6 +4,9 @@ mcux_add_macro(
        -DFSL_PM_SUPPORT_ALWAYS_ON_SECTION=1"
 )
 
+mcux_add_armgcc_configuration(
+    CC "-DAPP_BYPASS_ECC_INIT=1"
+)
 
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
