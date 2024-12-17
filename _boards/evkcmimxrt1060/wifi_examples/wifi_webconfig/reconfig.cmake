@@ -33,6 +33,17 @@ mcux_add_iar_configuration(
 	LD "--semihosting"
 )
 
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Os"
+)
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Oz"
+)
+mcux_add_macro(
+    CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+)
 
 # Remove all default linker files
 mcux_remove_armgcc_linker_script(

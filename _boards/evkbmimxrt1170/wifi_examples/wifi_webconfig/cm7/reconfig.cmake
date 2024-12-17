@@ -33,7 +33,14 @@ mcux_add_iar_configuration(
 	LD "--semihosting"
 )
 
-
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Os"
+)
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Oz"
+)
 
 # Remove all default linker files
 mcux_remove_armgcc_linker_script(

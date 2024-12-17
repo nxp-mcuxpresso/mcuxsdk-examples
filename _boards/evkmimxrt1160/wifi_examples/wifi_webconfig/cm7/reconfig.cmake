@@ -26,7 +26,14 @@ mcux_add_macro(
     CC "-DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ"
 )
 
-
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Os"
+)
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Oz"
+)
 
 # Remove all default linker files
 mcux_remove_armgcc_linker_script(
