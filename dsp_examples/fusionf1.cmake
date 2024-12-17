@@ -50,4 +50,9 @@ mcux_add_custom_command(
   --only-section=.bss
 )
 
-mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+mcux_add_custom_command(
+  TOOLCHAINS xtensa
+  BUILD_EVENT POST_BUILD
+  BUILD_COMMAND ${CMAKE_OBJCOPY}
+  --xtensa-params= -Obinary ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin
+)
