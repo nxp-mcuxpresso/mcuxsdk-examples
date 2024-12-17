@@ -14,6 +14,7 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.dc-fb-ssd1963
     select MCUX_COMPONENT_driver.mipi_dsi_smartdma
     select MCUX_COMPONENT_driver.flexio_mculcd_smartdma
+    select MCUX_COMPONENT_driver.dbi_flexio_smartdma
 
 if MCUX_PRJSEG_module.board.display_support
 
