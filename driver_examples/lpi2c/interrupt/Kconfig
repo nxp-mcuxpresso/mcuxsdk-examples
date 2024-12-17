@@ -1,0 +1,31 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config LPI2C_MASTER_SLAVE_ADDR_7BIT
+    hex "LPI2C Device Address (7bit)"
+    default 0x7E
+    range 0x00 0x7F
+    help
+        No prefix in generated macro
+        type unsigned
+
+config LPI2C_BAUDRATE
+    int "LPI2C BaudRate (bps)"
+    default 100000
+    help
+        No prefix in generated macro
+        type unsigned
+
+config LPI2C_DATA_LENGTH
+    int "LPI2C Transfer Data Length (byte)"
+    default 32
+    help
+        No prefix in generated macro
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
