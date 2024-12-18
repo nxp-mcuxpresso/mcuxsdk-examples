@@ -272,8 +272,6 @@ status_t DEMO_CreateDC(void)
 {
     status_t status;
 
-    memset(&s_dcDbiHandle, 0, sizeof(dc_fb_dbi_handle_t));
-
     /* DC DBI handle. */
     s_dcDbiHandle.width = DEMO_PANEL_WIDTH;
     s_dcDbiHandle.height = DEMO_PANEL_HEIGHT;
