@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 fatfs_ramdisk:
+  section-type: application
   contents:
     meta_path: examples/fatfs_examples/fatfs_ramdisk
     project-root-path: boards/${board}/fatfs_examples/fatfs_ramdisk/${multicore_foldername}
