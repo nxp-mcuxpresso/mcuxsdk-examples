@@ -281,7 +281,6 @@ lvgl_demo_widgets_bm:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     mimxrt700evk@cm33_core0: []
-    frdmmcxa156: []
     frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
