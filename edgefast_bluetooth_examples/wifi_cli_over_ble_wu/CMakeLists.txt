@@ -40,7 +40,6 @@ mcux_add_include(
     middleware/wifi_nxp/example/wifi_cli
     middleware/wifi_nxp/example/wifi_cli/wifi_config
     middleware/wifi_nxp/example/wifi_cli/lwip_config
-    middleware/wifi_nxp/example/wifi_cli/freertos_config
 )
 
 mcux_add_macro(
