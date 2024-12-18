@@ -4332,6 +4332,40 @@ static int wlan_ncp_remove_all_networks(void *tlv)
     return ret;
 }
 
+static int wlan_ncp_get_pkt_stats(void *tlv)
+{
+    unsigned int count;
+    int ret = WM_SUCCESS;
+    wlan_pkt_stats_t stats;
+
+    if(wlan_get_log(&stats) != WM_SUCCESS)
+    {
+        ret = -WM_FAIL;
+    }
+
+    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
+    cmd_res->header.cmd        = NCP_RSP_WLAN_GET_PKT_STATS;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum     = 0x00;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    NCP_CMD_PKT_STATS *pkt_stats = (NCP_CMD_PKT_STATS *)&cmd_res->params.get_pkt_stats;
+
+    (void)memcpy(&pkt_stats, &stats, sizeof(wlan_pkt_stats_t));
+
+done:
+    if(ret == -WM_FAIL)
+    {
+        cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
+    }
+    else
+    {
+        cmd_res->header.size         += sizeof(NCP_CMD_PKT_STATS);
+    }
+
+    return ret;
+}
+
 static int wlan_ncp_error_ack(void *tlv)
 {
     wlan_ncp_prepare_status(NCP_RSP_INVALID_CMD, NCP_CMD_RESULT_ERROR);
