@@ -31,7 +31,7 @@ if MCUX_PRJSEG_module.board.display_support
 
     choice MCUX_PRJSEG_module.board.display_support.panel
         prompt "Panel Selection"
-        default MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5
+        default MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
 
         config MCUX_PRJSEG_module.board.display_support.TFT_PROTO_5
             bool "MikroE TFT Proto 5 inch CAPACITIVE"
