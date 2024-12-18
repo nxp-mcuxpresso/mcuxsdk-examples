@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 fatfs_ramdisk_freertos:
+  section-type: application
   contents:
     meta_path: examples/fatfs_examples/fatfs_ramdisk_freertos
     project-root-path: boards/${board}/fatfs_examples/fatfs_ramdisk_freertos/${multicore_foldername}
