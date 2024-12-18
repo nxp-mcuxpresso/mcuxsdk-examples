@@ -6,14 +6,14 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/uart_wifi_bridge/lwipopts.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/lwippools.h
+    SOURCES middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwipopts.h
+            middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwippools.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/mfg_wlan_bt_fw.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sd8801_mfg_wlan.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart8987_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartIW416_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart_nw61x_mfg_se.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/FreeRTOSConfig.h
+            middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
             middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config/wifi_config.h
             examples/_boards/${board}/wifi_examples/common/./hardware_init.c
             examples/_boards/${board}/wifi_examples/common/./app.h
@@ -31,6 +31,8 @@ mcux_add_include(
              middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware
              middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config
              examples/_boards/${board}/wifi_examples/common/app_config
+             middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config
+             middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config
 )
 
 
