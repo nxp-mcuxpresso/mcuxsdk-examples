@@ -6,13 +6,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/wifi_test_mode/lwipopts.h
-            middleware/wifi_nxp/example/wifi_test_mode/lwippools.h
+    SOURCES middleware/wifi_nxp/example/wifi_test_mode/lwip_config/lwipopts.h
+            middleware/wifi_nxp/example/wifi_test_mode/lwip_config/lwippools.h
             examples/_boards/${board}/wifi_examples/common/lpm/lpm.c
             examples/_boards/${board}/wifi_examples/common/lpm/lpm.h
             examples/_boards/${board}/wifi_examples/common/lpm/host_sleep.c
             examples/_boards/${board}/wifi_examples/common/lpm/host_sleep.h
-            middleware/wifi_nxp/example/wifi_test_mode/FreeRTOSConfig.h
+            middleware/wifi_nxp/example/wifi_test_mode/freertos_config/FreeRTOSConfig.h
             examples/_boards/${board}/wifi_examples/common/pin_mux.c
             examples/_boards/${board}/wifi_examples/common/pin_mux.h
             examples/_boards/${board}/wifi_examples/common/./hardware_init.c
@@ -33,6 +33,8 @@ mcux_add_include(
              examples/_boards/${board}/wifi_examples/common
              middleware/wifi_nxp/example/wifi_test_mode/wifi_config
              examples/_boards/${board}/wifi_examples/common/app_config
+             middleware/wifi_nxp/example/wifi_test_mode/lwip_config
+             middleware/wifi_nxp/example/wifi_test_mode/freertos_config
 )
 
 mcux_add_iar_configuration(
