@@ -43,6 +43,7 @@ mcux_add_include(
         bluetooth/examples/otac_l2cap/
         ../../examples/wireless_examples/bluetooth/common/freertos
         ../../examples/wireless_examples/bluetooth/common/
+        ../../examples/wireless_examples/bluetooth/common/otap_client
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/otac_l2cap/${multicore_foldername}/freertos/reconfig.cmake OPTIONAL)

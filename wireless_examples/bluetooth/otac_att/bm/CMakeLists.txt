@@ -39,6 +39,7 @@ mcux_add_include(
     INCLUDES
         bluetooth/examples/otac_att/
         ../../examples/wireless_examples/bluetooth/common/
+        ../../examples/wireless_examples/bluetooth/common/otap_client
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/otac_att/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)

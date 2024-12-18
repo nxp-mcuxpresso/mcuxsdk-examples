@@ -29,7 +29,7 @@ mcux_add_source(
            bluetooth/examples/hid_device/hid_device.c
            bluetooth/examples/hid_device/hid_device.h
            bluetooth/examples/hid_device/readme.md
-           ../../${board_root}/${board}/wireless_examples/bluetooth/advhid_device_ext_central/example_board_readme.md
+           ../../${board_root}/${board}/wireless_examples/bluetooth/hid_device/example_board_readme.md
 )
 
 mcux_add_include(
