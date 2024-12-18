@@ -34,9 +34,9 @@ mcux_add_include(
     INCLUDES examples/_boards/${board}/wifi_examples/common
              examples/_boards/${board}/wifi_examples/wifi_cli
              middleware/wifi_nxp/example/wifi_cli/wifi_config
+             examples/_boards/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/wifi_cli/lwip_config
              middleware/wifi_nxp/example/wifi_cli/freertos_config
-             examples/_boards/${board}/wifi_examples/common/app_config
 )
 
 

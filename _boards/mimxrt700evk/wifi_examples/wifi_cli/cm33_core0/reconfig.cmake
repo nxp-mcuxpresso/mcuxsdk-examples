@@ -8,10 +8,10 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/_boards/${board}/wifi_examples/common/pin_mux.c
             examples/_boards/${board}/wifi_examples/common/pin_mux.h
-            middleware/wifi_nxp/example/wifi_cli/lwippools.h
-            middleware/wifi_nxp/example/wifi_cli/lwiphooks.h
-            middleware/wifi_nxp/example/wifi_cli/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_cli/lwipopts.h
+            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
+            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
+            middleware/wifi_nxp/example/wifi_cli/freertos_config/FreeRTOSConfig.h
+            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
             middleware/wifi_nxp/example/wifi_cli/wifi_config/wifi_config.h
             examples/_boards/${board}/wifi_examples/common/cm33_core0/hardware_init.c
             examples/_boards/${board}/wifi_examples/common/cm33_core0/app.h
@@ -29,6 +29,8 @@ mcux_add_include(
              examples/_boards/${board}/wifi_examples/common/cm33_core0
              middleware/wifi_nxp/example/wifi_cli/wifi_config
              examples/_boards/${board}/wifi_examples/common/app_config
+             middleware/wifi_nxp/example/wifi_cli/lwip_config
+             middleware/wifi_nxp/example/wifi_cli/freertos_config
 )
 
 mcux_add_iar_configuration(
