@@ -16,6 +16,7 @@ wireless_uart_freertos:
     kw45b41zloc: []
     k32w148evk: []
     frdmmcxw71: []
+    mcxw71evk: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []
