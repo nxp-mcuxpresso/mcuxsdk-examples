@@ -7,7 +7,7 @@ Hardware requirements
 Board settings
 ============
 Attach OV7670 to J9 camera interface(pin5 to pin22).
-Rework the camera pins by changing the SJ16, SJ26 and SJ27 from A side to B side.
+Rework the camera pins by changing the SJ16, SJ26 and SJ27 from right side to left side.
 Attach LCD-PAR-S035 low cost panel to J8.
 
 Prepare the Demo
