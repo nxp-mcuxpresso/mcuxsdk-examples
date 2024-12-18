@@ -98,7 +98,8 @@ void lv_port_disp_init(void)
     s_fbInfo.strideBytes = DEMO_BUFFER_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL;
     g_dc.ops->setLayerConfig(&g_dc, 0, &s_fbInfo);
 
-    g_dc.ops->setCallback(&g_dc, 0, DEMO_BufferSwitchOffCallback, NULL);
+    disp_drv = lv_display_create(DEMO_BUFFER_WIDTH, DEMO_BUFFER_HEIGHT);
+    g_dc.ops->setCallback(&g_dc, 0, DEMO_BufferSwitchOffCallback, disp_drv);
 
 #if defined(SDK_OS_FREE_RTOS)
     s_transferDone = xSemaphoreCreateBinary();
@@ -121,8 +122,6 @@ void lv_port_disp_init(void)
 #endif
 
     g_dc.ops->enableLayer(&g_dc, 0);
-
-    disp_drv = lv_display_create(DEMO_BUFFER_WIDTH, DEMO_BUFFER_HEIGHT);
 
 #if DEMO_PANEL_TYPE_DBI
     lv_display_set_buffers(disp_drv, s_frameBuffer[0], s_frameBuffer[1], LCD_VIRTUAL_BUF_SIZE, LV_DISPLAY_RENDER_MODE_PARTIAL);
