@@ -89,7 +89,7 @@ static void init_freemaster_usart(void)
 
 #if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
     /* Enable UART interrupts. */
-    EnableIRQ(BOARD_UART_IRQ);
+    EnableIRQ(BOARD_USART_IRQ);
     EnableGlobalIRQ(0);
 #endif
 }
