@@ -17,7 +17,7 @@ mcux_add_include(
 )
 
 mcux_add_iar_configuration(
-    TARGETS debug release
+    TARGETS flash_debug flash_release
     LD "--semihosting\
        --redirect __iar_sh_stdout=__iar_sh_stdout_swo"
 )
@@ -30,7 +30,7 @@ mcux_add_macro(
 )
 
 mcux_add_configuration(
-    TARGETS debug
+    TARGETS debug flash_debug
     CC "-DDBG=1"
 )
 
@@ -54,8 +54,8 @@ mcux_remove_armgcc_linker_script(
 
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER devices/RT/RT700/MIMXRT798S/iar/MIMXRT798Sxxxx_cm33_core0_ram.icf
+    TARGETS flash_debug flash_release
+    LINKER devices/RT/RT700/MIMXRT798S/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
 )
 
 # Add or remove Linker File Configurations
@@ -67,7 +67,7 @@ mcux_add_armgcc_linker_script(
 
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER examples/_boards/${board}/openvg_examples/openvg_tiger/MIMXRT798Sxxxx_cm33_core0_psram.icf
+    TARGETS flash_debug flash_release
+    LINKER examples/_boards/${board}/openvg_examples/openvg_tiger/MIMXRT798Sxxxx_cm33_core0_psram_flash.icf
 )
 
