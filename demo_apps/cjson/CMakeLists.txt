@@ -10,6 +10,10 @@ mcux_add_source(
     SOURCES examples/demo_apps/cjson/cjson_demo.c
 )
 
+mcux_add_linker_symbol(
+      SYMBOLS "__heap_size__=0x2000"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/demo_apps/cjson/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
