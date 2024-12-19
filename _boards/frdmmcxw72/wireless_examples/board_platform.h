@@ -12,6 +12,9 @@
  * Definitions
  ******************************************************************************/
 
+/*! @brief The board name */
+#define BOARD_NAME "FRDM-MCXW72"
+
 /*! \brief Change Default trimming value for 32MHz crystal,
       will be used by hardware_init.c file during initialization */
 #ifndef BOARD_32MHZ_XTAL_CDAC_VALUE

@@ -12,6 +12,9 @@
  * Definitions
  ******************************************************************************/
 
+/*! @brief The board name */
+#define BOARD_NAME "KW45B41Z-LOC"
+
 /*! \brief Change Default trimming value for 32MHz crystal,
       will be used by hardware_init.c file during initialization */
 /* BOARD_32MHZ_XTAL_TRIM_DEFAULT macro is deprecated

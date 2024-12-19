@@ -7,6 +7,7 @@
 #ifndef _BOARD_H_
 #define _BOARD_H_
 
+#include "board_platform.h"
 #include "clock_config.h"
 #include "fsl_gpio.h"
 
@@ -28,8 +29,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-/*! \brief The board name */
-#define BOARD_NAME        "KW45x_K32W1x_MCXW71x"
+/*! \brief The manufacturer name
+ * Note: The board name BOARD_NAME is located in board_platform.h
+ */
 #define MANUFACTURER_NAME "NXP"
 
 /* Number of LEDs supported on the board
