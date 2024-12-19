@@ -21,5 +21,4 @@ endif()
 
 include(${SdkRootDirPath}/examples/_common/project_segments/wireless/wireless_mcu/prjseg.cmake)
 include(${SdkRootDirPath}/examples/_common/project_segments/freertos/examples/tickless/prjseg.cmake)
-
-mcux_add_cmakelists(${SdkRootDirPath}/examples/wireless_examples/bluetooth/common)
+mcux_add_cmakelists(${SdkRootDirPath}/middleware/wireless/bluetooth/application/common)
