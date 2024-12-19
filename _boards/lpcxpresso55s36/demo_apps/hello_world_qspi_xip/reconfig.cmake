@@ -1,4 +1,3 @@
-include(${CMAKE_CURRENT_LIST_DIR}/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_add_iar_configuration(
     LD "--config_def __qspi_xip__=1"
