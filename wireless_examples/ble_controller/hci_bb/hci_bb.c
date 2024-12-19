@@ -19,6 +19,7 @@
 #include "app.h"
 #include "fwk_platform.h"
 #include "fwk_platform_ble.h"
+#include "board.h"
 
 #include "controller_interface.h"
 #include "controller_api.h"
@@ -40,7 +41,9 @@
 #define HCI_HW_RESET_OPCODE                    0xFDAFU
 #define HCI_IDENTIFY_DEV_OPCODE                0xFDB0U
 
-#ifndef BOARD_NAME_STR
+#ifdef BOARD_NAME
+#define BOARD_NAME_STR BOARD_NAME
+#else
 #define BOARD_NAME_STR "None"
 #endif
 
