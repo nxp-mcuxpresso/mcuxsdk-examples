@@ -8,6 +8,11 @@ mcux_add_macro(
     CC "-DENABLE_RAM_VECTOR_TABLE"
 )
 
+mcux_add_linker_symbol(
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    SYMBOLS "__ram_vector_table__=1"
+)
+
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}

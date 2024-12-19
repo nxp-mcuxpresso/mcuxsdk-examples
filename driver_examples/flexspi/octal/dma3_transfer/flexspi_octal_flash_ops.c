@@ -609,6 +609,10 @@ void flexspi_nor_flash_init(FLEXSPI_Type *base)
     /* To store custom's LUT table in local. */
     uint32_t tempCustomLUT[CUSTOM_LUT_LENGTH] = {0U};
 
+    /* Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read sequence(LUT[0])
+     * and load wrong LUT table from FLASH region. */
+    memcpy(tempCustomLUT, customLUTOctalMode, sizeof(tempCustomLUT));
+
 #if defined(CACHE_MAINTAIN) && CACHE_MAINTAIN
     flexspi_cache_status_t cacheStatus;
     flexspi_nor_disable_cache(&cacheStatus);
@@ -647,9 +651,6 @@ void flexspi_nor_flash_init(FLEXSPI_Type *base)
     memcpy(tmpFastReadSDRLUTCommandSeq, FastReadSDRLUTCommandSeq, sizeof(FastReadSDRLUTCommandSeq));
 #endif
 
-    /* Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read sequence(LUT[0])
-     * and load wrong LUT table from FLASH region. */
-    memcpy(tempCustomLUT, customLUTOctalMode, sizeof(tempCustomLUT));
     FLEXSPI_UpdateLUT(base, 0, tempCustomLUT, CUSTOM_LUT_LENGTH);
 
     /* Do software reset. */
