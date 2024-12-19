@@ -206,8 +206,8 @@ void ADC1_IRQHandler(void)
     /* Call FreeMASTER recorder */
     FMSTR_Recorder(0);
 
-    /* Clear the TCOMP INT flag */
-    ADC1->STAT |= (uint32_t)(1U << 9);
+    /* Clear the Result FIFO 0 Overflow Flag */
+    ADC1->STAT |= (uint32_t)(1U << 1U);
 
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;

@@ -37,7 +37,8 @@
         "parametersFreewheelDuration": 1.5,
         "parametersScalarUqMin": 1,
         "parametersAlignVoltage": 1.2,
-        "parametersAlignDuration": 0.4
+        "parametersAlignDuration": 0.4,
+        "parametersScalarVHzRatio": 100
     },
     "currentLoop": {
         "currentLoopSampleTime": 0.0000625,
