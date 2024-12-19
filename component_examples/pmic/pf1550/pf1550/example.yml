@@ -2,10 +2,10 @@ pf1550:
   section-type: application
   contents:
     meta_path: examples/component_examples/pmic/pf1550/pf1550
-    project-root-path: boards/${board}/driver_examples/pf1550/${multicore_foldername}
+    project-root-path: boards/${board}/component_examples/pf1550/${multicore_foldername}
     document:
       name: pf1550
-      category: driver_examples/pf1550
+      category: component_examples/pf1550
       brief: The pf1550 driver example demonstrates the usage of pf1550 SDK component
         driver.The example shows the usage of PF1550 API to:1. Set regulator output
         voltages;2. Query regulator output voltages;3. Dump PF1550 register content;4.
@@ -16,7 +16,7 @@ pf1550:
         sure that the battery is not over-charged.
       example_readme:
       - examples/component_examples/pmic/pf1550/pf1550/readme.md
-      - examples/_boards/${board}/driver_examples/pf1550/example_board_readme.md
+      - examples/_boards/${board}/component_examples/pf1550/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []
