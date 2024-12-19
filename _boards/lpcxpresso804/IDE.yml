@@ -3,6 +3,10 @@ iar:
   - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
   - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
   - scripts/guigenerator/templates/iar/general.eww
+  config:
+    __common__:
+      debugger_setting:
+        cmsisdap_resetlist: halt_after_bootloader
 mdk:
   project-templates:
   - scripts/guigenerator/templates/mdk/app_xpresso804/xpresso804.uvprojx
