@@ -14,15 +14,15 @@ include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     SOURCES
-           ../../examples/wireless_examples/bluetooth/common/bm/main.c
-           ../../examples/wireless_examples/bluetooth/common/app_conn.c
-           ../../examples/wireless_examples/bluetooth/common/app_conn.h
-           ../../examples/wireless_examples/bluetooth/common/ble_init.c
-           ../../examples/wireless_examples/bluetooth/common/ble_init.h
-           ../../examples/wireless_examples/bluetooth/common/app_connection.c
-           ../../examples/wireless_examples/bluetooth/common/app_advertiser.c
-           ../../examples/wireless_examples/bluetooth/common/app_advertiser.h
-           ../../examples/wireless_examples/bluetooth/common/app_nvm.c
+           bluetooth/application/common/bm/main.c
+           bluetooth/application/common/app_conn.c
+           bluetooth/application/common/app_conn.h
+           bluetooth/application/common/ble_init.c
+           bluetooth/application/common/ble_init.h
+           bluetooth/application/common/app_connection.c
+           bluetooth/application/common/app_advertiser.c
+           bluetooth/application/common/app_advertiser.h
+           bluetooth/application/common/app_nvm.c
            bluetooth/examples/adv_ext_peripheral/app_config.c
            bluetooth/examples/adv_ext_peripheral/gatt_db.h
            bluetooth/examples/adv_ext_peripheral/gatt_uuid128.h
@@ -36,7 +36,7 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     INCLUDES
         bluetooth/examples/adv_ext_peripheral/
-        ../../examples/wireless_examples/bluetooth/common/
+        bluetooth/application/common/
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/adv_ext_peripheral/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)

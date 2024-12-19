@@ -15,17 +15,17 @@ include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     SOURCES
-        ../../examples/wireless_examples/bluetooth/common/freertos/main.c
-        ../../examples/wireless_examples/bluetooth/common/freertos/FreeRTOSConfig.h
-        ../../examples/wireless_examples/bluetooth/common/app_conn.c
-        ../../examples/wireless_examples/bluetooth/common/app_conn.h
-        ../../examples/wireless_examples/bluetooth/common/ble_init.c
-        ../../examples/wireless_examples/bluetooth/common/ble_init.h
-        ../../examples/wireless_examples/bluetooth/common/app_connection.c
-        ../../examples/wireless_examples/bluetooth/common/app_scanner.c
-        ../../examples/wireless_examples/bluetooth/common/app_scanner.h
-        ../../examples/wireless_examples/bluetooth/common/app_nvm.c
-        ../../examples/wireless_examples/bluetooth/common/app_low_power.c
+        bluetooth/application/common/freertos/main.c
+        bluetooth/application/common/freertos/FreeRTOSConfig.h
+        bluetooth/application/common/app_conn.c
+        bluetooth/application/common/app_conn.h
+        bluetooth/application/common/ble_init.c
+        bluetooth/application/common/ble_init.h
+        bluetooth/application/common/app_connection.c
+        bluetooth/application/common/app_scanner.c
+        bluetooth/application/common/app_scanner.h
+        bluetooth/application/common/app_nvm.c
+        bluetooth/application/common/app_low_power.c
         bluetooth/examples/adv_ext_central/app_config.c
         bluetooth/examples/adv_ext_central/gatt_db.h
         bluetooth/examples/adv_ext_central/gatt_uuid128.h
@@ -39,8 +39,8 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     INCLUDES
         bluetooth/examples/adv_ext_central/
-        ../../examples/wireless_examples/bluetooth/common/freertos
-        ../../examples/wireless_examples/bluetooth/common/
+        bluetooth/application/common/freertos
+        bluetooth/application/common/
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/adv_ext_central/${multicore_foldername}/freertos/reconfig.cmake OPTIONAL)

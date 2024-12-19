@@ -13,19 +13,19 @@ include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     SOURCES
-           ../../examples/wireless_examples/bluetooth/common/bm/main.c
-           ../../examples/wireless_examples/bluetooth/common/app_conn.c
-           ../../examples/wireless_examples/bluetooth/common/app_conn.h
-           ../../examples/wireless_examples/bluetooth/common/ble_init.c
-           ../../examples/wireless_examples/bluetooth/common/ble_init.h
-           ../../examples/wireless_examples/bluetooth/common/app_advertiser.c
-           ../../examples/wireless_examples/bluetooth/common/app_advertiser.h
-           ../../examples/wireless_examples/bluetooth/common/app_connection.c
-           ../../examples/wireless_examples/bluetooth/common/app_scanner.c
-           ../../examples/wireless_examples/bluetooth/common/app_scanner.h
-           ../../examples/wireless_examples/bluetooth/common/app_nvm.c
-           ../../examples/wireless_examples/bluetooth/common/genfsk_app/genfsk_app.c
-           ../../examples/wireless_examples/bluetooth/common/genfsk_app/genfsk_app.h
+           bluetooth/application/common/bm/main.c
+           bluetooth/application/common/app_conn.c
+           bluetooth/application/common/app_conn.h
+           bluetooth/application/common/ble_init.c
+           bluetooth/application/common/ble_init.h
+           bluetooth/application/common/app_advertiser.c
+           bluetooth/application/common/app_advertiser.h
+           bluetooth/application/common/app_connection.c
+           bluetooth/application/common/app_scanner.c
+           bluetooth/application/common/app_scanner.h
+           bluetooth/application/common/app_nvm.c
+           bluetooth/application/common/genfsk_app/genfsk_app.c
+           bluetooth/application/common/genfsk_app/genfsk_app.h
            bluetooth/examples/w_uart_genfsk/app_config.c
            bluetooth/examples/w_uart_genfsk/gatt_db.h
            bluetooth/examples/w_uart_genfsk/gatt_uuid128.h
@@ -39,8 +39,8 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}/middleware/wireless/
     INCLUDES
         bluetooth/examples/w_uart_genfsk/
-        ../../examples/wireless_examples/bluetooth/common/
-        ../../examples/wireless_examples/bluetooth/common/genfsk_app
+        bluetooth/application/common/
+        bluetooth/application/common/genfsk_app
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/w_uart_genfsk/${multicore_foldername}/reconfig.cmake OPTIONAL)
