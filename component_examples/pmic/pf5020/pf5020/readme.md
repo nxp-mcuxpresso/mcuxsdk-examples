@@ -12,4 +12,4 @@ To use this example, user need to pay attention the output voltage when update t
 output and make sure the output voltage to set will not cause hardware damage.
 
 ## Supported Boards
-- [MIMXRT1170-EVKB](../../../../_boards/evkbmimxrt1170/driver_examples/pf5020/example_board_readme.md)
+- [MIMXRT1170-EVKB](../../../../_boards/evkbmimxrt1170/component_examples/pf5020/example_board_readme.md)

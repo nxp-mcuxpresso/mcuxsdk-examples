@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(pf3000 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/pf3000)
+project(pf3000 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/component_examples/pf3000)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

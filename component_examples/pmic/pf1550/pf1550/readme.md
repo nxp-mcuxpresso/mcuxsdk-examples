@@ -14,4 +14,4 @@ You need also to pay attention to the charging voltage setting when charging Li-
 and make sure that the battery is not over-charged.
 
 ## Supported Boards
-- [EVK-MCIMX7ULP](../../../../_boards/evkmcimx7ulp/driver_examples/pf1550/example_board_readme.md)
+- [EVK-MCIMX7ULP](../../../../_boards/evkmcimx7ulp/component_examples/pf1550/example_board_readme.md)
