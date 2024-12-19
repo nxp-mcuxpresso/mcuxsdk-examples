@@ -256,18 +256,11 @@
 
 #elif (DEMO_PANEL_CO5300 == DEMO_PANEL)
 
-/* Default use LCDIF DBI interface to transfer pixel to MIPI. */
-#define CO5300_USE_LCDIF 1
-
 /* Pixel format macro mapping. */
 #define DEMO_CO5300_BUFFER_RGB565   0
 #define DEMO_CO5300_BUFFER_RGB888   1
 
 #define DEMO_CO5300_BUFFER_FORMAT DEMO_CO5300_BUFFER_RGB565
-
-#if (!CO5300_USE_LCDIF && (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB888))
-#error When using MIPI interrupt way, the frame buffer format must be the same as panel interface pixel format which is RGB565.
-#endif
 
 /* Use fixed address to place buffer on PSRAM. */
 #define DEMO_BUFFER_FIXED_ADDRESS 1
@@ -307,16 +300,11 @@
 #define DEMO_BUFFER_START_X 6U /* The hardware actually starts to show from pixel 7. */
 #define DEMO_BUFFER_START_Y 0U
 
-#if CO5300_USE_LCDIF
 #if (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB565)
 #define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), 64U)
 #else
 /* For RGB888 format, the stride shall also be divisible by 3. */
 #define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), (64U * 3U))
-#endif
-#else
-/* No align requirement for MIPI APB. */
-#define DEMO_BUFFER_STRIDE_BYTE DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL
 #endif
 
 #endif

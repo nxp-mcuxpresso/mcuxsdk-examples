@@ -30,7 +30,7 @@
 #endif
 #include "fsl_mipi_dsi.h"
 #else
-#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || ((DEMO_PANEL_CO5300 == DEMO_PANEL) && CO5300_USE_LCDIF))
+#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || (DEMO_PANEL_CO5300 == DEMO_PANEL))
 #include "fsl_dc_fb_dbi.h"
 #include "fsl_dbi_lcdif.h"
 #else
@@ -910,7 +910,7 @@ status_t BOARD_PrepareDisplayController(void)
 #define DEMO_MIPI_DSI          MIPI_DSI_HOST
 #define DEMO_MIPI_DSI_LANE_NUM 1
 
-#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || ((DEMO_PANEL_CO5300 == DEMO_PANEL) && CO5300_USE_LCDIF))
+#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || (DEMO_PANEL_CO5300 == DEMO_PANEL))
 
 /* Macros for LCDIF and interrupt. */
 #define DEMO_DBI_LCDIF      LCDIF
@@ -949,7 +949,7 @@ static void BOARD_InitMipiDsi(void);
 static status_t BOARD_DSI_Transfer(dsi_transfer_t *xfer);
 static void BOARD_InitMipiPanelTEPin(void);
 
-#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || ((DEMO_PANEL_CO5300 == DEMO_PANEL) && CO5300_USE_LCDIF))
+#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || (DEMO_PANEL_CO5300 == DEMO_PANEL))
 static void BOARD_InitLcdifPowerReset(void);
 static void BOARD_InitLcdif(void);
 #else /* The DBI panel does not use LCDIF */
@@ -965,7 +965,7 @@ static uint32_t mipiDsiDphyBitClkFreq_Hz;
 static mipi_dsi_device_t dsiDevice = {
     .virtualChannel = 0,
     .xferFunc       = BOARD_DSI_Transfer,
-#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && !RM67162_USE_LCDIF) || ((DEMO_PANEL_CO5300 == DEMO_PANEL) && !CO5300_USE_LCDIF))
+#if ((DEMO_PANEL_RM67162 == DEMO_PANEL) && !RM67162_USE_LCDIF)
     .memWriteFunc   = BOARD_DSI_MemWrite,
 #endif
 };
@@ -994,7 +994,7 @@ static display_handle_t co5300Handle = {
 };
 #endif
 
-#if ((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || ((DEMO_PANEL_CO5300 == DEMO_PANEL) && CO5300_USE_LCDIF)
+#if ((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || (DEMO_PANEL_CO5300 == DEMO_PANEL)
 
 static display_config_t displayConfig = {
     .resolution   = FSL_VIDEO_RESOLUTION(DEMO_PANEL_WIDTH, DEMO_PANEL_HEIGHT),
@@ -1006,7 +1006,7 @@ static display_config_t displayConfig = {
     .vbp          = 0,
     .controlFlags = 0,
     .dsiLanes     = DEMO_MIPI_DSI_LANE_NUM,
-    .pixelFormat  = kVIDEO_PixelFormatRGB565, /* The same as LCDIF DBI format kLCDIF_DbiOutD16RGB565. */
+    .pixelFormat  = DEMO_BUFFER_PIXEL_FORMAT,
 };
 
 static dbi_lcdif_prv_data_t s_lcdifPrvData;
@@ -1040,7 +1040,7 @@ const dc_fb_dsi_cmd_config_t s_panelConfig = {
             .vbp          = 0,
             .controlFlags = 0,
             .dsiLanes     = DEMO_MIPI_DSI_LANE_NUM,
-            .pixelFormat  = kVIDEO_PixelFormatRGB565,
+            .pixelFormat  = DEMO_BUFFER_PIXEL_FORMAT,
         },
     .useTEPin = true,
 };
@@ -1153,7 +1153,7 @@ static void BOARD_InitMipiDsi(void)
     /* Init DPHY. There is not DPHY PLL, the ref clock is not used. */
     DSI_InitDphy(DEMO_MIPI_DSI, &dphyConfig, 0);
 
-#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || ((DEMO_PANEL_CO5300 == DEMO_PANEL) && CO5300_USE_LCDIF))
+#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || (DEMO_PANEL_CO5300 == DEMO_PANEL))
     DSI_SetDbiPixelFormat(DEMO_MIPI_DSI, kDSI_DbiRGB565);
 #endif
 }
@@ -1212,7 +1212,7 @@ static void BOARD_InitMipiPanelTEPin(void)
     EnableIRQ(BOARD_MIPI_TE_GPIO_IRQn);
 }
 
-#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || ((DEMO_PANEL_CO5300 == DEMO_PANEL) && CO5300_USE_LCDIF))
+#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && RM67162_USE_LCDIF) || (DEMO_PANEL_CO5300 == DEMO_PANEL))
 
 static void BOARD_InitLcdifPowerReset(void)
 {
@@ -1245,7 +1245,14 @@ static void BOARD_InitLcdif(void)
     dbiConfig.writeWRPeriod   = 14U;
     /* With 279.53MHz source and 16bpp format, a 14 cycle period requires a 279.53MHz / 14 * 16 = 319.46Mhz DPHY clk
      * source. */
-    dbiConfig.format          = kLCDIF_DbiOutD16RGB565;
+    if (DEMO_BUFFER_PIXEL_FORMAT == kVIDEO_PixelFormatRGB565)
+    {
+        dbiConfig.format = kLCDIF_DbiOutD16RGB565;
+    }
+    else
+    {
+        dbiConfig.format = kLCDIF_DbiOutD16RGB888Option1;
+    }
     dbiConfig.type            = kLCDIF_DbiTypeB;
     dbiConfig.writeCSAssert   = 1;
     dbiConfig.writeCSDeassert = 4;
@@ -1257,10 +1264,14 @@ static void BOARD_InitLcdif(void)
 
     LCDIF_PanelGetDefaultConfig(&config);
 #if (DEMO_PANEL_CO5300 == DEMO_PANEL)
-    /* For ZC143AC72MIPI panel, the source endian shall be swapped and the component order on bus shll be BGR
+    /* For ZC143AC72MIPI panel, when the source pixel format is RGB565, the endian shall be swapped and the component order on bus shall be BGR
        to show the piture properly. */
-    config.endian = kLCDIF_WordSwap;
+    if (DEMO_BUFFER_PIXEL_FORMAT == kVIDEO_PixelFormatRGB565)
+    {
+        config.endian = kLCDIF_WordSwap;
+    }
 #endif
+
     LCDIF_SetPanelConfig(DEMO_DBI_LCDIF, 0, &config);
 
     NVIC_ClearPendingIRQ(DEMO_DBI_LCDIF_IRQn);
