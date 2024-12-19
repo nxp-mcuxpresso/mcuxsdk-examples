@@ -581,6 +581,10 @@ void flexspi_nor_flash_init(FLEXSPI_Type *base)
     flexspi_nor_disable_cache(&cacheStatus);
 #endif
 
+    /* Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read sequence(LUT[0])
+     * and load wrong LUT table from FLASH region. */
+    memcpy(tempCustomLUT, customLUTOctalMode, sizeof(tempCustomLUT));
+
     /*Get FLEXSPI default settings and configure the flexspi. */
     FLEXSPI_GetDefaultConfig(&config);
 
@@ -614,9 +618,6 @@ void flexspi_nor_flash_init(FLEXSPI_Type *base)
     memcpy(tmpFastReadSDRLUTCommandSeq, FastReadSDRLUTCommandSeq, sizeof(FastReadSDRLUTCommandSeq));
 #endif
 
-    /* Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read sequence(LUT[0])
-     * and load wrong LUT table from FLASH region. */
-    memcpy(tempCustomLUT, customLUTOctalMode, sizeof(tempCustomLUT));
     /* Update LUT table into a specific mode, such as octal SDR mode or octal DDR mode based on application's
      * requirement. */
     FLEXSPI_UpdateLUT(base, 0, tempCustomLUT, CUSTOM_LUT_LENGTH);

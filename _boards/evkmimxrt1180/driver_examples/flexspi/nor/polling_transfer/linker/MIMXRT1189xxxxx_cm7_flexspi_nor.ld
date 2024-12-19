@@ -123,7 +123,13 @@ SECTIONS
     . = ALIGN(4);
     EXCLUDE_FILE (
         *flexspi_nor_flash_ops.c.obj
-        *fsl_flexspi.c.obj)
+        *fsl_flexspi.c.obj
+        *libc_a-memcpy-stub.o
+        *libc_a-memset.o
+        *_aeabi_uldivmod.o
+        *_aeabi_ldivmod.o
+        *_udivmoddi4.o
+        *_dvmd_tls.o)
       *(.text .rdata .text* .rodata*)
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
@@ -227,6 +233,12 @@ SECTIONS
     *(CodeQuickAccess)
     *flexspi_nor_flash_ops.c.obj(.text .text* .rodata .rodata*)
     *fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+    *libc_a-memcpy-stub.o(.text .text* .rodata .rodata*)
+    *libc_a-memset.o(.text .text* .rodata .rodata*)
+    *_aeabi_uldivmod.o(.text .text* .rodata .rodata*)
+    *_aeabi_ldivmod.o(.text .text* .rodata .rodata*)
+    *_udivmoddi4.o(.text .text* .rodata .rodata*)
+    *_dvmd_tls.o(.text .text* .rodata .rodata*)
     . = ALIGN(128);
     __ram_function_end__ = .;
   } > m_qacode
