@@ -31,10 +31,6 @@ mcux_add_include(
 
 mcux_add_macro(
   CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE"
-  TOOLCHAINS
-    "armgcc"
-    "iar"
-    "mdk"
 )
 
 mcux_add_macro(
