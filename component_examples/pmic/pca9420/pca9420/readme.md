@@ -9,6 +9,6 @@ The example shows the usage of PF1550 API to:
 4. Feed watchdog;
 
 ## Supported Boards
-- [EVK-MIMXRT595](../../../../_boards/evkmimxrt595/driver_examples/pca9420/example_board_readme.md)
-- [EVK-MIMXRT685](../../../../_boards/evkmimxrt685/driver_examples/pca9420/example_board_readme.md)
-- [MIMXRT685-AUD-EVK](../../../../_boards/mimxrt685audevk/driver_examples/pca9420/example_board_readme.md)
+- [EVK-MIMXRT595](../../../../_boards/evkmimxrt595/component_examples/pca9420/example_board_readme.md)
+- [EVK-MIMXRT685](../../../../_boards/evkmimxrt685/component_examples/pca9420/example_board_readme.md)
+- [MIMXRT685-AUD-EVK](../../../../_boards/mimxrt685audevk/component_examples/pca9420/example_board_readme.md)

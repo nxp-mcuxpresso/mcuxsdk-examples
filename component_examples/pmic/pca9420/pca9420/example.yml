@@ -2,16 +2,16 @@ pca9420:
   section-type: application
   contents:
     meta_path: examples/component_examples/pmic/pca9420/pca9420
-    project-root-path: boards/${board}/driver_examples/pca9420/${multicore_foldername}
+    project-root-path: boards/${board}/component_examples/pca9420/${multicore_foldername}
     document:
       name: pca9420
-      category: driver_examples/pca9420
+      category: component_examples/pca9420
       brief: The pca9420 driver example demonstrates the usage of pca9420 SDK component
         driver.The example shows the usage of PCA9420 API to dump mode group settings;
         Or switch mode group; Or dump PCA9420 register content;
       example_readme:
       - examples/component_examples/pmic/pca9420/pca9420/readme.md
-      - examples/_boards/${board}/driver_examples/pca9420/example_board_readme.md
+      - examples/_boards/${board}/component_examples/pca9420/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
