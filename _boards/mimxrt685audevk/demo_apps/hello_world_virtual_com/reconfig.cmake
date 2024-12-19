@@ -12,6 +12,9 @@ mcux_add_iar_configuration(
     CC "--no_unaligned_access"
 )
 
+mcux_add_mdk_configuration(
+  CC "-mno-unaligned-access"
+)
 mcux_add_macro(
     CC "-DUSB_STACK_USE_DEDICATED_RAM=1\
        -DSERIAL_PORT_TYPE_USBCDC=1\
