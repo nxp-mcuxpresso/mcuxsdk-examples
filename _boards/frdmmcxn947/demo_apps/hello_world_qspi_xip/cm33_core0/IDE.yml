@@ -1,0 +1,12 @@
+iar:
+  config:
+    __common__:
+      debugger_extra_options:
+      - "--macro_param initFlexSPI=1"
+
+mdk:
+  project-templates:
+    - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/app_mcxnxxxevk_hwreset.uvprojx
+    - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/app_mcxnxxxevk_hwreset.uvoptx
+    - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/JLinkSettings.JLinkScript
+    - scripts/guigenerator/templates/mdk/app_mcxnxxxevk/JLinkSettings.ini
