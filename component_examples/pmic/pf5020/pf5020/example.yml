@@ -2,10 +2,10 @@ pf5020:
   section-type: application
   contents:
     meta_path: examples/component_examples/pmic/pf5020/pf5020
-    project-root-path: boards/${board}/driver_examples/pf5020/${multicore_foldername}
+    project-root-path: boards/${board}/component_examples/pf5020/${multicore_foldername}
     document:
       name: pf5020${core_id_suffix_name}
-      category: driver_examples
+      category: component_examples
       brief: The pf5020 driver example demonstrates the usage of pf5020 SDK component
         driver. The example shows the usage of pf5020 API to 1. Set regulator output
         voltages; 2. Set Internal high speed clock; 3. Set PF5020 to standby mode;
@@ -14,7 +14,7 @@ pf5020:
         voltage to set will not cause hardware damage.
       example_readme:
       - examples/component_examples/pmic/pf5020/pf5020/readme.md
-      - examples/_boards/${board}/driver_examples/pf5020/example_board_readme.md
+      - examples/_boards/${board}/component_examples/pf5020/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1170@cm4: []
