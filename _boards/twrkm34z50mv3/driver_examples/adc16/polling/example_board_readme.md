@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-Connect J21 1-2 to use potentiometer
+Connect J8 1-2 to use potentiometer
 
 Prepare the Demo
 ================
@@ -22,7 +22,7 @@ Prepare the Demo
 
 Running the demo
 ================
-Roll the potentiometer(R21) to change the ADC value.
+Roll the potentiometer(R20) to change the ADC value.
 When the demo runs successfully, the following message is displayed in the terminal:
 
 ~~~~~~~~~~~~~~~~~~~~~
