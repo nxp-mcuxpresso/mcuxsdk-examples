@@ -39,7 +39,7 @@ struct mbc_conf {
  ******************************************************************************/
 
 void mbc_setup(const struct mbc_conf conf[], size_t cnt);
-void glikey_write_enable(uint32_t index);
+void glikey_write_enable(void);
 void mbc_print(void);
 
 /*******************************************************************************
@@ -106,7 +106,7 @@ int main(void)
     mbc_print();
 #endif
     
-    glikey_write_enable(MBC_GLIKEY_IDX);
+    glikey_write_enable();
     mbc_setup(mbc_config_sbl, ARRAY_SIZE(mbc_config_sbl));
     
 #if 0
@@ -157,27 +157,16 @@ void mbc_setup(const struct mbc_conf conf[], size_t cnt)
     }
 }
 
-void glikey_write_enable(uint32_t index)
+void glikey_write_enable(void)
 {
-    status_t status;
-
-    status = GLIKEY_IsLocked(GLIKEY0);
-    if (status != kStatus_GLIKEY_NotLocked)
-    {
-        PRINTF("\n! GLIKEY locked !\n");
-        return;
-    }
-
-    GLIKEY_SyncReset(GLIKEY0);
-    GLIKEY_StartEnable(GLIKEY0, index);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP1);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP2);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP3);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP4);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP5);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP6);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP7);
-    GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP_EN);
+    /* Enable MBC register written with GLIKEY index15 */
+    GLIKEY0->CTRL_0 = 0x00060000U;
+    GLIKEY0->CTRL_0 = 0x0002000FU;
+    GLIKEY0->CTRL_0 = 0x0001000FU;
+    GLIKEY0->CTRL_1 = 0x00290000U;
+    GLIKEY0->CTRL_0 = 0x0002000FU;
+    GLIKEY0->CTRL_1 = 0x00280000U;
+    GLIKEY0->CTRL_0 = 0x0000000FU;
 }
 
 void mbc_print(void)
@@ -197,7 +186,9 @@ void SBL_DisablePeripherals(void)
 {
     /* reconfigure flash access rights for app about to be booted, lock GLIKEY */
     mbc_setup(mbc_config_app, ARRAY_SIZE(mbc_config_app));
-    GLIKEY_EndOperation(GLIKEY0);
+
+    /* Disable MBC register written */
+    GLIKEY0->CTRL_0 = 0x0002000FU;
     
     DbgConsole_Deinit();
 }
@@ -206,3 +197,4 @@ status_t CRYPTO_InitHardware(void)
 {
     return kStatus_Success;
 }
+
