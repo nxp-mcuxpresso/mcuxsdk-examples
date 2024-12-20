@@ -9,7 +9,7 @@ static_image_mobilenet_view:
       brief: Vision Pipeline example using MobileNetv1 model
       example_readme:
       - examples/eiq_examples/mpp/static_image_mobilenet_view/readme.md
-      - middleware/eiq/mpp/${board}/board_readme.md
+      - examples/_boards/${board}/eiq_examples/mpp/board_readme.md
       - middleware/eiq/mpp/README.md
     configuration:
       tools:

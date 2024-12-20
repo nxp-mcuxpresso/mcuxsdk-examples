@@ -9,7 +9,7 @@ camera_view:
       brief: Vision Pipeline example for camera viewfinder
       example_readme:
       - examples/eiq_examples/mpp/camera_view/readme.md
-      - middleware/eiq/mpp/${board}/board_readme.md
+      - examples/_boards/${board}/eiq_examples/mpp/board_readme.md
       - middleware/eiq/mpp/README.md
     configuration:
       tools:
