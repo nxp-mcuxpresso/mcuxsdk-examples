@@ -12,10 +12,10 @@ mcux_add_source(
             ${board_root}/${board}/wifi_examples/common/lpm/host_sleep.h
             ${board_root}/${board}/wifi_examples/common/pin_mux.c
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
-            middleware/wifi_nxp/example/wifi_cli/lwippools.h
-            middleware/wifi_nxp/example/wifi_cli/lwiphooks.h
-            middleware/wifi_nxp/example/wifi_cli/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_cli/lwipopts.h
+            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
+            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
+            middleware/wifi_nxp/example/wifi_cli/freertos_config/FreeRTOSConfig.h
+            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
             ${board_root}/${board}/wifi_examples/common/./app.h
             ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
@@ -34,6 +34,8 @@ mcux_add_include(
              ${board_root}/${board}/wifi_examples/common
              middleware/wifi_nxp/example/wifi_cli/wifi_config
              ${board_root}/${board}/wifi_examples/common/app_config
+             middleware/wifi_nxp/example/wifi_cli/lwip_config
+             middleware/wifi_nxp/example/wifi_cli/freertos_config
 )
 
 mcux_add_armgcc_configuration(
