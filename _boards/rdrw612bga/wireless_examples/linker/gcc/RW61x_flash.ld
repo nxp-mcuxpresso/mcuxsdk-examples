@@ -10,7 +10,7 @@
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -406,8 +406,9 @@ SECTIONS
     KEEP(*(SORT(._k_mem_slab*)))
     _k_mem_slab_list_end = .;
     . = ALIGN(4);
-    _net_buf_pool_list = .;
+    _net_buf_pool_list_start = .;
     KEEP(*(SORT(._net_buf_pool*)))
+    _net_buf_pool_list_end = .;
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data

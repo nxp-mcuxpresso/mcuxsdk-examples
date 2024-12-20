@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2024 NXP
+ * Copyright 2020-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,6 +13,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "els_pkc_mbedtls.h"
+#include "fsl_debug_console.h"
 
 /* -------------------------------------------------------------------------- */
 /*                               Private macros                               */
@@ -33,7 +34,11 @@ void BOARD_InitHardware(void)
 {
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+#if defined(SERIAL_PORT_TYPE_BLE_WU) && (SERIAL_PORT_TYPE_BLE_WU > 0)
+    DbgConsole_Init(0, 0, kSerialPort_BleWu, 0);
+#else
     BOARD_InitDebugConsole();
+#endif
     (void)CRYPTO_InitHardware();
 #if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
     CLOCK_AttachClk(kRC32K_to_CLK32K);
