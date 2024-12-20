@@ -16,6 +16,18 @@ mcux_add_include(
              examples/_boards/${board}/driver_examples/romapi/flashhiding/${core_id}
 )
 
+mcux_add_iar_configuration(
+    LD "--config_def=__stack_size__=0xC00"
+)
+
+mcux_add_mdk_configuration(
+    LD "--predefine=\"-D__stack_size__=0xC00\""
+)
+
+mcux_add_armgcc_configuration(
+    LD "-Xlinker --defsym=__stack_size__=0xC00"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/driver_examples/romapi/flashhiding/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
