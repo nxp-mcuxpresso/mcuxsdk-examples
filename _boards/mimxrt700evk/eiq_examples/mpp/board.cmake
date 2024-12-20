@@ -25,7 +25,11 @@ mcux_add_macro(
         -DSDK_I2C_BASED_COMPONENT_USED=1 \
         -DSSD1963_DATA_WITDH=8 \
         -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8 \
-        -DCUSTOM_VGLITE_MEMORY_CONFIG=1"
+        -DCUSTOM_VGLITE_MEMORY_CONFIG=1 \
+        -D__FPU_PRESENT=1 \
+        -DARM_MATH_CM33"
+    CX "-DARM_MATH_CM33\
+        -D__FPU_PRESENT=1"
 )
 
 mcux_remove_armgcc_linker_script(
@@ -45,3 +49,4 @@ mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/mpp
     LINKER MIMXRT798Sxxxx_cm33_core0_flash.ld
 )
+
