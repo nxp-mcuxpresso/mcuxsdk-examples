@@ -150,6 +150,18 @@
 #define NCP_CMD_WLAN_GET_PKT_STATS    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000036)
 /** Wi-Fi STA get pkt stats command response ID */
 #define NCP_RSP_WLAN_GET_PKT_STATS    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000036)
+/** Wi-Fi STA get current rssi command ID */
+#define NCP_CMD_WLAN_STA_GET_CURRENT_RSSI    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000037)
+/** Wi-Fi STA get current rssi command response ID */
+#define NCP_RSP_WLAN_STA_GET_CURRENT_RSSI    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000037)
+/** Wi-Fi STA get current channel command ID */
+#define NCP_CMD_WLAN_STA_GET_CURRENT_CHANNEL    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000038)
+/** Wi-Fi STA get current channel command response ID */
+#define NCP_RSP_WLAN_STA_GET_CURRENT_CHANNEL    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000038)
+/** Wi-Fi STA get ip config command ID */
+#define NCP_CMD_WLAN_GET_IP_CINFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000039)
+/** Wi-Fi STA get ip config command response ID */
+#define NCP_RSP_WLAN_GET_IP_CINFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000039)
 
 /** WLAN Basic command/response */
 /** Wi-Fi reset command ID */
@@ -555,6 +567,8 @@
 
 #define MDNS_RRTYPE_A   "A"
 #define MDNS_RRTYPE_PTR "PTR"
+
+#define MAX_IPV6_ADDRESSES 3
 
 /** This structure is used to store the information of one scanned AP */
 typedef NCP_TLV_PACK_START struct _ncp_wlan_scan_result
@@ -1052,6 +1066,35 @@ typedef struct _NCP_CMD_PKT_STATS
     /** RX Buffer Overrun Dropped Count */
     uint32_t rx_overrun_cnt;
 } NCP_CMD_PKT_STATS;
+
+/** This structure is used for current rssi configuration. */
+typedef struct _NCP_CMD_GET_CURRENT_RSSI
+{
+    short rssi;
+} NCP_CMD_GET_CURRENT_RSSI;
+
+/** This structure is used for current channel configuration. */
+typedef struct _NCP_CMD_GET_CURRENT_CHANNEL
+{
+    uint8_t channel;
+} NCP_CMD_GET_CURRENT_CHANNEL;
+
+/** Network IP configuration.
+ *
+ *  This data structure represents the network IP configuration
+ *  for IPv4 as well as IPv6 addresses
+ */
+typedef struct _NCP_CMD_IP_CONFIG
+{
+#ifdef CONFIG_IPV6
+    /** The network IPv6 address configuration that should be
+     * associated with this interface. */
+    struct ipv6_config ipv6[MAX_IPV6_ADDRESSES];
+#endif
+    /** The network IPv4 address configuration that should be
+     * associated with this interface. */
+    struct ipv4_config ipv4;
+} NCP_CMD_IP_CONFIG;
 
 /** This structure is used for MAC address configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_MAC_ADDRESS
@@ -2714,6 +2757,12 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_GET_CURRENT_NETWORK current_network;
         /** get pkt stats*/
         NCP_CMD_PKT_STATS get_pkt_stats;
+        /** get current rssi*/
+        NCP_CMD_GET_CURRENT_RSSI current_rssi;
+        /** get current channel*/
+        NCP_CMD_GET_CURRENT_CHANNEL current_channel;
+        /** get ip config*/
+        NCP_CMD_IP_CONFIG ip_config;
     } params;
 } NCP_TLV_PACK_END NCPCmd_DS_COMMAND, MCU_NCPCmd_DS_COMMAND;
 

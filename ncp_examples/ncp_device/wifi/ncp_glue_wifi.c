@@ -4366,6 +4366,106 @@ done:
     return ret;
 }
 
+static int wlan_ncp_get_current_rssi(void *tlv)
+{
+    int ret = WM_SUCCESS;
+    short rssi;
+
+    if(wlan_get_current_rssi(&rssi) != WM_SUCCESS)
+    {
+        ret = -WM_FAIL;
+    }
+
+    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
+    cmd_res->header.cmd        = NCP_RSP_WLAN_STA_GET_CURRENT_RSSI;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum     = 0x00;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    NCP_CMD_GET_CURRENT_RSSI *current_rssi = (NCP_CMD_GET_CURRENT_RSSI *)&cmd_res->params.current_rssi;
+
+    (void)memcpy(&current_rssi->rssi, &rssi, sizeof(short));
+
+done:
+    if(ret == -WM_FAIL)
+    {
+        cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
+    }
+    else
+    {
+        cmd_res->header.size         += sizeof(NCP_CMD_GET_CURRENT_RSSI);
+    }
+
+    return ret;
+}
+
+static int wlan_ncp_get_current_channel(void *tlv)
+{
+    uint8_t channel;
+    int ret = WM_SUCCESS;
+
+    channel = wlan_get_current_channel();
+    if(channel == 0)
+    {
+        ret = -WM_FAIL;
+    }
+
+    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
+    cmd_res->header.cmd        = NCP_RSP_WLAN_STA_GET_CURRENT_CHANNEL;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum     = 0x00;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    NCP_CMD_GET_CURRENT_CHANNEL *current_channel = (NCP_CMD_GET_CURRENT_CHANNEL *)&cmd_res->params.current_channel;
+
+    (void)memcpy(&current_channel->channel, &channel, sizeof(uint8_t));
+
+done:
+    if(ret == -WM_FAIL)
+    {
+        cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
+    }
+    else
+    {
+        cmd_res->header.size         += sizeof(NCP_CMD_GET_CURRENT_CHANNEL);
+    }
+
+    return ret;
+}
+
+static int wlan_ncp_get_ip_config(void *tlv)
+{
+    struct wlan_ip_config ip_config;
+    int ret = WM_SUCCESS;
+
+    if(wlan_get_address(&ip_config) != WM_SUCCESS)
+    {
+        ret = -WM_FAIL;
+    }
+
+    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
+    cmd_res->header.cmd        = NCP_RSP_WLAN_GET_IP_CINFIG;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum     = 0x00;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    NCP_CMD_IP_CONFIG *ncp_ip_config = (NCP_CMD_IP_CONFIG *)&cmd_res->params.ip_config;
+
+    (void)memcpy(&ncp_ip_config, &ip_config, sizeof(uint8_t));
+
+done:
+    if(ret == -WM_FAIL)
+    {
+        cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
+    }
+    else
+    {
+        cmd_res->header.size         += sizeof(NCP_CMD_IP_CONFIG);
+    }
+
+    return ret;
+}
+
 static int wlan_ncp_error_ack(void *tlv)
 {
     wlan_ncp_prepare_status(NCP_RSP_INVALID_CMD, NCP_CMD_RESULT_ERROR);
@@ -4454,6 +4554,10 @@ struct cmd_t wlan_cmd_network[] = {
     {NCP_CMD_WLAN_NETWORK_ADDRESS, "wlan-address", wlan_ncp_address, CMD_SYNC},
     {NCP_CMD_WLAN_GET_CURRENT_NETWORK, "wlan-get-current-network", wlan_ncp_get_current_network, CMD_SYNC},
     {NCP_CMD_WLAN_NETWORKS_REMOVE_ALL, "wlan-remove-all-networks", wlan_ncp_remove_all_networks, CMD_SYNC},
+    {NCP_CMD_WLAN_GET_PKT_STATS, "wlan-ncp-get-pkt-stats", wlan_ncp_get_pkt_stats, CMD_SYNC},
+    {NCP_CMD_WLAN_STA_GET_CURRENT_RSSI, "wlan-ncp-get-current-rssi", wlan_ncp_get_current_rssi, CMD_SYNC},
+    {NCP_CMD_WLAN_STA_GET_CURRENT_CHANNEL, "wlan-ncp-get-current-channel", wlan_ncp_get_current_channel, CMD_SYNC},
+    {NCP_CMD_WLAN_GET_IP_CINFIG, "wlan-ncp-get-ip-config", wlan_ncp_get_ip_config, CMD_SYNC},
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
