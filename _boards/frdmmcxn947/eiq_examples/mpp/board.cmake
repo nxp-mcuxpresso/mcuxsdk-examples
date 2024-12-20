@@ -16,12 +16,19 @@ mcux_add_source(
             inc/app.h
             inc/clock_config.h
             inc/utick_config.h
+            inc/FreeRTOSConfig.h
 )
 
 mcux_add_macro(
     CC "-DSDK_I2C_BASED_COMPONENT_USED=1 \
         -DSSD1963_DATA_WITDH=8 \
-        -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8"
+        -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8 \
+        -DSDK_DEBUGCONSOLE_UART \
+        -DARM_MATH_CM33 \
+        -D__FPU_PRESENT=1"
+    CX "-DSDK_DEBUGCONSOLE_UART\
+        -DARM_MATH_CM33\
+        -D__FPU_PRESENT=1"
 )
 
 mcux_remove_armgcc_linker_script(
@@ -35,6 +42,18 @@ mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
+
+mcux_remove_armgcc_configuration(
+  TARGETS flash_release flash_debug
+  CC "-Os"
+  CX "-Os"
+  )
+
+mcux_add_armgcc_configuration(
+  TARGETS flash_release flash_debug
+  CC "-O3"
+  CX "-O3"
+  )
 
 mcux_add_armgcc_linker_script(
     TARGETS flash_debug flash_release
