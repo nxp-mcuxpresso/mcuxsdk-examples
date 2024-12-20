@@ -16,9 +16,10 @@
 #define RW610
 
 #define RW612_SERIES
-#define CONFIG_WIFI_BLE_COEX_APP 1
-#define CONFIG_DISABLE_BLE 0
-#define CONFIG_WPA_SUPP_MBEDTLS 1
+#define CONFIG_WIFI_BLE_COEX_APP  1
+#define CONFIG_DISABLE_BLE        0
+#define CONFIG_OT_CLI             0
+#define CONFIG_WPA_SUPP_MBEDTLS   1
 #define SHELL_BUFFER_SIZE 512
 #define SHELL_MAX_ARGS 48
 /* Monolithic configure */

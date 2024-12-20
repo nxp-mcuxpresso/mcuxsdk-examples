@@ -39,6 +39,9 @@ mcux_add_include(
              middleware/wireless/coex/src/common
 )
 
+# ot-nxp config
+include(${SdkRootDirPath}/middleware/wireless/coex/third_party/third_party.cmake OPTIONAL)
+
 mcux_add_armgcc_configuration(
     TARGETS flash_release
     AS "-g"
