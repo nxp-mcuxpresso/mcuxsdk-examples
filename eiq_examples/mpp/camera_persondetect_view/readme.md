@@ -1,5 +1,6 @@
-Overview
-========
+# camera_persondetect_view
+
+## Overview
 
 This example shows how to use the library to create a use-case for
 person detection using a camera or a static image as source.
@@ -7,22 +8,20 @@ person detection using a camera or a static image as source.
 The machine learning framework used for this example is TensorFlow Lite Micro.
 The person detection model used is quantized persondetect model that detects multiple persons in an input image.
 
-Toolchains supported
-====================
+## Toolchains supported
 - MCUXpresso, version 11.10.0
 - GCC Arm Embedded, version 13.2.Rel1
 
-Hardware requirements
-=====================
+## Hardware requirements
 Refer to board.readme for hardware setup requirements.
+- [FRDM-MCXN947](../../../_boards/frdmmcxn947/eiq_examples/mpp/board_readme.md)
 
-Use-cases Description
-=====================
+## Use-cases Description
 
 HOW TO USE THE APPLICATION:
 
-1-a) High-level description
-     ----------------------
+### High-level description
+```
                                                                    +--------------------------------------------------------+
                                                                    |                                                        |
                                                                    |                                                        |
@@ -41,14 +40,13 @@ Pipeline 1                         +---> |  2D convert | -->  | ML Inference | -
                                                                        |                                                    |
                                                                        |                                                    |
         +-----------------+                                            |                                                    |
-	    |  Main app:      |                                            |                                                    |
-	    | ML output       |   <----- ML Inference output callback -----+                                                    |
+	|  Main app:      |                                            |                                                    |
+	| ML output       |   <----- ML Inference output callback -----+                                                    |
         | post processing |                                                                                                 |
-	    |                 |   ------   labeled rectangle update   ----------------------------------------------------------+
-	    +-----------------+
-
-1-b) Detailed description
-     --------------------
+	|                 |   ------   labeled rectangle update   ----------------------------------------------------------+
+	+-----------------+
+```
+### Detailed description
 
 Application creates two pipelines:
 
@@ -58,8 +56,7 @@ Application creates two pipelines:
 - Pipeline 0 executes the processing of each element sequentially and CANNOT be preempted by another pipeline.
 - Pipeline 1 executes the processing of each element sequentially but CAN be preempted.
 
-1-c) Pipelines elements description
-     ------------------------------
+### Pipelines elements description
 
 * Camera element is configured for a specific pixel format and resolution (board dependent)
 * Static image element is configured for a specific pixel format and resolution (board dependent)
@@ -82,8 +79,7 @@ Application creates two pipelines:
 * At every inference, the ML inference element invokes a callback containing the inference outputs.
 These outputs are post-processed by the callback client component (in this case, the main task of the application)
 
-Running the demo
-================
+## Running the demo
 
 EXPECTED OUTPUTS:
 The expected outputs of the example are:
@@ -91,7 +87,7 @@ The expected outputs of the example are:
 - Logs below should be displayed on the debug console.
 
 Logs for camera_persondetect_view example using TensorFlow Lite Micro model should look like this:
-
+```
 [MPP_VERSION_2.1.e1dc37e]
 Inference Engine: TensorFlow-Lite Micro 
 
@@ -127,9 +123,8 @@ No person detected
 Element stats --------------------------
 Persondetect : exec_time 405 ms
 No person detected
-
-Important notes
-===============
+```
+## Important notes
 
 TensorFLow Lite Micro is an optional engine for the ML Inference component of MPP.
 This project embeds NXP's custom TensorFlow Lite Micro code by default.

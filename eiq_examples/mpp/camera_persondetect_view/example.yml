@@ -8,8 +8,8 @@ camera_persondetect_view:
       category: eiq_examples
       brief: Vision Pipeline example for model FastestDet
       example_readme:
-      - examples/eiq_examples/mpp/camera_persondetect_view/camera_persondetect_view.readme
-      - middleware/eiq/mpp/${board}/board.readme
+      - examples/eiq_examples/mpp/camera_persondetect_view/readme.md
+      - middleware/eiq/mpp/${board}/board_readme.md
       - middleware/eiq/mpp/README.md
     configuration:
       tools:
@@ -20,6 +20,8 @@ camera_persondetect_view:
                 HAL_LOG_LEVEL: 0 
               cx-define:
                 HAL_LOG_LEVEL: 0 
+        mcux:
+          ignore: true
   boards:
     frdmmcxn947@cm33_core0:
     - -armgcc@debug

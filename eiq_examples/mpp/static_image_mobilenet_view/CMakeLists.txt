@@ -25,7 +25,7 @@ include(${SdkRootDirPath}/middleware/eiq/mpp/models/mobilenet_v1_0.25_128_quant_
 # top level
 include(${SdkRootDirPath}/CMakeLists.txt)
 # board & app specific cmake
-include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/static_image_mobilenet_view/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/mpp/examples/static_image_mobilenet_view/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 

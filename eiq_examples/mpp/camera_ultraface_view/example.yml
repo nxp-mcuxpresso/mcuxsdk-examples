@@ -8,8 +8,8 @@ camera_ultraface_view:
       category: eiq_examples
       brief: Vision Pipeline example for model Ultraface
       example_readme:
-      - examples/eiq_examples/mpp/camera_ultraface_view/camera_ultraface_view.readme
-      - middleware/eiq/mpp/${board}/board.readme
+      - examples/eiq_examples/mpp/camera_ultraface_view/readme.md
+      - middleware/eiq/mpp/${board}/board_readme.md
       - middleware/eiq/mpp/README.md
     configuration:
       tools:
@@ -20,6 +20,8 @@ camera_ultraface_view:
                 HAL_LOG_LEVEL: 0 
               cx-define:
                 HAL_LOG_LEVEL: 0 
+        mcux:
+          ignore: true
   boards:
     frdmmcxn947@cm33_core0:
     - -armgcc@debug

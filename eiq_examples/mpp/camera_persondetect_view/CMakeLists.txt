@@ -23,7 +23,7 @@ include(${SdkRootDirPath}/middleware/eiq/mpp/models/persondetect/model.cmake)
 # top level
 include(${SdkRootDirPath}/CMakeLists.txt)
 # board & app specific cmake
-include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/camera_persondetect_view/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/mpp/examples/camera_persondetect_view/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 

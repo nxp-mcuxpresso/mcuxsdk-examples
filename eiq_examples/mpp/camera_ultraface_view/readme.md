@@ -1,5 +1,6 @@
-Overview
-========
+# camera_ultraface_view
+
+## Overview
 
 This example shows how to use the library to create a use-case for
 face detection using camera as source.
@@ -7,22 +8,20 @@ face detection using camera as source.
 The machine learning framework used for this example is TensorFlow Lite Micro.
 The face detection model used is quantized Ultraface slim model that detects multiple faces in an input image.
 
-Toolchains supported
-====================
+## Toolchains supported
 - MCUXpresso, version 11.10.0
 - GCC Arm Embedded, version 13.2.Rel1
 
-Hardware requirements
-=====================
+## Hardware requirements
 Refer to board.readme for hardware setup requirements.
+- [FRDM-MCXN947](../../../_boards/frdmmcxn947/eiq_examples/mpp/board_readme.md)
 
-Use-cases Description
-=====================
+## Use-cases Description
 
 HOW TO USE THE APPLICATION:
 
-1-a) High-level description
-     ----------------------
+### High-level description
+```
                                                                    +--------------------------------------------------------+
                                                                    |                                                        |
                                                                    |                                                        |
@@ -41,14 +40,13 @@ Pipeline 1                         +---> |  2D convert | -->  | ML Inference | -
                                                                        |                                                    |
                                                                        |                                                    |
         +-----------------+                                            |                                                    |
-	    |  Main app:      |                                            |                                                    |
-	    | ML output       |   <----- ML Inference output callback -----+                                                    |
+	|  Main app:      |                                            |                                                    |
+	| ML output       |   <----- ML Inference output callback -----+                                                    |
         | post processing |                                                                                                 |
-	    |                 |   ------   labeled rectangle update   ----------------------------------------------------------+
-	    +-----------------+
-
-1-b) Detailed description
-     --------------------
+	|                 |   ------   labeled rectangle update   ----------------------------------------------------------+
+	+-----------------+
+```
+### Detailed description
 
 Application creates two pipelines:
 
@@ -58,8 +56,7 @@ Application creates two pipelines:
 - Pipeline 0 executes the processing of each element sequentially and CANNOT be preempted by another pipeline.
 - Pipeline 1 executes the processing of each element sequentially but CAN be preempted.
 
-1-c) Pipelines elements description
-     ------------------------------
+### Pipelines elements description
 
 * Camera element is configured for a specific pixel format and resolution (board dependent)
 * Display element is configured for a specific pixel format and resolution (board dependent)
@@ -81,8 +78,7 @@ Application creates two pipelines:
 * At every inference, the ML inference element invokes a callback containing the inference outputs.
 These outputs are post-processed by the callback client component (in this case, the main task of the application)
 
-Running the demo
-================
+## Running the demo
 
 EXPECTED OUTPUTS:
 The expected outputs of the example are:
@@ -90,7 +86,7 @@ The expected outputs of the example are:
 - Logs below should be displayed on the debug console.
 
 Logs for camera_ultraface_view example using TensorFlow Lite Micro model should look like this:
-
+```
 [MPP_VERSION_1.0.0]
 Inference Engine: TensorFlow-Lite Micro
 inference time 707 ms
@@ -112,9 +108,8 @@ ultraface : box 0 label face score 99(%)
 inference time 710 ms
 ultraface : box 0 label face score 99(%)
 inference time 710 ms
-
-Important notes
-===============
+```
+## Important notes
 
 TensorFLow Lite Micro is an optional engine for the ML Inference component of MPP.
 This project embeds NXP's custom TensorFlow Lite Micro code by default.

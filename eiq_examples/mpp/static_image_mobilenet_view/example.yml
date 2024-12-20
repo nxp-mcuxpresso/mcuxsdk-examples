@@ -8,18 +8,11 @@ static_image_mobilenet_view:
       category: eiq_examples
       brief: Vision Pipeline example using MobileNetv1 model
       example_readme:
-      - examples/eiq_examples/mpp/static_image_mobilenet_view/static_image_mobilenet_view.readme
-      - middleware/eiq/mpp/${board}/board.readme
+      - examples/eiq_examples/mpp/static_image_mobilenet_view/readme.md
+      - middleware/eiq/mpp/${board}/board_readme.md
       - middleware/eiq/mpp/README.md
     configuration:
       tools:
-        __common__:
-          config:
-            __common__:
-              cc-define:
-                HAL_LOG_LEVEL: 0 
-              cx-define:
-                HAL_LOG_LEVEL: 0 
         mcux:
           ignore: true
   boards:

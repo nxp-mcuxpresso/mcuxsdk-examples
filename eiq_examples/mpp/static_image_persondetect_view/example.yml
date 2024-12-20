@@ -8,18 +8,11 @@ static_image_persondetect_view:
       category: eiq_examples
       brief: Vision Pipeline example using Fastestdet model
       example_readme:
-      - examples/eiq_examples/mpp/static_image_persondetect_view/static_image_persondetect_view.readme
-      - middleware/eiq/mpp/${board}/board.readme
+      - examples/eiq_examples/mpp/static_image_persondetect_view/readme.md
+      - middleware/eiq/mpp/${board}/board_readme.md
       - middleware/eiq/mpp/README.md
     configuration:
       tools:
-        __common__:
-          config:
-            __common__:
-              cc-define:
-                HAL_LOG_LEVEL: 0 
-              cx-define:
-                HAL_LOG_LEVEL: 0 
         mcux:
           ignore: true
   boards:
