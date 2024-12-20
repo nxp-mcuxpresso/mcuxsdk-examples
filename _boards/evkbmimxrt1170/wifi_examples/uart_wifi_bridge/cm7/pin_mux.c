@@ -193,6 +193,24 @@ void BOARD_InitPins(void) {
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitBTUARTPins:
+- options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
+- pin_list:
+  - {pin_num: D9, peripheral: LPUART2, signal: TXD, pin_signal: GPIO_DISP_B2_10, software_input_on: Disable, pull_keeper_select: Keeper}
+  - {pin_num: B6, peripheral: LPUART2, signal: CTS_B, pin_signal: GPIO_DISP_B2_12, pull_keeper_select: Keeper}
+  - {pin_num: A5, peripheral: LPUART2, signal: RTS_B, pin_signal: GPIO_DISP_B2_13, pull_keeper_select: Keeper}
+  - {pin_num: A6, peripheral: LPUART2, signal: RXD, pin_signal: GPIO_DISP_B2_11, pull_keeper_select: Keeper}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitBTUARTPins, assigned for the Cortex-M7F core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
 void BOARD_InitBTUARTPins(void)
 {
     CLOCK_EnableClock(kCLOCK_Iomuxc); /* iomuxc clock (iomuxc_clk_enable): 0x03U */
@@ -247,6 +265,24 @@ void BOARD_InitBTUARTPins(void)
                                                  Domain write protection lock: Neither of DWP bits is locked */
 }
 
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitSpiPins:
+- options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
+- pin_list:
+  - {pin_num: L17, peripheral: LPSPI1, signal: SCK, pin_signal: GPIO_AD_28, pull_keeper_select: Keeper}
+  - {pin_num: M17, peripheral: LPSPI1, signal: PCS0, pin_signal: GPIO_AD_29, pull_keeper_select: Keeper}
+  - {pin_num: K17, peripheral: LPSPI1, signal: SOUT, pin_signal: GPIO_AD_30, pull_keeper_select: Keeper}
+  - {pin_num: J17, peripheral: LPSPI1, signal: SIN, pin_signal: GPIO_AD_31, pull_keeper_select: Keeper}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSpiPins, assigned for the Cortex-M7F core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
 void BOARD_InitSpiPins(void)
 {
     CLOCK_EnableClock(kCLOCK_Iomuxc); /* LPCG on: LPCG is ON. */
