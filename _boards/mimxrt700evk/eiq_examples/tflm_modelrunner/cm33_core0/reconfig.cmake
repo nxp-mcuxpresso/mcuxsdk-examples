@@ -10,7 +10,6 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/eiq_examples/common/timer.c
             examples/eiq_examples/common/timer.h
-            examples/_boards/${board}/eiq_examples/tflm_modelrunner/${core_id}/app.h
 	    examples/driver_examples/xspi/psram/polling_transfer/xspi_psram_ops.c
 )
 
@@ -50,7 +49,7 @@ mcux_add_macro(
        -DARM_MATH_CM33\
        -DUSE_NPU=1\
        -DEXTERNAL_MEM=1\
-       -DMODEL_SIZE=1000*1024\
+       -DMODEL_SIZE=2048*1024\
        -DPRINTF_ADVANCED_ENABLE=1\
        -DPRINTF_FLOAT_ENABLE=1\
        -D__FPU_PRESENT=1"
@@ -58,7 +57,7 @@ mcux_add_macro(
        -DARM_MATH_CM33\
        -DUSE_NPU=1\
        -DEXTERNAL_MEM=1\
-       -DMODEL_SIZE=1000*1024\
+       -DMODEL_SIZE=2048*1024\
        -DPRINTF_ADVANCED_ENABLE=1\
        -DPRINTF_FLOAT_ENABLE=1\
        -D__FPU_PRESENT=1"
