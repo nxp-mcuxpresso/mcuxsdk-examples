@@ -47,7 +47,7 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: F3, peripheral: FLEXCOMM3, signal: USART_RXD, pin_signal: GPIO_24}
   - {pin_num: D12, peripheral: GPIO, signal: 'PIO0, 0', pin_signal: GPIO_0, direction: OUTPUT}
-  - {pin_num: G3, peripheral: GPIO, signal: 'PIO0, 25', pin_signal: GPIO_25}
+  - {pin_num: E5, peripheral: GPIO, signal: 'PIO0, 11', pin_signal: GPIO_11}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -74,8 +74,8 @@ void BOARD_InitPins(void)
     IO_MUX_SetPinMux(IO_MUX_FC3_USART_DATA);
     /* Initialize GPIO0 functionality on pin GPIO_0 (pin D12) */
     IO_MUX_SetPinMux(IO_MUX_GPIO0);
-    /* Initialize GPIO25 functionality on pin GPIO_25 (pin G3) */
-    IO_MUX_SetPinMux(IO_MUX_GPIO25);
+    /* Initialize GPIO11 functionality on pin GPIO_11 (pin E5) */
+    IO_MUX_SetPinMux(IO_MUX_GPIO11);
 }
 /***********************************************************************************************************************
  * EOF
