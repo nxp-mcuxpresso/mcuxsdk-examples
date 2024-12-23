@@ -32,6 +32,7 @@
 #if LV_USE_DRAW_VGLITE
 #include "vg_lite.h"
 #include "vglite_support.h"
+#include "lv_vglite_utils.h"
 #endif
 
 #include "fsl_cache.h"
@@ -327,6 +328,23 @@ static void DEMO_WaitBufferSwitchOff(void)
 }
 
 #if DEMO_DISPLAY_USE_PARTIAL_REFRESH
+#if LV_USE_DRAW_VGLITE
+static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint32_t fbStrideBytes, uint8_t align_bytes)
+{
+    uint32_t y;
+    uint32_t areaWidth = lv_area_get_width(area);
+
+    fb += (area->y1 * fbStrideBytes + area->x1 * DEMO_BUFFER_BYTE_PER_PIXEL);
+
+    for (y = area->y1; y <= area->y2; y++)
+    {
+        memcpy(fb, color_p, areaWidth * DEMO_BUFFER_BYTE_PER_PIXEL);
+        fb += fbStrideBytes;
+        /* Round up to get correct value to match alignment */
+        color_p += LV_ROUND_UP((areaWidth * DEMO_BUFFER_BYTE_PER_PIXEL), align_bytes);
+    }
+}
+#else
 static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint32_t fbStrideBytes)
 {
     uint32_t y;
@@ -344,6 +362,7 @@ static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint
         color_p += value * LV_DRAW_BUF_STRIDE_ALIGN;
     }
 }
+#endif
 
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p)
 {
@@ -351,8 +370,14 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
     static bool first_flush = true;
 
     uint8_t *fb = (uint8_t *)DEMO_BUFFER1_ADDR;
+    uint8_t cf = lv_display_get_color_format(disp_drv);
 
+#if LV_USE_DRAW_VGLITE
+    uint8_t align_bytes = vglite_get_stride_alignment(cf);
+    copy_area(area, color_p, fb, DEMO_BUFFER_STRIDE_BYTE, align_bytes);
+#else
     copy_area(area, color_p, fb, DEMO_BUFFER_STRIDE_BYTE);
+#endif
 
     if (first_flush == true)
     {

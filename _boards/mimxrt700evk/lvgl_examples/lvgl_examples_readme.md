@@ -59,6 +59,20 @@ Note:
 When RGB565 or XRGB8888 is selected, changing `LV_COLOR_DEPTH` in Kconfig or mcux_config.h
 doesn't affect the real pixel format.
 
+When RGB888 is selected.
+
+#define CONFIG_LV_COLOR_DEPTH_24 1
+#define CONFIG_LV_COLOR_DEPTH 24
+#define CONFIG_LV_DRAW_BUF_ALIGN 192
+
+For SSD1963 DBI panel:
+#define DEMO_SSD1963_BUFFER_FORMAT 1
+For RM67162 MIPI smart DBI panel:
+#define DEMO_RM67162_BUFFER_FORMAT 1
+For ZC143AC72MIPI DBI panel:
+#define DEMO_CO5300_BUFFER_FORMAT  1
+
+
 Running the demo
 ===============
 There is tearing effect when using the SSD1963 panel, because the panel video buffer
