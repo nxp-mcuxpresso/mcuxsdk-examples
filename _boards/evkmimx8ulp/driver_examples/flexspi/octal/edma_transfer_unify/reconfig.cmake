@@ -20,6 +20,16 @@ mcux_add_macro(
        -DENABLE_RAM_VECTOR_TABLE"
 )
 
+mcux_add_iar_configuration(
+    LD "--config_def=__ram_vector_table__=1\
+        --config_def=__stack_size__=0x800"
+)
+
+mcux_add_armgcc_configuration(
+    LD "-Xlinker --defsym=__ram_vector_table__=1\
+        -Xlinker --defsym=__stack_size__=0x800"
+)
+
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
