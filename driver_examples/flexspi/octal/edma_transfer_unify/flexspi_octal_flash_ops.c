@@ -720,9 +720,16 @@ __attribute__((weak)) status_t flexspi_nor_get_id(FLEXSPI_Type *base, uint8_t *I
 {
     /* Read manufacturer ID based on JEP106V spec, max continuation code table is 9, max manufacturer ID starts from
      * 9 + 1. */
-    uint8_t id[SPI_NOR_MAX_ID_LEN] = {0x00U};
+    uint8_t id[SPI_NOR_MAX_ID_LEN];
     status_t status                = kStatus_Fail;
     uint8_t seqIdx                 = NOR_CMD_LUT_SEQ_IDX_READID_SPI;
+    uint8_t i = 0x00U;
+
+    /* Manually initialize the array to prevent the compiler(iar) to replace it with memset(currently the mcu is not able to fetch instructions from flash) for initializatioin */
+    for (i = 0x00U; i < sizeof(id); i++)
+    {
+        id[i] = 0x00U;
+    }
 
     if (flash_state.ioMode == SPINOR_OPI_MODE)
     {
@@ -733,7 +740,7 @@ __attribute__((weak)) status_t flexspi_nor_get_id(FLEXSPI_Type *base, uint8_t *I
 
     if (status == kStatus_Success)
     {
-        for (uint8_t i = 0x00U; i < sizeof(id); i++)
+        for (i = 0x00U; i < sizeof(id); i++)
         {
             if (CFI_CONTINUATION != id[i])
             {
@@ -748,16 +755,35 @@ __attribute__((weak)) status_t flexspi_nor_get_id(FLEXSPI_Type *base, uint8_t *I
 status_t flexspi_nor_flash_init(FLEXSPI_Type *base, uint8_t *id)
 {
     flexspi_config_t config;
-    /* To store custom's LUT table in local. */
-    uint32_t tempCustomLUT[CUSTOM_LUT_LENGTH] = {0U};
     status_t status;
     uint32_t val = 0;
+    /* To store custom's LUT table in local. */
+    uint32_t tempCustomLUT[CUSTOM_LUT_LENGTH] = {0U};
     uint32_t tempReadLUTCmdSeq[4];
+#if FLASH_ADESTO_DEVICE_ATXP032
+    uint32_t tempCustomLUT_ADESTO[CUSTOM_LUT_LENGTH] = {0U};
+    uint32_t tempReadLUTCmdSeq_ADESTO[4];
+#endif
+#if FLASH_GIGADEVICE_DEVICE_GD25LX256
+    uint32_t tempLUT[4] = {0};
+    uint32_t tempCustomLUT_GIGADEVICE[CUSTOM_LUT_LENGTH] = {0U};
+    uint32_t tempReadLUTCmdSeq_GIGADEVICE[4];
+#endif
+#if FLASH_MACRONIX_DEVICE_MX25UM51345G
+    uint32_t tempCustomLUT_MACRONIX[CUSTOM_LUT_LENGTH] = {0U};
+    uint32_t tempReadLUTCmdSeq_MACRONIX[4];
+#endif
 
     (void)val; /* drop warning */
     /* memcpy/memset api is running in nor flash, so make sure that copy the data as soon as possible */
-
     memset((void *)&flash_state, 0 , sizeof(flash_state));
+
+    /*
+     * Copy LUT information from flash region into RAM region, because flash will be reset and back to single mode;
+     * In lately time, LUT table assignment maybe failed after flash reset due to LUT read entry is application's
+     * required mode(such as octal DDR mode) and flash is being in single SDR mode, they don't matched.
+     */
+    memcpy(tempCustomLUT, commonLUTOctalMode, sizeof(tempCustomLUT));
     memcpy(tempReadLUTCmdSeq, commonReadLUTCmdSeq, sizeof(tempReadLUTCmdSeq));
 #if defined(FLASH_MACRONIX_DEVICE_MX25UM51345G) && FLASH_MACRONIX_DEVICE_MX25UM51345G
 #if defined(FLASH_GIGADEVICE_DEVICE_GD25LX256) && FLASH_GIGADEVICE_DEVICE_GD25LX256
@@ -766,15 +792,32 @@ status_t flexspi_nor_flash_init(FLEXSPI_Type *base, uint8_t *id)
 #if defined(FLASH_ADESTO_DEVICE_ATXP032) && FLASH_ADESTO_DEVICE_ATXP032
 #error "Cannot define two nor flash, MX25UM51345G's fast read command is different with ATXP032, so pls define FLASH_ADESTO_DEVICE_ATXP032 as 0"
 #endif
-    memcpy(tempReadLUTCmdSeq, ReadLUTCmdSeq_MACRONIX, sizeof(tempReadLUTCmdSeq));
 #endif
 
+#if FLASH_ADESTO_DEVICE_ATXP032
     /*
-     * Copy LUT information from flash region into RAM region, because flash will be reset and back to single mode;
-     * In lately time, LUT table assignment maybe failed after flash reset due to LUT read entry is application's
-     * required mode(such as octal DDR mode) and flash is being in single SDR mode, they don't matched.
+     * Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read
+     * sequence(LUT[0]) and load wrong LUT table from FLASH region.
      */
-    memcpy(tempCustomLUT, commonLUTOctalMode, sizeof(tempCustomLUT));
+    memcpy(tempCustomLUT_ADESTO, LUTOctalMode_ADESTO, sizeof(tempCustomLUT_ADESTO));
+    memcpy(tempReadLUTCmdSeq_ADESTO, ReadLUTCmdSeq_ADESTO, sizeof(tempReadLUTCmdSeq_ADESTO));
+#endif
+#if FLASH_GIGADEVICE_DEVICE_GD25LX256
+    /*
+     * Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read
+     * sequence(LUT[0]) and load wrong LUT table from FLASH region.
+     */
+    memcpy(tempCustomLUT_GIGADEVICE, LUTOctalMode_GIGADEVICE, sizeof(tempCustomLUT_GIGADEVICE));
+    memcpy(tempReadLUTCmdSeq_GIGADEVICE, ReadLUTCmdSeq_GIGADEVICE, sizeof(tempReadLUTCmdSeq_GIGADEVICE));
+#endif
+#if FLASH_MACRONIX_DEVICE_MX25UM51345G
+    /*
+     * Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read
+     * sequence(LUT[0]) and load wrong LUT table from FLASH region.
+     */
+    memcpy(tempCustomLUT_MACRONIX, LUTOctalMode_MACRONIX, sizeof(tempCustomLUT_MACRONIX));
+    memcpy(tempReadLUTCmdSeq_MACRONIX, ReadLUTCmdSeq_MACRONIX, sizeof(tempReadLUTCmdSeq_MACRONIX));
+#endif
 
 #if defined(CACHE_MAINTAIN) && CACHE_MAINTAIN
     flexspi_cache_status_t cacheStatus;
@@ -827,25 +870,18 @@ status_t flexspi_nor_flash_init(FLEXSPI_Type *base, uint8_t *id)
         case (SNOR_MFR_ADESTO):
         {
             /*
-             * Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read
-             * sequence(LUT[0]) and load wrong LUT table from FLASH region.
-             */
-
-            memcpy(tempCustomLUT, LUTOctalMode_ADESTO, sizeof(tempCustomLUT));
-            memcpy(tempReadLUTCmdSeq, ReadLUTCmdSeq_ADESTO, sizeof(tempReadLUTCmdSeq));
-            /*
              * Update LUT table into a specific mode, such as octal SDR mode or octal DDR mode based on application's
              * requirement.
              */
 
-            FLEXSPI_UpdateLUT(base, 0, tempCustomLUT, ARRAY_SIZE(tempCustomLUT));
+            FLEXSPI_UpdateLUT(base, 0, tempCustomLUT_ADESTO, ARRAY_SIZE(tempCustomLUT_ADESTO));
             if (flash_state.ioMode == SPINOR_SPI_MODE)
             {
                 /*
                  * Make sure that cpu could load instruction from flash correctly(cpu will load
                  * instruction when execute the function EXAMPLE_FLASH_RESET_CONFIG).
                  */
-                FLEXSPI_UpdateLUT(base, 4 * NOR_CMD_LUT_SEQ_IDX_READ, tempReadLUTCmdSeq, 4);
+                FLEXSPI_UpdateLUT(base, 4 * NOR_CMD_LUT_SEQ_IDX_READ, tempReadLUTCmdSeq_ADESTO, 4);
             }
         }
         break;
@@ -855,27 +891,17 @@ status_t flexspi_nor_flash_init(FLEXSPI_Type *base, uint8_t *id)
         {
             if (flash_state.ioMode == SPINOR_SPI_MODE)
             {
-                uint32_t tempLUT[4] = {0};
-
-                /*
-                 * Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read
-                 * sequence(LUT[0]) and load wrong LUT table from FLASH region.
-                 */
-                memcpy(tempCustomLUT, LUTOctalMode_GIGADEVICE, sizeof(tempCustomLUT));
-                memcpy(tempReadLUTCmdSeq, ReadLUTCmdSeq_GIGADEVICE, sizeof(tempReadLUTCmdSeq));
                 /*
                  * Update LUT table into a specific mode, such as octal SDR mode or octal DDR mode based on
                  * application's requirement.
                  */
 
                 FLEXSPI_UpdateLUT(
-                    base, 0, tempCustomLUT,
-                    ARRAY_SIZE(tempCustomLUT)); /* NOR_CMD_LUT_SEQ_IDX_READ lookup table will be replaced */
+                    base, 0, tempCustomLUT_GIGADEVICE,
+                    ARRAY_SIZE(tempCustomLUT_GIGADEVICE)); /* NOR_CMD_LUT_SEQ_IDX_READ lookup table will be replaced */
 
-                FLEXSPI_UpdateLUT(base, 4 * NOR_CMD_LUT_SEQ_IDX_READ, tempReadLUTCmdSeq,
+                FLEXSPI_UpdateLUT(base, 4 * NOR_CMD_LUT_SEQ_IDX_READ, tempReadLUTCmdSeq_GIGADEVICE,
                                   4); /* Make sure that cpu could load instruction from flash correctly */
-
-                memset((void *)tempLUT, 0, sizeof(tempLUT));
 
                 tempLUT[0] = FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_1PAD, SPINOR_OP_RDFSR,
                                              kFLEXSPI_Command_READ_SDR, kFLEXSPI_1PAD, SPINOR_DATA_SIZE_4_BYTES);
@@ -887,7 +913,6 @@ status_t flexspi_nor_flash_init(FLEXSPI_Type *base, uint8_t *id)
                     flexspi_nor_exec_op(base, 0, FLASH_PORT, kFLEXSPI_Read, NOR_CMD_LUT_SEQ_IDX_CONFIG, 1, &val, 1);
                 if (status == kStatus_Success)
                 {
-                    memset((void *)tempLUT, 0, sizeof(tempLUT));
                     /* check address mode(Flag Status Register FS0, ADS), in 4-Byte address mode when ADS = 1 */
                     flash_state.addrMode = val & FSR_ADS_GIGADEVICE;
 
@@ -939,21 +964,14 @@ status_t flexspi_nor_flash_init(FLEXSPI_Type *base, uint8_t *id)
         case (SNOR_MFR_MACRONIX):
         {
             /*
-             * Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read
-             * sequence(LUT[0]) and load wrong LUT table from FLASH region.
-             */
-
-            memcpy(tempCustomLUT, LUTOctalMode_MACRONIX, sizeof(tempCustomLUT));
-            memcpy(tempReadLUTCmdSeq, ReadLUTCmdSeq_MACRONIX, sizeof(tempReadLUTCmdSeq));
-            /*
              * Update LUT table into a specific mode, such as octal SDR mode or octal DDR mode based on application's
              * requirement.
              */
 
-            FLEXSPI_UpdateLUT(base, 0, tempCustomLUT, ARRAY_SIZE(tempCustomLUT));
+            FLEXSPI_UpdateLUT(base, 0, tempCustomLUT_MACRONIX, ARRAY_SIZE(tempCustomLUT_MACRONIX));
             if (flash_state.ioMode == SPINOR_SPI_MODE)
             {
-                FLEXSPI_UpdateLUT(base, 4 * NOR_CMD_LUT_SEQ_IDX_READ, tempReadLUTCmdSeq,
+                FLEXSPI_UpdateLUT(base, 4 * NOR_CMD_LUT_SEQ_IDX_READ, tempReadLUTCmdSeq_MACRONIX,
                                       4); /* Make sure that cpu could load instruction from flash correctly */
             }
         }
