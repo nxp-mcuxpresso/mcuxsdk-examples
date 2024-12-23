@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2024 NXP
  * All rights reserved.
  *
  *
@@ -38,7 +38,7 @@ flexspi_device_config_t deviceconfig = {
     .AHBWriteWaitInterval = 0,
 };
 
-const uint32_t customLUT[CUSTOM_LUT_LENGTH] = {
+AT_QUICKACCESS_SECTION_DATA(uint32_t customLUT[CUSTOM_LUT_LENGTH]) = {
     /* Normal read mode -SDR */
     [4 * NOR_CMD_LUT_SEQ_IDX_READ_NORMAL] =
         FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_1PAD, 0x03, kFLEXSPI_Command_RADDR_SDR, kFLEXSPI_1PAD, 0x18),

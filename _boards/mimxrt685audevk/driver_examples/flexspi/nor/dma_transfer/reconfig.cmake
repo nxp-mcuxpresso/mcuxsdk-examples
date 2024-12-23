@@ -5,7 +5,13 @@ mcux_add_source(
 )
 
 mcux_add_macro(
+    TARGETS flash_debug flash_release
     CC "-DENABLE_RAM_VECTOR_TABLE"
+)
+
+mcux_add_linker_symbol(
+    TARGETS flash_debug flash_release
+    SYMBOLS "__ram_vector_table__=1"
 )
 
 # Add or remove Linker File Configurations
