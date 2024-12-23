@@ -7,6 +7,8 @@ mcux_add_source(
             examples/_boards/${board}/lvgl_examples/app.h
             examples/lvgl_examples/lvgl_freertos.c
             examples/lvgl_examples/lvgl_freertos.h
+            middleware/lvgl/src/draw/nxp/vglite/lv_vglite_utils.c
+            middleware/lvgl/src/draw/nxp/vglite/lv_vglite_utils.h
 )
 
 mcux_add_include(
@@ -14,6 +16,7 @@ mcux_add_include(
     INCLUDES examples/_boards/${board}/lvgl_examples/lvgl_demo_benchmark
              examples/_boards/${board}/lvgl_examples
 	     examples/lvgl_examples
+             middleware/lvgl/src/draw/nxp/vglite
 )
 
 mcux_add_iar_configuration(

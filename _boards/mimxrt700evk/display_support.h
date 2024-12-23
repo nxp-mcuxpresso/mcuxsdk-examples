@@ -196,7 +196,9 @@
 #define DEMO_RM67162_BUFFER_RGB565   0
 #define DEMO_RM67162_BUFFER_RGB888   1
 
+#ifndef DEMO_RM67162_BUFFER_FORMAT
 #define DEMO_RM67162_BUFFER_FORMAT DEMO_RM67162_BUFFER_RGB565
+#endif
 
 #if (!RM67162_USE_LCDIF && (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB888))
 #error When using MIPI interrupt way, the frame buffer format must be the same as panel interface pixel format which is RGB565.
@@ -260,7 +262,9 @@
 #define DEMO_CO5300_BUFFER_RGB565   0
 #define DEMO_CO5300_BUFFER_RGB888   1
 
+#ifndef DEMO_CO5300_BUFFER_FORMAT
 #define DEMO_CO5300_BUFFER_FORMAT DEMO_CO5300_BUFFER_RGB565
+#endif
 
 /* Use fixed address to place buffer on PSRAM. */
 #define DEMO_BUFFER_FIXED_ADDRESS 1

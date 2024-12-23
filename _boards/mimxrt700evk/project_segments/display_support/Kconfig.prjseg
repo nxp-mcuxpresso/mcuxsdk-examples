@@ -82,4 +82,19 @@ if MCUX_PRJSEG_module.board.display_support
 
     endchoice
 
+    config DEMO_SSD1963_BUFFER_FORMAT
+        bool "default select RGB565 format for SSD1963"
+        help
+            No prefix in generated macro
+
+    config DEMO_RM67162_BUFFER_FORMAT
+        bool "default select RGB565 format for RM67162"
+        help
+            No prefix in generated macro
+
+    config DEMO_CO5300_BUFFER_FORMAT
+        bool "default select RGB565 format for CO5300"
+        help
+            No prefix in generated macro
+
 endif
