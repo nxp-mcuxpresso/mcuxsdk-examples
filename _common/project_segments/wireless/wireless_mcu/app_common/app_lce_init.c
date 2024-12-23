@@ -9,6 +9,7 @@
 #include "fsl_mu.h"
 #include "fsl_ce_cmd.h"
 #include "fsl_ce.h"
+#include "fsl_component_lce.h"
 #include "app_lce_init.h"
 
 /* -------------------------------------------------------------------------- */
@@ -119,8 +120,10 @@ void APP_InitLce(void)
     (void)MU_BootOtherCore((MU_Type *)MUA_BASE, kMU_CoreBootFromSTCM5);
     /* CE API execution buffer initialization */
     (void)CE_CmdInitBuffer(&cpu_ce_cmdbuffer, ce_buffers.ce_cmd_buffer, ce_buffers.ce_status_buffer,
-                           kCE_CmdModeOneBlocking);
+                           kCE_CmdModeOneNonBlocking);
     /* Enable CE clock */
     (void)CLOCK_EnableClock(kCLOCK_DSP0);
+    /* Initialization for LCE APIs */
+    (void)LCE_Init();
     return;
 }
