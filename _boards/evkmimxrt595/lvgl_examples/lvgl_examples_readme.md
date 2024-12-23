@@ -32,6 +32,9 @@ Select the panel
 ================
 RK055MHD091 MIPI panel is used by default, follow the steps to configure the sw to support different panel.
 
+Tips: In the 24.12.00 release, due to alignment mismatch issues, we decided to disable VGLITE on the evkmimxrt595 platform to support the LVGL functionality.
+
+
 When Kconfig is used
 -------------
 Select the panel in Kconfig "Panel Selection".
