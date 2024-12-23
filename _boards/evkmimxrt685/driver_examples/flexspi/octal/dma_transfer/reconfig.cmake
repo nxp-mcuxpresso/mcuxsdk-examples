@@ -1,5 +1,6 @@
 
 mcux_add_macro(
+    TARGETS flash_debug flash_release
     CC "-DENABLE_RAM_VECTOR_TABLE"
 )
 
