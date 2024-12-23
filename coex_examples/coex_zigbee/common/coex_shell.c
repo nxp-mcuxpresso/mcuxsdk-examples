@@ -24,13 +24,7 @@
 SDK_ALIGN(static uint8_t shell_handle_buffer[SHELL_HANDLE_SIZE], 4);
 static shell_handle_t shell_handle;
 
-#if (CONFIG_COEX_ENABLE_EDGEFAST || CONFIG_COEX_ENABLE_WIFI)
 static char s_shellCoexPrompt[32] = "@coex> ";
-#elif (CONFIG_COEX_ENABLE_EDGEFAST)
-static char s_shellCoexPrompt[32] = "@ble> ";
-#elif (CONFIG_COEX_ENABLE_WIFI)
-static char s_shellCoexPrompt[32] = "@wifi> ";
-#endif
 
 /****************************************************************************/
 /***        Exported Functions                                            ***/
@@ -161,7 +155,7 @@ int coex_cli_init(void)
     zigbee_CommandInit(shell_handle);
 #endif
 
-#if (CONFIG_COEX_ENABLE_EDGEFAST)
+#if (CONFIG_COEX_ENABLE_BLE)
     printSeparator();
     (void)PRINTF("BLE shell initialization\r\n");
     bt_CommandInit(shell_handle);

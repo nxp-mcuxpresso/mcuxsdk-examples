@@ -1,93 +1,10 @@
-# 1. Overview
-==============
+## Hardware requirements
 
-This document provides step-by-step procedures to build and test coex zigbee examples,
-and also instructions for running the included sample applications.
-
-## 1.1 SDK
-===========
-
-- Version: NXP SDK next
-
-- Set up NXP SDK next generation environment.
-
-## 1.2 Hardware requirements
-=============================
-
-- USB-type-C cable
-- FRDM-RW61X board
+- Type-C cable
+- FRDMRW612 board
 - Personal Computer
 
-## 1.3 Board settings
-======================
-
-No specail setting to do for zigbee&ble coex.
-
-# 2. Build and flash
-=====================
-
-## 2.1 Configuration
-=====================
-
-Modify ```examples/coex_examples/coex_zigbee/app_config.cmake``` to generate different coexistence images.
-
-1. Macros releated to Wi-Fi/BLE component.
-
-| coexistence images | CONFIG_ZIGBEE | CONFIG_EDGEFAST | CONFIG_WIFI |
-| - | - | - | - |
-| ZIGBEE + BLE + WIFI | 1 | 1 | 1 |
-
-2. Macors releated to Wi-Fi supplicant
-
-|   Wi-Fi supplicant   | CONFIG_WPA_SUPP_MBEDTLS  |
-| -------------------- | ------------------------ |
-| embedded supplicant  | 0                        |
-| wpa supplicant       | 1(default)               |
-
-
-## 2.2 Build
-=============
-
-To build a coex zigee example, we use `west build`, like the following:
-```bash
-west build -b <board> -p auto <path to the application>
-```
-
-As an example, to build the coordinator application of rdrw612bga board:
-```bash
-west build -b rdrw612bga -p auto <sdk root>/examples/coex_examples/coex_zigbee/coordinator/freertos
-```
-
-### Current examples supported
-
-You'll find below the list of NXP Zigbee examples supported with CMake.
-
-All these examples are located with the other SDK examples, in `<sdk_root>/examples`.
-
-| Name | Source folder |  Supported boards |
-| - | - | - |
-| `coex_zigbee_coordinator` | `<sdk_root>/examples/coex_examples/coex_zigbee/coordinator/<os>` | `frdmrw612` `rdrw612bga`  |
-| `coex_zigbee_router` | `<sdk_root>/examples/coex_examples/coex_zigbee/router/<os>`  | `frdmrw612` `rdrw612bga`  |
-| `coex_zigbee_ed_rx_on` | `<sdk_root>/examples/coex_examples/coex_zigbee/ed_rx_on/<os>` |`frdmrw612` `rdrw612bga` |
-
-## 2.3 Flash Binaries
-======================
-
-Flash the image with the following command,
-
-1. Flash coex_zigbee_coordinator
-```bash
-
-# CMD to write CPU3 coex app image to flash in J-link window:
-J-Link> loadfile coex_zigbee_coordinator.elf
-```
-2. Flash coex_zigbee_coordinator
-Please refer [OTA](../../../../../middleware/wireless/zigbee/platform/RW612/docs/README.md)
-
-# 3. Run
-
-## 3.1 Prepare the Demo
-========================
+## Prepare the Demo
 
 1. Connect a micro USB cable between the PC host and the MCU-Link USB port (J7) on the board.
 2. Open a serial terminal with the following settings:
@@ -99,8 +16,117 @@ Please refer [OTA](../../../../../middleware/wireless/zigbee/platform/RW612/docs
 3. Download the program to the target board.
 4. Launch the debugger in your IDE to begin running the example.
 
-## 3.2 Running the example
-===========================
+## Building Coex Zigbee examples with CMake
+
+Prerequisites:
+- CMake (version >=3.24)
+- Ninja (version >=1.12)
+- ARM GCC Toolchain (**only support ARM GCC**)
+- Python3 (version >=3.6)
+
+### Python requirements
+
+Python is used to run the ZPSConfig and PDUMConfig tools, and requires the extra modules. To avoid conflicts with your global Python install, we recommend using a virtual environment. You can either use the one used with your MCUXPresso SDK install, or create a specific one:
+```bash
+python3 -m venv .venv
+```
+
+Then, make sure to activate your environment:
+```bash
+source .venv/bin/activate
+```
+Once the virtual environment is activated, you can install the required modules with `pip`:
+```bash
+pip install -r requirements.txt
+```
+
+### Windows long paths limitation
+CMake can generate long paths name, and depending on where your MCUX SDK is located, the build might not work correctly on Windows. For this reason, it is recommended to enable long paths support, Microsoft documented the procedure [here](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry). We also recommend to place your MCUXPresso SDK in the root of your disk, like `C:\`, to reduce the paths length as much as possible.
+
+Currently, a Linux environment is preferred over Windows due to these limitations. WSL, Virtual Machine or native Linux environment can be used.
+
+## Build and Flash
+
+Please setup the SDK. Once the SDK is setup, the coex_zigbee examples will be located at `<path to sdk>/examples/coex_examples/coex_zigbee` and you will be able to build the CMake based examples. 
+
+### Configuration
+
+Modify `examples/coex_examples/coex_zigbee/app_config.cmake` to generate different coexistence images.
+
+Macros releated to Wi-Fi/BLE component:
+
+| coexistence images | CONFIG_ZIGBEE | CONFIG_BLE | CONFIG_WIFI |
+| - | - | - | - |
+| Zigbee + Wi-Fi       | 1 | 0 | 1 |
+| Zigbee + BLE         | 1 | 1 | 0 |
+| Zigbee + BLE + Wi-Fi | 1 | 1 | 1 |
+
+Modify these options according to your needs:
+
+|   Wi-Fi supplicant   | CONFIG_WPA_SUPP_MBEDTLS  |
+| -------------------- | ------------------------ |
+| embedded supplicant  | 0                        |
+| wpa-supplicant       | 1(default)               |
+
+
+### Building
+
+To build a coex_zigee example, we use `west build`, like the following:
+```bash
+west build -b <board> <sdk root>/examples/coex_examples/coex_zigbee/<zigbee role>/freertos --toolchain armgcc
+```
+
+Build the coex_zigbee application of frdmrw612 board:
+```bash
+# For coex_zigbee_coordinator example,
+west build -b frdmrw612 <sdk root>/examples/coex_examples/coex_zigbee/coordinator/freertos --toolchain armgcc
+
+# For coex_zigbee_router example,
+west build -b frdmrw612 <sdk root>/examples/coex_examples/coex_zigbee/router/freertos --toolchain armgcc
+
+# For coex_zigbee_ed_rx_on example,
+west build -b frdmrw612 <sdk root>/examples/coex_examples/coex_zigbee/ed_rx_on/freertos --toolchain armgcc
+```
+
+> **NOTE**: 
+> For `coex_zigbee_router`/`coex_zigbee_ed_rx_on` examples, still need to build `mcuboot_opensource` image.
+```bash
+# For mcuboot_opensource example,
+west build -b frdmrw612 examples/ota_examples/mcuboot_opensource
+```
+
+### Current examples supported
+
+You'll find below the list of coex_zigbee examples supported with CMake.
+
+All these examples are located with the other SDK examples, in `<sdk_root>/examples`.
+
+| Name | Source folder | Description | Supported boards |
+| - | - | - | - |
+| `coex_zigbee_coordinator` | `<sdk_root>/examples/coex_examples/coex_zigbee/coordinator/freertos` | See [README](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_coordinator/README.md) | `frdmrw612` `rdrw612bga` |
+| `coex_zigbee_router` | `<sdk_root>/examples/coex_examples/coex_zigbee/router/freertos` | See [README](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_router/README.md) | `frdmrw612` `rdrw612bga` |
+| `coex_zigbee_ed_rx_on` | `<sdk_root>/examples/coex_examples/coex_zigbee/ed_rx_on/freertos` | See [README](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_ed_rx_on/README.md) | `frdmrw612` `rdrw612bga` |
+
+
+### Flash Binaries
+
+Flash the image with the following command,
+```bash
+# CMD to write CPU3 coex app image to flash in J-link window:
+
+# Flash coex_zigbee_coordinator,
+J-Link> loadfile coex_zigbee_coordinator.elf
+
+# Flash coex_zigbee_router,
+J-Link> loadfile mcuboot_opensource.elf
+J-Link> loadbin coex_zigbee_router_v1.signed.confirmed.bin 0x18020000
+
+# Flash coex_zigbee_ed_rx_on,
+J-Link> loadfile mcuboot_opensource.elf
+J-Link> loadbin coex_zigbee_ed_rx_on_v1.signed.confirmed.bin 0x18020000
+```
+
+## Running the example
 
 The log below shows the output of the coex examples (based on edgefast-shell) in the terminal window:
 
@@ -383,4 +409,4 @@ APP-EVT: Request Nwk Formation 00
 APP-BDB: NwkFormation Success
 APP-ZDO: Network started Channel = 12
 ```
-- More zigbee commands please refer [coordinator](../../../../../middleware/wireless/zigbee/examples/zigbee_coordinator/README.md), [router](../../../../../middleware/wireless/zigbee/examples/zigbee_router/README.md), [rx_on](../../../../../middleware/wireless/zigbee/examples/zigbee_rx_on/README.md)
+> **NOTE: More zigbee commands please refer [coordinator](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_coordinator/README.md), [router](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_router/README.md), [rx_on](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_ed_rx_on/README.md)**

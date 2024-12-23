@@ -9,7 +9,7 @@
 
 #if (CONFIG_COEX_ENABLE_ZIGBEE)
 #include "fwk_platform_coex.h"
-#elif (CONFIG_COEX_ENABLE_EDGEFAST)
+#elif (CONFIG_COEX_ENABLE_BLE)
 #include "fwk_platform_ble.h"
 #endif
 
@@ -357,7 +357,7 @@ void coex_controller_init(void)
     extern void zigbee_init(void);
     /* Zigbee init */
     zigbee_init();
-#elif (CONFIG_COEX_ENABLE_EDGEFAST)
+#elif (CONFIG_COEX_ENABLE_BLE)
     /* BT only FW download */
     PLATFORM_InitBle();
 #endif
