@@ -6,7 +6,7 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/wifi_cli/wifi_config/wifi_config.h
+    SOURCES ${board_root}/${board}/wifi_examples/wifi_cli/wifi_config.h
             ${board_root}/${board}/wifi_examples/wifi_cli/lwipopts.h
             ${board_root}/${board}/wifi_examples/common/pin_mux.c
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
@@ -28,7 +28,6 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/wifi_examples/wifi_cli
              ${board_root}/${board}/wifi_examples/common/${core_id}
-             middleware/wifi_nxp/example/wifi_cli/wifi_config
              ${board_root}/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/wifi_cli/lwip_config
              middleware/wifi_nxp/example/wifi_cli/freertos_config
