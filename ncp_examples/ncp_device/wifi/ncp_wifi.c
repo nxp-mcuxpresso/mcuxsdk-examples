@@ -604,7 +604,7 @@ int wifi_ncp_init(void)
 int ncp_wifi_set_nvm_network(void)
 {
     struct wlan_network *network = NULL;
-    int res;
+    int res = -WM_FAIL;
 
     network = (struct wlan_network *)OSA_MemoryAllocate(sizeof(struct wlan_network));
     if (network == NULL)
