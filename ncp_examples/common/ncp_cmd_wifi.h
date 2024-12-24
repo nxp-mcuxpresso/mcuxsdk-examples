@@ -12,14 +12,14 @@
 
 #include "ncp_cmd_common.h"
 
-/** NCP Wi-Fi subclass typse */
-/** subclass type for Wi-Fi station commands, such as scan, connect,version, set mac and so on. */
+/** NCP Wi-Fi subclass types */
+/** subclass type for Wi-Fi station commands, such as scan, connect, version, set mac and so on. */
 #define NCP_CMD_WLAN_STA         0x00000000
 /** subclass type for basic command such as reset, reset UAP provisioning and start UAP provisioning. */
 #define NCP_CMD_WLAN_BASIC       0x00100000
 /** subclass type for regulatory commands, such as set RF TX, RX antenna mode and RF band. */
 #define NCP_CMD_WLAN_REGULATORY  0x00200000
-/** subclass type for power managerment commands, such as enable/disable deep sleep power save mode. */
+/** subclass type for power management commands, such as enable/disable deep sleep power save mode. */
 #define NCP_CMD_WLAN_POWERMGMT   0x00300000
 /** subclass type for debug commands. */
 #define NCP_CMD_WLAN_DEBUG       0x00400000
@@ -46,7 +46,7 @@
 #define MLAN_MAX_DRIVER_VER_STR_LEN  16
 /** System's IPv6 address. */
 #define MLAN_IPV6_ADDR_LEN           4
-/** Maximum lenght of IPV6 address type string. */
+/** Maximum length of IPV6 address type string. */
 #define IPV6_MAX_ADDR_TYPE_STR_LEN   16
 /** Maximum address state string of IPv6 address. */
 #define IPV6_MAX_ADDR_STATE_STR_LEN  32
@@ -104,17 +104,17 @@
 #define NCP_CMD_WLAN_STA_11K_CFG       (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000021) /* wlan-11k-enable */
 /** Wi-Fi STA enable 11K command response ID */
 #define NCP_RSP_WLAN_STA_11K_CFG       (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000021)
-/** Wi-Fi STA neigbor request command ID */
+/** Wi-Fi STA neighbor request command ID */
 #define NCP_CMD_WLAN_STA_NEIGHBOR_REQ  (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000022) /* wlan-11k-neighbor-req */
-/** Wi-Fi STA neigbor request command response ID */
+/** Wi-Fi STA neighbor request command response ID */
 #define NCP_RSP_WLAN_STA_NEIGHBOR_REQ  (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000022)
 /** Wi-Fi STA MBO enable command ID */
 #define NCP_CMD_WLAN_MBO_ENABLE        (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000023) /*wlan-mbo-enable*/
 /** Wi-Fi STA MBO enable command response ID */
 #define NCP_RSP_WLAN_MBO_ENABLE        (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000023)
-/** Wi-Fi STA MBO nonprefer channel command ID */
+/** Wi-Fi STA MBO non prefer channel command ID */
 #define NCP_CMD_WLAN_MBO_NONPREFER_CH  (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000024) /*wlan-mbo-nonprefer-ch*/
-/** Wi-Fi STA MBO nonprefer channel command response ID */
+/** Wi-Fi STA MBO non prefer channel command response ID */
 #define NCP_RSP_WLAN_MBO_NONPREFER_CH  (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000024)
 /** Wi-Fi STA MBO set cell capacity command ID */
 #define NCP_CMD_WLAN_MBO_SET_CELL_CAPA (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000025) /*wlan-mbo-set-cell-capa*/
@@ -180,13 +180,13 @@
 #define NCP_CMD_WLAN_HTTP_RECV        (NCP_CMD_WLAN | NCP_CMD_WLAN_HTTP | NCP_MSG_TYPE_CMD | 0x00000004) /* wlan-http-recv */
 /** Wi-Fi http request command response ID */
 #define NCP_RSP_WLAN_HTTP_RECV        (NCP_CMD_WLAN | NCP_CMD_WLAN_HTTP | NCP_MSG_TYPE_RESP | 0x00000004)
-/** Wi-Fi http seth command ID */
+/** Wi-Fi http set header command ID */
 #define NCP_CMD_WLAN_HTTP_SETH        (NCP_CMD_WLAN | NCP_CMD_WLAN_HTTP | NCP_MSG_TYPE_CMD | 0x00000005) /* wlan-http-seth */
-/** Wi-Fi http seth command response ID */
+/** Wi-Fi http set header command response ID */
 #define NCP_RSP_WLAN_HTTP_SETH        (NCP_CMD_WLAN | NCP_CMD_WLAN_HTTP | NCP_MSG_TYPE_RESP | 0x00000005)
-/** Wi-Fi http unseth command ID */
+/** Wi-Fi http unset header command ID */
 #define NCP_CMD_WLAN_HTTP_UNSETH      (NCP_CMD_WLAN | NCP_CMD_WLAN_HTTP | NCP_MSG_TYPE_CMD | 0x00000006) /* wlan-http-unseth */
-/** Wi-Fi http unseth command response ID */
+/** Wi-Fi http unset header command response ID */
 #define NCP_RSP_WLAN_HTTP_UNSETH      (NCP_CMD_WLAN | NCP_CMD_WLAN_HTTP | NCP_MSG_TYPE_RESP | 0x00000006)
 /** Wi-Fi web socket update command ID */
 #define NCP_CMD_WLAN_WEBSOCKET_UPG    (NCP_CMD_WLAN | NCP_CMD_WLAN_HTTP | NCP_MSG_TYPE_CMD | 0x00000007) /* wlan-websocket-upg */
@@ -306,9 +306,9 @@
 #define NCP_CMD_WLAN_POWERMGMT_DEEP_SLEEP_PS (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000002) /* wlan-deep-sleep-ps */
 /** Wi-Fi enable/disable deep sleep power save mode command response ID */
 #define NCP_RSP_WLAN_POWERMGMT_DEEP_SLEEP_PS (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_RESP | 0x00000002)
-/** Wi-Fi enable/disable ieee power save mode command ID */
+/** Wi-Fi enable/disable IEEE power save mode command ID */
 #define NCP_CMD_WLAN_POWERMGMT_IEEE_PS       (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000003) /* wlan-ieee-ps */
-/** Wi-Fi enable/disable ieee power save mode command response ID */
+/** Wi-Fi enable/disable IEEE power save mode command response ID */
 #define NCP_RSP_WLAN_POWERMGMT_IEEE_PS       (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_RESP | 0x00000003)
 /** Wi-Fi enable/disable WMM (Wi-Fi multimedia) power save mode command ID */
 #define NCP_CMD_WLAN_POWERMGMT_UAPSD         (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000004)  /* wlan-uapsd-enable */
@@ -501,7 +501,7 @@
 /** NCP WLAN TLV */
 /** NCP network ssid tlv type */
 #define NCP_CMD_NETWORK_SSID_TLV         0x0001
-/** NCP network bssid tlv type */
+/** NCP network BSSID tlv type */
 #define NCP_CMD_NETWORK_BSSID_TLV        0x0002
 /** NCP network channel tlv type */
 #define NCP_CMD_NETWORK_CHANNEL_TLV      0x0003
@@ -567,7 +567,7 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_scan_result
 
     /* network features */
     /** Network supports 802.11n.  This is set to 0 if the network does not
-     *  support 802.11N or if the system does not have 802.11N support enabled. */
+     *  support 802.11n or if the system does not have 802.11n support enabled. */
     unsigned dot11n : 1;
 #if CONFIG_NCP_11AC
     /** Network supports 802.11ac.  This is set to 0 if the network does not
@@ -609,7 +609,7 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_scan_result
     char trans_ssid[IEEEtypes_SSID_SIZE + 1];
     /** SSID length */
     unsigned int trans_ssid_len;
-    /** Network BSSID (basic servivce set ID), represented as a 6-byte array. */
+    /** Network BSSID (basic service set ID), represented as a 6-byte array. */
     char trans_bssid[IEEEtypes_MAC_ADDRESS_SIZE];
 
     /** Beacon period. */
@@ -759,11 +759,20 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_network
     /** Network's security type. Use specified by enum wlan_security_type. */
     uint8_t security_type;
 
-    /** Enable 802.11ax flage, 1: enable; 0: disable. */
+    /** Enable 802.11ax flag, \n 
+     *  1: enable; \n
+     *  0: disable. 
+     */
     uint8_t enable_11ax : 1;
-    /** Enable 802.11ac flag, 1: enable; 0: disable. */
+    /** Enable 802.11ac flag, \n
+     *  1: enable; \n 
+     *  0: disable.
+     */
     uint8_t enable_11ac : 1;
-    /** Enable 802.11n flag, 1: enable; 0: disable */
+    /** Enable 802.11n flag,\n
+     *  1: enable; \n
+     *  0: disable.
+     */
     uint8_t enable_11n : 1;
 
     /** Configuration of network is IPv6 address. */
@@ -778,7 +787,7 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_network
     /* Private Fields */
     /** If set to 1, the ssid field contains the specific SSID for this network.*/
     unsigned ssid_specific : 1;
-    /** If set to 1, the BSSID (basic servivce set ID) field contains the specific BSSID for this
+    /** If set to 1, the BSSID (basic service set ID) field contains the specific BSSID for this
      *  network. */
     unsigned bssid_specific : 1;
     /** If set to 1, the channel field contains the specific channel for this network. */
@@ -872,10 +881,10 @@ typedef NCP_TLV_PACK_START struct _BSSRole_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
-    /** network BSS role,\n 
-    0: STA,\n
-    1: UAP.
-    */
+    /** Network BSS role,\n 
+     *  0: STA,\n
+     *  1: UAP.
+     */
     uint8_t role;
 } NCP_TLV_PACK_END BSSRole_ParamSet_t;
 
@@ -884,7 +893,7 @@ typedef NCP_TLV_PACK_START struct _Channel_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
-    /** network channel */
+    /** Network channel */
     uint8_t channel;
 } NCP_TLV_PACK_END Channel_ParamSet_t;
 
@@ -895,9 +904,9 @@ typedef NCP_TLV_PACK_START struct _Pwe_Derivation_ParamSet_t
     TypeHeader_t header;
     /**
      * sae_pwe - SAE mechanism for PWE derivation. \n 
-     * 0: hunting-and-pecking loop only \n
-     * 1: hash-to-element only \n
-     * 2: both hunting-and-pecking loop and hash-to-element enabled
+     * 0: hunting-and-pecking loop only, \n
+     * 1: hash-to-element only, \n
+     * 2: both hunting-and-pecking loop and hash-to-element enabled.
      */
     uint8_t pwe_derivation;
 } NCP_TLV_PACK_END Pwe_Derivation_ParamSet_t;
@@ -916,7 +925,10 @@ typedef NCP_TLV_PACK_START struct _ACSBand_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
-    /** Band configuration for ACS. Valid when set channel to zero. 0: 2GHz, 1: 5GHz. */
+    /** Band configuration for ACS. Valid when set channel to zero.\n
+     *  0: 2GHz,\n
+     *  1: 5GHz.
+     */
     uint16_t acs_band;
 } NCP_TLV_PACK_END ACSBand_ParamSet_t;
 
@@ -925,7 +937,10 @@ typedef NCP_TLV_PACK_START struct _IP_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
-    /** Auto ip flag, 0: no auto IP, 1: auto IP. */
+    /** Auto IP flag,\n
+     *  0: not auto IP,\n
+     *  1: auto IP.
+     */
     uint8_t is_autoip;
     /** Network IP address. */
     uint32_t address;
@@ -939,7 +954,7 @@ typedef NCP_TLV_PACK_START struct _IP_ParamSet_t
     uint32_t dns2;
 } NCP_TLV_PACK_END IP_ParamSet_t;
 
-/** This structure is used for security passsword configuration. */
+/** This structure is used for security password configuration. */
 typedef NCP_TLV_PACK_START struct _Security_ParamSet_t
 {
     /** Header type and size information. */
@@ -958,9 +973,15 @@ typedef NCP_TLV_PACK_START struct _PMF_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
-    /** MFPC (management frame protection capable) flag, 1: enable, 0: disable. */
+    /** MFPC (management frame protection capable) flag,\n
+     *  1: enable,\n
+     *  0: disable.
+     */
     uint8_t mfpc;
-    /** MFPR (management frame protection required) flag, 1: enable, 0: disable. */
+    /** MFPR (management frame protection required) flag,\n 
+     *  1: enable,\n
+     *  0: disable.
+     */
     uint8_t mfpr;
 } NCP_TLV_PACK_END PMF_ParamSet_t;
 
@@ -981,7 +1002,7 @@ typedef NCP_TLV_PACK_START struct _DTIM_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
-    /** DTIM (delivery traffic indication message) period */
+    /** DTIM (delivery traffic indication message) period. */
     uint8_t dtim_period;
 } NCP_TLV_PACK_END DTIM_ParamSet_t;
 #endif
@@ -1002,9 +1023,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_NETWORK_ADD
 {
     /** Network name string */
     char name[WLAN_NETWORK_NAME_MAX_LENGTH];
-    /** Length of TLVs sent in command starting at tlvBuffer */
+    /** Length of TLVs sent in command starting at TLV buffer */
     uint32_t tlv_buf_len;
-    /** Payload of "wlan-add" command, includes:
+    /** Payload of "wlan-add" command, includes: \n
      * SSID TLV, SSID_ParamSet_t \n
      * BSSID TLV, BSSID_ParamSet_t \n
      * BSS role TLV, BSSRole_ParamSet_t \n
@@ -1040,7 +1061,10 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_NETWORK_UAP_STA_LIST
 /** This structure is used for roaming configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_ROAMING
 {
-    /** STA roaming enable flag, 1: enable roaming, 0: disable roaming. */
+    /** STA roaming enable flag, \n
+     *  1: enable roaming,\n
+     *  0: disable roaming.
+     */
     uint32_t enable;
     /** When the RSSI of the AP currently connected to the STA is lower than this threshold,
      * the STA begins to scan the environment to find APs with better signals for roaming.
@@ -1075,7 +1099,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_OPEN_CFG
     uint32_t opened_handle;
 } NCP_TLV_PACK_END NCP_CMD_SOCKET_OPEN_CFG;
 
-/** NCP Wlan socket connect */
+/** NCP Wi-Fi socket connect */
 #define IP_ADDR_LEN 16
 
 /** This structure is used for socket connect configuration. */
@@ -1092,7 +1116,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_CON_CFG
 /** This structure is used for socket bind configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_BIND_CFG
 {
-    /** Socket handle index number */
+    /** Socket handle index number. */
     uint32_t handle;
     /** socket port number to be bound. */
     uint32_t port;
@@ -1103,7 +1127,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_BIND_CFG
 /** This structure is used for socket closing configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_CLOSE_CFG
 {
-    /** Socket handle index number */
+    /** Socket handle index number. */
     uint32_t handle;
 } NCP_TLV_PACK_END NCP_CMD_SOCKET_CLOSE_CFG;
 
@@ -1121,7 +1145,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_ACCEPT_CFG
 {
     /** Socket handle index number. */
     uint32_t handle;
-    /** Accept socket handle */
+    /** Accept socket handle. */
     int  accepted_handle;
 } NCP_TLV_PACK_END NCP_CMD_SOCKET_ACCEPT_CFG;
 
@@ -1130,7 +1154,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_SEND_CFG
 {
     /** Socket handle index number. */
     uint32_t handle;
-    /** Size of send data */
+    /** Size of send data. */
     uint32_t size;
     /** Data buffer to send. */
     char send_data[1];
@@ -1139,7 +1163,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_SEND_CFG
 /** This structure is used for socket sendto configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_SENDTO_CFG
 {
-    /** Socket handle index number */
+    /** Socket handle index number. */
     uint32_t handle;
     /** Send data size. */
     uint32_t size;
@@ -1154,13 +1178,13 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_SENDTO_CFG
 /** This structure is used for socket receive configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_SOCKET_RECEIVE_CFG
 {
-    /** Peer socket handle */
+    /** Peer socket handle. */
     uint32_t handle;
     /** Received buffer size, the buffer max length is 4072. */
     uint32_t recv_size;
-    /** Wait time */
+    /** Wait time. */
     uint32_t timeout;
-    /** Reveived data */
+    /** Received data. */
     char recv_data[1];
 } NCP_TLV_PACK_END NCP_CMD_SOCKET_RECEIVE_CFG;
 
@@ -1216,7 +1240,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_HTTP_SETH_CFG
 {
     /** HTTP header segment name. */
     char name[SETH_NAME_LENGTH];
-    /** HTTP header segment value */
+    /** HTTP header segment value. */
     char value[SETH_VALUE_LENGTH];
 } NCP_TLV_PACK_END NCP_CMD_HTTP_SETH_CFG;
 
@@ -1227,24 +1251,24 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_HTTP_UNSETH_CFG
     char name[SETH_NAME_LENGTH];
 } NCP_TLV_PACK_END NCP_CMD_HTTP_UNSETH_CFG;
 
-/** NCP Wlan Http Request */
+/** NCP Wi-Fi http request */
 #define HTTP_URI_LEN 512
 /** This structure is used for HTTP request configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_HTTP_REQ_CFG
 {
-    /** socket handle index number */
+    /** Socket handle index number. */
     uint32_t handle;
     /** Support method is get/delete/put/options. The max length is 16. */
     char method[HTTP_PARA_LEN];
     /** HTTP URL, the string max length is 512 */
     char uri[HTTP_URI_LEN];
-    /** Size of the request data */
+    /** Size of the request data. */
     uint32_t req_size;
     /** Request data. */
     char req_data[1];
 } NCP_TLV_PACK_END NCP_CMD_HTTP_REQ_CFG;
 
-/** This structure is used for HTTP request response configruation. */
+/** This structure is used for HTTP request response configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_HTTP_REQ_RESP_CFG
 {
     /** Received header size */
@@ -1269,7 +1293,7 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_HTTP_RECV_CFG
 /** This structure is used for HTTP upgrade configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_HTTP_UPG_CFG
 {
-    /** Socket handle index number */
+    /** Socket handle index number. */
     uint32_t handle;
     /** Web socket URI */
     char uri[HTTP_URI_LEN];
@@ -1323,10 +1347,10 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_WPS_PIN
 typedef NCP_TLV_PACK_START struct _NCP_WLAN_NET_MONITOR_PARA
 {
     /** Action, \n 
-    add: add mac addr as filter element \n
-    delete: delete mac addr \n
-    clear: clear mac addr \n
-    dump: dump monitor parameter.
+     *  add: add mac addr as filter element \n
+     *  delete: delete mac addr \n
+     *  clear: clear mac addr \n
+     *  dump: dump monitor parameter.
     */
     uint16_t action;
     /** Monitor activity enable flag, 1 enable, other disable. */
@@ -1354,15 +1378,15 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_NET_MONITOR
 typedef NCP_TLV_PACK_START struct _NCP_CMD_REGISTER_ACCESS
 {  
     /** Action, \n
-    0: get, \n
-    1: set.
-    */
+     *  0: get, \n
+     *  1: set.
+     */
     uint8_t action;
     /** 
-    1: MAC, \n
-    2: BBP, \n
-    3: RF, \n
-    4: CAU */
+     * 1: MAC, \n
+     * 2: BBP, \n
+     * 3: RF, \n
+     * 4: CAU */
     uint8_t type;
     /** Offset of register. */
     uint32_t offset;
@@ -1389,7 +1413,10 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_CSI
 /** This structure is used for enable/disable 802.11k flag configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_11K_CFG
 {   
-    /** Enable/disable 802.11k flag, 0: disable, 1: enable. */
+    /** Enable/disable 802.11k flag,\n 
+     *  0: disable,\n
+     *  1: enable.
+     */
     int enable;
 } NCP_TLV_PACK_END NCP_CMD_11K_CFG;
 
@@ -1403,7 +1430,10 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_NEIGHBOR_REQ
 /** This structure is used for MBO (multi band operation) flag configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_MBO_ENABLE
 {   
-    /** Enable/disable MBO flag, 0: disable, 1: enable. */
+    /** Enable/disable MBO flag,\n 
+     *  0: disable,\n 
+     *  1: enable.
+     */
     int enable;
 } NCP_TLV_PACK_END NCP_CMD_MBO_ENABLE;
 
@@ -1419,8 +1449,10 @@ typedef NCP_TLV_PACK_START struct _MBO_NONPREFER_CH
     uint8_t preference1;
 } NCP_TLV_PACK_END MBO_NONPREFER_CH;
 
+/** This structure is used for MBO non prefer channel configuration. */
 typedef NCP_TLV_PACK_START struct _MBO_NONPREFER_CH_SUPP
 {
+     /** MBO non prefer channel parameters. */
     char mbo_nonprefer_ch_params[32];
 } NCP_TLV_PACK_END MBO_NONPREFER_CH_SUPP;
 
@@ -1432,13 +1464,23 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_MBO_NONPREFER_CH
     } NONPREFER_CH_CFG;
 } NCP_TLV_PACK_END NCP_CMD_MBO_NONPREFER_CH;
 
+/** This structure is used for MBO cellular data capabilities configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_MBO_SET_CELL_CAPA
-{
+{   /** MBO cellular data capabilities,\n
+     *  1: cellular data connection available,\n
+     *  2: cellular data connection not available, \n
+     *  3: not cellular capable (default value).
+     */
     uint8_t cell_capa;
 } NCP_TLV_PACK_END NCP_CMD_MBO_SET_CELL_CAPA;
 
+/** This structure is used for MBO OCE (optimized connectivity experience) configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_MBO_SET_OCE
-{
+{   
+    /** Enable OCE features, \n
+     *  1: Enable OCE in non-AP STA mode, \n
+     *  2: Enable OCE in STA-CFON mode. 
+     */
     uint8_t oce;
 } NCP_TLV_PACK_END NCP_CMD_MBO_SET_OCE;
 
@@ -1482,28 +1524,28 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RSSI
 typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_MEF
 {
     /** Type, \n
-     0: delete, \n 
-     1: ping, \n 
-     2: ARP (address resolution protocol). \n
-     3: multicast, \n
-     4: Ipv6 NS.
-    */
+     *  0: delete, \n 
+     *  1: ping, \n 
+     *  2: ARP (address resolution protocol). \n
+     *  3: multicast, \n
+     *  4: Ipv6 NS.
+     */
     int type;
     /** Action, \n
-     0: discard and do not wake up the host, \n
-     1: discard and wake up the host, \n
-     3: allow and wake up the host.
-    */
+     *  0: discard and do not wake up the host, \n
+     *  1: discard and wake up the host, \n
+     *  3: allow and wake up the host.
+     */
     uint8_t action;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_MEF;
 
-/** This strucure is use for UAPSD (unscheduled automatic power save delivery) flag configuration. */
+/** This structure is use for UAPSD (unscheduled automatic power save delivery) flag configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_UAPSD
 {   
     /** Enable flag, \n
-    0: disable UAPSD, \n
-    1: enable UAPSD.
-    */
+     *  0: disable UAPSD, \n
+     *  1: enable UAPSD.
+     */
     int enable;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_UAPSD;
 
@@ -1513,9 +1555,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_QOSINFO
     /** QOS information. */
     uint8_t qos_info;
     /** Action, \n
-    0: get, \n
-    1: set
-    */
+     *  0: get, \n
+     *  1: set.
+     */
     uint8_t action;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_QOSINFO;
 
@@ -1525,9 +1567,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_SLEEP_PERIOD
     /** Power management sleep period */
     uint32_t period;
     /** Action, \n
-    0: get, \n
-    1: set
-    */
+     *  0: get, \n
+     *  1: set.
+     */
     uint8_t action;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_SLEEP_PERIOD;
 
@@ -1535,20 +1577,19 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_SLEEP_PERIOD
 typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_WOWLAN_CFG
 {   
     /** Type, \n
-    0x0: WOWLAN \n
-    0x1: MEF
-    */
+     *  0x0: WOWLAN \n
+     *  0x1: MEF.
+     */
     uint8_t is_mef;
-    /**
-    Wakeup condition bitmap, value for default WOWLAN (wake on wireless LAN) conditions only. \n 
-    bit 0: WAKE_ON_ALL_BROADCAST, \n
-    bit 1: WAKE_ON_UNICAST, \n
-    bit 2: WAKE_ON_MAC_EVENT, \n 
-    bit 3: WAKE_ON_MULTICAST, \n 
-    bit 4: WAKE_ON_ARP_BROADCAST, \n 
-    bit 6: WAKE_ON_MGMT_FRAME, \n 
-    all bit 0 discard and not wakeup host.
-    */
+    /** Wakeup condition bitmap, value for default WOWLAN (wake on wireless LAN) conditions only. \n 
+     *  bit 0: WAKE_ON_ALL_BROADCAST, \n
+     *  bit 1: WAKE_ON_UNICAST, \n
+     *  bit 2: WAKE_ON_MAC_EVENT, \n 
+     *  bit 3: WAKE_ON_MULTICAST, \n 
+     *  bit 4: WAKE_ON_ARP_BROADCAST, \n 
+     *  bit 6: WAKE_ON_MGMT_FRAME, \n 
+     *  all bit 0 discard and not wakeup host.
+     */
     uint8_t wake_up_conds;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_WOWLAN_CFG;
 
@@ -1556,10 +1597,10 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_WOWLAN_CFG
 typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_SUSPEND
 {   
     /** Suspend mode, \n
-    1: PM1, \n
-    2: PM2, \n 
-    3: PM3.  
-    */
+     *  1: PM1, \n
+     *  2: PM2, \n 
+     *  3: PM3.  
+     */
     int mode;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_SUSPEND;
 
@@ -1576,7 +1617,7 @@ typedef NCP_TLV_PACK_START struct _HE_CAP_ParamSet_t
     /** HE physical capabilities information.The bit values of this bit field are 
     defined in the 802.11ax core specification. */
     uint8_t he_phy_cap[11];
-    /** HE txrx MCS support for 80MHz. The bit values of this bit field are defined 
+    /** HE TX/RX MCS support for 80MHz. The bit values of this bit field are defined 
     in the 802.11ax core specification. */
     uint8_t he_txrx_mcs_support[4];
     /** Including he_txrx_mcs_support for 160 and 80+80 MHz, and PPE Thresholds.
@@ -1589,10 +1630,10 @@ typedef NCP_TLV_PACK_START struct _HE_CAP_ParamSet_t
 typedef NCP_TLV_PACK_START struct _NCP_CMD_11AX_CFG
 {
     /** Band, \n
-     * 0: 2.4GHz, \n  
-     * 2: 5GHz, \n
-     * 3: 2.4GHz and 5GHz  
-     * */
+     *  0: 2.4GHz, \n  
+     *  2: 5GHz, \n
+     *  3: 2.4GHz and 5GHz.  
+     */
     uint8_t band;
     /** HE (802.11ax high efficient) capability. */
     HE_CAP_ParamSet_t he_cap_tlv;
@@ -1631,30 +1672,49 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_BTWT_CFG
 /** This structure is used for TWT configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_TWT_SETUP
 {
-    /** Implicit enable flag, 0: TWT session is explicit, 1: session is implicit. */
+    /** Implicit enable flag,\n
+     *  0: TWT session is explicit,\n
+     *  1: session is implicit.
+     */
     uint8_t implicit;
-    /** Announced enable flag, 0: unannounced, 1: announced TWT. */
+    /** Announced enable flag,\n
+     *  0: unannounced,\n
+     *  1: announced TWT.
+     */
     uint8_t announced;
-    /** Trigger enable flag, 0: Non-Trigger enabled, 1: trigger enabled TWT. */
+    /** Trigger enable flag,\n
+     *  0: Non-Trigger enabled,\n
+     *  1: trigger enabled TWT.
+     */
     uint8_t trigger_enabled;
-    /** TWT information disable flag, 0: TWT info enabled, 1: TWT info disabled. */
+    /** TWT information disable flag,\n
+     *  0: TWT info enabled,\n
+     *  1: TWT info disabled.
+     */
     uint8_t twt_info_disabled;
-    /** Negotiation type, 0: individual TWT, 3: broadcast TWT. */
+    /** Negotiation type,\n
+     *  0: individual TWT,\n
+     *  3: broadcast TWT.
+     */
     uint8_t negotiation_type;
     /** TWT wakeup duration, time after which the TWT requesting STA can
      * transition to doze state. */
     uint8_t twt_wakeup_duration;
     /** Flow identifier. range: [0-7]. */
     uint8_t flow_identifier;
-    /** Hard constraint,
-     0: FW can tweak the TWT setup parameters if it is rejected by AP.
-     1: Firmware should not tweak any parameters. */
+    /** Hard constraint, \n
+     *  0: FW can tweak the TWT setup parameters if it is rejected by AP. \n
+     *  1: Firmware should not tweak any parameters.
+     */
     uint8_t hard_constraint;
     /** TWT exponent, range: [0-63]. */
     uint8_t twt_exponent;
     /** TWT wake interval mantissa, range: [0-(2^16-1)]. */
     uint16_t twt_mantissa;
-    /** TWT request type, 0: REQUEST_TWT, 1: SUGGEST_TWT. */
+    /** TWT request type,\n
+     *  0: REQUEST_TWT,\n
+     *  1: SUGGEST_TWT.
+     */
     uint8_t twt_request;
 } NCP_TLV_PACK_END NCP_CMD_TWT_SETUP_CFG;
 
@@ -1664,14 +1724,14 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_TWT_TEARDOWN
     /** TWT flow identifier, range from 0 to 7. */
     uint8_t flow_identifier;
     /** Negotiation type. \n
-    0: Future individual TWT service period start time,\n
-    1: Next wake TBTT (target beacon transmission time).
-    */
+     *  0: Future individual TWT service period start time,\n
+     *  1: Next wake TBTT (target beacon transmission time).
+     */
     uint8_t negotiation_type;
     /** Tear down all TWT enable flag. \n
-    1: To teardown all TWT, \n
-    0: none to do. 
-    */
+     *  1: To teardown all TWT, \n
+     *  0: none to do. 
+     */
     uint8_t teardown_all_twt;
 } NCP_TLV_PACK_END NCP_CMD_TWT_TEARDOWN_CFG;
 
@@ -1719,14 +1779,14 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_TWT_REPORT
 /** This structure is used for 802.11d flag configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_11D_ENABLE
 {
-    /** Role type,
-     * 0: STA, \n
-     * 1: UAP. 
+    /** Role type, \n
+     *  0: STA, \n
+     *  1: UAP. 
      */
     uint32_t role;
-    /** State type,
-     * 0: disable 802.11d, \n
-     * 1: enable 802.11d.
+    /** State type, \n
+     *  0: disable 802.11d, \n
+     *  1: enable 802.11d.
      */
     uint32_t state;
 } NCP_TLV_PACK_END NCP_CMD_11D_ENABLE_CFG;
@@ -1734,24 +1794,23 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_11D_ENABLE
 /** This structure is used for region code configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_REGION_CODE
 {
-    /** 
-    Action, \n
-    0: get, \n
-    1: set
-    */
+    /** Action, \n
+     *  0: get, \n
+     *  1: set.
+     */
     uint32_t action;
     /** Region code, \n 
-    0x00:"WW" World Wide, \n
-    0x10:"US" US FCC, \n
-    0x20:"CA" IC Canada, \n
-    0x10:"SG" Singapore, \n
-    0x30:"EU" ETSI, \n
-    0x30:"AU" Australia, \n
-    0x30:"KR" Republic Of Korea, \n
-    0x32:"FR" France, \n
-    0xFF:"JP" Japan, \n
-    0x50:"CN" China 
-    */
+     *  0x00:"WW" World Wide, \n
+     *  0x10:"US" US FCC, \n
+     *  0x20:"CA" IC Canada, \n
+     *  0x10:"SG" Singapore, \n
+     *  0x30:"EU" ETSI, \n
+     *  0x30:"AU" Australia, \n
+     *  0x30:"KR" Republic Of Korea, \n
+     *  0x32:"FR" France, \n
+     *  0xFF:"JP" Japan, \n
+     *  0x50:"CN" China. 
+     */
     uint32_t region_code;
 } NCP_TLV_PACK_END NCP_CMD_REGION_CODE_CFG;
 
@@ -1761,9 +1820,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_CLIENT_CNT
     /** Maximum number of STAs set in the command. */
     uint16_t max_sta_count;
     /** Set status. \n 
-    0: success, \n
-    1: fail.
-    */
+     *  0: success, \n
+     *  1: fail.
+     */
     uint8_t set_status;
     /** Maximum number of STAs supported by the device side. */
     uint8_t support_count;
@@ -1773,24 +1832,24 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_CLIENT_CNT
 typedef NCP_TLV_PACK_START struct _NCP_CMD_ANTENNA_CFG
 {   
     /** Action type, \n
-    0:get, \n
-    1:set 
-    */
+     *  0: get, \n
+     *  1: set 
+     */
     uint8_t action;
     /** Antenna mode, \n
-    0: 1ANT, \n
-    1: 2ANT, \n
-    15: ANT diversity.
-    */
+     *  0: 1ANT, \n
+     *  1: 2ANT, \n
+     *  15: ANT diversity.
+     */
     uint32_t antenna_mode;
     /** SAD (software antenna diversity) evaluate time interval (unit: milliseconds), default value is 6000ms. */
     uint16_t evaluate_time;
     /** Evaluate mode is used to specify two out of three antennas for SAD, with valid values of 0, 1, 2 and 255. \n
-    0: ant 1 and ant 2, \n
-    1: ant 2 and ant 3, \n
-    2: ant 1 and ant 3, \n
-    255: indicates that no antenna is specified.
-    */
+     *  0: ant 1 and ant 2, \n
+     *  1: ant 2 and ant 3, \n
+     *  2: ant 1 and ant 3, \n
+     *  255: indicates that no antenna is specified.
+     */
     uint8_t evaluate_mode;
     /** Current antenna configuration. */
     uint16_t current_antenna;
@@ -1799,20 +1858,20 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_ANTENNA_CFG
 /** This structure is used for deep sleep power save mode flag configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_DEEP_SLEEP_PS
 {
-    /** Enable deep sleep power save mode flag,
-    0: disable, \n
-    1: enable. 
-    */
+    /** Enable deep sleep power save mode flag, \n
+     *  0: disable, \n
+     *  1: enable. 
+     */
     int enable;
 } NCP_TLV_PACK_END NCP_CMD_DEEP_SLEEP_PS;
 
 /** This structure is used for IEEE power save mode configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_IEEE_PS
 {
-    /** Enable IEEE power save mode flag,
-    0: disable, \n
-    1: enable.
-    */
+    /** Enable IEEE power save mode flag,\n
+     *  0: disable, \n
+     *  1: enable.
+     */
     int enable;
 } NCP_TLV_PACK_END NCP_CMD_IEEE_PS;
 
@@ -1820,9 +1879,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_IEEE_PS
 typedef NCP_TLV_PACK_START struct _NCP_CMD_ED_MAC
 {   
     /** Action, \n
-    0: get, \n
-    1: set.
-    */
+     *  0: get, \n
+     *  1: set.
+     */
     uint8_t action;
     /** Enable/disable EU (Encrypt unit) adaptivity for 2.4GHz band. */
     uint16_t ed_ctrl_2g;
@@ -1840,43 +1899,40 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_ED_MAC
 /** This structure is used for RF TX antenna configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_ANTENNA
 {   
-    /** Antenna type,
-    1: main antenna, \n
-    2: aux antenna.
-    */
+    /** Antenna type, \n
+     *  1: main antenna, \n
+     *  2: aux antenna.
+     */
     uint8_t ant;
 } NCP_TLV_PACK_END NCP_CMD_RF_TX_ANTENNA;
 
 /** This structure is used for RF RX antenna configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_RX_ANTENNA
 {   
-    /** 
-    Antenna type, \n
-    1: main antenna, \n
-    2: aux antenna.
-    */
+    /** Antenna type, \n
+     *  1: main antenna, \n
+     *  2: aux antenna.
+     */
     uint8_t ant;
 } NCP_TLV_PACK_END NCP_CMD_RF_RX_ANTENNA;
 
 /** This structure is used for RF band configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_BAND
 {   
-    /** 
-    Band mode, \n
-    0: 2.4GHz, \n
-    1: 5GHz.
-    */
+    /** Band mode, \n
+     *  0: 2.4GHz, \n
+     *  1: 5GHz.
+     */
     uint8_t band;
 } NCP_TLV_PACK_END NCP_CMD_RF_BAND;
 
 /** This structure is used for RF bandwidth configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_BANDWIDTH
 {   
-    /** 
-    Bandwidth, \n
-    0: 20MHz; \n
-    1: 40MHz; \n
-    4: 80MHz
+   /** Bandwidth, \n
+    *  0: 20MHz; \n
+    *  1: 40MHz; \n
+    *  4: 80MHz.
     */
     uint8_t bandwidth;
 } NCP_TLV_PACK_END NCP_CMD_RF_BANDWIDTH;
@@ -1891,12 +1947,11 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_CHANNEL
 /** This structure is used for RF radio mode configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_RADIO_MODE
 {  
-    /** 
-    Radio mode, \n
-    0: set radio in power down mode, \n
-    3: sets radio in 5GHz band, 1X1 mode(path A), \n
-    11: sets radio in 2.4GHz band, 1X1 mode(path A).
-    */
+    /** Radio mode, \n
+     *  0: set radio in power down mode, \n
+     *  3: sets radio in 5GHz band, 1X1 mode(path A), \n
+     *  11: sets radio in 2.4GHz band, 1X1 mode(path A).
+     */
     uint8_t radio_mode;
 } NCP_TLV_PACK_END NCP_CMD_RF_RADIO_MODE;
 
@@ -1905,13 +1960,16 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_POWER
 {
     /** Power value: 0~24 dBm. */
 	uint8_t power;
-	/** Modulation mode, (0: CCK (complementary code keying), 1:OFDM (orthogonal frequency division multiplexing), 2:MCS). */
+	/** Modulation mode, \n 
+	 *  0: CCK (complementary code keying), \n
+	 *  1: OFDM (orthogonal frequency division multiplexing), \n
+	 *  2: MCS.
+	 */
     uint8_t mod;
-	/** 
-	Path ID, \n
-	0: path A, \n
-	1: path B, \n
-	2: path A+B.
+	/** Path ID, \n
+	 *  0: path A, \n
+	 *  1: path B, \n
+	 *  2: path A+B.
      */
     uint8_t path_id;
 } NCP_TLV_PACK_END NCP_CMD_RF_TX_POWER;
@@ -1919,32 +1977,28 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_POWER
 /** This structure is used for RF TX continuous configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_CONT_MODE
 {   
-    /** 
-    Enable TX flag, \n
-    0: disable TX, \n
-    1: enable TX.
-    */
+    /** Enable TX flag, \n
+     *  0: disable TX, \n
+     *  1: enable TX.
+     */
     uint32_t enable_tx;
-	/** 
-	Enable CW (continuous wave) mode flag, \n
-	0: disable, \n
-	1: enable.
-	*/
+	/** Enable CW (continuous wave) mode flag, \n
+	 *  0: disable, \n
+	 *  1: enable.
+	 */
     uint32_t cw_mode;
 	/** Payload pattern, 0 to 0xFFFFFFF (enter hexadecimal value). */
     uint32_t payload_pattern;
-	/** 
-	Enable CS mode flag, applicable only when continuous wave is disabled, \n
-	0:disable, \n
-	1:enable.
-	*/
+	/** Enable CS mode flag, applicable only when continuous wave is disabled, \n
+	 *  0: disable, \n
+	 *  1: enable.
+	 */
     uint32_t cs_mode;
-	/** 
-	Active sub channel, \n
-	0: low, \n
-	1: upper, \n
-	3: both.
-	*/
+	/** Active sub channel, \n
+	 *  0: low, \n
+	 *  1: upper, \n
+	 *  3: both.
+	 */
     uint32_t act_sub_ch;
 	/** Transmit data rate, rate index corresponding to legacy/HT (802.11n high throughput)/VHT (802.11ac very high throughput) rates. */
     uint32_t tx_rate;
@@ -1953,7 +2007,10 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_CONT_MODE
 /** This structure is used for RF TX frame configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_FRAME
 {   
-    /** Enable flag, 0: disable, 1: enable. */
+    /** Enable flag, \n 
+     *  0: disable, \n
+     *  1: enable.
+     */
     uint32_t enable;
     /** Transmit data rate, rate index corresponding to legacy/HT/VHT rates. */
     uint32_t data_rate;
@@ -1961,25 +2018,50 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_TX_FRAME
     uint32_t frame_pattern;
     /** Payload length, (1 to 0x400) (Enter hexadecimal value) */
     uint32_t frame_length;
-    /** Adjust burst SIFS3 gap enable flag (0:disable, 1:enable) */
+    /** Adjust burst SIFS3 gap enable flag,\n
+     *  0: disable, \n
+     *  1: enable.
+     */
     uint32_t adjust_burst_sifs;
     /** Burst SIFS (short interframe space) in us (0 to 255us) */
     uint32_t burst_sifs_in_us;
-    /** Enable short preamble flag (0: disable, 1: enable). */
+    /** Enable short preamble flag, \n
+     *  0: disable,\n
+     *  1: enable.
+     */
     uint32_t short_preamble;
-    /** Enable active sub channel flag (0: low, 1: upper, 3: both). */
+    /** Enable active sub channel flag, \n
+     *  0: low, \n
+     *  1: upper,\n
+     *  3: both.
+     */
     uint32_t act_sub_ch;
-    /** Enable short GI (guard interval) flag (0: disable, 1: enable). */
+    /** Enable short GI (guard interval) flag,\n
+     *  0: disable,\n
+     *  1: enable.
+     */
     uint32_t short_gi;
-    /** Eable advanced coding flag (0: disable, 1: enable). */
+    /** Enable advanced coding flag,\n
+     *  0: disable,\n
+     *  1: enable.
+     */
     uint32_t adv_coding;
-    /** Enable beamforming flag (0: disable, 1: enable). */
+    /** Enable beamforming flag,\n
+     *  0: disable,\n
+     *  1: enable.
+     */
     uint32_t tx_bf;
-    /** Enable green field mode flag (0: disable, 1: enable). */
+    /** Enable green field mode flag,\n
+     *  0: disable,\n
+     *  1: enable.
+     */
     uint32_t gf_mode;
-    /** Enable STBC (space time block coding) flag (0: disable, 1: enable). */
+    /** Enable STBC (space time block coding) flag, \n
+     *  0: disable,\n
+     *  1: enable.
+     */
     uint32_t stbc;
-    /** Bssid string. */
+    /** BSSID string. */
     uint8_t bssid[MLAN_MAC_ADDR_LENGTH];
 } NCP_TLV_PACK_END NCP_CMD_RF_TX_FRAME;
 
@@ -1998,7 +2080,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_RF_PER
 /** This structure is used for EU (encryption unit) crypto configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_EU_CRYPRTO
 {   
-    /** 0: decrypt, 1: encrypt. */
+    /** 0: decrypt, \n 
+     *  1: encrypt.
+     */
     uint8_t enc;
 } NCP_TLV_PACK_END NCP_CMD_EU_CRYPRTO;
 
@@ -2006,9 +2090,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_EU_CRYPRTO
 typedef NCP_TLV_PACK_START struct _wlan_date_time_t
 {   
     /** Action type, \n
-    0: get, \n
-    1: set.
-    */
+     *  0: get, \n
+     *  1: set.
+     */
     uint32_t action;
     /** Year: range from 1970 to 2099. */
     uint16_t year;  
@@ -2027,11 +2111,10 @@ typedef NCP_TLV_PACK_START struct _wlan_date_time_t
 /** This structure is used for date and time configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_DATE_TIME
 {   
-    /** 
-    Action type, \n
-    0: get, \n
-    1: set.
-    */
+    /** Action type, \n
+     *  0: get, \n
+     *  1: set.
+     */
     uint32_t action;
     /** Date and time structure. */
     wlan_date_time_t date_time;
@@ -2060,11 +2143,10 @@ typedef NCP_TLV_PACK_START struct _QUERY_PTR_CFG
 {
     /** Type of service, like "http". */
     char service[NCP_MDNS_LABEL_MAX_LEN + 1];
-    /** 
-    Protocol type, \n
-    0: UDP, \n
-    1: TCP.
-    */
+    /** Protocol type, \n
+     *  0: UDP, \n
+     *  1: TCP.
+     */
     uint16_t proto;
 } NCP_TLV_PACK_END QUERY_PTR_CFG;
 
@@ -2092,11 +2174,12 @@ typedef NCP_TLV_PACK_START struct _PTR_ParamSet_t
 {   
     /** Header type and size information. */
     TypeHeader_t header;
-    /* Instance name. */
+    /** Instance name, used to distinguish between different service instances of the same type. */
     char instance_name[NCP_MDNS_LABEL_MAX_LEN + 1];
-    /* Service type. */
+    /** The type of service and the transport protocol are identified, for example, _http._tcp indicates
+    an HTTP service that uses the TCP protocol. */
     char service_type[NCP_MDNS_LABEL_MAX_LEN + 1];
-    /* Service protocol. */
+    /** The protocol type of service, for example, the TCP/UDP protocol. */
     char proto[8];
 } NCP_TLV_PACK_END PTR_ParamSet_t;
 
@@ -2129,11 +2212,10 @@ typedef NCP_TLV_PACK_START struct _IP_ADDR_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
-    /** 
-    IP address type. \n
-    1: ADDR_TYPE_DHCP, use DHCP (dynamic host configuration protocol) to obtain the IP address. \n
-    0: ADDR_TYPE_STATIC, use a static IP address.
-    */
+    /** IP address type. \n
+     *  1: ADDR_TYPE_DHCP, use DHCP (dynamic host configuration protocol) to obtain the IP address. \n
+     *  0: ADDR_TYPE_STATIC, use a static IP address.
+     */
     uint8_t addr_type;
     /** IPv4/IPv6 address. */
     union {
@@ -2203,11 +2285,10 @@ typedef NCP_TLV_PACK_START struct _NCP_EVT_CSI_DATA
 /** This structure is for MDNS domain event. */
 typedef NCP_TLV_PACK_START struct _NCP_EVT_MDNS_RESOLVE
 {   
-    /** 
-    IP type, \n
-    0: IPv4, \n
-    1: IPv6.
-    */
+    /** IP type, \n
+     *  0: IPv4, \n
+     *  1: IPv6.
+     */
     uint8_t ip_type;
 	/** IPv4/IPv6 address. */
     union {
@@ -2232,7 +2313,7 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_MAC_ADDRESS mac_addr;
         /** Get MAC address */
         NCP_CMD_GET_MAC_ADDRESS get_mac_addr;
-        /** wlan connnection state */
+        /** wlan connection state */
         NCP_CMD_CONNECT_STAT conn_stat;
         /** wlan network info*/
         NCP_CMD_NETWORK_INFO network_info;
@@ -2243,11 +2324,11 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_NETWORK_ADD network_add;
         /** wlan start network*/
         NCP_CMD_NETWORK_START network_start;
-        /** wlan uap sta list */
+        /** wlan UAP station list */
         NCP_CMD_NETWORK_UAP_STA_LIST uap_sta_list;
 		/** CSI configuration */
         NCP_CMD_CSI csi_cfg;
-		/** 802.11k enabale configuration */
+		/** 802.11k enable configuration */
         NCP_CMD_11K_CFG wlan_11k_cfg;
 		/** neighbor report request */
         NCP_CMD_NEIGHBOR_REQ neighbor_req;
@@ -2329,11 +2410,11 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_POWERMGMT_MEF mef_config;
         /** Wi-Fi deep sleep power save mode. */
         NCP_CMD_DEEP_SLEEP_PS wlan_deep_sleep_ps;
-        /** Wlan IEEE power save mode configure. */
+        /** Wi-Fi IEEE power save mode configure. */
         NCP_CMD_IEEE_PS wlan_ieee_ps;
 		/** NCP enable/disable UAPSD configuration*/
         NCP_CMD_POWERMGMT_UAPSD uapsd_cfg;
-		/** NCP set/get WMM Qos configuration  */
+		/** NCP set/get WMM QoS configuration  */
         NCP_CMD_POWERMGMT_QOSINFO qosinfo_cfg;
 		/** NCP set/get sleep period */
         NCP_CMD_POWERMGMT_SLEEP_PERIOD sleep_period_cfg;
@@ -2388,7 +2469,7 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_WLAN_CONN wlan_connect;
         /** MDNS query. */
         NCP_CMD_MDNS_QUERY mdns_query;
-        /** MDNS reuslt. */
+        /** MDNS result. */
         NCP_EVT_MDNS_RESULT mdns_result;
         /** MDNS resolve. */
         NCP_EVT_MDNS_RESOLVE mdns_resolve;

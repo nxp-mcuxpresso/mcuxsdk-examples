@@ -9,20 +9,15 @@ This is a ncp host demo. Need to use with ncp_device application.
 
     help
     wlan-scan
-    get-scan-result
     wlan-connect <ssid>
-    get-scan-result
+	wlan-info
     wlan-disconnect
-    ping [c <packet_count>] <ip_address>
-    get-ping-result
-    iperf [s|su|c <host>|cu <host>|a|] [options]
-    get-iperf-result
+    ping [-s <packet_size>][-c <packet_count>] [-W <timeout in sec>] <ipv4 address>
+    wlan-ncp-iperf <handle> [tcp|udp] [tx|rx] <ipv4 address> <port> <packet_count> <rate>
 
 2.  Enter command
 
     #wlan-scan
-
-    #get-scan-result
 
      3 networks found:
       94:10:3E:02:60:F0  [nxp_mrvl]
@@ -43,7 +38,7 @@ This is a ncp host demo. Need to use with ncp_device application.
 
     #wlan-connect net-5g
 
-    #get-connect-result
+    #wlan-info
 
      Already connected to an AP:
      SSID = {net-5g}
@@ -54,17 +49,15 @@ This is a ncp host demo. Need to use with ncp_device application.
 
     Already disconnect to network
 
-    #ping 192.168.0.1 c 20
+    #ping -s 100 -c 10 192.168.0.128
  
-    #get-ping-result
-
     ---  ping statistics  ---
-    20 packets transmitted, 20 packets received, 0% packets loss
+    10 packets transmitted, 10 packets received, 0% packets loss
 
-    #iperf c 192.168.0.1 t 20
-    
-    #get-iperf-result
-
+    #wlan-socket-open tcp
+    #wlan-socket-connect 0 192.168.0.128 5001
+	#wlan-ncp-iperf 0 tcp tx 100
+    #wlan-socket-close 0	
     ---------------------
     TCP_DONE_CLIENT (TX)
     Local address : 192.168.0.97  Port : 49153
@@ -75,3 +68,6 @@ This is a ncp host demo. Need to use with ncp_device application.
 
 ## Supported Boards
 - [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ncp_examples/ncp_host/example_board_readme.md)
+
+## NCP API reference doc
+- [NCP API doc](./NCP_API_reference.md)
