@@ -27,6 +27,14 @@ mcux_remove_macro(
     AS "-D__STARTUP_INITIALIZE_NONCACHEDATA"
 )
 
+mcux_add_iar_configuration(
+    LD "--config_def=__stack_size__=0x800"
+)
+
+mcux_add_armgcc_configuration(
+    LD "-Xlinker --defsym=__stack_size__=0x800"
+)
+
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
