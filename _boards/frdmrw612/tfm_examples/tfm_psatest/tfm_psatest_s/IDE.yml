@@ -36,3 +36,7 @@ iar:
         item: 1
         offset: 0
         debug_info_only: false
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic_dsp.ewp
+  - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
+  - scripts/guigenerator/templates/iar/general.eww
