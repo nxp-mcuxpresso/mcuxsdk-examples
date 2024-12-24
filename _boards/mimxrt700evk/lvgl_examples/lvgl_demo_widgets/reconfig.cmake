@@ -7,15 +7,13 @@ mcux_add_source(
             examples/_boards/${board}/lvgl_examples/app.h
             examples/lvgl_examples/lvgl_freertos.c
             examples/lvgl_examples/lvgl_freertos.h
-            middleware/lvgl/src/draw/nxp/vglite/lv_vglite_utils.c
-            middleware/lvgl/src/draw/nxp/vglite/lv_vglite_utils.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/_boards/${board}/lvgl_examples/lvgl_demo_widgets
              examples/_boards/${board}/lvgl_examples
-             middleware/lvgl/src/draw/nxp/vglite
+             examples/lvgl_examples
 )
 
 mcux_add_iar_configuration(
