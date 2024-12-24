@@ -434,4 +434,4 @@ Note: the a2dp_bridge could only work with a2dp_source right now.
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/edgefast_bluetooth_examples/unicast_media_sender/example_board_readme.md)
 - [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/edgefast_bluetooth_examples/unicast_media_sender/example_board_readme.md)
-- MIMXRT700-EVK
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/edgefast_bluetooth_examples/unicast_media_sender/example_board_readme.md)
