@@ -19,6 +19,7 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
         BASE_PATH ${SdkRootDirPath}
 	    INCLUDES
             middleware/lvgl
+            middleware/lvgl/src/draw/nxp/vglite
     )
 
     mcux_add_source(
