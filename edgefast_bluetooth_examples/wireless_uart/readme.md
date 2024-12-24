@@ -83,5 +83,5 @@ long press the user button, the example will work as peripheral again.
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/edgefast_bluetooth_examples/wireless_uart/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/edgefast_bluetooth_examples/wireless_uart/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/edgefast_bluetooth_examples/wireless_uart/example_board_readme.md)
-- MIMXRT700-EVK
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/edgefast_bluetooth_examples/wireless_uart/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/edgefast_bluetooth_examples/wireless_uart/example_board_readme.md)

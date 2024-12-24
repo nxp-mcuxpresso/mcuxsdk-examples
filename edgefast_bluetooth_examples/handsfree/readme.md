@@ -93,4 +93,4 @@ and at the end of each ring tone segment. The codec power on pop noise cannot el
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/edgefast_bluetooth_examples/handsfree/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/edgefast_bluetooth_examples/handsfree/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/edgefast_bluetooth_examples/handsfree/example_board_readme.md)
-- MIMXRT700-EVK
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/edgefast_bluetooth_examples/handsfree/example_board_readme.md)

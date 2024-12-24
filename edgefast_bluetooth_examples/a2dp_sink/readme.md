@@ -46,4 +46,4 @@ Procedures to run
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/edgefast_bluetooth_examples/a2dp_sink/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/edgefast_bluetooth_examples/a2dp_sink/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/edgefast_bluetooth_examples/a2dp_sink/example_board_readme.md)
-- MIMXRT700-EVK
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/edgefast_bluetooth_examples/a2dp_sink/example_board_readme.md)

@@ -63,5 +63,5 @@ To avoid this issue, following steps shall be taken:
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/example_board_readme.md)
-- MIMXRT700-EVK
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/example_board_readme.md)
