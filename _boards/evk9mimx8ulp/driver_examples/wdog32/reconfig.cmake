@@ -11,3 +11,9 @@ mcux_add_include(
     INCLUDES ${board_root}/evkmimx8ulp/driver_examples/wdog32
              ${board_root}/evkmimx8ulp
 )
+
+mcux_add_macro(
+    TOOLCHAINS armgcc iar
+    TARGETS flash_debug flash_release
+    CC "-DENABLE_RAM_VECTOR_TABLE"
+)
