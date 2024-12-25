@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+decnano_decompress:
+  section-type: application
+  contents:
+    meta_path: examples/display_examples/decnano_decompress
+    project-root-path: boards/${board}/display_examples/decnano_decompress/${multicore_foldername}
+    document:
+      name: decnano_decompress${core_id_suffix_name}
+      category: display_examples
+      brief: The DECNano decompress Demo reads the RGB888 or ARGB8888 picture that is compressed in
+             DECNano format, decompress them, and shows them in the LCD panel.
+      example_readme:
+      - examples/display_examples/decnano_decompress/readme.md
+      - ${board_root}/${board}/display_examples/decnano_decompress/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []
