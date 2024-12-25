@@ -59,7 +59,6 @@ typedef StaticSemaphore_t srtm_mutex_buf_t;
 #define SRTM_AUDIO_SERVICE_DEBUG_OFF  (0)
 #define SRTM_PMIC_SERVICE_DEBUG_OFF   (0)
 
-#define SRTM_SAI_EDMA_LOCAL_BUF_ENABLE (1)
 #endif /* SDK_OS_FREE_RTOS */
 
 #ifdef __cplusplus

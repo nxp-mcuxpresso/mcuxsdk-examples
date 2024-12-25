@@ -19,6 +19,9 @@ mcux_add_include(
              middleware/multicore/remoteproc
 )
 
+mcux_add_configuration(
+           CC "-DSRTM_SAI_EDMA_LOCAL_BUF_ENABLE=1"
+)
 mcux_add_macro(
     CC "-DSDK_I2C_BASED_COMPONENT_USED=1\
        -DBOARD_USE_DDR_RETENTION=1"

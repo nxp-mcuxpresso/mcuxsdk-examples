@@ -26,6 +26,9 @@ mcux_add_macro(
     AS "-DNO_CRP"
 )
 
+mcux_add_configuration(
+           CC "-DSRTM_SAI_EDMA_LOCAL_BUF_ENABLE=1"
+)
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}

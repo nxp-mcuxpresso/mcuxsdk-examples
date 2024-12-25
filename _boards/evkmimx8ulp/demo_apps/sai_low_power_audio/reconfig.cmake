@@ -7,6 +7,9 @@ mcux_add_configuration(
 mcux_add_configuration(
            CC "-DSDK_I2C_BASED_COMPONENT_USED=1"
 )
+mcux_add_configuration(
+           CC "-DSRTM_SAI_EDMA_LOCAL_BUF_ENABLE=1"
+)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/demo_apps/sai_low_power_audio/FreeRTOSConfig.h
