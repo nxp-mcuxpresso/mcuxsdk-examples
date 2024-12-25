@@ -13,3 +13,5 @@ eiq_examples
    tflm_label_image_ext_mem/readme.md
    tflm_lib/readme.md
    tflm_modelrunner/readme.md
+   executorch_cifarnet/readme.md
+   executorch_lib/readme.md
