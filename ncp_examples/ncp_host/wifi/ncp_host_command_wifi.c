@@ -2971,9 +2971,12 @@ int wlan_process_scan_response(uint8_t *res)
                         (void)PRINTF("WPA3 SAE ");
                     if (scan_res_tlv->res[i].wpa2_entp != 0U)
                         (void)PRINTF("WPA2 Enterprise");
+                    if (scan_res_tlv->res[i].wpa3_entp != 0U)
+                        (void)PRINTF("WPA3 Enterprise");
                 }
                 if (!(scan_res_tlv->res[i].wep || scan_res_tlv->res[i].wpa || scan_res_tlv->res[i].wpa2 ||
-                      scan_res_tlv->res[i].wpa2_sha256 || scan_res_tlv->res[i].wpa3_sae || scan_res_tlv->res[i].wpa2_entp))
+                      scan_res_tlv->res[i].wpa2_sha256 || scan_res_tlv->res[i].wpa3_sae || scan_res_tlv->res[i].wpa3_entp ||
+                      scan_res_tlv->res[i].wpa2_entp))
                 {
                     (void)PRINTF("OPEN ");
                 }

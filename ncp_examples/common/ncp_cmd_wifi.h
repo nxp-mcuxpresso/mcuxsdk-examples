@@ -599,6 +599,8 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_scan_result
     unsigned wpa2_sha256 : 1;
     /** Network uses WPA3 SAE (simultaneous authentication of equals) security. */
     unsigned wpa3_sae : 1;
+    /** Network uses WPA3 Enterprise security */
+    unsigned wpa3_entp: 1;
 
     /** Signal strength of the beacon. */
     unsigned char rssi;

@@ -142,6 +142,7 @@ static int scan_cb(unsigned int count)
         scan_result->res[i].wpa2           = res.wpa2;
         scan_result->res[i].wpa2_sha256    = res.wpa2_sha256;
         scan_result->res[i].wpa3_sae       = res.wpa3_sae;
+        scan_result->res[i].wpa3_entp      = res.wpa3_entp;
         scan_result->res[i].trans_ssid_len = res.trans_ssid_len;
         scan_result->res[i].beacon_period  = res.beacon_period;
         scan_result->res[i].dtim_period    = res.dtim_period;
