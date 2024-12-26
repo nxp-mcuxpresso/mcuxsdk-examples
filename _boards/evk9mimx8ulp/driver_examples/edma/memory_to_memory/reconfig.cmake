@@ -11,3 +11,7 @@ mcux_add_include(
     INCLUDES ${board_root}/evkmimx8ulp/driver_examples/edma/memory_to_memory
              ${board_root}/evkmimx8ulp
 )
+
+mcux_add_armgcc_configuration(
+    AS "-D__STARTUP_INITIALIZE_NONCACHEDATA"
+)
