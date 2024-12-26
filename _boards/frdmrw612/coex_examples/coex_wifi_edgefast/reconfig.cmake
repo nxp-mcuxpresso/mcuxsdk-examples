@@ -39,9 +39,6 @@ mcux_add_include(
              middleware/wireless/coex/src/common
 )
 
-# ot-nxp config
-include(${SdkRootDirPath}/middleware/wireless/coex/third_party/third_party.cmake OPTIONAL)
-
 mcux_add_armgcc_configuration(
     TARGETS flash_release
     AS "-g"
@@ -50,15 +47,13 @@ mcux_add_armgcc_configuration(
 )
 
 mcux_add_macro(
-    CC "-DUSE_RTOS=1\
+       "-DUSE_RTOS=1\
        -DSDK_OS_FREE_RTOS\
        -DFSL_OSA_TASK_ENABLE=1\
        -DPRINTF_ADVANCED_ENABLE=1\
        -DMCUX_ENABLE_TRNG_AS_ENTROPY_SEED\
        -DMBEDTLS_MCUX_ELS_PKC_API\
        -DMBEDTLS_MCUX_USE_PKC\
-       -DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
-       -DMBEDTLS_CONFIG_FILE=\\\"els_pkc_mbedtls_config.h\\\"\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
        -DGATT_CLIENT\
        -DGATT_DB\
@@ -94,6 +89,22 @@ mcux_add_macro(
        -DCONFIG_HOSTAPD=0"
 )
 
+if(${CONFIG_OT})
+message(STATUS "Build with external ot-cli libs, MBEDTLS_USER_CONFIG_FILE = rw612-mbedtls-config.h")
+mcux_add_macro(
+    CC "-DMBEDTLS_CONFIG_FILE=\\\"rw612-mbedtls-config.h\\\"\
+        -DOPENTHREAD_CONFIG_FILE=\\\"openthread-core-rw612-config.h\\\"\
+        -DOPENTHREAD_PROJECT_CORE_CONFIG_FILE=\\\"openthread-core-rw612-config.h\\\"\
+        -DOPENTHREAD_CORE_CONFIG_PLATFORM_CHECK_FILE=\\\"openthread-core-rw612-config-check.h\\\"\
+        -DOPENTHREAD_PROJECT_LIB_CONFIG_FILE=\\\"openthread-core-rw612-config.h\\\""
+)
+else()
+message(STATUS "Build with external ot-cli libs, MBEDTLS_USER_CONFIG_FILE = wpa_supp_els_pkc_mbedtls_config.h")
+mcux_add_macro(
+    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
+       -DMBEDTLS_CONFIG_FILE=\\\"els_pkc_mbedtls_config.h\\\""
+)
+endif()
 
 mcux_remove_macro(
     TOOLCHAINS armgcc
