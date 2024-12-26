@@ -37,20 +37,13 @@ extern "C" {
 
 
 /** Heart Rate Service UUID value */
-#define UUID_HRS 0x180d
+#define UUID_HRS                                0x180d
 /** HRS Characteristic Measurement Interval UUID value */
-#define UUID_HRS_MEASUREMENT 0x2a37
+#define UUID_HRS_MEASUREMENT                    0x2a37
 /** HRS Characteristic Body Sensor Location */
-#define UUID_HRS_BODY_SENSOR 0x2a38
+#define UUID_HRS_BODY_SENSOR                    0x2a38
 /** HRS Characteristic Control Point UUID value */
-#define UUID_HRS_CONTROL_POINT 0x2a39
-
-
-/** HTS flag values */
-#define hrs_unit_celsius_c        0x00U /* bit 0 unset */
-#define hrs_unit_fahrenheit_c     0x01U /* bit 0 set */
-#define hrs_include_temp_type     0x04U /* bit 2 set */
-
+#define UUID_HRS_CONTROL_POINT                  0x2a39
 
 /*******************************************************************************
 * Prototypes
@@ -65,11 +58,13 @@ extern "C" {
  * 
  */
 void central_hrc_start(void);
+
 /**
  * Init HRC Service
  * 
  */
 void hrc_init(void);
+
 #if 0
 void central_htc_event_put(osa_event_flags_t flag);
 void central_htc_found(NCP_DEVICE_ADV_REPORT_EV * data);
@@ -84,22 +79,29 @@ void central_notify(uint8_t *data);
  * 
  */
 void hrs_init(void);
+
 /**
  * Count binary semaphore to wait for HRS write characteristic response event
  * 
  * \param[in] flag flag to wait
  * 
+ * \return void.
+ * 
  */
 void peripheral_hrs_event_put(osa_event_flags_t flag);
+
 /**
  * Start Peripheral HRS Service
  * 
  */
 void peripheral_hrs_start(void);
+
 /**
  * Indicate HRS characteristic value change event 
  * 
  * \param[in] value hrs value
+ * 
+ * \return void
  * 
  */
 void peripheral_hrs_indicate(uint8_t value);

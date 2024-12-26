@@ -36,56 +36,53 @@ extern "C" {
 #define HTS_EVENT_WRITE_CHRA_RSP                0x01
 
 /** GATT Primary Service UUID */
-#define UUID_GATT_PRIMARY 0x2800
+#define UUID_GATT_PRIMARY                       0x2800
 
 /** Health Thermometer Service UUID */
-#define UUID_HTS 0x1809
+#define UUID_HTS                                0x1809
 
 /** HTS Characteristic Measurement Value UUID */
-#define UUID_HTS_MEASUREMENT 0x2a1c
+#define UUID_HTS_MEASUREMENT                    0x2a1c
 
 /** GATT Client Characteristic Configuration UUID */
-#define UUID_GATT_CCC 0x2902
+#define UUID_GATT_CCC                           0x2902
 
 /** Client Characteristic Configuration Values */
 
-
-/** Client Characteristic Configuration Notification.
+/** Client Characteristic Configuration Notification. \n
  * If set, changes to Characteristic Value are notified.
  */
-#define BT_GATT_CCC_NOTIFY			0x0001
-/** Client Characteristic Configuration Indication.
+#define BT_GATT_CCC_NOTIFY	                    0x0001
+/** Client Characteristic Configuration Indication. \n
  * If set, changes to Characteristic Value are indicated.
  */
-#define BT_GATT_CCC_INDICATE			0x0002
+#define BT_GATT_CCC_INDICATE                    0x0002
 
 /** HTS flag values */
-#define hts_unit_celsius_c        0x00U /* bit 0 unset */
-#define hts_unit_fahrenheit_c     0x01U /* bit 0 set */
-
-#define hts_include_temp_type     0x04U /* bit 2 set */
-
+#define hts_unit_celsius_c                      0x00U
+#define hts_unit_fahrenheit_c                   0x01U
+#define hts_include_temp_type                   0x04U
 
 /** Temperature measurement format */
 struct temp_measurement
 {
-    /** temperature type flag 
-     * 0: Fahrenheit
+    /** temperature type flag \n
+     * 0: Fahrenheit \n
      * 1: Celsius
     */
     uint8_t flags;
     /** temperature */
     uint8_t temperature[4];
-    /** Possible temperature sensor locations
-     * 0: hts_no_temp_type
-     * 1: hts_armpit
-     * 2: hts_body
-     * 3: hts_ear
-     * 4: hts_finger
-     * 5: hts_gastroInt
-     * 6: hts_mouth
-     * 7: hts_rectum
-     * 8: hts_toe
+    /** Possible temperature sensor locations \n
+     * 0: hts_no_temp_type \n
+     * 1: hts_armpit \n
+     * 2: hts_body \n
+     * 3: hts_ear \n
+     * 4: hts_finger \n
+     * 5: hts_gastroInt \n
+     * 6: hts_mouth \n
+     * 7: hts_rectum \n
+     * 8: hts_toe \n
      * 9: hts_tympanum
     */
     uint8_t type;
@@ -103,7 +100,7 @@ struct hr_measurement
 /*******************************************************************************
 * Prototypes
 ******************************************************************************/
-/** Possible temperature sensor locations */
+/* Possible temperature sensor locations */
 enum
 {
     hts_no_temp_type = 0x00U,
@@ -126,11 +123,13 @@ enum
  * 
  */
 void central_htc_start(void);
+
 /**
  * Init HTC Service
  * 
  */
 void htc_init(void);
+
 #if 0
 void central_htc_event_put(osa_event_flags_t flag);
 void central_htc_found(NCP_DEVICE_ADV_REPORT_EV * data);
@@ -145,22 +144,29 @@ void central_notify(uint8_t *data);
  * 
  */
 void hts_init(void);
+
 /**
  * Count binary semaphore to wait for HTS write characteristic response event
  * 
  * \param[in] flag flag to wait
  * 
+ * \return void
+ * 
  */
 void peripheral_hts_event_put(osa_event_flags_t flag);
+
 /**
  * Start Peripheral HTS Service
  * 
  */
 void peripheral_hts_start(void);
+
 /**
  * Indicate HTS characteristic value change event 
  * 
  * \param[in] value hts value
+ * 
+ * \return void
  * 
  */
 void peripheral_hts_indicate(uint8_t value);

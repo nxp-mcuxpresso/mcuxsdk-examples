@@ -101,7 +101,7 @@ static void peripheral_hrs_task(void *pvParameters)
     int argc = ARRAY_SIZE(hrs_profile);
     int arg = 0;
 
-    MCU_NCPCmd_DS_COMMAND *host_service_add_command = ncp_host_get_cmd_buffer_ble();
+    MCU_NCPCmd_DS_BLE_COMMAND *host_service_add_command = ncp_host_get_cmd_buffer_ble();
     NCP_CMD_SERVICE_ADD *host_service_add_tlv       = (NCP_CMD_SERVICE_ADD *)&host_service_add_command->params.host_svc_add;
     uint8_t *ptlv_pos                               = host_service_add_tlv->tlv_buf;
     uint32_t tlv_buf_len                            = 0;

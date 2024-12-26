@@ -1219,7 +1219,7 @@ static void le_identity_resolved(struct bt_conn *conn, const bt_addr_le_t *rpa,
     memcpy(ev.identity_address, identity->a.val,
            sizeof(ev.identity_address));
 
-    ble_prepare_status(NCP_EVENT_IDENITY_RESOLVED, NCP_CMD_RESULT_OK, (uint8_t *) &ev, sizeof(ev));
+    ble_prepare_status(NCP_EVENT_IDENTITY_RESOLVED, NCP_CMD_RESULT_OK, (uint8_t *) &ev, sizeof(ev));
 }
 
 /*

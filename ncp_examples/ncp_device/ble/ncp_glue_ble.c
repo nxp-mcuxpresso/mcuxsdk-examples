@@ -645,9 +645,9 @@ static int ble_start_l2cap_metrics(void *tlv)
     return ret;
 }
 
-NCPCmd_DS_COMMAND *ncp__get_ble_response_buffer()
+NCPCmd_DS_BLE_COMMAND *ncp__get_ble_response_buffer()
 {
-    return (NCPCmd_DS_COMMAND *)(ble_res_buf);
+    return (NCPCmd_DS_BLE_COMMAND *)(ble_res_buf);
 }
 
 /** Prepare TLV command response */
@@ -659,7 +659,7 @@ int ble_prepare_status(uint32_t cmd,
 {
     //os_mutex_get(&resp_buf_mutex, OS_WAIT_FOREVER);
     ncp_get_ble_resp_buf_lock();
-    NCPCmd_DS_COMMAND *cmd_res = ncp__get_ble_response_buffer();
+    NCPCmd_DS_BLE_COMMAND *cmd_res = ncp__get_ble_response_buffer();
 
     cmd_res->header.cmd        = cmd;
     cmd_res->header.size       = NCP_CMD_HEADER_LEN + len;

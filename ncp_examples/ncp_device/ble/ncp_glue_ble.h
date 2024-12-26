@@ -18,7 +18,7 @@ int ble_prepare_status(uint32_t cmd,
     uint8_t *data,
     size_t len);
 
-NCPCmd_DS_COMMAND *ncp__get_ble_response_buffer();
+NCPCmd_DS_BLE_COMMAND *ncp__get_ble_response_buffer();
 
 void ncp_get_ble_resp_buf_lock();
 void ncp_put_ble_resp_buf_lock();

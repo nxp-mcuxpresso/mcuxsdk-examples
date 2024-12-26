@@ -207,7 +207,7 @@ static void dump_hex(const void *data, unsigned len)
 static int l2cap_recv(struct bt_l2cap_chan *chan, struct net_buf *buf)
 {
     struct l2ch *l2ch = L2CH_CHAN(chan);
-    struct l2cap_reveive_ev ev = {0};
+    struct l2cap_receive_ev ev = {0};
     const bt_addr_le_t *addr = bt_conn_get_dst(chan->conn);
 
     if (metrics) {
