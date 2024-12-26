@@ -1,14 +1,14 @@
 # yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
-coex_edgefast_zigbee_router:
+coex_zigbee_router:
   section-type: application
   contents:
     meta_path: examples/coex_examples/coex_zigbee/router/freertos
-    project-root-path: boards/${board}/coex_examples/coex_zigbee/zigbee/router/freertos
+    project-root-path: boards/${board}/coex_examples/coex_zigbee/router/freertos
     document:
-      name: coex_edgefast_zigbee_router
-      category: coex_examples/coex_zigbee/zigbee/router/freertos
-      brief: The Zigbee Router example is a simple router example on the MCUXpresso SDK.
-        The application implements a Zigbee router that will attempt to connect to a Zigbee
+      name: coex_zigbee_router
+      category: coex_examples/coex_zigbee/router/freertos
+      brief: The Coex Zigbee Router example is a simple coex-router example on the MCUXpresso SDK.
+        The application implements a Coex-Zigbee router that will attempt to connect to a Coex-Zigbee
         coordinator.
   boards:
     frdmrw612:

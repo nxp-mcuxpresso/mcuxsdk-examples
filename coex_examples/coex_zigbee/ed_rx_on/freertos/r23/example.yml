@@ -1,14 +1,14 @@
 # yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
-coex_edgefast_zigbee_ed_rx_on_r23:
+coex_zigbee_ed_rx_on_r23:
   section-type: application
   contents:
     meta_path: examples/coex_examples/coex_zigbee/ed_rx_on/freertos/r23
-    project-root-path: boards/${board}/coex_examples/coex_zigbee/zigbee/ed_rx_on_r23/freertos
+    project-root-path: boards/${board}/coex_examples/coex_zigbee/ed_rx_on_r23/freertos
     document:
-      name: coex_edgefast_zigbee_ed_rx_on_r23
-      category: coex_examples/coex_zigbee/zigbee/ed_rx_on/freertos
-      brief: The zigbee_ed_rx_on example is a simple end device example on the MCUXpresso SDK.
-             The application implements a Zigbee end device RX on that will attempt to connect
-             to a Zigbee coordinator.
+      name: coex_zigbee_ed_rx_on_r23
+      category: coex_examples/coex_zigbee/ed_rx_on/freertos
+      brief: The coex_zigbee_ed_rx_on example is a simple end device example on the MCUXpresso SDK.
+             The application implements a Coex-Zigbee end device RX on that will attempt to connect
+             to a Coex-Zigbee coordinator.
   boards:
 
