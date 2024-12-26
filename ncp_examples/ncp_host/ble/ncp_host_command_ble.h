@@ -26,7 +26,7 @@
  *                  argv[0]: 'ble-set-adv-data' \n
  *                  argv[1]: Advertising data to set (Required) \n
  *                          Advertising data should follow struture: \n
- *                          \struct bt_data { \n 
+ *                          struct bt_data { \n 
  *                              U8 len; \n
  *                              U8 type; \n
  *                              const U8 *data; \n
@@ -36,7 +36,7 @@
  *                              len : 0e(14 bytes, contain type and data) \n
  *                              type: 09(BT_DATA_NAME_COMPLETE) \n
  *                              data: 4e43505f444542554731323334(NCP_DEBUG1234) \n
- *                           TYPE Reference: Core Specification Supplement, Part A, Data Types Specification 
+ *                          TYPE Reference: Core Specification Supplement, Part A, Data Types Specification
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
@@ -44,28 +44,37 @@
  */
 int ble_set_adv_data_command(int argc, char **argv);
 
-/** This API is used to start Bluetooth LE advertising
+/** 
+ * This API is used to start Bluetooth LE advertising
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
- *                 argc should be 1 
+ *                 argc should be 1
  * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-start-adv'
  *                 
- * 
  * \return NCP_STATUS_SUCCESS if success
+ * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_start_adv_command(int argc, char **argv);
 
-/** This API is used to stop Bluetooth LE advertising
+/** 
+ * This API is used to stop Bluetooth LE advertising
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 1
  * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-stop-adv'
  * 
- * \return NCP_STATUS_SUCCESS
+ * \return NCP_STATUS_SUCCESS if success
+ * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_stop_adv_command(int argc, char **argv);
 
-/** This API is used to set Bluetooth LE scan parameter
+/** 
+ * This API is used to set Bluetooth LE scan parameter
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 4
  * \param[in] argv Argument vector. \n
@@ -77,14 +86,17 @@ int ble_stop_adv_command(int argc, char **argv);
  *                 argv[2]: scan interval (Required) \n
  *                          Range from 4 to 16384 (Decimal value) \n
  *                 argv[3]: scan window (Required) \n
- *                          Range: 4 to 16384 (Decimal value, window value shall be less than or equal to interval value) \n
+ *                          Range: 4 to 16384 (Decimal value, window value shall be less than or equal to interval value)
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_set_scan_param_command(int argc, char **argv);
 
-/** This API is used to start Bluetooth LE scanning
+/** 
+ * This API is used to start Bluetooth LE scanning
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 2
  * \param[in] argv Argument vector. \n
@@ -95,20 +107,27 @@ int ble_set_scan_param_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_start_scan_command(int argc, char **argv);
 
-/** This API is used to stop Bluetooth LE scanning
- * \param[in] argc Argument count, the number of strings pointed to by argv.
+/** 
+ * This API is used to stop Bluetooth LE scanning
+ * 
+ * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 1
  * \param[in] argv Argument vector. \n
- *                 argv[0]: 'ble-stop-scan' \n
+ *                 argv[0]: 'ble-stop-scan'
  * 
- * \return NCP_STATUS_SUCCESS
+ * \return NCP_STATUS_SUCCESS if success
+ * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_stop_scan_command(int argc, char **argv);
 
-/** This API is used to connect the advertising device
+/** 
+ * This API is used to connect the advertising device
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 3
  * \param[in] argv Argument vector. \n
@@ -121,10 +140,13 @@ int ble_stop_scan_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_connect_command(int argc, char **argv);
 
-/** This API is used to disconnect the connected device
+/** 
+ * This API is used to disconnect the connected device
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 3
  * \param[in] argv Argument vector. \n
@@ -137,10 +159,13 @@ int ble_connect_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_disconnect_command(int argc, char **argv);
 
-/** This API is used to update the device connection parameter
+/** 
+ * This API is used to update the device connection parameter
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 7
  * \param[in] argv Argument vector. \n
@@ -161,13 +186,16 @@ int ble_disconnect_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
-int ble_connect_paramter_update_command(int argc, char **argv);
+int ble_connect_parameter_update_command(int argc, char **argv);
 
-/** This API is used to set the Bluetooth PHY
+/** 
+ * This API is used to set the Bluetooth PHY
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 5
- * \param[in] argv Argument vector.
+ * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-set-phy' \n
  *                 argv[1]: address type (Required) \n
  *                          'public' -- public address \n
@@ -185,10 +213,13 @@ int ble_connect_paramter_update_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_set_phy_command(int argc, char **argv);
 
-/** This API is used to update data packet length
+/** 
+ * This API is used to update data packet length
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 4 or 5
  * \param[in] argv Argument vector. \n
@@ -200,18 +231,22 @@ int ble_set_phy_command(int argc, char **argv);
  *                          device address format: XX:XX:XX:XX:XX:XX (Hexadecimal value) \n
  *                 argv[3]: Maximum data length to transmit (Required) \n
  *                          Range: 27 to 251 (Decimal value) \n
- *                 argv[4]: Maximum TX transimit time (Optional) \n
+ *                 argv[4]: Maximum TX transmit time (Optional) \n
  *                          Range: 328 to 17040 (Decimal value, this parameter can be left unset when sending commands) 
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_set_data_len_command(int argc, char **argv);
 
-/** This API is used to configure the filter list. After the filter list is set, use the ble-scan-param to scan the parameter. Select the filter option 2. Send the scan command.
+/** 
+ * This API is used to configure the filter list. After the filter list is set, use the ble-scan-param to scan the parameter.
+ *  Select the filter option 2. Send the scan command.
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be at least 4
- * \param[in] argv Argument vector. 
+ * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-set-filter-list' \n
  *                 argv[1]: The number of device address need to filter (Required) \n
  *                          Range: 1 to 255 (Decimal value) \n
@@ -229,14 +264,17 @@ int ble_set_data_len_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_set_filter_list_command(int argc, char **argv);
 
-/** This API is used to initiate security connection. If peer is already paired, IUT (Implementation under test) is expected to enable security
+/** 
+ * This API is used to initiate security connection. If peer is already paired, IUT (Implementation under test) is expected to enable security
  *  (encryption) with peer. If peer is not paired, the IUT start the pairing process.
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 3
- * \param[in] argv Argument vector.
+ * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-start-encryption' \n
  *                 argv[1]: address type (Required) \n
  *                          'public' -- public address \n
@@ -246,13 +284,16 @@ int ble_set_filter_list_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_start_encryption_command(int argc, char **argv);
 
-/** This API is used to read profile charactertistic value by handle. This API must be called after the device is connected
+/** 
+ * This API is used to read profile characteristic value by handle. This API must be called after the device is connected
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 4
- * \param[in] argv Argument vector.
+ * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-read-characteristic' \n
  *                 argv[1]: address type (Required) \n
  *                          'public' -- public address \n
@@ -264,13 +305,16 @@ int ble_start_encryption_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_read_characteristic_command(int argc, char **argv);
 
-/** This API is used to register the service that runs the profile on the NCP device
+/** 
+ * This API is used to register the service that runs the profile on the NCP device
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be at least 3
- * \param[in] argv Argument vector.
+ * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-register-service' \n
  *                 argv[1]: The number of service to register (Required) \n
  *                          Range from 1 to 5 \n
@@ -285,13 +329,16 @@ int ble_read_characteristic_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_register_service_command(int argc, char **argv);
 
-/** This API is used to set the device power mode
+/** 
+ * This API is used to set the device power mode
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 2
- * \param[in] argv Argument vector.
+ * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-set-power-mode' \n
  *                 argv[1]: device power mode \n
  *                          0 -- enable controller auto sleep \n
@@ -299,10 +346,13 @@ int ble_register_service_command(int argc, char **argv);
  * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_set_power_mode_command(int argc, char **argv);
 
-/** This API is used to set the service parameters. One service may have several characteristic
+/** 
+ * This API is used to set the service parameters. One service may have several characteristic
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be at least 11
  * \param[in] argv Argument vector. \n
@@ -316,54 +366,57 @@ int ble_set_power_mode_command(int argc, char **argv);
  *                 argv[5]: characteristic properties (Required) \n
  *                          XX (Hexadecimal value) \n
  *                          BIT 1: Broadcast  \n
-                            BIT 2: Read \n
-                            BIT 3: Write Without Response \n
-                            BIT 4: Write \n
-                            BIT 5: Notify \n
-                            BIT 6: Indicate \n
-                            BIT 7: Authenticated Signed Writes \n
-                            BIT 8: Extended Properties \n
+ *                          BIT 2: Read \n
+ *                          BIT 3: Write Without Response \n
+ *                          BIT 4: Write \n
+ *                          BIT 5: Notify \n
+ *                          BIT 6: Indicate \n
+ *                          BIT 7: Authenticated Signed Writes \n
+ *                          BIT 8: Extended Properties \n
  *                 argv[6]: characteristic permission (Required) \n
  *                          XX (Hexadecimal value) \n
  *                          0:   None \n
-                            BIT 0: Read \n
-                            BIT 1: Write \n
-                            BIT 2: Read with Encryption \n
-                            BIT 3: Write with Encryption \n
-                            BIT 4: Read with Authentication \n
-                            BIT 5: Write with Authentication \n
-                            BIT 6: Prepare Write \n
-                            BIT 7: Read with LE Secure Connection encryption \n
-                            BIT 8: Write with LE Secure Connection encryption \n
+ *                          BIT 0: Read \n
+ *                          BIT 1: Write \n
+ *                          BIT 2: Read with Encryption \n
+ *                          BIT 3: Write with Encryption \n
+ *                          BIT 4: Read with Authentication \n
+ *                          BIT 5: Write with Authentication \n
+ *                          BIT 6: Prepare Write \n
+ *                          BIT 7: Read with LE Secure Connection encryption \n
+ *                          BIT 8: Write with LE Secure Connection encryption \n
  *                 argv[7]: 'ccc' (Required) \n
  *                 argv[8]: client characteristic configuration uuid (Required) \n
  *                          XXXX (Hexadecimal value) \n
  *                 argv[9]: client characteristic configuration permissions (Required) \n
  *                          XX (Hexadecimal value) \n
-                            0:   None \n
-                            BIT 0: Read \n
-                            BIT 1: Write \n
-                            BIT 2: Read with Encryption \n
-                            BIT 3: Write with Encryption \n
-                            BIT 4: Read with Authentication \n
-                            BIT 5: Write with Authentication \n
-                            BIT 6: Prepare Write \n
-                            BIT 7: Read with LE Secure Connection encryption \n
-                            BIT 8: Write with LE Secure Connection encryption \n
+ *                          0:   None \n
+ *                          BIT 0: Read \n
+ *                          BIT 1: Write \n
+ *                          BIT 2: Read with Encryption \n
+ *                          BIT 3: Write with Encryption \n
+ *                          BIT 4: Read with Authentication \n
+ *                          BIT 5: Write with Authentication \n
+ *                          BIT 6: Prepare Write \n
+ *                          BIT 7: Read with LE Secure Connection encryption \n
+ *                          BIT 8: Write with LE Secure Connection encryption \n
  *                 ...... \n
- *                argv[n]: 'start' (Required)  \n   
- *                  \n
- *                Example: Add hts service  \n
+ *                 argv[n]: 'start' (Required)  \n   
+ *                 Example: Add hts service  \n
  *                         ble-host-svc-add prim 1809 chrc 2a1c 20 00 ccc 2902 03 start (same as the command 'ble-start-service hts' )
+ * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_host_service_add_command(int argc, char **argv);
 
-/** This API is used to start service that runs the profile on the NCP host
+/** 
+ * This API is used to start service that runs the profile on the NCP host
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 2
- * \param[in] argv Argument vector.
+ * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-start-service' \n
  *                 argv[1]: profile name (Required) \n
  *                          'hts' -- Peripheral health thermometer \n
@@ -373,17 +426,21 @@ int ble_host_service_add_command(int argc, char **argv);
  *                          'bas' -- Peripheral battery service \n
  *                 \note To use the command, enable the following macros: \n
  *                       CONFIG_NCP_BLE \n
-                         CONFIG_NCP_BLE_PROFILE_MODE \n
-                         CONFIG_NCP_HTS \n
-                         CONFIG_NCP_HRS \n
-                         CONFIG_NCP_HTC \n
-                         CONFIG_NCP_HRC \n
+ *                       CONFIG_NCP_BLE_PROFILE_MODE \n
+ *                       CONFIG_NCP_HTS \n
+ *                       CONFIG_NCP_HRS \n
+ *                       CONFIG_NCP_HTC \n
+ *                       CONFIG_NCP_HRC
+ *
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_start_service_command(int argc, char **argv);
 
-/** This API is used to subscribe the ccc handle
+/** 
+ * This API is used to subscribe the ccc handle
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 6
  * \param[in] argv Argument vector. \n
@@ -401,13 +458,17 @@ int ble_start_service_command(int argc, char **argv);
  *                          1 -- enable subscription \n
  *                 argv[5]: client characteristic configuration handle (Required) \n
  *                          specific one needs to be referred to the print ccc handle value of Discover the Descriptor Event (Hexadecimal value)
+ * 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_cfg_subscribe_command(int argc, char **argv);
 
-/** This API is used to connect the l2cap PSM (Protocol service multiplexer). \n
- *  The l2cap PSM need to be registered by remote device, then issue ble-l2cap-connect command to connect the remote device
+/** 
+ * This API is used to connect the l2cap PSM (Protocol service multiplexer). \n
+ * The l2cap PSM need to be registered by remote device, then issue ble-l2cap-connect command to connect the remote device
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 4
  * \param[in] argv Argument vector. \n
@@ -422,10 +483,13 @@ int ble_cfg_subscribe_command(int argc, char **argv);
  *                 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_l2cap_connection_command(int argc, char **argv);
 
-/** This API is used to disconnect the l2cap channel
+/** 
+ * This API is used to disconnect the l2cap channel
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 3
  * \param[in] argv Argument vector. \n
@@ -438,10 +502,13 @@ int ble_l2cap_connection_command(int argc, char **argv);
  *                 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_l2cap_disconnect_command(int argc, char **argv);
 
-/** This API is used to send the data with the l2cap PSM
+/** 
+ * This API is used to send the data with the l2cap PSM
+ * 
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 4
  * \param[in] argv Argument vector. \n
@@ -456,29 +523,32 @@ int ble_l2cap_disconnect_command(int argc, char **argv);
  *                 
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ * 
  */
 int ble_l2cap_send_command(int argc, char **argv);
 
-/** This API is used to register the l2cap PSM 
+/**
+ * This API is used to register the l2cap PSM 
+ *
  * \param[in] argc Argument count, the number of strings pointed to by argv. \n
  *                 argc should be 2
  * \param[in] argv Argument vector. \n
  *                 argv[0]: 'ble-l2cap-register' \n
  *                 argv[1]: Protocol service multiplexer value (Required) \n
  *                          Range: 128 to 255 (Decimal value)
- *                 
+ *
  * \return NCP_STATUS_SUCCESS if success
  * \return NCP_STATUS_ERROR if failure
+ *
  */
 int ble_l2cap_register_command(int argc, char **argv);
 
 /**
- * 
  * Get NCP Bluetooth LE command buffer
- * 
- * \return A ponter to MCU_NCPCmd_DS_COMMAND
- * 
+ *
+ * \return A pointer to MCU_NCPCmd_DS_BLE_COMMAND
+ *
  */
-MCU_NCPCmd_DS_COMMAND *ncp_host_get_cmd_buffer_ble(void);
+MCU_NCPCmd_DS_BLE_COMMAND *ncp_host_get_cmd_buffer_ble(void);
 
 #endif /*__NCP_HOST_COMMAND_BLE_H_*/

@@ -23,8 +23,8 @@
 
 #if CONFIG_NCP_HRC
 /**
- * @brief Health Thermometer Client (HRC)
- * @defgroup bt_hts Health Thermometer Client (HRC)
+ * @brief Health Rate Client (HRC)
+ * @defgroup bt_hrc Health Rate Client (HRC)
  * @ingroup bluetooth
  * @{
  */
@@ -61,7 +61,7 @@ NCP_DISC_CHRC_UUID_CMD hrc_discover_descriptors;
 
 void central_hrc_start(void)
 {
-    MCU_NCPCmd_DS_COMMAND *start_service_command = ncp_host_get_cmd_buffer_ble();
+    MCU_NCPCmd_DS_BLE_COMMAND *start_service_command = ncp_host_get_cmd_buffer_ble();
     (void)memset((uint8_t *)start_service_command, 0, NCP_HOST_COMMAND_LEN);
 
     start_service_command->header.cmd      = NCP_CMD_BLE_GATT_START_SERVICE;
