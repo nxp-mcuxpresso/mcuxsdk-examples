@@ -85,6 +85,21 @@ mcux_remove_armgcc_linker_script(
     TARGETS sdram_txt_debug sdram_txt_release
     LINKER ${device_root}/RT/RT1064/MIMXRT1064/gcc/MIMXRT1064xxxxx_sdram_txt.ld
 )
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1064/MIMXRT1064/iar/MIMXRT1064xxxxx_flexspi_nor.icf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1064/MIMXRT1064/arm/MIMXRT1064xxxxx_flexspi_nor.scf
+)
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1064/MIMXRT1064/gcc/MIMXRT1064xxxxx_flexspi_nor.ld
+)
 
 # Add or remove Linker File Configurations
 mcux_add_iar_linker_script(
@@ -101,4 +116,19 @@ mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS sdram_txt_debug sdram_txt_release
     LINKER ${board_root}/${board}/driver_examples/flexram/ram_allocate/linker/armgcc/evkmimxrt1064_flexram_ram_allocate.ld
+)
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1064/MIMXRT1064/iar/MIMXRT1064xxxxx_flexspi_nor_sdram.icf
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1064/MIMXRT1064/arm/MIMXRT1064xxxxx_flexspi_nor_sdram.scf
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_debug flexspi_nor_release
+    LINKER ${device_root}/RT/RT1064/MIMXRT1064/gcc/MIMXRT1064xxxxx_flexspi_nor_sdram.ld
 )
