@@ -1,5 +1,5 @@
 /*!\file otopcode.h
- *\brief This file provides interface to get OpenThread comands corrspoding opcode.
+ *\brief This file provides interface to get Open Thread commands corresponding opcode.
  */
 /*
  * Copyright 2024 NXP

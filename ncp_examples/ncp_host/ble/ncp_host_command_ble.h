@@ -25,7 +25,7 @@
  * \param[in] argv  Argument vector. \n
  *                  argv[0]: 'ble-set-adv-data' \n
  *                  argv[1]: Advertising data to set (Required) \n
- *                          Advertising data should follow struture: \n
+ *                          Advertising data should follow structure: \n
  *                          struct bt_data { \n 
  *                              U8 len; \n
  *                              U8 type; \n

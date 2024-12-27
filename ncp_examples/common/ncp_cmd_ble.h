@@ -639,8 +639,8 @@ typedef NCP_TLV_PACK_START struct gap_set_data_len_cmd {
     /** Bluetooth LE address */
     uint8_t  address[NCP_BLE_ADDR_LENGTH];
     /** option to use \ref tx_max_time or to use system calculate maximum TX transmit time \n
-        0 - use system maximum TX transmit time \n
-        1 - use customized maximum TX transmit time
+        0: use system maximum TX transmit time \n
+        1: use customized maximum TX transmit time
     */
     uint8_t  time_flag;
     /** Maximum data length to transmit */
@@ -1815,7 +1815,7 @@ typedef NCP_TLV_PACK_START struct gatt_change_db_cmd {
 
 /** NCP Bluetooth LE gatt eatt connect ID */
 #define GATT_EATT_CONNECT		0x1f
-/** This structure contains the configuration values that are used as input to the Bluetooth LE eatt connect command. */
+/** This structure contains the configuration values that are used as input to the Bluetooth LE gatt eatt connect command. */
 struct gatt_eatt_connect_cmd {
     /** Bluetooth LE address type \n
       0: public \n
