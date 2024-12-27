@@ -636,7 +636,7 @@ void ncp_notify_host_gpio_output(void)
 
 int ncp_is_pm3_mode(int powerState)
 {
-#ifdef CONFIG_NCP_USB
+#if CONFIG_NCP_USB
     if (global_power_config.is_manual == false)
     {
         if (global_power_config.wake_mode == WAKE_MODE_GPIO && powerState == PM_LP_STATE_PM2)
