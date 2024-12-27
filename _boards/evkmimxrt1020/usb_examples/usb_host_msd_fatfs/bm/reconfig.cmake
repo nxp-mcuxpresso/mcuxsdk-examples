@@ -26,6 +26,11 @@ mcux_add_mdk_configuration(
     "sdram_debug"
 )
 
+mcux_add_iar_configuration(
+  LD "--inline"
+  TARGETS "release"
+)
+
 mcux_add_armgcc_configuration(
   LD "-Xlinker --defsym=__heap_size__=0x2000"
 )
