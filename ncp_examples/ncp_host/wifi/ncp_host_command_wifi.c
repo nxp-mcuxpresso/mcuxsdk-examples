@@ -1501,6 +1501,12 @@ static void dump_wlan_add_usage()
         "    wlan-add <profile_name> ssid <ssid> [wpa2 <psk> <secret>]"
         "\r\n");
     (void)PRINTF("      If using WPA2 security, set the PMF configuration if required.\r\n");
+#if CONFIG_NCP_EAP_TLS
+    (void)PRINTF(
+        "    wlan-add <profile_name> ssid <ssid> [eap-tls aid <aid> key_passwd <key_passwd>]"
+        "\r\n");
+    (void)PRINTF("      For WPA2 enterprise eap-tls security, only station is supported.\r\n");
+#endif
     (void)PRINTF(
         "    wlan-add <profile_name> ssid <ssid> [wpa3 sae <secret> mfpc <1> mfpr <0/1>]"
         "\r\n");
@@ -1525,10 +1531,6 @@ static void dump_wlan_add_usage()
     (void)PRINTF(
         "    [wpa2 <psk> <secret>]/[wpa <secret> wpa2 <psk> <secret>]/[wpa3 sae <secret> [pwe <0/1/2>] [tr <0/1>]]/[wpa2 <secret> wpa3 sae "
         "<secret>]");
-#if CONFIG_NCP_EAP_TLS
-    (void)PRINTF(
-        "/[eap-tls aid <aid> key_passwd <key_passwd>]");
-#endif
 #if CONFIG_NCP_WIFI_CAPA
     (void)PRINTF("\r\n");
     (void)PRINTF("    [capa <11ax/11ac/11n/legacy>]");
@@ -2193,6 +2195,16 @@ int wlan_add_command(int argc, char **argv)
         (void)PRINTF("Error: tr is only configurable for wpa3, tr= %d\r\n", info.tr);
         return -WM_FAIL;
     }
+
+#if CONFIG_NCP_EAP_TLS
+    if (info.security2 && (security_wpa2_tlv->type == WLAN_SECURITY_EAP_TLS)
+        && (role_tlv->role == WLAN_BSS_ROLE_UAP))
+    {
+        dump_wlan_add_usage();
+        (void)PRINTF("Error: not support uap for WPA2 enterprise eap-tls security, only support station.\r\n");
+        return -WM_FAIL;
+    }
+#endif
 
     network_add_command->header.cmd = NCP_CMD_WLAN_NETWORK_ADD;
     network_add_command->header.size =
@@ -6954,6 +6966,19 @@ static void print_network(NCP_WLAN_NETWORK *network)
     {
         sec_tag = "\tsecurity [Wildcard]";
     }
+    else
+    {
+#if CONFIG_NCP_WPA_SUPP_CRYPTO_ENTERPRISE
+        if (
+#if CONFIG_NCP_EAP_TLS
+            (network->security_type == WLAN_SECURITY_EAP_TLS) ||
+#endif
+            false)
+        {
+            sec_tag = "\tsecurity: WPA2";
+        }
+#endif
+    }
     switch (network->security_type)
     {
         case WLAN_SECURITY_NONE:
@@ -6974,6 +6999,13 @@ static void print_network(NCP_WLAN_NETWORK *network)
         case WLAN_SECURITY_WPA_WPA2_MIXED:
             (void)PRINTF("%s: WPA/WPA2 Mixed\r\n", sec_tag);
             break;
+#if CONFIG_NCP_WPA_SUPP_CRYPTO_ENTERPRISE
+#if CONFIG_NCP_EAP_TLS
+        case WLAN_SECURITY_EAP_TLS:
+            (void)PRINTF("%s Enterprise EAP-TLS\r\n", sec_tag);
+            break;
+#endif
+#endif
         case WLAN_SECURITY_WPA3_SAE:
             (void)PRINTF("%s: WPA3 SAE\r\n", sec_tag);
             break;
