@@ -174,10 +174,17 @@ status_t powerManager_PmNotify(pm_event_type_t eventType, uint8_t powerState, vo
     }
 
 #if CONFIG_NCP_SPI
+#if CONFIG_NCP_BLE || CONFIG_NCP_OT
     if(ncp_spi_txrx_is_finish() == 0)
     {
         return kStatus_PMPowerStateNotAllowed;
     }
+#else
+    while(ncp_spi_txrx_is_finish() == 0)
+    {
+        ;
+    }
+#endif
 #endif /* CONFIG_NCP_SPI */
     if (eventType == kPM_EventEnteringSleep)
     {
