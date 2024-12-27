@@ -278,11 +278,11 @@ struct host_gatt_attr {
 #define BT_DATA_SVC_DATA32                  0x20
 /** Service data, 128-bit UUID */
 #define BT_DATA_SVC_DATA128                 0x21
-/** LE SC Confirmation Value */
+/** LE Secure Connections Confirmation Value */
 #define BT_DATA_LE_SC_CONFIRM_VALUE         0x22
-/** LE SC Random Value */
+/** LE Secure Connections Random Value */
 #define BT_DATA_LE_SC_RANDOM_VALUE          0x23
-/** URI */
+/** Uniform Resource Identifier */
 #define BT_DATA_URI                         0x24
 /** LE Supported Features */
 #define BT_DATA_LE_SUPPORTED_FEATURES       0x27
@@ -294,7 +294,7 @@ struct host_gatt_attr {
 #define BT_DATA_MESH_MESSAGE                0x2a
 /** Mesh Beacon */
 #define BT_DATA_MESH_BEACON                 0x2b
-/** BIGInfo */
+/** BIG Information */
 #define BT_DATA_BIG_INFO                    0x2c
 /** Broadcast Code */
 #define BT_DATA_BROADCAST_CODE              0x2d
