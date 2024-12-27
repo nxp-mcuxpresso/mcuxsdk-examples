@@ -107,8 +107,6 @@ void task_main(void *param)
 
 #if CONFIG_NCP_OT
     appOtStart(0, NULL);
-    /* register ot idle function to os idle hook list */
-    OSA_SetupIdleFunction(otSysRunIdleTask);
     PRINTF("OT initialized\r\n");
 #endif
 
@@ -152,3 +150,12 @@ int main(void)
     for (;;)
         ;
 }
+
+#if CONFIG_COEX_APP
+void vApplicationIdleHook(void)
+{
+#if(CONFIG_NCP_OT)
+    otSysRunIdleTask();
+#endif
+}
+#endif

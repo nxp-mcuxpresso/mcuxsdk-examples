@@ -154,8 +154,7 @@
  */
 #define WIFI_ADD_ON     1
 
-#define CONFIG_NCP_SUPP   1
-#if CONFIG_NCP_SUPP
+#if CONFIG_WPA_SUPP_MBEDTLS
 #define CONFIG_WPA_SUPP        1
 #define CONFIG_WIFI_NXP        1
 #define CONFIG_WPA_SUPP_CRYPTO 1

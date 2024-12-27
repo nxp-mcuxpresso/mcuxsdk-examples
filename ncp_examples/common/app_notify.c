@@ -128,7 +128,7 @@ static void app_notify_event_handler(void *argv)
             continue;
         }
 
-#if !CONFIG_NCP_BLE
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
         app_d("got notify message: %d %d %p", msg.event, msg.reason, msg.data);
 #endif
         switch (msg.event)
@@ -271,7 +271,7 @@ static void app_notify_event_handler(void *argv)
                     app_e("ot has not been transmitted yet");
                 }
 #endif
-#if !CONFIG_NCP_BLE
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
                 app_d("got MCU sleep enter report");
 #endif
                 event_buf = ncp_sys_evt_status(NCP_EVENT_MCU_SLEEP_ENTER, &msg);
@@ -309,7 +309,7 @@ static void app_notify_event_handler(void *argv)
                 APP_SetTicklessIdle(true);
 #endif
 #endif
-#if !CONFIG_NCP_BLE
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
                 app_d("got MCU sleep exit report");
 #endif
                 event_buf = ncp_sys_evt_status(NCP_EVENT_MCU_SLEEP_EXIT, &msg);

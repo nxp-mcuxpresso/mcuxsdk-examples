@@ -4,6 +4,19 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(ncp_device LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ncp_examples/ncp_device)
 
+include(${SdkRootDirPath}/examples/ncp_examples/ncp_device/app_config.cmake)
+
+mcux_add_macro(
+    CONFIG_NCP_WIFI=${CONFIG_NCP_WIFI}
+    CONFIG_NCP_BLE=${CONFIG_NCP_BLE}
+    CONFIG_NCP_OT=${CONFIG_NCP_OT}
+    CONFIG_NCP_UART=${CONFIG_NCP_UART}
+    CONFIG_NCP_SPI=${CONFIG_NCP_SPI}
+    CONFIG_NCP_USB=${CONFIG_NCP_USB}
+    CONFIG_NCP_SDIO=${CONFIG_NCP_SDIO}
+    CONFIG_WPA_SUPP_MBEDTLS=${CONFIG_WPA_SUPPLICANT}
+)
+
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
@@ -46,6 +59,8 @@ mcux_add_source(
             mbedtls/mbedtls_device.c
             mbedtls/mbedtls_device.h
             mbedtls/key_cert.h
+            ot/peripherals.c
+            ot/peripherals.h
 )
 
 mcux_add_source(
@@ -132,6 +147,7 @@ mcux_add_include(
              ble/service/gatt_client
              ble/service/gatt_server
              mbedtls
+             ot
 )
 
 mcux_add_include(
@@ -156,6 +172,10 @@ mcux_add_include(
         common/httpc/src/websocket
         common/uap_prov
 )
+
+if(${CONFIG_NCP_OT})
+include(${SdkRootDirPath}/examples/ncp_examples/ncp_device/ot/third_party/ot_config.cmake OPTIONAL)
+endif()
 
 include(${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_device/reconfig.cmake OPTIONAL)
 

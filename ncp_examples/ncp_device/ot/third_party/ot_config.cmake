@@ -32,51 +32,51 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cmake_policy(SET CMP0076 NEW)
-cmake_policy(SET CMP0079 NEW)
-
-set(NXP_OT_ROOT_PATH "${CMAKE_CURRENT_LIST_DIR}/ot-nxp")
-set(NXP_OT_LIBS_PATH "${NXP_OT_ROOT_PATH}/build_rw612/rw612_ot_cli/lib")
+mcux_set_variable(NXP_OT_ROOT_PATH "${CMAKE_CURRENT_LIST_DIR}/ot-nxp")
+mcux_set_variable(NXP_OT_LIBS_PATH "${NXP_OT_ROOT_PATH}/build_rw612/rw612_ot_cli/lib")
 
 if (EXISTS ${NXP_OT_ROOT_PATH})
-    target_include_directories(${MCUX_SDK_PROJECT_NAME} PUBLIC
-        # rw612 header files
-        ${NXP_OT_ROOT_PATH}/src/rw/rw612
+    mcux_add_include(
+        BASE_PATH ${NXP_OT_ROOT_PATH}
+        INCLUDES
+            # rw612 header files
+            src/rw/rw612
 
-        # ot common
-        ${NXP_OT_ROOT_PATH}/src/common
+            # ot common
+            src/common
 
-        # openthread
-        ${NXP_OT_ROOT_PATH}/openthread/src
-        ${NXP_OT_ROOT_PATH}/openthread/include
-        ${NXP_OT_ROOT_PATH}/openthread/src/core
-        ${NXP_OT_ROOT_PATH}/openthread/examples/platforms
-        ${NXP_OT_ROOT_PATH}/openthread/third_party/mbedtls
+            # openthread
+            openthread/src
+            openthread/include
+            openthread/src/core
+            openthread/examples/platforms
+            openthread/third_party/mbedtls
+
+            # mbedtls config in third_party
+            third_party/mbedtls/configs
     )
 else()
     message(WARNING "Please download ot-nxp in ${CMAKE_CURRENT_LIST_DIR}")
 endif()
 
 if (EXISTS ${NXP_OT_LIBS_PATH})
-    TARGET_LINK_LIBRARIES(${MCUX_SDK_PROJECT_NAME} PRIVATE -Wl,--start-group)
-
     # ot ncp libs
-    target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
-        ${NXP_OT_LIBS_PATH}/libopenthread-cli-ftd.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-ftd.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-hdlc.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-ncp-ftd.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-platform.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-rw612.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-spinel-ncp.a
-        ${NXP_OT_LIBS_PATH}/libot-cli-addons.a
-        ${NXP_OT_LIBS_PATH}/libot-cli-rw612.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-url.a
-        ${NXP_OT_LIBS_PATH}/libopenthread-radio-spinel.a
-        ${NXP_OT_LIBS_PATH}/libtcplp-ftd.a
+    mcux_add_library(
+        BASE_PATH ${NXP_OT_LIBS_PATH}
+        LIBS
+            libopenthread-cli-ftd.a
+            libopenthread-ftd.a
+            libopenthread-hdlc.a
+            libopenthread-ncp-ftd.a
+            libopenthread-platform.a
+            libopenthread-rw612.a
+            libopenthread-spinel-ncp.a
+            libot-cli-addons.a
+            libot-cli-rw612.a
+            libopenthread-url.a
+            libopenthread-radio-spinel.a
+            libtcplp-ftd.a
     )
-
-    TARGET_LINK_LIBRARIES(${MCUX_SDK_PROJECT_NAME} PRIVATE -Wl,--end-group)
 else()
     message(WARNING "Please compile ot ncp libs in ${CMAKE_CURRENT_LIST_DIR}")
 endif()

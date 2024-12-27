@@ -26,27 +26,19 @@
 #define CONFIG_NCP_DEBUG  0
 #define CONFIG_CRC32_HW_ACCELERATE  1
 
-#define CONFIG_NCP_WIFI   1
-#define CONFIG_NCP_BLE    0
-#define CONFIG_NCP_OT     0
+/* CONFIG_COEX_APP will decide whether WIFI uses its own application
+ * idle hook in freertos, to avoid duplication defined by the app.
+ */
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
+#define CONFIG_COEX_APP    0
+#else
+#define CONFIG_COEX_APP    1
+#endif
 
-#if defined(WIFI_BOARD_RW610)
-#if CONFIG_NCP_WIFI
-#define CONFIG_MONOLITHIC_WIFI 1
-#endif
-#if (CONFIG_NCP_BLE) && (CONFIG_NCP_OT)
-#define CONFIG_MONOLITHIC_BLE_15_4    1
-#define CONFIG_MONOLITHIC_BLE         0
-#else
-#if CONFIG_NCP_BLE
-#define CONFIG_MONOLITHIC_BLE_15_4    0
-#define CONFIG_MONOLITHIC_BLE         1
-#else
-#define CONFIG_MONOLITHIC_BLE_15_4    0
-#define CONFIG_MONOLITHIC_BLE         0
-#endif
-#endif
-#endif
+#define CONFIG_MONOLITHIC_WIFI     CONFIG_NCP_WIFI
+
+#define CONFIG_MONOLITHIC_BLE      ((CONFIG_NCP_BLE) && (!CONFIG_NCP_OT))
+#define CONFIG_MONOLITHIC_BLE_15_4 CONFIG_NCP_OT
 
 #if ((CONFIG_MONOLITHIC_WIFI) || (CONFIG_MONOLITHIC_BLE) || (CONFIG_MONOLITHIC_BLE_15_4))
 #define CONFIG_SOC_SERIES_RW6XX_REVISION_A2 1
@@ -69,18 +61,11 @@
 
 #endif /* CONFIG_MONOLITHIC_BLE || CONFIG_MONOLITHIC_BLE_15_4 */
 
-#define CONFIG_NCP_UART   1
-#define CONFIG_NCP_SPI    0
-#define CONFIG_NCP_USB    0
-#define CONFIG_NCP_SDIO   0
-
-
 #define CONFIG_HOST_SLEEP           1
 #define CONFIG_POWER_MANAGER        1
 
 #if (CONFIG_NCP_BLE) || (CONFIG_NCP_OT)
 #define configUSE_TICKLESS_IDLE 1
-#define configUSE_IDLE_HOOK 0
 #endif
 //#if (CONFIG_NCP_WIFI)
 #define CONFIG_APP_NOTIFY_DEBUG   1

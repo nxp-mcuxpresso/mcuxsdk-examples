@@ -508,7 +508,7 @@ int ncp_config_suspend_mode(int mode)
     return WM_SUCCESS;
 }
 
-#if defined(configUSE_IDLE_HOOK) && (configUSE_IDLE_HOOK == 1)
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
 void powerManager_EnterLowPower()
 {
     if (global_power_config.is_periodic && pm_handle.enable

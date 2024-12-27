@@ -35,8 +35,6 @@ mcux_add_armgcc_configuration(
 
 mcux_add_macro(
     CC "-DBT_PLATFORM\
-       -DMBEDTLS_CONFIG_FILE=\\\"els_pkc_mbedtls_config.h\\\"\
-       -DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
        -DEDGEFAST_BT_LITTLEFS_MFLASH\
        -DGATT_CLIENT\
@@ -48,6 +46,17 @@ mcux_add_macro(
        -DLFS_CONFIG=littlefs_config.h\
        -DCONFIG_HOSTAPD=0"
 )
+
+if(${CONFIG_NCP_OT})
+    mcux_add_macro(
+        CC "-DMBEDTLS_CONFIG_FILE=\\\"rw612-mbedtls-config.h\\\""
+    )
+else()
+    mcux_add_macro(
+        CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
+            -DMBEDTLS_CONFIG_FILE=\\\"els_pkc_mbedtls_config.h\\\""
+    )
+endif()
 
 mcux_remove_mdk_configuration(
     TARGETS flash_debug

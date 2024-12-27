@@ -450,7 +450,7 @@ void powerManager_Init()
                         pdFALSE, NULL, &LPM_TimerCallback);
 #endif /* configUSE_TICKLESS_IDLE */
 
-#if defined(configUSE_IDLE_HOOK) && (configUSE_IDLE_HOOK == 1)
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
     PM_CreateHandle(&pm_handle);
     /* Init and start RTC time counter */
     powerManager_RTC_Init();
@@ -458,7 +458,7 @@ void powerManager_Init()
     PM_EnablePowerManager(true);
 
     OSA_SetupIdleFunction(powerManager_EnterLowPower);
-#endif /* configUSE_IDLE_HOOK */
+#endif
 
 #if CONFIG_NCP_WIFI
     /* Register WLAN notifier */

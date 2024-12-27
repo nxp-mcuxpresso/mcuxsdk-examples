@@ -184,13 +184,7 @@ typedef NCP_TLV_PACK_START struct
 	(type *)( (char *)__mptr - offsetof(type,member) );})
 
 /* ADAPTER TLV TASK PRIORITY */
-#if CONFIG_NCP_WIFI
 #define NCP_TLV_TX_TASK_PRIORITY    11
-#elif CONFIG_NCP_BLE      
-#define NCP_TLV_TX_TASK_PRIORITY    11
-#elif defined(CONFIG_NCP_OT)
-#define NCP_TLV_TX_TASK_PRIORITY    11
-#endif      
 
 /* NCP ADAPTER TX queue max length */
 #define NCP_TLV_QUEUE_LENGTH 160

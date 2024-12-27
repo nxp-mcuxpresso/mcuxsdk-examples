@@ -26,7 +26,7 @@
  * Variables
  ******************************************************************************/
 extern power_cfg_t global_power_config;
-#if !CONFIG_NCP_BLE
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
 extern OSA_TIMER_HANDLE_DEFINE(wake_timer);
 #endif
 int current_PM_mode;
@@ -184,7 +184,7 @@ static int ncp_sys_wake_cfg(void *tlv)
 
     global_power_config.wake_mode     = wake_config->wake_mode;
     global_power_config.subscribe_evt = wake_config->subscribe_evt;
-#if !CONFIG_NCP_BLE
+#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
     global_power_config.wake_duration = wake_config->wake_duration;
     if (global_power_config.wake_duration > 0)
     {
