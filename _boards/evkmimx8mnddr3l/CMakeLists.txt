@@ -14,4 +14,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.suite)
     mcux_add_source(BASE_PATH ${SdkRootDirPath} SOURCES ${board_root}/evkmimx8mn/board.h ${board_root}/evkmimx8mn/board.c)
     mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${board_root}/evkmimx8mn)
 
+    mcux_add_macro(
+	CC "-DVDEV0_VRING_BASE=0x78000000U"
+    )
 endif()
