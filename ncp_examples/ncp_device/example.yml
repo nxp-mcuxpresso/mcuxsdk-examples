@@ -18,6 +18,8 @@ ncp_device:
     - -armgcc@release
     - -iar@debug
     - -iar@release
+    - -iar@flash_debug
+    - -iar@flash_release
     - -mdk@debug
     - -mdk@flash_debug
     - -mdk@flash_release
@@ -27,6 +29,8 @@ ncp_device:
     - -armgcc@release
     - -iar@debug
     - -iar@release
+    - -iar@flash_debug
+    - -iar@flash_release
     - -mdk@debug
     - -mdk@flash_debug
     - -mdk@flash_release
