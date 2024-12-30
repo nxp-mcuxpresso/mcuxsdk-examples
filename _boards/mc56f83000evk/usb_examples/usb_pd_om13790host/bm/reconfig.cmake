@@ -6,11 +6,6 @@ mcux_add_source(
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd/bm/pin_mux.h
             examples/_boards/${board}/peripherals/peripherals.c
             examples/_boards/${board}/peripherals/peripherals.h
-            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd/bm/VIF/consumer_provider.xml
-            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd/bm/VIF/drp.xml
-            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd/bm/VIF/drp_try_snk.xml
-            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd/bm/VIF/drp_try_src.xml
-            middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd/bm/VIF/provider_consumer.xml
             middleware/usb/example/boards/mc56f83000evk_om13790host/usb_pd/bm/pd_board_config.h
             middleware/usb/example/usb_pd_om13790host/bm/pd_app_demo.c
             middleware/usb/example/usb_pd_om13790host/bm/pd_app.h

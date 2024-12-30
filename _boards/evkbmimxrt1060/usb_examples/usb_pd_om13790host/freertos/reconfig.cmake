@@ -4,11 +4,6 @@ mcux_add_source(
     SOURCES middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/hardware_init.c
             middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/pin_mux.c
             middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/pin_mux.h
-            middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/VIF/consumer_provider.xml
-            middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/VIF/drp.xml
-            middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/VIF/drp_try_snk.xml
-            middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/VIF/drp_try_src.xml
-            middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/VIF/provider_consumer.xml
             middleware/usb/example/boards/evkbmimxrt1060_om13790host/usb_pd/freertos/pd_board_config.h
             middleware/usb/example/usb_pd_om13790host/freertos/pd_app_demo.c
             middleware/usb/example/usb_pd_om13790host/freertos/pd_app.h
