@@ -17,5 +17,4 @@ mcux_add_include(
 
 include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/tee_fault/core1/reconfig.cmake OPTIONAL)
 
-mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
-mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/core1_image.bin)
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_image.bin)
