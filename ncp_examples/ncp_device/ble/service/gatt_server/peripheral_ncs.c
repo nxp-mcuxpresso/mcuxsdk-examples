@@ -5,24 +5,18 @@
  */
 #if CONFIG_NCP_BLE
 
-#include <stdio.h>
-#include <string.h>
-#include <stddef.h>
-#include <stdarg.h>
-#include <errno/errno.h>
-#include <toolchain.h>
+#include "fsl_debug_console.h"
+
 #include <porting.h>
-#include <fsl_debug_console.h>
-#include <sys/byteorder.h>
-
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/uuid.h>
 #include <bluetooth/gatt.h>
-#include "service.h"
 
+#include "service.h"
 #include "ncp_glue_ble.h"
 #include "peripheral_ncs.h"
 
+/*******************************************************************************
+* Definitions
+******************************************************************************/
 
 /*******************************************************************************
  * Variables

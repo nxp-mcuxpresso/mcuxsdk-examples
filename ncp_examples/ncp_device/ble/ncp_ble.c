@@ -40,11 +40,11 @@ extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 
 bool is_create_conn_cmd = false;
 
-/* Indicate the state of ncpble*/
+/* Indicate the state of ncp ble*/
 atomic_t ncp_ble_state[1];
 
-//os_thread_t ble_ncp_thread;                         /* ncp   task */
-//static os_thread_stack_define(ble_ncp_stack, 4096); /* ncp  task stack*/
+//os_thread_t ble_ncp_thread;                         /* ncp task */
+//static os_thread_stack_define(ble_ncp_stack, 4096); /* ncp task stack*/
 #define BLE_TASK_PRIO        11
 #define BLE_NCP_STACK_SIZE   4096
 
@@ -275,9 +275,9 @@ bool ncp_ble_is_running(void)
 {
     bool ret = false;
 
-    if (ncp_ble_state_check(NCP_BLE_SCNNING) == true) //BLE is scanning
+    if (ncp_ble_state_check(NCP_BLE_SCANNING) == true) //BLE is scanning
         ret = true;
 
     return ret;
 }
-#endif
+#endif /* CONFIG_NCP_BLE */

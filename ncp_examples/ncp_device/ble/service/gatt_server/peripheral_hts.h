@@ -4,8 +4,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#ifndef ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_HTS_H_
-#define ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_HTS_H_
+#ifndef NCP_HTS_H_
+#define NCP_HTS_H_
 /**
  * @brief Health Thermometer Service (HTS)
  * @defgroup bt_hts Health Thermometer Service (HTS)
@@ -46,4 +46,4 @@ void init_hts_service(void);
  * @}
  */
 
-#endif /* ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_HTS_H_ */
+#endif /* NCP_HTS_H_ */

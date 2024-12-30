@@ -8,23 +8,20 @@
 #ifndef __NCP_BLE_SERVICE_H__
 #define __NCP_BLE_SERVICE_H__
 
-#include <stddef.h>
-#include <sys/slist.h>
-#if !(defined(__ICCARM__) || defined(__CC_ARM) || defined(__ARMCC_VERSION))
-#include <sys/types.h>
-#endif
-#include <sys/util.h>
 #include <bluetooth/conn.h>
 
-#include <toolchain.h>
 #include "ncp_tlv_adapter.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*******************************************************************************
 * Definitions
 ******************************************************************************/
 #define PERIPHERAL_HTS_SERVICE_ID      1
 #define PERIPHERAL_HRS_SERVICE_ID      2
-#define BAS_SERVICE_ID      3
+#define BAS_SERVICE_ID                 3
 #define CENTRAL_HTC_SERVICE_ID         4
 #define CENTRAL_HRC_SERVICE_ID         5
 #define PERIPHERAL_NCS_SERVICE_ID      6
@@ -59,10 +56,7 @@ enum
     hts_tympanum     = 0x09U,
 };
 
-/*******************************************************************************
-* Prototypes
-******************************************************************************/
-
+/* NCP BLE service information */
 struct service_t
 {
     uint8_t svc_id;
@@ -72,6 +66,7 @@ struct service_t
     void (*init)(void);
 };
 
+/* ADV report date format */
 struct adv_report_data
 {
     uint8_t type;
@@ -79,6 +74,7 @@ struct adv_report_data
     uint8_t *data;
 };
 
+/* MCP BLE service callback */
 struct service_cb_t
 {
     uint8_t svc_id;
@@ -93,15 +89,9 @@ struct service_cb_t
     };
 };
 
-typedef NCP_TLV_PACK_START struct service_connect_param {
-    struct bt_conn *conn;
-} NCP_TLV_PACK_END service_connect_param_t;
-
-typedef NCP_TLV_PACK_START struct service_scan_param {
-    struct bt_data *data;
-    void *user_data;
-} NCP_TLV_PACK_END service_scan_param_t;
-
+/*******************************************************************************
+* Prototypes
+******************************************************************************/
 int ncp_ble_register_service(uint8_t id);
 
 void le_service_connect(struct bt_conn *conn, uint8_t conn_err);
@@ -119,5 +109,9 @@ void le_service_eir_found(struct net_buf_simple* adv_buf);
 void le_service_adv_report_process(uint8_t *data);
 
 void svc_scan_start(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

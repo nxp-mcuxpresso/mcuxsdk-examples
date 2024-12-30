@@ -83,7 +83,7 @@ void device_found
 (
     const bt_addr_le_t *addr,
     int8_t rssi,
-    uint8_t evtype,
+    uint8_t evt_type,
     struct net_buf_simple *ad
 );
 
@@ -652,7 +652,7 @@ void start_discovery(const uint8_t *data, uint16_t len)
             net_buf_simple_init(adv_buf, 0);
             discovery_flags = cmd->flags;
             status = NCP_CMD_RESULT_OK;
-            ncp_ble_state_set(NCP_BLE_SCNNING);
+            ncp_ble_state_set(NCP_BLE_SCANNING);
             ble_prepare_status(NCP_RSP_BLE_GAP_START_SCAN, status, NULL, 0);
         }
     }
@@ -726,7 +726,7 @@ void stop_discovery(const uint8_t *data, uint16_t len)
         ncp_e("Failed to stop scanning: %d", err);
         status = NCP_CMD_RESULT_ERROR;
     }
-    ncp_ble_state_clear(NCP_BLE_SCNNING);
+    ncp_ble_state_clear(NCP_BLE_SCANNING);
     ble_prepare_status(NCP_RSP_BLE_GAP_STOP_SCAN, status, NULL, 0);
 }
 
@@ -1380,7 +1380,7 @@ static void le_security_changed(struct bt_conn *conn, bt_security_t level,
  * @brief   This event indicates that a device was found during device
  *          discovery.
  */
-void device_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t evtype,
+void device_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t evt_type,
              struct net_buf_simple *ad)
 {
 #if (defined(CONFIG_BLE_ADV_REPORT_BUFFER_FILTER) && (CONFIG_BLE_ADV_REPORT_BUFFER_FILTER > 0U))
@@ -1388,7 +1388,7 @@ void device_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t evtype,
 #endif //#if (defined(CONFIG_BLE_ADV_REPORT_BUFFER_FILTER) && (CONFIG_BLE_ADV_REPORT_BUFFER_FILTER > 0U))
     /* if General/Limited Discovery - parse Advertising data to get flags */
     if (!(discovery_flags & GAP_DISCOVERY_FLAG_LE_OBSERVE) &&
-        (evtype != BT_GAP_ADV_TYPE_SCAN_RSP))
+        (evt_type != BT_GAP_ADV_TYPE_SCAN_RSP))
     {
         uint8_t flags = get_ad_flags(ad);
 
@@ -1405,7 +1405,7 @@ void device_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t evtype,
     }
 
     /* attach Scan Response data */
-    if (evtype == BT_GAP_ADV_TYPE_SCAN_RSP)
+    if (evt_type == BT_GAP_ADV_TYPE_SCAN_RSP)
     {
         struct gap_device_found_ev *ev;
         bt_addr_le_t a;
@@ -1453,7 +1453,7 @@ void device_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t evtype,
          if (NCP_CMD_RESULT_OK == appl_hci_le_find_free_adv_list_inst(&index))
          {
              /* Save the Event type */
-             APPL_HCI_LE_GET_PEER_ADV_TYPE(index) = evtype;
+             APPL_HCI_LE_GET_PEER_ADV_TYPE(index) = evt_type;
              /* Save the Device address and Type */
              APPL_HCI_LE_GET_PEER_ADV_ADDR(index).type = addr->type;
              memcpy(&(APPL_HCI_LE_GET_PEER_ADV_ADDR(index).a.val), addr->a.val, 6);
@@ -1495,8 +1495,8 @@ void device_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t evtype,
 
     /* if Active Scan and scannable event - wait for Scan Response */
     if ((discovery_flags & GAP_DISCOVERY_FLAG_LE_ACTIVE_SCAN) &&
-        (evtype == BT_GAP_ADV_TYPE_ADV_IND ||
-         evtype == BT_GAP_ADV_TYPE_ADV_SCAN_IND))
+        (evt_type == BT_GAP_ADV_TYPE_ADV_IND ||
+         evt_type == BT_GAP_ADV_TYPE_ADV_SCAN_IND))
     {
         return;
     }
@@ -1930,4 +1930,4 @@ uint16_t appl_hci_le_init_adv_list(void)
     return NCP_CMD_RESULT_OK;
 }
 #endif //#if (defined(CONFIG_BLE_ADV_REPORT_BUFFER_FILTER) && (CONFIG_BLE_ADV_REPORT_BUFFER_FILTER > 0U))
-#endif
+#endif /* CONFIG_NCP_BLE */

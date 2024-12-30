@@ -2358,25 +2358,7 @@ static int enable_subscription(struct bt_conn *conn, uint16_t ccc_handle,
 
 #if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
     /* require security level from time of subscription */
-#if (defined(CONFIG_AUTO_PTS_DEFALUT_MIN_SEC_L2_ENABLE) && (CONFIG_AUTO_PTS_DEFALUT_MIN_SEC_L2_ENABLE > 0))
-	/* GAP/SEC/SEM/BV-56-C
-	   GAP/SEC/SEM/BV-62-C
-	   GAP/SEC/SEM/BV-63-C
-	   GAP/SEC/SEM/BV-64-C
-	   GAP/SEC/SEM/BV-65-C
-	   GAP/SEC/SEM/BV-66-C
-	   GAP/SEC/SEM/BV-67-C */
-#if (defined(CONFIG_BT_SMP_SC_ONLY) && (CONFIG_BT_SMP_SC_ONLY == 1)) || \
-    (defined(CONFIG_BT_SMP_SC_PAIR_ONLY) && (CONFIG_BT_SMP_SC_PAIR_ONLY == 1))
-    subscription->min_security = BT_SECURITY_L4;
-#elif (defined(CONFIG_BT_SMP_ENFORCE_MITM) && (CONFIG_BT_SMP_ENFORCE_MITM == 1))
-    subscription->min_security = BT_SECURITY_L3;
-#elif (defined(CONFIG_BT_SMP_ENFORCE_MITM) && (CONFIG_BT_SMP_ENFORCE_MITM == 0))
-    subscription->min_security = BT_SECURITY_L2;
-#endif
-#else
     subscription->min_security = bt_conn_get_security(conn);
-#endif /* CONFIG_AUTO_PTS_DEFALUT_MIN_SEC_L2_ENABLE > 0 */
 #endif /* CONFIG_BT_SMP > 0 */
 
     return bt_gatt_discover(conn, &discover_params);
@@ -2602,7 +2584,7 @@ static uint8_t get_attr_val_rp(const struct bt_gatt_attr *attr, uint16_t handle,
 #if (defined(CONFIG_BT_GATT_NOTIFY_MULTIPLE) && (CONFIG_BT_GATT_NOTIFY_MULTIPLE > 0))
 static void notify_cb(struct bt_conn *conn, void *user_data)
 {
-    LOG_DBG("Nofication sent");
+    LOG_DBG("Notification sent");
 }
 
 static void notify_mult(uint8_t *data, uint16_t len, uint16_t op)

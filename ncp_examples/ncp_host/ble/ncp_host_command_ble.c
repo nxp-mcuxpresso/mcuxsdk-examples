@@ -17,7 +17,7 @@
 #include "ble_service/ht.h"
 #include "ble_service/hr.h"
 #include "ble_service/bas.h"
-   
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -156,7 +156,7 @@ int ble_start_adv_command(int argc, char **argv)
  * @brief This function prepares set le adv data command
  *
  * @return Status returned
- */ 
+ */
 int ble_set_adv_data_command(int argc, char **argv)
 {
     uint32_t i = 0;
@@ -185,7 +185,7 @@ int ble_set_adv_data_command(int argc, char **argv)
       memcpy(conv_value, (char *)&argv[1][i], 2);
       set_adv_da->adv_data[i/2] = strtol(conv_value, &endptr, 16);
     }
-    
+
     set_adv_data_command->header.size += set_adv_da->adv_length + 1;
 
     return NCP_STATUS_SUCCESS;
@@ -263,7 +263,7 @@ int ble_start_scan_command(int argc, char **argv)
     start_scan_command->header.cmd      = NCP_CMD_BLE_GAP_START_SCAN;
     start_scan_command->header.size     = NCP_CMD_HEADER_LEN;
     start_scan_command->header.result   = NCP_CMD_RESULT_OK;
-    
+
     NCP_CMD_SCAN_START *scan_start = (NCP_CMD_SCAN_START *)&start_scan_command->params.scan_start;
     if(scan_type == 0)
     {
@@ -703,7 +703,7 @@ int ble_start_encryption_command(int argc, char **argv)
 }
 
 
-void write_charateristic_command_local(NCP_SET_VALUE_CMD *param)
+void write_characteristic_command_local(NCP_SET_VALUE_CMD *param)
 {
     MCU_NCPCmd_DS_BLE_COMMAND *write_characteristic_command = ncp_host_get_cmd_buffer_ble();
     (void)memset((uint8_t *)write_characteristic_command, 0, NCP_HOST_COMMAND_LEN);
@@ -764,7 +764,7 @@ int ble_write_characteristic_command(int argc, char **argv)
     gatt_set_value.len = a2hex(argv[3]);
     gatt_set_value.uuid_length = uuid_length;
 
-    write_charateristic_command_local(&gatt_set_value);
+    write_characteristic_command_local(&gatt_set_value);
 
     return NCP_STATUS_SUCCESS;
 }
@@ -854,7 +854,7 @@ int ble_register_service_command(int argc, char **argv)
     register_service_command->header.result   = NCP_CMD_RESULT_OK;
 
     NCP_REGISTER_SERVICE *register_service = (NCP_REGISTER_SERVICE *)&register_service_command->params.register_service;
-    
+
     service_len = atoi(argv[1]);
     for(uint8_t i = 2; i < argc; i++)
     {
@@ -996,7 +996,7 @@ static void dump_ble_host_service_add_usage()
     (void)PRINTF(
         "    ble-host-svc-add prim <uuid> chrc <uuid> <Properties> <Permissions> [ccc <Permissions>] start"
         "\r\n");
-    (void)PRINTF(" If want add mutli Characteristic: \r\n");
+    (void)PRINTF(" If want add multi Characteristic: \r\n");
     (void)PRINTF(
         "    ble-host-svc-add prim <uuid> chrc <uuid> <Properties> <Permissions> chrc <uuid> <Properties> <Permissions> ..."
         "\r\n");
@@ -1088,7 +1088,7 @@ int ble_host_service_add_command(int argc, char **argv)
                 (void)PRINTF("  XXX-XX-XX-XX-XXXXXX for UUID128\r\n");
                 return NCP_STATUS_ERROR;
             }
-            
+
             // if (a2hex(argv[arg + 2]) > (1 << 8))
             // {
             //     (void)PRINTF("Error: invalid properties\r\n");
@@ -1157,7 +1157,7 @@ int ble_host_service_add_command(int argc, char **argv)
             return NCP_STATUS_ERROR;
         }
     } while (arg < argc);
-    
+
     host_service_add_tlv->tlv_buf_len = tlv_buf_len;
 
     host_service_add_command->header.cmd      = NCP_CMD_BLE_HOST_SERVICE_ADD;
@@ -1197,7 +1197,7 @@ int ble_start_service_command(int argc, char **argv)
         {
             if (host_service_list[i].svc_start)
             {
-                host_service_list[i].svc_start(); 
+                host_service_list[i].svc_start();
                 return NCP_STATUS_SUCCESS;
             }
         }
@@ -1490,11 +1490,11 @@ int ble_cfg_subscribe_command(int argc, char **argv)
     int ret;
     uint8_t addr_type;
     uint8_t raw_addr[NCP_BLE_ADDR_LENGTH];
-    MCU_NCPCmd_DS_BLE_COMMAND *ble_subcribe_command = ncp_host_get_cmd_buffer_ble();
-    (void)memset((uint8_t *)ble_subcribe_command, 0, NCP_HOST_COMMAND_LEN);
+    MCU_NCPCmd_DS_BLE_COMMAND *ble_subscribe_command = ncp_host_get_cmd_buffer_ble();
+    (void)memset((uint8_t *)ble_subscribe_command, 0, NCP_HOST_COMMAND_LEN);
 
-    ble_subcribe_command->header.size     = NCP_CMD_HEADER_LEN;
-    ble_subcribe_command->header.result   = NCP_CMD_RESULT_OK;
+    ble_subscribe_command->header.size     = NCP_CMD_HEADER_LEN;
+    ble_subscribe_command->header.result   = NCP_CMD_RESULT_OK;
 
     if(argc != 6)
     {
@@ -1505,12 +1505,12 @@ int ble_cfg_subscribe_command(int argc, char **argv)
     }
 
     if (!strncmp(argv[1], "indicate", 9))
-        ble_subcribe_command->header.cmd      = NCP_CMD_BLE_GATT_CFG_INDICATE;
+        ble_subscribe_command->header.cmd      = NCP_CMD_BLE_GATT_CFG_INDICATE;
     else if (!strncmp(argv[1], "notify", 7))
-        ble_subcribe_command->header.cmd      = NCP_CMD_BLE_GATT_CFG_NOTIFY;
+        ble_subscribe_command->header.cmd      = NCP_CMD_BLE_GATT_CFG_NOTIFY;
     else
     {
-        printf("Error: invalid sucbscribe type\r\n");
+        printf("Error: invalid subscribe type\r\n");
         return -NCP_STATUS_ERROR;
     }
 
@@ -1540,14 +1540,14 @@ int ble_cfg_subscribe_command(int argc, char **argv)
         printf("Error: invalid ADDRESS type\r\n");
         return -NCP_STATUS_ERROR;
     }
-    NCP_CFG_SUBSCRIBE_CMD *ble_subcribe = (NCP_CFG_SUBSCRIBE_CMD *)&ble_subcribe_command->params.cfg_subscribe;
+    NCP_CFG_SUBSCRIBE_CMD *ble_subscribe = (NCP_CFG_SUBSCRIBE_CMD *)&ble_subscribe_command->params.cfg_subscribe;
 
-    ble_subcribe->address_type = addr_type;
-    memcpy(ble_subcribe->address, raw_addr, NCP_BLE_ADDR_LENGTH);
-    ble_subcribe->enable = atoi(argv[4]);
-    ble_subcribe->ccc_handle = a2hex(argv[5]);
+    ble_subscribe->address_type = addr_type;
+    memcpy(ble_subscribe->address, raw_addr, NCP_BLE_ADDR_LENGTH);
+    ble_subscribe->enable = atoi(argv[4]);
+    ble_subscribe->ccc_handle = a2hex(argv[5]);
 
-    ble_subcribe_command->header.size += sizeof(NCP_CFG_SUBSCRIBE_CMD);
+    ble_subscribe_command->header.size += sizeof(NCP_CFG_SUBSCRIBE_CMD);
 
     return NCP_STATUS_SUCCESS;
 }
@@ -1654,10 +1654,10 @@ int ble_l2cap_disconnect_command(int argc, char **argv)
         return -NCP_STATUS_ERROR;
     }
 
-    NCP_L2CAP_DISCONNECT_CMD *set_l2cap_disconn = (NCP_L2CAP_DISCONNECT_CMD *)&l2cap_disconnect_command->params.l2cap_disconnect;
+    NCP_L2CAP_DISCONNECT_CMD *set_l2cap_disconnect = (NCP_L2CAP_DISCONNECT_CMD *)&l2cap_disconnect_command->params.l2cap_disconnect;
 
-    set_l2cap_disconn->address_type = type;
-    memcpy(set_l2cap_disconn->address, raw_addr, NCP_BLE_ADDR_LENGTH);
+    set_l2cap_disconnect->address_type = type;
+    memcpy(set_l2cap_disconnect->address, raw_addr, NCP_BLE_ADDR_LENGTH);
 
     l2cap_disconnect_command->header.size += sizeof(NCP_L2CAP_DISCONNECT_CMD);
 
@@ -1776,13 +1776,13 @@ int ble_l2cap_register_command(int argc, char **argv)
  */
 static int ble_l2cap_metrics_command(int argc, char **argv)
 {
-    MCU_NCPCmd_DS_BLE_COMMAND *l2cap_rmetrics_command = ncp_host_get_cmd_buffer_ble();
-    (void)memset((uint8_t *)l2cap_rmetrics_command, 0, NCP_HOST_COMMAND_LEN);
+    MCU_NCPCmd_DS_BLE_COMMAND *l2cap_metrics_command = ncp_host_get_cmd_buffer_ble();
+    (void)memset((uint8_t *)l2cap_metrics_command, 0, NCP_HOST_COMMAND_LEN);
 
-    l2cap_rmetrics_command->header.cmd      = NCP_CMD_BLE_L2CAP_METRICS;
-    l2cap_rmetrics_command->header.size     = NCP_CMD_HEADER_LEN;
-    l2cap_rmetrics_command->header.result   = NCP_CMD_RESULT_OK;
-    l2cap_rmetrics_command->header.msg_type = NCP_MSG_TYPE_CMD;
+    l2cap_metrics_command->header.cmd      = NCP_CMD_BLE_L2CAP_METRICS;
+    l2cap_metrics_command->header.size     = NCP_CMD_HEADER_LEN;
+    l2cap_metrics_command->header.result   = NCP_CMD_RESULT_OK;
+    l2cap_metrics_command->header.msg_type = NCP_MSG_TYPE_CMD;
 
     if(argc != 2)
     {
@@ -1791,11 +1791,11 @@ static int ble_l2cap_metrics_command(int argc, char **argv)
         return -NCP_STATUS_ERROR;
     }
 
-    NCP_L2CAP_METRICS_CMD *set_l2cap_metrics = (NCP_L2CAP_METRICS_CMD *)&l2cap_rmetrics_command->params.l2cap_metrics;
+    NCP_L2CAP_METRICS_CMD *set_l2cap_metrics = (NCP_L2CAP_METRICS_CMD *)&l2cap_metrics_command->params.l2cap_metrics;
 
     set_l2cap_metrics->metrics_flag = atoi(argv[1]);
 
-    l2cap_rmetrics_command->header.size += sizeof(NCP_L2CAP_METRICS_CMD);
+    l2cap_metrics_command->header.size += sizeof(NCP_L2CAP_METRICS_CMD);
 
     return NCP_STATUS_SUCCESS;
 }
@@ -1911,7 +1911,7 @@ int ble_process_ncp_event(uint8_t *res)
             ret = ble_process_gatt_ncs_info_receive(res);
             break;
         default:
-            printf("Invaild event! Invalid event id is %08lx\r\n", evt->header.cmd);
+            printf("Invalid event! Invalid event id is %08lx\r\n", evt->header.cmd);
             break;
     }
     return ret;
@@ -1940,10 +1940,10 @@ static int ble_process_device_connected(uint8_t *res)
     NCP_DEVICE_CONNECTED_EV *device_connected_tlv = (NCP_DEVICE_CONNECTED_EV *)&evt_res->params.device_connected;
 
     memcpy(address,device_connected_tlv->address, 6);
-    printf("Connected to: %02X:%02X:%02X:%02X:%02X:%02X ", 
+    printf("Connected to: %02X:%02X:%02X:%02X:%02X:%02X ",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(device_connected_tlv->address_type == 0) //pubilc address
+    if(device_connected_tlv->address_type == 0) //public address
     {
         printf("Address type: public\r\n");
 
@@ -1954,7 +1954,7 @@ static int ble_process_device_connected(uint8_t *res)
     }
     printf("Connection Interval: %X\r\n",device_connected_tlv->interval);
     printf("Connection Latency: %X\r\n",device_connected_tlv->latency);
-    printf("Supervation Timeout: %X\r\n",device_connected_tlv->timeout);
+    printf("Supervision Timeout: %X\r\n",device_connected_tlv->timeout);
 
     return NCP_STATUS_SUCCESS;
 }
@@ -1968,10 +1968,10 @@ static int ble_process_device_disconnected(uint8_t *res)
     NCP_DEVICE_DISCONNECTED_EV *device_disconnected_tlv = (NCP_DEVICE_DISCONNECTED_EV *)&evt_res->params.device_disconnected;
 
     memcpy(address,device_disconnected_tlv->address, 6);
-    printf("Disonnected to: %02X:%02X:%02X:%02X:%02X:%02X ", 
+    printf("Disconnected to: %02X:%02X:%02X:%02X:%02X:%02X ",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(device_disconnected_tlv->address_type == 0) //pubilc address
+    if(device_disconnected_tlv->address_type == 0) //public address
     {
         printf("Address type: public\r\n");
 
@@ -1987,7 +1987,7 @@ static int ble_process_device_disconnected(uint8_t *res)
 static int ble_process_passkey_display(uint8_t *res)
 {
     uint32_t key = 0;
-    
+
     MCU_NCPCmd_DS_BLE_COMMAND *evt_res = (MCU_NCPCmd_DS_BLE_COMMAND *)res;
 
     NCP_PASSKEY_DISPLAY_EV *passkey_display_tlv = (NCP_PASSKEY_DISPLAY_EV *)&evt_res->params.passkey_display;
@@ -2004,16 +2004,16 @@ static int ble_process_identity_resolved(uint8_t *res)
 
     MCU_NCPCmd_DS_BLE_COMMAND *evt_res = (MCU_NCPCmd_DS_BLE_COMMAND *)res;
 
-    NCP_IDENTITY_RESOLVED_EV *idenitiy_resolved_tlv = (NCP_IDENTITY_RESOLVED_EV *)&evt_res->params.identity_resolved;
+    NCP_IDENTITY_RESOLVED_EV *identity_resolved_tlv = (NCP_IDENTITY_RESOLVED_EV *)&evt_res->params.identity_resolved;
 
-    memcpy(identity_address,idenitiy_resolved_tlv->identity_address, 6);
+    memcpy(identity_address,identity_resolved_tlv->identity_address, 6);
 
     printf("Remote device Identity Address Resolved\r\n");
-    printf("Identity Address: %02X:%02X:%02X:%02X:%02X:%02X \r\n", 
-                    identity_address[0],  identity_address[1], identity_address[2], identity_address[3], 
+    printf("Identity Address: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
+                    identity_address[0],  identity_address[1], identity_address[2], identity_address[3],
                     identity_address[4], identity_address[5]);
 
-    if(idenitiy_resolved_tlv->identity_address_type == 0) //pubilc address
+    if(identity_resolved_tlv->identity_address_type == 0) //public address
     {
         printf("Identity Address type: public\r\n");
 
@@ -2038,7 +2038,7 @@ static int ble_process_conn_param_update(uint8_t *res)
     printf("Connected to: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(conn_update_tlv->type == 0) //pubilc address
+    if(conn_update_tlv->type == 0) //public address
     {
         printf("Address type: public\r\n");
 
@@ -2049,7 +2049,7 @@ static int ble_process_conn_param_update(uint8_t *res)
     }
     printf("Connection Interval: %X\r\n",conn_update_tlv->interval);
     printf("Connection Latency: %X\r\n",conn_update_tlv->latency);
-    printf("Supervation Timeout: %X\r\n",conn_update_tlv->timeout);
+    printf("Supervision Timeout: %X\r\n",conn_update_tlv->timeout);
 
     return NCP_STATUS_SUCCESS;
 }
@@ -2066,7 +2066,7 @@ static int ble_process_phy_update(uint8_t *res)
     printf("Connected to: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(phy_update_tlv->address_type == 0) //pubilc address
+    if(phy_update_tlv->address_type == 0) //public address
     {
         printf("Address type: public\r\n");
     }
@@ -2092,7 +2092,7 @@ static int ble_process_data_len_update(uint8_t *res)
     printf("Connected to: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(data_len_update_tlv->address_type == 0) //pubilc address
+    if(data_len_update_tlv->address_type == 0) //public address
     {
         printf("Address type: public\r\n");
 
@@ -2105,7 +2105,7 @@ static int ble_process_data_len_update(uint8_t *res)
     printf("tx_max_time: %X\r\n",data_len_update_tlv->tx_max_time);
     printf("rx_max_len: %X\r\n",data_len_update_tlv->rx_max_len);
     printf("rx_max_time: %X\r\n",data_len_update_tlv->rx_max_time);
-    
+
     return NCP_STATUS_SUCCESS;
 }
 
@@ -2140,11 +2140,11 @@ static int ble_process_security_level_changed(uint8_t *res)
             break;
     }
 
-    printf(" Address: %02X:%02X:%02X:%02X:%02X:%02X ", 
-                    address[0],  address[1], address[2], address[3], 
+    printf(" Address: %02X:%02X:%02X:%02X:%02X:%02X ",
+                    address[0],  address[1], address[2], address[3],
                     address[4], address[5]);
 
-    if(sec_level_changed_tlv->address_type == 0) //pubilc address
+    if(sec_level_changed_tlv->address_type == 0) //public address
     {
         printf(" type: public\r\n");
 
@@ -2165,10 +2165,10 @@ static int ble_process_gatt_notification(uint8_t *res)
     uint8_t address[6]= {0};
 
     memcpy(address, gatt_notification_tlv->address, 6);
-    printf("Recieve Notification form %02X:%02X:%02X:%02X:%02X:%02X ", 
+    printf("Receive Notification form %02X:%02X:%02X:%02X:%02X:%02X ",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(gatt_notification_tlv->address_type == 0) //pubilc address
+    if(gatt_notification_tlv->address_type == 0) //public address
     {
         printf("type: public ");
 
@@ -2183,8 +2183,8 @@ static int ble_process_gatt_notification(uint8_t *res)
         printf("%02d ", gatt_notification_tlv->data[i]);
     }
     printf("\r\n");
-    
-    // device central profile data print 
+
+    // device central profile data print
     switch (gatt_notification_tlv->svc_id)
     {
         case CENTRAL_HTC_SERVICE_ID:
@@ -2193,7 +2193,7 @@ static int ble_process_gatt_notification(uint8_t *res)
         case CENTRAL_HRC_SERVICE_ID:
             hrc_central_notify(gatt_notification_tlv->data);
             break;
-  
+
         default:
             // PRINTF("unsupported profile service\n");
             break;
@@ -2250,15 +2250,15 @@ static int ble_process_gatt_ccc_cfg_changed(uint8_t *res)
 static int ble_process_gatt_subscription(uint8_t *res)
 {
     MCU_NCPCmd_DS_BLE_COMMAND *evt_res = (MCU_NCPCmd_DS_BLE_COMMAND *)res;
-    NCP_SUBSCRIPTION_EV *gatt_subscriptioned_tlv = (NCP_SUBSCRIPTION_EV *)&evt_res->params.gatt_subscription_ev;
+    NCP_SUBSCRIPTION_EV *gatt_subscription_tlv = (NCP_SUBSCRIPTION_EV *)&evt_res->params.gatt_subscription_ev;
     printf("\n");
     printf("Subscription ");
-    switch (gatt_subscriptioned_tlv->svc_id)
+    switch (gatt_subscription_tlv->svc_id)
     {
     case CENTRAL_HTC_SERVICE_ID:
         printf("HTC ");
         break;
-    
+
     case CENTRAL_HRC_SERVICE_ID:
         printf("HRC ");
         break;
@@ -2267,13 +2267,13 @@ static int ble_process_gatt_subscription(uint8_t *res)
         break;
     }
 
-    if(!gatt_subscriptioned_tlv->status) {
+    if(!gatt_subscription_tlv->status) {
         printf("success\r\n");
     }else {
         printf("failed\r\n");
     }
     printf("\n");
-    
+
     return NCP_STATUS_SUCCESS;
 }
 
@@ -2289,7 +2289,7 @@ static int ble_process_l2cap_connected(uint8_t *res)
     printf("Connected to: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(l2cap_connected_tlv->address_type == 0) //pubilc address
+    if(l2cap_connected_tlv->address_type == 0) //public address
     {
         printf("Address type: public\r\n");
 
@@ -2315,7 +2315,7 @@ static int ble_process_l2cap_disconnected(uint8_t *res)
     printf("Addr: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(l2cap_disconnected_tlv->address_type == 0) //pubilc address
+    if(l2cap_disconnected_tlv->address_type == 0) //public address
     {
         printf("Address type: public\r\n");
 
@@ -2325,7 +2325,7 @@ static int ble_process_l2cap_disconnected(uint8_t *res)
         printf("Address type: random\r\n");
     }
     printf("L2CAP psm %u disconnect\r\n",l2cap_disconnected_tlv->psm);
-    
+
     return NCP_STATUS_SUCCESS;
 }
 
@@ -2386,7 +2386,7 @@ static int ble_process_gatt_chrc_discovered(uint8_t *res)
         memcpy(&characteristics, &gatt_disc_chrc_tlv->characteristics[i], sizeof(GATT_CHARACTERISTIC_T));
         (void)PRINTF("Discovered Characteristics: Handle %04X, Value Handle %04X, uuid: %02X%02X ", \
                 characteristics.characteristic_handle, characteristics.value_handle, characteristics.uuid[1], characteristics.uuid[0]);
-        
+
         print_chrc_props(characteristics.properties);
 
         switch (sys_get_le16(characteristics.uuid))
@@ -2423,7 +2423,7 @@ int ble_process_l2cap_received(uint8_t *res)
     printf("Connected to: %02X:%02X:%02X:%02X:%02X:%02X \r\n",
                     address[0],  address[1], address[2], address[3], address[4], address[5]);
 
-    if(l2cap_received_tlv->address_type == 0) //pubilc address
+    if(l2cap_received_tlv->address_type == 0) //public address
     {
         printf("Address type: public\r\n");
 
@@ -2599,14 +2599,14 @@ int ble_process_response(uint8_t *res)
             break;
 
         default:
-            printf("Invaild response cmd!\r\n");
+            printf("Invalid response cmd!\r\n");
             break;
     }
     return ret;
 }
 
 /**
- * @brief      This function processes start adv resopnse from ncp_ble
+ * @brief      This function processes start adv response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2624,7 +2624,7 @@ static int ble_process_start_adv_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes stop adv resopnse from ncp_ble
+ * @brief      This function processes stop adv response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2666,7 +2666,7 @@ static int ble_process_set_adv_data_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes set scan parameter resopnse from ncp_ble
+ * @brief      This function processes set scan parameter response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2686,7 +2686,7 @@ static int ble_process_set_scan_param_response(uint8_t *res)
     return NCP_STATUS_SUCCESS;
 }
 /**
- * @brief      This function processes start scan resopnse from ncp_ble
+ * @brief      This function processes start scan response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2707,7 +2707,7 @@ static int ble_process_start_scan_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes stop scan resopnse from ncp_ble
+ * @brief      This function processes stop scan response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2728,7 +2728,7 @@ static int ble_process_stop_scan_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes connect resopnse from ncp_ble
+ * @brief      This function processes connect response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2749,7 +2749,7 @@ static int ble_process_connect_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes disconnect resopnse from ncp_ble
+ * @brief      This function processes disconnect response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2812,7 +2812,7 @@ static int ble_process_set_phy_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes connection param update resopnse from ncp_ble
+ * @brief      This function processes connection param update response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2827,14 +2827,14 @@ static int ble_process_conn_update_response(uint8_t *res)
     }
     else
     {
-        printf("Error: unable to update connection paramete \r\n");
+        printf("Error: unable to update connection parameter \r\n");
         printf("Make sure you have entered valid interval, interval_min and interval_max should apply to : interval_min > current interval or interval_max < current interval \r\n");
     }
     return NCP_STATUS_SUCCESS;
 }
 
 /**
- * @brief      This function processes set filter list resopnse from ncp_ble
+ * @brief      This function processes set filter list response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -2924,7 +2924,7 @@ static int ble_process_host_service_add_response(uint8_t *res)
     }
     else
     {
-        printf("Error: unable to add host service\r\n");  
+        printf("Error: unable to add host service\r\n");
     }
     return NCP_STATUS_SUCCESS;
 }
@@ -2939,7 +2939,7 @@ static int ble_process_start_service_response(uint8_t *res)
     }
     else
     {
-        printf("Error: unable to start service\r\n");  
+        printf("Error: unable to start service\r\n");
     }
     return NCP_STATUS_SUCCESS;
 }
@@ -2957,13 +2957,13 @@ int ble_process_write_characteristic_response(uint8_t *res)
         printf("Error: unable to write GATT value\r\n");
     }
 #if CONFIG_NCP_HTS
-    peripheral_hts_event_put(HTS_EVENT_WRITE_CHRA_RSP);
+    peripheral_hts_event_put(HTS_EVENT_WRITE_CHAR_RSP);
 #endif
 #if CONFIG_NCP_HRS
-    peripheral_hrs_event_put(HRS_EVENT_WRITE_CHRA_RSP);
+    peripheral_hrs_event_put(HRS_EVENT_WRITE_CHAR_RSP);
 #endif
 #if CONFIG_NCP_BAS
-    peripheral_bas_event_put(BAS_EVENT_WRITE_CHRA_RSP);
+    peripheral_bas_event_put(BAS_EVENT_WRITE_CHAR_RSP);
 #endif
     return NCP_STATUS_SUCCESS;
 }
@@ -3038,7 +3038,7 @@ static int ble_process_cfg_notify_response(uint8_t *res)
     }
     else
     {
-        printf("Error: Failed to configure service nofity\r\n");
+        printf("Error: Failed to configure service notify\r\n");
     }
     return NCP_STATUS_SUCCESS;
 }
@@ -3074,7 +3074,7 @@ static int ble_process_register_service_response(uint8_t *res)
             {
                 case 1:
                     printf("Peripheral_HTS ");
-                    break; 
+                    break;
                 case 2:
                     printf("Peripheral_HRS ");
                     break;
@@ -3110,6 +3110,7 @@ static int ble_process_register_service_response(uint8_t *res)
     return NCP_STATUS_SUCCESS;
 }
 
+#if 0
 static double pow(double x, double y)
 {
 	double result = 1;
@@ -3127,6 +3128,7 @@ static double pow(double x, double y)
 
 	return result;
 }
+#endif
 
 /* device central service notify function */
 static void htc_central_notify(uint8_t *data)
@@ -3134,8 +3136,8 @@ static void htc_central_notify(uint8_t *data)
     struct temp_measurement temp_measurement;
     uint8_t temperature;
     uint32_t mantissa;
-                                             
-    /* temperature value display */          
+
+    /* temperature value display */
     temp_measurement = *(struct temp_measurement*)data;
     mantissa = sys_get_le32(temp_measurement.temperature);
     temperature = (uint8_t)mantissa;
@@ -3153,16 +3155,16 @@ static void htc_central_notify(uint8_t *data)
 static void hrc_central_notify(uint8_t *data)
 {
     struct hr_measurement *hr_measurement = (struct hr_measurement *) data;
-    
+
     uint8_t sensor = hr_measurement->sensor;
     uint8_t rate   = hr_measurement->rate;
-    
+
     /* heart rate value display */
     printf("[NOTIFICATION] sensor id is %d, heart rate is %d\n", sensor, rate);
 }
 
 /**
- * @brief      This function processes l2cap connect resopnse from ncp_ble
+ * @brief      This function processes l2cap connect response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -3204,7 +3206,7 @@ static int ble_process_l2cap_disconnect_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes l2cap send resopnse from ncp_ble
+ * @brief      This function processes l2cap send response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -3225,7 +3227,7 @@ static int ble_process_l2cap_send_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes l2cap register resopnse from ncp_ble
+ * @brief      This function processes l2cap register response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -3246,7 +3248,7 @@ static int ble_process_l2cap_register_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes l2cap metrics resopnse from ncp_ble
+ * @brief      This function processes l2cap metrics response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -3267,7 +3269,7 @@ static int ble_process_l2cap_metrics_response(uint8_t *res)
 }
 
 /**
- * @brief      This function processes l2cap receive resopnse from ncp_ble
+ * @brief      This function processes l2cap receive response from ncp_ble
  *
  * @param res  A pointer to uint8_t
  * @return     Status returned
@@ -3345,4 +3347,4 @@ int ncp_host_ble_command_init()
     return NCP_STATUS_SUCCESS;
 }
 
-#endif
+#endif /* CONFIG_NCP_BLE */

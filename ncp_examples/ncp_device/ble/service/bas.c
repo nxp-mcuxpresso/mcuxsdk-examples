@@ -11,21 +11,18 @@
  */
 #if CONFIG_NCP_BLE
 
-#include <errno/errno.h>
-#include <stdbool.h>
-#include <zephyr/types.h>
-#include <sys/atomic.h>
+#include "fsl_debug_console.h"
 
 #include <porting.h>
-
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/conn.h>
 #include <bluetooth/gatt.h>
-#include <bluetooth/uuid.h>
-#include "bas.h"
+
 #include "service.h"
 #include "ncp_glue_ble.h"
+#include "bas.h"
 
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
 #define LOG_ENABLE IS_ENABLED(CONFIG_BT_DEBUG_SERVICE)
 #define LOG_MODULE_NAME bt_bas
 #include "fsl_component_log.h"
@@ -58,9 +55,6 @@ static const struct bt_data bas_ad[] = {
 		      BT_UUID_16_ENCODE(BT_UUID_DIS_VAL))
 };
 
-/*******************************************************************************
- * Definitions
- ******************************************************************************/
 static struct bt_gatt_attr bas_attrs[] = {
         /* Battery Service Declaration */
         BT_GATT_PRIMARY_SERVICE(BT_UUID_BAS),

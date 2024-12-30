@@ -6,8 +6,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#ifndef ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_BAS_H_
-#define ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_BAS_H_
+#ifndef NCP_BAS_H_
+#define NCP_BAS_H_
 
 /**
  * @brief Battery Service (BAS)
@@ -22,6 +22,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/*******************************************************************************
+* Definitions
+******************************************************************************/
+
+/*******************************************************************************
+* Prototypes
+******************************************************************************/
 void bas_disconnect(struct bt_conn *conn, uint8_t reason);
 
 void bas_connect(struct bt_conn *conn, uint8_t conn_err);
@@ -39,4 +46,4 @@ void init_bas_service(void);
  * @}
  */
 
-#endif /* ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_BAS_H_ */
+#endif /* NCP_BAS_H_ */

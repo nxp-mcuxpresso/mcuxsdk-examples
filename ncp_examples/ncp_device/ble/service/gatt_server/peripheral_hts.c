@@ -7,27 +7,22 @@
  */
 #if CONFIG_NCP_BLE
 
-#include <stdio.h>
-#include <string.h>
-#include <stddef.h>
-#include <stdarg.h>
-#include <errno/errno.h>
-#include <toolchain.h>
+#include "fsl_debug_console.h"
+
 #include <porting.h>
-#include <fsl_debug_console.h>
-#include <sys/byteorder.h>
-
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/uuid.h>
 #include <bluetooth/gatt.h>
-#include "service.h"
 
+#include "service.h"
 #include "ncp_glue_ble.h"
+#include "peripheral_hts.h"
 
 #if defined(APP_USE_SENSORS) && (APP_USE_SENSORS > 0)
 #include <sensors.h>
 #endif /* APP_USE_SENSORS */
 
+/*******************************************************************************
+* Definitions
+******************************************************************************/
 #define BT_DIS_MANUF     "NXP"
 #define BT_DIS_NAME      "NCP HTS Demo"
 #define BT_DIS_SN        "BLESN01"
@@ -37,7 +32,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-static bool cccd_written;
+static bool ccc_written;
 static uint8_t indicating;
 static struct bt_gatt_indicate_params ind_params;
 
@@ -116,7 +111,7 @@ void peripheral_hts_disconnect(struct bt_conn *conn, uint8_t reason)
 static void htmc_ccc_cfg_changed(const struct bt_gatt_attr *attr,
          uint16_t value)
 {
-    cccd_written = (value == BT_GATT_CCC_INDICATE) ? true : false;
+    ccc_written = (value == BT_GATT_CCC_INDICATE) ? true : false;
 }
 
 static void indicate_cb(struct bt_conn *conn,
@@ -133,7 +128,7 @@ static void bt_hts_indicate(void)
     static uint8_t temp_type = hts_no_temp_type;
     struct temp_measurement temp_measurement;
 
-    if(cccd_written)
+    if(ccc_written)
     {
         /* check to not send consecutive indications before receiving a response */
         if (indicating)

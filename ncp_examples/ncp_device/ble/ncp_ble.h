@@ -7,15 +7,7 @@
 #ifndef _NCP_BLE_H_
 #define _NCP_BLE_H_
 
-#include <stdio.h>
-#include <stddef.h>
-#include <string.h>
 #include <porting.h>
-
-#include <bluetooth/bluetooth.h>
-
-#include <bluetooth/uuid.h>
-#include <bluetooth/gatt.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,8 +18,8 @@ extern "C" {
  ******************************************************************************/
 /** NCP BLE GAP advertising */
 #define NCP_BLE_ADVERTISING        1
-/** NCP BLE GAP scnning */
-#define NCP_BLE_SCNNING            2
+/** NCP BLE GAP scanning */
+#define NCP_BLE_SCANNING           2
 
 extern bool is_create_conn_cmd;
 

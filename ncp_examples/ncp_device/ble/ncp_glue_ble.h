@@ -12,6 +12,13 @@
 
 #include "ncp_cmd_ble.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*******************************************************************************
+ * API
+ ******************************************************************************/
 /** Prepare TLV command response */
 int ble_prepare_status(uint32_t cmd,
     uint8_t status,
@@ -23,6 +30,9 @@ NCPCmd_DS_BLE_COMMAND *ncp__get_ble_response_buffer();
 void ncp_get_ble_resp_buf_lock();
 void ncp_put_ble_resp_buf_lock();
 
-#endif /* __NCP_GLUE_BLE_H__ */
-
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* __NCP_GLUE_BLE_H__ */
+#endif /* CONFIG_NCP_BLE */

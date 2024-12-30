@@ -4,8 +4,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#ifndef INCLUDE_BLUETOOTH_HTC_H_
-#define INCLUDE_BLUETOOTH_HTC_H_
+#ifndef NCP_HTC_H_
+#define NCP_HTC_H_
 /**
  * @brief Health Thermometer (HTC)
  * @defgroup bt_htc Health Thermometer (HTC)
@@ -20,7 +20,9 @@
 extern "C" {
 #endif
 
-
+/*******************************************************************************
+* Prototypes
+******************************************************************************/
 void central_htc_connect(struct bt_conn *conn, uint8_t conn_err);
 
 void central_htc_disconnect(struct bt_conn *conn, uint8_t reason);
@@ -37,4 +39,4 @@ void central_htc_task(void *pvParameters);
  * @}
  */
 
-#endif /* INCLUDE_BLUETOOTH_HTC_H_ */
+#endif /* NCP_HTC_H_ */

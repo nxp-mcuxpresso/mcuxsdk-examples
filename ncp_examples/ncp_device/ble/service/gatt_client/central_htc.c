@@ -6,28 +6,22 @@
  */
 #if CONFIG_NCP_BLE
 
-#include <zephyr/types.h>
-#include <stddef.h>
-#include <string.h>
-#include <errno/errno.h>
-#include <sys/printk.h>
-#include <sys/byteorder.h>
-#include <porting.h>
+#include "fsl_debug_console.h"
 
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/hci.h>
-#include <bluetooth/conn.h>
-#include <bluetooth/uuid.h>
+#include <porting.h>
 #include <bluetooth/gatt.h>
 #include <bluetooth/l2cap.h>
 #include "bt_pal_hci_core.h"
 
-#include "fsl_loader_utils.h"
-#include "fsl_debug_console.h"
-#include "host_msd_fatfs.h"
-
 #include "service.h"
 #include "ncp_glue_ble.h"
+#include "central_htc.h"
+
+/*******************************************************************************
+* Definitions
+******************************************************************************/
+#define HTC_MAX_NOTIF_DATA                  (MIN(BT_L2CAP_RX_MTU, BT_L2CAP_TX_MTU) - 3)
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -37,7 +31,6 @@ static struct bt_gatt_subscribe_params subscribe_params;
 
 static struct bt_conn *default_conn = NULL;
 
-#define HTC_MAX_NOTIF_DATA                  (MIN(BT_L2CAP_RX_MTU, BT_L2CAP_TX_MTU) - 3)
 static uint8_t htc_ev_buf[sizeof(gatt_notification_ev_t) + HTC_MAX_NOTIF_DATA];
 extern uint8_t host_svc;
 

@@ -3,11 +3,11 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#ifndef ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_NCS_H_
-#define ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_NCS_H_
+#ifndef NCP_NCS_H_
+#define NCP_NCS_H_
 /**
- * @brief NXP Commision Service (NCS)
- * @defgroup bt_ncs NXP Commision Service (NCS)
+ * @brief NXP Commission Service (NCS)
+ * @defgroup bt_ncs NXP Commission Service (NCS)
  * @ingroup bluetooth
  * @{
  *
@@ -51,4 +51,4 @@ void init_ncs_service(void);
  * @}
  */
 
-#endif /* ZEPHYR_INCLUDE_BLUETOOTH_SERVICES_NCS_H_ */
+#endif /* NCP_NCS_H_ */

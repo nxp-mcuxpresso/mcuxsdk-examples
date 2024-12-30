@@ -116,7 +116,7 @@ void add_ncp_debug_time_item(const char *func)
 }
 #endif
 
-void ncp_notify_attribute(const void *data, uint16_t len) 
+void ncp_notify_attribute(const void *data, uint16_t len)
 {
     uint8_t *event_buf        = NULL;
     if(len <= 0)
@@ -176,18 +176,18 @@ static int hci_le_vendor_set_bd_address(uint8_t bd_address[6])
     cp->paramater_id = 0xFE;
     cp->bd_addr_len = 0x06;
     memcpy(cp->bd_address, &bd_address[0],sizeof(uint8_t) * cp->bd_addr_len);
-    
+
     return bt_hci_cmd_send_sync(BT_HCI_VD_SET_BD_ADDRESS, buf, NULL);
 }
 
 /* Core Handlers */
-static int ble_read_support_cmd(void *tlv) 
+static int ble_read_support_cmd(void *tlv)
 {
     // supported_commands(tlv, 0);
     return NCP_CMD_RESULT_OK;
 }
 
-static int ble_read_support_ser(void *tlv) 
+static int ble_read_support_ser(void *tlv)
 {
     // supported_services(tlv, 0);
     return NCP_CMD_RESULT_OK;
@@ -224,7 +224,7 @@ static int ble_stop_adv(void *tlv)
 
     stop_advertising(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_set_scan_param(void *tlv)
@@ -242,7 +242,7 @@ static int ble_start_scan(void *tlv)
 
     start_discovery(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_stop_scan(void *tlv)
@@ -251,7 +251,7 @@ static int ble_stop_scan(void *tlv)
 
     stop_discovery(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_start_connect(void *tlv)
@@ -260,7 +260,7 @@ static int ble_start_connect(void *tlv)
 
     ble_connect(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_start_disconnect(void *tlv)
@@ -269,7 +269,7 @@ static int ble_start_disconnect(void *tlv)
 
     disconnect(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 #if (defined(CONFIG_BT_USER_DATA_LEN_UPDATE) && (CONFIG_BT_USER_DATA_LEN_UPDATE > 0))
@@ -300,7 +300,7 @@ static int ble_conn_param_update(void *tlv)
 
     conn_param_update(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_set_filter_list(void *tlv)
@@ -309,7 +309,7 @@ static int ble_set_filter_list(void *tlv)
 
     set_filter_list(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_pair(void *tlv)
@@ -318,7 +318,7 @@ static int ble_pair(void *tlv)
 
     pair(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 /* Gatt handlers*/
@@ -328,7 +328,7 @@ static int ble_set_value(void *tlv)
 
     set_value(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_read_data(void *tlv)
@@ -337,7 +337,7 @@ static int ble_read_data(void *tlv)
 
     read_data(tlv, 0);
 
-    return ret;  
+    return ret;
 }
 
 static int ble_write_data(void *tlv)
@@ -398,7 +398,7 @@ static int ble_register(void *tlv)
 {
     gatt_ncp_ble_add_service_cmd_t *cmd = (gatt_ncp_ble_add_service_cmd_t*) tlv;
     gatt_ncp_ble_add_service_rp_t *rp;
-    
+
     struct net_buf_simple *buf = NET_BUF_SIMPLE(NCP_BLE_DATA_MAX_SIZE);
     net_buf_simple_init(buf, 0);
     rp = net_buf_simple_add(buf, sizeof(*rp));
@@ -409,7 +409,7 @@ static int ble_register(void *tlv)
         rp->status[i] = ncp_ble_register_service(cmd->svc[i]);
     }
     rp->svc_length = cmd->svc_length;
-    
+
     ble_prepare_status(NCP_RSP_BLE_GATT_REGISTER_SERVICE, ret, (uint8_t *) rp, sizeof(uint8_t) * (1 + cmd->svc_length));
 
     return ret;
@@ -425,7 +425,7 @@ static int ble_set_power_mode(void *tlv)
     if(NCP_CMD_RESULT_OK != hci_le_vendor_power_mode_cfg(*data)) {
         ret = NCP_CMD_RESULT_ERROR;
     }
- 
+
     ble_prepare_status(NCP_RSP_BLE_VENDOR_POWER_MODE, ret, NULL, 0);
 
     return ret;
@@ -434,10 +434,10 @@ static int ble_set_power_mode(void *tlv)
 static int ble_set_uart_baud_rate(void *tlv)
 {
     int ret = NCP_CMD_RESULT_OK;
-    /* 
+    /*
        TODO: This may change UART clock at CPU3 side, not support yet
        TODO: Need de-init UART, reset clock, then re-init UART
-    */ 
+    */
     return ret;
 }
 
@@ -450,7 +450,7 @@ static int ble_set_device_address(void *tlv)
     if(NCP_CMD_RESULT_OK != hci_le_vendor_set_bd_address(data)) {
         ret = NCP_CMD_RESULT_ERROR;
     }
- 
+
     ble_prepare_status(NCP_RSP_BLE_VENDOR_SET_DEVICE_ADDR, ret, NULL, 0);
 
     return ret;
@@ -476,7 +476,7 @@ static int ble_config_multi_adv(void *tlv)
 {
     int ret = NCP_CMD_RESULT_OK;
 
-    //TODO: 
+    //TODO:
     return ret;
 }
 
@@ -488,7 +488,7 @@ static int ble_host_service_add(void *tlv)
     uint8_t info[1], auto_start = 0;
 
     struct bt_data data;
-    struct gap_set_adv_data_cmd adv; 
+    struct gap_set_adv_data_cmd adv;
     uint8_t adv_uuids[] = {0}, adv_uuid_all_len = 0;
     uint16_t rsp = 0;
 
@@ -572,7 +572,7 @@ static int ble_host_service_add(void *tlv)
         start_advertising();
     }
 
-    return ret; 
+    return ret;
 }
 
 static int ble_start_service(void *tlv)
@@ -583,7 +583,7 @@ static int ble_start_service(void *tlv)
     extern uint8_t host_svc;
     host_svc = cmd->form_host;
     ret = ncp_ble_register_service(cmd->svc_id);
-    
+
 #if 0
     ret = start_server(NULL, 0);
 #endif
@@ -672,7 +672,7 @@ int ble_prepare_status(uint32_t cmd,
     }
 
     ble_ncp_send_response((uint8_t *) cmd_res);
-    
+
     //os_mutex_put(&resp_buf_mutex);
 
     return NCP_CMD_RESULT_OK;
@@ -698,13 +698,13 @@ struct cmd_t ble_cmd_gap[] = {
 #endif
    {NCP_CMD_BLE_GAP_CONN_PARAM_UPDATE, "connection parameters update", ble_conn_param_update, CMD_SYNC},
    {NCP_CMD_BLE_GAP_SET_FILTER_LIST, "set filter accept list", ble_set_filter_list, CMD_SYNC},
-   {NCP_CMD_BLE_GAP_PAIR, "enable encryption with peer", ble_pair, CMD_SYNC}, 
+   {NCP_CMD_BLE_GAP_PAIR, "enable encryption with peer", ble_pair, CMD_SYNC},
    {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 struct cmd_t ble_cmd_gatt[] = {
    {NCP_CMD_BLE_HOST_SERVICE_ADD, "host service add", ble_host_service_add, CMD_SYNC},
    {NCP_CMD_BLE_GATT_START_SERVICE, "start service", ble_start_service, CMD_SYNC},
-   {NCP_CMD_BLE_GATT_SET_VALUE, "set characteristic/descriptor Value", ble_set_value, CMD_SYNC}, 
+   {NCP_CMD_BLE_GATT_SET_VALUE, "set characteristic/descriptor Value", ble_set_value, CMD_SYNC},
    {NCP_CMD_BLE_GAP_SET_FILTER_LIST, "read characteristic/descriptor", ble_read_data, CMD_SYNC},
    {NCP_CMD_BLE_GATT_REGISTER_SERVICE, "register profile services", ble_register, CMD_SYNC},
    {NCP_CMD_BLE_GATT_READ, "read characteristic/descriptor", ble_read_data, CMD_SYNC},
@@ -721,22 +721,22 @@ struct cmd_t ble_cmd_l2cap[] = {
    {NCP_CMD_BLE_L2CAP_CONNECT, "l2cap connect", ble_start_l2cap_connect, CMD_SYNC},
    {NCP_CMD_BLE_L2CAP_DISCONNECT, "l2cap disconnect", ble_start_l2cap_disconnect, CMD_SYNC},
    {NCP_CMD_BLE_L2CAP_REGISTER, "l2cap register", ble_l2cap_register, CMD_SYNC},
-   {NCP_CMD_BLE_L2CAP_RECEIVE, "l2cap recieve", ble_l2cap_receive, CMD_SYNC},
+   {NCP_CMD_BLE_L2CAP_RECEIVE, "l2cap receive", ble_l2cap_receive, CMD_SYNC},
    {NCP_CMD_BLE_L2CAP_SEND, "l2cap send", ble_l2cap_send, CMD_SYNC},
    {NCP_CMD_BLE_L2CAP_METRICS, "l2cap metrics", ble_start_l2cap_metrics, CMD_SYNC},
    {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
-struct cmd_t ble_cmd_powermgmt[] = {
+struct cmd_t ble_cmd_power_mgmt[] = {
    {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
 struct cmd_t ble_cmd_vendor[] = {
-   {NCP_CMD_BLE_VENDOR_POWER_MODE, "set power mode", ble_set_power_mode, CMD_SYNC}, 
-   {NCP_CMD_BLE_VENDOR_SET_UART_BR, "set uart baud rate", ble_set_uart_baud_rate, CMD_SYNC}, 
-   {NCP_CMD_BLE_VENDOR_SET_DEVICE_ADDR, "set device address", ble_set_device_address, CMD_SYNC}, 
-   {NCP_CMD_BLE_VENDOR_SET_DEVICE_NAME, "set device name", ble_set_device_name, CMD_SYNC}, 
-   {NCP_CMD_BLE_VENDOR_CFG_MULTI_ADV, "config multi adv", ble_config_multi_adv, CMD_SYNC}, 
+   {NCP_CMD_BLE_VENDOR_POWER_MODE, "set power mode", ble_set_power_mode, CMD_SYNC},
+   {NCP_CMD_BLE_VENDOR_SET_UART_BR, "set uart baud rate", ble_set_uart_baud_rate, CMD_SYNC},
+   {NCP_CMD_BLE_VENDOR_SET_DEVICE_ADDR, "set device address", ble_set_device_address, CMD_SYNC},
+   {NCP_CMD_BLE_VENDOR_SET_DEVICE_NAME, "set device name", ble_set_device_name, CMD_SYNC},
+   {NCP_CMD_BLE_VENDOR_CFG_MULTI_ADV, "config multi adv", ble_config_multi_adv, CMD_SYNC},
    {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
@@ -749,7 +749,7 @@ struct cmd_subclass_t cmd_subclass_ble[8] = {
    {NCP_CMD_BLE_GAP, ble_cmd_gap},
    {NCP_CMD_BLE_GATT, ble_cmd_gatt},
    {NCP_CMD_BLE_L2CAP, ble_cmd_l2cap},
-   {NCP_CMD_BLE_POWERMGMT, ble_cmd_powermgmt},
+   {NCP_CMD_BLE_POWERMGMT, ble_cmd_power_mgmt},
    {NCP_CMD_BLE_VENDOR, ble_cmd_vendor},
    {NCP_CMD_BLE_OTHER, ble_cmd_other},
    {NCP_CMD_INVALID, NULL},

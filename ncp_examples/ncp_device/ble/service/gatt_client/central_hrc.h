@@ -4,8 +4,8 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#ifndef INCLUDE_BLUETOOTH_HRC_H_
-#define INCLUDE_BLUETOOTH_HRC_H_
+#ifndef NCP_HRC_H_
+#define NCP_HRC_H_
 /**
  * @brief Health Rate (HRC)
  * @defgroup bt_hrc Health Rate (HRC)
@@ -20,7 +20,9 @@
 extern "C" {
 #endif
 
-
+/*******************************************************************************
+* Prototypes
+******************************************************************************/
 void central_hrc_connect(struct bt_conn *conn, uint8_t conn_err);
 
 void central_hrc_disconnect(struct bt_conn *conn, uint8_t reason);
@@ -37,4 +39,4 @@ void central_hrc_task(void *pvParameters);
  * @}
  */
 
-#endif /* INCLUDE_BLUETOOTH_HTC_H_ */
+#endif /* NCP_HRC_H_ */

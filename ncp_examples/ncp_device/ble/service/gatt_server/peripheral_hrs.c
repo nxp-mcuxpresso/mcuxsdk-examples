@@ -6,37 +6,26 @@
  */
 #if CONFIG_NCP_BLE
 
-#include <zephyr/types.h>
-#include <stddef.h>
-#include <string.h>
-#include <errno/errno.h>
-#include <sys/printk.h>
-#include <sys/byteorder.h>
+#include "fsl_debug_console.h"
+
 #include <porting.h>
-
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/hci.h>
-#include <bluetooth/conn.h>
-#include <bluetooth/uuid.h>
 #include <bluetooth/gatt.h>
-#include "service.h"
 
+#include "service.h"
 #include "ncp_glue_ble.h"
+#include "peripheral_hrs.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 #define BT_DIS_HRS_NAME      "NCP HRS Demo"
 
-static uint8_t hrs_blsc = 0x01;
-static bool is_registered = false;
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 static void hrs_adv_start(void);
 
-static int bt_hrs_notify(uint16_t heartrate);
+static int bt_hrs_notify(uint16_t heart_rate);
 
 static void hrmc_ccc_cfg_changed(const struct bt_gatt_attr *attr, uint16_t value);
 
@@ -46,6 +35,8 @@ static ssize_t read_blsc(struct bt_conn *conn, const struct bt_gatt_attr *attr,
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+static uint8_t hrs_blsc = 0x01;
+static bool is_registered = false;
 static struct bt_conn *default_conn = NULL;
 
 static const struct bt_data hrs_ad[] = {
@@ -94,15 +85,15 @@ void peripheral_hrs_disconnect(struct bt_conn *conn, uint8_t reason)
 
 static void peripheral_hrs_notify(void)
 {
-	static uint8_t heartrate = 90U;
+	static uint8_t heart_rate = 90U;
 
-	/* Heartrate measurements simulation */
-	heartrate++;
-	if (heartrate == 160U) {
-		heartrate = 90U;
+	/* Heart rate measurements simulation */
+	heart_rate++;
+	if (heart_rate == 160U) {
+		heart_rate = 90U;
 	}
 
-	bt_hrs_notify(heartrate);
+	bt_hrs_notify(heart_rate);
 }
 
 static void hrmc_ccc_cfg_changed(const struct bt_gatt_attr *attr, uint16_t value)
@@ -122,13 +113,13 @@ static ssize_t read_blsc(struct bt_conn *conn, const struct bt_gatt_attr *attr,
 				 sizeof(hrs_blsc));
 }
 
-static int bt_hrs_notify(uint16_t heartrate)
+static int bt_hrs_notify(uint16_t heart_rate)
 {
 	int rc;
 	static uint8_t hrm[2];
 
 	hrm[0] = 0x06; /* uint8, sensor contact */
-	hrm[1] = heartrate;
+	hrm[1] = heart_rate;
 
 	rc = bt_gatt_notify(NULL, &hrs_svc.attrs[1], &hrm, sizeof(hrm));
 
@@ -166,9 +157,9 @@ void peripheral_hrs_task(void *pvParameters)
     {
         vTaskDelay(1000);
 
-		/* Heartrate measurements simulation */
+		/* Heart rate measurements simulation */
         peripheral_hrs_notify();
     }
 }
 
-#endif
+#endif /* CONFIG_NCP_BLE */

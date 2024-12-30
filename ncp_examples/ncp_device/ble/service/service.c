@@ -6,19 +6,11 @@
  */
 #if CONFIG_NCP_BLE
 
-#include <stdio.h>
-#include <string.h>
-#include <stddef.h>
-
 #include "fsl_os_abstraction.h"
-#include "service.h"
 #include "FreeRTOS.h"
 #include "fsl_debug_console.h"
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/hci.h>
-#include <bluetooth/conn.h>
-#include <bluetooth/uuid.h>
-#include <bluetooth/gatt.h>
+
+#include "service.h"
 #include "service/bas.h"
 #include "service/gatt_server/peripheral_hts.h"
 #include "service/gatt_server/peripheral_hrs.h"
@@ -326,4 +318,4 @@ int ncp_ble_register_service(uint8_t id) {
     return NCP_CMD_RESULT_OK;
 }
 
-#endif
+#endif /* CONFIG_NCP_BLE */
