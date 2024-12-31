@@ -13,8 +13,6 @@
 /*${header:end}*/
 
 /*${function:start}*/
-void GPIO_SET() {}
-void GPIO_CLR() {}
 
 void PWM_Trigger_Init(PWM_Type *PWMBase)
 {

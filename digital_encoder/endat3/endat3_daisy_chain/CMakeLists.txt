@@ -7,7 +7,7 @@ project(endat3_point2point LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_r
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/digital_encoder/endat3/endat3_DaisyChain/endat3.c
+    SOURCES examples/digital_encoder/endat3/endat3_daisy_chain/endat3.c
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/digital_encoder/endat3/${core_id}/reconfig.cmake OPTIONAL)

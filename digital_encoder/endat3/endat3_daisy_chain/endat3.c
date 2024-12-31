@@ -269,7 +269,6 @@ static void BOARD_InitSysTick(void)
  */
 int main(void)
 {
-
     PRINTF("Encoder Endat3 example\n");
 
 	enc_dev1.base = BOARD_ENDAT3_BASEADDR;

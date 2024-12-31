@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v14.0
-processor: MIMXRT1189xxxxx
-package_id: MIMXRT1189CVM8B
+product: Pins v12.0
+processor: MIMX9352xxxxM
+package_id: MIMX9352DVUXM
 mcu_data: ksdk2_0
-processor_version: 0.14.7
+processor_version: 0.12.3
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -29,7 +29,8 @@ processor_version: 0.14.7
  * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
-    BOARD_InitPins();
+	BOARD_InitENCODER1Pins();
+	BOARD_InitENCODER2Pins();
 }
 
 /*
@@ -52,12 +53,14 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void) {
+void BOARD_InitENCODER1Pins(void) {
   HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD0__DIG_ENCODER2_DATA_EN, 0U);
   HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD1__DIG_ENCODER2_DATA_CLK, 0U);
   HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD2__DIG_ENCODER2_DATA_OUT ,0U);
   HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
+}
 
+void BOARD_InitENCODER2Pins(void) {
   HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD0__DIG_ENCODER1_DATA_EN, 0U);
   HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD1__DIG_ENCODER1_DATA_CLK, 0U);
   HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD2__DIG_ENCODER1_DATA_OUT, 0U);

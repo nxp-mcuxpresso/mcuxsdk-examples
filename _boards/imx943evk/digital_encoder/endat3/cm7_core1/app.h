@@ -43,8 +43,6 @@
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
 void PWM_Trigger_Init(PWM_Type *PWMBase);
-void GPIO_SET();
-void GPIO_CLR();
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

@@ -12,7 +12,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+#define SYSTICK_START_COUNT() (SysTick->VAL = SysTick->LOAD)
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -24,6 +24,13 @@ endat3_dev enc_dev;
 /*******************************************************************************
  * Code
  ******************************************************************************/
+uint32_t SYSTICK_GET_COUNT()
+{
+    uint32_t val  = SysTick->VAL;
+    uint32_t load = SysTick->LOAD;
+    return load - val;
+}
+
 void ENDAT3_RspDump(endat3_rsp_t *rsp)
 {
 	uint16_t errCode;
@@ -199,7 +206,8 @@ void DEMO_XBARA_IRQHandler(void)
 /* FG_IRQ0_IRQHandler */
 void FG_IRQ0_IRQHandler(void)
 {
-	GPIO_CLR();
+	uint32_t time = SYSTICK_GET_COUNT();
+	PRINTF("Receive time: %d\r\n", time);
 	ENDAT3_PosDump();
 	ENDAT3_IRQ_Clear(enc_dev.base, CLEAR_FG_IRQ0);
 }
@@ -627,9 +635,9 @@ int main(void)
 	/* Enable the FG_IRQ0 when HPF received */
 	ENDAT3_FG_IRQ_Enable_With_FIxM_Frame_Count(enc_dev.base, 0, 1);
 	for (int i = 0; i < 100; i++) {
-		GPIO_SET();
+		SYSTICK_START_COUNT();
 		ENDAT3_FG_Req(enc_dev.base, ENDAT3_FG_REQ_DATA0, 0);
-		SDK_DelayAtLeastUs(20000, SystemCoreClock);
+		SDK_DelayAtLeastUs(2000000, SystemCoreClock);
 	}
 	ENDAT3_FG_IRQ_Disable(enc_dev.base, 0, FIxM_FRAME_CNT_EN);
 	DisableIRQ(DEMO_ENDAT3_FG_IRQn);
