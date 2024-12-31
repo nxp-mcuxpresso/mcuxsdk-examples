@@ -1,0 +1,19 @@
+
+		*flexspi_nor_flash_ops.o(.text .text* .rodata .rodata*)
+		*fsl_flexspi.o(.text .text* .rodata .rodata*)
+		*fsl_cache.o(.text .text* .rodata .rodata*)
+		*flash_mcux_flexspi_nor.o(.text .text* .rodata .rodata*)
+		*jesd216.o(.text .text* .rodata .rodata*)
+		*memc_mcux_flexspi.o(.text .text* .rodata .rodata*)
+		*device.o(.text .text* .rodata .rodata*)
+		*zephyr_mcux_helper.o(.text .text* .rodata .rodata*)
+		*clock_control_mcux_syscon.o(.text .text* .rodata .rodata* RamFunction)
+		*fsl_clock.o(.text .text* .rodata .rodata*)
+		*flexspi_clock_setup.o(.text .text* .rodata .rodata* RamFunction)
+	    *(EXCLUDE_FILE(*flash_mcux_flexspi_nor.o *fsl_flexspi.o *fsl_cache.o *fsl_clock.o *jesd216.o *memc_mcux_flexspi.o *device.o *zephyr_mcux_helper.o *clock_control_mcux_syscon.o) .z_init_EARLY[0-9]?_[0-9]* .z_init_EARLY[0-9]?_[0-9]* .z_init_PRE_KERNEL_1?_[0-9]* .z_init_PRE_KERNEL_1?[0-9]?_[0-9]* ._device.static.[0-9]?_[0-9]?_[0-9]* ._device.static.*_[0-9]?[0-9]?_[0-9]* .z_init_POST_KERNEL[0-9]?_[0-9]* .z_init_POST_KERNEL[0-9]?[0-9]?_[0-9]* .z_init_EARLY[0-9]?_[0-9]* .z_init_EARLY[0-9]?[0-9]?_[0-9]* .z_init_PRE_KERNEL_2?_[0-9]* .z_init_PRE_KERNEL_2?[0-9]?_[0-9]*)
+	    __device_states_start = .;
+	    _image_ram_start = .;
+	    KEEP(*(".z_devstate"));
+	    KEEP(*(".z_devstate.[0-9]*"));
+	    _image_ram_end = .;
+	    __device_states_end = .;
