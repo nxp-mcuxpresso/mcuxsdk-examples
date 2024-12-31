@@ -18,9 +18,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DEMO_DMA_ADC_CHANNEL   0U
 #define DEMO_DMA_BASE          DMA0
-#define DMA_DESCRIPTOR_NUM     2U
 #define DEMO_ADC_DATA_REG_ADDR (uint32_t)(&(DEMO_ADC_BASE->DAT[DEMO_ADC_SAMPLE_CHANNEL_NUMBER]))
 
 /*******************************************************************************

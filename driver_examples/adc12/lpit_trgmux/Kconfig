@@ -1,0 +1,16 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config LPIT_TRIGGER_TIME
+    int "LPIT Trigger Period in us"
+    default 1000000
+    help
+        No prefix in generated macro
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

@@ -1,0 +1,23 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config TRANSFER_SIZE
+    int "Transfer Size"
+    default 64
+    help
+        No prefix in generated macro
+        type unsigned
+
+config TRANSFER_BAUDRATE
+    int "Transfer Baudrate"
+    default 5000000
+    help
+        No prefix in generated macro
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

@@ -1,0 +1,23 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config ADC_ETC_DONE0_FLAG
+    hex "ADC ETC Conversion Done Flag 0"
+    default 0x1
+    help
+        No prefix in generated macro
+        type unsigned
+
+config ADC_ETC_DONE1_FLAG
+    hex "ADC ETC Conversion Done Flag 1"
+    default 0x2
+    help
+        No prefix in generated macro
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

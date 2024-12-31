@@ -1,0 +1,16 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config DEMO_DAC14_VALUE_ARRAY_SIZE
+    int "Array Size to Store DAC Value"
+    default 32
+    help
+        No prefix in generated macro
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

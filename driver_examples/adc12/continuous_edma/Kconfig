@@ -1,0 +1,16 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config DEMO_ADC12_SAMPLE_COUNT
+    int "ADC12 Sample Count"
+    default 16
+    help
+        No prefix in generated macro
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

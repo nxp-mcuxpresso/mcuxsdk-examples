@@ -1,0 +1,23 @@
+# Copyright 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config DMA_DESCRIPTOR_NUM
+    int "DMA Descriptor Numbers"
+    default 2
+    help
+        No prefix in generated macro
+        type unsigned
+
+config DEMO_CADC_SAMPLE_COUNT
+    int "LPADC Sample Count"
+    default 3
+    help
+        No prefix in generated macro
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
