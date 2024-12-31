@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+vref_lpadc:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/vref_1/vref_lpadc
+    project-root-path: boards/${board}/driver_examples/vref/vref_lpadc/${multicore_foldername}
+    document:
+      name: vref_lpadc${core_id_suffix_name}
+      category: driver_examples/vref
+      brief: In this example, we first get the default trim value of the VREF and measure
+        the VREF output through the LPADC to get the default output voltage. Adjust
+        the trim value by 30 steps to create a 20mv (30*0.5*4/3=20mv) voltage difference,
+        The theoretical voltage value should be 20mv greater than or less than the
+        default output voltage, then use the LPADC to measure the VREF output again,
+        the measured voltage value should close to the theoretical voltage.
+      example_readme:
+      - examples/driver_examples/vref_1/vref_lpadc/readme.md
+      - ${board_root}/${board}/driver_examples/vref/vref_lpadc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
