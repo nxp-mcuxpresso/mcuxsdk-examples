@@ -2121,7 +2121,8 @@ int wlan_add_command(int argc, char **argv)
             info.acs_band = 1;
         }
 #if CONFIG_NCP_WIFI_CAPA
-        else if (!info.wlan_capa && role_tlv->role == WLAN_BSS_ROLE_UAP && string_equal("capa", argv[arg]))
+        else if (!info.wlan_capa && (role_tlv != NULL) && (role_tlv->role == WLAN_BSS_ROLE_UAP)
+                 && string_equal("capa", argv[arg]))
         {
             capa_tlv = (CAPA_ParamSet_t *)ptlv_pos;
             if (arg + 1 >= argc)
@@ -2197,8 +2198,8 @@ int wlan_add_command(int argc, char **argv)
     }
 
 #if CONFIG_NCP_EAP_TLS
-    if (info.security2 && (security_wpa2_tlv->type == WLAN_SECURITY_EAP_TLS)
-        && (role_tlv->role == WLAN_BSS_ROLE_UAP))
+    if ((info.security2 != 0) && (security_wpa2_tlv->type == WLAN_SECURITY_EAP_TLS)
+        && (role_tlv != NULL) && (role_tlv->role == WLAN_BSS_ROLE_UAP))
     {
         dump_wlan_add_usage();
         (void)PRINTF("Error: not support uap for WPA2 enterprise eap-tls security, only support station.\r\n");
