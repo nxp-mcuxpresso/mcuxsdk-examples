@@ -1,0 +1,47 @@
+/*
+ * Copyright 2025 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define DEMO_TIME_DELAY_FOR_DUTY_CYCLE_UPDATE 100000U
+#define DEMO_FLEXIO_BASEADDR                  FLEXIO1
+#define DEMO_FLEXIO_OUTPUTPIN                 5U /* Select flexio1_3_1_flexio2 as PWM output */
+#define DEMO_FLEXIO_TIMER_CH                  0U /* Flexio timer0 used */
+#define DEMO_FLEXIO_CLOCK hal_clock_flexio1
+#define DEMO_FLEXIO_CLOCK_FREQUENCY HAL_ClockGetRate(DEMO_FLEXIO_CLOCK)
+#define DEMO_FLEXIO_FREQUENCY       100000U
+/*${macro:end}*/
+
+/* define instance */
+#define BOARD_TPM_BASEADDR TPM6
+#define BOARD_TPM_CHANNEL  kTPM_Chnl_0
+
+/* Interrupt to enable and flag to read; depends on the TPM channel used */
+#define TPM_CHANNEL_INTERRUPT_ENABLE kTPM_Chnl0InterruptEnable
+#define TPM_CHANNEL_FLAG             kTPM_Chnl0Flag
+
+/* Interrupt number and interrupt handler for the TPM instance used */
+#define TPM_INTERRUPT_NUMBER TPM6_IRQn
+#define TPM_LED_HANDLER      TPM6_IRQHandler
+
+/* Get source clock for TPM driver */
+#define LPTPM_CLOCK_ROOT hal_clock_tpm6
+#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

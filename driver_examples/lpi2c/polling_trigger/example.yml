@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+lpi2c_polling_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpi2c/polling_trigger
+    project-root-path: boards/${board}/driver_examples/lpi2c/polling_trigger/${multicore_foldername}
+    document:
+      name: lpi2c_polling_trigger${core_id_suffix_name}
+      category: driver_examples/lpi2c
+      brief: The lpi2c_polling_trigger example shows how to use lpi2c driver to transfer
+        using polling method with trigger signal:In this example,
+        one lpi2c instance as master and another lpi2c instance on the same board
+        as slave. Master sends a piece of data to slave, and receive a piece of data
+        from slave. This example checks if the data received from slave is correct
+        when there is a trigger signal.
+      example_readme:
+      - examples/driver_examples/lpi2c/polling_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/lpi2c/polling_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release

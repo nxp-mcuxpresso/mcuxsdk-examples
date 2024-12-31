@@ -1,0 +1,24 @@
+pwm_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/pwm/pwm_trigger
+    project-root-path: boards/${board}/driver_examples/pwm/pwm_trigger/${multicore_foldername}
+    document:
+      name: pwm_trigger${core_id_suffix_name}
+      category: driver_examples/pwm/pwm_trigger
+      brief: The PWM project is a simple demonstration program of the SDK PWM driver.The
+        pulse width modulator (PWM) module contains PWM submodules, each of which
+        is set up to control a single half-bridge power stage.Fault channel support
+        is provided. This PWM module can generate various switching patterns, including
+        highly sophisticated waveforms.It can be used to control all known Switched
+        Mode Power Supplies (SMPS) topologies.
+      example_readme:
+      - examples/driver_examples/pwm/pwm_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/pwm/pwm_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release

@@ -1,0 +1,22 @@
+lptmr_trigger_out:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lptmr/lptmr_trigger_out
+    project-root-path: boards/${board}/driver_examples/lptmr/lptmr_trigger_out/${multicore_foldername}
+    document:
+      name: lptmr${core_id_suffix_name}
+      category: driver_examples/lptmr/lptmr_trigger_out
+      brief: The LPTMR project is a simple demonstration program of the SDK LPTMR
+        driver. It sets up the LPTMRhardware block to trigger a periodic interrupt
+        after every 1 second. When the LPTMR interrupt is triggereda message a printed
+        on the UART terminal and an LED is toggled on the board.
+      example_readme:
+      - examples/driver_examples/lptmr/lptmr_trigger_out/readme.md
+      - ${board_root}/${board}/driver_examples/lptmr/lptmr_trigger_out/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release

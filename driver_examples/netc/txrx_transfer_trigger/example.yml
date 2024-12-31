@@ -1,0 +1,27 @@
+netc_txrx_transfer_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/netc/txrx_transfer_trigger
+    project-root-path: boards/${board}/driver_examples/netc/txrx_transfer_trigger/${multicore_foldername}
+    document:
+      name: netc_txrx_transfer_trigger${core_id_suffix_name}
+      category: driver_examples/netc
+      brief: 'The example shows the way to use NETC driver to receive and transmit
+        frame in the 1588 feature required cases.1. This example shows how to initialize
+        the NETC. 2. How to get the time stamp of the PTP 1588 timer. 3. How to use
+        Get the ENET_QOS transmit and receive frame time stamp.The example transmits
+        20 number PTP event frame, shows the timestamp of the transmitted frame.The
+        length, source MAC address and destination MAC address of the received frame
+        will be print. The time stamp of the received timestamp will be print when
+        the PTP message frame is received(the outside loopback cable can be used to
+        see the right rx time-stamping log since we send the ptp message). '
+      example_readme:
+      - examples/driver_examples/netc/txrx_transfer_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/netc/txrx_transfer_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release

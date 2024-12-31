@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+qtmr_outputpwm_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/qtmr_1/outputpwm_trigger
+    project-root-path: boards/${board}/driver_examples/qtmr/outputpwm_trigger/${multicore_foldername}
+    document:
+      name: qtmr_outputpwm_trigger${core_id_suffix_name}
+      category: driver_examples/qtmr
+      brief: 'The QTMR project is a demonstration program of the SDK QTMR driver''s
+        input capture and output pwm feature.The example sets up a QTMR channel for
+        input capture. Once the input signal is received,this example will enter interrupt
+        and print the capture value.The example also sets up one QTMR channel to output
+        pwm. The user should probe a 50Khz PWM signal output with50% dutycycle with
+        a oscilloscope. '
+      example_readme:
+      - examples/driver_examples/qtmr_1/outputpwm_trigger/readme.md
+      - ${board_root}/${board}/driver_examples/qtmr/outputpwm_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release

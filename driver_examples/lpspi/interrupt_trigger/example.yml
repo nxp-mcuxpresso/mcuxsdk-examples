@@ -1,0 +1,23 @@
+lpspi_interrupt_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpspi/interrupt_trigger
+    project-root-path: boards/${board}/driver_examples/lpspi/interrupt_trigger/${multicore_foldername}
+    document:
+      name: lpspi_interrupt_trigger${core_id_suffix_name}
+      category: driver_examples/lpspi
+      brief: The lpspi_functional_interrupt_trigger example shows how to use LPSPI driver
+        in interrupt way with trigger signal:In this example , one lpspi instance used
+        as LPSPI master and another lpspi instance used as LPSPI slave .1. LPSPI master
+        send/received data to/from LPSPI slave in interrupt when there is trigger signal.
+        (LPSPI Slave using interrupt to receive/send the data)
+      example_readme:
+      - examples/driver_examples/lpspi/interrupt_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/lpspi/interrupt_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release

@@ -1,0 +1,20 @@
+sinc_lpspi_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sinc/lpspi_sinc_trigger
+    project-root-path: boards/${board}/driver_examples/sinc/lpspi_sinc_trigger/${multicore_foldername}
+    document:
+      name: sinc_lpspi_trigger${core_id_suffix_name}
+      category: driver_examples/sinc
+      brief: The sinc lpspi example shows how to use SINC driver to configure SINC
+        module as single conversion mode to work with on-chip lpspi.
+      example_readme:
+      - examples/driver_examples/sinc/lpspi_sinc_trigger/readme.md
+      - ${board_root}/${board}/driver_examples/sinc/lpspi_sinc_trigger/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release

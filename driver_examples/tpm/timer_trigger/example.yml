@@ -1,0 +1,22 @@
+tpm_timer_trigger:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tpm/timer_trigger
+    project-root-path: boards/${board}/driver_examples/tpm/timer_trigger/${multicore_foldername}
+    document:
+      name: tpm_timer_trigger${core_id_suffix_name}
+      category: driver_examples/tpm
+      brief: The TPM project is a simple demonstration program of the SDK TPM driver
+        to use TPM as a timer.It sets up the TPM hardware block to trigger an interrupt
+        every 1 millisecond.When the TPM interrupt is triggered a message a printed
+        on the UART terminal.
+      example_readme:
+      - examples/driver_examples/tpm/timer_trigger/readme.md
+      - examples/_boards/${board}/driver_examples/tpm/timer_trigger/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
