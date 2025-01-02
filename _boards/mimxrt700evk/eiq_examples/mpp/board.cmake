@@ -6,16 +6,17 @@ mcux_add_include(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/eiq_examples/mpp
-    SOURCES src/pin_mux.c
-            src/hardware_init.c
-            src/clock_config.c
-            src/utick_config.c
-            inc/pin_mux.h
-            inc/app.h
-            inc/utick_config.h
-            inc/FreeRTOSConfig.h
-            inc/clock_config.h
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/_boards/${board}/eiq_examples/mpp/src/pin_mux.c
+            examples/_boards/${board}/eiq_examples/mpp/src/hardware_init.c
+            examples/_boards/${board}/eiq_examples/mpp/src/clock_config.c
+            examples/_boards/${board}/eiq_examples/mpp/src/utick_config.c
+            examples/_boards/${board}/eiq_examples/mpp/inc/pin_mux.h
+            examples/_boards/${board}/eiq_examples/mpp/inc/app.h
+            examples/_boards/${board}/eiq_examples/mpp/inc/utick_config.h
+            examples/_boards/${board}/eiq_examples/mpp/inc/FreeRTOSConfig.h
+            examples/_boards/${board}/eiq_examples/mpp/inc/clock_config.h
+            middleware/eiq/mpp/hal/hal_${board}.c
 )
 
 mcux_add_macro(
