@@ -40,6 +40,9 @@ mcux_add_source(
             ot/ot_opcode/otopcode.c
             ot/ot_opcode/otopcode.h
             ot/ot_opcode/otopcode_private.h
+            mbedtls/mbedtls_host.c
+            mbedtls/mbedtls_host.h
+            mbedtls/key_cert.h
 )
 
 mcux_add_source(
@@ -58,6 +61,8 @@ mcux_add_source(
             common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
             common/crc/crc.c
             common/crc/crc.h
+            common/mbedtls/mbedtls_common.c
+            common/mbedtls/mbedtls_common.h
             common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.c
             common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.h
             common/ncp_adapter/ncp_adapter.h
@@ -80,6 +85,7 @@ mcux_add_include(
              ble/ble_service
              ot
              ot/ot_opcode
+             mbedtls
 )
 
 mcux_add_include(
@@ -94,6 +100,7 @@ mcux_add_include(
              common
              common/ncp_adapter/ncp_intf
              common/ncp_adapter/ncp_intf/uart
+             common/mbedtls
 )
 include(${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_host/reconfig.cmake OPTIONAL)
 

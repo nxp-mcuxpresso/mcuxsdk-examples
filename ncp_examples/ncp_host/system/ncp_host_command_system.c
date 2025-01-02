@@ -10,6 +10,9 @@
 #include "ncp_debug.h"
 #include "ncp_cmd_system.h"
 #include "ncp_host_command.h"
+#if CONFIG_NCP_USE_ENCRYPT
+#include "mbedtls_host.h"
+#endif
 #include <string.h>
 
 power_cfg_t global_power_config;
@@ -654,6 +657,14 @@ int system_process_event(uint8_t *res)
         case NCP_EVENT_MCU_SLEEP_EXIT:
             ret = ncp_process_sleep_status(res);
             break;
+#if CONFIG_NCP_USE_ENCRYPT
+        case NCP_EVENT_SYSTEM_ENCRYPT:
+            ret = ncp_process_encrypt_event(res);
+            break;
+        case NCP_EVENT_SYSTEM_ENCRYPT_STOP:
+            ret = ncp_process_encrypt_stop_event(res);
+            break;
+#endif
         case NCP_EVENT_CRC_CHECK_ERROR:
             ret = ncp_process_crc_check_error(res);
             break;
@@ -694,6 +705,11 @@ int system_process_response(uint8_t *res)
         case NCP_RSP_SYSTEM_POWERMGMT_WAKEUP_HOST:
             ret = ncp_process_wakeup_host_response(res);
             break;
+#if CONFIG_NCP_USE_ENCRYPT
+        case NCP_RSP_SYSTEM_CONFIG_ENCRYPT:
+            ret = ncp_process_encrypt_response(res);
+            break;
+#endif
         default:
             ncp_e("Invaild response cmd!");
             break;
@@ -718,6 +734,10 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands_system[] = {
     {"ncp-get-mcu-sleep-config", NULL, ncp_get_mcu_sleep_conf_command},
 #if CONFIG_NCP_USB
     {"ncp-usb-pm-cfg", "<1/2>", usb_pm_cfg},
+#endif
+#if CONFIG_NCP_USE_ENCRYPT
+    {"ncp-encrypt", NULL, ncp_encrypt_command},
+    {"ncp-dbg-encrypt-stop", NULL, ncp_dbg_encrypt_stop_command},
 #endif
 };
 

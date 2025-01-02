@@ -43,6 +43,9 @@ mcux_add_source(
             ble/service/bas.h
             ble/service/service.c
             ble/service/service.h
+            mbedtls/mbedtls_device.c
+            mbedtls/mbedtls_device.h
+            mbedtls/key_cert.h
 )
 
 mcux_add_source(
@@ -88,6 +91,8 @@ mcux_add_source(
             common/lpm/host_sleep_wifi.h
             common/crc/crc.c
             common/crc/crc.h
+            common/mbedtls/mbedtls_common.c
+            common/mbedtls/mbedtls_common.h
             common/ncp_debug/ncp_debug.h
             common/httpc/inc/json_parser/jsmn.h
             common/httpc/inc/json_parser/json_generator.h
@@ -126,6 +131,7 @@ mcux_add_include(
              ble/service
              ble/service/gatt_client
              ble/service/gatt_server
+             mbedtls
 )
 
 mcux_add_include(
@@ -143,6 +149,7 @@ mcux_add_include(
         common/mdns
         common/lpm
         common/crc
+        common/mbedtls
         common/ncp_debug
         common/httpc/inc
         common/httpc/inc/json_parser

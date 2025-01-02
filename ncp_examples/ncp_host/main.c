@@ -37,7 +37,9 @@ extern int ncp_ble_app_init();
 #if CONFIG_NCP_OT
 extern int ncp_ot_app_init();
 #endif
-
+#if CONFIG_NCP_USE_ENCRYPT
+extern int ncp_trigger_encrypted_communication(void);
+#endif
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -98,7 +100,10 @@ void task_main(void *param)
     result = ncp_ot_app_init();
     assert(NCP_SUCCESS == result);
 #endif
-
+#if CONFIG_NCP_USE_ENCRYPT && CONFIG_NCP_HOST_AUTO_TRIG_ENCRYPT
+    result = ncp_trigger_encrypted_communication();
+    (void)result;
+#endif
     printSeparator();
 
     while (1)

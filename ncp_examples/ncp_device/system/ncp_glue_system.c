@@ -18,6 +18,9 @@
 #if CONFIG_NCP_WIFI
 #include "wlan.h"
 #endif
+#if CONFIG_NCP_USE_ENCRYPT
+#include "mbedtls_device.h"
+#endif
 
 /*******************************************************************************
  * Variables
@@ -355,6 +358,9 @@ static int ncp_sys_mcu_sleep_cfm(void *tlv)
 struct cmd_t system_cmd_config[] = {
     {NCP_CMD_SYSTEM_CONFIG_SET, "ncp-set", ncp_sys_set_config, CMD_SYNC},
     {NCP_CMD_SYSTEM_CONFIG_GET, "ncp-get", ncp_sys_get_config, CMD_SYNC},
+#if CONFIG_NCP_USE_ENCRYPT
+    {NCP_CMD_SYSTEM_CONFIG_ENCRYPT, "ncp-encrypt", ncp_sys_encrypt, CMD_SYNC},
+#endif
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
