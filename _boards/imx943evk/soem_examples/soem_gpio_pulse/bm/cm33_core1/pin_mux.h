@@ -33,6 +33,8 @@ extern "C" {
  *
  */
 void BOARD_InitBootPins(void);
+void BOARD_InitETH4Pins(void);
+void BOARD_InitGPIOPins(void);
 
 #if defined(__cplusplus)
 }

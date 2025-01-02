@@ -14,16 +14,17 @@
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void)
 {
-    BOARD_InitPins();
+    BOARD_InitETH4Pins();
+    BOARD_InitGPIOPins();
 }
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitPins, assigned for the Cortex-M33 core.
+ * Function Name : BOARD_InitETH4Pins, assigned for the Cortex-M33 core.
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void)
+void BOARD_InitETH4Pins(void)
 {
 #if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
 #else
@@ -57,6 +58,16 @@ void BOARD_InitPins(void)
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH4_RXD2__NETC_PINMUX_ETH4_RXD2, 0x57eU);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH4_RXD3__NETC_PINMUX_ETH4_RXD3, 0x57eU);
 #endif
+}
+
+void BOARD_InitGPIOPins(void)
+{
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28, 0U);
+
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
 }
 
 /***********************************************************************************************************************

@@ -24,7 +24,7 @@
 struct netc_ep_if_port if_port;
 
 #define BOARD_LED_RGPIO          GPIO2
-#define BOARD_LED_RGPIO_PIN      13U
+#define BOARD_LED_RGPIO_PIN      28U
 
 #define MSGINTR       MSGINTR2
 
