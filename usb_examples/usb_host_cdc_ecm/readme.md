@@ -38,7 +38,7 @@ For detailed instructions, see the appropriate board User's Guide.
     - No parity
     - One stop bit
     - No flow control
-2.  Connect the target board to the external power source (the example is self-powered).
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Connect the target board to the external power source (the example is self-powered).
 3.  Download the program to the target board.
 4.  Power off the target board, then power on again.
 

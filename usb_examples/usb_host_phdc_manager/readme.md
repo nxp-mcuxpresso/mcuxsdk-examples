@@ -42,7 +42,7 @@ For detailed instructions, see the appropriate board User's Guide.
 ## Run the example
 
 1.  Connect the board UART to the PC and open the COM port in a terminal tool.
-2.  Plug in a hub or the USB weight scale device to the board that is running the PHDC manager example.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the USB weight scale device to the board that is running the PHDC manager example.
     The attached information prints out in the terminal.
 3.  The weight scale data (body mass and body mass index) is automatically sent to the host. The scan
     report number, time, value, and unit of each field is shown in terminal tool.

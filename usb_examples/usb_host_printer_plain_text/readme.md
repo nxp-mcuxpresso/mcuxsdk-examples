@@ -50,7 +50,7 @@ For more information, see the appropriate manuals.
 ## Run the example
 
 1.  Connect the board UART to the PC and open the COM port in a terminal tool.
-2.  Plug in the HUB or the printer device to the board. The attached information prints out in the terminal.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the printer device to the board. The attached information prints out in the terminal.
 > Two types of printer devices are supported: device_printer_virtual_plain_text demo device and
 the real printer that support PJL and postscript.
 3.  The terminal log is as follows:

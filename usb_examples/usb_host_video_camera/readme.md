@@ -50,9 +50,10 @@ and formats.
 as the following image. 
 <br>![SDcard Insert](sdcard_insert.jpg "SDcard Insert")
 
-3.  The USB video camera information is printed in the terminal when USB video camera device is attached,
-    including resolution, frame rate and the using picture format. the USB application automatically try to get
-    mjpeg format from camera device firstly, if camera device doesn't support mjpeg format, the USB application will use raw data. Then, host application will get stream data from the USB video camera device and saves them into SD card. If mjpeg format is selected, then the format of the saved picture is MJPEG; if raw data is selected, in our application we just saved pictures as YUV format whatever the actual raw data format is. So please use a YUV format camera to test raw data picture. This example will save 500 pictures from camera device into SD card. If 500 pictures are finished, this example will continue getting pictures and overlay from the first picture in SD card, so the pictures are always newest.
+3.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. The USB video camera information is printed in the terminal when USB video camera device is attached, including resolution, frame rate and the using picture format. the USB application automatically try to get
+    mjpeg format from camera device firstly, if camera device doesn't support mjpeg format, the USB application will use raw data. Then, host application will get stream data from the USB video camera device and saves them into SD card. If mjpeg format is selected, then the format of the saved picture is MJPEG; 
+    if raw data is selected, in our application we just saved pictures as YUV format whatever the actual raw data format is. So please use a YUV format camera to test raw data picture. This example will save 500 pictures from camera device into SD card. If 500 pictures are finished, this example will continue
+    getting pictures and overlay from the first picture in SD card, so the pictures are always newest.
     The following figure is an example for attaching one camera device.
 <br>![Camera device Run](host_video_camera_example.jpg "Camera device Run")
 

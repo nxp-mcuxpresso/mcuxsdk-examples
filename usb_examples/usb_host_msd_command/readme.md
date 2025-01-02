@@ -43,7 +43,7 @@ The application executes UFI commands to test the attached device.
 ## Run the example
 
 1.  Connect the board UART to the PC and open the COM port in a terminal tool.
-2.  Plug in the hub or U-disk device to the board. The attached information prints out in the terminal.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the U-disk device to the board. The attached information prints out in the terminal.
 3.  The test information prints in the terminal, "success" prints when one command succeeds and "fail" prints when one command fails.
     The test completes when there is a command fail or all the tests are done.
 <br> The following figure is an example for attaching one U-disk device.

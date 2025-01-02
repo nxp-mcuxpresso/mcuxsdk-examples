@@ -51,7 +51,7 @@ The host will wake up the device by delivering the resume signal if it is waked 
 ## Run the example
 
 1.  Connect the board UART to the PC and open the COM port in a terminal tool.
-2.  Plug in the mouse device to the board. The attached information prints out in the terminal.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the mouse device to the board. The attached information prints out in the terminal.
 3.  The mouse operation information prints in the terminal when you operate the mouse.
     <br> The application prints the mouse operation information in one line. Each line contains the following sequential string:
     "Left Click", "Middle Click", "Right Click" and "Wheel Down"/"Wheel Up" movement. For "Right"/"Left" movement and "UP"/"Down" movement, to print less log, the related log is printed after movement count reaches 100.

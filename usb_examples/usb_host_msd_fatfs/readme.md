@@ -43,7 +43,7 @@ The application executes some FatFs APIs to test the attached device.
 ## Run the example
 
 1.  Connect the board UART to the PC and open the COM port in a terminal tool.
-2.  Plug in a HUB or a U-disk device to the board. The attached information prints out in the terminal.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in a U-disk device to the board. The attached information prints out in the terminal.
 3.  The test information prints in the terminal. The "success" message prints when a FatFs API succeeds. The "fail" message prints when a FatFs API fails.
     The test completes when either the FatFs API fails or all the tests are done.
 <br> The following figure is an example for attaching one U-disk device.

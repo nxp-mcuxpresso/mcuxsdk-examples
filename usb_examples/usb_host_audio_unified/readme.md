@@ -46,7 +46,7 @@ For detailed instructions, see the appropriate board User's Guide.
 COM port in a terminal tool such as PuTTy as the following picture, the baud rate is 115200.
 <br>![UART port number](device_manager.jpg "UART port number")
 <br>![Open UART](open_uart.jpg "Open UART")
-3.  Plug in the USB audio unified (microphone and speaker) device to the board and the related information is printed in the
+3.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the USB audio unified (microphone and speaker) device to the board and the related information is printed in the
 terminal.
 4.  After the USB audio unified device is plugged into the host, the USB application automatically gets the audio data from the 
 USB audio microphone of this device then transfers the recorded audio data to the USB audio speaker of this device. At this time, the
