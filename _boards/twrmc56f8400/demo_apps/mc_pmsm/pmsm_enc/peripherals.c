@@ -12,11 +12,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v11.0
+product: Peripherals v15.0
 processor: MC56F84789
 package_id: MC56F84789VLL
 mcu_data: ksdk2_0
-processor_version: 0.13.1
+processor_version: 0.2412.50
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: 92d6a9b6-2797-420f-8d74-8ca27a0c51d6
@@ -31,6 +31,7 @@ component:
 - global_system_definitions:
   - user_definitions: ''
   - user_includes: ''
+  - global_init: ''
   - init_delay_enable: 'false'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
@@ -69,7 +70,7 @@ instance:
 - type: 'intc_reg'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'intc_reg_5d361a53fef6bec91d1f7c2aeedd895b'
+- type_id: 'intc_reg'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'INTC'
 - config_sets:
@@ -103,7 +104,7 @@ instance:
 - type: 'dsc_flash_config'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'dsc_flash_config_87b8cda2db02ccd1732cf954ffb02af3'
+- type_id: 'dsc_flash_config'
 - functional_group: 'BOARD_InitPeripherals'
 - config_sets:
   - fcf_config:
@@ -152,16 +153,1311 @@ static void Flash_configuration_init(void) {
 } */
 
 /***********************************************************************************************************************
+ * ADC initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'ADC'
+- type: 'cadc_reg'
+- mode: 'CADC'
+- custom_name_enabled: 'false'
+- type_id: 'cadc_reg'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'ADC'
+- config_sets:
+  - fsl_cadc:
+    - cadcConfig:
+      - clockSource: 'BusInterfaceClock'
+      - clockSourceFreq: 'BOARD_BootClockRUN'
+      - dualConverterScanMode: 'kCADC_DualConverterWorkAsTriggeredParallel'
+      - enableSimultaneousMode: 'true'
+      - DMATriggerSource: 'kCADC_DMATriggerSourceAsEndOfScan'
+      - powerUpDelay: '26'
+      - autoPowerDown: 'false'
+      - autoStandby: 'false'
+      - clockDivisorInt: '5'
+      - SPEEDA: '3'
+      - SCNT0: '2'
+      - enableDMA0: 'false'
+      - enableStop0: 'false'
+      - startConversion0: 'false'
+      - enableSYNC0: 'true'
+      - manualPowerDownA: 'false'
+      - highReferenceA: 'vdda'
+      - lowReferenceA: 'vssa'
+      - manualPowerDownB: 'false'
+      - highReferenceB: 'vdda'
+      - lowReferenceB: 'vssa'
+    - channelConfig:
+      - 0:
+        - chMode: '0'
+      - 1:
+        - chMode: '0'
+      - 2:
+        - chMode: '0'
+      - 3:
+        - chMode: '0'
+      - 4:
+        - chMode: '0'
+      - 5:
+        - chMode: '0'
+      - 6:
+        - chMode: '0'
+      - 7:
+        - chMode: '0'
+    - inputGainConfig:
+      - channels_inputGain_convA:
+        - 0:
+          - channelGain: '0'
+        - 1:
+          - channelGain: '0'
+        - 2:
+          - channelGain: '0'
+        - 3:
+          - channelGain: '0'
+        - 4:
+          - channelGain: '0'
+        - 5:
+          - channelGain: '0'
+        - 6:
+          - channelGain: '0'
+        - 7:
+          - channelGain: '0'
+      - channels_inputGain_convB:
+        - 0:
+          - channelGain: '0'
+        - 1:
+          - channelGain: '0'
+        - 2:
+          - channelGain: '0'
+        - 3:
+          - channelGain: '0'
+        - 4:
+          - channelGain: '0'
+        - 5:
+          - channelGain: '0'
+        - 6:
+          - channelGain: '0'
+        - 7:
+          - channelGain: '0'
+    - channels_config:
+      - 0:
+        - sampleName: 'Sample_0'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.0'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 1:
+        - sampleName: 'Sample_1'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.1'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 2:
+        - sampleName: 'Sample_2'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.2'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 3:
+        - sampleName: 'Sample_3'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.3'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 4:
+        - sampleName: 'Sample_4'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.4'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 5:
+        - sampleName: 'Sample_5'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.5'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 6:
+        - sampleName: 'Sample_6'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.6'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 7:
+        - sampleName: 'Sample_7'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.7'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 8:
+        - sampleName: 'Sample_8'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.0'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 9:
+        - sampleName: 'Sample_9'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.1'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 10:
+        - sampleName: 'Sample_10'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.2'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 11:
+        - sampleName: 'Sample_11'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.3'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 12:
+        - sampleName: 'Sample_12'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.4'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 13:
+        - sampleName: 'Sample_13'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.5'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 14:
+        - sampleName: 'Sample_14'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.6'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 15:
+        - sampleName: 'Sample_15'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.7'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+    - channels_config_A_parallel:
+      - 0:
+        - sampleName: 'Sample_0'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.0'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 1:
+        - sampleName: 'Sample_1'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANA.1'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 2:
+        - sampleName: 'Sample_2'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANA.2'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 3:
+        - sampleName: 'Sample_3'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANA.3'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 4:
+        - sampleName: 'Sample_8'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANA.4'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 5:
+        - sampleName: 'Sample_9'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANA.5'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 6:
+        - sampleName: 'Sample_10'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANA.6'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 7:
+        - sampleName: 'Sample_11'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANA.7'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+    - channels_config_B_parallel:
+      - 0:
+        - sampleName: 'Sample_4'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.0'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 1:
+        - sampleName: 'Sample_5'
+        - disableSample: 'false'
+        - channelNumberEnum: 'ANB.1'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 2:
+        - sampleName: 'Sample_6'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANB.2'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 3:
+        - sampleName: 'Sample_7'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANB.3'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 4:
+        - sampleName: 'Sample_12'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANB.4'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 5:
+        - sampleName: 'Sample_13'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANB.5'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 6:
+        - sampleName: 'Sample_14'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANB.6'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+      - 7:
+        - sampleName: 'Sample_15'
+        - disableSample: 'true'
+        - channelNumberEnum: 'ANB.7'
+        - zeroCrossingMode: '0'
+        - highLimitValue: '4095'
+        - lowLimitValue: '0'
+        - offsetValue: '0'
+        - enableWaitSync: 'false'
+        - enableSampleInterrupt: 'false'
+        - cadcTemplateSampleVariables: []
+    - interrupt:
+      - interruptSources: 'kCADC_ConverterAEndOfScanInterruptEnable'
+      - enable_err_irq: 'false'
+      - interrupt_err:
+        - IRQn: 'kADC_ERR_VECTORn'
+        - dsc_enable_interrrupt: 'iprVal0'
+        - enable_custom_name: 'false'
+      - enable_cc0_irq: 'true'
+      - interrupt_cc0:
+        - IRQn: 'kADC_CC0_VECTORn'
+        - dsc_enable_interrrupt: 'iprVal3'
+        - enable_custom_name: 'false'
+      - enable_cc1_irq: 'false'
+      - interrupt_cc1:
+        - IRQn: 'kADC_CC1_VECTORn'
+        - dsc_enable_interrrupt: 'iprVal0'
+        - enable_custom_name: 'false'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+static void ADC_init(void) {
+  /* Software reset Cyclic ADC. */
+  SIM->PSWR2 |= SIM_PSWR2_CYCADC_MASK;
+  SIM->PSWR2 &= ~ SIM_PSWR2_CYCADC_MASK;
+#if defined(ADC_CTRL1_INIT)
+  ADC->CTRL1 = ADC_CTRL1_INIT;
+#endif /* ADC_CTRL1_INIT */
+#if defined(ADC_CTRL2_INIT)
+  ADC->CTRL2 = ADC_CTRL2_INIT;
+#endif /* ADC_CTRL2_INIT */
+#if defined(ADC_STAT_INIT)
+  ADC->STAT = ADC_STAT_INIT;
+#endif /* ADC_STAT_INIT */
+#if defined(ADC_PWR_INIT)
+  ADC->PWR = ADC_PWR_INIT;
+#if (defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD0_MASK | ADC_PWR_APD_MASK)) == 0UL))
+while(((ADC->PWR) & ADC_PWR_PSTS0_MASK) != 0UL)
+{}
+#elif (defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD1_MASK | ADC_PWR_APD_MASK)) == 0UL))
+while(((ADC->PWR) & ADC_PWR_PSTS1_MASK) != 0UL)
+{}
+#elif (defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD0_MASK | ADC_PWR_PD1_MASK | ADC_PWR_APD_MASK)) == 0UL))
+while(((ADC->PWR) & (ADC_PWR_PSTS1_MASK | ADC_PWR_PSTS0_MASK)) != 0UL)
+{}
+#endif /* defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD0_MASK | ADC_PWR_APD_MASK)) == 0UL) */
+#endif /* ADC_PWR_INIT */
+#if defined(ADC_CAL_INIT)
+  ADC->CAL = ADC_CAL_INIT;
+#endif /* ADC_CAL_INIT */
+#if defined(ADC_PWR2_INIT)
+  ADC->PWR2 = ADC_PWR2_INIT;
+#endif /* ADC_PWR2_INIT */
+#if defined(ADC_CTRL3_INIT)
+  ADC->CTRL3 = ADC_CTRL3_INIT;
+#endif /* ADC_CTRL3_INIT */
+#if defined(ADC_ZXCTRL1_INIT)
+  ADC->ZXCTRL1 = ADC_ZXCTRL1_INIT;
+#endif /* ADC_ZXCTRL1_INIT */
+#if defined(ADC_ZXCTRL2_INIT)
+  ADC->ZXCTRL2 = ADC_ZXCTRL2_INIT;
+#endif /* ADC_ZXCTRL2_INIT */
+#if defined(ADC_ZXCTRL3_INIT)
+  ADC->ZXCTRL3 = ADC_ZXCTRL3_INIT;
+#endif /* ADC_ZXCTRL3_INIT */
+#if defined(ADC_CLIST1_INIT)
+  ADC->CLIST1 = ADC_CLIST1_INIT;
+#endif /* ADC_CLIST1_INIT */
+#if defined(ADC_CLIST2_INIT)
+  ADC->CLIST2 = ADC_CLIST2_INIT;
+#endif /* ADC_CLIST2_INIT */
+#if defined(ADC_CLIST3_INIT)
+  ADC->CLIST3 = ADC_CLIST3_INIT;
+#endif /* ADC_CLIST3_INIT */
+#if defined(ADC_CLIST4_INIT)
+  ADC->CLIST4 = ADC_CLIST4_INIT;
+#endif /* ADC_CLIST4_INIT */
+#if defined(ADC_CLIST5_INIT)
+  ADC->CLIST5 = ADC_CLIST5_INIT;
+#endif /* ADC_CLIST5_INIT */
+#if defined(ADC_SDIS_INIT)
+  ADC->SDIS = ADC_SDIS_INIT;
+#endif /* ADC_SDIS_INIT */
+#if defined(ADC_SDIS2_INIT)
+  ADC->SDIS2 = ADC_SDIS2_INIT;
+#endif /* ADC_SDIS2_INIT */
+#if defined(ADC_LOLIMSTAT_INIT)
+  ADC->LOLIMSTAT = ADC_LOLIMSTAT_INIT;
+#endif /* ADC_LOLIMSTAT_INIT */
+#if defined(ADC_LOLIMSTAT2_INIT)
+  ADC->LOLIMSTAT2 = ADC_LOLIMSTAT2_INIT;
+#endif /* ADC_LOLIMSTAT2_INIT */
+#if defined(ADC_HILIMSTAT_INIT)
+  ADC->HILIMSTAT = ADC_HILIMSTAT_INIT;
+#endif /* ADC_HILIMSTAT_INIT */
+#if defined(ADC_HILIMSTAT2_INIT)
+  ADC->HILIMSTAT2 = ADC_HILIMSTAT2_INIT;
+#endif /* ADC_HILIMSTAT2_INIT */
+#if defined(ADC_ZXSTAT_INIT)
+  ADC->ZXSTAT = ADC_ZXSTAT_INIT;
+#endif /* ADC_ZXSTAT_INIT */
+#if defined(ADC_ZXSTAT2_INIT)
+  ADC->ZXSTAT2 = ADC_ZXSTAT2_INIT;
+#endif /* ADC_ZXSTAT2_INIT */
+#if defined(ADC_GC1_INIT)
+  ADC->GC1 = ADC_GC1_INIT;
+#endif /* ADC_GC1_INIT */
+#if defined(ADC_GC2_INIT)
+  ADC->GC2 = ADC_GC2_INIT;
+#endif /* ADC_GC2_INIT */
+#if defined(ADC_GC3_INIT)
+  ADC->GC3 = ADC_GC3_INIT;
+#endif /* ADC_GC3_INIT */
+#if defined(ADC_SCTRL_INIT)
+  ADC->SCTRL = ADC_SCTRL_INIT;
+#endif /* ADC_SCTRL_INIT */
+#if defined(ADC_SCTRL2_INIT)
+  ADC->SCTRL2 = ADC_SCTRL2_INIT;
+#endif /* ADC_SCTRL2_INIT */
+#if defined(ADC_SCHLTEN_INIT)
+  ADC->SCHLTEN = ADC_SCHLTEN_INIT;
+#endif /* ADC_SCHLTEN_INIT */
+#if defined(ADC_SCHLTEN2_INIT)
+  ADC->SCHLTEN2 = ADC_SCHLTEN2_INIT;
+#endif /* ADC_SCHLTEN2_INIT */
+#if defined(ADC_EXPCFG_INIT)
+  ADC->EXPCFG = ADC_EXPCFG_INIT;
+#endif /* ADC_EXPCFG_INIT */
+#if defined(ADC_EXPAUX4A_INIT)
+  ADC->EXPAUX4A = ADC_EXPAUX4A_INIT;
+#endif /* ADC_EXPAUX4A_INIT */
+#if defined(ADC_EXPAUX4B_INIT)
+  ADC->EXPAUX4B = ADC_EXPAUX4B_INIT;
+#endif /* ADC_EXPAUX4B_INIT */
+#if defined(ADC_EXPMUX4A0_INIT)
+  ADC->EXPMUX4A0 = ADC_EXPMUX4A0_INIT;
+#endif /* ADC_EXPMUX4A0_INIT */
+#if defined(ADC_EXPMUX4A1_INIT)
+  ADC->EXPMUX4A1 = ADC_EXPMUX4A1_INIT;
+#endif /* ADC_EXPMUX4A1_INIT */
+#if defined(ADC_EXPMUX4B0_INIT)
+  ADC->EXPMUX4B0 = ADC_EXPMUX4B0_INIT;
+#endif /* ADC_EXPMUX4B0_INIT */
+#if defined(ADC_EXPMUX4B1_INIT)
+  ADC->EXPMUX4B1 = ADC_EXPMUX4B1_INIT;
+#endif /* ADC_EXPMUX4B1_INIT */
+
+#if defined(ADC_LOLIM0_INIT)
+  ADC->LOLIM[0] = ADC_LOLIM0_INIT;
+#endif /* ADC_LOLIM0_INIT */
+#if defined(ADC_LOLIM20_INIT)
+  ADC->LOLIM2[0 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM20_INIT;
+#endif /* ADC_LOLIM20_INIT */
+#if defined(ADC_HILIM0_INIT)
+  ADC->HILIM[0] = ADC_HILIM0_INIT;
+#endif /* ADC_HILIM0_INIT */
+#if defined(ADC_HILIM20_INIT)
+  ADC->HILIM2[0 - ADC_MIN_REGS2_INDEX] = ADC_HILIM20_INIT;
+#endif /* ADC_HILIM20_INIT */
+#if defined(ADC_OFFST0_INIT)
+  ADC->OFFST[0] = ADC_OFFST0_INIT;
+#endif /* ADC_OFFST0_INIT */
+#if defined (ADC_OFFST20_INIT)
+  ADC->OFFST2[0 - ADC_MIN_REGS2_INDEX] = ADC_OFFST20_INIT;
+#endif /* ADC_OFFST20_INIT */
+#if defined(ADC_LOLIM1_INIT)
+  ADC->LOLIM[1] = ADC_LOLIM1_INIT;
+#endif /* ADC_LOLIM1_INIT */
+#if defined(ADC_LOLIM21_INIT)
+  ADC->LOLIM2[1 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM21_INIT;
+#endif /* ADC_LOLIM21_INIT */
+#if defined(ADC_HILIM1_INIT)
+  ADC->HILIM[1] = ADC_HILIM1_INIT;
+#endif /* ADC_HILIM1_INIT */
+#if defined(ADC_HILIM21_INIT)
+  ADC->HILIM2[1 - ADC_MIN_REGS2_INDEX] = ADC_HILIM21_INIT;
+#endif /* ADC_HILIM21_INIT */
+#if defined(ADC_OFFST1_INIT)
+  ADC->OFFST[1] = ADC_OFFST1_INIT;
+#endif /* ADC_OFFST1_INIT */
+#if defined (ADC_OFFST21_INIT)
+  ADC->OFFST2[1 - ADC_MIN_REGS2_INDEX] = ADC_OFFST21_INIT;
+#endif /* ADC_OFFST21_INIT */
+#if defined(ADC_LOLIM2_INIT)
+  ADC->LOLIM[2] = ADC_LOLIM2_INIT;
+#endif /* ADC_LOLIM2_INIT */
+#if defined(ADC_LOLIM22_INIT)
+  ADC->LOLIM2[2 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM22_INIT;
+#endif /* ADC_LOLIM22_INIT */
+#if defined(ADC_HILIM2_INIT)
+  ADC->HILIM[2] = ADC_HILIM2_INIT;
+#endif /* ADC_HILIM2_INIT */
+#if defined(ADC_HILIM22_INIT)
+  ADC->HILIM2[2 - ADC_MIN_REGS2_INDEX] = ADC_HILIM22_INIT;
+#endif /* ADC_HILIM22_INIT */
+#if defined(ADC_OFFST2_INIT)
+  ADC->OFFST[2] = ADC_OFFST2_INIT;
+#endif /* ADC_OFFST2_INIT */
+#if defined (ADC_OFFST22_INIT)
+  ADC->OFFST2[2 - ADC_MIN_REGS2_INDEX] = ADC_OFFST22_INIT;
+#endif /* ADC_OFFST22_INIT */
+#if defined(ADC_LOLIM3_INIT)
+  ADC->LOLIM[3] = ADC_LOLIM3_INIT;
+#endif /* ADC_LOLIM3_INIT */
+#if defined(ADC_LOLIM23_INIT)
+  ADC->LOLIM2[3 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM23_INIT;
+#endif /* ADC_LOLIM23_INIT */
+#if defined(ADC_HILIM3_INIT)
+  ADC->HILIM[3] = ADC_HILIM3_INIT;
+#endif /* ADC_HILIM3_INIT */
+#if defined(ADC_HILIM23_INIT)
+  ADC->HILIM2[3 - ADC_MIN_REGS2_INDEX] = ADC_HILIM23_INIT;
+#endif /* ADC_HILIM23_INIT */
+#if defined(ADC_OFFST3_INIT)
+  ADC->OFFST[3] = ADC_OFFST3_INIT;
+#endif /* ADC_OFFST3_INIT */
+#if defined (ADC_OFFST23_INIT)
+  ADC->OFFST2[3 - ADC_MIN_REGS2_INDEX] = ADC_OFFST23_INIT;
+#endif /* ADC_OFFST23_INIT */
+#if defined(ADC_LOLIM4_INIT)
+  ADC->LOLIM[4] = ADC_LOLIM4_INIT;
+#endif /* ADC_LOLIM4_INIT */
+#if defined(ADC_LOLIM24_INIT)
+  ADC->LOLIM2[4 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM24_INIT;
+#endif /* ADC_LOLIM24_INIT */
+#if defined(ADC_HILIM4_INIT)
+  ADC->HILIM[4] = ADC_HILIM4_INIT;
+#endif /* ADC_HILIM4_INIT */
+#if defined(ADC_HILIM24_INIT)
+  ADC->HILIM2[4 - ADC_MIN_REGS2_INDEX] = ADC_HILIM24_INIT;
+#endif /* ADC_HILIM24_INIT */
+#if defined(ADC_OFFST4_INIT)
+  ADC->OFFST[4] = ADC_OFFST4_INIT;
+#endif /* ADC_OFFST4_INIT */
+#if defined (ADC_OFFST24_INIT)
+  ADC->OFFST2[4 - ADC_MIN_REGS2_INDEX] = ADC_OFFST24_INIT;
+#endif /* ADC_OFFST24_INIT */
+#if defined(ADC_LOLIM5_INIT)
+  ADC->LOLIM[5] = ADC_LOLIM5_INIT;
+#endif /* ADC_LOLIM5_INIT */
+#if defined(ADC_LOLIM25_INIT)
+  ADC->LOLIM2[5 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM25_INIT;
+#endif /* ADC_LOLIM25_INIT */
+#if defined(ADC_HILIM5_INIT)
+  ADC->HILIM[5] = ADC_HILIM5_INIT;
+#endif /* ADC_HILIM5_INIT */
+#if defined(ADC_HILIM25_INIT)
+  ADC->HILIM2[5 - ADC_MIN_REGS2_INDEX] = ADC_HILIM25_INIT;
+#endif /* ADC_HILIM25_INIT */
+#if defined(ADC_OFFST5_INIT)
+  ADC->OFFST[5] = ADC_OFFST5_INIT;
+#endif /* ADC_OFFST5_INIT */
+#if defined (ADC_OFFST25_INIT)
+  ADC->OFFST2[5 - ADC_MIN_REGS2_INDEX] = ADC_OFFST25_INIT;
+#endif /* ADC_OFFST25_INIT */
+#if defined(ADC_LOLIM6_INIT)
+  ADC->LOLIM[6] = ADC_LOLIM6_INIT;
+#endif /* ADC_LOLIM6_INIT */
+#if defined(ADC_LOLIM26_INIT)
+  ADC->LOLIM2[6 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM26_INIT;
+#endif /* ADC_LOLIM26_INIT */
+#if defined(ADC_HILIM6_INIT)
+  ADC->HILIM[6] = ADC_HILIM6_INIT;
+#endif /* ADC_HILIM6_INIT */
+#if defined(ADC_HILIM26_INIT)
+  ADC->HILIM2[6 - ADC_MIN_REGS2_INDEX] = ADC_HILIM26_INIT;
+#endif /* ADC_HILIM26_INIT */
+#if defined(ADC_OFFST6_INIT)
+  ADC->OFFST[6] = ADC_OFFST6_INIT;
+#endif /* ADC_OFFST6_INIT */
+#if defined (ADC_OFFST26_INIT)
+  ADC->OFFST2[6 - ADC_MIN_REGS2_INDEX] = ADC_OFFST26_INIT;
+#endif /* ADC_OFFST26_INIT */
+#if defined(ADC_LOLIM7_INIT)
+  ADC->LOLIM[7] = ADC_LOLIM7_INIT;
+#endif /* ADC_LOLIM7_INIT */
+#if defined(ADC_LOLIM27_INIT)
+  ADC->LOLIM2[7 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM27_INIT;
+#endif /* ADC_LOLIM27_INIT */
+#if defined(ADC_HILIM7_INIT)
+  ADC->HILIM[7] = ADC_HILIM7_INIT;
+#endif /* ADC_HILIM7_INIT */
+#if defined(ADC_HILIM27_INIT)
+  ADC->HILIM2[7 - ADC_MIN_REGS2_INDEX] = ADC_HILIM27_INIT;
+#endif /* ADC_HILIM27_INIT */
+#if defined(ADC_OFFST7_INIT)
+  ADC->OFFST[7] = ADC_OFFST7_INIT;
+#endif /* ADC_OFFST7_INIT */
+#if defined (ADC_OFFST27_INIT)
+  ADC->OFFST2[7 - ADC_MIN_REGS2_INDEX] = ADC_OFFST27_INIT;
+#endif /* ADC_OFFST27_INIT */
+#if defined(ADC_LOLIM8_INIT)
+  ADC->LOLIM[8] = ADC_LOLIM8_INIT;
+#endif /* ADC_LOLIM8_INIT */
+#if defined(ADC_LOLIM28_INIT)
+  ADC->LOLIM2[8 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM28_INIT;
+#endif /* ADC_LOLIM28_INIT */
+#if defined(ADC_HILIM8_INIT)
+  ADC->HILIM[8] = ADC_HILIM8_INIT;
+#endif /* ADC_HILIM8_INIT */
+#if defined(ADC_HILIM28_INIT)
+  ADC->HILIM2[8 - ADC_MIN_REGS2_INDEX] = ADC_HILIM28_INIT;
+#endif /* ADC_HILIM28_INIT */
+#if defined(ADC_OFFST8_INIT)
+  ADC->OFFST[8] = ADC_OFFST8_INIT;
+#endif /* ADC_OFFST8_INIT */
+#if defined (ADC_OFFST28_INIT)
+  ADC->OFFST2[8 - ADC_MIN_REGS2_INDEX] = ADC_OFFST28_INIT;
+#endif /* ADC_OFFST28_INIT */
+#if defined(ADC_LOLIM9_INIT)
+  ADC->LOLIM[9] = ADC_LOLIM9_INIT;
+#endif /* ADC_LOLIM9_INIT */
+#if defined(ADC_LOLIM29_INIT)
+  ADC->LOLIM2[9 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM29_INIT;
+#endif /* ADC_LOLIM29_INIT */
+#if defined(ADC_HILIM9_INIT)
+  ADC->HILIM[9] = ADC_HILIM9_INIT;
+#endif /* ADC_HILIM9_INIT */
+#if defined(ADC_HILIM29_INIT)
+  ADC->HILIM2[9 - ADC_MIN_REGS2_INDEX] = ADC_HILIM29_INIT;
+#endif /* ADC_HILIM29_INIT */
+#if defined(ADC_OFFST9_INIT)
+  ADC->OFFST[9] = ADC_OFFST9_INIT;
+#endif /* ADC_OFFST9_INIT */
+#if defined (ADC_OFFST29_INIT)
+  ADC->OFFST2[9 - ADC_MIN_REGS2_INDEX] = ADC_OFFST29_INIT;
+#endif /* ADC_OFFST29_INIT */
+#if defined(ADC_LOLIM10_INIT)
+  ADC->LOLIM[10] = ADC_LOLIM10_INIT;
+#endif /* ADC_LOLIM10_INIT */
+#if defined(ADC_LOLIM210_INIT)
+  ADC->LOLIM2[10 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM210_INIT;
+#endif /* ADC_LOLIM210_INIT */
+#if defined(ADC_HILIM10_INIT)
+  ADC->HILIM[10] = ADC_HILIM10_INIT;
+#endif /* ADC_HILIM10_INIT */
+#if defined(ADC_HILIM210_INIT)
+  ADC->HILIM2[10 - ADC_MIN_REGS2_INDEX] = ADC_HILIM210_INIT;
+#endif /* ADC_HILIM210_INIT */
+#if defined(ADC_OFFST10_INIT)
+  ADC->OFFST[10] = ADC_OFFST10_INIT;
+#endif /* ADC_OFFST10_INIT */
+#if defined (ADC_OFFST210_INIT)
+  ADC->OFFST2[10 - ADC_MIN_REGS2_INDEX] = ADC_OFFST210_INIT;
+#endif /* ADC_OFFST210_INIT */
+#if defined(ADC_LOLIM11_INIT)
+  ADC->LOLIM[11] = ADC_LOLIM11_INIT;
+#endif /* ADC_LOLIM11_INIT */
+#if defined(ADC_LOLIM211_INIT)
+  ADC->LOLIM2[11 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM211_INIT;
+#endif /* ADC_LOLIM211_INIT */
+#if defined(ADC_HILIM11_INIT)
+  ADC->HILIM[11] = ADC_HILIM11_INIT;
+#endif /* ADC_HILIM11_INIT */
+#if defined(ADC_HILIM211_INIT)
+  ADC->HILIM2[11 - ADC_MIN_REGS2_INDEX] = ADC_HILIM211_INIT;
+#endif /* ADC_HILIM211_INIT */
+#if defined(ADC_OFFST11_INIT)
+  ADC->OFFST[11] = ADC_OFFST11_INIT;
+#endif /* ADC_OFFST11_INIT */
+#if defined (ADC_OFFST211_INIT)
+  ADC->OFFST2[11 - ADC_MIN_REGS2_INDEX] = ADC_OFFST211_INIT;
+#endif /* ADC_OFFST211_INIT */
+#if defined(ADC_LOLIM12_INIT)
+  ADC->LOLIM[12] = ADC_LOLIM12_INIT;
+#endif /* ADC_LOLIM12_INIT */
+#if defined(ADC_LOLIM212_INIT)
+  ADC->LOLIM2[12 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM212_INIT;
+#endif /* ADC_LOLIM212_INIT */
+#if defined(ADC_HILIM12_INIT)
+  ADC->HILIM[12] = ADC_HILIM12_INIT;
+#endif /* ADC_HILIM12_INIT */
+#if defined(ADC_HILIM212_INIT)
+  ADC->HILIM2[12 - ADC_MIN_REGS2_INDEX] = ADC_HILIM212_INIT;
+#endif /* ADC_HILIM212_INIT */
+#if defined(ADC_OFFST12_INIT)
+  ADC->OFFST[12] = ADC_OFFST12_INIT;
+#endif /* ADC_OFFST12_INIT */
+#if defined (ADC_OFFST212_INIT)
+  ADC->OFFST2[12 - ADC_MIN_REGS2_INDEX] = ADC_OFFST212_INIT;
+#endif /* ADC_OFFST212_INIT */
+#if defined(ADC_LOLIM13_INIT)
+  ADC->LOLIM[13] = ADC_LOLIM13_INIT;
+#endif /* ADC_LOLIM13_INIT */
+#if defined(ADC_LOLIM213_INIT)
+  ADC->LOLIM2[13 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM213_INIT;
+#endif /* ADC_LOLIM213_INIT */
+#if defined(ADC_HILIM13_INIT)
+  ADC->HILIM[13] = ADC_HILIM13_INIT;
+#endif /* ADC_HILIM13_INIT */
+#if defined(ADC_HILIM213_INIT)
+  ADC->HILIM2[13 - ADC_MIN_REGS2_INDEX] = ADC_HILIM213_INIT;
+#endif /* ADC_HILIM213_INIT */
+#if defined(ADC_OFFST13_INIT)
+  ADC->OFFST[13] = ADC_OFFST13_INIT;
+#endif /* ADC_OFFST13_INIT */
+#if defined (ADC_OFFST213_INIT)
+  ADC->OFFST2[13 - ADC_MIN_REGS2_INDEX] = ADC_OFFST213_INIT;
+#endif /* ADC_OFFST213_INIT */
+#if defined(ADC_LOLIM14_INIT)
+  ADC->LOLIM[14] = ADC_LOLIM14_INIT;
+#endif /* ADC_LOLIM14_INIT */
+#if defined(ADC_LOLIM214_INIT)
+  ADC->LOLIM2[14 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM214_INIT;
+#endif /* ADC_LOLIM214_INIT */
+#if defined(ADC_HILIM14_INIT)
+  ADC->HILIM[14] = ADC_HILIM14_INIT;
+#endif /* ADC_HILIM14_INIT */
+#if defined(ADC_HILIM214_INIT)
+  ADC->HILIM2[14 - ADC_MIN_REGS2_INDEX] = ADC_HILIM214_INIT;
+#endif /* ADC_HILIM214_INIT */
+#if defined(ADC_OFFST14_INIT)
+  ADC->OFFST[14] = ADC_OFFST14_INIT;
+#endif /* ADC_OFFST14_INIT */
+#if defined (ADC_OFFST214_INIT)
+  ADC->OFFST2[14 - ADC_MIN_REGS2_INDEX] = ADC_OFFST214_INIT;
+#endif /* ADC_OFFST214_INIT */
+#if defined(ADC_LOLIM15_INIT)
+  ADC->LOLIM[15] = ADC_LOLIM15_INIT;
+#endif /* ADC_LOLIM15_INIT */
+#if defined(ADC_LOLIM215_INIT)
+  ADC->LOLIM2[15 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM215_INIT;
+#endif /* ADC_LOLIM215_INIT */
+#if defined(ADC_HILIM15_INIT)
+  ADC->HILIM[15] = ADC_HILIM15_INIT;
+#endif /* ADC_HILIM15_INIT */
+#if defined(ADC_HILIM215_INIT)
+  ADC->HILIM2[15 - ADC_MIN_REGS2_INDEX] = ADC_HILIM215_INIT;
+#endif /* ADC_HILIM215_INIT */
+#if defined(ADC_OFFST15_INIT)
+  ADC->OFFST[15] = ADC_OFFST15_INIT;
+#endif /* ADC_OFFST15_INIT */
+#if defined (ADC_OFFST215_INIT)
+  ADC->OFFST2[15 - ADC_MIN_REGS2_INDEX] = ADC_OFFST215_INIT;
+#endif /* ADC_OFFST215_INIT */
+}
+
+/***********************************************************************************************************************
+ * PIT0 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'PIT0'
+- type: 'pit_reg'
+- mode: 'PIT_GENERAL'
+- custom_name_enabled: 'false'
+- type_id: 'pit_reg'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'PIT0'
+- config_sets:
+  - pit_reg:
+    - clock_config:
+      - clockSource: 'kAltClock0'
+      - clockSourceFreq: 'BOARD_BootClockRUN'
+      - prescaler: 'p9'
+      - modulo: '195'
+    - slaveMode: 'false'
+    - enableCounter: 'true'
+    - enableRollOverInterruptSource: 'true'
+    - enable_irq: 'true'
+    - interrupt:
+      - IRQn: 'kPIT0_ROLLOVR_VECTORn'
+      - dsc_enable_interrrupt: 'iprVal2'
+      - enable_custom_name: 'false'
+    - pit_template_params: []
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+static void PIT0_init(void) {
+/****************************************************************************/
+/* PIT0 initialization */
+/****************************************************************************/
+    /* Software reset PIT0. */
+    SIM->PSWR2 |= SIM_PSWR2_PIT0_MASK;
+    SIM->PSWR2 &= ~ SIM_PSWR2_PIT0_MASK;
+
+#if defined(PIT0_MOD_L_INIT) && defined(PIT0_MOD_H_INIT)
+    PIT0->MOD_L = PIT0_MOD_L_INIT;
+    PIT0->MOD_H = PIT0_MOD_H_INIT;
+#endif
+#if defined(PIT0_MOD_INIT)
+    PIT0->MOD = PIT0_MOD_INIT;
+#endif
+#if defined(PIT0_FILT_INIT)
+    PIT0->FILT = PIT0_FILT_INIT;
+#endif
+#if defined(PIT0_CTRL2_INIT)
+    PIT0->CTRL2 = PIT0_CTRL2_INIT;
+#endif
+#if defined(PIT0_CTRL_INIT)
+#if ((PIT0_CTRL_INIT & PIT_CTRL_CNT_EN_MASK) != 0)
+    PIT0->CTRL = (PIT0_CTRL_INIT & (~PIT_CTRL_CNT_EN_MASK));
+    PIT0->CTRL |= PIT_CTRL_CNT_EN_MASK;
+#else
+    PIT0->CTRL = PIT0_CTRL_INIT;
+#endif
+#endif
+}
+
+/***********************************************************************************************************************
+ * QSCI1 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'QSCI1'
+- type: 'qsci_reg'
+- mode: 'general'
+- custom_name_enabled: 'false'
+- type_id: 'qsci_reg'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'QSCI1'
+- config_sets:
+  - fsl_qsci:
+    - qsciConfig:
+      - clockSource: 'BusInterfaceClock'
+      - clockSourceFreq: 'BOARD_BootClockRUN'
+      - DividerBaudRateStr: '115200bps'
+      - parityEnable: 'false'
+      - parityMode: '0'
+      - dataBitCount: '0'
+      - polarityMode: '0'
+      - fifoEn: 'false'
+      - txFifoWatermark: '0'
+      - rxFifoWatermark: '1'
+      - enableTx: 'true'
+      - enableRx: 'true'
+      - LINSlaveEnable: 'false'
+      - LoopEnable: 'false'
+      - ReceiverSource: '0'
+      - WaitEnable: 'false'
+      - StopHoldEnable: 'false'
+      - StandbyEnable: 'false'
+      - WakeUpCondition: '0'
+      - txDMAEn: 'false'
+      - rxDMAEn: 'false'
+      - interrupt_vectors:
+        - interrupt_types: ''
+        - enable_tx_irq: 'false'
+        - interrupt_tx:
+          - IRQn: 'kQSCI0_TDRE_VECTORn'
+          - dsc_enable_interrrupt: 'iprVal0'
+          - enable_custom_name: 'false'
+        - enable_rx_irq: 'false'
+        - interrupt_rx:
+          - IRQn: 'kQSCI0_RCV_VECTORn'
+          - dsc_enable_interrrupt: 'iprVal0'
+          - enable_custom_name: 'false'
+        - enable_rx_err_irq: 'false'
+        - interrupt_rx_err:
+          - IRQn: 'kQSCI0_RERR_VECTORn'
+          - dsc_enable_interrrupt: 'iprVal0'
+          - enable_custom_name: 'false'
+        - enable_tridle_irq: 'false'
+        - interrupt_tridle:
+          - IRQn: 'kQSCI0_TIDLE_VECTORn'
+          - dsc_enable_interrrupt: 'iprVal0'
+          - enable_custom_name: 'false'
+    - qsci_params: []
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+static void QSCI1_init(void) {
+/****************************************************************************/
+/* QSCI1 initialization */
+/****************************************************************************/
+  /* Software peripheral reset to a known state. */
+  SIM->PSWR1 |= SIM_PSWR1_SCI1_MASK;
+  SIM->PSWR1 &= ~ SIM_PSWR1_SCI1_MASK;
+#if defined(QSCI1_RATE_INIT)
+  QSCI1->RATE = QSCI1_RATE_INIT;
+#endif /* QSCI1_RATE_INIT */
+#if defined(QSCI1_CTRL2_INIT)
+  QSCI1->CTRL2 = QSCI1_CTRL2_INIT;
+#endif /* QSCI1_CTRL2_INIT */
+#if defined(QSCI1_CTRL3_INIT)
+  QSCI1->CTRL3 = QSCI1_CTRL3_INIT;
+#endif /* QSCI1_CTRL3_INIT */
+#if defined(QSCI1_CTRL1_INIT)
+  QSCI1->CTRL1 = QSCI1_CTRL1_INIT;
+#endif /* QSCI1_CTRL1_INIT */
+
+}
+
+/***********************************************************************************************************************
+ * QSPI0 initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'QSPI0'
+- type: 'queued_spi_reg'
+- mode: 'general'
+- custom_name_enabled: 'false'
+- type_id: 'queued_spi_reg'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'QSPI0'
+- config_sets:
+  - generalConfig:
+    - clkConfig:
+      - clockSource: 'BusInterfaceClock'
+      - clockSourceFreq: 'BOARD_BootClockRUN'
+    - control:
+      - SPMSTR: '1'
+      - SPE: 'true'
+      - SPR: '5'
+      - BD2X: 'false'
+      - DS: '8'
+      - CPOL: '1'
+      - CPHA: '0'
+      - DSO: '0'
+      - WAIT: '1'
+      - SHEN: '0'
+      - WOM: 'false'
+      - TDMAEN: 'false'
+      - RDMAEN: 'false'
+      - MODFEN: 'false'
+    - ssControl:
+      - SSB_AUTO: '1'
+      - SSB_STRB: '0'
+      - SSB_DDR: '1'
+      - SSB_DATA: '1'
+      - SSB_ODM: '0'
+      - SSB_OVER: 'false'
+    - fifoConfig:
+      - FIFO_ENA: 'false'
+      - TFWM: '0'
+      - RFWM: '3'
+    - irqSources: ''
+    - enable_tx_irq: 'false'
+    - interruptTx:
+      - IRQn: 'kQSPI0_XMIT_VECTORn'
+      - dsc_enable_interrrupt: 'iprVal0'
+      - enable_custom_name: 'false'
+    - enable_rx_irq: 'false'
+    - interruptRx:
+      - IRQn: 'kQSPI0_RCV_VECTORn'
+      - dsc_enable_interrrupt: 'iprVal0'
+      - enable_custom_name: 'false'
+    - qspi_params: []
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+static void QSPI0_init(void) {
+/****************************************************************************/
+/* QSPI0 initialization */
+/****************************************************************************/
+  /* Software peripheral reset to a known state. */
+  SIM->PSWR1 |= SIM_PSWR1_QSPI0_MASK;
+  SIM->PSWR1 &= ~ SIM_PSWR1_QSPI0_MASK;
+QSPI0->SPSCR = QSPI0->SPSCR | QSPI_SPSCR_MODF_MASK;
+#if defined(QSPI0_SPDSR_INIT)
+  QSPI0->SPDSR = QSPI0_SPDSR_INIT;
+#endif /* QSPI0_SPDSR_INIT */
+#if defined(QSPI0_SPFIFO_INIT)
+  QSPI0->SPFIFO = QSPI0_SPFIFO_INIT;
+#endif /* QSPI0_SPFIFO_INIT */
+#if defined(QSPI0_SPWAIT_INIT)
+  QSPI0->SPWAIT = QSPI0_SPWAIT_INIT;
+#endif /* QSPI0_SPWAIT_INIT */
+#if defined(QSPI0_SPCTL2_INIT)
+  QSPI0->SPCTL2 = QSPI0_SPCTL2_INIT;
+#endif /* QSPI0_SPCTL2_INIT */
+#if defined(QSPI0_SPSCR_INIT)
+  QSPI0->SPSCR = QSPI0_SPSCR_INIT & (~QSPI_SPSCR_SPE_MASK);
+#if ((QSPI0_SPSCR_INIT & QSPI_SPSCR_SPE_MASK) != 0U)
+  QSPI0->SPSCR = QSPI0->SPSCR | QSPI_SPSCR_SPE_MASK;
+#endif /* (QSPI0_SPSCR_INIT & QSPI_SPSCR_SPE_MASK) != 0U */
+#endif /* QSPI0_SPSCR_INIT */
+}
+
+/***********************************************************************************************************************
+ * TMRA initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'TMRA'
+- type: 'qtmr_reg'
+- mode: 'general'
+- custom_name_enabled: 'false'
+- type_id: 'qtmr_reg'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'TMRA'
+- config_sets:
+  - generalConfig:
+    - clockSource: 'BusInterfaceClock'
+    - clockSourceFreq: 'BOARD_BootClockRUN'
+    - enable_timer_channels:
+      - 0:
+        - enableTimerChannel: 'true'
+      - 1:
+        - enableTimerChannel: 'true'
+      - 2:
+        - enableTimerChannel: 'true'
+      - 3:
+        - enableTimerChannel: 'true'
+    - input_filters:
+      - 0:
+        - inputFilterPeriod: '0'
+        - inputFilterCount: '3'
+      - 1:
+        - inputFilterPeriod: '0'
+        - inputFilterCount: '3'
+      - 2:
+        - inputFilterPeriod: '0'
+        - inputFilterCount: '3'
+      - 3:
+        - inputFilterPeriod: '0'
+        - inputFilterCount: '3'
+    - qtmr_channels:
+      - 0:
+        - channel: '0'
+        - channelConfig:
+          - primarySource: '8'
+          - secondarySource: '0'
+          - inputPolarity: 'false'
+          - inputFault: 'false'
+          - countingMode: '1'
+          - enableCountOnce: 'false'
+          - countLength: '0'
+          - inputAltLoad: 'false'
+          - countDirection: '0'
+          - triggeredCountInit: '0'
+          - enableMasterMode: 'false'
+          - enableExternalForce: 'false'
+          - enableCoChannelReinit: 'false'
+          - outputMode: '0'
+          - forceOutputValue: 'false'
+          - forcedOutputValue: '0'
+          - outputPolarity: 'false'
+          - outputEnabled: 'false'
+          - captureMode: '0'
+          - reloadOnCapture: 'false'
+          - compare1Period: '0'
+          - compareLoadControl1: '0'
+          - compare2Period: '0'
+          - compareLoadControl2: '0'
+          - compareLoad1: '0'
+          - compareLoad2: '0'
+          - counterLoad: '0'
+          - counterInit: '0'
+          - debugMode: '0'
+          - interruptSources:
+            - kQTMR_CompareInterruptEnable: 'false'
+            - kQTMR_Compare1InterruptEnable: 'false'
+            - kQTMR_Compare2InterruptEnable: 'false'
+            - kQTMR_OverflowInterruptEnable: 'false'
+            - kQTMR_EdgeInterruptEnable: 'false'
+          - enable_irq: 'false'
+          - interrupt:
+            - IRQn: 'kTMRA_0_VECTORn'
+            - dsc_enable_interrrupt: 'iprVal0'
+            - enable_custom_name: 'false'
+          - dma:
+            - kQTMR_InputEdgeFlagDmaEnable: 'false'
+            - kQTMR_ComparatorPreload1DmaEnable: 'false'
+            - kQTMR_ComparatorPreload2DmaEnable: 'false'
+        - template_params: []
+    - qtmr_params: []
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+static void TMRA_init(void) {
+/****************************************************************************/
+/* Channel 0 initialization */
+/****************************************************************************/
+  /* Disable the channel before the module init*/
+  TMRA->CHANNEL[0].ENBL &= ~(TMR_ENBL_ENBL(1U << 0));
+  TMRA->CHANNEL[0].HOLD = 0x0U;
+  TMRA->CHANNEL[0].CAPT = 0x0U;
+#ifdef TMRA_COMP10_INIT
+  TMRA->CHANNEL[0].COMP1 = TMRA_COMP10_INIT;
+#else
+  TMRA->CHANNEL[0].COMP1 = 0x0U;
+#endif /*TMRA_COMP10_INIT*/
+#ifdef TMRA_COMP20_INIT
+  TMRA->CHANNEL[0].COMP2 = TMRA_COMP20_INIT;
+#else
+  TMRA->CHANNEL[0].COMP2 = 0x0U;
+#endif /*TMRA_COMP20_INIT */
+#ifdef TMRA_LOAD0_INIT
+  TMRA->CHANNEL[0].LOAD = TMRA_LOAD0_INIT;
+#else
+  TMRA->CHANNEL[0].LOAD = 0x0U;
+#endif /*TMRA_LOAD0_INIT */
+#ifdef TMRA_CNTR0_INIT
+  TMRA->CHANNEL[0].CNTR = TMRA_CNTR0_INIT;
+#else
+  TMRA->CHANNEL[0].CNTR = 0x0U;
+#endif /*TMRA_CNTR0_INIT */
+#ifdef TMRA_SCTRL0_INIT
+  TMRA->CHANNEL[0].SCTRL = TMRA_SCTRL0_INIT;
+#else
+  TMRA->CHANNEL[0].SCTRL = 0x0U;
+#endif /*TMRA_SCTRL0_INIT */
+#ifdef TMRA_CMPLD10_INIT
+  TMRA->CHANNEL[0].CMPLD1 = TMRA_CMPLD10_INIT;
+#else
+  TMRA->CHANNEL[0].CMPLD1 = 0x0U;
+#endif /*TMRA_CMPLD10_INIT */
+#ifdef TMRA_CMPLD20_INIT
+  TMRA->CHANNEL[0].CMPLD2 = TMRA_CMPLD20_INIT;
+#else
+  TMRA->CHANNEL[0].CMPLD2 = 0x0U;
+#endif /*TMRA_CMPLD20_INIT */
+#ifdef TMRA_CSCTRL0_INIT
+  TMRA->CHANNEL[0].CSCTRL = TMRA_CSCTRL0_INIT;
+#else
+  TMRA->CHANNEL[0].CSCTRL = 0x0U;
+#endif /*TMRA_CSCTRL0_INIT */
+#ifdef TMRA_DMA0_INIT
+  TMRA->CHANNEL[0].DMA = TMRA_DMA0_INIT;
+#else
+  TMRA->CHANNEL[0].DMA = 0x0U;
+#endif /*TMRA_DMA0_INIT */
+#ifdef TMRA_CTRL0_INIT
+  TMRA->CHANNEL[0].CTRL = TMRA_CTRL0_INIT;
+#else
+  TMRA->CHANNEL[0].CTRL = 0x0U;
+#endif /*TMRA_CTRL0_INIT */
+/****************************************************************************/
+/* Quad timer global initialization */
+/****************************************************************************/
+  /* Input filters configuration */
+#ifdef TMRA_FILT0_INIT
+  TMRA->CHANNEL[0].FILT = TMRA_FILT0_INIT;
+#else
+  TMRA->CHANNEL[0].FILT = 0x0U;
+#endif /*TMRA_FILT0_INIT */
+#ifdef TMRA_FILT1_INIT
+  TMRA->CHANNEL[1].FILT = TMRA_FILT1_INIT;
+#else
+  TMRA->CHANNEL[1].FILT = 0x0U;
+#endif /*TMRA_FILT1_INIT */
+#ifdef TMRA_FILT2_INIT
+  TMRA->CHANNEL[2].FILT = TMRA_FILT2_INIT;
+#else
+  TMRA->CHANNEL[2].FILT = 0x0U;
+#endif /*TMRA_FILT2_INIT */
+#ifdef TMRA_FILT3_INIT
+  TMRA->CHANNEL[3].FILT = TMRA_FILT3_INIT;
+#else
+  TMRA->CHANNEL[3].FILT = 0x0U;
+#endif /*TMRA_FILT3_INIT */
+  /* Synchronous start of all channels */
+#if defined(TMRA_ENBL_INIT)
+   TMRA->CHANNEL[0].ENBL = (TMRA->CHANNEL[0].ENBL & (~TMRA_ENBL_INIT_MASK)) | (TMRA_ENBL_INIT & TMRA_ENBL_INIT_MASK);
+#endif /*TMRA_TMRA_ENBL_INIT */
+}
+
+/***********************************************************************************************************************
  * PWMA initialization code
  **********************************************************************************************************************/
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 instance:
 - name: 'PWMA'
-- type: 'pwm'
+- type: 'pwm_reg'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'pwm_reg_d49946f7b366f6b63d56e6e76fd333cc'
+- type_id: 'pwm_reg'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'PWMA'
 - config_sets:
@@ -277,7 +1573,7 @@ instance:
         - config:
           - clockSource: 'kPWM_Submodule0Clock'
           - prescale: '0'
-          - loadOK: 'false'
+          - loadOK: 'true'
           - startCounter: 'false'
           - signed_unsigned: 'signed'
           - init: '-5000'
@@ -680,6 +1976,8 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[1].DTCNT1 = 0x7ffU;
 #endif /* PWMA_SM1DTCNT1_INIT */
+
+#ifdef PWM_CAPTCTRLA_EDGA0_MASK
 #ifdef PWMA_SM1CAPTCTRLA_INIT
   PWMA->SM[1].CAPTCTRLA = PWMA_SM1CAPTCTRLA_INIT;
 #else
@@ -690,6 +1988,16 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[1].CAPTCOMPA = 0x0U;
 #endif /* PWMA_SM1CAPTCOMPA_INIT */
+#endif /* PWM_CAPTCTRLA_EDGA0_MASK */
+
+#ifdef PWM_CAPTFILTA_CAPTA_FILT_PER_MASK
+  PWMA->SM[1].CAPTFILTA = 0x0U;
+#ifdef PWMA_SM1CAPTFILTA_INIT
+  PWMA->SM[1].CAPTFILTA = PWMA_SM1CAPTFILTA_INIT;
+#endif
+#endif  /* PWM_CAPTFILTA_CAPTA_FILT_PER_MASK */
+
+#ifdef PWM_CAPTCTRLB_EDGB0_MASK
 #ifdef PWMA_SM1CAPTCTRLB_INIT
   PWMA->SM[1].CAPTCTRLB = PWMA_SM1CAPTCTRLB_INIT;
 #else
@@ -700,6 +2008,16 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[1].CAPTCOMPB = 0x0U;
 #endif /* PWMA_SM1CAPTCOMPB_INIT */
+#endif /* PWM_CAPTCTRLB_EDGB0_MASK */
+
+#ifdef PWM_CAPTFILTB_CAPTB_FILT_PER_MASK
+  PWMA->SM[1].CAPTFILTB = 0x0U;
+#ifdef PWMA_SM1CAPTFILTB_INIT
+  PWMA->SM[1].CAPTFILTB = PWMA_SM1CAPTFILTB_INIT;
+#endif
+#endif  /* PWM_CAPTFILTB_CAPTB_FILT_PER_MASK */
+
+#ifdef PWM_CAPTCTRLX_EDGX0_MASK
 #ifdef PWMA_SM1CAPTCTRLX_INIT
   PWMA->SM[1].CAPTCTRLX = PWMA_SM1CAPTCTRLX_INIT;
 #else
@@ -710,6 +2028,15 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[1].CAPTCOMPX = 0x0U;
 #endif /* PWMA_SM1CAPTCOMPX_INIT */
+#endif /* PWM_CAPTCTRLX_EDGX0_MASK */
+
+#ifdef PWM_CAPTFILTX_CAPTX_FILT_PER_MASK
+  PWMA->SM[1].CAPTFILTX = 0x0U;
+#ifdef PWMA_SM1CAPTFILTX_INIT
+  PWMA->SM[1].CAPTFILTX = PWMA_SM1CAPTFILTX_INIT;
+#endif
+#endif  /* PWM_CAPTFILTX_CAPTX_FILT_PER_MASK */
+
 #if (0 != 1)
 #ifdef PWM_PHASEDLY_PHASEDLY_MASK
 #ifdef PWMA_SM1PHASEDLY_INIT
@@ -722,6 +2049,7 @@ static void PWMA_init(void) {
 #if ((!defined(PWMA_SM1CTRL_INIT)) || (0U == (PWMA_SM1CTRL_INIT & PWM_CTRL_LDMOD_MASK)))
   PWMA->MCTRL |= PWM_MCTRL_LDOK(1U << 1);
 #endif /* ((!defined(PWMA_SM1CTRL_INIT)) || (0U == (PWMA_SM1CTRL_INIT & PWM_CTRL_LDMOD_MASK))) */
+
 /****************************************************************************/
 /* Submodule 2 initialization */
 /****************************************************************************/
@@ -850,6 +2178,8 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[2].DTCNT1 = 0x7ffU;
 #endif /* PWMA_SM2DTCNT1_INIT */
+
+#ifdef PWM_CAPTCTRLA_EDGA0_MASK
 #ifdef PWMA_SM2CAPTCTRLA_INIT
   PWMA->SM[2].CAPTCTRLA = PWMA_SM2CAPTCTRLA_INIT;
 #else
@@ -860,6 +2190,16 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[2].CAPTCOMPA = 0x0U;
 #endif /* PWMA_SM2CAPTCOMPA_INIT */
+#endif /* PWM_CAPTCTRLA_EDGA0_MASK */
+
+#ifdef PWM_CAPTFILTA_CAPTA_FILT_PER_MASK
+  PWMA->SM[2].CAPTFILTA = 0x0U;
+#ifdef PWMA_SM2CAPTFILTA_INIT
+  PWMA->SM[2].CAPTFILTA = PWMA_SM2CAPTFILTA_INIT;
+#endif
+#endif  /* PWM_CAPTFILTA_CAPTA_FILT_PER_MASK */
+
+#ifdef PWM_CAPTCTRLB_EDGB0_MASK
 #ifdef PWMA_SM2CAPTCTRLB_INIT
   PWMA->SM[2].CAPTCTRLB = PWMA_SM2CAPTCTRLB_INIT;
 #else
@@ -870,6 +2210,16 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[2].CAPTCOMPB = 0x0U;
 #endif /* PWMA_SM2CAPTCOMPB_INIT */
+#endif /* PWM_CAPTCTRLB_EDGB0_MASK */
+
+#ifdef PWM_CAPTFILTB_CAPTB_FILT_PER_MASK
+  PWMA->SM[2].CAPTFILTB = 0x0U;
+#ifdef PWMA_SM2CAPTFILTB_INIT
+  PWMA->SM[2].CAPTFILTB = PWMA_SM2CAPTFILTB_INIT;
+#endif
+#endif  /* PWM_CAPTFILTB_CAPTB_FILT_PER_MASK */
+
+#ifdef PWM_CAPTCTRLX_EDGX0_MASK
 #ifdef PWMA_SM2CAPTCTRLX_INIT
   PWMA->SM[2].CAPTCTRLX = PWMA_SM2CAPTCTRLX_INIT;
 #else
@@ -880,6 +2230,15 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[2].CAPTCOMPX = 0x0U;
 #endif /* PWMA_SM2CAPTCOMPX_INIT */
+#endif /* PWM_CAPTCTRLX_EDGX0_MASK */
+
+#ifdef PWM_CAPTFILTX_CAPTX_FILT_PER_MASK
+  PWMA->SM[2].CAPTFILTX = 0x0U;
+#ifdef PWMA_SM2CAPTFILTX_INIT
+  PWMA->SM[2].CAPTFILTX = PWMA_SM2CAPTFILTX_INIT;
+#endif
+#endif  /* PWM_CAPTFILTX_CAPTX_FILT_PER_MASK */
+
 #if (0 != 2)
 #ifdef PWM_PHASEDLY_PHASEDLY_MASK
 #ifdef PWMA_SM2PHASEDLY_INIT
@@ -892,6 +2251,7 @@ static void PWMA_init(void) {
 #if ((!defined(PWMA_SM2CTRL_INIT)) || (0U == (PWMA_SM2CTRL_INIT & PWM_CTRL_LDMOD_MASK)))
   PWMA->MCTRL |= PWM_MCTRL_LDOK(1U << 2);
 #endif /* ((!defined(PWMA_SM2CTRL_INIT)) || (0U == (PWMA_SM2CTRL_INIT & PWM_CTRL_LDMOD_MASK))) */
+
 /****************************************************************************/
 /* Submodule 0 initialization */
 /****************************************************************************/
@@ -1020,6 +2380,8 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[0].DTCNT1 = 0x7ffU;
 #endif /* PWMA_SM0DTCNT1_INIT */
+
+#ifdef PWM_CAPTCTRLA_EDGA0_MASK
 #ifdef PWMA_SM0CAPTCTRLA_INIT
   PWMA->SM[0].CAPTCTRLA = PWMA_SM0CAPTCTRLA_INIT;
 #else
@@ -1030,6 +2392,16 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[0].CAPTCOMPA = 0x0U;
 #endif /* PWMA_SM0CAPTCOMPA_INIT */
+#endif /* PWM_CAPTCTRLA_EDGA0_MASK */
+
+#ifdef PWM_CAPTFILTA_CAPTA_FILT_PER_MASK
+  PWMA->SM[0].CAPTFILTA = 0x0U;
+#ifdef PWMA_SM0CAPTFILTA_INIT
+  PWMA->SM[0].CAPTFILTA = PWMA_SM0CAPTFILTA_INIT;
+#endif
+#endif  /* PWM_CAPTFILTA_CAPTA_FILT_PER_MASK */
+
+#ifdef PWM_CAPTCTRLB_EDGB0_MASK
 #ifdef PWMA_SM0CAPTCTRLB_INIT
   PWMA->SM[0].CAPTCTRLB = PWMA_SM0CAPTCTRLB_INIT;
 #else
@@ -1040,6 +2412,16 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[0].CAPTCOMPB = 0x0U;
 #endif /* PWMA_SM0CAPTCOMPB_INIT */
+#endif /* PWM_CAPTCTRLB_EDGB0_MASK */
+
+#ifdef PWM_CAPTFILTB_CAPTB_FILT_PER_MASK
+  PWMA->SM[0].CAPTFILTB = 0x0U;
+#ifdef PWMA_SM0CAPTFILTB_INIT
+  PWMA->SM[0].CAPTFILTB = PWMA_SM0CAPTFILTB_INIT;
+#endif
+#endif  /* PWM_CAPTFILTB_CAPTB_FILT_PER_MASK */
+
+#ifdef PWM_CAPTCTRLX_EDGX0_MASK
 #ifdef PWMA_SM0CAPTCTRLX_INIT
   PWMA->SM[0].CAPTCTRLX = PWMA_SM0CAPTCTRLX_INIT;
 #else
@@ -1050,6 +2432,15 @@ static void PWMA_init(void) {
 #else
   PWMA->SM[0].CAPTCOMPX = 0x0U;
 #endif /* PWMA_SM0CAPTCOMPX_INIT */
+#endif /* PWM_CAPTCTRLX_EDGX0_MASK */
+
+#ifdef PWM_CAPTFILTX_CAPTX_FILT_PER_MASK
+  PWMA->SM[0].CAPTFILTX = 0x0U;
+#ifdef PWMA_SM0CAPTFILTX_INIT
+  PWMA->SM[0].CAPTFILTX = PWMA_SM0CAPTFILTX_INIT;
+#endif
+#endif  /* PWM_CAPTFILTX_CAPTX_FILT_PER_MASK */
+
 #if (0 != 0)
 #ifdef PWM_PHASEDLY_PHASEDLY_MASK
 #ifdef PWMA_SM0PHASEDLY_INIT
@@ -1062,6 +2453,7 @@ static void PWMA_init(void) {
 #if ((!defined(PWMA_SM0CTRL_INIT)) || (0U == (PWMA_SM0CTRL_INIT & PWM_CTRL_LDMOD_MASK)))
   PWMA->MCTRL |= PWM_MCTRL_LDOK(1U << 0);
 #endif /* ((!defined(PWMA_SM0CTRL_INIT)) || (0U == (PWMA_SM0CTRL_INIT & PWM_CTRL_LDMOD_MASK))) */
+
 /****************************************************************************/
 /* Fault channel0 initialization */
 /****************************************************************************/
@@ -1172,1080 +2564,6 @@ static void PWMA_init(void) {
 }
 
 /***********************************************************************************************************************
- * ADC initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'ADC'
-- type: 'cadc_reg'
-- mode: 'CADC'
-- custom_name_enabled: 'false'
-- type_id: 'cadc_reg_3aa3a1e7f4a7b23ac90f68072daac258'
-- functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'ADC'
-- config_sets:
-  - fsl_cadc:
-    - cadcConfig:
-      - clockSource: 'BusInterfaceClock'
-      - clockSourceFreq: 'BOARD_BootClockRUN'
-      - dualConverterScanMode: 'kCADC_DualConverterWorkAsTriggeredParallel'
-      - enableSimultaneousMode: 'true'
-      - DMATriggerSource: 'kCADC_DMATriggerSourceAsEndOfScan'
-      - powerUpDelay: '26'
-      - autoPowerDown: 'false'
-      - autoStandby: 'false'
-      - clockDivisorInt: '5'
-      - SPEEDA: '3'
-      - SCNT0: '2'
-      - enableDMA0: 'false'
-      - enableStop0: 'false'
-      - startConversion0: 'false'
-      - enableSYNC0: 'true'
-      - manualPowerDownA: 'false'
-      - highReferenceA: 'vdda'
-      - lowReferenceA: 'vssa'
-      - manualPowerDownB: 'false'
-      - highReferenceB: 'vdda'
-      - lowReferenceB: 'vssa'
-    - channelConfig:
-      - 0:
-        - chMode: '0'
-      - 1:
-        - chMode: '0'
-      - 2:
-        - chMode: '0'
-      - 3:
-        - chMode: '0'
-      - 4:
-        - chMode: '0'
-      - 5:
-        - chMode: '0'
-      - 6:
-        - chMode: '0'
-      - 7:
-        - chMode: '0'
-    - inputGainConfig:
-      - channels_inputGain_convA:
-        - 0:
-          - channelGain: '0'
-        - 1:
-          - channelGain: '0'
-        - 2:
-          - channelGain: '0'
-        - 3:
-          - channelGain: '0'
-        - 4:
-          - channelGain: '0'
-        - 5:
-          - channelGain: '0'
-        - 6:
-          - channelGain: '0'
-        - 7:
-          - channelGain: '0'
-      - channels_inputGain_convB:
-        - 0:
-          - channelGain: '0'
-        - 1:
-          - channelGain: '0'
-        - 2:
-          - channelGain: '0'
-        - 3:
-          - channelGain: '0'
-        - 4:
-          - channelGain: '0'
-        - 5:
-          - channelGain: '0'
-        - 6:
-          - channelGain: '0'
-        - 7:
-          - channelGain: '0'
-    - channels_config_A_parallel:
-      - 0:
-        - sampleName: 'Sample_0'
-        - disableSample: 'false'
-        - channelNumberEnum: 'ANA.0'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 1:
-        - sampleName: 'Sample_1'
-        - disableSample: 'false'
-        - channelNumberEnum: 'ANA.1'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 2:
-        - sampleName: 'Sample_2'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANA.2'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 3:
-        - sampleName: 'Sample_3'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANA.3'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 4:
-        - sampleName: 'Sample_8'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANA.4'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 5:
-        - sampleName: 'Sample_9'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANA.5'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 6:
-        - sampleName: 'Sample_10'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANA.6'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 7:
-        - sampleName: 'Sample_11'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANA.7'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-    - channels_config_B_parallel:
-      - 0:
-        - sampleName: 'Sample_4'
-        - disableSample: 'false'
-        - channelNumberEnum: 'ANB.0'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 1:
-        - sampleName: 'Sample_5'
-        - disableSample: 'false'
-        - channelNumberEnum: 'ANB.1'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 2:
-        - sampleName: 'Sample_6'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANB.2'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 3:
-        - sampleName: 'Sample_7'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANB.3'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 4:
-        - sampleName: 'Sample_12'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANB.4'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 5:
-        - sampleName: 'Sample_13'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANB.5'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 6:
-        - sampleName: 'Sample_14'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANB.6'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-      - 7:
-        - sampleName: 'Sample_15'
-        - disableSample: 'true'
-        - channelNumberEnum: 'ANB.7'
-        - zeroCrossingMode: '0'
-        - highLimitValue: '4095'
-        - lowLimitValue: '0'
-        - offsetValue: '0'
-        - enableWaitSync: 'false'
-        - enableSampleInterrupt: 'false'
-    - interrupt:
-      - interruptSources: 'kCADC_ConverterAEndOfScanInterruptEnable'
-      - enable_err_irq: 'false'
-      - interrupt_err:
-        - IRQn: 'kADC_ERR_VECTORn'
-        - dsc_enable_interrrupt: 'iprVal0'
-        - enable_custom_name: 'false'
-      - enable_cc0_irq: 'true'
-      - interrupt_cc0:
-        - IRQn: 'kADC_CC0_VECTORn'
-        - dsc_enable_interrrupt: 'iprVal3'
-        - enable_custom_name: 'false'
-      - enable_cc1_irq: 'false'
-      - interrupt_cc1:
-        - IRQn: 'kADC_CC1_VECTORn'
-        - dsc_enable_interrrupt: 'iprVal0'
-        - enable_custom_name: 'false'
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-
-static void ADC_init(void) {
-  /* Software reset Cyclic ADC. */
-  SIM->PSWR2 |= SIM_PSWR2_CYCADC_MASK;
-  SIM->PSWR2 &= ~ SIM_PSWR2_CYCADC_MASK;
-#if defined(ADC_CTRL1_INIT)
-  ADC->CTRL1 = ADC_CTRL1_INIT;
-#endif /* ADC_CTRL1_INIT */
-#if defined(ADC_CTRL2_INIT)
-  ADC->CTRL2 = ADC_CTRL2_INIT;
-#endif /* ADC_CTRL2_INIT */
-#if defined(ADC_STAT_INIT)
-  ADC->STAT = ADC_STAT_INIT;
-#endif /* ADC_STAT_INIT */
-#if defined(ADC_PWR_INIT)
-  ADC->PWR = ADC_PWR_INIT;
-#if (defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD0_MASK | ADC_PWR_APD_MASK)) == 0UL))
-while(((ADC->PWR) & ADC_PWR_PSTS0_MASK) != 0UL)
-{}
-#elif (defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD1_MASK | ADC_PWR_APD_MASK)) == 0UL))
-while(((ADC->PWR) & ADC_PWR_PSTS1_MASK) != 0UL)
-{}
-#elif (defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD0_MASK | ADC_PWR_PD1_MASK | ADC_PWR_APD_MASK)) == 0UL))
-while(((ADC->PWR) & (ADC_PWR_PSTS1_MASK | ADC_PWR_PSTS0_MASK)) != 0UL)
-{}
-#endif /* defined(ADC_PWR_INIT) && (((ADC_PWR_INIT) & (ADC_PWR_PD0_MASK | ADC_PWR_APD_MASK)) == 0UL) */
-#endif /* ADC_PWR_INIT */
-#if defined(ADC_CAL_INIT)
-  ADC->CAL = ADC_CAL_INIT;
-#endif /* ADC_CAL_INIT */
-#if defined(ADC_PWR2_INIT)
-  ADC->PWR2 = ADC_PWR2_INIT;
-#endif /* ADC_PWR2_INIT */
-#if defined(ADC_CTRL3_INIT)
-  ADC->CTRL3 = ADC_CTRL3_INIT;
-#endif /* ADC_CTRL3_INIT */
-#if defined(ADC_ZXCTRL1_INIT)
-  ADC->ZXCTRL1 = ADC_ZXCTRL1_INIT;
-#endif /* ADC_ZXCTRL1_INIT */
-#if defined(ADC_ZXCTRL2_INIT)
-  ADC->ZXCTRL2 = ADC_ZXCTRL2_INIT;
-#endif /* ADC_ZXCTRL2_INIT */
-#if defined(ADC_ZXCTRL3_INIT)
-  ADC->ZXCTRL3 = ADC_ZXCTRL3_INIT;
-#endif /* ADC_ZXCTRL3_INIT */
-#if defined(ADC_CLIST1_INIT)
-  ADC->CLIST1 = ADC_CLIST1_INIT;
-#endif /* ADC_CLIST1_INIT */
-#if defined(ADC_CLIST2_INIT)
-  ADC->CLIST2 = ADC_CLIST2_INIT;
-#endif /* ADC_CLIST2_INIT */
-#if defined(ADC_CLIST3_INIT)
-  ADC->CLIST3 = ADC_CLIST3_INIT;
-#endif /* ADC_CLIST3_INIT */
-#if defined(ADC_CLIST4_INIT)
-  ADC->CLIST4 = ADC_CLIST4_INIT;
-#endif /* ADC_CLIST4_INIT */
-#if defined(ADC_CLIST5_INIT)
-  ADC->CLIST5 = ADC_CLIST5_INIT;
-#endif /* ADC_CLIST5_INIT */
-#if defined(ADC_SDIS_INIT)
-  ADC->SDIS = ADC_SDIS_INIT;
-#endif /* ADC_SDIS_INIT */
-#if defined(ADC_SDIS2_INIT)
-  ADC->SDIS2 = ADC_SDIS2_INIT;
-#endif /* ADC_SDIS2_INIT */
-#if defined(ADC_LOLIMSTAT_INIT)
-  ADC->LOLIMSTAT = ADC_LOLIMSTAT_INIT;
-#endif /* ADC_LOLIMSTAT_INIT */
-#if defined(ADC_LOLIMSTAT2_INIT)
-  ADC->LOLIMSTAT2 = ADC_LOLIMSTAT2_INIT;
-#endif /* ADC_LOLIMSTAT2_INIT */
-#if defined(ADC_HILIMSTAT_INIT)
-  ADC->HILIMSTAT = ADC_HILIMSTAT_INIT;
-#endif /* ADC_HILIMSTAT_INIT */
-#if defined(ADC_HILIMSTAT2_INIT)
-  ADC->HILIMSTAT2 = ADC_HILIMSTAT2_INIT;
-#endif /* ADC_HILIMSTAT2_INIT */
-#if defined(ADC_ZXSTAT_INIT)
-  ADC->ZXSTAT = ADC_ZXSTAT_INIT;
-#endif /* ADC_ZXSTAT_INIT */
-#if defined(ADC_ZXSTAT2_INIT)
-  ADC->ZXSTAT2 = ADC_ZXSTAT2_INIT;
-#endif /* ADC_ZXSTAT2_INIT */
-#if defined(ADC_GC1_INIT)
-  ADC->GC1 = ADC_GC1_INIT;
-#endif /* ADC_GC1_INIT */
-#if defined(ADC_GC2_INIT)
-  ADC->GC2 = ADC_GC2_INIT;
-#endif /* ADC_GC2_INIT */
-#if defined(ADC_GC3_INIT)
-  ADC->GC3 = ADC_GC3_INIT;
-#endif /* ADC_GC3_INIT */
-#if defined(ADC_SCTRL_INIT)
-  ADC->SCTRL = ADC_SCTRL_INIT;
-#endif /* ADC_SCTRL_INIT */
-#if defined(ADC_SCTRL2_INIT)
-  ADC->SCTRL2 = ADC_SCTRL2_INIT;
-#endif /* ADC_SCTRL2_INIT */
-#if defined(ADC_SCHLTEN_INIT)
-  ADC->SCHLTEN = ADC_SCHLTEN_INIT;
-#endif /* ADC_SCHLTEN_INIT */
-#if defined(ADC_SCHLTEN2_INIT)
-  ADC->SCHLTEN2 = ADC_SCHLTEN2_INIT;
-#endif /* ADC_SCHLTEN2_INIT */
-#if defined(ADC_LOLIM0_INIT)
-  ADC->LOLIM[0] = ADC_LOLIM0_INIT;
-#endif /* ADC_LOLIM0_INIT */
-#if defined(ADC_LOLIM20_INIT)
-  ADC->LOLIM2[0 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM20_INIT;
-#endif /* ADC_LOLIM20_INIT */
-#if defined(ADC_HILIM0_INIT)
-  ADC->HILIM[0] = ADC_HILIM0_INIT;
-#endif /* ADC_HILIM0_INIT */
-#if defined(ADC_HILIM20_INIT)
-  ADC->HILIM2[0 - ADC_MIN_REGS2_INDEX] = ADC_HILIM20_INIT;
-#endif /* ADC_HILIM20_INIT */
-#if defined(ADC_OFFST0_INIT)
-  ADC->OFFST[0] = ADC_OFFST0_INIT;
-#endif /* ADC_OFFST0_INIT */
-#if defined (ADC_OFFST20_INIT)
-  ADC->OFFST2[0 - ADC_MIN_REGS2_INDEX] = ADC_OFFST20_INIT;
-#endif /* ADC_OFFST20_INIT */
-#if defined(ADC_LOLIM1_INIT)
-  ADC->LOLIM[1] = ADC_LOLIM1_INIT;
-#endif /* ADC_LOLIM1_INIT */
-#if defined(ADC_LOLIM21_INIT)
-  ADC->LOLIM2[1 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM21_INIT;
-#endif /* ADC_LOLIM21_INIT */
-#if defined(ADC_HILIM1_INIT)
-  ADC->HILIM[1] = ADC_HILIM1_INIT;
-#endif /* ADC_HILIM1_INIT */
-#if defined(ADC_HILIM21_INIT)
-  ADC->HILIM2[1 - ADC_MIN_REGS2_INDEX] = ADC_HILIM21_INIT;
-#endif /* ADC_HILIM21_INIT */
-#if defined(ADC_OFFST1_INIT)
-  ADC->OFFST[1] = ADC_OFFST1_INIT;
-#endif /* ADC_OFFST1_INIT */
-#if defined (ADC_OFFST21_INIT)
-  ADC->OFFST2[1 - ADC_MIN_REGS2_INDEX] = ADC_OFFST21_INIT;
-#endif /* ADC_OFFST21_INIT */
-#if defined(ADC_LOLIM2_INIT)
-  ADC->LOLIM[2] = ADC_LOLIM2_INIT;
-#endif /* ADC_LOLIM2_INIT */
-#if defined(ADC_LOLIM22_INIT)
-  ADC->LOLIM2[2 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM22_INIT;
-#endif /* ADC_LOLIM22_INIT */
-#if defined(ADC_HILIM2_INIT)
-  ADC->HILIM[2] = ADC_HILIM2_INIT;
-#endif /* ADC_HILIM2_INIT */
-#if defined(ADC_HILIM22_INIT)
-  ADC->HILIM2[2 - ADC_MIN_REGS2_INDEX] = ADC_HILIM22_INIT;
-#endif /* ADC_HILIM22_INIT */
-#if defined(ADC_OFFST2_INIT)
-  ADC->OFFST[2] = ADC_OFFST2_INIT;
-#endif /* ADC_OFFST2_INIT */
-#if defined (ADC_OFFST22_INIT)
-  ADC->OFFST2[2 - ADC_MIN_REGS2_INDEX] = ADC_OFFST22_INIT;
-#endif /* ADC_OFFST22_INIT */
-#if defined(ADC_LOLIM3_INIT)
-  ADC->LOLIM[3] = ADC_LOLIM3_INIT;
-#endif /* ADC_LOLIM3_INIT */
-#if defined(ADC_LOLIM23_INIT)
-  ADC->LOLIM2[3 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM23_INIT;
-#endif /* ADC_LOLIM23_INIT */
-#if defined(ADC_HILIM3_INIT)
-  ADC->HILIM[3] = ADC_HILIM3_INIT;
-#endif /* ADC_HILIM3_INIT */
-#if defined(ADC_HILIM23_INIT)
-  ADC->HILIM2[3 - ADC_MIN_REGS2_INDEX] = ADC_HILIM23_INIT;
-#endif /* ADC_HILIM23_INIT */
-#if defined(ADC_OFFST3_INIT)
-  ADC->OFFST[3] = ADC_OFFST3_INIT;
-#endif /* ADC_OFFST3_INIT */
-#if defined (ADC_OFFST23_INIT)
-  ADC->OFFST2[3 - ADC_MIN_REGS2_INDEX] = ADC_OFFST23_INIT;
-#endif /* ADC_OFFST23_INIT */
-#if defined(ADC_LOLIM4_INIT)
-  ADC->LOLIM[4] = ADC_LOLIM4_INIT;
-#endif /* ADC_LOLIM4_INIT */
-#if defined(ADC_LOLIM24_INIT)
-  ADC->LOLIM2[4 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM24_INIT;
-#endif /* ADC_LOLIM24_INIT */
-#if defined(ADC_HILIM4_INIT)
-  ADC->HILIM[4] = ADC_HILIM4_INIT;
-#endif /* ADC_HILIM4_INIT */
-#if defined(ADC_HILIM24_INIT)
-  ADC->HILIM2[4 - ADC_MIN_REGS2_INDEX] = ADC_HILIM24_INIT;
-#endif /* ADC_HILIM24_INIT */
-#if defined(ADC_OFFST4_INIT)
-  ADC->OFFST[4] = ADC_OFFST4_INIT;
-#endif /* ADC_OFFST4_INIT */
-#if defined (ADC_OFFST24_INIT)
-  ADC->OFFST2[4 - ADC_MIN_REGS2_INDEX] = ADC_OFFST24_INIT;
-#endif /* ADC_OFFST24_INIT */
-#if defined(ADC_LOLIM5_INIT)
-  ADC->LOLIM[5] = ADC_LOLIM5_INIT;
-#endif /* ADC_LOLIM5_INIT */
-#if defined(ADC_LOLIM25_INIT)
-  ADC->LOLIM2[5 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM25_INIT;
-#endif /* ADC_LOLIM25_INIT */
-#if defined(ADC_HILIM5_INIT)
-  ADC->HILIM[5] = ADC_HILIM5_INIT;
-#endif /* ADC_HILIM5_INIT */
-#if defined(ADC_HILIM25_INIT)
-  ADC->HILIM2[5 - ADC_MIN_REGS2_INDEX] = ADC_HILIM25_INIT;
-#endif /* ADC_HILIM25_INIT */
-#if defined(ADC_OFFST5_INIT)
-  ADC->OFFST[5] = ADC_OFFST5_INIT;
-#endif /* ADC_OFFST5_INIT */
-#if defined (ADC_OFFST25_INIT)
-  ADC->OFFST2[5 - ADC_MIN_REGS2_INDEX] = ADC_OFFST25_INIT;
-#endif /* ADC_OFFST25_INIT */
-#if defined(ADC_LOLIM6_INIT)
-  ADC->LOLIM[6] = ADC_LOLIM6_INIT;
-#endif /* ADC_LOLIM6_INIT */
-#if defined(ADC_LOLIM26_INIT)
-  ADC->LOLIM2[6 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM26_INIT;
-#endif /* ADC_LOLIM26_INIT */
-#if defined(ADC_HILIM6_INIT)
-  ADC->HILIM[6] = ADC_HILIM6_INIT;
-#endif /* ADC_HILIM6_INIT */
-#if defined(ADC_HILIM26_INIT)
-  ADC->HILIM2[6 - ADC_MIN_REGS2_INDEX] = ADC_HILIM26_INIT;
-#endif /* ADC_HILIM26_INIT */
-#if defined(ADC_OFFST6_INIT)
-  ADC->OFFST[6] = ADC_OFFST6_INIT;
-#endif /* ADC_OFFST6_INIT */
-#if defined (ADC_OFFST26_INIT)
-  ADC->OFFST2[6 - ADC_MIN_REGS2_INDEX] = ADC_OFFST26_INIT;
-#endif /* ADC_OFFST26_INIT */
-#if defined(ADC_LOLIM7_INIT)
-  ADC->LOLIM[7] = ADC_LOLIM7_INIT;
-#endif /* ADC_LOLIM7_INIT */
-#if defined(ADC_LOLIM27_INIT)
-  ADC->LOLIM2[7 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM27_INIT;
-#endif /* ADC_LOLIM27_INIT */
-#if defined(ADC_HILIM7_INIT)
-  ADC->HILIM[7] = ADC_HILIM7_INIT;
-#endif /* ADC_HILIM7_INIT */
-#if defined(ADC_HILIM27_INIT)
-  ADC->HILIM2[7 - ADC_MIN_REGS2_INDEX] = ADC_HILIM27_INIT;
-#endif /* ADC_HILIM27_INIT */
-#if defined(ADC_OFFST7_INIT)
-  ADC->OFFST[7] = ADC_OFFST7_INIT;
-#endif /* ADC_OFFST7_INIT */
-#if defined (ADC_OFFST27_INIT)
-  ADC->OFFST2[7 - ADC_MIN_REGS2_INDEX] = ADC_OFFST27_INIT;
-#endif /* ADC_OFFST27_INIT */
-#if defined(ADC_LOLIM8_INIT)
-  ADC->LOLIM[8] = ADC_LOLIM8_INIT;
-#endif /* ADC_LOLIM8_INIT */
-#if defined(ADC_LOLIM28_INIT)
-  ADC->LOLIM2[8 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM28_INIT;
-#endif /* ADC_LOLIM28_INIT */
-#if defined(ADC_HILIM8_INIT)
-  ADC->HILIM[8] = ADC_HILIM8_INIT;
-#endif /* ADC_HILIM8_INIT */
-#if defined(ADC_HILIM28_INIT)
-  ADC->HILIM2[8 - ADC_MIN_REGS2_INDEX] = ADC_HILIM28_INIT;
-#endif /* ADC_HILIM28_INIT */
-#if defined(ADC_OFFST8_INIT)
-  ADC->OFFST[8] = ADC_OFFST8_INIT;
-#endif /* ADC_OFFST8_INIT */
-#if defined (ADC_OFFST28_INIT)
-  ADC->OFFST2[8 - ADC_MIN_REGS2_INDEX] = ADC_OFFST28_INIT;
-#endif /* ADC_OFFST28_INIT */
-#if defined(ADC_LOLIM9_INIT)
-  ADC->LOLIM[9] = ADC_LOLIM9_INIT;
-#endif /* ADC_LOLIM9_INIT */
-#if defined(ADC_LOLIM29_INIT)
-  ADC->LOLIM2[9 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM29_INIT;
-#endif /* ADC_LOLIM29_INIT */
-#if defined(ADC_HILIM9_INIT)
-  ADC->HILIM[9] = ADC_HILIM9_INIT;
-#endif /* ADC_HILIM9_INIT */
-#if defined(ADC_HILIM29_INIT)
-  ADC->HILIM2[9 - ADC_MIN_REGS2_INDEX] = ADC_HILIM29_INIT;
-#endif /* ADC_HILIM29_INIT */
-#if defined(ADC_OFFST9_INIT)
-  ADC->OFFST[9] = ADC_OFFST9_INIT;
-#endif /* ADC_OFFST9_INIT */
-#if defined (ADC_OFFST29_INIT)
-  ADC->OFFST2[9 - ADC_MIN_REGS2_INDEX] = ADC_OFFST29_INIT;
-#endif /* ADC_OFFST29_INIT */
-#if defined(ADC_LOLIM10_INIT)
-  ADC->LOLIM[10] = ADC_LOLIM10_INIT;
-#endif /* ADC_LOLIM10_INIT */
-#if defined(ADC_LOLIM210_INIT)
-  ADC->LOLIM2[10 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM210_INIT;
-#endif /* ADC_LOLIM210_INIT */
-#if defined(ADC_HILIM10_INIT)
-  ADC->HILIM[10] = ADC_HILIM10_INIT;
-#endif /* ADC_HILIM10_INIT */
-#if defined(ADC_HILIM210_INIT)
-  ADC->HILIM2[10 - ADC_MIN_REGS2_INDEX] = ADC_HILIM210_INIT;
-#endif /* ADC_HILIM210_INIT */
-#if defined(ADC_OFFST10_INIT)
-  ADC->OFFST[10] = ADC_OFFST10_INIT;
-#endif /* ADC_OFFST10_INIT */
-#if defined (ADC_OFFST210_INIT)
-  ADC->OFFST2[10 - ADC_MIN_REGS2_INDEX] = ADC_OFFST210_INIT;
-#endif /* ADC_OFFST210_INIT */
-#if defined(ADC_LOLIM11_INIT)
-  ADC->LOLIM[11] = ADC_LOLIM11_INIT;
-#endif /* ADC_LOLIM11_INIT */
-#if defined(ADC_LOLIM211_INIT)
-  ADC->LOLIM2[11 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM211_INIT;
-#endif /* ADC_LOLIM211_INIT */
-#if defined(ADC_HILIM11_INIT)
-  ADC->HILIM[11] = ADC_HILIM11_INIT;
-#endif /* ADC_HILIM11_INIT */
-#if defined(ADC_HILIM211_INIT)
-  ADC->HILIM2[11 - ADC_MIN_REGS2_INDEX] = ADC_HILIM211_INIT;
-#endif /* ADC_HILIM211_INIT */
-#if defined(ADC_OFFST11_INIT)
-  ADC->OFFST[11] = ADC_OFFST11_INIT;
-#endif /* ADC_OFFST11_INIT */
-#if defined (ADC_OFFST211_INIT)
-  ADC->OFFST2[11 - ADC_MIN_REGS2_INDEX] = ADC_OFFST211_INIT;
-#endif /* ADC_OFFST211_INIT */
-#if defined(ADC_LOLIM12_INIT)
-  ADC->LOLIM[12] = ADC_LOLIM12_INIT;
-#endif /* ADC_LOLIM12_INIT */
-#if defined(ADC_LOLIM212_INIT)
-  ADC->LOLIM2[12 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM212_INIT;
-#endif /* ADC_LOLIM212_INIT */
-#if defined(ADC_HILIM12_INIT)
-  ADC->HILIM[12] = ADC_HILIM12_INIT;
-#endif /* ADC_HILIM12_INIT */
-#if defined(ADC_HILIM212_INIT)
-  ADC->HILIM2[12 - ADC_MIN_REGS2_INDEX] = ADC_HILIM212_INIT;
-#endif /* ADC_HILIM212_INIT */
-#if defined(ADC_OFFST12_INIT)
-  ADC->OFFST[12] = ADC_OFFST12_INIT;
-#endif /* ADC_OFFST12_INIT */
-#if defined (ADC_OFFST212_INIT)
-  ADC->OFFST2[12 - ADC_MIN_REGS2_INDEX] = ADC_OFFST212_INIT;
-#endif /* ADC_OFFST212_INIT */
-#if defined(ADC_LOLIM13_INIT)
-  ADC->LOLIM[13] = ADC_LOLIM13_INIT;
-#endif /* ADC_LOLIM13_INIT */
-#if defined(ADC_LOLIM213_INIT)
-  ADC->LOLIM2[13 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM213_INIT;
-#endif /* ADC_LOLIM213_INIT */
-#if defined(ADC_HILIM13_INIT)
-  ADC->HILIM[13] = ADC_HILIM13_INIT;
-#endif /* ADC_HILIM13_INIT */
-#if defined(ADC_HILIM213_INIT)
-  ADC->HILIM2[13 - ADC_MIN_REGS2_INDEX] = ADC_HILIM213_INIT;
-#endif /* ADC_HILIM213_INIT */
-#if defined(ADC_OFFST13_INIT)
-  ADC->OFFST[13] = ADC_OFFST13_INIT;
-#endif /* ADC_OFFST13_INIT */
-#if defined (ADC_OFFST213_INIT)
-  ADC->OFFST2[13 - ADC_MIN_REGS2_INDEX] = ADC_OFFST213_INIT;
-#endif /* ADC_OFFST213_INIT */
-#if defined(ADC_LOLIM14_INIT)
-  ADC->LOLIM[14] = ADC_LOLIM14_INIT;
-#endif /* ADC_LOLIM14_INIT */
-#if defined(ADC_LOLIM214_INIT)
-  ADC->LOLIM2[14 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM214_INIT;
-#endif /* ADC_LOLIM214_INIT */
-#if defined(ADC_HILIM14_INIT)
-  ADC->HILIM[14] = ADC_HILIM14_INIT;
-#endif /* ADC_HILIM14_INIT */
-#if defined(ADC_HILIM214_INIT)
-  ADC->HILIM2[14 - ADC_MIN_REGS2_INDEX] = ADC_HILIM214_INIT;
-#endif /* ADC_HILIM214_INIT */
-#if defined(ADC_OFFST14_INIT)
-  ADC->OFFST[14] = ADC_OFFST14_INIT;
-#endif /* ADC_OFFST14_INIT */
-#if defined (ADC_OFFST214_INIT)
-  ADC->OFFST2[14 - ADC_MIN_REGS2_INDEX] = ADC_OFFST214_INIT;
-#endif /* ADC_OFFST214_INIT */
-#if defined(ADC_LOLIM15_INIT)
-  ADC->LOLIM[15] = ADC_LOLIM15_INIT;
-#endif /* ADC_LOLIM15_INIT */
-#if defined(ADC_LOLIM215_INIT)
-  ADC->LOLIM2[15 - ADC_MIN_REGS2_INDEX] = ADC_LOLIM215_INIT;
-#endif /* ADC_LOLIM215_INIT */
-#if defined(ADC_HILIM15_INIT)
-  ADC->HILIM[15] = ADC_HILIM15_INIT;
-#endif /* ADC_HILIM15_INIT */
-#if defined(ADC_HILIM215_INIT)
-  ADC->HILIM2[15 - ADC_MIN_REGS2_INDEX] = ADC_HILIM215_INIT;
-#endif /* ADC_HILIM215_INIT */
-#if defined(ADC_OFFST15_INIT)
-  ADC->OFFST[15] = ADC_OFFST15_INIT;
-#endif /* ADC_OFFST15_INIT */
-#if defined (ADC_OFFST215_INIT)
-  ADC->OFFST2[15 - ADC_MIN_REGS2_INDEX] = ADC_OFFST215_INIT;
-#endif /* ADC_OFFST215_INIT */
-}
-
-/***********************************************************************************************************************
- * PIT0 initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'PIT0'
-- type: 'pit_reg'
-- mode: 'PIT_GENERAL'
-- custom_name_enabled: 'false'
-- type_id: 'pit_reg_6035bba38bcf2931406cb9b038081d5d'
-- functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'PIT0'
-- config_sets:
-  - pit_reg:
-    - clock_config:
-      - clockSource: 'kAltClock0'
-      - clockSourceFreq: 'BOARD_BootClockRUN'
-      - prescaler: 'p9'
-      - modulo: '195'
-    - slaveMode: 'false'
-    - enableCounter: 'true'
-    - enableRollOverInterruptSource: 'true'
-    - enable_irq: 'true'
-    - interrupt:
-      - IRQn: 'kPIT0_ROLLOVR_VECTORn'
-      - dsc_enable_interrrupt: 'iprVal2'
-      - enable_custom_name: 'false'
-    - pit_template_params: []
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-
-static void PIT0_init(void) {
-/****************************************************************************/
-/* PIT0 initialization */
-/****************************************************************************/
-    /* Software reset PIT0. */
-    SIM->PSWR2 |= SIM_PSWR2_PIT0_MASK;
-    SIM->PSWR2 &= ~ SIM_PSWR2_PIT0_MASK;
-
-#if defined(PIT0_MOD_L_INIT) && defined(PIT0_MOD_H_INIT)
-    PIT0->MOD_L = PIT0_MOD_L_INIT;
-    PIT0->MOD_H = PIT0_MOD_H_INIT;
-#endif
-#if defined(PIT0_MOD_INIT)
-    PIT0->MOD = PIT0_MOD_INIT;
-#endif
-#if defined(PIT0_CTRL_INIT)
-#if ((PIT0_CTRL_INIT & PIT_CTRL_CNT_EN_MASK) != 0)
-    PIT0->CTRL = (PIT0_CTRL_INIT & (~PIT_CTRL_CNT_EN_MASK));
-    PIT0->CTRL |= PIT_CTRL_CNT_EN_MASK;
-#else
-    PIT0->CTRL = PIT0_CTRL_INIT;
-#endif
-#endif
-}
-
-/***********************************************************************************************************************
- * QSCI1 initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'QSCI1'
-- type: 'qsci_reg'
-- mode: 'general'
-- custom_name_enabled: 'false'
-- type_id: 'qsci_reg_2d9323f68f6773d3646d5e49c6c75606'
-- functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'QSCI1'
-- config_sets:
-  - fsl_qsci:
-    - qsciConfig:
-      - clockSource: 'BusInterfaceClock'
-      - clockSourceFreq: 'BOARD_BootClockRUN'
-      - DividerBaudRateStr: '115200bps'
-      - parityEnable: 'false'
-      - parityMode: '0'
-      - dataBitCount: '0'
-      - polarityMode: '0'
-      - fifoEn: 'false'
-      - txFifoWatermark: '0'
-      - rxFifoWatermark: '1'
-      - enableTx: 'true'
-      - enableRx: 'true'
-      - LINSlaveEnable: 'false'
-      - LoopEnable: 'false'
-      - ReceiverSource: '0'
-      - WaitEnable: 'false'
-      - StopHoldEnable: 'false'
-      - StandbyEnable: 'false'
-      - WakeUpCondition: '0'
-      - txDMAEn: 'false'
-      - rxDMAEn: 'false'
-      - interrupt_vectors:
-        - interrupt_types: ''
-        - enable_tx_irq: 'false'
-        - interrupt_tx:
-          - IRQn: 'kQSCI0_TDRE_VECTORn'
-          - dsc_enable_interrrupt: 'iprVal0'
-          - enable_custom_name: 'false'
-        - enable_rx_irq: 'false'
-        - interrupt_rx:
-          - IRQn: 'kQSCI0_RCV_VECTORn'
-          - dsc_enable_interrrupt: 'iprVal0'
-          - enable_custom_name: 'false'
-        - enable_rx_err_irq: 'false'
-        - interrupt_rx_err:
-          - IRQn: 'kQSCI0_RERR_VECTORn'
-          - dsc_enable_interrrupt: 'iprVal0'
-          - enable_custom_name: 'false'
-        - enable_tridle_irq: 'false'
-        - interrupt_tridle:
-          - IRQn: 'kQSCI0_TIDLE_VECTORn'
-          - dsc_enable_interrrupt: 'iprVal0'
-          - enable_custom_name: 'false'
-    - qsci_params: []
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-
-static void QSCI1_init(void) {
-/****************************************************************************/
-/* QSCI1 initialization */
-/****************************************************************************/
-  /* Software peripheral reset to a known state. */
-  SIM->PSWR1 |= SIM_PSWR1_SCI1_MASK;
-  SIM->PSWR1 &= ~ SIM_PSWR1_SCI1_MASK;
-#if defined(QSCI1_RATE_INIT)
-  QSCI1->RATE = QSCI1_RATE_INIT;
-#endif /* QSCI1_RATE_INIT */
-#if defined(QSCI1_CTRL2_INIT)
-  QSCI1->CTRL2 = QSCI1_CTRL2_INIT;
-#endif /* QSCI1_CTRL2_INIT */
-#if defined(QSCI1_CTRL3_INIT)
-  QSCI1->CTRL3 = QSCI1_CTRL3_INIT;
-#endif /* QSCI1_CTRL3_INIT */
-#if defined(QSCI1_CTRL1_INIT)
-  QSCI1->CTRL1 = QSCI1_CTRL1_INIT;
-#endif /* QSCI1_CTRL1_INIT */
-
-}
-
-/***********************************************************************************************************************
- * QSPI0 initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'QSPI0'
-- type: 'queued_spi_reg'
-- mode: 'general'
-- custom_name_enabled: 'false'
-- type_id: 'queued_spi_reg_ee9643568caa514ccfc75a1c98ffd9de'
-- functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'QSPI0'
-- config_sets:
-  - generalConfig:
-    - clkConfig:
-      - clockSource: 'BusInterfaceClock'
-      - clockSourceFreq: 'BOARD_BootClockRUN'
-    - control:
-      - SPMSTR: '1'
-      - SPE: 'true'
-      - SPR: '5'
-      - BD2X: 'false'
-      - DS: '8'
-      - CPOL: '1'
-      - CPHA: '0'
-      - DSO: '0'
-      - WAIT: '1'
-      - SHEN: '0'
-      - WOM: 'false'
-      - TDMAEN: 'false'
-      - RDMAEN: 'false'
-      - MODFEN: 'false'
-    - ssControl:
-      - SSB_AUTO: '1'
-      - SSB_STRB: '0'
-      - SSB_DDR: '1'
-      - SSB_DATA: '1'
-      - SSB_ODM: '0'
-      - SSB_OVER: 'false'
-    - fifoConfig:
-      - FIFO_ENA: 'false'
-      - TFWM: '0'
-      - RFWM: '3'
-    - irqSources: ''
-    - enable_tx_irq: 'false'
-    - interruptTx:
-      - IRQn: 'kQSPI0_XMIT_VECTORn'
-      - dsc_enable_interrrupt: 'iprVal0'
-      - enable_custom_name: 'false'
-    - enable_rx_irq: 'false'
-    - interruptRx:
-      - IRQn: 'kQSPI0_RCV_VECTORn'
-      - dsc_enable_interrrupt: 'iprVal0'
-      - enable_custom_name: 'false'
-    - qspi_params: []
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-
-static void QSPI0_init(void) {
-/****************************************************************************/
-/* QSPI0 initialization */
-/****************************************************************************/
-  /* Software peripheral reset to a known state. */
-  SIM->PSWR1 |= SIM_PSWR1_QSPI0_MASK;
-  SIM->PSWR1 &= ~ SIM_PSWR1_QSPI0_MASK;
-QSPI0->SPSCR = QSPI0->SPSCR | QSPI_SPSCR_MODF_MASK;
-#if defined(QSPI0_SPDSR_INIT)
-  QSPI0->SPDSR = QSPI0_SPDSR_INIT;
-#endif /* QSPI0_SPDSR_INIT */
-#if defined(QSPI0_SPFIFO_INIT)
-  QSPI0->SPFIFO = QSPI0_SPFIFO_INIT;
-#endif /* QSPI0_SPFIFO_INIT */
-#if defined(QSPI0_SPWAIT_INIT)
-  QSPI0->SPWAIT = QSPI0_SPWAIT_INIT;
-#endif /* QSPI0_SPWAIT_INIT */
-#if defined(QSPI0_SPCTL2_INIT)
-  QSPI0->SPCTL2 = QSPI0_SPCTL2_INIT;
-#endif /* QSPI0_SPCTL2_INIT */
-#if defined(QSPI0_SPSCR_INIT)
-  QSPI0->SPSCR = QSPI0_SPSCR_INIT & (~QSPI_SPSCR_SPE_MASK);
-#if ((QSPI0_SPSCR_INIT & QSPI_SPSCR_SPE_MASK) != 0U)
-  QSPI0->SPSCR = QSPI0->SPSCR | QSPI_SPSCR_SPE_MASK;
-#endif /* (QSPI0_SPSCR_INIT & QSPI_SPSCR_SPE_MASK) != 0U */
-#endif /* QSPI0_SPSCR_INIT */
-}
-
-/***********************************************************************************************************************
- * TMRA initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'TMRA'
-- type: 'qtmr_reg'
-- mode: 'general'
-- custom_name_enabled: 'false'
-- type_id: 'qtmr_reg_19ff29c7d66f72ec59fde9c83852e6f9'
-- functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'TMRA'
-- config_sets:
-  - generalConfig:
-    - clockSource: 'BusInterfaceClock'
-    - clockSourceFreq: 'BOARD_BootClockRUN'
-    - enable_timer_channels:
-      - 0:
-        - enableTimerChannel: 'true'
-      - 1:
-        - enableTimerChannel: 'true'
-      - 2:
-        - enableTimerChannel: 'true'
-      - 3:
-        - enableTimerChannel: 'true'
-    - input_filters:
-      - 0:
-        - inputFilterPeriod: '0'
-        - inputFilterCount: '3'
-      - 1:
-        - inputFilterPeriod: '0'
-        - inputFilterCount: '3'
-      - 2:
-        - inputFilterPeriod: '0'
-        - inputFilterCount: '3'
-      - 3:
-        - inputFilterPeriod: '0'
-        - inputFilterCount: '3'
-    - qtmr_channels:
-      - 0:
-        - channel: '0'
-        - channelConfig:
-          - primarySource: '8'
-          - secondarySource: '0'
-          - inputPolarity: 'false'
-          - inputFault: 'false'
-          - countingMode: '1'
-          - enableCountOnce: 'false'
-          - countLength: '0'
-          - inputAltLoad: 'false'
-          - countDirection: '0'
-          - triggeredCountInit: '0'
-          - enableMasterMode: 'false'
-          - enableExternalForce: 'false'
-          - enableCoChannelReinit: 'false'
-          - outputMode: '0'
-          - forceOutputValue: 'false'
-          - forcedOutputValue: '0'
-          - outputPolarity: 'false'
-          - outputEnabled: 'false'
-          - captureMode: '0'
-          - reloadOnCapture: 'false'
-          - compare1Period: '0'
-          - compareLoadControl1: '0'
-          - compare2Period: '0'
-          - compareLoadControl2: '0'
-          - compareLoad1: '0'
-          - compareLoad2: '0'
-          - counterLoad: '0'
-          - counterInit: '0'
-          - debugMode: '0'
-          - interruptSources:
-            - kQTMR_CompareInterruptEnable: 'false'
-            - kQTMR_Compare1InterruptEnable: 'false'
-            - kQTMR_Compare2InterruptEnable: 'false'
-            - kQTMR_OverflowInterruptEnable: 'false'
-            - kQTMR_EdgeInterruptEnable: 'false'
-          - enable_irq: 'false'
-          - interrupt:
-            - IRQn: 'kTMRA_0_VECTORn'
-            - dsc_enable_interrrupt: 'iprVal0'
-            - enable_custom_name: 'false'
-          - dma:
-            - kQTMR_InputEdgeFlagDmaEnable: 'false'
-            - kQTMR_ComparatorPreload1DmaEnable: 'false'
-            - kQTMR_ComparatorPreload2DmaEnable: 'false'
-        - template_params: []
-    - qtmr_params: []
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-
-static void TMRA_init(void) {
-/****************************************************************************/
-/* Channel 0 initialization */
-/****************************************************************************/
-  /* Disable the channel before the module init*/
-  TMRA->CHANNEL[0].ENBL &= ~(TMR_ENBL_ENBL(1U << 0));
-  TMRA->CHANNEL[0].HOLD = 0x0U;
-  TMRA->CHANNEL[0].CAPT = 0x0U;
-#ifdef TMRA_COMP10_INIT
-  TMRA->CHANNEL[0].COMP1 = TMRA_COMP10_INIT;
-#else
-  TMRA->CHANNEL[0].COMP1 = 0x0U;
-#endif /*TMRA_COMP10_INIT*/
-#ifdef TMRA_COMP20_INIT
-  TMRA->CHANNEL[0].COMP2 = TMRA_COMP20_INIT;
-#else
-  TMRA->CHANNEL[0].COMP2 = 0x0U;
-#endif /*TMRA_COMP20_INIT */
-#ifdef TMRA_LOAD0_INIT
-  TMRA->CHANNEL[0].LOAD = TMRA_LOAD0_INIT;
-#else
-  TMRA->CHANNEL[0].LOAD = 0x0U;
-#endif /*TMRA_LOAD0_INIT */
-#ifdef TMRA_CNTR0_INIT
-  TMRA->CHANNEL[0].CNTR = TMRA_CNTR0_INIT;
-#else
-  TMRA->CHANNEL[0].CNTR = 0x0U;
-#endif /*TMRA_CNTR0_INIT */
-#ifdef TMRA_SCTRL0_INIT
-  TMRA->CHANNEL[0].SCTRL = TMRA_SCTRL0_INIT;
-#else
-  TMRA->CHANNEL[0].SCTRL = 0x0U;
-#endif /*TMRA_SCTRL0_INIT */
-#ifdef TMRA_CMPLD10_INIT
-  TMRA->CHANNEL[0].CMPLD1 = TMRA_CMPLD10_INIT;
-#else
-  TMRA->CHANNEL[0].CMPLD1 = 0x0U;
-#endif /*TMRA_CMPLD10_INIT */
-#ifdef TMRA_CMPLD20_INIT
-  TMRA->CHANNEL[0].CMPLD2 = TMRA_CMPLD20_INIT;
-#else
-  TMRA->CHANNEL[0].CMPLD2 = 0x0U;
-#endif /*TMRA_CMPLD20_INIT */
-#ifdef TMRA_CSCTRL0_INIT
-  TMRA->CHANNEL[0].CSCTRL = TMRA_CSCTRL0_INIT;
-#else
-  TMRA->CHANNEL[0].CSCTRL = 0x0U;
-#endif /*TMRA_CSCTRL0_INIT */
-#ifdef TMRA_DMA0_INIT
-  TMRA->CHANNEL[0].DMA = TMRA_DMA0_INIT;
-#else
-  TMRA->CHANNEL[0].DMA = 0x0U;
-#endif /*TMRA_DMA0_INIT */
-#ifdef TMRA_CTRL0_INIT
-  TMRA->CHANNEL[0].CTRL = TMRA_CTRL0_INIT;
-#else
-  TMRA->CHANNEL[0].CTRL = 0x0U;
-#endif /*TMRA_CTRL0_INIT */
-/****************************************************************************/
-/* Quad timer global initialization */
-/****************************************************************************/
-  /* Input filters configuration */
-#ifdef TMRA_FILT0_INIT
-  TMRA->CHANNEL[0].FILT = TMRA_FILT0_INIT;
-#else
-  TMRA->CHANNEL[0].FILT = 0x0U;
-#endif /*TMRA_FILT0_INIT */
-#ifdef TMRA_FILT1_INIT
-  TMRA->CHANNEL[1].FILT = TMRA_FILT1_INIT;
-#else
-  TMRA->CHANNEL[1].FILT = 0x0U;
-#endif /*TMRA_FILT1_INIT */
-#ifdef TMRA_FILT2_INIT
-  TMRA->CHANNEL[2].FILT = TMRA_FILT2_INIT;
-#else
-  TMRA->CHANNEL[2].FILT = 0x0U;
-#endif /*TMRA_FILT2_INIT */
-#ifdef TMRA_FILT3_INIT
-  TMRA->CHANNEL[3].FILT = TMRA_FILT3_INIT;
-#else
-  TMRA->CHANNEL[3].FILT = 0x0U;
-#endif /*TMRA_FILT3_INIT */
-  /* Synchronous start of all channels */
-#if defined(TMRA_ENBL_INIT)
-   TMRA->CHANNEL[0].ENBL = (TMRA->CHANNEL[0].ENBL & (~TMRA_ENBL_INIT_MASK)) | (TMRA_ENBL_INIT & TMRA_ENBL_INIT_MASK);
-#endif /*TMRA_TMRA_ENBL_INIT */
-}
-
-/***********************************************************************************************************************
  * FreeMASTER initialization code
  **********************************************************************************************************************/
 /* clang-format off */
@@ -2255,7 +2573,7 @@ instance:
 - type: 'freemaster'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'freemaster_14894d49d87e02d0dca5f799e22554da'
+- type_id: 'freemaster_3.0.1'
 - functional_group: 'BOARD_InitPeripherals'
 - config_sets:
   - freemaster_config:
@@ -2280,6 +2598,7 @@ instance:
         - interrupt_rx:
           - IRQn: 'kQSCI1_RCV_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'false'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2287,6 +2606,7 @@ instance:
         - interrupt_tx:
           - IRQn: 'kQSCI1_TDRE_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'false'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2294,6 +2614,7 @@ instance:
         - interrupt_error:
           - IRQn: 'kQSCI1_RERR_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'false'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2301,6 +2622,7 @@ instance:
         - interrupt_tidle:
           - IRQn: 'kQSCI1_TIDLE_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'false'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2318,6 +2640,7 @@ instance:
         - flexcan_interrupt_mb:
           - IRQn: 'kCAN_MB_OR_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'true'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2325,6 +2648,7 @@ instance:
         - flexcan_interrupt_busoff:
           - IRQn: 'kCAN_BUS_OFF_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'true'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2332,6 +2656,7 @@ instance:
         - flexcan_interrupt_error:
           - IRQn: 'kCAN_ERROR_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'true'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2339,6 +2664,7 @@ instance:
         - flexcan_interrupt_txwarn:
           - IRQn: 'kCAN_TX_WARN_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'true'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2346,6 +2672,7 @@ instance:
         - flexcan_interrupt_rxwarn:
           - IRQn: 'kCAN_RX_WARN_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'true'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2353,6 +2680,7 @@ instance:
         - flexcan_interrupt_wakeup:
           - IRQn: 'kCAN_WAKEUP_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'true'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2362,6 +2690,7 @@ instance:
         - tx_interrupt_vector:
           - IRQn: 'kTX_REG_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'false'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2369,6 +2698,7 @@ instance:
         - rx_interrupt_vector:
           - IRQn: 'kRX_REG_VECTORn'
           - dsc_enable_interrrupt: ''
+          - intmuxChannel: '0'
           - useDefaultISR: 'false'
           - enable_custom_name: 'false'
           - handler_custom_name: ''
@@ -2433,7 +2763,7 @@ FMSTR_U8 FreeMASTER_RecBuffer0[FREEMASTER_REC_0_SIZE];
 FMSTR_REC_BUFF FreeMASTER_Recorder_0 = {
   .name = "Description of recorder 0",
   .addr = (FMSTR_ADDR)FreeMASTER_RecBuffer0,
-  .size = FREEMASTER_REC_0_SIZE,
+  .size = (FMSTR_SIZE) sizeof(FreeMASTER_RecBuffer0),
   .basePeriod_ns = 100000UL
 };
 
@@ -2451,12 +2781,6 @@ static void BOARD_InitPeripherals_CommonPreInit(void)
 {
   /* Disable all interrupts to prevent invoking of any interrupt during initialization of peripherals. */
   INTC->CTRL |= INTC_CTRL_INT_DIS_MASK;
-  /* Enable clock gate of the PWMA peripheral. */
-  SIM->PCE3 |= SIM_PCE3_PWMACH0_MASK;
-  /* Enable clock gate of the PWMA peripheral. */
-  SIM->PCE3 |= SIM_PCE3_PWMACH1_MASK;
-  /* Enable clock gate of the PWMA peripheral. */
-  SIM->PCE3 |= SIM_PCE3_PWMACH2_MASK;
   /* Enable clock gate of the ADC peripheral. */
   SIM->PCE2 |= SIM_PCE2_CYCADC_MASK;
   /* Enable clock gate of the PIT0 peripheral. */
@@ -2467,6 +2791,12 @@ static void BOARD_InitPeripherals_CommonPreInit(void)
   SIM->PCE1 |= SIM_PCE1_QSPI0_MASK;
   /* Enable clock gate of the TMRA peripheral. */
   SIM->PCE0 |= SIM_PCE0_TA0_MASK;
+  /* Enable clock gate of the PWMA peripheral. */
+  SIM->PCE3 |= SIM_PCE3_PWMACH0_MASK;
+  /* Enable clock gate of the PWMA peripheral. */
+  SIM->PCE3 |= SIM_PCE3_PWMACH1_MASK;
+  /* Enable clock gate of the PWMA peripheral. */
+  SIM->PCE3 |= SIM_PCE3_PWMACH2_MASK;
 }
 
 static void BOARD_InitPeripherals_CommonPostInit(void)
@@ -2488,12 +2818,12 @@ void BOARD_InitPeripherals(void)
   /* Common pre-initialization */
   BOARD_InitPeripherals_CommonPreInit();
   /* Initialize components */
-  PWMA_init();
   ADC_init();
   PIT0_init();
   QSCI1_init();
   QSPI0_init();
   TMRA_init();
+  PWMA_init();
   FreeMASTER_init();
   /* Common post-initialization */
   BOARD_InitPeripherals_CommonPostInit();

@@ -13,12 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v13.0
+product: Pins v17.0
 processor: MC56F84789
 package_id: MC56F84789VLL
 mcu_data: ksdk2_0
-processor_version: 0.13.2
-external_user_signals: {}
+processor_version: 0.2412.50
 pin_labels:
 - {pin_num: '34', pin_signal: GPIOB1/ANB1/CMPB_IN0, label: I_A_adc_b, identifier: I_A_adc_b}
 - {pin_num: '36', pin_signal: GPIOB2/ANB2/VREFHB/CMPC_IN3, label: I_C_adc_b, identifier: I_C_adc_b}
