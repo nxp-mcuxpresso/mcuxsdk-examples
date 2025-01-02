@@ -133,8 +133,8 @@ psa_status_t psa_fwu_query(psa_fwu_component_t component,
     {
         
         /* In debug session we assume active image to be version 0.0.0 for 
-        * development purpose.
-        */
+         * development purpose.
+         */
         if(bl_get_active_image_info(component, &bl_image_info) != kStatus_Success)
         {
           PRINTF("Warning: Active image has no header (debug session?)\n");
