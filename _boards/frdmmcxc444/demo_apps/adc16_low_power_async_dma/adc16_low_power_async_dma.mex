@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="MCXC444" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_15 http://mcuxpresso.nxp.com/XSD/mex_configuration_15.xsd" uuid="028f2aa5-61aa-4f45-a4cb-c529031de2d3" version="15" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="MCXC444" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="58f3f704-b079-4982-8ec3-c9231c71d7b2" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>MCXC444</processor>
       <package>MCXC444VLH</package>
+      <board>FRDM-MCXC444</board>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="core0">
          <core name="Cortex-M0P" id="core0" description="M0P core"/>
@@ -11,13 +12,12 @@
    </common>
    <preferences>
       <validate_boot_init_only>true</validate_boot_init_only>
-      <generate_extended_information>false</generate_extended_information>
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
       <update_include_paths>true</update_include_paths>
       <generate_registers_defines>false</generate_registers_defines>
    </preferences>
    <tools>
-      <pins name="Pins" version="15.0" enabled="true" update_project_code="true">
+      <pins name="Pins" version="17.0" enabled="true" update_project_code="true">
          <pins_profile>
             <processor_version>0.0.0</processor_version>
          </pins_profile>
@@ -54,7 +54,7 @@
             </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="13.0" enabled="true" update_project_code="true">
+      <clocks name="Clocks" version="15.0" enabled="true" update_project_code="true">
          <clocks_profile>
             <processor_version>0.0.0</processor_version>
          </clocks_profile>
@@ -79,6 +79,7 @@
                   <clock_output id="LPO_clock.outFreq" value="1 kHz" locked="false" accuracy=""/>
                   <clock_output id="MCGIRCLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="MCGPCLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
+                  <clock_output id="Platform_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
@@ -116,6 +117,7 @@
                   <clock_output id="Flash_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
                   <clock_output id="LPO_clock.outFreq" value="1 kHz" locked="false" accuracy=""/>
                   <clock_output id="MCGIRCLK.outFreq" value="2 MHz" locked="false" accuracy=""/>
+                  <clock_output id="Platform_clock.outFreq" value="2 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="2 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
@@ -133,7 +135,7 @@
          </dcdx_profile>
          <dcdx_configurations/>
       </dcdx>
-      <periphs name="Peripherals" version="14.0" enabled="true" update_project_code="true">
+      <periphs name="Peripherals" version="15.0" enabled="true" update_project_code="true">
          <peripherals_profile>
             <processor_version>0.0.0</processor_version>
          </peripherals_profile>
@@ -143,7 +145,7 @@
                <options/>
                <dependencies/>
                <instances>
-                  <instance name="NVIC" uuid="c97c048a-5d26-413e-a058-7530c8bc087a" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                  <instance name="NVIC" uuid="c97c048a-5d26-413e-a058-7530c8bc087a" type="nvic" type_id="nvic" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
                      <config_set name="nvic">
                         <array name="interrupt_table"/>
                         <array name="interrupts"/>
@@ -157,6 +159,7 @@
                <config_set_global name="global_system_definitions">
                   <setting name="user_definitions" value=""/>
                   <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
                </config_set_global>
             </component>
             <component name="uart_cmsis_common" uuid="5c4c4059-0e7e-4e3d-910a-019e2a5d9626" type_id="uart_cmsis_common_9cb8e302497aa696fdbb5a4fd622c2a8">
@@ -179,7 +182,7 @@
             </component>
          </components>
       </periphs>
-      <tee name="TEE" version="6.0" enabled="false" update_project_code="true">
+      <tee name="TEE" version="8.0" enabled="false" update_project_code="true">
          <tee_profile>
             <processor_version>N/A</processor_version>
          </tee_profile>
