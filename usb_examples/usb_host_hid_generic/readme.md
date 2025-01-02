@@ -36,7 +36,7 @@ The application sends one test string to the device. The device receives and sen
 
 1.  Download the program to the target board.
 2.  Power off the target board and power on again.
-3.  Connect devices to the board.
+3.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Connect devices to the board.
 
 > For detailed instructions, see the appropriate board User's Guide.
 > this example could be tested with the "usb_device_hid_generic" example in pairs.

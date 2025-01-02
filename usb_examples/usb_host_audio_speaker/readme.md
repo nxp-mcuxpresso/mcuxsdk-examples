@@ -43,7 +43,7 @@ For detailed instructions, see the appropriate board User's Guide.
 ## Run the example
 
 1.  Connect the board UART to the PC and open the COM port in a terminal tool.
-2.  Plug in the USB audio speaker device to the board and attach the information print out in the terminal.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the USB audio speaker device to the board and attach the information print out in the terminal.
 3.  The USB audio speaker information prints in the terminal when USB speaker device is attached. 
 4.  After the USB speaker device is plugged into the host, the USB application automatically transfers the audio 
     data to the USB audio speaker device and the sound can be heard from the audio speaker device.
@@ -56,12 +56,12 @@ The following image shows how to attach a USB audio speaker device.
 ## Known issue for FreeRTOS Host Audio Speaker Example
 -   The FreeRTOS OS version example attach/detached printed debug message displays jumbled instructions to perform the hot plug test many times. Because the example
     handles different interfaces in different tasks, one task printing the debug message may be broken by another task and cause the debug
-	message to be jumbled.
-	
--	A noise occurs when a song is playing on some boards with The FreeRTOS version example. Because there is no software timer to
+    message to be jumbled.
+
+-   A noise occurs when a song is playing on some boards with The FreeRTOS version example. Because there is no software timer to
     ensure that one ISO transfer is sent per one SOF timer without the hardware PIT timer enablement, the issue also is effected by the KHCI
-	hardware SOF Threshold feature. The host sends less audio data to the device after a while. As a result, the buffer on the device side experiences an underrun 
-	error. If the device doesn't have an appropriate method to deal with it, some noise will occur.
+    hardware SOF Threshold feature. The host sends less audio data to the device after a while. As a result, the buffer on the device side experiences an underrun 
+    error. If the device doesn't have an appropriate method to deal with it, some noise will occur.
 
 
 

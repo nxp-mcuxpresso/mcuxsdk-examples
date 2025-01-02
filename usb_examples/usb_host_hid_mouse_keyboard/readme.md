@@ -52,7 +52,7 @@ Because this is a simple demo, special function keys and long press function are
 ## Run the example
 
 1.  Connect the board UART to the PC and open the COM port in a terminal tool.
-2.  Plug in the HUB, mouse or keyboard device to the board. The attached information prints out in the terminal.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the mouse or keyboard device to the board. The attached information prints out in the terminal.
 3.  If one mouse is plugged in, the mouse operation information prints in the terminal when moving the mouse.
     <br> The application prints the mouse operation information in one line. Each line contains the following sequential string: 
     "Left Click", "Middle Click", "Right Click", "Right"/"Left" movement, "UP"/"Down" movement and "Wheel Down"/"Wheel Up" movement.

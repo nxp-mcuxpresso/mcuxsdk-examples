@@ -49,8 +49,7 @@ COM port in a terminal tool such as PuTTy as the following picture, the baud rat
 2.  Insert the SD card into the slot. "sdcard inserted" and free memory size is printed out in the terminal as the following
 image.
 <br>![SDcard Insert](sdcard_insert.jpg "SDcard Insert")
-3.  Plug in the USB audio microphone(generator) device to the board and the related information is printed in the
-terminal.
+3.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the USB audio microphone(generator) device to the board and the related information is printed in the terminal.
 4.  Enter 'r' to start recording. The USB application will transfers the audio data from the USB audio microphone
 device and the sound is written in sd card. Enter 's' to stop recording, then one PCM file is saved. The following
 image shows how to attach a USB audio microphone device.

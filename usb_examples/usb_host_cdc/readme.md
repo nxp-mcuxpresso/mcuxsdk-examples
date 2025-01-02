@@ -49,7 +49,7 @@ It enumerates a COM port and echoes back the data from the UART as follows:
 ## Run the example
 
 1.  Run the host_cdc_serial example. The printed guide is displayed. Follow the guide to modify the demo.
-2.  Plug in the CDC device. The attached information is printed out.
+2.  Make sure to use a USB HUB or an adapter with OTG functionality firstly. Plug in the CDC device. The attached information is printed out.
 3.  Type a string and the string is sent to the CDC device if the string length is greater than
 <br> USB_HOST_SEND_RECV_PER_TIME. If the length is shorter than the
     USB_HOST_SEND_RECV_PER_TIME, the string is echoed back later.
