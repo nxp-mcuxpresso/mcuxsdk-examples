@@ -15,11 +15,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v10.0
+product: Clocks v15.0
 processor: MC56F84789
 package_id: MC56F84789VLL
 mcu_data: ksdk2_0
-processor_version: 0.13.1
+processor_version: 0.2412.50
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
