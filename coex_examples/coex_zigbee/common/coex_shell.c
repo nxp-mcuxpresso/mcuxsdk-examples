@@ -27,6 +27,16 @@ static shell_handle_t shell_handle;
 static char s_shellCoexPrompt[32] = "@coex> ";
 
 /****************************************************************************/
+/***        Global Variables                                              ***/
+/****************************************************************************/
+struct shell coex_sh;
+
+/****************************************************************************/
+/***        Exported Variables                                            ***/
+/****************************************************************************/
+extern const struct shell *ctx_shell;
+
+/****************************************************************************/
 /***        Exported Functions                                            ***/
 /****************************************************************************/
 extern uint8_t process_cmd_zigbee(int32_t argc, char **argv);
@@ -161,6 +171,9 @@ int coex_cli_init(void)
     bt_CommandInit(shell_handle);
 #endif
     printSeparator();
+
+    coex_sh.sh = shell_handle;
+    ctx_shell = &coex_sh;
 
     SHELL_ChangePrompt(shell_handle, (char *)s_shellCoexPrompt);
     return 0;
