@@ -23,6 +23,10 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivI3cFclk, 6U, false);
     CLOCK_AttachClk(kMAIN_CLK_to_I3CFCLK);
 
+    /* Enable FCLKS for I3C slave event. */
+    CLOCK_SetClkDiv(kCLOCK_DivI3cFclkS, 0U, true);
+    CLOCK_SetClkDiv(kCLOCK_DivI3cFclkS, 1U, false);
+
     /* Enable FRO 1MHz clock. */
     SYSCON->CLOCK_CTRL |= SYSCON_CLOCK_CTRL_FRO1MHZ_CLK_ENA_MASK;
 

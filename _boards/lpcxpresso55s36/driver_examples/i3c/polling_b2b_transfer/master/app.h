@@ -16,6 +16,7 @@
 #define EXAMPLE_I3C_OD_BAUDRATE    625000
 #define EXAMPLE_I3C_PP_BAUDRATE    1250000
 #define I3C_MASTER_CLOCK_FREQUENCY CLOCK_GetI3cClkFreq()
+#define WAIT_TIME_US               100000U
 /*${macro:end}*/
 
 /*******************************************************************************
