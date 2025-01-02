@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dcif_figure_display:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcif/figure_display
+    project-root-path: boards/${board}/driver_examples/dcif/figure_display/${multicore_foldername}
+    document:
+      name: dcif_figure_display${core_id_suffix_name}
+      category: driver_examples/dcif
+      brief: The figure display project shows how to display figure with DCIF and
+        LVDS. If this example runs correctly, the expected figure will be output
+        on panel
+      example_readme:
+      - examples/driver_examples/dcif/figure_display/readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards: {}

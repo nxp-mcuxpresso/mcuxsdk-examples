@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dcif_argb8888:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcif/argb8888
+    project-root-path: boards/${board}/driver_examples/dcif/argb8888/${multicore_foldername}
+    document:
+      name: dcif_argb8888${core_id_suffix_name}
+      category: driver_examples/dcif
+      brief: The ARGB8888 project shows how to drive the RGB interface LCD using DCIF
+        driver.If this example runs correctly, a rectangle is moving in the screen,
+        and the colorchanges every time it reaches the edges of the screen.The rectangle
+        moving speed might be different with Debug target and Release target,because
+        these two targets spend different time to fill the frame buffer.
+      example_readme:
+      - examples/driver_examples/dcif/argb8888/readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards: {}
