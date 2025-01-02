@@ -21,9 +21,3 @@ mcux_add_macro(
     CC "-DLFS_NO_INTRINSICS=1\
        -DSDK_DEBUGCONSOLE_UART"
 )
-
-mcux_add_armgcc_linker_script(
-	TARGETS sdram_debug sdram_release debug release
-    BASE_PATH ${SdkRootDirPath}
-    LINKER examples/_boards/${board}/littlefs_examples/littlefs_shell/linker/K32W1480xxxA_ram.ld
-)
