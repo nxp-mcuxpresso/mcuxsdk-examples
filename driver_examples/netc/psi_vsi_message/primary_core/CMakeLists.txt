@@ -26,7 +26,8 @@ include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/netc/psi_vsi_me
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 # Settings to link to secondary core project
 mcux_add_iar_configuration(
-    LD "--image_input=${APPLICATION_BINARY_DIR}/../netc_psi_vsi_message_secondary_core/iar/core1_image.bin,_core1_image,__core1_image,4 "
+    LD "--image_input=${APPLICATION_BINARY_DIR}/../netc_psi_vsi_message_secondary_core/iar/core1_image.bin,_core1_image,__core1_image,4 \
+        --keep _core1_image"
 )
 
 mcux_add_linker_symbol(

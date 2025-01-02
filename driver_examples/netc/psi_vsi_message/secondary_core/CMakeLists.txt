@@ -24,7 +24,7 @@ mcux_add_linker_symbol(
     SYMBOLS "__multicore__=1"
 )
 
-include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/netc/psi_vsi_message//reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/netc/psi_vsi_message/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar

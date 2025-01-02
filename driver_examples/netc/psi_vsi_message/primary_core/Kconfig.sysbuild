@@ -7,4 +7,5 @@ config secondary_toolchain
     string
     default "$(toolchain)"
 
+source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"
 source "${SdkRootDirPath}/${board_root}/${board}/driver_examples/netc/psi_vsi_message/${core_id}/Kconfig.sysbuild"
