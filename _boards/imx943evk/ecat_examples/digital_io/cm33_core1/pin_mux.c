@@ -40,7 +40,18 @@ void BOARD_InitBootPins(void)
 	BOARD_InitEcatPortMiiPins();
 #endif
 	BOARD_InitEcatI2CPins();
-	BOARD_InitEcatMDIOPins();	
+	BOARD_InitEcatMDIOPins();
+    BOARD_InitGPIOPins();	
+}
+
+void BOARD_InitGPIOPins(void) 
+{
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28, 0U);
+
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
 }
 
 void BOARD_InitEcatLinkPins(void)

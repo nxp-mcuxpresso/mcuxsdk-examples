@@ -38,6 +38,8 @@ void BOARD_InitEcatI2CPins(void);
 void BOARD_InitEcatPortRmiiPins(void);
 void BOARD_InitEcatPortMiiPins(void);
 void BOARD_InitEcatLinkPins(void);
+void BOARD_InitGPIOPins(void);
+
 #if defined(__cplusplus)
 }
 #endif

@@ -31,22 +31,22 @@ processor_version: 0.12.3
 void BOARD_InitBootPins(void)
 {
     BOARD_InitDebugConsolePins();
-//	BOARD_InitEcatLinkPins();
+    BOARD_InitEcatLinkPins();
 #ifdef ECAT_RMII_PORT
-//	BOARD_InitEcatPortRmiiPins();
+	BOARD_InitEcatPortRmiiPins();
 #else
-//	BOARD_InitEcatPortMiiPins();
+	BOARD_InitEcatPortMiiPins();
 #endif
 	BOARD_InitEcatI2CPins();
-//	BOARD_InitEcatMDIOPins();	
-//	GPIO_initPins();
+	BOARD_InitEcatMDIOPins();	
+	BOARD_InitGPIOPins();
 }
 
-void GPIO_initPins(void)
+void BOARD_InitGPIOPins(void) 
 {
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__GPIO2_IO13, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__GPIO2_IO13,
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
