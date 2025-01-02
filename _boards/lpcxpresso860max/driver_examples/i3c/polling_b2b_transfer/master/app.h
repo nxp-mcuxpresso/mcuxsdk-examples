@@ -17,6 +17,7 @@
 /* PP baudrate should be set equal to I3C FCLK dividing even number. */
 #define EXAMPLE_I3C_PP_BAUDRATE    750000
 #define I3C_MASTER_CLOCK_FREQUENCY CLOCK_GetI3cClkFreq()
+#define WAIT_TIME_US               200000
 /*${macro:end}*/
 
 /*******************************************************************************
