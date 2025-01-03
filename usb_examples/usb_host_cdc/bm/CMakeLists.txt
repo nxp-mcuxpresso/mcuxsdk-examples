@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_host_cdc/bm"
+  INCLUDES "examples/usb_examples/usb_host_cdc/bm"
 )
 
 mcux_add_macro(
@@ -33,10 +33,10 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_host_cdc/bm/app.c"
-    "middleware/usb/example/usb_host_cdc/bm/app.h"
-    "middleware/usb/example/usb_host_cdc/bm/host_cdc.c"
-    "middleware/usb/example/usb_host_cdc/bm/host_cdc.h"
+    "examples/usb_examples/usb_host_cdc/bm/app.c"
+    "examples/usb_examples/usb_host_cdc/bm/app.h"
+    "examples/usb_examples/usb_host_cdc/bm/host_cdc.c"
+    "examples/usb_examples/usb_host_cdc/bm/host_cdc.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_host_cdc/bm/reconfig.cmake" OPTIONAL)

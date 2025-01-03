@@ -1,7 +1,7 @@
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/boards/${board}/usb_device_msc_ramdisk/bm"
+  INCLUDES "${board_root}/${board}/usb_examples/usb_device_msc_ramdisk/bm"
 )
 
 mcux_add_source(
@@ -9,7 +9,7 @@ mcux_add_source(
   SOURCES
     "${board_root}/${board}/peripherals/peripherals.c"
     "${board_root}/${board}/peripherals/peripherals.h"
-    "middleware/usb/example/boards/${board}/usb_device_msc_ramdisk/bm/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_msc_ramdisk/bm/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_msc_ramdisk/bm/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_msc_ramdisk/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_msc_ramdisk/bm/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_msc_ramdisk/bm/pin_mux.h"
 )

@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_host_phdc_manager/bm"
+  INCLUDES "examples/usb_examples/usb_host_phdc_manager/bm"
 )
 
 mcux_add_macro(
@@ -33,13 +33,13 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_host_phdc_manager/bm/app.c"
-    "middleware/usb/example/usb_host_phdc_manager/bm/app.h"
-    "middleware/usb/example/usb_host_phdc_manager/bm/host_phdc_manager.c"
-    "middleware/usb/example/usb_host_phdc_manager/bm/host_phdc_manager.h"
-    "middleware/usb/example/usb_host_phdc_manager/bm/ieee11073_nomenclature.c"
-    "middleware/usb/example/usb_host_phdc_manager/bm/ieee11073_nomenclature.h"
-    "middleware/usb/example/usb_host_phdc_manager/bm/ieee11073_types.h"
+    "examples/usb_examples/usb_host_phdc_manager/bm/app.c"
+    "examples/usb_examples/usb_host_phdc_manager/bm/app.h"
+    "examples/usb_examples/usb_host_phdc_manager/bm/host_phdc_manager.c"
+    "examples/usb_examples/usb_host_phdc_manager/bm/host_phdc_manager.h"
+    "examples/usb_examples/usb_host_phdc_manager/bm/ieee11073_nomenclature.c"
+    "examples/usb_examples/usb_host_phdc_manager/bm/ieee11073_nomenclature.h"
+    "examples/usb_examples/usb_host_phdc_manager/bm/ieee11073_types.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_host_phdc_manager/bm/reconfig.cmake" OPTIONAL)

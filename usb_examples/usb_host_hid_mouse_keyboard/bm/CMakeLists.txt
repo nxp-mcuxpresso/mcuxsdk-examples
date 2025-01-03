@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_host_hid_mouse_keyboard/bm"
+  INCLUDES "examples/usb_examples/usb_host_hid_mouse_keyboard/bm"
 )
 
 mcux_add_macro(
@@ -33,13 +33,13 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/bm/app.c"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/bm/app.h"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/bm/host_keyboard.c"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/bm/host_keyboard.h"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/bm/host_keyboard_mouse.h"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/bm/host_mouse.c"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/bm/host_mouse.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/bm/app.c"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/bm/app.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/bm/host_keyboard.c"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/bm/host_keyboard.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/bm/host_keyboard_mouse.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/bm/host_mouse.c"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/bm/host_mouse.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_host_hid_mouse_keyboard/bm/reconfig.cmake" OPTIONAL)

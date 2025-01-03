@@ -20,7 +20,7 @@ mcux_add_iar_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "middleware/usb/example/usb_device_msc_disk/bm"
+    "examples/usb_examples/usb_device_msc_disk/bm"
     "middleware/usb/utility"
 )
 
@@ -35,10 +35,10 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_msc_disk/bm/disk.c"
-    "middleware/usb/example/usb_device_msc_disk/bm/disk.h"
-    "middleware/usb/example/usb_device_msc_disk/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_msc_disk/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_msc_disk/bm/disk.c"
+    "examples/usb_examples/usb_device_msc_disk/bm/disk.h"
+    "examples/usb_examples/usb_device_msc_disk/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_msc_disk/bm/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_msc_disk/bm/reconfig.cmake" OPTIONAL)

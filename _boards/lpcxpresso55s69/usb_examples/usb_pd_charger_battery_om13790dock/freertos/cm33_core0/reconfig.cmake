@@ -1,27 +1,25 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/usb/example/boards/lpcxpresso55s69_om13790dock/usb_pd_charger_battery/freertos/hardware_init.c
-            middleware/usb/example/boards/lpcxpresso55s69_om13790dock/usb_pd_charger_battery/freertos/pin_mux.c
-            middleware/usb/example/boards/lpcxpresso55s69_om13790dock/usb_pd_charger_battery/freertos/pin_mux.h
-            middleware/usb/example/boards/lpcxpresso55s69_om13790dock/usb_pd_charger_battery/freertos/pd_board_config.h
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_app_demo.c
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_app.h
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_command_app.c
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_command_interface.c
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_command_interface.h
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_power_app.c
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_power_interface.c
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_power_interface.h
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_power_nx20p3483.c
-            middleware/usb/example/usb_pd_charger_battery_om13790dock/freertos/pd_power_nx20p3483.h
+    SOURCES ${board_root}/${board}/usb_examples/usb_pd_charger_battery_om13790dock/freertos/hardware_init.c
+            ${board_root}/${board}/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pin_mux.c
+            ${board_root}/${board}/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pin_mux.h
+            ${board_root}/${board}/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_board_config.h
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_app_demo.c
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_app.h
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_command_app.c
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_command_interface.c
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_command_interface.h
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_power_app.c
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_power_interface.c
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_power_interface.h
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_power_nx20p3483.c
+            examples/usb_examples/usb_pd_charger_battery_om13790dock/freertos/pd_power_nx20p3483.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/usb/example/boards/lpcxpresso55s69_om13790dock/usb_pd_charger_battery/freertos
-             ${board_root}/lpcxpresso55s69_om13790dock/usb_examples/usb_pd_charger_battery/freertos/${core_id}/..
-             middleware/usb/config/freertos
+    INCLUDES ${board_root}/${board}/usb_examples/usb_pd_charger_battery_om13790dock/freertos
 )
 
 mcux_add_macro(

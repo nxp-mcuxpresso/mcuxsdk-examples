@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_pin_detect_hid_mouse/freertos"
+  INCLUDES "examples/usb_examples/usb_pin_detect_hid_mouse/freertos"
 )
 
 mcux_add_macro(
@@ -33,14 +33,14 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/app.c"
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/app.h"
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/device_mouse.c"
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/device_mouse.h"
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/host_mouse.c"
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/host_mouse.h"
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/usb_device_descriptor.c"
-    "middleware/usb/example/usb_pin_detect_hid_mouse/freertos/usb_device_descriptor.h"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/app.c"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/app.h"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/device_mouse.c"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/device_mouse.h"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/host_mouse.c"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/host_mouse.h"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/usb_device_descriptor.c"
+    "examples/usb_examples/usb_pin_detect_hid_mouse/freertos/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_pin_detect_hid_mouse/freertos/reconfig.cmake" OPTIONAL)

@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos"
+  INCLUDES "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos"
 )
 
 mcux_add_macro(
@@ -33,13 +33,13 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos/app.c"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos/app.h"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos/host_keyboard.c"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos/host_keyboard.h"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos/host_keyboard_mouse.h"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos/host_mouse.c"
-    "middleware/usb/example/usb_host_hid_mouse_keyboard/freertos/host_mouse.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos/app.c"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos/app.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos/host_keyboard.c"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos/host_keyboard.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos/host_keyboard_mouse.h"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos/host_mouse.c"
+    "examples/usb_examples/usb_host_hid_mouse_keyboard/freertos/host_mouse.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_host_hid_mouse_keyboard/freertos/reconfig.cmake" OPTIONAL)

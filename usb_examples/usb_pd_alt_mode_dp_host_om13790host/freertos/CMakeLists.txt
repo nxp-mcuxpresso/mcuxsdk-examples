@@ -7,12 +7,12 @@ project(usb_pd_alt_mode_dp_host_freertos_om13790host LANGUAGES C CXX ASM PROJECT
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/usb/example/usb_pd_alt_mode_dp_host_om13790host/freertos/pd_app.c
+    SOURCES examples/usb_examples/usb_pd_alt_mode_dp_host_om13790host/freertos/pd_app.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/usb/example/usb_pd_alt_mode_dp_host_om13790host/freertos
+    INCLUDES examples/usb_examples/usb_pd_alt_mode_dp_host_om13790host/freertos
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_pd_alt_mode_dp_host_om13790host/freertos/reconfig.cmake OPTIONAL)

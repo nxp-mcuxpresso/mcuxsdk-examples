@@ -18,17 +18,17 @@ mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
     "${board_root}/${board}/usb_examples/usb_device_dfu/freertos"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/freertos"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/freertos/${core_id}"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}"
 )
 
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_dfu/freertos/${core_id}/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/freertos/${core_id}/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/freertos/${core_id}/pin_mux.h"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/freertos/${core_id}/usb_device_dfu_config.h"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/usb_device_dfu_config.h"
     "middleware/usb/utility/usb_dfu_ram.c"
     "middleware/usb/utility/usb_flash.h"
 )

@@ -20,7 +20,7 @@ mcux_add_iar_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "middleware/usb/example/usb_device_dfu/freertos"
+    "examples/usb_examples/usb_device_dfu/freertos"
     "middleware/usb/utility"
 )
 
@@ -35,14 +35,14 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_dfu/freertos/dfu.c"
-    "middleware/usb/example/usb_device_dfu/freertos/dfu.h"
-    "middleware/usb/example/usb_device_dfu/freertos/dfu_app.c"
-    "middleware/usb/example/usb_device_dfu/freertos/dfu_app.h"
-    "middleware/usb/example/usb_device_dfu/freertos/dfu_timer.c"
-    "middleware/usb/example/usb_device_dfu/freertos/dfu_timer.h"
-    "middleware/usb/example/usb_device_dfu/freertos/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_dfu/freertos/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_dfu/freertos/dfu.c"
+    "examples/usb_examples/usb_device_dfu/freertos/dfu.h"
+    "examples/usb_examples/usb_device_dfu/freertos/dfu_app.c"
+    "examples/usb_examples/usb_device_dfu/freertos/dfu_app.h"
+    "examples/usb_examples/usb_device_dfu/freertos/dfu_timer.c"
+    "examples/usb_examples/usb_device_dfu/freertos/dfu_timer.h"
+    "examples/usb_examples/usb_device_dfu/freertos/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_dfu/freertos/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_dfu/freertos/reconfig.cmake" OPTIONAL)

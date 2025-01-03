@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_hid_mouse/freertos_static"
+  INCLUDES "examples/usb_examples/usb_device_hid_mouse/freertos_static"
 )
 
 mcux_add_macro(
@@ -33,10 +33,10 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_hid_mouse/freertos_static/mouse.c"
-    "middleware/usb/example/usb_device_hid_mouse/freertos_static/mouse.h"
-    "middleware/usb/example/usb_device_hid_mouse/freertos_static/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_hid_mouse/freertos_static/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_hid_mouse/freertos_static/mouse.c"
+    "examples/usb_examples/usb_device_hid_mouse/freertos_static/mouse.h"
+    "examples/usb_examples/usb_device_hid_mouse/freertos_static/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_hid_mouse/freertos_static/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_hid_mouse/freertos_static/reconfig.cmake" OPTIONAL)

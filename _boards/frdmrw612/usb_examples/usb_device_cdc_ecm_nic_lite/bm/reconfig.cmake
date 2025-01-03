@@ -25,7 +25,7 @@ mcux_add_mdk_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "middleware/usb/example/boards/${board}/usb_device_cdc_ecm_nic_lite/bm"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_ecm_nic_lite/bm"
     "middleware/usb/utility"
 )
 
@@ -36,9 +36,9 @@ mcux_add_macro(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_cdc_ecm_nic_lite/bm/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_ecm_nic_lite/bm/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_ecm_nic_lite/bm/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_ecm_nic_lite/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_ecm_nic_lite/bm/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_ecm_nic_lite/bm/pin_mux.h"
     "middleware/usb/utility/usb_eth_adapter.h"
     "middleware/usb/utility/usb_eth_enet_adapter.c"
 )

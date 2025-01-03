@@ -25,8 +25,8 @@ mcux_add_mdk_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vnic/freertos/${core_id}"
-    "middleware/usb/example/usb_device_cdc_vnic/freertos/netc_adapter"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vnic/freertos/${core_id}"
+    "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter"
 )
 
 mcux_remove_macro(
@@ -61,11 +61,11 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vnic/freertos/${core_id}/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vnic/freertos/${core_id}/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vnic/freertos/${core_id}/pin_mux.h"
-    "middleware/usb/example/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enet_adapter.c"
-    "middleware/usb/example/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enet_adapter.h"
-    "middleware/usb/example/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enetif.c"
-    "middleware/usb/example/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enetif.h"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vnic/freertos/${core_id}/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vnic/freertos/${core_id}/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vnic/freertos/${core_id}/pin_mux.h"
+    "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enet_adapter.c"
+    "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enet_adapter.h"
+    "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enetif.c"
+    "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enetif.h"
 )

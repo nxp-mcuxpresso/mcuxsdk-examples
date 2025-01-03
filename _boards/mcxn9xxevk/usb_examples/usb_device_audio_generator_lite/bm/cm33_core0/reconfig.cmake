@@ -25,16 +25,16 @@ mcux_add_mdk_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "middleware/usb/example/boards/${board}/usb_device_audio_generator_lite/bm"
-    "middleware/usb/example/boards/${board}/usb_device_audio_generator_lite/bm/${core_id}"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator_lite/bm"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator_lite/bm/${core_id}"
 )
 
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_audio_generator_lite/bm/${core_id}/usb_audio_config.h"
-    "middleware/usb/example/boards/${board}/usb_device_audio_generator_lite/bm/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_audio_generator_lite/bm/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_audio_generator_lite/bm/pin_mux.h"
-    "middleware/usb/example/usb_device_audio_generator_lite/bm/audio_data.c"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator_lite/bm/${core_id}/usb_audio_config.h"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator_lite/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator_lite/bm/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_audio_generator_lite/bm/pin_mux.h"
+    "examples/usb_examples/usb_device_audio_generator_lite/bm/audio_data.c"
 )

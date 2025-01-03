@@ -24,7 +24,7 @@ mcux_add_mdk_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/boards/${board}/usb_host_audio_recorder/freertos"
+  INCLUDES "${board_root}/${board}/usb_examples/usb_host_audio_recorder/freertos"
 )
 
 mcux_add_source(
@@ -37,7 +37,7 @@ mcux_add_source(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_host_audio_recorder/freertos/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_host_audio_recorder/freertos/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_host_audio_recorder/freertos/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_host_audio_recorder/freertos/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_host_audio_recorder/freertos/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_host_audio_recorder/freertos/pin_mux.h"
 )

@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_host_msd_fatfs/freertos"
+  INCLUDES "examples/usb_examples/usb_host_msd_fatfs/freertos"
 )
 
 mcux_add_macro(
@@ -33,10 +33,10 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_host_msd_fatfs/freertos/app.c"
-    "middleware/usb/example/usb_host_msd_fatfs/freertos/app.h"
-    "middleware/usb/example/usb_host_msd_fatfs/freertos/host_msd_fatfs.c"
-    "middleware/usb/example/usb_host_msd_fatfs/freertos/host_msd_fatfs.h"
+    "examples/usb_examples/usb_host_msd_fatfs/freertos/app.c"
+    "examples/usb_examples/usb_host_msd_fatfs/freertos/app.h"
+    "examples/usb_examples/usb_host_msd_fatfs/freertos/host_msd_fatfs.c"
+    "examples/usb_examples/usb_host_msd_fatfs/freertos/host_msd_fatfs.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_host_msd_fatfs/freertos/reconfig.cmake" OPTIONAL)

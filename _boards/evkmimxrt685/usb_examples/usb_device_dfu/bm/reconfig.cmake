@@ -30,7 +30,7 @@ mcux_add_mdk_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/boards/${board}/usb_device_dfu/bm"
+  INCLUDES "${board_root}/${board}/usb_examples/usb_device_dfu/bm"
 )
 
 mcux_add_macro(
@@ -40,10 +40,10 @@ mcux_add_macro(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_dfu/bm/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/bm/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/bm/pin_mux.h"
-    "middleware/usb/example/boards/${board}/usb_device_dfu/bm/usb_device_dfu_config.h"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/bm/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/bm/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_dfu/bm/usb_device_dfu_config.h"
     "middleware/usb/utility/usb_dfu_ram.c"
     "middleware/usb/utility/usb_flash.h"
 )

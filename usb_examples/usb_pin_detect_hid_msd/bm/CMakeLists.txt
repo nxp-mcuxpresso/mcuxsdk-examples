@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_pin_detect_hid_msd/bm"
+  INCLUDES "examples/usb_examples/usb_pin_detect_hid_msd/bm"
 )
 
 mcux_add_macro(
@@ -33,16 +33,16 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/app.c"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/app.h"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/device_mouse.c"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/device_mouse.h"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/host_app.c"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/host_app.h"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/host_msd_fatfs.c"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/host_msd_fatfs.h"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_pin_detect_hid_msd/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/app.c"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/app.h"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/device_mouse.c"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/device_mouse.h"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/host_app.c"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/host_app.h"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/host_msd_fatfs.c"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/host_msd_fatfs.h"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_pin_detect_hid_msd/bm/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_pin_detect_hid_msd/bm/reconfig.cmake" OPTIONAL)

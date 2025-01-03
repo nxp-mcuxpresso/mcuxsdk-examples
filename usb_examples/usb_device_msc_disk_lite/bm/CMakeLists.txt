@@ -20,7 +20,7 @@ mcux_add_iar_configuration(
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
-    "middleware/usb/example/usb_device_msc_disk_lite/bm"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm"
     "middleware/usb/utility"
 )
 
@@ -35,16 +35,16 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/disk.c"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/disk.h"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_ch9.c"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_ch9.h"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_descriptor.h"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_msc.c"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_msc.h"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_msc_ufi.c"
-    "middleware/usb/example/usb_device_msc_disk_lite/bm/usb_device_msc_ufi.h"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/disk.c"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/disk.h"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_ch9.c"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_ch9.h"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_msc.c"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_msc.h"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_msc_ufi.c"
+    "examples/usb_examples/usb_device_msc_disk_lite/bm/usb_device_msc_ufi.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_msc_disk_lite/bm/reconfig.cmake" OPTIONAL)

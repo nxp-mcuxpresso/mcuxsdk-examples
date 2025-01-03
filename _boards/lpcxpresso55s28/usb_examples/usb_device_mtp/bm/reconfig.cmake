@@ -42,7 +42,7 @@ mcux_add_mdk_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/boards/${board}/usb_device_mtp/bm"
+  INCLUDES "${board_root}/${board}/usb_examples/usb_device_mtp/bm"
 )
 
 mcux_add_macro(
@@ -54,8 +54,8 @@ mcux_add_source(
   SOURCES
     "${board_root}/${board}/sdmmc_config.c"
     "${board_root}/${board}/sdmmc_config.h"
-    "middleware/usb/example/boards/${board}/usb_device_mtp/bm/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_mtp/bm/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_mtp/bm/pin_mux.h"
-    "middleware/usb/example/boards/${board}/usb_device_mtp/bm/usb_device_mtp_config.h"
+    "${board_root}/${board}/usb_examples/usb_device_mtp/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_mtp/bm/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_mtp/bm/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_mtp/bm/usb_device_mtp_config.h"
 )

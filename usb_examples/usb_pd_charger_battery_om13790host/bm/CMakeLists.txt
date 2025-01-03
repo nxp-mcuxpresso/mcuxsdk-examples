@@ -7,12 +7,12 @@ project(usb_pd_charger_battery_bm_om13790host LANGUAGES C CXX ASM PROJECT_BOARD_
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/usb/example/usb_pd_charger_battery_om13790host/bm/pd_app.c
+    SOURCES examples/usb_examples/usb_pd_charger_battery_om13790host/bm/pd_app.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/usb/example/usb_pd_charger_battery_om13790host/bm
+    INCLUDES examples/usb_examples/usb_pd_charger_battery_om13790host/bm
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_pd_charger_battery_om13790host/bm/reconfig.cmake OPTIONAL)

@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_mtp/bm"
+  INCLUDES "examples/usb_examples/usb_device_mtp/bm"
 )
 
 mcux_add_macro(
@@ -33,16 +33,16 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_mtp/bm/mtp.c"
-    "middleware/usb/example/usb_device_mtp/bm/mtp.h"
-    "middleware/usb/example/usb_device_mtp/bm/mtp_file_system_adapter.c"
-    "middleware/usb/example/usb_device_mtp/bm/mtp_file_system_adapter.h"
-    "middleware/usb/example/usb_device_mtp/bm/mtp_object_handle.c"
-    "middleware/usb/example/usb_device_mtp/bm/mtp_object_handle.h"
-    "middleware/usb/example/usb_device_mtp/bm/mtp_operation.c"
-    "middleware/usb/example/usb_device_mtp/bm/mtp_operation.h"
-    "middleware/usb/example/usb_device_mtp/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_mtp/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_mtp/bm/mtp.c"
+    "examples/usb_examples/usb_device_mtp/bm/mtp.h"
+    "examples/usb_examples/usb_device_mtp/bm/mtp_file_system_adapter.c"
+    "examples/usb_examples/usb_device_mtp/bm/mtp_file_system_adapter.h"
+    "examples/usb_examples/usb_device_mtp/bm/mtp_object_handle.c"
+    "examples/usb_examples/usb_device_mtp/bm/mtp_object_handle.h"
+    "examples/usb_examples/usb_device_mtp/bm/mtp_operation.c"
+    "examples/usb_examples/usb_device_mtp/bm/mtp_operation.h"
+    "examples/usb_examples/usb_device_mtp/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_mtp/bm/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_mtp/bm/reconfig.cmake" OPTIONAL)

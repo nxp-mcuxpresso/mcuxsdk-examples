@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_host_audio_speaker/freertos"
+  INCLUDES "examples/usb_examples/usb_host_audio_speaker/freertos"
 )
 
 mcux_add_macro(
@@ -33,13 +33,13 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_host_audio_speaker/freertos/app.c"
-    "middleware/usb/example/usb_host_audio_speaker/freertos/app.h"
-    "middleware/usb/example/usb_host_audio_speaker/freertos/audio8k16S.c"
-    "middleware/usb/example/usb_host_audio_speaker/freertos/audio_speaker.c"
-    "middleware/usb/example/usb_host_audio_speaker/freertos/audio_speaker.h"
-    "middleware/usb/example/usb_host_audio_speaker/freertos/host_keypad.c"
-    "middleware/usb/example/usb_host_audio_speaker/freertos/host_keypad.h"
+    "examples/usb_examples/usb_host_audio_speaker/freertos/app.c"
+    "examples/usb_examples/usb_host_audio_speaker/freertos/app.h"
+    "examples/usb_examples/usb_host_audio_speaker/freertos/audio8k16S.c"
+    "examples/usb_examples/usb_host_audio_speaker/freertos/audio_speaker.c"
+    "examples/usb_examples/usb_host_audio_speaker/freertos/audio_speaker.h"
+    "examples/usb_examples/usb_host_audio_speaker/freertos/host_keypad.c"
+    "examples/usb_examples/usb_host_audio_speaker/freertos/host_keypad.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_host_audio_speaker/freertos/reconfig.cmake" OPTIONAL)

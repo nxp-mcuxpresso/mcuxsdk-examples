@@ -40,7 +40,7 @@ mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
     "${board_root}/${board}/usb_examples/usb_host_hid_generic/bm"
-    "middleware/usb/example/boards/${board}/usb_host_hid_generic/bm"
+    "${board_root}/${board}/usb_examples/usb_host_hid_generic/bm"
 )
 
 mcux_add_macro(
@@ -50,7 +50,7 @@ mcux_add_macro(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_host_hid_generic/bm/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_host_hid_generic/bm/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_host_hid_generic/bm/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_host_hid_generic/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_host_hid_generic/bm/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_host_hid_generic/bm/pin_mux.h"
 )

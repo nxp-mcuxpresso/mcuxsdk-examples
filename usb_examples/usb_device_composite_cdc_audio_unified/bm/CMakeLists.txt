@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm"
+  INCLUDES "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm"
 )
 
 mcux_add_macro(
@@ -33,16 +33,16 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/audio_data_dmic.c"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/audio_data_dmic.h"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/audio_unified.c"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/audio_unified.h"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/composite.c"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/composite.h"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/usb_device_descriptor.h"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/virtual_com.c"
-    "middleware/usb/example/usb_device_composite_cdc_audio_unified/bm/virtual_com.h"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/audio_data_dmic.c"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/audio_data_dmic.h"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/audio_unified.c"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/audio_unified.h"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/composite.c"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/composite.h"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/virtual_com.c"
+    "examples/usb_examples/usb_device_composite_cdc_audio_unified/bm/virtual_com.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_composite_cdc_audio_unified/bm/reconfig.cmake" OPTIONAL)

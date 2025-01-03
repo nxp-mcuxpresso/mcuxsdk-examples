@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_phdc_weighscale/freertos"
+  INCLUDES "examples/usb_examples/usb_device_phdc_weighscale/freertos"
 )
 
 mcux_add_macro(
@@ -33,17 +33,17 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/ieee11073_agent.c"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/ieee11073_agent.h"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/ieee11073_timer.c"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/ieee11073_timer.h"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/ieee11073_types.h"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/usb_device_descriptor.h"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/usb_shim_agent.c"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/usb_shim_agent.h"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/weighscale.c"
-    "middleware/usb/example/usb_device_phdc_weighscale/freertos/weighscale.h"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/ieee11073_agent.c"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/ieee11073_agent.h"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/ieee11073_timer.c"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/ieee11073_timer.h"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/ieee11073_types.h"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/usb_shim_agent.c"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/usb_shim_agent.h"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/weighscale.c"
+    "examples/usb_examples/usb_device_phdc_weighscale/freertos/weighscale.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_phdc_weighscale/freertos/reconfig.cmake" OPTIONAL)

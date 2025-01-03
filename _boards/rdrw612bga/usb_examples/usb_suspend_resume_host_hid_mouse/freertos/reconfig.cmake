@@ -12,7 +12,7 @@ mcux_add_mdk_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/boards/${board}/usb_suspend_resume_host_hid_mouse/freertos"
+  INCLUDES "${board_root}/${board}/usb_examples/usb_suspend_resume_host_hid_mouse/freertos"
 )
 
 mcux_add_source(
@@ -20,7 +20,7 @@ mcux_add_source(
   SOURCES
     "${board_root}/${board}/lpm.c"
     "${board_root}/${board}/lpm.h"
-    "middleware/usb/example/boards/${board}/usb_suspend_resume_host_hid_mouse/freertos/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_suspend_resume_host_hid_mouse/freertos/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_suspend_resume_host_hid_mouse/freertos/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_suspend_resume_host_hid_mouse/freertos/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_suspend_resume_host_hid_mouse/freertos/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_suspend_resume_host_hid_mouse/freertos/pin_mux.h"
 )

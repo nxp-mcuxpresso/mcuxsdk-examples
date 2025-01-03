@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_video_virtual_camera/freertos"
+  INCLUDES "examples/usb_examples/usb_device_video_virtual_camera/freertos"
 )
 
 mcux_add_macro(
@@ -33,12 +33,12 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_video_virtual_camera/freertos/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_video_virtual_camera/freertos/usb_device_descriptor.h"
-    "middleware/usb/example/usb_device_video_virtual_camera/freertos/video_data.c"
-    "middleware/usb/example/usb_device_video_virtual_camera/freertos/video_data.h"
-    "middleware/usb/example/usb_device_video_virtual_camera/freertos/virtual_camera.c"
-    "middleware/usb/example/usb_device_video_virtual_camera/freertos/virtual_camera.h"
+    "examples/usb_examples/usb_device_video_virtual_camera/freertos/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_video_virtual_camera/freertos/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_video_virtual_camera/freertos/video_data.c"
+    "examples/usb_examples/usb_device_video_virtual_camera/freertos/video_data.h"
+    "examples/usb_examples/usb_device_video_virtual_camera/freertos/virtual_camera.c"
+    "examples/usb_examples/usb_device_video_virtual_camera/freertos/virtual_camera.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_video_virtual_camera/freertos/reconfig.cmake" OPTIONAL)

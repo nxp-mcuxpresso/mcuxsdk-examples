@@ -40,7 +40,7 @@ mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
     "${board_root}/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm"
-    "middleware/usb/example/boards/${board}/usb_device_composite_hid_mouse_hid_keyboard_lite/bm"
+    "${board_root}/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm"
 )
 
 mcux_add_macro(
@@ -50,7 +50,7 @@ mcux_add_macro(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard_lite/bm/pin_mux.h"
 )

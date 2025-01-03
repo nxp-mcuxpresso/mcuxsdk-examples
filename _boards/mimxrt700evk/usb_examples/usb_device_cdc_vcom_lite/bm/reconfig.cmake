@@ -18,14 +18,14 @@ mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
   INCLUDES
     "${board_root}/${board}/usb_examples/usb_device_cdc_vcom_lite/bm"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vcom_lite/bm"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vcom_lite/bm/${core_id}"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vcom_lite/bm"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vcom_lite/bm/${core_id}"
 )
 
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vcom_lite/bm/${core_id}/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vcom_lite/bm/${core_id}/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_cdc_vcom_lite/bm/${core_id}/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vcom_lite/bm/${core_id}/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vcom_lite/bm/${core_id}/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_cdc_vcom_lite/bm/${core_id}/pin_mux.h"
 )

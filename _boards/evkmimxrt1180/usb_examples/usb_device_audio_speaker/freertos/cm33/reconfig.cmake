@@ -28,7 +28,7 @@ mcux_add_armgcc_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/boards/${board}/usb_device_audio_speaker/freertos/${core_id}"
+  INCLUDES "${board_root}/${board}/usb_examples/usb_device_audio_speaker/freertos/${core_id}"
 )
 
 mcux_remove_macro(
@@ -56,11 +56,11 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_device_audio_speaker/freertos/${core_id}/app.h"
-    "middleware/usb/example/boards/${board}/usb_device_audio_speaker/freertos/${core_id}/hardware_init.c"
-    "middleware/usb/example/boards/${board}/usb_device_audio_speaker/freertos/${core_id}/pin_mux.c"
-    "middleware/usb/example/boards/${board}/usb_device_audio_speaker/freertos/${core_id}/pin_mux.h"
-    "middleware/usb/example/boards/${board}/usb_device_audio_speaker/freertos/${core_id}/usb_audio_config.h"
+    "${board_root}/${board}/usb_examples/usb_device_audio_speaker/freertos/${core_id}/app.h"
+    "${board_root}/${board}/usb_examples/usb_device_audio_speaker/freertos/${core_id}/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_device_audio_speaker/freertos/${core_id}/pin_mux.c"
+    "${board_root}/${board}/usb_examples/usb_device_audio_speaker/freertos/${core_id}/pin_mux.h"
+    "${board_root}/${board}/usb_examples/usb_device_audio_speaker/freertos/${core_id}/usb_audio_config.h"
 )
 
 mcux_remove_armgcc_configuration(

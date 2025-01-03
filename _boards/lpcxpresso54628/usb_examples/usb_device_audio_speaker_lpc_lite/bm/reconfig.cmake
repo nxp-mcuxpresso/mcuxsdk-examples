@@ -25,24 +25,24 @@ mcux_add_mdk_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/usb/example/boards/${board}/usb_device_audio_speaker_lpc_lite/bm/app.h
-            middleware/usb/example/boards/${board}/usb_device_audio_speaker_lpc_lite/bm/usb_audio_config.h
-            middleware/usb/example/boards/${board}/usb_device_audio_speaker_lpc_lite/bm/./hardware_init.c
-            middleware/usb/example/boards/${board}/usb_device_audio_speaker_lpc_lite/bm/./pin_mux.c
-            middleware/usb/example/boards/${board}/usb_device_audio_speaker_lpc_lite/bm/./pin_mux.h
-            middleware/usb/example/usb_device_audio_speaker_lpc_lite/bm/audio_speaker.h
-            middleware/usb/example/usb_device_audio_speaker_lpc_lite/bm/usb_device_descriptor.c
-            middleware/usb/example/usb_device_audio_speaker_lpc_lite/bm/usb_device_descriptor.h
-            middleware/usb/example/usb_device_audio_speaker_lpc_lite/bm/usb_device_audio.c
-            middleware/usb/example/usb_device_audio_speaker_lpc_lite/bm/usb_device_audio.h
-            middleware/usb/example/usb_device_audio_speaker_lpc_lite/bm/usb_device_ch9.c
-            middleware/usb/example/usb_device_audio_speaker_lpc_lite/bm/usb_device_ch9.h
+    SOURCES ${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc_lite/bm/app.h
+            ${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc_lite/bm/usb_audio_config.h
+            ${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc_lite/bm/./hardware_init.c
+            ${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc_lite/bm/./pin_mux.c
+            ${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc_lite/bm/./pin_mux.h
+            examples/usb_examples/usb_device_audio_speaker_lpc_lite/bm/audio_speaker.h
+            examples/usb_examples/usb_device_audio_speaker_lpc_lite/bm/usb_device_descriptor.c
+            examples/usb_examples/usb_device_audio_speaker_lpc_lite/bm/usb_device_descriptor.h
+            examples/usb_examples/usb_device_audio_speaker_lpc_lite/bm/usb_device_audio.c
+            examples/usb_examples/usb_device_audio_speaker_lpc_lite/bm/usb_device_audio.h
+            examples/usb_examples/usb_device_audio_speaker_lpc_lite/bm/usb_device_ch9.c
+            examples/usb_examples/usb_device_audio_speaker_lpc_lite/bm/usb_device_ch9.h
             
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/usb/example/boards/${board}/usb_device_audio_speaker_lpc_lite/bm
+    INCLUDES ${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc_lite/bm
 )
 
 

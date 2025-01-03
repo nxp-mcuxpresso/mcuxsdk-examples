@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_composite_hid_audio_lite/bm"
+  INCLUDES "examples/usb_examples/usb_device_composite_hid_audio_lite/bm"
 )
 
 mcux_add_macro(
@@ -33,20 +33,20 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/audio_generator.c"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/audio_generator.h"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/composite.c"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/composite.h"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/mouse.c"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/mouse.h"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_audio.c"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_audio.h"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_ch9.c"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_ch9.h"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_descriptor.h"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_hid.c"
-    "middleware/usb/example/usb_device_composite_hid_audio_lite/bm/usb_device_hid.h"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/audio_generator.c"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/audio_generator.h"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/composite.c"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/composite.h"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/mouse.c"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/mouse.h"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_audio.c"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_audio.h"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_ch9.c"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_ch9.h"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_hid.c"
+    "examples/usb_examples/usb_device_composite_hid_audio_lite/bm/usb_device_hid.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_composite_hid_audio_lite/bm/reconfig.cmake" OPTIONAL)

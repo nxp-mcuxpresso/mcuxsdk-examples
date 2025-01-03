@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_audio_speaker_lpc/bm"
+  INCLUDES "examples/usb_examples/usb_device_audio_speaker_lpc/bm"
 )
 
 mcux_add_macro(
@@ -33,10 +33,10 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_audio_speaker_lpc/bm/audio_speaker.c"
-    "middleware/usb/example/usb_device_audio_speaker_lpc/bm/audio_speaker.h"
-    "middleware/usb/example/usb_device_audio_speaker_lpc/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_audio_speaker_lpc/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_audio_speaker_lpc/bm/audio_speaker.c"
+    "examples/usb_examples/usb_device_audio_speaker_lpc/bm/audio_speaker.h"
+    "examples/usb_examples/usb_device_audio_speaker_lpc/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_audio_speaker_lpc/bm/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_audio_speaker_lpc/bm/reconfig.cmake" OPTIONAL)

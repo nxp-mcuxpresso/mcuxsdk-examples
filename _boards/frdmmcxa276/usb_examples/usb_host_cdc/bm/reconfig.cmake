@@ -24,11 +24,11 @@ mcux_add_mdk_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/boards/${board}/usb_host_cdc/bm"
+  INCLUDES "${board_root}/${board}/usb_examples/usb_host_cdc/bm"
 )
 
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/boards/${board}/usb_host_cdc/bm/hardware_init.c"
+    "${board_root}/${board}/usb_examples/usb_host_cdc/bm/hardware_init.c"
 )

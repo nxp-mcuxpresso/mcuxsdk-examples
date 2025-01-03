@@ -19,7 +19,7 @@ mcux_add_iar_configuration(
 
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
-  INCLUDES "middleware/usb/example/usb_device_composite_hid_audio/bm"
+  INCLUDES "examples/usb_examples/usb_device_composite_hid_audio/bm"
 )
 
 mcux_add_macro(
@@ -33,14 +33,14 @@ mcux_add_mdk_configuration(
 mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/audio_generator.c"
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/audio_generator.h"
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/composite.c"
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/composite.h"
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/mouse.c"
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/mouse.h"
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/usb_device_descriptor.c"
-    "middleware/usb/example/usb_device_composite_hid_audio/bm/usb_device_descriptor.h"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/audio_generator.c"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/audio_generator.h"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/composite.c"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/composite.h"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/mouse.c"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/mouse.h"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/usb_device_descriptor.c"
+    "examples/usb_examples/usb_device_composite_hid_audio/bm/usb_device_descriptor.h"
 )
 
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_composite_hid_audio/bm/reconfig.cmake" OPTIONAL)
