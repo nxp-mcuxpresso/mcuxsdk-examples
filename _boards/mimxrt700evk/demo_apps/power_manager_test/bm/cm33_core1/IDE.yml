@@ -1,0 +1,8 @@
+iar:
+  config:
+    __common__:
+      debugger_setting:
+        suppress_download: true
+        verify_download: false
+      debugger_extra_options:
+      - --macro_param _enableCore1=0
