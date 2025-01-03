@@ -15,6 +15,7 @@ Examples
    coex_examples/index.rst
    component_examples/index.rst
    demo_apps/index.rst
+   digital_encoder_examples/index.rst
    display_examples/index.rst
    driver_examples/index.rst
    dsp_examples/index.rst

@@ -1,0 +1,29 @@
+biss:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/biss
+    project-root-path: boards/${board}/digital_encoder_examples/biss/${multicore_foldername}
+    document:
+      name: biss${core_id_suffix_name}
+      category: digital_encoder
+      brief: BiSS interface example
+      example_readme:
+      - examples/digital_encoder_examples/biss/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/biss/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm7_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
+    imx943evk@cm7_core0:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
