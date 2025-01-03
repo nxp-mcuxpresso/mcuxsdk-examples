@@ -7,5 +7,4 @@ ncp_examples
    :maxdepth: 1
 
 
-   ncp_device/readme.md
    ncp_host/readme.md
