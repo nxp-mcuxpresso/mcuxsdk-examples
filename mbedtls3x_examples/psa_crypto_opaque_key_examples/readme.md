@@ -51,25 +51,53 @@ Card inserted.
 Create directory......
 Directory exists.
 File System initialized for Persistent Storage
+Location is 1
+
+VOLATILE KEYS
 
 ECC keys
-224 bit PERSISTENT ECC_KEY_PAIR(SECP_R1) with sign/verify algo ECDSA(SHA224): PASSED
+224 bit ECC_KEY_PAIR(SECP_R1) with sign/verify algo ECDSA(SHA224): PASSED
 521 bit ECC_KEY_PAIR(SECP_R1) with sign/verify algo ECDSA(SHA512): PASSED
+256 bit ECC_KEY_PAIR(SECP_R1) with sign/verify algo ECDSA(SHA256): PASSED
 256 ECC_KEY_PAIR(BRAINPOOL_R1) with sign/verify algo ECDSA(SHA256): PASSED
 384 bit ECC_KEY_PAIR(BRAINPOOL_R1) with sign/verify algo ECDSA(SHA384): PASSED
 
-AES keys 
-128 bit PERSISTENT AES key with encrypt/decrypt algo ECB_NO_PADDING: PASSED
-196 bit AES key with encrypt/decrypt algo CBC_NO_PADDING: FAILED
+AES keys
+128 bit AES key with encrypt/decrypt algo ECB_NO_PADDING: PASSED
+192 bit AES key with encrypt/decrypt algo CBC_NO_PADDING: PASSED
 256 bit AES key with encrypt/decrypt algo CTR: PASSED
 128 bit AES key with encrypt/decrypt algo CCM: PASSED
 256 bit AES key with encrypt/decrypt algo GCM: PASSED
 192 bit AES key with sign/verify algo CMAC : PASSED
 
-MAC keys 
+MAC keys
 256 bit PERSISTENT HMAC key with sign/verify algo HMAC(SHA-256): PASSED
 
-RSA keys 
+RSA keys
+2048 bit RSA key with sign/verify algo RSA_PKCS1V15(SHA256) : PASSED
+2048 bit RSA key with sign/verify algo RSA_PSS(SHA512) : PASSED
+
+PERSISTENT KEYS
+
+ECC keys
+224 bit ECC_KEY_PAIR(SECP_R1) with sign/verify algo ECDSA(SHA224): PASSED
+521 bit ECC_KEY_PAIR(SECP_R1) with sign/verify algo ECDSA(SHA512): PASSED
+256 bit ECC_KEY_PAIR(SECP_R1) with sign/verify algo ECDSA(SHA256): PASSED
+256 ECC_KEY_PAIR(BRAINPOOL_R1) with sign/verify algo ECDSA(SHA256): PASSED
+384 bit ECC_KEY_PAIR(BRAINPOOL_R1) with sign/verify algo ECDSA(SHA384): PASSED
+
+AES keys
+128 bit AES key with encrypt/decrypt algo ECB_NO_PADDING: PASSED
+192 bit AES key with encrypt/decrypt algo CBC_NO_PADDING: PASSED
+256 bit AES key with encrypt/decrypt algo CTR: PASSED
+128 bit AES key with encrypt/decrypt algo CCM: PASSED
+256 bit AES key with encrypt/decrypt algo GCM: PASSED
+192 bit AES key with sign/verify algo CMAC : PASSED
+
+MAC keys
+256 bit PERSISTENT HMAC key with sign/verify algo HMAC(SHA-256): PASSED
+
+RSA keys
 2048 bit RSA key with sign/verify algo RSA_PKCS1V15(SHA256) : PASSED
 2048 bit RSA key with sign/verify algo RSA_PSS(SHA512) : PASSED
 
