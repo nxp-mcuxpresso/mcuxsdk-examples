@@ -24,6 +24,11 @@
 #if defined(BOARD_DBG_SWO_CORE_FUNNEL) && (BOARD_DBG_SWO_CORE_FUNNEL != 0)
 #include "fwk_debug_swo.h"
 #endif
+
+#if defined(DBG_SWO_PIN_ENABLE) && (DBG_SWO_PIN_ENABLE != 0)
+#include "fwk_debug_swo.h"
+#endif
+
 /*${header:end}*/
 
 /*${function:start}*/
@@ -93,6 +98,14 @@ void BOARD_InitHardware(void)
     /* Configure SoC so that SWO can be controlled */
     DBG_InitSWO(BOARD_DBG_SWO_CORE_FUNNEL);
 #endif
+
+#if defined(DBG_SWO_PIN_ENABLE) && (DBG_SWO_PIN_ENABLE != 0)
+    /* Configure SWO signal routing on GPIO */
+    BOARD_InitPinSWO();
+    /* Configure SoC so that SWO can be controlled */
+    DBG_InitSWOFunnelMuxing(DBG_SWO_FUNNEL_MUXING);
+#endif
+
 }
 
 /* -------------------------------------------------------------------------- */

@@ -41,6 +41,25 @@
 
 #define gAppUseSensors_d                0
 
+/* Enable debug throught SWO trace */
+#define gDbg_SwoEnabled_d       0
+
+#if (defined(gDbg_SwoEnabled_d) && (gDbg_SwoEnabled_d == 1))
+
+/* Define to 1 if you want to configure the DWT/ITM/TPIU-SWO via SW i.s.o.the probe */
+#define DBG_SWO_INIT_VIA_SW 1
+/* Define to 1 to route SWO signal on GPIO */
+/* Setting shall be done on Main Application Core PPB */
+#define DBG_SWO_PIN_ENABLE 1
+/* CoreSight Funnel SWO route Muxing configuration    */
+/* Setting shall be done on Main Application Core PPB */
+#define DBG_SWO_CORE_MAIN_CORE 1 // Main Core
+#define DBG_SWO_CORE_NBU_CORE  2 // Nbu Core
+#define DBG_SWO_FUNNEL_MUXING DBG_SWO_CORE_NBU_CORE
+
+#endif /* gDbg_SwoEnabled_d == 1 */
+
+
 /*
  * TimerManager Configuration
  */
