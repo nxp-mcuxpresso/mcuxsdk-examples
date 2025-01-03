@@ -6,6 +6,7 @@ Hardware requirements
 
 Board settings
 ============
+IMPORTANT: Connect pin 2-3 of JP1 and JP56 (sets VCC_1V9 for MCU and flash)
 Connect pin 1-2 of JP41,JP42,JP43,JP44,JP45,JP64 and JP65.
 Close JP66,JP67,JP68 and JP69.
 
