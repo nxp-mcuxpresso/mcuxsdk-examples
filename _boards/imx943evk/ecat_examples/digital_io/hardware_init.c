@@ -160,7 +160,7 @@ void Reserved194_IRQHandler(void)
 /*config Sync1 IRQ*/
 void Reserved195_IRQHandler(void)
 {
-	Sync0_Isr();
+	Sync1_Isr();
     SDK_ISR_EXIT_BARRIER;
 }
 
