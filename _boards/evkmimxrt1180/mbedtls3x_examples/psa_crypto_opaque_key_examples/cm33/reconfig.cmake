@@ -15,12 +15,9 @@ mcux_add_include(
 )
 
 mcux_add_macro(
-    CC "-DTEST_KEY_LOCATION=PSA_CRYPTO_ELE_S4XX_LOCATION -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
+    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
 )
 
 mcux_add_macro(
-        CC  "PSA_CRYPTO_DRIVER_ELE_S4XX"
+    CC  "PSA_CRYPTO_DRIVER_ELE_S4XX"
 )
-	
-
-

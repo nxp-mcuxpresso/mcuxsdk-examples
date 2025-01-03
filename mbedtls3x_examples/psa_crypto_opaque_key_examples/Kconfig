@@ -9,3 +9,7 @@ config TEST_KEY_LOCATION
     hex "The key location to be used for test"
     help
         No prefix in generated macro
+        This macro defines a PSA API psa_key_location_t value for the keys used
+        in this test example. The default value is overridden in the device-specific
+        project configuration files. For more information on the meaning of this value,
+        please refer to the PSA API documentation for the psa_key_location_t type.
