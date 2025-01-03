@@ -186,6 +186,7 @@ SECTIONS
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     */fsl_cache.c.obj(.text .text* .rodata .rodata*)
+    */fsl_reset.c.obj(.text .text* .rodata .rodata*)
     */bignum.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */

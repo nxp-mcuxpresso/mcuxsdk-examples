@@ -20,7 +20,8 @@ mcux_add_mdk_configuration(
 
 mcux_add_macro(
     CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
-       -DHIGH_SPEED_SDIO_CLOCK"
+       -DHIGH_SPEED_SDIO_CLOCK\
+       -DFSL_SDK_DISABLE_DRIVER_RESET_CONTROL=1"
 )
 
 mcux_remove_mdk_configuration(

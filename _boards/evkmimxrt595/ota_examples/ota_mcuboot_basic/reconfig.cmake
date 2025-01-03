@@ -1,4 +1,7 @@
 
+mcux_add_macro(
+    CC "-DFSL_SDK_DISABLE_DRIVER_RESET_CONTROL=1"
+)
 
 
 # Add additional configuration
