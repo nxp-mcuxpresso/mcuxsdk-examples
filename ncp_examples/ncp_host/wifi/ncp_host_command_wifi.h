@@ -50,11 +50,11 @@ typedef struct _wifi_sta_info_t
 /** This structure is used for Wi-Fi CSI (channel state information) filter configuration. */
 typedef NCP_TLV_PACK_START struct _wifi_csi_filter_t
 {
-    /** Source address of the packet to receive */
+    /** Source address of the packet to receive. */
     uint8_t mac_addr[MLAN_MAC_ADDR_LENGTH];
-    /** Packet type of the interested CSI */
+    /** Packet type of the interested CSI. */
     uint8_t pkt_type;
-    /** Packet subtype of the interested CSI */
+    /** Packet subtype of the interested CSI. */
     uint8_t subtype;
     /** Other filter flags */
     uint8_t flags;
@@ -63,11 +63,17 @@ typedef NCP_TLV_PACK_START struct _wifi_csi_filter_t
 /** This structure is used for Wi-Fi CSI configuration. */
 typedef NCP_TLV_PACK_START struct _wifi_csi_config_params_t
 {   
-   /** 0: STA; 1: UAP. */
+   /** BSS type, \n
+    *  0: STA; \n
+    *  1: UAP.
+    */
     uint8_t bss_type;
-    /** CSI enable flag. 1: enable, 2: disable */
+    /** CSI enable flag, \n
+     *  1: enable, \n
+     *  2: disable.
+     */
     uint16_t csi_enable;
-    /** Header ID*/
+    /** Header ID */
     uint32_t head_id;
     /** Tail ID */
     uint32_t tail_id;
@@ -81,9 +87,9 @@ typedef NCP_TLV_PACK_START struct _wifi_csi_config_params_t
     uint8_t channel;
     /** Enable getting CSI data on special channel */
     uint8_t csi_monitor_enable;
-    /** CSI data received in cfg channel with mac addr filter, not only RA is us or other*/
+    /** CSI data received in cfg channel with mac addr filter, not only RA is us or other. */
     uint8_t ra4us;
-    /** CSI filters */
+    /** CSI filters. */
     wifi_csi_filter_t csi_filter[CSI_FILTER_MAX];
 } NCP_TLV_PACK_END wifi_csi_config_params_t;
 
@@ -157,7 +163,7 @@ enum wlan_mef_type
 #define WIFI_SUPPORT_LEGACY (1 << 0)
 #endif
 
-/** Network wireless BSS Role */
+/** Network wireless BSS role. */
 enum wlan_bss_role
 {
     /** Infrastructure network. The system will act as a station connected
@@ -166,7 +172,7 @@ enum wlan_bss_role
     /** UAP network. The system will act as an UAP node to
      * which other Wireless clients can connect. */
     WLAN_BSS_ROLE_UAP = 1,
-    /** Either Infrastructure network or UAP network */
+    /** Either infrastructure network or UAP network */
     WLAN_BSS_ROLE_ANY = 0xff,
 };
 	
@@ -203,7 +209,7 @@ enum wlan_security_type
      * is specific to uAP or SoftAP only */
     WLAN_SECURITY_WPA2_WPA3_SAE_MIXED,
 #if CONFIG_NCP_OWE
-    /** The network uses OWE only security without Transition mode support. */
+    /** The network uses OWE only security without transition mode support. */
     WLAN_SECURITY_OWE_ONLY,
 #endif
 #if CONFIG_NCP_WPA_SUPP_CRYPTO_ENTERPRISE
@@ -213,7 +219,7 @@ enum wlan_security_type
 #endif
 #if CONFIG_NCP_WPA_SUPP_CRYPTO_ENTERPRISE
 #if CONFIG_NCP_EAP_TLS
-    /** The network uses WPA2 Enterprise EAP-TLS SHA256 security
+    /** The network uses WPA2 enterprise EAP-TLS SHA256 security
      * The identity field in \ref wlan_network structure is used */
     WLAN_SECURITY_EAP_TLS_SHA256,
 #if CONFIG_NCP_11R
@@ -226,7 +232,7 @@ enum wlan_security_type
 #endif
 #endif
 #if CONFIG_NCP_EAP_TTLS
-    /** The network uses WPA2 Enterprise EAP-TTLS (extensible authentication protocol tunneled transport layer security).
+    /** The network uses WPA2 enterprise EAP-TTLS (extensible authentication protocol tunneled transport layer security).
     The identity field in \ref wlan_network structure is used */
     WLAN_SECURITY_EAP_TTLS,
 #if CONFIG_NCP_EAP_MSCHAPV2
@@ -325,15 +331,19 @@ enum
 /** This structure is used for ICMP (internet control message protocol) echo header configuration. */
 NCP_TLV_PACK_START struct icmp_echo_hdr
 {   
-    /** Echo type */ 
+    /** Indicates the type of ICMP packet. */ 
     uint8_t type;
-    /** Code */
+    /** Identifies the code of the corresponding ICMP packet.
+    Together with the Type field, it identifies the detailed type of an ICMP packet. */
     uint8_t code;
-    /** Checksum */
+    /** This checksum checksums the entire ICMP datagram, including the data portion of the ICMP packet,
+    to check whether there is an error in the transmission of the packet. */
     uint16_t chksum;
-    /** Identify */
+    /** This field is used to identify the ICMP process, but is only applicable to echoing requests 
+    and replies to ICMP packets, and has a value of 0 for ICMP packets whose destinations are unreachable 
+    and ICMP packets that have timed out. */
     uint16_t id;
-    /** Sequence number. */
+    /** Packet sequence number, which is used to mark the order of ICMP packets. */
     uint16_t seqno;
 } NCP_TLV_PACK_END;
 
@@ -377,7 +387,7 @@ typedef NCP_TLV_PACK_START struct _ping_msg_t
     uint32_t timeout;
     /** Socket handle index number. */
     uint32_t handle;
-    /** Peer ID address. */
+    /** Peer IP address. */
     char ip_addr[IP_ADDR_LEN];
     /** Peer port number. */
     uint32_t port;
@@ -425,12 +435,12 @@ enum ncp_iperf_item
 /** This structure is used for iperf configuration. */
 typedef struct _iperf_set_t
 {   
-    /** Iperf type,
-    0: TCP TX, \n
-    1: TCP RX, \n
-    2: UDP TX, \n 
-    3: UDP RX,
-    */
+    /** Iperf type, \n
+     *  0: TCP TX, \n
+     *  1: TCP RX, \n
+     *  2: UDP TX, \n 
+     *  3: UDP RX.
+     */
     uint32_t iperf_type;
     /** Iperf package count. */
     uint32_t iperf_count;
@@ -443,7 +453,10 @@ typedef struct _iperf_set_t
 /** This structure is used for iperf message configuration. */
 typedef struct _iperf_msg_t
 {   
-    /** Iperf Status. status[0] is for TX, status[1] is for RX. */
+    /** Iperf status. \n
+     *  status[0] is for TX, \n
+     *  status[1] is for RX.
+     */
     int16_t status[2];
     /** Count of iperf package. */
     uint32_t count;
@@ -461,49 +474,49 @@ typedef struct _iperf_msg_t
     iperf_set_t iperf_set;
 } iperf_msg_t;
 
-/** Station Power save mode */
+/** Station power save mode. */
 enum wlan_ps_mode
 {
-    /** Active mode */
+    /** Active mode. */
     WLAN_ACTIVE = 0,
-    /** IEEE power save mode */
+    /** IEEE power save mode. */
     WLAN_IEEE,
-    /** Deep sleep power save mode */
+    /** Deep sleep power save mode. */
     WLAN_DEEP_SLEEP,
-    /** IEEE deep sleep power save mode */
+    /** IEEE deep sleep power save mode. */
     WLAN_IEEE_DEEP_SLEEP,
-    /** WNM power save mode */
+    /** WNM power save mode. */
     WLAN_WNM,
-    /** WNM deep sleep power save mode */
+    /** WNM deep sleep power save mode. */
     WLAN_WNM_DEEP_SLEEP,
 };
 
-/** WLAN station/UAP/Wi-Fi direct connection/status state */
+/** Wi-Fi station/UAP/Wi-Fi direct connection/status state. */
 enum wlan_connection_state
 {
-    /** The WLAN Connection Manager is not connected and no connection attempt
+    /** The Wi-Fi connection manager is not connected and no connection attempt
      *  is in progress.  It is possible to connect to a network or scan. */
     WLAN_DISCONNECTED,
-    /** The WLAN Connection Manager is not connected but it is currently
+    /** The Wi-Fi connection manager is not connected but it is currently
      *  attempting to connect to a network.  It is not possible to scan at this
      *  time.  It is possible to connect to a different network. */
     WLAN_CONNECTING,
-    /** The WLAN Connection Manager is not connected but associated. */
+    /** The Wi-Fi connection manager is not connected but associated. */
     WLAN_ASSOCIATED,
-    /** The WLAN Connection Manager is not connected but authenticated. */
+    /** The Wi-Fi connection manager is not connected but authenticated. */
     WLAN_AUTHENTICATED,
-    /** The WLAN Connection Manager is connected.  It is possible to scan and
+    /** The Wi-Fi connection manager is connected.  It is possible to scan and
      *  connect to another network at this time.  Information about the current
      *  network configuration is available. */
     WLAN_CONNECTED,
-    /** The WLAN Connection Manager has started uAP */
+    /** The Wi-Fi connection manager has started UAP */
     WLAN_UAP_STARTED,
-    /** The WLAN Connection Manager has stopped uAP */
+    /** The Wi-Fi connection manager has stopped UAP */
     WLAN_UAP_STOPPED,
-    /** The WLAN Connection Manager is not connected and network scan
+    /** The Wi-Fi connection manager is not connected and network scan
      * is in progress. */
     WLAN_SCANNING,
-    /** The WLAN Connection Manager is not connected and network association
+    /** The Wi-Fi connection manager is not connected and network association
      * is in progress. */
     WLAN_ASSOCIATING,
 };
@@ -606,7 +619,7 @@ int wlan_process_wlan_uap_prov_start_result_response(uint8_t *res);
 /**
  * This API is used to reset the UAP provisioning.
  *
- * \param[in] argc    Argument count, the number of strings pointed to by argv,
+ * \param[in] argc    Argument count, the number of strings pointed to by argv, \n
  *                    argc should be 1.
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: wlan-uap-prov-reset
@@ -622,9 +635,9 @@ int wlan_uap_prov_reset_command(int argc, char **argv);
  * \param[in] argc    Argument count, the number of strings pointed to by argv,
  *                    argc should be 2, 3 or 4.
  * \param[in] argv    Argument vector.\n
- *                    argv[0]: wlan-uap-prov-set-uapcfg
- *                    argv[1]: ssid
- *                    argv[2]: security type
+ *                    argv[0]: wlan-uap-prov-set-uapcfg \n
+ *                    argv[1]: ssid \n 
+ *                    argv[2]: security type \n
  *                    argv[3]: password string
  *
  * \return WM_SUCCESS if success.
@@ -645,7 +658,7 @@ int wlan_process_wlan_uap_prov_reset_result_response(uint8_t *res);
 /**
  * This API is used to get the RSSI information.
  * 
- * \param[in] argc    Argument count, the number of strings pointed to by argv,
+ * \param[in] argc    Argument count, the number of strings pointed to by argv, \n
  *                    argc should be 1.
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: wlan-get-signal
@@ -823,7 +836,7 @@ int wlan_process_eu_crypto_gcmp256_response(uint8_t *res);
  *                    argc should be 2.
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: wlan-eu-crypto-ccmp-256\n
- *                    argv[1]: string value of decrypt or encypt option.\n
+ *                    argv[1]: string value of decrypt or encrypt option.\n
  *                             0: decrypt\n
  *                             1: encrypt
  *
@@ -850,7 +863,7 @@ int wlan_process_eu_crypto_ccmp256_response(uint8_t *res);
  *                    argc should be 2.
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: wlan-eu-crypto-rc4\n
- *                    argv[1]: string value of decrypt or encypt option.\n
+ *                    argv[1]: string value of decrypt or encrypt option.\n
  *                             0: decrypt\n
  *                             1: encrypt
  *
@@ -877,7 +890,7 @@ int wlan_process_eu_crypto_rc4_response(uint8_t *res);
  *                    argc should be 2.
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: wlan-eu-crypto-aes-wrap\n
- *                    argv[1]: string value of decrypt or encypt option.\n
+ *                    argv[1]: string value of decrypt or encrypt option.\n
  *                             0: decrypt\n
  *                             1: encrypt
  *
@@ -904,7 +917,7 @@ int wlan_process_eu_crypto_aes_wrap_response(uint8_t *res);
  *                    argc should be 2.
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: wlan-eu-crypto-aes-ecb\n
- *                    argv[1]: string value of decrypt or encypt option.\n
+ *                    argv[1]: string value of decrypt or encrypt option.\n
  *                             0: decrypt\n
  *                             1: encrypt
  *
@@ -1289,7 +1302,7 @@ int wlan_process_get_rf_channel_response(uint8_t *res);
 int wlan_set_rf_radio_mode_command(int argc, char **argv);
 
 /**
- * This API is used to process the reponse of setting RF radio mode command.
+ * This API is used to process the response of setting RF radio mode command.
  *
  * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
  *
@@ -1468,7 +1481,7 @@ int wlan_process_set_rf_tx_cont_mode_response(uint8_t *res);
 int wlan_ncp_set_rf_tx_frame_command(int argc, char **argv);
 
 /**
- * This API is used to process set rf tx frame response.
+ * This API is used to process set RF TX frame response.
  *
  * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
  *
@@ -1696,7 +1709,7 @@ int wlan_process_stat_response(uint8_t *res);
 int wlan_reset_command(int argc, char **argv);
 
 /**
- * This API is used to process the reponse for the Wi-Fi reset command.
+ * This API is used to process the response for the Wi-Fi reset command.
  *
  * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
  *
@@ -2424,7 +2437,7 @@ int wlan_process_roaming_response(uint8_t *res);
  * This API is used to set/delete the MEF (memory efficient filtering) entries configuration.
  *
  * \note Use this API with command wlan-mcu-sleep with wakeup method MEF.
- * Make sure to have connection on STA interface or start uAP.
+ * Make sure to have connection on STA interface or start UAP.
  *
  * \param[in] argc    Argument count, the number of strings pointed to by argv,
  *                    argc should range from 2 to 3.
@@ -2595,10 +2608,10 @@ int wlan_process_ieee_ps_response(uint8_t *res);
  *                    argc should be 2.
  * \param[in] argv    Argument vector,\n
  *                    argv[0]: should be "wlan-reset"\n
- *                    argv[1]: string value of wlan reset type (Required)\n
- *                             0 -- disable WiFi\n
- *                             1 -- enable WiFi\n
- *                             2 -- reset WiFi
+ *                    argv[1]: string value of Wi-Fi reset type (Required)\n
+ *                             0 -- disable Wi-Fi\n
+ *                             1 -- enable Wi-Fi\n
+ *                             2 -- reset Wi-Fi
  *
  * \return WM_SUCCESS if success.
  * \return -WM_FAIL if failure.
@@ -2614,8 +2627,8 @@ int wlan_reset_command(int argc, char **argv);
  * \param[in] argv    Argument vector,\n
  *                    argv[0]: wlan-socket-open\n
  *                    argv[1]: string value of socket_type (Required)\n
- *                             tcp -- tcp socket\n
- *                             udp -- udp socket\n
+ *                             tcp -- TCP socket\n
+ *                             udp -- UDP socket\n
  *                             raw -- raw socket\n
  *                    argv[2]: string value of socket domain (Optional)\n
  *                             ipv4 -- default is ipv4 domain\n
@@ -2751,13 +2764,13 @@ int wlan_socket_listen_command(int argc, char **argv);
 int wlan_process_wlan_socket_listen_response(uint8_t *res);
 
 /**
- * This API is used to accpet the TCP sever's connection.
+ * This API is used to accept the TCP server's connection.
  *
  * \param[in] argc    Argument count, the number of strings pointed to by argv,\n
  *                    argc should be 2,
  * \param[in] argv    Argument vector,\n
  *                    argv[0]: wlan-socket-accept\n
- *                    argv[1]: string value of tcp server listen socket fd (Required)
+ *                    argv[1]: string value of TCP server listen socket fd (Required)
  *
  * \return WM_SUCCESS if success.
  * \return -WM_FAIL if failure.
@@ -2805,7 +2818,7 @@ int wlan_socket_send_command(int argc, char **argv);
 int wlan_process_wlan_socket_send_response(uint8_t *res);
 
 /**
- * This API is used to send data to specified ip and port.
+ * This API is used to send data to specified IP and port.
  *
  * \param[in] argc    Argument count, the number of strings pointed to by argv,\n
  *                    argc should range from 6 to 7.
@@ -3251,12 +3264,12 @@ int wlan_process_csi_response(uint8_t *res);
  *                             0: disable csi\n
  *                    argv[3]: string value of head id\n
  *                             head id is symbol placed at start of csi data\n
- *                             used to seperate CSI event records received from FW, could be set as any value.\n
+ *                             used to separate CSI event records received from FW, could be set as any value.\n
  *                    argv[4]: string value of tail id\n
  *                             tail id is symbol placed at end of csi data\n
- *                             used to seperate CSI event records received from FW, could be set as any value.\n
+ *                             used to separate CSI event records received from FW, could be set as any value.\n
  *                    argv[5]: string value of chip id\n
- *                             used to seperate CSI event records received from FW, could be set as any value.\n
+ *                             used to separate CSI event records received from FW, could be set as any value.\n
  *                    argv[6]: band configure\n
  *                             properties of csi channel\n
  *                             bit[0:1]: Band Info\n
@@ -3292,22 +3305,22 @@ int wlan_set_csi_param_header_command(int argc, char **argv);
  *
  * \param[in] argc    Argument count, the number of string pointed to by argv,
  *                    argc should be 2 or 6.\n
- *                    2: action for filter is delet, clear and dump\n
+ *                    2: action for filter is delete, clear and dump\n
  *                    6: action for filter is add.\n
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: should be "wlan-set-csi-filter".\n
  *                    argv[1]: string value of action for filter\n
- *                             "add": add one filter to csi filter\n
- *                             "delet": delete last filter entry of csi filter\n
- *                             "clear": clear all entries of csi filter\n
- *                             "dump": dump all entries of csi filter.\n
+ *                             "add": add one filter to CSI filter\n
+ *                             "delet": delete last filter entry of CSI filter\n
+ *                             "clear": clear all entries of CSI filter\n
+ *                             "dump": dump all entries of CSI filter.\n
  *                    argv[2]: string value of mac address, format like 11:22:33:44:55:66.\n
  *                    argv[3]: string value of 802.11 frame control filed type.\n
  *                    argv[4]: string value of 802.11 frame control filed subtype.\n
  *                    argv[5]: string value of flag\n
  *                             bit[0]: reserved, must be set to 0\n
  *                             bit[1]: wait for trigger, not implement currently, must be set to 0\n
- *                             bit[2]: send csi error event when timeout, not implement currently, must be set to 0.
+ *                             bit[2]: send CSI error event when timeout, not implement currently, must be set to 0.
  *
  * \return WM_SUCCESS if success.
  * \return -WM_FAIL if failure.
@@ -3345,7 +3358,7 @@ int wlan_process_monitor_response(uint8_t *res);
  *
  * \param[in] argc    Argument count, the number of string pointed to by argv,
  *                    argc should be 2 or 3.\n
- *                    2: action for filter is delet, clear and dump\n
+ *                    2: action for filter is delete, clear and dump\n
  *                    3: action for filter is add.\n
  * \param[in] argv    Argument vector.\n
  *                    argv[0]: should be "wlan-set-monitor-filter".\n
