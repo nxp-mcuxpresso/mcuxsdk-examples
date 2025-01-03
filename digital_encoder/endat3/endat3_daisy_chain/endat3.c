@@ -34,75 +34,73 @@ uint32_t SYSTICK_GET_COUNT()
 void ENDAT3_RspDump(endat3_rsp_t *rsp)
 {
 	uint16_t errCode;
+    PRINTF("\tHPF.STATUS:   0x%02x(F: %d, W: %d, HPFV: %d,  RM: %d,  ERR_REQ: %d)\r\n", ENDAT3_READ_HPF_STATUS_F(rsp->hpf.hpf64),
+            ENDAT3_READ_HPF_STATUS_W(rsp->hpf.hpf64), ENDAT3_READ_HPF_STATUS_HPFV(rsp->hpf.hpf64),
+            ENDAT3_READ_HPF_STATUS_RM(rsp->hpf.hpf64), ENDAT3_READ_HPF_STATUS_ERR_REQ(rsp->hpf.hpf64));
+    PRINTF("\tHPF.DATA:     0x%012\" PRIx64 \"\r\n", ENDAT3_READ_HPF_DATA(rsp->hpf.hpf64));
+    PRINTF("\tHPF.DATA:     0x%012llx\r\n", ENDAT3_READ_HPF_DATA(rsp->hpf.hpf64));
+    PRINTF("\tHPF.CS:       0x%02x\r\n", ENDAT3_READ_HPF_CS(rsp->hpf.hpf64));
 
-	PRINTF("\tHPF.STATUS:   0x%02x(F: %d, W: %d, HPFV: %d,  RM: %d,  ERR_REQ: %d)\r\n", ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_F),
-			ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_W), ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_HPFV),
-			ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_RM), ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_ERR_REQ));
-	PRINTF("\tHPF.DATA:     0x%012\" PRIx64 \"\r\n", ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, DATA));
-	PRINTF("\tHPF.DATA:     0x%012llx\r\n", ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, DATA));
-	PRINTF("\tHPF.CS:       0x%02x\r\n", ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, CS));
+    if (ENDAT3_READ_HPF_STATUS_HPFV(rsp->hpf.hpf64) == 0) {
+        errCode = ENDAT3_READ_HPF_ERRORCODE(rsp->hpf.hpf64);
+        PRINTF("\tHPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+    }
 
-	if (ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_HPFV) == 0) {
-		errCode = ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, ERRORCODE);
-		PRINTF("\tHPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
-	}
+    PRINTF("\tLPH.STATUS:   0x%02x (BG_STATUS: %d  BG_ERR_EXEC: %d  ZACT: %d)\r\n", ENDAT3_READ_LPH_STATUS(rsp->lph.lph32),
+            ENDAT3_READ_LPH_STATUS_BG_STATUS(rsp->lph.lph32), ENDAT3_READ_LPH_STATUS_BG_ERR_EXEC(rsp->lph.lph32),
+            ENDAT3_READ_LPH_STATUS_ZACT(rsp->lph.lph32));
+    PRINTF("\tLPH.NLPF:     0x%02x (YACT: %2d  XDIM: %2d)\r\n", ENDAT3_READ_LPH_NLPF(rsp->lph.lph32),
+            ENDAT3_READ_LPH_NLPF_YACT(rsp->lph.lph32), ENDAT3_READ_LPH_NLPF_XDIM(rsp->lph.lph32));
+    PRINTF("\tLPH.CS:       0x%02x\r\n", ENDAT3_READ_LPH_CS(rsp->lph.lph32));
 
-	PRINTF("\tLPH.STATUS:   0x%02x (BG_STATUS: %d  BG_ERR_EXEC: %d  ZACT: %d)\r\n", ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, STATUS),
-			ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, STATUS_BG_STATUS), ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, STATUS_BG_ERR_EXEC),
-			ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, STATUS_ZACT));
-	PRINTF("\tLPH.NLPF:     0x%02x (YACT: %2d  XDIM: %2d)\r\n", ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, NLPF),
-			ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, NLPF_YACT), ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, NLPF_XDIM));
-	PRINTF("\tLPH.CS:       0x%02x\r\n", ENDAT3_READ_FRAME_FIELD(rsp->lph.lph32, LPH, CS));
-
-	uint8_t i;
-	char *str;
-	for (i = 0; i < rsp->xdim; i++) {
-		uint8_t fid = ENDAT3_READ_FRAME_FIELD(rsp->lpf[i].lpf64, LPF, STATUS_FID);
-		uint8_t lpfv = ENDAT3_READ_FRAME_FIELD(rsp->lpf[i].lpf64, LPF, STATUS_LPFV);
-		str = ENDAT3_FID2str(fid);
-		uint8_t status = ENDAT3_READ_FRAME_FIELD(rsp->lpf[i].lpf64, LPF, STATUS);
-		PRINTF("\tLPF[%2d].STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\r\n", i,status , fid, str, lpfv);
-		if (lpfv == 0) {
-			errCode = ENDAT3_READ_FRAME_FIELD(rsp->lpf[i].lpf64, LPF, ERRORCODE);
-			PRINTF("\t\tLPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
-		}
-		PRINTF("\tLPF[%2d].DATA:        0x%012llx\r\n", i, ENDAT3_READ_FRAME_FIELD(rsp->lpf[i].lpf64, LPF, DATA));
-		PRINTF("\tLPF[%2d].CS:          0x%02x\r\n", i, ENDAT3_READ_FRAME_FIELD(rsp->lpf[i].lpf64, LPF, CS));
-	 }
+    uint8_t i;
+    char *str;
+    for (i = 0; i < rsp->xdim; i++) {
+        uint8_t fid = ENDAT3_READ_LPF_STATUS_FID(rsp->lpf[i].lpf64);
+        uint8_t lpfv = ENDAT3_READ_LPF_STATUS_LPFV(rsp->lpf[i].lpf64);
+        str = ENDAT3_FID2str(fid);
+        uint8_t status = ENDAT3_READ_LPF_STATUS(rsp->lpf[i].lpf64);
+        PRINTF("\tLPF[%2d].STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\r\n", i,status , fid, str, lpfv);
+        if (lpfv == 0) {
+            errCode = ENDAT3_READ_LPF_ERRORCODE(rsp->lpf[i].lpf64);
+            PRINTF("\t\tLPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+        }
+        PRINTF("\tLPF[%2d].DATA:        0x%012llx\r\n", i, ENDAT3_READ_LPF_DATA(rsp->lpf[i].lpf64));
+        PRINTF("\tLPF[%2d].CS:          0x%02x\r\n", i, ENDAT3_READ_LPF_CS(rsp->lpf[i].lpf64));
+     }
 }
 
 void ENDAT3_PosDump(endat3_rsp_t *rsp)
 {
 	uint64_t position;
+    position = ENDAT3_READ_HPF_DATA(rsp->hpf.hpf64);
 
-	position = ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, DATA);
+    if ((rsp->hpf.hpf.status | 0x1F) != 0x0C) {
+        if (ENDAT3_READ_HPF_STATUS_F(rsp->hpf.hpf64)) {
+            PRINTF("The position data might be wrong and should therefore no longer be used. The cause for f being set can be read through the LPF ERRMSG\n");
+            return;
+        }
 
-	if ((rsp->hpf.hpf.status | 0x1F) != 0x0C) {
-		if (ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_F)) {
-			PRINTF("The position data might be wrong and should therefore no longer be used. The cause for f being set can be read through the LPF ERRMSG\n");
-			return;
-		}
+        if (ENDAT3_READ_HPF_STATUS_W(rsp->hpf.hpf64)) {
+            PRINTF("The position data is correct, but errors might occur soon. The cause for W being set can be read through the LPF ERRMSG.\n");
+            return;
+        }
 
-		if (ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_W)) {
-			PRINTF("The position data is correct, but errors might occur soon. The cause for W being set can be read through the LPF ERRMSG.\n");
-			return;
-		}
+        if (ENDAT3_READ_HPF_STATUS_HPFV(rsp->hpf.hpf64) == 0x0) {
+            PRINTF("The field HPF.DATA does not contain the configured contents. One of the error codes is being transmitted\n");
+            return;
+        }
 
-		if (ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_HPFV) == 0x0) {
-			PRINTF("The field HPF.DATA does not contain the configured contents. One of the error codes is being transmitted\n");
-			return;
-		}
+        if (ENDAT3_READ_HPF_STATUS_RM(rsp->hpf.hpf64) == 0x0) {
+            PRINTF("Absolute value cannot be made available\n");
+            return;
+        }
 
-		if (ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_RM) == 0x0) {
-			PRINTF("Absolute value cannot be made available\n");
-			return;
-		}
-
-		if (ENDAT3_READ_FRAME_FIELD(rsp->hpf.hpf64, HPF, STATUS_ERR_REQ)) {
-			PRINTF("The request code does not support or that is not defined\n");
-			return;
-		}
-	}
+        if (ENDAT3_READ_HPF_STATUS_ERR_REQ(rsp->hpf.hpf64)) {
+            PRINTF("The request code does not support or that is not defined\n");
+            return;
+        }
+    }
 
 #ifdef ENCODER_TYPE_ROTARY
 	uint16_t multiturn  = position >> 32;
@@ -137,60 +135,61 @@ void ENDAT3_SAFETY_MEM_Dump(ENDAT3_Type *base, uint8_t bus_addr, uint8_t packet,
     PRINTF("FID_SD1:\r\n");
     if (inHPF) {
         struct HPF *hpf = ENDAT3_GET_SAFETY_FID_SD1_HPF(base, bus_addr, packet);
-        PRINTF("\tHPF.STATUS:   0x%x(F: %d, W: %d, HPFV: %d,  RM: %d,  ERR_REQ: %d)\n",ENDAT3_READ_FRAME_FIELD(hpf->hpf64, HPF, STATUS), ENDAT3_READ_FRAME_FIELD(hpf->hpf64, HPF, STATUS_F),
-            ENDAT3_READ_FRAME_FIELD(hpf->hpf64, HPF, STATUS_W), ENDAT3_READ_FRAME_FIELD(hpf->hpf64, HPF, STATUS_HPFV),
-            ENDAT3_READ_FRAME_FIELD(hpf->hpf64, HPF, STATUS_RM), ENDAT3_READ_FRAME_FIELD(hpf->hpf64, HPF, STATUS_ERR_REQ));
-        PRINTF("\tHPF: singleturn =  0x%x. multiturn = 0x%x\n", ENDAT3_READ_POS_SINGLETURN_HPF(hpf->hpf64), ENDAT3_READ_POS_MULTITURN_HPF(hpf->hpf64));
-        PRINTF("\tHPF.CS:       0x%x\n", ENDAT3_READ_FRAME_FIELD(hpf->hpf64, HPF, CS));
+        PRINTF("\tHPF.STATUS:   0x%02x(F: %d, W: %d, HPFV: %d,  RM: %d,  ERR_REQ: %d)\r\n", ENDAT3_READ_HPF_STATUS_F(hpf->hpf64),
+            ENDAT3_READ_HPF_STATUS_W(hpf->hpf64), ENDAT3_READ_HPF_STATUS_HPFV(hpf->hpf64),
+            ENDAT3_READ_HPF_STATUS_RM(hpf->hpf64), ENDAT3_READ_HPF_STATUS_ERR_REQ(hpf->hpf64));
+        PRINTF("\tHPF.DATA:     0x%012\" PRIx64 \"\r\n", ENDAT3_READ_HPF_DATA(hpf->hpf64));
+        PRINTF("\tHPF.DATA:     0x%012llx\r\n", ENDAT3_READ_HPF_DATA(hpf->hpf64));
+        PRINTF("\tHPF.CS:       0x%02x\r\n", ENDAT3_READ_HPF_CS(hpf->hpf64));
     } else {
         lpf = ENDAT3_GET_SAFETY_FID_SD1_LPF(base, bus_addr, packet);
-        fid = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS_FID);
-        lpfv = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS_LPFV);
+        fid = ENDAT3_READ_LPF_STATUS_FID(lpf->lpf64);
+        lpfv = ENDAT3_READ_LPF_STATUS_LPFV(lpf->lpf64);
         str = ENDAT3_FID2str(fid);
-        status = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS);
+        status = ENDAT3_READ_LPF_STATUS(lpf->lpf64);
         PRINTF("\tLPF.STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\n", status , fid, str, lpfv);
         if (lpfv == 0) {
-            errCode = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, ERRORCODE);
+            errCode = ENDAT3_READ_LPF_ERRORCODE(lpf->lpf64);
             PRINTF("\t\tLPF invalid [0x%04x: %s]\n", errCode, ENDAT3_Err2str(errCode));
         }
         PRINTF("\tLPF: singleturn = 0x%x.  multiturn = 0x%x\n", ENDAT3_READ_POS_SINGLETURN_LPF(lpf->lpf64), ENDAT3_READ_POS_MULTITURN_LPF(lpf->lpf64));
-        PRINTF("\tLPF[%2d].CS:          0x%02x\n", ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, CS));
+        PRINTF("\tLPF[%2d].CS:          0x%02x\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
     }
     PRINTF("FID_SD2:\r\n");
     lpf = ENDAT3_GET_SAFETY_FID_SD2_LPF(base, bus_addr, packet);
-    fid = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS_FID);
-    lpfv = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS_LPFV);
+    fid = ENDAT3_READ_LPF_STATUS_FID(lpf->lpf64);
+    lpfv = ENDAT3_READ_LPF_STATUS_LPFV(lpf->lpf64);
     str = ENDAT3_FID2str(fid);
-    status = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS);
+    status = ENDAT3_READ_LPF_STATUS(lpf->lpf64);
     PRINTF("\tLPF.STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\n", status , fid, str, lpfv);
     if (lpfv == 0) {
-        errCode = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, ERRORCODE);
+        errCode = ENDAT3_READ_LPF_ERRORCODE(lpf->lpf64);
         PRINTF("\t\tLPF invalid [0x%04x: %s]\n", errCode, ENDAT3_Err2str(errCode));
     }
     PRINTF("\tLPF: singleturn = 0x%x.  multiturn = 0x%x\n", ENDAT3_READ_POS_SINGLETURN_LPF(lpf->lpf64), ENDAT3_READ_POS_MULTITURN_LPF(lpf->lpf64));
-    PRINTF("\tLPF[%2d].CS:          0x%02x\n", ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, CS));
+    PRINTF("\tLPF[%2d].CS:          0x%02x\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
 
     PRINTF("FID_SF:\r\n");
     lpf = ENDAT3_GET_SAFETY_FID_SF_LPF(base, bus_addr, packet);
-    fid = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS_FID);
-    lpfv = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS_LPFV);
+    fid = ENDAT3_READ_LPF_STATUS_FID(lpf->lpf64);
+    lpfv = ENDAT3_READ_LPF_STATUS_LPFV(lpf->lpf64);
     str = ENDAT3_FID2str(fid);
-    status = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, STATUS);
+    status = ENDAT3_READ_LPF_STATUS(lpf->lpf64);
     PRINTF("\tLPF.STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\n", status , fid, str, lpfv);
     if (lpfv == 0) {
-        errCode = ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, ERRORCODE);
+        errCode = ENDAT3_READ_LPF_ERRORCODE(lpf->lpf64);
         PRINTF("\t\tLPF invalid [0x%04x: %s]\n", errCode, ENDAT3_Err2str(errCode));
     }
 
     PRINTF("\tLPF: AA:0x%x F1:0x%x F2:0x%x IgF1:0x%x IgF2:0x%x SOL:0x%x CSS:0x%x\r\n",
-                ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, DATA_SF_POS1_AA),
-                ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, DATA_SF_POS1_STATUS_F1),
-                ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, DATA_SF_POS1_STATUS_F2),
-                ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, DATA_SF_POS1_STATUS_IgF1),
-                ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, DATA_SF_POS1_STATUS_IgF2),
-                ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, DATA_SF_POS1_SOL),
-                ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, DATA_SF_POS1_CSS));
-    PRINTF("\tLPF[%2d].CS:          0x%02x\n", ENDAT3_READ_FRAME_FIELD(lpf->lpf64, LPF, CS));
+                ENDAT3_READ_LPF_DATA_SF_POS1_AA(lpf->lpf64),
+                ENDAT3_READ_LPF_DATA_SF_POS1_STATUS_F1(lpf->lpf64),
+                ENDAT3_READ_LPF_DATA_SF_POS1_STATUS_F2(lpf->lpf64),
+                ENDAT3_READ_LPF_DATA_SF_POS1_STATUS_IgF1(lpf->lpf64),
+                ENDAT3_READ_LPF_DATA_SF_POS1_STATUS_IgF2(lpf->lpf64),
+                ENDAT3_READ_LPF_DATA_SF_POS1_SOL(lpf->lpf64),
+                ENDAT3_READ_LPF_DATA_SF_POS1_CSS(lpf->lpf64));
+    PRINTF("\tLPF[%2d].CS:          0x%02x\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
 }
 
 
@@ -475,22 +474,23 @@ int main(void)
 		return 1;
 	}
 
-	devName[0] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_0);
-	devName[1] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_1);
-	devName[2] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_2);
-	devName[3] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_3);
-	devName[4] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_4);
-	devName[5] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_5);
-	devName[6] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_6);
-	devName[7] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_7);
-	devName[8] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_8);
-	devName[9] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_9);
+	devName[0] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_0(cache);
+	devName[1] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_1(cache);
+	devName[2] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_2(cache);
+	devName[3] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_3(cache);
+	devName[4] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_4(cache);
+	devName[5] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_5(cache);
+	devName[6] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_6(cache);
+	devName[7] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_7(cache);
+	devName[8] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_8(cache);
+	devName[9] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_9(cache);
+
 	PRINTF("\tEL.deviceName   : \"%s\"\t\n", devName);
 
-	ident = ENDAT3_MEM_CACHE_READ_u64(cache, EL, DEVICEIDENT);
+	ident = ENDAT3_MEM_CACHE_READ_EL_DEVICEIDENT(cache);
 	PRINTF("\tEL.deviceIdent  : %6u-%c%c\t\n", (uint32_t)(ident>>16), (uint8_t)(ident >> 8) & 0xFF, (uint8_t)(ident & 0xFF));
 
-	serial = ENDAT3_MEM_CACHE_READ_u64(cache, EL, DEVICESERIAL);
+	serial = ENDAT3_MEM_CACHE_READ_EL_DEVICESERIAL(cache);
 	PRINTF("\tEL.deviceSerial : %c%u%c\t\n", (uint8_t)(serial >> 40), (uint32_t)(serial>>8) & 0xFFFFFFFF, (uint8_t)(serial & 0xFF));
 
 	/* For enc_dev2 */
@@ -509,22 +509,22 @@ int main(void)
 		return 1;
 	}
 
-	devName[0] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_0);
-	devName[1] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_1);
-	devName[2] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_2);
-	devName[3] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_3);
-	devName[4] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_4);
-	devName[5] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_5);
-	devName[6] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_6);
-	devName[7] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_7);
-	devName[8] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_8);
-	devName[9] = ENDAT3_MEM_CACHE_READ(cache, EL, DEVICENAME_CHAR_9);
+	devName[0] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_0(cache);
+	devName[1] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_1(cache);
+	devName[2] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_2(cache);
+	devName[3] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_3(cache);
+	devName[4] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_4(cache);
+	devName[5] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_5(cache);
+	devName[6] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_6(cache);
+	devName[7] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_7(cache);
+	devName[8] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_8(cache);
+	devName[9] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_9(cache);
 	PRINTF("\tEL.deviceName   : \"%s\"\t\n", devName);
 
-	ident = ENDAT3_MEM_CACHE_READ_u64(cache, EL, DEVICEIDENT);
+	ident = ENDAT3_MEM_CACHE_READ_EL_DEVICEIDENT(cache);
 	PRINTF("\tEL.deviceIdent  : %6u-%c%c\t\n", (uint32_t)(ident>>16), (uint8_t)(ident >> 8) & 0xFF, (uint8_t)(ident & 0xFF));
 
-	serial = ENDAT3_MEM_CACHE_READ_u64(cache, EL, DEVICESERIAL);
+	serial = ENDAT3_MEM_CACHE_READ_EL_DEVICESERIAL(cache);
 	PRINTF("\tEL.deviceSerial : %c%u%c\t\n", (uint8_t)(serial >> 40), (uint32_t)(serial>>8) & 0xFFFFFFFF, (uint8_t)(serial & 0xFF));
 
 
@@ -547,7 +547,7 @@ int main(void)
 	}
 
 	uint16_t encoder_type;
-	encoder_type = ENDAT3_MEM_CACHE_READ(cache, XEL, ENCODERTYPE);
+	encoder_type = ENDAT3_MEM_CACHE_READ_XEL_ENCODERTYPE(cache);
 	switch (encoder_type) {
 		case 0x0000: PRINTF("\tXEL.encoderType: Not available\r\n"); break;
 		case 0x0001: PRINTF("\tXEL.encoderType: Rotary absolute\r\n"); break;
@@ -573,7 +573,7 @@ int main(void)
 		return 1;
 	}
 
-	encoder_type = ENDAT3_MEM_CACHE_READ(cache, XEL, ENCODERTYPE);
+	encoder_type = ENDAT3_MEM_CACHE_READ_XEL_ENCODERTYPE(cache);
 	switch (encoder_type) {
 		case 0x0000: PRINTF("\tXEL.encoderType: Not available\r\n"); break;
 		case 0x0001: PRINTF("\tXEL.encoderType: Rotary absolute\r\n"); break;

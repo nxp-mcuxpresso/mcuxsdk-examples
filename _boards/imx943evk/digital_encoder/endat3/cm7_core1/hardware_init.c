@@ -13,13 +13,11 @@
 /*${header:end}*/
 
 /*${function:start}*/
-
 void PWM_Trigger_Init(PWM_Type *PWMBase)
 {
 	uint32_t pwmSourceClockInHz = PWM_SRC_CLK_FREQ / (1 << DEMO_PWM_CLOCK_DEVIDER);
 	uint32_t temp = pwmSourceClockInHz / APP_DEFAULT_PWM_FREQUENCE;
 	unsigned short int ui16M1PwmModulo = temp & 0xFFFF;
-	unsigned short int ui16M1PwmDeadTime = ((500 * pwmSourceClockInHz / 1000000U)) / 1000U;   // 500ns
 	unsigned short int ui16EnociderTransactionTime = TRANSACTION_TIME_US * pwmSourceClockInHz / 1000000U;
 	/* Full cycle reload */
 	PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK;
