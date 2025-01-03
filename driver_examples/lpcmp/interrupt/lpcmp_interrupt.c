@@ -1,8 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2023 NXP
- * All rights reserved.
- *
+ * Copyright 2016-2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -54,7 +52,9 @@ int main(void)
     LPCMP_Init(DEMO_LPCMP_BASE, &mLpcmpConfigStruct);
 
     /* Configure the internal DAC to output half of reference voltage. */
+#if !(defined(FSL_FEATURE_LPCMP_HAS_DCR_DAC_HPMD) && (FSL_FEATURE_LPCMP_HAS_DCR_DAC_HPMD == 0U))
     mLpcmpDacConfigStruct.enableLowPowerMode = false;
+#endif /* FSL_FEATURE_LPCMP_HAS_DCR_DAC_HPMD */
 #ifdef DEMO_LPCMP_REFERENCE
     mLpcmpDacConfigStruct.referenceVoltageSource = DEMO_LPCMP_REFERENCE;
 #else
@@ -65,6 +65,13 @@ int main(void)
     LPCMP_SetDACConfig(DEMO_LPCMP_BASE, &mLpcmpDacConfigStruct);
 
     /* Configure LPCMP input channels. */
+#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL
+    config->plusInputSrc = kLPCMP_PlusInputSrcMux;
+#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL */
+#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL
+    config->minusInputSrc = kLPCMP_MinusInputSrcDac;
+#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL */
+
     LPCMP_SetInputChannels(DEMO_LPCMP_BASE, DEMO_LPCMP_USER_CHANNEL, DEMO_LPCMP_DAC_CHANNEL);
 
     /* Init the LED. */
