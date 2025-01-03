@@ -38,13 +38,22 @@ static void Ecat_KickOff(void)
     HAL_Reset(&hal_ecat_disable);
 
 	SRC_XSPR_NETCMIX->IRST_REQ_CTRL |= 1 << 0x01;  // disable ecat
-    BLK_CTRL_NETCMIX->CFG_ECAT |= BLK_CTRL_NETCMIX_CFG_ECAT_ecat_pt0_tx_clk_obe_MASK |
-                                         BLK_CTRL_NETCMIX_CFG_ECAT_ecat_pt1_tx_clk_obe_MASK;
 
-    BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT0_POL_SHIFT);
-    BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT1_POL_SHIFT);
+    /* EtherCAT port0 is in MII mode */
+    BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_RMII_SEL0_SHIFT);
+    /* EtherCAT port1 is in MII mode */
+    BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_RMII_SEL1_SHIFT);
 
-    BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_PROM_SIZE_SHIFT);
+    /* ECAT_LINK_ACT[0] polarity control: Active LOW */
+    BLK_CTRL_NETCMIX->CFG_ECAT |= (1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT0_POL_SHIFT);
+    /* ECAT_LINK_ACT[1] polarity control: Active LOW */
+    BLK_CTRL_NETCMIX->CFG_ECAT |= (1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT1_POL_SHIFT);
+
+    /* 16 bit I2C memory address range */
+    BLK_CTRL_NETCMIX->CFG_ECAT |= (1 << BLK_CTRL_NETCMIX_CFG_ECAT_PROM_SIZE_SHIFT);
+
+    /* EtherCAT PHY_OFFSET_VEC */
+    BLK_CTRL_NETCMIX->CFG_ECAT |= (BLK_CTRL_NETCMIX_CFG_ECAT_PHY_OFFSET_VEC(2));
 
     hal_rst_t hal_ecat_enable = {
         .id = 24,
@@ -92,6 +101,13 @@ UINT16 HW_Init(void)
 	/*
 	 * Phy reset via I2C GPIO chip. todo 
 	*/
+
+    /*Select ECAT1_CLK25*/
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
+    /*Open ECAT EEPROM*/
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA9544_I2C6_ID, CAN2_SEL);
+
     Ecat_KickOff();
 
 #if BOARD_IMX943_TYPE == BOARD_IMX943_EVK
