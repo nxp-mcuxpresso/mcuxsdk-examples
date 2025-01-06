@@ -77,12 +77,8 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRate(&hal_saiCLKCfg);
     HAL_ClockEnable(&hal_saiCLKCfg);
 
-    /* Select SAI3 signals */
-    //pcal6408_handle_t handle;
-    //BOARD_InitPCAL6408_I2C4(&handle);
-    //PCAL6408_SetDirection(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL), kPCAL6408_Output);
-    //PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL));
-    //SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    /* Select i2c channel to access codec */
+    BOARD_MUX_Select(BOARD_PCA9548_I2C3_ID, BOARD_S4_CHAN_IDX);
 
     /* select MCLK direction(Enable MCLK clock) */
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */

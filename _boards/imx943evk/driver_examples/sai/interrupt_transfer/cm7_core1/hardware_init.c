@@ -38,9 +38,10 @@ wm8962_config_t wm8962Config = {
             .fllReferenceClockFreq = 12288000U,
             .fllOutputFreq         = 12288000U,
         },
-    .sysclkSource = kWM8962_SysClkSourceMclk,
-    .masterSlave  = false, /* sai use as master mode, so codec as slave mode */
+    .sysclkSource = kWM8962_SysClkSourceMclk, /* use MCLK pin as sysclk's source */
+    .masterSlave  = false,                    /* sai running as master mode, so codec running as slave mode */
 };
+
 codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfig = &wm8962Config};
 /*${variable:end}*/
 
@@ -61,12 +62,10 @@ void BOARD_InitHardware(void)
         .clk_round_opt = hal_clk_round_auto,
         .rate = 24000000UL,
     };
-
     sai_master_clock_t saiMasterCfg = {
         .mclkOutputEnable = true,
-    };
+     };
     /* clang-format on */
-
     SM_Platform_Init();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
@@ -78,12 +77,8 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRate(&hal_saiCLKCfg);
     HAL_ClockEnable(&hal_saiCLKCfg);
 
-    /* Select SAI3 signals */
-    //pcal6408_handle_t handle;
-    //BOARD_InitPCAL6408_I2C4(&handle);
-    //PCAL6408_SetDirection(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL), kPCAL6408_Output);
-    //PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL));
-    //SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    /* Select i2c channel to access codec */
+    BOARD_MUX_Select(BOARD_PCA9548_I2C3_ID, BOARD_S4_CHAN_IDX);
 
     /* select MCLK direction(Enable MCLK clock) */
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */

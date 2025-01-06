@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 /*${header:start}*/
-#include "pin_mux.h"
 #include "board.h"
+#include "pin_mux.h"
 #include "app.h"
 #include "fsl_codec_common.h"
 #include "fsl_wm8962.h"
@@ -55,7 +55,7 @@ void BOARD_InitHardware(void)
         .clk_round_opt = hal_clk_round_auto,
         .rate = 24000000UL,
     };
-    
+
     hal_clk_t hal_saiCLKCfg = {
         .clk_id = SAI_CLOCK_ROOT,
         .pclk_id = hal_clock_audiopll1, // select audiopll1out source(393216000 Hz)
@@ -77,12 +77,8 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRate(&hal_saiCLKCfg);
     HAL_ClockEnable(&hal_saiCLKCfg);
 
-    /* Select SAI3 signals */
-    //pcal6408_handle_t handle;
-    //BOARD_InitPCAL6408_I2C4(&handle);
-    //PCAL6408_SetDirection(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL), kPCAL6408_Output);
-    //PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL));
-    //SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    /* Select i2c channel to access codec */
+    BOARD_MUX_Select(BOARD_PCA9548_I2C3_ID, BOARD_S4_CHAN_IDX);
 
     /* select MCLK direction(Enable MCLK clock) */
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */
