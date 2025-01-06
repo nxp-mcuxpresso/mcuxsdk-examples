@@ -24,7 +24,7 @@ Change the `-b <board>` parameter based on board you want to build.
 For these parameters please see attribute `boards:` in `primary/example.yml`.
 
 ```
-west build examples/multicore_examples/erpc_server_dac_adc --toolchain armgcc --config debug -b frdmk32l2b
+west build examples/multiprocessor_examples/erpc_server_dac_adc --toolchain armgcc --config debug -b frdmk32l2b
 ```
 
 ## Supported Boards

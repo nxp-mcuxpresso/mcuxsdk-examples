@@ -51,7 +51,7 @@ Change the `-Dcore_id=<core_id>` parameter based on board core you want to build
 For these parameters please see attribute `boards:` in `primary/example.yml`.
 
 ```
-west build examples/multicore_examples/erpc_server_matrix_multiply_uart --toolchain armgcc --config debug -b evkbmimxrt1170 -Dcore_id=cm7
+west build examples/multiprocessor_examples/erpc_server_matrix_multiply_uart --toolchain armgcc --config debug -b evkbmimxrt1170 -Dcore_id=cm7
 ```
 
 ## Supported Boards
