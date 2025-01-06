@@ -14,15 +14,7 @@ wifi_serial_demo:
       - examples/_boards/${board}/wifi_examples/common/wifi_examples_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt1010:
-    - -armgcc@debug
-    - -armgcc@release
-    - -iar@debug
-    - -iar@release
-    - -mdk@debug
-    - -mdk@release
     evkmimxrt1020: []
-    frdmk32l2a4s: []
     frdmmcxc242: []
     frdmmcxc444: []
     lpcxpresso54628: []
