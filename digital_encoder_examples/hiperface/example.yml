@@ -1,0 +1,20 @@
+hiperface:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/hiperface/
+    project-root-path: boards/${board}/digital_encoder_examples/hiperface/${multicore_foldername}
+    document:
+      name: hiperface${core_id_suffix_name}
+      category: digital_encoder_examples
+      brief: Digital encoder hiperface example
+      example_readme:
+      - examples/digital_encoder_examples/hiperface/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/hiperface/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
