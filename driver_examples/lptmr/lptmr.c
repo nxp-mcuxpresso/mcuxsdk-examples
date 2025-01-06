@@ -66,6 +66,7 @@ int main(void)
      * lptmrConfig.prescalerClockSource = kLPTMR_PrescalerClock_1;
      * lptmrConfig.value = kLPTMR_Prescale_Glitch_0;
      */
+    /* Note: the input clock source for prescaler clock must be enabled and attached in advance with configuration in SYSCON or SCG */
     LPTMR_GetDefaultConfig(&lptmrConfig);
 
     /* Initialize the LPTMR */
