@@ -253,7 +253,7 @@ status_t BOARD_PCA6416A_I2C_Send(void *base,
                             txBuffSize);
 }
 
-status_t BOARD_PCA6416A_I2C_Receive(void *base
+status_t BOARD_PCA6416A_I2C_Receive(void *base,
                                     uint8_t deviceAddress,
                                     uint32_t subAddress,
                                     uint8_t subAddressSize,

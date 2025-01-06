@@ -318,13 +318,15 @@ void BOARD_InitPCAL6408_I2C5(pcal6408_handle_t *handle);
 
 #if defined(BOARD_USE_PCA6416A) && BOARD_USE_PCA6416A
 void BOARD_PCA6416A_I2C_Init(void);
-status_t BOARD_PCA6416A_I2C_Send(uint8_t deviceAddress,
+status_t BOARD_PCA6416A_I2C_Send(void *base,
+                                 uint8_t deviceAddress,
                                  uint32_t subAddress,
                                  uint8_t subAddressSize,
                                  const uint8_t *txBuff,
                                  uint8_t txBuffSize,
                                  uint32_t flags);
-status_t BOARD_PCA6416A_I2C_Receive(uint8_t deviceAddress,
+status_t BOARD_PCA6416A_I2C_Receive(void *base,
+                                    uint8_t deviceAddress,
                                     uint32_t subAddress,
                                     uint8_t subAddressSize,
                                     uint8_t *rxBuff,

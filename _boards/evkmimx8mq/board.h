@@ -78,13 +78,15 @@ status_t BOARD_I2C_Receive(I2C_Type *base,
 extern pca6416a_handle_t g_pca6416aHandle;
 extern void BOARD_InitPCA6416A(pca6416a_handle_t *handle);
 extern void BOARD_PCA6416A_I2C_Init(void);
-status_t BOARD_PCA6416A_I2C_Send(uint8_t deviceAddress,
+status_t BOARD_PCA6416A_I2C_Send(void *base,
+                                 uint8_t deviceAddress,
                                  uint32_t subAddress,
                                  uint8_t subAddressSize,
                                  const uint8_t *txBuff,
                                  uint8_t txBuffSize,
                                  uint32_t flags);
-status_t BOARD_PCA6416A_I2C_Receive(uint8_t deviceAddress,
+status_t BOARD_PCA6416A_I2C_Receive(void *base,
+                                    uint8_t deviceAddress,
                                     uint32_t subAddress,
                                     uint8_t subAddressSize,
                                     uint8_t *rxBuff,
