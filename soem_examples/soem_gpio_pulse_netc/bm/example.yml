@@ -22,6 +22,3 @@ soem_gpio_pulse_netc_bm:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
-    imx943evk@cm33_core1:
-    - +armgcc@debug
-    - +armgcc@release
