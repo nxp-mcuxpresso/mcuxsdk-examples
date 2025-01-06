@@ -63,7 +63,7 @@ void BOARD_InitHardware(void)
 	xbar_control_config_t xbaraConfig;
 	xbaraConfig.activeEdge                   = kXBAR_EdgeRising;
 	xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
-	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputEndat3HwStrobe);
+	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputEndat3HwStrobe);
 	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputEdma4IpdReq76);
 	XBAR_SetOutputSignalConfig(kXBAR1_OutputEdma4IpdReq76, &xbaraConfig);
 
