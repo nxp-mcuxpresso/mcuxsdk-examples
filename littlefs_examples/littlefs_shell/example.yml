@@ -23,6 +23,8 @@ littlefs_shell:
     - -iar@sdram_debug
     - -iar@sdram_release
     evkmimxrt1024:
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
     - -iar@flexspi_nor_debug

@@ -23,17 +23,15 @@ mcux_add_mdk_configuration(
 )
 
 # Add or remove Linker File Configurations
-mcux_remove_armgcc_linker_script(
-        BASE_PATH ${SdkRootDirPath}
-        LINKER ${device_root}/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_flexspi_nor.ld
-)
 
 mcux_remove_armgcc_linker_script(
-        BASE_PATH ${SdkRootDirPath}
-        LINKER ${device_root}/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_ram.ld
+    TARGETS release debug
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${device_root}/RT/RT1020/MIMXRT1024/gcc/MIMXRT1024xxxxx_ram.ld
 )
 
 mcux_add_armgcc_linker_script(
+    TARGETS release debug
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/littlefs_examples/littlefs_shell/linker/MIMXRT1021xxxxx_flexspi_nor.ld
+    LINKER ${board_root}/${board}/littlefs_examples/littlefs_shell/linker/MIMXRT1024xxxxx_ram_txt_in_ocram.ld
 )
