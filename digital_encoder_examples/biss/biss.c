@@ -9,6 +9,7 @@
 #include "pin_mux.h"
 #include "fsl_biss.h"
 #include "fsl_xbar.h"
+
 #include "fsl_debug_console.h"
 
 /*******************************************************************************
@@ -238,10 +239,10 @@ static void BISS_SLVDumpPosition(biss_master_t *master, uint8_t slvID)
             BISS_SLVGetStVal(master, slvID, SCData));
 }
 
-static void BISS_EnablePinTrigger(void)
+static void BISS_EnableXbarPinTrigger(void)
 {
     XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputTpm2LptpmChTrigger2, kXBAR1_OutputBissGetsens);
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputBissGetsens);
 }
 
 /*!
@@ -264,7 +265,6 @@ int main(void)
     PRINTF("   SL       --   BISS Data Line Input\r\n");
 
     BISS_DisableInterrupt();
-    BISS_EnablePinTrigger();
 
     master = BISS_MasterInit(BISS_BASE, BISS_SYS_CLK_FREQ,
                              BISS_MA_CLK_FREQ, BISS_AGS_CLK_FREQ);
@@ -341,6 +341,12 @@ int main(void)
         else if ('6' == inputChar)
         {
             BISS_ChangeTriggerMode(master, BISS_PIN_TRIGGER);
+
+            /* Initialize FlexPWM to generate the trigger signalis. */
+            PWM_Trigger_Init(BOARD_PWM_BASEADDR);
+
+            BISS_EnableXbarPinTrigger();
+
             BISS_EnableInterrupt();
         }
     }
