@@ -39,6 +39,7 @@ void BOARD_InitEcatPortRmiiPins(void);
 void BOARD_InitEcatPortMiiPins(void);
 void BOARD_InitEcatLinkPins(void);
 void BOARD_InitEcatResetPins(void);
+void BOARD_InitI2C6Pins(void);                                /*!< Function assigned for the core: undefined[cm33] */
 void BOARD_InitGPIOPins(void);
 
 #if defined(__cplusplus)
