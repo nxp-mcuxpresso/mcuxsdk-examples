@@ -10,7 +10,6 @@ wifi_examples
    uart_wifi_bridge/readme.md
    wifi_cert/readme.md
    wifi_cli/readme.md
-   wifi_cli_prov/readme.md
    wifi_httpsrv/readme.md
    wifi_ipv4_ipv6_echo/readme.md
    wifi_mqtt/readme.md
