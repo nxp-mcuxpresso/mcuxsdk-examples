@@ -11,7 +11,7 @@ fmstr_example_any:
         demonstrates use of FreeMASTER tool to visualize internal variables and to
         control the application flow by modifying variables. The application also
         shows use of advanced FreeMASTER features like TSA tables and Pipes.
-      category: FreeMASTER_examples
+      category: freemaster_examples
       example_readme:
       - examples/freemaster_examples/fmstr_example_any/readme.md
       - ${board_root}/${board}/freemaster_examples/fmstr_any/example_board_readme.md
