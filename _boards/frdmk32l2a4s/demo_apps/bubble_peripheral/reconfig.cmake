@@ -4,6 +4,8 @@ mcux_add_source(
     SOURCES ${board_root}/${board}/demo_apps/bubble_peripheral/bubble.c
             ${board_root}/${board}/demo_apps/bubble_peripheral/peripherals.c
             ${board_root}/${board}/demo_apps/bubble_peripheral/peripherals.h
+            ${board_root}/${board}/demo_apps/bubble_peripheral/clock_config.c
+            ${board_root}/${board}/demo_apps/bubble_peripheral/clock_config.h
 )
 
 mcux_add_macro(
