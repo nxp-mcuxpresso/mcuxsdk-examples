@@ -12,6 +12,11 @@
 #include "sm_platform.h"
 /*${header:end}*/
 
+#define DIG_ENCODER_MUX_HIPERFACE_DSL   0x0
+#define DIG_ENCODER_MUX_ENDAT2P2        0x1
+#define DIG_ENCODER_MUX_ENDAT3          0x2
+#define DIG_ENCODER_NUX_BISS            0x3
+
 /*${function:start}*/
 void PWM_Trigger_Init(PWM_Type *PWMBase)
 {
@@ -53,12 +58,37 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 
 void BOARD_InitHardware(void)
 {
+    /* Hiperface 75MHz */
+    hal_clk_t hal_hiperfaceClk = {
+        .clk_id = HIPERFACE_CLOCK_ROOT,
+        .pclk_id = hal_clock_encoderplldfs0, /* 75 MHz */
+        .div = 1,
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
+    };
+	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+
     SM_Platform_Init();
     BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+
+    HAL_ClockSetRootClk(&hal_hiperfaceClk);
+
+    blk_base->DIAG_ENCODER_MUX_SEL =
+        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_HIPERFACE_DSL) |
+        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_HIPERFACE_DSL);
+
+    /* Select Motor controller 1 */
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+
+    /* Select Motor controller 2 */
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
 
 	XBAR_Init(kXBAR_DSC1);
 	xbar_control_config_t xbaraConfig;
@@ -68,7 +98,6 @@ void BOARD_InitHardware(void)
 	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputEdma4IpdReq76);
 	XBAR_SetOutputSignalConfig(kXBAR1_OutputEdma4IpdReq76, &xbaraConfig);
 
-	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 	blk_base->HIPERFACE1_SYNC_CTL1 = BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_clk_source_sel(0x00);
 	blk_base->HIPERFACE1_SYNC_CTL1 |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_clk_enable_MASK;
 
