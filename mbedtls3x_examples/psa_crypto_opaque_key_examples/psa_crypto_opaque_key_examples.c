@@ -640,7 +640,7 @@ void generate_ecc_keys(psa_key_lifetime_t lifetime)
                                384,
                                PSA_KEY_USAGE_SIGN_HASH | PSA_KEY_USAGE_VERIFY_HASH | PSA_KEY_USAGE_SIGN_MESSAGE | PSA_KEY_USAGE_VERIFY_MESSAGE,
                                PSA_ALG_ECDSA(PSA_ALG_SHA_384),
-                               PSA_KEY_LIFETIME_VOLATILE,
+                               lifetime,
                                TEST_KEY_LOCATION);
     PRINT_STATUS(ok);
 
