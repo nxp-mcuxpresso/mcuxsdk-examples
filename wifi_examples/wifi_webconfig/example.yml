@@ -109,6 +109,8 @@ wifi_webconfig:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
     - -armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@hyperram_debug
     - -iar@hyperram_release
