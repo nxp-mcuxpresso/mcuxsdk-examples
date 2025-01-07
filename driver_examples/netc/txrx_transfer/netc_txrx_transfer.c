@@ -423,7 +423,11 @@ status_t APP_SWT_XferLoopBack(void)
 
         txOver     = false;
         txArg.ring = 0;
+#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
+        result     = SWT_SendFrame(&g_swt_handle, &txFrame, NULL, NULL);
+#else
         result     = SWT_SendFrame(&g_swt_handle, txArg, (netc_hw_port_idx_t)(kNETC_SWITCH0Port0 + i), false, &txFrame, NULL, NULL);
+#endif
         if (result != kStatus_Success)
         {
             PRINTF("\r\nTransmit frame failed!\r\n");
@@ -432,7 +436,11 @@ status_t APP_SWT_XferLoopBack(void)
         while (!txOver)
         {
         }
+#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
+        SWT_ReclaimTxDescriptor(&g_swt_handle, 0);
+#else
         SWT_ReclaimTxDescriptor(&g_swt_handle, false, 0);
+#endif
         if (mgmtTxFrameInfo.status != kNETC_EPTxSuccess)
         {
             PRINTF("\r\nTransmit frame has error!\r\n");
