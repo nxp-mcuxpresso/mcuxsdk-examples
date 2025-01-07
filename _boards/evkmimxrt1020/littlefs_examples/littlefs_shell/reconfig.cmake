@@ -36,5 +36,5 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
     TARGETS debug release sdram_debug sdram_release
     BASE_PATH ${SdkRootDirPath}
-    LINKER examples/${board}/littlefs_examples/littlefs_shell/linker/MIMXRT1021xxxxx_sdram.ld
+    LINKER examples/_boards/${board}/littlefs_examples/littlefs_shell/linker/MIMXRT1021xxxxx_sdram.ld
 )
