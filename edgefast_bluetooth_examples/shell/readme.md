@@ -2,6 +2,7 @@
 
 ## Overview
 Application demonstrating the shell mode of the simplified Adapter APIs.
+> Note: Some platforms only support BLE (like: rw610/rw612), classic Bluetooth are not supported on these platforms, so the classic Bluetooth related shell cmds don't exist on the platforms.
 
 ## Prepare the Demo
 
