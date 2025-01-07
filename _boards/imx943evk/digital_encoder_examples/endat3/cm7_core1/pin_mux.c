@@ -29,8 +29,9 @@ processor_version: 0.12.3
  * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
-	BOARD_InitENCODER1Pins();
-	BOARD_InitENCODER2Pins();
+    BOARD_InitENCODER1Pins();
+    BOARD_InitENCODER2Pins();
+    BOARD_InitI2C6Pins();
 }
 
 /*
@@ -54,19 +55,31 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitENCODER1Pins(void) {
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD0__DIG_ENCODER2_DATA_EN, 0U);
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD1__DIG_ENCODER2_DATA_CLK, 0U);
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD2__DIG_ENCODER2_DATA_OUT ,0U);
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD0__DIG_ENCODER2_DATA_EN, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD1__DIG_ENCODER2_DATA_CLK, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD2__DIG_ENCODER2_DATA_OUT ,0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
 }
 
 void BOARD_InitENCODER2Pins(void) {
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD0__DIG_ENCODER1_DATA_EN, 0U);
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD1__DIG_ENCODER1_DATA_CLK, 0U);
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD2__DIG_ENCODER1_DATA_OUT, 0U);
-  HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD3__DIG_ENCODER1_DATA_IN, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD0__DIG_ENCODER1_DATA_EN, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD1__DIG_ENCODER1_DATA_CLK, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD2__DIG_ENCODER1_DATA_OUT, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_RXD3__DIG_ENCODER1_DATA_IN, 0U);
 }
 
+void BOARD_InitI2C6Pins(void)
+{
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
+
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

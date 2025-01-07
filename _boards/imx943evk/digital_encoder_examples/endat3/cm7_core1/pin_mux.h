@@ -39,6 +39,7 @@ void BOARD_InitBootPins(void);
  */
 void BOARD_InitENCODER1Pins(void);
 void BOARD_InitENCODER2Pins(void);
+void BOARD_InitI2C6Pins(void);
 
 #if defined(__cplusplus)
 }
