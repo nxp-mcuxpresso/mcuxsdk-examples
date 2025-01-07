@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+Please ensure there is FXOS8700 on board
 
 Prepare the Demo
 ===============
