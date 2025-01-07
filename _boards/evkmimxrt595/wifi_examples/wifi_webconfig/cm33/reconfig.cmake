@@ -27,7 +27,9 @@ mcux_add_macro(
     CC "-DXIP_EXTERNAL_FLASH"
 )
 
-
+mcux_add_macro(
+    CC "-DFSL_SDK_DISABLE_DRIVER_RESET_CONTROL=1"
+)
 
 # Remove all default linker files
 mcux_remove_armgcc_linker_script(
