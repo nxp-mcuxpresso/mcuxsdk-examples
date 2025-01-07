@@ -1409,3 +1409,8 @@ void BOARD_ShowEleFwInfo(void)
     PRINTF("Ele Firmware Version: 0x%x\r\n", ele_fw_ver);
 }
 #endif
+
+void BOARD_SelectFTUART(void)
+{
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, UART_M_FT_SEL);
+}

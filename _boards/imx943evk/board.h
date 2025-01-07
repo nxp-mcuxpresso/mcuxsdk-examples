@@ -721,6 +721,8 @@ void BOARD_DeinitLpuart12Pins(void);
 void BOARD_InitLpuartPins(uint32_t instIdx);
 
 void BOARD_ShowEleFwInfo(void);
+
+void BOARD_SelectFTUART(void);
 #if defined(__cplusplus)
 }
 #endif /* __cplusplus */
