@@ -1,6 +1,5 @@
 /*
- * Copyright 2017 NXP
- * All rights reserved.
+ * Copyright 2017-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -37,11 +36,11 @@ void BOARD_InitHardware(void)
      * lptmrConfig.value = kLPTMR_Prescale_Glitch_0;
      */
     LPTMR_GetDefaultConfig(&lptmrConfig);
-    LPTMR_Init(LPTMR0, &lptmrConfig);
+    LPTMR_Init(LPTMR2, &lptmrConfig);
     /* Enable timer interrupt */
-    LPTMR_EnableInterrupts(LPTMR0, kLPTMR_TimerInterruptEnable);
+    LPTMR_EnableInterrupts(LPTMR2, kLPTMR_TimerInterruptEnable);
     /* Enable at the NVIC */
-    EnableIRQ(LPTMR0_IRQn);
+    EnableIRQ(LPTMR2_IRQn);
 #endif
     BOARD_InitPins();
     BOARD_InitBootClocks();
@@ -49,7 +48,6 @@ void BOARD_InitHardware(void)
     INTMUX_Init(INTMUX1);
     /* Enable PORTA intmux source on INTMUX channel 0 */
     INTMUX_EnableInterrupt(INTMUX1, 0, PORTA_IRQn);
-    INTMUX_EnableInterrupt(INTMUX1, 0, LPTMR0_IRQn);
 }
 
 #if configUSE_TICKLESS_IDLE == 2
@@ -58,7 +56,7 @@ void BOARD_InitHardware(void)
  *
  * This function to call vPortLptmrIsr
  */
-void LPTMR0_IRQHandler(void)
+void LPTMR2_IRQHandler(void)
 {
     vPortLptmrIsr();
 }
@@ -71,7 +69,7 @@ void LPTMR0_IRQHandler(void)
 
 LPTMR_Type *vPortGetLptrmBase(void)
 {
-    return LPTMR0;
+    return LPTMR2;
 }
 
 /*!
@@ -82,7 +80,7 @@ LPTMR_Type *vPortGetLptrmBase(void)
 
 IRQn_Type vPortGetLptmrIrqn(void)
 {
-    return LPTMR0_IRQn;
+    return LPTMR2_IRQn;
 }
 #endif
 /*${function:end}*/
