@@ -30,7 +30,8 @@ processor_version: 0.12.3
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void)
 {
-    BOARD_InitPins();
+    BOARD_InitI2C3Pins();
+    BOARD_InitSAI1Pins();
 }
 
 /*
@@ -59,14 +60,9 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
+void BOARD_InitI2C3Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 1U);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXC__SAI1_TX_BCLK, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SDA__SAI1_MCLK, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_RXD0__SAI1_RX_DATA0, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXD0__SAI1_TX_DATA0, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXFS__SAI1_TX_SYNC, 1U);
 
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
@@ -74,6 +70,15 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+}
+
+void BOARD_InitSAI1Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXC__SAI1_TX_BCLK, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SDA__SAI1_MCLK, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_RXD0__SAI1_RX_DATA0, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXD0__SAI1_TX_DATA0, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXFS__SAI1_TX_SYNC, 1U);
+
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SAI1_TXC__SAI1_TX_BCLK,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SDA__SAI1_MCLK,
