@@ -1,5 +1,5 @@
 /*
- *  Copyright 2021-2023 NXP
+ *  Copyright 2021-2025 NXP
  *  All rights reserved.
  *
  *  SPDX-License-Identifier: BSD-3-Clause
@@ -14,6 +14,7 @@
  *     WIFI_IW416_BOARD_MURATA_1XK_M2
  *     WIFI_88W8987_BOARD_MURATA_1ZM_M2
  *     WIFI_IW612_BOARD_MURATA_2EL_M2
+ *     WIFI_IW610_BOARD_MURATA_2LL_M2
  */
 /* @TEST_ANCHOR */
 #define WIFI_IW612_BOARD_MURATA_2EL_M2
