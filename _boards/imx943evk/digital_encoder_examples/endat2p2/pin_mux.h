@@ -52,6 +52,12 @@ void BOARD_InitEncoder1Pins(void);
  */
 void BOARD_InitEncoder2Pins(void);
 
+/*!
+ * @brief Configures pin routing for I2C for pin MUX.
+ *
+ */
+void BOARD_InitI2C6Pins(void);
+
 #if defined(__cplusplus)
 }
 #endif

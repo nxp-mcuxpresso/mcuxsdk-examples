@@ -693,15 +693,26 @@ static int ENDATDEV_TimerLoop(endat2p2_dev_t *dev)
     return 0;
 }
 
+static void ENDAT2P2_EnableXbarPinTrigger(void)
+{
+    XBAR_Init(kXBAR_DSC1);
+    XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputEndat21StrN);
+}
+
 static int ENDATDEV_HardwareStrobeLoop(endat2p2_dev_t *dev)
 {
     int i, loop = 10;
     endat2p2_recv_data_t data;
     endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
 
+    /* Initialize FlexPWM to generate the trigger signalis. */
+    PWM_Trigger_Init(BOARD_PWM_BASEADDR);
+
+    ENDAT2P2_EnableXbarPinTrigger();
+
     /* reset additional info's if present */
     ENDAT2P2_EncoderRest(dev);
-    ENDAT2P2_DelayUs(500);
+    SDK_DelayAtLeastUs(500U, SystemCoreClock);
     ENDAT2P2_CMDBuild(dev, cmd, 0, 0);
 
     ENDAT2P2_SetHWStrobe(dev, 1);

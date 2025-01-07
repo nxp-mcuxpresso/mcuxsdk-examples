@@ -32,6 +32,7 @@ void BOARD_InitBootPins(void) {
     BOARD_InitPins();
     BOARD_InitEncoder1Pins();
     BOARD_InitEncoder2Pins();
+    BOARD_InitI2C6Pins();
 }
 
 /*
@@ -70,6 +71,18 @@ void BOARD_InitEncoder2Pins(void)
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
 }
 
+void BOARD_InitI2C6Pins(void)
+{
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
+
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
