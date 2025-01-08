@@ -1,6 +1,5 @@
 /*
  * Copyright 2024 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,7 +17,7 @@ product: Pins v15.0
 processor: RW612
 package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 0.15.5
+processor_version: 0.16.9
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -45,8 +44,8 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: F3, peripheral: FLEXCOMM3, signal: USART_RXD, pin_signal: GPIO_24}
-  - {pin_num: G3, peripheral: PINT, signal: 'PINT, 0', pin_signal: GPIO_25}
+  - {pin_num: E5, peripheral: FLEXCOMM3, signal: USART_RXD, pin_signal: GPIO_24}
+  - {pin_num: M2, peripheral: PINT, signal: 'PINT, 0', pin_signal: GPIO_11}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -62,12 +61,12 @@ void BOARD_InitPins(void)
 {
     /* pmux clock control: Enable clock */
     CLOCK_EnableClock(kCLOCK_InputMux);
-    /* Initialize FC3_USART_DATA functionality on pin GPIO_24 (pin F3) */
+    /* Initialize FC3_USART_DATA functionality on pin GPIO_24 (pin E5) */
     IO_MUX_SetPinMux(IO_MUX_FC3_USART_DATA);
-    /* Initialize GPIO25 functionality on pin GPIO_25 (pin G3) */
-    IO_MUX_SetPinMux(IO_MUX_GPIO25);
-    /* PIO0_25 is selected for PINT input 0 */
-    INPUTMUX_AttachSignal(INPUTMUX, 0U, kINPUTMUX_GpioPort0Pin25ToPintsel);
+    /* Initialize GPIO11 functionality on pin GPIO_11 (pin M2) */
+    IO_MUX_SetPinMux(IO_MUX_GPIO11);
+    /* PIO0_11 is selected for PINT input 0 */
+    INPUTMUX_AttachSignal(INPUTMUX, 0U, kINPUTMUX_GpioPort0Pin11ToPintsel);
 }
 /***********************************************************************************************************************
  * EOF

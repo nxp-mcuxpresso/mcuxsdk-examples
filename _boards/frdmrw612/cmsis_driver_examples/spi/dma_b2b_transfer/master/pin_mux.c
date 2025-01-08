@@ -1,6 +1,5 @@
 /*
  * Copyright 2024 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -14,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v15.0
 processor: RW612
 package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 0.16.21
+processor_version: 0.16.9
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -68,7 +67,7 @@ void BOARD_InitPins(void)
 SPI1_InitPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: L5, peripheral: FLEXCOMM1, signal: SPI_SSELN0, pin_signal: GPIO_6, pull_up_down: up}
+  - {pin_num: L5, peripheral: FLEXCOMM1, signal: SPI_SSELN0, pin_signal: GPIO_6, pull_up_down: disable}
   - {pin_num: L9, peripheral: FLEXCOMM1, signal: SPI_SCK, pin_signal: GPIO_7, pull_up_down: disable}
   - {pin_num: M4, peripheral: FLEXCOMM1, signal: SPI_MOSI, pin_signal: GPIO_9, pull_up_down: disable}
   - {pin_num: M6, peripheral: FLEXCOMM1, signal: SPI_MISO, pin_signal: GPIO_8, pull_up_down: disable}
@@ -87,8 +86,8 @@ void SPI1_InitPins(void)
 {
     /* Initialize FC1_SPI_SS0 functionality on pin GPIO_6, GPIO_7, GPIO_9, GPIO_8 (pin L5_L9_M4_M6) */
     IO_MUX_SetPinMux(IO_MUX_FC1_SPI_SS0);
-    /* Set GPIO_6 (pin L5_L9_M4_M6) configuration - Enable pull-up; strongest slew rate */
-    IO_MUX_SetPinConfig(6U, IO_MUX_PinConfigPullUp);
+    /* Set GPIO_6 (pin L5_L9_M4_M6) configuration - Disable pull-up / pull-down; strongest slew rate */
+    IO_MUX_SetPinConfig(6U, IO_MUX_PinConfigNoPull);
     /* Set GPIO_7 (pin L5_L9_M4_M6) configuration - Disable pull-up / pull-down; strongest slew rate */
     IO_MUX_SetPinConfig(7U, IO_MUX_PinConfigNoPull);
     /* Set GPIO_8 (pin L5_L9_M4_M6) configuration - Disable pull-up / pull-down; strongest slew rate */

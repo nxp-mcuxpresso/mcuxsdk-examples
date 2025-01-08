@@ -1,6 +1,5 @@
 /*
  * Copyright 2024 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,7 +17,7 @@ product: Pins v15.0
 processor: RW612
 package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.16.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */

@@ -1,6 +1,5 @@
 /*
  * Copyright 2024 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,12 +17,13 @@ product: Pins v15.0
 processor: RW612
 package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 0.15.4
+processor_version: 0.16.9
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
 
 #include "fsl_common.h"
+#include "fsl_gpio.h"
 #include "fsl_io_mux.h"
 #include "pin_mux.h"
 
@@ -44,8 +44,8 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: F3, peripheral: FLEXCOMM3, signal: USART_RXD, pin_signal: GPIO_24}
-  - {pin_num: G3, peripheral: GPIO, signal: 'PIO0, 25', pin_signal: GPIO_25}
+  - {pin_num: E5, peripheral: FLEXCOMM3, signal: USART_RXD, pin_signal: GPIO_24}
+  - {pin_num: M2, peripheral: GPIO, signal: 'PIO0, 11', pin_signal: GPIO_11, direction: INPUT, gpio_interrupt_a_enable: enabled, gpio_interrupt_config: gpioIrqFallingEdge}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -59,10 +59,25 @@ BOARD_InitPins:
 /* Function assigned for the Cortex-M33 */
 void BOARD_InitPins(void)
 {
-    /* Initialize FC3_USART_DATA functionality on pin GPIO_24 (pin F3) */
+    /* Enables the clock for the GPIO0 module */
+    GPIO_PortInit(GPIO, 0);
+
+    gpio_pin_config_t gpio0_pinM2_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    gpio_interrupt_config_t gpio0_pinM2_int_config = {
+        .mode = kGPIO_PinIntEnableEdge,
+        .polarity = kGPIO_PinIntEnableLowOrFall
+    };
+    /* Initialize GPIO functionality on pin PIO0_11 (pin M2)  */
+    GPIO_PinInit(GPIO, 0U, 11U, &gpio0_pinM2_config);
+    GPIO_SetPinInterruptConfig(GPIO, 0U, 11U, &gpio0_pinM2_int_config);
+    GPIO_PinEnableInterrupt(GPIO, 0U, 11U, (uint32_t)kGPIO_InterruptA);
+    /* Initialize FC3_USART_DATA functionality on pin GPIO_24 (pin E5) */
     IO_MUX_SetPinMux(IO_MUX_FC3_USART_DATA);
-    /* Initialize GPIO25 functionality on pin GPIO_25 (pin G3) */
-    IO_MUX_SetPinMux(IO_MUX_GPIO25);
+    /* Initialize GPIO11 functionality on pin GPIO_11 (pin M2) */
+    IO_MUX_SetPinMux(IO_MUX_GPIO11);
 }
 /***********************************************************************************************************************
  * EOF
