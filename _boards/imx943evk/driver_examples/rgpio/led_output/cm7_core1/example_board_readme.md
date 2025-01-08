@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ==============
-Connect J27-5(GPIO_IO28 pad, I2C6_SCL_3V3) and J27-7(GND) to oscilloscope
+Connect J44-10(GPIO_IO31 pad, signal name M1_LED_TP1) and J43-14(GND) to oscilloscope
 
 #### Please note this application can't support running with Linux BSP! ####
 
