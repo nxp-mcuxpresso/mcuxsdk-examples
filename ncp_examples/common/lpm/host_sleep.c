@@ -99,7 +99,7 @@ static void ncp_hs_delay(uint32_t loop)
     }
 }
 
-static void ncp_hs_delay_us(uint32_t us)
+void ncp_hs_delay_us(unsigned int us)
 {
     uint32_t instNum;
 

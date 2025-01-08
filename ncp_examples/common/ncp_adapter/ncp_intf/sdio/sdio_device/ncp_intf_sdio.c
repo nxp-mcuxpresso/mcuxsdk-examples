@@ -241,6 +241,8 @@ static int ncp_sdio_pm_enter(int32_t pm_state)
     return (int)ret;
 }
 
+uint32_t g_gpio_delay_output_1 = 100000;
+uint32_t g_gpio_delay_output_2 = 0;
 static int ncp_sdio_pm_exit(int32_t pm_state)
 {
     int ret = (int)NCP_PM_STATUS_SUCCESS;
@@ -260,10 +262,19 @@ static int ncp_sdio_pm_exit(int32_t pm_state)
             return (int)NCP_PM_STATUS_ERROR;
         }
 
-        /* After wakeup from PM3, sdio device notify sdio host to re-enumerate by gpio */
 #ifdef CONFIG_HOST_SLEEP
+        ncp_adap_d("Toggle gpio %u %u", g_gpio_delay_output_1, g_gpio_delay_output_2);
+        if (g_gpio_delay_output_1)
+            ncp_hs_delay_us(g_gpio_delay_output_1);
+        ncp_adap_d("g_gpio_delay_output_1 after %u", g_gpio_delay_output_1);
+        /* After wakeup from PM3, sdio device notify sdio host to re-enumerate by gpio */
         ncp_notify_host_gpio_init();
+        ncp_adap_d("ncp_notify_host_gpio_init done");
         ncp_notify_host_gpio_output();
+        ncp_adap_d("ncp_notify_host_gpio_output done");
+        if (g_gpio_delay_output_2)
+            ncp_hs_delay_us(g_gpio_delay_output_2);
+        ncp_adap_d("g_gpio_delay_output_2 after %u", g_gpio_delay_output_2);
 #endif
     }
     return ret;
