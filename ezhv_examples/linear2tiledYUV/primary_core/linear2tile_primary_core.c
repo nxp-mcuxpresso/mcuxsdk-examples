@@ -466,11 +466,6 @@ static void redraw()
     VGLITE_SwapBuffers(&window);
 }
 
-static uint32_t getTime()
-{
-    return (uint32_t)(xTaskGetTickCount() * portTICK_PERIOD_MS);
-}
-
 static void vglite_task(void *pvParam)
 {
     status_t status;
