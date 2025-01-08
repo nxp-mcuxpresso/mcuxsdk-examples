@@ -54,7 +54,10 @@ usb_device_class_config_list_struct_t cdcEcmConfigList = {
 };
 
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
-static uint8_t notify_req[sizeof(usb_setup_struct_t) + 8];
+static uint8_t notify_network_connection_req[sizeof(usb_setup_struct_t)];
+
+USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
+static uint8_t notify_connection_speed_change_req[sizeof(usb_setup_struct_t) + 8];
 
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
 static uint8_t dataOutBuffer[APP_ETH_FRAME_MAX_LENGTH];
@@ -135,8 +138,8 @@ static void APP_NotifyLinkStatus(void)
     req.wIndex = USB_DEVICE_CDC_ECM_COMM_INTERFACE_NUMBER + 1;
     req.wLength = 0;
 
-    APP_EncapsulateUSBRequest(notify_req, &req, NULL, 0);
-    while (USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_COMM_INTERRUPT_IN_EP_NUMBER, notify_req, 8) != kStatus_USB_Success)
+    APP_EncapsulateUSBRequest(notify_network_connection_req, &req, NULL, 0);
+    while (USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_COMM_INTERRUPT_IN_EP_NUMBER, notify_network_connection_req, 8) != kStatus_USB_Success)
     {
 #if USB_DEVICE_CONFIG_USE_TASK
         USB_DeviceTaskFn(ethNicHandle.deviceHandle);
@@ -157,8 +160,8 @@ static void APP_NotifyLinkStatus(void)
     speedMap[0] = ethNicHandle.linkSpeed;
     speedMap[1] = ethNicHandle.linkSpeed;
 
-    APP_EncapsulateUSBRequest(notify_req, &req, (uint8_t *)speedMap, 8);
-    while (USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_COMM_INTERRUPT_IN_EP_NUMBER, notify_req, 16) != kStatus_USB_Success)
+    APP_EncapsulateUSBRequest(notify_connection_speed_change_req, &req, (uint8_t *)speedMap, 8);
+    while (USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_COMM_INTERRUPT_IN_EP_NUMBER, notify_connection_speed_change_req, 16) != kStatus_USB_Success)
     {
 #if USB_DEVICE_CONFIG_USE_TASK
         USB_DeviceTaskFn(ethNicHandle.deviceHandle);
