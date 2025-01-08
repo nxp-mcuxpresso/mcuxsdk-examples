@@ -12,4 +12,5 @@ mcux_add_source(
     SOURCES app_preinclude.h
 )
 
+
 mcux_add_linker_symbol(SYMBOLS "gLowpowerPowerDownEnable_d=1")

@@ -36,14 +36,6 @@ mcux_add_armgcc_configuration(
         -Xlinker --defsym=__use_shmem__=1"
 )
 
-mcux_add_source(
-    SOURCES ../../../app_preinclude_common.h
-        ../app_preinclude.h
-)
 
-mcux_add_source(
-    PREINCLUDE TRUE
-    SOURCES ../app_preinclude.h
-)
 
 mcux_add_macro(ECC_RAM_STCM8_INIT=1)

@@ -25,5 +25,15 @@ mcux_add_include(
     INCLUDES .
 )
 
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES middleware/wireless/bluetooth/boards/${board}/app_preinclude_common.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}/middleware/wireless/
+    INCLUDES bluetooth/boards/${board}
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/genfsk/connectivity_test/reconfig.cmake OPTIONAL)
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/connectivity_test_bm.bin)

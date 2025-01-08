@@ -31,14 +31,6 @@ mcux_add_linker_symbol(SYMBOLS "gUseProdInfoLegacyMode_d=1" )
 mcux_add_linker_symbol(SYMBOLS "__use_shmem__=1" )
 
 
-mcux_add_source(
-    SOURCES ../../../app_preinclude_common.h
-        ../app_preinclude.h
-)
 
-mcux_add_source(
-    PREINCLUDE TRUE
-    SOURCES ../app_preinclude.h
-)
 
 mcux_add_macro(ECC_RAM_STCM8_INIT=1)

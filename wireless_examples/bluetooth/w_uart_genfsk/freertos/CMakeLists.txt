@@ -47,6 +47,12 @@ mcux_add_include(
         bluetooth/application/common/genfsk_app
 )
 
+mcux_add_source(
+    PREINCLUDE TRUE
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES middleware/wireless/bluetooth/boards/${board}/bluetooth/w_uart_genfsk/app_preinclude.h
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/w_uart_genfsk/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(

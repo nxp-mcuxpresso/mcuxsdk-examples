@@ -18,7 +18,6 @@ mcux_add_include(
 
 mcux_add_source(
     SOURCES 
-        ../../app_preinclude_common.h
         ./app_preinclude.h
 )
 

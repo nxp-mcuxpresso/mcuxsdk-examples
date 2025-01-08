@@ -39,6 +39,12 @@ mcux_add_include(
         bluetooth/application/common/
 )
 
+mcux_add_source(
+    PREINCLUDE TRUE
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES middleware/wireless/bluetooth/boards/${board}/bluetooth/temp_coll/app_preinclude.h
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/temp_coll/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(

@@ -42,6 +42,16 @@ mcux_add_include(
     INCLUDES ../../../../../../middleware/wireless/bluetooth/host/interface
 )
 
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES middleware/wireless/bluetooth/boards/${board}/app_preinclude_common.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}/middleware/wireless/
+    INCLUDES bluetooth/boards/${board}
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/reconfig.cmake OPTIONAL)
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/${multicore_foldername}/reconfig.cmake OPTIONAL)
 

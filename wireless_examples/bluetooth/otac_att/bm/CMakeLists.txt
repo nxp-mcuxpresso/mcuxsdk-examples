@@ -42,6 +42,12 @@ mcux_add_include(
         bluetooth/application/common/otap_client
 )
 
+mcux_add_source(
+    PREINCLUDE TRUE
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES middleware/wireless/bluetooth/boards/${board}/bluetooth/otac_att/app_preinclude.h
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/otac_att/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)
 
 mcux_add_linker_symbol(SYMBOLS "gUseInternalStorageLink_d=1")
