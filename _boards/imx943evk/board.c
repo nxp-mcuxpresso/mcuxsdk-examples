@@ -69,23 +69,23 @@ i2c_device_table_t g_i2cDevTbl[] = {
     },
    [BOARD_PCA6416_I2C6_S3_ID & I2C_DEVICE_ARRAY_IDX_MASK] = {
         .handle = &g_pca6416Handle[BOARD_PCA6416_I2C6_S3_HANDLE_IDX],
-        .parent_id = BOARD_PCA6416_I2C6_S3_ID,
+        .parent_id = BOARD_PCA9544_I2C6_ID,
     },
    [BOARD_PCA6416_I2C3_S5_20_ID & I2C_DEVICE_ARRAY_IDX_MASK] = {
         .handle = &g_pca6416Handle[BOARD_PCA6416_I2C3_S5_20_HANDLE_IDX],
-        .parent_id = BOARD_PCA6416_I2C3_S5_20_ID,
+        .parent_id = BOARD_PCA9548_I2C3_ID,
     },
    [BOARD_PCA6416_I2C3_S5_21_ID & I2C_DEVICE_ARRAY_IDX_MASK] = {
         .handle = &g_pca6416Handle[BOARD_PCA6416_I2C3_S5_21_HANDLE_IDX],
-        .parent_id = BOARD_PCA6416_I2C3_S5_21_ID,
+        .parent_id = BOARD_PCA9548_I2C3_ID,
     },
     [BOARD_PCA6416_I2C3_S6_ID & I2C_DEVICE_ARRAY_IDX_MASK] = {
 	 .handle = &g_pca6416Handle[BOARD_PCA6416_I2C3_S6_HANDLE_IDX],
-	 .parent_id = BOARD_PCA6416_I2C3_S6_ID,
+	 .parent_id = BOARD_PCA9548_I2C3_ID,
      },
     [BOARD_PCA6408_I2C3_S7_ID & I2C_DEVICE_ARRAY_IDX_MASK] = {
 	 .handle = &g_pca6408Handle[BOARD_PCA6408_I2C3_S7_HANDLE_IDX],
-	 .parent_id = BOARD_PCA6408_I2C3_S7_ID,
+	 .parent_id = BOARD_PCA9548_I2C3_ID,
      },
 
 };
