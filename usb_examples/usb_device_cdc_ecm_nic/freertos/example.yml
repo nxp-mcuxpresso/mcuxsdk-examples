@@ -18,4 +18,5 @@ dev_cdc_ecm_nic_freertos:
   boards:
     frdmrw612: []
     mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
     rdrw612bga: []
