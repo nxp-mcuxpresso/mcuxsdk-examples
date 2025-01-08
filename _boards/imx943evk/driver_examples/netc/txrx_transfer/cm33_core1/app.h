@@ -65,15 +65,15 @@
     }
 
 #elif BOARD_IMX943_TYPE == BOARD_IMX943_EVK
-#define EXAMPLE_EP_NUM        2U
+#define EXAMPLE_EP_NUM        3U
 
 #define EXAMPLE_EP_SI                      \
     {                                      \
-        kNETC_ENETC0PSI0, kNETC_ENETC2PSI0 \
+        kNETC_ENETC1PSI0, kNETC_ENETC2PSI0, kNETC_ENETC3PSI0 \
     }
 #define EXAMPLE_EP_PHY_ADDR \
     {                       \
-        0x1U, 0x8U          \
+        0x5U, 0x6U, 0x7        \
     }
 
 #endif
