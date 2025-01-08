@@ -62,5 +62,5 @@ include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controlle
 
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar
-    BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_image.bin
+    BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/nbu_ble.bin
 )

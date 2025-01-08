@@ -26,3 +26,4 @@ mcux_add_include(
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/genfsk/connectivity_test/reconfig.cmake OPTIONAL)
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/connectivity_test_bm.bin)

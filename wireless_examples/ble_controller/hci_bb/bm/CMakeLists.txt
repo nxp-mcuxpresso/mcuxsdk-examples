@@ -44,3 +44,5 @@ mcux_add_include(
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/reconfig.cmake OPTIONAL)
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/${multicore_foldername}/reconfig.cmake OPTIONAL)
+
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/hci_bb_bm.bin)
