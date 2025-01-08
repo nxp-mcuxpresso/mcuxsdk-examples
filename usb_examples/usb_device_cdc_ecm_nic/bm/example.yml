@@ -17,4 +17,5 @@ dev_cdc_ecm_nic_bm:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612: []
+    mcxn5xxevk@cm33_core0: []
     rdrw612bga: []
