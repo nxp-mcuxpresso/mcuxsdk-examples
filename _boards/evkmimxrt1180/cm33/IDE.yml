@@ -22,6 +22,13 @@ iar:
       debugger_setting:
         cmsisdap_resetlist: software
 
+jlink_script_file:
+  files:
+    - source: ${board_root}/evkmimxrt1180/jlinkscript/evkmimxrt1180_cm33.jlinkscript
+      attribute: jlink_script_file
+      toolchains: iar
+      choose: true
+
 macro-file:
   files:
     - source: ${board_root}/evkmimxrt1180/evkmimxrt1180.mac
