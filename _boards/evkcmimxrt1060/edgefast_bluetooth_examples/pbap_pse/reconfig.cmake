@@ -4,7 +4,6 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
-            middleware/edgefast_bluetooth/output/templates/config/app_config.h
 #           middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/pbap_pse/app_bluetooth_config.h
             ${board_root}/${board}/sdmmc_config.c
             ${board_root}/${board}/sdmmc_config.h
@@ -22,7 +21,6 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
              middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/pbap_pse
-             middleware/edgefast_bluetooth/output/templates/config
              middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls
              #  middleware/edgefast_bluetooth/include
              components/wifi_bt_module/incl/

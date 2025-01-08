@@ -11,7 +11,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/pin_mux.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
 )
 mcux_add_include(
@@ -21,7 +20,6 @@ mcux_add_include(
     ${board_root}/${board}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
-    middleware/edgefast_bluetooth/output/templates/config
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls
 )
 mcux_add_macro(

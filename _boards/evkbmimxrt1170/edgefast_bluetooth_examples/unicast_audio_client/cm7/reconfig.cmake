@@ -13,7 +13,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/unicast_audio_client/${core_id}/pin_mux.h
     middleware/edgefast_bluetooth/examples/unicast_audio_client/unicast_audio_client.c
     middleware/edgefast_bluetooth/examples/unicast_audio_client/unicast_audio_client.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
 )
 mcux_add_include(
@@ -24,7 +23,6 @@ mcux_add_include(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/unicast_audio_client/${core_id}
     middleware/edgefast_bluetooth/examples/unicast_audio_client
-    middleware/edgefast_bluetooth/output/templates/config
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls
 )
 mcux_add_macro(

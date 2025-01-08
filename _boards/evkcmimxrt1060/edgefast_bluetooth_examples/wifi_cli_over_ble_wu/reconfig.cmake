@@ -12,7 +12,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/hardware_init.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/pin_mux.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
 )
 mcux_add_include(
@@ -22,7 +21,6 @@ mcux_add_include(
     ${board_root}/${board}
     ${board_root}/${board}/wifi_examples/common
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
-    middleware/edgefast_bluetooth/output/templates/config
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls
 )
 mcux_add_macro(

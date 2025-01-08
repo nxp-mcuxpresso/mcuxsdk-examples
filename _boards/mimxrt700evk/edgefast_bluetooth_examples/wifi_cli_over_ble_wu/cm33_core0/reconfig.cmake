@@ -11,7 +11,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/pin_mux.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
@@ -20,7 +19,6 @@ mcux_add_include(
     ${board_root}/${board}/wifi_examples/common/${core_id}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}
-    middleware/edgefast_bluetooth/output/templates/config
 )
 mcux_add_mdk_configuration(
   LD "--keep=*(._bt_*)\

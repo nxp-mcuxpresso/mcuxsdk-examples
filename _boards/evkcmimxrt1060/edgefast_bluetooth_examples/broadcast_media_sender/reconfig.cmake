@@ -13,7 +13,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/pin_mux.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
 )
 
 mcux_add_source(
@@ -40,7 +39,6 @@ mcux_add_include(
     ${board_root}/${board}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
-    middleware/edgefast_bluetooth/output/templates/config
 )
 mcux_add_macro(
   AS "-DFLEXRAM_CFG_ENABLE=1"

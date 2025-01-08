@@ -106,6 +106,7 @@ mcux_add_source(
     middleware/edgefast_bluetooth/examples/audio_profile/streamer_pcm.h
     middleware/edgefast_bluetooth/examples/audio_profile/usb_host_fatfs.c
     middleware/edgefast_bluetooth/examples/audio_profile/usb_host_fatfs.h
+    middleware/edgefast_bluetooth/examples/audio_profile/app_config.h
 )
 
 mcux_add_include(

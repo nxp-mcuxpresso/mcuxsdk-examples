@@ -25,6 +25,7 @@ mcux_add_source(
     components/serial_manager/fsl_component_serial_port_ble_wu.h
     middleware/edgefast_bluetooth/examples/wifi_cli_over_ble_wu/serial_port_ble_wu_lower_level.c
     middleware/edgefast_bluetooth/examples/wifi_cli_over_ble_wu/wifi_cli_adapter.c
+    middleware/edgefast_bluetooth/examples/wifi_cli_over_ble_wu/app_config.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h

@@ -12,7 +12,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/hardware_init.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/pin_mux.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
@@ -21,7 +20,6 @@ mcux_add_include(
     ${board_root}/${board}/wifi_examples/common
     ${board_root}/${board}/wifi_examples/common/lpm
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
-    middleware/edgefast_bluetooth/output/templates/config
 )
 mcux_add_macro(
   CC "-DAPPL_USE_STANDARD_IO\

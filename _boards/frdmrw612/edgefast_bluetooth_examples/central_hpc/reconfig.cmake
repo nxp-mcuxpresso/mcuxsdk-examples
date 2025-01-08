@@ -7,7 +7,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_hpc/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_hpc/pin_mux.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
@@ -15,7 +14,6 @@ mcux_add_include(
     ${board_root}/${board}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_hpc
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
-    middleware/edgefast_bluetooth/output/templates/config
 )
 mcux_add_macro(
   CC "-DAPPL_USE_STANDARD_IO\

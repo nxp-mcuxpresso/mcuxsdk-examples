@@ -11,7 +11,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/pin_mux.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
@@ -20,7 +19,6 @@ mcux_add_include(
     ${board_root}/${board}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
-    middleware/edgefast_bluetooth/output/templates/config
 )
 mcux_add_macro(
   CC "-DFILE=void"

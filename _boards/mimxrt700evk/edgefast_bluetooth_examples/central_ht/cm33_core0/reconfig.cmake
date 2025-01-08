@@ -10,7 +10,6 @@ mcux_add_source(
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_ht/${core_id}/pin_mux.c
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_ht/${core_id}/pin_mux.h
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/output/templates/config/app_config.h
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/low_power/controller_low_power.c
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/low_power/controller_low_power.h
 )
@@ -20,7 +19,6 @@ mcux_add_include(
     ${board_root}/${board}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_ht/${core_id}
     middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
-    middleware/edgefast_bluetooth/output/templates/config
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/low_power
 )
 mcux_add_mdk_configuration(
