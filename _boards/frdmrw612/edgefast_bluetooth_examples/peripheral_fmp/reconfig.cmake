@@ -3,17 +3,17 @@ mcux_add_source(
   SOURCES
     ${board_root}/${board}/FreeRTOSConfigBoard.h
     ${board_root}/${board}/monolithic_config.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/hardware_init.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/pin_mux.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/pin_mux.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/hardware_init.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/pin_mux.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/pin_mux.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
     ${board_root}/${board}
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_fmp
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs
+    examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp
 )
 mcux_add_macro(
   CC "-DBT_PLATFORM\
@@ -66,21 +66,21 @@ mcux_remove_armgcc_linker_script(
 )
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/linker/iar/RW610_flash.icf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/linker/iar/RW610_flash.icf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/linker/arm/RW610_flash.scf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/linker/arm/RW610_flash.scf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/linker/gcc/RW610_flash.ld
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_fmp/linker/gcc/RW610_flash.ld
   TARGETS
     flash_debug
     flash_release

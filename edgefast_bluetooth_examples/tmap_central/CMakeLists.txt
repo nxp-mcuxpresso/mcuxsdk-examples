@@ -7,12 +7,12 @@ project(tmap_central LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/$
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/tmap_central
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/tmap_central
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/tmap_central/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/tmap_central/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,18 +21,18 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/tmap_central/cap_initiator.c
-    middleware/edgefast_bluetooth/examples/tmap_central/ccp_server.c
-    middleware/edgefast_bluetooth/examples/tmap_central/main.c
-    middleware/edgefast_bluetooth/examples/tmap_central/mcp_server.c
-    middleware/edgefast_bluetooth/examples/tmap_central/tmap_central.c
-    middleware/edgefast_bluetooth/examples/tmap_central/tmap_central.h
-    middleware/edgefast_bluetooth/examples/tmap_central/vcp_vol_ctlr.c
+    examples/edgefast_bluetooth_examples/tmap_central/cap_initiator.c
+    examples/edgefast_bluetooth_examples/tmap_central/ccp_server.c
+    examples/edgefast_bluetooth_examples/tmap_central/main.c
+    examples/edgefast_bluetooth_examples/tmap_central/mcp_server.c
+    examples/edgefast_bluetooth_examples/tmap_central/tmap_central.c
+    examples/edgefast_bluetooth_examples/tmap_central/tmap_central.h
+    examples/edgefast_bluetooth_examples/tmap_central/vcp_vol_ctlr.c
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/tmap_central
+  INCLUDES examples/edgefast_bluetooth_examples/tmap_central
 )
 
 mcux_add_macro(

@@ -7,12 +7,12 @@ project(tmap_peripheral LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/tmap_peripheral
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/tmap_peripheral
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/tmap_peripheral/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/tmap_peripheral/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,19 +21,19 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/bap_unicast_sr.c
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/ccp_call_ctrl.c
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/csip_set_member.c
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/main.c
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/mcp_ctlr.c
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/tmap_peripheral.c
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/tmap_peripheral.h
-    middleware/edgefast_bluetooth/examples/tmap_peripheral/vcp_vol_renderer.c
+    examples/edgefast_bluetooth_examples/tmap_peripheral/bap_unicast_sr.c
+    examples/edgefast_bluetooth_examples/tmap_peripheral/ccp_call_ctrl.c
+    examples/edgefast_bluetooth_examples/tmap_peripheral/csip_set_member.c
+    examples/edgefast_bluetooth_examples/tmap_peripheral/main.c
+    examples/edgefast_bluetooth_examples/tmap_peripheral/mcp_ctlr.c
+    examples/edgefast_bluetooth_examples/tmap_peripheral/tmap_peripheral.c
+    examples/edgefast_bluetooth_examples/tmap_peripheral/tmap_peripheral.h
+    examples/edgefast_bluetooth_examples/tmap_peripheral/vcp_vol_renderer.c
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/tmap_peripheral
+  INCLUDES examples/edgefast_bluetooth_examples/tmap_peripheral
 )
 
 mcux_add_macro(

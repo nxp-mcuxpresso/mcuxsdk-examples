@@ -7,10 +7,10 @@ mcux_add_source(
     ${board_root}/${board}/sdmmc_config.h
     ${board_root}/${board}/wifi_bt_config.c
     ${board_root}/${board}/wifi_bt_config.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/hardware_init.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/pin_mux.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/pin_mux.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_sink/hardware_init.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_sink/pin_mux.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_sink/pin_mux.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
 )
 mcux_add_include(
@@ -18,8 +18,8 @@ mcux_add_include(
   INCLUDES
     components/wifi_bt_module/incl
     ${board_root}/${board}
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
+    examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_sink
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs
     middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls
 )
 mcux_add_macro(
@@ -78,21 +78,21 @@ mcux_remove_armgcc_linker_script(
 )
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/linker/iar/MIMXRT595Sxxxx_cm33_flash.icf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_sink/linker/iar/MIMXRT595Sxxxx_cm33_flash.icf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/linker/arm/MIMXRT595Sxxxx_cm33_flash.scf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_sink/linker/arm/MIMXRT595Sxxxx_cm33_flash.scf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_sink/linker/gcc/MIMXRT595Sxxxx_cm33_flash.ld
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_sink/linker/gcc/MIMXRT595Sxxxx_cm33_flash.ld
   TARGETS
     flash_debug
     flash_release

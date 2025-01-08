@@ -7,12 +7,12 @@ project(handsfree LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${bo
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/handsfree
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/handsfree
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/handsfree/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/handsfree/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,20 +21,20 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/handsfree/app_connect.c
-    middleware/edgefast_bluetooth/examples/handsfree/app_connect.h
-    middleware/edgefast_bluetooth/examples/handsfree/app_handsfree.c
-    middleware/edgefast_bluetooth/examples/handsfree/app_handsfree.h
-    middleware/edgefast_bluetooth/examples/handsfree/app_shell.c
-    middleware/edgefast_bluetooth/examples/handsfree/app_shell.h
-    middleware/edgefast_bluetooth/examples/handsfree/main.c
-    middleware/edgefast_bluetooth/examples/handsfree/ringtone.h
-    middleware/edgefast_bluetooth/examples/handsfree/sco_audio_pl_ext.c
+    examples/edgefast_bluetooth_examples/handsfree/app_connect.c
+    examples/edgefast_bluetooth_examples/handsfree/app_connect.h
+    examples/edgefast_bluetooth_examples/handsfree/app_handsfree.c
+    examples/edgefast_bluetooth_examples/handsfree/app_handsfree.h
+    examples/edgefast_bluetooth_examples/handsfree/app_shell.c
+    examples/edgefast_bluetooth_examples/handsfree/app_shell.h
+    examples/edgefast_bluetooth_examples/handsfree/main.c
+    examples/edgefast_bluetooth_examples/handsfree/ringtone.h
+    examples/edgefast_bluetooth_examples/handsfree/sco_audio_pl_ext.c
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/handsfree
+  INCLUDES examples/edgefast_bluetooth_examples/handsfree
 )
 
 mcux_add_macro(

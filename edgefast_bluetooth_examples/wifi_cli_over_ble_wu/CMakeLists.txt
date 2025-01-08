@@ -7,12 +7,12 @@ project(wifi_cli_over_ble_wu LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -23,9 +23,9 @@ mcux_add_source(
   SOURCES
     components/serial_manager/fsl_component_serial_port_ble_wu.c
     components/serial_manager/fsl_component_serial_port_ble_wu.h
-    middleware/edgefast_bluetooth/examples/wifi_cli_over_ble_wu/serial_port_ble_wu_lower_level.c
-    middleware/edgefast_bluetooth/examples/wifi_cli_over_ble_wu/wifi_cli_adapter.c
-    middleware/edgefast_bluetooth/examples/wifi_cli_over_ble_wu/app_config.h
+    examples/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/serial_port_ble_wu_lower_level.c
+    examples/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/wifi_cli_adapter.c
+    examples/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/app_config.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
@@ -37,7 +37,7 @@ mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
     components/serial_manager
-    middleware/edgefast_bluetooth/examples/wifi_cli_over_ble_wu
+    examples/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
     middleware/wifi_nxp/example/wifi_cli
     middleware/wifi_nxp/example/wifi_cli/wifi_config
     middleware/wifi_nxp/example/wifi_cli/lwip_config

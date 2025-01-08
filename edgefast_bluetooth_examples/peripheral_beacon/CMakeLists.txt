@@ -7,12 +7,12 @@ project(peripheral_beacon LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_ro
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_beacon
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_beacon
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_beacon/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_beacon/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,18 +21,18 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/peripheral_beacon/beacon.c
-    middleware/edgefast_bluetooth/examples/peripheral_beacon/beacon.h
-    middleware/edgefast_bluetooth/examples/peripheral_beacon/eddystone.c
-    middleware/edgefast_bluetooth/examples/peripheral_beacon/eddystone.h
-    middleware/edgefast_bluetooth/examples/peripheral_beacon/ibeacon.c
-    middleware/edgefast_bluetooth/examples/peripheral_beacon/ibeacon.h
-    middleware/edgefast_bluetooth/examples/peripheral_beacon/main.c
+    examples/edgefast_bluetooth_examples/peripheral_beacon/beacon.c
+    examples/edgefast_bluetooth_examples/peripheral_beacon/beacon.h
+    examples/edgefast_bluetooth_examples/peripheral_beacon/eddystone.c
+    examples/edgefast_bluetooth_examples/peripheral_beacon/eddystone.h
+    examples/edgefast_bluetooth_examples/peripheral_beacon/ibeacon.c
+    examples/edgefast_bluetooth_examples/peripheral_beacon/ibeacon.h
+    examples/edgefast_bluetooth_examples/peripheral_beacon/main.c
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/peripheral_beacon
+  INCLUDES examples/edgefast_bluetooth_examples/peripheral_beacon
 )
 
 mcux_add_macro(

@@ -7,12 +7,12 @@ project(edgefast_bluetooth_shell LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${b
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/shell
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/shell
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/shell/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/shell/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,16 +21,16 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/shell/main.c
-    middleware/edgefast_bluetooth/examples/shell/shell.c
-    middleware/edgefast_bluetooth/examples/shell/shell.h
+    examples/edgefast_bluetooth_examples/shell/main.c
+    examples/edgefast_bluetooth_examples/shell/shell.c
+    examples/edgefast_bluetooth_examples/shell/shell.h
     middleware/edgefast_bluetooth/source/shell/shell_common.c
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
-    middleware/edgefast_bluetooth/examples/shell
+    examples/edgefast_bluetooth_examples/shell
     middleware/edgefast_bluetooth/source/shell
 )
 

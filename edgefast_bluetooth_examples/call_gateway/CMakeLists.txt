@@ -7,12 +7,12 @@ project(call_gateway LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/$
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/call_gateway
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/call_gateway
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/call_gateway/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/call_gateway/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,21 +21,21 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/call_gateway/call_gateway.c
-    middleware/edgefast_bluetooth/examples/call_gateway/call_gateway.h
-    middleware/edgefast_bluetooth/examples/call_gateway/ccp_server.c
-    middleware/edgefast_bluetooth/examples/call_gateway/ccp_server.h
-    middleware/edgefast_bluetooth/examples/call_gateway/main.c
-    middleware/edgefast_bluetooth/examples/call_gateway/ringtone.h
-    middleware/edgefast_bluetooth/examples/call_gateway/set_coordinator.c
-    middleware/edgefast_bluetooth/examples/call_gateway/set_coordinator.h
-    middleware/edgefast_bluetooth/examples/call_gateway/unicast_audio_client.c
-    middleware/edgefast_bluetooth/examples/call_gateway/unicast_audio_client.h
+    examples/edgefast_bluetooth_examples/call_gateway/call_gateway.c
+    examples/edgefast_bluetooth_examples/call_gateway/call_gateway.h
+    examples/edgefast_bluetooth_examples/call_gateway/ccp_server.c
+    examples/edgefast_bluetooth_examples/call_gateway/ccp_server.h
+    examples/edgefast_bluetooth_examples/call_gateway/main.c
+    examples/edgefast_bluetooth_examples/call_gateway/ringtone.h
+    examples/edgefast_bluetooth_examples/call_gateway/set_coordinator.c
+    examples/edgefast_bluetooth_examples/call_gateway/set_coordinator.h
+    examples/edgefast_bluetooth_examples/call_gateway/unicast_audio_client.c
+    examples/edgefast_bluetooth_examples/call_gateway/unicast_audio_client.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/call_gateway
+  INCLUDES examples/edgefast_bluetooth_examples/call_gateway
 )
 
 mcux_add_macro(

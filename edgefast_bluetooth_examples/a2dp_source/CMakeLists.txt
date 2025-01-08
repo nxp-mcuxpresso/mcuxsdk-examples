@@ -7,12 +7,12 @@ project(a2dp_source LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_source
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_source
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/a2dp_source/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/a2dp_source/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,21 +21,21 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/a2dp_source/a2dp_pl_media_48KHz.h
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_a2dp_source.c
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_a2dp_source.h
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_connect.c
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_connect.h
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_discover.c
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_discover.h
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_shell.c
-    middleware/edgefast_bluetooth/examples/a2dp_source/app_shell.h
-    middleware/edgefast_bluetooth/examples/a2dp_source/main.c
+    examples/edgefast_bluetooth_examples/a2dp_source/a2dp_pl_media_48KHz.h
+    examples/edgefast_bluetooth_examples/a2dp_source/app_a2dp_source.c
+    examples/edgefast_bluetooth_examples/a2dp_source/app_a2dp_source.h
+    examples/edgefast_bluetooth_examples/a2dp_source/app_connect.c
+    examples/edgefast_bluetooth_examples/a2dp_source/app_connect.h
+    examples/edgefast_bluetooth_examples/a2dp_source/app_discover.c
+    examples/edgefast_bluetooth_examples/a2dp_source/app_discover.h
+    examples/edgefast_bluetooth_examples/a2dp_source/app_shell.c
+    examples/edgefast_bluetooth_examples/a2dp_source/app_shell.h
+    examples/edgefast_bluetooth_examples/a2dp_source/main.c
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/a2dp_source
+  INCLUDES examples/edgefast_bluetooth_examples/a2dp_source
 )
 
 mcux_add_macro(

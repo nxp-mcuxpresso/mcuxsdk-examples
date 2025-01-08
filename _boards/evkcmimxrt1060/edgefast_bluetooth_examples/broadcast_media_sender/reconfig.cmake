@@ -7,29 +7,29 @@ mcux_add_source(
     ${board_root}/${board}/sdmmc_config.h
     ${board_root}/${board}/wifi_bt_config.c
     ${board_root}/${board}/wifi_bt_config.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/board.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/board.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/hardware_init.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/pin_mux.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/pin_mux.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/board.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/board.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/hardware_init.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/pin_mux.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/pin_mux.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
 )
 
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
-  SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/startup/iar/startup_MIMXRT1062.s
+  SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/startup/iar/startup_MIMXRT1062.s
   TOOLCHAINS iar
 )
 
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
-  SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/startup/gcc/startup_MIMXRT1062.S
+  SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/startup/gcc/startup_MIMXRT1062.S
   TOOLCHAINS armgcc
 )
 
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
-  SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/startup/arm/startup_MIMXRT1062.S
+  SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/startup/arm/startup_MIMXRT1062.S
   TOOLCHAINS mdk
 )
 mcux_add_include(
@@ -37,8 +37,8 @@ mcux_add_include(
   INCLUDES
     components/wifi_bt_module/incl
     ${board_root}/${board}
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs
 )
 mcux_add_macro(
   AS "-DFLEXRAM_CFG_ENABLE=1"
@@ -109,21 +109,21 @@ mcux_remove_armgcc_linker_script(
 )
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/linker/iar/MIMXRT1062xxxxx_flexspi_nor.icf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/linker/iar/MIMXRT1062xxxxx_flexspi_nor.icf
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
 )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/linker/arm/MIMXRT1062xxxxx_flexspi_nor.scf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/linker/arm/MIMXRT1062xxxxx_flexspi_nor.scf
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
 )
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_sender/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release

@@ -1,0 +1,10 @@
+	    *(EXCLUDE_FILE(
+	        *bt_db_gen.o*
+	    ).bss)
+	    *(EXCLUDE_FILE(
+	        *bt_db_gen.o*
+	    ).bss*)
+        . = ALIGN(32);
+        *(CacheLineData)
+        . = ALIGN(32);
+        *(.bss*)

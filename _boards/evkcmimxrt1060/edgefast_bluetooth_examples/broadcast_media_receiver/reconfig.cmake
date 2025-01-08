@@ -7,18 +7,18 @@ mcux_add_source(
     ${board_root}/${board}/sdmmc_config.h
     ${board_root}/${board}/wifi_bt_config.c
     ${board_root}/${board}/wifi_bt_config.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/hardware_init.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/pin_mux.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/pin_mux.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/hardware_init.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/pin_mux.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/pin_mux.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
     components/wifi_bt_module/incl
     ${board_root}/${board}
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
+    examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver
+    examples/_boards/${board}/edgefast_bluetooth_examples/configs
 )
 mcux_add_macro(
   CC "-DFILE=void"
@@ -86,21 +86,21 @@ mcux_remove_armgcc_linker_script(
 )
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/linker/iar/MIMXRT1062xxxxx_flexspi_nor.icf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/linker/iar/MIMXRT1062xxxxx_flexspi_nor.icf
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
 )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/linker/arm/MIMXRT1062xxxxx_flexspi_nor.scf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/linker/arm/MIMXRT1062xxxxx_flexspi_nor.scf
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
 )
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/broadcast_media_receiver/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release

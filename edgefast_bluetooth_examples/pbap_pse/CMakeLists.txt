@@ -7,12 +7,12 @@ project(pbap_pse LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${boa
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/pbap_pse
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/pbap_pse
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/pbap_pse/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/pbap_pse/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -20,16 +20,16 @@ mcux_add_source(
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/examples/pbap_pse/main.c
-            middleware/edgefast_bluetooth/examples/pbap_pse/app_pbap_pse.c
-            middleware/edgefast_bluetooth/examples/pbap_pse/app_pbap_pse.h
-            middleware/edgefast_bluetooth/examples/pbap_pse/app_connect.c
-            middleware/edgefast_bluetooth/examples/pbap_pse/app_connect.h
+    SOURCES examples/edgefast_bluetooth_examples/pbap_pse/main.c
+            examples/edgefast_bluetooth_examples/pbap_pse/app_pbap_pse.c
+            examples/edgefast_bluetooth_examples/pbap_pse/app_pbap_pse.h
+            examples/edgefast_bluetooth_examples/pbap_pse/app_connect.c
+            examples/edgefast_bluetooth_examples/pbap_pse/app_connect.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/examples/pbap_pse
+    INCLUDES examples/edgefast_bluetooth_examples/pbap_pse
 )
 
 mcux_add_macro(

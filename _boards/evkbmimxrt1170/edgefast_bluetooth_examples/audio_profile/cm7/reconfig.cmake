@@ -13,9 +13,9 @@ mcux_add_source(
     examples/aws_examples/common/dev_mode_key_provisioning/src/aws_dev_mode_key_provisioning.c
     examples/aws_examples/common/lwipopts_wifi_nxp/lwipopts.h
     examples/aws_examples/common/pkcs11/iot_pkcs11_pal.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}/hardware_init.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}/pin_mux.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}/pin_mux.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}/hardware_init.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}/pin_mux.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}/pin_mux.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
@@ -28,7 +28,7 @@ mcux_add_include(
     examples/aws_examples/common/dev_mode_key_provisioning/src
     examples/aws_examples/common/lwipopts_wifi_nxp
     examples/aws_examples/common/pkcs11
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}
+    examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/${core_id}
 )
 mcux_add_macro(
   CC "-DAPPL_USE_STANDARD_IO\
@@ -103,21 +103,21 @@ mcux_remove_armgcc_linker_script(
 )
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/linker/iar/MIMXRT1176xxxxx_cm7_flexspi_nor.icf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/linker/iar/MIMXRT1176xxxxx_cm7_flexspi_nor.icf
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
 )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/linker/arm/MIMXRT1176xxxxx_cm7_flexspi_nor.scf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/linker/arm/MIMXRT1176xxxxx_cm7_flexspi_nor.scf
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release
 )
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/linker/gcc/MIMXRT1176xxxxx_cm7_flexspi_nor.ld
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/linker/gcc/MIMXRT1176xxxxx_cm7_flexspi_nor.ld
   TARGETS
     flexspi_nor_debug
     flexspi_nor_release

@@ -7,18 +7,18 @@ mcux_add_source(
     ${board_root}/${board}/wifi_bt_config.c
     ${board_root}/${board}/wifi_bt_config.h
     ${board_root}/${board}/wifi_examples/common/${core_id}/app.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/hardware_init.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/pin_mux.c
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/pin_mux.h
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/FreeRTOSConfig.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/hardware_init.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/pin_mux.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}/pin_mux.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/FreeRTOSConfig.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
     ${board_root}/${board}
     ${board_root}/${board}/wifi_examples/common/${core_id}
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
-    middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}
+    examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu
+    examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${core_id}
 )
 mcux_add_mdk_configuration(
   LD "--keep=*(._bt_*)\
@@ -34,21 +34,21 @@ mcux_add_mdk_configuration(
 )
 mcux_add_armgcc_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/linker/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/linker/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
   TARGETS
     flash_debug
     flash_release
 )
 mcux_add_iar_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/linker/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/linker/iar/MIMXRT798Sxxxx_cm33_core0_flash.icf
   TARGETS
     flash_debug
     flash_release
 )
 mcux_add_mdk_linker_script(
   BASE_PATH ${SdkRootDirPath}
-  LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/linker/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
+  LINKER examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/linker/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
   TARGETS
     flash_debug
     flash_release

@@ -7,12 +7,12 @@ project(audio_profile LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/audio_profile/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/audio_profile/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,99 +21,99 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/audio_profile/FreeRTOSConfig.h
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/.idea/gradle.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/.idea/misc.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/.idea/modules.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/.idea/runConfigurations.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/AwsMusicControl.apk
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/AwsMusicControlPreferences.properties
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/build.gradle
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/proguard-rules.pro
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/AndroidManifest.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/ic_launcher-web.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/ic_launcher_round-web.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/AboutActivity.java
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/MainActivity.java
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/AwsConstants.java
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/AwsShadow.java
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/IPreferencesListener.java
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/RgbLed.java
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/mqtt/Connection.java
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-hdpi/ic_action_refresh.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-hdpi/ic_led.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-hdpi/ic_led_filled.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-mdpi/ic_action_refresh.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-mdpi/ic_led.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-mdpi/ic_led_filled.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-xhdpi/ic_action_refresh.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-xhdpi/ic_led.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-xhdpi/ic_led_filled.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-xxhdpi/ic_action_refresh.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-xxhdpi/ic_led.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable-xxhdpi/ic_led_filled.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/drawable/nxp.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/layout/activity_about.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/layout/activity_main.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/layout/content_about.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/layout/content_main.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/layout/music_info.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/menu/main.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-hdpi/ic_launcher.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-hdpi/ic_launcher_round.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-mdpi/ic_launcher.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-mdpi/ic_launcher_round.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/values/colors.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/values/dimens.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/values/drawables.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/values/strings.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/app/src/main/res/values/styles.xml
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/build.gradle
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/gradle.properties
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/gradle/wrapper/gradle-wrapper.jar
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/gradle/wrapper/gradle-wrapper.properties
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/gradlew
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/gradlew.bat
-    middleware/edgefast_bluetooth/examples/audio_profile/android_app/settings.gradle
-    middleware/edgefast_bluetooth/examples/audio_profile/app_a2dp.c
-    middleware/edgefast_bluetooth/examples/audio_profile/app_a2dp.h
-    middleware/edgefast_bluetooth/examples/audio_profile/app_common.c
-    middleware/edgefast_bluetooth/examples/audio_profile/app_common.h
-    middleware/edgefast_bluetooth/examples/audio_profile/app_music_control.c
-    middleware/edgefast_bluetooth/examples/audio_profile/app_music_control.h
-    middleware/edgefast_bluetooth/examples/audio_profile/app_streamer.c
-    middleware/edgefast_bluetooth/examples/audio_profile/app_streamer.h
-    middleware/edgefast_bluetooth/examples/audio_profile/cmd.c
-    middleware/edgefast_bluetooth/examples/audio_profile/cmd.h
-    middleware/edgefast_bluetooth/examples/audio_profile/ffconf.h
-    middleware/edgefast_bluetooth/examples/audio_profile/include/aws_clientcredential.h
-    middleware/edgefast_bluetooth/examples/audio_profile/include/aws_clientcredential_keys.h
-    middleware/edgefast_bluetooth/examples/audio_profile/include/core_mqtt_config.h
-    middleware/edgefast_bluetooth/examples/audio_profile/include/core_pkcs11_config.h
-    middleware/edgefast_bluetooth/examples/audio_profile/include/demo_config.h
-    middleware/edgefast_bluetooth/examples/audio_profile/include/kvstore_config.h
-    middleware/edgefast_bluetooth/examples/audio_profile/include/shadow_config.h
-    middleware/edgefast_bluetooth/examples/audio_profile/main.c
-    middleware/edgefast_bluetooth/examples/audio_profile/shadow_device_task.c
-    middleware/edgefast_bluetooth/examples/audio_profile/shadow_update_task.c
-    middleware/edgefast_bluetooth/examples/audio_profile/streamer_pcm.c
-    middleware/edgefast_bluetooth/examples/audio_profile/streamer_pcm.h
-    middleware/edgefast_bluetooth/examples/audio_profile/usb_host_fatfs.c
-    middleware/edgefast_bluetooth/examples/audio_profile/usb_host_fatfs.h
-    middleware/edgefast_bluetooth/examples/audio_profile/app_config.h
+    examples/edgefast_bluetooth_examples/audio_profile/FreeRTOSConfig.h
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/.idea/gradle.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/.idea/misc.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/.idea/modules.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/.idea/runConfigurations.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/AwsMusicControl.apk
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/AwsMusicControlPreferences.properties
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/build.gradle
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/proguard-rules.pro
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/AndroidManifest.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/ic_launcher-web.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/ic_launcher_round-web.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/AboutActivity.java
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/MainActivity.java
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/AwsConstants.java
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/AwsShadow.java
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/IPreferencesListener.java
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/iot/RgbLed.java
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/java/com/nxp/awsmusiccontrol/mqtt/Connection.java
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-hdpi/ic_action_refresh.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-hdpi/ic_led.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-hdpi/ic_led_filled.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-mdpi/ic_action_refresh.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-mdpi/ic_led.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-mdpi/ic_led_filled.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-xhdpi/ic_action_refresh.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-xhdpi/ic_led.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-xhdpi/ic_led_filled.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-xxhdpi/ic_action_refresh.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-xxhdpi/ic_led.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable-xxhdpi/ic_led_filled.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/drawable/nxp.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/layout/activity_about.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/layout/activity_main.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/layout/content_about.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/layout/content_main.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/layout/music_info.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/menu/main.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-hdpi/ic_launcher.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-hdpi/ic_launcher_round.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-mdpi/ic_launcher.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-mdpi/ic_launcher_round.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/values/colors.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/values/dimens.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/values/drawables.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/values/strings.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/app/src/main/res/values/styles.xml
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/build.gradle
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/gradle.properties
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/gradle/wrapper/gradle-wrapper.jar
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/gradle/wrapper/gradle-wrapper.properties
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/gradlew
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/gradlew.bat
+    examples/edgefast_bluetooth_examples/audio_profile/android_app/settings.gradle
+    examples/edgefast_bluetooth_examples/audio_profile/app_a2dp.c
+    examples/edgefast_bluetooth_examples/audio_profile/app_a2dp.h
+    examples/edgefast_bluetooth_examples/audio_profile/app_common.c
+    examples/edgefast_bluetooth_examples/audio_profile/app_common.h
+    examples/edgefast_bluetooth_examples/audio_profile/app_music_control.c
+    examples/edgefast_bluetooth_examples/audio_profile/app_music_control.h
+    examples/edgefast_bluetooth_examples/audio_profile/app_streamer.c
+    examples/edgefast_bluetooth_examples/audio_profile/app_streamer.h
+    examples/edgefast_bluetooth_examples/audio_profile/cmd.c
+    examples/edgefast_bluetooth_examples/audio_profile/cmd.h
+    examples/edgefast_bluetooth_examples/audio_profile/ffconf.h
+    examples/edgefast_bluetooth_examples/audio_profile/include/aws_clientcredential.h
+    examples/edgefast_bluetooth_examples/audio_profile/include/aws_clientcredential_keys.h
+    examples/edgefast_bluetooth_examples/audio_profile/include/core_mqtt_config.h
+    examples/edgefast_bluetooth_examples/audio_profile/include/core_pkcs11_config.h
+    examples/edgefast_bluetooth_examples/audio_profile/include/demo_config.h
+    examples/edgefast_bluetooth_examples/audio_profile/include/kvstore_config.h
+    examples/edgefast_bluetooth_examples/audio_profile/include/shadow_config.h
+    examples/edgefast_bluetooth_examples/audio_profile/main.c
+    examples/edgefast_bluetooth_examples/audio_profile/shadow_device_task.c
+    examples/edgefast_bluetooth_examples/audio_profile/shadow_update_task.c
+    examples/edgefast_bluetooth_examples/audio_profile/streamer_pcm.c
+    examples/edgefast_bluetooth_examples/audio_profile/streamer_pcm.h
+    examples/edgefast_bluetooth_examples/audio_profile/usb_host_fatfs.c
+    examples/edgefast_bluetooth_examples/audio_profile/usb_host_fatfs.h
+    examples/edgefast_bluetooth_examples/audio_profile/app_config.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
-    middleware/edgefast_bluetooth/examples/audio_profile
-    middleware/edgefast_bluetooth/examples/audio_profile/include
+    examples/edgefast_bluetooth_examples/audio_profile
+    examples/edgefast_bluetooth_examples/audio_profile/include
 )
 
 mcux_add_macro(

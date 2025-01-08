@@ -7,12 +7,12 @@ project(unicast_media_receiver LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${boa
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,30 +21,30 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_common.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_common.h
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_service.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_service.h
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_shell.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_shell.h
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_sync.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/le_audio_sync.h
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/main.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/modules/audio_i2s.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/modules/audio_i2s.h
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/modules/hw_codec.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/modules/hw_codec.h
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/modules/lc3_codec.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/modules/lc3_codec.h
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/unicast_media_receiver.c
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/unicast_media_receiver.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_common.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_common.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_service.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_service.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_shell.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_shell.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_sync.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/le_audio_sync.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/main.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/modules/audio_i2s.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/modules/audio_i2s.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/modules/hw_codec.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/modules/hw_codec.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/modules/lc3_codec.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/modules/lc3_codec.h
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/unicast_media_receiver.c
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/unicast_media_receiver.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver
-    middleware/edgefast_bluetooth/examples/unicast_media_receiver/modules
+    examples/edgefast_bluetooth_examples/unicast_media_receiver
+    examples/edgefast_bluetooth_examples/unicast_media_receiver/modules
 )
 
 mcux_add_macro(

@@ -7,12 +7,12 @@ project(central_pxm LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_pxm
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/central_pxm
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/central_pxm/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/central_pxm/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,14 +21,14 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/central_pxm/central_pxm.c
-    middleware/edgefast_bluetooth/examples/central_pxm/central_pxm.h
-    middleware/edgefast_bluetooth/examples/central_pxm/main.c
+    examples/edgefast_bluetooth_examples/central_pxm/central_pxm.c
+    examples/edgefast_bluetooth_examples/central_pxm/central_pxm.h
+    examples/edgefast_bluetooth_examples/central_pxm/main.c
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/central_pxm
+  INCLUDES examples/edgefast_bluetooth_examples/central_pxm
 )
 
 mcux_add_macro(

@@ -7,12 +7,12 @@ project(peripheral_ht LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_ht
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_ht
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/peripheral_ht/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_ht/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,14 +21,14 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/peripheral_ht/main.c
-    middleware/edgefast_bluetooth/examples/peripheral_ht/peripheral_ht.c
-    middleware/edgefast_bluetooth/examples/peripheral_ht/peripheral_ht.h
+    examples/edgefast_bluetooth_examples/peripheral_ht/main.c
+    examples/edgefast_bluetooth_examples/peripheral_ht/peripheral_ht.c
+    examples/edgefast_bluetooth_examples/peripheral_ht/peripheral_ht.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/peripheral_ht
+  INCLUDES examples/edgefast_bluetooth_examples/peripheral_ht
 )
 
 mcux_add_macro(

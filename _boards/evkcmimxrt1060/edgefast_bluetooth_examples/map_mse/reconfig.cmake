@@ -2,16 +2,16 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/configs/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
-#           middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/app_bluetooth_config.h
+#           examples/_boards/${board}/edgefast_bluetooth_examples/map_mse/app_bluetooth_config.h
             ${board_root}/${board}/sdmmc_config.c
             ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
-            middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/hardware_init.c
-            middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/pin_mux.c
-            middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/pin_mux.h
+            examples/_boards/${board}/edgefast_bluetooth_examples/map_mse/hardware_init.c
+            examples/_boards/${board}/edgefast_bluetooth_examples/map_mse/pin_mux.c
+            examples/_boards/${board}/edgefast_bluetooth_examples/map_mse/pin_mux.h
             middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls/mbedtls_config_client.h
             components/wifi_bt_module/incl/wifi_bt_module_config.h
 )
@@ -19,8 +19,8 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/configs
-             middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/configs
+             examples/_boards/${board}/edgefast_bluetooth_examples/map_mse
              middleware/edgefast_bluetooth/source/impl/ethermind/controller/configs/mbedtls
              #  middleware/edgefast_bluetooth/include
              components/wifi_bt_module/incl/
@@ -94,15 +94,15 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/linker/iar/MIMXRT1062xxxxx_flexspi_nor.icf
+    LINKER examples/_boards/${board}/edgefast_bluetooth_examples/map_mse/linker/iar/MIMXRT1062xxxxx_flexspi_nor.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/linker/arm/MIMXRT1062xxxxx_flexspi_nor.scf
+    LINKER examples/_boards/${board}/edgefast_bluetooth_examples/map_mse/linker/arm/MIMXRT1062xxxxx_flexspi_nor.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mse/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
+    LINKER examples/_boards/${board}/edgefast_bluetooth_examples/map_mse/linker/gcc/MIMXRT1062xxxxx_flexspi_nor.ld
 )

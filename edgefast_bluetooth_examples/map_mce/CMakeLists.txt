@@ -7,12 +7,12 @@ project(map_mce LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${boar
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mce
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/map_mce
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/map_mce/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/map_mce/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -20,18 +20,18 @@ mcux_add_source(
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/examples/map_mce/main.c
-            middleware/edgefast_bluetooth/examples/map_mce/app_map_mce.c
-            middleware/edgefast_bluetooth/examples/map_mce/app_map_mce.h
-            middleware/edgefast_bluetooth/examples/map_mce/app_connect.c
-            middleware/edgefast_bluetooth/examples/map_mce/app_connect.h
-            middleware/edgefast_bluetooth/examples/map_mce/app_discover.c
-            middleware/edgefast_bluetooth/examples/map_mce/app_discover.h
+    SOURCES examples/edgefast_bluetooth_examples/map_mce/main.c
+            examples/edgefast_bluetooth_examples/map_mce/app_map_mce.c
+            examples/edgefast_bluetooth_examples/map_mce/app_map_mce.h
+            examples/edgefast_bluetooth_examples/map_mce/app_connect.c
+            examples/edgefast_bluetooth_examples/map_mce/app_connect.h
+            examples/edgefast_bluetooth_examples/map_mce/app_discover.c
+            examples/edgefast_bluetooth_examples/map_mce/app_discover.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/examples/map_mce
+    INCLUDES examples/edgefast_bluetooth_examples/map_mce
 )
 
 mcux_add_macro(

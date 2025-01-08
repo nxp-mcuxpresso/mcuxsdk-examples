@@ -7,12 +7,12 @@ project(call_terminal LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/call_terminal
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/call_terminal
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/call_terminal/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/call_terminal/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,19 +21,19 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/call_terminal/call_terminal.c
-    middleware/edgefast_bluetooth/examples/call_terminal/call_terminal.h
-    middleware/edgefast_bluetooth/examples/call_terminal/ccp_client.c
-    middleware/edgefast_bluetooth/examples/call_terminal/ccp_client.h
-    middleware/edgefast_bluetooth/examples/call_terminal/main.c
-    middleware/edgefast_bluetooth/examples/call_terminal/ringtone.h
-    middleware/edgefast_bluetooth/examples/call_terminal/unicast_audio_server.c
-    middleware/edgefast_bluetooth/examples/call_terminal/unicast_audio_server.h
+    examples/edgefast_bluetooth_examples/call_terminal/call_terminal.c
+    examples/edgefast_bluetooth_examples/call_terminal/call_terminal.h
+    examples/edgefast_bluetooth_examples/call_terminal/ccp_client.c
+    examples/edgefast_bluetooth_examples/call_terminal/ccp_client.h
+    examples/edgefast_bluetooth_examples/call_terminal/main.c
+    examples/edgefast_bluetooth_examples/call_terminal/ringtone.h
+    examples/edgefast_bluetooth_examples/call_terminal/unicast_audio_server.c
+    examples/edgefast_bluetooth_examples/call_terminal/unicast_audio_server.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/call_terminal
+  INCLUDES examples/edgefast_bluetooth_examples/call_terminal
 )
 
 mcux_add_macro(

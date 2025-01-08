@@ -7,12 +7,12 @@ project(wireless_uart LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/
 
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wireless_uart
+    INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/wireless_uart
 	TARGET edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/edgefast_bluetooth/boards/${board}/edgefast_bluetooth_examples/wireless_uart/${multicore_foldername}/edgefast_bluetooth_app.h
+    SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/wireless_uart/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
 )
@@ -21,14 +21,14 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    middleware/edgefast_bluetooth/examples/wireless_uart/main.c
-    middleware/edgefast_bluetooth/examples/wireless_uart/wireless_uart.c
-    middleware/edgefast_bluetooth/examples/wireless_uart/wireless_uart.h
+    examples/edgefast_bluetooth_examples/wireless_uart/main.c
+    examples/edgefast_bluetooth_examples/wireless_uart/wireless_uart.c
+    examples/edgefast_bluetooth_examples/wireless_uart/wireless_uart.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
-  INCLUDES middleware/edgefast_bluetooth/examples/wireless_uart
+  INCLUDES examples/edgefast_bluetooth_examples/wireless_uart
 )
 
 mcux_add_macro(
