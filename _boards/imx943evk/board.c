@@ -513,7 +513,7 @@ status_t BOARD_EXPANDER_SetPinAsOutput(uint32_t i2cDevId, uint8_t pinIdx)
         BOARD_InitI2cDevice(i2cDevId);
     }
 
-    pca64xxData = g_i2cDevTbl[i2cDevId].data;
+    pca64xxData = g_i2cDevTbl[i2cDevArrayIdx].data;
 
     assert(pca64xxData->set_pin_as_input != NULL);
 
