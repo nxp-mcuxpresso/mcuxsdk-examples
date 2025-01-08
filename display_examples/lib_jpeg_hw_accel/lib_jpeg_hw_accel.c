@@ -30,8 +30,7 @@ JPEG_DECODER_Type g_jpegdec = {
  ******************************************************************************/
 #define APP_FB_BPP    3 /* LCD frame buffer byte per pixel, RGB888 format, 24-bit. */
 #define APP_FB_FORMAT kVIDEO_PixelFormatRGB888
-#define APP_RGB_ADDR  0x20239000U
-#define APP_YUV_ADDR  0x204DC000U
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
