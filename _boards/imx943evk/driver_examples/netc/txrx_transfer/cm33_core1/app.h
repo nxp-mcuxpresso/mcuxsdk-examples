@@ -73,7 +73,7 @@
     }
 #define EXAMPLE_EP_PHY_ADDR \
     {                       \
-        0x5U, 0x6U, 0x7        \
+        0x5U, 0x6U, 0x7U        \
     }
 
 #endif
