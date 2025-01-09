@@ -309,7 +309,10 @@ usb_status_t USB_DeviceAudioRequest(class_handle_t handle, uint32_t event, void 
         case USB_DEVICE_AUDIO_TE_GET_CUR_CONNECTOR_CONTROL:
             if (USB_AUDIO_RECORDER_CONTROL_INPUT_TERMINAL_ID == entity_id)
             {
-                /* set proper value for recorderConnectorStatus based on the practical usage scenario */
+                /* set proper value for recorderConnectorStatus based on the practical usage scenario */			
+                g_deviceAudioComposite->audioUnified.recorderConnectorStatus.bNrChannels          = AUDIO_IN_FORMAT_CHANNELS;
+                g_deviceAudioComposite->audioUnified.recorderConnectorStatus.bmChannelConfig      = 0x03U;
+                g_deviceAudioComposite->audioUnified.recorderConnectorStatus.iChannelNames        = 0U;
                 request->buffer = (uint8_t *)&g_deviceAudioComposite->audioUnified.recorderConnectorStatus;
                 request->length = sizeof(g_deviceAudioComposite->audioUnified.recorderConnectorStatus);
             }

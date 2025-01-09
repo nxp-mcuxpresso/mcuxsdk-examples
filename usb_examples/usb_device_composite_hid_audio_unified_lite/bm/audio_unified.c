@@ -1658,6 +1658,9 @@ usb_status_t USB_DeviceAudioProcessTerminalRequest(uint32_t audioCommand,
             if (USB_AUDIO_RECORDER_CONTROL_INPUT_TERMINAL_ID == entityOrEndpoint)
             {
                 /* set proper value for recorderConnectorStatus based on the practical usage scenario */
+                g_deviceComposite->audioUnified.recorderConnectorStatus.bNrChannels          = AUDIO_IN_FORMAT_CHANNELS;
+                g_deviceComposite->audioUnified.recorderConnectorStatus.bmChannelConfig      = 0x03U;
+                g_deviceComposite->audioUnified.recorderConnectorStatus.iChannelNames        = 0x0U;
                 *buffer = (uint8_t *)&g_deviceComposite->audioUnified.recorderConnectorStatus;
                 *length = sizeof(g_deviceComposite->audioUnified.recorderConnectorStatus);
             }
