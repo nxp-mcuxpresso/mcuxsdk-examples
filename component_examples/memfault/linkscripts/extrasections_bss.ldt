@@ -1,0 +1,4 @@
+    __memfault_capture_bss_start = .;
+    *tasks.o(.bss COMMON .bss*)
+    *timers.o(.bss COMMON .bss*)
+    __memfault_capture_bss_end = .;

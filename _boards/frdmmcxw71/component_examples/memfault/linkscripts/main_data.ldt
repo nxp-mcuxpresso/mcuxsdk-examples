@@ -1,0 +1,2 @@
+       *mflash_drv.o(.text .text* .rodata .rodata*)
+       *(.data*)

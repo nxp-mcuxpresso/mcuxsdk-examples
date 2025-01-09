@@ -317,3 +317,8 @@ config USB_HOST_CONFIG_COMPLIANCE_TEST
         No prefix in generated macro
 endmenu
 endif
+
+if MCUX_COMPONENT_component.memfault_sdk.ports.mcuxsdk
+    config MEMFAULT_FLASH_SUPPORT_PAGE_REPROGRAM
+        default y
+endif
