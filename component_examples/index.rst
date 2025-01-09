@@ -8,6 +8,7 @@ component_examples
 
 
    flash_component/index.rst
+   memfault/readme.md
    hardfault_handling/readme.md
    i3c_bus/index.rst
    led_control/index.rst

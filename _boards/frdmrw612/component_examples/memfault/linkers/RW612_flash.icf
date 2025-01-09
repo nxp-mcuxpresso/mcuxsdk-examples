@@ -1,0 +1,143 @@
+/*
+** ###################################################################
+**     Processors:          RW612ETA2I
+**                          RW612HNA2I
+**                          RW612UKA2I
+**
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**     Reference manual:    RW61X User manual Rev. 0.95, June 2022
+**     Version:             rev. 1.0, 2021-03-16
+**     Build:               b231201
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM
+**
+**     Copyright 2025 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+/* Stack and Heap Sizes */
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__        = __stack_size__;
+} else {
+  define symbol __size_cstack__        = 0x0400;
+}
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__          = __heap_size__;
+} else {
+  define symbol __size_heap__          = 0x0400;
+}
+
+define symbol __ram_vector_table_size__        =  isdefinedsymbol(__ram_vector_table__) ? 0x00000280 : 0;
+define symbol __ram_vector_table_offset__      =  isdefinedsymbol(__ram_vector_table__) ? 0x0000027F : 0;
+
+define symbol m_interrupts_start               = 0x08001000;
+define symbol m_interrupts_end                 = 0x0800127F;
+
+define symbol m_text_start                     = 0x08001280;
+define symbol m_text_end                       = 0x081FFFFF;
+
+define symbol m_interrupts_ram_start           = 0x20000000;
+define symbol m_interrupts_ram_end             = 0x20000000 + __ram_vector_table_offset__;
+
+define symbol m_data_start                     = m_interrupts_ram_start + __ram_vector_table_size__;
+define symbol m_data_end                       = 0x2012FFFF;
+
+define symbol m_boot_flash_start               = 0x08000000;
+
+define exported symbol __VECTOR_TABLE          = m_interrupts_start;
+define exported symbol __VECTOR_RAM            = isdefinedsymbol(__ram_vector_table__) ? m_interrupts_ram_start : m_interrupts_start;
+define exported symbol __RAM_VECTOR_TABLE_SIZE = __ram_vector_table_size__;
+
+define memory mem with size = 4G;
+
+define region TEXT_region             = mem:[from m_interrupts_start to m_interrupts_end]
+                                      | mem:[from m_text_start to m_text_end];
+define region m_interrupts_ram_region = mem:[from m_interrupts_ram_start to m_interrupts_ram_end];
+define region DATA_region             = mem:[from m_data_start to m_data_end - __size_cstack__];
+define region CSTACK_region           = mem:[from m_data_end-__size_cstack__ + 1 to m_data_end];
+
+define block CSTACK    with alignment = 8, size = __size_cstack__   { };
+define block HEAP      with alignment = 8, size = __size_heap__     { };
+define block RO        { readonly };
+define block RW        { readwrite };
+define block ZI        { zi };
+
+define block INIT_EARLY        with alignment = 4, fixed order { section .z_init_EARLY?_*, section .z_init_EARLY??_* };
+define block INIT_PRE_KERNEL_1 with alignment = 4, fixed order { section .z_init_PRE_KERNEL_1?_*, section .z_init_PRE_KERNEL_1??_* };
+define block INIT_PRE_KERNEL_2 with alignment = 4, fixed order { section .z_init_PRE_KERNEL_2?_*, section .z_init_PRE_KERNEL_2??_* };
+define block INIT_POST_KERNEL  with alignment = 4, fixed order { section .z_init_POST_KERNEL?_*, section .z_init_POST_KERNEL??_* };
+define block INIT_APPLICATION  with alignment = 4, fixed order { section .z_init_APPLICATION?_*, section .z_init_APPLICATION??_* };
+define block INIT_SMP          with alignment = 4, fixed order { section .z_init_SMP?_*, section .z_init_SMP??_* };
+define block DEFERRED_INIT     with alignment = 4, fixed order { section .z_deferred_init* };
+
+define block GENHAL_INIT       with fixed order { block INIT_EARLY, block INIT_PRE_KERNEL_1, block INIT_PRE_KERNEL_2, block INIT_POST_KERNEL, block INIT_APPLICATION, block INIT_SMP };
+
+define block DEVICE_STATES     with alignment = 4, fixed order { section .z_devstate, section .z_devstate.* };
+define block DEVICE_AREA       with alignment = 4, fixed order { section ._device.static.*_?_*, section ._device.static.*_??_* };
+define block DEVICE_DEPS       with alignment = 4, fixed order { section .__device_deps_pass2* };
+
+initialize by copy {
+  readwrite, 
+  object fsl_flexspi.o,
+  object fsl_clock.o,
+  object fsl_reset.o,
+  object fsl_cache.o,
+  object flexspi_clock_setup.o,
+  readonly object flash_mcux_flexspi_nor.o,
+  readonly object jesd216.o,
+  readonly object memc_mcux_flexspi.o,
+  readonly object device.o,
+  readonly object zephyr_mcux_helper.o,
+  readonly object clock_control_mcux_syscon.o,
+  readonly object ABImemcpy.o,
+  readonly object ABImemset.o,
+  readonly object ABImemcpy48.o,
+  readonly object ABImemset48.o,
+  section .textrw,
+  section CodeQuickAccess,
+  section DataQuickAccess,
+  section RamFunction,
+} except {
+  section .z_init_EARLY?_*, section .z_init_EARLY??_*,
+  section .z_init_PRE_KERNEL_1?_*, section .z_init_PRE_KERNEL_1??_*,
+  section .z_init_PRE_KERNEL_2?_*, section .z_init_PRE_KERNEL_2??_*,
+  section .z_init_POST_KERNEL?_*, section .z_init_POST_KERNEL??_*,
+  section .z_init_POST_KERNEL?_*, section .z_init_POST_KERNEL??_*,
+  section .z_init_APPLICATION?_*, section .z_init_APPLICATION??_*,
+  section .z_init_SMP?_*, section .z_init_SMP??_*,
+  section .z_deferred_init*,
+  section ._device.static.*_?_*, section ._device.static.*_??_*,
+  section .__device_deps_pass2*,
+};
+
+do not initialize  { section .noinit };
+
+keep{ section .flash_conf };
+keep{ block DEFERRED_INIT };
+keep{ block GENHAL_INIT };
+keep{ block DEVICE_STATES };
+keep{ block DEVICE_AREA };
+keep{ block DEVICE_DEPS };
+
+keep{ section .flash_conf };
+place at address mem: m_boot_flash_start    { readonly section .flash_conf };
+place at address mem: m_interrupts_start    { readonly section .intvec };
+place in TEXT_region                        { block RO };
+place in TEXT_region                        { block GENHAL_INIT };
+place in TEXT_region                        { block DEFERRED_INIT };
+place in TEXT_region                        { block DEVICE_AREA };
+place in TEXT_region                        { block DEVICE_DEPS };
+place in m_interrupts_ram_region            { section m_interrupts_ram };
+place in DATA_region                        { section CodeQuickAccess, section DataQuickAccess };
+place in DATA_region                        { block RW };
+place in DATA_region                        { block ZI };
+place in DATA_region                        { block DEVICE_STATES };
+place in DATA_region                        { last block HEAP };
+place in CSTACK_region                      { block CSTACK };

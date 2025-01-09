@@ -1,0 +1,21 @@
+memfault:
+  section-type: application
+  contents:
+    meta_path: examples/component_examples/memfault/
+    project-root-path: boards/${board}/component_examples/memfault/
+    document:
+      name: memfault${core_id_suffix_name}
+      category: component_examples/memfault/
+      brief: The example demostrate usage of memfault component.
+      example_readme:
+      - examples/component_examples/memfault/readme.md
+      - examples/_boards/${board}/component_examples/memfault/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -mdk@debug
+    - -mdk@release
+    - -iar@debug
+    - -iar@release
