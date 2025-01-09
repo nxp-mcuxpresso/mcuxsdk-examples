@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
  * Copyright 2016 NXP
- * All rights reserved.
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,6 +13,12 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define APP_WAKEUP_PIN1_NAME "SW2"
+#define APP_GPIO_PIN_NAME    "SW2"
+#define APP_AONPIN_CONNECTED (false)
+#define APP_GPIO_INTA_IRQHandler GPIO_INTA_DriverIRQHandler
+#define APP_SW_PORT              BOARD_SW2_GPIO_PORT
+#define APP_SW_PIN               BOARD_SW2_GPIO_PIN
+
 /* Leave AON modules on in PM2 */
 #define APP_PM2_MEM_PU_CFG ((uint32_t)kPOWER_Pm2MemPuAon1 | (uint32_t)kPOWER_Pm2MemPuAon0)
 /* All ANA in low power mode in PM2 */

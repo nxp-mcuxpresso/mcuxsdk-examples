@@ -1,6 +1,5 @@
 /*
  * Copyright 2020 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +16,7 @@ typedef enum _app_wakeup_source
     kAPP_WakeupSourcePin1, /*!< Wakeup by wakeup pin1. */
     kAPP_WakeupSourceRtc,  /*!< Wakeup by RTC.         */
     kAPP_WakeupSourceUart, /*!< Wakeup by UART.        */
+    kAPP_WakeupSourceGPIOPIN, /*!< Wakeup by GPIO Pin.    */
 } app_wakeup_source_t;
 
 /*******************************************************************************

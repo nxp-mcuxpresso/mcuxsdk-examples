@@ -1,6 +1,5 @@
 /*
  * Copyright 2020 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,6 +44,13 @@ static uart_clock_context_t s_uartClockCtx;
 /*******************************************************************************
  * Function Code
  ******************************************************************************/
+void APP_GPIO_INTA_IRQHandler(void)
+{
+    /* clear the interrupt status */
+    GPIO_PinClearInterruptFlag(GPIO, APP_SW_PORT, APP_SW_PIN, 0);
+    SDK_ISR_EXIT_BARRIER;
+}
+
 void BOARD_UART_IRQ_HANDLER(void)
 {
     /* If new data arrived. */
@@ -105,9 +111,12 @@ static app_wakeup_source_t APP_GetWakeupSource(uint32_t mode)
     {
         PRINTF("Select the wake up source:\r\n");
         PRINTF("Press T for RTC.\r\n");
+#if (APP_AONPIN_CONNECTED)
         PRINTF("Press 1 for wakeup pin1(%s).\r\n", APP_WAKEUP_PIN1_NAME);
+#endif
         if (mode <= 2U)
         {
+            PRINTF("Press 2 for wakeup gpio pin(%s).\r\n", APP_GPIO_PIN_NAME);
             PRINTF("Press U for UART wakeup.\r\n");
         }
 
@@ -125,9 +134,15 @@ static app_wakeup_source_t APP_GetWakeupSource(uint32_t mode)
         {
             return kAPP_WakeupSourceRtc;
         }
+#if (APP_AONPIN_CONNECTED)
         else if (ch == '1')
         {
             return kAPP_WakeupSourcePin1;
+        }
+#endif
+        else if (ch == '2')
+        {
+            return kAPP_WakeupSourceGPIOPIN;
         }
         else if ((ch == 'U') && (mode <= 2U))
         {
@@ -209,6 +224,10 @@ static void APP_SetWakeupConfig(void)
         LPM_EnableWakeupSource(PIN1_INT_IRQn);
         PRINTF("Push wakeup PIN1 to wake up.\r\n");
     }
+    else if (s_wakeupSource == kAPP_WakeupSourceGPIOPIN)
+    {
+        LPM_EnableWakeupSource(GPIO_INTA_IRQn);
+        PRINTF("Push wakeup GPIO PIN to wake up.\r\n");    }
     else
     {
     }

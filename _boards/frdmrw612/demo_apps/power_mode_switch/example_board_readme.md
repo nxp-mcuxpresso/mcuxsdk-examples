@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Micro USB cable
+- USB-C cable
 - FRDM-RW612 board
 - Personal Computer
 
@@ -10,7 +10,7 @@ No special settings
 
 Prepare the Demo
 ===============
-1.  Connect a micro USB cable between the PC host and the MCU-Link USB port (J10) on the board
+1.  Connect a USB-C cable between the PC host and the MCU-Link USB port (J10) on the board
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -24,6 +24,8 @@ Running the demo
 ================
 When running the demo, the debug console shows the menu to command the MCU to the target power mode (PM0 - Active, PM1 - Idle, PM2 - Standby, PM3 - Sleep, PM4 - Deep Sleep).
 NOTE: Only input when the demo asks for input. Input entered at any other time might cause the debug console to overflow and receive the wrong input value.
+
+Note: On FRDM-RW612 board, the SW2 is connected to GPIO 11, which is not AON pin. So no pin wakeup in sleep modes.
 
 Here's the initial menu when running successfully.
 ~~~~~~~~~~~~~~~~~~~~~
@@ -47,7 +49,7 @@ Waiting for power mode select..
 1
 Select the wake up source:
 Press T for RTC.
-Press 1 for wakeup pin1(SW2).
+Press 2 for wakeup gpio pin(SW2).
 Press U for UART wakeup.
 
 Waiting for key press..
@@ -82,14 +84,20 @@ Waiting for power mode select..
 3
 Select the wake up source:
 Press T for RTC.
-Press 1 for wakeup pin1(SW2).
 
 Waiting for key press..
 
-1
-Push wakeup PIN1 to wake up.
+t
+Select the wake up timeout in seconds.
+The allowed range is 1s ~ 99s.
+Eg. enter 05 to wake up in 5 seconds.
 
-MCU wakeup source 0x0...
+Waiting for input timeout value...
+
+02
+RTC wake up after 2 seconds.
+Woken up by RTC
+Exit from power mode 3
 
 ####################  Power Mode Switch ####################
 
@@ -109,7 +117,6 @@ Waiting for power mode select..
 4
 Select the wake up source:
 Press T for RTC.
-Press 1 for wakeup pin1(SW2).
 
 Waiting for key press..
 
