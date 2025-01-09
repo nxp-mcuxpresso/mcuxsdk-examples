@@ -5,7 +5,7 @@ rom_dev_audio_bm:
     project-root-path: boards/${board}/usb_examples/usb_rom_device_audio/bm/${multicore_foldername}
     document:
       name: rom_dev_audio_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The example shows how to use USBD ROM stack to create and USB AUDIO class
         device. This device supports 2 channel audio in (MIC/LINE_IN) and 2 channel
         audio out (SPEAKERS/HEADPHONE).

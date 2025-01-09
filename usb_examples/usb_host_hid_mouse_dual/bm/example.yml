@@ -5,7 +5,7 @@ host_hid_mouse_dual_bm:
     project-root-path: boards/${board}/usb_examples/usb_host_hid_mouse_dual/bm/${multicore_foldername}
     document:
       name: host_hid_mouse_dual_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The application supports the mouse device. It prints the mouse operation
         when the mouse device is attached.
       example_readme:

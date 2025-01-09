@@ -5,7 +5,7 @@ dev_cdc_vnic_bm:
     project-root-path: boards/${board}/usb_examples/usb_device_cdc_vnic/bm/${multicore_foldername}
     document:
       name: dev_cdc_vnic_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The Virtual NIC project is enumerated as a network adapter. Users can
         access the network by properly configuring this network adapter.
       example_readme:

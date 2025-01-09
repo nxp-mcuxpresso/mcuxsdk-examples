@@ -5,7 +5,7 @@ usb_pd_charger_battery_freertos_om13790host:
     project-root-path: boards/${board}/usb_examples/usb_pd_charger_battery_om13790host/freertos/${multicore_foldername}
     document:
       name: usb_pd_charger_battery_freertos_om13790host${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The application simulate battery product, it prints the battery percent
         continually. The demo works as sink and get power from partner port
       example_readme:

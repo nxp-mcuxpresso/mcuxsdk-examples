@@ -5,7 +5,7 @@ dev_lpm_hid_mouse_lite_bm:
     project-root-path: boards/${board}/usb_examples/usb_lpm_device_hid_mouse_lite/bm/${multicore_foldername}
     document:
       name: dev_lpm_hid_mouse_lite_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: This is one example support LPM(Link Power Management).
       example_readme:
       - examples/usb_examples/usb_lpm_device_hid_mouse_lite/readme.md

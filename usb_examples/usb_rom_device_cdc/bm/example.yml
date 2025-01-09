@@ -5,7 +5,7 @@ rom_dev_cdc_bm:
     project-root-path: boards/${board}/usb_examples/usb_rom_device_cdc/bm/${multicore_foldername}
     document:
       name: rom_dev_cdc_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The example shows how to use USBD ROM stack to create a virtual comm
         port. When the USB on J3 is connected to a PC, the host would recognize the
         USB connection as a new serial port.

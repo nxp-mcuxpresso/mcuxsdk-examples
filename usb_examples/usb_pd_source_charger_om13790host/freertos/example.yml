@@ -5,7 +5,7 @@ usb_pd_source_charger_freertos_om13790host:
     project-root-path: boards/${board}/usb_examples/usb_pd_source_charger_om13790host/freertos/${multicore_foldername}
     document:
       name: usb_pd_source_charger_freertos_om13790host${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The application simulate charger product. The demo only works as source
         and is external powered
       example_readme:

@@ -5,7 +5,7 @@ host_suspend_resume_hid_mouse_bm:
     project-root-path: boards/${board}/usb_examples/usb_suspend_resume_host_hid_mouse/bm/${multicore_foldername}
     document:
       name: host_suspend_resume_hid_mouse_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: This is one example support suspend/resume.
       example_readme:
       - examples/usb_examples/usb_suspend_resume_host_hid_mouse/readme.md

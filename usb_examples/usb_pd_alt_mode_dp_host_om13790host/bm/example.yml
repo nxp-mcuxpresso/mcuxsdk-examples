@@ -5,7 +5,7 @@ usb_pd_alt_mode_dp_host_bm_om13790host:
     project-root-path: boards/${board}/usb_examples/usb_pd_alt_mode_dp_host_om13790host/bm/${multicore_foldername}
     document:
       name: usb_pd_alt_mode_dp_host_bm_om13790host${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: This PD example is a simple demonstration based on the MCUXpresso SDK
         PD stack. The application use the shield host board (om13790host) to implement
         the DisplayPort alternate mode.It recognize attached video adapters (like

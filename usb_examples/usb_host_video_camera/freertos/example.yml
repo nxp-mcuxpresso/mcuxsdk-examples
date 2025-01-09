@@ -5,7 +5,7 @@ host_video_camera_freertos:
     project-root-path: boards/${board}/usb_examples/usb_host_video_camera/freertos/${multicore_foldername}
     document:
       name: host_video_camera_freertos${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The application supports to get JPEG image from camera function.
       example_readme:
       - examples/usb_examples/usb_host_video_camera/readme.md

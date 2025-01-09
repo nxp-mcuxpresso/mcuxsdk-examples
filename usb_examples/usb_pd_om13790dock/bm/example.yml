@@ -5,7 +5,7 @@ usb_pd_bm_om13790dock:
     project-root-path: boards/${board}/usb_examples/usb_pd_om13790dock/bm/${multicore_foldername}
     document:
       name: usb_pd_bm_om13790dock${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: This PD example is a simple demonstration based on the MCUXpresso SDK
         PD stack. The application use the board keys and debug console to test the
         PD functions. The demo works as DRP. When connect, the board can be source

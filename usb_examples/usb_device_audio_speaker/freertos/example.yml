@@ -5,7 +5,7 @@ dev_audio_speaker_freertos:
     project-root-path: boards/${board}/usb_examples/usb_device_audio_speaker/freertos/${multicore_foldername}
     document:
       name: dev_audio_speaker_freertos${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The USB Audio Speaker application is a simple demonstration program based
         on the MCUXpresso SDK. It is enumerated as a playback device and users can
         play music using the device.

@@ -5,7 +5,7 @@ host_audio_speaker_freertos:
     project-root-path: boards/${board}/usb_examples/usb_host_audio_speaker/freertos/${multicore_foldername}
     document:
       name: host_audio_speaker_freertos${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The Host Audio example supports the audio speaker device. @n The application
         prints the audio speaker information when the USB speaker device is attached.
       example_readme:

@@ -5,7 +5,7 @@ dev_composite_cdc_msc_lite_bm:
     project-root-path: boards/${board}/usb_examples/usb_device_composite_cdc_msc_lite/bm/${multicore_foldername}
     document:
       name: dev_composite_cdc_msc_lite_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The Composite CDC_MSC project is a simple demonstration program based
         on the MCUXpresso SDK.  It is enumerated as a COM port and a RAM disk, which
         can be opened using terminal tools, such as TeraTerm. The demo echoes back

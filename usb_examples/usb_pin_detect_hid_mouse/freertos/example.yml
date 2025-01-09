@@ -5,7 +5,7 @@ pin_detect_hid_mouse_freertos:
     project-root-path: boards/${board}/usb_examples/usb_pin_detect_hid_mouse/freertos/${multicore_foldername}
     document:
       name: pin_detect_hid_mouse_freertos${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: This pin detect HID example supports the mouse device. The application
         prints the operation information when the mouse device is attached or plugged
         in to the PC host.

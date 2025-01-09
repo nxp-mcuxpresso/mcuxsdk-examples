@@ -5,7 +5,7 @@ host_cdc_freertos:
     project-root-path: boards/${board}/usb_examples/usb_host_cdc/freertos/${multicore_foldername}
     document:
       name: host_cdc_freertos${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The host CDC project is a simple demonstration program based on the MCUXpresso
         SDK. It enumerates a COM port and echoes back the data from the UART .
       example_readme:

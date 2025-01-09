@@ -5,7 +5,7 @@ host_msd_command_bm:
     project-root-path: boards/${board}/usb_examples/usb_host_msd_command/bm/${multicore_foldername}
     document:
       name: host_msd_command_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: This Host MSD example supports the UFI and SCSI U-disk device. The application
         prints the attached device information when the U-disk device is attached.The
         application executes UFI commands to test the attached device.

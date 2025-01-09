@@ -5,7 +5,7 @@ dev_mtp_lite_bm:
     project-root-path: boards/${board}/usb_examples/usb_device_mtp_lite/bm/${multicore_foldername}
     document:
       name: dev_mtp_lite_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The USB MTP application is a simple demonstration program based on the
         MCUXpresso SDK. It is enumerated as portable media device. Users can read
         and write the SD card or MMC by MTP operations.

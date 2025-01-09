@@ -5,7 +5,7 @@ dev_cdc_vcom_lite_bm:
     project-root-path: boards/${board}/usb_examples/usb_device_cdc_vcom_lite/bm/${multicore_foldername}
     document:
       name: dev_cdc_vcom_lite_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The Virtual COM project enumerated as a COM port, which the users can
         open using terminal tools, such as TeraTerm. The demo echoes back any character
         it receives.

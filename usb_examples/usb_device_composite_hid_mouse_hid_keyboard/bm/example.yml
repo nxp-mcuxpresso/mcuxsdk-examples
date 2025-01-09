@@ -5,7 +5,7 @@ dev_composite_hid_mouse_hid_keyboard_bm:
     project-root-path: boards/${board}/usb_examples/usb_device_composite_hid_mouse_hid_keyboard/bm/${multicore_foldername}
     document:
       name: dev_composite_hid_mouse_hid_keyboard_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The application is a simple demonstration program based on the MCUXpresso
         SDK. The application is enumerated as HID-compliant mouse and keyboard devices.
       example_readme:

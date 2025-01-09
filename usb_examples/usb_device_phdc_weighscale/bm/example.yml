@@ -5,7 +5,7 @@ dev_phdc_weighscale_bm:
     project-root-path: boards/${board}/usb_examples/usb_device_phdc_weighscale/bm/${multicore_foldername}
     document:
       name: dev_phdc_weighscale_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The USB PHDC WeighScale application is a simple demonstration program
         based on the MCUXpresso SDK.It is enumerated as a weight scale device and
         the HealthLink software is used to interact with thisdevice to simulate the

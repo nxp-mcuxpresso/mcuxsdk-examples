@@ -5,7 +5,7 @@ dev_printer_virtual_plain_text_bm:
     project-root-path: boards/${board}/usb_examples/usb_device_printer_virtual_plain_text/bm/${multicore_foldername}
     document:
       name: dev_printer_virtual_plain_text_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The USB virtual printer application is a simple application to demonstrate
         a virtual printer functionality.Because there is no printer language parsing,
         the received raw data is output directly in the debug console.As a result,

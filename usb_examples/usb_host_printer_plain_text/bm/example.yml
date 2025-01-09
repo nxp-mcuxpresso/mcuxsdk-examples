@@ -5,7 +5,7 @@ host_printer_plain_text_bm:
     project-root-path: boards/${board}/usb_examples/usb_host_printer_plain_text/bm/${multicore_foldername}
     document:
       name: host_printer_plain_text_bm${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: The host printer example demonstrates how to get the status of the printer
         deviceand how to print a certain test string.
       example_readme:

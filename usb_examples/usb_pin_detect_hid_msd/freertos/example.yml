@@ -5,7 +5,7 @@ pin_detect_hid_msd_freertos:
     project-root-path: boards/${board}/usb_examples/usb_pin_detect_hid_msd/freertos/${multicore_foldername}
     document:
       name: pin_detect_hid_msd_freertos${core_id_suffix_name}
-      category: usb_examples/
+      category: usb_examples
       brief: This pin detect HID MSD example can become a HID mouse device or a MSD
         host that supports U-disk. The application prints the operation information
         when the U-disk is attached or is plugged into the PC host.
