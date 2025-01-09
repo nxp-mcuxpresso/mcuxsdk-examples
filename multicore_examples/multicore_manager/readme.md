@@ -38,6 +38,9 @@ west build --sysbuild examples/multicore_manager/hello_world/primary --toolchain
 ## Supported Boards
 
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/multicore_examples/multicore_manager/example_board_readme.md)
+- [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/multicore_examples/multicore_manager/example_board_readme.md)
+- [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/multicore_examples/multicore_manager/example_board_readme.md)
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/multicore_examples/multicore_manager/example_board_readme.md)
 - [FRDM-K32L3A6](../../_boards/frdmk32l3a6/multicore_examples/multicore_manager/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/multicore_examples/multicore_manager/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/multicore_examples/multicore_manager/example_board_readme.md)

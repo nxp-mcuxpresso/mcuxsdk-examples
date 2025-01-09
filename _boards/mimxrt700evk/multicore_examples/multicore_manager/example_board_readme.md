@@ -38,4 +38,11 @@ Use the Stop and then the Start button to get it running again.
 .
 .
 
+Secondary core cannot be stopped!
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+> **_NOTE: #1_**:
+> The MIMXRT700-EVK board does not support stopping of secondary code.
+> After pressing the button prints that secondary core cannot be stopped.
+> Only way to start the secondary core again is POR.

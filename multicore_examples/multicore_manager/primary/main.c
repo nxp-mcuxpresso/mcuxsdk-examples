@@ -117,12 +117,18 @@ int main(void)
         /* Stop secondary core execution. */
         if (IS_BUTTON_1_PRESSED())
         {
-            if (kStatus_MCMGR_Success == MCMGR_StopCore(kMCMGR_Core1))
+            const mcmgr_status_t status = MCMGR_StopCore(kMCMGR_Core1);
+
+            if (kStatus_MCMGR_Success == status)
             {
 #ifdef APP_ONE_BUTTON_ONLY
                 secondary_core_started = 0U;
 #endif
                 (void)PRINTF("Stopped Secondary core.\r\n");
+            }
+            else if (kStatus_MCMGR_NotImplemented == status)
+            {
+                (void)PRINTF("Secondary core cannot be stopped!\r\n");
             }
             else
             {
