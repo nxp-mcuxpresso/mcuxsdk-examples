@@ -1,0 +1,21 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config DEMO_FILE_BUF_COUNT
+    int "Number of file buffers"
+    default 3
+    help
+        No prefix in generated macro
+
+config DEMO_FILE_BUF_SIZE
+    hex "Number of file buffers"
+    default 0x8000
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

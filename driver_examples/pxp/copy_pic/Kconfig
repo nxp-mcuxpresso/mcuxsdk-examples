@@ -1,0 +1,69 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config INPUT_BUF_WIDTH
+    int "Input buffer width"
+    default 128
+    help
+        No prefix in generated macro
+
+config INPUT_BUF_HEIGHT
+    int "Input buffer height"
+    default 64
+    help
+        No prefix in generated macro
+
+config OUTPUT_BUF_WIDTH
+    int "Output buffer width"
+    default 64
+    help
+        No prefix in generated macro
+
+config OUTPUT_BUF_HEIGHT
+    int "Output buffer height"
+    default 32
+    help
+        No prefix in generated macro
+
+config COPY_WIDTH
+    int "Horizontal size of the copied area"
+    default 16
+    help
+        No prefix in generated macro
+
+config COPY_HEIGHT
+    int "Vertical size of the copied area"
+    default 8
+    help
+        No prefix in generated macro
+
+config SRC_OFFSET_X
+    int "The x coordinate of the upper left corner of the copied area"
+    default 0
+    help
+        No prefix in generated macro
+
+config SRC_OFFSET_Y
+    int "The y coordinate of the upper left corner of the copied area"
+    default 0
+    help
+        No prefix in generated macro
+
+config DEST_OFFSET_X
+    int "The x coordinate of the upper left corner of the destination area"
+    default 10
+    help
+        No prefix in generated macro
+
+config DEST_OFFSET_Y
+    int "The y coordinate of the upper left corner of the destination area"
+    default 20
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

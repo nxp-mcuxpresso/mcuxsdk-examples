@@ -1,0 +1,18 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config APP_FB_NUM
+    int "Number of frame buffers"
+    default 3
+    help
+        For better performance, by default, three frame buffers are used in this demo.
+        If the memory region is not large enough, user can define to 2 to override
+        this value.
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

@@ -1,0 +1,29 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config APP_FB_WIDTH
+    int "Frame buffer width"
+    default 480
+    help
+        No prefix in generated macro
+        type unsigned
+
+config APP_FB_HEIGHT
+    int "Frame buffer height"
+    default 272
+    help
+        No prefix in generated macro
+        type unsigned
+
+config APP_PIC_NUM
+    int "Total number of pictures to decode"
+    default 121
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

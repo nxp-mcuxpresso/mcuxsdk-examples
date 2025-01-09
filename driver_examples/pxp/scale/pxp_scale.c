@@ -25,9 +25,6 @@
 #define APP_PS_SIZE (APP_IMG_WIDTH / 2U)
 #endif
 
-#define APP_PS_ULC_X 0U
-#define APP_PS_ULC_Y 0U
-
 #if USE_RGB565
 
 typedef uint16_t pixel_t;
