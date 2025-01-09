@@ -30,14 +30,14 @@ UINT32 EcatTimerCnt;
 
 static void Ecat_KickOff(void)
 {
-    hal_rst_t hal_ecat_disable = {
-        .id = 24,
-        .flags = 2,
-        .resetState = 0,
-    };
-    HAL_Reset(&hal_ecat_disable);
+    // hal_rst_t hal_ecat_disable = {
+    //     .id = 24,
+    //     .flags = 2,
+    //     .resetState = 0,
+    // };
+    // HAL_Reset(&hal_ecat_disable);
 
-	SRC_XSPR_NETCMIX->IRST_REQ_CTRL |= 1 << 0x01;  // disable ecat
+    //SRC_XSPR_NETCMIX->IRST_REQ_CTRL |= 1 << 0x01;  // disable ecat
 
     /* EtherCAT port0 is in MII mode */
     BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_RMII_SEL0_SHIFT);
@@ -55,6 +55,8 @@ static void Ecat_KickOff(void)
     /* EtherCAT PHY_OFFSET_VEC */
     BLK_CTRL_NETCMIX->CFG_ECAT |= (BLK_CTRL_NETCMIX_CFG_ECAT_PHY_OFFSET_VEC(2));
 
+    SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+    
     hal_rst_t hal_ecat_enable = {
         .id = 24,
         .flags = 0,
@@ -105,13 +107,24 @@ UINT16 HW_Init(void)
     /*Select ECAT1_CLK25*/
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
+
+    BOARD_EXPANDER_SetPinToHigh(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
+    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
+    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
+    BOARD_EXPANDER_SetPinToHigh(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
+    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
+    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     
     /*Open ECAT EEPROM*/
-    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA9544_I2C6_ID, CAN2_SEL);
-    BOARD_EXPANDER_SetPinToLow(BOARD_PCA9544_I2C6_ID, CAN2_SEL);
-    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
+    
+    BOARD_EXPANDER_SetPinToHigh(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
+    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
+    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     Ecat_KickOff();
 
@@ -143,7 +156,6 @@ UINT16 HW_Init(void)
 
     HW_EscWriteDWord(intMask, ESC_AL_EVENTMASK_OFFSET);
 
-	PRINTF("IRST_REQ_CTRL4 = 0x%x\r\n", SRC_XSPR_NETCMIX->IRST_REQ_CTRL);
     /*Enable GPT*/
     GPT_GetDefaultConfig(&gptConfig);
 

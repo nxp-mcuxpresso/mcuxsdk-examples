@@ -12,26 +12,28 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v12.0
-processor: MIMX9352xxxxM
-package_id: MIMX9352DVUXM
+product: Pins v15.0
+processor: MIMXRT1189xxxxx
+package_id: MIMXRT1189CVM8B
 mcu_data: ksdk2_0
-processor_version: 0.12.3
+processor_version: 0.15.9
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
+// #include "fsl_common.h"
+// #include "fsl_iomuxc.h"
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
- *
+ * 
  * Function Name : BOARD_InitBootPins
  * Description   : Calls initialization functions.
- *
+ * 
  * END ****************************************************************************************************************/
-void BOARD_InitBootPins(void)
+void BOARD_InitBootPins(void) 
 {
     BOARD_InitDebugConsolePins();
-    BOARD_InitEcatLinkPins();
+	BOARD_InitEcatLinkPins();
 #ifdef ECAT_RMII_PORT
 	BOARD_InitEcatPortRmiiPins();
 #else
@@ -41,7 +43,7 @@ void BOARD_InitBootPins(void)
 	BOARD_InitEcatMDIOPins();
     BOARD_InitEcatResetPins();
     BOARD_InitI2C6Pins();
-	BOARD_InitGPIOPins();
+    //BOARD_InitGPIOPins();	
 }
 
 void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
@@ -99,14 +101,14 @@ void BOARD_InitEcatI2CPins(void)
 {
 
 /* Using GPIO_IO14/GPIO_IO15 */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO34__ECAT_SDA, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO35__ECAT_SCL, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO34__ECAT_SDA,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3));
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO35__ECAT_SCL,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3));
+    // HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__ECAT_SDA, 0U);
+    // HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__ECAT_SCL, 0U);
+    // HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__ECAT_SDA,
+    //                     HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3));
+    // HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__ECAT_SCL,
+    //                     HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3));
 
-#if 0
+#if 1
 
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO34__ECAT_SDA, 0U);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO35__ECAT_SCL, 0U);
@@ -173,6 +175,7 @@ void BOARD_InitEcatPortMiiPins(void)
 }
 
 #endif
+
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
