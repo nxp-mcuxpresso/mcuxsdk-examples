@@ -210,6 +210,11 @@ fmstr_example_uart:
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
     frdmrw612: []
+    imx943evk@cm7_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
     kw47evk@cm33_core0: []
     lpc845breakout: []
     lpcxpresso51u68: []
