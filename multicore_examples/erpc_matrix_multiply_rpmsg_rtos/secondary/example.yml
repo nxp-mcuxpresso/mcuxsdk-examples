@@ -100,7 +100,5 @@ erpc_matrix_multiply_rpmsg_rtos_secondary_core:
     mcxn9xxevk@cm33_core1: []
     kw47evk@cm33_core1: []
     mcxw72evk@cm33_core1: []
-    evkmcimx7ulp:
-    - -armgcc@debug
     kw47loc@cm33_core1: []
     frdmmcxw72@cm33_core1: []
