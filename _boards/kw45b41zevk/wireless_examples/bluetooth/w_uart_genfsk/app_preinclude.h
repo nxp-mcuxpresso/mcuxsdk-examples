@@ -3,7 +3,7 @@
  * @{
  ********************************************************************************** */
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  *
  *
@@ -54,6 +54,9 @@
 
 /*! Enable Genfsk config support */
 #define gAppEnableHybridGenfsk_d        1
+
+/*! Enable extensive Genfsk logging */
+#define gHybridGenfskErrorLog_d         0
 
 /*! *********************************************************************************
  *     Framework Configuration
