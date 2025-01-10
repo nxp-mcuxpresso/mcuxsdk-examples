@@ -25,6 +25,7 @@ extern "C" {
 #define CENTRAL_HTC_SERVICE_ID         4
 #define CENTRAL_HRC_SERVICE_ID         5
 #define PERIPHERAL_NCS_SERVICE_ID      6
+#define PERIPHERAL_MATTER_SERVICE_ID   7
 
 /* HTS flag values */
 #define hts_unit_celsius_c        0x00U /* bit 0 unset */

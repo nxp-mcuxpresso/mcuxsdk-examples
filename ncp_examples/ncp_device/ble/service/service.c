@@ -15,6 +15,7 @@
 #include "service/gatt_server/peripheral_hts.h"
 #include "service/gatt_server/peripheral_hrs.h"
 #include "service/gatt_server/peripheral_ncs.h"
+#include "service/gatt_server/peripheral_matter.h"
 #include "service/gatt_client/central_hrc.h"
 #include "service/gatt_client/central_htc.h"
 #include "ncp_glue_ble.h"
@@ -52,6 +53,7 @@ struct service_t svc_list[] = {
     {CENTRAL_HTC_SERVICE_ID, false,"CENTRAL HTC SERVICE", central_htc_task, NULL},
     {CENTRAL_HRC_SERVICE_ID, false, "CENTRAL HRC SERVICE", central_hrc_task, NULL},
     {PERIPHERAL_NCS_SERVICE_ID, false, "PERIPHERAL NCS SERVICE", peripheral_ncs_task, init_ncs_service},
+    {PERIPHERAL_MATTER_SERVICE_ID, false, "PERIPHERAL MATTER SERVICE", peripheral_matter_task, init_matter_service},
 };
 
 struct service_cb_t svc_cb_connect[] = {
@@ -61,6 +63,7 @@ struct service_cb_t svc_cb_connect[] = {
     {CENTRAL_HTC_SERVICE_ID, .svc_conn_cb = central_htc_connect},
     {CENTRAL_HRC_SERVICE_ID, .svc_conn_cb = central_hrc_connect},
     {PERIPHERAL_NCS_SERVICE_ID, .svc_conn_cb = peripheral_ncs_connect},
+    {PERIPHERAL_MATTER_SERVICE_ID, .svc_conn_cb = peripheral_matter_connect},
 };
 
 struct service_cb_t svc_cb_disconnect[] = {
@@ -70,6 +73,7 @@ struct service_cb_t svc_cb_disconnect[] = {
     {CENTRAL_HTC_SERVICE_ID, .svc_disconn_cb = central_htc_disconnect},
     {CENTRAL_HRC_SERVICE_ID, .svc_disconn_cb = central_hrc_disconnect},
     {PERIPHERAL_NCS_SERVICE_ID, .svc_disconn_cb = peripheral_ncs_disconnect},
+    {PERIPHERAL_MATTER_SERVICE_ID, .svc_disconn_cb = peripheral_matter_disconnect},
 };
 
 struct service_cb_t svc_cb_security[] = {

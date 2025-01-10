@@ -11,7 +11,7 @@
 
 extern struct cmd_subclass_t cmd_subclass_wlan[12];
 #if CONFIG_NCP_BLE
-extern struct cmd_subclass_t cmd_subclass_ble[8];
+extern struct cmd_subclass_t cmd_subclass_ble[9];
 #endif
 #if CONFIG_NCP_OT
 extern struct cmd_subclass_t cmd_subclass_15D4[3];

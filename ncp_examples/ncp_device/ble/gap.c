@@ -127,6 +127,13 @@ static void set_oob_sc_remote_data(const uint8_t *data, uint16_t len);
 #endif
 void set_filter_list(const uint8_t *data, uint16_t len);
 
+void matter_get_device_name(const uint8_t *data, uint16_t len);
+void matter_get_conn_idx(const uint8_t *data, uint16_t len);
+void matter_conn_ref(const uint8_t *data, uint16_t len);
+void matter_conn_unref(const uint8_t *data, uint16_t len);
+void matter_get_mtu(const uint8_t *data, uint16_t len);
+void matter_disconn(const uint8_t *data, uint16_t len);
+
 /* Helpers */
 static void store_adv
 (
@@ -262,6 +269,9 @@ static struct bt_conn_auth_cb auth_cb = {
     .pairing_accept = auth_pairing_accept,
 #endif
 };
+
+/* Matter bt_conn pointer store */
+struct bt_conn *conn_store[CONFIG_BT_MAX_CONN];
 
 /*******************************************************************************
  * Code
@@ -1159,11 +1169,25 @@ static void le_connected(struct bt_conn *conn, uint8_t err)
 {
     struct gap_device_connected_ev ev = {0};
     struct bt_conn_info info;
+    uint8_t conn_idx = 0;
 
     if (err)
     {
         ncp_e("Failed to connect (err %u)\n", err);
     }else {
+        for (conn_idx = 0; conn_idx < CONFIG_BT_MAX_CONN; conn_idx++)
+        {
+            if (conn_store[conn_idx] == NULL)
+            {
+                conn_store[conn_idx] = conn;
+                break;
+            }
+        }
+        if (conn_idx == CONFIG_BT_MAX_CONN)
+        {
+            ncp_e("Out range of connection\n");
+        }
+
         (void)bt_conn_get_info(conn, &info);
 
         if (info.le.dst != NULL)
@@ -1174,6 +1198,7 @@ static void le_connected(struct bt_conn *conn, uint8_t err)
         ev.interval = sys_cpu_to_le16(info.le.interval);
         ev.latency = sys_cpu_to_le16(info.le.latency);
         ev.timeout = sys_cpu_to_le16(info.le.timeout);
+        ev.conn_id = conn_idx;
 
         // for profile service connect callback
         le_service_connect(conn, err);
@@ -1190,6 +1215,7 @@ static void le_disconnected(struct bt_conn *conn, uint8_t reason)
 {
     struct gap_device_disconnected_ev ev = {0};
     const bt_addr_le_t *addr = bt_conn_get_dst(conn);
+    uint8_t conn_idx = 0;
 
     if (addr != NULL)
     {
@@ -1199,6 +1225,22 @@ static void le_disconnected(struct bt_conn *conn, uint8_t reason)
 
     // for profile service disconnect callback
     le_service_disconnect(conn, reason);
+
+    for (conn_idx = 0; conn_idx < CONFIG_BT_MAX_CONN; conn_idx++)
+    {
+        if (conn_store[conn_idx] == conn)
+        {
+            conn_store[conn_idx] = NULL;
+            break;
+        }
+    }
+    if (conn_idx == CONFIG_BT_MAX_CONN)
+    {
+        ncp_e("Invalid connection\n");
+    }
+
+    ev.conn_id = conn_idx;
+    ev.reason = reason;
 
     ble_prepare_status(NCP_EVENT_DEVICE_DISCONNECT, NCP_CMD_RESULT_OK, (uint8_t *) &ev, sizeof(ev));
 }
@@ -1930,4 +1972,121 @@ uint16_t appl_hci_le_init_adv_list(void)
     return NCP_CMD_RESULT_OK;
 }
 #endif //#if (defined(CONFIG_BLE_ADV_REPORT_BUFFER_FILTER) && (CONFIG_BLE_ADV_REPORT_BUFFER_FILTER > 0U))
+
+/*
+ * @brief   This command is used to get device name.
+ */
+void matter_get_device_name(const uint8_t *data, uint16_t len)
+{
+    uint8_t status = NCP_CMD_RESULT_OK;
+
+    const char *name = bt_get_name();
+
+    ble_prepare_status(NCP_RSP_BLE_MATTER_GET_DEVICE_NAME, status, (uint8_t *)name, (strlen(name)+1));
+}
+
+/*
+ * @brief   This command is used to get connection index.
+ */
+void matter_get_conn_idx(const uint8_t *data, uint16_t len)
+{
+    struct _NCP_CMD_GET_CONN_INDEX *cmd = (void *) data;
+
+    // no need to handle, conn idx is conn_id
+    uint8_t status = NCP_CMD_RESULT_OK;
+
+    ble_prepare_status(NCP_RSP_BLE_MATTER_GET_CONN_INDEX, status, NULL, 0);
+}
+
+/*
+ * @brief   This command is used to connection reference.
+ */
+void matter_conn_ref(const uint8_t *data, uint16_t len)
+{
+    uint8_t status = NCP_CMD_RESULT_OK;
+    struct bt_conn *conn;
+
+    struct _NCP_CMD_CONN_REF *cmd = (void *) data;
+
+    conn = bt_conn_ref(conn_store[cmd->conn_id]);
+    if (conn == NULL)
+    {
+        ncp_e("Failed to increase conn ref");
+        status = NCP_CMD_RESULT_ERROR;
+    }
+
+    ble_prepare_status(NCP_RSP_BLE_MATTER_CONN_REF, status, NULL, 0);
+}
+
+/*
+ * @brief   This command is used to connection unreference.
+ */
+void matter_conn_unref(const uint8_t *data, uint16_t len)
+{
+    uint8_t status = NCP_CMD_RESULT_OK;
+    struct _NCP_CMD_CONN_UNREF *cmd = (void *) data;
+
+    bt_conn_unref(conn_store[cmd->conn_id]);
+
+    ble_prepare_status(NCP_RSP_BLE_MATTER_CONN_UNREF, status, NULL, 0);
+}
+
+/*
+ * @brief   This command is used to get MTU size.
+ */
+void matter_get_mtu(const uint8_t *data, uint16_t len)
+{
+    uint8_t status = NCP_CMD_RESULT_OK;
+    uint16_t mtu_size = 0;
+    struct _NCP_CMD_GET_MTU *cmd = (void *) data;
+
+    mtu_size = bt_gatt_get_mtu(conn_store[cmd->conn_id]);
+
+    ble_prepare_status(NCP_RSP_BLE_MATTER_GET_MTU, NCP_CMD_RESULT_OK, (uint8_t *)&mtu_size, sizeof(mtu_size));
+}
+
+/*
+ * @brief   This command is used to disconnect ble link.
+ */
+void matter_disconn(const uint8_t *data, uint16_t len)
+{
+    uint8_t status = NCP_CMD_RESULT_OK;
+    struct _NCP_CMD_DISCONN *cmd = (void *) data;
+
+    if (bt_conn_disconnect(conn_store[cmd->conn_id], cmd->reason))
+    {
+        ncp_e("Failed to disconnect");
+        status = NCP_CMD_RESULT_ERROR;
+    }
+
+    ble_prepare_status(NCP_RSP_BLE_GAP_DISCONNECT, status, NULL, 0);
+}
+
+/*
+ * @brief   This command is used to send indication.
+ */
+extern void peripheral_matter_indication(uint8_t *buff, uint16_t len);
+void matter_send_indication(const uint8_t *data, uint16_t len)
+{
+    uint8_t status = NCP_CMD_RESULT_OK;
+    struct _NCP_CMD_MATTER_INDICATE *cmd = (void *) data;
+
+    peripheral_matter_indication(cmd->data, cmd->len);
+
+    ble_prepare_status(NCP_RSP_BLE_MATTER_INDICATE, status, NULL, 0);
+}
+
+/*
+ * @brief   This command is used to unregister matter service.
+ */
+extern void unregister_matter_service(void);;
+void matter_service_unregister(const uint8_t *data, uint16_t len)
+{
+    uint8_t status = NCP_CMD_RESULT_OK;
+
+    unregister_matter_service();
+
+    ble_prepare_status(NCP_RSP_BLE_MATTER_UNREGISTER, status, NULL, 0);
+}
+
 #endif /* CONFIG_NCP_BLE */

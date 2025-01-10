@@ -38,6 +38,8 @@ mcux_add_source(
             ble/service/gatt_server/peripheral_hts.h
             ble/service/gatt_server/peripheral_ncs.c
             ble/service/gatt_server/peripheral_ncs.h
+            ble/service/gatt_server/peripheral_matter.c
+            ble/service/gatt_server/peripheral_matter.h
             ble/service/gatt_client/central_hrc.c
             ble/service/gatt_client/central_hrc.h
             ble/service/gatt_client/central_htc.c

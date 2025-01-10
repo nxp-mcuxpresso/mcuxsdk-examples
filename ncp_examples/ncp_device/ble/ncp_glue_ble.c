@@ -75,6 +75,16 @@ extern void write_data(const uint8_t *data, uint16_t len);
 
 extern uint8_t ncp_ble_init_gatt(void);
 
+//MATTER
+extern void matter_get_device_name(const uint8_t *data, uint16_t len);
+extern void matter_get_conn_idx(const uint8_t *data, uint16_t len);
+extern void matter_conn_ref(const uint8_t *data, uint16_t len);
+extern void matter_conn_unref(const uint8_t *data, uint16_t len);
+extern void matter_get_mtu(const uint8_t *data, uint16_t len);
+extern void matter_disconn(const uint8_t *data, uint16_t len);
+extern void matter_send_indication(const uint8_t *data, uint16_t len);
+extern void matter_service_unregister(const uint8_t *data, uint16_t len);
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -645,6 +655,78 @@ static int ble_start_l2cap_metrics(void *tlv)
     return ret;
 }
 
+static int ble_matter_get_device_name(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_get_device_name(tlv, 0);
+
+    return ret;
+}
+
+static int ble_matter_get_conn_idx(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_get_conn_idx(tlv, 0);
+
+    return ret;
+}
+
+static int ble_matter_conn_ref(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_conn_ref(tlv, 0);
+
+    return ret;
+}
+
+static int ble_matter_conn_unref(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_conn_unref(tlv, 0);
+
+    return ret;
+}
+
+static int ble_matter_get_mtu(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_get_mtu(tlv, 0);
+
+    return ret;
+}
+
+static int ble_matter_disconn(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_disconn(tlv, 0);
+
+    return ret;
+}
+
+static int ble_matter_send_indication(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_send_indication(tlv, 0);
+
+    return ret;
+}
+
+static int ble_matter_service_unregister(void *tlv)
+{
+    int ret = NCP_CMD_RESULT_OK;
+
+    matter_service_unregister(tlv, 0);
+
+    return ret;
+}
+
 NCPCmd_DS_BLE_COMMAND *ncp__get_ble_response_buffer()
 {
     return (NCPCmd_DS_BLE_COMMAND *)(ble_res_buf);
@@ -740,17 +822,30 @@ struct cmd_t ble_cmd_vendor[] = {
    {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
+struct cmd_t ble_cmd_matter[] = {
+   {NCP_CMD_BLE_MATTER_GET_DEVICE_NAME, "get connection index", ble_matter_get_device_name, CMD_SYNC},
+   {NCP_CMD_BLE_MATTER_GET_CONN_INDEX, "get connection index", ble_matter_get_conn_idx, CMD_SYNC},
+   {NCP_CMD_BLE_MATTER_CONN_REF, "connection reference", ble_matter_conn_ref, CMD_SYNC},
+   {NCP_CMD_BLE_MATTER_CONN_UNREF, "connection unreference", ble_matter_conn_unref, CMD_SYNC},
+   {NCP_CMD_BLE_MATTER_GET_MTU, "get mtu size", ble_matter_get_mtu, CMD_SYNC},
+   {NCP_CMD_BLE_MATTER_DISCONN, "terminate a connection", ble_matter_disconn, CMD_SYNC},
+   {NCP_CMD_BLE_MATTER_INDICATE, "send indication", ble_matter_send_indication, CMD_SYNC},
+   {NCP_CMD_BLE_MATTER_UNREGISTER, "service unregister", ble_matter_service_unregister, CMD_SYNC},
+   {NCP_CMD_INVALID, NULL, NULL, NULL},
+};
+
 struct cmd_t ble_cmd_other[] = {
    {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
-struct cmd_subclass_t cmd_subclass_ble[8] = {
+struct cmd_subclass_t cmd_subclass_ble[9] = {
    {NCP_CMD_BLE_CORE, ble_cmd_core},
    {NCP_CMD_BLE_GAP, ble_cmd_gap},
    {NCP_CMD_BLE_GATT, ble_cmd_gatt},
    {NCP_CMD_BLE_L2CAP, ble_cmd_l2cap},
    {NCP_CMD_BLE_POWERMGMT, ble_cmd_power_mgmt},
    {NCP_CMD_BLE_VENDOR, ble_cmd_vendor},
+   {NCP_CMD_BLE_MATTER, ble_cmd_matter},
    {NCP_CMD_BLE_OTHER, ble_cmd_other},
    {NCP_CMD_INVALID, NULL},
 };
