@@ -15,7 +15,6 @@ source by following the debug console prompts. The purpose of this demo is to sh
  - Debug pins(e.g SWD_DIO) would consume addtional power, had better to disable related pins or disconnect them.
 
 ## Supported Boards
-- [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/demo_apps/power_mode_switch/example_board_readme.md)
 - [FRDM-K22F](../../_boards/frdmk22f/demo_apps/power_mode_switch/example_board_readme.md)
 - [FRDM-K32L2A4S](../../_boards/frdmk32l2a4s/demo_apps/power_mode_switch/example_board_readme.md)
 - [FRDM-K32L2B](../../_boards/frdmk32l2b/demo_apps/power_mode_switch/example_board_readme.md)

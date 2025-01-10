@@ -13,9 +13,3 @@ wireless_uart_bridge:
       - examples/_boards/${board}/demo_apps/wireless_uart_bridge/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
-    evkmcimx7ulp:
-    - -armgcc@debug
-    - -armgcc@flash_debug
-    - -armgcc@flash_release
-    - -iar@flash_debug
-    - -iar@flash_release

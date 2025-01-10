@@ -33,8 +33,6 @@ rpmsg_lite_pingpong_rtos_remote_core:
       - examples/_boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
-    evkmcimx7ulp:
-    - -armgcc@debug
     evkmimx8mm: []
     evkmimx8mn: []
     evkmimx8mnddr3l: []

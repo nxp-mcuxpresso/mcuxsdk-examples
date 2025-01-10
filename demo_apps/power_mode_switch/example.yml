@@ -32,8 +32,6 @@ power_mode_switch:
       - examples/_boards/${board}/demo_apps/power_mode_switch/example_board_readme.md
       - examples/_boards/${board}/examples_shared_readme.md
   boards:
-    evkmcimx7ulp:
-    - -armgcc@debug
     frdmk22f: []
     frdmk32l2a4s: []
     frdmk32l2b: []
