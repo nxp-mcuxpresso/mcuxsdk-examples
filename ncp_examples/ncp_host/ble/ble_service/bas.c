@@ -79,10 +79,10 @@ void peripheral_bas_start(void)
     {
         is_started = true;
         bas_init();
-        printf("BAS profile at host side starting...\n");
+        PRINTF("BAS profile at host side starting...\n");
         return;
     }
-    printf("BAS profile at host side already started\n");
+    PRINTF("BAS profile at host side already started\n");
     return;
 }
 
@@ -107,7 +107,7 @@ static void peripheral_bas_task(void *pvParameters)
 
     /*Wait for command response semaphore.*/
     mcu_get_command_resp_sem();
-    printf("Send 'ble-host-svc-add prim 180f chrc 2a19 10 00 ccc 2902 03 start' to add BAS profile to ncp device side\n");
+    PRINTF("Send 'ble-host-svc-add prim 180f chrc 2a19 10 00 ccc 2902 03 start' to add BAS profile to ncp device side\n");
 
     do
     {

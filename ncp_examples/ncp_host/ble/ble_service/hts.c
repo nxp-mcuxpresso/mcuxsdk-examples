@@ -78,10 +78,10 @@ void peripheral_hts_start(void)
     {
         is_started = true;
         hts_init();
-        printf("HTS profile at host side starting...\n");
+        PRINTF("HTS profile at host side starting...\n");
         return;
     }
-    printf("HTS profile at host side already started\n");
+    PRINTF("HTS profile at host side already started\n");
     return;
 }
 
@@ -110,7 +110,7 @@ static void peripheral_hts_task(void *pvParameters)
 
     /*Wait for command response semaphore.*/
     mcu_get_command_resp_sem();
-    printf("Send 'ble-host-svc-add prim 1809 chrc 2a1c 20 00 ccc 2902 03 start' to add HTS profile to ncp device side\n");
+    PRINTF("Send 'ble-host-svc-add prim 1809 chrc 2a1c 20 00 ccc 2902 03 start' to add HTS profile to ncp device side\n");
 
     do
     {
@@ -182,7 +182,7 @@ static void peripheral_hts_task(void *pvParameters)
     {
         if(hts_ccc_written)
         {
-            printf("temperature is %ldC\n", temperature);
+            PRINTF("temperature is %ldC\n", temperature);
             temp_measurement.flags = hts_unit_celsius_c;
             temp_measurement.flags += hts_include_temp_type;
             temp_measurement.type = temp_type;

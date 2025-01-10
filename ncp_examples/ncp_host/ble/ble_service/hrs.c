@@ -84,10 +84,10 @@ void peripheral_hrs_start(void)
     {
         is_started = true;
         hrs_init();
-        printf("HRS profile at host side starting...\n");
+        PRINTF("HRS profile at host side starting...\n");
         return;
     }
-    printf("HRS profile at host side already started\n");
+    PRINTF("HRS profile at host side already started\n");
     return;
 }
 
@@ -111,7 +111,7 @@ static void peripheral_hrs_task(void *pvParameters)
 
     /*Wait for command response semaphore.*/
     mcu_get_command_resp_sem();
-    printf("Send 'ble-host-svc-add prim 180d chrc 2a37 10 00 ccc 2902 03 chrc 2a38 20 01 chrc 2a39 20 00 start' to add HRS profile to ncp device side\n");
+    PRINTF("Send 'ble-host-svc-add prim 180d chrc 2a37 10 00 ccc 2902 03 chrc 2a38 20 01 chrc 2a39 20 00 start' to add HRS profile to ncp device side\n");
 
     do
     {

@@ -75,7 +75,7 @@ void central_hrc_start(void)
 
     start_service_command->header.size += sizeof(NCP_CMD_START_SERVICE);
 
-    (void)printf("HTC profile at host side starting...\n");
+    (void)PRINTF("HTC profile at host side starting...\n");
     ncp_host_send_tlv_command();
     return;
 }
@@ -115,11 +115,11 @@ void central_notify(uint8_t *data)
 
     if ((temp_measurement.flags & 0x01) == hts_unit_celsius_c)
     {
-        printf("Temperature %d degrees Celsius \n", temperature);
+        PRINTF("Temperature %d degrees Celsius \n", temperature);
     }
     else
     {
-        printf("Temperature %d degrees Fahrenheit \n", temperature);
+        PRINTF("Temperature %d degrees Fahrenheit \n", temperature);
     }
 }
 
@@ -141,7 +141,7 @@ void central_hrc_found(NCP_DEVICE_ADV_REPORT_EV * data)
         {
             if ((adv_data.data_len - 1) % sizeof(uint16_t) != 0U)
             {
-                (void)printf("AD malformed\n");
+                (void)PRINTF("AD malformed\n");
                 break;
             }
             for (uint8_t i = 0; i < adv_data.data_len; i += sizeof(uint16_t))
@@ -149,7 +149,7 @@ void central_hrc_found(NCP_DEVICE_ADV_REPORT_EV * data)
                 memcpy(&uuid, &adv_data.data[i], sizeof(uuid));
                 if(uuid == UUID_HTS)
                 {
-                    (void)printf("Found the temperature server - stop scanning\n");
+                    (void)PRINTF("Found the temperature server - stop scanning\n");
                     memcpy(hrc_conn_address.address, data->address, 6);
                     hrc_conn_address.type = data->address_type;
                     is_found = true;
@@ -206,13 +206,13 @@ static void central_hrc_task(void *pvParameters)
 
     if (is_found)
     {
-        (void)printf("Send 'ble-connect' to connect temperature server\n");
+        (void)PRINTF("Send 'ble-connect' to connect temperature server\n");
         ble_connect_command_local((NCP_CMD_CONNECT *)&hrc_conn_address);
         central_hrc_send_tlv_command();
         central_hrc_event_get(HRC_EVENT_CONNECTED);
     }
     // discover BT_UUID_HTS
-    (void)printf("Send 'ble-discover-prim' to discover BT_UUID_HTS\n");
+    (void)PRINTF("Send 'ble-discover-prim' to discover BT_UUID_HTS\n");
     //address
     memcpy(hrc_discover_primary.address, hrc_conn_address.address, 6);
     hrc_discover_primary.address_type = hrc_conn_address.type;
@@ -223,7 +223,7 @@ static void central_hrc_task(void *pvParameters)
     central_hrc_event_get(HRC_EVENT_GET_PRIMARY_SERVICE);
 
     // discover BT_UUID_HTS_MEASUREMENT
-    (void)printf("Send 'ble-discover-chrc' to discover BT_UUID_HTS_MEASUREMENT\n");
+    (void)PRINTF("Send 'ble-discover-chrc' to discover BT_UUID_HTS_MEASUREMENT\n");
     memcpy(hrc_discover_characteristics.address, hrc_conn_address.address, 6);
     hrc_discover_characteristics.address_type = hrc_conn_address.type;
     hrc_discover_characteristics.start_handle = hts_attr.start_handle + 1;
@@ -235,7 +235,7 @@ static void central_hrc_task(void *pvParameters)
     central_hrc_event_get(HRC_EVENT_GET_CHARACTERISTICS);
 
     // discover BT_GATT_CCC
-    (void)printf("Send 'ble-discover-desc' to discover BT_GATT_CCC\n");
+    (void)PRINTF("Send 'ble-discover-desc' to discover BT_GATT_CCC\n");
     memcpy(hrc_discover_descriptors.address, hrc_conn_address.address, 6);
     hrc_discover_descriptors.address_type = hrc_conn_address.type;
     hrc_discover_descriptors.start_handle = hts_measurement_attr.characteristic_handle +1;
@@ -247,7 +247,7 @@ static void central_hrc_task(void *pvParameters)
     central_hrc_event_get(HRC_EVENT_GET_CCC);
 
     // Configure indicate
-    (void)printf("Send 'ble-cfg-indicate' to enable service indicate\n");
+    (void)PRINTF("Send 'ble-cfg-indicate' to enable service indicate\n");
     memcpy(hrc_cfg_indicate.address, hrc_conn_address.address, 6);
     hrc_cfg_indicate.address_type = hrc_conn_address.type;
     hrc_cfg_indicate.enable= 1;
