@@ -44,7 +44,6 @@ west build --sysbuild examples/multicore_examples/erpc_matrix_multiply_rpmsg_rto
 ## Supported Boards
 
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/multicore_examples/erpc_matrix_multiply_rpmsg_rtos/example_board_readme.md)
-- [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/multicore_examples/erpc_matrix_multiply_rpmsg_rtos/example_board_readme.md)
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/multicore_examples/erpc_matrix_multiply_rpmsg_rtos/example_board_readme.md)
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/multicore_examples/erpc_matrix_multiply_rpmsg_rtos/example_board_readme.md)
 - [FRDM-K32L3A6](../../_boards/frdmk32l3a6/multicore_examples/erpc_matrix_multiply_rpmsg_rtos/example_board_readme.md)
