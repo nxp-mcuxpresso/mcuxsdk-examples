@@ -22,8 +22,13 @@
 #endif
 
 #if !(defined(FSL_FEATURE_NETC_HAS_NO_SWITCH) && FSL_FEATURE_NETC_HAS_NO_SWITCH)
+/* ENETC pseudo port for management */
 #ifndef EXAMPLE_SWT_SI
 #define EXAMPLE_SWT_SI kNETC_ENETC1PSI0
+#endif
+/* Switch pseudo port */
+#ifndef EXAMPLE_SWT_PSEUDO_PORT
+#define EXAMPLE_SWT_PSEUDO_PORT 0x4U
 #endif
 #endif
 /*******************************************************************************
@@ -95,6 +100,43 @@ static void APP_BuildBroadCastFrame(void)
         g_txFrame[count + 14U] = count % 0xFFU;
     }
 }
+
+#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
+/*! @brief Build Frame for single ring transmit. */
+static void APP_BuildBroadCastFrameSwtTag(void)
+{
+    netc_swt_tag_port_no_ts_t tag = {
+        .comTag = {
+            .tpid = NETC_SWITCH_DEFAULT_ETHER_TYPE,
+            .subType = kNETC_TagToPortNoTs,
+            .type = kNETC_TagToPort,
+            .qv = 1,
+            .ipv = 0,
+            .dr = 0,
+            .swtId = 1,
+            .port = EXAMPLE_SWT_USED_PORT
+        }
+    };
+    uint32_t headerSize = 14U + sizeof(tag);
+    uint32_t length = EXAMPLE_EP_TEST_FRAME_SIZE - headerSize;
+    uint32_t count;
+
+    for (count = 0; count < 6U; count++)
+    {
+        g_txFrame[count] = 0xFFU;
+    }
+    memcpy(&g_txFrame[6], &g_macAddr[0], 6U);
+    memcpy(&g_txFrame[12], &tag, sizeof(tag));
+
+    g_txFrame[12 + sizeof(tag)] = (length >> 8U) & 0xFFU;
+    g_txFrame[13 + sizeof(tag)] = length & 0xFFU;
+
+    for (count = 0; count < length; count++)
+    {
+        g_txFrame[count + headerSize] = count % 0xFFU;
+    }
+}
+#endif
 
 static status_t APP_ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame_info_t *frameInfo, void *userData)
 {
@@ -275,9 +317,13 @@ status_t APP_SWT_XferLoopBack(void)
     netc_rx_bdr_config_t rxBdrConfig = {0};
     netc_tx_bdr_config_t txBdrConfig = {0};
     netc_bdr_config_t bdrConfig      = {.rxBdrConfig = &rxBdrConfig, .txBdrConfig = &txBdrConfig};
+#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
+    uint32_t dataOffset              = 12U + sizeof(netc_swt_tag_port_no_ts_t);
+#else
+    swt_mgmt_tx_arg_t txArg          = {0};
+#endif
     netc_buffer_struct_t txBuff      = {.buffer = &g_txFrame, .length = sizeof(g_txFrame)};
     netc_frame_struct_t txFrame      = {.buffArray = &txBuff, .length = 1};
-    swt_mgmt_tx_arg_t txArg          = {0};
     bool link                        = false;
     netc_msix_entry_t msixEntry[2];
     netc_hw_mii_mode_t phyMode;
@@ -396,12 +442,16 @@ status_t APP_SWT_XferLoopBack(void)
     EP_MsixSetEntryMask(&g_ep_handle, EXAMPLE_TX_MSIX_ENTRY_IDX, false);
     EP_MsixSetEntryMask(&g_ep_handle, EXAMPLE_RX_MSIX_ENTRY_IDX, false);
 
+#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
+    APP_BuildBroadCastFrameSwtTag();
+#else
     APP_BuildBroadCastFrame();
+#endif
     rxFrameNum = 0;
     txFrameNum = 0;
 
     /* Set FDB table, input frame only forwards to pseudo MAC port. */
-    netc_tb_fdb_config_t fdbEntryCfg = {.keye.fid = EXAMPLE_FRAME_FID, .cfge.portBitmap = 0x10U, .cfge.dynamic = 1};
+    netc_tb_fdb_config_t fdbEntryCfg = {.keye.fid = EXAMPLE_FRAME_FID, .cfge.portBitmap = (1U << EXAMPLE_SWT_PSEUDO_PORT), .cfge.dynamic = 1};
     memset(&fdbEntryCfg.keye.macAddr[0], 0xFF, 6U);
     result = SWT_BridgeAddFDBTableEntry(&g_swt_handle, &fdbEntryCfg, &entryID);
     if ((kStatus_Success != result) || (0xFFFFFFFFU == entryID))
@@ -422,10 +472,10 @@ status_t APP_SWT_XferLoopBack(void)
         }
 
         txOver     = false;
-        txArg.ring = 0;
 #if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
         result     = SWT_SendFrame(&g_swt_handle, &txFrame, NULL, NULL);
 #else
+        txArg.ring = 0;
         result     = SWT_SendFrame(&g_swt_handle, txArg, (netc_hw_port_idx_t)(kNETC_SWITCH0Port0 + i), false, &txFrame, NULL, NULL);
 #endif
         if (result != kStatus_Success)
@@ -469,7 +519,11 @@ status_t APP_SWT_XferLoopBack(void)
                g_rxFrame[0], g_rxFrame[1], g_rxFrame[2], g_rxFrame[3], g_rxFrame[4], g_rxFrame[5], g_rxFrame[6],
                g_rxFrame[7], g_rxFrame[8], g_rxFrame[9], g_rxFrame[10], g_rxFrame[11]);
 
+#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
+        if (memcmp(&g_rxFrame[dataOffset], &g_txFrame[dataOffset], sizeof(g_txFrame) - dataOffset))
+#else
         if (memcmp(g_rxFrame, g_txFrame, sizeof(g_txFrame)))
+#endif
         {
             PRINTF("\r\nTx/Rx frames don't match!\r\n");
             return kStatus_Fail;
