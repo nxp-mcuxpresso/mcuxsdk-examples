@@ -30,24 +30,15 @@ UINT32 EcatTimerCnt;
 
 static void Ecat_KickOff(void)
 {
-    // hal_rst_t hal_ecat_disable = {
-    //     .id = 24,
-    //     .flags = 2,
-    //     .resetState = 0,
-    // };
-    // HAL_Reset(&hal_ecat_disable);
-
-    //SRC_XSPR_NETCMIX->IRST_REQ_CTRL |= 1 << 0x01;  // disable ecat
-
     /* EtherCAT port0 is in MII mode */
     BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_RMII_SEL0_SHIFT);
     /* EtherCAT port1 is in MII mode */
     BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_RMII_SEL1_SHIFT);
 
     /* ECAT_LINK_ACT[0] polarity control: Active LOW */
-    BLK_CTRL_NETCMIX->CFG_ECAT |= (1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT0_POL_SHIFT);
+    BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT0_POL_SHIFT);
     /* ECAT_LINK_ACT[1] polarity control: Active LOW */
-    BLK_CTRL_NETCMIX->CFG_ECAT |= (1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT1_POL_SHIFT);
+    BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_ECAT_LINK_ACT1_POL_SHIFT);
 
     /* 16 bit I2C memory address range */
     BLK_CTRL_NETCMIX->CFG_ECAT |= (1 << BLK_CTRL_NETCMIX_CFG_ECAT_PROM_SIZE_SHIFT);
@@ -99,10 +90,6 @@ UINT16 HW_Init(void)
     BOARD_InitDebugConsole();
 
     PRINTF("Start the SSC digital_io example...\r\n");
-    /* Reset ecat PHY */
-	/*
-	 * Phy reset via I2C GPIO chip. todo 
-	*/
 
     /*Select ECAT1_CLK25*/
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
@@ -120,7 +107,7 @@ UINT16 HW_Init(void)
     
     /*Open ECAT EEPROM*/
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
-    
+
     BOARD_EXPANDER_SetPinToHigh(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
     SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
