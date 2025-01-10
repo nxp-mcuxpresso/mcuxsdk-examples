@@ -10,6 +10,7 @@
 #include "board.h"
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_switch.h"
+#include "fsl_netc_tag.h"
 #include "fsl_netc_mdio.h"
 #include "fsl_phyrtl8211f.h"
 #include "fsl_msgintr.h"
@@ -57,12 +58,14 @@
 
 /* Switch port */
 #define EXAMPLE_SWT_MAX_PORT_NUM   3U
-#define EXAMPLE_SWT_USED_PORT_BITMAP 0x4U /*! Enabled Switch port bit map, bit n represents port n. Only enabled switch port2(0x4 = 0b 0100 - the second bit)  */
+#define EXAMPLE_SWT_USED_PORT 0x2U
+#define EXAMPLE_SWT_USED_PORT_BITMAP (1U << EXAMPLE_SWT_USED_PORT)
+#define EXAMPLE_SWT_PSEUDO_PORT 0x3U
 #define EXAMPLE_SWT_PORT0 0x02U
 #define EXAMPLE_SWT_PORT1 0x03U
 #define EXAMPLE_SWT_PORT2 0x04U
 
-#define EXAMPLE_SWT_SI kNETC_ENETC3PSI0 /* Pseudo MAC for management */
+#define EXAMPLE_SWT_SI kNETC_ENETC3PSI0
 
 /* PHY: EP0, EP1, SWT_PORT0(not enabled), SWT_PORT1(not enabled), SWT_PORT2 */
 #define EXAMPLE_PHY_ADDR \
