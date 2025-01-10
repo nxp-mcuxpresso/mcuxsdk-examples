@@ -14,20 +14,15 @@
 /*${header:end}*/
 
 /*${macro:start}*/
-#define PHY_PAGE_SELECT_REG 0x1FU /*!< The PHY page select register. */
-
-/* Select MAC2 or MAC3 */
-#define NETC_ETH2_ROUTE_TO_MAC2 0
-#define NETC_ETH2_ROUTE_TO_MAC3 1
-#define NETC_ETH2_SEL_MAC NETC_ETH2_ROUTE_TO_MAC3
+#define EXAMPLE_PORT_NUM (EXAMPLE_EP_NUM + EXAMPLE_SWT_MAX_PORT_NUM)
 /*${macro:end}*/
 
 /*${variable:start}*/
 /* PHY operation. */
 static netc_mdio_handle_t s_emdio_handle;
 static phy_rtl8211f_resource_t s_phy_rtl8211f_resource;
-static uint8_t s_phy_addr[EXAMPLE_EP_NUM] = EXAMPLE_EP_PHY_ADDR;
-static phy_handle_t s_phy_handle[5];
+static uint8_t s_phy_addr[EXAMPLE_PORT_NUM] = EXAMPLE_PHY_ADDR;
+static phy_handle_t s_phy_handle[EXAMPLE_PORT_NUM];
 /*${variable:end}*/
 
 /*${function:start}*/
@@ -133,30 +128,39 @@ void BOARD_InitHardware(void)
     HAL_ClockSetParent(&hal_busmixClk);
     HAL_ClockSetRate(&hal_busmixClk);
     HAL_ClockEnable(&hal_busmixClk);
+
     HAL_ClockSetParent(&hal_enetClk);
     HAL_ClockSetRate(&hal_enetClk);
     HAL_ClockEnable(&hal_enetClk);
+
     HAL_ClockSetParent(&hal_enetrefClk);
     HAL_ClockSetRate(&hal_enetrefClk);
     HAL_ClockEnable(&hal_enetrefClk);
+
     HAL_ClockSetParent(&hal_enettimer1Clk);
     HAL_ClockSetRate(&hal_enettimer1Clk);
     HAL_ClockEnable(&hal_enettimer1Clk);
+
     HAL_ClockSetParent(&hal_mac0Clk);
     HAL_ClockSetRate(&hal_mac0Clk);
     HAL_ClockEnable(&hal_mac0Clk);
+
     HAL_ClockSetParent(&hal_mac1Clk);
     HAL_ClockSetRate(&hal_mac1Clk);
     HAL_ClockEnable(&hal_mac1Clk);
+
     HAL_ClockSetParent(&hal_mac2Clk);
     HAL_ClockSetRate(&hal_mac2Clk);
     HAL_ClockEnable(&hal_mac2Clk);
+
     HAL_ClockSetParent(&hal_mac3Clk);
     HAL_ClockSetRate(&hal_mac3Clk);
     HAL_ClockEnable(&hal_mac3Clk);
+
     HAL_ClockSetParent(&hal_mac4Clk);
     HAL_ClockSetRate(&hal_mac4Clk);
     HAL_ClockEnable(&hal_mac4Clk);
+
     HAL_ClockSetParent(&hal_mac5Clk);
     HAL_ClockSetRate(&hal_mac5Clk);
     HAL_ClockEnable(&hal_mac5Clk);
@@ -218,20 +222,11 @@ void BOARD_InitHardware(void)
     BLK_CTRL_NETCMIX->NETC_LINK_CFG5 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG5_MII_PROT(0x2U); /* RGMII */
 
     /*
-     * Selection for TSN MAC2 or MAC3 port
+     * ETH2 selection: MAC2(switch port2) or MAC3(enetc1)
      * 0b - MAC2 selected
      * 1b - MAC3 selected
-     * enetc0 <-> MAC3 <-> eth2
-     * or
-     * switch(enetc3)<-> MAC2 <-> eth2
      */
-#if NETC_ETH2_SEL_MAC == NETC_ETH2_ROUTE_TO_MAC3
-    BLK_CTRL_NETCMIX->EXT_PIN_CONTROL |= BLK_CTRL_NETCMIX_EXT_PIN_CONTROL_mac2_mac3_sel(1U);
-#elif NETC_ETH2_SEL_MAC == NETC_ETH2_ROUTE_TO_MAC2
     BLK_CTRL_NETCMIX->EXT_PIN_CONTROL &= ~BLK_CTRL_NETCMIX_EXT_PIN_CONTROL_mac2_mac3_sel(1U);
-#else
-#error "Pls define macro NETC_ETH2_SEL_MAC!"
-#endif
 
     /* Unlock the IERB. It will warm reset whole NETC. */
     NETC_PRIV->NETCRR &= ~NETC_PRIV_NETCRR_LOCK_MASK;
@@ -249,7 +244,6 @@ void BOARD_InitHardware(void)
 status_t APP_MDIO_Init(void)
 {
     status_t result = kStatus_Success;
-    netc_hw_eth_port_idx_t ethernet_mac_ports[] = EXAMPLE_PORTS;
 
     netc_mdio_config_t mdioConfig = {
         .isPreambleDisable = false,
@@ -273,44 +267,6 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
     return NETC_MDIORead(&s_emdio_handle, phyAddr, regAddr, pData);
 }
 
-#if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
-status_t APP_PHY_Init(void)
-{
-    return kStatus_Success;
-}
-
-status_t APP_PHY_GetLinkStatus(uint32_t port, bool *link)
-{
-    *link = true;
-
-    return kStatus_Success;
-}
-
-status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port, netc_hw_mii_mode_t *mode, netc_hw_mii_speed_t *speed, netc_hw_mii_duplex_t *duplex)
-{
-    switch (port)
-    {
-        case EXAMPLE_EP0_PORT:
-        case EXAMPLE_EP1_PORT:
-            *mode = kNETC_RgmiiMode;
-            *speed = kNETC_MiiSpeed1000M;
-            *duplex = kNETC_MiiFullDuplex;
-            break;
-        case EXAMPLE_SWT_PORT0:
-        case EXAMPLE_SWT_PORT1:
-        case EXAMPLE_SWT_PORT2:
-            *mode = kNETC_RgmiiMode;
-            *speed = kNETC_MiiSpeed1000M;
-            *duplex = kNETC_MiiFullDuplex;
-            break;
-        default:
-            assert(false);
-            break;
-    }
-
-    return kStatus_Success;
-}
-#elif BOARD_IMX943_TYPE == BOARD_IMX943_EVK
 status_t APP_PHY_Init(void)
 {
     status_t result            = kStatus_Success;
@@ -327,7 +283,15 @@ status_t APP_PHY_Init(void)
     s_phy_rtl8211f_resource.read  = APP_EMDIORead;
     phy8211Config.resource = &s_phy_rtl8211f_resource;
 
-    for (int i = 0; i < EXAMPLE_EP_NUM; i++) {
+    for (int i = 0; i < EXAMPLE_PORT_NUM; i++) {
+        int swt_port_index = i - EXAMPLE_EP_NUM;
+
+        if ((swt_port_index >= 0) &&
+            ((1U << swt_port_index) & EXAMPLE_SWT_USED_PORT_BITMAP) == 0U)
+        {
+            continue;
+        }
+
         phy8211Config.phyAddr  = s_phy_addr[i];
         result = PHY_Init(&s_phy_handle[i], &phy8211Config);
         if (result != kStatus_Success)
@@ -355,7 +319,7 @@ status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port, netc_hw_mii_mode_t *mode,
     {
         case EXAMPLE_EP0_PORT:
         case EXAMPLE_EP1_PORT:
-        case EXAMPLE_EP2_PORT:
+        case EXAMPLE_SWT_PORT2:
             *mode = kNETC_RgmiiMode;
             break;
         default:
@@ -365,6 +329,4 @@ status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port, netc_hw_mii_mode_t *mode,
 
     return PHY_GetLinkSpeedDuplex(&s_phy_handle[port], (phy_speed_t *)speed, (phy_duplex_t *)duplex);
 }
-
-#endif
 /*${function:end}*/

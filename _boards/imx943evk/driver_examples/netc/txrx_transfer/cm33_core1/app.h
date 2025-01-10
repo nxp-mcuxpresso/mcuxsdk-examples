@@ -12,7 +12,6 @@
 #include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
 #include "fsl_phyrtl8211f.h"
-#include "fsl_phyrtl8201.h"
 #include "fsl_msgintr.h"
 /*${header:end}*/
 
@@ -22,64 +21,56 @@
 /*${macro:start}*/
 
 /*
- * +--------------------------------------------------------------------------------+
- * | enetc/switch    |   mac   | eth   |port    | link    | MII protocol            |
- * +--------------------------------------------------------------------------------+
- * | switch(enetc3)  |   mac0  | eth0  |port0   | link0   | RGMII/MII/RMII          |
- * +--------------------------------------------------------------------------------+
- * | switch(enetc3)  |   mac1  | eth1  |port1   | link1   | RGMII/MII/RMII          |
- * +--------------------------------------------------------------------------------+
- * | switch(enetc3)  |   mac2  | eth2  |port2   | link2   | RGMII/RMII/RevMII       |
- * +--------------------------------------------------------------------------------+
- * | enetc0          |   mac3  | eth2  |port3   | link3   | RGMII/RMII/RevMII       |
- * +--------------------------------------------------------------------------------+
- * | enetc1          |   mac4  | eth3  |port4   | link4   | RGMII/RMII/RevMII       |
- * +--------------------------------------------------------------------------------+
- * | enetc2          |   mac5  | eth4  |port5   | link5   | RGMII/RMII/RevMII       |
- * +--------------------------------------------------------------------------------+
+ * This example uses enetc1/enetc2 for end-point, and uses switch port2 for switch port.
+ *
+ * +--------------------------------------------------------------------------------------+
+ * | enetc/switch    |   mac         | eth   |port    | link    | MII protocol            |
+ * +--------------------------------------------------------------------------------------+
+ * | switch port0    |   mac0        | eth0  |port0   | link0   | RGMII/MII/RMII          |
+ * +--------------------------------------------------------------------------------------+
+ * | switch port1    |   mac1        | eth1  |port1   | link1   | RGMII/MII/RMII          |
+ * +--------------------------------------------------------------------------------------+
+ * | switch port2    |   mac2        | eth2  |port2   | link2   | RGMII/RMII/RevMII       |
+ * +--------------------------------------------------------------------------------------+
+ * | switch port3    |   pseudo mac  |                                                    |
+ * +--------------------------------------------------------------------------------------+
+ * | enetc0          |   mac3        | eth2  |port3   | link3   | RGMII/RMII/RevMII       |
+ * +--------------------------------------------------------------------------------------+
+ * | enetc1          |   mac4        | eth3  |port4   | link4   | RGMII/RMII/RevMII       |
+ * +--------------------------------------------------------------------------------------+
+ * | enetc2          |   mac5        | eth4  |port5   | link5   | RGMII/RMII/RevMII       |
+ * +--------------------------------------------------------------------------------------+
+ * | enetc3          |   pseudo mac  |                                                    |
+ * +--------------------------------------------------------------------------------------+
  *
  */
-/* Ethernet port identifier. */
-#define EXAMPLE_PORT_NUM 6
-#define EXAMPLE_PORTS { kNETC_ENETC2EthPort, kNETC_ENETC1EthPort, kNETC_ENETC0EthPort, kNETC_SWITCH0EthPort0, kNETC_SWITCH0EthPort1, kNETC_SWITCH0EthPort2}
 
-/* endpoint or switch port */
+/* End-point port */
+#define EXAMPLE_EP_NUM        2U
 #define EXAMPLE_EP0_PORT      0x00U
 #define EXAMPLE_EP1_PORT      0x01U
-#define EXAMPLE_EP2_PORT      0x02U
-#define EXAMPLE_SWT_PORT0 0x03U
-#define EXAMPLE_SWT_PORT1 0x04U
-#define EXAMPLE_SWT_PORT2 0x05U
-
-#if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
-#define EXAMPLE_EP_NUM        1U
 
 #define EXAMPLE_EP_SI                      \
     {                                      \
-        kNETC_ENETC2PSI0 \
+        kNETC_ENETC1PSI0, kNETC_ENETC2PSI0 \
     }
 
-#define EXAMPLE_EP_PHY_ADDR \
+/* Switch port */
+#define EXAMPLE_SWT_MAX_PORT_NUM   3U
+#define EXAMPLE_SWT_USED_PORT_BITMAP 0x4U /*! Enabled Switch port bit map, bit n represents port n. Only enabled switch port2(0x4 = 0b 0100 - the second bit)  */
+#define EXAMPLE_SWT_PORT0 0x02U
+#define EXAMPLE_SWT_PORT1 0x03U
+#define EXAMPLE_SWT_PORT2 0x04U
+
+#define EXAMPLE_SWT_SI kNETC_ENETC3PSI0 /* Pseudo MAC for management */
+
+/* PHY: EP0, EP1, SWT_PORT0(not enabled), SWT_PORT1(not enabled), SWT_PORT2 */
+#define EXAMPLE_PHY_ADDR \
     {                       \
-        BOARD_EP0_PHY_ADDR          \
+        0x6U, 0x7U, 0x0U, 0x0U, 0x5U        \
     }
 
-#elif BOARD_IMX943_TYPE == BOARD_IMX943_EVK
-#define EXAMPLE_EP_NUM        3U
-
-#define EXAMPLE_EP_SI                      \
-    {                                      \
-        kNETC_ENETC1PSI0, kNETC_ENETC2PSI0, kNETC_ENETC3PSI0 \
-    }
-#define EXAMPLE_EP_PHY_ADDR \
-    {                       \
-        0x5U, 0x6U, 0x7U        \
-    }
-
-#endif
-
-#define EXAMPLE_SWT_SI kNETC_ENETC3PSI0
-
+/* MSGINTR */
 #define EXAMPLE_MSGINTR       MSGINTR2
 
 /* Buffer desciptor configuration. */
@@ -93,11 +84,6 @@
 #define EXAMPLE_EP_TEST_FRAME_SIZE   1000U
 
 #define EXAMPLE_EP_TXFRAME_NUM 20U
-
-#define EXAMPLE_SWT_MAX_PORT_NUM   3U
-#if !defined(EXAMPLE_SWT_USED_PORT_BITMAP)
-#define EXAMPLE_SWT_USED_PORT_BITMAP 0x4U /*! Enabled Switch port bit map, bit n represents port n. Only enabled switch port2(0x4 = 0b 0100 - the second bit)  */
-#endif
 /*${macro:end}*/
 
 extern phy_handle_t g_phy_rtl8211;
