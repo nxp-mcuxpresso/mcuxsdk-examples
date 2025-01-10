@@ -11,16 +11,20 @@ Before running the demo it is need to configure AWS IoT Console and update some 
 2.  Configure device in the AWS IoT Console base on this guide: https://docs.aws.amazon.com/iot/latest/developerguide/create-iot-resources.html
 
     Make note of example's "Thing name" and "REST API endpoint". These strings need to be set in the "aws_clientcredential.h".
+
     Example:
+
         #define clientcredentialMQTT_BROKER_ENDPOINT "abcdefgh123456.iot.us-west-2.amazonaws.com"
         #define clientcredentialIOT_THING_NAME "MyExample"
 
     Device certificate and private key needs to be opened in text editor and its content copied into the "aws_clientcredential_keys.h".
     Note: be sure to add " at the beginning of a line and \n"\ on every line break.
+
     Example:
+
         #define keyCLIENT_CERTIFICATE_PEM NULL
 
-        Needs to be changed to:
+      Needs to be changed to:
 
         #define keyCLIENT_CERTIFICATE_PEM "-----BEGIN CERTIFICATE-----\n"\
         "MIIDWTCCAkGgAwIBAgIUfmv3zA+JULlMOxmz+upkAzhEkQ0wDQYJKoZIhvcNAQEL\n"\
@@ -51,8 +55,10 @@ Before running the demo it is need to configure AWS IoT Console and update some 
 
 8.  During the runtime will be necessary to configure Wi-Fi module. Follow instructions in the terminal for Wi-Fi module configuration or resetting to provisioning mode.
     If the module is in provisioning mode, it will create micro-AP:
+
         SSID: Serial2Wifi
         Passphrase: nxp12345
+
     Connect your PC or mobile phone to this Wi-Fi micro-AP, open address: http://192.168.10.1 in web browser, select "Provisioning" and then select WLAN for connection.
     Wi-Fi module stores the WLAN credentials and it will use them automatically for next connection.
 
