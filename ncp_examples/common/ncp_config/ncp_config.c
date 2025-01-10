@@ -60,13 +60,21 @@ const wifi_flash_table_type_t g_wifi_flash_table_wlan_sta[WLAN_STA_MAX_TYPE] = {
     {WLAN_BSSID_NAME, WLAN_BSSID_OFT, WLAN_BSSID_MAX_LEN},
     {WLAN_CHANNEL_NAME, WLAN_CHANNEL_OFT, WLAN_CHANNEL_MAX_LEN},
     {WLAN_SECURITY_NAME, WLAN_SECURITY_OFT, WLAN_SECURITY_MAX_LEN},
+    {WLAN_WPA3_ENT_NAME, WLAN_WPA3_ENT_OFT, WLAN_WPA3_ENT_MAX_LEN},
+    {WLAN_WPA3_SB_NAME, WLAN_WPA3_SB_OFT, WLAN_WPA3_SB_MAX_LEN},
+    {WLAN_WPA3_SB_192_NAME, WLAN_WPA3_SB_192_OFT, WLAN_WPA3_SB_192_MAX_LEN},
     {WLAN_PSK_NAME, WLAN_PSK_OFT, WLAN_PSK_MAX_LEN},
     {WLAN_PASSPHRASE_NAME, WLAN_PASSPHRASE_OFT, WLAN_PASSPHRASE_MAX_LEN},
     {WLAN_MFPC_NAME, WLAN_MFPC_OFT, WLAN_MFPC_MAX_LEN},
     {WLAN_MFPR_NAME, WLAN_MFPR_OFT, WLAN_MFPR_MAX_LEN},
     {WLAN_PWE_NAME, WLAN_PWE_OFT, WLAN_PWE_MAX_LEN},
+    {WLAN_TLS_CIPHER_NAME, WLAN_TLS_CIPHER_OFT, WLAN_TLS_CIPHER_MAX_LEN},
+    {WLAN_IDENTITY_NAME, WLAN_IDENTITY_OFT, WLAN_IDENTITY_MAX_LEN},
+    {WLAN_EAP_PASSWORD_NAME, WLAN_EAP_PASSWORD_OFT, WLAN_EAP_PASSWORD_MAX_LEN},
     {WLAN_ANONYMOUS_IDENTITY_NAME, WLAN_ANONYMOUS_IDENTITY_OFT, WLAN_ANONYMOUS_IDENTITY_MAX_LEN},
     {WLAN_CLIENT_KEY_PASSWD_NAME, WLAN_CLIENT_KEY_PASSWD_OFT, WLAN_CLIENT_KEY_PASSWD_MAX_LEN},
+    {WLAN_EAP_VER_NAME, WLAN_EAP_VER_OFT, WLAN_EAP_VER_MAX_LEN},
+    {WLAN_VERIFY_PEER_NAME, WLAN_VERIFY_PEER_OFT, WLAN_VERIFY_PEER_MAX_LEN},
     {WLAN_IP_ADDR_TYPE_NAME, WLAN_IP_ADDR_TYPE_OFT, WLAN_IP_ADDR_TYPE_MAX_LEN},
     {WLAN_IP_ADDR_NAME, WLAN_IP_ADDR_OFT, WLAN_IP_ADDR_MAX_LEN},
     {WLAN_NETMASK_NAME, WLAN_NETMASK_OFT, WLAN_NETMASK_MAX_LEN},
@@ -88,13 +96,21 @@ const wifi_flash_table_type_t g_wifi_flash_table_wlan_uap[WLAN_UAP_MAX_TYPE] = {
     {WLAN_BSSID_NAME, WLAN_BSSID_OFT, WLAN_BSSID_MAX_LEN},
     {WLAN_CHANNEL_NAME, WLAN_CHANNEL_OFT, WLAN_CHANNEL_MAX_LEN},
     {WLAN_SECURITY_NAME, WLAN_SECURITY_OFT, WLAN_SECURITY_MAX_LEN},
+    {WLAN_WPA3_ENT_NAME, WLAN_WPA3_ENT_OFT, WLAN_WPA3_ENT_MAX_LEN},
+    {WLAN_WPA3_SB_NAME, WLAN_WPA3_SB_OFT, WLAN_WPA3_SB_MAX_LEN},
+    {WLAN_WPA3_SB_192_NAME, WLAN_WPA3_SB_192_OFT, WLAN_WPA3_SB_192_MAX_LEN},
     {WLAN_PSK_NAME, WLAN_PSK_OFT, WLAN_PSK_MAX_LEN},
     {WLAN_PASSPHRASE_NAME, WLAN_PASSPHRASE_OFT, WLAN_PASSPHRASE_MAX_LEN},
     {WLAN_MFPC_NAME, WLAN_MFPC_OFT, WLAN_MFPC_MAX_LEN},
     {WLAN_MFPR_NAME, WLAN_MFPR_OFT, WLAN_MFPR_MAX_LEN},
     {WLAN_PWE_NAME, WLAN_PWE_OFT, WLAN_PWE_MAX_LEN},
+    {WLAN_TLS_CIPHER_NAME, WLAN_TLS_CIPHER_OFT, WLAN_TLS_CIPHER_MAX_LEN},
+    {WLAN_IDENTITY_NAME, WLAN_IDENTITY_OFT, WLAN_IDENTITY_MAX_LEN},
+    {WLAN_EAP_PASSWORD_NAME, WLAN_EAP_PASSWORD_OFT, WLAN_EAP_PASSWORD_MAX_LEN},
     {WLAN_ANONYMOUS_IDENTITY_NAME, WLAN_ANONYMOUS_IDENTITY_OFT, WLAN_ANONYMOUS_IDENTITY_MAX_LEN},
     {WLAN_CLIENT_KEY_PASSWD_NAME, WLAN_CLIENT_KEY_PASSWD_OFT, WLAN_CLIENT_KEY_PASSWD_MAX_LEN},
+    {WLAN_EAP_VER_NAME, WLAN_EAP_VER_OFT, WLAN_EAP_VER_MAX_LEN},
+    {WLAN_VERIFY_PEER_NAME, WLAN_VERIFY_PEER_OFT, WLAN_VERIFY_PEER_MAX_LEN},
     {WLAN_IP_ADDR_TYPE_NAME, WLAN_IP_ADDR_TYPE_OFT, WLAN_IP_ADDR_TYPE_MAX_LEN},
     {WLAN_IP_ADDR_NAME, WLAN_IP_ADDR_OFT, WLAN_IP_ADDR_MAX_LEN},
     {WLAN_NETMASK_NAME, WLAN_NETMASK_OFT, WLAN_NETMASK_MAX_LEN},
@@ -856,6 +872,21 @@ static int wifi_save_default_config_wlan_bss(void)
         res = lfs_file_write(&lfs, &file, buf, WLAN_SECURITY_MAX_LEN - strlen(WLAN_SECURITY_DEF));
         wifi_flash_check_rw_ret(res);
 
+        res = lfs_file_write(&lfs, &file, WLAN_WPA3_ENT_NAME, WLAN_WPA3_ENT_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_WPA3_ENT_DEF, WLAN_WPA3_ENT_MAX_LEN);
+        wifi_flash_check_rw_ret(res);
+
+        res = lfs_file_write(&lfs, &file, WLAN_WPA3_SB_NAME, WLAN_WPA3_SB_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_WPA3_SB_DEF, WLAN_WPA3_SB_MAX_LEN);
+        wifi_flash_check_rw_ret(res);
+
+        res = lfs_file_write(&lfs, &file, WLAN_WPA3_SB_192_NAME, WLAN_WPA3_SB_192_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_WPA3_SB_192_DEF, WLAN_WPA3_SB_192_MAX_LEN);
+        wifi_flash_check_rw_ret(res);
+
         /* default string value length less than its max length, padding with 0 */
         res = lfs_file_write(&lfs, &file, WLAN_PSK_NAME, WLAN_PSK_NAME_LEN);
         wifi_flash_check_rw_ret(res);
@@ -889,6 +920,28 @@ static int wifi_save_default_config_wlan_bss(void)
         res = lfs_file_write(&lfs, &file, buf, WLAN_PWE_MAX_LEN - strlen(WLAN_PWE_DEF));
         wifi_flash_check_rw_ret(res);
 
+        res = lfs_file_write(&lfs, &file, WLAN_TLS_CIPHER_NAME, WLAN_TLS_CIPHER_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_TLS_CIPHER_DEF, WLAN_TLS_CIPHER_MAX_LEN);
+        wifi_flash_check_rw_ret(res);
+
+        /* default string value length less than its max length, padding with 0 */
+        res = lfs_file_write(&lfs, &file, WLAN_IDENTITY_NAME, WLAN_IDENTITY_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_IDENTITY_DEF, strlen(WLAN_IDENTITY_DEF));
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, buf, WLAN_IDENTITY_MAX_LEN - strlen(WLAN_IDENTITY_DEF));
+        wifi_flash_check_rw_ret(res);
+
+        /* default string value length less than its max length, padding with 0 */
+        res = lfs_file_write(&lfs, &file, WLAN_EAP_PASSWORD_NAME, WLAN_EAP_PASSWORD_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_EAP_PASSWORD_DEF, strlen(WLAN_EAP_PASSWORD_DEF));
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, buf, WLAN_EAP_PASSWORD_MAX_LEN - strlen(WLAN_EAP_PASSWORD_DEF));
+        wifi_flash_check_rw_ret(res);
+
+        /* default string value length less than its max length, padding with 0 */
         res = lfs_file_write(&lfs, &file, WLAN_ANONYMOUS_IDENTITY_NAME, WLAN_ANONYMOUS_IDENTITY_NAME_LEN);
         wifi_flash_check_rw_ret(res);
         res = lfs_file_write(&lfs, &file, WLAN_ANONYMOUS_IDENTITY_DEF, strlen(WLAN_ANONYMOUS_IDENTITY_DEF));
@@ -896,11 +949,22 @@ static int wifi_save_default_config_wlan_bss(void)
         res = lfs_file_write(&lfs, &file, buf, WLAN_ANONYMOUS_IDENTITY_MAX_LEN - strlen(WLAN_ANONYMOUS_IDENTITY_DEF));
         wifi_flash_check_rw_ret(res);
 
+        /* default string value length less than its max length, padding with 0 */
         res = lfs_file_write(&lfs, &file, WLAN_CLIENT_KEY_PASSWD_NAME, WLAN_CLIENT_KEY_PASSWD_NAME_LEN);
         wifi_flash_check_rw_ret(res);
         res = lfs_file_write(&lfs, &file, WLAN_CLIENT_KEY_PASSWD_DEF, strlen(WLAN_CLIENT_KEY_PASSWD_DEF));
         wifi_flash_check_rw_ret(res);
         res = lfs_file_write(&lfs, &file, buf, WLAN_CLIENT_KEY_PASSWD_MAX_LEN - strlen(WLAN_CLIENT_KEY_PASSWD_DEF));
+        wifi_flash_check_rw_ret(res);
+
+        res = lfs_file_write(&lfs, &file, WLAN_EAP_VER_NAME, WLAN_EAP_VER_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_EAP_VER_DEF, WLAN_EAP_VER_MAX_LEN);
+        wifi_flash_check_rw_ret(res);
+
+        res = lfs_file_write(&lfs, &file, WLAN_VERIFY_PEER_NAME, WLAN_VERIFY_PEER_NAME_LEN);
+        wifi_flash_check_rw_ret(res);
+        res = lfs_file_write(&lfs, &file, WLAN_VERIFY_PEER_DEF, WLAN_VERIFY_PEER_MAX_LEN);
         wifi_flash_check_rw_ret(res);
 
         res = lfs_file_write(&lfs, &file, WLAN_IP_ADDR_TYPE_NAME, WLAN_IP_ADDR_TYPE_NAME_LEN);
@@ -1071,6 +1135,18 @@ int wifi_set_network(struct wlan_network *network)
     int res, i, index = 0, bss_status;
     int ret = -WM_FAIL;
     char channel[4], security_type[3], mfpc[2], mfpr[2], addr_type[2], pwe[2];
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+    char wpa3_ent[2], wpa3_sb[2], wpa3_sb_192[2];
+#if CONFIG_EAP_TLS
+    char tls_cipher[2];
+#endif
+#if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
+    char eap_ver[2];
+#if CONFIG_EAP_MSCHAPV2
+    char verify_peer[2];
+#endif
+#endif
+#endif
     struct in_addr ip, gw, nm, dns1, dns2;
     char ip_addr_temp[17], configured[2], role[2], status[2];
     char uap_prov_sta_name[] = "uap_prov_sta_label";
@@ -1182,6 +1258,14 @@ ncp_set_bss:
     res += save_config(&file, WLAN_CHANNEL, channel, sizeof(channel));
     snprintf(security_type, sizeof(security_type), "%u", network->security.type);
     res += save_config(&file, WLAN_SECURITY, security_type, sizeof(security_type));
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+    snprintf(wpa3_ent, sizeof(wpa3_ent), "%u", network->security.wpa3_ent);
+    res += save_config(&file, WLAN_WPA3_ENT, wpa3_ent, sizeof(wpa3_ent));
+    snprintf(wpa3_sb, sizeof(wpa3_sb), "%u", network->security.wpa3_sb);
+    res += save_config(&file, WLAN_WPA3_SB, wpa3_sb, sizeof(wpa3_sb));
+    snprintf(wpa3_sb_192, sizeof(wpa3_sb_192), "%u", network->security.wpa3_sb_192);
+    res += save_config(&file, WLAN_WPA3_SB_192, wpa3_sb_192, sizeof(wpa3_sb_192));
+#endif
     res += save_config(&file, WLAN_PSK, network->security.psk, sizeof(network->security.psk));
     res += save_config(&file, WLAN_PASSPHRASE, network->security.password, sizeof(network->security.password));
     snprintf(mfpc, sizeof(mfpc), "%u", network->security.mfpc);
@@ -1190,9 +1274,23 @@ ncp_set_bss:
     res += save_config(&file, WLAN_MFPR, mfpr, sizeof(mfpr));
     snprintf(pwe, sizeof(pwe), "%u", network->security.pwe_derivation);
     res += save_config(&file, WLAN_PWE, pwe, sizeof(network->security.pwe_derivation));
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
 #if CONFIG_EAP_TLS
+    snprintf(tls_cipher, sizeof(tls_cipher), "%u", network->security.tls_cipher);
+    res += save_config(&file, WLAN_TLS_CIPHER, tls_cipher, sizeof(tls_cipher));
+#endif
+#if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
+    res += save_config(&file, WLAN_IDENTITY, network->security.identity, sizeof(network->security.identity));
+    res += save_config(&file, WLAN_EAP_PASSWORD, network->security.eap_password, sizeof(network->security.eap_password));
     res += save_config(&file, WLAN_ANONYMOUS_IDENTITY, network->security.anonymous_identity, sizeof(network->security.anonymous_identity));
     res += save_config(&file, WLAN_CLIENT_KEY_PASSWD, network->security.client_key_passwd, sizeof(network->security.client_key_passwd));
+    snprintf(eap_ver, sizeof(eap_ver), "%u", network->security.eap_ver);
+    res += save_config(&file, WLAN_EAP_VER, eap_ver, sizeof(eap_ver));
+#if CONFIG_EAP_MSCHAPV2
+    snprintf(verify_peer, sizeof(verify_peer), "%u", network->security.verify_peer);
+    res += save_config(&file, WLAN_VERIFY_PEER, verify_peer, sizeof(verify_peer));
+#endif
+#endif
 #endif
 
     if (network->ip.ipv4.addr_type == ADDR_TYPE_STATIC)
@@ -1299,6 +1397,18 @@ int wifi_get_network(struct wlan_network *network, enum wlan_bss_role bss_role, 
     int res, i;
     int ret = -WM_FAIL;
     char channel[4], security_type[3], mfpc[2], mfpr[2], addr_type[2], pwe[2];
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+    char wpa3_ent[2], wpa3_sb[2], wpa3_sb_192[2];
+#if CONFIG_EAP_TLS
+    char tls_cipher[2];
+#endif
+#if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
+    char eap_ver[2];
+#if CONFIG_EAP_MSCHAPV2
+    char verify_peer[2];
+#endif
+#endif
+#endif
     char ip_addr_temp[17], role[2];
     lfs_file_t file;
     char *path;
@@ -1391,6 +1501,14 @@ ncp_get_bss:
     network->channel = atoi(channel);
     res += load_config(&file, WLAN_SECURITY, security_type, sizeof(security_type));
     network->security.type = (enum wlan_security_type)atoi(security_type);
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+    res += load_config(&file, WLAN_WPA3_ENT, wpa3_ent, sizeof(wpa3_ent));
+    network->security.wpa3_ent = atoi(wpa3_ent);
+    res += load_config(&file, WLAN_WPA3_SB, wpa3_sb, sizeof(wpa3_sb));
+    network->security.wpa3_sb = atoi(wpa3_sb);
+    res += load_config(&file, WLAN_WPA3_SB_192, wpa3_sb_192, sizeof(wpa3_sb_192));
+    network->security.wpa3_sb_192 = atoi(wpa3_sb_192);
+#endif
     res += load_config(&file, WLAN_PSK, network->security.psk, sizeof(network->security.psk));
     res += load_config(&file, WLAN_PASSPHRASE, network->security.password, sizeof(network->security.password));
 
@@ -1415,9 +1533,23 @@ ncp_get_bss:
     network->security.mfpr = atoi(mfpr);
     res += load_config(&file, WLAN_PWE, pwe, sizeof(network->security.pwe_derivation));
     network->security.pwe_derivation = atoi(pwe);
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
 #if CONFIG_EAP_TLS
+    res += load_config(&file, WLAN_TLS_CIPHER, tls_cipher, sizeof(tls_cipher));
+    network->security.tls_cipher = atoi(tls_cipher);
+#endif
+#if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
+    res += load_config(&file, WLAN_IDENTITY, network->security.identity, sizeof(network->security.identity));
+    res += load_config(&file, WLAN_EAP_PASSWORD, network->security.eap_password, sizeof(network->security.eap_password));
     res += load_config(&file, WLAN_ANONYMOUS_IDENTITY, network->security.anonymous_identity, sizeof(network->security.anonymous_identity));
     res += load_config(&file, WLAN_CLIENT_KEY_PASSWD, network->security.client_key_passwd, sizeof(network->security.client_key_passwd));
+    res += load_config(&file, WLAN_EAP_VER, eap_ver, sizeof(eap_ver));
+    network->security.eap_ver = atoi(eap_ver);
+#if CONFIG_EAP_MSCHAPV2
+    res += load_config(&file, WLAN_VERIFY_PEER, verify_peer, sizeof(verify_peer));
+    network->security.verify_peer = atoi(verify_peer);
+#endif
+#endif
 #endif
 
     res += load_config(&file, WLAN_IP_ADDR_TYPE, addr_type, sizeof(addr_type));

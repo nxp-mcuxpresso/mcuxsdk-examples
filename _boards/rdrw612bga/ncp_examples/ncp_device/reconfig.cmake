@@ -49,6 +49,7 @@ mcux_add_macro(
        -DPRINTF_ADVANCED_ENABLE=1\
        -DSDK_OS_FREE_RTOS\
        -DFSL_OSA_TASK_ENABLE=1\
+       -DMCUX_ENABLE_TRNG_AS_ENTROPY_SEED\
        -DLFS_CONFIG=littlefs_config.h\
        -DCONFIG_HOSTAPD=0"
 )

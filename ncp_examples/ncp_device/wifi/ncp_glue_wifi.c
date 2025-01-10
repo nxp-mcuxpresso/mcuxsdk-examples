@@ -143,6 +143,8 @@ static int scan_cb(unsigned int count)
         scan_result->res[i].wpa2_sha256    = res.wpa2_sha256;
         scan_result->res[i].wpa3_sae       = res.wpa3_sae;
         scan_result->res[i].wpa3_entp      = res.wpa3_entp;
+        scan_result->res[i].wpa3_1x_sha256 = res.wpa3_1x_sha256;
+        scan_result->res[i].wpa3_1x_sha384 = res.wpa3_1x_sha384;
         scan_result->res[i].trans_ssid_len = res.trans_ssid_len;
         scan_result->res[i].beacon_period  = res.beacon_period;
         scan_result->res[i].dtim_period    = res.dtim_period;
@@ -402,6 +404,12 @@ static void wlan_network_info_copy(NCP_WLAN_NETWORK *network_info, struct wlan_n
     network_info->role = network->role;
 
     network_info->security_type     = network->security.type;
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+    network_info->wpa3_ent          = network->security.wpa3_ent;
+    network_info->wpa3_sb           = network->security.wpa3_sb;
+    network_info->wpa3_sb_192       = network->security.wpa3_sb_192;
+    network_info->eap_ver           = network->security.eap_ver;
+#endif
     network_info->security_specific = network->security_specific;
 
 #if CONFIG_WIFI_CAPA
@@ -717,12 +725,31 @@ static int wlan_ncp_add(void *tlv)
         unsigned security : 1;
         unsigned security2 : 1;
         unsigned security3 : 1;
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+#if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
+        unsigned security_eap : 1;
+#endif
+#endif
         unsigned role : 1;
         unsigned mfpc : 1;
         unsigned mfpr : 1;
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+        unsigned wpa3_ent : 1;
+        unsigned wpa3_sb : 1;
+        unsigned wpa3_sb_192 : 1;
 #if CONFIG_EAP_TLS
+        unsigned tls_cipher : 1;
         unsigned aid : 1;
         unsigned key_passwd : 1;
+#endif
+#if CONFIG_EAP_PEAP
+#if CONFIG_EAP_MSCHAPV2
+        unsigned eap_ver : 1;
+        unsigned verify_peer : 1;
+        unsigned id : 1;
+        unsigned pass : 1;
+#endif
+#endif
 #endif
         unsigned pwe: 1;
         unsigned tr : 1;
@@ -867,15 +894,38 @@ static int wlan_ncp_add(void *tlv)
                             info.security3++;
                         }
                         break;
-#if CONFIG_EAP_TLS
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+#if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
                     case WLAN_SECURITY_EAP_TLS:
-                        if (!info.security2)
+#if CONFIG_EAP_MSCHAPV2
+                    case WLAN_SECURITY_EAP_PEAP_MSCHAPV2:
+#endif
+                        if (!info.security_eap)
                         {
-                            network->security.type = WLAN_SECURITY_EAP_TLS;
-                            info.security2++;
+                            network->security.type = security_tlv->type;
+
+                            if((info.wpa3_ent == 0U) && (security_tlv->wpa3_ent == 1))
+                            {
+                                network->security.wpa3_ent = 1;
+                                info.wpa3_ent++;
+                            }
+                            if((info.wpa3_sb == 0U) && (security_tlv->wpa3_sb == 1))
+                            {
+                                network->security.wpa3_sb = 1;
+                                info.wpa3_sb++;
+                            }
+                            if((info.wpa3_sb_192 == 0U) && (security_tlv->wpa3_sb_192 == 1))
+                            {
+                                network->security.wpa3_sb_192 = 1;
+                                info.wpa3_sb_192++;
+                            }
+
+                            info.security_eap++;
                         }
                         break;
 #endif
+#endif
+
 #if CONFIG_WPA2_ENTP
                     case WLAN_SECURITY_EAP_TLS:
                         if (!info.security2)
@@ -945,10 +995,17 @@ static int wlan_ncp_add(void *tlv)
                 }
             }
             break;
-#if CONFIG_EAP_TLS
+#if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
+#if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
             case NCP_CMD_NETWORK_EAP_TLV:
             {
                 EAP_ParamSet_t *eap_tlv = (EAP_ParamSet_t *)ptlv_pos;
+                if (!info.tls_cipher)
+                {
+                    /* Set Cipher for EAP TLS */
+                    network->security.tls_cipher = eap_tlv->tls_cipher;
+                    info.tls_cipher++;
+                }
                 if (!info.aid)
                 {
                     /* Set Client Anonymous Identity */
@@ -961,8 +1018,33 @@ static int wlan_ncp_add(void *tlv)
                     strcpy(network->security.client_key_passwd, eap_tlv->client_key_passwd);
                     info.key_passwd++;
                 }
+                if (!info.verify_peer)
+                {
+                    /* Set whether verify peer with CA or not */
+                    network->security.verify_peer = eap_tlv->verify_peer;
+                    info.verify_peer++;
+                }
+                if (!info.eap_ver)
+                {
+                    /* Set EAP (Extensible Authentication Protocol) version */
+                    network->security.eap_ver = eap_tlv->eap_ver;
+                    info.eap_ver++;
+                }
+                if (!info.id)
+                {
+                    /* Set Client Identity */
+                    strcpy(network->security.identity, eap_tlv->identity);
+                    info.id++;
+                }
+                if (!info.pass)
+                {
+                    /* Set Client Password */
+                    strcpy(network->security.eap_password, eap_tlv->eap_password);
+                    info.pass++;
+                }
             }
             break;
+#endif
 #endif
             case NCP_CMD_NETWORK_ROLE_TLV:
                 if (!info.role)

@@ -521,6 +521,20 @@ enum wlan_connection_state
     WLAN_ASSOCIATING,
 };
 
+#if CONFIG_NCP_WPA_SUPP_CRYPTO_ENTERPRISE
+#if CONFIG_NCP_EAP_TLS
+/** EAP TLS Cipher types*/
+enum eap_tls_cipher_type
+{
+    EAP_TLS_NONE,
+    /** EAP TLS with ECDH & ECDSA with p384 */
+    EAP_TLS_ECC_P384,
+    /** EAP TLS with ECDH & RSA with > 3K */
+    EAP_TLS_RSA_3K,
+};
+#endif
+#endif
+
 /** 
 * Get NCP host TLV command buffer.
 *

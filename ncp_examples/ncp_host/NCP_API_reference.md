@@ -581,9 +581,19 @@ period configuration.
 
   - TypeHeader\_t header
 
+  - unsigned char tls\_cipher
+
+  - char identity \[IDENTITY\_MAX\_LENGTH\]
+
+  - char eap\_password \[PASSWORD\_MAX\_LENGTH\]
+
   - char anonymous\_identity \[IDENTITY\_MAX\_LENGTH\]
 
   - char client\_key\_passwd \[PASSWORD\_MAX\_LENGTH\]
+
+  - uint8_t eap\_ver
+
+  - uint8_t verify\_peer
 
 ### Detailed Description
 
@@ -596,6 +606,18 @@ information configuration.
 
 > Header type and size information.
 
+#### TypeHeader\_t \_EAP\_ParamSet\_t::tls\_cipher
+
+> Cipher for EAP TLS (Extensible Authentication Protocol Transport Layer Security)
+
+#### char \_EAP\_ParamSet\_t::identity\[IDENTITY\_MAX\_LENGTH\]
+
+> Identity string for EAP
+
+#### char \_EAP\_ParamSet\_t::eap\_password\[PASSWORD\_MAX\_LENGTH\]
+
+> Password string for EAP.
+
 #### char \_EAP\_ParamSet\_t::anonymous\_identity\[IDENTITY\_MAX\_LENGTH\]
 
 > Anonymous identity string for EAP
@@ -603,6 +625,16 @@ information configuration.
 #### char \_EAP\_ParamSet\_t::client\_key\_passwd\[PASSWORD\_MAX\_LENGTH\]
 
 > Client key password string
+
+#### TypeHeader\_t \_EAP\_ParamSet\_t::eap\_ver
+
+> EAP (Extensible Authentication Protocol) version
+
+#### TypeHeader\_t \_EAP\_ParamSet\_t::verify\_peer
+
+> whether verify peer with CA or not
+> 0: not verify,
+> 1: verify.
 
 #### The documentation for this struct was generated from the following file:
 
@@ -6199,6 +6231,14 @@ This structure is used for network monitor configuration.
 
   - uint8\_t security\_type
 
+  - uint8\_t wpa3\_ent
+
+  - uint8\_t wpa3\_sb
+
+  - uint8\_t wpa3\_sb\_192
+
+  - uint8\_t eap\_ver
+
   - uint8\_t enable\_11ax: 1
 
   - uint8\_t enable\_11ac: 1
@@ -6286,6 +6326,34 @@ This structure is used to store a Wi-Fi network profile.
 #### uint8\_t \_ncp\_wlan\_network::security\_type
 
 > Network's security type. Use specified by enum wlan\_security\_type.
+
+#### uint8\_t \_ncp\_wlan\_network::wpa3\_ent
+
+> WPA3 Enterprise mode
+>
+> 1: enable;
+>
+> 0: disable.
+
+#### uint8\_t \_ncp\_wlan\_network::wpa3\_sb
+
+> WPA3 Enterprise Suite B mode
+>
+> 1: enable;
+>
+> 0: disable.
+
+#### uint8\_t \_ncp\_wlan\_network::wpa3\_sb\_192
+
+> WPA3 Enterprise Suite B 192 mode
+>
+> 1: enable;
+>
+> 0: disable.
+
+#### uint8\_t \_ncp\_wlan\_network::eap\_ver
+
+> EAP (Extensible Authentication Protocol) version
 
 #### uint8\_t \_ncp\_wlan\_network::enable\_11ax
 
@@ -6494,6 +6562,12 @@ information configuration.
 
   - unsigned wpa3\_sae: 1
 
+  - unsigned wpa3\_entp: 1
+
+  - unsigned wpa3\_1x\_sha256: 1
+
+  - unsigned wpa3\_1x\_sha384: 1
+
   - unsigned char rssi
 
   - char trans\_ssid \[IEEEtypes\_SSID\_SIZE+1\]
@@ -6590,6 +6664,18 @@ This structure is used to store the information of one scanned AP
 
 > Network uses WPA3 SAE (simultaneous authentication of equals)
 > security.
+
+#### unsigned \_ncp\_wlan\_scan\_result::wpa3\_entp
+
+> Network uses WPA3 Enterprise security
+
+#### unsigned \_ncp\_wlan\_scan\_result::wpa3\_1x\_sha256
+
+> Network uses WPA3 Enterprise SHA256 security
+
+#### unsigned \_ncp\_wlan\_scan\_result::wpa3\_1x\_sha384
+
+> Network uses WPA3 Enterprise SHA384 security
 
 #### unsigned char \_ncp\_wlan\_scan\_result::rssi
 
@@ -7801,6 +7887,12 @@ This structure is used for service protocol configuration.
 
   - uint8\_t type
 
+  - uint8\_t wpa3\_ent
+
+  - uint8\_t wpa3\_sb
+
+  - uint8\_t wpa3\_sb\_192
+
   - uint8\_t password\_len
 
   - char password \[1\]
@@ -7818,6 +7910,18 @@ This structure is used for security password configuration.
 #### uint8\_t \_Security\_ParamSet\_t::type
 
 > Wi-Fi security type.
+
+#### uint8\_t \_Security\_ParamSet\_t::wpa3\_ent
+
+> WPA3 Enterprise mode.
+
+#### uint8\_t \_Security\_ParamSet\_t::wpa3\_sb
+
+> WPA3 Enterprise Suite B mode.
+
+#### uint8\_t \_Security\_ParamSet\_t::wpa3\_sb\_192
+
+> WPA3 Enterprise Suite B 192 mode.
 
 #### uint8\_t \_Security\_ParamSet\_t::password\_len
 
@@ -22110,6 +22214,29 @@ NCP host command interfaces.
 <tr class="odd">
 <td>WLAN_ASSOCIATING</td>
 <td>The Wi-Fi connection manager is not connected and network association is in progress.</td>
+</tr>
+</tbody>
+</table>
+
+#### enum eap\_tls\_cipher\_type
+
+> EAP TLS Cipher types
+
+##### Enumerator:
+
+<table>
+<tbody>
+<tr class="odd">
+<td>EAP_TLS_NONE</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>EAP_TLS_ECC_P384</td>
+<td>EAP TLS with ECDH & ECDSA with p384</td>
+</tr>
+<tr class="odd">
+<td>EAP_TLS_RSA_3K</td>
+<td>EAP TLS with ECDH & RSA with > 3K</td>
 </tr>
 </tbody>
 </table>

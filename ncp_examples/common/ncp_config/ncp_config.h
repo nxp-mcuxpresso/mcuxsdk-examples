@@ -360,13 +360,21 @@ typedef enum
     WLAN_BSSID,
     WLAN_CHANNEL,
     WLAN_SECURITY,
+    WLAN_WPA3_ENT,
+    WLAN_WPA3_SB,
+    WLAN_WPA3_SB_192,
     WLAN_PSK,
     WLAN_PASSPHRASE,
     WLAN_MFPC,
     WLAN_MFPR,
     WLAN_PWE,
+    WLAN_TLS_CIPHER,
+    WLAN_IDENTITY,
+    WLAN_EAP_PASSWORD,
     WLAN_ANONYMOUS_IDENTITY,
     WLAN_CLIENT_KEY_PASSWD,
+    WLAN_EAP_VER,
+    WLAN_VERIFY_PEER,
     WLAN_IP_ADDR_TYPE,
     WLAN_IP_ADDR,
     WLAN_NETMASK,
@@ -461,12 +469,48 @@ typedef enum
 #define WLAN_SECURITY_DEF      "4"
 #define WLAN_SECURITY_END      (WLAN_SECURITY_OFT + WLAN_SECURITY_NAME_LEN + WLAN_SECURITY_MAX_LEN)
 
+/** WPA3 Enterprise mode
+ *
+ *  content: "0", "1"
+ *  value: 0 - disable,1 - enable
+ */
+#define WLAN_WPA3_ENT_OFT      WLAN_SECURITY_END
+#define WLAN_WPA3_ENT_NAME     "wpa3_ent="
+#define WLAN_WPA3_ENT_NAME_LEN 9
+#define WLAN_WPA3_ENT_MAX_LEN  2
+#define WLAN_WPA3_ENT_DEF      "0"
+#define WLAN_WPA3_ENT_END      (WLAN_WPA3_ENT_OFT + WLAN_WPA3_ENT_NAME_LEN + WLAN_WPA3_ENT_MAX_LEN)
+
+/** WPA3 Enterprise Suite B mode
+ *
+ *  content: "0", "1"
+ *  value: 0 - disable,1 - enable
+ */
+#define WLAN_WPA3_SB_OFT      WLAN_WPA3_ENT_END
+#define WLAN_WPA3_SB_NAME     "wpa3_sb="
+#define WLAN_WPA3_SB_NAME_LEN 8
+#define WLAN_WPA3_SB_MAX_LEN  2
+#define WLAN_WPA3_SB_DEF      "0"
+#define WLAN_WPA3_SB_END      (WLAN_WPA3_SB_OFT + WLAN_WPA3_SB_NAME_LEN + WLAN_WPA3_SB_MAX_LEN)
+
+/** WPA3 Enterprise Suite B 192 mode
+ *
+ *  content: "0", "1"
+ *  value: 0 - disable,1 - enable
+ */
+#define WLAN_WPA3_SB_192_OFT      WLAN_WPA3_SB_END
+#define WLAN_WPA3_SB_192_NAME     "wpa3_sb_192="
+#define WLAN_WPA3_SB_192_NAME_LEN 12
+#define WLAN_WPA3_SB_192_MAX_LEN  2
+#define WLAN_WPA3_SB_192_DEF      "0"
+#define WLAN_WPA3_SB_192_END      (WLAN_WPA3_SB_192_OFT + WLAN_WPA3_SB_192_NAME_LEN + WLAN_WPA3_SB_192_MAX_LEN)
+
 /** The WPA/WPA2 Pre-shared key (network password) for home network
  *
  *  content: passphrase string
  *  value: passphrase string
  */
-#define WLAN_PSK_OFT      WLAN_SECURITY_END
+#define WLAN_PSK_OFT      WLAN_WPA3_SB_192_END
 #define WLAN_PSK_NAME     "psk="
 #define WLAN_PSK_NAME_LEN 4
 #define WLAN_PSK_MAX_LEN  65
@@ -523,12 +567,49 @@ typedef enum
 #define WLAN_PWE_DEF      "0"
 #define WLAN_PWE_END      (WLAN_PWE_OFT + WLAN_PWE_NAME_LEN + WLAN_PWE_MAX_LEN)
 
+/** Cipher for EAP TLS
+ *
+ *  content: EAP TLS Cipher types
+ *  value: 0 - EAP_TLS_NONE, 1 - EAP_TLS_ECC_P384, 2 - EAP_TLS_RSA_3K
+ *
+ */
+#define WLAN_TLS_CIPHER_OFT      WLAN_PWE_END
+#define WLAN_TLS_CIPHER_NAME     "tls_cipher="
+#define WLAN_TLS_CIPHER_NAME_LEN 11
+#define WLAN_TLS_CIPHER_MAX_LEN  2
+#define WLAN_TLS_CIPHER_DEF      "0"
+#define WLAN_TLS_CIPHER_END      (WLAN_TLS_CIPHER_OFT + WLAN_TLS_CIPHER_NAME_LEN + WLAN_TLS_CIPHER_MAX_LEN)
+
+/** Identity string for EAP
+ *
+ *  content: Identity string
+ *
+ */
+#define WLAN_IDENTITY_OFT      WLAN_TLS_CIPHER_END
+#define WLAN_IDENTITY_NAME     "identity="
+#define WLAN_IDENTITY_NAME_LEN 9
+#define WLAN_IDENTITY_MAX_LEN  64
+#define WLAN_IDENTITY_DEF      "0"
+#define WLAN_IDENTITY_END      (WLAN_IDENTITY_OFT + WLAN_IDENTITY_NAME_LEN + WLAN_IDENTITY_MAX_LEN)
+
+/** Password string for EAP
+ *
+ *  content: Password string
+ *
+ */
+#define WLAN_EAP_PASSWORD_OFT      WLAN_IDENTITY_END
+#define WLAN_EAP_PASSWORD_NAME     "eap_password="
+#define WLAN_EAP_PASSWORD_NAME_LEN 13
+#define WLAN_EAP_PASSWORD_MAX_LEN  128
+#define WLAN_EAP_PASSWORD_DEF      "0"
+#define WLAN_EAP_PASSWORD_END      (WLAN_EAP_PASSWORD_OFT + WLAN_EAP_PASSWORD_NAME_LEN + WLAN_EAP_PASSWORD_MAX_LEN)
+
 /** Anonymous identity string for EAP
  *
  *  content: Anonymous identity string
  *
  */
-#define WLAN_ANONYMOUS_IDENTITY_OFT      WLAN_PWE_END
+#define WLAN_ANONYMOUS_IDENTITY_OFT      WLAN_EAP_PASSWORD_END
 #define WLAN_ANONYMOUS_IDENTITY_NAME     "anonymous_identity="
 #define WLAN_ANONYMOUS_IDENTITY_NAME_LEN 19
 #define WLAN_ANONYMOUS_IDENTITY_MAX_LEN  64
@@ -547,12 +628,38 @@ typedef enum
 #define WLAN_CLIENT_KEY_PASSWD_DEF      "0"
 #define WLAN_CLIENT_KEY_PASSWD_END      (WLAN_CLIENT_KEY_PASSWD_OFT + WLAN_CLIENT_KEY_PASSWD_NAME_LEN + WLAN_CLIENT_KEY_PASSWD_MAX_LEN)
 
+/** EAP version
+ *
+ *  content: EAP version
+ *  value: 0 - peap version 0, 1 - peap version 1
+ *
+ */
+#define WLAN_EAP_VER_OFT      WLAN_CLIENT_KEY_PASSWD_END
+#define WLAN_EAP_VER_NAME     "eap_ver="
+#define WLAN_EAP_VER_NAME_LEN 8
+#define WLAN_EAP_VER_MAX_LEN  2
+#define WLAN_EAP_VER_DEF      "0"
+#define WLAN_EAP_VER_END      (WLAN_EAP_VER_OFT + WLAN_EAP_VER_NAME_LEN + WLAN_EAP_VER_MAX_LEN)
+
+/** Whether verify peer with CA or not
+ *
+ *  content: "0", "1"
+ *  value: 0 - not verify, 1 - verify
+ *
+ */
+#define WLAN_VERIFY_PEER_OFT      WLAN_EAP_VER_END
+#define WLAN_VERIFY_PEER_NAME     "verify_peer="
+#define WLAN_VERIFY_PEER_NAME_LEN 12
+#define WLAN_VERIFY_PEER_MAX_LEN  2
+#define WLAN_VERIFY_PEER_DEF      "0"
+#define WLAN_VERIFY_PEER_END      (WLAN_VERIFY_PEER_OFT + WLAN_VERIFY_PEER_NAME_LEN + WLAN_VERIFY_PEER_MAX_LEN)
+
 /** IP address type
  *
  *  content: "0", "1"
  *  value: 0 - static,1 - DHCP
  */
-#define WLAN_IP_ADDR_TYPE_OFT      WLAN_CLIENT_KEY_PASSWD_END
+#define WLAN_IP_ADDR_TYPE_OFT      WLAN_VERIFY_PEER_END
 #define WLAN_IP_ADDR_TYPE_NAME     "ipaddr_type="
 #define WLAN_IP_ADDR_TYPE_NAME_LEN 12
 #define WLAN_IP_ADDR_TYPE_MAX_LEN  2

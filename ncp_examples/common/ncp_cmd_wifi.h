@@ -601,6 +601,10 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_scan_result
     unsigned wpa3_sae : 1;
     /** Network uses WPA3 Enterprise security */
     unsigned wpa3_entp: 1;
+    /** Network uses WPA3 Enterprise SHA256 security */
+    unsigned wpa3_1x_sha256 : 1;
+    /** Network uses WPA3 Enterprise SHA384 security */
+    unsigned wpa3_1x_sha384 : 1;
 
     /** Signal strength of the beacon. */
     unsigned char rssi;
@@ -761,9 +765,30 @@ typedef NCP_TLV_PACK_START struct _ncp_wlan_network
     /** Network's security type. Use specified by enum wlan_security_type. */
     uint8_t security_type;
 
-    /** Enable 802.11ax flag, \n 
+    /** WPA3 Enterprise mode \n
      *  1: enable; \n
-     *  0: disable. 
+     *  0: disable.
+     */
+    uint8_t wpa3_ent : 1;
+
+    /** WPA3 Enterprise Suite B mode \n
+     *  1: enable; \n
+     *  0: disable.
+     */
+    uint8_t wpa3_sb : 1;
+
+    /** WPA3 Enterprise Suite B 192 mode \n
+     *  1: enable; \n
+     *  0: disable.
+     */
+    uint8_t wpa3_sb_192 : 1;
+
+    /** EAP (Extensible Authentication Protocol) version */
+    uint8_t eap_ver : 1;
+
+    /** Enable 802.11ax flag, \n
+     *  1: enable; \n
+     *  0: disable.
      */
     uint8_t enable_11ax : 1;
     /** Enable 802.11ac flag, \n
@@ -963,6 +988,12 @@ typedef NCP_TLV_PACK_START struct _Security_ParamSet_t
     TypeHeader_t header;
     /** Wi-Fi security type. */
     uint8_t type;
+    /** WPA3 Enterprise mode. */
+    uint8_t wpa3_ent;
+    /** WPA3 Enterprise Suite B mode. */
+    uint8_t wpa3_sb;
+    /** WPA3 Enterprise Suite B 192 mode. */
+    uint8_t wpa3_sb_192;
     /** Wi-Fi security password length. */
     uint8_t password_len;
     /** Wi-Fi security password string. */
@@ -992,10 +1023,22 @@ typedef NCP_TLV_PACK_START struct _EAP_ParamSet_t
 {
     /** Header type and size information. */
     TypeHeader_t header;
+    /** Cipher for EAP TLS (Extensible Authentication Protocol Transport Layer Security) */
+    unsigned char tls_cipher;
+    /** Identity string for EAP */
+    char identity[IDENTITY_MAX_LENGTH];
+    /** Password string for EAP. */
+    char eap_password[PASSWORD_MAX_LENGTH];
     /** Anonymous identity string for EAP */
     char anonymous_identity[IDENTITY_MAX_LENGTH];
     /** Client key password string */
     char client_key_passwd[PASSWORD_MAX_LENGTH];
+    /** EAP (Extensible Authentication Protocol) version */
+    uint8_t eap_ver;
+    /** whether verify peer with CA or not
+     *  0: not verify,
+     *  1: verify. */
+    uint8_t verify_peer;
 } NCP_TLV_PACK_END EAP_ParamSet_t;
 
 #if CONFIG_NCP_WIFI_DTIM_PERIOD
