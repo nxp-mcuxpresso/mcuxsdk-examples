@@ -43,7 +43,9 @@ void BOARD_InitBootPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPins(void);
+void BOARD_InitLPSPI3Pins(void);
+void BOARD_InitLPSPI8Pins(void);
+void BOARD_InitI2C6Pins(void);
 
 #if defined(__cplusplus)
 }
