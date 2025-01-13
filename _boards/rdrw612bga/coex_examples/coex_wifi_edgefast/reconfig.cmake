@@ -9,9 +9,12 @@ mcux_add_source(
             ${board_root}/${board}/coex_examples/coex_wifi_edgefast/pin_mux.h
             middleware/wireless/coex/src/configs/rw61x/wifi/wifi_config.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwipopts.h
+            middleware/wireless/coex/src/configs/rw61x/mbedtls/mbedtls_config_client.h
             middleware/wireless/coex/src/edgefast/coex_shell.c
             middleware/wireless/coex/src/edgefast/coex_shell.h
             middleware/wireless/coex/src/common/controller_coex_nxp.c
+            middleware/wireless/coex/third_party/third_party.cmake
+            examples/coex_examples/coex_wifi_edgefast/app_config.cmake
 )
 
 mcux_add_source(
@@ -34,8 +37,11 @@ mcux_add_include(
              middleware/wireless/coex/src/configs/rw61x/edgefast
              middleware/wireless/coex/src/configs/rw61x/wifi
              middleware/wireless/coex/src/configs/rw61x/lwip
+             middleware/wireless/coex/src/configs/rw61x/mbedtls
              middleware/wireless/coex/src/edgefast
              middleware/wireless/coex/src/common
+             middleware/wireless/coex/third_party
+             examples/coex_examples/coex_wifi_edgefast
 )
 
 mcux_add_armgcc_configuration(
@@ -54,6 +60,7 @@ mcux_add_macro(
        -DMBEDTLS_MCUX_ELS_PKC_API\
        -DMBEDTLS_MCUX_USE_PKC\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
+       -DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
        -DGATT_CLIENT\
        -DGATT_DB\
        -DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0\
@@ -87,23 +94,6 @@ mcux_add_macro(
        -DSHELL_TASK_PRIORITY=1 \
        -DCONFIG_HOSTAPD=0"
 )
-
-if(${CONFIG_OT})
-message(STATUS "Build with external ot-cli libs, MBEDTLS_USER_CONFIG_FILE = rw612-mbedtls-config.h")
-mcux_add_macro(
-    CC "-DMBEDTLS_CONFIG_FILE=\\\"rw612-mbedtls-config.h\\\"\
-        -DOPENTHREAD_CONFIG_FILE=\\\"openthread-core-rw612-config.h\\\"\
-        -DOPENTHREAD_PROJECT_CORE_CONFIG_FILE=\\\"openthread-core-rw612-config.h\\\"\
-        -DOPENTHREAD_CORE_CONFIG_PLATFORM_CHECK_FILE=\\\"openthread-core-rw612-config-check.h\\\"\
-        -DOPENTHREAD_PROJECT_LIB_CONFIG_FILE=\\\"openthread-core-rw612-config.h\\\""
-)
-else()
-message(STATUS "Build with external ot-cli libs, MBEDTLS_USER_CONFIG_FILE = wpa_supp_els_pkc_mbedtls_config.h")
-mcux_add_macro(
-    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
-       -DMBEDTLS_CONFIG_FILE=\\\"els_pkc_mbedtls_config.h\\\""
-)
-endif()
 
 mcux_remove_macro(
     TOOLCHAINS armgcc
