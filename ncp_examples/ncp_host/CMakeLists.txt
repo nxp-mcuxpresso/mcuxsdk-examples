@@ -23,6 +23,8 @@ mcux_add_source(
             wifi/ncp_host_command_wifi.h
             wifi/ncp_host_command_wifi.c
             wifi/ncp_host_utils_wifi.h
+            wifi/ncp_wifi_api.h
+            wifi/ncp_wifi_api.c
             ble/ncp_host_app_ble.c
             ble/ncp_host_command_ble.h
             ble/ncp_host_command_ble.c
@@ -75,6 +77,8 @@ mcux_add_source(
             common/ncp_adapter/ncp_intf/ncp_intf_pm.h
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.c
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.h
+            common/ncp_cmd_node/ncp_cmd_node.c
+            common/ncp_cmd_node/ncp_cmd_node.h
 )
 
 mcux_add_include(
@@ -101,6 +105,7 @@ mcux_add_include(
              common/ncp_adapter/ncp_intf
              common/ncp_adapter/ncp_intf/uart
              common/mbedtls
+             common/ncp_cmd_node
 )
 include(${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_host/reconfig.cmake OPTIONAL)
 

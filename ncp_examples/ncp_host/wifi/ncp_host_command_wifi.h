@@ -17,6 +17,12 @@
 #define MLAN_MAX_VER_STR_LEN         128
 /** MAC address length. */
 #define MLAN_MAC_ADDR_LENGTH         6
+
+#ifdef CONFIG_IPV6
+/** The maximum number of IPV6 addresses that will be stored */
+#define MAX_IPV6_ADDRESSES 3
+#endif
+
 /** Maximum length of network name. */
 #define WLAN_NETWORK_NAME_MAX_LENGTH 32
 /** Maximum length of identity string . */
@@ -25,12 +31,49 @@
 #define PASSWORD_MAX_LENGTH          128
 /** Maximum number of STAs are connected to the UAP. */
 #define MAX_NUM_CLIENTS              16
+/** Maximum number of STAs can be saved in the scan table. */
+#define NCP_MAX_AP_ENTRIES           10
 
 #define MAX_MONIT_MAC_FILTER_NUM     3
 /** Maximum CSI filter count */
 #define CSI_FILTER_MAX               16
 /** Size of iperf end token. */
 #define NCP_IPERF_END_TOKEN_SIZE 11
+
+/** This data structure represents an IPv4 address */
+struct ipv4_config
+{
+    /** Set to \ref ADDR_TYPE_DHCP to use DHCP to obtain the IP address or
+     *  \ref ADDR_TYPE_STATIC to use a static IP. In case of static IP
+     *  address ip, gw, netmask and dns members must be specified.  When
+     *  using DHCP, the ip, gw, netmask and dns are overwritten by the
+     *  values obtained from the DHCP server. They should be zeroed out if
+     *  not used. */
+    unsigned addr_type : 2;
+    /** The system's IP address in network order. */
+    unsigned address;
+    /** The system's default gateway in network order. */
+    unsigned gw;
+    /** The system's subnet mask in network order. */
+    unsigned netmask;
+    /** The system's primary dns server in network order. */
+    unsigned dns1;
+    /** The system's secondary dns server in network order. */
+    unsigned dns2;
+};
+
+#ifdef CONFIG_IPV6
+/** This data structure represents an IPv6 address */
+struct ipv6_config
+{
+    /** The system's IPv6 address in network order. */
+    unsigned address[4];
+    /** The address type: linklocal, site-local or global. */
+    unsigned char addr_type;
+    /** The state of IPv6 address (Tentative, Preferred, etc). */
+    unsigned char addr_state;
+};
+#endif
 
 /** This structure is used for station configuration. */
 typedef struct _wifi_sta_info_t

@@ -8977,6 +8977,9 @@ int wlan_process_response(uint8_t *res)
             PRINTF("Invaild response cmd!\r\n");
             break;
     }
+
+    ncp_cmd_node_wakeup_pending_tasks(cmd_res);
+    
     return ret;
 }
 
