@@ -35,6 +35,10 @@ mcux_add_source(
     "examples/usb_examples/usb_device_cdc_ecm_nic_lite/bm/app.h"
 )
 
+mcux_add_mdk_configuration(
+  LD "--library_type=microlib"
+)
+
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_cdc_ecm_nic_lite/bm/reconfig.cmake" OPTIONAL)
 
 mcux_convert_binary(

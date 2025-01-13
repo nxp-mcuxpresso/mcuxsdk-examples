@@ -31,6 +31,10 @@ mcux_add_source(
     "examples/usb_examples/usb_device_cdc_ecm_nic/freertos/app.h"
 )
 
+mcux_add_mdk_configuration(
+  LD "--library_type=microlib"
+)
+
 include("${SdkRootDirPath}/${board_root}/${board}/usb_examples/usb_device_cdc_ecm_nic/freertos/reconfig.cmake" OPTIONAL)
 
 mcux_convert_binary(
