@@ -13,9 +13,6 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define MODE_POLL  0
-#define MODE_INT   1
-#define MODE       MODE_POLL
 
 /*******************************************************************************
  * Prototypes
@@ -30,28 +27,6 @@ status_t status;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#if (MODE == MODE_INT)
-static bool cmdFlag = false;
-void FLEXIO_T_Format_UserCallback(FLEXIO_T_FORMAT_Type *base,
-       	                          flexio_t_format_handle_t *handle,
-                                  status_t status, void *userData)
-{
-    userData = userData;
-
-    if (kStatus_FLEXIO_T_FORMAT_TxIdle == status)
-    {
-//        txBufferFull = false;
-//        txOnGoing    = false;
-    }
-
-    if (kStatus_FLEXIO_T_FORMAT_RxIdle == status)
-    {
-        cmdFlag = true;
-//        rxBufferEmpty = false;
-//        rxOnGoing     = false;
-    }
-}
-#endif
 
 /*!
  * @brief Main function
@@ -65,10 +40,13 @@ int main(void)
     uint8_t enc_id;
     int8_t temp = 0, temp_save = 0;
     uint64_t time = 0;
+    uint32_t clock;
 
     BOARD_InitHardware();
+    clock = FLEXIO_CLOCK_FREQUENCY / 1000000;
 
     PRINTF("Encoder T-format example\r\n");
+    PRINTF("FlexIO Root Clock is %d MHz\r\n", clock);
 
     /* 
      * Config->enableT_Format   = true;
@@ -89,7 +67,6 @@ int main(void)
     encDev.timerIndex[0]   = T_FORMAT_TX_TIMER_INDEX;
     encDev.timerIndex[1]   = T_FORMAT_RX_TIMER_INDEX;
     encDev.timerIndex[2]   = T_FORMAT_DR_TIMER_INDEX;
-//    encDev.triggerIn       = T_FORMAT_TRIGGER_INDEX;
 
     encoder.controller = &encDev;
     encoder.singleTurnRevolution  = 17;
@@ -103,22 +80,6 @@ int main(void)
         return -1;
     }
 
-#if (MODE == MODE_INT)
-    FLEXIO_T_Format_TransferCreateHandle(&encDev, &g_aformatHandle, FLEXIO_T_Format_UserCallback, NULL);
-    T_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(0x03), &enc_abs);
-    while (1)
-    {
-        if (cmdFlag)
-        {
-            PRINTF("Multi-turn data: %d, single-turn data: %ld\r\n", enc_abs.multiTurn, enc_abs.singleTurn);
-            cmdFlag = false;
-        }
-        SDK_DelayAtLeastUs(3000000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        T_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(0x03), &enc_abs);
-    }
-#endif
-
-#if (MODE == MODE_POLL)
     status = T_Format_Get_Encoder_ID(&encoder, &enc_id);
     if (status == kStatus_FLEXIO_T_FORMAT_FrameErr)
     {
@@ -158,12 +119,10 @@ int main(void)
             PRINTF("[%.2fs] The frame of getting ABS and ABM is error!\r\n", time/10.0);
         }
 	T_Format_Get_Temperature(&encoder, &temp);
-        if (/*(abs((int)enc_abs.multiTurn - (int)abs_save.multiTurn) > 10) || */(abs(enc_abs.singleTurn - abs_save.singleTurn) > 500) ||
-            (abs(temp - temp_save) > 1)) {
+        if ((abs(enc_abs.singleTurn - abs_save.singleTurn) > 500) || (abs(temp - temp_save) > 1)) {
             PRINTF("[%.2fs] Encoder ID: 0x%X\n\r\t Multi-turn data: %d, single-turn data: %d\r\n\t Temperature: %d\r\n", time/10.0, enc_id, enc_abs.multiTurn, enc_abs.singleTurn, temp);
             abs_save = enc_abs;
             temp_save = temp;
         }
     }
-#endif
 }

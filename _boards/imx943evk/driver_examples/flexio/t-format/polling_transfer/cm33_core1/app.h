@@ -14,16 +14,9 @@
 /*${macro:start}*/
 #define BOARD_FLEXIO_BASE      FLEXIO1
 
-#if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
-#warning "For Emulator"
-#define FLEXIO_T_FORMAT_DR_PIN    9U
-#define FLEXIO_T_FORMAT_TX_PIN    11U
-#define FLEXIO_T_FORMAT_RX_PIN    8U
-#else
 #define FLEXIO_T_FORMAT_DR_PIN    1U
 #define FLEXIO_T_FORMAT_TX_PIN    2U
 #define FLEXIO_T_FORMAT_RX_PIN    3U
-#endif
 
 #define T_FORMAT_TX_SHIFTER_INDEX 0U
 #define T_FORMAT_RX_SHIFTER_INDEX 1U
