@@ -4289,20 +4289,23 @@ static int wlan_ncp_get_current_network(void *tlv)
 {
     int ret = WM_SUCCESS;
     struct wlan_network sta_network;
+    
+    NCP_CMD_GET_CURRENT_NETWORK *current_network = (NCP_CMD_GET_CURRENT_NETWORK *)tlv;
 
-    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
-    cmd_res->header.cmd        = NCP_RSP_WLAN_GET_CURRENT_NETWORK;
-    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
-    cmd_res->header.seqnum     = 0x00;
-    cmd_res->header.result     = NCP_CMD_RESULT_OK;
-
-    if(!wlan_get_current_network(&sta_network))
+    if(wlan_get_current_network(&sta_network) != WM_SUCCESS)
     {
         ret = -WM_FAIL;
         goto done;
     }
 
-    NCP_CMD_GET_CURRENT_NETWORK *current_network = (NCP_CMD_GET_CURRENT_NETWORK *)&cmd_res->params.current_network;
+    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
+    current_network = (NCP_CMD_GET_CURRENT_NETWORK *)&cmd_res->params.current_network;
+    
+    cmd_res->header.cmd        = NCP_RSP_WLAN_GET_CURRENT_NETWORK;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum     = 0x00;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
     (void)memcpy(&current_network->sta_network.ssid, &sta_network.ssid, (IEEEtypes_SSID_SIZE + 1));
     (void)memcpy(&current_network->sta_network.name, &sta_network.name, (WLAN_NETWORK_NAME_MAX_LENGTH + 1));
     /* BUFFER_SIZE | Coverity Event buffer_size */
