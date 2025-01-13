@@ -23,6 +23,7 @@
 #define DEMO_PDM_ENABLE_CHANNEL_RIGHT (1U)
 #define DEMO_PDM_HWVAD_SIGNAL_GAIN    0
 #define DEMO_PDM_CHANNEL_GAIN         kPDM_DfOutputGain0
+//#define DEMO_PDM_CHANNEL_CUTOFF_FREQUENCY       kPDM_DcRemoverBypass
 
 #define DEMO_CODEC_WM8962
 #define DEMO_SAI              SAI1
