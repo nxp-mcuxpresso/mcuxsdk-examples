@@ -1,6 +1,5 @@
 /*
  * Copyright 2021-2024 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,7 +22,41 @@
      (((uint32_t)BOARD_InitDebugConsole >= 0x18000000U) && ((uint32_t)BOARD_InitDebugConsole < 0x20000000U)))
 
 /*! @brief The UART to use for debug messages. */
+/*
+  On FRDMRW612, FLEXCOMM3 UART has onboard support of transition to USB interface
+  FLEXCOMM0 UART and FLEXCOMM1 UART only has UART TX/RX signals output on board socket pins
+*/
+#ifndef DEBUG_CONSOLE_UART_INDEX
+#define DEBUG_CONSOLE_UART_INDEX 3
+#endif
+
 #define BOARD_DEBUG_UART_TYPE     kSerialPort_Uart
+
+#if (0 == DEBUG_CONSOLE_UART_INDEX)
+#define BOARD_DEBUG_UART_BASEADDR (uint32_t) FLEXCOMM0
+#define BOARD_DEBUG_UART_INSTANCE 0U
+#define BOARD_DEBUG_UART          USART0
+#define BOARD_DEBUG_UART_CLK_FREQ CLOCK_GetFlexCommClkFreq(0)
+#define BOARD_DEBUG_UART_FRG_CLK \
+    (&(const clock_frg_clk_config_t){0, kCLOCK_FrgPllDiv, 255, 0}) /*!< Select FRG0 mux as frg_pll */
+#define BOARD_DEBUG_UART_CLK_ATTACH kFRG_to_FLEXCOMM0
+#define BOARD_DEBUG_UART_RST        kFC0_RST_SHIFT_RSTn
+#define BOARD_DEBUG_UART_CLKSRC     kCLOCK_Flexcomm0
+#define BOARD_UART_IRQ_HANDLER      FLEXCOMM0_IRQHandler
+#define BOARD_UART_IRQ              FLEXCOMM0_IRQn
+#elif (1 == DEBUG_CONSOLE_UART_INDEX)
+#define BOARD_DEBUG_UART_BASEADDR (uint32_t) FLEXCOMM1
+#define BOARD_DEBUG_UART_INSTANCE 1U
+#define BOARD_DEBUG_UART          USART1
+#define BOARD_DEBUG_UART_CLK_FREQ CLOCK_GetFlexCommClkFreq(1)
+#define BOARD_DEBUG_UART_FRG_CLK \
+    (&(const clock_frg_clk_config_t){1, kCLOCK_FrgPllDiv, 255, 0}) /*!< Select FRG1 mux as frg_pll */
+#define BOARD_DEBUG_UART_CLK_ATTACH kFRG_to_FLEXCOMM1
+#define BOARD_DEBUG_UART_RST        kFC1_RST_SHIFT_RSTn
+#define BOARD_DEBUG_UART_CLKSRC     kCLOCK_Flexcomm1
+#define BOARD_UART_IRQ_HANDLER      FLEXCOMM1_IRQHandler
+#define BOARD_UART_IRQ              FLEXCOMM1_IRQn
+#elif (3 == DEBUG_CONSOLE_UART_INDEX)
 #define BOARD_DEBUG_UART_BASEADDR (uint32_t) FLEXCOMM3
 #define BOARD_DEBUG_UART_INSTANCE 3U
 #define BOARD_DEBUG_UART          USART3
@@ -35,6 +68,7 @@
 #define BOARD_DEBUG_UART_CLKSRC     kCLOCK_Flexcomm3
 #define BOARD_UART_IRQ_HANDLER      FLEXCOMM3_IRQHandler
 #define BOARD_UART_IRQ              FLEXCOMM3_IRQn
+#endif
 
 #ifndef BOARD_DEBUG_UART_BAUDRATE
 #define BOARD_DEBUG_UART_BAUDRATE 115200
