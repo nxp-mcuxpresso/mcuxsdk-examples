@@ -38,25 +38,6 @@
     DCDC will not manage current higher than 40mA */
 #define gBoardDcdcFreqStabEnabled_d     1
 
-/*! \brief Change Default trimming value for 32MHz crystal,
-      will be used by hardware_init.c file during initialization */
-#define BOARD_32MHZ_XTAL_CDAC_VALUE 19U
-
-/*! \brief Change Default amplifier current selected for 32MHz crystal,
-      will be used by hardware_init.c file during initialization */
-#define BOARD_32MHZ_XTAL_ISEL_VALUE 7U
-
-/*! \brief Default load capacitance config for 32KHz crystal,
-      Values must be adjusted to minimize the jitter on the crystal. This is to avoid
-      a shift of 31.25us on the link layer timebase in NBU.
-*/
-#define BOARD_32KHZ_XTAL_CLOAD_DEFAULT 3U
-
-/*! \brief Default coarse adjustement config for 32KHz crystal,
-      Values must be adjusted depending the equivalent series resistance (ESR) of the crystal on the board
-*/
-#define BOARD_32KHZ_XTAL_COARSE_ADJ_DEFAULT 2U
-
 /**********************************************************************************
  *     Debug Configuration
  ***********************************************************************************/

@@ -38,25 +38,6 @@
     DCDC will not manage current higher than 40mA */
 #define gBoardDcdcFreqStabEnabled_d     1
 
-/*! \brief Change Default trimming value for 32MHz crystal,
-      will be used by hardware_init.c file during initialization */
-#define BOARD_32MHZ_XTAL_CDAC_VALUE 19U
-
-/*! \brief Change Default amplifier current selected for 32MHz crystal,
-      will be used by hardware_init.c file during initialization */
-#define BOARD_32MHZ_XTAL_ISEL_VALUE 7U
-
-/*! \brief Default load capacitance config for 32KHz crystal,
-      Values must be adjusted to minimize the jitter on the crystal. This is to avoid
-      a shift of 31.25us on the link layer timebase in NBU.
-*/
-#define BOARD_32KHZ_XTAL_CLOAD_DEFAULT 3U
-
-/*! \brief Default coarse adjustement config for 32KHz crystal,
-      Values must be adjusted depending the equivalent series resistance (ESR) of the crystal on the board
-*/
-#define BOARD_32KHZ_XTAL_COARSE_ADJ_DEFAULT 2U
-
 /**********************************************************************************
  *     Debug Configuration
  ***********************************************************************************/
@@ -136,13 +117,13 @@
 //#define gAppExtAdvEnable_d              1
 
 /*! Set the default Tx power in dBm - This signed integer value must be less than or equal to gAppMaxTxPowerDbm_c*/
-#define mAdvertisingDefaultTxPower_c    0
-#define mConnectionDefaultTxPower_c     0
+#define mAdvertisingDefaultTxPower_c    10
+#define mConnectionDefaultTxPower_c     10
 
 /*! Max TX power  , default is 10bDm,  reduce the value to lower the power consumption
     Possible values are 0, 7 or 10.
     shall be higher than mAdvertisingDefaultTxPower_c and mConnectionDefaultTxPower_c */
-#define gAppMaxTxPowerDbm_c        0
+#define gAppMaxTxPowerDbm_c        10
 
 /*! ADV interval in Slots : 800 gives 500ms advertising interval */
 #define gAppAdvertisingInterval         800
@@ -212,7 +193,7 @@
 /*! \brief Number of half slot before LL interrupt to wakeup the 32MHz of the NBU, depends on the 32Mhz crystal on the
  *  board.
  */
-#define BOARD_LL_32MHz_WAKEUP_ADVANCE_HSLOT 2
+#define BOARD_LL_32MHz_WAKEUP_ADVANCE_HSLOT 3
 
 /*! \brief Delay from the 32MHz wake up of the LL to wake up the radio domain in number of 30.5us period. Default value
     is set to 0x10 in fwk_plaform.c file. The lower this value is, the safest it is, but it increases power consumption.
