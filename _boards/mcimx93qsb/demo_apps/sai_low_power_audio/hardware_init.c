@@ -75,6 +75,8 @@ void BOARD_InitHardware(void)
     /* copy resource table to destination address(TCM) */
     copyResourceTable();
 
+    NVIC_SetPriority (SysTick_IRQn, APP_SYSTEM_TICK_IRQ_PRIO);
+
     APP_SRTM_Init();
     APP_SRTM_StartCommunication();
 }

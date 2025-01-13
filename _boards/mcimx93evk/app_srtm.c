@@ -50,7 +50,7 @@ static srtm_sai_edma_local_buf_t g_local_buf = {
     .buf       = (uint8_t *)&g_buffer,
     .bufSize   = BUFFER_LEN,
     .periods   = SRTM_SAI_EDMA_MAX_LOCAL_BUF_PERIODS,
-    .threshold = 1,
+    .threshold = 2,
 
 };
 #endif
@@ -442,7 +442,7 @@ static void APP_SRTM_InitAudioService(void)
 #else
     saiTxConfig.stopOnSuspend = false; /* Keep playing audio on APD suspend. */
 #endif
-    saiTxConfig.threshold = 1U; /* Every period transmitted triggers periodDone message to A core. */
+    saiTxConfig.threshold = 2U; /* Every period transmitted triggers periodDone message to A core. */
     saiTxConfig.guardTime =
         1000; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
     saiTxConfig.dmaChannel = APP_SAI_TX_DMA_CHANNEL;
@@ -614,7 +614,6 @@ bool APP_SRTM_IsAudioServiceIdle(void)
     {
         if (curPwrState != StopMode)
         {
-            PRINTF("\r\nNo audio playback, M core enters STOP mode!\r\n");
             curPwrState = StopMode;
         }
 
@@ -624,7 +623,6 @@ bool APP_SRTM_IsAudioServiceIdle(void)
     {
         if (curPwrState != RunMode)
         {
-            PRINTF("\r\nPlayback is running, M core enters RUN mode!\r\n");
             curPwrState = RunMode;
         }
         return false;

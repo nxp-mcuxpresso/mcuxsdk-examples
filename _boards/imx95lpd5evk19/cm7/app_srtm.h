@@ -24,6 +24,8 @@
 #define APP_PDM_DMA_IRQ_PRIO          (5U)
 #define APP_M2M_DMA_IRQ_PRIO          (5U)
 
+#define APP_SYSTEM_TICK_IRQ_PRIO      (5U)
+
 /* Define the timeout ms to polling the A Core link up status */
 #define APP_LINKUP_TIMER_PERIOD_MS (10U)
 

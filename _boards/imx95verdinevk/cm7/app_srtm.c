@@ -249,7 +249,9 @@ int32_t MU7_B_IRQHandler(void)
          */
         if (sleepMode == CPU_SLEEP_MODE_SUSPEND)
         {
+#if (defined(SRTM_AUDIO_SERVICE_USED) && (0 == SRTM_AUDIO_SERVICE_USED))
             PRINTF("Other side(AP) entered suspend to memory state through linux command: echo mem > /sys/power/state\r\n");
+#endif
         }
         else if (sleepMode == CPU_SLEEP_MODE_RUN)
         {
@@ -476,7 +478,7 @@ static void APP_SRTM_InitAudioService(void)
 #else
     saiTxConfig.stopOnSuspend = false; /* Keep playing audio on APD suspend. */
 #endif
-    saiTxConfig.threshold = 1U; /* Every period transmitted triggers periodDone message to A core. */
+    saiTxConfig.threshold = 2U; /* Every period transmitted triggers periodDone message to A core. */
     saiTxConfig.guardTime =
         1500; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
     saiTxConfig.dmaChannel = APP_SAI_TX_DMA_CHANNEL;
