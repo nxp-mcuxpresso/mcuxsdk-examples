@@ -53,7 +53,7 @@ int main(void)
         PRINTF("\r\n Sensor configuration failed!");
     }
 
-    status = SCMI_SensorConfigGet(SCMI_A2P, desc.sensorId, &sensorConfig);
+    status = SCMI_SensorConfigGet(SM_PLATFORM_A2P, desc.sensorId, &sensorConfig);
     if (SCMI_ERR_SUCCESS != status)
     {
         enabled = SCMI_SENSOR_CONFIG_GET_ENABLED(sensorConfig);
@@ -71,7 +71,7 @@ int main(void)
         
         int32_t sensorValue = 0;
 
-        status = SCMI_SensorReadingGet(SCMI_A2P, desc.sensorId, SCMI_SENSOR_READ_FLAGS_ASYNC(0U), readings);
+        status = SCMI_SensorReadingGet(SM_PLATFORM_A2P, desc.sensorId, SCMI_SENSOR_READ_FLAGS_ASYNC(0U), readings);
         if (status == SCMI_ERR_SUCCESS)
         {
             sensorValue = readings[0].sensorValueLow;
