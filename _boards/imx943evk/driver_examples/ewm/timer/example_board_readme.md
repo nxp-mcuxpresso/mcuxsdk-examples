@@ -31,11 +31,12 @@ Running the demo
 When the example runs successfully, you can see the similar information from the terminal as below.
 
 ~~~~~~~~~~~~~~~~~~~~~
-Press anykey to start the example...
-
 EWM example
 Timeout timer to expire EWM
 EWM interrupt is occurred
 Timeout timer to expire EWM again
+EWM interrupt is occurred
+Timeout timer to expire EWM again
+...
 ~~~~~~~~~~~~~~~~~~~~~
 

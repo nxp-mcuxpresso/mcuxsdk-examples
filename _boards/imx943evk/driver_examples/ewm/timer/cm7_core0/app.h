@@ -10,9 +10,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define USE_TIMER_TIMEOUT_EVENT (1)
 #define EXAMPLE_EWM EWM
-#define WDOG_EWM_IRQn       EWM_IRQn
+#define WDOG_EWM_IRQ       EWM_IRQn
 #define WDOG_EWM_IRQHandler EWM_IRQHandler
 #define EXAMPLE_TIMER_CLK_ID (hal_clock_buswakeup)
 /* unit: micro second*/
