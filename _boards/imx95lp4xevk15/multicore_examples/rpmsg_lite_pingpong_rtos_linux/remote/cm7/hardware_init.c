@@ -31,7 +31,7 @@ void BOARD_InitHardware(void)
 {
     SM_Platform_Init();
     BOARD_InitBootPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
     /* copy resource table to destination address(TCM and DRAM) */
