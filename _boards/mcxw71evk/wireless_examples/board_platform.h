@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,6 +11,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+
+/*! @brief The board name */
+#define BOARD_NAME "MCX-W71-EVK"
 
 /*! \brief Change Default trimming value for 32MHz crystal,
       will be used by hardware_init.c file during initialization */
