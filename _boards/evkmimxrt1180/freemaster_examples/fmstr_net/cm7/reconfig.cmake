@@ -1,7 +1,7 @@
 
 # Define macro
 mcux_add_macro(
-    CC  "PHY_RTL8211F=1"
+    CC  "PHY_RTL8201=1"
 )
 # Heap configuration
 mcux_add_linker_symbol(
