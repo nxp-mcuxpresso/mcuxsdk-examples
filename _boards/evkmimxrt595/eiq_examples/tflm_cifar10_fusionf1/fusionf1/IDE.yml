@@ -1,0 +1,8 @@
+xtensa:
+  config:
+    __common__:
+      export_include_path: off
+
+xcc:
+  project_language: cpp
+

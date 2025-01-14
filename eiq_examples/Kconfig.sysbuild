@@ -11,4 +11,21 @@ config dsp_toolchain
     string
     default "xtensa"
 
+config secondary_board
+    string
+    default "$(board)"
+
+config secondary_toolchain
+    string
+    default "$(toolchain)"
+
+config secondary_config
+    string
+    default "debug" if $(config) = "flexspi_nor_debug"
+    default "release" if $(config) = "flexspi_nor_release"
+    default "debug" if $(config) = "flexspi_nor_sdram_debug"
+    default "release" if $(config) = "flexspi_nor_sdram_release"
+    default "debug" if $(config) = "debug"
+    default "release" if $(config) = "release"
+
 source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"

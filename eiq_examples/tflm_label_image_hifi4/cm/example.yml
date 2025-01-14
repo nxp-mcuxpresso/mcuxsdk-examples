@@ -25,3 +25,17 @@ tflm_label_image_hifi4:
     - +iar@flash_release
     - +mdk@flash_debug
     - +mdk@flash_release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
