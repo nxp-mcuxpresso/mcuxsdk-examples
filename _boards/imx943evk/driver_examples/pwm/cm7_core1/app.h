@@ -15,6 +15,7 @@
 
 #define PWM_SRC_CLK_FREQ       HAL_ClockGetRate(hal_clock_busaon)
 #define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_4
+#define DEMO_PWM_DISABLE_MAP_OP ~
 /*${macro:end}*/
 
 /*******************************************************************************
