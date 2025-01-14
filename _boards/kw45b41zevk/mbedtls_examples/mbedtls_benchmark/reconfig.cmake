@@ -1,8 +1,4 @@
 
-mcux_add_armgcc_configuration(
-    TARGETS debug
-    CC "-O1"
-)
 mcux_add_mdk_configuration(
     LD "--diag_suppress 6329"
 )
@@ -16,7 +12,3 @@ mcux_add_macro(
        -DFREESCALE_KSDK_BM"
 )
 
-mcux_remove_armgcc_configuration(
-    TARGETS debug
-    CC "-O0"
-)
