@@ -30,4 +30,19 @@ rpmsg_lite_pingpong_rtos_remote_core:
       example_readme:
       - examples/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/remote/readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: {}
+  boards:
+    imx943evk@cm7_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
+    imx943evk@cm7_core0:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
