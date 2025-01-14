@@ -17,45 +17,34 @@
 #include "netc_ep/soem_netc_ep.h"
 /*${header:end}*/
 
+#define EXAMPLE_EP_NUM        2U
 #define EP0_PORT      0U
 #define EP1_PORT      1U
 #define SOEM_PORT 		EP0_PORT
 
+/* Switch port */
+#define EXAMPLE_SWT_MAX_PORT_NUM   3U
+#define EXAMPLE_SWT_USED_PORT 0x2U
+#define EXAMPLE_SWT_USED_PORT_BITMAP (1U << EXAMPLE_SWT_USED_PORT)
+#define EXAMPLE_SWT_PSEUDO_PORT 0x3U
+#define EXAMPLE_SWT_PORT0 0x02U
+#define EXAMPLE_SWT_PORT1 0x03U
+#define EXAMPLE_SWT_PORT2 0x04U
+
+#define EP0_PHY_ADDR       0x6U
+
 struct netc_ep_if_port if_port;
 
 #define BOARD_LED_RGPIO          GPIO2
-#define BOARD_LED_RGPIO_PIN      28U
+#define BOARD_LED_RGPIO_PIN      31U
 
 #define MSGINTR       MSGINTR2
 
-#define KNETC_EP_CONFIG_SI    kNETC_ENETC2PSI0
+#define KNETC_EP_CONFIG_SI    kNETC_ENETC1PSI0
 
-#define KNETC_HW_MII_MODE     kNETC_MiiMode
+#define KNETC_HW_MII_MODE     kNETC_RgmiiMode
 
-#if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
-#define EP_NUM        1U
-
-#define EP_SI                      \
-    {                                      \
-        kNETC_ENETC2PSI0 \
-    }
-
-#define EP_PHY_ADDR \
-    {                       \
-        0x1U          \
-    }
-#elif BOARD_IMX943_TYPE == BOARD_IMX943_EVK
-#define EP_NUM        2U
-
-#define EP_SI                      \
-    {                                      \
-        kNETC_ENETC0PSI0, kNETC_ENETC2PSI0 \
-    }
-#define EP_PHY_ADDR \
-    {                       \
-        0x1U, 0x8U          \
-    }
-#endif
+#define EP_NUM        3U
 
 #define EP_RING_NUM          3U
 #define EP_RXBD_NUM          8U
@@ -69,7 +58,6 @@ struct netc_ep_if_port if_port;
 
 #define EP_TXFRAME_NUM 20U
 #define PHY_PAGE_SELECT_REG 0x1FU /*!< The PHY page select register. */
-#define EP0_PHY_ADDR       0x00U
 #define TX_INTR_MSG_DATA  1U
 #define RX_INTR_MSG_DATA  2U
 #define TX_MSIX_ENTRY_IDX 0U
