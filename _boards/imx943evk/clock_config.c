@@ -27,4 +27,5 @@ static void BOARD_InitClock(void)
 void BOARD_BootClockRUN(void)
 {
     BOARD_InitClock();
+    SystemCoreClockUpdate();
 }
