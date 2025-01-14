@@ -14,6 +14,6 @@
 
 #define GPIO_LED        GPIO2
 
-#define GPIO_LED_PIN    28
+#define GPIO_LED_PIN    31U
 
 #endif /* _APP_H_ */

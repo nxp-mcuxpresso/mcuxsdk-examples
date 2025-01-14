@@ -61,9 +61,9 @@ void BOARD_InitI2C6Pins(void) {                                /*!< Function ass
 
 void BOARD_InitGPIOPins(void) 
 {
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__GPIO2_IO31, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__GPIO2_IO28,
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__GPIO2_IO31,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
