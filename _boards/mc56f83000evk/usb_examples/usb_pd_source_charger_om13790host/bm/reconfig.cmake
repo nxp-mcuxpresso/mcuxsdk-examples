@@ -4,8 +4,6 @@ mcux_add_source(
     SOURCES ${board_root}/${board}/usb_examples/usb_pd_source_charger_om13790host/bm/hardware_init.c
             ${board_root}/${board}/usb_examples/usb_pd_source_charger_om13790host/bm/pin_mux.c
             ${board_root}/${board}/usb_examples/usb_pd_source_charger_om13790host/bm/pin_mux.h
-            ${board_root}/${board}/peripherals/peripherals.c
-            ${board_root}/${board}/peripherals/peripherals.h
             ${board_root}/${board}/usb_examples/usb_pd_source_charger_om13790host/bm/pd_board_config.h
             examples/usb_examples/usb_pd_source_charger_om13790host/bm/pd_app_demo.c
             examples/usb_examples/usb_pd_source_charger_om13790host/bm/pd_app.h
