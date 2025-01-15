@@ -35,7 +35,7 @@ NOTE
 2.  Since the music files are typically large, users could create a new large size partition in the SD card to place the music files.
 3.  After M core running, please boot the linux kernel to create the rpmsg channel between A core and M core.
     Make sure the FDT file and key bootargs are correctly set before booting the linux kernel. Following is the example commands on A core U-Boot console:
-      =>setenv fdtfile imx8ulp-evk-lpa.dtb
+      =>setenv fdtfile imx8ulp-9x9-evk-lpa.dtb
       =>setenv mmcargs 'setenv bootargs ${jh_clk} console=${console} root=${mmcroot} no_console_suspend snd_pcm.max_alloc_per_card=134217728'
       =>saveenv
 4.  Please make sure audio file (such as xxx.wav) in any filesystem that Linux can access.
