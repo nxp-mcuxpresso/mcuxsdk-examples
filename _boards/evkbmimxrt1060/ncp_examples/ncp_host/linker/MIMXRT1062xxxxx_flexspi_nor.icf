@@ -38,7 +38,7 @@ define symbol m_interrupts_ram_start   = 0x20000000;
 define symbol m_interrupts_ram_end     = 0x20000000 + __ram_vector_table_offset__;
 
 define symbol m_data_start             = m_interrupts_ram_start + __ram_vector_table_size__;
-define symbol m_data_end               = 0x2002FFFF;
+define symbol m_data_end               = 0x2001FFFF;
 
 define symbol m_data2_start            = 0x20200000;
 define symbol m_data2_end              = 0x202BFFFF;
@@ -132,7 +132,7 @@ keep{ section .boot_hdr.conf, section .boot_hdr.ivt, section .boot_hdr.boot_data
 
 place in TEXT_region                        { readonly };
 place in DATA_region                        { block RW };
-place in DATA_region                        { block ZI };
+place in DATA2_region                       { block ZI };
 place in DATA_region                        { last block HEAP };
 place in DATA_region                        { block NCACHE_VAR };
 place in CSTACK_region                      { block CSTACK };

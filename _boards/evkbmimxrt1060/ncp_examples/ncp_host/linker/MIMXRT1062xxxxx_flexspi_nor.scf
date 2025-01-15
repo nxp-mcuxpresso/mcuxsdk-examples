@@ -51,7 +51,7 @@
 #define m_interrupts_ram_size          __ram_vector_table_size__
 
 #define m_data_start                   (m_interrupts_ram_start + m_interrupts_ram_size)
-#define m_data_size                    (0x0002F000 - m_interrupts_ram_size)
+#define m_data_size                    (0x00020000 - m_interrupts_ram_size)
 
 #define m_data2_start                  0x20200000
 #define m_data2_size                   0x000C0000
@@ -142,7 +142,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
     memseta.o (+RO)
   }
   RW_m_data2 m_data2_start m_data2_size { ; RW data2
-    .ANY (+RW)
+    .ANY (+RW +ZI)
   }
   RW_m_ncache +0 EMPTY 0 {
   }
