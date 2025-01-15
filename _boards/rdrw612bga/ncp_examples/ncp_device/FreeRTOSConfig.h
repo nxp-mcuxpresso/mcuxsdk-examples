@@ -52,7 +52,7 @@
 #else
 #define configMAX_PRIORITIES                    10
 #endif
-#define configMINIMAL_STACK_SIZE                ((unsigned short)320)
+#define configMINIMAL_STACK_SIZE                ((unsigned short)1024)
 #define configMAX_TASK_NAME_LEN                 20
 #define configUSE_16_BIT_TICKS                  0
 #define configIDLE_SHOULD_YIELD                 1
