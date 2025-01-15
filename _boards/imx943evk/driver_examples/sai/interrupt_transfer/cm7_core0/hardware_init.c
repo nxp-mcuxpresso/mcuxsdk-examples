@@ -49,6 +49,18 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfi
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
+    hal_clk_t hal_audiopll1vcoCLKCfg = {
+        .clk_id = hal_clock_audiopll1ctl,
+        .clk_round_opt = hal_clk_round_auto,
+        .ratel = 3932160000,
+        .rateu = 0,
+    };
+    hal_clk_t hal_audiopll1CLKCfg = {
+        .clk_id = hal_clock_audiopll1,
+        .clk_round_opt = hal_clk_round_auto,
+        .ratel = 393216000,
+        .rateu = 0,
+    };
     hal_clk_t hal_lpi2cCLKCfg = {
         .clk_id = LPI2C_MASTER_CLOCK_ROOT,
         .pclk_id = hal_clock_osc24m,
@@ -60,7 +72,9 @@ void BOARD_InitHardware(void)
         .clk_id = SAI_CLOCK_ROOT,
         .pclk_id = hal_clock_audiopll1, // select audiopll1out source(393216000 Hz)
         .clk_round_opt = hal_clk_round_auto,
-        .rate = 24000000UL,
+        .div = 32, // output 12288000 Hz
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
     };
     sai_master_clock_t saiMasterCfg = {
         .mclkOutputEnable = true,
@@ -72,9 +86,14 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+    HAL_ClockSetPllClk(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockSetPllClk(&hal_audiopll1CLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);
     HAL_ClockSetRate(&hal_lpi2cCLKCfg);
     HAL_ClockEnable(&hal_lpi2cCLKCfg);
-    HAL_ClockSetRate(&hal_saiCLKCfg);
+    HAL_ClockSetRootClk(&hal_saiCLKCfg);
+    //HAL_ClockSetRate(&hal_saiCLKCfg);
     HAL_ClockEnable(&hal_saiCLKCfg);
 
     /* Select i2c channel to access codec */
