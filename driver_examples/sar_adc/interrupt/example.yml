@@ -39,3 +39,4 @@ adc_interrupt:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    mcimx93evk: []

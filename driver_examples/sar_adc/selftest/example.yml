@@ -42,3 +42,4 @@ adc_selftest:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    mcimx93evk: []

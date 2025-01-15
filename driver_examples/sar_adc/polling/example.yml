@@ -39,3 +39,4 @@ adc_polling:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    mcimx93evk: []

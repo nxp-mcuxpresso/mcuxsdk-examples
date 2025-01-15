@@ -42,3 +42,4 @@ adc_watchdog:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    mcimx93evk: []
