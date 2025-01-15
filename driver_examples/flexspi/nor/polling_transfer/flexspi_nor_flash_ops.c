@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2022 NXP
+ * Copyright 2016-2022, 2025 NXP
  * All rights reserved.
  *
  *
@@ -389,6 +389,9 @@ status_t flexspi_nor_flash_read(FLEXSPI_Type *base, uint32_t dstAddr, const uint
 
 status_t flexspi_nor_flash_program(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src, uint32_t length)
 {
+    /* Ensure program data size is multiple of flash page size. */
+    assert((length % (uint32_t)FLASH_PAGE_SIZE) == 0UL);
+
     status_t status;
     flexspi_transfer_t flashXfer;
 
@@ -397,30 +400,33 @@ status_t flexspi_nor_flash_program(FLEXSPI_Type *base, uint32_t dstAddr, const u
     flexspi_nor_disable_cache(&cacheStatus);
 #endif
 
-    /* Write enable */
-    status = flexspi_nor_write_enable(base, dstAddr);
-
-    if (status != kStatus_Success)
+    for (uint32_t i = 0UL; i < (length / (uint32_t)FLASH_PAGE_SIZE); i++)
     {
-        return status;
+        /* Write enable */
+        status = flexspi_nor_write_enable(base, dstAddr);
+
+        if (status != kStatus_Success)
+        {
+            return status;
+        }
+
+        /* Prepare page program command */
+        flashXfer.deviceAddress = dstAddr;
+        flashXfer.port          = FLASH_PORT;
+        flashXfer.cmdType       = kFLEXSPI_Write;
+        flashXfer.SeqNumber     = 1;
+        flashXfer.seqIndex      = NOR_CMD_LUT_SEQ_IDX_PAGEPROGRAM_QUAD;
+        flashXfer.data          = (uint32_t *)((uint32_t)src + (i * FLASH_PAGE_SIZE));
+        flashXfer.dataSize      = FLASH_PAGE_SIZE;
+        status                  = FLEXSPI_TransferBlocking(base, &flashXfer);
+
+        if (status != kStatus_Success)
+        {
+            return status;
+        }
+
+        status = flexspi_nor_wait_bus_busy(base);
     }
-
-    /* Prepare page program command */
-    flashXfer.deviceAddress = dstAddr;
-    flashXfer.port          = FLASH_PORT;
-    flashXfer.cmdType       = kFLEXSPI_Write;
-    flashXfer.SeqNumber     = 1;
-    flashXfer.seqIndex      = NOR_CMD_LUT_SEQ_IDX_PAGEPROGRAM_QUAD;
-    flashXfer.data          = (uint32_t *)src;
-    flashXfer.dataSize      = length;
-    status                  = FLEXSPI_TransferBlocking(base, &flashXfer);
-
-    if (status != kStatus_Success)
-    {
-        return status;
-    }
-
-    status = flexspi_nor_wait_bus_busy(base);
 
     /* Do software reset or clear AHB buffer directly. */
 #if defined(FSL_FEATURE_SOC_OTFAD_COUNT) && defined(FLEXSPI_AHBCR_CLRAHBRXBUF_MASK) && \
