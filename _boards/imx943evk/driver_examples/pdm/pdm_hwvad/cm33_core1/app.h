@@ -18,11 +18,10 @@
 #define DEMO_PDM_CIC_OVERSAMPLE_RATE  (0U)
 #define DEMO_PDM_ENABLE_CHANNEL_LEFT  (0U)
 #define DEMO_PDM_ENABLE_CHANNEL_RIGHT (1U)
-#define DEMO_PDM_SAMPLE_CLOCK_RATE    (640000U) /* 16KHZ */
 #define DEMO_PDM_HWVAD_SIGNAL_GAIN    0
 #define DEMO_PDM_CHANNEL_GAIN         kPDM_DfOutputGain0
 
-#define DEMO_AUDIO_SAMPLE_RATE (48000U)
+#define DEMO_AUDIO_SAMPLE_RATE (16000U)
 /*${macro:end}*/
 
 /*******************************************************************************
