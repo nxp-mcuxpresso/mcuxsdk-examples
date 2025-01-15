@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
@@ -136,6 +136,11 @@ int wifi_ncp_send_response(uint8_t *pbuf)
     return ret;
 }
 
+
+#include <NCP-DISPATCH-functions.h>
+#include <NCP-UTILS-Delegated-Role.h>
+
+
 static int wifi_ncp_command_handle_input(uint8_t *cmd)
 {
     NCP_COMMAND *input_cmd = (NCP_COMMAND *)cmd;
@@ -149,25 +154,73 @@ static int wifi_ncp_command_handle_input(uint8_t *cmd)
     current_cmd           = input_cmd->cmd;
     g_cmd_seqno           = input_cmd->seqnum;
 
-    command               = lookup_class(cmd_class, cmd_subclass, cmd_id);
-    if (NULL == command)
-    {
-        ncp_d("ncp wifi lookup cmd failed\r\n");
-        return -WM_FAIL;
-    }
-    ncp_d("ncp wifi got command: <%s>", command->help);
-    ret = command->handler(cmd_tlv);
+#define NCP_TLV_HDR_SUBCLASS_INET_API    0x0C
 
-    if (command->async == CMD_SYNC)
-    {
-         wifi_ncp_send_response(wifi_res_buf);
+    if ( (cmd_class == NCP_CMD_WLAN) && (cmd_subclass == NCP_TLV_HDR_SUBCLASS_INET_API) )
+    {        
+        static char *ncp_cmd_buf = NULL;
+        static int   ncp_cmd_size = 0;
+        
+        static int   cmd_opcode = 0;
+        
+        //static int   dump = 1;
+        static int   dump = 0;
+
+        ncp_cmd_buf  = (char *) cmd_tlv;
+        ncp_cmd_size = input_cmd->size-NCP_CMD_HEADER_LEN;
+
+        if (ncp_cmd_size < sizeof(cmd_opcode))
+        {
+            LOG_NCP_ERR("NCP_Wait_for_RX returns wrong TLV size [0x%04x]!", ncp_cmd_size);
+        }
+        else
+            cmd_opcode = *((int *)&ncp_cmd_buf[0]);
+        
+        
+        if ( ((cmd_opcode > OPCODE__API__START) && (cmd_opcode < OPCODE__API__END)) &&
+             ((cmd_opcode == NCP_Dispatch_API[cmd_opcode-OPCODE__API__START].cmd_opcode) && NCP_Dispatch_API[cmd_opcode-OPCODE__API__START].process_func) )
+        {
+            NCP_Dispatch_API[cmd_opcode-OPCODE__API__START].process_func(cmd_opcode, ncp_cmd_buf, &ncp_cmd_size, dump);
+        }
+        else
+        {
+            LOG_NCP_ERR("RX TLV Payload size [%d] -- Unknown cmd_opcode=0x%04x !!!", ncp_cmd_size, cmd_opcode);
+            
+            NCP_UTILS_DR_UNKNOWN_CMD(cmd_opcode, ncp_cmd_buf, &ncp_cmd_size, dump);
+        }
+
+        // Release 'wifi_ncp_lock' Semaphore after ncp_tlv_send() operation to reuse ncp_adapter
+        {
+            //OSA_SemaphorePost(wifi_ncp_lock);
+            static char ncp_TX_RX[NCP_CMD_HEADER_LEN] = {0};
+            wifi_ncp_send_response(ncp_TX_RX);
+        }
+        
     }
     else
     {
-        /* Wait for cmd to execute, then
-         * 1) send cmd response
-         * 2) reset cmd_buf & wifi_res_buf
-         * 3) release wifi_ncp_lock */
+
+        command               = lookup_class(cmd_class, cmd_subclass, cmd_id);
+        if (NULL == command)
+        {
+            ncp_d("ncp wifi lookup cmd failed\r\n");
+            return -WM_FAIL;
+        }
+        ncp_d("ncp wifi got command: <%s>", command->help);
+        ret = command->handler(cmd_tlv);
+        
+        if (command->async == CMD_SYNC)
+        {
+            wifi_ncp_send_response(wifi_res_buf);
+        }
+        else
+        {
+            /* Wait for cmd to execute, then
+             * 1) send cmd response
+             * 2) reset cmd_buf & wifi_res_buf
+             * 3) release wifi_ncp_lock */
+        }
+        
     }
 
     return ret;
@@ -178,6 +231,7 @@ static void wifi_ncp_task(void *pvParameters)
     int ret = 0;
     wifi_ncp_command_t cmd_item;
     uint8_t *cmd_buf = NULL;
+    
     while (1)
     {
         ret = OSA_MsgQGet(wifi_ncp_command_queue, &cmd_item, osaWaitForever_c);
