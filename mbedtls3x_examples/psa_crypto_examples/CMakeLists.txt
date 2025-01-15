@@ -15,9 +15,12 @@ include(${SdkRootDirPath}/${board_root}/${board}/mbedtls3x_examples/psa_crypto_e
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 
+#iar common configs
 mcux_add_iar_configuration(
     CX "--diag_suppress Pe111"
     CC "--diag_suppress Pe111"
+    CC "--diag_suppress Pa082,Pa050,Pe546,Pe188,Pe111,Pa084,Pe068,Pe177,Pe223"
+    CX "--diag_suppress Pa082,Pa050,Pe546,Pe188,Pe111,Pa084,Pe068,Pe177,Pe223"
 )
 
 mcux_add_linker_symbol(

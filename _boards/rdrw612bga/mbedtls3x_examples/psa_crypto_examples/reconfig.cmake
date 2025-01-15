@@ -26,20 +26,6 @@ mcux_add_armgcc_configuration(
     CC "-Wno-unused-variable"
 )
 
-# remove iar configurations
-mcux_remove_iar_configuration(
-    TARGETS debug
-    CX "--diag_suppress=Pa082,Pa050"
-    CC "--diag_suppress=Pa082,Pa050"
-)
-
-
-#iar common configs
-mcux_add_iar_configuration(
-    CC "--diag_suppress Pa082,Pa050,Pe546,Pe188,Pe111,Pa084,Pe068,Pe177,Pe223"
-    CX "--diag_suppress Pa082,Pa050,Pe546,Pe188,Pe111,Pa084,Pe068,Pe177,Pe223"
-)
-
 mcux_add_macro(
     CC "-DMCUXPRESSO_SDK"
 )
