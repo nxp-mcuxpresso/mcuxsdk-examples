@@ -13,7 +13,6 @@ tfm_regression_s:
       example_readme:
       - examples/tfm_examples/tfm_regression_s/readme.md
       - ${board_root}/${board}/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md
-      - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmrw612:
     - -armgcc@flash_debug
