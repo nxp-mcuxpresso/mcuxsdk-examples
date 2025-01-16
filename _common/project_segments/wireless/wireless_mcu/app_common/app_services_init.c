@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 - 2022, 2024 NXP
+ * Copyright 2020-2022, 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -258,7 +258,7 @@ void APP_InitServices(void)
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
     /* Measure battery voltage during initialization for BLE battery service profile */
-    SENSORS_RefreshBatteryLevel();
+    (void)SENSORS_RefreshBatteryLevel();
 #endif
 
 #if defined(gAppLowpowerEnabled_d) && (gAppLowpowerEnabled_d > 0)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -65,7 +65,7 @@ int APP_InitBle(void)
             break;
         }
 
-    } while (0);
+    } while (false);
 
 #if defined(gAppDisableControllerLowPower_d) && (gAppDisableControllerLowPower_d > 0)
     if (status == 0)
