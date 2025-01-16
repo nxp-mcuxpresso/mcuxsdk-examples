@@ -6,17 +6,6 @@ project(ncp_device LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${b
 
 include(${SdkRootDirPath}/examples/ncp_examples/ncp_device/app_config.cmake)
 
-mcux_add_macro(
-    CONFIG_NCP_WIFI=${CONFIG_NCP_WIFI}
-    CONFIG_NCP_BLE=${CONFIG_NCP_BLE}
-    CONFIG_NCP_OT=${CONFIG_NCP_OT}
-    CONFIG_NCP_UART=${CONFIG_NCP_UART}
-    CONFIG_NCP_SPI=${CONFIG_NCP_SPI}
-    CONFIG_NCP_USB=${CONFIG_NCP_USB}
-    CONFIG_NCP_SDIO=${CONFIG_NCP_SDIO}
-    CONFIG_WPA_SUPP_MBEDTLS=${CONFIG_WPA_SUPPLICANT}
-)
-
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
@@ -24,6 +13,7 @@ mcux_add_source(
             lwipopts.h
             lwippools.h
             lwiphooks.h
+            app_config.cmake
             controller_coex_nxp.c
             system/ncp_system.h
             system/ncp_system.c
@@ -61,6 +51,7 @@ mcux_add_source(
             mbedtls/key_cert.h
             ot/peripherals.c
             ot/peripherals.h
+            ot/third_party/ot_config.cmake
 )
 
 mcux_add_source(
@@ -108,6 +99,7 @@ mcux_add_source(
             common/crc/crc.h
             common/mbedtls/mbedtls_common.c
             common/mbedtls/mbedtls_common.h
+            common/mbedtls/mbedtls_config_client.h
             common/ncp_debug/ncp_debug.h
             common/httpc/inc/json_parser/jsmn.h
             common/httpc/inc/json_parser/json_generator.h
@@ -173,9 +165,7 @@ mcux_add_include(
         common/uap_prov
 )
 
-if(${CONFIG_NCP_OT})
 include(${SdkRootDirPath}/examples/ncp_examples/ncp_device/ot/third_party/ot_config.cmake OPTIONAL)
-endif()
 
 include(${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_device/reconfig.cmake OPTIONAL)
 
