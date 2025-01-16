@@ -38,7 +38,7 @@ void BOARD_InitBootPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPins(void); /* Function assigned for the Cortex-M33 */
+void BOARD_InitPins(void);
 
 /*!
  * @brief Configures pin routing for digital encoder 1.
@@ -57,6 +57,12 @@ void BOARD_InitEncoder2Pins(void);
  *
  */
 void BOARD_InitI2C6Pins(void);
+
+/*!
+ * @brief Configures pin routing for PWM1.
+ *
+ */
+void BOARD_InitIPWM1(void);
 
 #if defined(__cplusplus)
 }

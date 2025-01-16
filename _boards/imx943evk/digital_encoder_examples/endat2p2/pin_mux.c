@@ -28,11 +28,13 @@ processor_version: 0.12.3
  * Description   : Calls initialization functions.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitBootPins(void) {
+void BOARD_InitBootPins(void)
+{
     BOARD_InitPins();
     BOARD_InitEncoder1Pins();
     BOARD_InitEncoder2Pins();
     BOARD_InitI2C6Pins();
+    BOARD_InitIPWM1();
 }
 
 /*
@@ -83,6 +85,20 @@ void BOARD_InitI2C6Pins(void)
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
 }
+
+void BOARD_InitIPWM1(void)
+{
+    HAL_PinctrlSetPinMux(
+      HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_TXD3__FLEXPWM1_PWMA0,      /* GPIO_AD_00 is configured as FLEXPWM1_PWMA00 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  HAL_PinctrlSetPinMux(
+      HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_TXD1__FLEXPWM1_PWMA1,      /* GPIO_AD_01 is configured as FLEXPWM1_PWMB00 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  HAL_PinctrlSetPinMux(
+      HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH3_TX_CTL__FLEXPWM1_PWMA2,      /* GPIO_AD_01 is configured as FLEXPWM1_PWMB00 */
+      0U);
+}
+
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

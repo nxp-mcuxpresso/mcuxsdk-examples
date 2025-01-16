@@ -23,7 +23,6 @@
  * Variables
  ******************************************************************************/
 endat2p2_dev_t *dev;
-BLK_CTRL_WAKEUPMIX_Type *blk_ctr = BLK_CTRL_WAKEUPMIX;
 
 /*******************************************************************************
  * Code
@@ -34,20 +33,17 @@ static void ENDATDEV_PrintMenu(void)
     PRINTF("|--------------------------------------------------------|\r\n");
     PRINTF("|      Select the encoder command from following         |\r\n");
     PRINTF("|--------------------------------------------------------|\r\n");
-    PRINTF("| 1 : Encoder send position values                       |\r\n");
-    PRINTF("| 2 : Selection of memory area                           |\r\n");
-    PRINTF("| 3 : Encoder receive parameter                          |\r\n");
-    PRINTF("| 4 : Encoder send parameter                             |\r\n");
-    PRINTF("| 5 : Encoder receive reset                              |\r\n");
-    PRINTF("| 6 : Encoder send test values                           |\r\n");
-    PRINTF("| 7 : Encoder receive test values                        |\r\n");
-    PRINTF("| 8 : Encoder send position with ADDINFO                 |\r\n");
-    PRINTF("| 9 : Encoder send position with ADDINFO select memory   |\r\n");
-    PRINTF("| 10: Encoder send position with ADDINFO recv param      |\r\n");
-    PRINTF("| 11: Encoder send position with ADDINFO send param      |\r\n");
-    PRINTF("| 12: Encoder send position with ADDINFO recv err reset  |\r\n");
-    PRINTF("| 13: Encoder send position with ADDINFO recv test cmd   |\r\n");
-    PRINTF("| 14: Encoder receive communication command              |\r\n");
+    PRINTF("|  1: Encoder send position values                       |\r\n");
+    PRINTF("|  2: Selection of memory area                           |\r\n");
+    PRINTF("|  3: Encoder receive parameter                          |\r\n");
+    PRINTF("|  4: Encoder send parameter                             |\r\n");
+    PRINTF("|  5: Encoder receive reset                              |\r\n");
+    PRINTF("|  6: Encoder send position with ADDINFO                 |\r\n");
+    PRINTF("|  7: Encoder send position with ADDINFO select memory   |\r\n");
+    PRINTF("|  8: Encoder send position with ADDINFO recv param      |\r\n");
+    PRINTF("|  9: Encoder send position with ADDINFO send param      |\r\n");
+    PRINTF("| 10: Encoder send position with ADDINFO recv err reset  |\r\n");
+    PRINTF("| 11: Encoder receive communication command              |\r\n");
     PRINTF("|                                                        |\r\n");
     PRINTF("|100: Display encoder information                        |\r\n");
     PRINTF("|101: Display registers                                  |\r\n");
@@ -70,15 +66,12 @@ const int menu_cmd_to_mode_cmd[] = {
     ENDAT2P2_CMD_RECEIVE_PARAMETERS,                    /* 3 */
     ENDAT2P2_CMD_SEND_PARAMETERS,                       /* 4 */
     ENDAT2P2_CMD_RECEIVE_RESET,                         /* 5 */
-    ENDAT2P2_CMD_SEND_TEST_VALUES,                      /* 6 */
-    ENDAT2P2_CMD_RECEIVE_TEST_COMMAND,                  /* 7 */
-    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO,              /* 8 */
-    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_SEL_MEM,      /* 9 */
-    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_RECV_PARAM,   /* 10 */
-    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_SEND_PARAM,   /* 11 */
-    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_RECV_ERR_RST, /* 12 */
-    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_RECV_TESTCMD, /* 13 */
-    ENDAT2P2_CMD_RECEIVE_COMMUNICATION_CMD,             /* 14 */
+    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO,              /* 6 */
+    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_SEL_MEM,      /* 7 */
+    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_RECV_PARAM,   /* 8 */
+    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_SEND_PARAM,   /* 9 */
+    ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_RECV_ERR_RST, /* 10 */
+    ENDAT2P2_CMD_RECEIVE_COMMUNICATION_CMD,             /* 11 */
 };
 
 static void ENDATDEV_PrintEncoderInfo(endat2p2_dev_t *dev)
@@ -184,17 +177,51 @@ static void ENDATDEV_DumpRegs(endat2p2_dev_t *dev)
     PRINTF("CONF Reg1: 0x%08x\r\n", dev->base->CONFIGREGISTER1);
     PRINTF("CONF Reg2: 0x%08x\r\n", dev->base->CONFIGREGISTER2);
     PRINTF("STAT Reg : 0x%08x\r\n", dev->base->STATUSREGISTER);
+    PRINTF("INT MASK : 0x%08x\r\n", dev->base->INTERRUPTMASKREGISTER);
+}
+
+static void ENDATDEV_DumpPosition(endat2p2_dev_t *dev,
+                                  endat2p2_recv_data_t *data)
+{
+    /* float angle; */
+    /* uint64_t max = 1 << dev->single_turn_res; */
+    uint64_t length = 0;
+
+    PRINTF("\r\n");
+
+    if (ENDAT2P2_EncoderIsRotary(dev))
+    {
+        /*
+        angle = ((float) data->position.position) /
+                        (float)max * (float)360;
+        */
+    }
+    else
+    {
+        length = data->position.position * dev->step;
+    }
+
+    if(dev->multi_turn_res)
+    {
+        PRINTF("Single Turn: %d, Multiple Turn: %d\r\n",
+                (uint32_t) data->position.position,
+                (uint32_t) data->position.revolution);
+    }
+    else if (ENDAT2P2_EncoderIsRotary(dev))
+    {
+        PRINTF("Single Turn: %d\r\n",
+                (uint32_t) data->position.position);
+    }
+    else
+    {
+        PRINTF("position: %d\r\n", (uint32_t) length);
+    }
 }
 
 static void ENDATDEV_DumpRecvData(endat2p2_dev_t *dev, int cmd,
                                   endat2p2_recv_data_t *data)
 {
-    float angle;
-    uint64_t lenght;
-    uint64_t max = 1 << dev->single_turn_res;
     uint32_t status = data->status;
-
-    PRINTF("\r\n");
 
     switch(cmd)
     {
@@ -205,32 +232,7 @@ static void ENDATDEV_DumpRecvData(endat2p2_dev_t *dev, int cmd,
             break;
 
         case ENDAT2P2_CMD_SEND_POSITION_VALUE:
-            if (ENDAT2P2_EncoderIsRotary(dev))
-            {
-                angle = ((float) data->position.position) /
-                                (float)max * (float)360;
-            }
-            else
-            {
-                lenght = data->position.position * dev->step;
-            }
-
-            if(dev->multi_turn_res)
-            {
-                PRINTF("position: %.12f, revolution: %lld",
-                        angle, data->position.revolution);
-            }
-            else
-            {
-                if (ENDAT2P2_EncoderIsRotary(dev))
-                {
-                    PRINTF("position: %.12f", angle);
-                }
-                else
-                {
-                    PRINTF("position: %lld", lenght);
-                }
-            }
+            ENDATDEV_DumpPosition(dev, data);
             break;
 
         case ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO:
@@ -239,34 +241,7 @@ static void ENDATDEV_DumpRecvData(endat2p2_dev_t *dev, int cmd,
         case ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_SEND_PARAM:
         case ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_RECV_ERR_RST:
         case ENDAT2P2_CMD_SEND_POSVAL_WITH_ADDINFO_RECV_TESTCMD:
-            if (ENDAT2P2_EncoderIsRotary(dev))
-            {
-                angle = ((float) data->position_addinfo.position) /
-                                 (float)max * (float)360;
-            }
-            else
-            {
-                lenght = data->position_addinfo.position *
-                                  dev->step;
-            }
-
-            if(dev->multi_turn_res)
-            {
-                PRINTF("position: %.12f, revolution: %lld",
-                        angle, data->position_addinfo.revolution);
-            }
-            else
-            {
-                if (ENDAT2P2_EncoderIsRotary(dev))
-                {
-                    PRINTF("position: %.12f", angle);
-                }
-                else
-                {
-                    PRINTF("position: %lld", lenght);
-                }
-            }
-
+            ENDATDEV_DumpPosition(dev, data);
             if (status & ENDAT2P2_STATUSREGISTER_RECEIVE_REGISTER3_MASK)
             {
                 PRINTF("Additional Information 1: 0x%x\r\n",
@@ -282,11 +257,8 @@ static void ENDATDEV_DumpRecvData(endat2p2_dev_t *dev, int cmd,
             break;
 
         default:
-            PRINTF("ERROR: invalid command %x\r\n", cmd);
             break;
     }
-
-    PRINTF("\r\n");
 }
 
 static void ENDATDEV_DumpStatus(endat2p2_dev_t *dev, uint32_t status)
@@ -296,7 +268,7 @@ static void ENDATDEV_DumpStatus(endat2p2_dev_t *dev, uint32_t status)
         PRINTF("ERROR: Recv register 1 is not updated\r\n");
     }
 
-    PRINTF("Data: updated ERR: %d CRC: %d F1: %d F2: %d MRS:%d\r\n",
+    PRINTF("Status: ERR:%d CRC:%d F1:%d F2:%d MRS:%d\r\n",
             NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_ERROR1, status),
             NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_CRC_PW_PARITY, status),
             NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_F_TYPE_I, status),
@@ -333,17 +305,17 @@ static void ENDATDEV_DumpStatus(endat2p2_dev_t *dev, uint32_t status)
     {
         if(status & ENDAT2P2_STATUSREGISTER_RECEIVE_REGISTER2_MASK)
         {
-            PRINTF("AddINFO1: is updated\r\n");
+            PRINTF("AddINFO1 is updated\r\n");
         }
         if(status & ENDAT2P2_STATUSREGISTER_RECEIVE_REGISTER3_MASK)
         {
-            PRINTF("AddINFO2: is updated\r\n");
+            PRINTF("AddINFO2 is updated\r\n");
         }
-        PRINTF("AddINFO: ERR2: %d CRC1: %d CRC2: %d\r\n",
+        PRINTF("AddINFO: ERR2:%d CRC1:%d CRC2:%d\r\n",
                NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_ERROR2, status),
                NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_CRC_ZI1, status),
                NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_CRC_ZI2, status));
-        PRINTF("Encoder: Busy: %d RM: %d WRN: %d Spike:%d\r\n",
+        PRINTF("Encoder: Busy:%d RM:%d WRN:%d Spike:%d\r\n",
                NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_BUSY, status),
                NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_RM, status),
                NXP_FLD2VAL(ENDAT2P2_STATUSREGISTER_WRN, status),
@@ -389,7 +361,6 @@ static void ENDATDEV_HandleRx(endat2p2_dev_t *dev, int cmd)
 {
     endat2p2_recv_data_t data;
 
-    ENDAT2P2_CMDWait(dev);
     ENDAT2P2_RecvData(dev, cmd, &data);
     ENDATDEV_DumpRecvData(dev, cmd, &data);
     ENDATDEV_DumpStatus(dev, data.status);
@@ -411,6 +382,7 @@ static int ENDATDEV_InputMRS(int *mrs)
         return -1;
     }
 
+    PRINTF("0x%x\r\n", *mrs);
     return 0;
 }
 
@@ -430,6 +402,7 @@ static int ENDATDEV_InputAddr(int *addr)
         return -1;
     }
 
+     PRINTF("0x%x\r\n", *addr);
     return 0;
 }
 
@@ -449,6 +422,8 @@ static int ENDATDEV_InputParam(int *param)
         return -1;
     }
 
+    PRINTF("0x%x\r\n", *param);
+
     return 0;
 }
 
@@ -462,6 +437,8 @@ static int ENDATDEV_InputFrequency(int *frequency)
         return -1;
     }
 
+    PRINTF("%d\r\n", *frequency);
+
     return 0;
 }
 
@@ -474,6 +451,8 @@ static int ENDATDEV_InputLoopTime(int *loop_time)
         PRINTF("ERROR: invalid value\r\n");
         return -1;
     }
+
+    PRINTF("%d\r\n", *loop_time);
 
     return 0;
 }
@@ -562,30 +541,23 @@ static int ENDATDEV_ConfigureClock(endat2p2_dev_t *dev)
 
 void ENDAT2P2_IRQHandler(void)
 {
-    uint32_t status;
+    PRINTF("Interrupt Handler:\r\n");
+    ENDATDEV_HandleRx(dev, ENDAT2P2_CMD_SEND_POSITION_VALUE);
 
-    status = ENDAT2P2_GetStatus(dev);
-
-    ENDATDEV_DumpStatus(dev, status);
-
-    ENDAT2P2_CleanStatus(dev);
+    SDK_ISR_EXIT_BARRIER;
 }
 
-static int ENDATDEV_EnableInterrupt(endat2p2_dev_t *dev)
+static void ENDATDEV_EnableInterrupt(endat2p2_dev_t *dev)
 {
-    ENDAT2P2_SetInterruptMask(dev, 0x0FFFFFFF);
+    ENDAT2P2_SetInterruptMask(dev,
+        ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
     EnableIRQ(ENDAT2P2_IRQn);
-
-    return 0;
 }
 
-static int ENDATDEV_DisableInterrupt(endat2p2_dev_t *dev)
+static void ENDATDEV_DisableInterrupt(endat2p2_dev_t *dev)
 {
     ENDAT2P2_SetInterruptMask(dev, 0);
-
     DisableIRQ(ENDAT2P2_IRQn);
-
-    return 0;
 }
 
 static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
@@ -609,11 +581,10 @@ static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
     for (i = 1; i <= loop; i++)
     {
         /* BOARD_SystickStart(&tick); */
-        /* ENDAT2P2_DelayUs(1); */
         ENDAT2P2_CMDSend(dev);
         if(loop_time)
         {
-            ENDAT2P2_DelayUs(loop_time);
+            SDK_DelayAtLeastUs(loop_time, SystemCoreClock);
         }
         ENDAT2P2_CMDWait(dev);
         ENDAT2P2_RecvData(dev, cmd, &data);
@@ -625,7 +596,6 @@ static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
 
     return 0;
 }
-
 
 void ENDATDEV_GetPerformance(int loop)
 {
@@ -671,7 +641,7 @@ static int ENDATDEV_TimerLoop(endat2p2_dev_t *dev)
 
     /* reset additional info's if present */
     ENDAT2P2_EncoderRest(dev);
-    ENDAT2P2_DelayUs(500);
+    SDK_DelayAtLeastUs(500U, SystemCoreClock);
     ENDAT2P2_CMDBuild(dev, cmd, 0, 0);
 
     ENDAT2P2_CleanStatus(dev);
@@ -680,7 +650,7 @@ static int ENDATDEV_TimerLoop(endat2p2_dev_t *dev)
 
     for(i = 1; i <= loop; i++)
     {
-        ENDAT2P2_DelayUs(loop_time);
+        SDK_DelayAtLeastUs(loop_time, SystemCoreClock);
         ENDAT2P2_CMDWait(dev);
         ENDAT2P2_RecvData(dev, cmd, &data);
         /* us = BOARD_SystickElapsedTime_us(&tick); */
@@ -701,9 +671,9 @@ static void ENDAT2P2_EnableXbarPinTrigger(void)
 
 static int ENDATDEV_HardwareStrobeLoop(endat2p2_dev_t *dev)
 {
+    endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
     int i, loop = 10;
     endat2p2_recv_data_t data;
-    endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
 
     /* Initialize FlexPWM to generate the trigger signalis. */
     PWM_Trigger_Init(BOARD_PWM_BASEADDR);
@@ -715,22 +685,22 @@ static int ENDATDEV_HardwareStrobeLoop(endat2p2_dev_t *dev)
     SDK_DelayAtLeastUs(500U, SystemCoreClock);
     ENDAT2P2_CMDBuild(dev, cmd, 0, 0);
 
-    ENDAT2P2_SetHWStrobe(dev, 1);
-
     ENDAT2P2_CleanStatus(dev);
-    /* BOARD_SystickStart(&tick); */
+    ENDAT2P2_SetHWStrobe(dev, true);
+
+    /* ENDATDEV_EnableInterrupt(dev); */
 
     for(i = 1; i <= loop; i++)
     {
-        ENDAT2P2_CMDWait(dev);
-        while(ENDAT2P2_CheckRecv(dev))
-            ;
+        while(!ENDAT2P2_CheckRecv(dev))
+        {
+            SDK_DelayAtLeastUs(100, SystemCoreClock);
+        }
         ENDAT2P2_RecvData(dev, cmd, &data);
-        /* us = BOARD_SystickElapsedTime_us(&tick); */
-
-        /* PRINTF("Loop%d: interval time:%dus\r\n", i, us); */
         ENDATDEV_DumpRecvData(dev, cmd, &data);
     }
+
+    ENDAT2P2_SetHWStrobe(dev, false);
 
     return 0;
 }
@@ -748,13 +718,13 @@ int main(void)
 
 	PRINTF("Start ENDAT2.2 Diagnostic application\r\n");
 
-    dev = ENDAT2P2_InitMaster(ENDAT2P2_BASE, ENDAT2P2_CLK_100M);
+    PRINTF("ENDAT2P2_SYS_CLOCK %d\r\n", ENDAT2P2_SYS_CLOCK);
+    dev = ENDAT2P2_InitMaster(ENDAT2P2_BASE, ENDAT2P2_SYS_CLOCK);
     if(!dev)
     {
         PRINTF("EnDat2.2 0x%x failed to initialize\r\n");
         return 0;
     }
-    PRINTF("propagation time: %d fsysclk\r\n", ENDAT2P2_GetCablePropagationTime(dev));
 
     ret = ENDAT2P2_InitEncoder(dev);
     if (ret != kStatus_Success)
@@ -765,17 +735,20 @@ int main(void)
 
     ENDATDEV_PrintEncoderInfo(dev);
 
+    ENDAT2P2_EnableDelayCompensation(dev);
+    PRINTF("propagation time: %d fsysclk\r\n",
+            ENDAT2P2_GetCablePropagationTime(dev));
+
     /* default frequency - 2MHz for 2.2 encoders, 1MHz for 2.1 encoders */
     if(dev->cmd_set_2_2)
     {
         frequency = ENDAT2P2_FTCLK;
         ENDAT2P2_SetFTCLOCK(dev, frequency);
 
+        PRINTF("For EnDat2.2, change recovery time I to 3.75us\r\n");
         /* Change tm to 3.75us */
         data = ENDAT2P2_GetParamWithPos(dev, MRS_CODE_OPERATING_STATUS,
                                         ENDAT2P2_MEM_WORD_3);
-        PRINTF("function initialization 0x%x\r\n", data);
-
         data = (data & (~3)) | 0x1;
 
         ENDAT2P2_SetParamWithPos(dev, MRS_CODE_OPERATING_STATUS,
@@ -784,7 +757,6 @@ int main(void)
 
         data = ENDAT2P2_GetParamWithPos(dev, MRS_CODE_OPERATING_STATUS,
                                         ENDAT2P2_MEM_WORD_3);
-        PRINTF("function initialization 0x%x\r\n",data);
 
         ENDAT2P2_SetRecoveryTimer(dev, 0);
     }
@@ -813,15 +785,14 @@ int main(void)
                                 ENDAT2P2_MEM_WORD_1);
         PRINTF("ENDAT2P2_GetParamWithPoS: get multiturn: %d\r\n", ret);
 
-
         /* Endat 2.2 */
         if(dev->status_addinfo1 & ENDAT2P2_ADDINFO1_STATUS_POS2_MASK)
-            PRINTF("PosVal2:%lld\r\n", ENDAT2P2_GetPosVal2(dev));
+            PRINTF("PosVal2:%d\r\n", (uint32_t)ENDAT2P2_GetPosVal2(dev));
 
         if(dev->status_addinfo1 & ENDAT2P2_ADDINFO1_STATUS_TEMP1_MASK)
-            PRINTF("Temperature1:%f\r\n", ENDAT2P2_GetTemperature1(dev));
+            PRINTF("Temperature1:%d\r\n", (int)ENDAT2P2_GetTemperature1(dev));
         if(dev->status_addinfo1 & ENDAT2P2_ADDINFO1_STATUS_TEMP1_MASK)
-            PRINTF("Temperature2:%f\r\n", ENDAT2P2_GetTemperature2(dev));
+            PRINTF("Temperature2:%d\r\n", (int)ENDAT2P2_GetTemperature2(dev));
 
         if(dev->status_addinfo2 & ENDAT2P2_ADDINFO2_STATUS_OPTERRSRC_MASK)
             PRINTF("OPT Err SRC:0x%x\r\n", ENDAT2P2_GetOPSERRSRC(dev));
@@ -833,7 +804,7 @@ int main(void)
 
         menu_cmd = 0;
 		SCANF("%d", &menu_cmd);
-
+        PRINTF("%d\r\n", menu_cmd);
         if(menu_cmd >= 1 && menu_cmd <= 14)
         {
             mode_cmd = menu_cmd_to_mode_cmd[menu_cmd];
@@ -868,30 +839,35 @@ int main(void)
 
         if(menu_cmd == 104)
         {
+            PRINTF("Enable interrupt\r\n");
             ENDATDEV_EnableInterrupt(dev);
             continue;
         }
 
         if(menu_cmd == 105)
         {
+            PRINTF("Disable interrupt\r\n");
             ENDATDEV_DisableInterrupt(dev);
             continue;
         }
 
         if(menu_cmd == 200)
         {
+            PRINTF("Software loop to receive position\r\n");
             ENDATDEV_PositionLoop(dev);
             continue;
         }
 
         if(menu_cmd == 201)
         {
+            PRINTF("Timer loop to receive position\r\n");
             ENDATDEV_TimerLoop(dev);
             continue;
         }
 
         if(menu_cmd == 202)
         {
+            PRINTF("Hardware strobe to receive position\r\n");
             ENDATDEV_HardwareStrobeLoop(dev);
             continue;
         }

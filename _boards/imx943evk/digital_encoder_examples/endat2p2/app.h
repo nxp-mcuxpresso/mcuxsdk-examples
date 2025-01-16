@@ -19,14 +19,21 @@
  ******************************************************************************/
 /*${macro:start}*/
 
+#define ENDAT2P2_USE_ENCODER_1
+
+#ifdef ENDAT2P2_USE_ENCODER_1
 #define ENDAT2P2_BASE           ENDAT2P2_1
-
-/* Interrupt number and interrupt handler for the TPM instance used */
 #define ENDAT2P2_IRQn           Reserved163_IRQn
-#define ENDAT2P2_IRQHandler     Reserved163_IRQnHandler
+#define ENDAT2P2_IRQHandler     Reserved163_IRQHandler
+#else
+#define ENDAT2P2_BASE           ENDAT2P2_2
+#define ENDAT2P2_IRQn           Reserved165_IRQn
+#define ENDAT2P2_IRQHandler     Reserved165_IRQHandler
+#endif
 
+#define ENDAT2P2_SYS_CLK_ROOT   hal_clock_endat21
+#define ENDAT2P2_SYS_CLOCK      ENDAT2P2_CLK_100M
 #define ENDAT2P2_FTCLK          2000000 /* 2MHz */
-#define ENDAT2P2_SOURCE_CLOCK   HAL_ClockGetFreq(hal_clock_endat21)
 
 /* The PWM base address */
 #define BOARD_PWM_BASEADDR              PWM1
