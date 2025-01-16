@@ -10,12 +10,12 @@
 #include "fsl_codec_common.h"
 #include "fsl_wm8962.h"
 #include "fsl_codec_adapter.h"
+#include "fsl_sai.h"
 #include "sm_platform.h"
 /*${header:end}*/
 
 /*${variable:start}*/
 wm8962_config_t wm8962Config = {
-    //.i2cConfig = {.codecI2CInstance = BOARD_CODEC_I2C_INSTANCE, .codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ},
     .i2cConfig = {.codecI2CInstance = BOARD_CODEC_I2C_INSTANCE},
     .route =
         {
@@ -29,12 +29,19 @@ wm8962_config_t wm8962Config = {
             .rightHeadphoneMixerSource = kWM8962_OutputMixerDisabled,
             .rightHeadphonePGASource   = kWM8962_OutputPGASourceDAC,
         },
-    .slaveAddress     = WM8962_I2C_ADDR,
-    .bus              = kWM8962_BusI2S,
-    .format           = {.mclk_HZ = 24576000U,
-                         .sampleRate = kWM8962_AudioSampleRate16KHz, .bitWidth = kWM8962_AudioBitWidth16bit},
-    .masterSlave     = false,
+    .slaveAddress = WM8962_I2C_ADDR,
+    .bus          = kWM8962_BusI2S,
+    .format       = {.sampleRate = kWM8962_AudioSampleRate16KHz, .bitWidth = kWM8962_AudioBitWidth16bit},
+    .fllClock =
+        {
+            .fllClockSource        = kWM8962_FLLClkSourceMCLK,
+            .fllReferenceClockFreq = 12288000U,
+            .fllOutputFreq         = 12288000U,
+        },
+    .sysclkSource = kWM8962_SysClkSourceMclk, /* use MCLK pin as sysclk's source */
+    .masterSlave  = false,                    /* sai running as master mode, so codec running as slave mode */
 };
+
 codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfig = &wm8962Config};
 /*${variable:end}*/
 
@@ -42,23 +49,58 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfi
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
+    hal_clk_t hal_audiopll1vcoCLKCfg = {
+        .clk_id = hal_clock_audiopll1ctl,
+        .clk_round_opt = hal_clk_round_auto,
+        .ratel = 3932160000,
+        .rateu = 0,
+    };
+
+    hal_clk_t hal_audiopll1CLKCfg = {
+        .clk_id = hal_clock_audiopll1,
+        .clk_round_opt = hal_clk_round_auto,
+        .ratel = 393216000,
+        .rateu = 0,
+    };
+
+    hal_clk_t hal_pdmClkCfg = {
+        .clk_id = PDM_CLOCK_ROOT,
+        .pclk_id = hal_clock_audiopll1,
+        .div = 2,
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
+    };
+
     hal_clk_t hal_lpi2cCLKCfg = {
         .clk_id = LPI2C_MASTER_CLOCK_ROOT,
         .pclk_id = hal_clock_osc24m,
         .clk_round_opt = hal_clk_round_auto,
         .rate = 24000000UL,
     };
-    hal_clk_t hal_saiCLKCfg = {
+
+/*    hal_clk_t hal_saiCLKCfg = {
         .clk_id = SAI_CLOCK_ROOT,
         .pclk_id = hal_clock_audiopll1, // select audiopll1out source(393216000 Hz)
         .clk_round_opt = hal_clk_round_auto,
         .rate = 24000000UL,
+    };*/
+    hal_clk_t hal_saiCLKCfg = {
+        .clk_id = SAI_CLOCK_ROOT,
+        .pclk_id = hal_clock_audiopll1, // select audiopll1out source(393216000 Hz)
+        .clk_round_opt = hal_clk_round_auto,
+        .div = 32, // output 12288000 Hz
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
     };
-    hal_clk_t hal_pdmClkCfg = {
+
+    /*hal_clk_t hal_pdmClkCfg = {
         .clk_id = PDM_CLOCK_ROOT,
         .pclk_id = hal_clock_audiopll1,
         .clk_round_opt = hal_clk_round_auto,
         .rate = 24000000UL,
+    };*/
+    sai_master_clock_t saiMasterCfg = {
+        .mclkOutputEnable = true,
     };
     /* clang-format on */
 
@@ -68,13 +110,24 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_pdmClkCfg);
+    HAL_ClockSetPllClk(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockSetPllClk(&hal_audiopll1CLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);
+    HAL_ClockSetRootClk(&hal_pdmClkCfg);
+    //HAL_ClockSetRate(&hal_pdmClkCfg);
     HAL_ClockEnable(&hal_pdmClkCfg);
     HAL_ClockSetRate(&hal_lpi2cCLKCfg);
     HAL_ClockEnable(&hal_lpi2cCLKCfg);
-    HAL_ClockSetRate(&hal_saiCLKCfg);
+    //HAL_ClockSetRate(&hal_saiCLKCfg);
+    HAL_ClockSetRootClk(&hal_saiCLKCfg);
     HAL_ClockEnable(&hal_saiCLKCfg);
 
+
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN_PDM_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN_PDM_SEL);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C3_S5_21_ID, MQS_MIC_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C3_S5_21_ID, MQS_MIC_SEL);
     /* Select PDM/SAI signals */
     //pcal6408_handle_t handle;
     //BOARD_InitPCAL6408_I2C4(&handle);
@@ -82,7 +135,14 @@ void BOARD_InitHardware(void)
     //PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL));
     //SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    wm8962Config.i2cConfig.codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ;
+    /* Select i2c channel to access codec */
+    BOARD_MUX_Select(BOARD_PCA9548_I2C3_ID, BOARD_S4_CHAN_IDX);
+    /* select MCLK direction(Enable MCLK clock) */
+    saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */
+    saiMasterCfg.mclkHz          = saiMasterCfg.mclkSourceClkHz; /* setup target clock of MCLK */
+    SAI_SetMasterClockConfig(DEMO_SAI, &saiMasterCfg);
+
+    wm8962Config.i2cConfig.codecI2CSourceClock = DEMO_I2C_CLK_FREQ;
     wm8962Config.format.mclk_HZ                = DEMO_SAI_CLK_FREQ;
 }
 /*${function:end}*/

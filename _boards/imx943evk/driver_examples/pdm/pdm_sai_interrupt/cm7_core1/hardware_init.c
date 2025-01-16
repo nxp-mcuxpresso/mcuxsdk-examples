@@ -49,6 +49,28 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfi
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
+    hal_clk_t hal_audiopll1vcoCLKCfg = {
+        .clk_id = hal_clock_audiopll1ctl,
+        .clk_round_opt = hal_clk_round_auto,
+        .ratel = 3932160000,
+        .rateu = 0,
+    };
+
+    hal_clk_t hal_audiopll1CLKCfg = {
+        .clk_id = hal_clock_audiopll1,
+        .clk_round_opt = hal_clk_round_auto,
+        .ratel = 393216000,
+        .rateu = 0,
+    };
+
+    hal_clk_t hal_pdmClkCfg = {
+        .clk_id = PDM_CLOCK_ROOT,
+        .pclk_id = hal_clock_audiopll1,
+        .div = 2,
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
+    };
+
     hal_clk_t hal_lpi2cCLKCfg = {
         .clk_id = LPI2C_MASTER_CLOCK_ROOT,
         .pclk_id = hal_clock_osc24m,
@@ -56,19 +78,27 @@ void BOARD_InitHardware(void)
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_saiCLKCfg = {
+/*    hal_clk_t hal_saiCLKCfg = {
         .clk_id = SAI_CLOCK_ROOT,
         .pclk_id = hal_clock_audiopll1, // select audiopll1out source(393216000 Hz)
         .clk_round_opt = hal_clk_round_auto,
         .rate = 24000000UL,
+    };*/
+    hal_clk_t hal_saiCLKCfg = {
+        .clk_id = SAI_CLOCK_ROOT,
+        .pclk_id = hal_clock_audiopll1, // select audiopll1out source(393216000 Hz)
+        .clk_round_opt = hal_clk_round_auto,
+        .div = 32, // output 12288000 Hz
+        .enable_clk = true,
+        .clk_round_opt = hal_clk_round_auto,
     };
 
-    hal_clk_t hal_pdmClkCfg = {
+    /*hal_clk_t hal_pdmClkCfg = {
         .clk_id = PDM_CLOCK_ROOT,
         .pclk_id = hal_clock_audiopll1,
         .clk_round_opt = hal_clk_round_auto,
         .rate = 24000000UL,
-    };
+    };*/
     sai_master_clock_t saiMasterCfg = {
         .mclkOutputEnable = true,
     };
@@ -80,13 +110,24 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_pdmClkCfg);
+    HAL_ClockSetPllClk(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockSetPllClk(&hal_audiopll1CLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);
+    HAL_ClockSetRootClk(&hal_pdmClkCfg);
+    //HAL_ClockSetRate(&hal_pdmClkCfg);
     HAL_ClockEnable(&hal_pdmClkCfg);
     HAL_ClockSetRate(&hal_lpi2cCLKCfg);
     HAL_ClockEnable(&hal_lpi2cCLKCfg);
-    HAL_ClockSetRate(&hal_saiCLKCfg);
+    //HAL_ClockSetRate(&hal_saiCLKCfg);
+    HAL_ClockSetRootClk(&hal_saiCLKCfg);
     HAL_ClockEnable(&hal_saiCLKCfg);
 
+
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN_PDM_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN_PDM_SEL);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C3_S5_21_ID, MQS_MIC_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C3_S5_21_ID, MQS_MIC_SEL);
     /* Select PDM/SAI signals */
     //pcal6408_handle_t handle;
     //BOARD_InitPCAL6408_I2C4(&handle);
@@ -94,6 +135,8 @@ void BOARD_InitHardware(void)
     //PCAL6408_ClearPins(&handle, (1 << BOARD_PCAL6408_SLOT_SAI3_SEL));
     //SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
+    /* Select i2c channel to access codec */
+    BOARD_MUX_Select(BOARD_PCA9548_I2C3_ID, BOARD_S4_CHAN_IDX);
     /* select MCLK direction(Enable MCLK clock) */
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */
     saiMasterCfg.mclkHz          = saiMasterCfg.mclkSourceClkHz; /* setup target clock of MCLK */
