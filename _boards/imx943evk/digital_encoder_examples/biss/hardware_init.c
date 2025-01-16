@@ -19,71 +19,75 @@
 /*${function:start}*/
 void PWM_Trigger_Init(PWM_Type *PWMBase)
 {
-	uint32_t pwmSourceClockInHz = PWM_SRC_CLK_FREQ / (1 << DEMO_PWM_CLOCK_DEVIDER);
-	uint32_t temp = pwmSourceClockInHz / APP_DEFAULT_PWM_FREQUENCE;
-	unsigned short int ui16M1PwmModulo = temp & 0xFFFF;
-	unsigned short int ui16EnociderTransactionTime = TRANSACTION_TIME_US * pwmSourceClockInHz / 1000000U;
-	/* Full cycle reload */
-	PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK;
+    uint32_t pwmSourceClockInHz = PWM_SRC_CLK_FREQ / (1 << DEMO_PWM_CLOCK_DEVIDER);
+    uint32_t temp = pwmSourceClockInHz / APP_DEFAULT_PWM_FREQUENCE;
+    unsigned short int ui16M1PwmModulo = temp & 0xFFFF;
+    unsigned short int ui16EnociderTransactionTime = TRANSACTION_TIME_US * pwmSourceClockInHz / 1000000U;
+    /* Full cycle reload */
+    PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK;
 
-	PWMBase->SM[0].CTRL |= PWM_CTRL_PRSC(DEMO_PWM_CLOCK_DEVIDER);
+    PWMBase->SM[0].CTRL |= PWM_CTRL_PRSC(DEMO_PWM_CLOCK_DEVIDER);
 
     /* Value register initial values, duty cycle 50% */
     PWMBase->SM[0].INIT = (uint16_t)(-(ui16M1PwmModulo / 2));
-	PWMBase->SM[0].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
+    PWMBase->SM[0].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
 
-	PWMBase->SM[1].VAL1 = ((ui16M1PwmModulo / 2) - 1);
+    PWMBase->SM[1].VAL1 = ((ui16M1PwmModulo / 2) - 1);
 
 
-	/* Trigger for Encoder synchronization */
-	PWMBase->SM[0].VAL5 = -(ui16M1PwmModulo / 2) + 10;
+    /* Trigger for Encoder synchronization */
+    PWMBase->SM[0].VAL5 = -(ui16M1PwmModulo / 2) + 10;
 
-	/* Trigger for interrupt synchronization */
-	PWMBase->SM[0].VAL4 = ((ui16M1PwmModulo / 2 - 1) - ui16EnociderTransactionTime );
+    /* Trigger for interrupt synchronization */
+    PWMBase->SM[0].VAL4 = ((ui16M1PwmModulo / 2 - 1) - ui16EnociderTransactionTime );
 
-	/* PWM0 ~ PWM3 module 0 trigger on VAL4 enabled for ADC synchronization */
-	PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 4);
-	PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 5);
+    /* PWM0 ~ PWM3 module 0 trigger on VAL4 enabled for ADC synchronization */
+    PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 4);
+    PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 5);
 
-	/* Master reload is generated every one opportunity */
-	PWMBase->SM[0].CTRL = (PWMBase->SM[0].CTRL & ~PWM_CTRL_LDFQ_MASK) | PWM_CTRL_LDFQ(ENCODER_ACCESS_FREQ_VS_PWM_FRE0 - 1);
+    /* Master reload is generated every one opportunity */
+    PWMBase->SM[0].CTRL = (PWMBase->SM[0].CTRL & ~PWM_CTRL_LDFQ_MASK) | PWM_CTRL_LDFQ(ENCODER_ACCESS_FREQ_VS_PWM_FRE0 - 1);
 
-	/* Start PWM trigger*/
-	PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0x1);
-	PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0x1);
-	PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x1);
+    /* Start PWM trigger*/
+    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0x1);
+    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0x1);
+    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x1);
 }
 
 void BOARD_InitHardware(void)
 {
     /* BiSS 20MHz */
     hal_clk_t hal_bissClk = {
-		.clk_id = hal_clock_biss,
-		.pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
-		.div = 20,
-		.enable_clk = true,
-		.clk_round_opt = hal_clk_round_auto,
-	};
+        .clk_id = BISS_SYS_CLK_ROOT,
+        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
+        .rate = BISS_SYS_CLK_FREQ,
+        .clk_round_opt = hal_clk_round_auto,
+    };
 
     BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
 
     SM_Platform_Init();
+    BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRootClk(&hal_bissClk);
+    HAL_ClockSetParent(&hal_bissClk);
+    HAL_ClockSetRate(&hal_bissClk);
+    HAL_ClockEnable(&hal_bissClk);
 
+    // encoder 1 select BiSS
     blk_ctrl->DIAG_ENCODER_MUX_SEL =
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_NUX_BISS) |
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_NUX_BISS);
+        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_NUX_BISS);
+
+/*
+    blk_ctrl->BISS1_GETSENS_PULSE_STRETCHER_CTL =
+        BLK_CTRL_WAKEUPMIX_BISS1_GETSENS_PULSE_STRETCHER_CTL_value(3) |
+        BLK_CTRL_WAKEUPMIX_BISS1_GETSENS_PULSE_STRETCHER_CTL_stretcher_en(1);
+*/
 
     /* Select Motor controller 1 */
-    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
-    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
-
-    /* Select Motor controller 2 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
     SDK_DelayAtLeastUs(100U, SystemCoreClock);

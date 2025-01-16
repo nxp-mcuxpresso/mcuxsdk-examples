@@ -58,6 +58,12 @@ void BOARD_InitEncoder2Pins(void);
  */
 void BOARD_InitI2C6Pins(void);
 
+/*!
+ * @brief Configures pin routing for PWM1.
+ *
+ */
+void BOARD_InitIPWM1(void);
+
 #if defined(__cplusplus)
 }
 #endif
