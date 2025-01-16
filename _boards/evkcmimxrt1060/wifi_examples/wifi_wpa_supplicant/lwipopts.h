@@ -528,7 +528,12 @@ u32_t lwip_rand(void);
 
 #ifndef LWIP_HOOK_FILENAME
 #define LWIP_HOOK_FILENAME                               "lwiphooks.h"
+#endif
+
+#if CONFIG_CLOUD_KEEP_ALIVE
 #define LWIP_HOOK_TCP_OUT_ADD_TCPOPTS(p, hdr, pcb, opts) lwip_hook_tcp_out_add_tcpopts(p, hdr, pcb, opts)
 #endif
+
+#define LWIP_HOOK_IP4_ROUTE_SRC(src, dest) lwip_hook_ip4_route_src(src, dest)
 
 #endif /* __LWIPOPTS_H__ */
