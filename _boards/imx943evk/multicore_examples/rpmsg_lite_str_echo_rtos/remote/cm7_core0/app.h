@@ -15,6 +15,8 @@
 #define RPMSG_LITE_NS_ANNOUNCE_STRING "rpmsg-virtual-tty-channel"
 #define RPMSG_LITE_MASTER_IS_LINUX
 
+#define LOCAL_EPT_ADDR 70
+
 #define APP_DEBUG_UART_BAUDRATE (115200U) /* Debug console baud rate. */
 /*${macro:end}*/
 
