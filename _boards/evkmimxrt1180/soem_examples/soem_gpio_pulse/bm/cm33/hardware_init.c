@@ -112,7 +112,7 @@ status_t NETC_EP_PHY_Init(void)
     return result;
 }
 
-void BOARD_InitHardware(void)
+status_t BOARD_InitHardware(void)
 {
     bool link;
     status_t result = kStatus_Success;
