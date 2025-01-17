@@ -441,7 +441,7 @@ static uint32_t APP_SRTM_ConfAudioDevice(srtm_audio_format_type_t format, uint32
 
 static uint32_t APP_SRTM_ConfPdmDevice(srtm_audio_format_type_t format, uint32_t srate)
 {
-    return CLOCK_GetIpFreq(kCLOCK_Root_Pdm);
+    return HAL_ClockGetIpFreq(hal_clock_pdm);
 }
 
 static void APP_SRTM_InitAudioService(void)
