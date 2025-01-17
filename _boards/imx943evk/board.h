@@ -18,8 +18,8 @@
 /*! @brief The board name */
 #define BOARD_NAME "IMX943-EVK"
 
-#define BOARD_ENABLE_ELE 0
-//#define BOARD_ENABLE_ELE 1
+//#define BOARD_ENABLE_ELE 0
+#define BOARD_ENABLE_ELE 1
 
 /* For cmsis demos */
 #define BOARD_Lpuart1GetFreq LPUART1_GetFreq
