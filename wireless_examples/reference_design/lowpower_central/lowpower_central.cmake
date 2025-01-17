@@ -10,8 +10,7 @@ mcux_add_source(
     lowpower_central.h
     gatt_db.h
     gatt_uuid128.h
-    ../readme.md
-    ../pics/fig3.PNG
+    readme.md
 )
 
 mcux_add_linker_symbol(SYMBOLS "gUseNVMLink_d=1" )

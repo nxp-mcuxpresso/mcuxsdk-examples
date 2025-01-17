@@ -8,4 +8,4 @@ wireless_examples
 
 
    bluetooth/index.rst
-   reference_design/readme.md
+   reference_design/index.rst
