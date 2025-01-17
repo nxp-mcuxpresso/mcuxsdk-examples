@@ -15,6 +15,10 @@ hiperface:
     imx943evk@cm7_core1:
     - +armgcc@debug
     - +armgcc@release
+    - +iar@release
+    - +iar@debug
     imx943evk@cm33_core1:
     - +armgcc@debug
     - +armgcc@release
+    - +iar@release
+    - +iar@debug

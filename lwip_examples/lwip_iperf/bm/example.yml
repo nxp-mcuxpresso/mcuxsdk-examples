@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
 lwip_iperf_bm:
   section-type: application
   contents:
@@ -104,3 +103,18 @@ lwip_iperf_bm:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     rdrw612bga: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

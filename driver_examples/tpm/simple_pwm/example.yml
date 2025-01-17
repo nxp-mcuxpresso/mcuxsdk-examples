@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 tpm_simple_pwm:
   section-type: application
   contents:
@@ -43,3 +42,18 @@ tpm_simple_pwm:
     mcimx93autoevk: []
     mcimx93evk: []
     mcimx93qsb: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

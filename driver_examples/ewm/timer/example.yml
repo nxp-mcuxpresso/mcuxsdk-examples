@@ -6,14 +6,27 @@ ewm_timer:
     document:
       name: ewm_timer${core_id_suffix_name}
       category: driver_examples/ewm_timer
-      brief: The EWM TIMER Example project is to demonstrate usage of the KSDK EWM driver.
-        In the example, EWM counter is continuously refreshed until timer is timeout.
-        Once the timer is timeut, EWM counter will expire and interrupt will be generated.
+      brief: The EWM TIMER Example project is to demonstrate usage of the KSDK EWM
+        driver. In the example, EWM counter is continuously refreshed until timer
+        is timeout. Once the timer is timeut, EWM counter will expire and interrupt
+        will be generated.
       example_readme:
       - examples/driver_examples/ewm/timer/readme.md
       - ${board_root}/${board}/driver_examples/ewm/timer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    imx943evk@cm33_core1: []
-    imx943evk@cm7_core0: []
-    imx943evk@cm7_core1: []
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

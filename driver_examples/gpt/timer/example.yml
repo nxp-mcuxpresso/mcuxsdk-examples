@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 gpt_timer:
   section-type: application
   contents:
@@ -36,3 +35,18 @@ gpt_timer:
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

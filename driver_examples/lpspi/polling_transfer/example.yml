@@ -6,16 +6,27 @@ lpspi_interrupt:
     document:
       name: lpspi_interrupt${core_id_suffix_name}
       category: driver_examples/lpspi
-      brief: The lpspi_polling_transfer example shows how to use LPSPI driver
-        in polling way:In this example , one lpspi instance used as LPSPI master
-        and another lpspi instance used as LPSPI slave .1. LPSPI master send/received
-        data to/from LPSPI slave . (LPSPI Slave interrupt to receive/send
-        the data)
+      brief: The lpspi_polling_transfer example shows how to use LPSPI driver in polling
+        way:In this example , one lpspi instance used as LPSPI master and another
+        lpspi instance used as LPSPI slave .1. LPSPI master send/received data to/from
+        LPSPI slave . (LPSPI Slave interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/lpspi/polling_transfer/readme.md
       - ${board_root}/${board}/driver_examples/lpspi/polling_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    imx943evk@cm7_core1: []
-    imx943evk@cm7_core0: []
-    imx943evk@cm33_core1: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

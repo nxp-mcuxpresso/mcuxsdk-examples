@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
 lwip_httpsrv_freertos:
   section-type: application
   contents:
@@ -257,3 +256,18 @@ lwip_httpsrv_freertos:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

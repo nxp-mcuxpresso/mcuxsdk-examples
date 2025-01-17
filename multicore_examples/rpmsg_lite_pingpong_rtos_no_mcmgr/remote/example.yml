@@ -1,7 +1,3 @@
-#
-# Copyright 2024 NXP
-#
-# SPDX-License-Identifier: BSD-3-Clause
 rpmsg_lite_pingpong_rtos_remote_core:
   section-type: application
   contents:

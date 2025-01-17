@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 edma4_memory_to_memory:
   section-type: application
   contents:
@@ -24,3 +23,18 @@ edma4_memory_to_memory:
     mcimx93qsb: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 adc_polling:
   section-type: application
   contents:
@@ -25,3 +24,18 @@ adc_polling:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

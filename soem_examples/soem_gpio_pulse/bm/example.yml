@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
 soem_gpio_pulse_bm:
   section-type: application
   contents:
@@ -112,3 +111,8 @@ soem_gpio_pulse_bm:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
