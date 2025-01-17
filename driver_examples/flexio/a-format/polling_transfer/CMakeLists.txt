@@ -18,7 +18,8 @@ mcux_add_include(
 
 mcux_add_macro(
     CC "-DPRINTF_ADVANCED_ENABLE=1\
-       -DPRINTF_FLOAT_ENABLE=1"
+       -DPRINTF_FLOAT_ENABLE=1\
+       -DA_FORMAT_RETRY_TIMES=0x6000"
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/flexio/a-format/polling_transfer/reconfig.cmake OPTIONAL)

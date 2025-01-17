@@ -246,6 +246,20 @@ int main(void)
         PRINTF("failed\r\n");
     }
 
+    PRINTF("\r\n******************** Multiple Transmission mode (The board can access multiple encoders on the bus simultaneously) ********************\r\n");
+    PRINTF("****************\r\n* Test case 16 *\r\n****************\r\n");
+    PRINTF("> Get the single-turn data and the multi-turn data of the encoder ==> \r\n");
+    status = A_Format_ABS_Readout_Multi_Single(&encoder, ENCODER_ADDRESS_MT(ENC_ADDR), &enc_abs[0]);
+    for (uint8_t index = 0; index < ENC_ADDR; index++)
+    {
+        if (enc_abs[index].es != A_Format_ES_FrameErr) {
+            A_Format_PrintfES(PRINTF, enc_abs[index].es);
+            PRINTF("\t[Encoder %d] Multi-turn data: %d, single-turn data: %d\r\n", enc_abs[index].encID, enc_abs[index].multiTurn, enc_abs[index].singleTurn);
+        } else {
+            PRINTF("\t[Encoder -] failed\r\n");
+        }
+    }
+
     PRINTF("\r\n******************** Running the loop test ********************\r\n");
     abs_save  = enc_abs[0];
     temp_save = temp;
