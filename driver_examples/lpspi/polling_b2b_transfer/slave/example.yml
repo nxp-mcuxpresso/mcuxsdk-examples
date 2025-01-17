@@ -63,8 +63,4 @@ lpspi_polling_b2b_transfer_slave:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
-    imx943evk@cm33_core1:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@release
-    - +iar@debug
+
