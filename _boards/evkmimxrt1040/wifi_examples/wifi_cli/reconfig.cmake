@@ -19,7 +19,6 @@ mcux_add_source(
             ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
@@ -27,7 +26,6 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/wifi_examples/wifi_cli
-             ${board_root}/${board}/wifi_examples/common/app_config
 )
 
 mcux_project_remove_include(

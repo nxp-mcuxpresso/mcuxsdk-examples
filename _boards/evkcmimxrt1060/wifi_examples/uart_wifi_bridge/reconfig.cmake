@@ -25,7 +25,6 @@ mcux_add_source(
             ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
@@ -33,7 +32,6 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware
              middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config
-             ${board_root}/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config
              middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config
 )

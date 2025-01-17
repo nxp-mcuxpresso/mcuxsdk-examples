@@ -19,7 +19,6 @@ mcux_add_source(
             ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
             ${board_root}/${board}/FlashIMXRT600_EVK_FLEXSPI_B_QSPI.board
 )
@@ -28,7 +27,6 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              middleware/wifi_nxp/example/wifi_cli/wifi_config
-             ${board_root}/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/wifi_cli/lwip_config
              middleware/wifi_nxp/example/wifi_cli/freertos_config
 )

@@ -21,7 +21,6 @@ mcux_add_source(
             ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
@@ -31,7 +30,6 @@ mcux_add_include(
              ${board_root}/${board}/wifi_examples/wifi_cli
              middleware/wifi_nxp/example/wifi_cli/wifi_config
              ${board_root}/${board}/wifi_examples/common/${core_id}
-             ${board_root}/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/wifi_cli/lwip_config
              middleware/wifi_nxp/example/wifi_cli/freertos_config
 )
