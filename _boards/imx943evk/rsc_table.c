@@ -17,7 +17,7 @@
 
 #if defined(__ICCARM__)
 extern void __RscTblStart;
-extern void __RscTblInDramStart;
+extern void __RscTblShareWithMpuStart;
 #elif defined(__GNUC__)
 extern const void __RscTblStart;
 extern const void __RscTblShareWithMpuStart;
