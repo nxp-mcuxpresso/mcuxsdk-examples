@@ -56,7 +56,7 @@ struct netc_ep_if_port if_port;
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
-void BOARD_InitHardware(void);
+status_t BOARD_InitHardware(void);
 status_t NETC_EP_MDIO_Init(void);
 status_t NETC_EP_PHY_Init(void);
 /*${prototype:end}*/
