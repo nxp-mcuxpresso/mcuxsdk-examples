@@ -1,0 +1,33 @@
+t-format_polling_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/t-format/polling_transfer
+    project-root-path: boards/${board}/digital_encoder_examples/t-format/polling_transfer/${multicore_foldername}
+    document:
+      name: t-format_polling_transfer${core_id_suffix_name}
+      category: digital_encoder_examples
+      brief: The t-format_polling example shows how to use flexio T-format driver
+        in polling way:In this example, a flexio simulated T-format connect to the encoder
+        through RS-485, the board will send requests to and receive responses from the encoder.
+      example_readme:
+      - examples/digital_encoder_examples/t-format/polling_transfer/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/t-format/polling_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33: []
+    evkmimxrt1180@cm7: []
+    imx943evk@cm7_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
+    imx943evk@cm7_core0:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
+    imx943evk@cm33_core1:
+    - +iar@debug
+    - +armgcc@debug
+    - +iar@release
+    - +armgcc@release
