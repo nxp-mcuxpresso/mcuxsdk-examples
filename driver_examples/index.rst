@@ -284,6 +284,7 @@ driver_examples
    spifi/index.rst
    src/index.rst
    ssarc/index.rst
+   stm/readme.md
    syscon_clockout/readme.md
    sysctr/readme.md
    sysmpu/readme.md

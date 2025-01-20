@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+stm_match_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/stm
+    project-root-path: boards/${board}/driver_examples/stm/${multicore_foldername}
+    document:
+      name: stm_match_interrupt{core_id_suffix_name}
+      category: driver_examples/stm
+      brief: The stm_match_interrupt example is to demonstrate usage of the SDK STM driver with interrupt callback functions.
+             When STM timer count matches the channel value, the interrupt callback functions for this channel will be called.
+      example_readme:
+      - examples/driver_examples/stm/readme.md
+      - ${board_root}/${board}/driver_examples/stm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
