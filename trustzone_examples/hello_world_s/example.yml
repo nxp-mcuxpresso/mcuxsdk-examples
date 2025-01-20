@@ -60,6 +60,7 @@ hello_world_s:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    imx943evk@cm33_core1: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
