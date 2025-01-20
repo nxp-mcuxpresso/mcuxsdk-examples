@@ -59,6 +59,8 @@ MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
 //#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
 
 /*
+ * Maximum size of IPED region
+ *
  * The PRINCE variant used in RW61x is based on AES in Galois/Counter Mode (GCM)
  * Algortihm of encryption unit consumes 1.25 (5/4) time of physical memory.
  * Also we need to take into account one sector for mcuboot trailer.
@@ -70,7 +72,7 @@ MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
  * 3472kB of plaintext generates 868kB of IPED tags. Both values suits
  * the boundaries of pages, sectors and the boundaries of encryption alignment
  */
-#define CONFIG_ENCRYPT_XIP_IPED_REGION_SIZE  0x364000
+#define CONFIG_ENCRYPT_XIP_IPED_REGION_MAX_SIZE  0x364000
 
 /*
  * Size of write buffer used for overwrite-only mode has to be adjusted if IPED
