@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+rtc_jdp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/rtc_jdp
+    project-root-path: boards/${board}/driver_examples/rtc/${multicore_foldername}
+    document:
+      name: rtc_jdp${core_id_suffix_name}
+      category: driver_examples/rtc
+      brief: The RTC example is a simple demonstration program of the SDK RTC driver. The RTC interrupt is enabled in period 1000ms, the API(Autonomous Periodic Interrupt) interrupt is enabled in 500ms. 
+            A callback function sample is provided which will log it is a RTC or API interrupt and toggle the corresponding LED if existed in the board.
+      example_readme:
+      - examples/driver_examples/rtc_jdp/readme.md
+      - ${board_root}/${board}/driver_examples/rtc_jdp/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md

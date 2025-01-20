@@ -257,6 +257,7 @@ driver_examples
    romapi/index.rst
    rtc/readme.md
    rtc_1/readme.md
+   rtc_jdp/readme.md
    rtwdog/readme.md
    s3mu/readme.md
    sai/index.rst
