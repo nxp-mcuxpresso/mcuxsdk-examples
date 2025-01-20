@@ -203,8 +203,8 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
 
         if (kAPP_WakeupSourceLptmr == s_wakeupSource)
         {
-            /* s_wakeupTimeOut * 1000: convert second to microsecond */
-            HAL_TimerUpdateTimeout((hal_timer_handle_t)halWakupTimerHandle, s_wakeupTimeout * 1000U);
+            /* s_wakeupTimeOut * 1000 * 1000: convert second to microsecond */
+            HAL_TimerUpdateTimeout((hal_timer_handle_t)halWakupTimerHandle, s_wakeupTimeout * 1000U * 1000U);
             HAL_TimerEnable((hal_timer_handle_t)halWakupTimerHandle);
             /* Ensure not to be woken up by sm messages */
 	    DisableIRQ(SM_PLATFORM_MU_IRQ);
