@@ -19,7 +19,7 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitPins();
-    BOARD_BootClockRUN();
+    BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
     /* Configure core1 secure privileged access to GPIOD peripheral

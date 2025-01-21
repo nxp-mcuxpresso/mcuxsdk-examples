@@ -22,6 +22,7 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_Gpio0);
     CLOCK_EnableClock(kCLOCK_Gpio1);
     BOARD_InitBootPins();
+    BOARD_InitBootClocks();
 }
 
 /*!

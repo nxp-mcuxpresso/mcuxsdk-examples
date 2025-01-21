@@ -17,6 +17,7 @@ void BOARD_InitHardware(void)
     /* enable clock for GPIO */
     CLOCK_EnableClock(kCLOCK_Gpio0);
     BOARD_InitBootPins();
+    SystemCoreClock = CLOCK_GetCoreSysClkFreq();
 }
 
 /*!

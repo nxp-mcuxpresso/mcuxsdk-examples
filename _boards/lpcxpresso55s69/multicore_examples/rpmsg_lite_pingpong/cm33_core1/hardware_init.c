@@ -19,6 +19,7 @@ void BOARD_InitHardware(void)
     /* set BOD VBAT level to 1.65V */
     POWER_SetBodVbatLevel(kPOWER_BodVbatLevel1650mv, kPOWER_BodHystLevel50mv, false);
     BOARD_InitBootPins();
+    BOARD_InitBootClocks();
 }
 
 /*!
