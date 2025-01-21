@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,14 +11,14 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v14.0
+product: Peripherals v15.0
 processor: MCXA276
 package_id: MCXA276VLQ
 mcu_data: ksdk2_0
-processor_version: 0.15.2
+processor_version: 0.2412.80
 functionalGroups:
 - name: BOARD_InitPeripherals
-  UUID: 9c69b39f-9abc-4e8a-8540-8e1714f5fb00
+  UUID: 536ba9b7-eeb9-4c4f-8c37-857eaf4a1ba6
   called_from_default_init: true
   selectedCore: cm33_core0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
@@ -26,7 +26,7 @@ functionalGroups:
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 component:
 - type: 'system'
-- type_id: 'system_54b53072540eeeb8f8e9343e71f28176'
+- type_id: 'system'
 - global_system_definitions:
   - user_definitions: ''
   - user_includes: ''
@@ -36,7 +36,7 @@ component:
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 component:
 - type: 'uart_cmsis_common'
-- type_id: 'uart_cmsis_common_9cb8e302497aa696fdbb5a4fd622c2a8'
+- type_id: 'uart_cmsis_common'
 - global_USART_CMSIS_common:
   - quick_selection: 'default'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
@@ -44,7 +44,7 @@ component:
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 component:
 - type: 'gpio_adapter_common'
-- type_id: 'gpio_adapter_common_57579b9ac814fe26bf95df0a384c36b6'
+- type_id: 'gpio_adapter_common'
 - global_gpio_adapter_common:
   - quick_selection: 'default'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
@@ -68,7 +68,7 @@ instance:
 - type: 'nvic'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'nvic_57b5eef3774cc60acaede6f5b8bddc67'
+- type_id: 'nvic'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'NVIC'
 - config_sets:
@@ -93,7 +93,7 @@ instance:
 - type: 'systick'
 - mode: 'GENERAL'
 - custom_name_enabled: 'false'
-- type_id: 'systick_835fd8dd4fe722f5394f39cf587e71ab'
+- type_id: 'systick'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'SysTick'
 - config_sets:
@@ -111,7 +111,9 @@ instance:
 
 static void SysTick_init(void) {
   /* Initialize the systick module. */
-  SysTick_Config(SYSTICK_TICKS);
+  SysTick->LOAD = (uint32_t)(SYSTICK_TICKS - 1UL);
+  SysTick->VAL = 0UL;
+  SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
 }
 
 /***********************************************************************************************************************
