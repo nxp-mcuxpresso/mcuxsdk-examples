@@ -41,14 +41,14 @@ MEMORY
   m_text                (RX)  : ORIGIN = 0x60002400, LENGTH = 0x007FDC00
   m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00020000
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00020000
-  m_data2               (RW)  : ORIGIN = 0x20200000, LENGTH = 0x000C0000
+  m_data2               (RW)  : ORIGIN = 0x20200000, LENGTH = 0x00080000
 }
 
 /* Define output sections */
 SECTIONS
 {
   __NCACHE_REGION_START = ORIGIN(m_data2);
-  __NCACHE_REGION_SIZE  = 0x000C0000;
+  __NCACHE_REGION_SIZE  = 0x00080000;
 
   .flash_config :
   {
