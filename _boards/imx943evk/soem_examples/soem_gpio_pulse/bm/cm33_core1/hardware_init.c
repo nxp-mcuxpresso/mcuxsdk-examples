@@ -14,6 +14,8 @@
 /*${header:end}*/
 
 /*${variable:start}*/
+struct netc_ep_if_port if_port;
+
 /* PHY operation. */
 static netc_mdio_handle_t s_emdio_handle;
 /*${variable:end}*/

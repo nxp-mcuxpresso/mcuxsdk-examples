@@ -8,6 +8,8 @@
 
 void BOARD_InitI2C6Pins(void);
 void BOARD_InitI2C3Pins(void);
+void BOARD_InitPins(void);
+void BOARD_InitGPIOPins(void);
 /* FUNCTION ************************************************************************************************************
  *
  * Function Name : BOARD_InitBootPins

@@ -33,8 +33,6 @@
 
 #define EP0_PHY_ADDR       0x6U
 
-struct netc_ep_if_port if_port;
-
 #define BOARD_LED_RGPIO          GPIO2
 #define BOARD_LED_RGPIO_PIN      31U
 

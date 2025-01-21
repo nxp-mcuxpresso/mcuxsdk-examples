@@ -17,8 +17,6 @@
 #include "netc_ep/soem_netc_ep.h"
 /*${header:end}*/
 
-struct netc_ep_if_port if_port;
-
 #define MSGINTR       MSGINTR1
 
 #define KNETC_EP_CONFIG_SI    kNETC_ENETC0PSI0

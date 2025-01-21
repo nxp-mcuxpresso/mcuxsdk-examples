@@ -11,6 +11,8 @@
 #include "app.h"
 /*${header:end}*/
 
+struct netc_ep_if_port if_port;
+
 status_t NETC_EP_MDIO_Init(void)
 {
     status_t result = kStatus_Success;

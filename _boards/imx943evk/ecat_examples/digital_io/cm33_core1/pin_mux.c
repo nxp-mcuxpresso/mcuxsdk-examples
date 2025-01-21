@@ -24,29 +24,6 @@ processor_version: 0.15.9
 // #include "fsl_iomuxc.h"
 #include "pin_mux.h"
 
-/* FUNCTION ************************************************************************************************************
- * 
- * Function Name : BOARD_InitBootPins
- * Description   : Calls initialization functions.
- * 
- * END ****************************************************************************************************************/
-void BOARD_InitBootPins(void) 
-{
-    BOARD_InitDebugConsolePins();
-	BOARD_InitEcatLinkPins();
-#ifdef ECAT_RMII_PORT
-	BOARD_InitEcatPortRmiiPins();
-#else
-	BOARD_InitEcatPortMiiPins();
-#endif
-	BOARD_InitEcatI2CPins();
-	BOARD_InitEcatMDIOPins();
-    BOARD_InitEcatCLKPins();
-    BOARD_InitEcatResetPins();
-    BOARD_InitI2C6Pins();
-    //BOARD_InitGPIOPins();	
-}
-
 void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
@@ -184,6 +161,29 @@ void BOARD_InitEcatPortMiiPins(void)
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH0_RX_DV__ECAT_PT0_RX_DV, 0);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH0_RX_ER__ECAT_PT0_RX_ER, 0);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ETH0_RX_CLK__ECAT_PT0_RX_CLK,0);
+}
+
+/* FUNCTION ************************************************************************************************************
+ * 
+ * Function Name : BOARD_InitBootPins
+ * Description   : Calls initialization functions.
+ * 
+ * END ****************************************************************************************************************/
+void BOARD_InitBootPins(void) 
+{
+    BOARD_InitDebugConsolePins();
+	BOARD_InitEcatLinkPins();
+#ifdef ECAT_RMII_PORT
+	BOARD_InitEcatPortRmiiPins();
+#else
+	BOARD_InitEcatPortMiiPins();
+#endif
+	BOARD_InitEcatI2CPins();
+	BOARD_InitEcatMDIOPins();
+    BOARD_InitEcatCLKPins();
+    BOARD_InitEcatResetPins();
+    BOARD_InitI2C6Pins();
+    BOARD_InitGPIOPins();	
 }
 
 #endif
