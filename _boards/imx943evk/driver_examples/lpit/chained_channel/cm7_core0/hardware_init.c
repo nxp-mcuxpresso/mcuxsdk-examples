@@ -17,9 +17,9 @@ void BOARD_InitHardware(void)
 
     hal_clk_t hal_lpit_clk = {
         .clk_id = LPIT_MASTER_CLOCK_ROOT,
-	.pclk_id = hal_clock_osc24m,
+	.pclk_id = hal_clock_syspll1dfs1div2,
         .clk_round_opt = hal_clk_round_auto,
-        .rate = 24000000UL,
+        .rate = 133333333UL,
     };
 
     /* clang-format on */
