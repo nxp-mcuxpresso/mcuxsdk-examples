@@ -16,7 +16,6 @@ mcux_add_source(
             middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
             ${board_root}/${board}/wifi_examples/common/./app.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
@@ -31,7 +30,6 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/wifi_examples/common
              middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config
              middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware
-             ${board_root}/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config
              middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config
 )

@@ -18,7 +18,6 @@ mcux_add_source(
             middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
             ${board_root}/${board}/wifi_examples/common/./app.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
@@ -33,7 +32,6 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/wifi_examples/common/lpm/
              ${board_root}/${board}/wifi_examples/common
              middleware/wifi_nxp/example/wifi_cli/wifi_config
-             ${board_root}/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/wifi_cli/lwip_config
              middleware/wifi_nxp/example/wifi_cli/freertos_config
 )

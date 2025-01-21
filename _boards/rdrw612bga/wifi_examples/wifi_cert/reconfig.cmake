@@ -13,7 +13,6 @@ mcux_add_source(
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
             ${board_root}/${board}/wifi_examples/common/./app.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
@@ -27,7 +26,6 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              middleware/wifi_nxp/example/wifi_cert/wifi_config
-             ${board_root}/${board}/wifi_examples/common/app_config
              middleware/wifi_nxp/example/wifi_cert/lwip_config
              middleware/wifi_nxp/example/wifi_cert/freertos_config
 )
