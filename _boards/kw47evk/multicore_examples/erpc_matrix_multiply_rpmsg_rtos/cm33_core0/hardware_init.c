@@ -17,7 +17,7 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitPins();
-    BOARD_BootClockRUN();
+    BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 }
 
