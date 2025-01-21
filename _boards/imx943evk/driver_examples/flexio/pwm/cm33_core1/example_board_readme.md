@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect J27-3 to Oscilloscope or Logic Analyzer.
+Connect J44-10 to Oscilloscope or Logic Analyzer.
 
 #### Please note this application can't support running with Linux BSP! ####
 

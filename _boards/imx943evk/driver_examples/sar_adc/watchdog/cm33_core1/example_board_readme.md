@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Use the jumper to connect J20 3-4, press the keyboard three times, and then connect J20 1-4
+Set 0~1.8V voltage input to J9-5 by using DC power supply, press the keyboard three times and then connect jumper to J9 5-6.
 
 #### Please note this application can't support running with Linux BSP! ####
 
@@ -32,9 +32,9 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC watchdog example.
  Please press any key to get the conversion result.
- The channel 1 ADC conversion value is 3664.
- The channel 1 ADC conversion value is 3664.
- The channel 1 ADC conversion value is 3666.
- The channel 1 ADC conversion value is 4070.
+ The channel 4 ADC conversion value is 3909.
+ The channel 4 ADC conversion value is 3912.
+ The channel 4 ADC conversion value is 3923.
+ The channel 4 ADC conversion value is 0.
  Current ADC value is higher than the high threshold.
 ~~~~~~~~~~~~~~~~~~~~~

@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ==============
-- Connect J47-6 and J37(GND) to Oscilloscope
+- Connect J47-6 and J47-14(GND) to Oscilloscope
 
 Prepare the Demo
 ===============

@@ -8,7 +8,10 @@ Hardware requirements
 
 Board settings
 ============
-Use the jumper to connect the J20 1-2, 3-4, 5-6
+Set 0~1.8V voltage input to below ADC channels by using DC power supply
+ADC channel 4 --- J9-2
+ADC channel 5 --- J9-5
+ADC channel 6 --- J9-8
 
 #### Please note this application can't support running with Linux BSP! ####
 
@@ -32,15 +35,15 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC polling example.
  Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4084.
- The channel 1 ADC conversion data is 3740.
- The channel 2 ADC conversion data is 2049.
+ The channel 4 ADC conversion data is 4084.
+ The channel 5 ADC conversion data is 3740.
+ The channel 6 ADC conversion data is 2049.
  Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4085.
- The channel 1 ADC conversion data is 3741.
- The channel 2 ADC conversion data is 2049.
+ The channel 4 ADC conversion data is 4085.
+ The channel 5 ADC conversion data is 3741.
+ The channel 6 ADC conversion data is 2049.
  Please press any key to get the conversion result.
- The channel 0 ADC conversion data is 4084.
- The channel 1 ADC conversion data is 3739.
- The channel 2 ADC conversion data is 2049.
+ The channel 4 ADC conversion data is 4084.
+ The channel 5 ADC conversion data is 3739.
+ The channel 6 ADC conversion data is 2049.
 ~~~~~~~~~~~~~~~~~~~~~
