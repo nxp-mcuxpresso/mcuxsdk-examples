@@ -11,14 +11,14 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Get source clock for LPIT driver */
-#define DEMO_LPUART                 LPUART11
-#define DEMO_LPUART_INSTANCE_IDX (11U)
-#define LPUART_CLOCK_ROOT           hal_clock_lpuart11
+#define DEMO_LPUART                 LPUART12
+#define DEMO_LPUART_INSTANCE_IDX (12U)
+#define LPUART_CLOCK_ROOT           hal_clock_lpuart12
 #define DEMO_LPUART_CLK_FREQ        HAL_ClockGetRate(LPUART_CLOCK_ROOT)
-#define LPUART_TX_DMA_CHANNEL       21U
-#define LPUART_RX_DMA_CHANNEL       22U
-#define DEMO_LPUART_RX_EDMA_CHANNEL       kDma3RequestMuxLpuart11Rx
-#define DEMO_LPUART_TX_EDMA_CHANNEL       kDma3RequestMuxLpuart11Tx
+#define LPUART_TX_DMA_CHANNEL       17U
+#define LPUART_RX_DMA_CHANNEL       18U
+#define DEMO_LPUART_RX_EDMA_CHANNEL       kDma3RequestMuxLpuart12Rx
+#define DEMO_LPUART_TX_EDMA_CHANNEL       kDma3RequestMuxLpuart12Tx
 #define EXAMPLE_LPUART_DMA_BASEADDR EDMA3
 /*${macro:end}*/
 

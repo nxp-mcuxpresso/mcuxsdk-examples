@@ -11,12 +11,12 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Get source clock for LPIT driver */
-#define DEMO_LPUART            LPUART8
-#define DEMO_LPUART_INSTANCE_IDX (8U)
-#define LPUART_CLOCK_ROOT      hal_clock_lpuart8
+#define DEMO_LPUART            LPUART11
+#define DEMO_LPUART_INSTANCE_IDX (11U)
+#define LPUART_CLOCK_ROOT      hal_clock_lpuart11
 #define DEMO_LPUART_CLK_FREQ   HAL_ClockGetRate(LPUART_CLOCK_ROOT)
-#define DEMO_LPUART_IRQn       LPUART8_IRQn
-#define DEMO_LPUART_IRQHandler LPUART8_IRQHandler
+#define DEMO_LPUART_IRQn       LPUART11_IRQn
+#define DEMO_LPUART_IRQHandler LPUART11_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************

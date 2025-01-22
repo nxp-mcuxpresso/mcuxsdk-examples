@@ -27,6 +27,7 @@ void BOARD_InitHardware(void)
     BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
+    HAL_ClockSetParent(&hal_clk);
     HAL_ClockSetRate(&hal_clk);
     HAL_ClockEnable(&hal_clk);
 }
