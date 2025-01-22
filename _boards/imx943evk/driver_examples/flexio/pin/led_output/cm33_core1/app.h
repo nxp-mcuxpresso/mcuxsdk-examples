@@ -12,7 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define BOARD_LED_FLEXIO     FLEXIO1
-#define BOARD_LED_FLEXIO_PIN 3U
+#define BOARD_LED_FLEXIO_PIN 4U
 /*${macro:end}*/
 
 /*******************************************************************************

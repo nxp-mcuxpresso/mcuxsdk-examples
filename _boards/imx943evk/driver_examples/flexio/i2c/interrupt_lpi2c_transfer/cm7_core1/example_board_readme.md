@@ -9,8 +9,8 @@ Hardware requirements
 Board settings
 ============
 The example requires doing connection between FLEXIO1(as master) pins and LPI2C4(as slave) pins.
-- LPI2C4_SCL(J25-5), HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__FLEXIO1_3_1_FLEXIO2(J27-5) connected
-- LPI2C4_SDA(J25-3), HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__FLEXIO1_3_1_FLEXIO3(J27-3) connected
+- LPI2C4_SCL(J12-5), HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__FLEXIO1_3_1_FLEXIO5(J44-10) connected
+- LPI2C4_SDA(J12-3), HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__FLEXIO1_3_1_FLEXIO4(J51-18) connected
 
 #### Please note this application can't support running with Linux BSP! ####
 

@@ -22,8 +22,8 @@
 #define LPI2C_CLOCK_FREQUENCY  HAL_ClockGetRate(DEMO_LPI2C_CLOCK)
 #define DEMO_FLEXIO_CLOCK (hal_clock_flexio1)
 #define FLEXIO_CLOCK_FREQUENCY HAL_ClockGetRate(DEMO_FLEXIO_CLOCK)
-#define FLEXIO_I2C_SDA_PIN     3U
-#define FLEXIO_I2C_SCL_PIN     2U
+#define FLEXIO_I2C_SDA_PIN     4U
+#define FLEXIO_I2C_SCL_PIN     5U
 
 /* I2C Baudrate 400K */
 #define I2C_BAUDRATE (400000)
