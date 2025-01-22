@@ -4,7 +4,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
+#include "sm_platform.h"
 #include "fsl_debug_console.h"
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -22,7 +22,7 @@
 #include "ecatappl.h"
 
 #define TIMER_IRQ_ID     GPT2_IRQn
-#define TIMER            GPT2
+#define TIMER            (GPT_Type *) GPT2
 #define TIMER_IRQHandler GPT2_IRQHandler
 #define TIMER_CLK_FREQ   HAL_ClockGetRate(hal_clock_gpt2)
 
@@ -228,5 +228,4 @@ void DISABLE_ESC_INT(void)
 
 void HW_SetLed(UINT8 RunLed, UINT8 ErrorLed)
 {
-		return kStatus_Success;
 }
