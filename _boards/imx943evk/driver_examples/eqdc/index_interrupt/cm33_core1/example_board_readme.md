@@ -8,10 +8,9 @@ Hardware requirements
 Board settings
 ============
 1. For pin connection between board and encoder,
-      J47-10(pad name: GPIO_IO9) -> kXBAR1_InputRESERVED44 -> kXBAR1_OutputEnc1Phasea -> EQDC_PHA
-      J47-8(pad name: GPIO_IO10) -> kXBAR1_InputRESERVED45 -> kXBAR1_OutputEnc1Phaseb -> EQDC_PHB
-      J47-12(pad name: GPIO_IO11) -> kXBAR1_InputRESERVED46 -> kXBAR1_OutputEnc1Index -> EQDC_INDEX
-
+      J47-10(name: M2_SPI3_MISO, pad name: GPIO_IO9) -> EQDC_PHA
+      J47-8(name: M2_SPI3_MOSI, pad name: GPIO_IO10) -> EQDC_PHB
+      J47-12(name: M2_SPI3_SCLK, pad name: GPIO_IO11) -> EQDC_INDEX
 
 Prepare the Demo
 ===============
