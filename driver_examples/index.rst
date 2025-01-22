@@ -221,6 +221,7 @@ driver_examples
    pdm/index.rst
    pint/index.rst
    pit/readme.md
+   pit_rti/readme.md
    plu/index.rst
    pn76/index.rst
    pngdec/readme.md
