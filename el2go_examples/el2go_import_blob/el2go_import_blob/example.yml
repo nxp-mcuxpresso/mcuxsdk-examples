@@ -1,0 +1,20 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+el2go_import_blob:
+  section-type: application
+  contents:
+    meta_path: examples/el2go_examples/el2go_import_blob/el2go_import_blob
+    project-root-path: boards/${board}/el2go_examples/el2go_import_blob/el2go_import_blob
+    document:
+      name: el2go_import_blob
+      category: el2go_examples
+      brief: The EL2GO import blob application is used to import blobs from flash and test them
+      example_readme:
+      - examples/el2go_examples/el2go_import_blob/el2go_import_blob/readme.md
+  boards:
+    kw45b41zevk: []
+    kw45b41zloc: []
+    k32w148evk: []
+    frdmmcxw71: []

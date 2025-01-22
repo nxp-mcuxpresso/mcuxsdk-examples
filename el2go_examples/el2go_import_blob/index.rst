@@ -9,3 +9,4 @@ el2go_import_blob
 
    el2go_import_blob_ns/readme.md
    el2go_import_blob_s/readme.md
+   el2go_import_blob/readme.md
