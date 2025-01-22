@@ -1,0 +1,17 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+source "${SdkRootDirPath}/examples/driver_examples/mcx_enet/Kconfig"
+
+config APP_MAC_ADDRESS2
+    string "MAC Address 2 Byte Array"
+    default "{0x01, 0x00, 0x5e, 0x00, 0x01, 0x81}"
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

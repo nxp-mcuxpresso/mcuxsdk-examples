@@ -1,5 +1,5 @@
 /*
- * Copyright 2022, 2024 NXP
+ * Copyright 2022, 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,9 +23,6 @@
 #define ENET_EXAMPLE_FRAME_SIZE     (ENET_EXAMPLE_DATA_LENGTH + ENET_EXAMPLE_FRAME_HEADSIZE)
 #define ENET_EXAMPLE_PACKAGETYPE    (4U)
 #define ENET_EXAMPLE_SEND_COUNT     (20U)
-#ifndef PHY_AUTONEGO_TIMEOUT_COUNT
-#define PHY_AUTONEGO_TIMEOUT_COUNT (500000U)
-#endif
 
 #if defined(__GNUC__)
 #ifndef __ALIGN_END
@@ -49,15 +46,6 @@
 
 /* @TEST_ANCHOR */
 
-#ifndef MAC_ADDRESS
-#define MAC_ADDRESS                        \
-    {                                      \
-        0x54, 0x27, 0x8d, 0x00, 0x00, 0x00 \
-    }
-#else
-#define USER_DEFINED_MAC_ADDRESS
-#endif
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -80,7 +68,11 @@ static enet_tx_reclaim_info_t g_txDirty[ENET_TXBD_NUM];
 static volatile bool tx_frame_over = false;
 
 /* The MAC address for ENET device. */
-static uint8_t g_macAddr[6] = MAC_ADDRESS;
+#if APP_USER_DEFINED_MAC_ADDRESS
+static uint8_t g_macAddr[6] = APP_MAC_ADDRESS;
+#else
+static uint8_t g_macAddr[6];
+#endif
 static uint8_t g_frame[ENET_EXAMPLE_PACKAGETYPE][ENET_EXAMPLE_FRAME_SIZE];
 static uint32_t g_txIdx   = 0;
 static uint32_t g_testIdx = 0;
@@ -174,7 +166,7 @@ int main(void)
         {
             PRINTF("Wait for PHY link up...\r\n");
             /* Wait for auto-negotiation success and link up */
-            count = PHY_AUTONEGO_TIMEOUT_COUNT;
+            count = APP_PHY_AUTONEGO_TIMEOUT_COUNT;
             do
             {
                 PHY_GetAutoNegotiationStatus(&phyHandle, &autonego);
@@ -193,7 +185,7 @@ int main(void)
 
     PHY_GetLinkSpeedDuplex(&phyHandle, &speed, &duplex);
 
-#ifndef USER_DEFINED_MAC_ADDRESS
+#if !APP_USER_DEFINED_MAC_ADDRESS
     /* Set special address for each chip. */
     SILICONID_ConvertToMacAddr(&g_macAddr);
 #endif

@@ -1,0 +1,11 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+source "${SdkRootDirPath}/examples/driver_examples/lpc_enet/Kconfig"
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

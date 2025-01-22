@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2023 NXP
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,42 +45,14 @@
 #define EXAMPLE_CACHE_LINE_SIZE 1 /*!< No need to align cache line size */
 #endif                            /* FSL_ETH_ENABLE_CACHE_CONTROL */
 
-#ifndef PHY_LINKUP_TIMEOUT_COUNT
-#define PHY_LINKUP_TIMEOUT_COUNT (800000U)
-#endif
-#ifndef PHY_AUTONEGO_TIMEOUT_COUNT
-#define PHY_AUTONEGO_TIMEOUT_COUNT (800000U)
-#endif
-#ifndef PHY_STABILITY_DELAY_US
-#define PHY_STABILITY_DELAY_US (500000U)
-#endif
-#ifndef EXAMPLE_PHY_LINK_INTR_SUPPORT
-#define EXAMPLE_PHY_LINK_INTR_SUPPORT (0U)
-#endif
-
 /* @TEST_ANCHOR */
 
-#ifndef MAC_ADDRESS
-#define MAC_ADDRESS                        \
-    {                                      \
-        0x54, 0x27, 0x8d, 0x00, 0x00, 0x00 \
-    }
-#else
-#define USER_DEFINED_MAC_ADDRESS
-#endif
-
-#ifndef MAC_ADDRESS2
-#define MAC_ADDRESS2                       \
-    {                                      \
-        0x01, 0x00, 0x5e, 0x00, 0x01, 0x81 \
-    }
-#endif
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 static void ENET_QOS_BuildPtpEventFrame(void);
 
-#if (defined(EXAMPLE_PHY_LINK_INTR_SUPPORT) && (EXAMPLE_PHY_LINK_INTR_SUPPORT))
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
 void GPIO_EnableLinkIntr(void);
 #endif
 
@@ -94,8 +66,12 @@ enet_qos_frame_info_t g_txDirty[ENET_QOS_RXBD_NUM];
 
 enet_qos_handle_t g_handle = {0};
 /* The MAC address for ENET device. */
-uint8_t g_macAddr[6]       = MAC_ADDRESS;
-uint8_t g_multicastAddr[6] = MAC_ADDRESS2;
+#if APP_USER_DEFINED_MAC_ADDRESS
+uint8_t g_macAddr[6] = APP_MAC_ADDRESS;
+#else
+uint8_t g_macAddr[6];
+#endif
+uint8_t g_multicastAddr[6] = APP_MAC_ADDRESS2;
 uint8_t g_frame[ENET_QOS_EXAMPLE_PACKAGETYPE][ENET_QOS_EXAMPLE_FRAME_SIZE];
 uint8_t *g_txbuff[ENET_QOS_TXBD_NUM];
 uint32_t g_txIdx     = 0;
@@ -104,7 +80,7 @@ uint8_t g_txCosumIdx = 0;
 uint32_t g_testIdx   = 0;
 static phy_handle_t phyHandle;
 
-#if (defined(EXAMPLE_PHY_LINK_INTR_SUPPORT) && (EXAMPLE_PHY_LINK_INTR_SUPPORT))
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
 static bool linkChange = false;
 #endif
 
@@ -152,7 +128,7 @@ void ENET_QOS_IntCallback(
     }
 }
 
-#if (defined(EXAMPLE_PHY_LINK_INTR_SUPPORT) && (EXAMPLE_PHY_LINK_INTR_SUPPORT))
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
 void PHY_LinkStatusChange(void)
 {
     linkChange = true;
@@ -224,7 +200,7 @@ int main(void)
     phyConfig.autoNeg  = true;
     phyConfig.ops      = EXAMPLE_PHY_OPS;
     phyConfig.resource = EXAMPLE_PHY_RESOURCE;
-#if (defined(EXAMPLE_PHY_LINK_INTR_SUPPORT) && (EXAMPLE_PHY_LINK_INTR_SUPPORT))
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
     phyConfig.intrType = kPHY_IntrActiveLow;
 #endif
 
@@ -249,7 +225,7 @@ int main(void)
 
         /* Wait link up */
         PRINTF("Wait for PHY link up...\r\n");
-        count = PHY_LINKUP_TIMEOUT_COUNT;
+        count = APP_PHY_LINKUP_TIMEOUT_COUNT;
         do
         {
             PHY_GetLinkStatus(&phyHandle, &link);
@@ -268,7 +244,7 @@ int main(void)
         {
             PRINTF("Wait for PHY link up...\r\n");
             /* Wait for auto-negotiation success and link up */
-            count = PHY_AUTONEGO_TIMEOUT_COUNT;
+            count = APP_PHY_AUTONEGO_TIMEOUT_COUNT;
             do
             {
                 PHY_GetAutoNegotiationStatus(&phyHandle, &autonego);
@@ -287,7 +263,7 @@ int main(void)
 #endif
 
     /* Wait a moment for PHY status to be stable. */
-    SDK_DelayAtLeastUs(PHY_STABILITY_DELAY_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    SDK_DelayAtLeastUs(APP_PHY_STABILITY_DELAY_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     PHY_GetLinkSpeedDuplex(&phyHandle, &speed, &duplex);
 
@@ -311,7 +287,7 @@ int main(void)
     }
     config.miiDuplex = (enet_qos_mii_duplex_t)duplex;
 
-#ifndef USER_DEFINED_MAC_ADDRESS
+#if !APP_USER_DEFINED_MAC_ADDRESS
     /* Set special address for each chip. */
     SILICONID_ConvertToMacAddr(&g_macAddr);
 #endif
@@ -357,7 +333,7 @@ int main(void)
     while (1)
     {
         /* PHY link status update. */
-#if (defined(EXAMPLE_PHY_LINK_INTR_SUPPORT) && (EXAMPLE_PHY_LINK_INTR_SUPPORT))
+#if (defined(APP_PHY_LINK_INTR_SUPPORT) && (APP_PHY_LINK_INTR_SUPPORT))
         if (linkChange)
         {
             linkChange = false;

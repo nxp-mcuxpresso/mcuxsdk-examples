@@ -1,0 +1,5 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+source "${SdkRootDirPath}/examples/driver_examples/enet/txrx_multiring_transfer/Kconfig"

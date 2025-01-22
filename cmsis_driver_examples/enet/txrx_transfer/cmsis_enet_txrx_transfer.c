@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 NXP
+ * Copyright 2017-2020, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -27,15 +27,6 @@
 
 /* @TEST_ANCHOR*/
 
-#ifndef MAC_ADDRESS
-#define MAC_ADDRESS                        \
-    {                                      \
-        0x54, 0x27, 0x8d, 0x00, 0x00, 0x00 \
-    }
-#else
-#define USER_DEFINED_MAC_ADDRESS
-#endif
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -45,7 +36,11 @@
  ******************************************************************************/
 uint8_t g_frame[ENET_DATA_LENGTH + 14];
 volatile uint32_t g_testTxNum  = 0;
-uint8_t g_macAddr[6]           = MAC_ADDRESS;
+#if APP_USER_DEFINED_MAC_ADDRESS
+uint8_t g_macAddr[6] = APP_MAC_ADDRESS;
+#else
+uint8_t g_macAddr[6];
+#endif
 volatile uint32_t g_rxIndex    = 0;
 volatile uint32_t g_rxCheckIdx = 0;
 volatile uint32_t g_txCheckIdx = 0;
@@ -121,7 +116,7 @@ int main(void)
 
     PRINTF("\r\nENET example start.\r\n");
 
-#ifndef USER_DEFINED_MAC_ADDRESS
+#if !APP_USER_DEFINED_MAC_ADDRESS
     /* Set special address for each chip. */
     SILICONID_ConvertToMacAddr(&g_macAddr);
 #endif

@@ -1,0 +1,55 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config APP_USES_LOOPBACK_CABLE
+    bool "Loopback Cable instead of PHY loopback"
+    default n
+    help
+        No prefix in generated macro
+
+config APP_PHY_LINK_INTR_SUPPORT
+    bool "PHY Link Interrupt"
+    default n
+    help
+        No prefix in generated macro
+
+config APP_PHY_AUTONEGO_TIMEOUT_COUNT
+    int "PHY Autonegotiation Timeout Count"
+    default 300000
+    help
+        No prefix in generated macro
+        type unsigned
+
+config APP_PHY_STABILITY_DELAY_US
+    int "PHY Stability Delay (μs)"
+    default 0 if APP_USES_LOOPBACK_CABLE
+    default 100000 if !APP_USES_LOOPBACK_CABLE
+    help
+        No prefix in generated macro
+        type unsigned
+
+config APP_USER_DEFINED_MAC_ADDRESS
+    bool "MAC Address Defined by User"
+    default n
+    help
+        No prefix in generated macro
+
+config APP_MAC_ADDRESS
+    string "MAC Address Byte Array"
+    default "{0x54, 0x27, 0x8d, 0x00, 0x00, 0x00}"
+    depends on APP_USER_DEFINED_MAC_ADDRESS
+    help
+        No prefix in generated macro
+
+config APP_ENET_BUFF_ALIGNMENT
+    string "Ethernet Buffers Alignment"
+    default "ENET_BUFF_ALIGNMENT"
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

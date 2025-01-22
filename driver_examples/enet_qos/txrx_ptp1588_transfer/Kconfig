@@ -1,0 +1,17 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+source "${SdkRootDirPath}/examples/driver_examples/enet_qos/Kconfig"
+
+config APP_PHY_LINK_INTR_SUPPORT
+    bool "PHY Link Interrupt"
+    default n
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

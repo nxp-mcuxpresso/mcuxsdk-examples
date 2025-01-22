@@ -1,0 +1,23 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config APP_PHY_AUTONEGO_TIMEOUT_COUNT
+    int "PHY Autonegotiation Timeout Count"
+    default 500000
+    help
+        No prefix in generated macro
+        type unsigned
+
+config APP_USER_DEFINED_MAC_ADDRESS
+    bool "MAC Address Defined by User"
+    default n
+    help
+        No prefix in generated macro
+
+config APP_MAC_ADDRESS
+    string "MAC Address Byte Array"
+    default "{0x54, 0x27, 0x8d, 0x00, 0x00, 0x00}"
+    depends on APP_USER_DEFINED_MAC_ADDRESS
+    help
+        No prefix in generated macro
