@@ -3,7 +3,7 @@ flashloader_loader:
   section-type: application
   contents:
     meta_path: examples/bootloader_examples/flashloader_loader
-    project-root-path: boards/_boards/${board}/bootloader_examples/flashloader_loader/${multicore_foldername}
+    project-root-path: boards/${board}/bootloader_examples/flashloader_loader/${multicore_foldername}
     document:
       name: flashloader_loader${core_id_suffix_name}
       category: bootloader_examples

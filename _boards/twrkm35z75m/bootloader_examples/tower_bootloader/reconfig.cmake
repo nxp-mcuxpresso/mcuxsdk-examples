@@ -18,5 +18,7 @@ mcux_add_macro(
 )
 mcux_add_macro(
     CC "-DBL_TARGET_FLASH\
-       -DFSL_OSA_BM_TIMER_CONFIG=FSL_OSA_BM_TIMER_NONE"
+       -DFSL_OSA_BM_TIMER_CONFIG=FSL_OSA_BM_TIMER_NONE\
+	   -DTOWER\
+       -DTWR_KM35Z7"
 )

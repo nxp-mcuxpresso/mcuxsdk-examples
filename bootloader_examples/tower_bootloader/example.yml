@@ -3,7 +3,7 @@ tower_bootloader:
   section-type: application
   contents:
     meta_path: examples/bootloader_examples/tower_bootloader
-    project-root-path: boards/_boards/${board}/bootloader_examples/tower_bootloader/${multicore_foldername}
+    project-root-path: boards/${board}/bootloader_examples/tower_bootloader/${multicore_foldername}
     document:
       name: tower_bootloader${core_id_suffix_name}
       category: bootloader_examples
