@@ -28,6 +28,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+    HAL_ClockSetParent(&hal_flexcanClkCfg);
     HAL_ClockSetRate(&hal_flexcanClkCfg);
     HAL_ClockEnable(&hal_flexcanClkCfg);
 

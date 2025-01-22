@@ -38,8 +38,10 @@ void BOARD_InitBootPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPins(void);                                 /*!< Function assigned for the core: undefined[cm33] */
 
+void BOARD_InitCAN1Pins(void);                                /*!< Function assigned for the core: undefined[cm33] */
+
+void BOARD_InitI2C6Pins(void);                                /*!< Function assigned for the core: undefined[cm33] */
 #if defined(__cplusplus)
 }
 #endif

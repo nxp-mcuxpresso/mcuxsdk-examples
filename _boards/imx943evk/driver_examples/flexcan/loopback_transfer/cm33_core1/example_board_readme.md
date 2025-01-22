@@ -9,7 +9,7 @@ Hardware requirements
 Board settings
 ==============
 Connect below pins,
-J64-2(CAN3_H) <-> J64-3(CAN3_L)
+J17-2(CAN1_H) <-> J17-3(CAN1_L)
 
 Prepare the Demo
 ================
