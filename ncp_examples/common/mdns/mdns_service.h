@@ -39,10 +39,10 @@
 #include <wm_net.h>
 #include <lwip/dns.h>
 #include "wlan.h"
-#include "mdns.h"
-#include "mdns_priv.h"
+#include "lwip/apps/mdns.h"
+#include "lwip/apps/mdns_priv.h"
 #include "ncp_cmd_wifi.h"
-#include "mdns_out.h"
+#include "lwip/apps/mdns_out.h"
 
 /*******************************************************************************
  * Definitions
