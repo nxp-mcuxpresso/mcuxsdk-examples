@@ -29,6 +29,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
 
     hal_clk.clk_id = (hal_clk_id_e)BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
+    HAL_ClockSetParent(&hal_clk);
     HAL_ClockSetRate(&hal_clk);
     HAL_ClockEnable(&hal_clk);
 }
