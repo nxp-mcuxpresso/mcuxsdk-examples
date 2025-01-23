@@ -28,3 +28,6 @@ xbar_aoi:
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    imx943evk@cm33_core1: []
+    imx943evk@cm7_core0: []
+    imx943evk@cm7_core1: []
