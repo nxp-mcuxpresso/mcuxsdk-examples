@@ -22,7 +22,7 @@ iar:
       debugger_extra_options:
       - --macro_param enable_core=1
       debugger_setting:
-        cmsisdap_resetlist: software
+        cmsisdap_resetlist: system
 
 jlink_script_file:
   files:
