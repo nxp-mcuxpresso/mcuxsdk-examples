@@ -32,7 +32,7 @@
 #define DEMO_PDM_HWVAD_SIGNAL_GAIN    0
 #define DEMO_PDM_CHANNEL_GAIN         kPDM_DfOutputGain0
 
-#define DEMO_CODEC_WM8960
+#define DEMO_CODEC_WM8962
 #define DEMO_SAI              SAI1
 #define DEMO_SAI_CHANNEL      (0)
 #define DEMO_SAI_IRQ          SAI1_IRQn
@@ -43,7 +43,7 @@
 #define DEMO_SAI_CLOCK_SOURCE (kSAI_BclkSourceMclkDiv)
 
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
-#define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
+#define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth32bits
 #define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
