@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2022, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -19,7 +18,6 @@
 #define BOARD_SW_IRQ_HANDLER BOARD_SW3_IRQ_HANDLER
 #define BOARD_SW_NAME        BOARD_SW3_NAME
 
-#define INTM_CHANNEL      FSL_FEATURE_INTM_MONITOR_COUNT
 #define INTM_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_Fro12M) / 12)
 /*${macro:end}*/
 
@@ -28,6 +26,8 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+void BOARD_InitSWConfig(void);
+void BOARD_ClearSWIntFlag(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
