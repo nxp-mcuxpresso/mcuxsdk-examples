@@ -1,4 +1,4 @@
-rpmsg_lite_pingpong_rtos_remote_core:
+rpmsg_lite_pingpong_rtos_no_mcmgr_remote:
   section-type: application
   contents:
     meta_path: examples/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/remote

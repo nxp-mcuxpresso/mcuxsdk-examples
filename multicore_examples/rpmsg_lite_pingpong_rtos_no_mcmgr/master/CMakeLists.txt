@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(rpmsg_lite_pingpong_rtos_master_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master)
+project(rpmsg_lite_pingpong_rtos_no_mcmgr_master LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

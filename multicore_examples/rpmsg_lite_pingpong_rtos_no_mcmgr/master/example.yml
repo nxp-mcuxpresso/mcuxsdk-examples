@@ -1,5 +1,4 @@
-rpmsg_lite_pingpong_rtos_master_core:
-  use_sysbuild: true
+rpmsg_lite_pingpong_rtos_no_mcmgr_master:
   section-type: application
   contents:
     meta_path: examples/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/master
