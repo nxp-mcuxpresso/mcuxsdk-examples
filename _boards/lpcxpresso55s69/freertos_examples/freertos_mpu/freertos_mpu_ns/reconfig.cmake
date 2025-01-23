@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -36,7 +36,6 @@ mcux_remove_armgcc_linker_script(
     LINKER ${device_root}/LPC/LPC5500/LPC55S69/gcc/LPC55S69_cm33_core0_flash.ld
 )
 
-
 mcux_add_iar_linker_script(
     TARGETS debug release
     LINKER linkscripts/LPC55S69_cm33_core0_flash_ns.icf
@@ -48,10 +47,4 @@ mcux_add_armgcc_linker_script(
 mcux_add_mdk_linker_script(
     TARGETS debug release
     LINKER linkscripts/LPC55S69_cm33_core0_flash_ns.scf
-)
-
-mcux_add_library(
-    BASE_PATH ${APPLICATION_BINARY_DIR}
-    LIBS "../freertos_mpu_s/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
-    GENERATED TRUE
 )

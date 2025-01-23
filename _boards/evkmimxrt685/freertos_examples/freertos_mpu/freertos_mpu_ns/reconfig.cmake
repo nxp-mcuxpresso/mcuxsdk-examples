@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -48,7 +48,6 @@ mcux_remove_armgcc_linker_script(
     LINKER ${device_root}/RT/RT600/MIMXRT685S/gcc/MIMXRT685Sxxxx_cm33_ram.ld
 )
 
-
 mcux_add_iar_linker_script(
     TARGETS debug release
     LINKER linkscripts/MIMXRT685Sxxxx_cm33_ram_ns.icf
@@ -72,12 +71,4 @@ mcux_add_armgcc_linker_script(
 mcux_add_mdk_linker_script(
     TARGETS flash_debug flash_release
     LINKER linkscripts/MIMXRT685Sxxxx_cm33_flash_ns.scf
-)
-
-
-
-mcux_add_library(
-    BASE_PATH ${APPLICATION_BINARY_DIR}
-    LIBS "../freertos_mpu_s/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
-    GENERATED TRUE
 )

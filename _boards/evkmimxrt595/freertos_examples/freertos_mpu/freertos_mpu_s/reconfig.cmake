@@ -1,21 +1,7 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
-mcux_add_configuration(
-    TARGETS debug release
-    AS "-DDEMO_CODE_START_NS=2883584"
-    CC "-DDEMO_CODE_START_NS=2883584 "
-    CX "-DDEMO_CODE_START_NS=2883584"
-    )
-
-mcux_add_configuration(
-    TARGETS flash_debug flash_release
-    AS "-DDEMO_CODE_START_NS=135266304"
-    CC "-DDEMO_CODE_START_NS=135266304"
-    CX "-DDEMO_CODE_START_NS=135266304"
-    )
 
 mcux_add_source(
     SOURCES nsc_functions.c
@@ -37,28 +23,32 @@ mcux_add_include(
     INCLUDES ./
 )
 
-mcux_add_custom_command(
-    BUILD_EVENT PRE_BUILD
-    TOOLCHAINS armgcc
-    BUILD_COMMAND ${CMAKE_COMMAND} -E make_directory ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}
+mcux_add_macro(
+    TOOLCHAINS armgcc iar mdk
+    TARGETS debug release
+    CC "-DDEMO_CODE_START_NS=2883584"
 )
 
-mcux_add_armgcc_configuration(
-    LD "-Wl,--cmse-implib"
-    LD "-Wl,--out-implib=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
+mcux_add_macro(
+    TOOLCHAINS armgcc iar mdk
+    TARGETS flash_debug flash_release
+    CC "-DDEMO_CODE_START_NS=135266304"
 )
 
-mcux_add_mdk_configuration(
-    LD "--import-cmse-lib-out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
+# Remove no_se from IAR FLags
+mcux_remove_iar_configuration(
+    AS "--cpu=cortex-m33.no_se"
+    CC "--cpu=cortex-m33.no_se"
+    CX "--cpu=cortex-m33.no_se"
+    LD "--cpu=cortex-m33.no_se"
 )
 
+# And then this will add Trust Zone Enable clicky button checked in IAR GUI Project
 mcux_add_iar_configuration(
-    LD "--import_cmse_lib_out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
-)
-
-mcux_convert_binary(
-        TOOLCHAINS armgcc mdk iar
-        BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.bin
+    AS "--cpu=cortex-m33"
+    CC "--cpu=cortex-m33"
+    CX "--cpu=cortex-m33"
+    LD "--cpu=cortex-m33"
 )
 
 mcux_remove_iar_linker_script(
@@ -91,8 +81,6 @@ mcux_remove_armgcc_linker_script(
     TARGETS debug release
     LINKER ${device_root}/RT/RT500/MIMXRT595S/gcc/MIMXRT595Sxxxx_cm33_ram.ld
 )
-
-
 
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}

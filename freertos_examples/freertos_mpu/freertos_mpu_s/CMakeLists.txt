@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -27,26 +27,34 @@ mcux_add_include(
              ../
 )
 
-mcux_remove_iar_configuration(
-        AS "--cpu=cortex-m33.no_se"
-        CC "--cpu=cortex-m33.no_se"
-        CX "--cpu=cortex-m33.no_se"
+# For armgcc first create output directory for cmse lib
+mcux_add_custom_command(
+    BUILD_EVENT PRE_BUILD
+    TOOLCHAINS armgcc
+    BUILD_COMMAND ${CMAKE_COMMAND} -E make_directory ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}
 )
 
 mcux_add_iar_configuration(
-    AS "--cpu=cortex-m33"
-    CC "--cmse --cpu=cortex-m33"
-    CX "--cmse --cpu=cortex-m33"
-    )
-
-mcux_add_mdk_configuration(
-    AS "-mcmse"
-    CC "-mcmse"
-    CX "-mcmse"
-    )
+    CC "--cmse"
+    CX "--cmse"
+    LD "--import_cmse_lib_out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
+)
 
 mcux_add_armgcc_configuration(
     AS "-mcmse"
     CC "-mcmse"
     CX "-mcmse"
-    )
+    LD "-Wl,--cmse-implib \
+        -Wl,--out-implib=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
+)
+
+mcux_add_mdk_configuration(
+    AS "-mcmse"
+    CC "-mcmse"
+    CX "-mcmse"
+    LD "--import-cmse-lib-out=\"${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o\""
+)
+
+mcux_convert_binary(
+        BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.bin
+)
