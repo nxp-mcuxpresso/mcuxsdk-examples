@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -47,14 +47,14 @@ int BOARD_CODEC_Init(void)
 
     if (CODEC_Init(&codecHandle, &boardCodecConfig) != kStatus_Success)
     {
-        assert(false);
+        return -1;
     }
 
     /* Initial volume kept low for hearing safety. */
     if (CODEC_SetVolume(&codecHandle, kCODEC_PlayChannelHeadphoneLeft | kCODEC_PlayChannelHeadphoneRight, 75) !=
         kStatus_Success)
     {
-        assert(false);
+        return -1;
     }
 
     return 0;

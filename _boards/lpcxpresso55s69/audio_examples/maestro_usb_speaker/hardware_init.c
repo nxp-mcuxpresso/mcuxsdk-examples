@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -46,21 +46,21 @@ int BOARD_CODEC_Init(void)
 
     if (CODEC_Init(&codecHandle, &boardCodecConfig) != kStatus_Success)
     {
-        assert(false);
+        return -1;
     }
 
     /* Invert the DAC data in order to output signal with correct polarity - set DACL_DATINV and DACR_DATINV = 1 */
     if (WM8904_WriteRegister((wm8904_handle_t *)codecHandle.codecDevHandle, WM8904_AUDIO_IF_0, 0x1850) !=
         kStatus_WM8904_Success)
     {
-        assert(false);
+        return -1;
     }
-    
+
     /* Initial volume kept low for hearing safety. */
     if (CODEC_SetVolume(&codecHandle, kCODEC_PlayChannelHeadphoneLeft | kCODEC_PlayChannelHeadphoneRight, 75) !=
         kStatus_Success)
     {
-        assert(false);
+        return -1;
     }
 
     return 0;
