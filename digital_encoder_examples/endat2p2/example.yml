@@ -27,8 +27,3 @@ endat2p2:
     - +armgcc@debug
     - +iar@release
     - +armgcc@release
-    imx943evk:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@release
-    - +iar@debug
