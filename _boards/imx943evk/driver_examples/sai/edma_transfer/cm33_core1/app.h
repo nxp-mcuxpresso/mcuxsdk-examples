@@ -38,7 +38,7 @@
 
 /* DMA */
 #define DEMO_DMA               EDMA1
-#define DEMO_EDMA_CHANNEL      2U
+#define DEMO_EDMA_CHANNEL      24U
 #define DEMO_SAI_EDMA_CHANNEL  kDma1RequestMuxSai1Tx
 #define DEMO_XFER_BUFFER_SIZE  (3200U)
 #define EXAMPLE_DMA_CLOCK_ROOT hal_clock_m33
