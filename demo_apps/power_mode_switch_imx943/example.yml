@@ -32,3 +32,6 @@ power_mode_switch_rtos_imx943:
       - ${board_root}/${board}/demo_apps/power_mode_switch/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    imx943evk@cm33_core1: []
+    imx943evk@cm7_core0: []
+    imx943evk@cm7_core1: []
