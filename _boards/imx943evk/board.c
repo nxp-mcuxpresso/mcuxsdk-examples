@@ -1282,7 +1282,7 @@ uint32_t BOARD_Lpuart10GetFreq(void)
     return BOARD_GetUartFreq(10);
 }
 
-uint32_t BOARD_Lpurt11GetFreq(void)
+uint32_t BOARD_Lpuart11GetFreq(void)
 {
     return BOARD_GetUartFreq(11);
 }
