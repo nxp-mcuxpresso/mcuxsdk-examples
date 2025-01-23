@@ -220,7 +220,7 @@ void ENABLE_ESC_INT(void)
 
 void DISABLE_ESC_INT(void)
 {
-    NVIC_DisableIRQ(XBAR1_CH0_CH1_IRQn);
+    NVIC_DisableIRQ(Reserved192_IRQn);
     NVIC_DisableIRQ(Reserved194_IRQn);
     NVIC_DisableIRQ(Reserved195_IRQn);
     NVIC_DisableIRQ(TIMER_IRQ_ID);
