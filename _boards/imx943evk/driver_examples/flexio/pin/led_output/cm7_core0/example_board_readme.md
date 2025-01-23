@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect J44-10 and J45-10(GND) to oscilloscope
+Connect J44-10 and J45-12(GND) to oscilloscope
 
 Note
 ====
