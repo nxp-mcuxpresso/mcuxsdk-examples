@@ -14,6 +14,11 @@ mcux_add_include(
              ${COEX_SRC_BASE}/common
 )
 
+# Fix build errors temporarily
+mcux_add_armgcc_configuration(
+    LD "-Wl,-z -Wl,muldefs"
+)
+
 include(${SdkRootDirPath}/${COEX_SRC_BASE}/${ZIGBEE_ROLE}/freertos/variable.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/${COEX_BOARD_BASE}/zigbee/${ZIGBEE_ROLE}/freertos/reconfig.cmake OPTIONAL)
