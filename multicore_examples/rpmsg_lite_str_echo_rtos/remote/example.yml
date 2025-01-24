@@ -1,9 +1,9 @@
-rpmsg_lite_str_echo_rtos_remote_core:
+rpmsg_lite_str_echo_rtos_remote:
   contents:
     meta_path: examples/multicore_examples/rpmsg_lite_str_echo_rtos/remote
     project-root-path: boards/${board}/multicore_examples/rpmsg_lite_str_echo_rtos/remote/${multicore_foldername}/
     document:
-      name: rpmsg_lite_str_echo_rtos_remote_core
+      name: rpmsg_lite_str_echo_rtos_remote${core_id_suffix_name}
       category: multicore_examples/
       brief: "The Multicore RPMsg-Lite string echo project is a simple demonstration\
         \ program that uses the MCUXpresso SDK software and the RPMsg-Lite library\
