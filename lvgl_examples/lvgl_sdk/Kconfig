@@ -1,3 +1,5 @@
+# Copyright 2024-2025 NXP
+# SPDX-License-Identifier: BSD-3-Clause
 
 menuconfig MCUX_COMPONENT_middleware.lvgl
     bool "LVGL"
@@ -31,71 +33,81 @@ if MCUX_COMPONENT_middleware.lvgl
 
 endif
 
-# Template
-config MCUX_COMPONENT_middleware.lvgl.template
-    bool "LVGL project template"
+menu "LVGL application layers"
 
-config MCUX_COMPONENT_middleware.lvgl.demo.common
-    bool "LVGL demo common"
-    imply MCUX_COMPONENT_middleware.lvgl
+    config MCUX_COMPONENT_middleware.lvgl.template
+        bool "LVGL project template"
 
-config MCUX_COMPONENT_middleware.lvgl.demo.transform
-    bool "LVGL demo transform"
-    imply MCUX_COMPONENT_middleware.lvgl
+    menu "Demos"
 
-config MCUX_COMPONENT_middleware.lvgl.demo.multilang
-    bool "LVGL demo multilang"
-    imply MCUX_COMPONENT_middleware.lvgl
+        config MCUX_COMPONENT_middleware.lvgl.demo.common
+            bool "common"
+            imply MCUX_COMPONENT_middleware.lvgl
 
-config MCUX_COMPONENT_middleware.lvgl.demo.flex_layout
-    bool "LVGL demo flex_layout"
-    imply MCUX_COMPONENT_middleware.lvgl
+        config MCUX_COMPONENT_middleware.lvgl.demo.transform
+            bool "transform"
+            imply MCUX_COMPONENT_middleware.lvgl
 
-config MCUX_COMPONENT_middleware.lvgl.demo.scroll
-    bool "LVGL demo scroll"
-    imply MCUX_COMPONENT_middleware.lvgl
+        config MCUX_COMPONENT_middleware.lvgl.demo.multilang
+            bool "multilang"
+            imply MCUX_COMPONENT_middleware.lvgl
 
-config MCUX_COMPONENT_middleware.lvgl.demo.music
-    bool "LVGL demo music"
-    imply MCUX_COMPONENT_middleware.lvgl
+        config MCUX_COMPONENT_middleware.lvgl.demo.flex_layout
+            bool "flex_layout"
+            imply MCUX_COMPONENT_middleware.lvgl
 
-config MCUX_COMPONENT_middleware.lvgl.demo.keypad_encoder
-    bool "LVGL demo keypad_encoder"
-    imply MCUX_COMPONENT_middleware.lvgl
-# Demos
-config MCUX_COMPONENT_middleware.lvgl.demo.benchmark
-    bool "LVGL demo benchmark"
-    imply MCUX_COMPONENT_middleware.lvgl
-    imply MCUX_COMPONENT_middleware.lvgl.demo.transform
-    imply MCUX_COMPONENT_middleware.lvgl.demo.widgets
-    imply MCUX_COMPONENT_middleware.lvgl.demo.common
+        config MCUX_COMPONENT_middleware.lvgl.demo.scroll
+            bool "scroll"
+            imply MCUX_COMPONENT_middleware.lvgl
 
-config MCUX_COMPONENT_middleware.lvgl.demo.stress
-    bool "LVGL demo stress"
-    imply MCUX_COMPONENT_middleware.lvgl
-    imply MCUX_COMPONENT_middleware.lvgl.demo.common
+        config MCUX_COMPONENT_middleware.lvgl.demo.music
+            bool "music"
+            imply MCUX_COMPONENT_middleware.lvgl
 
-config MCUX_COMPONENT_middleware.lvgl.demo.widgets
-    bool "LVGL demo widgets"
-    imply MCUX_COMPONENT_middleware.lvgl
-    imply MCUX_COMPONENT_middleware.lvgl.demo.common
+        config MCUX_COMPONENT_middleware.lvgl.demo.keypad_encoder
+            bool "keypad_encoder"
+            imply MCUX_COMPONENT_middleware.lvgl
 
+        config MCUX_COMPONENT_middleware.lvgl.demo.benchmark
+            bool "benchmark"
+            imply MCUX_COMPONENT_middleware.lvgl
+            imply MCUX_COMPONENT_middleware.lvgl.demo.transform
+            imply MCUX_COMPONENT_middleware.lvgl.demo.widgets
+            imply MCUX_COMPONENT_middleware.lvgl.demo.common
 
-config LV_ATTRIBUTE_MEM_ALIGN
-    string "Will be added where memories needs to be aligned (with -Os data might not be aligned to boundary by default)."
-    default ""
-    help
-    E.g. __attribute__((aligned(LV_ATTRIBUTE_MEM_ALIGN_SIZE)))
+        config MCUX_COMPONENT_middleware.lvgl.demo.stress
+            bool "stress"
+            imply MCUX_COMPONENT_middleware.lvgl
+            imply MCUX_COMPONENT_middleware.lvgl.demo.common
 
-config LV_ATTRIBUTE_LARGE_CONST
-    string "Attribute to mark large constant arrays for example font's bitmaps"
-    default ""
-    help
-    E.g. __attribute__((section("DataQuickAccess")))
-config LV_SYSMON_GET_IDLE
-    string "Get the idle percentage."
-    depends on LV_USE_SYSMON
-    default "lv_timer_get_idle"
-    help
-    E.g. uint32_t my_get_idle(void);
+        config MCUX_COMPONENT_middleware.lvgl.demo.widgets
+            bool "widgets"
+            imply MCUX_COMPONENT_middleware.lvgl
+            imply MCUX_COMPONENT_middleware.lvgl.demo.common
 
+    endmenu
+
+    config LV_ATTRIBUTE_MEM_ALIGN
+        string "LV_ATTRIBUTE_MEM_ALIGN"
+        default ""
+        help
+            Will be added where memories needs to be aligned
+            (with -Os data might not be aligned to boundary by default).
+            E.g. __attribute__((aligned(LV_ATTRIBUTE_MEM_ALIGN_SIZE)))
+
+    config LV_ATTRIBUTE_LARGE_CONST
+        string "LV_ATTRIBUTE_LARGE_CONST"
+        default ""
+        help
+            Attribute to mark large constant arrays for example font's bitmaps.
+            E.g. __attribute__((section("DataQuickAccess")))
+
+    config LV_SYSMON_GET_IDLE
+        string "LV_SYSMON_GET_IDLE"
+        depends on LV_USE_SYSMON
+        default "lv_timer_get_idle"
+        help
+            Get the idle percentage.
+            E.g. uint32_t my_get_idle(void);
+
+endmenu
