@@ -40,30 +40,28 @@ endif()
 
 
 if (CONFIG_MCUX_COMPONENT_driver.srtm)
-
     mcux_add_source(
         SOURCES
-            ./${core_id}/app_srtm.c
             rsc_table.c
+            rsc_table.h
     )
 
     mcux_add_include(
         INCLUDES
-            ./${core_id}
+            .
     )
 
 endif()
 
-if (CONFIG_MCUX_COMPONENT_driver.rpmsg_config)
+if (CONFIG_MCUX_COMPONENT_driver.srtm_config)
 
     mcux_add_source(
         SOURCES
-            ./${core_id}/rpmsg_config.h
+            srtm_config.h
     )
 
     mcux_add_include(
-        INCLUDES 
-            ./${core_id}
+        INCLUDES
+            .
     )
-
 endif()

@@ -6,4 +6,13 @@ config MCUX_HW_BOARD_imx943evk_cm33_core1
     bool
     default y
     imply MCUX_COMPONENT_middleware.freertos-kernel.cm33_non_trustzone if MCUX_COMPONENT_middleware.freertos-kernel
+    select MCUX_COMPONENT_driver.app_srtm.cm33_core1 if MCUX_COMPONENT_driver.srtm
 
+config MCUX_COMPONENT_driver.app_srtm.cm33_core1
+    bool
+    select MCUX_COMPONENT_driver.rpmsg_config.cm33_core1
+    default n
+
+config MCUX_COMPONENT_driver.rpmsg_config.cm33_core1
+    bool "The option is a common rpmsg config for demos using srtm"
+    default n
