@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2001-2003 Swedish Institute of Computer Science.
+ * Copyright 2016, 2018-2020, 2025 NXP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -83,7 +84,7 @@
 #include "lwip/debug.h"
 #include "lwip/stats.h"
 #include "lwip/apps/fs.h"
-#include "apps/http/httpd_structs.h"
+#include "httpd_structs.h"
 #include "lwip/tcp.h"
 
 #include <string.h>
