@@ -56,12 +56,6 @@ static int ncp_send_event(uint32_t evt, uint8_t *buf, size_t len)
         event_buf = NULL;
     }
     
-#if CONFIG_NCP_SDIO
-    /* WAR: NCP device sends handshaking data by event and doesn't wait 
-       for host's ack, leading to host losting data; so delay here. */
-    OSA_TimeDelay(3);
-#endif
-    
     return len;
 }
 
