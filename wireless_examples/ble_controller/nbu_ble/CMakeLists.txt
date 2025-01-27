@@ -26,7 +26,8 @@ mcux_add_configuration(
 				-DHCI_FREE_RxBuffer=0\
 				-DRF_OSC_26MHZ=0\
 				-DTEST_BUILD_COEX=0\
-				-DgNbu_Hadm_d=1"
+				-DgNbu_Hadm_d=1\
+				-DTX_INCLUDE_USER_DEFINE_FILE"
 )
 mcux_add_iar_configuration(
     TARGETS  release
