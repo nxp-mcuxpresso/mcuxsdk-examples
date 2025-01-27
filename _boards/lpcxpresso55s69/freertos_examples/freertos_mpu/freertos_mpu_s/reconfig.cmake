@@ -4,12 +4,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 mcux_add_configuration(
-    AS "-DDEMO_CODE_START_NS=65536"
     CC "-DDEMO_CODE_START_NS=65536 "
-    CX "-DDEMO_CODE_START_NS=65536"
     )
 
-    # Remove no_se from IAR FLags
+# Remove no_se from IAR FLags
 mcux_remove_iar_configuration(
     AS "--cpu=cortex-m33.no_se"
     CC "--cpu=cortex-m33.no_se"

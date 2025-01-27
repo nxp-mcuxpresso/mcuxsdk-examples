@@ -5,16 +5,12 @@
 
 mcux_add_configuration(
     TARGETS debug release
-    AS "-DDEMO_CODE_START_NS=786432"
     CC "-DDEMO_CODE_START_NS=786432 "
-    CX "-DDEMO_CODE_START_NS=786432"
     )
 
 mcux_add_configuration(
     TARGETS flash_debug flash_release
-    AS "-DDEMO_CODE_START_NS=135266304"
     CC "-DDEMO_CODE_START_NS=135266304"
-    CX "-DDEMO_CODE_START_NS=135266304"
     )
 
 # Remove no_se from IAR FLags

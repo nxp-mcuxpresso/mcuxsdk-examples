@@ -24,13 +24,11 @@ mcux_add_include(
 )
 
 mcux_add_macro(
-    TOOLCHAINS armgcc iar mdk
     TARGETS debug release
     CC "-DDEMO_CODE_START_NS=2883584"
 )
 
 mcux_add_macro(
-    TOOLCHAINS armgcc iar mdk
     TARGETS flash_debug flash_release
     CC "-DDEMO_CODE_START_NS=135266304"
 )
