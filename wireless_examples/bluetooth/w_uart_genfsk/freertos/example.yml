@@ -18,3 +18,5 @@ wireless_uart_genfsk_freertos:
   boards:
     kw45b41zevk: []
     kw45b41zloc: []
+    kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
