@@ -18,3 +18,10 @@ config MCUX_PRJSEG_module.board.wireless.core_linker_script
     help
       Use the linker script provided by the Connectivity Framework for the current platform core.
       This should be left disabled if the user wants to use a custom linker script.
+
+config MCUX_PRJSEG_module.board.wireless.core_linker_script_ble
+    bool "Connectivity BLE linker script for specific core"
+    help
+      Use the linker script provided by the Connectivity Framework for the current platform core
+      in case of bluetooth examples.
+      This should be left disabled if the user wants to use a custom linker script.
