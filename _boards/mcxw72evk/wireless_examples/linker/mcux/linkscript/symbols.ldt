@@ -3,8 +3,8 @@
 <#include SYMBOLS_FILE ignore_missing=true>
 
     /* Linker Symbols */
-    _RAM_START_ = 0x1FFFC000;
-    _RAM_END_ = 0x2000BFFF;
+    _RAM_START_ = 0x20000000;
+    _RAM_END_ = 0x20039FFF;
 
     __RAM_VECTOR_TABLE_SIZE_BYTES = 0x400;
     __VECTOR_RAM = __base_RAM_VECTOR_TABLE;
@@ -34,7 +34,7 @@
     m_ram_img_end = DEFINED(gUseNVMLink_d) ? NV_STORAGE_START_ADDRESS - 1 : PROD_DATA_BASE_ADDR - 1;
     m_max_ram_img_size = DEFINED(gRamImageSizeInFlash_c) ? gRamImageSizeInFlash_c : 0x0;
     m_ram_img_start = m_ram_img_end - m_max_ram_img_size + 1;
-    firmware_ram_upper_limit = __CSTACK_end__;
+    firmware_ram_upper_limit = _RAM_END_;
     firmware_ram_lower_limit = __VECTOR_RAM;
 
 /******************************************SHARED MEMORY********************************************/
