@@ -9,12 +9,6 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/ota_examples/ota_mcuboot_client
 )
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    PREINCLUDE TRUE
-    SOURCES ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
-)
-
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )

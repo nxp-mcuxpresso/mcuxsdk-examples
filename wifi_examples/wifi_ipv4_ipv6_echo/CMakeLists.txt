@@ -23,7 +23,6 @@ mcux_add_source(
         examples/wifi_examples/wifi_ipv4_ipv6_echo/FreeRTOSConfig.h
 
         ${board_root}/${board}/FreeRTOSConfigBoard.h
-        ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
         ${board_root}/${board}/wifi_examples/common/pin_mux.c
         ${board_root}/${board}/wifi_examples/common/pin_mux.h
 )
@@ -33,7 +32,6 @@ mcux_add_include(
     INCLUDES 
         examples/wifi_examples/wifi_ipv4_ipv6_echo
         examples/wifi_examples/wifi_ipv4_ipv6_echo/wifi_config
-        ${board_root}/${board}/wifi_examples/common/app_config
         ${board_root}/${board}/wifi_examples/common
 )
 

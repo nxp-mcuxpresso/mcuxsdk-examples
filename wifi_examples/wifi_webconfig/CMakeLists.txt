@@ -27,7 +27,6 @@ mcux_add_source(
         examples/wifi_examples/wifi_webconfig/FreeRTOSConfig.h
 
         ${board_root}/${board}/FreeRTOSConfigBoard.h
-        ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
         ${board_root}/${board}/wifi_examples/common/pin_mux.c
         ${board_root}/${board}/wifi_examples/common/pin_mux.h
 )
@@ -38,7 +37,6 @@ mcux_add_include(
         examples/wifi_examples/wifi_webconfig/nxp
         examples/wifi_examples/wifi_webconfig/wifi_config/
         examples/wifi_examples/wifi_webconfig
-        ${board_root}/${board}/wifi_examples/common/app_config
         ${board_root}/${board}/wifi_examples/common
 )
 

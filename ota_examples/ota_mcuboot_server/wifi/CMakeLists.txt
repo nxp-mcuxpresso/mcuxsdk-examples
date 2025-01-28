@@ -27,7 +27,6 @@ mcux_add_include(
              examples/ota_examples/ota_mcuboot_server/network_wifi_nxp
              ${board_root}/${board}/ota_examples/ota_mcuboot_server
              ${board_root}/${board}/ota_examples/ota_mcuboot_server/wifi
-             ${board_root}/${board}/wifi_examples/common/app_config/
              ${board_root}/${board}/ota_examples/mcuboot_opensource
              ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning
              ${board_root}/${board}
@@ -41,7 +40,6 @@ mcux_add_source(
     SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
             ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.c
             ${board_root}/${board}/ota_examples/mcuboot_opensource/sblconfig.h
-            ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
 )
 
 mcux_add_armgcc_configuration(

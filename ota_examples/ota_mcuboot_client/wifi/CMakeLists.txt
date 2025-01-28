@@ -28,8 +28,7 @@ mcux_add_source(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
-            ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
+    SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.h
             ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning/flash_partitioning.c
             ${board_root}/${board}/ota_examples/mcuboot_opensource/sblconfig.h
 )
@@ -39,7 +38,6 @@ mcux_add_include(
     INCLUDES examples/ota_examples/ota_mcuboot_client/network_wifi_nxp
              examples/ota_examples/ota_mcuboot_client
              ${board_root}/${board}/ota_examples/ota_mcuboot_client/wifi
-             ${board_root}/${board}/wifi_examples/common/app_config
              ${board_root}/${board}/ota_examples/mcuboot_opensource/flash_partitioning
              ${board_root}/${board}/ota_examples/mcuboot_opensource
              ${board_root}/${board}

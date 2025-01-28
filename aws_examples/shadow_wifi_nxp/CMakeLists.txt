@@ -10,8 +10,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
-            examples/aws_examples/common/aws_mbedtls_config.h
+    SOURCES examples/aws_examples/common/aws_mbedtls_config.h
             examples/aws_examples/common/config_files/aws_clientcredential.h
             examples/aws_examples/common/config_files/aws_clientcredential_keys.h
             examples/aws_examples/common/config_files/core_mqtt_config.h
@@ -31,8 +30,7 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/${board}/wifi_examples/common/app_config
-             examples/aws_examples/common
+    INCLUDES examples/aws_examples/common
              examples/aws_examples/common/config_files
              examples/aws_examples/common/config_files_wifi_nxp
              examples/aws_examples/common/dev_mode_key_provisioning/include
