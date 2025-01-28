@@ -128,11 +128,22 @@
 #define BOARD_DEBUG_UART_BASEADDR (uint32_t) LPUART0
 #define BOARD_DEBUG_UART_CLK      kCLOCK_Lpuart0
 #endif
-#define BOARD_DEBUG_UART_CLKSRC   kCLOCK_IpSrcFro6M // kCLOCK_IpSrcFro192M
+
+#ifndef BOARD_DEBUG_UART_CLKSRC
+#define BOARD_DEBUG_UART_CLKSRC   kCLOCK_IpSrcFro6M // kCLOCK_IpSrcFro192M could be used as well
+#endif /* BOARD_DEBUG_UART_CLKSRC */
+
+#ifndef BOARD_DEBUG_UART_CLK_FREQ
 #define BOARD_DEBUG_UART_CLK_FREQ 6000000U          // 192000000U could be used as well
+#endif /* BOARD_DEBUG_UART_CLK_FREQ */
 
 #ifndef BOARD_DEBUG_UART_BAUDRATE
 #define BOARD_DEBUG_UART_BAUDRATE 115200
+#else
+#if ((BOARD_DEBUG_UART_BAUDRATE > 460800) &&                                                      \
+    ((BOARD_DEBUG_UART_CLKSRC != kCLOCK_IpSrcFro192M) || (BOARD_DEBUG_UART_CLK_FREQ < 192000000U)))
+#warning "BOARD_DEBUG_UART_BAUDRATE is not compatible with BOARD_DEBUG_UART_CLKSRC or BOARD_DEBUG_UART_CLK_FREQ selected"
+#endif
 #endif /* BOARD_DEBUG_UART_BAUDRATE */
 
 #define BOARD_SERIAL_MGR_IF_INVALID 0xFFu
