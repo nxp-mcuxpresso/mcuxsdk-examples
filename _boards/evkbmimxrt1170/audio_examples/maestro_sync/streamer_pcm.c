@@ -253,17 +253,15 @@ int streamer_pcm_read(uint8_t *data, uint32_t size)
 
     if ((rx_data_valid > 0))
     {
-        if ((rx_data_valid > 0) && (tx_data_valid > 0))
-        {
-            rx_data_valid--;
-            /* Copy data from the DMIC buffer */
-            memcpy(Streamer_buff_addr_Pull(), &s_buffer[s_readIndex], size);
-            s_readIndex += size;
-            if (s_readIndex >= BUFFER_SIZE)
-                s_readIndex -= BUFFER_SIZE;
+        rx_data_valid--;
+        /* Copy data from the DMIC buffer */
+        memcpy(Streamer_buff_addr_Pull(), &s_buffer[s_readIndex], size);
+        s_readIndex += size;
+        if (s_readIndex >= BUFFER_SIZE)
+            s_readIndex -= BUFFER_SIZE;
 
-            /* Signal that data are already ready for processing */
-            ret = 0;
+        /* Signal that data are already ready for processing */
+        ret = 0;
     }
 
     // Store the data buffer address in the queue
