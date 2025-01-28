@@ -17,7 +17,6 @@ mcux_add_source(
             examples/aws_examples/common/config_files/core_mqtt_config.h
             examples/aws_examples/common/config_files/core_pkcs11_config.h
             examples/aws_examples/common/config_files/demo_config.h
-            examples/aws_examples/common/config_files/freertos_tasks_c_additions.h
             examples/aws_examples/common/config_files/kvstore_config.h
             examples/aws_examples/common/config_files/shadow_config.h
             examples/aws_examples/common/config_files_wifi_nxp/wifi_config.h
