@@ -40,9 +40,6 @@
 #include "mpp_api.h"
 #include "mpp_config.h"
 
-/* utility functions */
-#include "models/utils.h"
-
 /*******************************************************************************
  * Variables declaration
  ******************************************************************************/

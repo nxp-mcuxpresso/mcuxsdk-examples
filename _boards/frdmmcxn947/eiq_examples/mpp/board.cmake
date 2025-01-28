@@ -6,22 +6,29 @@ mcux_add_include(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp
-    SOURCES src/pin_mux.c
-            src/hardware_init.c
-            src/board.c
-            src/clock_config.c
-            src/utick_config.c
-            inc/pin_mux.h
-            inc/app.h
-            inc/clock_config.h
-            inc/utick_config.h
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES ${board_root}/${board}/eiq_examples/mpp/src/pin_mux.c
+            ${board_root}/${board}/eiq_examples/mpp/src/hardware_init.c
+            ${board_root}/${board}/eiq_examples/mpp/src/board.c
+            ${board_root}/${board}/eiq_examples/mpp/src/clock_config.c
+            ${board_root}/${board}/eiq_examples/mpp/src/utick_config.c
+            ${board_root}/${board}/eiq_examples/mpp/inc/pin_mux.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/app.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/board.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/clock_config.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/utick_config.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/FreeRTOSConfig.h
+            middleware/eiq/mpp/hal/hal_${board}.c
 )
 
 mcux_add_macro(
     CC "-DSDK_I2C_BASED_COMPONENT_USED=1 \
-        -DSSD1963_DATA_WITDH=8 \
-        -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8"
+        -DSDK_DEBUGCONSOLE_UART \
+        -DARM_MATH_CM33 \
+        -D__FPU_PRESENT=1"
+    CX "-DSDK_DEBUGCONSOLE_UART\
+        -DARM_MATH_CM33\
+        -D__FPU_PRESENT=1"
 )
 
 mcux_remove_armgcc_linker_script(
@@ -35,6 +42,18 @@ mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
+
+mcux_remove_armgcc_configuration(
+  TARGETS flash_release flash_debug
+  CC "-Os"
+  CX "-Os"
+  )
+
+mcux_add_armgcc_configuration(
+  TARGETS flash_release flash_debug
+  CC "-O3"
+  CX "-O3"
+  )
 
 mcux_add_armgcc_linker_script(
     TARGETS flash_debug flash_release

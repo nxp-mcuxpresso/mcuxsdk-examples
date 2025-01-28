@@ -31,7 +31,7 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
-#include "board_init.h"
+#include "app.h"
 
 /* MPP includes */
 #include "mpp_api.h"

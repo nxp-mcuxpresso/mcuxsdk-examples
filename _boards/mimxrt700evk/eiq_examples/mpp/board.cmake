@@ -6,16 +6,17 @@ mcux_add_include(
 )
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp
-    SOURCES src/pin_mux.c
-            src/hardware_init.c
-            src/clock_config.c
-            src/utick_config.c
-            inc/pin_mux.h
-            inc/app.h
-            inc/utick_config.h
-            inc/FreeRTOSConfig.h
-            inc/clock_config.h
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES ${board_root}/${board}/eiq_examples/mpp/src/pin_mux.c
+            ${board_root}/${board}/eiq_examples/mpp/src/hardware_init.c
+            ${board_root}/${board}/eiq_examples/mpp/src/clock_config.c
+            ${board_root}/${board}/eiq_examples/mpp/src/utick_config.c
+            ${board_root}/${board}/eiq_examples/mpp/inc/pin_mux.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/app.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/utick_config.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/FreeRTOSConfig.h
+            ${board_root}/${board}/eiq_examples/mpp/inc/clock_config.h
+            middleware/eiq/mpp/hal/hal_${board}.c
 )
 
 mcux_add_macro(
@@ -25,7 +26,11 @@ mcux_add_macro(
         -DSDK_I2C_BASED_COMPONENT_USED=1 \
         -DSSD1963_DATA_WITDH=8 \
         -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8 \
-        -DCUSTOM_VGLITE_MEMORY_CONFIG=1"
+        -DCUSTOM_VGLITE_MEMORY_CONFIG=1 \
+        -D__FPU_PRESENT=1 \
+        -DARM_MATH_CM33"
+    CX "-DARM_MATH_CM33\
+        -D__FPU_PRESENT=1"
 )
 
 mcux_remove_armgcc_linker_script(
@@ -45,3 +50,4 @@ mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/mpp
     LINKER MIMXRT798Sxxxx_cm33_core0_flash.ld
 )
+
