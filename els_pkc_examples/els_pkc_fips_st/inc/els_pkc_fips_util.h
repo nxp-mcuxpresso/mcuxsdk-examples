@@ -9,41 +9,41 @@
 #define _ELS_PKC_FIPS_UTIL_H_
 
 #include "app.h"
-#include <fsl_device_registers.h>
-#include <fsl_debug_console.h>
-#include <board.h>
-#include <mcuxClAes.h>
-#include <mcuxClEls.h>
-#include <mcuxClSession.h>
-#include <mcuxClKey.h>
-#include <mcuxClCore_FunctionIdentifiers.h>
-#include <mcuxCsslFlowProtection.h>
-#include <mcuxClAes_Constants.h>
-#include <mcuxClHash_Constants.h>
-#include <mcuxClEls_Hash.h>
-#include <mcuxClEls_KeyManagement.h>
-#include <mcuxClEls_Rng.h>
-#include <mcuxClAes.h>
-#include <mcuxClEls_Ecc.h>
-#include <mcuxClEls_Kdf.h>
-#include <mcuxClEls_Cipher.h>
-#include <mcuxClEls_Cmac.h>
-#include <mcuxClEls_Types.h>
-#include <mcuxClRandomModes.h>
-#include <mcuxClRandom.h>
-#include <mcuxClConfig.h>
-#include <mcuxClCore_Platform.h>
-#include <platform_specific_headers.h>
 #include "fsl_common.h"
 #include "mbedtls/bignum.h"
+#include "mbedtls/ecdh.h"
 #include "mbedtls/ecp.h"
+#include "mbedtls/entropy.h"
+#include "mbedtls/hkdf.h"
+#include "mbedtls/nist_kw.h"
+#include "md_wrap.h"
 #include "psa/crypto.h"
 #include "psa/crypto_values.h"
-#include "mbedtls/ecdh.h"
-#include "mbedtls/nist_kw.h"
-#include "mbedtls/entropy.h"
-#include "md_wrap.h"
-#include "mbedtls/hkdf.h"
+#include <board.h>
+#include <fsl_debug_console.h>
+#include <fsl_device_registers.h>
+#include <mcuxClAes.h>
+#include <mcuxClAes_Constants.h>
+#include <mcuxClConfig.h>
+#include <mcuxClCore_FunctionIdentifiers.h>
+#include <mcuxClCore_Platform.h>
+#include <mcuxClEls.h>
+#include <mcuxClEls_Cipher.h>
+#include <mcuxClEls_Cmac.h>
+#include <mcuxClEls_Ecc.h>
+#include <mcuxClEls_Hash.h>
+#include <mcuxClEls_Kdf.h>
+#include <mcuxClEls_KeyManagement.h>
+#include <mcuxClEls_Rng.h>
+#include <mcuxClEls_Types.h>
+#include <mcuxClHash_Constants.h>
+#include <mcuxClKey.h>
+#include <mcuxClRandom.h>
+#include <mcuxClRandomModes.h>
+#include <mcuxClSession.h>
+#include <mcuxClToolchain.h>
+#include <mcuxCsslFlowProtection.h>
+#include <platform_specific_headers.h>
 
 /*******************************************************************************
  * Definitions
@@ -62,26 +62,26 @@
 #define FIPS_ALL_TESTS (1ULL << 0ULL)
 
 /* AES */
-#define FIPS_AES_CBC_128  (1ULL << 1ULL)
-#define FIPS_AES_CBC_192  (1ULL << 2ULL)
-#define FIPS_AES_CBC_256  (1ULL << 3ULL)
-#define FIPS_AES_ECB_128  (1ULL << 4ULL)
-#define FIPS_AES_ECB_192  (1ULL << 5ULL)
-#define FIPS_AES_ECB_256  (1ULL << 6ULL)
-#define FIPS_AES_CTR_128  (1ULL << 7ULL)
-#define FIPS_AES_CTR_192  (1ULL << 8ULL)
-#define FIPS_AES_CTR_256  (1ULL << 9ULL)
-#define FIPS_AES_GCM_128  (1ULL << 10ULL)
-#define FIPS_AES_GCM_192  (1ULL << 11ULL)
-#define FIPS_AES_GCM_256  (1ULL << 12ULL)
-#define FIPS_AES_CCM_128  (1ULL << 13ULL)
-#define FIPS_AES_CCM_256  (1ULL << 14ULL)
+#define FIPS_AES_CBC_128 (1ULL << 1ULL)
+#define FIPS_AES_CBC_192 (1ULL << 2ULL)
+#define FIPS_AES_CBC_256 (1ULL << 3ULL)
+#define FIPS_AES_ECB_128 (1ULL << 4ULL)
+#define FIPS_AES_ECB_192 (1ULL << 5ULL)
+#define FIPS_AES_ECB_256 (1ULL << 6ULL)
+#define FIPS_AES_CTR_128 (1ULL << 7ULL)
+#define FIPS_AES_CTR_192 (1ULL << 8ULL)
+#define FIPS_AES_CTR_256 (1ULL << 9ULL)
+#define FIPS_AES_GCM_128 (1ULL << 10ULL)
+#define FIPS_AES_GCM_192 (1ULL << 11ULL)
+#define FIPS_AES_GCM_256 (1ULL << 12ULL)
+#define FIPS_AES_CCM_128 (1ULL << 13ULL)
+#define FIPS_AES_CCM_256 (1ULL << 14ULL)
 #define FIPS_AES_CMAC_128 (1ULL << 15ULL)
 #define FIPS_AES_CMAC_256 (1ULL << 16ULL)
 
 /* KDF */
 #define FIPS_CKDF_SP800108 (1ULL << 17ULL)
-#define FIPS_HKDF_RFC5869  (1ULL << 18ULL)
+#define FIPS_HKDF_RFC5869 (1ULL << 18ULL)
 #define FIPS_HKDF_SP80056C (1ULL << 19ULL)
 
 /* DRBG */
@@ -89,13 +89,13 @@
 #define FIPS_ECB_DRBG (1ULL << 21ULL)
 
 /* ECC, ECDH */
-#define FIPS_EDDSA           (1ULL << 22ULL)
-#define FIPS_ECDSA_256P      (1ULL << 23ULL)
-#define FIPS_ECDSA_384P      (1ULL << 24ULL)
-#define FIPS_ECDSA_521P      (1ULL << 25ULL)
-#define FIPS_ECDH256P        (1ULL << 26ULL)
-#define FIPS_ECDH384P        (1ULL << 27ULL)
-#define FIPS_ECDH521P        (1ULL << 28ULL)
+#define FIPS_EDDSA (1ULL << 22ULL)
+#define FIPS_ECDSA_256P (1ULL << 23ULL)
+#define FIPS_ECDSA_384P (1ULL << 24ULL)
+#define FIPS_ECDSA_521P (1ULL << 25ULL)
+#define FIPS_ECDH256P (1ULL << 26ULL)
+#define FIPS_ECDH384P (1ULL << 27ULL)
+#define FIPS_ECDH521P (1ULL << 28ULL)
 #define FIPS_ECC_KEYGEN_256P (1ULL << 29ULL)
 #define FIPS_ECC_KEYGEN_384P (1ULL << 30ULL)
 #define FIPS_ECC_KEYGEN_521P (1ULL << 31ULL)
@@ -104,9 +104,9 @@
 #define FIPS_RSA_PKCS15_2048 (1ULL << 32ULL)
 #define FIPS_RSA_PKCS15_3072 (1ULL << 33ULL)
 #define FIPS_RSA_PKCS15_4096 (1ULL << 34ULL)
-#define FIPS_RSA_PSS_2048    (1ULL << 35ULL)
-#define FIPS_RSA_PSS_3072    (1ULL << 36ULL)
-#define FIPS_RSA_PSS_4096    (1ULL << 37ULL)
+#define FIPS_RSA_PSS_2048 (1ULL << 35ULL)
+#define FIPS_RSA_PSS_3072 (1ULL << 36ULL)
+#define FIPS_RSA_PSS_4096 (1ULL << 37ULL)
 
 /* HMAC */
 #define FIPS_HMAC_SHA224 (1ULL << 38ULL)
@@ -121,72 +121,64 @@
 #define FIPS_SHA512 (1ULL << 45ULL)
 
 /* Import blob defines */
-#define STATUS_SUCCESS       0
+#define STATUS_SUCCESS 0
 #define STATUS_ERROR_GENERIC 1
 
 #define AES_BLOCK_SIZE 16U
 
 #define ELS_BLOB_METADATA_SIZE 8U
-#define MAX_ELS_KEY_SIZE       32U
-#define ELS_WRAP_OVERHEAD      8U
+#define MAX_ELS_KEY_SIZE 32U
+#define ELS_WRAP_OVERHEAD 8U
 
 #define FUNCTION_NAME_MAX_SIZE 50U
 
-#define PRINTF_SET_COLOR(color) PRINTF("\33[%dm", (color))
-
 /* Allocate els_pkc session */
-#define ALLOCATE_AND_INITIALIZE_SESSION(session, cpu_wa_length, pkc_wa_length)                                 \
-    uint32_t cpu_wa_buffer[(cpu_wa_length)];                                                                   \
-    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                                                          \
-        si_status, token,                                                                                      \
-        mcuxClSession_init(/* mcuxClSession_Handle_t session:     */ (session),                                \
-                           /* uint32_t * const cpuWaBuffer:       */ cpu_wa_buffer,                            \
-                           /* uint32_t cpuWaSize:                 */ (cpu_wa_length),                          \
-                           /* uint32_t * const pkcWaBuffer:       */ (uint32_t *)PKC_RAM_ADDR,                 \
-                           /* uint32_t pkcWaSize:                 */ (pkc_wa_length)));                        \
-    /* mcuxClSession_init is a flow-protected function: Check the protection token and the return value */     \
-    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != token) || (MCUXCLSESSION_STATUS_OK != si_status)) \
-    {                                                                                                          \
-        return STATUS_ERROR_GENERIC;                                                                           \
-    }                                                                                                          \
-    MCUX_CSSL_FP_FUNCTION_CALL_END();
+#define ALLOCATE_AND_INITIALIZE_SESSION(session, cpu_wa_length, pkc_wa_length) \
+  uint32_t cpu_wa_buffer[(cpu_wa_length)];                                     \
+  MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(                                            \
+      si_status, token,                                                        \
+      mcuxClSession_init((session), cpu_wa_buffer, (cpu_wa_length),            \
+                         (uint32_t *)PKC_RAM_ADDR, (pkc_wa_length)));          \
+  if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClSession_init) != token) ||           \
+      (MCUXCLSESSION_STATUS_OK != si_status)) {                                \
+    return STATUS_ERROR_GENERIC;                                               \
+  }                                                                            \
+  MCUX_CSSL_FP_FUNCTION_CALL_END()
 
 /* Defines for logging */
-#define CHECK_MBEDTLS_SUCCESS()        \
-    if (0 != ret)                      \
-    {                                  \
-        status = STATUS_ERROR_GENERIC; \
-    }
+#define CHECK_MBEDTLS_SUCCESS()                                                \
+  if (0 != ret) {                                                              \
+    status = STATUS_ERROR_GENERIC;                                             \
+  }
 
-#define PRINT_ARRAY(array, array_size)                                                           \
-    PRINTF("0x");                                                                                \
-    for (uint64_t print_array_index = 0U; print_array_index < (array_size); ++print_array_index) \
-    {                                                                                            \
-        PRINTF("%02X", (array[print_array_index]));                                              \
-    }                                                                                            \
-    PRINTF("\r\n");
+#define PRINT_ARRAY(array, array_size)                                         \
+  PRINTF("0x");                                                                \
+  for (uint64_t print_array_index = 0U; print_array_index < (array_size);      \
+       ++print_array_index) {                                                  \
+    PRINTF("%02X", (array[print_array_index]));                                \
+  }                                                                            \
+  PRINTF("\r\n");
 
-#define CHECK_STATUS_AND_LOG(code, function_name, test_type)                          \
-    if (strlen((function_name)) + strlen((test_type)) + 3U <= FUNCTION_NAME_MAX_SIZE) \
-    {                                                                                 \
-        if ((code) != STATUS_SUCCESS)                                                 \
-        {                                                                             \
-            char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                   \
-            (void)strcpy(tmp, (function_name));                                       \
-            PRINTF_SET_COLOR(RED_TERMINAL_COLOR);                                     \
-            PRINTF("  - [ERROR] %s FAIL\r\n",                                         \
-            strcat(strcat(tmp, " "), (test_type)));                                   \
-            PRINTF_SET_COLOR(DEFAULT_TERMINAL_COLOR);                                 \
-        }                                                                             \
-        else                                                                          \
-        {                                                                             \
-            char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                   \
-            (void)strcpy(tmp, (function_name));                                       \
-            PRINTF_SET_COLOR(GREEN_TERMINAL_COLOR);                                   \
-            PRINTF("  - %s SUCCESS\r\n", strcat(strcat(tmp, " "), (test_type)));      \
-            PRINTF_SET_COLOR(DEFAULT_TERMINAL_COLOR);                                 \
-        }                                                                             \
-    }
+#define PRINTF_SET_COLOR(color) PRINTF("\33[%dm", (color))
+
+#define CHECK_STATUS_AND_LOG(code, function_name, test_type)                   \
+  if (strlen((function_name)) + strlen((test_type)) + 3U <=                    \
+      FUNCTION_NAME_MAX_SIZE) {                                                \
+    if ((code) != STATUS_SUCCESS) {                                            \
+      char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                  \
+      (void)strcpy(tmp, (function_name));                                      \
+      PRINTF_SET_COLOR(RED_TERMINAL_COLOR);                                    \
+      PRINTF("  - [ERROR] %s FAIL\r\n",                                        \
+             strcat(strcat(tmp, " "), (test_type)));                           \
+      PRINTF_SET_COLOR(DEFAULT_TERMINAL_COLOR);                                \
+    } else {                                                                   \
+      char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                  \
+      (void)strcpy(tmp, (function_name));                                      \
+      PRINTF_SET_COLOR(GREEN_TERMINAL_COLOR);                                  \
+      PRINTF("  - %s SUCCESS\r\n", strcat(strcat(tmp, " "), (test_type)));     \
+      PRINTF_SET_COLOR(DEFAULT_TERMINAL_COLOR);                                \
+    }                                                                          \
+  }
 
 /*!
  * @brief Import plain key into els keystore.
@@ -229,7 +221,8 @@ mcuxClEls_KeyIndex_t els_get_free_keyslot(uint32_t required_keyslots);
  * @retval STATUS_SUCCESS If generation was successful.
  * @retval STATUS_ERROR_GENERIC If generation was unsuccessful.
  */
-status_t els_keygen(mcuxClEls_KeyIndex_t key_index, uint8_t *public_key, size_t *public_key_size);
+status_t els_keygen(mcuxClEls_KeyIndex_t key_index, uint8_t *public_key,
+                    size_t *public_key_size);
 
 /*!
  * @brief Initialize key and load.
@@ -245,15 +238,12 @@ status_t els_keygen(mcuxClEls_KeyIndex_t key_index, uint8_t *public_key, size_t 
  * @retval STATUS_ERROR_GENERIC If initialization was unsuccessful.
  */
 status_t cl_key_init_and_load(mcuxClSession_Handle_t session,
-                              mcuxClKey_Handle_t key,
-                              mcuxClKey_Type_t type,
-                              uint8_t *data,
-                              uint32_t key_data_length,
+                              mcuxClKey_Handle_t key, mcuxClKey_Type_t type,
+                              uint8_t *data, uint32_t key_data_length,
                               mcuxClEls_KeyProp_t *key_properties,
-                              uint32_t *dst,
-                              uint8_t key_loading_option);
+                              uint32_t *dst, uint8_t key_loading_option);
 /*!
- * @brief Initialize key and load.
+ * @brief Check if 2 arrays with same length are equal.
  *
  * @param x First array.
  * @param y Second array.
@@ -261,6 +251,7 @@ status_t cl_key_init_and_load(mcuxClSession_Handle_t session,
  * @retval true If the 2 arrays are equal.
  * @retval false If the 2 arrays are not equal.
  */
-bool assert_equal(const uint8_t *const x, const uint8_t *const y, uint32_t length);
+bool assert_equal(const uint8_t *const x, const uint8_t *const y,
+                  uint32_t length);
 
 #endif /* _ELS_PKC_FIPS_UTIL_H_ */

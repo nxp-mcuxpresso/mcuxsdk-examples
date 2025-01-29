@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -7,6 +7,7 @@
 
 #ifndef _ELS_PKC_BM_KEY_GEN_H_
 #define _ELS_PKC_BM_KEY_GEN_H_
+
 #include "els_pkc_benchmark_utils.h"
 #include <mcuxClEcc.h>
 #include <mcuxClPkc_Types.h>
@@ -26,7 +27,8 @@ void run_tests_key_gen();
  * @param data_from String "RAM" or "FLASH".
  * @param bit_length Bit length of algorithm (P and N).
  */
-void test_ecc_weier_key_gen(char *code_from, char *data_from, uint32_t bit_length);
+void test_ecc_weier_key_gen(char *code_from, char *data_from,
+                            uint32_t bit_length);
 
 /*!
  * @brief Function executing ECC key generation on Weier p-256/384/521.

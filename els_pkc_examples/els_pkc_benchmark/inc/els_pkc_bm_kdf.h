@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -7,10 +7,11 @@
 
 #ifndef _ELS_PKC_BM_KDF_H_
 #define _ELS_PKC_BM_KDF_H_
+
 #include "els_pkc_benchmark_utils.h"
-#include <mcuxClEls_Kdf.h>
-#include <mcuxClAes.h>
 #include <internal/mcuxClKey_Internal.h>
+#include <mcuxClAes.h>
+#include <mcuxClEls_Kdf.h>
 
 /*******************************************************************************
  * Definitions

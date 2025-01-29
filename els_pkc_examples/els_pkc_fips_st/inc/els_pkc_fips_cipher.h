@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -9,10 +9,10 @@
 #define _ELS_PKC_FIPS_CIPHER_H_
 
 #include "els_pkc_fips_util.h"
-#include <mcuxClCipherModes.h>
+#include <mcuxClAead.h>
 #include <mcuxClAeadModes.h>
 #include <mcuxClCipher.h>
-#include <mcuxClAead.h>
+#include <mcuxClCipherModes.h>
 
 /*******************************************************************************
  * Definitions

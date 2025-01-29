@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -10,8 +10,8 @@
 
 #include "els_pkc_fips_util.h"
 #include <mcuxClEcc.h>
-#include <mcuxClPkc_Types.h>
 #include <mcuxClEcc_ECDSA_Internal.h>
+#include <mcuxClPkc_Types.h>
 
 /*******************************************************************************
  * Definitions

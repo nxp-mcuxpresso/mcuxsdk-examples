@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -7,12 +7,13 @@
 
 #ifndef _ELS_PKC_BM_SYMMETRIC_H_
 #define _ELS_PKC_BM_SYMMETRIC_H_
+
 #include "els_pkc_benchmark_utils.h"
+#include <mcuxClAead.h>
 #include <mcuxClAeadModes.h>
-#include <mcuxClAes.h>         /* Interface to AES-related definitions and types */
-#include <mcuxClCipher.h>      /* Interface to the entire mcuxClCipher component */
-#include <mcuxClCipherModes.h> /* Interface to the entire mcuxClCipherModes component */
-#include <mcuxClAead.h>        /* Interface to the entire mcuxClAead component */
+#include <mcuxClAes.h>
+#include <mcuxClCipher.h>
+#include <mcuxClCipherModes.h>
 
 /*******************************************************************************
  * Definitions
@@ -31,16 +32,14 @@ void run_tests_symmetric(void);
  * taken from RAM or Flash.
  * @param a_result Struct for the algorithm result.
  * @param key_size Size of the key in bytes.
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
  * @retval MCUXCLEXAMPLE_STATUS_OK If error in algorithm happens.
  */
-bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
-                         uint32_t block_amount,
-                         char *data_from,
-                         algorithm_result *a_result,
-                         const uint16_t key_size,
-                         const bool cache_enable);
+bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode, uint32_t block_amount,
+                         char *data_from, algorithm_result *a_result,
+                         const uint16_t key_size, const bool cache_enable);
 
 /*!
  * @brief Wrapper function for executing an AEAD algorithm.
@@ -51,16 +50,14 @@ bool exec_cl_cipher_mode(mcuxClCipher_Mode_t mode,
  * taken from RAM or Flash.
  * @param a_result Struct for the algorithm result.
  * @param key_size Size of the key in bytes.
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  * @retval MCUXCLEXAMPLE_STATUS_ERROR If error in algorithm happens.
  * @retval MCUXCLEXAMPLE_STATUS_OK If algorithm succeeds.
  */
-bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
-                       uint32_t block_amount,
-                       char *data_from,
-                       algorithm_result *a_result,
-                       const uint16_t key_size,
-                       const bool cache_enable);
+bool exec_cl_aead_mode(mcuxClAead_Mode_t mode, uint32_t block_amount,
+                       char *data_from, algorithm_result *a_result,
+                       const uint16_t key_size, const bool cache_enable);
 
 /*!
  * @brief Performance test for CBC encryption.
@@ -69,10 +66,11 @@ bool exec_cl_aead_mode(mcuxClAead_Mode_t mode,
  * @param data_from String "RAM" or "FLASH".
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  */
-void test_aes_cbc(
-    char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
+void test_aes_cbc(char *code_from, char *data_from, uint32_t block_amount,
+                  const uint16_t key_size, const bool cache_enable);
 
 /*!
  * @brief Performance test for ECB encryption.
@@ -81,10 +79,11 @@ void test_aes_cbc(
  * @param data_from String "RAM" or "FLASH".
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  */
-void test_aes_ecb(
-    char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
+void test_aes_ecb(char *code_from, char *data_from, uint32_t block_amount,
+                  const uint16_t key_size, const bool cache_enable);
 
 /*!
  * @brief Performance test for CTR encryption.
@@ -93,10 +92,11 @@ void test_aes_ecb(
  * @param data_from String "RAM" or "FLASH".
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  */
-void test_aes_ctr(
-    char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
+void test_aes_ctr(char *code_from, char *data_from, uint32_t block_amount,
+                  const uint16_t key_size, const bool cache_enable);
 
 /*!
  * @brief Performance test for CCM AEAD.
@@ -105,10 +105,11 @@ void test_aes_ctr(
  * @param data_from String "RAM" or "FLASH".
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  */
-void test_aes_ccm(
-    char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
+void test_aes_ccm(char *code_from, char *data_from, uint32_t block_amount,
+                  const uint16_t key_size, const bool cache_enable);
 
 /*!
  * @brief Performance test for GCM AEAD.
@@ -117,9 +118,10 @@ void test_aes_ccm(
  * @param data_from String "RAM" or "FLASH".
  * @param block_amount Constant defining either SINGLE_BLOCK or MULTIPLE_BLOCKS.
  * @param key_size Size of the key in bytes.
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  */
-void test_aes_gcm(
-    char *code_from, char *data_from, uint32_t block_amount, const uint16_t key_size, const bool cache_enable);
+void test_aes_gcm(char *code_from, char *data_from, uint32_t block_amount,
+                  const uint16_t key_size, const bool cache_enable);
 
 #endif /* _ELS_PKC_BM_SYMMETRIC_H_ */

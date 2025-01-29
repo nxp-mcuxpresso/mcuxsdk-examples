@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -7,6 +7,7 @@
 
 #ifndef _ELS_PKC_BM_KWA_H_
 #define _ELS_PKC_BM_KWA_H_
+
 #include "els_pkc_benchmark_utils.h"
 #include <mcuxClExample_RFC3394_Helper.h>
 
@@ -43,7 +44,8 @@ bool exec_rfc3394_unwrap(char *data_from);
  *
  * @param code_from String "RAM" or "FLASH".
  * @param data_from String "RAM" or "FLASH".
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  */
 void test_rfc3394_wrap(char *code_from, char *data_from, bool cache_enable);
 
@@ -52,7 +54,8 @@ void test_rfc3394_wrap(char *code_from, char *data_from, bool cache_enable);
  *
  * @param code_from String "RAM" or "FLASH".
  * @param data_from String "RAM" or "FLASH".
- * @param cache_enable Specifies if run with same algorihtm was executed before or not (warm up run).
+ * @param cache_enable Specifies if run with same algorihtm was executed before
+ * or not (warm up run).
  */
 void test_rfc3394_unwrap(char *code_from, char *data_from, bool cache_enable);
 
