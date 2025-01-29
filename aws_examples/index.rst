@@ -9,4 +9,3 @@ aws_examples
 
    shadow_enet/readme.md
    shadow_wifi_nxp/readme.md
-   shadow_wifi_serial/readme.md

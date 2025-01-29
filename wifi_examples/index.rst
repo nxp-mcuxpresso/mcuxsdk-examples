@@ -13,8 +13,6 @@ wifi_examples
    wifi_httpsrv/readme.md
    wifi_ipv4_ipv6_echo/readme.md
    wifi_mqtt/readme.md
-   wifi_serial_demo/readme.md
-   wifi_serial_iperf3/readme.md
    wifi_setup/readme.md
    wifi_test_mode/readme.md
    wifi_webconfig/readme.md
