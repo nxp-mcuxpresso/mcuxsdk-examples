@@ -1004,27 +1004,36 @@ static void BleApp_ResetPeerDeviceInformation(deviceId_t peerDeviceId)
 ********************************************************************************** */
 static void BleApp_HandleConnection(deviceId_t peerDeviceId)
 {
-    appConnectionNumber++;
-    /* register device */
-    appPeerInformation[peerDeviceId].deviceId = peerDeviceId;
-    BleApp_SubscribeClientToService(peerDeviceId);
+    if (peerDeviceId < gAppMaxConnections_c)
+    {
+       appConnectionNumber++;
+       /* register device */
+       appPeerInformation[peerDeviceId].deviceId = peerDeviceId;
+       BleApp_SubscribeClientToService(peerDeviceId);
 
 #if defined(gAppUsePairing_d) && (gAppUsePairing_d == 1U)
-    /* if the device has already been bonded, consider it is paired */
-    (void)Gap_CheckIfBonded(appPeerInformation[peerDeviceId].deviceId, &appPeerInformation[peerDeviceId].isPaired, NULL);
+       /* if the device has already been bonded, consider it is paired */
+        (void)Gap_CheckIfBonded(appPeerInformation[peerDeviceId].deviceId, &appPeerInformation[peerDeviceId].isPaired, NULL);
 #endif /* gAppUsePairing_d */
 
-    /* start timeout timer */
-    (void)TM_InstallCallback((timer_handle_t)appPeerInformation[peerDeviceId].timeoutTimer, DisconnectTimerCallback, &appPeerInformation[peerDeviceId].deviceId);
-    (void)TM_Start((timer_handle_t)appPeerInformation[peerDeviceId].timeoutTimer, kTimerModeSetSecondTimer | kTimerModeLowPowerTimer, gAppConnectionTimeoutInSecs_c);
+        /* start timeout timer */
+        (void)TM_InstallCallback((timer_handle_t)appPeerInformation[peerDeviceId].timeoutTimer, DisconnectTimerCallback, &appPeerInformation[peerDeviceId].deviceId);
+        (void)TM_Start((timer_handle_t)appPeerInformation[peerDeviceId].timeoutTimer, kTimerModeSetSecondTimer | kTimerModeLowPowerTimer, gAppConnectionTimeoutInSecs_c);
 
 #if (gAppMaxConnections_c > 1)
-    BLEAPP_WRITE("Device ");
-    BLEAPP_WRITEDEC((uint32_t)appPeerInformation[peerDeviceId].deviceId);
-    BLEAPP_WRITE(" - Connected\r\n");
+        BLEAPP_WRITE("Device ");
+        BLEAPP_WRITEDEC((uint32_t)appPeerInformation[peerDeviceId].deviceId);
+        BLEAPP_WRITE(" - Connected\r\n");
 #else
-    BLEAPP_WRITE("Connected\r\n");
+        BLEAPP_WRITE("Connected\r\n");
 #endif
+    }
+    else
+    {
+        /* Should not happen as we do not support more connection than gAppMaxConnections_c */
+        BLEAPP_WRITE("Trying to connect to an invalid device\r\n");
+        assert(0);
+    }
 }
 
 /*! *********************************************************************************
@@ -1033,20 +1042,29 @@ static void BleApp_HandleConnection(deviceId_t peerDeviceId)
 ********************************************************************************** */
 static void BleApp_HandleDisconnection(deviceId_t peerDeviceId)
 {
-    appConnectionNumber--;
+    if (peerDeviceId < gAppMaxConnections_c)
+    {
+        appConnectionNumber--;
 
-    /* unregister device */
-    BleApp_UnsubscribeClientFromService(peerDeviceId);
-    /* reset peer device information */
-    BleApp_ResetPeerDeviceInformation(peerDeviceId);
+        /* unregister device */
+        BleApp_UnsubscribeClientFromService(peerDeviceId);
+        /* reset peer device information */
+        BleApp_ResetPeerDeviceInformation(peerDeviceId);
 
 #if (gAppMaxConnections_c > 1)
-    BLEAPP_WRITE("Device ");
-    BLEAPP_WRITEDEC((uint32_t)peerDeviceId);
-    BLEAPP_WRITE(" - Disconnected\r\n");
+        BLEAPP_WRITE("Device ");
+        BLEAPP_WRITEDEC((uint32_t)peerDeviceId);
+        BLEAPP_WRITE(" - Disconnected\r\n");
 #else
-    BLEAPP_WRITE("Disconnected\r\n");
+        BLEAPP_WRITE("Disconnected\r\n");
 #endif
+    }
+    else
+    {
+        /* Should not happen as we do not support more connection than gAppMaxConnections_c */
+        BLEAPP_WRITE("Trying to disconnect to an invalid device\r\n");
+        assert(0);
+    }
 }
 
 /*! *********************************************************************************
