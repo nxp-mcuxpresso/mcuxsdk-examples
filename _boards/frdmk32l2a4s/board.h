@@ -166,14 +166,6 @@
 #define LED_BLUE_TOGGLE() \
     GPIO_PortToggle(BOARD_LED_BLUE_GPIO, 1U << BOARD_LED_BLUE_GPIO_PIN) /*!< Toggle on target LED_BLUE */
 
-/* Serial MWM WIFI */
-#define BOARD_SERIAL_MWM_PORT_CLK_FREQ     CLOCK_GetIpFreq(kCLOCK_Lpuart0)
-#define BOARD_SERIAL_MWM_PORT              LPUART0
-#define BOARD_SERIAL_MWM_PORT_IRQn         LPUART0_IRQn
-#define BOARD_SERIAL_MWM_RST_GPIO          GPIOC
-#define BOARD_SERIAL_MWM_RST_PIN           13
-#define BOARD_SERIAL_MWM_RST_WRITE(output) GPIO_PinWrite(BOARD_SERIAL_MWM_RST_GPIO, BOARD_SERIAL_MWM_RST_PIN, output)
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

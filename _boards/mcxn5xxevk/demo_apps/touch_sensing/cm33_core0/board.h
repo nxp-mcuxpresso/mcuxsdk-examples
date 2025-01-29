@@ -201,12 +201,6 @@
 #define BOARD_LCD_DC_GPIO_PORT 0U
 #define BOARD_LCD_DC_GPIO_PIN  10U
 
-/* Serial MWM WIFI */
-#define BOARD_SERIAL_MWM_PORT_CLK_FREQ CLOCK_GetFlexCommClkFreq(2)
-#define BOARD_SERIAL_MWM_PORT          USART2
-#define BOARD_SERIAL_MWM_PORT_IRQn     FLEXCOMM2_IRQn
-#define BOARD_SERIAL_MWM_RST_WRITE(output)
-
 /*! @brief The EMVSIM SMARTCARD PHY configuration. */
 #define BOARD_SMARTCARD_MODULE                (EMVSIM0)      /*!< SMARTCARD communicational module instance */
 #define BOARD_SMARTCARD_MODULE_IRQ            (EMVSIM0_IRQn) /*!< SMARTCARD communicational module IRQ handler */

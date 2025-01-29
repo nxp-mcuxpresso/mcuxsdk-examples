@@ -193,16 +193,6 @@
 #define BOARD_TOUCH_INT_PORT     4
 #define BOARD_TOUCH_INT_PIN      0
 
-/* Serial MWM WIFI */
-#define BOARD_SERIAL_MWM_PORT_CLK_FREQ CLOCK_GetFlexCommClkFreq(4)
-#define BOARD_SERIAL_MWM_PORT          USART4
-#define BOARD_SERIAL_MWM_PORT_IRQn     FLEXCOMM4_IRQn
-#define BOARD_SERIAL_MWM_RST_GPIO      GPIO
-#define BOARD_SERIAL_MWM_RST_PORT      1
-#define BOARD_SERIAL_MWM_RST_PIN       22
-#define BOARD_SERIAL_MWM_RST_WRITE(output) \
-    GPIO_PinWrite(BOARD_SERIAL_MWM_RST_GPIO, BOARD_SERIAL_MWM_RST_PORT, BOARD_SERIAL_MWM_RST_PIN, output)
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

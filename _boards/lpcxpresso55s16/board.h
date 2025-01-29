@@ -183,12 +183,6 @@
 #define BOARD_LCD_DC_GPIO_PORT 1U
 #define BOARD_LCD_DC_GPIO_PIN  5U
 
-/* Serial MWM WIFI */
-#define BOARD_SERIAL_MWM_PORT_CLK_FREQ CLOCK_GetFlexCommClkFreq(2)
-#define BOARD_SERIAL_MWM_PORT          USART2
-#define BOARD_SERIAL_MWM_PORT_IRQn     FLEXCOMM2_IRQn
-#define BOARD_SERIAL_MWM_RST_WRITE(output)
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

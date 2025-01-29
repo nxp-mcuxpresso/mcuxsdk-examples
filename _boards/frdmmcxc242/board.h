@@ -141,14 +141,6 @@
 /* Board accelerometer driver */
 #define BOARD_ACCEL_MMA
 
-/* Serial MWM Wi-Fi */
-#define BOARD_SERIAL_MWM_PORT_CLK_FREQ     CLOCK_GetFreq(kCLOCK_McgPeriphClk)
-#define BOARD_SERIAL_MWM_PORT              LPUART1
-#define BOARD_SERIAL_MWM_PORT_IRQn         LPUART1_IRQn
-#define BOARD_SERIAL_MWM_RST_GPIO          GPIOE
-#define BOARD_SERIAL_MWM_RST_PIN           30U
-#define BOARD_SERIAL_MWM_RST_WRITE(output) GPIO_PinWrite(BOARD_SERIAL_MWM_RST_GPIO, BOARD_SERIAL_MWM_RST_PIN, output)
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
