@@ -38,6 +38,11 @@ mcux_add_include(
              ../
 )
 
+mcux_add_mdk_configuration(
+    LD "--diag_suppress=6314 \
+        --diag_suppress=6329"
+)
+
 mcux_add_library(
     BASE_PATH ${APPLICATION_BINARY_DIR}
     LIBS "../freertos_mpu_s/${CONFIG_TOOLCHAIN}/${board}_freertos_mpu_s_CMSE_lib.o"
