@@ -12,4 +12,6 @@ els_pkc_benchmark:
       example_readme:
       - examples/els_pkc_examples/els_pkc_benchmark/readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: {}
+  boards:
+    rdrw612bga: []
+    frdmrw612: []

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -39,6 +39,8 @@ static uint8_t s_Key256[32U] = {0x53U, 0x47U, 0x24U, 0x76U, 0x32U, 0x78U, 0x64U,
 
 static uint8_t s_Iv[16U] = {0xF0U, 0xF1U, 0xF2U, 0xF3U, 0xF4U, 0xF5U, 0xF6U, 0xF7U,
                             0xF8U, 0xF9U, 0xFAU, 0xFBU, 0xFCU, 0xFDU, 0xFEU, 0xFFU};
+
+static uint8_t s_Tag[8U] = {0U};
 
 static uint8_t s_CipherKatCBC128[32U] = {0x7AU, 0x24U, 0x33U, 0x67U, 0x25U, 0x84U, 0x01U, 0xCEU, 0x47U, 0x76U, 0xADU,
                                          0xDFU, 0x7AU, 0x4EU, 0x04U, 0xFCU, 0x01U, 0xB0U, 0xDDU, 0xC2U, 0x8CU, 0xECU,
@@ -256,7 +258,6 @@ static status_t aes_aead_crypt(mcuxClAead_Mode_t mode,
 
     uint32_t output_size   = 0U;
     uint8_t output[64U]    = {0U};
-    uint8_t tag_output[8U] = {0U};
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result_enc, token_enc,
                                      mcuxClAead_crypt(
@@ -271,8 +272,8 @@ static status_t aes_aead_crypt(mcuxClAead_Mode_t mode,
                                          /* uint32_t adataSize,             */ sizeof(s_Adata),
                                          /* mcuxCl_Buffer_t pOut,           */ output,
                                          /* uint32_t * const pOutSize       */ &output_size,
-                                         /* mcuxCl_Buffer_t pTag,           */ tag_output,
-                                         /* uint32_t tagSize                */ sizeof(tag_output)));
+                                         /* mcuxCl_Buffer_t pTag,           */ s_Tag,
+                                         /* uint32_t tagSize                */ sizeof(s_Tag)));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClAead_crypt) != token_enc) || (MCUXCLAEAD_STATUS_OK != result_enc))
     {
         return STATUS_ERROR_GENERIC;

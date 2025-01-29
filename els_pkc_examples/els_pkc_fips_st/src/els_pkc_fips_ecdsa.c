@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -395,15 +395,12 @@ static status_t ecdsa_sign(uint32_t bit_length, uint8_t *message, uint8_t *priva
             return STATUS_ERROR_GENERIC;
     }
 
-    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t sign_mode;
-    sign_mode.generateOption = MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED;
-
     mcuxClEcc_Sign_Param_t sign_parameters = (mcuxClEcc_Sign_Param_t){.curveParam  = domain_params,
                                                                       .pHash       = message,
                                                                       .pPrivateKey = private_key,
                                                                       .pSignature  = signature_buffer,
                                                                       .optLen = mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                                                                      .pMode  = &sign_mode};
+                                                                      .pMode  = &mcuxClEcc_ECDSA_ProtocolDescriptor};
     /* Execute sign operation */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(session, &sign_parameters));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Sign) != sign_token))

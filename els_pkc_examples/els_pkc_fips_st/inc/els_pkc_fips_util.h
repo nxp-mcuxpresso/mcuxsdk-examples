@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -53,6 +53,10 @@
 #define WEIER256_BIT_LENGTH (256U)
 #define WEIER384_BIT_LENGTH (384U)
 #define WEIER521_BIT_LENGTH (521U)
+
+#define DEFAULT_TERMINAL_COLOR 0
+#define RED_TERMINAL_COLOR 31
+#define GREEN_TERMINAL_COLOR 32
 
 /* Execute all fips self tests */
 #define FIPS_ALL_TESTS (1ULL << 0ULL)
@@ -128,6 +132,8 @@
 
 #define FUNCTION_NAME_MAX_SIZE 50U
 
+#define PRINTF_SET_COLOR(color) PRINTF("\33[%dm", (color))
+
 /* Allocate els_pkc session */
 #define ALLOCATE_AND_INITIALIZE_SESSION(session, cpu_wa_length, pkc_wa_length)                                 \
     uint32_t cpu_wa_buffer[(cpu_wa_length)];                                                                   \
@@ -167,13 +173,18 @@
         {                                                                             \
             char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                   \
             (void)strcpy(tmp, (function_name));                                       \
-            PRINTF("  - [ERROR] %s FAIL\r\n", strcat(strcat(tmp, " "), (test_type))); \
+            PRINTF_SET_COLOR(RED_TERMINAL_COLOR);                                     \
+            PRINTF("  - [ERROR] %s FAIL\r\n",                                         \
+            strcat(strcat(tmp, " "), (test_type)));                                   \
+            PRINTF_SET_COLOR(DEFAULT_TERMINAL_COLOR);                                 \
         }                                                                             \
         else                                                                          \
         {                                                                             \
             char tmp[FUNCTION_NAME_MAX_SIZE] = {0};                                   \
             (void)strcpy(tmp, (function_name));                                       \
+            PRINTF_SET_COLOR(GREEN_TERMINAL_COLOR);                                   \
             PRINTF("  - %s SUCCESS\r\n", strcat(strcat(tmp, " "), (test_type)));      \
+            PRINTF_SET_COLOR(DEFAULT_TERMINAL_COLOR);                                 \
         }                                                                             \
     }
 

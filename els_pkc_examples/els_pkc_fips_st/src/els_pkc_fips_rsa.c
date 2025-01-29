@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -511,7 +511,7 @@ static status_t rsa_pss_sign(uint8_t *modulus,
     mcuxClSession_Handle_t session = &sessionDesc;
 
     ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE,
-                                    MCUXCLRSA_SIGN_PLAIN_PSSENCODE_4096_WACPU_SIZE);
+                                    MCUXCLRSA_SIGN_PLAIN_4096_WAPKC_SIZE);
 
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));

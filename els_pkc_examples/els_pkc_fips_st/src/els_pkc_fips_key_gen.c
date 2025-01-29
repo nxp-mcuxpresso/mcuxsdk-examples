@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -204,7 +204,7 @@ static status_t ecc_weier_key_gen(uint32_t bit_length)
 
     mcuxClSession_Descriptor_t session_desc;
     mcuxClSession_Handle_t session = &session_desc;
-    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_KEYGEN_WACPU_SIZE, MCUXCLECC_KEYGEN_WAPKC_SIZE_512);
+    ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLECC_KEYGEN_WACPU_SIZE, 2240);
 
     /* Initialize the RNG context, with maximum size */
     uint32_t rng_ctx[MCUXCLRANDOMMODES_CTR_DRBG_AES256_CONTEXT_SIZE_IN_WORDS] = {0U};
@@ -273,15 +273,12 @@ static status_t ecc_weier_key_gen(uint32_t bit_length)
     uint8_t signature_buffer[2U * 66U] = {0U};
 
     mcuxClEcc_Sign_Param_t sign_parameters;
-    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t sign_mode;
-    sign_mode.generateOption = MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED;
-
     sign_parameters = (mcuxClEcc_Sign_Param_t){.curveParam  = domain_params,
                                                .pHash       = s_DigestWeierKeygen,
                                                .pPrivateKey = private_key,
                                                .pSignature  = signature_buffer,
                                                .optLen      = mcuxClEcc_Sign_Param_optLen_Pack(64U),
-                                               .pMode       = &sign_mode};
+                                               .pMode       = &mcuxClEcc_ECDSA_ProtocolDescriptor};
 
     /* Execute ECC sign operation */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(session, &sign_parameters));

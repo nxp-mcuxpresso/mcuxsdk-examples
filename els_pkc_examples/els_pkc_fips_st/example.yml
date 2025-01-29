@@ -12,4 +12,6 @@ els_pkc_fips_st:
       example_readme:
       - examples/els_pkc_examples/els_pkc_fips_st/readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: null
+  boards:
+    rdrw612bga: []
+    frdmrw612: []

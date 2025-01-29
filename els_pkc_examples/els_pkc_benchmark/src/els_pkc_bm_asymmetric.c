@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDx-License-Identifier: BSD-3-Clause
@@ -638,7 +638,7 @@ bool exec_rsa_sign_pss_sha(char *data_from, uint32_t m_length, signature_algorit
     mcuxClSession_Handle_t session = &sessionDesc;
 
     MCUXCLEXAMPLE_ALLOCATE_AND_INITIALIZE_SESSION(session, MCUXCLRSA_SIGN_PLAIN_PSSENCODE_2048_WACPU_SIZE,
-                                                  MCUXCLRSA_SIGN_PLAIN_PSSENCODE_2048_WACPU_SIZE);
+                                                  MCUXCLRSA_SIGN_PLAIN_2048_WAPKC_SIZE);
 
     /* Initialize the PRNG */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(prngInit_result, prngInit_token, mcuxClRandom_ncInit(session));
@@ -1068,10 +1068,7 @@ bool exec_weier_ecc_generate_signature(char *data_from, uint32_t m_length, uint3
     /* Generate signature                                                     */
     /**************************************************************************/
     mcuxClEcc_Sign_Param_t parameters = get_param_sign(bit_length, domain_param, data_from_ram, m_length);
-
-    mcuxClEcc_ECDSA_SignatureProtocolDescriptor_t descriptor;
-    descriptor.generateOption = MCUXCLECC_ECDSA_SIGNATURE_GENERATE_RANDOMIZED;
-    parameters.pMode          = &descriptor;
+    parameters.pMode          = &mcuxClEcc_ECDSA_ProtocolDescriptor;
 
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(sign_result, sign_token, mcuxClEcc_Sign(pSession, &parameters));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEcc_Sign) != sign_token))
