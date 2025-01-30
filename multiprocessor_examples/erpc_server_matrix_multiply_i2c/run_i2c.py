@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # Copyright (c) 2021 Freescale Semiconductor, Inc.
-# All rights reserved.
+# Copyright 2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -15,7 +15,7 @@ import serial.tools.list_ports as list_ports
 try:
     import erpc
 except ImportError:
-    print("Could not import erpc.\r\nPlease install it first by running \"middleware\multicore\erpc\erpc_python\setup.py\" script.")
+    print("Could not import erpc.\r\nPlease install it first by running \"pip install .\" in folder \"middleware/multicore/erpc/erpc_python/\".")
     sys.exit()
 
 # eRPC service code
