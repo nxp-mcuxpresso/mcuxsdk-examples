@@ -71,9 +71,9 @@ OSA_SEMAPHORE_HANDLE_DEFINE(xSemaphoreScoAudio);
 
 static volatile uint8_t saiEnable= 0;
 static uint32_t txMic_index = 0U, rxMic_index = 0U;
-volatile atomic_t emptyMicBlock = BUFFER_NUMBER;
+atomic_t emptyMicBlock = BUFFER_NUMBER;
 static uint32_t txSpeaker_index = 0U, rxSpeaker_index = 0U;
-volatile atomic_t emptySpeakerBlock = BUFFER_NUMBER;
+atomic_t emptySpeakerBlock = BUFFER_NUMBER;
 static uint32_t rxSpeaker_test = 0U, rxMic_test = 0U;
 static volatile uint8_t s_ringTone = 0;
 static uint32_t cpy_index = 0U, tx_index = 0U;
