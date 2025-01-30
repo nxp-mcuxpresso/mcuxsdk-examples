@@ -1,7 +1,7 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/vglite/vglite_sdk/example/tiger_freertos/256x256_etc2_img.h
+    SOURCES middleware/vglite/vglite_sdk/example/decompress_etc2_freertos/256x256_etc2_img.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.c
             ${board_root}/${board}/vglite_examples/vglite_support/pin_mux.c
