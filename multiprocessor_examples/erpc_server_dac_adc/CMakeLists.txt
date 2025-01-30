@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -11,25 +11,16 @@ project(erpc_server_dac_adc LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
+include(${CMAKE_CURRENT_LIST_DIR}/service/erpc_dac_adc.cmake)
+
 include(${SdkRootDirPath}/${board_root}/${board}/multiprocessor_examples/erpc_server_dac_adc/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES main_server.c
-            service/erpc_dac_adc_server.cpp
-            service/erpc_dac_adc_server.hpp
-            service/erpc_dac_adc_common.h
-            service/erpc_dac_adc_common.hpp
-            service/erpc_dac_adc_interface.hpp
-            service/erpc_dac_adc_interface.cpp
-            service/c_erpc_dac_adc_server.h
-            service/c_erpc_dac_adc_server.cpp
-            service/erpc_dac_adc_server.hpp
-            service/erpc_dac_adc_server.cpp
 )
 
 mcux_add_include(
     INCLUDES .
-             service/
 )
 
 mcux_add_linker_symbol(
