@@ -28,6 +28,7 @@ mcux_add_source(
             smac/source/*.h
             ieee_802_15_4/examples/connectivity_test/readme.txt
             docs/connectivity_test/CTACLIUG.pdf
+            docs/connectivity_test/UG10204-Connectivity-Test-Application-Getting-Started.pdf
 )
 
 mcux_add_configuration(
