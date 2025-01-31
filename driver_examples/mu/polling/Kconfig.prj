@@ -1,0 +1,16 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config MSG_LENGTH
+    int "How many message is used to test message sending"
+    range 1 32
+    default 32
+    help
+        type unsigned
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
