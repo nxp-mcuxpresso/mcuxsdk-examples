@@ -439,6 +439,134 @@ status_t test_sha_context_switching(void)
     return status;
 }
 
+status_t test_sha_context_export_import(void)
+{
+    status_t status              = kStatus_Fail;
+    sss_sscp_digest_t ctx_sha256 = {0};
+    sss_sscp_digest_t ctx_sha256_imported = {0};
+    uint8_t digest[64]           = {0};
+    size_t digest_length         = sizeof(digest);
+    uint8_t digest_blob[ELE_FEATURE_DIGEST_CONTEXT_BLOB_SIZE_IN_BYTES] = {0};
+    size_t blob_size = ELE_FEATURE_DIGEST_CONTEXT_BLOB_SIZE_IN_BYTES;
+
+    size_t example_hash_update_size = message_length / 2;
+
+    do
+    {
+        PRINTF("**** Export and Import digest context ****\r\n");
+
+        /* Initialize hash context */
+        PRINTF("Init context ");
+        status = sss_sscp_digest_context_init(&ctx_sha256, &sssSession, kAlgorithm_SSS_SHA256, kMode_SSS_Digest);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        PRINTF(OK_STRING);
+
+        /**** Init ****/
+
+        /* SHA256 digest init */
+        PRINTF("Init SHA256...");
+        status = sss_sscp_digest_init(&ctx_sha256);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        PRINTF(OK_STRING);
+
+        /**** Update ****/
+
+        /* SHA256 digest first update */
+        PRINTF("Update SHA256 with first %d bytes...", example_hash_update_size);
+        status = sss_sscp_digest_update(&ctx_sha256, (uint8_t *)&message[0], example_hash_update_size);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        PRINTF(OK_STRING);
+        /* Digest context export  */
+        PRINTF("Export digest context ");
+        status = sss_sscp_digest_export(&ctx_sha256, digest_blob, &blob_size);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        PRINTF(OK_STRING);
+        
+        /* Free context which  was used for first part of digest computing*/
+        status = sss_sscp_digest_context_free(&ctx_sha256);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        
+        /* Init context which will used for imported digest blob */
+        status = sss_sscp_digest_context_init(&ctx_sha256_imported, &sssSession, kAlgorithm_SSS_SHA256, kMode_SSS_Digest);
+        if (status != kStatus_SSS_Success)
+        {
+        return kStatus_Fail;
+        }
+        
+        /* Digest context import  */
+        PRINTF("Import digest context");
+        status = sss_sscp_digest_import(&ctx_sha256_imported, digest_blob, blob_size);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        PRINTF(OK_STRING);
+
+        /* SHA256 digest second update */
+        PRINTF("Update SHA256 with remaining %d bytes...", example_hash_update_size);
+        status = sss_sscp_digest_update(&ctx_sha256_imported, (uint8_t *)&message[example_hash_update_size],
+                                        example_hash_update_size);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        PRINTF(OK_STRING);
+        
+        /**** Finish and correctness check ****/
+       
+        /* SHA256 digest finish */
+        PRINTF("Finish SHA256...");
+        status = sss_sscp_digest_finish(&ctx_sha256_imported, digest, &digest_length);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+        PRINTF(OK_STRING);
+        
+        /* Check SHA256 digest correctness */
+        PRINTF("Check SHA256 digest...");
+        if (memcmp(sha256_expected, digest, ctx_sha256_imported.digestFullLen))
+        {
+            status = kStatus_Fail;
+            break;
+        }
+        PRINTF(OK_STRING);
+
+        /* Free context which  was used for second part of digest computing*/
+        status = sss_sscp_digest_context_free(&ctx_sha256_imported);
+        if (status != kStatus_SSS_Success)
+        {
+            break;
+        }
+
+        status = kStatus_Success;
+    } while (0);
+    
+
+    if (status != kStatus_Success)
+    {
+        PRINTF(ERROR_STRING);
+    }
+    PRINTF("\r\n");
+
+    return status;
+}
+                                     
 static status_t mac_transparent(sss_sscp_mac_t *ctx_cmac_transparent,
                                 sss_sscp_mac_t *ctx_hmac_transparent,
                                 sss_sscp_object_t *key_object_cmac,
@@ -739,14 +867,15 @@ int main(void)
      * 9.  Update the four digests with the second half of the message
      * 10. Finish the multi-part hash operations and check digest correctness
      * 11. Free the four separate hash contexts
-     * 12. Prepare opaque and transparent MAC key objects and initialize RNG
-     * 13. Set transparent keys for two of the MACs and initialize two MAC contexts
-     * 14. Generate and check MACs
-     * 13. Generate opaque keys for two MACs and initialize two additional MAC contexts
-     * 14. Generate MACs
-     * 15. Close all four MAC contexts, free key objects and close the RNG context
-     * 14. Close the key store
-     * 15. Close the EdgeLock session
+     * 12. Show how to export and import digest context
+     * 13. Prepare opaque and transparent MAC key objects and initialize RNG
+     * 14. Set transparent keys for two of the MACs and initialize two MAC contexts
+     * 15. Generate and check MACs
+     * 16. Generate opaque keys for two MACs and initialize two additional MAC contexts
+     * 17. Generate MACs
+     * 18. Close all four MAC contexts, free key objects and close the RNG context
+     * 19. Close the key store
+     * 20. Close the EdgeLock session
      * Note: This example does not close already opened contexts or objects in case of failed command.
      */
 
@@ -790,7 +919,14 @@ int main(void)
         {
             break;
         }
-
+        
+        /* Showcase digest with context export/import */
+        status = test_sha_context_export_import();
+        if (status != kStatus_Success)
+        {
+            break;
+        }
+     
         status = test_mac_one_go_many_contexts();
         if (status != kStatus_Success)
         {
