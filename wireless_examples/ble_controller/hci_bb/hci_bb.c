@@ -558,7 +558,7 @@ void main_task(uint32_t param)
 #ifdef HCI_IDENTIFY_DEV_OPCODE
         if(opcode == HCI_IDENTIFY_DEV_OPCODE)
         {
-            uint32_t nb_returns;
+            uint32_t nb_returns=0U;
             uint16_t event_len;
             uint8_t i = 0;
             uint8_t status = 0x00U;

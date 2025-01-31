@@ -3047,23 +3047,23 @@ bool_t CT_RFSwitchControl(ct_event_t evType, void* pAssociatedValue)
             bRFSwCtrl3State = ((BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO->PDOR & BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO_PIN_MASK) == BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_GPIO_PIN_MASK);
 
             /* Print Current RF Switch Mode */
-            if(bRFSwCtrl1State & !bRFSwCtrl2State & !bRFSwCtrl3State)
+            if(bRFSwCtrl1State & (!bRFSwCtrl2State) & (!bRFSwCtrl3State))
             {
                 Serial_Print(mAppSerId, "\rCurrent Mode: RF1 (SMA1)\n\r", gAllowToBlock_d);
             }
-            else if(bRFSwCtrl2State & !bRFSwCtrl1State & !bRFSwCtrl3State)
+            else if(bRFSwCtrl2State & (!bRFSwCtrl1State) & (!bRFSwCtrl3State))
             {
                 Serial_Print(mAppSerId, "\rCurrent Mode: RF2 (ANT_A)\n\r", gAllowToBlock_d);
             }
-            else if(bRFSwCtrl1State & bRFSwCtrl2State & !bRFSwCtrl3State)
+            else if(bRFSwCtrl1State & bRFSwCtrl2State & (!bRFSwCtrl3State))
             {
                 Serial_Print(mAppSerId, "\rCurrent Mode: RF3 (ANT_B)\n\r", gAllowToBlock_d);
             }
-            else if((!bRFSwCtrl1State & !bRFSwCtrl2State & bRFSwCtrl3State) || (!bRFSwCtrl1State & !bRFSwCtrl2State & !bRFSwCtrl3State))
+            else if((!bRFSwCtrl1State & (!bRFSwCtrl2State) & bRFSwCtrl3State) || ((!bRFSwCtrl1State) & (!bRFSwCtrl2State) & (!bRFSwCtrl3State)))
             {
                 Serial_Print(mAppSerId, "\rCurrent Mode: RF4 (SMA2)\n\r", gAllowToBlock_d);
             }
-            else if ((bRFSwCtrl1State & !bRFSwCtrl2State & bRFSwCtrl3State) || (!bRFSwCtrl1State & bRFSwCtrl2State & bRFSwCtrl3State))
+            else if ((bRFSwCtrl1State & (!bRFSwCtrl2State) & bRFSwCtrl3State) || ((!bRFSwCtrl1State) & bRFSwCtrl2State & bRFSwCtrl3State))
             {
                 Serial_Print(mAppSerId, "\rCurrent Mode: ALL OFF\n\r", gAllowToBlock_d);
             }
