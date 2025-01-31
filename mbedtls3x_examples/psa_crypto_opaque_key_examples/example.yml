@@ -29,3 +29,9 @@ psa_crypto_opaque_key_examples:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmrw612: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    rdrw612bga: []
