@@ -439,6 +439,7 @@ status_t test_sha_context_switching(void)
     return status;
 }
 
+#if defined(ELE_FEATURE_DIGEST_IMPORT) && (ELE_FEATURE_DIGEST_IMPORT == 1)
 status_t test_sha_context_export_import(void)
 {
     status_t status              = kStatus_Fail;
@@ -566,6 +567,7 @@ status_t test_sha_context_export_import(void)
 
     return status;
 }
+#endif /* ELE_FEATURE_DIGEST_IMPORT */
                                      
 static status_t mac_transparent(sss_sscp_mac_t *ctx_cmac_transparent,
                                 sss_sscp_mac_t *ctx_hmac_transparent,
@@ -919,14 +921,16 @@ int main(void)
         {
             break;
         }
-        
+
+#if defined(ELE_FEATURE_DIGEST_IMPORT) && (ELE_FEATURE_DIGEST_IMPORT == 1)        
         /* Showcase digest with context export/import */
         status = test_sha_context_export_import();
         if (status != kStatus_Success)
         {
             break;
         }
-     
+#endif /* ELE_FEATURE_DIGEST_IMPORT */    
+
         status = test_mac_one_go_many_contexts();
         if (status != kStatus_Success)
         {
