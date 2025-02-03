@@ -20,3 +20,8 @@ zigbee_coordinator_bm:
     - +armgcc@release
     - -iar@debug
     - -iar@release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
