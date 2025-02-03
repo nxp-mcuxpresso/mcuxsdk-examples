@@ -1,0 +1,21 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+el2go_blob_test:
+  section-type: application
+  contents:
+    meta_path: examples/el2go_examples/el2go_blob_test/el2go_blob_test
+    project-root-path: boards/${board}/el2go_examples/el2go_blob_test/el2go_blob_test
+    document:
+      name: el2go_blob_test
+      category: el2go_examples
+      brief: The EL2GO blob test application imports and verifies the usage of different
+        keyblobs
+      example_readme:
+      - examples/el2go_examples/el2go_blob_test/el2go_blob_test/readme.md
+  boards:
+    kw45b41zevk: []
+    kw45b41zloc: []
+    k32w148evk: []
+    frdmmcxw71: []
