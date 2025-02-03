@@ -43,7 +43,6 @@ mcux_add_source(
             app_start.c
             app_zb_stack_utils.c
             app_zcl_task.h
-            build_version.sh
             coordinator.zpscfg
             zcl_options.h
             zigbee_config.h
@@ -76,7 +75,6 @@ mcux_add_source(
             pdum_gen.h
             zps_gen.c
             zps_gen.h
-            version.h
 )
 
 mcux_add_macro(
@@ -120,13 +118,6 @@ add_custom_command(
                              -f ${ZPSCFG}
                              -o ${APPLICATION_BINARY_DIR}
                              -c $ENV{ARMGCC_DIR}
-)
-
-add_custom_command(
-        PRE_BUILD
-        OUTPUT
-        ${APPLICATION_BINARY_DIR}/version.h
-        COMMAND sh ${NXP_ZB_BASE}/examples/zigbee_coprocessor/src/build_version.sh ${SdkRootDirPath}
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
