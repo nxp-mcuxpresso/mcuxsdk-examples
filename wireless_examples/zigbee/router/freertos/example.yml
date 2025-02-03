@@ -57,3 +57,8 @@ zigbee_router_freertos:
     - +armgcc@release
     - -iar@debug
     - -iar@release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
