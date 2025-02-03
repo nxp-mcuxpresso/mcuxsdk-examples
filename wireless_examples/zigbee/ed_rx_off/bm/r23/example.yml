@@ -21,3 +21,8 @@ zigbee_ed_rx_off_bm_r23:
     - +armgcc@release
     - -iar@debug
     - -iar@release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
