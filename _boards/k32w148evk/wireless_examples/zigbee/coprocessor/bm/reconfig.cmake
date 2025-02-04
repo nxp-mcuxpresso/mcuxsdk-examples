@@ -82,6 +82,7 @@ mcux_add_configuration(
         -DOTA_ENCRYPTED\
         -DBUILD_OTA\
         -DBOARD_DEBUG_UART_BAUDRATE=1000000\
+        -DBOARD_DEBUG_UART_CLKSRC=kCLOCK_IpSrcFro192M\
         -DNCP_COPRO=1\
         -DMAC_TYPE_SOC=1\
         -DZB_COORD_DEVICE=1\
