@@ -510,7 +510,7 @@ status_t test_sha_context_export_import(void)
         }
         
         /* Digest context import  */
-        PRINTF("Import digest context");
+        PRINTF("Import digest context ");
         status = sss_sscp_digest_import(&ctx_sha256_imported, digest_blob, blob_size);
         if (status != kStatus_SSS_Success)
         {
