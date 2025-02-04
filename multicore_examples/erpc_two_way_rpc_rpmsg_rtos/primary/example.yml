@@ -117,11 +117,14 @@ erpc_two_way_rpc_rpmsg_rtos_primary_core:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     frdmk32l3a6@cm4: []
-    frdmmcxn947@cm33_core0: []
+    frdmmcxn947@cm33_core0:
+    - -armgcc@debug
     lpcxpresso55s69@cm33_core0:
     - -armgcc@debug
-    mcxn5xxevk@cm33_core0: []
-    mcxn9xxevk@cm33_core0: []
+    mcxn5xxevk@cm33_core0:
+    - -armgcc@debug
+    mcxn9xxevk@cm33_core0:
+    - -armgcc@debug
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []
     kw47loc@cm33_core0: []
