@@ -22,12 +22,13 @@ mcux_add_include(
 
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
-       -DPRINTF_ADVANCED_ENABLE=1"
+        -DPRINTF_ADVANCED_ENABLE=1\
+        -DSHELL_TASK_STACK_SIZE=2048"
 )
 
 mcux_add_linker_symbol(
     SYMBOLS "__stack_size__=2048\
-             __heap_size__=25600"
+             __heap_size__=35840"
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/lwip_examples/lwip_ipv4_ipv6_echo_enet_qos/freertos/reconfig.cmake OPTIONAL)

@@ -4,7 +4,7 @@
  * This file is based on \src\include\lwip\opt.h
  ******************************************************************************
  * Copyright (c) 2013-2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2018, 2022-2023 NXP
+ * Copyright 2016-2018, 2022-2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -98,7 +98,7 @@ void sys_mark_tcpip_thread(void);
  * a lot of data that needs to be copied, this should be set high.
  */
 #ifndef MEM_SIZE
-#define MEM_SIZE (22 * 1024)
+#define MEM_SIZE (12 * 1024)
 #endif
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
