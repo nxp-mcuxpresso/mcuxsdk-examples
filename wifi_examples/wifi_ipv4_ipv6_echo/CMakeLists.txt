@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -40,8 +40,9 @@ mcux_add_include(
 # Add additional configuration
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
-       -DPRINTF_ADVANCED_ENABLE=1\
-       -DSHELL_BUFFER_SIZE=160U"
+        -DPRINTF_ADVANCED_ENABLE=1\
+        -DSHELL_BUFFER_SIZE=160U\
+        -DSHELL_TASK_STACK_SIZE=3072"
 )
 mcux_add_iar_configuration(
 	CC "--dlib_config full\
