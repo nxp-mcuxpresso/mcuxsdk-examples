@@ -136,7 +136,7 @@ void BOARD_I2C_ReleaseBus(void)
     i2c_release_bus_delay();
 }
 
-void pint_intr_callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+void pint_intr_callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     g_ButtonPress = true;
 }
@@ -148,7 +148,8 @@ void BOARD_USB_AUDIO_KEYBOARD_Init(void)
     /* Initialize PINT */
     PINT_Init(PINT);
     /* Setup Pin Interrupt 0 for falling edge */
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge, pint_intr_callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge);
+    PINT_SetCallback(PINT, pint_intr_callback);
     NVIC_SetPriority(GPIO_INTA_IRQn, 2);
     EnableIRQ(GPIO_INTA_IRQn);
     /* Enable callbacks for PINT */

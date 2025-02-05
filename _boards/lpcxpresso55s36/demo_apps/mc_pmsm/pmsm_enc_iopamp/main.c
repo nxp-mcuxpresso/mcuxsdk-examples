@@ -1,7 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
- * All rights reserved.
+ * Copyright 2016-2021, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -58,7 +57,7 @@ static void BOARD_InitSysTick(void);
 static void DemoSpeedStimulator(void);
 static void DemoPositionStimulator(void);
 static void Application_Control_BL(void);
-void BOARD_SW3_Callback(pint_pin_int_t pintr, uint32_t pmatch_status);
+void BOARD_SW3_Callback(pint_pin_int_t pintr, pint_status_t *status);
 
 /*******************************************************************************
  * Variables
@@ -456,7 +455,7 @@ static void BOARD_InitSysTick(void)
  *
  *@return     none
  */
-void BOARD_SW3_Callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+void BOARD_SW3_Callback(pint_pin_int_t pintr, pint_status_t *status)
 {
   if (bDemoModeSpeed)
   {

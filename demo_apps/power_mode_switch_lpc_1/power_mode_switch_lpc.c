@@ -31,7 +31,7 @@ uint32_t g_currentPowerMode;
  ******************************************************************************/
 static uint32_t APP_GetUserSelection(void);
 static void APP_InitWakeupPin(void);
-static void pint_intr_callback(pint_pin_int_t pintr, uint32_t pmatch_status);
+static void pint_intr_callback(pint_pin_int_t pintr, pint_status_t *status);
 
 /*******************************************************************************
  * Code
@@ -123,7 +123,8 @@ static void APP_InitWakeupPin(void)
 
     /* Configure the interrupt for SW pin. */
     PINT_Init(PINT);
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge, pint_intr_callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge);
+    PINT_SetCallback(PINT, pint_intr_callback);
     PINT_EnableCallback(PINT); /* Enable callbacks for PINT */
 
     /* Enable wakeup for PinInt0. */
@@ -145,7 +146,7 @@ static void APP_InitWakeupPin(void)
 /*
  * Callback function when wakeup key is pressed.
  */
-static void pint_intr_callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+static void pint_intr_callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     PRINTF("Pin event occurs\r\n");
 }

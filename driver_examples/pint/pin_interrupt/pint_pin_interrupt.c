@@ -56,7 +56,7 @@ int main(void)
 
 #if (defined(PINT_USE_LEGACY_CALLBACK) && (PINT_USE_LEGACY_CALLBACK == 0))
     PINT_SetCallback(EXAMPLE_PINT_BASE, pint_intr_callback);
-#else
+#endif
 
     /* Setup Pin Interrupt 0 for rising edge */
 #if (defined(PINT_USE_LEGACY_CALLBACK) && PINT_USE_LEGACY_CALLBACK)

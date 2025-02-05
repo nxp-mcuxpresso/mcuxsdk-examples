@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2021, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,7 +15,7 @@
 /*${header:end}*/
 
 /*${function:start}*/
-void EXAMPLE_PinIntHandler(pint_pin_int_t pintr, uint32_t pmatch_status)
+void EXAMPLE_PinIntHandler(pint_pin_int_t pintr, pint_status_t *status)
 {
     APP_ACCEL_IntHandler();
 }

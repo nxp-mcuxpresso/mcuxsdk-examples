@@ -1,7 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
- * All rights reserved.
+ * Copyright 2016-2021, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -321,7 +320,7 @@ static void BOARD_Init(void)
  *
  * @return  none
  */
-static void DemoButtonIsr(pint_pin_int_t pintr, uint32_t pmatch_status)
+static void DemoButtonIsr(pint_pin_int_t pintr, pint_status_t *status)
 {
     /* Proceed only if pressing longer than timeout */
     if (ui32ButtonFilter > 200)
@@ -363,7 +362,8 @@ static void BOARD_InitGPIO(void)
     PINT_Init(PINT);
 
     /* Setup Pin Interrupt 1 for falling edge */
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt1, kPINT_PinIntEnableFallEdge, DemoButtonIsr);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt1, kPINT_PinIntEnableFallEdge);
+    PINT_SetCallback(PINT, DemoButtonIsr);
 
     /* Enable callbacks for PINT1 by Index */
     PINT_EnableCallbackByIndex(PINT, kPINT_PinInt1);

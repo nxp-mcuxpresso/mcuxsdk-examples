@@ -26,7 +26,7 @@ dma_channel_trigger_t s_channelTrigger = {
 /*${variable:end}*/
 
 /*${function:start}*/
-void PINT_Callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+void PINT_Callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     PRINTF("\r\n\r\nSW4 is pressed.");
 }
@@ -55,7 +55,8 @@ void DMA_HardwareTriggerConfig()
     /* Turnoff clock to inputmux to save power. Clock is only needed to make changes */
     INPUTMUX_Deinit(INPUTMUX);
 
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableRiseEdge, PINT_Callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableRiseEdge);
+    PINT_SetCallback(PINT, PINT_Callback);
 
     PINT_EnableCallbackByIndex(PINT, kPINT_PinInt0);
 

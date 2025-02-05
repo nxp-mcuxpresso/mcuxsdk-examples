@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2021, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -93,7 +92,7 @@ extern FMSTR_U8 FreeMASTER_TxPipe3[FREEMASTER_TX_PIPE_3_SIZE];
  * Callback functions
  **********************************************************************************************************************/
 /* INT_0 callback function for the PINT component */
-extern void BOARD_SW3_Callback(pint_pin_int_t pintr, uint32_t pmatch_status);
+extern void BOARD_SW3_Callback(pint_pin_int_t pintr, pint_status_t *status);
 
 /***********************************************************************************************************************
  * Initialization functions

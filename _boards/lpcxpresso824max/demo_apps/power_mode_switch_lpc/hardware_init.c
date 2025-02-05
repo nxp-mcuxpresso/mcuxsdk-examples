@@ -21,7 +21,7 @@
 /*
  * Callback function when wakeup key is pressed.
  */
-static void pint_intr_callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+static void pint_intr_callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     /* do nothing here */
 }
@@ -64,7 +64,8 @@ void DEMO_InitWakeupPin(void)
 
     /* Configure the interrupt for SW pin. */
     PINT_Init(PINT);
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge, pint_intr_callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge);
+    PINT_SetCallback(PINT, pint_intr_callback);
     PINT_EnableCallback(PINT); /* Enable callbacks for PINT */
 }
 

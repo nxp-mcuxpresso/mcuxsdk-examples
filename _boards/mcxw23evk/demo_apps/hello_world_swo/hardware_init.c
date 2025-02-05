@@ -36,7 +36,8 @@ void BOARD_InitKey(void)
     PINT_Init(PINT);
 
     /* Setup Pin Interrupt 0 for falling edge */
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge, pint_intr_callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge);
+    PINT_SetCallback(PINT, pint_intr_callback);
 
     /* Enable callbacks for PINT */
     PINT_EnableCallback(PINT);

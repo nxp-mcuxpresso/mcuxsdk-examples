@@ -17,7 +17,7 @@
 /*${function:start}*/
 extern volatile bool g_userPress;
 
-void pint_intr_callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+void pint_intr_callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     g_userPress = true;
 }
@@ -34,7 +34,8 @@ void BOARD_InitKey(void)
     PINT_Init(PINT);
 
     /* Setup Pin Interrupt 0 for rising edge */
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableRiseEdge, pint_intr_callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableRiseEdge);
+    PINT_SetCallback(PINT, pint_intr_callback);
 
     /* Enable callbacks for PINT0 by Index */
     PINT_EnableCallbackByIndex(PINT, kPINT_PinInt0);

@@ -100,7 +100,7 @@ void QEI_IRQHandler(void)
 /*!
  * @brief Call back for PINT Pin interrupt 0-7.
  */
-void pint_intr_callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+void pint_intr_callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     switch (code_mode_number++ % 4)
     {
@@ -156,7 +156,8 @@ int main(void)
     /* Initialize PINT */
     PINT_Init(PINT);
     /* Setup Pin Interrupt 1 for falling edge */
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt1, kPINT_PinIntEnableFallEdge, pint_intr_callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt1, kPINT_PinIntEnableFallEdge);
+    PINT_SetCallback(PINT, pint_intr_callback);
     /* Enable callback for PINT1 by Index */
     PINT_EnableCallbackByIndex(PINT, kPINT_PinInt1);
 

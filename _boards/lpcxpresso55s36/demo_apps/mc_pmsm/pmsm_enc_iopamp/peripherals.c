@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2021, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -180,7 +179,8 @@ static void PINT_init(void) {
   /* Interrupt vector PIN_INT0_IRQn priority settings in the NVIC. */
   NVIC_SetPriority(PINT_PINT_0_IRQN, PINT_PINT_0_IRQ_PRIORITY);
   /* PINT PINT.0 configuration */
-  PINT_PinInterruptConfig(PINT_PERIPHERAL, PINT_INT_0, kPINT_PinIntEnableFallEdge, BOARD_SW3_Callback);
+  PINT_PinInterruptConfig(PINT_PERIPHERAL, PINT_INT_0, kPINT_PinIntEnableFallEdge);
+  PINT_SetCallback(PINT_PERIPHERAL, BOARD_SW3_Callback);
   /* Enable PINT PINT.0 callback */
   PINT_EnableCallbackByIndex(PINT_PERIPHERAL, kPINT_PinInt0);
 }

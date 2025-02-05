@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2022, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,7 +22,7 @@ dma_channel_trigger_t s_channelTrigger = {
 /*${variable:end}*/
 
 /*${function:start}*/
-void PINT_Callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+void PINT_Callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     PRINTF("\r\n\r\nSW1 is pressed.");
 }
@@ -44,7 +43,8 @@ void DMA_HardwareTriggerConfig()
 
     SYSCON_AttachSignal(SYSCON, kPINT_PinInt4, kSYSCON_GpioPort0Pin12ToPintsel);
 
-    PINT_PinInterruptConfig(PINT, kPINT_PinInt4, kPINT_PinIntEnableRiseEdge, PINT_Callback);
+    PINT_PinInterruptConfig(PINT, kPINT_PinInt4, kPINT_PinIntEnableRiseEdge);
+    PINT_SetCallback(PINT, PINT_Callback);
 
     PINT_EnableCallbackByIndex(PINT, kPINT_PinInt4);
 

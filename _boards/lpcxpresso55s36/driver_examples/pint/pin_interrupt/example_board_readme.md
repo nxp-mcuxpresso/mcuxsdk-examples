@@ -32,21 +32,22 @@ Press corresponding switches to generate events
 
 2. This example configures "Pin Interrupt 0" to be invoked when SW3 switch is pressed by the user.
    The interrupt callback prints "PINT Pin Interrupt 0 event detected". "Pin Interrupt 1" is
-   is configured to be invoked when SW1 is pressed. The interrupt callback prints "PINT Pin Interrupt 
-   1 event detected". 
+   is configured to be invoked when SW1 is pressed. The interrupt callback prints "PINT Pin Interrupt
+   1 event detected".
 
 note:if need use secure pint,you just needs to modify base address.Find PINT baseaddr in source file,
-	 you need change it to SECPINT. everything else stays the same.Because of SECURE PINT device only 
+	 you need change it to SECPINT. everything else stays the same.Because of SECURE PINT device only
 	 support PORT0,so we only need to config secure pint interrupt 0.
 	 For example, the following
 	 PINT_Init(PINT);
-	 PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableRiseEdge, pint_intr_callback);
+	 PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableRiseEdge);
+	 PINT_SetCallback(PINT, pint_intr_callback);
 	 PINT_EnableCallbackByIndex(PINT, kPINT_PinInt0);
 	 Change the above three lines into the following:
 	 PINT_Init(SECPINT);
-	 PINT_PinInterruptConfig(SECPINT, kPINT_SecPinInt0, kPINT_PinIntEnableRiseEdge, pint_intr_callback);
+	 PINT_PinInterruptConfig(SECPINT, kPINT_SecPinInt0, kPINT_PinIntEnableRiseEdge);
+     PINT_SetCallback(SECPINT, pint_intr_callback);
 	 PINT_EnableCallbackByIndex(SECPINT, kPINT_SecPinInt0);
-	 
+
 	 After config secure pint device, you can see log output "The interrupt callback prints "PINT Pin Interrupt 8 event detected"
 	 by press SW4 button.
-	 

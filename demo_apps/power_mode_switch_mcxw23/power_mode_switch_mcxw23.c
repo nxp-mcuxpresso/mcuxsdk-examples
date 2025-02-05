@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 NXP
+ * Copyright 2022-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -414,7 +414,7 @@ static void ConfigureWwdtWakeUp(int ms)
     WWDT_Init(WWDT, &config);
 }
 
-void Pint_IRQHandler(pint_pin_int_t pintr, uint32_t pmatchStatus)
+void Pint_IRQHandler(pint_pin_int_t pintr, pint_status_t *status)
 {
 }
 
@@ -429,7 +429,8 @@ static void InitPint(bool init)
         INPUTMUX_Deinit(INPUTMUX);
 
         PINT_Init(PINT);
-        PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge, Pint_IRQHandler);
+        PINT_PinInterruptConfig(PINT, kPINT_PinInt0, kPINT_PinIntEnableFallEdge);
+        PINT_SetCallback(PINT, Pint_IRQHandler);
         PINT_EnableCallbackByIndex(PINT, kPINT_PinInt0);
     }
     else
