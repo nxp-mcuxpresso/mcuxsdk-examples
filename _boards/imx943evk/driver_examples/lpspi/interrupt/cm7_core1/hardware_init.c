@@ -41,5 +41,11 @@ void BOARD_InitHardware(void)
     HAL_ClockEnable(&hal_lpspiMstClkCfg);
     HAL_ClockSetRate(&hal_lpspiSlvClkCfg);
     HAL_ClockEnable(&hal_lpspiSlvClkCfg);
+
+    /* Route LPSPI8 of SoC to arduino interface */
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL3);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL3);
 }
 /*${function:end}*/

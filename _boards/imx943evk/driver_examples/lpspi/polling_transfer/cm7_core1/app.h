@@ -10,22 +10,22 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Master related */
-#define EXAMPLE_LPSPI_MASTER_BASEADDR (LPSPI3)
-#define EXAMPLE_LPSPI_MASTER_IRQN     (LPSPI3_IRQn)
+#define EXAMPLE_LPSPI_MASTER_BASEADDR (LPSPI8)
+#define EXAMPLE_LPSPI_MASTER_IRQN     (LPSPI8_IRQn)
 
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER (kLPSPI_MasterPcs0)
 
-#define EXAMPLE_LPSPI_MASTER_CLK_ID (hal_clock_lpspi3)
+#define EXAMPLE_LPSPI_MASTER_CLK_ID (hal_clock_lpspi8)
 
 /* Slave related */
-#define EXAMPLE_LPSPI_SLAVE_BASEADDR (LPSPI8)
-#define EXAMPLE_LPSPI_SLAVE_IRQN     (LPSPI8_IRQn)
+#define EXAMPLE_LPSPI_SLAVE_BASEADDR (LPSPI3)
+#define EXAMPLE_LPSPI_SLAVE_IRQN     (LPSPI3_IRQn)
 
 #define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER (kLPSPI_SlavePcs0)
 
-#define EXAMPLE_LPSPI_SLAVE_CLK_ID (hal_clock_lpspi8)
+#define EXAMPLE_LPSPI_SLAVE_CLK_ID (hal_clock_lpspi3)
 
 #define EXAMPLE_LPSPI_MASTER_CLOCK_FREQ HAL_ClockGetRate(EXAMPLE_LPSPI_MASTER_CLK_ID) 
 #define EXAMPLE_LPSPI_SLAVE_CLOCK_FREQ  HAL_ClockGetRate(EXAMPLE_LPSPI_SLAVE_CLK_ID)
