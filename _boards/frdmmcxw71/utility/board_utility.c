@@ -47,6 +47,7 @@ static void initAdcReference(lpadc_reference_voltage_source_t reference)
     mLpadcConfigStruct.enableAnalogPreliminary = true;
     mLpadcConfigStruct.referenceVoltageSource  = reference;
     mLpadcConfigStruct.conversionAverageMode   = kLPADC_ConversionAverage128;
+    mLpadcConfigStruct.FIFO1Watermark   = FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE - 1U;
     LPADC_Init(LPADC_BASE, &mLpadcConfigStruct);
 
     currentADCReference = reference;
@@ -85,6 +86,7 @@ void BOARD_InitAdc(void)
         mLpadcConfigStruct.enableAnalogPreliminary = true;
         mLpadcConfigStruct.referenceVoltageSource  = LPADC_REFERENCE_BATTERY;
         mLpadcConfigStruct.conversionAverageMode   = kLPADC_ConversionAverage128;
+        mLpadcConfigStruct.FIFO1Watermark   = FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE - 1U;
         LPADC_Init(LPADC_BASE, &mLpadcConfigStruct);
 
         currentADCReference = LPADC_REFERENCE_BATTERY;
@@ -166,6 +168,10 @@ void BOARD_AdcSwTrigger(uint32_t channel)
     LPADC_GetDefaultConvTriggerConfig(&mLpadcTriggerConfigStruct);
     mLpadcTriggerConfigStruct.targetCommandId       = LPADC_USER_CMDID;
     mLpadcTriggerConfigStruct.enableHardwareTrigger = false;
+    if (LPADC_TEMPEATURE_SENSOR_CHANNEL == channel)
+    {
+        mLpadcTriggerConfigStruct.channelAFIFOSelect = 1;
+    }
     LPADC_SetConvTriggerConfig(LPADC_BASE, 0U, &mLpadcTriggerConfigStruct); /* Configurate the trigger0. */
 
     LPADC_DoSoftwareTrigger(LPADC_BASE, 1U);                                /* 1U is trigger0 mask. */
@@ -194,12 +200,12 @@ float BOARD_GetTemperature(void)
             break;
         }
 
-        while (!LPADC_GetConvResult(LPADC_BASE, &mLpadcResultConfigStruct, 0U))
+        while (!LPADC_GetConvResult(LPADC_BASE, &mLpadcResultConfigStruct, 1U))
             ;
 
         Vbe1 = (mLpadcResultConfigStruct.convValue) >> g_LpadcResultShift;
 
-        while (!LPADC_GetConvResult(LPADC_BASE, &mLpadcResultConfigStruct, 0U))
+        while (!LPADC_GetConvResult(LPADC_BASE, &mLpadcResultConfigStruct, 1U))
             ;
 
         Vbe8 = (mLpadcResultConfigStruct.convValue) >> g_LpadcResultShift;
