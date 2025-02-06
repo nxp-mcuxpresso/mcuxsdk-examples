@@ -30,7 +30,9 @@ processor_version: 0.0.0
  * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
-    BOARD_InitPins();
+    BOARD_InitLPSPI3Pins();
+    BOARD_InitLPSPI8Pins();
+    BOARD_InitI2C6Pins();
 }
 
 /*
@@ -67,55 +69,70 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void) {
+void BOARD_InitLPSPI3Pins(void) {
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
 
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
 
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
 
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
+}
 
+void BOARD_InitLPSPI8Pins(void) {
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO12__LPSPI8_PCS0, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO12__LPSPI8_PCS0,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
 
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__LPSPI8_SIN, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__LPSPI8_SIN,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
 
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPSPI8_SOUT, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPSPI8_SOUT,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
 
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPSPI8_SCK, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPSPI8_SCK,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(63U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PU_MASK);
 }
+
+void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
+
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+}
+
 
 /***********************************************************************************************************************
  * EOF
