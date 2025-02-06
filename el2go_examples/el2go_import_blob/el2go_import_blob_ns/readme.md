@@ -13,12 +13,15 @@ Workspace structure:
   - This can be achieved via the [SPSDK](https://www.nxp.com/design/design-center/software/development-software/secure-provisioning-sdk-spsdk:SPSDK)
   - The following default flash location should be used to store the EdgeLock 2GO blobs:
     - **[RW61X]** `0x084B0000`
-    - **[MCXN]** `0x001C0000`
+	- **[MCX-N5XX-EVK]** `0x001C0000`
+	- **[MCX-N9XX-EVK]** `0x001C0000`
+	- **[FRDM-MCXN947]** `0x001C0000`
+	- **[FRDM-MCXN236]** `0x000C4000`
 
 ## Hardware requirements
 
-- FRDM-RW612, RD-RW61X-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 board
-- USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
+- FRDM-RW612, RD-RW61X-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK, FRDM-MCXN947 or FRDM-MCXN236 board
+- USB-C (FRDM-RW612, FRDM-MCXN947 or FRDM-MCXN236) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
 - Personal Computer
 
 ## Board settings

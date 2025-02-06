@@ -17,8 +17,8 @@ Workspace structure:
 
 ## Hardware requirements
 
-- FRDM-RW612, RD-RW61X-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 board
-- USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
+- FRDM-RW612, RD-RW61X-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 or FRDM-MCXN236 board
+- USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
 - Personal Computer
 
 ## Board settings
@@ -42,7 +42,7 @@ Workspace structure:
             ```
     - **[MCXN]** Memory mode:
         1. Create a device group in EdgeLock 2GO containing the desired blobs for your board
-        2. Provision the blobs to your board via the `el2go-host` app from SPSDK (set the `secure_objects_address` property of the config file to `0x001C0000`):
+        2. Provision the blobs to your board via the `el2go-host` app from SPSDK (set the `secure_objects_address` property of the config file to `0x001C0000` or '' for FRDM-MCXN236.):
             ```sh
             el2go-host provision-device -p [COM_PORT] --config [CONFIG_PATH] --workspace [WORKSPACE_PATH]
             ```
@@ -99,7 +99,7 @@ Workspace structure:
     - **[META]** Compile the *el2go_blob_test_ns* project with your desired toolchain using `--sysbuild`.
     - **[IDE]** First compile the *el2go_blob_test_s* project and then the *el2go_blob_test_ns* project.
 
-6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW61X-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
+6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW61X-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
 
 7.  Open a serial terminal with the following settings:
 
