@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022, 2024 NXP
+ * Copyright 2021-2022, 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,15 +15,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#ifndef I3C_MASTER_SLAVE_ADDR_7BIT
 #define I3C_MASTER_SLAVE_ADDR_7BIT 0x1E
-#endif
-#ifndef I3C_DATA_LENGTH
 #define I3C_DATA_LENGTH            32U
-#endif
-#ifndef EXAMPLE_I3C_HDR_SUPPORT
-#define EXAMPLE_I3C_HDR_SUPPORT    0U
-#endif
 
 #define I3C_PACKET_LENGTH          (I3C_DATA_LENGTH + 2U)
 
