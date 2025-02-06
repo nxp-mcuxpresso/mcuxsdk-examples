@@ -242,14 +242,6 @@ void BOARD_InitHardware(void)
         .rate = 250000000UL,
     };
 
-    /* mac5Clk(enetc2) 250MHz */
-    hal_clk_t hal_mac5Clk = {
-        .clk_id = hal_clock_mac5,
-        .pclk_id = hal_clock_syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
-        .rate = 24000000UL,
-    };
-
     hal_pwr_s_t pwrst = {
         .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_NETC,
         .st = hal_power_state_on,
