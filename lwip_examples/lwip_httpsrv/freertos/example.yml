@@ -257,17 +257,17 @@ lwip_httpsrv_freertos:
     - -mdk@debug
     - -mdk@release
     imx943evk@cm7_core1:
-    - +armgcc@debug
+    - -armgcc@debug
     - +armgcc@release
     - +iar@release
     - +iar@debug
     imx943evk@cm7_core0:
-    - +armgcc@debug
+    - -armgcc@debug
     - +armgcc@release
     - +iar@release
     - +iar@debug
     imx943evk@cm33_core1:
-    - +armgcc@debug
+    - -armgcc@debug
     - +armgcc@release
     - +iar@release
     - +iar@debug
