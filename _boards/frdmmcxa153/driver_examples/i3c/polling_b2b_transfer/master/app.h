@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,13 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_MASTER             I3C0
-#define EXAMPLE_I2C_BAUDRATE       100000
-#define EXAMPLE_I3C_OD_BAUDRATE    375000
-#define EXAMPLE_I3C_PP_BAUDRATE    750000
 #define I3C_MASTER_CLOCK_FREQUENCY CLOCK_GetI3CFClkFreq()
-#define I3C_MASTER_SLAVE_ADDR_7BIT 0x1E
-#define WAIT_TIME                  10000
-#define I3C_DATA_LENGTH            33
 /*${macro:end}*/
 
 /*******************************************************************************

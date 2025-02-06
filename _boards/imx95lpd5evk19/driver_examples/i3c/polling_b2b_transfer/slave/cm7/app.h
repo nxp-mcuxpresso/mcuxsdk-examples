@@ -1,6 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,9 +14,6 @@
 #define EXAMPLE_SLAVE              I3C1
 #define I3C_SLAVE_CLOCK_ROOT       hal_clock_i3c1
 #define I3C_SLAVE_CLOCK_FREQUENCY  HAL_ClockGetIpFreq(I3C_SLAVE_CLOCK_ROOT)
-#define I3C_TIME_OUT_INDEX         210000000
-#define I3C_MASTER_SLAVE_ADDR_7BIT 0x1EU
-#define I3C_DATA_LENGTH            34U
 /*${macro:end}*/
 
 /*******************************************************************************

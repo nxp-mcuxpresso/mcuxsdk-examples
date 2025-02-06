@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,13 +11,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_MASTER          I3C0
-#define EXAMPLE_I2C_BAUDRATE    100000
-#define EXAMPLE_I3C_OD_BAUDRATE 375000
-/* PP baudrate should be set equal to I3C FCLK dividing even number. */
-#define EXAMPLE_I3C_PP_BAUDRATE    750000
+#define EXAMPLE_MASTER             I3C0
 #define I3C_MASTER_CLOCK_FREQUENCY CLOCK_GetI3cClkFreq()
-#define WAIT_TIME                  100000U
 /*${macro:end}*/
 
 /*******************************************************************************

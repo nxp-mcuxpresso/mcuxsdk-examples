@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,8 +13,6 @@
 /*${macro:start}*/
 #define EXAMPLE_SLAVE              I3C0
 #define I3C_SLAVE_CLOCK_FREQUENCY  24000000
-#define I3C_MASTER_SLAVE_ADDR_7BIT 0x1EU
-#define I3C_DATA_LENGTH            33
 
 #define EXAMPLE_DMA                     DMA0
 #define EXAMPLE_I3C_TX_DMA_CHANNEL      (0U)
