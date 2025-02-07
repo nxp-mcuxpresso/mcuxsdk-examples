@@ -46,8 +46,8 @@ Select the panel in Kconfig "Panel Selection".
 
 When Package is used
 -------------
-To use Adafruit panel: define DEMO_PANEL as 0 in mcux_config.h.
-To use LCD-PAR-S035: define DEMO_PANEL as 1 in mcux_config.h.
+To use Adafruit panel: define DEMO_PANEL as 7 in mcux_config.h.
+To use LCD-PAR-S035: define DEMO_PANEL as 8 in mcux_config.h.
 
 Running the demo
 ===============

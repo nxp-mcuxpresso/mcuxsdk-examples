@@ -28,7 +28,7 @@ The project uses RK043FN66HS-CT6 panel by default, to use other panels:
 
 If Kconfig is used, select the panel in Kconfig "Panel Selection".
 
-If package is used, modify the mcux_config.h, change DEMO_PANEL to 0 use RK043FN02H-CT.
+If package is used, modify the mcux_config.h, change DEMO_PANEL to 9 use RK043FN02H-CT.
 
 
 Steps to configure the pixel format

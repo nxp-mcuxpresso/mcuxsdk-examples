@@ -38,7 +38,7 @@ When Kconfig is used
 Below setting is for kconfig, you can fix below settings in prj.conf under example folder
 For default panel, you do not need to change anything.
 For RK055AHD091(rm68200) panel:
-CONFIG_MCUX_PRJSEG_module.board.display_support.RK055AHD091=y
+CONFIG_DEMO_PANEL_RK055AHD091=y
 
 When package is used
 ----------------
