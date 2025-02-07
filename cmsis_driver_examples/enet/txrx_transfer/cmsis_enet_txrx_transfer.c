@@ -35,6 +35,7 @@
  * Variables
  ******************************************************************************/
 uint8_t g_frame[ENET_DATA_LENGTH + 14];
+uint8_t g_rxFrame[ENET_FRAME_MAX_FRAMELEN];
 volatile uint32_t g_testTxNum  = 0;
 #if APP_USER_DEFINED_MAC_ADDRESS
 uint8_t g_macAddr[6] = APP_MAC_ADDRESS;
@@ -58,22 +59,17 @@ void ENET_SignalEvent_t(uint32_t event)
         /* Get the Frame size */
         size = EXAMPLE_ENET.GetRxFrameSize();
         /* Call ENET_ReadFrame when there is a received frame. */
-        if (size != 0)
+        if ((size != 0) && (size <= sizeof(g_rxFrame)))
         {
-            /* Received valid frame. Deliver the rx buffer with the size equal to length. */
-            uint8_t *data = (uint8_t *)malloc(size);
-            if (data)
+            /* Received valid frame. Just read it out into a buffer. */
+            len = EXAMPLE_ENET.ReadFrame(&g_rxFrame[0], size);
+            if (size == len)
             {
-                len = EXAMPLE_ENET.ReadFrame(data, size);
-                if (size == len)
+                /* Increase the received frame numbers. */
+                if (g_rxIndex < ENET_EXAMPLE_LOOP_COUNT)
                 {
-                    /* Increase the received frame numbers. */
-                    if (g_rxIndex < ENET_EXAMPLE_LOOP_COUNT)
-                    {
-                        g_rxIndex++;
-                    }
+                    g_rxIndex++;
                 }
-                free(data);
             }
         }
     }
