@@ -103,7 +103,7 @@ static void APP_BuildBroadCastFrame(void)
 
 #if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
 /*! @brief Build Frame for single ring transmit. */
-static void APP_BuildBroadCastFrameSwtTag(void)
+static void APP_BuildBroadCastFrameSwtTag(uint8_t port)
 {
     netc_swt_tag_port_no_ts_t tag = {
         .comTag = {
@@ -114,7 +114,7 @@ static void APP_BuildBroadCastFrameSwtTag(void)
             .ipv = 0,
             .dr = 0,
             .swtId = 1,
-            .port = EXAMPLE_SWT_USED_PORT
+            .port = port
         }
     };
     uint32_t headerSize = 14U + sizeof(tag);
@@ -442,9 +442,7 @@ status_t APP_SWT_XferLoopBack(void)
     EP_MsixSetEntryMask(&g_ep_handle, EXAMPLE_TX_MSIX_ENTRY_IDX, false);
     EP_MsixSetEntryMask(&g_ep_handle, EXAMPLE_RX_MSIX_ENTRY_IDX, false);
 
-#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
-    APP_BuildBroadCastFrameSwtTag();
-#else
+#if !(defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG)
     APP_BuildBroadCastFrame();
 #endif
     rxFrameNum = 0;
@@ -470,6 +468,10 @@ status_t APP_SWT_XferLoopBack(void)
             i = ((i >= EXAMPLE_SWT_MAX_PORT_NUM) ? 0 : i);
             continue;
         }
+
+#if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
+        APP_BuildBroadCastFrameSwtTag(i);
+#endif
 
         txOver     = false;
 #if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
