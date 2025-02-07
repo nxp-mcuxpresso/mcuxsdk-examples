@@ -19,16 +19,7 @@ mcux_add_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/littlefs/example/littlefs_shell/littlefs_shell.c
-            examples/littlefs_examples/littlefs_shell/lfs_mflash.c
-            examples/littlefs_examples/littlefs_shell/lfs_mflash.h
-            ${board_root}/${board}/littlefs_examples/littlefs_shell_onchip_flash/peripherals.c
-            ${board_root}/${board}/littlefs_examples/littlefs_shell_onchip_flash/peripherals.h
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/littlefs/example/littlefs_shell
+    SOURCES examples/littlefs_examples/littlefs_shell/littlefs_shell.c
 )
 
 mcux_add_iar_configuration(
