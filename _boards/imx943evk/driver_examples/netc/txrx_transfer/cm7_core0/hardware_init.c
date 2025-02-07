@@ -21,6 +21,7 @@
 /* PHY operation. */
 static netc_mdio_handle_t s_emdio_handle;
 static phy_rtl8211f_resource_t s_phy_rtl8211f_resource;
+static phy_dp8384x_resource_t s_phy_dp8384x_resource;
 static uint8_t s_phy_addr[EXAMPLE_PORT_NUM] = EXAMPLE_PHY_ADDR;
 static phy_handle_t s_phy_handle[EXAMPLE_PORT_NUM];
 /*${variable:end}*/
@@ -214,8 +215,8 @@ void BOARD_InitHardware(void)
      * 0b0011..SGMII
      * 0b0100~0b1111..Reserved
      */
-    BLK_CTRL_NETCMIX->NETC_LINK_CFG0 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG0_MII_PROT(0x3U); /* SGMII */
-    BLK_CTRL_NETCMIX->NETC_LINK_CFG1 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG1_MII_PROT(0x3U); /* SGMII */
+    BLK_CTRL_NETCMIX->NETC_LINK_CFG0 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG0_MII_PROT(0x0U); /* MII */
+    BLK_CTRL_NETCMIX->NETC_LINK_CFG1 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG1_MII_PROT(0x0U); /* MII */
     BLK_CTRL_NETCMIX->NETC_LINK_CFG2 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG2_MII_PROT(0x2U); /* RGMII */
     BLK_CTRL_NETCMIX->NETC_LINK_CFG3 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG3_MII_PROT(0x2U); /* RGMII */
     BLK_CTRL_NETCMIX->NETC_LINK_CFG4 |= BLK_CTRL_NETCMIX_NETC_LINK_CFG4_MII_PROT(0x2U); /* RGMII */
@@ -271,6 +272,7 @@ status_t APP_PHY_Init(void)
 {
     status_t result            = kStatus_Success;
 
+    /* phyrtl8211f */
     phy_config_t phy8211Config = {
         .autoNeg   = true,
         .speed     = kPHY_Speed1000M,
@@ -283,22 +285,45 @@ status_t APP_PHY_Init(void)
     s_phy_rtl8211f_resource.read  = APP_EMDIORead;
     phy8211Config.resource = &s_phy_rtl8211f_resource;
 
-    for (int i = 0; i < EXAMPLE_PORT_NUM; i++) {
-        int swt_port_index = i - EXAMPLE_EP_NUM;
+    /* phydp8384x */
+    phy_config_t phy8384xConfig = {
+        .autoNeg   = true,
+        .speed     = kPHY_Speed100M,
+        .duplex    = kPHY_FullDuplex,
+        .enableEEE = false,
+        .ops       = &phydp8384x_ops,
+    };
 
-        if ((swt_port_index >= 0) &&
-            ((1U << swt_port_index) & EXAMPLE_SWT_USED_PORT_BITMAP) == 0U)
+    s_phy_dp8384x_resource.write = APP_EMDIOWrite;
+    s_phy_dp8384x_resource.read  = APP_EMDIORead;
+    phy8384xConfig.resource = &s_phy_dp8384x_resource.write;
+
+    for (int i = 0; i < EXAMPLE_PORT_NUM; i++) {
+	phy_config_t *phyConfig;
+
+        switch (i)
         {
-            continue;
+            case EXAMPLE_EP0_PORT:
+            case EXAMPLE_EP1_PORT:
+            case EXAMPLE_SWT_PORT2:
+                phyConfig = &phy8211Config;
+                break;
+            case EXAMPLE_SWT_PORT0:
+            case EXAMPLE_SWT_PORT1:
+                phyConfig = &phy8384xConfig;
+                break;
+            default:
+                assert(false);
+                break;
         }
 
-        phy8211Config.phyAddr  = s_phy_addr[i];
-        result = PHY_Init(&s_phy_handle[i], &phy8211Config);
+        phyConfig->phyAddr = s_phy_addr[i];
+        result = PHY_Init(&s_phy_handle[i], phyConfig);
         if (result != kStatus_Success)
         {
             return result;
         }
-        result = PHY_EnableLoopback(&s_phy_handle[i], kPHY_LocalLoop, phy8211Config.speed, true);
+        result = PHY_EnableLoopback(&s_phy_handle[i], kPHY_LocalLoop, phyConfig->speed, true);
         if (result != kStatus_Success)
         {
             return result;
@@ -321,6 +346,10 @@ status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port, netc_hw_mii_mode_t *mode,
         case EXAMPLE_EP1_PORT:
         case EXAMPLE_SWT_PORT2:
             *mode = kNETC_RgmiiMode;
+            break;
+        case EXAMPLE_SWT_PORT0:
+        case EXAMPLE_SWT_PORT1:
+            *mode = kNETC_MiiMode;
             break;
         default:
             assert(false);

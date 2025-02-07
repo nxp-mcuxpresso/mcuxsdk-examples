@@ -13,6 +13,7 @@
 #include "fsl_netc_tag.h"
 #include "fsl_netc_mdio.h"
 #include "fsl_phyrtl8211f.h"
+#include "fsl_phydp8384x.h"
 #include "fsl_msgintr.h"
 /*${header:end}*/
 
@@ -46,10 +47,15 @@
  *
  */
 
+/* Port used */
+#define EXAMPLE_EP0_PORT  0x00U
+#define EXAMPLE_EP1_PORT  0x01U
+#define EXAMPLE_SWT_PORT0 0x02U
+#define EXAMPLE_SWT_PORT1 0x03U
+#define EXAMPLE_SWT_PORT2 0x04U
+
 /* End-point port */
-#define EXAMPLE_EP_NUM        2U
-#define EXAMPLE_EP0_PORT      0x00U
-#define EXAMPLE_EP1_PORT      0x01U
+#define EXAMPLE_EP_NUM 2U
 
 #define EXAMPLE_EP_SI                      \
     {                                      \
@@ -57,24 +63,19 @@
     }
 
 /* Switch port */
-#define EXAMPLE_SWT_MAX_PORT_NUM   3U
-#define EXAMPLE_SWT_USED_PORT 0x2U
-#define EXAMPLE_SWT_USED_PORT_BITMAP (1U << EXAMPLE_SWT_USED_PORT)
-#define EXAMPLE_SWT_PSEUDO_PORT 0x3U
-#define EXAMPLE_SWT_PORT0 0x02U
-#define EXAMPLE_SWT_PORT1 0x03U
-#define EXAMPLE_SWT_PORT2 0x04U
+#define EXAMPLE_SWT_MAX_PORT_NUM     3U
+#define EXAMPLE_SWT_USED_PORT_BITMAP 0x7U
+#define EXAMPLE_SWT_PSEUDO_PORT      0x3U
+#define EXAMPLE_SWT_SI               kNETC_ENETC3PSI0
 
-#define EXAMPLE_SWT_SI kNETC_ENETC3PSI0
-
-/* PHY: EP0, EP1, SWT_PORT0(not enabled), SWT_PORT1(not enabled), SWT_PORT2 */
+/* PHY: EP0, EP1, SWT_PORT0, SWT_PORT1, SWT_PORT2 */
 #define EXAMPLE_PHY_ADDR \
     {                       \
-        0x6U, 0x7U, 0x0U, 0x0U, 0x5U        \
+        0x6U, 0x7U, 0x2U, 0x3U, 0x5U        \
     }
 
 /* MSGINTR */
-#define EXAMPLE_MSGINTR       MSGINTR2
+#define EXAMPLE_MSGINTR MSGINTR2
 
 /* Buffer desciptor configuration. */
 #define EXAMPLE_EP_RING_NUM          3U
