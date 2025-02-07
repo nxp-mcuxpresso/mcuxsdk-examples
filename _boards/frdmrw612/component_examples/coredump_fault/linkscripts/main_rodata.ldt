@@ -1,2 +1,0 @@
-		*(EXCLUDE_FILE(*fsl_flexspi.o *fsl_cache.o *flash_mcux_flexspi_nor.o *jesd216.o *memc_mcux_flexspi.o *device.o *zephyr_mcux_helper.o *clock_control_mcux_syscon.o *fsl_clock.o *flexspi_clock_setup.o) .rodata*)
-		*(EXCLUDE_FILE(*fsl_flexspi.o *fsl_cache.o *flash_mcux_flexspi_nor.o *jesd216.o *memc_mcux_flexspi.o *device.o *zephyr_mcux_helper.o *clock_control_mcux_syscon.o *fsl_clock.o *flexspi_clock_setup.o) .rodata)

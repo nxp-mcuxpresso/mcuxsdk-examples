@@ -21,8 +21,6 @@
 ** ###################################################################
 */
 
-
-
 /* Entry Point */
 ENTRY(Reset_Handler)
 
@@ -68,60 +66,36 @@ SECTIONS
   {
     . = ALIGN(4);
     *(EXCLUDE_FILE(
-      /* Exclude flash and frequently executed functions from XIP */
-      */flexspi_nor_flash_ops.c.obj
-      */fsl_flexspi.c.obj
-      */fsl_cache.c.obj
-      *flash_mcux_flexspi_nor.c.obj
-      *jesd216.c.obj
-      *memc_mcux_flexspi.c.obj
-      *device.c.obj
-      *zephyr_mcux_helper.c.obj
-      *clock_control_mcux_syscon.c.obj
-      *fsl_clock.c.obj
-      *flexspi_clock_setup.c.obj
+        /* Exclude flash and frequently executed functions from XIP */
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
+        */fsl_clock.c.obj
+        */fsl_cache.c.obj
+        */fsl_reset.c.obj
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
-        */flexspi_nor_flash_ops.c.obj
+        */mflash_drv.c.obj
         */fsl_flexspi.c.obj
+        */fsl_clock.c.obj
         */fsl_cache.c.obj
-        *flash_mcux_flexspi_nor.c.obj
-        *jesd216.c.obj
-        *memc_mcux_flexspi.c.obj
-        *device.c.obj
-        *zephyr_mcux_helper.c.obj
-        *clock_control_mcux_syscon.c.obj
-        *fsl_clock.c.obj
-        *flexspi_clock_setup.c.obj
+        */fsl_reset.c.obj
     ) .text*)                /* .text* sections (code) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
-        */flexspi_nor_flash_ops.c.obj
+        */mflash_drv.c.obj
         */fsl_flexspi.c.obj
+        */fsl_clock.c.obj
         */fsl_cache.c.obj
-        *flash_mcux_flexspi_nor.c.obj
-        *jesd216.c.obj
-        *memc_mcux_flexspi.c.obj
-        *device.c.obj
-        *zephyr_mcux_helper.c.obj
-        *clock_control_mcux_syscon.c.obj
-        *fsl_clock.c.obj
-        *flexspi_clock_setup.c.obj
+        */fsl_reset.c.obj
     ) .rodata)               /* .rodata sections (constants, strings, etc.) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
-        */flexspi_nor_flash_ops.c.obj
+        */mflash_drv.c.obj
         */fsl_flexspi.c.obj
+        */fsl_clock.c.obj
         */fsl_cache.c.obj
-        *flash_mcux_flexspi_nor.c.obj
-        *jesd216.c.obj
-        *memc_mcux_flexspi.c.obj
-        *device.c.obj
-        *zephyr_mcux_helper.c.obj
-        *clock_control_mcux_syscon.c.obj
-        *fsl_clock.c.obj
-        *flexspi_clock_setup.c.obj
+        */fsl_reset.c.obj
     ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
@@ -129,30 +103,6 @@ SECTIONS
     KEEP (*(.init))
     KEEP (*(.fini))
     . = ALIGN(4);
-  } > m_text
-
-  initlevel :
-  {
-     __init_start = .;
-     __init_EARLY_start = .; KEEP(*(SORT(.z_init_EARLY?_*))); KEEP(*(SORT(.z_init_EARLY??_*)));
-     __init_PRE_KERNEL_1_start = .; KEEP(*(SORT(.z_init_PRE_KERNEL_1?_*))); KEEP(*(SORT(.z_init_PRE_KERNEL_1??_*)));
-     __init_PRE_KERNEL_2_start = .; KEEP(*(SORT(.z_init_PRE_KERNEL_2?_*))); KEEP(*(SORT(.z_init_PRE_KERNEL_2??_*)));
-     __init_POST_KERNEL_start = .; KEEP(*(SORT(.z_init_POST_KERNEL?_*))); KEEP(*(SORT(.z_init_POST_KERNEL??_*)));
-     __init_APPLICATION_start = .; KEEP(*(SORT(.z_init_APPLICATION?_*))); KEEP(*(SORT(.z_init_APPLICATION??_*)));
-     __init_SMP_start = .; KEEP(*(SORT(.z_init_SMP?_*))); KEEP(*(SORT(.z_init_SMP??_*)));
-     __init_end = .;
-     __deferred_init_list_start = .;
-     KEEP(*(.z_deferred_init*))
-     __deferred_init_list_end = .;
-  } > m_text
-  device_area : SUBALIGN(4) { _device_list_start = .; KEEP(*(SORT(._device.static.*_?_*))); KEEP(*(SORT(._device.static.*_??_*))); _device_list_end = .; } > m_text
-
-
-  device_deps : ALIGN_WITH_INPUT
-  {
-     __device_deps_start = .;
-     KEEP(*(SORT(.__device_deps_pass2*)));
-     __device_deps_end = .;
   } > m_text
 
   .ARM.extab :
@@ -247,59 +197,24 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *flash_mcux_flexspi_nor.c.obj(.text .text* .rodata .rodata*)
-    *fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
-    *fsl_cache.c.obj(.text .text* .rodata .rodata*)
-    *fsl_clock.c.obj(.text .text* .rodata .rodata*)
-    *jesd216.c.obj(.text .text* .rodata .rodata*)
-    *memc_mcux_flexspi.c.obj(.text .text* .rodata .rodata*)
-    *device.c.obj(.text .text* .rodata .rodata*)
-    *zephyr_mcux_helper.c.obj(.text .text* .rodata .rodata*)
-    *clock_control_mcux_syscon.c.obj(.text .text* .rodata .rodata* RamFunction)
-    *flexspi_clock_setup.c.obj(.text .text* .rodata .rodata* RamFunction)
-    *(EXCLUDE_FILE(
-      */flash_mcux_flexspi_nor.c.obj
-      */fsl_flexspi.c.obj
-      */fsl_cache.c.obj
-      */fsl_clock.c.obj
-      */jesd216.c.obj
-      */memc_mcux_flexspi.c.obj
-      */device.c.obj
-      */zephyr_mcux_helper.c.obj
-      */clock_control_mcux_syscon.c.obj
-    ) .z_init_EARLY?_* .z_init_EARLY?_* .z_init_PRE_KERNEL_1?_* .z_init_PRE_KERNEL_1??_* ._device.static.*_?_* ._device.static.*_??_* .z_init_POST_KERNEL?_* .z_init_POST_KERNEL??_* .z_init_EARLY?_* .z_init_EARLY??_* .z_init_PRE_KERNEL_2?_* .z_init_PRE_KERNEL_2??_*)
     *(CodeQuickAccess)       /* CodeQuickAccess sections */
     *(DataQuickAccess)       /* DataQuickAccess sections */
+    /* Explicit placement of flash and frequently executed functions in RAM */
+    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
+    */fsl_clock.c.obj(.text .text* .rodata .rodata*)
+    */fsl_cache.c.obj(.text .text* .rodata .rodata*)
+    */fsl_reset.c.obj(.text .text* .rodata .rodata*)
+    _image_ram_start = .;
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
-    __device_states_start = .;
-    _image_ram_start = .;
-    KEEP(*(".z_devstate"));
-    KEEP(*(".z_devstate.*"));
     _image_ram_end = .;
-    __device_states_end = .;
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
 
   __DATA_END = __DATA_ROM + (__data_end__ - __data_start__);
-
-  /* Place holder for RAM function.
-   * By default CodeQuickAccess is placed in .data section, but if there's dedicated mem region
-   * allocated on code bus (SRAM address starts from 0x0), CodeQuickAccess can be inserted in
-   * .ram_function and the .ram_function can be located in the code bus region instead of m_data
-   * to get better performance. Remember to define __STARTUP_INITIALIZE_RAMFUNCTION macro to
-   * build startup_xx.S to ensure the RAM function copy from flash to RAM. */
-  .ram_function : AT(__DATA_END)
-  {
-    . = ALIGN(4);
-    __ram_function_start__ = .;
-    /* RAM function sections */
-    . = ALIGN(4);
-    __ram_function_end__ = .;
-  } > m_data
-
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
   _image_size = __DATA_END - __VECTOR_TABLE;
@@ -345,4 +260,3 @@ SECTIONS
 
   ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
 }
-
