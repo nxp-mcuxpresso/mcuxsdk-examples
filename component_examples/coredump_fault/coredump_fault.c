@@ -9,11 +9,6 @@
 #include "board.h"
 #include "app.h"
 
-#include "zephyr/drivers/flash.h"
-#include "zephyr/device.h"
-#include "zephyr/devicetree.h"
-
-
 #include "zephyr/debug/coredump.h"
 
 /*******************************************************************************
@@ -24,7 +19,6 @@
  * Prototypes
  ******************************************************************************/
 extern uint32_t fault_capture(uint32_t msp, uint32_t psp, uint32_t exc_return, struct arch_esf *ptrEsf);
-extern void genhal_init(void);
 void DEMO_TriggetUseFault(void);
 
 struct arch_esf esf;
@@ -66,9 +60,6 @@ int main(void)
 {
     /* Init board hardware. */
     BOARD_InitHardware();
-    
-    /* Init peripherals. */
-    genhal_init();
     
     if(BOARD_SoftwareResetAsserted())
     {

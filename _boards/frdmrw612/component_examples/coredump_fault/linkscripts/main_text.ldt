@@ -1,13 +1,1 @@
-	*(EXCLUDE_FILE(*fsl_flexspi.o *fsl_cache.o *flash_mcux_flexspi_nor.o *jesd216.o *memc_mcux_flexspi.o *device.o *zephyr_mcux_helper.o *clock_control_mcux_syscon.o *fsl_clock.o *flexspi_clock_setup.o) .text*)
-	     __init_start = .;
-	     __init_EARLY_start = .; KEEP(*(SORT(.z_init_EARLY[0-9]?_[0-9]*))); KEEP(*(SORT(.z_init_EARLY[0-9]?[0-9]?_[0-9]*)));
-	     __init_PRE_KERNEL_1_start = .; KEEP(*(SORT(.z_init_PRE_KERNEL_1?_[0-9]*))); KEEP(*(SORT(.z_init_PRE_KERNEL_1?[0-9]?_[0-9]*)));
-	     __init_PRE_KERNEL_2_start = .; KEEP(*(SORT(.z_init_PRE_KERNEL_2?_[0-9]*))); KEEP(*(SORT(.z_init_PRE_KERNEL_2?[0-9]?_[0-9]*)));
-	     __init_POST_KERNEL_start = .; KEEP(*(SORT(.z_init_POST_KERNEL[0-9]?_[0-9]*))); KEEP(*(SORT(.z_init_POST_KERNEL[0-9]?[0-9]?_[0-9]*)));
-	     __init_APPLICATION_start = .; KEEP(*(SORT(.z_init_APPLICATION[0-9]?_[0-9]*))); KEEP(*(SORT(.z_init_APPLICATION[0-9]?[0-9]?_[0-9]*)));
-	     __init_SMP_start = .; KEEP(*(SORT(.z_init_SMP[0-9]?_[0-9]*))); KEEP(*(SORT(.z_init_SMP[0-9]?[0-9]?_[0-9]*)));
-	     __init_end = .;
-	     __deferred_init_list_start = .;
-	     KEEP(*(.z_deferred_init*))
-	     __deferred_init_list_end = .;
-	     _device_list_start = .; KEEP(*(SORT(._device.static.[0-9]*_[0-9]?_[0-9]*))); KEEP(*(SORT(._device.static.[0-9]*_[0-9]?[0-9]?_[0-9]*))); _device_list_end = .;
+        *(EXCLUDE_FILE(*mflash_drv.o *fsl_flexspi.o *fsl_clock.o *fsl_cache.o *fsl_reset.o) .text*)
