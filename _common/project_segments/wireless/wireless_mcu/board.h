@@ -139,11 +139,6 @@
 
 #ifndef BOARD_DEBUG_UART_BAUDRATE
 #define BOARD_DEBUG_UART_BAUDRATE 115200
-#else
-#if ((BOARD_DEBUG_UART_BAUDRATE > 460800) &&                                                      \
-    ((BOARD_DEBUG_UART_CLKSRC != kCLOCK_IpSrcFro192M) || (BOARD_DEBUG_UART_CLK_FREQ < 192000000U)))
-#warning "BOARD_DEBUG_UART_BAUDRATE is not compatible with BOARD_DEBUG_UART_CLKSRC or BOARD_DEBUG_UART_CLK_FREQ selected"
-#endif
 #endif /* BOARD_DEBUG_UART_BAUDRATE */
 
 #define BOARD_SERIAL_MGR_IF_INVALID 0xFFu
