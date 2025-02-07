@@ -1,26 +1,18 @@
 Supported Wi-Fi/BT/BLE modules
 ==============================
-  - AzureWave AW-NM191MA
-  - AzureWave AW-AM510MA
-  - AzureWave AW-CM358MA
-  - Embedded Artists 2DS M.2 Module (EAR00386)
-  - Embedded Artists 1ZM M.2 Module (EAR00364)
-  - Embedded Artists 1XK M.2 Module (EAR00385)
+  - AzureWave FRDM-IW416-AW-AM510
 
 
-Murata Solution Board settings
-==============================
-Embedded Artists M.2 module resource page: https://www.embeddedartists.com/m2
-Embedded Artists 2DS module datasheet: https://www.embeddedartists.com/doc/ds/2DS_M2_Datasheet.pdf
-Embedded Artists 1XK module datasheet: https://www.embeddedartists.com/doc/ds/1XK_M2_Datasheet.pdf
-Embedded Artists 1ZM module datasheet: https://www.embeddedartists.com/doc/ds/1ZM_M2_Datasheet.pdf
+Modules Settings
+================
+AzureWave FRDM-IW416-AW-AM510 Module:
+  - J4  1-2: 1.8V (VIO)
+  - J7  2-3: 3.3V (SDIO voltage level - Arduino header)
+  - J16 2-3: 3.3V (WL_RST voltage level - Arduino header)
+  - connect antenna to J1
 
 
 Board settings
 ==============
-JP45: 2-3
-JP47: 2-3
+Connect additional USB: J11.
 
-Remove R833, R815, R817, R818, R819, R820, R821, R860, R861, R862, R863, R864, R865
-Add 0Ohm resistors: R835, R816, R822, R823, R824, R825, R826
-Replace R317 by 50kOhm resistor

@@ -2,20 +2,20 @@
 /*
 ** ###################################################################
 **     Processors:          MCXN947VDF_cm33_core0
+**                          MCXN947VKL_cm33_core0
 **                          MCXN947VNL_cm33_core0
+**                          MCXN947VPB_cm33_core0
 **
 **     Compiler:            Keil ARM C/C++ Compiler
-**     Reference manual:    MCX N1xNxxx Reference Manual
+**     Reference manual:    MCXNx4x Reference Manual
 **     Version:             rev. 1.0, 2021-08-03
-**     Build:               b221128
+**     Build:               b241105
 **
 **     Abstract:
 **         Linker file for the Keil ARM C/C++ Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2022 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2024 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -40,11 +40,19 @@
   #define Heap_Size                    0x0400
 #endif
 
-#define  m_interrupts_start            0x00000000
-#define  m_interrupts_size             0x00000400
+#if (defined(__qspi_xip__))
+  #define  m_interrupts_start            0x80001000
+  #define  m_interrupts_size             0x00000400
 
-#define  m_text_start                  0x00000400
-#define  m_text_size                   0x000FFC00
+  #define  m_text_start                  0x80001400
+  #define  m_text_size                   0x0FFFEC00
+#else
+  #define  m_interrupts_start            0x00000000
+  #define  m_interrupts_size             0x00000400
+
+  #define  m_text_start                  0x00000400
+  #define  m_text_size                   0x000FFC00
+#endif
 
 #define  m_flash1_start                0x00100000
 #define  m_flash1_size                 0x00100000
@@ -64,6 +72,14 @@
 #endif
 #define  m_usb_sram_start              0x400BA000
 #define  m_usb_sram_size               0x00001000
+
+#define  m_boot_flash_conf_start       0x80000400
+
+LR_m_flash_conf m_boot_flash_conf_start 0x400 {
+  FLASH_CONFIG m_boot_flash_conf_start 0x400{ ; load address = execution address
+    * (.flexspi_fcb)
+  }
+}
 
 LR_m_text m_interrupts_start m_interrupts_size+m_text_size {   ; load region size_region
 

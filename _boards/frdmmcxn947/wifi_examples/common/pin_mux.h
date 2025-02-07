@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -41,39 +41,25 @@ void BOARD_InitPins(void);
 
 #define PCR_IBE_ibe1 0x01u /*!<@brief Input Buffer Enable: Enables */
 
-/*! @name PORT3_5 (coord G14), SDIO_RST
+/*! @name PORT1_21 (coord L5), WL_RST
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITPINSM2_SDIO_RST_GPIO GPIO3               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITPINSM2_SDIO_RST_GPIO_PIN 5U              /*!<@brief GPIO pin number */
-#define BOARD_INITPINSM2_SDIO_RST_GPIO_PIN_MASK (1U << 5U) /*!<@brief GPIO pin mask */
+#define BOARD_INITPINSWIFI_WL_RST_GPIO GPIO1                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINSWIFI_WL_RST_GPIO_PIN 21U              /*!<@brief GPIO pin number */
+#define BOARD_INITPINSWIFI_WL_RST_GPIO_PIN_MASK (1U << 21U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITPINSM2_SDIO_RST_PORT PORT3               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINSM2_SDIO_RST_PIN 5U                   /*!<@brief PORT pin number */
-#define BOARD_INITPINSM2_SDIO_RST_PIN_MASK (1U << 5U)      /*!<@brief PORT pin mask */
-                                                           /* @} */
-
-/*! @name PORT0_8 (coord C12), WL_RST
-  @{ */
-
-/* Symbols to be used with GPIO driver */
-#define BOARD_INITPINSM2_WL_RST_GPIO GPIO0               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITPINSM2_WL_RST_GPIO_PIN 8U              /*!<@brief GPIO pin number */
-#define BOARD_INITPINSM2_WL_RST_GPIO_PIN_MASK (1U << 8U) /*!<@brief GPIO pin mask */
-
-/* Symbols to be used with PORT driver */
-#define BOARD_INITPINSM2_WL_RST_PORT PORT0               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINSM2_WL_RST_PIN 8U                   /*!<@brief PORT pin number */
-#define BOARD_INITPINSM2_WL_RST_PIN_MASK (1U << 8U)      /*!<@brief PORT pin mask */
-                                                         /* @} */
+#define BOARD_INITPINSWIFI_WL_RST_PORT PORT1                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINSWIFI_WL_RST_PIN 21U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINSWIFI_WL_RST_PIN_MASK (1U << 21U)      /*!<@brief PORT pin mask */
+                                                            /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPinsM2(void);
+void BOARD_InitPinsWifi(void);
 
 #if defined(__cplusplus)
 }

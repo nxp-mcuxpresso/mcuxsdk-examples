@@ -1,20 +1,20 @@
 /*
 ** ###################################################################
 **     Processors:          MCXN947VDF_cm33_core0
+**                          MCXN947VKL_cm33_core0
 **                          MCXN947VNL_cm33_core0
+**                          MCXN947VPB_cm33_core0
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    MCX N1xNxxx Reference Manual
+**     Reference manual:    MCXNx4x Reference Manual
 **     Version:             rev. 1.0, 2021-08-03
-**     Build:               b221128
+**     Build:               b241105
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2022 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2024 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -32,16 +32,19 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 
+TEXT_START = DEFINED(__qspi_xip__)  ? 0x80001000 : 0x00000000; /* flexspi boot image start with 0x80000000 */
+TEXT_SIZE = DEFINED(__qspi_xip__)  ? 0x0FFFF000 : 0x00100000; /* flexspi boot image offset at 0x80001000 */
+
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x00000400, LENGTH = 0x000FFC00
+  m_interrupts          (RX)  : ORIGIN = TEXT_START, LENGTH = 0x00000400
+  m_text                (RX)  : ORIGIN = TEXT_START + 0x00000400, LENGTH = TEXT_SIZE - 0x00000400
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x0004E000 - RPMSG_SHMEM_SIZE
   rpmsg_sh_mem          (RW)  : ORIGIN = 0x2004E000 - RPMSG_SHMEM_SIZE, LENGTH = RPMSG_SHMEM_SIZE
   m_flash1              (RX)  : ORIGIN = 0x00100000, LENGTH = 0x00100000
   m_sramx               (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00018000
-
+  m_flash_config        (RX)  : ORIGIN = 0x80000400, LENGTH = 0x00000400
   m_usb_sram            (RW)  : ORIGIN = 0x400BA000, LENGTH = 0x00001000
 }
 
@@ -56,6 +59,14 @@ SECTIONS
      . = ALIGN(4) ;
      __RPMSG_SH_MEM_END__ = .;
   } > rpmsg_sh_mem
+
+  .flash_config :
+  {
+    . = ALIGN(4);
+    __FLASH_BASE = .;
+    KEEP(* (.flexspi_fcb))     /* FCB section */
+    . = ALIGN(4);
+  } > m_flash_config
 
   /* The startup code goes first into internal flash */
   .interrupts :

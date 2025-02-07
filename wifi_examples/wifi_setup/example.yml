@@ -136,6 +136,7 @@ wifi_setup:
     - -mdk@release
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxn947@cm33_core0: []
     mimxrt685audevk@cm33:
     - -armgcc@debug
     - -armgcc@release

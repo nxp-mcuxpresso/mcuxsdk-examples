@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -15,6 +15,10 @@
  ******************************************************************************/
 #ifdef WIFI_BT_USE_USD_INTERFACE
 #warning "uSD interface is not supported"
+#endif
+
+#ifdef WIFI_BT_USE_M2_INTERFACE
+#warning "M.2 interface is not supported"
 #endif
 
 /*******************************************************************************
@@ -45,12 +49,8 @@ void BOARD_WIFI_BT_Enable(bool enable)
     {
         /* Enable module */
 
-        /* Set SDIO_RST to 1 */
-        GPIO_PinWrite(BOARD_INITPINSM2_SDIO_RST_GPIO, BOARD_INITPINSM2_SDIO_RST_GPIO_PIN, 1U);
-        vTaskDelay(pdMS_TO_TICKS(100));
-
         /* Set WL_RST to 1 */
-        GPIO_PinWrite(BOARD_INITPINSM2_WL_RST_GPIO, BOARD_INITPINSM2_WL_RST_GPIO_PIN, 1U);
+        GPIO_PinWrite(BOARD_INITPINSWIFI_WL_RST_GPIO, BOARD_INITPINSWIFI_WL_RST_GPIO_PIN, 1U);
         vTaskDelay(pdMS_TO_TICKS(100));
     }
     else
@@ -58,10 +58,7 @@ void BOARD_WIFI_BT_Enable(bool enable)
         /* Disable module */
 
         /* Set WL_RST to 0 */
-        GPIO_PinWrite(BOARD_INITPINSM2_WL_RST_GPIO, BOARD_INITPINSM2_WL_RST_GPIO_PIN, 0U);
-        /* Set SDIO_RST to 0 */
-        GPIO_PinWrite(BOARD_INITPINSM2_SDIO_RST_GPIO, BOARD_INITPINSM2_SDIO_RST_GPIO_PIN, 0U);
-
+        GPIO_PinWrite(BOARD_INITPINSWIFI_WL_RST_GPIO, BOARD_INITPINSWIFI_WL_RST_GPIO_PIN, 0U);
         vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
