@@ -11,48 +11,39 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.dc-fb-elcdif
     select MCUX_COMPONENT_driver.dc-fb-lcdifv2
 
-if MCUX_PRJSEG_module.board.display_support
+# Which panels the board supports
+config DEMO_PANEL_RK055AHD091_SUPPORT
+    default y
 
-    config DEMO_PANEL
-        int
-        default 0 if MCUX_PRJSEG_module.board.display_support.RK055AHD091
-        default 1 if MCUX_PRJSEG_module.board.display_support.RK055IQH091
-        default 2 if MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
-        help
-            Panel selection for display support
-            No prefix in generated macro
+config DEMO_PANEL_RK055IQH091_SUPPORT
+    default y
+
+config DEMO_PANEL_RK055MHD091A0_SUPPORT
+    default y
+
+if MCUX_PRJSEG_module.board.display_support
 
     config DEMO_DISPLAY_CONTROLLER
         int
-        default 0 if MCUX_PRJSEG_module.board.display_support.elcdif
-        default 1 if MCUX_PRJSEG_module.board.display_support.lcdifv2
+        default 0 if DEMO_PANEL_elcdif
+        default 1 if DEMO_PANEL_lcdifv2
         help
             Panel driver selection for display support
             No prefix in generated macro
 
-    choice MCUX_PRJSEG_module.board.display_support.panel
-        prompt "Panel Selection"
-        default MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
-
-        config MCUX_PRJSEG_module.board.display_support.RK055AHD091
-            bool "RK055AHD091-CTG"
-
-        config MCUX_PRJSEG_module.board.display_support.RK055IQH091
-            bool "RK055IQH091-CTG"
-
-        config MCUX_PRJSEG_module.board.display_support.RK055MHD091A0
-            bool "RK055MHD091A0-CTG"
+    choice DISPLAY_SUPPORT_PANEL
+        default DEMO_PANEL_RK055MHD091A0
 
     endchoice
 
-    choice MCUX_PRJSEG_module.board.display_support.display_controller
+    choice DEMO_PANEL_display_controller
         prompt "Display Controller Selection"
-        default MCUX_PRJSEG_module.board.display_support.lcdifv2
+        default DEMO_PANEL_lcdifv2
 
-        config MCUX_PRJSEG_module.board.display_support.elcdif
+        config DEMO_PANEL_elcdif
             bool "eLCDIF"
 
-        config MCUX_PRJSEG_module.board.display_support.lcdifv2
+        config DEMO_PANEL_lcdifv2
             bool "LCDIFv2"
 
     endchoice

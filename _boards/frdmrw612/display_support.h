@@ -13,8 +13,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DEMO_PANEL_ADAFRUIT_2_8     0 /* Adafruit 2.8" captative panel */
-#define DEMO_PANEL_LCD_PAR_S035     1 /* LCD_PAR_S035 panel */
+#define DEMO_PANEL_ADAFRUIT_2_8     7 /* Adafruit 2.8" captative panel */
+#define DEMO_PANEL_LCD_PAR_S035     8 /* LCD_PAR_S035 panel */
 
 /* @TEST_ANCHOR */
 

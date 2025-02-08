@@ -3,7 +3,95 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+config DEMO_PANEL_RK055AHD091_SUPPORT
+    bool
+
+config DEMO_PANEL_RK055IQH091_SUPPORT
+    bool
+
+config DEMO_PANEL_RK055MHD091A0_SUPPORT
+    bool
+
+config DEMO_PANEL_G1120B0MIPI_SUPPORT
+    bool
+
+config DEMO_PANEL_TFT_PROTO_5_SUPPORT
+    bool
+
+config DEMO_PANEL_RASPI_7INCH_SUPPORT
+    bool
+
+config DEMO_PANEL_ZC143AC72MIPI_SUPPORT
+    bool
+
+config DEMO_PANEL_ADAFRUIT_2_8_SUPPORT
+    bool
+
+config DEMO_PANEL_LCD_PAR_S035_SUPPORT
+    bool
+
+config DEMO_PANEL_RK043FN02H_SUPPORT
+    bool
+
+config DEMO_PANEL_RK043FN66HS_SUPPORT
+    bool
+
 config MCUX_PRJSEG_module.board.display_support
     bool "Enable Display Support"
+
+    config DEMO_PANEL
+        int
+        default 0 if DEMO_PANEL_RK055AHD091
+        default 1 if DEMO_PANEL_RK055IQH091
+        default 2 if DEMO_PANEL_RK055MHD091A0
+        default 3 if DEMO_PANEL_G1120B0MIPI
+        default 4 if DEMO_PANEL_TFT_PROTO_5
+        default 5 if DEMO_PANEL_RASPI_7INCH
+        default 6 if DEMO_PANEL_ZC143AC72MIPI
+        default 7 if DEMO_PANEL_ADAFRUIT_2_8
+        default 8 if DEMO_PANEL_LCD_PAR_S035
+        default 9 if DEMO_PANEL_RK043FN02H
+        default 10 if DEMO_PANEL_RK043FN66HS
+        help
+            Panel selection for display support
+            No prefix in generated macro
+
+    choice DISPLAY_SUPPORT_PANEL
+        prompt "Panel Selection"
+
+        config DEMO_PANEL_RK055AHD091
+            bool "RK055AHD091-CTG" if DEMO_PANEL_RK055AHD091_SUPPORT
+
+        config DEMO_PANEL_RK055IQH091
+            bool "RK055IQH091-CTG" if DEMO_PANEL_RK055IQH091_SUPPORT
+
+        config DEMO_PANEL_RK055MHD091A0
+            bool "RK055MHD091A0-CTG" if DEMO_PANEL_RK055MHD091A0_SUPPORT
+
+        config DEMO_PANEL_G1120B0MIPI
+            bool "MIPI Circular Display G1120B0MIPI" if DEMO_PANEL_G1120B0MIPI_SUPPORT
+
+        config DEMO_PANEL_TFT_PROTO_5
+            bool "MikroE TFT Proto 5 inch CAPACITIVE" if DEMO_PANEL_TFT_PROTO_5_SUPPORT
+
+        config DEMO_PANEL_RASPI_7INCH
+            bool "Raspberry Pi 7 inch" if DEMO_PANEL_RASPI_7INCH_SUPPORT
+
+        config DEMO_PANEL_ZC143AC72MIPI
+            bool "MIPI Circular Display ZC143AC72MIPI" if DEMO_PANEL_ZC143AC72MIPI_SUPPORT
+
+        config DEMO_PANEL_ADAFRUIT_2_8
+            bool "Adafruit 2.8 inch captative panel" if DEMO_PANEL_ADAFRUIT_2_8_SUPPORT
+
+        config DEMO_PANEL_LCD_PAR_S035
+            bool "LCD_PAR_S035 panel" if DEMO_PANEL_LCD_PAR_S035_SUPPORT
+
+        config DEMO_PANEL_RK043FN02H
+            bool "RK043FN02H-CT" if DEMO_PANEL_RK043FN02H_SUPPORT
+
+        config DEMO_PANEL_RK043FN66HS
+            bool "RK043FN66HS-CTG" if DEMO_PANEL_RK043FN66HS_SUPPORT
+
+    endchoice
 
 orsource "../../../../${board_root}/${board}/project_segments/display_support/Kconfig.prjseg"

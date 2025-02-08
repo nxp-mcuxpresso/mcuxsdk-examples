@@ -13,11 +13,11 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DEMO_PANEL_TFT_PROTO_5 0 /* MikroE TFT Proto 5" CAPACITIVE FlexIO Display */
-#define DEMO_PANEL_RK055AHD091 1 /* NXP "RK055HDMIPI4M" MIPI Rectangular Display  */
-#define DEMO_PANEL_RK055IQH091 2 /* NXP RESERVED                                  */
+#define DEMO_PANEL_TFT_PROTO_5 4 /* MikroE TFT Proto 5" CAPACITIVE FlexIO Display */
+#define DEMO_PANEL_RK055AHD091 0 /* NXP "RK055HDMIPI4M" MIPI Rectangular Display  */
+#define DEMO_PANEL_RK055IQH091 1 /* NXP RESERVED                                  */
 #define DEMO_PANEL_RM67162     3 /* NXP "G1120B0MIPI" MIPI Circular Display       */
-#define DEMO_PANEL_RK055MHD091 4 /* NXP "RK055MHD091A0-CTG MIPI Rectangular Display  */
+#define DEMO_PANEL_RK055MHD091 2 /* NXP "RK055MHD091A0-CTG MIPI Rectangular Display  */
 
 /* @TEST_ANCHOR */
 

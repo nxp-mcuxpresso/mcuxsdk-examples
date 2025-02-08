@@ -16,25 +16,17 @@ config MCUX_PRJSEG_module.board.display_support
     select ILI9341_USE_DBI_IFACE
     select FT6X06_USE_SIMPLE_I2C_API
 
+# Which panels the board supports
+config DEMO_PANEL_ADAFRUIT_2_8_SUPPORT
+    default y
+
+config DEMO_PANEL_LCD_PAR_S035_SUPPORT
+    default y
+
 if MCUX_PRJSEG_module.board.display_support
 
-    config DEMO_PANEL
-        int
-        default 0 if MCUX_PRJSEG_module.board.display_support.ADAFRUIT_2_8
-        default 1 if MCUX_PRJSEG_module.board.display_support.LCD_PAR_S035
-        help
-            Panel selection for display support
-            No prefix in generated macro
-
-    choice MCUX_PRJSEG_module.board.display_support.panel
-        prompt "Panel Selection"
-        default MCUX_PRJSEG_module.board.display_support.LCD_PAR_S035
-
-        config MCUX_PRJSEG_module.board.display_support.ADAFRUIT_2_8
-            bool "Adafruit 2.8 inch captative panel"
-
-        config MCUX_PRJSEG_module.board.display_support.LCD_PAR_S035
-            bool "LCD_PAR_S035 panel"
+    choice DISPLAY_SUPPORT_PANEL
+        default DEMO_PANEL_LCD_PAR_S035
 
     endchoice
 endif

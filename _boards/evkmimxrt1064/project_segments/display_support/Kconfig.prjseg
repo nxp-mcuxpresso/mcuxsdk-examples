@@ -1,2 +1,18 @@
 config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.dc-fb-elcdif
+
+# Which panels the board supports
+config DEMO_PANEL_RK043FN02H_SUPPORT
+    default y
+
+config DEMO_PANEL_RK043FN66HS_SUPPORT
+    default y
+
+if MCUX_PRJSEG_module.board.display_support
+
+    choice DISPLAY_SUPPORT_PANEL
+        default DEMO_PANEL_RK043FN66HS
+
+    endchoice
+
+endif
