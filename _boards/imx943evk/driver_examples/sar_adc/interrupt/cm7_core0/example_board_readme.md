@@ -8,10 +8,10 @@ Hardware requirements
 
 Board settings
 ============
-Set 0~1.8V voltage input to below ADC channels by using DC power supply
-ADC channel 4 --- J9-2
-ADC channel 5 --- J9-5
-ADC channel 6 --- J9-8
+Set 0~3.3V voltage input to below ADC channels by using DC power supply
+ADC channel 4(J9-2)
+ADC channel 5(J9-5)
+ADC channel 6(J9-8)
 
 
 #### Please note this application can't support running with Linux BSP! ####
@@ -36,7 +36,7 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC interrupt example.
  Please press any key to get the conversion result.
- The channel 4 ADC conversion data is 4070.
+ The channel 4 ADC conversion data is 3962.
  The channel 5 ADC conversion data is 3734.
  The channel 6 ADC conversion data is 2055.
 ~~~~~~~~~~~~~~~~~~~~~

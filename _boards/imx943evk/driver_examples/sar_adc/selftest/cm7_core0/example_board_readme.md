@@ -8,10 +8,10 @@ Hardware requirements
 
 Board settings
 ============
-Set 0~1.8V voltage input to below ADC channels by using DC power supply
-ADC channel 4 --- J9-2
-ADC channel 5 --- J9-5
-ADC channel 6 --- J9-8
+Set 0~3.3V voltage input to below ADC channels by using DC power supply
+ADC channel 4(J9-2)
+ADC channel 5(J9-5)
+ADC channel 6(J9-8)
 
 #### Please note this application can't support running with Linux BSP! ####
 
