@@ -4,7 +4,7 @@
     -   MIMXRT1180-EVK RevC
     -   RJ45 Network cable
     -   Mini/micro USB cable
-    -   Personal Computer with TwinCat3
+    -   Personal Computer with TwinCat3(Windows 10 is recommended)
 -   Board settings
     -   No special settings are required.
 -   Connection

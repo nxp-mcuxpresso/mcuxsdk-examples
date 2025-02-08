@@ -6,7 +6,7 @@
     -   Teknic 2311P Motor
     -   RJ45 Network cable
     -   Mini/micro universal serial bus \(USB\) cable
-    -   Personal Computer on which the TwinCAT3 has been installed
+    -   Personal Computer on which the TwinCAT3 has been installed(Windows 10 is recommended)
 -   **Board settings**
 
     For multiple boards cascades, remove the R142 register.

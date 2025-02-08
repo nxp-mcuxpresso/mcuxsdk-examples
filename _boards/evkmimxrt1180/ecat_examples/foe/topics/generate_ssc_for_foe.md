@@ -2,7 +2,7 @@
 
 Due to the license issue, the MCUXpresso SDK does not include the EtherCAT Subdevice Stack Code \(SSC\). The SSC tool must generate the subdevice stack code first. This section lists the steps to download the SSC tool and generate the subdevice stack code for the FoE example via the SSC tool.
 
-**Note**: You must have a Backoff account to download the EtherCAT SSC tool.
+**Note**: You must have a Beckhoff account to download the EtherCAT SSC tool.
 
 1.  Download and install the SSC tool.
     1.  Click the link [https://www.ethercat.org/en/downloads.html](https://www.ethercat.org/en/downloads.html).
@@ -82,5 +82,5 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT Subde
         ![](../images/image18.png "Start to create the code")
 
 8.  Copy the **Src** subfolder to `boards\evkmimxrt1180\ecat_examples\foe\<core>\SSC\Src` under the SDK source code.
-9.  Delete the **foe.c** file under the **Src** folder because this file is provided by MCUXpresso SDK.
+9.  Delete the **foe.c** file under the **Src** folder because this file is already provided in the root directory of *foe* example.
 
