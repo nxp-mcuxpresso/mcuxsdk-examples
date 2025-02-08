@@ -16,6 +16,7 @@ freertos_lpc_usart:
       - ${board_root}/${board}/freertos_driver_examples/freertos_lpc_usart/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []

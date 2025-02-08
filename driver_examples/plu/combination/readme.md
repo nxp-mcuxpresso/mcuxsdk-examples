@@ -7,6 +7,7 @@ configuration and use of the Programmable Logic Unit (PLU) to construct a combin
 
 ## Supported Boards
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/plu/combination/example_board_readme.md)
+- [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/plu/combination/example_board_readme.md)
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/driver_examples/plu/combination/example_board_readme.md)
 - [LPCXpresso804](../../../_boards/lpcxpresso804/driver_examples/plu/combination/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/plu/combination/example_board_readme.md)

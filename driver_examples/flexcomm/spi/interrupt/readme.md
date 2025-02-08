@@ -7,6 +7,7 @@ In this example, one spi instance as master and another spi instance as slave. M
 and check if the data slave received is correct.
 
 ## Supported Boards
+- [FRDM-MCXW23](../../../../_boards/frdmmcxw23/driver_examples/spi/interrupt/example_board_readme.md)
 - [LPCXpresso51U68](../../../../_boards/lpcxpresso51u68/driver_examples/spi/interrupt/example_board_readme.md)
 - [LPCXpresso54628](../../../../_boards/lpcxpresso54628/driver_examples/spi/interrupt/example_board_readme.md)
 - [LPCXpresso54S018](../../../../_boards/lpcxpresso54s018/driver_examples/spi/interrupt/example_board_readme.md)

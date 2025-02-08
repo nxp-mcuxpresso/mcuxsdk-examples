@@ -6,6 +6,7 @@ The demo sets the MicroTick Timer as a wake up source and puts the device in dee
 The MicroTick timer wakes up the device.
 
 ## Supported Boards
+- [FRDM-MCXW23](../../../_boards/frdmmcxw23/demo_apps/utick_wakeup/example_board_readme.md)
 - [LPCXpresso51U68](../../../_boards/lpcxpresso51u68/demo_apps/utick_wakeup/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/demo_apps/utick_wakeup/example_board_readme.md)
 - [LPCXpresso55S06](../../../_boards/lpcxpresso55s06/demo_apps/utick_wakeup/example_board_readme.md)

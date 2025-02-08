@@ -6,6 +6,7 @@ The example uses single instance of USART IP and writes string into, then reads 
 After every 4B received, these are sent back on USART.
 
 ## Supported Boards
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/freertos_driver_examples/freertos_lpc_usart/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/freertos_driver_examples/freertos_lpc_usart/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/freertos_driver_examples/freertos_lpc_usart/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/freertos_driver_examples/freertos_lpc_usart/example_board_readme.md)

@@ -25,6 +25,7 @@ ctimer_pwm_interrupt_example:
     frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxw23: []
     frdmrw612: []
     lpc845breakout: []
     lpcxpresso51u68: []

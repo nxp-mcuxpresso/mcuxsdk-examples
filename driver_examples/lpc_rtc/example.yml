@@ -18,6 +18,7 @@ rtc_example:
   boards:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
+    frdmmcxw23: []
     frdmrw612: []
     lpcxpresso51u68: []
     lpcxpresso54628: []

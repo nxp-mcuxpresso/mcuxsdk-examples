@@ -13,6 +13,7 @@ In this example, the match feature of the CTimer is used to toggle the output le
 - [FRDM-MCXA276](../../../_boards/frdmmcxa276/driver_examples/ctimer/simple_match/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/ctimer/simple_match/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/ctimer/simple_match/example_board_readme.md)
+- [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/ctimer/simple_match/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/ctimer/simple_match/example_board_readme.md)
 - [LPC845BREAKOUT](../../../_boards/lpc845breakout/driver_examples/ctimer/simple_match/example_board_readme.md)
 - [LPCXpresso51U68](../../../_boards/lpcxpresso51u68/driver_examples/ctimer/simple_match/example_board_readme.md)

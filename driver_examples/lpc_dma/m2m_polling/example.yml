@@ -17,6 +17,7 @@ dma_m2m_polling:
       - ${board_root}/${board}/driver_examples/dma/m2m_polling/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpc845breakout: []
     lpcxpresso51u68: []
     lpcxpresso54628: []

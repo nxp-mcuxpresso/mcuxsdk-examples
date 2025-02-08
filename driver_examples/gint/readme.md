@@ -4,6 +4,7 @@
 This example shows how to use SDK drivers to use the Group GPIO input interrupt peripheral.
 
 ## Supported Boards
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/driver_examples/gint/example_board_readme.md)
 - [LPCXpresso51U68](../../_boards/lpcxpresso51u68/driver_examples/gint/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/driver_examples/gint/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/driver_examples/gint/example_board_readme.md)

@@ -15,6 +15,7 @@ utick_wakeup:
       - ${board_root}/${board}/demo_apps/utick_wakeup/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso55s06: []

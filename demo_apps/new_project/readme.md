@@ -26,6 +26,7 @@ NA
 - [FRDM-K32L2B](../../_boards/frdmk32l2b/demo_apps/new_project/example_board_readme.md)
 - [FRDM-KE15Z](../../_boards/frdmke15z/demo_apps/new_project/example_board_readme.md)
 - [FRDM-KE16Z](../../_boards/frdmke16z/demo_apps/new_project/example_board_readme.md)
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/demo_apps/new_project/example_board_readme.md)
 - [LPC845BREAKOUT](../../_boards/lpc845breakout/demo_apps/new_project/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/demo_apps/new_project/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/demo_apps/new_project/example_board_readme.md)

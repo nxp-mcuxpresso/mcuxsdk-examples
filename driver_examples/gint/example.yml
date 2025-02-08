@@ -14,6 +14,7 @@ gint:
       - ${board_root}/${board}/driver_examples/gint/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

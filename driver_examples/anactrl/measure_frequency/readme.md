@@ -6,6 +6,7 @@ In the example, you can set a reference clock and target clock. The project will
 target clock according to the reference clock frequency.
 
 ## Supported Boards
+- [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/anactrl/measure_frequency/example_board_readme.md)
 - [LPCXpresso55S06](../../../_boards/lpcxpresso55s06/driver_examples/anactrl/measure_frequency/example_board_readme.md)
 - [LPCXpresso55S16](../../../_boards/lpcxpresso55s16/driver_examples/anactrl/measure_frequency/example_board_readme.md)
 - [LPCXpresso55S28](../../../_boards/lpcxpresso55s28/driver_examples/anactrl/measure_frequency/example_board_readme.md)

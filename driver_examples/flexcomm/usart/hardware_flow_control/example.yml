@@ -19,5 +19,6 @@ usart_hardware_flow_control:
       - ${board_root}/${board}/driver_examples/usart/hardware_flow_control/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpcxpresso54628: []
     rdrw612bga: []

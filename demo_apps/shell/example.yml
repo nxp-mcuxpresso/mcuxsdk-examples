@@ -44,6 +44,7 @@ shell:
     frdmmcxc444: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxw23: []
     frdmmcxw71: []
     k32w148evk:
     - +armgcc@debug

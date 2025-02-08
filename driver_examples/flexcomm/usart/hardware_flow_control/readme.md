@@ -10,5 +10,6 @@ to inform the transmiter if receiver is ready to receive data. So, please connec
 RTS to CTS pin directly.
 
 ## Supported Boards
+- [FRDM-MCXW23](../../../../_boards/frdmmcxw23/driver_examples/usart/hardware_flow_control/example_board_readme.md)
 - [LPCXpresso54628](../../../../_boards/lpcxpresso54628/driver_examples/usart/hardware_flow_control/example_board_readme.md)
 - [RD-RW612-BGA](../../../../_boards/rdrw612bga/driver_examples/usart/hardware_flow_control/example_board_readme.md)

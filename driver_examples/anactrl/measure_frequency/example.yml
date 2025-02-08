@@ -16,6 +16,7 @@ anactrl_measure_frequency:
       - ${board_root}/${board}/driver_examples/anactrl/measure_frequency/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpcxpresso55s06: []
     lpcxpresso55s16: []
     lpcxpresso55s28: []

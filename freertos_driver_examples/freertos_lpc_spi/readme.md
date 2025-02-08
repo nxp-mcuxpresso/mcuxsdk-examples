@@ -70,6 +70,7 @@ Master-to-slave data verified ok.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)

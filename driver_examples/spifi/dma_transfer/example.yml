@@ -15,6 +15,7 @@ spifi_dma_transfer:
       - ${board_root}/${board}/driver_examples/spifi/dma_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []

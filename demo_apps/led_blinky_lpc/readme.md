@@ -12,6 +12,7 @@ This demo will initialize the pin configuration, then configure System Tick to g
 see that LED is blinking on the board.
 
 ## Supported Boards
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/demo_apps/led_blinky/example_board_readme.md)
 - [LPC845BREAKOUT](../../_boards/lpc845breakout/demo_apps/led_blinky/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/demo_apps/led_blinky/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/demo_apps/led_blinky/example_board_readme.md)

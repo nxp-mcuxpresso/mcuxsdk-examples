@@ -80,6 +80,7 @@ End of FreeRTOS I2C example.
 ## Supported Boards
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/freertos_driver_examples/freertos_lpc_i2c/example_board_readme.md)
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/freertos_driver_examples/freertos_lpc_i2c/example_board_readme.md)
+- [FRDM-MCXW23](../../_boards/frdmmcxw23/freertos_driver_examples/freertos_lpc_i2c/example_board_readme.md)
 - [LPCXpresso51U68](../../_boards/lpcxpresso51u68/freertos_driver_examples/freertos_lpc_i2c/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/freertos_driver_examples/freertos_lpc_i2c/example_board_readme.md)
 - [LPCXpresso54S018](../../_boards/lpcxpresso54s018/freertos_driver_examples/freertos_lpc_i2c/example_board_readme.md)

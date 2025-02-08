@@ -32,6 +32,7 @@ trng_random:
     frdmk32l2a4s: []
     frdmk32l3a6@cm0plus: []
     frdmk32l3a6@cm4: []
+    frdmmcxw23: []
     frdmrw612:
     - -mdk@debug
     - -mdk@flash_debug

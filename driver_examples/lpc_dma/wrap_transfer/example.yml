@@ -16,6 +16,7 @@ lpc_dma_wrap_transfer:
       - ${board_root}/${board}/driver_examples/dma/wrap_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxw23: []
     lpc845breakout: []
     lpcxpresso51u68: []
     lpcxpresso54628: []

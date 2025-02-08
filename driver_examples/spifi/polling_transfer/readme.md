@@ -27,6 +27,7 @@ All data written is correct!
 SPIFI Polling example Finished!
 
 ## Supported Boards
+- [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/spifi/polling_transfer/example_board_readme.md)
 - [LPCXpresso54628](../../../_boards/lpcxpresso54628/driver_examples/spifi/polling_transfer/example_board_readme.md)
 - [LPCXpresso54S018](../../../_boards/lpcxpresso54s018/driver_examples/spifi/polling_transfer/example_board_readme.md)
 - [LPCXpresso54S018M](../../../_boards/lpcxpresso54s018m/driver_examples/spifi/polling_transfer/example_board_readme.md)
