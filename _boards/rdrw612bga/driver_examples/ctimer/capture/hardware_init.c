@@ -1,7 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
- *
+ * Copyright 2022, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,11 +43,11 @@ void DEMO_InitGpioPin(void)
     };
 
     /* Init to low level. */
-    GPIO_PinInit(GPIO, DEMO_GPIO_PORT, DEMO_GPIO_PIN, &pinConfig);
+    GPIO_PinInit(GPIO, (uint32_t)DEMO_GPIO_PORT, (uint32_t)DEMO_GPIO_PIN, &pinConfig);
 }
 
-void DEMO_PullGpioPin(int level)
+void DEMO_PullGpioPin(uint8_t level)
 {
-    GPIO_PinWrite(GPIO, DEMO_GPIO_PORT, DEMO_GPIO_PIN, (uint8_t)level);
+    GPIO_PinWrite(GPIO, (uint32_t)DEMO_GPIO_PORT, (uint32_t)DEMO_GPIO_PIN, level);
 }
 /*${function:end}*/
