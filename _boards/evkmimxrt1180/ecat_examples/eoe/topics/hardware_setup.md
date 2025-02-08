@@ -7,7 +7,7 @@
 
     -   Mini/micro USB cable
 
-    -   Personal computer with TwinCat3.
+    -   Personal computer with TwinCat3.(Windows 10 is recommended)
 
 -   **Board settings**
 

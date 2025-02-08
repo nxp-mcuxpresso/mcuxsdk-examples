@@ -4,7 +4,7 @@
     -   MIMXRT1180-EVK RevC
     -   RJ45 Network cable
     -   Mini/micro USB cable
-    -   Personal Computer with TwinCAT3
+    -   Personal Computer with TwinCAT3(Windows 10 is recommended)
 -   **Board settings**
 
 For multiple boards cascades, remove the R142 register.

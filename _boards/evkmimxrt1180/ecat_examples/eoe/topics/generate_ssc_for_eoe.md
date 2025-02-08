@@ -2,7 +2,7 @@
 
 Due to the license issue, the MCUXpresso SDK does not include the EtherCAT Subdevice Stack Code \(SSC\). The SSC Tool must generate the subdevice stack code first. This section lists the steps to download the SSC tool and generate the subdevice stack code for the EoE example via the SSC tool.
 
-**Note:** You must have a Backoff account to download the EtherCAT SSC tool.
+**Note:** You must have a Beckhoff account to download the EtherCAT SSC tool.
 
 1.  Download and install the SSC tool.
     1.  Click the link [https://www.ethercat.org/en/downloads.html](https://www.ethercat.org/en/downloads.html).
@@ -97,5 +97,5 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT Subde
                                         to create the code")
 
 7.  Copy the *Src* subfolder to *boards\\evkmimxrt1180\\ecat\_examples\\eoe\\<core\>\\SSC\\Src* under the SDK source code.
-8.  Delete the *eoe\_freertos.c* file under Src folder because this file is provided by MCUXpresso SDK.
+8.  Delete the *eoe\_freertos.c* file under Src folder because this file is already provided in the root directory of *eoe* example.
 
