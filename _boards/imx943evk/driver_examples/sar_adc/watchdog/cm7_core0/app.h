@@ -20,7 +20,7 @@
 
 /* The range of 12bit ADC is [0, 4095],  */
 #define DEMO_ADC_LOW_THRESHOLD  0U
-#define DEMO_ADC_HIGH_THRESHOLD 4000U
+#define DEMO_ADC_HIGH_THRESHOLD 3800U
 /*${macro:end}*/
 
 /*******************************************************************************
