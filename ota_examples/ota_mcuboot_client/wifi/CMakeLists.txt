@@ -22,9 +22,13 @@ mcux_add_source(
             examples/ota_examples/ota_mcuboot_client/network_wifi_nxp/network_cfg.h
             examples/ota_examples/ota_mcuboot_client/network_wifi_nxp/init_wifi.c
             examples/ota_examples/ota_mcuboot_client/network_wifi_nxp/lwipopts.h
-            examples/ota_examples/ota_mcuboot_client/network_wifi_nxp/wifi_config.h
 )
 
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    PREINCLUDE TRUE
+    SOURCES examples/ota_examples/ota_mcuboot_client/network_wifi_nxp/wifi_config.h
+)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}

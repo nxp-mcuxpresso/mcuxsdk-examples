@@ -13,7 +13,6 @@ mcux_add_source(
             ${board_root}/${board}/ota_examples/ota_mcuboot_server/wifi/network_cfg.h
             examples/ota_examples/ota_mcuboot_server/network_wifi_nxp/init_wifi.c
             examples/ota_examples/ota_mcuboot_server/network_wifi_nxp/lwipopts.h
-            examples/ota_examples/ota_mcuboot_server/network_wifi_nxp/wifi_config.h
             examples/ota_examples/ota_mcuboot_server/httpsrv_fs_data.c
             examples/ota_examples/ota_mcuboot_server/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
@@ -34,6 +33,11 @@ mcux_add_include(
 
 )
 
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    PREINCLUDE TRUE
+    SOURCES examples/ota_examples/ota_mcuboot_server/network_wifi_nxp/wifi_config.h
+)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
