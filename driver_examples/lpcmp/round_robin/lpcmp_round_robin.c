@@ -47,6 +47,14 @@ int main(void)
      *   config->functionalSourceClock = kLPCMP_FunctionalClockSource0;
      */
     LPCMP_GetDefaultConfig(&mLpcmpConfigStruct);
+    
+    /* Configure LPCMP input channels. */
+#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL
+    mLpcmpConfigStruct.plusInputSrc = kLPCMP_PlusInputSrcDac;
+#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL */
+#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL
+    mLpcmpConfigStruct.minusInputSrc = kLPCMP_MinusInputSrcMux;
+#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL */
 
     /* Init the LPCMP module. */
     LPCMP_Init(DEMO_LPCMP_BASE, &mLpcmpConfigStruct);

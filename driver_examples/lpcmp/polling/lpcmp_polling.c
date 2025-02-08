@@ -48,6 +48,15 @@ int main(void)
      *   k_LpcmpConfigStruct->functionalSourceClock = kLPCMP_FunctionalClockSource0;
      */
     LPCMP_GetDefaultConfig(&mLpcmpConfigStruct);
+   
+    /* Configure LPCMP input channels. */
+#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL
+    mLpcmpConfigStruct.plusInputSrc = kLPCMP_PlusInputSrcMux;
+#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL */
+#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL
+    mLpcmpConfigStruct.minusInputSrc = kLPCMP_MinusInputSrcDac;
+#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL */
+
     /* Init the LPCMP module. */
     LPCMP_Init(DEMO_LPCMP_BASE, &mLpcmpConfigStruct);
 
@@ -64,13 +73,6 @@ int main(void)
         ((LPCMP_DCR_DAC_DATA_MASK >> LPCMP_DCR_DAC_DATA_SHIFT) >> 1U); /* Half of reference voltage. */
     LPCMP_SetDACConfig(DEMO_LPCMP_BASE, &mLpcmpDacConfigStruct);
 
-    /* Configure LPCMP input channels. */
-#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL
-    config->plusInputSrc = kLPCMP_PlusInputSrcMux;
-#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INPSEL */
-#if defined(FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL) && FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL
-    config->minusInputSrc = kLPCMP_MinusInputSrcDac;
-#endif  /* FSL_FEATURE_LPCMP_HAS_CCR2_INMSEL */
     LPCMP_SetInputChannels(DEMO_LPCMP_BASE, DEMO_LPCMP_USER_CHANNEL, DEMO_LPCMP_DAC_CHANNEL);
 
     /* Init the LED. */
