@@ -1,0 +1,11 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_jlinkswd/generic_fixed_jlink_debug_speed.ewd
+  - scripts/guigenerator/templates/iar/app_jlinkswd_m33/generic_trustzone.ewp
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_frdmmcxw23/app_frdmmcxw23.uvprojx
+  - scripts/guigenerator/templates/mdk/app_frdmmcxw23/app_frdmmcxw23.uvoptx
+  - scripts/guigenerator/templates/mdk/app_frdmmcxw23/JLinkSettings.JLinkScript
+  - scripts/guigenerator/templates/mdk/app_frdmmcxw23/JLinkSettings.ini

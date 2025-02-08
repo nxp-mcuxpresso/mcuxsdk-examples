@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+puf_1:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/puf_1
+    project-root-path: boards/${board}/driver_examples/puf/${multicore_foldername}
+    document:
+      name: puf_1${core_id_suffix_name}
+      category: driver_examples/puf
+      brief: This driver example project demonstrates how to use driver for the PUF
+        controller which provides a secure key storage.
+      example_readme:
+      - examples/driver_examples/puf_1/readme.md
+      - ${board_root}/${board}/driver_examples/puf/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw23: []

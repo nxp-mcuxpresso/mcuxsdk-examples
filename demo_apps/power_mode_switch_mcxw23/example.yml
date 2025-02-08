@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+power_mode_switch_mcxw23:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/power_mode_switch_mcxw23
+    project-root-path: boards/${board}/demo_apps/power_mode_switch_mcxw23/${multicore_foldername}
+    document:
+      name: power_mode_switch_mcxw23${core_id_suffix_name}
+      category: demo_apps/power_mode_switch
+      brief: 'The power mode switch demo project demonstrates the capabilities of the power driver, to go into multiple power states (e.g. sleep mode, deep sleep mode), 
+              to wake up the chip from different sources (e.g. RTC timer, OS timer, Wake up button),
+               and to calibrate device FROs (e.g. 32KHZ, 1MHZ, 12MHZ).'
+      example_readme:
+      - examples/demo_apps/power_mode_switch_mcxw23/readme.md
+      - ${board_root}/${board}/demo_apps/power_mode_switch/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw23: []

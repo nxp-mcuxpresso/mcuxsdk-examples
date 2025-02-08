@@ -98,6 +98,7 @@ demo_apps
    power_mode_switch_mcxa/index.rst
    power_mode_switch_mcxl/readme.md
    power_mode_switch_mcxw/readme.md
+   power_mode_switch_mcxw23/readme.md
    power_mode_switch_rt10xx/index.rst
    power_mode_switch_rt1xxx/index.rst
    power_mode_with_hifi/readme.md
