@@ -1,6 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -45,7 +44,7 @@ int main(void)
     PRINTF("Rising edge triggered and CTimer capture the edge periodically\r\n\r\n");
 
     DEMO_InitGpioPin();
-    DEMO_PullGpioPin(0);
+    DEMO_PullGpioPin(0U);
     DEMO_InitCtimerInput();
 
     /*
@@ -77,7 +76,7 @@ int main(void)
     while (1)
     {
         /* Pull up the capture pin, CTIMER will capture the edge. */
-        DEMO_PullGpioPin(1);
+        DEMO_PullGpioPin(1U);
 
         /* Wait until edge detected, and timer count saved to capture register */
         while (0U == (kCTIMER_Capture0Flag & CTIMER_GetStatusFlags(DEMO_CTIMER)))
@@ -91,7 +90,7 @@ int main(void)
         PRINTF("Timer value is %d when rising edge captured\r\n", captureValue);
 
         /* Pull down the capture pin, prepare for next capture. */
-        DEMO_PullGpioPin(0);
+        DEMO_PullGpioPin(0U);
 
         /* Delay for a while for next capture. */
         SDK_DelayAtLeastUs(1 * 1000 * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);

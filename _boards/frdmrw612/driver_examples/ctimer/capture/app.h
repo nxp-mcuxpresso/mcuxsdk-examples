@@ -1,6 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -24,7 +23,7 @@
 void BOARD_InitHardware(void);
 void DEMO_InitCtimerInput(void);
 void DEMO_InitGpioPin(void);
-void DEMO_PullGpioPin(int level);
+void DEMO_PullGpioPin(uint8_t level);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
