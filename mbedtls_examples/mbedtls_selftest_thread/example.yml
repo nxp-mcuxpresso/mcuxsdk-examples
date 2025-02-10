@@ -13,6 +13,7 @@ mbedtls_selftest_thread:
       - examples/mbedtls_examples/mbedtls_selftest_thread/readme.md
       - ${board_root}/${board}/mbedtls_examples/mbedtls_selftest_thread/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards:
-    frdmrw612: []
-    rdrw612bga: []
+  # boards:
+    # Disable due to FreeRTOS configuration compile issue TODO: resolve
+    # frdmrw612: []
+    # rdrw612bga: []
