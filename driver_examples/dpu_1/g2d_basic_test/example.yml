@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dpu_1_g2d_basic_test:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dpu_1/g2d_basic_test
+    project-root-path: boards/${board}/driver_examples/dpu/g2d_basic_test/${multicore_foldername}
+    document:
+      name: dpu_1_g2d_basic_test${core_id_suffix_name}
+      category: driver_examples/dpu
+      brief: This example tests the Blit Engine by running G2D operations.
+        g2d_basic_test.c creates pixel buffers and specifies the operation to be performed.
+        Each call to g2d_blit() triggers the Blit Engine to process the pixels and place
+        the result in the destination pixel buffer.
+      example_readme:
+      - examples/driver_examples/dpu_1/g2d_basic_test/readme.md
+      - ${board_root}/${board}/driver_examples/dpu/g2d_basic_test/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx95lpd5evk19@cm7: []
+    imx95lp4xevk15@cm7: []
+    imx95verdinevk@cm7: []
