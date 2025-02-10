@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -14,7 +14,6 @@
 #define EXAMPLE_MASTER              I3C0
 #define I3C_CLOCK_FREQUENCY         CLOCK_GetI3cClkFreq()
 #define I3C_SLOW_CLOCK_FREQUENCY    CLOCK_GetLpOscFreq()
-#define EXAMPLE_EVENT_WAIT_DELAY_NS 100000
 #define FSL_FEATURE_I3C_HAS_IBI_PAYLOAD_SIZE_OPTIONAL_BYTE (1)
 /*${macro:end}*/
 
