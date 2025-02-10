@@ -1,4 +1,4 @@
-lpspi_interrupt:
+lpspi_loopback:
   section-type: application
   contents:
     meta_path: examples/driver_examples/lpspi/loopback
@@ -16,6 +16,3 @@ lpspi_interrupt:
       - ${board_root}/${board}/driver_examples/lpspi/loopback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    imx943evk@cm7_core1: []
-    imx943evk@cm7_core0: []
-    imx943evk@cm33_core1: []
