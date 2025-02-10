@@ -13,22 +13,23 @@ mbedtls_testsuite:
       - examples/mbedtls_examples/mbedtls_testsuite/readme.md
       - ${board_root}/${board}/mbedtls_examples/mbedtls_testsuite/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards:
-    frdmrw612:
-    - -iar@debug
-    - -iar@flash_debug
-    - -iar@flash_release
-    - -iar@release
-    - -mdk@debug
-    - -mdk@flash_debug
-    - -mdk@flash_release
-    - -mdk@release
-    rdrw612bga:
-    - -iar@debug
-    - -iar@flash_debug
-    - -iar@flash_release
-    - -iar@release
-    - -mdk@debug
-    - -mdk@flash_debug
-    - -mdk@flash_release
-    - -mdk@release
+  # boards:
+    # Commenting out due to examples folder location change; TODO: move original files to example repo and fix build
+    # frdmrw612:
+    # - -iar@debug
+    # - -iar@flash_debug
+    # - -iar@flash_release
+    # - -iar@release
+    # - -mdk@debug
+    # - -mdk@flash_debug
+    # - -mdk@flash_release
+    # - -mdk@release
+    # rdrw612bga:
+    # - -iar@debug
+    # - -iar@flash_debug
+    # - -iar@flash_release
+    # - -iar@release
+    # - -mdk@debug
+    # - -mdk@flash_debug
+    # - -mdk@flash_release
+    # - -mdk@release
