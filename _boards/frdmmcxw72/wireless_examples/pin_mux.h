@@ -25,17 +25,17 @@ extern "C" {
 #endif
 
 
-/*! @name PORTD1 (number 24), SW3/SW2/SW2
+/*! @name PORTC6 (number 44), SW2
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITPINBUTTON0_SW2_GPIO GPIOD               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITPINBUTTON0_SW2_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
+#define BOARD_INITPINBUTTON0_SW2_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINBUTTON0_SW2_GPIO_PIN_MASK (1U << 6U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITPINBUTTON0_SW2_PORT PORTD               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINBUTTON0_SW2_PIN 1U                   /*!<@brief PORT pin number */
-#define BOARD_INITPINBUTTON0_SW2_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+#define BOARD_INITPINBUTTON0_SW2_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINBUTTON0_SW2_PIN 6U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINBUTTON0_SW2_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
                                                           /* @} */
 
 /* Symbols to be used in board_comp.h initialization(s) */
@@ -92,17 +92,17 @@ void BOARD_InitPinButton1(void);
  */
 void BOARD_InitPinSWO(void);
 
-/*! @name PORTB0 (number 46), LED1/LPSPI1_PCS0
+/*! @name PORTC1 (number 38), LED1/LPSPI_PCS3
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITPINLED1_LED1_GPIO GPIOB               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITPINLED1_LED1_GPIO_PIN_MASK (1U << 0U) /*!<@brief GPIO pin mask */
-#define BOARD_MONOCHROME_GPIO_PIN_DEFAULT_STATE 0U      /*!<@brief GPIO default state */
+#define BOARD_INITPINLED1_LED1_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINLED1_LED1_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
+#define BOARD_MONOCHROME_GPIO_PIN_DEFAULT_STATE 1U      /*!<@brief GPIO default state */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITPINLED1_LED1_PORT PORTB               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINLED1_LED1_PIN 0U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINLED1_LED1_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINLED1_LED1_PIN 1U                   /*!<@brief PORT pin number */
 #define BOARD_INITPINLED1_LED1_PIN_MASK (1U << 0U)      /*!<@brief PORT pin mask */
                                                         /* @} */
 
@@ -118,7 +118,7 @@ void BOARD_InitPinLED1(void);
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINLED2_LED_R_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
 #define BOARD_INITPINLED2_LED_R_GPIO_PIN_MASK (1U << 21U) /*!<@brief GPIO pin mask */
-#define BOARD_RGB_RED_GPIO_PIN_DEFAULT_STATE    0U        /*!<@brief GPIO default state */
+#define BOARD_RGB_RED_GPIO_PIN_DEFAULT_STATE    1U        /*!<@brief GPIO default state */
 
 /* Symbols to be used with PORT driver */
 #define BOARD_INITPINLED2_LED_R_PORT PORTA                /*!<@brief PORT peripheral base pointer */
@@ -138,7 +138,7 @@ void BOARD_InitPinLED2(void);
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINLED3_LED_G_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
 #define BOARD_INITPINLED3_LED_G_GPIO_PIN_MASK (1U << 19U) /*!<@brief GPIO pin mask */
-#define BOARD_RGB_GREEN_GPIO_PIN_DEFAULT_STATE  0U        /*!<@brief GPIO default state */
+#define BOARD_RGB_GREEN_GPIO_PIN_DEFAULT_STATE  1U        /*!<@brief GPIO default state */
 
 /* Symbols to be used with PORT driver */
 #define BOARD_INITPINLED3_LED_G_PORT PORTA                /*!<@brief PORT peripheral base pointer */
@@ -158,7 +158,7 @@ void BOARD_InitPinLED3(void);
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINLED4_LED_B_GPIO GPIOA                /*!<@brief GPIO peripheral base pointer */
 #define BOARD_INITPINLED4_LED_B_GPIO_PIN_MASK (1U << 20U) /*!<@brief GPIO pin mask */
-#define BOARD_RGB_BLUE_GPIO_PIN_DEFAULT_STATE   0U        /*!<@brief GPIO default state */
+#define BOARD_RGB_BLUE_GPIO_PIN_DEFAULT_STATE   1U        /*!<@brief GPIO default state */
 
 /* Symbols to be used with PORT driver */
 #define BOARD_INITPINLED4_LED_B_PORT PORTA                /*!<@brief PORT peripheral base pointer */
