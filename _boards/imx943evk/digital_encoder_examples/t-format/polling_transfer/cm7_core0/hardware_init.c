@@ -16,26 +16,21 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_dfsDiv2ClkCfg = {
-        .clk_id = DEMO_DFS_DIV2_CLOCK,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
-        .rate = 240000000UL, //240MHz
-    };
     hal_clk_t hal_flexioClkCfg = {
         .clk_id = DEMO_FLEXIO_CLOCK,
-        .pclk_id = DEMO_DFS_DIV2_CLOCK,
+        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
         .clk_round_opt = hal_clk_round_auto,
-        .rate = 80000000UL, //80MHz
+        .rate = 80000000UL, /* 80MHz */
     };
+    /* clang-format on */
+
     SM_Platform_Init();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_dfsDiv2ClkCfg);
-    HAL_ClockEnable(&hal_dfsDiv2ClkCfg);
+    HAL_ClockSetParent(&hal_flexioClkCfg);
     HAL_ClockSetRate(&hal_flexioClkCfg);
     HAL_ClockEnable(&hal_flexioClkCfg);
 }
