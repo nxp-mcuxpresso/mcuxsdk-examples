@@ -10,13 +10,27 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-
 #include "g2d_api_macros.h"
 
+/*******************************************************************************
+ * Definitions
+ *******************************************************************************/
 #define TEST_WIDTH         1920
 #define TEST_HEIGHT        1080
 #define TEST_LOOPS         16
 #define TICKS_PER_USEC     24U
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+void BOARD_InitHardware(void);
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+/*******************************************************************************
+ * Code
+ ******************************************************************************/
 
 static void fill_source_buffer(struct g2d_buf* buf, int rows, int cols) 
 {
@@ -60,7 +74,7 @@ static uint32_t get_test_runtime(uint64_t start, const int loops)
 // test G2D operations on the Blit Engine
 int main(void) 
 {
-    init_board_dpu();
+    BOARD_InitHardware();
 
     void *handle = NULL;
     int i, j;

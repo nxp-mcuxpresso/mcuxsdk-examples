@@ -11,7 +11,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/driver_examples/dpu/g2d_basic_test/g2d_basic_test.c
+    SOURCES examples/driver_examples/dpu_1/g2d_basic_test/g2d_basic_test.c
 )
 
 mcux_add_include(

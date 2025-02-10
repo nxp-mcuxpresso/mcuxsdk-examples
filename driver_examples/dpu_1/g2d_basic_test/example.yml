@@ -17,5 +17,3 @@ dpu_1_g2d_basic_test:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
-    imx95lp4xevk15@cm7: []
-    imx95verdinevk@cm7: []
