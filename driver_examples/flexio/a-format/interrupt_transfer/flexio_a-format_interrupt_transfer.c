@@ -13,7 +13,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define ENC_ADDR 0x03
+#define ENCODER_ID 0x03
 
 /*******************************************************************************
  * Prototypes
@@ -26,7 +26,6 @@ encoder_A_format encoder;
 status_t status;
 static bool cmdFlag = false;
 flexio_a_format_handle_t g_aformatHandle;
-uint8_t cmd_g;
 
 /*******************************************************************************
  * Code
@@ -35,15 +34,19 @@ void FLEXIO_A_Format_UserCallback(FLEXIO_A_FORMAT_Type *base,
        	                          flexio_a_format_handle_t *handle,
                                   status_t status, void *userData)
 {
-    cmd_g = *(uint8_t *)userData;
+    userData = userData;
 
     if (kStatus_FLEXIO_A_FORMAT_TxIdle == status)
     {
+//        txBufferFull = false;
+//        txOnGoing    = false;
     }
 
     if (kStatus_FLEXIO_A_FORMAT_RxIdle == status)
     {
         cmdFlag = true;
+//        rxBufferEmpty = false;
+//        rxOnGoing     = false;
     }
 }
 
@@ -55,16 +58,11 @@ int main(void)
     /* Structure of initialize A-format encoder */
     flexio_a_format_config_t devConfig;
     FLEXIO_A_FORMAT_Type encDev;
-    encoder_status_t statusData;
-    encoder_abs_multi_t multiData;
-    encoder_abs_single_t single_data;
-    encoder_abs_multi_single_t enc_abs, abs_save;
-    float temp;
-    uint32_t enc_id;
+    encoder_abs_multi_single_t enc_abs;
 
     BOARD_InitHardware();
 
-    PRINTF("Encoder A-format example (Interrupt mode)\r\n");
+    PRINTF("Encoder A-format example\r\n");
 
     /* 
      * Config->enableA_Format   = true;
@@ -85,6 +83,7 @@ int main(void)
     encDev.timerIndex[TIMER_TX_INDEX] = A_FORMAT_TX_TIMER_INDEX;
     encDev.timerIndex[TIMER_RX_INDEX] = A_FORMAT_RX_TIMER_INDEX;
     encDev.timerIndex[TIMER_DR_INDEX] = A_FORMAT_DR_TIMER_INDEX;
+//    encDev.triggerIn                  = A_FORMAT_TRIGGER_INDEX;
 
     encoder.controller = &encDev;
     encoder.singleTurnRevolution  = 20;
@@ -99,83 +98,15 @@ int main(void)
     }
 
     FLEXIO_A_Format_TransferCreateHandle(&encDev, &g_aformatHandle, FLEXIO_A_Format_UserCallback, NULL);
-
-    PRINTF("\r\n******************** Individual Transmission mode (The board accesses only one encoder on the bus) ********************\r\n");
-
-    PRINTF("****************\r\n* Test case  1 *\r\n****************\r\n");
-    PRINTF("> Get the encoder ID ==> ");
-    A_Format_Get_ID_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_id);
-    while (!cmdFlag);
-    cmdFlag = false;
-    if (cmd_g == 0xFF)
-    {
-        PRINTF("failed\r\n");
-    } else {
-        PRINTF("0x%06X (successful)\r\n", enc_id);
-    }
-
-    PRINTF("****************\r\n* Test case  2 *\r\n****************\r\n");
-    PRINTF("> Read the status of the encoder 0x%02X ==> ", ENC_ADDR);
-    A_Format_Readout_Encoder_status_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &statusData);
-    while (!cmdFlag);
-    cmdFlag = false;
-    if (statusData.es == A_Format_ES_FrameErr)
-    {
-        PRINTF("failed\r\n");
-    } else {
-        PRINTF("ES: 0x%02X, ALM: 0x%04X (successful)\r\n", statusData.es, statusData.status);
-    }
-
-    PRINTF("****************\r\n* Test case  3 *\r\n****************\r\n");
-    PRINTF("> Get the temperature of the encoder ==> ");
-    A_Format_Get_Temperature_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &temp);
-    while (!cmdFlag);
-    cmdFlag = false;
-    if (cmd_g == 0xFF)
-    {
-        PRINTF("failed\r\n");
-    } else {
-        PRINTF("%f (successful)\r\n", temp);
-    }
-
-    PRINTF("****************\r\n* Test case  4 *\r\n****************\r\n");
-    PRINTF("> Get the multi-turn data of the encoder ==> ");
-    A_Format_ABS_Readout_Multi_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &multiData);
-    while (!cmdFlag);
-    cmdFlag = false;
-    if (multiData.es == A_Format_ES_FrameErr)
-    {
-        PRINTF("failed\r\n");
-    } else {
-        PRINTF("ES: 0x%02X, Multi-turn: %d (successful)\r\n", multiData.es, multiData.multiTurn);
-    }
-
-    PRINTF("****************\r\n* Test case  5 *\r\n****************\r\n");
-    PRINTF("> Get the single-turn data of the encoder ==> ");
-    A_Format_ABS_Readout_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &single_data);
-    while (!cmdFlag);
-    cmdFlag = false;
-    if (single_data.es == A_Format_ES_FrameErr)
-    {
-        PRINTF("failed\r\n");
-    } else {
-        PRINTF("ES: 0x%02X, Single-turn data: %d (successful)\r\n", single_data.es, single_data.singleTurn);
-    }
-
-    PRINTF("\r\n******************** Running the loop test ********************\r\n");
-    A_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_abs);
+    A_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(0x03), &enc_abs);
     while (1)
     {
         if (cmdFlag)
         {
-            if (abs(enc_abs.singleTurn - abs_save.singleTurn) > 500)
-            {
-                PRINTF("Multi-turn data: %d, single-turn data: %d\r\n", enc_abs.multiTurn, enc_abs.singleTurn);
-                abs_save = enc_abs;
-            }
+            PRINTF("Multi-turn data: %d, single-turn data: %ld\r\n", enc_abs.multiTurn, enc_abs.singleTurn);
             cmdFlag = false;
-            SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-            A_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_abs);
+            SDK_DelayAtLeastUs(3000000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+            A_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(0x03), &enc_abs);
         }
     }
 }
