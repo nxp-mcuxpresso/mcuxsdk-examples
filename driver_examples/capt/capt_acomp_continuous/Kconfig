@@ -1,0 +1,15 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config DEMO_CAPT_ENABLE_PINS_NUM
+    int "Number of capt enabled pins"
+    default 5
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

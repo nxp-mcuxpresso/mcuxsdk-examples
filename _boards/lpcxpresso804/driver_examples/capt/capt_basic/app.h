@@ -18,7 +18,6 @@
     {                                                                   \
         kCAPT_X0Pin, kCAPT_X1Pin, kCAPT_X2Pin, kCAPT_X3Pin, kCAPT_X4Pin \
     }
-#define DEMO_CAPT_ENABLE_PINS_NUM 5
 #define DEMO_CAPT_CLOCK_FREQ      CLOCK_GetFroFreq()
 /*${macro:end}*/
 

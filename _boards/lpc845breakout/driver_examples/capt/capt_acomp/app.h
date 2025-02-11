@@ -20,7 +20,6 @@
     {                               \
         kCAPT_X0Pin                 \
     }
-#define DEMO_CAPT_ENABLE_PINS_NUM 1
 #define DEMO_CAPT_CLOCK_FREQ      CLOCK_GetFroFreq()
 /*${macro:end}*/
 

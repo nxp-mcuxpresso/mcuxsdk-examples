@@ -18,7 +18,6 @@
 #define DEMO_CAPT_IRQn            CMP_CAPT_IRQn
 #define DEMO_CAPT_IRQHandler      CMP_CAPT_IRQHandler
 #define DEMO_CAPT_ENABLE_PINS     kCAPT_X0Pin
-#define DEMO_CAPT_ENABLE_PINS_NUM 1
 #define DEMO_CAPT_CLOCK_FREQ      CLOCK_GetFroFreq()
 /*${macro:end}*/
 
