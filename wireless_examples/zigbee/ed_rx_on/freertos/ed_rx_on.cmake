@@ -35,11 +35,9 @@ mcux_add_source(
 )
 
 mcux_add_source(
-    # BASE_PATH ${NXP_ZB_BASE}/examples/zigbee_ed_rx_on_freertos/src/
-    BASE_PATH ${NXP_ZB_BASE}/examples/zigbee_ed_rx_on/src/
+    BASE_PATH ${NXP_ZB_BASE}/examples/zigbee_ed_rx_on_freertos/src/
     SOURCES
-            # app_main_freertos.c
-            app_main.c
+            app_main_freertos.c
 )
 
 # Dummy files, to be pulled for MCUX package
@@ -71,7 +69,7 @@ mcux_add_macro(
     TRACE_ZCL=${CONFIG_ZB_ED_RXON_TRACE_ZCL}
     ZPS_GENERATED_FILE=\\\"${APPLICATION_BINARY_DIR}/zps_gen.h\\\"
     PDUM_GENERATED_FILE=\\\"${APPLICATION_BINARY_DIR}/pdum_gen.h\\\"
-    # ZIGBEE_EVENT_IMPL
+    ZIGBEE_EVENT_IMPL
 )
 
 mcux_add_include(
