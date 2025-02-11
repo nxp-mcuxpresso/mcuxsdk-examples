@@ -1,7 +1,6 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/wireless/coex/build/${board}/common/app_services_init.c
-            middleware/wireless/coex/build/${board}/common/FreeRTOSConfig.h
             middleware/wireless/coex/build/${board}/common/hardware_init.c
             middleware/wireless/coex/build/${board}/common/peripherals.c
             middleware/wireless/coex/build/${board}/common/peripherals.h
@@ -15,6 +14,7 @@ mcux_add_source(
             middleware/wireless/coex/src/common/controller_coex_nxp.c
             middleware/wireless/coex/third_party/third_party.cmake
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
+            examples/_boards/${board}/coex_examples/coex_wifi_edgefast/FreeRTOSConfig.h
 )
 
 mcux_add_source(
