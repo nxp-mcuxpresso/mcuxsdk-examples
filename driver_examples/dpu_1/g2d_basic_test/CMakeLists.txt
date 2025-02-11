@@ -38,7 +38,7 @@ mcux_remove_armgcc_linker_script(
 mcux_add_armgcc_linker_script(
         TARGETS debug release
         BASE_PATH ${SdkRootDirPath}
-        LINKER examples/_boards/${board}/driver_examples/dpu/g2d_basic_test/cm7/MIMX9596_cm7_ram.ld
+        LINKER examples/_boards/${board}/driver_examples/dpu/g2d_basic_test/cm7/linker_g2d.ld
 )
 
 target_compile_definitions(${MCUX_SDK_PROJECT_NAME} PRIVATE

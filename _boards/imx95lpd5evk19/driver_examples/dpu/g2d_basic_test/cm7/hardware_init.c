@@ -69,7 +69,7 @@ void BOARD_InitHardware(void)
     HAL_PowerSetState(&campwrst);
     while (HAL_PowerGetState(&campwrst));
 
-    BOARD_ConfigMPU();
+    // BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
