@@ -17,6 +17,8 @@
 #include "netc_ep/soem_netc_ep.h"
 /*${header:end}*/
 
+#define SOEM_PORT_NAME "ENET4"
+
 #define MSGINTR       MSGINTR1
 
 #define KNETC_EP_CONFIG_SI    kNETC_ENETC0PSI0

@@ -17,6 +17,8 @@
 #include "netc_ep/soem_netc_ep.h"
 /*${header:end}*/
 
+#define SOEM_PORT_NAME "J26"
+
 #define EXAMPLE_EP_NUM        2U
 #define EP0_PORT      0U
 #define EP1_PORT      1U
