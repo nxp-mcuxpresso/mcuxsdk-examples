@@ -19,9 +19,6 @@
 #define TSI0_IRQHandler TSI_END_OF_SCAN_IRQHandler
 #define TSI0_IRQn       TSI_END_OF_SCAN_IRQn
 
-/* Define the delta value to indicate a touch event */
-#define TOUCH_DELTA_VALUE 100U
-
 /* TSI indication led of electrode 1 */
 #define LED1_INIT()   LED_BLUE_INIT(LOGIC_LED_OFF)
 #define LED1_TOGGLE() LED_BLUE_TOGGLE()

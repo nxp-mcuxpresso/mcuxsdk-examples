@@ -19,9 +19,6 @@
 #define TSI0_IRQHandler TSI_END_OF_SCAN_IRQHandler
 #define TSI0_IRQn       TSI_END_OF_SCAN_IRQn
 
-/* Define the delta value to indicate a touch event */
-#define TOUCH_DELTA_VALUE 50U
-
 /* TSI counter value may overflow when noise is enabled */
 #define NOISE_CANCELLATION_ENABLE false
 
