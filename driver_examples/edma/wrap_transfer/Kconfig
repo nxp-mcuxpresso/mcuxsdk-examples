@@ -1,0 +1,21 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config BUFFER_LENGTH
+    int "Number of buffer length"
+    default 8
+    help
+        No prefix in generated macro
+
+config TCD_QUEUE_SIZE
+    int "Number of tcd queue size"
+    default 2
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

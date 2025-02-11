@@ -1,0 +1,28 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config SOURCE_BUFFER_LENGTH
+    int "Number of source buffer length"
+    default 8
+    help
+        No prefix in generated macro
+
+config DEST_BUFFER_LENGTH
+    int "Number of Destination buffer length"
+    default 8
+    help
+        No prefix in generated macro
+
+config DMA_DESCRIPTOR_NUM
+    int "Number of descriptor"
+    default 2
+    help
+        No prefix in generated macro
+
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

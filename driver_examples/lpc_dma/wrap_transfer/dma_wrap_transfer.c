@@ -13,10 +13,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define SOURCE_BUFFER_LENGTH 8U
-#define DEST_BUFFER_LENGTH   8U
 #define DEMO_TRANSFER_WIDTH  uint32_t
-#define DMA_DESCRIPTOR_NUM   2U
 
 /*******************************************************************************
  * Prototypes
