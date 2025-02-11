@@ -52,6 +52,22 @@ BOARD_InitPins:
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
 
+#if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO8, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO8,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO9, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO9,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__FLEXIO1_FLEXIO11, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__FLEXIO1_FLEXIO11,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+#else
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
@@ -66,6 +82,7 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+#endif
 }
 
 /***********************************************************************************************************************
