@@ -38,7 +38,7 @@ void BOARD_InitBootPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M7[cm7] */
+void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M33[cm33] */
 
 #if defined(__cplusplus)
 }

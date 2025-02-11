@@ -36,7 +36,7 @@ void BOARD_InitBootPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm7}
+- options: {callFromInitBoot: 'true', coreID: cm33}
 - pin_list:
   - {pin_num: K20, peripheral: FLEXIO1, signal: 'flexio_flexio, 02', pin_signal: GPIO_IO02, PD: DISABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
   - {pin_num: K21, peripheral: FLEXIO1, signal: 'flexio_flexio, 03', pin_signal: GPIO_IO03, PD: DISABLED}
@@ -50,8 +50,24 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7[cm7] */
+void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
 
+#if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO8, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__FLEXIO1_FLEXIO8,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO9, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__FLEXIO1_FLEXIO9,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__FLEXIO1_FLEXIO11, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__FLEXIO1_FLEXIO11,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+#else
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
@@ -66,6 +82,7 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+#endif
 }
 
 /***********************************************************************************************************************
