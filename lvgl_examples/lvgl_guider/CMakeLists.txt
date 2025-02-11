@@ -30,6 +30,7 @@ mcux_add_source(
             ./../lvgl_demo_utils.h
             ./../lvgl_freertos.c
             ./../lvgl_freertos.h
+            ../FreeRTOSConfig_frag.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/lvgl_examples/lvgl_guider/reconfig.cmake OPTIONAL)
