@@ -14,7 +14,7 @@
 #define TX_MESSAGE_BUFFER_NUM (9)
 
 #define EXAMPLE_CAN_DMA         (EDMA1)
-#define EXAMPLE_CAN_DMA_CHANNEL 0
+#define EXAMPLE_CAN_DMA_CHANNEL (kDma1RequestMuxCan1)
 #define FLEXCAN_DMA_REQUEST_SOURCE (kDma1RequestMuxCan1)
 
 #define FLEXCAN_CLOCK_ROOT         (hal_clock_can1)
