@@ -27,11 +27,17 @@ mbedtls_benchmark:
     - -armgcc@debug
     - -mdk@debug
     - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1060:
     - -armgcc@debug
     - -mdk@release
     - -mdk@debug
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1170@cm4:
+    - -armgcc@release
+    - -armgcc@sdram_release
     - -armgcc@debug
     - -armgcc@sdram_debug
     - -iar@flexspi_nor_debug
@@ -109,6 +115,8 @@ mbedtls_benchmark:
     - -mdk@sdram_release
     evkmimxrt1064:
     - -armgcc@debug
+    - -mdk@release
+    - -mdk@sdram_release
     - -mdk@debug
     - -mdk@sdram_debug
     evkmimxrt1160@cm4:

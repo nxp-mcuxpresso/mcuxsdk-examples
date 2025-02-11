@@ -1,9 +1,5 @@
 
 mcux_add_mdk_configuration(
-    TARGETS debug sdram_debug
-    CC "-Os"
-)
-mcux_add_mdk_configuration(
     LD "--diag_suppress 6329"
 )
 
@@ -16,7 +12,12 @@ mcux_add_macro(
 
 mcux_remove_mdk_configuration(
     TARGETS debug sdram_debug
-    CC "-O1"
+    CC "-Ofast"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS debug sdram_debug release sdram_release
+    CC "-Os"
 )
 
 mcux_remove_armgcc_configuration(
