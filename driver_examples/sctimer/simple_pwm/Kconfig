@@ -1,0 +1,44 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config DUTY_CYCLE_CH1
+    int "Channel 1 PWM duty cycle"
+    default 50
+    range 0 100
+    help
+        No prefix in generated macro
+        type unsigned
+
+config DUTY_CYCLE_CH2
+    int "Channel 2 PWM duty cycle"
+    default 20
+    range 0 100
+    help
+        No prefix in generated macro
+        type unsigned
+
+config PWM_MODE
+    string
+    default "kSCTIMER_CenterAlignedPwm" if EXAMPLE_CENTER_ALIGNED
+    default "kSCTIMER_EdgeAlignedPwm" if EXAMPLE_EDGE_ALIGNED
+    help
+        No prefix in generated macro
+
+choice
+    prompt "Select PWM mode"
+    default EXAMPLE_CENTER_ALIGNED
+
+    config EXAMPLE_CENTER_ALIGNED
+        bool "Center Aligned PWM"
+
+    config EXAMPLE_EDGE_ALIGNED
+        bool "Edge Aligned PWM"
+
+endchoice
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
