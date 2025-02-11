@@ -16,6 +16,14 @@ mcux_add_macro(
        -DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\""
 )
 
+mcux_remove_mdk_configuration(
+    CC "-Ofast"
+)
+
+mcux_add_mdk_configuration(
+    CC "-Os"
+)
+
 mcux_remove_armgcc_configuration(
     TARGETS debug sdram_debug
     CC "-O0"

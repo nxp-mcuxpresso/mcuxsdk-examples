@@ -15,8 +15,13 @@ mcux_add_macro(
 )
 
 mcux_remove_mdk_configuration(
-    TARGETS debug sdram_debug
-    CC "-O1"
+    TARGETS debug sdram_debug release sdram_release
+    CC "-Ofast"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS debug sdram_debug release sdram_release
+    CC "-Os"
 )
 
 mcux_remove_armgcc_configuration(
