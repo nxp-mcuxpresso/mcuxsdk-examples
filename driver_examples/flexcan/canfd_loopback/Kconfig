@@ -1,0 +1,61 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config DLC
+    int "DLC field value of frame to be transmitted (Range: 0~15)"
+    default 15
+    range 0 15
+    help
+        DLC must align with message buffer bytes.
+        No prefix in generated macro
+        type unsigned
+
+config BYTES_IN_MB
+    string
+    default "kFLEXCAN_8BperMB" if EXAMPLE_8BYTES_PER_MB
+    default "kFLEXCAN_16BperMB" if EXAMPLE_16BYTES_PER_MB
+    default "kFLEXCAN_32BperMB" if EXAMPLE_32BYTES_PER_MB
+    default "kFLEXCAN_64BperMB" if EXAMPLE_64BYTES_PER_MB
+    help
+        No prefix in generated macro
+
+config DWORD_IN_MB
+    int
+    default 2 if EXAMPLE_8BYTES_PER_MB
+    default 4 if EXAMPLE_16BYTES_PER_MB
+    default 8 if EXAMPLE_32BYTES_PER_MB
+    default 16 if EXAMPLE_64BYTES_PER_MB
+    help
+        No prefix in generated macro
+        type unsigned
+
+choice
+    prompt "Select data size per Message Buffer"
+    default EXAMPLE_64BYTES_PER_MB
+    help
+        Bytes in MB        DLC
+            8              8
+            16             10
+            32             13
+            64             15
+
+    config EXAMPLE_8BYTES_PER_MB
+        bool "8 bytes per Message Buffer"
+
+    config EXAMPLE_16BYTES_PER_MB
+        bool "16 bytes per Message Buffer"
+
+    config EXAMPLE_32BYTES_PER_MB
+        bool "32 bytes per Message Buffer"
+
+    config EXAMPLE_64BYTES_PER_MB
+        bool "64 bytes per Message Buffer"
+
+endchoice
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
