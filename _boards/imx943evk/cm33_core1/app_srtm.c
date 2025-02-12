@@ -16,17 +16,41 @@
 #include "srtm_message.h"
 #include "srtm_rpmsg_endpoint.h"
 #include "srtm_i2c_service.h"
+#include "srtm_audio_service.h"
+#include "srtm_sai_edma_adapter.h"
+#include "srtm_pdm_edma_adapter.h"
 
 #include "app_srtm.h"
 #include "board.h"
 #include "rsc_table.h"
 #include "fsl_mu.h"
 
+#if SRTM_AUDIO_SERVICE_USED
+static uint8_t edmaUseCnt = 0U;
+static srtm_service_t audioService;
+srtm_sai_adapter_t pdmAdapter;
+static srtm_sai_adapter_t saiAdapter;
+#if SRTM_SAI_EDMA_LOCAL_BUF_ENABLE
+#define BUFFER_LEN (128 * 1024)
+#if (defined(__ICCARM__))
+static uint8_t g_buffer[BUFFER_LEN] @"AudioBuf";
+#else
+static uint8_t g_buffer[BUFFER_LEN] __attribute__((section("AudioBuf,\"w\",%nobits @")));
+#endif
+static srtm_sai_edma_local_buf_t g_local_buf = {
+    .buf       = (uint8_t *)&g_buffer,
+    .bufSize   = BUFFER_LEN,
+    .periods   = 4,
+    .threshold = 1,
+};
+#endif
+#endif
+
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
 static srtm_service_t i2cService;
 static SemaphoreHandle_t monSig;
-static volatile app_srtm_state_t srtmState;
+app_srtm_state_t srtmState;
 static struct rpmsg_lite_instance *rpmsgHandle;
 static app_rpmsg_monitor_t rpmsgMonitor;
 static void *rpmsgMonitorParam;
@@ -68,6 +92,11 @@ static struct _i2c_bus platform_i2c_buses[] = {
      .type           = SRTM_I2C_TYPE_LPI2C,
      .switch_idx     = I2C_SWITCH_NONE,
      .switch_channel = SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED},
+    {.bus_id         = 2,
+     .base_addr      = LPI2C3_BASE,
+     .type           = SRTM_I2C_TYPE_LPI2C,
+     .switch_idx     = I2C_SWITCH_NONE,
+     .switch_channel = SRTM_I2C_SWITCH_CHANNEL_UNSPECIFIED},
 };
 
 static struct _srtm_i2c_adapter i2c_adapter = {.read          = APP_SRTM_I2C_Read,
@@ -94,12 +123,12 @@ static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
                                         uint16_t flags)
 {
     status_t retVal   = kStatus_Fail;
-    //uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
+    uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
 
     switch (type)
     {
         case SRTM_I2C_TYPE_LPI2C:
-            //retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
             break;
         default:
             break;
@@ -269,6 +298,20 @@ static void APP_SRTM_Linkup(void)
     rpmsgConfig.peerAddr    = RL_ADDR_ANY;
     rpmsgConfig.rpmsgHandle = rpmsgHandle;
 
+#if SRTM_AUDIO_SERVICE_USED
+    rpmsgConfig.epName = APP_SRTM_AUDIO_CHANNEL_NAME;
+    chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
+    SRTM_PeerCore_AddChannel(core, chan);
+    assert((audioService != NULL) && (saiAdapter != NULL));
+    SRTM_AudioService_BindChannel(audioService, saiAdapter, chan);
+
+    rpmsgConfig.epName = APP_SRTM_PDM_CHANNEL_NAME;
+    chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
+    SRTM_PeerCore_AddChannel(core, chan);
+    assert((audioService != NULL) && (pdmAdapter != NULL));
+    SRTM_AudioService_BindChannel(audioService, pdmAdapter, chan);
+#endif
+
     /* Create and add SRTM I2C channel to peer core*/
     rpmsgConfig.epName = APP_SRTM_I2C_CHANNEL_NAME;
     chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
@@ -296,6 +339,139 @@ static void APP_SRTM_InitPeerCore(void)
         xTimerStart(linkupTimer, portMAX_DELAY);
     }
 }
+
+#if SRTM_AUDIO_SERVICE_USED
+static void APP_SRTM_InitPdmDevice(bool enable)
+{
+    edma_config_t dmaConfig;
+    if (enable)
+    {
+        if (edmaUseCnt == 0U)
+        {
+            EDMA_GetDefaultConfig(&dmaConfig);
+            EDMA_Init(APP_SRTM_PDM_DMA, &dmaConfig);
+        }
+        edmaUseCnt++;
+    }
+    else
+    {
+        edmaUseCnt--;
+        if (edmaUseCnt == 0U)
+        {
+            EDMA_Deinit(APP_SRTM_PDM_DMA);
+        }
+    }
+}
+
+static void APP_SRTM_InitAudioDevice(void)
+{
+    edma_config_t dmaConfig;
+
+    /* Initialize DMA4 for SAI */
+    EDMA_GetDefaultConfig(&dmaConfig);
+    EDMA_Init(APP_SAI_DMA, &dmaConfig);
+
+    /* Initialize DMAMUX for SAI */
+    EDMA_SetChannelMux(APP_SAI_DMA, APP_SAI_TX_DMA_CHANNEL, APP_SAI_TX_DMA_MUX);
+    EDMA_SetChannelMux(APP_SAI_DMA, APP_SAI_RX_DMA_CHANNEL, APP_SAI_RX_DMA_MUX);
+
+    APP_SRTM_InitPdmDevice(true);
+}
+
+static uint32_t APP_SRTM_ConfAudioDevice(srtm_audio_format_type_t format, uint32_t srate)
+{
+    uint32_t freq = 0U;
+
+    if ((srate % (uint32_t)kSAI_SampleRate44100Hz) == 0U)
+    {
+        freq = (APP_AUDIO_PLL2_FREQ / 32);
+    }
+    else if((srate % (uint32_t)kSAI_SampleRate8KHz) == 0U)
+    {
+        freq = (APP_AUDIO_PLL1_FREQ / 32);
+    }
+
+    return freq;
+}
+
+static uint32_t APP_SRTM_ConfPdmDevice(srtm_audio_format_type_t format, uint32_t srate)
+{
+    return HAL_ClockGetRate(hal_clock_pdm);
+}
+
+static void APP_SRTM_InitAudioService(void)
+{
+    srtm_sai_edma_config_t saiTxConfig;
+    srtm_sai_edma_config_t saiRxConfig;
+    srtm_pdm_edma_config_t pdmConfig;
+
+    APP_SRTM_InitAudioDevice();
+
+    memset(&saiTxConfig, 0, sizeof(saiTxConfig));
+    memset(&saiRxConfig, 0, sizeof(saiRxConfig));
+    memset(&pdmConfig, 0, sizeof(srtm_pdm_edma_config_t));
+
+    /*  Set IRQ Priorities. */
+    NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_TX_DMA_CHANNEL), APP_SAI_TX_DMA_IRQ_PRIO);
+    NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_RX_DMA_CHANNEL), APP_SAI_RX_DMA_IRQ_PRIO);
+    NVIC_SetPriority(APP_SRTM_SAI_IRQn, APP_SAI_IRQ_PRIO);
+    NVIC_SetPriority(APP_DMA_IRQN(APP_PDM_RX_DMA_CHANNEL), APP_PDM_DMA_IRQ_PRIO);
+
+    /* Create SAI EDMA adapter */
+    SAI_GetClassicI2SConfig(&saiTxConfig.config, kSAI_WordWidth16bits, kSAI_Stereo, kSAI_Channel0Mask);
+    saiTxConfig.config.syncMode           = kSAI_ModeAsync; /* Tx in Async mode */
+    saiTxConfig.config.fifo.fifoWatermark = FSL_FEATURE_SAI_FIFO_COUNTn(APP_SRTM_SAI) - 1;
+    saiTxConfig.mclk                      = APP_SAI_CLK_FREQ;
+
+#if defined(DEMO_SAI_TX_CONFIG_StopOnSuspend)
+    saiTxConfig.stopOnSuspend = DEMO_SAI_TX_CONFIG_StopOnSuspend;
+#else
+    saiTxConfig.stopOnSuspend = false; /* Keep playing audio on APD suspend. */
+#endif
+    saiTxConfig.threshold = 1U; /* Every period transmitted triggers periodDone message to A core. */
+    saiTxConfig.guardTime =
+        1500; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
+    saiTxConfig.dmaChannel = APP_SAI_TX_DMA_CHANNEL;
+    saiTxConfig.extendConfig.audioDevConf = APP_SRTM_ConfAudioDevice;
+
+    SAI_GetClassicI2SConfig(&saiRxConfig.config, kSAI_WordWidth16bits, kSAI_Stereo, kSAI_Channel0Mask);
+    saiRxConfig.config.syncMode           = kSAI_ModeSync; /* Rx in Sync mode */
+    saiRxConfig.config.fifo.fifoWatermark = 1;
+    saiRxConfig.mclk                      = APP_SAI_CLK_FREQ;
+#if defined(DEMO_SAI_TX_CONFIG_StopOnSuspend)
+    saiTxConfig.stopOnSuspend = DEMO_SAI_TX_CONFIG_StopOnSuspend;
+#else
+    saiRxConfig.stopOnSuspend = false; /* Keep recording data on APD suspend. */
+#endif
+    saiRxConfig.threshold  = UINT32_MAX; /* Every period received triggers periodDone message to A core. */
+    saiRxConfig.dmaChannel = APP_SAI_RX_DMA_CHANNEL;
+
+    saiAdapter = SRTM_SaiEdmaAdapter_Create(APP_SRTM_SAI, APP_SAI_DMA, &saiTxConfig, &saiRxConfig);
+    assert(saiAdapter);
+
+#if SRTM_SAI_EDMA_LOCAL_BUF_ENABLE
+    SRTM_SaiEdmaAdapter_SetTxLocalBuf(saiAdapter, &g_local_buf);
+#endif
+
+    /* Creat PDM SDMA adapter */
+    pdmConfig.stopOnSuspend = false; // Keep recording on A core suspend.
+    pdmConfig.dmaChannel    = APP_PDM_RX_DMA_CHANNEL;
+    pdmConfig.extendConfig.audioDevInit = APP_SRTM_InitPdmDevice;
+    pdmConfig.extendConfig.audioDevConf = APP_SRTM_ConfPdmDevice;
+    pdmConfig.pdmSrcClk                 = HAL_ClockGetIpFreq(hal_clock_pdm);;
+    pdmConfig.config.qualityMode        = APP_PDM_QUALITY_MODE;
+    pdmConfig.config.enableDoze         = false;
+    pdmConfig.config.fifoWatermark      = FSL_FEATURE_PDM_FIFO_DEPTH / 2U;
+    pdmConfig.config.cicOverSampleRate  = APP_PDM_CICOVERSAMPLE_RATE;
+    pdmConfig.channelConfig.gain        = APP_PDM_CHANNEL_GAIN;
+    pdmAdapter                          = SRTM_PdmEdmaAdapter_Create(APP_SRTM_PDM, APP_SRTM_PDM_DMA, &pdmConfig);
+    assert(pdmAdapter);
+
+    audioService = SRTM_AudioService_Create(saiAdapter, NULL);
+    SRTM_AudioService_AddAudioInterface(audioService, pdmAdapter);
+    SRTM_Dispatcher_RegisterService(disp, audioService);
+}
+#endif
 
 static void APP_SRTM_ResetServices(void)
 {
@@ -330,6 +506,9 @@ static void APP_SRTM_DeinitPeerCore(void)
 static void APP_SRTM_InitServices(void)
 {
     APP_SRTM_InitI2CService();
+#if SRTM_AUDIO_SERVICE_USED
+    APP_SRTM_InitAudioService();
+#endif    
 }
 
 static void SRTM_DispatcherTask(void *pvParameters)
