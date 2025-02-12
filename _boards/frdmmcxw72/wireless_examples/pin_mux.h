@@ -48,17 +48,18 @@ extern "C" {
  */
 void BOARD_InitPinButton0(void);
 
-/*! @name PORTC6 (number 44), SW2/SW3/SW3
+
+/*! @name PORTD1 (number 24), SW3
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITPINBUTTON1_SW3_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITPINBUTTON1_SW3_GPIO_PIN_MASK (1U << 6U) /*!<@brief GPIO pin mask */
+#define BOARD_INITPINBUTTON1_SW3_GPIO GPIOD               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINBUTTON1_SW3_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_INITPINBUTTON1_SW3_PORT PORTC               /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINBUTTON1_SW3_PIN 6U                   /*!<@brief PORT pin number */
-#define BOARD_INITPINBUTTON1_SW3_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
+#define BOARD_INITPINBUTTON1_SW3_PORT PORTD               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINBUTTON1_SW3_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINBUTTON1_SW3_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
                                                           /* @} */
 
 /* Symbols to be used in board_comp.h initialization(s) */
@@ -220,13 +221,13 @@ void BOARD_UnInitPinLPUART1_RX(void);
  */
 void BOARD_UnInitPinLPUART1_TX(void);
 
-/*! @name PORTC6 (number 44), SW2/SW3/SW3
+/*! @name PORTD1 (number 24), SW3
   @{ */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_UNINITPINBUTTON1_SW3_PORT PORTC               /*!<@brief PORT peripheral base pointer */
-#define BOARD_UNINITPINBUTTON1_SW3_PIN 6U                   /*!<@brief PORT pin number */
-#define BOARD_UNINITPINBUTTON1_SW3_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
+#define BOARD_UNINITPINBUTTON1_SW3_PORT PORTD               /*!<@brief PORT peripheral base pointer */
+#define BOARD_UNINITPINBUTTON1_SW3_PIN 4U                   /*!<@brief PORT pin number */
+#define BOARD_UNINITPINBUTTON1_SW3_PIN_MASK (1U << 4U)      /*!<@brief PORT pin mask */
                                                             /* @} */
 
 /*!
@@ -235,13 +236,13 @@ void BOARD_UnInitPinLPUART1_TX(void);
  */
 void BOARD_UnInitPinButton1(void);
 
-/*! @name PORTD1 (number 24), SW3/SW2/SW2
+/*! @name PORTC6 (number 44), SW2
   @{ */
 
 /* Symbols to be used with PORT driver */
-#define BOARD_UNINITPINBUTTON0_SW2_PORT PORTD               /*!<@brief PORT peripheral base pointer */
-#define BOARD_UNINITPINBUTTON0_SW2_PIN 1U                   /*!<@brief PORT pin number */
-#define BOARD_UNINITPINBUTTON0_SW2_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+#define BOARD_UNINITPINBUTTON0_SW2_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_UNINITPINBUTTON0_SW2_PIN 6U                   /*!<@brief PORT pin number */
+#define BOARD_UNINITPINBUTTON0_SW2_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
                                                             /* @} */
 
 /*!
