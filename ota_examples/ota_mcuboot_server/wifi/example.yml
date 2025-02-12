@@ -22,6 +22,8 @@ ota_mcuboot_server_wifi:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     rdrw612bga:
     - -armgcc@debug
     - -armgcc@release
@@ -29,6 +31,8 @@ ota_mcuboot_server_wifi:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     evkmimxrt595@cm33:
     - -armgcc@debug
     - -armgcc@release
@@ -36,6 +40,8 @@ ota_mcuboot_server_wifi:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     evkmimxrt685@cm33:
     - -armgcc@debug
     - -armgcc@release
@@ -43,3 +49,5 @@ ota_mcuboot_server_wifi:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release

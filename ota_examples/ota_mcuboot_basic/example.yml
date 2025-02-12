@@ -26,6 +26,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkbmimxrt1060:
     - -armgcc@debug
     - -armgcc@release
@@ -39,6 +41,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkbmimxrt1170@cm7:
     - -armgcc@debug
     - -armgcc@release
@@ -52,6 +56,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkcmimxrt1060:
     - -armgcc@debug
     - -armgcc@release
@@ -65,6 +71,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1020:
     - -armgcc@debug
     - -armgcc@release
@@ -78,6 +86,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1040:
     - -armgcc@debug
     - -armgcc@release
@@ -91,6 +101,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1064:
     - -armgcc@debug
     - -armgcc@release
@@ -104,6 +116,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1160@cm7:
     - -armgcc@debug
     - -armgcc@release
@@ -117,6 +131,8 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1180@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug
@@ -130,6 +146,8 @@ ota_mcuboot_basic:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt595@cm33:
     - -armgcc@debug
     - -armgcc@release
@@ -137,6 +155,8 @@ ota_mcuboot_basic:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     evkmimxrt685@cm33:
     - -armgcc@debug
     - -armgcc@release
@@ -144,6 +164,8 @@ ota_mcuboot_basic:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     frdmmcxa153:
     - -mdk@debug
     - -mdk@release
@@ -157,10 +179,20 @@ ota_mcuboot_basic:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    lpcxpresso55s69@cm33_core0: []
-    mcxn5xxevk@cm33_core0: []
-    mcxn9xxevk@cm33_core0: []
-    frdmmcxn947@cm33_core0: []
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    lpcxpresso55s69@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
+    mcxn5xxevk@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
+    mcxn9xxevk@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
+    frdmmcxn947@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
     mimxrt685audevk@cm33:
     - -armgcc@debug
     - -armgcc@release
@@ -168,6 +200,8 @@ ota_mcuboot_basic:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     rdrw612bga:
     - -armgcc@debug
     - -armgcc@release
@@ -175,6 +209,8 @@ ota_mcuboot_basic:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     mimxrt700evk@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
@@ -182,3 +218,5 @@ ota_mcuboot_basic:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release

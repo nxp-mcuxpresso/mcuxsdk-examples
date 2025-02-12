@@ -27,6 +27,8 @@ ota_mcuboot_basic_psa:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkcmimxrt1060:
     - -armgcc@debug
     - -armgcc@release
@@ -40,6 +42,14 @@ ota_mcuboot_basic_psa:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
-    frdmmcxn947@cm33_core0: []
-    mcxn5xxevk@cm33_core0: []
-    mcxn9xxevk@cm33_core0: []
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    frdmmcxn947@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
+    mcxn5xxevk@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
+    mcxn9xxevk@cm33_core0:
+    - -mdk@debug
+    - -mdk@release
