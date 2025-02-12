@@ -17,18 +17,6 @@
 #define PRINTF_FLOAT_ENABLE 1
 #define PRINTF_ADVANCED_ENABLE 1
 
-/* Controller config
- * Supported controller list,
- * WIFI_IW612_BOARD_MURATA_2EL_M2
- *
- * If Murata Type 2EL module(Rev-A1 M2 only) used , define macro WIFI_IW612_BOARD_MURATA_2EL_M2 in following.
- */
-
-/* @TEST_ANCHOR */
-#define WIFI_IW612_BOARD_MURATA_2EL_M2
-/* @END_TEST_ANCHOR */
-/*#define WIFI_IW612_BOARD_MURATA_2EL_M2*/
-
 #if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"

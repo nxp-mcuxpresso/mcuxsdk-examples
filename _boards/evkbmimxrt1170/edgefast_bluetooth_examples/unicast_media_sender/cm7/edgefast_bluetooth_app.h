@@ -12,21 +12,6 @@
 
 #define FLASH_ADAPTER_SIZE 0x10000
 
-/* Controller config
- * Supported controller list,
- * BT_THIRD_PARTY_TRANSCEIVER
- * WIFI_IW612_BOARD_RD_USD
- * WIFI_IW612_BOARD_MURATA_2EL_M2
- *
- * If third party controller used , define macro BT_THIRD_PARTY_TRANSCEIVER in following.
- * If IW612 is used, define the macro WIFI_IW612_BOARD_RD_USD in following.
- * If Murata Type 2EL module(M2 only) used , define macro WIFI_IW612_BOARD_MURATA_2EL_M2 in following.
- */
-
-/* @TEST_ANCHOR */
-#define WIFI_IW612_BOARD_MURATA_2EL_M2
-/* @END_TEST_ANCHOR */
-
 #if defined(BT_THIRD_PARTY_TRANSCEIVER) || defined(WIFI_IW612_BOARD_RD_USD) || defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"

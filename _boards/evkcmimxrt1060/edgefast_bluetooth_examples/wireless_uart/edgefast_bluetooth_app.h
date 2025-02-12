@@ -11,27 +11,6 @@
 
 #define OSA_USED                          1
 
-/* Controller config
- * Supported controller list,
- * WIFI_IW416_BOARD_MURATA_1XK_M2
- * WIFI_88W8987_BOARD_MURATA_1ZM_M2
- * WIFI_IW612_BOARD_MURATA_2EL_M2
- * WIFI_IW610_BOARD_MURATA_2LL_M2
- *
- * If Embedded Artists Type 1XK(EAR00385 M2 only) used, define macro WIFI_IW416_BOARD_MURATA_1XK_M2 in following.
- * If Embedded Artists Type 1ZM(EAR00364 M2 only) used, define macro WIFI_88W8987_BOARD_MURATA_1ZM_M2 in following.
- * If Murata Type 2EL module(Rev-A1 M2 only) used , define macro WIFI_IW612_BOARD_MURATA_2EL_M2 in following.
- * If Embedded Artists Type 2LL(EAR00500 M2 only) used, define macro WIFI_IW610_BOARD_MURATA_2LL_M2 in following.
- */
-
-/* @TEST_ANCHOR */
-#define WIFI_IW612_BOARD_MURATA_2EL_M2
-/* @END_TEST_ANCHOR */
-/*#define WIFI_IW416_BOARD_MURATA_1XK_M2*/
-/*#define WIFI_88W8987_BOARD_MURATA_1ZM_M2*/
-/*#define WIFI_IW612_BOARD_MURATA_2EL_M2*/
-/*#define WIFI_IW610_BOARD_MURATA_2LL_M2*/
-
 #if (defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
      defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2))
 #include "wifi_bt_module_config.h"
