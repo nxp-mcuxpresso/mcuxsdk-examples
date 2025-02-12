@@ -172,6 +172,12 @@ mcuboot_opensource:
     frdmmcxa156:
     - -mdk@release
     - -mdk@debug
+    frdmmcxa166:
+    - -mdk@release
+    - -mdk@debug
+    frdmmcxa276:
+    - -mdk@release
+    - -mdk@debug
     frdmrw612:
     - -armgcc@debug
     - -armgcc@release
