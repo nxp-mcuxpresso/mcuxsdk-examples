@@ -44,11 +44,6 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
-#define CLOCK_GRANULARITY_NS 25UL
-#define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
-#define CLOCK_INCREASE_PER_SEC 1000000000UL 
-
 #define CYCLE_PERIOD_NS 1000000 // 1ms
 
 #define asda_b3_VendorId 0x000001dd

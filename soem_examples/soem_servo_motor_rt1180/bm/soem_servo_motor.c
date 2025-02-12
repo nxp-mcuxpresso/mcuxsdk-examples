@@ -44,11 +44,6 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
-#define CLOCK_GRANULARITY_NS 25UL
-#define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
-#define CLOCK_INCREASE_PER_SEC 1000000000UL 
-
 #define CYCLE_PERIOD_NS 1000000 // 1ms
 
 #define asda_b3_VendorId 0x000001dd
@@ -281,6 +276,8 @@ static void osal_timer_init(uint32_t priority)
 	GPT_GetDefaultConfig(&gptConfig);
 	GPT_Init(OSAL_TIMER, &gptConfig);
 	gptFreq = OSAL_TIMER_CLK_FREQ;
+	PRINTF("\r\nGPT freq: %d\r\n", gptFreq);
+	PRINTF("\r\nGPT divider: %d\r\n", gptFreq / CLOCK_GRANULARITY_FRE);
 	/* Divide GPT clock source frequency to 1MHz */
 	GPT_SetClockDivider(OSAL_TIMER, gptFreq / CLOCK_GRANULARITY_FRE);
 	/* Set both GPT modules to 1 second duration */
