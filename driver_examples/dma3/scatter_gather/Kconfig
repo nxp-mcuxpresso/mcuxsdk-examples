@@ -10,13 +10,6 @@ config BUFF_LENGTH
     help
         No prefix in generated macro
 
-config HALF_BUFF_LENGTH
-    int "Number of half buffer length"
-    default 4
-    help
-        This value should be half of BUFFER_LENGTH
-        No prefix in generated macro
-
 config TCD_QUEUE_SIZE
     int "Number of tcd queue size"
     default 2

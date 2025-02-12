@@ -10,13 +10,6 @@ config BUFFER_LENGTH
     help
         No prefix in generated macro
 
-config HALF_BUFFER_LENGTH
-    int "Number of half buffer length"
-    default 4
-    help
-        This value should be half of BUFFER_LENGTH
-        No prefix in generated macro
-
 endmenu
 
 source "${SdkRootDirPath}/Kconfig.mcuxpresso"

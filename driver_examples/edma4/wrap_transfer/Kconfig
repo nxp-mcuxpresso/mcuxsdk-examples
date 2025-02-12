@@ -4,17 +4,10 @@
 
 menu "Project Settings"
 
-config BUFFER_LENGTH
+config BUFF_LENGTH
     int "Number of buffer length"
     default 8
     help
-        No prefix in generated macro
-
-config HALF_BUFFER_LENGTH
-    int "Number of half buffer length"
-    default 4
-    help
-        This value should be half of BUFFER_LENGTH
         No prefix in generated macro
 
 endmenu
