@@ -2,6 +2,11 @@ mcux_add_configuration(
     CC "-DBOARD_PMIC_CONFIG_USE_SEMA4=1"
 )
 
+mcux_add_macro(
+    AS "-DDSP_IMAGE_COPY_TO_RAM=1"
+    CC "-DDSP_IMAGE_COPY_TO_RAM=1"
+)
+
 mcux_add_iar_configuration(
     LD "--config_def=__stack_size__=0x1000\
         --config_def=__heap_size__=0x1000"
