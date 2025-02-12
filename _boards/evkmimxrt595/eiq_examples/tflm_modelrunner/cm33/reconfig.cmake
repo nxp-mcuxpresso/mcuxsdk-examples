@@ -11,3 +11,7 @@ mcux_add_source(
 mcux_add_mdk_configuration(
         CX "-std=gnu++17"
 )
+mcux_remove_mdk_configuration(
+  CC "-fshort-wchar"
+  CX "-fshort-wchar"
+  )
