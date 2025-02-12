@@ -63,18 +63,18 @@ void SysTick_Handler(void)
 }
 
 /*!
- * @brief Reverses current output level of BOARD_LED_BLUE_GPIO.
+ * @brief Reverses current output level of BOARD_LED_GPIO.
  */
 void GpioPinToggle(void)
 {
-    BOARD_LED_BLUE_GPIO->NOT[BOARD_LED_BLUE_GPIO_PORT] = 1U << BOARD_LED_BLUE_GPIO_PIN;
+    BOARD_LED_GPIO->NOT[BOARD_LED_GPIO_PORT] = 1U << BOARD_LED_GPIO_PIN;
 }
 /*!
- * @brief Sets the output level of BOARD_LED_BLUE_GPIO to the logic 0.
+ * @brief Sets the output level of BOARD_LED_GPIO to the logic 0.
  */
 void GpioPinClear(void)
 {
-    BOARD_LED_BLUE_GPIO->CLR[BOARD_LED_BLUE_GPIO_PORT] = 1U << BOARD_LED_BLUE_GPIO_PIN;
+    BOARD_LED_GPIO->CLR[BOARD_LED_GPIO_PORT] = 1U << BOARD_LED_GPIO_PIN;
 }
 /*!
  * @brief Retrieves and prints the flash properties.
