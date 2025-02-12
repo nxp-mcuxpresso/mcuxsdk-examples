@@ -58,6 +58,8 @@ BOARD_InitPinButton0:
  * END ****************************************************************************************************************/
 void BOARD_InitPinButton0(void)
 {
+    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_PortC);
 
     const port_pin_config_t SW2 = {/* Internal pull-up resistor is enabled */
                                    (uint16_t)kPORT_PullUp,
@@ -73,11 +75,11 @@ void BOARD_InitPinButton0(void)
                                    (uint16_t)kPORT_LowDriveStrength,
                                    /* Normal drive strength is configured */
                                    (uint16_t)kPORT_NormalDriveStrength,
-                                   /* Pin is configured as PTD1 */
+                                   /* Pin is configured as PTC6 */
                                    (uint16_t)kPORT_MuxAsGpio,
                                    /* Pin Control Register fields [15:0] are not locked */
                                    (uint16_t)kPORT_UnlockRegister};
-    /* PORTD1 (pin 24) is configured as PTD1 */
+    /* PORTC6 (pin 44) is configured as PTC6 */
     PORT_SetPinConfig(BOARD_INITPINBUTTON0_SW2_PORT, BOARD_INITPINBUTTON0_SW2_PIN, &SW2);
 }
 
@@ -101,8 +103,6 @@ BOARD_InitPinButton1:
  * END ****************************************************************************************************************/
 void BOARD_InitPinButton1(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
 
     const port_pin_config_t SW3 = {/* Internal pull-up resistor is enabled */
                                    (uint16_t)kPORT_PullUp,
@@ -118,11 +118,11 @@ void BOARD_InitPinButton1(void)
                                    (uint16_t)kPORT_LowDriveStrength,
                                    /* Normal drive strength is configured */
                                    (uint16_t)kPORT_NormalDriveStrength,
-                                   /* Pin is configured as PTC6 */
+                                   /* Pin is configured as PTD1 */
                                    (uint16_t)kPORT_MuxAsGpio,
                                    /* Pin Control Register fields [15:0] are not locked */
                                    (uint16_t)kPORT_UnlockRegister};
-    /* PORTC6 (pin 44) is configured as PTC6 */
+    /* PORTD1 (pin 24) is configured as PTD1 */
     PORT_SetPinConfig(BOARD_INITPINBUTTON1_SW3_PORT, BOARD_INITPINBUTTON1_SW3_PIN, &SW3);
 }
 
@@ -579,10 +579,7 @@ BOARD_UnInitPinButton1:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinButton1(void)
 {
-    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
-    CLOCK_EnableClock(kCLOCK_PortC);
-
-    /* PORTC6 (pin 44) is configured as ADC0_A8 */
+    /* PORTD1 (pin 24) is configured as ADC0_B5 */
     PORT_SetPinMux(BOARD_UNINITPINBUTTON1_SW3_PORT, BOARD_UNINITPINBUTTON1_SW3_PIN, kPORT_PinDisabledOrAnalog);
 }
 
@@ -605,8 +602,10 @@ BOARD_UnInitPinButton0:
  * END ****************************************************************************************************************/
 void BOARD_UnInitPinButton0(void)
 {
+    /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
+    CLOCK_EnableClock(kCLOCK_PortC);
 
-    /* PORTD1 (pin 24) is configured as ADC0_B5 */
+    /* PORTC6 (pin 44) is configured as ADC0_A8 */
     PORT_SetPinMux(BOARD_UNINITPINBUTTON0_SW2_PORT, BOARD_UNINITPINBUTTON0_SW2_PIN, kPORT_PinDisabledOrAnalog);
 }
 
