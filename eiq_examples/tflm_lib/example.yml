@@ -11,6 +11,20 @@ tflm_lib:
       - examples/eiq_examples/tflm_lib/readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    evkmimxrt595@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    evkmimxrt685@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     mimxrt700evk@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
@@ -46,80 +60,62 @@ tflm_lib:
     - +mdk@debug
     - +mdk@release
     evkbmimxrt1170@cm7:
-    - +armgcc@flexspi_nor_sdram_debug
-    - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
-    - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
-    - +mdk@flexspi_nor_sdram_release
-    - -armgcc@debug
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -iar@debug
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
-    - -mdk@debug
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkmimxrt1160@cm7:
-    - +armgcc@flexspi_nor_sdram_debug
-    - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
-    - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
-    - +mdk@flexspi_nor_sdram_release
-    - -armgcc@debug
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -iar@debug
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
-    - -mdk@debug
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkmimxrt1180@cm33:
-    - +armgcc@flexspi_nor_hyperram_debug
-    - +armgcc@flexspi_nor_hyperram_release
-    - +iar@flexspi_nor_hyperram_debug
-    - +iar@flexspi_nor_hyperram_release
-    - +mdk@flexspi_nor_hyperram_debug
-    - +mdk@flexspi_nor_hyperram_release
-    - -armgcc@debug
-    - -armgcc@release
+    - -armgcc@flexspi_nor_hyperram_debug
+    - -armgcc@flexspi_nor_hyperram_release
+    - -iar@flexspi_nor_hyperram_debug
+    - -iar@flexspi_nor_hyperram_release
+    - -mdk@flexspi_nor_hyperram_debug
+    - -mdk@flexspi_nor_hyperram_release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -iar@debug
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
     - -iar@hyperram_debug
     - -iar@hyperram_release
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -mdk@debug
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
     - -mdk@hyperram_debug
@@ -127,127 +123,97 @@ tflm_lib:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     evkbimxrt1050:
-    - +armgcc@flexspi_nor_sdram_debug
-    - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
-    - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
-    - +mdk@flexspi_nor_sdram_release
-    - -armgcc@debug
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -iar@debug
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
-    - -mdk@debug
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkbmimxrt1060:
-    - +armgcc@flexspi_nor_sdram_debug
-    - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
-    - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
-    - +mdk@flexspi_nor_sdram_release
-    - -armgcc@debug
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -iar@debug
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
-    - -mdk@debug
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkcmimxrt1060:
-    - +armgcc@flexspi_nor_sdram_debug
-    - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
-    - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
-    - +mdk@flexspi_nor_sdram_release
-    - -armgcc@debug
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -iar@debug
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
-    - -mdk@debug
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkmimxrt1040:
-    - +armgcc@flexspi_nor_sdram_debug
-    - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
-    - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
-    - +mdk@flexspi_nor_sdram_release
-    - -armgcc@debug
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -iar@debug
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
-    - -mdk@debug
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
     evkmimxrt1064:
-    - +armgcc@flexspi_nor_sdram_debug
-    - +armgcc@flexspi_nor_sdram_release
-    - +iar@flexspi_nor_sdram_debug
-    - +iar@flexspi_nor_sdram_release
-    - +mdk@flexspi_nor_sdram_debug
-    - +mdk@flexspi_nor_sdram_release
-    - -armgcc@debug
+    - -armgcc@flexspi_nor_sdram_debug
+    - -armgcc@flexspi_nor_sdram_release
+    - -iar@flexspi_nor_sdram_debug
+    - -iar@flexspi_nor_sdram_release
+    - -mdk@flexspi_nor_sdram_debug
+    - -mdk@flexspi_nor_sdram_release
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
-    - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
-    - -iar@debug
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
-    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
-    - -mdk@debug
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release

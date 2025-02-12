@@ -7,5 +7,8 @@ mcux_add_source(
   SOURCES examples/eiq_examples/tflm_kws/cpu/model_data.h
   examples/eiq_examples/tflm_kws/cpu/model_ds_cnn_ops_micro.cpp
   )
-
+mcux_remove_mdk_configuration(
+  CC "-fshort-wchar"
+  CX "-fshort-wchar"
+  )
 
