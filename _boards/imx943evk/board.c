@@ -1059,7 +1059,22 @@ void BOARD_InitLpuart7Pins(void) {                                /*!< Function 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
 }
 
+#if BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS
+void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
+
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+}
+#endif
+
 void BOARD_InitLpuart8Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
+#if BOARD_LPUART8_USE_JTAG_PADS
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TCLK_SWCLK__LPUART8_RX, 0U);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TMS_SWDIO__LPUART8_TX, 0U);
 
@@ -1067,6 +1082,23 @@ void BOARD_InitLpuart8Pins(void) {                                /*!< Function 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TMS_SWDIO__LPUART8_TX,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+#elif BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__LPUART8_RX, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO12__LPUART8_TX, 0U);
+
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__LPUART8_RX,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO12__LPUART8_TX,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+
+    BOARD_InitI2C6Pins();
+    /* Route LPSPI8 of SoC to arduino interface */
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL3);
+#else
+#error "Pls find PADS for function LPUART8"
+#endif
 }
 
 void BOARD_InitLpuart9Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
