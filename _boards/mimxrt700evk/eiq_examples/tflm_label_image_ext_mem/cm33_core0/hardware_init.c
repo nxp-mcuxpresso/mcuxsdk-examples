@@ -119,10 +119,8 @@ xspi_edma_handle_t xspiHandle;
 
 extern void XSPI_TX_DMA_ISR(void);
 extern void XSPI_RX_DMA_ISR(void);
-#if 0
 void cleanCache(void)
 {
-   PRINTF("%s\r\n", __func__);
    XCACHE_CleanCache(XCACHE0);
 }
 
@@ -131,7 +129,6 @@ void invalidateCache(void)
    XCACHE_CleanCache(XCACHE0);
    XCACHE_InvalidateCache(XCACHE0);
 }
-#endif
 void BOARD_Init()
 {
     edma_config_t userConfig;
