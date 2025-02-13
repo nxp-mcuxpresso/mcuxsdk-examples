@@ -40,7 +40,7 @@ mcux_add_source(
            bluetooth/examples/ble_shell/shell_thrput.h
            bluetooth/examples/ble_shell/dynamic_gatt_database.c
            bluetooth/examples/ble_shell/dynamic_gatt_database.h
-           bluetooth/examples/ble_shell/readme.md
+           ../../examples/wireless_examples/bluetooth/ble_shell/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/ble_shell/example_board_readme.md
 )
 

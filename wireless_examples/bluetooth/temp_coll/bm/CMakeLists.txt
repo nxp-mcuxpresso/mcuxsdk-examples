@@ -28,7 +28,7 @@ mcux_add_source(
            bluetooth/examples/temp_coll/gatt_uuid128.h
            bluetooth/examples/temp_coll/temperature_collector.c
            bluetooth/examples/temp_coll/temperature_collector.h
-           bluetooth/examples/temp_coll/readme.md
+           ../../examples/wireless_examples/bluetooth/temp_coll/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/temp_coll/example_board_readme.md
 )
 

@@ -30,7 +30,7 @@ mcux_add_source(
            bluetooth/examples/ancs_c/gatt_uuid128.h
            bluetooth/examples/ancs_c/ancs_client.c
            bluetooth/examples/ancs_c/ancs_client.h
-           bluetooth/examples/ancs_c/readme.md
+           ../../examples/wireless_examples/bluetooth/ancs_c/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/ancs_c/example_board_readme.md
 )
 

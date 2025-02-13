@@ -28,7 +28,7 @@ mcux_add_source(
            bluetooth/examples/adv_ext_peripheral/gatt_uuid128.h
            bluetooth/examples/adv_ext_peripheral/adv_ext_peripheral.c
            bluetooth/examples/adv_ext_peripheral/adv_ext_peripheral.h
-           bluetooth/examples/adv_ext_peripheral/readme.md
+           ../../examples/wireless_examples/bluetooth/adv_ext_peripheral/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/adv_ext_peripheral/example_board_readme.md
 )
 

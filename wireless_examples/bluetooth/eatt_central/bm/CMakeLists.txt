@@ -28,7 +28,7 @@ mcux_add_source(
            bluetooth/examples/eatt_central/gatt_uuid128.h
            bluetooth/examples/eatt_central/eatt_central.c
            bluetooth/examples/eatt_central/eatt_central.h
-           bluetooth/examples/eatt_central/readme.md
+           ../../examples/wireless_examples/bluetooth/eatt_central/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/eatt_central/example_board_readme.md
 )
 
