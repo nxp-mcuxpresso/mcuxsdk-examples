@@ -36,7 +36,7 @@ mcux_add_source(
            bluetooth/examples/digital_key_car_anchor/digital_key_car_anchor.h
            bluetooth/examples/digital_key_car_anchor/shell_digital_key_car_anchor.c
            bluetooth/examples/digital_key_car_anchor/shell_digital_key_car_anchor.h
-           bluetooth/examples/digital_key_car_anchor/readme.md
+           ../../examples/wireless_examples/bluetooth/digital_key_car_anchor/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/digital_key_car_anchor/example_board_readme.md
 )
 

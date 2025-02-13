@@ -33,7 +33,7 @@ mcux_add_source(
            bluetooth/examples/digital_key_device/digital_key_device.h
            bluetooth/examples/digital_key_device/shell_digital_key_device.c
            bluetooth/examples/digital_key_device/shell_digital_key_device.h
-           bluetooth/examples/digital_key_device/readme.md
+           ../../examples/wireless_examples/bluetooth/digital_key_device/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/digital_key_device/example_board_readme.md
 )
 

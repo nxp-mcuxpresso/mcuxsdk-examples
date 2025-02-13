@@ -30,7 +30,7 @@ mcux_add_source(
            bluetooth/examples/otac_l2cap/gatt_uuid128.h
            bluetooth/examples/otac_l2cap/otap_client_l2cap_credit.c
            bluetooth/examples/otac_l2cap/otap_client_l2cap_credit.h
-           bluetooth/examples/otac_l2cap/readme.md
+           ../../examples/wireless_examples/bluetooth/otac_l2cap/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/otac_l2cap/example_board_readme.md
 )
 

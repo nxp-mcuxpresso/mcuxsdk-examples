@@ -32,7 +32,7 @@ mcux_add_source(
            bluetooth/examples/hid_device/gatt_uuid128.h
            bluetooth/examples/hid_device/hid_device.c
            bluetooth/examples/hid_device/hid_device.h
-           bluetooth/examples/hid_device/readme.md
+           ../../examples/wireless_examples/bluetooth/hid_device/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/hid_device/example_board_readme.md
 )
 

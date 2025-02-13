@@ -27,7 +27,7 @@ mcux_add_source(
            bluetooth/examples/beacon/gatt_uuid128.h
            bluetooth/examples/beacon/beacon.c
            bluetooth/examples/beacon/beacon.h
-           bluetooth/examples/beacon/readme.md
+           ../../examples/wireless_examples/bluetooth/beacon/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/beacon/example_board_readme.md
 )
 

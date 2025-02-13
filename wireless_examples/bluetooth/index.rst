@@ -22,3 +22,5 @@ bluetooth
    temp_sens/readme.md
    w_uart/readme.md
    w_uart_genfsk/readme.md
+
+:ref:`See more information here: <examples__wireless_examples__bluetooth_docs>`

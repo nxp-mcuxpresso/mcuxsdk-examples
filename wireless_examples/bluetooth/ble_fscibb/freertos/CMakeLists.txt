@@ -29,7 +29,7 @@ mcux_add_source(
            bluetooth/application/common/ble_init.h
            bluetooth/examples/ble_fscibb/ble_fsci_black_box.c
            bluetooth/examples/ble_fscibb/ble_fsci_black_box.h
-           bluetooth/examples/ble_fscibb/readme.md
+           ../../examples/wireless_examples/bluetooth/ble_fscibb/readme.md
            ../../${board_root}/${board}/wireless_examples/bluetooth/ble_fscibb/example_board_readme.md
 )
 
