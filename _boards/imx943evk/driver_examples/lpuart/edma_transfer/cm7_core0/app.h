@@ -15,11 +15,11 @@
 #define DEMO_LPUART_INSTANCE_IDX (11U)
 #define LPUART_CLOCK_ROOT           hal_clock_lpuart11
 #define DEMO_LPUART_CLK_FREQ        HAL_ClockGetRate(LPUART_CLOCK_ROOT)
-#define LPUART_TX_DMA_CHANNEL       21U
-#define LPUART_RX_DMA_CHANNEL       22U
-#define DEMO_LPUART_RX_EDMA_CHANNEL       kDma3RequestMuxLpuart11Rx
-#define DEMO_LPUART_TX_EDMA_CHANNEL       kDma3RequestMuxLpuart11Tx
-#define EXAMPLE_LPUART_DMA_BASEADDR EDMA3
+#define LPUART_TX_DMA_CHANNEL       0U
+#define LPUART_RX_DMA_CHANNEL       1U
+#define DEMO_LPUART_RX_EDMA_CHANNEL       kDma2RequestMuxLpuart11Rx
+#define DEMO_LPUART_TX_EDMA_CHANNEL       kDma2RequestMuxLpuart11Tx
+#define EXAMPLE_LPUART_DMA_BASEADDR EDMA2
 /*${macro:end}*/
 
 /*******************************************************************************
