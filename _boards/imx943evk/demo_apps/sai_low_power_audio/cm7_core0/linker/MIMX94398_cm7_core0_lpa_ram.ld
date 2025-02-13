@@ -57,7 +57,7 @@ MEMORY
   m_interrupts              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00002000
   m_text                    (RX)  : ORIGIN = 0x00002000, LENGTH = 0x0003E000
   m_data                    (RW)  : ORIGIN = 0x20003000, LENGTH = 0x00017FFF
-  m_data2                   (RW)  : ORIGIN = 0x2001B000, LENGTH = 0x0001FFFF
+  m_data2                   (RW)  : ORIGIN = 0x80000000, LENGTH = 0x00040000
   m_ncache                  (RW)  : ORIGIN = 0x2003B000, LENGTH = 0x0000B000
   m_rsc_tbl                 (RW)  : ORIGIN = 0x2003C000, LENGTH = 0x00004000
   m_rsc_tbl_share_with_mpu  (RW)  : ORIGIN = 0x82220000, LENGTH = 0x00001000

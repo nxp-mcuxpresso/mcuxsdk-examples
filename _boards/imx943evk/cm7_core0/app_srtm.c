@@ -31,7 +31,7 @@ static srtm_service_t audioService;
 srtm_sai_adapter_t pdmAdapter;
 static srtm_sai_adapter_t saiAdapter;
 #if SRTM_SAI_EDMA_LOCAL_BUF_ENABLE
-#define BUFFER_LEN (128 * 1024)
+#define BUFFER_LEN (256 * 1024)
 #if (defined(__ICCARM__))
 static uint8_t g_buffer[BUFFER_LEN] @"AudioBuf";
 #else
@@ -431,7 +431,7 @@ static void APP_SRTM_InitAudioService(void)
 #endif
     saiTxConfig.threshold = 1U; /* Every period transmitted triggers periodDone message to A core. */
     saiTxConfig.guardTime =
-        1500; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
+        3000; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
     saiTxConfig.dmaChannel = APP_SAI_TX_DMA_CHANNEL;
     saiTxConfig.extendConfig.audioDevConf = APP_SRTM_ConfAudioDevice;
 
