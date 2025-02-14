@@ -1,0 +1,38 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mdk:
+  shared-workspace: mailbox_interrupt
+  sharing-workspace:
+  - ../../mailbox_interrupt_secondary_core/mdk/mailbox_interrupt_secondary_core_${SB_CONFIG_secondary_core_id}
+
+iar:
+  shared-workspace: mailbox_interrupt
+  sharing-workspace:
+  - ../../mailbox_interrupt_secondary_core/iar/mailbox_interrupt_secondary_core_${SB_CONFIG_secondary_core_id}
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../mailbox_interrupt_secondary_core/iar/mailbox_interrupt_secondary_core_${SB_CONFIG_secondary_core_id}.eww"
+        slave-project: mailbox_interrupt_secondary_core_${SB_CONFIG_secondary_core_id}
+    debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    release:
+      asym-multicore-debugger:
+        slave-configuration: release
+    flash_debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    flash_release:
+      asym-multicore-debugger:
+        slave-configuration: release
+    flexspi_nor_debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    flexspi_nor_release:
+      asym-multicore-debugger:
+        slave-configuration: release
