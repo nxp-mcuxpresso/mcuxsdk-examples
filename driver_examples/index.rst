@@ -287,6 +287,7 @@ driver_examples
    src/index.rst
    ssarc/index.rst
    stm/readme.md
+   swt/readme.md
    syscon_clockout/readme.md
    sysctr/readme.md
    sysmpu/readme.md
