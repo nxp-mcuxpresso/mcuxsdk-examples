@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -43,7 +43,8 @@ int main(void)
     BOARD_InitPins();
     BOARD_InitBootClocks();
 
-    CLOCK_SetIpSrc(kCLOCK_Lpuart1, kCLOCK_IpSrcFro6M);
+    CLOCK_SetIpSrc(kCLOCK_Lpuart1, kCLOCK_IpSrcFro192M);
+    CLOCK_SetIpSrcDiv(kCLOCK_Lpuart1, 15U);
 
     /* FreeMASTER communication layer initialization */
     init_freemaster_lpuart();

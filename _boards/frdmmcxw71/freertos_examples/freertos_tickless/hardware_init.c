@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -36,6 +36,7 @@ void BOARD_InitHardware(void)
     LPTMR_GetDefaultConfig(&lptmrConfig);
 
     lptmrConfig.bypassPrescaler = true;
+    lptmrConfig.prescalerClockSource = kLPTMR_PrescalerClock_2;
     LPTMR_Init(LPTMR0, &lptmrConfig);
     /* Enable timer interrupt */
     LPTMR_EnableInterrupts(LPTMR0, kLPTMR_TimerInterruptEnable);

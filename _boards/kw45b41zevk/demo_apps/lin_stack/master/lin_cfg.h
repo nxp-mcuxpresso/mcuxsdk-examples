@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -41,7 +41,7 @@
 #define LIN_FLAG_BUF_SIZE  7U
 
 /* LPUART clock frequency. */
-#define LIN_LPUART_CLOCK_FREQ CLOCK_GetFreq(kCLOCK_ScgSircClk)
+#define LIN_LPUART_CLOCK_FREQ CLOCK_GetIpFreq(kCLOCK_Lpuart0)
 /* Definition macro for LIN stack used. */
 #define DEV_ASSERT     assert
 #define STATUS_SUCCESS LIN_SUCCESS

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,7 +14,7 @@
 /*${macro:start}*/
 /* Whether the SW buttons use the separate IRQ handler */
 #define DEMO_SW_USE_SEPARATE_HANDLER 1
-#define LIN_CLOCK_NAME               kCLOCK_ScgSircClk
+#define LIN_CLOCK_NAME               kCLOCK_Lpuart0
 #define TJA_WAKEUP                   1
 #define TIMER_TPM                    1
 /* Whether to disable the PrintBuffer function */
@@ -24,9 +24,9 @@
 #define DEMO_TPM_IRQHandler  TPM0_IRQHandler
 #define DEMO_TPM_CLOCK       kCLOCK_Tpm0
 /* timer frequency */
-#define TIMER_FREQ CLOCK_GetFreq(kCLOCK_ScgSircClk)
+#define TIMER_FREQ CLOCK_GetIpFreq(DEMO_TPM_CLOCK)
 /* (timer period (us) * (timer clock frequency)(Hz)) - 1 ) */
-#define MODULO_VALUE ((500U * (CLOCK_GetFreq(kCLOCK_ScgSircClk) / 1000000U)) - 1U)
+#define MODULO_VALUE ((500U * (CLOCK_GetIpFreq(DEMO_TPM_CLOCK) / 1000000U)) - 1U)
 /* nanoseconds / timer clock frequency  */
 #define TIMER_1TICK_DURATION_PS (1000000000000U / TIMER_FREQ)
 

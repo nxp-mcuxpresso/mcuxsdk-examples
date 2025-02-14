@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -19,6 +19,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* Set the source for the LPIT module */
-    CLOCK_SetIpSrc(kCLOCK_Lpit0, kCLOCK_IpSrcFro6M);
+    CLOCK_SetIpSrc(kCLOCK_Lpit0, kCLOCK_IpSrcFro192M);
+    CLOCK_SetIpSrcDiv(kCLOCK_Lpit0, 15U);
 }
 /*${function:end}*/

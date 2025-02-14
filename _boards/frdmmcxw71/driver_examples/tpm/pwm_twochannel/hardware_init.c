@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -20,7 +20,8 @@ void BOARD_InitHardware(void)
 
     /* TPM 0 Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_Tpm0);
-    /* Set the source for the LPIT module */
-    CLOCK_SetIpSrc(kCLOCK_Tpm0, kCLOCK_IpSrcFro6M);
+    /* Set the source for the TPM 0 module */
+    CLOCK_SetIpSrc(kCLOCK_Tpm0, kCLOCK_IpSrcFro192M);
+    CLOCK_SetIpSrcDiv(kCLOCK_Tpm0, 3U);
 }
 /*${function:end}*/

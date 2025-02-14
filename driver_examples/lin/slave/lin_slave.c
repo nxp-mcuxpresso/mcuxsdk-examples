@@ -1,5 +1,5 @@
 /*
- * Copyright  2016-2020 NXP
+ * Copyright  2016-2020,2025 NXP
  * All rights reserved.
  *
  *
@@ -770,7 +770,7 @@ int main(void)
      */
     LIN_GetSlaveDefaultConfig(&linUserConfigSlave);
     /* get LIN clock frequency */
-    linfreq = CLOCK_GetFreq(LIN_CLOCK_NAME);
+    linfreq = CLOCK_GetIpFreq(LIN_CLOCK_NAME);
 
 #if defined(TIMER_TPM) && TIMER_TPM
     TPM_GetDefaultConfig(&tpmInfo);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -35,10 +35,12 @@ void BOARD_InitHardware(void)
     BOARD_InitLinLpuart();
     BOARD_BootClockRUN();
     /* Set LIN LPUART clock */
-    CLOCK_SetIpSrc(kCLOCK_Lpuart0, kCLOCK_IpSrcFro6M);
+    CLOCK_SetIpSrc(kCLOCK_Lpuart0, kCLOCK_IpSrcFro192M);
+    CLOCK_SetIpSrcDiv(kCLOCK_Lpuart0, 15U);
 #if defined(DEMO_TIMER_TPM_ENABLE) && DEMO_TIMER_TPM_ENABLE
     /* Set Timer LPUART clock */
-    CLOCK_SetIpSrc(DEMO_TPM_CLOCK, kCLOCK_IpSrcFro6M);
+    CLOCK_SetIpSrc(DEMO_TPM_CLOCK, kCLOCK_IpSrcFro192M);
+    CLOCK_SetIpSrcDiv(DEMO_TPM_CLOCK, 15U);
 #endif
     BOARD_InitDebugConsole();
 

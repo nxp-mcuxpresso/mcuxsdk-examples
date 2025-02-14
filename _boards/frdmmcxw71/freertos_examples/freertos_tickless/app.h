@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -12,8 +12,6 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define DEMO_LPTMR_BASE    LPTMR0
-#define LPTMR_USEC_COUNT   1000000
-#define LPTMR_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_ScgSircClk))
 
 #define BOARD_SW_GPIO        BOARD_SW2_GPIO
 #define BOARD_SW_PORT        BOARD_SW2_PORT
