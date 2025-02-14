@@ -35,7 +35,7 @@
  *        Set by default to PTC6 interrupt as SW3 button is mapped to PTC6 on EVK boards
  *
  */
-#define BOARD_WAKEUP_SOURCE_BUTTON0 (uint32_t) PM_WSID_PTC6_FALLING_EDGE
+#define BOARD_WAKEUP_SOURCE_BUTTON0 (uint32_t) PM_WSID_PTC6_ANY_EDGE
 
 /*!
  * \brief Defines the wake up source for the button1
