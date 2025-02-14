@@ -43,7 +43,7 @@ void BOARD_InitBootPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33_core1, enableClock: 'true'}
 - pin_list:
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */

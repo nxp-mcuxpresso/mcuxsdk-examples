@@ -43,7 +43,7 @@ void BOARD_InitBootPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'true', coreID: cm33_core1, enableClock: 'true'}
 - pin_list:
   - {pin_num: R10, peripheral: LP_FLEXCOMM19, signal: P0, pin_signal: PIO8_14, input_buffer: enable}
   - {pin_num: T10, peripheral: LP_FLEXCOMM19, signal: P1, pin_signal: PIO8_15}
