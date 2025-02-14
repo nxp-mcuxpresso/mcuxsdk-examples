@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect JP50; Disconnect JP9, JP11
+Connect JP50, JP51; Disconnect JP9, JP11
 
 Prepare the Demo
 ===============
