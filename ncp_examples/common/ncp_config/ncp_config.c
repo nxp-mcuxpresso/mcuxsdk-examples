@@ -74,7 +74,7 @@ const wifi_flash_table_type_t g_wifi_flash_table_wlan_sta[WLAN_STA_MAX_TYPE] = {
     {WLAN_ANONYMOUS_IDENTITY_NAME, WLAN_ANONYMOUS_IDENTITY_OFT, WLAN_ANONYMOUS_IDENTITY_MAX_LEN},
     {WLAN_CLIENT_KEY_PASSWD_NAME, WLAN_CLIENT_KEY_PASSWD_OFT, WLAN_CLIENT_KEY_PASSWD_MAX_LEN},
     {WLAN_EAP_VER_NAME, WLAN_EAP_VER_OFT, WLAN_EAP_VER_MAX_LEN},
-    {WLAN_VERIFY_PEER_NAME, WLAN_VERIFY_PEER_OFT, WLAN_VERIFY_PEER_MAX_LEN},
+    {WLAN_VERIFY_PEER_CERT_NAME, WLAN_VERIFY_PEER_CERT_OFT, WLAN_VERIFY_PEER_CERT_MAX_LEN},
     {WLAN_IP_ADDR_TYPE_NAME, WLAN_IP_ADDR_TYPE_OFT, WLAN_IP_ADDR_TYPE_MAX_LEN},
     {WLAN_IP_ADDR_NAME, WLAN_IP_ADDR_OFT, WLAN_IP_ADDR_MAX_LEN},
     {WLAN_NETMASK_NAME, WLAN_NETMASK_OFT, WLAN_NETMASK_MAX_LEN},
@@ -110,7 +110,7 @@ const wifi_flash_table_type_t g_wifi_flash_table_wlan_uap[WLAN_UAP_MAX_TYPE] = {
     {WLAN_ANONYMOUS_IDENTITY_NAME, WLAN_ANONYMOUS_IDENTITY_OFT, WLAN_ANONYMOUS_IDENTITY_MAX_LEN},
     {WLAN_CLIENT_KEY_PASSWD_NAME, WLAN_CLIENT_KEY_PASSWD_OFT, WLAN_CLIENT_KEY_PASSWD_MAX_LEN},
     {WLAN_EAP_VER_NAME, WLAN_EAP_VER_OFT, WLAN_EAP_VER_MAX_LEN},
-    {WLAN_VERIFY_PEER_NAME, WLAN_VERIFY_PEER_OFT, WLAN_VERIFY_PEER_MAX_LEN},
+    {WLAN_VERIFY_PEER_CERT_NAME, WLAN_VERIFY_PEER_CERT_OFT, WLAN_VERIFY_PEER_CERT_MAX_LEN},
     {WLAN_IP_ADDR_TYPE_NAME, WLAN_IP_ADDR_TYPE_OFT, WLAN_IP_ADDR_TYPE_MAX_LEN},
     {WLAN_IP_ADDR_NAME, WLAN_IP_ADDR_OFT, WLAN_IP_ADDR_MAX_LEN},
     {WLAN_NETMASK_NAME, WLAN_NETMASK_OFT, WLAN_NETMASK_MAX_LEN},
@@ -962,9 +962,9 @@ static int wifi_save_default_config_wlan_bss(void)
         res = lfs_file_write(&lfs, &file, WLAN_EAP_VER_DEF, WLAN_EAP_VER_MAX_LEN);
         wifi_flash_check_rw_ret(res);
 
-        res = lfs_file_write(&lfs, &file, WLAN_VERIFY_PEER_NAME, WLAN_VERIFY_PEER_NAME_LEN);
+        res = lfs_file_write(&lfs, &file, WLAN_VERIFY_PEER_CERT_NAME, WLAN_VERIFY_PEER_CERT_NAME_LEN);
         wifi_flash_check_rw_ret(res);
-        res = lfs_file_write(&lfs, &file, WLAN_VERIFY_PEER_DEF, WLAN_VERIFY_PEER_MAX_LEN);
+        res = lfs_file_write(&lfs, &file, WLAN_VERIFY_PEER_CERT_DEF, WLAN_VERIFY_PEER_CERT_MAX_LEN);
         wifi_flash_check_rw_ret(res);
 
         res = lfs_file_write(&lfs, &file, WLAN_IP_ADDR_TYPE_NAME, WLAN_IP_ADDR_TYPE_NAME_LEN);
@@ -1143,7 +1143,7 @@ int wifi_set_network(struct wlan_network *network)
 #if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
     char eap_ver[2];
 #if CONFIG_EAP_MSCHAPV2
-    char verify_peer[2];
+    char verify_peer_cert[2];
 #endif
 #endif
 #endif
@@ -1287,8 +1287,8 @@ ncp_set_bss:
     snprintf(eap_ver, sizeof(eap_ver), "%u", network->security.eap_ver);
     res += save_config(&file, WLAN_EAP_VER, eap_ver, sizeof(eap_ver));
 #if CONFIG_EAP_MSCHAPV2
-    snprintf(verify_peer, sizeof(verify_peer), "%u", network->security.verify_peer);
-    res += save_config(&file, WLAN_VERIFY_PEER, verify_peer, sizeof(verify_peer));
+    snprintf(verify_peer_cert, sizeof(verify_peer_cert), "%u", network->security.verify_peer_cert);
+    res += save_config(&file, WLAN_VERIFY_PEER_CERT, verify_peer_cert, sizeof(verify_peer_cert));
 #endif
 #endif
 #endif
@@ -1405,7 +1405,7 @@ int wifi_get_network(struct wlan_network *network, enum wlan_bss_role bss_role, 
 #if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
     char eap_ver[2];
 #if CONFIG_EAP_MSCHAPV2
-    char verify_peer[2];
+    char verify_peer_cert[2];
 #endif
 #endif
 #endif
@@ -1546,8 +1546,8 @@ ncp_get_bss:
     res += load_config(&file, WLAN_EAP_VER, eap_ver, sizeof(eap_ver));
     network->security.eap_ver = atoi(eap_ver);
 #if CONFIG_EAP_MSCHAPV2
-    res += load_config(&file, WLAN_VERIFY_PEER, verify_peer, sizeof(verify_peer));
-    network->security.verify_peer = atoi(verify_peer);
+    res += load_config(&file, WLAN_VERIFY_PEER_CERT, verify_peer_cert, sizeof(verify_peer_cert));
+    network->security.verify_peer_cert = atoi(verify_peer_cert);
 #endif
 #endif
 #endif
