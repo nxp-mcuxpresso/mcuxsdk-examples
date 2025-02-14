@@ -1036,9 +1036,9 @@ typedef NCP_TLV_PACK_START struct _EAP_ParamSet_t
     /** EAP (Extensible Authentication Protocol) version */
     uint8_t eap_ver;
     /** whether verify peer with CA or not
-     *  0: not verify,
-     *  1: verify. */
-    uint8_t verify_peer;
+     *  false: not verify,
+     *  true: verify. */
+    bool verify_peer_cert;
 } NCP_TLV_PACK_END EAP_ParamSet_t;
 
 #if CONFIG_NCP_WIFI_DTIM_PERIOD

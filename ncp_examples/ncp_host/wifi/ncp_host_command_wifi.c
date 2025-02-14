@@ -1511,7 +1511,7 @@ static void dump_wlan_add_usage()
 #if CONFIG_NCP_EAP_PEAP
 #if CONFIG_NCP_EAP_MSCHAPV2
     (void)PRINTF(
-        "    wlan-add <profile_name> ssid <ssid> eap-peap-mschapv2 [use_ca <0/1>] ver <0/1> aid <aid> id <id>"
+        "    wlan-add <profile_name> ssid <ssid> eap-peap-mschapv2 [verify_peer_cert <0/1>] ver <0/1> aid <aid> id <id>"
         " pass <pass> key_passwd <key_passwd>"
         "\r\n");
     (void)PRINTF("      For WPA2 enterprise eap-peap-mschapv2 security, only station is supported.\r\n");
@@ -1537,7 +1537,7 @@ static void dump_wlan_add_usage()
 #if CONFIG_NCP_EAP_PEAP
 #if CONFIG_NCP_EAP_MSCHAPV2
     (void)PRINTF(
-        "    wlan-add <profile_name> ssid <ssid> wpa3-ent/wpa3-sb/wpa3-sb-192 eap-peap-mschapv2 [use_ca <0/1>] ver <0/1>"
+        "    wlan-add <profile_name> ssid <ssid> wpa3-ent/wpa3-sb/wpa3-sb-192 eap-peap-mschapv2 [verify_peer_cert <0/1>] ver <0/1>"
         " aid <aid> id <id> pass <pass> key_passwd <key_passwd> mfpc <1> mfpr <0/1>"
         "\r\n");
     (void)PRINTF("      For WPA3 enterprise eap-peap-mschapv2 security, only station is supported.\r\n");
@@ -1696,7 +1696,7 @@ int wlan_add_command(int argc, char **argv)
         unsigned key_passwd : 1;
         unsigned eap_ver : 1;
 #if CONFIG_NCP_EAP_MSCHAPV2
-        unsigned verify_peer : 1;
+        unsigned verify_peer_cert : 1;
 #endif
         unsigned id : 1;
         unsigned pass : 1;
@@ -2097,8 +2097,9 @@ int wlan_add_command(int argc, char **argv)
             info.key_passwd++;
         }
 #if CONFIG_NCP_EAP_MSCHAPV2
-        else if ((info.verify_peer == 0U) && (string_equal("use_ca", argv[arg])))
+        else if ((info.verify_peer_cert == 0U) && (string_equal("verify_peer_cert", argv[arg])))
         {
+            uint8_t verify_peer_cert = 0;
             if (eap_tlv == NULL)
             {
                 eap_tlv = (EAP_ParamSet_t *)ptlv_pos;
@@ -2109,16 +2110,17 @@ int wlan_add_command(int argc, char **argv)
                 ptlv_pos += NCP_TLV_HEADER_LEN + eap_tlv->header.size;
                 tlv_buf_len += NCP_TLV_HEADER_LEN + eap_tlv->header.size;
             }
-            eap_tlv->verify_peer = atoi(argv[arg + 1]);
-            if (arg + 1 >= argc || (eap_tlv->verify_peer != 0 && eap_tlv->verify_peer != 1))
+            verify_peer_cert = atoi(argv[arg + 1]);
+            if (arg + 1 >= argc || (verify_peer_cert != 0 && verify_peer_cert != 1))
             {
                 (void)PRINTF(
-                    "Error: invalid use_ca"
+                    "Error: invalid verify_peer_cert"
                     " argument\r\n");
                 return -WM_FAIL;
             }
+            eap_tlv->verify_peer_cert = !!verify_peer_cert;
             arg += 2;
-            info.verify_peer++;
+            info.verify_peer_cert++;
         }
 #endif
         else if ((info.eap_ver == 0U) && (string_equal("ver", argv[arg])))

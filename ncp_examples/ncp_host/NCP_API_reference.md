@@ -593,7 +593,7 @@ period configuration.
 
   - uint8_t eap\_ver
 
-  - uint8_t verify\_peer
+  - bool verify\_peer
 
 ### Detailed Description
 
@@ -633,8 +633,8 @@ information configuration.
 #### TypeHeader\_t \_EAP\_ParamSet\_t::verify\_peer
 
 > whether verify peer with CA or not
-> 0: not verify,
-> 1: verify.
+> false: not verify,
+> true: verify.
 
 #### The documentation for this struct was generated from the following file:
 

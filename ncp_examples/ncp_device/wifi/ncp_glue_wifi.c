@@ -745,7 +745,7 @@ static int wlan_ncp_add(void *tlv)
 #if CONFIG_EAP_PEAP
 #if CONFIG_EAP_MSCHAPV2
         unsigned eap_ver : 1;
-        unsigned verify_peer : 1;
+        unsigned verify_peer_cert : 1;
         unsigned id : 1;
         unsigned pass : 1;
 #endif
@@ -1018,11 +1018,11 @@ static int wlan_ncp_add(void *tlv)
                     strcpy(network->security.client_key_passwd, eap_tlv->client_key_passwd);
                     info.key_passwd++;
                 }
-                if (!info.verify_peer)
+                if (!info.verify_peer_cert)
                 {
                     /* Set whether verify peer with CA or not */
-                    network->security.verify_peer = eap_tlv->verify_peer;
-                    info.verify_peer++;
+                    network->security.verify_peer_cert = eap_tlv->verify_peer_cert;
+                    info.verify_peer_cert++;
                 }
                 if (!info.eap_ver)
                 {
