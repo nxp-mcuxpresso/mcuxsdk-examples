@@ -1,6 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
- * All rights reserved.
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -91,9 +90,11 @@ int main(void)
     /* Do calibration to reduce or eliminate the various error contribution effects. */
     calibrationConfig.enableAverage        = true;
     calibrationConfig.sampleTime           = kADC_SampleTime22;
+#if (defined(FSL_FEATURE_ADC_HAS_CALBISTREG) && (FSL_FEATURE_ADC_HAS_CALBISTREG==1U))
+    calibrationConfig.averageSampleNumbers = kADC_AverageSampleNumbers32;
+#else
     calibrationConfig.averageSampleNumbers = kADC_AverageSampleNumbers512;
-
-    ADC_SetPowerDownMode(DEMO_ADC_BASE, false);
+#endif /* FSL_FEATURE_ADC_HAS_CALBISTREG */
 
     if (!(ADC_DoCalibration(DEMO_ADC_BASE, &calibrationConfig)))
     {
