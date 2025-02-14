@@ -70,6 +70,11 @@
 #define BOARD_CODEC_I2C_CLOCK_FREQ 12000000
 #define BOARD_CODEC_I2C_INSTANCE   2
 
+#define BOARD_CODEC_I2C_SCL_PIN  1U
+#define BOARD_CODEC_I2C_SDA_PIN  0U
+#define BOARD_CODEC_I2C_SDA_GPIO GPIO4
+#define BOARD_CODEC_I2C_SCL_GPIO GPIO4
+
 /*! @brief Indexes of the TSI channels for on-board electrodes */
 #ifndef BOARD_TSI_ELECTRODE_1
 #define BOARD_TSI_ELECTRODE_1 19
@@ -190,6 +195,31 @@ extern "C" {
 
 void BOARD_InitDebugConsole(void);
 void BOARD_InitDebugConsole_Core1(void);
+
+/*!
+ * @brief Set the onboard I2C2 Pins to GPIO.
+ */
+void BOARD_InitI2c2PinAsGpio(void);
+/*!
+ * @brief Restore the pin mux configuration for onboard I2C2 pins.
+ */
+void BOARD_RestoreI2c2PinMux(void);
+/*!
+ * @brief Recover onboard I2C2 bus.
+ */
+void BOARD_I2c2RecoverBus(void);
+/*!
+ * @brief Release onboard I2C bus. This macro is used to release the onboard I2C bus which may connected to sensors or
+ * codec. NOTE, the corresponding APIs called by this macro need to be defined.
+ */
+#define BOARD_I2C_ReleaseBus(n)        \
+    do                                 \
+    {                                  \
+        BOARD_InitI2c##n##PinAsGpio(); \
+        BOARD_I2c##n##RecoverBus();    \
+        BOARD_RestoreI2c##n##PinMux(); \
+    } while (0);
+
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz);
 status_t BOARD_LPI2C_Send(LPI2C_Type *base,

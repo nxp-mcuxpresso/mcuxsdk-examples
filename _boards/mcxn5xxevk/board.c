@@ -20,6 +20,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+static uint32_t i2c_pcr[2] = {0U};
 
 /*******************************************************************************
  * Code
@@ -52,6 +53,76 @@ void BOARD_InitDebugConsole_Core1(void)
 
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE_CORE1, BOARD_DEBUG_UART_BAUDRATE_CORE1, BOARD_DEBUG_UART_TYPE_CORE1,
                     uartClkSrcFreq);
+}
+
+inline static void i2c_release_bus_delay(void)
+{
+    SDK_DelayAtLeastUs(10U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+}
+
+void BOARD_InitI2c2PinAsGpio(void)
+{   
+    /* PORT4_0 (pin P1) is configured as PIO4_0 */
+    i2c_pcr[0]    = PORT4->PCR[0];
+    PORT4->PCR[0] = 0x1000u;
+    
+    /* PORT4_1 (pin P2) is configured as PIO4_1 */
+    i2c_pcr[1]    = PORT4->PCR[1];
+    PORT4->PCR[1] = 0x1000u;
+}
+
+void BOARD_RestoreI2c2PinMux(void)
+{
+    PORT4->PCR[0] = i2c_pcr[0];
+    PORT4->PCR[1] = i2c_pcr[1];
+}
+
+void BOARD_I2c2RecoverBus(void)
+{
+    gpio_pin_config_t pin_config = {
+        kGPIO_DigitalOutput,
+        1U,
+    };
+
+    GPIO_PinInit(BOARD_CODEC_I2C_SCL_GPIO, BOARD_CODEC_I2C_SCL_PIN, &pin_config);
+    i2c_release_bus_delay();
+    
+    /* Configure SDA pin as input. */
+    pin_config.pinDirection = kGPIO_DigitalInput;
+    GPIO_PinInit(BOARD_CODEC_I2C_SDA_GPIO, BOARD_CODEC_I2C_SDA_PIN, &pin_config);
+
+    /* Send pulses on SCL until SDA is released and then send stop. */
+    while(true)
+    {
+        /* SCL pulse - low */
+        GPIO_PinWrite(BOARD_CODEC_I2C_SCL_GPIO, BOARD_CODEC_I2C_SCL_PIN, 0U);
+        i2c_release_bus_delay();
+
+        /* Check whether SDA line is released */
+        if (1U == GPIO_PinRead(BOARD_CODEC_I2C_SDA_GPIO, BOARD_CODEC_I2C_SDA_PIN))
+        {
+            /* SDA is released, hold it in low */
+            pin_config.pinDirection = kGPIO_DigitalOutput;
+            pin_config.outputLogic = 0U;
+            GPIO_PinInit(BOARD_CODEC_I2C_SDA_GPIO, BOARD_CODEC_I2C_SDA_PIN, &pin_config);
+
+            /* SCL pulse - high */
+            GPIO_PinWrite(BOARD_CODEC_I2C_SCL_GPIO, BOARD_CODEC_I2C_SCL_PIN, 1U);
+            i2c_release_bus_delay();
+
+            /* Set SDA to high from low - send stop */
+            GPIO_PinWrite(BOARD_CODEC_I2C_SDA_GPIO, BOARD_CODEC_I2C_SDA_PIN, 1U);
+            i2c_release_bus_delay();
+
+            break;
+        }
+        else
+        {
+            /* SCL pulse - high */
+            GPIO_PinWrite(BOARD_CODEC_I2C_SCL_GPIO, BOARD_CODEC_I2C_SCL_PIN, 1U);
+            i2c_release_bus_delay();
+        }
+    }
 }
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
