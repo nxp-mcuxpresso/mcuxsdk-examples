@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2021 NXP
+ * Copyright 2016-2017, 2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -19,7 +19,7 @@
 /* Region actual end/start address is computed by the following equation. */
 #define ACTUAL_REGION_END_ADDR(x)   ((uint32_t)(x) | (0x1FU))
 #define ACTUAL_REGION_START_ADDR(x) ((uint32_t)(x) & (~0x1FU))
-#define SYSMPU_EXAMPLE_TEST_SIZE    (20U)
+#define SYSMPU_EXAMPLE_TEST_SIZE    (32U)
 #define SYSMPU_FAULTHAND_TIMEOUT    (0x100U)
 /*******************************************************************************
  * Prototypes
@@ -33,7 +33,7 @@ volatile bool g_busFaultFlag = false;
 #if defined(SYSMPU_EXAMPLE_TEST_ADDRESS)
 volatile uint32_t *regionArray = (uint32_t *)SYSMPU_EXAMPLE_TEST_ADDRESS;
 #else
-volatile uint32_t regionArray[SYSMPU_EXAMPLE_TEST_SIZE];
+SDK_ALIGN(volatile uint32_t regionArray[SYSMPU_EXAMPLE_TEST_SIZE], 32U);
 #endif
 uint32_t g_count = 0;
 
