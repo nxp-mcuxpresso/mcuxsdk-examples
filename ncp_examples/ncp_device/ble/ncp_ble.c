@@ -31,6 +31,8 @@
 typedef struct ncp_cmd_t ble_ncp_command_t;
 
 extern int ble_ncp_L2capInit(void);
+
+extern void ncp_set_mbedtls_set_time();
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -238,6 +240,8 @@ int ble_ncp_init(void)
     }
 
     CRYPTO_InitHardware();
+
+    ncp_set_mbedtls_set_time();
 
     //printSeparator();
     PRINTF("BLE initialized\r\n");
