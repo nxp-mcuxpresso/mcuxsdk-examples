@@ -146,7 +146,7 @@ void DEMO_DCIF_Init(void)
     const dcif_buffer_config_t fbConfig = {
         .strideBytes = DEMO_IMG_WIDTH * DEMO_BYTE_PER_PIXEL,
         .pixelFormat = kDCIF_PixelFormatARGB8888,
-        .globleAlpha = 0xFF,
+        .globalAlpha = 0xFF,
     };
 
     BOARD_InitDisplayInterface();

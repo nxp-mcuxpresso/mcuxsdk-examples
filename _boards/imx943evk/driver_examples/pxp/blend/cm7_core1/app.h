@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,6 +15,7 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+#define APP_PXP PXP
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
