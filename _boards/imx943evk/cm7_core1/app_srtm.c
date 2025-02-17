@@ -16,9 +16,11 @@
 #include "srtm_message.h"
 #include "srtm_rpmsg_endpoint.h"
 #include "srtm_i2c_service.h"
+#if SRTM_AUDIO_SERVICE_USED
 #include "srtm_audio_service.h"
 #include "srtm_sai_edma_adapter.h"
 #include "srtm_pdm_edma_adapter.h"
+#endif
 
 #include "app_srtm.h"
 #include "board.h"
