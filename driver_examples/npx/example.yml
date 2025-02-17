@@ -7,7 +7,7 @@ npx:
     document:
       name: npx${core_id_suffix_name}
       category: driver_examples/npx
-      brief: This driver example should demonstrate how to setup 
+      brief: This driver example should demonstrate how to setup NPX driver for on the fly encryption/decryption of data stored in flash memory region.
       example_readme:
       - examples/driver_examples/npx/readme.md
       - ${board_root}/${board}/driver_examples/npx/example_board_readme.md
