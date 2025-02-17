@@ -13,7 +13,6 @@ mcux_add_source(
 mcux_add_source(
     BASE_PATH ${CMAKE_CURRENT_LIST_DIR}
     SOURCES app_definitions.h
-            app.h
 )
 
 mcux_add_include(

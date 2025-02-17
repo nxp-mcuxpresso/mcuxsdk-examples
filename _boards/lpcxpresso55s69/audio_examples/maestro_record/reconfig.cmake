@@ -9,7 +9,6 @@ mcux_add_source(
     BASE_PATH ${CMAKE_CURRENT_LIST_DIR}
     SOURCES streamer_pcm.h
             streamer_pcm.c
-            app.h
             app_definitions.h
 )
 
