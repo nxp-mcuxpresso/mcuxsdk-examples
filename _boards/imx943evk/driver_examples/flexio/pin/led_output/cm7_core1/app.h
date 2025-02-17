@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,7 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define BOARD_LED_FLEXIO     FLEXIO1
-#define BOARD_LED_FLEXIO_PIN 4U
+#define BOARD_LED_FLEXIO_PIN 5U
 /*${macro:end}*/
 
 /*******************************************************************************
