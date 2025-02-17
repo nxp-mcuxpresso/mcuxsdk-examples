@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+npx:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/npx
+    project-root-path: boards/${board}/driver_examples/npx/${multicore_foldername}
+    document:
+      name: npx${core_id_suffix_name}
+      category: driver_examples/npx
+      brief: This driver example should demonstrate how to setup 
+      example_readme:
+      - examples/driver_examples/npx/readme.md
+      - ${board_root}/${board}/driver_examples/npx/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
