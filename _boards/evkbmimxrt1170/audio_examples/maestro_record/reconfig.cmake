@@ -11,5 +11,4 @@ mcux_add_source(
     SOURCES streamer_pcm.c
             streamer_pcm.h
             ${core_id}/app_definitions.h
-            ${core_id}/app.h
 )
