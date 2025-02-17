@@ -81,10 +81,13 @@ conn 202DE3C0 snk ctx 519 src ctx 3
 conn 202DE3C0 dir 2 ep 202DAE38
 Discover sources complete: err 0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-4 After the message "Discover complete (err 0)! TBS count 1, GTBS found? Yes" is printed on call_terminal side. All feature are ready.
-5.1. Start the call by local. Enter "call_outgoing 0 <XX>:<YY>" on the call_gateway side, or enter "call_outgoing 0 <XX>:<YY>" on the call_terminal side,
+4 After the message "Discover complete (err 0)! TBS count 1, GTBS found? Yes" is printed on call_terminal side. All features are ready.
+5.1. Start the call by local.
+The commander is showing as "call_outgoing <telephone bearer index> <callee_URI>". The "<telephone bearer index>" is 0 for the application. The "<callee_URI>" is the callee URI. Enter "call_outgoing 0 <XX>:<YY>" on the call_gateway side, or enter "call_outgoing 0 <XX>:<YY>" on the call_terminal side.
+Such as the entered command line is "call_outgoing 0 tel:qq", the "<telephone bearer index>" is 0, and the "<callee_URI>" is "tel:qq" here.
 The log is following,
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+call_outgoing 0 tel:qq
 Start a outgoing call, call index 1, callee tel:qq
 Audio Stream 202F0688 configured
 Audio Stream 202F0650 configured
@@ -97,7 +100,11 @@ Audio Stream 202F0650 enabled
 Audio Stream 202F0650 started
 Audio Stream 202F0688 started
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-5.2 Start a call by remote. Enter "remote_call_incoming 0 <AA>:<BB> <CC>:<DD> <EE>" on the call_gateway side.
+5.2 Start a call by remote.
+The commander is showing as "remote_call_incoming <telephone bearer index> <callee_URI> <caller_URI> <caller_name>".
+The "<telephone bearer index>" is 0 for the application. The "<callee_URI>" and "<caller_URI>" are the callee URI and caller URI. "<caller_name>" is caller name. Enter "remote_call_incoming 0 <AA>:<BB> <CC>:<DD> <EE>" on the call_gateway side.
+Such as the entered command line is "remote_call_incoming 0 tel:qq tel:qq qq", the "<telephone bearer index>" is 0. The "<callee_URI>" is "tel:qq". The "<caller_URI>" is "tel:qq". "<caller_name>" is "qq".
+The log is following,
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 remote_call_incoming 0 tel:qq tel:qq qq
 incoming call: callee uri tel:qq, caller uri tel:qq
