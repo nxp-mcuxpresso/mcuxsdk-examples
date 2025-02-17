@@ -28,6 +28,7 @@ hello_world_ns:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release

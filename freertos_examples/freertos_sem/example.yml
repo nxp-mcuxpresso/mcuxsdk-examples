@@ -63,6 +63,7 @@ freertos_sem:
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []
     frdmmcxw71: []
+    mcxw71evk: []
     frdmrw612: []
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

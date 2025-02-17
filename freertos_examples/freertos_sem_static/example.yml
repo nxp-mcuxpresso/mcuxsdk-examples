@@ -67,6 +67,7 @@ freertos_sem_static:
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []
     frdmmcxw71: []
+    mcxw71evk: []
     frdmrw612: []
     k32w148evk:
     - +armgcc@debug

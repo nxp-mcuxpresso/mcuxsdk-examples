@@ -28,6 +28,7 @@ flexcan_efifo_interrupt_transfer:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
     frdmmcxw71: []
+    mcxw71evk: []
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []
     kw45b41zevk:

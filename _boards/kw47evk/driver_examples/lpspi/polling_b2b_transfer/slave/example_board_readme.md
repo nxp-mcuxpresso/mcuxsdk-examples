@@ -37,9 +37,12 @@ Running the demo
 ================
 The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LPSPI board to board interrupt example.
+LPSPI board to board polling example.
 
  Slave example is running...
+This is LPSPI slave transfer completed callback. 
+It's a successful transfer. 
+
 This is LPSPI slave transfer completed callback. 
 It's a successful transfer. 
 

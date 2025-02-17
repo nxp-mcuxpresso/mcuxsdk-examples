@@ -16,6 +16,7 @@ ltc_aes:
   boards:
     evkmcimx7ulp: []
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release

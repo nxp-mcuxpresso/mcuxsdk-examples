@@ -20,6 +20,7 @@ dma3_scatter_gather:
     evk9mimx8ulp@cm33: []
     evkmimx8ulp@cm33: []
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release

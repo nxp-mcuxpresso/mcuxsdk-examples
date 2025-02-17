@@ -34,6 +34,7 @@ In the example, you can send characters to the console back and they will be pri
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/lpuart/edma_transfer/example_board_readme.md)
+- [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [imx95verdinevk](../../../_boards/imx95verdinevk/driver_examples/lpuart/edma_transfer/example_board_readme.md)

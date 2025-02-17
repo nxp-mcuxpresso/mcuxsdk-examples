@@ -40,6 +40,7 @@ flexcan_loopback_transfer:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
+    mcxw71evk: []
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []

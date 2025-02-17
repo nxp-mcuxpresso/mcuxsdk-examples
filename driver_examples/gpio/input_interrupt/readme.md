@@ -26,6 +26,7 @@ example uses the software button to control/toggle the LED.
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/gpio/input_interrupt/example_board_readme.md)
+- [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [K32W148-EVK](../../../_boards/k32w148evk/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/driver_examples/gpio/input_interrupt/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/gpio/input_interrupt/example_board_readme.md)

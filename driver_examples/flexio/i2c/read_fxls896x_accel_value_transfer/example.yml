@@ -19,6 +19,7 @@ flexio_i2c_read_fxls896x_accel_value_transfer:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release

@@ -23,3 +23,6 @@ ele_common:
     frdmmcxw71:
     - +armgcc@debug
     - +armgcc@release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release

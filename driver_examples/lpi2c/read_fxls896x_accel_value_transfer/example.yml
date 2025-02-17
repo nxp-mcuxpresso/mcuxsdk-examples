@@ -18,6 +18,7 @@ lpi2c_read_fxls896x_accel_value_transfer:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
+    mcxw71evk: []
     frdmmcxw72@cm33_core0: []
     k32w148evk:
     - +armgcc@debug

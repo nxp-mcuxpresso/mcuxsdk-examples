@@ -16,6 +16,7 @@ the message content to terminal.
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
+- [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)

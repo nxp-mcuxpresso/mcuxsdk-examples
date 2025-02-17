@@ -38,6 +38,7 @@ This example uses the transactional API in LPSPI driver.
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW71](../../../../_boards/frdmmcxw71/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
+- [MCX-W71-EVK](../../../../_boards/mcxw71evk/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [K32W148-EVK](../../../../_boards/k32w148evk/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [KW45B41Z-EVK](../../../../_boards/kw45b41zevk/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)
 - [KW47-EVK](../../../../_boards/kw47evk/cmsis_driver_examples/lpspi/int_b2b_transfer/slave/example_board_readme.md)

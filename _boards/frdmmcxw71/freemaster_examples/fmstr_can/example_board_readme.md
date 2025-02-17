@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ==============
-CAN transceiver is available on board, at pins J29
+CAN transceiver is available on board, at pins J21
 
 Prepare the demo
 ===============

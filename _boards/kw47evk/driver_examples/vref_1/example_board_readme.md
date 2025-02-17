@@ -6,7 +6,6 @@ Hardware requirements
 
 Board settings
 ==============
-Remove JP5 3-4,short JP5 5-6.
 
 Prepare the Demo
 ================

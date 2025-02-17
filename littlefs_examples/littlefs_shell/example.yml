@@ -130,6 +130,13 @@ littlefs_shell:
     - +iar@release
     - -armgcc@hyperram_release
     - -iar@hyperram_release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - -armgcc@hyperram_release
+    - -iar@hyperram_release
     kw47evk@cm33_core0:
     - +armgcc@debug
     - +armgcc@release

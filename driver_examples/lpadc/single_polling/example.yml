@@ -26,6 +26,7 @@ lpadc_single_polling:
     evkmimx8ulp@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release

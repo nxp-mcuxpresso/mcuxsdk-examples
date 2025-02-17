@@ -22,7 +22,7 @@
 #define BOARD_DEBUG_UART_TYPE     kSerialPort_Uart
 #define BOARD_DEBUG_UART_BASEADDR (uint32_t) LPUART1
 #define BOARD_DEBUG_UART_INSTANCE 1U
-#define BOARD_DEBUG_UART_CLK_FREQ (CLOCK_GetFreq(kCLOCK_ScgSircClk))
+#define BOARD_DEBUG_UART_CLK_FREQ (CLOCK_GetFreq(kCLOCK_ScgFircClk))
 
 #ifndef BOARD_DEBUG_UART_BAUDRATE
 #define BOARD_DEBUG_UART_BAUDRATE (115200U)
@@ -41,8 +41,8 @@
 /*! @brief The TPM channel used for board */
 #define BOARD_TPM_CHANNEL 0U
 
-#define LOGIC_LED_ON  0U
-#define LOGIC_LED_OFF 1U
+#define LOGIC_LED_ON  1U
+#define LOGIC_LED_OFF 0U
 
 #ifndef BOARD_LED1_GPIO
 #define BOARD_LED1_GPIO GPIOA
@@ -68,41 +68,41 @@
 #define LED1_INIT(output)                                        \
     GPIO_PinWrite(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PIN, output); \
     BOARD_LED1_GPIO->PDDR |= (1U << BOARD_LED1_GPIO_PIN)                          /*!< Enable target LED1 */
-#define LED1_ON()     GPIO_PortClear(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)  /*!< Turn on target LED1 */
-#define LED1_OFF()    GPIO_PortSet(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)    /*!< Turn off target LED1 */
+#define LED1_ON()     GPIO_PortSet(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)  /*!< Turn on target LED1 */
+#define LED1_OFF()    GPIO_PortClear(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN)    /*!< Turn off target LED1 */
 #define LED1_TOGGLE() GPIO_PortToggle(BOARD_LED1_GPIO, 1U << BOARD_LED1_GPIO_PIN) /*!< Toggle on target LED1 */
 
 #define LED2_INIT(output)                                        \
     GPIO_PinWrite(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PIN, output); \
     BOARD_LED2_GPIO->PDDR |= (1U << BOARD_LED2_GPIO_PIN)                          /*!< Enable target LED2 */
-#define LED2_ON()     GPIO_PortClear(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)  /*!< Turn on target LED2 */
-#define LED2_OFF()    GPIO_PortSet(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)    /*!< Turn off target LED2 */
+#define LED2_ON()     GPIO_PortSet(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)  /*!< Turn on target LED2 */
+#define LED2_OFF()    GPIO_PortClear(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN)    /*!< Turn off target LED2 */
 #define LED2_TOGGLE() GPIO_PortToggle(BOARD_LED2_GPIO, 1U << BOARD_LED2_GPIO_PIN) /*!< Toggle on target LED2 */
 
 #define LED3_INIT(output)                                        \
     GPIO_PinWrite(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PIN, output); \
     BOARD_LED3_GPIO->PDDR |= (1U << BOARD_LED3_GPIO_PIN)                          /*!< Enable target LED3 */
-#define LED3_ON()     GPIO_PortClear(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)  /*!< Turn on target LED3 */
-#define LED3_OFF()    GPIO_PortSet(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)    /*!< Turn off target LED3 */
+#define LED3_ON()     GPIO_PortSet(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)  /*!< Turn on target LED3 */
+#define LED3_OFF()    GPIO_PortClear(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN)    /*!< Turn off target LED3 */
 #define LED3_TOGGLE() GPIO_PortToggle(BOARD_LED3_GPIO, 1U << BOARD_LED3_GPIO_PIN) /*!< Toggle on target LED3 */
 
-#define BOARD_SW4_NAME        "SW4"
-#define BOARD_SW4_GPIO        GPIOD
-#define BOARD_SW4_GPIO_PIN    1U
-#define BOARD_SW4_IRQ         GPIOD_INT0_IRQn
-#define BOARD_SW4_IRQ_HANDLER GPIOD_INT0_IRQHandler
-
-#define BOARD_SW2_NAME        "SW2"
-#define BOARD_SW2_GPIO        GPIOC
-#define BOARD_SW2_GPIO_PIN    6U
-#define BOARD_SW2_IRQ         GPIOC_INT0_IRQn
-#define BOARD_SW2_IRQ_HANDLER GPIOC_INT0_IRQHandler
+#define BOARD_SW2_NAME   "SW2"
+#define BOARD_SW2_GPIO        GPIOD
+#define BOARD_SW2_GPIO_PIN    1U
+#define BOARD_SW2_IRQ         GPIOD_INT0_IRQn
+#define BOARD_SW2_IRQ_HANDLER GPIOD_INT0_IRQHandler
 
 #define BOARD_SW3_NAME        "SW3"
-#define BOARD_SW3_GPIO        GPIOA
-#define BOARD_SW3_GPIO_PIN    4U
-#define BOARD_SW3_IRQ         GPIOA_INT0_IRQn
-#define BOARD_SW3_IRQ_HANDLER GPIOA_INT0_IRQHandler
+#define BOARD_SW3_GPIO        GPIOC
+#define BOARD_SW3_GPIO_PIN    6U
+#define BOARD_SW3_IRQ         GPIOC_INT0_IRQn
+#define BOARD_SW3_IRQ_HANDLER GPIOC_INT0_IRQHandler
+
+#define BOARD_SW4_NAME        "SW4"
+#define BOARD_SW4_GPIO        GPIOA
+#define BOARD_SW4_GPIO_PIN    4U
+#define BOARD_SW4_IRQ         GPIOA_INT0_IRQn
+#define BOARD_SW4_IRQ_HANDLER GPIOA_INT0_IRQHandler
 
 #define BOARD_ACCEL_I2C_BASEADDR LPI2C1
 

@@ -13,9 +13,9 @@ EVK board:
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     MASTER(I3C0)                  connect to        SLAVE(I3C0)
     Pin Name    Board Location                      Pin Name    Board Location
-    SCL         J2  pin 9                           SCL         J2  pin 9
-    SDA         J2  pin 10                          SDA         J2  pin 10
-    GND         J10 pin 4                           GND         J10 pin 4
+    SCL         J2  pin 1                           SCL         J2  pin 1
+    SDA         J2  pin 2                           SDA         J2  pin 2
+    GND         J2  pin 4                           GND         J2  pin 4
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Other jumpers keep default configuration.

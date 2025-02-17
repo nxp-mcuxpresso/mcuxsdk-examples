@@ -54,6 +54,7 @@ log_bm:
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release

@@ -27,6 +27,7 @@ led_blinky:
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxw71: []
+    mcxw71evk: []
     frdmmcxw72@cm33_core0: []
     k32w148evk:
     - +armgcc@debug

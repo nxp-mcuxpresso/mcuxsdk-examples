@@ -26,6 +26,7 @@ When the example runs successfully, you can see the similar information from the
 
 ## Supported Boards
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/flash/pflash/example_board_readme.md)
+- [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/flash/pflash/example_board_readme.md)
 - [K32W148-EVK](../../../_boards/k32w148evk/driver_examples/flash/pflash/example_board_readme.md)
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/driver_examples/flash/pflash/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/flash/pflash/example_board_readme.md)

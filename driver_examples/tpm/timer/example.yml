@@ -29,6 +29,7 @@ tpm_timer:
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxw71: []
+    mcxw71evk: []
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []

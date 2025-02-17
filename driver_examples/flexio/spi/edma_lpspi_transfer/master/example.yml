@@ -58,6 +58,7 @@ flexio_spi_edma_lpspi_transfer_master:
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release

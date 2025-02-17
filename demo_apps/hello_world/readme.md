@@ -52,6 +52,7 @@ debug_console supports this, debug_console_lite doesn't support).
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/demo_apps/hello_world/example_board_readme.md)
+- [MCX-W71-EVK](../../_boards/mcxw71evk/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/demo_apps/hello_world/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../_boards/imx95lp4xevk15/demo_apps/hello_world/example_board_readme.md)
