@@ -1,0 +1,19 @@
+hifi_lc3:
+  section-type: application
+  skip_build: true
+  contents:
+    meta_path: examples/edgefast_bluetooth_examples/hifi_lc3/dsp
+    project-root-path: boards/${board}/edgefast_bluetooth_examples/hifi_lc3/${core_id}
+    document:
+      name: hifi_lc3${core_id_suffix_name}
+      category: edgefast_bluetooth_examples
+      brief: The hifi_lc3 demo application demonstrates starting DSP core with
+        DSP image.
+      example_readme:
+      - examples/edgefast_bluetooth_examples/hifi_lc3/readme.md
+      - examples/_boards/${board}/edgefast_bluetooth_examples/hifi_lc3/example_board_readme.md
+      - examples/_boards/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@hifi4:
+    - +xtensa@debug
+    - +xtensa@release

@@ -22,6 +22,7 @@ edgefast_bluetooth_examples
    central_tip/readme.md
    handsfree/readme.md
    handsfree_ag/readme.md
+   hifi_lc3/readme.md
    map_mce/readme.md
    map_mse/readme.md
    pbap_pce/readme.md
