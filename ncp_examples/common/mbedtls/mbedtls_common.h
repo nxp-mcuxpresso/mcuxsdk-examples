@@ -40,6 +40,24 @@
 #define TLS_ERR_RINGBUF_FULL                    12
 #define TLS_ERR_HANDSHAKE                       13
 
+#ifdef RW610
+#if !defined(MBEDTLS_PLATFORM_C)
+#define MBEDTLS_PLATFORM_C
+#endif
+
+#if !defined(CONFIG_HAVE_TIME_DISABLE)
+#define MBEDTLS_HAVE_TIME
+#endif
+
+#if !defined(CONFIG_HAVE_TIME_DISABLE)
+#define MBEDTLS_PLATFORM_TIME_ALT
+#endif
+
+#if (!defined(MBEDTLS_PLATFORM_GMTIME_R_ALT) && !defined(CONFIG_HAVE_TIME_DISABLE))
+#define MBEDTLS_PLATFORM_GMTIME_R_ALT
+#define MBEDTLS_PLATFORM_GMTIME_FUNC_USE
+#endif
+#endif
 
 #pragma pack(1)
 typedef struct {

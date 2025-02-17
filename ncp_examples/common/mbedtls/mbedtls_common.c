@@ -18,6 +18,10 @@
 #include "key_cert.h"
 #include "ncp_cmd_common.h"
 #include "ncp_cmd_ble.h"
+#ifdef RW610
+#include "mbedtls/platform_time.h"
+#include "fsl_rtc.h"
+#endif
 
 /* TODO: remove this private definition and use the definition in header file */
 #define _NCP_CMD_WLAN                0x00000000
@@ -400,3 +404,41 @@ int ncp_cmd_is_data_cmd(uint32_t cmd)
 }
 
 #endif /* CONFIG_NCP_USE_ENCRYPT */
+
+#ifdef RW610
+#ifdef MBEDTLS_PLATFORM_TIME_ALT
+mbedtls_time_t ncp_time_func(mbedtls_time_t *timer)
+{
+    (void)(timer);
+    return 0;
+}
+#endif
+
+void ncp_set_mbedtls_set_time()
+{
+#ifdef MBEDTLS_PLATFORM_TIME_ALT
+    mbedtls_platform_set_time(ncp_time_func);
+#endif
+}
+
+#ifdef MBEDTLS_PLATFORM_GMTIME_FUNC_USE
+struct tm *mbedtls_platform_gmtime_r(const mbedtls_time_t *tt,
+                                     struct tm *tm_buf)
+{
+    (void)(tt);
+    rtc_datetime_t date;
+
+    /* Get date time */
+    RTC_GetDatetime(RTC, &date);
+
+    tm_buf->tm_sec = date.second;
+    tm_buf->tm_min = date.minute;
+    tm_buf->tm_hour = date.hour;
+    tm_buf->tm_mday = date.day;
+    tm_buf->tm_mon = date.month - 1;
+    tm_buf->tm_year = date.year - 1900;
+
+    return tm_buf;
+}
+#endif
+#endif
