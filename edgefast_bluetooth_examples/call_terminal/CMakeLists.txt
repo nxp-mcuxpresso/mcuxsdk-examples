@@ -21,6 +21,8 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
+    examples/edgefast_bluetooth_examples/call_terminal/modules/lc3_codec.c
+    examples/edgefast_bluetooth_examples/call_terminal/modules/lc3_codec.h
     examples/edgefast_bluetooth_examples/call_terminal/call_terminal.c
     examples/edgefast_bluetooth_examples/call_terminal/call_terminal.h
     examples/edgefast_bluetooth_examples/call_terminal/ccp_client.c
@@ -34,6 +36,7 @@ mcux_add_source(
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES examples/edgefast_bluetooth_examples/call_terminal
+           examples/edgefast_bluetooth_examples/call_terminal/modules
 )
 
 mcux_add_macro(

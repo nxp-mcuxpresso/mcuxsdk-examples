@@ -101,9 +101,9 @@ int DSP_Main(void *arg, int wake_value)
     rpmsg       = rpmsg_lite_remote_init(rpmsg_shmem_base, RPMSG_LITE_LINK_ID, RL_NO_FLAGS);
     rpmsg_queue = rpmsg_queue_create(rpmsg);
 
-    rpmsg_lite_wait_for_link_up(rpmsg, RL_BLOCK);
-
     SEMA42_Unlock(APP_SEMA42, SEMA_STARTUP_NUM);
+
+    rpmsg_lite_wait_for_link_up(rpmsg, RL_BLOCK);
 
     ept = rpmsg_lite_create_ept(rpmsg, DSP_EPT_ADDR, rpmsg_queue_rx_cb, (void *)rpmsg_queue);
 

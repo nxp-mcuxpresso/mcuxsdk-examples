@@ -1,3 +1,8 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
@@ -10,6 +15,9 @@ mcux_add_source(
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/${core_id}/hardware_init.c
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/${core_id}/pin_mux.c
     examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/${core_id}/pin_mux.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/dsp_config.h
+    examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/dsp_support.c
+    examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/dsp_support.h
 )
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
@@ -111,4 +119,51 @@ mcux_add_macro(
   CC "-DLFS_NO_ASSERT"
   TARGETS flash_release
   TOOLCHAINS armgcc
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/edgefast_bluetooth_examples/unicast_media_receiver/
+    SOURCES incbin.S
+    TOOLCHAINS mdk armgcc mcux
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/edgefast_bluetooth_examples/hifi_lc3/hifi4/binary/
+    TARGETS flash_debug flash_release
+    SOURCES dsp_literal_release.bin
+            dsp_text_release.bin
+            dsp_data_release.bin
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}/examples/_boards/${board}/edgefast_bluetooth_examples/hifi_lc3/hifi4/binary/
+    INCLUDES ./
+)
+
+mcux_add_iar_configuration(
+    TARGETS flash_debug flash_release
+    LD "--image_input=${SdkRootDirPath}/examples/_boards/${board}/edgefast_bluetooth_examples/hifi_lc3/hifi4/binary/dsp_literal_release.bin,__dsp_literal_bin,__dsp_literal_section,4\
+        --keep=__dsp_literal_bin\
+        --image_input=${SdkRootDirPath}/examples/_boards/${board}/edgefast_bluetooth_examples/hifi_lc3/hifi4/binary/dsp_text_release.bin,__dsp_text_bin,__dsp_text_section,4\
+        --keep=__dsp_text_bin\
+        --image_input=${SdkRootDirPath}/examples/_boards/${board}/edgefast_bluetooth_examples/hifi_lc3/hifi4/binary/dsp_data_release.bin,__dsp_data_bin,__dsp_data_section,4\
+        --keep=__dsp_data_bin"
+)
+
+mcux_add_armgcc_configuration(
+  LD "-Xlinker --defsym=__use_shmem__=1"
+)
+
+mcux_add_iar_configuration(
+  LD "--config_def=__use_shmem__=1"
+)
+
+mcux_add_mdk_configuration(
+  LD "--predefine=\"-D__use_shmem__=1\""
+)
+
+mcux_add_macro(
+  CC "-DDSP_IMAGE_COPY_TO_RAM=1\
+      -DLC3_HIFI4=1"
+  AS "-DDSP_IMAGE_COPY_TO_RAM=1"
 )

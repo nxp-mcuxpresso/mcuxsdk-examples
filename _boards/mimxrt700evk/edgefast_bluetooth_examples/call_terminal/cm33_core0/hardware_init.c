@@ -6,6 +6,9 @@
  */
 
 /*${header:start}*/
+#include "rpmsg_lite.h"
+#include "rpmsg_queue.h"
+
 #include "pin_mux.h"
 #include "board.h"
 #include "clock_config.h"
@@ -26,9 +29,19 @@
 #include "fsl_cache.h"
 #endif /* CONFIG_BT_SMP */
 #include "fsl_ctimer.h"
+
+#include "dsp_config.h"
+#include "dsp_support.h"
+#include "fsl_sema42.h"
+
 /*${header:end}*/
 
 /*${macro:start}*/
+#define APP_SEMA42        SEMA42_4
+#define SEMA_PRINTF_NUM   0
+#define SEMA_STARTUP_NUM  1
+#define SEMA_CORE_ID_CM33 0
+#define SEMA_LOCKED_BY_DSP kSEMA42_LockedByProc4
 
 /* GPT - SyncTimer */
 #if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
@@ -82,6 +95,12 @@ static uint64_t SyncTimer_Bclk_Value = 0;
 /*${macro:end}*/
 
 /*${variable:start}*/
+
+static struct rpmsg_lite_instance *ipc_rpmsg;
+static struct rpmsg_lite_endpoint *ipc_rpmsg_ept;
+static rpmsg_queue_handle ipc_rpmsg_queue;
+static uint32_t ipc_rpmsg_dsp_ept_addr;
+
 /* set boardCodecConfig */
 wm8962_config_t wm8962Config = {
     .i2cConfig = {.codecI2CInstance = BOARD_CODEC_I2C_INSTANCE, .codecI2CSourceClock = DEMO_I2C_CLK_FREQ},
@@ -405,6 +424,76 @@ static void ctimer_callback(uint32_t flags)
 }
 #endif /* WIFI_IW612_BOARD_MURATA_2EL_M2 */
 
+static void BOARD_DSP_IPC_Init(void)
+{
+    /* Set Hifi4 as Secure privileged master */
+    GlikeyWriteEnable(GLIKEY0, 6U);
+    AHBSC0->MASTER_SEC_LEVEL = 0x3;
+    AHBSC0->MASTER_SEC_ANTI_POL_REG = 0xFFC;
+
+    // CLOCK_EnableClock(kCLOCK_InputMux);
+    /* Clear SEMA42 reset */
+    RESET_PeripheralReset(kSEMA424_RST_SHIFT_RSTn);
+
+    /* Clear MU4 reset before run DSP core */
+    RESET_PeripheralReset(kMU4_RST_SHIFT_RSTn);
+
+    /* SEMA42 init */
+    SEMA42_Init(APP_SEMA42);
+    /* Reset the sema42 gate */
+    SEMA42_ResetAllGates(APP_SEMA42);
+	
+    /* Copy DSP image to RAM and start DSP core. */
+    BOARD_DSP_Init();
+
+    /* Wait for the DSP to lock the semaphore */
+    while (SEMA_LOCKED_BY_DSP != SEMA42_GetGateStatus(APP_SEMA42, SEMA_STARTUP_NUM))
+    {
+    }
+
+    /* DSP core init rpmsg remote. */
+
+    /* Wait for the DSP to unlock the semaphore 1 */
+    while (SEMA42_GetGateStatus(APP_SEMA42, SEMA_STARTUP_NUM))
+    {
+    }
+
+    /* Initialize RPMsg IPC interface between ARM and DSP cores. */
+    ipc_rpmsg       = rpmsg_lite_master_init((void *)RPMSG_LITE_SHMEM_BASE, RPMSG_LITE_SHMEM_SIZE, RPMSG_LITE_LINK_ID, RL_NO_FLAGS);
+    ipc_rpmsg_queue = rpmsg_queue_create(ipc_rpmsg);
+    ipc_rpmsg_ept          = rpmsg_lite_create_ept(ipc_rpmsg, MCU_EPT_ADDR, rpmsg_queue_rx_cb, ipc_rpmsg_queue);
+    ipc_rpmsg_dsp_ept_addr = DSP_EPT_ADDR;
+
+    /* Now the DSP core rpmsg will ready to use. */
+}
+
+/* IPC send to dsp core, should be called in task context. */
+int BOARD_DSP_IPC_Send(uint8_t *data, int size)
+{
+    int32_t status;
+    
+    status = rpmsg_lite_send(ipc_rpmsg, ipc_rpmsg_ept, ipc_rpmsg_dsp_ept_addr, (char *)data, size, RL_BLOCK);
+    if (status != RL_SUCCESS)
+    {
+        return -1;
+    }
+
+    return 0;
+}
+
+/* IPC receive from dsp core, should be called in task context. */
+int BOARD_DSP_IPC_Recv(uint8_t *data, int size)
+{
+    int32_t status;
+    
+    status = rpmsg_queue_recv(ipc_rpmsg, ipc_rpmsg_queue, NULL, (char *)data, size, NULL, RL_BLOCK);
+    if (status != RL_SUCCESS)
+    {
+        return -1;
+    }
+
+    return 0;
+}
 
 void  BOARD_InitHardware(void)
 {
@@ -414,8 +503,10 @@ void  BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    BOARD_InitAHBSC();
 
-    //BOARD_InitAHBSC();
+    BOARD_DSP_IPC_Init();
+
     BOARD_Init_BT_UART();
     BOARD_Init_I2C();
     BOARD_Init_EDMA();

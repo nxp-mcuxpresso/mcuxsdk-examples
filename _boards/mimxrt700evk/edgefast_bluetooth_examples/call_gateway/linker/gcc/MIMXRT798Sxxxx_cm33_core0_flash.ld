@@ -39,7 +39,7 @@ NCACHE_SIZE  = 0x00200000;
 HEAP_SIZE    = DEFINED(__heap_size__)  ? __heap_size__  : 0x1000;
 STACK_SIZE   = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 
-RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x10000 : 0;
 
 DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
 NCACHE_END   = NCACHE_START + NCACHE_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0);
