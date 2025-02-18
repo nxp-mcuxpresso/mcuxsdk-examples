@@ -1,3 +1,4 @@
+include(${SdkRootDirPath}/examples/coex_examples/coex_zigbee/app_config.cmake)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${COEX_SRC_BASE}/main.c
@@ -13,6 +14,13 @@ mcux_add_include(
     INCLUDES ${COEX_SRC_BASE}
              ${COEX_SRC_BASE}/common
 )
+
+if(${CONFIG_WPA_SUPPLICANT})
+#zigbee user mbedtls config (SecLib_mbedtls_config.h) has been defined in wpa_supp_els_pkc_mbedtls_config.h
+mcux_remove_macro(
+    MBEDTLS_USER_CONFIG_FILE=\\\"SecLib_mbedtls_config.h\\\"
+)
+endif()
 
 # Fix build errors temporarily
 mcux_add_armgcc_configuration(
