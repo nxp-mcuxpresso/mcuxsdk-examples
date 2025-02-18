@@ -25,12 +25,6 @@ Prepare the Demo
 
 Running the demo
 ================
-Find display_support.h in /examples/_boards/imx95lpd5evk19/
-Make two changes:
-    set DPU_EXAMPLE_DI to DPU_DI_MIPI (default DPU_DI_LVDS)
-    set APP_DISPLAY_EXTERNAL_CONVERTOR to 1 (default 0)
-Or make the same changes in the build/mcux_config.h file.
-
 When the demo runs successfully, will get the similar messages on the terminal:
 ~~~~~~~~~~~~~~~~~~~~~~
 Width: 1920, Height: 1088, Testing Loops: 16

@@ -9,20 +9,13 @@ project(g2d_basic_test LANGUAGES C PROJECT_BOARD_PORT_PATH examples/_boards/${bo
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/driver_examples/dpu_1/g2d_basic_test/g2d_basic_test.c
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${PROJECT_BOARD_PORT_PATH}/${core_id}
-             middleware/dpu/
+mcux_add_source(SOURCES 
+    g2d_basic_test.c
 )
 
 # link the G2D-DPU library
 target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE 
-    ${SdkRootDirPath}/middleware/dpu/cm7/libg2d.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/libg2d.a
     -Wl,--start-group
     m c gcc
     -Wl,--end-group
@@ -46,7 +39,6 @@ target_compile_definitions(${MCUX_SDK_PROJECT_NAME} PRIVATE
     LPTMR0_IRQn=LPTMR1_IRQn
     CLOCK_GetFreq=CLOCK_GetIpFreq
     kCLOCK_LpoClk=0
-    M7_CACHE_SUPPORTED=0
     BOARD_USE_ADP5585=1
 )
 

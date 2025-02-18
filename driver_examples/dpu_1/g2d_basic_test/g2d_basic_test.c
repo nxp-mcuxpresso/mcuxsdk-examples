@@ -10,20 +10,161 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "g2d_api_macros.h"
 
 /*******************************************************************************
  * Definitions
  *******************************************************************************/
 #define TEST_WIDTH         1920
 #define TEST_HEIGHT        1080
-#define TEST_LOOPS         16
 #define TICKS_PER_USEC     24U
 
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 void BOARD_InitHardware(void);
+
+uint32_t hal_print(const char *format, ...);
+#define g2d_printf hal_print
+
+int hal_get_current_time(void);
+
+enum g2d_format
+{
+    G2D_RGB565               = 0,
+    G2D_RGBA8888             = 1,
+    G2D_RGBX8888             = 2,
+    G2D_BGRA8888             = 3,
+    G2D_BGRX8888             = 4,
+    G2D_BGR565               = 5,
+
+    G2D_ARGB8888             = 6,
+    G2D_ABGR8888             = 7,
+    G2D_XRGB8888             = 8,
+    G2D_XBGR8888             = 9,
+    G2D_RGB888               = 10,
+    G2D_BGR888               = 11,
+
+    G2D_RGBA5551             = 12,
+    G2D_RGBX5551             = 13,
+    G2D_BGRA5551             = 14,
+    G2D_BGRX5551             = 15,
+
+    G2D_RGBA1010102          = 16,
+
+    G2D_GRAY8                = 19,
+
+    G2D_NV12                 = 20,
+    G2D_I420                 = 21,
+    G2D_YV12                 = 22,
+    G2D_NV21                 = 23,
+    G2D_YUYV                 = 24,
+    G2D_YVYU                 = 25,
+    G2D_UYVY                 = 26,
+    G2D_VYUY                 = 27,
+    G2D_NV16                 = 28,
+    G2D_NV61                 = 29,
+};
+
+enum g2d_blend_func
+{
+    G2D_ZERO                  = 0,
+    G2D_ONE                   = 1,
+    G2D_SRC_ALPHA             = 2,
+    G2D_ONE_MINUS_SRC_ALPHA   = 3,
+    G2D_DST_ALPHA             = 4,
+    G2D_ONE_MINUS_DST_ALPHA   = 5,
+    G2D_PRE_MULTIPLIED_ALPHA  = 0x10,
+    G2D_DEMULTIPLY_OUT_ALPHA  = 0x20,
+};
+
+enum g2d_cap_mode
+{
+    G2D_BLEND                 = 0,
+    G2D_DITHER                = 1,
+    G2D_GLOBAL_ALPHA          = 2,
+    G2D_BLEND_DIM             = 3,
+    G2D_BLUR                  = 4,
+    G2D_YUV_BT_601            = 5,
+    G2D_YUV_BT_709            = 6,
+    G2D_YUV_BT_601FR          = 7,
+    G2D_YUV_BT_709FR          = 8,
+    G2D_WARPING               = 9,
+};
+
+enum g2d_feature
+{
+    G2D_SCALING               = 0,
+    G2D_ROTATION,
+    G2D_SRC_YUV,
+    G2D_DST_YUV,
+    G2D_MULTI_SOURCE_BLT,
+    G2D_FAST_CLEAR,
+    G2D_WARP_DEWARP,
+};
+
+enum g2d_rotation
+{
+    G2D_ROTATION_0            = 0,
+    G2D_ROTATION_90           = 1,
+    G2D_ROTATION_180          = 2,
+    G2D_ROTATION_270          = 3,
+    G2D_FLIP_H                = 4,
+    G2D_FLIP_V                = 5,
+};
+
+enum g2d_cache_mode
+{
+    G2D_CACHE_CLEAN           = 0,
+    G2D_CACHE_FLUSH           = 1,
+    G2D_CACHE_INVALIDATE      = 2,
+};
+
+enum g2d_status
+{
+    G2D_STATUS_FAIL           =-1,
+    G2D_STATUS_OK             = 0,
+    G2D_STATUS_NOT_SUPPORTED  = 1,
+};
+
+typedef unsigned int g2d_phys_addr_t;
+
+struct g2d_surface
+{
+    enum g2d_format format;
+    g2d_phys_addr_t planes[3];
+    int left;
+    int top;
+    int right;
+    int bottom;
+    int stride;
+    int width;
+    int height;
+    enum g2d_blend_func blendfunc;
+    int global_alpha;
+    int clrcolor;
+    enum g2d_rotation rot;
+};
+
+struct g2d_buf
+{
+    void *buf_handle;
+    void *buf_vaddr;
+    g2d_phys_addr_t buf_paddr;
+    int  buf_size;
+};
+
+int g2d_open(void **handle);
+int g2d_close(void *handle);
+int g2d_clear(void *handle, struct g2d_surface *area);
+int g2d_blit(void *handle, struct g2d_surface *src, struct g2d_surface *dst);
+int g2d_copy(void *handle, struct g2d_buf *d, struct g2d_buf* s, int size);
+int g2d_enable(void *handle, enum g2d_cap_mode cap);
+int g2d_disable(void *handle, enum g2d_cap_mode cap);
+int g2d_cache_op(struct g2d_buf *buf, enum g2d_cache_mode op);
+struct g2d_buf *g2d_alloc(int size, int cacheable);
+int g2d_free(struct g2d_buf *buf);
+int g2d_finish(void *handle);
+int g2d_query_feature(void *handle, enum g2d_feature feature, int *available);
 
 /*******************************************************************************
  * Variables
@@ -71,6 +212,7 @@ static uint32_t get_test_runtime(uint64_t start, const int loops)
     return (uint32_t)runtime;
 }
 
+
 // test G2D operations on the Blit Engine
 int main(void) 
 {
@@ -82,16 +224,15 @@ int main(void)
     struct g2d_surface src, dst;
     uint64_t start;
     uint32_t us;
-    bool quit = false;
     int g2d_feature_available = 0;
+    const int test_loops = 16;
 
     // set the test window dimensions
     const int test_width  = (TEST_WIDTH + 15) & ~15;
     const int test_height = (TEST_HEIGHT + 15) & ~15;
-    const int test_loops = TEST_LOOPS;
 
-    g2d_printf("Width: %d, Height: %d, Testing Loops: %d\n", 
-                test_width, test_height, test_loops);
+    g2d_printf("Width: %d, Height: %d\n", 
+                test_width, test_height);
 
     const int frame_pixels = test_height * test_width;
     const int frame_bytes = frame_pixels * 4;
@@ -242,12 +383,8 @@ int main(void)
     g2d_disable(handle, G2D_BLEND);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) break;
         for (j = 0; j < test_width; j++) {
-            if (quit) break;
-
             unsigned char Cs, As, Co, Ao;
             unsigned char *p = (unsigned char *)(((char *)d_buf->buf_vaddr) +
                                                 (i * test_width + j) * 4);
@@ -255,7 +392,6 @@ int main(void)
             if (p[0] != p[1] || p[0] != p[2]) {
                 g2d_printf("2d blended r/g/b values(%d/%d/%d) are not same in SRC mode!\n",
                     p[0], p[1], p[2]);
-                quit = true;
             }
 
             Co = Ao = Cs = As = (i * test_width + j) % 255;
@@ -263,7 +399,6 @@ int main(void)
             if (Co != p[0] || Ao != p[3]) {
                 g2d_printf("2d blended color(%d) or alpha(%d) is incorrect in SRC mode, Co %d, Ao %d\n",
                         p[0], p[3], Co, Ao);
-                quit = true;
             }
         }
     }
@@ -288,11 +423,8 @@ int main(void)
         g2d_finish(handle);
 
         // Expect the data in dst buffer to be changed only within the rectangle
-        quit = false;
         for (i = 0; i < test_height; i++) {
-            if (quit) break;
             for (j = 0; j < test_width; j++)  {
-                if (quit) break;
 
                 int color = *(int *)(((char *)d_buf->buf_vaddr) + (i * test_width + j) * 4);
                 
@@ -304,7 +436,6 @@ int main(void)
                     {
                         g2d_printf("[%d, %d] Expected value 0x%x, Real value 0x%x\n", j, i,
                                     0x55555555, color);
-                        quit = true;
                     }
                 } 
                 // otherwise, color should be unchanged
@@ -313,7 +444,6 @@ int main(void)
                     {
                         g2d_printf("[%d, %d] Expected value 0x%x, Real value 0x%x\n", j, i,
                                     0xAAAAAAAA, color);
-                        quit = true;
                     }
                 }
             }
@@ -338,12 +468,8 @@ int main(void)
     g2d_disable(handle, G2D_BLEND);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) break;
         for (j = 0; j < test_width; j++) {
-            if (quit) break;
-            
             unsigned char Cd, Ad, Co, Ao;
             unsigned char *p = (unsigned char *)(((char *)d_buf->buf_vaddr) +
                                                 (i * test_width + j) * 4);
@@ -351,7 +477,6 @@ int main(void)
             if (p[0] != p[1] || p[0] != p[2]) {
                 g2d_printf("2d blended r/g/b values(%d/%d/%d) are not same in DST mode!\n",
                             p[0], p[1], p[2]);
-                quit = true;
             }
 
             Co = Ao = Cd = Ad = ((i * test_width + j + 128) % 255);
@@ -360,7 +485,6 @@ int main(void)
                 g2d_printf("2d blended color(%d) or alpha(%d) is incorrect in DST mode, Co "
                             "%d, Ao %d\n",
                             p[0], p[3], Co, Ao);
-                quit = true;
                 
             }
         }
@@ -378,12 +502,8 @@ int main(void)
     g2d_disable(handle, G2D_BLEND);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) break;
         for (j = 0; j < test_width; j++) {
-            if (quit) break;
-
             unsigned int iCo, iAo;
             unsigned char Cs, As, Cd, Ad, Co, Ao;
             unsigned char *p = (unsigned char *)(((char *)d_buf->buf_vaddr) +
@@ -393,7 +513,6 @@ int main(void)
                 g2d_printf("2d blended r/g/b values(%d/%d/%d) are not same in SRC OVER "
                             "mode!\n",
                             p[0], p[1], p[2]);
-                quit = true;
             }
 
             Cs = As = (i * test_width + j) % 255;
@@ -417,7 +536,6 @@ int main(void)
                 g2d_printf("2d blended color(%d) or alpha(%d) is incorrect in SRC OVER "
                         "mode, Cs %d, As %d, Cd %d, Ad %d, Co %d, Ao %d\n",
                         p[0], p[3], Cs, As, Cd, Ad, Co, Ao);
-                quit = true;
             }
         }
     }
@@ -773,14 +891,13 @@ int main(void)
                 g2d_printf("2d blended color(%d) or alpha(%d) is incorrect in XOR mode, Cs "
                             "%d, As %d, Cd %d, Ad %d, Co %d, Ao %d\n",
                             p[0], p[3], Cs, As, Cd, Ad, Co, Ao);
-                quit = true;
             }
         }
     }
     g2d_printf(". ");
 
     // Global Alpha: alpha blending mode G2D_ZERO, G2D_SRC_ALPHA
-    fill_destination_buffer(d_buf, test_height, test_width);  // maybe the copy is not accurate enough, need to fill
+    fill_destination_buffer(d_buf, test_height, test_width);
 
     src.blendfunc = G2D_ZERO;
     dst.blendfunc = G2D_SRC_ALPHA;
@@ -797,12 +914,8 @@ int main(void)
     g2d_disable(handle, G2D_BLEND);
     g2d_finish(handle);
     
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) {break;}
         for (j = 0; j < test_width; j++) {
-            if (quit) {break;}
-
             unsigned char Cs, As, Cd, Ad, Co, Ao;
             unsigned char *p = (unsigned char *)(((char *)d_buf->buf_vaddr) +
                                                 (i * test_width + j) * 4);
@@ -825,7 +938,6 @@ int main(void)
                 g2d_printf("2d blended color(%d) or alpha(%d) is incorrect in DST IN mode, "
                             "Cs %d, As %d, Ad %d, Co %d, Ao %d\n",
                             p[0], p[3], Cs, As, Ad, Co, Ao);
-                quit = true;
             }
         }
     }
@@ -849,12 +961,8 @@ int main(void)
     g2d_disable(handle, G2D_BLEND);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) {break;}
         for (j = 0; j < test_width; j++) {
-            if (quit) {break;}
-
             unsigned int iCo, iAo, iCo_on_pxp, iAo_on_pxp;
             unsigned char Cs, As, Cd, Ad, Co, Ao, Co_on_pxp, Ao_on_pxp;
 
@@ -892,7 +1000,6 @@ int main(void)
                             "Cd %d, Ad %d, Co %d, Ao %d, global alpha=%d\n",
                             p[0], p[3], Cs, As, Cd, Ad, Co, Ao,
                             src.global_alpha);
-                quit = true;
             }
         }
     }
@@ -909,12 +1016,8 @@ int main(void)
     g2d_disable(handle, G2D_BLEND);
     g2d_finish(handle);
 
-    quit = false;
     for (int i = 0; i < test_height; i++) {
-        if (quit) {break;}
         for (int j = 0; j < test_width; j++) {
-            if (quit) {break;}
-
             unsigned int iCo, iAo;
             unsigned char Cs, As, Cd, Ad, Co, Ao;
             unsigned char *p = (unsigned char *)(((char *)d_buf->buf_vaddr) + (i * test_width + j) * 4);
@@ -944,7 +1047,6 @@ int main(void)
             {
                 g2d_printf("premult fail: color(%d) alpha(%d), Cs %d, As %d, Cd %d, Ad %d, Co %d, Ao %d\n",
                         p[0], p[3], Cs, As, Cd, Ad, Co, Ao);
-                quit = true;
             }
         }
     }
@@ -1014,11 +1116,11 @@ int main(void)
         g2d_finish(handle);
 
         // check if the generated color is correct
-        quit = false;
+
         for (i = 0; i < test_height; i++) {
-            if (quit) break;
+
             for (j = 0; j < test_width; j++) {
-                if (quit) break;
+    
 
                 int clrcolor = *(int *)(((char *)d_buf->buf_vaddr) + (i * test_width + j) * 4);
 
@@ -1027,14 +1129,14 @@ int main(void)
                     if (clrcolor != dst.clrcolor) {
                         g2d_printf("[%d, %d] Expected value 0x%x, Real color value 0x%x\n", j,
                                     i, dst.clrcolor, clrcolor);
-                        quit = true;
+    
                     }
                 } 
                 else {
                     if (clrcolor != 0xcdcdcdcd) {
                         g2d_printf("[%d, %d] Expected value 0x%x, Real color value 0x%x\n", j,
                                     i, 0xcdcdcdcd, clrcolor);
-                        quit = true;
+    
                     }
                 }
             }
@@ -1095,19 +1197,14 @@ int main(void)
     g2d_blit(handle, &src, &dst);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_width; i++) {
-        if (quit) break;
         for (j = 0; j < test_height; j++) {
-            if (quit) break;
-
             int correct_val = (test_height - 1 - j) * test_width + i;
             int rotated_val = *(int *)(((char *)d_buf->buf_vaddr) + (i * test_height + j) * 4);
             if (rotated_val != correct_val) 
             {
                 g2d_printf("[%d][%d]: 90 rotation value should be %d instead of %d(0x%x)\n",
                             i, j, correct_val, rotated_val, rotated_val);
-                quit = true;
             }
         }
     }
@@ -1130,19 +1227,14 @@ int main(void)
     g2d_blit(handle, &src, &dst);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_width; i++) {
-        if (quit) break;
         for (j = 0; j < test_height; j++) {
-            if (quit) break;
-
             int correct_val = test_width * j + (test_width - 1 - i);
             int rotated_val =
                 *(int *)(((char *)d_buf->buf_vaddr) + (i * test_height + j) * 4);
             if (rotated_val != correct_val) {
                 g2d_printf("[%d][%d]: 270 rotation value should be %d instead of %d(0x%x)\n",
                             i, j, correct_val, rotated_val, rotated_val);
-                quit = true;
             }
         }
     }
@@ -1172,19 +1264,14 @@ int main(void)
     g2d_blit(handle, &src, &dst);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) break;
         for (j = 0; j < test_width; j++) {
-            if (quit) break;
-
             int correct_val = (test_height - 1 - i) * test_width + (test_width - 1 - j);
             int rotated_val = *(int *)(((char *)d_buf->buf_vaddr) + (i * test_width + j) * 4);
             if (rotated_val != correct_val) {
                 g2d_printf(
                     "[%d][%d]: 180 rotation value should be %d instead of %d(0x%x)\n",
                     i, j, correct_val, rotated_val, rotated_val);
-                quit = true;
             }
         }
     }
@@ -1207,19 +1294,14 @@ int main(void)
     g2d_blit(handle, &src, &dst);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) break;
         for (j = 0; j < test_width; j++) {
-            if (quit) break;
-
             int correct_val = test_width * i + (test_width - 1 - j);
             int rotated_val =
                 *(int *)(((char *)d_buf->buf_vaddr) + (i * test_width + j) * 4);
             if (rotated_val != correct_val) {
                 g2d_printf("[%d][%d]: flip-h value should be %d instead of %d(0x%x)\n", i,
                         j, correct_val, rotated_val, rotated_val);
-                quit = true;
             }
         }
     }
@@ -1242,18 +1324,13 @@ int main(void)
     g2d_blit(handle, &src, &dst);
     g2d_finish(handle);
 
-    quit = false;
     for (i = 0; i < test_height; i++) {
-        if (quit) break;
         for (j = 0; j < test_width; j++) {
-            if (quit) break;
-
             int correct_val = test_width * (test_height - 1 - i) + j;
             int rotated_val = *(int *)(((char *)d_buf->buf_vaddr) + (i * test_width + j) * 4);
             if (rotated_val != correct_val) {
                 g2d_printf("[%d][%d]: flip-v value should be %d instead of %d(0x%x)\n", i,
                             j, correct_val, rotated_val, rotated_val);
-                quit = true;
             }
         }
     }
@@ -1268,8 +1345,6 @@ int main(void)
     us = get_test_runtime(start, test_loops);
     g2d_printf("g2d flip-v time %dus, %dfps, %dMpixel/s ........\n", us,
             1000000 / us, frame_pixels / us);
-
-    
 
     g2d_printf("---------------- g2d YUV rotation performance ----------------\n");
     memset(d_buf->buf_vaddr, 0xcd, frame_bytes);
@@ -1569,117 +1644,6 @@ int main(void)
 
     for (i = 0; i < test_loops; i++) {
         memcpy(d_buf->buf_vaddr, s_buf->buf_vaddr, frame_bytes);
-    }
-
-    us = get_test_runtime(start, test_loops);
-    g2d_printf("cpu copy non-cacheable time %dus, %dfps, %dMpixel/s ........\n", us,
-            1000000 / us, frame_pixels / us);
-
-    // ask SDK team for help with M7 cache
-    if (M7_CACHE_SUPPORTED) 
-    {
-        void* v_buf1 = malloc(frame_bytes);
-        void* v_buf2 = malloc(frame_bytes);
-
-        memset(v_buf1, 0, frame_bytes);
-
-        start = hal_get_current_time();
-
-        for (i = 0; i < test_loops; i++) {
-            memcpy(v_buf2, v_buf1, frame_bytes);
-        }
-
-        us = get_test_runtime(start, test_loops);
-        g2d_printf("cpu copy user cacheable time %dus, %dfps, %dMpixel/s ........\n",
-                us, 1000000 / us, frame_pixels / us);
-
-        memset(v_buf1, 0, frame_bytes);
-
-        start = hal_get_current_time();
-
-        for (i = 0; i < test_loops; i++) {
-            memcpy(d_buf->buf_vaddr, v_buf1, frame_bytes);
-        }
-
-        us = get_test_runtime(start, test_loops);
-        g2d_printf("cpu copy user cacheable to non-cacheable time %dus, %dfps, "
-                "%dMpixel/s ........\n",
-                us, 1000000 / us, frame_pixels / us);
-
-        memset(s_buf->buf_vaddr, 0, frame_bytes);
-
-        start = hal_get_current_time();
-
-        for (i = 0; i < test_loops; i++) {
-            memcpy(v_buf2, s_buf->buf_vaddr, frame_bytes);
-        }
-
-        us = get_test_runtime(start, test_loops);
-        g2d_printf("cpu copy user non-cacheable to cacheable time %dus, %dfps, "
-                "%dMpixel/s ........\n",
-                us, 1000000 / us, frame_pixels / us);
-
-        start = hal_get_current_time();
-
-        free(v_buf1);
-        free(v_buf2);
-        g2d_free(s_buf);
-        g2d_free(d_buf);
-
-        s_buf = g2d_alloc(frame_bytes, 1);
-        d_buf = g2d_alloc(frame_bytes, 1);
-
-        start = hal_get_current_time();
-
-        for (i = 0; i < test_loops; i++) {
-            memcpy(d_buf->buf_vaddr, s_buf->buf_vaddr, frame_bytes);
-        }
-
-        us = get_test_runtime(start, test_loops);
-        g2d_printf("cpu copy gpu cacheable time %dus, %dfps, %dMpixel/s ........\n", us,
-                1000000 / us, frame_pixels / us);
-
-
-        /****************************************** test g2d_cache_op
-         * *********************************************************/
-        memset(s_buf->buf_vaddr, 0xab, frame_bytes);
-        memset(d_buf->buf_vaddr, 0xcd, frame_bytes);
-
-        g2d_cache_op(s_buf, G2D_CACHE_FLUSH);
-        g2d_cache_op(d_buf, G2D_CACHE_FLUSH);
-
-        g2d_copy(handle, d_buf, s_buf, frame_bytes);
-        g2d_finish(handle);
-
-        if (memcmp(s_buf->buf_vaddr, d_buf->buf_vaddr, frame_bytes)) 
-        {
-            g2d_printf("g2d_cache_op error, the comparision result is different !\n");
-        }
-
-        start = hal_get_current_time();
-
-        for (i = 0; i < test_loops; i++) {
-            g2d_cache_op(s_buf, G2D_CACHE_CLEAN);
-            g2d_cache_op(d_buf, G2D_CACHE_INVALIDATE);
-
-            g2d_copy(handle, d_buf, s_buf, frame_bytes);
-            g2d_finish(handle);
-        }
-
-        us = get_test_runtime(start, test_loops);
-        g2d_printf("g2d copy with cache op time %dus, %dfps, %dMpixel/s ........\n", us,
-                1000000 / us, frame_pixels / us);
-        
-    }
-    else {
-        g2d_printf("M7 cache is not supported\n");
-    }
-
-    if (g2d_make_current(handle, G2D_HARDWARE_VG) == G2D_STATUS_OK) {
-        g2d_printf("vg core supported, need to add the test!\n");
-    } 
-    else {
-        g2d_printf("vg core is not supported\n");
     }
         
     g2d_free(s_buf);
