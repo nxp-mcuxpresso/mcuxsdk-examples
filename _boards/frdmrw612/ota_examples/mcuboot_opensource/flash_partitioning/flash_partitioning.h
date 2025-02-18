@@ -11,6 +11,24 @@
 #ifndef _FLASH_PARTITIONING_H_
 #define _FLASH_PARTITIONING_H_
 
+
+#define BOOT_FLASH_BASE     0x08000000
+
+
+#if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
+/* Layout setup from Kconfig */
+
+#define BOOT_FLASH_ACT_APP              CONFIG_BOOT_FLASH_ACT_APP_ADDRESS
+#define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
+
+#if CONFIG_ENCRYPT_XIP_ENABLE
+#define BOOT_FLASH_EXEC_APP             CONFIG_BOOT_FLASH_EXEC_APP_ADDRESS
+#define BOOT_FLASH_ENC_META             CONFIG_BOOT_FLASH_ENC_META_ADDRESS
+#endif
+
+
+/* Default layout setup */
+
 /*
 The memory is allocated as follows:
     Default:
@@ -30,10 +48,7 @@ The memory is allocated as follows:
     - ENC_META:    0x001000 bytes @ 0x088A0000
 */
 
-//Todo temporary decreased to 1MB slot size for testing purpose
-#define BOOT_FLASH_BASE     0x08000000
-
-#if !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
+#elif !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
 /* Overwrite-only, swap or direct-xip mode with flash remapping */
 
 #define BOOT_FLASH_ACT_APP  0x08020000

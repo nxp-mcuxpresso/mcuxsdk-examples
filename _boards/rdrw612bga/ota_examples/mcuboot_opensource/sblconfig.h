@@ -8,55 +8,10 @@
 #ifndef SBL_CONFIG_H__
 #define SBL_CONFIG_H__
 
-
-/* MCUBoot Flash Config */
-
-#define CONFIG_MCUBOOT_MAX_IMG_SECTORS 1090u
-
-/*
- * Number of image pairs is 1 in the case of the monolithic application.
- * This is mandated by the MATTER specification.
- */
-#define CONFIG_UPDATEABLE_IMAGE_NUMBER 1
-
-/*
- * MCUBoot upgrade mode
- *
- * The default MCUBoot configuration is to use swap mechanism. In case the flash
- * remapping functionality is supported by processor the alternative mechanism
- * using direct-xip mode can be used and evaluated by user.
- * Comment this to enable swap mode or when encrypted XIP extension is enabled.
- */
-#define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
-
 /* Board specific register for flash remap functionality */
 #define FLASH_REMAP_START_REG           0x40134420      /* RW61x flash remap start address register */
 #define FLASH_REMAP_END_REG             0x40134424      /* RW61x flash remap end address register */
 #define FLASH_REMAP_OFFSET_REG          0x40134428      /* RW61x flash remap offset register */
-
-/* Encrypted XIP support config */
-
-/*
- * Uncomment to enable extension utilizing on-the-fly decryption of encrypted image.
- * Note: Flash remap feature has to be disabled.
- * For more information please see readme file of mcuboot_opensource example.
- */
-//#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
-
-#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
-    (!defined(MBEDTLS_MCUX_DISABLE_HW_ALT) || \
-      defined(MBEDTLS_MCUX_USE_ELS) ||        \
-      defined(MBEDTLS_MCUX_USE_PKC))
-#error "There is currently an issue in mbedTLS if hardware acceleration and IPED \
-are enabled on RW61x, please remove global defines MBEDTLS_MCUX_USE_ELS and \
-MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
-#endif
-
-/*
- * Optional:
- * Uncomment to use simpler OVERWRITE_ONLY mode instead of three slot configuration.
- */
-//#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
 
 /*
  * Maximum size of IPED region
@@ -81,6 +36,49 @@ MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
  */
 #define CONFIG_ENCRYPT_XIP_OVERWRITE_ONLY_BUF_SIZE      (4*256)
 
+
+/*******************************************************************/
+/* Use default configuration if setup from Kconfig is not provided */
+/*******************************************************************/
+#ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
+
+
+/* MCUBoot Flash Config */
+
+#define CONFIG_MCUBOOT_MAX_IMG_SECTORS 1090u
+
+/*
+ * Number of image pairs is 1 in the case of the monolithic application.
+ * This is mandated by the MATTER specification.
+ */
+#define CONFIG_UPDATEABLE_IMAGE_NUMBER 1
+
+/*
+ * MCUBoot upgrade mode
+ *
+ * The default MCUBoot configuration is to use swap mechanism. In case the flash
+ * remapping functionality is supported by processor the alternative mechanism
+ * using direct-xip mode can be used and evaluated by user.
+ * Comment this to enable swap mode or when encrypted XIP extension is enabled.
+ */
+#define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+
+/* Encrypted XIP support config */
+
+/*
+ * Uncomment to enable extension utilizing on-the-fly decryption of encrypted image.
+ * Note: Flash remap feature has to be disabled.
+ * For more information please see readme file of mcuboot_opensource example.
+ */
+//#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
+
+/*
+ * Optional:
+ * Uncomment to use simpler OVERWRITE_ONLY mode instead of three slot configuration.
+ */
+//#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
+
+
 /* Crypto Config */
 // #define CONFIG_BOOT_OTA_TEST
 /* uncomment to generate MCU boot for testing without image signature verification */
@@ -97,4 +95,19 @@ MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
 #define COMPONENT_MBEDTLS
 #define CONFIG_BOOT_BOOTSTRAP
 
+#endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
+
+
+/* Config Guards */
+
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
+    (!defined(MBEDTLS_MCUX_DISABLE_HW_ALT) || \
+      defined(MBEDTLS_MCUX_USE_ELS) ||        \
+      defined(MBEDTLS_MCUX_USE_PKC))
+#error "There is currently an issue in mbedTLS if hardware acceleration and IPED \
+are enabled on RW61x, please remove global defines MBEDTLS_MCUX_USE_ELS and \
+MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
 #endif
+
+#endif
+

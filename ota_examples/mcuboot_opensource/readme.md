@@ -1,7 +1,7 @@
 # mcuboot_opensource
 
 Overview
-========
+--------
 The mcuboot_opensource is a second stage bootloader based on MCUBoot project. It is primarily meant to be used together with OTA (over-the-air) update examples
 to demonstrate functionality of application self-upgrade.
 
@@ -111,7 +111,7 @@ MCUXpresso Secure Provisioning Tool from verion 9 supports automation for MCUBoo
 it's possible to setup the device for entire boot chain in a few steps.
 
 Prepare the Demo
-===============
+----------------
 1.  Connect a USB cable between the PC host and the OpenSDA(or USB to Serial) USB port on the target board.
 2.  Open a serial terminal on PC for OpenSDA serial(or USB to Serial) device with these settings:
     - 115200 baud rate
@@ -124,7 +124,7 @@ Prepare the Demo
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
-===============
+----------------
 When the demo runs successfully, the terminal will display the following:
 
     hello sbl.
