@@ -232,7 +232,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.core_linker_script_ble)
     mcux_add_armgcc_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER ${board_root}/${board}/wireless_examples/linker/${core_id}/gcc/${gcc_wireless_linker_file}
+        LINKER ${board_root}/${board}/wireless_examples/linker/${core_id}/gcc/${gcc_wireless_linker_file_ble}
     )
 
     mcux_remove_iar_linker_script(

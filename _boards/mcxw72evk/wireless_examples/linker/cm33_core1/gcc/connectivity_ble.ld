@@ -67,9 +67,6 @@ m_data1_size                        = m_data1_end - m_data1_start;
 m_cstack_start                      = m_data1_end + 1;
 m_cstack_end                        = m_ram1_end;
 
-__HEAP_start__                      = m_data1_end - HEAP_SIZE;
-__HEAP_end__                        = m_data1_end;
-
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
 
@@ -157,6 +154,10 @@ rpmsg_sh_mem_start       = rpmsg_sh_mem_end - rpmsg_sh_mem_size + 1;
 m_free_data_start                 = m_sqram_rldat_end + 1;
 m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 m_free_data_end                   = rpmsg_sh_mem_start - 1;
+m_extra_data_start                = rpmsg_sh_mem_end + 1;
+m_extra_data_end                  = m_shared_ram_end;
+__HEAP_start__                      = m_extra_data_end - HEAP_SIZE;
+__HEAP_end__                        = m_extra_data_end;
 
 /* Last reserved word of the debug section used for the sfc module */
 m_sfc_log_start                     = 0x489C0078;
@@ -180,6 +181,7 @@ MEMORY
   sqram_rldat_region (RW): ORIGIN = m_sqram_rldat_start, LENGTH = m_sqram_rldat_end-m_sqram_rldat_start+1
   rpmsg_sh_mem_region (RW): ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_end-rpmsg_sh_mem_start
   sqram_dbg_ext_logging_region (RW):ORIGIN = dbg_ext_logging_start, LENGTH = dbg_ext_logging_end-dbg_ext_logging_start
+  extra_data (RW):ORIGIN = m_extra_data_start, LENGTH = m_extra_data_end-m_extra_data_start
 }
 
 /* Define output sections */
@@ -258,6 +260,15 @@ SECTIONS
   {
       *(.trackbuf)
   }>sqram_dbg_ext_logging_region
+
+  .VERSION_TAGS :
+  {
+    . = ALIGN(4);
+    PROVIDE(__start_VERSION_TAGS = .);
+    KEEP(*(.VERSION_TAGS));
+    PROVIDE(__stop_VERSION_TAGS = .);
+    . = ALIGN(4);
+  } > m_text
   
   .ARM.extab :
   {
@@ -396,7 +407,7 @@ SECTIONS
     . += HEAP_SIZE;
     PROVIDE(__HeapLimit = .);
     *(.heap)
-  } > m_data1
+  } > extra_data
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
