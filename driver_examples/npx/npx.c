@@ -142,6 +142,7 @@ int main(void)
     /* Data previsouly written when NPX is enabled shall be gibberish*/
     NPX_EncryptDisable(NPX0);
  
+    /* Invalidate cache because after disabling NPX cache contain invalid cache data */
     L1CACHE_InvalidateCodeCache();
     
     /* Data should not match pattern as NPX has been disabled, so pattern shall be some gibberish ciphertext*/
