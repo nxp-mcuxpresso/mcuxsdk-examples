@@ -117,11 +117,11 @@
 #define RTE_USART8_PIN_INIT        BOARD_InitLpuart8Pins
 #define RTE_USART8_PIN_DEINIT      BOARD_DeinitLpuart8Pins
 #define RTE_USART8_DMA_RX_CH       (uint8_t) 0
-#define RTE_USART8_DMA_RX_PERI_SEL (uint8_t) kDma3RequestMuxLpuart8Rx
-#define RTE_USART8_DMA_RX_DMA_BASE EDMA3
+#define RTE_USART8_DMA_RX_PERI_SEL (uint8_t) kDma4RequestMuxLpuart8Rx
+#define RTE_USART8_DMA_RX_DMA_BASE EDMA4
 #define RTE_USART8_DMA_TX_CH       (uint8_t) 1
-#define RTE_USART8_DMA_TX_PERI_SEL (uint8_t) kDma3RequestMuxLpuart8Tx
-#define RTE_USART8_DMA_TX_DMA_BASE EDMA3
+#define RTE_USART8_DMA_TX_PERI_SEL (uint8_t) kDma4RequestMuxLpuart8Tx
+#define RTE_USART8_DMA_TX_DMA_BASE EDMA4
 
 #elif BOARD_DEBUG_UART_INSTANCE == 11
 
@@ -136,11 +136,11 @@
 #define RTE_USART11_PIN_INIT        BOARD_InitLpuart11Pins
 #define RTE_USART11_PIN_DEINIT      BOARD_DeinitLpuart11Pins
 #define RTE_USART11_DMA_RX_CH       (uint8_t) 0
-#define RTE_USART11_DMA_RX_PERI_SEL (uint8_t) kDma3RequestMuxLpuart11Rx
-#define RTE_USART11_DMA_RX_DMA_BASE EDMA3
+#define RTE_USART11_DMA_RX_PERI_SEL (uint8_t) kDma2RequestMuxLpuart11Rx
+#define RTE_USART11_DMA_RX_DMA_BASE EDMA2
 #define RTE_USART11_DMA_TX_CH       (uint8_t) 1
-#define RTE_USART11_DMA_TX_PERI_SEL (uint8_t) kDma3RequestMuxLpuart11Tx
-#define RTE_USART11_DMA_TX_DMA_BASE EDMA3
+#define RTE_USART11_DMA_TX_PERI_SEL (uint8_t) kDma2RequestMuxLpuart11Tx
+#define RTE_USART11_DMA_TX_DMA_BASE EDMA2
 
 #elif BOARD_DEBUG_UART_INSTANCE == 12
 
@@ -155,11 +155,11 @@
 #define RTE_USART12_PIN_INIT        BOARD_InitLpuart12Pins
 #define RTE_USART12_PIN_DEINIT      BOARD_DeinitLpuart12Pins
 #define RTE_USART12_DMA_RX_CH       (uint8_t) 0
-#define RTE_USART12_DMA_RX_PERI_SEL (uint8_t) kDma3RequestMuxLpuart12Rx
-#define RTE_USART12_DMA_RX_DMA_BASE EDMA3
+#define RTE_USART12_DMA_RX_PERI_SEL (uint8_t) kDma4RequestMuxLpuart12Rx
+#define RTE_USART12_DMA_RX_DMA_BASE EDMA4
 #define RTE_USART12_DMA_TX_CH       (uint8_t) 1
-#define RTE_USART12_DMA_TX_PERI_SEL (uint8_t) kDma3RequestMuxLpuart12Tx
-#define RTE_USART12_DMA_TX_DMA_BASE EDMA3
+#define RTE_USART12_DMA_TX_PERI_SEL (uint8_t) kDma4RequestMuxLpuart12Tx
+#define RTE_USART12_DMA_TX_DMA_BASE EDMA4
 
 #else
 #error "Pls define RTE macros"
