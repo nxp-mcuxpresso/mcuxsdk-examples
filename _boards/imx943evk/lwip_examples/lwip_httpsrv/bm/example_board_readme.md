@@ -8,4 +8,4 @@ Hardware requirements
 
 Board settings
 ============
-This example uses NETC ENETC2 1G port in default. To choose other port, configure in lwip_netc_port.h.
+This example uses NETC ENETC0 (ETH2/J25) 1G port in default. To choose other port, configure in lwip_netc_port.h.

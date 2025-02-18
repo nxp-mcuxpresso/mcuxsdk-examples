@@ -69,68 +69,16 @@
     }
 #endif
 
-/*
- * +--------------------------------------------------------------------------------+-------------------+-----------------------+
- * | enetc/switch    |   mac   | eth   |port    | link    | MII protocol            |  phy in imx943evk | phy addr in imx943evk |
- * +--------------------------------------------------------------------------------+-------------------+-----------------------+
- * | switch(enetc3)  |   mac0  | eth0  |port0   | link0   | SGMII/RGMII/MII/RMII    |     DP838491      | 0x6                   |
- * +--------------------------------------------------------------------------------+-------------------+-----------------------+
- * | switch(enetc3)  |   mac1  | eth1  |port1   | link1   | SGMII/RGMII/MII/RMII    |     DP838491      | 0x7                   |
- * +--------------------------------------------------------------------------------+-------------------+-----------------------+
- * | switch(enetc3)  |   mac2  | eth2  |port2   | link2   | RGMII/RMII/RevMII       |     RTL8211FDI    | 0x5                   |
- * +--------------------------------------------------------------------------------+-------------------------------------------+
- * | enetc0          |   mac3  | eth2  |port3   | link3   | RGMII/RMII/RevMII       |     RTL8211FDI    | 0x5                   |
- * +--------------------------------------------------------------------------------+-------------------------------------------+
- * | enetc1          |   mac4  | eth3  |port4   | link4   | RGMII/RMII/RevMII       |     RTL8211FDI    | 0x6                   |
- * +--------------------------------------------------------------------------------+-------------------------------------------+
- * | enetc2          |   mac5  | eth4  |port5   | link5   | RGMII/RMII/RevMII       |     RTL8211FDI    | 0x7                   |
- * +--------------------------------------------------------------------------------+-------------------------------------------+
- *
- */
-
-
-#if SELECT_MAC_PORT == MAC_PORT0
-#define EXAMPLE_PHY_ADDRESS  0x6
-//#define EXAMPLE_PHY_OPS (&g_app_phy_dp838491_ops)
-#define EXAMPLE_PHY_OPS (&g_app_phy_rtl8211f_ops)
-#define EXAMPLE_PHY_RESOURCE ((void *)&g_phy_dp838491_resource)
-#define NETC_SWITCH_MAC_PORT (kNETC_SWITCH0EthPort0)
-#elif SELECT_MAC_PORT == MAC_PORT1
-#define EXAMPLE_PHY_ADDRESS  0x7
-//#define EXAMPLE_PHY_OPS (&g_app_phy_dp838491_ops)
-#define EXAMPLE_PHY_OPS (&g_app_phy_rtl8211f_ops)
-#define NETC_SWITCH_MAC_PORT (kNETC_SWITCH0EthPort1)
-#define EXAMPLE_PHY_RESOURCE ((void *)&g_phy_dp838491_resource)
-#elif SELECT_MAC_PORT == MAC_PORT2
-#define EXAMPLE_PHY_ADDRESS  0x5
-#define EXAMPLE_PHY_OPS (&g_app_phy_rtl8211f_ops)
-#define NETC_SWITCH_MAC_PORT (kNETC_SWITCH0EthPort2)
-#define EXAMPLE_PHY_RESOURCE ((void *)&g_phy_rtl8211f_resource)
-#elif SELECT_MAC_PORT == MAC_PORT3
-#define EXAMPLE_PHY_ADDRESS  0x5
-#define EXAMPLE_PHY_OPS (&g_app_phy_rtl8211f_ops)
-#define EXAMPLE_PHY_RESOURCE ((void *)&g_phy_rtl8211f_resource)
-#elif SELECT_MAC_PORT == MAC_PORT4
-#define EXAMPLE_PHY_ADDRESS  0x6
-#define EXAMPLE_PHY_OPS (&g_app_phy_rtl8211f_ops)
-#define EXAMPLE_PHY_RESOURCE ((void *)&g_phy_rtl8211f_resource)
-#elif SELECT_MAC_PORT == MAC_PORT5
-#define EXAMPLE_PHY_ADDRESS  0x7
-#define EXAMPLE_PHY_OPS (&g_app_phy_rtl8211f_ops)
-#define EXAMPLE_PHY_RESOURCE ((void *)&g_phy_rtl8211f_resource)
-#endif
-
+#define EXAMPLE_PHY_ADDRESS  ((NETC_PSI == kNETC_ENETC0PSI0) ? 0x5U : \
+				((NETC_PSI == kNETC_ENETC1PSI0) ? 0x6U : 0x7U))
+#define EXAMPLE_PHY_OPS      &g_app_phy_rtl8211f_ops
+#define EXAMPLE_PHY_RESOURCE (void *)&g_phy_rtl8211f_resource
 #define EXAMPLE_CLOCK_FREQ   HAL_ClockGetRate(hal_clock_enet)
-
 /*${macro:end}*/
-
-#if 0
-extern phy_dp838491_resource_t g_phy_dp838491_resource;
-extern const phy_operations_t g_app_phy_dp838491_ops;
-#endif
 
 extern phy_rtl8211f_resource_t g_phy_rtl8211f_resource;
 extern const phy_operations_t g_app_phy_rtl8211f_ops;
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
