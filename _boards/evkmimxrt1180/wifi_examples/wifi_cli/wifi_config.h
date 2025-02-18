@@ -8,7 +8,6 @@
 #ifndef _WIFI_CONFIG_H_
 #define _WIFI_CONFIG_H_
 
-#include "app_config.h"
 #include "wifi_bt_module_config.h"
 
 #define CONFIG_WIFI_MAX_PRIO (configMAX_PRIORITIES - 1)
