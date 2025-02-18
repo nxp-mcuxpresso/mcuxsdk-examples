@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
 hello_world_s:
-  use_sysbuild: true
+  skip_build: true
   section-type: application
   contents:
     meta_path: examples/trustzone_examples/hello_world_s
-    project-root-path: boards/${board}/trustzone_examples/hello_world/hello_world_s/${multicore_foldername}
+    project-root-path: boards/${board}/trustzone_examples/hello_world/hello_world_s
     document:
       name: hello_world_s${core_id_suffix_name}
       category: trustzone_examples

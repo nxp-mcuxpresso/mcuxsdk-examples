@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -46,7 +46,7 @@ mcux_add_include(
 
 mcux_add_library(
     BASE_PATH ${APPLICATION_BINARY_DIR}
-    LIBS "../hello_world_s_CMSE_lib.o"
+    LIBS "../hello_world_s/${CONFIG_TOOLCHAIN}/hello_world_s${core_id_suffix_name}_CMSE_lib.o"
     TOOLCHAINS armgcc mdk iar
     GENERATED TRUE
 )
