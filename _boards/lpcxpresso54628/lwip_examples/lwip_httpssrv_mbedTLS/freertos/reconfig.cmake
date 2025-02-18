@@ -1,9 +1,9 @@
-# Add additional configuration
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_macro(
-    CC "-DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\"\
-        -DPBUF_POOL_SIZE=5\
-        -DENET_RXBD_NUM=5\
-        -DENET_RXBUFF_NUM=14"
+    CC "-DMBEDTLS_CONFIG_FILE=\\\"ksdk_mbedtls_config.h\\\""
 )
 mcux_add_armgcc_configuration(
     TARGETS debug

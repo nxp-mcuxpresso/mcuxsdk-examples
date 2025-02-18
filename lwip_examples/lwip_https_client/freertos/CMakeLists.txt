@@ -1,3 +1,7 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
@@ -17,7 +21,6 @@ mcux_add_source(
             examples/lwip_examples/lwip_https_client/freertos/app_mbedtls_socket.c
             examples/lwip_examples/lwip_https_client/freertos/app_https_client_task.h
             examples/lwip_examples/lwip_https_client/freertos/app_https_client_task.c
-            examples/lwip_examples/lwip_https_client/freertos/lwipopts.h
             examples/lwip_examples/lwip_https_client/freertos/core_http_config.h
 )
 

@@ -1,4 +1,7 @@
-# Add additional configuration
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_remove_armgcc_configuration(
     TARGETS debug sdram_debug
     CC "-O0"
@@ -11,9 +14,7 @@ mcux_add_armgcc_configuration(
 )
 
 mcux_add_macro(
-    CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
-        -DENET_RXBUFF_NUM=14\
-        -DENET_RXBD_NUM=9"
+    CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE"
 )
 mcux_add_macro(
     TOOLCHAINS iar mdk armgcc

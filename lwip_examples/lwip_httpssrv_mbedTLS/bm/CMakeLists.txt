@@ -1,3 +1,7 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
@@ -11,7 +15,6 @@ mcux_add_source(
     SOURCES examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/httpd_mbedtls.c
             examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/httpd_mbedtls.h
             examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/lwip_httpssrv_mbedTLS_bm.c
-            examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/lwipopts.h
 )
 
 mcux_add_include(

@@ -1,3 +1,7 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
@@ -9,7 +13,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/lwip_examples/lwip_dhcp_usb/freertos/lwip_dhcp_usb_freertos.c
-            examples/lwip_examples/lwip_dhcp_usb/freertos/lwipopts.h
             examples/lwip_examples/lwip_dhcp_usb/freertos/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
@@ -23,7 +26,8 @@ mcux_add_macro(
     CC "-DUSE_RTOS=1\
        -DUSB_STACK_FREERTOS\
        -DPRINTF_ADVANCED_ENABLE=1\
-       -DSDK_DEBUGCONSOLE=1"
+       -DSDK_DEBUGCONSOLE=1\
+       -DMYY=12"
 )
 
 mcux_add_linker_symbol(

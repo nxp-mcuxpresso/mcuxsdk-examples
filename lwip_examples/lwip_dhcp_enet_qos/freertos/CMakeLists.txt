@@ -1,3 +1,6 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 
 cmake_minimum_required(VERSION 3.22.0)
 
@@ -10,12 +13,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/lwip_examples/lwip_dhcp/freertos/lwip_dhcp_freertos.c
-            examples/lwip_examples/lwip_dhcp/freertos/lwipopts.h
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/lwip_examples/lwip_dhcp/freertos
 )
 
 mcux_add_macro(

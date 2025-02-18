@@ -1,6 +1,7 @@
-# Add additional configuration
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_macro(
-    CC "-DENET_RXBD_NUM=14\
-        -DTCP_WND=18980"
     AS "-DIMG_BAUDRATE=96000000"
 )

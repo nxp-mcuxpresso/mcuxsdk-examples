@@ -1,3 +1,7 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
@@ -9,12 +13,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/lwip_examples/lwip_dhcp_usb/bm/lwip_dhcp_usb_bm.c
-            examples/lwip_examples/lwip_dhcp_usb/bm/lwipopts.h
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/lwip_examples/lwip_dhcp_usb/bm
 )
 
 mcux_add_linker_symbol(

@@ -1,7 +1,9 @@
-# Add additional configuration
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 mcux_add_macro(
-    CC "-DMEMP_NUM_IGMP_GROUP=4\
-        -DFSL_ETH_ENABLE_CACHE_CONTROL"
+    CC "-DFSL_ETH_ENABLE_CACHE_CONTROL"
 )
 mcux_add_armgcc_configuration(
     TARGETS debug hyperram_debug

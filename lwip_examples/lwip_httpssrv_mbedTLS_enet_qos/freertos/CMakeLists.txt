@@ -1,3 +1,6 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
 
 cmake_minimum_required(VERSION 3.22.0)
 
@@ -12,19 +15,11 @@ include(${SdkRootDirPath}/examples/lwip_examples/httpsrv_common/fs_data/webpage/
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/lwip_examples/lwip_httpssrv_mbedTLS/freertos/lwip_httpssrv_mbedTLS_freertos.c
-            examples/lwip_examples/lwip_httpssrv_mbedTLS/freertos/lwipopts.h
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/lwip_examples/lwip_httpssrv_mbedTLS/freertos
 )
 
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
-       -DPRINTF_ADVANCED_ENABLE=1\
-       -DHTTPSRV_CFG_WEBSOCKET_ENABLED=1\
-       -DHTTPSRV_CFG_MBEDTLS_ENABLE=1"
+       -DPRINTF_ADVANCED_ENABLE=1"
 )
 
 mcux_add_macro(
