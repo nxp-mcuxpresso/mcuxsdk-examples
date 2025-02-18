@@ -44,22 +44,29 @@ int main(void)
     int digit = 0U;
     char ch;
     int descIdx = 0;
+    uint64_t sensorValue = 0;
+
 
     BOARD_InitHardware();
 
     PRINTF("\r\n Temperature measurement example.");
 
     status = SCMI_SensorDescriptionGet(SM_PLATFORM_A2P, 0U, &numSensorFlags, desc);
+    if (SCMI_ERR_SUCCESS != status)
+    {
+        PRINTF("\r\n Sensor descriptor get failed!");
+        assert(false);
+    }
     numSensorDescs = numSensorFlags & NUM_SENSOR_DESCS_MASK;
     for (int i = 0; i < numSensorDescs; i++)
     {
-	    PRINTF("desc[%d].sensorId = 0x%x\r\n", i, desc[i].sensorId);
-	    PRINTF("desc[%d].name = %s\r\n", i, desc[i].name);
+	    PRINTF("\r\n desc[%d].sensorId = 0x%x", i, desc[i].sensorId);
+	    PRINTF("\r\n desc[%d].name = %s", i, desc[i].name);
     }
-    /* choose a sensor to get temperature */
-    PRINTF("Pls input a number to choose sensor to get data:(valid input is 0-%d)\r\n", numSensorDescs - 1);
     while (1)
     {
+        /* choose a sensor to get temperature */
+        PRINTF("\r\n Pls input a number to choose sensor to get data:(valid input is 0-%d)", numSensorDescs - 1);
         ch = GETCHAR();
 	PUTCHAR(ch);
         if (ch >= '0' && ch <= '9')
@@ -67,59 +74,51 @@ int main(void)
             digit = ch - '0';
             if (digit >= numSensorDescs)
             {
-                PRINTF("valid number is 0-%d\r\n", numSensorDescs - 1);
+                PRINTF("\r\n Valid number is 0-%d\r\n", numSensorDescs - 1);
             }
 	    else
 	    {
-		PRINTF("sensor(desc index is %d) %s is selected\r\n", digit, desc[digit].name);
+		PRINTF("\r\n Sensor(desc index is %d) %s is selected", digit, desc[digit].name);
 		descIdx = digit;
-		break;
 	    }
         }
         else
         {
-            PRINTF("Pls input a number:\r\n");
+            PRINTF("\r\n Pls input a number:");
+            continue;
         }
 
-    }
-    if (SCMI_ERR_SUCCESS != status)
-    {
-        PRINTF("\r\n Sensor descriptor get failed!");
-    }
-
-    status = SCMI_SensorConfigSet(SM_PLATFORM_A2P, desc[descIdx].sensorId, SCMI_SENSOR_CONFIG_SET_ENABLE(1U));
-    if (SCMI_ERR_SUCCESS != status)
-    {
-        PRINTF("\r\n Sensor configuration failed!");
-    }
-
-    status = SCMI_SensorConfigGet(SM_PLATFORM_A2P, desc[descIdx].sensorId, &sensorConfig);
-    if (SCMI_ERR_SUCCESS != status)
-    {
-        enabled = SCMI_SENSOR_CONFIG_GET_ENABLED(sensorConfig);
-        if (!enabled)
+        status = SCMI_SensorConfigSet(SM_PLATFORM_A2P, desc[descIdx].sensorId, SCMI_SENSOR_CONFIG_SET_ENABLE(1U));
+        if (SCMI_ERR_SUCCESS != status)
         {
-            PRINTF("\r\n Sensor not enabled!");
+            PRINTF("\r\n Sensor configuration failed!");
+            continue;
         }
-    }
 
-    PRINTF("\r\n Sensor is ready to read, press entry key to get the temperature.");
+        status = SCMI_SensorConfigGet(SM_PLATFORM_A2P, desc[descIdx].sensorId, &sensorConfig);
+        if (SCMI_ERR_SUCCESS != status)
+        {
+            enabled = SCMI_SENSOR_CONFIG_GET_ENABLED(sensorConfig);
+            if (!enabled)
+            {
+                PRINTF("\r\n Sensor not enabled!");
+                continue;
+            }
+        }
+        PRINTF("\r\n Sensor is ready to read, press enter key to get the temperature.");
 
-    while (1)
-    {
         GETCHAR();
         
-        int32_t sensorValue = 0;
-
         status = SCMI_SensorReadingGet(SM_PLATFORM_A2P, desc[descIdx].sensorId, SCMI_SENSOR_READ_FLAGS_ASYNC(0U), readings);
         if (status == SCMI_ERR_SUCCESS)
         {
-            sensorValue = readings[0].sensorValueLow;
-            PRINTF("\r\n current temperature is %.2f degrees Celsius", (double)((float)sensorValue / 100.0F));
+            sensorValue = readings[0].sensorValueLow | ((uint64_t)readings[0].sensorValueHigh << 32UL);
+            PRINTF("\r\n Current temperature is %llu degrees Celsius", sensorValue);
         }
 	else
         {
-            PRINTF("Failed to get data from sensor\r\n");
+            PRINTF("\r\n Failed to get data from sensor");
+            continue;
         }
     }
 }
