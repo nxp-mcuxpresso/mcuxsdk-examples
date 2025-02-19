@@ -21,6 +21,7 @@ lpit_pwm:
     frdmke16z: []
     frdmke17z: []
     frdmke17z512: []
+    frdmmcxe247: []
     imx943evk@cm7_core1:
     - +armgcc@debug
     - +armgcc@release

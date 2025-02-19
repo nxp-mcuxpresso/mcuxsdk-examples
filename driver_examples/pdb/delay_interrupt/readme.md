@@ -11,5 +11,6 @@ so that user can see just a general counter is working with interrupt.
 - [FRDM-K22F](../../../_boards/frdmk22f/driver_examples/pdb/delay_interrupt/example_board_readme.md)
 - [FRDM-KE15Z](../../../_boards/frdmke15z/driver_examples/pdb/delay_interrupt/example_board_readme.md)
 - [FRDM-KE16Z](../../../_boards/frdmke16z/driver_examples/pdb/delay_interrupt/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/pdb/delay_interrupt/example_board_readme.md)
 - [TWR-KM34Z75M](../../../_boards/twrkm34z75m/driver_examples/pdb/delay_interrupt/example_board_readme.md)
 - [TWR-KM35Z75M](../../../_boards/twrkm35z75m/driver_examples/pdb/delay_interrupt/example_board_readme.md)

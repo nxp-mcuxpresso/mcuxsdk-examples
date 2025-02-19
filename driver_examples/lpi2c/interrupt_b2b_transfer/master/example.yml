@@ -46,6 +46,7 @@ lpi2c_interrupt_b2b_transfer_master:
     frdmmcxa156: []
     frdmmcxa166: []
     frdmmcxa276: []
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []

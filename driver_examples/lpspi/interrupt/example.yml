@@ -27,6 +27,7 @@ lpspi_interrupt:
     frdmmcxa156: []
     frdmmcxa166: []
     frdmmcxa276: []
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []

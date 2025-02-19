@@ -63,6 +63,7 @@ End of master example!
 - [FRDM-MCXA156](../../../../_boards/frdmmcxa156/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXA166](../../../../_boards/frdmmcxa166/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXA276](../../../../_boards/frdmmcxa276/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
+- [FRDM-MCXE247](../../../../_boards/frdmmcxe247/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXW71](../../../../_boards/frdmmcxw71/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)

@@ -22,3 +22,4 @@ pdb_adc12_trigger:
   boards:
     frdmke15z: []
     frdmke16z: []
+    frdmmcxe247: []

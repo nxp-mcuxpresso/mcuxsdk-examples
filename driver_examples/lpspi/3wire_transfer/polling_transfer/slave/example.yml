@@ -25,3 +25,4 @@ lpspi_3wire_polling_transfer_slave:
     frdmke15z: []
     frdmke17z: []
     frdmke17z512: []
+    frdmmcxe247: []

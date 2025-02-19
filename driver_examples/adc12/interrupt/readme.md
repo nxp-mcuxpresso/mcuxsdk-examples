@@ -21,3 +21,4 @@ Press any key to get user channel's ADC value ...
 - [FRDM-KE16Z](../../../_boards/frdmke16z/driver_examples/adc12/interrupt/example_board_readme.md)
 - [FRDM-KE17Z](../../../_boards/frdmke17z/driver_examples/adc12/interrupt/example_board_readme.md)
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/driver_examples/adc12/interrupt/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/adc12/interrupt/example_board_readme.md)

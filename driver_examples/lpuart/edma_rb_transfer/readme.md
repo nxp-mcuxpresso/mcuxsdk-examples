@@ -20,6 +20,7 @@ them to the terminal by using EDMA mode. so, you can see the your pressed charac
 - [FRDM-KE15Z](../../../_boards/frdmke15z/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [FRDM-KE17Z](../../../_boards/frdmke17z/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [K32W148-EVK](../../../_boards/k32w148evk/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)

@@ -34,6 +34,7 @@ Starting channel No.0 ...
 - [FRDM-KE16Z](../../../_boards/frdmke16z/driver_examples/lpit/single_channel/example_board_readme.md)
 - [FRDM-KE17Z](../../../_boards/frdmke17z/driver_examples/lpit/single_channel/example_board_readme.md)
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/driver_examples/lpit/single_channel/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/lpit/single_channel/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/lpit/single_channel/example_board_readme.md)
 - [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/lpit/single_channel/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/lpit/single_channel/example_board_readme.md)

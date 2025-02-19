@@ -46,6 +46,7 @@ End of Example.
 - [FRDM-KE17Z512](../../../../../_boards/frdmke17z512/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA156](../../../../../_boards/frdmmcxa156/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA276](../../../../../_boards/frdmmcxa276/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md)
+- [FRDM-MCXE247](../../../../../_boards/frdmmcxe247/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN236](../../../../../_boards/frdmmcxn236/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN947](../../../../../_boards/frdmmcxn947/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW71](../../../../../_boards/frdmmcxw71/driver_examples/flexio/spi/int_lpspi_transfer/slave/example_board_readme.md)

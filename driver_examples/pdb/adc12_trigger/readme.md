@@ -35,3 +35,4 @@ ADC12 Conversion Interrupt Counter: 4
 ## Supported Boards
 - [FRDM-KE15Z](../../../_boards/frdmke15z/driver_examples/pdb/adc12_trigger/example_board_readme.md)
 - [FRDM-KE16Z](../../../_boards/frdmke16z/driver_examples/pdb/adc12_trigger/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/pdb/adc12_trigger/example_board_readme.md)

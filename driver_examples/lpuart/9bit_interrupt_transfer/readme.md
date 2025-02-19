@@ -29,6 +29,7 @@ sent after the address can be received by itself.
 - [FRDM-KE17Z](../../../_boards/frdmke17z/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXC242](../../../_boards/frdmmcxc242/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)

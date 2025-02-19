@@ -16,3 +16,4 @@ trgmux_lptmr_trigger_lpit:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmcimx7ulp: []
+    frdmmcxe247: []

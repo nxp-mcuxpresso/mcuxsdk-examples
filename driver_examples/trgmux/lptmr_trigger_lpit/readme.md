@@ -8,3 +8,4 @@ eight TRGMUX_OUTx pins.
 
 ## Supported Boards
 - [EVK-MCIMX7ULP](../../../_boards/evkmcimx7ulp/driver_examples/trgmux/lptmr_trigger_lpit/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/trgmux/lptmr_trigger_lpit/example_board_readme.md)

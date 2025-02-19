@@ -45,6 +45,7 @@ flexio_uart_int_rb_transfer:
     frdmmcxa276: []
     frdmmcxc242: []
     frdmmcxc444: []
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []

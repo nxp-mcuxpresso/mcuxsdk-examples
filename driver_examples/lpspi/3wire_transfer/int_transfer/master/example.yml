@@ -26,3 +26,4 @@ lpspi_3wire_int_transfer_master:
     frdmke15z: []
     frdmke17z: []
     frdmke17z512: []
+    frdmmcxe247: []

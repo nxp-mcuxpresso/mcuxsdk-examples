@@ -26,4 +26,5 @@ acmp_round_robin:
     frdmke16z: []
     frdmke17z: []
     frdmke17z512: []
+    frdmmcxe247: []
     mimxrt685audevk@cm33: []

@@ -46,6 +46,7 @@ lpi2c_polling_b2b_slave:
     frdmmcxa156: []
     frdmmcxa166: []
     frdmmcxa276: []
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
