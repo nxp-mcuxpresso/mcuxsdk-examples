@@ -91,7 +91,7 @@ m_text_size                         = m_text_end - m_text_start;
 m_ram0_start                        = 0x14000000;
 m_ram0_end                          = 0x14007FFF;
 m_ram1_start                        = 0x20000000;
-m_ram1_end                          = 0x2003FFFF;
+m_ram1_end                          = 0x20039FFF;
 /* This region is used by bootrom when exiting power down modes */
 m_ram1_reserved_start               = m_ram1_start;
 m_ram1_reserved_size                = 0x4000;
