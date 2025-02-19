@@ -1,5 +1,6 @@
 mcux_add_macro(
-    CC "-DNETC_PORT_USE_INCLUDES=1"
+    CC "-DNETC_PORT_USE_INCLUDES=1\
+        -DNETC_PROMISCUOUS=1"
 )
 
 mcux_add_source(
