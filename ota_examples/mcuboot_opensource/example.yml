@@ -10,6 +10,7 @@ mcuboot_opensource:
       brief: MCUboot bootloader
       example_readme:
       - examples/ota_examples/mcuboot_opensource/readme.md
+      - examples/ota_examples/mcuboot_opensource/CHANGELOG.md
       - ${board_root}/${board}/ota_examples/mcuboot_opensource/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:

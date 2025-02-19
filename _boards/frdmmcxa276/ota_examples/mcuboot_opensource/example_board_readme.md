@@ -25,10 +25,10 @@ Board settings
     imgtool sign   --key sign-ecdsa-p256-priv.pem
                    --align 16
                    --version 1.1
-                   --slot-size 0x7c000
+                   --slot-size 0x76000
                    --header-size 0x200
                    --pad-header
-                   --max-sectors 64
+                   --max-sectors 59
                    ota_mcuboot_basic.bin
                    ota_mcuboot_basic.SIGNED.bin
 
