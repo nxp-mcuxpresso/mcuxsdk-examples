@@ -1,13 +1,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/ota_examples/ota_rom_server/romapi_mcxn10/rom_iap.h
-            examples/ota_examples/ota_rom_server/romapi_mcxn10/rom_iap.c
+    SOURCES examples/ota_examples/sb3_api/sb3_api.h
+            examples/ota_examples/sb3_api/sb3_api_mcxn10.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/ota_examples/ota_rom_server/romapi_mcxn10
+    INCLUDES examples/ota_examples/sb3_api
 )
 
 mcux_add_mdk_configuration(

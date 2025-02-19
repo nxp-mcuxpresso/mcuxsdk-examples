@@ -6,7 +6,7 @@
  */
 
 
-#include "rom_iap.h"
+#include "sb3_api.h"
 #include "fsl_flash.h"
 #include "fsl_debug_console.h"
 
@@ -15,6 +15,8 @@ ROM In Application Programming (IAP) API for MCX N10 series MCU's
 */
 
 #define ROM_IAP_PTR ((iap_api_interface_t **)0x1303FC34)
+
+#define ROM_BUF_SIZE        0x1000
 
 
 typedef struct iap_api_interface_struct
@@ -35,6 +37,11 @@ typedef struct iap_api_interface_struct
     status_t (*sbloader_finalize)(api_core_context_t *ctx);
 } iap_api_interface_t;
 
+
+
+#ifndef SDK_OS_FREE_RTOS
+static uint32_t static_buf[ROM_BUF_SIZE / sizeof(uint32_t)];
+#endif
 
 
 /********************************************************************************
@@ -124,12 +131,27 @@ int is_remap_active(void)
     return NPX0->REMAP ? 1 : 0;
 }
 
-
 int is_sb3_header(const void *header)
 {
     return !memcmp("sbv3", header, 4);
 }
 
+/* Note: there is no clear way how to detect mbi presence so we analyze atleast Image Type */
+int mbi_image_info_sanity_check(const uint32_t *image)
+{
+    uint32_t image_type = image[0x24/4];
+    uint32_t load_addr  = image[0x34/4];
+          
+    //Image type <= 0x8
+    if((image_type & 0x3F) > 0x8)
+        return 0;
+    //Image Subtype <= 0x1
+    if((image_type>>6 & 0x3) > 0x1)
+        return 0;
+    if(load_addr == 0xFFFFFFFF)
+        return 0;
+    return 1;
+}
 
 void parse_mbi_image_info(const uint32_t *image, struct mbi_image_info *info)
 {
@@ -140,7 +162,7 @@ void parse_mbi_image_info(const uint32_t *image, struct mbi_image_info *info)
     
     info->cert_offset = image[0x28/4];
     info->cert_size   = image[info->cert_offset/4 + 2];
-    info->fw_version  = image[(info->cert_offset+info->cert_size)/4 + 2];    
+    info->fw_version  = image[(info->cert_offset+info->cert_size)/4 + 2];
 }
 
 
@@ -148,7 +170,7 @@ status_t sb3_iap_init(sb3_iap_ctx_t *ctx)
 {
     status_t status;
     
-    const size_t iapWorkBufSize = 0x1000;
+    const size_t iapWorkBufSize = ROM_BUF_SIZE;
     
     //standard_version_t iapVersion = iap_api_version();
     //PRINTF("IAP API version=%d.%d.%d\n", iapVersion.major, iapVersion.minor, iapVersion.bugfix);
@@ -160,7 +182,11 @@ status_t sb3_iap_init(sb3_iap_ctx_t *ctx)
     memset(&ctx->init_param, 0x0, sizeof(ctx->init_param));
     
     ctx->init_param.allocSize = iapWorkBufSize;
+#ifndef SDK_OS_FREE_RTOS
+    ctx->init_param.allocStart = (uint32_t) static_buf;
+#else
     ctx->init_param.allocStart = (uint32_t) pvPortMalloc(iapWorkBufSize);
+#endif
     
     if (ctx->init_param.allocStart == 0)
     {
@@ -185,8 +211,9 @@ status_t sb3_iap_init(sb3_iap_ctx_t *ctx)
     return status;
     
 cleanup:
-    
+#ifdef SDK_OS_FREE_RTOS
     vPortFree((void *) ctx->init_param.allocStart);
+#endif
     
     return status;
 }
@@ -207,7 +234,10 @@ void sb3_iap_finalize(sb3_iap_ctx_t *ctx)
 }
 
 
-void sb3_iap_free(sb3_iap_ctx_t *ctx)
+status_t sb3_iap_free(sb3_iap_ctx_t *ctx)
 {
+#ifdef SDK_OS_FREE_RTOS
     vPortFree((void *)ctx->init_param.allocStart);
+#endif
+    return iap_api_deinit(&ctx->core_ctx);
 }

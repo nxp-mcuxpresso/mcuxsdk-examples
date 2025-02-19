@@ -53,7 +53,7 @@ List of boards with projects supporting flash remapping function:
 
 Encrypted XIP support
 ----------------------
-For more information please see `mcuboot_encrypted_xip.md` (in mcuboot_opensource/ext/nxp_encrypted_xip)
+For more information please see `mcuboot_encrypted_xip.md` (in middleware/mcuboot_opensource/ext/nxp_encrypted_xip)
 
 This extension of MCUboot functionality can be evaluated by enabling define `CONFIG_ENCRYPT_XIP_EXT_ENABLE` in sblconfig.h
 
@@ -67,6 +67,14 @@ List of boards with projects supporting encrypted XIP:
 - MIMXRT1064-EVK  (BEE)
 - RDRW612BGA      (IPED)
 - FRDMRW612       (IPED)
+
+OTA update by using SB3 file
+----------------------------
+SB3 processing is demonstrated in `ota_mcuboot_basic`, for more information please see `readme_sb3.md`(in middleware/mcuboot_opensource/ext/sb3_api)
+
+List of boards supporting SB3:
+- MCX-N9XX-EVK
+- FRDM-MCXN947
 
 Signing the application image
 -----------------------------

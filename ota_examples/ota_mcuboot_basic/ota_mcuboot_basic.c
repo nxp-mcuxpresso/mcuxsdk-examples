@@ -20,6 +20,10 @@
 
 #include <ctype.h>
 
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
+#include "sb3_api.h"
+#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -30,6 +34,9 @@
 
 static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, char **argv);
 static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, char **argv);
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
+static shell_status_t shellCmd_xmodem_sb3(shell_handle_t shellHandle, int32_t argc, char **argv);
+#endif
 static shell_status_t shellCmd_mem(shell_handle_t shellHandle, int32_t argc, char **argv);
 static shell_status_t shellCmd_reboot(shell_handle_t shellHandle, int32_t argc, char **argv);
 
@@ -58,7 +65,9 @@ static SHELL_COMMAND_DEFINE(mem,
                             SHELL_IGNORE_PARAMETER_COUNT);
 
 static SHELL_COMMAND_DEFINE(xmodem, "\n\"xmodem [imgNum]\": Start receiving with XMODEM-CRC\n", shellCmd_xmodem, SHELL_IGNORE_PARAMETER_COUNT);
-
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
+static SHELL_COMMAND_DEFINE(xmodem_sb3, "\n\"xmodem_sb3\": Start SB3 receiving with XMODEM-CRC\n", shellCmd_xmodem_sb3, SHELL_IGNORE_PARAMETER_COUNT);
+#endif
 static SHELL_COMMAND_DEFINE(reboot, "\n\"reboot\": Triggers software reset\n", shellCmd_reboot, 0);
 
 SDK_ALIGN(static uint8_t s_shellHandleBuffer[SHELL_HANDLE_SIZE], 4);
@@ -71,6 +80,10 @@ static shell_handle_t s_shellHandle;
 static uint32_t progbuf[1024/sizeof(uint32_t)];
 
 static hashctx_t sha256_xmodem_ctx;
+
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
+static sb3_iap_ctx_t iap_ctx;
+#endif
 
 /*******************************************************************************
  * Code
@@ -117,7 +130,7 @@ static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, c
     int ret;
     status_t status;
     uint32_t imgstate;
-
+    
     if (argc > 3)
     {
         PRINTF("Too many arguments.\n");
@@ -292,14 +305,14 @@ static shell_status_t shellCmd_mem(shell_handle_t shellHandle, int32_t argc, cha
     return kStatus_SHELL_Success;
 }
 
+
 static int process_received_data(uint32_t dst_addr, uint32_t offset, uint32_t size)
 {
     int ret;
     uint32_t *data = progbuf;
     uint32_t addr = dst_addr + offset;
-    
+       
     /* 1kB programming buffer should be ok with all page size alignments */
-      
     while (size)
     {
         size_t chunk = (size < MFLASH_PAGE_SIZE) ? size : MFLASH_PAGE_SIZE;
@@ -323,6 +336,32 @@ static int process_received_data(uint32_t dst_addr, uint32_t offset, uint32_t si
     
     return 0;
 }
+
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
+static int process_received_data_sb3(uint32_t dst_addr, uint32_t offset, uint32_t size)
+{
+    int ret;
+    uint32_t *data = progbuf;
+    
+    if(offset == 0)
+    {
+        if(!is_sb3_header(data))
+        {
+            return -1;
+        }
+    }
+    
+    /* Processing SB3 image */
+    ret = sb3_iap_pump(&iap_ctx, (uint8_t *)data, size);
+    if (ret != kStatus_Success && ret != kStatusRomLdrDataUnderrun)
+    {
+        PRINTF("sb3_iap_pump failed/n");
+        return -1;
+    }
+    
+    return 0;
+}
+#endif
 
 static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
@@ -376,19 +415,18 @@ static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, 
     recvsize = xmodem_receive(&cfg);
     
     /* With some terminals it takes a while before they recover receiving to the console */
-    SDK_DelayAtLeastUs(100000, SystemCoreClock);
+    SDK_DelayAtLeastUs(1000000, SystemCoreClock);
     
     if (recvsize < 0)
     {
         PRINTF("\nTransfer failed (%d)\n", recvsize);
         return kStatus_SHELL_Error;
     }
-       
-    PRINTF("\nReceived %u bytes\n", recvsize);    
-    
+    PRINTF("\nReceived %u bytes\n", recvsize);
+   
     sha256_finish(&sha256_xmodem_ctx, sha256_recv);
     flash_sha256(prt_ota.start, recvsize, sha256_flash);    
-    
+
     PRINTF("SHA256 of received data: ");
     print_hash(sha256_recv, 10);
     PRINTF("...\n");
@@ -400,6 +438,69 @@ static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, 
     return kStatus_SHELL_Success;
 }
 
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
+static shell_status_t shellCmd_xmodem_sb3(shell_handle_t shellHandle, int32_t argc, char **argv)
+{
+    long recvsize;    
+    partition_t prt_ota;
+    
+    if (argc > 2)
+    {
+        PRINTF("Too many arguments.\n");
+        return kStatus_SHELL_Error;
+    }
+          
+    if (bl_get_update_partition_info(0, &prt_ota) != kStatus_Success)
+    {
+        PRINTF("FAILED to determine address for download\n");
+        return kStatus_SHELL_Error;
+    }
+    
+    //Todo add provisioning check
+    if (sb3_iap_init(&iap_ctx) != kStatus_Success)
+    {
+        PRINTF("sb3_iap_init failed/n");
+        return kStatus_SHELL_Error;
+    }
+    
+    PRINTF("Started xmodem processing SB3\n");
+    PRINTF("Make sure this device is provisioned to accept secure binary and its load address is 0x%X\n", prt_ota.start);
+    
+    struct xmodem_cfg cfg = {
+        .putc = xmodem_putc,
+        .getc = xmodem_getc,
+        .canread = xmodem_canread,
+        .canread_retries = xmodem_canread_retries,
+        .dst_addr = prt_ota.start,
+        .maxsize = prt_ota.size,
+        .buffer = (uint8_t*)progbuf,
+        .buffer_size = sizeof(progbuf),
+        .buffer_full_callback = process_received_data_sb3
+    };
+    
+    sha256_init(&sha256_xmodem_ctx);
+    
+    PRINTF("Initiated XMODEM-CRC transfer. Receiving... (Press 'x' to cancel)\n");
+    
+    recvsize = xmodem_receive(&cfg);
+    
+    /* With some terminals it takes a while before they recover receiving to the console */
+    SDK_DelayAtLeastUs(1000000, SystemCoreClock);
+    
+    if (recvsize < 0)
+    {
+        PRINTF("\nTransfer failed (%d)\n", recvsize);
+        return kStatus_SHELL_Error;
+    }  
+    PRINTF("\nReceived %u bytes\n", recvsize);     
+    
+    PRINTF("SB3 has been processed\n");
+    sb3_iap_finalize(&iap_ctx);
+    sb3_iap_free(&iap_ctx);
+    
+    return kStatus_SHELL_Success;
+}
+#endif
 
 static shell_status_t shellCmd_reboot(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
@@ -473,6 +574,9 @@ int main(void)
 
     SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(image));
     SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(xmodem));
+#ifdef MCUBOOT_OTA_SB3_SUPPORT
+    SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(xmodem_sb3));
+#endif
     SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(mem));
     SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(reboot));
 

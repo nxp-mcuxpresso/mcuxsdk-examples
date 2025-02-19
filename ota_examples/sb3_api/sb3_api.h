@@ -1,12 +1,12 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef _ROM_IAP_H_
-#define _ROM_IAP_H_
+#ifndef _SB3_API_H_
+#define _SB3_API_H_
 
 #include "fsl_flash.h"
 #include "fsl_flexspi_nor_flash.h"
@@ -128,6 +128,9 @@ int is_remap_active(void);
 /* tests presence of SB3 file signature */
 int is_sb3_header(const void *header);
 
+/* tests presence of signed image */
+int mbi_image_info_sanity_check(const uint32_t *image);
+
 /* parses basic information about MBI image */
 void parse_mbi_image_info(const uint32_t *image, struct mbi_image_info *info);
 
@@ -141,6 +144,6 @@ status_t sb3_iap_pump(sb3_iap_ctx_t *ctx, uint8_t *data, size_t len);
 void sb3_iap_finalize(sb3_iap_ctx_t *ctx);
 
 /* ROM IAP - used to free allocated memory*/
-void sb3_iap_free(sb3_iap_ctx_t *ctx);
+status_t sb3_iap_free(sb3_iap_ctx_t *ctx);
 
-#endif // _ROM_IAP_H_
+#endif // _SB3_API_H_

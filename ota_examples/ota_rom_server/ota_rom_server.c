@@ -28,7 +28,7 @@
 #include "timers.h"
 #include "fsl_debug_console.h"
 
-#include "rom_iap.h"
+#include "sb3_api.h"
 
 
 /*******************************************************************************
@@ -176,7 +176,7 @@ static int ssi_ota_image_info(HTTPSRV_SSI_PARAM_STRUCT *param)
     html = "<tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
     
-    if (is_sb3_header((void *) slot0_log_addr))
+    if (mbi_image_info_sanity_check((void *) slot0_log_addr))
     {
         parse_mbi_image_info((uint32_t *) slot0_log_addr, &imginfo);            
     
@@ -199,7 +199,7 @@ static int ssi_ota_image_info(HTTPSRV_SSI_PARAM_STRUCT *param)
     html = "<tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
     
-    if (is_sb3_header((void *) slot1_log_addr))
+    if (mbi_image_info_sanity_check((void *) slot1_log_addr))
     {    
         parse_mbi_image_info((uint32_t *) slot1_log_addr, &imginfo);
         
