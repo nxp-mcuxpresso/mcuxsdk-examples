@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 NXP
+ * Copyright 2024 - 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -40,6 +40,7 @@
 
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 
+#define APP_ETH_LINK_CHECK_INTERVAL_MS (200U)
 #define APP_ETH_FRAME_MAX_LENGTH (1514U)
 
 #define APP_ETH_NIC_EVENT_SET(event, offset) (event |= (uint32_t)(1U << offset))
@@ -61,16 +62,13 @@ typedef struct _usb_eth_nic_struct
     uint8_t deviceSpeed;
     volatile uint8_t linkStatus;
     uint32_t linkSpeed;
-    volatile uint8_t boardcastFramePass;
-    volatile uint8_t multicastFramePass;
-    volatile uint8_t unicastFramePass;
 } usb_eth_nic_t;
 
 typedef enum _usb_eth_nic_event_enum
 {
+    kAPP_CheckLinkChange,
     kAPP_NotifyNetworkChange,
-    kAPP_UsbDataInXfer,
-    kAPP_UsbDataOutXfer,
+    kAPP_UsbDataXfer,
 } usb_eth_nic_event_t;
 
 /*******************************************************************************

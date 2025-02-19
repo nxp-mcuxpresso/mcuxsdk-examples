@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 NXP
+ * Copyright 2024 - 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -38,6 +38,8 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+volatile uint32_t BOARD_SystickCount = 0;
+
 usb_eth_nic_t ethNicHandle;
 
 usb_device_class_config_struct_t cdcEcmConfig[] = {
@@ -54,23 +56,146 @@ usb_device_class_config_list_struct_t cdcEcmConfigList = {
 };
 
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
-static uint8_t notify_network_connection_req[sizeof(usb_setup_struct_t)];
+uint8_t notify_network_connection_req[sizeof(usb_setup_struct_t)];
 
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
-static uint8_t notify_connection_speed_change_req[sizeof(usb_setup_struct_t) + 8];
+uint8_t notify_connection_speed_change_req[sizeof(usb_setup_struct_t) + 8];
 
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
-static uint8_t dataOutBuffer[APP_ETH_FRAME_MAX_LENGTH];
+uint8_t dataOutBuffer[APP_ETH_FRAME_MAX_LENGTH];
 
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE)
-static uint8_t zlpBuffer;
+uint8_t zlpBuffer;
 
-uint32_t appEvent;
+volatile uint32_t appEvent;
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
-static void APP_Init(void)
+void APP_TransferUSB2Ethernet_USBRecv(void)
+{
+    if (USB_DeviceCdcEcmRecv(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER, dataOutBuffer, APP_ETH_FRAME_MAX_LENGTH) != kStatus_USB_Success)
+    {
+        if (!ethNicHandle.attachStatus)
+        {
+            (void)USB_DeviceCancel(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER | USB_DESCRIPTOR_ENDPOINT_ADDRESS_DIRECTION_OUT);
+        }
+    }
+#if USB_DEVICE_CONFIG_USE_TASK
+    USB_DeviceTaskFn(ethNicHandle.deviceHandle);
+#endif
+}
+
+void APP_TransferUSB2Ethernet_EthernetSend(void)
+{
+    eth_adapter_frame_buf_t *frame;
+
+    if (ETH_ADAPTER_FrameQueueGet(&ethNicHandle.ethHandle->txFrameQueue, &frame) == ETH_ADAPTER_OK)
+    {
+        if (ETH_ADAPTER_SendFrame(frame) == ETH_ADAPTER_OK)
+        {
+            if (ETH_ADAPTER_FrameQueuePop(&ethNicHandle.ethHandle->txFrameQueue, NULL) != ETH_ADAPTER_OK)
+            {
+                (void)usb_echo("USB->ENET(ENET TX): Invalid frame was not popped up.\r\n");
+            }
+        }
+    }
+}
+
+void APP_DeviceCdcEcmSend(eth_adapter_frame_buf_t *frame)
+{
+    uint32_t sentLen;
+    uint32_t usbDataIdx = 0U;
+
+    while (usbDataIdx < frame->len)
+    {
+        sentLen = MIN(frame->len - usbDataIdx, USB_DEVICE_CDC_ECM_CLASS_DESCRIPTOR_MAX_SEGMENT_SIZE);
+        if (USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER, &frame->payload[usbDataIdx], sentLen) != kStatus_USB_Success)
+        {
+            if (!ethNicHandle.attachStatus)
+            {
+                (void)USB_DeviceCancel(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER | USB_DESCRIPTOR_ENDPOINT_ADDRESS_DIRECTION_IN);
+            }
+
+            break;
+        }
+#if USB_DEVICE_CONFIG_USE_TASK
+        USB_DeviceTaskFn(ethNicHandle.deviceHandle);
+#endif
+
+        usbDataIdx += sentLen;
+
+        if (usbDataIdx == frame->len)
+        {
+            if (ETH_ADAPTER_FrameQueuePop(&ethNicHandle.ethHandle->rxFrameQueue, NULL) != ETH_ADAPTER_OK)
+            {
+                (void)usb_echo("USB(DATA IN): Sent frame was not popped up.\r\n");
+            }
+
+            if (sentLen == USB_DEVICE_CDC_ECM_CLASS_DESCRIPTOR_MAX_SEGMENT_SIZE)
+            {
+                if (USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER, &zlpBuffer, 0) != kStatus_USB_Success)
+                {
+                    if (!ethNicHandle.attachStatus)
+                    {
+                        (void)USB_DeviceCancel(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER | USB_DESCRIPTOR_ENDPOINT_ADDRESS_DIRECTION_IN);
+                    }
+                }
+#if USB_DEVICE_CONFIG_USE_TASK
+                USB_DeviceTaskFn(ethNicHandle.deviceHandle);
+#endif
+            }
+        }
+    }
+}
+
+void APP_TransferEthernet2USB_USBSend(void)
+{
+    eth_adapter_frame_buf_t *data;
+
+    if (ETH_ADAPTER_FrameQueueGet(&ethNicHandle.ethHandle->rxFrameQueue, &data) == ETH_ADAPTER_OK)
+    {
+        if (!data->len)
+        {
+            if (ETH_ADAPTER_FrameQueueDrop(&ethNicHandle.ethHandle->rxFrameQueue, NULL) != ETH_ADAPTER_OK)
+            {
+                (void)usb_echo("ENET->USB(USB DATA IN): Empty frame was not dropped.\r\n");
+            }
+        }
+        else
+        {
+            APP_DeviceCdcEcmSend(data);
+        }
+    }
+}
+
+void APP_TransferEthernet2USB_EthernetRecv(void)
+{
+    eth_adapter_frame_buf_t *data;
+
+    if (ETH_ADAPTER_FrameQueueAlloc(&ethNicHandle.ethHandle->rxFrameQueue, &data) == ETH_ADAPTER_OK)
+    {
+        if (ETH_ADAPTER_RecvFrame(data, APP_ETH_FRAME_MAX_LENGTH) != ETH_ADAPTER_OK)
+        {
+            if (ETH_ADAPTER_FrameQueueDrop(&ethNicHandle.ethHandle->rxFrameQueue, NULL) != ETH_ADAPTER_OK)
+            {
+                (void)usb_echo("ENET->USB(ENET RX): Allocated empty frame was not dropped.\r\n");
+            }
+        }
+        else
+        {
+            if (!data->len)
+            {
+                if (ETH_ADAPTER_FrameQueueDrop(&ethNicHandle.ethHandle->rxFrameQueue, NULL) != ETH_ADAPTER_OK)
+                {
+                    (void)usb_echo("ENET->USB(ENET RX): Empty frame was not dropped.\r\n");
+                }
+            }
+        }
+    }
+}
+
+void APP_Init(void)
 {
     USB_DeviceClockInit();
 
@@ -81,11 +206,15 @@ static void APP_Init(void)
     if (ETH_ADAPTER_Init() != ETH_ADAPTER_OK)
     {
         (void)usb_echo("ETH_ADAPTER_Init() occurs error.\r\n");
+
+        return;
     }
 
     if (USB_DeviceClassInit(CONTROLLER_ID, &cdcEcmConfigList, &ethNicHandle.deviceHandle) != kStatus_USB_Success)
     {
         (void)usb_echo("USB_DeviceClassInit() occurs error.\r\n");
+
+        return;
     }
     else
     {
@@ -101,7 +230,7 @@ static void APP_Init(void)
     USB_DeviceRun(ethNicHandle.deviceHandle);
 }
 
-static void APP_EncapsulateUSBRequest(uint8_t *buffer, usb_setup_struct_t *setup, uint8_t *data, uint32_t length)
+void APP_EncapsulateUSBRequest(uint8_t *buffer, usb_setup_struct_t *setup, uint8_t *data, uint32_t length)
 {
     uint8_t offset = sizeof(usb_setup_struct_t);
 
@@ -116,7 +245,7 @@ static void APP_EncapsulateUSBRequest(uint8_t *buffer, usb_setup_struct_t *setup
     }
 }
 
-static void APP_CheckLinkChange(void)
+void APP_CheckLinkChange(void)
 {
     bool link = false;
     (void)ETH_ADAPTER_GetLinkStatus(&link);
@@ -127,7 +256,7 @@ static void APP_CheckLinkChange(void)
     }
 }
 
-static void APP_NotifyLinkStatus(void)
+void APP_NotifyLinkStatus(void)
 {
     usb_setup_struct_t req;
     uint32_t speedMap[2];
@@ -170,157 +299,12 @@ static void APP_NotifyLinkStatus(void)
 
     if (ethNicHandle.linkStatus)
     {
-        APP_ETH_NIC_EVENT_SET(appEvent, kAPP_UsbDataInXfer);
-        APP_ETH_NIC_EVENT_SET(appEvent, kAPP_UsbDataOutXfer);
+        APP_ETH_NIC_EVENT_SET(appEvent, kAPP_UsbDataXfer);
     }
     else
     {
-        APP_ETH_NIC_EVENT_UNSET(appEvent, kAPP_UsbDataInXfer);
-        APP_ETH_NIC_EVENT_UNSET(appEvent, kAPP_UsbDataOutXfer);
+        APP_ETH_NIC_EVENT_UNSET(appEvent, kAPP_UsbDataXfer);
     }
-}
-
-static void APP_TransferFrameUSBIn(void)
-{
-    (void)ETH_ADAPTER_RecvFrameQueue();
-
-    if (ethNicHandle.ethHandle->rxFrameQueue.valid_len)
-    {
-        eth_adapter_frame_buf_t *buf = &ethNicHandle.ethHandle->rxFrameQueue.queue[ethNicHandle.ethHandle->rxFrameQueue.idx];
-        eth_adapter_dst_frame_type_t type;
-        uint8_t sendToHost = 0U;
-
-        if (ETH_ADAPTER_IdentifyDstFrameType(buf, &type) != ETH_ADAPTER_OK)
-        {
-            ETH_ADAPTER_FrameQueuePop(&ethNicHandle.ethHandle->rxFrameQueue, NULL);
-        }
-        else
-        {
-            switch (type)
-            {
-                case ETH_ADAPTER_DST_FRAME_UNICAST:
-                    if (ethNicHandle.unicastFramePass)
-                    {
-                        sendToHost = 1U;
-                    }
-                    break;
-
-                case ETH_ADAPTER_DST_FRAME_MULTICAST:
-                    if (ethNicHandle.multicastFramePass)
-                    {
-                        sendToHost = 1U;
-                    }
-                    break;
-
-                case ETH_ADAPTER_DST_FRAME_BOARDCAST:
-                    if (ethNicHandle.boardcastFramePass)
-                    {
-                        sendToHost = 1U;
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (sendToHost)
-            {
-                for (uint32_t frame_total_len = buf->len, sent_len = 0; frame_total_len > 0;)
-                {
-                    if (frame_total_len > USB_DEVICE_CDC_ECM_CLASS_DESCRIPTOR_MAX_SEGMENT_SIZE)
-                    {
-                        usb_status_t status = USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER, &buf->payload[sent_len], USB_DEVICE_CDC_ECM_CLASS_DESCRIPTOR_MAX_SEGMENT_SIZE);
-                        switch (status)
-                        {
-                            case kStatus_USB_Busy:
-                                break;
-
-                            case kStatus_USB_Success:
-                                ETH_ADAPTER_FrameQueuePop(&ethNicHandle.ethHandle->rxFrameQueue, NULL);
-                                sent_len += USB_DEVICE_CDC_ECM_CLASS_DESCRIPTOR_MAX_SEGMENT_SIZE;
-                                frame_total_len -= USB_DEVICE_CDC_ECM_CLASS_DESCRIPTOR_MAX_SEGMENT_SIZE;
-                                break;
-
-                            default:
-                                frame_total_len = 0;
-                                break;
-                        }
-
-                        if (!ethNicHandle.attachStatus)
-                        {
-                            (void)USB_DeviceCancel(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER | USB_DESCRIPTOR_ENDPOINT_ADDRESS_DIRECTION_IN);
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        usb_status_t status = USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER, &buf->payload[sent_len], frame_total_len);
-                        switch (status)
-                        {
-                            case kStatus_USB_Busy:
-                                break;
-
-                            case kStatus_USB_Success:
-                                ETH_ADAPTER_FrameQueuePop(&ethNicHandle.ethHandle->rxFrameQueue, NULL);
-                                sent_len += frame_total_len;
-                                frame_total_len = 0;
-                                break;
-
-                            default:
-                                frame_total_len = 0;
-                                break;
-                        }
-
-                        if (!ethNicHandle.attachStatus)
-                        {
-                            (void)USB_DeviceCancel(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER | USB_DESCRIPTOR_ENDPOINT_ADDRESS_DIRECTION_IN);
-                            break;
-                        }
-                    }
-
-#if USB_DEVICE_CONFIG_USE_TASK
-                    USB_DeviceTaskFn(ethNicHandle.deviceHandle);
-#endif
-                }
-
-#if (defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)) || (defined(USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS > 0U))
-                if (!(buf->len % USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_MAXPKT_SIZE_HS))
-#else
-                if (!(buf->len % USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_MAXPKT_SIZE_FS))
-#endif
-                {
-                    if (USB_DeviceCdcEcmSend(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER, &zlpBuffer, 0) != kStatus_USB_Success)
-                    {
-                        if (!ethNicHandle.attachStatus)
-                        {
-                            (void)USB_DeviceCancel(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_IN_EP_NUMBER | USB_DESCRIPTOR_ENDPOINT_ADDRESS_DIRECTION_IN);
-                        }
-                    }
-
-#if USB_DEVICE_CONFIG_USE_TASK
-                    USB_DeviceTaskFn(ethNicHandle.deviceHandle);
-#endif
-                }
-            }
-        }
-    }
-}
-
-static void APP_TransferFrameUSBOut(void)
-{
-    (void)ETH_ADAPTER_SendFrameQueue();
-
-    if (USB_DeviceCdcEcmRecv(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER, dataOutBuffer, APP_ETH_FRAME_MAX_LENGTH) != kStatus_USB_Success)
-    {
-        if (!ethNicHandle.attachStatus)
-        {
-            (void)USB_DeviceCancel(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER | USB_DESCRIPTOR_ENDPOINT_ADDRESS_DIRECTION_OUT);
-        }
-    }
-
-#if USB_DEVICE_CONFIG_USE_TASK
-    USB_DeviceTaskFn(ethNicHandle.deviceHandle);
-#endif
 }
 
 usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *param)
@@ -359,9 +343,6 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
             }
 
             ethNicHandle.configuration = 0U;
-            ethNicHandle.boardcastFramePass = 0U;
-            ethNicHandle.multicastFramePass = 0U;
-            ethNicHandle.unicastFramePass = 0U;
             ethNicHandle.attachStatus = 0U;
             ethNicHandle.linkStatus = 0U;
 
@@ -473,19 +454,24 @@ usb_status_t USB_DeviceCdcEcmCallback(usb_device_handle handle, uint32_t event, 
     switch (event)
     {
         case kUSB_DeviceCdcEcmEventSendResponse:
+            APP_TransferEthernet2USB_USBSend();
             break;
 
         case kUSB_DeviceCdcEcmEventRecvResponse:
-        {
-            if (epMsg->length != USB_CANCELLED_TRANSFER_LENGTH)
             {
-                eth_adapter_frame_buf_t frame;
-                frame.len = epMsg->length;
-                frame.payload = epMsg->buffer;
-                (void)ETH_ADAPTER_FrameQueuePush(&ethNicHandle.ethHandle->txFrameQueue, &frame);
+                if (epMsg->length != USB_CANCELLED_TRANSFER_LENGTH)
+                {
+                    eth_adapter_frame_buf_t frame;
+                    frame.len = epMsg->length;
+                    frame.payload = epMsg->buffer;
+                    if (ETH_ADAPTER_FrameQueuePush(&ethNicHandle.ethHandle->txFrameQueue, &frame) != ETH_ADAPTER_OK)
+                    {
+                        (void)usb_echo("USB(DATA OUT CALLBACK): Lost frame.\r\n");
+                    }
+                    (void)USB_DeviceCdcEcmRecv(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER, dataOutBuffer, APP_ETH_FRAME_MAX_LENGTH);
+                }
             }
-        }
-        break;
+            break;
 
         case kUSB_DeviceCdcEcmEventNotifyResponse:
             break;
@@ -495,37 +481,37 @@ usb_status_t USB_DeviceCdcEcmCallback(usb_device_handle handle, uint32_t event, 
 
             if (request->setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_PROMISCUOUS_MASK)
             {
-                ethNicHandle.boardcastFramePass = 1U;
-                ethNicHandle.multicastFramePass = 1U;
-                ethNicHandle.unicastFramePass = 1U;
+                ethNicHandle.ethHandle->boardcastFramePass = true;
+                ethNicHandle.ethHandle->multicastFramePass = true;
+                ethNicHandle.ethHandle->unicastFramePass = true;
             }
             else
             {
                 if (request->setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_ALL_MULTICAST_MASK)
                 {
-                    ethNicHandle.multicastFramePass = 1U;
+                    ethNicHandle.ethHandle->multicastFramePass = true;
                 }
                 else
                 {
-                    ethNicHandle.multicastFramePass = 0U;
+                    ethNicHandle.ethHandle->multicastFramePass = false;
                 }
 
                 if (request->setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_DIRECTED_MASK)
                 {
-                    ethNicHandle.unicastFramePass = 1U;
+                    ethNicHandle.ethHandle->unicastFramePass = true;
                 }
                 else
                 {
-                    ethNicHandle.unicastFramePass = 0U;
+                    ethNicHandle.ethHandle->unicastFramePass = false;
                 }
 
                 if (request->setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_BROADCAST_MASK)
                 {
-                    ethNicHandle.boardcastFramePass = 1U;
+                    ethNicHandle.ethHandle->boardcastFramePass = true;
                 }
                 else
                 {
-                    ethNicHandle.boardcastFramePass = 0U;
+                    ethNicHandle.ethHandle->boardcastFramePass = false;
                 }
             }
             break;
@@ -551,7 +537,11 @@ void main(void)
     {
         if (ethNicHandle.attachStatus)
         {
-            APP_CheckLinkChange();
+            if (APP_ETH_NIC_EVENT_GET(appEvent, kAPP_CheckLinkChange))
+            {
+                APP_ETH_NIC_EVENT_UNSET(appEvent, kAPP_CheckLinkChange);
+                APP_CheckLinkChange();
+            }
 
             if (APP_ETH_NIC_EVENT_GET(appEvent, kAPP_NotifyNetworkChange))
             {
@@ -559,14 +549,12 @@ void main(void)
                 APP_NotifyLinkStatus();
             }
 
-            if (APP_ETH_NIC_EVENT_GET(appEvent, kAPP_UsbDataInXfer))
+            if (APP_ETH_NIC_EVENT_GET(appEvent, kAPP_UsbDataXfer))
             {
-                APP_TransferFrameUSBIn();
-            }
-
-            if (APP_ETH_NIC_EVENT_GET(appEvent, kAPP_UsbDataOutXfer))
-            {
-                APP_TransferFrameUSBOut();
+                APP_TransferUSB2Ethernet_USBRecv();
+                APP_TransferUSB2Ethernet_EthernetSend();
+                APP_TransferEthernet2USB_EthernetRecv();
+                APP_TransferEthernet2USB_USBSend();
             }
         }
 

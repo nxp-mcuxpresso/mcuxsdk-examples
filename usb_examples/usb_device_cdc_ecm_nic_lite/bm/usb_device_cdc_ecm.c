@@ -22,10 +22,13 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+extern void APP_TransferEthernet2USB_USBSend(void);
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+extern uint8_t dataOutBuffer[];
+
 static usb_device_cdc_ecm_pipe_status_t cdcEcmPipe;
 
 /*******************************************************************************
@@ -33,6 +36,8 @@ static usb_device_cdc_ecm_pipe_status_t cdcEcmPipe;
  ******************************************************************************/
 usb_status_t USB_DeviceCdcEcmBulkIn(usb_device_handle handle, usb_device_endpoint_callback_message_struct_t *message, void *callbackParam)
 {
+    APP_TransferEthernet2USB_USBSend();
+
     cdcEcmPipe.bulkInIsBusy = 0U;
 
     return kStatus_USB_Success;
@@ -45,7 +50,11 @@ usb_status_t USB_DeviceCdcEcmBulkOut(usb_device_handle handle, usb_device_endpoi
         eth_adapter_frame_buf_t frame;
         frame.len = message->length;
         frame.payload = message->buffer;
-        (void)ETH_ADAPTER_FrameQueuePush(&ethNicHandle.ethHandle->txFrameQueue, &frame);
+        if (ETH_ADAPTER_FrameQueuePush(&ethNicHandle.ethHandle->txFrameQueue, &frame) != ETH_ADAPTER_OK)
+        {
+            (void)usb_echo("USB(DATA OUT CALLBACK): Lost frame.\r\n");
+        }
+        (void)USB_DeviceCdcEcmRecv(ethNicHandle.deviceHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER, dataOutBuffer, APP_ETH_FRAME_MAX_LENGTH);
     }
 
     cdcEcmPipe.bulkOutIsBusy = 0U;
@@ -75,37 +84,37 @@ usb_status_t USB_DeviceProcessClassRequest(usb_device_handle handle, usb_setup_s
             ethNicHandle.attachStatus = 1U;
             if (setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_PROMISCUOUS_MASK)
             {
-                ethNicHandle.boardcastFramePass = 1U;
-                ethNicHandle.multicastFramePass = 1U;
-                ethNicHandle.unicastFramePass = 1U;
+                ethNicHandle.ethHandle->boardcastFramePass = true;
+                ethNicHandle.ethHandle->multicastFramePass = true;
+                ethNicHandle.ethHandle->unicastFramePass = true;
             }
             else
             {
                 if (setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_ALL_MULTICAST_MASK)
                 {
-                    ethNicHandle.multicastFramePass = 1U;
+                    ethNicHandle.ethHandle->multicastFramePass = true;
                 }
                 else
                 {
-                    ethNicHandle.multicastFramePass = 0U;
+                    ethNicHandle.ethHandle->multicastFramePass = false;
                 }
 
                 if (setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_DIRECTED_MASK)
                 {
-                    ethNicHandle.unicastFramePass = 1U;
+                    ethNicHandle.ethHandle->unicastFramePass = true;
                 }
                 else
                 {
-                    ethNicHandle.unicastFramePass = 0U;
+                    ethNicHandle.ethHandle->unicastFramePass = false;
                 }
 
                 if (setup->wValue & USB_DEVICE_CDC_ECM_PACKET_TYPE_BROADCAST_MASK)
                 {
-                    ethNicHandle.boardcastFramePass = 1U;
+                    ethNicHandle.ethHandle->boardcastFramePass = true;
                 }
                 else
                 {
-                    ethNicHandle.boardcastFramePass = 0U;
+                    ethNicHandle.ethHandle->boardcastFramePass = false;
                 }
             }
             status = kStatus_USB_Success;
