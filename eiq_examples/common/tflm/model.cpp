@@ -39,6 +39,8 @@ static uint8_t s_tensorArena[kTensorArenaSize] __ALIGNED(16) __attribute__((sect
 static uint8_t s_tensorArena[kTensorArenaSize] __ALIGNED(16);
 #endif
 
+static uint32_t s_tensorArenaSizeUsed = 0;
+
 status_t MODEL_Init(void)
 {
     // Map the model into a usable data structure. This doesn't involve any
@@ -69,6 +71,14 @@ status_t MODEL_Init(void)
         PRINTF("AllocateTensors() failed!\r\n");
         return kStatus_Fail;
     }
+
+    s_tensorArenaSizeUsed = s_interpreter->arena_used_bytes();
+    PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetCoreSysClkFreq()/1000000);
+    PRINTF("TensorArena Addr: 0x%x - 0x%x\r\n", s_tensorArena, s_tensorArena + kTensorArenaSize);
+    PRINTF("TensorArena Size: Total 0x%x (%d B); Used 0x%x (%d B)\r\n" , kTensorArenaSize, kTensorArenaSize, s_tensorArenaSizeUsed, s_tensorArenaSizeUsed);
+    PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data + sizeof(model_data));
+    PRINTF("Model Size: 0x%x (%d B)\r\n" , sizeof(model_data), sizeof(model_data)); 
+    PRINTF("Total Size Used: %d B (Model (%d B) + TensorArena (%d B))\r\n" , (sizeof(model_data) + s_tensorArenaSizeUsed), sizeof(model_data), s_tensorArenaSizeUsed);
 
     return kStatus_Success;
 }
