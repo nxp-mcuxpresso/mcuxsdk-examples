@@ -5,21 +5,6 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-/*
- * Supported Wi-Fi boards (modules):
- *     WIFI_88W8801_BOARD_AW_NM191MA
- *     WIFI_IW416_BOARD_AW_AM510MA
- *     WIFI_88W8987_BOARD_AW_CM358MA
- *     WIFI_88W8801_BOARD_MURATA_2DS_M2
- *     WIFI_IW416_BOARD_MURATA_1XK_M2
- *     WIFI_88W8987_BOARD_MURATA_1ZM_M2
- *     WIFI_IW612_BOARD_MURATA_2EL_M2
- *     WIFI_IW610_BOARD_MURATA_2LL_M2
- */
-/* @TEST_ANCHOR */
-#define WIFI_IW610_BOARD_MURATA_2LL_M2
-/* @END_TEST_ANCHOR */
-
 /* If OT or BLE is enabled, the vApplicationHook defined by the app should be used
  * instead of the private definition of WIFI, use CONFIG_COEX_APP macro to select.
  */
@@ -29,9 +14,13 @@
 #define CONFIG_COEX_APP                 0
 #endif
 
-// #ifdef CONFIG_BT_IND_DNLD
-// #define ENABLE_BT_IND_RESET
-// #endif
+#include "app_bluetooth_config.h"
+#include "wifi_bt_module_config.h"
+#include "wifi_config.h"
 
-// #include "wifi_bt_module_config.h"
-// #include "wifi_config.h"
+// #ifndef CONFIG_WIFI_IND_DNLD
+// #define CONFIG_WIFI_IND_DNLD 1
+// #endif
+// #ifndef CONFIG_BT_IND_DNLD
+// #define CONFIG_BT_IND_DNLD 1
+// #endif
