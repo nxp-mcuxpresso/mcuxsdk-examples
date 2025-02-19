@@ -21,12 +21,36 @@ mcux_add_macro(
     AS "-DBL_HAS_BOOTLOADER_CONFIG=0"
 )
 mcux_add_macro(
+    TARGETS release debug
     CC "-DBL_TARGET_RAM\
        -DFRDM_KE17Z9\
        -DFSL_OSA_BM_TIMER_CONFIG=FSL_OSA_BM_TIMER_NONE"
 )
+mcux_remove_iar_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_iar_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
 mcux_remove_mdk_configuration(
+    CC  "-DDEBUG"
     LD "--keep=*(.FlashConfig)"
+    TARGETS release
+)
+mcux_remove_mdk_configuration(
+    CC  "-DNDEBUG"
+    LD "--keep=*(.FlashConfig)"
+    TARGETS debug
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
 )
 mcux_add_custom_command(
         TARGETS release debug
@@ -45,7 +69,7 @@ mcux_add_custom_command(
         TARGETS release debug
         TOOLCHAINS armgcc
         BUILD_EVENT POST_BUILD
-        BUILD_COMMAND - python ${ProjDirPath}/../create_fl_image_mcux.py ${EXECUTABLE_OUTPUT_PATH}/flashloader.elf
+        BUILD_COMMAND python ${ProjDirPath}/../create_fl_image_mcux.py ${EXECUTABLE_OUTPUT_PATH}/flashloader.elf
             ${EXECUTABLE_OUTPUT_PATH}/flashloader.bin ${EXECUTABLE_OUTPUT_PATH}/flashloader_image.c
 )
 mcux_add_custom_command(

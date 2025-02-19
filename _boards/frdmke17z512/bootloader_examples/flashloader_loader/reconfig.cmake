@@ -12,7 +12,7 @@ mcux_add_include(
              examples/${board}/bootloader_examples/flashloader_loader/../flashloader/mdk
              examples/${board}/bootloader_examples/flashloader_loader/../flashloader/armgcc
              examples/${board}/bootloader_examples/flashloader_loader/../flashloader/iar/release
-			 examples/${board}/bootloader_examples/flashloader_loader/../flashloader/iar/debug
+             examples/${board}/bootloader_examples/flashloader_loader/../flashloader/iar/debug
              middleware/mcu_bootloader/src
              src
              examples/${board}/src
@@ -27,4 +27,28 @@ mcux_add_macro(
     CC "-DBL_TARGET_FLASH\
        -DFRDM_KE17Z9"
     AS "-DLITE_FOOTPRINT"
+)
+mcux_remove_iar_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_iar_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_mdk_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_mdk_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
 )

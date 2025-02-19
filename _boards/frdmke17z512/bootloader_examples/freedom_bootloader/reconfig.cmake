@@ -22,3 +22,36 @@ mcux_add_macro(
        -DFRDM_KE17Z9\
        -DFSL_OSA_BM_TIMER_CONFIG=FSL_OSA_BM_TIMER_NONE"
 )
+mcux_add_macro(
+    TOOLCHAINS mdk
+    AS "-DBL_HAS_BOOTLOADER_CONFIG=0"
+)
+mcux_add_macro(
+    CC "-DBL_TARGET_FLASH\
+       -DFRDM_KE17Z9"
+    AS "-DLITE_FOOTPRINT"
+)
+mcux_remove_iar_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_iar_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_mdk_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_mdk_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)

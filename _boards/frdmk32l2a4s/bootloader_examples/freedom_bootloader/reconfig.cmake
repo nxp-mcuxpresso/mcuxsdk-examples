@@ -23,3 +23,27 @@ mcux_add_macro(
        -DUSB_STACK_BM\
        -DFSL_OSA_BM_TIMER_CONFIG=FSL_OSA_BM_TIMER_NONE"
 )
+mcux_remove_iar_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_iar_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_mdk_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_mdk_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)

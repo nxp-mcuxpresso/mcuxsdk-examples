@@ -19,6 +19,30 @@ mcux_add_macro(
 mcux_add_macro(
     CC "-DBL_TARGET_FLASH\
        -DFSL_OSA_BM_TIMER_CONFIG=FSL_OSA_BM_TIMER_NONE\
-	   -DTOWER\
+       -DTOWER\
        -DTWR_KM35Z7"
+)
+mcux_remove_iar_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_iar_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_mdk_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_mdk_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DDEBUG"
+    TARGETS release
+)
+mcux_remove_armgcc_configuration(
+    CC  "-DNDEBUG"
+    TARGETS debug
 )
