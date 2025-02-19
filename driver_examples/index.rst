@@ -293,6 +293,7 @@ driver_examples
    syspm/readme.md
    tdet/readme.md
    tempmon/readme.md
+   tempsense/index.rst
    tempsensor/readme.md
    tempsensor_1/index.rst
    tmu/index.rst

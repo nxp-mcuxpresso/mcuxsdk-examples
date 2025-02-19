@@ -1,0 +1,14 @@
+temp_measure:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/tempsense/temp_measure
+    project-root-path: boards/${board}/driver_examples/tempsense/temp_measure/${multicore_foldername}
+    document:
+      name: temp_measure${core_id_suffix_name}
+      category: driver_examples/tempsense
+      brief: The temp_measure project is a simple demonstration program of the SDK TEMPSENSE
+        driver. The system can use the tempsense module to measure the on-die temperature.
+      example_readme:
+      - examples/driver_examples/tempsense/temp_measure/readme.md
+      - ${board_root}/${board}/driver_examples/tempsense/temp_measure/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
