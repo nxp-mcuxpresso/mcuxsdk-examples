@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -15,19 +15,7 @@
 #include "fsl_inputmux.h"
 /*${header:end}*/
 
-/*${macro:start}*/
-#define I2C_RELEASE_SDA_PORT  PORT4
-#define I2C_RELEASE_SCL_PORT  PORT4
-#define I2C_RELEASE_SDA_GPIO  GPIO4
-#define I2C_RELEASE_SDA_PIN   0U
-#define I2C_RELEASE_SCL_GPIO  GPIO4
-#define I2C_RELEASE_SCL_PIN   1U
-#define I2C_RELEASE_BUS_COUNT 100U
-/*${macro:end}*/
-
 /*${function:start}*/
-void BOARD_I2C_ReleaseBus(void);
-
 static void BOARD_InitSmartDMA(void)
 {
     RESET_ClearPeripheralReset(kMUX_RST_SHIFT_RSTn);
@@ -57,68 +45,12 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
     CLOCK_AttachClk(kPLL0_to_FLEXIO);
     BOARD_InitBootClocks();
-    BOARD_I2C_ReleaseBus();
+    BOARD_I2C_ReleaseBus(2);
     BOARD_InitBootPins();
     BOARD_InitDebugConsole();
     
     /* Init smartdma. */
     BOARD_InitSmartDMA();
-}
-
-static void i2c_release_bus_delay(void)
-{
-    SDK_DelayAtLeastUs(100U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-}
-
-void BOARD_I2C_ReleaseBus(void)
-{
-    uint8_t i = 0;
-    gpio_pin_config_t pin_config;
-    port_pin_config_t i2c_pin_config = {0};
-
-    /* Config pin mux as gpio */
-    i2c_pin_config.pullSelect = kPORT_PullUp;
-    i2c_pin_config.mux        = kPORT_MuxAsGpio;
-
-    pin_config.pinDirection = kGPIO_DigitalOutput;
-    pin_config.outputLogic  = 1U;
-    CLOCK_EnableClock(kCLOCK_Port4);
-    PORT_SetPinConfig(I2C_RELEASE_SCL_PORT, I2C_RELEASE_SCL_PIN, &i2c_pin_config);
-    PORT_SetPinConfig(I2C_RELEASE_SCL_PORT, I2C_RELEASE_SDA_PIN, &i2c_pin_config);
-
-    GPIO_PinInit(I2C_RELEASE_SCL_GPIO, I2C_RELEASE_SCL_PIN, &pin_config);
-    GPIO_PinInit(I2C_RELEASE_SDA_GPIO, I2C_RELEASE_SDA_PIN, &pin_config);
-
-    /* Drive SDA low first to simulate a start */
-    GPIO_PinWrite(I2C_RELEASE_SDA_GPIO, I2C_RELEASE_SDA_PIN, 0U);
-    i2c_release_bus_delay();
-
-    /* Send 9 pulses on SCL and keep SDA high */
-    for (i = 0; i < 9; i++)
-    {
-        GPIO_PinWrite(I2C_RELEASE_SCL_GPIO, I2C_RELEASE_SCL_PIN, 0U);
-        i2c_release_bus_delay();
-
-        GPIO_PinWrite(I2C_RELEASE_SDA_GPIO, I2C_RELEASE_SDA_PIN, 1U);
-        i2c_release_bus_delay();
-
-        GPIO_PinWrite(I2C_RELEASE_SCL_GPIO, I2C_RELEASE_SCL_PIN, 1U);
-        i2c_release_bus_delay();
-        i2c_release_bus_delay();
-    }
-
-    /* Send stop */
-    GPIO_PinWrite(I2C_RELEASE_SCL_GPIO, I2C_RELEASE_SCL_PIN, 0U);
-    i2c_release_bus_delay();
-
-    GPIO_PinWrite(I2C_RELEASE_SDA_GPIO, I2C_RELEASE_SDA_PIN, 0U);
-    i2c_release_bus_delay();
-
-    GPIO_PinWrite(I2C_RELEASE_SCL_GPIO, I2C_RELEASE_SCL_PIN, 1U);
-    i2c_release_bus_delay();
-
-    GPIO_PinWrite(I2C_RELEASE_SDA_GPIO, I2C_RELEASE_SDA_PIN, 1U);
-    i2c_release_bus_delay();
 }
 
 void BOARD_LCD_INT_IRQHandler(void)
