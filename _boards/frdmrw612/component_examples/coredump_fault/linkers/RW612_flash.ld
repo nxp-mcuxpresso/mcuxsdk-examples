@@ -100,6 +100,7 @@ SECTIONS
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
+    KEEP (*(.dbg_thread_info))
     KEEP (*(.init))
     KEEP (*(.fini))
     . = ALIGN(4);

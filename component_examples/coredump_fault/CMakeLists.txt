@@ -14,6 +14,19 @@ mcux_add_source(
     SOURCES examples/component_examples/coredump_fault/coredump_fault.c
 )
 
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    TOOLCHAINS iar
+    SOURCES examples/component_examples/coredump_fault/IAR_UsageFault.s
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    TOOLCHAINS armgcc mdk
+    SOURCES examples/component_examples/coredump_fault/GCC_UsageFault.S
+)
+
+
 include(${SdkRootDirPath}/examples/_boards/${board}/component_examples/coredump_fault/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
