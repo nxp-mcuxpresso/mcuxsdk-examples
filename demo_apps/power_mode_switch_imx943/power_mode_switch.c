@@ -21,15 +21,18 @@
 #include "app_srtm.h"
 #include "sm_platform.h"
 #include "fsl_adapter_timer.h"
+#if defined(CPU_MIMX94398AVKM_cm7_core0)
+#include "fsl_lptmr.h"
+#endif
 
 /*******************************************************************************
  * Struct Definitions
  ******************************************************************************/
 typedef enum _app_wakeup_source
 {
-    kAPP_WakeupSourceLptmr,  /*!< Wakeup by LPTMR.        */
-    kAPP_WakeupSourceLpuart, /*!< Wakeup by LPUART.       */
-    kAPP_WakeupSourceSM      /*!< Wakeup by SM message.    */
+    kAPP_WakeupSourceTimer,  /*!< Wakeup by TMR, M33_CORE1:TPM6, M7_CORE0:LPTMR2, M7_CORE1:TPM3. */
+    kAPP_WakeupSourceLpuart, /*!< Wakeup by LPUART */
+    kAPP_WakeupSourceSM      /*!< Wakeup by SM message, both of wakeup message from sm console and ONOFF button. */
 } app_wakeup_source_t;
 
 /*******************************************************************************
@@ -106,7 +109,7 @@ static app_wakeup_source_t APP_GetWakeupSource(void)
     while (1)
     {
         PRINTF("Select the wake up source:\r\n");
-        PRINTF("Press T for LPTMR - Low Power Timer\r\n");
+        PRINTF("Press T for TIMER - Timer\r\n");
         PRINTF("Press U for LPUART - Low Power Uart\r\n");
         PRINTF("Press S for SM source: Sm console 'wake' command or ONOFF button\r\n");
 
@@ -121,7 +124,7 @@ static app_wakeup_source_t APP_GetWakeupSource(void)
 
         if (ch == 'T')
         {
-            return kAPP_WakeupSourceLptmr;
+            return kAPP_WakeupSourceTimer;
         }
         else if (ch == 'U')
         {
@@ -144,9 +147,9 @@ static void APP_GetWakeupConfig(void)
     /* Get wakeup source by user input. */
     s_wakeupSource = APP_GetWakeupSource();
 
-    if (kAPP_WakeupSourceLptmr == s_wakeupSource)
+    if (kAPP_WakeupSourceTimer == s_wakeupSource)
     {
-        /* Wakeup source is LPTMR, user should input wakeup timeout value. */
+        /* Wakeup source is TIMER, user should input wakeup timeout value. */
         s_wakeupTimeout = APP_GetWakeupTimeout();
         PRINTF("Will wakeup in %d seconds.\r\n", s_wakeupTimeout);
     }
@@ -179,19 +182,19 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
          wakeMask[idx] = ~(NVIC->ISER[idx]);
      }
 
-    if (kAPP_WakeupSourceLptmr == s_wakeupSource || kAPP_WakeupSourceLpuart == s_wakeupSource)
+    if (kAPP_WakeupSourceTimer == s_wakeupSource || kAPP_WakeupSourceLpuart == s_wakeupSource)
     {
         for (uint32_t idx = 0; idx < ARRAY_SIZE(irqTbl); idx++)
 	{
+            /* deal with interrupt mask from A55 and system manager. */
             wakeMaskIdx = irqTbl[idx] / 32;
             wakeMaskBitPos = irqTbl[idx] % 32;
-            /* deal with MU interrupts, configure IRQ wake sources. */
-            wakeMask[wakeMaskIdx] = 0xFFFFFFFFU;
+            wakeMask[wakeMaskIdx] |= (1 << wakeMaskBitPos);
         }
 
         /*
-         * LPUART3 and LPTMR2 in wakeupmix, need assure its power on state in system suspend state.
-         * Set WAKEUPMIX LPM response to M7 based on wakeup configuration.
+         * LPUART and TIMER used for wakeup in wakeupmix, need assure its power on state in system suspend state.
+         * Set WAKEUPMIX LPM response to Mcore based on wakeup configuration.
          */
         scmi_pd_lpm_config_t lpmConfig;
         lpmConfig.lpmSetting = SCMI_CPU_LPM_SETTING_ON_ALWAYS;
@@ -201,7 +204,7 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
         lpmConfig.domainId = APP_WAKEUP_TIMER_PWR_MIX_SLICE_IDX;
         SCMI_CpuPdLpmConfigSet(SM_PLATFORM_A2P, APP_CPU_ID, 1U, &lpmConfig);
 
-        if (kAPP_WakeupSourceLptmr == s_wakeupSource)
+        if (kAPP_WakeupSourceTimer == s_wakeupSource)
         {
             /* s_wakeupTimeOut * 1000 * 1000: convert second to microsecond */
             HAL_TimerUpdateTimeout((hal_timer_handle_t)halWakupTimerHandle, s_wakeupTimeout * 1000U * 1000U);
@@ -226,9 +229,9 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
             DisableIRQ(RPMSG_LITE_MU_IRQ);
 
             /*
-             * Set lpuart3 can be async wakeup when its clock is gated, LPCGs of lpuart3 need to be changed to CPU LPM controlled.
-             * M7 sned per lpm list to system manager, sm check and record request and will deal with when M7 domain enter suspend mode.
-             * In to assure lpuart3 can be used as system suspend wakeup source.
+             * Set lpuart can be async wakeup when its clock is gated, LPCGs of lpuart need to be changed to CPU LPM controlled.
+             * Mcore sned per lpm list to system manager, sm check and record request and will deal with when Mcore domain enter suspend mode.
+             * In to assure lpuart can be used as system suspend wakeup source.
              */
             scmi_per_lpm_config_t perLpmConfig;
             perLpmConfig.perId = APP_CPU_PER_LPI_IDX_UART;
@@ -268,7 +271,7 @@ void APP_WAKEUP_TIMER_IRQHANDLER(void* param)
     portYIELD_FROM_ISR(pdTRUE);
 }
 
-/* LPUART3 interrupt handler. */
+/* LPUART(use as wakeup source) interrupt handler. */
 void APP_UART_IRQHANDLER(void)
 {
     bool wakeup = false;
@@ -298,6 +301,10 @@ void PowerModeSwitchTask(void *pvParameters)
     halTimerConfig.timeout = 1000;
     halTimerConfig.srcClock_Hz = APP_WAKEUP_TIMER_CLOCK_RATE;
     halTimerConfig.instance = APP_WAKEUP_TIMER_INSTANCE_IDX;
+#if defined(CPU_MIMX94398AVKM_cm7_core0)
+    /* lptmr wakeup source use clock source2. */
+    halTimerConfig.clockSrcSelect = kLPTMR_PrescalerClock_2;
+#endif
     HAL_TimerInit((hal_timer_handle_t)halWakupTimerHandle, &halTimerConfig);
     HAL_TimerInstallCallback((hal_timer_handle_t)halWakupTimerHandle, APP_WAKEUP_TIMER_IRQHANDLER, NULL);
 
@@ -380,7 +387,7 @@ void PowerModeSwitchTask(void *pvParameters)
             }
             else
             {
-                status = SCMI_LmmSuspend(SM_PLATFORM_A2P, SM_PLATFORM_AP_ID);
+                status = SCMI_LmmSuspend(SM_PLATFORM_A2P, SM_PLATFORM_AP_LMM_ID);
                 if (status != SCMI_ERR_SUCCESS)
                 {
                     PRINTF("SCMI_LmmSuspend A55 fail\r\n");
@@ -389,7 +396,7 @@ void PowerModeSwitchTask(void *pvParameters)
         }
         else if ('W' == ch)
         { 
-            status = SCMI_LmmWake(SM_PLATFORM_A2P, SM_PLATFORM_AP_ID);
+            status = SCMI_LmmWake(SM_PLATFORM_A2P, SM_PLATFORM_AP_LMM_ID);
             if (status != SCMI_ERR_SUCCESS)
             {
                 PRINTF("SCMI_LmmWake A55 fail\r\n");
@@ -469,7 +476,7 @@ void APP_PowerPreSwitchHook(lpm_power_mode_t targetMode)
 
     /* M7 mix will be poweroff when M7 core enter suspend mode, TCM data reserved. */
     lpmConfig[0].domainId = APP_CPU_PWR_MIX_SLICE_IDX;
-    lpmConfig[0].lpmSetting = SCMI_CPU_LPM_SETTING_ON_RUN_WAIT_STOP;
+    lpmConfig[0].lpmSetting = APP_LPM_SETTING;
     lpmConfig[0].retMask = 1U << APP_CPU_PWR_MEM_SLICE_IDX;
      /* Configure LPM setting */
      status = SCMI_CpuPdLpmConfigSet(SM_PLATFORM_A2P, APP_CPU_ID, 1U, lpmConfig);
@@ -493,36 +500,37 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
             PRINTF("SCMI_CpuSleepModeSet into RUN STATE FAIL\r\n");
         }
     }
+
+    /*
+     * if select SM as Mcore wakeup source, Mcore only support message from system manager.
+     * Mcore don't need wakeup mix source, so that it will be poweroff after system suspend mode.
+     * reinitialize LPUART and HAL timer and MU which locate at wakeupmix.
+     */
+    if (SM_Platform_GetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND)
+    {
+        hal_timer_config_t halTimerConfig;
+        BOARD_InitBootPins();
+        BOARD_InitDebugConsole();
+
+        halTimerConfig.timeout = 1000;
+        halTimerConfig.srcClock_Hz = APP_WAKEUP_TIMER_CLOCK_RATE;
+        halTimerConfig.instance = APP_WAKEUP_TIMER_INSTANCE_IDX;
+        HAL_TimerInit((hal_timer_handle_t)halWakupTimerHandle, &halTimerConfig);
+
+        MU_Init(RPMSG_LITE_MU);
+        NVIC_SetPriority(RPMSG_LITE_MU_IRQ, RPMSG_LITE_MU_IRQ_PRIORITY);
+        NVIC_EnableIRQ(RPMSG_LITE_MU_IRQ);
+#if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
+        MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterPowerDownInterruptEnable);
+        MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterRunInterruptEnable);
+        MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterHaltInterruptEnable);
+        MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterWaitInterruptEnable);
+        MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterStopInterruptEnable);
+#endif
+    }
+
     if (s_wakeupSource == kAPP_WakeupSourceSM)
     {
-        /*
-         * if select SM as M7 wakeup source, M7 only support message from MU5(system manager).
-         * M7 don't need wakeup mix source, so that it will be poweroff after system suspend mode.
-         * reinitialize LPUART3 and LPTMR2 and MU7 which locate at wakeupmix.
-         */
-        if (targetMode == LPM_PowerModeSuspend)
-        {
-            hal_timer_config_t halTimerConfig;
-            BOARD_InitBootPins();
-            BOARD_InitDebugConsole();
-
-            halTimerConfig.timeout = 1000;
-            halTimerConfig.srcClock_Hz = APP_WAKEUP_TIMER_CLOCK_RATE;
-            halTimerConfig.instance = APP_WAKEUP_TIMER_INSTANCE_IDX;
-            HAL_TimerInit((hal_timer_handle_t)halWakupTimerHandle, &halTimerConfig);
-
-            MU_Init(RPMSG_LITE_MU);
-            NVIC_SetPriority(RPMSG_LITE_MU_IRQ, RPMSG_LITE_MU_IRQ_PRIORITY);
-            NVIC_EnableIRQ(RPMSG_LITE_MU_IRQ);
-#if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterPowerDownInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterRunInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterHaltInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterWaitInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterStopInterruptEnable);
-#endif
-        }
-
         /* re-enable A55 message unit */
         EnableIRQ(RPMSG_LITE_MU_IRQ);
 
@@ -541,7 +549,7 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
     {
         PRINTF("cpu irq mask reset fail\r\n");
     }
-
+#if defined(SM_LM_SUSPEND_ENABLED)
     if (SM_Platform_GetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SM_Platform_GetSystemState() == SCMI_SYS_STATE_SUSPEND)
     {
         SM_Platform_SetSystemState(0xFFFFFFFF);
@@ -554,9 +562,11 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
 
         s_curMode = LPM_PowerModeRun;
     }
+#endif
     PRINTF("== Power switch %s ==\r\n", result ? "OK" : "FAIL");
 }
 
+#if defined(SM_LM_SUSPEND_ENABLED)
 static void APP_SuspendTimerCallback(TimerHandle_t xTimer)
 {
     int32_t status = SCMI_ERR_SUCCESS;
@@ -601,6 +611,7 @@ static void APP_SuspendTimerCallback(TimerHandle_t xTimer)
         xTimerStart(suspendTimer, portMAX_DELAY);
     }
 }
+#endif
 
 /*! @brief Main function */
 int main(void)
@@ -610,10 +621,12 @@ int main(void)
     LPM_Init();
     s_wakeupSig = xSemaphoreCreateBinary();
 
+#if defined(SM_LM_SUSPEND_ENABLED)
     suspendTimer =
         xTimerCreate("suspend", pdMS_TO_TICKS(APP_LINKUP_TIMER_PERIOD_MS), pdFALSE, NULL, APP_SuspendTimerCallback);
     assert(suspendTimer);
     xTimerStart(suspendTimer, portMAX_DELAY);
+#endif
 
     xTaskCreate(PowerModeSwitchTask, "Main Task", 512U, NULL, tskIDLE_PRIORITY + 1U, &pxPowerModeSwitch);
     xTaskCreate(WorkingTask, "Working Task", configMINIMAL_STACK_SIZE, (void *)1, tskIDLE_PRIORITY + 2U, &pxWorkingTask);
@@ -626,5 +639,6 @@ int main(void)
     {
     }
 }
+
 
 
