@@ -232,7 +232,7 @@ int main(void)
         }
 
         destAdrss = flexramBlockBase;
-        PRINTF("\r\n\r\n Stat to program... \r\n");
+        PRINTF("\r\n\r\n Start to program... \r\n");
         result = FLEXRAM_TraditionalRamWrite(&s_flashDriver, destAdrss, (uint8_t *)s_buffer, sizeof(s_buffer));
         if (result != kStatus_FTFx_Success)
         {

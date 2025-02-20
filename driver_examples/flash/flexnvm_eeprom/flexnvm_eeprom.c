@@ -22,9 +22,25 @@
 
 #define BUFFER_LEN 4
 
+/* Test presence of security related registers to determine CSE support */
+#ifdef FTFC_FCSESTAT_SB
+#define FTFX_CSE_ENABLED
+#endif
+
+/* Partitioning setup done in Kconfig */
+#ifdef CONFIG_IFLASH_EXPLICIT_DEVICE_CONFIG_VALUES
+    #define FLEXNVM_PARTITION_CODE     CONFIG_IFLASH_DEPART_CODE
+    #define EEPROM_DATA_SET_SIZE_CODE  CONFIG_IFLASH_EEESIZE_CODE
+#endif
+
+/* Default setup */
+
+#ifndef EEPROM_DATA_SET_SIZE_CODE
 /*! @brief Set 32B FlexRAM Size(EEESIZE) for EEprom, Subsystem A = B = EEESIZE / 2 */
 #define EEPROM_DATA_SET_SIZE_CODE (0x39U)
+#endif
 
+#ifndef FLEXNVM_PARTITION_CODE
 /*! @brief Set EEprom backup memory */
 #if ((FSL_FEATURE_FLASH_FLEX_NVM_DFLASH_SIZE_FOR_DEPART_0011 != 0xFFFFFFFF) && \
      (FSL_FEATURE_FLASH_FLEX_NVM_DFLASH_SIZE_FOR_DEPART_0011 != 0x00000000) && \
@@ -68,6 +84,7 @@
 #define FLEXNVM_PARTITION_CODE (0xdU)
 #else
 #define FLEXNVM_PARTITION_CODE (0x8U)
+#endif
 #endif
 /*******************************************************************************
  * Prototypes
@@ -208,8 +225,14 @@ int main(void)
             PRINTF("\r\n There is no available EEprom (FlexNVM) on this Device by default.");
             PRINTF("\r\n Example is trying to configure FlexNVM block as EEprom.");
 
+#ifdef FTFX_CSE_ENABLED
+            result = FLEXNVM_ProgramPartition_CSE(&s_flashDriver, kFTFx_PartitionFlexramLoadOptLoadedWithValidEepromData,
+                                              eepromDataSizeCode, flexnvmPartitionCode, 0, 0);
+#else
             result = FLEXNVM_ProgramPartition(&s_flashDriver, kFTFx_PartitionFlexramLoadOptLoadedWithValidEepromData,
-                                              eepromDataSizeCode, flexnvmPartitionCode);
+                                              eepromDataSizeCode, flexnvmPartitionCode); 
+#endif
+
             if (kStatus_FTFx_Success != result)
             {
                 error_trap();
