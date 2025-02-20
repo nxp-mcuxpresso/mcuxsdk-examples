@@ -19,6 +19,7 @@ driver_examples
    afe/index.rst
    anactrl/index.rst
    aoi/index.rst
+   aon_lpadc/index.rst
    asrc/index.rst
    bee/readme.md
    caam/readme.md

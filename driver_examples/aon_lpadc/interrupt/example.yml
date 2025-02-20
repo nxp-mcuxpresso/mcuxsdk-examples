@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+aon_lpadc_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/aon_lpadc/interrupt
+    project-root-path: boards/${board}/driver_examples/aon_lpadc/interrupt/${multicore_foldername}
+    document:
+      name: aon_lpadc_interrupt${core_id_suffix_name}
+      category: driver_examples/aon_lpadc
+      brief: The aon_lpadc_interrupt example shows how to use interrupt with aon_lpadc
+        driver.In this example, user should indicate a channel to provide a voltage
+        signal (can be controlled by user) as the aon_lpadc'ssample input. When running
+        the project, typing any key into debug console would trigger the conversion.
+        ADC watermark interrupt would be asserted once the number of datawords stored
+        in the ADC Result FIFO is greater than watermark value.In ADC ISR, the watermark
+        flag would be cleared by reading the conversion result value. Also, result
+        information wouldbe printed when the execution return to the main function.
+      example_readme:
+      - examples/driver_examples/aon_lpadc/interrupt/readme.md
+      - ${board_root}/${board}/driver_examples/aon_lpadc/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm0plus: []
+
