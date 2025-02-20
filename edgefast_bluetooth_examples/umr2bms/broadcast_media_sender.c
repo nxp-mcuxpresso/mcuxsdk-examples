@@ -315,6 +315,8 @@ int bms_qos(struct bt_audio_codec_qos *qos)
 {
 	lc3_preset.qos = *qos;
 
+	lc3_preset.qos.sdu = bt_audio_codec_cfg_get_octets_per_frame(&lc3_preset.codec_cfg);
+
 	return 0;
 }
 
@@ -594,6 +596,7 @@ int bms_stream_send(enum bt_audio_location chan_allocation, struct net_buf *buf)
 	struct broadcast_source_stream *stream = NULL;
 	struct net_buf *tx_buf;
 	int err;
+	uint32_t loc = (uint32_t)chan_allocation;
 
 	if (!started) {
 		return -EINVAL;
@@ -611,37 +614,54 @@ int bms_stream_send(enum bt_audio_location chan_allocation, struct net_buf *buf)
 		sdu_time_stamp = (uint32_t)((double)tx_time_stamp_start + (double)tx_samples * 1000000.0 / (double)lc3_codec_info.sample_rate);
 	}
 
-	for (size_t i = 0U; i < ARRAY_SIZE(streams); i++) {
-		if (streams[i].loc == chan_allocation) {
-			stream = &streams[i];
+	for (int index = 0; index < (sizeof(loc) *8); index++) {
+		if (loc == 0) {
 			break;
 		}
-	}
 
-	if (!stream) {
-		return -EINVAL;
-	}
-
-	if (!atomic_test_bit(stream->flags, BMS_START)) {
-		return -ENOTCONN;
-	}
-
-	tx_buf = net_buf_alloc(&tx_pool, 0);
-	if (tx_buf != NULL) {
-		net_buf_reserve(tx_buf, BT_ISO_CHAN_SEND_RESERVE);
-		if (buf != NULL) {
-			net_buf_add_mem(tx_buf, buf, buf->len);
+		if (loc & BIT(index)) {
+			loc &= ~BIT(index);
 		} else {
-			uint8_t *data;
-			size_t len = bt_audio_codec_cfg_get_octets_per_frame(&lc3_preset.codec_cfg);
-
-			data = net_buf_add(tx_buf, len);
-			memset(data, 0, len);
+			continue;
 		}
-		err = bt_bap_stream_send_ts(&stream->stream, tx_buf, (uint16_t)(seq_num & 0xffff), sdu_time_stamp);
-		if (err < 0) {
-			printk("BMS: Unable to broadcast data on %p: %d\r\n", stream, err);
-			net_buf_unref(tx_buf);
+
+		for (size_t i = 0U; i < ARRAY_SIZE(streams); i++) {
+			if (streams[i].loc == (enum bt_audio_location)BIT(index)) {
+				stream = &streams[i];
+				break;
+			}
+		}
+
+		if (!stream) {
+			continue;
+		}
+
+		if (!atomic_test_bit(stream->flags, BMS_START)) {
+			continue;
+		}
+
+		tx_buf = net_buf_alloc(&tx_pool, 0);
+		if (tx_buf != NULL) {
+			size_t len;
+
+			len = lc3_codec_info.octets_per_frame;
+
+			net_buf_reserve(tx_buf, BT_ISO_CHAN_SEND_RESERVE);
+			if ((buf != NULL) && (buf->len >= len)) {
+				net_buf_add_mem(tx_buf, buf->data, len);
+				net_buf_pull(buf, len);
+			} else {
+				uint8_t *data;
+
+				data = net_buf_add(tx_buf, len);
+				memset(data, 0, len);
+			}
+
+			err = bt_bap_stream_send_ts(&stream->stream, tx_buf, (uint16_t)(seq_num & 0xffff), sdu_time_stamp);
+			if (err < 0) {
+				printk("BMS: Unable to broadcast data on %p: %d\r\n", stream, err);
+				net_buf_unref(tx_buf);
+			}
 		}
 	}
 
@@ -666,9 +686,11 @@ void streaming_simulate_work_handler(struct k_work *work)
 	if (buf != NULL) {
 		memset(buf->data, index, lc3_codec_info.octets_per_frame);
 		net_buf_add(buf, lc3_codec_info.octets_per_frame);
+		index ++;
+		memset(&buf->data[buf->len], index, lc3_codec_info.octets_per_frame);
+		net_buf_add(buf, lc3_codec_info.octets_per_frame);
 
-		bms_stream_send(BT_AUDIO_LOCATION_FRONT_LEFT, buf);
-		bms_stream_send(BT_AUDIO_LOCATION_FRONT_RIGHT, buf);
+		bms_stream_send((enum bt_audio_location)(BT_AUDIO_LOCATION_FRONT_LEFT | BT_AUDIO_LOCATION_FRONT_RIGHT), buf);
 
 		net_buf_unref(buf);
 	}
