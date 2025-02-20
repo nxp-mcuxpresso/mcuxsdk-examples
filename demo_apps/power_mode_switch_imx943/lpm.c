@@ -55,6 +55,7 @@ uint32_t tmp_stack[0x100];
 
 TIMER_HANDLE_DEFINE(halSystickTimerHandle);
 
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
 /* Init vector table at 0x0, the first boot of M7 stats from this original table. */
 #if defined(__ICCARM__)
 extern void  __RESERVED_START;
@@ -64,6 +65,7 @@ extern void  __VECTOR_TABLE_SIZE;
 extern void const __RESERVED_START;
 extern void const __VECTOR_TABLE;
 extern void const __VECTOR_TABLE_SIZE;
+#endif
 #endif
 
 typedef struct _lpm_nvic_context
@@ -250,6 +252,7 @@ void LPM_NvicStateRestore(void)
 
 void LPM_SetReumeEntry(bool resume)
 {
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
     int32_t status = SCMI_ERR_SUCCESS;
     uint32_t vectorLow, vectorhigh;
     /* M7 resume entry use low reg in sm side, high vector value is used by sm to deal with linux system. */
@@ -267,8 +270,10 @@ void LPM_SetReumeEntry(bool resume)
     {
         PRINTF("set cpu reset vector by sm fail\r\n");
     }
+#endif
 }
 
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
 bool LPM_Resume(void)
 {
      /* Re-entry point of Power Down wake. */
@@ -327,10 +332,11 @@ void LPM_Vector_Copy()
         source += 4;
      }
 }
+#endif
 
-void LPM_M7_Suspend()
+void LPM_Mcore_Suspend()
 {
-    /* Put M7 core into suspend mode. */
+    /* Put M core into suspend mode. */
     SCMI_CpuSleepModeSet(SM_PLATFORM_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_SUSPEND);
 
     __DSB();
@@ -340,6 +346,7 @@ void LPM_M7_Suspend()
 
 bool LPM_Suspend()
 {
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
     /* Save current M7 core state register, can't add variable in this function, it will impact stack state. */
     __asm volatile(
         "loop:\n"
@@ -360,15 +367,19 @@ bool LPM_Suspend()
     LPM_Vector_Copy();
     LPM_NvicStateSave();   /* #5 Save NVIC setting */
     LPM_SetReumeEntry(true);
-
-    LPM_M7_Suspend();
+#endif
+    LPM_Mcore_Suspend();
 
     /* Successful Power Down exit will never come here, but jump to LPM_Resume() */
 
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
     /* Power Down entering fail, retore core register before return */
     __asm volatile("POP    {R4-R11, LR}\n");
-
     return false;
+#else
+    return true;
+#endif
+
 }
 
 bool LPM_SystemPowerDown()

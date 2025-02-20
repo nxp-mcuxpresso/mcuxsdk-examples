@@ -41,6 +41,18 @@
 #define CLOCK_FREQ_32K_HZ (32000UL)
 #define LPTMR_PRESCALER_CLOCK_FREQ CLOCK_FREQ_32K_HZ
 
+#define SM_PLATFORM_SM_LMM_ID     0
+#define SM_PLATFORM_M33S_LMM_ID   1
+#define SM_PLATFORM_M70_LMM_ID    2
+#define SM_PLATFORM_M71_LMM_ID    3
+#define SM_PLATFORM_AP_LMM_ID     4
+
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
+#define APP_LPM_SETTING SCMI_CPU_LPM_SETTING_ON_RUN_WAIT_STOP
+#else
+#define APP_LPM_SETTING SCMI_CPU_LPM_SETTING_ON_ALWAYS
+#endif
+
 /* Power mode definition used in application. */
 typedef enum _app_power_mode
 {

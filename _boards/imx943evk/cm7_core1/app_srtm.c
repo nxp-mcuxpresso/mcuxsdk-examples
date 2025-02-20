@@ -21,6 +21,10 @@
 #include "board.h"
 #include "rsc_table.h"
 #include "fsl_mu.h"
+#include "scmi_cpu.h"
+#include "scmi.h"
+#include "fsl_cpu.h"
+#include "sm_platform.h"
 
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
@@ -204,14 +208,37 @@ int32_t MU13_A_IRQHandler(void)
     }
     if (status & kMU_OtherSideEnterPowerDownInterruptFlag)
     {
-        if (core != NULL)
+        MU_ClearStatusFlags(RPMSG_LITE_MU, (uint32_t)kMU_OtherSideEnterPowerDownInterruptFlag);
+
+        uint32_t runMode, velow, vehigh;
+        uint32_t sleepMode = 0;
+        int32_t status = SCMI_ERR_SUCCESS;
+        status = SCMI_CpuInfoGet(SM_PLATFORM_A2P, CPU_IDX_A55C0, &runMode, &sleepMode, &velow, &vehigh);
+        if (status != SCMI_ERR_SUCCESS)
         {
-            SRTM_PeerCore_SetState(core, SRTM_PeerCore_State_Deactivated);
+            PRINTF("Get AP info fail\r\n");
         }
 
-        PRINTF("Other side is in power down\r\n");
-        MU_ClearStatusFlags(RPMSG_LITE_MU, (uint32_t)kMU_OtherSideEnterPowerDownInterruptFlag);
-        APP_SRTM_OtherSideResetHandler();
+        /*
+         * Use AP sleep mode state to judge A55 suspend or poweroff state.
+         * AP suspend  --  CPU_SLEEP_MODE_SUSPEND.
+         * AP poweroff --  CPU_SLEEP_MODE_RUN.
+         */
+        if (sleepMode == CPU_SLEEP_MODE_SUSPEND)
+        {
+#if (defined(SRTM_AUDIO_SERVICE_USED) && (0 == SRTM_AUDIO_SERVICE_USED))
+            PRINTF("Other side(AP) entered suspend to memory state through linux command: echo mem > /sys/power/state\r\n");
+#endif
+        }
+        else if (sleepMode == CPU_SLEEP_MODE_RUN)
+        {
+            PRINTF("Other side(AP) entered poweroff state through linux command: poweroff\r\n");
+            if (core != NULL)
+            {
+                SRTM_PeerCore_SetState(core, SRTM_PeerCore_State_Deactivated);
+            }
+            APP_SRTM_OtherSideResetHandler();
+        }
     }
 #endif
 
