@@ -91,7 +91,7 @@ static struct audio_sink {
 	enum bt_audio_location loc;
 	atomic_t flags;
 	struct k_sem sem;
-} sinks[CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT];
+} sinks[1]; /* Only support one sink instead of CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT. */
 
 NET_BUF_POOL_FIXED_DEFINE(tx_pool, TOTAL_BUF_NEEDED,
 			  LC3_INPUT_FRAME_SIZE_MAX * MAX_AUDIO_CHANNEL_COUNT * BITS_RATES_OF_SAMPLE / 8,
@@ -183,7 +183,6 @@ static uint64_t tx_samples = 0;
 static uint32_t tx_time_stamp_start;
 
 static int selected_sample_rate = 0;
-static int selected_channels = 2;
 static int selected_bits = 16;
 static int selected_duration_us = 0;
 
@@ -237,7 +236,6 @@ static void codec_rx_callback(uint8_t *rx_buffer)
 static void source_send_stream_task(void *param)
 {
 	struct net_buf *buf;
-	struct net_buf *buf2;
 	uint8_t * buffer = NULL;
 	int err;
 	uint32_t sdu_time_stamp;
@@ -249,28 +247,23 @@ static void source_send_stream_task(void *param)
 			continue;
 		}
 
-		buf2 = net_buf_alloc(&tx_pool, 0U);
-		if (NULL == buf2)
-		{
-			net_buf_unref(buf2);
-			continue;
-		}
-
 		buffer = buf->data;
 		net_buf_reset(buf);
 		net_buf_reserve(buf, BT_ISO_CHAN_SEND_RESERVE);
-		net_buf_reserve(buf2, BT_ISO_CHAN_SEND_RESERVE);
 
 		err = lc3_encoder(&encoder, buffer, buf->data);
 		if(err < 0)
 		{
 			PRINTF("\nlc3_encoder fail!\r\n");
+			net_buf_unref(buf);
 			continue;
 		}
 
-		net_buf_add_mem(buf2, buf->data, lc3_codec_info.octets_per_frame);
+		buffer = buf->data;
 		net_buf_add(buf, lc3_codec_info.octets_per_frame);
-
+		if (lc3_codec_info.channels > 1) {
+			net_buf_add_mem(buf, buffer, lc3_codec_info.octets_per_frame);
+		}
 
 		if(seq_num == 0)
 		{
@@ -290,14 +283,6 @@ static void source_send_stream_task(void *param)
 			PRINTF("Unable to send stream on %p: %d\r\n", &sinks[0].stream, err);
 			net_buf_unref(buf);
 		}
-
-		err = bt_bap_stream_send_ts(&sinks[1].stream, buf2, seq_num, sdu_time_stamp);
-		if (err < 0) {
-			/* This will end send stream. */
-			PRINTF("Unable to send stream on %p: %d\r\n", &sinks[1].stream, err);
-			net_buf_unref(buf2);
-		}
-
 		seq_num ++;
 	}
 }
@@ -343,9 +328,25 @@ void print_all_preset(int sample_rate)
 	}
 }
 
+int get_lc3_channel_count(enum bt_audio_location loc)
+{
+	int channel_count = 0;
+
+	for (int index = 0; index < (sizeof(loc) * 8); index++) {
+		if (((uint32_t)loc) & BIT(index)) {
+			channel_count ++;
+		}
+	}
+
+	return channel_count;
+}
+
 int select_lc3_preset(char *preset_name)
 {
 	bool find = false;
+	int err;
+	enum bt_audio_location loc;
+	int channel_count = 0;
 
 	for(int i = 0; i < ARRAY_SIZE(lc3_unicast_presets); i++)
 	{
@@ -360,10 +361,22 @@ int select_lc3_preset(char *preset_name)
 
 	if(!find)
 	{
-		return -1;
+		return -EINVAL;
+	}
+
+	err = bt_audio_codec_cfg_get_chan_allocation(&lc3_preset.codec_cfg, &loc, false);
+	if (err < 0) {
+		return err;
+	}
+
+	channel_count = get_lc3_channel_count(loc);
+	if (channel_count == 0) {
+		return -EINVAL;
 	}
 
 	print_lc3_preset(preset_name, &lc3_preset);
+
+	lc3_preset.qos.sdu = bt_audio_codec_cfg_get_octets_per_frame(&lc3_preset.codec_cfg) * channel_count;
 
 	(void)OSA_SemaphorePost(sem_lc3_preset);
 
@@ -470,6 +483,8 @@ void config_channel_location(void)
 		}
 	}
 
+	sinks[count].loc = loc;
+#if 0
 	for (int index = 0; index < sizeof(loc); index++)
 	{
 		if ((uint32_t)loc & BIT(index)) {
@@ -480,10 +495,21 @@ void config_channel_location(void)
 			}
 		}
 	}
+#endif
 }
 
-void config_audio_parameters(int sample_rate, int channels, int bits)
+void config_audio_parameters(int sample_rate, int bits)
 {
+	enum bt_audio_location loc;
+	int err;
+
+	err = bt_audio_codec_cfg_get_chan_allocation(&lc3_preset.codec_cfg, &loc, false);
+	if (err < 0) {
+		PRINTF("Invalid channel count, channel location %08x\r\n", loc);
+	}
+
+	__ASSERT(!(err < 0), "Invalid channel count, channel location %08x", loc);
+
 	/* set the LC3 encoder parameters. */
 	lc3_codec_info.sample_rate = sample_rate;
 	lc3_codec_info.frame_duration_us = bt_audio_codec_cfg_frame_dur_to_frame_dur_us((enum bt_audio_codec_cfg_frame_dur)bt_audio_codec_cfg_get_frame_dur(&lc3_preset.codec_cfg));
@@ -491,7 +517,7 @@ void config_audio_parameters(int sample_rate, int channels, int bits)
 	lc3_codec_info.blocks_per_sdu = 1;
 	lc3_codec_info.chan_allocation = 0; /* not used. */
 
-	lc3_codec_info.channels = channels;
+	lc3_codec_info.channels = get_lc3_channel_count(loc);
 	if(lc3_codec_info.sample_rate == 44100)
 	{
 		if(lc3_codec_info.frame_duration_us == 7500)
@@ -510,10 +536,10 @@ void config_audio_parameters(int sample_rate, int channels, int bits)
 	lc3_codec_info.bytes_per_channel_frame = lc3_codec_info.samples_per_frame * bits / 8;
 
 	/* LC3 Encoder Init. */
-	int lc3_res = lc3_encoder_init(&encoder, sample_rate, lc3_codec_info.frame_duration_us, lc3_codec_info.octets_per_frame, bits);
-	if(lc3_res)
+	err = lc3_encoder_init(&encoder, sample_rate, lc3_codec_info.frame_duration_us, lc3_codec_info.octets_per_frame, bits);
+	if(err)
 	{
-		PRINTF("\nlc3_encoder_init fail!\r\n");
+		PRINTF("lc3_encoder_init fail err %d!\r\n", err);
 	}
 	PRINTF("LC3 encoder setup done!\r\n");
 
@@ -1220,13 +1246,13 @@ static int configure_streams()
 
 static int create_group(void)
 {
-	const size_t params_count = CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT;
-	struct bt_bap_unicast_group_stream_pair_param pair_params[CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT + CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SRC_COUNT];
-	struct bt_bap_unicast_group_stream_param stream_params[CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT + CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SRC_COUNT];
+	const size_t params_count = ARRAY_SIZE(sinks);
+	struct bt_bap_unicast_group_stream_pair_param pair_params[ARRAY_SIZE(sinks) + CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SRC_COUNT];
+	struct bt_bap_unicast_group_stream_param stream_params[ARRAY_SIZE(sinks) + CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SRC_COUNT];
 	struct bt_bap_unicast_group_param param;
 	int err;
 
-	for (size_t i = 0U; i < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; i++) {
+	for (size_t i = 0U; i < ARRAY_SIZE(sinks); i++) {
 		stream_params[i].stream = &sinks[i].stream;
 		stream_params[i].qos = &lc3_preset.qos;
 
@@ -1551,19 +1577,12 @@ void ums_microphone_task(void *param)
 	/* MCS */
 	le_audio_mcs_server_init(mcs_server_state_cb);
 
-	/* CSIP */
-	err = bt_csip_set_coordinator_register_cb(&csip_cb);
-	if (err != 0) {
-		PRINTF("Failed to register csip callbacks: %d", err);
-		while(1);
-	}
-
 	/* Select LC3 preset */
 	PRINTF("\nPlease select lc3 preset use \"lc3_preset <name>\" command.\r\n");
 	OSA_SemaphoreWait(sem_lc3_preset, osaWaitForever_c);
 	/* Config audio parameters. */
 	selected_sample_rate = bt_audio_codec_cfg_freq_to_freq_hz((enum bt_audio_codec_cfg_freq)bt_audio_codec_cfg_get_freq(&lc3_preset.codec_cfg));
-	config_audio_parameters(selected_sample_rate, selected_channels, selected_bits);
+	config_audio_parameters(selected_sample_rate, selected_bits);
 
 	selected_duration_us = bt_audio_codec_cfg_frame_dur_to_frame_dur_us((enum bt_audio_codec_cfg_frame_dur)bt_audio_codec_cfg_get_frame_dur(&lc3_preset.codec_cfg));
 
