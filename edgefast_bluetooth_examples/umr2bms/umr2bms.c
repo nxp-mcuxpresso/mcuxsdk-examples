@@ -116,13 +116,12 @@ int umr_to_bms_audio_codec_qos(struct bt_audio_codec_qos *qos)
 
 int umr_to_bms_audio_enable(void)
 {
-	atomic_set_bit(&flags, UMR_TO_BMS_FLAG_AUDIO_ENABLED);
-	k_sem_give(&sem);
 	return 0;
 }
 
 int umr_to_bms_audio_start(void)
 {
+	atomic_set_bit(&flags, UMR_TO_BMS_FLAG_AUDIO_ENABLED);
 	atomic_set_bit(&flags, UMR_TO_BMS_FLAG_AUDIO_STARTED);
 	k_sem_give(&sem);
 	return 0;
