@@ -21,6 +21,7 @@ driver_examples
    aoi/index.rst
    aon_lpadc/index.rst
    asrc/index.rst
+   bctu/index.rst
    bee/readme.md
    caam/readme.md
    cache/readme.md

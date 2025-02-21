@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sw_trig:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/bctu/sw_trig
+    project-root-path: boards/${board}/driver_examples/bctu/sw_trig/${multicore_foldername}
+    document:
+      name: sw_trig${core_id_suffix_name}
+      category: driver_examples/bctu
+      brief: The sw_trig example demostrated how to use BCTU
+        software trigger function to trigger the ADC to convert.
+      example_readme:
+      - examples/driver_examples/bctu/sw_trig/readme.md
+      - ${board_root}/${board}/driver_examples/bctu/sw_trig/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md

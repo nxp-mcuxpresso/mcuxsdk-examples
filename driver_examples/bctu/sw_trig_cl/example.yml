@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sw_trig_cl:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/bctu/sw_trig_cl
+    project-root-path: boards/${board}/driver_examples/bctu/sw_trig_cl/${multicore_foldername}
+    document:
+      name: sw_trig_cl${core_id_suffix_name}
+      category: driver_examples/bctu
+      brief: In sw_trig_cl, the conversion list function of BCTU is used.
+        Implemented the use of one trigger signal to trigger multiple
+        parallel ADC conversions.
+      example_readme:
+      - examples/driver_examples/bctu/sw_trig_cl/readme.md
+      - ${board_root}/${board}/driver_examples/bctu/sw_trig_cl/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md

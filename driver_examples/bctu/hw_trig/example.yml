@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+hw_trig:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/bctu/hw_trig
+    project-root-path: boards/${board}/driver_examples/bctu/hw_trig/${multicore_foldername}
+    document:
+      name: hw_trig${core_id_suffix_name}
+      category: driver_examples/bctu
+      brief: In the hw_trig example, a counter is used to generate a 10KHz,
+        70% duty cycle PWM, and a trigger is generated at 50% of the
+        PWM period. This trigger is routed to bctu as the hardware trigger
+        source, which is then trigger ADC to convert.
+      example_readme:
+      - examples/driver_examples/bctu/hw_trig/readme.md
+      - ${board_root}/${board}/driver_examples/bctu/hw_trig/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
