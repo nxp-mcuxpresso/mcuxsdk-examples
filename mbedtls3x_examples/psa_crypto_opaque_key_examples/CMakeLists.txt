@@ -8,6 +8,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/mbedtls3x_examples/psa_crypto_opaque_key_examples/psa_crypto_opaque_key_examples.c
+            examples/mbedtls3x_examples/psa_crypto_opaque_key_examples/mcux_mbedtls_psa_crypto_opaque_config.h
 )
 
 mcux_add_include(
