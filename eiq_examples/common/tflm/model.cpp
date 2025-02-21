@@ -72,7 +72,7 @@ status_t MODEL_Init(void)
     }
 
     s_tensorArenaSizeUsed = s_interpreter->arena_used_bytes();
-    PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetCoreSysClkFreq()/1000000);
+    PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
     PRINTF("TensorArena Addr: 0x%x - 0x%x\r\n", s_tensorArena, s_tensorArena + kTensorArenaSize);
     PRINTF("TensorArena Size: Total 0x%x (%d B); Used 0x%x (%d B)\r\n" , kTensorArenaSize, kTensorArenaSize, s_tensorArenaSizeUsed, s_tensorArenaSizeUsed);
     PRINTF("Model Addr: 0x%x - 0x%x\r\n" , model_data, model_data + sizeof(model_data));
