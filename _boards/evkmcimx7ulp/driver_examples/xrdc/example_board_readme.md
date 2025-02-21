@@ -48,17 +48,4 @@ This should be run together with uboot.
 
 Running the demo
 ================
-When the example runs successfully, you can see information from the terminal as below.
-
 **Please note the XRDC can't access the MRGD register unless the related memory region clock has been enabled!**
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-XRDC example start
-Set the peripheral not accessiable
-Violent access at address: 0x41025000
-The peripheral is accessiable now
-Set the memory not accessiable
-Violent access at address: 0x2F020000
-The memory is accessiable now
-XRDC example Success
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

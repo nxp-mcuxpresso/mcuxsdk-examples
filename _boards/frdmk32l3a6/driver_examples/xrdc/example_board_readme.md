@@ -19,17 +19,3 @@ Prepare the Demo
     - No flow control
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
-
-Running the demo
-================
-The log below shows the output of the example in the terminal window:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-XRDC example start
-Set the peripheral not accessiable
-Violent access at address: 0x40032000
-The peripheral is accessiable now
-Set the memory not accessiable
-Violent access at address: 0x 8000000
-The memory is accessiable now
-XRDC example Success
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

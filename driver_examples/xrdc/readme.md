@@ -7,6 +7,21 @@ policy using XRDC.
 In this example, one peripheral and a memory region are set to unaccessible, then
 the hardfault occurs.
 
+Running the demo
+================
+The log below shows the output of the example in the terminal window.
+**NOTE** The access address might be different by platforms.
+```
+XRDC example start
+Set the peripheral not accessiable
+Violent access at address: 0x40032000
+The peripheral is accessiable now
+Set the memory not accessiable
+Violent access at address: 0x08000000
+The memory is accessiable now
+XRDC example Success
+```
+
 ## Supported Boards
 - [EVK-MCIMX7ULP](../../_boards/evkmcimx7ulp/driver_examples/xrdc/example_board_readme.md)
 - [FRDM-K32L3A6](../../_boards/frdmk32l3a6/driver_examples/xrdc/example_board_readme.md)
