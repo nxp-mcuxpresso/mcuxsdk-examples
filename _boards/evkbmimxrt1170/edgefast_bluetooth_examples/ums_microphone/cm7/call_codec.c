@@ -28,7 +28,7 @@
 #define HFP_CODEC_HP_VOLUME  (70U)  /* Range: 0 ~ 100 */
 
 /* Simple configuration */
-#define SIMPLE_BIT_RATE_MAX 384000
+#define SIMPLE_BIT_RATE_MAX 48000
 #define SIMPLE_BITS_MAX     16U
 #define SIMPLE_DURATION_MAX 10U
 #define SIMPLE_TX_CHANNELS_MAX 2U
