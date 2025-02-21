@@ -8,12 +8,10 @@
 #include "demo_info.h"
 #include "fsl_debug_console.h"
 #include "model.h"
-#include "image.h"
 
 void DEMO_PrintInfo(void)
 {
     PRINTF("%s example using a %s model." EOL, EXAMPLE_NAME, FRAMEWORK_NAME);
     PRINTF("Detection threshold: %d%%" EOL, DETECTION_TRESHOLD);
     PRINTF("Model: %s" EOL, MODEL_GetModelName());
-    PRINTF("Image: %s" EOL, IMAGE_GetImageName());
 }
