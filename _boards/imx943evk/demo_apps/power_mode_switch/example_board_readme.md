@@ -26,9 +26,13 @@ Prepare the Demo
 
 Running the demo
 ================
-Mcore debug console shows the menu to command the MCU to the target power mode. The target power mode can be wakeup by LPTMR.
-SYSTEM SLEEP flow: In linux console use command "echo mem > /sys/power/state" to suspend A55, then select SUSPEND mode in Mcore debug console. The STBY LED on board will light with RED color.
-NOTE: M33 wakeup A55 by using MU interrupt "GCR[GIR1]". Please ensure the A55 already in SUSPEND mode, then press "W" button in Mcore debug console. Or you will meet call trace info in linux.
+How to enter system suspend mode(such as Mcore use sm as wakeup source): In linux console use command "echo mem > /sys/power/state" to suspend A55, then select SUSPEND mode in Mcore debug console and input "S" into select SM as wakeup source, input "idle" command in M33 console. The STBY LED on board will light.
+How to escape system suspend mode(such as M7 use sm as wakeup source): press enter in SM console, then input "wake" command to wakeup Mcore and A55. Or press ONOFF button in board.
+NOTE:
+      1. Mcore support TIMER/LPUART/SM interface(wakeup command in sm consle or ONOFF button in board) wakeup source.
+         1.1 Due to hardware clock source limitations which the clock sources supported by TPM will be turned off when the system is suspended, we only support TIMER wakeup on CM7_CORE0 in system suspend mode, do not support TIMER wakeup on CM33_CORE1/CM7_CORE1 in system suspend mode.
+      2. Option 'P' will suspend A55 core.
+      3. Please ensure the A55 already in SUSPEND mode, then press "W" button in Mcore debug console. A55 core will be wakeup.
 
 The log below shows the output of the power mode switch demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,8 +41,8 @@ Task 1 is working now
 
 ####################  Power Mode Switch Task ####################
 
-    Build Time: Dec  2 2022--15:15:19
-    Core Clock: 200000000Hz
+    Build Time: Feb 20 2025--07:59:03
+    Core Clock: 266666666Hz
 
 Select the desired operation
 
@@ -46,6 +50,7 @@ Press  A to enter: Normal RUN mode
 Press  B to enter: WAIT mode
 Press  C to enter: STOP mode
 Press  D to enter: SUSPEND mode
+Press  P to suspend A55 core
 Press  W to wakeup A55 core
 
 Waiting for power mode select..
