@@ -14,7 +14,7 @@ extern struct cmd_subclass_t cmd_subclass_wlan[12];
 extern struct cmd_subclass_t cmd_subclass_ble[8];
 #endif
 #if CONFIG_NCP_OT
-extern struct cmd_subclass_t cmd_subclass_15D4[2];
+extern struct cmd_subclass_t cmd_subclass_15D4[3];
 #endif
 extern struct cmd_subclass_t cmd_subclass_system[2];
 extern struct cmd_t error_ack_cmd;
