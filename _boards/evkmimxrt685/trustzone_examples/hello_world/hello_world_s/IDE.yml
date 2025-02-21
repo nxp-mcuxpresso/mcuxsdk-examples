@@ -48,34 +48,34 @@ initialization_file:
 mdk:
   shared-workspace: hello_world
   sharing-workspace:
-  - ../../hello_world_ns/mdk/hello_world_ns_cm33
+  - ../../hello_world_ns/mdk/hello_world_ns${core_id_suffix_name}
 
 iar:
   shared-workspace: hello_world
   sharing-workspace:
-  - ../../hello_world_ns/iar/hello_world_ns_cm33
+  - ../../hello_world_ns/iar/hello_world_ns${core_id_suffix_name}
   config:
     debug:
       download-extra-image:
-      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+      - path: "../../hello_world_ns/iar/hello_world_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false
     release:
       download-extra-image:
-      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+      - path: "../../hello_world_ns/iar/hello_world_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false
     flash_debug:
       download-extra-image:
-      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+      - path: "../../hello_world_ns/iar/hello_world_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false
     flash_release:
       download-extra-image:
-      - path: "../../hello_world_ns/iar/hello_world_ns_cm33.out"
+      - path: "../../hello_world_ns/iar/hello_world_ns${core_id_suffix_name}.out"
         item: 1
         offset: 0
         debug_info_only: false
