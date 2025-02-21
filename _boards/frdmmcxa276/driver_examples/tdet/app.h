@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,20 +10,11 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define TAMPER_INTERRUPT      VBAT0_IRQn
+#define TAMPER_INTERRUPT       TDET_IRQn
 
 #define TAMPER_PASSIVE        kTDET_TamperTamperPin4
 #define TAMPER_PASSIVE_STATUS kTDET_StatusTamperPinTamper4
 #define TAMPER_PASSIVE_EXTPIN kTDET_ExternalTamper4
-
-#define TAMPER_TX             kTDET_TamperTamperPin5 
-#define TAMPER_TX_STATUS      kTDET_StatusTamperPinTamper5
-#define TAMPER_TX_EXTPIN      kTDET_ExternalTamper5
-
-#define TAMPER_RX             kTDET_TamperTamperPin6
-#define TAMPER_RX_STATUS      kTDET_StatusTamperPinTamper6
-#define TAMPER_RX_EXTPIN      kTDET_ExternalTamper6
-
 /*${macro:end}*/
 
 /*******************************************************************************
@@ -32,6 +22,7 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
+
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

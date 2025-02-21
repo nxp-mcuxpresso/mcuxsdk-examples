@@ -23,6 +23,10 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
 
+	/* TDET module us clocked from VBAT module */
+    /* So for proper function of active tampers clocks FRO16k or OSC32k must be enabled */
+    CLOCK_SetupClk16KClocking(kCLOCK_Clk16KToVbat);
+	
     BOARD_InitPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();

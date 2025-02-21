@@ -36,14 +36,14 @@
 
 void VBAT0_DriverIRQHandler(void)
 {
-    NVIC_DisableIRQ(VBAT0_IRQn);
+    NVIC_DisableIRQ(TAMPER_INTERRUPT);
 
     PRINTF("TDET IRQ Reached!\r\n");
 
     PRINTF("Clear TDET IRQ r\n");
     TDET_ClearStatusFlags(TDET0, kTDET_StatusAll);
 
-    NVIC_EnableIRQ(VBAT0_IRQn);
+    NVIC_EnableIRQ(TAMPER_INTERRUPT);
 }
 
 /*!
@@ -71,10 +71,6 @@ int main(void)
         return 1;
     }
 
-    /* TDET module us clocked from VBAT module */
-    /* So for proper function of active tampers clocks FRO16k or OSC32k must be enabled */
-    CLOCK_SetupClk16KClocking(kCLOCK_Clk16KToVbat);
-
     flags = 0;
 
     TDET_SoftwareReset(base);
@@ -89,7 +85,7 @@ int main(void)
 
     result = TDET_SetConfig(base, &myConfig);
 
-    NVIC_EnableIRQ(VBAT0_IRQn);
+    NVIC_EnableIRQ(TAMPER_INTERRUPT);
 
     // TDET_EnableInterrupts(base, kTDET_InterruptAll);
 
@@ -137,6 +133,8 @@ int main(void)
 
     result = TDET_ClearStatusFlags(base, TAMPER_PASSIVE_STATUS);
 
+#if defined(TDET_HAS_ACTIVE_TAMPER)
+    
     PRINTF("Active tamper example \r\n");
 
     tdet_pin_config_t active_tamper_cfg_tx;
@@ -191,6 +189,8 @@ int main(void)
     {
         PRINTF("No tampering detected on active tamper \r\n\r\n");
     }
+    
+#endif /* defined(TDET_HAS_ACTIVE_TAMPER) */
 
     /* Deinit TDET */
     TDET_Deinit(base);

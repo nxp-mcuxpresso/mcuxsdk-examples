@@ -11,6 +11,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
+#define TAMPER_INTERRUPT      VBAT0_IRQn
+
 #define TAMPER_PASSIVE        kTDET_TamperTamperPin0
 #define TAMPER_PASSIVE_STATUS kTDET_StatusTamperPinTamper0
 #define TAMPER_PASSIVE_EXTPIN kTDET_ExternalTamper0
