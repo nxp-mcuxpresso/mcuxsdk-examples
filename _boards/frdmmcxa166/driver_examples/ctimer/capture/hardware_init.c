@@ -10,6 +10,8 @@
 #include "fsl_inputmux.h"
 #include "fsl_gpio.h"
 #include "app.h"
+#include <stdbool.h>
+#include "fsl_reset.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -28,8 +30,10 @@ void DEMO_InitCtimerInput(void)
 {
     /* INPUTMUX0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
+	RESET_PeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
 
     /*  CtimerInp8 connect to Timer0Captsel 0 */
+	INPUTMUX_Init(INPUTMUX0);
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_CtimerInp8ToTimer0Captsel);
 }
 

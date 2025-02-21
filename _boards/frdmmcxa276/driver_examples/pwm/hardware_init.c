@@ -8,13 +8,17 @@
 #include "fsl_device_registers.h"
 #include "pin_mux.h"
 #include "clock_config.h"
+#include "fsl_reset.h"
 #include "board.h"
+#include <stdbool.h>
 #include "fsl_inputmux.h"
 /*${header:end}*/
 
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    RESET_PeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();

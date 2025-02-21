@@ -12,6 +12,7 @@
 #include "clock_config.h"
 #include "fsl_inputmux.h"
 #include "fsl_reset.h"
+#include <stdbool.h>
 /*${header:end}*/
 
 /*${function:start}*/
@@ -31,6 +32,7 @@ void BOARD_InitHardware(void)
 {
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kAOI0_RST_SHIFT_RSTn);
+    RESET_PeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
 
     BOARD_InitPins();
     BOARD_InitBootClocks();
