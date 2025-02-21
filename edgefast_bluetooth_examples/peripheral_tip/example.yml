@@ -26,3 +26,4 @@ peripheral_tip:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxn947@cm33_core0: []

@@ -28,3 +28,4 @@ The Locator will trigger an Immediate Alert on the application and disconnect. T
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/edgefast_bluetooth_examples/peripheral_fmp/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/edgefast_bluetooth_examples/peripheral_fmp/example_board_readme.md)
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/edgefast_bluetooth_examples/peripheral_fmp/example_board_readme.md)

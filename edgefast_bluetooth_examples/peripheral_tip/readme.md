@@ -32,3 +32,4 @@ the server will periodically notify its local time value to the client.
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/edgefast_bluetooth_examples/peripheral_tip/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/edgefast_bluetooth_examples/peripheral_tip/example_board_readme.md)
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/edgefast_bluetooth_examples/peripheral_tip/example_board_readme.md)

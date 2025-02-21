@@ -73,3 +73,4 @@ wifi_cli_over_ble_wu:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxn947@cm33_core0: []
