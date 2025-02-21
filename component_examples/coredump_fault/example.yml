@@ -8,14 +8,15 @@ coredump_fault:
       category: component_examples/coredump_fault
       brief: The example demostrate usage of coredump component.
       example_readme:
-      - examples/component_examples/coredump_fault/readme.md
-      - examples/_boards/${board}/component_examples/coredump_fault/example_board_readme.md
-      - examples/_boards/${board}/examples_shared_readme.md
+        - examples/component_examples/coredump_fault/readme.md
+        - examples/_boards/${board}/component_examples/coredump_fault/example_board_readme.md
+        - examples/_boards/${board}/examples_shared_readme.md
   boards:
     frdmrw612:
-    - -armgcc@debug
-    - -armgcc@release
-    - -mdk@debug
-    - -mdk@release
-    - -iar@debug
-    - -iar@release
+      - -armgcc@debug
+      - -armgcc@release
+      - -mdk@debug
+      - -mdk@release
+      - -iar@debug
+      - -iar@release
+    frdmmcxw71: []
