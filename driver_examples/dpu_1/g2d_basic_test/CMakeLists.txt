@@ -1,20 +1,18 @@
 
 cmake_minimum_required(VERSION 3.22.0)
 
-set(SdkRootDirPath /home/joshua/g2d/integration/sdk-next/mcuxsdk-core/mcuxsdk)
-
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(g2d_basic_test LANGUAGES C PROJECT_BOARD_PORT_PATH examples/_boards/${board}/driver_examples/dpu/g2d_basic_test)
+project(dpu_1_g2d_basic_test LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/driver_examples/dpu/g2d_basic_test)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-mcux_add_source(SOURCES 
+mcux_add_source(SOURCES
     g2d_basic_test.c
 )
 
 # link the G2D-DPU library
-target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE 
+target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/libg2d.a
     -Wl,--start-group
     m c gcc
@@ -42,4 +40,4 @@ target_compile_definitions(${MCUX_SDK_PROJECT_NAME} PRIVATE
     BOARD_USE_ADP5585=1
 )
 
-mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/m7_image.bin)
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
