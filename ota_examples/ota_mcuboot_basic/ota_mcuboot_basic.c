@@ -81,10 +81,6 @@ static uint32_t progbuf[1024/sizeof(uint32_t)];
 
 static hashctx_t sha256_xmodem_ctx;
 
-#ifdef MCUBOOT_OTA_SB3_SUPPORT
-static sb3_iap_ctx_t iap_ctx;
-#endif
-
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -130,7 +126,7 @@ static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, c
     int ret;
     status_t status;
     uint32_t imgstate;
-    
+
     if (argc > 3)
     {
         PRINTF("Too many arguments.\n");
@@ -155,7 +151,7 @@ static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, c
     {
         char *parse_end;
         image = strtol(argv[2], &parse_end, 10);
-        
+
         if (image < 0 || image >= MCUBOOT_IMAGE_NUMBER || *parse_end != '\0')
         {
             PRINTF("Wrong image number.\n");
@@ -199,9 +195,9 @@ static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, c
             return kStatus_SHELL_Error;
         }
     }
-    
+
     /* image erase [imgNum] */
-    
+
     else if (!strcmp(argv[1], "erase"))
     {
         partition_t ptn;
@@ -230,7 +226,7 @@ static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, c
         }
         PRINTF("done\n");
     }
-    
+
     else
     {
         PRINTF("Wrong arguments. See 'help'\n");
@@ -252,14 +248,14 @@ static shell_status_t shellCmd_mem(shell_handle_t shellHandle, int32_t argc, cha
         PRINTF("Wrong argument count\n");
         return kStatus_SHELL_Error;
     }
- 
+
     addr = strtol(argv[2], &parse_end, 0);
     if (*parse_end != '\0')
     {
         PRINTF("Bad address\n");
         return kStatus_SHELL_Error;
     }
-    
+
     if (argc == 4)
     {
         size = strtol(argv[3], &parse_end, 0);
@@ -311,29 +307,29 @@ static int process_received_data(uint32_t dst_addr, uint32_t offset, uint32_t si
     int ret;
     uint32_t *data = progbuf;
     uint32_t addr = dst_addr + offset;
-       
+
     /* 1kB programming buffer should be ok with all page size alignments */
     while (size)
     {
         size_t chunk = (size < MFLASH_PAGE_SIZE) ? size : MFLASH_PAGE_SIZE;
-               
+
         /* mlfash takes entire page, in case of last data of smaller size it will
            program more data, which shouln't be a problem as the space allocated
            for the image slot is page aligned */
-        
+
         ret = mflash_drv_page_program(addr, data);
         if (ret)
         {
             PRINTF("Failed to program flash at %x (ret %d)\n", addr, ret);
             return -1;
         }
-        
+
         sha256_update(&sha256_xmodem_ctx, data, chunk);
         addr += chunk;
         data += chunk/sizeof(uint32_t);
         size -= chunk;
     }
-    
+
     return 0;
 }
 
@@ -342,7 +338,7 @@ static int process_received_data_sb3(uint32_t dst_addr, uint32_t offset, uint32_
 {
     int ret;
     uint32_t *data = progbuf;
-    
+
     if(offset == 0)
     {
         if(!is_sb3_header(data))
@@ -350,15 +346,15 @@ static int process_received_data_sb3(uint32_t dst_addr, uint32_t offset, uint32_
             return -1;
         }
     }
-    
+
     /* Processing SB3 image */
-    ret = sb3_iap_pump(&iap_ctx, (uint8_t *)data, size);
-    if (ret != kStatus_Success && ret != kStatusRomLdrDataUnderrun)
+    ret = sb3_api_pump((uint8_t *)data, size);
+    if (ret != kStatus_Success)
     {
-        PRINTF("sb3_iap_pump failed/n");
+        PRINTF("sb3_api_pump failed/n");
         return -1;
     }
-    
+
     return 0;
 }
 #endif
@@ -366,36 +362,36 @@ static int process_received_data_sb3(uint32_t dst_addr, uint32_t offset, uint32_
 static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
     int image = 0;
-    long recvsize;    
+    long recvsize;
     uint8_t sha256_recv[32], sha256_flash[32];
     partition_t prt_ota;
-    
+
     if (argc > 3)
     {
         PRINTF("Too many arguments.\n");
         return kStatus_SHELL_Error;
     }
-    
+
     if (argc == 3)
     {
         char *parse_end;
         image = strtol(argv[2], &parse_end, 10);
-        
+
         if (image < 0 || image >= MCUBOOT_IMAGE_NUMBER || *parse_end != '\0')
         {
             PRINTF("Wrong image number.\n");
             return kStatus_SHELL_Error;
         }
     }
-       
+
     if (bl_get_update_partition_info(image, &prt_ota) != kStatus_Success)
     {
         PRINTF("FAILED to determine address for download\n");
         return kStatus_SHELL_Error;
     }
-    
+
     PRINTF("Started xmodem download into flash at 0x%X\n", prt_ota.start);
-    
+
     struct xmodem_cfg cfg = {
         .putc = xmodem_putc,
         .getc = xmodem_getc,
@@ -407,30 +403,30 @@ static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, 
         .buffer_size = sizeof(progbuf),
         .buffer_full_callback = process_received_data
     };
-    
+
     sha256_init(&sha256_xmodem_ctx);
-    
+
     PRINTF("Initiated XMODEM-CRC transfer. Receiving... (Press 'x' to cancel)\n");
-    
+
     recvsize = xmodem_receive(&cfg);
-    
+
     /* With some terminals it takes a while before they recover receiving to the console */
     SDK_DelayAtLeastUs(1000000, SystemCoreClock);
-    
+
     if (recvsize < 0)
     {
         PRINTF("\nTransfer failed (%d)\n", recvsize);
         return kStatus_SHELL_Error;
     }
     PRINTF("\nReceived %u bytes\n", recvsize);
-   
+
     sha256_finish(&sha256_xmodem_ctx, sha256_recv);
-    flash_sha256(prt_ota.start, recvsize, sha256_flash);    
+    flash_sha256(prt_ota.start, recvsize, sha256_flash);
 
     PRINTF("SHA256 of received data: ");
     print_hash(sha256_recv, 10);
     PRINTF("...\n");
-    
+
     PRINTF("SHA256 of flashed data:  ");
     print_hash(sha256_flash, 10);
     PRINTF("...\n");
@@ -441,31 +437,31 @@ static shell_status_t shellCmd_xmodem(shell_handle_t shellHandle, int32_t argc, 
 #ifdef MCUBOOT_OTA_SB3_SUPPORT
 static shell_status_t shellCmd_xmodem_sb3(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
-    long recvsize;    
+    long recvsize;
     partition_t prt_ota;
-    
+
     if (argc > 2)
     {
         PRINTF("Too many arguments.\n");
         return kStatus_SHELL_Error;
     }
-          
+
     if (bl_get_update_partition_info(0, &prt_ota) != kStatus_Success)
     {
         PRINTF("FAILED to determine address for download\n");
         return kStatus_SHELL_Error;
     }
-    
+
     //Todo add provisioning check
-    if (sb3_iap_init(&iap_ctx) != kStatus_Success)
+    if (sb3_api_init() != kStatus_Success)
     {
         PRINTF("sb3_iap_init failed/n");
         return kStatus_SHELL_Error;
     }
-    
+
     PRINTF("Started xmodem processing SB3\n");
     PRINTF("Make sure this device is provisioned to accept secure binary and its load address is 0x%X\n", prt_ota.start);
-    
+
     struct xmodem_cfg cfg = {
         .putc = xmodem_putc,
         .getc = xmodem_getc,
@@ -477,27 +473,27 @@ static shell_status_t shellCmd_xmodem_sb3(shell_handle_t shellHandle, int32_t ar
         .buffer_size = sizeof(progbuf),
         .buffer_full_callback = process_received_data_sb3
     };
-    
+
     sha256_init(&sha256_xmodem_ctx);
-    
+
     PRINTF("Initiated XMODEM-CRC transfer. Receiving... (Press 'x' to cancel)\n");
-    
+
     recvsize = xmodem_receive(&cfg);
-    
+
     /* With some terminals it takes a while before they recover receiving to the console */
     SDK_DelayAtLeastUs(1000000, SystemCoreClock);
-    
+
     if (recvsize < 0)
     {
         PRINTF("\nTransfer failed (%d)\n", recvsize);
         return kStatus_SHELL_Error;
-    }  
-    PRINTF("\nReceived %u bytes\n", recvsize);     
-    
+    }
+    PRINTF("\nReceived %u bytes\n", recvsize);
+
     PRINTF("SB3 has been processed\n");
-    sb3_iap_finalize(&iap_ctx);
-    sb3_iap_free(&iap_ctx);
-    
+    sb3_api_finalize();
+    sb3_api_deinit();
+
     return kStatus_SHELL_Success;
 }
 #endif
@@ -551,7 +547,7 @@ int main(void)
 
     /* Init board hardware. */
     BOARD_InitHardware();
-    
+
     ret = mflash_drv_init();
     if (ret)
     {
@@ -562,9 +558,9 @@ int main(void)
            "*************************************\n"
            "* Basic MCUBoot application example *\n"
            "*************************************\n\n");
-    
+
     PRINTF("Built " __DATE__ " " __TIME__ "\n");
-    
+
     ret = SHELL_Init(s_shellHandle, g_serialHandle, "$ ");
     if (ret != kStatus_SHELL_Success)
     {
@@ -588,6 +584,6 @@ int main(void)
 
 failed_init:
     while (1)
-    {        
+    {
     }
 }

@@ -18,6 +18,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    CLOCK_EnableClock(kCLOCK_Otp);
 }
 
 /*${function:end}*/

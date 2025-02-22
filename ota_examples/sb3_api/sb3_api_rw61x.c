@@ -1,21 +1,29 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #include "sb3_api.h"
-#include "fsl_flash.h"
 #include "fsl_debug_console.h"
-#include "fsl_mem_interface.h"
-#include "fsl_sbloader.h"
+#include "fsl_romapi_iap.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 
-#define ROM_BUF_SIZE        0x1000
+#define ROM_BUF_SIZE     0x6000
+
+#define FLASH_REMAP_REG  0x40134428           /* RW61x flash remap offset register */
+#define FLASH_BASE       0x08000000
+#define FLASH_FCB_OFFSET (FLASH_BASE + 0x400) /* FCB of main app  */
+
+#define OTP_RKTH_383_352_FUSE_IDX     (104u)
+#define OTP_RKTH_383_352_FUSE_VALUE() (OCOTP->OTP_SHADOW[OTP_RKTH_383_352_FUSE_IDX])
+
+#define OTP_CUST_SK_MK_31_0_FUSE_IDX     (92u)
+#define OTP_CUST_SK_MK_31_0_FUSE_VALUE() (OCOTP->OTP_SHADOW[OTP_CUST_SK_MK_31_0_FUSE_IDX])
 
 typedef struct
 {
@@ -50,7 +58,7 @@ sb3_api_ctx_t sb3_api_ctx;
 
 int is_remap_active(void)
 {
-    return NPX0->REMAP ? 1 : 0;
+    return (*((volatile uint32_t *)FLASH_REMAP_REG) > 0) ? 1 : 0;
 }
 
 int is_sb3_header(const void *header)
@@ -87,6 +95,14 @@ void parse_mbi_image_info(const uint32_t *image, struct mbi_image_info *info)
     info->fw_version  = image[(info->cert_offset+info->cert_size)/4 + 2];
 }
 
+int sb3_check_provisioning(void)
+{
+    if(OTP_RKTH_383_352_FUSE_VALUE() != 0 && OTP_CUST_SK_MK_31_0_FUSE_VALUE() != 0)
+    {
+        return 1;
+    }
+    return 0;
+}
 
 status_t sb3_api_init(void)
 {
@@ -99,8 +115,6 @@ status_t sb3_api_init(void)
     //PRINTF("IAP API version=%d.%d.%d\n", iapVersion.major, iapVersion.minor, iapVersion.bugfix);
 
     memset(&ctx->core_ctx, 0x0, sizeof(ctx->core_ctx));
-
-    ctx->core_ctx.flashConfig.modeConfig.sysFreqInMHz = SystemCoreClock / 1000000;
 
     memset(&ctx->init_param, 0x0, sizeof(ctx->init_param));
 
@@ -117,17 +131,29 @@ status_t sb3_api_init(void)
         return kStatus_Fail;
     }
 
-    status = API_Init(&(ctx->core_ctx), &(ctx->init_param));
+    standard_version_t iapVersion = (standard_version_t) iap_api_version();
+    PRINTF("IAP API version=%d.%d.%d\n", iapVersion.major, iapVersion.minor, iapVersion.bugfix);
+
+    status = iap_api_init(&(ctx->core_ctx), &(ctx->init_param));
     if (status != kStatus_Success)
     {
-        PRINTF("%s: API_Init() failed with %d\n", __func__, status);
+        PRINTF("%s: iap_api_init() failed with %d\n", __func__, status);
         goto cleanup;
     }
 
-    status = Sbloader_Init(&ctx->core_ctx);
+    /* Let ROM IAP configure flash driver from FCB of SBL */
+#if 0
+    status = iap_mem_config(&(ctx->core_ctx), (uint32_t *) FLASH_FCB_OFFSET, kMemoryID_FlexspiNor);
+    if(status != kStatus_Success) {
+        PRINTF("iap_mem_config returned with code 0x%X\n", status);
+        return status;
+    }
+#endif
+
+    status = iap_sbloader_init(&ctx->core_ctx);
     if (status != kStatus_Success)
     {
-        PRINTF("%s: Sbloader_Init() failed with %d\n", __func__, status);
+        PRINTF("%s: iap_sbloader_init() failed with %d\n", __func__, status);
         goto cleanup;
     }
 
@@ -146,7 +172,7 @@ status_t sb3_api_pump(uint8_t *data, size_t len)
     status_t status;
     sb3_api_ctx_t *ctx = &sb3_api_ctx;
 
-    status = Sbloader_Pump(&ctx->core_ctx, data, len);
+    status = iap_sbloader_pump(&ctx->core_ctx, data, len);
 
     if (status != kStatus_Success && status != kStatusRomLdrDataUnderrun)
     {
@@ -160,7 +186,7 @@ status_t sb3_api_pump(uint8_t *data, size_t len)
 void sb3_api_finalize(void)
 {
     sb3_api_ctx_t *ctx = &sb3_api_ctx;
-    Sbloader_Finalize(&ctx->core_ctx);
+    iap_sbloader_finalize(&ctx->core_ctx);
 }
 
 
@@ -170,5 +196,5 @@ status_t sb3_api_deinit(void)
 #ifdef SDK_OS_FREE_RTOS
     vPortFree((void *)ctx->init_param.allocStart);
 #endif
-    return API_Deinit(&ctx->core_ctx);
+    return iap_api_deinit(&ctx->core_ctx);
 }

@@ -75,6 +75,8 @@ SB3 processing is demonstrated in `ota_mcuboot_basic`, for more information plea
 List of boards supporting SB3:
 - MCX-N9XX-EVK
 - FRDM-MCXN947
+- RD-RW612-BGA
+- FRDM-RW612
 
 Signing the application image
 -----------------------------

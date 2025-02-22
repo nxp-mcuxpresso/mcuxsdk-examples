@@ -126,7 +126,7 @@ static int ssi_ota_image_upload(HTTPSRV_SSI_PARAM_STRUCT *param)
 {
     char buf[128];
     char *html;
- 
+
     html = "<tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
 
@@ -150,13 +150,13 @@ static int ssi_ota_image_info(HTTPSRV_SSI_PARAM_STRUCT *param)
     char buf[128];
     char *html;
     const char* invalid_header_msg = "<td colspan=100>Invalid image header</td>";
-    
+
     struct mbi_image_info imginfo;
-    
+
     uint32_t slot0_log_addr;
     uint32_t slot1_log_addr;
-    
-    
+
+
     if (is_remap_active())
     {
         slot0_log_addr = 0x100000;
@@ -169,17 +169,17 @@ static int ssi_ota_image_info(HTTPSRV_SSI_PARAM_STRUCT *param)
     }
 
     /* Slot 0 info */
-    
+
     html = "<table border='1'><tr><th>Bank</th><th>Active</th><th>ImgVersion</th><th>FwVersion</th><th>Size</th><th>Type</th><th>ExecAddr</th></tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
-    
+
     html = "<tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
-    
+
     if (mbi_image_info_sanity_check((void *) slot0_log_addr))
     {
-        parse_mbi_image_info((uint32_t *) slot0_log_addr, &imginfo);            
-    
+        parse_mbi_image_info((uint32_t *) slot0_log_addr, &imginfo);
+
         snprintf(buf, sizeof(buf), "<td>%d</td><td>%s</td><td>%u</td><td>%lu</td><td>%lu</td><td>%u</td><td>0x%lx</td>",
                  0, is_remap_active()?" ":"X",
                  imginfo.img_version, imginfo.fw_version, imginfo.length, imginfo.type, imginfo.execaddr);
@@ -188,21 +188,21 @@ static int ssi_ota_image_info(HTTPSRV_SSI_PARAM_STRUCT *param)
     {
         strcpy(buf, invalid_header_msg);
     }
-    
+
     HTTPSRV_ssi_write(param->ses_handle, buf, strlen(buf));
-    
+
     html = "</tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
-    
+
     /* Slot 1 info */
-       
+
     html = "<tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
-    
+
     if (mbi_image_info_sanity_check((void *) slot1_log_addr))
-    {    
+    {
         parse_mbi_image_info((uint32_t *) slot1_log_addr, &imginfo);
-        
+
         snprintf(buf, sizeof(buf), "<td>%d</td><td>%s</td><td>%u</td><td>%lu</td><td>%lu</td><td>%u</td><td>0x%lx</td>",
                  1, is_remap_active()?"X":" ",
                  imginfo.img_version, imginfo.fw_version, imginfo.length, imginfo.type, imginfo.execaddr);
@@ -211,15 +211,15 @@ static int ssi_ota_image_info(HTTPSRV_SSI_PARAM_STRUCT *param)
     {
         strcpy(buf, invalid_header_msg);
     }
-    
+
     HTTPSRV_ssi_write(param->ses_handle, buf, strlen(buf));
-    
+
     html = "</tr>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
-    
+
     html = "</table>";
     HTTPSRV_ssi_write(param->ses_handle, html, strlen(html));
-    
+
     return 0;
 }
 
@@ -230,8 +230,6 @@ int32_t process_sb3_upload(struct multipart_read_ctx *ctx)
 {
     int32_t ret = 0;
     int32_t chunk_len;
-    
-    sb3_iap_ctx_t iap_ctx;
 
     /* Page buffers */
     size_t prog_size;
@@ -248,23 +246,23 @@ int32_t process_sb3_upload(struct multipart_read_ctx *ctx)
         PRINTF("%s: prog buffer allocation error\n", __func__);
         return -1;
     }
-    
-    ret = sb3_iap_init(&iap_ctx);
+
+    ret = sb3_api_init();
     if (ret != kStatus_Success)
     {
-        PRINTF("%s: sb3_iap_init() failed\n", __func__);
+        PRINTF("%s: sb3_api_init() failed\n", __func__);
         ret = -1;
         goto cleanup;
     }
-    
+
     do
     {
         /* The data is received in requested chunk size, except for the last one */
         chunk_len = multipart_read_data(ctx, (uint8_t *)prog_buf, prog_size);
-        
+
         /* end of stream */
         if (chunk_len < 1) break;
-        
+
         if (total_processed == 0)
         {
             /* notify if this isn't sb3 stream */
@@ -273,12 +271,12 @@ int32_t process_sb3_upload(struct multipart_read_ctx *ctx)
                 PRINTF("WARNING: Uploaded stream doesn't start with SB3 signature!\n");
             }
         }
-        
+
         /* Hand over for sb3 processing */
-        ret = sb3_iap_pump(&iap_ctx, prog_buf, chunk_len);
-        if (ret != kStatus_Success && ret != kStatusRomLdrDataUnderrun)
+        ret = sb3_api_pump(prog_buf, chunk_len);
+        if (ret != kStatus_Success)
         {
-            PRINTF("%s: sb3_iap_pump() failed with %d\n", __func__, ret);
+            PRINTF("%s: sb3_api_pump() failed with %d\n", __func__, ret);
             ret = -1;
             goto cleanup;
         }
@@ -286,7 +284,7 @@ int32_t process_sb3_upload(struct multipart_read_ctx *ctx)
         total_processed += chunk_len;
 
         PRINTF("%s: processed %i bytes\n", __func__, total_processed);
-        
+
     } while (chunk_len == prog_size);
 
     /* If there was error reading multipart content, report failure */
@@ -298,15 +296,15 @@ int32_t process_sb3_upload(struct multipart_read_ctx *ctx)
 
     if (ret == 0)
     {
-        sb3_iap_finalize(&iap_ctx);
+        sb3_api_finalize();
         ret = total_processed;
         PRINTF("\n%s: upload complete (%u bytes)\n", __func__, total_processed);
     }
-    
+
 cleanup:
-    
+
     httpsrv_mem_free(prog_buf);
-    sb3_iap_free(&iap_ctx);
+    sb3_api_deinit();
 
     return ret;
 }
@@ -359,8 +357,8 @@ static int cgi_ota_upload(HTTPSRV_CGI_REQ_STRUCT *param)
                 /* int image = atoi(&mpr_ctx->form_data_name[strlen(prefix)]); */
                 int32_t stored;
 
-                images_processed++;                
-     
+                images_processed++;
+
                 stored = process_sb3_upload(mpr_ctx);
                 if (stored < 0)
                 {
@@ -369,7 +367,7 @@ static int cgi_ota_upload(HTTPSRV_CGI_REQ_STRUCT *param)
                     response.status_code = HTTPSRV_CODE_INTERNAL_ERROR;
                     continue;
                 }
-                
+
                 PRINTF("Image upload completed\n");
             }
             else
@@ -516,25 +514,25 @@ static void main_thread(void *arg)
 {
     int cmpa_ok;
     int remap_size;
-    
+
     LWIP_UNUSED_ARG(arg);
 
     initNetwork();
-    
-    
+
+
     /* Test device is setup - CMPA header is present and flash remapping enabled */
-    
+
     cmpa_ok = *((uint16_t*)0x1004002) == 0x5963;
     remap_size = ((*((uint8_t *)0x1004004) & 0x1F)+1)*32;
-    
+
     PRINTF("CMPA header %s; REMAP size %u kB\n", cmpa_ok ? "OK" : "MISMATCH!", remap_size);
-    
+
     if (!cmpa_ok || remap_size == 0)
     {
         PRINTF("WARNING! Device doesn't seem to be configured properly! Check instructions in readme file.\n");
         ota_status = OTA_STATUS_SETUP_ERROR;
     }
-    
+
     http_server_socket_init();
 
     vTaskDelete(NULL);
@@ -550,7 +548,7 @@ int main(void)
 {
     BOARD_InitHardware();
     mflash_drv_init();
-    
+
     /* create server thread in RTOS */
     if (sys_thread_new("main", main_thread, NULL, HTTPD_STACKSIZE, HTTPD_PRIORITY) == NULL)
         LWIP_ASSERT("main(): Task creation failed.", 0);

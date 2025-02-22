@@ -1,9 +1,18 @@
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/ota_examples/sb3_api/sb3_api.h
+            examples/ota_examples/sb3_api/sb3_api_rw61x.c
+)
 
-
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/ota_examples/sb3_api
+)
 
 # Add additional configuration
 mcux_add_macro(
     CC "-DWPL_NO_WLAN_INIT"
+    CC "-DMCUBOOT_OTA_SB3_SUPPORT"
 )
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
