@@ -20,4 +20,4 @@ aon_lpadc_edma:
       - ${board_root}/${board}/driver_examples/aon_lpadc/edma/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxl255@cm0plus: []
+    frdmmcxl255@cm33: []

@@ -20,5 +20,5 @@ aon_lpadc_interrupt:
       - ${board_root}/${board}/driver_examples/aon_lpadc/interrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxl255@cm0plus: []
+    frdmmcxl255@cm33: []
 
