@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021,2025 NXP
  * All rights reserved.
  *
  *
@@ -13,7 +13,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define DEMO_LPUART          LPUART0
-#define DEMO_LPUART_CLK_FREQ BOARD_DEBUG_UART_CLK_FREQ
+#define DEMO_LPUART_CLK_FREQ CLOCK_GetIpFreq(kCLOCK_Lpuart0)
 #define DELAY_TIME           100000U
 /*${macro:end}*/
 

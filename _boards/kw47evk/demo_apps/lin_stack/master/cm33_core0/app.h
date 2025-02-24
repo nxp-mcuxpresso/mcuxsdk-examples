@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,13 +18,13 @@
 #define DEMO_TPM_BASEADDR            TPM0
 #define DEMO_TPM_IRQn                TPM0_IRQn
 #define DEMO_TPM_IRQHandler          TPM0_IRQHandler
-#define DEMO_TIMER_FREQ              CLOCK_GetFreq(kCLOCK_ScgSircClk)
 #define DEMO_TPM_CLOCK               kCLOCK_Tpm0
+#define DEMO_TIMER_FREQ              CLOCK_GetIpFreq(DEMO_TPM_CLOCK)
 
 /* (timer period (us) * (timer clock frequency)(Hz)) - 1 ). */
-#define DEMO_MODULO_VALUE        ((500U * (CLOCK_GetFreq(kCLOCK_ScgSircClk) / 1000000U)) - 1U)
+#define DEMO_MODULO_VALUE        ((500U * (CLOCK_GetIpFreq(DEMO_TPM_CLOCK) / 1000000U)) - 1U)
 #define DEMO_TIMER_TICKS_1US     (DEMO_TIMER_FREQ / 1000000)
-#define DEMO_TIMER_COMPARE_VALUE (500U * (CLOCK_GetFreq(kCLOCK_ScgSircClk) / 1000000U))
+#define DEMO_TIMER_COMPARE_VALUE (500U * (CLOCK_GetIpFreq(DEMO_TPM_CLOCK) / 1000000U))
 
 /* Which lpuart instance was used. */
 #define DEMO_MASTER_LPUART_INSTANCE 0U

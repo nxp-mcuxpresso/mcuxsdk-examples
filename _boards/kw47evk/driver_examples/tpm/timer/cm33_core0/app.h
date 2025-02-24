@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -16,7 +16,7 @@
 #define BOARD_TPM_IRQ_NUM TPM0_IRQn
 #define BOARD_TPM_HANDLER TPM0_IRQHandler
 /* Get source clock for LPIT driver */
-#define TPM_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_ScgSircClk))
+#define TPM_SOURCE_CLOCK (CLOCK_GetIpFreq(kCLOCK_Tpm0))
 /*${macro:end}*/
 
 /*******************************************************************************

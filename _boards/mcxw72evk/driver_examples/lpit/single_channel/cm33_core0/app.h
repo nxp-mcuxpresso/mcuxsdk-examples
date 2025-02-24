@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -15,7 +15,7 @@
 #define DEMO_LPIT_IRQn       LPIT0_IRQn
 #define DEMO_LPIT_IRQHandler LPIT0_IRQHandler
 /* Get source clock for LPIT driver */
-#define LPIT_SOURCECLOCK (CLOCK_GetFreq(kCLOCK_ScgSircClk))
+#define LPIT_SOURCECLOCK (CLOCK_GetIpFreq(kCLOCK_Lpit0))
 #define LED_INIT()       LED3_INIT(LOGIC_LED_OFF)
 #define LED_TOGGLE()     LED3_TOGGLE()
 /*${macro:end}*/

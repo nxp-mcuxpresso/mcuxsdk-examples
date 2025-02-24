@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 NXP
+ * Copyright 2019,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -29,8 +29,8 @@
 #define DEMO_TPM_CLOCK        kCLOCK_Tpm0
 
 /* Timer frequency. */
-#define DEMO_TIMER_FREQ        CLOCK_GetFreq(kCLOCK_ScgSircClk)
-#define DEMO_MODULO_VALUE      ((500U * (CLOCK_GetFreq(kCLOCK_ScgSircClk) / 1000000U)) - 1U)
+#define DEMO_TIMER_FREQ        CLOCK_GetIpFreq(DEMO_TPM_CLOCK)
+#define DEMO_MODULO_VALUE      ((500U * (CLOCK_GetIpFreq(DEMO_TPM_CLOCK) / 1000000U)) - 1U)
 #define DEMO_1TICK_DURATION_PS (1000000000000U / DEMO_TIMER_FREQ)
 
 #define DEMO_TIMER_COMPARE_VALUE (0xFFFF)
