@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2022 NXP
- * All rights reserved.
+ * Copyright 2016-2022, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +16,7 @@
 /* Fix MISRA_C-2012 Rule 17.7. */
 #define LOG_INFO (void)PRINTF
 
+#if (defined(USE_CANFD) && USE_CANFD)
 /*
  *    DWORD_IN_MB    DLC    BYTES_IN_MB             Maximum MBs
  *    2              8      kFLEXCAN_8BperMB    32(1 RAM block)  64(2 RAM block)  96(3 RAM block)
@@ -27,6 +27,8 @@
  * Dword in each message buffer, Length of data in bytes, Payload size must align,
  * and the Message Buffers are limited corresponding to each payload configuration:
  */
+#define BYTES_IN_MB kFLEXCAN_64BperMB
+#endif
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -198,7 +200,7 @@ int main(void)
 #endif
 #if (defined(USE_CANFD) && USE_CANFD)
     uint8_t i = 0;
-    for (i = 0; i < DWORD_IN_MB; i++)
+    for (i = 0; i < (DLC_LENGTH_DECODE(DLC) + 3U) / 4U; i++)
     {
         txFrame.dataWord[i] = i;
     }
@@ -211,7 +213,7 @@ int main(void)
 
     LOG_INFO("Send message from MB%d to MB%d\r\n", TX_MESSAGE_BUFFER_NUM, RX_MESSAGE_BUFFER_NUM);
 #if (defined(USE_CANFD) && USE_CANFD)
-    for (i = 0; i < DWORD_IN_MB; i++)
+    for (i = 0; i < (DLC_LENGTH_DECODE(DLC) + 3U) / 4U; i++)
     {
         LOG_INFO("tx word%d = 0x%x\r\n", i, txFrame.dataWord[i]);
     }
@@ -220,7 +222,7 @@ int main(void)
     LOG_INFO("tx word1 = 0x%x\r\n", txFrame.dataWord1);
 #endif
 
-/* Send data through Tx Message Buffer using polling function. */
+    /* Send data through Tx Message Buffer using polling function. */
 #if (defined(USE_CANFD) && USE_CANFD)
     (void)FLEXCAN_TransferFDSendBlocking(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, &txFrame);
 #else
@@ -234,13 +236,20 @@ int main(void)
 
     LOG_INFO("\r\nReceived message from MB%d\r\n", RX_MESSAGE_BUFFER_NUM);
 #if (defined(USE_CANFD) && USE_CANFD)
-    for (i = 0; i < DWORD_IN_MB; i++)
+    for (i = 0; i < (DLC_LENGTH_DECODE(DLC) + 3U) / 4U; i++)
     {
         LOG_INFO("rx word%d = 0x%x\r\n", i, rxFrame.dataWord[i]);
     }
 #else
     LOG_INFO("rx word0 = 0x%x\r\n", rxFrame.dataWord0);
-    LOG_INFO("rx word1 = 0x%x\r\n", rxFrame.dataWord1);
+    /*
+     * When DLC less than 5 FlexCAN transmit 0-4 bytes, receive mailbox only update WORD0,
+     * WORD1 stores previous unwanted message. Only print received message.
+     */
+    if (DLC > 4)
+    {
+        LOG_INFO("rx word1 = 0x%x\r\n", rxFrame.dataWord1);
+    }
 #endif
 
     /* Stop FlexCAN Send & Receive. */

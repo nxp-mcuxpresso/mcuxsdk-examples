@@ -5,9 +5,9 @@
 menu "Project Settings"
 
 config DLC
-    int "CAN frame data length in bytes (Range: 0~8)"
+    int "CAN frame data length in bytes (Range: 1~8)"
     default 8
-    range 0 8
+    range 1 8
     help
         Correspond to the DLC field value of frame to be transmitted.
         No prefix in generated macro
