@@ -115,38 +115,6 @@ littlefs_shell:
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []
     frdmrw612: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
-    kw45b41zevk:
-    - +armgcc@debug
-    - +armgcc@release
-    - -armgcc@hyperram_release
-    - -iar@hyperram_release
-    frdmmcxw71:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@debug
-    - +iar@release
-    - -armgcc@hyperram_release
-    - -iar@hyperram_release
-    mcxw71evk:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@debug
-    - +iar@release
-    - -armgcc@hyperram_release
-    - -iar@hyperram_release
-    kw47evk@cm33_core0:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@debug
-    - +iar@release
-    mcxw72evk@cm33_core0:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@debug
-    - +iar@release
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
     lpcxpresso55s36: []
