@@ -17,4 +17,3 @@ adc_sample_rate_measurement:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
-    frdmmcxe318: []

@@ -40,4 +40,3 @@ adc_polling:
     - +iar@release
     - +iar@debug
     mcimx93evk: []
-    frdmmcxe318: []
