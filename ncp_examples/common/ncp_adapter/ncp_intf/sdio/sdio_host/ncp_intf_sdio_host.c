@@ -39,6 +39,11 @@
 #define NCP_SDIO_DEVICE_STATUS_PRE_SLEEP 2
 #define NCP_SDIO_DEVICE_STATUS_SLEEP     3
 
+#define NCP_SDIO_DEVICE_PM0           (0U)
+#define NCP_SDIO_DEVICE_PM1           (1U)
+#define NCP_SDIO_DEVICE_PM2           (2U)
+#define NCP_SDIO_DEVICE_PM3           (3U)
+
 /*! @brief SD power reset */
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_BASE GPIO1
 //#define BOARD_SDMMC_SD_POWER_RESET_GPIO_PORT 1
@@ -1124,9 +1129,25 @@ void sdhost_rescan_set_event(osa_event_flags_t flagsToWait)
 
 void sdhost_rescan_task(void *argv)
 {
+    uint32_t resp = 0;
+    uint8_t pm_state = 0;
+    int ret = 0;
+
     for (;;)
     {
         (void)sdhost_rescan_wait_event(SDHOST_RESCAN_START);
+
+        /* Read PM mode from device */
+        ret = sdio_drv_creg_read(0xFC, 1, &resp);
+        pm_state = resp & 0xffU;
+
+        ncp_adap_d("%s: sdio_drv_creg_read ret=%d resp=%u pm_state=%u", __FUNCTION__, ret, resp, pm_state);
+        if ((ret == true) && ((pm_state == NCP_SDIO_DEVICE_PM1) || (pm_state == NCP_SDIO_DEVICE_PM2)))
+        {
+            /* If read success and device in PM1/PM2 then do nothing */
+            ncp_adap_d("%s: do thing continue", __FUNCTION__);
+            continue;
+        }
 
         if (NCP_STATUS_SUCCESS != ncp_sdhost_CardDeinit())
         {
