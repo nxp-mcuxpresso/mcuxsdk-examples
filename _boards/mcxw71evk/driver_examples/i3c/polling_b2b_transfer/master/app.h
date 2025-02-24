@@ -12,13 +12,8 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_MASTER             I3C
-#define EXAMPLE_I2C_BAUDRATE       200000
-#define EXAMPLE_I3C_OD_BAUDRATE    600000
-#define EXAMPLE_I3C_PP_BAUDRATE    1200000
 #define I3C_MASTER_CLOCK_FREQUENCY CLOCK_GetIpFreq(kCLOCK_I3c0)
-#define I3C_MASTER_SLAVE_ADDR_7BIT 0x1E
 #define WAIT_TIME                  1000
-#define I3C_DATA_LENGTH            33
 /*${macro:end}*/
 
 /*******************************************************************************
