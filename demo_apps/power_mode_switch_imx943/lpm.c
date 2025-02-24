@@ -17,6 +17,9 @@
 #include "sm_platform.h"
 #include "fsl_adapter_timer.h"
 #include "app.h"
+#if defined(CPU_MIMX94398AVKM_cm7_core0)
+#include "fsl_lptmr.h"
+#endif
 
 /*******************************************************************************
  * Definitions
@@ -519,7 +522,10 @@ void vPortSetupTimerInterrupt(void)
     halTimerConfig.timeout = SYSTICK_TIMEOUT_US; /* uint: microsecond; 1000 * 1000 microseconds = 1 seconds; timeout = 1 seconds / configTICK_RATE_HZ */
     halTimerConfig.srcClock_Hz = APP_SYSTICK_TIMER_CLOCK_RATE;
     halTimerConfig.instance = APP_SYSTICK_TIMER_INSTANCE_IDX;
-
+#if defined(CPU_MIMX94398AVKM_cm7_core0)
+    /* lptmr system tick clock source use lptmr_clk_root. */
+    halTimerConfig.clockSrcSelect = kLPTMR_PrescalerClock_0;
+#endif
     HAL_TimerInit((hal_timer_handle_t)halSystickTimerHandle, &halTimerConfig);
 
     HAL_TimerInstallCallback((hal_timer_handle_t)halSystickTimerHandle, APP_SYSTICK_TIMER_HANDLER, NULL);

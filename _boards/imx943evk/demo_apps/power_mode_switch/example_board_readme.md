@@ -33,6 +33,13 @@ NOTE:
          1.1 Due to hardware clock source limitations which the clock sources supported by TPM will be turned off when the system is suspended, we only support TIMER wakeup on CM7_CORE0 in system suspend mode, do not support TIMER wakeup on CM33_CORE1/CM7_CORE1 in system suspend mode.
       2. Option 'P' will suspend A55 core.
       3. Please ensure the A55 already in SUSPEND mode, then press "W" button in Mcore debug console. A55 core will be wakeup.
+      4. Support lm core_id suspend and lm core_id wake command in system manager console, lm info get core_id:
+         4.1 >$ lm info
+             000: SM   = on
+             001: M33S = on
+             002: M7   = on
+             003: M71  = on
+             004: AP   = on (default)
 
 The log below shows the output of the power mode switch demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
