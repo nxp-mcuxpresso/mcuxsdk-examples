@@ -10,6 +10,8 @@ edgefast_bluetooth_examples
    a2dp_sink/readme.md
    a2dp_source/readme.md
    audio_profile/readme.md
+   bms_4bis/readme.md
+   bmr_4bis/readme.md
    broadcast_media_receiver/readme.md
    broadcast_media_sender/readme.md
    call_gateway/readme.md
@@ -38,6 +40,8 @@ edgefast_bluetooth_examples
    spp/readme.md
    tmap_central/readme.md
    tmap_peripheral/readme.md
+   ums_4cis/readme.md
+   umr_4cis/readme.md
    unicast_media_receiver/readme.md
    unicast_media_sender/readme.md
    wifi_cli_over_ble_wu/readme.md
