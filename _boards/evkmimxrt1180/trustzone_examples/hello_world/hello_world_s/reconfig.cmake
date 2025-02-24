@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
 
@@ -14,6 +14,17 @@ mcux_add_source(
 
 mcux_add_include(
     INCLUDES .
+)
+
+mcux_remove_mdk_configuration(
+    LD "--fpu=FPv5-SP"
+)
+
+mcux_add_mdk_configuration(
+        AS "-mfpu=none -mfloat-abi=soft"
+        CC "-mfpu=none -mfloat-abi=soft"
+        CX "-mfpu=none -mfloat-abi=soft"
+        LD "--fpu=softvfp --load_addr_map_info --library_type=microlib"
 )
 
 mcux_add_armgcc_linker_script(
