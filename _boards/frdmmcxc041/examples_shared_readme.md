@@ -1,14 +1,14 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXW23 Board
+- FRDM-MCXC041 board
 - Personal Computer
 
 Prepare the Demo
-================
-1.  Connect a USB cable between the host PC and the FRDM board J10.
+===============
+1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
 2.  Open a serial terminal with the following settings:
-    - 115200 baud rate
+    - 9600 baud rate
     - 8 data bits
     - No parity
     - One stop bit

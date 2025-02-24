@@ -1,13 +1,13 @@
 Hardware requirements
 =====================
-- Type-C USB cable
-- FRDM-MCXW23 Board
+- Mini/micro USB cable
+- MCX-N9XX-EVK board
 - Personal Computer
 
 Prepare the Demo
-================
-1.  Connect a USB cable between the host PC and the FRDM board J10.
-2.  Open a serial terminal with the following settings:
+===============
+1.  Connect a micro USB cable between the PC host and the MCU-Link USB port (J5) on the board
+2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
     - 115200 baud rate
     - 8 data bits
     - No parity

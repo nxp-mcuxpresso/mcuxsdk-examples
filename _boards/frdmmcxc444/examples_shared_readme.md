@@ -1,12 +1,12 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXW23 Board
+- FRDM-MCXC444 board
 - Personal Computer
 
 Prepare the Demo
-================
-1.  Connect a USB cable between the host PC and the FRDM board J10.
+===============
+1.  Connect a type-c USB cable between the host PC and the MCU-Link USB port (J13) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

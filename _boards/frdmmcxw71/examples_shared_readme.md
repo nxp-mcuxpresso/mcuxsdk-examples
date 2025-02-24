@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXW23 Board
+- FRDM-MCXW71 Board
 - Personal Computer
 
 Prepare the Demo

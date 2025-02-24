@@ -1,12 +1,12 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXW23 Board
+- KW47-LOC Board
 - Personal Computer
 
 Prepare the Demo
 ================
-1.  Connect a USB cable between the host PC and the FRDM board J10.
+1.  Connect a USB cable between the host PC and the LOC board J3.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
