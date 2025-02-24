@@ -166,12 +166,6 @@ mbedtls_benchmark:
     - -mdk@release
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
-    frdmk32l2a4s:
-    - -armgcc@debug
-    frdmk32l3a6@cm0plus:
-    - -armgcc@debug
-    frdmk32l3a6@cm4:
-    - -armgcc@debug
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71:
