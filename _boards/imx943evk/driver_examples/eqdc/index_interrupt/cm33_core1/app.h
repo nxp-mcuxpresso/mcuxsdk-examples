@@ -12,7 +12,7 @@
 /*${macro:start}*/
 #define DEMO_EQDC              EQDC1
 #define DEMO_EQDC_INDEX_IRQ_ID ENC1_IRQn
-#define ENC_INDEX_IRQHandler   EQDC1_IRQHandler
+#define ENC_INDEX_IRQHandler   ENC1_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
