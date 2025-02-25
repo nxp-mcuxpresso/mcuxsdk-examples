@@ -18,6 +18,7 @@ littlefs_shell_onchip_flash:
     frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmmcxw23: []
     lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

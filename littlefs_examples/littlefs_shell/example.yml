@@ -113,7 +113,6 @@ littlefs_shell:
     - -armgcc@hyperram_release
     - -armgcc@hyperram_debug
     frdmmcxn947@cm33_core0: []
-    frdmmcxw23: []
     frdmrw612: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
