@@ -86,7 +86,7 @@ mcux_add_macro(
       -DSHELL_TASK_STACK_SIZE=2900\
       -DUSE_RTOS=1"
 )
-# -DSHELL_ADVANCE=1 \
+
 mcux_add_macro(
   CC "-DCONFIG_ARM=1\
       -DCOEX_APP_SUPPORT=1\
@@ -102,7 +102,8 @@ mcux_add_macro(
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DSDIO_ENABLED=1\
-      -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1"
+      -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1\
+      -DCONTROLLER_INIT_ESCAPE=1"
 )
 
 # wifi

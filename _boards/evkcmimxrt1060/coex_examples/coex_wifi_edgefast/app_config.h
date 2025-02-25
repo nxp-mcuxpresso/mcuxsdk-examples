@@ -18,9 +18,9 @@
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 
-#ifndef CONFIG_WIFI_IND_DNLD
-#define CONFIG_WIFI_IND_DNLD CONFIG_WIFI_BLE_COEX_APP
-#endif
-#ifndef CONFIG_BT_IND_DNLD
-#define CONFIG_BT_IND_DNLD (!CONFIG_DISABLE_BLE)
-#endif
+#undef CONFIG_WIFI_IND_DNLD
+#define CONFIG_WIFI_IND_DNLD 1
+
+#undef CONFIG_BT_IND_DNLD
+#define CONFIG_BT_IND_DNLD 1
+
