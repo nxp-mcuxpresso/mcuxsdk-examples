@@ -14,7 +14,6 @@ mcux_add_source(SOURCES
 # link the G2D-DPU library
 target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/libg2d.a
-    m c gcc
 )
 
 mcux_remove_armgcc_linker_script(
@@ -31,10 +30,6 @@ mcux_add_armgcc_linker_script(
 )
 
 target_compile_definitions(${MCUX_SDK_PROJECT_NAME} PRIVATE
-    LPTMR0=LPTMR1
-    LPTMR0_IRQn=LPTMR1_IRQn
-    CLOCK_GetFreq=CLOCK_GetIpFreq
-    kCLOCK_LpoClk=0
     BOARD_USE_ADP5585=1
 )
 
