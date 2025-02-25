@@ -159,6 +159,7 @@ driver_examples
    lcdif/index.rst
    lcdifv2/index.rst
    lcdifv3/index.rst
+   lcu/readme.md
    lin/index.rst
    lmem/readme.md
    lpadc/index.rst
