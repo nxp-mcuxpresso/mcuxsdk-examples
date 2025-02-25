@@ -26,7 +26,11 @@ Running the demo
 The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Status=DD000001, Reply=AA000002
-F32 MAT MULT Test Passed: Status=DD000002, Reply=AA000003
-CF32 MAT MULT Test Passed: Status=DD000003, Reply=AA000004
+F32 2x1 x 1x3 MAT MULT Test Passed: Status=DD000002, Reply=AA000003
+F32 2x2 MAT MULT Test Passed: Status=DD000003, Reply=AA000004
+CF32 2x1 x 1x3 MAT MULT Test Passed: Status=DD000004, Reply=AA000005
+CF32 2x2 MAT MULT Test Passed: Status=DD000005, Reply=AA000006
+F32 MAT MULT Test Passed: Status=DD000006, Reply=AA000007
+CF32 MAT MULT Test Passed: Status=DD000007, Reply=AA000008
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

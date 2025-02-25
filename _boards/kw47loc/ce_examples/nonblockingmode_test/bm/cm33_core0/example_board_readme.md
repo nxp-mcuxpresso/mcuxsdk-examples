@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- MCX-W72-EVK Board
+- KW47-LOC Board
 - Personal Computer
 
 Board settings
@@ -10,7 +10,7 @@ No special settings are required.
 
 Prepare the Demo
 ================
-1. Connect a USB cable between the host PC and the EVK board J14.
+1. Connect a USB cable between the host PC and the LOC board J3.
 2. Open a serial terminal on PC for the serial device with these settings:
     - 115200 baud rate
     - 8 data bits
@@ -25,9 +25,10 @@ Running the demo
 ================
 The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Status=       0, Reply=AA000001
-OneCmd Non-blocking F32 MAT MULT Test Passed: Status=       0, Reply=AA000003
-OneCmd Non-blocking CF32 MAT MULT Test Passed: Status=       0, Reply=AA000004
-Non-blocking Cmd Queue Test Passed: Status=       0, Reply=AA000005
+CE non-blocking mode test using the LCE component
+LCE task2 start
+CF32 MAT MULT Test Passed: Status=       0, Reply=AA000002
+LCE task1 start
+F32 MAT MULT Test Passed: Status=       0, Reply=AA000003
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

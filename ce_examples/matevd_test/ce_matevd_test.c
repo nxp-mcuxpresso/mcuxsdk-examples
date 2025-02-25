@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -125,7 +125,7 @@ int main(void)
     CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneBlocking);
 
     status = CE_NullCmd();
-    PRINTF("Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    PRINTF("Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     // MAT EVD Test
     M = EVDSZ;
@@ -161,9 +161,9 @@ int main(void)
     }
 
     if ((copyerr > 1e-7) || (copyerr2 > 1e-7))
-        PRINTF("CF32 MAT EVD Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("CF32 MAT EVD Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("CF32 MAT EVD Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("CF32 MAT EVD Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     while (1)
     {

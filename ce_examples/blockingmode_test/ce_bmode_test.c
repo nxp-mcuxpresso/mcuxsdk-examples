@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -95,7 +95,7 @@ int main(void)
     CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneBlocking);
     
     status = CE_NullCmd();
-    PRINTF("Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    PRINTF("Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
     // F32 A[60x60] * B[60x60]
     M = 60;
@@ -128,9 +128,9 @@ int main(void)
     }
     
     if (copyerr > 1e-10)
-        PRINTF("OneCmd Blocking F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("OneCmd Blocking F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("OneCmd Blocking F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("OneCmd Blocking F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
     // CF32 A[40x40] * B[40x40]
     M = 40;
@@ -163,9 +163,9 @@ int main(void)
     }
 
     if (copyerr > 1e-10)
-        PRINTF("OneCmd Blocking CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("OneCmd Blocking CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("OneCmd Blocking CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("OneCmd Blocking CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
     ///////////////////////////////////////////////////////////////////
     // Multi Command Queue tests 
@@ -213,9 +213,9 @@ int main(void)
     }
     
     if ( (copyerr > 0) || (copyerr2 > 0) )
-        PRINTF("Blocking Cmd Queue Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Blocking Cmd Queue Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("Blocking Cmd Queue Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Blocking Cmd Queue Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
     while(1)
     {

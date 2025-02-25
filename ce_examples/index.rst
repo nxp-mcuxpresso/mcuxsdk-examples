@@ -13,4 +13,4 @@ ce_examples
    mat_test/readme.md
    matevd_test/readme.md
    matinv_test/readme.md
-   nonblockingmode_test/readme.md
+   nonblockingmode_test/bm/readme.md

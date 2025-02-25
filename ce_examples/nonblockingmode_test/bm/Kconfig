@@ -1,6 +1,6 @@
 # It is optional to provide example specific Kconfig.
 
-mainmenu "CE non blocking mode test"
+mainmenu "CE non blocking mode test bare-metal application"
 
 # Need to refer the root Kconfig.mcuxpreso to get all Kconfig data
 source "${SdkRootDirPath}/Kconfig.mcuxpresso"

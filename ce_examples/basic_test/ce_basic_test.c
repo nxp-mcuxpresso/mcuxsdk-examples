@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -78,7 +78,7 @@ int main(void)
     }
 
     status = CE_NullCmd();
-    PRINTF("Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    PRINTF("Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     for (i = 0; i < 25; i++)
     {
@@ -98,9 +98,9 @@ int main(void)
     }
 
     if (copyerr > 0)
-        PRINTF("VECADD Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("VECADD Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("VECADD Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("VECADD Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     for (i = 0; i < 25; i++)
     {
@@ -120,9 +120,9 @@ int main(void)
     }
 
     if (copyerr > 0)
-        PRINTF("VECMULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("VECMULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("VECMULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("VECMULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     while (1)
     {

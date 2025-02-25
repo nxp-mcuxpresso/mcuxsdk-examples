@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -87,7 +87,135 @@ int main(void)
     CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneBlocking);
 
     status = CE_NullCmd();
-    PRINTF("Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    PRINTF("Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+
+    // F32 A[2x1] * Ones[1x3]
+    temp = (float *)&inputA[0];
+    matA[0] = *temp;
+    temp = (float *)&inputA[1];
+    matA[1] = *temp;
+
+    matB[0] = 1.0;
+    matB[1] = 1.0;
+    matB[2] = 1.0;
+
+    refOut[0] = matA[0];
+    refOut[1] = matA[0];
+    refOut[2] = matA[0];
+    refOut[3] = matA[1];
+    refOut[4] = matA[1];
+    refOut[5] = matA[1];
+
+    status = CE_MatrixMul_F32(matC, matA, matB, 2, 1, 3);
+
+    copyerr = 0;
+    for (i = 0; i < 6; i++)
+    {
+        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+    }
+
+    if (copyerr > 1e-10)
+        PRINTF("F32 2x1 x 1x3 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+    else
+        PRINTF("F32 2x1 x 1x3 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+
+    // F32 A[2x2] * Identity[2x2]
+    for (i = 0; i < 4; i++)
+    {
+      temp  = (float *)&inputA[i];
+      matA[i] = *temp;
+      refOut[i] = *temp;
+    }
+    matB[0] = 1.0;
+    matB[1] = 0;
+    matB[2] = 0;
+    matB[3] = 1.0;
+
+    status = CE_MatrixMul_F32(matC, matA, matB, 2, 2, 2);
+
+    copyerr = 0;
+    for (i = 0; i < 4; i++)
+    {
+        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+    }
+
+    if (copyerr > 1e-10)
+        PRINTF("F32 2x2 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+    else
+        PRINTF("F32 2x2 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+
+    // CF32 A[2x1] * Ones[1x3]
+    temp = (float *)&inputA[0];
+    matA[0] = *temp;
+    temp = (float *)&inputA[1];
+    matA[1] = *temp;
+    temp = (float *)&inputA[2];
+    matA[2] = *temp;
+    temp = (float *)&inputA[3];
+    matA[3] = *temp;
+
+    matB[0] = 1.0;
+    matB[1] = 0;
+    matB[2] = 1.0;
+    matB[3] = 0;
+    matB[4] = 1.0;
+    matB[5] = 0;
+
+    refOut[0] = matA[0];
+    refOut[1] = matA[1];
+    refOut[2] = matA[0];
+    refOut[3] = matA[1];
+    refOut[4] = matA[0];
+    refOut[5] = matA[1];
+
+    refOut[6] = matA[2];
+    refOut[7] = matA[3];
+    refOut[8] = matA[2];
+    refOut[9] = matA[3];
+    refOut[10] = matA[2];
+    refOut[11] = matA[3];
+
+    status = CE_MatrixMul_CF32(matC, matA, matB, 2, 1, 3);
+
+    copyerr = 0;
+    for (i = 0; i < 6*2; i++)
+    {
+        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+    }
+
+    if (copyerr > 1e-10)
+        PRINTF("CF32 2x1 x 1x3 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+    else
+        PRINTF("CF32 2x1 x 1x3 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+
+    // CF32 A[2x2] * Identity[2x2]
+    for (i = 0; i < 4*2; i++)
+    {
+      temp = (float *)&inputA[i];
+      matA[i] = *temp;
+      refOut[i] = *temp;
+    }
+    matB[0] = 1.0;
+    matB[1] = 0;
+    matB[2] = 0;
+    matB[3] = 0;
+    matB[4] = 0;
+    matB[5] = 0;
+    matB[6] = 1.0;
+    matB[7] = 0;
+
+    status = CE_MatrixMul_CF32(matC, matA, matB, 2, 2, 2);
+
+    copyerr = 0;
+    for (i = 0; i < 4*2; i++)
+    {
+        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+    }
+
+    if (copyerr > 1e-10)
+        PRINTF("CF32 2x2 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+    else
+        PRINTF("CF32 2x2 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     // F32 A[60x60] * B[60x60]
     M = 60;
@@ -120,9 +248,9 @@ int main(void)
     }
 
     if (copyerr > 1e-10)
-        PRINTF("F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     // CF32 A[40x40] * B[40x40]
     M = 40;
@@ -155,9 +283,9 @@ int main(void)
     }
 
     if (copyerr > 1e-10)
-        PRINTF("CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     while (1)
     {

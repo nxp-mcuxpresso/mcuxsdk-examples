@@ -1,31 +1,31 @@
 # yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
-ce_nonblockingmode_test:
+ce_nonblockingmode_test_bm:
   section-type: application
   contents:
-    meta_path: examples/ce_examples/nonblockingmode_test
-    project-root-path: boards/${board}/ce_examples/nonblockingmode_test/${multicore_foldername}
+    meta_path: examples/ce_examples/nonblockingmode_test/bm
+    project-root-path: boards/${board}/ce_examples/nonblockingmode_test/${multicore_foldername}/bm
     complete_cmake_data:
       files:
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_mult_input_A.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/bm/mat_mult_input_A.txt:
           project_relative_path: ./
           type: src
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_mult_input_B.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/bm/mat_mult_input_B.txt:
           project_relative_path: ./
           type: src
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_multcf32_40x40x40_C_ref.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/bm/mat_multcf32_40x40x40_C_ref.txt:
           project_relative_path: ./
           type: src
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/mat_multf32_60x60x60_C_ref.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/bm/mat_multf32_60x60x60_C_ref.txt:
           project_relative_path: ./
           type: src
     document:
-      name: ce_nonblockingmode_test${core_id_suffix_name}
+      name: ce_nonblockingmode_test_bm${core_id_suffix_name}
       category: ce_examples
       brief: Sample application that tests the non-blocking mode operation of ZV2117
         in both single and multi-command settings.
       example_readme:
-      - examples/ce_examples/nonblockingmode_test/readme.md
-      - ${board_root}/${board}/ce_examples/nonblockingmode_test/example_board_readme.md
+      - examples/ce_examples/nonblockingmode_test/bm/readme.md
+      - ${board_root}/${board}/ce_examples/nonblockingmode_test/bm/${core_id}/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     kw47evk@cm33_core0:

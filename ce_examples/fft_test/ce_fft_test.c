@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -106,7 +106,7 @@ int main(void)
     CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneBlocking);
 
     status = CE_NullCmd();
-    PRINTF("Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    PRINTF("Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     // Test 1: CF16 32pt FFT Test
     N     = 32;
@@ -128,9 +128,9 @@ int main(void)
     }
 
     if (copyerr > 0)
-        PRINTF("Test 1: CFFT 32 F16 Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 1: CFFT 32 F16 Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("Test 1: CFFT 32 F16 Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 1: CFFT 32 F16 Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     // Test 2: CF32 512pt FFT Test
     N     = 512;
@@ -152,9 +152,9 @@ int main(void)
     }
 
     if (copyerr > 0)
-        PRINTF("Test 2: CFFT 512 F32 Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 2: CFFT 512 F32 Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("Test 2: CFFT 512 F32 Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 2: CFFT 512 F32 Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     // Test 3: CF16 1024pt IFFT Test
     N     = 1024;
@@ -176,9 +176,9 @@ int main(void)
     }
 
     if (copyerr > 0)
-        PRINTF("Test 3: IFFT 1024 F16 Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 3: IFFT 1024 F16 Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("Test 3: IFFT 1024 F16 Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 3: IFFT 1024 F16 Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     // Test 4: CF32 32pt IFFT Test
     N     = 256;
@@ -200,9 +200,9 @@ int main(void)
     }
 
     if (copyerr > 0)
-        PRINTF("Test 4: IFFT 256 F32 Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 4: IFFT 256 F32 Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("Test 4: IFFT 256 F32 Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("Test 4: IFFT 256 F32 Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
     while (1)
     {

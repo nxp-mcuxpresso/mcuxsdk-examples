@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -13,12 +13,26 @@
 #include "fsl_mu.h"
 #include "fsl_ce.h"
 #include "fsl_ce_cmd.h"
-
-
+#include "fsl_os_abstraction.h"
+#include "fsl_component_lce.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 #define Nmax 3600
+
+#ifndef gLCE_Task1_TaskPriority_c
+#define gLCE_Task1_TaskPriority_c        1
+#endif /* gLCE_Task1_TaskPriority_c */
+#ifndef gLCE_Task1_TaskStackSize_c
+#define gLCE_Task1_TaskStackSize_c       1024
+#endif /* gLCE_Task1_TaskStackSize_c */
+
+#ifndef gLCE_Task2_TaskPriority_c
+#define gLCE_Task2_TaskPriority_c        1
+#endif /* gLCE_Task2_TaskPriority_c */
+#ifndef gLCE_Task2_TaskStackSize_c
+#define gLCE_Task2_TaskStackSize_c       1024
+#endif /* gLCE_Task2_TaskStackSize_c */
 
 /*******************************************************************************
  * Prototypes
@@ -73,32 +87,20 @@ int outputC2_ref[Nmax] = {
 };
 
 ce_cmdbuffer_t ce_cmd_buffer;
-
 /*******************************************************************************
  * Code
  ******************************************************************************/
+static OSA_TASK_HANDLE_DEFINE(LCE_Task1_TaskId);
 
-/*!
- * @brief Main function
- */
-int main(void)
+static void LCE_Task1(void *param)
 {
     int status, i;
-    double copyerr = 0, copyerr2 = 0;
+    double copyerr = 0;
     int M, N, P;
     float *temp;
-    int ce_status = CE_STATUS_IDLE;
 
-    BOARD_InitHardware();
+    PRINTF("LCE task1 start\r\n");
 
-    ///////////////////////////////////////////////////////////////////
-    // One Command tests 
-    ///////////////////////////////////////////////////////////////////
-    CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneNonBlocking);
-    
-    status = CE_NullCmd();
-    PRINTF("Status=%8X, Reply=%8X\n", status, status_buffer[0]);
-    
     // F32 A[60x60] * B[60x60]
     M = 60;
     N = 60;
@@ -121,20 +123,8 @@ int main(void)
         refOut[i] = *temp;
     }
 
-    ce_status = CE_CmdCheckStatus();
-    while (ce_status != CE_STATUS_IDLE)
-    {
-        ce_status = CE_CmdCheckStatus();
-    }
-    
-    status = CE_MatrixMul_F32(matC, matA, matB, M, N, P);
+    status = LCE_MatrixMul_F32(matC, matA, matB, M, N, P);
 
-    ce_status = CE_CmdCheckStatus();
-    while (ce_status != CE_STATUS_IDLE)
-    {
-        ce_status = CE_CmdCheckStatus();
-    }
-    
     copyerr = 0;
     for (i = 0; i < M * P; i++)
     {
@@ -142,10 +132,26 @@ int main(void)
     }
     
     if (copyerr > 1e-10)
-        PRINTF("OneCmd Non-blocking F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("OneCmd Non-blocking F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
+    OSA_TaskDestroy(LCE_Task1_TaskId);
+}
+
+static OSA_TASK_DEFINE(LCE_Task1, gLCE_Task1_TaskPriority_c, 1, gLCE_Task1_TaskStackSize_c, (uint8_t)false);
+
+static OSA_TASK_HANDLE_DEFINE(LCE_Task2_TaskId);
+
+static void LCE_Task2(void *param)
+{
+    int status, i;
+    double copyerr = 0;
+    int M, N, P;
+    float *temp;
+
+    PRINTF("LCE task2 start\r\n");
+
     // CF32 A[40x40] * B[40x40]
     M = 40;
     N = 40;
@@ -168,13 +174,7 @@ int main(void)
         refOut[i] = *temp;
     }
 
-    status = CE_MatrixMul_CF32(matC, matA, matB, M, N, P);
-    
-    ce_status = CE_CmdCheckStatus();
-    while (ce_status != CE_STATUS_IDLE)
-    {
-        ce_status = CE_CmdCheckStatus();
-    }
+    status = LCE_MatrixMul_CF32(matC, matA, matB, M, N, P);
 
     copyerr = 0;
     for (i = 0; i < M * P * 2; i++)
@@ -183,68 +183,39 @@ int main(void)
     }
 
     if (copyerr > 1e-10)
-        PRINTF("OneCmd Non-blocking CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("OneCmd Non-blocking CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+        PRINTF("CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
-    ///////////////////////////////////////////////////////////////////
-    // Multi Command Queue tests 
-    ///////////////////////////////////////////////////////////////////
-    CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeMultipleNonBlocking);
-    
-    for (i = 0; i < Nmax; i++)
-    {
-        temp    = (float *)&inputA[i];
-        matA[i] = *temp;
-    }
+    OSA_TaskDestroy(LCE_Task2_TaskId);
+}
 
-    for (i = 0; i < Nmax; i++)
-    {
-        temp    = (float *)&inputB[i];
-        matB[i] = *temp;
-    }
+static OSA_TASK_DEFINE(LCE_Task2, gLCE_Task2_TaskPriority_c, 1, gLCE_Task2_TaskStackSize_c, (uint8_t)false);
 
-    status = CE_MatrixMul_F32(matC, matA, matB, 60, 60, 60);
-    status = CE_MatrixMul_CF32(matC2, matA, matB, 40, 40, 40);
-    CE_CmdLaunch(1);
+/*!
+ * @brief Main function
+ */
+int main(void)
+{
+    osa_status_t osaStatus;
     
-    for (i = 0; i < 60 * 60; i++)
-    {
-        temp      = (float *)&outputC_ref[i];
-        refOut[i] = *temp;
-    }
-    
-    for (i = 0; i < 40 * 40 * 2; i++)
-    {
-        temp      = (float *)&outputC2_ref[i];
-        refOut2[i] = *temp;
-    }
-    
-    ce_status = CE_CmdCheckStatus();
-    while (ce_status != CE_STATUS_IDLE)
-    {
-        ce_status = CE_CmdCheckStatus();
-    }
-    
-    copyerr = 0;
-    for (i = 0; i < 60*60; i++)
-    {
-        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
-    }
-    
-    copyerr2 = 0;
-    for (i = 0; i < 40*40*2; i++)
-    {
-        copyerr2 += (double)((refOut2[i] - matC2[i]) * (refOut2[i] - matC2[i]));
-    }
-    
-    if ( (copyerr > 0) || (copyerr2 > 0) )
-        PRINTF("Non-blocking Cmd Queue Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
-    else
-        PRINTF("Non-blocking Cmd Queue Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
-    
-    while(1)
-    {
-      // just hang out
-    }
+    BOARD_InitHardware();
+    LCE_Init();
+
+    PRINTF("CE non-blocking mode test using the LCE component\r\n");
+    /* Init OSA: should be called before any other OSA API */
+    OSA_Init();
+
+    CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneNonBlocking);
+
+    osaStatus = OSA_TaskCreate((osa_task_handle_t)LCE_Task1_TaskId, OSA_TASK(LCE_Task1), NULL);
+    assert(KOSA_StatusSuccess == osaStatus);
+    osaStatus = OSA_TaskCreate((osa_task_handle_t)LCE_Task2_TaskId, OSA_TASK(LCE_Task2), NULL);
+    assert(KOSA_StatusSuccess == osaStatus);
+
+    OSA_Start();
+
+    /* Won't run here */
+    assert(0);
+    return 0;
 }
