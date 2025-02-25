@@ -32,9 +32,9 @@ When the example runs successfully, you will see similar information from the te
 ~~~~~~~~~~~~~~~~~~~~~
  ADC watchdog example.
  Please press any key to get the conversion result.
- The channel 4 ADC conversion value is 2064.
- The channel 4 ADC conversion value is 2065.
- The channel 4 ADC conversion value is 2033.
- The channel 4 ADC conversion value is 3945.
+ The channel 5 ADC conversion value is 2064.
+ The channel 5 ADC conversion value is 2065.
+ The channel 5 ADC conversion value is 2033.
+ The channel 5 ADC conversion value is 3945.
  Current ADC value is higher than the high threshold.
 ~~~~~~~~~~~~~~~~~~~~~
