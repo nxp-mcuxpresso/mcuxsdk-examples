@@ -5,10 +5,8 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "edgefast_bluetooth_config_Gen.h"
-#include "edgefast_bluetooth_audio_config_Gen.h"
-#include "edgefast_bluetooth_debug_config_Gen.h"
-#include "edgefast_bluetooth_extension_config_Gen.h"
+#include "edgefast_bluetooth_config.h"
+#include "edgefast_bluetooth_audio_config.h"
 
 #if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
 #include "wifi_bt_module_config.h"

@@ -5,9 +5,7 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "edgefast_bluetooth_config_Gen.h"
-#include "edgefast_bluetooth_debug_config_Gen.h"
-#include "edgefast_bluetooth_extension_config_Gen.h"
+#include "edgefast_bluetooth_config.h"
 
 #define PCM_MODE_CONFIG_TX_CLK_SYNC 1
 

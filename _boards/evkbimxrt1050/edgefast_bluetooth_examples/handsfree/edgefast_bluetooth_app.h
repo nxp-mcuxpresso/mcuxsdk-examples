@@ -5,9 +5,7 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "edgefast_bluetooth_config_Gen.h"
-#include "edgefast_bluetooth_debug_config_Gen.h"
-#include "edgefast_bluetooth_extension_config_Gen.h"
+#include "edgefast_bluetooth_config.h"
 
 #if (defined(WIFI_IW416_BOARD_AW_AM510_USD) || defined(WIFI_IW416_BOARD_AW_AM457_USD) ||     \
      defined(WIFI_88W8987_BOARD_AW_CM358_USD) || defined(WIFI_IW416_BOARD_MURATA_1XK_USD) || \
