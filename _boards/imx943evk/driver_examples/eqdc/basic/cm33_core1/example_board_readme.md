@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-1. Insert the FRDM board into the arduino interface on the back of the IMX943-EVK board
+1. Insert the FRDM board into the MC2 arduino interface on the IMX943-EVK board
 2. Set FRDM board
         Set SW30 from [0000] to [0100]
         Set SW90 from [0000] to [1000]
@@ -19,9 +19,6 @@ Board settings
         J60-3 -> ENC_A cable of encoder
         J60-4 -> ENC_B cable of encoder
         J60-5 -> ENC_I cable of encoder
-        J140-1 -> PH_A cable of encoder
-        J140-2 -> PH_B cable of encoder
-        J140-3 -> PH_C cable of encoder
 4. Connect 12V power to FRDM board
 
 Prepare the Demo
