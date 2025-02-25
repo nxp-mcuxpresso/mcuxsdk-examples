@@ -11,7 +11,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* The PWM base address */
-#define BOARD_PWM_BASEADDR PWM2
+#define BOARD_PWM_BASEADDR PWM1
 
 #define PWM_SRC_CLK_FREQ       HAL_ClockGetRate(hal_clock_busaon)
 #define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_4
