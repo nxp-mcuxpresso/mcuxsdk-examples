@@ -14,5 +14,10 @@ mcux_add_source(
             examples/ota_examples/sb3_api/sb3_api_mcxn10.c
 )
 
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/ota_examples/sb3_api
+)
+
 # Linker file reconfiguration
 include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/linker_common_ifr/linker_reconfig.cmake OPTIONAL)
