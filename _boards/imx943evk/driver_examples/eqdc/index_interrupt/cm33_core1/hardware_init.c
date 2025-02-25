@@ -17,13 +17,18 @@ void BOARD_InitHardware(void)
     SM_Platform_Init();
     BOARD_InitDebugConsolePins();
     BOARD_ConfigMPU();
-    BOARD_InitPins();
+    BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+    /* Select Motor controller 1 */
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+
     XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn44, kXBAR1_OutputEnc1PhaseAInput);
     XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn45, kXBAR1_OutputEnc1PhaseBInput);
     XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn46, kXBAR1_OutputEnc1Index);
+    XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarIn48, kXBAR1_OutputEnc1PhaseAInput);
 }
 /*${function:end}*/
