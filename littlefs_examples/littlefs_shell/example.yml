@@ -14,6 +14,8 @@ littlefs_shell:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
     - -iar@flexspi_nor_debug
