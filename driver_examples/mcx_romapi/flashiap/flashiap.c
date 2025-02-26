@@ -85,6 +85,47 @@ void app_finalize(void)
     }
 }
 
+/*
+ * @brief Clear speculation buffer.
+ *
+ */
+void speculation_buffer_clear(void)
+{
+    /* Clear Flash/Flash data speculation. */
+    if(((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_MBECC_ERR_INST_MASK) == 0U) 
+        && ((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_MBECC_ERR_DATA_MASK) == 0U))
+    {
+        if((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK) == 0U)
+        {
+            /* Disable flash speculation first. */
+            SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK;          
+            /* Re-enable flash speculation. */
+            SYSCON->NVM_CTRL &= ~SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK;
+        }
+        if((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK) == 0U)
+        {
+            /* Disable flash data speculation first. */
+            SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK;          
+            /* Re-enable flash data speculation. */
+            SYSCON->NVM_CTRL &= ~SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK;
+        }
+    }
+}
+
+/*
+ * @brief Clear flash cache.
+ *
+ */
+void flash_cache_clear(void)
+{
+    /* Clear Flash cache. */
+    if((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_FLASH_CACHE_MASK) == 0U)
+    {
+        SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_CLR_FLASH_CACHE_MASK;
+        SYSCON->NVM_CTRL &= ~SYSCON_NVM_CTRL_CLR_FLASH_CACHE_MASK;
+    }
+}
+
 int main()
 {
     status_t status;
@@ -157,6 +198,10 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
+    
+    /* Clear speculation buffer and flash cache. */
+    speculation_buffer_clear();
+    flash_cache_clear();
 
 #if defined(LPCAC_INVALIDATE) && LPCAC_INVALIDATE
     L1CACHE_InvalidateCodeCache();
@@ -187,6 +232,10 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
+    
+    /* Clear speculation buffer and flash cache. */
+    speculation_buffer_clear();
+    flash_cache_clear();
 
 #if defined(LPCAC_INVALIDATE) && LPCAC_INVALIDATE
     L1CACHE_InvalidateCodeCache();

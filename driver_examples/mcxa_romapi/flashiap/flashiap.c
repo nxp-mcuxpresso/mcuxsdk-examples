@@ -65,6 +65,33 @@ void app_finalize(void)
     }
 }
 
+/*
+ * @brief Clear speculation buffer.
+ *
+ */
+void speculation_buffer_clear(void)
+{
+    /* Clear Flash/Flash data speculation. */
+    if(((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_MBECC_ERR_INST_MASK) == 0U) 
+        && ((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_MBECC_ERR_DATA_MASK) == 0U))
+    {
+        if((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK) == 0U)
+        {
+            /* Disable flash speculation first. */
+            SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK;          
+            /* Re-enable flash speculation. */
+            SYSCON->NVM_CTRL &= ~SYSCON_NVM_CTRL_DIS_FLASH_SPEC_MASK;
+        }
+        if((SYSCON->NVM_CTRL & SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK) == 0U)
+        {
+            /* Disable flash data speculation first. */
+            SYSCON->NVM_CTRL |= SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK;          
+            /* Re-enable flash data speculation. */
+            SYSCON->NVM_CTRL &= ~SYSCON_NVM_CTRL_DIS_DATA_SPEC_MASK;
+        }
+    }
+}
+
 int main()
 {
     status_t status;
@@ -124,6 +151,9 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
+    
+    /* Clear speculation buffer. */
+    speculation_buffer_clear();
 
     /* Verify if the given flash range is successfully erased. */
     PRINTF("\r\n Calling flash_verify_erase_sector() API.");
@@ -150,6 +180,9 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
+    
+    /* Clear speculation buffer. */
+    speculation_buffer_clear();
 
     /* Verify if the given flash region is successfully programmed with given data */
     PRINTF("\r\n Calling FLASH_VerifyProgram() API.");
