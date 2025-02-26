@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+w_uart_host_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/w_uart_host/bm
+    project-root-path: boards/${board}/wireless_examples/bluetooth/w_uart_host/bm/${multicore_foldername}
+    document:
+      name: w_uart_host_bm
+      category: wireless_examples/bluetooth/w_uart_host/bm/
+      brief: The BLE wireless uart application is a simple demonstration program based
+        on the MCUXpresso SDK.The application implements a custom GATT based Wireless
+        UART Profile that emulates UART over BLE.To use the pplication Test Tool 12
+        or any other application which supports the FSCI protocol is required.
+  boards:
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []

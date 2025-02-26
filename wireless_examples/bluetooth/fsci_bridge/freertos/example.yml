@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+fsci_bridge_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/fsci_bridge/freertos
+    project-root-path: boards/${board}/wireless_examples/bluetooth/fsci_bridge/freertos/${multicore_foldername}
+    document:
+      name: fsci_bridge_freertos
+      category: wireless_examples/bluetooth/fsci_bridge/freertos/
+      brief: The fsci bridge application is a simple demonstration program based
+        on the MCUXpresso SDK.This application implements a Test Application for the
+        BLE extended NBU which conveys the FSCI packets between the serial interface and RPMSG. To
+        use the application Test Tool 12 or any other application which supports the
+        FSCI protocol is needed.
+  boards:
+    mcxw72evk@cm33_core0: []
+    frdmmcxw72@cm33_core0: []

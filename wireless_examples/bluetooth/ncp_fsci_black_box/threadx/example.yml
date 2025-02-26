@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+ncp_fsci_black_box:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/bluetooth/ncp_fsci_black_box/threadx
+    project-root-path: boards/${board}/wireless_examples/bluetooth/ncp_fscibb
+    document:
+      name: ncp_fsci_black_box
+      category: wireless_examples/bluetooth/ncp_fsci_black_box/
+      brief: The BLE ncp fsci black box application is a simple demonstration program for core 1
+        based on the MCUXpresso SDK.This application implements a Bluetooth Low Energy
+        Host Black Box which can communicate using the FSCI protocol over a RPMSG serial
+        interface.To use the application with Test Tool 12, or any other application which
+        supports the FSCI protocol, the fsci_bridge application is required to be running on core 0.
+  boards:
+    mcxw72evk@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
+    frdmmcxw72@cm33_core1:
+    - -armgcc@debug
+    - -armgcc@release
