@@ -25,14 +25,6 @@ mc_pmsm_enc:
     - -iar@debug
     - -mdk@debug
     - -mcux@debug
-    frdmmcxa166:
-    - -armgcc@release
-    - -iar@debug
-    - -mcux@debug
-    frdmmcxa276:
-    - -armgcc@release
-    - -iar@debug
-    - -mcux@debug
     frdmmcxn236:
     - -armgcc@debug
     - -iar@debug
@@ -47,3 +39,5 @@ mc_pmsm_enc:
     mc56f81000evk: []
     mc56f83000evk: []
     twrmc56f8400: []
+    frdmmcxa166: []
+    frdmmcxa276: []
