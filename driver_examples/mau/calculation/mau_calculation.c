@@ -14,6 +14,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define MAU_ABS(a, b)              (((a) > (b)) ? ((a) - (b)) : ((b) - (a)))
 #define MAU_EXAMPLE_PI             (3.1415926535898)
 #define MAU_EXAMPLE_MATH_LEN       (32)
 #define MAU_EXAMPLE_FLOAT_2_Q31(x) ((int32_t)((x) * 2147483648.0f))
@@ -26,6 +27,7 @@
         {                                              \
         }                                              \
     }
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -81,36 +83,36 @@ static void MAU_FloatExample(void)
 
         ref    = 1 / input;
         result = MAU_RecipFloat(MAU0, input, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result)) <= 0.000001);
 
         ref    = sqrt((double)input);
         result = MAU_SqrtFloat(MAU0, input, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result)) <= 0.000001);
 
         ref    = 1 / sqrt((double)input);
         result = MAU_SqrtRecipFloat(MAU0, input, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result)) <= 0.000001);
 
         /* The input value is in radians.*/
         input = (double)((((float)(i * 2) / (float)MAU_EXAMPLE_MATH_LEN) - 1.0f));
 
         ref    = sin((double)input * MAU_EXAMPLE_PI);
         result = MAU_SinPIXFloat(MAU0, input, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result)) <= 0.000001);
 
         ref    = cos((double)input * MAU_EXAMPLE_PI);
         result = MAU_CosPIXFloat(MAU0, input, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result)) <= 0.000001);
 
         MAU_SinCosPIXFloat(MAU0, input, &result, &result2, kMAU_RES0, kMAU_RES1);
         ref = sin((double)input * MAU_EXAMPLE_PI);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result)) <= 0.000001);
         ref = cos((double)input * MAU_EXAMPLE_PI);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result2)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result2)) <= 0.000001);
 
         ref    = atan((double)input) / MAU_EXAMPLE_PI;
         result = MAU_AtanXDivPIFloat(MAU0, input, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(fabs((double)(ref - result)) <= 0.000001);
+        MAU_EXAMPLE_ASSERT_TRUE((double)(MAU_ABS(ref, result)) <= 0.000001);
     }
 }
 
@@ -129,11 +131,11 @@ static void MAU_Q31Example(void)
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q31((float)i / input);
         result = MAU_RecipQ31(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q31(sqrt((double)input));
         result = MAU_SqrtQ31(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         /* The input value is in radians.*/
         input     = (double)((((float)(i * 2) / (float)MAU_EXAMPLE_MATH_LEN) - 1.0f));
@@ -141,21 +143,21 @@ static void MAU_Q31Example(void)
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q31(sin((double)input * MAU_EXAMPLE_PI));
         result = MAU_SinPIXQ31(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q31(cos((double)input * MAU_EXAMPLE_PI));
         result = MAU_CosPIXQ31(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         MAU_SinCosPIXQ31(MAU0, input_q1x, &result, &result2, kMAU_RES0, kMAU_RES1);
         ref = MAU_EXAMPLE_FLOAT_2_Q31(sin((double)input * MAU_EXAMPLE_PI));
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
         ref = MAU_EXAMPLE_FLOAT_2_Q31(cos((double)input * MAU_EXAMPLE_PI));
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result2) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result2) <= 400);
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q31(atan((double)input) / MAU_EXAMPLE_PI);
         result = MAU_AtanXDivPIQ31(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
     }
 }
 static void MAU_Q15Example(void)
@@ -173,11 +175,11 @@ static void MAU_Q15Example(void)
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q15((float)i / input);
         result = MAU_RecipQ15(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q15(sqrt((double)input));
         result = MAU_SqrtQ15(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         /* The input value is in radians.*/
         input     = (double)((((float)(i * 2) / (float)MAU_EXAMPLE_MATH_LEN) - 1.0f));
@@ -185,21 +187,21 @@ static void MAU_Q15Example(void)
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q15(sin((double)input * MAU_EXAMPLE_PI));
         result = MAU_SinPIXQ15(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q15(cos((double)input * MAU_EXAMPLE_PI));
         result = MAU_CosPIXQ15(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
 
         MAU_SinCosPIXQ15(MAU0, input_q1x, &result, &result2, kMAU_RES0, kMAU_RES1);
         ref = MAU_EXAMPLE_FLOAT_2_Q15(sin((double)input * MAU_EXAMPLE_PI));
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
         ref = MAU_EXAMPLE_FLOAT_2_Q15(cos((double)input * MAU_EXAMPLE_PI));
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result2) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result2) <= 400);
 
         ref    = MAU_EXAMPLE_FLOAT_2_Q15(atan((double)input) / MAU_EXAMPLE_PI);
         result = MAU_AtanXDivPIQ15(MAU0, input_q1x, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 400);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 400);
     }
 }
 
@@ -216,6 +218,6 @@ static void MAU_Uint32Example(void)
 
         ref    = i;
         result = MAU_SqrtUint32(MAU0, input, kMAU_RES0);
-        MAU_EXAMPLE_ASSERT_TRUE(abs(ref - result) <= 1);
+        MAU_EXAMPLE_ASSERT_TRUE(MAU_ABS(ref, result) <= 1);
     }
 }
