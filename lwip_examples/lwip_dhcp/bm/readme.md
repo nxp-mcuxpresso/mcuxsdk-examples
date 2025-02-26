@@ -23,20 +23,20 @@ Those link state changes are also printed.
 ## Running the demo
 When the demo runs, the log would be seen on the terminal like:
 
-Initializing PHY...
-[LINK STATE] netif=0, state=up, speed=1000M_full
+    Initializing PHY...
+    [LINK STATE] netif=0, state=up, speed=1000M_full
 
-************************************************
- DHCP example
-************************************************
- DHCP state       : SELECTING
- DHCP state       : REQUESTING
- DHCP state       : CHECKING
- DHCP state       : BOUND
+    ************************************************
+     DHCP example
+    ************************************************
+     DHCP state       : SELECTING
+     DHCP state       : REQUESTING
+     DHCP state       : CHECKING
+     DHCP state       : BOUND
 
- IPv4 Address     : 192.168.0.4
- IPv4 Subnet mask : 255.255.255.0
- IPv4 Gateway     : 192.168.0.1
+     IPv4 Address     : 192.168.0.4
+     IPv4 Subnet mask : 255.255.255.0
+     IPv4 Gateway     : 192.168.0.1
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/lwip_examples/lwip_dhcp/bm/example_board_readme.md)

@@ -67,20 +67,27 @@ For RTOS applications, DEFAULT_THREAD_PRIO and TCPIP_THREAD_PRIO values can have
 
 2. Start the server (on the PC or on the board) first.
     If you want to run server on the board and client on the PC, enter the number of the desired server mode (TCP or UDP) into the terminal.
-    If you want to run server on the PC and client on the board, start iperf application on the PC:
+    If you want to run server on the PC and client on the board, start iperf application on the PC:    
+
         For TCP: iperf.exe -s -p 5001 -i 1 -f k
         For UDP: iperf.exe -s -p 5001 -i 1 -f k -u
+
 3. Start the client.
     If the PC is the client, start iperf application on the PC:
+
         For TCP: iperf.exe -c 192.168.0.102 -p 5001 -P 1 -i 1 -f k -t 10
         For UDP: iperf.exe -c 192.168.0.102 -p 5001 -P 1 -i 1 -f k -t 10 -u -b 100M
-        Parameters like -d, -r, -R could be appended to the command for dual, tradeoff or reverse test modes.
-        The iperf implementation in lwIP does not support all 2.1.x features, so it does not make
-        sense to use some of the modes which require board cooperation, like --full-duplex.
+
+    Parameters like -d, -r, -R could be appended to the command for dual, tradeoff or reverse test modes.
+    The iperf implementation in lwIP does not support all 2.1.x features, so it does not make
+    sense to use some of the modes which require board cooperation, like --full-duplex.
+
     If the board is the client, enter the number of the desired client mode into the terminal.
+
 4. When the test is finished, the output log of iperf.exe would be seen like below,
     where occurrences of the symbol "N" would be replaced by actual measured values.
     The log will vary depending on the selected mode:
+
         iperf.exe -c 192.168.0.102 -p 5001 -P 1 -i 1 -f k -t 10
         ------------------------------------------------------------
         Client connecting to 192.168.0.102, TCP port 5001
@@ -103,6 +110,7 @@ For RTOS applications, DEFAULT_THREAD_PRIO and TCPIP_THREAD_PRIO values can have
 5. Also, when the test is finished, the log would be seen on the terminal like below,
     where occurrences of the symbol "N" would be replaced by actual measured values.
     The log will vary depending on the selected mode:
+
         Enter mode number: 0
         Press SPACE to abort the test and return to main menu
         New TCP client (settings flags 0x40010078)
