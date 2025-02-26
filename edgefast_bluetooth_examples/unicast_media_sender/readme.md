@@ -4,12 +4,15 @@
 Application demonstrating how to use the unicast media sender feature.
 
 There should be three boards: 1 UMS + 1 UMR(left) + 1 UMR(right).
-UMS: unicast stereo audio stream, left channel on first CIS and right channel on another CIS.
-UMR: receive one of CIS channel and render it.
+- UMS: unicast stereo audio stream, left channel on first CIS and right channel on another CIS.
+- UMR: receive one of CIS channel and render it.
 
 This demo integrated a2dp sink function for RT1170-EVKB, so that Classic BT and LE Audio can work at the same time.
+
 After enable the macro "CONFIG_BT_A2DP" and "CONFIG_BT_A2DP_SINK", this demo will run as a a2dp_bridge.
+
 The audio stream received by a2dp sink will be streamed to UMS and send out via LE Audio.
+
 There should be four boards for a2dp_bridge: 1 a2dp_source + 1 a2dp_bridge(UMS) + 1 UMR(left) + 1 UMR(right).
 
 ## Prepare the Demo
@@ -225,29 +228,29 @@ Streams started
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Procedures to run
-1 input "help" to show command list.
-2 make sure UMR left and right are initialized and start advertising.
-3 input "wav_open <path>" to open one wav file.
-4 input "lc3_preset <name>" to load one lc3 preset.
-5 input "scan" to start scan all sink devices, then use "connect" to connect one of the set member.
+1. input "help" to show command list.
+2. make sure UMR left and right are initialized and start advertising.
+3. input "wav_open <path>" to open one wav file.
+4. input "lc3_preset <name>" to load one lc3 preset.
+5. input "scan" to start scan all sink devices, then use "connect" to connect one of the set member.
 Another set member will be connected automatically.
-6 the audio will start playing after all config done.
-7 input "pause" to stop playing.
-8 input "play" to start playing.
-9 input "vol_up", "vol_down", "vol_set" to set volume of all sinks.
-10 input "vol_mute", "vol_unmute" to set mute of all sinks.
+6. the audio will start playing after all config done.
+7. input "pause" to stop playing.
+8. input "play" to start playing.
+9. input "vol_up", "vol_down", "vol_set" to set volume of all sinks.
+10. input "vol_mute", "vol_unmute" to set mute of all sinks.
 
 Note:
-1 "exit" command is a shell internal command, only used to exit shell module and could not used to exit demo.
-2 the "music_16_2.wav" should be 16/24/32bits 2 channel with sample rate 8000/16000/24000/32000/48000.
+1. "exit" command is a shell internal command, only used to exit shell module and could not used to exit demo.
+2. the "music_16_2.wav" should be 16/24/32bits 2 channel with sample rate 8000/16000/24000/32000/48000.
 
 Other cmds could be used:
-1 "lc3_preset_list" used to list all the lc3 preset this demo support.
-2 "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
-3 "config_rtn" used to config the rtn, and this cmd should be used before "lc3_preset".
-4 "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
-5 "config_phy" used to config the phy, and this cmd should be used before "lc3_preset".
-6 "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
+1. "lc3_preset_list" used to list all the lc3 preset this demo support.
+2. "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
+3. "config_rtn" used to config the rtn, and this cmd should be used before "lc3_preset".
+4. "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
+5. "config_phy" used to config the phy, and this cmd should be used before "lc3_preset".
+6. "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
 
 ## Running the bridge demo
 The log below shows the output of the example in the terminal window.
@@ -408,25 +411,25 @@ Streams started
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Procedures to run a2dp_bridge
-1 make sure UMR left and right are initialized and start advertising.
-2 wait a2dp_source connect and config the a2dp stream.
-3 input "lc3_preset <name>" to load one lc3 preset.
-4 input "scan" to start scan all sink devices, then use "connect" to connect one of the set member.
+1. make sure UMR left and right are initialized and start advertising.
+2. wait a2dp_source connect and config the a2dp stream.
+3. input "lc3_preset <name>" to load one lc3 preset.
+4. input "scan" to start scan all sink devices, then use "connect" to connect one of the set member.
 Another set member will be connected automatically.
-5 the audio will start playing after all config done.
-6 input "pause" to stop playing.
-7 input "play" to start playing.
-8 input "vol_up", "vol_down", "vol_set" to set volume of all sinks.
-9 input "vol_mute", "vol_unmute" to set mute of all sinks.
+5. the audio will start playing after all config done.
+6. input "pause" to stop playing.
+7. input "play" to start playing.
+8. input "vol_up", "vol_down", "vol_set" to set volume of all sinks.
+9. input "vol_mute", "vol_unmute" to set mute of all sinks.
 
 Other cmds could be used:
-1 "lc3_preset_list" used to list all the lc3 preset this demo support.
-2 "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
-3 "config_rtn" used to config the rtn, and this cmd should be used before "lc3_preset".
-4 "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
-5 "config_phy" used to config the phy, and this cmd should be used before "lc3_preset".
-6 "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
-7 "config_conn_param" used to config connection interval, and this cmd should be used before "connect". 
+1. "lc3_preset_list" used to list all the lc3 preset this demo support.
+2. "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
+3. "config_rtn" used to config the rtn, and this cmd should be used before "lc3_preset".
+4. "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
+5. "config_phy" used to config the phy, and this cmd should be used before "lc3_preset".
+6. "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
+7. "config_conn_param" used to config connection interval, and this cmd should be used before "connect". 
 The connection interval should >= N * iso_interval (N equal to iso channel number).
 
 Note: the a2dp_bridge could only work with a2dp_source right now.

@@ -2,6 +2,7 @@
 
 ## Overview
 Application demonstrating very basic BLE Central role functionality by scanning for other BLE devices and establishing a connection to the first one with a strong enough signal.
+
 This application specifically looks for a peer advertising the Intermediate Alert Service and implementing the Find Me Profile.
 
 ## Prepare the Demo
@@ -23,8 +24,11 @@ This application specifically looks for a peer advertising the Intermediate Aler
 
 ## Running the demo
 The locator will automatically start scanning and will connect to the first advertiser who is advertising the Intermediate Alert Service.
+
 If the connection is successful, the application performs service discovery to find the Alert Level characteristic.
+
 The application will trigger periodic alerts on the target device until a threshold is reached, after which it will disconnect.
+
 After the disconnect from the target the locator will restart scanning.
 
 ## Supported Boards

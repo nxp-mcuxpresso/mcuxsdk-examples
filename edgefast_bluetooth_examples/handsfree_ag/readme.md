@@ -2,6 +2,7 @@
 
 ## Overview
 This example demonstrates the HFP Ag basic functionality, currently support simulate an incoming call, and the call could be answered and ended.
+
 The HFP Ag can connected a HFP HF device like headphone or device running HFP HF device.
 
 ## Prepare the Demo
@@ -23,6 +24,7 @@ The HFP Ag can connected a HFP HF device like headphone or device running HFP HF
 
 ## Running the demo
 The log below shows the output of the example in the terminal window. 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 USB Host stack successfully initialized
 Bluetooth initialized
 
@@ -30,7 +32,9 @@ SHELL build: Mar  1 2021
 Copyright  2020  NXP
 
 >>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 the bellow commands have been supported:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "bt": BT related function
   USAGE: bt [discover|connect|disconnect|delete]
     discover             start to find BT devices
@@ -47,6 +51,7 @@ the bellow commands have been supported:
     stwcincall           start multiple an incoming call.
     disconnect           disconnect current connection.
     delete               delete all devices. Ensure to disconnect the HCI link connection with the peer device before attempting to delete the bonding information.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 1) "discover" start to find BT devices, it will list all device can be found, usage
 2) "connect" is used to connect to the device that is found, for example: bt connect n (from 1), usage :
    bt connect 1
@@ -67,8 +72,8 @@ the bellow commands have been supported:
 14) "delete" is used to delete all devices. Ensure to disconnect the HCI link connection with the peer device before attempting to delete the bonding information.
 
 Note:
-There is a short noise can be heard at headset at the begin audio streaming when in running HFP Ag . 
-The codec power on pop noise cannot eliminate.
+1. There is a short noise can be heard at headset at the begin audio streaming when in running HFP Ag . 
+2. The codec power on pop noise cannot eliminate.
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/edgefast_bluetooth_examples/handsfree_ag/example_board_readme.md)

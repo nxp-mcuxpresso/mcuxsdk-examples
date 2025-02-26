@@ -4,9 +4,10 @@
 Application is working as a bridge to demonstrate a function that relay the UMS stream to BMR.
 
 There should be four boards: 1 ums_microphone + 1 umr2bms bridge + 1 BMR(left) + 1 BMR(right).
-ums_microphone: unicast stereo audio stream, left channel on first CIS and right channel on another CIS.
-umr2bms: combine UMR and BMS features. For UMR, it provides two ASEs, and receives two CIS channel streams from ums_microphone.
-         For BMS, it provides two ASEs. It relays the streams received from UMR and sends them to BIS channels.
+- ums_microphone: unicast stereo audio stream, left channel on first CIS and right channel on another CIS.
+- umr2bms: combine UMR and BMS features. For UMR, it provides two ASEs, and receives two CIS channel streams from ums_microphone.
+    - For BMS, it provides two ASEs. It relays the streams received from UMR and sends them to BIS channels.
+
 BMR: It receives stream from one of BIS channel and render it.
 
 ## Prepare the Demo

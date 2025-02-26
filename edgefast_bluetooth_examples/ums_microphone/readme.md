@@ -6,9 +6,9 @@ Application demonstrating how to use the unicast media sender feature.
 The stream source of UMS is came from microphone.
 
 There should be four boards: 1 ums_microphone + 1 umr2bms bridge + 1 BMR(left) + 1 BMR(right).
-ums_microphone: unicast stereo audio stream, left channel on first CIS and right channel on another CIS.
-umr2bms: combine UMR and BMS features. For UMR, it provides two ASEs, and receives two CIS channel streams from ums_microphone.
-         For BMS, it provides two ASEs. It relays the streams received from UMR and sends them to BIS channels.
+- ums_microphone: unicast stereo audio stream, left channel on first CIS and right channel on another CIS.
+- umr2bms: combine UMR and BMS features. For UMR, it provides two ASEs, and receives two CIS channel streams from ums_microphone.
+    - For BMS, it provides two ASEs. It relays the streams received from UMR and sends them to BIS channels.
 BMR: It receives stream from one of BIS channel and render it.
 
 ## Prepare the Demo
@@ -128,10 +128,10 @@ Streams started
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Procedures to run
-1 input "help" to show command list
-2 input "lc3_preset <name>" to load one lc3 preset.
-3 input "scan" to start scan all sink devices, then use "connect" to connect the device.
-4 the audio will start playing after all config done.
+1. input "help" to show command list
+2. input "lc3_preset <name>" to load one lc3 preset.
+3. input "scan" to start scan all sink devices, then use "connect" to connect the device.
+4. the audio will start playing after all config done.
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/edgefast_bluetooth_examples/unicast_media_sender/example_board_readme.md)

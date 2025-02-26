@@ -22,7 +22,9 @@ Application demonstrating the BLE Peripheral role, except that this application 
 
 ## Running the demo
 The demo does not require user interaction. The application will automatically start advertising the Intermediate Alert Service and it will accept the first connection request it receives.
+
 The application will initially set the default levels for the Link Loss Alert and the Immediate Alert.
+
 The Locator will trigger an Immediate Alert on the application and disconnect. The Target will then resume advertising.
 
 ## Supported Boards

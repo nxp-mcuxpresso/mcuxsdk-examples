@@ -24,8 +24,10 @@ specifically implements the Time Profile.
 
 ## Running the demo
 The demo does not require user interaction.
+
 The application will automatically start advertising the Current Time Service and the 
 Reference Time Update Service and it will accept the first connection request it receives.
+
 Once the client configures the Current Time Characteristic CCCD for notifications,
 the server will periodically notify its local time value to the client.
 

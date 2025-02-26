@@ -19,11 +19,14 @@ other BLE devices and establishing a connection with the first scanned Time Serv
 
 ## Running the demo
 The demo does not require user interaction.  
+
 The application will automatically start scanning and will connect to the first
 advertiser who is advertising the Current Time Service.  
+
 If the connection is successful, the application performs service discovery to find the
 characteristics of the Current Time Service. If discovery is successful,
 the application will subscribe to receive time notifications from the peer.  
+
 The application will display the received notifications in the console.
 
 ## Supported Boards

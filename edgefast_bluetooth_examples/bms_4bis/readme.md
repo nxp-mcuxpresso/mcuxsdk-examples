@@ -4,11 +4,12 @@
 Application demonstrating how to use the broadcast media sender 4 BIS feature.
 
 There should be three boards: 1 BMS + 1 BMR(front) + 1 BMR(back).
-BMS: broadcast stereo audio stream, front_left/right channel on first two BIS and back_left/right on last two BIS.
-BMR: lisen 2 of BIS channels and render them.
+1. BMS: broadcast stereo audio stream, front_left/right channel on first two BIS and back_left/right on last two BIS.
+2. BMR: lisen 2 of BIS channels and render them.
 
-Note: 4BIS requires higher performance, and the debug project cannot meet the needs, so here we only provide the release version of the project for this demonstration.
-The MCUX project is not available due to performance issues.
+Note:
+1. 4BIS requires higher performance, and the debug project cannot meet the needs, so here we only provide the release version of the project for this demonstration.
+2. The MCUX project is not available due to performance issues.
 
 ## Prepare the Demo
 
@@ -103,22 +104,22 @@ Broadcast source started
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Procedures to run
-1 input "help" to show command list
-2 input "wav_open <path>" open the wav file.
-3 input "lc3_preset <name>" load lc3 preset, then the broadcast will start.
-4 input "pause" to stop the broadcast.
-5 input "play" to start broadcast.
+1. input "help" to show command list
+2. input "wav_open <path>" open the wav file.
+3. input "lc3_preset <name>" load lc3 preset, then the broadcast will start.
+4. input "pause" to stop the broadcast.
+5. input "play" to start broadcast.
 
 Other cmds could be used:
-1 "lc3_preset_list" used to list all the lc3 preset this demo support.
-2 "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
-4 "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
-6 "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
-7 "set_broadcast_code" used to set broadcast code, and this cmd should be used before "lc3_preset".
+1. "lc3_preset_list" used to list all the lc3 preset this demo support.
+2. "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
+3. "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
+4. "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
+5. "set_broadcast_code" used to set broadcast code, and this cmd should be used before "lc3_preset".
 
 Note:
-1 "exit" command is a shell internal command, only used to exit shell module and could not used to exit demo.
-2 the "music_16_2.wav" should be 16/24/32bits 2 channel with sample rate 8000/16000/24000/32000/48000.
+1. "exit" command is a shell internal command, only used to exit shell module and could not used to exit demo.
+2. the "music_16_2.wav" should be 16/24/32bits 2 channel with sample rate 8000/16000/24000/32000/48000.
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/edgefast_bluetooth_examples/bms_4bis/example_board_readme.md)

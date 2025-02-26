@@ -2,6 +2,7 @@
 
 ## Overview
 Application demonstrating very basic BLE Central role functionality by scanning for other BLE devices and establishing a connection to the first one with a strong enough signal.
+
 Except that this application specifically looks for health thermometer sensor and reports the die temperature readings once connected.
 
 ## Prepare the Demo

@@ -4,11 +4,12 @@
 Application demonstrating how to use the unicast media sender 4 CIS feature.
 
 There should be three boards: 1 UMS + 1 UMR(front) + 1 UMR(back).
-UMS: unicast stereo audio stream, front_left/right channel on first two CIS and back_left/right on last two CIS.
-UMR: receive 2 of CIS channels and render them.
+- UMS: unicast stereo audio stream, front_left/right channel on first two CIS and back_left/right on last two CIS.
+- UMR: receive 2 of CIS channels and render them.
 
-Note: 4BIS requires higher performance, and the debug project cannot meet the needs, so here we only provide the release version of the project for this demonstration.
-The MCUX project is not available due to performance issues.
+Note:
+1. 4BIS requires higher performance, and the debug project cannot meet the needs, so here we only provide the release version of the project for this demonstration.
+2. The MCUX project is not available due to performance issues.
 
 ## Prepare the Demo
 
@@ -240,29 +241,29 @@ Streams started
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Procedures to run
-1 input "help" to show command list.
-2 make sure UMR left and right are initialized and start advertising.
-3 input "wav_open <path>" to open one wav file.
-4 input "lc3_preset <name>" to load one lc3 preset.
-5 input "scan" to start scan all sink devices, then use "connect" to connect one of the set member.
+1. input "help" to show command list.
+2. make sure UMR left and right are initialized and start advertising.
+3. input "wav_open <path>" to open one wav file.
+4. input "lc3_preset <name>" to load one lc3 preset.
+5. input "scan" to start scan all sink devices, then use "connect" to connect one of the set member.
 Another set member will be connected automatically.
-6 the audio will start playing after all config done.
-7 input "pause" to stop playing.
-8 input "play" to start playing.
-9 input "vol_up", "vol_down", "vol_set" to set volume of all sinks.
-10 input "vol_mute", "vol_unmute" to set mute of all sinks.
+6. the audio will start playing after all config done.
+7. input "pause" to stop playing.
+8. input "play" to start playing.
+9. input "vol_up", "vol_down", "vol_set" to set volume of all sinks.
+10. input "vol_mute", "vol_unmute" to set mute of all sinks.
 
 Other cmds could be used:
-1 "lc3_preset_list" used to list all the lc3 preset this demo support.
-2 "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
-3 "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
-4 "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
-5 "config_conn_param" used to config connection interval, and this cmd should be used before "connect". 
+1. "lc3_preset_list" used to list all the lc3 preset this demo support.
+2. "sync_info" used to get iso_interval/sync_delay, and this cmd should be used after the audio stream start.
+3. "config_pd" used to config the pd, and this cmd should be used before "lc3_preset".
+4. "config_packing" used to config iso packing mode, and this cmd should be used before "lc3_preset".
+5. "config_conn_param" used to config connection interval, and this cmd should be used before "connect". 
 The connection interval should >= N * iso_interval (N equal to iso channel number).
 
 Note:
-1 "exit" command is a shell internal command, only used to exit shell module and could not used to exit demo.
-2 the "music_16_2.wav" should be 16/24/32bits 2 channel with sample rate 8000/16000/24000/32000/48000.
+1. "exit" command is a shell internal command, only used to exit shell module and could not used to exit demo.
+2. the "music_16_2.wav" should be 16/24/32bits 2 channel with sample rate 8000/16000/24000/32000/48000.
 
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/edgefast_bluetooth_examples/ums_4cis/example_board_readme.md)

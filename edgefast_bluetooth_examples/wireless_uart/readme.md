@@ -26,11 +26,11 @@ The demo require user interaction. The application will automatically start adve
 The application will start scan and connect to the wirless uart Service automatically,after short prees the user button, the The application can connect at most 8 connection when work as cnentral.
 
 after reset, the Serial port terminal log is:
-
+~~~
 BLE Wireless Uart demo start...
 Bluetooth initialized
 Advertising successfully started
-
+~~~
 then we can use "IoT Toolbox" or another wireless_uart example(use B to refer to) to test the current device. 
 peripheral role test:
 please open "IoT Toolbox", check the "Wireless UART" option, one device named "NXP_WU" will be found, click the "NXP_WU", the software will connect to the NXP_WU, please accept the pair request, or else there maybe pair fail. take android as example, please check the " message notification bar" to find the Pair request. 
@@ -39,7 +39,7 @@ after pair, data could be sent/receive in the toolbox.
 central role test:
 let B work as default state after reset. 
 short press the user button, the example will work as central can automatically connect to any discovered wireless uart example.each time short press, the example will scan and connect to wirelss uart service if new device is found.
-
+~~~
 BLE Wireless Uart demo start...
 Bluetooth initialized
 Advertising successfully started
@@ -59,6 +59,7 @@ GATT MTU exchanged: 65
 [ATTRIBUTE] handle 25
 [ATTRIBUTE] handle 26
 Security changed: 80:D2:1D:E8:2B:7E (public) level 2 (error 0)
+~~~
 Note:
 the device address, AD event type data len, and RSSI are variable, it depend on all the bluetooth device in test environment.
 
