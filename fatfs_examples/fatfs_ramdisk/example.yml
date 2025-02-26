@@ -19,3 +19,5 @@ fatfs_ramdisk:
   boards:
     evkbimxrt1050: []
     lpcxpresso54s018m: []
+    frdmmcxa276: []
+    frdmmcxa166: []

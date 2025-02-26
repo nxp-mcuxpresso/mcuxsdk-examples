@@ -15,3 +15,5 @@ mcux_add_include(
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+
+include(${SdkRootDirPath}/${board_root}/${board}/fatfs_examples/fatfs_ramdisk/reconfig.cmake OPTIONAL)
