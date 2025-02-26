@@ -7,7 +7,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 ### Added
 
 - (MCXA20) Basic support for FRDM-MCXA276 and FRDM-MCXA166
-- Added SB3 processing support in ota_mcuboot_basic example for selected platforms
+- Added SB3 processing support in `ota_mcuboot_basic` example for selected platforms
 - (MCXN)(RW61x) Enabled SB3 processing support for FRDM-MCXN947, MCXN9XXEVK, FRDM-RW612 and RD-RW612BGA
 
 ### Changed
@@ -28,3 +28,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 ### Added
 
 - Initial release
+
+### Removed
+
+- Removed WiFi OTA examples on boards that also support Ethernet
