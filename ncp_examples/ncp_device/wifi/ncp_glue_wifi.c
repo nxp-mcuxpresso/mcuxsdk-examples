@@ -4291,13 +4291,6 @@ static int wlan_ncp_get_current_network(void *tlv)
     struct wlan_network sta_network;
     
     NCP_CMD_GET_CURRENT_NETWORK *current_network = (NCP_CMD_GET_CURRENT_NETWORK *)tlv;
-
-    if(wlan_get_current_network(&sta_network) != WM_SUCCESS)
-    {
-        ret = -WM_FAIL;
-        goto done;
-    }
-
     NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
     current_network = (NCP_CMD_GET_CURRENT_NETWORK *)&cmd_res->params.current_network;
     
@@ -4305,6 +4298,12 @@ static int wlan_ncp_get_current_network(void *tlv)
     cmd_res->header.size       = NCP_CMD_HEADER_LEN;
     cmd_res->header.seqnum     = 0x00;
     cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    if(wlan_get_current_network(&sta_network) != WM_SUCCESS)
+    {
+        ret = -WM_FAIL;
+        goto done;
+    }
 
     (void)memcpy(&current_network->sta_network.ssid, &sta_network.ssid, (IEEEtypes_SSID_SIZE + 1));
     (void)memcpy(&current_network->sta_network.name, &sta_network.name, (WLAN_NETWORK_NAME_MAX_LENGTH + 1));
@@ -4491,6 +4490,12 @@ struct cmd_t wlan_cmd_sta[] = {
     {NCP_CMD_WLAN_STA_SIGNAL, "wlan-get-signal", wlan_ncp_get_signal, CMD_SYNC},
     {NCP_CMD_WLAN_STA_ANTENNA, "wlan-set-antenna-cfg", wlan_ncp_set_get_antenna_cfg, CMD_SYNC},
     {NCP_CMD_WLAN_STA_ANTENNA, "wlan-get-antenna-cfg", wlan_ncp_set_get_antenna_cfg, CMD_SYNC},
+    {NCP_CMD_WLAN_GET_CURRENT_NETWORK, "wlan-get-current-network", wlan_ncp_get_current_network, CMD_SYNC},
+    {NCP_CMD_WLAN_NETWORKS_REMOVE_ALL, "wlan-remove-all-networks", wlan_ncp_remove_all_networks, CMD_SYNC},
+    {NCP_CMD_WLAN_GET_PKT_STATS, "wlan-ncp-get-pkt-stats", wlan_ncp_get_pkt_stats, CMD_SYNC},
+    {NCP_CMD_WLAN_STA_GET_CURRENT_RSSI, "wlan-ncp-get-current-rssi", wlan_ncp_get_current_rssi, CMD_SYNC},
+    {NCP_CMD_WLAN_STA_GET_CURRENT_CHANNEL, "wlan-ncp-get-current-channel", wlan_ncp_get_current_channel, CMD_SYNC},
+    {NCP_CMD_WLAN_GET_IP_CINFIG, "wlan-ncp-get-ip-config", wlan_ncp_get_ip_config, CMD_SYNC},
 #if CONFIG_NCP_SUPP_WPS
     {NCP_CMD_WLAN_STA_WPS_PBC, "wlan-start-wps-pbc", wlan_ncp_start_wps_pbc, CMD_SYNC},
     {NCP_CMD_WLAN_STA_GEN_WPS_PIN, "wlan-generate-wps-pin", wlan_ncp_wps_generate_pin, CMD_SYNC},
@@ -4555,12 +4560,6 @@ struct cmd_t wlan_cmd_network[] = {
     {NCP_CMD_WLAN_NETWORK_LIST, "wlan-list", wlan_ncp_network_list, CMD_SYNC},
     {NCP_CMD_WLAN_NETWORK_REMOVE, "wlan-remove", wlan_ncp_network_remove, CMD_SYNC},
     {NCP_CMD_WLAN_NETWORK_ADDRESS, "wlan-address", wlan_ncp_address, CMD_SYNC},
-    {NCP_CMD_WLAN_GET_CURRENT_NETWORK, "wlan-get-current-network", wlan_ncp_get_current_network, CMD_SYNC},
-    {NCP_CMD_WLAN_NETWORKS_REMOVE_ALL, "wlan-remove-all-networks", wlan_ncp_remove_all_networks, CMD_SYNC},
-    {NCP_CMD_WLAN_GET_PKT_STATS, "wlan-ncp-get-pkt-stats", wlan_ncp_get_pkt_stats, CMD_SYNC},
-    {NCP_CMD_WLAN_STA_GET_CURRENT_RSSI, "wlan-ncp-get-current-rssi", wlan_ncp_get_current_rssi, CMD_SYNC},
-    {NCP_CMD_WLAN_STA_GET_CURRENT_CHANNEL, "wlan-ncp-get-current-channel", wlan_ncp_get_current_channel, CMD_SYNC},
-    {NCP_CMD_WLAN_GET_IP_CINFIG, "wlan-ncp-get-ip-config", wlan_ncp_get_ip_config, CMD_SYNC},
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
