@@ -8,7 +8,7 @@ UMS: unicast stereo audio stream, front_left/right channel on first two CIS and 
 UMR: receive 2 of CIS channels and render them.
 
 Note: 4BIS requires higher performance, and the debug project cannot meet the needs, so here we only provide the release version of the project for this demonstration.
-The MCUX debug target is reserved but should not be used.
+The MCUX project is not available due to performance issues.
 
 ## Prepare the Demo
 

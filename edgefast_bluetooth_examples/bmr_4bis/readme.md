@@ -8,7 +8,7 @@ BMS: broadcast stereo audio stream, front_left/right channel on first two BIS an
 BMR: lisen 2 of BIS channels and render them.
 
 Note: 4BIS requires higher performance, and the debug project cannot meet the needs, so here we only provide the release version of the project for this demonstration.
-The MCUX debug target is reserved but should not be used.
+The MCUX project is not available due to performance issues.
 
 ## Prepare the Demo
 
