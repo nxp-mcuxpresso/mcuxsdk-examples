@@ -266,7 +266,7 @@ int32_t process_sb3_upload(struct multipart_read_ctx *ctx)
         if (total_processed == 0)
         {
             /* notify if this isn't sb3 stream */
-            if (!is_sb3_header(prog_buf))
+            if (!sb3_parse_header(prog_buf, NULL))
             {
                 PRINTF("WARNING: Uploaded stream doesn't start with SB3 signature!\n");
             }

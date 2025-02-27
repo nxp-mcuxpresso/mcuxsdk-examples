@@ -338,23 +338,43 @@ static int process_received_data_sb3(uint32_t dst_addr, uint32_t offset, uint32_
 {
     int ret;
     uint32_t *data = progbuf;
+    uint32_t chunk_sz;
+
+    static uint32_t sb_size;
+    static uint32_t bytes_processed;
 
     if(offset == 0)
     {
-        if(!is_sb3_header(data))
+        /* first chunk */
+        if(!sb3_parse_header(data, &sb_size))
         {
             return -1;
         }
+        bytes_processed = 0;
+    }
+
+    if(sb_size == bytes_processed)
+    {
+        /* just in case */
+        return -1;
+    }
+
+    if (sb_size - bytes_processed > size) {
+        chunk_sz = size;
+    } else {
+        /* last chunk */
+        chunk_sz = sb_size - bytes_processed;
     }
 
     /* Processing SB3 image */
-    ret = sb3_api_pump((uint8_t *)data, size);
+    ret = sb3_api_pump((uint8_t *)data, chunk_sz);
     if (ret != kStatus_Success)
     {
         PRINTF("sb3_api_pump failed/n");
         return -1;
     }
 
+    bytes_processed += chunk_sz;
     return 0;
 }
 #endif
