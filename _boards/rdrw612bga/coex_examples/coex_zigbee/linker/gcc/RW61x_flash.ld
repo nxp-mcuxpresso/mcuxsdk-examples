@@ -201,6 +201,10 @@ SECTIONS
         *fsl_adapter_imu.c.obj
         *fsl_cache.c.obj
         *fsl_os_abstraction_free_rtos.c.obj
+        *fsl_memcpy.S.obj
+        *etharp.c.obj
+        *ethernet.c.obj
+        *wifi_netif.c.obj
         *libethermind_ble_lc3_ndsp_common.a:*
         *libethermind_ble_lc3_ndsp_decoder.a:*
         *libethermind_ble_lc3_ndsp_encoder.a:*
@@ -404,6 +408,10 @@ SECTIONS
     *fsl_adapter_imu.c.obj(.text* .rodata*)
     *fsl_cache.c.obj(.text* .rodata*)
     *fsl_os_abstraction_free_rtos.c.obj(.text* .rodata*)
+    *fsl_memcpy.S.obj(.text* .rodata*)
+    *etharp.c.obj(.text* .rodata*)
+    *ethernet.c.obj(.text* .rodata*)
+    *wifi_netif.c.obj(.text* .rodata*)
     *libethermind_ble_lc3_ndsp_common.a:*(.text* .rodata*)
     *libethermind_ble_lc3_ndsp_decoder.a:*(.text* .rodata*)
     *libethermind_ble_lc3_ndsp_encoder.a:*(.text* .rodata*)

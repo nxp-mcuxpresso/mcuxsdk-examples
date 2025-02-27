@@ -22,6 +22,14 @@ mcux_remove_macro(
 )
 endif()
 
+mcux_remove_macro(
+    IMU_TASK_PRIORITY=1
+)
+
+mcux_add_macro(
+    IMU_TASK_PRIORITY=3
+)
+
 # Fix build errors temporarily
 mcux_add_armgcc_configuration(
     LD "-Wl,-z -Wl,muldefs"
