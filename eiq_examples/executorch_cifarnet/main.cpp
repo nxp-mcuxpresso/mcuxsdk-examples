@@ -30,8 +30,8 @@ using namespace std;
 using torch::executor::Error;
 using torch::executor::Result;
 
-static uint8_t __attribute__((aligned(16))) method_allocator_pool[1024 * 1024U];
-static uint8_t __attribute__((aligned(16))) tmp_allocator_pool[1024 * 1024U];
+static uint8_t __attribute__((aligned(16))) method_allocator_pool[512 * 1024U];
+static uint8_t __attribute__((aligned(16))) tmp_allocator_pool[512 * 1024U];
 
 void et_pal_init(void) {}
 

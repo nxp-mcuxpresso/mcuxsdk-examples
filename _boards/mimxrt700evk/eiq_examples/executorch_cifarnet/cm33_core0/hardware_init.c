@@ -15,7 +15,6 @@ void BOARD_Init()
     BOARD_InitPins();
 
     BOARD_InitAHBSC();
-    BOARD_ConfigMPU();
 
     BOARD_InitPmicPins();
     BOARD_InitPmic();
