@@ -97,7 +97,7 @@ int main(void)
 
     BOARD_InitHardware();
 
-    PRINTF("LPSPI edma example start.\r\n");
+    PRINTF("LPSPI edma transfer example.\r\n");
     PRINTF("This example use one lpspi instance as master and another as slave on one board.\r\n");
     PRINTF("Both master and slave use edma way.\r\n");
 
@@ -181,6 +181,12 @@ int main(void)
                       EXAMPLE_LPSPI_SLAVE_DMA_RX_CHANNEL);
     EDMA_CreateHandle(&(lpspiEdmaSlaveTxDataToTxRegHandle), EXAMPLE_LPSPI_SLAVE_DMA_BASEADDR,
                       EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL);
+#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+    EDMA_SetChannelMux(EXAMPLE_LPSPI_SLAVE_DMA_BASEADDR, EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL,
+                       EXAMPLE_LPSPI_SLAVE_DMA_TX_REQ);
+    EDMA_SetChannelMux(EXAMPLE_LPSPI_SLAVE_DMA_BASEADDR, EXAMPLE_LPSPI_SLAVE_DMA_RX_CHANNEL,
+                       EXAMPLE_LPSPI_SLAVE_DMA_RX_REQ);
+#endif
 
     LPSPI_SlaveTransferCreateHandleEDMA(EXAMPLE_LPSPI_SLAVE_BASEADDR, &g_s_edma_handle, LPSPI_SlaveUserEdmaCallback,
                                         NULL, &lpspiEdmaSlaveRxRegToRxDataHandle, &lpspiEdmaSlaveTxDataToTxRegHandle);
@@ -202,6 +208,12 @@ int main(void)
                       EXAMPLE_LPSPI_MASTER_DMA_RX_CHANNEL);
     EDMA_CreateHandle(&(lpspiEdmaMasterTxDataToTxRegHandle), EXAMPLE_LPSPI_MASTER_DMA_BASEADDR,
                       EXAMPLE_LPSPI_MASTER_DMA_TX_CHANNEL);
+#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+    EDMA_SetChannelMux(EXAMPLE_LPSPI_MASTER_DMA_BASEADDR, EXAMPLE_LPSPI_MASTER_DMA_TX_CHANNEL,
+                       EXAMPLE_LPSPI_MASTER_DMA_TX_REQ);
+    EDMA_SetChannelMux(EXAMPLE_LPSPI_MASTER_DMA_BASEADDR, EXAMPLE_LPSPI_MASTER_DMA_RX_CHANNEL,
+                       EXAMPLE_LPSPI_MASTER_DMA_RX_REQ);
+#endif
 
     LPSPI_MasterTransferCreateHandleEDMA(EXAMPLE_LPSPI_MASTER_BASEADDR, &g_m_edma_handle, LPSPI_MasterUserEdmaCallback,
                                          NULL, &lpspiEdmaMasterRxRegToRxDataHandle,
@@ -211,7 +223,6 @@ int main(void)
     masterXfer.txData      = masterTxData;
     masterXfer.rxData      = masterRxData;
     masterXfer.dataSize    = TRANSFER_SIZE;
-    masterXfer.configFlags = EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER | kLPSPI_MasterByteSwap | kLPSPI_MasterPcsContinuous;
 
     isMasterTransferCompleted = false;
     LPSPI_MasterTransferEDMA(EXAMPLE_LPSPI_MASTER_BASEADDR, &g_m_edma_handle, &masterXfer);

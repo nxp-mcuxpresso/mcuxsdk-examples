@@ -75,7 +75,7 @@ int main(void)
 {
     BOARD_InitHardware();
 
-    PRINTF("LPSPI interrupt example start.\r\n");
+    PRINTF("LPSPI interrupt transfer example.\r\n");
     PRINTF("This example use one lpspi instance as master and another as slave on one board.\r\n");
     PRINTF("Master uses interrupt way and slave uses interrupt way.\r\n");
     PRINTF(
