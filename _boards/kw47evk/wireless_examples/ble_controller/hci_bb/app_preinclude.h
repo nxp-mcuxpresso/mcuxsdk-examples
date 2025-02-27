@@ -69,12 +69,12 @@
  ***********************************************************************************/
 
 /* Define as 1 in order to configure FEM to use external PA.
-   FEM in NBU is activated by API function Controller_ConfigureFEM.
+   FEM in NBU is activated by API function PLATFORM_InitFEM.
    Remark: FEM may conflict with Localisation feature in term of RF_GPO use. */
 //#define gAppConfigureFEM                       1
 
-/* Define as 1 when use with an external WIFI chip offering Coexistence control to KW4541 BLE.
-   Coexistence in NBU is activated by API function Controller_ConfigureCOEX.
+/* Define as 1 when use with an external WIFI chip offering Coexistence control to BLE.
+   Coexistence in NBU is activated by API function PLATFORM_InitCOEX.
    Remark: Coexistence may conflict with Localisation feature in term of RF_GPO use. */
 //#define gAppConfigureCOEX                      1
 
