@@ -14,7 +14,8 @@ include(${SdkRootDirPath}/${board_root}/${board}/el2go_examples/el2go_import_blo
 # ------- littlefs related configs --------
 mcux_add_configuration(
     CC "-DLFS_NO_INTRINSICS=1\
-        -DSDK_DEBUGCONSOLE_UART"
+        -DSDK_DEBUGCONSOLE_UART\
+        -DLFS_NO_ERROR"
 )
 
 mcux_add_macro(
