@@ -10,7 +10,6 @@ camera_persondetect_view:
       example_readme:
       - examples/eiq_examples/mpp/camera_persondetect_view/readme.md
       - middleware/eiq/mpp/${board}/board_readme.md
-      - middleware/eiq/mpp/README.md
     configuration:
       tools:
         __common__:
