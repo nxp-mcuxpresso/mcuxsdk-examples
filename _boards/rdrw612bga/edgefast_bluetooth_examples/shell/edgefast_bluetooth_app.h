@@ -7,7 +7,6 @@
 
 #include "edgefast_bluetooth_config.h"
 
-#define CONFIG_BT_L2CAP_UNBLOCK_SEND    1
 #if 0
 #undef CONFIG_BT_EXT_ADV
 #define CONFIG_BT_EXT_ADV 1
