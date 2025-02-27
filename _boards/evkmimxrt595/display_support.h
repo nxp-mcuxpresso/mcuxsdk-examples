@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2021 NXP
+ * Copyright 2019-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -26,10 +26,12 @@
 #define DEMO_PANEL DEMO_PANEL_TFT_PROTO_5
 #endif
 
+#define DEMO_ALIGN_ADDR(addr, align) ((((addr) / (align) * (align)) == (addr)) ? (addr) : ((addr) / (align) * (align) + (align)))
+
 #if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
 
-#ifndef DEMO_SSD1963_USE_RG565
-#define DEMO_SSD1963_USE_RG565 1
+#ifndef DEMO_SSD1963_USE_RGB565
+#define DEMO_SSD1963_USE_RGB565 1
 #endif
 
 #ifndef DEMO_SSD1963_USE_FLEXIO_SMARTDMA
@@ -55,6 +57,8 @@
 #define DEMO_BUFFER_COUNT  1 /* 1 is enough for DBI interface display. */
 #define FRAME_BUFFER_ALIGN 4 /* SMARTDMA buffer should be 4 byte aligned. */
 
+#define DEMO_FB_WIDTH  (DEMO_PANEL_WIDTH)
+#define DEMO_FB_HEIGHT (DEMO_PANEL_HEIGHT)
 #define DEMO_BUFFER_WIDTH  (DEMO_PANEL_WIDTH)
 #define DEMO_BUFFER_HEIGHT (DEMO_PANEL_HEIGHT)
 
@@ -67,12 +71,14 @@
  * should be RGB888 or BGR888. When SMARTDMA used, the SMARTDMA could read RGB565 from frame
  * buffer, convert to RGB888 and send out.
  */
-#if DEMO_SSD1963_USE_RG565
+#if DEMO_SSD1963_USE_RGB565
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
 #define DEMO_BUFFER_BYTE_PER_PIXEL 2
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), 64U)
 #else
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB888
 #define DEMO_BUFFER_BYTE_PER_PIXEL 3
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), (192U))
 #endif
 
 #if !DEMO_SSD1963_USE_FLEXIO_SMARTDMA
@@ -143,12 +149,16 @@
 
 #endif
 
+#define DEMO_FB_WIDTH   DEMO_PANEL_WIDTH
+#define DEMO_FB_HEIGHT  DEMO_PANEL_HEIGHT
 #define DEMO_BUFFER_WIDTH   DEMO_PANEL_WIDTH
 #define DEMO_BUFFER_HEIGHT  DEMO_PANEL_HEIGHT
 
 /* Where the frame buffer is shown in the screen. */
 #define DEMO_BUFFER_START_X 0U
 #define DEMO_BUFFER_START_Y 0U
+
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), 64U)
 
 #elif (DEMO_PANEL_RM67162 == DEMO_PANEL)
 
@@ -158,18 +168,18 @@
  * MIPI_DSI + Smart DMA support three pixel formats:
  *
  * 1. RGB565: frame buffer format is RGB565, MIPI DSI send out data format is RGB565,
- *    to use this, set DEMO_RM67162_USE_RG565=1
+ *    to use this, set DEMO_RM67162_USE_RGB565=1
  *
  * 2. RGB888: frame buffer format is RGB888, MIPI DSI send out data format is RGB888,
- *    to use this, set DEMO_RM67162_USE_RG565=0, DEMO_RM67162_USE_XRGB8888=0
+ *    to use this, set DEMO_RM67162_USE_RGB565=0, DEMO_RM67162_USE_XRGB8888=0
  *
  * 3. XRGB8888: frame buffer format is XRGB888, SMARTDMA helps drop the useless byte
  *    and MIPI DSI send out data format is RGB888,
- *    to use this, set DEMO_RM67162_USE_RG565=0, DEMO_RM67162_USE_XRGB8888=1
+ *    to use this, set DEMO_RM67162_USE_RGB565=0, DEMO_RM67162_USE_XRGB8888=1
  */
 
-#ifndef DEMO_RM67162_USE_RG565
-#define DEMO_RM67162_USE_RG565 1
+#ifndef DEMO_RM67162_USE_RGB565
+#define DEMO_RM67162_USE_RGB565 1
 #endif
 
 #ifndef DEMO_RM67162_USE_XRGB8888
@@ -181,7 +191,7 @@
 #define DEMO_RM67162_BUFFER_RGB888   1
 #define DEMO_RM67162_BUFFER_XRGB8888 2
 
-#if DEMO_RM67162_USE_RG565
+#if DEMO_RM67162_USE_RGB565
 
 #define DEMO_RM67162_BUFFER_FORMAT DEMO_RM67162_BUFFER_RGB565
 
@@ -236,7 +246,8 @@
 
 #define DEMO_PANEL_WIDTH  (400U)
 #define DEMO_PANEL_HEIGHT (392U)
-
+#define DEMO_FB_WIDTH     DEMO_PANEL_WIDTH
+#define DEMO_FB_HEIGHT    DEMO_PANEL_HEIGHT
 #define DEMO_BUFFER_WIDTH   (400U)
 #define DEMO_BUFFER_HEIGHT  (392U)
 
@@ -244,9 +255,19 @@
 #define DEMO_BUFFER_START_X 4U
 #define DEMO_BUFFER_START_Y 0U
 
+#if DEMO_RM67162_USE_DSI_SMARTDMA
+#if (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB565)
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), 64U)
+#else
+/* For RGB888 format, the stride shall also be divisible by 3. */
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), (192U))
+#endif
+#else
+/* No align requirement for MIPI APB. */
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL
 #endif
 
-#define DEMO_BUFFER_STRIDE_BYTE (DEMO_BUFFER_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL)
+#endif
 
 extern const dc_fb_t g_dc;
 

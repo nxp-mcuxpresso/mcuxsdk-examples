@@ -247,7 +247,7 @@ status_t BOARD_PrepareDisplayController(void)
     status_t status;
 
     flexio_mculcd_smartdma_config_t flexioEzhConfig = {
-#if DEMO_SSD1963_USE_RG565
+#if DEMO_SSD1963_USE_RGB565
         .inputPixelFormat = kFLEXIO_MCULCD_RGB565,
 #else
         .inputPixelFormat = kFLEXIO_MCULCD_RGB888,

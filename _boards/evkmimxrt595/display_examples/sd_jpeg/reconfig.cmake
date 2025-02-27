@@ -8,6 +8,6 @@ mcux_add_macro(
        -DSSD1963_DATA_WITDH=8\
        -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8\
        -DLIBJPEG_USER_CONFIG_FILE=\\\"libjpeg_user_config.h\\\"\
-       -DDEMO_RM67162_USE_RG565\
-       -DDEMO_SSD1963_USE_RG565"
+       -DDEMO_RM67162_USE_RGB565\
+       -DDEMO_SSD1963_USE_RGB565"
 )
