@@ -48,6 +48,10 @@ static uint32_t static_buf[ROM_BUF_SIZE / sizeof(uint32_t)];
  ******************************************************************************/
 sb3_api_ctx_t sb3_api_ctx;
 
+static int is_sb3_header(const void *header)
+{
+    return !memcmp("sbv3", header, 4);
+}
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -61,9 +65,20 @@ int is_remap_active(void)
     return (*((volatile uint32_t *)FLASH_REMAP_REG) > 0) ? 1 : 0;
 }
 
-int is_sb3_header(const void *header)
+int sb3_parse_header(const void *header, uint32_t *sb3_len)
 {
-    return !memcmp("sbv3", header, 4);
+    if(!is_sb3_header(header))
+    {
+        return 0;
+    }
+    if(sb3_len != NULL)
+    {
+        /* Calculate SB3 file size */
+        /* blockCount * blockSize + imageTotalLength */
+        uint32_t *sb3_ptr = (uint32_t *) header;
+        *sb3_len = sb3_ptr[0xC/4] * sb3_ptr[0x10/4] + sb3_ptr[0x20/4];
+    }
+    return 1;
 }
 
 /* Note: there is no clear way how to detect mbi presence so we analyze atleast Image Type */

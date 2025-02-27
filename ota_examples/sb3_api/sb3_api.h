@@ -28,8 +28,8 @@ typedef struct mbi_image_info
 /* tests if flah remapping is active */
 int is_remap_active(void);
 
-/* tests presence of SB3 file signature */
-int is_sb3_header(const void *header);
+/* Tests presence of SB3 magic and parse SB3 file length if wanted */
+int sb3_parse_header(const void *header, uint32_t *sb3_len);
 
 /* tests presence of signed image */
 int mbi_image_info_sanity_check(const uint32_t *image);
