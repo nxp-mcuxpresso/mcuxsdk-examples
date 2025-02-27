@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2024 NXP
+ * Copyright 2019-2024,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -60,6 +60,14 @@
 #endif
 #endif
 
+#ifndef kCLOCK_IpUartSrc
+#define kCLOCK_IpUartSrc kCLOCK_IpSrcFro6M // kCLOCK_IpSrcFro192M could be used as well
+#endif
+
+#if (kCLOCK_IpUartSrc == kCLOCK_IpSrcFro192M) && defined(gAppLpuart0WakeUpSourceEnable_d) && (gAppLpuart0WakeUpSourceEnable_d == 1)
+#warning "FRO192M is not available in deep sleep. To be able to wake up from LPUART0, FRO6M needs to be used"
+#endif
+
 #if (defined(HAL_UART_DMA_ENABLE) && (HAL_UART_DMA_ENABLE > 0U))
 #define BOARD_APP_UART_TYPE (kSerialPort_UartDma)
 #else
@@ -68,7 +76,7 @@
 #if (BOARD_APP_UART_INSTANCE == 0U)
 #define BOARD_APP_UART_BASEADDR     (uint32_t) LPUART0 /*set lpuart0 as the default*/
 #define BOARD_APP_UART_CLK          kCLOCK_Lpuart0     /*set lpuart0 as the default*/
-#define BOARD_APP_UART_CLKSRC       kCLOCK_IpSrcFro6M  /* LPUART0 and FRO6M are in same power domain */
+#define BOARD_APP_UART_CLKSRC       kCLOCK_IpUartSrc
 #define BOARD_APP_UART_DMAREQ_TX    kDmaRequestLPUART0Tx
 #define BOARD_APP_UART_DMAREQ_RX    kDmaRequestLPUART0Rx
 #define BOARD_APP_UART_DMAREQMUX_TX kDmaRequestMuxLPUART0Tx
@@ -80,7 +88,7 @@
 /* FRO6M is selected as srcclk, it limits the baudrate because of the oversamplig factor, you can change it to
  * kCLOCK_IpSrcFro192M to allow higher baudrate but in this case you need to wait for its stabilization before using
  * the UART */
-#define BOARD_APP2_UART_CLKSRC       kCLOCK_IpSrcFro6M
+#define BOARD_APP2_UART_CLKSRC       kCLOCK_IpUartSrc
 #define BOARD_APP2_UART_DMAREQ_TX    kDmaRequestLPUART1Tx
 #define BOARD_APP2_UART_DMAREQ_RX    kDmaRequestLPUART1Rx
 #define BOARD_APP2_UART_DMAREQMUX_TX kDmaRequestMuxLPUART1Tx
@@ -91,7 +99,7 @@
 /* FRO6M is selected as srcclk, it limits the baudrate because of the oversamplig factor, you can change it to
  * kCLOCK_IpSrcFro192M to allow higher baudrate but in this case you need to wait for its stabilization before using
  * the UART */
-#define BOARD_APP_UART_CLKSRC       kCLOCK_IpSrcFro6M
+#define BOARD_APP_UART_CLKSRC       kCLOCK_IpUartSrc
 #define BOARD_APP_UART_DMAREQ_TX    kDmaRequestLPUART1Tx
 #define BOARD_APP_UART_DMAREQ_RX    kDmaRequestLPUART1Rx
 #define BOARD_APP_UART_DMAREQMUX_TX kDmaRequestMuxLPUART1Tx
@@ -100,7 +108,7 @@
 #define BOARD_APP2_UART_BASEADDR     (uint32_t) LPUART0 /*set lpuart0 as the default*/
 #define BOARD_APP2_UART_INSTANCE     0U                 /*set lpuart0 as the default*/
 #define BOARD_APP2_UART_CLK          kCLOCK_Lpuart0     /*set lpuart0 as the default*/
-#define BOARD_APP2_UART_CLKSRC       kCLOCK_IpSrcFro6M  /* LPUART0 and FRO6M are in same power domain */
+#define BOARD_APP2_UART_CLKSRC       kCLOCK_IpUartSrc
 #define BOARD_APP2_UART_DMAREQ_TX    kDmaRequestLPUART0Tx
 #define BOARD_APP2_UART_DMAREQ_RX    kDmaRequestLPUART0Rx
 #define BOARD_APP2_UART_DMAREQMUX_TX kDmaRequestMuxLPUART0Tx
@@ -130,7 +138,7 @@
 #endif
 
 #ifndef BOARD_DEBUG_UART_CLKSRC
-#define BOARD_DEBUG_UART_CLKSRC   kCLOCK_IpSrcFro6M // kCLOCK_IpSrcFro192M could be used as well
+#define BOARD_DEBUG_UART_CLKSRC   kCLOCK_IpUartSrc
 #endif /* BOARD_DEBUG_UART_CLKSRC */
 
 #ifndef BOARD_DEBUG_UART_CLK_FREQ
