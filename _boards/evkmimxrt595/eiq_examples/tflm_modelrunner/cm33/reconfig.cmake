@@ -7,7 +7,11 @@ mcux_add_source(
   SOURCES examples/eiq_examples/common/timer.c
           examples/eiq_examples/common/timer.h
   )
-
+mcux_add_macro(
+	CX "MODEL_SIZE=1024*1024"
+	CC "PRINTF_ADVANCED_ENABLE=1 \
+	    PRINTF_FLOAT_ENABLE=1"
+)
 mcux_add_mdk_configuration(
         CX "-std=gnu++17"
 )
@@ -15,3 +19,19 @@ mcux_remove_mdk_configuration(
   CC "-fshort-wchar"
   CX "-fshort-wchar"
   )
+mcux_add_iar_configuration(
+  LD "--config_def=__heap_size__=0x200000\
+  --config_def=__stack_size__=0x2000"
+  )
+mcux_add_mdk_configuration(
+  LD "--predefine=-D__heap_size__=0x200000\
+  --predefine=-D__stack_size__=0x2000"
+  )
+mcux_add_armgcc_configuration(
+  LD "-Xlinker --defsym=__heap_size__=0x200000\
+  -Xlinker --defsym=__stack_size__=0x2000"
+  )
+mcux_add_mcux_configuration(
+  LD "-Xlinker --defsym=__heap_size__=0x200000\
+      -Xlinker --defsym=__stack_size__=0x2000"
+)

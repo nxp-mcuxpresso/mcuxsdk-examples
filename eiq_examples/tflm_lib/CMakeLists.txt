@@ -11,12 +11,12 @@ mcux_add_iar_configuration(
   CX "--endian=little -e  -DNDEBUG --diag_suppress=Pe167 --diag_suppress=Pe260,Pe1031,Pe144"
 )
 mcux_add_mdk_configuration(
-  CC "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -fno-builtin -mthumb -fno-rtti -DNDEBUG"
-  CX "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -fno-builtin -mthumb -fno-rtti -DNDEBUG"
+  CC "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -mthumb -fno-rtti -DNDEBUG"
+  CX "-Oz -ffunction-sections -fno-common -fdata-sections -fshort-enums -mthumb -fno-rtti -DNDEBUG"
 )
 mcux_add_armgcc_configuration(
-  CC "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -mthumb -mapcs -DNDEBUG  -O3"
-  CX "-Wall -fno-common -ffunction-sections -fdata-sections -fno-builtin -mthumb -mapcs -fno-rtti -fno-exceptions -DNDEBUG -O3"
+  CC "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -DNDEBUG  -O2"
+  CX "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -fno-rtti -fno-exceptions -DNDEBUG -O2"
 )
 if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm33" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm33f")
   mcux_add_iar_configuration(

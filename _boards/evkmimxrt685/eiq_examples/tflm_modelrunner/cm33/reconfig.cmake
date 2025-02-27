@@ -15,3 +15,8 @@ mcux_remove_mdk_configuration(
   CC "-fshort-wchar"
   CX "-fshort-wchar"
   )
+mcux_add_macro(
+        CX "MODEL_SIZE=1024*1024"
+        CC "PRINTF_ADVANCED_ENABLE=1 \
+            PRINTF_FLOAT_ENABLE=1"
+)

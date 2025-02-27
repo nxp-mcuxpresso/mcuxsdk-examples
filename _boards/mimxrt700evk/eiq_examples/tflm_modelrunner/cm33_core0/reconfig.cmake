@@ -34,14 +34,14 @@ mcux_add_mdk_configuration(
        --library_type=nomicrolib"
 )
 mcux_add_mdk_configuration(
-    TARGETS release
+    TARGETS flash_release
     CC "-Oz\
        -O3"
 )
 mcux_add_armgcc_configuration(
-    TARGETS release
-    CC "-O3"
-    CX "-O3"
+    TARGETS flash_release
+    CC "-O2"
+    CX "-O2"
 )
 
 mcux_add_macro(
@@ -90,7 +90,7 @@ mcux_remove_armgcc_configuration(
     LD "--specs=nano.specs"
 )
 mcux_remove_armgcc_configuration(
-    TARGETS release
+    TARGETS flash_release
     CC "-Os"
     CX "-Os"
 )

@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- MIMXRT700-EVK board
+- EVK-MIMXRT595 board
 - Personal computer
 
 Board settings
