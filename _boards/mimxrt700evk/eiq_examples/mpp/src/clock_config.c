@@ -95,6 +95,8 @@ void BOARD_BootClockRUN(void)
         .coarseTrimEn = true,
     };
 
+    /* Ungate all FRO clock. */
+    POWER_DisablePD(kPDRUNCFG_GATE_FRO0);
     POWER_DisablePD(kPDRUNCFG_PD_LPOSC);
 
     /* Power up OSC */
@@ -102,27 +104,14 @@ void BOARD_BootClockRUN(void)
     CLOCK_EnableSysOscClk(true, true, BOARD_SYSOSC_SETTLING_US); /* Enable system OSC */
     CLOCK_SetXtalFreq(BOARD_XTAL_SYS_CLK_HZ);                    /* Sets external XTAL OSC freq */
 
-    POWER_DisablePD(kPDRUNCFG_PD_FRO1); /* Make sure FRO1 is enabled. */
+    CLOCK_AttachClk(kFRO1_DIV1_to_COMMON_BASE); /* Switch to 192 MHZ */
+    BOARD_XspiClockSafeConfig(); /*Change to FRO0_DIV1. */
 
-    /* Switch to FRO1 for safe configure. */
-    CLOCK_AttachClk(kFRO1_DIV1_to_COMPUTE_BASE);
-    CLOCK_AttachClk(kCOMPUTE_BASE_to_COMPUTE_MAIN); 
-    CLOCK_SetClkDiv(kCLOCK_DivCmptMainClk, 1U);
-    CLOCK_AttachClk(kFRO1_DIV1_to_RAM);
-    CLOCK_SetClkDiv(kCLOCK_DivComputeRamClk, 1U);
-    CLOCK_AttachClk(kFRO1_DIV1_to_COMMON_BASE);
-    CLOCK_AttachClk(kCOMMON_BASE_to_COMMON_VDDN);
-    CLOCK_SetClkDiv(kCLOCK_DivCommonVddnClk, 1U);
-
-    BOARD_XspiClockSafeConfig(); /*Change to common_base clock(Sourced by FRO1). */
-
-    /* Ungate all FRO clock. */
-    POWER_DisablePD(kPDRUNCFG_GATE_FRO0);
     CLOCK_EnableFroClkFreqCloseLoop(FRO0, &froAutotrimCfg, kCLOCK_FroAllOutEn); /* Use close loop mode. */
     CLOCK_EnableFro0ClkForDomain(kCLOCK_AllDomainEnable); /* Enable FRO0 MAX clock for all domains. */
 
     CLOCK_InitMainPll(&g_mainPllConfig_BOARD_BootClockRUN);
-    CLOCK_InitMainPfd(kCLOCK_Pfd0, 20U); /* 475MHz */
+    CLOCK_InitMainPfd(kCLOCK_Pfd0, 16U); /* 594MHz */
     CLOCK_InitMainPfd(kCLOCK_Pfd1, 24U); /* 396MHz */
     CLOCK_InitMainPfd(kCLOCK_Pfd2, 18U); /* 528MHz */
     CLOCK_InitMainPfd(kCLOCK_Pfd3, 19U); /* Main PLL kCLOCK_Pfd3 (528 * 18 / 19) = 500MHz -need 2 div  -> 250MHz*/
@@ -145,11 +134,11 @@ void BOARD_BootClockRUN(void)
     CLOCK_AttachClk(kMAIN_PLL_PFD0_to_RAM); /* Switch to PLL 230MHZ */
 
     CLOCK_SetClkDiv(kCLOCK_DivCommonVddnClk, 2U);
-    CLOCK_AttachClk(kMAIN_PLL_PFD3_to_COMMON_VDDN); /* Switch to 250MHZ */
+    CLOCK_AttachClk(kMAIN_PLL_PFD3_to_COMMON_VDDN); /* Switch to250 MHZ */
 
     /* Configure Audio PLL clock source. */
     CLOCK_InitAudioPll(&g_audioPllConfig_BOARD_BootClockRUN); /* 532.48MHZ */
-    CLOCK_InitAudioPfd(kCLOCK_Pfd1, 24U);  /* 399.36MHz */
+    CLOCK_InitAudioPfd(kCLOCK_Pfd1, 24U);  /* 528MHz */
     CLOCK_InitAudioPfd(kCLOCK_Pfd3, 26U);  /* Enable Audio PLL PFD3 clock to 368.64MHZ */
     CLOCK_EnableAudioPllPfdClkForDomain(kCLOCK_Pfd1, kCLOCK_AllDomainEnable);
     CLOCK_EnableAudioPllPfdClkForDomain(kCLOCK_Pfd3, kCLOCK_AllDomainEnable);
@@ -159,3 +148,4 @@ void BOARD_BootClockRUN(void)
 
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
 }
+

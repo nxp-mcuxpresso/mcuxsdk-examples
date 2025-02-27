@@ -1,36 +1,40 @@
 /*
- * Copyright 2019, 2021 NXP
+ * Copyright 2024 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
-#ifndef _VGLITE_SUPPORT_H_
-#define _VGLITE_SUPPORT_H_
+#ifndef _FSL_FLEXIO_CAMERA_H_
+#define _FSL_FLEXIO_CAMERA_H_
 
 #include "fsl_common.h"
+#include "fsl_flexio.h"
+/*!
+ * @addtogroup flexio_camera
+ * @{
+ */
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
+extern volatile uint32_t g_ezhvIrqIdx;
+extern volatile uint32_t g_ezhvIrq;
+extern CameraBuffer_t *g_stCamBuf;
 /*******************************************************************************
  * API
  ******************************************************************************/
+
 #if defined(__cplusplus)
 extern "C" {
-#endif                                          /* __cplusplus */
+#endif /*_cplusplus*/
 
-#define VG_LITE_COMMAND_BUFFER_SIZE (128 << 10) /* 128 KB */
-
-/* Default tessellation window width and height, in pixels */
-#define DEFAULT_VG_LITE_TW_WIDTH  128 /* pixels */
-#define DEFAULT_VG_LITE_TW_HEIGHT DEMO_PANEL_HEIGHT /* pixels */
-
-status_t BOARD_PrepareVGLiteController(void);
+void flexio_camera_init(void);
+/*! @} */
 
 #if defined(__cplusplus)
 }
-#endif /* __cplusplus */
+#endif /*_cplusplus*/
 
-#endif /* _VGLITE_SUPPORT_H_ */
+/*@}*/
+
+#endif /*_FSL_FLEXIO_CAMERA_H_*/

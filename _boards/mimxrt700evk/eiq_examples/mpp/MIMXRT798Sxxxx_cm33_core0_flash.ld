@@ -30,6 +30,8 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x800;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x400;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
+m_ezhv_image_maximum_size = 0x00010000;
+
 DATA_START   = 0x20000000; /* SRAM P0 */
 DATA_SIZE    = 0x00300000;
 DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
@@ -37,6 +39,12 @@ DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 
 NCACHE_START = 0x20400000; /* SRAM P14 */
 NCACHE_SIZE  = 0x00380000; /* SRAM P29 end - SRAM P14 start */
 NCACHE_END   = NCACHE_START + NCACHE_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0);
+
+EZHV_DATA_START = 0x24108000;
+EZHV_DATA_SIZE  = 0x7FFF;
+
+IMAGE_DATA_START = 0x60000000;
+IMAGE_DATA_SIZE  = 0xFFFF;
 
 HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
 
@@ -52,6 +60,8 @@ MEMORY
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_model               (RW)  : ORIGIN = 0x20300000, LENGTH = 0x00100000 /* SRAM P13 */
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_END - NCACHE_START + 1
+  m_ezhv_data           (RW)  : ORIGIN = EZHV_DATA_START, LENGTH = EZHV_DATA_SIZE
+  m_image_data          (RW)  : ORIGIN = IMAGE_DATA_START, LENGTH = IMAGE_DATA_SIZE
   m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE
 }
 
@@ -89,8 +99,16 @@ SECTIONS
     *(.eh_frame)
     KEEP (*(.init))
     KEEP (*(.fini))
+
+    . = ALIGN(16);
+    ezhv_image_start = .;
+    KEEP (*(.ezhvcode))
+    *(.ezhvcode*)
+    ezhv_image_end = .;
     . = ALIGN(4);
   } > m_text
+
+  ASSERT((ezhv_image_end - ezhv_image_start) <= m_ezhv_image_maximum_size, "ezhv image size exceeds the limit")
 
   .ARM.extab :
   {
@@ -215,6 +233,25 @@ SECTIONS
     *(.modeldata*)
     __modeldata_end__ = .;
   } > m_model
+
+  /* The ezhv cmd and data go into internal ram */
+  .m_ezhv_data :
+  {
+    . = ALIGN(4);
+    ezhv_data_start = .;
+    KEEP (*(zv_cmd))
+    KEEP (*(zv_stat))
+    KEEP (*(zv_data))
+    ezhv_data_end = .;
+  } > m_ezhv_data
+
+  .m_image_data :
+  {
+    . = ALIGN(4);
+    image_data_start = .;
+    KEEP (*(image_data))
+    image_data_end = .;
+  } > m_image_data
 
   __NCACHE_REGION_START = ORIGIN(m_ncache);
   __NCACHE_REGION_SIZE  = NCACHE_SIZE;

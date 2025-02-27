@@ -26,7 +26,7 @@ processor_version: 0.0.0
 #include "fsl_common.h"
 #include "fsl_iopctl.h"
 #include "pin_mux.h"
-
+void BOARD_InitCameraPins(void);
 /* FUNCTION ************************************************************************************************************
  *
  * Function Name : BOARD_InitBootPins
@@ -38,6 +38,7 @@ void BOARD_InitBootPins(void)
     RESET_ClearPeripheralReset(kIOPCTL0_RST_SHIFT_RSTn);
 
     BOARD_InitUARTPins();
+    BOARD_InitCameraPins(); 
 }
 
 /* clang-format off */
@@ -1391,6 +1392,218 @@ void BOARD_InitPsRamPins_Xspi2(void)
 
     IOPCTL_PinMuxSet(4U, 20U, port4_pin20_config);
 }
+
+void BOARD_InitPmicPins(void)
+{
+    const uint32_t i2c_scl_config = (/* Pin is configured as I2C_SCL */
+                                          IOPCTL_PIO_FUNC0 |
+                                          /* Disable pull-up / pull-down function */
+                                          IOPCTL_PIO_PUPD_DI |
+                                          /* Enable pull-down function */
+                                          IOPCTL_PIO_PULLDOWN_EN |
+                                          /* Enables input buffer function */
+                                          IOPCTL_PIO_INBUF_EN |
+                                          /* Normal mode */
+                                          IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                          /* Normal drive */
+                                          IOPCTL_PIO_FULLDRIVE_DI |
+                                          /* Analog mux is disabled */
+                                          IOPCTL_PIO_ANAMUX_DI |
+                                          /* Pseudo Output Drain is enabled */
+                                          IOPCTL_PIO_PSEDRAIN_EN |
+                                          /* Input function is not inverted */
+                                          IOPCTL_PIO_INV_DI);
+    /* FC15_SCL PIN (coords: K4) is configured as I2C SCL */
+    IOPCTL1->PMIC_I2C_SCL = i2c_scl_config;
+ 
+    const uint32_t i2c_sda_config = (/* Pin is configured as I2C_SDA */
+                                          IOPCTL_PIO_FUNC0 |
+                                          /* Disable pull-up / pull-down function */
+                                          IOPCTL_PIO_PUPD_DI |
+                                          /* Enable pull-down function */
+                                          IOPCTL_PIO_PULLDOWN_EN |
+                                          /* Enables input buffer function */
+                                          IOPCTL_PIO_INBUF_EN |
+                                          /* Normal mode */
+                                          IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                          /* Normal drive */
+                                          IOPCTL_PIO_FULLDRIVE_DI |
+                                          /* Analog mux is disabled */
+                                          IOPCTL_PIO_ANAMUX_DI |
+                                          /* Pseudo Output Drain is enabled */
+                                          IOPCTL_PIO_PSEDRAIN_EN |
+                                          /* Input function is not inverted */
+                                          IOPCTL_PIO_INV_DI);
+    /* FC15_SDA PIN (coords: K6) is configured as I2C SDA */
+    IOPCTL1->PMIC_I2C_SDA = i2c_sda_config;
+
+}
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_FlexIO_InitPins
+ * Description   : FLEXIO_D1 used as output pin, output XCLK signal into Camera Sensor OV7675.
+ *                 FLEXIO_D15 used as input pin, receive PCLK signal from Camera Sensor
+ *                 FLEXIO_D2 used as input pin, receive HREF signal from Camera Sensor
+ *                 FLEXIO_D5 used as input pin, receive XSYNC signal from Camera Sensor
+ *                 FLEXIO_D6~D13 used as input pins, receive D0~D7 signal from Camera Sensor
+ *
+ * END ****************************************************************************************************************/
+void BOARD_FlexIO_InitPins(void)
+{
+    const uint32_t flexio_config = (
+                                   IOPCTL_PIO_FUNC5 |
+                                   /* Disable pull-up / pull-down function */
+                                   IOPCTL_PIO_PUPD_EN |
+                                   /* Enable pull-down function */
+                                   IOPCTL_PIO_PULLUP_EN |
+                                   /* Enables input buffer function */
+                                   IOPCTL_PIO_INBUF_EN |
+                                   /* Normal mode */
+                                   IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                   /* Normal drive */
+                                   IOPCTL_PIO_FULLDRIVE_DI |
+                                   /* Analog mux is disabled */
+                                   IOPCTL_PIO_ANAMUX_DI |
+                                   /* Pseudo Output Drain is disabled */
+                                   IOPCTL_PIO_PSEDRAIN_DI |
+                                   /* Input function is not inverted */
+                                   IOPCTL_PIO_INV_DI);
+    /* PORT2 PIN6 is configured as FLEXIO_D6  => D0,J53-16 */
+    IOPCTL_PinMuxSet(2U, 6U, flexio_config);
+    /* PORT2 PIN7 is configured as FLEXIO_D7 => D1, J53-15 */
+    IOPCTL_PinMuxSet(2U, 7U, flexio_config);
+    /* PORT2 PIN8 is configured as FLEXIO_D8 => D2, J53-14 */
+    IOPCTL_PinMuxSet(2U, 8U, flexio_config);
+    /* PORT2 PIN9 is configured as FLEXIO_D9 => D3, J53-13 */
+    IOPCTL_PinMuxSet(2U, 9U, flexio_config);
+    /* PORT2 PIN10 is configured as FLEXIO_D10 => D4, J53-12 */
+    IOPCTL_PinMuxSet(2U, 10U, flexio_config);
+    /* PORT2 PIN11 is configured as FLEXIO_D11 => D5, J53-11 */
+    IOPCTL_PinMuxSet(2U, 11U, flexio_config);
+    /* PORT2 PIN12 is configured as FLEXIO_D12 => D6, J53-10 */
+    IOPCTL_PinMuxSet(2U, 12U, flexio_config);
+    /* PORT2 PIN13 is configured as FLEXIO_D13 => D7, J53-09 */
+    IOPCTL_PinMuxSet(2U, 13U, flexio_config);
+    /* PORT2 PIN2 is configured as FLEXIO_D2 => HREF, J53-6 */
+    IOPCTL_PinMuxSet(2U, 2U, flexio_config);
+    /* PORT2 PIN15 is configured as FLEXIO_D15 => PCLK, J53-7 */
+    IOPCTL_PinMuxSet(2U, 15U, flexio_config);
+
+    const uint32_t xclk_config = (
+                                 IOPCTL_PIO_FUNC5 |
+                                 /* Disable pull-up / pull-down function */
+                                 IOPCTL_PIO_PUPD_DI |
+                                 /* Enable pull-down function */
+                                 IOPCTL_PIO_PULLDOWN_EN |
+                                 /* Disable input buffer function */
+                                 IOPCTL_PIO_INBUF_DI |
+                                 /* Normal mode */
+                                 IOPCTL_PIO_SLEW_RATE_EN |
+                                 /* Normal drive */
+                                 IOPCTL_PIO_FULLDRIVE_DI |
+                                 /* Analog mux is disabled */
+                                 IOPCTL_PIO_ANAMUX_DI |
+                                 /* Pseudo Output Drain is disabled */
+                                 IOPCTL_PIO_PSEDRAIN_DI |
+                                 /* Input function is not inverted */
+                                 IOPCTL_PIO_INV_DI);
+    /* PORT2 PIN1 is configured as FLEXIO_D1 => XCLK, J53-8 */
+    IOPCTL_PinMuxSet(2U, 1U, xclk_config);
+
+    const uint32_t vsync_config = (
+                                   IOPCTL_PIO_FUNC0 |
+                                   /* Disable pull-up / pull-down function */
+                                   IOPCTL_PIO_PUPD_DI |
+                                   /* Enable pull-down function */
+                                   IOPCTL_PIO_PULLDOWN_EN |
+                                   /* Enables input buffer function */
+                                   IOPCTL_PIO_INBUF_EN |
+                                   /* Normal mode */
+                                   IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                   /* Normal drive */
+                                   IOPCTL_PIO_FULLDRIVE_DI |
+                                   /* Analog mux is disabled */
+                                   IOPCTL_PIO_ANAMUX_DI |
+                                   /* Pseudo Output Drain is disabled */
+                                   IOPCTL_PIO_PSEDRAIN_DI |
+                                   /* Input function is not inverted */
+                                   IOPCTL_PIO_INV_DI);
+    /* PORT2 PIN5 (is configured as PIO2_5 => VSYNC, J53-5 */
+    IOPCTL_PinMuxSet(2U, 5U, vsync_config);
+
+    const uint32_t gpio_config = (
+                                  IOPCTL_PIO_FUNC0 |
+                                  /* Disable pull-up / pull-down function */
+                                  IOPCTL_PIO_PUPD_DI |
+                                  /* Enable pull-down function */
+                                  IOPCTL_PIO_PULLDOWN_EN |
+                                  /* Enables input buffer function */
+                                  IOPCTL_PIO_INBUF_DI |
+                                  /* Normal mode */
+                                  IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                  /* Analog mux is disabled */
+                                  IOPCTL_PIO_ANAMUX_DI |
+                                  /* Pseudo Output Drain is disabled */
+                                  IOPCTL_PIO_PSEDRAIN_DI |
+                                  /* Input function is not inverted */
+                                  IOPCTL_PIO_INV_DI);
+    /* PORT2 PIN0 (is configured as PIO2_0 => RESET, J53-17 */
+    IOPCTL_PinMuxSet(2U, 0U, gpio_config);
+}
+
+/* Function Name : BOARD_FlexComm_I2C_InitPins */
+void BOARD_LPFlexComm_I2C_InitPins(void)
+{
+    const uint32_t port0_pin6_config = (/* Pin is configured as LP_FLEXCOMM8_P0 */
+                                        IOPCTL_PIO_FUNC5 |
+                                        /* Enable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_EN |
+                                        /* Enable pull-up function */
+                                        IOPCTL_PIO_PULLUP_EN |
+                                        /* Enables input buffer function */
+                                        IOPCTL_PIO_INBUF_EN |
+                                        /* Pseudo Output Drain is enabled */
+                                        IOPCTL_PIO_PSEDRAIN_EN |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI |
+                                        /* Selects transmitter current drive 100ohm */
+                                        IOPCTL_DRIVE_100OHM);
+    /* PORT0 PIN6 (coords: J5) is configured as LP_FLEXCOMM8_P0 */
+    IOPCTL_PinMuxSet(0U, 6U, port0_pin6_config);
+
+    const uint32_t port0_pin7_config = (/* Pin is configured as LP_FLEXCOMM8_P1 */
+                                        IOPCTL_PIO_FUNC5 |
+                                        /* Enable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_EN |
+                                        /* Enable pull-up function */
+                                        IOPCTL_PIO_PULLUP_EN |
+                                        /* Enables input buffer function */
+                                        IOPCTL_PIO_INBUF_EN |
+                                        /* Pseudo Output Drain is enabled */
+                                        IOPCTL_PIO_PSEDRAIN_EN |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI |
+                                        /* Selects transmitter current drive 100ohm */
+                                        IOPCTL_DRIVE_100OHM);
+    /* PORT0 PIN7 (coords: K5) is configured as LP_FLEXCOMM8_P1 */
+    IOPCTL_PinMuxSet(0U, 7U, port0_pin7_config);
+}
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCameraPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCameraPins(void)
+{
+    /* Flexio CameraIf pin */
+    BOARD_FlexIO_InitPins();
+    /* FlexComm Camera SCCB pins */
+    BOARD_LPFlexComm_I2C_InitPins();
+}
+
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

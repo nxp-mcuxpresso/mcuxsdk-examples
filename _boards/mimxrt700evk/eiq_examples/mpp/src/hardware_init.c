@@ -11,6 +11,8 @@
 #include "clock_config.h"
 #include "board.h"
 #include "display_support.h"
+#include "pmic_support.h"
+
 /*${header:end}*/
 
 /*${function:start}*/
@@ -36,6 +38,9 @@ void BOARD_Init(void)
     BOARD_InitAHBSC();
     BOARD_InitBootPins();
     BOARD_InitPsRamPins_Xspi2();
+    BOARD_InitPmicDVSPin();
+    BOARD_InitPmic();
+    BOARD_SetPmicVdd2Voltage(1150000U);
 
 #if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
 #if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
@@ -53,8 +58,10 @@ void BOARD_Init(void)
     BOARD_InitMipiPanelPinsEvk();
 
     CLOCK_EnableClock(kCLOCK_Gpio1);
+    CLOCK_EnableClock(kCLOCK_Gpio2);
     CLOCK_EnableClock(kCLOCK_Gpio3);
     RESET_PeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+    RESET_PeripheralReset(kGPIO2_RST_SHIFT_RSTn);
     RESET_PeripheralReset(kGPIO3_RST_SHIFT_RSTn);
 #endif
 

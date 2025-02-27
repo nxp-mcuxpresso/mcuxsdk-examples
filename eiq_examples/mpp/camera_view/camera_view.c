@@ -152,7 +152,7 @@ static void app_task(void *params) {
     mpp_element_params_t elem_params;
     memset(&elem_params, 0, sizeof(elem_params));
     /* pick default device from the first listed and supported by Hw */
-    elem_params.convert.dev_name = NULL;
+    elem_params.convert.dev_name = APP_GFX_BACKEND_NAME;
     /* set output buffer dims */
     elem_params.convert.out_buf.width = APP_DISPLAY_WIDTH;
     elem_params.convert.out_buf.height = APP_DISPLAY_HEIGHT;

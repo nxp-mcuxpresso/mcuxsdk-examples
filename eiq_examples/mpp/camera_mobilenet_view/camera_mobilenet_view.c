@@ -214,6 +214,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
         {
             /* copy inference output */
             app_priv->inf_out = out_data;
+            app_priv->inference_time_ms = inf_output->inference_time_ms;
             __atomic_store_n(&app_priv->accessing, 0, __ATOMIC_SEQ_CST);
         }
         app_priv->inference_frame_num++;
@@ -278,6 +279,8 @@ static void app_task(void *params)
 
     /* split the pipeline into 2 branches */
     mpp_t mp_split;
+    mpp_stats_t split_stats;
+    mpp_params.stats = &split_stats;
     mpp_params.exec_flag = MPP_EXEC_INHERIT;
     ret = mpp_split(mp, 1 , &mpp_params, &mp_split);
     if (ret) {
@@ -479,13 +482,16 @@ static void app_task(void *params)
         PRINTF("pr_slot  = %u ms pr_rounds %u app_slot %u ms\r\n",
                 api_stats.api.pr_slot, api_stats.api.pr_rounds, api_stats.api.app_slot);
         PRINTF("MPP stats ------------------------------\r\n");
-        PRINTF("mpp %p exec_time %u ms\r\n", mpp_stats.mpp.mpp, mpp_stats.mpp.mpp_exec_time);
-        PRINTF("mpp %p exec_time %u ms\r\n", bg_stats.mpp.mpp, bg_stats.mpp.mpp_exec_time);
+        PRINTF("mp %p exec_time %u ms\r\n", mpp_stats.mpp.mpp, mpp_stats.mpp.mpp_exec_time);
+        PRINTF("mp_split %p exec_time %u ms\r\n", split_stats.mpp.mpp, split_stats.mpp.mpp_exec_time);
+        PRINTF("mp_bg %p exec_time %u ms\r\n", bg_stats.mpp.mpp, bg_stats.mpp.mpp_exec_time);
         PRINTF("Element stats --------------------------\r\n");
-        PRINTF("mobilenet : exec_time %u ms\r\n", mobilenet_stats.elem.elem_exec_time);
+        PRINTF("Inference : exec_time %u ms\r\n", mobilenet_stats.elem.elem_exec_time);
         if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
         {
+            PRINTF("Inference results --------------------------\r\n");
             PRINTF("mobilenet : %s (%d%%)\r\n", user_data.inf_out.label, user_data.inf_out.score);
+            PRINTF("mobilenet : %d ms\r\n", user_data.inference_time_ms);
             __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
         }
         mpp_stats_enable(MPP_STATS_GRP_MPP);

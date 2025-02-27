@@ -41,6 +41,10 @@ void BOARD_InitBootPins(void);
 #define IOPCTL_PIO_PUPD_DI 0x00u          /*!<@brief Disable pull-up / pull-down function */
 #define IOPCTL_PIO_SLEW_RATE_NORMAL 0x00u /*!<@brief Normal mode */
 #define IOPCTL_PIO_FULLDRIVE_DI 0x00u
+#define IOPCTL_PIO_DRIVE_100OHM (0x0 << 12) /*!< Selects transmitter current drive 100ohm */
+#define IOPCTL_PIO_DRIVE_66OHM  (0x1 << 12) /*!< Selects transmitter current drive 66ohm */
+#define IOPCTL_PIO_DRIVE_50OHM  (0x2 << 12) /*!< Selects transmitter current drive 50ohm */
+#define IOPCTL_PIO_DRIVE_33OHM  (0x3 << 12) /*!< Selects transmitter current drive 33ohm */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
@@ -124,7 +128,7 @@ void BOARD_InitFlexIOPanelPins(void); /* Function assigned for the Cortex-M33 (C
 #define IOPCTL_PIO_PULLDOWN_EN 0x00u      /*!<@brief Enable pull-down function */
 #define IOPCTL_PIO_PUPD_DI 0x00u          /*!<@brief Disable pull-up / pull-down function */
 #define IOPCTL_PIO_SLEW_RATE_NORMAL 0x00u /*!<@brief Normal mode */
-
+#define IOPCTL_PIO_SLEW_RATE_EN 0x80u     /*!<@brief Slew rate mode */
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -144,6 +148,8 @@ void BOARD_InitLcdDBIPanelPins(void); /* Function assigned for the Cortex-M33 (C
 void BOARD_InitI2cPins(void); /* Function assigned for the Cortex-M33 (Core #0) */
 
 void BOARD_InitPsRamPins_Xspi2(void);
+void BOARD_InitPmicPins(void);
+
 #if defined(__cplusplus)
 }
 #endif
