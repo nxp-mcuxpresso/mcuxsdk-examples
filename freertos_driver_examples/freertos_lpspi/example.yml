@@ -18,7 +18,6 @@ freertos_lpspi:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbimxrt1050: []
-    evkbmimxrt1060: []
     evkbmimxrt1170: []
     evkmimxrt1020: []
     evkmimxrt1024: []
