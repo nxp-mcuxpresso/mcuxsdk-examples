@@ -1,14 +1,7 @@
-/*
- * Copyright 2023 NXP
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
 #ifndef _PIN_MUX_H_
 #define _PIN_MUX_H_
 
 #include "hal_pinctrl.h"
-#include "board.h"
 
 /***********************************************************************************************************************
  * Definitions
@@ -34,11 +27,11 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
-void BOARD_InitLpuart1Pins(void);
-
-void BOARD_InitLpuart2Pins(void);
-
-void BOARD_InitLpuart3Pins(void);
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M7F[cm7] */
 
 #if defined(__cplusplus)
 }
