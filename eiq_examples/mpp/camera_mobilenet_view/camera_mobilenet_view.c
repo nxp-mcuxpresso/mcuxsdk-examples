@@ -52,6 +52,7 @@ typedef struct _user_data_t {
     mpp_labeled_rect_t labels[1];
     mobilenet_post_proc_data_t inf_out;
     uint32_t accessing; /* boolean protecting access to user data */
+    int inference_time_ms;
 } user_data_t;
 
 /*******************************************************************************
