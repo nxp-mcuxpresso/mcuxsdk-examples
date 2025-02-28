@@ -17,6 +17,7 @@ k4w1_romapi_flash:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
+    mcxw71evk: []
     k32w148evk:
     - +armgcc@debug
     - +armgcc@release
