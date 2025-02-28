@@ -77,19 +77,9 @@ void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
             cfg[mode].ldo4OutVolt = 3300000U;
             break;
 
-            /* PMIC_MODE[1:0] = 10b */
-        case kPCA9422_StandbyMode:
-            cfg[mode].sw1OutVolt  = 630000U;
-            cfg[mode].sw2OutVolt  = 1000000U;
-            cfg[mode].sw3OutVolt  = 630000U;
-            cfg[mode].sw4OutVolt  = 1800000U;
-            cfg[mode].ldo1OutVolt = 1800000U;
-            cfg[mode].ldo2OutVolt = 1800000U;
-            cfg[mode].ldo3OutVolt = 1200000U;
-            cfg[mode].ldo4OutVolt = 3300000U;
-            break;
-            /* PMIC_MODE[1:0] = 11b */
-        case kPCA9422_DPStandbyMode:
+         /* Note: the StandbyMode and DPStandbyMode use same register for voltage configuration. */
+        case kPCA9422_StandbyMode: /* PMIC_MODE[1:0] = 10b */
+        case kPCA9422_DPStandbyMode: /* PMIC_MODE[1:0] = 11b */
             cfg[mode].sw1OutVolt  = 630000U;
             cfg[mode].sw2OutVolt  = 1000000U;
             cfg[mode].sw3OutVolt  = 630000U;
@@ -191,12 +181,9 @@ void BOARD_InitPowerConfig(void)
     pca9422_modecfg_t pca9422ModeCfg[12];
     uint32_t i;
     clock_osc32k_config_t config = {
-        .bypass = false, .monitorEnable = false, .lowPowerMode = false, .cap = kCLOCK_Osc32kCapPf0};
-    /* If OSC32K not enabled, enable OSC32K. */
-    if (CLOCK_GetOsc32KFreq() == 0U)
-    {
-        CLOCK_EnableOsc32K(&config);
-    }
+        .bypass = false, .monitorEnable = false, .lowPowerMode = true, .cap = kCLOCK_Osc32kCapPf16};
+    /* Configure OSC32K. */
+    CLOCK_EnableOsc32K(&config);
 
 #if defined(DEMO_POWER_USE_PLL) && (DEMO_POWER_USE_PLL == 0U)
     CLKCTL2->MAINPLL0PFDDOMAINEN  = 0;
