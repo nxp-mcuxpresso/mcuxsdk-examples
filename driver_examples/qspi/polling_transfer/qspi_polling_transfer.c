@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
- * All rights reserved.
+ * Copyright 2016-2017, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -27,11 +26,16 @@ extern void enable_octal_mode(void);
 extern void erase_sector(uint32_t addr);
 extern void erase_all(void);
 extern void program_page(uint32_t dest_addr, uint32_t *src_addr);
+extern void ip_read_flash(uint32_t addr, uint32_t *buffer, uint32_t size);
 extern void BOARD_SetQspiClock(QuadSPI_Type *qspi, uint32_t qspiClockSrc, uint32_t divider);
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
 static uint32_t buff[64]; /* Test data */
+#if defined(EXAMPLE_USE_IP_READ_FLASH) && EXAMPLE_USE_IP_READ_FLASH
+static uint32_t ipRxBuff[64] = {0};
+#endif
 #if !defined(FSL_FEATURE_QSPI_CLOCK_CONTROL_EXTERNAL) || (!FSL_FEATURE_QSPI_CLOCK_CONTROL_EXTERNAL)
 static bool isDivNeedRestore = false;
 #endif
@@ -45,6 +49,7 @@ void qspi_polling(void)
     uint32_t i    = 0;
     uint32_t err  = 0;
     uint32_t addr = 0;
+
 #if !defined(QSPI_ERASE_ADDR_OFFSET)
     addr = FSL_FEATURE_QSPI_AMBA_BASE;
 #else
@@ -98,6 +103,27 @@ void qspi_polling(void)
 #endif
 #endif
 
+#if defined(EXAMPLE_USE_IP_READ_FLASH) && EXAMPLE_USE_IP_READ_FLASH
+    for (i = 0U; i < FLASH_SECTORE_SIZE / FLASH_PAGE_SIZE; i++)
+    {
+        memset(&ipRxBuff[0], 0, sizeof(ipRxBuff));
+        ip_read_flash(addr, &ipRxBuff[0], sizeof(ipRxBuff));
+
+        for(uint32_t j = 0U; j < 64U; j++)
+        {
+            if (ipRxBuff[j] != buff[j])
+            {
+                PRINTF("The data in %d is wrong!!\r\n", j);
+                PRINTF("The flash value in %d is %d\r\n", j, ipRxBuff[j]);
+                err++;
+            }
+        }
+    }
+    if (err == 0U)
+    {
+        PRINTF("Program through QSPI polling succeed!\r\n");
+    }
+#else
     for (i = 0; i < FLASH_SECTORE_SIZE / 4; i++)
     {
         if (((uint32_t *)addr)[i] != buff[i % 64])
@@ -111,6 +137,7 @@ void qspi_polling(void)
     {
         PRINTF("Program through QSPI polling succeed!\r\n");
     }
+#endif
 }
 
 int main(void)
@@ -119,7 +146,7 @@ int main(void)
 
     BOARD_InitHardware();
 
-    /*Enable QSPI clock */
+    /* Enable QSPI clock */
     PRINTF("QSPI example started!\r\n");
 
     /* Copy the LUT table */
@@ -128,7 +155,7 @@ int main(void)
     qspi_nor_flash_init(EXAMPLE_QSPI);
 
     /*Initialize data buffer */
-    for (i = 0; i < 64; i++)
+    for (i = 0U; i < 64U; i++)
     {
         buff[i] = i;
     }

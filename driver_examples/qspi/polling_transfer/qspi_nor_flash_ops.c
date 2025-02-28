@@ -11,6 +11,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#ifndef QSPI_CMD_SEQ_READ
+#define QSPI_CMD_SEQ_READ 0U
+#endif
 #ifndef QSPI_CMD_SEQ_WRITE_ENABLE
 #define QSPI_CMD_SEQ_WRITE_ENABLE 4U
 #endif
@@ -217,6 +220,30 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
 #endif
 }
 
+/* Use IP read to read flash data. */
+void ip_read_flash(uint32_t addr, uint32_t *buffer, uint32_t size)
+{
+    uint32_t leftSize = size;
+    uint32_t rxFifoSize = 4U * FSL_FEATURE_QSPI_RXFIFO_DEPTH;
+    uint32_t transSize;
+
+    for(uint32_t i = 0U; leftSize != 0U; i++)
+    {
+        transSize = (leftSize > rxFifoSize) ? rxFifoSize : leftSize;
+
+        QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_RxFifo);
+        QSPI_SetIPCommandAddress(EXAMPLE_QSPI, addr + rxFifoSize * i);
+        QSPI_SetIPCommandSize(EXAMPLE_QSPI, transSize);
+        QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_READ);
+        while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
+        {
+        }
+        QSPI_ReadBlocking(EXAMPLE_QSPI, buffer + i * FSL_FEATURE_QSPI_RXFIFO_DEPTH, transSize);
+
+        leftSize -= transSize;
+    }
+}
+
 void qspi_nor_flash_init(QuadSPI_Type *base)
 {
     uint32_t clockSourceFreq = 0;
@@ -236,11 +263,11 @@ void qspi_nor_flash_init(QuadSPI_Type *base)
     }
     clockSourceFreq = QSPI_CLK_FREQ;
 
-#if defined(FSL_FEATURE_QSPI_HAS_SOC_CONFIG) && (FSL_FEATURE_QSPI_HAS_SOC_CONFIG)
-    BOARD_QspiSocConfigure(base, &config);
-#endif    
-
     QSPI_Init(base, &config, clockSourceFreq);
+
+#if defined(EXAMPLE_QSPI_HAS_SOC_CONFIG) && (EXAMPLE_QSPI_HAS_SOC_CONFIG)
+    BOARD_QspiSocConfigure(EXAMPLE_QSPI);
+#endif
 
 #if defined(FLASH_NEED_DQS)
     /* Set DQS config */
@@ -254,7 +281,7 @@ void qspi_nor_flash_init(QuadSPI_Type *base)
     qspi_delay_chain_config_t delayConfig = {.dqsDelayEnable = true};
     QSPI_SetDelayChainConfig(base, &delayConfig);
 #endif
-    
+
 #if defined(FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC) && (FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC)
     QSPI_ClearCache(base);
 #endif

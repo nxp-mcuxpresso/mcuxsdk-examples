@@ -416,6 +416,144 @@ void BOARD_InitCANPins(void)
     /* PORTE5 (pin 8) is configured as CAN0_TX */
     PORT_SetPinMux(PORTE, 5U, kPORT_MuxAlt5);
 }
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFlashPins:
+- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '49', peripheral: QuadSPI, signal: 'SCLK, A', pin_signal: PTD10/FTM2_CH0/FTM2_QD_PHB/ETM_TRACE_D3/MII_RX_CLK/CLKOUT/QSPI_A_SCK, drive_strength: high,
+    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '42', peripheral: QuadSPI, signal: 'SS0, A', pin_signal: PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4, drive_strength: high,
+    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '48', peripheral: QuadSPI, signal: 'DATA0, A', pin_signal: PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS/QSPI_A_IO0, drive_strength: high,
+    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '44', peripheral: QuadSPI, signal: 'DATA1, A', pin_signal: PTD7/LPUART2_TX/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6, drive_strength: high, pull_select: down,
+    pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '47', peripheral: QuadSPI, signal: 'DATA2, A', pin_signal: PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS/QSPI_A_IO2, drive_strength: high,
+    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '43', peripheral: QuadSPI, signal: 'DATA3, A', pin_signal: PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/QSPI_A_IO3/ADC0_SE10/CMP0_IN5, drive_strength: high,
+    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFlashPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFlashPins(void)
+{
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortC);
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortD);
+    /* Configure digital filter */
+    PORT_EnablePinsDigitalFilter(
+        /* Digital filter is configured on port C */
+        PORTC,
+        /* Digital filter is configured for PORTC0 */
+          PORT_DFER_DFE_2_MASK
+            /* Digital filter is configured for PORTC1 */
+            | PORT_DFER_DFE_3_MASK,
+        /* Disable digital filter */
+        false);
+
+    const port_pin_config_t portc2_pin43_config = {/* Internal pull-up/down resistor is disabled */
+                                                   kPORT_PullDisable,
+                                                   /* Passive filter is disabled */
+                                                   kPORT_PassiveFilterDisable,
+                                                   /* High drive strength is configured */
+                                                   kPORT_HighDriveStrength,
+                                                   /* Pin is configured as QSPI_A_IO3 */
+                                                   kPORT_MuxAlt7,
+                                                   /* Pin Control Register fields [15:0] are not locked */
+                                                   kPORT_UnlockRegister};
+    /* PORTC2 (pin 43) is configured as QSPI_A_IO3 */
+    PORT_SetPinConfig(PORTC, 2U, &portc2_pin43_config);
+
+    const port_pin_config_t portc3_pin42_config = {/* Internal pull-up/down resistor is disabled */
+                                                   kPORT_PullDisable,
+                                                   /* Passive filter is disabled */
+                                                   kPORT_PassiveFilterDisable,
+                                                   /* High drive strength is configured */
+                                                   kPORT_HighDriveStrength,
+                                                   /* Pin is configured as QSPI_A_CS */
+                                                   kPORT_MuxAlt6,
+                                                   /* Pin Control Register fields [15:0] are not locked */
+                                                   kPORT_UnlockRegister};
+    /* PORTC3 (pin 42) is configured as QSPI_A_CS */
+    PORT_SetPinConfig(PORTC, 3U, &portc3_pin42_config);
+    /* Configure digital filter */
+    PORT_EnablePinsDigitalFilter(
+        /* Digital filter is configured on port D */
+        PORTD,
+        /* Digital filter is configured for PORTD0 */
+          PORT_DFER_DFE_7_MASK
+            /* Digital filter is configured for PORTD1 */
+            | PORT_DFER_DFE_10_MASK
+            /* Digital filter is configured for PORTD2 */
+            | PORT_DFER_DFE_11_MASK
+            /* Digital filter is configured for PORTD3 */
+            | PORT_DFER_DFE_12_MASK,
+        /* Disable digital filter */
+        false);
+
+    const port_pin_config_t portd10_pin49_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Passive filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* High drive strength is configured */
+                                                    kPORT_HighDriveStrength,
+                                                    /* Pin is configured as QSPI_A_SCK */
+                                                    kPORT_MuxAlt7,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORTD10 (pin 49) is configured as QSPI_A_SCK */
+    PORT_SetPinConfig(PORTD, 10U, &portd10_pin49_config);
+
+    const port_pin_config_t portd11_pin48_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Passive filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* High drive strength is configured */
+                                                    kPORT_HighDriveStrength,
+                                                    /* Pin is configured as QSPI_A_IO0 */
+                                                    kPORT_MuxAlt7,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORTD11 (pin 48) is configured as QSPI_A_IO0 */
+    PORT_SetPinConfig(PORTD, 11U, &portd11_pin48_config);
+
+    const port_pin_config_t portd12_pin47_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Passive filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* High drive strength is configured */
+                                                    kPORT_HighDriveStrength,
+                                                    /* Pin is configured as QSPI_A_IO2 */
+                                                    kPORT_MuxAlt7,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORTD12 (pin 47) is configured as QSPI_A_IO2 */
+    PORT_SetPinConfig(PORTD, 12U, &portd12_pin47_config);
+
+    const port_pin_config_t portd7_pin44_config = {/* Internal pull-up/down resistor is disabled */
+                                                   kPORT_PullDisable,
+                                                   /* Passive filter is disabled */
+                                                   kPORT_PassiveFilterDisable,
+                                                   /* High drive strength is configured */
+                                                   kPORT_HighDriveStrength,
+                                                   /* Pin is configured as QSPI_A_IO1 */
+                                                   kPORT_MuxAlt7,
+                                                   /* Pin Control Register fields [15:0] are not locked */
+                                                   kPORT_UnlockRegister};
+    /* PORTD7 (pin 44) is configured as QSPI_A_IO1 */
+    PORT_SetPinConfig(PORTD, 7U, &portd7_pin44_config);
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
