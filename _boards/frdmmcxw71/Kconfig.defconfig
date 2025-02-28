@@ -20,8 +20,3 @@ endif
 
 config HAL_RPMSG_SELECT_ROLE
     default n
-
-if MCUX_COMPONENT_component.memfault_sdk.ports.mcuxsdk
-    config MEMFAULT_FLASH_SUPPORT_PAGE_REPROGRAM
-        default n
-endif
