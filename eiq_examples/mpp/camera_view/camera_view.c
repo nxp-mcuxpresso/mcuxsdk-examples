@@ -40,6 +40,11 @@
 #define APP_STRIPE_MODE 0
 #endif
 
+/* pick default backend if not specified. */
+#ifndef APP_GFX_BACKEND_NAME
+#define APP_GFX_BACKEND_NAME NULL
+#endif
+
 /** Default priority for application tasks
    Tasks created by the application have a lower priority than pipeline tasks by default.
    Pipeline_task_max_prio in mpp_api_params_t structure should be adjusted with other application tasks.*/
