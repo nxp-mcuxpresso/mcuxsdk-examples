@@ -12,11 +12,5 @@ nbu_ble:
         Controller with HCI interface.
   boards:
     kw47evk@cm33_core1:
-    - -armgcc@debug
-    - -armgcc@release
     mcxw72evk@cm33_core1:
-    - -armgcc@debug
-    - -armgcc@release
     frdmmcxw72@cm33_core1:
-    - -armgcc@debug
-    - -armgcc@release
