@@ -14,8 +14,4 @@ ncp_fsci_black_box:
         supports the FSCI protocol, the fsci_bridge application is required to be running on core 0.
   boards:
     mcxw72evk@cm33_core1:
-    - -armgcc@debug
-    - -armgcc@release
     frdmmcxw72@cm33_core1:
-    - -armgcc@debug
-    - -armgcc@release
