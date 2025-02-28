@@ -21,7 +21,6 @@ freertos_lpspi:
     evkbmimxrt1170: []
     evkmimxrt1020: []
     evkmimxrt1024: []
-    evkmimxrt1064: []
     evkmimxrt1160: []
     frdmk32l2a4s: []
     frdmk32l3a6: []
