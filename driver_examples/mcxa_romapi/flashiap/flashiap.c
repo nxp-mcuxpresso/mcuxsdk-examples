@@ -92,6 +92,19 @@ void speculation_buffer_clear(void)
     }
 }
 
+/*
+ * @brief Clear L1 low power cache.
+ *
+ */
+void lpcac_clear(void)
+{
+    /* Clear L1 low power cache. */
+    if((SYSCON->LPCAC_CTRL & SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK) == 0U)
+    {
+        SYSCON->LPCAC_CTRL |= SYSCON_LPCAC_CTRL_CLR_LPCAC_MASK;
+    }
+}
+
 int main()
 {
     status_t status;
@@ -151,9 +164,10 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
-    
-    /* Clear speculation buffer. */
+
+    /* Clear speculation buffer and lpcac. */
     speculation_buffer_clear();
+    lpcac_clear();
 
     /* Verify if the given flash range is successfully erased. */
     PRINTF("\r\n Calling flash_verify_erase_sector() API.");
@@ -180,9 +194,10 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
-    
-    /* Clear speculation buffer. */
+
+    /* Clear speculation buffer and lpcac. */
     speculation_buffer_clear();
+    lpcac_clear();
 
     /* Verify if the given flash region is successfully programmed with given data */
     PRINTF("\r\n Calling FLASH_VerifyProgram() API.");

@@ -12,9 +12,7 @@
 #include "pin_mux.h"
 #include "board.h"
 #include "app.h"
-#if defined(LPCAC_INVALIDATE) && LPCAC_INVALIDATE
 #include "fsl_cache_lpcac.h"
-#endif
 
 /*******************************************************************************
  * Definitions
@@ -126,6 +124,19 @@ void flash_cache_clear(void)
     }
 }
 
+/*
+ * @brief Clear L1 low power cache.
+ *
+ */
+void lpcac_clear(void)
+{
+    /* Clear L1 low power cache. */
+    if((SYSCON->LPCAC_CTRL & SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK) == 0U)
+    {
+        L1CACHE_InvalidateCodeCache();
+    }
+}
+
 int main()
 {
     status_t status;
@@ -198,14 +209,11 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
-    
-    /* Clear speculation buffer and flash cache. */
+
+    /* Clear speculation buffer, flash cache and lpcac. */
     speculation_buffer_clear();
     flash_cache_clear();
-
-#if defined(LPCAC_INVALIDATE) && LPCAC_INVALIDATE
-    L1CACHE_InvalidateCodeCache();
-#endif
+    lpcac_clear();
 
     /* Verify if the given flash range is successfully erased. */
     PRINTF("\r\n Calling FLASH_VerifyErase() API.");
@@ -232,14 +240,11 @@ SECTOR_INDEX_FROM_END = 2 means (the last sector -1 )...
     {
         error_trap();
     }
-    
-    /* Clear speculation buffer and flash cache. */
+
+    /* Clear speculation buffer, flash cache and lpcac. */
     speculation_buffer_clear();
     flash_cache_clear();
-
-#if defined(LPCAC_INVALIDATE) && LPCAC_INVALIDATE
-    L1CACHE_InvalidateCodeCache();
-#endif
+    lpcac_clear();
 
     /* Verify if the given flash region is successfully programmed with given data */
     PRINTF("\r\n Calling FLASH_VerifyProgram() API.");

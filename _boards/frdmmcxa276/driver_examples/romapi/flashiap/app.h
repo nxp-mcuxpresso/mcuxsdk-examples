@@ -10,7 +10,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define SECTOR_INDEX_FROM_END 2U /* start from the last 2 sector*/
+#define SECTOR_INDEX_FROM_END 32U /* start from the last 32 sector*/
 /*${macro:end}*/
 
 /*******************************************************************************
