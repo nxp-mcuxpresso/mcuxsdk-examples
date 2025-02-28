@@ -11,10 +11,12 @@ mcux_add_source(SOURCES
     g2d_basic_test.c
 )
 
+add_compile_options(-mfloat-abi=soft)
+
 # link the G2D-DPU library
 target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/libg2d.a
-    m
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/libg2d.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/libs/libm.a
 )
 
 mcux_remove_armgcc_linker_script(
