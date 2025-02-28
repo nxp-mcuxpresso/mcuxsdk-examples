@@ -317,8 +317,8 @@ static bool LoadGdetCfg(power_gdet_data_t *data)
     }
     else
     {
-        /* GDET clock has been characterzed to 64MHz */
-        CLKCTL0->ELS_GDET_CLK_SEL = CLKCTL0_ELS_GDET_CLK_SEL_SEL(2);
+        /* GDET clock set to boot value */
+        CLKCTL0->ELS_GDET_CLK_SEL = data->TRIM0;
     }
 
     if (retval)
