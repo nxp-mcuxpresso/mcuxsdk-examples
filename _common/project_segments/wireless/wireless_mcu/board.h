@@ -64,7 +64,8 @@
 #define BOARD_UART_CLKSRC_FRO192M 3U  // kCLOCK_IpSrcFro192M
 
 #ifndef BOARD_UART_CLKSRC
-#define BOARD_UART_CLKSRC BOARD_UART_CLKSRC_FRO6M
+// 192M is recommended since FRO6M has an issue where it can run at a lower frequency in some cases
+#define BOARD_UART_CLKSRC BOARD_UART_CLKSRC_FRO192M
 #endif
 
 #if (BOARD_UART_CLKSRC == BOARD_UART_CLKSRC_FRO192M) && defined(gAppLpuart0WakeUpSourceEnable_d) && (gAppLpuart0WakeUpSourceEnable_d == 1)
