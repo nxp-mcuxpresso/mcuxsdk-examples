@@ -28,6 +28,11 @@ uint32_t hal_print(const char *format, ...);
 
 int hal_get_current_time(void);
 
+int *__errno(void) {
+    static int no = 0;
+    return &no;
+}
+
 enum g2d_format
 {
     G2D_RGB565               = 0,
