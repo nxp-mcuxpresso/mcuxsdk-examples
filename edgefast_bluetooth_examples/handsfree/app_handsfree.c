@@ -140,13 +140,17 @@ static struct bt_conn_auth_cb auth_cb_display = {
     .cancel = auth_cancel, .passkey_display = passkey_display, /* Passkey display callback */
                                                                //  .passkey_confirm = passkey_confirm,
 };
-static void connected(struct bt_conn *conn)
+static void connected(struct bt_conn *conn, int err)
 {
 #if !((defined AUTO_CONNECT_USE_BOND_INFO) && (AUTO_CONNECT_USE_BOND_INFO))
     struct bt_conn_info info;
 #endif
 
-    printf("HFP HF Connected!\n");
+    printf("HFP HF Connected:%d!\n", err);
+    if (err)
+    {
+        return;
+    }
     default_conn = conn;
 #if !((defined AUTO_CONNECT_USE_BOND_INFO) && (AUTO_CONNECT_USE_BOND_INFO))
     bt_conn_get_info(conn, &info);

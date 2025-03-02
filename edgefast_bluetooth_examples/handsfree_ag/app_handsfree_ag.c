@@ -118,9 +118,13 @@ static struct bt_sdp_attribute hfp_ag_attrs[] = {
     BT_SDP_SUPPORTED_FEATURES(0x2100),
 };
 static struct bt_sdp_record hfp_ag_rec = BT_SDP_RECORD(hfp_ag_attrs);
-static void ag_connected(struct bt_hfp_ag *hfp_ag)
+static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
 {
-    printf("HFP AG Connected!\n");
+    printf("HFP AG Connected:%!\n", err);
+    if (err)
+    {
+        return;
+    }
     g_HfpAg.hfp_agHandle = hfp_ag;
     s_hfp_in_calling_status = 1;
     g_HfpAg.selectCodec = 1;
