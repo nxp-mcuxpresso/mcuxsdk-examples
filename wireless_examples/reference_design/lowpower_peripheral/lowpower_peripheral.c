@@ -1074,15 +1074,24 @@ static void BleApp_HandleDisconnection(deviceId_t peerDeviceId)
 #if defined(gAppUsePairing_d) && (gAppUsePairing_d == 1U)
 static void BleApp_HandlePairingComplete(deviceId_t peerDeviceId)
 {
-    appPeerInformation[peerDeviceId].isPaired = TRUE;
+    if (peerDeviceId < gAppMaxConnections_c)
+    {
+        appPeerInformation[peerDeviceId].isPaired = TRUE;
 
 #if (gAppMaxConnections_c > 1)
-    BLEAPP_WRITE("Device ");
-    BLEAPP_WRITEDEC((uint32_t)appPeerInformation[peerDeviceId].deviceId);
-    BLEAPP_WRITE(" - Paired\r\n");
+        BLEAPP_WRITE("Device ");
+        BLEAPP_WRITEDEC((uint32_t)appPeerInformation[peerDeviceId].deviceId);
+        BLEAPP_WRITE(" - Paired\r\n");
 #else
-    BLEAPP_WRITE("Paired\r\n");
+        BLEAPP_WRITE("Paired\r\n");
 #endif
+    }
+    else
+    {
+        /* Should not happen as we do not support more connection than gAppMaxConnections_c */
+        BLEAPP_WRITE("Trying to handle pairing with an invalid device\r\n");
+        assert(0);
+    }
 }
 #endif
 
