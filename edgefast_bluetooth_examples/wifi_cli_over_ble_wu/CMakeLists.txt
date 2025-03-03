@@ -15,6 +15,7 @@ mcux_add_source(
     SOURCES examples/_boards/${board}/edgefast_bluetooth_examples/wifi_cli_over_ble_wu/${multicore_foldername}/edgefast_bluetooth_app.h
     CONFIG True
     PREINCLUDE True
+    PREINCLUDE_TYPE c_include cpp_include
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
