@@ -9,7 +9,7 @@ mcux_add_source(
   )
 mcux_add_macro(
 	CX "MODEL_SIZE=1024*1024"
-	CC "PRINTF_ADVANCED_ENABLE=1 \
+	CC "PRINTF_ADVANCED_ENABLE=1\
 	    PRINTF_FLOAT_ENABLE=1"
 )
 mcux_add_mdk_configuration(

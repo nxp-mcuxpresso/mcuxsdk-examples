@@ -23,8 +23,8 @@ tflm_kws:
     - +armgcc@flash_release
     - +iar@flash_debug
     - +iar@flash_release
-    - +mdk@flash_debug
-    - +mdk@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     mcxn5xxevk@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
@@ -36,8 +36,8 @@ tflm_kws:
     - +armgcc@flash_release
     - +iar@flash_debug
     - +iar@flash_release
-    - +mdk@flash_debug
-    - +mdk@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     mcxn9xxevk@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
@@ -49,8 +49,8 @@ tflm_kws:
     - +armgcc@flash_release
     - +iar@flash_debug
     - +iar@flash_release
-    - +mdk@flash_debug
-    - +mdk@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     mimxrt700evk@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
@@ -62,8 +62,8 @@ tflm_kws:
     - +armgcc@flash_release
     - +iar@flash_debug
     - +iar@flash_release
-    - +mdk@flash_debug
-    - +mdk@flash_release
+    - -mdk@flash_debug
+    - -mdk@flash_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release

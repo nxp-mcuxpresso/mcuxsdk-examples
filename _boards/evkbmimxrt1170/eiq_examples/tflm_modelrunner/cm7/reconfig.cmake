@@ -68,4 +68,5 @@ mcux_add_iar_configuration(
   )
 mcux_add_armgcc_configuration(
   LD "-Xlinker --defsym=__heap_size__=0x2000000\
-  -Xlinker --defsym=__stack_size__=0x4000"                                                                                                                                                    )
+  -Xlinker --defsym=__stack_size__=0x4000"
+  )

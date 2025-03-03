@@ -16,10 +16,6 @@ mcux_add_macro(
        -DUSE_RTOS=1\
        -D__FPU_PRESENT=1"
 )
-mcux_add_macro(
-  CC "XIP_BOOT_HEADER_DCD_ENABLE=1 \
-      USE_SDRAM=1"
-)
 
 mcux_remove_iar_configuration(
         CC "-Oh -On"
