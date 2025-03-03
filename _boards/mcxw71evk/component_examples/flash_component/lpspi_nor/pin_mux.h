@@ -38,6 +38,7 @@ void BOARD_InitBootPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINS_LPSPI1_PCS3_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINS_LPSPI1_PCS3_INIT_GPIO_VALUE 0U       /*!<@brief GPIO output initial state */
 #define BOARD_INITPINS_LPSPI1_PCS3_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
@@ -57,6 +58,7 @@ void BOARD_InitPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_GPIO GPIOB               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_INIT_GPIO_VALUE 1U       /*!<@brief GPIO output initial state */
 #define BOARD_INITEXTFLASHPINS_LPSPI1_PCS0_GPIO_PIN_MASK (1U << 0U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
@@ -70,6 +72,7 @@ void BOARD_InitPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_INIT_GPIO_VALUE 1U       /*!<@brief GPIO output initial state */
 #define BOARD_INITEXTFLASHPINS_LPSPI1_PCS3_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
@@ -89,6 +92,7 @@ void BOARD_InitExtFlashPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_GPIO GPIOB               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_INIT_GPIO_VALUE 0U       /*!<@brief GPIO output initial state */
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS0_GPIO_PIN_MASK (1U << 0U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
@@ -102,6 +106,7 @@ void BOARD_InitExtFlashPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_INIT_GPIO_VALUE 0U       /*!<@brief GPIO output initial state */
 #define BOARD_DEINITEXTFLASHPINS_LPSPI1_PCS3_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
 
 /* Symbols to be used with PORT driver */
