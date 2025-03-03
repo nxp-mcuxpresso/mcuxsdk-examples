@@ -23,4 +23,5 @@ ftm_pwm_twochannel:
     frdmke16z: []
     frdmke17z: []
     frdmke17z512: []
+    frdmmcxe247: []
     lpcxpresso860max: []

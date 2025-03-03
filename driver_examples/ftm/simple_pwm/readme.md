@@ -16,4 +16,5 @@ Can be judged by FSL_FEATURE_FTM_IS_TPM_ONLY_INSTANCE(base) macro.
 - [FRDM-KE16Z](../../../_boards/frdmke16z/driver_examples/ftm/simple_pwm/example_board_readme.md)
 - [FRDM-KE17Z](../../../_boards/frdmke17z/driver_examples/ftm/simple_pwm/example_board_readme.md)
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/driver_examples/ftm/simple_pwm/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/ftm/simple_pwm/example_board_readme.md)
 - [LPCXpresso860MAX](../../../_boards/lpcxpresso860max/driver_examples/ftm/simple_pwm/example_board_readme.md)
