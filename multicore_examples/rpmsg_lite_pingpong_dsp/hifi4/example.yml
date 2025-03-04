@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+rpmsg_lite_pingpong_dsp:
+  skip_build: true
+  section-type: application
+  contents:
+    meta_path: examples/multicore_examples/rpmsg_lite_pingpong_dsp/hifi4
+    project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_dsp/${core_id}
+    document:
+      name: rpmsg_lite_pingpong_dsp${core_id_suffix_name}
+      category: multicore_examples
+      brief: The rpmsg_lite_pingpong_dsp demo application demonstrates RPMSG-Lite
+        communication between multiple CM cores and DSPs.
+      example_readme:
+      - examples/multicore_examples/rpmsg_lite_pingpong_dsp/readme.md
+      - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_dsp/example_board_readme.md
+  boards:
+    mimxrt700evk@hifi4:
+    - +xtensa@debug
+    - +xtensa@release
