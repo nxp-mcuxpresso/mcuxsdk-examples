@@ -129,6 +129,9 @@ int main(void)
     
     /* FreeMASTER initialization */
     FMSTR_Init();
+	
+	/* RTCESL MAU initialization */
+	RTCESL_MAU_Init();
 
     /* Initialize peripheral motor control driver for motor M1 */
     MCDRV_Init_M1();   
