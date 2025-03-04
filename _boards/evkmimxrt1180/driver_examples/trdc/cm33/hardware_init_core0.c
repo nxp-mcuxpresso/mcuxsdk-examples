@@ -62,6 +62,9 @@ void BOARD_InitHardware(void)
 
 void APP_SetTrdcGlobalConfig(void)
 {
+    /* Enable all access control(secore and non-secure read/write/execute) for the
+     * TRDC1 and TRDC2. There is no need to configure TRDC3 because it has no MBC/MRC
+     * thus no access control to be configured. */
     uint32_t i, j;
 
     TRDC_Init(EXAMPLE_TRDC_INSTANCE);
