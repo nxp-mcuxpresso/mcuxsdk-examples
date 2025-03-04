@@ -200,18 +200,38 @@ int main(void)
     osa_status_t osaStatus;
     
     BOARD_InitHardware();
-    LCE_Init();
 
     PRINTF("CE non-blocking mode test using the LCE component\r\n");
+
+    osaStatus = LCE_Init();
+
+    if (KOSA_StatusSuccess != osaStatus)
+    {
+        PRINTF("Failed to initialize the LCE component\r\n");
+        assert(0);
+        return 1;
+    }
+
     /* Init OSA: should be called before any other OSA API */
     OSA_Init();
 
     CE_CmdInitBuffer(&ce_cmd_buffer, cmd_buffer, status_buffer, kCE_CmdModeOneNonBlocking);
 
     osaStatus = OSA_TaskCreate((osa_task_handle_t)LCE_Task1_TaskId, OSA_TASK(LCE_Task1), NULL);
-    assert(KOSA_StatusSuccess == osaStatus);
+    if (KOSA_StatusSuccess != osaStatus)
+    {
+        PRINTF("Failed to create Task1\r\n");
+        assert(0);
+        return 1;
+    }
+
     osaStatus = OSA_TaskCreate((osa_task_handle_t)LCE_Task2_TaskId, OSA_TASK(LCE_Task2), NULL);
-    assert(KOSA_StatusSuccess == osaStatus);
+    if (KOSA_StatusSuccess != osaStatus)
+    {
+        PRINTF("Failed to create Task2\r\n");
+        assert(0);
+        return 1;
+    }
 
     OSA_Start();
 
