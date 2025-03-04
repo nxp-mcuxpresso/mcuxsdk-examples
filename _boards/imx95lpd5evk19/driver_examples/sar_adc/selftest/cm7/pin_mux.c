@@ -1,6 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
+ * Copyright 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v12.0
-processor: MIMX9352xxxxM
-package_id: MIMX9352DVUXM
+product: Pins v16.0
+processor: MIMX9596xxxxN
+package_id: MIMX9596AVZXN
 mcu_data: ksdk2_0
-processor_version: 0.12.3
+processor_version: 16.1.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -31,22 +30,16 @@ processor_version: 0.12.3
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void)
 {
-#if BOARD_DEBUG_UART_INSTANCE == 1
-    BOARD_InitLpuart1Pins();
-#elif BOARD_DEBUG_UART_INSTANCE == 2
-    BOARD_InitLpuart2Pins();
-#elif BOARD_DEBUG_UART_INSTANCE == 3
-    BOARD_InitLpuart3Pins();
-#endif
+    BOARD_InitPins();
 }
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm33}
+- options: {callFromInitBoot: 'true', coreID: cm7}
 - pin_list:
-  - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
+  - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -56,37 +49,17 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitLpuart1Pins(void)
-{ /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_RXD__LPUART1_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_TXD__LPUART1_TX, 0U);
-
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_RXD__LPUART1_RX,
-                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_TXD__LPUART1_TX,
-                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
-}
-
-void BOARD_InitLpuart2Pins(void)
-{ /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
-
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_RXD__LPUART2_RX,
-                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_TXD__LPUART2_TX,
-                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
-}
-
-void BOARD_InitLpuart3Pins(void)
-{ /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 0U);
+void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
-
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX,
-                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX,
-                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
 }
 
 /***********************************************************************************************************************
