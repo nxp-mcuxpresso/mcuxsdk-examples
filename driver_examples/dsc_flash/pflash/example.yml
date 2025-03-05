@@ -12,9 +12,7 @@ dsc_pflash:
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []
-    mc56f81000evk:
-    - -codewarrior@flash_sdm_lpm_debug
-    - -codewarrior@flash_sdm_lpm_release
+    mc56f81000evk: []
     mc56f83000evk:
     - -codewarrior@flash_sdm_lpm_debug
     - -codewarrior@flash_sdm_lpm_release

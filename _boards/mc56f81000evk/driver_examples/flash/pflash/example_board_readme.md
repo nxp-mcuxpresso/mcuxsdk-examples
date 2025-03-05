@@ -37,15 +37,18 @@ Running the demo
 ================
 These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- FLASH example Start
- Flash Information: 
- Total Program Flash Size: xx KB, Hex: (xx)
- Program Flash Sector Size: xx KB, hex: (xx)
- ...
- Flash is xx
+ PFlash Example Start
+
+ PFlash Information:
+ Total Program Flash Size:      128 KB, Hex: (0x20000)
+ Program Flash Sector Size:     1 KB, Hex: (0x400)
+ Flash is UNSECURE!
+
  Erase a sector of flash
- Successfully Erased Sector xx -> xx
+ Successfully Erased Sector 0x1fc00 -> 0x20000
+
  Program a buffer to a sector of flash
- Successfully Programmed and Verified Location xx -> xx
- End of FLASH example
+ Successfully Programmed and Verified Location 0x1fc00 -> 0x1fc10
+
+ End of PFlash Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
