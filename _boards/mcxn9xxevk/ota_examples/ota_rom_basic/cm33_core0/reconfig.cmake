@@ -1,4 +1,3 @@
-
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/ota_examples/_common/sb3_api/sb3_api.h
@@ -19,7 +18,6 @@ mcux_remove_armgcc_configuration(
     CC "-g"
     CX "-g"
 )
-
 
 # Add or remove Linker File Configurations
 
@@ -44,15 +42,15 @@ mcux_remove_mdk_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/ota_rom_server/linker/mcxn10_cm33_flash.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_rom_basic/linker/mcxn10_cm33_flash.icf
 )
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/ota_rom_server/linker/mcxn10_cm33_flash.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_rom_basic/linker/mcxn10_cm33_flash.scf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/ota_rom_server/linker/mcxn10_cm33_flash.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_rom_basic/linker/mcxn10_cm33_flash.ld
 )

@@ -2,6 +2,15 @@
 
 All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples will be documented in this file.
 
+## [25.06.0] - 06/2025
+
+### Added
+- Added `ota_rom_basic` example demonstrating ROM bootloader processing a secure binary as an OTA image (see documentation in docs folder)
+- Enabled `ota_rom_basic` example for FRDM-MCXN947, MCXN9XXEVK, FRDM-RW612 and RD-RW612BGA
+
+### Removed
+- Removed `ota_rom_server` (replaced by simpler `ota_rom_basic`)
+
 ## [25.03.0] - 03/2025
 
 ### Added

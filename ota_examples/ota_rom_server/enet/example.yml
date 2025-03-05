@@ -15,5 +15,3 @@ ota_rom_server_enet:
       - ${board_root}/${board}/ota_examples/ota_rom_server/enet/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxn947@cm33_core0: []
-    mcxn9xxevk@cm33_core0: []

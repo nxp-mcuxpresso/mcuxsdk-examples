@@ -479,6 +479,11 @@ static shell_status_t shellCmd_xmodem_sb3(shell_handle_t shellHandle, int32_t ar
         return kStatus_SHELL_Error;
     }
 
+    if(sb3_check_provisioning(false) == 0)
+    {
+        PRINTF("WARNING! Device doesn't seem to be configured properly! Check instructions in readme file.\n");
+    }
+
     PRINTF("Started xmodem processing SB3\n");
     PRINTF("Make sure this device is provisioned to accept secure binary and its load address is 0x%X\n", prt_ota.start);
 

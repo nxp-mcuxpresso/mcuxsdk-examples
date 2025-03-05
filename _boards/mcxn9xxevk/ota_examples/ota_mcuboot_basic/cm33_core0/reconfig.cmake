@@ -10,13 +10,13 @@ mcux_add_macro(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/ota_examples/sb3_api/sb3_api.h
-            examples/ota_examples/sb3_api/sb3_api_mcxn10.c
+    SOURCES examples/ota_examples/_common/sb3_api/sb3_api.h
+            examples/ota_examples/_common/sb3_api/sb3_api_mcxn10.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/ota_examples/sb3_api
+    INCLUDES examples/ota_examples/_common/sb3_api
 )
 
 # Linker file reconfiguration
