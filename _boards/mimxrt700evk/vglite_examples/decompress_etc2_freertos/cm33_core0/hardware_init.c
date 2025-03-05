@@ -14,7 +14,7 @@
 /*${header:end}*/
 
 /*${function:start}*/
-#if (DEMO_PANEL_RM67162 == DEMO_PANEL)
+#if (DEMO_PANEL_RM67162 == DEMO_PANEL || DEMO_PANEL_CO5300 == DEMO_PANEL)
 void BOARD_MIPI_TE_GPIO_IRQ_Handler(void)
 {
     uint32_t intStat;
