@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2023 NXP
- * All rights reserved.
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -85,7 +84,7 @@ void app_task(void *param)
     uint32_t startupData;
 
     /* Get the startup data */
-    (void)MCMGR_GetStartupData(kMCMGR_Core1, &startupData);
+    (void)MCMGR_GetStartupData(kMCMGR_Core1, &startupData, kMCMGR_Core0);
 
     my_rpmsg = rpmsg_lite_remote_init((void *)startupData, RPMSG_LITE_LINK_ID, RL_NO_FLAGS);
 

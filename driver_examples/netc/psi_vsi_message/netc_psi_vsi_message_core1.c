@@ -154,7 +154,7 @@ int main(void)
     /* Get the startup data */
     do
     {
-        status = MCMGR_GetStartupData(&startupData);
+        status = MCMGR_GetStartupData(kMCMGR_Core0, &startupData);
     } while (status != kStatus_MCMGR_Success);
 
     /* Make a noticable delay after the reset */

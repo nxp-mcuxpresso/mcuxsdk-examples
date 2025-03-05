@@ -67,7 +67,7 @@ static int32_t dsp_ept_read_cb(void *payload, uint32_t payload_len, uint32_t src
     return RL_RELEASE;
 }
 
-static void RPMsgRemoteReadyEventHandler(uint16_t eventData, void *context, mcmgr_core_t coreNum)
+static void RPMsgRemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)
 {
     uint16_t *data = &((uint16_t *)context)[coreNum];
 
@@ -113,14 +113,14 @@ int main(void)
     /* Get the startup data from primary core */
     do
     {
-        status = MCMGR_GetStartupData(&startupData, APP_CM_CORE);
+        status = MCMGR_GetStartupData(APP_CM_CORE, &startupData);
     } while (status != kStatus_MCMGR_Success);
 
     /* We will get shared mem address from primary core in startup data. */
     cm_rpmsg = rpmsg_lite_remote_init((void *)(char *)(platform_patova(startupData)), RPMSG_LITE_LINK_ID_CM, RL_NO_FLAGS, &cm_rpmsg_ctxt);
 
     /* Signal the other core we are ready by triggering the event and passing the APP_RPMSG_READY_EVENT_DATA */
-    (void)MCMGR_TriggerEvent(kMCMGR_RemoteApplicationEvent, APP_RPMSG_READY_EVENT_DATA, APP_CM_CORE);
+    (void)MCMGR_TriggerEvent(APP_CM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_READY_EVENT_DATA);
 
     rpmsg_lite_wait_for_link_up(cm_rpmsg, RL_BLOCK);
 
@@ -128,7 +128,7 @@ int main(void)
 
     /* Signal the other core the endpoint has been created by triggering the event and passing the
      * APP_RPMSG_READY_EP_EVENT_DATA */
-    (void)MCMGR_TriggerEvent(kMCMGR_RemoteApplicationEvent, APP_RPMSG_EP_READY_EVENT_DATA, APP_CM_CORE);
+    (void)MCMGR_TriggerEvent(APP_CM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_EP_READY_EVENT_DATA);
 
 #ifdef RPMSG_LITE_NS_USED
     (void)rpmsg_ns_announce(cm_rpmsg, cm_ept, RPMSG_LITE_NS_ANNOUNCE_STRING, (uint32_t)RL_NS_CREATE);

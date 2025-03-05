@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015-2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2024 NXP
- * All rights reserved.
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -65,7 +64,7 @@ static int32_t my_ept_read_cb(void *payload, uint32_t payload_len, uint32_t src,
     return RL_RELEASE;
 }
 
-static void RPMsgRemoteReadyEventHandler(uint16_t eventData, void *context)
+static void RPMsgRemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)
 {
     uint16_t *data = (uint16_t *)context;
 

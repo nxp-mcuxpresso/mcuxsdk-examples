@@ -24,16 +24,6 @@ mcux_add_include(
     INCLUDES .
 )
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_dsp
-    SOURCES dsp_config.h
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_dsp
-    INCLUDES ./
-)
-
 mcux_add_macro(
     AS "-DDSP_IMAGE_COPY_TO_RAM=1"
     CC "-DDSP_IMAGE_COPY_TO_RAM=1"

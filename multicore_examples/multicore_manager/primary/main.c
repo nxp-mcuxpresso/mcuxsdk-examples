@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2024 NXP
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,16 +18,16 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-static void MCMGR_RemoteCoreUpEventHandler(uint16_t remoteData, void *context);
-static void MCMGR_RemoteCoreDownEventHandler(uint16_t remoteData, void *context);
-static void MCMGR_RemoteExceptionEventHandler(uint16_t remoteData, void *context);
+static void MCMGR_RemoteCoreUpEventHandler(mcmgr_core_t coreNum, uint16_t remoteData, void *context);
+static void MCMGR_RemoteCoreDownEventHandler(mcmgr_core_t coreNum, uint16_t remoteData, void *context);
+static void MCMGR_RemoteExceptionEventHandler(mcmgr_core_t coreNum, uint16_t remoteData, void *context);
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
 static volatile uint16_t RemoteReadyEventData = 0U;
 
-static void RemoteReadyEventHandler(uint16_t eventData, void *context)
+static void RemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)
 {
     RemoteReadyEventData = eventData;
 }
@@ -174,19 +174,19 @@ int main(void)
     }
 }
 
-static void MCMGR_RemoteCoreUpEventHandler(uint16_t remoteData, void *context)
+static void MCMGR_RemoteCoreUpEventHandler(mcmgr_core_t coreNum, uint16_t remoteData, void *context)
 {
     uint32_t *startupDone = (uint32_t *)context;
     *startupDone          = 1U;
 }
 
-static void MCMGR_RemoteCoreDownEventHandler(uint16_t remoteData, void *context)
+static void MCMGR_RemoteCoreDownEventHandler(mcmgr_core_t coreNum, uint16_t remoteData, void *context)
 {
     uint32_t *resetDone = (uint32_t *)context;
     *resetDone          = 1U;
 }
 
-static void MCMGR_RemoteExceptionEventHandler(uint16_t remoteData, void *context)
+static void MCMGR_RemoteExceptionEventHandler(mcmgr_core_t coreNum, uint16_t remoteData, void *context)
 {
     uint32_t *exceptionNumber = (uint32_t *)context;
     *exceptionNumber          = (uint32_t)remoteData;

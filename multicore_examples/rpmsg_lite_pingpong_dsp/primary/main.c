@@ -68,7 +68,7 @@ static int32_t dsp_ept_read_cb(void *payload, uint32_t payload_len, uint32_t src
     return RL_RELEASE;
 }
 
-static void RPMsgRemoteReadyEventHandler(uint16_t eventData, void *context, mcmgr_core_t coreNum)
+static void RPMsgRemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)
 {
     uint16_t *data = &((uint16_t *)context)[coreNum];
 

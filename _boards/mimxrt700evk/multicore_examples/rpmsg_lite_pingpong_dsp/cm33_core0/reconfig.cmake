@@ -8,16 +8,9 @@ mcux_add_include(
     INCLUDES ./
 )
 
-mcux_add_source(
-    SOURCES ../dsp_config.h
-)
-
-mcux_add_include(
-    INCLUDES ../
-)
-
 mcux_add_macro(
     CC "-DCORE1_IMAGE_COPY_TO_RAM=1"
+    TOOLCHAINS armgcc iar mdk
 )
 
 mcux_add_iar_configuration(

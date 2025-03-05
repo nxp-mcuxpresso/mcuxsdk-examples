@@ -8,10 +8,6 @@ mcux_add_include(
     INCLUDES ./
 )
 
-mcux_add_include(
-    INCLUDES ./
-)
-
 # CM33 core1 requires also shared memory for hifi1
 mcux_add_linker_symbol(
     SYMBOLS "__use_shmem_hifi1__=1 "

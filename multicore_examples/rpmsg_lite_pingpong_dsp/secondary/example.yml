@@ -4,14 +4,14 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
-rpmsg_lite_pingpong_dsp:
+rpmsg_lite_pingpong_dsp_secondary_core:
   skip_build: true
   section-type: application
   contents:
     meta_path: examples/multicore_examples/rpmsg_lite_pingpong_dsp/secondary
     project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_dsp/${core_id}
     document:
-      name: rpmsg_lite_pingpong_dsp${core_id_suffix_name}
+      name: rpmsg_lite_pingpong_dsp_secondary_core
       category: multicore_examples
       brief: The rpmsg_lite_pingpong_dsp demo application demonstrates RPMSG-Lite
         communication between multiple CM cores and DSPs.
@@ -19,16 +19,4 @@ rpmsg_lite_pingpong_dsp:
       - examples/multicore_examples/rpmsg_lite_pingpong_dsp/readme.md
       - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_dsp/example_board_readme.md
   boards:
-    mimxrt700evk@cm33_core1:
-    - -armgcc@debug
-    - +armgcc@flash_debug
-    - +armgcc@flash_release
-    - -armgcc@release
-    - -iar@debug
-    - +iar@flash_debug
-    - +iar@flash_release
-    - -iar@release
-    - -mdk@debug
-    - +mdk@flash_debug
-    - +mdk@flash_release
-    - -mdk@release
+    mimxrt700evk@cm33_core1: []

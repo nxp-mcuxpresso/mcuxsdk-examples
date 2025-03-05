@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
-rpmsg_lite_pingpong_dsp:
+rpmsg_lite_pingpong_dsp_hifi1_core:
   skip_build: true
   section-type: application
   contents:

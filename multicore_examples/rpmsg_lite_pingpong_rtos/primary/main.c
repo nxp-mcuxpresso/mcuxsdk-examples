@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2024 NXP
- * All rights reserved.
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -64,7 +63,7 @@ static void app_nameservice_isr_cb(uint32_t new_ept, const char *new_ept_name, u
 
 #ifdef MCMGR_USED
 static volatile uint16_t RPMsgRemoteReadyEventData = 0U;
-static void RPMsgRemoteReadyEventHandler(uint16_t eventData, void *context)
+static void RPMsgRemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void *context)
 {
     uint16_t *data = (uint16_t *)context;
 
