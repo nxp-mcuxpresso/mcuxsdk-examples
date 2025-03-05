@@ -49,3 +49,5 @@ mcux_add_include(
     BASE_PATH ${APPLICATION_BINARY_DIR}
     INCLUDES ../rpmsg_lite_pingpong_rtos_secondary_core/${CONFIG_TOOLCHAIN}/
 )
+
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
