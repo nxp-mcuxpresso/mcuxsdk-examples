@@ -266,7 +266,7 @@ status_t BOARD_InitHardware(void)
     } while (!link);
 
     PRINTF("\r\n PHY get link status success\r\n");
-
+    return result;
 }
 
 status_t NETC_EP_MDIO_Init(void)
@@ -284,6 +284,8 @@ status_t NETC_EP_MDIO_Init(void)
     {
         return result;
     }
+    
+    return result;
 }
 
 static status_t NETC_EP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)

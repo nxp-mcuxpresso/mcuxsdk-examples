@@ -169,4 +169,5 @@ status_t BOARD_InitHardware(void)
 		PHY_GetLinkStatus(&if_port.phy_handle, &link);
     } while (!link);
 
+    return result;
 }
