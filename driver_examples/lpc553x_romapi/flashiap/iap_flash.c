@@ -12,6 +12,7 @@
 #include "pin_mux.h"
 #include "board.h"
 #include "app.h"
+#include "fsl_cache_lpcac.h"
 
 /*******************************************************************************
  * Definitions
@@ -79,6 +80,19 @@ void app_finalize(void)
     PRINTF("\r\n End of PFlash Example! \r\n");
     while (1)
     {
+    }
+}
+
+/*
+ * @brief Clear L1 low power cache.
+ *
+ */
+void lpcac_clear(void)
+{
+    /* Clear L1 low power cache. */
+    if((SYSCON->LPCAC_CTRL & SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK) == 0U)
+    {
+        L1CACHE_InvalidateCodeCache();
     }
 }
 
@@ -160,6 +174,9 @@ PFLASH_PAGE_INDEX = 2 means (the last page -1 )...
     }
 #endif /* FSL_SUPPORT_ERASE_SECTOR_NON_BLOCKING */
 
+    /* Clear lpcac. */
+    lpcac_clear();
+
 #if defined(FSL_SUPPORT_ERASE_SECTOR_NON_BLOCKING) && FSL_SUPPORT_ERASE_SECTOR_NON_BLOCKING
     /* Delay 4ms to wait for the erase to complete. */
     SysTick_DelayTicks(4U);
@@ -197,6 +214,9 @@ PFLASH_PAGE_INDEX = 2 means (the last page -1 )...
     {
         error_trap();
     }
+
+    /* Clear lpcac. */
+    lpcac_clear();
 
     /* Verify if the given flash region is successfully programmed with given data */
     PRINTF("\r\n Calling FLASH_VerifyProgram() API.");
