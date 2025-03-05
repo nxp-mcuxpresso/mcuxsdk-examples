@@ -6,8 +6,6 @@
  */
 
 /*${header:start}*/
-#include "rpmsg_lite.h"
-#include "rpmsg_queue.h"
 
 #include "pin_mux.h"
 #include "board.h"
@@ -23,10 +21,6 @@
 #include "fsl_cache.h"
 #endif /* CONFIG_BT_SMP */
 #include "fsl_adapter_gpio.h"
-
-#include "dsp_config.h"
-#include "dsp_support.h"
-#include "fsl_sema42.h"
 
 /*${header:end}*/
 
@@ -50,10 +44,6 @@
 GPIO_HANDLE_DEFINE(sync_signal_pin_handle);
 static volatile uint32_t SyncSignal_Index = 0;
 
-static struct rpmsg_lite_instance *ipc_rpmsg;
-static struct rpmsg_lite_endpoint *ipc_rpmsg_ept;
-static rpmsg_queue_handle ipc_rpmsg_queue;
-static uint32_t ipc_rpmsg_dsp_ept_addr;
 /*${variable:end}*/
 
 /*${function:start}*/
@@ -100,77 +90,6 @@ uint32_t BOARD_SyncSignal_Count(void)
 void BOARD_Init_M2(void);
 void BOARD_Init_BT_UART(void);
 
-static void BOARD_DSP_IPC_Init(void)
-{
-    /* Set Hifi4 as Secure privileged master */
-    GlikeyWriteEnable(GLIKEY0, 6U);
-    AHBSC0->MASTER_SEC_LEVEL = 0x3;
-    AHBSC0->MASTER_SEC_ANTI_POL_REG = 0xFFC;
-
-    // CLOCK_EnableClock(kCLOCK_InputMux);
-    /* Clear SEMA42 reset */
-    RESET_PeripheralReset(kSEMA424_RST_SHIFT_RSTn);
-
-    /* Clear MU4 reset before run DSP core */
-    RESET_PeripheralReset(kMU4_RST_SHIFT_RSTn);
-
-    /* SEMA42 init */
-    SEMA42_Init(APP_SEMA42);
-    /* Reset the sema42 gate */
-    SEMA42_ResetAllGates(APP_SEMA42);
-	
-    /* Copy DSP image to RAM and start DSP core. */
-    BOARD_DSP_Init();
-
-    /* Wait for the DSP to lock the semaphore */
-    while (SEMA_LOCKED_BY_DSP != SEMA42_GetGateStatus(APP_SEMA42, SEMA_STARTUP_NUM))
-    {
-    }
-
-    /* DSP core init rpmsg remote. */
-
-    /* Wait for the DSP to unlock the semaphore 1 */
-    while (SEMA42_GetGateStatus(APP_SEMA42, SEMA_STARTUP_NUM))
-    {
-    }
-
-    /* Initialize RPMsg IPC interface between ARM and DSP cores. */
-    ipc_rpmsg       = rpmsg_lite_master_init((void *)RPMSG_LITE_SHMEM_BASE, RPMSG_LITE_SHMEM_SIZE, RPMSG_LITE_LINK_ID, RL_NO_FLAGS);
-    ipc_rpmsg_queue = rpmsg_queue_create(ipc_rpmsg);
-    ipc_rpmsg_ept          = rpmsg_lite_create_ept(ipc_rpmsg, MCU_EPT_ADDR, rpmsg_queue_rx_cb, ipc_rpmsg_queue);
-    ipc_rpmsg_dsp_ept_addr = DSP_EPT_ADDR;
-
-    /* Now the DSP core rpmsg will ready to use. */
-}
-
-/* IPC send to dsp core, should be called in task context. */
-int BOARD_DSP_IPC_Send(uint8_t *data, int size)
-{
-    int32_t status;
-    
-    status = rpmsg_lite_send(ipc_rpmsg, ipc_rpmsg_ept, ipc_rpmsg_dsp_ept_addr, (char *)data, size, RL_BLOCK);
-    if (status != RL_SUCCESS)
-    {
-        return -1;
-    }
-
-    return 0;
-}
-
-/* IPC receive from dsp core, should be called in task context. */
-int BOARD_DSP_IPC_Recv(uint8_t *data, int size)
-{
-    int32_t status;
-    
-    status = rpmsg_queue_recv(ipc_rpmsg, ipc_rpmsg_queue, NULL, (char *)data, size, NULL, RL_BLOCK);
-    if (status != RL_SUCCESS)
-    {
-        return -1;
-    }
-
-    return 0;
-}
-
 void BOARD_InitHardware(void)
 {
     BOARD_Init_M2();
@@ -182,8 +101,6 @@ void BOARD_InitHardware(void)
     BOARD_InitAHBSC();
 
     BOARD_SyncSignal_Init();
-
-    BOARD_DSP_IPC_Init();
 
     BOARD_Init_BT_UART();
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
