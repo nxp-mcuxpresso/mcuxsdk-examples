@@ -15,3 +15,4 @@ flexnvm_dflash:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmke15z: []
+    frdmmcxe247: []
