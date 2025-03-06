@@ -326,6 +326,7 @@ driver_examples
    wwdt/index.rst
    xbar/readme.md
    xbara/readme.md
+   xbic/readme.md
    xecc/index.rst
    xrdc/readme.md
    xrdc2/readme.md
