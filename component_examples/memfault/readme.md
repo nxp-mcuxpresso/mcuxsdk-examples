@@ -40,6 +40,29 @@ Option 'C' is self test, if run pass, `Test successed` will be printed.
 **Note** If run 'A' then 'C', the test will fail, because there is valid dump data
 in flash, selftest can't erase the dump data.
 
+## Analyze the dumped result
+
+There are two methods to analyze the dumped result: Upload dumped data chunk to Memfault
+server, or debug use GDB.
+
+### Upload data chunk to Memfault server
+
+When 'B' is pressed, the data chunks are shown in the terminal, post the data following
+such guide: https://docs.memfault.com/docs/mcu/export-chunks-over-console
+
+### Debug with GDB
+
+1. Install the python tool using command `pip install memfault-core-convert`. Details
+   of this tool is: https://pypi.org/project/memfault-core-convert/
+2. Export the dumped data in flash, for example, using gdb command like,
+   `dump binary memory memfault-core.bin 0x00010000 0x00018000`, fill the right flash
+   address according to your settings.
+3. Generate the core elf file use `memfault-core-convert --file memfault-core.bin --out_elf core.elf`
+4. Run GDB to debug: `arm-none-eabi-gdb -se memfault.elf --core core.elf`, here `memfault.elf`
+   is current project image.
+
+Detailed steps can be found here: https://docs.memfault.com/docs/mcu/coredump-elf-with-gdb.
+
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/component_examples/memfault/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/component_examples/memfault/example_board_readme.md)
