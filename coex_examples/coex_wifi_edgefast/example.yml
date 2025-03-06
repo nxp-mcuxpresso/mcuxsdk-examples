@@ -3,7 +3,7 @@ coex_wifi_edgefast:
   section-type: application
   contents:
     meta_path: examples/coex_examples/coex_wifi_edgefast
-    project-root-path: _boards/${board}/coex_examples/coex_wifi_edgefast/${multicore_foldername}
+    project-root-path: boards/${board}/coex_examples/coex_wifi_edgefast/${multicore_foldername}
     document:
       name: coex_wifi_edgefast${core_id_suffix_name}
       category: coex_examples
