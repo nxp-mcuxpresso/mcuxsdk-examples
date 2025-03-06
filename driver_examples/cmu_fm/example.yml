@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+cmu_fm_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/cmu_fm
+    project-root-path: boards/${board}/driver_examples/cmu_fm/${multicore_foldername}
+    document:
+      name: cmu_fm_interrupt${core_id_suffix_name}
+      category: driver_examples/cmu_fm
+      brief: The cmu_fm_interrupt example is to demonstrate usage of the SDK cmu_fm driver with interrupt callback functions. When cmu_fm completes the metering of the target clock, the interrupt callback functions for this module will be called.
+      example_readme:
+      - examples/driver_examples/cmu_fm/readme.md
+      - ${board_root}/${board}/driver_examples/cmu_fm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
