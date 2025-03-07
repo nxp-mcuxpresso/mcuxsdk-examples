@@ -9,7 +9,7 @@
 
 #define FLASH_ADAPTER_SIZE 0x4000
 
-#if defined(WIFI_IW416_BOARD_AW_AM510_ARDUINO)
+#if (defined(WIFI_IW416_BOARD_AW_AM510_ARDUINO) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2))
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 #else
@@ -35,6 +35,13 @@
 
 #ifdef K32W061_TRANSCEIVER
 #undef CONFIG_BT_CLASSIC
+#endif
+
+#ifdef WIFI_IW610_BOARD_MURATA_2LL_M2
+#undef CONFIG_BT_CLASSIC
+#undef CONFIG_BT_HFP_HF
+#undef CONFIG_BT_IND_RESET
+#undef CONFIG_BT_IND_RESET_OOB
 #endif
 
 #define HAL_UART_DMA_RING_BUFFER_ENABLE 0

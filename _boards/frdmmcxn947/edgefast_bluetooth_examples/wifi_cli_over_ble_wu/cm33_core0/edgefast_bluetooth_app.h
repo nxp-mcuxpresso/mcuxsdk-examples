@@ -15,7 +15,7 @@
 #define OSA_USED                        1
 #define porting_errno                     1
 
-#if defined(WIFI_IW416_BOARD_AW_AM510_ARDUINO)
+#if (defined(WIFI_IW416_BOARD_AW_AM510_ARDUINO) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2))
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 #else

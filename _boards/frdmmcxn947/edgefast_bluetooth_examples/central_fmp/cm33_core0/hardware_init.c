@@ -82,7 +82,7 @@ void BOARD_InitHardware(void)
 #endif /* CONFIG_BT_SMP */
 }
 
-#if defined(WIFI_IW416_BOARD_AW_AM510_ARDUINO)
+#if (defined(WIFI_IW416_BOARD_AW_AM510_ARDUINO) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2))
 int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
 {
     if (NULL == config)
