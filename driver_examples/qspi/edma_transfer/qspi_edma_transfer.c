@@ -230,10 +230,16 @@ int main(void)
     /*Enable QSPI clock */
     PRINTF("QSPI example started!\r\n");
 
+#if defined(EXAMPLE_DMAMUX_CHANNEL)
     /* Init DMAMUX */
+    DMAMUX_Init(EXAMPLE_DMAMUX);
+    DMAMUX_SetSource(EXAMPLE_DMAMUX, EXAMPLE_DMAMUX_CHANNEL, EXAMPLE_DMA_SOURCE);
+    DMAMUX_EnableChannel(EXAMPLE_DMAMUX, EXAMPLE_DMAMUX_CHANNEL);
+#else
     DMAMUX_Init(EXAMPLE_DMAMUX);
     DMAMUX_SetSource(EXAMPLE_DMAMUX, EXAMPLE_CHANNEL, EXAMPLE_DMA_SOURCE);
     DMAMUX_EnableChannel(EXAMPLE_DMAMUX, EXAMPLE_CHANNEL);
+#endif
 
     /* Init EDMA */
     /*
