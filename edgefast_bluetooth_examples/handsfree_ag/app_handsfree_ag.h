@@ -26,4 +26,5 @@ void app_hfp_ag_volume_update(hf_ag_volume_type_t type, int volume);
 int app_hfp_ag_codec_select(uint8_t codec);
 void app_hfp_ag_open_audio();
 void app_hfp_ag_close_audio();
+int app_hfp_ag_set_hf_indicator(uint8_t indicator, uint8_t control);
 #endif /* __APPL_PERIPHERAL_HFP_AG_MAIN_H__ */

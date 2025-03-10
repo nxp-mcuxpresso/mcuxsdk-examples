@@ -55,7 +55,8 @@ SHELL_COMMAND_DEFINE(bt,
                      "    set_speaker_volume   update Speaker Volume, for example: bt set_speaker_volume 14\r\n"
                      "    stwcincall           start multiple an incoming call\r\n"
                      "    disconnect           disconnect current connection\r\n"
-                     "    delete               delete all devices. Ensure to disconnect the HCI link connection with the peer "
+                     "    delete               delete all devices. Ensure to disconnect the HCI link connection with the peer\r\n"
+                     "    set_hf_ind <1|2> <enable|disable>      enable/disable the hf indicator. 1 - enhanced driver safety; 2 - battery level"
                      "device before attempting to delete the bonding information.\r\n",
                      shellBt,
                      SHELL_IGNORE_PARAMETER_COUNT);
@@ -240,6 +241,51 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
         else
         {
             PRINTF("success\r\n");
+        }
+    }
+    else if (strcmp(argv[1], "set_hf_ind") == 0)
+    {
+        char *indicator_str;
+        char *control_str;
+        uint8_t indicator = 0xFFU;
+        uint8_t control = 0xFFU;
+
+        if (argc < 3)
+        {
+            PRINTF("the parameter count is wrong\r\n");
+        }
+
+        indicator_str = argv[2];
+        control_str = argv[3];
+
+        if ((indicator_str[0] == '1') || (indicator_str[0] == '2'))
+        {
+            indicator = indicator_str[0] - '0';
+        }
+
+        if (strcmp(control_str, "enable") == 0)
+        {
+            control = 1U;
+        }
+        else if (strcmp(control_str, "disable") == 0)
+        {
+            control = 0U;
+        }
+        else
+        {
+        }
+
+        if ((indicator != 0xFFU) && (control != 0xFFU))
+        {
+            int err = app_hfp_ag_set_hf_indicator(indicator, control);
+            if (err)
+            {
+                PRINTF("fail to send cmd:%d\r\n", err);
+            }
+        }
+        else
+        {
+            PRINTF("wrong parameter\r\n");
         }
     }
     else

@@ -143,6 +143,7 @@ hfp_ag_get_config hfp_ag_config = {
     .bt_hfp_ag_inband          = 0,
     .bt_hfp_ag_codec_negotiate = 0,
     .bt_hfp_ag_dial            = 0,
+    .hf_indicators_slc_enable  = HF_INDICATOR_BATTERY_LEVEL/* | HF_INDICATOR_ENHANCED_DRIVER_SAFETY*/,
 };
 static void bt_work_ata_response(struct k_work *work)
 {
@@ -239,6 +240,21 @@ void get_config(struct bt_hfp_ag *hfp_ag, hfp_ag_get_config **config)
     *config = &hfp_ag_config;
 }
 
+void hf_indicator(struct bt_hfp_ag *hfp_ag, uint16_t indicator, uint32_t value)
+{
+    if (indicator == HF_INDICATOR_BATTERY_LEVEL)
+    {
+        PRINTF("battery level: %d\r\n", value);
+    }
+    else if (indicator == HF_INDICATOR_ENHANCED_DRIVER_SAFETY)
+    {
+        PRINTF("enhanced driver safety: %d\r\n", value);
+    }
+    else
+    {
+    }
+}
+
 static struct bt_hfp_ag_cb ag_cb = {
     .connected       = ag_connected,
     .disconnected    = ag_disconnected,
@@ -249,6 +265,7 @@ static struct bt_hfp_ag_cb ag_cb = {
     .chld            = chld,
     .codec_negotiate = codec_negotiate,
     .get_config      = get_config,
+    .hf_indicator    = hf_indicator,
 };
 
 int app_hfp_ag_discover(struct bt_conn *conn, uint8_t channel)
@@ -414,6 +431,11 @@ void app_hfp_ag_set_phnum_tag(char *name)
 void app_hfp_ag_volume_update(hf_ag_volume_type_t type, int volume)
 {
     bt_hfp_ag_set_volume_control(g_HfpAg.hfp_agHandle, type, volume);
+}
+
+int app_hfp_ag_set_hf_indicator(uint8_t indicator, uint8_t control)
+{
+    return bt_hfp_ag_set_hf_indicator(g_HfpAg.hfp_agHandle, indicator, control);
 }
 
 void peripheral_hfp_ag_task(void *pvParameters)
