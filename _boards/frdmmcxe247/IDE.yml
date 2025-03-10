@@ -3,3 +3,7 @@ iar:
   - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewd
   - scripts/guigenerator/templates/iar/app_cmsisdap/generic.ewp
   - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_frdmmcxe247/frdmmcxe247.uvprojx
+  - scripts/guigenerator/templates/mdk/app_frdmmcxe247/frdmmcxe247.uvoptx
