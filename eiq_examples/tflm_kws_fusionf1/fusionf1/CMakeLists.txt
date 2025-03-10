@@ -38,7 +38,7 @@ mcux_add_source(
   examples/eiq_examples/tflm_kws_fusionf1/fusionf1/model_ds_cnn_ops_micro.cpp
   examples/eiq_examples/common/board_init.h
   examples/eiq_examples/common/timer_xtensa.c
-  examples/eiq_examples/common/timer_xtensa.h
+  examples/eiq_examples/common/timer.h
   examples/eiq_examples/tflm_kws_fusionf1/fusionf1/train.py
   examples/eiq_examples/tflm_kws_fusionf1/fusionf1/off.wav
 
