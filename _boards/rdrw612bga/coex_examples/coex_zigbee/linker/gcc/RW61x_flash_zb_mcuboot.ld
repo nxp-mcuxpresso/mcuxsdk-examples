@@ -9,7 +9,7 @@
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2024 NXP
+**     Copyright 2024-2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -54,6 +54,11 @@ _size     |     m_app     |                                 '
           |               |                                 '
           |               |                                 '
           |               |                                 '
+          |               | m_slot1_partition_end
+    - - - +---------------+ - - - - - - - - - - - - - - - - - - - -
+          +               + EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS
+          +    LittleFS   +
+          +               + EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS + EDGEFAST_BT_LITTLEFS_REGION_SIZE
     - - - +---------------+ - - - - - - - - - - - - - - - - - - - -
           +               +
           +               +
@@ -116,6 +121,12 @@ FW_UPDATE_STORAGE_START             = m_slot1_partition_start;
 FW_UPDATE_STORAGE_SIZE              = FW_ACTIVE_APP_SIZE;
 FW_UPDATE_STORAGE_OFFSET            = FW_UPDATE_STORAGE_START - m_flash_start;
 
+/* Used for littleFS - the EDGEFAST_BT_LITTLEFS_REGION_SIZE flash region is reserved for litteFS data */
+EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS   = m_slot1_partition_end + 1;
+EDGEFAST_BT_LITTLEFS_STORAGE_SECTOR_SIZE     = m_flash_sector_size;
+EDGEFAST_BT_LITTLEFS_REGION_SIZE             = 0x200000;
+EDGEFAST_BT_LITTLEFS_STORAGE_MAX_SECTORS     = EDGEFAST_BT_LITTLEFS_REGION_SIZE / EDGEFAST_BT_LITTLEFS_STORAGE_SECTOR_SIZE;
+
 /* Used for NVS - the last flash sector is usually reserved for factory data section */
 NV_STORAGE_END_ADDRESS              = m_flash_end - m_flash_sector_size;
 NV_STORAGE_MAX_SECTORS              = DEFINED(gUseNVMLink_d) ? (DEFINED(gNVMSectorCountLink_d) ? gNVMSectorCountLink_d : 8) : 0;
@@ -123,16 +134,6 @@ NV_STORAGE_SECTOR_SIZE              = m_flash_sector_size;
 NV_STORAGE_SIZE                     = NV_STORAGE_MAX_SECTORS * NV_STORAGE_SECTOR_SIZE;
 NV_STORAGE_START_ADDRESS            = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;
 NV_STORAGE_START_ADDRESS_OFFSET     = NV_STORAGE_START_ADDRESS - m_flash_start;
-
-LITTLEFS_STORAGE_START_ADDRESS       = NV_STORAGE_END_ADDRESS + 1;
-LITTLEFS_STORAGE_START_ADDRESS_OFFSET = LITTLEFS_STORAGE_START_ADDRESS - m_flash_start;
-LITTLEFS_STORAGE_END_ADDRESS         = m_flash_end;
-LITTLEFS_STORAGE_SECTOR_SIZE         = m_flash_sector_size;
-LITTLEFS_STORAGE_MAX_SECTORS         = (LITTLEFS_STORAGE_END_ADDRESS - LITTLEFS_STORAGE_START_ADDRESS) / LITTLEFS_STORAGE_SECTOR_SIZE;
-EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS   = LITTLEFS_STORAGE_START_ADDRESS;
-EDGEFAST_BT_LITTLEFS_STORAGE_END_ADDRESS     = LITTLEFS_STORAGE_END_ADDRESS;
-EDGEFAST_BT_LITTLEFS_STORAGE_SECTOR_SIZE     = LITTLEFS_STORAGE_SECTOR_SIZE;
-EDGEFAST_BT_LITTLEFS_STORAGE_MAX_SECTORS     = LITTLEFS_STORAGE_MAX_SECTORS;
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x1000;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
