@@ -387,23 +387,35 @@ status_t flexspi_nor_flash_read(FLEXSPI_Type *base, uint32_t dstAddr, const uint
     return status;
 }
 
+/*!
+ * @brief Write data to flash, the size of buffer is not limited.
+ * 
+ * @param base Flexspi base address.
+ * @param dstAddr Flash address to write
+ * @param src Pointer to source data buffer.
+ * @param length Length of buffer size.
+ *
+ * @return Status of operation.
+ */
 status_t flexspi_nor_flash_program(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src, uint32_t length)
 {
-    /* Ensure program data size is multiple of flash page size. */
-    assert((length % (uint32_t)FLASH_PAGE_SIZE) == 0UL);
-
     status_t status;
     flexspi_transfer_t flashXfer;
+    uint32_t tmpAddr = dstAddr;
+    int32_t remainingSize = (int32_t)length;
+    uint32_t transferSize = 0UL;
+    uint32_t srdAddr = (uint32_t)src;
 
 #if defined(CACHE_MAINTAIN) && CACHE_MAINTAIN
     flexspi_cache_status_t cacheStatus;
     flexspi_nor_disable_cache(&cacheStatus);
 #endif
 
-    for (uint32_t i = 0UL; i < (length / (uint32_t)FLASH_PAGE_SIZE); i++)
+    while(remainingSize > 0)
     {
+        transferSize = (remainingSize >= FLASH_PAGE_SIZE) ? FLASH_PAGE_SIZE : remainingSize;
         /* Write enable */
-        status = flexspi_nor_write_enable(base, dstAddr);
+        status = flexspi_nor_write_enable(base, tmpAddr);
 
         if (status != kStatus_Success)
         {
@@ -411,13 +423,13 @@ status_t flexspi_nor_flash_program(FLEXSPI_Type *base, uint32_t dstAddr, const u
         }
 
         /* Prepare page program command */
-        flashXfer.deviceAddress = dstAddr;
+        flashXfer.deviceAddress = tmpAddr;
         flashXfer.port          = FLASH_PORT;
         flashXfer.cmdType       = kFLEXSPI_Write;
         flashXfer.SeqNumber     = 1;
         flashXfer.seqIndex      = NOR_CMD_LUT_SEQ_IDX_PAGEPROGRAM_QUAD;
-        flashXfer.data          = (uint32_t *)((uint32_t)src + (i * FLASH_PAGE_SIZE));
-        flashXfer.dataSize      = FLASH_PAGE_SIZE;
+        flashXfer.data          = (uint32_t *)srdAddr;
+        flashXfer.dataSize      = transferSize;
         status                  = FLEXSPI_TransferBlocking(base, &flashXfer);
 
         if (status != kStatus_Success)
@@ -426,6 +438,15 @@ status_t flexspi_nor_flash_program(FLEXSPI_Type *base, uint32_t dstAddr, const u
         }
 
         status = flexspi_nor_wait_bus_busy(base);
+
+        if (status != kStatus_Success)
+        {
+            return status;
+        }
+
+        remainingSize -= transferSize;
+        tmpAddr += transferSize;
+        srdAddr += transferSize;
     }
 
     /* Do software reset or clear AHB buffer directly. */
@@ -444,6 +465,15 @@ status_t flexspi_nor_flash_program(FLEXSPI_Type *base, uint32_t dstAddr, const u
     return status;
 }
 
+/*!
+ * @brief Do whole page program to flash.
+ * 
+ * @param base Flexspi Base address.
+ * @param dstAddr Flash address to write
+ * @param src Pointer to source data buffer.
+ *
+ * @return Status of operation.
+ */
 status_t flexspi_nor_flash_page_program(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src)
 {
     status_t status;
