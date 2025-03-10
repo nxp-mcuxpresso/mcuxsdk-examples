@@ -1,0 +1,35 @@
+co_device_bm:
+  section-type: application
+  contents:
+    meta_path: examples/canopennode_examples/device/bm/.
+    project-root-path: boards/${board}/canopennode_examples/device/bm/${multicore_foldername}
+    document:
+      name: co_device_bm${core_id_suffix_name}
+      category: canopennode_examples
+      brief: The CANopen device demo application demonstrates a CANopen device on the
+        CANopenNode stack.The application acts as a CANopen device and is managed by
+        the CANopen manager.
+      example_readme:
+      - examples/canopennode_examples/device/bm/readme.md
+      - ${board_root}/${board}/canopennode_examples/device/bm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+
