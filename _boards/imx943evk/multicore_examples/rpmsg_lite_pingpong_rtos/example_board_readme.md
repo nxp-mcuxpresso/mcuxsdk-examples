@@ -23,6 +23,7 @@ Prepare the Demo
 3. Download the program to the target board.
 4. Either re-power up your board or launch the debugger in your IDE to begin running the example.
 
+Note: Pls don't use sysbuild to build demos.
 Enable an option(Cannot enable them at the same time) in rpmsg_lite_pingpong_rtos/prj.conf and rpmsg_lite_pingpong_rtos/${core_id}/prj.conf(if it exists; it exists for cm7 core0, so it also need to be modified) to select which core as master and which core as remote as the follow table:
 |         Option                       |   Master |   Remote   |
 |--------------------------------------|----------|------------|
