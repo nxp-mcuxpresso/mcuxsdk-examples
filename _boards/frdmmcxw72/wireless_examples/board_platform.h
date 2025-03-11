@@ -36,7 +36,7 @@
 */
 //#define BOARD_32KHZ_XTAL_CLOAD_DEFAULT 4U
 
-/*! \brief Default coarse adjustment config for 32KHz crystal,
+/*! \brief Default coarse adjustement config for 32KHz crystal,
       Values must be adjusted depending the equivalent series resistance (ESR) of the crystal on the board
 */
 //#define BOARD_32KHZ_XTAL_COARSE_ADJ_DEFAULT 3U
@@ -80,6 +80,37 @@
 
 /* Define to output SWO on a pin */
 //#define BOARD_DBG_SWO_PIN_ENABLE 1
+
+/*! \brief Increase DCDC voltage with a ramp to avoid peak of current when DCDC output is set to higher voltage.
+ *
+ * \details gBoardDcdcRampTrim_c can vary between 0 and 7 
+ *          gBoardDcdcRampTrim_c = 0 means feature disabled
+ *          gBoardDcdcRampTrim_c = 1 is the smoothest ramp
+ *          gBoardDcdcRampTrim_c = 7 is the steepest ramp
+ *
+ * \note Cannot be applied when switching between lowpower DCDC configuration and active configuration. 
+ *       The DCDC ramp feature is only functional when the SPC is configured in Normal drive strenght. 
+ *       The NBU core will handle the switch to the targeted DCDC output voltage. The targeted voltage will depend on the TX output 
+ *       power requested by the application.
+ *       After exiting lowpower, the NBU core will request the high power mode. After that, it will wait for the transition to be over 
+ *       and the targeted voltage to be reached before resuming any other activities. 
+ *       The smoothest the ramp is, the longer the lowpower exit procedure will take time.
+ *       The value 3 is a good trade-off between peak of current and lowpower exit duration.
+ */
+//#define gBoardDcdcRampTrim_c 3
+
+/*! \brief  Enable the high power mode configuration to activate the dynamic DCDC output voltage switching 
+ *          when TX output power is less or equal to 7dBm.
+ *
+ * \details The NBU requires higher DCDC output voltage for radio transmits for output power between 0dBm and 7dBm. 
+ *          It will adapt the DCDC output voltage depending the required Tx power. 
+ *          - benefit : The DCDC output voltage does not have to increase as much as needed by the Tx ouput power requested 
+ *          when only the main power domain is active.
+ *
+ * \note limitation : NBU cannot switch to 2.5V by itself via high power mode voltage, a setting on SPC is also required. 
+ *       NBU will not be able to handle tx power higher than 7Dbm as it requires 2.5V on the DCDC output voltage.
+ */
+//#define gBoardDcdcEnableHighPowerModeOnNbu_d 1
 
 /*******************************************************************************
  * Platform specific - do not change
@@ -133,6 +164,16 @@
 #error "BOARD_DBG_SWO_CORE_FUNNEL needs to be enabled when using BOARD_DBG_SWO_PIN_ENABLE."
 #endif
 
+#if ((defined (gBoardDcdcRampTrim_c)) && (gBoardDcdcRampTrim_c > 0)) && \
+    ((!defined(gBoardDcdcEnableHighPowerModeOnNbu_d)) || (gBoardDcdcEnableHighPowerModeOnNbu_d == 0))
+#error "gBoardDcdcRampTrim_c feature cannot be enabled without gBoardDcdcEnableHighPowerModeOnNbu_d feature enabled."
+#endif
+
+#if (((defined (gBoardDcdcRampTrim_c)) && (gBoardDcdcRampTrim_c > 0)) || \
+    ((defined(gBoardDcdcEnableHighPowerModeOnNbu_d)) && (gBoardDcdcEnableHighPowerModeOnNbu_d == 1))) && \
+    ((defined(gAppMaxTxPowerDbm_c)) && (gAppMaxTxPowerDbm_c > 7))
+#error "gBoardDcdcRampTrim_c and gBoardDcdcEnableHighPowerModeOnNbu_d features cannot be enabled when gAppMaxTxPowerDbm_c is higher than 7."
+#endif
 /* FRDM-MCXW72 is fitted with Macronix MX25R6435FM2IL0 SPI flash */
 #define BOARD_EXFLASH_IS_MX25R6435FM2IL0 1
 

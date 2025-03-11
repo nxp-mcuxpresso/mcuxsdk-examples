@@ -27,6 +27,7 @@
 /*                                  Includes                                  */
 /* -------------------------------------------------------------------------- */
 #include "board_dcdc.h"
+#include "board_platform.h"
 #include "fsl_spc.h"
 
 /* -------------------------------------------------------------------------- */
@@ -121,6 +122,20 @@ static void BOARD_InitDcdcBuck(void)
 {
     status_t status;
 
+#if defined (gBoardDcdcRampTrim_c) && (gBoardDcdcRampTrim_c > 0)
+
+    uint32_t spc_dcdc_cfg = SPC0->DCDC_CFG;
+
+    spc_dcdc_cfg |= SPC_DCDC_CFG_RAMP_CNTRL_EN(1);
+    SPC0->DCDC_CFG = spc_dcdc_cfg;
+    while ((SPC0->SC & SPC_SC_REG_BUSY_MASK) != 0UL);
+
+    spc_dcdc_cfg &= ~SPC_DCDC_CFG_RAMP_CNTRL_MASK;
+    /* gBoardDcdcRampTrim_c can vary between 0 and 7 */
+    spc_dcdc_cfg |= SPC_DCDC_CFG_RAMP_CNTRL(gBoardDcdcRampTrim_c);
+    SPC0->DCDC_CFG = spc_dcdc_cfg;
+#endif    
+
     /* Enable/Disable Regulators */
     SPC_EnableSystemLDORegulator(SPC0, true);
     SPC_EnableDCDCRegulator(SPC0, true);
@@ -144,7 +159,8 @@ static void BOARD_InitDcdcBuck(void)
         DCDC will not manage current higher than 40mA */
     SPC0->DCDC_CFG |= SPC_DCDC_CFG_FREQ_CNTRL_ON_MASK;
 #endif
-
+#if (!defined (gBoardDcdcRampTrim_c)) || (gBoardDcdcRampTrim_c == 0) \
+    || (!defined (gBoardDcdcEnableHighPowerModeOnNbu_d)) || (gBoardDcdcEnableHighPowerModeOnNbu_d == 0)
 #if defined(gAppMaxTxPowerDbm_c) && (gAppMaxTxPowerDbm_c <= 0)
 #if defined(gAppHighSystemClockFrequency_d) && (gAppHighSystemClockFrequency_d >= 0)
     /* 0 dBm, 96MHz 1.35V  */
@@ -160,10 +176,19 @@ static void BOARD_InitDcdcBuck(void)
 #else
     /* 10 dBm, 2.5V */
     BOARD_DCDC_config(kSPC_DCDC_NormalDriveStrength, kSPC_DCDC_NormalVoltage, true);
-
 #endif /* gAppMaxTxPowerDbm_c */
-}
+#else
+    /* To be functional the DCDC ramping needs the SPC to be in Normal drive strenght when active. 
+     * Let the NBU decide on the DCDC output voltage depending the requested Tx power */
+    BOARD_DCDC_config(kSPC_DCDC_NormalDriveStrength, kSPC_DCDC_MidVoltage, false);
+#endif
 
+#if defined (gBoardDcdcEnableHighPowerModeOnNbu_d) && (gBoardDcdcEnableHighPowerModeOnNbu_d == 1)
+    /* Enable the request of SPC high power mode, that will be later on enable/disable by NBU core */
+    SPC0->HP_CNFG_CTRL |= SPC_HP_CNFG_CTRL_HP_REQ_EN_MASK;
+#endif
+
+}
 #else
 
 static void BOARD_InitDcdcBypass(void)
