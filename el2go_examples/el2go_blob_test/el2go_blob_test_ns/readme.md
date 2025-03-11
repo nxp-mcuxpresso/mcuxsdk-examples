@@ -34,7 +34,7 @@ Workspace structure:
         1. Obtain a RTP JSON file from EdgeLock 2GO containing the desired blobs for your board
         2. **[MCXN]** Connect your board and rewrap all the blobs in the RTP JSON file:
             ```sh
-            el2go_blob_rewrap.py [RAW_RTP_JSON_PATH] [PROVISIONING_FIRMWARE_PATH] [COM_PORT] [RTP_JSON_PATH]
+            el2go_blob_rewrap.py [RAW_RTP_JSON_PATH] [PROVISIONING_FIRMWARE_PATH] [COM_PORT] [RTP_JSON_PATH] [DEVICE_NAME]
             ```
         2. Run the file trough the preprocessor:
             ```sh
@@ -42,13 +42,17 @@ Workspace structure:
             ```
     - **[MCXN]** Memory mode:
         1. Create a device group in EdgeLock 2GO containing the desired blobs for your board
-        2. Provision the blobs to your board via the `el2go-host` app from SPSDK (set the `secure_objects_address` property of the config file to `0x001C0000` or '' for FRDM-MCXN236.):
+        2. Provision the blobs to your board via the `el2go-host` app from SPSDK (set the `secure_objects_address` property of the config file to `0x001C0000` or '' for FRDM-MCXN236 use `0x000C4000`):
             ```sh
             el2go-host provision-device -p [COM_PORT] --config [CONFIG_PATH] --workspace [WORKSPACE_PATH]
             ```
         3. Run the RTP JSON file downloaded by `el2go-host` trough the preprocessor, specifying the memory location method and address:
             ```sh
             el2go_blob_test_pre.py [WORKSPACE_PATH]/provisionings.json --storage_mode memory --blob_address 0x001C0000
+            ```
+            For FRDM-MCXN236:
+            ```sh
+            el2go_blob_test_pre.py [WORKSPACE_PATH]/provisionings.json --storage_mode memory --blob_address 0x000C4000
             ```
         *NOTE: This method only works for a maximum of 16 blobs, not exceeding 16KB in total.*
 
