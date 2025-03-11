@@ -39,6 +39,24 @@ void BOARD_InitDebugConsole(void)
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, uartClkSrcFreq);
 }
 
+void BOARD_UninitDebugConsole(void)
+{
+    CLOCK_DisableClock(BOARD_DEBUG_UART_CLKSRC);
+}
+
+void BOARD_InitDebugConsole2(void)
+{
+    CLOCK_AttachClk(BOARD_DEBUG2_UART_CLK_ATTACH);
+    RESET_ClearPeripheralReset(BOARD_DEBUG2_UART_RST);
+    uint32_t uartClkSrcFreq = BOARD_DEBUG2_UART_CLK_FREQ;
+    DbgConsole_Init(BOARD_DEBUG2_UART_INSTANCE, BOARD_DEBUG2_UART_BAUDRATE, BOARD_DEBUG2_UART_TYPE, uartClkSrcFreq);
+}
+
+void BOARD_UninitDebugConsole2(void)
+{
+    CLOCK_DisableClock(BOARD_DEBUG2_UART_CLKSRC);
+}
+
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 /** I2C configuration */
 static i2c_master_config_t s_i2cConfig;
