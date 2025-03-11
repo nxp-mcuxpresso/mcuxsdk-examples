@@ -77,6 +77,9 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_lpi2cCLKCfg);
     HAL_ClockSetRootClk(&hal_saiCLKCfg);
 
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);    
+
     /* select MCLK direction(Enable MCLK clock) */
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */
     saiMasterCfg.mclkHz          = saiMasterCfg.mclkSourceClkHz; /* setup target clock of MCLK */
