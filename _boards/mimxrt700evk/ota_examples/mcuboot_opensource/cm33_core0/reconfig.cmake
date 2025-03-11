@@ -20,6 +20,16 @@ mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
 
+# MCUX-77300 - fails mflash init due optimization
+mcux_add_armgcc_configuration(
+    TARGETS flash_release
+    CC "-O3"
+)
+mcux_remove_armgcc_configuration(
+    TARGETS flash_release
+    CC "-Os"
+)
+
 
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
