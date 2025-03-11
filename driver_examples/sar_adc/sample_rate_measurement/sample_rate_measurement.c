@@ -41,7 +41,7 @@
  ******************************************************************************/
 volatile bool timeOut                   = false;
 volatile uint32_t conversionCount       = 0U;
-AT_NONCACHEABLE_SECTION_ALIGN_INIT(uint32_t destAddr[1200], 32U) = {0x00U};
+AT_NONCACHEABLE_SECTION_ALIGN_INIT(uint32_t destAddr[DEMO_ADC_RES_ARRAY_SIZE], 32U) = {0x00U};
 adc_channel_config_t adcChannelConfig[1] = {
     {
         .channelIndex      = DEMO_ADC_CHANNEL,
@@ -93,10 +93,10 @@ static void DEMO_AdcConfig(void)
 
     /* Configure the ADC. */
     ADC_GetDefaultConfig(&adcConfig);
-    adcConfig.enableOverWrite = false;
-    adcConfig.clockFrequency    = DEMO_ADC_CLOCK_FREQ;
-    adcConfig.dmaRequestClearSrc = kADC_DMARequestClearByAck;
-    adcConfig.samplePhaseDuration[0U] = 0x16U;
+    adcConfig.enableOverWrite           = false;
+    adcConfig.clockFrequency            = DEMO_ADC_CLOCK_FREQ;
+    adcConfig.dmaRequestClearSrc        = kADC_DMARequestClearByAck;
+    adcConfig.samplePhaseDuration[0U]   = 0x16U;
     ADC_Init(DEMO_ADC_BASE, &adcConfig);
 
     /* Configure the ADC conversion chain. */
@@ -142,8 +142,8 @@ static void DEMO_TimerConfig(void)
 
     PIT_GetDefaultConfig(&pitConfig);
     PIT_Init(DEMO_PIT_BASE, &pitConfig);
-    
-    PIT_SetTimerPeriod(DEMO_PIT_BASE, DEMO_PIT_CHANNEL, USEC_TO_COUNT(100U, DEMO_PIT_CLOCK_FREQ));
+
+    PIT_SetTimerPeriod(DEMO_PIT_BASE, DEMO_PIT_CHANNEL, USEC_TO_COUNT(1000U, DEMO_PIT_CLOCK_FREQ));
     PIT_EnableInterrupts(DEMO_PIT_BASE, DEMO_PIT_CHANNEL, kPIT_TimerInterruptEnable);
 #endif /* FSL_FEATURE_SOC_PIT_COUNT */
 }
