@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -43,6 +43,7 @@ uint32_t mipiDsiDpiClkFreq_Hz;
 uint32_t mediaApbClkFreq_Hz;
 uint32_t testByteClkFreq_Hz;
 uint32_t phyRefClkFreq_Hz;
+uint32_t pixelClkFreq_Hz;
 uint32_t phyByteClkFreq_Hz;
 uint32_t mediaPixClkFreq_Hz;
 /*******************************************************************************
@@ -283,6 +284,7 @@ void BOARD_PrepareDisplay(void)
     HAL_ClockSetPllClk(&hal_videopll1vcoCLKCfg);
     HAL_ClockSetPllClk(&hal_videopll1CLKCfg);
     HAL_ClockSetRootClk(&hal_disp1pixlCLKCfg);
+    mipiDsiDpiClkFreq_Hz = HAL_ClockGetIpFreq(hal_clock_disp1pix);
     HAL_ClockSetRootClk(&hal_mipiphycfgCLKCfg);
     HAL_ClockSetRootClk(&hal_mipiphypllbypassCLKCfg);
     HAL_ClockSetRootClk(&hal_mipiphypllrefCLKCfg);
@@ -466,7 +468,15 @@ static void tx_dphy_write_control(uint16_t testcode, uint8_t testwrite)
 void BOARD_InitDisplayInterface(void)
 {
 #if (DPU_EXAMPLE_DI == DPU_DI_MIPI)
+    uint32_t m;
+    uint32_t n;
+    uint32_t bnd_wdth;
+    uint16_t phy_hsfreqrange;
+    uint16_t pll_prop_cntrl;
+    uint16_t pll_vco_cntrl;
+    uint16_t sr_osc_freq_target;
     dsi_config_t dsiConfig;
+    dsi_dphy_config_t phyConfig;
     dsiConfig.mode                    = kDSI_CommandMode;
     dsiConfig.packageFlags            = kDSI_DpiEnableBta | kDSI_DpiEnableEcc | kDSI_DpiEnableCrc;
     dsiConfig.enableNoncontinuousClk  = false;
@@ -493,9 +503,17 @@ void BOARD_InitDisplayInterface(void)
                                         .panelHeight      = APP_PANEL_HEIGHT};
 
     DSI_SetDpiConfig(MIPI_DSI, &dpiConfig, APP_MIPI_DSI_LANE_NUM);
-    MIPI_DSI->VID_HSA_TIME   = APP_HSW * MIPI_DSI_BPP / MIPI_DSI_DIV;
-    MIPI_DSI->VID_HBP_TIME   = APP_HBP * MIPI_DSI_BPP / MIPI_DSI_DIV;
-    MIPI_DSI->VID_HLINE_TIME = (APP_PANEL_WIDTH + APP_HSW + APP_HBP + APP_HFP) * MIPI_DSI_BPP / MIPI_DSI_DIV;
+
+    /* Calculate byte count per second. */
+    phyByteClkFreq_Hz = mipiDsiDpiClkFreq_Hz * BYTE_PER_PIXEL;
+    bnd_wdth = phyByteClkFreq_Hz /1000000U;
+    DSI_DphyGetPllDivider(&m, &n, phyRefClkFreq_Hz, phyByteClkFreq_Hz);
+    DSI_GetDefaultDphyConfig(&phyConfig, phyByteClkFreq_Hz, APP_MIPI_DSI_LANE_NUM);
+    DSI_InitDphy(MIPI_DSI, &phyConfig);
+    phy_hsfreqrange = Pll_Set_Hs_Freqrange(phyByteClkFreq_Hz * 2U);
+    pll_prop_cntrl = Pll_Set_Pll_Prop_Param(bnd_wdth);
+    sr_osc_freq_target = Pll_Set_Sr_Osc_Freq_Target(bnd_wdth);
+    pll_vco_cntrl = Pll_Set_Pll_Vco_Param(bnd_wdth);
 
     /* Clear PHY state. */
     MIPI_DSI->PHY_RSTZ = 0U;
@@ -521,40 +539,28 @@ void BOARD_InitDisplayInterface(void)
 
     /* set the value of slew rate calibration for 1.5Gbps or below */
     tx_dphy_write_control(0x272, 0x0);  /* sr_range=0, 0x272 */
-    tx_dphy_write_control(0x271, 0x7);  /* sr_osc_freq_target[11:8], 0x271 */
-    tx_dphy_write_control(0x270, 0xd0); /* sr_osc_freq_target[7:0], 0x270 */
+    tx_dphy_write_control(0x271, sr_osc_freq_target >> 8);  /* sr_osc_freq_target[11:8], 0x271 */
+    tx_dphy_write_control(0x270, sr_osc_freq_target & 0xFF); /* sr_osc_freq_target[7:0], 0x270 */
     /* enable slew rate calibration */
     tx_dphy_write_control(0x272, 0x10); /* sr_range=0,sr_sel_tester_rw=2'b01(slew rate on), 0x272 */
 
     /* cfg hsfreqrange */
-    CAMERA__DSI_OR_CSI_PHY_CSR->COMBO_PHY_FREQ_CONTROL = 0x29001CU;
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
-    CAMERA__DSI_OR_CSI_PHY_CSR->COMBO_PHY_FREQ_CONTROL = 0x16001CU;
-#endif
+    CAMERA__DSI_OR_CSI_PHY_CSR->COMBO_PHY_FREQ_CONTROL = CAMERA_DSI_OR_CSI_PHY_CSR_COMBO_PHY_FREQ_CONTROL_Phy_hsfreqrange(phy_hsfreqrange)|CAMERA_DSI_OR_CSI_PHY_CSR_COMBO_PHY_FREQ_CONTROL_Phy_cfgclkfreqrange(0x1CU);
     /* Configure the PLL */
     /* set PLL M */
-    tx_dphy_write_control(0x17A, (165 >> 8));   /* pll_m_ovr_rw[9:8]=0, 0x17A */
+    tx_dphy_write_control(0x17A, (m >> 8));   /* pll_m_ovr_rw[9:8]=0, 0x17A */
                                                   /* tx_dphy_read_control(0x17A) */
-    tx_dphy_write_control(0x179, (165 & 0xFF)); /* pll_m_ovr_rw[7:0]='hC6, 0x179 */
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
-    tx_dphy_write_control(0x17A, (68 >> 8));   /* pll_m_ovr_rw[9:8]=0, 0x17A */
-                                                  /* tx_dphy_read_control(0x17A) */
-    tx_dphy_write_control(0x179, (68 & 0xFF)); /* pll_m_ovr_rw[7:0]='hC6, 0x179 */
+    tx_dphy_write_control(0x179, (m & 0xFF)); /* pll_m_ovr_rw[7:0]='hC6, 0x179 */
     /* tx_dphy_read_control(0x179) */
-#endif
     /* set PLL N */
-
     /* enable PLL divider and PLL feedback multiplication parameter overrides */
-    tx_dphy_write_control(0x178, (0x1 << 7 | (8 << 3))); /* pll_n_ovr_en_rw =1, pll_n_ovr_rw[3:0]=7, 0x178 */
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
-    tx_dphy_write_control(0x178, (0x1 << 7 | (7 << 3))); /* pll_n_ovr_en_rw =1, pll_n_ovr_rw[3:0]=7, 0x178 */
-#endif
+    tx_dphy_write_control(0x178, (0x1 << 7 | (n << 3))); /* pll_n_ovr_en_rw =1, pll_n_ovr_rw[3:0]=7, 0x178 */
     /* configure VCO control and PLL charge pump */
-    tx_dphy_write_control(0x17B, 0x93); /* pll_vco_cntrl_ovr_en_rw =1, pll_vco_cntrl_ovr_rw[5:0]=9, pll_m_ovr_en_rw=1, 0x17B */
+    tx_dphy_write_control(0x17B, 1 << 7 | pll_vco_cntrl << 1 | 1); /* pll_vco_cntrl_ovr_en_rw =1, pll_vco_cntrl_ovr_rw[5:0]=9, pll_m_ovr_en_rw=1, 0x17B */
     tx_dphy_write_control(0x15E, 0x10); /* pll_cpbias_cntrl_rw[6:0]='h10, 0x15E */
     tx_dphy_write_control(0x162, 0x1);  /* pll_gmp_cntrl_rw[1:0]='b01,pll_int_cntrl_rw[5:0]=0, 0x162 */
 
-    tx_dphy_write_control(0x16E, 0xd);  /* pll_prop_cntrl_rw[5:0]='hd, 0x16E */
+    tx_dphy_write_control(0x16E, pll_prop_cntrl); /* pll_prop_cntrl_rw[5:0]='hd,pll_pwron_ovr_rw=1,pll_pwron_ovr_en_rw=1, 0x16E */
 
     /* Configure PLL lock fields */
     tx_dphy_write_control(0x173, 0x2);  /* pll_th1_rw[7:0]=2; 0x173 */
@@ -576,15 +582,6 @@ void BOARD_InitDisplayInterface(void)
     SDK_DelayAtLeastUs(100000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     MIPI_DSI->PHY_RSTZ = (1 | (0 << 1) | (1 << 2) | (0 << 3));
     SDK_DelayAtLeastUs(100000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-#if (DEMO_PANEL == CAP_TOUCH_DSI)
-    /* only for VERDIN PANEl*/
-    MIPI_DSI->CLKMGR_CFG = 0x3U;
-    MIPI_DSI->DPI_LP_CMD_TIM = 0x0U;
-    MIPI_DSI->PHY_TMR_LPCLK_CFG = 0x280041U;
-    MIPI_DSI->PHY_TMR_CFG = 0x170031U;
-    MIPI_DSI->PHY_IF_CFG = 0x2003U;
-#endif
 
     status_t result = MIPI_DSI_PowerUp(MIPI_DSI);
     if (result != 0U)
