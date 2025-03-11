@@ -14,8 +14,8 @@ Connect J44-10(GPIO_IO31 pad, signal name M1_LED_TP1) and J43-14(GND) to oscillo
 
 Prepare the Demo
 ================
-1.  Connect 12V~20V power supply and JLink Plus to the board, switch SW301 to power on the board
-2.  Connect a micro USB cable between the host PC and the J1401 USB port on the target board.
+1.  Connect 12V~20V power supply and JLink Plus to the board, switch SW1(SYS_PWR) to power on the board
+2.  Connect a micro USB cable between the host PC and the J15(FTDI_DEBUG) USB port on the target board.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

@@ -15,7 +15,7 @@ configurations in default state when running this demo.
 
 Prepare the Demo
 ================
-1. Connect a micro USB cable between the host PC and the J1401 USB port on the target board.
+1. Connect a micro USB cable between the host PC and the J15(FTDI_DEBUG) USB port on the target board.
    Open two serial terminals for A Core and M Core with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -23,7 +23,7 @@ Prepare the Demo
     - One stop bit
     - No flow control
     (e.g. /dev/ttyUSB0~3, /dev/ttyUSB2 for A Core, /dev/ttyUSB3 for M Core)
-2. Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW301 to power on the board
+2. Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board
 3. Boot Linux BSP to u-boot, and load M core image from SD card to run. (Put the image into SD card before.)
    => load mmc 1:1 0x80000000 /rpmsg_lite_str_echo_rtos.bin
    => cp.b 0x80000000 0x201e0000 0x10000

@@ -9,13 +9,13 @@ Hardware requirements
 
 Board settings
 ============
-Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW301 to power on the board.
+Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board.
 By default this demo communicates over a virtual serial line interface of the debugger USB connection. 
 With a proper RS232 transceiver and pin configuration, it may also connect to microcontroller UART peripheral.
 
 Prepare the demo
 ===============
-1.  Connect a USB cable between the host PC and the J1401 Debug USB port on the target board.
+1.  Connect a USB cable between the host PC and the J15(FTDI_DEBUG) Debug USB port on the target board.
 2.  Compile and download the program to the target microcontroller.
 3.  Run and resume application execution when debugger stops in the main() function.
 

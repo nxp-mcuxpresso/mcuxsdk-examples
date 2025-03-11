@@ -17,8 +17,8 @@ Prepare the Demo
 Note: single boot with Linux BSP is required. SAI3 and EDMA4 are modules of WAKEUPMIX, A core and Linux
       BSP is responsible to configure proper permissions with TRDC.
 
-1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW301 to power on the board.
-2.  Connect a micro USB cable between the host PC and the J1401 USB port on the target board.
+1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board.
+2.  Connect a micro USB cable between the host PC and the J15(FTDI_DEBUG) USB port on the target board.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
