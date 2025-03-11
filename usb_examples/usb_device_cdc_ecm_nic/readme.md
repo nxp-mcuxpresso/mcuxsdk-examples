@@ -44,6 +44,7 @@ Set the hardware jumpers (Tower system/base module) to default settings.
 
 ## Supported Boards
 
+- MIMXRT1170-EVKB
 - FRDM-MCXN947
 - FRDM-RW612
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/usb_examples/usb_device_cdc_ecm_nic/example_board_readme.md)
