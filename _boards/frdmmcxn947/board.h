@@ -46,6 +46,7 @@
 #endif /* BOARD_DEBUG_UART_BAUDRATE_CORE1 */
 
 /*! @brief The UART to use for Bluetooth M.2 interface. */
+#define BOARD_BT_UART_BASEADDR   LPUART2
 #define BOARD_BT_UART_INSTANCE   2
 #define BOARD_BT_UART_BAUDRATE   3000000
 #define BOARD_BT_UART_CLK_FREQ   12000000U
