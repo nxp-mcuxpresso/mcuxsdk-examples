@@ -101,6 +101,9 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_lpi2cCLKCfg);
     HAL_ClockSetRootClk(&hal_saiCLKCfg);
 
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);
+
     /* Select PDM/SAI signals */
     pcal6524_handle_t handle;
 

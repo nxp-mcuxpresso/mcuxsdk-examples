@@ -92,6 +92,9 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_lpi2cCLKCfg);
     HAL_ClockSetRootClk(&hal_saiCLKCfg);
 
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);
+
     /* Select SAI3 signals */
     pcal6408_handle_t handle;
     BOARD_InitPCAL6408_I2C4(&handle);
