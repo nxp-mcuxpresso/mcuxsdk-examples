@@ -11,9 +11,6 @@
 #include "clock_config.h"
 /*${header:end}*/
 
-/* only for test on zebu */
-int g_core_id = 1;
-
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
