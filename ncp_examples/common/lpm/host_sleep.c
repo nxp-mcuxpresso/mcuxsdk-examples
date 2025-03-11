@@ -639,7 +639,8 @@ int ncp_is_pm3_mode(int powerState)
 #if CONFIG_NCP_USB
     if (global_power_config.is_manual == false)
     {
-        if (global_power_config.wake_mode == WAKE_MODE_GPIO && powerState == PM_LP_STATE_PM2)
+        if ((global_power_config.wake_mode == WAKE_MODE_GPIO && powerState == PM_LP_STATE_PM2) || \
+           (global_power_config.wake_mode == WAKE_MODE_WIFI_NB && powerState == PM_LP_STATE_PM2))
             return 0;
     }
 #endif

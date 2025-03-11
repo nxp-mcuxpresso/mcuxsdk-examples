@@ -154,6 +154,11 @@ status_t powerManager_PmNotify(pm_event_type_t eventType, uint8_t powerState, vo
     if (is_hs_handshake_done != WLAN_HOSTSLEEP_SUCCESS)
         return kStatus_PMPowerStateNotAllowed;
 #endif
+    if (!ncp_is_pm3_mode(powerState))
+    {
+        return kStatus_PMPowerStateNotAllowed;
+    }
+
 #if CONFIG_NCP_BLE
     /* when ble is running, block into sleep */
     if ((ncp_ble_is_running())
