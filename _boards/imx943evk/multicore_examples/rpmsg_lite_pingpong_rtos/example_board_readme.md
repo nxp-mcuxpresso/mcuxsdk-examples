@@ -23,7 +23,7 @@ Prepare the Demo
 3. Download the program to the target board.
 4. Either re-power up your board or launch the debugger in your IDE to begin running the example.
 
-Enable an option(Cannot enable them at the same time) in prj.conf of the project to select which core as master and which core as remote as the follow table:
+Enable an option(Cannot enable them at the same time) in rpmsg_lite_pingpong_rtos/prj.conf and rpmsg_lite_pingpong_rtos/${core_id}/prj.conf(if it exists; it exists for cm7 core0, so it also need to be modified) to select which core as master and which core as remote as the follow table:
 |         Option                       |   Master |   Remote   |
 |--------------------------------------|----------|------------|
 |  CONFIG_RPMSG_M71_M33S=y(default)    |    M71   |    M33S    |
@@ -44,7 +44,7 @@ Running the demo
 After the boot process succeeds, the MCU-Remote terminal displays the following information:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 RPMSG Ping-Pong FreeRTOS RTOS API Demo...
-RPMSG Share Base Addr is 0x20330000
+RPMSG Share Base Addr is 0x20430000
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 During boot system MCU-Remote terminal displays the following information:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
