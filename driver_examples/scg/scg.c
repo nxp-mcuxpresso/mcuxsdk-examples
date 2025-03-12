@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2023 NXP
+ * Copyright 2016-2017, 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,6 +18,11 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#if defined(SCG_SPLLCFG_SOURCE)
+#define SCG_SPLL_HAS_CLK_SRC 1
+#else
+#define SCG_SPLL_HAS_CLK_SRC 0
+#endif
 
 /*
  * SIRC clock setting.
@@ -54,6 +59,21 @@ const scg_firc_config_t s_scgFircConfig = {.enableMode = kSCG_FircEnable,
                                            .range      = kSCG_FircRange48M,
                                            .trimConfig = NULL};
 
+/*
+ * When SPLL is available, and SPLL doesn't have clock source selection, it will
+ * use System OSC as clock source. The System OSC should be initialized.
+ */
+#if (defined(FSL_FEATURE_SCG_HAS_SPLL) && FSL_FEATURE_SCG_HAS_SPLL) && (!SCG_SPLL_HAS_CLK_SRC)
+const scg_sosc_config_t g_scgSysOscConfig =
+{
+    .freq        = APP_SCG_SOSC_FREQ,
+    .enableMode  = kSCG_SysOscEnable,
+    .monitorMode = kSCG_SysOscMonitorDisable,
+    .div2        = APP_SCG_SOSC_DIV2,
+    .workMode    = APP_SCG_SOSC_WORK_MODE,
+};
+#endif
+
 #if (defined(FSL_FEATURE_SCG_HAS_SPLL) && FSL_FEATURE_SCG_HAS_SPLL)
 /*
  * SYSPLL clock setting.
@@ -71,9 +91,31 @@ const scg_spll_config_t s_scgSysPllConfig = {.enableMode  = kSCG_SysPllEnable,
 #if (defined(FSL_FEATURE_SCG_HAS_SPLLDIV3) && FSL_FEATURE_SCG_HAS_SPLLDIV3)
                                              .div3 = kSCG_AsyncClkDivBy2,
 #endif
+/* If SPLL can use FIRC as the clock source, then use it. FIRC is configured to 48M Hz. */
+#if SCG_SPLL_HAS_CLK_SRC
                                              .src    = kSCG_SysPllSrcFirc,
                                              .prediv = 5U,
-                                             .mult   = 2U};
+                                             .mult   = 2U
+/* If SPLL can't slect FIRC as clock source, when porting this project, the
+ * prediv and mult should be set to the proper value based on the source clock
+ * frequency.
+ *
+ * SPLL freq = source clk freq / (prediv + SCG_SPLL_PREDIV_BASE_VALUE) * (mult + SCG_SPLL_MULT_BASE_VALUE) / 2.
+ *
+ * Rules to follow:
+ * 1. Clock after prediv must be in the range of 8 MHz to 32 MHz
+ * 2. When the chip supports high speed run (HSRUN) power mode (FSL_FEATURE_SMC_HAS_HIGH_SPEED_RUN_MODE == 1),
+ *    SPLL will be used in HSRUN mode as system clock. The SPLL clock and s_sysClkConfigSysPllInHsrun should
+ *    be configured properly to meet clock frequency requirement in HSRUN mode, for example,
+ *    the system clock, bus clock, and so on shall be in allowed range.
+ *
+ */
+#else
+                                             .prediv = APP_SCG_SPLL_PREDIV,
+                                             .mult   = APP_SCG_SPLL_MULT
+
+#endif /* SCG_SPLL_HAS_CLK_SRC */
+};
 #endif
 
 #if (defined(FSL_FEATURE_SCG_HAS_LPFLL) && FSL_FEATURE_SCG_HAS_LPFLL)
@@ -253,6 +295,16 @@ int main(void)
     CLOCK_InitFirc(&s_scgFircConfig);
 
 #if (defined(FSL_FEATURE_SCG_HAS_SPLL) && FSL_FEATURE_SCG_HAS_SPLL)
+
+#if !SCG_SPLL_HAS_CLK_SRC
+     /* When SPLL doesn't have clock source selection, it uses OSC as clock source,
+      * so init OSC before init SPLL.
+      */
+    CLOCK_InitSysOsc(&g_scgSysOscConfig);
+    /* Set the XTAL0 frequency based on board settings. */
+    CLOCK_SetXtal0Freq(g_scgSysOscConfig.freq);
+#endif
+
     /*
      * Init SYSPLL clock, SYSPLL uses FIRC as clock source, so must init FIRC
      * before init SYSPLL.
