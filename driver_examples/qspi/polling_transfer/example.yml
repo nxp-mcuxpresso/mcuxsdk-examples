@@ -29,3 +29,4 @@ qspi_polling_transfer:
     - -iar@flash_debug
     - -iar@flash_release
     evkmimx8mq: []
+    frdmmcxe31b: []
