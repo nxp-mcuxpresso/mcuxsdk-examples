@@ -120,7 +120,7 @@ static struct bt_sdp_attribute hfp_ag_attrs[] = {
 static struct bt_sdp_record hfp_ag_rec = BT_SDP_RECORD(hfp_ag_attrs);
 static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
 {
-    printf("HFP AG Connected:%!\n", err);
+    printf("HFP AG Connected:%d!\n", err);
     if (err)
     {
         return;
