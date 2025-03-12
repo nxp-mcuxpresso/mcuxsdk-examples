@@ -26,7 +26,6 @@
 static void connected(struct bt_conn *conn, uint8_t err);
 static void disconnected(struct bt_conn *conn, uint8_t reason);
 static void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_security_err err);
-extern struct bt_conn *default_conn;
 bt_addr_t default_peer_addr;
 static uint8_t default_connect_initialized;
 
@@ -41,15 +40,10 @@ static void connected(struct bt_conn *conn, uint8_t err)
     int res;
     if (err)
     {
-        if (default_conn != NULL)
-        {
-            default_conn = NULL;
-        }
-        PRINTF("Connection failed (err 0x%02x)\n", err);
+        PRINTF("acl connection failed (err 0x%02x)\n", err);
     }
     else
     {
-        default_conn = conn;
         if (1U == default_connect_initialized)
         {
             struct bt_conn_info info;
@@ -67,7 +61,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
              */
             if (0 == memcmp(info.br.dst, &default_peer_addr, 6U))
             {
-                res = bt_hfp_ag_discover(default_conn, &app_hfp_ag_discover);
+                res = bt_hfp_ag_discover(conn, &app_hfp_ag_discover);
                 if (res)
                 {
                     PRINTF("SDP discovery failed: result\r\n");
@@ -84,21 +78,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
 {
-    PRINTF("Disconnected (reason 0x%02x)\n", reason);
-
-    if (default_conn != conn)
-    {
-        return;
-    }
-
-    if (default_conn)
-    {
-        default_conn = NULL;
-    }
-    else
-    {
-        return;
-    }
+    PRINTF("acl disconnected (reason 0x%02x)\n", reason);
 }
 
 static void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_security_err err)
@@ -145,27 +125,35 @@ static void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_
 
 void app_connect(uint8_t *addr)
 {
+    struct bt_conn *conn;
+
     default_connect_initialized = 1U;
     memcpy(&default_peer_addr, addr, 6U);
-    default_conn = bt_conn_create_br(&default_peer_addr, BT_BR_CONN_PARAM_DEFAULT);
-    if (!default_conn)
+    conn = bt_conn_create_br(&default_peer_addr, BT_BR_CONN_PARAM_DEFAULT);
+    if (!conn)
     {
         default_connect_initialized = 0U;
-        PRINTF("Connection failed\r\n");
+        PRINTF("acl connection failed\r\n");
     }
     else
     {
         /* unref connection obj in advance as app user */
-        bt_conn_unref(default_conn);
-        PRINTF("Connection pending\r\n");
+        bt_conn_unref(conn);
     }
 }
 
-void app_disconnect(void)
+void app_disconnect(uint8_t index)
 {
-    if (bt_conn_disconnect(default_conn, 0x13U))
+    if (g_HfpAgs[index].conn)
     {
-        PRINTF("Disconnection failed\r\n");
+        if (bt_conn_disconnect(g_HfpAgs[index].conn, 0x13U))
+        {
+            PRINTF("Disconnection failed\r\n");
+        }
+    }
+    else
+    {
+        PRINTF("no connection to disconnect\r\n");
     }
 }
 

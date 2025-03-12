@@ -3,7 +3,8 @@
 ## Overview
 This example demonstrates the HFP Ag basic functionality, currently support simulate an incoming call, and the call could be answered and ended.
 
-The HFP Ag can connected a HFP HF device like headphone or device running HFP HF device.
+The HFP Ag can connected at most two HFP HF devices like headphone or device running HFP HF device.
+But the SCO audio can only be opened with one connection at the same time.
 
 ## Prepare the Demo
 
@@ -39,27 +40,30 @@ the bellow commands have been supported:
   USAGE: bt [discover|connect|disconnect|delete]
     discover             start to find BT devices
     connect              connect to the device that is found, for example: bt connect n (from 1)
-    openaudio            open audio connection without calls
-    closeaudio           close audio connection without calls 
-    sincall              start an incoming call.
-    aincall              accept the call.
-    eincall              end an call.
-    set_tag              set phone num tag, for example: bt set_tag 123456789.
-    select_codec         codec select for codec Negotiation, for example: bt select_codec 2, it will select the codec 2 as codec.
-    set_mic_volume       update mic Volume, for example: bt set_mic_volume 14.
-    set_speaker_volume   update Speaker Volume, for example: bt set_speaker_volume 14.
-    stwcincall           start multiple an incoming call.
-    disconnect           disconnect current connection.
-    delete               delete all devices. Ensure to disconnect the HCI link connection with the peer device before attempting to delete the bonding information.
+    select_conn <1|2>    select the connection to process
+    openaudio            open audio connection without calls on the selected conn
+    closeaudio           close audio connection without calls on the selected conn
+    sincall              start an incoming call on the selected conn
+    aincall              accept the call on the selected conn.
+    eincall              end an call on the selected conn.
+    set_tag              set phone num tag on the selected conn, for example: bt set_tag 123456789
+    select_codec         codec select for codec Negotiation on the selected conn, for example: bt select_codec 2, it will select the codec 2 as codec.
+    set_mic_volume       update mic Volume on the selected conn, for example: bt set_mic_volume 14
+    set_speaker_volume   update Speaker Volume on the selected conn, for example: bt set_speaker_volume 14
+    stwcincall           start multiple an incoming call on the selected conn
+    disconnect <1|2>     disconnect current connection
+    delete               delete all devices. Ensure to disconnect the HCI link connection with the peer
+    set_hf_ind <1|2> <enable|disable>      enable/disable the hf indicator on the selected conn. 1 - enhanced driver safety; 2 - battery leveldevice before attempting to delete the bonding information.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 1) "discover" start to find BT devices, it will list all device can be found, usage
-2) "connect" is used to connect to the device that is found, for example: bt connect n (from 1), usage :
-   bt connect 1
-3) "openaudio" is used to open audio connection without calls
-4) "closeaudio" is used to close audio connection without calls 
-5) "sincall" is used to start an incoming call
-6) "aincall" is used to accept an incoming call
-7) "eincall" is used to end or reject an incoming call
+2) "connect" is used to connect to the device that is found, this demo supports connecting max 2 hf devices.
+   for example: bt connect n (from 1), usage: bt connect 1
+3) "select_conn" is used to select the connection that the other shell cmds operate.
+4) "openaudio" is used to open audio connection without calls, only one connection is supported at the same time.
+4) "closeaudio" is used to close audio connection without calls, only one connection is supported at the same time.
+5) "sincall" is used to start an incoming call, only one connection is supported at the same time.
+6) "aincall" is used to accept an incoming call, only one connection is supported at the same time.
+7) "eincall" is used to end or reject an incoming call, only one connection is supported at the same time.
 8) "set_tag" is used to set phone num tag, for example: bt set_tag 123456789
 9) "select_codec" is used to  codec select for codec Negotiation, for example: bt select_codec 2, it will select the codec 2 as codec, usage:
    bt select_codec 2
@@ -70,6 +74,7 @@ the bellow commands have been supported:
 12) "stwcincall"  to start multiple an incoming call, need run "sincall" is used to start an incoming call before run the command
 13) "disconnect"  to disconnect current connection
 14) "delete" is used to delete all devices. Ensure to disconnect the HCI link connection with the peer device before attempting to delete the bonding information.
+15) "set_hf_ind" is used to operate the hf indicator function.
 
 Note:
 1. There is a short noise can be heard at headset at the begin audio streaming when in running HFP Ag . 

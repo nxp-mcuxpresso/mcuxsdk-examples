@@ -11,7 +11,6 @@
  * Definitions
  ******************************************************************************/
 
-extern struct bt_conn *default_conn;
 extern bt_addr_t default_peer_addr;
 
 /*******************************************************************************
@@ -22,7 +21,7 @@ void app_connect_init(void);
 
 void app_connect(uint8_t *addr);
 
-void app_disconnect(void);
+void app_disconnect(uint8_t index);
 
 void app_delete(void);
 
