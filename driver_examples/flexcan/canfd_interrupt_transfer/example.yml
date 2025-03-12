@@ -30,6 +30,7 @@ canfd_interrupt_transfer:
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    frdmmcxe247: []
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []

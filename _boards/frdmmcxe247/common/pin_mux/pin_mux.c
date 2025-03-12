@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -386,6 +385,36 @@ void BOARD_InitSPIPins(void)
                                            kPORT_UnlockRegister};
     /* PORTE6 (pin 121) is configured as LPSPI0_PCS2 */
     PORT_SetPinConfig(BOARD_INITSPIPINS_LPSPI0_PCS2_PORT, BOARD_INITSPIPINS_LPSPI0_PCS2_PIN, &LPSPI0_PCS2);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCANPins:
+- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '9', peripheral: CAN0, signal: RX, pin_signal: PTE4/ETM_TRACE_D1/FTM2_QD_PHB/FTM2_CH2/CAN0_RX/FXIO_D6/EWM_OUT_b}
+  - {pin_num: '8', peripheral: CAN0, signal: TX, pin_signal: PTE5/TCLK2/FTM2_QD_PHA/FTM2_CH3/CAN0_TX/FXIO_D7/EWM_IN}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCANPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCANPins(void)
+{
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortE);
+
+    /* PORTE4 (pin 9) is configured as CAN0_RX */
+    PORT_SetPinMux(PORTE, 4U, kPORT_MuxAlt5);
+
+    /* PORTE5 (pin 8) is configured as CAN0_TX */
+    PORT_SetPinMux(PORTE, 5U, kPORT_MuxAlt5);
 }
 /***********************************************************************************************************************
  * EOF

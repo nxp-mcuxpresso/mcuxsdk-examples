@@ -17,6 +17,7 @@ at last.
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/flexcan/loopback_edma_transfer/example_board_readme.md)
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/driver_examples/flexcan/loopback_edma_transfer/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/flexcan/loopback_edma_transfer/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/driver_examples/flexcan/loopback_edma_transfer/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/flexcan/loopback_edma_transfer/example_board_readme.md)
 - [MCX-W71-EVK](../../../_boards/mcxw71evk/driver_examples/flexcan/loopback_edma_transfer/example_board_readme.md)
 - [IMX95LP4XEVK-15](../../../_boards/imx95lp4xevk15/driver_examples/flexcan/loopback_edma_transfer/example_board_readme.md)

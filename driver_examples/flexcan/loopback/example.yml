@@ -37,6 +37,7 @@ flexcan_loopback:
     frdmmcxa156: []
     frdmmcxa166: []
     frdmmcxa276: []
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     imx95lpd5evk19@cm7: []
