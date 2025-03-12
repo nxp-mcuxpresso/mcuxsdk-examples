@@ -26,7 +26,7 @@ Prepare the Demo
     - No flow control
 4.  Load flash.bin file with sm as alt config before starting the demo to ensure that the permissions of Mcore involved in the demo are allowed.
 5.  Make sure the FDT file and key bootargs are correctly set before booting the linux kernel. Following is the example commands on A core U-Boot console:
-    =>setenv fdtfile imx943-19x19-evk-rpmsg.dtb
+    =>setenv fdtfile imx943-evk-rpmsg.dtb
     =>setenv mmcargs 'setenv bootargs ${jh_clk} console=${console} root=${mmcroot} snd_pcm.max_alloc_per_card=134217728 pd_ignore_unused clk_ignore_unused'
     =>saveenv
 6.  Boot Linux BSP to u-boot, and load M core image from SD card to run. (Put the image into SD card device before)
