@@ -20,7 +20,7 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/driver_examples/dcif
              ${board_root}/${board}/driver_examples/dcif/${multicore_foldername}
-             $${board_root}/${board}/driver_examples/dcif/${multicore_foldername}{board_root}/${board}/driver_examples/dcif/argb8888/${core_id}
+             ${board_root}/${board}/driver_examples/dcif/argb8888/${core_id}
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/dcif/argb8888/reconfig.cmake OPTIONAL)
