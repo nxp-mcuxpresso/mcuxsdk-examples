@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -19,6 +19,8 @@
 #define gAppLedCnt_c            0
 
 #define gDebugConsoleEnable_d   0
+
+#define gAppHighSystemClockFrequency_d 1
 
 /*! *********************************************************************************
  * 	App Configuration
