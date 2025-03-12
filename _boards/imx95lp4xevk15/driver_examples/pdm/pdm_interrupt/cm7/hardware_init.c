@@ -56,6 +56,9 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_pdmClkCfg);
     HAL_ClockSetRootClk(&hal_lpi2cclk);
 
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);
+
     BOARD_InitPCAL6524(&handle);
 
     PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_PDM_MQS_SEL), kPCAL6524_Output);

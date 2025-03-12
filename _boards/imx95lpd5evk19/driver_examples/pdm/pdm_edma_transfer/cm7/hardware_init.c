@@ -56,6 +56,9 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_pdmClkCfg);
     HAL_ClockSetRootClk(&hal_lpi2cclk);
 
+    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_audiopll1CLKCfg);
+
     BOARD_InitPCA6416A(&handle);
     PCA6416A_SetDirection(&handle, (1 << BOARD_PCA6416A_PDM_CAN_SEL), kPCA6416A_Output);
     PCA6416A_ClearPins(&handle, (1 << BOARD_PCA6416A_PDM_CAN_SEL));
