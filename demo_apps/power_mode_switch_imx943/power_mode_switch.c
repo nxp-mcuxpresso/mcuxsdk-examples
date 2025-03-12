@@ -359,8 +359,14 @@ void PowerModeSwitchTask(void *pvParameters)
         PRINTF("Press  %c to enter: WAIT mode\r\n", kAPP_PowerModeWait);
         PRINTF("Press  %c to enter: STOP mode\r\n", kAPP_PowerModeStop);
         PRINTF("Press  %c to enter: SUSPEND mode\r\n", kAPP_PowerModeSuspend);
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
+	/*
+	 * The CM33S core is for network processing and not have access rights to shutdown and boot the AP now.
+	 * Please update system manager config if you want enable this case in M33s core.
+	 */
         PRINTF("Press  P to suspend A55 core\r\n");
         PRINTF("Press  W to wakeup A55 core\r\n");
+#endif
         PRINTF("\r\nWaiting for power mode select..\r\n\r\n");
 
         /* Wait for user response */

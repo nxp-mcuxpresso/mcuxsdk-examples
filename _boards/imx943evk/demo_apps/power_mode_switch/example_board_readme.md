@@ -40,6 +40,7 @@ NOTE:
              002: M7   = on
              003: M71  = on
              004: AP   = on (default)
+      5. Only M7_core0 and M7_core1 can use option 'P' 'W', reserved for cm33_core1.
 
 The log below shows the output of the power mode switch demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
