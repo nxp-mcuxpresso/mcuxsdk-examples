@@ -1,3 +1,0 @@
-        <#if memory.name=="SRAM_DTC_cm7">
-        *(.bss*)
-        </#if>
