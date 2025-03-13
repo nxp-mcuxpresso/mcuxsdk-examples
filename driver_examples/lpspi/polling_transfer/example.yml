@@ -1,4 +1,4 @@
-lpspi_interrupt:
+lpspi_polling_transfer:
   section-type: application
   contents:
     meta_path: examples/driver_examples/lpspi/polling_transfer
