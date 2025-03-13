@@ -2,19 +2,18 @@
 ** ###################################################################
 **     Processors:          MIMXRT1166CVM5A_cm7
 **                          MIMXRT1166DVM6A_cm7
+**                          MIMXRT1166XVM5A_cm7
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1160RM, Rev B, 02/2021
-**     Version:             rev. 0.1, 2020-12-29
-**     Build:               b210209
+**     Reference manual:    IMXRT1160RM, Rev 0, 03/2021
+**     Version:             rev. 0.2, 2023-02-27
+**     Build:               b241024
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2021 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2024 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -30,6 +29,8 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000400 : 0;
+TEXT_SIZE = 0x00D8DC00;
+CORE1IMAGE_START = 0x30FC0000;
 
 /* Specify the memory areas */
 MEMORY
@@ -37,12 +38,12 @@ MEMORY
   m_flash_config        (RX)  : ORIGIN = 0x30000400, LENGTH = 0x00000C00
   m_ivt                 (RX)  : ORIGIN = 0x30001000, LENGTH = 0x00001000
   m_interrupts          (RX)  : ORIGIN = 0x30002000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = 0x00D8DC00
-  m_text2               (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
+  m_text                (RX)  : ORIGIN = 0x30002400, LENGTH = TEXT_SIZE
+  m_qacode              (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00040000
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00040000
   m_data2               (RW)  : ORIGIN = 0x202C0000 + RPMSG_SHMEM_SIZE, LENGTH = 0x00010000 - RPMSG_SHMEM_SIZE
   rpmsg_sh_mem          (RW)  : ORIGIN = 0x202C0000, LENGTH = RPMSG_SHMEM_SIZE
-  m_core1_image         (RX)  : ORIGIN = 0x30FC0000, LENGTH = 0x00040000
+  m_core1_image         (RX)  : ORIGIN = CORE1IMAGE_START, LENGTH = 0x00040000
 }
 
 /* NOTE: Flash in range 0x30D9_0000 - 0x30FF_FFFF is reserved for  data */
@@ -66,9 +67,9 @@ SECTIONS
   .ivt : AT(ivt_begin)
   {
     . = ALIGN(4);
-      KEEP(* (.boot_hdr.ivt))           /* ivt section */
-      KEEP(* (.boot_hdr.boot_data))     /* boot section */
-      KEEP(* (.boot_hdr.dcd_data))      /* dcd section */
+    KEEP(* (.boot_hdr.ivt))           /* ivt section */
+    KEEP(* (.boot_hdr.boot_data))     /* boot section */
+    KEEP(* (.boot_hdr.dcd_data))      /* dcd section */
     . = ALIGN(4);
   } > m_ivt
 
@@ -105,17 +106,21 @@ SECTIONS
   {
     . = ALIGN(4);
     *(EXCLUDE_FILE(
-        /* Exclude flash and frequently executed functions from XIP */
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
-        /* Exclude flash and frequently executed functions from XIP */
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
     ) .text*)                /* .text* sections (code) */
-    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
+    ) .rodata)               /* .rodata sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
+    ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -216,17 +221,15 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
-    /* Explicit placement of flash and frequently executed functions in RAM */
-    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
-    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
+    *(DataQuickAccess)       /* quick access data section */
     *(.wlan_data .wlan_data.*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
+
   __ram_function_flash_start = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for TCM data initialization */
 
   .ram_function : AT(__ram_function_flash_start)
@@ -234,9 +237,11 @@ SECTIONS
     . = ALIGN(32);
     __ram_function_start__ = .;
     *(CodeQuickAccess)
+    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
+    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     . = ALIGN(128);
     __ram_function_end__ = .;
-  } > m_text2
+  } > m_qacode
 
   __NDATA_ROM = __ram_function_flash_start + (__ram_function_end__ - __ram_function_start__);
   .ncache.init : AT(__NDATA_ROM)
@@ -265,7 +270,6 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
@@ -300,4 +304,3 @@ SECTIONS
 
   ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
 }
-
