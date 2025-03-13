@@ -15,6 +15,7 @@ lp_refdes_ble_peripheral_freertos:
     - +armgcc@debug
     - +armgcc@release
     frdmmcxw71: []
+    mcxw71evk: []
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []
     kw45b41zloc: []
