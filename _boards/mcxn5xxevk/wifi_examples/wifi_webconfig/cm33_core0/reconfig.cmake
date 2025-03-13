@@ -31,10 +31,6 @@ mcux_remove_armgcc_configuration(
     CC "-O0"
 )
 
-mcux_remove_macro(
-    "-DMFLASH_FILE_BASEADDR=131072"
-)
-
 mcux_add_macro(
     "-DMFLASH_FILE_BASEADDR=2064384"
 )
