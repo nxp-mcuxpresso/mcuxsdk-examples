@@ -11,6 +11,7 @@ connectivity_test_freertos:
         on the MCUXpresso SDK.The application test GENFSK functionnality.
   boards:
     frdmmcxw71: []
+    mcxw71evk: []
     frdmmcxw72@cm33_core0: []
     k32w148evk: []
     kw47evk@cm33_core0: []
