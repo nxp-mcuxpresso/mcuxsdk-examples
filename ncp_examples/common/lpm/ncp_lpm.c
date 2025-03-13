@@ -271,6 +271,10 @@ status_t powerManager_BoardNotify(pm_event_type_t eventType, uint8_t powerState,
         }
         else if (powerState == PM_LP_STATE_PM2)
             ncp_intf_pm_exit((int32_t)PM_LP_STATE_PM2);
+#if CONFIG_NCP_SDIO
+        else if (powerState == PM_LP_STATE_PM1)
+            ncp_intf_pm_exit((int32_t)PM_LP_STATE_PM1);
+#endif
         else
         {
             /* Do Nothing */

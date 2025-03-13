@@ -249,7 +249,9 @@ static int ncp_notify_host_gpio(int32_t pm_state)
 {
     int ret = (int)NCP_PM_STATUS_SUCCESS;
 
-    if ((pm_state == NCP_PM_STATE_PM2) || (pm_state == NCP_PM_STATE_PM3))
+    if ((pm_state == NCP_PM_STATE_PM1) ||
+        (pm_state == NCP_PM_STATE_PM2) ||
+        (pm_state == NCP_PM_STATE_PM3))
     {
         ncp_adap_d("Toggle gpio %u %u %u in PM%u",
             g_gpio_delay_output_1_pm2, g_gpio_delay_output_1_pm3,
