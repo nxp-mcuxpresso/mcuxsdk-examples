@@ -1216,6 +1216,11 @@ BOARD_InitRFSwitchControlPins:
  * END ****************************************************************************************************************/
 void BOARD_InitRFSwitchControlPins(void)
 {
+    /* KW47-LOC uses different RF_GPO and pin mux setting (shared with COEX/FEM features and internal debug capability).
+     * Please refer to API uint8_t PLATFORM_InitLcl(void) in mcux-sdk-middleware-connectivity-framework module.
+     * The empty API is to avoid uselessly occupying pins and increasing power consumption.
+     */
+#if 0
     /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
     CLOCK_EnableClock(kCLOCK_GpioA);
     /* Clock Configuration: Peripheral clocks are enabled; module does not stall low power mode entry */
@@ -1260,6 +1265,7 @@ void BOARD_InitRFSwitchControlPins(void)
     PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_1_PIN, &RF_SW_CTL);
     /* PORTA20 (pin 17) is configured as RF_GPO_2 */
     PORT_SetPinConfig(BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PORT, BOARD_INITRFSWITCHCONTROLPINS_RF_GPO_2_PIN, &RF_SW_CTL);
+#endif
 }
 
 /* clang-format off */
