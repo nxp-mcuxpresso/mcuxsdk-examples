@@ -12,6 +12,7 @@ hci_bb_bm:
         with a shell inteface.
   boards:
     frdmmcxw71: []
+    mcxw71evk: []
     frdmmcxw72@cm33_core0: []
     k32w148evk: []
     kw47evk@cm33_core0: []
