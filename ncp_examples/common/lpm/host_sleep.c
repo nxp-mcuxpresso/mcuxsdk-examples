@@ -462,6 +462,10 @@ static void ncp_suspend_task(void *argv)
             lpm_pm3_exit_hw_reinit();
         else if (suspend_mode == 2)
             ncp_intf_pm_exit(suspend_mode);
+#if CONFIG_NCP_SDIO
+        else if (suspend_mode == 1)
+            ncp_intf_pm_exit(suspend_mode);
+#endif
 #if CONFIG_NCP_WIFI
         if (ncp_cancel_wlan_wakeup() != 0)
             break;
