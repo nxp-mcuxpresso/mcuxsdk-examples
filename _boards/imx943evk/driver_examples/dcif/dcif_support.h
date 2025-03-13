@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -43,7 +43,7 @@
 #define DEMO_FB_ALIGN 128
 
 #define DEMO_FB0_ADDR 0x80000000
-#define DEMO_FB1_ADDR 0x80200000
+#define DEMO_FB1_ADDR 0x803E8000
 
 /*******************************************************************************
  * Prototypes
