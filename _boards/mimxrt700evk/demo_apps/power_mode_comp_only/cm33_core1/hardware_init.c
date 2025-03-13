@@ -109,6 +109,14 @@ void BOARD_InitPowerConfig(void)
     };
     POWER_ConfigRegulatorSetpoints(kRegulator_Vdd1LDO, &ldo, &lvd);
 
+#if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMC)
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_LP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+#else
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+#endif
+
     POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
     POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);

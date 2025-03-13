@@ -71,7 +71,7 @@ static inline void BOARD_PrepareForDS(void)
 #endif
     CLOCK_DisableClock(kCLOCK_LPI2c15);
 
-    /* Low power handshake to for async interrupt. */
+    /* Low power handshake for async interrupt. */
     if (POWER_ModuleEnterLPRequest(APP_SW_LP_REQ) != kStatus_Success)
     {
          assert(false);
@@ -414,7 +414,7 @@ void BOARD_InitPowerConfig(void)
     POWER_EnablePD(kPDRUNCFG_PD_AUDPLLLDO);
     POWER_EnablePD(kPDRUNCFG_PD_ADC0);
     POWER_EnablePD(kPDRUNCFG_SHUT_RAM1_CLK); /* Compute access RAM arbiter1 clock. */
-    POWER_EnablePD(kPDRUNCFG_LP_DCDC);
+    /* POWER_EnablePD(kPDRUNCFG_LP_DCDC); // Replaced by POWER_SetRunRegulatorMode */
     PMC1->PDRUNCFG1 = 0x7FFFFFFFU;
     PMC1->PDRUNCFG2 &= ~(0x3FFC0000U); /* Power up all the SRAM partitions in Sense domain. */
     PMC1->PDRUNCFG3 &= ~(0x3FFC0000U);
@@ -443,13 +443,19 @@ void BOARD_InitPowerConfig(void)
 
     g_runVolt = POWER_CalcVoltLevel(kRegulator_Vdd1LDO, SystemCoreClock, 0U); /* Calculate the voltage per frequency. */
 
-#if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_MIXED)
+#if defined(DEMO_POWER_SUPPLY_OPTION) && ((DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_MIXED) || (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMC))
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_LP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 2U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
     POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
     POWER_ApplyPD();
 #elif defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_DisableLPRequestMask(kPower_MaskLpi2c15);
     BOARD_InitPmic();
     /* Select the lowest LVD setpoint. */
@@ -457,6 +463,8 @@ void BOARD_InitPowerConfig(void)
     POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
     POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
     POWER_ApplyPD();
 
     BOARD_SetPmicVdd1Voltage(g_runVolt);

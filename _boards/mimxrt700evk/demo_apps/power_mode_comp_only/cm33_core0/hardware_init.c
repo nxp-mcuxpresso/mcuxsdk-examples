@@ -118,15 +118,10 @@ void BOARD_ConfigPMICRegEnable(pca9422_handle_t *handle)
     /* Configure Regulator Enable */
     PCA9422_GetDefaultRegEnableConfig(&cfg);
 
-    /* All regulators enable in RUN state. */
-    cfg.sw2Enable = true;
-#if (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
+    /* All regulators enable in RUN state. SW1 for VDD2, SW2 for VDDN, SW3 for VDD1 */
     cfg.sw1Enable = true;
+    cfg.sw2Enable = true;
     cfg.sw3Enable = true;
-#else /* VDD1, VDD2 are supplied by internal LDO. */
-    cfg.sw1Enable    = false;
-    cfg.sw3Enable    = false;
-#endif
     cfg.sw4Enable  = true;
     cfg.ldo1Enable = true;
     cfg.ldo2Enable = true;
@@ -149,7 +144,11 @@ void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
     cfg.sw1OutEnMode = kPCA9422_EnmodeOnActive;
     cfg.sw3OutEnMode = kPCA9422_EnmodeOnActive;
 #endif
+#if (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMC)
+    cfg.sw2OutEnMode  = kPCA9422_EnmodeOnActive; /* Use internal DCDC. */
+#else
     cfg.sw2OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
+#endif
     cfg.sw4OutEnMode  = kPCA9422_EnmodeOnActiveSleepStandby;
     cfg.ldo1OutEnMode = kPCA9422_EnmodeOnAll;
     cfg.ldo2OutEnMode = kPCA9422_EnmodeOnActiveSleepStandby;
@@ -328,7 +327,6 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnablePD(kPDRUNCFG_SHUT_MEDIA_MAINCLK);
     POWER_EnablePD(kPDRUNCFG_SHUT_RAM1_CLK);
 
-    POWER_EnablePD(kPDRUNCFG_LP_DCDC);
     POWER_EnablePD(kPDRUNCFG_APD_XSPI2);
     POWER_EnablePD(kPDRUNCFG_PPD_XSPI2);
     POWER_EnablePD(kPDRUNCFG_APD_DMA0_1_PKC_ETF);
@@ -367,12 +365,51 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 
     POWER_ApplyPD();
 
-#if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_MIXED)
-    /* VDDN use external PMIC supply, VDD1&VDD2 use internal LDO. */
+#if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
+    /* PMIC is used. When using On-Chip regulator, need to be changed to kVddSrc_PMC. */
     POWER_SetVddnSupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd1SupplySrc(kVddSrc_PMC);
-    POWER_SetVdd2SupplySrc(kVddSrc_PMC);
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
+    POWER_DisableRegulators(kPower_SCPC);
 
+    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_ApplyPD();
+
+    BOARD_SetPmicVdd2Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
+    BOARD_SetPmicVdd1Voltage(POWER_CalcVoltLevel(kRegulator_Vdd1LDO, DEMO_SENSE_M33_CPU_CLOCK_FREQ, 0U)); /* CPU1 frequency 32MHZ. */
+#else
+#if (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMC) /* VDDN use internal DCDC */ 
+    POWER_SetVddnSupplySrc(kVddSrc_PMC);
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_LP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    
+    status_t ret = kStatus_Success;
+    power_regulator_voltage_t dcdc = {
+                                        .DCDC.vsel1 = 1100000U,
+                                        .DCDC.vsel0 = 600000U,
+                                     };
+    power_lvd_voltage_t lvd = {
+      .VDDN.lvl1 = 900000U,
+      .VDDN.lvl0 = 500000U,
+    };
+
+    ret = POWER_ConfigRegulatorSetpoints(kRegulator_DCDC,  &dcdc, &lvd);
+    if (ret != kStatus_Success)
+    {
+        PRINTF("DCDC configuration failed %d\r\n", ret);
+    }
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+    POWER_DisableSleepRegulators(kPower_DCDC_FDSR); /* DCDC power down in FDSR. */
+    POWER_ApplyPD();
+#else /* VDDN powered by external PMIC. */
+    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+#endif
     /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order*/
     uint32_t freqs[4] = {0};
     freqs[0] = 0U; /* Used for DeepSleep mode */
@@ -384,22 +421,13 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     miniVolts[0] = 630000U; /* 0.63V for DeepSleep mode. */
 
     POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd2LDO, freqs, miniVolts, 0U, 4U);
+
+    POWER_SetVdd1SupplySrc(kVddSrc_PMC);
+    POWER_SetVdd2SupplySrc(kVddSrc_PMC);
+
     POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 2U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
     POWER_ApplyPD();
-#elif defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
-    /* PMIC is used. When using On-Chip regulator, need to be changed to kVddSrc_PMC. */
-    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
-    POWER_DisableRegulators(kPower_SCPC);
-
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_ApplyPD();
-
-    BOARD_SetPmicVdd2Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
-    BOARD_SetPmicVdd1Voltage(POWER_CalcVoltLevel(kRegulator_Vdd1LDO, DEMO_SENSE_M33_CPU_CLOCK_FREQ, 0U)); /* CPU1 frequency 32MHZ. */
 #endif
 }
 
