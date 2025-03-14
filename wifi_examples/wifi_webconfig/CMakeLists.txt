@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -54,12 +54,6 @@ mcux_add_iar_configuration(
 		--no_inline"
 	CX "--no_clustering"
 	LD "--semihosting"
-)
-
-mcux_remove_macro(
-    TOOLCHAINS armgcc
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    AS "-D__STARTUP_INITIALIZE_RAMFUNCTION"
 )
 
 mcux_add_iar_configuration(
