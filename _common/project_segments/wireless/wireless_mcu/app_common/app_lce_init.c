@@ -122,7 +122,7 @@ void APP_InitLce(void)
     (void)CE_CmdInitBuffer(&cpu_ce_cmdbuffer, ce_buffers.ce_cmd_buffer, ce_buffers.ce_status_buffer,
                            kCE_CmdModeOneNonBlocking);
     /* Enable CE clock */
-    (void)CLOCK_EnableClock(kCLOCK_DSP0);
+    (void)CLOCK_EnableClockLPMode(kCLOCK_DSP0, kCLOCK_IpClkControl_fun2);
     /* Initialization for LCE APIs */
     (void)LCE_Init();
     return;
