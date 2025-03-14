@@ -10,7 +10,7 @@ rpmsg_lite_pingpong_rtos_primary_core:
     meta_path: examples/multicore_examples/rpmsg_lite_pingpong_rtos/primary
     project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos/${multicore_foldername}
     document:
-      name: rpmsg_lite_pingpong_rtos_primary_core
+      name: rpmsg_lite_pingpong_rtos_primary_core${core_id_suffix_name}
       category: multicore_examples
       brief: 'The Multicore RPMsg-Lite pingpong RTOS project is a simple demonstration
         program that uses theMCUXpresso SDK software and the RPMsg-Lite library and
