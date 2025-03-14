@@ -1801,6 +1801,12 @@ static int wlan_ncp_http_recv(void *data)
     NCP_CMD_HTTP_RECV_CFG *tlv = (NCP_CMD_HTTP_RECV_CFG *)data;
     unsigned int header_len    = NCP_CMD_HEADER_LEN + sizeof(NCP_CMD_HTTP_RECV_CFG);
 
+    NCPCmd_DS_COMMAND *cmd_res     = wlan_ncp_get_response_buffer();
+    cmd_res->header.cmd            = NCP_RSP_WLAN_HTTP_RECV;
+    cmd_res->header.size           = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum         = 0x00;
+    cmd_res->header.result         = NCP_CMD_RESULT_OK;
+
     int recv_size = tlv->recv_size;
     if (recv_size >= (NCP_INBUF_SIZE - header_len))
     {
@@ -1810,12 +1816,6 @@ static int wlan_ncp_http_recv(void *data)
     }
 
     ncp_d("size = %s, timeout = %s\n", tlv->recv_size, tlv->timeout);
-
-    NCPCmd_DS_COMMAND *cmd_res     = wlan_ncp_get_response_buffer();
-    cmd_res->header.cmd            = NCP_RSP_WLAN_HTTP_RECV;
-    cmd_res->header.size           = NCP_CMD_HEADER_LEN;
-    cmd_res->header.seqnum         = 0x00;
-    cmd_res->header.result         = NCP_CMD_RESULT_OK;
 
     NCP_CMD_HTTP_RECV_CFG *tlv_res = (NCP_CMD_HTTP_RECV_CFG *)&cmd_res->params.wlan_http_recv;
     recv_size                      = ncp_http_recv(tlv->handle, tlv->recv_size, tlv->timeout, tlv_res->recv_data);
@@ -1831,6 +1831,7 @@ out:
 
     if (ret != WM_SUCCESS)
     {
+        /* UNINT | Coverity Event uninit_use */
         cmd_res->header.result = NCP_CMD_RESULT_ERROR;
     }
     else
@@ -2634,17 +2635,16 @@ static int wlan_ncp_twt_teardown(void *data)
 static int wlan_ncp_twt_report(void *data)
 {
     NCPCmd_DS_COMMAND *cmd_res    = wlan_ncp_get_response_buffer();
-    NCP_CMD_TWT_REPORT twt_report = {0};
     cmd_res->header.cmd           = NCP_RSP_TWT_GET_REPORT;
     cmd_res->header.size          = NCP_CMD_HEADER_LEN;
     cmd_res->header.result        = NCP_CMD_RESULT_OK;
     cmd_res->header.seqnum        = 0x00;
 
     wlan_twt_report_t twt_info;
-    (void)memcpy((void *)&twt_info, (void *)&twt_report, sizeof(wlan_twt_report_t));
+    (void)memset(&twt_info, 0x00, sizeof(twt_info));
 
     wlan_get_twt_report(&twt_info);
-    memcpy(&cmd_res->params.twt_report, (uint8_t *)&twt_report, sizeof(twt_report));
+    memcpy(&cmd_res->params.twt_report, (uint8_t *)&twt_info, sizeof(twt_info));
     cmd_res->header.size += sizeof(NCP_CMD_TWT_REPORT);
     return WM_SUCCESS;
 }
@@ -4198,7 +4198,8 @@ static int wlan_ncp_get_current_network(void *tlv)
     NCP_CMD_GET_CURRENT_NETWORK *current_network = (NCP_CMD_GET_CURRENT_NETWORK *)&cmd_res->params.current_network;
     (void)memcpy(&current_network->sta_network.ssid, &sta_network.ssid, (IEEEtypes_SSID_SIZE + 1));
     (void)memcpy(&current_network->sta_network.name, &sta_network.name, (WLAN_NETWORK_NAME_MAX_LENGTH + 1));
-    (void)memcpy(&current_network->sta_network.bssid, &sta_network.bssid, (IEEEtypes_ADDRESS_SIZE + 1));
+    /* BUFFER_SIZE | Coverity Event buffer_size */
+    (void)memcpy(&current_network->sta_network.bssid, &sta_network.bssid, IEEEtypes_ADDRESS_SIZE);
     current_network->sta_network.security_type = sta_network.security.type;
 
 done:

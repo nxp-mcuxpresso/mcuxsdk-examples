@@ -155,7 +155,7 @@ static void _httpc_free_ssl_context(session_t *s)
  * @note If this function returns WM_E_HTTPC_SOCKET_ERROR then errno should
  * be read to get more information.
  */
-static int _http_raw_recv(session_t *s, char *buf, int maxlen, int wait_for_to)
+static int _http_raw_recv(session_t *s, char *buf, unsigned int maxlen, int wait_for_to)
 {
     assert(maxlen != 0);
 
@@ -261,7 +261,8 @@ static int prefetch_header(session_t *s)
 {
     prefetch_t *pbuf = &s->pbuf;
     /* One less so that delimit strings */
-    int max_read_size   = MAX_REQ_RESP_HDR_SIZE - 1;
+    /* INTEGER_OVERFOLW | Coverity Event overflow_sink */
+    unsigned int max_read_size   = MAX_REQ_RESP_HDR_SIZE - 1;
     int total_read_size = 0;
     int size_read;
     httpc_d("Start header read");
@@ -325,7 +326,7 @@ static int prefetch_header(session_t *s)
  * re-try read for DEF_INT_MAX_TO_MS time. Note to caller: Set this
  * parameter to true if you are doing a task transparent to the httpc caller.
  */
-static int recv_buf(session_t *s, char *buf, int max_read_size, bool wait_for_to)
+static int recv_buf(session_t *s, char *buf, unsigned int max_read_size, bool wait_for_to)
 {
     /* The header is already read */
     int r;
@@ -1916,8 +1917,8 @@ static int http_read_standard(session_t *s, void *buf, uint32_t max_len)
     }
 
     int content_len    = s->resp.content_length;
-    int size_remaining = content_len - s->content_returned;
-    int size_to_read   = size_remaining <= max_len ? size_remaining : max_len;
+    unsigned int size_remaining = content_len - s->content_returned;
+    unsigned int size_to_read   = size_remaining <= max_len ? size_remaining : max_len;
     int size_read      = recv_buf(s, buf, size_to_read, false);
     if (size_read < 0)
     {
@@ -1948,7 +1949,7 @@ static int get_content_len(session_t *s)
     char c;
     for (i = 0; i < MAX_CHUNK_HEADER_SIZE; i++)
     {
-        int size_read = recv_buf(s, &c, 1, true);
+        int size_read = recv_buf(s, &c, 1U, true);
         if (size_read < 0)
         {
             httpc_e("Error while reading chunk len: %d", size_read);
@@ -1988,14 +1989,14 @@ static int zap_chunk_boundary(session_t *s)
 {
     char chunk_boundary[2];
     int size_read;
-    size_read = recv_buf(s, &chunk_boundary[0], 1, true);
+    size_read = recv_buf(s, &chunk_boundary[0], 1U, true);
     if (size_read != 1)
     {
         httpc_e("Error while reading chunk len: %d", size_read);
         s->chunk.state = STATE_ERROR_CHUNK;
         return size_read;
     }
-    size_read = recv_buf(s, &chunk_boundary[1], 1, true);
+    size_read = recv_buf(s, &chunk_boundary[1], 1U, true);
     if (size_read != 1)
     {
         httpc_e("Error while reading chunk len: %d", size_read);
@@ -2019,8 +2020,8 @@ static int http_read_chunked(session_t *s, void *buf, uint32_t max_len)
     if (s->chunk.state == STATE_BETWEEN_CHUNK)
     {
         /* partial length from a chunk was returned earlier */
-        int size_remaining = s->chunk.size - s->content_returned;
-        int size_to_read   = size_remaining <= max_len ? size_remaining : max_len;
+        unsigned int size_remaining = s->chunk.size - s->content_returned;
+        unsigned int size_to_read   = size_remaining <= max_len ? size_remaining : max_len;
         httpc_d("Readng %d bytes of chunked data (b/w)... remn'g %d", size_to_read, size_remaining);
         int size_read = recv_buf(s, buf, size_to_read, false);
         if (size_read < 0)
@@ -2087,7 +2088,7 @@ static int http_read_chunked(session_t *s, void *buf, uint32_t max_len)
                 return -WM_FAIL;
             }
         }
-        int to_read   = s->chunk.size <= max_len ? s->chunk.size : max_len;
+        unsigned int to_read   = s->chunk.size <= max_len ? s->chunk.size : max_len;
         int size_read = recv_buf(s, buf, to_read, false);
         if (size_read < 0)
         {
