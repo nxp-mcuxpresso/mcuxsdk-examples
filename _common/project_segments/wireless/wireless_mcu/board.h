@@ -51,6 +51,13 @@
 #define BOARD_APP_UART_INSTANCE DEFAULT_APP_UART
 #endif
 
+#if defined(gBoardUse3MbOnUart0_d) && (gBoardUse3MbOnUart0_d > 0U)
+/* Use UART 0 and configure 3M baudrate. Note that high baudrate requires flow control */
+#define BOARD_APP_UART_INSTANCE     0U
+#define BOARD_APP_UART_BAUDRATE     3000000U
+#define gBoardUseUart0HwFlowControl 1
+#endif
+
 #ifndef BOARD_APP_UART_INSTANCE
 /* Use LPUART1 as default UART for Applicative serial console on new EVK rev A1-B1*/
 #define BOARD_APP_UART_INSTANCE 1U
