@@ -16,7 +16,8 @@ product: Pins v15.0
 processor: MIMXRT1189xxxxx
 package_id: MIMXRT1189CVM8B
 mcu_data: ksdk2_0
-processor_version: 0.15.9
+processor_version: 15.0.0
+board: MIMXRT1180-EVK
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
