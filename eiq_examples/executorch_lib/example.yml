@@ -1,5 +1,6 @@
 executorch_lib:
   section-type: library
+  skip_build: true
   contents:
     meta_path: examples/eiq_examples/executorch_lib
     project-root-path: boards/${board}/eiq_examples/executorch_lib/${core_id}

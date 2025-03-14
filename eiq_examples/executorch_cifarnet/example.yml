@@ -1,5 +1,6 @@
 executorch_cifarnet:
   section-type: application
+  skip_build: true
   contents:
     meta_path: examples/eiq_examples/executorch_cifarnet/.
     project-root-path: boards/${board}/eiq_examples/executorch_cifarnet/${core_id}
