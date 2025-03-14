@@ -1817,8 +1817,9 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_TWT_REPORT
     uint8_t length;
 	/** Reserved fields. */
     uint8_t reserve[2];
-    /** TWT report payload for FW response to fill, 4 * 9bytes. */
-    IEEE_BTWT_ParamSet_t info[4];
+    /* OVERRUN | Coverity Event overrun-buffer-arg */
+    /** TWT report payload for FW response to fill, 6 * 9bytes. */
+    IEEE_BTWT_ParamSet_t info[6];
 } NCP_TLV_PACK_END NCP_CMD_TWT_REPORT;
 
 /** This structure is used for 802.11d flag configuration. */

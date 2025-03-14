@@ -136,7 +136,7 @@ typedef enum
  * This prefetch buffer is also used as a buffer to store the request
  * header, before sending an HTTP request.
  */
-#define MAX_REQ_RESP_HDR_SIZE 2048
+#define MAX_REQ_RESP_HDR_SIZE 2048U
 
 #define STANDARD_HDR_FLAGS (HDR_ADD_DEFAULT_USER_AGENT)
 
