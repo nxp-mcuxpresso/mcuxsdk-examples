@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -28,7 +28,8 @@ void BOARD_InitHardware(void)
     /* Enable 1MHz clock. */
     SYSCON->CLOCK_CTRL |= SYSCON_CLOCK_CTRL_FRO1MHZ_CLK_ENA_MASK;
 
-    BOARD_InitPins();
+    BOARD_InitBootPins();
+    BOARD_InitI3CPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 }

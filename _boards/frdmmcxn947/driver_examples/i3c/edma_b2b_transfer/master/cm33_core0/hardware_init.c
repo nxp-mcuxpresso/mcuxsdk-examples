@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -22,7 +22,8 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivI3c1FClk, 6U);
     CLOCK_AttachClk(kPLL0_to_I3C1FCLK);
 
-    BOARD_InitPins();
+    BOARD_InitBootPins();
+    BOARD_InitI3CPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 }
