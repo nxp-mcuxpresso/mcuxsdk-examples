@@ -163,7 +163,6 @@ periodicAdvInterval = 0
 Adv Data
 EA Connectable Data 01 EA Connectable Data 02 EA Connectable Data 03
 EA Connectable Data 04 EA Connectable Data 05 EA Connectable Data 06
-EA Connectable Data 07 EA Connectable Data 08 EA Connectable Data 09
 Found device:
 EA*PRPHC4603770BCC5
 Connected!
