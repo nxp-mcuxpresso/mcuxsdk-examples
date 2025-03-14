@@ -50,28 +50,29 @@ IPv4 Address     : 192.168.0.249
 IPv4 Subnet mask : 255.255.255.0
 IPv4 Gateway     : 0.0.0.0
 
-Resolving "broker.hivemq.com"...
-Connecting to MQTT broker at 18.185.216.165...
-MQTT client "nxp_f50003c25757bd58aa6d0ce50102f020" connected.
+Resolving "test.mosquitto.org"...
+Connecting to MQTT broker at 5.196.78.28...
+MQTT client "nxp_322c480e82967d6a" connected.
 Subscribing to the topic "lwip_topic/#" with QoS 0...
 Subscribing to the topic "lwip_other/#" with QoS 1...
 Subscribed to the topic "lwip_topic/#".
 Subscribed to the topic "lwip_other/#".
 Going to publish to the topic "lwip_topic/100"...
-Published to the topic "lwip_topic/100".
 Received 18 bytes from the topic "lwip_topic/100": "message from board"
+Published to the topic "lwip_topic/100".
 Going to publish to the topic "lwip_topic/100"...
-Published to the topic "lwip_topic/100".
 Received 18 bytes from the topic "lwip_topic/100": "message from board"
+Published to the topic "lwip_topic/100".
 Going to publish to the topic "lwip_topic/100"...
-Published to the topic "lwip_topic/100".
 Received 18 bytes from the topic "lwip_topic/100": "message from board"
+Published to the topic "lwip_topic/100".
 Going to publish to the topic "lwip_topic/100"...
-Published to the topic "lwip_topic/100".
 Received 18 bytes from the topic "lwip_topic/100": "message from board"
+Published to the topic "lwip_topic/100".
 Going to publish to the topic "lwip_topic/100"...
-Published to the topic "lwip_topic/100".
 Received 18 bytes from the topic "lwip_topic/100": "message from board"
+Published to the topic "lwip_topic/100".
+Disconnected from MQTT broker.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards

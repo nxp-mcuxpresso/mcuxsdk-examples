@@ -6,13 +6,25 @@ The lwip_mqtt demo application demonstrates MQTT client connecting to MQTT broke
 The application obtains IP and DNS addresses from DHCP and resolves broker's hostname if needed.
 Then it connects to the broker and subscribes to the "lwip_topic/#" and "lwip_other/#" topics.
 Further it publishes five messages to the "lwip_topic/100" which are also received back
-as the board is subscribed to the "lwip_topic/#".
-Meanwhile it continues to receive messages published to the subscribed topics from other clients.
+as the board is subscribed to the "lwip_topic/#". It then disconnects from the broker.
 
 ## Prepare the Demo
 1.  Make sure the MQTT broker pointed to by EXAMPLE_MQTT_SERVER_HOST and EXAMPLE_MQTT_SERVER_PORT definitions
     is up and accessible on your network via unsecured socket. A public MQTT testing server can be used
     or you can install a broker locally and modify the definitions mentioned above.
+
+    The public testing MQTT brokers might be overloaded and unable to connect to sometimes. Better option
+    might be to install an MQTT broker, like Eclipse Mosquitto, locally and have full control.
+    If you install this one, the following settings added to its configuration file mosquitto.conf allow
+    to connect from the board to the broker via port 1883 and without a username and a password
+    (provided there are no additional restrictions, like firewall blocking the port, in place):
+
+        allow_anonymous true
+        listener 1883
+
+    Naturally, this means that anybody able to establish TCP connection with that computer on port 1883
+    might connect to the broker.
+
 2.  Connect a USB cable between the PC host and the OpenSDA(or USB to Serial) USB port on the target board.
 3.  Open a serial terminal on PC for OpenSDA serial(or USB to Serial) device with these settings:
     - 115200 baud rate
@@ -28,38 +40,40 @@ Meanwhile it continues to receive messages published to the subscribed topics fr
 When the demo runs, the log would be seen on the terminal like:
 
     Initializing PHY...
-
+    
     ************************************************
      MQTT client example
     ************************************************
     Getting IP address from DHCP...
-
-    IPv4 Address     : 192.168.0.102
+    
+    IPv4 Address     : 192.168.10.4
     IPv4 Subnet mask : 255.255.255.0
-    IPv4 Gateway     : 192.168.0.100
-
-    Resolving "broker.hivemq.com"...
-    Connecting to MQTT broker at 18.185.216.165...
-    MQTT client "nxp_f50003c25757bd58aa6d0ce50102f020" connected.
+    IPv4 Gateway     : 192.168.10.1
+    
+    Resolving "test.mosquitto.org"...
+    Connecting to MQTT broker at 5.196.78.28...
+    MQTT client "nxp_322c480e82967d6a" connected.
     Subscribing to the topic "lwip_topic/#" with QoS 0...
     Subscribing to the topic "lwip_other/#" with QoS 1...
     Subscribed to the topic "lwip_topic/#".
     Subscribed to the topic "lwip_other/#".
     Going to publish to the topic "lwip_topic/100"...
-    Published to the topic "lwip_topic/100".
     Received 18 bytes from the topic "lwip_topic/100": "message from board"
+    Published to the topic "lwip_topic/100".
     Going to publish to the topic "lwip_topic/100"...
-    Published to the topic "lwip_topic/100".
     Received 18 bytes from the topic "lwip_topic/100": "message from board"
+    Published to the topic "lwip_topic/100".
     Going to publish to the topic "lwip_topic/100"...
-    Published to the topic "lwip_topic/100".
     Received 18 bytes from the topic "lwip_topic/100": "message from board"
+    Published to the topic "lwip_topic/100".
     Going to publish to the topic "lwip_topic/100"...
-    Published to the topic "lwip_topic/100".
     Received 18 bytes from the topic "lwip_topic/100": "message from board"
+    Published to the topic "lwip_topic/100".
     Going to publish to the topic "lwip_topic/100"...
-    Published to the topic "lwip_topic/100".
     Received 18 bytes from the topic "lwip_topic/100": "message from board"
+    Published to the topic "lwip_topic/100".
+    Disconnected from MQTT broker.
+
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/lwip_examples/lwip_mqtt/freertos/example_board_readme.md)
