@@ -43,6 +43,29 @@ enum {
 static atomic_t flags;
 static struct k_sem sem;
 
+static int change_trigger_pin_mapping(void)
+{
+	struct net_buf *buf;
+	int err;
+
+	buf = bt_hci_cmd_create(BT_OP(BT_OGF_VS, 0x029A), 2);
+	if (!buf) {
+		PRINTF("Unable to allocate buffer");
+		return -ENOBUFS;
+	}
+
+	net_buf_add_u8(buf, 0x01);
+	net_buf_add_u8(buf, 0x01);
+
+	err = bt_hci_cmd_send_sync(BT_OP(BT_OGF_VS, 0x029A), buf, NULL);
+	if (err) {
+		PRINTF("Failed to send HCI command: %d", err);
+		return err;
+	}
+
+	return 0;
+}
+
 void umr_to_bms_task(void *param)
 {
 	int err;
@@ -60,6 +83,12 @@ void umr_to_bms_task(void *param)
 	}
 
 	PRINTF("Bluetooth initialized\r\n");
+
+	/* Change trigger pin mapping */
+	err = change_trigger_pin_mapping();
+	if (err) {
+		PRINTF("Fail to change trigger pin mapping (err %d)\r\n", err);
+	}
 
 	/* Host msd init. */
 #if (defined(BT_BLE_PLATFORM_INIT_ESCAPE) && (BT_BLE_PLATFORM_INIT_ESCAPE > 0))
