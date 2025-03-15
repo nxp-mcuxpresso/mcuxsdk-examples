@@ -132,7 +132,19 @@ SECTIONS
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
 
-  __DATA_END = __DATA_ROM + (__data_end__ - __data_start__);
+  __DATA_GENERAL_END = __DATA_ROM + (__data_end__ - __data_start__);
+
+  .AlwaysOnData_init : AT(__DATA_GENERAL_END)
+  {
+    __data_aon_start__ = .;      /* create a global symbol at data start */
+    . = ALIGN(4);
+    *(.AlwaysOnData.init)
+    . = ALIGN(4);
+    __data_aon_end__ = .;        /* define a global symbol at data end */
+  } > m_data_always_on
+
+  __DATA_END = __DATA_GENERAL_END + (__data_aon_end__ - __data_aon_start__);
+
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
 
@@ -170,10 +182,10 @@ SECTIONS
 
   .AlwaysOnData :
   {
-    . = ALIGN(4);
     __START_ALWAYSON = .;
+    . = ALIGN(4);
     *(.AlwaysOnData)
-    *(.AlwaysOnData.init)
+    . = ALIGN(4);
     __END_ALWAYSON = .;
   } > m_data_always_on
 
