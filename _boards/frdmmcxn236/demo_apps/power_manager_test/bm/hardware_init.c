@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -108,7 +108,6 @@ static status_t APP_UartControl(pm_event_type_t eventType, uint8_t powerState, v
 {
     if (eventType == kPM_EventEnteringSleep)
     {
-        PRINTF(" Please press %s to wakeup.", "SW2");
         PRINTF("\r\n De-init UART.");
         while (!(kLPUART_TransmissionCompleteFlag & LPUART_GetStatusFlags((LPUART_Type *)BOARD_DEBUG_UART_BASEADDR)))
         {
@@ -124,7 +123,25 @@ static status_t APP_UartControl(pm_event_type_t eventType, uint8_t powerState, v
     return kStatus_Success;
 }
 
+static status_t APP_EntryPowerModeInfoPrint(pm_event_type_t eventType, uint8_t powerState, void *data)
+{
+    if (eventType == kPM_EventEnteringSleep)
+    {
+        if (powerState == 3U)
+        {
+            PRINTF("\r\n Please note that exiting from deep power down will cause wakeup reset.");
+        }
+    }
+
+    return kStatus_Success;
+}
+
 AT_ALWAYS_ON_DATA_INIT(pm_notify_element_t g_notify0) = {
+    .notifyCallback = APP_EntryPowerModeInfoPrint,
+    .data           = NULL,
+};
+
+AT_ALWAYS_ON_DATA_INIT(pm_notify_element_t g_notify1) = {
     .notifyCallback = APP_UartControl,
     .data           = NULL,
 };
@@ -208,6 +225,12 @@ void APP_RegisterNotify(void)
     {
         assert(false);
         PRINTF("\r\n Register notify0 failed");
+    }
+
+    if (kStatus_PMSuccess != PM_RegisterNotify(kPM_NotifyGroup1, &g_notify1))
+    {
+        assert(false);
+        PRINTF("\r\n Register notify1 failed");
     }
 }
 

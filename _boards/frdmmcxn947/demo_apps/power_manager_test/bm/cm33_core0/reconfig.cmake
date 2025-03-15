@@ -41,3 +41,23 @@ mcux_add_mdk_linker_script(
     TARGETS debug release
     LINKER ${board_root}/${board}/demo_apps/power_manager_test/linker/MCXN947_cm33_core0_flash_for_power_manager.scf
 )
+
+mcux_add_source(
+  BASE_PATH ${SdkRootDirPath}
+  SOURCES examples/_boards/${board}/demo_apps/power_manager_test/bm/${core_id}/startup_MCXN947_cm33_core0_power_manager.S
+  TOOLCHAINS armgcc
+)
+
+mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}
+        SOURCES iar/startup_${CONFIG_MCUX_HW_DEVICE_CORE}.s
+        TOOLCHAINS iar
+        CONFIG true
+)
+
+mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}
+        SOURCES arm/startup_${CONFIG_MCUX_HW_DEVICE_CORE}.S
+        TOOLCHAINS mdk
+        CONFIG true
+)
