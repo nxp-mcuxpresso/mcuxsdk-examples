@@ -41,3 +41,23 @@ mcux_add_mdk_linker_script(
     TARGETS debug release
     LINKER examples/_boards/${board}/demo_apps/power_manager_test/linker/MCXN236_power_manager_flash.scf
 )
+
+mcux_add_source(
+  BASE_PATH ${SdkRootDirPath}
+  SOURCES examples/_boards/${board}/demo_apps/power_manager_test/bm/startup_MCXN236_power_manager.S
+  TOOLCHAINS armgcc
+)
+
+mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}
+        SOURCES iar/startup_${CONFIG_MCUX_HW_DEVICE_CORE}.s
+        TOOLCHAINS iar
+        CONFIG true
+)
+
+mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}/${device_root}/${soc_portfolio}/${soc_series}/${device}
+        SOURCES arm/startup_${CONFIG_MCUX_HW_DEVICE_CORE}.S
+        TOOLCHAINS mdk
+        CONFIG true
+)
