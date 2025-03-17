@@ -18,7 +18,7 @@ config MCUX_PRJSEG_module.board.wireless.app_ble
 
 config MCUX_PRJSEG_module.board.wireless.app_lce
     bool "Wireless Localization Compute Engine"
-    select MCUX_COMPONENT_driver.ce
+    select MCUX_COMPONENT_component.lce
     select MCUX_COMPONENT_driver.mu1
     depends on MCUX_PRJSEG_module.board.wireless.board
     help
