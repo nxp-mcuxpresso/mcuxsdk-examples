@@ -25,6 +25,12 @@ config EXAMPLE_I3C_PP_BAUDRATE
         No prefix in generated macro
         type unsigned
 
+config EXAMPLE_I3C_HDR_SUPPORT
+    bool "I3C HDR transfer case support"
+    default y
+    help
+        No prefix in generated macro
+
 endmenu
 
 source "${SdkRootDirPath}/Kconfig.mcuxpresso"
