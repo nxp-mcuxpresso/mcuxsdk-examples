@@ -31,7 +31,7 @@ Prepare the Demo
     =>saveenv
 6.  Boot Linux BSP to u-boot, and load M core image from SD card to run. (Put the image into SD card device before)
     6.1 Mcore run in CM33_CORE1
-      load mmc 1:1 0x90400000 sai_low_power_audio_rtos_imx943_cm33_core1.bin; cp.b 0x90400000 0x209c0000 0x40000; bootaux 0x1fffc0000 8;
+      load mmc 1:1 0x90400000 sai_low_power_audio_rtos_imx943_cm33_core1.bin; cp.b 0x90400000 0x209c0000 0x40000; bootaux 0x1fffc000 8;
     6.2 Mcore run in CM7_CORE0
       load mmc 1:1 0x90400000 sai_low_power_audio_rtos_imx943_cm7_core0.bin; cp.b 0x90400000 0x203c0000 0x40000; bootaux 0x00000000 1;
     6.2 Mcore run in CM7_CORE1
