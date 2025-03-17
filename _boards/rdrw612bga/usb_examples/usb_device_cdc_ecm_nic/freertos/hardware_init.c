@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 NXP
+ * Copyright 2024 - 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -34,6 +34,12 @@
  ******************************************************************************/
 static phy_ksz8081_resource_t g_phy_resource;
 
+ENET_Type *BOARD_Enet = ENET;
+const phy_operations_t *BOARD_PhyOps = &phyksz8081_ops;
+uint32_t BOARD_PhySysClock;
+uint8_t BOARD_PhyAddress = EXAMPLE_PHY_ADDRESS;
+void *BOARD_PhySource = &g_phy_resource;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -43,48 +49,23 @@ void BOARD_InitModuleClock(void)
     CLOCK_EnableClock(kCLOCK_TddrMciEnetClk);
 }
 
-ENET_Type *BOARD_GetExampleEnetBase(void)
-{
-    return ENET;
-}
-
-const phy_operations_t *BOARD_GetPhyOps(void)
-{
-    return &phyksz8081_ops;
-}
-
-void *BOARD_GetPhyResource(void)
-{
-    return &g_phy_resource;
-}
-
-uint32_t BOARD_GetPhySysClock(void)
-{
-    return CLOCK_GetMainClkFreq();
-}
-
-uint8_t BOARD_GetPhyAddress(void)
-{
-    return EXAMPLE_PHY_ADDRESS;
-}
-
 static void MDIO_Init(void)
 {
-    uint32_t i = ENET_GetInstance(BOARD_GetExampleEnetBase());
+    uint32_t i = ENET_GetInstance(BOARD_Enet);
 
     (void)CLOCK_EnableClock(s_enetClock[i]);
     (void)CLOCK_EnableClock(s_enetExtraClock[i]);
-    ENET_SetSMI(BOARD_GetExampleEnetBase(), BOARD_GetPhySysClock(), false);
+    ENET_SetSMI(BOARD_Enet, BOARD_PhySysClock, false);
 }
 
 static status_t MDIO_Write(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
-    return ENET_MDIOWrite(BOARD_GetExampleEnetBase(), phyAddr, regAddr, data);
+    return ENET_MDIOWrite(BOARD_Enet, phyAddr, regAddr, data);
 }
 
 static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
-    return ENET_MDIORead(BOARD_GetExampleEnetBase(), phyAddr, regAddr, pData);
+    return ENET_MDIORead(BOARD_Enet, phyAddr, regAddr, pData);
 }
 
 void BOARD_InitHardware(void)
@@ -99,6 +80,8 @@ void BOARD_InitHardware(void)
     GPIO_PinWrite(GPIO, 0U, 21U, 0U);
     SDK_DelayAtLeastUs(1000000, CLOCK_GetCoreSysClkFreq());
     GPIO_PinWrite(GPIO, 0U, 21U, 1U);
+
+    BOARD_PhySysClock = CLOCK_GetMainClkFreq();
 
     MDIO_Init();
     g_phy_resource.read = MDIO_Read;

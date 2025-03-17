@@ -34,50 +34,33 @@
  ******************************************************************************/
 static phy_lan8741_resource_t g_phy_resource;
 
+extern volatile uint32_t appEvent;
+extern volatile uint32_t BOARD_SystickCount;
+
+ENET_Type *BOARD_Enet = ENET;
+const phy_operations_t *BOARD_PhyOps = &phylan8741_ops;
+uint32_t BOARD_PhySysClock;
+uint8_t BOARD_PhyAddress = EXAMPLE_PHY_ADDRESS;
+void *BOARD_PhySource = &g_phy_resource;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
-ENET_Type *BOARD_GetExampleEnetBase(void)
-{
-    return ENET;
-}
-
-const phy_operations_t *BOARD_GetPhyOps(void)
-{
-    return &phylan8741_ops;
-}
-
-void *BOARD_GetPhyResource(void)
-{
-    return &g_phy_resource;
-}
-
-uint32_t BOARD_GetPhySysClock(void)
-{
-    return CLOCK_GetCoreSysClkFreq();
-}
-
-uint8_t BOARD_GetPhyAddress(void)
-{
-    return EXAMPLE_PHY_ADDRESS;
-}
 
 static void MDIO_Init(void)
 {
-    uint32_t i = ENET_GetInstance(BOARD_GetExampleEnetBase());
-
-    CLOCK_EnableClock(s_enetClock[i]);
-    ENET_SetSMI(BOARD_GetExampleEnetBase(), BOARD_GetPhySysClock());
+    CLOCK_EnableClock(s_enetClock[ENET_GetInstance(BOARD_Enet)]);
+    ENET_SetSMI(BOARD_Enet, BOARD_PhySysClock);
 }
 
 static status_t MDIO_Write(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
-    return ENET_MDIOWrite(BOARD_GetExampleEnetBase(), phyAddr, regAddr, data);
+    return ENET_MDIOWrite(BOARD_Enet, phyAddr, regAddr, data);
 }
 
 static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
-    return ENET_MDIORead(BOARD_GetExampleEnetBase(), phyAddr, regAddr, pData);
+    return ENET_MDIORead(BOARD_Enet, phyAddr, regAddr, pData);
 }
 
 void BOARD_InitHardware(void)
@@ -99,9 +82,13 @@ void BOARD_InitHardware(void)
     SYSCON0->PRESETCTRL2 = SYSCON_PRESETCTRL2_ENET_RST_MASK;
     SYSCON0->PRESETCTRL2 &= ~SYSCON_PRESETCTRL2_ENET_RST_MASK;
 
+    BOARD_PhySysClock = CLOCK_GetCoreSysClkFreq();
+
     MDIO_Init();
     g_phy_resource.read = MDIO_Read;
     g_phy_resource.write = MDIO_Write;
+
+    SysTick_Config(SystemCoreClock / 1000U);
 }
 
 #if defined(USB_DEVICE_CONFIG_EHCI) && (USB_DEVICE_CONFIG_EHCI > 0U)
@@ -206,3 +193,11 @@ void USB_DeviceTaskFn(void *deviceHandle)
 #endif
 }
 #endif
+
+void SysTick_Handler(void)
+{
+    if (!(BOARD_SystickCount++ % APP_ETH_LINK_CHECK_INTERVAL_MS))
+    {
+        APP_ETH_NIC_EVENT_SET(appEvent, kAPP_CheckLinkChange);
+    }
+}
