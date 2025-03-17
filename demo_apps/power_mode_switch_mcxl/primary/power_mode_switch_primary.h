@@ -19,6 +19,8 @@ typedef enum _app_power_mode_select
     kAPP_PowerModeActive,
     kAPP_PowerModeSleep,
     kAPP_PowerModeDeepSleep,
+    kAPP_PowerModePowerDown1,
+    kAPP_PowerModePowerDown2,
     kAPP_PowerModeDeepPowerDown1,
     kAPP_PowerModeDeepPowerDown2,
     kAPP_PowerModeDeepPowerDown3,
