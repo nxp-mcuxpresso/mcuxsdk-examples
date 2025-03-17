@@ -197,7 +197,7 @@ void sys_mark_tcpip_thread(void);
    ---------- Internal Memory Pool Sizes ----------
    ------------------------------------------------
 */
-#define MEMP_USE_CUSTOM_POOLS 1
+#define MEMP_USE_CUSTOM_POOLS 0
 
 /**
  * MEMP_NUM_PBUF: the number of memp struct pbufs (used for PBUF_ROM and PBUF_REF).
