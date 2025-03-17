@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+rpmsg_lite_pingpong_rtos_no_mcmgr_remote:
+  section-type: application
+  contents:
+    meta_path: examples/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/remote
+    project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/${multicore_foldername}/
+    document:
+      name: rpmsg_lite_pingpong_rtos_no_mcmgr_remote${core_id_suffix_name}
+      category: multicore_examples/
+      brief: 'The Multicore RPMsg-Lite pingpong RTOS project is a simple demonstration
+        program that uses theMCUXpresso SDK software and the RPMsg-Lite library and
+        shows how to implement the inter-core communication between cores of the multicore
+        system without multicore manager. Once the RPMsg is initialized
+        and endpoints are created the message exchange starts, incrementing a virtual
+        counter that is part of the message payload. The message pingpong finishes
+        when the counter reaches the value of 100. Then the RPMsg-Lite is deinitialized
+        and the procedure of the data exchange is repeated again.
+
+        Shared memory usage
+
+        This multicore example uses the shared memory for data exchange. The shared
+        memory region is defined and the size can be adjustable in the linker file.
+        The shared memory region start address and the size have to be defined in
+        linker file for each core equally. The shared memory start address is then
+        exported from the linker to the application.'
+      example_readme:
+      - examples/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/readme.md
+      - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
