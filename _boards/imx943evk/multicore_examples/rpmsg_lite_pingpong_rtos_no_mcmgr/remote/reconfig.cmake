@@ -4,10 +4,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 mcux_add_include(
     INCLUDES .
+    INCLUDES ${core_id}
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-            ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/${core_id}/rpmsg_config.h
+            ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_no_mcmgr/remote/rpmsg_config.h
 )
