@@ -18,9 +18,9 @@
 /* Packet size and interval. */
 #if (USB_DEVICE_CONFIG_AUDIO_CLASS_2_0)
 #if defined(USB_DEVICE_AUDIO_USE_SYNC_MODE) && (USB_DEVICE_AUDIO_USE_SYNC_MODE > 0U)
-#define HS_ISO_OUT_ENDP_INTERVAL (0x01)
+#define HS_ISO_OUT_ENDP_INTERVAL (0x02)
 #else
-#define HS_ISO_OUT_ENDP_INTERVAL (0x01)
+#define HS_ISO_OUT_ENDP_INTERVAL (0x02)
 #endif
 #else
 #define HS_ISO_OUT_ENDP_INTERVAL (0x04) /*interval must be 1ms for usb audio 1.0 */
@@ -42,13 +42,13 @@
 #if (USB_DEVICE_CONFIG_AUDIO_CLASS_2_0)
 #if (defined(USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS > 0U))
 #if defined(USB_DEVICE_AUDIO_USE_SYNC_MODE) && (USB_DEVICE_AUDIO_USE_SYNC_MODE > 0U)
-/* 6 means 16 mico frames (24*125us = 3ms)*/
-#define AUDIO_CLASS_2_0_HS_LOW_LATENCY_TRANSFER_COUNT (24U)
+/* 12 means 12 frames (12*250us = 3ms)*/
+#define AUDIO_CLASS_2_0_HS_LOW_LATENCY_TRANSFER_COUNT (12U)
 /* 7 units size buffer (1 unit means the size to play during 1ms) */
 #define AUDIO_SPEAKER_DATA_WHOLE_BUFFER_COUNT (7U)
 #else
-/* 0x10 means 16 mico frames (16*125us, 2ms) */
-#define AUDIO_CLASS_2_0_HS_LOW_LATENCY_TRANSFER_COUNT (0x10U)
+/* 8 means 8 frames (8*250us, 2ms) */
+#define AUDIO_CLASS_2_0_HS_LOW_LATENCY_TRANSFER_COUNT (8U)
 /* 6 units size buffer (1 unit means the size to play during 1ms) */
 #define AUDIO_SPEAKER_DATA_WHOLE_BUFFER_COUNT         (6U)
 #endif
