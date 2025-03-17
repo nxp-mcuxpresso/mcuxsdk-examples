@@ -26,3 +26,4 @@ mcux_add_include(
     INCLUDES ../../rpmsg_lite_pingpong_rtos/secondary
 )
 
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
