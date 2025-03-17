@@ -12,8 +12,8 @@ The log below shows example output of the NPX driver demo in the terminal window
 NPX Example.
 API_Init Successfully!
  NPX was successfully configured for memory encryption/decryption from 0x1a0000 to 0x1affff.
-*Success* read programmed&encrypted data from 0x1a0000 to0x1affff match expected pattern.
-*Success* read at 0x1a0000 to0x1affff doesnt match expected pattern.
+*Success* read programmed&encrypted data from 0x1a0000 to 0x1affff match expected pattern.
+*Success* read at 0x1a0000 to 0x1affff doesnt match expected pattern.
 Example end.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Supported Boards

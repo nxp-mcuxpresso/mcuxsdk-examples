@@ -152,7 +152,7 @@ int main(void)
     }
     else
     {
-        PRINTF("*Success* read at 0x%x to0x%x doesnt match expected pattern.\r\n", config.startAddress, config.endAddress);
+        PRINTF("*Success* read at 0x%x to 0x%x doesnt match expected pattern.\r\n", config.startAddress, config.endAddress);
     }
     
     PRINTF("Example end.\r\n");
