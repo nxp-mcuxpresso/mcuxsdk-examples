@@ -135,7 +135,7 @@ int main(void)
     }
     else
     {
-        PRINTF("*Success* read programmed&encrypted data from 0x%x to0x%x match expected pattern.\r\n", config.startAddress, config.endAddress);
+        PRINTF("*Success* read programmed&encrypted data from 0x%x to 0x%x match expected pattern.\r\n", config.startAddress, config.endAddress);
     }
     
     /* Disable NPX On-the-Fly Encryption and Decryption */
