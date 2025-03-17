@@ -212,12 +212,12 @@ void BOARD_InitPinsM2(void)
 BOARD_InitPinsM2_SDIO:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: L17, peripheral: USDHC1, signal: CLK, pin_signal: PIO7_17, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
-  - {pin_num: L16, peripheral: USDHC1, signal: CMD, pin_signal: PIO7_18, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
-  - {pin_num: M17, peripheral: USDHC1, signal: 'DATA, 0', pin_signal: PIO7_19, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
-  - {pin_num: M18, peripheral: USDHC1, signal: 'DATA, 1', pin_signal: PIO7_20, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
-  - {pin_num: K18, peripheral: USDHC1, signal: 'DATA, 2', pin_signal: PIO7_21, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
-  - {pin_num: K17, peripheral: USDHC1, signal: 'DATA, 3', pin_signal: PIO7_22, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
+  - {pin_num: L17, peripheral: USDHC1, signal: USDHC_CLK, pin_signal: PIO7_17, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
+  - {pin_num: L16, peripheral: USDHC1, signal: USDHC_CMD, pin_signal: PIO7_18, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
+  - {pin_num: M17, peripheral: USDHC1, signal: 'USDHC_DATA, 0', pin_signal: PIO7_19, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
+  - {pin_num: M18, peripheral: USDHC1, signal: 'USDHC_DATA, 1', pin_signal: PIO7_20, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
+  - {pin_num: K18, peripheral: USDHC1, signal: 'USDHC_DATA, 2', pin_signal: PIO7_21, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
+  - {pin_num: K17, peripheral: USDHC1, signal: 'USDHC_DATA, 3', pin_signal: PIO7_22, SelectsTransmitterCurrentDrive: O_33, InputBufferEnable: enable, PullSelect: up, PullEnable: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
