@@ -17,10 +17,10 @@ config MCUX_PRJSEG_module.board.display_support
     select FT6X06_USE_SIMPLE_I2C_API
 
 # Which panels the board supports
-config DEMO_PANEL_ADAFRUIT_2_8_SUPPORT
+config MCUX_DEMO_PANEL_ADAFRUIT_2_8_SUPPORT
     default y
 
-config DEMO_PANEL_LCD_PAR_S035_SUPPORT
+config MCUX_DEMO_PANEL_LCD_PAR_S035_SUPPORT
     default y
 
 if MCUX_PRJSEG_module.board.display_support
