@@ -11,11 +11,6 @@ zigbee_ed_rx_on_freertos_r23:
              The application implements a Zigbee end device RX on that will attempt to connect
              to a Zigbee coordinator.
   boards:
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
-    - -iar@debug
-    - -iar@release
     frdmmcxw71:
     - +armgcc@debug
     - +armgcc@release
