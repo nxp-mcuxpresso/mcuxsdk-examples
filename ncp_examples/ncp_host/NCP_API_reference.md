@@ -9,11 +9,10 @@ Developers can refer to NCP APIs for Wi-Fi, Bluetooth LE and 15.4 to
 implement their own sample application which runs on their host
 platform.
 
-Note:
-Default NCP host MCU platform: RT1060 EVKB.
-NCP device supported two kinds redfinch boards:
-RD-RW612-BGA: UART/SPI/USB/SDIO,
-FRDM-RW612: UART/SPI/USB.
+Note: Default NCP host MCU platform: RT1060 EVKB. 
+NCP device supported two kinds redfinch boards: 
+RD-RW612-BGA: UART/SPI/USB/SDIO, 
+FRDM-RW612:UART/SPI/USB.
 
 ### Abbreviations and acronyms
 
@@ -384,6 +383,8 @@ Here is a list of all documented files with brief descriptions:
 
 **ncp\_cmd\_ble.h (NCP Bluetooth LE command and structure definitions )**
 
+**ncp\_cmd\_system.h (This file provies power save commands for NCP system )**
+
 **ncp\_cmd\_wifi.h (NCP Wi-Fi command/response definitions )**
 
 **ncp\_host\_command\_ble.h (NCP Bluetooth LE host command interfaces )**
@@ -391,6 +392,8 @@ Here is a list of all documented files with brief descriptions:
 **ncp\_host\_command\_wifi.h (NCP host command interfaces )**
 
 **otopcode.h (This file provides interface to get Open Thread commands corresponding opcode )**
+
+**otopcode\_private.h (This file provides the OpenThread (OT) commands )**
 
 **service.h (Bluetooth service definitions )**
 
@@ -591,9 +594,9 @@ period configuration.
 
   - char client\_key\_passwd \[PASSWORD\_MAX\_LENGTH\]
 
-  - uint8_t eap\_ver
+  - uint8\_t eap\_ver
 
-  - bool verify\_peer
+  - bool verify\_peer\_cert
 
 ### Detailed Description
 
@@ -606,9 +609,10 @@ information configuration.
 
 > Header type and size information.
 
-#### TypeHeader\_t \_EAP\_ParamSet\_t::tls\_cipher
+#### unsigned char \_EAP\_ParamSet\_t::tls\_cipher
 
-> Cipher for EAP TLS (Extensible Authentication Protocol Transport Layer Security)
+> Cipher for EAP TLS (Extensible Authentication Protocol Transport Layer
+> Security)
 
 #### char \_EAP\_ParamSet\_t::identity\[IDENTITY\_MAX\_LENGTH\]
 
@@ -626,15 +630,13 @@ information configuration.
 
 > Client key password string
 
-#### TypeHeader\_t \_EAP\_ParamSet\_t::eap\_ver
+#### uint8\_t \_EAP\_ParamSet\_t::eap\_ver
 
 > EAP (Extensible Authentication Protocol) version
 
-#### TypeHeader\_t \_EAP\_ParamSet\_t::verify\_peer
+#### bool \_EAP\_ParamSet\_t::verify\_peer\_cert
 
-> whether verify peer with CA or not
-> false: not verify,
-> true: verify.
+> whether verify peer with CA or not false: not verify, true: verify.
 
 #### The documentation for this struct was generated from the following file:
 
@@ -1772,6 +1774,35 @@ mode configuration.
 
 #### 
 
+## \_NCP\_CMD\_ENCRYPT Struct Reference
+
+### Data Fields
+
+  - uint8\_t action
+
+  - uint32\_t arg
+
+### Detailed Description
+
+NCP host device encrypted communication .
+
+### Field Documentation
+
+#### uint8\_t \_NCP\_CMD\_ENCRYPT::action
+
+> 0: trigger encrypted communication flow 1: send handshake data to NCP
+> device 2: verify the encryption communication
+
+#### uint32\_t \_NCP\_CMD\_ENCRYPT::arg
+
+> checksum of keys and IVs when action is 2
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_system.h
+
+#### 
+
 ## \_NCP\_CMD\_ENCRYPTION Struct Reference
 
 ### Data Fields
@@ -2677,6 +2708,41 @@ transmitter PHY or receiver PHY in use.
 
 #### 
 
+## \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP Struct Reference
+
+### Data Fields
+
+  - uint8\_t enable
+
+  - uint8\_t is\_manual
+
+  - int rtc\_timeout
+
+### Detailed Description
+
+NCP device sleep configuration
+
+### Field Documentation
+
+#### uint8\_t \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::enable
+
+> 0x0: disable, 0x1: enable
+
+#### uint8\_t \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::is\_manual
+
+> 0x0: power manager, 0x1: manual
+
+#### int \_NCP\_CMD\_POWERMGMT\_MCU\_SLEEP::rtc\_timeout
+
+> used to configure timeout for RTC timer and it is used with power
+> manager only
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_system.h
+
+#### 
+
 ## \_NCP\_CMD\_POWERMGMT\_MEF Struct Reference
 
 ### Data Fields
@@ -2839,6 +2905,62 @@ delivery) flag configuration.
 #### The documentation for this struct was generated from the following file:
 
   - ncp\_cmd\_wifi.h
+
+#### 
+
+## \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG Struct Reference
+
+### Data Fields
+
+  - uint8\_t wake\_mode
+
+  - uint8\_t subscribe\_evt
+
+  - uint32\_t wake\_duration
+
+### Detailed Description
+
+NCP power manager wakeup configuration
+
+### Field Documentation
+
+#### uint8\_t \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG::wake\_mode
+
+> host wake up mode, 0x1: INTF 0x2: wakes up through GPIO
+
+#### uint8\_t \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG::subscribe\_evt
+
+> 0 – unsubscribe(default) 1 – subscribe(mandatory if wake\_mode == 0x2)
+
+#### uint32\_t \_NCP\_CMD\_POWERMGMT\_WAKE\_CFG::wake\_duration
+
+> wake up duration, minimum is 0
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_system.h
+
+#### 
+
+## \_NCP\_CMD\_POWERMGMT\_WAKEUP\_HOST Struct Reference
+
+### Data Fields
+
+  - uint8\_t enable
+
+### Detailed Description
+
+NCP device wakeup NCP host configuration.
+
+### Field Documentation
+
+#### uint8\_t \_NCP\_CMD\_POWERMGMT\_WAKEUP\_HOST::enable
+
+> 0: disable, 1: enable
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_system.h
 
 #### 
 
@@ -4272,6 +4394,24 @@ to the Bluetooth LE start service command.
 
 #### 
 
+## \_NCP\_CMD\_SYSTEM\_CFG Struct Reference
+
+### Data Fields
+
+  - char **module\_name** \[MODULE\_NAME\_MAX\_LEN\]
+
+  - char **variable\_name** \[VAR\_NAME\_MAX\_LEN\]
+
+  - char **value** \[CONFIG\_VALUE\_MAX\_LEN\]
+
+### Detailed Description
+
+NCP system configuration
+
+The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_system.h
+
 ## \_NCP\_CMD\_TEMPERATURE Struct Reference
 
 ### Data Fields
@@ -4304,7 +4444,7 @@ This structure is used to store temperature of the device.
 
   - uint8\_t reserve \[2\]
 
-  - IEEE\_BTWT\_ParamSet\_t info \[6\]
+  - IEEE\_BTWT\_ParamSet\_t info \[4\]
 
 ### Detailed Description
 
@@ -4324,7 +4464,7 @@ This structure is used for TWT report.
 
 > Reserved fields.
 
-#### IEEE\_BTWT\_ParamSet\_t \_NCP\_CMD\_TWT\_REPORT::info\[6\]
+#### IEEE\_BTWT\_ParamSet\_t \_NCP\_CMD\_TWT\_REPORT::info\[4\]
 
 > TWT report payload for FW response to fill, 4 \* 9bytes.
 
@@ -6231,13 +6371,13 @@ This structure is used for network monitor configuration.
 
   - uint8\_t security\_type
 
-  - uint8\_t wpa3\_ent
+  - uint8\_t wpa3\_ent: 1
 
-  - uint8\_t wpa3\_sb
+  - uint8\_t wpa3\_sb: 1
 
-  - uint8\_t wpa3\_sb\_192
+  - uint8\_t wpa3\_sb\_192: 1
 
-  - uint8\_t eap\_ver
+  - uint8\_t eap\_ver: 1
 
   - uint8\_t enable\_11ax: 1
 
@@ -6330,25 +6470,25 @@ This structure is used to store a Wi-Fi network profile.
 #### uint8\_t \_ncp\_wlan\_network::wpa3\_ent
 
 > WPA3 Enterprise mode
->
+> 
 > 1: enable;
->
+> 
 > 0: disable.
 
 #### uint8\_t \_ncp\_wlan\_network::wpa3\_sb
 
 > WPA3 Enterprise Suite B mode
->
+> 
 > 1: enable;
->
+> 
 > 0: disable.
 
 #### uint8\_t \_ncp\_wlan\_network::wpa3\_sb\_192
 
 > WPA3 Enterprise Suite B 192 mode
->
+> 
 > 1: enable;
->
+> 
 > 0: disable.
 
 #### uint8\_t \_ncp\_wlan\_network::eap\_ver
@@ -7591,6 +7731,66 @@ input to the Bluetooth LE TLV command.
 #### The documentation for this struct was generated from the following file:
 
   - ncp\_cmd\_ble.h
+
+#### 
+
+## \_NCPCmd\_DS\_SYS\_COMMAND Struct Reference
+
+### Data Fields
+
+  - NCP\_COMMAND header
+
+  - union {
+
+  -   NCP\_CMD\_SYSTEM\_CFG system\_cfg
+
+  -   NCP\_CMD\_POWERMGMT\_WAKE\_CFG wake\_config
+
+  -   NCP\_CMD\_POWERMGMT\_MCU\_SLEEP mcu\_sleep\_config
+
+  -   NCP\_CMD\_POWERMGMT\_WAKEUP\_HOST host\_wakeup\_ctrl
+
+  -   NCP\_CMD\_ENCRYPT encrypt
+
+  - } params
+
+### Detailed Description
+
+NCP system command
+
+### Field Documentation
+
+#### NCP\_COMMAND \_NCPCmd\_DS\_SYS\_COMMAND::header
+
+> Command Header : Command
+
+#### NCP\_CMD\_SYSTEM\_CFG \_NCPCmd\_DS\_SYS\_COMMAND::system\_cfg
+
+> System configuration
+
+#### NCP\_CMD\_POWERMGMT\_WAKE\_CFG \_NCPCmd\_DS\_SYS\_COMMAND::wake\_config
+
+> NCP power manager wakeup configuration
+
+#### NCP\_CMD\_POWERMGMT\_MCU\_SLEEP \_NCPCmd\_DS\_SYS\_COMMAND::mcu\_sleep\_config
+
+> NCP device sleep configuration.
+
+#### NCP\_CMD\_POWERMGMT\_WAKEUP\_HOST \_NCPCmd\_DS\_SYS\_COMMAND::host\_wakeup\_ctrl
+
+> Control for NCP device wakeup NCP host.
+
+#### NCP\_CMD\_ENCRYPT \_NCPCmd\_DS\_SYS\_COMMAND::encrypt
+
+> NCP host and device encrypted communication.
+
+#### union { ... } \_NCPCmd\_DS\_SYS\_COMMAND::params
+
+> Command Body
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_system.h
 
 #### 
 
@@ -10010,53 +10210,6 @@ characteristics.
 
 #### 
 
-## GATT\_CHARACTERISTIC Struct Reference
-
-### Data Fields
-
-  - uint16\_t characteristic\_handle
-
-  - uint16\_t value\_handle
-
-  - uint8\_t properties
-
-  - uint8\_t uuid\_length
-
-  - uint8\_t uuid \[SERVER\_MAX\_UUID\_LEN\]
-
-### Detailed Description
-
-This structure contains the configuration values of the Bluetooth LE
-characteristic data.
-
-### Field Documentation
-
-#### uint16\_t GATT\_CHARACTERISTIC::characteristic\_handle
-
-> characteristic handle
-
-#### uint16\_t GATT\_CHARACTERISTIC::value\_handle
-
-> characteristic value handle
-
-#### uint8\_t GATT\_CHARACTERISTIC::properties
-
-> characteristic properties handle
-
-#### uint8\_t GATT\_CHARACTERISTIC::uuid\_length
-
-> characteristic UUID length
-
-#### uint8\_t GATT\_CHARACTERISTIC::uuid\[SERVER\_MAX\_UUID\_LEN\]
-
-> characteristic UUID value
-
-#### The documentation for this struct was generated from the following file:
-
-  - ncp\_cmd\_ble.h
-
-#### 
-
 ## gatt\_characteristic Struct Reference
 
 ### Data Fields
@@ -10097,6 +10250,53 @@ characteristic data.
 #### uint8\_t gatt\_characteristic::uuid\[SERVER\_MAX\_UUID\_LEN\]
 
 > characteristic UUIDs
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
+## GATT\_CHARACTERISTIC Struct Reference
+
+### Data Fields
+
+  - uint16\_t characteristic\_handle
+
+  - uint16\_t value\_handle
+
+  - uint8\_t properties
+
+  - uint8\_t uuid\_length
+
+  - uint8\_t uuid \[SERVER\_MAX\_UUID\_LEN\]
+
+### Detailed Description
+
+This structure contains the configuration values of the Bluetooth LE
+characteristic data.
+
+### Field Documentation
+
+#### uint16\_t GATT\_CHARACTERISTIC::characteristic\_handle
+
+> characteristic handle
+
+#### uint16\_t GATT\_CHARACTERISTIC::value\_handle
+
+> characteristic value handle
+
+#### uint8\_t GATT\_CHARACTERISTIC::properties
+
+> characteristic properties handle
+
+#### uint8\_t GATT\_CHARACTERISTIC::uuid\_length
+
+> characteristic UUID length
+
+#### uint8\_t GATT\_CHARACTERISTIC::uuid\[SERVER\_MAX\_UUID\_LEN\]
+
+> characteristic UUID value
 
 #### The documentation for this struct was generated from the following file:
 
@@ -12887,7 +13087,7 @@ Battery Service Profile definitions.
 
 ### Macro Documentation
 
-#### \#define BAS\_EVENT\_WRITE\_CHRA\_RSP  0x01
+#### \#define BAS\_EVENT\_WRITE\_CHAR\_RSP  0x01
 
 > BAS write characteristic response event ID
 
@@ -12986,7 +13186,7 @@ Health Rate Profile definitions.
 
 > HRC get characteristic configuration changed event ID
 
-#### \#define HRS\_EVENT\_WRITE\_CHRA\_RSP  0x01
+#### \#define HRS\_EVENT\_WRITE\_CHAR\_RSP  0x01
 
 > HRC write characteristic response event ID
 
@@ -13093,7 +13293,7 @@ Health Thermometer Profile definitions.
 
 > HTC get characteristic configuration changed event ID
 
-#### \#define HTS\_EVENT\_WRITE\_CHRA\_RSP  0x01
+#### \#define HTS\_EVENT\_WRITE\_CHAR\_RSP  0x01
 
 > HTC write characteristic response event ID
 
@@ -14179,6 +14379,106 @@ NCP Bluetooth LE command and structure definitions.
 #### \#define MAX\_ATTRIBUTE\_VALUE\_LEN  256
 
 > The maximum length of the attribute to notify
+
+#### 
+
+## ncp\_cmd\_system.h File Reference
+
+This file provies power save commands for NCP system.
+
+### Macro Documentation
+
+#### \#define NCP\_CMD\_SYSTEM\_CONFIG  0x00000000
+
+> System NCP subclass subclass type for system configure
+
+#### \#define NCP\_CMD\_SYSTEM\_TEST  0x00100000
+
+> subclass type for system test
+
+#### \#define NCP\_CMD\_SYSTEM\_POWERMGMT  0x00200000
+
+> subclass type for system power managerment
+
+#### \#define NCP\_CMD\_SYSTEM\_ASYNC\_EVENT  0x00300000
+
+> subclass type for system asynchronous event
+
+#### \#define NCP\_CMD\_SYSTEM\_CONFIG\_SET  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_CMD | 0x00000001) /\* set-device-cfg \*/
+
+> System Configure command Wi-Fi system set configuration command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_CONFIG\_SET  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_RESP | 0x00000001)
+
+> Wi-Fi system set configuration command response ID
+
+#### \#define NCP\_CMD\_SYSTEM\_CONFIG\_GET  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_CMD | 0x00000002) /\* get-device-cfg \*/
+
+> Wi-Fi system get configuration command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_CONFIG\_GET  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_RESP | 0x00000002)
+
+> Wi-Fi system get configuration command response ID
+
+#### \#define NCP\_CMD\_SYSTEM\_CONFIG\_ENCRYPT  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_CMD | 0x00000003) /\* ncp\_encrypt \*/
+
+> system configuration encrypted communication command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_CONFIG\_ENCRYPT  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_RESP | 0x00000003)
+
+> system configuration encrypted communication command response ID
+
+#### \#define NCP\_CMD\_SYSTEM\_POWERMGMT\_WAKE\_CFG  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_CMD | 0x00000001) /\* ncp-wake-cfg \*/
+
+> Wi-Fi system power manager wakeup configuration command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_POWERMGMT\_WAKE\_CFG  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_RESP | 0x00000001)
+
+> Wi-Fi system power manager wakeup configuration command response ID
+
+#### \#define NCP\_CMD\_SYSTEM\_POWERMGMT\_MCU\_SLEEP  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_CMD | 0x00000002) /\* ncp-mcu-sleep \*/
+
+> Wi-Fi system MCU deep sleep power save mode command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_POWERMGMT\_MCU\_SLEEP  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_RESP | 0x00000002)
+
+> Wi-Fi system MCU deep sleep power save mode command response ID
+
+#### \#define NCP\_CMD\_SYSTEM\_POWERMGMT\_WAKEUP\_HOST  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_CMD | 0x00000003) /\* ncp-wakeup-host \*/
+
+> Wi-Fi system power manager wakeup host command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_POWERMGMT\_WAKEUP\_HOST  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_RESP | 0x00000003)
+
+> Wi-Fi system power manager wakeup host command response ID
+
+#### \#define NCP\_CMD\_SYSTEM\_POWERMGMT\_MCU\_SLEEP\_CFM  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_CMD | 0x00000004)
+
+> Wi-Fi system power manager MCU sleep command ID
+
+#### \#define NCP\_RSP\_SYSTEM\_POWERMGMT\_MCU\_SLEEP\_CFM  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_POWERMGMT | NCP\_MSG\_TYPE\_RESP | 0x00000004)
+
+> Wi-Fi system power manager MCU sleep command response ID
+
+#### \#define NCP\_EVENT\_MCU\_SLEEP\_ENTER  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_ASYNC\_EVENT | NCP\_MSG\_TYPE\_EVENT | 0x00000001)
+
+> Wi-Fi enter MCU sleep mode event ID
+
+#### \#define NCP\_EVENT\_MCU\_SLEEP\_EXIT  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_ASYNC\_EVENT | NCP\_MSG\_TYPE\_EVENT | 0x00000002)
+
+> Wi-Fi exit MCU sleep mode event ID
+
+#### \#define NCP\_EVENT\_SYSTEM\_ENCRYPT  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_EVENT | 0x00000003)
+
+> NCP host device encrypted communication event ID
+
+#### \#define NCP\_EVENT\_SYSTEM\_ENCRYPT\_STOP  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_CONFIG | NCP\_MSG\_TYPE\_EVENT | 0x00000004)
+
+> NCP host device encrypted communication stop event ID
+
+#### \#define NCP\_CMD\_SYSTEM\_TEST\_LOOPBACK  (NCP\_CMD\_SYSTEM | NCP\_CMD\_SYSTEM\_TEST | NCP\_MSG\_TYPE\_CMD | 0x00000001) /\* test-loopback \*/
+
+> Wi-Fi system test loopback command ID
 
 #### 
 
@@ -22227,16 +22527,12 @@ NCP host command interfaces.
 <table>
 <tbody>
 <tr class="odd">
-<td>EAP_TLS_NONE</td>
-<td></td>
+<td>EAP_TLS_ECC_P384</td>
+<td>EAP TLS with ECDH &amp; ECDSA with p384</td>
 </tr>
 <tr class="even">
-<td>EAP_TLS_ECC_P384</td>
-<td>EAP TLS with ECDH & ECDSA with p384</td>
-</tr>
-<tr class="odd">
 <td>EAP_TLS_RSA_3K</td>
-<td>EAP TLS with ECDH & RSA with > 3K</td>
+<td>EAP TLS with ECDH &amp; RSA with &gt; 3K</td>
 </tr>
 </tbody>
 </table>
@@ -22275,6 +22571,18 @@ opcode.
 ##### Returns
 
 > opcode of the command.
+
+#### 
+
+## otopcode\_private.h File Reference
+
+This file provides the OpenThread (OT) commands.
+
+### Variable Documentation
+
+#### char\* otcommands\[\]\[static\]
+
+> OpenThread (OT) 802.15.4 commands
 
 #### 
 
