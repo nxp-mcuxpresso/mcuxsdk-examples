@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -20,6 +19,6 @@ void BOARD_InitHardware(void)
 
     CLOCK_EnableClock(kCLOCK_I3c0);
     CLOCK_SetIpSrc(kCLOCK_I3c0, kCLOCK_IpSrcFro192M);
-    CLOCK_SetIpSrcDiv(kCLOCK_I3c0, kSCG_SysClkDivBy16);
+    CLOCK_SetIpSrcDiv(kCLOCK_I3c0, kSCG_SysClkDivBy4);
 }
 /*${function:end}*/
