@@ -13,3 +13,7 @@ mcux_add_include(
     INCLUDES ${board_root}/evkmimx8mn/driver_examples/sai/sdma_transfer
              ${board_root}/evkmimx8mn
 )
+
+mcux_remove_armgcc_configuration(
+                AS "-D__STARTUP_INITIALIZE_NONCACHEDATA"
+)
