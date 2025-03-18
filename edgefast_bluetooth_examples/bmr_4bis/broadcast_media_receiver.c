@@ -1011,10 +1011,12 @@ void broadcast_media_receiver_task(void *param)
 			continue;
 		}
 
-		err = OSA_SemaphoreWait(sem_stream_started, SEM_TIMEOUT);
-		if (err != 0) {
-			PRINTF("sem_stream_started timed out, resetting\n");
-			continue;
+		for (size_t i = 0U; i < MAX_AUDIO_CHANNEL_COUNT; i++) {
+			err = OSA_SemaphoreWait(sem_stream_started, SEM_TIMEOUT);
+			if (err != 0) {
+				PRINTF("sem_stream_started timed out, resetting\n");
+				continue;
+			}
 		}
 
 		int res = 0;
@@ -1036,10 +1038,12 @@ void broadcast_media_receiver_task(void *param)
 						PRINTF("Unable to sync to broadcast source: %d\n", err);
 					}
 
-					err = OSA_SemaphoreWait(sem_stream_started, SEM_TIMEOUT);
-					if (err != 0) {
-						PRINTF("sem_stream_started timed out, resetting\n");
-						le_audio_sync_stop();
+					for (size_t i = 0U; i < MAX_AUDIO_CHANNEL_COUNT; i++) {
+						err = OSA_SemaphoreWait(sem_stream_started, SEM_TIMEOUT);
+						if (err != 0) {
+							PRINTF("sem_stream_started timed out, resetting\n");
+							le_audio_sync_stop();
+						}
 					}
 				}
 				else
@@ -1059,9 +1063,11 @@ void broadcast_media_receiver_task(void *param)
 						PRINTF("Unable to stop broadcast sink: %d\n", err);
 					}
 
-					err = OSA_SemaphoreWait(sem_stream_stopped, SEM_TIMEOUT);
-					if (err != 0) {
-						PRINTF("sem_stream_stopped timed out, resetting\n");
+					for (size_t i = 0U; i < MAX_AUDIO_CHANNEL_COUNT; i++) {
+						err = OSA_SemaphoreWait(sem_stream_stopped, SEM_TIMEOUT);
+						if (err != 0) {
+							PRINTF("sem_stream_stopped timed out, resetting\n");
+						}
 					}
 					PRINTF("\nBroadcast sink stoped!\n");
 				}
