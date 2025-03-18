@@ -122,8 +122,8 @@ void BOARD_InitDEBUG_UARTPins(void)
 BOARD_InitPinsM2:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: H7, peripheral: GPIO3, signal: 'IO, 7', pin_signal: PIO3_7, direction: OUTPUT, gpio_direction: out, gpio_init_state: 'false'}
-  - {pin_num: N14, peripheral: GPIO7, signal: 'IO, 23', pin_signal: PIO7_23, direction: OUTPUT, gpio_direction: out, gpio_init_state: 'false'}
+  - {pin_num: H7, peripheral: GPIO3, signal: 'GPIO, 7', pin_signal: PIO3_7, direction: OUTPUT, gpio_direction: out, gpio_init_state: 'false'}
+  - {pin_num: N14, peripheral: GPIO7, signal: 'GPIO, 23', pin_signal: PIO7_23, direction: OUTPUT, gpio_direction: out, gpio_init_state: 'false'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
