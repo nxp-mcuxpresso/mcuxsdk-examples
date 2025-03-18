@@ -2,18 +2,17 @@
 ** ###################################################################
 **     Processors:          MIMXRT595SFAWC_cm33
 **                          MIMXRT595SFFOC_cm33
+**
 **     Compiler:            GNU C Compiler
-**     Reference manual:    iMXRT500RM Rev.0, 01/2021
+**     Reference manual:    iMXRT500RM Rev.1, 07/2022
 **     Version:             rev. 5.0, 2021-07-28
-**     Build:               b210728
+**     Build:               b241125
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2021 NXP
-**     All rights reserved.
-**
+**     Copyright 2016-2024 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -28,13 +27,14 @@
 ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000180 : 0;
 
 /* Specify the memory areas */
 /* The SRAM region [0x10000-0x1BFFF] is reserved for ROM code. */
-/* The SRAM region [0x0-0xFFFF], [0x1C000-0x1FFFF] is reserved for app-specific use cases. */
+/* The SRAM region [0x0-0xFFFF], [0x1C000-0x1FFFF] are reserved for app-specific use cases. */
 /* The SRAM region [0x20000-0x7FFFF] is reserved for Non-cached shared memory between M33 and DSP. */
+/* The SRAM region [0x80000-0x27FFFF] is reserved for DSP code and data. */
 /* NOTE: Flash in range 0x08200000 - 0x083FFFFF is reserved for application "filesystem" */
 
 MEMORY
@@ -76,17 +76,25 @@ SECTIONS
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
         */fsl_cache.c.obj
-        */bignum.c.obj
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
         */fsl_cache.c.obj
-        */bignum.c.obj
     ) .text*)                /* .text* sections (code) */
-    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(
+        /* Exclude flash and frequently executed functions from XIP */
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
+        */fsl_cache.c.obj
+    ) .rodata)               /* .rodata sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(
+        /* Exclude flash and frequently executed functions from XIP */
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
+        */fsl_cache.c.obj
+    ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -193,7 +201,6 @@ SECTIONS
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     */fsl_cache.c.obj(.text .text* .rodata .rodata*)
-    */bignum.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     *(.wlan_data .wlan_data.*)
