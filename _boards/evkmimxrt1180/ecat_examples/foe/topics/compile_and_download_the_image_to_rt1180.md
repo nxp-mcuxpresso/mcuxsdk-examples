@@ -17,7 +17,7 @@ The GCC Arm Embedded 12.3.1 toolchain is supported.
 
         ![](../images/image19.png "Install the imgtool")
 
-    3.  Type `imgtool sign --key sign-rsa2048-priv.pem --align 4 --header-size 0x400 --pad-header --slot-size 0x200000 --pad --confirm --max-sectors 800 --version "2.3.0" ecat_examples_foe_cm33.bin ecat_foe_2-3-0_SIGNED.bin` to generate the FoE example signed image.
+    3.  Type `imgtool sign --key sign-rsa2048-priv.pem --align 4 --header-size 0x400 --pad-header --slot-size 0x200000 --pad --confirm --max-sectors 800 --version "2.3.0" ecat_foe_cm33.bin ecat_foe_2-3-0_SIGNED.bin` to generate the FoE example signed image.
 
         ![](../images/image20.png "Generate the FoE example signed image")
 
