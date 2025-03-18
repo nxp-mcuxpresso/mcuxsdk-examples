@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,7 +12,6 @@
 /*${macro:start}*/
 #define EXAMPLE_MASTER             I3C
 #define I3C_MASTER_CLOCK_FREQUENCY CLOCK_GetIpFreq(kCLOCK_I3c0)
-#define WAIT_TIME                  1000
 /*${macro:end}*/
 
 /*******************************************************************************
