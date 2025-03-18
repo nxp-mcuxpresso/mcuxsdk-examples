@@ -130,6 +130,7 @@ Waiting for input timeout value...
 02
 RTC wake up after 2 seconds.
 
+Please note that exiting from deep sleep mode will cause wakeup reset.
 MCU wakeup source 0x0...
 
 ####################  Power Mode Switch ####################

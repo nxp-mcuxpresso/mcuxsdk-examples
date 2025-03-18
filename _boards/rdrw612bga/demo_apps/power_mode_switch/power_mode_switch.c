@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 NXP
+ * Copyright 2020, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -367,6 +367,11 @@ int main(void)
         {
             APP_GetWakeupConfig(pm);
             APP_SetWakeupConfig();
+        }
+
+        if (pm == 4U)
+        {
+            PRINTF("\r\nPlease note that exiting from deep sleep mode will cause wakeup reset.");
         }
 
         LPM_SetPowerMode(pm, &slpCfg);

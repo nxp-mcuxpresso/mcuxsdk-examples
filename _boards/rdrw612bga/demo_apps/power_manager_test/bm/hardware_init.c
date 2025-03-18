@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -22,6 +22,11 @@
 extern pm_handle_t g_pmHandle;
 
 /*${function:start}*/
+
+AT_ALWAYS_ON_DATA_INIT(pm_notify_element_t g_notify0) = {
+    .notifyCallback = APP_EntryPowerModeInfoPrint,
+    .data           = NULL,
+};
 
 AT_ALWAYS_ON_DATA_INIT(pm_notify_element_t g_notify1) = {
     .notifyCallback = APP_UartControlCallback,
@@ -71,6 +76,19 @@ void BOARD_InitHardware(void)
     /* Start RTC */
     RTC_ClearStatusFlags(RTC, kRTC_AlarmFlag);
     RTC_StartTimer(RTC);
+}
+
+status_t APP_EntryPowerModeInfoPrint(pm_event_type_t eventType, uint8_t powerState, void *data)
+{
+    if (eventType == kPM_EventEnteringSleep)
+    {
+        if (powerState == PM_LP_STATE_PM4)
+        {
+            PRINTF("\r\nPlease note that exiting from deep sleep will cause wakeup reset.");
+        }
+    }
+
+    return kStatus_Success;
 }
 
 status_t APP_UartControlCallback(pm_event_type_t eventType, uint8_t powerState, void *data)
@@ -153,7 +171,8 @@ uint32_t APP_GetWakeupTimeout(void)
 
 void APP_RegisterNotify(void)
 {
-    PM_RegisterNotify(kPM_NotifyGroup0, &g_notify1);
+    PM_RegisterNotify(kPM_NotifyGroup0, &g_notify0);
+    PM_RegisterNotify(kPM_NotifyGroup1, &g_notify1);
 }
 
 void APP_SetConstraints(uint8_t powerMode)

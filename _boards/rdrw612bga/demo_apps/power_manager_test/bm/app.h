@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 NXP
+ * Copyright 2020-2022, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -35,6 +35,7 @@
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
 status_t APP_UartControlCallback(pm_event_type_t eventType, uint8_t powerState, void *data);
+status_t APP_EntryPowerModeInfoPrint(pm_event_type_t eventType, uint8_t powerState, void *data);
 void APP_InitWakeupSource(void);
 void APP_StartRtcTimer(uint64_t timeOutTickes);
 void APP_StopRtcTimer(void);
