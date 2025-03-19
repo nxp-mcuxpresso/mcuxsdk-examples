@@ -14,7 +14,6 @@ hci_bb_bm:
     frdmmcxw71: []
     mcxw71evk: []
     frdmmcxw72@cm33_core0: []
-    k32w148evk: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     kw45b41zevk: []
