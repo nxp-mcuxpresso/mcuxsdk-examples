@@ -1268,7 +1268,7 @@ static void BOARD_InitLcdif(void)
        to show the piture properly. */
     if (DEMO_BUFFER_PIXEL_FORMAT == kVIDEO_PixelFormatRGB565)
     {
-        config.endian = kLCDIF_WordSwap;
+        config.endian = kLCDIF_HalfWordSwap;
     }
 #endif
 
