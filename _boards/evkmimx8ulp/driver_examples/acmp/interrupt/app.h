@@ -1,6 +1,5 @@
 /*
- * Copyright 2021 NXP
- * All rights reserved.
+ * Copyright 2021,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,11 +10,11 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_ACMP_BASEADDR         CMP1
-#define DEMO_ACMP_MINUS_INPUT      2U /* reference */
+#define DEMO_ACMP_BASEADDR         CMP0
+#define DEMO_ACMP_MINUS_INPUT      4U /* External input 4 for plus channel(reference input 3) */
 #define DEMO_ACMP_PLUS_INPUT       7U /*  Internal 8bit DAC output. */
-#define DEMO_ACMP_IRQ_ID           CMP1_IRQn
-#define DEMO_ACMP_IRQ_HANDLER_FUNC CMP1_IRQHandler
+#define DEMO_ACMP_IRQ_ID           CMP0_IRQn
+#define DEMO_ACMP_IRQ_HANDLER_FUNC CMP0_IRQHandler
 
 /*${macro:end}*/
 

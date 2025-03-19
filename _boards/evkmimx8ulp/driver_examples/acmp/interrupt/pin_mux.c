@@ -54,7 +54,7 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
-    IOMUXC_SetPinMux(IOMUXC_PTA0_CMP1_IN2, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PTA6_CMP0_IN4, 0U);
     IOMUXC_SetPinMux(IOMUXC_PTA10_LPUART1_TX, 0U);
     IOMUXC_SetPinConfig(IOMUXC_PTA10_LPUART1_TX,
                         IOMUXC_PCR_PE_MASK |

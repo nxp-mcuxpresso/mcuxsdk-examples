@@ -8,12 +8,11 @@ Hardware requirements
 
 Board settings
 ============
-- This example project uses ACMP instance 1 to compare the voltage signal input from External Input2(J12-5)
+- This example project uses ACMP instance 0 to compare the voltage signal input from External Input4(J23-6)
 with the voltage signal(half of 1.8V) output by ACMP's internal DAC. Terminal will print information
 corresponding to different comparison result.
 - Please note that the input voltage should in the range of 0 to 1.8V.
-- Connect ACMP Input2(J12-5) to DC power supply.
-- Please remove the R291 which connect to J12-5(or the PIN J12-5 is not able to input voltage) 
+- Connect ACMP Input4(J23-6) to DC power supply.
 
 **Please note this application can't support running with Linux BSP!**
 
