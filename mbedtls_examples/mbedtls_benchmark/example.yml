@@ -193,5 +193,3 @@ mbedtls_benchmark:
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
     rdrw612bga: []
-    twrkm35z75m:
-    - -armgcc@debug
