@@ -1,16 +1,26 @@
-# g2d_basic_test
+# dpu_1_g2d_basic_test
 
 ## Overview
-This project is for i.MX95 M7 and tests G2D operations using the Blit Engine.
-The Blit Engine is controlled using the G2D library API. g2d_basic_test.c creates pixel buffers and specifies the type 
-of operation to be performed. The API sends the requested operation to the Blit Engine, which process the pixels
-and places the result in the destination buffer. For each test, the destination buffer is checked for correctness.
+This is a test of the graphics performance of the Blit Engine hardware and the graphics enablement
+of the G2D (2D graphics) library. g2d_basic_test.c uses the G2D API to send graphics operations to
+the Blit Engine. The engine does pixel processing and places its result in the destination buffer.
+The engine operations are timed and checked for correctness.
 
-## Running the demo
-1. $ west build -b imx95lpd5evk19 examples/driver_examples/dpu/g2d_basic_test/ -Dcore_id=cm7
-2. copy the image (ex: /mcuxsdk/build/m7_image.bin) to your image builder (ex: /<bsp-dir>/imx-mkimage/iMX95)
-3. $ make SOC=iMX95 flash_m7 LPDDR_TYPE=lpddr5 OEI=YES
-4. program the board with the created flash.bin (ex: $ uuu.exe flash.bin)
+Program flow:
+| 1. init G2D library
+  2. setup pixel buffers
+  3. send an operation to the Blit Engine
+  4. wait for result to be stored by the engine
+  5. check result correctness
+  6. print engine performance metrics
+  7. repeat 3-6 with various operations
+__________________________                         __________________________
+|                        |-----(G2D operation)---> |                        |
+|  main program:         |                         |  Blit Engine:          |
+| - G2D API calls        |                         | - process pixels       |
+| - check performance    |                         | - store the result     |
+| - check correctness    |                         |                        |
+|________________________| <---(result frame)------|________________________|
 
 ## Supported Boards
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/driver_examples/dpu/g2d_basic_test/example_board_readme.md)

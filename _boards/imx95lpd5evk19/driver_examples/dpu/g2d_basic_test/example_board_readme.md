@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- (2x) Micro USB cable
+- (2x) USB Type-C cable
 - IMX95LPD5-EVK board
 - 12V~20V power supply
 - Personal Computer
@@ -12,8 +12,8 @@ No special settings are required.
 Prepare the Demo
 ===============
 1.  Connect 12V~20V power supply to the board, switch SW4 to power on the board.
-2.  Connect a micro USB cable between the host PC and the J31 USB port on the target board.
-3.  Connect a micro USB cable between the host PC and the J8 USB port on the target board.
+2.  Connect a USB-C cable between the host PC and the J31 USB port on the target board.
+3.  Connect a USB-C cable between the host PC and the J8 USB port on the target board.
 4.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
