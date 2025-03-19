@@ -80,8 +80,8 @@ int main(void)
     /* Clean up API context structure*/
     memset(&apiCoreCtx, 0, sizeof(apiCoreCtx));
     
-    config.startAddress = 0x001A0000;
-    config.endAddress   = 0x001AFFFF;
+    config.startAddress = DATA_START_ADDR;
+    config.endAddress   = DATA_END_ADDR;
     config.subRegionEnable = 0;
     
     uint32_t ctxIvReg[4] = {0xDEADBEEF,0xDEADBEEF,0xDEADBEEF,0xDEADBEEF};
