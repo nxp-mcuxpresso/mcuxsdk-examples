@@ -12,14 +12,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/httpd_mbedtls.c
-            examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/httpd_mbedtls.h
-            examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/lwip_httpssrv_mbedTLS_bm.c
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/lwip_examples/lwip_httpssrv_mbedTLS/bm
+    SOURCES examples/lwip_examples/lwip_httpssrv_mbedTLS/bm/lwip_httpssrv_mbedTLS_bm.c
 )
 
 mcux_add_macro(
