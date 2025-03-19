@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -51,6 +51,9 @@ void DEMO_LPADC_IRQ_HANDLER_FUNC(void)
 #endif /* (defined(FSL_FEATURE_LPADC_FIFO_COUNT) && (FSL_FEATURE_LPADC_FIFO_COUNT == 2)) */
     {
         lpadc_conv_result_t tmpResult;
+
+        (void)memset(&tmpResult, 0, sizeof(tmpResult));
+
 #if (defined(FSL_FEATURE_LPADC_FIFO_COUNT) && (FSL_FEATURE_LPADC_FIFO_COUNT == 2))
         LPADC_GetConvResult(DEMO_LPADC_BASE, &tmpResult, 0U);
 #else
