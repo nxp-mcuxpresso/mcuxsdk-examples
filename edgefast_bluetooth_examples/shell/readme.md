@@ -983,6 +983,62 @@ Note:
 2. This example acting as MSE doesn't support all application parameters and only supports to parse/send the part of application parameters from/to MCE.
 3. This example acting as MSE is based on FatFs RAM disk. There is a limited memory to store the incoming message from MCE.
 
+## BR+BLE testes
+Notes: The nRF Connect APP can be used to create BLE connection for the follow BLE connection.
+
+- BLE is derived from br/edr
+  - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
+  - bt.init
+  - bt.clear all
+  - a2dp.register_sink_ep 1
+  - br.pscan on
+  - br.iscan on
+  - bt.advertise on
+  - Scan and connect to the br/edr from Phone, verify that the paring is triggered.
+  - connect to the ble from Phone, and verify that the BLE doesn't trigger pairing and security success.
+  - clear the keys in the Phone
+  - Scan and connect to the br/edr from Phone again, verify that the paring is triggered.
+  - connect to the ble from Phone, and verify that the BLE doesn't trigger pairing and security success.
+  - Power down DUT and power up again, and do the same shell cmds initialization.
+  - input bt.bond to check whether the bond information exist.
+  - Scan and connect to the br/edr from Phone again, verify that the paring is not triggered.
+  - connect to the ble from Phone, and verify that the BLE doesn't trigger pairing and security success.
+  - bt.clear all
+  - connect to the ble from Phone, and verify that the BLE security fail.
+- BR is derived from BLE
+  - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
+  - bt.init
+  - bt.clear all
+  - a2dp.register_sink_ep 1
+  - br.pscan on
+  - br.iscan on
+  - bt.advertise on
+  - connect to the ble from Phone, and pair.
+  - Connect br/edr from Phone: Scan and connect to the br/edr from Phone,
+  - Connect br/edr from DUT: If the Phone side can't find the br/edr device to click to connect, input br.discovery on to find the Phone, then br.connect xx:xx:xx:xx:xx:xx to connect with the Phone, then a2dp.connect to connect a2dp.
+  - verify that the br/edr doesn't trigger pairing and security success.
+  - clear the keys in the Phone
+  - connect to the ble from Phone, and pair again.
+  - Connect br/edr from Phone: Scan and connect to the br/edr from Phone again,
+  - Connect br/edr from DUT: If the Phone side can't find the br/edr device to click to connect, input br.discovery on to find the Phone, then br.connect xx:xx:xx:xx:xx:xx to connect with the Phone, then a2dp.connect to connect a2dp.
+  - verify that the br/edr doesn't trigger pairing and security success again.
+  - Power down DUT and power up again, and do the same shell cmds initialization.
+  - input bt.bond to check whether the bond information exist.
+  - connect to the ble from Phone, and pair again, verify that the paring is not triggered.
+  - Connect br/edr from Phone: Scan and connect to the br/edr from Phone again,
+  - Connect br/edr from DUT: If the Phone side can't find the br/edr device to click to connect, input br.discovery on to find the Phone, then br.connect xx:xx:xx:xx:xx:xx to connect with the Phone, then a2dp.connect to connect a2dp.
+  - bt.clear all
+  - connect to the ble from Phone, and verify that the BLE security fail.
+
+## bt_unpair test
+- use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
+- create br connection, ble connection or both of them and pair.
+- bt.clear all
+- create br connection, ble connection or both of them gain, check the pairing is triggered again or security fail with key miss error.
+- bt.clear all
+- power down and power up DUT.
+- create br connection, ble connection or both of them gain, check the pairing is triggered again or security fail with key miss error.
+
 ## Supported Boards
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/edgefast_bluetooth_examples/shell/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/edgefast_bluetooth_examples/shell/example_board_readme.md)
