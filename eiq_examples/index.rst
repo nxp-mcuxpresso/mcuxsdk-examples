@@ -15,3 +15,4 @@ eiq_examples
    tflm_modelrunner/readme.md
    executorch_cifarnet/readme.md
    executorch_lib/readme.md
+   mpp/index.rst
