@@ -37,13 +37,10 @@ extern int ncp_ble_app_init();
 #if CONFIG_NCP_OT
 extern int ncp_ot_app_init();
 #endif
-<<<<<<< HEAD
 #if CONFIG_NCP_USE_ENCRYPT
 extern int ncp_trigger_encrypted_communication(void);
 #endif
-=======
 extern int mcu_create_mutex_scan_lock();
->>>>>>> 7cad4748c ([WSW-51449] Support MATTER-NCP ncp-host based on rt platform)
 /*******************************************************************************
  * Code
  ******************************************************************************/

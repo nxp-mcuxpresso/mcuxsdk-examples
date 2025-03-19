@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "ncp_host_command_wifi.h"
 #include "ncp_tlv_adapter.h"
 #include "ncp_wifi_api.h"
@@ -307,6 +306,8 @@ bool wlan_ncp_add_network(char * ssid, char * key, int8_t mode, int8_t frequency
         if (security_tlv->password_len < WLAN_PSK_MIN_LENGTH || security_tlv->password_len >= WLAN_PSK_MAX_LENGTH)
         {
             ncp_e("Error: Invalid passphrase length %lu (expected ASCII characters: 8..63)\r\n", key_len);
+            OSA_MemoryFree(cmd_resp_buf);
+            OSA_MemoryFree(network_add_command);
             return NCP_STATUS_ERROR;
         }
         else
@@ -405,6 +406,7 @@ bool wlan_ncp_scan(void)
     if(cmd_resp_buf == NULL)
     {
         PRINTF("failed to malloc cmd_resp_buf!\r\n");
+        mcu_put_scan_lock();
         return false;
     }
     (void) memset((uint8_t *) cmd_resp_buf, 0, sizeof(NCP_COMMAND) + sizeof(NCP_CMD_SCAN_NETWORK_INFO));
@@ -414,6 +416,7 @@ bool wlan_ncp_scan(void)
     {
         PRINTF("failed to malloc cmd buff.\r\n");
         OSA_MemoryFree(cmd_resp_buf);
+        mcu_put_scan_lock();
         return false;
     }
     (void) memset((uint8_t *) scan_command, 0, sizeof(NCP_COMMAND));

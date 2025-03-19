@@ -8,13 +8,6 @@ include(${SdkRootDirPath}/examples/ncp_examples/ncp_device/app_config.cmake)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-mcux_add_configuration(
-    CC "-DNCP_LWIP_SOCKET \
-        -DCONFIG_NCP_MSG  \
-        -DCONFIG_NCP_UART \
-        -DCONFIG_NCP_WIFI"
-)
-
 mcux_add_source(
     SOURCES main.c
             lwipopts.h
@@ -59,25 +52,6 @@ mcux_add_source(
             ot/peripherals.c
             ot/peripherals.h
             ot/third_party/ot_config.cmake
-)
-
-mcux_add_source(
-    SOURCES wifi/NCP-FW-DR/NCP-List_of_functions_opcodes.h
-            wifi/NCP-FW-DR/NCP-DISPATCH-functions.h
-            wifi/NCP-FW-DR/NCP-DISPATCH-generic.h
-            wifi/NCP-FW-DR/NCP-INET-DF-Delegated-Role.c
-            wifi/NCP-FW-DR/NCP-INET-DF-Delegated-Role.h
-            wifi/NCP-FW-DR/NCP-UTILS-Delegated-Role.c
-            wifi/NCP-FW-DR/NCP-UTILS-Delegated-Role.h
-)
-
-mcux_add_source(
-    SOURCES wifi/lib-NCP-PROTOCOL/NCP-PROTOCOL-functions.h
-)
-
-mcux_add_source(
-    SOURCES wifi/API-NCP-DUMP/NCP-DUMP-functions.c
-            wifi/API-NCP-DUMP/NCP-DUMP-functions.h
 )
 
 mcux_add_source(
@@ -175,12 +149,6 @@ mcux_add_include(
              ble/service/gatt_server
              mbedtls
              ot
-)
-
-mcux_add_include(
-    INCLUDES wifi/NCP-FW-DR
-             wifi/lib-NCP-PROTOCOL
-             wifi/API-NCP-DUMP
 )
 
 mcux_add_include(

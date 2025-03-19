@@ -6,6 +6,9 @@
  *
  */
 
+#ifndef __NCP_CMD_NODE__
+#define __NCP_CMD_NODE__
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <FreeRTOS.h>
@@ -43,3 +46,4 @@ int ncp_cmd_node_list_init();
 void ncp_cmd_node_list_deinit();
 uint8_t ncp_tlv_send_wait_resp(void * cmd, void * cmd_resp_buf, Handle_respFunc cb);
 void ncp_cmd_node_wakeup_pending_tasks(uint8_t *cmd_res);
+#endif /* __NCP_CMD_NODE__ */
