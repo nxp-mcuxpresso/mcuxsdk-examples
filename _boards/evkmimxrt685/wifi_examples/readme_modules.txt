@@ -45,3 +45,8 @@ Jumper settings on AzureWave AW-CM358-uSD Module:
          o o=o J4
       J2 o=o o
          1 2 3
+
+
+Board settings
+==============
+Connect J6 with external power

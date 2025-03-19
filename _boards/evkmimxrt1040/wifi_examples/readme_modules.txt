@@ -22,3 +22,4 @@ Board settings
 ==============
 Remove R456 resistor when using Embedded Artists 2DS M.2 Module (EAR00386).
 
+Connect external power supply to J45, set J40: 1-2 and turn on SW6.
