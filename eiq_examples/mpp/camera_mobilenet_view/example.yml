@@ -19,8 +19,6 @@ camera_mobilenet_view:
                 HAL_LOG_LEVEL: 0 
               cx-define:
                 HAL_LOG_LEVEL: 0 
-        mcux:
-          ignore: true
   boards:
     frdmmcxn947@cm33_core0:
     - -armgcc@debug

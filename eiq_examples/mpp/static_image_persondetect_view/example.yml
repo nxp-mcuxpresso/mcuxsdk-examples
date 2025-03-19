@@ -10,10 +10,6 @@ static_image_persondetect_view:
       example_readme:
       - examples/eiq_examples/mpp/static_image_persondetect_view/readme.md
       - middleware/eiq/mpp/${board}/board_readme.md
-    configuration:
-      tools:
-        mcux:
-          ignore: true
   boards:
     mimxrt700evk@cm33_core0:
     - -armgcc@debug
