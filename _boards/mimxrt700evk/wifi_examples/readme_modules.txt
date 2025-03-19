@@ -17,4 +17,4 @@ Embedded Artists 2EL module datasheet: https://www.embeddedartists.com/doc/ds/2E
 
 Board settings
 ==============
-
+Connect external power supply to J45, set J2: 1-2 and turn on SW4.
