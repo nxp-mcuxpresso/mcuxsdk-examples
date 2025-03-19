@@ -11,6 +11,7 @@ wifi_cert:
       example_readme:
       - examples/wifi_examples/wifi_cert/readme.md
       - ${board_root}/${board}/wifi_examples/common/wifi_examples_readme.md
+      - ${board_root}/${board}/wifi_examples/readme_modules.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060:

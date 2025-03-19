@@ -14,6 +14,7 @@ ota_mcuboot_server_wifi:
       - examples/ota_examples/ota_mcuboot_server/wifi/readme.md
       - ${board_root}/${board}/ota_examples/ota_mcuboot_server/wifi/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/wifi_examples/readme_modules.md
   boards:
     frdmrw612:
     - -armgcc@debug

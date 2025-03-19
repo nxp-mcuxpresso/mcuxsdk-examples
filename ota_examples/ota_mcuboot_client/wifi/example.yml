@@ -15,6 +15,7 @@ ota_mcuboot_client_wifi:
       - examples/ota_examples/ota_mcuboot_client/wifi/readme.md
       - ${board_root}/${board}/ota_examples/ota_mcuboot_client/wifi/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/wifi_examples/readme_modules.md
   boards:
     evkmimxrt595@cm33:
     - -armgcc@debug
