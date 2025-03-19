@@ -211,6 +211,7 @@ status_t powerManager_PmNotify(pm_event_type_t eventType, uint8_t powerState, vo
     return kStatus_PMSuccess;
 }
 
+static bool board_notify_done = false;
 status_t powerManager_BoardNotify(pm_event_type_t eventType, uint8_t powerState, void *data)
 {
 #if CONFIG_NCP_WIFI
@@ -265,10 +266,11 @@ status_t powerManager_BoardNotify(pm_event_type_t eventType, uint8_t powerState,
         {
             /* Do Nothing */
         }
+        board_notify_done = true;
     }
     else if (eventType == kPM_EventExitingSleep)
     {
-        if (powerState == PM_LP_STATE_PM3)
+        if ((powerState == PM_LP_STATE_PM3) && (board_notify_done == true))
         {
             lpm_pm3_exit_hw_reinit();
         }
@@ -282,6 +284,7 @@ status_t powerManager_BoardNotify(pm_event_type_t eventType, uint8_t powerState,
         {
             /* Do Nothing */
         }
+        board_notify_done = false;
     }
     return kStatus_PMSuccess;
 }
