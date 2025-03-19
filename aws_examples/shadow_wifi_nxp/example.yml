@@ -11,6 +11,7 @@ aws_shadow_wifi_nxp:
       - examples/aws_examples/shadow_wifi_nxp/readme.md
       - ${board_root}/${board}/aws_examples/shadow_wifi_nxp/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+      - ${board_root}/${board}/wifi_examples/readme_modules.md
   boards:
     evkbimxrt1050:
     - -armgcc@debug

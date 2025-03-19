@@ -11,6 +11,7 @@ wifi_wpa_supplicant:
       example_readme:
       - examples/wifi_examples/wifi_wpa_supplicant/readme.md
       - ${board_root}/${board}/wifi_examples/common/wifi_examples_readme.md
+      - ${board_root}/${board}/wifi_examples/readme_modules.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkbmimxrt1060:
