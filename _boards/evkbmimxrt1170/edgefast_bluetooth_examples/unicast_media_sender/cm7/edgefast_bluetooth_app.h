@@ -33,6 +33,11 @@
 #define CONFIG_BT_CENTRAL_ONLY 0
 #endif
 
+/* This configuration used to upsample 44.1k audio to 48k in a2dp bridge. */
+#ifndef APP_BRIDGE_UPSAMPLE_441_TO_48
+#define APP_BRIDGE_UPSAMPLE_441_TO_48 0
+#endif
+
 #if CONFIG_BT_A2DP_SINK
 #undef CONFIG_BT_DEVICE_NAME
 #define CONFIG_BT_DEVICE_NAME           "a2dp_bridge"

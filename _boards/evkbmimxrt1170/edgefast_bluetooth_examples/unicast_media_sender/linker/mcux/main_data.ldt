@@ -14,6 +14,7 @@
         *fsl_adapter_flexspi_nor_flash.o(.text .text* .rodata .rodata*)
         *fsl_flexspi.o(.text .text* .rodata .rodata*)
         *mflash_drv.o(.text .text* .rodata .rodata*)
+        *srCvtFrm.o(.text .text* .rodata .rodata*)
         *libethermind_lc3_common.a(.text .text* .rodata .rodata*)
         *libethermind_lc3_encoder.a(.text .text* .rodata .rodata*)
         *libethermind_lc3_decoder.a(.text .text* .rodata .rodata*)

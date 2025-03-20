@@ -13,7 +13,7 @@
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2023 NXP
+**     Copyright 2016-2024 NXP
 **     All rights reserved.
 **
 **     SPDX-License-Identifier: BSD-3-Clause
@@ -133,6 +133,7 @@ initialize by copy { readwrite, section .textrw, section CodeQuickAccess, sectio
   object fsl_flexspi.o,
  };
 initialize by copy { readwrite, section .textrw,
+  object srCvtFrm.o,
   object libethermind_lc3_common.a,
   object libethermind_lc3_encoder.a,
   object libethermind_lc3_decoder.a,
