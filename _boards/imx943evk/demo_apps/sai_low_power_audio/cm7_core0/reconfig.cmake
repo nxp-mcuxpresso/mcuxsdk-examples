@@ -10,20 +10,14 @@ mcux_add_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/cm7_core0/app_srtm.c
-            ${board_root}/${board}/cm7_core0/app_srtm.h
-            ${board_root}/${board}/demo_apps/sai_low_power_audio/cm7_core0/rpmsg_config.h
+    SOURCES ${board_root}/${board}/demo_apps/sai_low_power_audio/cm7_core0/rpmsg_config.h
             examples/demo_apps/sai_low_power_audio_imx943/sai_low_power_audio.h
-            ${board_root}/${board}/rsc_table.c
-            ${board_root}/${board}/rsc_table.h
-            middleware/multicore/remoteproc/remoteproc.h
             ${board_root}/${board}/demo_apps/sai_low_power_audio/cm7_core0/srtm_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/demo_apps/sai_low_power_audio_imx943
-             middleware/multicore/remoteproc
              ${board_root}/${board}/cm7_core0
              ${board_root}/${board}/demo_apps/sai_low_power_audio
              ${board_root}/${board}/demo_apps/sai_low_power_audio/linker
