@@ -27,4 +27,19 @@ M.2 connector:
 For connection with Embedded Artists 2DS M.2 Module (EAR00386):
   - remove R2163
 
+Wi-Fi Host Sleep Wakeup GPIO For 1XK/1ZM/2EL:
+  - add 0Ohm resistor at position R252
+  - 1XK:
+      - Connect Fly-Wire between J33.1 and J108.5.
+      - J108 is routed on M2.P44 which internally routed on GPIO[2] of Controller 1XK.
+  - 1ZM:
+      - Connect Fly-Wire between J33.1 and J108.2.
+      - J108 is routed on M2.P40 which internally routed on GPIO[13] of Controller 1ZM.
+  - 2EL:
+      - No fly-wire connection required.
+Wi-Fi Independent Reset OOB Trigger For 1XK/1ZM/2EL:
+  - Connect Fly-Wire between J16.1 and J108.4.
+  - J108 is routed on M2.P48 which internally routed on IR GPIO[15] of Controller 1XK/1ZM.
+  - For 2EL-M2, No fly-wire connection required.
+
 Connect external power supply to J45, set J40: 1-2 and turn on SW6.
