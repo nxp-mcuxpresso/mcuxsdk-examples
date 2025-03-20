@@ -129,4 +129,10 @@ void App_SetSPCConfiguration(void)
     while (SPC_GetBusyStatusFlag(SPC0));
 
 }
+
+void APP_WaitClockValid(void)
+{
+    /* Wait for lpuart clock to be valid. */
+    SDK_DelayAtLeastUs(1000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+}
 /*${function:end}*/

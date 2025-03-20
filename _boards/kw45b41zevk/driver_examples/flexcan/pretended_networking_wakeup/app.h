@@ -17,6 +17,7 @@
 #define EXAMPLE_CAN_CLK_FREQ  CLOCK_GetFreq(kCLOCK_ScgSysOscClk)
 #define USE_IMPROVED_TIMING_CONFIG (1U)
 #define EXAMPLE_SET_SPC_CONFIG (1)
+#define EXAMPLE_WAIT_CLOCK_VALID (1)
 
 /* Pretended Networking functionality can making FlexCan able to process Rx message filtering as defined by the
  * configuration registers when module in Doze mode or Stop mode. If the chip enter low power mode sent the Doze request
@@ -32,6 +33,7 @@ void BOARD_InitHardware(void);
 void APP_SetLowerPowerConfig(void);
 void APP_EnterLowerPowerMode(void);
 void App_SetSPCConfiguration(void);
+void APP_WaitClockValid(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

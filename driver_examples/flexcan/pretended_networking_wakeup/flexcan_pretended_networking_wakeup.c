@@ -221,6 +221,9 @@ int main(void)
             {
                 wakenUp = false;
 
+#if defined(EXAMPLE_WAIT_CLOCK_VALID) && EXAMPLE_WAIT_CLOCK_VALID
+                APP_WaitClockValid();
+#endif
                 LOG_INFO("Waken up!\r\n");
                 /* Print the last received wake up messages, max to 4. */
                 for (i = 0;
