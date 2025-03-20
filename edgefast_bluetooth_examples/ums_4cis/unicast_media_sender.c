@@ -1707,6 +1707,12 @@ void unicast_media_sender_task(void *param)
 		lc3_preset.qos.phy = new_phy;
 	}
 
+	/* 4cis need set max transport latency >= 20ms */
+	if(lc3_preset.qos.latency < 20)
+	{
+		lc3_preset.qos.latency = 20;
+	}
+	
 	if((new_rtn >= 0) || (new_pd >= 0) || (new_phy > 0))
 	{
 		print_lc3_preset("new_preset", &lc3_preset);
