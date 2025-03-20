@@ -307,6 +307,8 @@ void BOARD_PrepareDisplay(void)
 #endif
     HAL_ClockSetPllClk(&hal_ldbpllvcoCLKCfg);
     HAL_ClockSetPllClk(&hal_ldbpllCLKCfg);
+    HAL_ClockEnable(&hal_ldbpllvcoCLKCfg);
+    HAL_ClockEnable(&hal_ldbpllCLKCfg);
 
     /* Select LVDS pin by using PCAL6524 */
     BOARD_InitPCAL6524(&pcalHandle);

@@ -296,6 +296,8 @@ void BOARD_PrepareDisplay(void)
 #endif
     HAL_ClockSetPllClk(&hal_ldbpllvcoCLKCfg);
     HAL_ClockSetPllClk(&hal_ldbpllCLKCfg);
+    HAL_ClockEnable(&hal_ldbpllvcoCLKCfg);
+    HAL_ClockEnable(&hal_ldbpllCLKCfg);
 
     /* Select LVDS1 pin by using ADP5585 */
     BOARD_InitADP5585(&adpHandle);
