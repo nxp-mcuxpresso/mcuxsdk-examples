@@ -64,6 +64,16 @@ static int ring_buff_read_out_bytes = 0;
 int a2dp_audio_sample_rate = 0;
 int a2dp_audio_channels = 0;
 int a2dp_audio_bits = 0;
+
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
+#include "srCvtFrm.h"
+/* Resampler */
+SrCvtFrmCfg_t upSrcCfg[MAX_AUDIO_CHANNEL_COUNT];
+SrCvtFrm_t    upSrc[MAX_AUDIO_CHANNEL_COUNT];
+
+static uint8_t a2dp_audio_resample_buff[MAX_AUDIO_CHANNEL_COUNT][480 * 2];
+#endif
+
 #endif
 
 static uint8_t audio_buff[MAX_AUDIO_CHANNEL_COUNT][MAX_AUDIO_BUFF_SIZE];
@@ -237,6 +247,31 @@ static uint16_t get_and_incr_seq_num(const struct bt_bap_stream *stream)
 	return 0;
 }
 
+#if defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
+static void Resampler_Init(int instans, int sample_rate_in, int sample_rate_out, int samples_per_frame_in, int samples_per_frame_out)
+{
+    upSrcCfg[instans].fsIn = sample_rate_in;            //input sampling rate
+    upSrcCfg[instans].sfOut = sample_rate_out;           //output sampling rate
+    upSrcCfg[instans].phs = 32;                              //the filter phases
+    upSrcCfg[instans].fltTaps = 32;                          //the filter taps
+    upSrcCfg[instans].frmSizeIn = samples_per_frame_in;   //input frame size, 10ms interval
+    upSrcCfg[instans].frmSizeOut = samples_per_frame_out;  //output frame size
+
+    initUpCvtFrm(&upSrc[instans], &upSrcCfg[instans], 0.0);
+}
+
+static int Resampler(int instans, int16_t *in, int16_t *out)
+{
+    int samples_out = 0;
+    /* Here we only use up convter.  */
+    samples_out = upCvtFrm(&upSrc[instans], in, out);
+
+    return samples_out;
+}
+#endif
+#endif
+
 static int audio_stream_encode(bool mute)
 {
 	uint32_t sdu_time_stamp;
@@ -246,6 +281,15 @@ static int audio_stream_encode(bool mute)
 #if defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
 	if(!mute)
 	{
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
+		int ret = ring_buf_get(&a2dp_to_ums_audio_buf, wav_file_buff, 441 * 4);
+
+		if (ret != 441 * 4)
+		{
+			int clear_bytes = 441 * 4 - ret;
+			memset(wav_file_buff + ret, 0, clear_bytes);
+		}
+#else
 		int ret = ring_buf_get(&a2dp_to_ums_audio_buf, wav_file_buff, lc3_codec_info.samples_per_frame * 4);
 
 		if (ret != lc3_codec_info.samples_per_frame * 4)
@@ -253,6 +297,7 @@ static int audio_stream_encode(bool mute)
 			int clear_bytes = lc3_codec_info.samples_per_frame * 4 - ret;
 			memset(wav_file_buff + ret, 0, clear_bytes);
 		}
+#endif
 
 		ring_buff_read_out_bytes += ret;
 
@@ -297,13 +342,26 @@ static int audio_stream_encode(bool mute)
 
 	if(mute)
 	{
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
+		memset(wav_file_buff, 0, 441 * 2 * (bits / 8));
+#else
 		memset(wav_file_buff, 0, lc3_codec_info.samples_per_frame * 2 * (bits / 8));
+#endif
 	}
 
 	/* copy data from pcm form to channel format */
 	if(2 == lc3_codec_info.channels)
 	{
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0) && \
+	defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
+		(void)audio_data_stereo_split(441, bits, wav_file_buff, audio_buff[0], audio_buff[1]);
+		Resampler(0, (int16_t *)audio_buff[0], (int16_t *)a2dp_audio_resample_buff[0]);
+		Resampler(1, (int16_t *)audio_buff[1], (int16_t *)a2dp_audio_resample_buff[1]);
+		memcpy(audio_buff[0], a2dp_audio_resample_buff[0], 480 * 2);
+		memcpy(audio_buff[1], a2dp_audio_resample_buff[1], 480 * 2);
+#else
 		(void)audio_data_stereo_split(lc3_codec_info.samples_per_frame, bits, wav_file_buff, audio_buff[0], audio_buff[1]);
+#endif
 	}
 	else
 	{
@@ -541,7 +599,11 @@ int select_lc3_preset(char *preset_name)
 		{
 			int sample_rate = bt_audio_codec_cfg_freq_to_freq_hz((enum bt_audio_codec_cfg_freq)bt_audio_codec_cfg_get_freq(codec_cfg));
 #if defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
+			if(sample_rate != 48000)
+#else
 			if(sample_rate != a2dp_audio_sample_rate)
+#endif
 #else
 			if(sample_rate != wav_file.sample_rate)
 #endif
@@ -698,6 +760,18 @@ void config_audio_parameters(int sample_rate, int channels, int bits)
 		}
 	}
 	PRINTF("LC3 encoder setup done!\n");
+
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0) && \
+	defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
+	/* Resampler Init. */
+	if(lc3_codec_info.frame_duration_us == 7500)
+	{
+		PRINTF("\nbridge upsample not support 7.5ms frame!\n");
+		while(1);
+	}
+	Resampler_Init(0, 44100, 48000, 441, 480);
+	Resampler_Init(1, 44100, 48000, 441, 480);
+#endif
 
 	/* set codec data. */
 
@@ -1693,7 +1767,11 @@ void unicast_media_sender_task(void *param)
 #endif
 	/* Select LC3 preset */
 #if defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
+	print_all_preset(48000);
+#else
 	print_all_preset(a2dp_audio_sample_rate);
+#endif
 #else
 	print_all_preset(wav_file.sample_rate);
 #endif
@@ -1701,7 +1779,11 @@ void unicast_media_sender_task(void *param)
 	OSA_SemaphoreWait(sem_lc3_preset, osaWaitForever_c);
 	/* Config audio parameters. */
 #if defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
+#if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
+	config_audio_parameters(48000, a2dp_audio_channels, a2dp_audio_bits);
+#else
 	config_audio_parameters(a2dp_audio_sample_rate, a2dp_audio_channels, a2dp_audio_bits);
+#endif
 #else
 	config_audio_parameters(wav_file.sample_rate, wav_file.channels, wav_file.bits);
 #endif

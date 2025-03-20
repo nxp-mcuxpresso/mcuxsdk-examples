@@ -124,6 +124,8 @@ SECTIONS
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
 
+        */srCvtFrm.c.obj
+
         *libethermind_lc3_decoder.a
         *libethermind_lc3_encoder.a
         *libethermind_lc3_common.a
@@ -139,6 +141,8 @@ SECTIONS
         */fsl_adapter_flexspi_nor_flash.c.obj
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
+
+        */srCvtFrm.c.obj
 
         *libethermind_lc3_decoder.a
         *libethermind_lc3_encoder.a
@@ -156,6 +160,8 @@ SECTIONS
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
 
+        */srCvtFrm.c.obj
+
         *libethermind_lc3_decoder.a
         *libethermind_lc3_encoder.a
         *libethermind_lc3_common.a
@@ -165,6 +171,8 @@ SECTIONS
         */fsl_adapter_flexspi_nor_flash.c.obj
         */mflash_drv.c.obj
         */fsl_flexspi.c.obj
+
+        */srCvtFrm.c.obj
 
         *libethermind_lc3_decoder.a
         *libethermind_lc3_encoder.a
@@ -339,6 +347,8 @@ SECTIONS
     */fsl_adapter_flexspi_nor_flash.c.obj(.text .text* .rodata .rodata*)
     */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+
+    */srCvtFrm.c.obj(.text .text* .rodata .rodata*)
 
     *libethermind_lc3_decoder.a(.text .text* .rodata .rodata*)
     *libethermind_lc3_encoder.a(.text .text* .rodata .rodata*)
