@@ -1,9 +1,3 @@
 # digital_key_device
 
-## Overview
-The Digital Key Device application emulates a Car Connectivity Consortium (CCC) Digital Key Release 3-enabled smartphone.
-It acts as a Bluetooth Low Energy central device, scanning for advertising coming from a Digital Key Car Anchor.
-
-## Supported Boards
-- KW45B41Z-EVK
-- KW47-EVK
+For details about the this application please check out the [Digital Key Device](<https://mcuxpresso.nxp.com/mcuxsdk/latest/html/middleware/wireless/bluetooth/doc/Bluetooth Low Energy CCC Digital Key Application Note/topics/ccc_digital_key_applications_overview.html#digital-key-device>) section in the Bluetooth Low Energy Demo Applications Users Guide.

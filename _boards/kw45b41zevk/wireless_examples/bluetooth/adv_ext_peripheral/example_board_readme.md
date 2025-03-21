@@ -10,14 +10,25 @@ Hardware requirements
 - KW45B41Z-EVK Board
 - Personal Computer
 
+Hardware references
+===================
+|  Platform    | WAKESW | OPTSW  | ADVLED   | CONNLED  |
+|:-------------|:------:|:------:|:--------:|:--------:|
+| KW45B41Z-EVK | SW3    | SW2    | LED2     | LED1     |
+
 Board settings
 ==============
 No special board setting.
 To flash the board in case the sensor is put in deep sleep, press SW3 or RESET.
 
-Hardware references
-=====================
-|  Platform    | WAKESW | OPTSW  | ADVLED   | CONNLED  |
-|--------------|--------|--------|----------|----------|
-| KW45B41Z-EVK | SW3    | SW2    | LED2     | LED1     |
-
+Prepare the Demo
+================
+1.  Connect a USB cable between the PC host and the OpenSDA USB port on the board.
+2.  Download the program to the target board.
+3.  Press the reset button on your board to begin running the demo.
+4.  Open a serial terminal application and use the following settings with the detected serial device:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
