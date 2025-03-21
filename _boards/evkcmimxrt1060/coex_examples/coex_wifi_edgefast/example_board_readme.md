@@ -66,17 +66,6 @@ Macors releated to Wi-Fi supplicant,
 | wpa supplicant       | 1(default)               |
 
 
-WLAN and BT FW download,
-
-|        FW download        | CONFIG_WIFI_IND_DNLD | CONFIG_BT_IND_DNLD |
-| ------------------------- | -------------------- | ------------------ |
-| WLAN independent download | 1(default)           | /                  |
-| BT independent download   | /                    | 1(default)         |
-| Combo FW download         | 0                    | 0                  |
-> NOTE: WLAN/BT FW independent download is enabled by default.
-> 1) WLAN only FW download over SDIO
-> 2) BT only FW download over UART
-
 ### Building coex examples with CMake
 
 
@@ -89,7 +78,7 @@ $ west build -b evkcmimxrt1060 examples/coex_examples/coex_wifi_edgefast --toolc
 > flexspi_nor_release:
 ```bash
 $ cd <sdk root>
-$ west build -b evkcmimxrt1060 examples/coex_examples/coex_wifi_edgefast --toolchain armgcc --config flexspi_nor_debug -d coex_wifi_edgefast
+$ west build -b evkcmimxrt1060 examples/coex_examples/coex_wifi_edgefast --toolchain armgcc --config flexspi_nor_release -d coex_wifi_edgefast
 ```
 
 **NOTE:**
