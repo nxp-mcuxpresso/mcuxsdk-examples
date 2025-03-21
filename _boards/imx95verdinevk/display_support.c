@@ -283,6 +283,8 @@ void BOARD_PrepareDisplay(void)
 
     HAL_ClockSetPllClk(&hal_videopll1vcoCLKCfg);
     HAL_ClockSetPllClk(&hal_videopll1CLKCfg);
+    HAL_ClockEnable(&hal_videopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_videopll1CLKCfg);
     HAL_ClockSetRootClk(&hal_disp1pixlCLKCfg);
     mipiDsiDpiClkFreq_Hz = HAL_ClockGetIpFreq(hal_clock_disp1pix);
     HAL_ClockSetRootClk(&hal_mipiphycfgCLKCfg);
@@ -309,6 +311,8 @@ void BOARD_PrepareDisplay(void)
 #endif
     HAL_ClockSetPllClk(&hal_ldbpllvcoCLKCfg);
     HAL_ClockSetPllClk(&hal_ldbpllCLKCfg);
+    HAL_ClockEnable(&hal_ldbpllvcoCLKCfg);
+    HAL_ClockEnable(&hal_ldbpllCLKCfg);
 
     /* Select LVDS pin by using PCAL6524 */
     BOARD_InitPCAL6524(&pcalHandle);
