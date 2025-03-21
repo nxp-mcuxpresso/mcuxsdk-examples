@@ -1,4 +1,4 @@
-/* Copyright 2024-2025 NXP
+/* Copyright 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -20,7 +20,7 @@
 #define HAL_ENABLE_CAMERA
 #define HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670     1
 #define HAL_ENABLE_DISPLAY
-#define HAL_ENABLE_DISPLAY_DEV_Lcdifv2Rk055   1
+#define HAL_ENABLE_DISPLAY_DEV_Lcdifv2Rk055ah 1
 #define HAL_ENABLE_2D_IMGPROC
 
 /* use GPU backend */
@@ -29,8 +29,24 @@
 #define HAL_ENABLE_GFX_DEV_GPU                1
 
 /* use TFlite micro inference engine for this application */
-#define HAL_ENABLE_INFERENCE_TFLITE           0
+#define HAL_ENABLE_INFERENCE_TFLITE           1
 
+/**
+ * This is the inference HAL configuration
+ */
+
+/* The size of Tensor Arena buffer for TensorFlowLite-Micro */
+/* minimum required arena size for MobileNetv1 converted for NPU */
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB         256
+
+/*
+ * TFLite tensor arena buffer alignment requirement:
+ * TFLite input buffer allocation is not dynamically controlled by the pipeline.
+ * Thus, set HAL_TFLITE_BUFFER_ALIGN to 64B when using GPU backend as its output buffer
+ * is 64B aligned.
+ * Default value is 16Bytes.
+ */
+#define HAL_TFLITE_BUFFER_ALIGN               64
 
 /**
  * VGLite heap size for MIMXRT700 EVK.
@@ -75,19 +91,25 @@
 #define APP_CAMERA_FORMAT  MPP_PIXEL_RGB565
 
 /* display parameters */
-#define APP_DISPLAY_NAME   "Lcdifv2Rk055"
-#define APP_DISPLAY_WIDTH  720
-#define APP_DISPLAY_HEIGHT 1280
-#define APP_DISPLAY_FORMAT MPP_PIXEL_RGB565
-
-#define APP_GFX_BACKEND_NAME "gfx_GPU"
-
-/* 30fps capture */
-#define APP_RC_CYCLE_INC 3
-#define APP_RC_CYCLE_MIN 33
+#define APP_DISPLAY_NAME                      "Lcdifv2Rk055ah"
+#define APP_DISPLAY_WIDTH                     720
+#define APP_DISPLAY_HEIGHT                    1280
+#define APP_DISPLAY_FORMAT                    MPP_PIXEL_RGB565
 
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */
-#define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_0
+#define APP_DISPLAY_LANDSCAPE_ROTATE          ROTATE_90
+
+/* 30fps capture */
+#define APP_RC_CYCLE_INC 3
+#define APP_RC_CYCLE_MIN 35
+
+/* select inference model converted for NPU */
+#define APP_USE_NEUTRON64_MODEL
+
+#define APP_GFX_BACKEND_NAME "gfx_GPU"
+
+/* Tensorflow lite Model data */
+#define APP_TFLITE_MODEL_NAME "models/mobilenet_v1_0.25_128_quant_int8/mobilenetv1_model_data_tflite_npu64.h"
 
 #endif /* _MPP_CONFIG_H */

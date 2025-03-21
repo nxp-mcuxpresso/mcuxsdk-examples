@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -72,6 +72,10 @@ void BOARD_ClockPreConfig(void)
     CLOCK_AttachClk(kSENSE_BASE_to_SENSE_MAIN);
 }
 
+/*
+ * NOTE, the actual output of the LDO may not exactly same with the setting due to accuracy and internal circuite voltage drop.
+ * To make sure the minumum supply voltage meeting the rquirement of corresponding operation frequency, external supply is suggested.
+ */
 void BOARD_ClockHSRunPreConfig(void)
 {
     BOARD_ClockPreConfig();
@@ -92,6 +96,7 @@ void BOARD_ClockHSRunPreConfig(void)
     };
 
     POWER_ConfigRegulatorSetpoints(kRegulator_Vdd1LDO, &ldo, &lvd);
+    POWER_SetRunRegulatorMode(kRegulator_Vdd1LDO, kPower_LDOMode_Bypass); /* Change to bypass mode. */
 
     POWER_ApplyPD();
 }
@@ -123,6 +128,10 @@ void BOARD_ClockPreConfig(void)
     BOARD_XspiClockSafeConfig(); /*Change to common_base clock(Sourced by FRO1). */
 }
 
+/*
+ * NOTE, the actual output of the LDO may not exactly same with the setting due to accuracy and internal circuite voltage drop.
+ * To make sure the minumum supply voltage meeting the rquirement of corresponding operation frequency, external supply is suggested.
+ */
 void BOARD_ClockHSRunPreConfig(void)
 {
     BOARD_ClockPreConfig();
@@ -143,6 +152,7 @@ void BOARD_ClockHSRunPreConfig(void)
     };
 
     POWER_ConfigRegulatorSetpoints(kRegulator_Vdd2LDO, &ldo, &lvd);
+    POWER_SetRunRegulatorMode(kRegulator_Vdd2LDO, kPower_LDOMode_Bypass); /* Change to bypass mode. */
 
     POWER_ApplyPD();
 }
@@ -252,8 +262,8 @@ void BOARD_ConfigMPU(void)
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
 
     /* Enable code & system cache */
-    //XCACHE_EnableCache(XCACHE0);
-    //XCACHE_EnableCache(XCACHE1);
+    XCACHE_EnableCache(XCACHE0);
+    XCACHE_EnableCache(XCACHE1);
 
     /* flush pipeline */
     __DSB();

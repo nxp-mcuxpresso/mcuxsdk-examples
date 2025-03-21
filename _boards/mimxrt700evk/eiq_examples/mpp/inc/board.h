@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -51,9 +51,6 @@
 #else
 #error "Unsupported core!"
 #endif
-
-#define EXAMPLE_XSPI1_AMBA_BASE   0x08000000U
-#define EXAMPLE_XSPI2_AMBA_BASE   0x60000000U
 
 /* HCI UART configuration */
 #define BOARD_BT_UART_BASEADDR     LPUART3
@@ -313,6 +310,10 @@ void BOARD_I2c2RecoverBus(void);
         BOARD_RestoreI2c##n##PinMux(); \
     } while (0);
 
+/*!
+ * @brief Release Codec I2C bus. This macro is used to release the onboard codec I2C.
+ */
+#define BOARD_Codec_I2C_ReleaseBus() BOARD_I2C_ReleaseBus(2)
 #endif
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED

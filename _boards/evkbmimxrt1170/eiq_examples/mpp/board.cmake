@@ -14,6 +14,7 @@ mcux_add_source(
             inc/dcd.h
             inc/app.h
             inc/FreeRTOSConfig.h
+            inc/fsl_debug_console_conf.h
 )
 
 mcux_add_source(

@@ -12,8 +12,10 @@ Files origin from sdk v2.15.0:
 │   │   /* boards/evkbmimxrt1170/eiq_examples/tflm_label_image/dcd.h, not modified */
 │   ├── FreeRTOSConfig.h
 │   │   /* boards/evkbmimxrt1170/freertos_examples/freertos_hello/cm7/FreeRTOSConfig.h and modified to fit mpp demo - configTICK_RATE_HZ is changed to 1000 */
-│   └── pin_mux.h
-│       /* boards/evkbmimxrt1170/eiq_examples/tflm_label_image/pin_mux.h, not modified */
+│   ├── pin_mux.h
+│   │   /* boards/evkbmimxrt1170/eiq_examples/tflm_label_image/pin_mux.h, not modified */
+│   └── fsl_debug_console_conf.h
+│       /* boards/evkbmimxrt1170/edgefast_bluetooth_examples/shell/cm7, not modified */
 ├─ src
 │   ├── board_init.c
 │   │   /* created to redefine BOARD_Init() for mpp demo */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -29,8 +29,10 @@
 #endif
 
 #ifndef APP_CONFIG
-#error "ERROR: test configuration APP_CONFIG is not defined"
-#elif (APP_CONFIG==1)
+#define APP_CONFIG 1
+#endif
+
+#if (APP_CONFIG==1) /* default app config */
 #include "images/couple_COCO_128_128_rgb.h"
 #define EXPECTED_CONFIDENCE_MIN       99
 #define EXPECTED_NUM_DETECTED_FACES   2

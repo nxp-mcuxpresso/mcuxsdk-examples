@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -22,6 +22,6 @@
 #define IMAGE_TYPE IMG_couple_COCO
 #endif
 
-#pragma message "No test configuration is supported for this application and for this board""
+#pragma message "No test configuration is supported for this application and for this board"
 
 #endif /* _TEST_CONFIG_H */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -22,8 +22,10 @@
 #endif
 
 #ifndef APP_CONFIG
-#error "ERROR: test configuration APP_CONFIG is not defined"
-#elif (APP_CONFIG ==1 )
+#define APP_CONFIG 1
+#endif
+
+#if (APP_CONFIG==1) /* default app config */
 #ifndef USE_NAS_OPTIMIZED_MODEL
 #include APP_STATIC_IMAGE_NAME
 #define EXPECTED_CONFIDENCE_MIN       0

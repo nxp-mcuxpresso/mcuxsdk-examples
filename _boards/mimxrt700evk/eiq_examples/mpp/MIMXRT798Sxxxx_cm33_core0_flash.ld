@@ -26,8 +26,8 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 
-HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x800;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x400;
+HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x1000;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
 m_ezhv_image_maximum_size = 0x00010000;
@@ -218,19 +218,13 @@ SECTIONS
   __MDATA_REGION_SIZE  = LENGTH(m_model);
   __MDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for model data initialization */
 
-  .model.init : AT(__MDATA_ROM)
+  .modeldata : AT(__MDATA_ROM)
   {
+    . = ALIGN(4);
     __modeldata_start__ = .;   /* create a global symbol at model data start */
-    . = ALIGN(4);
-    __modeldata_init_end__ = .;   /* create a global symbol at initialized model data end */
-  } > m_model
-
-  . = __modeldata_init_end__;
-  .model :
-  {
-    . = ALIGN(4);
     *(.modeldata)
     *(.modeldata*)
+    . = ALIGN(4);
     __modeldata_end__ = .;
   } > m_model
 
@@ -272,7 +266,7 @@ SECTIONS
     __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
   } > m_ncache
 
-  __DATA_END = __MDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
+  __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
 
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")

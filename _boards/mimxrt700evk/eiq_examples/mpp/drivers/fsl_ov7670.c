@@ -1,10 +1,13 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2020 NXP
- * All rights reserved.
+ * Copyright 2016-2017, 2020, 2023 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
+#include "fsl_video_common.h"
+#include "fsl_camera.h"
+#include "fsl_camera_device.h"
 #include "fsl_ov7670.h"
 
 /*******************************************************************************
@@ -61,13 +64,13 @@ ov7670_output_format_config_t OV7670_FORMAT_xRGB444           = {0x04, 0xd0, 0x2
 ov7670_output_format_config_t OV7670_FORMAT_RGBx444           = {0x04, 0xd0, 0x3};
 
 /*! @brief resolution initialization structure data                           */
-ov7670_resolution_config_t OV7670_RESOLUTION_VGA = {0x00, 0x00, 0x00, 0x3a, 0x35, 0x11, 0xf0, 0x02}; /*!< 640 x 480 */
+ov7670_resolution_config_t OV7670_RESOLUTION_VGA = {0x00, 0x00, 0x00, 0x3a, 0x35, 0x11, 0xf0, 0x02};   /*!< 640 x 480 */
 ov7670_resolution_config_t OV7670_RESOLUTION_QVGA_ORIGINAL = {0x10, 0x00, 0x00, 0x3a,
                                                               0x35, 0x11, 0xf0, 0x02};                 /*!< 320 x 240 */
 ov7670_resolution_config_t OV7670_RESOLUTION_QVGA  = {0x10, 0x04, 0x19, 0x3a, 0x35, 0x11, 0xf1, 0x02}; /*!< 320 x 240 */
 ov7670_resolution_config_t OV7670_RESOLUTION_QQVGA = {0x10, 0x04, 0x1A, 0x3a, 0x35, 0x22, 0xf2, 0x02}; /*!< 160 x 120 */
 
-ov7670_resolution_config_t OV7670_RESOLUTION_CIF = {0x20, 0x08, 0x11, 0x3a, 0x35, 0x11, 0xf1, 0x02}; /*!< 352 x 288 */
+ov7670_resolution_config_t OV7670_RESOLUTION_CIF = {0x20, 0x08, 0x11, 0x3a, 0x35, 0x11, 0xf1, 0x02};   /*!< 352 x 288 */
 ov7670_resolution_config_t OV7670_RESOLUTION_QCIF_ORIGINAL = {0x21, 0x08, 0x11, 0x3a,
                                                               0x35, 0x11, 0xf1, 0x02};                 /*!< 176 x 144 */
 ov7670_resolution_config_t OV7670_RESOLUTION_QCIF  = {0x28, 0x00, 0x11, 0x3a, 0x35, 0x11, 0xf1, 0x02}; /*!< 176 x 144 */
@@ -121,11 +124,11 @@ ov7670_filter_config_t OV7670_FILTER_14FPS_50HZ_AUTO_LIGHT_FREQ_DETECT = {0x20, 
 
 /*! @brief White balance initialization structure data                        */
 ov7670_white_balance_config_t OV7670_WHITE_BALANCE_DEFAULT  = {0x02, 0x9a, 0xc0, 0x55, 0x02, 0x14,
-                                                              0xf0, 0x45, 0x61, 0x51, 0x79, 0x08};
+                                                               0xf0, 0x45, 0x61, 0x51, 0x79, 0x08};
 ov7670_white_balance_config_t OV7670_WHITE_BALANCE_DISABLED = {0x00, 0x9a, 0xc0, 0x55, 0x02, 0x14,
                                                                0xf0, 0x45, 0x61, 0x51, 0x79, 0x00};
 ov7670_white_balance_config_t OV7670_WHITE_BALANCE_SIMPLE   = {0x02, 0x9f, 0x10, 0x55, 0x02, 0x14,
-                                                             0xf0, 0x45, 0x61, 0x51, 0x79, 0x08};
+                                                               0xf0, 0x45, 0x61, 0x51, 0x79, 0x08};
 
 /*! @brief Light mode configuration initialization structure data             */
 ov7670_light_mode_config_t OV7670_LIGHT_MODE_DISABLED = {0x05, 0x0a, 0x08, 0x00, 0x08};
@@ -161,7 +164,7 @@ ov7670_special_effect_config_t OV7670_SPECIAL_EFFECT_DISABLED    = {0x08, 0x80, 
 ov7670_gamma_curve_slope_config_t OV7670_GAMMA_CURVE_SLOPE_DEFAULT = {0x24, 0x04, 0x07, 0x10, 0x28, 0x36, 0x44, 0x52,
                                                                       0x60, 0x6c, 0x78, 0x8c, 0x9e, 0xbb, 0xd2, 0xe5};
 ov7670_gamma_curve_slope_config_t OV7670_GAMMA_CURVE_SLOPE1        = {0x20, 0x10, 0x1e, 0x35, 0x5a, 0x69, 0x76, 0x80,
-                                                               0x88, 0x8f, 0x96, 0xa3, 0xaf, 0xc4, 0xd7, 0xe8};
+                                                                      0x88, 0x8f, 0x96, 0xa3, 0xaf, 0xc4, 0xd7, 0xe8};
 
 const camera_device_operations_t ov7670_ops = {
     .init     = OV7670_Init,
@@ -188,7 +191,6 @@ status_t OV7670_CameraInit(camera_device_handle_t *handle, const ov7670_config_t
     (void)OV7670_WriteReg(handle, OV7670_COM7_REG, 0x80);
     /* wait for a least 1ms */
     OV7670_DelayMs(5); /* 5ms */
-
     /* Read product ID nuumber MSB */
     if (OV7670_ReadReg(handle, OV7670_PID_REG, &u8TempVal0) != kStatus_Success)
     {
@@ -216,7 +218,6 @@ status_t OV7670_CameraInit(camera_device_handle_t *handle, const ov7670_config_t
     {
         (void)OV7670_Configure(handle, config);
     }
-	
     /* MVFP */
     if (OV7670_ReadReg(handle, OV7670_MVFP_REG, &u8TempVal1) != kStatus_Success)
     {
@@ -289,6 +290,11 @@ status_t OV7670_Configure(camera_device_handle_t *handle, const ov7670_config_t 
 
     (void)OV7670_SetWindow(handle, windowConfig);
     (void)OV7670_FrameRateAdjustment(handle, config->frameRate);
+
+#if !CONFIG_OV7670_FREERUNNING_PCLK
+    /* configure Hsync/Vsync for EZH */
+    (void)OV7670_WriteReg(handle, OV7670_COM10_REG, 0x20); /* no PCLK toggle during Hblank, mandatory! */
+#endif
 
     if (config->advancedConfig == NULL)
     {
@@ -404,8 +410,7 @@ status_t OV7670_FrameRateAdjustment(camera_device_handle_t *handle, const ov7670
     OV7670_DelayMs(2);
     (void)OV7670_WriteReg(handle, OV7670_DM_LNL_REG, frameRateConfig->dm_lnl);
     OV7670_DelayMs(2);
-    //(void)OV7670_WriteReg(handle, OV7670_DM_LNH_REG, frameRateConfig->dm_lnh);
-	(void)OV7670_WriteReg(handle, OV7670_DM_LNL_REG, frameRateConfig->dm_lnh);
+    (void)OV7670_WriteReg(handle, OV7670_DM_LNH_REG, frameRateConfig->dm_lnh);
     OV7670_DelayMs(2);
 
     return kStatus_Success;

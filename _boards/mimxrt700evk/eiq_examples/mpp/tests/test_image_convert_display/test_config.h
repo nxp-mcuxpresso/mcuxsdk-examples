@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -26,8 +26,10 @@
 #endif
 
 #ifndef APP_CONFIG
-#error "ERROR: test configuration APP_CONFIG is not defined"
-#elif (APP_CONFIG==0) /* default app config */
+#define APP_CONFIG 0
+#endif
+
+#if (APP_CONFIG==0) /* default app config */
 #include "images/stopwatch168_208_rgb565.h"
 #define IMAGE_NAME "stopwatch168_208_rgb565"
 #define EXPECTED_CHECKSUM 0x0
