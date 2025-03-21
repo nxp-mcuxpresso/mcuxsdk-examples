@@ -29,15 +29,20 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
-#include "board_init.h"
+#include "app.h"
+
+/* Shell includes */
+#include "fsl_shell.h"
 
 /* MPP includes */
 #include "mpp_api.h"
 #include "mpp_config.h"
 #include "hal_utils.h"
+#include "hal_os.h"
 
 /* utility functions */
 #include "models/utils.h"
+#include "models/shell_database_utils.h"
 
 /*******************************************************************************
  * Variables declaration
@@ -47,8 +52,23 @@
 #include APP_TFLITE_MOBILEFACENET_DATA
 #include APP_TFLITE_ULTRAFACE_DATA
 
+/* Persons database */
+#include APP_DATABASE_NAME
+
 static const char s_display_name[] = APP_DISPLAY_NAME;
 static const char s_camera_name[] =  APP_CAMERA_NAME;
+
+/* shell functions */
+/* The handle should be 4 byte aligned, because unaligned access isn't be supported on some devices.*/
+SDK_ALIGN(static uint8_t s_shellHandleBuffer[SHELL_HANDLE_SIZE], 4);
+static shell_handle_t s_shellHandle;
+extern serial_handle_t g_serialHandle;
+
+static TaskHandle_t shell_task_handle = NULL;
+
+#include APP_DATABASE_INFOS
+
+#define REGISTRATION_DELAY_MS 10000
 
 /*******************************************************************************
  * Definitions
@@ -63,10 +83,49 @@ static const char s_camera_name[] =  APP_CAMERA_NAME;
  ******************************************************************************/
 static void app_task(void *params);
 int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data);
+static void shell_database_init(void *params);
+
+static user_data_t user_data = {0};
+
+/* shell task status. */
+static int task_status;
+
+/* define shell commands */
+SHELL_COMMAND_DEFINE(Add,
+		"\r\n\"Add  arg \": Name \r\n Usage: name of person you want to add to database \r\n          ",
+		database_add,
+		1);
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
+/* @brief shell and database init function */
+static void shell_database_init(void *params)
+{
+    /* Init SHELL */
+    s_shellHandle = (shell_handle_t)&s_shellHandleBuffer[0];
+
+    char *propmt_text = "SHELL DATABASE CONTROL MODE >";
+
+    if (kStatus_SHELL_Success != SHELL_Init(s_shellHandle, g_serialHandle, propmt_text))
+    {
+        PRINTF("Shell initialization failed!\r\n");
+        return;
+    }
+
+    init_database(Embedding_database);
+
+    /* Add new command to commands list */
+    /* Definition of shell commands */
+
+    SHELL_RegisterCommand(s_shellHandle, SHELL_COMMAND(Add));
+
+    while (1)
+    {
+        SHELL_TASK_DELAY;
+    }
+}
+
 /*!
  * @brief Application entry point.
  */
@@ -78,6 +137,14 @@ int main()
 
     /* Init board hardware. */
     BOARD_Init();
+
+	ret = xTaskCreate(
+			shell_database_init,
+			"shell_database_init",
+			configMINIMAL_STACK_SIZE + 1000,
+			NULL,
+			APP_DEFAULT_PRIO + 1,
+			&shell_task_handle);
 
     ret = xTaskCreate(
             app_task,
@@ -98,41 +165,66 @@ int main()
     return 0;
 }
 
-void print_periodic(user_data_t *user_data)
+void print_conditional(user_data_t *user_data)
 {
-    if (user_data->last_model == MODEL_ULTRAFACE)
-    {
-        if (user_data->detected_count <= 0)
-        {
-            PRINTF("%s : no detection\r\n", ULTRAFACE_NAME);
-        }
-        else
-        {
-            for (int i = 0; i < NUM_BOXES_MAX; i++)
-            {
-                if (user_data->final_boxes[i].area > 0)
-                {
-                    PRINTF("%s : box %d score %d(%%)\r\n", ULTRAFACE_NAME, i,
-                            (int)(user_data->final_boxes[i].score * 100.0f));
-                }
-            }
-        }
-    }
-    else // MODEL_MOBILEFACENET
-    {
-        PRINTF("%s : name %s score %d(%%)\r\n", MOBILEFACENET_NAME,
-                user_data->result.recognized_name, user_data->result.similarity_percentage);
-    }
-    PRINTF("inference time %d ms \r\n", user_data->inference_time_ms);
-    return;
+	if (user_data->state != STATE_REGISTERING)
+	{
+		if (task_status == -1) /* task suspended */
+		{
+			vTaskSuspend(shell_task_handle);
+			task_status = -1;
+		}
+
+		if (user_data->last_model == MODEL_ULTRAFACE)
+		{
+			if (user_data->detected_count <= 0)
+			{
+				PRINTF("%s : no detection\r\n", ULTRAFACE_NAME);
+			}
+			else
+			{
+				for (int i = 0; i < NUM_BOXES_MAX; i++)
+				{
+					if (user_data->final_boxes[i].area > 0)
+					{
+						PRINTF("%s : box %d score %d(%%)\r\n", ULTRAFACE_NAME, i,
+								(int)(user_data->final_boxes[i].score * 100.0f));
+						PRINTF("Ultraface inference time %d ms \r\n", user_data->inference_time_ms);
+					}
+				}
+			}
+		}
+		else // MODEL_MOBILEFACENET
+		{
+		    if (strcmp(user_data->result.recognized_name, "") != 0)
+		    {
+		        PRINTF("%s : name %s score %d(%%)\r\n", MOBILEFACENET_NAME,
+		                                            user_data->result.recognized_name, user_data->result.similarity_percentage);
+		        PRINTF("Mobilefacenet inference time %d ms \r\n", user_data->inference_time_ms);
+		    }
+		}
+
+		if (task_status == -1) /* task suspended */
+		{
+			vTaskResume(shell_task_handle);
+			task_status = 0; /* task on */
+		}
+	}
+
+	return;
 }
 
 static void app_task(void *params)
 {
-    static user_data_t user_data = {0};
     user_data.cur_model = MODEL_ULTRAFACE;
     user_data.state = STATE_DETECTING;
+    user_data.db = Embedding_database;
+    user_data.db_max = DATABASE_MAX_PEOPLE;
     int ret = 0;
+    int last_time = 0;
+    int face_registered = 1;
+    /* registration status. */
+    static int registering = 0;
 
     PRINTF("[%s]\r\n", mpp_get_version());
 
@@ -145,6 +237,10 @@ static void app_task(void *params)
     api_param.rc_cycle_inc = APP_RC_CYCLE_INC;
     api_param.rc_cycle_min = APP_RC_CYCLE_MIN;
 #endif
+
+	/* fix max pipeline task priority. */
+    api_param.pipeline_task_max_prio = APP_PIPELINE_TASK_MAX_PRIO;
+
     ret = mpp_api_init(&api_param);
     if (ret)
         goto err;
@@ -238,6 +334,9 @@ static void app_task(void *params)
     mpp_element_params_t mobilefacenet_params;
     memset(&mobilefacenet_params, 0 , sizeof(mpp_element_params_t));
 
+#ifdef APP_USE_NEUTRON64_MODEL
+    copy_mobilefacenet_to_ram();
+#endif
     mobilefacenet_params.ml_inference.model_data = mobilefacenet_data;
     mobilefacenet_params.ml_inference.model_size = mobilefacenet_data_len;
     mobilefacenet_params.ml_inference.model_input_mean = MOBILEFACENET_INPUT_MEAN;
@@ -250,6 +349,9 @@ static void app_task(void *params)
     /* prepare the ultraface model params */
     mpp_element_params_t ultraface_params;
     memset(&ultraface_params, 0 , sizeof(mpp_element_params_t));
+#ifdef APP_USE_NEUTRON64_MODEL
+    copy_ultraface_to_ram();
+#endif
     ultraface_params.ml_inference.model_data = ultraface_data;
     ultraface_params.ml_inference.model_size = ultraface_data_len;
     ultraface_params.ml_inference.model_input_mean = ULTRAFACE_INPUT_MEAN;
@@ -396,12 +498,13 @@ static void app_task(void *params)
         if ((tick > (xLastPrintTime + xFrequency)) && Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0))
         {
             xLastPrintTime = tick;
-            print_periodic(&user_data);
+            print_conditional(&user_data);
         }
         __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 
         /* manage timed state transition */
-        if (user_data.state == STATE_RECOGNIZED || user_data.state == STATE_REGISTERED)
+        if (user_data.state == STATE_RECOGNIZED || user_data.state == STATE_REGISTERED ||
+                user_data.state == STATE_REGISTRATION_CANCELLED)
         {
             /* start timer */
             notifyTime = tick;
@@ -418,6 +521,49 @@ static void app_task(void *params)
             /* stop timer */
             notifyTime = 0;
             user_data.state = STATE_USER_NOTIFIED;
+        }
+
+        if (user_data.state == STATE_REGISTERING)
+        {
+            if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
+            {
+                /* set new person embeddings */
+                set_new_person_embeddings((const float *)user_data.result.embedding);
+
+                int start_time = hal_get_exec_time();
+                /* wait for user to finish registration */
+                while(registering != 1)
+                {
+                    /* check if user entered the new face name */
+                    registering = registration_state();
+                    /* cancel registration, if delay is expired */
+                    if (last_time >= start_time + REGISTRATION_DELAY_MS)
+                    {
+                        PRINTF("*** Registration time expired! ***\r\n");
+                        face_registered = 0; /* person will not be added to database */
+                        break;
+                    }
+                    last_time = hal_get_exec_time();
+                }
+
+                /* reset registration state to 0 */
+                registering = reset_registration_state();
+
+                if (face_registered == 1) /* registration done */
+                {
+                    PRINTF("*** Face registered! ***\r\n");
+
+                    if (user_data.state == STATE_REGISTERING)
+                        user_data.state = STATE_REGISTERED;
+                }
+                else /* registration cancelled */
+                {
+                    if (user_data.state == STATE_REGISTERING)
+                        user_data.state = STATE_REGISTRATION_CANCELLED;
+                }
+
+                __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+            }
         }
 
         /* manage face recognition state machine */
@@ -498,7 +644,7 @@ static void app_task(void *params)
         }
         else
         {
-            /* empty */
+        	/* empty */
         }
     }
 

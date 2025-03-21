@@ -8,7 +8,7 @@
 #ifndef EMBEDDING_DATABASE_H
 #define EMBEDDING_DATABASE_H
 
-#include "models/mobilefacenet/mobilefacenet_output_postproc_quantized.h"
+#include "mobilefacenet_output_postproc_quantized.h"
 
 #define DATABASE_MAX_PEOPLE 10
 #define DATABASE_NUM_PEOPLE 0

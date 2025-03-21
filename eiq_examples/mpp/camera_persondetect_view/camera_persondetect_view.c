@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -259,6 +259,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 		/* update labeled rectangle */
 		if ( (app_priv->mp != NULL) && (app_priv->elem != 0) ) {
 			mpp_element_params_t params;
+			memset(&params, 0, sizeof(params));
 			/* detected_count contains at least the detection zone box */
 			params.labels.detected_count = app_priv->detected_count + 1;
 			params.labels.max_count = MAX_LABEL_RECTS;
@@ -390,6 +391,9 @@ static void app_task(void *params)
 	mpp_element_params_t persondetect_params;
 	memset(&persondetect_params, 0 , sizeof(mpp_element_params_t));
 
+#ifdef APP_USE_NEUTRON64_MODEL
+    copy_persondetect_to_ram();
+#endif
 	persondetect_params.ml_inference.model_data = persondetect_data;
 	persondetect_params.ml_inference.model_size = persondetect_data_len;
 	persondetect_params.ml_inference.model_input_mean = PERSONDETECT_INPUT_MEAN;

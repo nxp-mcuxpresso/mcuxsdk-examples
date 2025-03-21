@@ -9,8 +9,8 @@
 #define APP_TYPES_H_
 
 #include "mpp_api_types.h"
-#include "models/mobilefacenet/mobilefacenet_output_postproc_quantized.h"
-#include "models/ultraface_slim_quant_int8/ultraface_output_postproc.h"
+#include "mobilefacenet_output_postproc_quantized.h"
+#include "ultraface_output_postproc.h"
 
 typedef enum _e_cur_model {
     MODEL_ULTRAFACE,
@@ -24,6 +24,7 @@ typedef enum _e_state {
     STATE_RECOGNIZED,
     STATE_REGISTERING,  // TODO use this state to let user input its name
     STATE_REGISTERED,
+    STATE_REGISTRATION_CANCELLED,
     STATE_NOTIFYING_USER,
     STATE_USER_NOTIFIED
 } e_state;
@@ -42,6 +43,8 @@ typedef struct _user_data_t {
     int detected_count;     /* number of detected boxes */
     int inference_time_ms;
     e_state state;          /* state-machine for the app */
+    person * db;            /* embeddings database */
+    int db_max;             /* embeddings database max size. */
 } user_data_t;
 
 #endif /* APP_TYPES_H_ */
