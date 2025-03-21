@@ -45,6 +45,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1u);
     CLOCK_AttachClk(kPLL0_to_FLEXIO);
     BOARD_InitBootClocks();
+    CLOCK_EnableClock(kCLOCK_Port4);
     BOARD_I2C_ReleaseBus(2);
     BOARD_InitBootPins();
     BOARD_InitDebugConsole();
