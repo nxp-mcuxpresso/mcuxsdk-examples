@@ -40,6 +40,7 @@ mcux_add_macro(
     SDK_DEBUGCONSOLE_UART=1
     SHELL_BUFFER_SIZE=140
     SHELL_TASK_STACK_SIZE=3000U
+    STORAGE_IDLE_TASK_PRIORITY=11 # storage task must be higher priority than Zigbee task for bonding to work
 )
 
 mcux_add_source(
@@ -147,7 +148,7 @@ add_custom_command(
         ${APPLICATION_BINARY_DIR}/pdum_gen.h
         ${APPLICATION_BINARY_DIR}/pdum_apdu.S
         COMMAND ${PYTHON_EXECUTABLE} ${PDUMCONFIG}
-        ARGS 
+        ARGS
         -z router
         -e ENDIAN
         -f ${ZPSCFG}

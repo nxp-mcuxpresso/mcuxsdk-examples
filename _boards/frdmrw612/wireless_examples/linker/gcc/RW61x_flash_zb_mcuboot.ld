@@ -58,6 +58,10 @@ _size     |     m_app     |                                 '
           +               +
           +               +
     - - - +---------------+ - - - - - - - - - - - - - - - - - - - -
+          +               + EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS
+          +    LittleFS   +
+          +               + EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS + EDGEFAST_BT_LITTLEFS_REGION_SIZE
+    - - - +---------------+ - - - - - - - - - - - - - - - - - - - -
           |               | NV_STORAGE_START_ADDRESS
           |      NVS      |
           |               | NV_STORAGE_END_ADDRESS
@@ -123,6 +127,12 @@ NV_STORAGE_SECTOR_SIZE              = m_flash_sector_size;
 NV_STORAGE_SIZE                     = NV_STORAGE_MAX_SECTORS * NV_STORAGE_SECTOR_SIZE;
 NV_STORAGE_START_ADDRESS            = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;
 NV_STORAGE_START_ADDRESS_OFFSET     = NV_STORAGE_START_ADDRESS - m_flash_start;
+
+/* Used for littleFS - the EDGEFAST_BT_LITTLEFS_REGION_SIZE flash region is reserved for litteFS data */
+EDGEFAST_BT_LITTLEFS_STORAGE_MAX_SECTORS     = 16;
+EDGEFAST_BT_LITTLEFS_STORAGE_SECTOR_SIZE     = m_flash_sector_size;
+EDGEFAST_BT_LITTLEFS_REGION_SIZE             = EDGEFAST_BT_LITTLEFS_STORAGE_SECTOR_SIZE * EDGEFAST_BT_LITTLEFS_STORAGE_MAX_SECTORS;
+EDGEFAST_BT_LITTLEFS_STORAGE_START_ADDRESS   = NV_STORAGE_START_ADDRESS - EDGEFAST_BT_LITTLEFS_REGION_SIZE;
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x1000;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
