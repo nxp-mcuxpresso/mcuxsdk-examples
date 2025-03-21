@@ -89,3 +89,5 @@ lpuart_interrupt:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []

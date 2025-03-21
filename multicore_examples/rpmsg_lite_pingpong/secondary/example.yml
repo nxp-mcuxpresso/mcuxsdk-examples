@@ -103,3 +103,4 @@ rpmsg_lite_pingpong_secondary_core:
     mcxw72evk@cm33_core1: []
     kw47loc@cm33_core1: []
     frdmmcxw72@cm33_core1: []
+    frdmmcxl255@cm0plus: []

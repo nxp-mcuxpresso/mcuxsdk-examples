@@ -56,3 +56,4 @@ lpspi_interrupt_b2b_transfer_master:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
+    frdmmcxl255@cm33: []

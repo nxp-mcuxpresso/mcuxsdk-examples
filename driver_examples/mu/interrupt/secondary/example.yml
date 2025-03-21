@@ -80,3 +80,4 @@ mu_interrupt_secondary_core:
     - -mdk@hyperram_release
     frdmk32l3a6@cm0plus: []
     mimxrt700evk@cm33_core1: []
+    frdmmcxl255@cm0plus: []

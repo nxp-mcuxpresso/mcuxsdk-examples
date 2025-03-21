@@ -32,3 +32,5 @@ qtmr_inputcapture_outputpwm:
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []

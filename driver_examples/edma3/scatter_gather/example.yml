@@ -42,3 +42,4 @@ edma3_scatter_gather:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxl255@cm33: []

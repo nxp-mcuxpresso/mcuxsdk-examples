@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<configuration name="hello_world" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_15 http://mcuxpresso.nxp.com/XSD/mex_configuration_15.xsd" uuid="e2639888-a97b-4edd-b1fc-b26530d779fe" version="15" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <common>
+      <processor>MCXL255xxx</processor>
+      <package>MCXL255VDF</package>
+      <mcu_data>ksdk2_0</mcu_data>
+      <cores selected="cm33">
+         <core name="Cortex-M0P" id="cm0plus" description=""/>
+         <core name="Cortex-M33" id="cm33" description=""/>
+      </cores>
+      <description></description>
+   </common>
+   <preferences>
+      <validate_boot_init_only>true</validate_boot_init_only>
+      <generate_extended_information>false</generate_extended_information>
+      <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
+      <update_include_paths>true</update_include_paths>
+      <generate_registers_defines>false</generate_registers_defines>
+   </preferences>
+   <tools>
+      <pins name="Pins" version="15.0" enabled="true" update_project_code="true">
+         <pins_profile>
+            <processor_version>0.0.0</processor_version>
+         </pins_profile>
+         <functions_list>
+            <function name="BOARD_InitPins">
+               <description>Configures pin routing and optionally pin electrical features.</description>
+               <options>
+                  <callFromInitBoot>true</callFromInitBoot>
+                  <coreID>cm33</coreID>
+                  <enableClock>true</enableClock>
+               </options>
+               <dependencies/>
+               <pins>
+                  <pin peripheral="LPUART2" signal="TXD" pin_num="C10" pin_signal="P1_12/TRIG_IN1/LPUART2_TXD/CT_INP13/UTICK_CAP0/PWM0_B1">
+                     <pin_features>
+                        <pin_feature name="pull_value" value="low"/>
+                        <pin_feature name="pull_enable" value="disable"/>
+                        <pin_feature name="pull_select" value="down"/>
+                        <pin_feature name="invert_input" value="normal"/>
+                        <pin_feature name="input_buffer" value="disable"/>
+                        <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="drive_strength1" value="normal"/>
+                        <pin_feature name="open_drain" value="disable"/>
+                        <pin_feature name="passive_filter" value="disable"/>
+                        <pin_feature name="slew_rate" value="fast"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="LPUART2" signal="RXD" pin_num="B10" pin_signal="P1_13/TRIG_IN2/LPUART2_RXD/CT_INP14/UTICK_CAP1/PWM0_A1/WUU_P19">
+                     <pin_features>
+                        <pin_feature name="pull_value" value="low"/>
+                        <pin_feature name="pull_enable" value="disable"/>
+                        <pin_feature name="pull_select" value="down"/>
+                        <pin_feature name="invert_input" value="normal"/>
+                        <pin_feature name="input_buffer" value="disable"/>
+                        <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="drive_strength1" value="normal"/>
+                        <pin_feature name="open_drain" value="disable"/>
+                        <pin_feature name="passive_filter" value="disable"/>
+                        <pin_feature name="slew_rate" value="fast"/>
+                     </pin_features>
+                  </pin>
+               </pins>
+            </function>
+         </functions_list>
+      </pins>
+      <clocks name="Clocks" version="13.0" enabled="true" update_project_code="true">
+         <clocks_profile>
+            <processor_version>0.0.0</processor_version>
+         </clocks_profile>
+         <clock_configurations>
+            <clock_configuration name="BOARD_BootClockFRO40M" id_prefix="" prefix_user_defined="false">
+               <description></description>
+               <options/>
+               <dependencies/>
+               <clock_sources/>
+               <clock_outputs>
+                  <clock_output id="CLK_1M.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="CPU_clock.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FLASH_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_12M_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_HF_clock.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MAIN_CLK.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_reference_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_target_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_CMP0_FUNC_CLK.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_DBG_TRACE_CLK.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPTMR0_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_OSTIMER0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_UTICK0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_WWDT0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC_FRO_HF_DIV_CLK.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="Slow_clock.outFreq" value="10 MHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="40 MHz" locked="false" accuracy=""/>
+               </clock_outputs>
+               <clock_settings>
+                  <setting id="SCGMode" value="FIRC" locked="false"/>
+                  <setting id="CMP0FUNCCLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="DBGTRACECLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="LPTMR0CLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="MRCC.MRCC_CTIMER0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_OSTIMER0_SEL.sel" value="SCG.CLK_1M" locked="false"/>
+                  <setting id="MRCC.MRCC_PERIPH_GROUP_0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_PERIPH_GROUP_1_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_SYSTICK_SEL.sel" value="SYSCON.CPU_CLK" locked="false"/>
+                  <setting id="SCG.SCSSEL.sel" value="SCG.FIRC_SEL" locked="false"/>
+                  <setting id="WWDT0CLKDIV_HALT" value="Enable" locked="false"/>
+               </clock_settings>
+               <called_from_default_init>false</called_from_default_init>
+            </clock_configuration>
+            <clock_configuration name="BOARD_BootClockFRO36M" id_prefix="" prefix_user_defined="false">
+               <description></description>
+               <options/>
+               <dependencies/>
+               <clock_sources>
+                  <clock_source id="SCG.FIRC.outFreq" value="36 MHz" locked="false" enabled="false"/>
+               </clock_sources>
+               <clock_outputs>
+                  <clock_output id="CLK_1M.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="CPU_clock.outFreq" value="36 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FLASH_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_12M_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_HF_clock.outFreq" value="36 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MAIN_CLK.outFreq" value="36 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_reference_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_target_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_CMP0_FUNC_CLK.outFreq" value="36 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_DBG_TRACE_CLK.outFreq" value="36 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPTMR0_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_OSTIMER0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_UTICK0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_WWDT0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC_FRO_HF_DIV_CLK.outFreq" value="36 MHz" locked="false" accuracy=""/>
+                  <clock_output id="Slow_clock.outFreq" value="9 MHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="36 MHz" locked="false" accuracy=""/>
+               </clock_outputs>
+               <clock_settings>
+                  <setting id="SCGMode" value="FIRC" locked="false"/>
+                  <setting id="CMP0FUNCCLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="DBGTRACECLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="LPTMR0CLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="MRCC.MRCC_CTIMER0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_OSTIMER0_SEL.sel" value="SCG.CLK_1M" locked="false"/>
+                  <setting id="MRCC.MRCC_PERIPH_GROUP_0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="SCG.SCSSEL.sel" value="SCG.FIRC_SEL" locked="false"/>
+                  <setting id="WWDT0CLKDIV_HALT" value="Enable" locked="false"/>
+               </clock_settings>
+               <called_from_default_init>false</called_from_default_init>
+            </clock_configuration>
+            <clock_configuration name="BOARD_BootClockFRO20M" id_prefix="" prefix_user_defined="false">
+               <description></description>
+               <options/>
+               <dependencies/>
+               <clock_sources/>
+               <clock_outputs>
+                  <clock_output id="CLK_1M.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="CPU_clock.outFreq" value="20 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FLASH_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_12M_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_HF_clock.outFreq" value="20 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MAIN_CLK.outFreq" value="20 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_reference_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_target_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_CMP0_FUNC_CLK.outFreq" value="20 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_DBG_TRACE_CLK.outFreq" value="20 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPTMR0_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_OSTIMER0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_UTICK0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_WWDT0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC_FRO_HF_DIV_CLK.outFreq" value="20 MHz" locked="false" accuracy=""/>
+                  <clock_output id="Slow_clock.outFreq" value="5 MHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="20 MHz" locked="false" accuracy=""/>
+               </clock_outputs>
+               <clock_settings>
+                  <setting id="SCGMode" value="FIRC" locked="false"/>
+                  <setting id="CMP0FUNCCLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="DBGTRACECLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="LPTMR0CLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="MRCC.MRCC_CTIMER0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_OSTIMER0_SEL.sel" value="SCG.CLK_1M" locked="false"/>
+                  <setting id="MRCC.MRCC_PERIPH_GROUP_0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_SYSTICK_SEL.sel" value="SYSCON.CPU_CLK" locked="false"/>
+                  <setting id="SCG.FIRC_SEL.sel" value="SCG.FIRC_DIV2" locked="false"/>
+                  <setting id="SCG.SCSSEL.sel" value="SCG.FIRC_SEL" locked="false"/>
+                  <setting id="WWDT0CLKDIV_HALT" value="Enable" locked="false"/>
+               </clock_settings>
+               <called_from_default_init>false</called_from_default_init>
+            </clock_configuration>
+            <clock_configuration name="BOARD_BootClockFRO18M" id_prefix="" prefix_user_defined="false">
+               <description></description>
+               <options/>
+               <dependencies/>
+               <clock_sources>
+                  <clock_source id="SCG.FIRC.outFreq" value="36 MHz" locked="false" enabled="false"/>
+               </clock_sources>
+               <clock_outputs>
+                  <clock_output id="CLK_1M.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="CPU_clock.outFreq" value="18 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FLASH_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_12M_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_HF_clock.outFreq" value="18 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MAIN_CLK.outFreq" value="18 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_reference_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_target_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_CMP0_FUNC_CLK.outFreq" value="18 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_DBG_TRACE_CLK.outFreq" value="18 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPTMR0_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_OSTIMER0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_UTICK0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_WWDT0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC_FRO_HF_DIV_CLK.outFreq" value="18 MHz" locked="false" accuracy=""/>
+                  <clock_output id="Slow_clock.outFreq" value="4.5 MHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="18 MHz" locked="false" accuracy=""/>
+               </clock_outputs>
+               <clock_settings>
+                  <setting id="SCGMode" value="FIRC" locked="false"/>
+                  <setting id="CMP0FUNCCLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="DBGTRACECLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="LPTMR0CLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="MRCC.MRCC_CTIMER0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_OSTIMER0_SEL.sel" value="SCG.CLK_1M" locked="false"/>
+                  <setting id="SCG.FIRC_SEL.sel" value="SCG.FIRC_DIV2" locked="false"/>
+                  <setting id="SCG.SCSSEL.sel" value="SCG.FIRC_SEL" locked="false"/>
+                  <setting id="WWDT0CLKDIV_HALT" value="Enable" locked="false"/>
+               </clock_settings>
+               <called_from_default_init>false</called_from_default_init>
+            </clock_configuration>
+            <clock_configuration name="BOARD_BootClockFRO12M" id_prefix="" prefix_user_defined="false">
+               <description></description>
+               <options/>
+               <dependencies/>
+               <clock_sources/>
+               <clock_outputs>
+                  <clock_output id="CLK_1M.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="CPU_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FLASH_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_12M_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_HF_clock.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MAIN_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_reference_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.FREQME_target_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_CMP0_FUNC_CLK.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_DBG_TRACE_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPTMR0_CLK.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_UTICK0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_WWDT0_CLK.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC_FRO_HF_DIV_CLK.outFreq" value="40 MHz" locked="false" accuracy=""/>
+                  <clock_output id="Slow_clock.outFreq" value="3 MHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+               </clock_outputs>
+               <clock_settings>
+                  <setting id="CMP0FUNCCLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="DBGTRACECLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="LPTMR0CLKDIV_HALT" value="Enable" locked="false"/>
+                  <setting id="MRCC.MRCC_CTIMER0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_PERIPH_GROUP_0_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_PERIPH_GROUP_1_SEL.sel" value="MRCC.FRO_HF_DIVCLK" locked="false"/>
+                  <setting id="MRCC.MRCC_SYSTICK_SEL.sel" value="SYSCON.CPU_CLK" locked="false"/>
+                  <setting id="WWDT0CLKDIV_HALT" value="Enable" locked="false"/>
+               </clock_settings>
+               <called_from_default_init>false</called_from_default_init>
+            </clock_configuration>
+         </clock_configurations>
+      </clocks>
+      <dcdx name="DCDx" version="3.0" enabled="false" update_project_code="true">
+         <dcdx_profile>
+            <processor_version>0.0.0</processor_version>
+         </dcdx_profile>
+         <dcdx_configurations/>
+      </dcdx>
+      <periphs name="Peripherals" version="14.0" enabled="false" update_project_code="true">
+         <peripherals_profile>
+            <processor_version>0.0.0</processor_version>
+         </peripherals_profile>
+         <functional_groups/>
+         <components/>
+      </periphs>
+      <tee name="TEE" version="6.0" enabled="false" update_project_code="true">
+         <tee_profile>
+            <processor_version>0.0.0</processor_version>
+         </tee_profile>
+      </tee>
+   </tools>
+</configuration>

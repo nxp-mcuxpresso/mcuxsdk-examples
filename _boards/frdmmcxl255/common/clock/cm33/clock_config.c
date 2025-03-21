@@ -1,0 +1,111 @@
+/*
+ * Copyright 2023-2025 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+#include "fsl_clock.h"
+#include "clock_config.h"
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+/* System clock frequency. */
+extern uint32_t SystemCoreClock;
+
+/*******************************************************************************
+ ************************ BOARD_InitBootClocks function ************************
+ ******************************************************************************/
+void BOARD_InitBootClocks(void) 
+{
+    /* Config 32k Crystal Oscillator */
+    /* Monitor is disabled */
+    CLOCK_SetRoscMonitorMode(kSCG_RoscMonitorDisable);
+    CLOCK_SetXtal32Freq(32768U);
+    CLOCK_SetupFROHFClocking(96000000U, 0U);                    /* Setup FRO HF clock */
+
+    CLOCK_SetupFRO12MClocking();                                /* Setup FRO12M clock */
+
+    /*!< Set up clock selectors - Attach clocks to the peripheries */
+    CLOCK_AttachClk(kFIRC_to_MAIN_CLK);                  /* !< Switch MAIN_CLK to FIRC */
+    CLOCK_AttachClk(kFIRC_to_FRO_HF);                      /* !< Switch FRO_HF to FIRC */
+    CLOCK_AttachClk(kCPU_CLK_to_SYSTICK);                  /* !< Switch SYSTICK to CPU_CLK */
+    CLOCK_AttachClk(kCLK_1M_to_OSTIMER0);                  /* !< Switch OSTIMER0 to CLK_1M */
+    CLOCK_AttachClk(kSLOW_CLK_to_CLKOUT);                  /* !< Switch CLKOUT to SLOW_CLK */
+    CLOCK_AttachClk(kFRO_HF_DIV_to_ADC0);                  /* !< Switch ADC0 to FRO_HF_DIV */
+    CLOCK_AttachClk(kCLK_1M_to_UTICK0);                    /* !< Switch UTICK0 to CLK_1M */
+    CLOCK_AttachClk(kFRO_HF_DIV_to_CTIMER0);               /* !< Switch CTIMER0 to FRO_HF_DIV */
+    CLOCK_AttachClk(kFRO_HF_DIV_to_CTIMER1);               /* !< Switch CTIMER1 to FRO_HF_DIV */
+    CLOCK_AttachClk(kFRO12M_to_CMP0);                  /* !< Switch CMP0 to FRO_HF_DIV */
+    CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP0);             /* !< Switch PERIPH_GROUP0 to FRO_12M */
+    CLOCK_AttachClk(kFRO_HF_DIV_to_PERIPH_GROUP1);         /* !< Switch PERIPH_GROUP1 to FRO_HF_DIV */
+
+    /* Configure FREQME clock */
+    /*CLOCK_EnableClock(kCLOCK_InputMux);
+    RESET_PeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    INPUTMUX0->FREQMEAS_REF = INPUTMUX_FREQMEAS_REF_INP(2);
+    INPUTMUX0->FREQMEAS_TAR = INPUTMUX_FREQMEAS_TAR_INP(2);*/
+
+    /*!< Set up dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set AHBCLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF_DIV, 1U);           /* !< Set MRCC_FRO_HF_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC_WWDT0_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);            /* !< Set MRCC_CMP0_FUNC_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC_DBG_TRACE_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivADC0, 1U);                 /* !< Set MRCC_ADC0_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup0 , 1U);        /* !< Set MRCC_LPUART_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup1 , 1U);        /* !< Set MRCC_LPUART_DIV divider to value 1 */
+    
+    CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP0);
+    CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
+
+    
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = 96000000U;
+
+
+    /** Clocks for AON **/
+    CLOCK_EnableClock(kCLOCK_GateAonPORT);
+
+    /* 2.5M to I2C & UART */
+    CLOCK_AttachClk(kFROdiv1_to_AON_COM);
+    CLOCK_SetClockDiv(kCLOCK_DIVAonCMP, 1U);
+    CLOCK_EnableClock(kCLOCK_GateAonUART);
+
+    /* 2.5M to QTMR */
+    CLOCK_AttachClk(kFROdiv4_to_AON_TMR);
+    CLOCK_EnableClock(kCLOCK_GateAonQTMR0);
+    CLOCK_EnableClock(kCLOCK_GateAonQTMR1);
+
+    /* 2.5M (from step above) to LPTMR */
+    CLOCK_AttachClk(AON_TMR_to_AON_LPTMR);
+    CLOCK_EnableClock(kCLOCK_GateAonLPTMR);
+
+    /* 2.5M to AON CMP0 */
+    CLOCK_AttachClk(kFROdiv4_to_AON_CMP0);
+    CLOCK_EnableClock(kCLOCK_GateAonCMP0);
+    CLOCK_SetClockDiv(kCLOCK_DIVAonCMP0CLK0, 1U);
+    CLOCK_SetClockDiv(kCLOCK_DIVAonCMP0CLK1, 1U);
+
+    /* 2.5M to to LPADC */
+    CLOCK_AttachClk(kFROdiv4_to_AON_LPADC);
+    CLOCK_EnableClock(kCLOCK_GateAonLPADC);
+
+    /* PMUIRC fro16k to sLCD */
+    CLOCK_AttachClk(kFRO16K_to_AON_KPP);
+    CLOCK_EnableClock(kCLOCK_GateAonKPP);
+
+    /* PMUIRC fro16k to KPP */
+    CLOCK_AttachClk(kFRO16K_to_AON_LCD);
+    CLOCK_EnableClock(kCLOCK_GateAonLCD);
+                                             
+}
+
+

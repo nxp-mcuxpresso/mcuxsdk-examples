@@ -80,3 +80,4 @@ lpuart_edma_transfer:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxl255@cm33: []

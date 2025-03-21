@@ -1,0 +1,46 @@
+Hardware requirements
+=====================
+- Type-C USB cable
+- FRDM-MCXL255 board
+- Personal Computer
+
+Board settings
+============
+To measure the frequency or pulse width of external input clock, please connect input clock signal to
+J2_5(FREQME_CLK_IN0) or J2_3(FREQME_CLK_IN1)
+
+Prepare the Demo
+===============
+Note: MCUXpresso IDE project default debug console is semihost
+1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
+2.  Open a serial terminal with the following settings:
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Running the demo
+================
+The log below shows the output of the freqme_interrupt demo in the terminal window:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+FREQME Interrupt Example!
+Please select operate mode...
+        A -- Frequency Measurement Mode.
+        B -- Pulse Width Measurement Mode.
+Frequency Measurement Mode Selected!
+Please select the target clock:
+                A -- FRO_OSC_12M - The 12 MHz clock output from FRO12M (SIRC).
+                B -- CLK_16K[0] - The 16.384 kHz clock output from RTC Oscillator (ROSC). It is the clock of peripherals in Main Domain.
+                C -- SLOW_CLK - The SYSTEM_CLK divided by 4.
+                D -- FREQME_CLK_IN0 - Clock input from PIN P0_12.
+                E -- FREQME_CLK_IN1 - Clock input from PIN P0_13.
+Please input the scale factor of reference clock(Ranges from 0 to 31).
+20
+Target clock frequency is 12007408 Hz.
+Please select operate mode...
+        A -- Frequency Measurement Mode.
+        B -- Pulse Width Measurement Mode.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

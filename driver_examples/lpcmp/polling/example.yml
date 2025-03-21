@@ -43,3 +43,5 @@ lpcmp_polling:
     - +armgcc@release
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []
