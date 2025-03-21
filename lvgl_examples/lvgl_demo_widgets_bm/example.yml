@@ -293,6 +293,11 @@ lvgl_demo_widgets_bm:
     - -mdk@release
     lpcxpresso54628:
     - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
     lpcxpresso55s28:
