@@ -96,6 +96,7 @@ demo_apps
    power_mode_switch_lpc_1/readme.md
    power_mode_switch_mcx/index.rst
    power_mode_switch_mcxa/index.rst
+   power_mode_switch_mcxe/index.rst
    power_mode_switch_mcxl/readme.md
    power_mode_switch_mcxw/readme.md
    power_mode_switch_mcxw23/readme.md
