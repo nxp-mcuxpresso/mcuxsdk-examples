@@ -30,7 +30,8 @@ mcux_add_iar_configuration(
         --no_tbaa\
         --no_unaligned_access\
         --dlib_config full\
-        --diag_suppress Pa050,Pa082,Pe188"
+        --diag_suppress Pa050,Pa082,Pe188\
+        --no_code_motion"                     # to disable iar compiler code motion optimizations - when enabled, opus_encode is not functioning properly
     LD "--config_def=__heap_size__=0xF000"
 )
 
