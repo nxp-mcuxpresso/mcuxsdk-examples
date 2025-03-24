@@ -263,6 +263,8 @@ void BOARD_PrepareDisplay(void)
     HAL_ClockSetRootClk(&hal_mipiphypllrefCLKCfg);
     phyRefClkFreq_Hz = HAL_ClockGetIpFreq(hal_clock_mipiPhyPllRef);
     HAL_ClockSetRootClk(&hal_mipitestbyteCLKCfg);
+    HAL_ClockEnable(&hal_videopll1vcoCLKCfg);
+    HAL_ClockEnable(&hal_videopll1CLKCfg);
 
 #elif (DPU_EXAMPLE_DI == DPU_DI_LVDS)
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
