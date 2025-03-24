@@ -17,6 +17,7 @@ freertos_lpc_usart:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw23: []
+    mcxw23evk: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []

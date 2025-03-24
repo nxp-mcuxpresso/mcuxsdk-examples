@@ -24,6 +24,7 @@ flexcomm_spi_dma_b2b_transfer_master:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxw23: []
+    mcxw23evk: []
     frdmrw612: []
     lpcxpresso54628: []
     lpcxpresso55s06: []

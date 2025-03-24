@@ -272,6 +272,7 @@ hello_world:
     mcxw71evk: []
     frdmmcxw72@cm33_core0: []
     frdmmcxw23: []
+    mcxw23evk: []
     frdmrw612: []
     k32w148evk:
     - +armgcc@debug

@@ -31,6 +31,7 @@ freertos_lpc_i2c:
     evkmimxrt595: []
     evkmimxrt685: []
     frdmmcxw23: []
+    mcxw23evk: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

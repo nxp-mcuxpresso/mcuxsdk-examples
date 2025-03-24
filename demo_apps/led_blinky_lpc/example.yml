@@ -18,6 +18,7 @@ led_blinky_lpc:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw23: []
+    mcxw23evk: []
     lpc845breakout: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []

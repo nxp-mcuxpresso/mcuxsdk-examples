@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<configuration name="MCXW236B" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="73f0b34a-8d1a-4bcd-9a74-fc28036a1984" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <common>
+      <processor>MCXW236B</processor>
+      <package>MCXW236BIHNAR</package>
+      <mcu_data>ksdk2_0</mcu_data>
+      <cores selected="cm33_core0">
+         <core name="Cortex-M33" id="cm33_core0" description="M33 core"/>
+      </cores>
+      <description></description>
+   </common>
+   <preferences>
+      <validate_boot_init_only>true</validate_boot_init_only>
+      <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
+      <update_include_paths>true</update_include_paths>
+      <generate_registers_defines>false</generate_registers_defines>
+   </preferences>
+   <tools>
+      <pins name="Pins" version="16.0" enabled="true" update_project_code="true">
+         <pins_profile>
+            <processor_version>0.0.0</processor_version>
+         </pins_profile>
+         <functions_list>
+            <function name="BOARD_InitPins">
+               <description>Configures pin routing and optionally pin electrical features.</description>
+               <options>
+                  <callFromInitBoot>true</callFromInitBoot>
+                  <coreID>cm33_core0</coreID>
+                  <enableClock>true</enableClock>
+               </options>
+               <dependencies>
+                  <dependency resourceType="Peripheral" resourceId="SWD" description="Peripheral SWD is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM0" description="Peripheral FLEXCOMM0 is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="Peripheral" resourceId="SYSCON" description="Peripheral SYSCON is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
+                     <feature name="enabled" evaluation="equal" configuration="cm33_core0">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="SWComponent" resourceId="platform.drivers.lpc_iocon" description="Pins initialization requires the LPC_IOCON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
+                     <feature name="enabled" evaluation="equal" configuration="cm33_core0">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+               </dependencies>
+               <pins>
+                  <pin peripheral="SWD" signal="SWO" pin_num="28" pin_signal="PIO0_17/SWO/FC0_CTS_SDA_SSEL0/SCT_GPI2/PLU_OUT5/SEC_PIO0_17/ANT_SWITCH_2/CTIMER4_MAT1/CTIMER_INP17">
+                     <pin_features>
+                        <pin_feature name="mode" value="inactive"/>
+                        <pin_feature name="slew_rate" value="standard"/>
+                        <pin_feature name="invert" value="disabled"/>
+                        <pin_feature name="open_drain" value="disabled"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="FLEXCOMM0" signal="RXD_SDA_MOSI" pin_num="2" pin_signal="PIO0_2/FC0_RXD_SDA_MOSI/SCT_OUT9/SEC_PIO0_2/CTIMER0_MAT2/CTIMER_INP2">
+                     <pin_features>
+                        <pin_feature name="mode" value="inactive"/>
+                        <pin_feature name="slew_rate" value="standard"/>
+                        <pin_feature name="invert" value="disabled"/>
+                        <pin_feature name="open_drain" value="disabled"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="FLEXCOMM0" signal="TXD_SCL_MISO" pin_num="3" pin_signal="PIO0_3/FC0_TXD_SCL_MISO/SCT_OUT8/FREQME_GPIO_3/SEC_PIO0_3/CTIMER0_MAT3/CTIMER_INP3">
+                     <pin_features>
+                        <pin_feature name="mode" value="inactive"/>
+                        <pin_feature name="slew_rate" value="standard"/>
+                        <pin_feature name="invert" value="disabled"/>
+                        <pin_feature name="open_drain" value="disabled"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="GPIO" signal="PIO0, 19" pin_num="7" pin_signal="PIO0_19/FC2_TXD_SCL_MISO/SCT_GPI0/PLU_OUT7/SEC_PIO0_19/CTIMER4_MAT3/CTIMER_INP19">
+                     <pin_features>
+                        <pin_feature name="mode" value="inactive"/>
+                        <pin_feature name="slew_rate" value="standard"/>
+                        <pin_feature name="invert" value="disabled"/>
+                        <pin_feature name="open_drain" value="disabled"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="SYSCON" signal="CLKOUT" pin_num="12" pin_signal="PIO0_9/SCT_GPI6/CLKOUT/PLU_IN4/SEC_PIO0_9/SPIFI_IO3/CTIMER2_MAT1/CTIMER_INP9/ANT_SWITCH_3">
+                     <pin_features>
+                        <pin_feature name="mode" value="inactive"/>
+                        <pin_feature name="slew_rate" value="standard"/>
+                        <pin_feature name="invert" value="disabled"/>
+                        <pin_feature name="open_drain" value="disabled"/>
+                     </pin_features>
+                  </pin>
+               </pins>
+            </function>
+         </functions_list>
+      </pins>
+      <clocks name="Clocks" version="14.0" enabled="true" update_project_code="true">
+         <clocks_profile>
+            <processor_version>0.0.0</processor_version>
+         </clocks_profile>
+         <clock_configurations>
+            <clock_configuration name="BOARD_BootClockRUN" id_prefix="" prefix_user_defined="false">
+               <description></description>
+               <options/>
+               <dependencies>
+                  <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Clocks initialization requires the COMMON Driver in the project." problem_level="2" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="enabled" evaluation="equal" configuration="cm33_core0">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="SWComponent" resourceId="platform.drivers.clock" description="Clocks initialization requires the CLOCK Driver in the project." problem_level="2" source="Clocks:BOARD_BootClockRUN">
+                     <feature name="enabled" evaluation="equal" configuration="cm33_core0">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+               </dependencies>
+               <clock_sources>
+                  <clock_source id="RTC.fro_32k.outFreq" value="32.768 kHz" locked="false" enabled="false"/>
+                  <clock_source id="SYSCON.fro_1m.outFreq" value="1 MHz" locked="false" enabled="false"/>
+               </clock_sources>
+               <clock_outputs>
+                  <clock_output id="FRO_12MHz_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="FRO_1MHz_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="OSC32KHZ_clock.outFreq" value="32.768 kHz" locked="false" accuracy=""/>
+                  <clock_output id="RTC1HZ_clock.outFreq" value="32768/32767 Hz" locked="false" accuracy=""/>
+                  <clock_output id="RTC1KHZ_clock.outFreq" value="1.024 kHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="UTICK_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
+               </clock_outputs>
+               <clock_settings>
+                  <setting id="PMC_PDRUNCFG_PDEN_FRO32K_CFG" value="Power_up" locked="false"/>
+                  <setting id="RTC1KHZ_EN_CFG" value="Enable" locked="false"/>
+                  <setting id="RTC_EN_CFG" value="Enable" locked="false"/>
+                  <setting id="SYSCON_CLOCK_CTRL_FRO1MHZ_CLK_ENA_CFG" value="Enabled" locked="false"/>
+                  <setting id="UTICK_EN_CFG" value="Enable" locked="false"/>
+               </clock_settings>
+               <called_from_default_init>true</called_from_default_init>
+            </clock_configuration>
+         </clock_configurations>
+      </clocks>
+      <dcdx name="DCDx" version="3.0" enabled="false" update_project_code="true">
+         <dcdx_profile>
+            <processor_version>N/A</processor_version>
+         </dcdx_profile>
+         <dcdx_configurations/>
+      </dcdx>
+      <periphs name="Peripherals" version="15.0" enabled="false" update_project_code="true">
+         <peripherals_profile>
+            <processor_version>N/A</processor_version>
+         </peripherals_profile>
+         <functional_groups/>
+         <components/>
+      </periphs>
+      <tee name="TEE" version="7.0" enabled="false" update_project_code="true">
+         <tee_profile>
+            <processor_version>N/A</processor_version>
+         </tee_profile>
+      </tee>
+   </tools>
+</configuration>

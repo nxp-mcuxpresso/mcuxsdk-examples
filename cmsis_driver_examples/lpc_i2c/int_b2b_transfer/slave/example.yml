@@ -25,6 +25,7 @@ cmsis_lpc_i2c_int_b2b_transfer_slave:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxw23: []
+    mcxw23evk: []
     frdmrw612: []
     lpcxpresso51u68: []
     lpcxpresso54628: []

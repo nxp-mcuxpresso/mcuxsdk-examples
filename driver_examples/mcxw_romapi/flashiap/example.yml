@@ -16,3 +16,4 @@ mcxw23_romapi_flash:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw23: []
+    mcxw23evk: []

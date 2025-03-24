@@ -19,6 +19,7 @@ sctimer_pwm_with_dutycyle_change:
     evkmimxrt685@cm33: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []
+    mcxw23evk: []
     frdmrw612: []
     lpc845breakout: []
     lpcxpresso51u68: []

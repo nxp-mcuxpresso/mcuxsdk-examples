@@ -19,6 +19,7 @@ usart_dma_transfer:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxw23: []
+    mcxw23evk: []
     frdmrw612: []
     lpcxpresso51u68: []
     lpcxpresso54628: []

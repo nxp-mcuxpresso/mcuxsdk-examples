@@ -20,5 +20,6 @@ usart_hardware_flow_control:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw23: []
+    mcxw23evk: []
     lpcxpresso54628: []
     rdrw612bga: []

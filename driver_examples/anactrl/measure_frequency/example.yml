@@ -17,6 +17,7 @@ anactrl_measure_frequency:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw23: []
+    mcxw23evk: []
     lpcxpresso55s06: []
     lpcxpresso55s16: []
     lpcxpresso55s28: []

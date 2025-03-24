@@ -19,6 +19,7 @@ dma_interleave_transfer:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxw23: []
+    mcxw23evk: []
     frdmrw612: []
     lpc845breakout: []
     lpcxpresso51u68: []
