@@ -14,6 +14,8 @@ Program flow:
   5. check result correctness
   6. print engine performance metrics
   7. repeat 3-6 with various operations
+
+```
 __________________________                         __________________________
 |                        |-----(G2D operation)---> |                        |
 |  main program:         |                         |  Blit Engine:          |
@@ -21,6 +23,7 @@ __________________________                         __________________________
 | - check performance    |                         | - store the result     |
 | - check correctness    |                         |                        |
 |________________________| <---(result frame)------|________________________|
+```
 
 ## Supported Boards
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/driver_examples/dpu/g2d_basic_test/example_board_readme.md)
