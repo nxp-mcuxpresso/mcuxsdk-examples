@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2025 NXP
+ * Copyright 2019-2021,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,7 +18,7 @@
 #define DEMO_PANEL_RK055IQH091 1 /* NXP RESERVED                                  */
 #define DEMO_PANEL_RM67162     3 /* NXP "G1120B0MIPI" MIPI Circular Display       */
 #define DEMO_PANEL_RK055MHD091 2 /* NXP "RK055MHD091A0-CTG MIPI Rectangular Display  */
-
+#define DEMO_PANEL_CO5300      6 /* NXP ZC143AC72MIPI MIPI Circular Display */
 /* @TEST_ANCHOR */
 
 /* Configure this macro in Kconfig or directly in the generated mcux_config.h. */
@@ -257,6 +257,114 @@
 
 #if DEMO_RM67162_USE_DSI_SMARTDMA
 #if (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB565)
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), 64U)
+#else
+/* For RGB888 format, the stride shall also be divisible by 3. */
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), (192U))
+#endif
+#else
+/* No align requirement for MIPI APB. */
+#define DEMO_BUFFER_STRIDE_BYTE DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL
+#endif
+
+#else /* Use panel ZC143AC72MIPI */
+
+/*
+ * Use the MIPI smart panel
+ *
+ * MIPI_DSI + Smart DMA support three pixel formats:
+ *
+ * 1. RGB565: frame buffer format is RGB565, MIPI DSI send out data format is RGB565,
+ *    to use this, set DEMO_CO5300_USE_RGB565=1
+ *
+ * 2. RGB888: frame buffer format is RGB888, MIPI DSI send out data format is RGB888,
+ *    to use this, set DEMO_CO5300_USE_RGB565=0, DEMO_CO5300_USE_XRGB8888=0
+ *
+ * 3. XRGB8888: frame buffer format is XRGB888, SMARTDMA helps drop the useless byte
+ *    and MIPI DSI send out data format is RGB888,
+ *    to use this, set DEMO_CO5300_USE_RGB565=0, DEMO_CO5300_USE_XRGB8888=1
+ */
+
+#ifndef DEMO_CO5300_USE_RGB565
+#define DEMO_CO5300_USE_RGB565 1
+#endif
+
+#ifndef DEMO_CO5300_USE_XRGB8888
+#define DEMO_CO5300_USE_XRGB8888 0
+#endif
+
+/* Pixel format macro mapping. */
+#define DEMO_CO5300_BUFFER_RGB565   0
+#define DEMO_CO5300_BUFFER_RGB888   1
+#define DEMO_CO5300_BUFFER_XRGB8888 2
+
+#if DEMO_CO5300_USE_RGB565
+
+#define DEMO_CO5300_BUFFER_FORMAT DEMO_CO5300_BUFFER_RGB565
+
+#else
+
+#if DEMO_CO5300_USE_XRGB8888
+#define DEMO_CO5300_BUFFER_FORMAT DEMO_CO5300_BUFFER_XRGB8888
+#else
+#define DEMO_CO5300_BUFFER_FORMAT DEMO_CO5300_BUFFER_RGB888
+#endif
+
+#endif
+
+/* Use SMARTDMA to send image to panel. */
+#ifndef DEMO_CO5300_USE_DSI_SMARTDMA
+#define DEMO_CO5300_USE_DSI_SMARTDMA 1
+#endif
+
+#if (((DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_XRGB8888) || (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB565)) \
+    && (!DEMO_CO5300_USE_DSI_SMARTDMA))
+#error Must use SMARTDMA when use XRGB8888 pixel format
+#endif
+
+#define DEMO_BUFFER_FIXED_ADDRESS 1
+
+/*
+ * Place frame buffer in on-board PSRAM.
+ */
+#define DEMO_BUFFER0_ADDR         0x28000000U
+#define DEMO_BUFFER1_ADDR         0x28200000U
+
+/* Definitions for the frame buffer. */
+/* 1 is enough, use 2 could render background buffer while display the foreground buffer. */
+#define DEMO_BUFFER_COUNT         2
+#define FRAME_BUFFER_ALIGN        4
+
+#if (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB565)
+
+#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
+#define DEMO_BUFFER_BYTE_PER_PIXEL 2
+
+#elif (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB888)
+
+#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB888
+#define DEMO_BUFFER_BYTE_PER_PIXEL 3
+
+#else
+
+#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatXRGB8888
+#define DEMO_BUFFER_BYTE_PER_PIXEL 4
+
+#endif /* DEMO_CO5300_BUFFER_FORMAT */
+
+#define DEMO_PANEL_WIDTH  (480U)
+#define DEMO_PANEL_HEIGHT (466U)
+#define DEMO_FB_WIDTH     DEMO_PANEL_WIDTH
+#define DEMO_FB_HEIGHT    DEMO_PANEL_HEIGHT
+#define DEMO_BUFFER_WIDTH   (466U)
+#define DEMO_BUFFER_HEIGHT  (466U)
+
+/* Where the frame buffer is shown in the screen. */
+#define DEMO_BUFFER_START_X 6U
+#define DEMO_BUFFER_START_Y 0U
+
+#if DEMO_CO5300_USE_DSI_SMARTDMA
+#if (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB565)
 #define DEMO_BUFFER_STRIDE_BYTE DEMO_ALIGN_ADDR((DEMO_FB_WIDTH * DEMO_BUFFER_BYTE_PER_PIXEL), 64U)
 #else
 /* For RGB888 format, the stride shall also be divisible by 3. */

@@ -6,7 +6,8 @@ Hardware requirements
 - Personal Computer
 - RK055AHD091 MIPI panel (Not necessary if use other panel)
 - RK055MHD091 MIPI panel (Not necessary if use other panel)
-- RM67162 smart MIPI panel (Not necessary if use other panel)
+- RM67162(G1120B0MIPI) smart MIPI panel (Not necessary if use other panel)
+- CO5300(ZC143AC72MIPI) smart MIPI panel (Not necessary if use other panel)
 
 Board settings
 ============

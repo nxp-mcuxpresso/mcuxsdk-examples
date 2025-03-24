@@ -9,6 +9,7 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.display-rm68191
     select MCUX_COMPONENT_driver.display-hx8394
     select MCUX_COMPONENT_driver.display-rm67162
+    select MCUX_COMPONENT_driver.display-co5300
     select MCUX_COMPONENT_driver.dc-fb-lcdif
     select MCUX_COMPONENT_driver.dc-fb-dsi-cmd
     select MCUX_COMPONENT_driver.dc-fb-ssd1963
@@ -30,6 +31,9 @@ config MCUX_DEMO_PANEL_G1120B0MIPI_SUPPORT
     default y
 
 config MCUX_DEMO_PANEL_RK055MHD091A0_SUPPORT
+    default y
+
+config MCUX_DEMO_PANEL_ZC143AC72MIPI_SUPPORT
     default y
 
 if MCUX_PRJSEG_module.board.display_support
