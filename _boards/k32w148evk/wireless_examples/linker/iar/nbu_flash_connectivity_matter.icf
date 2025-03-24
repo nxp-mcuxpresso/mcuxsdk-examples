@@ -61,8 +61,13 @@ define exported symbol __HEAP_end__             = __HEAP_start__ + __size_heap__
 
 define symbol m_shared_ram_end                  = 0xB0009FFF;
 
+/*New section allowing to share debug info to CM33 (LL error/warnings).*/
+define exported symbol m_sqram_debug_start      = 0xB0000000;
+define symbol m_sqram_debug_size                = 0x7C;           /*31 x 4 bytes*/
+define symbol m_sqram_debug_end                 = m_sqram_debug_start + m_sqram_debug_size - 1;
+
 define symbol m_lowpower_flag_size              = 0x04;
-define exported symbol m_lowpower_flag_start    = 0xB000007C;
+define exported symbol m_lowpower_flag_start    = m_sqram_debug_end + 1;
 define symbol m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
 //define symbol m_sqram_btblesqbuf_start          = 0xB0000000;

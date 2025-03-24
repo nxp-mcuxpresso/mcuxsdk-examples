@@ -78,7 +78,7 @@ define symbol m_shared_ram_start                = 0xB0000000;
 define symbol m_shared_ram_end                  = 0xB0013FFF;
 
 /*New section allowing to share debug info to CM33 (LL error/warnings).*/
-define symbol m_sqram_debug_start               = 0xB0000000;
+define exported symbol m_sqram_debug_start      = 0xB0000000;
 define symbol m_sqram_debug_size                = 0x7C;           /*31 x 4 bytes*/
 define symbol m_sqram_debug_end                 = m_sqram_debug_start + m_sqram_debug_size - 1;
 
