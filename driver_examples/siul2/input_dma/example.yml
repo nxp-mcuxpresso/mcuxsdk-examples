@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+siul2_input_dma:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/siul2/input_dma
+    project-root-path: boards/${board}/driver_examples/siul2/input_dma/${multicore_foldername}
+    document:
+      name: siul2_input_dma${core_id_suffix_name}
+      category: driver_examples/siul2
+      brief: The siul2 Example project is a demonstration program that uses the KSDK
+        software to manipulate the general-purposeoutputs.The example is supported
+        by the set, clear, and toggle write-only registers for each port output data
+        register. The example uses the software button to control/toggle the LED.
+      example_readme:
+      - examples/driver_examples/siul2/input_dma/readme.md
+      - ${board_root}/${board}/driver_examples/siul2/input_dma/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+

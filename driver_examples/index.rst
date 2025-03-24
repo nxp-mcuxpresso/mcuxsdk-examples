@@ -278,6 +278,7 @@ driver_examples
    sfa/index.rst
    sha/readme.md
    sinc/index.rst
+   siul2/index.rst
    slcd/readme.md
    smartcard/readme.md
    smscm/readme.md
