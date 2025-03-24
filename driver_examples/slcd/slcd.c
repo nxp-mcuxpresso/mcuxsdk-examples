@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
+ * Copyright 2016-2019,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -35,6 +35,11 @@ static void SLCD_Show_Digital(void);
 
 /* Demonstrate how to show icon. */
 static void SLCD_Show_Icon(void);
+
+#if SLCD_PANEL_SUPPORT_LETTER
+/* Demonstrate how to show letter. */
+static void SLCD_Show_Letter(void);
+#endif
 
 /* Demonstrate the blink feature. */
 static void SLCD_Blink(void);
@@ -100,6 +105,38 @@ static void SLCD_Show_Digital(void)
     PRINTF("\r\nShow digital numbers finished\r\n");
 }
 
+#if SLCD_PANEL_SUPPORT_LETTER
+static void SLCD_Show_Letter(void)
+{
+    int8_t letter;
+    int8_t position;
+
+    PRINTF("\r\nShow letter\r\n");
+
+    for (letter = 'A'; letter <= 'z'; letter++)
+    {
+        for (position = 0; position < NUM_POSEND; position++)
+        {
+            SLCD_Engine_Show_Letter(&slcdEngine, letter, position, 1);
+        }
+
+        SLCD_TimeDelay(500);
+
+        for (position = 0; position < NUM_POSEND; position++)
+        {
+            SLCD_Engine_Show_Letter(&slcdEngine, letter, position, 0);
+        }
+
+        if (letter == 'Z')
+        {
+            letter = 'a';
+        }
+    }
+
+    PRINTF("\r\nShow letter finished\r\n");
+}
+#endif
+
 static void SLCD_Show_Icon(void)
 {
     int32_t icon;
@@ -159,17 +196,21 @@ int main(void)
     /* SLCD get default configure. */
     /*
      * config.displayMode = kSLCD_NormalMode;
-     * config.powerSupply = kSLCD_InternalVll3UseChargePump;
-     * config.voltageTrim = kSLCD_RegulatedVolatgeTrim08;
-     * config.lowPowerBehavior = kSLCD_EnabledInWaitStop;
      * config.frameFreqIntEnable = false;
      * config.faultConfig = NULL;
      */
     SLCD_GetDefaultConfig(&config);
 
     /* Verify and Complete the configuration structure. */
+#if !(defined(FSL_FEATURE_SLCD_LP_CONTROL) && FSL_FEATURE_SLCD_LP_CONTROL)
+    /*
+     * config.powerSupply = kSLCD_InternalVll3UseChargePump;
+     * config.voltageTrim = kSLCD_RegulatedVolatgeTrim08;
+     * config.lowPowerBehavior = kSLCD_EnabledInWaitStop;
+     */
     config.clkConfig          = &slcdClkConfig;
     config.loadAdjust         = kSLCD_HighLoadOrSlowestClkSrc;
+#endif
     config.dutyCycle          = APP_SLCD_DUTY_CYCLE;
     config.slcdLowPinEnabled  = APP_SLCD_LOW_PIN_ENABLED;
     config.slcdHighPinEnabled = APP_SLCD_HIGH_PIN_ENABLED;
@@ -190,6 +231,10 @@ int main(void)
     SLCD_StartDisplay(LCD);
 
     SLCD_Show_Digital();
+
+#if SLCD_PANEL_SUPPORT_LETTER
+    SLCD_Show_Letter();
+#endif
 
     SLCD_Show_Icon();
 

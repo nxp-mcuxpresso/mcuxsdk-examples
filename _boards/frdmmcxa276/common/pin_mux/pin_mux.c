@@ -1051,6 +1051,206 @@ void BOARD_InitCANPins(void)
     /* PORT1_2 (pin 137) is configured as CAN0_TXD */
     PORT_SetPinConfig(PORT1, 2U, &port1_2_pin137_config);
 }
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitSLCDPins:
+- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '119', peripheral: SLCD0, signal: 'P, 16', pin_signal: P0_12/CT0_MAT2/FLEXIO0_D4/LCD_P16/ADC2_A12}
+  - {pin_num: '120', peripheral: SLCD0, signal: 'P, 17', pin_signal: P0_13/CT0_MAT3/FLEXIO0_D5/LCD_P17/ADC2_A13}
+  - {pin_num: '121', peripheral: SLCD0, signal: 'P, 18', pin_signal: P0_14/CT_INP2/UTICK_CAP0/FLEXIO0_D6/SmartDMA_PIO4/LCD_P18/ADC2_A14}
+  - {pin_num: '122', peripheral: SLCD0, signal: 'P, 19', pin_signal: P0_15/CT_INP3/UTICK_CAP1/FLEXIO0_D7/SmartDMA_PIO5/LCD_P19/ADC2_A15}
+  - {pin_num: '123', peripheral: SLCD0, signal: 'P, 20', pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/FLEXIO0_D0/SmartDMA_PIO6/LCD_P20/I3C0_SDA}
+  - {pin_num: '124', peripheral: SLCD0, signal: 'P, 21', pin_signal: P0_17/LPI2C0_SCL/LPSPI0_PCS3/CT0_MAT1/UTICK_CAP3/FLEXIO0_D1/SmartDMA_PIO7/LCD_P21/I3C0_SCL}
+  - {pin_num: '125', peripheral: SLCD0, signal: 'P, 22', pin_signal: P0_18/LPI2C0_SCLS/CT0_MAT2/FLEXIO0_D2/SmartDMA_PIO8/CMP0_OUT/LCD_P22/ADC0_A8}
+  - {pin_num: '126', peripheral: SLCD0, signal: 'P, 23', pin_signal: P0_19/WUU0_IN3/LPI2C0_SDAS/CT0_MAT3/FLEXIO0_D3/SmartDMA_PIO9/CMP1_OUT/LCD_P23/ADC0_A9}
+  - {pin_num: '127', peripheral: SLCD0, signal: 'P, 24', pin_signal: P0_20/WUU0_IN4/LPUART0_RXD/CT_INP0/FLEXIO0_D4/SmartDMA_PIO10/CMP2_OUT/LCD_P24/ADC0_A10}
+  - {pin_num: '128', peripheral: SLCD0, signal: 'P, 25', pin_signal: P0_21/LPUART0_TXD/CT_INP1/FLEXIO0_D5/SmartDMA_PIO11/LCD_P25/ADC0_A11}
+  - {pin_num: '129', peripheral: SLCD0, signal: 'P, 26', pin_signal: P0_22/LPUART0_RTS_B/CT_INP2/CT0_MAT0/FLEXIO0_D6/SmartDMA_PIO12/LCD_P26/ADC0_A12}
+  - {pin_num: '130', peripheral: SLCD0, signal: 'P, 27', pin_signal: P0_23/WUU0_IN5/LPUART0_CTS_B/CT_INP3/CT0_MAT1/FLEXIO0_D7/SmartDMA_PIO13/LCD_P27/ADC0_A13/CMP2_IN2}
+  - {pin_num: '131', peripheral: SLCD0, signal: 'P, 28', pin_signal: P0_24/CT0_MAT0/LPUART5_RXD/LCD_P28}
+  - {pin_num: '132', peripheral: SLCD0, signal: 'P, 29', pin_signal: P0_25/CT0_MAT1/LPUART5_TXD/LCD_P29}
+  - {pin_num: '133', peripheral: SLCD0, signal: 'P, 30', pin_signal: P0_26/CT0_MAT2/LPUART5_RTS_B/LCD_P30}
+  - {pin_num: '134', peripheral: SLCD0, signal: 'P, 31', pin_signal: P0_27/CT0_MAT3/LPUART5_CTS_B/LCD_P31}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSLCDPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitSLCDPins(void)
+{
+    /* PORT0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT0);
+    /* PORT0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT0_RST_SHIFT_RSTn);
+
+    /* PORT0_12 (pin 119) is configured as LCD_P16 */
+    PORT_SetPinMux(PORT0, 12U, kPORT_MuxAlt9);
+
+    PORT0->PCR[12] = ((PORT0->PCR[12] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_13 (pin 120) is configured as LCD_P17 */
+    PORT_SetPinMux(PORT0, 13U, kPORT_MuxAlt9);
+
+    PORT0->PCR[13] = ((PORT0->PCR[13] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_14 (pin 121) is configured as LCD_P18 */
+    PORT_SetPinMux(PORT0, 14U, kPORT_MuxAlt9);
+
+    PORT0->PCR[14] = ((PORT0->PCR[14] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_15 (pin 122) is configured as LCD_P19 */
+    PORT_SetPinMux(PORT0, 15U, kPORT_MuxAlt9);
+
+    PORT0->PCR[15] = ((PORT0->PCR[15] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_16 (pin 123) is configured as LCD_P20 */
+    PORT_SetPinMux(PORT0, 16U, kPORT_MuxAlt9);
+
+    PORT0->PCR[16] = ((PORT0->PCR[16] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_17 (pin 124) is configured as LCD_P21 */
+    PORT_SetPinMux(PORT0, 17U, kPORT_MuxAlt9);
+
+    PORT0->PCR[17] = ((PORT0->PCR[17] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_18 (pin 125) is configured as LCD_P22 */
+    PORT_SetPinMux(PORT0, 18U, kPORT_MuxAlt9);
+
+    PORT0->PCR[18] = ((PORT0->PCR[18] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_19 (pin 126) is configured as LCD_P23 */
+    PORT_SetPinMux(PORT0, 19U, kPORT_MuxAlt9);
+
+    PORT0->PCR[19] = ((PORT0->PCR[19] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_20 (pin 127) is configured as LCD_P24 */
+    PORT_SetPinMux(PORT0, 20U, kPORT_MuxAlt9);
+
+    PORT0->PCR[20] = ((PORT0->PCR[20] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_21 (pin 128) is configured as LCD_P25 */
+    PORT_SetPinMux(PORT0, 21U, kPORT_MuxAlt9);
+
+    PORT0->PCR[21] = ((PORT0->PCR[21] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_22 (pin 129) is configured as LCD_P26 */
+    PORT_SetPinMux(PORT0, 22U, kPORT_MuxAlt9);
+
+    PORT0->PCR[22] = ((PORT0->PCR[22] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_23 (pin 130) is configured as LCD_P27 */
+    PORT_SetPinMux(PORT0, 23U, kPORT_MuxAlt9);
+
+    PORT0->PCR[23] = ((PORT0->PCR[23] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_24 (pin 131) is configured as LCD_P28 */
+    PORT_SetPinMux(PORT0, 24U, kPORT_MuxAlt9);
+
+    PORT0->PCR[24] = ((PORT0->PCR[24] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_25 (pin 132) is configured as LCD_P29 */
+    PORT_SetPinMux(PORT0, 25U, kPORT_MuxAlt9);
+
+    PORT0->PCR[25] = ((PORT0->PCR[25] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_26 (pin 133) is configured as LCD_P30 */
+    PORT_SetPinMux(PORT0, 26U, kPORT_MuxAlt9);
+
+    PORT0->PCR[26] = ((PORT0->PCR[26] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_27 (pin 134) is configured as LCD_P31 */
+    PORT_SetPinMux(PORT0, 27U, kPORT_MuxAlt9);
+
+    PORT0->PCR[27] = ((PORT0->PCR[27] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
