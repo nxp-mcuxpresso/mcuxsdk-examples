@@ -15,14 +15,18 @@
 #define BOARD_PWM_BASEADDR PWM1
 
 #define PWM_SRC_CLK_FREQ       HAL_ClockGetRate(hal_clock_busaon)
-#define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_128
-#define APP_DEFAULT_PWM_FREQUENCE (200UL)
+#define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_1
+#define APP_DEFAULT_PWM_FREQUENCE (16000UL)
 #define TRANSACTION_TIME_US 10U
-#define ENCODER_ACCESS_FREQ_VS_PWM_FRE0 		16
+#define ENCODER_ACCESS_FREQ_VS_PWM_FRE0 		1
 
 #define DEMO_XBARA_BASEADDR            XBARA1
-#define DEMO_XBARA_IRQn                XBAR1_CH0_CH1_IRQn
-#define DEMO_XBARA_IRQHandler          XBAR1_CH0_CH1_IRQHandler
+#define DEMO_XBARA_Sync_Pos_IRQn                XBAR1_CH0_CH1_IRQn
+#define DEMO_XBARA_Sync_Pos_IRQHandler          XBAR1_CH0_CH1_IRQHandler
+
+#define DEMO_XBARA_Sync_Sig_IRQn                XBAR1_CH2_CH3_IRQn
+#define DEMO_XBARA_Sync_Sig_IRQHandler          XBAR1_CH2_CH3_IRQHandler
+
 
 #define BOARD_HIPERFACE_BASEADDR 				HIPERFACE1
 #define DEMO_HIPERFACE_IRQn						Reserved164_IRQn

@@ -34,27 +34,52 @@ uint32_t SYSTICK_GET_COUNT()
 	return load - val;
 }
 
-void DEMO_XBARA_IRQHandler(void)
+void BOARD_InitSysTick(void)
 {
+	/* Initialize SysTick core timer to run free */
+	/* Set period to maximum value 2^24*/
+	SysTick->LOAD = 0xFFFFFF;
+
+	/*Clock source - System Clock*/
+	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+
+	/*Start Sys Timer*/
+	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+}
+
+void DEMO_XBARA_Sync_Pos_IRQHandler(void)
+{
+	uint64_t pos = DSL_GetFastPosition(BOARD_HIPERFACE_BASEADDR, &enc);
 	if (!DSL_GetEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR)) {
-		PRINTF("Pos: %ld\r\n", DSL_GetFastPosition(BOARD_HIPERFACE_BASEADDR, &enc));
+		/*Only output low 32bits position data due to PRINTF.*/
+		PRINTF("Pos_sync: %c%ld\r\n", (pos >> 63) == 1 ? '-' : ' ',  (uint32_t)(pos & 0xFFFFFFFF));
 	} else {
 		PRINTF("Estimator Deviation Threshold Error\r\n");
+		DSL_ClrEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR);
 	}
 }
 
 void DEMO_HIPERFACE_POS_RCVD_IRQHandler(void)
 {
+	uint32_t counter = SYSTICK_GET_COUNT();
+	PRINTF("The minimal communication cycle test: %d\r\n", counter);
+	uint64_t pos = DSL_GetFastPosition(BOARD_HIPERFACE_BASEADDR, &enc);
 	if (!DSL_GetEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR)) {
-		PRINTF("Pos: %ld\r\n", DSL_GetFastPosition(BOARD_HIPERFACE_BASEADDR, &enc));
+		/*Only output low 32bits position data due to PRINTF.*/
+		PRINTF("Pos_irq: %c%ld\r\n", (pos >> 63) == 1 ? '-' : ' ',  (uint32_t)(pos & 0xFFFFFFFF));
 	} else {
 		PRINTF("Estimator Deviation Threshold Error\r\n");
+		DSL_ClrEventEstimatorThresholdErr(BOARD_HIPERFACE_BASEADDR);
 	}
+	hiperface_clear_fast_pos_irq_status();
+	hiperface_fast_pos_irq_disable();
 }
 
 void DEMO_HIPERFACE_S_IRQHandler(void)
 {
-
+		PRINTF("HIPERFACE_S_IRQHandler: 0x%x\r\n", BOARD_HIPERFACE_BASEADDR->EVENT_S);
+		BOARD_HIPERFACE_BASEADDR->MASK_S = 0x0;
+		BOARD_HIPERFACE_BASEADDR->EVENT_S = 0;
 }
 
 void DEMO_HIPERFACE_IRQHandler(void)
@@ -63,7 +88,7 @@ void DEMO_HIPERFACE_IRQHandler(void)
 	if (DSL_GetEventSlaveEventSum(base) && DSL_GetEventMaskMSUM(event_mask_h)) {
 			PRINTF("The DSL Slave has signaled an event and the summary mask is set accordingly\r\n");
 			DSL_ClrEventSlaveEventSum(base);
-	} 
+	}
 
 	if (DSL_GetEventeEstimatorOn(base) && DSL_GetEventMaskMPOS(event_mask_h)) {
 			PRINTF("Fast position data consistency error. The fast position read through drive interface is supplied by the estimator\r\n");
@@ -96,7 +121,7 @@ void DEMO_HIPERFACE_IRQHandler(void)
 	}
 
 	if (DSl_GetEventLongMsgChannelfree(base) && DSL_GetEventMaskMFREL(event_mask_l)) {
-			PRINTF("A \"long message\" can be sent on the Parameters Channel\r\n");
+			PRINTF("\"long message\" can be sent on the Parameters Channel\r\n");
 			DSl_ClrEventLongMsgChannelfree(base);
 	}
 }
@@ -104,12 +129,12 @@ void DEMO_HIPERFACE_IRQHandler(void)
 /*!
  * @brief Main function
  */
-
 int main(void)
 {
 
+	BOARD_InitHardware();
 	dsl_encoder_version_info_t info;
-    PRINTF("Encoder Hiperface example\n");
+	PRINTF("Encoder Hiperface example:\r\n");
 
 	/* Enable DSL Master*/
 	hiperface_config_t config;
@@ -120,18 +145,32 @@ int main(void)
 		PRINTF("No connection present or connection error due to a communications error\r\n");
 		return -1;
 	}
-
 	DSL_GetMasterReleaseInfo(BOARD_HIPERFACE_BASEADDR, &info);
 	PRINTF("Type of IP Core: %d\r\n", info.coding);
 	PRINTF("IP Core Major release number: %d\r\n", info.majorNumber);
 	PRINTF("IP Core Minor release number: %d\r\n", info.minorNumber);
 	PRINTF("IP Core Release date: %d-%d-%d\r\n", info.year, info.month, info.day);
 
-	uint64_t pos;
-	int32_t speed;
-	DSL_GetFastPositionAndSpeed(BOARD_HIPERFACE_BASEADDR, &pos, &speed);
-	PRINTF("%lld, %d\r\n", pos, speed);
-	
+	PRINTF("Register access performance test:\r\n");
+	BOARD_InitSysTick();
+	volatile uint32_t *pos_h = (uint32_t *)&BOARD_HIPERFACE_BASEADDR->POS_PRIM[0];
+	volatile uint32_t pos;
+	SYSTICK_START_COUNT();
+	for (int i =0 ; i< 1000; i++) {
+		pos = *pos_h;
+	}
+
+	PRINTF("\tRead access time: %d\r\n", SYSTICK_GET_COUNT());
+	volatile uint8_t *p = (uint8_t *)&BOARD_HIPERFACE_BASEADDR->PRIM[0];
+	uint8_t v;
+	v = *pos_h;
+	SYSTICK_START_COUNT();
+	for (int i =0 ; i< 1000; i++) {
+		*pos_h = v;
+	}
+
+	PRINTF("\tWrite access time: %d\r\n", SYSTICK_GET_COUNT());
+
 	/* Cache all RDB infomation */
 	DSL_RDB_ReadAllNodeDefiningValue(BOARD_HIPERFACE_BASEADDR, &enc);
 	DSL_RDB_DumpAllNodeDefiningValue(&enc);
@@ -166,10 +205,6 @@ int main(void)
 	SDK_DelayAtLeastUs(2000000, SystemCoreClock);
 	DisableIRQ(DEMO_HIPERFACE_IRQn);
 
-	/*Test HIPERFACE_POS_RCVD_IRQn*/
-	EnableIRQ(DEMO_HIPERFACE_POS_RCVD_IRQn);
-	
-
 	DSL_SetEventMaskMSUM(BOARD_HIPERFACE_BASEADDR, event_mask_h, 0);
 	DSL_SetEventMaskMPOS(BOARD_HIPERFACE_BASEADDR, event_mask_h, 0);
 	DSL_SetEventMaskMDTE(BOARD_HIPERFACE_BASEADDR, event_mask_h, 0);
@@ -181,36 +216,67 @@ int main(void)
 
 	uint8_t enc_st0,enc_st1,enc_st2,enc_st3,enc_st4,enc_st5,enc_st6,enc_st7;
 
-	enc_st0 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x40); PRINTF("enc_st0=0x%x mir_st0=0x%x\r\n",enc_st0, BOARD_HIPERFACE_BASEADDR->MIR_ST[0]); SDK_DelayAtLeastUs(2, SystemCoreClock);
-	enc_st1 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x41); PRINTF("enc_st1=0x%x mir_st1=0x%x\r\n",enc_st1, BOARD_HIPERFACE_BASEADDR->MIR_ST[1]); SDK_DelayAtLeastUs(2, SystemCoreClock);
-	enc_st2 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x42); PRINTF("enc_st2=0x%x mir_st2=0x%x\r\n",enc_st2, BOARD_HIPERFACE_BASEADDR->MIR_ST[2]); SDK_DelayAtLeastUs(2, SystemCoreClock);
-	enc_st3 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x43); PRINTF("enc_st3=0x%x mir_st3=0x%x\r\n",enc_st3, BOARD_HIPERFACE_BASEADDR->MIR_ST[3]); SDK_DelayAtLeastUs(2, SystemCoreClock);
-	enc_st4 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x44); PRINTF("enc_st4=0x%x mir_st4=0x%x\r\n",enc_st4, BOARD_HIPERFACE_BASEADDR->MIR_ST[4]); SDK_DelayAtLeastUs(2, SystemCoreClock);
-	enc_st5 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x45); PRINTF("enc_st5=0x%x mir_st5=0x%x\r\n",enc_st5, BOARD_HIPERFACE_BASEADDR->MIR_ST[5]); SDK_DelayAtLeastUs(2, SystemCoreClock);
-	enc_st6 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x46); PRINTF("enc_st6=0x%x mir_st6=0x%x\r\n",enc_st6, BOARD_HIPERFACE_BASEADDR->MIR_ST[6]); SDK_DelayAtLeastUs(2, SystemCoreClock);
-	enc_st7 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x47); PRINTF("enc_st7=0x%x mir_st7=0x%x\r\n",enc_st7, BOARD_HIPERFACE_BASEADDR->MIR_ST[7]); SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st0 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x40);
+	PRINTF("enc_st0=0x%x mir_st0=0x%x\r\n",enc_st0, BOARD_HIPERFACE_BASEADDR->MIR_ST[0]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st1 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x41);
+	PRINTF("enc_st1=0x%x mir_st1=0x%x\r\n",enc_st1, BOARD_HIPERFACE_BASEADDR->MIR_ST[1]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st2 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x42);
+	PRINTF("enc_st2=0x%x mir_st2=0x%x\r\n",enc_st2, BOARD_HIPERFACE_BASEADDR->MIR_ST[2]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st3 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x43);
+	PRINTF("enc_st3=0x%x mir_st3=0x%x\r\n",enc_st3, BOARD_HIPERFACE_BASEADDR->MIR_ST[3]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st4 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x44);
+	PRINTF("enc_st4=0x%x mir_st4=0x%x\r\n",enc_st4, BOARD_HIPERFACE_BASEADDR->MIR_ST[4]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st5 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x45);
+	PRINTF("enc_st5=0x%x mir_st5=0x%x\r\n",enc_st5, BOARD_HIPERFACE_BASEADDR->MIR_ST[5]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st6 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x46);
+	PRINTF("enc_st6=0x%x mir_st6=0x%x\r\n",enc_st6, BOARD_HIPERFACE_BASEADDR->MIR_ST[6]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
+	enc_st7 = ENC_ST_register_reading(BOARD_HIPERFACE_BASEADDR, 0x47);
+	PRINTF("enc_st7=0x%x mir_st7=0x%x\r\n",enc_st7, BOARD_HIPERFACE_BASEADDR->MIR_ST[7]);
+	SDK_DelayAtLeastUs(2, SystemCoreClock);
 
-	uint8_t srssi = Slave_SRSSI_register_reading(BOARD_HIPERFACE_BASEADDR); PRINTF("srssi = 0x%x\r\n",srssi);
+	uint8_t srssi = Slave_SRSSI_register_reading(BOARD_HIPERFACE_BASEADDR);
+	PRINTF("srssi = 0x%x\r\n",srssi);
 
-	uint8_t ping_v;
-	ping_v = Slave_Ping_register_reading(BOARD_HIPERFACE_BASEADDR);
-	PRINTF("Default ping value: 0x%x\r\n", ping_v);
+	uint8_t ping;
+	ping = Slave_Ping_register_reading(BOARD_HIPERFACE_BASEADDR);
+	PRINTF("Default ping value: 0x%x\r\n", ping);
 
 	// send ping message: 0x57
 	Slave_Ping_register_writing(BOARD_HIPERFACE_BASEADDR, 0x57);
 	SDK_DelayAtLeastUs(20, SystemCoreClock);
-	ping_v = Slave_Ping_register_reading(BOARD_HIPERFACE_BASEADDR);
-	PRINTF("ping meaage test: %s\r\n", ping_v == 0x57 ? "Ok" : "Fault");
+	ping = Slave_Ping_register_reading(BOARD_HIPERFACE_BASEADDR);
+	PRINTF("ping meaage test: %s\r\n", ping == 0x57 ? "Ok" : "Fault");
 
-	if (DSL_SyncModeEnable(BOARD_HIPERFACE_BASEADDR, APP_DEFAULT_PWM_FREQUENCE, 5) != kStatus_Success) {
+	/*HIPERFACE_S interrupt test*/
+	BOARD_HIPERFACE_BASEADDR->MASK_S = 0xFF;
+	EnableIRQ(DEMO_HIPERFACE_S_IRQn);
+	SDK_DelayAtLeastUs(2000000, SystemCoreClock);
+	DisableIRQ(DEMO_HIPERFACE_S_IRQn);
+
+	/*HIPERFACE_POS_RCVD interrupt test*/
+	hiperface_fast_pos_irq_enable();
+	EnableIRQ(DEMO_HIPERFACE_POS_RCVD_IRQn);
+	SDK_DelayAtLeastUs(2000000, SystemCoreClock);
+	DisableIRQ(DEMO_HIPERFACE_POS_RCVD_IRQn);
+
+	/*Sync mode test*/
+	config.es = DSL_getMaxES(APP_DEFAULT_PWM_FREQUENCE);
+	config.pos_ready_mode = POS_READY_MODE_SHOWS_TIME_SYNC_TRANSMISSIONS;
+	if (DSL_SyncModeEnable(BOARD_HIPERFACE_BASEADDR, APP_DEFAULT_PWM_FREQUENCE, &config) != kStatus_Success) {
 		PRINTF("Invalid ES\r\n");
 		return -1;
 	}
-
+	PRINTF("ES: %d\r\n", config.es);
 	/* Initialize FlexPWM to generate the trigger signal to trigge transmitting */
 	PWM_Trigger_Init(BOARD_PWM_BASEADDR);
-
-    // Enable Interrupt
-  	EnableIRQ(XBAR1_CH0_CH1_IRQn);
+	// Enable Interrupt
+	EnableIRQ(DEMO_XBARA_Sync_Pos_IRQn);
 	while (1);
 }

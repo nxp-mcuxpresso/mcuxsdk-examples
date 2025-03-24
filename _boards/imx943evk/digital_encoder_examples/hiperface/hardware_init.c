@@ -30,12 +30,11 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 	
 	PWMBase->SM[0].CTRL |= PWM_CTRL_PRSC(DEMO_PWM_CLOCK_DEVIDER);
 
-    /* Value register initial values, duty cycle 50% */
-    PWMBase->SM[0].INIT = (uint16_t)(-(ui16M1PwmModulo / 2));
+	/* Value register initial values, duty cycle 50% */
+	PWMBase->SM[0].INIT = (uint16_t)(-(ui16M1PwmModulo / 2));
 	PWMBase->SM[0].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
 
-	PWMBase->SM[1].VAL1 = ((ui16M1PwmModulo / 2) - 1);
-
+	PWMBase->SM[0].VAL1 = ((ui16M1PwmModulo / 2) - 1);
 
 	/* Trigger for Encoder synchronization */
 	PWMBase->SM[0].VAL5 = -(ui16M1PwmModulo / 2) + 10;
@@ -58,37 +57,55 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 
 void BOARD_InitHardware(void)
 {
-    /* Hiperface 75MHz */
-    hal_clk_t hal_hiperfaceClk = {
-        .clk_id = HIPERFACE_CLOCK_ROOT,
-        .pclk_id = hal_clock_encoderplldfs0, /* 75 MHz */
-        .div = 1,
-        .enable_clk = true,
-        .clk_round_opt = hal_clk_round_auto,
-    };
+	/* Hiperface 75MHz */
+	hal_clk_t hal_encoderplldfs0ctl = {
+		.clk_id = hal_clock_encoderplldfs0ctl,
+		.rate = 75000000UL,
+		.clk_round_opt = hal_clk_round_auto,
+	};
+
+	hal_clk_t hal_encoderplldfs0 = {
+		.clk_id = hal_clock_encoderplldfs0,
+		.rate = 75000000UL,
+		.clk_round_opt = hal_clk_round_auto,
+	};
+
+	hal_clk_t hal_hiperfaceClk = {
+		.clk_id = HIPERFACE_CLOCK_ROOT,
+		.pclk_id = hal_clock_encoderplldfs0, /* 75 MHz */
+		.rate = 75000000UL,
+		.clk_round_opt = hal_clk_round_auto,
+	};
 	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 
-    SM_Platform_Init();
-    BOARD_ConfigMPU();
-    BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
-    BOARD_BootClockRUN();
-    BOARD_InitDebugConsole();
+	SM_Platform_Init();
+	BOARD_InitDebugConsolePins();
+	BOARD_InitBootPins();
+	BOARD_BootClockRUN();
+	BOARD_InitDebugConsole();
 
-    HAL_ClockSetRootClk(&hal_hiperfaceClk);
+	HAL_ClockSetRate(&hal_encoderplldfs0ctl);
+	HAL_ClockEnable(&hal_encoderplldfs0ctl);
 
-    blk_base->DIAG_ENCODER_MUX_SEL =
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_HIPERFACE_DSL) |
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_HIPERFACE_DSL);
+	HAL_ClockSetRate(&hal_encoderplldfs0);
+	HAL_ClockEnable(&hal_encoderplldfs0);
 
-    /* Select Motor controller 1 */
-    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
-    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+	HAL_ClockSetParent(&hal_hiperfaceClk);
+	HAL_ClockSetRate(&hal_hiperfaceClk);
+	HAL_ClockEnable(&hal_hiperfaceClk);
 
-    /* Select Motor controller 2 */
-    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
-    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
-    SDK_DelayAtLeastUs(100U, SystemCoreClock);
+	blk_base->DIAG_ENCODER_MUX_SEL =
+		BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_HIPERFACE_DSL) |
+		BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_HIPERFACE_DSL);
+
+	/* Select Motor controller 1 */
+	BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+	BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+
+	/* Select Motor controller 2 */
+	BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+	BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+	SDK_DelayAtLeastUs(100U, SystemCoreClock);
 
 	XBAR_Init(kXBAR_DSC1);
 	xbar_control_config_t xbaraConfig;
@@ -96,7 +113,11 @@ void BOARD_InitHardware(void)
 	xbaraConfig.requestType                  = kXBAR_RequestInterruptEnable;
 	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputHiperface1SyncXbar);
 	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputEdma4IpdReq76);
+	/*output the tripgger signal to verify the synchronization on Sync Mode and Stetcher/Divider */
+	XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux1Trigger0, kXBAR1_OutputIomuxXbarOut07);
 	XBAR_SetOutputSignalConfig(kXBAR1_OutputEdma4IpdReq76, &xbaraConfig);
+
+	blk_base->HIPERFACE_EXT_SYNC_OUT_CTL = 0x3;
 
 	blk_base->HIPERFACE1_SYNC_CTL1 = BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_clk_source_sel(0x00);
 	blk_base->HIPERFACE1_SYNC_CTL1 |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_clk_enable_MASK;
@@ -110,4 +131,23 @@ void BOARD_InitHardware(void)
 
 	blk_base->HIPERFACE1_SYNC_CTL1 |= BLK_CTRL_WAKEUPMIX_HIPERFACE1_SYNC_CTL1_sync_enable_MASK;
 }
+
+void hiperface_fast_pos_irq_enable()
+{
+	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+	blk_base->HIPERFACE1_INT_CTL |= (1 << 5);
+}
+
+void hiperface_fast_pos_irq_disable()
+{
+	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+	blk_base->HIPERFACE1_INT_CTL &= ~(1 << 5);
+}
+
+void hiperface_clear_fast_pos_irq_status()
+{
+	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
+	blk_base->HIPERFACE1_INT_CTL |= (1 << 1);
+}
+
 /*${function:end}*/
