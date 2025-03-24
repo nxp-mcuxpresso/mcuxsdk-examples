@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -78,10 +78,10 @@ void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
 #if (DEMO_POWER_HIFI4_USED != 0U)
             cfg[mode].sw1OutVolt = 900000U; /* DSP keep running. */
 #else
-            cfg[mode].sw1OutVolt = 630000U;
+            cfg[mode].sw1OutVolt = 500000U;
 #endif
             cfg[mode].sw2OutVolt  = 1000000U;
-            cfg[mode].sw3OutVolt  = 630000U;
+            cfg[mode].sw3OutVolt  = 500000U;
             cfg[mode].sw4OutVolt  = 1800000U;
             cfg[mode].ldo1OutVolt = 1800000U;
             cfg[mode].ldo2OutVolt = 1800000U;
@@ -92,9 +92,9 @@ void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
         /* Note: the StandbyMode and DPStandbyMode use same register for voltage configuration. */
         case kPCA9422_StandbyMode: /* PMIC_MODE[1:0] = 10b */
         case kPCA9422_DPStandbyMode: /* PMIC_MODE[1:0] = 11b */
-            cfg[mode].sw1OutVolt  = 630000U;
+            cfg[mode].sw1OutVolt  = 500000U;
             cfg[mode].sw2OutVolt  = 1000000U;
-            cfg[mode].sw3OutVolt  = 630000U;
+            cfg[mode].sw3OutVolt  = 500000U;
             cfg[mode].sw4OutVolt  = 1800000U;
             cfg[mode].ldo1OutVolt = 1800000U;
             cfg[mode].ldo2OutVolt = 1800000U;

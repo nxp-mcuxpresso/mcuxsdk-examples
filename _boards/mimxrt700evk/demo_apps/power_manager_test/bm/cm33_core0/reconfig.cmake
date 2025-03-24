@@ -1,5 +1,5 @@
 mcux_add_configuration(
-    CC "-DBOARD_PMIC_CONFIG_USE_SEMA4=1 -DPOWER_DEFAULT_PMICMODE_DSR=2 -DPOWER_DEFAULT_PMICMODE_DPD=3"
+    CC "-DBOARD_PMIC_CONFIG_USE_SEMA4=1"
 )
 
 mcux_add_mdk_configuration(

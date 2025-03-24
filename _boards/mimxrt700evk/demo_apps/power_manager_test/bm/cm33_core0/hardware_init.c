@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -87,9 +87,9 @@ void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
 
         /* PMIC_MODE[1:0] = 01b */
         case kPCA9422_SleepMode:
-            cfg[mode].sw1OutVolt  = 630000U;
+            cfg[mode].sw1OutVolt  = 500000U;
             cfg[mode].sw2OutVolt  = 1000000U;
-            cfg[mode].sw3OutVolt  = 630000U;
+            cfg[mode].sw3OutVolt  = 500000U;
             cfg[mode].sw4OutVolt  = 1800000U;
             cfg[mode].ldo1OutVolt = 1800000U;
             cfg[mode].ldo2OutVolt = 1800000U;
@@ -149,18 +149,18 @@ void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
     PCA9422_GetDefaultEnModeConfig(&cfg);
 
 #if (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
-    cfg.sw1OutEnMode = kPCA9422_EnmodeOnActiveSleepStandby;
-    cfg.sw3OutEnMode = kPCA9422_EnmodeOnActiveSleepStandby;
+    cfg.sw1OutEnMode = kPCA9422_EnmodeOnActiveSleep;
+    cfg.sw3OutEnMode = kPCA9422_EnmodeOnActiveSleep;
 #else
     cfg.sw1OutEnMode = kPCA9422_EnmodeOnActive;
     cfg.sw3OutEnMode = kPCA9422_EnmodeOnActive;
 #endif
-    cfg.sw2OutEnMode  = kPCA9422_EnmodeOnActiveSleepStandby;
+    cfg.sw2OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
     cfg.sw4OutEnMode  = kPCA9422_EnmodeOnActiveSleepStandby;
     cfg.ldo1OutEnMode = kPCA9422_EnmodeOnAll;
-    cfg.ldo2OutEnMode = kPCA9422_EnmodeOnActiveSleepStandby;
-    cfg.ldo3OutEnMode = kPCA9422_EnmodeOnActiveSleepStandby;
-    cfg.ldo4OutEnMode = kPCA9422_EnmodeOnActiveSleepStandby;
+    cfg.ldo2OutEnMode = kPCA9422_EnmodeOnActiveSleep;
+    cfg.ldo3OutEnMode = kPCA9422_EnmodeOnActiveSleep;
+    cfg.ldo4OutEnMode = kPCA9422_EnmodeOnActiveSleep;
 
     PCA9422_WriteEnModeConfig(handle, cfg);
 }
