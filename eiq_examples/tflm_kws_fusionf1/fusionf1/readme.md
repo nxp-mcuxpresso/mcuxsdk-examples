@@ -78,6 +78,9 @@ Files:
   model/model_ds_cnn_ops.cpp - model operations registration
   model/output_postproc.cpp - model output processing
 
+This example cannot be imported into Config Tools because the xtensa toolchain is not supported.
+
+
 ## Running the demo
 The log below shows the output of the demo in the terminal window:
 
@@ -117,7 +120,4 @@ Microphone data processing:
 ```
 
 ## Supported Boards
-- [FRDM-MCXN947](../../_boards/frdmmcxn947/eiq_examples/tflm_kws/example_board_readme.md)
-- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/eiq_examples/tflm_kws/example_board_readme.md)
-- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/eiq_examples/tflm_kws/example_board_readme.md)
-- [MIMXRT700-EVK](../../_boards/mimxrt700evk/eiq_examples/tflm_kws/example_board_readme.md)
+- [EVK-MIMXRT595]
