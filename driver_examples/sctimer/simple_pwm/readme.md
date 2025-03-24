@@ -27,3 +27,4 @@ The duty cycles of the two PWM signals are 50% and 20%, respectively.
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/sctimer/simple_pwm/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/sctimer/simple_pwm/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/sctimer/simple_pwm/example_board_readme.md)
+- [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/sctimer/simple_pwm/example_board_readme.md)

@@ -4,8 +4,8 @@
 This document explains the freertos_swtimer example. It shows usage of software timer and its
 callback.
 
-The example application creates one software timer SwTimer. The timer’s callback SwTimerCallback is
-periodically executed and text “Tick.” is printed to terminal.
+The example application creates one software timer SwTimer. The timer's callback SwTimerCallback is
+periodically executed and text "Tick." is printed to terminal.
 
 
 
@@ -89,3 +89,4 @@ Tick.
 - [TWR-KM34Z50MV3](../../_boards/twrkm34z50mv3/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/freertos_examples/freertos_swtimer/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/freertos_examples/freertos_swtimer/example_board_readme.md)

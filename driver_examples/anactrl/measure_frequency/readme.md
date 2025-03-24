@@ -11,3 +11,4 @@ target clock according to the reference clock frequency.
 - [LPCXpresso55S16](../../../_boards/lpcxpresso55s16/driver_examples/anactrl/measure_frequency/example_board_readme.md)
 - [LPCXpresso55S28](../../../_boards/lpcxpresso55s28/driver_examples/anactrl/measure_frequency/example_board_readme.md)
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/driver_examples/anactrl/measure_frequency/example_board_readme.md)
+- [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/anactrl/measure_frequency/example_board_readme.md)

@@ -48,3 +48,4 @@ Main routine:
 - [LPCXpresso55S69](../../../../../_boards/lpcxpresso55s69/driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../../../_boards/mimxrt685audevk/driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md)
 - [RD-RW612-BGA](../../../../../_boards/rdrw612bga/driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md)
+- [MCXW23-EVK](../../../../../_boards/mcxw23evk/driver_examples/spi/dma_b2b_transfer/slave/example_board_readme.md)

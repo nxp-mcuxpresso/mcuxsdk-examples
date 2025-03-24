@@ -83,3 +83,4 @@ All EC double scalar multiplication tests were succesfull.
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/driver_examples/casper/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/driver_examples/casper/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/driver_examples/casper/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/casper/example_board_readme.md)

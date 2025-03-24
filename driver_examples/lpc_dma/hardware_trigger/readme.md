@@ -18,3 +18,4 @@ fordebugging and further development.
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/driver_examples/dma/hardware_trigger/example_board_readme.md)
 - [LPCXpresso845MAX](../../../_boards/lpcxpresso845max/driver_examples/dma/hardware_trigger/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/dma/hardware_trigger/example_board_readme.md)
+- [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/dma/hardware_trigger/example_board_readme.md)

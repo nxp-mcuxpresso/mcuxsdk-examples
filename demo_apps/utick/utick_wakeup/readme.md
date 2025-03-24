@@ -14,3 +14,4 @@ The MicroTick timer wakes up the device.
 - [LPCXpresso55S28](../../../_boards/lpcxpresso55s28/demo_apps/utick_wakeup/example_board_readme.md)
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/demo_apps/utick_wakeup/example_board_readme.md)
 - [LPCXpresso55S69](../../../_boards/lpcxpresso55s69/demo_apps/utick_wakeup/example_board_readme.md)
+- [MCXW23-EVK](../../../_boards/mcxw23evk/demo_apps/utick_wakeup/example_board_readme.md)

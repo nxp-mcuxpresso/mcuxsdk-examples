@@ -97,3 +97,4 @@ Bit B1 is set
 - [TWR-KM34Z50MV3](../../_boards/twrkm34z50mv3/freertos_examples/freertos_event/example_board_readme.md)
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/freertos_examples/freertos_event/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/freertos_examples/freertos_event/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/freertos_examples/freertos_event/example_board_readme.md)

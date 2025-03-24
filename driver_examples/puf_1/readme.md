@@ -19,3 +19,4 @@ Usual use consists of these steps:
 
 ## Supported Boards
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/driver_examples/puf/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/puf/example_board_readme.md)

@@ -17,3 +17,4 @@ debugging and further development without DMA interrupt.
 - [LPCXpresso824MAX](../../../_boards/lpcxpresso824max/driver_examples/dma/m2m_polling/example_board_readme.md)
 - [LPCXpresso845MAX](../../../_boards/lpcxpresso845max/driver_examples/dma/m2m_polling/example_board_readme.md)
 - [LPCXpresso860MAX](../../../_boards/lpcxpresso860max/driver_examples/dma/m2m_polling/example_board_readme.md)
+- [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/dma/m2m_polling/example_board_readme.md)

@@ -37,3 +37,4 @@ RX to a continuous fast speed will cause the DMA to fall behind.
 - [LPCXpresso55S69](../../../../_boards/lpcxpresso55s69/driver_examples/usart/dma_double_buffer_transfer/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../../_boards/mimxrt685audevk/driver_examples/usart/dma_double_buffer_transfer/example_board_readme.md)
 - [RD-RW612-BGA](../../../../_boards/rdrw612bga/driver_examples/usart/dma_double_buffer_transfer/example_board_readme.md)
+- [MCXW23-EVK](../../../../_boards/mcxw23evk/driver_examples/usart/dma_double_buffer_transfer/example_board_readme.md)

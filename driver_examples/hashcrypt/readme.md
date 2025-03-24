@@ -14,3 +14,4 @@ and decrypt it back using AES and SHA algorithm. SHA-1, SHA-256, AES ECB and AES
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/driver_examples/hashcrypt/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/driver_examples/hashcrypt/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/driver_examples/hashcrypt/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/driver_examples/hashcrypt/example_board_readme.md)

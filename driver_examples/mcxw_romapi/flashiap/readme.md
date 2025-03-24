@@ -32,3 +32,4 @@ Finished FlashUpdateWaitStatesAccordingToMainClk with success !
 
 ## Supported Boards
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/romapi/flashiap/example_board_readme.md)
+- [MCXW23-EVK](../../../_boards/mcxw23evk/driver_examples/romapi/flashiap/example_board_readme.md)

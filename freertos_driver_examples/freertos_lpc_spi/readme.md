@@ -78,3 +78,4 @@ Master-to-slave data verified ok.
 - [LPCXpresso55S16](../../_boards/lpcxpresso55s16/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)
 - [LPCXpresso55S28](../../_boards/lpcxpresso55s28/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/freertos_driver_examples/freertos_lpc_spi/example_board_readme.md)
