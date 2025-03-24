@@ -986,7 +986,7 @@ Note:
 ## BR+BLE testes
 Notes: The nRF Connect APP can be used to create BLE connection for the follow BLE connection.
 
-- BLE is derived from br/edr
+- BLE is derived from br/edr (tested with Phone)
   - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
   - bt.init
   - bt.clear all
@@ -1003,9 +1003,34 @@ Notes: The nRF Connect APP can be used to create BLE connection for the follow B
   - input bt.bond to check whether the bond information exist.
   - Scan and connect to the br/edr from Phone again, verify that the paring is not triggered.
   - connect to the ble from Phone, and verify that the BLE doesn't trigger pairing and security success.
-  - bt.clear all
-  - connect to the ble from Phone, and verify that the BLE security fail.
-- BR is derived from BLE
+  - execute `bt.clear all` on one side.
+  - connect to the ble from Phone, and verify that the BLE security fail with "key miss".
+- BLE is derived from br/edr (board to board)
+  - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
+    - bt.init
+    - bt.clear all
+    - bt.auth status
+    - a2dp.register_sink_ep 1
+    - br.pscan on
+    - br.iscan on
+    - bt.advertise on
+  - execute the follow shell cmds on the board A.
+    - bt.init
+    - bt.clear all
+    - bt.auth status
+    - a2dp.register_source_ep 1
+  - Scan and connect to the br/edr from A to B, execute `a2dp.connect` on A, verify that the paring is triggered.
+  - connect to the ble from A to B, and verify that the BLE doesn't trigger pairing and security success.
+  - clear the keys in the A
+  - Scan and connect to the br/edr from Phone from A to B again, verify that the paring is triggered.
+  - connect to the ble from A to B, execute `bt.security 2` on A, verify that the BLE doesn't trigger pairing and security success.
+  - Power down DUT and power up again, and do the same shell cmds initialization.
+  - input bt.bond to check whether the bond information exist.
+  - Scan and connect to the br/edr from A to B again, verify that the paring is not triggered.
+  - connect to the ble from A to B, execute `bt.security 2` on A, verify that the BLE doesn't trigger pairing and security success.
+  - execute `bt.clear all` on one side.
+  - connect to the ble from A to B, execute `bt.security 2` on A, verify that the BLE security fail with "key miss".
+- BR is derived from BLE  (tested with Phone)
   - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
   - bt.init
   - bt.clear all
@@ -1014,7 +1039,7 @@ Notes: The nRF Connect APP can be used to create BLE connection for the follow B
   - br.iscan on
   - bt.advertise on
   - connect to the ble from Phone, and pair.
-  - Connect br/edr from Phone: Scan and connect to the br/edr from Phone,
+  - Connect br/edr from Phone.
   - Connect br/edr from DUT: If the Phone side can't find the br/edr device to click to connect, input br.discovery on to find the Phone, then br.connect xx:xx:xx:xx:xx:xx to connect with the Phone, then a2dp.connect to connect a2dp.
   - verify that the br/edr doesn't trigger pairing and security success.
   - clear the keys in the Phone
@@ -1029,15 +1054,73 @@ Notes: The nRF Connect APP can be used to create BLE connection for the follow B
   - Connect br/edr from DUT: If the Phone side can't find the br/edr device to click to connect, input br.discovery on to find the Phone, then br.connect xx:xx:xx:xx:xx:xx to connect with the Phone, then a2dp.connect to connect a2dp.
   - bt.clear all
   - connect to the ble from Phone, and verify that the BLE security fail.
+- BR is derived from BLE  (board to board)
+  - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
+  - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
+    - bt.init
+    - bt.clear all
+    - bt.auth status
+    - a2dp.register_sink_ep 1
+    - br.pscan on
+    - br.iscan on
+    - bt.advertise on
+  - execute the follow shell cmds on the board A.
+    - bt.init
+    - bt.clear all
+    - bt.auth status
+    - a2dp.register_source_ep 1
+  - connect to the ble from A to B, and pair (bt.security 2).
+  - Connect br/edr from A to B.
+  - execute `a2dp.connect` on A to connect a2dp.
+  - verify that the br/edr doesn't trigger pairing and security success.
+  - clear the keys in the A.
+  - connect to the ble from Phone, and pair again (bt.security 2).
+  - Connect br/edr from A to B.
+  - execute `a2dp.connect` on A to connect a2dp.
+  - verify that the br/edr doesn't trigger pairing and security success again.
+  - Power down DUT and power up again, and do the same shell cmds initialization.
+  - input bt.bond to check whether the bond information exist.
+  - connect to the ble from A to B, and  again, verify that the paring is not triggered.
+  - Connect br/edr from Phone.
+  - execute `a2dp.connect` on A to connect a2dp.
+  - bt.clear all
+  - connect to the ble from A to B, execute `bt.security 2` on A, verify that the BLE security fail with "key miss".
 
 ## bt_unpair test
 - use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
 - create br connection, ble connection or both of them and pair.
-- bt.clear all
-- create br connection, ble connection or both of them gain, check the pairing is triggered again or security fail with key miss error.
-- bt.clear all
+- execute `bt.clear all` on both side.
+- create br connection, ble connection or both of them gain, check the pairing is triggered again.
+- execute `bt.clear all` on both side.
 - power down and power up DUT.
-- create br connection, ble connection or both of them gain, check the pairing is triggered again or security fail with key miss error.
+- create br connection, ble connection or both of them gain, check the pairing is triggered again.
+- execute `bt.clear all` on one side.
+- create br connection, ble connection or both of them gain, check the pairing is triggered again or the "key miss" error is printed.
+
+## swith role test
+- use the "prj-br-ble-conns.conf" config file to build the shell demo and run.
+- execute the follow shell cmds on the board B.
+  - bt.init
+  - bt.clear all
+  - bt.auth status
+  - a2dp.register_sink_ep 1
+  - bt.pscan on
+  - bt.iscan on
+  - bt.advertise on
+- execute the follow shell cmds on the board A.
+  - bt.init
+  - bt.clear all
+  - bt.auth status
+  - a2dp.register_source_ep 1
+- create br connection from board A to board B.
+- execute `br.get-role` on A to confirm the role is Central now.
+- execute `br.switch-role 1` on A, swith role as Peripheral.
+- execute `br.get-role` on A to confirm the role is Peripheral now.
+- execute `a2dp.connect` on A or B.
+- verify the pairing success, and the ble ltk is derived too here.
+- connect ble connection from A to B.
+- execute `bt.security 2` on A.
+- If the ble pairing triggered, it fails. Otherwise it success.
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/edgefast_bluetooth_examples/shell/example_board_readme.md)
