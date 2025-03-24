@@ -11,7 +11,7 @@ mcux_add_mdk_configuration(
 )
 
 mcux_add_macro(
-  CC "-DUSB_DEVICE_CONFIG_BUFFER_PROPERTY_CACHEABLE=1"
+  CC "-DUSB_DEVICE_CONFIG_BUFFER_PROPERTY_CACHEABLE=1 -DEUSB_CONFIG_NATIVE_MODE=0"
 )
 
 mcux_add_include(

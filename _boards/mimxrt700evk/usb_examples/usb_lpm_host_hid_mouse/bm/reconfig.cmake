@@ -36,7 +36,7 @@ mcux_add_armgcc_configuration(
 )
 
 mcux_add_macro(
-  CC "-DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1"
+  CC "-DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1, -DEUSB_CONFIG_NATIVE_MODE=0"
 )
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"

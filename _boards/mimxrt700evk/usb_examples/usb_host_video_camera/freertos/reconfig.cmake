@@ -25,7 +25,8 @@ mcux_add_mdk_configuration(
 
 mcux_add_macro(
   CC "-DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1 \
-      -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
+      -DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1 \
+      -DEUSB_CONFIG_NATIVE_MODE=0"
 )
 mcux_add_include(
   BASE_PATH "${SdkRootDirPath}"
