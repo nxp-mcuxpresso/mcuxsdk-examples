@@ -52,7 +52,7 @@ zigbee_ed_rx_on_freertos:
     - +armgcc@release
     - -iar@debug
     - -iar@release
-    mcxw71evk@cm33_core0:
+    mcxw71evk:
     - +armgcc@debug
     - +armgcc@release
     - -iar@debug
