@@ -24,7 +24,7 @@ Prepare the Demo
 	- Remove digital_io.c under Src folder
 	
 2. Connect EtherCAT Port0 with TwinCAT3
-	RJ45 interface labeled as J28 is the EtherCAT Port0 and RJ45 interface labeled as J32 is the EtherCAT Port1.
+	RJ45 interface labeled as J28 is the EtherCAT Port0, RJ45 interface labeled as J32 is the EtherCAT Port1.
 
 3. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
 

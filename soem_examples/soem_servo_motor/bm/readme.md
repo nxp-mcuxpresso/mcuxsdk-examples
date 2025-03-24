@@ -9,8 +9,6 @@ In this example there are 2 servo-motor:
 
 
 ## Running the demo
-If the test passes, D6 LED light will light up and the motor will start to retate.
-
 When the demo is running, the serial port will output:
 
 NETC EP frame loopback example start.
