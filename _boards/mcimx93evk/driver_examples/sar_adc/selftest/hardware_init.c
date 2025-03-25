@@ -1,10 +1,10 @@
 /*
- * Copyright 2024 NXP
- * All rights reserved.
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 /*${header:start}*/
+#include "app.h"
 #include "board.h"
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -17,5 +17,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    /* Enable bandgap for ADC selftest */
+    REG_BANDGAP |= REG_BANDGAP_ENABLE_MASK;
 } 
 /*${function:end}*/
