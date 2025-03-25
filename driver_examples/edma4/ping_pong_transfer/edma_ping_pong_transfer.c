@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -75,7 +75,7 @@ int main(void)
                          sizeof(uint32_t) * HALF_BUFFER_LENGTH, sizeof(uint32_t) * HALF_BUFFER_LENGTH,
                          kEDMA_MemoryToMemory);
     EDMA_SubmitLoopTransfer(&g_DMA_Handle, transferConfig, 2);
-    EDMA_StartTransfer(&g_DMA_Handle);
+    EDMA_TriggerChannelStart(EXAMPLE_DMA_BASEADDR, DEMO_DMA_CHANNEL_0);
 
     /* Wait for EDMA transfer finish */
     while (!g_transferDone)
@@ -84,7 +84,7 @@ int main(void)
 
     g_transferDone = false;
 
-    EDMA_StartTransfer(&g_DMA_Handle);
+    EDMA_TriggerChannelStart(EXAMPLE_DMA_BASEADDR, DEMO_DMA_CHANNEL_0);
 
     /* Wait for EDMA transfer finish */
     while (!g_transferDone)
