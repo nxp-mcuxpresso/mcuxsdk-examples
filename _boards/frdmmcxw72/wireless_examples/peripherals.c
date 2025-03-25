@@ -14,8 +14,8 @@
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Peripherals v11.0
-processor: KW45B41Z83xxxA
-package_id: KW45B41Z83AFTA
+processor: MCXW727CxxxA
+package_id: MCXW727CMFTA
 mcu_data: ksdk2_0
 processor_version: 0.12.3
 board: KW45B41Z-EVK

@@ -14,8 +14,8 @@
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Peripherals v11.0
-processor: KW45B41Z83xxxA
-package_id: KW45B41Z83AFTA
+processor: KW47B42ZB7xxxA
+package_id: KW47B42ZB7AFTA
 mcu_data: ksdk2_0
 processor_version: 0.12.3
 board: KW45B41Z-EVK
