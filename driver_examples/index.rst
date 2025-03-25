@@ -311,6 +311,7 @@ driver_examples
    tsens/index.rst
    tsi/index.rst
    tsi_v6/index.rst
+   tspc/readme.md
    tstmr/readme.md
    uart/index.rst
    utick/readme.md
