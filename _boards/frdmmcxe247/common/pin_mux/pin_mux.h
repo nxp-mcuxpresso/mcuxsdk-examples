@@ -151,11 +151,40 @@ void BOARD_InitCANPins(void);
 #define PORT_DFER_DFE_3_MASK 0x08u    /*!<@brief Digital Filter Enable Mask for item 3. */
 #define PORT_DFER_DFE_7_MASK 0x80u    /*!<@brief Digital Filter Enable Mask for item 7. */
 
+/*! @name PORTC3 (number 42), PTC3_PIN42
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITFLASHPINS_PTC3_PIN42_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITFLASHPINS_PTC3_PIN42_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITFLASHPINS_PTC3_PIN42_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                                /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitFlashPins(void);
+
+/*! @name PORTC3 (number 42), PTC3_PIN42
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITENETPINS_PTC3_PIN42_GPIO GPIOC               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITENETPINS_PTC3_PIN42_INIT_GPIO_VALUE 1U       /*!<@brief GPIO output initial state */
+#define BOARD_INITENETPINS_PTC3_PIN42_GPIO_PIN_MASK (1U << 3U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITENETPINS_PTC3_PIN42_PORT PORTC               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITENETPINS_PTC3_PIN42_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITENETPINS_PTC3_PIN42_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                               /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitENETPins(void);
 
 #if defined(__cplusplus)
 }

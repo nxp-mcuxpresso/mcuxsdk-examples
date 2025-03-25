@@ -25,12 +25,14 @@ pin_labels:
 - {pin_num: '122', pin_signal: PTE2/LPSPI0_SOUT/LPTMR0_ALT3/FTM3_CH6/LPUART1_CTS/SAI1_SYNC/ADC1_SE10, label: LPSPI0_SIN, identifier: LPSPI0_SIN;LPSPI0_SOUT}
 - {pin_num: '138', pin_signal: PTE0/LPSPI0_SCK/TCLK1/LPI2C1_SDA/LPSPI1_SOUT/FTM1_FLT2/SAI0_D2, label: LPSPI0_SCK, identifier: LPSPI0_SCK}
 - {pin_num: '121', pin_signal: PTE6/LPSPI0_PCS2/FTM7_FLT1/FTM3_CH7/LPUART1_RTS/ADC1_SE11, label: LPSPI0_PCS2, identifier: LPSPI0_PCS2}
+- {pin_num: '42', pin_signal: PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4, label: PTC3_PIN42, identifier: PTC3_PIN42}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
 
 #include "fsl_common.h"
 #include "fsl_port.h"
+#include "fsl_gpio.h"
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
@@ -475,18 +477,18 @@ void BOARD_InitFlashPins(void)
     /* PORTC2 (pin 43) is configured as QSPI_A_IO3 */
     PORT_SetPinConfig(PORTC, 2U, &portc2_pin43_config);
 
-    const port_pin_config_t portc3_pin42_config = {/* Internal pull-up/down resistor is disabled */
-                                                   kPORT_PullDisable,
-                                                   /* Passive filter is disabled */
-                                                   kPORT_PassiveFilterDisable,
-                                                   /* High drive strength is configured */
-                                                   kPORT_HighDriveStrength,
-                                                   /* Pin is configured as QSPI_A_CS */
-                                                   kPORT_MuxAlt6,
-                                                   /* Pin Control Register fields [15:0] are not locked */
-                                                   kPORT_UnlockRegister};
+    const port_pin_config_t PTC3_PIN42 = {/* Internal pull-up/down resistor is disabled */
+                                          kPORT_PullDisable,
+                                          /* Passive filter is disabled */
+                                          kPORT_PassiveFilterDisable,
+                                          /* High drive strength is configured */
+                                          kPORT_HighDriveStrength,
+                                          /* Pin is configured as QSPI_A_CS */
+                                          kPORT_MuxAlt6,
+                                          /* Pin Control Register fields [15:0] are not locked */
+                                          kPORT_UnlockRegister};
     /* PORTC3 (pin 42) is configured as QSPI_A_CS */
-    PORT_SetPinConfig(PORTC, 3U, &portc3_pin42_config);
+    PORT_SetPinConfig(BOARD_INITFLASHPINS_PTC3_PIN42_PORT, BOARD_INITFLASHPINS_PTC3_PIN42_PIN, &PTC3_PIN42);
     /* Configure digital filter */
     PORT_EnablePinsDigitalFilter(
         /* Digital filter is configured on port D */
@@ -553,6 +555,89 @@ void BOARD_InitFlashPins(void)
                                                    kPORT_UnlockRegister};
     /* PORTD7 (pin 44) is configured as QSPI_A_IO1 */
     PORT_SetPinConfig(PORTD, 7U, &portd7_pin44_config);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitENETPins:
+- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '41', peripheral: ENET, signal: RMII_MDIO, pin_signal: PTB4/FTM0_CH4/LPSPI0_SOUT/MII_RMII_MDIO/TRGMUX_IN1/QSPI_B_IO0, pull_enable: disable}
+  - {pin_num: '43', peripheral: ENET, signal: RMII_TXD0, pin_signal: PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/QSPI_A_IO3/ADC0_SE10/CMP0_IN5}
+  - {pin_num: '44', peripheral: ENET, signal: RMII_TXD1, pin_signal: PTD7/LPUART2_TX/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6}
+  - {pin_num: '47', peripheral: ENET, signal: RMII_TXEN, pin_signal: PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS/QSPI_A_IO2}
+  - {pin_num: '52', peripheral: ENET, signal: RMII_RXD0, pin_signal: PTC1/FTM0_CH1/LPSPI2_SOUT/MII_RMII_RXD1/MII_RMII_RXD0/FTM1_CH7/QSPI_B_SCK/ADC0_SE9}
+  - {pin_num: '53', peripheral: ENET, signal: RMII_RXD1, pin_signal: PTC0/FTM0_CH0/LPSPI2_SIN/MII_RMII_RXD1/MII_RMII_RXD0/FTM1_CH6/QSPI_B_RWDS/ADC0_SE8}
+  - {pin_num: '56', peripheral: ENET, signal: RMII_CRS_DV, pin_signal: PTC17/CAN2_TX/LPI2C1_SCLS/MII_RMII_RX_DV/QSPI_B_IO6/ADC0_SE15}
+  - {pin_num: '48', peripheral: ENET, signal: MII_TXCLK, pin_signal: PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS/QSPI_A_IO0}
+  - {pin_num: '39', peripheral: ENET, signal: RMII_MDC, pin_signal: PTE8/FTM0_CH6/MII_RMII_MDC/CMP0_IN3}
+  - {pin_num: '42', peripheral: GPIOC, signal: 'GPIO, 3', pin_signal: PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4, direction: OUTPUT,
+    gpio_init_state: 'true'}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitENETPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitENETPins(void)
+{
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortB);
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortC);
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortD);
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortE);
+
+    gpio_pin_config_t PTC3_PIN42_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PTC3 (pin 42)  */
+    GPIO_PinInit(BOARD_INITENETPINS_PTC3_PIN42_GPIO, BOARD_INITENETPINS_PTC3_PIN42_PIN, &PTC3_PIN42_config);
+
+    /* PORTB4 (pin 41) is configured as MII_RMII_MDIO */
+    PORT_SetPinMux(PORTB, 4U, kPORT_MuxAlt5);
+
+    PORTB->PCR[4] = ((PORTB->PCR[4] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                     /* Pull Enable: Internal pullup or pulldown resistor is not enabled on the corresponding pin. */
+                     | PORT_PCR_PE(kPORT_PullDisable));
+
+    /* PORTC0 (pin 53) is configured as MII_RMII_RXD1 */
+    PORT_SetPinMux(PORTC, 0U, kPORT_MuxAlt4);
+
+    /* PORTC1 (pin 52) is configured as MII_RMII_RXD0 */
+    PORT_SetPinMux(PORTC, 1U, kPORT_MuxAlt5);
+
+    /* PORTC17 (pin 56) is configured as MII_RMII_RX_DV */
+    PORT_SetPinMux(PORTC, 17U, kPORT_MuxAlt5);
+
+    /* PORTC2 (pin 43) is configured as MII_RMII_TXD0 */
+    PORT_SetPinMux(PORTC, 2U, kPORT_MuxAlt5);
+
+    /* PORTC3 (pin 42) is configured as PTC3 */
+    PORT_SetPinMux(BOARD_INITENETPINS_PTC3_PIN42_PORT, BOARD_INITENETPINS_PTC3_PIN42_PIN, kPORT_MuxAsGpio);
+
+    /* PORTD11 (pin 48) is configured as MII_RMII_TX_CLK */
+    PORT_SetPinMux(PORTD, 11U, kPORT_MuxAlt5);
+
+    /* PORTD12 (pin 47) is configured as MII_RMII_TX_EN */
+    PORT_SetPinMux(PORTD, 12U, kPORT_MuxAlt5);
+
+    /* PORTD7 (pin 44) is configured as MII_RMII_TXD1 */
+    PORT_SetPinMux(PORTD, 7U, kPORT_MuxAlt5);
+
+    /* PORTE8 (pin 39) is configured as MII_RMII_MDC */
+    PORT_SetPinMux(PORTE, 8U, kPORT_MuxAlt5);
 }
 /***********************************************************************************************************************
  * EOF

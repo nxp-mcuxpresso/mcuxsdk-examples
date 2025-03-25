@@ -34,6 +34,7 @@ enet_txrx_transfer:
     evkmimxrt1064: []
     evkmimxrt1160@cm4: []
     evkmimxrt1160@cm7: []
+    frdmmcxe247: []
     frdmrw612: []
     mcimx93autoevk: []
     mcimx93evk: []

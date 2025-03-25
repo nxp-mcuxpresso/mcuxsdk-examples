@@ -38,5 +38,6 @@ enet_txrx_ptp1588_transfer:
     evkmimxrt1064: []
     evkmimxrt1160@cm4: []
     evkmimxrt1160@cm7: []
+    frdmmcxe247: []
     mcimx93autoevk: []
     mcimx93evk: []

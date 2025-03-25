@@ -20,6 +20,7 @@ cmsis_enet_txrx_transfer:
       - ${board_root}/${board}/cmsis_driver_examples/enet/txrx_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxe247: []
     evkbimxrt1050: []
     evkbmimxrt1060: []
     evkbmimxrt1170@cm4: []
