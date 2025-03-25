@@ -1,4 +1,9 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 pflash_c40:
   section-type: application
   contents:
@@ -14,3 +19,4 @@ pflash_c40:
       - ${board_root}/${board}/driver_examples/flash/pflash/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    frdmmcxe31b: []

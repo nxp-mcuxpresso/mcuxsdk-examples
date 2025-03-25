@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 led_blinky:
   section-type: application
   contents:
@@ -41,3 +46,4 @@ led_blinky:
     kw47loc@cm33_core0: []
     twrkm34z50mv3: []
     twrkm35z75m: []
+    frdmmcxe31b: []

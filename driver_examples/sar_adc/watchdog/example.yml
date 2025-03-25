@@ -1,3 +1,9 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 adc_watchdog:
   section-type: application
   contents:
@@ -43,3 +49,4 @@ adc_watchdog:
     - +iar@release
     - +iar@debug
     mcimx93evk: []
+    frdmmcxe31b: []

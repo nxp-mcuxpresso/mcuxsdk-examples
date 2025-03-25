@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 crc:
   section-type: application
   contents:
@@ -49,3 +54,4 @@ crc:
     twrkm34z75m: []
     twrkm35z75m: []
     mimxrt700evk@cm33_core0: []
+    frdmmcxe31b: []

@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 lpi2c_interrupt_b2b_transfer_master:
   section-type: application
   contents:
@@ -71,3 +76,4 @@ lpi2c_interrupt_b2b_transfer_master:
     mimxrt700evk@cm33_core0: []
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
+    frdmmcxe31b: []

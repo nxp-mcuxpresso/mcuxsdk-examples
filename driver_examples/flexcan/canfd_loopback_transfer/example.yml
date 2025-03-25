@@ -1,4 +1,9 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 canfd_loopback_transfer:
   section-type: application
   contents:
@@ -38,3 +43,4 @@ canfd_loopback_transfer:
     mcimx93autoevk: []
     mcimx93evk: []
     mcimx93qsb: []
+    frdmmcxe31b: []

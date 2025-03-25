@@ -1,3 +1,9 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 flexio_pwm:
   section-type: application
   contents:
@@ -82,3 +88,4 @@ flexio_pwm:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxe31b: []

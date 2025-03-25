@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 pit:
   section-type: application
   contents:
@@ -9,8 +14,8 @@ pit:
       category: driver_examples/pit
       brief: The PIT project is a simple demonstration program of the SDK PIT driver.
         It sets up the PIT hardware block to trigger a periodic interrupt after every
-        1 second. When the PIT interrupt is triggered, a message will be printed on the
-        UART terminal and an LED be toggled on the board.
+        1 second. When the PIT interrupt is triggered, a message will be printed on
+        the UART terminal and an LED be toggled on the board.
       example_readme:
       - examples/driver_examples/pit/readme.md
       - ${board_root}/${board}/driver_examples/pit/example_board_readme.md
@@ -37,3 +42,4 @@ pit:
     twrkm34z50mv3: []
     twrkm34z75m: []
     twrkm35z75m: []
+    frdmmcxe31b: []

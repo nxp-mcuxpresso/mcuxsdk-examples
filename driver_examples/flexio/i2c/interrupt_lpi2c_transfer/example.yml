@@ -1,3 +1,9 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 flexio_i2c_interrupt_lpi2c_transfer:
   section-type: application
   contents:
@@ -52,7 +58,7 @@ flexio_i2c_interrupt_lpi2c_transfer:
     frdmke17z512: []
     frdmmcxa156: []
     frdmmcxa276: []
-    frdmmcxe247: []   
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
@@ -89,3 +95,4 @@ flexio_i2c_interrupt_lpi2c_transfer:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxe31b: []

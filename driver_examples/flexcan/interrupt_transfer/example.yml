@@ -1,4 +1,9 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 flexcan_interrupt_transfer:
   section-type: application
   contents:
@@ -54,3 +59,4 @@ flexcan_interrupt_transfer:
     mcimx93evk: []
     mcimx93qsb: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxe31b: []

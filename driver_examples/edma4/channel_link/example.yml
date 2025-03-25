@@ -1,3 +1,9 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 edma4_channel_link:
   section-type: application
   contents:
@@ -36,3 +42,4 @@ edma4_channel_link:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxe31b: []

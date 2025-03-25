@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2025 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -21,4 +21,4 @@ siul2_input_dma:
       - ${board_root}/${board}/driver_examples/siul2/input_dma/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-
+    frdmmcxe31b: []

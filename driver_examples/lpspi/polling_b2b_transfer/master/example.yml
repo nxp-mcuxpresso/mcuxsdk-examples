@@ -1,3 +1,9 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 lpspi_polling_b2b_transfer_master:
   section-type: application
   contents:
@@ -67,3 +73,4 @@ lpspi_polling_b2b_transfer_master:
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
     frdmmcxl255@cm33: []
+    frdmmcxe31b: []

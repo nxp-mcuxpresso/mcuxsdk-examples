@@ -1,4 +1,9 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 sw_trig:
   section-type: application
   contents:
@@ -13,3 +18,5 @@ sw_trig:
       - examples/driver_examples/bctu/sw_trig/readme.md
       - ${board_root}/${board}/driver_examples/bctu/sw_trig/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []

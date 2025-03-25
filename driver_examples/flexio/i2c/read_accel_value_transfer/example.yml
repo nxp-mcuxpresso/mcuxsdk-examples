@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 flexio_i2c_read_accel_value_transfer:
   section-type: application
   contents:
@@ -51,3 +56,4 @@ flexio_i2c_read_accel_value_transfer:
     mcimx93autoevk: []
     mcimx93evk: []
     mcimx93qsb: []
+    frdmmcxe31b: []

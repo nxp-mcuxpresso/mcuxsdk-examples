@@ -1,4 +1,9 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 adc_sample_rate_measurement:
   section-type: application
   contents:
@@ -17,3 +22,4 @@ adc_sample_rate_measurement:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
+    frdmmcxe31b: []

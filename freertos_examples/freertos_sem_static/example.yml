@@ -1,8 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
+
 freertos_sem_static:
   section-type: application
   contents:
@@ -98,3 +99,4 @@ freertos_sem_static:
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
     twrkm34z75m: []
+    frdmmcxe31b: []

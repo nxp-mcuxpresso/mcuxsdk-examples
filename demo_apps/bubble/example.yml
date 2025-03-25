@@ -1,4 +1,9 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 bubble:
   section-type: application
   contents:
@@ -24,3 +29,4 @@ bubble:
     frdmmcxc041: []
     frdmmcxc444: []
     frdmmcxn236: []
+    frdmmcxe31b: []

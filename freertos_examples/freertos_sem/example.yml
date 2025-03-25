@@ -1,3 +1,9 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 freertos_sem:
   section-type: application
   contents:
@@ -115,3 +121,4 @@ freertos_sem:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxe31b: []

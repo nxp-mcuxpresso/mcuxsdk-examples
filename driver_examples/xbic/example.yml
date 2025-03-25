@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 xbic:
   section-type: application
   contents:
@@ -9,9 +14,11 @@ xbic:
       category: driver_examples
       brief: The xbic Example project is to demonstrate usage of the KSDK xbic driver.
         In this example, The XBIC will enable master port and slave port error detection.
-        Then inject errors into the communication and check whether the error information is correct.
+        Then inject errors into the communication and check whether the error information
+        is correct.
       example_readme:
       - examples/driver_examples/xbic/readme.md
       - ${board_root}/${board}/driver_examples/xbic/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: {}
+  boards:
+    frdmmcxe31b: []

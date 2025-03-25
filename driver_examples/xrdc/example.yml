@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 xrdc:
   section-type: application
   contents:
@@ -18,3 +23,4 @@ xrdc:
     evkmcimx7ulp: []
     frdmk32l3a6@cm0plus: []
     frdmk32l3a6@cm4: []
+    frdmmcxe31b: []

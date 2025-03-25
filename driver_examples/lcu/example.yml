@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 lcu:
   section-type: application
   contents:
@@ -8,10 +13,12 @@ lcu:
       name: lcu${core_id_suffix_name}
       category: driver_examples
       brief: The lcu Example project is to demonstrate usage of the KSDK lcu driver.
-        In this example, lcu will be refreshed by fixed service and keyed service sequence in regular window.
-        After this, it will refresh lcu with fixed service sequence in window mode.
+        In this example, lcu will be refreshed by fixed service and keyed service
+        sequence in regular window. After this, it will refresh lcu with fixed service
+        sequence in window mode.
       example_readme:
       - examples/driver_examples/lcu/readme.md
       - ${board_root}/${board}/driver_examples/lcu/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: {}
+  boards:
+    frdmmcxe31b: []

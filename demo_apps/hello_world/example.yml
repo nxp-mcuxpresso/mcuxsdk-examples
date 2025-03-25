@@ -1,4 +1,9 @@
-# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 hello_world:
   section-type: application
   contents:
@@ -321,3 +326,4 @@ hello_world:
     imx943evk@cm7_core1: []
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
+    frdmmcxe31b: []
