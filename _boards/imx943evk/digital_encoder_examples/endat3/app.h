@@ -27,6 +27,10 @@
 #define BOARD_ENDAT3_BASEADDR 	ENDAT3
 #define DEMO_ENDAT3_FG_IRQn		Reserved164_IRQn
 #define DEMO_FG_IRQ_IRQHandler Reserved164_IRQHandler
+
+#define DEMO_ENDAT3_BG_IRQn 	Reserved163_IRQn
+#define DEMO_BG_IRQ_IRQHandler 	Reserved163_IRQHandler
+
 #define ENDAT3_CLOCK_ROOT       hal_clock_endat31fast
 #define ENDAT3_SOURCE_CLOCK     HAL_ClockGetFreq(ENDAT3_CLOCK_ROOT)
 #define ENDAT3_STRETCHER_CTRL_ASYNC_EN 1

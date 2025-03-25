@@ -33,7 +33,7 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
     PWMBase->SM[0].INIT = (uint16_t)(-(ui16M1PwmModulo / 2));
     PWMBase->SM[0].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
 
-    PWMBase->SM[1].VAL1 = ((ui16M1PwmModulo / 2) - 1);
+    PWMBase->SM[0].VAL1 = ((ui16M1PwmModulo / 2) - 1);
 
 
     /* Trigger for Encoder synchronization */
@@ -57,30 +57,43 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 
 void BOARD_InitHardware(void)
 {
-    /* EnDat3.0 100MHz */
-    hal_clk_t hal_endat3Clk = {
+    /* EnDat3.0 200MHz */
+    hal_clk_t hal_endat3Clk_rxtx = {
         .clk_id = hal_clock_endat31fast,
         .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
-        .div = 4,
-        .enable_clk = true,
+        .rate = 200000000UL,
+        .clk_round_opt = hal_clk_round_auto,
+    };
+
+    hal_clk_t hal_endat3Clk_sys = {
+        .clk_id = hal_clock_endat31slow,
+        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
+        .rate = 100000000UL,
         .clk_round_opt = hal_clk_round_auto,
     };
 
     BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 
     SM_Platform_Init();
-    BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRootClk(&hal_endat3Clk);
+    HAL_ClockSetParent(&hal_endat3Clk_rxtx);
+    HAL_ClockSetRate(&hal_endat3Clk_rxtx);
+    HAL_ClockEnable(&hal_endat3Clk_rxtx);
+
+    HAL_ClockSetParent(&hal_endat3Clk_sys);
+    HAL_ClockSetRate(&hal_endat3Clk_sys);
+    HAL_ClockEnable(&hal_endat3Clk_sys);
 
     blk_base->DIAG_ENCODER_MUX_SEL =
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3) |
-        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
-
+        BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3);
+#ifdef ENDAT3_SLE_ENC2
+	blk_base->DIAG_ENCODER_MUX_SEL =
+		BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
+#endif
     /* Select Motor controller 1 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);

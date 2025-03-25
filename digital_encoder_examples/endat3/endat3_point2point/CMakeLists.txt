@@ -14,6 +14,6 @@ mcux_add_macro(
     CC "-DENDAT3_PARTICIPANTS_NUM=1"
 )
 
-include(${SdkRootDirPath}/${board_root}/${board}/digital_encoder_examples/endat3/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/digital_encoder_examples/endat3/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
