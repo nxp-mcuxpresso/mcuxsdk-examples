@@ -16,15 +16,9 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_EnableClock(kCLOCK_GateLPUART2);
-    CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
-
-    /* Release peripheral RESET */
-    RESET_PeripheralReset(kCRC_RST_SHIFT_RSTn);
-    RESET_PeripheralReset(kPORT1_RST_SHIFT_RSTn);
-
-    BOARD_InitPins();
     BOARD_InitBootClocks();
+    BOARD_InitSWD_DEBUGPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
