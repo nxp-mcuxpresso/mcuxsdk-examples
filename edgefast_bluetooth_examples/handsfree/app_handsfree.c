@@ -1,5 +1,5 @@
 /*
- * Copyright 2021, 2024 NXP
+ * Copyright 2021, 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -259,6 +259,22 @@ static void app_hfp_hf_get_config( hfp_hf_get_config **config)
 {
     *config = &hfp_hf_config;
 }
+
+void app_cmd_complete_cb(struct bt_conn *conn, struct bt_hfp_hf_cmd_complete *cmd)
+{
+    if ((NULL != cmd) && (cmd->type != HFP_HF_CMD_OK))
+    {
+        if (cmd->type == HFP_HF_CMD_ERR_FROM_AG)
+        {
+                printf("> hfp api fail because peer device reject/return error\n");
+        }
+        else
+        {
+                printf("> hfp api fail error :%d\n", cmd->type);
+        }
+    }
+}
+
 static struct bt_hfp_hf_cb hf_cb = {
     .connected       = connected,
     .disconnected    = disconnected,
@@ -275,6 +291,7 @@ static struct bt_hfp_hf_cb hf_cb = {
     .waiting_call    = waiting_call,
     .indicator_status = indicator_status,
     .get_config      = app_hfp_hf_get_config,
+    .cmd_complete_cb = app_cmd_complete_cb,
 };
 
 static void handsfree_enable(void)
