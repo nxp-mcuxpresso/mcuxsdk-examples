@@ -32,6 +32,7 @@ void BOARD_InitQTMRPins(void);
 void BOARD_InitACMPPins(void);
 void BOARD_InitLPCMPPins(void);
 void BOARD_InitKPPPins(void);
+void BOARD_InitLPADCPins(void);
 
 #if defined(__cplusplus)
 }

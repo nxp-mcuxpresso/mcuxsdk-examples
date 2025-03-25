@@ -652,3 +652,31 @@ void BOARD_InitKPPPins()
 
     PORT_SetPinConfig(AON__PORT0, 6U, &port0_6_config);
 }
+
+void BOARD_InitAonLpadcPins(void)
+{
+    const port_pin_config_t port0_13_config = {/* Internal pull-up/down resistor is disabled */
+                                                 kPORT_PullDisable,
+                                                 /* Low internal pull resistor value is selected. */
+                                                 kPORT_LowPullResistor,
+                                                 /* Fast slew rate is configured */
+                                                 kPORT_FastSlewRate,
+                                                 /* Passive input filter is disabled */
+                                                 kPORT_PassiveFilterDisable,
+                                                 /* Open drain output is disabled */
+                                                 kPORT_OpenDrainDisable,
+                                                 /* Low drive strength is configured */
+                                                 kPORT_LowDriveStrength,
+                                                 /* Normal drive strength is configured */
+                                                 kPORT_NormalDriveStrength,
+                                                 /* Pin is configured as AON_LPADC0_A3 */
+                                                 kPORT_MuxAlt0,
+                                                 /* Digital input disabled; it is required for analog functions */
+                                                 kPORT_InputBufferDisable,
+                                                 /* Digital input is not inverted */
+                                                 kPORT_InputNormal,
+                                                 /* Pin Control Register fields [15:0] are not locked */
+                                                 kPORT_UnlockRegister};
+    /* PORT0_13 is configured as AON_LPADC0_A3 */
+    PORT_SetPinConfig(AON__PORT0, 13U, &port0_13_config);
+}

@@ -1,24 +1,28 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 /*${header:start}*/
+#include "fsl_common.h"
 #include "pin_mux.h"
-#include "clock_config.h"
 #include "board.h"
 /*${header:end}*/
 
-/*${variable:start}*/
-
-/*${variable:end}*/
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);
+    CLOCK_EnableClock(kCLOCK_GateAonLPADC);
+    CLOCK_EnableClock(kCLOCK_GateAonPORT);
+
+    BOARD_InitAonLpadcPins();
+
+    AHBSC__AHBSC0->SEC_GP_REG[3U] |= (1UL << 25U);
 }
 /*${function:end}*/

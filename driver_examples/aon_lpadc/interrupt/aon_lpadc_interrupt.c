@@ -27,7 +27,7 @@ adc_conv_res_t convRes;
  * Code
  ******************************************************************************/
 /*! @brief ADC IRQ handler */
-void DEMO_LPADC_IRQ_HANDLER_FUNC(void)
+void DEMO_ADC_IRQ_HANDLER_FUNC(void)
 {
     if (ADC_GetConvRes(DEMO_ADC_BASE, &convRes, DEMO_ADC_FIFO_INDEX))
     {
@@ -69,6 +69,8 @@ static void DEMO_DoAdcConfig(void)
     /* ADC interrupts */
     ADC_EnableInt(DEMO_ADC_BASE, kADC_ResFifo0WatermarkIntEn);
     EnableIRQ(DEMO_ADC_IRQ);
+    
+    ADC_Enable(DEMO_ADC_BASE, true);
 }
 
 /*! @brief Main function */

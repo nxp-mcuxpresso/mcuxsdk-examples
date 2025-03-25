@@ -32,13 +32,16 @@ volatile bool edmaTransDoneFlag = false;
  * Code
  ******************************************************************************/
 /*! @brief EDMA IRQ handler */
-void DEMO_DMA_IRQ_HANDLER(void)
+void DEMO_EDMA_IRQ_HANDLER(void)
 {
     if ((EDMA_GetChannelStatusFlags(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL) & kEDMA_InterruptFlag) != 0U)
     {
         edmaTransDoneFlag = true;
         EDMA_ClearChannelStatusFlags(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL, kEDMA_InterruptFlag);
         EDMA_EnableChannelRequest(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL);
+        
+        ADC_Enable(DEMO_ADC_BASE, false);
+        ADC_DoFifoRst(DEMO_ADC_BASE, DEMO_ADC_FIFO_INDEX);
     }
 }
 
@@ -56,20 +59,21 @@ static void DEMO_DoEdmaConfig(void)
     /* EDMA channel configuration */
     chanConfig.channelRequestSource = DEMO_EDMA_REQUEST;
     EDMA_InitChannel(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL, &chanConfig);
-    EDMA_EnableChannelRequest(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL);
 
     /* EDMA transfer configuration */
-    void *srcAddr = (uint32_t *)(&(DEMO_ADC_BASE->RESFIFO0));
-
-    transConfig.dstMajorLoopOffset = (int32_t)((-1) * sizeof(destAddr));
-
+    void *srcAddr = (uint32_t *)(&(DEMO_ADC_BASE->RESFIFO0) + DEMO_ADC_FIFO_INDEX);
     EDMA_PrepareTransfer(&transConfig, srcAddr, sizeof(uint32_t), destAddr, sizeof(destAddr[0]),
                          sizeof(destAddr[0]), sizeof(destAddr), kEDMA_PeripheralToMemory);
 
+    transConfig.dstMajorLoopOffset = (int32_t)((-1) * sizeof(destAddr));
+
     EDMA_SetTransferConfig(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL, &transConfig, NULL);
 
+    EDMA_EnableAutoStopRequest(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL, false);
+    EDMA_EnableChannelRequest(DEMO_EDMA_BASE, DEMO_EDMA_CHANNEL);
+
     /* EDMA interrupt */
-    EnableIRQ(DEMO_DMA_IRQ);
+    EnableIRQ(DEMO_EDMA_IRQ);
 }
 
 /*! @brief ADC configuration */
@@ -97,7 +101,7 @@ static void DEMO_DoAdcConfig(void)
     cmdConfig.chanIndex         = DEMO_ADC_CHAN_INDEX;
     cmdConfig.convAvg           = DEMO_ADC_CONV_AVG;
     cmdConfig.convSampleTime    = DEMO_ADC_CONV_SAMP_TIME;
-    cmdConfig.nextCmdIndex      = DEMO_ADC_NEXT_CMD_INDEX;
+    cmdConfig.nextCmdIndex      = DEMO_ADC_CMD_INDEX;
     ADC_SetCmdConfig(DEMO_ADC_BASE, DEMO_ADC_CMD_INDEX, &cmdConfig);
 
     /* ADC trigger configration. */
@@ -123,7 +127,8 @@ int main(void)
         PRINTF("\r\nPress any key to get the ADC conversion result");
         GETCHAR();
 
-        ADC_DoSoftwareTrig(DEMO_EDMA_BASE, DEMO_ADC_TRIG_INDEX);
+        ADC_Enable(DEMO_ADC_BASE, true);
+        ADC_DoSoftwareTrig(DEMO_ADC_BASE, DEMO_ADC_TRIG_INDEX);
 
         while (!edmaTransDoneFlag)
         {
@@ -135,5 +140,7 @@ int main(void)
             PRINTF("\r\nValue[%d] = %d", index, ((destAddr[index] & LPADC_RESFIFO0_D_MASK) >>
                                                   LPADC_RESFIFO0_D_SHIFT));
         }
+
+        edmaTransDoneFlag = false;
     }
 }

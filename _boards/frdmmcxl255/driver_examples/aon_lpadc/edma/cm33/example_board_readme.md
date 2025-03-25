@@ -28,14 +28,14 @@ The log below shows the output of the hello world demo in the terminal window:
 Lpadc edma example
 Press any key to get the ADC conversion result
 10 times conversion result:
-Value[0] = 35746
-Value[1] = 35746
-Value[2] = 35746
-Value[3] = 35746
-Value[4] = 35746
-Value[5] = 35746
-Value[6] = 35746
-Value[7] = 35746
-Value[8] = 35746
-Value[9] = 35746
+Value[0] = 36724
+Value[1] = 36728
+Value[2] = 36746
+Value[3] = 36761
+Value[4] = 36765
+Value[5] = 36772
+Value[6] = 36776
+Value[7] = 36807
+Value[8] = 36803
+Value[9] = 36810
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

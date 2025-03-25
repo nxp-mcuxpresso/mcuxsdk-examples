@@ -20,7 +20,7 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_GateAonAPB);
     CLOCK_EnableClock(kCLOCK_GateAonLPADC);
     CLOCK_EnableClock(kCLOCK_GateAonPORT);
-
-    BOARD_InitAonLpadcPins();
+    
+    BOARD_InitLPADCPins();
 }
 /*${function:end}*/
