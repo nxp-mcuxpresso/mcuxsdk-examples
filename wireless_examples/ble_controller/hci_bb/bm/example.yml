@@ -19,3 +19,6 @@ hci_bb_bm:
     kw45b41zevk: []
     kw45b41zloc: []
     mcxw72evk@cm33_core0: []
+    kw43evk:
+    - -armgcc@debug
+    - -armgcc@release

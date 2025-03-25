@@ -18,4 +18,7 @@ lp_refdes_ble_peripheral_bm:
     kw45b41zloc: []
     frdmmcxw72@cm33_core0: []
     kw47loc@cm33_core0: []
-    
+    kw43evk:
+    - -armgcc@debug
+    - -armgcc@release
+

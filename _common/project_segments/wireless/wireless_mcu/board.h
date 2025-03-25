@@ -52,19 +52,20 @@
 #endif
 
 #ifndef BOARD_APP_UART_INSTANCE
-#if !defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0)
 /* Use LPUART1 as default UART for Applicative serial console on new EVK rev A1-B1*/
 #define BOARD_APP_UART_INSTANCE 1U
-#else
-#define BOARD_APP_UART_INSTANCE 0U
-#endif
 #endif
 
+#ifndef BOARD_UART_CLKSRC_FRO6M
 #define BOARD_UART_CLKSRC_FRO6M   2U  // kCLOCK_IpSrcFro6M
+#endif
+
+#ifndef BOARD_UART_CLKSRC_FRO192M
 #define BOARD_UART_CLKSRC_FRO192M 3U  // kCLOCK_IpSrcFro192M
+#endif
 
 #ifndef BOARD_UART_CLKSRC
-// 192M is recommended since FRO6M has an issue where it can run at a lower frequency in some cases
+/* Use FRO192M. Note that FRO6M is not recommended on some platforms */
 #define BOARD_UART_CLKSRC BOARD_UART_CLKSRC_FRO192M
 #endif
 
@@ -121,6 +122,10 @@
 
 #ifndef BOARD_APP_UART_BAUDRATE
 #define BOARD_APP_UART_BAUDRATE 115200
+#endif
+
+#ifndef BOARD_APP_UART_CLK_FREQ
+#define BOARD_APP_UART_CLK_FREQ CLOCK_GetIpFreq(BOARD_APP_UART_CLK)
 #endif
 
 #ifndef BOARD_APP2_UART_BAUDRATE

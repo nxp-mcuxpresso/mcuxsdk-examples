@@ -96,7 +96,7 @@ int main(void)
     BOARD_InitHardware();
 
     PLATFORM_InitBle();
-#if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0)) && (!defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0))
+#if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0))
     PLATFORM_InitLcl();
 #endif
 #if (defined(gAppConfigureCOEX) && (gAppConfigureCOEX == 1))

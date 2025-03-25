@@ -3,8 +3,7 @@
 * @{
 ********************************************************************************** */
 /*! *********************************************************************************
-* Copyright 2019-2024 NXP
-* All rights reserved.
+* Copyright 2019-2025 NXP
 *
 * \file
 *
@@ -29,7 +28,6 @@
 #include "fsl_component_mem_manager.h"
 #include "app.h"
 #include "FunctionLib.h"
-#include "PWR_Interface.h"
 #include "fwk_platform.h"
 #include "fwk_debug.h"
 
@@ -49,6 +47,10 @@
 #include "app_conn.h"
 #include "app_scanner.h"
 #include "lowpower_central.h"
+
+#if defined(gAppLowpowerEnabled_d) && (gAppLowpowerEnabled_d>0)
+#include "PWR_Interface.h"
+#endif
 
 #if defined(gAppMonitorControllerNotifications_d) && (gAppMonitorControllerNotifications_d == 1)
 #include "enhanced_notification.h"

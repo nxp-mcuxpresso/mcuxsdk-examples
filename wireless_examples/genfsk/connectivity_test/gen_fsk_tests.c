@@ -347,7 +347,7 @@ app_status_t CT_GenFskInit(pHookAppNotification pFunc, pTmrHookNotification pTmr
     gaConfigParams[gConfParamChannel].paramValue.decValue = gGenFskDefaultChannel_c;
 
     gaConfigParams[gConfParamPower].paramType = gParamTypeNumber_c;
-    FLib_MemCpy(gaConfigParams[gConfParamPower].paramName, 
+    FLib_MemCpy(gaConfigParams[gConfParamPower].paramName,
 #if !defined(RADIO_IS_GEN_4P5)
                 "Lo Power", 9);
 #else
@@ -1402,18 +1402,18 @@ static bool_t CT_RangeTx(ct_event_t evType,
         if((gCtEvtUart_c == evType) && (' ' == u8UartData))
         {
             GENFSK_AbortAll();
-            
+
             Serial_Print(mAppSerId, cu8RangeTxMessages[3], gAllowToBlock_d);
 
-            i8AverageRssi = u16ReceivedPackets > 0 ? 
+            i8AverageRssi = u16ReceivedPackets > 0 ?
                 (int8_t)(i32RssiSum/u16ReceivedPackets) : 0;
             /*print average RSSI for the Range test*/
             PrintAvgRssi(i8AverageRssi, mAppSerId);
             /*print number of dropped packets*/
             PrintRangeTxDroppedPackets(u16PacketsDropped, mAppSerId);
-            
+
             Serial_Print(mAppSerId, cu8RangeTxMessages[4], gAllowToBlock_d);
-            
+
             rangeTxState = gRangeTxStateIdle_c;
         }
 
@@ -2167,7 +2167,7 @@ static void CT_HandleHighLowPower(void)
         status = GENFSK_ConfigurePower(0U);
         if (status == gGenfskSuccess_c)
         {
-           FLib_MemCpy(gaConfigParams[gConfParamPower].paramName, 
+           FLib_MemCpy(gaConfigParams[gConfParamPower].paramName,
 #if !defined(RADIO_IS_GEN_4P5)
                 "Lo Power", 9);
 #else
@@ -2485,7 +2485,7 @@ static bool_t CT_ApplyPrintConfigParams(void)
                 status = GENFSK_ConfigurePower(0U);
                 if (status == gGenfskSuccess_c)
                 {
-                   FLib_MemCpy(gaConfigParams[gConfParamPower].paramName, 
+                   FLib_MemCpy(gaConfigParams[gConfParamPower].paramName,
 #if !defined(RADIO_IS_GEN_4P5)
                 "Lo Power", 9);
 #else
@@ -2547,7 +2547,7 @@ static bool_t CT_ApplyPrintConfigParams(void)
             bParamsUpdated = TRUE;
         }
 #endif
-        
+
 #if defined(gBoard_Antenna_Diversity_Support_d) && (gBoard_Antenna_Diversity_Support_d > 0)
         if( gaConfigParams[gConfParamFrdmShieldAnt].id != frdmShieldAnt )
         {
@@ -2625,8 +2625,10 @@ bool_t CT_TrimAdjust(ct_event_t evType, void* pAssociatedValue)
             //LED_StopFlashingAllLeds();
             //LED_UnInit();
 
+#if !defined(FPGA_TARGET) || (FPGA_TARGET == 0)
             /* init 32k osc */
             PLATFORM_InitOsc32K();
+#endif
             /* output 32k clock on ptc7 */
             CLOCK_EnableClock(kCLOCK_PortC);
             PORT_SetPinMux(PORTC, 7u, kPORT_MuxAlt7);
@@ -2778,12 +2780,12 @@ static bool_t GetPllNumOffset(int32_t *pVal, uint8_t u8UartData)
     static uint32_t base;
     static int32_t  sign = 1;
     bool_t status = true;
-    
+
     #define BIT_FIELDS_SIZE             28
     #define MAX_INPUT_DECIMAL           ((1<<(BIT_FIELDS_SIZE-1))-1)    // 0x7FFFFFF
     #define MIN_INPUT_DECIMAL           (-((1<<(BIT_FIELDS_SIZE-1))))   // 0x8000000
     #define MAX_INPUT_HEXA              ((1<<(BIT_FIELDS_SIZE))-1)      // 0xFFFFFFF
-    
+
     do
     {
         if( pVal == NULL && u8UartData == 0 )
@@ -2796,7 +2798,7 @@ static bool_t GetPllNumOffset(int32_t *pVal, uint8_t u8UartData)
             sign = 1;
             break;
         }
-        
+
         if( u8UartData =='\r' )
         {
             // get result
@@ -2869,7 +2871,7 @@ static bool_t GetPllNumOffset(int32_t *pVal, uint8_t u8UartData)
             length++;
             break;
         }
-        
+
         if ( length==1 && base==10 && (u8UartData=='x'||u8UartData=='X') )
         {
           base = 16;
@@ -2904,7 +2906,7 @@ static bool_t GetPllNumOffset(int32_t *pVal, uint8_t u8UartData)
         val_valid = true;
 
     } while (false);
-    
+
     return status;
 }
 
@@ -2961,9 +2963,9 @@ bool_t CT_PllNumOffsetAdjust(ct_event_t evType, void* pAssociatedValue)
                     XCVR_PLL_DIG->PLL_OFFSET_CTRL &= ~XCVR_PLL_DIG_PLL_OFFSET_CTRL_PLL_NUMERATOR_OFFSET_MASK;
                     XCVR_PLL_DIG->PLL_OFFSET_CTRL |= XCVR_PLL_DIG_PLL_OFFSET_CTRL_PLL_NUMERATOR_OFFSET(val);
                 }
-                
+
                 PrintPllNumOffset();
-                
+
                 // reset input parer
                 (void)GetPllNumOffset(NULL, 0);
             }
@@ -2985,7 +2987,7 @@ bool_t CT_PllNumOffsetAdjust(ct_event_t evType, void* pAssociatedValue)
             }
         }
     }
-    
+
     return bReturnFromSM;
 }
 
@@ -3008,7 +3010,7 @@ static void CT_FrdmShieldBoardAntSel(uint8_t antenna_selection)
     //uint8_t val;
     //val = (antenna_selection & 3);
     //GPIOC->PDOR = (GPIOC->PDOR & ~(_BV(16) | _BV(17) | _BV(18))) | (val<<16);
-    
+
     uint32_t index;
     for(index=0; index<ARRAY_SIZE(frdmShieldPins); index++)
     {

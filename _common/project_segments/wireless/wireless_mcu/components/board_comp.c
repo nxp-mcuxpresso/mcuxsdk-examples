@@ -357,11 +357,7 @@ void BOARD_InitSerialManager(serial_handle_t serialManagerHandle)
     uartDmaConfig1.dma_channel_mux_configure                = &dma_channel_mux;
 #endif
 #else
-#if !defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0)
-    uartConfig1.clockRate = CLOCK_GetIpFreq(BOARD_APP_UART_CLK);
-#else
-    uartConfig1.clockRate = 16000000;
-#endif
+    uartConfig1.clockRate = BOARD_APP_UART_CLK_FREQ;
 #endif
     /* Init Serial Manager */
     ret = SerialManager_Init((serial_handle_t)serialManagerHandle, &s_serialManagerConfig1);

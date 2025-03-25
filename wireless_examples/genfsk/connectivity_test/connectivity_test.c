@@ -42,13 +42,11 @@ SPDX-License-Identifier: BSD-3-Clause
 /* KSDK */
 #include "board.h"
 #include "app.h"
-#if defined(KW45B41Z83_SERIES) || defined(KW45B41Z82_SERIES) || defined(K32W1480_SERIES) || defined(MCXW716A_SERIES) || defined(MCXW716C_SERIES) || defined(KW47B42ZB7_cm33_core0_SERIES) || defined(MCXW727C_cm33_core0_SERIES)
 #include "fwk_platform.h"
 #if !defined(MULTICORE_APP) || (MULTICORE_APP!=1)
 #include "platform_genfsk.h"
 #else
 #include "fwk_platform_genfsk.h"
-#endif
 #endif
 
 #ifdef cPWR_UsePowerDownMode
@@ -67,9 +65,6 @@ SPDX-License-Identifier: BSD-3-Clause
 #include "menus.h"
 #include "connectivity_test.h"
 
-#if defined(FPGA_SUPPORT) && (FPGA_SUPPORT == 1)
-#include "fwk_platform_fpga.h"
-#endif
 /************************************************************************************
 *************************************************************************************
 * Private macros
@@ -260,10 +255,6 @@ void main_task(uint32_t param)
         BOARD_DCDCInit();
 #endif
 
-#if defined(FPGA_SUPPORT) && (FPGA_SUPPORT == 1)
-        PLATFORM_InitRadio();
-#endif
-
 #if (defined(SDK_COMPONENT_INTEGRATION) && (SDK_COMPONENT_INTEGRATION > 0))
         //hardware_init();
 #else
@@ -300,7 +291,7 @@ void main_task(uint32_t param)
 
         GENFSK_Init();
 
-        
+
 
         /* GENFSK LL Init with default register config */
         GENFSK_AllocInstance(&mAppGenfskId, NULL, NULL, NULL);
@@ -347,11 +338,11 @@ void main_task(uint32_t param)
         //initialize Serial Manager
         Serial_InitManager();
 
-        Serial_InitInterface(&mAppSerId, 
-                             APP_SERIAL_INTERFACE_TYPE, 
+        Serial_InitInterface(&mAppSerId,
+                             APP_SERIAL_INTERFACE_TYPE,
                              APP_SERIAL_INTERFACE_INSTANCE);
         /*set baudrate to 115200*/
-        Serial_SetBaudRate(mAppSerId, 
+        Serial_SetBaudRate(mAppSerId,
                            APP_SERIAL_INTERFACE_SPEED);
         /*set Serial Manager receive callback*/
         Serial_SetRxCallBack(mAppSerId, App_SerialCallback, NULL);
@@ -387,12 +378,8 @@ int main(void)
 
     BOARD_InitHardware();
 
-#if defined(KW45B41Z83_SERIES) || defined(KW45B41Z82_SERIES) || defined(K32W1480_SERIES) || defined(MCXW716A_SERIES) || defined(MCXW716C_SERIES) || defined(KW47B42ZB7_cm33_core0_SERIES) || defined(MCXW727C_cm33_core0_SERIES)
     PLATFORM_InitGenfsk();
     APP_InitServices();
-#else
-    APP_InitHardware();
-#endif
 
     (void)OSA_TaskCreate((osa_task_handle_t)s_startTaskHandle, OSA_TASK(start_task), NULL);
 

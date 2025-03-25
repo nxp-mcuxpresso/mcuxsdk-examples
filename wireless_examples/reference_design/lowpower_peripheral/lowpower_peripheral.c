@@ -4,8 +4,7 @@
 ********************************************************************************** */
 /*! *********************************************************************************
 * Copyright (c) 2015, Freescale Semiconductor, Inc.
-* Copyright 2016-2024 NXP
-* All rights reserved.
+* Copyright 2016-2025 NXP
 *
 * \file
 *
@@ -31,10 +30,13 @@
 #include "FunctionLib.h"
 #include "fwk_debug.h"
 #include "fwk_platform.h"
+
+#if defined(gAppLowpowerEnabled_d) && (gAppLowpowerEnabled_d>0)
 #include "board_lp.h"
+#include "PWR_Interface.h"
+#endif
 
 #include "sensors.h"
-#include "PWR_Interface.h"
 
 /* BLE Host Stack */
 #include "gatt_server_interface.h"

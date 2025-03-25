@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 NXP
+ * Copyright 2021-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -7,14 +7,23 @@
 /*${header:start}*/
 #include "board_platform.h"
 #include "board.h"
-#include "board_dcdc.h"
 #include "clock_config.h"
 #include "pin_mux.h"
 #include "fwk_platform.h"
 #include "fwk_debug.h"
 
+#ifndef gBoardUseDcdc_d
+#define gBoardUseDcdc_d 1
+#endif
+
+#if defined(gBoardUseDcdc_d) && (gBoardUseDcdc_d > 0)
+#include "board_dcdc.h"
+#endif
+
+#if !defined(FPGA_TARGET) || (FPGA_TARGET == 0)
 #if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
 #include "fsl_ccm32k.h"
+#endif
 #endif
 
 #if defined(BOARD_DBG_SWO_PIN_ENABLE) && (BOARD_DBG_SWO_PIN_ENABLE != 0)
@@ -37,7 +46,7 @@
 /*                             Private prototypes                             */
 /* -------------------------------------------------------------------------- */
 
-#if !defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0)
+#if !defined(FPGA_TARGET) || (FPGA_TARGET == 0)
 static void BOARD_InitOsc32MHzConfig(void);
 #endif
 /* -------------------------------------------------------------------------- */
@@ -48,7 +57,7 @@ void BOARD_InitHardware(void)
 {
     BOARD_DBGCONFIGINIT(TRUE); // internal debug
 
-#if !defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0)
+#if !defined(FPGA_TARGET) || (FPGA_TARGET == 0)
     /* Set default value before XTAL start up but can be updated at run time through
        PLATFORM_Update32MhzTrimFromHwParam() from value stored in flash in hw param*/
     BOARD_InitOsc32MHzConfig();
@@ -76,10 +85,14 @@ void BOARD_InitHardware(void)
      * The fro32k MUST NOT be disabled now, this will be handled by the radio core or in PLATFORM_SwitchToOsc32k. */
     (void)PLATFORM_InitOsc32K();
 #endif
+#endif /* #if !defined(FPGA_TARGET) || (FPGA_TARGET == 0) */
 
+    CLOCK_EnableClock(kCLOCK_Tstmr0);
+
+#if defined(gBoardUseDcdc_d) && (gBoardUseDcdc_d > 0)
     /* Initialize DCDC and apply optimized configuration */
     BOARD_InitDcdc();
-#endif /* #if !defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0) */
+#endif /* #if defined(gBoardUseDcdc_d) && (gBoardUseDcdc_d > 0) */
 
     /* Configure any pins by default during device Initialization.
      * Shall be called first. Pin configuration can be overriden by any other specific pin API functions below.
@@ -112,7 +125,7 @@ void BOARD_InitHardware(void)
 /*                              Private functions                             */
 /* -------------------------------------------------------------------------- */
 
-#if !defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0)
+#if !defined(FPGA_TARGET) || (FPGA_TARGET == 0)
 static void BOARD_InitOsc32MHzConfig(void)
 {
     uint32_t rfmc_xo;
@@ -131,6 +144,6 @@ static void BOARD_InitOsc32MHzConfig(void)
 
     RFMC->XO_TEST = rfmc_xo;
     return;
-} /* #if !defined(FPGA_SUPPORT) || (FPGA_SUPPORT == 0) */
+} /* #if !defined(FPGA_TARGET) || (FPGA_TARGET == 0) */
 /*${function:end}*/
 #endif

@@ -4,7 +4,7 @@
 ********************************************************************************** */
 /*! *********************************************************************************
 * Copyright (c) 2014, Freescale Semiconductor, Inc.
-* Copyright 2016-2018,2024 NXP
+* Copyright 2016-2018,2024-2025 NXP
 * All rights reserved.
 *
 * \file
@@ -12,6 +12,7 @@
 * SPDX-License-Identifier: BSD-3-Clause
 ********************************************************************************** */
 
+#include "board_platform.h"
 #include "board.h"
 #include "gap_types.h"
 #include "gatt_db_dynamic.h"

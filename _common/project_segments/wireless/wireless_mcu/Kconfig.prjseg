@@ -62,6 +62,7 @@ if MCUX_PRJSEG_module.board.wireless.board
       select MCUX_COMPONENT_middleware.wireless.framework.seclib_rng
       select MCUX_COMPONENT_component.timer_manager
       select MCUX_COMPONENT_component.power_manager_framework
+      select MCUX_COMPONENT_middleware.wireless.framework.lowpower
 endif
 
 config MCUX_PRJSEG_module.board.wireless.clock

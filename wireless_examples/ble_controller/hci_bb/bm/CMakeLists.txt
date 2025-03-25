@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(hci_bb_bm LANGUAGES C CXX ASM 
+project(hci_bb_bm LANGUAGES C CXX ASM
     PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
 )
 
@@ -53,7 +53,6 @@ mcux_add_include(
     INCLUDES bluetooth/boards/${board}
 )
 
-include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/reconfig.cmake OPTIONAL)
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ble_controller/hci_bb/bm/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/hci_bb_bm.bin)
