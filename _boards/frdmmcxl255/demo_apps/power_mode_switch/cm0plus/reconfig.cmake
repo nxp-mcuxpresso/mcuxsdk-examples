@@ -1,0 +1,11 @@
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/MCX/MCXL/MCXL255/iar/MCXL255_cm0plus_ram.icf
+)
+
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/demo_apps/power_mode_switch/cm0plus/linkers/power_cm0plus_ram.icf
+)

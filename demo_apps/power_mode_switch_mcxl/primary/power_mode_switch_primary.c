@@ -11,6 +11,7 @@
 #include "fsl_clock.h"
 #include "fsl_power.h"
 #include "power_mode_switch_primary.h"
+#include "fsl_mu.h"
 
 /*******************************************************************************
  * Definitions

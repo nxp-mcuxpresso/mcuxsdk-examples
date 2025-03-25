@@ -10,4 +10,5 @@ power_mode_switch_mcxl_primary:
       example_readme:
       - examples/demo_apps/power_mode_switch_mcxl/readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: {}
+  boards:
+    frdmmcxl255@cm33: []
