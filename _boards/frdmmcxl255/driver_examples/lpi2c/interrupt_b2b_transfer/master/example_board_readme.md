@@ -26,7 +26,7 @@ AON__I2C0_SDA   J2-7            AON__I2C0_SDA    J2-7
 GND             J2-14           GND              J2-14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Make sure you have jumpers SJ1 and SJ2 set to
+Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
 - 2-3 for AON core (cm0+)
 

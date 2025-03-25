@@ -15,7 +15,7 @@ CM0+  AON_CMP0_IN5/P0_3    J8_4 (Sensor p.)  >  VDD or GND      J8_2 or J8_1
 This example project uses LPCMP0 to compare the voltage signal input from CMP0_IN3
 with the voltage signal(half of VDD) output by LPCMP's internal DAC.
 
-Make sure you have jumpers SJ1 and SJ2 set to
+Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
 - 2-3 for AON core (cm0+)
 
