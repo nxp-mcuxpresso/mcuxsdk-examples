@@ -30,7 +30,7 @@ AT_NONCACHEABLE_SECTION_INIT(uint32_t srcAddr[BUFFER_LENGTH])  = {0x01, 0x02, 0x
 AT_NONCACHEABLE_SECTION_INIT(uint32_t destAddr[BUFFER_LENGTH]) = {0x00, 0x00, 0x00, 0x00};
 volatile bool g_Transfer_Done                                  = false;
 
-edma_handle_t g_DMA_Handle = false;
+edma_handle_t g_DMA_Handle;
 /*******************************************************************************
  * Code
  ******************************************************************************/
