@@ -2603,7 +2603,10 @@ void USB_DeviceCmdSetObjPropVal(void *param)
                 size >>= 1U;
                 while (renameBuffer[size] != '/')
                 {
-                    size--;
+                    if (size > 0U)
+                    {
+                        size--;
+                    }
                 };
 #if (defined(USB_DEVICE_CONFIG_RETURN_VALUE_CHECK) && (USB_DEVICE_CONFIG_RETURN_VALUE_CHECK > 0U))
                 /* j indicates the offset */
