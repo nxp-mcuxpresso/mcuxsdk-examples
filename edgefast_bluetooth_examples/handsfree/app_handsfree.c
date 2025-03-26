@@ -255,6 +255,18 @@ void indicator_status(struct bt_conn *conn, hf_indicator_status_t *status)
     printf("> ID : signal %d\n", status->signal);
 }
 
+void app_list_current_calls(struct bt_conn *conn, bt_hfp_hf_current_calls_state_t *current_calls)
+{
+    printf("> current_calls : id %d\n", current_calls->id);
+    printf("> current_calls : dir %d\n", current_calls->dir);
+    printf("> current_calls : status %d\n", current_calls->status);
+    printf("> current_calls : mode %d\n", current_calls->mode);
+    printf("> current_calls : mprty %s\n", current_calls->mprty);
+    printf("> current_calls : number %s\n", current_calls->number);
+    printf("> current_calls : type %d\n", current_calls->type);
+    printf("> current_calls : alpha %s\n", current_calls->alpha);  
+}
+
 static void app_hfp_hf_get_config( hfp_hf_get_config **config)
 {
     *config = &hfp_hf_config;
@@ -291,6 +303,7 @@ static struct bt_hfp_hf_cb hf_cb = {
     .waiting_call    = waiting_call,
     .indicator_status = indicator_status,
     .get_config      = app_hfp_hf_get_config,
+    .list_current_calls = app_list_current_calls,
     .cmd_complete_cb = app_cmd_complete_cb,
 };
 
@@ -436,6 +449,11 @@ void hfp_multiparty_call_option(uint8_t option)
 void hfp_trigger_codec_connection(void)
 {
     bt_hfp_hf_trigger_codec_connection(default_conn);
+}
+
+void hfp_hf_query_list_current_calls(void)
+{
+    bt_hfp_hf_query_list_current_calls(default_conn);
 }
 
 void peripheral_hfp_hf_task(void *pvParameters)
