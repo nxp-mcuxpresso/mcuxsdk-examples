@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -10,6 +10,8 @@
 /*${header:start}*/
 #include "hal_clock.h"
 #include "fsl_phyaqr113c.h"
+#include "fsl_netc_soc.h"
+#include "netc_hw/fsl_netc_hw.h"
 #include "app_srtm.h"
 /*${header:end}*/
 
@@ -84,6 +86,7 @@ extern const phy_operations_t g_app_phy_aqr113c_ops;
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
 status_t APP_PHY_Init(phy_handle_t *phy_handle, const phy_config_t *config);
+status_t APP_NETC_PreinitVsi(netc_enetc_hw_t *hw, netc_hw_si_idx_t si);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
