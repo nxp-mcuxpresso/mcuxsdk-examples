@@ -9,5 +9,25 @@ This can be done by setting the ERASE_ALL_KEYS macro to 1.
 After partitioning Flash for CSEc operation, using the JLink Flash configuration of any other project will not work anymore. Workaround:
 - Run csec_keyconfig example with ERASE_ALL_KEYS 1, using PEmicro Flash debug configuration
 
+## Running the demo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CSEc Driver Example
+
+CSEc Init - done
+Flash is UNSECURE
+To access the CSEcfeature set, the part must be configured for EEE operation, using the PGMPART command.
+For this purpose FLASH must be parittioned.
+
+Press any key to trigger partitioning...
+EEPROM already partitioned, make sure CSEc was enabeled!
+CSEc RND Init - done
+CSEc Generate random number - success!
+CSEc Load plaintext key in KEY_RAM location - success!
+CSEc AES-ECB encryption - success!
+Encrypted cipher match the expected value!
+
+ End of Example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 ## Supported Boards
 - [FRDM-MCXE153](../../_boards/frdmmcxe247/driver_examples/csec/example_board_readme.md)

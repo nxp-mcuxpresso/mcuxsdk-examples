@@ -19,10 +19,3 @@ Prepare the Demo
     - No flow control
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
-
-Running the demo
-================
-The log below shows the output of the hello world demo in the terminal window:
-~~~~~~~~~~~~
-hello world.
-~~~~~~~~~~~~

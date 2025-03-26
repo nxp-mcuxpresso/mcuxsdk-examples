@@ -6,7 +6,7 @@ csec:
     project-root-path: boards/${board}/driver_examples/csec/${multicore_foldername}
     document:
       name: csec${core_id_suffix_name}
-      category: demo_apps
+      category: driver_examples/csec
       brief: The purpose of this demo application is to show the user how to use the Cryptographic Services Engine module from the MCXE-247 MCU with the MCUX SDK API.
       example_readme:
       - examples/driver_examples/csec/readme.md

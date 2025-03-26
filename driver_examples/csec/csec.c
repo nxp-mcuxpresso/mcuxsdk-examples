@@ -1,215 +1,229 @@
 /*
- * Copyright 2020 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
- * NXP Confidential. This software is owned or controlled by NXP and may only be
- * used strictly in accordance with the applicable license terms. By expressly
- * accepting such terms or by downloading, installing, activating and/or otherwise
- * using the software, you are agreeing that you have read, and that you agree to
- * comply with and are bound by, such license terms. If you do not agree to be
- * bound by the applicable license terms, then you may not retain, install,
- * activate or otherwise use the software. The production use license in
- * Section 2.3 is expressly granted for this software.
+ * SPDX-License-Identifier: BSD-3-Clause
  */
-
-
-/* Including needed modules to compile this module/procedure */
-//#include "sdk_project_config.h"
-//#include "flash_driver.h"
-#if CPU_INIT_CONFIG
-  #include "Init_Config.h"
-#endif
 
 volatile int exit_code = 0;
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "fsl_debug_console.h"
 #include "csec_utils.h"
+#include "fsl_flash.h"
+#include "board.h"
+#include "app.h"
 
-/* @brief Has 0x07 Program Phrase command. */
-#define FEATURE_FLS_HAS_PROGRAM_PHRASE_CMD (1u)
 
-#if 0
+/*! @brief Flash driver Structure */
+static flexnvm_config_t s_flashDriver;
 
-/* Flash configuration */
-static const flash_user_config_t flash1_InitConfig0 = {
-    .PFlashBase  = 0x00000000U,                     /* Base address of Program Flash block */
-    .PFlashSize  = 0x00100000U,                     /* Size of Program Flash block         */
-    .DFlashBase  = 0x10000000U,                     /* Base address of Data Flash block    */
-    .EERAMBase   = 0x14000000U,                     /* Base address of FlexRAM block */
-    /* If using callback, any code reachable from this function must not be placed in a Flash block targeted for a program/erase operation.*/
-    .CallBack    = NULL_CALLBACK
-};
+csec_state_t csecState;
 
-#define EVB
+#define CONFIG_IFLASH_DEPART_CODE 0x04
+#define CONFIG_IFLASH_EEESIZE_CODE 0x02
 
-#ifdef EVB
-    #define LED_PORT       PTE
-    #define LED_OK         21U
-    #define LED_ERROR      22U
-#else
-    #define LED_PORT       PTC
-    #define LED_OK         0U
-    #define LED_ERROR      1U
-#endif
+#define FLEXNVM_PARTITION_CODE     CONFIG_IFLASH_DEPART_CODE
+#define EEPROM_DATA_SET_SIZE_CODE  CONFIG_IFLASH_EEESIZE_CODE
+
+/* Set this macro-definition to 1 if you want to partition FLASH */
+#define CSEC_DEMO_PARTITION 1
 
 /* Set this macro-definition to 1 if you want to reset all the keys */
 #define ERASE_ALL_KEYS	0
 
-void initFlashForCsecOperation(void)
+/*
+ * @brief Gets called when an error occurs.
+ *
+ * @details Print error message and trap forever.
+ */
+void error_trap(void)
 {
-	flash_ssd_config_t flashSSDConfig;
-
-	FLASH_DRV_Init(&flash1_InitConfig0, &flashSSDConfig);
-
-	if (flashSSDConfig.EEESize == 0)
-	{
-#ifdef FLASH_TARGET
-		/* Flash partitioning for CSEc operation must only be ran with RAM configuration.
-		 * The first time when running the example on the board, or after a key erase,
-		 * this example should be ran from RAM, in order to enable CSEc operation. Please
-		 * refer to the documentation for more information. */
-		PINS_DRV_ClearPins(LED_PORT, 1 << LED_OK);
-#else
-		uint32_t address;
-		uint32_t size;
-#if (FEATURE_FLS_HAS_PROGRAM_PHRASE_CMD == 1u)
-		uint8_t unsecure_key[FTFx_PHRASE_SIZE] = {0xFFu, 0xFFu, 0xFFu, 0xFFu, 0xFEu, 0xFFu, 0xFFu, 0xFFu};
-#else   /* FEATURE_FLASH_HAS_PROGRAM_LONGWORD_CMD */
-		uint8_t unsecure_key[FTFx_LONGWORD_SIZE] = {0xFEu, 0xFFu, 0xFFu, 0xFFu};
-#endif  /* FEATURE_FLS_HAS_PROGRAM_PHRASE_CMD */
-
-		/* First, erase all Flash blocks to ensure the IFR region is blank
-		 * before partitioning FlexNVM and FlexRAM */
-		FLASH_DRV_EraseAllBlock(&flashSSDConfig);
-		/* Reprogram secure byte in Flash configuration field */
-#if (FEATURE_FLS_HAS_PROGRAM_PHRASE_CMD == 1u)
-		address = 0x408u;
-		size = FTFx_PHRASE_SIZE;
-#else   /* FEATURE_FLASH_HAS_PROGRAM_LONGWORD_CMD == 1u */
-		address = 0x40Cu;
-		size = FTFx_LONGWORD_SIZE;
-#endif /* FEATURE_FLS_HAS_PROGRAM_PHRASE_CMD */
-		FLASH_DRV_Program(&flashSSDConfig, address, size, unsecure_key);
-
-        FLASH_DRV_DEFlashPartition(&flashSSDConfig, 0x2, 0x4, 0x3, false, true);
-#endif /* FLASH_TARGET */
-	}
+    PRINTF("\r\n\r\n\r\n\t---- HALTED DUE TO FLASH ERROR! ----");
+    while (1)
+    {
+    }
 }
 
-/*!
-  \brief The main function for the project.
-  \details The startup initialization sequence is the following:
- * - __start (startup asm routine)
- * - __init_hardware()
- * - main()
- *   - PE_low_level_init()
- *     - Common_Init()
- *     - Peripherals_Init()
-*/
+void initFlashForCsecOperation(void)
+{
+  /* To access the CSEcfeature set, the part must be configured for EEE operation, using the PGMPART command.
+   * By enabling security features and configuring a number of user keys, 
+   * the total size of the 4 Kbyte FlexRAMused for EEEPROM will be reduced by the space required to store the user keys.
+   * The user key space will then effectively be unaddressablespace in the FlexRAM. 
+   */
+
+    status_t status = kStatus_Fail;
+    ftfx_security_state_t securityStatus = kFTFx_SecurityStateNotSecure; /* Return protection status */
+
+    /* Clean up Flash driver Structure*/
+    memset(&s_flashDriver, 0, sizeof(flexnvm_config_t));
+    
+    /* Setup flash driver structure for device and initialize variables. */
+    status = FLEXNVM_Init(&s_flashDriver);
+    if (kStatus_FTFx_Success != status)
+    {
+        error_trap();
+    }
+
+    /* Check security status. */
+    status = FLEXNVM_GetSecurityState(&s_flashDriver, &securityStatus);
+    if (kStatus_FTFx_Success != status)
+    {
+        error_trap();
+    }
+
+    /* Print security status. */
+    switch (securityStatus)
+    {
+        case kFTFx_SecurityStateNotSecure:
+            PRINTF("Flash is UNSECURE");
+            break;
+        case kFTFx_SecurityStateBackdoorEnabled:
+            PRINTF("Flash is SECURE, BACKDOOR is ENABLED");
+            break;
+        case kFTFx_SecurityStateBackdoorDisabled:
+            PRINTF("Flash is SECURE, BACKDOOR is DISABLED");
+            break;
+        default:
+            break;
+    }
+    PRINTF("\r\n");
+
+#if CSEC_DEMO_PARTITION
+    
+    uint32_t eepromDataSizeCode   = EEPROM_DATA_SET_SIZE_CODE;
+    uint32_t flexnvmPartitionCode = FLEXNVM_PARTITION_CODE;
+    uint32_t eepromTotalSize = 0u;
+    
+    FLEXNVM_GetProperty(&s_flashDriver, kFLEXNVM_PropertyEepromTotalSize, &eepromTotalSize);
+    
+    PRINTF("To access the CSEcfeature set, the part must be configured for EEE operation, using the PGMPART command.\r\n");
+    PRINTF("For this purpose FLASH must be parittioned.\r\n\r\n");
+    PRINTF("Press any key to trigger partitioning...\r\n");
+    GETCHAR();
+
+    if (eepromTotalSize == 0u)
+    {
+        status = FLEXNVM_ProgramPartition_CSE(&s_flashDriver, kFTFx_PartitionFlexramLoadOptLoadedWithValidEepromData,
+                                      eepromDataSizeCode, flexnvmPartitionCode, 0x3, 0);
+        if(status == kStatus_Success)
+        {
+            PRINTF("Partitioning - success! ");
+            FLEXNVM_GetProperty(&s_flashDriver, kFLEXNVM_PropertyEepromTotalSize, &eepromTotalSize);
+            PRINTF("EEPROM size: 0x%x", eepromTotalSize);
+        }
+    }
+    else
+    {
+        PRINTF("EEPROM already partitioned, make sure CSEc was enabeled!\r\n");
+    }
+#endif
+}
+
 int main(void)
 {
-  /* Write your code here */
-  /* Initialize and configure clocks
-   * 	-	see clock manager component for details
-   */
-  CLOCK_SYS_Init(g_clockManConfigsArr, CLOCK_MANAGER_CONFIG_CNT,
-						g_clockManCallbacksArr, CLOCK_MANAGER_CALLBACK_CNT);
-  CLOCK_SYS_UpdateConfiguration(0U, CLOCK_MANAGER_POLICY_FORCIBLE);
+  /* Init hardware */
+  BOARD_InitHardware();
 
-  /* Initialize pins */
-  PINS_DRV_Init(NUM_OF_CONFIGURED_PINS0, g_pin_mux_InitConfigArr0);
-
-  /* Turn off the leds */
-  PINS_DRV_SetPins(LED_PORT, (1 << LED_ERROR) | (1 << LED_OK));
-
-  bool keyLoaded;
   uint8_t key[16] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
               0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
-
+  uint8_t rnd[16] = {0u};
+  
+  PRINTF("CSEc Driver Example\r\n\r\n");
+  
   /* Initialize CSEc driver */
   CSEC_DRV_Init(&csecState);
-
+  PRINTF("CSEc Init - done\r\n");
+  
   /* Initialize Flash for CSEc operation */
   initFlashForCsecOperation();
 
+#if ERASE_ALL_KEYS
+  eraseKeys();
+#endif /* ERASE_ALL_KEYS */
+  
+  /* For Automation pourposes we use only volatile RAM_KEY, 
+   * but below functions can be used as reference */
   /* Load the MASTER_ECU key with a known value, which will be used as Authorization
    * key (a secret key known by the application in order to configure other user keys) */
-  setAuthKey();
-
+  //setAuthKey();
   /* Load the selected key */
   /* First load => counter == 1 */
-  keyLoaded = loadKey(CSEC_KEY_1, key, 1);
+  //keyLoaded = loadKey(CSEC_KEY_2, key, 2);
 
-  if (keyLoaded)
+  if(CSEC_DRV_InitRNG() != kStatus_Success)
   {
-      /* Test an encryption using the loaded key.
-       *
-       * key        = 000102030405060708090a0b0c0d0e0f
-       * plaintext  = 00112233445566778899aabbccddeeff
-       * ciphertext = 69c4e0d86a7b0430d8cdb78070b4c55a
-       *
-       * The values are extracted from the SHE Spec 1.1 test vectors.
-       */
-      uint8_t i;
+      error_trap();
+  }
+  PRINTF("CSEc RND Init - done\r\n");
+  
+  if(CSEC_DRV_GenerateRND(rnd) != kStatus_Success)
+  {
+      error_trap();
+  }
 
-      status_t stat;
-      bool encryptionOk = true;
-      uint8_t cipherText[16];
-      uint8_t plainText[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
-        0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
-      uint8_t expectedCipherText[16] = {0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b, 0x04,
-        0x30, 0xd8, 0xcd, 0xb7, 0x80, 0x70, 0xb4, 0xc5, 0x5a};
+  PRINTF("CSEc Generate random number - success!\r\n");
+  
+  if( CSEC_DRV_LoadPlainKey(key) != kStatus_Success)
+  {
+      error_trap();
+  }
 
-      stat = CSEC_DRV_EncryptECB(CSEC_KEY_1, plainText, 16U, cipherText, 1U);
-      if (stat == STATUS_SUCCESS)
+  PRINTF("CSEc Load plaintext key in KEY_RAM location - success!\r\n");  
+  
+
+  /* Test an encryption using the loaded key.
+   *
+   * key        = 000102030405060708090a0b0c0d0e0f
+   * plaintext  = 00112233445566778899aabbccddeeff
+   * ciphertext = 69c4e0d86a7b0430d8cdb78070b4c55a
+   *
+   * The values are extracted from the SHE Spec 1.1 test vectors.
+   */
+  uint8_t i;
+
+  status_t stat;
+  bool encryptionOk = false;
+  uint8_t cipherText[16];
+  uint8_t plainText[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
+    0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
+  uint8_t expectedCipherText[16] = {0x69, 0xc4, 0xe0, 0xd8, 0x6a, 0x7b, 0x04,
+    0x30, 0xd8, 0xcd, 0xb7, 0x80, 0x70, 0xb4, 0xc5, 0x5a};
+
+  stat = CSEC_DRV_EncryptECB(CSEC_RAM_KEY, plainText, 16U, cipherText, 1U);
+  if (stat == kStatus_Success)
+  {
+      PRINTF("CSEc AES-ECB encryption - success!\r\n");
+      /* Check if the cipher text is the one expected */
+      for (i = 0; i < 16; i++)
       {
-          /* Check if the cipher text is the one expected */
-          for (i = 0; i < 16; i++)
+          if (cipherText[i] == expectedCipherText[i])
           {
-              if (cipherText[i] != expectedCipherText[i])
-              {
-                  encryptionOk = false;
-                  break;
-              }
+              encryptionOk = true;
+          }
+          else
+          {
+              encryptionOk = false;
+              break;
           }
       }
-
-      if (encryptionOk)
-      {
-          PINS_DRV_ClearPins(LED_PORT, 1 << LED_OK);
-      }
   }
-  else
+
+  if (encryptionOk)
   {
-      PINS_DRV_ClearPins(LED_PORT, 1 << LED_ERROR);
+      PRINTF("Encrypted cipher match the expected value!\r\n ");
   }
 
-
-#if ERASE_ALL_KEYS
-  if (eraseKeys())
-  {
-      PINS_DRV_ClearPins(LED_PORT, 1 << LED_OK);
-      PINS_DRV_ClearPins(LED_PORT, 1 << LED_ERROR);
-  }
-#endif
-
-
+  PRINTF("\r\n End of Example\r\n");
+  
   for(;;) {
     if(exit_code != 0) {
       break;
     }
   }
   return exit_code;
-
-} /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
-#endif
-
-int main(void)
-{
-
-
-  return kStatus_Success;
 
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
