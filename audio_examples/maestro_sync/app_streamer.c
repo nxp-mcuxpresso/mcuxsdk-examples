@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2024 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -117,7 +117,7 @@ void STREAMER_Start(streamer_handle_t *handle)
     {
         if (handle->streamer->pipes[i] != (uintptr_t)NULL)
         {
-            if (streamer_set_state(handle->streamer, i, STATE_PLAYING, true) != 0)
+            if (streamer_set_state(handle->streamer, i, STATE_PLAYING, false) != 0)
             {
                 PRINTF("[STREAMER] Playback start failed\r\n");
             }
