@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -145,16 +145,8 @@ void BOARD_EnterDeepSleep(const uint32_t exclude_from_pd[7])
 {
     POWER_EnableSleepRBB(kPower_BodyBiasVdd1 | kPower_BodyBiasVdd2 | kPower_BodyBiasVddn | kPower_BodyBiasVdd1Sram |
                          kPower_BodyBiasVdd2Sram);
-    /* Change to a lower frequency to safly decrease the VDD1 voltage when CPU1 enter low power mode but CPU0 active and
-     * requires sense shared main clock. */
-    CLOCK_AttachClk(kLPOSC_to_SENSE_BASE);
-    CLOCK_AttachClk(kSENSE_BASE_to_SENSE_MAIN);
-    CLOCK_EnableFroClkOutput(FRO2, kCLOCK_FroDiv6OutEn); /* Need Keep DIV6. */
 
     POWER_EnterDeepSleep(exclude_from_pd);
-    CLOCK_EnableFroClkOutput(FRO2, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
-    CLOCK_AttachClk(kFRO2_DIV1_to_SENSE_MAIN);
-    CLOCK_AttachClk(kFRO2_DIV3_to_SENSE_BASE);
 }
 
 void BOARD_RequestDPD(const uint32_t exclude_from_pd[7])

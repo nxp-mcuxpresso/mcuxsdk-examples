@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -26,6 +26,21 @@
 /*${macro:end}*/
 
 /*${function:start}*/
+
+/* Before accessing shared resource, such as PMIC I2C, debug, PMC registers, the shared sense main clock should be enabled. */
+void BOARD_EnableSharedSenseMainClk(void)
+{
+    CLOCK_EnableClock(kCLOCK_Sleepcon0); /* make sure the sleepcon clock is enabled. */
+    POWER_DisablePD(kPDRUNCFG_PD_FRO2);
+    POWER_DisablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK); /* Keep Sense shared parts clock on. */
+}
+
+void BOARD_DisableSharedSenseMainClk(void)
+{
+    POWER_EnablePD(kPDRUNCFG_PD_FRO2);
+    POWER_EnablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK); /* Keep Sense shared parts clock on. */
+}
+
 void BOARD_ClockLPPreConfig(void)
 {
     POWER_DisablePD(kPDRUNCFG_PD_FRO1); /* Make sure FRO1 is enabled. */
@@ -242,9 +257,9 @@ void BOARD_InitPowerConfig(void)
     BOARD_SetPmicDVSPinStatus(0x1);
 
     /* Keep the used resources on. */
-    POWER_DisablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK); /* Keep Sense shared parts clock on. */
-
+    BOARD_EnableSharedSenseMainClk();               /* Keep Sense shared parts clock on. */
     POWER_DisablePD(kPDRUNCFG_GATE_FRO0);           /* Just use PD bit to control FRO. */
+    POWER_DisablePD(kPDRUNCFG_GATE_FRO2);
     POWER_DisablePD(kPDRUNCFG_SHUT_RAM1_CLK);
     POWER_ApplyPD();
     POWER_DisableLPRequestMask(kPower_MaskAll); /* Let's compute control all the shared resources. */
@@ -334,7 +349,6 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 
     POWER_EnablePD(kPDRUNCFG_SHUT_SENSEP_MAINCLK); /* Let Sense control private parts clock. */
     POWER_EnablePD(kPDRUNCFG_PD_FRO1); /* Note: Sense boots using FRO1 and switchs to FRO2(Sense can't control FRO1). */
-    POWER_EnablePD(kPDRUNCFG_PD_FRO2);
 
     POWER_EnablePD(kPDRUNCFG_SHUT_RAM0_CLK);                        /* Sense access RAM arbiter0 clock. */
     POWER_EnablePD(kPDRUNCFG_SHUT_RAM1_CLK);                        /* Compute access RAM arbiter1 clock. */
@@ -345,7 +359,7 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnableSleepRBB(kPower_BodyBiasVddn | kPower_BodyBiasVdd2Sram | kPower_BodyBiasVdd2 | kPower_BodyBiasVdd1 |
                          kPower_BodyBiasVdd1Sram);
 
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
 
     POWER_ApplyPD();
@@ -550,7 +564,7 @@ void BOARD_RunActiveTest(void)
 
     /* Note, the debug will not work anymore when the sense shared mainclk is disabled. */
     POWER_EnablePD(kPDRUNCFG_PD_LPOSC);
-    POWER_EnablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK);
+    BOARD_DisableSharedSenseMainClk();
 
     CLOCK_DisableClock(kCLOCK_Sleepcon0);
 
@@ -565,7 +579,7 @@ void BOARD_RunActiveTest(void)
     CLOCK_EnableClock(kCLOCK_Sleepcon0);
 
     POWER_DisablePD(kPDRUNCFG_PD_LPOSC);
-    POWER_DisablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK);
+    BOARD_EnableSharedSenseMainClk();
 
     BOARD_RestoreClocks();
     CLOCK_EnableClock(kCLOCK_Rtc);
@@ -614,12 +628,12 @@ void BOARD_EnterSleep(void)
     irqMask = DisableGlobalIRQ();
 
     POWER_EnablePD(kPDRUNCFG_PD_LPOSC);
-    POWER_EnablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK);
+    BOARD_DisableSharedSenseMainClk();
 
     POWER_EnterSleep();
 
     POWER_DisablePD(kPDRUNCFG_PD_LPOSC);
-    POWER_DisablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK);
+    BOARD_EnableSharedSenseMainClk();
     EnableGlobalIRQ(irqMask);
     __ISB();
 
