@@ -48,6 +48,10 @@ End of Example with SUCCESS!!
 Example end
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+## Note
+By default, IAR's "Static clustering" optimization option is enabled in the IAR `release` targets.
+Compile flag `--no_clustering` has been added to the build to disable static clustering due to it causing erroneous execution of this example.
+
 ## Supported Boards
 - [KW47-EVK](../../_boards/kw47evk/secure-subsystem_examples/ele_derive_key/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/secure-subsystem_examples/ele_derive_key/example_board_readme.md)

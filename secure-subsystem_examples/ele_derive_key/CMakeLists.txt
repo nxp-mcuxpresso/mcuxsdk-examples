@@ -14,6 +14,11 @@ mcux_add_include(
     INCLUDES .
 )
 
+mcux_add_iar_configuration(
+    CC "--no_clustering"
+    CX "--no_clustering"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/secure-subsystem_examples/ele_derive_key/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
