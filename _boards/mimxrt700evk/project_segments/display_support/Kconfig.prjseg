@@ -20,6 +20,7 @@ config MCUX_PRJSEG_module.board.display_support
     select MCUX_COMPONENT_driver.lpflexcomm_lpi2c
     select MCUX_COMPONENT_driver.gpio
     select MCUX_COMPONENT_driver.edma4
+    select DBI_USE_MIPI_PANEL
 
 # Which panels the board supports
 config MCUX_DEMO_PANEL_TFT_PROTO_5_SUPPORT
