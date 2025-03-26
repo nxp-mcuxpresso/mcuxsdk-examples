@@ -358,9 +358,10 @@ sources:
  ******************************************************************************/
 const scg_sys_clk_config_t g_sysClkConfig_BOARD_BootClockHSRUN =
     {
-        .divSlow = kSCG_SysClkDivBy4,             /* Slow Clock Divider: divided by 4 */
         .divCore = kSCG_SysClkDivBy1,             /* Core Clock Divider: divided by 1 */
-        .src = kSCG_SysClkSrcFirc,                /* FIRC as System Clock Source */
+        .divBus = kSCG_SysClkDivBy2,              /* Bus Clock Divider: divided by 2 */
+        .divSlow = kSCG_SysClkDivBy4,             /* Slow Clock Divider: divided by 4 */
+        .src = kSCG_SysClkSrcSysPll,              /* SPLL as System Clock Source */
     };
 const scg_sosc_config_t g_scgSysOscConfig_BOARD_BootClockHSRUN =
     {
@@ -383,6 +384,15 @@ const scg_firc_config_t g_scgFircConfig_BOARD_BootClockHSRUN =
         .range = kSCG_FircRange48M,               /* Fast IRC is trimmed to 48MHz */
         .trimConfig = NULL,                       /* Fast IRC Trim disabled */
     };
+const scg_spll_config_t g_scgSysPllConfig_BOARD_BootClockHSRUN =
+    {
+        .enableMode = kSCG_SysPllEnable,          /* Enable SPLL clock */
+        .monitorMode = kSCG_SysPllMonitorDisable, /* Monitor disabled */
+        .div1 = kSCG_AsyncClkDivBy1,              /* System PLL Clock Divider 1: divided by 1 */
+        .div2 = kSCG_AsyncClkDivBy1,              /* System PLL Clock Divider 2: divided by 1 */
+        .prediv = 0,                              /* Divided by 1 */
+        .mult = 12,                               /* Multiply Factor is 28 */
+    };
 
 /*******************************************************************************
  * Code for BOARD_BootClockHSRUN configuration
@@ -397,6 +407,8 @@ void BOARD_BootClockHSRUN(void)
     CLOCK_SetXtal0Freq(g_scgSysOscConfig_BOARD_BootClockHSRUN.freq);
     /* Init FIRC. */
     CLOCK_CONFIG_FircSafeConfig(&g_scgFircConfig_BOARD_BootClockHSRUN);
+    /* Init SysPll. */
+    CLOCK_InitSysPll(&g_scgSysPllConfig_BOARD_BootClockHSRUN);
     /* Set HSRUN power mode. */
     SMC_SetPowerModeProtection(SMC, kSMC_AllowPowerModeAll);
     SMC_SetPowerModeHsrun(SMC);
@@ -406,7 +418,7 @@ void BOARD_BootClockHSRUN(void)
 
     /* Init SIRC. */
     CLOCK_InitSirc(&g_scgSircConfig_BOARD_BootClockHSRUN);
-    /* Set SCG to LPFLL mode. */
+    /* Set SCG to HSRUN. */
     CLOCK_SetHsrunModeSysClkConfig(&g_sysClkConfig_BOARD_BootClockHSRUN);
     /* Wait for clock source switch finished. */
     do
