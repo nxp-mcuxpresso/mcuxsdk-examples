@@ -13,7 +13,7 @@ mcux_add_armgcc_configuration(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wireless/bluetooth/boards/${board}/app_preinclude_common.h
+    SOURCES middleware/wireless/${bluetooth_root}/boards/${board}/app_preinclude_common.h
 )
 
 mcux_add_include(

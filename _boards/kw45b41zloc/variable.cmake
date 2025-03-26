@@ -5,6 +5,7 @@
 
 mcux_set_variable(board kw45b41zloc)
 mcux_set_variable(board_root examples/_boards)
+mcux_set_variable(bluetooth_root bluetooth)
 
 if (NOT DEFINED device)
     mcux_set_variable(device KW45B41Z83)
