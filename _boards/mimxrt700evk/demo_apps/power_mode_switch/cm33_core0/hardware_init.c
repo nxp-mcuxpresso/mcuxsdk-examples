@@ -70,7 +70,7 @@ void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
         /* PMIC_MODE[1:0] = 01b */
         case kPCA9422_SleepMode:
             cfg[mode].sw1OutVolt  = 500000U;
-            cfg[mode].sw2OutVolt  = 1000000U;
+            cfg[mode].sw2OutVolt  = 600000U;
             cfg[mode].sw3OutVolt  = 500000U;
             cfg[mode].sw4OutVolt  = 1800000U;
             cfg[mode].ldo1OutVolt = 1800000U;
@@ -83,7 +83,7 @@ void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
         case kPCA9422_StandbyMode: /* PMIC_MODE[1:0] = 10b */
         case kPCA9422_DPStandbyMode: /* PMIC_MODE[1:0] = 11b */
             cfg[mode].sw1OutVolt  = 500000U;
-            cfg[mode].sw2OutVolt  = 1000000U;
+            cfg[mode].sw2OutVolt  = 600000U;
             cfg[mode].sw3OutVolt  = 500000U;
             cfg[mode].sw4OutVolt  = 1800000U;
             cfg[mode].ldo1OutVolt = 1800000U;
