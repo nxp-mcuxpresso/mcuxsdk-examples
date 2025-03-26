@@ -24,8 +24,16 @@ Running the demo
 ================
 The log below shows the output of the hello world multicore demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Starting Secondary core.
-
 Hello World from the Primary Core!
 
+Copy Secondary core image to address: 0xa1000000, size: 4278
+Starting Secondary core.
+The secondary core application has been started.
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Note:
+The "Copy Secondary core image to address..." log message is not displayed on the terminal window when MCUXpresso IDE is used.
+In case of MCUXpresso IDE the secondary core image is copied to the target memory during startup automatically.
+
+Note:
+As it is not possible to use any on-board LED from the cm0plus core the secondary core is running LED indication is not working in this example.
