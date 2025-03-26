@@ -267,8 +267,11 @@ void BOARD_InitLPADCPins()
 
 void BOARD_InitKPPPins()
 {
-      const port_pin_config_t port0_13_config = {/* Internal pull-up/down resistor is disabled */
-                                                      kPORT_PullDisable,
+    /* AonKPP peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kAonKPP_RST_SHIFT_RSTn);
+
+    const port_pin_config_t port0_13_config = {/* Internal pull-up/down resistor is disabled */
+                                                      kPORT_PullUp,
                                                       /* Low internal pull resistor value is selected. */
                                                       kPORT_LowPullResistor,
                                                       /* Fast slew rate is configured */
@@ -293,7 +296,7 @@ void BOARD_InitKPPPins()
     PORT_SetPinConfig(AON__PORT0, 13U, &port0_13_config);
 
     const port_pin_config_t port0_12_config = {/* Internal pull-up/down resistor is disabled */
-                                                      kPORT_PullDisable,
+                                                      kPORT_PullUp,
                                                       /* Low internal pull resistor value is selected. */
                                                       kPORT_LowPullResistor,
                                                       /* Fast slew rate is configured */
@@ -326,7 +329,7 @@ void BOARD_InitKPPPins()
                                                       /* Passive input filter is disabled */
                                                       kPORT_PassiveFilterDisable,
                                                       /* Open drain output is disabled */
-                                                      kPORT_OpenDrainDisable,
+                                                      kPORT_OpenDrainEnable,
                                                       /* Low drive strength is configured */
                                                       kPORT_LowDriveStrength,
                                                       /* Normal drive strength is configured */
@@ -351,7 +354,7 @@ void BOARD_InitKPPPins()
                                                       /* Passive input filter is disabled */
                                                       kPORT_PassiveFilterDisable,
                                                       /* Open drain output is disabled */
-                                                      kPORT_OpenDrainDisable,
+                                                      kPORT_OpenDrainEnable,
                                                       /* Low drive strength is configured */
                                                       kPORT_LowDriveStrength,
                                                       /* Normal drive strength is configured */

@@ -12,9 +12,9 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_KPP_ACTIVE_COLUMROWS  (0xC0) // COL/ROW 6,7
+#define EXAMPLE_KPP_ACTIVE_COLUMROWS  (0x03) // COL/ROW 0,1
 #define EXAMPLE_KPP_MATRX_NUM         (2)
-#define EXAMPLE_KPP_COLROW_START_INDX (6)
+#define EXAMPLE_KPP_COLROW_START_INDX (0)
 #define EXAMPLE_KPP                   AON__KPP0
 #define EXAMPLE_KPP_SYS_CLK_FREQ      SystemCoreClock
 /*${macro:end}*/
