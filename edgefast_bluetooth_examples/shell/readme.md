@@ -983,6 +983,32 @@ Note:
 2. This example acting as MSE doesn't support all application parameters and only supports to parse/send the part of application parameters from/to MCE.
 3. This example acting as MSE is based on FatFs RAM disk. There is a limited memory to store the incoming message from MCE.
 
+## HCI command concurrency test
+Before run shell project, please set the following macros and rebuild shell project:
+- CONFIG_BT_HCI_TEST = 1
+1. Initialize the Host, press "bt.init",
+2. Press "bt.hci_test" to run hci command concurrency test, bellow message will not be printed:
+   HCI command concurrency test start.
+   High_task READ_SUPPORTED_COMMANDS Start
+   low_task READ_LOCAL_FEATURES Start
+   High_task READ_SUPPORTED_COMMANDS Done
+   High_task READ_LOCAL_FEATURES Start
+   ......
+3. Make sure all commands are successfully transmitted to the controller
+   without any of them being lost or overwritten.
+
+## Running ATT msg is processed before the ATT is initialized test case.
+Before run shell project, please set the following macros and rebuild shell project:
+- CONFIG_BT_ATT_TEST = 1
+1. Initialize the Host, press "bt.init",
+2. Advertising, press "bt.advertise on",
+3. After the connection is established, bellow message will not be printed:
+   @bt> ATT request received
+   Connected: F4:60:E2:88:6D:5B (public)
+   ATT request start process......
+4. There is an "ATT request received" message before the "Connected" message and an
+   "ATT request start process" message after it, also make sure there is no disconnection happening.
+
 ## BR+BLE testes
 Notes: The nRF Connect APP can be used to create BLE connection for the follow BLE connection.
 
