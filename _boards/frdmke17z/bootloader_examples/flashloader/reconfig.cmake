@@ -91,13 +91,13 @@ mcux_remove_armgcc_configuration(
         # BUILD_EVENT POST_BUILD
         # BUILD_COMMAND python ../create_fl_image_mdk.py release/flashloader.out release/flashloader.bin release/flashloader_image.c
 # )
-# mcux_add_custom_command(
-        # TARGETS release debug
-        # TOOLCHAINS mcux
-        # BUILD_EVENT POST_BUILD
-        # BUILD_COMMAND arm-none-eabi-objcopy -I elf32-littlearm -O binary "${ProjName}.axf"
-            # "${ProjName}.bin"; python ../source/create_fl_image_mcux.py "${ProjName}.axf"
-            # "${ProjName}.bin" "flashloader_image.c"; mkdir -p "../../${ProjName}_loader/Release/";
-            # cp "flashloader_image.c" "../../${ProjName}_loader/Release/"; mkdir -p
-            # "../../${ProjName}_loader/Debug/"; cp "flashloader_image.c" "../../${ProjName}_loader/Debug/"
-# )
+mcux_add_custom_command(
+        TARGETS release debug
+        TOOLCHAINS mcux
+        BUILD_EVENT POST_BUILD
+        BUILD_COMMAND arm-none-eabi-objcopy -I elf32-littlearm -O binary "${ProjName}.axf"
+            "${ProjName}.bin"; python ../source/create_fl_image_mcux.py "${ProjName}.axf"
+            "${ProjName}.bin" "flashloader_image.c"; mkdir -p "../../${ProjName}_loader/Release/";
+            cp "flashloader_image.c" "../../${ProjName}_loader/Release/"; mkdir -p
+            "../../${ProjName}_loader/Debug/"; cp "flashloader_image.c" "../../${ProjName}_loader/Debug/"
+)

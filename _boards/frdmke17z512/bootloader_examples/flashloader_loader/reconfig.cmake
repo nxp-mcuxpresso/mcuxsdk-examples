@@ -52,3 +52,27 @@ mcux_remove_armgcc_configuration(
     CC  "-DNDEBUG"
     TARGETS debug
 )
+mcux_add_custom_command(
+        TARGETS release debug
+        TOOLCHAINS iar 
+        BUILD_EVENT PRE_BUILD
+        BUILD_COMMAND ielftool --bin ../../flashloader/iar/$CONFIG_NAME$/flashloader.out ../../flashloader/iar/flashloader.bin && python ../../flashloader/create_fl_image.py ../../flashloader/iar/$CONFIG_NAME$/flashloader.out ../../flashloader/iar/flashloader.bin ../../flashloader/iar/$CONFIG_NAME$/flashloader_image.c
+)
+mcux_add_custom_command(
+        TARGETS release debug
+        TOOLCHAINS armgcc
+        BUILD_EVENT PRE_BUILD
+        BUILD_COMMAND python ${ProjDirPath}/../../flashloader/create_fl_image_mcux.py ${ProjDirPath}/../../flashloader/armgcc/${CMAKE_BUILD_TYPE}/flashloader.elf ${ProjDirPath}/../../flashloader/armgcc/${CMAKE_BUILD_TYPE}/flashloader.bin ${ProjDirPath}/../../flashloader/armgcc/${CMAKE_BUILD_TYPE}/flashloader_image.c
+)
+mcux_add_custom_command(
+        TARGETS debug
+        TOOLCHAINS mdk
+        BUILD_EVENT PRE_BUILD
+        BUILD_COMMAND python ../../flashloader/create_fl_image_mdk.py ../../flashloader/mdk/debug/flashloader.out ../../flashloader/mdk/debug/flashloader.bin ../../flashloader/mdk/debug/flashloader_image.c
+)
+mcux_add_custom_command(
+        TARGETS release
+        TOOLCHAINS mdk
+        BUILD_EVENT PRE_BUILD
+        BUILD_COMMAND python ../../flashloader/create_fl_image_mdk.py ../../flashloader/mdk/release/flashloader.out ../../flashloader/mdk/release/flashloader.bin ../../flashloader/mdk/release/flashloader_image.c
+)
