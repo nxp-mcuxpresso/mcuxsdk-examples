@@ -23,6 +23,8 @@ mcux_add_source(
         framework/services/FSCI/Source/FsciCommunication.h
         framework/services/FSCI/Source/FsciCommands.c
         framework/services/FSCI/Source/FsciCommands.h
+        framework/services/NVM/Source/NV_FsciCommands.c
+        framework/services/NVM/Source/NV_FsciCommands.h
         bluetooth/examples/fsci_bridge/fsci_bridge.h
         bluetooth/examples/fsci_bridge/fsci_bridge.c
         bluetooth/examples/fsci_bridge/main.c
