@@ -14,4 +14,3 @@ pflash_c40:
       - ${board_root}/${board}/driver_examples/flash/pflash/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxe31b: []
