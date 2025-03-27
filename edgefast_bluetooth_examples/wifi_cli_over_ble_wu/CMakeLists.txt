@@ -49,6 +49,8 @@ mcux_add_macro(
       -DPRINTF_ADVANCED_ENABLE=1\
       -DSDK_DEBUGCONSOLE_UART=1\
       -DSDK_OS_FREE_RTOS\
+      -DCONFIG_WIFI_IND_DNLD=0\
+      -DCONFIG_WIFI_IND_RESET=0\
       -DUSE_RTOS=1"
 )
 
