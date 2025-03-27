@@ -35,7 +35,7 @@ m_ocram1_size      = 0x0007C000;
 m_ocram2_start     = 0x20500000;
 m_ocram2_size      = 0x00040000;
 m_flash_start      = 0x28000000;
-m_flash_size       = 0x01000000;
+m_flash_size       = 0x00800000;
 
 VECTOR_RAM_SIZE    = DEFINED(__ram_vector_table__) ? vector_table_size : 0;
 HEAP_SIZE          = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;

@@ -28,7 +28,7 @@
 ENTRY(Reset_Handler)
 
 vector_table_size  = 0x00000400;
-app_image_offset   = 0x0000B000;
+app_image_offset   = 0x00000000;
 m_itcm_start       = 0x00000000;
 m_itcm_size        = 0x00040000;
 m_dtcm_start       = 0x20000000;
@@ -37,8 +37,8 @@ m_ocram1_start     = 0x20484000;
 m_ocram1_size      = 0x0007C000;
 m_ocram2_start     = 0x20500000;
 m_ocram2_size      = 0x00040000;
-m_flash_start      = 0x28000000;
-m_flash_size       = 0x01000000;
+m_flash_start      = 0x28800000;
+m_flash_size       = 0x00800000;
 
 VECTOR_RAM_SIZE    = DEFINED(__ram_vector_table__) ? vector_table_size : 0;
 HEAP_SIZE          = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;

@@ -38,7 +38,7 @@ define symbol m_ocram2_start           = 0x20500000;
 define symbol m_ocram2_size            = 0x00040000;
 
 define symbol m_flash_start            = 0x28000000;
-define symbol m_flash_size             = 0x01000000;
+define symbol m_flash_size             = 0x00800000;
 
 /* code & data allocation */
 define symbol m_interrupts_start       = m_flash_start + app_image_offset;
