@@ -278,7 +278,7 @@ static void BOARD_InitPCA954X(uint32_t i2cDevId, void *base, uint32_t clkFreq, u
     BOARD_I2C_DeviceInit(base, clkFreq);
 
     pca954x_config_t config = {
-        .id              = id,
+        .id              = (enum pca954x_id)id,
         .i2cBase         = base,
         .i2cAddr         = i2cAddr,
         .I2C_SendFunc    = BOARD_I2C_DeviceSend,
