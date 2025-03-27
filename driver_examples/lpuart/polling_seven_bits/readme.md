@@ -41,3 +41,4 @@ NOTE: Please set com port format to "7 data bits without parity bit" in PC's com
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpuart/polling_seven_bits/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lpuart/polling_seven_bits/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/lpuart/polling_seven_bits/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/lpuart/polling_seven_bits/example_board_readme.md)

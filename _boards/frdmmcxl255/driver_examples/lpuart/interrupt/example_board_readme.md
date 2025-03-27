@@ -12,7 +12,8 @@ Make sure you have solder bridges SJ1 and SJ2 set to
 
 Prepare the Demo
 ===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (P6) on the target board.
+Note: MCUXpresso IDE project default debug console is semihost
+1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -23,7 +24,7 @@ Prepare the Demo
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
-===============
+================
 When the demo runs successfully, the log would be seen on the MCU-Link terminal like:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Lpuart functional interrupt example

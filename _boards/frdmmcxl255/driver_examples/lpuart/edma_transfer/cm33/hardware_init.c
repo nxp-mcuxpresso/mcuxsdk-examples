@@ -20,5 +20,9 @@ void BOARD_InitHardware(void)
     BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
+    
+    /* Enable DMA0 requests for LPUART0 Receive and LPUART0 Transmit */
+    AHBSC__AHBSC0->SEC_GP_REG[0U] |= (1UL << kDma0RequestLPUART0Tx);
+    AHBSC__AHBSC0->SEC_GP_REG[0U] |= (1UL << kDma0RequestLPUART0Rx);
 }
 /*${function:end}*/
