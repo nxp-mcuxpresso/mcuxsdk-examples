@@ -571,7 +571,7 @@ static const struct bt_bap_unicast_server_cb unicast_server_cb = {
 	.release = lc3_release,
 };
 
-static sdu_packet_t sdu_packets[MAX_AUDIO_CHANNEL_COUNT];
+static sdu_packet_t sdu_packets[3];
 
 static void stream_recv_lc3_codec(struct bt_bap_stream *stream,
 				  const struct bt_iso_recv_info *info,
@@ -580,17 +580,18 @@ static void stream_recv_lc3_codec(struct bt_bap_stream *stream,
 	struct net_buf *sdu_buf;
 	sdu_packet_t *sdu;
 
-#if 1
-	// PRINTF("sdu ts:%d, seq:%d\n", info->ts, info->seq_num);
+	/* Here the received packet will put into index 0, and previous packets shifted to index 1 */
+	memcpy(&sdu_packets[2], &sdu_packets[1], sizeof(sdu_packet_t));
+	memcpy(&sdu_packets[1], &sdu_packets[0], sizeof(sdu_packet_t));
 
-	memcpy(&sdu_packets[0], &sdu_packets[1], sizeof(sdu_packet_t));
+	/* Update the latest received packet at index 0 */
+	memcpy(&sdu_packets[0].info, info, sizeof(struct bt_iso_recv_info));
+	memcpy(sdu_packets[0].buff, buf->data, buf->len);
+	sdu_packets[0].len = buf->len;
 
-	memcpy(&sdu_packets[1].info, info, sizeof(struct bt_iso_recv_info));
-	memcpy(sdu_packets[1].buff, buf->data, buf->len);
-	sdu_packets[1].len = buf->len;
-
-	if( (sdu_packets[0].info.ts == sdu_packets[1].info.ts) &&
-	    (sdu_packets[0].info.ts != 0) )
+	/* Check index 0 and 1 have the same timestamp and it's not zero */
+	if ((sdu_packets[0].info.ts == sdu_packets[1].info.ts) &&
+	(sdu_packets[0].info.ts != 0))
 	{
 		/* alloc sdu buf from sdu pool */
 		sdu_buf = net_buf_alloc(&sdu_pool, osaWaitForever_c);
@@ -603,7 +604,8 @@ static void stream_recv_lc3_codec(struct bt_bap_stream *stream,
 		/* copy sdu to buff. */
 		sdu = net_buf_add(sdu_buf, 2*sizeof(sdu_packet_t));
 
-		memcpy(sdu, sdu_packets, sizeof(sdu_packets));
+		memcpy(sdu, &sdu_packets[1], sizeof(sdu_packet_t));
+		memcpy(sdu+1, &sdu_packets[0], sizeof(sdu_packet_t));
 
 		/* put sdu buf to sdu fifo */
 		osa_status_t status = OSA_MsgQPut(sdu_fifo, &sdu_buf);
@@ -613,30 +615,33 @@ static void stream_recv_lc3_codec(struct bt_bap_stream *stream,
 			PRINTF("Put sdu to sdu_fifo failed!\n");
 		}
 	}
-#else
-	/* alloc sdu buf from sdu pool */
-	sdu_buf = net_buf_alloc(&sdu_pool, osaWaitForever_c);
-	if(!sdu_buf)
+
+	/* Check index 0 and 2 have the same timestamp and it's not zero */
+	if ((sdu_packets[0].info.ts == sdu_packets[2].info.ts) &&
+	(sdu_packets[0].info.ts != 0))
 	{
-		PRINTF("sdu buf alloc failed!\n");
-		return;
+		/* alloc sdu buf from sdu pool */
+		sdu_buf = net_buf_alloc(&sdu_pool, osaWaitForever_c);
+		if(!sdu_buf)
+		{
+			PRINTF("sdu buf alloc failed!\n");
+			return;
+		}
+
+		/* copy sdu to buff. */
+		sdu = net_buf_add(sdu_buf, 2*sizeof(sdu_packet_t));
+
+		memcpy(sdu, &sdu_packets[2], sizeof(sdu_packet_t));
+		memcpy(sdu+1, &sdu_packets[0], sizeof(sdu_packet_t));
+
+		/* put sdu buf to sdu fifo */
+		osa_status_t status = OSA_MsgQPut(sdu_fifo, &sdu_buf);
+		if(status != KOSA_StatusSuccess)
+		{
+			net_buf_unref(sdu_buf);
+			PRINTF("Put sdu to sdu_fifo failed!\n");
+		}
 	}
-
-	/* copy sdu to buff. */
-	sdu = net_buf_add(sdu_buf, sizeof(sdu_packet_t) - sizeof(sdu->buff) + buf->len);
-	memcpy(&sdu->info, info, sizeof(struct bt_iso_recv_info));
-	memcpy(sdu->buff, buf->data, buf->len);
-	sdu->len = buf->len;
-
-	/* put sdu buf to sdu fifo */
-	osa_status_t status = OSA_MsgQPut(sdu_fifo, &sdu_buf);
-	if(status != KOSA_StatusSuccess)
-	{
-		net_buf_unref(sdu_buf);
-		PRINTF("Put sdu to sdu_fifo failed!\n");
-	}
-
-#endif
 }
 
 static void stream_started(struct bt_bap_stream *stream)
