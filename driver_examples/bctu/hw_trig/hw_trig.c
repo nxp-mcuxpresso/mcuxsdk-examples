@@ -57,12 +57,12 @@ static void DEMO_CountConfig(void)
      * PRESCALE: (0x0U => 0x1U, no prescale)
      * An is used (count period => 16000, 10KHz), ALTAn and Bn is not used.
      */
-    EMIOS_0->UC[0U].C = ((EMIOS_0->UC[0U].C & ~(eMIOS_0_C_MODE_MASK | eMIOS_0_C_EDPOL_MASK
-                        | eMIOS_0_C_EDSEL_MASK | eMIOS_0_C_BSL_MASK | eMIOS_0_C_UCPRE_MASK))
-                        | (eMIOS_0_C_MODE(0x50U) | eMIOS_0_C_EDPOL(0U) | eMIOS_0_C_EDSEL(0U)
-                        | eMIOS_0_C_BSL(3U) | eMIOS_0_C_UCPRE(0U)));
+    EMIOS_0->UC[0U].C = ((EMIOS_0->UC[0U].C & ~(EMIOS_C_MODE_MASK | EMIOS_C_EDPOL_MASK
+                        | EMIOS_C_EDSEL_MASK | EMIOS_C_BSL_MASK | EMIOS_C_UCPRE_MASK))
+                        | (EMIOS_C_MODE(0x50U) | EMIOS_C_EDPOL(0U) | EMIOS_C_EDSEL(0U)
+                        | EMIOS_C_BSL(3U) | EMIOS_C_UCPRE(0U)));
 
-    EMIOS_0->UC[0U].A = ((EMIOS_0->UC[0U].A & ~(eMIOS_0_A_A_MASK)) | eMIOS_0_A_A(DEMO_COUNTER_PWM_PERIOD));
+    EMIOS_0->UC[0U].A = ((EMIOS_0->UC[0U].A & ~(EMIOS_A_A_MASK)) | EMIOS_A_A(DEMO_COUNTER_PWM_PERIOD));
 
     /* MODE: Output Pulse Width Modulation with Trigger (0x26U), used for generate PWM.
      * BUS: Counter bus B from channel 0 (1U)
@@ -81,20 +81,20 @@ static void DEMO_CountConfig(void)
      *
      * AS1:10% period; AS2(ALTA):80% period; BS1:50% period;
      */
-    EMIOS_0->UC[1U].C = ((EMIOS_0->UC[1U].C & ~(eMIOS_0_C_MODE_MASK | eMIOS_0_C_EDPOL_MASK
-                        | eMIOS_0_C_EDSEL_MASK | eMIOS_0_C_BSL_MASK | eMIOS_0_C_UCPRE_MASK | eMIOS_0_C_FEN_MASK))
-                        | (eMIOS_0_C_MODE(0x26U) | eMIOS_0_C_EDPOL(0U) | eMIOS_0_C_EDSEL(0U)
-                        | eMIOS_0_C_BSL(1U) | eMIOS_0_C_UCPRE(0U) | eMIOS_0_C_FEN(1U)));
+    EMIOS_0->UC[1U].C = ((EMIOS_0->UC[1U].C & ~(EMIOS_C_MODE_MASK | EMIOS_C_EDPOL_MASK
+                        | EMIOS_C_EDSEL_MASK | EMIOS_C_BSL_MASK | EMIOS_C_UCPRE_MASK | EMIOS_C_FEN_MASK))
+                        | (EMIOS_C_MODE(0x26U) | EMIOS_C_EDPOL(0U) | EMIOS_C_EDSEL(0U)
+                        | EMIOS_C_BSL(1U) | EMIOS_C_UCPRE(0U) | EMIOS_C_FEN(1U)));
     
-    EMIOS_0->UC[1U].A = ((EMIOS_0->UC[1U].A & ~(eMIOS_0_A_A_MASK)) | eMIOS_0_A_A((uint16_t)(DEMO_COUNTER_PWM_PERIOD * 0.1F)));
-    EMIOS_0->UC[1U].B = ((EMIOS_0->UC[1U].B & ~(eMIOS_0_B_B_MASK)) | eMIOS_0_B_B((uint16_t)(DEMO_COUNTER_PWM_PERIOD * 0.8F)));
-    EMIOS_0->UC[1U].ALTA = ((EMIOS_0->UC[1U].ALTA & ~(eMIOS_0_ALTA_ALTA_MASK)) | eMIOS_0_ALTA_ALTA((uint16_t)(DEMO_COUNTER_PWM_PERIOD * 0.5F)));
+    EMIOS_0->UC[1U].A = ((EMIOS_0->UC[1U].A & ~(EMIOS_A_A_MASK)) | EMIOS_A_A((uint16_t)(DEMO_COUNTER_PWM_PERIOD * 0.1F)));
+    EMIOS_0->UC[1U].B = ((EMIOS_0->UC[1U].B & ~(EMIOS_B_B_MASK)) | EMIOS_B_B((uint16_t)(DEMO_COUNTER_PWM_PERIOD * 0.8F)));
+    EMIOS_0->UC[1U].ALTA = ((EMIOS_0->UC[1U].ALTA & ~(EMIOS_ALTA_ALTA_MASK)) | EMIOS_ALTA_ALTA((uint16_t)(DEMO_COUNTER_PWM_PERIOD * 0.5F)));
 
     /* Enable EMIOS. */
-    EMIOS_0->UC[0U].C |= eMIOS_0_C_UCPREN_MASK;
-    EMIOS_0->UC[1U].C |= eMIOS_0_C_UCPREN_MASK;
-    EMIOS_0->MCR = ((EMIOS_0->MCR & ~(eMIOS_0_MCR_MDIS_MASK | eMIOS_0_MCR_GTBE_MASK | eMIOS_0_MCR_GPREN_MASK | eMIOS_0_MCR_GPRE_MASK))
-                    | (eMIOS_0_MCR_MDIS(0U) | eMIOS_0_MCR_GTBE(1U) | eMIOS_0_MCR_GPREN(1U) | eMIOS_0_MCR_GPRE(0U)));
+    EMIOS_0->UC[0U].C |= EMIOS_C_UCPREN_MASK;
+    EMIOS_0->UC[1U].C |= EMIOS_C_UCPREN_MASK;
+    EMIOS_0->MCR = ((EMIOS_0->MCR & ~(EMIOS_MCR_MDIS_MASK | EMIOS_MCR_GTBE_MASK | EMIOS_MCR_GPREN_MASK | EMIOS_MCR_GPRE_MASK))
+                    | (EMIOS_MCR_MDIS(0U) | EMIOS_MCR_GTBE(1U) | EMIOS_MCR_GPREN(1U) | EMIOS_MCR_GPRE(0U)));
 }
 
 static void DEMO_BctuConfig(void)
