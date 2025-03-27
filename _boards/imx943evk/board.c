@@ -345,6 +345,7 @@ status_t BOARD_MUX_Select(uint32_t i2cDevId, uint32_t chan)
     uint8_t deviceType = (i2cDevId & I2C_DEVICE_TYPE_MASK) >> I2C_DEVICE_TYPE_SHIFT;
     pca954x_t *pca954xData = NULL;
 
+    (void)deviceType;
     assert(deviceType < PCA954X_TYPE);
 
     if (g_i2cDevTbl[i2cDevArrayIdx].data == NULL)
@@ -364,6 +365,7 @@ status_t BOARD_MUX_Deselect(uint32_t i2cDevId, uint32_t chan)
     uint8_t deviceType = (i2cDevId & I2C_DEVICE_TYPE_MASK) >> I2C_DEVICE_TYPE_SHIFT;
     pca954x_t *pca954xData = NULL;
 
+    (void)deviceType;
     assert(deviceType < PCA954X_TYPE);
 
     if (g_i2cDevTbl[i2cDevArrayIdx].data == NULL)
@@ -386,9 +388,9 @@ status_t BOARD_EXPANDER_SetPinToHigh(uint32_t i2cDevId, uint8_t pinIdx)
     pca64xx_t *pca64xxData = NULL;
     status_t status = kStatus_Fail;
 
+    (void)deviceType;
     assert(deviceType >= PCA954X_TYPE);
     assert(deviceType < PCA64XX_TYPE);
-
 
     if (g_i2cDevTbl[i2cDevArrayIdx].data == NULL)
     {
@@ -428,6 +430,7 @@ status_t BOARD_EXPANDER_SetPinToLow(uint32_t i2cDevId, uint8_t pinIdx)
     pca64xx_t *pca64xxData = NULL;
     status_t status = kStatus_Fail;
 
+    (void)deviceType;
     assert(deviceType >= PCA954X_TYPE);
     assert(deviceType < PCA64XX_TYPE);
 
@@ -468,6 +471,7 @@ status_t BOARD_EXPANDER_SetPinAsInput(uint32_t i2cDevId, uint8_t pinIdx)
     status_t status = kStatus_Fail;
     pca64xx_t *pca64xxData = NULL;
 
+    (void)deviceType;
     assert(deviceType >= PCA954X_TYPE);
     assert(deviceType < PCA64XX_TYPE);
 
@@ -505,6 +509,7 @@ status_t BOARD_EXPANDER_SetPinAsOutput(uint32_t i2cDevId, uint8_t pinIdx)
     status_t status = kStatus_Fail;
     pca64xx_t *pca64xxData = NULL;
 
+    (void)deviceType;
     assert(deviceType >= PCA954X_TYPE);
     assert(deviceType < PCA64XX_TYPE);
 
