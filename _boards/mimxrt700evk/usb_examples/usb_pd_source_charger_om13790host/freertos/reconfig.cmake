@@ -39,3 +39,13 @@ mcux_add_mdk_configuration(
     LD "--predefine=\"-D__stack_size__=0x2000\"\
         --predefine=\"-D__heap_size__=0x1000\""
 )
+mcux_remove_iar_configuration(
+  CC "-On"
+  TARGETS
+    "flash_debug"
+)
+mcux_add_iar_configuration(
+  CC "-Ol"
+  TARGETS
+    "flash_debug"
+)
