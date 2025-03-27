@@ -32,7 +32,7 @@ void BOARD_InitSPIPins(void);
 void BOARD_InitQTMRPins(void);
 void BOARD_InitLEDsPins(void);
 void BOARD_InitACMPPins(void);
-void BOARD_InitLPCMPPins(void);
+void BOARD_InitCMPPins(void);
 void BOARD_InitLCDPins(void);
 void BOARD_InitKPPPins(void);
 void BOARD_InitAonLpadcPins(void);

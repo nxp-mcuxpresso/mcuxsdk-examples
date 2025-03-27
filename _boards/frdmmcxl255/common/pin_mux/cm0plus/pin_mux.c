@@ -183,7 +183,7 @@ void BOARD_InitQTMRPins(void) {
 
 void BOARD_InitACMPPins()
 {
-    const port_pin_config_t port0_5_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port0_4_config = {/* Internal pull-up/down resistor is disabled */
                                                  kPORT_PullDisable,
                                                  /* Low internal pull resistor value is selected. */
                                                  kPORT_LowPullResistor,
@@ -197,7 +197,7 @@ void BOARD_InitACMPPins()
                                                  kPORT_LowDriveStrength,
                                                  /* Normal drive strength is configured */
                                                  kPORT_NormalDriveStrength,
-                                                 /* Pin is configured as AON ACMP IN5 */
+                                                 /* Pin is configured as AON ACMP IN3 */
                                                  kPORT_MuxAlt0,
                                                  /* Digital input disabled; it is required for analog functions */
                                                  kPORT_InputBufferDisable,
@@ -205,8 +205,8 @@ void BOARD_InitACMPPins()
                                                  kPORT_InputNormal,
                                                  /* Pin Control Register fields [15:0] are not locked */
                                                  kPORT_UnlockRegister};
-    /* PORT0_5 is configured as AON ACMP IN5 */
-    PORT_SetPinConfig(AON__PORT0, 5U, &port0_5_config);
+    /* PORT0_5 is configured as AON ACMP IN3 */
+    PORT_SetPinConfig(AON__PORT0, 4U, &port0_4_config);
 }
 
 void BOARD_InitLPCMPPins()

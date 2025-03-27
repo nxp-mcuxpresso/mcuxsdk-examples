@@ -288,6 +288,19 @@ void BOARD_InitQTMRPins(void) {
 }
 
 void BOARD_InitLEDsPins(void) {
+  
+      gpio_pin_config_t output_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kGPIO2_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+  
     /* LED RED */
     const port_pin_config_t port1_15_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -304,7 +317,7 @@ void BOARD_InitLEDsPins(void) {
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
                                                      /* Pin is configured as GPIO */
-                                                     .mux = kPORT_MuxAsGpio,
+                                                     .mux = kPORT_MuxAlt0,
                                                      /* Digital input enabled */
                                                      .inputBuffer = kPORT_InputBufferEnable,
                                                      /* Digital input is not inverted */
@@ -329,7 +342,7 @@ void BOARD_InitLEDsPins(void) {
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
                                                      /* Pin is configured as GPIO */
-                                                     .mux = kPORT_MuxAsGpio,
+                                                     .mux = kPORT_MuxAlt0,
                                                      /* Digital input enabled */
                                                      .inputBuffer = kPORT_InputBufferEnable,
                                                      /* Digital input is not inverted */
@@ -354,7 +367,7 @@ void BOARD_InitLEDsPins(void) {
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
                                                      /* Pin is configured as GPIO */
-                                                     .mux = kPORT_MuxAsGpio,
+                                                     .mux = kPORT_MuxAlt0,
                                                      /* Digital input enabled */
                                                      .inputBuffer = kPORT_InputBufferEnable,
                                                      /* Digital input is not inverted */
@@ -362,10 +375,17 @@ void BOARD_InitLEDsPins(void) {
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
     PORT_SetPinConfig(PORT2, 12U, &port2_12_config); 
+    
+    GPIO_PinInit(GPIO1, 15, &output_config);
+    GPIO_PinInit(GPIO1, 16, &output_config);
+    GPIO_PinInit(GPIO2, 12, &output_config);
 }
 
 void BOARD_InitACMPPins()
 {
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    
     const port_pin_config_t port2_15_config = {/* Internal pull-up/down resistor is disabled */
                                                  kPORT_PullDisable,
                                                  /* Low internal pull resistor value is selected. */
@@ -477,7 +497,7 @@ void BOARD_InitBUTTONsPins(void)
 
 void BOARD_InitLPCMPPins()
 {
-    const port_pin_config_t port0_5_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_15_config = {/* Internal pull-up/down resistor is disabled */
                                                  kPORT_PullDisable,
                                                  /* Low internal pull resistor value is selected. */
                                                  kPORT_LowPullResistor,
@@ -499,8 +519,8 @@ void BOARD_InitLPCMPPins()
                                                  kPORT_InputNormal,
                                                  /* Pin Control Register fields [15:0] are not locked */
                                                  kPORT_UnlockRegister};
-    /* PORT0_5 is configured as CMP0_IN5 */
-    PORT_SetPinConfig(AON__PORT0, 5U, &port0_5_config);
+    /* PORT2_15 is configured as CMP0_IN3 */
+    PORT_SetPinConfig(PORT2, 5U, &port2_15_config);
 }
 
 void BOARD_InitLCDPins()
