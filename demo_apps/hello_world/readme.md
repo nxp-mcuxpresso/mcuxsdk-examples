@@ -97,3 +97,4 @@ debug_console supports this, debug_console_lite doesn't support).
 - [TWR-MC56F8200](../../_boards/twrmc56f8200/demo_apps/hello_world/example_board_readme.md)
 - [TWR-MC56F8400](../../_boards/twrmc56f8400/demo_apps/hello_world/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/demo_apps/hello_world/example_board_readme.md)

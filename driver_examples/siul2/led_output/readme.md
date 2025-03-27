@@ -7,4 +7,5 @@ The example is supported by the set, clear, and toggle write-only registers for 
 example take turns to shine the LED.
 
 ## Supported Boards
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/siul2/led_output/example_board_readme.md)
 

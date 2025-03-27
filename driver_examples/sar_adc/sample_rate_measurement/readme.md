@@ -8,3 +8,4 @@ on the keyboard, the ADC sample rate will be printed to the serial terminal.
 
 ## Supported Boards
 - [IMX95LPD5EVK-19](../../../_boards/imx95lpd5evk19/driver_examples/sar_adc/sample_rate_measurement/example_board_readme.md)
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/sar_adc/sample_rate_measurement/example_board_readme.md)

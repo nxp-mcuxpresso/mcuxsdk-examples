@@ -1,6 +1,6 @@
 Hardware requirements
-===================
-- Mini/micro USB cable
+=====================
+- Type-C USB cable
 - FRDM-MCXE31B board
 - Personal Computer
 
@@ -21,12 +21,10 @@ Prepare the Demo
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
-===============
-
+================
 When the example runs successfully, you can see the similar
 information from the terminal as shown below.
-
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Welcome to the BUBBLE example
 
 You will see the change of LED brightness when change angles of board
@@ -37,12 +35,4 @@ x= 10 y = 28
 x= 10 y = 28
 x= 11 y = 29
 x= 11 y = 29
-~~~~~~~~~~~~~~~~~~~~~
-
-Note:
-- If the user LED flashes constantly and the following message is printed on the console:
-    Sensor device initialize failed!
-
-    Please check the sensor chip U16
-
-  please check if the combo sensor (U16) is presented on the board.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

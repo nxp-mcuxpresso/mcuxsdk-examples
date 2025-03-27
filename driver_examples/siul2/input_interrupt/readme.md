@@ -7,3 +7,4 @@ The example is supported by the set, clear, and toggle write-only registers for 
 example uses the software button to control/toggle the LED.
 
 ## Supported Boards
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/siul2/input_interrupt/example_board_readme.md)

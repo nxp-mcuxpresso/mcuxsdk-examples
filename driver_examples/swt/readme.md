@@ -28,3 +28,4 @@ SWT refresh with fixed service sequence in window mode done!
 ===  Software watchdog timer example end  ===
 
 ## Supported Boards
+- FRDM-MCXE31B

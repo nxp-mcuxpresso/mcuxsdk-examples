@@ -24,3 +24,6 @@ Run in API call back.
 Run in RTC call back.
 ......
 ```
+
+## Supported Boards
+- FRDM-MCXE31B

@@ -9,3 +9,4 @@ hardware trigger source, which is then trigger ADC to
 convert.
 
 ## Supported Boards
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/bctu/hw_trig/example_board_readme.md)

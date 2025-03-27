@@ -28,3 +28,4 @@ output is logic one, or turned off when zero.
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/lpcmp/polling/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpcmp/polling/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpcmp/polling/example_board_readme.md)
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/lpcmp/polling/example_board_readme.md)

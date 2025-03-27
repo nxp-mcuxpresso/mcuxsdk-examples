@@ -25,3 +25,4 @@ them out using EDMA version FlexCAN transactional driver. The sent and received 
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)
+- [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/flexcan/efifo_edma_transfer/example_board_readme.md)

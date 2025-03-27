@@ -13,3 +13,4 @@ level utilizes two axes to visually show deviation from a level plane (0 degrees
 - [FRDM-MCXC041](../../_boards/frdmmcxc041/demo_apps/bubble/example_board_readme.md)
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/demo_apps/bubble/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/demo_apps/bubble/example_board_readme.md)
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/demo_apps/bubble/example_board_readme.md)
