@@ -21,7 +21,9 @@ mcux_add_source(
   SOURCES examples/eiq_examples/common/timer.c
   examples/eiq_examples/common/timer.h
 
+  examples/eiq_examples/executorch_cifarnet/demo_config.h
   examples/eiq_examples/executorch_cifarnet/image_data.h
+  examples/eiq_examples/executorch_cifarnet/labels.h
   examples/eiq_examples/executorch_cifarnet/main.cpp
   examples/eiq_examples/executorch_cifarnet/NativeFunctions.h
   examples/eiq_examples/executorch_cifarnet/RegisterKernels.cpp

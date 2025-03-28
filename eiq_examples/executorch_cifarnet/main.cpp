@@ -20,8 +20,10 @@
 #include <executorch/runtime/platform/runtime.h>
 
 #include "board_init.h"
+#include "demo_config.h"
 #include "fsl_debug_console.h"
 #include "image_data.h"
+#include "labels.h"
 #include "model_pte.h"
 #include "timer.h"
 
@@ -32,6 +34,11 @@ using torch::executor::Result;
 
 static uint8_t method_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
 static uint8_t temp_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
+
+typedef struct {
+    float score;
+    int index;
+} result_t;
 
 void et_pal_init(void) {}
 
@@ -121,15 +128,56 @@ int main(void)
     }
     auto endTime = TIMER_GetTimeInUS();
 
-    PRINTF("----------------------------------------\r\n");
-    PRINTF("     Inference time: %d us\r\n", endTime - startTime);
-    PRINTF("----------------------------------------\r\n");
-
     std::vector<torch::executor::EValue> outputs(method->outputs_size());
     PRINTF("%zu outputs: \r\n", outputs.size());
     status = method->get_outputs(outputs.data(), outputs.size());
     ET_CHECK(status == Error::Ok);
-    for (int i = 0; i < outputs.size(); ++i) {
+
+    result_t topResults[NUM_RESULTS];
+    for (int i = 0; i < NUM_RESULTS; i++) {
+        topResults[i] = {.score = 0.0f, .index = -1};
+    }
+
+    for (int i = 0; i < outputs[0].toTensor().numel(); i++) {
+        float value = 0.0f;
+        if (outputs[0].toTensor().scalar_type() == ScalarType::Float) {
+	    value = outputs[0].toTensor().const_data_ptr<float>()[i];
+        }
+
+        if (value < (float)DETECTION_TRESHOLD/100) {
+	    continue;
+        }
+        result_t pass = {.score = 0.0f, .index = -1};
+        for (int n = 0; n < NUM_RESULTS; n++) {
+            if (pass.index >= 0) {
+                result_t swap = topResults[n];
+                topResults[n] = pass;
+                pass = swap;
+            } else if (topResults[n].score < value) {
+                pass = topResults[n];
+                topResults[n] = {.score = value, .index = i};
+            }
+        }
+    }
+
+    const char* label = "No label detected";
+    float confidence = 0;
+
+    if (topResults[0].index >= 0) {
+        auto result = topResults[0];
+        confidence = result.score;
+        int index = result.index;
+        if (confidence * 100 > DETECTION_TRESHOLD)
+            label = labels[index];
+    }
+
+    int score = (int)(confidence * 100);
+    PRINTF("----------------------------------------\r\n");
+    PRINTF("     Inference time: %d us\r\n", endTime - startTime);
+    PRINTF("     Detected: %s (%d%%)\r\n", label, score);
+    PRINTF("----------------------------------------\r\n");
+
+    for (int i = 0; i < (int)outputs.size(); ++i) {
         Tensor t = outputs[i].toTensor();
         for (int j = 0; j < outputs[i].toTensor().numel(); ++j) {
             if (t.scalar_type() == ScalarType::Int) {
