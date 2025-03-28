@@ -1,0 +1,36 @@
+modbus_tcp_server:
+  section-type: application
+  contents:
+    meta_path: examples/modbus_examples/tcp/modbus_server
+    project-root-path: boards/${board}/modbus_examples/tcp/modbus_server/${multicore_foldername}
+    document:
+      name: modbus_tcp_server${core_id_suffix_name}
+      category: modbus_examples
+      brief: modbus tcp server example
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
