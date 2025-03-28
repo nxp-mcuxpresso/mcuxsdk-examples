@@ -27,13 +27,57 @@
 #include "model_pte.h"
 #include "timer.h"
 
-using namespace exec_aten;
-using namespace std;
-using torch::executor::Error;
-using torch::executor::Result;
+using executorch::aten::ScalarType;
+using executorch::aten::Tensor;
+using executorch::aten::TensorImpl;
+using executorch::extension::BufferCleanup;
+using executorch::extension::BufferDataLoader;
+using executorch::runtime::Error;
+using executorch::runtime::EValue;
+using executorch::runtime::HierarchicalAllocator;
+using executorch::runtime::MemoryAllocator;
+using executorch::runtime::MemoryManager;
+using executorch::runtime::Method;
+using executorch::runtime::MethodMeta;
+using executorch::runtime::Program;
+using executorch::runtime::Result;
+using executorch::runtime::Span;
+using executorch::runtime::Tag;
+using executorch::runtime::TensorInfo;
 
 static uint8_t method_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
 static uint8_t temp_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
+
+class NMemoryAllocator : public executorch::runtime::MemoryAllocator {
+    public:
+        NMemoryAllocator(uint32_t size, uint8_t* base_address)
+            : MemoryAllocator(size, base_address), used_(0) {}
+
+        void* allocate(size_t size, size_t alignment = kDefaultAlignment) override {
+            void* ret = executorch::runtime::MemoryAllocator::allocate(size, alignment);
+            if (ret != nullptr) {
+                if ((size & (alignment - 1)) == 0) {
+                    used_ += size;
+                } else {
+                    used_ = (used_ | (alignment - 1)) + 1 + size;
+                }
+            }
+            return ret;
+        }
+
+        // Returns the used size of the allocator's memory buffer.
+        size_t used_size() const {
+            return used_;
+        }
+
+        // Returns the free size of the allocator's memory buffer.
+        size_t free_size() const {
+            return executorch::runtime::MemoryAllocator::size() - used_;
+        }
+
+    private:
+        size_t used_;
+};
 
 typedef struct {
     float score;
@@ -49,12 +93,12 @@ int main(void)
 
     neutronInit();
 
-    torch::executor::runtime_init();
+    executorch::runtime::runtime_init();
 
-    auto loader = torch::executor::util::BufferDataLoader(model_pte, sizeof(model_pte));
-    PRINTF("Model PTE file loaded. Size: %d bytes.\r\n", sizeof(model_pte));
+    PRINTF("CIFARNET example using a ExecuTorch model\r\n");
+    auto loader = BufferDataLoader(model_pte, sizeof(model_pte));
 
-    Result<torch::executor::Program> program = torch::executor::Program::load(&loader);
+    Result<Program> program = Program::load(&loader);
     if (!program.ok()) {
         PRINTF("Program loading failed\r\n");
     }
@@ -67,19 +111,19 @@ int main(void)
     }
     PRINTF("Running method %s\r\n", method_name);
 
-    Result<torch::executor::MethodMeta> method_meta = program->method_meta(method_name);
+    Result<MethodMeta> method_meta = program->method_meta(method_name);
     if (!method_meta.ok()) {
         PRINTF("Failed to get method_meta for %s: 0x%x\r\n",
 	    method_name, (unsigned int)method_meta.error());
     }
 
-    torch::executor::MemoryAllocator method_allocator{
-        torch::executor::MemoryAllocator(sizeof(method_allocator_pool), method_allocator_pool)};
-    torch::executor::MemoryAllocator temp_allocator{
-        torch::executor::MemoryAllocator(sizeof(temp_allocator_pool), temp_allocator_pool)};
+    NMemoryAllocator method_allocator{
+        NMemoryAllocator(sizeof(method_allocator_pool), method_allocator_pool)};
+    NMemoryAllocator temp_allocator{
+        NMemoryAllocator(sizeof(temp_allocator_pool), temp_allocator_pool)};
 
     std::vector<uint8_t*> planned_buffers; // Owns the memory
-    std::vector<torch::executor::Span<uint8_t>> planned_spans; // Passed to the allocator
+    std::vector<Span<uint8_t>> planned_spans; // Passed to the allocator
     size_t num_memory_planned_buffers = method_meta->num_memory_planned_buffers();
 
     for (size_t id = 0; id < num_memory_planned_buffers; ++id) {
@@ -92,11 +136,11 @@ int main(void)
         planned_spans.push_back({planned_buffers.back(), buffer_size});
     }
 
-    torch::executor::HierarchicalAllocator planned_memory({planned_spans.data(), planned_spans.size()});
+    HierarchicalAllocator planned_memory({planned_spans.data(), planned_spans.size()});
 
-    torch::executor::MemoryManager memory_manager(&method_allocator, &planned_memory, &temp_allocator);
+    MemoryManager memory_manager(&method_allocator, &planned_memory, &temp_allocator);
 
-    Result<torch::executor::Method> method = program->load_method(method_name, &memory_manager);
+    Result<Method> method = program->load_method(method_name, &memory_manager);
     if (!method.ok()) {
         PRINTF("Loading of method %s failed with status 0x%\r\n" PRIx32,
 	    method_name, method.error());
@@ -104,11 +148,11 @@ int main(void)
     PRINTF("Method loaded.\r\n");
 
     PRINTF("Preparing inputs...\r\n");
-    torch::executor::Tensor::SizesType sizes[] = {1, 3, 32, 32};
-    torch::executor::Tensor::DimOrderType dim_order[] = {0, 1, 2, 3};
+    Tensor::SizesType sizes[] = {1, 3, 32, 32};
+    Tensor::DimOrderType dim_order[] = {0, 1, 2, 3};
 
-    torch::executor::TensorImpl impl(torch::executor::ScalarType::Float, 4, sizes, image_data, dim_order);
-    torch::executor::Tensor tensor(&impl);
+    TensorImpl impl(ScalarType::Float, 4, sizes, image_data, dim_order);
+    Tensor tensor(&impl);
     Error status = method->set_input(tensor, 0);
     if (status != Error::Ok) {
         PRINTF("Preparing inputs tensors for method %s failed with status 0x%...\r\n",
@@ -128,7 +172,22 @@ int main(void)
     }
     auto endTime = TIMER_GetTimeInUS();
 
-    std::vector<torch::executor::EValue> outputs(method->outputs_size());
+    PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
+    PRINTF("method_allocator Addr: 0x%x - 0x%x\r\n", method_allocator_pool, method_allocator_pool + method_allocator.size());
+    PRINTF("method_allocator_used: Total 0x%x (%d B); Used 0x%x (%d B); Used/Total %d %%\r\n",
+           method_allocator.size(), method_allocator.size(), method_allocator.used_size(), method_allocator.used_size(),
+	   100 * method_allocator.used_size() / method_allocator.size());
+    PRINTF("temp_allocator Addr: 0x%x - 0x%x\r\n", temp_allocator_pool, temp_allocator_pool + temp_allocator.size());
+    PRINTF("temp_allocator_used: Total 0x%x (%d B); Used 0x%x (%d B); Used/Total %d %%\r\n",
+           temp_allocator.size(), temp_allocator.size(), temp_allocator.used_size(), temp_allocator.used_size(),
+	   100 * temp_allocator.used_size() / temp_allocator.size());
+    PRINTF("Model Addr: 0x%x - 0x%x\r\n", model_pte, model_pte + sizeof(model_pte));
+    PRINTF("Model Size: 0x%x (%d B)\r\n", sizeof(model_pte), sizeof(model_pte));
+    PRINTF("Total Size Used: %d B (Model (%d B) + method_allocator (%d B) + temp_allocator (%d B))\r\n",
+           (sizeof(model_pte) + method_allocator.used_size() + temp_allocator.used_size()), sizeof(model_pte),
+	   method_allocator.used_size(), temp_allocator.used_size());
+
+    std::vector<EValue> outputs(method->outputs_size());
     PRINTF("%zu outputs: \r\n", outputs.size());
     status = method->get_outputs(outputs.data(), outputs.size());
     ET_CHECK(status == Error::Ok);
