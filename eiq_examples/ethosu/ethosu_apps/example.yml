@@ -1,0 +1,16 @@
+ethosu_apps:
+  section-type: application
+  contents:
+    meta_path: examples/eiq_examples/ethosu/ethosu_apps
+    project-root-path: boards/${board}/eiq_examples/ethosu/ethosu_app/${multicore_foldername}
+    document:
+      name: ethosu_apps${core_id_suffix_name}
+      category: eiq_examples
+      brief: inference for the conv2d op model in uboot.
+      example_readme:
+      - examples/eiq_examples/ethosu/ethosu_apps/readme.md
+      - ${board_root}/${board}/eiq_examples/ethosu/ethosu_apps/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mcimx93evk: []
+    mcimx93qsb: []
