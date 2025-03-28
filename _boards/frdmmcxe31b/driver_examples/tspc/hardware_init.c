@@ -8,7 +8,6 @@
 #include "fsl_common.h"
 #include "pin_mux.h"
 #include "board.h"
-#include "fsl_trgmux.h"
 /*${header:end}*/
 
 /*${function:start}*/
