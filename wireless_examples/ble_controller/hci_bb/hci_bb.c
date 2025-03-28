@@ -559,7 +559,6 @@ void main_task(uint32_t param)
         if(opcode == HCI_IDENTIFY_DEV_OPCODE)
         {
             uint32_t nb_returns=0U;
-            uint16_t event_len;
             uint8_t i = 0;
             uint8_t status = 0x00U;
             uint8_t id_info = maPendingHciCmd[4];
@@ -587,9 +586,7 @@ void main_task(uint32_t param)
             event[4] = maPendingHciCmd[2]; // opcode
             event[5] = status;
             event[6] = len_data_info;
-
-            event_len = 6 + nb_returns;
-            HCI_AppControllerRxCallback(0x04, event, event_len);
+            HCI_AppControllerRxCallback(0x04, event, 6U + nb_returns);
         }
         else
 #endif // HCI_IDENTIFY_DEV_OPCODE
@@ -604,7 +601,7 @@ void main_task(uint32_t param)
 #ifdef HCI_CTRL_API_OPCODE
         if(opcode == HCI_CTRL_API_OPCODE)
         {
-          uint8_t nb_param = (maPendingHciCmd[3]-3U) / 5U; // each param has 1 byte specified and 4 bytes data
+            uint8_t nb_param = (maPendingHciCmd[3]-3U) / 5U; // each param has 1 byte specified and 4 bytes data
             uint8_t status = 0U;
             uint32_t nb_returns = 0U;
             uint8_t event[6+NBU_API_MAX_RETURN_PARAM_LENGTH]={0xA5};
@@ -622,6 +619,15 @@ void main_task(uint32_t param)
                 {
                     // error
                     status = 0x1F; // HCI_ERR_UNSPECIFIED_ERROR
+                    nb_returns = 0;
+                }
+                else if ( nb_returns >= 4U )
+                {
+                    uint32_t api_status = (uint32_t)event[6] + ((uint32_t)event[7]<<8U) + ((uint32_t)event[8]<<16U) + ((uint32_t)event[9]<<24U);
+                    if (api_status != gBleSuccess_c)
+                    {   // API failed
+                        status = 0x12; // invalid parameters
+                    }
                 }
             }
             // Send command complete
@@ -631,16 +637,7 @@ void main_task(uint32_t param)
             event[3] = maPendingHciCmd[1]; // opcode
             event[4] = maPendingHciCmd[2]; // opcode
             event[5] = status;
-            uint16_t event_len;
-            if( status == 0 )
-            {
-              event_len = 6+nb_returns;
-            }
-            else
-            {
-              event_len = 6;
-            }
-            HCI_AppControllerRxCallback(0x04, event, event_len);
+            HCI_AppControllerRxCallback(0x04, event, 6U + nb_returns);
         }
         else
 #endif // HCI_CTRL_API_OPCODE
