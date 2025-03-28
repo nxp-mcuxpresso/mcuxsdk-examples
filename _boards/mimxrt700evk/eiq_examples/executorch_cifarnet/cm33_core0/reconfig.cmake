@@ -63,10 +63,10 @@ mcux_remove_armgcc_configuration(
 )
 
 mcux_add_armgcc_configuration(
-  LD "-Xlinker --defsym=__heap_size__=0x100000\
-      -Xlinker --defsym=__stack_size__=0x100000"
+  LD "-Xlinker --defsym=__heap_size__=0x10000\
+      -Xlinker --defsym=__stack_size__=0x10000"
 )
 mcux_add_mcux_configuration(
-  LD "-Xlinker --defsym=__heap_size__=0x100000\
-      -Xlinker --defsym=__stack_size__=0x100000"
+  LD "-Xlinker --defsym=__heap_size__=0x10000\
+      -Xlinker --defsym=__stack_size__=0x10000"
 )

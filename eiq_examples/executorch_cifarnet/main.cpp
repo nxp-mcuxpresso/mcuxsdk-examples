@@ -30,8 +30,8 @@ using namespace std;
 using torch::executor::Error;
 using torch::executor::Result;
 
-static uint8_t __attribute__((aligned(16))) method_allocator_pool[512 * 1024U];
-static uint8_t __attribute__((aligned(16))) tmp_allocator_pool[512 * 1024U];
+static uint8_t method_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
+static uint8_t temp_allocator_pool[512 * 1024U] __ALIGNED(16) __attribute__((section("NonCacheable")));
 
 void et_pal_init(void) {}
 
@@ -68,10 +68,10 @@ int main(void)
 
     torch::executor::MemoryAllocator method_allocator{
         torch::executor::MemoryAllocator(sizeof(method_allocator_pool), method_allocator_pool)};
-    torch::executor::MemoryAllocator tmp_allocator{
-        torch::executor::MemoryAllocator(sizeof(tmp_allocator_pool), tmp_allocator_pool)};
+    torch::executor::MemoryAllocator temp_allocator{
+        torch::executor::MemoryAllocator(sizeof(temp_allocator_pool), temp_allocator_pool)};
 
-    std::vector<std::unique_ptr<uint8_t[]>> planned_buffers; // Owns the memory
+    std::vector<uint8_t*> planned_buffers; // Owns the memory
     std::vector<torch::executor::Span<uint8_t>> planned_spans; // Passed to the allocator
     size_t num_memory_planned_buffers = method_meta->num_memory_planned_buffers();
 
@@ -79,13 +79,15 @@ int main(void)
         size_t buffer_size = static_cast<size_t>(method_meta->memory_planned_buffer_size(id).get());
         PRINTF("Setting up planned buffer %zu, size %zu.\r\n", id, buffer_size);
 
-        planned_buffers.push_back(std::make_unique<uint8_t[]>(buffer_size));
-        planned_spans.push_back({planned_buffers.back().get(), buffer_size});
+        uint8_t* buffer =
+            reinterpret_cast<uint8_t*>(method_allocator.allocate(buffer_size));
+        planned_buffers.push_back(buffer);
+        planned_spans.push_back({planned_buffers.back(), buffer_size});
     }
 
     torch::executor::HierarchicalAllocator planned_memory({planned_spans.data(), planned_spans.size()});
 
-    torch::executor::MemoryManager memory_manager(&method_allocator, &planned_memory, &tmp_allocator);
+    torch::executor::MemoryManager memory_manager(&method_allocator, &planned_memory, &temp_allocator);
 
     Result<torch::executor::Method> method = program->load_method(method_name, &memory_manager);
     if (!method.ok()) {

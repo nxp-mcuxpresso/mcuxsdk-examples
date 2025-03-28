@@ -26,8 +26,8 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 
-HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x80000;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x80000;
+HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x10000;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x10000;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
 /* Specify the memory areas */
@@ -37,8 +37,8 @@ MEMORY
   m_flash_config        (RX)  : ORIGIN = 0x28000000, LENGTH = 0x00004000
   m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
   m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x001FBD00
-  m_data                (RW)  : ORIGIN = 0x20010000, LENGTH = 0x00420000
-  m_ncache              (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00010000
+  m_data                (RW)  : ORIGIN = 0x20200000, LENGTH = 0x00230000
+  m_ncache              (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00200000
   m_model               (RW)  : ORIGIN = 0x20430000, LENGTH = 0x00100000
 }
 
