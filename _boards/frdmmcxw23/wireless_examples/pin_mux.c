@@ -174,6 +174,24 @@ void BOARD_InitPins(void)
     /* PORT0 PIN18 (coords: 8) is configured as PIO0_18 */
     IOCON_PinMuxSet(IOCON, BOARD_INITPINS_BUTTON0_PORT, BOARD_INITPINS_BUTTON0_PIN, BUTTON0);
 
+#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c >= 1)
+    /* Use pin 19 for UART prints */
+      const uint32_t port0_pin19_config = (/* Pin is configured as FC2_TXD_SCL_MISO */
+                                          IOCON_PIO_FUNC1 |
+                                          /* No addition pin function */
+                                          IOCON_PIO_MODE_INACT |
+                                          /* Standard mode, output slew rate control is enabled */
+                                          IOCON_PIO_SLEW_STANDARD |
+                                          /* Input function is not inverted */
+                                          IOCON_PIO_INV_DI |
+                                          /* Enables digital function */
+                                          IOCON_PIO_DIGITAL_EN |
+                                          /* Open drain is disabled */
+                                          IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN19 (coords: 7) is configured as FC2_TXD_SCL_MISO */
+    IOCON_PinMuxSet(IOCON, 0U, 19U, port0_pin19_config);
+#else
+    /* Use pin 19 for blue LED */
     const uint32_t LED_BLUE = (/* Pin is configured as PIO0_19 */
                                IOCON_PIO_FUNC0 |
                                /* No addition pin function */
@@ -188,6 +206,7 @@ void BOARD_InitPins(void)
                                IOCON_PIO_OPENDRAIN_DI);
     /* PORT0 PIN19 (coords: 7) is configured as PIO0_19 */
     IOCON_PinMuxSet(IOCON, BOARD_INITPINS_LED_BLUE_PORT, BOARD_INITPINS_LED_BLUE_PIN, LED_BLUE);
+#endif /* defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c >= 1) */
 
     const uint32_t port0_pin2_config = (/* Pin is configured as FC0_RXD_SDA_MOSI */
                                         IOCON_PIO_FUNC1 |

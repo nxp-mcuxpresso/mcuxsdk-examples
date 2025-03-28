@@ -57,7 +57,6 @@
 #if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c >= 1)
 
 static uint8_t s_ringBuffer1[SERIAL_MANAGER_RING_BUFFER_SIZE];
-static uint8_t s_ringBuffer2[SERIAL_MANAGER_RING_BUFFER_SIZE];
 
 static serial_port_uart_config_t uartConfig1 = {
     .instance     = BOARD_DEBUG_UART_INSTANCE,
@@ -77,26 +76,6 @@ static const serial_manager_config_t s_serialManagerConfig1 = {
     .ringBuffer     = &s_ringBuffer1[0],
     .ringBufferSize = SERIAL_MANAGER_RING_BUFFER_SIZE,
     .portConfig     = (serial_port_uart_config_t *)&uartConfig1,
-};
-
-static serial_port_uart_config_t uartConfig2 = {
-    .instance     = BOARD_DEBUG2_UART_INSTANCE,
-    .baudRate     = BOARD_DEBUG2_UART_BAUDRATE,
-    .parityMode   = kSerialManager_UartParityDisabled,
-    .stopBitCount = kSerialManager_UartOneStopBit,
-    .enableRx     = 1,
-    .enableTx     = 1,
-#if (defined(gBoardUseUart0HwFlowControl) && (gBoardUseUart0HwFlowControl > 0) && (BOARD_APP2_UART_INSTANCE == 0U))
-    .enableRxRTS  = 1,
-    .enableTxCTS  = 1,
-#endif
-};
-
-static const serial_manager_config_t s_serialManagerConfig2 = {
-    .type           = kSerialPort_Uart,
-    .ringBuffer     = &s_ringBuffer2[0],
-    .ringBufferSize = SERIAL_MANAGER_RING_BUFFER_SIZE,
-    .portConfig     = (serial_port_uart_config_t *)&uartConfig2,
 };
 #endif /* defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c >= 1) */
 
@@ -225,9 +204,8 @@ static const button_config_t g_button1Config = {
 void BOARD_InitSerialManager(serial_handle_t serialManagerHandle)
 {
     serial_manager_status_t ret;
-
-    BOARD_InitDebugConsole();
-   
+    
+    /* First instance of serial manager uses the UART for FSCI */
     uartConfig1.clockRate = CLOCK_GetFreq(BOARD_DEBUG_UART_CLKSRC);
 
     /* Init Serial Manager */
@@ -239,16 +217,8 @@ void BOARD_InitSerialManager(serial_handle_t serialManagerHandle)
 /* Initialize the second serial manager */
 void BOARD_InitSerialManager2(serial_handle_t serialManagerHandle)
 {
-    serial_manager_status_t ret;
-
     /* Second instance of serial manager uses the UART for Debug Console */
     BOARD_InitDebugConsole2();
-    uartConfig2.clockRate = CLOCK_GetFreq(BOARD_DEBUG2_UART_CLKSRC);
-
-    /* Init Serial Manager */
-    ret = SerialManager_Init((serial_handle_t)serialManagerHandle, &s_serialManagerConfig2);
-    assert(kStatus_SerialManager_Success == ret);
-    (void)ret;
 }
 
 /* DeInit Serial Manager before going lowpower when wake domain is in DS  (device DS3 or lower)*/

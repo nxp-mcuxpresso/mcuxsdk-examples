@@ -11,7 +11,7 @@ FLASH_END                    = FLASH_START + FLASH_SIZE - 1;
 FLASH_SECTOR_SIZE            = 0x2000; /* 8KB */
 
 NV_STORAGE_END_ADDRESS       = FLASH_END;
-NV_STORAGE_MAX_SECTORS       = 2;
+NV_STORAGE_MAX_SECTORS       = 4;
 NV_STORAGE_SECTOR_SIZE       = FLASH_SECTOR_SIZE;
 NV_STORAGE_SIZE              = FLASH_SECTOR_SIZE * NV_STORAGE_MAX_SECTORS;
 NV_STORAGE_START_ADDRESS     = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;
@@ -99,15 +99,6 @@ SECTIONS
     . = ALIGN(4);
   } > m_text
 
-  .NVM_TABLE :
-  {
-    . = ALIGN(4);
-    PROVIDE(__start_NVM_TABLE = .);
-    KEEP(*(.NVM_TABLE));
-    PROVIDE(__stop_NVM_TABLE = .);
-    . = ALIGN(4);
-  } > m_text
-
  .VERSION_TAGS :
   {
     . = ALIGN(4);
@@ -127,6 +118,15 @@ SECTIONS
     __exidx_start = .;
     *(.ARM.exidx*)
     __exidx_end = .;
+  } > m_text
+
+  .NVM_TABLE :
+  {
+    . = ALIGN(4);
+    PROVIDE(__start_NVM_TABLE = .);
+    KEEP(*(.NVM_TABLE));
+    PROVIDE(__stop_NVM_TABLE = .);
+    . = ALIGN(4);
   } > m_text
 
  .ctors :

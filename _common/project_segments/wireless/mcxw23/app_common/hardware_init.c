@@ -35,9 +35,5 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(kOSC32K_to_CTIMER0);
 
     BOARD_Configure32kOsc();
-
-#if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
-    BOARD_InitDebugConsole();
-#endif
 }
 /*${function:end}*/
