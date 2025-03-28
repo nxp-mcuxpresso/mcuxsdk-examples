@@ -9,12 +9,14 @@ mcux_add_source(
     SOURCES ${board_root}/${board}/wifi_examples/wifi_cli/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/pin_mux.c
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
+            ${board_root}/${board}/wifi_examples/common/host_sleep.c
+            ${board_root}/${board}/wifi_examples/common/host_sleep.h
             middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
             middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
             middleware/wifi_nxp/example/wifi_cli/freertos_config/FreeRTOSConfig.h
             middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
-            ${board_root}/${board}/wifi_examples/common/${core_id}/hardware_init.c
-            ${board_root}/${board}/wifi_examples/common/${core_id}/app.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/${core_id}/hardware_init.c
+            ${board_root}/${board}/wifi_examples/wifi_cli/${core_id}/app.h
             ${board_root}/${board}/sdmmc_config.c
             ${board_root}/${board}/sdmmc_config.h
             ${board_root}/${board}/wifi_bt_config.c
