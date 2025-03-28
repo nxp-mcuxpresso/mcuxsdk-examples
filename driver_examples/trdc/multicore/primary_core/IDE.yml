@@ -1,0 +1,26 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mdk:
+  shared-workspace: trdc
+  sharing-workspace:
+  - ../../trdc_secondary_core/mdk/trdc_secondary_core_${SB_CONFIG_secondary_core_id}
+
+iar:
+  shared-workspace: trdc
+  sharing-workspace:
+  - ../../trdc_secondary_core/iar/trdc_secondary_core_${SB_CONFIG_secondary_core_id}
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../trdc_secondary_core/iar/trdc_secondary_core_${SB_CONFIG_secondary_core_id}.eww"
+        slave-project: trdc_secondary_core_${SB_CONFIG_secondary_core_id}
+    flexspi_nor_debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    flexspi_nor_release:
+      asym-multicore-debugger:
+        slave-configuration: release

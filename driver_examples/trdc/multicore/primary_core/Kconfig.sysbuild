@@ -7,4 +7,4 @@ config secondary_toolchain
     string
     default "$(toolchain)"
 
-source "${SdkRootDirPath}/${board_root}/${board}/driver_examples/trdc/${core_id}/Kconfig.sysbuild"
+source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"

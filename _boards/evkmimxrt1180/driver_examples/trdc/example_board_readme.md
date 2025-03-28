@@ -17,8 +17,9 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-3.  Compile the CM7 then the CM33 project to get the binary trdc_cm33.bin.
-4.  Follow the instruction of SPSDK usage in SDK, to download and run the multicore image combined with edgelock FW.
+3.  Compile the CM7 then the CM33 project to get the executable image.
+4.  Follow the instruction of Bootable image generation section in getting started guide,
+to build and write the image using SPT tool.
 
 Running the demo
 ================
