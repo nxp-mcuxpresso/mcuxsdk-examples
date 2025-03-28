@@ -4,7 +4,7 @@ lpspi_loopback:
     meta_path: examples/driver_examples/lpspi/loopback
     project-root-path: boards/${board}/driver_examples/lpspi/loopback/${multicore_foldername}
     document:
-      name: lpspi_interrupt${core_id_suffix_name}
+      name: lpspi_loopback${core_id_suffix_name}
       category: driver_examples/lpspi
       brief: The lpspi_loopback example shows how to use LPSPI driver
         in polling way:In this example , one lpspi instance used as LPSPI master
