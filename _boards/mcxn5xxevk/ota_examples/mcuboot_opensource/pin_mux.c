@@ -13,11 +13,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v14.0
-processor: MCXN947
-package_id: MCXN947VDF
+product: Pins v13.0
+processor: MCXN547
+package_id: MCXN547VDF
 mcu_data: ksdk2_0
-processor_version: 0.14.14
+processor_version: 0.13.8
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */

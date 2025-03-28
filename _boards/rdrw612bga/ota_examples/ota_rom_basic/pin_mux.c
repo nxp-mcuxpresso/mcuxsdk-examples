@@ -16,9 +16,9 @@
 !!GlobalInfo
 product: Pins v15.0
 processor: RW612
-package_id: RW612UKA2I
+package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 16.3.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
