@@ -4,7 +4,7 @@ lpspi_polling_transfer:
     meta_path: examples/driver_examples/lpspi/polling_transfer
     project-root-path: boards/${board}/driver_examples/lpspi/polling_transfer/${multicore_foldername}
     document:
-      name: lpspi_interrupt${core_id_suffix_name}
+      name: lpspi_polling_transfer${core_id_suffix_name}
       category: driver_examples/lpspi
       brief: The lpspi_polling_transfer example shows how to use LPSPI driver in polling
         way:In this example , one lpspi instance used as LPSPI master and another
