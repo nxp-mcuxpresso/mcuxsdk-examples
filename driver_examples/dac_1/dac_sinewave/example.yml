@@ -16,7 +16,7 @@ dac_sinewave:
         and the user can add an array, the elements of the array are the input
         values corresponding to the DAC output voltage values for one sinewave cycle.
       example_readme:
-      - examples/driver_examples/dac/dac_sinewave/readme.md
+      - examples/driver_examples/dac_1/dac_sinewave/readme.md
       - ${board_root}/${board}/driver_examples/dac/dac_sinewave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
