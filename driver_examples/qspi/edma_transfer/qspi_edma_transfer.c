@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
- * All rights reserved.
+ * Copyright 2016-2017, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,7 +12,31 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define DUMMY_MASTER (0xE)
+#ifndef QSPI_CMD_SEQ_READ
+#define QSPI_CMD_SEQ_READ 0U
+#endif
+#ifndef QSPI_CMD_SEQ_WRITE_ENABLE
+#define QSPI_CMD_SEQ_WRITE_ENABLE 4U
+#endif
+#ifndef QSPI_CMD_SEQ_ERASE_ALL
+#define QSPI_CMD_SEQ_ERASE_ALL 8U
+#endif
+#ifndef QSPI_CMD_SEQ_READ_STATUS_REG
+#define QSPI_CMD_SEQ_READ_STATUS_REG 12U
+#endif
+#ifndef QSPI_CMD_SEQ_PROGRAM_PAGE
+#define QSPI_CMD_SEQ_PROGRAM_PAGE 16U
+#endif
+#ifndef QSPI_CMD_SEQ_WRITE_REG
+#define QSPI_CMD_SEQ_WRITE_REG 20U
+#endif
+#ifndef QSPI_CMD_SEQ_ERASE_SECTOR
+#define QSPI_CMD_SEQ_ERASE_SECTOR 28U
+#endif
+
+#ifndef EXAMPLE_DIV_NEED_RESTORE
+#define EXAMPLE_DIV_NEED_RESTORE 0U
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -28,7 +51,9 @@ static edma_handle_t dmaHandle       = {0};
 volatile bool isFinished             = false;
 
 AT_NONCACHEABLE_SECTION_ALIGN(static uint32_t buff[64], 4); /* Test data */
+#if defined(EXAMPLE_DIV_NEED_RESTORE) && EXAMPLE_DIV_NEED_RESTORE
 static bool isDivNeedRestore = false;
+#endif
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -48,7 +73,7 @@ void check_if_finished(void)
         {
         }
         QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_RxFifo);
-        QSPI_ExecuteIPCommand(EXAMPLE_QSPI, 12U);
+        QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_READ_STATUS_REG);
         while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
         {
         }
@@ -61,10 +86,10 @@ void check_if_finished(void)
 /* Write enable command */
 void cmd_write_enable(void)
 {
+    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_WRITE_ENABLE);
     while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
     {
     }
-    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, 4U);
 }
 
 #if defined(FLASH_ENABLE_QUAD_CMD)
@@ -104,7 +129,7 @@ void erase_sector(uint32_t addr)
     QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, addr);
     cmd_write_enable();
-    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, 28U);
+    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_ERASE_SECTOR);
     check_if_finished();
 }
 
@@ -117,7 +142,7 @@ void erase_all(void)
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, FSL_FEATURE_QSPI_AMBA_BASE);
     /* Write enable*/
     cmd_write_enable();
-    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, 8U);
+    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_ERASE_ALL);
     check_if_finished();
 }
 
@@ -143,7 +168,7 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
     QSPI_TransferSendEDMA(EXAMPLE_QSPI, &qspiHandle, &xfer);
 
     /* Execute the programe page command */
-    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, 16U);
+    QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_PROGRAM_PAGE);
 
     /*Wait for EDMA transfer finished*/
     while (isFinished != true)
@@ -175,6 +200,7 @@ void qspi_edma(void)
     erase_sector(addr);
     PRINTF("Erase finished!\r\n");
 
+#if defined(EXAMPLE_DIV_NEED_RESTORE) && EXAMPLE_DIV_NEED_RESTORE
     /* Reduce frequency while clock divder is less than 2 */
     uint8_t qspiClockDiv = ((EXAMPLE_QSPI->MCR & QuadSPI_MCR_SCLKCFG_MASK) >> QuadSPI_MCR_SCLKCFG_SHIFT) + 1U;
     if (qspiClockDiv == 1U)
@@ -186,6 +212,7 @@ void qspi_edma(void)
         EXAMPLE_QSPI->MCR |= QuadSPI_MCR_SCLKCFG(1U);
         QSPI_Enable(EXAMPLE_QSPI, true);
     }
+#endif
 
     /* Program pages in a sector */
     for (i = 0; i < FLASH_SECTORE_SIZE / FLASH_PAGE_SIZE; i++)
@@ -194,6 +221,7 @@ void qspi_edma(void)
     }
     PRINTF("Program data finished!\r\n");
 
+#if defined(EXAMPLE_DIV_NEED_RESTORE) && EXAMPLE_DIV_NEED_RESTORE
     /* Restore the frequency if needed */
     if (isDivNeedRestore)
     {
@@ -202,6 +230,7 @@ void qspi_edma(void)
         EXAMPLE_QSPI->MCR |= QuadSPI_MCR_SCLKCFG(0U);
         QSPI_Enable(EXAMPLE_QSPI, true);
     }
+#endif
 
     for (i = 0; i < FLASH_SECTORE_SIZE / 4; i++)
     {
@@ -259,6 +288,10 @@ int main(void)
     config.AHBbufferSize[3] = FLASH_PAGE_SIZE;
     clockSourceFreq         = QSPI_CLK_FREQ;
     QSPI_Init(EXAMPLE_QSPI, &config, clockSourceFreq);
+
+#if defined(EXAMPLE_QSPI_HAS_SOC_CONFIG) && (EXAMPLE_QSPI_HAS_SOC_CONFIG)
+    BOARD_QspiSocConfigure(EXAMPLE_QSPI);
+#endif
 
     /* Copy the LUT table */
     memcpy(single_config.lookuptable, lut, sizeof(uint32_t) * FSL_FEATURE_QSPI_LUT_DEPTH);
