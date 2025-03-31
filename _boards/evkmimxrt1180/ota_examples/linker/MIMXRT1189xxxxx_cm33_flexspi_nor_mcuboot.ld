@@ -38,7 +38,7 @@ m_sdram_size         = DEFINED(__dual_image__) ? 0x00200000 : 0x02000000;
 m_hyperram_start     = DEFINED(__dual_image__) ? 0x04600000 : 0x04000000;
 m_hyperram_size      = DEFINED(__dual_image__) ? 0x00200000 : 0x00800000;
 m_flash_start        = 0x28000000;
-m_flash_size         = 0x01000000;
+m_flash_size         = 0x00800000;
 
 m_core1_image_maximum_size = 0x00040000;
 
