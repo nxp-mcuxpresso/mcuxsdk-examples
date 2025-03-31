@@ -12,6 +12,7 @@ qsci_interrupt_rb_transfer:
         to the board.
       example_readme:
       - examples/driver_examples/qsci/interrupt_rb_transfer/readme.md
+      - ${board_root}/${board}/driver_examples/qsci/interrupt_rb_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

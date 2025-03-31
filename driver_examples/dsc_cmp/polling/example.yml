@@ -18,6 +18,7 @@ dsc_cmp_polling:
         be turned on when the compare output is logic one, or turned off when zero.
       example_readme:
       - examples/driver_examples/dsc_cmp/polling/readme.md
+      - ${board_root}/${board}/driver_examples/cmp/polling/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

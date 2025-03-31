@@ -13,6 +13,7 @@ dsc_edma_channel_link:
         and further development.
       example_readme:
       - examples/driver_examples/dsc_edma/channel_link/readme.md
+      - ${board_root}/${board}/driver_examples/edma/channel_link/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

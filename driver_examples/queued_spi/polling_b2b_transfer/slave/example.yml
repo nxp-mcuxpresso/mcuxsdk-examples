@@ -14,6 +14,7 @@ queued_spi_polling_b2b_transfer_slave:
         (queued_spi slave uses interrupt to receive/send the data)
       example_readme:
       - examples/driver_examples/queued_spi/polling_b2b_transfer/slave/readme.md
+      - ${board_root}/${board}/driver_examples/queued_spi/polling_b2b_transfer/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

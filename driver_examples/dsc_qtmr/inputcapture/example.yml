@@ -12,6 +12,7 @@ qtmr_inputcapture:
         the capture value.
       example_readme:
       - examples/driver_examples/dsc_qtmr/inputcapture/readme.md
+      - ${board_root}/${board}/driver_examples/qtmr/inputcapture/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

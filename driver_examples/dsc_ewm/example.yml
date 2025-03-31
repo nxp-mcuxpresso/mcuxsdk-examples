@@ -13,6 +13,7 @@ dsc_ewm:
         again.
       example_readme:
       - examples/driver_examples/dsc_ewm/readme.md
+      - ${board_root}/${board}/driver_examples/ewm/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

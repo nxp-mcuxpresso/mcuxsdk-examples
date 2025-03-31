@@ -14,6 +14,7 @@ cadc_expansion_mux_aux_opamp:
         Converter A and OPAMPA are used in pairs.
       example_readme:
       - examples/driver_examples/dsc_cadc/expansion_mux_aux_opamp/readme.md
+      - ${board_root}/${board}/driver_examples/cadc/expansion_mux_aux_opamp/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

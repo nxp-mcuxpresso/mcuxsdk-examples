@@ -15,6 +15,7 @@ dsc_flexcan_loopback:
         print out the Message payload to terminal.
       example_readme:
       - examples/driver_examples/dsc_flexcan/loopback/readme.md
+      - ${board_root}/${board}/driver_examples/flexcan/loopback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f83000evk: []

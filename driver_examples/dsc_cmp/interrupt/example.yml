@@ -20,6 +20,7 @@ dsc_cmp_interrupt:
         edge.
       example_readme:
       - examples/driver_examples/dsc_cmp/interrupt/readme.md
+      - ${board_root}/${board}/driver_examples/cmp/interrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

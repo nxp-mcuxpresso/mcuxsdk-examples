@@ -13,6 +13,7 @@ dsc_i2c_polling_b2b_transfer_master:
         from slave. This example checks if the data received from slave is correct.
       example_readme:
       - examples/driver_examples/dsc_i2c/polling_b2b_transfer/master/readme.md
+      - ${board_root}/${board}/driver_examples/i2c/polling_b2b_transfer/master/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f83000evk: []

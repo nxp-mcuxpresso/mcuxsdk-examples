@@ -13,5 +13,6 @@ igpio_input_eqdc_signal:
         output data register.
       example_readme:
       - examples/driver_examples/igpio/input_eqdc_interrupt/readme.md
+      - ${board_root}/${board}/driver_examples/gpio/input_eqdc_signal/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

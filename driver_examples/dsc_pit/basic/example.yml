@@ -12,6 +12,7 @@ pit_basic:
         on the UART terminal and an LED is toggled on the board.
       example_readme:
       - examples/driver_examples/dsc_pit/basic/readme.md
+      - ${board_root}/${board}/driver_examples/pit/basic/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

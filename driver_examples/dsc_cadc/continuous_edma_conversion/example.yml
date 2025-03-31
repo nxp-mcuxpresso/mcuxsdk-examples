@@ -18,6 +18,7 @@ cadc_continuous_edma_conversion:
         the terminal.  '
       example_readme:
       - examples/driver_examples/dsc_cadc/continuous_edma_conversion/readme.md
+      - ${board_root}/${board}/driver_examples/cadc/continuous_edma_conversion/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

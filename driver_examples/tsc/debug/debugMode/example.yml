@@ -17,5 +17,6 @@ tsc_debugMode:
         is valid, serial terminal prints x/y-coordinate information.
       example_readme:
       - examples/driver_examples/tsc/debug/debugMode/readme.md
+      - ${board_root}/${board}/driver_examples/tsc/debug/debugMode/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

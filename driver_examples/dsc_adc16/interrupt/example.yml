@@ -22,6 +22,7 @@ dsc_adc16_interrupt:
         setting would be used for each conversion.
       example_readme:
       - examples/driver_examples/dsc_adc16/interrupt/readme.md
+      - ${board_root}/${board}/driver_examples/adc16/interrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     twrmc56f8400: []

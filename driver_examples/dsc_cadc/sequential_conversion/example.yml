@@ -20,6 +20,7 @@ cadc_sequential_conversion:
         in the terminal. '
       example_readme:
       - examples/driver_examples/dsc_cadc/sequential_conversion/readme.md
+      - ${board_root}/${board}/driver_examples/cadc/sequential_conversion/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f80000evk: []

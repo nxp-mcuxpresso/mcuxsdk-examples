@@ -13,6 +13,7 @@ dsc_i2c_interrupt_b2b_transfer_slave:
         This example checks if the data received from slave is correct.
       example_readme:
       - examples/driver_examples/dsc_i2c/interrupt_b2b_transfer/slave/readme.md
+      - ${board_root}/${board}/driver_examples/i2c/interrupt_b2b_transfer/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: 
     mc56f83000evk: []

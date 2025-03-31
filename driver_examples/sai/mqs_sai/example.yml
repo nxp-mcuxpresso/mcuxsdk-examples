@@ -12,5 +12,6 @@ mqs_sai:
         using interrupt.MQS will covert audio stream to PWM signals.
       example_readme:
       - examples/driver_examples/sai/mqs_sai/readme.md
+      - ${board_root}/${board}/driver_examples/sai/mqs_sai/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

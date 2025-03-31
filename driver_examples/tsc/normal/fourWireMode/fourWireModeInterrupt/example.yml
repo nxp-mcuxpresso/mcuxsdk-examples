@@ -19,5 +19,6 @@ tsc_fourWireModeInterrupt:
         prints x/y-coordinate information.
       example_readme:
       - examples/driver_examples/tsc/normal/fourWireMode/fourWireModeInterrupt/readme.md
+      - ${board_root}/${board}/driver_examples/tsc/normal/fourWireMode/fourWireModeInterrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

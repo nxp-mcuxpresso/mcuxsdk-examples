@@ -18,5 +18,6 @@ tsc_fourWireModePolling:
         prints x/y-coordinate information.
       example_readme:
       - examples/driver_examples/tsc/normal/fourWireMode/fourWireModePolling/readme.md
+      - ${board_root}/${board}/driver_examples/tsc/normal/fourWireMode/fourWireModePolling/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: {}

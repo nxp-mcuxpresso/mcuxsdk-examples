@@ -14,5 +14,6 @@ isi_dwc_mipi_csi2_rgb565:
         is shown in the screen.'
       example_readme:
       - examples/driver_examples/isi/dwc_mipi_csi2/rgb565/readme.md
+      - ${board_root}/${board}/driver_examples/isi/dwc_mipi_csi2/rgb565/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards: {}
