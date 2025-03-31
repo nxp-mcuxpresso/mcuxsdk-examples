@@ -18,6 +18,7 @@ mcux_add_source(
 mcux_add_configuration(
     CC "        -DSERIAL_MANAGER_NON_BLOCKING_MODE=1\
                 -DSERIAL_MANAGER_TASK_HANDLE_RX_AVAILABLE_NOTIFY=1\
+                -DSERIAL_MANAGER_RING_BUFFER_FLOWCONTROL=1\
                 -DHAL_RPMSG_SELECT_ROLE=0\
                 -DPRINTF_FLOAT_ENABLE=0\
                 -DSCANF_FLOAT_ENABLE=0\
