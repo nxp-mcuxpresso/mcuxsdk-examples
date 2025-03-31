@@ -1,4 +1,5 @@
 power_mode_switch_mcxl_primary:
+  use_sysbuild: true
   section-type: application
   contents:
     meta_path: examples/demo_apps/power_mode_switch_mcxl/primary
