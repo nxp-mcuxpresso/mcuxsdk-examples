@@ -49,6 +49,12 @@ mcux_add_macro(
        -DPRINTF_ADVANCED_ENABLE=1"
 )
 
+# Enable SLIM features
+mcux_add_macro(
+    CC "-DCONFIG_FREERTOS_LOW_MEMORY_FOOTPRINT=1\
+       -DCONFIG_LWIP_LOW_MEM_FOOTPRINT=1"
+)
+
 mcux_remove_armgcc_configuration(
     TARGETS debug
     CC "-O0"
