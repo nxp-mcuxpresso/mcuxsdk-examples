@@ -3966,6 +3966,7 @@ static int wlan_ncp_get_temperature(void *data)
     return WM_SUCCESS;
 }
 
+#if CONFIG_NCP_MDNS_ENABLE
 int wlan_ncp_prepare_mdns_result(mdns_result_ring_buffer_t *mdns_res)
 {
     int i;
@@ -4229,6 +4230,7 @@ done:
 
     return WM_SUCCESS;
 }
+#endif
 
 #if CONFIG_DRIVER_MBO
 #if !CONFIG_WPA_SUPP
@@ -4577,7 +4579,9 @@ struct cmd_t wlan_cmd_network[] = {
     {NCP_CMD_WLAN_NETWORK_START, "wlan-start-network", wlan_ncp_start_network, CMD_ASYNC},
     {NCP_CMD_WLAN_NETWORK_STOP, "wlan-stop-network", wlan_ncp_stop_network, CMD_ASYNC},
     {NCP_CMD_WLAN_NETWORK_GET_UAP_STA_LIST, "wlan-get-uap-sta-list", wlan_ncp_get_uap_sta_list, CMD_SYNC},
+#if CONFIG_NCP_MDNS_ENABLE
     {NCP_CMD_WLAN_NETWORK_MDNS_QUERY, "wlan-mdns-query", wlan_ncp_mdns_query, CMD_SYNC},
+#endif
     {NCP_CMD_WLAN_NETWORK_LIST, "wlan-list", wlan_ncp_network_list, CMD_SYNC},
     {NCP_CMD_WLAN_NETWORK_REMOVE, "wlan-remove", wlan_ncp_network_remove, CMD_SYNC},
     {NCP_CMD_WLAN_NETWORK_ADDRESS, "wlan-address", wlan_ncp_address, CMD_SYNC},

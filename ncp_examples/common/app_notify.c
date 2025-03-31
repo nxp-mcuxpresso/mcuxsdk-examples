@@ -317,6 +317,7 @@ static void app_notify_event_handler(void *argv)
                 if (!event_buf)
                     ret = -WM_FAIL;
                 break;
+#if CONFIG_NCP_MDNS_ENABLE
             case APP_EVT_MDNS_SEARCH_RESULT:
                 app_d("got mdns search result");
                 if (msg.reason == APP_EVT_REASON_SUCCESS && msg.data != NULL)
@@ -344,6 +345,7 @@ static void app_notify_event_handler(void *argv)
                 if (!event_buf)
                     ret = -WM_FAIL;
                 break;
+#endif
             case APP_EVT_INVALID_CMD:
                 app_d("got invalid command");
                 wlan_ncp_prepare_status(NCP_RSP_INVALID_CMD, msg.reason);

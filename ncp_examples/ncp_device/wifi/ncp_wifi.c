@@ -299,7 +299,7 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
                 PRINTF("Failed to initialize UAP PROV CLI\r\n");
                 return 0;
             }
-
+#if CONFIG_NCP_MDNS_ENABLE
             ret = ncp_mdns_init();
             if (ret != WM_SUCCESS)
             {
@@ -307,6 +307,7 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
                 return 0;
             }
             (void)PRINTF("mDNS are initialized\r\n");
+#endif
             printSeparator();
             break;
         case WLAN_REASON_INITIALIZATION_FAILED:
@@ -348,6 +349,7 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
             }
             (void)PRINTF("\r\n");
 #endif
+#if CONFIG_NCP_MDNS_ENABLE
 #if MDNS_STA_INTERFACE
             if (!network_services)
             {
@@ -364,6 +366,7 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
             {
                 app_mdns_resp_restart(net_get_sta_handle());
             }
+#endif
 #endif
             NCP_CMD_WLAN_CONN *conn_res = (NCP_CMD_WLAN_CONN *)OSA_MemoryAllocate(sizeof(NCP_CMD_WLAN_CONN));
             if (conn_res == NULL)
@@ -394,6 +397,7 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
                 wlan_disconnect();
                 auth_fail = 0;
             }
+#if CONFIG_NCP_MDNS_ENABLE
 #if MDNS_STA_INTERFACE
             ret = app_mdns_deregister_iface(net_get_sta_handle());
             if (ret != WM_SUCCESS)
@@ -401,11 +405,14 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
             else
                 (void)PRINTF("mDNS STA Interface successfully deregistered\r\n");
 #endif
+#endif
             break;
         case WLAN_REASON_ADDRESS_SUCCESS:
             PRINTF("network mgr: DHCP new lease\r\n");
+#if CONFIG_NCP_MDNS_ENABLE
 #if MDNS_STA_INTERFACE
             app_mdns_resp_restart(net_get_sta_handle());
+#endif
 #endif
             break;
         case WLAN_REASON_ADDRESS_FAILED:
@@ -413,6 +420,7 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
             break;
         case WLAN_REASON_USER_DISCONNECT:
             PRINTF("app_cb: disconnected\r\n");
+#if CONFIG_NCP_MDNS_ENABLE
 #if MDNS_STA_INTERFACE
             ret = app_mdns_deregister_iface(net_get_sta_handle());
             if (ret != WM_SUCCESS)
@@ -422,6 +430,7 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
                 network_services = 0;
                 (void)PRINTF("mDNS STA Interface successfully deregistered\r\n");
             }
+#endif
 #endif
             if (!data)
                 app_notify_event(APP_EVT_USER_DISCONNECT, APP_EVT_REASON_SUCCESS, NULL, 0);
@@ -457,14 +466,14 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
             (void)memcpy(start_res->ssid, uap_network.ssid, sizeof(uap_network.ssid));
             app_notify_event(APP_EVT_USER_START_NETWORK, APP_EVT_REASON_SUCCESS, start_res,
                              sizeof(NCP_CMD_NETWORK_START));
-
+#if CONFIG_NCP_MDNS_ENABLE
             ret = app_mdns_register_iface(net_get_uap_handle());
             if (ret != WM_SUCCESS)
                 (void)PRINTF("Error in registering mDNS uAP interface\r\n");
             else
                 (void)PRINTF("mDNS uAP Interface successfully registered\r\n");
             printSeparator();
-
+#endif
             break;
         case WLAN_REASON_UAP_CLIENT_ASSOC:
             PRINTF("app_cb: WLAN: UAP a Client Associated\r\n");
@@ -493,13 +502,14 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
             PRINTF("DHCP Server stopped successfully\r\n");
             printSeparator();
             app_notify_event(APP_EVT_USER_STOP_NETWORK, APP_EVT_REASON_SUCCESS, NULL, 0);
-
+#if CONFIG_NCP_MDNS_ENABLE
             ret = app_mdns_deregister_iface(net_get_uap_handle());
             if (ret != WM_SUCCESS)
                 (void)PRINTF("Error in deregistering mDNS uAP interface\r\n");
             else
                 (void)PRINTF("mDNS uAP Interface successfully deregistered\r\n");
             printSeparator();
+#endif
             break;
         case WLAN_REASON_PS_ENTER:
             PRINTF("app_cb: WLAN: PS_ENTER\r\n");

@@ -5,6 +5,7 @@
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 
+#if CONFIG_NCP_MDNS_ENABLE
 /*******************************************************************************
  * Includes
  ******************************************************************************/
@@ -1186,3 +1187,4 @@ int app_mdns_query_a(const char *hostname, enum mdns_ifac_role role)
 
     return WM_SUCCESS;
 }
+#endif

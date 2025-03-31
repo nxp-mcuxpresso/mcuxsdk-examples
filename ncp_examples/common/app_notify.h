@@ -45,10 +45,12 @@ typedef enum
     APP_EVT_MCU_SLEEP_ENTER,
     /** Event for MCU exit sleep */
     APP_EVT_MCU_SLEEP_EXIT,
+#if CONFIG_NCP_MDNS_ENABLE
     /** Event for mDNS answers */
     APP_EVT_MDNS_SEARCH_RESULT,
     /** Event for resolving mDNS domain name */
     APP_EVT_MDNS_RESOLVE_DOMAIN_NAME,
+#endif
     /** Event for invalid command */
     APP_EVT_INVALID_CMD,
     /** Event for CSI data*/

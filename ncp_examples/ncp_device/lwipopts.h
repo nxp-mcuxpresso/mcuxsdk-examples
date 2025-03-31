@@ -39,6 +39,8 @@
 #if defined(__GNUC__) /* GNU Compiler */
 #define LWIP_TIMEVAL_PRIVATE 0
 #endif
+
+#if defined(CONFIG_NCP_MDNS_ENABLE) && (CONFIG_NCP_MDNS_ENABLE)
 /*
    ----------------------------------
    ---------- MDNS options ----------
@@ -63,6 +65,9 @@
 #define MDNS_DEBUG       LWIP_DBG_OFF
 
 #define LWIP_DNS_SUPPORT_MDNS_QUERIES 1
+#else
+#define LWIP_NUM_NETIF_CLIENT_DATA 3
+#endif
 
 #define CONFIG_NETWORK_HIGH_PERF 1
 

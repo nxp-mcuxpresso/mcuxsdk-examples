@@ -25,6 +25,7 @@
 #define CONFIG_NCP    1
 #define CONFIG_NCP_DEBUG  0
 #define CONFIG_CRC32_HW_ACCELERATE  1
+#define CONFIG_NCP_MDNS_ENABLE      1
 
 /* CONFIG_COEX_APP will decide whether WIFI uses its own application
  * idle hook in freertos, to avoid duplication defined by the app.

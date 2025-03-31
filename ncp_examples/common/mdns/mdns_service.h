@@ -36,6 +36,7 @@
 #ifndef _MDNS_SERVICE_H_
 #define _MDNS_SERVICE_H_
 
+#if CONFIG_NCP_MDNS_ENABLE
 #include <wm_net.h>
 #include <lwip/dns.h>
 #include "wlan.h"
@@ -250,5 +251,7 @@ void app_mdns_search_stop(uint8_t request_id);
  *  @return WM_SUCCESS
  */
 int app_mdns_query_a(const char *hostname, enum mdns_ifac_role role);
+
+#endif
 
 #endif /* _MDNS_SERVICE_H_ */

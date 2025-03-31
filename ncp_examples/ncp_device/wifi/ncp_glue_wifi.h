@@ -16,7 +16,9 @@
 #include <wm_net.h>
 #include <osa.h>
 #include "ncp_cmd_wifi.h"
+#if CONFIG_NCP_MDNS_ENABLE
 #include "mdns_service.h"
+#endif
 
 int wlan_ncp_prepare_status(uint32_t cmd, uint16_t result);
 
@@ -30,13 +32,15 @@ int wlan_ncp_prepare_start_network_result(NCP_CMD_NETWORK_START *start_res);
 
 int wlan_ncp_prepare_mac_address(void *mac_addr, uint8_t bss_type);
 
+#if CONFIG_NCP_MDNS_ENABLE
 int wlan_ncp_prepare_mdns_result(mdns_result_ring_buffer_t *mdns_res);
 
 uint8_t *wlan_ncp_prepare_mdns_resolve_result(ip_addr_t *ipaddr);
 
-NCPCmd_DS_COMMAND *wlan_ncp_get_response_buffer();
-
 int ncp_mdns_init(void);
+#endif
+
+NCPCmd_DS_COMMAND *wlan_ncp_get_response_buffer();
 
 void ncp_PostPowerSwitch(uint32_t mode, void *param);
 
