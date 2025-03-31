@@ -90,6 +90,7 @@ lwip_iperf_bm:
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug
     evkmimxrt1180@cm7: []
+    frdmmcxe247: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []
     imx95lpd5evk19@cm7: []
