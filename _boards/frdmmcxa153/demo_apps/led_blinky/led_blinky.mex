@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="MCXA153" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_14 http://mcuxpresso.nxp.com/XSD/mex_configuration_14.xsd" uuid="9a7fa702-eda5-4ae9-ad2a-f89b53410c1d" version="14" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="MCXA153" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="9a7fa702-eda5-4ae9-ad2a-f89b53410c1d" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>MCXA153</processor>
       <package>MCXA153VLH</package>
@@ -11,15 +11,14 @@
    </common>
    <preferences>
       <validate_boot_init_only>true</validate_boot_init_only>
-      <generate_extended_information>false</generate_extended_information>
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
       <update_include_paths>true</update_include_paths>
       <generate_registers_defines>false</generate_registers_defines>
    </preferences>
    <tools>
-      <pins name="Pins" version="14.0" enabled="true" update_project_code="true">
+      <pins name="Pins" version="17.0" enabled="true" update_project_code="true">
          <pins_profile>
-            <processor_version>0.14.4</processor_version>
+            <processor_version>0.2412.50</processor_version>
             <pin_labels>
                <pin_label pin_num="38" pin_signal="P3_12/LPUART2_RTS_B/CT1_MAT2/PWM0_X0" label="LED_RED" identifier="LED_RED"/>
             </pin_labels>
@@ -67,9 +66,9 @@
             </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="12.0" enabled="true" update_project_code="true">
+      <clocks name="Clocks" version="15.0" enabled="true" update_project_code="true">
          <clocks_profile>
-            <processor_version>0.14.4</processor_version>
+            <processor_version>0.2412.50</processor_version>
          </clocks_profile>
          <clock_configurations>
             <clock_configuration name="BOARD_BootClockFRO12M" id_prefix="" prefix_user_defined="false">
@@ -102,7 +101,9 @@
                   <clock_output id="MAIN_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
                   <clock_output id="Slow_clock.outFreq" value="3 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACE_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
                   <clock_output id="UTICK_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="WWDT0_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="SCGMode" value="SIRC" locked="false"/>
@@ -111,7 +112,7 @@
                   <setting id="SCG.SCSSEL.sel" value="SCG.SIRC" locked="false"/>
                   <setting id="SCG_FIRCCSR_FIRCEN_CFG" value="Disabled" locked="false"/>
                </clock_settings>
-               <called_from_default_init>false</called_from_default_init>
+               <called_from_default_init>true</called_from_default_init>
             </clock_configuration>
             <clock_configuration name="BOARD_BootClockFRO24M" id_prefix="" prefix_user_defined="false">
                <description></description>
@@ -146,7 +147,9 @@
                   <clock_output id="MAIN_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="Slow_clock.outFreq" value="6 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="24 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACE_clock.outFreq" value="24 MHz" locked="false" accuracy=""/>
                   <clock_output id="UTICK_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="WWDT0_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="MRCC.OSTIMERCLKSEL.sel" value="VBAT.CLK16K_1" locked="false"/>
@@ -187,7 +190,9 @@
                   <clock_output id="MAIN_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="Slow_clock.outFreq" value="12 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACE_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="UTICK_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="WWDT0_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="MRCC.OSTIMERCLKSEL.sel" value="VBAT.CLK16K_1" locked="false"/>
@@ -229,7 +234,9 @@
                   <clock_output id="MAIN_clock.outFreq" value="64 MHz" locked="false" accuracy=""/>
                   <clock_output id="Slow_clock.outFreq" value="16 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="64 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACE_clock.outFreq" value="64 MHz" locked="false" accuracy=""/>
                   <clock_output id="UTICK_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="WWDT0_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="VDD_CORE" value="voltage_1v1" locked="false"/>
@@ -274,7 +281,9 @@
                   <clock_output id="MAIN_clock.outFreq" value="96 MHz" locked="false" accuracy=""/>
                   <clock_output id="Slow_clock.outFreq" value="24 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="96 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACE_clock.outFreq" value="96 MHz" locked="false" accuracy=""/>
                   <clock_output id="UTICK_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
+                  <clock_output id="WWDT0_clock.outFreq" value="1 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="VDD_CORE" value="voltage_1v1" locked="false"/>
@@ -283,7 +292,7 @@
                   <setting id="MRCC.OSTIMERCLKSEL.sel" value="VBAT.CLK16K_1" locked="false"/>
                   <setting id="SYSCON.AHBCLKDIV.scale" value="1" locked="true"/>
                </clock_settings>
-               <called_from_default_init>true</called_from_default_init>
+               <called_from_default_init>false</called_from_default_init>
             </clock_configuration>
          </clock_configurations>
       </clocks>
@@ -293,7 +302,7 @@
          </dcdx_profile>
          <dcdx_configurations/>
       </dcdx>
-      <periphs name="Peripherals" version="13.0" enabled="true" update_project_code="true">
+      <periphs name="Peripherals" version="15.0" enabled="true" update_project_code="true">
          <dependencies>
             <dependency resourceType="Tool" resourceId="Clocks" description="The Clocks tool is required by the Peripherals tool, but it is disabled." problem_level="2" source="Peripherals">
                <feature name="enabled" evaluation="equal">
@@ -302,7 +311,7 @@
             </dependency>
          </dependencies>
          <peripherals_profile>
-            <processor_version>0.14.4</processor_version>
+            <processor_version>0.2412.50</processor_version>
          </peripherals_profile>
          <functional_groups>
             <functional_group name="BOARD_InitPeripherals" uuid="9c69b39f-9abc-4e8a-8540-8e1714f5fb00" called_from_default_init="true" id_prefix="" core="cm33_core0">
@@ -310,7 +319,7 @@
                <options/>
                <dependencies/>
                <instances>
-                  <instance name="NVIC" uuid="bfae73d6-afab-41fc-b34b-bc15873d0c78" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                  <instance name="NVIC" uuid="bfae73d6-afab-41fc-b34b-bc15873d0c78" type="nvic" type_id="nvic" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
                      <config_set name="nvic">
                         <array name="interrupt_table">
                            <struct name="0"/>
@@ -318,7 +327,7 @@
                         <array name="interrupts"/>
                      </config_set>
                   </instance>
-                  <instance name="SysTick" uuid="215141b3-050d-4e80-83a0-dcc127de4271" type="systick" type_id="systick_835fd8dd4fe722f5394f39cf587e71ab" mode="GENERAL" peripheral="SysTick" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                  <instance name="SysTick" uuid="215141b3-050d-4e80-83a0-dcc127de4271" type="systick" type_id="systick" mode="GENERAL" peripheral="SysTick" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
                      <config_set name="fsl_systick">
                         <struct name="timingConfig">
                            <setting name="clockSource" value="SYSTICKFunctionClock"/>
@@ -340,6 +349,7 @@
                <config_set_global name="global_system_definitions">
                   <setting name="user_definitions" value=""/>
                   <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
                </config_set_global>
             </component>
             <component name="uart_cmsis_common" uuid="0e321e23-b0ea-46c0-9b59-f77e96fddb3b" type_id="uart_cmsis_common_9cb8e302497aa696fdbb5a4fd622c2a8">

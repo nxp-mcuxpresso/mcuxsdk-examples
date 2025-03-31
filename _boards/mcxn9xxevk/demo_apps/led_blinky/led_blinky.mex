@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="MCXN947" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_14 http://mcuxpresso.nxp.com/XSD/mex_configuration_14.xsd" uuid="3ded5192-60e9-449b-ac64-e5acbea17e20" version="14" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="MCXN947" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="3ded5192-60e9-449b-ac64-e5acbea17e20" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>MCXN947</processor>
       <package>MCXN947VDF</package>
@@ -12,15 +12,14 @@
    </common>
    <preferences>
       <validate_boot_init_only>true</validate_boot_init_only>
-      <generate_extended_information>false</generate_extended_information>
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
       <update_include_paths>true</update_include_paths>
       <generate_registers_defines>false</generate_registers_defines>
    </preferences>
    <tools>
-      <pins name="Pins" version="15.0" enabled="true" update_project_code="true">
+      <pins name="Pins" version="17.0" enabled="true" update_project_code="true">
          <pins_profile>
-            <processor_version>0.15.4</processor_version>
+            <processor_version>0.2412.70</processor_version>
          </pins_profile>
          <functions_list>
             <function name="BOARD_InitPins">
@@ -48,7 +47,7 @@
                   </dependency>
                </dependencies>
                <pins>
-                  <pin peripheral="GPIO3" signal="GPIO, 4" pin_num="F14" pin_signal="PIO3_4/FC7_P2/CT_INP18/PWM0_X2/FLEXIO0_D12/SIM1_CLK">
+                  <pin peripheral="GPIO3" signal="GPIO, 4" pin_num="F14" pin_signal="PIO3_4/FC7_P2/CT_INP18/PWM0_X2/FLEXIO0_D12/SMARTDMA_PIO4/SIM1_CLK">
                      <pin_features>
                         <pin_feature name="slew_rate" value="fast"/>
                         <pin_feature name="open_drain" value="disable"/>
@@ -74,9 +73,9 @@
             </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="13.0" enabled="true" update_project_code="true">
+      <clocks name="Clocks" version="15.0" enabled="true" update_project_code="true">
          <clocks_profile>
-            <processor_version>0.15.4</processor_version>
+            <processor_version>0.2412.70</processor_version>
          </clocks_profile>
          <clock_configurations>
             <clock_configuration name="BOARD_BootClockFRO12M" id_prefix="" prefix_user_defined="false">
@@ -132,7 +131,7 @@
                   <setting id="SYSCON.FREQMEREFCLKSEL.sel" value="SYSCON.evtg_out0a" locked="false"/>
                   <setting id="SYSCON.FREQMETARGETCLKSEL.sel" value="SYSCON.evtg_out0a" locked="false"/>
                </clock_settings>
-               <called_from_default_init>false</called_from_default_init>
+               <called_from_default_init>true</called_from_default_init>
             </clock_configuration>
             <clock_configuration name="BOARD_BootClockFROHF48M" id_prefix="" prefix_user_defined="false">
                <description></description>
@@ -306,7 +305,7 @@
                   <setting id="SYSCON.FREQMEREFCLKSEL.sel" value="SYSCON.evtg_out0a" locked="false"/>
                   <setting id="SYSCON.FREQMETARGETCLKSEL.sel" value="SYSCON.evtg_out0a" locked="false"/>
                </clock_settings>
-               <called_from_default_init>true</called_from_default_init>
+               <called_from_default_init>false</called_from_default_init>
             </clock_configuration>
             <clock_configuration name="BOARD_BootClockPLL100M" id_prefix="" prefix_user_defined="false">
                <description></description>
@@ -315,11 +314,6 @@
                   <dependency resourceType="PeripheralUnifiedSignal" resourceId="SCG0.EXTAL" description="&apos;EXTAL&apos; (Pins tool id: SCG0.EXTAL, Clocks tool id: SCG.EXTAL) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockPLL100M">
                      <feature name="routed" evaluation="">
                         <data>true</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="SCG0.EXTAL" description="&apos;EXTAL&apos; (Pins tool id: SCG0.EXTAL, Clocks tool id: SCG.EXTAL) needs to have &apos;INPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockPLL100M">
-                     <feature name="direction" evaluation="">
-                        <data>INPUT</data>
                      </feature>
                   </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Clocks initialization requires the COMMON Driver in the project." problem_level="2" source="Clocks:BOARD_BootClockPLL100M">
@@ -391,9 +385,9 @@
          </dcdx_profile>
          <dcdx_configurations/>
       </dcdx>
-      <periphs name="Peripherals" version="14.0" enabled="true" update_project_code="true">
+      <periphs name="Peripherals" version="15.0" enabled="true" update_project_code="true">
          <peripherals_profile>
-            <processor_version>0.15.4</processor_version>
+            <processor_version>0.2412.70</processor_version>
          </peripherals_profile>
          <functional_groups>
             <functional_group name="BOARD_InitPeripherals" uuid="ef7ecff6-0855-450c-9af8-8018a5670f27" called_from_default_init="true" id_prefix="" core="cm33_core0">
@@ -401,7 +395,7 @@
                <options/>
                <dependencies/>
                <instances>
-                  <instance name="NVIC" uuid="2923cb66-461a-4675-a071-d75ca197f968" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                  <instance name="NVIC" uuid="2923cb66-461a-4675-a071-d75ca197f968" type="nvic" type_id="nvic" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
                      <config_set name="nvic">
                         <array name="interrupt_table"/>
                         <array name="interrupts"/>
@@ -415,6 +409,7 @@
                <config_set_global name="global_system_definitions">
                   <setting name="user_definitions" value=""/>
                   <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
                </config_set_global>
             </component>
             <component name="uart_cmsis_common" uuid="8f5573b3-bd3f-4281-b1be-3cd2453f2230" type_id="uart_cmsis_common_9cb8e302497aa696fdbb5a4fd622c2a8">
@@ -449,16 +444,18 @@
          <functional_group name="BOARD_InitTEE" called_from_default_init="true" id_prefix="" prefix_user_defined="false">
             <description></description>
             <options/>
-            <sau enabled="false" all_non_secure="false" generate_code_for_disabled_regions="false">
-               <region start="0" size="32" security="ns" enabled="false" index="0"/>
-               <region start="0" size="32" security="ns" enabled="false" index="1"/>
-               <region start="0" size="32" security="ns" enabled="false" index="2"/>
-               <region start="0" size="32" security="ns" enabled="false" index="3"/>
-               <region start="0" size="32" security="ns" enabled="false" index="4"/>
-               <region start="0" size="32" security="ns" enabled="false" index="5"/>
-               <region start="0" size="32" security="ns" enabled="false" index="6"/>
-               <region start="0" size="32" security="ns" enabled="false" index="7"/>
-            </sau>
+            <saus>
+               <sau enabled="false" all_non_secure="false" generate_code_for_disabled_regions="false">
+                  <region start="0" size="32" security="ns" enabled="false" index="0"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="1"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="2"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="3"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="4"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="5"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="6"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="7"/>
+               </sau>
+            </saus>
             <global_options>
                <option id="AIRCR_PRIS" value="no"/>
                <option id="AIRCR_BFHFNMINS" value="no"/>
