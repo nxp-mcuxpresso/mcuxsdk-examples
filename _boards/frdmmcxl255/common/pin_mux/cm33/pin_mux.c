@@ -381,37 +381,6 @@ void BOARD_InitLEDsPins(void) {
     GPIO_PinInit(GPIO2, 12, &output_config);
 }
 
-void BOARD_InitACMPPins()
-{
-    CLOCK_EnableClock(kCLOCK_GatePORT2);
-    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
-    
-    const port_pin_config_t port2_15_config = {/* Internal pull-up/down resistor is disabled */
-                                                 kPORT_PullDisable,
-                                                 /* Low internal pull resistor value is selected. */
-                                                 kPORT_LowPullResistor,
-                                                 /* Fast slew rate is configured */
-                                                 kPORT_FastSlewRate,
-                                                 /* Passive input filter is disabled */
-                                                 kPORT_PassiveFilterDisable,
-                                                 /* Open drain output is disabled */
-                                                 kPORT_OpenDrainDisable,
-                                                 /* Low drive strength is configured */
-                                                 kPORT_LowDriveStrength,
-                                                 /* Normal drive strength is configured */
-                                                 kPORT_NormalDriveStrength,
-                                                 /* Pin is configured as main ACMP IN3 */
-                                                 kPORT_MuxAlt0,
-                                                 /* Digital input disabled; it is required for analog functions */
-                                                 kPORT_InputBufferDisable,
-                                                 /* Digital input is not inverted */
-                                                 kPORT_InputNormal,
-                                                 /* Pin Control Register fields [15:0] are not locked */
-                                                 kPORT_UnlockRegister};
-    /* PORT2_15 is configured as main ACMP IN3 */
-    PORT_SetPinConfig(PORT2, 15U, &port2_15_config);
-}
-
 void BOARD_InitBUTTONsPins(void)
 {
 #if 0
@@ -495,7 +464,7 @@ void BOARD_InitBUTTONsPins(void)
 #endif
 }
 
-void BOARD_InitLPCMPPins()
+void BOARD_InitACMPPins()
 {
     const port_pin_config_t port2_15_config = {/* Internal pull-up/down resistor is disabled */
                                                  kPORT_PullDisable,

@@ -23,7 +23,7 @@ void BOARD_InitHardware(void)
     BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
-    BOARD_InitCMPPins();
+    BOARD_InitACMPPins();
     BOARD_InitLEDsPins();
 }
 /*${function:end}*/
