@@ -15,3 +15,4 @@ debugging and further development.
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/edma3/memory_to_memory_transfer/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/edma3/memory_to_memory_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/edma3/memory_to_memory_transfer/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/edma3/memory_to_memory_transfer/example_board_readme.md)

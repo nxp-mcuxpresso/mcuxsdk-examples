@@ -11,7 +11,8 @@ Make sure you have solder bridges SJ1 and SJ2 set to
 
 Prepare the Demo
 ===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board. 
+Note: MCUXpresso IDE project default debug console is semihost
+1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
