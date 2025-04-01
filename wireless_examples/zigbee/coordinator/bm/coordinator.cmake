@@ -2,16 +2,6 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
-mcux_set_variable(NXP_ZB_BASE ${SdkRootDirPath}/middleware/wireless/zigbee)
-mcux_set_variable(PDUMCONFIG  ${NXP_ZB_BASE}/tools/PDUMConfig/Source/PDUMConfig.py)
-mcux_set_variable(ZPSCONFIG   ${NXP_ZB_BASE}/tools/ZPSConfig/Source/ZPSConfig.py)
-mcux_set_variable(ZPSCFG      ${NXP_ZB_BASE}/examples/zigbee_coordinator/src/coordinator.zpscfg)
-
-mcux_set_variable(CONFIG_ZB_COORD_SINGLE_CHANNEL "12")
-mcux_set_variable(CONFIG_ZB_COORD_TRACE_APP 1)
-mcux_set_variable(CONFIG_ZB_COORD_TRACE_ZCL 1)
-
-
 if (CONFIG_ZB_COORD_R23_REVISION)
     mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL_R23.a)
     mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK_R23.a)
@@ -25,7 +15,7 @@ if (CONFIG_ZB_COORD_R22_REVISION)
 endif()
 
 #temporary for workarounds
-mcux_set_variable(NXP_WIRELESS_RELATIVE_PATH ../../../../../../middleware/wireless)
+# mcux_set_variable(NXP_WIRELESS_RELATIVE_PATH ../../../../../../middleware/wireless)
 # The files from this dir are pulled in only for the purpose of populating the MCUX project
 # They are overwritten by the pre-build steps
 mcux_set_variable(DUMMY_GEN_FILES_PATH ${SdkRootDirPath}/middleware/wireless/zigbee/examples/zigbee_coordinator/src)
@@ -121,5 +111,16 @@ add_custom_command(
                              -c $ENV{ARMGCC_DIR}
 )
 
+add_custom_command(
+        TARGET ${MCUX_SDK_PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${PYTHON_EXECUTABLE} ${MEMSIZE} ARGS
+		${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+		${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.map
+		${NXP_ZB_BASE}/examples/zigbee_coordinator/src/coordinator.json 2>&1 > /dev/null
+)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+mcux_add_armgcc_configuration(
+    LD "-Xlinker -Map=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.map -Wl,--cref -Wl,-fno-lto"
+)

@@ -9,6 +9,7 @@ project(zigbee_coordinator_bm LANGUAGES C CXX ASM
         ${board_root}/${board}/wireless_examples/zigbee
         ${board_root}/${board}/wireless_examples/zigbee/coordinator/bm
 )
+include(../freertos/variable.cmake)
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/zigbee/coordinator/bm/reconfig.cmake OPTIONAL)
 
 include(coordinator.cmake)

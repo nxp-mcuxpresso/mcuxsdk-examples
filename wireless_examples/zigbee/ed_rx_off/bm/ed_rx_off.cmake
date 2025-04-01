@@ -108,4 +108,16 @@ add_custom_command(
                              -c $ENV{ARMGCC_DIR}
 )
 
+add_custom_command(
+        TARGET ${MCUX_SDK_PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${PYTHON_EXECUTABLE} ${MEMSIZE} ARGS
+		${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+		${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.map
+		${NXP_ZB_BASE}/examples/zigbee_ed_rx_off/src/ed_rx_off.json 2>&1 > /dev/null
+)
+
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+mcux_add_armgcc_configuration(
+    LD "-Xlinker -Map=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.map -Wl,--cref -Wl,-fno-lto"
+)
