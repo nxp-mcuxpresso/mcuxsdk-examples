@@ -79,6 +79,9 @@ void BOARD_InitSWD_DEBUGPins(void)
 
 void BOARD_InitI2CPins(void)
 {
+    CLOCK_EnableClock(kCLOCK_GatePORT3);
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+    
     /* SDA */
     const port_pin_config_t port3_11_config = {/* Internal pull-up resistor is enabled */
                                                      kPORT_PullUp,
