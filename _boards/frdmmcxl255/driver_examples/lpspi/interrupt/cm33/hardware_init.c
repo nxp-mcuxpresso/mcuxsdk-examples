@@ -21,9 +21,5 @@ void BOARD_InitHardware(void)
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
     BOARD_InitSPIPins();
-
-    /* Enable DMA0 requests for LPSPI1 Receive and LPSPI1 Transmit */
-    AHBSC__AHBSC0->SEC_GP_REG[0U] |= (1UL << kDma0RequestLPSPI1Tx);
-    AHBSC__AHBSC0->SEC_GP_REG[0U] |= (1UL << kDma0RequestLPSPI1Rx);
 }
 /*${function:end}*/

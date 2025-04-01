@@ -9,13 +9,12 @@ Board settings
 
 LPSPI:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-       MASTER(SPI1)      connect to        SLAVE(SPI1)
+       MASTER(SPI0)      connect to        SLAVE(SPI1)
 Pin Name   Board Location     Pin Name    Board Location
-SOUT       J2-8               SIN         J2-10
-SIN        J2-10              SOUT        J2-8
-SCK        J2-12              SCK         J2-12
-PCS0       J2-6               PCS1        J2-6
-GND        J2-14              GND         J2-14
+SOUT       J6-6                SIN       J2-10
+SIN        J6-5                SOUT      J2-8
+SCK        J6-4                SCK       J2-12
+PCS0       J6-3                PCS1      J2-6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Make sure you have solder bridges SJ1 and SJ2 set to
@@ -36,27 +35,30 @@ Prepare the Demo
 
 Running the demo
 ================
-The following lines are printed to the serial terminal when the demo program is executed.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-lpspi_functional_interrupt_board_2_board_master start.
-This example use one board as master and the other as slave.
+When the example runs successfully, you can see the similar information from the terminal as below.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LPSPI functional interrupt example start.
+
+This example use one lpspi instance as master and another as slave on one board.
+
+Master uses interrupt way and slave uses interrupt way.
+
+Note that some LPSPI instances interrupt is in INTMUX ,you should set the intmux when you porting this example accordingly
+
 Please make sure you make the correct line connection. Basically, the connection is:
+
 LPSPI_master -- LPSPI_slave
+
    CLK      --    CLK
+
    PCS      --    PCS
+
    SOUT     --    SIN
+
    SIN      --    SOUT
-   GND      --    GND
-Please running slave here, then type any key to continue
 
 LPSPI transfer all data matched!
 
- Master received:
-
-  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
- 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F
- 20 21 22 23 24 25 26 27 28 29 2A 2B 2C 2D 2E 2F
- 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E 3F
-End of master example!
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+End of example.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~

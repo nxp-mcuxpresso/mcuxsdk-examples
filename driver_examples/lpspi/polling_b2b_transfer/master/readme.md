@@ -51,3 +51,4 @@ The file 'lpspi_polling_b2b_transfer_master.c' includes the LPSPI master code.
 - [MCX-W72-EVK](../../../../_boards/mcxw72evk/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)
 - [FRDM-MCXE31B](../../../../_boards/frdmmcxe31b/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXL255](../../../../_boards/frdmmcxl255/driver_examples/lpspi/polling_b2b_transfer/master/example_board_readme.md)

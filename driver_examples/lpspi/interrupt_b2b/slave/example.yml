@@ -73,3 +73,4 @@ lpspi_interrupt_b2b_slave:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
+    frdmmcxl255@cm33: []

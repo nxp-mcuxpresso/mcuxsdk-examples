@@ -1,12 +1,3 @@
-Overview
-========
-The lpspi_interrupt_b2b example shows how to use LPSPI driver in interrupt way:
-
-In this example , we need two boards , one board used as LPSPI master and another board used as LPSPI slave.
-The file 'dspi_interrupt_b2b_slave.c' includes the LPSPI slave code.
-This example does not use the transactional API in LPSPI driver. It's a demonstration that how to use the interrupt in KSDK driver.
-
-1. LPSPI master send/received data to/from LPSPI slave in interrupt . (LPSPI Slave using interrupt to receive/send the data)
 Hardware requirements
 =====================
 - Type-C USB cable

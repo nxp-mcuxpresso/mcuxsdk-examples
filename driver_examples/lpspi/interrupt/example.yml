@@ -47,3 +47,4 @@ lpspi_interrupt:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmmcxl255@cm33: []

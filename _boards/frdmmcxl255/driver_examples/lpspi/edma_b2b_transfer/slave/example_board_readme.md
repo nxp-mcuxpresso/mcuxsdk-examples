@@ -1,11 +1,3 @@
-Overview
-========
-The lpspi_edma_b2b_transfer example shows how to use LPSPI driver in edma way:
-
-In this example , we need two boards, one board used as LPSPI master and another board used as LPSPI slave.
-The file 'lpspi_edma_b2b_transfer_slave.c' includes the LPSPI slave code.
-
-1. LPSPI master send/received data to/from LPSPI slave in edma . (LPSPI Slave using edma to receive/send the data)
 Hardware requirements
 =====================
 - Type-C USB cable
