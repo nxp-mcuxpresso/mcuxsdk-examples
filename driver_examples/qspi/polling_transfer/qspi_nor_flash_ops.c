@@ -68,13 +68,14 @@ void check_if_finished(void)
     } while (val & 0x1);
 }
 
-#if (!defined(QSPI_CMD_AUTO_WRITE_ENABLE)) || !QSPI_CMD_AUTO_WRITE_ENABLE
 /* Write enable command */
 void cmd_write_enable(void)
 {
+#if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
+    BOARD_QspiUpdateLUT(QSPI_CMD_SEQ_WRITE_ENABLE, QSPI_CMD_TYPE_WRITE_ENABLE);
+#endif
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_WRITE_ENABLE);
 }
-#endif
 
 #if defined(FLASH_ENABLE_QUAD_CMD)
 /* Enable Quad mode */
@@ -90,9 +91,7 @@ void enable_quad_mode(void)
     /* Clear Tx FIFO */
     QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
 
-#if (!defined(QSPI_CMD_AUTO_WRITE_ENABLE)) || !QSPI_CMD_AUTO_WRITE_ENABLE
     cmd_write_enable();
-#endif
 
     /* Write data into TX FIFO, needs to write at least 16 bytes of data */
     QSPI_WriteBlocking(EXAMPLE_QSPI, val, 16U);
@@ -148,9 +147,13 @@ void erase_sector(uint32_t addr)
     }
     QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, addr);
-#if (!defined(QSPI_CMD_AUTO_WRITE_ENABLE)) || !QSPI_CMD_AUTO_WRITE_ENABLE
+
     cmd_write_enable();
+
+#if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
+    BOARD_QspiUpdateLUT(QSPI_CMD_SEQ_ERASE_SECTOR, QSPI_CMD_TYPE_ERASE_SECTOR);
 #endif
+
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_ERASE_SECTOR);
     check_if_finished();
 
@@ -166,9 +169,7 @@ void erase_all(void)
     {
     }
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, FSL_FEATURE_QSPI_AMBA_BASE);
-#if (!defined(QSPI_CMD_AUTO_WRITE_ENABLE)) || !QSPI_CMD_AUTO_WRITE_ENABLE
     cmd_write_enable();
-#endif
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_ERASE_ALL);
     check_if_finished();
 #if defined(FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC) && (FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC)
@@ -187,9 +188,7 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
     QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
 
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, dest_addr);
-#if (!defined(QSPI_CMD_AUTO_WRITE_ENABLE)) || !QSPI_CMD_AUTO_WRITE_ENABLE
     cmd_write_enable();
-#endif
     while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
     {
     }
