@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -19,7 +19,8 @@
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
-    BOARD_InitPins();
+    BOARD_InitBootPins();
+    BOARD_InitBUTTONsPins();
     BOARD_InitBootClocks();
 
     BOARD_InitDebugConsole();
