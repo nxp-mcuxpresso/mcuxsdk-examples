@@ -35,16 +35,16 @@ Found a FXL8974 on board , the device address is 0x18.
 
 The accel values:
 
-status_reg = 0xff , x =   -50 , y =    11 , z =  2045
-status_reg = 0xff , x =   -50 , y =     9 , z =  2031
-status_reg = 0xff , x =   -49 , y =    12 , z =  2032
-status_reg = 0xff , x =   -50 , y =     6 , z =  2046
-status_reg = 0xff , x =   -51 , y =     8 , z =  2040
-status_reg = 0xff , x =   -45 , y =     4 , z =  2032
-status_reg = 0xff , x =   -52 , y =    13 , z =  2042
-status_reg = 0xff , x =   -53 , y =    12 , z =  2041
-status_reg = 0xff , x =   -51 , y =     8 , z =  2048
-status_reg = 0xff , x =   -52 , y =     9 , z =  2036
+status_reg = 0x81 , x =   -50 , y =    11 , z =  2045
+status_reg = 0x81 , x =   -50 , y =     9 , z =  2031
+status_reg = 0x81 , x =   -49 , y =    12 , z =  2032
+status_reg = 0x81 , x =   -50 , y =     6 , z =  2046
+status_reg = 0x81 , x =   -51 , y =     8 , z =  2040
+status_reg = 0x81 , x =   -45 , y =     4 , z =  2032
+status_reg = 0x81 , x =   -52 , y =    13 , z =  2042
+status_reg = 0x81 , x =   -53 , y =    12 , z =  2041
+status_reg = 0x81 , x =   -51 , y =     8 , z =  2048
+status_reg = 0x81 , x =   -52 , y =     9 , z =  2036
 
 End of I2C example .
 ~~~~~~~~~~~~~~~~~~~~~
