@@ -23,3 +23,4 @@ qspi_edma_transfer:
     - -iar@flash_debug
     - -iar@flash_release
     frdmmcxe247: []
+    frdmmcxe31b: []

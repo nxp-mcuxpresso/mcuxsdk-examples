@@ -86,6 +86,9 @@ void check_if_finished(void)
 /* Write enable command */
 void cmd_write_enable(void)
 {
+#if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
+    BOARD_QspiUpdateLUT(QSPI_CMD_SEQ_WRITE_ENABLE, QSPI_CMD_TYPE_WRITE_ENABLE);
+#endif
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_WRITE_ENABLE);
     while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
     {
@@ -120,7 +123,7 @@ void enable_quad_mode(void)
 }
 #endif
 
-/*Erase sector */
+/* Erase sector */
 void erase_sector(uint32_t addr)
 {
     while (QSPI_GetStatusFlags(EXAMPLE_QSPI) & kQSPI_Busy)
@@ -129,6 +132,9 @@ void erase_sector(uint32_t addr)
     QSPI_ClearFifo(EXAMPLE_QSPI, kQSPI_TxFifo);
     QSPI_SetIPCommandAddress(EXAMPLE_QSPI, addr);
     cmd_write_enable();
+#if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
+    BOARD_QspiUpdateLUT(QSPI_CMD_SEQ_ERASE_SECTOR, QSPI_CMD_TYPE_ERASE_SECTOR);
+#endif
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_ERASE_SECTOR);
     check_if_finished();
 }
@@ -146,7 +152,7 @@ void erase_all(void)
     check_if_finished();
 }
 
-/* Program page into serial flash using QSPI polling way */
+/* Program page into serial flash using QSPI EDMA transfer. */
 void program_page(uint32_t dest_addr, uint32_t *src_addr)
 {
     qspi_transfer_t xfer = {0};
@@ -164,13 +170,14 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
     {
     }
 
-    /* Use EDMA transfer */
+    /* Use EDMA transfer. */
+    isFinished = false;
     QSPI_TransferSendEDMA(EXAMPLE_QSPI, &qspiHandle, &xfer);
 
-    /* Execute the programe page command */
+    /* Execute the program page command. */
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_PROGRAM_PAGE);
 
-    /*Wait for EDMA transfer finished*/
+    /* Wait for EDMA transfer finished. */
     while (isFinished != true)
     {
     }
