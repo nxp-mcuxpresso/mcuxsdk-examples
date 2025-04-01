@@ -1,0 +1,24 @@
+modbus_rtu_client:
+  section-type: application
+  contents:
+    meta_path: examples/modbus_examples/rtu/modbus_client
+    project-root-path: boards/${board}/modbus_examples/rtu/modbus_client/${multicore_foldername}
+    document:
+      name: modbus_rtu_client${core_id_suffix_name}
+      category: modbus_examples
+      brief: modbus rtu client example
+  boards:
+    evkmimxrt1180@cm33:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt1180@cm7:
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
