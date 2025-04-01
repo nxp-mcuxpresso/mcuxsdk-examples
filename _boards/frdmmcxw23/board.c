@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -35,8 +35,7 @@ void BOARD_InitDebugConsole(void)
 {
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
     RESET_ClearPeripheralReset(BOARD_DEBUG_UART_RST);
-    uint32_t uartClkSrcFreq = BOARD_DEBUG_UART_CLK_FREQ;
-    DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, uartClkSrcFreq);
+    DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, BOARD_DEBUG_UART_CLK_FREQ);
 }
 
 void BOARD_UninitDebugConsole(void)
@@ -48,8 +47,7 @@ void BOARD_InitDebugConsole2(void)
 {
     CLOCK_AttachClk(BOARD_DEBUG2_UART_CLK_ATTACH);
     RESET_ClearPeripheralReset(BOARD_DEBUG2_UART_RST);
-    uint32_t uartClkSrcFreq = BOARD_DEBUG2_UART_CLK_FREQ;
-    DbgConsole_Init(BOARD_DEBUG2_UART_INSTANCE, BOARD_DEBUG2_UART_BAUDRATE, BOARD_DEBUG2_UART_TYPE, uartClkSrcFreq);
+    DbgConsole_Init(BOARD_DEBUG2_UART_INSTANCE, BOARD_DEBUG2_UART_BAUDRATE, BOARD_DEBUG2_UART_TYPE, BOARD_DEBUG2_UART_CLK_FREQ);
 }
 
 void BOARD_UninitDebugConsole2(void)
