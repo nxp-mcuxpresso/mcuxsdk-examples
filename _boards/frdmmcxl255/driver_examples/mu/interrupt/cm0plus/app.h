@@ -12,8 +12,8 @@
  ******************************************************************************/
 
 /*${macro:start}*/
-#define LED_INIT()        LED_RED_INIT(LOGIC_LED_OFF)
-#define LED_TOGGLE()      LED_RED_TOGGLE()
+#define LED_INIT() //not possible to use on-board LED from the secondary core
+#define LED_TOGGLE() //not possible to use on-board LED from the secondary core
 #define APP_MU            MUB
 #define APP_MU_IRQHandler MU_B_RX_IRQHandler(void){MU_B_Joined_IRQHandler();}; \
                      void MU_B_TX_IRQHandler(void){MU_B_Joined_IRQHandler();}; \

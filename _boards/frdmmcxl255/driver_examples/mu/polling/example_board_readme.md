@@ -22,7 +22,7 @@ Prepare the Demo
 
 Running the demo
 ===============
-When the demo runs successfully, the log would be seen on the OpenSDA terminal like as below and LED will blink:
+When the demo runs successfully, the log would be seen on the terminal like as below and LED will blink:
 
 ~~~~~~~~~~~~~~~~~~~~~
 MU example polling!
@@ -60,3 +60,5 @@ Send: 30. Receive 30
 Send: 31. Receive 31
 MU example run succeed!
 ~~~~~~~~~~~~~~~~~~~~~
+Note:
+As it is not possible to use any on-board LED from the cm0plus core the secondary core is running LED indication is not working in this example.

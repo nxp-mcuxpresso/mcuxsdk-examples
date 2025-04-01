@@ -12,16 +12,6 @@
 /*${header:end}*/
 
 /*${function:start}*/
-static void BOARD_InitLedPin(void)
-{
-    const gpio_pin_config_t config = {
-        .pinDirection = kGPIO_DigitalOutput,
-        .outputLogic  = 1,
-    };
-
-    GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &config);
-}
-
 void APP_BootCore1(void)
 {
     AON__CGU->PER_CLK_EN = 0x7fe7;
@@ -50,6 +40,5 @@ void BOARD_InitHardware(void)
     BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
-    //BOARD_InitLedPin();
 }
 /*${function:end}*/
