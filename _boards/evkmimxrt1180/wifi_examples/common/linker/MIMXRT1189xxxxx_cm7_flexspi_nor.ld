@@ -1,18 +1,20 @@
 /*
 ** ###################################################################
 **     Processors:          MIMXRT1189CVM8B_cm7
+**                          MIMXRT1189CVM8C_cm7
 **                          MIMXRT1189XVM8B_cm7
+**                          MIMXRT1189XVM8C_cm7
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    IMXRT1180RM, Rev 2, 12/2022
-**     Version:             rev. 0.1, 2021-03-09
-**     Build:               b231213
+**     Reference manual:    IMXRT1180RM, Rev 5, 01/2024
+**     Version:             rev. 2.0, 2024-01-18
+**     Build:               b250310
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2023 NXP
+**     Copyright 2016-2025 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -37,11 +39,11 @@ m_sdram_start            = 0x80000000;
 m_sdram_size             = 0x01E00000;  /* Reserved 2M for CM33 usage, so size = physical memory size - 2M */
 m_hyperram_start         = 0x04000000;
 m_hyperram_size          = 0x00600000;  /* Reserved 2M for CM33 usage, so size = physical memory size - 2M */
-m_flash_start            = 0x28000000;
-m_flash_size             = 0x01000000;
+m_flash_start            = 0x28800000;
+m_flash_size             = 0x00800000;
 
 /* General definition */
-app_image_offset         = 0x0000B000;
+app_image_offset         = 0x00000000;
 vector_table_size        = 0x00000400;
 m_qacode_start           = m_itcm_start + (DEFINED(__ram_vector_table__) ? vector_table_size : 0);
 m_qacode_end             = m_itcm_start + m_dtcm_size - 1;
@@ -238,7 +240,6 @@ SECTIONS
   {
     . = ALIGN(4);
     __data_start__ = .;      /* create a global symbol at data start */
-    *(m_usb_dma_init_data)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     *(DataQuickAccess)       /* quick access data section */
@@ -321,7 +322,6 @@ SECTIONS
     /* This is used by the startup in order to initialize the .bss section */
     . = ALIGN(4);
     __bss_start__ = .;
-    *(m_usb_dma_noninit_data)
     *(.bss)
     *(.bss*)
     *(COMMON)
