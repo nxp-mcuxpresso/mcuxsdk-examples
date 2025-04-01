@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 NXP
+ * Copyright 2021-2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -242,6 +242,14 @@ status_t APP_EP_XferLoopBack(uint32_t index)
 #ifdef EXAMPLE_ENABLE_CACHE_MAINTAIN
     ep_config.rxCacheMaintain = true;
     ep_config.txCacheMaintain = true;
+#endif
+#if (defined(FSL_FEATURE_NETC_HAS_ERRATA_052167) && FSL_FEATURE_NETC_HAS_ERRATA_052167)
+    /* ERR052167: Actual MAC Tx IPG is longer than configured when transmitting back-to-back packets in MII half duplex
+    mode by approximately 15 extra bytes. For example, when configured for IPG=12, the actual IPG will be approximately 27.
+    The net result is that maximum throughput will be reduced also in the absence of half-duplex collision/retry events.
+    When using MII protocol, using full-duplex mode is recommended instead of half-duplex. If using MII half-duplex mode,
+    additional bandwidth loss should be expected and accounted for due to extended IPG. */
+    assert(!((phyMode == kNETC_MiiMode) && (phyDuplex == kNETC_MiiHalfDuplex)));
 #endif
     result = EP_Init(&g_ep_handle, &g_macAddr[0], &ep_config, &bdrConfig);
     if (result != kStatus_Success)
