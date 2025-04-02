@@ -5,36 +5,35 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
-LPI2C one board:
-  + Transfer data from MASTER_BOARD to SLAVE_BOARD of LPI2C interface, LPI2C1 pins of MASTER_BOARD are connected with
-    LPI2C1 pins of SLAVE_BOARD
+==============
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MASTER_BOARD        CONNECTS TO         SLAVE_BOARD
 Pin Name     Board Location     Pin Name     Board Location
-LPI2C1_SCL   J2-20             LPI2C1_SCL    J2-20
-LPI2C1_SDA   J2-18             LPI2C1_SDA    J2-18
-GND          J2-14             GND           J2-14
+LPI2C0_SCL   J5-5               LPI2C0_SCL   J5-5
+LPI2C0_SDA   J5-6               LPI2C0_SDA   J5-6
+GND          J5-8               GND          J5-8
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
 
 Prepare the Demo
-================
-1. Connect a mini USB cable between the PC host and the OpenSDA USB port on the board.
+===============
+Note: MCUXpresso IDE project default debug console is semihost
+1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
 2.  Open a serial terminal with the following settings:
-   - 115200 baud rate
-   - 8 data bits
-   - No parity
-   - One stop bit
-   - No flow control
-3. Download the program to the target board.
-4. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+    - 115200 baud rate
+    - 8 data bits
+    - No parity
+    - One stop bit
+    - No flow control
+3.  Download the program to the target board.
+4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
 ================
-When the example runs successfully, the following message is displayed in the terminal:
+The following message shows in the terminal if the example runs successfully.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPI2C board2board EDMA example -- Slave transfer.

@@ -76,7 +76,7 @@ void BOARD_InitSWD_DEBUGPins(void)
 
 void BOARD_InitI2CPins(void)
 {
-    /* SDA */
+    /* AONI2C0_SDA */
     const port_pin_config_t port0_13_config = {/* Internal pull-up resistor is enabled */
                                                      kPORT_PullUp,
                                                      /* Low internal pull resistor value is selected. */
@@ -91,7 +91,7 @@ void BOARD_InitI2CPins(void)
                                                      kPORT_LowDriveStrength,
                                                      /* Normal drive strength is configured */
                                                      kPORT_NormalDriveStrength,
-                                                     /* Pin is configured as LPI2C0_SDA */
+                                                     /* Pin is configured as AONI2C0_SDA */
                                                      kPORT_MuxAlt2,
                                                      /* Digital input enabled */
                                                      kPORT_InputBufferEnable,
@@ -102,7 +102,7 @@ void BOARD_InitI2CPins(void)
 
     PORT_SetPinConfig(AON__PORT0, 13U, &port0_13_config);
 
-    /* SCL */
+    /* AONI2C0_SCL */
     const port_pin_config_t port0_12_config = {/* Internal pull-up resistor is enabled */
                                                      kPORT_PullUp,
                                                      /* Low internal pull resistor value is selected. */
@@ -117,7 +117,7 @@ void BOARD_InitI2CPins(void)
                                                      kPORT_LowDriveStrength,
                                                      /* Normal drive strength is configured */
                                                      kPORT_NormalDriveStrength,
-                                                     /* Pin is configured as LPI2C0_SCL */
+                                                     /* Pin is configured as AONI2C0_SCL */
                                                      kPORT_MuxAlt2,
                                                      /* Digital input enabled */
                                                      kPORT_InputBufferEnable,

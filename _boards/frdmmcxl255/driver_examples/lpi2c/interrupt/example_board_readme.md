@@ -5,33 +5,18 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-==============
+============
+To make lpi2c example work, connections needed to be as follows:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER_BOARD        CONNECTS TO         SLAVE_BOARD
-Pin Name     Board Location     Pin Name     Board Location
-LPI2C0_SCL   J5-5               LPI2C0_SCL   J5-5
-LPI2C0_SDA   J5-6               LPI2C0_SDA   J5-6
-GND          J5-8               GND          J5-8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-AON:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER_BOARD        CONNECTS TO         SLAVE_BOARD
-Pin Name     Board Location     Pin Name     Board Location
-AON__I2C0_SCL   J2-9            AON__I2C0_SCL    J2-9
-AON__I2C0_SDA   J2-7            AON__I2C0_SDA    J2-7
-GND             J2-14           GND              J2-14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        LPI2C0 SCL(J5-5) -->   LPI2C1 SCL(J4-12)
+        LPI2C0 SDA(J5-6) -->   LPI2C1 SDA(J4-10)
 
 Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
-- 2-3 for AON core (cm0+)
 
 Prepare the Demo
 ===============
-Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
+1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board. 
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -46,19 +31,31 @@ Running the demo
 The following message shows in the terminal if the example runs successfully.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LPI2C board2board interrupt example -- Master transfer.
+LPI2C example -- MasterFunctionalInterrupt_SlaveFunctionalInterrupt.
 Master will send data :
 0x 0  0x 1  0x 2  0x 3  0x 4  0x 5  0x 6  0x 7
 0x 8  0x 9  0x a  0x b  0x c  0x d  0x e  0x f
 0x10  0x11  0x12  0x13  0x14  0x15  0x16  0x17
 0x18  0x19  0x1a  0x1b  0x1c  0x1d  0x1e  0x1f
 
-Receive sent data from slave :
+Slave received data :
 0x 0  0x 1  0x 2  0x 3  0x 4  0x 5  0x 6  0x 7
 0x 8  0x 9  0x a  0x b  0x c  0x d  0x e  0x f
 0x10  0x11  0x12  0x13  0x14  0x15  0x16  0x17
 0x18  0x19  0x1a  0x1b  0x1c  0x1d  0x1e  0x1f
 
+This time , slave will send data:
+0xff  0xfe  0xfd  0xfc  0xfb  0xfa  0xf9  0xf8
+0xf7  0xf6  0xf5  0xf4  0xf3  0xf2  0xf1  0xf0
+0xef  0xee  0xed  0xec  0xeb  0xea  0xe9  0xe8
+0xe7  0xe6  0xe5  0xe4  0xe3  0xe2  0xe1  0xe0
 
-End of LPI2C example .
+Master received data :
+0xff  0xfe  0xfd  0xfc  0xfb  0xfa  0xf9  0xf8
+0xf7  0xf6  0xf5  0xf4  0xf3  0xf2  0xf1  0xf0
+0xef  0xee  0xed  0xec  0xeb  0xea  0xe9  0xe8
+0xe7  0xe6  0xe5  0xe4  0xe3  0xe2  0xe1  0xe0
+
+End of I2C example .
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

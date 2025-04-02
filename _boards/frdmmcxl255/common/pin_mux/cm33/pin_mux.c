@@ -80,10 +80,67 @@ void BOARD_InitSWD_DEBUGPins(void)
 void BOARD_InitI2CPins(void)
 {
     CLOCK_EnableClock(kCLOCK_GatePORT3);
+    CLOCK_EnableClock(kCLOCK_GateLPI2C0);
+    CLOCK_EnableClock(kCLOCK_GateLPI2C1);
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kLPI2C0_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kLPI2C1_RST_SHIFT_RSTn);
     
-    /* SDA */
-    const port_pin_config_t port3_11_config = {/* Internal pull-up resistor is enabled */
+    /* LPI2C1_SDA */
+    const port_pin_config_t port3_1_config = {/* Internal pull-up resistor is enabled */
+                                                     kPORT_PullUp,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as LPI2C1_SDA */
+                                                     kPORT_MuxAlt2,
+                                                     /* Digital input enabled */
+                                                     kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     kPORT_UnlockRegister};
+
+    PORT_SetPinConfig(PORT3, 1U, &port3_1_config);
+
+    /* LPI2C1_SCL */
+    const port_pin_config_t port3_0_config = {/* Internal pull-up resistor is enabled */
+                                                     kPORT_PullUp,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as LPI2C1_SCL */
+                                                     kPORT_MuxAlt2,
+                                                     /* Digital input enabled */
+                                                     kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     kPORT_UnlockRegister};
+
+    PORT_SetPinConfig(PORT3, 0U, &port3_0_config);
+
+
+    /* LPI2C0_SDA */
+    const port_pin_config_t port3_13_config = {/* Internal pull-up resistor is enabled */
                                                      kPORT_PullUp,
                                                      /* Low internal pull resistor value is selected. */
                                                      kPORT_LowPullResistor,
@@ -98,7 +155,7 @@ void BOARD_InitI2CPins(void)
                                                      /* Normal drive strength is configured */
                                                      kPORT_NormalDriveStrength,
                                                      /* Pin is configured as LPI2C0_SDA */
-                                                     kPORT_MuxAlt4,
+                                                     kPORT_MuxAlt2,
                                                      /* Digital input enabled */
                                                      kPORT_InputBufferEnable,
                                                      /* Digital input is not inverted */
@@ -106,10 +163,10 @@ void BOARD_InitI2CPins(void)
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      kPORT_UnlockRegister};
 
-    PORT_SetPinConfig(PORT3, 11U, &port3_11_config);
+    PORT_SetPinConfig(PORT3, 13U, &port3_13_config);
 
-    /* SCL */
-    const port_pin_config_t port3_10_config = {/* Internal pull-up resistor is enabled */
+    /* LPI2C0_SCL */
+    const port_pin_config_t port3_12_config = {/* Internal pull-up resistor is enabled */
                                                      kPORT_PullUp,
                                                      /* Low internal pull resistor value is selected. */
                                                      kPORT_LowPullResistor,
@@ -124,7 +181,7 @@ void BOARD_InitI2CPins(void)
                                                      /* Normal drive strength is configured */
                                                      kPORT_NormalDriveStrength,
                                                      /* Pin is configured as LPI2C0_SCL */
-                                                     kPORT_MuxAlt4,
+                                                     kPORT_MuxAlt2,
                                                      /* Digital input enabled */
                                                      kPORT_InputBufferEnable,
                                                      /* Digital input is not inverted */
@@ -132,7 +189,7 @@ void BOARD_InitI2CPins(void)
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      kPORT_UnlockRegister};
 
-    PORT_SetPinConfig(PORT3, 10U, &port3_10_config);
+    PORT_SetPinConfig(PORT3, 12U, &port3_12_config);
 }
 
 void BOARD_InitSPIPins(void)

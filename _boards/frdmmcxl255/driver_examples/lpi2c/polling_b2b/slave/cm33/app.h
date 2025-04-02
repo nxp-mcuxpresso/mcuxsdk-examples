@@ -12,8 +12,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_I2C_SLAVE_INSTANCE  (1U)
-#define EXAMPLE_I2C_SLAVE_BASE      LPI2C1
+#define EXAMPLE_I2C_SLAVE_INSTANCE  (0U)
+#define EXAMPLE_I2C_SLAVE_BASE      LPI2C0
 #define LPI2C_SLAVE_CLOCK_FREQUENCY CLOCK_GetLpi2cClkFreq(EXAMPLE_I2C_SLAVE_INSTANCE)
 /*${macro:end}*/
 
