@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -33,6 +33,13 @@ void BOARD_InitBootClocks(void);
  *
  */
 void BOARD_BootClockRUN(void);
+
+/*! @brief Clock pre-initialization function.
+ */
+extern void BOARD_ClockPreConfig(void);
+/*! @brief Clock post-initialization function.
+ */
+extern void BOARD_ClockPostConfig(void);
 
 #if defined(__cplusplus)
 }

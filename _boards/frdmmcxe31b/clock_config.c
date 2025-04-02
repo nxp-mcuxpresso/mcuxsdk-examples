@@ -47,6 +47,8 @@ void BOARD_InitBootClocks(void)
 
 void BOARD_BootClockRUN()
 {
+    BOARD_ClockPreConfig();
+
     CLOCK_SelectSafeClock(kFIRC_CLK_to_MUX0); /* Switch MUX0 to FIRC for safe reconfig. */
 
     /* CLOCK_InitSxosc(true, 2U); */ /* Enable SXOSC in application when used. */

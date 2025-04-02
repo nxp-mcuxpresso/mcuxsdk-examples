@@ -184,6 +184,45 @@ void BOARD_InitDebugConsole(void)
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, uartClkSrcFreq);
 }
 
+/* Don't access system RAM when configuring PRAM FT_DIS.  */
+AT_QUICKACCESS_SECTION_CODE(void BOARD_EnableSRAMExtraLatency(bool en))
+{
+    if (en)
+    {
+        /* Configure SRAM read wait states. */
+        PRAMC_0->PRCR1 |= PRAMC_PRCR1_FT_DIS_MASK;
+        PRAMC_1->PRCR1 |= PRAMC_PRCR1_FT_DIS_MASK;
+    }
+    else
+    {
+        PRAMC_0->PRCR1 &= ~PRAMC_PRCR1_FT_DIS_MASK;
+        PRAMC_1->PRCR1 &= ~PRAMC_PRCR1_FT_DIS_MASK;
+    }
+}
+
+void BOARD_ClockPreConfig(void)
+{
+    /* Enables PMC last mile regulator before enable PLL.  */
+    if ((PMC->LVSC & PMC_LVSC_LVD15S_MASK) != 0U)
+    {
+        /* External bipolar junction transistor is connected between external voltage and V15 input pin. */
+        PMC->CONFIG |= PMC_CONFIG_LMBCTLEN_MASK;
+    }
+    while((PMC->LVSC & PMC_LVSC_LVD15S_MASK) != 0U)
+    {
+    }
+    PMC->CONFIG |= PMC_CONFIG_LMEN_MASK;
+    while((PMC->CONFIG & PMC_CONFIG_LMSTAT_MASK) == 0u)
+    {
+    }
+
+    BOARD_EnableSRAMExtraLatency(true);
+}
+
+void BOARD_ClockPostConfig(void)
+{
+}
+
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz)
 {

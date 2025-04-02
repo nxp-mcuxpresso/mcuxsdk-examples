@@ -117,6 +117,8 @@ extern "C" {
 void BOARD_InitDebugConsole(void);
 /*! @brief Config the MPU. */
 void BOARD_ConfigMPU(void);
+void BOARD_ClockPreConfig(void);
+void BOARD_ClockPostConfig(void);
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz);
 status_t BOARD_LPI2C_Send(LPI2C_Type *base,
