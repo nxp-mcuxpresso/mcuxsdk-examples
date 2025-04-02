@@ -201,6 +201,9 @@ static int ncp_encrypt_init_mbedtls(void)
     mbedtls_pk_init(&_mbedtls->pkey);
     mbedtls_entropy_init(&_mbedtls->entropy);
     mbedtls_ctr_drbg_init(&_mbedtls->ctr_drbg);
+#if !defined(MBEDTLS_SSL_CLI_ALLOW_WEAK_CERTIFICATE_VERIFICATION_WITHOUT_HOSTNAME)
+    mbedtls_ssl_set_hostname(&_mbedtls->ssl, "localhost");
+#endif
 #if defined(MBEDTLS_ENTROPY_NV_SEED) && defined(MBEDTLS_PLATFORM_NV_SEED_ALT)
     (void) mbedtls_platform_set_nv_seed(&port_mbedtls_entropy_read, &port_mbedtls_entropy_write);
 #endif
