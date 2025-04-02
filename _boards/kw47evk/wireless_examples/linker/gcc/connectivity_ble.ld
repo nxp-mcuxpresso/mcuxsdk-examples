@@ -16,7 +16,7 @@
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2024 NXP
+**     Copyright 2024 - 2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -307,6 +307,21 @@ SECTIONS
     . = ALIGN(m_sector_size);
     *(.PROD_DATA*)
   } > m_fsl_prod_info
+
+  /* Note that fEraseNVM and sEraseNVM sections are only there to be able to erase an NVM storage content when flashing a new firmware that might be incompatible.
+   * This may raise an issue if the final output of the build is a binary image. Indeed, in this case, the linker pads the binary between the top of the text section
+   * and fills the space with 0xff till the top of the NVM section, causing an increase in size.
+   * With IAR linker, undefining gEraseNVMLink_d linker symbol allows to remove the sections and thus prevent a binary image size increase.
+   * Unfortunately, gcc linker script has a limitation that does not allow conditional linkage.
+   * If a slim image is wanted, one can comment the .fEraseNVM and .sEraseNVM section definitions below.
+   * Alternately it is possible to leave the linker script as is with both EraseNVM sections, but modify the mcux_convert_binary
+   *  post-build rule in the application CMakeLists.txt as follows:
+   * mcux_convert_binary(
+   *  TOOLCHAINS armgcc
+   *  EXTRA_ARGS --remove-section .fEraseNVM --remove-section .sEraseNVM
+   *  BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_slim.bin)
+   * This results in removing the unwanted sections from the binary output.
+   */
 
   .fEraseNVM :
   {
