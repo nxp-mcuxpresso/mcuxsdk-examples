@@ -12,6 +12,7 @@ config MCUX_HW_BOARD_frdmmcxe31b
     imply MCUX_COMPONENT_driver.cache_armv7_m7
     imply MCUX_COMPONENT_driver.clock
     imply MCUX_COMPONENT_driver.common
+    imply MCUX_COMPONENT_driver.memory
     imply MCUX_COMPONENT_driver.siul2
     imply MCUX_COMPONENT_driver.lpuart
 
