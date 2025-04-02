@@ -13,4 +13,4 @@ cleared by reading the conversion result value. Also, result information would
 be printed when the execution return to the main function.
 
 ## Supported Boards
-- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/aon_lpadc/edma/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/aon_lpadc/interrupt/example_board_readme.md)

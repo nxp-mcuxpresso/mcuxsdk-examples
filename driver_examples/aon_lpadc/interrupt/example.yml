@@ -21,4 +21,5 @@ aon_lpadc_interrupt:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []
 

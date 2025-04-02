@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect a external voltage source to the J74-4.
+Connect a external voltage source to the J2-7.
 
 Prepare the Demo
 ===============
@@ -26,11 +26,17 @@ Running the demo
 The log below shows the output of the hello world demo in the terminal window:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Lpadc interrupt example
+Lpadc edma example
 Press any key to get the ADC conversion result
-ADC conversion value = 36368
-Press any key to get the ADC conversion result
-ADC conversion value = 36384
-Press any key to get the ADC conversion result
-ADC conversion value = 36377
+10 times conversion result:
+Value[0] = 36724
+Value[1] = 36728
+Value[2] = 36746
+Value[3] = 36761
+Value[4] = 36765
+Value[5] = 36772
+Value[6] = 36776
+Value[7] = 36807
+Value[8] = 36803
+Value[9] = 36810
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
