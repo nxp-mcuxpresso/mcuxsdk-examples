@@ -18,5 +18,6 @@ void BOARD_InitHardware(void)
     BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
+    RESET_ReleasePeripheralReset(kAonQTMR0_RST_SHIFT_RSTn);
 }
 /*${function:end}*/
