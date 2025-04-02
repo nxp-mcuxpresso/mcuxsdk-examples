@@ -122,3 +122,24 @@ edgefast_bluetooth_shell:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+
+edgefast_bluetooth_shell@multiple_conns:
+  section-type: custom_application
+  contents:
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/edgefast_bluetooth_examples/shell/prj-br-ble-conns.conf
+  boards:
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
