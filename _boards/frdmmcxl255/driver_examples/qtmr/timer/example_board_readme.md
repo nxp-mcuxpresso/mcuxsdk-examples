@@ -46,5 +46,8 @@ When the demo runs successfully, the following message is displayed in the termi
  Timer interrupt has occured !
  Timer interrupt has occured !
  Timer interrupt has occured !
+  ****Timer use-case, about 65.5s Over flow Test.****
+
+ Timer Overflow has occurred !
 *********QUADTIMER EXAMPLE END.*********
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
