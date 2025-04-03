@@ -9,8 +9,15 @@
 #ifndef _FLASH_PARTITIONING_H_
 #define _FLASH_PARTITIONING_H_
 
-#define BOOT_FLASH_BASE     0x28000000
+/*
+The memory is allocated as follows:
+    Default:
+    - BOOTLOADER:  0x040000 bytes @ 0x28000000
+    - APP_ACT:     0x200000 bytes @ 0x28040000
+    - APP_CAND:    0x200000 bytes @ 0x28240000
+*/
 
+#define BOOT_FLASH_BASE     0x28000000
 
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
 /* Layout setup from Kconfig */

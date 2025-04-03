@@ -32,6 +32,7 @@ __Flash remap using overlay__
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT700EVK](../../_boards/mimxrt700evk/ota_examples/mcuboot_opensource/example_board_readme.md)
 
 __Flash remap using swap__
 
