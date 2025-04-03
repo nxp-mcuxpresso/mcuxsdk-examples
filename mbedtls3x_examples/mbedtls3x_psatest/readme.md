@@ -7,6 +7,7 @@ API behaviours are implemented correctly.
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
+- [FRDM-MCXE247](../../_boards/frdmmcxe247/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)

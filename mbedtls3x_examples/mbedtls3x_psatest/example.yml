@@ -92,6 +92,7 @@ mbedtls3x_psatest:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
