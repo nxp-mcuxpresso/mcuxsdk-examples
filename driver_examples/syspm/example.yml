@@ -32,3 +32,4 @@ syspm:
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
     evkmimxrt1180@cm33: []
+    frdmimxrt1186@cm33: []

@@ -40,3 +40,5 @@ flexspi_nor_edma_transfer:
     mcimx93autoevk: []
     mcimx93evk: []
     mcimx93qsb: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

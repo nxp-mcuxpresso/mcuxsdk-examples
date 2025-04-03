@@ -91,3 +91,5 @@ cmsis_lpuart_interrupt_transfer:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

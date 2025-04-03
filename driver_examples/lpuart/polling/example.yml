@@ -97,3 +97,5 @@ lpuart_polling:
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

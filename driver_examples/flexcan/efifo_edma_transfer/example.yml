@@ -41,3 +41,5 @@ flexcan_efifo_edma_transfer:
     - +armgcc@debug
     - +armgcc@release
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

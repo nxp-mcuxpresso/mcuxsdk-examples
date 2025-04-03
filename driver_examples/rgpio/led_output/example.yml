@@ -40,3 +40,5 @@ rgpio_led_output:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

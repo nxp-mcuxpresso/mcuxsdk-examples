@@ -123,3 +123,19 @@ littlefs_shell:
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
+    frdmimxrt1186@cm33: 
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    frdmimxrt1186@cm7: 
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -armgcc@hyperram_release
+    - -armgcc@hyperram_debug

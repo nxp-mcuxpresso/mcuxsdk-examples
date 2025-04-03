@@ -28,3 +28,4 @@ iee_apc:
     evkmimxrt1160@cm4: []
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
+    frdmimxrt1186@cm33: []

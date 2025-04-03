@@ -71,3 +71,5 @@ flexio_spi_edma_lpspi_transfer_master:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

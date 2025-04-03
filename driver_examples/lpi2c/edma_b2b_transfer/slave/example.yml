@@ -75,3 +75,5 @@ lpi2c_edma_b2b_transfer_slave:
     mimxrt700evk@cm33_core0: []
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

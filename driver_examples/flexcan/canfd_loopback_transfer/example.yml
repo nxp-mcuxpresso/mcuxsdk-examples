@@ -44,3 +44,5 @@ canfd_loopback_transfer:
     mcimx93evk: []
     mcimx93qsb: []
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

@@ -32,3 +32,5 @@ flexspi_hyper_ram_polling_transfer:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

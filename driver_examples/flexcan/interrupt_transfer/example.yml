@@ -60,3 +60,5 @@ flexcan_interrupt_transfer:
     mcimx93qsb: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

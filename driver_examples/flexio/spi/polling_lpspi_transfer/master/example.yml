@@ -31,3 +31,5 @@ flexio_spi_polling_lpspi_transfer_master:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
     mimxrt700evk@cm33_core0: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

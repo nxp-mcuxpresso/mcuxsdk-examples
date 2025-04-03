@@ -58,3 +58,5 @@ lpuart_9bit_interrupt_transfer:
     mcxn9xxevk@cm33_core0: []
     twrkm34z75m: []
     twrkm35z75m: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

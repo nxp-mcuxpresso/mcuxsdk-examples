@@ -46,3 +46,5 @@ flexspi_nor_polling_transfer:
     mcimx93qsb: []
     mimxrt685audevk@cm33: []
     rdrw612bga: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

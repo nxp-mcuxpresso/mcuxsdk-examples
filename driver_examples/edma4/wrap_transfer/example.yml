@@ -43,3 +43,5 @@ edma4_wrap_transfer:
     - +iar@release
     - +iar@debug
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

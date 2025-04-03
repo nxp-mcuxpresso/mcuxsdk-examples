@@ -91,3 +91,5 @@ lpuart_interrupt:
     - +iar@debug
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

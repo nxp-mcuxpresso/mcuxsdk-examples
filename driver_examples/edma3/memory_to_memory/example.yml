@@ -48,3 +48,5 @@ edma3_memory_to_memory:
     - +iar@release
     - +iar@debug
     frdmmcxl255@cm33: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

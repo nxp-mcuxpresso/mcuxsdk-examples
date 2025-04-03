@@ -1,0 +1,7 @@
+
+config secondary_core_id
+    string
+    default "cm7"
+
+config secondary_config
+    string

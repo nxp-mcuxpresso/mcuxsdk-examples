@@ -44,3 +44,5 @@ flexcan_ping_pong_buffer_transfer:
     mcimx93evk: []
     mcimx93qsb: []
     mcxn9xxevk@cm33_core0: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

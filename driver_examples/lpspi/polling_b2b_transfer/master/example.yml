@@ -74,3 +74,5 @@ lpspi_polling_b2b_transfer_master:
     mimxrt700evk@cm33_core0: []
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

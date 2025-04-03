@@ -19,3 +19,5 @@ mecc_single_error:
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

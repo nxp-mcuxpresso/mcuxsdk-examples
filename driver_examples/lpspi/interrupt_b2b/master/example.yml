@@ -74,3 +74,5 @@ lpspi_interrupt_b2b_master:
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
     frdmmcxl255@cm33: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

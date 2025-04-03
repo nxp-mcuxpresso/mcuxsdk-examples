@@ -16,3 +16,4 @@ s3mu:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt1180@cm33: []
+    frdmimxrt1186@cm33: []

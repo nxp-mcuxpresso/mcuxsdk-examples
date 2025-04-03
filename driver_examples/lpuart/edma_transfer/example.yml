@@ -81,3 +81,5 @@ lpuart_edma_transfer:
     - +iar@release
     - +iar@debug
     frdmmcxl255@cm33: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

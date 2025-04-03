@@ -64,3 +64,5 @@ lpuart_polling_seven_bits:
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
     frdmmcxe31b: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []
