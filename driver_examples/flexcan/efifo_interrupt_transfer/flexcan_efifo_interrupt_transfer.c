@@ -205,6 +205,13 @@ int main(void)
 
     flexcanConfig.bitRate = 500000U;
 
+#if (defined(FSL_FEATURE_FLEXCAN_HAS_HIGH_RESOLUTION_TIMESTAMP) && FSL_FEATURE_FLEXCAN_HAS_HIGH_RESOLUTION_TIMESTAMP)
+    /* Select free-running timer as message buffer TIME_STAMP field timebase. */
+    flexcanConfig.captureTimeBase = kFLEXCAN_CANTimer;
+    /* Enable high resolution timestamp feature to read HR TIMESTAMP in enhanced Rx FIFO. */
+    flexcanConfig.capturePoint = kFLEXCAN_CANFrameStart;
+#endif
+
 #if defined(EXAMPLE_CAN_CLK_SOURCE)
     flexcanConfig.clkSrc = EXAMPLE_CAN_CLK_SOURCE;
 #endif

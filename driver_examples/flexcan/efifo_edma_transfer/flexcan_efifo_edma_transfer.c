@@ -215,6 +215,13 @@ int main(void)
 
     flexcanConfig.bitRate = 500000U;
 
+#if (defined(FSL_FEATURE_FLEXCAN_HAS_HIGH_RESOLUTION_TIMESTAMP) && FSL_FEATURE_FLEXCAN_HAS_HIGH_RESOLUTION_TIMESTAMP)
+    /* Select free-running timer as message buffer TIME_STAMP field timebase. */
+    flexcanConfig.captureTimeBase = kFLEXCAN_CANTimer;
+    /* Enable high resolution timestamp feature to read HR TIMESTAMP in enhanced Rx FIFO. */
+    flexcanConfig.capturePoint = kFLEXCAN_CANFrameStart;
+#endif
+
 #if defined(EXAMPLE_CAN_CLK_SOURCE)
     flexcanConfig.clkSrc = EXAMPLE_CAN_CLK_SOURCE;
 #endif
@@ -303,7 +310,11 @@ int main(void)
            read per transfer (dmaPerReadLength) should be programmed so that the Enhanced Rx FIFO element can store the
            largest CAN message present on the CAN bus. */
         rxEhFifoConfig.fifoWatermark    = 0U;
+#if (defined(FSL_FEATURE_FLEXCAN_HAS_HIGH_RESOLUTION_TIMESTAMP) && FSL_FEATURE_FLEXCAN_HAS_HIGH_RESOLUTION_TIMESTAMP)
+        rxEhFifoConfig.dmaPerReadLength = kFLEXCAN_20WordPerRead;
+#else
         rxEhFifoConfig.dmaPerReadLength = kFLEXCAN_19WordPerRead;
+#endif
         rxEhFifoConfig.priority         = kFLEXCAN_RxFifoPrioHigh;
         FLEXCAN_SetEnhancedRxFifoConfig(EXAMPLE_CAN, &rxEhFifoConfig, true);
         rxFifoXfer.framefd  = &rxFrame[0];
