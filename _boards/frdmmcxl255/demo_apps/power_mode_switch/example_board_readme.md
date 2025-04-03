@@ -26,19 +26,22 @@ Running the demo
 when running the demo, the debug console shows the menu to command the MCU to the target power mode.
 
 ~~~~~~~~~~~~~~~~~~~~~
-###########################    Power Mode Switch Demo    ###########################
-                Retained RAM Block Mask: 1ff
-                RTC Alive: false
-                Wakeup Reason: Shut Down Or POR
-                CM33 Clock = 12000000Hz
+###########################  Power Mode Switch Demo Primary Core Boot  ###########################
+Normal Boot......
+Core Clock Frequency: 96000000
+Copy Secondary core image to address: 0xa1000000, size: 7720
 
 Select the desired operation...
         Press A to enter: Active mode
-        Press B to enter: Deep Sleep mode
-        Press C to enter: Deep Power Down1 mode
-        Press D to enter: Deep Power Down2 mode
-        Press E to enter: Deep Power Down3 mode
-        Press F to enter: Shut Down mode
+        Press B to enter: Sleep mode
+        Press C to enter: Deep Sleep mode
+        Press D to enter: Power Down1 mode
+        Press E to enter: Power Down2 mode
+        Press F to enter: Deep Power Down1 mode
+        Press G to enter: Deep Power Down2 mode
+        Press H to enter: Deep Power Down3 mode
+        Press I to enter: Shut Down mode
 
+Waiting for power mode select...
 
 ~~~~~~~~~~~~~~~~~~~~~

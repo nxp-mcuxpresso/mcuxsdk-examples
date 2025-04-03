@@ -111,7 +111,7 @@ int main(void)
 static void DEMO_EnableWakeupSource(app_power_mode_select_t powerMode)
 {
       PRINTF("Please Select Wakeup Source...\r\n");
-      PRINTF("\t[1]: EXT_INT button.\r\n");
+      PRINTF("\t[1]: POR button.\r\n");
       
       char ch = GETCHAR();
       switch(ch)
