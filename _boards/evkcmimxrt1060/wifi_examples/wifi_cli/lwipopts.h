@@ -534,4 +534,10 @@ u32_t lwip_rand(void);
 
 #define LWIP_HOOK_IP4_ROUTE_SRC(src, dest) lwip_hook_ip4_route_src(src, dest)
 
+/**
+ * Support ip fragment max size 10000 in arp queue
+ */
+#define ARP_QUEUEING  1
+#define ARP_QUEUE_LEN 8
+
 #endif /* __LWIPOPTS_H__ */
