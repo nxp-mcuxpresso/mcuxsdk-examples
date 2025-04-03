@@ -14,8 +14,8 @@
 /*${macro:start}*/
 /* The QTMR instance/channel used for board */
 #define BOARD_QTMR_BASEADDR       AON__TMR1
-#define BOARD_FIRST_QTMR_CHANNEL  kQTMR_Channel_1
-#define BOARD_SECOND_QTMR_CHANNEL kQTMR_Channel_0
+#define BOARD_FIRST_QTMR_CHANNEL  kQTMR_Channel_0
+#define BOARD_SECOND_QTMR_CHANNEL kQTMR_Channel_1
 #define QTMR_ClockCounterOutput   kQTMR_ClockCounter0Output
 
 /* Interrupt number and interrupt handler for the QTMR instance used */

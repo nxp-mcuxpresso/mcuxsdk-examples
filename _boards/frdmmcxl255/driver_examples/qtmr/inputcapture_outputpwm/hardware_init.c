@@ -20,5 +20,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     BOARD_InitQTMRPins();
     RESET_ReleasePeripheralReset(kAonQTMR0_RST_SHIFT_RSTn);
+    AON__SYSCON_AON->PINMUXCLKCTRL = SYSCON_AON_PINMUXCLKCTRL_PINMUX_CLK_CTRL(0);
+    AON__INPUTMUX1->QTMR1_TMR[0] = 0x1;
 }
 /*${function:end}*/

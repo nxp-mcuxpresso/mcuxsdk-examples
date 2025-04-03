@@ -3,7 +3,7 @@
 ## Overview
 The LPTMR project is a simple demonstration program of the SDK LPTMR driver. It sets up the LPTMR
 hardware block to trigger a periodic interrupt after every 1 second. When the LPTMR interrupt is triggered
-a message a printed on the UART terminal and an LED is toggled on the board.
+a message is printed on the UART terminal and an LED is toggled on the board.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../_boards/evk9mimx8ulp/driver_examples/lptmr/example_board_readme.md)
@@ -45,3 +45,4 @@ a message a printed on the UART terminal and an LED is toggled on the board.
 - [TWR-KM34Z50MV3](../../_boards/twrkm34z50mv3/driver_examples/lptmr/example_board_readme.md)
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/driver_examples/lptmr/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/driver_examples/lptmr/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/driver_examples/lptmr/example_board_readme.md)
