@@ -60,6 +60,7 @@ void BOARD_InitPins(void);
  *
  */
 void BOARD_InitPinsWifi(void);
+void BOARD_InitArduinoUARTPins();
 
 #if defined(__cplusplus)
 }

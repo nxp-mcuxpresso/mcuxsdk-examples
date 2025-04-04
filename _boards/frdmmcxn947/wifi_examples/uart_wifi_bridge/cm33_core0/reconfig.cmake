@@ -63,7 +63,8 @@ mcux_add_macro(
 )
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
-       -DPRINTF_ADVANCED_ENABLE=1"
+       -DPRINTF_ADVANCED_ENABLE=1\
+       -DLPFLEXCOMM_INIT_NOT_USED_IN_DRIVER=1"
 )
 
 mcux_remove_mdk_configuration(
