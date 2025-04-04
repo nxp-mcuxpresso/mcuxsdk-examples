@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
 tfm_regression_s:
-  skip_build: true
+  #skip_build: true
+  use_sysbuild: true
   section-type: application
   contents:
     meta_path: examples/tfm_examples/tfm_regression_s

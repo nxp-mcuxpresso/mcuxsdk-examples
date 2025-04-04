@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -13,3 +13,9 @@ ExternalMCUXProject_Add(
 )
 # Let's build the tfm_regression_s application second
 add_dependencies(${DEFAULT_IMAGE} tfm_regression_s)
+
+# Let's build the tfm_s_crypto_clients application second
+add_dependencies(tfm_regression_s tfm_s_crypto_clients)
+
+# Let's build the tfm_s_reg_suites application second
+add_dependencies(tfm_regression_s tfm_s_reg_suites)

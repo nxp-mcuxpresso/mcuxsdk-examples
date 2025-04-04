@@ -1,5 +1,6 @@
 tfm_demo_s:
-  skip_build: true
+  #skip_build: true
+  use_sysbuild: true
   section-type: application
   contents:
     meta_path: examples/tfm_examples/tfm_demo_s

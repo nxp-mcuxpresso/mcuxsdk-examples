@@ -1,19 +1,16 @@
 #
-# Copyright 2024 NXP
+# Copyright 2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-include(${SdkRootDirPath}/${board_root}/${board}/tfm_examples/reconfig.cmake OPTIONAL)
+include (${SdkRootDirPath}/${board_root}/${board}/tfm_examples/reconfig.cmake OPTIONAL)
+include (${SdkRootDirPath}/drivers/flexcomm/CMakeLists.txt OPTIONAL)
+include (${SdkRootDirPath}/drivers/flexcomm/usart/CMakeLists.txt OPTIONAL)
 
-#add cc-defines
-mcux_add_macro(
-     CC "-DPRINTF_ADVANCED_ENABLE=1\
-       -DOCOTP_NV_COUNTERS_RAM_EMULATION=1\
-       -DTFM_FIH_PROFILE_ON\
-       -DTFM_FIH_PROFILE_MEDIUM\
-       -DFIH_CFI_ALT\
-       "
-)
+mcux_add_include(
+        INCLUDES examples/_boards/${board}/
+        BASE_PATH ${SdkRootDirPath}
+    )
 
 #mdk configurations:
 mcux_remove_mdk_configuration(
@@ -38,8 +35,15 @@ mcux_add_macro(
     TARGETS debug
     CC "-DNDEBUG"
 )
+mcux_remove_armgcc_configuration(
+    TARGETS debug
+    CC "-O0"
+    CX "-O0"
+)
 mcux_add_armgcc_configuration(
-    CC "-Wno-format"
+    TARGETS debug
+    CC "-Os"
+    CX "-Os"
 )
 
 #iar configurations

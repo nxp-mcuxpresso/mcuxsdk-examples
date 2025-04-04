@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -47,7 +47,7 @@ mcux_add_custom_command(
 # add armgcc configurations
 #--------------------------
 mcux_add_armgcc_configuration(
-    CC "-mcmse -Wno-unused-variable -Wno-unused-value -Wno-unused-function -Wno-unused-but-set-variable -Wno-return-type -Wno-bool-operation -Wno-maybe-uninitialized"
+    CC "-mcmse -Wno-unused-variable -Wno-unused-value -Wno-unused-function -Wno-unused-but-set-variable -Wno-return-type -Wno-bool-operation -Wno-maybe-uninitialized -Wno-format"
     CX "-mcmse"
     LD "-Wl,--cmse-implib \
         -Wl,--out-implib=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/tfm_psatest_s${core_id_suffix_name}_CMSE_lib.o"
@@ -67,7 +67,7 @@ mcux_add_custom_command(
 mcux_add_mdk_configuration(
     CC "-mcmse"
     CX "-mcmse"
-    LD "--diag_suppress=6329,6312 --import-cmse-lib-out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/tfm_psatest_s${core_id_suffix_name}_CMSE_lib.o"
+    LD "--diag_suppress=6329,6312,1296 --import-cmse-lib-out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/tfm_psatest_s${core_id_suffix_name}_CMSE_lib.o"
 )
 
 #pre build commands for linker file for mdk
@@ -140,6 +140,20 @@ mcux_add_mdk_linker_script(
     LINKER middleware/tfm/tf-m/platform/ext/target/nxp/common/armclang/tfm_common_s_pre.sct
 )
 
+# add tfm_s_crypto_clients lib
+mcux_add_include(
+    INCLUDES 
+	../tfm_s_crypto_clients
+)
+
+#add tfm_s_crypto_clients lib
+mcux_add_library(
+    BASE_PATH ${APPLICATION_BINARY_DIR}
+	LIBS
+	     "../tfm_s_crypto_clients/${CONFIG_TOOLCHAIN}/tfm_s_crypto_clients${core_id_suffix_name}.lib"
+    TOOLCHAINS iar armgcc mdk
+    GENERATED TRUE
+)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 
