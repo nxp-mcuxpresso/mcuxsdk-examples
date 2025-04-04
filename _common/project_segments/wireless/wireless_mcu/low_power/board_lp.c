@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- */
-/*                           Copyright 2020-2024 NXP                          */
+/*                           Copyright 2020-2025 NXP                          */
 /*                            All rights reserved.                            */
 /*                    SPDX-License-Identifier: BSD-3-Clause                   */
 /* -------------------------------------------------------------------------- */
@@ -181,6 +181,16 @@ static void BOARD_ExitLowPowerCb(void)
     /* Debug purpose only */
     static int nb = 0;
     PWR_DBG_LOG("%d", nb++);
+#endif
+
+#if defined(BOARD_UART_CLKSRC) && (BOARD_UART_CLKSRC == BOARD_UART_CLKSRC_FRO192M)
+    /* UART over FRO-192M is not ready for usage after deep sleep exit
+     * Seems like SOSC clock has an impact on FRO-192M.
+     * This is a workaround waiting for SOSC to be ready.
+     */
+    while (!CLOCK_IsSysOscValid())
+    {
+    }
 #endif
     return;
 }
