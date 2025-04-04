@@ -4,13 +4,21 @@
 # Uncomment line by line if you want that project to be skipped from build
 declare -a SKIP_LIST=(
 #           "coordinator_bm"
+#           "coordinator_bm/r23"
 #           "coordinator_freertos"
+#           "coordinator_freertos/r23"
 #           "router_bm"
+#           "router_bm/r23"
 #           "router_freertos"
+#           "router_freertos/r23"
 #           "ed_rx_off_bm"
+#           "ed_rx_off_bm/r23"
 #           "ed_rx_off_freertos"
+#           "ed_rx_off_freertos/r23"
 #           "ed_rx_on_bm"
+#           "ed_rx_on_bm/r23"
 #           "ed_rx_on_freertos"
+#           "ed_rx_on_freertos/r23"
 #           "coprocessor_bm"
           )
 LOGLEVEL="error" # use debug for verbose
@@ -35,9 +43,25 @@ export ARMGCC_DIR=$2
 rm -rf build_*
 rm -rf build.log
 
-if [[ "${BOARD}" == "mcxw72evk" ]]
+if [[ "${BOARD}" == "mcxw71evk"  ||  \
+      "${BOARD}" == "mcxw72evk"  ||  \
+      "${BOARD}" == "frdmmcxw72" ||  \
+      "${BOARD}" == "frdmmcxw71"     \
+   ]]
 then
-	# MCXW72 doesn't support bm or coprocesor prjs
+	SKIP_LIST+=(
+		"coordinator_ble_wu_freertos"
+		"router_ble_wu_freertos"
+	)
+fi
+
+if [[ "${BOARD}" == "mcxw72evk"  || \
+      "${BOARD}" == "frdmmcxw72" || \
+      "${BOARD}" == "frdmrw612"  || \
+      "${BOARD}" == "rdrw612bga"    \
+   ]]
+then
+	# MCXW72/RW612 doesn't support bm or coprocesor prjs
 	SKIP_LIST+=(
 		"coprocessor_bm"
 		"router_bm"
@@ -90,3 +114,4 @@ then
 
     exit 2
 fi
+
