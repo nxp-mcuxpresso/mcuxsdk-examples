@@ -36,7 +36,6 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.hw_app)
         BASE_PATH ${SdkRootDirPath}
         SOURCES
             examples/_common/project_segments/wireless/mcxw23/app_common/hardware_init.c
-            examples/_common/project_segments/wireless/mcxw23/app_common/app_ble_init.c
             examples/_common/project_segments/wireless/wireless_mcu/app_common/app.h
     )
     mcux_add_include(
@@ -66,4 +65,20 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
         TARGETS debug release
         LINKER linker/gcc/${gcc_wireless_linker_file_ble}
     )
+endif()
+
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.app_ble)
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES
+        examples/_common/project_segments/wireless/mcxw23/app_common/app_ble_init.c
+)
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/_common/project_segments/wireless/wireless_mcu/app_common
+)
+endif()
+
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.lowpower)
+# Not implemented for MCXW23 but cmake definition needed for ecosystem build.
 endif()
