@@ -39,7 +39,7 @@ if (isdefinedsymbol(__heap_size__)) {
   define symbol __size_heap__          = 0x1000;
 }
 
-define symbol LITTLEFS_REGION_SIZE               = 0x00080000;
+define symbol LITTLEFS_REGION_SIZE               = 0x00020000;
 
 if (isdefinedsymbol(__qspi_xip__)) {
   define symbol m_interrupts_start               = 0x80001000;

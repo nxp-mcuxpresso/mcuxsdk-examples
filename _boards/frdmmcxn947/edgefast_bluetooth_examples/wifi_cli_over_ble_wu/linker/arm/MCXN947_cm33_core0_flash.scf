@@ -40,7 +40,7 @@
   #define Heap_Size                    0x1000
 #endif
 
-#define LITTLEFS_REGION_SIZE             0x00080000
+#define LITTLEFS_REGION_SIZE             0x00020000
 
 #if (defined(__qspi_xip__))
   #define  m_interrupts_start            0x80001000

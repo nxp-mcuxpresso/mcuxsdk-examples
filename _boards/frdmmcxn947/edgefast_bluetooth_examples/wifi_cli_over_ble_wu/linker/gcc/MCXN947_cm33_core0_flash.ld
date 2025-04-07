@@ -35,7 +35,7 @@ RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
 TEXT_START = DEFINED(__qspi_xip__)  ? 0x80001000 : 0x00000000; /* flexspi boot image start with 0x80000000 */
 TEXT_SIZE = DEFINED(__qspi_xip__)  ? 0x0FFFF000 : 0x00200000; /* flexspi boot image offset at 0x80001000 */
 
-LITTLEFS_REGION_SIZE = 0x00080000;
+LITTLEFS_REGION_SIZE = 0x00020000;
 
 m_text_start         = TEXT_START;
 m_text_size          = TEXT_SIZE - LITTLEFS_REGION_SIZE;

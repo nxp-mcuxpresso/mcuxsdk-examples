@@ -7,6 +7,7 @@ Hardware requirements
   - WIFI_IW416_BOARD_MURATA_1XK_M2
   - WIFI_88W8987_BOARD_MURATA_1ZM_M2
   - WIFI_IW612_BOARD_MURATA_2EL_M2
+  - WIFI_IW610_BOARD_MURATA_2LL_M2
 
 Board settings
 ==============
@@ -14,6 +15,7 @@ Before building the example application select Wi-Fi module macro in the app_con
 If you want use the WIFI_IW416_BOARD_MURATA_1XK_M2, please change the macro to WIFI_IW416_BOARD_MURATA_1XK_M2.
 If you want use the WIFI_88W8987_BOARD_MURATA_1ZM_M2, please change the macro to WIFI_88W8987_BOARD_MURATA_1ZM_M2.
 If you want use the WIFI_IW612_BOARD_MURATA_2EL_M2, please change the macro to WIFI_IW612_BOARD_MURATA_2EL_M2.
+If you want to use Embedded Artists 2LL M.2 Module(EAR00500), please change the macro to WIFI_IW610_BOARD_MURATA_2LL_M2.
 
 Murata Solution Board settings
 ==============================
@@ -23,6 +25,7 @@ Embedded Artists M.2 module resource page: https://www.embeddedartists.com/m2
 Embedded Artists 1XK module datasheet: https://www.embeddedartists.com/doc/ds/1XK_M2_Datasheet.pdf
 Embedded Artists 1ZM module datasheet: https://www.embeddedartists.com/doc/ds/1ZM_M2_Datasheet.pdf
 Embedded Artists 2EL module datasheet: https://www.embeddedartists.com/doc/ds/2EL_M2_Datasheet.pdf
+Embedded Artists 2LL module datasheet: https://www.embeddedartists.com/wp-content/uploads/2024/12/2LL_M2_Datasheet.pdf
 
 Jumper settings for WIFI_IW416_BOARD_MURATA_1XK_M2:
   - J41 : from position (1-2) to position (2-3)
