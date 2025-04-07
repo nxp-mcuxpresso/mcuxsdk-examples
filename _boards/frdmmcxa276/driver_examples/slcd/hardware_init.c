@@ -41,6 +41,8 @@ void BOARD_SetSlcdBackPlanePhase(void)
 
 void BOARD_InitHardware(void)
 {
+    CLOCK_SetupFRO16KClocking(kCLKE_16K_COREMAIN);
+
     BOARD_InitBootPins();
     BOARD_InitSLCDPins();
     BOARD_InitBootClocks();
