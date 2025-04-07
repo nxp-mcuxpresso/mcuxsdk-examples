@@ -9,8 +9,11 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 # the application you may want to choose between secure/non-secure port, but the port also depends on the platform
 # core, so this is where we need to be able to define those overrides.
 project(lp_refdes_ble_central_freertos LANGUAGES C CXX ASM
-    PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
-    CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/freertos
+    PROJECT_BOARD_PORT_PATH
+        ${board_root}/${board}/wireless_examples
+    CUSTOM_PRJ_CONF_PATH
+        ${board_root}/${board}/wireless_examples/freertos
+        ${board_root}/${board}/wireless_examples/reference_design
 )
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/wireless_examples/reference_design/lowpower_central/lowpower_central.cmake)
