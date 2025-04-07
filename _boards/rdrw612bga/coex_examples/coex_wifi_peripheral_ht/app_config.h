@@ -16,8 +16,6 @@
 #define RW610
 
 #define RW612_SERIES
-#define SHELL_BUFFER_SIZE 512
-#define SHELL_MAX_ARGS 48
 
 /* If OT or BLE is enabled, the vApplicationHook defined by the app should be used
  * instead of the private definition of WIFI, use CONFIG_COEX_APP macro to select.

@@ -1,41 +1,25 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES #middleware/wireless/coex/build/${board}/common/app_services_init.c
-            #middleware/wireless/coex/build/${board}/common/hardware_init.c
-            middleware/wireless/coex/build/${board}/common/peripherals.c
-            middleware/wireless/coex/build/${board}/common/peripherals.h
-            examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/pin_mux.c
+    SOURCES examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/pin_mux.c
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/pin_mux.h
             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/hardware_init.c
+            examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/FreeRTOSConfig.h
+            examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/app_config.h
+            examples/coex_examples/coex_wifi_peripheral_ht/app_config.cmake
             middleware/wireless/coex/src/configs/rw61x/wifi/wifi_config.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwipopts.h
+            middleware/wireless/coex/src/configs/rw61x/lwip/lwiphooks.h
             middleware/wireless/coex/src/configs/rw61x/mbedtls/mbedtls_config_client.h
-            examples_int/_boards/${board}/coex_examples/coex_wifi_ble/FreeRTOSConfig.h
-)
-
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    PREINCLUDE TRUE
-    SOURCES examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht/app_config.h
-)
-
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wireless/coex/src/configs/rw61x/edgefast/app_bluetooth_config.h
-    CONFIG True
-    PREINCLUDE TRUE
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES middleware/wireless/coex/build/${board}/common
-             ${board_root}/${board}/coex_examples/coex_wifi_edgefast
-             middleware/wireless/coex/src/configs/rw61x/edgefast
              middleware/wireless/coex/src/configs/rw61x/wifi
              middleware/wireless/coex/src/configs/rw61x/lwip
              middleware/wireless/coex/src/configs/rw61x/mbedtls
-             middleware/wireless/coex/src/edgefast
-             middleware/wireless/coex/src/common
+             examples/_boards/${board}/coex_examples/coex_wifi_peripheral_ht
+             examples/coex_examples/coex_wifi_peripheral_ht
 )
 
 mcux_add_armgcc_configuration(
@@ -56,11 +40,8 @@ mcux_add_macro(
       -DHAL_AUDIO_DMA_INIT_ENABLE=0\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
-      -DgMemManagerLight=0"
-)
-
-mcux_add_macro(
-  CC "-DSHELL_ADVANCE=1"
+      -DgMemManagerLight=0\
+      -DDEBUG_CONSOLE_ENABLE_ECHO_FUNCTION"
 )
 
 mcux_remove_macro(

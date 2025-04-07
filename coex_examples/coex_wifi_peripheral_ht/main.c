@@ -44,8 +44,6 @@
 #include "fsl_common.h"
 #include "fsl_device_registers.h"
 
-#include "app.h"
-
 #include "BT_common.h"
 #include "BT_version.h"
 #include "BT_hci_api.h"
@@ -97,6 +95,13 @@
 #endif /* APP_LOWPOWER_ENABLED */
 #endif /* RW612_SERIES */
 
+#if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0)
+#include "PWR_Interface.h"
+#include "fwk_platform_lowpower.h"
+#endif /* APP_LOWPOWER_ENABLED */
+
+#include <peripheral_ht.h>
+
 #ifndef CONFIG_WIFI_BLE_COEX_APP
 #define CONFIG_WIFI_BLE_COEX_APP 1 // needs to define CONFIG_WIFI_BLE_COEX_APP with value, 0 for disable Wi-Fi, 1 for enable Wi-Fi
 #endif
@@ -109,7 +114,8 @@
 #include "fsl_phyksz8081.h"
 #endif /* HPS | IPSPR */
 
-#include "coex.h"
+//#include "coex.h"
+#include "coex_cli.h"
 
 /*******************************************************************************
  * Definitions
@@ -133,7 +139,7 @@ extern void (* a2dp_snk_cb)(UCHAR *data, UINT16 datalen);
 #endif /* A2DP_SINK */
 extern void BOARD_InitHardware(void);
 extern void coex_controller_init();
-extern void otSysRunIdleTask(void);
+extern void APP_InitServices(void);
 
 /*******************************************************************************
  * Variables
@@ -304,6 +310,11 @@ int main(void)
     PRINTF("        Coex APP\r\n");
     printSeparator();
 
+#if (defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0))|| \
+    (defined(APP_USE_SENSORS) && (APP_USE_SENSORS > 0))
+    APP_InitServices();
+#endif
+
     result =
         xTaskCreate(task_main, "main", TASK_MAIN_STACK_SIZE, NULL, TASK_MAIN_PRIO, &task_main_handle);
     assert(pdPASS == result);
@@ -318,6 +329,13 @@ int main(void)
         && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U)
     EM_register_sof_handler(stackOverflowHookHandler);
 #endif /* #if defined (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK) && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U) */
+
+    if (xTaskCreate(peripheral_ht_task, "peripheral_ht_task", configMINIMAL_STACK_SIZE * 8, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
+    {
+        PRINTF("peripheral ht task creation failed!\r\n");
+        while (1)
+            ;
+    }
 
     vTaskStartScheduler();
     for (;;)
