@@ -16,7 +16,7 @@
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2024 NXP
+**     Copyright 2024-2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -64,14 +64,7 @@ NV_STORAGE_START_ADDRESS            = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE +
 NV_VIRTUAL_PAGE_SZ                  = NV_STORAGE_SIZE / 2;
 NV_F_VIRTUAL_PAGE_START             = NV_STORAGE_START_ADDRESS;
 NV_S_VIRTUAL_PAGE_START             = NV_F_VIRTUAL_PAGE_START + NV_VIRTUAL_PAGE_SZ;
-SECURE_BOOT_SIZE                    = DEFINED(gUseSecureBoot_d) ? 1024 : 0;
-/* Signing an image will increase its size.
-   If the raw image size is large enough, the resulting signed image could overflow to the NVM address range.
-   In such case, NVM operations would corrupt the signature data, resulting in incapability to boot. */
-SECURE_BOOT_SIZE                    = DEFINED(gUseSecureBoot_d) ? 1024 : 0;
-SECURE_BOOT_END                     = NV_STORAGE_START_ADDRESS - 1;
-SECURE_BOOT_START                   = SECURE_BOOT_END - SECURE_BOOT_SIZE + 1;
-INT_STORAGE_END                     = SECURE_BOOT_START - 1;
+INT_STORAGE_END                     = NV_STORAGE_START_ADDRESS- 1;
 INT_STORAGE_SIZE                    = DEFINED(gUseInternalStorageLink_d) ? m_sector_size * ( ( (INT_STORAGE_END + 1 - m_interrupts_start) / 2 ) / m_sector_size + 1) : 0;
 INT_STORAGE_START                   = INT_STORAGE_END - INT_STORAGE_SIZE + 1;
 INT_STORAGE_SECTOR_SIZE             = m_sector_size;
