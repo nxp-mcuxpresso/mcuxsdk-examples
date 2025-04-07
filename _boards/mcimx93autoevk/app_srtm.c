@@ -1,18 +1,16 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #include "FreeRTOS.h"
-#include "semphr.h"
 #include "task.h"
 #include "timers.h"
 #include "semphr.h"
 #include "fsl_lpi2c.h"
 
-#include "fsl_lpi2c.h"
-
+#include "srtm_audio_service.h"
 #include "srtm_dispatcher.h"
 #include "srtm_peercore.h"
 #include "srtm_message.h"
@@ -33,6 +31,8 @@ srtm_sai_adapter_t pdmAdapter;
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
 static srtm_service_t i2cService;
+static srtm_service_t audioService;
+static uint8_t edmaUseCnt = 0U;
 static SemaphoreHandle_t monSig;
 volatile app_srtm_state_t srtmState;
 static struct rpmsg_lite_instance *rpmsgHandle;
@@ -50,7 +50,7 @@ static srtm_sai_edma_local_buf_t g_local_buf = {
     .buf       = (uint8_t *)&g_buffer,
     .bufSize   = BUFFER_LEN,
     .periods   = SRTM_SAI_EDMA_MAX_LOCAL_BUF_PERIODS,
-    .threshold = 1,
+    .threshold = 2,
 
 };
 #endif
@@ -118,12 +118,12 @@ static srtm_status_t APP_SRTM_I2C_Write(srtm_i2c_adapter_t adapter,
                                         uint16_t flags)
 {
     status_t retVal   = kStatus_Fail;
-    //uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
+    uint32_t needStop = (flags & SRTM_I2C_FLAG_NEED_STOP) ? kLPI2C_TransferDefaultFlag : kLPI2C_TransferNoStopFlag;
 
     switch (type)
     {
         case SRTM_I2C_TYPE_LPI2C:
-            //retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
+            retVal = BOARD_LPI2C_Send((LPI2C_Type *)base_addr, slaveAddr, 0, 0, buf, len, needStop);
             break;
         default:
             break;
@@ -269,15 +269,6 @@ static void APP_LinkupTimerCallback(TimerHandle_t xTimer)
     }
 }
 
-static void APP_SRTM_NotifyPeerCoreReady(struct rpmsg_lite_instance *rpmsgHandle, bool ready)
-{
-    /* deinit and init app task(str_echo/pingpong rpmsg) in APP_SRTM_StateReboot only */
-    if (rpmsgMonitor && (srtmState == APP_SRTM_StateReboot))
-    {
-        rpmsgMonitor(rpmsgHandle, ready, rpmsgMonitorParam);
-    }
-}
-
 static void APP_SRTM_Linkup(void)
 {
     srtm_channel_t chan;
@@ -297,8 +288,11 @@ static void APP_SRTM_Linkup(void)
     chan               = SRTM_RPMsgEndpoint_Create(&rpmsgConfig);
     SRTM_PeerCore_AddChannel(core, chan);
 #if defined(BOARD_USE_DDR_RETENTION) && BOARD_USE_DDR_RETENTION
+// Don't enable these callbacks in LPV case (DDR retention managed by SRTM PDM adapter)
+#if !(defined(SRTM_DDR_RETENTION_USED) && SRTM_DDR_RETENTION_USED)
     chan->sendDataPreCallback  = APP_SRTM_SendMessagePreCallback;
     chan->sendDataPostCallback = APP_SRTM_SendMessagePostCallback;
+#endif
 #endif
     assert((audioService != NULL) && (saiAdapter != NULL));
     SRTM_AudioService_BindChannel(audioService, saiAdapter, chan);
@@ -315,6 +309,15 @@ static void APP_SRTM_Linkup(void)
     SRTM_PeerCore_AddChannel(core, chan);
 
     SRTM_Dispatcher_AddPeerCore(disp, core);
+}
+
+static void APP_SRTM_NotifyPeerCoreReady(struct rpmsg_lite_instance *rpmsgHandle, bool ready)
+{
+    /* deinit and init app task(str_echo/pingpong rpmsg) in APP_SRTM_StateReboot only */
+    if (rpmsgMonitor && (srtmState == APP_SRTM_StateReboot))
+    {
+        rpmsgMonitor(rpmsgHandle, ready, rpmsgMonitorParam);
+    }
 }
 
 static void APP_SRTM_InitPeerCore(void)
@@ -421,10 +424,13 @@ static void APP_SRTM_InitAudioService(void)
     memset(&saiRxConfig, 0, sizeof(saiRxConfig));
     memset(&pdmConfig, 0, sizeof(srtm_pdm_edma_config_t));
 
-    /*  Set SAI DMA IRQ Priority. */
-    NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_TX_DMA_CHANNEL), APP_SAI_TX_DMA_IRQ_PRIO);
-    NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_RX_DMA_CHANNEL), APP_SAI_RX_DMA_IRQ_PRIO);
+    /*  Set IRQ Priorities. */
+    NVIC_SetPriority(APP_DMA4_IRQN(APP_SAI_TX_DMA_CHANNEL), APP_SAI_TX_DMA_IRQ_PRIO);
+    NVIC_SetPriority(APP_DMA4_IRQN(APP_SAI_RX_DMA_CHANNEL), APP_SAI_RX_DMA_IRQ_PRIO);
     NVIC_SetPriority(APP_SRTM_SAI_IRQn, APP_SAI_IRQ_PRIO);
+    NVIC_SetPriority(APP_DMA3_IRQN(APP_PDM_RX_DMA_CHANNEL), APP_PDM_DMA_IRQ_PRIO);
+    NVIC_SetPriority(APP_DMA4_IRQN(APP_MEM2MEM_W_DMA_CHANNEL), APP_M2M_DMA_IRQ_PRIO);
+    NVIC_SetPriority(APP_DMA4_IRQN(APP_MEM2MEM_R_DMA_CHANNEL), APP_M2M_DMA_IRQ_PRIO);
 
     /* Create SAI EDMA adapter */
     SAI_GetClassicI2SConfig(&saiTxConfig.config, kSAI_WordWidth16bits, kSAI_Stereo, kSAI_Channel0Mask);
@@ -436,7 +442,7 @@ static void APP_SRTM_InitAudioService(void)
 #else
     saiTxConfig.stopOnSuspend = false; /* Keep playing audio on APD suspend. */
 #endif
-    saiTxConfig.threshold = 1U; /* Every period transmitted triggers periodDone message to A core. */
+    saiTxConfig.threshold = 2U; /* Every period transmitted triggers periodDone message to A core. */
     saiTxConfig.guardTime =
         1000; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
     saiTxConfig.dmaChannel = APP_SAI_TX_DMA_CHANNEL;
@@ -487,6 +493,7 @@ static void APP_SRTM_InitAudioService(void)
 static void APP_SRTM_InitServices(void)
 {
     APP_SRTM_InitI2CService();
+    APP_SRTM_InitAudioService();
 }
 
 static void SRTM_DispatcherTask(void *pvParameters)
@@ -546,7 +553,7 @@ static void SRTM_MonitorTask(void *pvParameters)
                 APP_SRTM_DeinitPeerCore();
 
                 /* enable clock of MU before accessing registers of MU */
-                MU_Init(RPMSG_LITE_M7_A55_MU);
+                MU_Init(RPMSG_LITE_M33_A55_MU);
 
 #if !(defined(FSL_FEATURE_MU_NO_BOOT) && (0 != FSL_FEATURE_MU_NO_BOOT))
                 /* Relase core */
@@ -583,10 +590,6 @@ void APP_SRTM_Init(void)
         xTimerCreate("Linkup", pdMS_TO_TICKS(APP_LINKUP_TIMER_PERIOD_MS), pdFALSE, NULL, APP_LinkupTimerCallback);
     assert(linkupTimer);
 
-
-    MU_Init(MU7_MUB);
-    MU_EnableInterrupts(MU7_MUB, kMU_OtherSideEnterPowerDownInterruptEnable);
-
     /* Create SRTM dispatcher */
     disp = SRTM_Dispatcher_Create();
     xTaskCreate(SRTM_MonitorTask, "SRTM monitor", 256U, NULL, APP_SRTM_MONITOR_TASK_PRIO, NULL);
@@ -611,7 +614,6 @@ bool APP_SRTM_IsAudioServiceIdle(void)
     {
         if (curPwrState != StopMode)
         {
-            PRINTF("\r\nNo audio playback, M core enters STOP mode!\r\n");
             curPwrState = StopMode;
         }
 
@@ -621,7 +623,6 @@ bool APP_SRTM_IsAudioServiceIdle(void)
     {
         if (curPwrState != RunMode)
         {
-            PRINTF("\r\nPlayback is running, M core enters RUN mode!\r\n");
             curPwrState = RunMode;
         }
         return false;

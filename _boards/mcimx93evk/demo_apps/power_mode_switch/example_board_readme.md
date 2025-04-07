@@ -26,7 +26,7 @@ Prepare the Demo
     => bootaux 0x1ffe0000 0
 5.  Append "${mcore_clk}" in u-boot "mmcargs" env, before booting linux.
     => run prepare_mcore
-    => setenv mmcargs 'setenv bootargs ${jh_clk} ${mcore_clk} console=${console} root=${mmcroot}'
+    => setenv mmcargs 'setenv bootargs ${jh_clk} ${mcore_clk} console=${console} root=${mmcroot} clk_ignore_unused'
 6.  You can also test power_mode_switch function with flash.bin. After flash.bin compilation, please load the bianry by using "UUU" command.
     For flash.bin test mode, please skip step 4.
 

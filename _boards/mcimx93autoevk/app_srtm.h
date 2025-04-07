@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -21,17 +21,31 @@
 #define APP_SAI_TX_DMA_IRQ_PRIO       (5U)
 #define APP_SAI_RX_DMA_IRQ_PRIO       (5U)
 #define APP_SAI_IRQ_PRIO              (5U)
+#define APP_PDM_DMA_IRQ_PRIO          (5U)
+#define APP_M2M_DMA_IRQ_PRIO          (5U)
+
+#define APP_SYSTEM_TICK_IRQ_PRIO      (5U)
 
 /* Define the timeout ms to polling the A Core link up status */
 #define APP_LINKUP_TIMER_PERIOD_MS (10U)
 
 #define RPMSG_LITE_SRTM_SHMEM_BASE (VDEV0_VRING_BASE)
-#define RPMSG_LITE_SRTM_LINK_ID    (RL_PLATFORM_IMX95_M7_A55_SRTM_LINK_ID)
+#define RPMSG_LITE_SRTM_LINK_ID    (RL_PLATFORM_IMX93_M33_A55_SRTM_LINK_ID)
 
+#define APP_SRTM_AUDIO_CHANNEL_NAME "rpmsg-audio-channel"
+#define APP_SRTM_PDM_CHANNEL_NAME   "rpmsg-micfil-channel"
 #define APP_SRTM_I2C_CHANNEL_NAME   "rpmsg-i2c-channel"
 
 #define PEER_CORE_ID (1U)
 
+#define APP_SRTM_SAI           (SAI3)
+#define APP_SRTM_SAI_IRQn      SAI3_IRQn
+#define APP_DMA3_IRQN(channel) (IRQn_Type)((uint32_t)DMA3_0_IRQn + channel)
+#define APP_DMA4_IRQN(channel) (IRQn_Type)((uint32_t)DMA4_0_1_IRQn + (channel >> 1))
+#define APP_PDM_DMA_IRQn       DMA3_29_IRQn
+
+#define APP_SRTM_PDM (PDM)
+#define APP_SRTM_DMA ((EDMA_Type *)DMA3)
 
 /* I2C service */
 #define LPI2C1_BAUDRATE              (400000)
@@ -55,10 +69,14 @@
 #define APP_PDM_CHANNEL_GAIN        (kPDM_DfOutputGain4)
 #define APP_PDM_CHANNEL_CUTOFF_FREQ (kPDM_DcRemoverCutOff152Hz)
 
+/* Copies to/from external buffer  */
+#define APP_MEM2MEM_DMA           (DMA4)
+#define APP_MEM2MEM_W_DMA_CHANNEL (55)
+#define APP_MEM2MEM_R_DMA_CHANNEL (56)
+
 typedef void (*app_rpmsg_monitor_t)(struct rpmsg_lite_instance *rpmsgHandle, bool ready, void *param);
 typedef void (*app_irq_handler_t)(IRQn_Type irq, void *param);
 
-extern int32_t RPMsg_MU7_B_IRQHandler(void);
 /*******************************************************************************
  * API
  ******************************************************************************/

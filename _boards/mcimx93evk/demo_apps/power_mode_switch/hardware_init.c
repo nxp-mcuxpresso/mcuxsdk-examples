@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,6 +16,7 @@
 #include "lpm.h"
 #include "fsl_mu.h"
 #include "rsc_table.h"
+#include "app_srtm.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -55,4 +56,6 @@ void BOARD_InitHardware(void)
 
     /* copy resource table to destination address(TCM) */
     copyResourceTable();
+    APP_SRTM_Init();
+    APP_SRTM_StartCommunication();
 }

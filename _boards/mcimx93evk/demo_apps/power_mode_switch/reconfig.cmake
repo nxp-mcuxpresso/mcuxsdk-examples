@@ -10,6 +10,9 @@ mcux_add_source(
             examples/demo_apps/power_mode_switch_imx93/lpm.h
             ${board_root}/${board}/demo_apps/power_mode_switch/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
+            ${board_root}/${board}/app_srtm.c
+            ${board_root}/${board}/app_srtm.h
+            ${board_root}/${board}/demo_apps/sai_low_power_audio/srtm_config.h
 )
 
 mcux_add_include(
