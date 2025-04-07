@@ -43,6 +43,7 @@ void BOARD_InitCtimerMatch1Pins(void);
 void BOARD_InitCtimerPwmPins(void);
 void BOARD_InitCtimerCapPins(void);
 void BOARD_InitAOIPins(void);
+void BOARD_InitLPACMPPins(void);
 
 #if defined(__cplusplus)
 }

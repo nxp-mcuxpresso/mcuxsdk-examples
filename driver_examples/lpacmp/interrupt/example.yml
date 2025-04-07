@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+lpacmp_interrupt:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpacmp/interrupt
+    project-root-path: boards/${board}/driver_examples/lpacmp/interrupt/${multicore_foldername}
+    document:
+      name: lpacmp_interrupt${core_id_suffix_name}
+      category: driver_examples/lpacmp
+      brief: The lpacmp_interrupt example illustrates how to use interrupts in the lpacmp
+        driver. In this example, the user should specify a channel that provides the voltage signal
+        which can be controlled by the user as a sample input to lpacmp. When running the project,
+        typing any key in the debug console will start the comparison. The interrupt occurs when the
+        value of we check is higher than the reference value.
+      example_readme:
+      - examples/driver_examples/lpacmp/interrupt/readme.md
+      - ${board_root}/${board}/driver_examples/lpacmp/interrupt/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []
+

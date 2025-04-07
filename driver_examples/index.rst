@@ -165,6 +165,7 @@ driver_examples
    lin/index.rst
    lmem/readme.md
    lpadc/index.rst
+   lpacmp/index.rst
    lpc553x_romapi/index.rst
    lpc_acomp/index.rst
    lpc_adc/index.rst

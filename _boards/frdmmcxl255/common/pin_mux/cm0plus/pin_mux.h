@@ -33,6 +33,7 @@ void BOARD_InitACMPPins(void);
 void BOARD_InitLPCMPPins(void);
 void BOARD_InitKPPPins(void);
 void BOARD_InitLPADCPins(void);
+void BOARD_InitLPACMPPins(void);
 
 #if defined(__cplusplus)
 }
