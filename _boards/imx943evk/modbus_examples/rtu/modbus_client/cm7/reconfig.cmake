@@ -1,12 +1,12 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/modbus_examples/tcp/modbus_client/modbus_client.c
+    SOURCES examples/modbus_examples/rtu/modbus_client/modbus_client.c
 )
 
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/modbus_examples/tcp/modbus_client
+    INCLUDES examples/modbus_examples/rtu/modbus_client
 )
 
 
@@ -15,7 +15,6 @@ mcux_add_include(
 # Add additional configuration
 mcux_add_macro(
     CC "-DSDK_DEBUGCONSOLE_UART\
-        -DUSE_RTOS=1\
         -DSERIAL_PORT_TYPE_UART=1\
        -DPRINTF_ADVANCED_ENABLE=1"
 )

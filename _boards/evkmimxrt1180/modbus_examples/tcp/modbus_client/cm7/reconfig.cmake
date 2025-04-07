@@ -15,6 +15,7 @@ mcux_add_include(
 # Add additional configuration
 mcux_add_macro(
     CC "-DSDK_DEBUGCONSOLE_UART\
+        -DUSE_RTOS=1\
         -DSERIAL_PORT_TYPE_UART=1\
        -DPRINTF_ADVANCED_ENABLE=1"
 )

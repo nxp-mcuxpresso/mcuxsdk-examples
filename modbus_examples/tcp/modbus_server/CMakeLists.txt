@@ -12,13 +12,18 @@ mcux_add_source(
     SOURCES examples/modbus_examples/tcp/modbus_server/portevent.c
     SOURCES examples/modbus_examples/tcp/modbus_server/port.h
     SOURCES examples/modbus_examples/tcp/modbus_server/porttcp.c
-    SOURCES examples/modbus_examples/tcp/modbus_server/lwipopts.h
-    SOURCES examples/modbus_examples/tcp/modbus_server/FreeRTOSConfig.h
+    #SOURCES examples/modbus_examples/tcp/modbus_server/lwipopts.h
+    #SOURCES examples/modbus_examples/tcp/modbus_server/FreeRTOSConfig.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/modbus_examples/tcp/modbus_server
+)
+
+mcux_add_macro(
+    CC "-DUSE_RTOS=1\
+       -DPRINTF_ADVANCED_ENABLE=1"
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/modbus_examples/tcp/modbus_server/${core_id}/reconfig.cmake OPTIONAL)

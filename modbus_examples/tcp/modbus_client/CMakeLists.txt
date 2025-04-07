@@ -10,8 +10,6 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/modbus_examples/tcp/modbus_client/modbus_client.c
     SOURCES examples/modbus_examples/tcp/modbus_client/port.h
-    SOURCES examples/modbus_examples/tcp/modbus_client/lwipopts.h
-    SOURCES examples/modbus_examples/tcp/modbus_client/FreeRTOSConfig.h
 )
 
 mcux_add_include(
