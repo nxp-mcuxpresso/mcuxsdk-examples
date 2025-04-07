@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+coex_wifi_peripheral_ht:
+  section-type: application
+  contents:
+    meta_path: examples/coex_examples/coex_wifi_peripheral_ht
+    project-root-path: boards/${board}/coex_examples/coex_wifi_peripheral_ht/${multicore_foldername}
+    document:
+      name: coex_wifi_peripheral_ht${core_id_suffix_name}
+      category: coex_examples
+      brief: coex_wifi_peripheral_ht
+      example_readme:
+      - examples/coex_examples/coex_wifi_peripheral_ht/readme.md
+      - ${board_root}/${board}/coex_examples/coex_wifi_peripheral_ht/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
