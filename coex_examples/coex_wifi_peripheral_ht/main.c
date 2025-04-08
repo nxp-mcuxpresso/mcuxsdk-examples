@@ -102,10 +102,6 @@
 
 #include <peripheral_ht.h>
 
-#ifndef CONFIG_WIFI_BLE_COEX_APP
-#define CONFIG_WIFI_BLE_COEX_APP 1 // needs to define CONFIG_WIFI_BLE_COEX_APP with value, 0 for disable Wi-Fi, 1 for enable Wi-Fi
-#endif
-
 #ifndef CONFIG_DISABLE_BLE
 #define CONFIG_DISABLE_BLE 0 // needs to define CONFIG_DISABLE_BLE with value, 0 for enable BLE, 1 for disable BLE
 #endif
@@ -231,7 +227,7 @@ void task_main(void *param)
 #endif
 #endif
 
-#if ((CONFIG_WIFI_BLE_COEX_APP == 1) || (CONFIG_OT_CLI == 1))
+#if ((CONFIG_COEX_ENABLE_WIFI == 1) || (CONFIG_OT_CLI == 1))
     coex_menuPrint();
     while (1)
     {
@@ -241,7 +237,7 @@ void task_main(void *param)
             coex_menuAction(ch);
         }
     }
-#elif ((CONFIG_WIFI_BLE_COEX_APP == 0) && (CONFIG_DISABLE_BLE == 0))
+#elif ((CONFIG_COEX_ENABLE_WIFI == 0) && (CONFIG_DISABLE_BLE == 0))
     appl_main();
 
     while(1)
