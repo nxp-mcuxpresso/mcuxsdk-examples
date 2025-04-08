@@ -19,6 +19,4 @@ sai_low_power_audio_rtos_imx943:
       - ${board_root}/${board}/demo_apps/sai_low_power_audio/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    imx943evk@cm33_core1: []
     imx943evk@cm7_core0: []
-    imx943evk@cm7_core1: []

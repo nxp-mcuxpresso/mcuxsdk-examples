@@ -24,7 +24,7 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-4.  Load flash.bin file with sm as alt config before starting the demo to ensure that the permissions of M7 involved in the demo are allowed.
+4.  Load flash.bin file with sm as rpmsg config before starting the demo to ensure that the permissions of M7 involved in the demo are allowed.
     Build in imx-mkimage repo: make SOC=iMX95 flash_a55 LPDDR_TYPE=lpddr5 OEI=YES MSEL=1.
 4.  Make sure the FDT file and key bootargs are correctly set before booting the linux kernel. Following is the example commands on A core U-Boot console:
     =>setenv fdtfile imx95-15x15-evk-rpmsg.dtb
