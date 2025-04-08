@@ -19,10 +19,14 @@ mdk:
   shared-workspace: tfm_regression
   sharing-workspace:
   - ../../tfm_regression_ns/mdk/tfm_regression_ns
+  - ../../tfm_s_crypto_clients/mdk/tfm_s_crypto_clients
+  - ../../tfm_s_reg_suites/mdk/tfm_s_reg_suites
 iar:
   shared-workspace: tfm_regression
   sharing-workspace:
   - ../../tfm_regression_ns/iar/tfm_regression_ns
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
+  - ../../tfm_s_reg_suites/iar/tfm_s_reg_suites
   config:
     debug:
       download-extra-image:

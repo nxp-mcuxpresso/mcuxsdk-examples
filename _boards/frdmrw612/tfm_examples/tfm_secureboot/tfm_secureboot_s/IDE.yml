@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -19,10 +19,12 @@ mdk:
   shared-workspace: tfm_secureboot
   sharing-workspace:
   - ../../tfm_secureboot_ns/mdk/tfm_secureboot_ns
+  - ../../tfm_s_crypto_clients/mdk/tfm_s_crypto_clients
 iar:
   shared-workspace: tfm_secureboot
   sharing-workspace:
   - ../../tfm_secureboot_ns/iar/tfm_secureboot_ns
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
   config:
     debug:
       download-extra-image:

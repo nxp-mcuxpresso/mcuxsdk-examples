@@ -18,6 +18,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDebugConsole();
 }
 
 void SystemInit(void)

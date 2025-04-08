@@ -14,6 +14,7 @@ mcux_add_macro(
        -DFIH_CFI_ALT\
        "
 )
+
 #mdk configurations:
 mcux_remove_mdk_configuration(
     TARGETS debug
@@ -37,10 +38,6 @@ mcux_add_macro(
     TARGETS debug
     CC "-DNDEBUG"
 )
-#mcux_remove_armgcc_configuration(
-#    TARGETS debug
-#    CC "-O0"
-#)
 mcux_add_armgcc_configuration(
     CC "-Wno-format"
 )

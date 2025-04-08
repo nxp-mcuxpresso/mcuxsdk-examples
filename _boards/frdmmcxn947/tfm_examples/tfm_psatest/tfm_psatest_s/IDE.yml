@@ -19,10 +19,12 @@ mdk:
   shared-workspace: tfm_psatest
   sharing-workspace:
   - ../../tfm_psatest_ns/mdk/tfm_psatest_ns${core_id_suffix_name}
+  - ../../tfm_s_crypto_clients/mdk/tfm_s_crypto_clients${core_id_suffix_name}
 iar:
   shared-workspace: tfm_psatest
   sharing-workspace:
   - ../../tfm_psatest_ns/iar/tfm_psatest_ns${core_id_suffix_name}
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients${core_id_suffix_name}
   config:
     __common__:
       download-extra-image:

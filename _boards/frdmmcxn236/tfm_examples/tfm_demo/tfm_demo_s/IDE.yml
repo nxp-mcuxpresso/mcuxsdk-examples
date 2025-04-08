@@ -19,10 +19,12 @@ mdk:
   shared-workspace: tfm_demo
   sharing-workspace:
   - ../../tfm_demo_ns/mdk/tfm_demo_ns
+  - ../../tfm_s_crypto_clients/mdk/tfm_s_crypto_clients
 iar:
   shared-workspace: tfm_demo
   sharing-workspace:
   - ../../tfm_demo_ns/iar/tfm_demo_ns
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
   config:
     __common__:
       download-extra-image:
