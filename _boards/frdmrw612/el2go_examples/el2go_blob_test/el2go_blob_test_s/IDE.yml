@@ -2,6 +2,7 @@ mdk:
   shared-workspace: el2go_blob_test
   sharing-workspace:
   - ../../el2go_blob_test_ns/mdk/el2go_blob_test_ns
+  - ../../tfm_s_crypto_clients/mdk/tfm_s_crypto_clients
 flash_programming_file:
   files:
   - source: ${board_root}/${board}/el2go_examples/el2go_blob_test/el2go_blob_test_s/el2go_blob_test_flashdownload.ini
@@ -18,6 +19,7 @@ iar:
   shared-workspace: el2go_blob_test
   sharing-workspace:
   - ../../el2go_blob_test_ns/iar/el2go_blob_test_ns
+  - ../../tfm_s_crypto_clients/iar/tfm_s_crypto_clients
   config:
     __common__:
       download-extra-image:

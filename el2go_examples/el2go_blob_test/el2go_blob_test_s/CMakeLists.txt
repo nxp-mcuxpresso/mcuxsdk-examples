@@ -94,4 +94,19 @@ mcux_add_mdk_linker_script(
     LINKER middleware/tfm/tf-m/platform/ext/target/nxp/common/armclang/tfm_common_s_pre.sct
 )
 
+# add tfm_s_crypto_clients lib
+mcux_add_include(
+    INCLUDES 
+	../tfm_s_crypto_clients
+)
+
+# add tfm_s_crypto_clients lib
+mcux_add_library(
+    BASE_PATH ${APPLICATION_BINARY_DIR}
+    LIBS 
+	     "../tfm_s_crypto_clients/${CONFIG_TOOLCHAIN}/tfm_s_crypto_clients${core_id_suffix_name}.lib"
+    TOOLCHAINS iar armgcc mdk
+    GENERATED TRUE
+)
+
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

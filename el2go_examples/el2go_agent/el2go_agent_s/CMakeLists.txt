@@ -24,7 +24,7 @@ file(MAKE_DIRECTORY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN})
 # CMSE config
 mcux_add_armgcc_configuration(
     CC "-mcmse\
-        -Wno-unused-but-set-variable -Wno-unused-value"
+        -Wno-unused-but-set-variable -Wno-unused-value -Wno-format"
     LD "-Wl,--cmse-implib\
         -Wl,--out-implib=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/el2go_agent_s_CMSE_lib.o"
 )
@@ -38,7 +38,7 @@ mcux_add_iar_configuration(
 mcux_add_mdk_configuration(
     CC "-mcmse"
     LD "--import-cmse-lib-out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/el2go_agent_s_CMSE_lib.o\
-        --diag_suppress=6329"
+        --diag_suppress=6329,1296"
 )
 
 # TF-M linker file preprocessing
@@ -93,6 +93,21 @@ mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
     LINKER middleware/tfm/tf-m/platform/ext/target/nxp/common/armclang/tfm_common_s_pre.sct
+)
+
+# add tfm_s_crypto_clients lib
+mcux_add_include(
+    INCLUDES 
+	../tfm_s_crypto_clients
+)
+
+# add tfm_s_crypto_clients lib
+mcux_add_library(
+    BASE_PATH ${APPLICATION_BINARY_DIR}
+    LIBS 
+	     "../tfm_s_crypto_clients/${CONFIG_TOOLCHAIN}/tfm_s_crypto_clients${core_id_suffix_name}.lib"
+    TOOLCHAINS iar armgcc mdk
+    GENERATED TRUE
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

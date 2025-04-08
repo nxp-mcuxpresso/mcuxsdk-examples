@@ -4,3 +4,6 @@ ExternalMCUXProject_Add(
 )
 
 add_dependencies(${DEFAULT_IMAGE} el2go_agent_s)
+
+# Let's build the tfm_s_crypto_clients application second
+add_dependencies(el2go_agent_s tfm_s_crypto_clients)
