@@ -280,7 +280,6 @@ void BOARD_InitMonochromeLed(led_handle_t ledHandle)
 {
     led_status_t ret;
 
-    BOARD_InitPinLED1();
 
     ret = LED_Init(ledHandle, &g_monoLedConfig);
     assert(kStatus_LED_Success == ret);
@@ -293,7 +292,6 @@ void BOARD_UnInitMonochromeLed(led_handle_t ledHandle)
     ret = LED_TurnOnOff(ledHandle, 0U);
     assert(kStatus_LED_Success == ret);
     (void)ret;
-    BOARD_UnInitPinLED1();
 }
 
 /*Initialize LED*/
@@ -301,9 +299,6 @@ void BOARD_InitRgbLed(led_handle_t ledHandle)
 {
     led_status_t ret;
 
-    BOARD_InitPinLED2();
-    BOARD_InitPinLED3();
-    BOARD_InitPinLED4();
 
     ret = LED_Init(ledHandle, &g_RgbLedConfig);
     assert(kStatus_LED_Success == ret);
@@ -315,9 +310,6 @@ void BOARD_UnInitRgbLed(led_handle_t ledHandle)
     led_status_t ret = LED_TurnOnOff(ledHandle, 0U);
     assert(kStatus_LED_Success == ret);
     (void)ret;
-    BOARD_UnInitPinLED2();
-    BOARD_UnInitPinLED3();
-    BOARD_UnInitPinLED4();
 }
 
 #endif /* defined(gAppLedCnt_c) && (gAppLedCnt_c > 0) */
@@ -329,8 +321,6 @@ void BOARD_InitButton0(button_handle_t buttonHandle)
 {
     button_status_t ret;
     button_config_t button_config = g_button0Config;
-    /* Init Pin mux */
-    BOARD_InitPinButton0();
 
     /* Init button module and Gpio module */
     ret = BUTTON_Init(buttonHandle, &button_config);
@@ -342,9 +332,6 @@ void BOARD_Button0ExitPowerDown(button_handle_t buttonHandle)
 {
     button_status_t ret;
 
-    /* Restore pin mux config */
-    BOARD_InitPinButton0();
-
     ret = BUTTON_ExitLowpower(buttonHandle);
     assert(ret == kStatus_BUTTON_Success);
     (void)ret;
@@ -354,8 +341,6 @@ void BOARD_InitButton1(button_handle_t buttonHandle)
 {
     button_status_t ret;
     button_config_t button_config = g_button1Config;
-    /* Init Pin mux */
-    BOARD_InitPinButton1();
 
     /* Init button module and Gpio module */
     ret = BUTTON_Init(buttonHandle, &button_config);
@@ -366,9 +351,6 @@ void BOARD_InitButton1(button_handle_t buttonHandle)
 void BOARD_Button1ExitPowerDown(button_handle_t buttonHandle)
 {
     button_status_t ret;
-
-    /* Restore pin mux config */
-    BOARD_InitPinButton1();
 
     ret = BUTTON_ExitLowpower(buttonHandle);
     assert(ret == kStatus_BUTTON_Success);
@@ -389,8 +371,6 @@ void BOARD_InitBlueLed(led_handle_t ledHandle)
 {
     led_status_t ret;
 
-    BOARD_InitPinLED1();
-
     ret = LED_Init(ledHandle, &g_BlueLedConfig);
     assert(kStatus_LED_Success == ret);
     (void)ret;
@@ -402,6 +382,5 @@ void BOARD_UnInitBlueLed(led_handle_t ledHandle)
     ret = LED_TurnOnOff(ledHandle, 0U);
     assert(kStatus_LED_Success == ret);
     (void)ret;
-    BOARD_UnInitPinLED1();
 }
 #endif /* defined(gAppLedCnt_c) && (gAppLedCnt_c > 0) */

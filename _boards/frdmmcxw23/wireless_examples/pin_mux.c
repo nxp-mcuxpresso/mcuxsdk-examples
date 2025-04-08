@@ -174,7 +174,7 @@ void BOARD_InitPins(void)
     /* PORT0 PIN18 (coords: 8) is configured as PIO0_18 */
     IOCON_PinMuxSet(IOCON, BOARD_INITPINS_BUTTON0_PORT, BOARD_INITPINS_BUTTON0_PIN, BUTTON0);
 
-#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c >= 1)
+#if defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 1)
     /* Use pin 19 for UART prints */
       const uint32_t port0_pin19_config = (/* Pin is configured as FC2_TXD_SCL_MISO */
                                           IOCON_PIO_FUNC1 |

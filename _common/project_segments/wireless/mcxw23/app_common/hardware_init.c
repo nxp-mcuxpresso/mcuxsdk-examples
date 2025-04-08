@@ -35,5 +35,7 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(kOSC32K_to_CTIMER0);
 
     BOARD_Configure32kOsc();
+
+    BOARD_InitDebugConsole();
 }
 /*${function:end}*/

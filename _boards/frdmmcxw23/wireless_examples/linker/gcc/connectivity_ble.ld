@@ -24,12 +24,17 @@ EVENTSTORE_SIZE              = FLASH_SECTOR_SIZE*2;
 EVENTSTORE_START_ADDRESS     = DATASTORE_START_ADDRESS - EVENTSTORE_SIZE;
 EVENTSTORE_END_ADDRESS       = EVENTSTORE_START_ADDRESS + EVENTSTORE_SIZE -1;
 
-m_text_end                   = EVENTSTORE_START_ADDRESS - 1;
+INT_STORAGE_END              = EVENTSTORE_START_ADDRESS - 1;
+INT_STORAGE_SIZE             = DEFINED(gUseInternalStorageLink_d) ? FLASH_SECTOR_SIZE * ( ( (INT_STORAGE_END + 1 - FLASH_START) / 2 ) / FLASH_SECTOR_SIZE + 1) : 0;
+INT_STORAGE_START            = INT_STORAGE_END - INT_STORAGE_SIZE + 1;
+INT_STORAGE_SECTOR_SIZE      = FLASH_SECTOR_SIZE;
+
+m_text_end                   = INT_STORAGE_START - 1;
 m_text_start                 = 0x200;
 m_text_size                  = m_text_end - m_text_start + 1;
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0800;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0880;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
 M_VECTOR_RAM_SIZE = 0x00000140;
 LAST_HEAP_ADDRESS = 0x2001FFFF; /* Needs to be known to calculate __HEAP_end__ below */
 
