@@ -20,8 +20,8 @@ If the test passes, serial port output:
 
   Modbus RTU Client Example Start!
 
-Use the i.MX RT1180 as modbus Server simulator, write board LED status(0x0d) to control LED light
+Use the MIMXRT1180-EVK board as modbus Server simulator, write board LED status(0x0d) to control LED light
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/modbus_examples/rtu/modbus_client/example_board_readme.md)
-- [IMX943-EVK](../../../_boards/evkmimxrt1180/modbus_examples/rtu/modbus_client/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/modbus_examples/rtu/modbus_client/example_board_readme.md)

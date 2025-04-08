@@ -1,0 +1,54 @@
+/*
+ * Copyright 2025 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+/*${header:start}*/
+#include "app.h"
+#include "board.h"
+#include "sm_platform.h"
+#include "pin_mux.h"
+/*${header:end}*/
+
+/*${function:start}*/
+void BOARD_InitHardware(void)
+{
+    /* clang-format off */
+    hal_clk_t hal_clk = {
+        .clk_id = hal_clock_invalid,
+        .pclk_id = hal_clock_osc24m,
+        .clk_round_opt = hal_clk_round_auto,
+        .rate = 24000000UL,
+    };
+
+    hal_clk_t hal_lptpm6clk = {
+        .clk_id = LPTPM6_CLOCK_ROOT,
+        .pclk_id = hal_clock_osc24m,
+        .clk_round_opt = hal_clk_round_auto,
+        .rate = 24000000UL,
+    };
+
+    hal_clk_t hal_lptpm5clk = {
+        .clk_id = LPTPM5_CLOCK_ROOT,
+        .pclk_id = hal_clock_osc24m,
+        .clk_round_opt = hal_clk_round_auto,
+        .rate = 24000000UL,
+    };
+    /* clang-format on */
+
+    hal_clk.clk_id = (hal_clk_id_e)BOARD_GetUartClkId(DEMO_LPUART_INSTANCE_IDX);
+    SM_Platform_Init();
+    BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
+    BOARD_InitBootPins();
+    BOARD_BootClockRUN();
+    HAL_ClockSetParent(&hal_clk);
+    HAL_ClockSetRate(&hal_clk);
+    HAL_ClockEnable(&hal_clk);
+
+    HAL_ClockSetRate(&hal_lptpm6clk);
+    HAL_ClockEnable(&hal_lptpm6clk);
+    HAL_ClockSetRate(&hal_lptpm5clk);
+    HAL_ClockEnable(&hal_lptpm5clk);
+
+}
+/*${function:end}*/

@@ -43,10 +43,6 @@
 #define LED_START_ADDR                  0		/*LED start address*/
 #define LED_NUMS                        2		    /*LED numbers*/
 
-#define BOARD_LED_RGPIO                 BOARD_USER_LED_GPIO
-#define BOARD_LED_RGPIO_PIN1            26U
-#define BOARD_LED_RGPIO_PIN2            BOARD_USER_LED_GPIO_PIN
-
 /* ----------------------- Static variables ------------------------------- */
 static uint16_t     inputRegStart = INPUT_REGISTER_START_ADDR;
 
@@ -231,10 +227,8 @@ eMBRegDiscreteCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNDiscre
 int main(void)
 {
 	eMBErrorCode    eStatus;
-
-    BOARD_ConfigMPU();
-    BOARD_InitBootPins();
-    BOARD_InitBootClocks();
+    BOARD_InitHardware();
+    
     /* Define the init structure for the output LED pin*/
     rgpio_pin_config_t led1_config = {
         kRGPIO_DigitalOutput,

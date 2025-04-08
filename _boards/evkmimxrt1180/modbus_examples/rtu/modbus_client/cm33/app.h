@@ -32,10 +32,10 @@
 /* Get source clock for TPM driver */
 #define TPM_SOURCE_CLOCK CLOCK_GetRootClockFreq(kCLOCK_Root_Bus_Aon)
 
-#define BOARD_TPM2 TPM2
+#define BOARD_TPM_SECOND TPM2
 /* Interrupt number and interrupt handler for the TPM instance used */
-#define BOARD_TPM2_IRQ_NUM TPM2_IRQn
-#define BOARD_TPM2_HANDLER TPM2_IRQHandler
+#define BOARD_TPM_SECOND_IRQ_NUM TPM2_IRQn
+#define BOARD_TPM_SECOND_HANDLER TPM2_IRQHandler
 /* Get source clock for TPM driver */
 #define TPM_SOURCE_CLOCK CLOCK_GetRootClockFreq(kCLOCK_Root_Bus_Aon)
 
@@ -56,7 +56,7 @@
 /* Set counter period to 1ms */
 #define DEMO_TIMER_PERIOD_US (100000U)
 /* Calculate the clock division based on the PWM frequency to be obtained */
-#define TPM2_PRESCALER TPM_CalculateCounterClkDiv(BOARD_TPM2, 1000000U / DEMO_TIMER_PERIOD_US, TPM_SOURCE_CLOCK);
+#define TPM2_PRESCALER TPM_CalculateCounterClkDiv(BOARD_TPM_SECOND, 1000000U / DEMO_TIMER_PERIOD_US, TPM_SOURCE_CLOCK);
 
 /*******************************************************************************
  * Prototypes

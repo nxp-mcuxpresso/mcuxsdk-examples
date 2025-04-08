@@ -35,4 +35,4 @@ Use the modbus client simulator to read holding registers(0x3) to test modbus fu
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/modbus_examples/tcp/modbus_server/example_board_readme.md)
-- [IMX943-EVK](../../../_boards/evkmimxrt1180/modbus_examples/tcp/modbus_server/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/modbus_examples/tcp/modbus_server/example_board_readme.md)

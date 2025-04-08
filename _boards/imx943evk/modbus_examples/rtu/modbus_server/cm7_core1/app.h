@@ -13,21 +13,28 @@
 #include "fsl_tpm.h"
 /*${header:end}*/
 
-#define DEMO_LPUART            LPUART1
-#define DEMO_LPUART_IRQn       LPUART1_IRQn
-#define DEMO_LPUART_CLK_FREQ   BOARD_DebugConsoleSrcFreq()
-#define DEMO_LPUART_IRQHandler LPUART1_IRQHandler
+/* Get source clock for LPIT driver */
+#define DEMO_LPUART            LPUART11
+#define DEMO_LPUART_INSTANCE_IDX (11U)
+#define LPUART_CLOCK_ROOT      hal_clock_lpuart11
+#define DEMO_LPUART_CLK_FREQ   HAL_ClockGetRate(LPUART_CLOCK_ROOT)
+#define DEMO_LPUART_IRQn       LPUART11_IRQn
+#define DEMO_LPUART_IRQHandler LPUART11_IRQHandler
 
-#define BOARD_LED_RGPIO                 BOARD_USER_LED_GPIO
-#define BOARD_LED_RGPIO_PIN1            26U
-#define BOARD_LED_RGPIO_PIN2            BOARD_USER_LED_GPIO_PIN
+#define BOARD_LED_RGPIO                 GPIO2
+#define BOARD_LED_RGPIO_PIN1            31U
+#define BOARD_LED_RGPIO_PIN2            1U
 
-#define BOARD_TPM TPM1
+/* define instance */
+#define BOARD_TPM TPM6
+
 /* Interrupt number and interrupt handler for the TPM instance used */
-#define BOARD_TPM_IRQ_NUM TPM1_IRQn
-#define BOARD_TPM_HANDLER TPM1_IRQHandler
+#define BOARD_TPM_IRQ_NUM TPM6_IRQn
+#define BOARD_TPM_HANDLER TPM6_IRQHandler
+
 /* Get source clock for TPM driver */
-#define TPM_SOURCE_CLOCK CLOCK_GetRootClockFreq(kCLOCK_Root_Bus_Aon)
+#define LPTPM_CLOCK_ROOT hal_clock_tpm6
+#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
 
 #define TIME_PERIOD_US  1750U
 #ifndef TPM_PRESCALER

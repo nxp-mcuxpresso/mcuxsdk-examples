@@ -96,10 +96,10 @@ eMBMasterLedStatusCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs, eM
     return eStatus;
 }
 
-void BOARD_TPM2_HANDLER(void)
+void BOARD_TPM_SECOND_HANDLER(void)
 {
     /* Clear interrupt flag.*/
-    TPM_ClearStatusFlags(BOARD_TPM2, kTPM_TimeOverflowFlag);
+    TPM_ClearStatusFlags(BOARD_TPM_SECOND, kTPM_TimeOverflowFlag);
     eMBMasterPoll( );
     SDK_ISR_EXIT_BARRIER;
 }
@@ -113,16 +113,16 @@ void TPM2_Init(void)
     tpmInfo.prescale = TPM_PRESCALER;
 
     /* Initialize TPM module */
-    TPM_Init(BOARD_TPM2, &tpmInfo);
+    TPM_Init(BOARD_TPM_SECOND, &tpmInfo);
 
     /* Set timer period */
-    TPM_SetTimerPeriod(BOARD_TPM2, USEC_TO_COUNT(DEMO_TIMER_PERIOD_US, TPM_SOURCE_CLOCK / (1U << tpmInfo.prescale)));
+    TPM_SetTimerPeriod(BOARD_TPM_SECOND, USEC_TO_COUNT(DEMO_TIMER_PERIOD_US, TPM_SOURCE_CLOCK / (1U << tpmInfo.prescale)));
 
-    TPM_EnableInterrupts(BOARD_TPM2, kTPM_TimeOverflowInterruptEnable);
+    TPM_EnableInterrupts(BOARD_TPM_SECOND, kTPM_TimeOverflowInterruptEnable);
 
-    EnableIRQ(BOARD_TPM2_IRQ_NUM);
+    EnableIRQ(BOARD_TPM_SECOND_IRQ_NUM);
 
-    TPM_StartTimer(BOARD_TPM2, kTPM_SystemClock);
+    TPM_StartTimer(BOARD_TPM_SECOND, kTPM_SystemClock);
 }
 
 /*!
@@ -132,9 +132,7 @@ int main(void)
 {
 	eMBErrorCode    eStatus;
 
-    BOARD_ConfigMPU();
-    BOARD_InitBootPins();
-    BOARD_InitBootClocks();
+    BOARD_InitHardware();
     TPM2_Init();
 
     /* Select either ASCII or RTU Mode. */
