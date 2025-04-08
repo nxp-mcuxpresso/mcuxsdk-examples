@@ -52,10 +52,23 @@ if (EXISTS ${NXP_OT_ROOT_PATH})
         ${NXP_OT_ROOT_PATH}/third_party/mbedtls/configs
     )
 else()
-    message(WARNING "Please download ot-nxp in ${CMAKE_CURRENT_LIST_DIR}")
+    message(FATAL_ERROR "Please download ot-nxp in ${CMAKE_CURRENT_LIST_DIR}")
 endif()
 
 if (EXISTS ${NXP_OT_LIBS_PATH})
+
+    if(${CONFIG_NCP_UART})
+        set(ot-ncp-app-lib "libot-cli-rw612-ncp-uart.a")
+    elseif(${CONFIG_NCP_SPI})
+        set(ot-ncp-app-lib "libot-cli-rw612-ncp-spi.a")
+    elseif(${CONFIG_NCP_SDIO})
+        set(ot-ncp-app-lib "libot-cli-rw612-ncp-sdio.a")
+    elseif(${CONFIG_NCP_USB})
+        set(ot-ncp-app-lib "libot-cli-rw612-ncp-usb.a")
+    else()
+        message(FATAL_ERROR "Unknown ncp interface")
+    endif()
+
     TARGET_LINK_LIBRARIES(${MCUX_SDK_PROJECT_NAME} PRIVATE -Wl,--start-group)
     # ot ncp libs
     target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
@@ -67,13 +80,13 @@ if (EXISTS ${NXP_OT_LIBS_PATH})
         ${NXP_OT_LIBS_PATH}/libopenthread-rw612.a
         ${NXP_OT_LIBS_PATH}/libopenthread-spinel-ncp.a
         ${NXP_OT_LIBS_PATH}/libot-cli-addons.a
-        ${NXP_OT_LIBS_PATH}/libot-cli-rw612.a
+        ${NXP_OT_LIBS_PATH}/${ot-ncp-app-lib}
         ${NXP_OT_LIBS_PATH}/libopenthread-url.a
         ${NXP_OT_LIBS_PATH}/libopenthread-radio-spinel.a
         ${NXP_OT_LIBS_PATH}/libtcplp-ftd.a
     )
     TARGET_LINK_LIBRARIES(${MCUX_SDK_PROJECT_NAME} PRIVATE -Wl,--end-group)
 else()
-    message(WARNING "Please compile ot ncp libs in ${CMAKE_CURRENT_LIST_DIR}")
+    message(FATAL_ERROR "Please compile ot ncp libs in ${CMAKE_CURRENT_LIST_DIR}")
 endif()
 endif()
