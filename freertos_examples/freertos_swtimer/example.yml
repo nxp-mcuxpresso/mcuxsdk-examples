@@ -118,3 +118,5 @@ freertos_swtimer:
     - +iar@release
     - +iar@debug
     frdmmcxe31b: []
+    frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []

@@ -34,7 +34,7 @@
 #define BOARD_UART_IRQ_HANDLER      LPUART0_IRQHandler
 #define BOARD_UART_IRQ              LPUART0_IRQn
 #define BOARD_DEBUG_UART_CLK_FREQ   CLOCK_GetLpuartClkFreq(BOARD_DEBUG_UART_INSTANCE)
-#else
+#else /* Build on AON */
 #define BOARD_DEBUG_UART_BASEADDR   (uint32_t) AON__LPUART0
 #define BOARD_DEBUG_UART_INSTANCE   2U
 #define BOARD_DEBUG_UART_CLK_ATTACH kFROdiv4_to_AON_COM
@@ -43,7 +43,7 @@
 #define BOARD_UART_IRQ_HANDLER      LPUART0_IRQHandler
 #define BOARD_UART_IRQ              LPUART0_IRQn
 #define BOARD_DEBUG_UART_CLK_FREQ   CLOCK_GetLpuartClkFreq(BOARD_DEBUG_UART_INSTANCE)
-#endif
+#endif /*__CORTEX_M == (33U) */
 
 
 #if __CORTEX_M == (33U) /* Building on the main core */
@@ -68,30 +68,32 @@
 #ifndef BOARD_LED_BLUE_GPIO_PIN
 #define BOARD_LED_BLUE_GPIO_PIN 12U
 #endif
+#endif /*__CORTEX_M == (33U) */
 
 /*! @brief GPIO for SW. */
-#if __CORTEX_M == (33U) /* Building on the main core */
 #ifndef BOARD_SW2_GPIO
-#define BOARD_SW2_GPIO GPIO0
+#define BOARD_SW2_GPIO AON__GPIO0
 #endif
 #ifndef BOARD_SW2_GPIO_PIN
 #define BOARD_SW2_GPIO_PIN 9U
 #endif
 #define BOARD_SW2_NAME        "SW2"
-#define BOARD_SW2_IRQ         GPIO10_IRQn
-#define BOARD_SW2_IRQ_HANDLER GPIO10_IRQHandler
-#endif
+#define BOARD_SW2_IRQ         GPIO00_AON_IRQn
+#define BOARD_SW2_IRQ_HANDLER GPIO00_AON_IRQHandler
 
+#if __CORTEX_M == (33U) /* Building on the main core */
 #ifndef BOARD_SW5_GPIO
 #define BOARD_SW5_GPIO GPIO1
 #endif
 #ifndef BOARD_SW5_GPIO_PIN
-#define BOARD_SW5_GPIO_PIN 16U
+#define BOARD_SW5_GPIO_PIN 14U
 #endif
 #define BOARD_SW5_NAME        "SW5"
-#define BOARD_SW5_IRQ         GPIO00_AON_IRQn
-#define BOARD_SW5_IRQ_HANDLER GPIO00_AON_IRQHandler
+#define BOARD_SW5_IRQ         GPIO10_IRQn
+#define BOARD_SW5_IRQ_HANDLER GPIO10_IRQHandler
+#endif /*__CORTEX_M == (33U) */
 
+#if __CORTEX_M == (33U) /* Building on the main core */
 /* Board LED color mapping */
 /* Logic already inverted in pin_mux.c */
 #define LOGIC_LED_ON  0U

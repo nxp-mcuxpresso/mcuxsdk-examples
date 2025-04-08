@@ -90,3 +90,4 @@ Hello world.
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/freertos_examples/freertos_hello/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/freertos_examples/freertos_hello/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/freertos_examples/freertos_hello/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/freertos_examples/freertos_hello/example_board_readme.md)
