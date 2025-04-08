@@ -79,6 +79,13 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(kPLL_PHI1_CLK_to_QSPI_SFCK);
 }
 
+void BOARD_QspiSocConfigure(QuadSPI_Type *base)
+{
+    qspi_delay_chain_config_t delayConfig = {.dqsDelayEnable = true};
+
+    QSPI_SetDelayChainConfig(base, &delayConfig);
+}
+
 #if defined(QSPI_CMD_REUSE_LUT) && QSPI_CMD_REUSE_LUT
 void BOARD_QspiUpdateLUT(uint8_t seqID, uint8_t cmdType)
 {

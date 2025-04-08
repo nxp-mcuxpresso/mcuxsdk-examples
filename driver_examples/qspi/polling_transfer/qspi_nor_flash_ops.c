@@ -276,11 +276,6 @@ void qspi_nor_flash_init(QuadSPI_Type *base)
     /* According to serial flash feature to configure flash settings */
     QSPI_SetFlashConfig(base, &single_config);
 
-#if defined(FSL_FEATURE_QSPI_HAS_DLLCRA) && (FSL_FEATURE_QSPI_HAS_DLLCRA)
-    qspi_delay_chain_config_t delayConfig = {.dqsDelayEnable = true};
-    QSPI_SetDelayChainConfig(base, &delayConfig);
-#endif
-
 #if defined(FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC) && (FSL_FEATURE_QSPI_SOCCR_HAS_CLR_LPCAC)
     QSPI_ClearCache(base);
 #endif
