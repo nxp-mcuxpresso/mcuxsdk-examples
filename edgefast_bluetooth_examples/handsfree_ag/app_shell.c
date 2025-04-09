@@ -44,20 +44,20 @@ SHELL_COMMAND_DEFINE(bt,
                      "  USAGE: bt [discover|connect|disconnect|delete]\r\n"
                      "    discover             start to find BT devices\r\n"
                      "    connect              connect to the device that is found, for example: bt connect n (from 1)\r\n"
-                     "    select_conn <1|2>    select the connection to process\r\n"
-                     "    openaudio            open audio connection without calls on the selected conn\r\n"
-                     "    closeaudio           close audio connection without calls on the selected conn\r\n"
-                     "    sincall              start an incoming call on the selected conn\r\n"
-                     "    aincall              accept the call on the selected conn.\r\n"
-                     "    eincall              end an call on the selected conn.\r\n"
-                     "    set_tag              set phone num tag on the selected conn, for example: bt set_tag 123456789\r\n"
-                     "    select_codec         codec select for codec Negotiation on the selected conn, for example: bt select_codec 2, it will select the codec 2 as codec.\r\n"
-                     "    set_mic_volume       update mic Volume on the selected conn, for example: bt set_mic_volume 14\r\n"
-                     "    set_speaker_volume   update Speaker Volume on the selected conn, for example: bt set_speaker_volume 14\r\n"
-                     "    stwcincall           start multiple an incoming call on the selected conn\r\n"
+                     "    select_ag <0|1>      select the hf conn to process\r\n"
+                     "    openaudio            open audio connection without calls on the selected ag conn\r\n"
+                     "    closeaudio           close audio connection without calls on the selected ag conn\r\n"
+                     "    sincall              start an incoming call on the selected ag conn\r\n"
+                     "    aincall              accept the call on the selected ag conn.\r\n"
+                     "    eincall              end an call on the selected ag conn.\r\n"
+                     "    set_tag              set phone num tag on the selected ag conn, for example: bt set_tag 123456789\r\n"
+                     "    select_codec         codec select for codec Negotiation on the selected ag conn, for example: bt select_codec 2, it will select the codec 2 as codec.\r\n"
+                     "    set_mic_volume       update mic Volume on the selected ag conn, for example: bt set_mic_volume 14\r\n"
+                     "    set_speaker_volume   update Speaker Volume on the selected ag conn, for example: bt set_speaker_volume 14\r\n"
+                     "    stwcincall           start multiple an incoming call on the selected ag conn\r\n"
                      "    disconnect <1|2>     disconnect current connection\r\n"
                      "    delete               delete all devices. Ensure to disconnect the HCI link connection with the peer\r\n"
-                     "    set_hf_ind <1|2> <enable|disable>      enable/disable the hf indicator on the selected conn. 1 - enhanced driver safety; 2 - battery level"
+                     "    set_hf_ind <1|2> <enable|disable>      enable/disable the hf indicator on the selected ag conn. 1 - enhanced driver safety; 2 - battery level"
                      "device before attempting to delete the bonding information.\r\n",
                      shellBt,
                      SHELL_IGNORE_PARAMETER_COUNT);
@@ -175,7 +175,7 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 
         app_disconnect(index - 1U);
     }
-    else if (strcmp(argv[1], "select_conn") == 0)
+    else if (strcmp(argv[1], "select_ag") == 0)
     {
         char *index_str;
         uint8_t index = 0U;

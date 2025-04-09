@@ -162,7 +162,7 @@ static uint8_t app_ag_instance_index(struct bt_hfp_ag *hfp_ag)
     {
         if (g_HfpAgs[index].hfp_agHandle == hfp_ag)
         {
-            return index + 1;
+            return index;
         }
     }
 
@@ -197,7 +197,7 @@ static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
         PRINTF("Too many connections\n");
         return;
     }
-    printf("HFP AG %d Connected:%d!\n", app_ag_instance_index(hfp_ag), err);
+    printf("HFP AG (index:%d) Connected:%d!\n", app_ag_instance_index(hfp_ag), err);
 
     app_hfp_ag->hfp_agHandle = hfp_ag;
     app_hfp_ag->hfp_in_calling_status = 1;
@@ -206,7 +206,7 @@ static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
 
 static void ag_disconnected(struct bt_hfp_ag *hfp_ag)
 {
-    printf("HFP AG %d Disconnected!\n", app_ag_instance_index(hfp_ag));
+    printf("HFP AG (index:%d) Disconnected!\n", app_ag_instance_index(hfp_ag));
     app_ag_remove_instance(hfp_ag);
     bt_hfp_ag_disconnect(hfp_ag);
 }
