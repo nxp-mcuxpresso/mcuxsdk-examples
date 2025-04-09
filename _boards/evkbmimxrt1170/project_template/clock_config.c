@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -282,8 +282,8 @@ void BOARD_BootClockRUN(void)
     clock_root_config_t rootCfg = {0};
 
 #if !defined(SKIP_DCDC_CONFIGURATION) || (!SKIP_DCDC_CONFIGURATION)
-    /* Set DCDC to DCM mode to improve the efficiency for light loading in run mode and transient performance with a big loading step. */
-    DCDC_BootIntoDCM(DCDC);
+    /* Set DCDC to CCM mode to improve stablility. */
+    DCDC_BootIntoCCM(DCDC);
 
 #if !defined(SKIP_DCDC_ADJUSTMENT) || (!SKIP_DCDC_ADJUSTMENT)
     if((OCOTP->FUSEN[16].FUSE == 0x57AC5969U) && ((OCOTP->FUSEN[17].FUSE & 0xFFU) == 0x0BU))
@@ -1097,8 +1097,8 @@ void BOARD_BootClockRUN_800M(void)
     clock_root_config_t rootCfg = {0};
 
 #if !defined(SKIP_DCDC_CONFIGURATION) || (!SKIP_DCDC_CONFIGURATION)
-    /* Set DCDC to DCM mode to improve the efficiency for light loading in run mode and transient performance with a big loading step. */
-    DCDC_BootIntoDCM(DCDC);
+    /* Set DCDC to CCM mode to improve stablility. */
+    DCDC_BootIntoCCM(DCDC);
 
 #if !defined(SKIP_DCDC_ADJUSTMENT) || (!SKIP_DCDC_ADJUSTMENT)
     if((OCOTP->FUSEN[16].FUSE == 0x57AC5969U) && ((OCOTP->FUSEN[17].FUSE & 0xFFU) == 0x0BU))
