@@ -212,13 +212,6 @@ static void APP_SetCMCConfiguration(void)
 #endif 
 }
 
-static app_power_mode_t APP_GetTargetPowerMode(void)
-{
-    app_power_mode_t inputPowerMode = kAPP_PowerModeSleep;
-
-    return inputPowerMode;
-}
-
 /* Get wakeup timeout and wakeup source. */
 static void APP_GetWakeupConfig(app_power_mode_t targetMode)
 {
@@ -357,10 +350,6 @@ void mcu_suspend()
 
 int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void))
 {
-    uint32_t freq;
-    app_power_mode_t targetPowerMode;
-    bool needSetWakeup = false;
-
     BOARD_InitHardware();
 
     if ((CMC_GetSystemResetStatus(APP_CMC) & kCMC_WakeUpReset) == 0UL)
