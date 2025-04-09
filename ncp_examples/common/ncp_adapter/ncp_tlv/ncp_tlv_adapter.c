@@ -14,6 +14,7 @@
 #include "ncp_cmd_common.h"
 #include "mbedtls_common.h"
 #endif
+#include "ncp_cmd_system.h"
 
 
 /*******************************************************************************
@@ -66,7 +67,30 @@ static bool ncp_initialized = false;
 
 static void ncp_tlv_cb(void *arg)
 {
-    /* todo */
+#ifdef CONFIG_NCP_SDIO
+    extern power_cfg_t global_power_config;
+
+    NCP_COMMAND *cmd = (NCP_COMMAND *)arg;
+    if (!cmd)
+    {
+        ncp_adap_d("%s: cmd is NULL", __FUNCTION__);
+        return;
+    }
+
+    ncp_adap_d("%s: cmd=0x%x SLEEP_CFM=0x%x wake_mode=%u", __FUNCTION__, cmd->cmd,
+        NCP_CMD_SYSTEM_POWERMGMT_MCU_SLEEP_CFM, global_power_config.wake_mode);
+    if (cmd->cmd == NCP_CMD_SYSTEM_POWERMGMT_MCU_SLEEP_CFM)
+    {
+        if (global_power_config.wake_mode == WAKE_MODE_GPIO)
+        {
+            if (NULL != ncp_tlv_adapter.intf_ops->pm_ops->enter)
+            {
+                ncp_tlv_adapter.intf_ops->pm_ops->enter(NCP_PM_STATE_PM3);
+                ncp_adap_d("%s: lpm_enter PM3 done", __FUNCTION__);
+            }
+        }
+    }
+#endif
 }
 
 static void ncp_tlv_free_elmt(ncp_tlv_qelem_t **qbuf)

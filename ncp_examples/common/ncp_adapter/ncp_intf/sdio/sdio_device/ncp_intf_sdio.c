@@ -211,6 +211,20 @@ int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
     return (int)NCP_STATUS_SUCCESS;
 }
 
+uint32_t g_check_host_loop_delay_time = 10;
+static void ncp_wait_host_status(uint8_t status)
+{
+    while (true)
+    {
+        int ret = (int)kStatus_Success;
+        uint8_t host_status = 0;
+        ret = SDU_CheckHostStatus(&host_status);
+        if ((ret == kStatus_Success) && (host_status == status))
+            break;
+        ncp_hs_delay_us(g_check_host_loop_delay_time);
+    }
+}
+
 static int ncp_sdio_pm_enter(int32_t pm_state)
 {
     int ret = (int)NCP_PM_STATUS_SUCCESS;
@@ -229,8 +243,9 @@ static int ncp_sdio_pm_enter(int32_t pm_state)
     }
     else if(pm_state == NCP_PM_STATE_PM3)
     {
+        ncp_wait_host_status(SDIO_SLEEP_HS_DONE);
         ret = SDU_EnterPowerDown();
-        if(ret != kStatus_Success)
+        if (ret != kStatus_Success)
         {
             ncp_adap_e("Failed to deinit SDIO interface");
             return (int)NCP_PM_STATUS_ERROR;
@@ -292,7 +307,7 @@ static int ncp_sdio_pm_exit(int32_t pm_state)
         ret = SDU_ExitPowerDown();
         if(ret != kStatus_Success)
         {
-            ncp_adap_e("Failed to init SDIO interface");
+            ncp_adap_e("%s: SDU_ExitPowerDown failed.", __FUNCTION__);
             return (int)NCP_PM_STATUS_ERROR;
         }
     }
@@ -302,6 +317,17 @@ static int ncp_sdio_pm_exit(int32_t pm_state)
 #ifdef CONFIG_HOST_SLEEP
     ncp_notify_host_gpio(pm_state);
 #endif
+
+    if (pm_state == NCP_PM_STATE_PM3)
+    {
+        ncp_wait_host_status(SDIO_RESET_DONE);
+        ret = SDU_ExitPowerDownPhase2();
+        if(ret != kStatus_Success)
+        {
+            ncp_adap_e("%s: SDU_ExitPowerDownPhase2 failed.", __FUNCTION__);
+            return (int)NCP_PM_STATUS_ERROR;
+        }
+    }
 
     return ret;
 }
