@@ -17,9 +17,8 @@ mcux_add_include(
              component_examples/memfault
 )
 
-mcux_add_macro(
-    CC "-DMEMFAULT_EXC_HANDLER_HARD_FAULT=HardFault_Handler\
-        -DMEMFAULT_EXC_HANDLER_MEMORY_MANAGEMENT=MemManage_Handler"
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x800"
 )
 
 include(${SdkRootDirPath}/examples/_boards/${board}/component_examples/memfault/reconfig.cmake OPTIONAL)
