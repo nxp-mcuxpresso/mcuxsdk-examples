@@ -21,4 +21,4 @@ if (CONFIG_MCUX_COMPONENT_device.utility)
 endif()
 
 include(${SdkRootDirPath}/examples/_common/project_segments/wireless/wireless_mcu/prjseg.cmake)
-mcux_add_cmakelists(${SdkRootDirPath}/middleware/wireless/bluetooth/application/common)
+mcux_add_cmakelists(${SdkRootDirPath}/middleware/wireless/bluetooth/application/common OPTIONAL)
