@@ -42,7 +42,20 @@ extern usb_host_handle g_HostHandle;
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    /* GPIO42 pin for PIN wakeup
+     * GPIO wakeup only availale for PM1/2, no AON GPIO wakeup for PM3/4 on frdmrw612
+     */
     BOARD_InitBootPins();
+#if CONFIG_NCP
+    /* GPIO50 pin to wakeup external host */
+    BOARD_InitPins_NCP();
+#if CONFIG_NCP_SPI
+    BOARD_InitPins_NCP_SPI();
+#else
+    BOARD_InitPins_NCP_UART();
+#endif
+#endif
+
     if (BOARD_IS_XIP())
     {
         BOARD_BootClockLPR();

@@ -42,7 +42,18 @@ extern usb_host_handle g_HostHandle;
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitBootPins();
+    /* GPIO25 pin for PIN1 wakeup */
+	BOARD_InitBootPins();
+#if CONFIG_NCP
+    /* GPIO50 pin to wakeup external host */
+    BOARD_InitPins_NCP();
+#if CONFIG_NCP_SPI
+    BOARD_InitPins_NCP_SPI();
+#else
+    BOARD_InitPins_NCP_UART();
+#endif
+#endif
+
     if (BOARD_IS_XIP())
     {
         BOARD_BootClockLPR();
