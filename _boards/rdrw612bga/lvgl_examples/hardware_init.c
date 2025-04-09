@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -25,8 +25,9 @@ void BOARD_InitHardware(void)
     /* LCDIC clock. */
 #if (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
     BOARD_InitLcd1Pins();
-    CLOCK_AttachClk(kMAIN_CLK_to_LCD_CLK);
-    CLOCK_SetClkDiv(kCLOCK_DivLcdClk, 13);
+    CLOCK_AttachClk(kTDDR_MCI_FLEXSPI_to_LCD_CLK);
+    /* Clock source is 320mHz, divided by 4 which gives LCDIC 80mHz source. */
+    CLOCK_SetClkDiv(kCLOCK_DivLcdClk, 4);
     RESET_PeripheralReset(kLCDIC_RST_SHIFT_RSTn);
 #else
     BOARD_InitLcd0Pins();

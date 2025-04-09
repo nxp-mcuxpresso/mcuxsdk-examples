@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -206,6 +206,11 @@ status_t DEMO_InitLcdc(void)
     LCDIC_GetDefaultConfig(&config);
 #if (DEMO_PANEL == DEMO_PANEL_LCD_PAR_S035)
     config.mode        = kLCDIC_I8080;
+    /* With 80mHz clock source, the write bit rate is 80mHz/(2+3) = 16mHz.
+       For LCD_PAR_S035, the highest possible rate would be
+       16m x 8bit / 480 / 320 / 16bpp = 52.08fps. */
+    config.writeEnableActiveWidth   = 2;
+    config.writeEnableInactiveWidth = 3;
 #else
     config.mode        = kLCDIC_4WireSPI;
 #endif
