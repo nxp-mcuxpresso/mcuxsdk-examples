@@ -3,7 +3,7 @@ ncp_fsci_black_box:
   section-type: application
   contents:
     meta_path: examples/wireless_examples/bluetooth/ncp_fsci_black_box/threadx
-    project-root-path: boards/${board}/wireless_examples/bluetooth/ncp_fscibb
+    project-root-path: boards/${board}/wireless_examples/bluetooth/ncp_fscibb/threadx/${multicore_foldername}
     document:
       name: ncp_fsci_black_box
       category: wireless_examples/bluetooth/ncp_fsci_black_box/
