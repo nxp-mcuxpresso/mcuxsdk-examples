@@ -28,6 +28,7 @@ static void disconnected(struct bt_conn *conn, uint8_t reason);
 static void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_security_err err);
 bt_addr_t default_peer_addr;
 static uint8_t default_connect_initialized;
+struct bt_conn *default_conns[CONFIG_BT_MAX_CONN];
 
 static struct bt_conn_cb conn_callbacks = {
     .connected        = connected,
@@ -38,12 +39,13 @@ static struct bt_conn_cb conn_callbacks = {
 static void connected(struct bt_conn *conn, uint8_t err)
 {
     int res;
-    if (err)
+    if (err || (conn == NULL))
     {
         PRINTF("acl connection failed (err 0x%02x)\n", err);
     }
     else
     {
+        default_conns[bt_conn_index(conn)] = conn;
         if (1U == default_connect_initialized)
         {
             struct bt_conn_info info;
@@ -71,13 +73,17 @@ static void connected(struct bt_conn *conn, uint8_t err)
                     PRINTF("SDP discovery started\r\n");
                 }
             }
-            PRINTF("Connected\n");
         }
+        PRINTF("ACL Connected (index:%d)\n", bt_conn_index(conn));
     }
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
 {
+    if (conn)
+    {
+        default_conns[bt_conn_index(conn)] = NULL;
+    }
     PRINTF("acl disconnected (reason 0x%02x)\n", reason);
 }
 
@@ -144,9 +150,9 @@ void app_connect(uint8_t *addr)
 
 void app_disconnect(uint8_t index)
 {
-    if (g_HfpAgs[index].conn)
+    if (default_conns[index])
     {
-        if (bt_conn_disconnect(g_HfpAgs[index].conn, 0x13U))
+        if (bt_conn_disconnect(default_conns[index], 0x13U))
         {
             PRINTF("Disconnection failed\r\n");
         }

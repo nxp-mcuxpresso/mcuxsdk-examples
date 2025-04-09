@@ -44,7 +44,7 @@ SHELL_COMMAND_DEFINE(bt,
                      "  USAGE: bt [discover|connect|disconnect|delete]\r\n"
                      "    discover             start to find BT devices\r\n"
                      "    connect              connect to the device that is found, for example: bt connect n (from 1)\r\n"
-                     "    select_ag <0|1>      select the hf conn to process\r\n"
+                     "    select_ag <0|1>      select the ag conn to process, <0|1> is the ag conn index\r\n"
                      "    openaudio            open audio connection without calls on the selected ag conn\r\n"
                      "    closeaudio           close audio connection without calls on the selected ag conn\r\n"
                      "    sincall              start an incoming call on the selected ag conn\r\n"
@@ -55,7 +55,7 @@ SHELL_COMMAND_DEFINE(bt,
                      "    set_mic_volume       update mic Volume on the selected ag conn, for example: bt set_mic_volume 14\r\n"
                      "    set_speaker_volume   update Speaker Volume on the selected ag conn, for example: bt set_speaker_volume 14\r\n"
                      "    stwcincall           start multiple an incoming call on the selected ag conn\r\n"
-                     "    disconnect <1|2>     disconnect current connection\r\n"
+                     "    disconnect <index>   disconnect the acl connection, <index> is the acl conn's index (bt_conn_index's return value)\r\n"
                      "    delete               delete all devices. Ensure to disconnect the HCI link connection with the peer\r\n"
                      "    set_hf_ind <1|2> <enable|disable>      enable/disable the hf indicator on the selected ag conn. 1 - enhanced driver safety; 2 - battery level"
                      "device before attempting to delete the bonding information.\r\n",
@@ -96,6 +96,38 @@ static uint32_t hfp_get_value_from_str(char *ch)
       }
       return value;
 }
+
+static int app_get_selected_index(char *ch, uint8_t *index)
+{
+    uint8_t selectIndex = 0;
+
+    for (selectIndex = 0; selectIndex < strlen(ch); ++selectIndex)
+    {
+        if ((ch[selectIndex] < '0') || (ch[selectIndex] > '9'))
+        {
+            PRINTF("the parameter is wrong\r\n");
+            return -EINVAL;
+        }
+    }
+
+    switch (strlen(ch))
+    {
+        case 1:
+            selectIndex = ch[0] - '0';
+            break;
+        case 2:
+            selectIndex = (ch[0] - '0') * 10 + (ch[1] - '0');
+            break;
+        default:
+            PRINTF("the parameter is wrong\r\n");
+            return -EINVAL;
+    }
+
+    *index = selectIndex;
+
+    return 0;
+}
+
 static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
     uint8_t *addr;
@@ -112,7 +144,6 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
     else if (strcmp(argv[1], "connect") == 0)
     {
         uint8_t selectIndex = 0;
-        char *ch            = argv[2];
 
         if (argc < 2)
         {
@@ -120,38 +151,21 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
             return kStatus_SHELL_Error;
         }
 
-        for (selectIndex = 0; selectIndex < strlen(ch); ++selectIndex)
+        if (app_get_selected_index((char*)argv[2], &selectIndex))
         {
-            if ((ch[selectIndex] < '0') || (ch[selectIndex] > '9'))
-            {
-                PRINTF("the parameter is wrong\r\n");
-                return kStatus_SHELL_Error;
-            }
-        }
-
-        switch (strlen(ch))
-        {
-            case 1:
-                selectIndex = ch[0] - '0';
-                break;
-            case 2:
-                selectIndex = (ch[0] - '0') * 10 + (ch[1] - '0');
-                break;
-            default:
-                PRINTF("the parameter is wrong\r\n");
-                break;
+            return kStatus_SHELL_Error;
         }
 
         if (selectIndex == 0U)
         {
             PRINTF("the parameter is wrong\r\n");
+            return kStatus_SHELL_Error;
         }
         addr = app_get_addr(selectIndex - 1);
         app_connect(addr);
     }
     else if (strcmp(argv[1], "disconnect") == 0)
     {
-        char *index_str;
         uint8_t index = 0U;
 
         if (argc < 2)
@@ -160,20 +174,18 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
             return kStatus_SHELL_Error;
         }
 
-        index_str = argv[2];
-
-        if ((index_str[0] == '1') || (index_str[0] == '2'))
+        if (app_get_selected_index((char*)argv[2], &index))
         {
-            index = index_str[0] - '0';
+            return kStatus_SHELL_Error;
         }
 
-        if ((index != 1U) && (index != 2U))
+        if (index >= CONFIG_BT_MAX_CONN)
         {
             PRINTF("the parameter is wrong\r\n");
             return kStatus_SHELL_Error;
         }
 
-        app_disconnect(index - 1U);
+        app_disconnect(index);
     }
     else if (strcmp(argv[1], "select_ag") == 0)
     {

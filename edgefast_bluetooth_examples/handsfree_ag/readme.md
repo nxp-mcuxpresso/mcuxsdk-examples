@@ -40,25 +40,25 @@ the bellow commands have been supported:
   USAGE: bt [discover|connect|disconnect|delete]
     discover             start to find BT devices
     connect              connect to the device that is found, for example: bt connect n (from 1)
-    select_conn <1|2>    select the connection to process
-    openaudio            open audio connection without calls on the selected conn
-    closeaudio           close audio connection without calls on the selected conn
-    sincall              start an incoming call on the selected conn
-    aincall              accept the call on the selected conn.
-    eincall              end an call on the selected conn.
-    set_tag              set phone num tag on the selected conn, for example: bt set_tag 123456789
-    select_codec         codec select for codec Negotiation on the selected conn, for example: bt select_codec 2, it will select the codec 2 as codec.
-    set_mic_volume       update mic Volume on the selected conn, for example: bt set_mic_volume 14
-    set_speaker_volume   update Speaker Volume on the selected conn, for example: bt set_speaker_volume 14
-    stwcincall           start multiple an incoming call on the selected conn
-    disconnect <1|2>     disconnect current connection
+    select_ag <0|1>      select the ag conn to process, <0|1> is the ag conn index
+    openaudio            open audio connection without calls on the selected ag conn
+    closeaudio           close audio connection without calls on the selected ag conn
+    sincall              start an incoming call on the selected ag conn
+    aincall              accept the call on the selected ag conn.
+    eincall              end an call on the selected ag conn.
+    set_tag              set phone num tag on the selected ag conn, for example: bt set_tag 123456789
+    select_codec         codec select for codec Negotiation on the selected ag conn, for example: bt select_codec 2, it will select the codec 2 as codec.
+    set_mic_volume       update mic Volume on the selected ag conn, for example: bt set_mic_volume 14
+    set_speaker_volume   update Speaker Volume on the selected ag conn, for example: bt set_speaker_volume 14
+    stwcincall           start multiple an incoming call on the selected ag conn
+    disconnect <index>   disconnect the acl connection, <index> is the acl conn's index (bt_conn_index's return value)
     delete               delete all devices. Ensure to disconnect the HCI link connection with the peer
-    set_hf_ind <1|2> <enable|disable>      enable/disable the hf indicator on the selected conn. 1 - enhanced driver safety; 2 - battery leveldevice before attempting to delete the bonding information.
+    set_hf_ind <1|2> <enable|disable>      enable/disable the hf indicator on the selected ag conn. 1 - enhanced driver safety; 2 - battery leveldevice before attempting to delete the bonding information.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 1) "discover" start to find BT devices, it will list all device can be found, usage
 2) "connect" is used to connect to the device that is found, this demo supports connecting max 2 hf devices.
    for example: bt connect n (from 1), usage: bt connect 1
-3) "select_conn" is used to select the connection that the other shell cmds operate.
+3) "select_ag" is used to select the ag connection that the other shell cmds operate.
 4) "openaudio" is used to open audio connection without calls, only one connection is supported at the same time.
 4) "closeaudio" is used to close audio connection without calls, only one connection is supported at the same time.
 5) "sincall" is used to start an incoming call, only one connection is supported at the same time.

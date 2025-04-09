@@ -16,7 +16,6 @@
 typedef struct app_hfp_ag_
 {
     struct bt_hfp_ag *hfp_agHandle;
-    struct bt_conn *conn;
     struct k_work ataRespWork;
     TimerHandle_t xTimers;
     TimerHandle_t xTwcTimers;
