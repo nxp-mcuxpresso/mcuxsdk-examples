@@ -13,16 +13,10 @@
 #define CONFIG_IPV6 1
 #define CONFIG_MAX_IPV6_ADDRESSES 3
 
-#define CONFIG_WIFI_IND_DNLD 1
-#define CONFIG_WIFI_IND_RESET 1
-#define CONFIG_WIFI_SLIM_ROAM 1
-#define CONFIG_WIFI_SLIM_STA 1
-#define CONFIG_WIFI_SLIM_UAP 1
-#define CONFIG_WIFI_SLIM_DBG 0
-#define CONFIG_FW_DNLD_ASYNC 1
-
-#if defined(SD9177) || defined(IW610)
+#if defined(SD9177) || defined(IW610) || defined(SD8978)
 #define CONFIG_WMM 1
+#endif
+#if defined(SD9177) || defined(IW610)
 #define CONFIG_SDIO_MULTI_PORT_TX_AGGR 1
 #define CONFIG_WIFI_FEATURES 1
 #define CONFIG_OFFLOAD       1
