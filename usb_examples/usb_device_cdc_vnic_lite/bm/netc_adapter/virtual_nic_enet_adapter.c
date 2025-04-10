@@ -415,6 +415,10 @@ usb_status_t VNIC_EnetClearEnetQueue(void)
             enetPbuf.length  = cdcAcmTransfer.length;
             VNIC_EnetRxBufFree(&enetPbuf);
             g_cdcVnic.nicTrafficInfo.enetRxUsb2hostCleared++;
+            if (g_cdcVnic.nicTrafficInfo.enetRxUsb2hostCleared >= UINT32_MAX)
+            {
+                g_cdcVnic.nicTrafficInfo.enetRxUsb2hostCleared = 0U;
+            }
         }
     }
     /* Clear Tx queue */
