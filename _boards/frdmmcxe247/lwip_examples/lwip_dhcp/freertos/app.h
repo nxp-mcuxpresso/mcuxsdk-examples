@@ -26,7 +26,7 @@ extern phy_lan8741_resource_t g_phy_resource;
 #define EXAMPLE_PHY_ADDRESS   BOARD_ENET_PHY_ADDRESS
 #define EXAMPLE_PHY_OPS       &phylan8741_ops
 #define EXAMPLE_PHY_RESOURCE  &g_phy_resource
-#define EXAMPLE_CLOCK_FREQ    CLOCK_GetIpFreq(s_enetClock[ENET_GetInstance(EXAMPLE_ENET)])
+#define EXAMPLE_CLOCK_FREQ    CLOCK_GetCoreSysClkFreq()
 /*${macro:end}*/
 
 /*******************************************************************************
