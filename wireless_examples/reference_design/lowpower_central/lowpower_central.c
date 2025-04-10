@@ -204,6 +204,9 @@ static void DisconnectTimerCallback(void* pParam);
 static void WakeUpTimerCallback(void* pParam);
 #endif
 
+/* Callback to handle returned errors from platform files */
+static void BleApp_PlatformErrorCallback(uint32_t id, int32_t error_status);
+
 static appScanningParams_t mAppScanParams = {
     .pHostScanParams = &gScanParams,
     .enableDuplicateFiltering = gGapDuplicateFilteringEnable_c,
@@ -248,6 +251,9 @@ void BluetoothLEHost_AppInit(void)
     BUTTON_InstallCallback((button_handle_t)g_buttonHandle[1], BleApp_HandleKeys1, NULL);
 #endif /*gAppButtonCnt_c > 1*/
 #endif /*gAppButtonCnt_c > 0*/
+
+    /* Register the application callback to handle the errors returned from platform functions */
+    PLATFORM_RegisterErrorCallback(&BleApp_PlatformErrorCallback);
 
     /* Register generic callback */
     BluetoothLEHost_SetGenericCallback(BleApp_GenericCallback);
@@ -1641,6 +1647,35 @@ static void BleApp_PrintLePhyEvent(gapPhyEvent_t* pPhyEvent)
     NOT_USED(mLePhyModeStrings);
 #endif
 }
+
+static void BleApp_PlatformErrorCallback(uint32_t id, int32_t error_status)
+{
+    switch(id)
+    {
+    case PLATFORM_REMOTE_ACTIVE_REQ_ID:
+        {
+            /* Callback has been called from PLATFORM_RemoteActiveReq() function */
+            assert(0);
+            break;
+        }
+    case PLATFORM_INIT_BLE_ID:
+        {
+            /* Callback has been called from PLATFORM_InitBle() function */
+            assert(0);
+            break;
+        }
+    case PLATFORM_SEND_HCI_MESSAGE_ID:
+        {
+            /* Callback has been called from PLATFORM_SendHciMessage() function */
+            assert(0);
+            break;
+        }
+    }
+
+    /* Here the error_status argument is ignored but you can decide to check it in your implementation */
+    (void)error_status;
+}
+
 /*! *********************************************************************************
 * @}
 ********************************************************************************** */
