@@ -37,10 +37,10 @@
 #endif
 
 /* Include CPU2 FW */
-#if ((CONFIG_OT_CLI) && !(CONFIG_DISABLE_BLE)) /* CPU2 FW using combo image (ble + 15.4) */
+#if (CONFIG_OT_CLI) /* CPU2 FW using combo image (ble + 15.4) */
 #define CONFIG_MONOLITHIC_BLE_15_4          1
 #define CONFIG_MONOLITHIC_BLE               0
-#elif !(CONFIG_DISABLE_BLE) /* CPU2 FW using ble only image (ble) */
+#elif ((!CONFIG_OT_CLI) && (!CONFIG_DISABLE_BLE)) /* CPU2 FW using ble only image (ble) */
 #define CONFIG_MONOLITHIC_BLE_15_4          0
 #define CONFIG_MONOLITHIC_BLE               1
 #else /* Not use CPU2 FW */
