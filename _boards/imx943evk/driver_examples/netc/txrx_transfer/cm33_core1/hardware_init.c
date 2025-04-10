@@ -125,6 +125,7 @@ void BOARD_InitHardware(void)
     HAL_PowerSetState(&pwrst);
     st = HAL_PowerGetState(&pwrst);
     assert(st == hal_power_state_on);
+    (void)st;
 
     HAL_ClockSetParent(&hal_busmixClk);
     HAL_ClockSetRate(&hal_busmixClk);

@@ -63,6 +63,7 @@ void BOARD_InitHardware(void)
     HAL_PowerSetState(&pwrst);
     st = HAL_PowerGetState(&pwrst);
     assert(st == hal_power_state_on);
+    (void)st;
 
     HAL_ClockSetRate(&hal_clk);
     HAL_ClockEnable(&hal_clk);

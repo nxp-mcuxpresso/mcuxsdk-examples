@@ -122,6 +122,7 @@ status_t BOARD_InitHardware(void)
     HAL_PowerSetState(&pwrst);
     st = HAL_PowerGetState(&pwrst);
     assert(st == hal_power_state_on);
+    (void)st;
     
     rgpio_pin_config_t led_config = {
         kRGPIO_DigitalOutput,

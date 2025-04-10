@@ -17,13 +17,13 @@
 struct netc_ep_if_port if_port;
 
 /* PHY operation. */
-static netc_mdio_handle_t s_emdio_handle;
+//static netc_mdio_handle_t s_emdio_handle;
 /*${variable:end}*/
 
 status_t BOARD_InitHardware(void)
 {
     status_t result = kStatus_Success;
-	bool link;
+    bool link;
     hal_pwr_st_e st = hal_power_state_off;
     
     /* clang-format off */
@@ -112,9 +112,9 @@ status_t BOARD_InitHardware(void)
 
     SM_Platform_Init();
 	
-	BOARD_InitDebugConsolePins();	
+    BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
-	BOARD_BootClockRUN();
+    BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
     PRINTF("\r\n BOARD_Init success\r\n");
@@ -122,6 +122,7 @@ status_t BOARD_InitHardware(void)
     HAL_PowerSetState(&pwrst);
     st = HAL_PowerGetState(&pwrst);
     assert(st == hal_power_state_on);
+    (void)st;
     
     rgpio_pin_config_t led_config = {
         kRGPIO_DigitalOutput,

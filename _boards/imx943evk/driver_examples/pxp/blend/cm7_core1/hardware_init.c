@@ -55,6 +55,7 @@ void BOARD_InitHardware(void)
     HAL_PowerSetState(&pwrst);
     st = HAL_PowerGetState(&pwrst);
     assert(st == hal_power_state_on);
+    (void)st;
 
     HAL_ClockSetRate(&hal_lpi2cCLKCfg);
     HAL_ClockEnable(&hal_lpi2cCLKCfg);
