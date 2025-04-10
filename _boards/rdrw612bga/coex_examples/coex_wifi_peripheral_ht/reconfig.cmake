@@ -41,7 +41,13 @@ mcux_add_macro(
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DgMemManagerLight=0\
-      -DDEBUG_CONSOLE_ENABLE_ECHO_FUNCTION"
+      -DDEBUG_CONSOLE_ENABLE_ECHO_FUNCTION\
+      -DMCUX_ENABLE_TRNG_AS_ENTROPY_SEED\
+      -DMBEDTLS_MCUX_ELS_PKC_API\
+      -DMBEDTLS_MCUX_USE_PKC\
+      -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
+      -DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+      -DCONFIG_HOSTAPD=0"
 )
 
 mcux_remove_macro(

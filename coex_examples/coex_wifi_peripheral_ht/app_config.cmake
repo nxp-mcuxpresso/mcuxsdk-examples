@@ -2,7 +2,7 @@
 set(CONFIG_WIFI           1)
 set(CONFIG_BLE            0)
 set(CONFIG_OT             0)
-set(CONFIG_WPA_SUPPLICANT 0)
+set(CONFIG_WPA_SUPPLICANT 1)
 
 # coex defines
 target_compile_definitions(${MCUX_SDK_PROJECT_NAME}
