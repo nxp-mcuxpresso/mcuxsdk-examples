@@ -18,8 +18,6 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define Nmax 3600
-
 #ifndef gLCE_Task1_TaskPriority_c
 #define gLCE_Task1_TaskPriority_c        1
 #endif /* gLCE_Task1_TaskPriority_c */
@@ -45,45 +43,48 @@
 uint32_t cmd_buffer[256] @ "dspvA";
 uint32_t status_buffer[128 + 6] @ "dspvB";
 
-float matA[Nmax] @ "dspvC";
-float matB[Nmax] @ "dspvC";
-float matC[Nmax] @ "dspvC";
-float matC2[Nmax] @ "dspvC";
+float srcdata_cf16[1024] @ "dspvC";
+float srcdata_cf32[1024] @ "dspvC";
+float dstdata_cf16[1024] @ "dspvC";
+float dstdata_cf32[1024] @ "dspvC";
+float scratch[1024] @ "dspvC";
 #elif (defined(__CC_ARM) || defined(__ARMCC_VERSION))
 __attribute__((section("dspvA"), zero_init)) uint32_t cmd_buffer[256];
 __attribute__((section("dspvB"), zero_init)) uint32_t status_buffer[128 + 6];
 
-__attribute__((section("dspvC"), zero_init)) float matA[Nmax];
-__attribute__((section("dspvC"), zero_init)) float matB[Nmax];
-__attribute__((section("dspvC"), zero_init)) float matC[Nmax];
-__attribute__((section("dspvC"), zero_init)) float matC2[Nmax];
+__attribute__((section("dspvC"), zero_init)) float srcdata_cf16[1024];
+__attribute__((section("dspvC"), zero_init)) float srcdata_cf32[1024];
+__attribute__((section("dspvC"), zero_init)) float dstdata_cf16[1024];
+__attribute__((section("dspvC"), zero_init)) float dstdata_cf32[1024];
+__attribute__((section("dspvC"), zero_init)) float scratch[1024];
 #elif (defined(__GNUC__))
 __attribute__((section(".dspvA,\"aw\",%nobits @"))) uint32_t cmd_buffer[256];
 __attribute__((section(".dspvB,\"aw\",%nobits @"))) uint32_t status_buffer[128 + 6];
 
-__attribute__((section(".dspvC,\"aw\",%nobits @"))) float matA[Nmax];
-__attribute__((section(".dspvC,\"aw\",%nobits @"))) float matB[Nmax];
-__attribute__((section(".dspvC,\"aw\",%nobits @"))) float matC[Nmax];
-__attribute__((section(".dspvC,\"aw\",%nobits @"))) float matC2[Nmax];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float srcdata_cf16[1024];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float srcdata_cf32[1024];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float dstdata_cf16[1024];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float dstdata_cf32[1024];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) float scratch[1024];
 #endif
 
-float refOut[Nmax];
-float refOut2[Nmax];
+float refdata_cf16[1024 * 2];
+float refdata_cf32[1024 * 2];
 
-int inputA[Nmax] = {
-#include "mat_mult_input_A.txt"
+int fft32_cf16_input[32] = {
+#include "fft32_cf16_input.txt"
 };
 
-int inputB[Nmax] = {
-#include "mat_mult_input_B.txt"
+int fft32_cf16_ref_output[32] = {
+#include "fft32_cf16_ref_output.txt"
 };
 
-int outputC_ref[Nmax] = {
-#include "mat_multf32_60x60x60_C_ref.txt"
+int fft512_cf32_input[1024] = {
+#include "fft512_cf32_input.txt"
 };
 
-int outputC2_ref[Nmax] = {
-#include "mat_multcf32_40x40x40_C_ref.txt"
+int fft512_cf32_ref_output[1024] = {
+#include "fft512_cf32_ref_output.txt"
 };
 
 ce_cmdbuffer_t ce_cmd_buffer;
@@ -95,46 +96,34 @@ static OSA_TASK_HANDLE_DEFINE(LCE_Task1_TaskId);
 static void LCE_Task1(void *param)
 {
     int status, i;
-    double copyerr = 0;
-    int M, N, P;
+    float copyerr = 0;
+    int N, log2N;
     float *temp;
 
     PRINTF("LCE task1 start\r\n");
 
-    // F32 A[60x60] * B[60x60]
-    M = 60;
-    N = 60;
-    P = 60;
-    for (i = 0; i < M * N; i++)
+    N     = 32;
+    log2N = 5;
+    for (i = 0; i < N; i++)
     {
-        temp    = (float *)&inputA[i];
-        matA[i] = *temp;
+        temp       = (float *)&fft32_cf16_input[i];
+        srcdata_cf16[i] = *temp;
+        temp       = (float *)&fft32_cf16_ref_output[i];
+        refdata_cf16[i] = *temp;
     }
 
-    for (i = 0; i < N * P; i++)
-    {
-        temp    = (float *)&inputB[i];
-        matB[i] = *temp;
-    }
-
-    for (i = 0; i < M * P; i++)
-    {
-        temp      = (float *)&outputC_ref[i];
-        refOut[i] = *temp;
-    }
-
-    status = LCE_MatrixMul_F32(matC, matA, matB, M, N, P);
+    status = LCE_TransformCFFT_F16(dstdata_cf16, srcdata_cf16, scratch, log2N);
 
     copyerr = 0;
-    for (i = 0; i < M * P; i++)
+    for (i = 0; i < N; i++)
     {
-        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+        copyerr += (refdata_cf16[i] - dstdata_cf16[i]) * (refdata_cf16[i] - dstdata_cf16[i]);
     }
-    
-    if (copyerr > 1e-10)
-        PRINTF("F32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+
+    if (copyerr > 0)
+        PRINTF("CFFT 32 F16 Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("F32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+        PRINTF("CFFT 32 F16 Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
     OSA_TaskDestroy(LCE_Task1_TaskId);
 }
@@ -146,46 +135,34 @@ static OSA_TASK_HANDLE_DEFINE(LCE_Task2_TaskId);
 static void LCE_Task2(void *param)
 {
     int status, i;
-    double copyerr = 0;
-    int M, N, P;
+    float copyerr = 0;
+    int N, log2N;
     float *temp;
 
     PRINTF("LCE task2 start\r\n");
 
-    // CF32 A[40x40] * B[40x40]
-    M = 40;
-    N = 40;
-    P = 40;
-    for (i = 0; i < M * N * 2; i++)
+    N     = 512;
+    log2N = 9;
+    for (i = 0; i < 2 * N; i++)
     {
-        temp    = (float *)&inputA[i];
-        matA[i] = *temp;
+        temp       = (float *)&fft512_cf32_input[i];
+        srcdata_cf32[i] = *temp;
+        temp       = (float *)&fft512_cf32_ref_output[i];
+        refdata_cf32[i] = *temp;
     }
 
-    for (i = 0; i < N * P * 2; i++)
-    {
-        temp    = (float *)&inputB[i];
-        matB[i] = *temp;
-    }
-
-    for (i = 0; i < M * P * 2; i++)
-    {
-        temp      = (float *)&outputC2_ref[i];
-        refOut[i] = *temp;
-    }
-
-    status = LCE_MatrixMul_CF32(matC, matA, matB, M, N, P);
+    status = LCE_TransformCFFT_F32(dstdata_cf32, srcdata_cf32, scratch, log2N);
 
     copyerr = 0;
-    for (i = 0; i < M * P * 2; i++)
+    for (i = 0; i < 2 * N; i++)
     {
-        copyerr += (double)((refOut[i] - matC[i]) * (refOut[i] - matC[i]));
+        copyerr += (refdata_cf32[i] - dstdata_cf32[i]) * (refdata_cf32[i] - dstdata_cf32[i]);
     }
 
-    if (copyerr > 1e-10)
-        PRINTF("CF32 MAT MULT Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+    if (copyerr > 0)
+        PRINTF("CFFT 512 F32 Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("CF32 MAT MULT Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+        PRINTF("CFFT 512 F32 Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     
     OSA_TaskDestroy(LCE_Task2_TaskId);
 }

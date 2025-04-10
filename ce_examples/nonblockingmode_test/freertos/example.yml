@@ -6,16 +6,16 @@ ce_nonblockingmode_test_freertos:
     project-root-path: boards/${board}/ce_examples/nonblockingmode_test/${multicore_foldername}/freertos
     complete_cmake_data:
       files:
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_mult_input_A.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft32_cf16_input.txt:
           project_relative_path: ./
           type: src
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_mult_input_B.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft32_cf16_ref_output.txt:
           project_relative_path: ./
           type: src
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_multcf32_40x40x40_C_ref.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft512_cf32_input.txt:
           project_relative_path: ./
           type: src
-        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_multf32_60x60x60_C_ref.txt:
+        ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft512_cf32_ref_output.txt:
           project_relative_path: ./
           type: src
     document:

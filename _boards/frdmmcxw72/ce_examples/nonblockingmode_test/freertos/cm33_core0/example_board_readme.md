@@ -28,7 +28,7 @@ The following lines are printed to the serial terminal when the demo program is 
 CE non-blocking mode test using the LCE component
 LCE task1 start
 LCE task2 start
-F32 MAT MULT Test Passed: Status=       0, Reply=AA000002
-CF32 MAT MULT Test Passed: Status=       0, Reply=AA000003
+CFFT 32 F16 Test Passed: Status=       0, Reply=AA000002
+CFFT 512 F32 Test Passed: Status=       0, Reply=AA000003
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

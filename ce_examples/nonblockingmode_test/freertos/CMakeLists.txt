@@ -12,10 +12,10 @@ mcux_add_source(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_mult_input_A.txt
-    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_mult_input_B.txt
-    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_multcf32_40x40x40_C_ref.txt
-    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/mat_multf32_60x60x60_C_ref.txt
+    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft32_cf16_input.txt
+    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft32_cf16_ref_output.txt
+    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft512_cf32_input.txt
+    SOURCES ${board_root}/${board}/ce_examples/nonblockingmode_test/freertos/fft512_cf32_ref_output.txt
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/ce_examples/nonblockingmode_test/reconfig.cmake OPTIONAL)
