@@ -92,6 +92,19 @@ if(CONFIG_MCUX_PRJSEG_module.board.pinmux_project_folder)
   mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${project_board_port_path})
 endif()
 
+if(CONFIG_MCUX_PRJSEG_module.use_board_peripheral)
+    mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/common/peripherals
+        SOURCES peripherals.c
+                peripherals.h
+    )
+
+    mcux_add_include(
+        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/common/peripherals
+        INCLUDES ./
+    )
+endif()
+
 if(CONFIG_MCUX_PRJSEG_project.hw_app_project_core_folder)
   mcux_add_source(
     BASE_PATH ${SdkRootDirPath}

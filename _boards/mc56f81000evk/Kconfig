@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -8,12 +8,10 @@ config MCUX_HW_BOARD_mc56f81000evk
     bool
     default y
     imply MCUX_HW_DEVICE_MC56F81768
+    imply MCUX_COMPONENT_driver.clock
     imply MCUX_COMPONENT_driver.dsc_gpio
-    imply MCUX_COMPONENT_driver.qsci
-    imply MCUX_COMPONENT_driver.common
-    imply MCUX_COMPONENT_driver.dsc_sim
+    imply MCUX_COMPONENT_driver.dsc_device_sim
+    imply MCUX_COMPONENT_driver.intc
 
     ## Board project segment dependency data
-    select MCUX_COMPONENT_driver.qsci if MCUX_PRJSEG_module.board.console_lite
     select MCUX_COMPONENT_component.qsci_adapter if MCUX_PRJSEG_module.board.console_lite
-    select MCUX_COMPONENT_driver.clock if MCUX_PRJSEG_module.board.clock

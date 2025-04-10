@@ -30,10 +30,3 @@ Prepare the Demo
     - No flow control
 3.  Download the program to the target board with Multilink debug configuration.
 4.  Launch the debugger in your IDE to begin running the demo.
-
-Running the demo
-================
-The log below shows the output of the hello world demo in the terminal window:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-hello world.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -37,10 +37,3 @@ Prepare the Demo
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo. 
     Please be noted that default FCF(flash configuration field) setting makes MCU boot from bootloader. So after reset button press,
     it will wait 5s(wait in bootloader) to run the application code.
-
-Running the demo
-================
-The log below shows the output of the hello world demo in the terminal window:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-hello world.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

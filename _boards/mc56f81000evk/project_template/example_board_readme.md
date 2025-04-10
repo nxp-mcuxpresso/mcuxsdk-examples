@@ -32,10 +32,3 @@ Prepare the Demo
 4.  Download the program to the target board with PnE U-MultiLink debug configuration.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
     Please be noted default FCF(flash configuration field) makes the MCU boot from flash.
-
-Running the demo
-================
-The log below shows the output of the hello world demo in the terminal window:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-hello world.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

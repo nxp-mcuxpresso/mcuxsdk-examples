@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -111,6 +111,24 @@ choice MCUX_PRJSEG_module.board.pinmux_sel
         bool "project customized folder"
         select MCUX_DEPENDENCY_PINMUX
 
+endchoice
+
+# enable the choice item in guiconfig
+config MCUX_HAS_PRJSEG_module.board.peripheral_sel
+    bool "Use peripherals[.c|.h]"
+    default n
+    help
+        Use peripherals[.c|.h] in project.
+
+choice MCUX_PRJSEG_project.peripherals_sel
+    prompt "peripherals[.c|.h] selection"
+    depends on MCUX_HAS_PRJSEG_module.board.peripheral_sel
+
+    config MCUX_PRJSEG_module.use_board_peripheral
+        bool "Use ${board_root}/${board}/common/peripherals/peripherals[.c|.h]"
+
+    config MCUX_PRJSEG_module.use_customize_peripheral
+        bool "Use ${board_root}/${board}/<demo>/peripherals[.c|.h]"
 endchoice
 
 config MCUX_HAS_PRJSEG_project.use_hw_app
