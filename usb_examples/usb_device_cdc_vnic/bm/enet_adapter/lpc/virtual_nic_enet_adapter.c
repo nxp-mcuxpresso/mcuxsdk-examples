@@ -277,6 +277,10 @@ usb_status_t VNIC_EnetTxDone(void)
         packetBuffer.length  = cdcAcmTransfer.length;
 
         g_cdcVnic.nicTrafficInfo.enetTxUsb2enetSent++;
+        if (g_cdcVnic.nicTrafficInfo.enetTxUsb2enetSent >= UINT32_MAX)
+        {
+            g_cdcVnic.nicTrafficInfo.enetTxUsb2enetSent = 0U;
+        }	
         VNIC_EnetTxBufFree(&packetBuffer);
     }
 
@@ -360,6 +364,10 @@ usb_status_t VNIC_EnetSend(uint8_t *buf, uint32_t len)
         if (ENET_OK != error)
         {
             g_cdcVnic.nicTrafficInfo.enetTxUsb2enetFail++;
+            if (g_cdcVnic.nicTrafficInfo.enetTxUsb2enetFail >= UINT32_MAX)
+            {
+                g_cdcVnic.nicTrafficInfo.enetTxUsb2enetFail = 0U;
+            }
             VNIC_EnetTxBufFree(&packetBuffer);
             sts = kStatus_USB_Error;
             usb_echo("VNIC_EnetSend failed\n");
@@ -376,6 +384,10 @@ usb_status_t VNIC_EnetSend(uint8_t *buf, uint32_t len)
                 return sts;
             }
             g_cdcVnic.nicTrafficInfo.enetTxUsb2enet++;
+            if (g_cdcVnic.nicTrafficInfo.enetTxUsb2enet >= UINT32_MAX)
+            {
+                g_cdcVnic.nicTrafficInfo.enetTxUsb2enet = 0U;
+            }
         }
     }
 
