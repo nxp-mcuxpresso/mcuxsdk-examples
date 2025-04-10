@@ -338,6 +338,10 @@ usb_status_t VNIC_EnetSend(uint8_t *buf, uint32_t len)
     {
         sts = kStatus_USB_Busy;
         g_cdcVnic.nicTrafficInfo.enetTxHost2usbDiscard++;
+        if (g_cdcVnic.nicTrafficInfo.enetTxHost2usbDiscard >= UINT32_MAX)
+        {
+            g_cdcVnic.nicTrafficInfo.enetTxHost2usbDiscard = 0U;
+        }
         usb_echo("VNIC_EnetTxBufAlloc failed\n");
         return sts;
     }
