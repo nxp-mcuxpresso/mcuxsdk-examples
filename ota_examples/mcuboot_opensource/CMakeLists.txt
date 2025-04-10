@@ -16,7 +16,6 @@ mcux_add_include(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/ota_examples/mcuboot_opensource
-    PROJECT_BASE_PATH source
     SOURCES
         main.c
         sblconfig.h
