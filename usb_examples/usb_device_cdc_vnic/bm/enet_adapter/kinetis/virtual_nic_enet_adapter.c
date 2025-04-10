@@ -256,6 +256,10 @@ void VNIC_EnetCallback(pbuf_t *pbuffer)
     else
     {
         g_cdcVnic.nicTrafficInfo.enetRxEnet2usb++;
+        if (g_cdcVnic.nicTrafficInfo.enetRxEnet2usb >= UINT32_MAX)
+        {
+            g_cdcVnic.nicTrafficInfo.enetRxEnet2usb = 0U;
+        }
     }
     return;
 }
