@@ -25,7 +25,7 @@ static phy_lan8741_resource_t g_phy_resource;
 /*${function:start}*/
 uint32_t ENET_GetFreq(void)
 {
-    return CLOCK_GetIpFreq(s_enetClock[ENET_GetInstance(ENET)]);
+    return CLOCK_GetCoreSysClkFreq();
 }
 
 static void MDIO_Init(void)

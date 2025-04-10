@@ -17,6 +17,25 @@ phy_lan8741_resource_t g_phy_resource;
 /*${variable:end}*/
 
 /*${function:start}*/
+static void BOARD_InitModuleClock(void)
+{
+    const scg_spll_config_t spll_config =
+    {
+        .enableMode = kSCG_SysPllEnable,          /* Enable SPLL clock */
+        .monitorMode = kSCG_SysPllMonitorDisable, /* Monitor disabled */
+        .div1 = kSCG_AsyncClkDivBy2,              /* System PLL Clock Divider 1: divided by 2 */
+        .div2 = kSCG_AsyncClkDisable,             /* System PLL Clock Divider 2: disabled */
+        .prediv = 0U,                             /* Divided by 1 */
+        .mult = 9U,                               /* Multiply Factor is 25 */
+    };
+
+    /* Set SPLLDIV1_CLK to 50 MHz */
+    CLOCK_InitSysPll(&spll_config);
+
+    /* Set IEEE 1588 Ethernet clock source to SPLLDIV1_CLK */
+    CLOCK_SetIpSrc(kCLOCK_Enet, kCLOCK_IpSrcSysPllAsync);
+}
+
 static void MDIO_Init(void)
 {
     CLOCK_EnableClock(s_enetClock[ENET_GetInstance(EXAMPLE_ENET)]);
@@ -39,6 +58,7 @@ void BOARD_InitHardware(void)
     BOARD_InitENETPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    BOARD_InitModuleClock();
 
     /* Disable MPU */
     SYSMPU->CESR &= ~SYSMPU_CESR_VLD(1);
