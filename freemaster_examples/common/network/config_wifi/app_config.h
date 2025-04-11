@@ -83,6 +83,14 @@
 #define WIFI_BT_USE_IMU_INTERFACE
 #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_WW_rw610.h"
 
+/* FRDMRW61X */
+#elif defined(WIFI_BOARD_FRDM_RW61X)
+#define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_WW_rw610.h"
+#define RW610
+#define FRDMRW610
+#define WIFI_BT_USE_IMU_INTERFACE
+#define CONFIG_SOC_SERIES_RW6XX_REVISION_A2 1
+
 #else
 #error "Please define macro related to wifi board"
 #endif

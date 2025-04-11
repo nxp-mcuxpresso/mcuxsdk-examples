@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -46,7 +46,7 @@ int main(void)
     CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
   
     /* Board initialization */
-    BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_BootClockRUN();
 
     /* FreeMASTER communication layer initialization */
