@@ -63,4 +63,10 @@
 #error "Please define macro for RW610 board"
 #endif  /* defined(WIFI_BOARD_RW610) */
 
+/* On FRDM-RW612 boards, the Xtal32k is present but not connected by default
+ * An hardware rework is needed to connect the Xtal32k, so disable this flag with caution */
+#ifndef gBoardUseFro32k_d
+#define gBoardUseFro32k_d 1
+#endif
+
 #include "wifi_config.h"

@@ -113,6 +113,12 @@ static void BOARD_ExitPowerDown(void)
     /* Clocks and pins need to be reinitialized after wake up from power down */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+#if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
+    CLOCK_AttachClk(kRC32K_to_CLK32K);
+#else
+    CLOCK_EnableXtal32K(true);
+    CLOCK_AttachClk(kXTAL32K_to_CLK32K);
+#endif
     BOARD_InitSleepPinConfig();
 #ifdef CONFIG_BT_SETTINGS
     /* Reinit mflash driver after exit from power down mode */

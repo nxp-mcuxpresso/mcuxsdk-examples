@@ -63,4 +63,11 @@
 #error "Please define macro for RW610 board"
 #endif  /* defined(WIFI_BOARD_RW610) */
 
+/* On RD-RW612-BGA boards, the Xtal32k is present and connected by default
+ * so we use it by default. If an hardware rework done on the board disconnects
+ * the Xtal32k, this flag should be set to 1 to fall back to the Fro32k */
+#ifndef gBoardUseFro32k_d
+#define gBoardUseFro32k_d 0
+#endif
+
 #include "wifi_config.h"
