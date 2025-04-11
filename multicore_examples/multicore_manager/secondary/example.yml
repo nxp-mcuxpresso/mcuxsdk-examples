@@ -102,3 +102,4 @@ multicore_manager_secondary_core:
     lpcxpresso55s69@cm33_core1: []
     mcxn5xxevk@cm33_core1: []
     mcxn9xxevk@cm33_core1: []
+    frdmmcxl255@cm0plus: []
