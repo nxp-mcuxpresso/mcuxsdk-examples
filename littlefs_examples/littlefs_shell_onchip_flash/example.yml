@@ -54,3 +54,4 @@ littlefs_shell_onchip_flash:
     - +iar@release
     - -armgcc@hyperram_release
     - -iar@hyperram_release
+    frdmmcxl255@cm33: []
