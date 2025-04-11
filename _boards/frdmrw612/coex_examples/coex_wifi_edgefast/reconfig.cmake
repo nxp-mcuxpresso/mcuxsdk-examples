@@ -68,7 +68,7 @@ mcux_add_macro(
        -DFSL_FEATURE_FLASH_PAGE_SIZE_BYTES=4096\
        -DgMemManagerLight=0\
        -DCFG_BLE\
-       -DgPlatformDisableBleLowPower_d=1\
+       -DgPlatformDisableBleLowPower_d=0\
        -DSDK_DEBUGCONSOLE_UART=1\
        -DSHELL_TASK_STACK_SIZE=6144\
        -DLPUART_RING_BUFFER_SIZE=1024U\
@@ -93,6 +93,8 @@ mcux_add_macro(
        -DSERIAL_PORT_TYPE_UART=1 \
        -DMFLASH_FILE_BASEADDR=7340032 \
        -DSHELL_TASK_PRIORITY=1 \
+       -DAPP_LOWPOWER_ENABLED=1 \
+       -DHAL_UART_ADAPTER_LOWPOWER=1 \
        -DCONFIG_HOSTAPD=0"
 )
 

@@ -64,8 +64,3 @@
 #endif  /* defined(WIFI_BOARD_RW610) */
 
 #include "wifi_config.h"
-
-
-#ifndef CONFIG_BT_SNOOP
-    #define CONFIG_BT_SNOOP 1
-#endif

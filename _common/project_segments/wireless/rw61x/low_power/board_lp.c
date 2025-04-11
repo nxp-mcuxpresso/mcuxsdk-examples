@@ -113,7 +113,7 @@ static void BOARD_ExitPowerDown(void)
     /* Clocks and pins need to be reinitialized after wake up from power down */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
-
+    BOARD_InitSleepPinConfig();
 #ifdef CONFIG_BT_SETTINGS
     /* Reinit mflash driver after exit from power down mode */
     mflash_drv_init();
