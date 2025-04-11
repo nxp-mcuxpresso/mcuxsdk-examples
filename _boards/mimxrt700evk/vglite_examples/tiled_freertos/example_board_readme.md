@@ -13,6 +13,8 @@ Hardware requirements
 
 Board settings
 ============
+Use the external PMIC 5V power supply. Connect JP1 and JP3.
+
 To use SSD1963 panel:
 Connect SSD1963 panel to J4. Make sure to connect JP7 2&3 to use 3.3v FLEXIO interface.
 
@@ -22,6 +24,9 @@ Connect MIPI panel to J52.
 To use Raspberry panel:
 Connect the panel to J8. Then connect the panel's 5V pin to JP43-1, GND pin to JP43-2.
 Make sure the R75, R76, R79, R80 are connected.
+
+To use the ZC143AC72MIPI panel:
+Connect J2 1&2.
 
 Prepare the Demo
 ===============
