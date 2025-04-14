@@ -5,8 +5,9 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
-No special settings are required.
+==============
+Make sure you have solder bridges SJ1 and SJ2 set to
+- 2-1 for the main core (cm33)
 
 Prepare the Demo
 ===============
@@ -23,4 +24,9 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
-When the demo runs successfully, you will find the LED is blinking.
+These instructions are displayed/shown on the terminal window:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GPIO Driver example
+The LED is blinking.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+And you will find the LED RED is taking turns to shine.

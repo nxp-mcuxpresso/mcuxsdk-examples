@@ -53,3 +53,4 @@ gpio_input_interrupt:
     twrkm35z75m: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
+    frdmmcxl255@cm33: []
