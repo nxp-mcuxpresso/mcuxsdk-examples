@@ -18,5 +18,6 @@ glikey:
     frdmmcxa156: []
     frdmmcxa166: []
     frdmmcxa276: []
+    frdmmcxl255@cm33: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
