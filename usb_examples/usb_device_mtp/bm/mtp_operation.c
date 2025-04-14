@@ -352,6 +352,11 @@ static usb_status_t USB_DeviceBuildPath(usb_mtp_struct_t *mtp, uint32_t storageI
     uint32_t forwardOffset;
     uint32_t i;
     backwardOffset = USB_DeviceGetRootPath(mtp, storageID, path);
+    if (backwardOffset < 2U)
+    {
+        usb_echo("wrong root path length\r\n");
+        return kStatus_USB_Error;
+    }
     backwardOffset -= 2U; /* remove null-terminated */
     forwardOffset = MTP_PATH_MAX_LEN;
 
