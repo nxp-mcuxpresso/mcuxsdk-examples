@@ -36,6 +36,8 @@ void BOARD_InitHardware(void)
 
     BOARD_Configure32kOsc();
 
+#if (defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1))
     BOARD_InitDebugConsole();
+#endif
 }
 /*${function:end}*/
