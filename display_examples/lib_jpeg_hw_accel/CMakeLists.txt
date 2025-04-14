@@ -24,8 +24,7 @@ mcux_add_include(
 )
 
 mcux_add_macro(
-    CC "-DSDK_DEBUGCONSOLE_UART\
-        -DLIB_JPEG_USE_HW_ACCEL=1"
+    CC "-DSDK_DEBUGCONSOLE_UART"
 )
 
 mcux_add_linker_symbol(
