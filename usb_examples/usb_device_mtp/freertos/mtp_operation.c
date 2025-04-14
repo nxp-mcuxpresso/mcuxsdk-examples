@@ -1382,7 +1382,11 @@ void USB_DeviceCmdGetObjHandles(void *param)
         if (dataInfo->curPos < g_mtp.transferTotalSize)
         {
             offset = 0U;
-
+            if ((dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH - 4U) < 0U)
+            {
+                dataInfo->code = MTP_RESPONSE_INVALID_DATASET;
+                return;
+            }
             /* the number of object handle has been sent. */
             objHandleCount = (dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH - 4U) / 4U;
 
@@ -2165,6 +2169,11 @@ void USB_DeviceCmdSendObj(void *param)
             }
             else
             {
+                if ((dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH) < 0U)
+                {
+                    dataInfo->code = MTP_RESPONSE_INVALID_DATASET;
+                    return;
+                }
                 /* both first and last packet */
                 size = dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH;
             }
