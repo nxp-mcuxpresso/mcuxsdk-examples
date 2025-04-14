@@ -1892,7 +1892,11 @@ void USB_DeviceCmdGetObj(void *param)
         offset = ((g_mtp.transferTotalSize - dataInfo->curPos) > USB_DEVICE_MTP_TRANSFER_BUFF_SIZE) ?
                      USB_DEVICE_MTP_TRANSFER_BUFF_SIZE :
                      (g_mtp.transferTotalSize - dataInfo->curPos);
-
+        if ((dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH) < 0U)
+        {
+            dataInfo->code = MTP_RESPONSE_INVALID_DATASET;
+            return;
+        }
         result = USB_DeviceMtpLseek(g_mtp.file, dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH);
         result = USB_DeviceMtpRead(g_mtp.file, readBuf, offset, &sizeRead);
 
