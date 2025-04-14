@@ -220,7 +220,7 @@ static const led_config_t g_RgbLedConfig = {
         },
 };
 
-#if defined(KW47B42ZB7_cm33_core0_SERIES)
+#if defined(KW47B42ZB7_cm33_core0_SERIES) || defined(MCXW727C_cm33_core0_SERIES)
 static const led_config_t g_BlueLedConfig = {
     .type = kLED_TypeMonochrome,
     .ledMonochrome =
@@ -566,7 +566,7 @@ void BOARD_Button1ExitPowerDown(button_handle_t buttonHandle)
 
 #if defined(gAppLedCnt_c) && (gAppLedCnt_c > 0)
 
-#if defined(KW47B42ZB7_cm33_core0_SERIES)
+#if defined(KW47B42ZB7_cm33_core0_SERIES) || defined(MCXW727C_cm33_core0_SERIES)
 /*Initialize LED*/
 void BOARD_InitBlueLed(led_handle_t ledHandle)
 {
