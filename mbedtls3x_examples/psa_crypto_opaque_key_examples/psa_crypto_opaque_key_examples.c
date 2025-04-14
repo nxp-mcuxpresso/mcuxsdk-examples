@@ -1,6 +1,6 @@
 /*
  *  Example to demonstrate use of opaque keys with PSA API's
- * Copyright 2023 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -26,41 +26,43 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define ASSERT(predicate)                                                   \
+#define ASSERT(predicate)                                                     \
     do                                                                        \
     {                                                                         \
-        if (!(predicate))                                                 \
+        if (!(predicate))                                                     \
         {                                                                     \
-            printf("\tassertion failed at %s:%d - '%s'\r\n",         \
-                   __FILE__, __LINE__, #predicate);                  \
+            printf("\tassertion failed at %s:%d - '%s'\r\n",                  \
+                   __FILE__, __LINE__, #predicate);                           \
             goto exit;                                                        \
         }                                                                     \
     } while (0)
 
-#define ASSERT_STATUS(actual, expected)                                     \
+#define ASSERT_STATUS(actual, expected)                                       \
     do                                                                        \
     {                                                                         \
-        if ((actual) != (expected))                                      \
+        if ((actual) != (expected))                                           \
         {                                                                     \
-            printf("\tassertion failed at %s:%d - "                  \
-                   "actual:%d expected:%d\r\n", __FILE__, __LINE__,  \
-                   (psa_status_t) actual, (psa_status_t) expected); \
+            printf("\tassertion failed at %s:%d - "                           \
+                   "actual:%d expected:%d\r\n", __FILE__, __LINE__,           \
+                   (psa_status_t) actual, (psa_status_t) expected);           \
             goto exit;                                                        \
         }                                                                     \
     } while (0)
 
 #define PSA_ASSERT(status)      ASSERT_STATUS(status, PSA_SUCCESS)
 
-#define PRINT_STATUS(ok)                                    \
+#define PRINT_STATUS(ok)                                                      \
     do                                                                        \
     {                                                                         \
-        if (ok == 1) {                                              \
-            printf(" PASSED\r\n");                                 \
-        } else if (ok == 2) {                                                   \
-            printf(" NOT SUPPORTED\r\n");                                 \
-        } else {                                                   \
-            printf(" FAILED\r\n");                                 \
-        }								\
+        if (ok == 1) {                                                        \
+            printf(" PASSED\r\n");                                            \
+        } else if (ok == 2) {                                                 \
+            printf(" NOT SUPPORTED\r\n");                                     \
+        } else if (ok == 3) {                                                 \
+            printf(" KEY ERASE FAIL\r\n");                                    \
+        } else {                                                              \
+            printf(" FAILED\r\n");                                            \
+        }								      \
     } while (0)
 
 /* The location to be used for generation of keys can come from command line. */
@@ -482,7 +484,9 @@ int generate_and_test_key(uint16_t key_type_arg, size_t bits_arg,
 
 exit:
     psa_reset_key_attributes(&attributes);
-    psa_destroy_key(key_id);
+    
+    if(psa_destroy_key(key_id) != PSA_SUCCESS)
+        return 3;
 
     return ok;
 }
