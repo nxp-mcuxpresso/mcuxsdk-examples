@@ -15,7 +15,7 @@ FRDM-MCXL255 UART pins:
   - TX of USB2COM to SJ1-3(P0_7)
   - RX of USB2COM to SJ2-3(P0_6)
 
-Make sure you have solder bridges SJ1 and SJ2 set to
+Make sure you have solder bridges SJ1, SJ2, SJ6 and SJ20 set to
 - 2-1 for the main core (cm33)
 - 2-3 for AON core (cm0+)
 

@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-Make sure you have solder bridges SJ1 and SJ2 set to
+Make sure you have solder bridges SJ1, SJ2, SJ6 and SJ20 set to
 - 2-1 for the main core (cm33)
 
 Prepare the Demo

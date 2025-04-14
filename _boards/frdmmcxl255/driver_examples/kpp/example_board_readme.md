@@ -13,7 +13,7 @@ row0  <----->   J8_7  (P0_12)
 col1  <----->   J8_9  (P0_7)
 col0  <----->   J8_11 (P0_6)
 
-Make sure you have solder bridges SJ1 and SJ2 set to
+Make sure you have solder bridges SJ1, SJ2, SJ6 and SJ20 set to
 - 2-1 for the main core (cm33)
 
 Prepare the Demo

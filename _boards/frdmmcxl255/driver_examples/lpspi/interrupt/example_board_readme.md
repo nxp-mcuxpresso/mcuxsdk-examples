@@ -17,7 +17,7 @@ SCK        J6-4                SCK       J2-12
 PCS0       J6-3                PCS1      J2-6
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Make sure you have solder bridges SJ1 and SJ2 set to
+Make sure you have solder bridges SJ1, SJ2, SJ6 and SJ20 set to
 - 2-1 for the main core (cm33)
 
 Prepare the Demo
