@@ -100,15 +100,16 @@ static void init_freemaster_can(void)
     FMSTR_CanSetBaseAddress(CAN0);
 
 #if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
-    /* Enable CAN interrupt. */
-    EnableIRQ(CAN0_ORed_IRQn);
+    /* Enable CAN interrupts. */
+    EnableIRQ(CAN0_ORed_0_15_MB_IRQn);
+    EnableIRQ(CAN0_ORed_16_31_MB_IRQn);
     EnableGlobalIRQ(0);
 #endif
 }
 
 #if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
 /*
- *   Application interrupt handler of communication peripheral used in interrupt modes
+ *   Application interrupt handlers of communication peripheral used in interrupt modes
  *   of FreeMASTER communication.
  *
  *   NXP MCUXpresso SDK framework defines interrupt vector table as a part of "startup_XXXXXX.x"
@@ -118,7 +119,16 @@ static void init_freemaster_can(void)
  *
  */
 
-void CAN0_ORed_IRQHandler(void)
+void CAN0_ORed_0_15_MB_IRQHandler(void)
+{
+    /* Call FreeMASTER Interrupt routine handler */
+    FMSTR_CanIsr();
+
+    /* May be needed for ARM errata 838869 */
+    SDK_ISR_EXIT_BARRIER;
+}
+
+void CAN0_ORed_16_31_MB_IRQHandler(void)
 {
     /* Call FreeMASTER Interrupt routine handler */
     FMSTR_CanIsr();
