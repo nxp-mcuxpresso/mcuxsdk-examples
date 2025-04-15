@@ -209,6 +209,7 @@ fmstr_example_net:
     - -mdk@hyperram_release
     - -mdk@release
     evkmimxrt1180@cm7:
+    frdmmcxe247: []
     - -armgcc@debug
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
