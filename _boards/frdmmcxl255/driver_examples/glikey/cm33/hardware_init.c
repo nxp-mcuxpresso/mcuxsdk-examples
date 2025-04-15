@@ -14,8 +14,8 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
