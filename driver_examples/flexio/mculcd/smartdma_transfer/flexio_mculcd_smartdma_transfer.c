@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,7 +9,11 @@
 #include "fsl_flexio_mculcd.h"
 #include "fsl_flexio_mculcd_smartdma.h"
 #include "fsl_debug_console.h"
+#if BOARD_LCD_S035
+#include "fsl_st7796s.h"
+#else
 #include "fsl_ssd1963.h"
+#endif
 
 /*******************************************************************************
  * Definitions
@@ -88,7 +92,11 @@ static dbi_xfer_ops_t s_flexioDbiOps = {
                                     */
 };
 
+#if BOARD_LCD_S035
+static st7796s_handle_t lcdHandle;
+#else
 static ssd1963_handle_t lcdHandle;
+#endif
 static flexio_mculcd_smartdma_handle_t s_flexioLcdHandle;
 static demo_pixel_t s_lcdBuffer[DEMO_BUFFER_HEIGHT][DEMO_BUFFER_WIDTH];
 static volatile bool s_transferDone = false;
@@ -223,6 +231,15 @@ static void DEMO_InitPanel(void)
 {
     status_t status;
 
+#if BOARD_LCD_S035
+    const st7796s_config_t st7796sConfig = {.driverPreset    = kST7796S_DriverPresetLCDPARS035,
+                                            .pixelFormat     = kST7796S_PixelFormatRGB565,
+                                            .orientationMode = kST7796S_Orientation270,
+                                            .teConfig        = kST7796S_TEDisabled,
+                                            .invertDisplay   = true,
+                                            .flipDisplay     = true,
+                                            .bgrFilter       = true};
+#else
     const ssd1963_config_t ssd1963Config = {
         .pclkFreq_Hz = DEMO_SSD1963_PCLK_FREQ,
 #if SSD1963_DATA_WITDH == 16
@@ -241,6 +258,7 @@ static void DEMO_InitPanel(void)
         .vfp            = DEMO_SSD1963_VFP,
         .vbp            = DEMO_SSD1963_VBP
     };
+#endif
 
     /* Reset the SSD1963 LCD controller. */
     BOARD_SetResetPin(false);
@@ -248,7 +266,11 @@ static void DEMO_InitPanel(void)
     BOARD_SetResetPin(true);
     SDK_DelayAtLeastUs(5000, SystemCoreClock); /* Delay 5ms. */
 
+#if BOARD_LCD_S035
+    status = ST7796S_Init(&lcdHandle, &st7796sConfig, &s_flexioDbiOps, &s_flexioLcdHandle);
+#else
     status = SSD1963_Init(&lcdHandle, &ssd1963Config, &s_flexioDbiOps, &s_flexioLcdHandle, DEMO_SSD1963_XTAL_FREQ);
+#endif
 
     if (kStatus_Success != status)
     {
@@ -261,8 +283,12 @@ static void DEMO_InitPanel(void)
 
 static void DEMO_StartPanel(void)
 {
+#if BOARD_LCD_S035
+    ST7796S_EnableDisplay(&lcdHandle, true);
+#else
     SSD1963_StartDisplay(&lcdHandle);
     SSD1963_SetBackLight(&lcdHandle, 255);
+#endif
 }
 
 /*
@@ -276,8 +302,13 @@ static void DEMO_DrawWindow(uint16_t startX,
                             uint32_t dataLen,
                             uint32_t delayMsAfterDraw)
 {
+#if BOARD_LCD_S035
+    ST7796S_SelectArea(&lcdHandle, startX, startY, endX, endY);
+    ST7796S_WritePixels(&lcdHandle, (uint16_t *)data, dataLen / 2);
+#else
     SSD1963_SelectArea(&lcdHandle, startX, startY, endX, endY);
     SSD1963_WriteMemory(&lcdHandle, data, dataLen);
+#endif
 
     if (delayMsAfterDraw > 0)
     {
