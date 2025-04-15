@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dvs_pvt_comp_only_primary:
+  section-type: application
+  use_sysbuild: true
+  contents:
+    meta_path: examples/demo_apps/dvs_pvt_comp_only/primary
+    project-root-path: boards/${board}/demo_apps/dvs_pvt_comp_only/${multicore_foldername}
+    document:
+      name: dvs_pvt_comp_only_primary
+      category: demo_apps
+      brief: 'The dvs_pvt_comp_only application shows the usage of Dynamic Voltage Scalling
+        using PVT Sensor.'
+      example_readme:
+      - examples/demo_apps/dvs_pvt_comp_only/readme.md
+      - ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []

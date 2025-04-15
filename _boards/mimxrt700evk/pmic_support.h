@@ -68,6 +68,16 @@ void BOARD_SetPmicVdd1Voltage(uint32_t volt);
  *  @param  volt: the voltage in uV to be set.
  */
 void BOARD_SetPmicVdd2Voltage(uint32_t volt);
+/*!
+ *  @brief  Get current VDD2 voltage.
+ *  @return  the voltage in uV.
+ */
+uint32_t BOARD_GetPmicVdd2Voltage(void);
+/*!
+ *  @brief  Get current VDD1 voltage.
+ *  @return  the voltage in uV.
+ */
+uint32_t BOARD_GetPmicVdd2Voltage(void);
 
 #if defined(PMC0)
 /*!
