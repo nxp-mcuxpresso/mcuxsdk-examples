@@ -1,6 +1,5 @@
 /*
- * Copyright  2021-2023 NXP
- * All rights reserved.
+ * Copyright  2021-2023,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,8 +17,6 @@
  * Variables
  ******************************************************************************/
 static bool adcInitialized                                  = false;
-static bool autoCalibFinished                               = false;
-static bool needRestoreContext                              = false;
 static BOARD_AdcTriggerState triggerState                   = BOARD_AdcTriggerNone;
 static lpadc_reference_voltage_source_t currentADCReference = kLPADC_ReferenceVoltageAlt1;
 static lpadc_calibration_value_t adcCalibrationValue;
@@ -54,6 +51,26 @@ static void initAdcReference(lpadc_reference_voltage_source_t reference)
 }
 
 /*!
+ * brief Basic Init of ADC module
+ */
+static void initAdcBasic(void)
+{
+    vref_config_t vrefConfig;
+    VREF_GetDefaultConfig(&vrefConfig);
+    /* Initialize the VREF mode. */
+    VREF_Init(VREF0, &vrefConfig);
+
+    /* Get a 1.8V reference voltage. */
+    VREF_SetTrim21Val(VREF0, 8U);
+
+    CLOCK_EnableClock(kCLOCK_Lpadc0);
+    CLOCK_SetIpSrc(kCLOCK_Lpadc0, kCLOCK_IpSrcFro192M);
+    CLOCK_SetIpSrcDiv(kCLOCK_Lpadc0, kSCG_SysClkDivBy4);
+
+    initAdcReference(LPADC_REFERENCE_BATTERY);
+}
+
+/*!
  * brief Check if ADC driver is initialized.
  */
 bool BOARD_IsAdcInitialized(void)
@@ -68,32 +85,12 @@ void BOARD_InitAdc(void)
 {
     if (false == BOARD_IsAdcInitialized())
     {
-        vref_config_t vrefConfig;
-        lpadc_config_t mLpadcConfigStruct;
-        VREF_GetDefaultConfig(&vrefConfig);
-        /* Initialize the VREF mode. */
-        VREF_Init(VREF0, &vrefConfig);
+        initAdcBasic();
 
-        /* Get a 1.8V reference voltage. */
-        VREF_SetTrim21Val(VREF0, 8U);
-
-        CLOCK_EnableClock(kCLOCK_Lpadc0);
-        CLOCK_SetIpSrc(kCLOCK_Lpadc0, kCLOCK_IpSrcFro192M);
-        CLOCK_SetIpSrcDiv(kCLOCK_Lpadc0, kSCG_SysClkDivBy4);
-
-        LPADC_GetDefaultConfig(&mLpadcConfigStruct);
-
-        mLpadcConfigStruct.enableAnalogPreliminary = true;
-        mLpadcConfigStruct.referenceVoltageSource  = LPADC_REFERENCE_BATTERY;
-        mLpadcConfigStruct.conversionAverageMode   = kLPADC_ConversionAverage128;
-        mLpadcConfigStruct.FIFO1Watermark   = FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE - 1U;
-        LPADC_Init(LPADC_BASE, &mLpadcConfigStruct);
-
-        currentADCReference = LPADC_REFERENCE_BATTERY;
-
-        /* Request gain calibration. */
-        LPADC_PrepareAutoCalibration(LPADC_BASE);
-        autoCalibFinished = false;
+        /* Request offset calibration. Takes around 140us */
+        LPADC_DoOffsetCalibration(LPADC_BASE);
+        /* Request gain calibration and wait for it to be done, takes around 3.5ms */
+        LPADC_DoAutoCalibration(LPADC_BASE);
     }
 
     adcInitialized = true;
@@ -107,10 +104,32 @@ void BOARD_DeinitAdc(void)
     if (true == BOARD_IsAdcInitialized())
     {
         adcInitialized     = false;
-        needRestoreContext = false;
+        /* Save ADC calibration data to be restored by reinit function */
+        LPADC_GetCalibrationValue(LPADC_BASE, &adcCalibrationValue);
         LPADC_Deinit(LPADC_BASE);
         VREF_Deinit(VREF0);
     }
+}
+
+/*!
+ * brief Reinit ADC driver.
+ */
+void BOARD_ReinitAdc(void)
+{
+    if (false == BOARD_IsAdcInitialized())
+    {
+        initAdcBasic();
+
+        /* Request offset calibration */
+        LPADC_DoOffsetCalibration(LPADC_BASE);
+        /* Set calibration data saved before deinit */
+        /* Offset calibration allows to set ADC_STAT_CAL_RDY bit which is required
+         * by LPADC_SetCalibrationValue.
+         */
+        LPADC_SetCalibrationValue(LPADC_BASE, &adcCalibrationValue);
+    }
+
+    adcInitialized = true;
 }
 
 /*!
@@ -118,13 +137,6 @@ void BOARD_DeinitAdc(void)
  */
 void BOARD_AdcSwTrigger(uint32_t channel)
 {
-    if (autoCalibFinished == false)
-    {
-        /* Finish the auto calibration procedure starts with LPADC_PrepareAutoCalibration()*/
-        LPADC_FinishAutoCalibration(LPADC_BASE);
-        autoCalibFinished = true;
-    }
-
     lpadc_conv_trigger_config_t mLpadcTriggerConfigStruct;
     lpadc_conv_command_config_t mLpadcCommandConfigStruct;
 
@@ -264,21 +276,4 @@ int8_t BOARD_GetBatteryLevel(void)
     } while(false);
 
     return ((batLvl <= 100U) ? batLvl : 100U);
-}
-
-void BOARD_SaveAdcContext(void)
-{
-    if (BOARD_IsAdcInitialized() == true)
-    {
-        LPADC_GetCalibrationValue(LPADC_BASE, &adcCalibrationValue);
-        needRestoreContext = true;
-    }
-}
-
-void BOARD_RestoreAdcContext(void)
-{
-    if (needRestoreContext == true)
-    {
-        LPADC_SetCalibrationValue(LPADC_BASE, &adcCalibrationValue);
-    }
 }

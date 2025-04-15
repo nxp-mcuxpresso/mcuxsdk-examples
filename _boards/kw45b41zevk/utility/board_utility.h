@@ -1,6 +1,5 @@
 /*
- * Copyright  2021-2023 NXP
- * All rights reserved.
+ * Copyright 2021-2023,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -59,6 +58,11 @@ void BOARD_InitAdc(void);
 void BOARD_DeinitAdc(void);
 
 /*!
+ * brief Reinit ADC driver after deinit.
+ */
+void BOARD_ReinitAdc(void);
+
+/*!
  * brief Do software trigger to conversion command.
  */
 void BOARD_AdcSwTrigger(uint32_t channel);
@@ -76,18 +80,6 @@ float BOARD_GetTemperature(void);
  * return The battery level in percent.
  */
 int8_t BOARD_GetBatteryLevel(void);
-
-/*!
- * brief Save ADC driver context to static structure.
- *
- */
-void BOARD_SaveAdcContext(void);
-
-/*!
- * brief Restore ADC driver context with static structure.
- *
- */
-void BOARD_RestoreAdcContext(void);
 
 /*!
  * @}  end of FWK_Board_Utility addtogroup

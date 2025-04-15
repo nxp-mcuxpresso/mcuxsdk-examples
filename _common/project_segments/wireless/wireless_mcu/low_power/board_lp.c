@@ -127,7 +127,7 @@ static void BOARD_EnterLowPowerCb(void)
     int bank_mask;
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
-    PLATFORM_SaveAdcContext();
+    /* Deinit ADC in order to disable the functional clock. This saves 15uA during low-power mode */
     PLATFORM_DeinitAdc();
 #endif
 
@@ -174,7 +174,7 @@ static void BOARD_ExitLowPowerCb(void)
 #endif
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
-    PLATFORM_RestoreAdcContext();
+    PLATFORM_ReinitAdc();
 #endif
 
 #if defined(DBG_PWR) && (DBG_PWR == 1)
