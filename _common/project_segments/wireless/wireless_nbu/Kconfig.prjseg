@@ -1,0 +1,26 @@
+# Copyright 2025 NXP
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_PRJSEG_module.board.wireless.nbu.app.threadx
+    bool "Wireless NBU Application Main"
+    help
+      Provides an implementation of the main entry point for an NBU application running ThreadX.
+      Creates an idle task which can call the application with a hook, and provides Pre and Post kernel
+      initialization stages to the application.
+      This is a template for demo purpose and doesn't aim to always support all use cases.
+
+config MCUX_PRJSEG_module.board.wireless.hw_app
+    bool "Specific HW init for Wireless NBU applications"
+    help
+      This is a customized implementation of hardware init used in wireless examples.
+
+config MCUX_PRJSEG_module.board.wireless.board
+    bool "Wireless NBU board files"
+    help
+      This is a customized implementation of board file used in wireless examples.
+
+config MCUX_PRJSEG_module.board.wireless.core_linker_script
+    bool "Connectivity linker script for specific core"
+    help
+      Use the linker script provided by the Connectivity Framework for the current platform core.
+      This should be left disabled if the user wants to use a custom linker script.
