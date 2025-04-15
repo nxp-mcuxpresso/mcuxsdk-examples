@@ -1,0 +1,15 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config USE_RGB565
+    bool "Enable to use RGB565 as source pixel format, otherwise use XRGB8888"
+    default y
+    help
+        No prefix in generated macro
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"
