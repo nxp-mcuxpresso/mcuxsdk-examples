@@ -4873,15 +4873,6 @@ NCP_CMD_11AX_CFG_INFO g_11axcfg_params = {
      /* val for txrx mcs 160Mhz or 80+80, and PPE thresholds */
      {0x88, 0x1f}}};
 
-NCP_CMD_BTWT_CFG_INFO g_btwt_params = {.action          = 0x0001,
-                                  .sub_id          = 0x0125,
-                                  .nominal_wake    = 0x40,
-                                  .max_sta_support = 0x04,
-                                  .twt_mantissa    = 0x0063,
-                                  .twt_offset      = 0x0270,
-                                  .twt_exponent    = 0x0a,
-                                  .sp_gap          = 0x05};
-
 NCP_CMD_TWT_SETUP_CFG g_twt_setup_params = {.implicit            = 0x01,
                                         .announced           = 0x00,
                                         .trigger_enabled     = 0x00,
@@ -4900,7 +4891,6 @@ NCP_CMD_TWT_TEARDOWN_CFG g_twt_teardown_params = {
 enum
 {
     TEST_WLAN_11AX_CFG,
-    TEST_WLAN_BCAST_TWT,
     TEST_WLAN_TWT_SETUP,
     TEST_WLAN_TWT_TEARDOWN,
 };
@@ -4947,18 +4937,6 @@ const static test_cfg_param_t g_11ax_cfg_param[] = {
     {"pe", 27, 2, NULL},
 };
 
-const static test_cfg_param_t g_btwt_cfg_param[] = {
-    /* name             offset  len   notes */
-    {"action", 0, 2, "only support 1: Set"},
-    {"sub_id", 2, 2, "Broadcast TWT AP config"},
-    {"nominal_wake", 4, 1, "range 64-255"},
-    {"max_sta_support", 5, 1, "Max STA Support"},
-    {"twt_mantissa", 6, 2, NULL},
-    {"twt_offset", 8, 2, NULL},
-    {"twt_exponent", 10, 1, NULL},
-    {"sp_gap", 11, 1, NULL},
-};
-
 static test_cfg_param_t g_twt_setup_cfg_param[] = {
     /* name                 offset  len  notes */
     {"implicit", 0, 1, "0: TWT session is explicit, 1: Session is implicit"},
@@ -4993,7 +4971,6 @@ static test_cfg_param_t g_twt_teardown_cfg_param[] = {
 static test_cfg_table_t g_test_cfg_table_list[] = {
     /*  name         data                          total_len param_list          param_num*/
     {"11axcfg", (uint8_t *)&g_11axcfg_params, 29, g_11ax_cfg_param, 8},
-    {"twt_bcast", (uint8_t *)&g_btwt_params, 12, g_btwt_cfg_param, 8},
     {"twt_setup", (uint8_t *)&g_twt_setup_params, 12, g_twt_setup_cfg_param, 11},
     {"twt_teardown", (uint8_t *)&g_twt_teardown_params, 3, g_twt_teardown_cfg_param, 3},
     {NULL}};
@@ -5020,7 +4997,7 @@ int wlan_process_11axcfg_response(uint8_t *res)
     return WM_SUCCESS;
 }
 
-static int wlan_send_btwt_command(void)
+static int wlan_send_btwt_command(uint8_t *data)
 {
     MCU_NCPCmd_DS_COMMAND *command = ncp_host_get_cmd_buffer_wifi();
 
@@ -5029,8 +5006,8 @@ static int wlan_send_btwt_command(void)
     command->header.size     = NCP_CMD_HEADER_LEN;
     command->header.result   = NCP_CMD_RESULT_OK;
 
-    (void)memcpy((uint8_t *)&command->params.btwt_cfg, (uint8_t *)&g_btwt_params, sizeof(g_btwt_params));
-    command->header.size += sizeof(g_btwt_params);
+    (void)memcpy((uint8_t *)&command->params.btwt_cfg, data, sizeof(NCP_CMD_BTWT_CFG_INFO));
+    command->header.size += sizeof(NCP_CMD_BTWT_CFG_INFO);
 
     return WM_SUCCESS;
 }
@@ -5038,7 +5015,24 @@ static int wlan_send_btwt_command(void)
 int wlan_process_btwt_response(uint8_t *res)
 {
     MCU_NCPCmd_DS_COMMAND *cmd_res = (MCU_NCPCmd_DS_COMMAND *)res;
-    (void)PRINTF("btwt cfg set ret %hu\r\n", cmd_res->header.result);
+    NCP_CMD_BTWT_CFG_INFO *btwt    = (NCP_CMD_BTWT_CFG_INFO *)&cmd_res->params.btwt_cfg;
+    ncp_btwt_set_t *cfg;
+    int i;
+
+    if (btwt->action == ACTION_GET && cmd_res->header.result == NCP_CMD_RESULT_OK)
+    {
+        (void)PRINTF("btwt cfg count %d:\r\n", btwt->count);
+        for (i = 0; i < btwt->count; i++)
+        {
+            cfg = &btwt->btwt_sets[i];
+            (void)PRINTF("id[%d] mantissa[%d] exponent[%d] nominal_wake[%d]\r\n",
+                cfg->btwt_id, cfg->bcast_mantissa, cfg->bcast_exponent, cfg->nominal_wake);
+        }
+    }
+    else
+    {
+        (void)PRINTF("btwt cfg action %d ret %hu\r\n", btwt->action, cmd_res->header.result);
+    }
     return WM_SUCCESS;
 }
 
@@ -5214,9 +5208,6 @@ static void send_cfg_msg(test_cfg_table_t *cfg, uint32_t index)
         case TEST_WLAN_11AX_CFG:
             ret = wlan_send_11axcfg_command();
             break;
-        case TEST_WLAN_BCAST_TWT:
-            ret = wlan_send_btwt_command();
-            break;
         case TEST_WLAN_TWT_SETUP:
             ret = wlan_send_twt_setup_command();
             break;
@@ -5268,9 +5259,59 @@ int wlan_set_11axcfg_command(int argc, char **argv)
     return WM_SUCCESS;
 }
 
-int wlan_set_btwt_command(int argc, char **argv)
+static void dump_wlan_btwt_usage(void)
 {
-    test_wlan_cfg_process(TEST_WLAN_BCAST_TWT, argc, argv);
+    (void)PRINTF("Usage:\r\n");
+    (void)PRINTF("wlan-bcast-twt get\r\n");
+    (void)PRINTF("wlan-bcast-twt set <sta_wait> <offset> <twtli> <session_num>\
+ <id0> <mantissa0> <exponent0> <nominal_wake0> <id1> <mantissa1> <exponent1> <nominal_wake1> ...\r\n");
+    (void)PRINTF("AP BTWT setting. \r\n");
+    (void)PRINTF("Note: If set cfg, session_num, the number of TWT sessions, range: [2-5]\r\n");
+}
+
+int wlan_bcast_twt_command(int argc, char **argv)
+{
+    int ret = 0;
+    NCP_CMD_BTWT_CFG_INFO btwt_cfg = {0};
+    int i;
+
+    if (argc < 2)
+    {
+        dump_wlan_btwt_usage();
+        return -WM_FAIL;
+    }
+
+    if (0 == strncmp(argv[1], "get", 3))
+    {
+        btwt_cfg.action = ACTION_GET;
+        ret = wlan_send_btwt_command((uint8_t *)(void *)&btwt_cfg);
+        (void)ret;
+    }
+    else if (0 == strncmp(argv[1], "set", 3))
+    {
+        btwt_cfg.action              = ACTION_SET;
+        btwt_cfg.bcast_bet_sta_wait  = a2hex_or_atoi(argv[2]);
+        btwt_cfg.bcast_offset        = a2hex_or_atoi(argv[3]);
+        btwt_cfg.bcast_twtli         = a2hex_or_atoi(argv[4]);
+        btwt_cfg.count               = a2hex_or_atoi(argv[5]);
+
+        if (btwt_cfg.count < 2 || argc != 6 + 4 * btwt_cfg.count)
+        {
+            dump_wlan_btwt_usage();
+            return -WM_FAIL;
+        }
+
+        for (i = 0; i < btwt_cfg.count; ++i)
+        {
+            btwt_cfg.btwt_sets[i].btwt_id        = a2hex_or_atoi(argv[6 + i * 4 + 0]);
+            btwt_cfg.btwt_sets[i].bcast_mantissa = a2hex_or_atoi(argv[6 + i * 4 + 1]);
+            btwt_cfg.btwt_sets[i].bcast_exponent = a2hex_or_atoi(argv[6 + i * 4 + 2]);
+            btwt_cfg.btwt_sets[i].nominal_wake   = a2hex_or_atoi(argv[6 + i * 4 + 3]);
+        }
+
+        ret = wlan_send_btwt_command((uint8_t *)(void *)&btwt_cfg);
+        (void)ret;
+    }
     return WM_SUCCESS;
 }
 
@@ -8981,7 +9022,7 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-uap-prov-start", NULL, wlan_uap_prov_start_command},
     {"wlan-uap-prov-reset", NULL, wlan_uap_prov_reset_command},
     {"wlan-uap-prov-set-uapcfg", "<ssid> [<sec> <password>]", wlan_uap_prov_set_uapcfg},
-    {"wlan-set-btwt-cfg", NULL, wlan_set_btwt_command},
+    {"wlan-bcast-twt", "<set/get>", wlan_bcast_twt_command},
     {"wlan-twt-setup", NULL, wlan_twt_setup_command},
     {"wlan-twt-teardown", NULL, wlan_twt_teardown_command},
     {"wlan-get-twt-report", NULL, wlan_get_twt_report_command},

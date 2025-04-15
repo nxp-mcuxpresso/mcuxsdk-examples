@@ -1684,6 +1684,20 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_11AX_CFG
     HE_CAP_ParamSet_t he_cap_tlv;
 } NCP_TLV_PACK_END NCP_CMD_11AX_CFG_INFO;
 
+/** This structure is used for broadcast various TWT config sets */
+#define BTWT_AGREEMENT_MAX 5
+typedef NCP_TLV_PACK_START struct
+{
+    /** BTWT ID */
+    uint8_t btwt_id;
+    /** BTWT Mantissa */
+    uint16_t bcast_mantissa;
+    /** BTWT Exponent */
+    uint8_t bcast_exponent;
+    /** Range 64-255 */
+    uint8_t nominal_wake;
+} NCP_TLV_PACK_END ncp_btwt_set_t;
+
 /** This structure is used for BTWT configuration.
  * The AP manages BTWT working mechanism: the AP announces the TWT time
  * period of the current round in each beacon frame. In some cases, 
@@ -1696,22 +1710,18 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_11AX_CFG
  */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_BTWT_CFG
 {
-    /** Action, only support 1: set. */
-    uint16_t action;
-    /** Subcommand ID, the subcommand ID of BTWT is 0x125. */
-    uint16_t sub_id;
-    /** Nominal minimum TWT wake duration. */
-    uint8_t nominal_wake;
-    /** Maximum number of STAs supported. */
-    uint8_t max_sta_support;
-    /** TWT wake interval mantissa, range: [0 - (2^16-1)]. */
-    uint16_t twt_mantissa;
-    /** TWT wake interval offset. */
-    uint16_t twt_offset;
-    /** TWT wake interval exponent. */
-    uint8_t twt_exponent;
-    /** Service period gap. */
-    uint8_t sp_gap;
+    /** Action 0: get, 1: set */
+    uint8_t action;
+    /** Reserved */
+    uint8_t bcast_bet_sta_wait;
+    /** Reserved */
+    uint16_t bcast_offset;
+    /** Reserved */
+    uint8_t bcast_twtli;
+    /** Count of BTWT agreement sets */
+    uint8_t count;
+    /** BTWT agreement sets */
+    ncp_btwt_set_t btwt_sets[BTWT_AGREEMENT_MAX];
 } NCP_TLV_PACK_END NCP_CMD_BTWT_CFG_INFO;
 
 /** This structure is used for TWT configuration. */

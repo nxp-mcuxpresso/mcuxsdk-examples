@@ -2133,37 +2133,29 @@ int wlan_set_11axcfg_command(int argc, char **argv);
 int wlan_process_11axcfg_response(uint8_t *res);
 
 /**
- * This API is used to modify and set Wi-Fi BTWT (broadcast target awake time) config.
- *
- * \note Implemented as global variable arrays with default config.
- *       This API can get and change one parameter and
- *       it will be restored until reboot.
- *       Then this config data can be sent to Wi-Fi.
- *       Refer to \ref NCP_CMD_BTWT_CFG_INFO for config parameter usage and length.
+ * This API is used to get and set Wi-Fi BTWT (broadcast target awake time) config.
  *
  * \param[in] argc    Argument count, the number of strings pointed to by argv, \n
  *                    argc should be at least 2.
  * \param[in] argv    Argument vector, \n
- *                    argv[0]: wlan-set-btwt-cfg \n
- *                    argv[1]: action in string (Required)
- *                             help: show helper
- *                             dump: dump parameter data currently restored
- *                             set: set one parameter
- *                             done: configure current data to Wi-Fi \n
- *                    argv[2]: parameter name (Required when action is "set") \n
- *                    argv[3]: parameter value in hexadecimal,
- *                             have more argvs when value is more than one byte,
- *                             like a byte array or uint16_t, uint32_t,
- *                             uint16_t and uint32_t is ordered in little-endian
- *                             (Required when action is "set") \n
+ *                    argv[0]: wlan-bcast-twt \n
+ *                    argv[1]: get/set (Required) \n
+ *                    argv[2]: Reserved for now, 0 (Required when action is "set") \n
+ *                    argv[3]: Reserved for now, 0 \n
+ *                    argv[4]: Reserved for now, 0 \n
+ *                    argv[5]: TWT Session number, range [2 - 5] \n
+ *                    argv[6]: Session 0 id, 0 \n
+ *                    argv[7]: Session 0 mantissa \n
+ *                    argv[8]: Session 0 exponent \n
+ *                    argv[9]: Session 0 nominal wake \n
+ *                    argv[10]: Session 1 id, 1 \n
  *                    ... \n
- *                    argv[x]: parameter value in hexadecimal,
- *                             uint16_t and uint32_t is ordered in little-endian
+ *                    argv[25]: Session 4 nominal wake, if there are 5 sessions \n
  *
  * \return WM_SUCCESS if success.
  * \return -WM_FAIL if failure.
  */
-int wlan_set_btwt_command(int argc, char **argv);
+int wlan_bcast_twt_command(int argc, char **argv);
 
 /**
  * This API is used to process BTWT command response.

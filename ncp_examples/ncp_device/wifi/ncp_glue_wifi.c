@@ -2599,12 +2599,47 @@ static int wlan_ncp_11ax_cfg(void *data)
 static int wlan_ncp_btwt_cfg(void *data)
 {
     int ret;
-
+    NCP_CMD_BTWT_CFG_INFO *tlv = (NCP_CMD_BTWT_CFG_INFO *)data;
     wlan_btwt_config_t btwt_config;
-    (void)memcpy((void *)&btwt_config, data, sizeof(btwt_config));
 
-    ret = wlan_set_btwt_cfg(&btwt_config);
-    wlan_ncp_prepare_status(NCP_RSP_BTWT_CFG, ret);
+    if (tlv->action == ACTION_GET)
+    {
+        NCPCmd_DS_COMMAND *cmd_res  = wlan_ncp_get_response_buffer();
+        wlan_btwt_config_t *get_cfg =
+            (wlan_btwt_config_t *)(void *)&cmd_res->params.btwt_cfg.bcast_bet_sta_wait;
+
+        cmd_res->header.cmd  = NCP_RSP_BTWT_CFG;
+        cmd_res->header.size = NCP_CMD_HEADER_LEN;
+
+        ret = wlan_get_btwt_cfg(get_cfg);
+        cmd_res->header.size  += sizeof(wlan_btwt_config_t);
+        if (ret == WM_SUCCESS)
+        {
+            cmd_res->header.result = NCP_CMD_RESULT_OK;
+        }
+        else
+        {
+            cmd_res->header.result = NCP_CMD_RESULT_ERROR;
+        }
+    }
+    else if (tlv->action == ACTION_SET)
+    {
+        (void)memcpy((void *)&btwt_config, (void *)&tlv->bcast_bet_sta_wait, sizeof(btwt_config));
+        ret = wlan_set_btwt_cfg(&btwt_config);
+        if (ret == WM_SUCCESS)
+        {
+            wlan_ncp_prepare_status(NCP_RSP_BTWT_CFG, NCP_CMD_RESULT_OK);
+        }
+        else
+        {
+            wlan_ncp_prepare_status(NCP_RSP_BTWT_CFG, NCP_CMD_RESULT_ERROR);
+        }
+    }
+    else
+    {
+        ret = -1;
+        wlan_ncp_prepare_status(NCP_RSP_BTWT_CFG, NCP_CMD_RESULT_ERROR);
+    }
     return ret;
 }
 
