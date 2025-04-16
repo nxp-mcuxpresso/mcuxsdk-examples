@@ -126,6 +126,10 @@ ErrorCode_t vcom_init(USBD_HANDLE_T hUsb, USB_CORE_DESCS_T *pDesc, USBD_API_INIT
         /* allocate transfer buffers */
         g_vCOM.rx_buff = (uint8_t *)cdc_param.mem_base;
         cdc_param.mem_base += VCOM_RX_BUF_SZ;
+        if (cdc_param.mem_size < VCOM_RX_BUF_SZ)
+        {
+           return ERR_FAILED;
+        }
         cdc_param.mem_size -= VCOM_RX_BUF_SZ;
 
         /* register endpoint interrupt handler */
