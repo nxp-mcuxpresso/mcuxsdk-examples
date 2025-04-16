@@ -8,7 +8,3 @@ mcux_set_variable(MEMSIZE     ${NXP_ZB_BASE}/tools/memsize2/memsize.py)
 mcux_set_variable(ENCRYPTION_KEY 1234567890ABCDEFA1B2C3D4E5F6F1B4)
 mcux_set_variable(MANUFACTURER_CODE 0x1037)
 mcux_set_variable(OTA_IMAGE_TYPE 0x0003)
-
-mcux_set_variable(CONFIG_ZB_ROUTER_SINGLE_CHANNEL "12")
-mcux_set_variable(CONFIG_ZB_ROUTER_TRACE_APP 1)
-mcux_set_variable(CONFIG_ZB_ROUTER_TRACE_ZCL 1)

@@ -17,10 +17,6 @@ mcux_set_variable(PDUMCONFIG  ${NXP_ZB_BASE}/tools/PDUMConfig/Source/PDUMConfig.
 mcux_set_variable(ZPSCONFIG   ${NXP_ZB_BASE}/tools/ZPSConfig/Source/ZPSConfig.py)
 mcux_set_variable(ZPSCFG      ${NXP_ZB_BASE}/examples/zigbee_coprocessor/src/coordinator.zpscfg)
 
-mcux_set_variable(CONFIG_ZB_COORD_SINGLE_CHANNEL "12")
-mcux_set_variable(CONFIG_ZB_COORD_TRACE_APP 1)
-mcux_set_variable(CONFIG_ZB_COORD_TRACE_ZCL 1)
-
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/zigbee/coprocessor/bm/reconfig.cmake OPTIONAL)
 
 mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL.a)
@@ -78,9 +74,9 @@ mcux_add_source(
 )
 
 mcux_add_macro(
-    SINGLE_CHANNEL=${CONFIG_ZB_COORD_SINGLE_CHANNEL}
-    TRACE_APP=${CONFIG_ZB_COORD_TRACE_APP}
-    TRACE_ZCL=${CONFIG_ZB_COORD_TRACE_ZCL}
+    SINGLE_CHANNEL=CONFIG_ZB_COORD_SINGLE_CHANNEL
+    TRACE_APP=CONFIG_ZB_COORD_TRACE_APP
+    TRACE_ZCL=CONFIG_ZB_COORD_TRACE_ZCL
     ZPS_GENERATED_FILE=\\\"${APPLICATION_BINARY_DIR}/zps_gen.h\\\"
     PDUM_GENERATED_FILE=\\\"${APPLICATION_BINARY_DIR}/pdum_gen.h\\\"
 )
