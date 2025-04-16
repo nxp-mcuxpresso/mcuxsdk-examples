@@ -13,7 +13,7 @@
 /*${macro:start}*/
 #define EXAMPLE_CAN                CAN0
 #define EXAMPLE_FLEXCAN_IRQn       CAN0_ORed_0_15_MB_IRQn
-#define EXAMPLE_FLEXCAN_IRQHandler CAN0_IRQHandler
+#define EXAMPLE_FLEXCAN_IRQHandler CAN0_ORed_0_15_MB_IRQHandler
 
 #define RX_MESSAGE_BUFFER_NUM (1)
 #define TX_MESSAGE_BUFFER_NUM (0)
