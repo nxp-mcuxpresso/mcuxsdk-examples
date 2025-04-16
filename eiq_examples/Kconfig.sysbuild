@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -28,4 +28,8 @@ config secondary_config
     default "debug" if $(config) = "debug"
     default "release" if $(config) = "release"
 
-source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"
+# This is for internal board support
+osource "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"
+
+# This is for external custom board support
+osource "${CUSTOM_BOARD_ROOT}/${board}/Kconfig.sysbuild"

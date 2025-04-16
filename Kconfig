@@ -1,8 +1,13 @@
-# Copyright 2024 NXP
+# Copyright 2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-rsource "../${board_root}/${board}/Kconfig"
+# External repository board, exclusive to the internal repository board
+osource "${CUSTOM_BOARD_ROOT}/${board}/Kconfig"
+
+# Internal repository board, exclusive to the external repository board
+orsource "../${board_root}/${board}/Kconfig"
+
 rsource "_common/Kconfig.interfaces"
 
 menu "Project Segments"

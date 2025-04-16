@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -11,4 +11,8 @@ config secondary_toolchain
     string
     default "$(toolchain)"
 
-source "${SdkRootDirPath}/${board_root}/${board}/tfm_examples/Kconfig.sysbuild"
+# This is for internal board support
+osource "${SdkRootDirPath}/${board_root}/${board}/tfm_examples/Kconfig.sysbuild"
+
+# This is for external custom board support
+osource "${CUSTOM_BOARD_ROOT}/${board}/tfm_examples/Kconfig.sysbuild"

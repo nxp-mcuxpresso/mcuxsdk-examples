@@ -6,4 +6,8 @@ config secondary_toolchain
     string
     default "$(toolchain)"
 
-source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"
+# This is for internal board support
+osource "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"
+
+# This is for external custom board support
+osource "${CUSTOM_BOARD_ROOT}/${board}/Kconfig.sysbuild"
