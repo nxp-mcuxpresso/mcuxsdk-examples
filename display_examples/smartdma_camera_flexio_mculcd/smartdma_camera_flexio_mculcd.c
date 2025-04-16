@@ -13,7 +13,6 @@
 #include "fsl_st7796s.h"
 #include "fsl_gpio.h"
 #include "fsl_smartdma.h"
-#include "fsl_smartdma_mcxn.h"
 #include "fsl_smartdma_prv.h"
 #include "fsl_inputmux.h"
 #include "fsl_ov7670.h"

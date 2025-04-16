@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -151,6 +151,50 @@ void BOARD_InitCANPins(void);
  *
  */
 void BOARD_InitSLCDPins(void);
+
+#define PCR_IBE_ibe1 0x01u           /*!<@brief Input Buffer Enable: Enables */
+#define PORT0_PCR7_MUX_mux110 0x06u  /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT2_PCR10_MUX_mux110 0x06u /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT2_PCR11_MUX_mux110 0x06u /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT2_PCR14_MUX_mux110 0x06u /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT2_PCR18_MUX_mux110 0x06u /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT2_PCR22_MUX_mux110 0x06u /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT2_PCR24_MUX_mux00 0x00u  /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+#define PORT2_PCR25_MUX_mux00 0x00u  /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+#define PORT2_PCR8_MUX_mux110 0x06u  /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT2_PCR9_MUX_mux110 0x06u  /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT4_PCR0_MUX_mux110 0x06u  /*!<@brief Pin Multiplex Control: Alternative 6 (chip-specific) */
+#define PORT4_PCR1_MUX_mux00 0x00u   /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+#define PORT4_PCR3_MUX_mux00 0x00u   /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFlexioMculcdPins(void);
+
+#define PCR_IBE_ibe1 0x01u          /*!<@brief Input Buffer Enable: Enables */
+#define PORT2_PCR26_MUX_mux00 0x00u /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+#define PORT4_PCR2_MUX_mux01 0x01u  /*!<@brief Pin Multiplex Control: Alternative 1 (chip-specific) */
+#define PORT4_PCR6_MUX_mux00 0x00u  /*!<@brief Pin Multiplex Control: Alternative 0 (GPIO) */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFlexioCameraPins(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFlexioMculcdSmartdmaTrigger(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFlexioCameraSmartdmaTrigger(void);
 
 #if defined(__cplusplus)
 }

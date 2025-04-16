@@ -16,4 +16,5 @@ smartdma_camera_flexio_mculcd:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
+    frdmmcxa276: []
     frdmmcxn947@cm33_core0: []

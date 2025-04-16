@@ -82,6 +82,11 @@
 #define LOGIC_LED_ON  0U
 #define LOGIC_LED_OFF 1U
 
+/* Camera */
+#define BOARD_CAMERA_I2C_BASEADDR   LPI2C2
+#define BOARD_CAMERA_I2C_INSTANCE   2U
+#define BOARD_CAMERA_I2C_CLOCK_FREQ CLOCK_GetLpi2cClkFreq(BOARD_CAMERA_I2C_INSTANCE)
+
 #define LED_RED_INIT(output)                                           \
     GPIO_PinWrite(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, output); \
     BOARD_LED_RED_GPIO->PDDR |= (1U << BOARD_LED_RED_GPIO_PIN)               /*!< Enable target LED_RED */
@@ -135,6 +140,11 @@ status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
                              uint8_t subaddressSize,
                              uint8_t *rxBuff,
                              uint8_t rxBuffSize);
+void BOARD_Camera_I2C_Init(void);
+status_t BOARD_Camera_I2C_SendSCCB(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
+status_t BOARD_Camera_I2C_ReceiveSCCB(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 
 #if defined(__cplusplus)

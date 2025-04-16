@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -31,6 +31,7 @@ pin_labels:
 #include "fsl_common.h"
 #include "fsl_port.h"
 #include "fsl_gpio.h"
+#include "fsl_inputmux.h"
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
@@ -1508,6 +1509,619 @@ void BOARD_InitSLCDPins(void)
                                                       .lockRegister = kPORT_UnlockRegister};
     /* PORT0_27 (pin 134) is configured as LCD_P31 */
     PORT_SetPinConfig(PORT0, 27U, &port0_27_pin134_config);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFlexioMculcdPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '59', peripheral: GPIO2, signal: 'GPIO, 24', pin_signal: P2_24/TRIG_OUT6/CT_INP8/ADC2_A3, direction: INPUT}
+  - {pin_num: '24', peripheral: GPIO4, signal: 'GPIO, 3', pin_signal: P4_3/LPI2C2_SCL/LPUART4_TXD/CT4_MAT1/PWM0_B2/FLEXIO0_D11/SmartDMA_PIO23/ADC2_A19, direction: OUTPUT}
+  - {pin_num: '22', peripheral: GPIO4, signal: 'GPIO, 1', pin_signal: P4_1/PWM0_B3/FLEXIO0_D9/SmartDMA_PIO21/ADC2_A17, direction: OUTPUT}
+  - {pin_num: '88', peripheral: GPIO3, signal: 'GPIO, 16', pin_signal: P3_16/LPUART4_RTS_B/CT_INP8/FLEXIO0_D24/PWM1_A0/LCD_P44/SmartDMA_PIO16, direction: OUTPUT}
+  - {pin_num: '60', peripheral: GPIO2, signal: 'GPIO, 25', pin_signal: P2_25/TRIG_OUT7/CT_INP9/ADC3_A3, direction: INPUT}
+  - {pin_num: '116', peripheral: FLEXIO0, signal: 'D, 7', pin_signal: P0_7/WUU0_IN1/CT_INP3/FLEXIO0_D7/SmartDMA_PIO3/ADC2_A11/CMP2_IN1}
+  - {pin_num: '21', peripheral: FLEXIO0, signal: 'D, 8', pin_signal: P4_0/TRIG_IN5/PWM0_A3/FLEXIO0_D8/SmartDMA_PIO20/ADC2_A16}
+  - {pin_num: '41', peripheral: FLEXIO0, signal: 'D, 16', pin_signal: P2_8/TRIG_OUT3/CT3_MAT0/FLEXIO0_D16}
+  - {pin_num: '42', peripheral: FLEXIO0, signal: 'D, 17', pin_signal: P2_9/TRIG_IN4/CT3_MAT1/FLEXIO0_D17}
+  - {pin_num: '43', peripheral: FLEXIO0, signal: 'D, 18', pin_signal: P2_10/TRIG_OUT5/LPUART2_TXD/CT3_MAT2/FLEXIO0_D18/SmartDMA_PIO14/ADC2_A1}
+  - {pin_num: '44', peripheral: FLEXIO0, signal: 'D, 19', pin_signal: P2_11/TRIG_IN4/LPUART2_RXD/CT3_MAT3/FLEXIO0_D19/SmartDMA_PIO15/ADC3_A1}
+  - {pin_num: '92', peripheral: FLEXIO0, signal: 'D, 20', pin_signal: P3_12/LPUART2_RTS_B/LPUART3_TXD/CT1_MAT2/PWM0_X0/FLEXIO0_D20/PWM1_A2/LCD_P40/SmartDMA_PIO12/ADC3_A14}
+  - {pin_num: '91', peripheral: FLEXIO0, signal: 'D, 21', pin_signal: P3_13/LPUART2_CTS_B/LPUART3_RXD/CT1_MAT3/PWM0_X1/FLEXIO0_D21/PWM1_B2/LCD_P41/SmartDMA_PIO13/ADC3_A15}
+  - {pin_num: '49', peripheral: FLEXIO0, signal: 'D, 22', pin_signal: P2_14/CT4_MAT2/FLEXIO0_D22}
+  - {pin_num: '8', peripheral: FLEXIO0, signal: 'D, 23', pin_signal: P1_15/WUU0_IN13/LPI2C1_SDAS/LPUART2_CTS_B/CT3_MAT1/FLEXIO0_D23/SmartDMA_PIO11/LCD_P13/ADC1_A13}
+  - {pin_num: '77', peripheral: FLEXIO0, signal: 'D, 24', pin_signal: P3_24/TRIG_IN11/CT_INP16/FLEXIO0_D24/SmartDMA_PIO24/ADC3_A22}
+  - {pin_num: '76', peripheral: FLEXIO0, signal: 'D, 25', pin_signal: P3_25/TRIG_OUT6/CT_INP15/FLEXIO0_D25/SmartDMA_PIO25/ADC3_A23}
+  - {pin_num: '53', peripheral: FLEXIO0, signal: 'D, 26', pin_signal: P2_18/CT3_MAT2/FLEXIO0_D26}
+  - {pin_num: '12', peripheral: FLEXIO0, signal: 'D, 27', pin_signal: P1_19/WUU0_IN15/FREQME_CLK_IN1/CT3_MAT1/FLEXIO0_D27/SmartDMA_PIO15/LPUART5_CTS_B/CAN0_RXD/ADC1_A17}
+  - {pin_num: '83', peripheral: FLEXIO0, signal: 'D, 28', pin_signal: P3_20/TRIG_OUT0/LPI2C3_SDA/LPUART1_RXD/CT2_MAT2/PWM0_X2/FLEXIO0_D28/PWM1_A3/SmartDMA_PIO20/ADC3_A18}
+  - {pin_num: '72', peripheral: FLEXIO0, signal: 'D, 29', pin_signal: P3_29/WUU0_IN27/ISPMODE_N/LPI2C3_HREQ/CT_INP3/CT3_MAT3/FLEXIO0_D29/SmartDMA_PIO29/ADC1_A22}
+  - {pin_num: '57', peripheral: FLEXIO0, signal: 'D, 30', pin_signal: P2_22/CT2_MAT2/FLEXIO0_D30}
+  - {pin_num: '80', peripheral: FLEXIO0, signal: 'D, 31', pin_signal: P3_23/LPUART1_CTS_B/CT_INP11/FLEXIO0_D31/PWM1_X3/SmartDMA_PIO23/ADC3_A21}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFlexioMculcdPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFlexioMculcdPins(void)
+{
+    /* GPIO2: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO2);
+    /* GPIO3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO3);
+    /* GPIO4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO4);
+    /* PORT0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT0);
+    /* PORT1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* PORT2: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    /* PORT3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT3);
+    /* PORT4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT4);
+    /* GPIO2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO2_RST_SHIFT_RSTn);
+    /* GPIO3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+    /* GPIO4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO4_RST_SHIFT_RSTn);
+    /* FLEXIO0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);
+    /* PORT0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT0_RST_SHIFT_RSTn);
+    /* PORT1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* PORT2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    /* PORT3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+    /* PORT4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
+
+    gpio_pin_config_t gpio2_pin59_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO2_24 (pin 59)  */
+    GPIO_PinInit(GPIO2, 24U, &gpio2_pin59_config);
+
+    gpio_pin_config_t gpio2_pin60_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO2_25 (pin 60)  */
+    GPIO_PinInit(GPIO2, 25U, &gpio2_pin60_config);
+
+    gpio_pin_config_t gpio3_pin88_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_16 (pin 88)  */
+    GPIO_PinInit(GPIO3, 16U, &gpio3_pin88_config);
+
+    gpio_pin_config_t gpio4_pin22_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO4_1 (pin 22)  */
+    GPIO_PinInit(GPIO4, 1U, &gpio4_pin22_config);
+
+    gpio_pin_config_t gpio4_pin24_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO4_3 (pin 24)  */
+    GPIO_PinInit(GPIO4, 3U, &gpio4_pin24_config);
+
+    PORT0->PCR[7] = ((PORT0->PCR[7] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT0_7 (pin 116) is configured as FLEXIO0_D7. */
+                     | PORT_PCR_MUX(PORT0_PCR7_MUX_mux110)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_15 (pin 8) is configured as FLEXIO0_D23 */
+    PORT_SetPinMux(PORT1, 15U, kPORT_MuxAlt6);
+
+    PORT1->PCR[15] = ((PORT1->PCR[15] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_19 (pin 12) is configured as FLEXIO0_D27 */
+    PORT_SetPinMux(PORT1, 19U, kPORT_MuxAlt6);
+
+    PORT1->PCR[19] = ((PORT1->PCR[19] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[10] = ((PORT2->PCR[10] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_10 (pin 43) is configured as FLEXIO0_D18. */
+                      | PORT_PCR_MUX(PORT2_PCR10_MUX_mux110)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[11] = ((PORT2->PCR[11] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_11 (pin 44) is configured as FLEXIO0_D19. */
+                      | PORT_PCR_MUX(PORT2_PCR11_MUX_mux110)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[14] = ((PORT2->PCR[14] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_14 (pin 49) is configured as FLEXIO0_D22. */
+                      | PORT_PCR_MUX(PORT2_PCR14_MUX_mux110)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[18] = ((PORT2->PCR[18] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_18 (pin 53) is configured as FLEXIO0_D26. */
+                      | PORT_PCR_MUX(PORT2_PCR18_MUX_mux110)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[22] = ((PORT2->PCR[22] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_22 (pin 57) is configured as FLEXIO0_D30. */
+                      | PORT_PCR_MUX(PORT2_PCR22_MUX_mux110)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[24] = ((PORT2->PCR[24] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_24 (pin 59) is configured as P2_24. */
+                      | PORT_PCR_MUX(PORT2_PCR24_MUX_mux00)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[25] = ((PORT2->PCR[25] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_25 (pin 60) is configured as P2_25. */
+                      | PORT_PCR_MUX(PORT2_PCR25_MUX_mux00)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[8] = ((PORT2->PCR[8] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT2_8 (pin 41) is configured as FLEXIO0_D16. */
+                     | PORT_PCR_MUX(PORT2_PCR8_MUX_mux110)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[9] = ((PORT2->PCR[9] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT2_9 (pin 42) is configured as FLEXIO0_D17. */
+                     | PORT_PCR_MUX(PORT2_PCR9_MUX_mux110)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_12 (pin 92) is configured as FLEXIO0_D20 */
+    PORT_SetPinMux(PORT3, 12U, kPORT_MuxAlt6);
+
+    PORT3->PCR[12] = ((PORT3->PCR[12] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_13 (pin 91) is configured as FLEXIO0_D21 */
+    PORT_SetPinMux(PORT3, 13U, kPORT_MuxAlt6);
+
+    PORT3->PCR[13] = ((PORT3->PCR[13] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_16 (pin 88) is configured as P3_16 */
+    PORT_SetPinMux(PORT3, 16U, kPORT_MuxAlt0);
+
+    PORT3->PCR[16] = ((PORT3->PCR[16] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_20 (pin 83) is configured as FLEXIO0_D28 */
+    PORT_SetPinMux(PORT3, 20U, kPORT_MuxAlt6);
+
+    PORT3->PCR[20] = ((PORT3->PCR[20] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_23 (pin 80) is configured as FLEXIO0_D31 */
+    PORT_SetPinMux(PORT3, 23U, kPORT_MuxAlt6);
+
+    PORT3->PCR[23] = ((PORT3->PCR[23] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_24 (pin 77) is configured as FLEXIO0_D24 */
+    PORT_SetPinMux(PORT3, 24U, kPORT_MuxAlt6);
+
+    PORT3->PCR[24] = ((PORT3->PCR[24] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_25 (pin 76) is configured as FLEXIO0_D25 */
+    PORT_SetPinMux(PORT3, 25U, kPORT_MuxAlt6);
+
+    PORT3->PCR[25] = ((PORT3->PCR[25] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_29 (pin 72) is configured as FLEXIO0_D29 */
+    PORT_SetPinMux(PORT3, 29U, kPORT_MuxAlt6);
+
+    PORT3->PCR[29] = ((PORT3->PCR[29] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT4->PCR[0] = ((PORT4->PCR[0] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT4_0 (pin 21) is configured as FLEXIO0_D8. */
+                     | PORT_PCR_MUX(PORT4_PCR0_MUX_mux110)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT4->PCR[1] = ((PORT4->PCR[1] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT4_1 (pin 22) is configured as P4_1. */
+                     | PORT_PCR_MUX(PORT4_PCR1_MUX_mux00)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT4->PCR[3] = ((PORT4->PCR[3] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT4_3 (pin 24) is configured as P4_3. */
+                     | PORT_PCR_MUX(PORT4_PCR3_MUX_mux00)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFlexioCameraPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '113', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 0', pin_signal: P0_4/WUU0_IN0/CT0_MAT2/UTICK_CAP2/FLEXIO0_D4/SmartDMA_PIO0/CMP1_OUT/ADC2_A9}
+  - {pin_num: '114', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 1', pin_signal: P0_5/CT0_MAT3/UTICK_CAP3/FLEXIO0_D5/SmartDMA_PIO1/CMP2_OUT/ADC2_A10}
+  - {pin_num: '104', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 2', pin_signal: P3_2/LPSPI1_PCS1/CT4_MAT0/PWM0_X0/FLEXIO0_D10/PWM1_X2/SmartDMA_PIO2/ADC3_A8}
+  - {pin_num: '103', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 3', pin_signal: P3_3/CT4_MAT1/PWM0_X1/FLEXIO0_D11/PWM1_X3/SmartDMA_PIO3/ADC3_A9}
+  - {pin_num: '102', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 4', pin_signal: P3_4/CT_INP18/PWM0_X2/FLEXIO0_D12/SmartDMA_PIO4/ADC3_A10}
+  - {pin_num: '101', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 5', pin_signal: P3_5/CT_INP19/PWM0_X3/FLEXIO0_D13/SmartDMA_PIO5/ADC3_A11}
+  - {pin_num: '100', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 6', pin_signal: P3_6/CLKOUT/LPSPI1_PCS3/LPUART3_RTS_B/CT4_MAT2/PWM0_A3/FLEXIO0_D14/PWM1_A0/LCD_P34/SmartDMA_PIO6/FREQME_CLK_OUT1/ADC3_A12}
+  - {pin_num: '99', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 7', pin_signal: P3_7/TRIG_IN2/LPSPI1_PCS2/LPUART3_CTS_B/CT4_MAT3/PWM0_B3/FLEXIO0_D15/PWM1_B0/LCD_P35/SmartDMA_PIO7/ADC3_A13}
+  - {pin_num: '23', peripheral: SYSCON, signal: CLKOUT, pin_signal: P4_2/WUU0_IN16/CLKOUT/LPI2C2_SDAS/LPUART3_RXD/CT4_MAT0/PWM0_A2/FLEXIO0_D10/SmartDMA_PIO22/ADC2_A18}
+  - {pin_num: '61', peripheral: GPIO2, signal: 'GPIO, 26', pin_signal: P2_26/TRIG_IN5/CT_INP10, direction: INPUT, gpio_per_interrupt: kGPIO_ActiveHighTriggerOutputEnable}
+  - {pin_num: '75', peripheral: GPIO3, signal: 'GPIO, 26', pin_signal: P3_26/TRIG_IN10/CT_INP14/FLEXIO0_D26/SmartDMA_PIO26, direction: INPUT, gpio_per_interrupt: kGPIO_ActiveHighTriggerOutputEnable}
+  - {pin_num: '27', peripheral: GPIO4, signal: 'GPIO, 6', pin_signal: P4_6/TRIG_IN4/LPI2C2_HREQ/LPUART3_CTS_B/CT_INP6/PWM0_A0/FLEXIO0_D14/SmartDMA_PIO26/ADC2_A22,
+    direction: INPUT, gpio_per_interrupt: kGPIO_ActiveHighTriggerOutputEnable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFlexioCameraPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFlexioCameraPins(void)
+{
+    /* GPIO2: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO2);
+    /* GPIO3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO3);
+    /* GPIO4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO4);
+    /* PORT0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT0);
+    /* PORT2: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    /* PORT3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT3);
+    /* PORT4: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT4);
+    /* GPIO2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO2_RST_SHIFT_RSTn);
+    /* GPIO3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+    /* GPIO4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO4_RST_SHIFT_RSTn);
+    /* PORT0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT0_RST_SHIFT_RSTn);
+    /* PORT2 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    /* PORT3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+    /* PORT4 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT4_RST_SHIFT_RSTn);
+
+    gpio_pin_config_t gpio2_pin61_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO2_26 (pin 61)  */
+    GPIO_PinInit(GPIO2, 26U, &gpio2_pin61_config);
+
+    gpio_pin_config_t gpio3_pin75_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_26 (pin 75)  */
+    GPIO_PinInit(GPIO3, 26U, &gpio3_pin75_config);
+
+    gpio_pin_config_t gpio4_pin27_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO4_6 (pin 27)  */
+    GPIO_PinInit(GPIO4, 6U, &gpio4_pin27_config);
+
+    /* Interrupt configuration on GPIO2_26 (pin 61): Enable active high-trigger output */
+    GPIO_SetPinInterruptConfig(GPIO2, 26U, kGPIO_ActiveHighTriggerOutputEnable);
+
+    /* Interrupt configuration on GPIO3_26 (pin 75): Enable active high-trigger output */
+    GPIO_SetPinInterruptConfig(GPIO3, 26U, kGPIO_ActiveHighTriggerOutputEnable);
+
+    /* Interrupt configuration on GPIO4_6 (pin 27): Enable active high-trigger output */
+    GPIO_SetPinInterruptConfig(GPIO4, 6U, kGPIO_ActiveHighTriggerOutputEnable);
+
+    /* PORT0_4 (pin 113) is configured as SmartDMA_PIO0 */
+    PORT_SetPinMux(PORT0, 4U, kPORT_MuxAlt7);
+
+    PORT0->PCR[4] = ((PORT0->PCR[4] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT0_5 (pin 114) is configured as SmartDMA_PIO1 */
+    PORT_SetPinMux(PORT0, 5U, kPORT_MuxAlt7);
+
+    PORT0->PCR[5] = ((PORT0->PCR[5] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT2->PCR[26] = ((PORT2->PCR[26] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT2_26 (pin 61) is configured as P2_26. */
+                      | PORT_PCR_MUX(PORT2_PCR26_MUX_mux00)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_2 (pin 104) is configured as SmartDMA_PIO2 */
+    PORT_SetPinMux(PORT3, 2U, kPORT_MuxAlt10);
+
+    PORT3->PCR[2] = ((PORT3->PCR[2] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_26 (pin 75) is configured as P3_26 */
+    PORT_SetPinMux(PORT3, 26U, kPORT_MuxAlt0);
+
+    PORT3->PCR[26] = ((PORT3->PCR[26] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_3 (pin 103) is configured as SmartDMA_PIO3 */
+    PORT_SetPinMux(PORT3, 3U, kPORT_MuxAlt10);
+
+    PORT3->PCR[3] = ((PORT3->PCR[3] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_4 (pin 102) is configured as SmartDMA_PIO4 */
+    PORT_SetPinMux(PORT3, 4U, kPORT_MuxAlt10);
+
+    PORT3->PCR[4] = ((PORT3->PCR[4] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_5 (pin 101) is configured as SmartDMA_PIO5 */
+    PORT_SetPinMux(PORT3, 5U, kPORT_MuxAlt10);
+
+    PORT3->PCR[5] = ((PORT3->PCR[5] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_6 (pin 100) is configured as SmartDMA_PIO6 */
+    PORT_SetPinMux(PORT3, 6U, kPORT_MuxAlt10);
+
+    PORT3->PCR[6] = ((PORT3->PCR[6] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_7 (pin 99) is configured as SmartDMA_PIO7 */
+    PORT_SetPinMux(PORT3, 7U, kPORT_MuxAlt10);
+
+    PORT3->PCR[7] = ((PORT3->PCR[7] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT4->PCR[2] = ((PORT4->PCR[2] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT4_2 (pin 23) is configured as CLKOUT. */
+                     | PORT_PCR_MUX(PORT4_PCR2_MUX_mux01)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT4->PCR[6] = ((PORT4->PCR[6] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                     /* Pin Multiplex Control: PORT4_6 (pin 27) is configured as P4_6. */
+                     | PORT_PCR_MUX(PORT4_PCR6_MUX_mux00)
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFlexioMculcdSmartdmaTrigger:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {peripheral: SmartDMA0, signal: 'TRIG, 0', pin_signal: flexio_irq}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFlexioMculcdSmartdmaTrigger
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFlexioMculcdSmartdmaTrigger(void)
+{
+    /* INPUTMUX0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
+    /* INPUTMUX0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    /*  FlexioIrq connect to Smartdma0Trigger 0 */
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_FlexioIrqToSmartdma0Trigger);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFlexioCameraSmartdmaTrigger:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {peripheral: SmartDMA0, signal: 'TRIG, 0', pin_signal: gpio2_pin_event_trig}
+  - {peripheral: SmartDMA0, signal: 'TRIG, 1', pin_signal: gpio3_pin_event_trig}
+  - {peripheral: SmartDMA0, signal: 'TRIG, 2', pin_signal: gpio4_pin_event_trig}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFlexioCameraSmartdmaTrigger
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFlexioCameraSmartdmaTrigger(void)
+{
+    /* INPUTMUX0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateINPUTMUX0);
+    /* INPUTMUX0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+    /*  Gpio2PinEventTrig connect to Smartdma0Trigger 0 */
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_Gpio2PinEventTrigToSmartdma0Trigger);
+    /*  Gpio3PinEventTrig connect to Smartdma0Trigger 1 */
+    INPUTMUX_AttachSignal(INPUTMUX0, 1U, kINPUTMUX_Gpio3PinEventTrigToSmartdma0Trigger);
+    /*  Gpio4PinEventTrig connect to Smartdma0Trigger 2 */
+    INPUTMUX_AttachSignal(INPUTMUX0, 2U, kINPUTMUX_Gpio4PinEventTrigToSmartdma0Trigger);
 }
 /***********************************************************************************************************************
  * EOF

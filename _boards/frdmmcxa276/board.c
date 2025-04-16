@@ -49,6 +49,7 @@ void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz)
      * lpi2cConfig.sclGlitchFilterWidth_ns = 0;
      */
     LPI2C_MasterGetDefaultConfig(&lpi2cConfig);
+    
     LPI2C_MasterInit(base, &lpi2cConfig, clkSrc_Hz);
 }
 
@@ -90,5 +91,30 @@ status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
     xfer.dataSize       = rxBuffSize;
 
     return LPI2C_MasterTransferBlocking(base, &xfer);
+}
+
+void BOARD_Camera_I2C_Init(void)
+{
+    BOARD_LPI2C_Init(BOARD_CAMERA_I2C_BASEADDR, BOARD_CAMERA_I2C_CLOCK_FREQ);
+}
+
+status_t BOARD_Camera_I2C_SendSCCB(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize)
+{
+    return BOARD_LPI2C_Send(BOARD_CAMERA_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
+                                txBuffSize);
+}
+
+status_t BOARD_Camera_I2C_ReceiveSCCB(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
+{
+    status_t result = BOARD_LPI2C_Send(BOARD_CAMERA_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, NULL, 0U);
+   
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    return BOARD_LPI2C_Receive(BOARD_CAMERA_I2C_BASEADDR, deviceAddress, 0U, 0U, rxBuff, rxBuffSize);
 }
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
