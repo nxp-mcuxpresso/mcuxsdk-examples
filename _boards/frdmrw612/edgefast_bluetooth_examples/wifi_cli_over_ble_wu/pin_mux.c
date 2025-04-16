@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP.
+ * Copyright 2024-2025 NXP.
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,11 +14,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v16.0
+product: Pins v17.0
 processor: RW612
 package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 0.16.8
+processor_version: 24.12.10
 pin_labels:
 - {pin_num: M2, pin_signal: GPIO_11, label: button, identifier: button}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
