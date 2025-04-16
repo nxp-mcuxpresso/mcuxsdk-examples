@@ -10,20 +10,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-/* Valid Frequencies: 110000000U, 192000000U, 325000000U */
-#define DEMO_MAINCLK_FREQ 192000000U
-
-/* Define voltage limits */
-#if (DEMO_MAINCLK_FREQ == 325000000U)
-#define MAX_VDDCORE 1100000U /*1V1*/
-#elif (DEMO_MAINCLK_FREQ == 192000000U)
-#define MAX_VDDCORE 900000U  /*0V9*/
-#elif (DEMO_MAINCLK_FREQ == 110000000U)
-#define MAX_VDDCORE 800000U  /*0V9*/
-#else
-#error "Unsupported frequency point for PVTS."
-#endif
-#define MIN_VDDCORE 700000U /*0V7*/
+/*-----------------Demo configuration ----------------------*/
+/* Define if PVT runs on CPU only (0) or both on CPU & DSP(1). */
+#define DEMO_PVT_ON_CPU_DSP 1U
 
 /* How often for PVT task to check if VDDCORE can go lower. */
 #define PVT_TASK_WAIT_MS 10000
@@ -36,8 +25,27 @@
  */
 #define WORKLOAD_DELAY_MS 5000U
 
-/* Define if PVT runs on CPU only (0) or both on CPU & DSP(1). */
-#define DEMO_PVT_ON_CPU_DSP 0U
+#define DEMO_PRINTF_INTERRUPT_STATUS 1U /* Print in interrupt. */
+
+#define DEMO_MAINCLK_FREQ DEMO_MAINCLK_FREQ_SP1
+/*----------------------------------------------------------*/
+
+/* Valid Frequencies: 110000000U, 192000000U, 325000000U */
+#define DEMO_MAINCLK_FREQ_SP0 110000000U
+#define DEMO_MAINCLK_FREQ_SP1 192000000U
+#define DEMO_MAINCLK_FREQ_SP2 325000000U
+
+/* Define voltage limits */
+#if (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP2)
+#define MAX_VDDCORE 1100000U /*1V1*/
+#elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP1)
+#define MAX_VDDCORE 900000U  /*0V9*/
+#elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
+#define MAX_VDDCORE 800000U  /*0V9*/
+#else
+#error "Unsupported frequency point for PVTS."
+#endif
+#define MIN_VDDCORE 700000U           /*0V7*/
 
 #define DEMO_PMIC_ADJUST_STEP (6250U) /* in uV. */
 
@@ -54,9 +62,8 @@
 #define BOOT_FLAG                     0x1U      /* Flag indicates Core1 Boot Up*/
 #define DEMO_SENSE_M33_CPU_CLOCK_FREQ 32000000U /* CPU1 clock frequency. */
 
-#define DEMO_PRINTF_INTERRUPT_STATUS  1U        /* Print in interrupt. */
-#define DEMO_POWER_CPU1_PRINT_ENABLE  1U        /* Enable CPU1 log print or not, disable the log can save power. */
-#define DEMO_POWER_ENABLE_DEBUG       1U        /* Enable debug or not, disable the debug function/clock can save power. */
+#define DEMO_POWER_CPU1_PRINT_ENABLE 1U         /* Enable CPU1 log print or not, disable the log can save power. */
+#define DEMO_POWER_ENABLE_DEBUG      1U /* Enable debug or not, disable the debug function/clock can save power. */
 /*******************************************************************************
  * API
  ******************************************************************************/

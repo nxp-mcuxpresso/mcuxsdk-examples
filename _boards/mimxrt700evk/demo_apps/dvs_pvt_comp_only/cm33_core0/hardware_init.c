@@ -26,7 +26,6 @@
 /*${header:end}*/
 
 /*${macro:start}*/
-#define DEMO_CORE1_BOOT_ADDRESS 0x205A0000U /* CPU1 boot address. */
 /*${macro:end}*/
 
 /*${function:start}*/
@@ -46,27 +45,63 @@ void BOARD_DisableSharedSenseMainClk(void)
     POWER_EnablePD(kPDRUNCFG_SHUT_SENSES_MAINCLK); /* Keep Sense shared parts clock on. */
 }
 
+static void BOARD_BootClockRUN_InitFRO0(void)
+{
+    const clock_fro_config_t g_fro0Config_BOARD_BootClockRUN = {
+#if (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
+        .targetFreq = 220000000, /* FRO0 TUNER output clock frequency: 325000000Hz */
+#elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP1)
+        .targetFreq = 192000000, /* FRO0 TUNER output clock frequency: 192000000Hz */
+#else
+        .targetFreq = 325000000, /* FRO0 TUNER output clock frequency: 220000000Hz */
+#endif
+        .range         = 100,   /* FRO0 range value: ¡À 100counts */
+        .trim1DelayUs  = 15,    /* FRO0 Trim1 delay: 15us */
+        .trim2DelayUs  = 150,   /* FRO0 Trim2 delay: 150us */
+        .refDiv        = 1,     /* The FRO reference divider is 1 */
+        .enableInt     = 0,     /* The FRO interrupts are disabled */
+        .coarseTrimEn  = false, /* The coarse value autotrimming is disabled */
+        .fastStartupEn = false, /* The fast startup is disabled */
+    };
+
+    /* Enable power and ungate the FRO0. */
+    POWER_DisablePD(kPDRUNCFG_GATE_FRO0);
+    POWER_DisablePD(kPDRUNCFG_PD_FRO0);
+    /* Configure FRO clock module in closed loop (autotrimming) mode */
+    CLOCK_EnableFroClkFreqCloseLoop(FRO0, &g_fro0Config_BOARD_BootClockRUN,
+                                    kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
+    /* Setup domain specific clock gates */
+    CLOCK_EnableFro0ClkForDomain(kCLOCK_VddnComDomainEnable | kCLOCK_Vdd2CompDomainEnable);
+}
+
 void BOARD_ClockLPPreConfig(void)
 {
-    POWER_DisablePD(kPDRUNCFG_PD_FRO1);                            /* Make sure FRO1 is enabled. */
-#if (DEMO_MAINCLK_FREQ == 192000000U)
-    BOARD_BootClockRUN192M_InitClockModule(kClockModule_XTAL_OSC); /* Enable SOSC used for FRO trim. */
-    BOARD_BootClockRUN192M_InitClockModule(kClockModule_FRO0);
+    POWER_DisablePD(kPDRUNCFG_PD_FRO1);                        /* Make sure FRO1 is enabled. */
+
+    BOARD_BootClockRUN_InitClockModule(kClockModule_XTAL_OSC); /* Enable SOSC used for FRO trim. */
+    BOARD_BootClockRUN_InitFRO0();
+#if (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
+    CLOCK_SetClkDiv(kCLOCK_DivCmptMainClk, 2U);
+#else
+    CLOCK_SetClkDiv(kCLOCK_DivCmptMainClk, 1U);
+#endif
+
+    /* Switch COMPUTE_MAIN_CLK selector to FRO0.FRO_MAX_VDD2_COMP_CLK */
+    CLOCK_AttachClk(kFRO0_DIV1_to_COMPUTE_MAIN);
 
     /* Move clock to FRO0_DIV1. Note, for A0, AHB clock frequency must >= Flash clock frequency(ERR052440). */
     BOARD_SetXspiClock(XSPI0, 2, 1);
-    BOARD_BootClockRUN192M_InitClockModule(kClockModule_CLK_ROOT_COMPUTE_MAIN_CLK);
-#else
-#endif
 }
 
 void BOARD_ClockLPPostConfig(void)
 {
 #if defined(DEMO_PVT_ON_CPU_DSP) && (DEMO_PVT_ON_CPU_DSP != 0U)
     /* Enable FRO0 clock for DSP. */
-    CLOCK_EnableFro0ClkForDomain(kCLOCK_Vdd2CompDomainEnable | kCLOCK_Vdd2ComDomainEnable| kCLOCK_VddnComDomainEnable | kCLOCK_Vdd2DspDomainEnable);
+    CLOCK_EnableFro0ClkForDomain(kCLOCK_Vdd2CompDomainEnable | kCLOCK_Vdd2ComDomainEnable | kCLOCK_VddnComDomainEnable |
+                                 kCLOCK_Vdd2DspDomainEnable);
 #endif
 
+    SystemCoreClockUpdate();
 }
 
 void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
@@ -132,9 +167,9 @@ void BOARD_ConfigPMICRegEnable(pca9422_handle_t *handle)
     PCA9422_GetDefaultRegEnableConfig(&cfg);
 
     /* All regulators enable in RUN state. */
-    cfg.sw2Enable = true;
-    cfg.sw1Enable = true;
-    cfg.sw3Enable = true;
+    cfg.sw2Enable  = true;
+    cfg.sw1Enable  = true;
+    cfg.sw3Enable  = true;
     cfg.sw4Enable  = true;
     cfg.ldo1Enable = true;
     cfg.ldo2Enable = true;
@@ -150,8 +185,8 @@ void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
     /* Configure ENMODE */
     PCA9422_GetDefaultEnModeConfig(&cfg);
 
-    cfg.sw1OutEnMode = kPCA9422_EnmodeOnActiveSleep;
-    cfg.sw3OutEnMode = kPCA9422_EnmodeOnActiveSleep;
+    cfg.sw1OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
+    cfg.sw3OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
     cfg.sw2OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
     cfg.sw4OutEnMode  = kPCA9422_EnmodeOnActiveSleepStandby;
     cfg.ldo1OutEnMode = kPCA9422_EnmodeOnAll;
@@ -183,21 +218,20 @@ void APP_BootCore1(void)
     BOARD_ReleaseCore1Power();
     BOARD_InitAHBSC();
 #ifdef CORE1_IMAGE_COPY_TO_RAM
-    BOARD_CopyCore1Image(DEMO_CORE1_BOOT_ADDRESS);
+    BOARD_CopyCore1Image(CORE1_BOOT_ADDRESS);
 #endif
-    BOARD_BootCore1(DEMO_CORE1_BOOT_ADDRESS, DEMO_CORE1_BOOT_ADDRESS);
+    BOARD_BootCore1(CORE1_BOOT_ADDRESS, CORE1_BOOT_ADDRESS);
     BOARD_WaitCPU1Booted();
 }
 
 void BOARD_BootDSP(void)
 {
+#if (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
+    BOARD_DSP_Init(2U, 2U, true); /* Select FRO0_MAX divider by 2 for HIFI clock. */
+#else
     /* Boot HIFI4. */
     BOARD_DSP_Init(2U, 1U, true); /* Select FRO0_MAX divider by 1 for HIFI clock. */
-}
-
-void BOARD_TriggerEvent(uint32_t msg)
-{
-    MU_SendMsgNonBlocking(APP_MU, APP_MU_REG, msg);
+#endif
 }
 
 void BOARD_PowerInitPMIC(void)
@@ -265,8 +299,6 @@ void BOARD_InitPowerConfig(void)
     CLOCK_AttachClk(kNONE_to_TRNG);
     CLOCK_AttachClk(kNONE_to_SDIO0);
     CLOCK_AttachClk(kNONE_to_SDIO1);
-
-    BOARD_PowerInitPMIC();
 
     /* Keep the used resources on. */
     BOARD_EnableSharedSenseMainClk();     /* Keep Sense shared parts clock on. */
@@ -373,17 +405,11 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 
     POWER_ApplyPD();
 
-    /* PMIC is used. When using On-Chip regulator, need to be changed to kVddSrc_PMC. */
-    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
-    POWER_DisableRegulators(kPower_SCPC);
-
     POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
     POWER_ApplyPD();
 
-    BOARD_SetPmicVdd2Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
+    BOARD_SetPmicVdd1Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
     BOARD_SetPmicVdd1Voltage(
         POWER_CalcVoltLevel(kRegulator_Vdd1LDO, DEMO_SENSE_M33_CPU_CLOCK_FREQ, 0U)); /* CPU1 frequency 32MHZ. */
 }
@@ -440,7 +466,17 @@ void BOARD_InitHardware(void)
     BOARD_DisableIoPads();
     BOARD_InitPins();
 
-    BOARD_BootClockRUN192M();
+    /* PMIC is used. */
+    BOARD_PowerInitPMIC();
+    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
+    POWER_DisableRegulators(kPower_SCPC);
+#if (MAX_VDDCORE > 1000000U)
+    BOARD_SetPmicVdd2Voltage(MAX_VDDCORE);
+#endif
+
+    BOARD_BootClockRUN();
 
     DEMO_InitDebugConsole();
 
@@ -484,7 +520,8 @@ static inline void BOARD_RestoreClocks(void)
     /* Restore clock, power for used modules. */
     CLOCK_EnableFroClkOutput(FRO0, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
 #if defined(DEMO_PVT_ON_CPU_DSP) && (DEMO_PVT_ON_CPU_DSP != 0U)
-    CLOCK_EnableFro0ClkForDomain(kCLOCK_Vdd2CompDomainEnable | kCLOCK_VddnComDomainEnable | kCLOCK_Vdd2ComDomainEnable | kCLOCK_Vdd2DspDomainEnable);
+    CLOCK_EnableFro0ClkForDomain(kCLOCK_Vdd2CompDomainEnable | kCLOCK_VddnComDomainEnable | kCLOCK_Vdd2ComDomainEnable |
+                                 kCLOCK_Vdd2DspDomainEnable);
 #else
     CLOCK_EnableFro0ClkForDomain(kCLOCK_Vdd2CompDomainEnable | kCLOCK_VddnComDomainEnable);
 #endif

@@ -1,6 +1,5 @@
 /*
- * Copyright 2023-2025 NXP
- *
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -154,9 +153,6 @@ void BOARD_RequestDPD(const uint32_t exclude_from_pd[7])
 
     POWER_EnableSleepRBB(kPower_BodyBiasVdd1 | kPower_BodyBiasVdd2 | kPower_BodyBiasVddn | kPower_BodyBiasVdd1Sram |
                          kPower_BodyBiasVdd2Sram);
-     /* Need keep sense shared main clock in case CPU0 enters power down mode after CPU1. */
-    CLOCK_AttachClk(kLPOSC_to_SENSE_BASE);
-    CLOCK_AttachClk(kSENSE_BASE_to_SENSE_MAIN);
     POWER_RequestDeepPowerDown(exclude_from_pd);
 }
 
@@ -164,8 +160,6 @@ void BOARD_RequestFDPD(const uint32_t exclude_from_pd[7])
 {
     POWER_EnableSleepRBB(kPower_BodyBiasVdd1 | kPower_BodyBiasVdd2 | kPower_BodyBiasVddn | kPower_BodyBiasVdd1Sram |
                          kPower_BodyBiasVdd2Sram);
-    CLOCK_AttachClk(kLPOSC_to_SENSE_BASE);
-    CLOCK_AttachClk(kSENSE_BASE_to_SENSE_MAIN);
     POWER_RequestFullDeepPowerDown(exclude_from_pd);
 }
 /*${function:end}*/

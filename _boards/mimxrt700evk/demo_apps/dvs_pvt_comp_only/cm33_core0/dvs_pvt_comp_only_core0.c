@@ -1,6 +1,5 @@
 /*
- * Copyright 2024 NXP
- * All rights reserved.
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -26,6 +25,8 @@
 #include "queue.h"
 #include "timers.h"
 #include "semphr.h"
+
+#include "coremark.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -38,7 +39,7 @@
 #define workload_task_PRIORITY (configMAX_PRIORITIES - 2)
 #define pvt_task_PRIORITY      (configMAX_PRIORITIES - 1)
 
-#define WORKLOAD_TIMES (100U)
+#define WORKLOAD_TIMES (5U)
 
 /*******************************************************************************
  * Variables
@@ -197,7 +198,7 @@ int main(void)
     ret = PVTS_ReadDelayFromOTP(false, kPVTS_Vdd2Com, DEMO_MAINCLK_FREQ, &delay);
     if ((kStatus_Success != ret) || (delay == 0U))
     {
-        DEMO_LOG("PVTS delay read failed!\r\n");
+        DEMO_LOG("Failed to read PVTS delay, please check the sample!\r\n");
         while (1)
         {
         }
@@ -214,7 +215,7 @@ int main(void)
     PRINTF("PVTS delay = %d\r\n", delay);
 
     DEMO_LOG("Core Clock: %dHz \r\n", CLOCK_GetCoreSysClkFreq());
-    DEMO_LOG("Input any key to start.\r\n");
+    DEMO_LOG("Input any key to start\r\n");
     (void)GETCHAR();
 
     /* Initialze power/clock configuration. */
@@ -229,7 +230,6 @@ int main(void)
 #if defined(DEMO_PVT_ON_CPU_DSP) && (DEMO_PVT_ON_CPU_DSP != 0U)
     BOARD_BootDSP();
 #endif
-    
 
     /*Create tickless task*/
     if (xTaskCreate(pvt_task, "PVT_task", configMINIMAL_STACK_SIZE + 500U, NULL, pvt_task_PRIORITY,
@@ -363,8 +363,8 @@ static void workload_task(void *pvParameters)
     {
         for (workload_index = 0; workload_index < WORKLOAD_TIMES; workload_index++)
         {
-            /*For matrix mult*/
-            SDK_DelayAtLeastUs(10000, SystemCoreClock);
+            /* Simulate workload. */
+            coremark_main();
         }
 
         PRINTF(" Workload Task: Current VDDCORE = %f V\r\n", (double)cur_voltage / 1000000.0);

@@ -1,3 +1,11 @@
+<!--
+ * @Author: Chay Guo changyi.guo@nxp.com
+ * @Date: 2025-04-10 12:52:36
+ * @LastEditors: Chay Guo changyi.guo@nxp.com
+ * @LastEditTime: 2025-04-18 12:58:04
+ * @FilePath: \sdk-next\mcuxsdk\examples\_boards\mimxrt700evk\demo_apps\dvs_pvt_comp_only\example_board_readme.md
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 Hardware requirements
 =====================
 - Micro USB cable
@@ -37,7 +45,7 @@ SILICON_REV_ID = A0
 Build Time: Apr 15 2025--17:50:38 
 PVTS delay = 16
 Core Clock: 192000000Hz 
-
+Input any key to start
 ```
 
 The cm33_core1 terminal window shows the below log,

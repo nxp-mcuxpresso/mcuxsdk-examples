@@ -25,7 +25,7 @@
 #define DEMO_LOG(...)
 #endif
 
-#define BOOT_FLAG                0x1U /* Flag indicates Core1 Boot Up*/
+#define BOOT_FLAG 0x1U /* Flag indicates Core1 Boot Up*/
 
 #define APP_MU MU1_MUA
 
@@ -47,7 +47,7 @@
                          APP_DEEPSLEEP_PDSLEEPCFG5}))
 
 /* @brief FreeRTOS tickless timer configuration. */
-#define TICKLESS_OSTIMER_BASE_PTR OSTIMER_CPU0      /*!< Tickless timer base address. */
+#define TICKLESS_OSTIMER_BASE_PTR OSTIMER_CPU0  /*!< Tickless timer base address. */
 #define TICKLESS_OSTIMER_IRQn     OS_EVENT_IRQn /*!< Tickless timer IRQ number. */
 /************************************************************************/
 /*${macro:end}*/

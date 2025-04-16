@@ -1,6 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
- * All rights reserved.
+ * Copyright 2023-2025 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -146,10 +145,10 @@ uint32_t BOARD_GetPmicVdd2Voltage(void)
 #endif
     PCA9422_GetCurrentPowerMode(&pca9422Handle, &pca9422CurrMode);
     PCA9422_ReadPowerModeConfigs(&pca9422Handle, pca9422CurrMode, &pca9422CurrModeCfg);
-    return pca9422CurrModeCfg.sw1OutVolt;
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Unlock();
 #endif
+    return pca9422CurrModeCfg.sw1OutVolt;
 }
 
 void BOARD_SetPmicVdd1Voltage(uint32_t volt)
@@ -173,8 +172,8 @@ uint32_t BOARD_GetPmicVdd1Voltage(void)
 #endif
     PCA9422_GetCurrentPowerMode(&pca9422Handle, &pca9422CurrMode);
     PCA9422_ReadPowerModeConfigs(&pca9422Handle, pca9422CurrMode, &pca9422CurrModeCfg);
-    return pca9422CurrModeCfg.sw3OutVolt;
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Unlock();
 #endif
+    return pca9422CurrModeCfg.sw3OutVolt;
 }

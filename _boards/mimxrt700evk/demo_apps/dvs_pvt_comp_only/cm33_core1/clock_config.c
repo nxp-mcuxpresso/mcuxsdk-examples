@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -21,11 +21,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v14.0
+product: Clocks v15.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGFOA
 mcu_data: ksdk2_0
-processor_version: 0.2412.40
+processor_version: 0.2503.110
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -65,20 +65,6 @@ outputs:
 - {id: SENSE_RAM_CLK.outFreq, value: 32 MHz}
 - {id: XSPI0_FCLK.outFreq, value: 500 kHz}
 - {id: XSPI0_FCLK_DIV2.outFreq, value: 250 kHz}
-- {id: audio_pll_pfd3_vdd1_sense.outFreq, value: 368.64 MHz}
-- {id: audio_pll_pfd3_vdd2_com.outFreq, value: 368.64 MHz}
-- {id: audio_pll_pfd3_vdd2_comp.outFreq, value: 368.64 MHz}
-- {id: audio_pll_pfd3_vdd2_dsp.outFreq, value: 368.64 MHz}
-- {id: audio_pll_pfd3_vdd2_media.outFreq, value: 368.64 MHz}
-- {id: audio_pll_pfd3_vddn_com.outFreq, value: 368.64 MHz}
-- {id: audio_pll_pfd3_vddn_media.outFreq, value: 368.64 MHz}
-- {id: audio_pll_vco_vdd1_sense.outFreq, value: 532.48 MHz}
-- {id: audio_pll_vco_vdd2_com.outFreq, value: 532.48 MHz}
-- {id: audio_pll_vco_vdd2_comp.outFreq, value: 532.48 MHz}
-- {id: audio_pll_vco_vdd2_dsp.outFreq, value: 532.48 MHz}
-- {id: audio_pll_vco_vdd2_media.outFreq, value: 532.48 MHz}
-- {id: audio_pll_vco_vddn_com.outFreq, value: 532.48 MHz}
-- {id: audio_pll_vco_vddn_media.outFreq, value: 532.48 MHz}
 - {id: baseclk_cmpt.outFreq, value: 1 MHz}
 - {id: baseclk_com2.outFreq, value: 1 MHz}
 - {id: baseclk_comn.outFreq, value: 1 MHz}
@@ -86,6 +72,7 @@ outputs:
 - {id: baseclk_md2.outFreq, value: 1 MHz}
 - {id: baseclk_mdn.outFreq, value: 1 MHz}
 - {id: baseclk_sense.outFreq, value: 64 MHz}
+- {id: ckil_32k.outFreq, value: 976.5625 Hz}
 - {id: fro0_div3.outFreq, value: 64 MHz}
 - {id: fro0_div6.outFreq, value: 32 MHz}
 - {id: fro0_max_vdd2_comp.outFreq, value: 192 MHz}
@@ -101,76 +88,15 @@ outputs:
 - {id: fro2_max_vdd1_sense.outFreq, value: 192 MHz}
 - {id: fro2_tuner_divided_clk.outFreq, value: 24 MHz}
 - {id: lposc_1m.outFreq, value: 1 MHz}
-- {id: main_pll_pfd0_vdd1_sense.outFreq, value: 9504/19 MHz}
-- {id: main_pll_pfd0_vdd2_com.outFreq, value: 9504/19 MHz}
-- {id: main_pll_pfd0_vdd2_comp.outFreq, value: 9504/19 MHz}
-- {id: main_pll_pfd0_vdd2_dsp.outFreq, value: 9504/19 MHz}
-- {id: main_pll_pfd0_vdd2_media.outFreq, value: 9504/19 MHz}
-- {id: main_pll_pfd0_vddn_com.outFreq, value: 9504/19 MHz}
-- {id: main_pll_pfd0_vddn_media.outFreq, value: 9504/19 MHz}
 - {id: osc_clk.outFreq, value: 24 MHz}
 - {id: osc_clk_eusb.outFreq, value: 24 MHz}
 - {id: osc_clk_usb.outFreq, value: 24 MHz}
 - {id: wake32k_clk.outFreq, value: 976.5625 Hz}
 settings:
+- {id: AUDIO_PLL0_INIT_Config, value: custom}
 - {id: AUDIO_VDD1_CLK_SEL_INIT_Config, value: custom}
 - {id: AUDIO_VDD2_CLK_SEL_INIT_Config, value: custom}
-- {id: COMN_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
-- {id: COMP_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
-- {id: ClockPostInitConfig, value: BOARD_ClockLPPostConfig}
-- {id: ClockPreInitConfig, value: BOARD_ClockLPPreConfig}
-- {id: FCCLK0_CLK_SEL_INIT_Config, value: custom}
-- {id: FCCLK1_CLK_SEL_INIT_Config, value: custom}
-- {id: FCCLK2_CLK_SEL_INIT_Config, value: custom}
-- {id: FCCLK3_CLK_SEL_INIT_Config, value: custom}
-- {id: FRO0_INIT_Config, value: runtime}
-- {id: FRO0_mode, value: ClosedLoop}
-- {id: FRO1_INIT_Config, value: custom}
-- {id: FRO2_CPU_Core_Config, value: cm33_core1}
-- {id: FRO2_mode, value: ClosedLoop}
-- {id: LOW_FREQ_CLK_SEL_INIT_Config, value: custom}
-- {id: LPOSC_1M_CLK_SEL_CPU_Core_Config, value: both}
-- {id: MEDIA_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
-- {id: OSC32KNP_INIT_Config, value: custom}
-- {id: RTC_SS_INIT_Config, value: custom}
-- {id: SENSEP_MAINCLK_SHUTOFF_INIT_Config, value: custom}
-- {id: SENSES_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
-- {id: WAKE32K_CLK_SEL_INIT_Config, value: custom}
-- {id: XTAL_OSC_CPU_Core_Config, value: both}
-- {id: XTAL_OSC_INIT_Config, value: runtime}
-- {id: CLKCTL0.CLOCK_ROOT_COMM2_CLKOUT.DIV.scale, value: '10', locked: true}
-- {id: CLKCTL0.CLOCK_ROOT_COMM2_CLKOUT.MUX.sel, value: FRO0.FRO_MAX_VDD2_COM_CLK}
-- {id: CLKCTL0.CLOCK_ROOT_COMMON_RAM_CLK.DIV.scale, value: '1', locked: true}
-- {id: CLKCTL0.CLOCK_ROOT_COMPUTE_MAIN_CLK.DIV.scale, value: '1', locked: true}
-- {id: CLKCTL0.CLOCK_ROOT_COMPUTE_MAIN_CLK.MUX.sel, value: FRO0.FRO_MAX_VDD2_COMP_CLK}
-- {id: CLKCTL0.CMPTBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
-- {id: CLKCTL0.DSPBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
-- {id: CLKCTL0.VDD2COMBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
-- {id: CLKCTL1.AUDIOVDD1CLKSEL.sel, value: FRO2.FRO_DIV8_CLK}
-- {id: CLKCTL1.SENSEBASECLKSEL.sel, value: FRO2.FRO_DIV3_CLK}
-- {id: CLKCTL2.AUDIOPLL0CLKSEL.sel, value: CLKCTL2.SYSOSCBYPASS}
-- {id: CLKCTL2.AUDIO_PLL0_PFD3_DIV.scale, value: '26', locked: true}
-- {id: CLKCTL2.AUDIO_PLL0_PFD3_MUL.scale, value: '18', locked: true}
-- {id: CLKCTL2.Audio_PLL0.denom, value: '27000'}
-- {id: CLKCTL2.Audio_PLL0.num, value: '5040'}
-- {id: CLKCTL2.CLOCK_ROOT_COMMON_VDDN_CLK.DIV.scale, value: '1', locked: true}
-- {id: CLKCTL2.COMNBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
-- {id: CLKCTL2.MAINPLL0CLKSEL.sel, value: CLKCTL2.SYSOSCBYPASS}
-- {id: CLKCTL2.MAIN_PLL0_PFD0_DIV.scale, value: '19', locked: true}
-- {id: CLKCTL2.MAIN_PLL0_PFD0_MUL.scale, value: '18', locked: true}
-- {id: CLKCTL2.Main_PLL0.denom, value: '1'}
-- {id: CLKCTL2.Main_PLL0.num, value: '0'}
-- {id: CLKCTL2_SYSOSCCTL0_LP_ENABLE_CFG, value: low_power}
-- {id: CLKCTL3.CLOCK_ROOT_SENSE_MAIN_CLK.DIV.scale, value: '6', locked: true}
-- {id: CLKCTL3.CLOCK_ROOT_SENSE_MAIN_CLK.MUX.sel, value: FRO2.FRO_MAX_VDD1_SENSE_CLK}
-- {id: CLKCTL4.CLOCK_ROOT_MEDIA_MAIN_CLK.DIV.scale, value: '1', locked: true}
-- {id: CLKCTL4.CLOCK_ROOT_MEDIA_VDDN_CLK.DIV.scale, value: '1', locked: true}
-- {id: CLKCTL4.MD2BASECLKSEL.sel, value: CLKCTL3.lposc_1m}
-- {id: CLKCTL4.MDNBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
-- {id: CLKCTL4_FCCLK0_SEL_EN_CFG, value: Disabled}
-- {id: CLKCTL4_FCCLK1_SEL_EN_CFG, value: Disabled}
-- {id: CLKCTL4_FCCLK2_SEL_EN_CFG, value: Disabled}
-- {id: CLKCTL4_FCCLK3_SEL_EN_CFG, value: Disabled}
+- {id: CKIL_32K_CLK_INIT_Config, value: custom}
 - {id: CLK_ROOT_COMM2_CLKOUT_INIT_Config, value: runtime}
 - {id: CLK_ROOT_COMMON_RAM_CLK_INIT_Config, value: runtime}
 - {id: CLK_ROOT_COMPUTE_MAIN_CLK_INIT_Config, value: runtime}
@@ -242,6 +168,64 @@ settings:
 - {id: CLK_ROOT_eUSB_WAKE_CLK_INIT_Config, value: custom}
 - {id: CLK_ROOT_osc_clk_eusb_INIT_Config, value: custom}
 - {id: CLK_ROOT_osc_clk_usb_INIT_Config, value: custom}
+- {id: COMN_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
+- {id: COMP_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
+- {id: ClockPostInitConfig, value: BOARD_ClockLPPostConfig}
+- {id: ClockPreInitConfig, value: BOARD_ClockLPPreConfig}
+- {id: FCCLK0_CLK_SEL_INIT_Config, value: custom}
+- {id: FCCLK1_CLK_SEL_INIT_Config, value: custom}
+- {id: FCCLK2_CLK_SEL_INIT_Config, value: custom}
+- {id: FCCLK3_CLK_SEL_INIT_Config, value: custom}
+- {id: FRO0_INIT_Config, value: runtime}
+- {id: FRO0_mode, value: ClosedLoop}
+- {id: FRO1_INIT_Config, value: custom}
+- {id: FRO2_CPU_Core_Config, value: cm33_core1}
+- {id: FRO2_mode, value: ClosedLoop}
+- {id: LOW_FREQ_CLK_SEL_INIT_Config, value: custom}
+- {id: LPOSC_1M_CLK_SEL_CPU_Core_Config, value: both}
+- {id: MAIN_PLL0_INIT_Config, value: custom}
+- {id: MEDIA_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
+- {id: OSC32KNP_INIT_Config, value: custom}
+- {id: RTC_SS_INIT_Config, value: custom}
+- {id: SENSEP_MAINCLK_SHUTOFF_INIT_Config, value: custom}
+- {id: SENSES_MAINCLK_SHUTOFF_INIT_Config, value: runtime}
+- {id: WAKE32K_CLK_SEL_INIT_Config, value: custom}
+- {id: XTAL_OSC_CPU_Core_Config, value: both}
+- {id: XTAL_OSC_INIT_Config, value: runtime}
+- {id: Audio_PLL0_Power_Config, value: Disabled}
+- {id: CLKCTL0.CLOCK_ROOT_COMM2_CLKOUT.DIV.scale, value: '10', locked: true}
+- {id: CLKCTL0.CLOCK_ROOT_COMM2_CLKOUT.MUX.sel, value: FRO0.FRO_MAX_VDD2_COM_CLK}
+- {id: CLKCTL0.CLOCK_ROOT_COMMON_RAM_CLK.DIV.scale, value: '1', locked: true}
+- {id: CLKCTL0.CLOCK_ROOT_COMPUTE_MAIN_CLK.DIV.scale, value: '1', locked: true}
+- {id: CLKCTL0.CLOCK_ROOT_COMPUTE_MAIN_CLK.MUX.sel, value: FRO0.FRO_MAX_VDD2_COMP_CLK}
+- {id: CLKCTL0.CMPTBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
+- {id: CLKCTL0.DSPBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
+- {id: CLKCTL0.VDD2COMBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
+- {id: CLKCTL1.AUDIOVDD1CLKSEL.sel, value: FRO2.FRO_DIV8_CLK}
+- {id: CLKCTL1.SENSEBASECLKSEL.sel, value: FRO2.FRO_DIV3_CLK}
+- {id: CLKCTL2.AUDIOPLL0CLKSEL.sel, value: CLKCTL2.SYSOSCBYPASS}
+- {id: CLKCTL2.AUDIO_PLL0_PFD3_DIV.scale, value: '26', locked: true}
+- {id: CLKCTL2.AUDIO_PLL0_PFD3_MUL.scale, value: '18', locked: true}
+- {id: CLKCTL2.Audio_PLL0.denom, value: '27000'}
+- {id: CLKCTL2.Audio_PLL0.num, value: '5040'}
+- {id: CLKCTL2.CLOCK_ROOT_COMMON_VDDN_CLK.DIV.scale, value: '1', locked: true}
+- {id: CLKCTL2.COMNBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
+- {id: CLKCTL2.MAINPLL0CLKSEL.sel, value: CLKCTL2.SYSOSCBYPASS}
+- {id: CLKCTL2.MAIN_PLL0_PFD0_DIV.scale, value: '19', locked: true}
+- {id: CLKCTL2.MAIN_PLL0_PFD0_MUL.scale, value: '18', locked: true}
+- {id: CLKCTL2.Main_PLL0.denom, value: '1'}
+- {id: CLKCTL2.Main_PLL0.num, value: '0'}
+- {id: CLKCTL2_SYSOSCCTL0_LP_ENABLE_CFG, value: low_power}
+- {id: CLKCTL3.CLOCK_ROOT_SENSE_MAIN_CLK.DIV.scale, value: '6', locked: true}
+- {id: CLKCTL3.CLOCK_ROOT_SENSE_MAIN_CLK.MUX.sel, value: FRO2.FRO_MAX_VDD1_SENSE_CLK}
+- {id: CLKCTL4.CLOCK_ROOT_MEDIA_MAIN_CLK.DIV.scale, value: '1', locked: true}
+- {id: CLKCTL4.CLOCK_ROOT_MEDIA_VDDN_CLK.DIV.scale, value: '1', locked: true}
+- {id: CLKCTL4.MD2BASECLKSEL.sel, value: CLKCTL3.lposc_1m}
+- {id: CLKCTL4.MDNBASECLKSEL.sel, value: CLKCTL3.lposc_1m}
+- {id: CLKCTL4_FCCLK0_SEL_EN_CFG, value: Disabled}
+- {id: CLKCTL4_FCCLK1_SEL_EN_CFG, value: Disabled}
+- {id: CLKCTL4_FCCLK2_SEL_EN_CFG, value: Disabled}
+- {id: CLKCTL4_FCCLK3_SEL_EN_CFG, value: Disabled}
 - {id: CLOCK_ROOTCOMM2_CLKOUT_CONTROL_OFF_CFG, value: Enabled}
 - {id: CLOCK_ROOTXSPI0_FCLK_CONTROL_OFF_CFG, value: Enabled}
 - {id: FRO0.FROMODESEL.sel, value: FRO0.FRO_TUNER}
@@ -265,6 +249,7 @@ settings:
 - {id: FRO2_CLKGATE_DIV8_CFG, value: Disabled}
 - {id: FRO2_COARSE_TRIM_Config, value: Disabled}
 - {id: FRO2_TRIM_COUNT_RANGE_Config, value: '100'}
+- {id: Main_PLL0_Power_Config, value: Disabled}
 sources:
 - {id: CLKCTL2.XTAL_OSC.outFreq, value: 24 MHz, enabled: true}
 - {id: FRO0.FRO_TRIM.outFreq, value: 192 MHz}
@@ -277,12 +262,13 @@ sources:
 const clock_fro_config_t g_fro2Config_BOARD_BootClockRUN =
     {
         .targetFreq = 192000000,                  /* FRO2 TUNER output clock frequency: 192000000Hz */
-        .range = 100,                             /* FRO2 range value: Â± 100counts */
+        .range = 100,                             /* FRO2 range value: ¡À 100counts */
         .trim1DelayUs = 5,                        /* FRO2 Trim1 delay: 5us */
         .trim2DelayUs = 150,                      /* FRO2 Trim2 delay: 150us */
         .refDiv = 1,                              /* The FRO reference divider is 1 */
         .enableInt = 0,                           /* The FRO interrupts are disabled */
         .coarseTrimEn = false,                    /* The coarse value autotrimming is disabled */
+        .fastStartupEn = false,                   /* The fast startup is disabled */
     };
 /*******************************************************************************
  * Code for BOARD_BootClockRUN configuration

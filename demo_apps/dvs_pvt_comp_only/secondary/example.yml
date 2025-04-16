@@ -15,4 +15,4 @@ dvs_pvt_comp_only_secondary:
       - ${board_root}/${board}/demo_apps/pvt_comp_only/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mimxrt700evk@cm33_core1: []
+    # mimxrt700evk@cm33_core1: []
