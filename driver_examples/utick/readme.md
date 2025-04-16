@@ -12,6 +12,7 @@ a message a printed on the UART terminal.
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXA166](../../_boards/frdmmcxa166/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXA276](../../_boards/frdmmcxa276/driver_examples/utick/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/driver_examples/utick/example_board_readme.md)
 - [FRDM-MCXW23](../../_boards/frdmmcxw23/driver_examples/utick/example_board_readme.md)
