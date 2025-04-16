@@ -17,5 +17,6 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    BOARD_Accel_I2C_ReleaseBus();
 }
 /*${function:end}*/

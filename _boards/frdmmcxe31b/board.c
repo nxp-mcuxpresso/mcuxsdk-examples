@@ -223,6 +223,68 @@ void BOARD_ClockPostConfig(void)
 {
 }
 
+inline static void i2c_release_bus_delay(void)
+{
+    SDK_DelayAtLeastUs(10U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+}
+
+void BOARD_InitI2c0PinAsGpio(void)
+{
+    SIUL2->MSCR[BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET] = (uint32_t)(kPORT_MUX_AS_GPIO);
+    SIUL2->MSCR[BOARD_ACCEL_I2C_SDA_PIN_MSCR_OFFSET] = (uint32_t)(kPORT_MUX_AS_GPIO);
+}
+
+void BOARD_RestoreI2c0PinMux(void)
+{
+    SIUL2->MSCR[BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET] = (uint32_t)(SIUL2_MSCR_OBE(1) | SIUL2_MSCR_IBE(1) | SIUL2_MSCR_PKE(1) | SIUL2_MSCR_PUE(1) | SIUL2_MSCR_PUS(1) | kPORT_MUX_ALT4);
+    SIUL2->MSCR[BOARD_ACCEL_I2C_SDA_PIN_MSCR_OFFSET] = (uint32_t)(SIUL2_MSCR_OBE(1) | SIUL2_MSCR_IBE(1) | SIUL2_MSCR_PKE(1) | SIUL2_MSCR_PUE(1) | SIUL2_MSCR_PUS(1) | kPORT_MUX_ALT4);
+    SIUL2->IMCR[BOARD_ACCEL_I2C_SCL_PIN_IMCR_OFFSET] = (uint32_t)(kPORT_INPUT_MUX_ALT2);
+    SIUL2->IMCR[BOARD_ACCEL_I2C_SDA_PIN_IMCR_OFFSET] = (uint32_t)(kPORT_INPUT_MUX_ALT2);
+}
+
+void BOARD_I2c0RecoverBus(void)
+{
+    SIUL2_SetPinOutputBuffer(SIUL2, BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET, true, kPORT_MUX_AS_GPIO);
+    SIUL2_SetPinDirection(SIUL2, BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET, kPORT_OUT);
+    SIUL2_PinWrite(SIUL2, BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET, GPIO_OUTPUT_HIGH_LOGIC);
+    i2c_release_bus_delay();
+   
+    SIUL2_SetPinOutputBuffer(SIUL2, BOARD_ACCEL_I2C_SDA_PIN_MSCR_OFFSET, true, kPORT_MUX_AS_GPIO);
+    SIUL2_SetPinDirection(SIUL2, BOARD_ACCEL_I2C_SDA_PIN_MSCR_OFFSET, kPORT_IN);
+ 
+    /* Send pulses on SCL until SDA is released and then send stop. */
+    while(true)
+    {
+        /* SCL pulse - low */
+        SIUL2_PinWrite(SIUL2, BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET, GPIO_OUTPUT_LOW_LOGIC);
+        i2c_release_bus_delay();
+ 
+        /* Check whether SDA line is released */
+        if (1U == SIUL2_PortPinRead(SIUL2, BOARD_ACCEL_I2C_SDA_GPIO, BOARD_ACCEL_I2C_SDA_PIN))
+        {
+            /* SDA is released, hold it in low */
+            SIUL2_SetPinDirection(SIUL2, BOARD_ACCEL_I2C_SDA_PIN_MSCR_OFFSET, kPORT_OUT);
+            SIUL2_PinWrite(SIUL2, BOARD_ACCEL_I2C_SDA_PIN_MSCR_OFFSET, GPIO_OUTPUT_LOW_LOGIC);
+ 
+            /* SCL pulse - high */
+            SIUL2_PinWrite(SIUL2, BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET, GPIO_OUTPUT_HIGH_LOGIC);
+            i2c_release_bus_delay();
+ 
+            /* Set SDA to high from low - send stop */
+            SIUL2_PinWrite(SIUL2, BOARD_ACCEL_I2C_SDA_PIN_MSCR_OFFSET, GPIO_OUTPUT_LOW_LOGIC);
+            i2c_release_bus_delay();
+ 
+            break;
+        }
+        else
+        {
+            /* SCL pulse - high */
+            SIUL2_PinWrite(SIUL2, BOARD_ACCEL_I2C_SCL_PIN_MSCR_OFFSET, GPIO_OUTPUT_HIGH_LOGIC);
+            i2c_release_bus_delay();
+        }
+    }
+}
+
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz)
 {
