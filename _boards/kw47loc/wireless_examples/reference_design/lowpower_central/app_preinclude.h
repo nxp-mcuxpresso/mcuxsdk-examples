@@ -3,8 +3,7 @@
  * @{
  ********************************************************************************** */
 /*! *********************************************************************************
-* Copyright 2024 NXP
-* All rights reserved.
+* Copyright 2024-2025 NXP
 *
 * \file
 *
@@ -227,7 +226,7 @@
  * For different compilers and optimization levels they can be reduced. */
 #define BUTTON_TASK_STACK_SIZE          364
 #define SERIAL_MANAGER_TASK_STACK_SIZE  300
-#define TM_TASK_STACK_SIZE              324
+#define TM_TASK_STACK_SIZE              350
 #define gHost_TaskStackSize_c           1650
 
 /*! The Application main task blocks with a timeout of gAppTaskWaitTimeout_ms_c ms
