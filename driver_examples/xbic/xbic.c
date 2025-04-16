@@ -21,9 +21,6 @@
  * Variables
  ******************************************************************************/
 
-/* Define a parameter located in SRAM. */
-static volatile uint32_t xbicParaInPram1;
-
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -34,6 +31,10 @@ static volatile uint32_t xbicParaInPram1;
 int main(void)
 {
     uint32_t address, master, slave, syndrome;
+    volatile uint32_t *xbicParaInSlavePort;
+
+    /* Define a parameter located in slave port. */
+    xbicParaInSlavePort = (uint32_t *)DEMO_XBIC_ERROR_ADDRESS;
 
     /* Init board hardware. */
     BOARD_InitHardware();
@@ -52,8 +53,8 @@ int main(void)
     /* Enable the error inject. */
     XBIC_EnableErrorInjection(DEMO_XBIC, true);
 
-    /* Generate transfer error by RMW operation on variable in SRAM. */
-    xbicParaInPram1++;
+    /* Generate transfer error by read operation on variable in slave port. */
+    (void)*xbicParaInSlavePort;
 
     /* Disable the error injection. */
     XBIC_EnableErrorInjection(DEMO_XBIC, false);
@@ -73,7 +74,7 @@ int main(void)
         syndrome = XBIC_GetErrorSyndrome(DEMO_XBIC);
 
         /* Check if the latest transfer error address, master port, slave port, syndrome. */
-        if((&xbicParaInPram1 == (uint32_t*)address) && \
+        if((xbicParaInSlavePort == (uint32_t*)address) && \
            (master == DEMO_XBIC_MASTER_PORT) &&        \
            (slave == DEMO_XBIC_SLAVE_PORT) &&          \
            (syndrome == DEMO_XBIC_SYNDROMES))
