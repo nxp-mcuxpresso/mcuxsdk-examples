@@ -113,7 +113,7 @@ endif()
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.app_ble)
     mcux_add_source(
         BASE_PATH ${SdkRootDirPath}
-        SOURCES 
+        SOURCES
             examples/_common/project_segments/wireless/wireless_mcu/app_common/app_ble_init.c
             examples/_common/project_segments/wireless/wireless_mcu/app_common/app.h
 

@@ -80,5 +80,3 @@ config MCUX_PRJSEG_module.board.wireless.hw_app
     depends on MCUX_PRJSEG_project.hw_app_customize_folder
     help
       This is a customized implementation of hardware init used in wireless examples.
-
-orsource "../../../../../${board_root}/${board}/project_segments/wireless/Kconfig.prjseg"
