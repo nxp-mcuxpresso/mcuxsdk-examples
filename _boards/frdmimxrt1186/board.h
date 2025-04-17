@@ -61,10 +61,10 @@
 #define LOGIC_LED_ON  (1U)
 #define LOGIC_LED_OFF (0U)
 #ifndef BOARD_USER_LED_GPIO
-#define BOARD_USER_LED_GPIO RGPIO4
+#define BOARD_USER_LED_GPIO RGPIO2
 #endif
 #ifndef BOARD_USER_LED_GPIO_PIN
-#define BOARD_USER_LED_GPIO_PIN (27U)
+#define BOARD_USER_LED_GPIO_PIN (11U)
 #endif
 
 #define USER_LED_INIT(output)                                             \
@@ -109,7 +109,7 @@
 #define BOARD_ARDUINO_I2C_IRQ   (LPI2C1_IRQn)
 #define BOARD_ARDUINO_I2C_INDEX (1)
 
-#define BOARD_HAS_SDCARD (1U)
+#define BOARD_HAS_SDCARD (0U)
 
 /* @Brief Board accelerator sensor configuration */
 #define BOARD_ACCEL_I2C_BASEADDR LPI2C2

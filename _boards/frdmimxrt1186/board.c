@@ -328,30 +328,19 @@ void BOARD_ConfigMPU(void)
 #endif
 
 #if defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1)
-    /* Region 8 setting: Memory with Normal type, not shareable, outer/inner write back. */ /*FSPI1*/
-    MPU->RBAR = ARM_MPU_RBAR(8, 0x28000000U);
+    /* Region 8 setting: Memory with Normal type, not shareable, outer/inner write back. */ /*FSPI2*/
+    MPU->RBAR = ARM_MPU_RBAR(8, 0x04000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_RO, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_16MB);
 #endif
 
 #if defined(USE_HYPERRAM)
-    MPU->RBAR = ARM_MPU_RBAR(9, 0x04000000U);
+    MPU->RBAR = ARM_MPU_RBAR(9, 0x28000000U);
 #if defined(CACHE_MODE_WRITE_THROUGH)
-    /* Region 9 setting: Memory with Normal type, not shareable, outer/inner write through. */ /*FSPI2*/
+    /* Region 9 setting: Memory with Normal type, not shareable, outer/inner write through. */ /*FSPI1*/
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_8MB);
 #else
-    /* Region 9 setting: Memory with Normal type, not shareable, outer/inner write back. */ /*FSPI2*/
+    /* Region 9 setting: Memory with Normal type, not shareable, outer/inner write back. */ /*FSPI1*/
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_8MB);
-#endif
-#endif
-
-#if defined(USE_SDRAM)
-    MPU->RBAR = ARM_MPU_RBAR(10, 0x80000000U);
-#if defined(CACHE_MODE_WRITE_THROUGH)
-    /* Region 10 setting: Memory with Normal type, not shareable, outer/inner write through */
-    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_64MB);
-#else
-    /* Region 10 setting: Memory with Normal type, not shareable, outer/inner write back */
-    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_64MB);
 #endif
 #endif
 
@@ -473,10 +462,10 @@ void BOARD_ConfigMPU(void)
          normal, write through, read allocate, non-shareable, read/write in privilege and non-privilege, executable
     */
 
-    /* Region 0 (FlexSPI2, Hyperram): [0x04000000, 0x047FFFFFF, 8M] */
+    /* Region 0 (FlexSPI1, Hyperram): [0x28000000, 0x287FFFFF, 8M] */
 #if !defined(CACHE_MODE_WRITE_THROUGH)
     /* non-shareable, read/write in privilege and non-privilege, executable. Attr 3 */
-    ARM_MPU_SetRegion(0U, ARM_MPU_RBAR(0x04000000, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR(0x047FFFFF, 3U));
+    ARM_MPU_SetRegion(0U, ARM_MPU_RBAR(0x28000000, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR(0x287FFFFF, 3U));
 #endif
 #endif
 
@@ -513,28 +502,13 @@ void BOARD_ConfigMPU(void)
        ARM_MPU_SetRegion(12U, ARM_MPU_RBAR(0x20500000, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR(0x2053FFFF, 3U));
     */
 
-    /* Region 5 (FlexSPI1, Nor Flash): [0x28000000, 0x28FFFFFF, 16M] */
+    /* Region 5 (FlexSPI2, Nor Flash): [0x04000000, 0x04FFFFFF, 16M] */
     /* non-shareable, read only in privilege and non-privileged, executable. Attr 2 */
-    ARM_MPU_SetRegion(5U, ARM_MPU_RBAR(0x28000000, ARM_MPU_SH_NON, 1U, 1U, 0U), ARM_MPU_RLAR(0x28FFFFFF, 2U));
+    ARM_MPU_SetRegion(5U, ARM_MPU_RBAR(0x04000000, ARM_MPU_SH_NON, 1U, 1U, 0U), ARM_MPU_RLAR(0x04FFFFFF, 2U));
 
     /* Region 6 (Peripherals): [0x40000000, 0x7FFFFFFF, 1G ] */
     /* non-shareable, read/write in privilege and non-privileged, execute-never. Attr 0 (device). */
     ARM_MPU_SetRegion(6U, ARM_MPU_RBAR(0x40000000, ARM_MPU_SH_NON, 0U, 1U, 1U), ARM_MPU_RLAR(0x7FFFFFFF, 0U));
-
-#if defined(USE_SDRAM)
-    /*
-       As common setting, not set this region to avoid potential overlapping setting with NCACHE(region 8)
-       and SHMEM(region 9) for specific build configuration, but use the default attribute of the background
-       system address map.
-       The default attribute of the background system address map for this address space:
-         normal, write through, read allocate, non-shareable, read/write in privilege and non-privilege, executable
-
-       If application needs to fine tune MPU settings, here is an example:
-       // Region 7 (SEMC, SDRAM): [0x80000000, 0x81FFFFFF, 32M]
-       // non-shareable, read/write in privilege and non-privilege, executable. Attr 3
-       ARM_MPU_SetRegion(7U, ARM_MPU_RBAR(0x80000000, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR(0x81FFFFFF, 3U));
-    */
-#endif
 
     i = 0;
     while ((nonCacheSize >> i) > 0x1U)
@@ -780,7 +754,7 @@ void BOARD_SetFlexspiClock(FLEXSPI_Type *base, uint8_t src, uint32_t divider)
 void BOARD_FlexspiClockSafeConfig(void)
 {
     /* Move FLEXSPI clock source to OSC_RC_24M to avoid instruction/data fetch issue in XIP when updating PLL. */
-    BOARD_SetFlexspiClock(FLEXSPI1, 0U, 1U);
+    BOARD_SetFlexspiClock(FLEXSPI2, 0U, 1U);
 }
 
 /* This function is used to set EdgeLock clock via safe method */
