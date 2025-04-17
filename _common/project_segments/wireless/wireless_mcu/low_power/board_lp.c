@@ -1,6 +1,5 @@
 /* -------------------------------------------------------------------------- */
 /*                           Copyright 2020-2025 NXP                          */
-/*                            All rights reserved.                            */
 /*                    SPDX-License-Identifier: BSD-3-Clause                   */
 /* -------------------------------------------------------------------------- */
 
@@ -20,6 +19,9 @@
 #include "fwk_debug.h"
 #include "SecLib.h"
 #include "RNG_Interface.h"
+#if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
+#include "sensors.h"
+#endif
 
 #if ((defined(gAppButtonCnt_c) && (gAppButtonCnt_c > 0)) ||               \
      (defined(gAppUseSerialManager_c) && (gAppUseSerialManager_c > 0)) || \
@@ -175,6 +177,7 @@ static void BOARD_ExitLowPowerCb(void)
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
     PLATFORM_ReinitAdc();
+    SENSORS_TriggerTemperatureMeasurementUnsafe();
 #endif
 
 #if defined(DBG_PWR) && (DBG_PWR == 1)
