@@ -31,7 +31,6 @@
 #define EXAMPLE_CAN_CLOCK_FREQUENCY           CLOCK_GetFlexcanClkFreq(0U)
 #define EXAMPLE_CAN_BITRATE                   500000U
 #define EXAMPLE_CAN_FD_BITRATE                2000000U
-#define EXAMPLE_USE_CAN_FD                    0
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
@@ -87,27 +86,22 @@ static void init_freemaster_can(void)
     flexcan_timing_config_t timing_config = { 0 };
     uint32_t canSrcClock = EXAMPLE_CAN_CLOCK_FREQUENCY;
 
-    /* Init FlexCAN module. */
+    /* Get FlexCAN default configuration */
     FLEXCAN_GetDefaultConfig(&flexcanConfig);
 
+    /* Update configuration */
     flexcanConfig.clkSrc   = kFLEXCAN_ClkSrcPeri;
     flexcanConfig.bitRate = EXAMPLE_CAN_BITRATE;
 
-#if EXAMPLE_USE_CAN_FD
+    /* FD bitrate applied only if FMSTR_CAN_USE_CANFD enabled */
     flexcanConfig.bitRateFD = EXAMPLE_CAN_FD_BITRATE;
 
-     /* Update the improved timing configuration */
+    /* Update the improved timing configuration */
     if (FLEXCAN_FDCalculateImprovedTimingValues(EXAMPLE_CAN_BASE, flexcanConfig.bitRate, flexcanConfig.bitRateFD, canSrcClock, &timing_config))
         flexcanConfig.timingConfig = timing_config;
 
+    /* Init FlexCAN module. */
     FLEXCAN_FDInit(EXAMPLE_CAN_BASE, &flexcanConfig, canSrcClock, kFLEXCAN_64BperMB, true);
-#else
-    /* Update the improved timing configuration */
-    if (FLEXCAN_CalculateImprovedTimingValues(EXAMPLE_CAN_BASE, flexcanConfig.bitRate, canSrcClock, &timing_config))
-        flexcanConfig.timingConfig = timing_config;
-
-    FLEXCAN_Init(EXAMPLE_CAN_BASE, &flexcanConfig, canSrcClock);
-#endif
 
     /* Register communication module used by FreeMASTER driver. */
     FMSTR_CanSetBaseAddress(EXAMPLE_CAN_BASE);

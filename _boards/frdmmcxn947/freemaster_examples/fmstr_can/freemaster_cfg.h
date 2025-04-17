@@ -42,15 +42,14 @@
 //    FMSTR_SERIAL_MCUX_MINIUSART -MCUXSDK driver for MINIUSART peripheral
 //    FMSTR_SERIAL_MCUX_USB    -   MCUXSDK driver for USB peripheral with CDC class
 // FMSTR_CAN      -   Standard CAN transport protocol (Used by various types of CAN peripherals)
-//    FMSTR_CAN_MCUX_FLEXCAN   -   MCUXSDK driver for FlexCAN peripheral
-//    FMSTR_CAN_MCUX_FLEXCANFD     MCUXSDK driver for FlexCAN peripheral with flexible data rate
+//    FMSTR_CAN_MCUX_FLEXCANFD     MCUXSDK driver for FlexCAN peripheral with optional CAN FD features
 //    FMSTR_CAN_MCUX_MCAN      -   MCUXSDK driver for MCAN peripheral
 //    FMSTR_CAN_MCUX_MSCAN     -   MCUXSDK driver for msCAN peripheral
 // FMSTR_PDBDM    -   Packet Driven BDM (direct memory access via JTAG, SWD or BDM debug probes). No low-level driver used.
 
 //! Select communication interface
 #define FMSTR_TRANSPORT         FMSTR_CAN    // Use serial transport layer */
-#define FMSTR_CAN_DRV           FMSTR_CAN_MCUX_FLEXCAN // Use serial driver for FlexCan */
+#define FMSTR_CAN_DRV           FMSTR_CAN_MCUX_FLEXCANFD // Use serial driver for FlexCan */
 
 //! Define communication interface base address or leave undefined for runtime setting
 // #undef FMSTR_SERIAL_BASE   // Serial base will be assigned in runtime (when FMSTR_USE_UART)
@@ -63,7 +62,7 @@
 //! Enable CAN-FD mode
 #define FMSTR_CAN_USE_CANFD     0
 //! Enable CAN-FD Bit-rate Switch in CAN-FD mode
-#define FMSTR_CANFD_USE_BRS     0
+#define FMSTR_CANFD_USE_BRS     1
 
 //! Input/output communication buffer size
 #define FMSTR_COMM_BUFFER_SIZE  0   // Set to 0 for "automatic"

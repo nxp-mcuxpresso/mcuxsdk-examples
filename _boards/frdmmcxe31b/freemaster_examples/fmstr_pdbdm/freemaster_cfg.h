@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2019, 2025 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -9,8 +8,6 @@
 
 #ifndef __FREEMASTER_CFG_H
 #define __FREEMASTER_CFG_H
-
-/* clang-format off */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
@@ -42,27 +39,13 @@
 //    FMSTR_SERIAL_MCUX_MINIUSART -MCUXSDK driver for MINIUSART peripheral
 //    FMSTR_SERIAL_MCUX_USB    -   MCUXSDK driver for USB peripheral with CDC class
 // FMSTR_CAN      -   Standard CAN transport protocol (Used by various types of CAN peripherals)
-//    FMSTR_CAN_MCUX_FLEXCANFD     MCUXSDK driver for FlexCAN peripheral with optional CAN FD features
+//    FMSTR_CAN_MCUX_FLEXCAN   -   MCUXSDK driver for FlexCAN peripheral
 //    FMSTR_CAN_MCUX_MCAN      -   MCUXSDK driver for MCAN peripheral
 //    FMSTR_CAN_MCUX_MSCAN     -   MCUXSDK driver for msCAN peripheral
 // FMSTR_PDBDM    -   Packet Driven BDM (direct memory access via JTAG, SWD or BDM debug probes). No low-level driver used.
 
 //! Select communication interface
-#define FMSTR_TRANSPORT         FMSTR_CAN    // Use serial transport layer */
-#define FMSTR_CAN_DRV           FMSTR_CAN_MCUX_FLEXCANFD // Use serial driver for FlexCan */
-
-//! Define communication interface base address or leave undefined for runtime setting
-// #undef FMSTR_SERIAL_BASE   // Serial base will be assigned in runtime (when FMSTR_USE_UART)
-// #undef FMSTR_CAN_BASE   // CAN base will be assigned in runtime (when FMSTR_USE_FLEXCAN)
-
-//! FlexCAN-specific, communication message buffers
-#define FMSTR_FLEXCAN_TXMB      1
-#define FMSTR_FLEXCAN_RXMB      2
-
-//! Enable CAN-FD mode
-#define FMSTR_CAN_USE_CANFD     0
-//! Enable CAN-FD Bit-rate Switch in CAN-FD mode
-#define FMSTR_CANFD_USE_BRS     1
+#define FMSTR_TRANSPORT         FMSTR_PDBDM    // Use PD BDM transport layer */
 
 //! Input/output communication buffer size
 #define FMSTR_COMM_BUFFER_SIZE  0   // Set to 0 for "automatic"
@@ -112,8 +95,6 @@
 // Storing cleartext passwords in Flash memory is not safe, consider storing their SHA1 hash instead
 // Even with this option, the hash must be generated from reasonably complex password to prevent dictionary attack.
 #define FMSTR_USE_HASHED_PASSWORDS  0  // When non-zero, the passwords above are specified as a pointer to 20-byte SHA1 hash of password text
-
-/* clang-format on */
 
 #endif /* __FREEMASTER_CFG_H */
 

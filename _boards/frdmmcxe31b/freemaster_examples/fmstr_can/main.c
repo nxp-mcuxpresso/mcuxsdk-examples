@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2019, 2025 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -26,10 +25,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Defines
 ////////////////////////////////////////////////////////////////////////////////
-#define EXAMPLE_CAN_BASE                      CAN1
-#define EXAMPLE_CAN_INTERRUPT                 CAN1_IRQn
-#define EXAMPLE_CAN_INTERRUPT_HANDLER         CAN1_IRQHandler
-#define EXAMPLE_CAN_CLOCK_FREQUENCY           CLOCK_GetRootClockFreq(kCLOCK_Root_Can1)
+#define EXAMPLE_CAN_BASE                      FLEXCAN_0
+#define EXAMPLE_CAN_INTERRUPT                 FlexCAN0_1_IRQn
+#define EXAMPLE_CAN_INTERRUPT_HANDLER         FlexCAN0_1_IRQHandler
+#define EXAMPLE_CAN_CLOCK_FREQUENCY           CLOCK_GetFreq(kCLOCK_Flexcan0Clk)
 #define EXAMPLE_CAN_BITRATE                   500000U
 #define EXAMPLE_CAN_FD_BITRATE                2000000U
 
@@ -54,10 +53,14 @@ int main(void)
 {
     /* Board initialization */
     BOARD_ConfigMPU();
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitCANPins();
+    BOARD_InitBootPins();
+    BOARD_InitFlexCANPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    /*Clock setting for FLEXCAN*/
+    CLOCK_SetClkDiv(kCLOCK_DivFlexcan012PeClk, 1U);
+    CLOCK_AttachClk(kAIPS_PLAT_CLK_to_FLEXCAN012_PE);
 
     /* FreeMASTER communication layer initialization */
     init_freemaster_can();

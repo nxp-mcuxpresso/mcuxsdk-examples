@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2019, 2025 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -11,27 +10,15 @@
 // Includes
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "board.h"
 #include "pin_mux.h"
-#include "fsl_flexcan.h"
-#include "fsl_clock.h"
+#include "fsl_lpuart.h"
 #include "fsl_common.h"
-#include "fsl_debug_console.h"
+#include "board.h"
 
 #include "freemaster.h"
-#include "freemaster_flexcan.h"
+#include "freemaster_serial_lpuart.h"
 
 #include "freemaster_example.h"
-
-////////////////////////////////////////////////////////////////////////////////
-// Defines
-////////////////////////////////////////////////////////////////////////////////
-#define EXAMPLE_CAN_BASE                      CAN1
-#define EXAMPLE_CAN_INTERRUPT                 CAN1_IRQn
-#define EXAMPLE_CAN_INTERRUPT_HANDLER         CAN1_IRQHandler
-#define EXAMPLE_CAN_CLOCK_FREQUENCY           CLOCK_GetRootClockFreq(kCLOCK_Root_Can1)
-#define EXAMPLE_CAN_BITRATE                   500000U
-#define EXAMPLE_CAN_FD_BITRATE                2000000U
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
@@ -44,7 +31,7 @@
 // Prototypes
 ////////////////////////////////////////////////////////////////////////////////
 
-static void init_freemaster_can(void);
+static void init_freemaster_lpuart(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Code
@@ -54,20 +41,14 @@ int main(void)
 {
     /* Board initialization */
     BOARD_ConfigMPU();
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitCANPins();
+    BOARD_InitBootPins();
     BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
 
     /* FreeMASTER communication layer initialization */
-    init_freemaster_can();
+    init_freemaster_lpuart();
 
     /* This example uses shared code from FreeMASTER generic example application */
     FMSTR_Example_Init();
-
-    PRINTF(
-       "\nFreeMASTER CAN Example.\n"
-        "Connect using CAN and use FreeMASTER over CAN plug-in.\n\n");
 
     while (1)
     {
@@ -78,37 +59,34 @@ int main(void)
 }
 
 /*!
- * @brief CAN Module initialization
+ * @brief LPUART Module initialization (LPUART is a the standard block included e.g. in K66F)
  */
-static void init_freemaster_can(void)
+static void init_freemaster_lpuart(void)
 {
-    flexcan_config_t flexcanConfig = { 0 };
-    flexcan_timing_config_t timing_config = { 0 };
-    uint32_t canSrcClock = EXAMPLE_CAN_CLOCK_FREQUENCY;
+    lpuart_config_t config;
 
-    /* Get FlexCAN default configuration */
-    FLEXCAN_GetDefaultConfig(&flexcanConfig);
+    /*
+     * config.baudRate_Bps = 115200U;
+     * config.parityMode = kUART_ParityDisabled;
+     * config.stopBitCount = kUART_OneStopBit;
+     * config.txFifoWatermark = 0;
+     * config.rxFifoWatermark = 1;
+     * config.enableTx = false;
+     * config.enableRx = false;
+     */
+    LPUART_GetDefaultConfig(&config);
+    config.baudRate_Bps = 115200U;
+    config.enableTx     = false;
+    config.enableRx     = false;
 
-    /* Update configuration */
-    flexcanConfig.clkSrc   = kFLEXCAN_ClkSrcPeri;
-    flexcanConfig.bitRate = EXAMPLE_CAN_BITRATE;
-
-    /* FD bitrate applied only if FMSTR_CAN_USE_CANFD enabled */
-    flexcanConfig.bitRateFD = EXAMPLE_CAN_FD_BITRATE;
-
-    /* Update the improved timing configuration */
-    if (FLEXCAN_FDCalculateImprovedTimingValues(EXAMPLE_CAN_BASE, flexcanConfig.bitRate, flexcanConfig.bitRateFD, canSrcClock, &timing_config))
-        flexcanConfig.timingConfig = timing_config;
-
-    /* Init FlexCAN module. */
-    FLEXCAN_FDInit(EXAMPLE_CAN_BASE, &flexcanConfig, canSrcClock, kFLEXCAN_64BperMB, true);
+    LPUART_Init((LPUART_Type *)BOARD_DEBUG_UART_BASEADDR, &config, CLOCK_GetFreq(kCLOCK_Lpuart5Clk));
 
     /* Register communication module used by FreeMASTER driver. */
-    FMSTR_CanSetBaseAddress(EXAMPLE_CAN_BASE);
+    FMSTR_SerialSetBaseAddress((LPUART_Type *)BOARD_DEBUG_UART_BASEADDR);
 
 #if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
-    /* Enable CAN interrupt. */
-    EnableIRQ(EXAMPLE_CAN_INTERRUPT);
+    /* Enable UART interrupts. */
+    EnableIRQ(LPUART_5_IRQn);
     EnableGlobalIRQ(0);
 #endif
 }
@@ -125,13 +103,10 @@ static void init_freemaster_can(void)
  *
  */
 
-void EXAMPLE_CAN_INTERRUPT_HANDLER(void)
+void LPUART_5_IRQHandler(void)
 {
     /* Call FreeMASTER Interrupt routine handler */
-    FMSTR_CanIsr();
-
-    /* May be needed for ARM errata 838869 */
-    SDK_ISR_EXIT_BARRIER;
+    FMSTR_SerialIsr();
 }
 #endif
 
