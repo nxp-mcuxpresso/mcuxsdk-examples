@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="MCXW236B" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="73f0b34a-8d1a-4bcd-9a74-fc28036a1984" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="MCXW236" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="73f0b34a-8d1a-4bcd-9a74-fc28036a1984" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
-      <processor>MCXW236B</processor>
+      <processor>MCXW236</processor>
       <package>MCXW236BIHNAR</package>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33_core0">

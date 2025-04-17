@@ -6,7 +6,7 @@ mcux_set_variable(board mcxw23evk)
 mcux_set_variable(board_root examples/_boards)
 
 if (NOT DEFINED device)
-    mcux_set_variable(device MCXW236B)
+    mcux_set_variable(device MCXW236)
 endif()
 
 if (NOT DEFINED soc_series)

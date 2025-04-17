@@ -7,7 +7,7 @@ rsource "Kconfig.defconfig"
 config MCUX_HW_BOARD_frdmmcxw23
     bool
     default y
-    imply MCUX_HW_DEVICE_MCXW236B
+    imply MCUX_HW_DEVICE_MCXW236
     imply MCUX_COMPONENT_driver.clock
     imply MCUX_COMPONENT_driver.common
     imply MCUX_COMPONENT_driver.flexcomm_i2c

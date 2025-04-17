@@ -7,7 +7,7 @@ mcux_set_variable(board_root examples/_boards)
 mcux_set_variable(bluetooth_root bluetooth)
 
 if (NOT DEFINED device)
-    mcux_set_variable(device MCXW236B)
+    mcux_set_variable(device MCXW236)
 endif()
 
 if (NOT DEFINED soc_series)

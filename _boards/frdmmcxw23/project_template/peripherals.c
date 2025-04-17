@@ -13,7 +13,7 @@
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Pins v16.0
-processor: MCXW236B
+processor: MCXW236
 package_id: MCXW236BIHNAR
 mcu_data: ksdk2_0
 processor_version: 0.0.0
