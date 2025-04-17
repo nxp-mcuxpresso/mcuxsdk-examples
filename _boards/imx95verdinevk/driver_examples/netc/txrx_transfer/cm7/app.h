@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,6 +12,7 @@
 #include "fsl_netc_phy_wrapper.h"
 #include "fsl_phyrtl8211f.h"
 #include "fsl_phyaqr113c.h"
+#include "fsl_phytja1120.h"
 #include "fsl_msgintr.h"
 /*${header:end}*/
 
@@ -21,17 +22,20 @@
 /*${macro:start}*/
 
 /* Ethernet port identifier. */
-#define EXAMPLE_EP_NUM        2U
+#define EXAMPLE_EP_NUM        3U
 #define EXAMPLE_EP0_PORT      0U
 #define EXAMPLE_EP1_PORT      1U
+#define EXAMPLE_EP2_PORT      2U
 
 #define EXAMPLE_EP_SI                      \
     {                                      \
-        kNETC_ENETC0PSI0, kNETC_ENETC2PSI0 \
+        kNETC_ENETC0PSI0,                  \
+        kNETC_ENETC2PSI0,                  \
+        kNETC_ENETC1PSI0,                  \
     }
 #define EXAMPLE_EP_PHY_ADDR \
     {                       \
-        0x1U, 0x8U          \
+        0x1U, 0x8U, 0x7U    \
     }
 #define EXAMPLE_MSGINTR       MSGINTR2
 

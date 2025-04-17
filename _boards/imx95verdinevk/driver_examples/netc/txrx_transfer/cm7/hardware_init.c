@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -20,6 +20,7 @@ static netc_mdio_handle_t s_mdio_handle;
 static netc_mdio_handle_t s_emdio_handle;
 static phy_rtl8211f_resource_t s_phy_rtl8211f_resource;
 static phy_aqr113c_resource_t s_phy_aqr113c_resource;
+static phy_tja1120_resource_t s_phy_tja1120_resource;
 static phy_handle_t s_phy_handle[EXAMPLE_EP_NUM];
 static uint8_t s_phy_addr[EXAMPLE_EP_NUM] = EXAMPLE_EP_PHY_ADDR;
 /*${variable:end}*/
@@ -156,11 +157,13 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 
 static status_t APP_EMDIOC45Write(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t data)
 {
+    SDK_DelayAtLeastUs(2000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     return NETC_MDIOC45Write(&s_emdio_handle, portAddr, devAddr, regAddr, data);
 }
 
 static status_t APP_EMDIOC45Read(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t *pData)
 {
+    SDK_DelayAtLeastUs(2000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     return NETC_MDIOC45Read(&s_emdio_handle, portAddr, devAddr, regAddr, pData);
 }
 
@@ -233,6 +236,54 @@ status_t APP_PHY_Init(void)
     }
 
     result = PHY_EnableLoopback(&s_phy_handle[EXAMPLE_EP1_PORT], kPHY_LocalLoop, phyaqr113cConfig.speed, true);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    /* EP2 PHY Init */
+
+    /* For a reset of TJA1120, this pin must be asserted low, deasserted and then wait at least 10 ms. */
+    PCAL6524_SetDirection(&handle, (1 << BOARD_PCAL6524_ETH2_RESET), kPCAL6524_Output);
+    PCAL6524_ClearPins(&handle, (1 << BOARD_PCAL6524_ETH2_RESET));
+    SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    PCAL6524_SetPins(&handle, (1 << BOARD_PCAL6524_ETH2_RESET));
+    SDK_DelayAtLeastUs(10000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
+    phy_config_t phytja1120Config = {
+        .ops       = &phytja1120_ops,
+        .speed     = kPHY_Speed1000M,
+        .duplex    = kPHY_FullDuplex,
+        .autoNeg   = false,
+        .enableEEE = false,
+        .master    = true,
+        .intrType  = kPHY_IntrDisable,
+    };
+
+    /* Initialize PHY for EP2. */
+    s_phy_tja1120_resource.write = APP_EMDIOC45Write;
+    s_phy_tja1120_resource.read  = APP_EMDIOC45Read;
+    phytja1120Config.resource = &s_phy_tja1120_resource;
+    phytja1120Config.phyAddr  = s_phy_addr[EXAMPLE_EP2_PORT];
+    result = PHY_Init(&s_phy_handle[EXAMPLE_EP2_PORT], &phytja1120Config);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    /* Enable and configure RGMII TXC and RXC delay */
+    result = APP_EMDIOC45Write(s_phy_handle[EXAMPLE_EP2_PORT].phyAddr, PHY_MMD_VEND1, 0xAFCDU, (1U << 15) | 18U);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+    result = APP_EMDIOC45Write(s_phy_handle[EXAMPLE_EP2_PORT].phyAddr, PHY_MMD_VEND1, 0xAFCCU, (1U << 15) | 18U);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    result = PHY_EnableLoopback(&s_phy_handle[EXAMPLE_EP2_PORT], kPHY_LocalLoop, phytja1120Config.speed, true);
     return result;
 }
 
@@ -250,6 +301,9 @@ status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port, netc_hw_mii_mode_t *mode,
             break;
         case EXAMPLE_EP1_PORT:
             *mode = kNETC_XgmiiMode;
+            break;
+        case EXAMPLE_EP2_PORT:
+            *mode = kNETC_RgmiiMode;
             break;
         default:
             assert(false);
