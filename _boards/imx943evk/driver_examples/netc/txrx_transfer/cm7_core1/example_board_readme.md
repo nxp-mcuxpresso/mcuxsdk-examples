@@ -19,6 +19,11 @@ Prepare the Demo
     - No flow control
 3.  Program flash.bin to boot source and start the board.
 
+Note: To use 2.5G SGMII of switch port0 and port1 and on-board PHY instead of 100M MII,
+      add below definition in app.h.
+
+      #define EXAMPLE_USE_PHY_GPY215 1U
+
 Running the demo
 ===============
 When the demo runs successfully, the log would be seen on the terminal like:

@@ -14,7 +14,9 @@
 #include "fsl_netc_mdio.h"
 #include "fsl_phyrtl8211f.h"
 #include "fsl_phydp8384x.h"
+#include "fsl_phygpy215.h"
 #include "fsl_msgintr.h"
+#include "fsl_netc_phy_wrapper.h"
 /*${header:end}*/
 
 /*******************************************************************************
@@ -66,11 +68,25 @@
 #define EXAMPLE_SWT_PSEUDO_PORT      0x3U
 #define EXAMPLE_SWT_SI               kNETC_ENETC3PSI0
 
+/*
+ * To use 2.5G SGMII of switch port0 and port1 and on-board PHY
+ * instead of 100M MII, add below definition in app.h.
+ *
+ * #define EXAMPLE_USE_PHY_GPY215 1U
+ */
+
 /* PHY: EP0, EP1, SWT_PORT0, SWT_PORT1, SWT_PORT2 */
+#if defined(EXAMPLE_USE_PHY_GPY215)
+#define EXAMPLE_PHY_ADDR \
+    {                       \
+        0x6U, 0x7U, 0xFU, 0x10U, 0x5U        \
+    }
+#else
 #define EXAMPLE_PHY_ADDR \
     {                       \
         0x6U, 0x7U, 0x2U, 0x3U, 0x5U        \
     }
+#endif
 
 /* MSGINTR */
 #define EXAMPLE_MSGINTR MSGINTR2
