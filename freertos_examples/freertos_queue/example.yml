@@ -125,3 +125,4 @@ freertos_queue:
     frdmmcxl255@cm0plus: []
     frdmimxrt1186@cm33: []
     frdmimxrt1186@cm7: []
+    frdmmcxe247: []

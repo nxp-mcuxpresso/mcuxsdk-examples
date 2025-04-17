@@ -104,3 +104,4 @@ Log 9: Task2 Message 4
 - [MCXW23-EVK](../../_boards/mcxw23evk/freertos_examples/freertos_queue/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/freertos_examples/freertos_queue/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/freertos_examples/freertos_queue/example_board_readme.md)
+- [FRDM-MCXE247](../../_boards/frdmmcxe247/freertos_examples/freertos_queue/example_board_readme.md)

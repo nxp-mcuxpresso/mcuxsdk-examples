@@ -97,3 +97,4 @@ The period of time delay is not changed after the external interrupt occurs.
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/freertos_examples/freertos_tickless/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/freertos_examples/freertos_tickless/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/freertos_examples/freertos_tickless/example_board_readme.md)
+- [FRDM-MCXE247](../../_boards/frdmmcxe247/freertos_examples/freertos_tickless/example_board_readme.md)
