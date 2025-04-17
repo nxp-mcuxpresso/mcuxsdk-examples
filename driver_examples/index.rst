@@ -314,6 +314,7 @@ driver_examples
    tspc/readme.md
    tstmr/readme.md
    uart/index.rst
+   virt_wrapper/index.rst
    utick/readme.md
    vref/readme.md
    vref_1/index.rst
