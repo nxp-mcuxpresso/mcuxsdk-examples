@@ -51,9 +51,6 @@ mcux_add_configuration(
         -DgEePromParams_BufferSize_c=512\
         -DgEepromParams_bufferedWrite_c=1\
         -DgEepromParams_CurrentOffset=0\
-        -DSINGLE_CHANNEL=${CONFIG_ZB_ED_RXOFF_SINGLE_CHANNEL}\
-        -DTRACE_APP=${CONFIG_ZB_ED_RXOFF_TRACE_APP}\
-        -DTRACE_ZCL=${CONFIG_ZB_ED_RXOFF_TRACE_ZCL}\
         -DOM15081\
         -DZIGBEE_USE_FRAMEWORK=1\
         -DgSupportBle=0\
