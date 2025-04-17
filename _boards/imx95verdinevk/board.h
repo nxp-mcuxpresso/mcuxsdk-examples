@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -169,6 +169,7 @@
 #define BOARD_PCAL6524_I2C_CLOCK_FREQ HAL_ClockGetRate(BOARD_PCAL6524_I2C_CLOCK_ROOT)
 
 #define BOARD_PCAL6524_PMIC_PWRON     (16U + 5U)
+#define BOARD_PCAL6524_ETH2_RESET     (16U + 7U)
 #define BOARD_PCAL6524_ETH3_RESET_B   (8U + 0U)
 #define BOARD_PCAL6524_CAN1_STBY_B     0U
 #define BOARD_PCAL6524_CAN1_WAKE       1U
