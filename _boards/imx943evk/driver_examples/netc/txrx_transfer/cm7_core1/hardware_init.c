@@ -310,23 +310,28 @@ status_t APP_MDIO_Init(void)
     return result;
 }
 
+/* Board issue is causing mdio access error. Workaround is adding delay between mdio accesses. */
 static status_t APP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
+    SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     return NETC_MDIOWrite(&s_emdio_handle, phyAddr, regAddr, data);
 }
 
 static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
+    SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     return NETC_MDIORead(&s_emdio_handle, phyAddr, regAddr, pData);
 }
 
 static status_t APP_EMDIOC45Write(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t data)
 {
+    SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     return NETC_MDIOC45Write(&s_emdio_handle, portAddr, devAddr, regAddr, data);
 }
 
 static status_t APP_EMDIOC45Read(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t *pData)
 {
+    SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     return NETC_MDIOC45Read(&s_emdio_handle, portAddr, devAddr, regAddr, pData);
 }
 
