@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.22.0)
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(nbu_ble LANGUAGES C CXX ASM
-    PROJECT_BOARD_PORT_PATH middleware/wireless/ble_controller/src/KW4x
+    PROJECT_BOARD_PORT_PATH
+        middleware/wireless/ble_controller/src/KW4x
+    CUSTOM_PRJ_CONF_PATH
+        ${board_root}/${board}/wireless_examples/ble_controller/nbu_ble
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
