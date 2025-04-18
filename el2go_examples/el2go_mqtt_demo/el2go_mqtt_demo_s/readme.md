@@ -3,6 +3,7 @@
 This sample application shows how to use MQTT connections to cloud services such as AWS or Azure with preprovisioned keys and certificates from the EdgeLock 2GO service.
 
 Workspace structure:
+- *tfm_s_crypto_client*: Project creating the static library required by the secure processing environment (S)
 - *el2go_mqtt_demo_s*: Project running in the secure processing environment (S)
 - *el2go_mqtt_demo_ns*: Project running in the non-secure processing environment (NS)
 

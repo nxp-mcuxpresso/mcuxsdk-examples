@@ -3,6 +3,7 @@
 This sample application shows how to use MQTT connections to cloud services such as AWS or Azure with preprovisioned keys and certificates from the EdgeLock 2GO service.
 
 Workspace structure:
+- *tfm_s_crypto_client*: Project creating the static library required by the secure processing environment (S)
 - *el2go_mqtt_demo_s*: Project running in the secure processing environment (S)
 - *el2go_mqtt_demo_ns*: Project running in the non-secure processing environment (NS)
 
@@ -100,11 +101,12 @@ The log below shows the output of the application in the terminal window (connec
 Booting the S project (TF-M initialization):
 
 ```
+Booting TF-M v2.1.1
 [WRN] This device was provisioned with dummy keys. This device is NOT SECURE
 [Sec Thread] Secure image initializing!
 TF-M Float ABI: Hard
 Lazy stacking enabled
-Booting TF-M 1.8.0
+[INF][PS] Encryption alg: 0x5500100
 ```
 
 **[RW61X]** Jumping to the NS project, loading the Wi-Fi firmware and connecting to an access point:

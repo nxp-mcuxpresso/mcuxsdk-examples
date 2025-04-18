@@ -3,6 +3,7 @@
 This is a test suite which imports and validates EL2GO blobs and their usage with PSA.
 
 Workspace structure:
+- *tfm_s_crypto_client*: Project creating the static library required by the secure processing environment (S)
 - *el2go_blob_test_s*: Project running in the secure processing environment (S)
 - *el2go_blob_test_ns*: Project running in the non-secure processing environment (NS)
 
@@ -136,11 +137,12 @@ The log below shows the output of the application in the terminal window.
 Booting the S project (TF-M initialization):
 
 ```
+Booting TF-M v2.1.1
 [WRN] This device was provisioned with dummy keys. This device is NOT SECURE
 [Sec Thread] Secure image initializing!
 TF-M Float ABI: Hard
 Lazy stacking enabled
-Booting TF-M 1.8.0
+[INF][PS] Encryption alg: 0x5500100
 ```
 
 Jumping to the NS project, running the blob test suite:

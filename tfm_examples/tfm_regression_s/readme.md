@@ -12,7 +12,14 @@ NOTE: The TF-M main() functions have a non-standard location:
        - Secure main() is in the tf-m\secure_fw\spm\cmsis_psa\main.c file.
        - Non-Secure main() is in the tf-m-tests\app\main_ns.c file.
 
+Workspace structure:
+- *tfm_s_crypto_client*: Project creating the static library required by the secure processing environment (S)
+- *tfm_s_reg_suites*: Project creating the static library of secure regression test suite (S)
+- *tfm_regression_s*: Project running in the secure processing environment (S)
+- *tfm_regression_ns*: Project running in the non-secure processing environment (NS)
+
 ## Supported Boards
+- [FRDM-MCXN236](../../_boards/frdmmcxn236/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/tfm_examples/tfm_regression/tfm_regression_s/example_board_readme.md)

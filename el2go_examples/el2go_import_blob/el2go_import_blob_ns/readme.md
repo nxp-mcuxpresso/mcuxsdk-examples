@@ -3,6 +3,7 @@
 This sample application shows how to import encrypted EdgeLock 2GO secure object blobs from flash to the ITS storage. The imported objects can then be validated by executing crypto operations.
 
 Workspace structure:
+- *tfm_s_crypto_client*: Project creating the static library required by the secure processing environment (S)
 - *el2go_import_blob_s*: Project running in the secure processing environment (S)
 - *el2go_import_blob_ns*: Project running in the non-secure processing environment (NS)
 
@@ -112,11 +113,12 @@ The log below shows the output of the application in the terminal window.
 Booting the S project (TF-M initialization):
 
 ```
+Booting TF-M v2.1.1
 [WRN] This device was provisioned with dummy keys. This device is NOT SECURE
 [Sec Thread] Secure image initializing!
 TF-M Float ABI: Hard
 Lazy stacking enabled
-Booting TF-M 1.8.0
+[INF][PS] Encryption alg: 0x5500100
 ```
 
 Jumping to the NS project, importing the blobs from flash into TF-M ITS:

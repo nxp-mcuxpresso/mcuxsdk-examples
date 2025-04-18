@@ -24,14 +24,16 @@ Running the demo
 ================
 The log below shows the output of the TFM demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Booting TF-M v2.1.1
 [INF] Beginning TF-M provisioning
 [WRN] TFM_DUMMY_PROVISIONING is not suitable for production! This device is NOT SECURE
+[WRN] This device was provisioned with dummy keys. This device is NOT SECURE
 [Sec Thread] Secure image initializing!
-TF-M FP mode: Hardware
+TF-M Float ABI: Hard
 Lazy stacking enabled
-Booting TF-M 1.7.0
 Creating an empty ITS flash layout.
 Creating an empty PS flash layout.
+[INF][PS] Encryption alg: 0x5500100
 Non-Secure system starting...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

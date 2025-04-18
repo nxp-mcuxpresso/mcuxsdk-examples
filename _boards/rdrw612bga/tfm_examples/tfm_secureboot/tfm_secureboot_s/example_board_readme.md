@@ -26,14 +26,16 @@ Running the demo
 ================
 The log below shows the output of the TFM PSA API tests in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Booting TF-M v2.1.1
 [INF] Beginning TF-M provisioning
 [WRN] TFM_DUMMY_PROVISIONING is not suitable for production! This device is NOT SECURE
+[WRN] This device was provisioned with dummy keys. This device is NOT SECURE
 [Sec Thread] Secure image initializing!
 TF-M Float ABI: Hard
 Lazy stacking enabled
-Booting TF-M 1.7.0
 Creating an empty ITS flash layout.
 Creating an empty PS flash layout.
+[INF][PS] Encryption alg: 0x5500100
 Non-Secure system starting...
 
 ***** PSA Architecture Test Suite - Version 1.4 *****
@@ -59,11 +61,10 @@ TEST: 202 | DESCRIPTION: Testing crypto key management APIs | UT: psa_import_key
 [Check 4] Test psa_import_key 2048 RSA public key
 [Check 5] Test psa_import_key with RSA 2048 keypair
 [Check 6] Test psa_import_key with EC Public key
-[Check 7] Test psa_import_key with EC keypair
-[Check 8] Test psa_import_key 16 bytes AES with invalid bits
-[Check 9] Test psa_import_key with key data greater than the algorithm size
-[Check 10] Test psa_import_key with incorrect key data size
-[Check 11] Test psa_import_key with invalid key type value
+[Check 7] Test psa_import_key 16 bytes AES with invalid bits
+[Check 8] Test psa_import_key with key data greater than the algorithm size
+[Check 9] Test psa_import_key with incorrect key data size
+[Check 10] Test psa_import_key with invalid key type value
 
 TEST RESULT: PASSED
 
@@ -77,9 +78,8 @@ TEST: 203 | DESCRIPTION: Testing crypto key management APIs | UT: psa_export_key
 [Check 4] Test psa_export_key 2048 RSA public key
 [Check 5] Test psa_export_key with RSA 2048 keypair
 [Check 6] Test psa_export_key with EC Public key
-[Check 7] Test psa_export_key with EC keypair
-[Check 8] Test psa_export_key with key policy verify
-[Check 9] Test psa_export_key with less buffer size
+[Check 7] Test psa_export_key with key policy verify
+[Check 8] Test psa_export_key with less buffer size
 
 TEST RESULT: PASSED
 
@@ -93,8 +93,7 @@ TEST: 204 | DESCRIPTION: Testing crypto key management APIs | UT: psa_export_pub
 [Check 4] Test psa_export_public_key 2048 RSA public key
 [Check 5] Test psa_export_public_key with RSA 2048 keypair
 [Check 6] Test psa_export_public_key with EC Public key
-[Check 7] Test psa_export_public_key with EC keypair
-[Check 8] Test psa_export_public_key with less buffer size
+[Check 7] Test psa_export_public_key with less buffer size
 
 TEST RESULT: PASSED
 
@@ -108,7 +107,6 @@ TEST: 205 | DESCRIPTION: Testing crypto key management APIs | UT: psa_destroy_ke
 [Check 4] Test psa_destroy_key 2048 RSA public key
 [Check 5] Test psa_destroy_key with RSA 2048 keypair
 [Check 6] Test psa_destroy_key with EC Public key
-[Check 7] Test psa_destroy_key with EC keypair
 
 TEST RESULT: PASSED
 
@@ -238,10 +236,9 @@ TEST: 216 | DESCRIPTION: Testing crypto generator functions APIs | UT: psa_gener
 [Check 2] Test psa_generate_key 24 Byte AES
 [Check 3] Test psa_generate_key 32 Byte AES
 [Check 4] Test psa_generate_key with RSA 2048 Keypair
-[Check 5] Test psa_generate_key with ECC KeyPair
-[Check 6] Test psa_generate_key with RSA 2048 Public key
-[Check 7] Test psa_generate_key with invalid key type
-[Check 8] Test psa_generate_key with invalid usage flags
+[Check 5] Test psa_generate_key with RSA 2048 Public key
+[Check 6] Test psa_generate_key with invalid key type
+[Check 7] Test psa_generate_key with invalid usage flags
 
 TEST RESULT: PASSED
 
@@ -476,9 +473,8 @@ TEST: 232 | DESCRIPTION: Testing crypto symmetric cipher APIs | UT: psa_cipher_e
 [Check 8] Test psa_cipher_encrypt_setup - RSA public key
 [Check 9] Test psa_cipher_encrypt_setup - RSA keypair
 [Check 10] Test psa_cipher_encrypt_setup - EC Public key
-[Check 11] Test psa_cipher_encrypt_setup - EC keypair
-[Check 12] Test psa_cipher_encrypt_setup - Invalid key handle
-[Check 13] Test psa_cipher_encrypt_setup - Zero as key handle
+[Check 11] Test psa_cipher_encrypt_setup - Invalid key handle
+[Check 12] Test psa_cipher_encrypt_setup - Zero as key handle
 
 TEST RESULT: PASSED
 
@@ -496,9 +492,8 @@ TEST: 233 | DESCRIPTION: Testing crypto symmetric cipher APIs | UT: psa_cipher_d
 [Check 8] Test psa_cipher_decrypt_setup - RSA public key
 [Check 9] Test psa_cipher_decrypt_setup - RSA keypair
 [Check 10] Test psa_cipher_decrypt_setup - EC Public key
-[Check 11] Test psa_cipher_decrypt_setup - EC keypair
-[Check 12] Test psa_cipher_decrypt_setup - Invalid key handle
-[Check 13] Test psa_cipher_decrypt_setup - Zero as key handle
+[Check 11] Test psa_cipher_decrypt_setup - Invalid key handle
+[Check 12] Test psa_cipher_decrypt_setup - Zero as key handle
 
 TEST RESULT: PASSED
 
@@ -683,7 +678,6 @@ TEST: 244 | DESCRIPTION: Testing crypto key management APIs | UT: psa_copy_key
 [Check 3] Test psa_copy_key - Incompatible target policy(source and target)
 [Check 4] Test psa_copy_key - source key with no export usage
 [Check 5] Test psa_copy_key - EC Public key
-[Check 6] Test psa_copy_key - EC keypair
 
 TEST RESULT: PASSED
 

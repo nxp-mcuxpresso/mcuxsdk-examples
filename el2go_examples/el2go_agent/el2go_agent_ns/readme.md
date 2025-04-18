@@ -3,6 +3,7 @@
 This sample application shows how to use the EdgeLock 2GO service to provisioning keys and certificates to an MCU device. Those keys and certificates can then be used to establish mutual-authenticated TLS connections to cloud services such as AWS or Azure.
 
 Workspace structure:
+- *tfm_s_crypto_client*: Project creating the static library required by the secure processing environment (S)
 - *el2go_agent_s*: Project running in the secure processing environment (S)
 - *el2go_agent_ns*: Project running in the non-secure processing environment (NS)
 
@@ -148,12 +149,12 @@ The log below shows the output of the application in the terminal window (with M
 Booting the S project (TF-M initialization):
 
 ```
-[INF] Beginning TF-M provisioning
-[WRN] TFM_DUMMY_PROVISIONING is not suitable for production! This device is NOT SECURE
+Booting TF-M v2.1.1
+[WRN] This device was provisioned with dummy keys. This device is NOT SECURE
 [Sec Thread] Secure image initializing!
 TF-M Float ABI: Hard
 Lazy stacking enabled
-Booting TF-M 1.8.0
+[INF][PS] Encryption alg: 0x5500100
 ```
 
 Jumping to the NS project, loading the Wi-Fi firmware and connecting to an access point:
