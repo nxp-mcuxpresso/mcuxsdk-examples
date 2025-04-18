@@ -210,7 +210,10 @@ static inline void *VNIC_EnetDequeueTxBuffer(void **queue)
     }
     if (NULL != buffer)
     {
-        s_dataTxBufferFreeCnt--;
+        if (s_dataTxBufferFreeCnt > 0U)
+        {
+            s_dataTxBufferFreeCnt--;
+        }
     }
     USB_DEVICE_VNIC_EXIT_CRITICAL();
     return buffer;
