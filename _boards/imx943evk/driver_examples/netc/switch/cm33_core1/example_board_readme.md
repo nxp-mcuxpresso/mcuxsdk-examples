@@ -20,6 +20,11 @@ Prepare the Demo
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
+Note: To use 2.5G SGMII of switch port0 and port1 and on-board PHY instead of 100M MII,
+      add below definition in app.h.
+
+      #define EXAMPLE_USE_PHY_GPY215 1U
+
 Running the demo
 ===============
 When the demo runs successfully, the log would be seen on the OpenSDA terminal like:
