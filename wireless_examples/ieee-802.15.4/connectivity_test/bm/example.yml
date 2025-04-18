@@ -50,5 +50,3 @@
     - +iar@debug
     - +iar@release
     kw43evk:
-    - -armgcc@debug
-    - -armgcc@release
