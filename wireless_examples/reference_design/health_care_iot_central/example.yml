@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+health_care_iot_central:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/reference_design/health_care_iot_central
+    project-root-path: boards/${board}/wireless_examples/reference_design/health_care_iot_central/${multicore_foldername}
+    document:
+      name: health_care_iot_central${core_id_suffix_name}
+      category: wireless_examples/reference_design
+      brief: 'The application demonstrates BLE central role and accepts connections from health_care_iot_peripheral.'
+      example_readme:
+      - examples/wireless_examples/reference_design/health_care_iot_central/readme.md
+      - ${board_root}/${board}/wireless_examples/reference_design/health_care_iot_central/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw23: []
