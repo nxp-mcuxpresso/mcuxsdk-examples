@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexspi_flr_ocram_benchmark:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexspi_flr/ocram/benchmark
+    project-root-path: boards/${board}/driver_examples/flexspi_flr/ocram/benchmark/${multicore_foldername}
+    document:
+      name: flexspi_flr_ocram_benchmark${core_id_suffix_name}
+      category: driver_examples/flexspi_flr
+      brief: The flexspi_flr_ocram_benchmark example shows how to test OCRAM and the FlexSPI Follower read/write performance.
+             In this example, the FlexSPI uses AHB APIs to access the FlexSPI Follower.
+      example_readme:
+      - examples/driver_examples/flexspi_flr/ocram/benchmark/readme.md
+      - ${board_root}/${board}/driver_examples/flexspi_flr/ocram/benchmark/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt1186@cm33: []

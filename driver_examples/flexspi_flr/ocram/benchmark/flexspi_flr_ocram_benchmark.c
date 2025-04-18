@@ -44,6 +44,7 @@ static char *io_mode[4] =
     "SDRx4", "SDRx8", "DDRx4", "DDRx8"
 };
 extern uint32_t gptFreq;
+extern flexspi_device_config_t deviceconfig;
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -266,7 +267,6 @@ int main(void)
 
     FLEXSPI_SLV_GetDefaultConfig(&config);
     config.io_mode     = EXAMPLE_FLEXSPI_SLV_MODE;
-    config.clock_freq  = EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK;
     config.baseAddr1   = OCRAM_BASEADDR;
     config.baseAddr2   = OCRAM_BASEADDR;
     config.addrRange1  = MEMORY_SIZE;

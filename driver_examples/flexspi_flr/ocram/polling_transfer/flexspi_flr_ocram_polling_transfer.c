@@ -1,7 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
- *
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -31,6 +29,7 @@ extern status_t flexspi_ocram_status_get(FLEXSPI_Type *base, uint32_t *readValue
 extern status_t flexspi_ocram_read_memory(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src, uint32_t length);
 extern status_t flexspi_ocram_write_memory(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src, uint32_t length);
 extern void flexspi_ocram_init(FLEXSPI_Type *base);
+extern flexspi_device_config_t deviceconfig;
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -61,7 +60,6 @@ int main(void)
 
     FLEXSPI_SLV_GetDefaultConfig(&config);
     config.io_mode     = EXAMPLE_FLEXSPI_SLV_MODE;
-    config.clock_freq  = EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK;
     config.baseAddr1   = OCRAM_BASEADDR;
     config.baseAddr2   = OCRAM_BASEADDR;
     config.addrRange1  = MEMORY_SIZE;
@@ -94,7 +92,7 @@ int main(void)
 
     intEN = FLEXSPI_SLV_MODULE_INTEN_WOFEN_MASK | FLEXSPI_SLV_MODULE_INTEN_RUFEN_MASK |
             FLEXSPI_SLV_MODULE_INTEN_ERRCMDEN_MASK;
-    FLEXSPI_SLV_InterruptCreateHandle(EXAMPLE_FLEXSPI_SLV, &handle, Interrupt_callback, &intEN);
+    FLEXSPI_SLV_InterruptCreateHandle(EXAMPLE_FLEXSPI_SLV, &handle, flexspi_flr_callback, intEN);
 
     flexspi_ocram_init(EXAMPLE_FLEXSPI);
     PRINTF("FLEXSPI leader is initialized!\r\n");

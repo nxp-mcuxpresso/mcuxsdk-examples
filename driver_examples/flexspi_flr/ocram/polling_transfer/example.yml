@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+flexspi_flr_ocram_polling_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/flexspi_flr/ocram/polling_transfer
+    project-root-path: boards/${board}/driver_examples/flexspi_flr/ocram/polling_transfer/${multicore_foldername}
+    document:
+      name: flexspi_flr_ocram_polling_transfer${core_id_suffix_name}
+      category: driver_examples/flexspi_flr
+      brief: The flexspi_flr_ocram_polling_transfer example shows how to use the spi leader to access the OCRAM via the spi follower.
+             In this example, FlexSPI and FlexSPI Follower are both enabled. The FlexSPI will read and write the internal OCRAM
+             controlled by FlexSPI Follower. During this process, FlexSPI will send a mailbox to the FlexSPI follower to trigger
+             an interrupt.
+      example_readme:
+      - examples/driver_examples/flexspi_flr/ocram/polling_transfer/readme.md
+      - ${board_root}/${board}/driver_examples/flexspi_flr/ocram/polling_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

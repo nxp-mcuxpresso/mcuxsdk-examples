@@ -1,7 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
- *
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,10 +7,25 @@
 #define _APP_H_
 
 #include "fsl_clock.h"
+#include "fsl_flexspi_flr.h"
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
+/*! @brief Clock frequency enumeration of FLEXSPI FOLLOWER.*/
+typedef enum _flexspi_slv_clock_freq
+{
+    kFLEXSPI_SLV_RootClock_50M   = 50,  /*!< 50MHz root clock */
+    kFLEXSPI_SLV_RootClock_66M   = 66,  /*!< 66MHz root clock */
+    kFLEXSPI_SLV_RootClock_80M   = 80,  /*!< 80MHz root clock */
+    kFLEXSPI_SLV_RootClock_100M  = 100, /*!< 100MHz root clock */
+    kFLEXSPI_SLV_RootClock_133M  = 133, /*!< 133MHz root clock */
+    kFLEXSPI_SLV_RootClock_166M  = 166, /*!< 166MHz root clock */
+    kFLEXSPI_SLV_RootClock_200M  = 200, /*!< 200MHz root clock */
+    kFLEXSPI_SLV_RootClock_400M  = 400  /*!< 400MHz root clock */
+} flexspi_slv_clock_freq_t;
+
 #define EXAMPLE_FLEXSPI                 FLEXSPI1
 #define EXAMPLE_FLEXSPI_AMBA_BASE       FlexSPI1_AMBA_BASE
 #define EXAMPLE_FLEXSPI_CLOCK           kCLOCK_Flexspi1
@@ -23,7 +36,7 @@
 
 #define EXAMPLE_FLEXSPI_SLV             FLEXSPI_SLV
 #define EXAMPLE_FLEXSPI_SLV_MODE        kFLEXSPI_SLV_IOMODE_DDRx8
-#define EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK  RootClock_400M
+#define EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK  kFLEXSPI_SLV_RootClock_400M
 #define EXAMPLE_MEMORY_ADDR             256
 #define EXAMPLE_MEMORY_ADDR_AHB         (256 * 2)
 #define EXAMPLE_MAILBOX_INDEX           0
@@ -65,6 +78,8 @@ typedef struct _flexspi_cache_status
 {
     volatile bool codeCacheEnableFlag;
     volatile bool systemCacheEnableFlag;
+    volatile bool DCacheEnableFlag;
+    volatile bool ICacheEnableFlag;
 } flexspi_cache_status_t;
 #endif
 /*${variable:end}*/
@@ -80,6 +95,8 @@ static inline void flexspi_clock_init(void)
     CLOCK_SetRootClockDiv(kCLOCK_Root_Flexspi1, EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV);
     CLOCK_SetRootClockMux(kCLOCK_Root_Flexspi1, EXAMPLE_FLEXSPI_ROOT_CLOCK_SRC);
 }
+uint32_t get_rootClock_freq_hz(clock_root_mux_source_t clk_name);
+void flexspi_flr_callback(FLEXSPI_SLV_Type *base, flexspi_slv_handle_t *handle);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

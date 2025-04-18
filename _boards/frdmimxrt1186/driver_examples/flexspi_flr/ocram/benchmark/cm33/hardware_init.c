@@ -1,7 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
- *
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -160,6 +158,63 @@ uint32_t get_rootClock_freq_hz(clock_root_mux_source_t clk_name)
     }
 }
 
+void FLEXSPI_SLV_ClkRootFrq(flexspi_slv_clock_freq_t clock_freq)
+{
+    clock_root_config_t rootCfg = {0};
+
+    switch (clock_freq)
+    {
+        case kFLEXSPI_SLV_RootClock_50M:
+            /* Configure FLEXSPI_SLV using OSC_RC_400M */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.div = 8;
+            break;
+
+        case kFLEXSPI_SLV_RootClock_66M:
+            /* Configure FLEXSPI_SLV using SYS_PLL2_CLK */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;
+            rootCfg.div = 8;
+            break;
+
+        case kFLEXSPI_SLV_RootClock_80M:
+            /* Configure FLEXSPI_SLV using OSC_RC_400M */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.div = 5;
+            break;
+
+        case kFLEXSPI_SLV_RootClock_100M:
+            /* Configure FLEXSPI_SLV using OSC_RC_400M */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.div = 4;
+            break;
+
+        case kFLEXSPI_SLV_RootClock_166M:
+            /* Configure FLEXSPI_SLV using SYS_PLL1_CLK */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll1Out;
+            rootCfg.div = 6;
+            break;
+
+        case kFLEXSPI_SLV_RootClock_200M:
+            /* Configure FLEXSPI_SLV using SYS_PLL1_CLK */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll1Out;
+            rootCfg.div = 5;
+            break;
+
+        case kFLEXSPI_SLV_RootClock_400M:
+            /* Configure FLEXSPI_SLV using OSC_RC_400M */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.div = 1;
+            break;
+
+        default:
+            /* RootClock_133M: Configure FLEXSPI_SLV using SYS_PLL2_CLK */
+            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;
+            rootCfg.div = 4;
+            break;
+    }
+    CLOCK_SetRootClock(kCLOCK_Root_Flexspi_Slv, &rootCfg);
+}
+
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
@@ -167,6 +222,8 @@ void BOARD_InitHardware(void)
     BOARD_InitFLEXSPI_FLRPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
+    FLEXSPI_SLV_ClkRootFrq(EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK);
 }
 
 /*${function:end}*/
