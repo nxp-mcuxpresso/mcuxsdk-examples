@@ -7,3 +7,5 @@ mcux_add_source(
           ${board_root}/${board}/project_template/peripherals.c
           ${board_root}/${board}/project_template/peripherals.h
 )
+
+mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${project_board_port_path})
