@@ -48,3 +48,8 @@ ce_blockingmode_test:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    mcxw72loc@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

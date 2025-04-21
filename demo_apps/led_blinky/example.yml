@@ -44,6 +44,7 @@ led_blinky:
     - +armgcc@release
     kw45b41zloc: []
     kw47loc@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     twrkm34z50mv3: []
     twrkm35z75m: []
     frdmmcxe31b: []

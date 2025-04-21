@@ -101,4 +101,5 @@ erpc_matrix_multiply_rpmsg_secondary_core:
     kw47evk@cm33_core1: []
     mcxw72evk@cm33_core1: []
     kw47loc@cm33_core1: []
+    mcxw72loc@cm33_core1: []
     frdmmcxw72@cm33_core1: []

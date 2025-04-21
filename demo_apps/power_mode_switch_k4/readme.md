@@ -23,3 +23,4 @@ source by following the debug console prompts. The purpose of this demo is to sh
 - [KW47-LOC](../../_boards/kw47loc/demo_apps/power_mode_switch/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/demo_apps/power_mode_switch/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/demo_apps/power_mode_switch/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/demo_apps/power_mode_switch/example_board_readme.md)
