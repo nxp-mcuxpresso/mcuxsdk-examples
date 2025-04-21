@@ -350,12 +350,11 @@ int select_lc3_preset(char *preset_name)
 
 	for(int i = 0; i < ARRAY_SIZE(lc3_unicast_presets); i++)
 	{
-		const struct bt_audio_codec_cfg *codec_cfg = &lc3_unicast_presets[i].preset.codec_cfg;
-
 		if(0 == strcmp(lc3_unicast_presets[i].name, preset_name))
 		{
 			find = true;
 			memcpy(&lc3_preset, &lc3_unicast_presets[i].preset, sizeof(lc3_preset));
+			break;
 		}
 	}
 
@@ -472,7 +471,7 @@ int modify_conn_param(int interval_min, int interval_max, int latency, int timeo
 void config_channel_location(void)
 {
 	int count = 0;
-	enum bt_audio_location loc;
+	enum bt_audio_location loc = BT_AUDIO_LOCATION_MONO_AUDIO;
 
 	for (int index = 0; index < CONFIG_BT_MAX_CONN; index++)
 	{

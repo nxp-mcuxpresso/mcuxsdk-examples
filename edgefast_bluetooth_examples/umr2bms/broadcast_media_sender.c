@@ -259,12 +259,11 @@ int select_lc3_preset(char *preset_name)
 
 	for(int i = 0; i < ARRAY_SIZE(lc3_broadcast_presets); i++)
 	{
-		const struct bt_audio_codec_cfg *codec_cfg = &lc3_broadcast_presets[i].preset.codec_cfg;
-
 		if(0 == strcmp(lc3_broadcast_presets[i].name, preset_name))
 		{
 			find = true;
-			memcpy(&lc3_preset.codec_cfg, codec_cfg, sizeof(lc3_preset));
+			memcpy(&lc3_preset, &lc3_broadcast_presets[i].preset, sizeof(lc3_preset));
+			break;
 		}
 	}
 

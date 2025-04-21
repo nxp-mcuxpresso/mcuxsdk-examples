@@ -593,11 +593,10 @@ int select_lc3_preset(char *preset_name)
 
 	for(int i = 0; i < ARRAY_SIZE(lc3_unicast_presets); i++)
 	{
-		const struct bt_audio_codec_cfg *codec_cfg = &lc3_unicast_presets[i].preset.codec_cfg;
-
 		if(0 == strcmp(lc3_unicast_presets[i].name, preset_name))
 		{
-			int sample_rate = bt_audio_codec_cfg_freq_to_freq_hz((enum bt_audio_codec_cfg_freq)bt_audio_codec_cfg_get_freq(codec_cfg));
+			const struct bt_bap_lc3_preset *preset = &lc3_unicast_presets[i].preset;
+			int sample_rate = bt_audio_codec_cfg_freq_to_freq_hz((enum bt_audio_codec_cfg_freq)bt_audio_codec_cfg_get_freq(&preset->codec_cfg));
 #if defined(CONFIG_BT_A2DP_SINK) && (CONFIG_BT_A2DP_SINK > 0)
 #if defined(APP_BRIDGE_UPSAMPLE_441_TO_48) && (APP_BRIDGE_UPSAMPLE_441_TO_48 > 0)
 			if(sample_rate != 48000)
@@ -612,7 +611,8 @@ int select_lc3_preset(char *preset_name)
 				return -1;
 			}
 			find = true;
-			memcpy(&lc3_preset, &lc3_unicast_presets[i].preset, sizeof(lc3_preset));
+			memcpy(&lc3_preset, preset, sizeof(lc3_preset));
+			break;
 		}
 	}
 
