@@ -264,11 +264,11 @@ void mcu_suspend()
     if (wlan_host_sleep_pre_cfg)
     {
         wlan_host_sleep_pre_cfg();
+#ifdef IW610
+        OSA_SemaphoreWait((osa_semaphore_handle_t)hs_config_sem, 1000);
+#endif
     }
 
-#ifdef IW610
-    OSA_SemaphoreWait((osa_semaphore_handle_t)hs_config_sem, osaWaitForever_c);
-#endif
     PowerModeSwitch(LPM_PowerModeSysIdle);
     if (wlan_host_sleep_post_cfg)
     {
