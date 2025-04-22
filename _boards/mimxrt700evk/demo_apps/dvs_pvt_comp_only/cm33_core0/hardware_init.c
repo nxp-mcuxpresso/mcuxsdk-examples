@@ -55,7 +55,7 @@ static void BOARD_BootClockRUN_InitFRO0(void)
 #else
         .targetFreq = 325000000, /* FRO0 TUNER output clock frequency: 220000000Hz */
 #endif
-        .range         = 100,   /* FRO0 range value: ¡À 100counts */
+        .range         = 100,   /* FRO0 range value: 100counts */
         .trim1DelayUs  = 15,    /* FRO0 Trim1 delay: 15us */
         .trim2DelayUs  = 150,   /* FRO0 Trim2 delay: 150us */
         .refDiv        = 1,     /* The FRO reference divider is 1 */
@@ -282,6 +282,7 @@ void BOARD_InitPowerConfig(void)
     CLOCK_DisableClock(kCLOCK_Prince1);
     CLOCK_DisableClock(kCLOCK_Iopctl0);
     CLOCK_DisableClock(kCLOCK_Ocotp0);
+    CLOCK_DisableClock(kCLOCK_Cdog0); /* B0 default enabled. */
     CLOCK_DisableClock(kCLOCK_Glikey3);
     CLOCK_DisableClock(kCLOCK_Glikey4);
     CLOCK_DisableClock(kCLOCK_Glikey5);
@@ -375,6 +376,8 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnablePD(kPDRUNCFG_PPD_DMA0_1_PKC_ETF);
     POWER_EnablePD(kPDRUNCFG_APD_USB0_SRAM);
     POWER_EnablePD(kPDRUNCFG_PPD_USB0_SRAM);
+    POWER_EnablePD(kPDRUNCFG_APD_USB1_SRAM);
+    POWER_EnablePD(kPDRUNCFG_PPD_USB1_SRAM);
     POWER_EnablePD(kPDRUNCFG_APD_SDHC0_SRAM);
     POWER_EnablePD(kPDRUNCFG_PPD_SDHC0_SRAM);
     POWER_EnablePD(kPDRUNCFG_APD_SDHC1_SRAM);
