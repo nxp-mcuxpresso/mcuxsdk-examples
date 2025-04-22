@@ -245,7 +245,7 @@ int main(void)
     }
 
     /* Register the application event */
-    (void)MCMGR_RegisterEvent(kMCMGR_RemoteApplicationEvent, RemoteApplicationEventHandler, ((void *)0), , kMCMGR_Core0);
+    (void)MCMGR_RegisterEvent(kMCMGR_RemoteApplicationEvent, RemoteApplicationEventHandler, ((void *)0));
 
     PRINTF("\r\nThis is core1.\r\n");
 
