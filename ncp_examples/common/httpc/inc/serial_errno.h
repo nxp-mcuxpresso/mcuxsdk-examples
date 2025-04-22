@@ -55,7 +55,6 @@
 
 /** Unknown failure */
 #define E_UNKNOWN		200
-#endif
 
 #ifdef ASCIICMD
 
@@ -121,3 +120,5 @@
 
 /** TLS error codes */
 #define E_TLS_CONTEXT_CREATION_FAIL 900
+
+#endif

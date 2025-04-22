@@ -59,12 +59,11 @@
 void host_sleep_cli_notify(void);
 int host_sleep_pre_cfg(int mode);
 void host_sleep_post_cfg(int mode);
-void host_sleep_dump_wakeup_source();
+void host_sleep_dump_wakeup_source(void);
 int ncp_config_suspend_mode(int mode);
 #if CONFIG_POWER_MANAGER
-void powerManager_EnterLowPower();
+void powerManager_EnterLowPower(void);
 #endif
-int host_sleep_cli_init(void);
 void ncp_gpio_init(void);
 int hostsleep_init(void);
 void ncp_notify_host_gpio_init(void);

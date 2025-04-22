@@ -56,7 +56,7 @@
 /*******************************************************************************
  * API
  ******************************************************************************/
-void lpm_pm3_exit_hw_reinit();
+void lpm_pm3_exit_hw_reinit(void);
 int LPM_Init(void);
 
 uint8_t lpm_getHandshakeState(void);
