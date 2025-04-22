@@ -1,6 +1,5 @@
 /*
  * Copyright 2023-2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +16,9 @@
 
 /* Enable DCDC */
 #define gBoardUseDcdc_d             1
+
+/* Enable XTAL32M temperature compensation */
+#define gBoardUseXtal32MTempComp 1
 
 /*! \brief Change Default trimming value for 32MHz crystal,
       will be used by hardware_init.c file during initialization */
@@ -83,31 +85,31 @@
 
 /*! \brief Increase DCDC voltage with a ramp to avoid peak of current when DCDC output is set to higher voltage.
  *
- * \details gBoardDcdcRampTrim_c can vary between 0 and 7 
+ * \details gBoardDcdcRampTrim_c can vary between 0 and 7
  *          gBoardDcdcRampTrim_c = 0 means feature disabled
  *          gBoardDcdcRampTrim_c = 1 is the smoothest ramp
  *          gBoardDcdcRampTrim_c = 7 is the steepest ramp
  *
- * \note Cannot be applied when switching between lowpower DCDC configuration and active configuration. 
- *       The DCDC ramp feature is only functional when the SPC is configured in Normal drive strenght. 
- *       The NBU core will handle the switch to the targeted DCDC output voltage. The targeted voltage will depend on the TX output 
+ * \note Cannot be applied when switching between lowpower DCDC configuration and active configuration.
+ *       The DCDC ramp feature is only functional when the SPC is configured in Normal drive strenght.
+ *       The NBU core will handle the switch to the targeted DCDC output voltage. The targeted voltage will depend on the TX output
  *       power requested by the application.
- *       After exiting lowpower, the NBU core will request the high power mode. After that, it will wait for the transition to be over 
- *       and the targeted voltage to be reached before resuming any other activities. 
+ *       After exiting lowpower, the NBU core will request the high power mode. After that, it will wait for the transition to be over
+ *       and the targeted voltage to be reached before resuming any other activities.
  *       The smoothest the ramp is, the longer the lowpower exit procedure will take time.
  *       The value 3 is a good trade-off between peak of current and lowpower exit duration.
  */
 //#define gBoardDcdcRampTrim_c 3
 
-/*! \brief  Enable the high power mode configuration to activate the dynamic DCDC output voltage switching 
+/*! \brief  Enable the high power mode configuration to activate the dynamic DCDC output voltage switching
  *          when TX output power is less or equal to 7dBm.
  *
- * \details The NBU requires higher DCDC output voltage for radio transmits for output power between 0dBm and 7dBm. 
- *          It will adapt the DCDC output voltage depending the required Tx power. 
- *          - benefit : The DCDC output voltage does not have to increase as much as needed by the Tx ouput power requested 
+ * \details The NBU requires higher DCDC output voltage for radio transmits for output power between 0dBm and 7dBm.
+ *          It will adapt the DCDC output voltage depending the required Tx power.
+ *          - benefit : The DCDC output voltage does not have to increase as much as needed by the Tx ouput power requested
  *          when only the main power domain is active.
  *
- * \note limitation : NBU cannot switch to 2.5V by itself via high power mode voltage, a setting on SPC is also required. 
+ * \note limitation : NBU cannot switch to 2.5V by itself via high power mode voltage, a setting on SPC is also required.
  *       NBU will not be able to handle tx power higher than 7Dbm as it requires 2.5V on the DCDC output voltage.
  */
 //#define gBoardDcdcEnableHighPowerModeOnNbu_d 1

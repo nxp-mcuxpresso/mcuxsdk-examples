@@ -1,6 +1,5 @@
 /*
  * Copyright 2023-2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -17,6 +16,9 @@
 
 /* Enable DCDC */
 #define gBoardUseDcdc_d             1
+
+/* XTAL32M temperature compensation not supported on this platform */
+#define gBoardUseXtal32MTempComp 0
 
 /*! \brief Change Default trimming value for 32MHz crystal,
       will be used by hardware_init.c file during initialization */

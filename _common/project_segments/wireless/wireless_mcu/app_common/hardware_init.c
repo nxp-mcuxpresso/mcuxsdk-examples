@@ -40,6 +40,31 @@
 
 /*${header:end}*/
 
+/* -------------------------------------------------------------------------- */
+/*                               Private memory                               */
+/* -------------------------------------------------------------------------- */
+#if defined(gBoardUseXtal32MTempComp) && (gBoardUseXtal32MTempComp > 0)
+/*!
+ * \brief This structure defines a LUT for the XCVR 32MHz crystal trimming
+ * compensation depending on the temperature for a range of [-39C,127C]
+ * Those are default values provided by NXP but can be customized depending on
+ * hardware. Those values are provided as a mean across several samples.
+ * gBoardUseXtal32MTempComp flag must be defined in board_platform.h to enable this
+ * feature.
+ * IMPORTANT: This LUT applies only to KW47/MCXW72 platforms, using it on other
+ * platforms could cause unexpected results.
+ *
+ */
+const xtal_temp_comp_lut_t xtal32MTempCompLut = {
+    .min_temp_degc = -39,
+    .max_temp_degc = 127,
+    .trim_below_min_temp = 2U,
+    .trim_above_max_temp = 50U,
+    .temp_step_degc = 10,
+    .xtal_trim_lut = {4U, 7U, 9U, 9U, 9U, 7U, 5U, 4U, 3U, 2U, 2U, 2U, 3U, 6U, 11U, 23U, 43U},
+};
+#endif /* defined(gBoardUseXtal32MTempComp) && (gBoardUseXtal32MTempComp > 0) */
+
 /*${function:start}*/
 
 /* -------------------------------------------------------------------------- */
@@ -119,6 +144,12 @@ void BOARD_InitHardware(void)
     DBG_InitSWOFunnelMuxing(DBG_SWO_FUNNEL_MUXING);
 #endif
 
+#if defined(gBoardUseXtal32MTempComp) && (gBoardUseXtal32MTempComp > 0)
+    /* Register the XTAL32M temperature compensation LUT
+     * When registered, this LUT will be used to calibrate XTAL32M against temperature
+     * when a temperature change is detected */
+    PLATFORM_RegisterXtal32MTempCompLut(&xtal32MTempCompLut);
+#endif
 }
 
 /* -------------------------------------------------------------------------- */
