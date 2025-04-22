@@ -32,11 +32,11 @@
 #endif
 #endif
 
-#define APP_SWT_HSR_ISQGID_BASE 0
-#define APP_SWT_HSR_ISEID_BASE 0
-#define APP_SWT_HSR_ETEID_BASE 0
+#define APP_SWT_HSR_ISQGID_BASE       0
+#define APP_SWT_HSR_ISEID_BASE        0
+#define APP_SWT_HSR_ETEID_BASE        0
 #define APP_SWT_HSR_INTERNAL_VID_BASE 2000
-#define APP_SWT_HSR_PGID 1
+#define APP_SWT_HSR_PGID              1
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -89,7 +89,7 @@ static uint64_t rxBuffAddrArray[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_RXBD_NUM];
 static netc_tx_frame_info_t g_mgmtTxDirty[EXAMPLE_EP_TXBD_NUM];
 static netc_tx_frame_info_t mgmtTxFrameInfo;
 #endif
-//static netc_tx_frame_info_t txFrameInfo;
+// static netc_tx_frame_info_t txFrameInfo;
 static volatile bool txOver;
 
 /* MAC address. */
@@ -103,20 +103,16 @@ static uint8_t g_macAddr[6] = {0x54, 0x27, 0x8d, 0x00, 0x00, 0x00};
 /*! @brief Build Frame for single ring transmit. */
 static void APP_BuildBroadCastFrameSwtTag(void)
 {
-    netc_swt_tag_port_no_ts_t tag = {
-        .comTag = {
-            .tpid = NETC_SWITCH_DEFAULT_ETHER_TYPE,
-            .subType = kNETC_TagToPortNoTs,
-            .type = kNETC_TagForward,
-            .qv = 1,
-            .ipv = 0,
-            .dr = 0,
-            .swtId = 1,
-            .port = 0
-        }
-    };
-    uint32_t headerSize = 14U + sizeof(tag);
-    uint32_t length = EXAMPLE_EP_TEST_FRAME_SIZE - headerSize;
+    netc_swt_tag_port_no_ts_t tag = {.comTag = {.tpid    = NETC_SWITCH_DEFAULT_ETHER_TYPE,
+                                                .subType = kNETC_TagToPortNoTs,
+                                                .type    = kNETC_TagForward,
+                                                .qv      = 1,
+                                                .ipv     = 0,
+                                                .dr      = 0,
+                                                .swtId   = 1,
+                                                .port    = 0}};
+    uint32_t headerSize           = 14U + sizeof(tag);
+    uint32_t length               = EXAMPLE_EP_TEST_FRAME_SIZE - headerSize;
     uint32_t count;
 
     for (count = 0; count < 6U; count++)
@@ -167,13 +163,13 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
 
 status_t APP_SWT_SendFrame(void)
 {
-    netc_buffer_struct_t txBuff      = {.buffer = &g_txFrame, .length = sizeof(g_txFrame)};
-    netc_frame_struct_t txFrame      = {.buffArray = &txBuff, .length = 1};
-    status_t result                  = kStatus_Success;
+    netc_buffer_struct_t txBuff = {.buffer = &g_txFrame, .length = sizeof(g_txFrame)};
+    netc_frame_struct_t txFrame = {.buffArray = &txBuff, .length = 1};
+    status_t result             = kStatus_Success;
 
     APP_BuildBroadCastFrameSwtTag();
-    txOver     = false;
-    result     = SWT_SendFrame(&g_swt_handle, &txFrame, NULL, NULL);
+    txOver = false;
+    result = SWT_SendFrame(&g_swt_handle, &txFrame, NULL, NULL);
     if (result != kStatus_Success)
     {
         PRINTF("\r\nTransmit frame failed!\r\n");
@@ -195,7 +191,7 @@ status_t APP_SWT_SendFrame(void)
 
 status_t APP_SWT_ReceiveFrame()
 {
-    status_t result                  = kStatus_Success;
+    status_t result = kStatus_Success;
     uint32_t length;
     do
     {
@@ -212,9 +208,9 @@ status_t APP_SWT_ReceiveFrame()
         return result;
     }
     PRINTF(" A frame received. The length is %d ", length);
-    PRINTF(" Dest Address %02x:%02x:%02x:%02x:%02x:%02x Src Address %02x:%02x:%02x:%02x:%02x:%02x \r\n",
-           g_rxFrame[0], g_rxFrame[1], g_rxFrame[2], g_rxFrame[3], g_rxFrame[4], g_rxFrame[5], g_rxFrame[6],
-           g_rxFrame[7], g_rxFrame[8], g_rxFrame[9], g_rxFrame[10], g_rxFrame[11]);
+    PRINTF(" Dest Address %02x:%02x:%02x:%02x:%02x:%02x Src Address %02x:%02x:%02x:%02x:%02x:%02x \r\n", g_rxFrame[0],
+           g_rxFrame[1], g_rxFrame[2], g_rxFrame[3], g_rxFrame[4], g_rxFrame[5], g_rxFrame[6], g_rxFrame[7],
+           g_rxFrame[8], g_rxFrame[9], g_rxFrame[10], g_rxFrame[11]);
 
     return result;
 }
@@ -222,75 +218,78 @@ status_t APP_SWT_ReceiveFrame()
 status_t APP_SWT_SetHsrModeN(swt_handle_t *handle, app_netc_port_hsr_config_t *hsrConfig)
 {
     static netc_tb_ipf_config_t ipfEntryCfg = {0};
-    status_t result = kStatus_Success;
-    netc_tb_is_config_t isconf = {0};
-    netc_tb_vf_config_t vlanconf = {0};
-    netc_tb_et_config_t ettconf = {0};
-    uint32_t isEID = APP_SWT_HSR_ISEID_BASE;
-    uint32_t etEID = APP_SWT_HSR_ETEID_BASE;
-    uint16_t vid = APP_SWT_HSR_INTERNAL_VID_BASE;
+    status_t result                         = kStatus_Success;
+    netc_tb_is_config_t isconf              = {0};
+    netc_tb_vf_config_t vlanconf            = {0};
+    netc_tb_et_config_t ettconf             = {0};
+    uint32_t isEID                          = APP_SWT_HSR_ISEID_BASE;
+    uint32_t etEID                          = APP_SWT_HSR_ETEID_BASE;
+    uint16_t vid                            = APP_SWT_HSR_INTERNAL_VID_BASE;
     uint32_t nonSrPortMask;
     uint32_t vftEID;
     uint32_t ipfid;
 
-    nonSrPortMask = ((1U << NETC_SOC_SWT_PORT_NUM) - 1U) & (~((1U << hsrConfig->srPortIdxA) | (1U << hsrConfig->srPortIdxB)));
+    nonSrPortMask =
+        ((1U << NETC_SOC_SWT_PORT_NUM) - 1U) & (~((1U << hsrConfig->srPortIdxA) | (1U << hsrConfig->srPortIdxB)));
 
     for (uint32_t i = 0U; i < NETC_SOC_SWT_PORT_NUM; i++)
     {
         if (i == hsrConfig->srPortIdxA || i == hsrConfig->srPortIdxB)
         {
-    	    ipfEntryCfg.keye.srcPort = i;
+            ipfEntryCfg.keye.srcPort     = i;
             ipfEntryCfg.keye.srcPortMask = 0x1f;
-	    ipfEntryCfg.cfge.fltfa = kNETC_IPFForwardPermit;
-	    ipfEntryCfg.cfge.hr = kNETC_SoftwareDefHR0;
-	    ipfEntryCfg.cfge.flta = kNETC_IPFWithIngressStream;
-	    ipfEntryCfg.cfge.fltaTgt = isEID;
-	    
-	    result = SWT_RxIPFAddTableEntry(handle, &ipfEntryCfg, &ipfid);
-	    if (result != kStatus_Success)
-	        return result;
+            ipfEntryCfg.cfge.fltfa       = kNETC_IPFForwardPermit;
+            ipfEntryCfg.cfge.hr          = kNETC_SoftwareDefHR0;
+            ipfEntryCfg.cfge.flta        = kNETC_IPFWithIngressStream;
+            ipfEntryCfg.cfge.fltaTgt     = isEID;
 
-            isconf.entryID = isEID;
-            isconf.cfge.fa = kNETC_ISBridgeForward;
-            isconf.cfge.sgiEID = 0xffffffff;
-            isconf.cfge.etEID = 0xffffffff;
-            isconf.cfge.isqEID = 0xffffffff;
-            isconf.cfge.iscEID = 0xffffffff;
-            isconf.cfge.etEID = 0xffffffff;
-	    isconf.cfge.ifmeLenChange = 4;
-            isconf.cfge.ifmEID = NETC_FD_EID_ENCODE_OPTION_2(kNETC_AddCVlanPcpAndDei, vid);
+            result = SWT_RxIPFAddTableEntry(handle, &ipfEntryCfg, &ipfid);
+            if (result != kStatus_Success)
+                return result;
+
+            isconf.entryID            = isEID;
+            isconf.cfge.fa            = kNETC_ISBridgeForward;
+            isconf.cfge.sgiEID        = 0xffffffff;
+            isconf.cfge.etEID         = 0xffffffff;
+            isconf.cfge.isqEID        = 0xffffffff;
+            isconf.cfge.iscEID        = 0xffffffff;
+            isconf.cfge.etEID         = 0xffffffff;
+            isconf.cfge.ifmeLenChange = 4;
+            isconf.cfge.ifmEID        = NETC_FD_EID_ENCODE_OPTION_2(kNETC_AddCVlanPcpAndDei, vid);
 
             result = SWT_RxPSFPAddISTableEntry(handle, &isconf);
             if (result != kStatus_Success)
-	        return result;
+                return result;
 
             vlanconf.cfge.portMembership = nonSrPortMask | (1 << i);
-            vlanconf.cfge.fid = vid;
-            vlanconf.cfge.baseETEID = APP_SWT_HSR_ETEID_BASE;
-            vlanconf.cfge.etaPortBitmap = nonSrPortMask;
-	    vlanconf.cfge.mlo = 2;
-	    vlanconf.cfge.mfo = 2;
-            vlanconf.keye.vid = vid;
-            result = SWT_BridgeAddVFTableEntry(handle, &vlanconf, &vftEID);
+            vlanconf.cfge.fid            = vid;
+            vlanconf.cfge.baseETEID      = APP_SWT_HSR_ETEID_BASE;
+            vlanconf.cfge.etaPortBitmap  = nonSrPortMask;
+            vlanconf.cfge.mlo            = 2;
+            vlanconf.cfge.mfo            = 2;
+            vlanconf.keye.vid            = vid;
+            result                       = SWT_BridgeAddVFTableEntry(handle, &vlanconf, &vftEID);
             if (result != kStatus_Success)
-	        return result;
+                return result;
 
-	    isEID++;
-	    vid++;
-	} else {
+            isEID++;
+            vid++;
+        }
+        else
+        {
             /* Bypass build warning. */
             uint8_t efmLenChange_temp = (uint8_t)-4;
-            ettconf.entryID = etEID;
-            ettconf.cfge.esqaTgtEID = 0xffffffff;
+            ettconf.entryID           = etEID;
+            ettconf.cfge.esqaTgtEID   = 0xffffffff;
             ettconf.cfge.efmLenChange = efmLenChange_temp;
-            ettconf.cfge.efmEID = NETC_FD_EID_ENCODE_OPTION_1(kNETC_NoSqtAction, kNETC_DelVlan);
- 
-	    result = SWT_TxEPPAddETTableEntry(handle, &ettconf);
-            if (result != kStatus_Success)
-	        return result;
+            ettconf.cfge.efmEID       = NETC_FD_EID_ENCODE_OPTION_1(kNETC_NoSqtAction, kNETC_DelVlan);
 
-	    etEID++;
-	}
+            result = SWT_TxEPPAddETTableEntry(handle, &ettconf);
+            if (result != kStatus_Success)
+                return result;
+
+            etEID++;
+        }
     }
 
     return result;
@@ -298,67 +297,69 @@ status_t APP_SWT_SetHsrModeN(swt_handle_t *handle, app_netc_port_hsr_config_t *h
 
 status_t APP_SWT_SetHSH(swt_handle_t *handle, app_netc_port_hsr_config_t *hsrConfig)
 {
-    status_t status = kStatus_Success;
+    status_t status                   = kStatus_Success;
     netc_tb_iseqg_config_t isqgConfig = {0};
-    netc_swt_port_sr_config_t sr = {0};
-    uint32_t isqgId = APP_SWT_HSR_ISQGID_BASE;
+    netc_swt_port_sr_config_t sr      = {0};
+    uint32_t isqgId                   = APP_SWT_HSR_ISQGID_BASE;
 
     if (!hsrConfig->enableHsr)
     {
-	sr.isqEID = 0xFFFF;
+        sr.isqEID = 0xFFFF;
         for (uint32_t i = 0U; i < NETC_SOC_SWT_PORT_NUM; i++)
-	{
-	    SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
-	    SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, 0);
-	}
+        {
+            SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
+            SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, 0);
+        }
 
-	return status;
+        return status;
     }
 
     for (uint32_t i = 0U; i < NETC_SOC_SWT_PORT_NUM; i++)
     {
-	memset(&sr, 0, sizeof(sr));
-	if (i == hsrConfig->srPortIdxA || i == hsrConfig->srPortIdxB)
-	{
-	    sr.pathId = (i == hsrConfig->srPortIdxA) ? 0 : 1;
-	    sr.isqEID = 0xFFFF;
-	    sr.sdfa = 1;
-	    sr.srPort = 1;
+        memset(&sr, 0, sizeof(sr));
+        if (i == hsrConfig->srPortIdxA || i == hsrConfig->srPortIdxB)
+        {
+            sr.pathId = (i == hsrConfig->srPortIdxA) ? 0 : 1;
+            sr.isqEID = 0xFFFF;
+            sr.sdfa   = 1;
+            sr.srPort = 1;
 
-	    if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_T)
-		sr.txSqta = 1;
-	    else if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_X)
-		sr.srcPortFlt = 1;
+            if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_T)
+                sr.txSqta = 1;
+            else if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_X)
+                sr.srcPortFlt = 1;
 
-	    SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
-	    SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, APP_SWT_HSR_PGID);
-	    g_swt_config.ports[i].bridgeCfg.enMacStationMove = 0;
-	    SWT_EnablePortMacStationMove(handle, (netc_hw_port_idx_t)i, g_swt_config.ports[i].bridgeCfg.enMacStationMove);
-	}
-	else
-	{
-            isqgConfig.entryID = isqgId;
-	    isqgConfig.cfge.sqTag = kNETC_SqHsrTag;
+            SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
+            SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, APP_SWT_HSR_PGID);
+            g_swt_config.ports[i].bridgeCfg.enMacStationMove = 0;
+            SWT_EnablePortMacStationMove(handle, (netc_hw_port_idx_t)i,
+                                         g_swt_config.ports[i].bridgeCfg.enMacStationMove);
+        }
+        else
+        {
+            isqgConfig.entryID    = isqgId;
+            isqgConfig.cfge.sqTag = kNETC_SqHsrTag;
 
-	    status = SWT_FRERAddISEQGTableEntry(handle, &isqgConfig);
+            status = SWT_FRERAddISEQGTableEntry(handle, &isqgConfig);
             if (status != kStatus_Success)
                 return status;
 
-	    sr.sdfa = 1;
-	    sr.txSqta = 1;
-	    sr.isqEID = isqgId;
-	    SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
+            sr.sdfa   = 1;
+            sr.txSqta = 1;
+            sr.isqEID = isqgId;
+            SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
 
-	    isqgId++;
+            isqgId++;
 
-	    if(hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_U)
-	        SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, APP_SWT_HSR_PGID);
-	    else
-		SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, 0);
-	}
+            if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_U)
+                SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, APP_SWT_HSR_PGID);
+            else
+                SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, 0);
+        }
     }
 
-    if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_N) {
+    if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_N)
+    {
         status = APP_SWT_SetHsrModeN(handle, hsrConfig);
         if (status != kStatus_Success)
         {
@@ -446,18 +447,18 @@ status_t APP_SWT_Init(void)
             PRINTF("\r\n%s: %d, Failed to get link status(mode, speed, dumplex)!\r\n", __func__, __LINE__);
             return result;
         }
-        g_swt_config.ports[i].ethMac.miiMode   = phyMode;
-        g_swt_config.ports[i].ethMac.miiSpeed  = phySpeed;
-        g_swt_config.ports[i].ethMac.miiDuplex = phyDuplex;
-        g_swt_config.ports[i].bridgeCfg.isRxVlanAware = true;
-	g_swt_config.ports[i].commonCfg.ipfCfg.enIPFTable = true;
+        g_swt_config.ports[i].ethMac.miiMode              = phyMode;
+        g_swt_config.ports[i].ethMac.miiSpeed             = phySpeed;
+        g_swt_config.ports[i].ethMac.miiDuplex            = phyDuplex;
+        g_swt_config.ports[i].bridgeCfg.isRxVlanAware     = true;
+        g_swt_config.ports[i].commonCfg.ipfCfg.enIPFTable = true;
     }
 
     g_swt_config.bridgeCfg.dVFCfg.portMembership = 0x1FU;
-    g_swt_config.bridgeCfg.dVFCfg.enUseFilterID = true;
-    g_swt_config.bridgeCfg.dVFCfg.filterID = EXAMPLE_FRAME_FID;
-    g_swt_config.bridgeCfg.dVFCfg.mfo = kNETC_FDBLookUpWithFlood;
-    g_swt_config.bridgeCfg.dVFCfg.mlo = kNETC_HardwareMACLearn;
+    g_swt_config.bridgeCfg.dVFCfg.enUseFilterID  = true;
+    g_swt_config.bridgeCfg.dVFCfg.filterID       = EXAMPLE_FRAME_FID;
+    g_swt_config.bridgeCfg.dVFCfg.mfo            = kNETC_FDBLookUpWithFlood;
+    g_swt_config.bridgeCfg.dVFCfg.mlo            = kNETC_HardwareMACLearn;
 
     g_swt_config.cmdRingUse            = 1U;
     g_swt_config.cmdBdrCfg[0].bdBase   = &g_cmdBuffDescrip[0];
@@ -500,7 +501,7 @@ status_t APP_SWT_Init(void)
 
 int main(void)
 {
-    status_t result = kStatus_Success;
+    status_t result                      = kStatus_Success;
     app_netc_port_hsr_config_t hsrConfig = {0};
 
     BOARD_InitHardware();
@@ -528,13 +529,13 @@ int main(void)
     }
 
     APP_SWT_Init();
-    
+
     PRINTF("\r\n Configure HSR!\r\n");
-    hsrConfig.enableHsr = 1;
+    hsrConfig.enableHsr  = 1;
     hsrConfig.srPortIdxA = (netc_hw_port_idx_t)0;
     hsrConfig.srPortIdxB = (netc_hw_port_idx_t)2;
-    hsrConfig.operMode = kNETC_HSR_OPERATION_MODE_H;
-    result = APP_SWT_SetHSH(&g_swt_handle, &hsrConfig);
+    hsrConfig.operMode   = kNETC_HSR_OPERATION_MODE_H;
+    result               = APP_SWT_SetHSH(&g_swt_handle, &hsrConfig);
     if (result != kStatus_Success)
     {
         PRINTF("\r\n HSR set error, result=%d\n", result);
@@ -547,6 +548,6 @@ int main(void)
 
     while (1)
     {
-	APP_SWT_ReceiveFrame();
+        APP_SWT_ReceiveFrame();
     }
 }
