@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+mau_cmsis:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/mau/cmsis
+    project-root-path: boards/${board}/driver_examples/mau/cmsis/${multicore_foldername}
+    document:
+      name: mau_cmsis${core_id_suffix_name}
+      category: driver_examples/mau
+      brief: This example shows the usage of all the MAU CMSIS functions. changes accordingly.
+      example_readme:
+      - examples/driver_examples/mau/cmsis/readme.md
+      - ${board_root}/${board}/driver_examples/mau/cmsis/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa346: []
