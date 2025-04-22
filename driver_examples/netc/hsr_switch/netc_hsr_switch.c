@@ -89,7 +89,7 @@ static uint64_t rxBuffAddrArray[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_RXBD_NUM];
 static netc_tx_frame_info_t g_mgmtTxDirty[EXAMPLE_EP_TXBD_NUM];
 static netc_tx_frame_info_t mgmtTxFrameInfo;
 #endif
-static netc_tx_frame_info_t txFrameInfo;
+//static netc_tx_frame_info_t txFrameInfo;
 static volatile bool txOver;
 
 /* MAC address. */
@@ -138,7 +138,7 @@ static void APP_BuildBroadCastFrameSwtTag(void)
 
 static status_t APP_ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame_info_t *frameInfo, void *userData)
 {
-    txFrameInfo = *frameInfo;
+    // txFrameInfo = *frameInfo;
     return kStatus_Success;
 }
 
@@ -278,9 +278,11 @@ status_t APP_SWT_SetHsrModeN(swt_handle_t *handle, app_netc_port_hsr_config_t *h
 	    isEID++;
 	    vid++;
 	} else {
+            /* Bypass build warning. */
+            uint8_t efmLenChange_temp = (uint8_t)-4;
             ettconf.entryID = etEID;
             ettconf.cfge.esqaTgtEID = 0xffffffff;
-            ettconf.cfge.efmLenChange = -4;
+            ettconf.cfge.efmLenChange = efmLenChange_temp;
             ettconf.cfge.efmEID = NETC_FD_EID_ENCODE_OPTION_1(kNETC_NoSqtAction, kNETC_DelVlan);
  
 	    result = SWT_TxEPPAddETTableEntry(handle, &ettconf);
@@ -298,7 +300,7 @@ status_t APP_SWT_SetHSH(swt_handle_t *handle, app_netc_port_hsr_config_t *hsrCon
 {
     status_t status = kStatus_Success;
     netc_tb_iseqg_config_t isqgConfig = {0};
-    netc_swt_port_sr_config sr = {0};
+    netc_swt_port_sr_config_t sr = {0};
     uint32_t isqgId = APP_SWT_HSR_ISQGID_BASE;
 
     if (!hsrConfig->enableHsr)
@@ -306,8 +308,8 @@ status_t APP_SWT_SetHSH(swt_handle_t *handle, app_netc_port_hsr_config_t *hsrCon
 	sr.isqEID = 0xFFFF;
         for (uint32_t i = 0U; i < NETC_SOC_SWT_PORT_NUM; i++)
 	{
-	    SWT_SetPortSR(handle, i, &sr);
-	    SWT_SetPortGroup(handle, i, 0);
+	    SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
+	    SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, 0);
 	}
 
 	return status;
@@ -328,10 +330,10 @@ status_t APP_SWT_SetHSH(swt_handle_t *handle, app_netc_port_hsr_config_t *hsrCon
 	    else if (hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_X)
 		sr.srcPortFlt = 1;
 
-	    SWT_SetPortSR(handle, i, &sr);
-	    SWT_SetPortGroup(handle, i, APP_SWT_HSR_PGID);
+	    SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
+	    SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, APP_SWT_HSR_PGID);
 	    g_swt_config.ports[i].bridgeCfg.enMacStationMove = 0;
-	    SWT_SetPortSTAMVD(handle, i, g_swt_config.ports[i].bridgeCfg.enMacStationMove);
+	    SWT_EnablePortMacStationMove(handle, (netc_hw_port_idx_t)i, g_swt_config.ports[i].bridgeCfg.enMacStationMove);
 	}
 	else
 	{
@@ -345,14 +347,14 @@ status_t APP_SWT_SetHSH(swt_handle_t *handle, app_netc_port_hsr_config_t *hsrCon
 	    sr.sdfa = 1;
 	    sr.txSqta = 1;
 	    sr.isqEID = isqgId;
-	    SWT_SetPortSR(handle, i, &sr);
+	    SWT_SetPortSR(handle, (netc_hw_port_idx_t)i, &sr);
 
 	    isqgId++;
 
 	    if(hsrConfig->operMode == kNETC_HSR_OPERATION_MODE_U)
-	        SWT_SetPortGroup(handle, i, APP_SWT_HSR_PGID);
+	        SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, APP_SWT_HSR_PGID);
 	    else
-		SWT_SetPortGroup(handle, i, 0);
+		SWT_SetPortGroup(handle, (netc_hw_port_idx_t)i, 0);
 	}
     }
 
@@ -529,8 +531,8 @@ int main(void)
     
     PRINTF("\r\n Configure HSR!\r\n");
     hsrConfig.enableHsr = 1;
-    hsrConfig.srPortIdxA = 0;
-    hsrConfig.srPortIdxB = 2;
+    hsrConfig.srPortIdxA = (netc_hw_port_idx_t)0;
+    hsrConfig.srPortIdxB = (netc_hw_port_idx_t)2;
     hsrConfig.operMode = kNETC_HSR_OPERATION_MODE_H;
     result = APP_SWT_SetHSH(&g_swt_handle, &hsrConfig);
     if (result != kStatus_Success)
