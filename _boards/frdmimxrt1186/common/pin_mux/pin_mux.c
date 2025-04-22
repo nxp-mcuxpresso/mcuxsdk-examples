@@ -22,6 +22,8 @@ pin_labels:
 - {pin_num: C8, pin_signal: GPIO_AON_20, label: ETH2, identifier: ETH2;ETH2_RESET}
 - {pin_num: H4, pin_signal: GPIO_EMC_B1_01, label: pin, identifier: pin;flexio_pin}
 - {pin_num: L13, pin_signal: GPIO_AD_29, label: FLEXIO_SPI, identifier: FLEXIO_SPI}
+- {pin_num: A9, pin_signal: GPIO_AON_03, label: ETH0, identifier: ETH0_INT_B}
+- {pin_num: B5, pin_signal: GPIO_AON_04, label: ETH2, identifier: ETH2_INT_B}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -198,6 +200,8 @@ pin_labels:
    - {pin_num: F5, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 3', pin_signal: GPIO_EMC_B1_36}
    - {pin_num: H2, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 2', pin_signal: GPIO_EMC_B1_37}
    - {pin_num: J2, peripheral: NETC_SWT_ETH2, signal: RX_CLK, pin_signal: GPIO_EMC_B1_38}
+   - {pin_num: A9, peripheral: RGPIO1, signal: 'gpio_io, 03', pin_signal: GPIO_AON_03, direction: INPUT}
+   - {pin_num: B5, peripheral: RGPIO1, signal: 'gpio_io, 04', pin_signal: GPIO_AON_04, direction: INPUT}
   * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
   */
  
@@ -210,6 +214,26 @@ pin_labels:
  void BOARD_InitNETPins(void) {
    CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
    CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
+ 
+   /* GPIO configuration of ETH0_INT_B on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin A9) */
+   rgpio_pin_config_t ETH0_INT_B_config = {
+       .pinDirection = kRGPIO_DigitalInput,
+       .outputLogic = 0U,
+   };
+   /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin A9) */
+   RGPIO_PinInit(RGPIO1, 3U, &ETH0_INT_B_config);
+   /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin A9) */
+   RGPIO_SetPinInterruptConfig(RGPIO1, 3U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+ 
+   /* GPIO configuration of ETH2_INT_B on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin B5) */
+   rgpio_pin_config_t ETH2_INT_B_config = {
+       .pinDirection = kRGPIO_DigitalInput,
+       .outputLogic = 0U,
+   };
+   /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin B5) */
+   RGPIO_PinInit(RGPIO1, 4U, &ETH2_INT_B_config);
+   /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin B5) */
+   RGPIO_SetPinInterruptConfig(RGPIO1, 4U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
  
    /* GPIO configuration of ETH0_RESET on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_15 (pin B4) */
    rgpio_pin_config_t ETH0_RESET_config = {
@@ -304,6 +328,12 @@ pin_labels:
        0U);                                    /* Software Input On Field: Input Path is determined by functionality */
    IOMUXC_SetPinMux(
        IOMUXC_GPIO_EMC_B2_12_NETC_PINMUX_ETH0_RX_ER,  /* GPIO_EMC_B2_12 is configured as NETC_PINMUX_ETH0_RX_ER */
+       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+   IOMUXC_SetPinMux(
+       IOMUXC_GPIO_AON_03_GPIO1_IO03,          /* GPIO_AON_03 is configured as GPIO1_IO03 */
+       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+   IOMUXC_SetPinMux(
+       IOMUXC_GPIO_AON_04_GPIO1_IO04,          /* GPIO_AON_04 is configured as GPIO1_IO04 */
        0U);                                    /* Software Input On Field: Input Path is determined by functionality */
    IOMUXC_SetPinMux(
        IOMUXC_GPIO_AON_15_GPIO1_IO15,          /* GPIO_AON_15 is configured as GPIO1_IO15 */

@@ -75,6 +75,28 @@
  #define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN                                20U   /*!< GPIO pin number */
  #define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN_MASK                   (1U << 20U)   /*!< GPIO pin mask */
  
+ /* GPIO_AON_03 (coord A9), ETH0 */
+ /* Routed pin properties */
+ #define BOARD_INITNETPINS_ETH0_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
+ #define BOARD_INITNETPINS_ETH0_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
+ #define BOARD_INITNETPINS_ETH0_INT_B_CHANNEL                                  3U   /*!< Signal channel */
+ 
+ /* Symbols to be used with GPIO driver */
+ #define BOARD_INITNETPINS_ETH0_INT_B_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
+ #define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN                                 3U   /*!< GPIO pin number */
+ #define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN_MASK                    (1U << 3U)   /*!< GPIO pin mask */
+ 
+ /* GPIO_AON_04 (coord B5), ETH2 */
+ /* Routed pin properties */
+ #define BOARD_INITNETPINS_ETH2_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
+ #define BOARD_INITNETPINS_ETH2_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
+ #define BOARD_INITNETPINS_ETH2_INT_B_CHANNEL                                  4U   /*!< Signal channel */
+ 
+ /* Symbols to be used with GPIO driver */
+ #define BOARD_INITNETPINS_ETH2_INT_B_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
+ #define BOARD_INITNETPINS_ETH2_INT_B_GPIO_PIN                                 4U   /*!< GPIO pin number */
+ #define BOARD_INITNETPINS_ETH2_INT_B_GPIO_PIN_MASK                    (1U << 4U)   /*!< GPIO pin mask */
+ 
  /*!
   * @brief Configures pin routing and optionally pin electrical features.
   *
