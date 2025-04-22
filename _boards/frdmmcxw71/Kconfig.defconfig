@@ -20,3 +20,8 @@ endif
 
 config HAL_RPMSG_SELECT_ROLE
     default n
+
+if MCUX_COMPONENT_utilities.gcov
+    config MCUX_COMPONENT_utilities.gcov.board_init
+        default y
+endif
