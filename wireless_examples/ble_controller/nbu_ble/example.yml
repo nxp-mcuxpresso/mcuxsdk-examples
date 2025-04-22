@@ -15,3 +15,6 @@ nbu_ble:
     mcxw72evk@cm33_core1:
     frdmmcxw72@cm33_core1:
     kw43evk_nbu:
+    kw45b41zevk_nbu:
+    - -armgcc@debug
+    - -armgcc@release
