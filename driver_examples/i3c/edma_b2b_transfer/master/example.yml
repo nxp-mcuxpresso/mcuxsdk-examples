@@ -21,7 +21,6 @@ i3c_edma_b2b_transfer_master:
     evkmimxrt1180@cm7: []
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []

@@ -20,7 +20,6 @@ dev_hid_mouse_freertos_static:
     frdmk32l3a6@cm4: []
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     lpcxpresso51u68: []

@@ -172,10 +172,7 @@ ota_mcuboot_basic:
     frdmmcxa156:
     - -mdk@debug
     - -mdk@release
-    frdmmcxa166:
-    - -mdk@debug
-    - -mdk@release
-    frdmmcxa276:
+    frdmmcxa346:
     - -mdk@debug
     - -mdk@release
     frdmrw612:

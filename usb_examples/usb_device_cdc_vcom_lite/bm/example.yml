@@ -43,7 +43,6 @@ dev_cdc_vcom_lite_bm:
     frdmk32l3a6@cm4: []
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxn236: []

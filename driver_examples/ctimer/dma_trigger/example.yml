@@ -18,5 +18,4 @@ ctimer_dma_trigger:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmrw612: []

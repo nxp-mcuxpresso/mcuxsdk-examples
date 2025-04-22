@@ -45,7 +45,6 @@ host_suspend_resume_hid_mouse_freertos:
     frdmk22f: []
     frdmk32l2a4s: []
     frdmmcxn236: []
-    frdmmcxa276: []
     frdmmcxn947@cm33_core0: []
     lpcxpresso54628: []
     lpcxpresso54s018: []

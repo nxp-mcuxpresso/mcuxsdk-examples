@@ -15,7 +15,6 @@ flexio_mculcd_smartdma_transfer:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236: []
-    frdmmcxa276: []
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

@@ -24,7 +24,6 @@ i3c_polling_b2b_transfer_slave:
     evkmimxrt685@cm33: []
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []

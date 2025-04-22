@@ -11,8 +11,7 @@ With this example, user can define the DAC output array to generate the differen
 ## Supported Boards
 - [FRDM-K32L3A6](../../../_boards/frdmk32l3a6/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
-- [FRDM-MCXA166](../../../_boards/frdmmcxa166/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
-- [FRDM-MCXA276](../../../_boards/frdmmcxa276/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
+- [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)

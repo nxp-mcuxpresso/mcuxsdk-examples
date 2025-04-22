@@ -39,7 +39,6 @@ dev_suspend_resume_hid_mouse_bm:
     frdmk32l2b: []
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxn236: []

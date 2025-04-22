@@ -51,7 +51,6 @@ dev_msc_ramdisk_bm:
     frdmk32l2b: []
     frdmk32l3a6@cm4: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxc444: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []

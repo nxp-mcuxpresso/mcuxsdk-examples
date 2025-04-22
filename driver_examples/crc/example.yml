@@ -22,8 +22,7 @@ crc:
   boards:
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa166: []
-    frdmmcxa276: []
+    frdmmcxa346: []
     lpcxpresso55s36: []
     evkmcimx7ulp: []
     frdmk22f: []

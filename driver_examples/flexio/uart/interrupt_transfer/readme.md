@@ -30,7 +30,6 @@ that PC send to the board. Note: two queued transfer in this example, so please 
 - [FRDM-KE17Z](../../../../_boards/frdmke17z/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md)
 - [FRDM-KE17Z512](../../../../_boards/frdmke17z512/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXA156](../../../../_boards/frdmmcxa156/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md)
-- [FRDM-MCXA276](../../../../_boards/frdmmcxa276/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXC242](../../../../_boards/frdmmcxc242/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXC444](../../../../_boards/frdmmcxc444/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md)
 - [FRDM-MCXE247](../../../../_boards/frdmmcxe247/driver_examples/flexio/uart/interrupt_transfer/example_board_readme.md)

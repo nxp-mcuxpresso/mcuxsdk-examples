@@ -20,7 +20,6 @@ flexio_mculcd_polling:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []

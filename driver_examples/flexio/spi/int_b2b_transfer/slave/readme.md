@@ -15,7 +15,6 @@ In this example, a flexio simulated slave connect to a flexio simulated spi mast
 - [MIMXRT1040-EVK](../../../../../_boards/evkmimxrt1040/driver_examples/flexio/spi/int_b2b_transfer/slave/example_board_readme.md)
 - [EVK-MIMXRT1064](../../../../../_boards/evkmimxrt1064/driver_examples/flexio/spi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA156](../../../../../_boards/frdmmcxa156/driver_examples/flexio/spi/int_b2b_transfer/slave/example_board_readme.md)
-- [FRDM-MCXA276](../../../../../_boards/frdmmcxa276/driver_examples/flexio/spi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN236](../../../../../_boards/frdmmcxn236/driver_examples/flexio/spi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN947](../../../../../_boards/frdmmcxn947/driver_examples/flexio/spi/int_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW71](../../../../../_boards/frdmmcxw71/driver_examples/flexio/spi/int_b2b_transfer/slave/example_board_readme.md)

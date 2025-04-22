@@ -16,7 +16,6 @@ i3c_master_read_sensor_p3t1755:
   boards:
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []

@@ -47,7 +47,6 @@ host_cdc_freertos:
     frdmk22f: []
     frdmk32l2a4s: []
     frdmmcxn236: []
-    frdmmcxa276: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []
     lpcxpresso54628: []

@@ -12,7 +12,6 @@ the data consistency.
 - [MIMXRT1180-EVK](../../../../_boards/evkmimxrt1180/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA153](../../../../_boards/frdmmcxa153/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA156](../../../../_boards/frdmmcxa156/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
-- [FRDM-MCXA276](../../../../_boards/frdmmcxa276/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)

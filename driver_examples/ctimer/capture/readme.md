@@ -9,8 +9,7 @@ to capture register, and print in the terminal. The GPIO pin is toggled priodica
 so the edge capture timestamp is shown periodically in the terminal.
 
 ## Supported Boards
-- [FRDM-MCXA166](../../../_boards/frdmmcxa166/driver_examples/ctimer/capture/example_board_readme.md)
-- [FRDM-MCXA276](../../../_boards/frdmmcxa276/driver_examples/ctimer/capture/example_board_readme.md)
+- [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/ctimer/capture/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/ctimer/capture/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/ctimer/capture/example_board_readme.md)
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/driver_examples/ctimer/capture/example_board_readme.md)

@@ -42,7 +42,6 @@ flexio_uart_int_rb_transfer:
     frdmke17z: []
     frdmke17z512: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxe247: []

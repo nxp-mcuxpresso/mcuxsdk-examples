@@ -13,5 +13,4 @@ mau_calculation:
       - ${board_root}/${board}/driver_examples/mau/calculation/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxa166: []
-    frdmmcxa276: []
+    frdmmcxa346: []

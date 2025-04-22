@@ -15,7 +15,6 @@ I3C slave and check the data consistency.
 - [EVK-MIMXRT685](../../../../_boards/evkmimxrt685/driver_examples/i3c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA153](../../../../_boards/frdmmcxa153/driver_examples/i3c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA156](../../../../_boards/frdmmcxa156/driver_examples/i3c/interrupt_b2b_transfer/slave/example_board_readme.md)
-- [FRDM-MCXA276](../../../../_boards/frdmmcxa276/driver_examples/i3c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/driver_examples/i3c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN947](../../../../_boards/frdmmcxn947/driver_examples/i3c/interrupt_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW71](../../../../_boards/frdmmcxw71/driver_examples/i3c/interrupt_b2b_transfer/slave/example_board_readme.md)

@@ -22,5 +22,4 @@ measured by LPADC.
 OPAMP1 input and output relationship formula: Vout = Vref + (R2 / R1 * (Vp - Vn)).
 
 ## Supported Boards
-- [FRDM-MCXA166](../../../_boards/frdmmcxa166/driver_examples/opamp/opamp_lpadc/example_board_readme.md)
-- [FRDM-MCXA276](../../../_boards/frdmmcxa276/driver_examples/opamp/opamp_lpadc/example_board_readme.md)
+- [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/opamp/opamp_lpadc/example_board_readme.md)

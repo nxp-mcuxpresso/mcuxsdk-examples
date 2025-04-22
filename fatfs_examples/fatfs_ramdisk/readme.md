@@ -24,5 +24,4 @@ Text in file.
 
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/fatfs_examples/fatfs_ramdisk/example_board_readme.md)
 - [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/fatfs_examples/fatfs_ramdisk/example_board_readme.md)
-- [FRDM-MCXA276](../../_boards/frdmmcxa276/fatfs_examples/fatfs_ramdisk/example_board_readme.md)
-- [FRDM-MCXA166](../../_boards/frdmmcxa166/fatfs_examples/fatfs_ramdisk/example_board_readme.md)
+- [FRDM-MCXA346](../../_boards/frdmmcxa346/fatfs_examples/fatfs_ramdisk/example_board_readme.md)

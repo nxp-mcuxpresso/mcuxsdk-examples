@@ -14,8 +14,7 @@ littlefs_shell_onchip_flash:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa156: []
-    frdmmcxa166: []
-    frdmmcxa276: []
+    frdmmcxa346: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []

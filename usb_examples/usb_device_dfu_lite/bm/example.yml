@@ -44,7 +44,6 @@ dev_dfu_lite_bm:
     evkmimxrt685@cm33: []
     frdmmcxa153: []
     frdmmcxa156: []
-    frdmmcxa276: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []

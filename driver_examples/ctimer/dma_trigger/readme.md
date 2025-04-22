@@ -22,5 +22,4 @@ Destination Buffer:
 
 ## Supported Boards
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/ctimer/dma_trigger/example_board_readme.md)
-- [FRDM-MCXA276](../../../_boards/frdmmcxa276/driver_examples/ctimer/dma_trigger/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/driver_examples/ctimer/dma_trigger/example_board_readme.md)

@@ -14,5 +14,4 @@ mau_benchmark:
       - ${board_root}/${board}/driver_examples/mau/benchmark/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxa166: []
-    frdmmcxa276: []
+    frdmmcxa346: []
