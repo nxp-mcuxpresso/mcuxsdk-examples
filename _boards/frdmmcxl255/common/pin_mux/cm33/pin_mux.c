@@ -86,7 +86,7 @@ void BOARD_InitI2CPins(void)
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kLPI2C0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kLPI2C1_RST_SHIFT_RSTn);
-    
+
     /* LPI2C1_SDA */
     const port_pin_config_t port3_1_config = {/* Internal pull-up resistor is enabled */
                                                      kPORT_PullUp,
@@ -407,7 +407,8 @@ void BOARD_InitSPIPins(void)
     PORT_SetPinConfig(PORT1, 20U, &port1_20_config);
 }
 
-void BOARD_InitQTMRPins(void) {
+void BOARD_InitQTMRPins(void)
+{
     /* AONQTMR1_OUT1 used as output */
     const port_pin_config_t port0_13_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -432,7 +433,7 @@ void BOARD_InitQTMRPins(void) {
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
     PORT_SetPinConfig(AON__PORT0, 13U, &port0_13_config);
-    
+
     /* AONQTMR1_OUT0 used as input */
     const port_pin_config_t port0_12_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -459,9 +460,10 @@ void BOARD_InitQTMRPins(void) {
     PORT_SetPinConfig(AON__PORT0, 12U, &port0_12_config);
 }
 
-void BOARD_InitLEDsPins(void) {
-  
-      gpio_pin_config_t output_config = {
+void BOARD_InitLEDsPins(void)
+{
+
+    gpio_pin_config_t output_config = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 1U
     };
@@ -472,7 +474,7 @@ void BOARD_InitLEDsPins(void) {
     RESET_ReleasePeripheralReset(kGPIO2_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
-  
+
     /* LED RED */
     const port_pin_config_t port1_15_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -497,7 +499,7 @@ void BOARD_InitLEDsPins(void) {
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
     PORT_SetPinConfig(PORT1, 15U, &port1_15_config);
-    
+
     /* LED GREEN */
     const port_pin_config_t port1_16_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -522,7 +524,7 @@ void BOARD_InitLEDsPins(void) {
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
     PORT_SetPinConfig(PORT1, 16U, &port1_16_config);
-    
+
     /* LED BLUE */
     const port_pin_config_t port2_12_config = {/* Internal pull-up/down resistor is disabled */
                                                      .pullSelect = kPORT_PullDisable,
@@ -546,8 +548,8 @@ void BOARD_InitLEDsPins(void) {
                                                      .invertInput = kPORT_InputNormal,
                                                      /* Pin Control Register fields [15:0] are not locked */
                                                      .lockRegister = kPORT_UnlockRegister};
-    PORT_SetPinConfig(PORT2, 12U, &port2_12_config); 
-    
+    PORT_SetPinConfig(PORT2, 12U, &port2_12_config);
+
     GPIO_PinInit(GPIO1, 15, &output_config);
     GPIO_PinInit(GPIO1, 16, &output_config);
     GPIO_PinInit(GPIO2, 12, &output_config);
@@ -664,28 +666,36 @@ void BOARD_InitACMPPins()
 
 void BOARD_InitLCDPins()
 {
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    CLOCK_EnableClock(kCLOCK_GatePORT3);
+
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+
     const port_pin_config_t port_config = {/* Internal pull-up/down resistor is disabled */
-                                                 kPORT_PullDisable,
-                                                 /* Low internal pull resistor value is selected. */
-                                                 kPORT_LowPullResistor,
-                                                 /* Fast slew rate is configured */
-                                                 kPORT_FastSlewRate,
-                                                 /* Passive input filter is disabled */
-                                                 kPORT_PassiveFilterDisable,
-                                                 /* Open drain output is disabled */
-                                                 kPORT_OpenDrainDisable,
-                                                 /* Low drive strength is configured */
-                                                 kPORT_LowDriveStrength,
-                                                 /* Normal drive strength is configured */
-                                                 kPORT_NormalDriveStrength,
-                                                 /* Pin is configured as LCD */
-                                                 kPORT_MuxAlt0,
-                                                 /* Digital input disabled; it is required for analog functions */
-                                                 kPORT_InputBufferDisable,
-                                                 /* Digital input is not inverted */
-                                                 kPORT_InputNormal,
-                                                 /* Pin Control Register fields [15:0] are not locked */
-                                                 kPORT_UnlockRegister};
+                                          .pullSelect = kPORT_PullDisable,
+                                          /* Low internal pull resistor value is selected. */
+                                          .pullValueSelect = kPORT_LowPullResistor,
+                                          /* Fast slew rate is configured */
+                                          .slewRate = kPORT_FastSlewRate,
+                                          /* Passive input filter is disabled */
+                                          .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                          /* Open drain output is disabled */
+                                          .openDrainEnable = kPORT_OpenDrainDisable,
+                                          /* Low drive strength is configured */
+                                          .driveStrength = kPORT_LowDriveStrength,
+                                          /* Normal drive strength is configured */
+                                          .driveStrength1 = kPORT_NormalDriveStrength,
+                                          /* Pin is configured as LCD */
+                                          .mux = kPORT_MuxAlt7,
+                                          /* Digital input enabled */
+                                          .inputBuffer = kPORT_InputBufferEnable,
+                                          /* Digital input is not inverted */
+                                          .invertInput = kPORT_InputNormal,
+                                          /* Pin Control Register fields [15:0] are not locked */
+                                          .lockRegister = kPORT_UnlockRegister};
 
     PORT_SetPinConfig(PORT3, 14U, &port_config);
     PORT_SetPinConfig(PORT1, 21U, &port_config);

@@ -1,0 +1,38 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+mdk:
+  shared-workspace: slcd_split
+  sharing-workspace:
+  - ../../slcd_split_secondary_core/mdk/slcd_split_secondary_core
+
+iar:
+  shared-workspace: slcd_split
+  sharing-workspace:
+  - ../../slcd_split_secondary_core/iar/slcd_split_secondary_core
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../slcd_split_secondary_core/iar/slcd_split_secondary_core_${SB_CONFIG_secondary_core_id}.eww"
+        slave-project: slcd_split_secondary_core_${SB_CONFIG_secondary_core_id}
+    debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    release:
+      asym-multicore-debugger:
+        slave-configuration: release
+    flash_debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    flash_release:
+      asym-multicore-debugger:
+        slave-configuration: release
+    flexspi_nor_debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    flexspi_nor_release:
+      asym-multicore-debugger:
+        slave-configuration: release

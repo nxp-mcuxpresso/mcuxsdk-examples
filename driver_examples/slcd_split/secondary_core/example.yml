@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+slcd_split_secondary_core:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/slcd_split/secondary_core
+    project-root-path: boards/${board}/driver_examples/slcd_split/${multicore_foldername}
+    document:
+      name: slcd_split_secondary_core
+      category: driver_examples
+      brief: The SLCD example shows how to use SLCD driver.
+      example_readme:
+      - examples/driver_examples/slcd_split/readme.md
+      - ${board_root}/${board}/driver_examples/slcd_split/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm0plus: []

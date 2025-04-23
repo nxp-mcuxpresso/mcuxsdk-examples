@@ -6,9 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-Make sure you have solder bridges SJ1 and SJ2 set to
-- 2-1 for the main core (cm33)
-- 2-3 for AON core (cm0+)
+Make sure the R144 is welded on board.
 
 Prepare the Demo
 ===============
@@ -24,5 +22,4 @@ Prepare the Demo
 
 Running the demo
 ===============
-You will se some breathtakingly beautiful characters precisely printed on
-the screen of onboard display.
+If the demo runs successfully, digitals, icons and letters are shown on panel one by one.
