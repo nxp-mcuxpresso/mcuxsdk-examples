@@ -8,6 +8,7 @@
 #include "fsl_common.h"
 #include "pin_mux.h"
 #include "board.h"
+#include "app.h"
 /*${header:end}*/
 
 /*${function:start}*/

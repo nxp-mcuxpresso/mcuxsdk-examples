@@ -26,11 +26,11 @@
 #define DEMO_BCTU_TRIG_CHAN_ADDR        0U
 #define DEMO_BCTU_DATA_DEST             kBCTU_DataDest_Fifo1
 #define DEMO_BCTU_LOOP_ENABLE           false
-#define DEMO_BCTU_TRIG_ADC_INSTANCE     (kBCTU_TrigAdc_0 | kBCTU_TrigAdc_1 | kBCTU_TrigAdc_2)
+#define DEMO_BCTU_TRIG_ADC_INSTANCE     ((uint32_t)kBCTU_TrigAdc_0 | (uint32_t)kBCTU_TrigAdc_1 | (uint32_t)kBCTU_TrigAdc_2)
 #define DEMO_BCTU_TRIG_RESOLUTION       kBCTU_TrigRes_ConvList
 #define DEMO_BCTU_TRIGGER_INDEX         0U
 #define DEMO_BCTU_FIFO_INDEX            kBCTU_Fifo_1
-#define DEMO_BCTU_INT_MASK              kBCTU_Fifo_1_Int
+#define DEMO_BCTU_INT_MASK              (uint32_t)kBCTU_Fifo_1_Int
 #define DEMO_BCTU_IRQn                  BCTU_IRQn
 #define DEMO_BCTU_IRQ_HANDLER_FUNC      BCTU_IRQHandler
 #define DEMO_BCTU_ADC_CHANNEL_0         48U

@@ -26,7 +26,7 @@
 #define DEMO_BCTU_TRIG_ADC_INSTANCE     kBCTU_TrigAdc_0
 #define DEMO_BCTU_TRIG_RESOLUTION       kBCTU_TrigRes_SingleConv
 #define DEMO_BCTU_TRIGGER_INDEX         kBCTU_TrigSourceEmios0Ch1
-#define DEMO_BCTU_INT_MASK              kBCTU_NewData_0_Ready
+#define DEMO_BCTU_INT_MASK              (uint32_t)kBCTU_NewData_0_Ready
 
 /* PWM period in ticks: EMIOS clock (core_clock) / emios_global_prescaler / Fpwm = 160MHz / 1 / 10KHz = 16000 */
 #define DEMO_COUNTER_PWM_PERIOD         16000U

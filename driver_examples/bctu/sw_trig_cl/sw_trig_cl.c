@@ -17,12 +17,13 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+void DEMO_BCTU_IRQ_HANDLER_FUNC(void);
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-volatile bool wmOverflow = false;
-bctu_fifo_res_t result[3U];
+static volatile bool wmOverflow = false;
+static bctu_fifo_res_t result[3U];
 
 /*******************************************************************************
  * Code
@@ -60,15 +61,15 @@ static void DEMO_AdcConfig(void)
 
     if (!(ADC_DoCalibration(DEMO_ADC_BASE_0, &calibrationConfig)))
     {
-        PRINTF("ADC 0 calibration failed\r\n");
+        (void)PRINTF("ADC 0 calibration failed\r\n");
     }
     if (!(ADC_DoCalibration(DEMO_ADC_BASE_1, &calibrationConfig)))
     {
-        PRINTF("ADC 1 calibration failed\r\n");
+        (void)PRINTF("ADC 1 calibration failed\r\n");
     }
     if (!(ADC_DoCalibration(DEMO_ADC_BASE_2, &calibrationConfig)))
     {
-        PRINTF("ADC 2 calibration failed\r\n");
+        (void)PRINTF("ADC 2 calibration failed\r\n");
     }
 }
 
@@ -114,7 +115,7 @@ static void DEMO_BctuConfig(void)
 
     BCTU_SetFifoWaterMark(DEMO_BCTU_BASE, DEMO_BCTU_FIFO_INDEX, (3U - 1U));
     BCTU_EnableFifoInt(DEMO_BCTU_BASE, DEMO_BCTU_INT_MASK, true);
-    EnableIRQ(DEMO_BCTU_IRQn);
+    (void)EnableIRQ(DEMO_BCTU_IRQn);
 }
 
 /*!
@@ -130,14 +131,14 @@ int main(void)
     BCTU_EnableModule(DEMO_BCTU_BASE, true);
     BCTU_EnableGlobalTrig(DEMO_BCTU_BASE, true);
 
-    PRINTF("BCTU SoftWare Trigger Multiple Parallel Conversions Example.\r\n");
-    PRINTF("Please press any key to get the ADC value\r\n");
+    (void)PRINTF("BCTU SoftWare Trigger Multiple Parallel Conversions Example.\r\n");
+    (void)PRINTF("Please press any key to get the ADC value\r\n");
 
     while (true)
     {
-        GETCHAR();
+        (void)GETCHAR();
 
-        BCTU_EnableSoftwareTrig(DEMO_BCTU_BASE, DEMO_BCTU_SW_TRIG_GROUP, DEMO_BCTU_SW_TRIG_MASK);
+        BCTU_EnableSoftwareTrig(DEMO_BCTU_BASE, DEMO_BCTU_SW_TRIG_GROUP, (uint32_t)DEMO_BCTU_SW_TRIG_MASK);
 
         while (!wmOverflow)
         {
@@ -145,7 +146,7 @@ int main(void)
 
         for(uint8_t index = 0U; index < 3U; ++index)
         {
-            PRINTF("ADC_%d channel %d value: %d\r\n", result[index].adcNum, result[index].chanNum, result[index].convRes);
+            (void)PRINTF("ADC_%d channel %d value: %d\r\n", result[index].adcNum, result[index].chanNum, result[index].convRes);
         }
 
         wmOverflow = false;

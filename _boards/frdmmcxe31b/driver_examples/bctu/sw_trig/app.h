@@ -26,9 +26,9 @@
 #define DEMO_BCTU_TRIG_ADC_INSTANCE     kBCTU_TrigAdc_0
 #define DEMO_BCTU_TRIG_RESOLUTION       kBCTU_TrigRes_SingleConv
 #define DEMO_BCTU_TRIGGER_INDEX         0U
-#define DEMO_BCTU_INT_MASK              kBCTU_NewData_0_Ready
+#define DEMO_BCTU_INT_MASK              (uint32_t)kBCTU_NewData_0_Ready
 #define DEMO_BCTU_SW_TRIG_GROUP         kBCTU_TrigGroup_0
-#define DEMO_BCTU_SW_TRIG_MASK          kBCTU_TrigMask_0
+#define DEMO_BCTU_SW_TRIG_MASK          (uint32_t)kBCTU_TrigMask_0
 /*${macro:end}*/
 
 /*******************************************************************************

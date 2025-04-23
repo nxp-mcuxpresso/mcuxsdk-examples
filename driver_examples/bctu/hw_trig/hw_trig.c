@@ -42,7 +42,7 @@ static void DEMO_AdcConfig(void)
 
     if (!(ADC_DoCalibration(DEMO_ADC_BASE, &calibrationConfig)))
     {
-        PRINTF("Calibration failed\r\n");
+        (void)PRINTF("Calibration failed\r\n");
     }
 }
 
@@ -106,11 +106,11 @@ static void DEMO_BctuConfig(void)
     config.writeProtect = kBCTU_ProtectDis_Permanent;
     BCTU_Init(DEMO_BCTU_BASE, &config);
 
-    trigConfig.trigIndex = DEMO_BCTU_TRIGGER_INDEX;
+    trigConfig.trigIndex = (uint8_t)DEMO_BCTU_TRIGGER_INDEX;
     trigConfig.chanAddr = DEMO_BCTU_TRIG_ADC_ADDR;
     trigConfig.dataDest = DEMO_BCTU_DATA_DEST;
     trigConfig.enableLoop = DEMO_BCTU_LOOP_ENABLE;
-    trigConfig.targetAdc = DEMO_BCTU_TRIG_ADC_INSTANCE;
+    trigConfig.targetAdc = (uint32_t)DEMO_BCTU_TRIG_ADC_INSTANCE;
     trigConfig.trigRes = DEMO_BCTU_TRIG_RESOLUTION;
     BCTU_SetTrigConfig(DEMO_BCTU_BASE, &trigConfig);
 }
@@ -131,12 +131,12 @@ int main(void)
     BCTU_EnableModule(DEMO_BCTU_BASE, true);
     BCTU_EnableGlobalTrig(DEMO_BCTU_BASE, true);
 
-    PRINTF("BCTU HardWare Trigger Example\r\n");
-    PRINTF("Please press any key to get the ADC value\r\n");
+    (void)PRINTF("BCTU HardWare Trigger Example\r\n");
+    (void)PRINTF("Please press any key to get the ADC value\r\n");
 
     while (true)
     {
-        GETCHAR();
+        (void)GETCHAR();
 
         BCTU_EnableHardwareTrig(DEMO_BCTU_BASE, DEMO_BCTU_TRIGGER_INDEX, true);
 
@@ -147,6 +147,6 @@ int main(void)
         BCTU_ClearStatusFlags(DEMO_BCTU_BASE, DEMO_BCTU_INT_MASK);
         BCTU_GetConvResult(DEMO_BCTU_BASE, DEMO_BCTU_TRIG_ADC_INSTANCE, &result);
 
-        PRINTF("ADC channel %d value: %d\r\n", result.chanNum, result.data);
+        (void)PRINTF("ADC channel %d value: %d\r\n", result.chanNum, result.data);
     }
 }
