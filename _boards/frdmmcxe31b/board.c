@@ -124,26 +124,42 @@ void BOARD_ConfigMPU(void)
     /* Region 3 setting: Memory with Normal type, not shareable, outer/inner write back, DFlash */
     MPU->RBAR = ARM_MPU_RBAR(3, 0x10000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_128KB);
-    
-    /* Region 4 setting: Memory with Normal type, not shareable, outer/inner noncache, DTCM */
-    MPU->RBAR = ARM_MPU_RBAR(4, 0x20000000U);
+
+    /* Region 4 setting: Memory with Normal type, not shareable, outer/inner noncache, ITCM backdoor */
+    MPU->RBAR = ARM_MPU_RBAR(4, 0x11000000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_32KB);
+
+    /* Region 5 setting: Memory with Normal type, not shareable, outer/inner noncache, ITCM1 backdoor */
+    MPU->RBAR = ARM_MPU_RBAR(5, 0x11400000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_32KB);
+
+    /* Region 6 setting: Memory with Normal type, not shareable, outer/inner noncache, DTCM */
+    MPU->RBAR = ARM_MPU_RBAR(6, 0x20000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_64KB);
 
-    /* Region 5 setting: Memory with Normal type, not shareable, outer/inner write back, SRAM */
-    MPU->RBAR = ARM_MPU_RBAR(5, 0x20400000U);
+    /* Region 7 setting: Memory with Normal type, not shareable, outer/inner write back, SRAM */
+    MPU->RBAR = ARM_MPU_RBAR(7, 0x20400000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_512KB);
 
-    /* Region 6 setting: Memory with Device type, not shareable, non-cacheable. */
-    MPU->RBAR = ARM_MPU_RBAR(6, 0x40000000U);
+    /* Region 8 setting: Memory with Normal type, not shareable, outer/inner noncache, DTCM backdoor */
+    MPU->RBAR = ARM_MPU_RBAR(8, 0x21000000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_64KB);
+    
+    /* Region 9 setting: Memory with Normal type, not shareable, outer/inner noncache, DTCM1 backdoor */
+    MPU->RBAR = ARM_MPU_RBAR(9, 0x21400000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_64KB);
+
+    /* Region 10 setting: Memory with Device type, not shareable, non-cacheable. */
+    MPU->RBAR = ARM_MPU_RBAR(10, 0x40000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_512MB);
 
-    /* Region 7 setting: Memory with Device type, not shareable, non-cacheable, QSPI RX buffer. */
-    MPU->RBAR = ARM_MPU_RBAR(7, 0x67000000U);
+    /* Region 11 setting: Memory with Device type, not shareable, non-cacheable, QSPI RX buffer. */
+    MPU->RBAR = ARM_MPU_RBAR(11, 0x67000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 2, 0, 0, 0, 0, ARM_MPU_REGION_SIZE_1KB);
 
 #if defined(SDK_USE_QSPI) /* Only configure QSPI memory when used. Refer to Arm errata 1013783-B */
-    /* Region 8 setting: Memory with Normal type, not shareable, outer/inner write back, QSPI AHB */
-    MPU->RBAR = ARM_MPU_RBAR(8, 0x68000000U);
+    /* Region 12 setting: Memory with Normal type, not shareable, outer/inner write back, QSPI AHB */
+    MPU->RBAR = ARM_MPU_RBAR(12, 0x68000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_128MB);
 #endif
 
