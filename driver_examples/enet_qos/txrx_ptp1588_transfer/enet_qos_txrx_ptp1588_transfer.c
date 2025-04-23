@@ -181,7 +181,7 @@ int main(void)
     }
 
     /* prepare the buffer configuration. */
-    enet_qos_buffer_config_t buffConfig = {
+    enet_qos_buffer_config_t buffConfigArray[1] = {{
         ENET_QOS_RXBD_NUM,
         ENET_QOS_TXBD_NUM,
         &g_txBuffDescrip[0],
@@ -192,7 +192,7 @@ int main(void)
         &rxbuffer[0],
         ENET_QOS_BuffSizeAlign(ENET_QOS_RXBUFF_SIZE),
         true,
-    };
+    }};
 
     PRINTF("\r\nENET example start.\r\n");
 
@@ -304,10 +304,10 @@ int main(void)
     ENET_QOS_Init(EXAMPLE_ENET_QOS_BASE, &config, &g_macAddr[0], 1, refClock);
 
     /* Initialize Descriptor. */
-    ENET_QOS_DescriptorInit(EXAMPLE_ENET_QOS_BASE, &config, &buffConfig);
+    ENET_QOS_DescriptorInit(EXAMPLE_ENET_QOS_BASE, &config, buffConfigArray);
 
     /* Create the handler. */
-    ENET_QOS_CreateHandler(EXAMPLE_ENET_QOS_BASE, &g_handle, &config, &buffConfig, ENET_QOS_IntCallback, NULL);
+    ENET_QOS_CreateHandler(EXAMPLE_ENET_QOS_BASE, &g_handle, &config, buffConfigArray, ENET_QOS_IntCallback, NULL);
 
     /* Add to multicast group to receive ptp multicast frame. */
     ENET_QOS_AddMulticastGroup(EXAMPLE_ENET_QOS_BASE, &g_multicastAddr[0]);
