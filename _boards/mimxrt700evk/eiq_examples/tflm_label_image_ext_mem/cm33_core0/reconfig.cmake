@@ -6,8 +6,8 @@ mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/model_mobilenet_ops_npu.cpp
   ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/model_data.h
+  ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/mobilenet_v1_1.0_224_int8_npu.tflite
   )
-
 
 mcux_remove_iar_linker_script(
   TARGETS flash_debug flash_release
@@ -102,3 +102,15 @@ mcux_add_armgcc_configuration(
   LD "-Xlinker --defsym=__heap_size__=0x8000\
   -Xlinker --defsym=__stack_size__=0x2000"
   )
+
+mcux_add_source(
+  BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/
+  SOURCES model_data.S
+  TOOLCHAINS mdk armgcc mcux
+)
+
+mcux_add_iar_configuration(
+  LD "--image_input=${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/mobilenet_v1_1.0_224_int8_npu.tflite,model_data,.modeldata,16\
+      --keep=model_data"
+)
+
