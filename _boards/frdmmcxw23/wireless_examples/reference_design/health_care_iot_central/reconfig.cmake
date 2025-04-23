@@ -6,7 +6,7 @@ mcux_add_source(
 mcux_remove_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/MCXW236B_flash.ld
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/MCXW236_flash.ld
 )
 
 mcux_add_armgcc_linker_script(
