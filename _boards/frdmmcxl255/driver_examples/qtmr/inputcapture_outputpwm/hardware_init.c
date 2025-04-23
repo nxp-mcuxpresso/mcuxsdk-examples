@@ -9,6 +9,8 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
+#include "fsl_inputmux.h"
+#include "fsl_inputmux_connections.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -20,7 +22,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     BOARD_InitQTMRPins();
     RESET_ReleasePeripheralReset(kAonQTMR0_RST_SHIFT_RSTn);
-    AON__SYSCON_AON->PINMUXCLKCTRL = SYSCON_AON_PINMUXCLKCTRL_PINMUX_CLK_CTRL(0);
-    AON__INPUTMUX1->QTMR1_TMR[0] = 0x1;
+    
+    INPUTMUX_Init(AON__INPUTMUX);
+    INPUTMUX_AttachSignal(AON__INPUTMUX, kINPUTMUXAON_INDEX_QTMR1_TMR0, kINPUTMUXAON_AonTrigIn0ToQtmr1Tmrn);
 }
 /*${function:end}*/
