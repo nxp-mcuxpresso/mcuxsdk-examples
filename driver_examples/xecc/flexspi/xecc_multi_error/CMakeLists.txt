@@ -8,7 +8,8 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/xecc/flexspi/xecc_multi_error/xecc_multi_error.c
-            examples/driver_examples/xecc/flexspi/xecc_multi_error/flexspi_nor_flash_ops.c
+            examples/driver_examples/xecc/flexspi/flexspi_xecc_ops.c
+            examples/driver_examples/flexspi/nor/polling_transfer/flexspi_nor_flash_ops.c
 )
 
 mcux_add_include(
