@@ -54,7 +54,7 @@ void ENET_SignalEvent_t(uint32_t event)
     if (event == ARM_ETH_MAC_EVENT_RX_FRAME)
     {
         uint32_t size;
-        uint32_t len;
+        int32_t len;
 
         /* Get the Frame size */
         size = EXAMPLE_ENET.GetRxFrameSize();
@@ -63,7 +63,7 @@ void ENET_SignalEvent_t(uint32_t event)
         {
             /* Received valid frame. Just read it out into a buffer. */
             len = EXAMPLE_ENET.ReadFrame(&g_rxFrame[0], size);
-            if (size == len)
+            if ((len >= 0) && (size == (uint32_t)len))
             {
                 /* Increase the received frame numbers. */
                 if (g_rxIndex < ENET_EXAMPLE_LOOP_COUNT)
@@ -75,7 +75,10 @@ void ENET_SignalEvent_t(uint32_t event)
     }
     if (event == ARM_ETH_MAC_EVENT_TX_FRAME)
     {
-        g_testTxNum++;
+        if (g_testTxNum < 0xFFFFFFFFU)
+        {
+            g_testTxNum++;
+        }
     }
 }
 
