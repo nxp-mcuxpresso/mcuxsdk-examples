@@ -229,7 +229,7 @@ void APP_EncapsulateUSBRequest(uint8_t *buffer, usb_setup_struct_t *setup, uint8
         memcpy(buffer, setup, offset);
     }
 
-    if (data)
+    if (data && (buffer + offset))
     {
         memcpy(buffer + offset, data, length);
     }
