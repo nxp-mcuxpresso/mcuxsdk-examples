@@ -24,9 +24,34 @@
  ******************************************************************************/
 endat2p2_dev_t *dev;
 
+bool performance_enable;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
+static void SYSTICK_StartCount()
+{
+    SysTick->VAL = SysTick->LOAD;
+}
+
+static uint32_t SYSTICK_GetCount()
+{
+    return SysTick->LOAD - SysTick->VAL;
+}
+
+static void BOARD_InitSysTick(void)
+{
+    /* Initialize SysTick core timer to run free */
+    /* Set period to maximum value 2^24*/
+    SysTick->LOAD = 0xFFFFFF;
+
+    /*Clock source - System Clock*/
+    SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+
+    /*Start Sys Timer*/
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+}
 
 static void ENDATDEV_PrintMenu(void)
 {
@@ -55,6 +80,7 @@ static void ENDATDEV_PrintMenu(void)
     PRINTF("|200: Software strobe 10 times loop                      |\r\n");
     PRINTF("|201: Internal timer strobe 10 times loop                |\r\n");
     PRINTF("|202: Hardware strobe 10 times loop                      |\r\n");
+    PRINTF("|203: Test the performance                               |\r\n");
     PRINTF("|--------------------------------------------------------|\r\n");
     PRINTF("| Input command value: ");
 }
@@ -359,7 +385,7 @@ static void ENDATDEV_DumpStatus(endat2p2_dev_t *dev, uint32_t status)
 
 static void ENDATDEV_HandleRx(endat2p2_dev_t *dev, int cmd)
 {
-    endat2p2_recv_data_t data;
+    endat2p2_recv_data_t data = {0};
 
     ENDAT2P2_RecvData(dev, cmd, &data);
     ENDATDEV_DumpRecvData(dev, cmd, &data);
@@ -564,7 +590,7 @@ static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
 {
     int i, loop = 10, loop_time = 0;
     /* uint32_t tick, us; */
-    endat2p2_recv_data_t data;
+    endat2p2_recv_data_t data = {0};
     endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
 
     ENDATDEV_InputLoopTime(&loop_time);
@@ -599,9 +625,39 @@ static int ENDATDEV_PositionLoop(endat2p2_dev_t *dev)
 
 void ENDATDEV_GetPerformance(int loop)
 {
-    int cnt = loop;
-    uint32_t st = 0, ed = 0;
+    int cnt, i;
+    uint32_t count, count1, count2, count3;
+    uint64_t time, time1, time2, time3;
     endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
+
+    BOARD_InitSysTick();
+
+    cnt = 10000;
+    PRINTF("\r\nStart to test Master's register reading\r\n");
+    SYSTICK_StartCount();
+    for(i = 0; i < cnt; i++)
+    {
+        count1 = dev->base->RECEIVEREGISTER1_1;
+    }
+    count = SYSTICK_GetCount();
+    count = count / cnt;
+    time = (uint64_t) count * 1000000000 / SystemCoreClock; /* ns */
+    PRINTF("Read a 32bits register takes clock count:%u time:%dns\r\n",
+            count, (uint32_t) time);
+
+    PRINTF("\r\nStart to test Master's register Writing\r\n");
+    SYSTICK_StartCount();
+    for(i = 0; i < cnt; i++)
+    {
+        dev->base->SENDREGISTER = 0;
+    }
+    count = SYSTICK_GetCount();
+    count = count / cnt;
+    time = (uint64_t) count * 1000000000 / SystemCoreClock; /* ns */
+    PRINTF("Write a 32bits register takes clock count:%u time:%dns\r\n",
+            count, (uint32_t) time);
+
+    PRINTF("\r\nStart to test loop mode performance\r\n");
 
     /* reset additional info's if present */
     ENDAT2P2_EncoderRest(dev);
@@ -610,25 +666,39 @@ void ENDATDEV_GetPerformance(int loop)
 
     ENDAT2P2_CleanStatus(dev);
 
-    /* st = STM_GetTime(); */
-    while (loop--)
+    for(i = 0; i < loop; i++)
     {
+        SYSTICK_StartCount();
         ENDAT2P2_CMDSend(dev);
+        while(!ENDAT2P2_CheckRecv(dev))
+        {
+            ;
+        }
+        count1 = SYSTICK_GetCount();
         ENDAT2P2_CMDWait(dev);
+        count2 = SYSTICK_GetCount();
         ENDAT2P2_GetRecvReg1(dev);
         ENDAT2P2_CleanStatus(dev);
+        count3 = SYSTICK_GetCount();
+        PRINTF("count1:%d count2:%d count3:%d\r\n",
+                count1, count2, count3);
+        time1 = (uint64_t) count1 * 1000000000 / SystemCoreClock; /* us */
+        time2 = (uint64_t) count2 * 1000000000 / SystemCoreClock; /* us */
+        time3 = (uint64_t) count3 * 1000000000 / SystemCoreClock; /* us */
+        PRINTF("A frame receiving takes count:%u time:%dns\r\n",
+                count1, (uint32_t) time1);
+        PRINTF("A frame cycle takes count:%u time:%dns\r\n",
+                count2, (uint32_t) time2);
+        PRINTF("A frame handle takes count:%u time:%dns\r\n",
+                count3 - count2, (uint32_t) (time3 - time2));
     }
-    /* ed = STM_GetTime(); */
-
-    PRINTF("Read %d frames take %dus\r\n", cnt, ed - st);
-    PRINTF("each frame takes %dus\r\n", (ed - st)/cnt);
 }
 
 static int ENDATDEV_TimerLoop(endat2p2_dev_t *dev)
 {
     int i, loop = 10, loop_time = 0;
     /* uint32_t tick, us; */
-    endat2p2_recv_data_t data;
+    endat2p2_recv_data_t data = {0};
     endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
 
     ENDATDEV_InputLoopTime(&loop_time);
@@ -673,7 +743,7 @@ static int ENDATDEV_HardwareStrobeLoop(endat2p2_dev_t *dev)
 {
     endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
     int i, loop = 10;
-    endat2p2_recv_data_t data;
+    endat2p2_recv_data_t data = {0};
 
     /* Initialize FlexPWM to generate the trigger signalis. */
     PWM_Trigger_Init(BOARD_PWM_BASEADDR);
@@ -869,6 +939,12 @@ int main(void)
         {
             PRINTF("Hardware strobe to receive position\r\n");
             ENDATDEV_HardwareStrobeLoop(dev);
+            continue;
+        }
+        if(menu_cmd == 203)
+        {
+            PRINTF("Test the performance\r\n");
+            ENDATDEV_GetPerformance(10);
             continue;
         }
     }

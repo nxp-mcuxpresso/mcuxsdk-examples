@@ -2,14 +2,13 @@ Hardware requirements
 =====================
 - Micro USB cable
 - IMX943-EVK board
-- J-Link Debug Probe
-- 12V~20V power supply
+- Motor control board
 - Personal Computer
 - EnDat2.2 sensor
 
 Board settings
 ============
-Motor control board is required.
+Insert Motor control board into IMX943-EVK board and connect EnDat2.2 sensor.
 
 Prepare the Demo
 ===============
