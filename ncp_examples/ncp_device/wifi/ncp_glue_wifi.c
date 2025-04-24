@@ -1561,8 +1561,9 @@ NCPCmd_DS_COMMAND *wlan_ncp_get_response_buffer()
 static int wlan_ncp_start_wps_pbc(void *tlv)
 {
     int ret;
+    struct netif *netif = net_get_sta_interface();
 
-    ret = wlan_start_wps_pbc();
+    ret = wlan_start_wps_pbc(netif);
     if (!ret)
         wlan_ncp_prepare_status(NCP_RSP_WLAN_STA_WPS_PBC, NCP_CMD_RESULT_OK);
     else
@@ -1597,17 +1598,14 @@ static int wlan_ncp_wps_generate_pin(void *tlv)
 
 static int wlan_ncp_start_wps_pin(void *tlv)
 {
+    struct netif *netif = net_get_sta_interface();
     int ret;
     char pin_str[10]         = {0};
     NCP_CMD_WPS_PIN *pin_cfg = (NCP_CMD_WPS_PIN *)tlv;
     uint32_t pin             = pin_cfg->pin;
     (void)snprintf(pin_str, sizeof(pin_str), "%08d", pin);
 
-#if CONFIG_WPA_SUPP_WPS
-    ret = wlan_start_wps_pin(pin_str);
-#else
-    ret = wlan_start_wps_pin(pin);
-#endif
+    ret = wlan_start_wps_pin(netif, pin_str);
     if (!ret)
         wlan_ncp_prepare_status(NCP_RSP_WLAN_STA_WPS_PIN, NCP_CMD_RESULT_OK);
     else
