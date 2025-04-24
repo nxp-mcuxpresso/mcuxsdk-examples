@@ -1,0 +1,5 @@
+This file contains version of the tools used for keys generation: 
+ 
+Key set generated using: 
+MCUXpresso Secure Provisioning Tool version 6.0.b230201 
+nxpkeygen, version 1.9.0
