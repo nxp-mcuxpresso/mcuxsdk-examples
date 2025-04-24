@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -10,7 +9,7 @@
 
 /*${header:start}*/
 #include "fsl_rgpio.h"
-#include "fsl_phyrtl8211f.h"
+#include "fsl_phyyt8521.h"
 
 volatile bool g_pinSet = false;
 /*${header:end}*/

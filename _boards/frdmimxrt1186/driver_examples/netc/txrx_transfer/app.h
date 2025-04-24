@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -10,8 +10,7 @@
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
-#include "fsl_phyrtl8211f.h"
-#include "fsl_phyrtl8201.h"
+#include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
 /*${header:end}*/
 
@@ -22,17 +21,14 @@
 #define EXAMPLE_NETC_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
 
 /* Ethernet port identifier. */
-#define EXAMPLE_EP_NUM   1U
-#define EXAMPLE_EP0_PORT 0x00U
+#define EXAMPLE_EP_NUM 1U
 #define EXAMPLE_EP_SI    \
     {                    \
         kNETC_ENETC0PSI0 \
     }
 #define EXAMPLE_MSGINTR   MSGINTR1
 #define EXAMPLE_SWT_PORT0 0x01U
-#define EXAMPLE_SWT_PORT1 0x02U
 #define EXAMPLE_SWT_PORT2 0x03U
-#define EXAMPLE_SWT_PORT3 0x04U
 
 /* Buffer desciptor configuration. */
 #define EXAMPLE_EP_RING_NUM          3U

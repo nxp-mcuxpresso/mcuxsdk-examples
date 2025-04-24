@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -10,8 +10,7 @@
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
-#include "fsl_phyrtl8211f.h"
-#include "fsl_phyrtl8201.h"
+#include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
 /*${header:end}*/
 

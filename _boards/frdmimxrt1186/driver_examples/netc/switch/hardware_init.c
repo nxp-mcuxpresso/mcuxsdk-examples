@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -24,7 +24,7 @@
 /*${variable:start}*/
 /* PHY operation. */
 static netc_mdio_handle_t s_emdio_handle;
-static phy_rtl8211f_resource_t s_phy_resource[5];
+static phy_yt8521_resource_t s_phy_resource[5];
 static phy_handle_t s_phy_handle[5];
 /*${variable:end}*/
 
@@ -115,19 +115,12 @@ static status_t APP_PHY_SetPort(uint32_t port, phy_config_t *phyConfig)
 status_t APP_PHY_Init(void)
 {
     status_t result            = kStatus_Success;
-    phy_config_t phy8211Config = {
+    phy_config_t phyyt8521Config = {
         .autoNeg   = false,
         .speed     = kPHY_Speed1000M,
         .duplex    = kPHY_FullDuplex,
         .enableEEE = false,
-        .ops       = &phyrtl8211f_ops,
-    };
-    phy_config_t phy8201Config = {
-        .autoNeg   = false,
-        .speed     = kPHY_Speed100M,
-        .duplex    = kPHY_FullDuplex,
-        .enableEEE = false,
-        .ops       = &phyrtl8201_ops,
+        .ops       = &phyyt8521_ops,
     };
 
     /* Reset all PHYs even some are not used in case unstable status has effect on other PHYs. */
@@ -147,9 +140,9 @@ status_t APP_PHY_Init(void)
     SDK_DelayAtLeastUs(150000, CLOCK_GetFreq(kCLOCK_CpuClk));
 
     /* Initialize PHY for EP. */
-    phy8201Config.resource = &s_phy_resource[EXAMPLE_EP0_PORT];
-    phy8201Config.phyAddr  = BOARD_EP0_PHY_ADDR;
-    result                 = APP_PHY_SetPort(EXAMPLE_EP0_PORT, &phy8201Config);
+    phyyt8521Config.resource = &s_phy_resource[EXAMPLE_EP0_PORT];
+    phyyt8521Config.phyAddr  = BOARD_EP0_PHY_ADDR;
+    result                 = APP_PHY_SetPort(EXAMPLE_EP0_PORT, &phyyt8521Config);
     if (result != kStatus_Success)
     {
         return result;
@@ -161,9 +154,9 @@ status_t APP_PHY_Init(void)
     }
 
     /* Initialize PHY for switch port0. */
-    phy8201Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT0];
-    phy8201Config.phyAddr  = BOARD_SWT_PORT0_PHY_ADDR;
-    result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT0, &phy8201Config);
+    phyyt8521Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT0];
+    phyyt8521Config.phyAddr  = BOARD_SWT_PORT0_PHY_ADDR;
+    result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT0, &phyyt8521Config);
     if (result != kStatus_Success)
     {
         return result;
@@ -175,9 +168,9 @@ status_t APP_PHY_Init(void)
     }
 
     /* Initialize PHY for switch port1. */
-    phy8211Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT1];
-    phy8211Config.phyAddr  = BOARD_SWT_PORT1_PHY_ADDR;
-    result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT1, &phy8211Config);
+    phyyt8521Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT1];
+    phyyt8521Config.phyAddr  = BOARD_SWT_PORT1_PHY_ADDR;
+    result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT1, &phyyt8521Config);
     if (result != kStatus_Success)
     {
         return result;
@@ -186,9 +179,9 @@ status_t APP_PHY_Init(void)
     if (((1U << 2) & EXAMPLE_SWT_USED_PORT_BITMAP) != 0U)
     {
         /* Initialize PHY for switch port2. */
-        phy8211Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT2];
-        phy8211Config.phyAddr  = BOARD_SWT_PORT2_PHY_ADDR;
-        result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT2, &phy8211Config);
+        phyyt8521Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT2];
+        phyyt8521Config.phyAddr  = BOARD_SWT_PORT2_PHY_ADDR;
+        result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT2, &phyyt8521Config);
         if (result != kStatus_Success)
         {
             return result;
@@ -198,9 +191,9 @@ status_t APP_PHY_Init(void)
     if (((1U << 3) & EXAMPLE_SWT_USED_PORT_BITMAP) != 0U)
     {
         /* Initialize PHY for switch port3. */
-        phy8211Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT3];
-        phy8211Config.phyAddr  = BOARD_SWT_PORT3_PHY_ADDR;
-        result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT3, &phy8211Config);
+        phyyt8521Config.resource = &s_phy_resource[EXAMPLE_SWT_PORT3];
+        phyyt8521Config.phyAddr  = BOARD_SWT_PORT3_PHY_ADDR;
+        result                 = APP_PHY_SetPort(EXAMPLE_SWT_PORT3, &phyyt8521Config);
         if (result != kStatus_Success)
         {
             return result;

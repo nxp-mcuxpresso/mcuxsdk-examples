@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,7 +9,7 @@
 #include "board.h"
 #include "app_core0.h"
 #include "fsl_debug_console.h"
-#include "fsl_phyrtl8211f.h"
+#include "fsl_phyyt8521.h"
 #include "fsl_netc_mdio.h"
 /*${header:end}*/
 
@@ -20,7 +20,7 @@
 /*${variable:start}*/
 /* PHY operation. */
 static netc_mdio_handle_t s_emdio_handle;
-static phy_rtl8211f_resource_t s_phy_resource;
+static phy_yt8521_resource_t s_phy_resource;
 static phy_handle_t s_phy_handle;
 /*${variable:end}*/
 
@@ -78,12 +78,12 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 status_t APP_PHY_Init(void)
 {
     status_t result            = kStatus_Success;
-    phy_config_t phy8211Config = {
+    phy_config_t phyyt8521Config = {
         .autoNeg   = false,
         .speed     = kPHY_Speed100M,
         .duplex    = kPHY_FullDuplex,
         .enableEEE = false,
-        .ops       = &phyrtl8211f_ops,
+        .ops       = &phyyt8521_ops,
     };
     rgpio_pin_config_t pinConfig = {.pinDirection = kRGPIO_DigitalOutput, .outputLogic = 0};
 
@@ -96,10 +96,10 @@ status_t APP_PHY_Init(void)
     /* Initialize PHY for switch port1. */
     s_phy_resource.write   = APP_EMDIOWrite;
     s_phy_resource.read    = APP_EMDIORead;
-    phy8211Config.resource = &s_phy_resource;
-    phy8211Config.phyAddr  = EXAMPLE_SWT_PORT1_PHY_ADDR;
+    phyyt8521Config.resource = &s_phy_resource;
+    phyyt8521Config.phyAddr  = EXAMPLE_SWT_PORT1_PHY_ADDR;
 
-    result = PHY_Init(&s_phy_handle, &phy8211Config);
+    result = PHY_Init(&s_phy_handle, &phyyt8521Config);
     if (result != kStatus_Success)
     {
         return result;
