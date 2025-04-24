@@ -87,28 +87,171 @@ For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/e
     * Note: alternatively unsigned application via debug session using preferred IDE (IAR, MCUX, VSCode) - in this case the `image` command returns invalid information as there is no valid image header to parse
 
 2. Check image state and active flag location with `image` command
+    * See active flag location to specify inactive image slot
 
-![Image](sb3_pics/3_ota_rom_mcxn_1.jpg)
+3. Send the OTA image
+    * Run `xmodem_sb3` command
+    * Send `ota_rom_basic_image_1_v2.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
 
-3. Run `xmodem_sb3` command
-    * Send `ota_rom_basic_image_1_v2.sb` file via __Files Transfer/Xmodem (1k)__ 
-    * Reboot
-    * Check image state with `image` command
+4. Reboot the device with `reboot` command
 
-![Image](sb3_pics/3_ota_rom_mcxn_2.jpg)
+5. Check image update with `image` command
+
+Here is an example of serial output:
+~~~
+
+*************************************
+* Basic ROM application example     *
+*************************************
+
+$ image
+Flash REMAP_SWAP disabled
+IMAGE 0:
+    <IMG_VERSION 0x1 LENGTH 36820 EXEC_ADDR 0x28004000>
+    *ACTIVE*
+IMAGE 1: Invalid image header
+$ xmodem_sb3
+Started xmodem processing SB3
+Initiated XMODEM-CRC transfer. Receiving... (Press 'x' to cancel)
+CCCC
+Received 37880 bytes
+SB3 has been processed
+$
+$ reboot
+System reset!
+
+*************************************
+* Basic ROM application example     *
+*************************************
+
+$ image
+Flash REMAP_SWAP active
+IMAGE 0:
+    <IMG_VERSION 0x1 LENGTH 36820 EXEC_ADDR 0x28004000>
+IMAGE 1:
+    <IMG_VERSION 0x2 LENGTH 36820 EXEC_ADDR 0x28004000>
+    *ACTIVE*
+$
+~~~
 
 ### 3.2 MCUboot bootloader use case
 
 1. Load and run initial `ota_mcuboot_basic` application as usual - alternatively load initial SB3 via `blhost` and `receive-sb-file` command.
     
-![Image](sb3_pics/3_ota_mcuboot_mcxn_1.jpg)
+2. Check image state and active flag location with `image` command
+    * See active flag location to specify inactive image slot
 
-2. Run `xmodem_sb3` command
-    * Send a SB3 file via __Files Transfer/Xmodem (1k)__ 
-    * Mark written signed image as ready for install by `image test` command
-    * Reboot
+2. Erase inactive slot with `image erase` command
+    * Note: not needed if the SB file contains the erase command 
 
-![Image](sb3_pics/3_ota_mcuboot_mcxn_2.jpg)
+4. Send the OTA image
+    * Run `xmodem_sb3` command
+    * Send `ota_mcuboot_secondary_slot.sb` targetting inactive slot via __Files Transfer/Xmodem (1k)__ 
+
+5. Mark installed image ready for test
+    * Run `image test` command
+
+6. Reboot the device with `reboot` command
+
+7. Check image update with `image` command
+
+8. Mark the updated slot with confirm flag using `image accept` and check the state again with `image` command again
+
+~~~
+hello sbl.
+Bootloader Version 2.2.0
+Primary   slot: version=1.0.0+1000
+Image 0 Secondary slot: Image not found
+Image 0 loaded from the primary slot
+Bootloader chainload address offset: 0x40000
+Reset_Handler address offset: 0x40400
+Jumping to the image
+
+
+Booting the primary slot - flash remapping is disabled
+
+*************************************
+* Basic MCUBoot application example *
+*************************************
+
+$ image
+Image 0; name APP; state None:
+
+  Slot 0 APP_PRIMARY; offset 0x0; size 0x100000 (1038576):
+    <IMAGE: size 28828; version 1.0.0+1000>
+    SHA256 of image payload: E069B6127A708EE88B39...
+    log_addr 0x0
+    *ACTIVE*
+
+  Slot 1 APP_SECONDARY; offset 0x100000; size 0x100000 (1038576):
+    <No Image Found>
+
+$ image erase
+Erasing inactive slot...done
+$ xmodem_sb3
+Started xmodem processing SB3
+Make sure this device is provisioned to accept secure binary and its load address is 0x100000
+Initiated XMODEM-CRC transfer. Receiving... (Press 'x' to cancel)
+CCCCC
+Received 51200 bytes
+SB3 has been processed
+$
+$ image test
+write magic number offset = 0x43ff00
+$ reboot
+System reset!
+hello sbl.
+Bootloader Version 2.2.0
+Primary   slot: version=1.0.0+1000
+Secondary slot: version=1.1.0+1000
+writing copy_done; fa_id=1 off=0x1fffe0 (0x43ffe0)
+Image 0 loaded from the secondary slot
+Bootloader chainload address offset: 0x240000
+Reset_Handler address offset: 0x240400
+Jumping to the image
+
+
+Booting the secondary slot - flash remapping is enabled
+
+*************************************
+* Basic MCUBoot application example *
+*************************************
+
+$ image
+Flash REMAP_SWAP active.
+
+Image 0; name APP; state Testing:
+
+  Slot 0 APP_PRIMARY; offset 0x0; size 0x100000 (1038576):
+    <IMAGE: size 28828; version 1.0.0+1000>
+    SHA256 of image payload: E069B6127A708EE88B39...
+    log_addr 0x0 remaps to 0x100000
+
+  Slot 1 APP_SECONDARY; offset 0x100000; size 0x100000 (1038576):
+    <IMAGE: size 28828; version 1.1.0+1000>
+    SHA256 of image payload: E069B6127A708EE88B39...
+    log_addr 0x100000 remaps to 0x0
+    *ACTIVE*
+
+$ image accept
+$ image
+Flash REMAP_SWAP active.
+
+Image 0; name APP; state Permanent:
+
+  Slot 0 APP_PRIMARY; offset 0x0; size 0x100000 (1038576):
+    <IMAGE: size 28828; version 1.0.0+1000>
+    SHA256 of image payload: E069B6127A708EE88B39...
+    log_addr 0x0 remaps to 0x100000
+
+  Slot 1 APP_SECONDARY; offset 0x100000; size 0x100000 (1038576):
+    <IMAGE: size 28828; version 1.1.0+1000>
+    SHA256 of image payload: E069B6127A708EE88B39...
+    log_addr 0x100000 remaps to 0x0
+    *ACTIVE*
+
+$
+~~~
 
 ## Supported Boards
 

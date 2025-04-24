@@ -18,7 +18,9 @@ west build -p always examples/ota_examples/mcuboot_opensource --toolchain iar --
     * enable `Add support for encrypted XIP` and `Use custom device configuration`
     * enable `Enable Encrypted XIP mode`
     * fill addresses of active and candidate application and meta data - default values from `flash_partioning.h` or board readme for `mcuboot_opensource` can be re-used
-    ![Image](kconfig_pics/encrypted_xip_1.jpg)
+
+![Image](kconfig_pics/encrypted_xip_1.jpg)
+
 3. Click Save and close the window.
 4. Navigate to folder with generated project and run
 ~~~
@@ -56,11 +58,17 @@ west build -p always examples/ota_examples/mcuboot_opensource --toolchain iar --
 ~~~
 
 2. Remove any PSA Crypto driver occurences in Component Configuration->Security, eventually related drivers in Driver Configuration
-    ![Image](kconfig_pics/tinycrypt_1.jpg)
+    
+![Image](kconfig_pics/tinycrypt_1.jpg)
+
 3. Remove Mbed TLS middleware and all related components
-    ![Image](kconfig_pics/tinycrypt_2.jpg)
+
+![Image](kconfig_pics/tinycrypt_2.jpg)
+
 4. Enable TinyCrypt and custom device configuration in MCUboot configuration
-    ![Image](kconfig_pics/tinycrypt_3.jpg)
+
+![Image](kconfig_pics/tinycrypt_3.jpg)
+
 5. Click Save and close the window.
 6. Navigate to folder with generated project and run
 ~~~

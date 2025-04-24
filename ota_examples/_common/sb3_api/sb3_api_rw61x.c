@@ -26,6 +26,9 @@
 #define OTP_CUST_SK_MK_31_0_FUSE_IDX     (92u)
 #define OTP_CUST_SK_MK_31_0_FUSE_VALUE() (OCOTP->OTP_SHADOW[OTP_CUST_SK_MK_31_0_FUSE_IDX])
 
+#define OTP_BOOT_CFG2_FUSE_IDX           (17u)
+#define OTP_BOOT_CFG2_FUSE_VALUE()       (OCOTP->OTP_SHADOW[OTP_BOOT_CFG2_FUSE_IDX])
+
 typedef struct
 {
     api_core_context_t core_ctx;
@@ -52,6 +55,35 @@ sb3_api_ctx_t sb3_api_ctx;
 static int is_sb3_header(const void *header)
 {
     return !memcmp("sbv3", header, 4);
+}
+
+/* Note: there is no clear way how to detect mbi presence so we analyze atleast Image Type */
+static int mbi_image_info_check(const uint32_t *image)
+{
+    uint32_t image_type = image[0x24/4];
+    uint32_t load_addr  = image[0x34/4];
+
+    //Image type <= 0x8
+    if((image_type & 0x3F) > 0x8)
+        return 0;
+    //Image Subtype <= 0x1
+    if((image_type>>6 & 0x3) > 0x1)
+        return 0;
+    if(load_addr == 0xFFFFFFFF)
+        return 0;
+    return 1;
+}
+
+static void mbi_image_info_parse(const uint32_t *image, struct mbi_image_info *info)
+{
+    info->length       = image[0x20/4];
+    info->type         = image[0x24/4] & 0xff;
+    info->img_version  = (image[0x24/4] & (1<<10)) ? (image[0x24/4] >> 16) : 0;
+    info->execaddr     = image[0x34/4];
+
+    info->cert_offset = image[0x28/4];
+    //info->cert_size   = image[info->cert_offset/4 + 2];
+    //info->fw_version  = image[(info->cert_offset+info->cert_size)/4 + 2];
 }
 /*******************************************************************************
  * Code
@@ -89,13 +121,25 @@ void mbi_print_info(void)
 
     uint32_t img_ver_addr[2];
     uint32_t img_mbi_addr[2];
+    uint32_t image1_off;
     int remap_active;
     uint32_t mbi_buf[64/sizeof(uint32_t)];
+    
+    
+    if(OTP_BOOT_CFG2_FUSE_VALUE() != 0)
+    {
+        image1_off = (OTP_BOOT_CFG2_FUSE_VALUE() >> 11 & 0x3FF) * 256 * 1024;
+    }
+    else
+    {
+        PRINTF("Warning: Fuse/shadow BOOT_CFG2 is not set. The image 1 offset can be invalid\n");
+        image1_off = 0x400000;
+    }
 
-    img_ver_addr[0] = 0x600;
+    img_ver_addr[0] = 0x0600;
     img_mbi_addr[0] = 0x1000;
-    img_ver_addr[1] = 0x400600;
-    img_mbi_addr[1] = 0x401000;
+    img_ver_addr[1] = image1_off + 0x0600;
+    img_mbi_addr[1] = image1_off + 0x1000;
 
     if (is_remap_active())
     {
@@ -145,35 +189,6 @@ void mbi_print_info(void)
             PRINTF("IMAGE %u: Invalid image header\n", img_index);
         }
     }
-}
-
-/* Note: there is no clear way how to detect mbi presence so we analyze atleast Image Type */
-int mbi_image_info_check(const uint32_t *image)
-{
-    uint32_t image_type = image[0x24/4];
-    uint32_t load_addr  = image[0x34/4];
-
-    //Image type <= 0x8
-    if((image_type & 0x3F) > 0x8)
-        return 0;
-    //Image Subtype <= 0x1
-    if((image_type>>6 & 0x3) > 0x1)
-        return 0;
-    if(load_addr == 0xFFFFFFFF)
-        return 0;
-    return 1;
-}
-
-void mbi_image_info_parse(const uint32_t *image, struct mbi_image_info *info)
-{
-    info->length       = image[0x20/4];
-    info->type         = image[0x24/4] & 0xff;
-    info->img_version  = (image[0x24/4] & (1<<10)) ? (image[0x24/4] >> 16) : 0;
-    info->execaddr     = image[0x34/4];
-
-    info->cert_offset = image[0x28/4];
-    //info->cert_size   = image[info->cert_offset/4 + 2];
-    //info->fw_version  = image[(info->cert_offset+info->cert_size)/4 + 2];
 }
 
 int sb3_check_provisioning(bool rom_only)

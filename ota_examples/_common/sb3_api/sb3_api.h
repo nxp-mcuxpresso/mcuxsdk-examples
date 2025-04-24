@@ -33,12 +33,6 @@ int is_remap_active(void);
 /* prints image info */
 void mbi_print_info(void);
 
-/* tests presence of MBI image */
-int mbi_image_info_check(const uint32_t *image);
-
-/* parses basic information about MBI image */
-void mbi_image_info_parse(const uint32_t *image, struct mbi_image_info *info);
-
 /*******************************************************************************
  * ROM IAP and SB3 Helper Functions
  ******************************************************************************/

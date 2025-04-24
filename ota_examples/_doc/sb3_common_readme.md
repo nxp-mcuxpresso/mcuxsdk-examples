@@ -11,16 +11,17 @@ In MCUXpresso OTA examples, there are two ways of using SB3:
    2. __The SB3 is used as an encapsulation of MCUboot image to secure its transport__
       * The process is demonstrated in the `ota_mcuboot_basic` example
       * The example provides an additional command 'xmodem_sb3' to receive and process the SB3 file
+      * the flash remapping feature is driven by MCUboot
 
-## Risks and flash remapping functionality
+## OTA using SB3 and flash remapping functionality
 
 Flash remapping feature, if supported, is enabled by default in the examples. However, there are a few things to keep in mind when using SB3 as an OTA update.
 
 A user has to ensure that the SB3 processed by an application has the correct load address targeting the currently __inactive image region__ because the active application has no control over ROM IAP handling SB3. This creates a risk of overwriting the active image region, potentially leading to a bricked device if an incorrect SB3 is downloaded and no backup image is present in the inactive image region to recover. This applies to both MCUboot and ROM bootloader use cases.
 
-__In other words, two separate SB3 files (for first and second image regions) have to be generated if flash remap based on OVERLAY is used. The application has to distinguish between these two binaries during an OTA update.__ 
+__In other words, two separate SB3 files (for first and second image regions) have to be prepared if flash remap based on OVERLAY is used. The application has to distinguish between these two binaries during an OTA update.__ 
 
-__In the case of flash remap based on the SWAP mechanism, the SB3 file is always generated for the second image region. Due to the design of SWAP, the SB3 payload is always written to the inactive image region.__
+__In the case of flash remap based on the SWAP mechanism, the SB3 file must be always generated for the second image region. Due to the design of SWAP, the SB3 payload is always written to the inactive image region.__
 
 For more information, please read ['Flash remapping functionality'](flash_remap_readme.md).
 
@@ -28,6 +29,7 @@ For more information, please read ['Flash remapping functionality'](flash_remap_
 
 - [RW61X](sb3_rw61x_readme.md)
 - [MCXN](sb3_mcxn_readme.md)
+- [RT7xx](sb3_rt7xx_readme.md)
 
 ## Supported Boards
 

@@ -44,6 +44,35 @@ static int is_sb3_header(const void *header)
 {
     return !memcmp("sbv3", header, 4);
 }
+
+/* Note: there is no clear way how to detect mbi presence so we analyze atleast Image Type */
+static int mbi_image_info_check(const uint32_t *image)
+{
+    uint32_t image_type = image[0x24/4];
+    uint32_t load_addr  = image[0x34/4];
+
+    //Image type <= 0x8
+    if((image_type & 0x3F) > 0x8)
+        return 0;
+    //Image Subtype <= 0x1
+    if((image_type>>6 & 0x3) > 0x1)
+        return 0;
+    if(load_addr == 0xFFFFFFFF)
+        return 0;
+    return 1;
+}
+
+static void mbi_image_info_parse(const uint32_t *image, struct mbi_image_info *info)
+{
+    info->length       = image[0x20/4];
+    info->type         = image[0x24/4] & 0xff;
+    info->img_version  = (image[0x24/4] & (1<<10)) ? (image[0x24/4] >> 16) : 0;
+    info->execaddr     = image[0x34/4];
+
+    info->cert_offset = image[0x28/4];
+    info->cert_size   = image[info->cert_offset/4 + 2];
+    info->fw_version  = image[(info->cert_offset+info->cert_size)/4 + 2];
+}
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -102,23 +131,6 @@ void mbi_print_info(void)
     }
 }
 
-/* Note: there is no clear way how to detect mbi presence so we analyze atleast Image Type */
-int mbi_image_info_check(const uint32_t *image)
-{
-    uint32_t image_type = image[0x24/4];
-    uint32_t load_addr  = image[0x34/4];
-
-    //Image type <= 0x8
-    if((image_type & 0x3F) > 0x8)
-        return 0;
-    //Image Subtype <= 0x1
-    if((image_type>>6 & 0x3) > 0x1)
-        return 0;
-    if(load_addr == 0xFFFFFFFF)
-        return 0;
-    return 1;
-}
-
 int sb3_check_provisioning(bool rom_only)
 {
     int cmpa_ok;
@@ -137,18 +149,6 @@ int sb3_check_provisioning(bool rom_only)
         return 0;
     }
     return 1;
-}
-
-void mbi_image_info_parse(const uint32_t *image, struct mbi_image_info *info)
-{
-    info->length       = image[0x20/4];
-    info->type         = image[0x24/4] & 0xff;
-    info->img_version  = (image[0x24/4] & (1<<10)) ? (image[0x24/4] >> 16) : 0;
-    info->execaddr     = image[0x34/4];
-
-    info->cert_offset = image[0x28/4];
-    info->cert_size   = image[info->cert_offset/4 + 2];
-    info->fw_version  = image[(info->cert_offset+info->cert_size)/4 + 2];
 }
 
 int sb3_parse_header(const void *header, uint32_t *sb3_len)

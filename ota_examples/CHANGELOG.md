@@ -6,6 +6,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ### Added
 - Added basic support for KW47-EVK and MCX-W72-EVK board
+- Added SB3 processing support for MIMXRT700EVK (see [SB3 doc](_doc/sb3_common_readme.md))
 
 ## [25.09.0] - 09/2025
 

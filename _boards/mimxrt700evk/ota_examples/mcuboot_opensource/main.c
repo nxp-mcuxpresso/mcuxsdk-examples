@@ -48,6 +48,9 @@ int main(void)
     __ISB();
 #endif
 
+    CLOCK_EnableClock(kCLOCK_Els);
+    CLOCK_EnableClock(kCLOCK_Ocotp0);
+
     PRINTF("hello sbl.\r\n");
 
     (void)sbl_boot_main();

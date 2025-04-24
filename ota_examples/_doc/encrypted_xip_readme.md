@@ -34,7 +34,7 @@ This document describes an extension of MCUboot functionality to support encrypt
 <!-- TOC --><a name="2-mcuboot-encrypted-image"></a>
 ## 2. MCUboot encrypted image
 
-In the extension, the image encrypted by MCUboot is used as a secure capsule for transport and staging in the non-XIP area of a device.
+In the extension, the image encrypted by MCUboot is used as a secure capsule for transport and staging in the non-XIP area of a device. For more information please see [MCUboot Encrypted images documentation](https://docs.mcuboot.com/encrypted_images.html).
 
 In summary, an image payload is encrypted using AES-CTR cipher by image tool (see [imgtool](https://docs.mcuboot.com/imgtool.html)). The AES key is randomized per OTA image and padded to image as an encrypted TLV section. The encrypted AES key can be decrypted using private key in selected key encryption scheme (RSA-OAEP, AES-KW, ECIES-P256 or ECIES-X25519).
 
@@ -43,8 +43,6 @@ Following image shows keys management of MCUboot encrypted image.
 ![Image](encrypted_xip_pics/keys_scheme.jpg)
 
 As shown in the image, a user must securely embed the encryption private key into the device. For simplicity, the OTA examples in SDK use private keys embedded as a C array in MCUboot code (see `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys.c`). Users are advised to implement secure provisioning and loading of the private key in the device, for example by encrypting the MCUboot application (including the array) using the encrypted XIP feature of the device, or by staging the private key in trusted sources like OTP or TPM (supported since MCUboot 2.2.0).
-
-For more information please see [MCUboot Encrypted images documentation](https://docs.mcuboot.com/encrypted_images.html). 
 
 <!-- TOC --><a name="3-encrypted-xip-extension-for-mcuboot"></a>
 ## 3. Encrypted XIP extension for MCUboot
@@ -68,13 +66,23 @@ Note: The risk is related only to use cases using a custom second-stage bootload
 
 The risk is resolved by moving configuration blocks out of the header of the second stage bootloader to a particular flash area and letting the bootloader configure the encryption module manually by inspecting these configuration blocks.
 
-The encrypted XIP extension uses a reserved area called encryption metadata which is used for storage of configuration blocks and encrypted XIP handling. The following image shows the general structure of encryption metadata.
+![Image](encrypted_xip_pics/config_layout.jpg)
+
+There is always one static configuration for MCUboot used by ROM for encrypted XIP initialization during startup, and one or two dynamic configurations for application slots which are regenerated during an OTA update. These dynamic configuration blocks are manually handled by MCUboot or an OTA process to provide more flexibility and robustness to the update process.
+
+In the case of a layout utilizing flash remap, the encryption of the MCUboot partition is optional. This is because there is no need for a private key, unlike in the overwrite-only layout, where slot 1 is offline encrypted by the MCUboot encryption mechanism.
+
+Note: The following text focuses on overwrite-only mode as it is much simpler and universally implementable on all devices. Flash remap layout will be covered in separate application notes in future SDK releases.
+
+The encrypted XIP extension uses a reserved area called encryption metadata which is used for storage of configuration blocks. The following image shows the general structure of encryption metadata.
 
 ![Image](encrypted_xip_pics/general_metadata.jpg)
 
 The metadata sector consists of platform-specific configuration blocks and a common confirmation block. The slot number is a pointer to the slot containing the selected image extracted from the MCUboot response object. The hash acts as a confirmation of the integrity of configuration blocks and content in the execution slot.
 
-During an OTA update, the extension generates a new configuration block with IV, writes it at a particular flash offset, and reconfigures the encryption unit for the execution area. If the update and verification of the execution area are successful, the configuration block is then hashed and confirmed by writing the confirmation block.
+It's recommended to have both blocks in a common flash sector so they are separated by flash page granularity and deleted simultaneously during OTA updates. Typically, in the example code, the configuration block is placed at the beginning of the sector and the confirmation block is placed at the end of the sector.
+
+During an OTA update, the extension generates a new configuration block with IV, writes it at a particular flash offset, and reconfigures the encryption unit for the execution area. If the update and verification of the execution area are successful, the configuration block is then hashed and confirmed by writing the confirmation block. 
 
 <!-- TOC --><a name="32-partition-layout"></a>
 ### 3.2 Partition layout
@@ -92,7 +100,7 @@ Following image shows flash memory layout using MCUboot bootloader in [MCUBOOT_O
 
 Secondary slots act as a staging area for encrypted OTA image by MCUboot. The execution slot is used as an execution area of the encrypted image using platform on-the-fly decryption.
 
-Note: the placement of metadata in this mode is up to user. 
+Note: the placement of metadata in the flash memory is up to user. 
 
 <!-- TOC --><a name="33-flow-of-modified-overwrite-only-mode"></a>
 ### 3.3 Flow of modified overwrite only mode
@@ -147,7 +155,7 @@ To be implemented...
 
 IPED is encryption unit for external flash specific for NXP RW61x, RT700 and MCXN MCUs. 
 
-Note: __The extension currently supports only IPED module based on GCM algorithm.__
+Note: __The extension currently supports only IPED module based on GCM algorithm in RW61x devices.__
 
 Following image shows configuration of metadata structure used for devices with IPED.
 

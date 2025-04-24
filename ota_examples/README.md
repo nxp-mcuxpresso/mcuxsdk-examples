@@ -20,7 +20,7 @@ The `ota_mcuboot_basic` is always supported. Network examples and its variants (
 
 A ROM bootloader is a first stage bootloader embedded in a NXP device which offers a lightweight OTA solution with minimum memory footprint. If supported, the ROM bootloader (without the second stage MCUboot) can be evaluated in `ota_rom_basic` example.
 
-The example typically demostrate Dual image feature (ROM utilizing flash remap) and [SB3](https://spsdk-try.readthedocs.io/en/stable/images/secure_update.html) file as an OTA image. More information related to SB3 processing can be found in ['OTA update by using SB3 file'](_doc/sb3_common_readme.md).
+The example typically demostrate a Dual image feature (ROM utilizing flash remap) and a [SB3](https://spsdk-try.readthedocs.io/en/stable/images/secure_update.html) file as an OTA image. More information related to the SB3 processing can be found in ['OTA update by using SB3 file'](_doc/sb3_common_readme.md).
 
 ## Advanced topics
 

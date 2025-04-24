@@ -488,7 +488,7 @@ static shell_status_t shellCmd_xmodem_sb3(shell_handle_t shellHandle, int32_t ar
     //Todo add provisioning check
     if (sb3_api_init() != kStatus_Success)
     {
-        PRINTF("sb3_iap_init failed/n");
+        PRINTF("sb3_iap_init failed\n");
         return kStatus_SHELL_Error;
     }
 
