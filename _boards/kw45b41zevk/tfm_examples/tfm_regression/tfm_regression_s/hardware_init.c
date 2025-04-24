@@ -1,24 +1,26 @@
 /*
- * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016 NXP
- * All rights reserved.
+ * Copyright 2016, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+/*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
 
 #include "board.h"
 #include "cmsis.h"
+/*${header:end}*/
+
+/*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitPins();
+    BOARD_InitBootPins();
 
     BOARD_BootClockRUN();
 
-    /* Setup clock for LPUART1 */
-    CLOCK_SetIpSrc(kCLOCK_Lpuart1, kCLOCK_IpSrcFro6M);
+    /* Also Setup clock for LPUART1 */
+    BOARD_InitDebugConsole();
 }
 
 void SystemInit(void)
@@ -63,3 +65,4 @@ void SystemInit(void)
     extern void *__VECTOR_TABLE[];
     SCB->VTOR = (uint32_t)&__VECTOR_TABLE[0];
 }
+/*${function:end}*/
