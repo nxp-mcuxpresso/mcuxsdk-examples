@@ -43,13 +43,12 @@ static pd_power_control_instance_t s_PowerControlInstances[PD_CONFIG_MAX_PORT];
 void PD_PowerBoardControlInit(uint8_t port, pd_handle pdHandle)
 {
     pd_power_control_instance_t *powerControl = NULL;
-    powerControl->pdHandle                    = pdHandle;
-
     if ((port == 0U) || (port > PD_CONFIG_MAX_PORT))
     {
         return;
     }
     powerControl = &s_PowerControlInstances[port - 1];
+    powerControl->pdHandle                    = pdHandle;
     {
         uint32_t getInfo = 0U;
         PD_Control(pdHandle, PD_CONTROL_GET_TYPEC_CURRENT_VALUE, &getInfo);

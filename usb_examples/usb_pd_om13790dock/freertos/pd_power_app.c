@@ -55,18 +55,17 @@ void PD_PowerBoardControlInit(uint8_t port,
                               hal_gpio_handle_t gpioExtPowerDetectHandle)
 {
     pd_power_control_instance_t *powerControl = NULL;
+    if ((port == 0) || (port > PD_CONFIG_MAX_PORT))
+    {
+        return;
+    }
+    powerControl = &s_PowerControlInstances[port - 1];
     powerControl->sourceVbusVoltage           = 0;
     powerControl->pdHandle                    = pdHandle;
     powerControl->powerGpioHandle             = powerGpioHandle;
 #if defined(PD_CONFIG_EXTERNAL_POWER_DETECTION_SUPPORT) && (PD_CONFIG_EXTERNAL_POWER_DETECTION_SUPPORT)
     powerControl->gpioExtPowerDetectHandle = gpioExtPowerDetectHandle;
 #endif
-
-    if ((port == 0) || (port > PD_CONFIG_MAX_PORT))
-    {
-        return;
-    }
-    powerControl = &s_PowerControlInstances[port - 1];
     {
         uint32_t getInfo = 0;
         PD_Control(pdHandle, PD_CONTROL_GET_TYPEC_CURRENT_VALUE, &getInfo);

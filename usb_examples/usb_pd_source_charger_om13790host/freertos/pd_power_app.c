@@ -49,15 +49,14 @@ static pd_power_control_instance_t s_PowerControlInstances[PD_CONFIG_MAX_PORT];
 void PD_PowerBoardControlInit(uint8_t port, pd_handle pdHandle, hal_gpio_handle_t powerGpioHandle)
 {
     pd_power_control_instance_t *powerControl = NULL;
-    powerControl->sourceVbusVoltage           = 0U;
-    powerControl->pdHandle                    = pdHandle;
-    powerControl->powerGpioHandle             = powerGpioHandle;
-
     if ((port == 0U) || (port > PD_CONFIG_MAX_PORT))
     {
         return;
     }
     powerControl = &s_PowerControlInstances[port - 1];
+    powerControl->sourceVbusVoltage           = 0U;
+    powerControl->pdHandle                    = pdHandle;
+    powerControl->powerGpioHandle             = powerGpioHandle;
     {
         uint32_t getInfo = 0U;
         PD_Control(pdHandle, PD_CONTROL_GET_TYPEC_CURRENT_VALUE, &getInfo);
