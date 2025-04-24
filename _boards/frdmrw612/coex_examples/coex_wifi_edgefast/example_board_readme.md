@@ -1,50 +1,37 @@
-# 1. Overview
-==============
+## Overview
 
 This document provides step-by-step procedures to build and test coex examples,
 and also instructions for running the included sample applications.
 
-## 1.1 SDK
-===========
+### Hardware requirements
 
-- Version: NXP SDK next
-
-- Set up NXP SDK next generation environment.
-
-## 1.2 Hardware requirements
-=============================
-
-- Micro USB cable
+- Type-C cable
 - FRDMRW612 board
 - Personal Computer
 
-## 1.3 Board settings
-======================
+### Board settings
 
 No specail setting to do for wifi&ble coex.
 
-# 2. Build and flash
-=====================
+## Build and flash
 
-## 2.1 Configuration
-=====================
+### Building
 
-Modify examples/${board}/coex_examples/coex_wifi_edgefast/app_config.h to generate different coexistence images.
+Modify `examples/coex_examples/coex_wifi_edgefast/app_config.cmake` to generate different coexistence images.
 
-1. Macros releated to component.
+| coexistence images | CONFIG_WIFI | CONFIG_BLE |
+| ------------------ | ------------| -----------|
+| WiFi + BLE         | 1           | 1          |
 
-| coexistence images | CONFIG_WIFI_BLE_COEX_APP | CONFIG_DISABLE_BLE |
-| ------------------ | ------------------------ | ------------------ |
-| Wi-Fi + BLE        | 1                        | 0                  |
+Macors releated to Wi-Fi supplicant
 
-2. Macors releated to Wi-Fi supplicant
-
-|   Wi-Fi supplicant   | CONFIG_WPA_SUPP_MBEDTLS  |
+|   Wi-Fi supplicant   | CONFIG_WPA_SUPPLICANT  |
 | -------------------- | ------------------------ |
 | embedded supplicant  | 0                        |
 | wpa supplicant       | 1(default)               |
 
-3. Enable Monolithic feature
+Enable Monolithic feature
+> Modify `examples/${board}/coex_examples/coex_wifi_edgefast/app_config.h`.
 
 | Component          | CONFIG_MONOLITHIC_WIFI | CONFIG_MONOLITHIC_BLE | CONFIG_MONOLITHIC_BLE_15_4 |
 | ------------------ | ---------------------- | --------------------- | -------------------------- |
@@ -54,17 +41,16 @@ Modify examples/${board}/coex_examples/coex_wifi_edgefast/app_config.h to genera
 If want to disable Wi-Fi monolithic feature, define ```CONFIG_MONOLITHIC_WIFI``` to 0.
 If want to disable BLE monolithic feature, define ```CONFIG_MONOLITHIC_BLE``` to 0.
 
-## 2.2 Build
-=============
+### Building coex examples
 
 > flash_debug:
 ```bash
-$ cd mcu-sdk-3.0
+$ cd <sdk root>
 $ west build -b frdmrw612 examples/coex_examples/coex_wifi_edgefast --toolchain armgcc --config=flash_debug -d coex_wifi_edgefast
 ```
 > flash_release
 ```bash
-$ cd mcu-sdk-3.0
+$ cd <sdk root>
 $ west build -b frdmrw612 examples/coex_examples/coex_wifi_edgefast --toolchain armgcc --config=flash_release -d coex_wifi_edgefast
 ```
 
@@ -74,22 +60,20 @@ $ west build -b frdmrw612 examples/coex_examples/coex_wifi_edgefast --toolchain 
 > 2. Find coex_wifi_edgefast.elf/coex_wifi_edgefast.bin in coex_wifi_edgefast folder.
 > 3. Only support armgcc to build coex application.
 
-## 2.3 Flash Binaries
-======================
+### Flash Binaries
 
 Flash the image with the following command,
 
 ```bash
-
 # CMD to write CPU3 coex app image to flash in J-link window:
 J-Link> loadbin C:\xxx\coex_wifi_edgefast.bin, 0x08000000
 ```
 
 **NOTE:**
 
-Monolithic feature is default enabled, this means it's no need to flash binaries manually. 
+Monolithic feature is default enabled, this means it's no need to flash binaries manually.
 
-If disable Wi-Fi or BLE monolithic feature, download firmware manually. 
+If disable Wi-Fi or BLE monolithic feature, download firmware manually.
 
 SB firmware path: mcu-sdk-3.0/components/conn_fwloader/fw_bin
 
@@ -99,11 +83,9 @@ J-Link> loadbin C:\xxx\rw61x_sb_wifi_a2.bin,0x08400000
 # CMD to write CPU2 ble to flash in J-link window:
 J-Link> loadbin C:\xxx\rw61x_sb_ble_a2.bin,0x08540000
 ```
-# 3. Run
-=========
+## Run
 
-## 3.1 Prepare the Demo
-=========================
+### Prepare the Demo
 
 1. Connect a micro USB cable between the PC host and the MCU-Link USB port (J7) on the board.
 2. Open a serial terminal with the following settings:
@@ -115,8 +97,7 @@ J-Link> loadbin C:\xxx\rw61x_sb_ble_a2.bin,0x08540000
 3. Download the program to the target board.
 4. Launch the debugger in your IDE to begin running the example.
 
-## 3.2 Running the example
-===========================
+### Running the example
 
 The log below shows the output of the coex examples (based on edgefast-shell) in the terminal window:
 
