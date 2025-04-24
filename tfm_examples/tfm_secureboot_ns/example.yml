@@ -26,3 +26,8 @@ tfm_secureboot_ns:
     - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    frdmmcxw71: []
+    mcxw71evk: []
