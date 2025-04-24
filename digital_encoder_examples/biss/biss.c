@@ -46,9 +46,34 @@ unsigned char MB4_REG[20] = {
     0x00, 0x00, 0x00, 0x00  /* 0x10 - 0x13 */
 };
 
+bool performance_enable;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
+static void SYSTICK_StartCount()
+{
+    SysTick->VAL = SysTick->LOAD;
+}
+
+static uint32_t SYSTICK_GetCount()
+{
+    return SysTick->LOAD - SysTick->VAL;
+}
+
+static void BOARD_InitSysTick(void)
+{
+    /* Initialize SysTick core timer to run free */
+    /* Set period to maximum value 2^24*/
+    SysTick->LOAD = 0xFFFFFF;
+
+    /*Clock source - System Clock*/
+    SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+
+    /*Start Sys Timer*/
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+}
 
 /* MB4 evaluation board driver */
 void MB4_UpdateCRC()
@@ -112,42 +137,6 @@ void MB4_Init(biss_master_t *master)
     PRINTF("reset biss slave 2 \r\n");
     data = 0x1;
     BISS_SLVWriteRegister(master, 1, 0x74, 1, &data);
-}
-
-void BISS_performance(int loop)
-{
-    uint32_t status;
-    uint64_t SCData;
-    uint32_t st = 0, ed = 0, err = 0, eot_err = 0;
-    int slvID = 1;
-
-    BISS_ChangeTriggerMode(master, BISS_INSTR_TRIGGER);
-
-    int cnt = loop;
-
-    PRINTF("Start to test performance\r\n");
-
-    /* st = STM_GetTime();  */
-    BISS_InstrSendandWait(master, BISS_INSTR_CDM_0, BISS_AGS_DISABLE);
-    while(loop--)
-    {
-        BISS_InstrSendandWait(master, BISS_INSTR_CDM_0, BISS_AGS_DISABLE);
-        status  = BISS_GetStatus(master);
-
-        if(!(status & 0x1))
-            eot_err++;
-        if(!(status & BISS_STATUS1_SVALID_MASK(slvID)))
-            err++;
-
-        status = BISS_SLVGetSCD(master, slvID, &SCData);
-        if (status != kStatus_Success)
-            err++;
-    }
-    /* ed = STM_GetTime(); */
-
-    PRINTF("Read %d frames take %dus\r\n", cnt, ed - st);
-    PRINTF("each frame takes %dus\r\n", (ed - st)/cnt);
-    PRINTF("There are err:%d EOT_err:%d\r\n", err, eot_err);
 }
 
 static void BISS_DumpRegs(biss_master_t *master)
@@ -227,10 +216,19 @@ void BISS_SOT_IRQHandler(void)
 
 void BISS_EOT_IRQHandler(void)
 {
+    uint32_t count;
+    uint64_t time;
+
     /* clear EOT interrupt */
     blk_ctrl->BISS1_EOT_CTL =
         BLK_CTRL_WAKEUPMIX_BISS1_EOT_CTL_biss_eot_rise_clr_int_b(1) | 3;
 
+    if (performance_enable)
+    {
+        count = SYSTICK_GetCount();
+        time = (uint64_t) count * 1000000 / SystemCoreClock;
+        PRINTF("A frame take count:%u time:%dus\r\n", count, (uint32_t) time);
+    }
     PRINTF("BISS_EOT_IRQHandler status 0x%08x\r\n", BISS_GetStatus(master));
 
     BISS_SLVDumpPosition(master, 0);
@@ -252,6 +250,76 @@ static void BISS_EnableInterrupt(void)
     EnableIRQ(BISS_EOT_IRQn);
 
     blk_ctrl->BISS1_EOT_CTL = 0x3;
+}
+
+void BISS_performance(int loop)
+{
+    uint32_t status;
+    uint64_t SCData, time;
+    uint32_t count, cnt, i;
+    int slvID = 0;
+
+    BOARD_InitSysTick();
+
+    BISS_ChangeTriggerMode(master, BISS_INSTR_TRIGGER);
+
+    cnt = 10000;
+
+    PRINTF("\r\nStart to test Master's register reading\r\n");
+    SYSTICK_StartCount();
+    for(i = 0; i < cnt; i++)
+    {
+        status = master->base->SCDATA1_LOW;
+    }
+    count = SYSTICK_GetCount();
+    count = count / cnt;
+    time = (uint64_t) count * 1000000000 / SystemCoreClock; /* ns */
+    PRINTF("Read a 32bits register takes clock count:%u time:%dns\r\n",
+            count, (uint32_t) time);
+
+    PRINTF("\r\nStart to test Master's register Writing\r\n");
+    SYSTICK_StartCount();
+    for(i = 0; i < cnt; i++)
+    {
+        master->base->RDATA1 = 0x12345678;
+    }
+    count = SYSTICK_GetCount();
+    count = count / cnt;
+    time = (uint64_t) count * 1000000000 / SystemCoreClock; /* ns */
+    PRINTF("Write a 32bits register takes clock count:%u time:%dns\r\n",
+            count, (uint32_t) time);
+
+    PRINTF("\r\nStart to test loop mode performance\r\n");
+
+    BISS_InstrSendandWait(master, BISS_INSTR_CDM_0, BISS_AGS_DISABLE);
+
+    for(i = 0; i < loop; i++)
+    {
+        SYSTICK_StartCount();
+        BISS_InstrSendandWait(master, BISS_INSTR_CDM_0, BISS_AGS_DISABLE);
+
+        status  = BISS_GetStatus(master);
+        SCData = BISS_SLVGetSCDRawData(master, slvID);
+
+        count = SYSTICK_GetCount();
+        time = (uint64_t) count * 1000000 / SystemCoreClock; /* us */
+
+        PRINTF("A frame takes count:%u time:%dus status 0x%x SCDData 0x%x\r\n",
+               count, (uint32_t) time, status, (uint32_t) SCData);
+    }
+
+    PRINTF("Start to test Interrupt mode performance\r\n");
+    BISS_EnableInterrupt();
+    performance_enable = true;
+
+    for(i = 0; i < loop; i++)
+    {
+        SYSTICK_StartCount();
+        BISS_InstrSendandWait(master, BISS_INSTR_CDM_0, BISS_AGS_DISABLE);
+        SDK_DelayAtLeastUs(100U, SystemCoreClock);
+    }
+    BISS_DisableInterrupt();
+    performance_enable = false;
 }
 
 /*!
@@ -331,6 +399,7 @@ int main(void)
         PRINTF("7: Reset BiSS-C\r\n");
         PRINTF("8: Re-scan BiSS bus\r\n");
         PRINTF("9: Dump slave information\r\n");
+        PRINTF("0: Test Performance\r\n");
         PRINTF("Input command values: ");
 
         inputChar = GETCHAR();
@@ -381,7 +450,7 @@ int main(void)
         }
         else if ('8' == inputChar)
         {
-           BISS_SLVScan(master);
+            BISS_SLVScan(master);
             PRINTF("Find %d BiSS Slave devices\r\n", master->slvCnt);
         }
         else if ('9' == inputChar)
@@ -391,6 +460,10 @@ int main(void)
                 slv = BISS_SLVGet(master, slvID);
                 BISS_SLVDumpInfo(master, slvID);
             }
+        }
+        else if ('0' == inputChar)
+        {
+           BISS_performance(10);
         }
     }
 

@@ -3,10 +3,12 @@ Hardware requirements
 - Mini/micro USB cable
 - i.MX943-EVK board
 - Personal Computer
+- Motor control board
 - BiSS sensor
 
 Board settings
 ==============
+Insert Motor control board into IMX943-EVK board and connect BiSS sensor.
 
 Prepare the Demo
 ===============
