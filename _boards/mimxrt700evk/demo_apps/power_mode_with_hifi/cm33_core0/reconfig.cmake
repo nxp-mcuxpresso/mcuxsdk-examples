@@ -30,8 +30,8 @@ mcux_add_source(
             ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}/clock_config.h
             ${board_root}/${board}/demo_apps/power_mode_with_hifi/power_mode_with_hifi.c
             ${board_root}/${board}/demo_apps/power_mode_with_hifi/power_demo_config.h
-            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_support.c
-            ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_support.h
+            ${board_root}/${board}/demo_apps/dsp_support.c
+            ${board_root}/${board}/demo_apps/dsp_support.h
             ${board_root}/${board}/demo_apps/power_mode_with_hifi/dsp_config.h
             ${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/*.bin
 )
@@ -47,6 +47,7 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/demo_apps/power_mode_with_hifi/${core_id}
              ${board_root}/${board}/demo_apps/power_mode_with_hifi/
              ${board_root}/${board}/demo_apps/power_mode_with_hifi/hifi4/binary/
+             ${board_root}/${board}/demo_apps/
 )
 
 mcux_add_iar_configuration(

@@ -32,8 +32,8 @@ mcux_add_source(
             ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/power_demo_config.h
             ${board_root}/${board}/lpm.h
             ${board_root}/${board}/lpm.c
-            ${board_root}/${board}/dsp_support.c
-            ${board_root}/${board}/dsp_support.h
+            ${board_root}/${board}/demo_apps/dsp_support.c
+            ${board_root}/${board}/demo_apps/dsp_support.h
             ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/dsp_config.h
             ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/hifi4/binary/*.bin
 )
@@ -43,6 +43,7 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/${core_id}
              ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/
              ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/hifi4/binary/
+             ${board_root}/${board}/demo_apps/
 )
 
 mcux_add_iar_configuration(
