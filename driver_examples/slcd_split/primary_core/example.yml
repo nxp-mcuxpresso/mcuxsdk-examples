@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
 slcd_split_primary_core:
+  use_sysbuild: true
   section-type: application
   contents:
     meta_path: examples/driver_examples/slcd_split/primary_core
