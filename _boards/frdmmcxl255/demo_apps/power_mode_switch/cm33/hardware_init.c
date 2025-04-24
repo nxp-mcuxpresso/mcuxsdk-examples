@@ -50,7 +50,7 @@ uint32_t get_core1_image_size(void)
 
 void APP_BootCore1(void)
 {
-    AON__CGU->RST_SUB_BLK |= CGU_RST_SUB_BLK_CMOP_RST_REL_MASK;
+    AON__CGU->RST_SUB_BLK |= CGU_RST_SUB_BLK_CM0P_RST_REL_MASK;
     for(uint8_t i = 0U; i < 100; i++)
     {
         __NOP();
