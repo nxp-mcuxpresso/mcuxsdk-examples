@@ -157,7 +157,10 @@ static void print_dhcp_state(void *arg)
             dhcpReady = 0;
             struct netconn *netconn;
             netconn = netconn_new(NETCONN_TCP);
-            netconn_set_recvtimeout(netconn, 3000);
+            if (netconn != NULL)
+            {
+                netconn_set_recvtimeout(netconn, 3000);
+            }
 
             while (netconn_gethostbyname((char *)&website[0], &currentaddr) != ERR_OK && dnsErrCnt++ < 10)
                 ;
