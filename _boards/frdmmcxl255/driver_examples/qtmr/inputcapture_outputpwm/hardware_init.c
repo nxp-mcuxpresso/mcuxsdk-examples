@@ -24,6 +24,7 @@ void BOARD_InitHardware(void)
     RESET_ReleasePeripheralReset(kAonQTMR0_RST_SHIFT_RSTn);
     
     INPUTMUX_Init(AON__INPUTMUX);
-    INPUTMUX_AttachSignal(AON__INPUTMUX, kINPUTMUXAON_INDEX_QTMR1_TMR0, kINPUTMUXAON_AonTrigIn0ToQtmr1Tmrn);
+    INPUTMUX_AttachSignal(AON__INPUTMUX, kINPUTMUXAON_INDEX_QTMR1_TMR0, kINPUTMUXAON_AonTrigIn4ToQtmr1Tmrn);
+    INPUTMUX_AttachSignal(AON__INPUTMUX, kINPUTMUXAON_INDEX_AON_TRIG_OUT0, kINPUTMUXAON_Qtmr1Tmr0OutputToAonTrigOutn);
 }
 /*${function:end}*/

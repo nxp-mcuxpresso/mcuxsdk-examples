@@ -434,9 +434,9 @@ void BOARD_InitQTMRPins(void)
                                                      .lockRegister = kPORT_UnlockRegister};
     PORT_SetPinConfig(AON__PORT0, 13U, &port0_13_config);
 
-    /* AONQTMR1_OUT0 used as input */
-    const port_pin_config_t port0_12_config = {/* Internal pull-up/down resistor is disabled */
-                                                     .pullSelect = kPORT_PullDisable,
+    /* AONTRIG_IN4 used as input */
+    const port_pin_config_t port0_12_config = {/* Internal pull-up/down resistor is enabled */
+                                                     .pullSelect = kPORT_PullUp,
                                                      /* Low internal pull resistor value is selected. */
                                                      .pullValueSelect = kPORT_LowPullResistor,
                                                      /* Fast slew rate is configured */
@@ -449,8 +449,8 @@ void BOARD_InitQTMRPins(void)
                                                      .driveStrength = kPORT_LowDriveStrength,
                                                      /* Normal drive strength is configured */
                                                      .driveStrength1 = kPORT_NormalDriveStrength,
-                                                     /* Pin is configured as AONQTMR1_OUT0 */
-                                                     .mux = kPORT_MuxAlt5,
+                                                     /* Pin is configured as AONTRIG_IN4 */
+                                                     .mux = kPORT_MuxAlt1,
                                                      /* Digital input enabled */
                                                      .inputBuffer = kPORT_InputBufferEnable,
                                                      /* Digital input is not inverted */
