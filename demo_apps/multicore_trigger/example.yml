@@ -27,3 +27,16 @@ multicore_trigger:
     - +mdk@flexspi_nor_hyperram_release
     - +mdk@hyperram_txt_debug
     - +mdk@hyperram_txt_release
+    frdmimxrt1186@cm33:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +armgcc@hyperram_txt_debug
+    - +armgcc@hyperram_txt_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +iar@hyperram_txt_debug
+    - +iar@hyperram_txt_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
+    - +mdk@hyperram_txt_debug
+    - +mdk@hyperram_txt_release
