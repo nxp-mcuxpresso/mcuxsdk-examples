@@ -11,6 +11,15 @@ The application supports two modes for registering a device at the EdgeLock 2GO 
 - UUID registration: At startup, the device UUID will be printed, which can be used for manual registration.
 - Claiming: The [el2go_claimcode_encryption](../../el2go_claimcode_encryption/readme.md) application must be run before, which will store a claim code blob in the flash memory. The EL2GO Agent application will present the claim code to the EdgeLock 2GO service and automatically register the device.
 
+Additional information about EdgeLock 2GO Provisioning for MCUs can be found in AN14624 under the following link https://www.nxp.com/webapp/Download?colCode=AN14624&amp;location=null.
+
+## Definitions
+
+- **[GITHUB]**: refers to the case where the MCU SDK is cloned as GitHub Repository and the EdgeLock 2GO application is build using meta build sytem.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/repo.html.
+- **[ZIP]**: refers to the case whete MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and build in one of supported IDEs.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/package.html.
+
 ## Prerequisites
 
 - Active [EdgeLock 2GO](https://www.nxp.com/products/security-and-authentication/secure-service-2go-platform/edgelock-2go:EDGELOCK-2GO) account
@@ -122,8 +131,8 @@ No special settings are required.
 
 7.  Build the application:
 
-    - **[META]** Compile the *el2go_agent_ns* project with your desired toolchain using `--sysbuild`.
-    - **[IDE]** First compile the *el2go_agent_s* project and then the *el2go_agent_ns* project.
+    - **[GITHUB]** Compile the *el2go_agent_ns* project with your desired toolchain using `--sysbuild`.
+    - **[ZIP]** First compile the *el2go_agent_s* project and then the *el2go_agent_ns* project.
 
 8.  Connect the USB-C (FRDM-RW612) or Micro-USB (RD-RW61X-BGA) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612] or J7 [RD-RW61X-BGA]) on the board.
 
@@ -137,8 +146,8 @@ No special settings are required.
 
 10. Download the application to the target board:
 
-    - **[META]** `west flash` will download both the S and the NS image. 
-    - **[IDE]** Downloading the S image will also download the NS image.
+    - **[GITHUB]** `west flash` will download both the S and the NS image. 
+    - **[ZIP]** Downloading the S image will also download the NS image.
 
 11. Press the reset button on the board or launch the debugger in your IDE to run the application.
 

@@ -6,30 +6,39 @@
 
 This sample application shows how to import encrypted EdgeLock 2GO secure object blobs from flash to the Secure storage(ITS). The imported objects can then be validated by executing crypto operations.
 
+Additional information about EdgeLock 2GO Provisioning for MCUs can be found in AN14624 under the following link https://www.nxp.com/webapp/Download?colCode=AN14624&amp;location=null.
+
+## Definitions
+
+- **[GITHUB]**: refers to the case where the MCU SDK is cloned as GitHub Repository and the EdgeLock 2GO application is build using meta build sytem.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/repo.html.
+- **[ZIP]**: refers to the case whete MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and build in one of supported IDEs.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/package.html.
+
 ## Prerequisites
 
 - Any serial communicator
 - EdgeLock 2GO secure object blobs stored in the devices flash memory
   - This can be achieved via the [SPSDK](https://www.nxp.com/design/design-center/software/development-software/secure-provisioning-sdk-spsdk:SPSDK)
   - The following default flash location should be used to store the EdgeLock 2GO blobs:
-    - **[K4W1]** `0x0C0000`
+    - **[KW45]**, **[MCX W71]** `0x0C0000`
 
 ## Hardware requirements
 
-- K32W148-EVK or KW45B41Z-EVK or KW45B41Z-LOC or FRDM-MCXW71 board
+- KW45B41Z-EVK or FRDM-MCXW71 or MCXW71-EVK board
 - Micro-USB cable
 - Personal Computer
 
 ## Board settings
 
-No special settings are required.
+- **[KW45]**, **[MCX W71]** The board must be provisioned with an OEM Auth Key Hash.
 
 ## Preparing the application
 
 1.  **[OPTIONAL]** Enable the validation of imported blobs:
 
-    - **[META]** By enabling the Kconfig symbol `VALIDATE_PSA_IMPORT_OPERATION`
-    - **[IDE]** By defining `VALIDATE_PSA_IMPORT_OPERATION` as `1` in `mcux_config.h`
+    - **[GITHUB]** By enabling the Kconfig symbol `VALIDATE_PSA_IMPORT_OPERATION`
+    - **[ZIP]** By defining `VALIDATE_PSA_IMPORT_OPERATION` as `1` in `mcux_config.h`
 
     This provides an example of how the imported blobs can be used. Specifically, the example demonstrates:
     - AES-ECB message encryption with a 256 bit key
@@ -37,28 +46,29 @@ No special settings are required.
 
 2.  **[OPTIONAL]** Enable secure boot:
 
-    To correctly run the application on RW61X, the secure boot mode on the device needs to be enabled. **For MCXN, this is optional**.
+    This feature is optional for **[KW45]** or **[MCX W71]**.
 
     The bootheader needs to be removed from the S image, it has to be merged with the NS image and the resulting image must be signed with the OEM key. Additionaly, if the application is supposed to run in the OEM CLOSED life cycle, the image needs to be encrypted with the OEM FW encryption key and loaded as an SB3.1 container.
 
     Details on how to execute these steps can be found in the following documents:
-    - **[K4W1]** Application note [AN14109 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW45) ("Documentation->Secure Files" section).
+    - **[KW45]** Application note [AN14109 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW45) ("Documentation->Secure Files" section).
+    - **[MCX W71]** Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/MCX-W71X) ("Documentation->Secure Files" section).
 
 4.  **[OPTIONAL]** Set the flash location of the EdgeLock 2GO blobs:
 
     In case you chose a different flash location than the default one mentioned above, you need to change two configuration options.
 
-    - **[META]** The Kconfig symbols `BLOB_AREA` and `BLOB_AREA_SIZE`
-    - **[IDE]** The defines `BLOB_AREA` and `BLOB_AREA_SIZE` in `mcux_config.h`
+    - **[GITHUB]** The Kconfig symbols `BLOB_AREA` and `BLOB_AREA_SIZE`
+    - **[ZIP]** The defines `BLOB_AREA` and `BLOB_AREA_SIZE` in `mcux_config.h`
 
     *ATTENTION: Make sure that your choice does not overlap with any other flash regions.*
 
 5.  Build the application:
 
-    - **[META]** Compile the *el2go_import_blob* project with your desired toolchain.
-    - **[IDE]** Compile the *el2go_import_blob* project with your desired toolchain.
+    - **[GITHUB]** Compile the *el2go_import_blob* project with your desired toolchain.
+    - **[ZIP]** Compile the *el2go_import_blob* project with your desired toolchain.
 
-6.  Connect the USB-C (K32W148-EVK or KW45B41Z-EVK or KW45B41Z-LOC or FRDM-MCXW71) cable to the PC host and the MCU-Link USB port (J14 [KW45B41Z-EVK or KW45B41Z-LOC]) on the board.
+6.  Connect the PC host to the MCU-Link USB port on the board.
 
 7.  Open a serial terminal with the following settings:
 
@@ -70,8 +80,8 @@ No special settings are required.
 
 8.  Download the application to the target board:
 
-    - **[META]** `west flash` will download the image. 
-    - **[IDE]** Downloading the image.
+    - **[GITHUB]** `west flash` will download the image. 
+    - **[ZIP]** Downloading the image.
 
 9.  Press the reset button on the board or launch the debugger in your IDE to run the application.
 

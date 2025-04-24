@@ -7,6 +7,15 @@ Workspace structure:
 - *el2go_blob_test_s*: Project running in the secure processing environment (S)
 - *el2go_blob_test_ns*: Project running in the non-secure processing environment (NS)
 
+Additional information about EdgeLock 2GO Provisioning for MCUs can be found in AN14624 under the following link https://www.nxp.com/webapp/Download?colCode=AN14624&amp;location=null.
+
+## Definitions
+
+- **[GITHUB]**: refers to the case where the MCU SDK is cloned as GitHub Repository and the EdgeLock 2GO application is build using meta build sytem.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/repo.html.
+- **[ZIP]**: refers to the case whete MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and build in one of supported IDEs.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/package.html.
+
 ## Prerequisites
 
 - Active [EdgeLock 2GO](https://www.nxp.com/products/security-and-authentication/secure-service-2go-platform/edgelock-2go:EDGELOCK-2GO) account
@@ -63,8 +72,8 @@ Workspace structure:
 
     By default, the test suite only runs variations that are expected to pass for a given board. If you want to run all possible tests instead, you can specify that:
 
-    - **[META]** By disabling the Kconfig symbol `RUN_VERIFIED_ONLY`
-    - **[IDE]** By defining `RUN_VERIFIED_ONLY` as `0` in `mcux_config.h`
+    - **[GITHUB]** By disabling the Kconfig symbol `RUN_VERIFIED_ONLY`
+    - **[ZIP]** By defining `RUN_VERIFIED_ONLY` as `0` in `mcux_config.h`
 
     *Note: If you input an entirely unsupported blob, the testcase will still run and fail, even if `RUN_VERIFIED_ONLY` is enabled.*
 
@@ -96,13 +105,13 @@ Workspace structure:
 
     After that, you can enable the testing of large blobs:
 
-    - **[META]** By enabling the Kconfig symbol `LARGE_BLOBS_ENABLED`
-    - **[IDE]** By defining `LARGE_BLOBS_ENABLED` as `1` in `mcux_config.h`
+    - **[GITHUB]** By enabling the Kconfig symbol `LARGE_BLOBS_ENABLED`
+    - **[ZIP]** By defining `LARGE_BLOBS_ENABLED` as `1` in `mcux_config.h`
 
 5.  Build the application:
 
-    - **[META]** Compile the *el2go_blob_test_ns* project with your desired toolchain using `--sysbuild`.
-    - **[IDE]** First compile the *el2go_blob_test_s* project and then the *el2go_blob_test_ns* project.
+    - **[GITHUB]** Compile the *el2go_blob_test_ns* project with your desired toolchain using `--sysbuild`.
+    - **[ZIP]** First compile the *el2go_blob_test_s* project and then the *el2go_blob_test_ns* project.
 
 6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW61X-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
 
@@ -116,8 +125,8 @@ Workspace structure:
 
 8.  Download the application to the target board:
 
-    - **[META]** `west flash` will download both the S and the NS image. 
-    - **[IDE]** Downloading the S image will also download the NS image.
+    - **[GITHUB]** `west flash` will download both the S and the NS image. 
+    - **[ZIP]** Downloading the S image will also download the NS image.
 
 9.  Press the reset button on the board or launch the debugger in your IDE to run the application.
 

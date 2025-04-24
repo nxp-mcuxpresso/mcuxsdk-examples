@@ -7,6 +7,15 @@ Workspace structure:
 - *el2go_import_blob_s*: Project running in the secure processing environment (S)
 - *el2go_import_blob_ns*: Project running in the non-secure processing environment (NS)
 
+Additional information about EdgeLock 2GO Provisioning for MCUs can be found in AN14624 under the following link https://www.nxp.com/webapp/Download?colCode=AN14624&amp;location=null.
+
+## Definitions
+
+- **[GITHUB]**: refers to the case where the MCU SDK is cloned as GitHub Repository and the EdgeLock 2GO application is build using meta build sytem.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/repo.html.
+- **[ZIP]**: refers to the case whete MCU SDK is generated as ZIP package and the EdgeLock 2GO application is imported and build in one of supported IDEs.
+  More details can be found in https://mcuxpresso.nxp.com/mcuxsdk/latest/html/gsd/package.html.
+
 ## Prerequisites
 
 - Any serial communicator
@@ -33,8 +42,8 @@ No special settings are required.
 
 1.  **[OPTIONAL]** Enable the validation of imported blobs:
 
-    - **[META]** By enabling the Kconfig symbol `VALIDATE_PSA_IMPORT_OPERATION`
-    - **[IDE]** By defining `VALIDATE_PSA_IMPORT_OPERATION` as `1` in `mcux_config.h`
+    - **[GITHUB]** By enabling the Kconfig symbol `VALIDATE_PSA_IMPORT_OPERATION`
+    - **[ZIP]** By defining `VALIDATE_PSA_IMPORT_OPERATION` as `1` in `mcux_config.h`
 
     This provides an example of how the imported blobs can be used. Specifically, the example demonstrates:
     - AES-ECB message encryption with a 256 bit key
@@ -70,8 +79,8 @@ No special settings are required.
 
     In case you chose a different flash location than the default one mentioned above, you need to change two configuration options.
 
-    - **[META]** The Kconfig symbols `BLOB_AREA` and `BLOB_AREA_SIZE`
-    - **[IDE]** The defines `BLOB_AREA` and `BLOB_AREA_SIZE` in `mcux_config.h`
+    - **[GITHUB]** The Kconfig symbols `BLOB_AREA` and `BLOB_AREA_SIZE`
+    - **[ZIP]** The defines `BLOB_AREA` and `BLOB_AREA_SIZE` in `mcux_config.h`
 
     Also, you need to adjust two TF-M parameters.
 
@@ -86,8 +95,8 @@ No special settings are required.
 
 5.  Build the application:
 
-    - **[META]** Compile the *el2go_import_blob_ns* project with your desired toolchain using `--sysbuild`.
-    - **[IDE]** First compile the *el2go_import_blob_s* project and then the *el2go_import_blob_ns* project.
+    - **[GITHUB]** Compile the *el2go_import_blob_ns* project with your desired toolchain using `--sysbuild`.
+    - **[ZIP]** First compile the *el2go_import_blob_s* project and then the *el2go_import_blob_ns* project.
 
 6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW61X-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
 
@@ -101,8 +110,8 @@ No special settings are required.
 
 8.  Download the application to the target board:
 
-    - **[META]** `west flash` will download both the S and the NS image. 
-    - **[IDE]** Downloading the S image will also download the NS image.
+    - **[GITHUB]** `west flash` will download both the S and the NS image. 
+    - **[ZIP]** Downloading the S image will also download the NS image.
 
 9.  Press the reset button on the board or launch the debugger in your IDE to run the application.
 

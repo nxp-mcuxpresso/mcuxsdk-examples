@@ -4,6 +4,8 @@ This sample application shows how to create and store an encrypted claim code bl
 
 It is meant to be used together with the [el2go_agent](../el2go_agent/el2go_agent_ns/readme.md) application, which needs to be downloaded afterwards. It will read the claim code blob and provide it to the EdgeLock 2GO service during device connection; the EdgeLock 2GO service will then decrypt and validate the blob and claim the device if the corresponding claim code is found in one of the device groups.
 
+Additional information about EdgeLock 2GO Provisioning for MCUs can be found in AN14624 under the following link https://www.nxp.com/webapp/Download?colCode=AN14624&amp;location=null.
+
 ## Prerequisites
 
 - Active [EdgeLock 2GO](https://www.nxp.com/products/security-and-authentication/secure-service-2go-platform/edgelock-2go:EDGELOCK-2GO) account
