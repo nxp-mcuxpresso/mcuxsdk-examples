@@ -13,3 +13,5 @@ stm_match_interrupt:
       - examples/driver_examples/stm/readme.md
       - ${board_root}/${board}/driver_examples/stm/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []
