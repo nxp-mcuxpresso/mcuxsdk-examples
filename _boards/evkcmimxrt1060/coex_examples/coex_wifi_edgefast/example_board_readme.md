@@ -10,6 +10,7 @@ and also instructions for running the included sample applications.
 - Personal Computer
 - One of the following modules:
   - Embedded Artists 2LL M.2 Module (EAR00500) - direct M2 connection
+  - Embedded Artists 2EL M.2 Module(Rev-A1) - direct M2 connection
 
 ### Board settings
 
@@ -19,6 +20,10 @@ If you want to use Embedded Artists 2LL M.2 Module(EAR00500), please set CONFIG_
 > `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.IW61X=y`
 > `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_2ll_m2=y`
 
+If you want to use Embedded Artists 2EL M.2 Module(Rev-A1), please set CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_2el_m2 to y.
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.IW61X=y`
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_2el_m2=y`
+
 #### Jumper settings for RT1060-EVKC (enables external 5V supply):
 remove  J40 5-6
 connect J40 1-2
@@ -26,6 +31,7 @@ connect J45 with external power(controlled by SW6)
 
 #### Murata Solution Board settings
 Embedded Artists 2LL module datasheet: https://www.embeddedartists.com/wp-content/uploads/2024/12/2LL_M2_Datasheet.pdf
+Embedded Artists 2EL module datasheet: https://www.embeddedartists.com/doc/ds/2EL_M2_Datasheet.pdf
 
 The hardware should be reworked according to the hardware rework guide for evkcmimxrt1060 and Murata 1XK/1ZM/2EL/2LL M.2 Adapter in document Hardware Rework Guide for EdgeFast BT PAL.
 
@@ -33,7 +39,7 @@ The hardware should be reworked according to the hardware rework guide for evkcm
 
 1. To ensure that the LITTLEFS flash region has been cleaned, all flash sectors need to be erased before downloading example code.
 2. After downloaded binary into qspiflash and boot from qspiflash directly, please reset the board by pressing SW7 or power off and on the board to run the application.
-3. Nighthwak BT UART Rework (LPUART3)
+3. Nighthwak and Firecrest BT UART Rework (LPUART3)
   - Mount R93, R96
   - Remove R193
   - Connect J109, J76 2-3
@@ -65,6 +71,7 @@ Macors releated to Wi-Fi supplicant,
 | embedded supplicant  | 0                        |
 | wpa supplicant       | 1(default)               |
 
+> **NOTE**: 2EL_M2 only supports embedded supplicant and WPA supplicant.
 
 ### Building coex examples with CMake
 
@@ -381,4 +388,99 @@ GATT central role side,
    Then press "bt.connect <address: XX:XX:XX:XX:XX:XX> <type: (public|random)>"
 5. After the connection is established, subscribe the GATT service changed indicator. press "bt.subscribe <CCC handle> <value handle> [ind]",
    such as "gatt.subscribe f e ind".
+```
+- Running a2dp:
+
+The commands are as follow:
+
+```bash
++---"a2dp": a2dp Bluetooth A2DP shell commands
+    +---"register_sink_ep": register_sink_ep <select codec.
+         1:SBC
+         2:MPEG-1,2
+         3:MPEG-2,4
+         4:vendor
+         5:sbc with delay report and content protection services
+         6:sbc with all other services(don't support data transfer yet)>
+    +---"register_source_ep": register_source_ep <select codec.
+         1:SBC
+         2:MPEG-1,2
+         3:MPEG-2,4
+         4:vendor
+         5:sbc with delay report and content protection services
+         6:sbc with all other services(don't support data transfer yet)>
+    +---"connect": connect [none]
+    +---"disconnect": disconnect [none]
+    +---"configure": configure [none]
+    +---"discover_peer_eps": discover_peer_eps [none]
+    +---"get_registered_eps": get_registered_eps [none]
+    +---"set_default_ep": set_default_ep <select endpoint>
+    +---"configure_ep": configure_ep "configure the default selected ep"
+    +---"deconfigure": deconfigure "de-configure the default selected ep"
+    +---"start": start "start the default selected ep"
+    +---"stop": stop "stop the default selected ep"
+    +---"send_media": send_media <second> "send media data to the default selected ep"
+ ```
+Test flow:
+1. Create ACL connection between two devices (A and B).
+2. In device B, input "a2dp.register_sink_ep x" to initialize sink endpoint.
+3. In device A, input "a2dp.register_source_ep x" to initialize source endpoint.
+4. In device A, input "a2dp.connect" to create a2dp connection with the default ACL connection.
+5. In device A, input "a2dp.configure" to configure the a2dp connection.
+6. In device A, input "a2dp.start" to start the a2dp media.
+7. In device A, input "a2dp.send_media x" to send media data for x seconds.
+8. For other commands:
+   1. "a2dp.disconnect" is used to disconnect the a2dp.
+   2. "a2dp.discover_peer_eps" is used to discover peer device's endpoints.
+   3. "a2dp.get_registered_eps" is used to get the local registered endpoints.
+   4. "a2dp.set_default_ep" is used to set the default selected endpoint.
+   5. "a2dp.deconfigure" de-configure the endpoint, then it can be configured again.
+   6. "a2dp.stop" stops media.
+   7. "a2dp.send_delay_report" send delay report.
+
+br discovery:
+```bash
+@Coex> br.discovery on
+Discovery started
+@Coex> BR/EDR discovery complete
+[DEVICE]: BC:7E:8B:E6:53:E1, RSSI -73 [TV] Samsung BET Series (55)
+[DEVICE]: 04:21:44:03:57:9F, RSSI -24 SRS-XB12
+[DEVICE]: 48:74:12:3F:9E:04, RSSI -81 OnePlus Nord CE 2
+[DEVICE]: C0:95:DA:00:D1:3D, RSSI -75 edgefast_hfp
+```
+
+To connect:
+```bash
+Coex> br.connect 04:21:44:03:57:9F
+Connection pending
+@Coex> BR Connected: 04:21:44:03:57:9F
+```
+
+To initialize source endpoint:
+```bash
+@Coex> a2dp.register_source_ep 1
+SBC source endpoint is registered
+```
+To create a2dp connection with the default ACL connection:
+```bash
+@Coex> a2dp.connect
+@Coex> Security changed: 04:21:44:03:57:9F level 2
+a2dp connected
+```
+To configure the a2dp connection:
+```bash
+@Coex> a2dp.configure
+@Coex> configure success
+
+the default ep is set as the configured ep
+```
+To start the a2dp media:
+```bash
+@Coex> a2dp.start
+@Coex> a2dp start playing
+```
+To send media data for 20 seconds:
+```bash
+@Coex> a2dp.send_media 20
+@Coex>
 ```
