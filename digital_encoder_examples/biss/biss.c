@@ -53,10 +53,10 @@ unsigned char MB4_REG[20] = {
 /* MB4 evaluation board driver */
 void MB4_UpdateCRC()
 {
-    int iCRCPoly = 0x11D; /* CRC-Polynomial 100011101 */
-    int iReg = 0;
+    unsigned short iCRCPoly = 0x11D; /* CRC-Polynomial 100011101 */
     unsigned char ucDataStream = 0;
     unsigned char ucCRC;
+    int iReg = 0;
 
     /* Calculate Config-CRC */
     ucCRC = 2; /* start value */
@@ -90,7 +90,7 @@ void MB4_UpdateCRC()
     MB4_REG[19] = ucCRC;
 }
 
-void MB4_ConfigureSlave(biss_master_t *master, int slvID)
+void MB4_ConfigureSlave(biss_master_t *master, uint8_t slvID)
 {
     for(int i = 0; i < 20; i++) {
         BISS_SLVWriteRegister(master, slvID, i, 1, &MB4_REG[i]);
@@ -165,7 +165,7 @@ static void BISS_DumpRegs(biss_master_t *master)
     PRINTF("STATUS2: \t0x%08x\r\n", master->base->STATUS2);
 }
 
-static void BISS_SLVDumpInfo(biss_master_t *master, int slvID)
+static void BISS_SLVDumpInfo(biss_master_t *master, uint8_t slvID)
 {
     biss_slave_info_t *slv;
 
@@ -263,8 +263,6 @@ int main(void)
     uint8_t slvID;
     char inputChar;
     biss_slave_info_t *slv;
-
-    BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
 
     BOARD_InitHardware();
 
