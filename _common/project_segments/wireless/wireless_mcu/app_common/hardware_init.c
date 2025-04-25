@@ -57,7 +57,7 @@
  */
 const xtal_temp_comp_lut_t xtal32MTempCompLut = {
     .min_temp_degc = -39,
-    .max_temp_degc = 127,
+    .max_temp_degc = 130,
     .trim_below_min_temp = 2U,
     .trim_above_max_temp = 50U,
     .temp_step_degc = 10,
