@@ -28,6 +28,18 @@ mcux_add_mdk_configuration(
        --diag_suppress=3912"
 )
 
+mcux_remove_macro(
+    TOOLCHAINS armgcc
+    TARGETS debug
+    CC "-DDEBUG"
+)
+
+mcux_add_macro(
+    TOOLCHAINS armgcc
+    TARGETS debug
+    CC "-DNDEBUG"
+)
+
 mcux_add_macro(
     CC "-DSDK_OS_FREE_RTOS\
        -DDEBUG_CONSOLE_ASSERT_DISABLE=1\
