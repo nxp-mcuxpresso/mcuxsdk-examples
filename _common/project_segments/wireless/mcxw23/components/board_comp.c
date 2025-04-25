@@ -81,6 +81,7 @@ static const serial_manager_config_t s_serialManagerConfig1 = {
 
 #if defined(gAppLedCnt_c) && (gAppLedCnt_c > 0)
 
+#if (defined gBoardLedMonochromeHdl)
 static const led_config_t g_monoLedConfig = {
     .type = kLED_TypeMonochrome,
     .ledMonochrome =
@@ -93,14 +94,16 @@ static const led_config_t g_monoLedConfig = {
 #if (defined(LED_USE_CONFIGURE_STRUCTURE) && (LED_USE_CONFIGURE_STRUCTURE > 0U))
                             kHAL_GpioDirectionOut,
 #endif
-                            BOARD_LED_BLUE_DEFAULT_STATE,
-                            BOARD_LED_BLUE_GPIO_PORT,
-                            BOARD_LED_BLUE_GPIO_PIN,
+                            BOARD_LED_GPIO_DEFAULT_STATE,
+                            BOARD_LED_GPIO_PORT,
+                            BOARD_LED_GPIO_PIN,
                         },
                 },
         },
 };
+#endif
 
+#if defined(gBoardLedRgbHdl)
 static const led_config_t g_RgbLedConfig = {
     .type = kLED_TypeRgb,
     .ledRgb =
@@ -146,7 +149,10 @@ static const led_config_t g_RgbLedConfig = {
                 },
         },
 };
+#endif
 
+
+#if (defined(gBoardLedBlue_d) && (gBoardLedBlue_d == 1))
 static const led_config_t g_BlueLedConfig = {
     .type = kLED_TypeMonochrome,
     .ledMonochrome =
@@ -166,6 +172,7 @@ static const led_config_t g_BlueLedConfig = {
                 },
         },
 };
+#endif
 
 #endif /* defined(gAppLedCnt_c) && (gAppLedCnt_c > 0) */
 
@@ -276,6 +283,7 @@ void BOARD_ReinitSerialManager2(serial_handle_t serialManagerHandle)
 #if defined(gAppLedCnt_c) && (gAppLedCnt_c > 0)
 
 /*Initialize LED*/
+#if (defined gBoardLedMonochromeHdl)
 void BOARD_InitMonochromeLed(led_handle_t ledHandle)
 {
     led_status_t ret;
@@ -293,8 +301,10 @@ void BOARD_UnInitMonochromeLed(led_handle_t ledHandle)
     assert(kStatus_LED_Success == ret);
     (void)ret;
 }
+#endif
 
 /*Initialize LED*/
+#if defined(gBoardLedRgbHdl)
 void BOARD_InitRgbLed(led_handle_t ledHandle)
 {
     led_status_t ret;
@@ -311,6 +321,7 @@ void BOARD_UnInitRgbLed(led_handle_t ledHandle)
     assert(kStatus_LED_Success == ret);
     (void)ret;
 }
+#endif
 
 #endif /* defined(gAppLedCnt_c) && (gAppLedCnt_c > 0) */
 
@@ -366,6 +377,7 @@ void BOARD_Button1ExitPowerDown(button_handle_t buttonHandle)
 ************************************************************************************/
 
 #if defined(gAppLedCnt_c) && (gAppLedCnt_c > 0)
+#if (defined(gBoardLedBlue_d) && (gBoardLedBlue_d == 1))
 /*Initialize LED*/
 void BOARD_InitBlueLed(led_handle_t ledHandle)
 {
@@ -383,4 +395,5 @@ void BOARD_UnInitBlueLed(led_handle_t ledHandle)
     assert(kStatus_LED_Success == ret);
     (void)ret;
 }
+#endif
 #endif /* defined(gAppLedCnt_c) && (gAppLedCnt_c > 0) */

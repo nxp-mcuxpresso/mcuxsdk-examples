@@ -44,7 +44,11 @@
 #define LedOff(ledNo) (void)LED_TurnOnOff((led_handle_t)g_ledHandle[ledNo], 0U)
 #define LedFlashing(ledNo) \
     (void)LED_Flash((led_handle_t)g_ledHandle[ledNo], (led_flash_config_t *)&g_ledFlashConfig[ledNo])
+#if (defined gBoardLedRgbHdl)
 #define LedSetColor(ledNo, ledColor) (void)LED_SetColor((led_handle_t)g_ledHandle[ledNo], (uint32_t)ledColor)
+#else
+#define LedSetColor(...)
+#endif
 #define Led1On()                     LedOn(0U)
 #define Led1Off()                    LedOff(0U)
 #define Led1Flashing()               LedFlashing(0U)

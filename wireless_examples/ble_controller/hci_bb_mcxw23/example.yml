@@ -14,3 +14,4 @@ hci_bb_mcxw23:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
      frdmmcxw23: []
+     mcxw23evk: []

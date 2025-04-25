@@ -30,18 +30,12 @@
 
  /* Even if the BSP supports 2 LEDs the Application may want one LED only but
  * that LED may RGB or monochrome */
-#if (defined(gAppLedCnt_c) && (gAppLedCnt_c == 1))
 #if defined(gAppRequireMonochromeLed_c) && (gAppRequireMonochromeLed_c > 0)
 #define gBoardLedMonochromeHdl ((led_handle_t)g_ledHandle[0])
 #endif
+
 #if defined(gAppRequireRgbLed_c) && (gAppRequireRgbLed_c > 0)
 #define gBoardLedRgbHdl ((led_handle_t)g_ledHandle[0])
-#endif
-#endif
-
-#if (defined(gAppLedCnt_c) && (gAppLedCnt_c == 2))
-#define gBoardLedMonochromeHdl ((led_handle_t)g_ledHandle[0])
-#define gBoardLedRgbHdl        ((led_handle_t)g_ledHandle[1])
 #endif
 
 #if (defined gBoardLedMonochromeHdl)

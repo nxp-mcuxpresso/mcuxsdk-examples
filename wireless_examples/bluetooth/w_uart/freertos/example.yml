@@ -26,4 +26,4 @@ wireless_uart_freertos:
     kw43evk:
     - -armgcc@debug
     - -armgcc@release
-
+    mcxw23evk: []

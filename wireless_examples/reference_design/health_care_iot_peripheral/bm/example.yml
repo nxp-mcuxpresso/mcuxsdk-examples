@@ -14,3 +14,4 @@ health_care_iot_peripheral_bm:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
      frdmmcxw23: []
+     mcxw23evk: []

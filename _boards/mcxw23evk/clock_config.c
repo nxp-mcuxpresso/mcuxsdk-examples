@@ -12,9 +12,9 @@
  * Definitions
  ******************************************************************************/
 /** 32KHz oscillator load in cap setting */
-#define OSC_CAP_IN_SETTING 5
+#define OSC_CAP_IN_SETTING 4
 /** 32KHz oscillator load out cap setting */
-#define OSC_CAP_OUT_SETTING 5
+#define OSC_CAP_OUT_SETTING 4
 
 /*******************************************************************************
  * Variables
