@@ -12,9 +12,7 @@ No special settings are required.
 
 Note
 ====
-1. Please build system manager firmware with the configuration mx94evk.cfg
-2. Generate flash.bin with command `make SOC=iMX94 OEI=YES flash_all`
-3. Stop in uboot command line
+Cannot get temperature from sensor temp_a55. It's an expected behaviour.
 
 Prepare the Demo
 ===============
@@ -43,11 +41,10 @@ Temperature measurement example.
  Pls input a number to choose sensor to get data:(valid input is 0-2)0
  Sensor(desc index is 0) temp_ana is selected
  Sensor is ready to read, press enter key to get the temperature.
- Current temperature is 42 degrees Celsius
+ Current temperature is 39 degrees Celsius
  Pls input a number to choose sensor to get data:(valid input is 0-2)1
  Sensor(desc index is 1) temp_a55 is selected
- Sensor is ready to read, press enter key to get the temperature.
- Current temperature is 43 degrees Celsius
+ Sensor configuration failed!
  Pls input a number to choose sensor to get data:(valid input is 0-2)2
  Sensor(desc index is 2) temp_pf09 is selected
  Sensor is ready to read, press enter key to get the temperature.
