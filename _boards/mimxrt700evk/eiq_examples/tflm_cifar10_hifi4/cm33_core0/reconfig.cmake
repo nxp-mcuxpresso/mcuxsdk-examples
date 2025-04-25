@@ -9,18 +9,20 @@ mcux_add_source(
             ../hifi4/binary/dsp_data_release.bin
 )
 
+mcux_add_source(
+  BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi4
+  SOURCES dsp_support.h
+  dsp_support.c
+)
+
 mcux_add_include(
     INCLUDES ../hifi4/binary
 )
 
-#mcux_add_source(
-#    SOURCES ../incbin.S
-#    TOOLCHAINS mdk armgcc mcux
-#)
-
 
 mcux_add_macro(
-    CC "-DDSP_IMAGE_COPY_TO_RAM=1"
+    CC "-DDSP_IMAGE_COPY_TO_RAM=1\
+    -DEIQ_EXAMPLE_HSRUN_CLOCK"
 )
 
 mcux_add_iar_configuration(
