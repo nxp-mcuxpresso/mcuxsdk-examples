@@ -9,6 +9,8 @@ Hardware requirements
 
 Board settings
 ============
+Connect JP1 and JP3.
+
 To use MIPI panel:
 Connect MIPI panel to J52.
 

@@ -11,6 +11,8 @@ Hardware requirements
 
 Board settings
 ============
+Connect JP1 and JP3.
+
 To use SSD1963 panel:
 Connect SSD1963 panel to J4. Make sure to connect JP7 2&3 to use 3.3v interface.
 
