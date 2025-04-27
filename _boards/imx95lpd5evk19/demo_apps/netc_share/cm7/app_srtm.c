@@ -22,6 +22,7 @@
 #include "board.h"
 #include "rsc_table.h"
 #include "fsl_mu.h"
+#include "sm_platform.h"
 
 static srtm_dispatcher_t disp;
 static srtm_peercore_t core;
@@ -292,19 +293,37 @@ int32_t MU7_B_IRQHandler(void)
     {
         PRINTF("Other side is in Halt\r\n");
     }
-    if (status & kMU_OtherSideEnterPowerDownInterruptFlag)
-    {
-        if (core != NULL)
-	{
-            SRTM_PeerCore_SetState(core, SRTM_PeerCore_State_Deactivated);
-	}
-
-        PRINTF("Other side is in power down\r\n");
-        MU_ClearStatusFlags(RPMSG_LITE_MU, (uint32_t)kMU_OtherSideEnterPowerDownInterruptFlag);
-        APP_SRTM_OtherSideResetHandler();
-    }
 #endif
     return RPMsg_MU7_B_IRQHandler();
+}
+
+void APP_SRTM_HandleLmmPowerChange(uint32_t lm, uint32_t flags)
+{
+    /*
+     * MU will mark the acore status as POWER DOWN when Acore is in cpuidle state.
+     * It cannot determine whether the other party is at suspend mode.
+     * so it is selected to identify through system manager notification.
+     */
+    if (lm == SM_PLATFORM_LMID_A55)
+    {
+        if (flags == SCMI_SYS_STATE_SUSPEND)
+        {
+            PRINTF("Other side(AP) entered suspend to memory state through linux command: echo mem > /sys/power/state\r\n");
+        }
+        else if(flags == SCMI_SYS_STATE_WARM_RESET)
+        {
+            PRINTF("Other side(AP) entered poweroff state through linux command: poweroff\r\n");
+            if (core != NULL)
+            {
+                SRTM_PeerCore_SetState(core, SRTM_PeerCore_State_Deactivated);
+            }
+            APP_SRTM_OtherSideResetHandler();
+        }
+        else
+        {
+            /* To do for other power mode. */
+        }
+    }
 }
 
 static void APP_SRTM_PollLinkup(srtm_dispatcher_t dispatcher, void *param1, void *param2)
@@ -517,7 +536,6 @@ void APP_SRTM_Init(void)
     /* Enable mu interrupts for remote(slave) side core */
     MU_Init(RPMSG_LITE_MU);
 #if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterPowerDownInterruptEnable);
     MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterRunInterruptEnable);
     MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterHaltInterruptEnable);
     MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterWaitInterruptEnable);

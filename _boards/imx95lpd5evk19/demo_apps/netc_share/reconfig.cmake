@@ -5,7 +5,8 @@ mcux_add_macro(
        -DBOARD_USE_PCAL6408=1 \
        -DNETC_PORT_USE_INCLUDES=1 \
        -DUSE_RTOS=1 \
-       -DPRINTF_ADVANCED_ENABLE=1"
+       -DPRINTF_ADVANCED_ENABLE=1\
+       -DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
 )
 
 mcux_add_linker_symbol(

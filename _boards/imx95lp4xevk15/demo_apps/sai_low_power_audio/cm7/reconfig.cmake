@@ -5,7 +5,8 @@ mcux_add_configuration(
             -DSRTM_SAI_EDMA_LOCAL_BUF_ENABLE=1\
             -DSRTM_SAI_EDMA_CLOCK_SWITCH_ENABLE=1\
             -DSRTM_AUDIO_SERVICE_USED=1\
-            -DBOARD_USE_PCAL6408=1"
+            -DBOARD_USE_PCAL6408=1\
+            -DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
 )
 
 mcux_add_source(

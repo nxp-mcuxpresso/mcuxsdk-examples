@@ -74,6 +74,9 @@ void APP_SRTM_StartCommunication(void);
 void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param);
 
 void APP_SRTM_NETC_VirtualizePCIConfig(void);
+
+/* Handle acore power mode changes */
+void APP_SRTM_HandleLmmPowerChange(uint32_t lm, uint32_t flags);
 #if defined(__cplusplus)
 }
 #endif

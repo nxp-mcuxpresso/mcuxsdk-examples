@@ -21,6 +21,7 @@
 #include "srtm_pdm_edma_adapter.h"
 #include "scmi_cpu.h"
 #include "scmi.h"
+#include "sm_platform.h"
 
 #include "app_srtm.h"
 #include "board.h"
@@ -229,31 +230,26 @@ int32_t MU7_B_IRQHandler(void)
     {
         PRINTF("Other side is in Halt\r\n");
     }
-    if (status & kMU_OtherSideEnterPowerDownInterruptFlag)
+#endif
+    return RPMsg_MU7_B_IRQHandler();
+}
+
+void APP_SRTM_HandleLmmPowerChange(uint32_t lm, uint32_t flags)
+{
+    /*
+     * MU will mark the acore status as POWER DOWN when Acore is in cpuidle state.
+     * It cannot determine whether the other party is at suspend mode.
+     * so it is selected to identify through system manager notification.
+     */
+    if (lm == SM_PLATFORM_LMID_A55)
     {
-        MU_ClearStatusFlags(RPMSG_LITE_MU, (uint32_t)kMU_OtherSideEnterPowerDownInterruptFlag);
-
-        uint32_t runMode, velow, vehigh;
-        uint32_t sleepMode = 0;
-        int32_t status = SCMI_ERR_SUCCESS;
-        status = SCMI_CpuInfoGet(SCMI_A2P, AP_DOMAIN_LD, &runMode, &sleepMode, &velow, &vehigh);
-        if (status != SCMI_ERR_SUCCESS)
-        {
-            PRINTF("Get AP info fail\r\n");
-        }
-
-        /*
-         * Use AP sleep mode state to judge A55 suspend or poweroff state.
-         * AP suspend  --  CPU_SLEEP_MODE_SUSPEND.
-         * AP poweroff --  CPU_SLEEP_MODE_RUN.
-         */
-        if (sleepMode == CPU_SLEEP_MODE_SUSPEND)
+        if (flags == SCMI_SYS_STATE_SUSPEND)
         {
 #if (defined(SRTM_AUDIO_SERVICE_USED) && (0 == SRTM_AUDIO_SERVICE_USED))
             PRINTF("Other side(AP) entered suspend to memory state through linux command: echo mem > /sys/power/state\r\n");
 #endif
         }
-        else if (sleepMode == CPU_SLEEP_MODE_RUN)
+        else if(flags == SCMI_SYS_STATE_WARM_RESET)
         {
             PRINTF("Other side(AP) entered poweroff state through linux command: poweroff\r\n");
             if (core != NULL)
@@ -262,9 +258,11 @@ int32_t MU7_B_IRQHandler(void)
             }
             APP_SRTM_OtherSideResetHandler();
         }
+        else
+        {
+            /* To do for other power mode. */
+        }
     }
-#endif
-    return RPMsg_MU7_B_IRQHandler();
 }
 
 static void APP_SRTM_PollLinkup(srtm_dispatcher_t dispatcher, void *param1, void *param2)
@@ -620,7 +618,6 @@ void APP_SRTM_Init(void)
     /* Enable mu interrupts for remote(slave) side core */
     MU_Init(RPMSG_LITE_MU);
 #if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterPowerDownInterruptEnable);
     MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterRunInterruptEnable);
     MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterHaltInterruptEnable);
     MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterWaitInterruptEnable);

@@ -119,6 +119,8 @@ void APP_SRTM_StartCommunication(void);
 /* Set RPMsg channel init/deinit monitor */
 void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param);
 
+/* Handle acore power mode changes */
+void APP_SRTM_HandleLmmPowerChange(uint32_t lm, uint32_t flags);
 #if defined(__cplusplus)
 }
 #endif

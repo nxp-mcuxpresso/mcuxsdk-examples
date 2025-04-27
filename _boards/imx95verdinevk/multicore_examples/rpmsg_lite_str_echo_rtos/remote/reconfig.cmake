@@ -31,3 +31,6 @@ mcux_add_iar_configuration(
     AS "-DCPU_${CONFIG_MCUX_HW_DEVICE_PART}${core_id_suffix_name}"
 )
 
+mcux_add_configuration(
+        CC "-DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
+)
