@@ -52,20 +52,20 @@ BOARD_InitPins:
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M33[cm33] */
 
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__FLEXIO1_FLEXIO1,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U));
 
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO2, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO2,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO2, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO02__FLEXIO1_FLEXIO2,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U));
 
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO03__FLEXIO1_FLEXIO3,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U));
 }
 
 /***********************************************************************************************************************

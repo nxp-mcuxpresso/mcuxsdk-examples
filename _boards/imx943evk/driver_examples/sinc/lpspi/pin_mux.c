@@ -65,29 +65,29 @@ LPSPI1_InitPins:
  * END ****************************************************************************************************************/
 void BOARD_InitLpspi3Pins(void)
 {
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO08__LPSPI3_PCS0,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
 
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO09__LPSPI3_SIN,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
 
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO10__LPSPI3_SOUT,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
 
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO11__LPSPI3_SCK,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
 }
 
 /* clang-format off */
@@ -114,30 +114,30 @@ BOARD_InitSincPins:
  * END ****************************************************************************************************************/
 void BOARD_InitSinc2Pins(void)
 {
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SD2_CLK__SINC2_EMBIT0, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SD2_CLK__SINC2_EMBIT0,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_SD2_CLK__SINC2_EMBIT0, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_SD2_CLK__SINC2_EMBIT0,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
 
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SD2_CD_B__SINC2_EMCLK0, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_SD2_CD_B__SINC2_EMCLK0,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinMux(IOMUXC_PAD_SD2_CD_B__SINC2_EMCLK0, 1U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_SD2_CD_B__SINC2_EMCLK0,
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
 }
 
 void BOARD_InitI2C6Pins(void)
 {
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
+                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
+                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
 }
 /***********************************************************************************************************************
  * EOF

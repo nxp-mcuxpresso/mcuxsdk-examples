@@ -7,7 +7,7 @@
  #ifndef _PIN_MUX_H_
  #define _PIN_MUX_H_
  
- #include "hal_pinctrl.h"
+ #include "fsl_iomuxc.h"
  #include "board.h"
  
  /*!

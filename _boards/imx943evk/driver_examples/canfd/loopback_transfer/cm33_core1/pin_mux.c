@@ -54,27 +54,27 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_CCM_CLKO3__CAN3_TX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_CCM_CLKO4__CAN3_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_CCM_CLKO3__CAN3_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_CCM_CLKO4__CAN3_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 1U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_CCM_CLKO3__CAN3_TX, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_CCM_CLKO4__CAN3_RX, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_CCM_CLKO3__CAN3_TX, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_CCM_CLKO4__CAN3_RX, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__LPI2C3_SDA, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__LPI2C3_SCL, 
+                        IOMUXC_PAD_DSE(15U) |
+                        IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
 }
 
 /***********************************************************************************************************************

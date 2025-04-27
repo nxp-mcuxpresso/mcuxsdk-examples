@@ -51,7 +51,7 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO08__TPM6_CH0, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO08__TPM6_CH0, 0U);
 }
 
 

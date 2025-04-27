@@ -17,7 +17,7 @@
 #include "fsl_pca954x.h"
 #endif
 #include "hal_clock.h"
-#include "hal_pinctrl.h"
+#include "fsl_iomuxc.h"
 #if BOARD_ENABLE_ELE
 #include "fsl_ele_base_api.h"
 #endif
@@ -973,128 +973,128 @@ void BOARD_ConfigMPU(void)
 #endif
 
 void BOARD_InitLpuart1Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_RXD__LPUART1_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_TXD__LPUART1_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART1_RXD__LPUART1_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART1_TXD__LPUART1_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_RXD__LPUART1_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_TXD__LPUART1_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_RXD__LPUART1_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_TXD__LPUART1_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart2Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__LPUART2_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__LPUART2_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_RXD__LPUART2_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_TXD__LPUART2_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__LPUART2_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__LPUART2_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart3Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPUART3_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPUART3_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO31__LPUART3_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO30__LPUART3_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPUART3_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPUART3_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__LPUART3_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO30__LPUART3_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 #if BOARD_IMX943_TYPE == BOARD_IMX943_EMULATOR
 void BOARD_InitLpuart4Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO40__LPUART4_TX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO41__LPUART4_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO40__LPUART4_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO41__LPUART4_RX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO41__LPUART4_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO40__LPUART4_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO41__LPUART4_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO40__LPUART4_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart5Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__LPUART5_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO00__LPUART5_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO01__LPUART5_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO00__LPUART5_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__LPUART5_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO00__LPUART5_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO01__LPUART5_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO00__LPUART5_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 #else
 void BOARD_InitLpuart4Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART4_TX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART4_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO14__LPUART4_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__LPUART4_RX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART4_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART4_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__LPUART4_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO14__LPUART4_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart5Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDI__LPUART5_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDO_TRACESWO__LPUART5_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TDI__LPUART5_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TDO_TRACESWO__LPUART5_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDI__LPUART5_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDO_TRACESWO__LPUART5_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TDI__LPUART5_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TDO_TRACESWO__LPUART5_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 #endif
 
 void BOARD_InitLpuart6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO21__LPUART6_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO20__LPUART6_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO21__LPUART6_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO20__LPUART6_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO21__LPUART6_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO20__LPUART6_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO21__LPUART6_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO20__LPUART6_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart7Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO32__LPUART7_TX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO33__LPUART7_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO32__LPUART7_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO33__LPUART7_RX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO33__LPUART7_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO32__LPUART7_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO33__LPUART7_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO32__LPUART7_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 #if BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS
 void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
+                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
+                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
+                        IOMUXC_PAD_OD_MASK);
 }
 #endif
 
 void BOARD_InitLpuart8Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
 #if BOARD_LPUART8_USE_JTAG_PADS
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TCLK_SWCLK__LPUART8_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TMS_SWDIO__LPUART8_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TCLK_SWCLK__LPUART8_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TMS_SWDIO__LPUART8_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TCLK_SWCLK__LPUART8_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TMS_SWDIO__LPUART8_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TCLK_SWCLK__LPUART8_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TMS_SWDIO__LPUART8_TX,
+                        IOMUXC_PAD_DSE(15U));
 #elif BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__LPUART8_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO12__LPUART8_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO13__LPUART8_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO12__LPUART8_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO13__LPUART8_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO12__LPUART8_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO13__LPUART8_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO12__LPUART8_TX,
+                        IOMUXC_PAD_DSE(15U));
 
     BOARD_InitI2C6Pins();
     /* Route LPSPI8 of SoC to arduino interface */
@@ -1107,159 +1107,159 @@ void BOARD_InitLpuart8Pins(void) {                                /*!< Function 
 }
 
 void BOARD_InitLpuart9Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO45__LPUART9_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO44__LPUART9_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO45__LPUART9_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO44__LPUART9_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO45__LPUART9_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO44__LPUART9_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO45__LPUART9_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO44__LPUART9_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart10Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO49__LPUART10_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO48__LPUART10_TX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO49__LPUART10_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO48__LPUART10_TX, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO49__LPUART10_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO48__LPUART10_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO49__LPUART10_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO48__LPUART10_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart11Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO25__LPUART11_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO24__LPUART11_TX, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO25__LPUART11_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO24__LPUART11_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO25__LPUART11_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO24__LPUART11_TX, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO25__LPUART11_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO24__LPUART11_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_InitLpuart12Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO27__LPUART12_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO26__LPUART12_TX, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO27__LPUART12_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO26__LPUART12_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO27__LPUART12_RX, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO26__LPUART12_TX, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO27__LPUART12_RX,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__LPUART12_TX,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart1Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_RXD__GPIO1_IO4, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_TXD__GPIO1_IO5, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART1_RXD__GPIO1_IO4, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART1_TXD__GPIO1_IO5, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_RXD__GPIO1_IO4,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART1_TXD__GPIO1_IO5,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_RXD__GPIO1_IO4,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART1_TXD__GPIO1_IO5,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart2Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_RXD__GPIO1_IO6, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_TXD__GPIO1_IO7, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_RXD__GPIO1_IO6, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_UART2_TXD__GPIO1_IO7, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_RXD__GPIO1_IO6,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_UART2_TXD__GPIO1_IO7,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_RXD__GPIO1_IO6,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_UART2_TXD__GPIO1_IO7,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart3Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__GPIO2_IO31, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__GPIO2_IO30, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO31__GPIO2_IO31, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO30__GPIO2_IO30, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__GPIO2_IO31,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__GPIO2_IO30,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO31__GPIO2_IO31,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO30__GPIO2_IO30,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart4Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__GPIO2_IO14, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__GPIO2_IO15, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO14__GPIO2_IO14, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__GPIO2_IO15, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__GPIO2_IO15,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__GPIO2_IO14,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__GPIO2_IO15,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO14__GPIO2_IO14,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart5Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDI__GPIO4_IO4, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDO_TRACESWO__GPIO4_IO7, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TDI__GPIO4_IO4, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TDO_TRACESWO__GPIO4_IO7, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDI__GPIO4_IO4,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TDO_TRACESWO__GPIO4_IO7,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TDI__GPIO4_IO4,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TDO_TRACESWO__GPIO4_IO7,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO21__GPIO2_IO21, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO20__GPIO2_IO20, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO21__GPIO2_IO21, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO20__GPIO2_IO20, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO21__GPIO2_IO21,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO20__GPIO2_IO20,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO21__GPIO2_IO21,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO20__GPIO2_IO20,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart7Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO32__GPIO3_IO0, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO33__GPIO3_IO1, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO32__GPIO3_IO0, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO33__GPIO3_IO1, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO33__GPIO3_IO1,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO32__GPIO3_IO0,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO33__GPIO3_IO1,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO32__GPIO3_IO0,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart8Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TCLK_SWCLK__GPIO4_IO6, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TMS_SWDIO__GPIO4_IO5, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TCLK_SWCLK__GPIO4_IO6, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_DAP_TMS_SWDIO__GPIO4_IO5, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TCLK_SWCLK__GPIO4_IO6,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DAP_TMS_SWDIO__GPIO4_IO5,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TCLK_SWCLK__GPIO4_IO6,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_DAP_TMS_SWDIO__GPIO4_IO5,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart9Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO45__GPIO3_IO13, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO44__GPIO3_IO12, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO45__GPIO3_IO13, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO44__GPIO3_IO12, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO45__GPIO3_IO13,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO44__GPIO3_IO12,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO45__GPIO3_IO13,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO44__GPIO3_IO12,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart10Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO49__GPIO3_IO17, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO48__GPIO3_IO16, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO49__GPIO3_IO17, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO48__GPIO3_IO16, 0U);
 
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO49__GPIO3_IO17,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO48__GPIO3_IO16,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO49__GPIO3_IO17,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO48__GPIO3_IO16,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart11Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__GPIO2_IO17, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__GPIO2_IO16, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__GPIO2_IO17,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__GPIO2_IO16,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO17__GPIO2_IO17, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO16__GPIO2_IO16, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO17__GPIO2_IO17,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO16__GPIO2_IO16,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 void BOARD_DeinitLpuart12Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO27__GPIO2_IO27, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO26__GPIO2_IO26, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO27__GPIO2_IO27,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO26__GPIO2_IO26,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO27__GPIO2_IO27, 0U);
+    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO26__GPIO2_IO26, 0U);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO27__GPIO2_IO27,
+                        IOMUXC_PAD_PD_MASK);
+    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__GPIO2_IO26,
+                        IOMUXC_PAD_DSE(15U));
 }
 
 uint32_t BOARD_GetUartFreq(uint32_t uartInstIdx)
@@ -1377,10 +1377,10 @@ void BOARD_InitLpuartPins(uint32_t instIdx)
 
 void BOARD_InitDebugConsolePins(void)
 {
-    hal_pinctrl_t hal_pinctrl = {0};
+    //hal_pinctrl_t hal_pinctrl = {0};
 
-    hal_pinctrl.set_gpr = true;
-    hal_pinctrl.gpr_instance = 0;
+    //hal_pinctrl.set_gpr = true;
+    //hal_pinctrl.gpr_instance = 0;
     /*
      * +-------------------------------+
      * | domain id |  master           |
@@ -1423,8 +1423,8 @@ void BOARD_InitDebugConsolePins(void)
      * core2_did - iomuxc_gpr0[11:8] - 0x3 - cortex-a55
      * core3_did - iomuxc_gpr0[15:12]- 0x1 - MTR
      */
-    hal_pinctrl.gpr_val = BOARD_IOMUXC_GPR_VAL;
-    HAL_PinctrlSetMiscCfg(&hal_pinctrl);
+    //hal_pinctrl.gpr_val = BOARD_IOMUXC_GPR_VAL;
+    //HAL_PinctrlSetMiscCfg(&hal_pinctrl);
 
 #if BOARD_DEBUG_UART_TYPE == kSerialPort_Uart
     BOARD_InitLpuartPins(BOARD_DEBUG_UART_INSTANCE);

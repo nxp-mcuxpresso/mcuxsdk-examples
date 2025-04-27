@@ -56,8 +56,8 @@ void BOARD_InitPins(void) {
     (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_40_MASK))) /* Mask bits to zero which are setting */
       | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_40(0x01U) /* IOMUXC XBAR_INOUT39 function direction select: XBAR_INOUT as output */
     );
-  HAL_PinctrlSetPinMux(
-      HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO01__XBAR1_XBAR_INOUT40,  /* GPIO_SD_B1_00 is configured as XBAR1_XBAR_INOUT20 */
+  IOMUXC_SetPinMux(
+      IOMUXC_PAD_GPIO_IO01__XBAR1_XBAR_INOUT40,  /* GPIO_SD_B1_00 is configured as XBAR1_XBAR_INOUT20 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
