@@ -19,7 +19,7 @@
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM
 **
-**     Copyright 2024 NXP
+**     Copyright 2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -67,10 +67,13 @@ define symbol m_data0_start                     = 0x00100000;
 define symbol m_data0_end                       = 0x001007FF;
 
 define symbol m_data1_start                     = 0x00140000;
-define symbol m_data1_end                       = m_dmem_end - __size_cstack__;
+define symbol m_data1_end                       = (m_dmem_end-__size_heap__) - __size_cstack__;
 
-define symbol m_stack_start                     = m_data1_end + 1;
-define symbol m_stack_end                       = m_dmem_end;
+define symbol m_stack_start                     = (m_dmem_end-__size_heap__+1) - __size_cstack__;
+define symbol m_stack_end                       = (m_dmem_end-__size_heap__);
+
+define exported symbol __HEAP_start__           = m_stack_end + 1;
+define exported symbol __HEAP_end__             = __HEAP_start__ + __size_heap__;
 
 /* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
 define symbol m_shared_ram_size                 = smu_and_dmem_size - m_dmem_size;
@@ -163,11 +166,6 @@ define symbol m_free_data_start                 = m_sqram_rldat_end + 1;
 define symbol m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 define symbol m_free_data_end                   = rpmsg_sh_mem_start - 1;
 
-define symbol m_extra_data_start                 = rpmsg_sh_mem_end + 1;
-define symbol m_extra_data_end                   = m_shared_ram_end;
-define exported symbol __HEAP_end__              = m_extra_data_end;
-define exported symbol __HEAP_start__            = (__size_heap__ == 0) ? __HEAP_end__ : (__HEAP_end__ - __size_heap__ + 1);
-
 if (m_sqram_rldat_end > rpmsg_sh_mem_start)
 {
   error "Total allocated sections in shared ram do not fit in available shared ram!";
@@ -179,6 +177,7 @@ define region TEXT_region             = mem:[from m_interrupts_start to m_interr
                                       | mem:[from m_text_start to m_text_end];
 define region DATA_region             = mem:[from m_data0_start to m_data0_end]
                                       | mem:[from m_data1_start to m_data1_end]
+                                      | mem:[from __HEAP_start__ to __HEAP_end__]
                                       | mem:[from m_free_data_start to m_free_data_end];
 define region CSTACK_region           = mem:[from m_stack_start to m_stack_end];
 
@@ -201,8 +200,6 @@ define symbol logging_start                     = 0x80000;
 define symbol logging_end                       = 0x90000;
 define region logging                           = mem:[from logging_start               to logging_end];
 define region rpmsg_sh_mem_region               = mem:[from rpmsg_sh_mem_start          to rpmsg_sh_mem_end];
-define region extra_data_region                 = mem:[from m_extra_data_start          to m_extra_data_end];
-
 
 define block CSTACK    with alignment = 8, size = __size_cstack__   { };
 define block RW        { readwrite };
@@ -223,7 +220,7 @@ place at address mem: m_interrupts_start    { readonly section .intvec };
 place in TEXT_region                        { readonly };
 place in DATA_region                        { block RW };
 place in DATA_region                        { block ZI };
-place in extra_data_region                  { last section .heap };
+place in DATA_region                        { last section .heap };
 place in CSTACK_region                      { block CSTACK };
 
 place in sqram_debug_region                       { readwrite section .debugbuf } ;

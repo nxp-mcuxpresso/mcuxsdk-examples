@@ -16,7 +16,7 @@
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM for Connectivity Demo Applications
 **
-**     Copyright 2024 NXP
+**     Copyright 2024-2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -51,12 +51,6 @@
                           |               | Enable with gUseNVMLink_d=1
                           |               |
                           |               | NV_STORAGE_START_ADDRESS
-                    - - - +---------------+ - - - - - - - -
-                          |               | SECURE_BOOT_END
-                          |  Secure Boot  |
-                          |  Reserved*    | Enable with gUseSecureBoot_d=1
-                          |               |
-                          |               | SECURE_BOOT_START
                     - - - +---------------+ - - - - - - - -
                           |               | INT_STORAGE_END
                           |               |
@@ -101,10 +95,6 @@ if (!isdefinedsymbol(gEraseNVMLink_d)) {
 
 if (!isdefinedsymbol(gUseInternalStorageLink_d)) {
     define symbol gUseInternalStorageLink_d = 0;
-}
-
-if (!isdefinedsymbol(gUseSecureBoot_d)) {
-    define symbol gUseSecureBoot_d = 0;
 }
 
 if (!isdefinedsymbol(gUseOtSettingsStorage_d)) {
@@ -207,21 +197,8 @@ define exported symbol NV_STORAGE_END_ADDRESS           = m_ot_settings_start - 
 define exported symbol NV_STORAGE_SIZE                  = (NV_STORAGE_MAX_SECTORS * NV_STORAGE_SECTOR_SIZE);
 define exported symbol NV_STORAGE_START_ADDRESS         = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;
 
-if(gUseSecureBoot_d) {
-    define symbol SECURE_BOOT_SIZE = 1024; // TODO: Determine max secure boot signature size KFOURWONE-2620
-}
-else {
-    define symbol SECURE_BOOT_SIZE = 0;
-}
-
-/* Signing an image will increase its size.
-   If the raw image size is large enough, the resulting signed image could overflow to the NVM address range.
-   In such case, NVM operations would corrupt the signature data, resulting in incapability to boot. */
-define exported symbol SECURE_BOOT_END   = NV_STORAGE_START_ADDRESS - 1;
-define exported symbol SECURE_BOOT_START = SECURE_BOOT_END - SECURE_BOOT_SIZE + 1;
-
 /* OTA */
-define exported symbol INT_STORAGE_END                  = SECURE_BOOT_START - 1;
+define exported symbol INT_STORAGE_END                  = NV_STORAGE_START_ADDRESS - 1;
 if (gUseInternalStorageLink_d) {
     define exported symbol INT_STORAGE_SIZE             = m_sector_size * ( ((INT_STORAGE_END + 1 - m_interrupts_start)/2)/m_sector_size +1);
 }
