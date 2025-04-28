@@ -6,7 +6,8 @@ Hardware requirements
 
 Board settings
 ==============
-No special is needed.
+Populate the R120, R122, R124, R126, R129, R130 on board.
+Remove the R164, R165 on board.
 
 Prepare the Demo
 ================
