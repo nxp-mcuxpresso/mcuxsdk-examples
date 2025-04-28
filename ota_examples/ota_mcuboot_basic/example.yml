@@ -223,3 +223,6 @@ ota_mcuboot_basic:
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmmcxe247:
+    - -mdk@debug
+    - -mdk@release

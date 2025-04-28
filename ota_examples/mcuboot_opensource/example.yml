@@ -223,3 +223,6 @@ mcuboot_opensource:
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
+    frdmmcxe247:
+    - -mdk@release
+    - -mdk@debug

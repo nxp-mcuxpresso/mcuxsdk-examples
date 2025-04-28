@@ -8,6 +8,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 - Added `ota_rom_basic` example demonstrating ROM bootloader processing a secure binary as an OTA image (see documentation in docs folder)
 - Enabled `ota_rom_basic` example for FRDM-MCXN947, MCXN9XXEVK, FRDM-RW612 and RD-RW612BGA
 - Enabled flash remap feature for MIMXRT700EVK
+- FRDM-MCXE247 basic MCUboot support
 
 ### Removed
 - Removed `ota_rom_server` (replaced by simpler `ota_rom_basic`)
