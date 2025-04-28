@@ -34,9 +34,7 @@
 
 GPIO_HANDLE_DEFINE(s_WakeupGpioHandle);
 GPIO_HANDLE_DEFINE(h_WakeupGpioHandle);
-#ifdef IW610
 OSA_SEMAPHORE_HANDLE_DEFINE(hs_config_sem);
-#endif
 
 static void (*wlan_host_sleep_pre_cfg)(void);
 static void (*wlan_host_sleep_post_cfg)(void);
@@ -71,12 +69,10 @@ static SemaphoreHandle_t s_wakeupSig;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#ifdef IW610
 void hs_config_put_sem(void)
 {
     OSA_SemaphorePost((osa_semaphore_handle_t)hs_config_sem);
 }
-#endif
 
 void APP_WAKEUP_BUTTON_Callback(void *param)
 {
@@ -264,9 +260,7 @@ void mcu_suspend()
     if (wlan_host_sleep_pre_cfg)
     {
         wlan_host_sleep_pre_cfg();
-#ifdef IW610
         OSA_SemaphoreWait((osa_semaphore_handle_t)hs_config_sem, 1000);
-#endif
     }
 
     PowerModeSwitch(LPM_PowerModeSysIdle);
@@ -278,9 +272,7 @@ void mcu_suspend()
 
 int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void))
 {
-#ifdef IW610
     int ret = WM_SUCCESS;
-#endif
     if (true != LPM_Init(s_curRunMode))
     {
         PRINTF("LPM Init Failed!\r\n");
@@ -297,7 +289,6 @@ int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void)
         assert(0);
     }
 
-#ifdef IW610
     ret = OSA_SemaphoreCreateBinary((osa_semaphore_handle_t)hs_config_sem);
     if (ret != kStatus_Success)
     {
@@ -306,7 +297,6 @@ int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void)
     }
 
     wlan_register_hs_callback(hs_config_put_sem);
-#endif
 
     hal_gpio_pin_config_t sw_config = {
         kHAL_GpioDirectionIn,

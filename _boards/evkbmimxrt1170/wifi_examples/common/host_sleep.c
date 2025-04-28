@@ -23,8 +23,10 @@
 #include "fsl_debug_console.h"
 #include "cli.h"
 #include "wlan.h"
+#include <osa.h>
 
 GPIO_HANDLE_DEFINE(s_WakeupGpioHandle);
+OSA_SEMAPHORE_HANDLE_DEFINE(hs_config_sem);
 
 static void (*wlan_host_sleep_pre_cfg)(void);
 static void (*wlan_host_sleep_post_cfg)(void);
@@ -42,6 +44,10 @@ static uint32_t g_savedPrimask;
 /*******************************************************************************
  * Code
  ******************************************************************************/
+void hs_config_put_sem(void)
+{
+    OSA_SemaphorePost((osa_semaphore_handle_t)hs_config_sem);
+}
 
 void GPC_EnableWakeupSource(uint32_t irq)
 {
@@ -143,6 +149,7 @@ void mcu_suspend()
     if (wlan_host_sleep_pre_cfg)
     {
         wlan_host_sleep_pre_cfg();
+        OSA_SemaphoreWait((osa_semaphore_handle_t)hs_config_sem, 1000);
     }
     APP_SetWakeupConfig();
     CpuModeTransition();
@@ -156,6 +163,15 @@ int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void)
 {
     wlan_host_sleep_pre_cfg = wlan_hs_pre_cfg;
     wlan_host_sleep_post_cfg = wlan_hs_post_cfg;
+
+    ret = OSA_SemaphoreCreateBinary((osa_semaphore_handle_t)hs_config_sem);
+    if (ret != kStatus_Success)
+    {
+        PRINTF("Create hs config sem failed");
+        return ret;
+    }
+
+    wlan_register_hs_callback(hs_config_put_sem);
 
     return 0;
 }
