@@ -30,16 +30,6 @@ mcux_add_source(
             ${board_root}/${board}/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/./hardware_init.c
             ${board_root}/${board}/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/./pin_mux.c
             ${board_root}/${board}/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/./pin_mux.h
-            examples/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/audio_unified.c
-            examples/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/audio_unified.h
-            examples/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/composite.h
-            examples/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/hid_keyboard.c
-            examples/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/hid_keyboard.h
-            examples/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/usb_device_descriptor.c
-            examples/usb_examples/usb_device_composite_hid_audio_unified_lpc/freertos/usb_device_descriptor.h
-            
-
-
 )
 
 mcux_add_include(
