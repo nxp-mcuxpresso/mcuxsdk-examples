@@ -59,7 +59,12 @@ void board_get_name(char *name)
 void convert_dac_adc(uint32_t numberToConvert, uint32_t *result)
 {
 #ifdef BOARD_DAC_BASEADDR
-    DAC_SetBufferValue(BOARD_DAC_BASEADDR, 0U, numberToConvert);
+    // Add range check before DAC conversion
+    if (numberToConvert > 0xFFFFU)
+    {
+        numberToConvert = 0xFFFFU; // maximum 16-bit value
+    }
+    DAC_SetBufferValue(BOARD_DAC_BASEADDR, 0U, (uint16_t)numberToConvert);
 #endif
     ADC16_SetChannelConfig(DEMO_ADC16_BASEADDR, DEMO_ADC16_CHANNEL_GROUP, &g_adc16ChannelConfigStruct);
 
