@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+emios_center_aligned_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/emios/center_aligned_pwm
+    project-root-path: boards/${board}/driver_examples/emios/center_aligned_pwm/${multicore_foldername}
+    document:
+      name: emios_center_aligned_pwm${core_id_suffix_name}
+      category: driver_examples/emios
+      brief: The eMIOS project is a simple demonstration example of the SDK eMIOS driver to use eMIOS as PWM generator.
+        It configures eMIOS UC (Unified channel) as Center Aligned Output PWM with Dead Time Insertion Buffered (OPWMCB) mode.
+        This example generates three 10kHz center aligned PWM, there duty cycle are 50%, 25% and 12.5%.
+      example_readme:
+      - examples/driver_examples/emios/center_aligned_pwm/readme.md
+      - ${board_root}/${board}/driver_examples/emios/center_aligned_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []

@@ -114,6 +114,12 @@ void BOARD_InitFlexCANPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
+void BOARD_InitEMIOSPins(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
 void BOARD_InitFLASHPins(void);
 
 /*!

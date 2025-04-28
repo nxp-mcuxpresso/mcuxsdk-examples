@@ -92,6 +92,7 @@ driver_examples
    elcdif/index.rst
    elemu/readme.md
    emc/index.rst
+   emios/index.rst
    enc/index.rst
    enet/index.rst
    enet_1g/index.rst

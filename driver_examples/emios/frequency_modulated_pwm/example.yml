@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+emios_frequency_modulated_pwm:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/emios/frequency_modulated_pwm
+    project-root-path: boards/${board}/driver_examples/emios/frequency_modulated_pwm/${multicore_foldername}
+    document:
+      name: emios_frequency_modulated_pwm${core_id_suffix_name}
+      category: driver_examples/emios
+      brief: The eMIOS project is a simple demonstration example of the SDK eMIOS driver to use eMIOS as PWM generator.
+        It configures eMIOS UC (Unified channel) as Output Pulse Width and Frequency Modulation Buffered (OPWFMB) mode.
+        Every two seconds, eMIOS will update PWM frequency from 10kHz to 20kHz, or from 20kHz to 10kHz.
+        eMIOS generate 10kHz PWM at first.
+      example_readme:
+      - examples/driver_examples/emios/frequency_modulated_pwm/readme.md
+      - ${board_root}/${board}/driver_examples/emios/frequency_modulated_pwm/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []

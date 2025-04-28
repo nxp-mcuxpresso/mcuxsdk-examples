@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+emios_input_capture:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/emios/input_capture
+    project-root-path: boards/${board}/driver_examples/emios/input_capture/${multicore_foldername}
+    document:
+      name: emios_input_capture${core_id_suffix_name}
+      category: driver_examples/emios
+      brief: The eMIOS project is a simple demonstration example of the SDK eMIOS driver to use eMIOS as pulse width measurement.
+        Example will print pulse width in ticks after a successful capture.
+      example_readme:
+      - examples/driver_examples/emios/input_capture/readme.md
+      - ${board_root}/${board}/driver_examples/emios/input_capture/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []
