@@ -5,6 +5,7 @@ if (CONFIG_MCUX_PRJSEG_config.arm.shared)
 
     mcux_add_armgcc_configuration(
         AS "-D__STARTUP_CLEAR_BSS"
+        CC "-D__STARTUP_CLEAR_BSS"
     )
 
     mcux_add_mcux_configuration(
