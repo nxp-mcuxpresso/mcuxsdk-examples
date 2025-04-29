@@ -104,6 +104,25 @@ erpc_two_way_rpc_rpmsg_rtos_secondary_core:
     - +mdk@release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    frdmimxrt1186@cm7:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     frdmk32l3a6@cm0plus: []
     frdmmcxn947@cm33_core1:
     - -armgcc@debug
