@@ -4433,6 +4433,7 @@ struct cmd_t wlan_cmd_regulatory[] = {
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 
+extern struct cmd_t wlan_cmd_inet[];
 struct cmd_subclass_t cmd_subclass_wlan[] = {
     {NCP_CMD_WLAN_STA, wlan_cmd_sta},
     {NCP_CMD_WLAN_BASIC, wlan_cmd_basic},
@@ -4444,6 +4445,7 @@ struct cmd_subclass_t cmd_subclass_wlan[] = {
     {NCP_CMD_WLAN_UAP, wlan_cmd_uap},
     {NCP_CMD_WLAN_DEBUG, wlan_cmd_debug},
     {NCP_CMD_WLAN_MEMORY, wlan_cmd_memory},
+    {NCP_CMD_WLAN_INET, wlan_cmd_inet},
     {NCP_CMD_WLAN_OTHER, wlan_cmd_other},
     {NCP_CMD_INVALID, NULL},
 };

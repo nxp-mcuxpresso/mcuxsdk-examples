@@ -35,6 +35,8 @@
 #define NCP_CMD_WLAN_UAP         0x00a00000
 /** subclass type for http commands */
 #define NCP_CMD_WLAN_HTTP        0x00b00000
+/** subclass type for inet commands */
+#define NCP_CMD_WLAN_INET        0x01000000
 /** subclass type for async events. */
 #define NCP_CMD_WLAN_ASYNC_EVENT 0x00f00000
 

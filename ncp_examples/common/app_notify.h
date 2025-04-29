@@ -53,6 +53,10 @@ typedef enum
     APP_EVT_INVALID_CMD,
     /** Event for CSI data*/
     APP_EVT_CSI_DATA,
+    /** Event for SOCKET receive data*/
+    APP_EVT_INET_SOCKET_RECV,
+    /** Event for SOCKET send fail*/
+    APP_EVT_INET_SOCKET_SEND_FAIL,
 } app_notify_event_t;
 
 typedef enum

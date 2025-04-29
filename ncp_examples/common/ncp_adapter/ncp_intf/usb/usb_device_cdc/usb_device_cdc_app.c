@@ -86,7 +86,7 @@ void USB_DeviceTaskFn(void *deviceHandle);
 
 /* NCP usb device task */
 static OSA_TASK_HANDLE_DEFINE(ncp_usb_device_thread);
-static OSA_TASK_DEFINE(USB_DeviceTask, OS_PRIO_2, 1, 1024, 0);
+static OSA_TASK_DEFINE(USB_DeviceTask, OS_PRIO_3, 1, 1024, 0);
 
 #if ((defined(USB_DEVICE_CONFIG_LOW_POWER_MODE)) && (USB_DEVICE_CONFIG_LOW_POWER_MODE > 0U))
 /* NCP usb device pm task */

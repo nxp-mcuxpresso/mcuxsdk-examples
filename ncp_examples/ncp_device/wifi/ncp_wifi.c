@@ -34,6 +34,7 @@
 #include "ncp_config.h"
 #include "uap_prov.h"
 #include "app_notify.h"
+#include "ncp_inet.h"
 
 #if CONFIG_NCP_DEBUG
 #include "cli.h"
@@ -286,6 +287,12 @@ int wlan_event_callback(enum wlan_event_reason reason, void *data)
                 return 0;
             }
 #endif
+            ret = ncp_inet_init();
+            if (ret != WM_SUCCESS)
+            {
+                (void)PRINTF("Failed to initialize inet\r\n");
+                return 0;
+            }
             ret = uap_prov_cli_init();
             if (ret != WM_SUCCESS)
             {

@@ -20,12 +20,13 @@
 #include "ncp_intf_usb_device_cdc.h"
 #endif
 #include "ncp_system.h"
+#include "ncp_inet.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 
-#define APP_NOTIFY_MAX_EVENTS 20
+#define APP_NOTIFY_MAX_EVENTS 33
 
 #ifndef OT_NCP_CMD_HANDLING
 #define OT_NCP_CMD_HANDLING 4
@@ -350,6 +351,24 @@ static void app_notify_event_handler(void *argv)
             case APP_EVT_CSI_DATA:
                 app_d("got csi data report");
                 event_buf = wlan_ncp_evt_status(NCP_EVENT_CSI_DATA, &msg);
+                if (!event_buf)
+                    ret = -WM_FAIL;
+                break;
+            case APP_EVT_INET_SOCKET_RECV:
+                app_d("got socket receive");
+                if (msg.reason == APP_EVT_REASON_SUCCESS && msg.data != NULL)
+                {
+                    event_buf = ncp_inet_prepare_socket_recv_resp(msg.data);
+                }
+                if (!event_buf)
+                    ret = -WM_FAIL;
+                break;
+            case APP_EVT_INET_SOCKET_SEND_FAIL:
+                app_d("socket send fail");
+                if (msg.reason == APP_EVT_REASON_SUCCESS && msg.data != NULL)
+                {
+                    event_buf = ncp_inet_prepare_socket_send_fail(msg.data);
+                }
                 if (!event_buf)
                     ret = -WM_FAIL;
                 break;

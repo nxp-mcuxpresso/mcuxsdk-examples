@@ -130,6 +130,15 @@ mcux_add_source(
             common/uap_prov/uap_prov.h
 )
 
+mcux_add_source(
+    SOURCES wifi/inet/ncp_inet.h
+            wifi/inet/ncp_inet.c
+)
+
+mcux_add_include(
+    INCLUDES wifi/inet/
+)
+
 mcux_add_include(
     INCLUDES .
              system
