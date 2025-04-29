@@ -59,7 +59,7 @@ static void eRPCReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventData, void
 /* Implementation of RPC function increaseNumber. */
 void increaseNumber(uint32_t *number)
 {
-    *number += 1U;
+    (*number < UINT32_MAX) ? (*number += 1U) : (*number = UINT32_MAX);
     s_number = *number;
 }
 
