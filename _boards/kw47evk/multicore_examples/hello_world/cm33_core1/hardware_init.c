@@ -11,7 +11,7 @@
 /*${header:end}*/
 
 static const uint32_t froPostDivFreq[] = {
-    16000000U, 24000000U, 32000000U, 48000000U, 64000000U
+    16000000U, 24000000U, 32000000U, 48000000U, 64000000U, 0U, 0U, 0U
 };
 /*${function:start}*/
 void BOARD_InitHardware(void)
