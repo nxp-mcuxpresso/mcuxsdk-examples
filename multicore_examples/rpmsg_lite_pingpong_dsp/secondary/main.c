@@ -14,9 +14,9 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define LOCAL_EPT_ADDR_CM             (30U)
-#define LOCAL_EPT_ADDR_DSP            (32U)
-#define REMOTE_EPT_ADDR_DSP           (42U)
+#define LOCAL_EPT_ADDR_CM   (30U)
+#define LOCAL_EPT_ADDR_DSP  (32U)
+#define REMOTE_EPT_ADDR_DSP (42U)
 
 #define APP_RPMSG_READY_EVENT_DATA    (1U)
 #define APP_RPMSG_EP_READY_EVENT_DATA (2U)
@@ -36,9 +36,9 @@ typedef struct the_message
  * Code
  ******************************************************************************/
 
-static THE_MESSAGE volatile cm_msg = {0};
+static THE_MESSAGE volatile cm_msg  = {0};
 static THE_MESSAGE volatile dsp_msg = {0};
-static uint32_t cm_remote_addr     = 0U;
+static uint32_t cm_remote_addr      = 0U;
 
 /* Internal functions */
 static int32_t cm_ept_read_cb(void *payload, uint32_t payload_len, uint32_t src, void *priv)
@@ -48,8 +48,8 @@ static int32_t cm_ept_read_cb(void *payload, uint32_t payload_len, uint32_t src,
     if (payload_len <= sizeof(THE_MESSAGE))
     {
         (void)memcpy((void *)&cm_msg, payload, payload_len);
-        cm_remote_addr   = src;
-        *has_received = 1;
+        cm_remote_addr = src;
+        *has_received  = 1;
     }
     return RL_RELEASE;
 }
@@ -79,17 +79,19 @@ static void RPMsgRemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventDat
  */
 int main(void)
 {
-    volatile int32_t cm_has_received = 0;
-    volatile int32_t dsp_has_received = 0;
+    volatile int32_t cm_has_received                            = 0;
+    volatile int32_t dsp_has_received                           = 0;
     volatile uint16_t RPMsgRemoteReadyEventData[APP_EVENT_SIZE] = {0};
-    struct rpmsg_lite_ept_static_context cm_ept_context;
-    struct rpmsg_lite_ept_static_context dsp_ept_context;
-    struct rpmsg_lite_endpoint *cm_ept;
-    struct rpmsg_lite_endpoint *dsp_ept;
-    struct rpmsg_lite_instance cm_rpmsg_ctxt;
-    struct rpmsg_lite_instance dsp_rpmsg_ctxt;
-    struct rpmsg_lite_instance *cm_rpmsg;
-    struct rpmsg_lite_instance *dsp_rpmsg;
+    struct rpmsg_lite_ept_static_context cm_ept_context         = {0};
+    struct rpmsg_lite_ept_static_context dsp_ept_context        = {0};
+    struct rpmsg_lite_endpoint *cm_ept                          = NULL;
+    struct rpmsg_lite_endpoint *dsp_ept                         = NULL;
+    struct rpmsg_lite_instance cm_rpmsg_ctxt                    = {0};
+    struct rpmsg_lite_instance dsp_rpmsg_ctxt                   = {0};
+    struct rpmsg_lite_instance *cm_rpmsg                        = NULL;
+    struct rpmsg_lite_instance *dsp_rpmsg                       = NULL;
+
+    bool error_occurred = false;
 
     /* Initialize standard SDK demo application pins */
     BOARD_InitHardware();
@@ -104,7 +106,7 @@ int main(void)
 
     /* Register the application event before starting any core */
     (void)MCMGR_RegisterEvent(kMCMGR_RemoteApplicationEvent, RPMsgRemoteReadyEventHandler,
-        (void *)RPMsgRemoteReadyEventData);
+                              (void *)RPMsgRemoteReadyEventData);
 
     /* Boot DSP Hifi1 core application */
     (void)MCMGR_StartCore(APP_DSP_CORE, (void *)(char *)NULL, (uint32_t)RPMSG_LITE_SHMEM_BASE_DSP,
@@ -117,14 +119,28 @@ int main(void)
     } while (status != kStatus_MCMGR_Success);
 
     /* We will get shared mem address from primary core in startup data. */
-    cm_rpmsg = rpmsg_lite_remote_init((void *)(char *)(platform_patova(startupData)), RPMSG_LITE_LINK_ID_CM, RL_NO_FLAGS, &cm_rpmsg_ctxt);
+    cm_rpmsg = rpmsg_lite_remote_init((void *)(char *)(platform_patova(startupData)), RPMSG_LITE_LINK_ID_CM,
+                                      RL_NO_FLAGS, &cm_rpmsg_ctxt);
+    if (cm_rpmsg == NULL)
+    {
+        (void)PRINTF("Failed to initialize CM rpmsg\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
 
     /* Signal the other core we are ready by triggering the event and passing the APP_RPMSG_READY_EVENT_DATA */
     (void)MCMGR_TriggerEvent(APP_CM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_READY_EVENT_DATA);
 
     rpmsg_lite_wait_for_link_up(cm_rpmsg, RL_BLOCK);
 
-    cm_ept = rpmsg_lite_create_ept(cm_rpmsg, LOCAL_EPT_ADDR_CM, cm_ept_read_cb, (void *)&cm_has_received, &cm_ept_context);
+    cm_ept =
+        rpmsg_lite_create_ept(cm_rpmsg, LOCAL_EPT_ADDR_CM, cm_ept_read_cb, (void *)&cm_has_received, &cm_ept_context);
+    if (cm_ept == NULL)
+    {
+        (void)PRINTF("Failed to create CM endpoint...\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
 
     /* Signal the other core the endpoint has been created by triggering the event and passing the
      * APP_RPMSG_READY_EP_EVENT_DATA */
@@ -142,7 +158,8 @@ int main(void)
             cm_has_received = 0;
 
             cm_msg.DATA++;
-            (void)rpmsg_lite_send(cm_rpmsg, cm_ept, cm_remote_addr, (char *)&cm_msg, sizeof(THE_MESSAGE), RL_DONT_BLOCK);
+            (void)rpmsg_lite_send(cm_rpmsg, cm_ept, cm_remote_addr, (char *)&cm_msg, sizeof(THE_MESSAGE),
+                                  RL_DONT_BLOCK);
 
             if (cm_msg.DATA >= 99U)
             {
@@ -157,9 +174,23 @@ int main(void)
     {
     };
 
-    dsp_rpmsg = rpmsg_lite_master_init(RPMSG_LITE_SHMEM_BASE_DSP, SH_MEM_TOTAL_SIZE, RPMSG_LITE_LINK_ID_DSP, RL_NO_FLAGS, &dsp_rpmsg_ctxt);
+    dsp_rpmsg = rpmsg_lite_master_init(RPMSG_LITE_SHMEM_BASE_DSP, SH_MEM_TOTAL_SIZE, RPMSG_LITE_LINK_ID_DSP,
+                                       RL_NO_FLAGS, &dsp_rpmsg_ctxt);
+    if (dsp_rpmsg == NULL)
+    {
+        (void)PRINTF("Failed to initialize DSP rpmsg\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
 
-    dsp_ept = rpmsg_lite_create_ept(dsp_rpmsg, LOCAL_EPT_ADDR_DSP, dsp_ept_read_cb, (void *)&dsp_has_received, &dsp_ept_context);
+    dsp_ept = rpmsg_lite_create_ept(dsp_rpmsg, LOCAL_EPT_ADDR_DSP, dsp_ept_read_cb, (void *)&dsp_has_received,
+                                    &dsp_ept_context);
+    if (dsp_ept == NULL)
+    {
+        (void)PRINTF("Failed to create DSP endpoint...\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
 
     dsp_has_received = 0;
 
@@ -171,8 +202,10 @@ int main(void)
     (void)PRINTF("Sending data to HIFI1 core...\r\n");
     /* Send the first message to the dsp core */
     dsp_msg.DATA = 200U;
-    (void)PRINTF("Secondary core sending  a dsp_msg. Message: Size=%x, DATA = %i\r\n", sizeof(THE_MESSAGE), dsp_msg.DATA);
-    (void)rpmsg_lite_send(dsp_rpmsg, dsp_ept, REMOTE_EPT_ADDR_DSP, (char *)&dsp_msg, sizeof(THE_MESSAGE), RL_DONT_BLOCK);
+    (void)PRINTF("Secondary core sending  a dsp_msg. Message: Size=%x, DATA = %i\r\n", sizeof(THE_MESSAGE),
+                 dsp_msg.DATA);
+    (void)rpmsg_lite_send(dsp_rpmsg, dsp_ept, REMOTE_EPT_ADDR_DSP, (char *)&dsp_msg, sizeof(THE_MESSAGE),
+                          RL_DONT_BLOCK);
 
     while (true)
     {
@@ -185,9 +218,50 @@ int main(void)
             }
 
             dsp_msg.DATA++;
-            (void)PRINTF("Secondary core sending  a dsp_msg. Message: Size=%x, DATA = %i\r\n", sizeof(THE_MESSAGE), dsp_msg.DATA);
-            (void)rpmsg_lite_send(dsp_rpmsg, dsp_ept, REMOTE_EPT_ADDR_DSP, (char *)&dsp_msg, sizeof(THE_MESSAGE), RL_DONT_BLOCK);
+            (void)PRINTF("Secondary core sending  a dsp_msg. Message: Size=%x, DATA = %i\r\n", sizeof(THE_MESSAGE),
+                         dsp_msg.DATA);
+            (void)rpmsg_lite_send(dsp_rpmsg, dsp_ept, REMOTE_EPT_ADDR_DSP, (char *)&dsp_msg, sizeof(THE_MESSAGE),
+                                  RL_DONT_BLOCK);
         }
+    }
+
+cleanup:
+    if (cm_ept != NULL)
+    {
+        (void)rpmsg_lite_destroy_ept(cm_rpmsg, cm_ept);
+        cm_ept = NULL;
+    }
+
+    if (cm_rpmsg != NULL)
+    {
+        (void)rpmsg_lite_deinit(cm_rpmsg);
+        cm_rpmsg = NULL;
+    }
+
+    cm_msg.DATA = 0U;
+
+    if (dsp_ept != NULL)
+    {
+        (void)rpmsg_lite_destroy_ept(dsp_rpmsg, dsp_ept);
+        dsp_ept = NULL;
+    }
+
+    if (dsp_rpmsg != NULL)
+    {
+        (void)rpmsg_lite_deinit(dsp_rpmsg);
+        dsp_rpmsg = NULL;
+    }
+
+    dsp_msg.DATA = 0U;
+
+    /* Print the ending banner */
+    if (error_occurred)
+    {
+        (void)PRINTF("\r\nRPMsg demo ends with Errors\r\n");
+    }
+    else
+    {
+        (void)PRINTF("\r\nRPMsg demo ends\r\n");
     }
 
     (void)rpmsg_lite_destroy_ept(cm_rpmsg, cm_ept);

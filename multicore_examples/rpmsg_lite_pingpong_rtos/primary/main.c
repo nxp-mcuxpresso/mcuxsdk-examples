@@ -74,12 +74,13 @@ static void RPMsgRemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventDat
 
 static void app_task(void *param)
 {
-    volatile uint32_t remote_addr = 0U;
-    struct rpmsg_lite_endpoint *my_ept;
-    rpmsg_queue_handle my_queue;
-    struct rpmsg_lite_instance *my_rpmsg;
-    rpmsg_ns_handle ns_handle;
-    uint32_t len = 0U;
+    volatile uint32_t remote_addr        = 0U;
+    struct rpmsg_lite_endpoint *my_ept   = NULL;
+    rpmsg_queue_handle my_queue          = NULL;
+    struct rpmsg_lite_instance *my_rpmsg = NULL;
+    rpmsg_ns_handle ns_handle            = NULL;
+    bool error_occurred                  = false;
+    uint32_t len                         = 0U;
 
 #ifdef CORE1_IMAGE_COPY_TO_RAM
     /* This section ensures the secondary core image is copied from flash location to the target RAM memory.
@@ -123,9 +124,36 @@ static void app_task(void *param)
     my_rpmsg =
         rpmsg_lite_master_init((void *)RPMSG_LITE_SHMEM_BASE, SH_MEM_TOTAL_SIZE, RPMSG_LITE_LINK_ID, RL_NO_FLAGS);
 #endif
-    my_queue  = rpmsg_queue_create(my_rpmsg);
-    my_ept    = rpmsg_lite_create_ept(my_rpmsg, LOCAL_EPT_ADDR, rpmsg_queue_rx_cb, my_queue);
+    if (my_rpmsg == NULL)
+    {
+        (void)PRINTF("Failed to initialize rpmsg\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
+
+    my_queue = rpmsg_queue_create(my_rpmsg);
+    if (my_queue == NULL)
+    {
+        (void)PRINTF("Failed to create queue...\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
+
+    my_ept = rpmsg_lite_create_ept(my_rpmsg, LOCAL_EPT_ADDR, rpmsg_queue_rx_cb, my_queue);
+    if (my_ept == NULL)
+    {
+        (void)PRINTF("Failed to create endpoint...\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
+
     ns_handle = rpmsg_ns_bind(my_rpmsg, app_nameservice_isr_cb, (void *)&remote_addr);
+    if (ns_handle == NULL)
+    {
+        (void)PRINTF("Failed to bind name service...\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
 
     /* Wait until the secondary core application issues the nameservice isr and the remote endpoint address is known. */
     while (0U == remote_addr)
@@ -147,15 +175,40 @@ static void app_task(void *param)
         (void)rpmsg_lite_send(my_rpmsg, my_ept, remote_addr, (char *)&msg, sizeof(THE_MESSAGE), RL_BLOCK);
     }
 
-    (void)rpmsg_lite_destroy_ept(my_rpmsg, my_ept);
-    my_ept = ((void *)0);
-    (void)rpmsg_queue_destroy(my_rpmsg, my_queue);
-    my_queue = ((void *)0);
-    (void)rpmsg_ns_unbind(my_rpmsg, ns_handle);
-    (void)rpmsg_lite_deinit(my_rpmsg);
+cleanup:
+    if (my_ept != NULL)
+    {
+        (void)rpmsg_lite_destroy_ept(my_rpmsg, my_ept);
+        my_ept = NULL;
+    }
+
+    if (my_queue != NULL)
+    {
+        (void)rpmsg_queue_destroy(my_rpmsg, my_queue);
+        my_queue = NULL;
+    }
+
+    if (ns_handle != NULL)
+    {
+        (void)rpmsg_ns_unbind(my_rpmsg, ns_handle);
+    }
+
+    if (my_rpmsg != NULL)
+    {
+        (void)rpmsg_lite_deinit(my_rpmsg);
+        my_rpmsg = NULL;
+    }
 
     /* Print the ending banner */
-    (void)PRINTF("\r\nRPMsg demo ends\r\n");
+    if (error_occurred)
+    {
+        (void)PRINTF("\r\nRPMsg demo ends with Errors\r\n");
+    }
+    else
+    {
+        (void)PRINTF("\r\nRPMsg demo ends\r\n");
+    }
+
     for (;;)
     {
     }

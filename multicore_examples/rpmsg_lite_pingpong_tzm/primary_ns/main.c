@@ -1,6 +1,5 @@
 /*
- * Copyright 2018-2020 NXP
- * All rights reserved.
+ * Copyright 2018-2020, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -53,11 +52,12 @@ static int32_t my_ept_read_cb_ns(void *payload, int32_t payload_len, uint32_t sr
  */
 int main(void)
 {
-    volatile int32_t has_received;
-    struct rpmsg_lite_endpoint *my_ept_ns;
+    volatile int32_t has_received                                      = 0;
+    struct rpmsg_lite_endpoint *my_ept_ns                              = NULL;
     struct rpmsg_lite_endpoint_callback_data_descr_ns callback_data_ns = {(void *)&has_received, (void *)&msg};
     struct rpmsg_lite_endpoint_callback_descr_ns callback_descr_ns     = {(rl_ept_rx_cb_ns_t)my_ept_read_cb_ns,
                                                                           &callback_data_ns};
+    bool error_occurred                                                = false;
     char str[50];
 
     /* Print the initial banner */
@@ -66,6 +66,12 @@ int main(void)
 
     /* Create non-secure endpoint */
     my_ept_ns = rpmsg_lite_create_ept_nse(LOCAL_NS_EPT_ADDR, &callback_descr_ns);
+    if (my_ept_ns == NULL)
+    {
+        PRINTF_NSE("Failed to create non-secure endpoint\r\n");
+        error_occurred = true;
+        goto cleanup;
+    }
 
     has_received = 0;
 
@@ -79,18 +85,38 @@ int main(void)
         if (1 == has_received)
         {
             PRINTF_NSE("Primary core received a msg\r\n");
-            sprintf(str, "Message: DATA = %i\r\n", (int)msg.DATA);
-            PRINTF_NSE(str);
+            int result = sprintf(str, "Message: DATA = %i\r\n", (int)msg.DATA);
+            if (result < 0)
+            {
+                /* Handle error - use a default message */
+                PRINTF_NSE("Error formatting message\r\n");
+            }
+            else
+            {
+                /* Use the formatted string as intended */
+                PRINTF_NSE(str);
+            }
             has_received = 0;
             msg.DATA++;
             (void)rpmsg_lite_send_nse(my_ept_ns, &msg_params, RL_DONT_BLOCK);
         }
     }
 
-    rpmsg_lite_destroy_ept_nse(my_ept_ns);
+cleanup:
+    if (my_ept_ns != NULL)
+    {
+        rpmsg_lite_destroy_ept_nse(my_ept_ns);
+    }
 
     /* Print the ending banner */
-    PRINTF_NSE("\r\nRPMsg demo ends\r\n");
+    if (error_occurred)
+    {
+        PRINTF_NSE("\r\nRPMsg demo ends with errors\r\n");
+    }
+    else
+    {
+        PRINTF_NSE("\r\nRPMsg demo ends\r\n");
+    }
 
     for (;;)
     {

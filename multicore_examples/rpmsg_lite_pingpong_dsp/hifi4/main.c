@@ -66,11 +66,11 @@ int main(void)
 
     xos_start_main("main", 7, 0);
 
-    volatile int32_t has_received = 0;
-    struct rpmsg_lite_ept_static_context my_ept_context;
-    struct rpmsg_lite_endpoint *my_ept;
-    struct rpmsg_lite_instance rpmsg_ctxt;
-    struct rpmsg_lite_instance *my_rpmsg;
+    volatile int32_t has_received                       = 0;
+    struct rpmsg_lite_ept_static_context my_ept_context = {0};
+    struct rpmsg_lite_endpoint *my_ept                  = NULL;
+    struct rpmsg_lite_instance rpmsg_ctxt               = {0};
+    struct rpmsg_lite_instance *my_rpmsg                = NULL;
 
     /* Initialize standard SDK demo application pins */
     BOARD_InitHardware();
@@ -91,18 +91,31 @@ int main(void)
     } while (status != kStatus_MCMGR_Success);
 
     /* In case of MCMGR is used we will get shared mem address from primary core in startup data. */
-    my_rpmsg = rpmsg_lite_remote_init((void *)(char *)(platform_patova(startupData)), RPMSG_LITE_LINK_ID, RL_NO_FLAGS, &rpmsg_ctxt);
+    my_rpmsg = rpmsg_lite_remote_init((void *)(char *)(platform_patova(startupData)), RPMSG_LITE_LINK_ID, RL_NO_FLAGS,
+                                      &rpmsg_ctxt);
+    if (my_rpmsg == NULL)
+    {
+        goto cleanup;
+    }
 
     /* Signal the other core we are ready by triggering the event and passing the APP_RPMSG_READY_EVENT_DATA */
     (void)MCMGR_TriggerEvent(APP_CM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_READY_EVENT_DATA);
 #else
     /* Otherwise the shared mem address is declared in app.h file. */
     my_rpmsg = rpmsg_lite_remote_init((void *)RPMSG_LITE_SHMEM_BASE, RPMSG_LITE_LINK_ID, RL_NO_FLAGS, &rpmsg_ctxt);
+    if (my_rpmsg == NULL)
+    {
+        goto cleanup;
+    }
 #endif /* MCMGR_USED */
 
     rpmsg_lite_wait_for_link_up(my_rpmsg, RL_BLOCK);
 
     my_ept = rpmsg_lite_create_ept(my_rpmsg, LOCAL_EPT_ADDR, my_ept_read_cb, (void *)&has_received, &my_ept_context);
+    if (my_ept == NULL)
+    {
+        goto cleanup;
+    }
 
 #ifdef MCMGR_USED
     /* Signal the other core the endpoint has been created by triggering the event and passing the
@@ -131,9 +144,19 @@ int main(void)
         }
     }
 
-    (void)rpmsg_lite_destroy_ept(my_rpmsg, my_ept);
-    my_ept = ((void *)0);
-    (void)rpmsg_lite_deinit(my_rpmsg);
+cleanup:
+    if (my_ept)
+    {
+        (void)rpmsg_lite_destroy_ept(my_rpmsg, my_ept);
+        my_ept = ((void *)0);
+    }
+
+    if (my_rpmsg)
+    {
+        (void)rpmsg_lite_deinit(my_rpmsg);
+        my_rpmsg = ((void *)0);
+    }
+
     msg.DATA = 0U;
 
     /* End of the example */

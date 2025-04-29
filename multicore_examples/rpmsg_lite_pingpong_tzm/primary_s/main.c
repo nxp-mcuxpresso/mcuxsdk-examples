@@ -86,10 +86,10 @@ static void RPMsgRemoteReadyEventHandler(mcmgr_core_t coreNum, uint16_t eventDat
  */
 int main(void)
 {
-    volatile int32_t has_received;
-    volatile uint16_t RPMsgRemoteReadyEventData = 0;
-    struct rpmsg_lite_ept_static_context my_ept_context_s;
-    struct rpmsg_lite_endpoint *my_ept_s;
+    volatile int32_t has_received                         = 0;
+    volatile uint16_t RPMsgRemoteReadyEventData           = 0;
+    struct rpmsg_lite_ept_static_context my_ept_context_s = {0};
+    struct rpmsg_lite_endpoint *my_ept_s                  = NULL;
 
     /* Initialize standard SDK demo application pins */
     BOARD_InitHardware();
@@ -136,9 +136,21 @@ int main(void)
 
     rpmsg_lite_instance_s =
         rpmsg_lite_master_init(rpmsg_lite_base, SH_MEM_TOTAL_SIZE, RPMSG_LITE_LINK_ID, RL_NO_FLAGS, &rpmsg_lite_ctxt_s);
+    if (rpmsg_lite_instance_s == NULL)
+    {
+        (void)PRINTF("Failed to initialize rpmsg\r\n");
+        goto error;
+    }
 
     my_ept_s = rpmsg_lite_create_ept(rpmsg_lite_instance_s, LOCAL_EPT_ADDR, my_ept_read_cb, (void *)&has_received,
                                      &my_ept_context_s);
+    if (my_ept_s == NULL)
+    {
+        (void)PRINTF("Failed to create endpoint...\r\n");
+        (void)rpmsg_lite_deinit(rpmsg_lite_instance_s);
+        rpmsg_lite_instance_s = NULL;
+        goto error;
+    }
 
     has_received = 0;
 
@@ -168,8 +180,10 @@ int main(void)
 
     /* jump to the non-secure domain */
     TZM_JumpToNormalWorld(NON_SECURE_START);
+
+error:
     for (;;)
     {
-        /* This point should never be reached */
+        /* This point should never be reached except on error */
     }
 }
