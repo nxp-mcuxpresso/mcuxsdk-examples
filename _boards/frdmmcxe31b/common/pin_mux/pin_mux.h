@@ -116,6 +116,24 @@ void BOARD_InitFlexCANPins(void);
  */
 void BOARD_InitFLASHPins(void);
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitDEBUG_UARTPins_deinit(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSPIPins_deinit(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitI2CPins_deinit(void);
+
 #if defined(__cplusplus)
 }
 #endif

@@ -109,6 +109,66 @@ void BOARD_InitDEBUG_UARTPins(void)
     SIUL2_PinInit(&pin_pte14_config);
 }
 
+void BOARD_InitDEBUG_UARTPins_deinit(void)
+{
+    const siul2_pin_settings_t pin_pte3_config =
+    {
+         .base                        = SIUL2,
+         .pinPortIdx                  = 131u,
+         .mux                         = kPORT_MUX_AS_GPIO,
+         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+         .invert                      = kPORT_INVERT_DISABLED,
+         .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+         .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
+         .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+         .inputMuxReg                 = {
+                                          192u
+                                        },
+         .inputMux                    = {
+                                          kPORT_INPUT_MUX_ALT0,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT,
+                                          kPORT_INPUT_MUX_NO_INIT
+                                        },
+         .initValue                   = 2u
+     };
+    SIUL2_PinInit(&pin_pte3_config);
+ 
+ 
+    const siul2_pin_settings_t pin_pte14_config =
+     {
+         .base                        = SIUL2,
+         .pinPortIdx                  = 142u,
+         .mux                         = kPORT_MUX_AS_GPIO,
+         .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+         .invert                      = kPORT_INVERT_DISABLED,
+         .inputBuffer                 = kPORT_INPUT_BUFFER_DISABLED,
+         .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+         .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+         .initValue                   = 2u
+     };
+     SIUL2_PinInit(&pin_pte14_config);    
+}
+
 void BOARD_InitLEDsPins(void)
 {
     /* Red LED. */
@@ -360,6 +420,87 @@ void BOARD_InitI2CPins(void)
     SIUL2_PinInit(&pin_ptc7_config);
 }
 
+void BOARD_InitI2CPins_deinit(void)
+{
+    const  siul2_pin_settings_t pin_ptc6_config =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 70u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .pullConfig                  = kPORT_INTERNAL_PULL_UP_ENABLED,
+        .pullKeep                    = kPORT_PULL_KEEP_ENABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         219u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT0,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u,
+    };
+
+    SIUL2_PinInit(&pin_ptc6_config);
+
+    const  siul2_pin_settings_t pin_ptc7_config =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 71u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .pullConfig                  = kPORT_INTERNAL_PULL_UP_ENABLED,
+        .pullKeep                    = kPORT_PULL_KEEP_ENABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         217u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT0,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u,
+    };
+
+    SIUL2_PinInit(&pin_ptc7_config);
+}
+
 void BOARD_InitSPIPins(void)
 {
     const  siul2_pin_settings_t pin_ptb18_config =
@@ -501,6 +642,169 @@ void BOARD_InitSPIPins(void)
                                        },
         .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT5,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u,
+    };
+
+    SIUL2_PinInit(&pin_pta30_config);
+}
+
+void BOARD_InitSPIPins_deinit(void)
+{
+    const  siul2_pin_settings_t pin_ptb18_config =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 50u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_DISABLED,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_DOWN_ENABLED,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         233u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT0,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u,
+    };
+
+    SIUL2_PinInit(&pin_ptb18_config);
+
+    const  siul2_pin_settings_t pin_pta28_config =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 28u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_DISABLED,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_DOWN_ENABLED,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         238u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT0,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u,
+    };
+
+    SIUL2_PinInit(&pin_pta28_config);
+
+    const  siul2_pin_settings_t pin_pta29_config =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 29u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_DISABLED,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_DOWN_ENABLED,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         239u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT0,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u,
+    };
+
+    SIUL2_PinInit(&pin_pta29_config);
+
+    const  siul2_pin_settings_t pin_pta30_config =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 30u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_DISABLED,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_DOWN_ENABLED,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         240u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
