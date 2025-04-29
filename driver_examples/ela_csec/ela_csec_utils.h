@@ -8,10 +8,10 @@
 #ifndef SOURCES_CSEC_UTILS_H_
 #define SOURCES_CSEC_UTILS_H_
 
-#include "csec_driver.h"
+#include "ela_csec_driver.h"
 
 /* This function sets the MASTER_ECU key with a key (g_authIdKey) defined in the
- * csec_utils.c file. This key will be used as an authorization secret for updating
+ * ela_csec_utils.c file. This key will be used as an authorization secret for updating
  * user keys.
  * Setting the MASTER_ECU key will work only for the first time, in order to use
  * another value for the key, there are two options:

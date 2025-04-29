@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "csec_utils.h"
+#include "ela_csec_utils.h"
 
 #define STATUS_SUCCESS kStatus_Success
 

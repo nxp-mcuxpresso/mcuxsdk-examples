@@ -1,6 +1,6 @@
 # It is optional to provide example specific Kconfig.
 
-mainmenu "CSEC"
+mainmenu "ELA_CSEC"
 
 # Need to refer the root Kconfig.mcuxpreso to get all Kconfig data
 source "${SdkRootDirPath}/Kconfig.mcuxpresso"

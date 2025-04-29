@@ -10,7 +10,7 @@ volatile int exit_code = 0;
 #include <stdint.h>
 #include <stdbool.h>
 #include "fsl_debug_console.h"
-#include "csec_utils.h"
+#include "ela_csec_utils.h"
 #include "fsl_flash.h"
 #include "board.h"
 #include "app.h"

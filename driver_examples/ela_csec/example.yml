@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+ela_csec:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/ela_csec
+    project-root-path: boards/${board}/driver_examples/ela_csec/${multicore_foldername}
+    document:
+      name: ela_csec${core_id_suffix_name}
+      category: driver_examples/ela_csec
+      brief: The purpose of this demo application is to show the user how to use the EdgeLock Accelerator Cryptographic Services Engine module from the MCXE-247 MCU with the MCUX SDK API.
+      example_readme:
+      - examples/driver_examples/ela_csec/readme.md
+      - ${board_root}/${board}/driver_examples/ela_csec/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe247: []
