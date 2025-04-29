@@ -30,7 +30,7 @@ mcux_add_configuration(
         -DgNvStorageIncluded_d=1\
         -DgAppButtonCnt_c=1\
         -DUSE_PB_RAM_AS_SYSTEM_MEMORY=1\
-        -DgHwParamsProdDataPlacement_c=gHwParamsProdDataPlacementLegacyMode_c\
+        -DgHwParamsProdDataPlacement_c=gHwParamsProdDataIfrMode_c\
         -DgDebugConsoleEnable_d=1\
         -DDebugConsole_c=1\
         -DFSL_OSA_TASK_ENABLE=1\
