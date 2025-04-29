@@ -663,7 +663,7 @@ void BOARD_ConfigMPU(void)
     ARM_MPU_SetRegion(1U, ARM_MPU_RBAR(0x28000000, ARM_MPU_SH_OUTER, 0U, 1U, 0U), ARM_MPU_RLAR(0x3FFFFFFF, 4U));
 
     /* Enable MPU(use default memory map when access the memory within region) */
-    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
+    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
 
     /* Enable ICache and DCache */
     XCACHE_EnableCache(M33_CACHE_CTRLPC);

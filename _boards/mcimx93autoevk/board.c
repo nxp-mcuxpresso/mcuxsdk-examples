@@ -378,7 +378,7 @@ void BOARD_ConfigMPU(void)
 #endif
 
     /* Enable MPU(use default memory map when access the memory within region) */
-    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk);
+    ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
 
     /* Enable ICache and DCache */
     XCACHE_EnableCache(LPCAC_PC);
