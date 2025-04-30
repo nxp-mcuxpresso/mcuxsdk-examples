@@ -18,7 +18,11 @@
  ******************************************************************************/
 #define PRINTF_NSE DbgConsole_Printf_NSE
 
+#if CONFIG_SECONDARY_CORE_USES_TZM == 1
+#define REMOTE_EPT_ADDR   (31U)
+#else
 #define REMOTE_EPT_ADDR   (30U)
+#endif /* CONFIG_SECONDARY_CORE_USES_TZM == 1 */
 #define LOCAL_NS_EPT_ADDR (41U)
 
 typedef struct the_message
@@ -59,6 +63,7 @@ int main(void)
                                                                           &callback_data_ns};
     bool error_occurred                                                = false;
     char str[50];
+    struct rpmsg_lite_send_params_ns msg_params                        = {REMOTE_EPT_ADDR, (char *)&msg, sizeof(THE_MESSAGE)};
 
     /* Print the initial banner */
     PRINTF_NSE("\r\nNon-secure portion of the application started!\r\n");
@@ -77,7 +82,6 @@ int main(void)
 
     /* Send the first message from the non-secure domain to the remoteproc */
     msg.DATA                                    = 1000U;
-    struct rpmsg_lite_send_params_ns msg_params = {REMOTE_EPT_ADDR, (char *)&msg, sizeof(THE_MESSAGE)};
     (void)rpmsg_lite_send_nse(my_ept_ns, &msg_params, RL_DONT_BLOCK);
 
     while (msg.DATA <= 1050U)

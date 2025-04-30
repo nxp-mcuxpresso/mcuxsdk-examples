@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(rpmsg_lite_pingpong_tzm_primary_core_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/ns)
+project(rpmsg_lite_pingpong_tzm_primary_core_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_ns)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -16,7 +16,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
 
 # Include reconfigure for Non Secure Project
-include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/ns/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_ns/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES main.c

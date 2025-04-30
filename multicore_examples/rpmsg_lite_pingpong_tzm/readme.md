@@ -27,6 +27,11 @@ This message pingpong finishes when the counter reaches the value of 1050.
 Debug prints from the non-secure portion of the application are routed into the secure domain using
 the dedicated veneer function.
 
+When the secondary core has the trustzone, the secure and non-secure projects for the secondary core are provided
+and the example shows data exchange between the primary core secure domain and the secondary core secure domain first
+and then non-secure domains are reached on both cores and the data exchange between the primary core non-secure domain 
+and the secondary core non-secure domain is demonstrated.
+
 ## Shared memory usage
 
 This multicore example uses the shared memory for data exchange.
@@ -40,10 +45,10 @@ The shared memory assignment to the secure domain is done in the BOARD_InitTrust
 This shows example how to build application for `frdmmcxn947` board with `cm33_core0` core_id.
 Change the `-b <board>` parameter based on board you want to build.
 Change the `-Dcore_id=<core_id>` parameter based on board core you want to build.
-For these parameters please see attribute `boards:` in `primary/example.yml`.
+For these parameters please see attribute `boards:` in `primary_ns/example.yml`.
 
 ```
-west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_tzm/primary --toolchain armgcc --config debug -b frdmmcxn947 -Dcore_id=cm33_core0
+west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_tzm/primary_ns --toolchain armgcc --config debug -b frdmmcxn947 -Dcore_id=cm33_core0
 ```
 
 ## Supported Boards
@@ -52,3 +57,4 @@ west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_tzm/primar
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)
+- [MIMXRT700-EVK](../../_boards/mimxrt700evk/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md)

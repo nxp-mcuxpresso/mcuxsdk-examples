@@ -1,0 +1,60 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+cmake_minimum_required(VERSION 3.22.0)
+
+include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
+
+project(rpmsg_lite_pingpong_tzm_secondary_core_ns LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/)
+
+include(${SdkRootDirPath}/CMakeLists.txt)
+
+# This will point to: ${SdkRootDirPath}/${board_root}/${board}/multicore_examples/reconfig.cmake
+# where common board multicore properties are set.
+include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
+
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_ns/reconfig.cmake OPTIONAL)
+
+mcux_add_source(
+    SOURCES main.c
+            ../veneer_table.h
+)
+
+mcux_add_include(
+    INCLUDES .
+             ../
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES examples/trustzone_examples/tzm_api/
+)
+
+mcux_add_configuration(
+        CC "-D__USE_SHMEM"
+)
+
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x400 \
+             __heap_size__=0x2000 \
+             __use_shmem__=1 \
+             __multicore__=1 \
+            "
+)
+
+mcux_add_mdk_configuration(
+        LD "--library_type=standardlib"
+)
+
+mcux_add_library(
+    BASE_PATH ${APPLICATION_BINARY_DIR}
+    LIBS "../rpmsg_lite_pingpong_tzm_secondary_core_s/${CONFIG_TOOLCHAIN}/rpmsg_lite_pingpong_tzm_secondary_s_CMSE_lib.o"
+    TOOLCHAINS armgcc mdk iar
+)
+
+mcux_convert_binary(
+        TOOLCHAINS armgcc mdk iar
+        BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_ns_image.bin
+)

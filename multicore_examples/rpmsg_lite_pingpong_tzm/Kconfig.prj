@@ -1,0 +1,15 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+menu "Project Settings"
+
+config SECONDARY_CORE_USES_TZM
+    bool "Is TZM allowed for secondary core?"
+    default y
+    help
+        Does the secondary core use TrustZone-M, i.e. does it run both the secure or non-secure projects?
+
+endmenu
+
+source "${SdkRootDirPath}/Kconfig.mcuxpresso"

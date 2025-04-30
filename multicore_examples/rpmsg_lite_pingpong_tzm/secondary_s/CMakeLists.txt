@@ -15,7 +15,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 # where common board multicore properties are set.
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
 
-include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_s/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES main.c

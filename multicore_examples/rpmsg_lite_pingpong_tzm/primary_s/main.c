@@ -111,6 +111,20 @@ int main(void)
     invalidate_cache_for_core1_image_memory(CORE1_BOOT_ADDRESS, core1_image_size);
 #endif /* APP_INVALIDATE_CACHE_FOR_SECONDARY_CORE_IMAGE_MEMORY*/
 
+#if CONFIG_SECONDARY_CORE_USES_TZM == 1
+    uint32_t core1_ns_image_size;
+    core1_ns_image_size = get_core1_ns_image_size();
+    (void)PRINTF("Copy CORE1 NS image to address: 0x%x, size: %d\r\n", (void *)(char *)CORE1_NS_BOOT_ADDRESS,
+                 core1_ns_image_size);
+
+    /* Copy application from FLASH to RAM */
+    (void)memcpy((void *)(char *)CORE1_NS_BOOT_ADDRESS, (void *)CORE1_NS_IMAGE_START, core1_ns_image_size);
+
+#ifdef APP_INVALIDATE_CACHE_FOR_SECONDARY_CORE_IMAGE_MEMORY
+    invalidate_cache_for_core1_image_memory(CORE1_NS_BOOT_ADDRESS, core1_ns_image_size);
+#endif /* APP_INVALIDATE_CACHE_FOR_SECONDARY_CORE_IMAGE_MEMORY*/
+#endif /* CONFIG_SECONDARY_CORE_USES_TZM == 1 */
+
 #endif /* CORE1_IMAGE_COPY_TO_RAM */
 
     /* Initialize MCMGR before calling its API */

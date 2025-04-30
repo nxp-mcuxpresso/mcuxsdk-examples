@@ -8,7 +8,7 @@ rpmsg_lite_pingpong_tzm_secondary_core_s:
   section-type: application
   contents:
     meta_path: examples/multicore_examples/rpmsg_lite_pingpong_tzm/secondary_s
-    project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${multicore_foldername}/
+    project-root-path: boards/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${multicore_foldername}/s/
     document:
       name: rpmsg_lite_pingpong_tzm_secondary_core_s
       category: multicore_examples
@@ -41,6 +41,7 @@ rpmsg_lite_pingpong_tzm_secondary_core_s:
       - ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    mimxrt700evk@cm33_core1: []
     frdmmcxn947@cm33_core1: []
     lpcxpresso55s69@cm33_core1: []
     mcxn5xxevk@cm33_core1: []

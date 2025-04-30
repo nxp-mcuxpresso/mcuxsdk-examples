@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(rpmsg_lite_pingpong_tzm_primary_core_s LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s)
+project(rpmsg_lite_pingpong_tzm_primary_core_s LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_s)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -16,7 +16,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
 
 # Include reconfigure for Secure Project
-include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/s/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/${core_id}_s/reconfig.cmake OPTIONAL)
 
 include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_tzm/reconfig.cmake OPTIONAL)
 
@@ -56,8 +56,8 @@ mcux_add_linker_symbol(
 
 mcux_add_iar_configuration(
     CC "--cmse"
-    LD "--image_input=${APPLICATION_BINARY_DIR}/../rpmsg_lite_pingpong_tzm_secondary_core_s/iar/core1_image.bin,_core1_image,__core1_image,4 \
-        --keep _core1_image \
+    LD "--image_input=${APPLICATION_BINARY_DIR}/../rpmsg_lite_pingpong_tzm_secondary_core_s/iar/core1_image.bin,_core1_image,__core1_image,4\
+        --keep=_core1_image\
         --import_cmse_lib_out=${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/rpmsg_lite_pingpong_tzm_s_CMSE_lib.o"
 )
 
