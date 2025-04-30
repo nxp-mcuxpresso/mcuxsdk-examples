@@ -1,3 +1,9 @@
+/*
+ * Copyright 2025 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 ################################################################################
  Secure Boot - Getting Started
 ################################################################################
@@ -600,4 +606,3 @@ Please follow the step by step guide how to do an initial provisioning, and foll
     - The Secure Provisioning SDK (SPSDK) user documentation: http://spsdk.nxp.com/index.html
     - The KW45B41Z Reference Manual, security chapters.
 
-*Copyright 2023, NXP. All rights reserved.*
