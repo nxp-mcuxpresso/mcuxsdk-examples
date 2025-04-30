@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2019 NXP
+ * Copyright 2018-2019, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -43,6 +43,7 @@
 //    FMSTR_SERIAL_MCUX_USB    -   MCUXSDK driver for USB peripheral with CDC class
 // FMSTR_CAN      -   Standard CAN transport protocol (Used by various types of CAN peripherals)
 //    FMSTR_CAN_MCUX_FLEXCAN   -   MCUXSDK driver for FlexCAN peripheral
+//    FMSTR_CAN_MCUX_FLEXCANFD     MCUXSDK driver for FlexCAN peripheral with flexible data rate
 //    FMSTR_CAN_MCUX_MCAN      -   MCUXSDK driver for MCAN peripheral
 //    FMSTR_CAN_MCUX_MSCAN     -   MCUXSDK driver for msCAN peripheral
 // FMSTR_PDBDM    -   Packet Driven BDM (direct memory access via JTAG, SWD or BDM debug probes). No low-level driver used.
@@ -58,6 +59,11 @@
 //! FlexCAN-specific, communication message buffers
 #define FMSTR_FLEXCAN_TXMB      1
 #define FMSTR_FLEXCAN_RXMB      2
+
+/* Enable CAN-FD mode */
+#define FMSTR_CAN_USE_CANFD     0
+// Use CAN FD flexible data rate for TX frames
+#define FMSTR_CANFD_USE_BRS     0
 
 //! Input/output communication buffer size
 #define FMSTR_COMM_BUFFER_SIZE  0   // Set to 0 for "automatic"

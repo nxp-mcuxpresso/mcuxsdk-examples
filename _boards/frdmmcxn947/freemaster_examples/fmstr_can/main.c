@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2019 NXP
+ * Copyright 2018-2019, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -21,6 +21,17 @@
 #include "freemaster_flexcan.h"
 
 #include "freemaster_example.h"
+
+////////////////////////////////////////////////////////////////////////////////
+// Defines
+////////////////////////////////////////////////////////////////////////////////
+#define EXAMPLE_CAN_BASE                      CAN0
+#define EXAMPLE_CAN_INTERRUPT                 CAN0_IRQn
+#define EXAMPLE_CAN_INTERRUPT_HANDLER         CAN0_IRQHandler
+#define EXAMPLE_CAN_CLOCK_FREQUENCY           CLOCK_GetFlexcanClkFreq(0U)
+#define EXAMPLE_CAN_BITRATE                   500000U
+#define EXAMPLE_CAN_FD_BITRATE                2000000U
+#define EXAMPLE_USE_CAN_FD                    0
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
@@ -74,13 +85,13 @@ static void init_freemaster_can(void)
 {
     flexcan_config_t flexcanConfig = { 0 };
     flexcan_timing_config_t timing_config = { 0 };
-    uint32_t canSrcClock = CLOCK_GetFlexcanClkFreq(0U);
+    uint32_t canSrcClock = EXAMPLE_CAN_CLOCK_FREQUENCY;
 
     /* Init FlexCAN module. */
     /*
      * flexcanConfig.clkSrc = kFLEXCAN_ClkSrcOsc;
-     * flexcanConfig.baudRate = 1000000U;
-     * flexcanConfig.baudRateFD = 2000000U;
+     * flexcanConfig.bitRate = 1000000U;
+     * flexcanConfig.bitRateFD = 2000000U;
      * flexcanConfig.maxMbNum = 16;
      * flexcanConfig.enableLoopBack = false;
      * flexcanConfig.enableSelfWakeup = false;
@@ -90,20 +101,30 @@ static void init_freemaster_can(void)
     FLEXCAN_GetDefaultConfig(&flexcanConfig);
 
     flexcanConfig.clkSrc   = kFLEXCAN_ClkSrcPeri;
-    flexcanConfig.baudRate = 500000U;
+    flexcanConfig.bitRate = EXAMPLE_CAN_BITRATE;
 
-    /* Update the improved timing configuration */
-    if (FLEXCAN_CalculateImprovedTimingValues(CAN0, flexcanConfig.baudRate, canSrcClock, &timing_config))
+#if EXAMPLE_USE_CAN_FD
+    flexcanConfig.bitRateFD = EXAMPLE_CAN_FD_BITRATE;
+
+     /* Update the improved timing configuration */
+    if (FLEXCAN_FDCalculateImprovedTimingValues(EXAMPLE_CAN_BASE, flexcanConfig.bitRate, flexcanConfig.bitRateFD, canSrcClock, &timing_config))
         flexcanConfig.timingConfig = timing_config;
 
-    FLEXCAN_Init(CAN0, &flexcanConfig, canSrcClock);
+    FLEXCAN_FDInit(EXAMPLE_CAN_BASE, &flexcanConfig, canSrcClock, kFLEXCAN_64BperMB, true);
+#else
+    /* Update the improved timing configuration */
+    if (FLEXCAN_CalculateImprovedTimingValues(EXAMPLE_CAN_BASE, flexcanConfig.bitRate, canSrcClock, &timing_config))
+        flexcanConfig.timingConfig = timing_config;
+
+    FLEXCAN_Init(EXAMPLE_CAN_BASE, &flexcanConfig, canSrcClock);
+#endif
 
     /* Register communication module used by FreeMASTER driver. */
-    FMSTR_CanSetBaseAddress(CAN0);
+    FMSTR_CanSetBaseAddress(EXAMPLE_CAN_BASE);
 
 #if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
     /* Enable CAN interrupt. */
-    EnableIRQ(CAN0_IRQn);
+    EnableIRQ(EXAMPLE_CAN_INTERRUPT);
     EnableGlobalIRQ(0);
 #endif
 }
@@ -120,7 +141,7 @@ static void init_freemaster_can(void)
  *
  */
 
-void CAN0_IRQHandler(void)
+void EXAMPLE_CAN_INTERRUPT_HANDLER(void)
 {
     /* Call FreeMASTER Interrupt routine handler */
     FMSTR_CanIsr();
