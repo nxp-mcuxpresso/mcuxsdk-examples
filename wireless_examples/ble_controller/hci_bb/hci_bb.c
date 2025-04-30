@@ -201,14 +201,12 @@ static void Hcit_SendMessageToController(void)
 {
 
     uint8_t*        pSerialPacket = NULL;
-    bleResult_t     result = gBleSuccess_c;
     uint32_t        packet_Size = mHcitData.bytesReceived + 1;
 
     pSerialPacket = MEM_BufferAlloc(packet_Size);
 
     if (pSerialPacket == NULL)
     {
-        result = gBleOutOfMemory_c;
         assert(0);
     }
     else
@@ -245,7 +243,6 @@ static void Hcit_SendMessageToController(void)
     }
 
     mPacketDetectStep = mDetectMarker_c;
-    (void)result;
 }
 
 void HCI_AppUartRxCallback(void *callbackParam,
@@ -253,10 +250,22 @@ void HCI_AppUartRxCallback(void *callbackParam,
                            serial_manager_status_t status)
 {
     uint8_t         recvChar;
-
+    uint8_t*        buffer;
+    uint32_t        length;
     uint32_t        count = 0U;
-    if(kStatus_SerialManager_Success != SerialManager_TryRead( (serial_read_handle_t)g_appUartReadHandle, &recvChar, 1, &count))
 
+    if( mPacketDetectStep != mPacketInProgress_c )
+    {
+        buffer = &recvChar;
+        length = 1;
+    }
+    else
+    {
+        buffer = &mHcitData.pPacket->raw[mHcitData.bytesReceived];
+        length = mHcitData.expectedLength - mHcitData.bytesReceived;
+    }
+
+    if(kStatus_SerialManager_Success != SerialManager_TryRead( (serial_read_handle_t)g_appUartReadHandle, buffer, length, &count))
     {
         return;
     }
@@ -266,9 +275,9 @@ void HCI_AppUartRxCallback(void *callbackParam,
         switch( mPacketDetectStep )
         {
             case mDetectMarker_c:
-                if( (recvChar == (uint8_t)gHciDataPacket_c) ||
-                    (recvChar == (uint8_t)gHciEventPacket_c) ||
-                    (recvChar == (uint8_t)gHciCommandPacket_c) )
+                if( (*buffer == (uint8_t)gHciDataPacket_c) ||
+                    (*buffer == (uint8_t)gHciEventPacket_c) ||
+                    (*buffer == (uint8_t)gHciCommandPacket_c) )
                 {
                     union
                     {
@@ -279,7 +288,7 @@ void HCI_AppUartRxCallback(void *callbackParam,
                     packetTemp.pPacketHdr = &mHcitData.pktHeader;
                     mHcitData.pPacket = packetTemp.pPacket;
 
-                    mHcitData.pktHeader.packetTypeMarker = (hciPacketType_t)recvChar;
+                    mHcitData.pktHeader.packetTypeMarker = (hciPacketType_t)*buffer;
                     mHcitData.bytesReceived = 1;
 
                     mPacketDetectStep = mDetectHeader_c;
@@ -287,7 +296,7 @@ void HCI_AppUartRxCallback(void *callbackParam,
                 break;
 
             case mDetectHeader_c:
-                mHcitData.pPacket->raw[mHcitData.bytesReceived++] = recvChar;
+                mHcitData.pPacket->raw[mHcitData.bytesReceived++] = *buffer;
 
                 switch( mHcitData.pktHeader.packetTypeMarker )
                 {
@@ -338,7 +347,7 @@ void HCI_AppUartRxCallback(void *callbackParam,
                         break;
                     case gHciSynchronousDataPacket_c:
                     default:
-                        ; /* Not Supported */
+                        /* Not Supported */
                         break;
                 }
 
@@ -352,24 +361,35 @@ void HCI_AppUartRxCallback(void *callbackParam,
                     {
                         Hcit_SendMessageToController();
                     }
+                    else
+                    {
+                        buffer = &mHcitData.pPacket->raw[mHcitData.bytesReceived];
+                        length = mHcitData.expectedLength - mHcitData.bytesReceived;
+                    }
                 }
                 break;
 
             case mPacketInProgress_c:
-                mHcitData.pPacket->raw[mHcitData.bytesReceived++] = recvChar;
+                mHcitData.bytesReceived += count;
 
                 if( mHcitData.bytesReceived == mHcitData.expectedLength )
                 {
                     Hcit_SendMessageToController();
+                    buffer = &recvChar;
+                    length = 1;
                 }
-                break;
+                else
+                {
+                    buffer = &mHcitData.pPacket->raw[mHcitData.bytesReceived];
+                    length = mHcitData.expectedLength - mHcitData.bytesReceived;
+                }
+            break;
 
             default:
-                ; /* No action required */
                 break;
         }
 
-        if(kStatus_SerialManager_Success != SerialManager_TryRead( (serial_read_handle_t)g_appUartReadHandle, &recvChar, 1, &count))
+        if(kStatus_SerialManager_Success != SerialManager_TryRead((serial_read_handle_t)g_appUartReadHandle, buffer, length, &count))
         {
             return;
         }
