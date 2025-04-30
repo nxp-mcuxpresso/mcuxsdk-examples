@@ -37,15 +37,15 @@ static const int _ciphersuite_list[] = {
 mbedtls_ctx_t *_mbedtls;
 uint32_t _verify_num;
 
-static int port_mbedtls_rng(void *p_rng, uint8_t *buf, uint32_t len)
+static int port_mbedtls_rng(void *p_rng, unsigned char *buf, size_t len)
 {
     if (!buf)
     {
         return -1;
     }
-    for (uint32_t i = 0; i < len; ++i)
+    for (uint32_t i = 0; i < (uint32_t)len; ++i)
     {
-        buf[i] = (uint8_t)rand();
+        buf[i] = (unsigned char)rand();
     }
     return 0;
 }
@@ -186,7 +186,7 @@ static int ncp_encrypt_init_mbedtls(void)
     (void) TRNG_Init(TRNG, &trngConfig);
     (void) TRNG_GetRandomData(TRNG, &seed, sizeof(seed));
     (void) srand(seed);
-    (void) port_mbedtls_rng(NULL, _mbedtls->entropy_buf, sizeof(_mbedtls->entropy_buf));
+    (void) port_mbedtls_rng(NULL, (unsigned char *)(_mbedtls->entropy_buf), sizeof(_mbedtls->entropy_buf));
     mbedtls_ssl_config_init(&_mbedtls->conf);
     // mbedtls_platform_set_printf(&DbgConsole_Printf);
 #ifdef MBEDTLS_DEBUG_C
