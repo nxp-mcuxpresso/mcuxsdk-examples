@@ -86,8 +86,11 @@ void lpm_pm3_exit_hw_reinit()
 #if CONFIG_POWER_MANAGER
 status_t powerManager_BoardNotify(pm_event_type_t eventType, uint8_t powerState, void *data)
 {
-    if (is_hs_handshake_done != WLAN_HOSTSLEEP_SUCCESS)
+    if ((wlan_is_started() != 0) && (is_hs_handshake_done != WLAN_HOSTSLEEP_SUCCESS))
+    {
         return kStatus_PMPowerStateNotAllowed;
+    }
+
     if (eventType == kPM_EventEnteringSleep)
     {
         if (powerState == PM_LP_STATE_PM3)

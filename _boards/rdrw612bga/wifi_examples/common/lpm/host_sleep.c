@@ -130,7 +130,7 @@ void host_sleep_cli_notify(void)
 {
 #if CONFIG_UART_INTERRUPT
 #if CONFIG_POWER_MANAGER
-    if (pm_handle.targetState == PM_LP_STATE_PM3)
+    if (pm_handle.targetState == PM_LP_STATE_PM3 && usart_suspend_flag == false)
     {
         usart_suspend_flag = true;
         cli_uart_notify();
@@ -305,7 +305,6 @@ uint8_t get_chip_info(void)
 
 void powerManager_EnterLowPower()
 {
-    /* Check is_wakeup_cond_set first, as wakelcok will be deleted in wlan-reset 0 */
     if (wlan_host_sleep_state && pm_handle.enable && !wakelock_isheld())
     {
         if((get_chip_info() == 1) || (get_chip_info() == 2))

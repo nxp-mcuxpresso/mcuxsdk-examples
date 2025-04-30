@@ -160,7 +160,7 @@ void lpm_pm3_exit_hw_reinit()
 status_t powerManager_PmNotify(pm_event_type_t eventType, uint8_t powerState, void *data)
 {
 #if CONFIG_NCP_WIFI
-    if (is_hs_handshake_done != WLAN_HOSTSLEEP_SUCCESS)
+    if (wlan_is_started() != 0 && is_hs_handshake_done != WLAN_HOSTSLEEP_SUCCESS)
         return kStatus_PMPowerStateNotAllowed;
 #endif
 
@@ -224,7 +224,7 @@ static bool board_notify_done = false;
 status_t powerManager_BoardNotify(pm_event_type_t eventType, uint8_t powerState, void *data)
 {
 #if CONFIG_NCP_WIFI
-    if (is_hs_handshake_done != WLAN_HOSTSLEEP_SUCCESS)
+    if (wlan_is_started() != 0 && is_hs_handshake_done != WLAN_HOSTSLEEP_SUCCESS)
         return kStatus_PMPowerStateNotAllowed;
 #endif /* CONFIG_NCP_WIFI */
 #if CONFIG_NCP_BLE
