@@ -28,7 +28,7 @@ mcux_add_configuration(
                 -DFSL_OSA_TASK_ENABLE=1\
                 -DHAL_FLASH_ROMAPI_DRIVER=1\
                 -DgUseHciTransportDownward_d=1\
-                -DSERIAL_MANAGER_TASK_HANDLE_TX=1\
+                -DSERIAL_MANAGER_TASK_HANDLE_TX=0\
                 -DOSA_USED\
                 -DMCUXPRESSO_SDK\
                 -DSDK_OS_BAREMETAL"
