@@ -1,3 +1,8 @@
+/*
+ * Copyright 2025 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
 ################################################################################
 TFM Secure Boot example
 ################################################################################
@@ -8,7 +13,6 @@ The TFM Secure Boot example has the following directory structure:
     |    |-- spt_workspace    - MCUx Secure Provisioning Tool workspace.
     |-- tfm_secureboot_ns     - TFM Non-secure FW.
     |-- tfm_secureboot_s      - TFM Secure FW.
+	|-- tfm_s_crypto_clients  - TFM Secure crypto clients Lib.
 
 Follow the steps described in the "scripts\README.txt" guide.
-
-*Copyright (c) 2022, NXP. All rights reserved.* 
