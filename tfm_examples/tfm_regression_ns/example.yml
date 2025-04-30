@@ -34,3 +34,6 @@ tfm_regression_ns:
     - +armgcc@release
     frdmmcxw71: []
     mcxw71evk: []
+    frdmmcxw72@cm33_core0: []
+    kw47evk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
