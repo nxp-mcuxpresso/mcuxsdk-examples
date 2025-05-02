@@ -12,7 +12,11 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
+#if !defined(gSecLibUsePsa_d) || (gSecLibUsePsa_d == 0)
 #include "els_pkc_mbedtls.h"
+#else
+#include "mcux_psa_els_pkc_common_init.h"
+#endif
 #include "fsl_debug_console.h"
 
 /* -------------------------------------------------------------------------- */
