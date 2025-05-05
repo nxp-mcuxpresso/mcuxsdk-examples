@@ -8,6 +8,8 @@
 #ifndef SBL_CONFIG_H__
 #define SBL_CONFIG_H__
 
+#include "mcux_config.h"
+
 #define CONFIG_MCUBOOT_FLASH_REMAP_BY_SWAP
 #define FLASH_REMAP_OFFSET_REG (&(NPX0->REMAP))
 
@@ -19,9 +21,16 @@
 /*******************************************************************/
 #ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
 
-/* HW Flash Swapping feature is used */
-
+#ifndef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
+/* HW Flash Swapping feature is used if MCUBoot is located in IFR region */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
+#else
+/* 
+ * MCUBoot is located in main flash -> Use overwrite update strategy
+ * Comment this out to enable swap update strategy (default)
+ */
+#define CONFIG_BOOT_OVERWRITE_ONLY
+#endif
 
 /* MCUBoot Flash Config */
 

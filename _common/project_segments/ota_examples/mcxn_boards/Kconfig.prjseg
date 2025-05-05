@@ -1,0 +1,43 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+# MCUboot application - default config
+config MCUX_PRJSEG_module.board.ota_examples.mcxn.default_linker_mcuboot
+    bool
+    default y
+    depends on !MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+    depends on MCUX_COMPONENT_middleware.mcuboot.bootutil
+    depends on !MCUX_COMPONENT_middleware.mcuboot.nxp_app_support
+    help
+      Use default mcuboot linker - bootloader located in IFR region
+
+# MCUboot application - custom config
+config MCUX_PRJSEG_module.board.ota_examples.mcxn.custom_linker_mcuboot
+    bool
+    default y
+    depends on MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+    depends on MCUX_COMPONENT_middleware.mcuboot.bootutil
+    depends on !MCUX_COMPONENT_middleware.mcuboot.nxp_app_support
+    help
+      Use custom mcuboot linker - bootloader located in main flash
+
+# OTA application - default config
+config MCUX_PRJSEG_module.board.ota_examples.mcxn.default_linker_application
+    bool
+    default y
+    depends on !MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+    depends on !MCUX_COMPONENT_middleware.mcuboot.bootutil
+    depends on MCUX_COMPONENT_middleware.mcuboot.nxp_app_support
+    help
+      Use default ota app linker - bootloader located in IFR region
+
+# OTA application - custom config
+config MCUX_PRJSEG_module.board.ota_examples.mcxn.custom_linker_application
+    bool
+    default y
+    depends on MCUX_COMPONENT_middleware.mcuboot.mcxn_custom_cfg.main_flash_only
+    depends on !MCUX_COMPONENT_middleware.mcuboot.bootutil
+    depends on MCUX_COMPONENT_middleware.mcuboot.nxp_app_support
+    help
+      Use custom ota app linker - bootloader located in main flash

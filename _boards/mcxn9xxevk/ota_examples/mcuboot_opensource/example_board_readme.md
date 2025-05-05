@@ -3,18 +3,20 @@ Hardware requirements
 - Micro USB cable
 - MCX-N9XX-EVK board
 - Personal Computer
+
 Board settings
 ============
 
-### MCUBoot layout for the internal flash
+### Default layout setup - bootloader located in IFR region
 
 | Region         | From       | To         | Size   |
 |----------------|------------|------------|--------|
-| MCUboot code   | 0x01008000 | 0x0100FFFF |   32kB |
 | Primary slot   | 0x00000000 | 0x000FFFFF | 1024kB |
 | Secondary slot | 0x00100000 | 0x001FFFFF | 1024kB |
+|----------------|------------|------------|--------|
+| MCUboot code   | 0x01008000 | 0x0100FFFF |   32kB |
 
-- MCUBoot resides in the `Bank_1 IFR_0` region
+- MCUBoot resides in the `Bank_1 IFR_0` region to utilize flash remap feature
 - MCUBoot header size is set to 1024 bytes
 - Signing algorithm is ECDSA-P256
 - Write alignment is 16 bytes
@@ -58,3 +60,40 @@ the following commands:
 
     #Flash CMPA
     blhost -u 0x1FC9,0x014F -- write-memory 0x01004000 cmpa.bin
+
+### Custom layout setup - bootloader located in main flash
+
+Default layout setup using the IFR region limits usage of some hardware features such as mbedTLS (due size of IFR region) or encrypted XIP using NPX module. This custom configuration moves the bootloader to main flash array.
+
+| Region         | From       | To         | Size   |
+|----------------|------------|------------|--------|
+| MCUboot code   | 0x00000000 | 0x0003FFFF |  256kB |
+| Primary slot   | 0x00040000 | 0x0011FFFF |  896kB |
+| Secondary slot | 0x00120000 | 0x001FFFFF |  896kB |
+
+- MCUBoot header size is set to 1024 bytes
+- Signing algorithm is ECDSA-P256
+- Write alignment is 16 bytes
+- MCUBoot is configured to use its `OVERWRITE_ONLY` image update strategy
+
+Image signing example:
+
+    imgtool sign --key sign-ecdsa-p256-priv.pem
+                 --align 16
+                 --version 1.1
+                 --slot-size 0xE0000
+                 --header-size 0x400
+                 --max-sectors 111
+                 --pad-header
+                 ota_mcuboot_basic.bin
+                 ota_mcuboot_basic.SIGNED.bin
+
+The custom build can be generated using `west build` and supports only IAR and GCC toolchain.
+
+Example:
+
+Bootloader:
+`west build -p always examples/ota_examples/mcuboot_opensource -b frdmmcxn947 --config debug --toolchain armgcc -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/mcuboot_opensource.conf"`
+
+OTA application:
+`west build -p always examples/ota_examples/ota_mcuboot_basic -b frdmmcxn947 --config debug --toolchain armgcc -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/ota_mcuboot_basic.conf"`

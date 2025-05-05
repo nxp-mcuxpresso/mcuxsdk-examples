@@ -4,4 +4,4 @@ mcux_add_mdk_configuration(
 )
 
 # Linker file reconfiguration
-include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/linker_common_ifr/linker_reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/linker_common/linker_reconfig.cmake OPTIONAL)

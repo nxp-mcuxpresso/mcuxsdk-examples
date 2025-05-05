@@ -9,6 +9,8 @@
 #ifndef _FLASH_PARTITIONING_H_
 #define _FLASH_PARTITIONING_H_
 
+#include "mcux_config.h"
+
 #define BOOT_FLASH_BASE     0x00000000
 
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
@@ -18,10 +20,28 @@
 #define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
 
 #else
-/* Default layout setup */
-
 /*
- Bootloader located in Bank 1 IFR 0 Region (0x0100_8000 - 0x0100_FFFF)
+ Layout setup
+*/
+#ifdef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
+/*
+ Custom configuration - see readme file
+ Bootloader located in main flash
+
+0x0000_0000  +------------------------+ Flash Start
+             | Bootloader             | 256 kB
+0x0004_0000  +------------------------+
+             | Application_Primary    | 896 kB
+0x0012_0000  +------------------------+
+             | Application_Secondary  | 896 kB
+0x0020_0000  +------------------------+
+*/
+#define BOOT_FLASH_ACT_APP  0x00040000
+#define BOOT_FLASH_CAND_APP 0x00120000
+#else
+/*
+  Default configuration
+  Bootloader located in Bank 1 IFR 0 Region (0x0100_8000 - 0x0100_FFFF)
 
 0x0000_0000  +------------------------+ Flash Start
              | Application_Primary    | 1024 kB
@@ -33,11 +53,9 @@
              | Bootloader             | 32 kB
 0x0100_FFFF  +------------------------+
 */
-
 #define BOOT_FLASH_ACT_APP  0x00000000
 #define BOOT_FLASH_CAND_APP 0x00100000
+#endif /* !MCXN_MCUBOOT_IN_MAIN_FLASH */
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
-
-#endif
-
+#endif /* _FLASH_PARTITIONING_H_ */

@@ -162,3 +162,19 @@ ota_mcuboot_server_enet:
     frdmmcxn947@cm33_core0:
     - -mdk@debug
     - -mdk@release
+ota_mcuboot_server_enet@mcxn_mcuboot_in_main_flash:
+  section-type: custom_application
+  contents:
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/ota_mcuboot_server_enet.conf
+  boards:
+    mcxn5xxevk@cm33_core0:
+    - -mdk@release
+    - -mdk@debug
+    mcxn9xxevk@cm33_core0:
+    - -mdk@release
+    - -mdk@debug
+    frdmmcxn947@cm33_core0:
+    - -mdk@release
+    - -mdk@debug
