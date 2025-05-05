@@ -18,3 +18,4 @@ romapi_runbootloader:
     frdmmcxa153: []
     frdmmcxa156: []
     frdmmcxa346: []
+    frdmmcxl255@cm33: []

@@ -95,7 +95,7 @@ int main()
     /* Init board hardware. */
     BOARD_InitHardware();
 
-    PRINTF("Enter boot image...\n");
+    PRINTF("Enter boot image...\r\n");
     user_app_boot_invoke_option_t arg = {.option = {.B = {
                                                         .tag            = BOOT_ARG_TAG,
                                                         .mode           = kUserAppBootMode_IspBoot,
@@ -105,26 +105,26 @@ int main()
 
     if (arg.option.B.tag != BOOT_ARG_TAG)
     {
-        PRINTF("The runBootloader API arg is Invalid...\n");
+        PRINTF("The runBootloader API arg is Invalid...\r\n");
         error_trap();
     }
     if (arg.option.B.mode == kUserAppBootMode_IspBoot)
     {
-        PRINTF("Calling the runBootloader API to force into the ISP mode: %x...\n", arg.option.B.boot_interface);
-        PRINTF("The runBootloader ISP interface is choosen from the following one:\n");
-        PRINTF("kIspPeripheral_Auto :     0\n");
-        PRINTF("kIspPeripheral_UsbHid :   1\n");
-        PRINTF("kIspPeripheral_Uart :     2\n");
-        PRINTF("kIspPeripheral_SpiSlave : 3\n");
-        PRINTF("kIspPeripheral_I2cSlave : 4\n");
-        PRINTF("kIspPeripheral_Can :      5\n");
+        PRINTF("Calling the runBootloader API to force into the ISP mode: %x...\r\n", arg.option.B.boot_interface);
+        PRINTF("The runBootloader ISP interface is choosen from the following one:\r\n");
+        PRINTF("kIspPeripheral_Auto :     0\r\n");
+        PRINTF("kIspPeripheral_UsbHid :   1\r\n");
+        PRINTF("kIspPeripheral_Uart :     2\r\n");
+        PRINTF("kIspPeripheral_SpiSlave : 3\r\n");
+        PRINTF("kIspPeripheral_I2cSlave : 4\r\n");
+        PRINTF("kIspPeripheral_Can :      5\r\n");
     }
     else
     {
         PRINTF("Not Calling the runBootloader API to force into the ISP mode\n");
     }
 
-    PRINTF("Call the runBootloader API based on the arg : %x...\n", arg);
+    PRINTF("Call the runBootloader API based on the arg : %x...\r\n", arg);
     ROM_API->run_bootloader(&arg);
 
     app_fail();
