@@ -19,3 +19,10 @@ mcux_add_include(
     INCLUDES ${board_root}/evkmimx8ulp/dsp_examples/pdm_sai/fusionf1/.
              ${board_root}/evkmimx8ulp
 )
+
+# Optimize compiler settings to reduce code size for IRAM memory constraints
+mcux_add_xtensa_configuration(
+    TARGETS debug
+    CC "-O1 -g"
+    CX "-O1 -g"
+)
