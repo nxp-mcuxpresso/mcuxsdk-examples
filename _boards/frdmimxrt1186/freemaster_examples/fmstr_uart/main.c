@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2019 NXP
+ * Copyright 2018-2019, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -20,6 +20,15 @@
 #include "freemaster_serial_lpuart.h"
 
 #include "freemaster_example.h"
+
+////////////////////////////////////////////////////////////////////////////////
+// Defines
+////////////////////////////////////////////////////////////////////////////////
+#define EXAMPLE_UART_BASE                     BOARD_DEBUG_UART_BASEADDR
+#define EXAMPLE_UART_INTERRUPT                BOARD_UART_IRQ
+#define EXAMPLE_UART_INTERRUPT_HANDLER        BOARD_UART_IRQ_HANDLER
+#define EXAMPLE_UART_CLOCK_FREQUENCY          BOARD_DEBUG_UART_CLK_FREQ
+#define EXAMPLE_UART_BAUD_RATE                115200U
 
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
@@ -42,7 +51,7 @@ int main(void)
 {
     /* Board initialization */
     BOARD_ConfigMPU();
-    BOARD_InitBootPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
 
     /* FreeMASTER communication layer initialization */
@@ -76,18 +85,18 @@ static void init_freemaster_lpuart(void)
      * config.enableRx = false;
      */
     LPUART_GetDefaultConfig(&config);
-    config.baudRate_Bps = 115200U;
+    config.baudRate_Bps = EXAMPLE_UART_BAUD_RATE;
     config.enableTx = false;
     config.enableRx = false;
 
-    LPUART_Init((LPUART_Type*)BOARD_DEBUG_UART_BASEADDR, &config, BOARD_DEBUG_UART_CLK_FREQ);
+    LPUART_Init((LPUART_Type*)EXAMPLE_UART_BASE, &config, BOARD_DEBUG_UART_CLK_FREQ);
 
     /* Register communication module used by FreeMASTER driver. */
-    FMSTR_SerialSetBaseAddress((LPUART_Type*)BOARD_DEBUG_UART_BASEADDR);
+    FMSTR_SerialSetBaseAddress((LPUART_Type*)EXAMPLE_UART_BASE);
 
 #if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
     /* Enable UART interrupts. */
-    EnableIRQ(BOARD_UART_IRQ);
+    EnableIRQ(EXAMPLE_UART_INTERRUPT);
     EnableGlobalIRQ(0);
 #endif
 
@@ -105,7 +114,7 @@ static void init_freemaster_lpuart(void)
 *
 */
 
-void BOARD_UART_IRQ_HANDLER (void)
+void EXAMPLE_UART_INTERRUPT_HANDLER (void)
 {
     /* Call FreeMASTER Interrupt routine handler */
     FMSTR_SerialIsr();

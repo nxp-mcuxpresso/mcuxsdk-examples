@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2019 NXP
+ * Copyright 2018-2019, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -11,12 +11,14 @@
 // Includes
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "board.h"
 #include "pin_mux.h"
+#include "fsl_clock.h"
 #include "fsl_common.h"
+#include "fsl_debug_console.h"
+
 #include "usb.h"
 #include "usb_phy.h"
-#include "board.h"
-
 #include "usb_device_config.h"
 
 #include "freemaster.h"
@@ -44,7 +46,7 @@ int main(void)
 {
     /* Board initialization */
     BOARD_ConfigMPU();
-    BOARD_InitBootPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
@@ -55,6 +57,10 @@ int main(void)
 
     /* This example uses shared code from FreeMASTER generic example application */
     FMSTR_Example_Init();
+
+    PRINTF(
+        "\nFreeMASTER USB Example.\n"
+        "Connect using USB Serial Device COM port.\n\n");
 
     while(1)
     {
@@ -73,16 +79,10 @@ void USB_DeviceClockInit(void)
         BOARD_USB_PHY_TXCAL45DM,
     };
     usbClockFreq = 24000000;
-    if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    {
-        CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
-    else
-    {
-        CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
+
+    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
+    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
+
     USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
 }
 

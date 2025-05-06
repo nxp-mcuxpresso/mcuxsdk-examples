@@ -1,7 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
-- FRDM-IMXRT1186 board
+- USB-C cable
 - 3.3V CAN transceiver
 - Supported CAN interface (IXXAT, Vector, Kvaser, etc.)
 - Personal Computer
@@ -9,18 +8,13 @@ Hardware requirements
 
 Board settings
 ==============
-CAN transceiver is available on board (use CAN3 port at J22)
+CAN transceiver is available on board (use CAN1).
 
 Multi-core considerations
 =========================
 There are example applications prepared for both CM33 and CM7 cores of the RT118x target platform. 
 The debugger is typically able to load and run the code on any of the cores, but only one core 
-is default (CM33) and will run automatically after reset. This means that the flash-based targets 
-(and both Debug and Release targets on MCUXpresso IDE) are only usable on the default core.
-
-Note that you also need to create an AHAB (Advanced High-assurance Boot) package, put the executable
-application into the package and flash it to the board using SPSDK nxpimage and blhost tools.
-
+is default (CM33) and will run automatically after reset.
 
 Prepare the demo
 ===============

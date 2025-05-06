@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
+- USB-C cable
 - Target microcontroller board
 - Personal Computer
 - FreeMASTER 3.1.2 with TCP/UDP communication plug-in installed

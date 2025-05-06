@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -57,23 +57,14 @@ static void example_task(void *arg);
 int main(void)
 {
     FMSTR_NET_IF_CAPS caps;
-
-    const clock_sys_pll1_config_t sysPll1Config = {
-        .pllDiv2En = true,
-    };
-
     memset(&caps, 0, sizeof(caps));
 
     /* Board initialization */
     BOARD_ConfigMPU();
-    BOARD_InitBootPins();
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitNETPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-
-    CLOCK_InitSysPll1(&sysPll1Config);
-
-    /* Select syspll2pfd3, 528*18/24 = 396M */
-    CLOCK_InitPfd(kCLOCK_PllSys2, kCLOCK_Pfd3, 24);
 
     /* FreeMaster task */
     if(xTaskCreate(fmstr_task, "fmstr_task", EXAMPLE_THREAD_STACKSIZE, NULL, EXAMPLE_FMSTR_THREAD_PRIO, NULL) == pdFAIL)

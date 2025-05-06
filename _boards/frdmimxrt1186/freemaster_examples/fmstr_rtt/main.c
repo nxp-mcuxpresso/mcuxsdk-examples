@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -36,7 +36,7 @@
 int main(void)
 {
     /* Board initialization */
-    BOARD_InitBootPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 

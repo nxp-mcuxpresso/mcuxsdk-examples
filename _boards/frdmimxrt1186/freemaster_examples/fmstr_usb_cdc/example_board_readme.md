@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- 2x Mini/micro USB cables
+- 2x USB-C cables
 - Target microcontroller board
 - Personal Computer
 - FreeMASTER 2.5 or later installed on PC
@@ -16,11 +16,7 @@ Multi-core considerations
 =========================
 There are example applications prepared for both CM33 and CM7 cores of the RT118x target platform. 
 The debugger is typically able to load and run the code on any of the cores, but only one core 
-is default (CM33) and will run automatically after reset. This means that the flash-based targets 
-(and both Debug and Release targets on MCUXpresso IDE) are only usable on the default core.
-
-Note that you also need to create an AHAB (Advanced High-assurance Boot) package, put the executable
-application into the package and flash it to the board using SPSDK nxpimage and blhost tools.
+is default (CM33) and will run automatically after reset.
 
 Prepare the demo
 ===============
