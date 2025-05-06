@@ -67,8 +67,10 @@ static wm8960_config_t wm8960Config = {
         .codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ,
     },
     .route            = kWM8960_RoutePlaybackandRecord,
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 ) ||\
-    defined( CPU_MIMXRT1166DVM6A_cm4 ) || defined( CPU_MIMXRT1176DVMAA_cm4 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1176_cm4_SERIES) || defined(MIMXRT1175_cm4_SERIES) || defined(MIMXRT1173_cm4_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES) || \
+    defined(MIMXRT1166_cm4_SERIES) || defined(MIMXRT1165_cm4_SERIES)
     .leftInputSource  = kWM8960_InputDifferentialMicInput3,
     .rightInputSource = kWM8960_InputDifferentialMicInput2,
 #else
@@ -242,8 +244,11 @@ static bool isReady(void)
  */
 static void AUDIO_EnableSaiMclkOutput(bool enable)
 {
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 ) ||\
-    defined( CPU_MIMXRT1176DVMAA_cm4 ) || defined( CPU_MIMXRT1166DVM6A_cm4 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1176_cm4_SERIES) || defined(MIMXRT1175_cm4_SERIES) || defined(MIMXRT1173_cm4_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES) || \
+    defined(MIMXRT1166_cm4_SERIES) || defined(MIMXRT1165_cm4_SERIES)
+
   if(enable)
   {
     IOMUXC_GPR->GPR0 |= IOMUXC_GPR_GPR0_SAI1_MCLK_DIR_MASK;
@@ -270,8 +275,10 @@ static void AUDIO_EnableSaiMclkOutput(bool enable)
  */
 static void AUDIO_InitClock(void)
 {
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 ) ||\
-    defined( CPU_MIMXRT1176DVMAA_cm4 ) || defined( CPU_MIMXRT1166DVM6A_cm4 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1176_cm4_SERIES) || defined(MIMXRT1175_cm4_SERIES) || defined(MIMXRT1173_cm4_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES) || \
+    defined(MIMXRT1166_cm4_SERIES) || defined(MIMXRT1165_cm4_SERIES)
 
     /* Clock setting for LPI2C */
     CLOCK_SetRootClockMux(kCLOCK_Root_Lpi2c5, DEMO_LPI2C_CLOCK_SOURCE_SELECT);

@@ -31,10 +31,12 @@
 #define DEMO_SAI_IRQ SAI1_IRQn
 
 /* DMA */
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES)
 #define DEMO_DMA             DMA0
 #define DEMO_DMAMUX          DMAMUX0
-#elif defined( CPU_MIMXRT1176DVMAA_cm4 ) || defined( CPU_MIMXRT1166DVM6A_cm4 )
+#elif defined(MIMXRT1176_cm4_SERIES) || defined(MIMXRT1175_cm4_SERIES) || defined(MIMXRT1173_cm4_SERIES) || \
+      defined(MIMXRT1166_cm4_SERIES) || defined(MIMXRT1165_cm4_SERIES)
 #define DEMO_DMA             DMA1
 #define DEMO_DMAMUX          DMAMUX1
 #else
@@ -47,8 +49,10 @@
 #define DEMO_SAI_TX_SOURCE   kDmaRequestMuxSai1Tx
 #define DEMO_SAI_RX_SOURCE   kDmaRequestMuxSai1Rx
 
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 ) || \
-    defined( CPU_MIMXRT1176DVMAA_cm4 ) || defined( CPU_MIMXRT1166DVM6A_cm4 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1176_cm4_SERIES) || defined(MIMXRT1175_cm4_SERIES) || defined(MIMXRT1173_cm4_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES) || \
+    defined(MIMXRT1166_cm4_SERIES) || defined(MIMXRT1165_cm4_SERIES)
 /* Select Audio/Video PLL (393.24 MHz) as sai1 clock source */
 #define DEMO_SAI1_CLOCK_SOURCE_SELECT (4U)
 /* Clock pre divider for sai1 clock source */
@@ -65,10 +69,12 @@
 #endif
 
 /* Get frequency of sai1 clock */
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES)
 #define DEMO_SAI_CLK_FREQ \
     (CLOCK_GetFreq(kCLOCK_AudioPll) / (DEMO_SAI1_CLOCK_SOURCE_DIVIDER + 1U) / (DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER + 1U))
-#elif defined( CPU_MIMXRT1176DVMAA_cm4 ) || defined( CPU_MIMXRT1166DVM6A_cm4 )
+#elif defined(MIMXRT1176_cm4_SERIES) || defined(MIMXRT1175_cm4_SERIES) || defined(MIMXRT1173_cm4_SERIES) || \
+      defined(MIMXRT1166_cm4_SERIES) || defined(MIMXRT1165_cm4_SERIES)
 #define DEMO_SAI_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1)
 #else
 #define DEMO_SAI_CLK_FREQ \
@@ -78,13 +84,15 @@
 /* I2C instance and clock */
 
 /* Get frequency of sai1 clock */
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES)
 #define DEMO_I2C LPI2C5
 #else
 #define DEMO_I2C LPI2C1
 #endif
 
-#if defined( CPU_MIMXRT1176DVMAA_cm7 ) || defined( CPU_MIMXRT1166DVM6A_cm7 )
+#if defined(MIMXRT1176_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1172_SERIES) || defined(MIMXRT1171_SERIES) || \
+    defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm7_SERIES)
 /* Select USB1 PLL (480 MHz) as master lpi2c clock source */
 #define DEMO_LPI2C_CLOCK_SOURCE_SELECT (1U)
 /* Clock divider for master lpi2c clock source */
