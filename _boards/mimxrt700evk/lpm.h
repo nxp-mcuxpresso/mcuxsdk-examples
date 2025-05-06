@@ -14,10 +14,13 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define configOSTIMER_CLOCK_HZ 32768U /* (CLOCK_GetOSTimerClkFreq()) */
+#define configOSTIMER_CLOCK_HZ (CLOCK_GetOSTimerClkFreq())
 #define portMAX_32_BIT_NUMBER  (0xffffffffUL)
-
+#if defined(PMC0)
 #define TICKLESS_OSTIMER_BASE_PTR OSTIMER_CPU0  /*!< Tickless timer base address. */
+#else
+#define TICKLESS_OSTIMER_BASE_PTR OSTIMER_CPU1  /*!< Tickless timer base address. */
+#endif
 #define TICKLESS_OSTIMER_IRQn     OS_EVENT_IRQn /*!< Tickless timer IRQ number. */
 
 /*******************************************************************************

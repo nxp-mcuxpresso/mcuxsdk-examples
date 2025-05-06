@@ -38,6 +38,12 @@ mcux_add_source(
             ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/hifi4/binary/*.bin
 )
 
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    EXCLUDE TRUE
+    SOURCES ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/main_dsp.c
+)
+
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/${core_id}

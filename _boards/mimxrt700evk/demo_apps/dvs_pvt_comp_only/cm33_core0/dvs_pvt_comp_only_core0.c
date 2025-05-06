@@ -48,6 +48,7 @@ pvts_delay_t delay;
 TaskHandle_t pvts_task_handle;
 volatile uint32_t cur_voltage           = MAX_VDDCORE;
 volatile static uint32_t workload_index = 0;
+
 /* Used for pvt_task to make sure that when pvt_task is running, even if there is a vtaskDelay, CPU won't go to
  * deepsleep mode.*/
 volatile bool adjusting = false;
@@ -74,9 +75,6 @@ void LPM_WaitForInterrupt(void)
     BOARD_EnterSleep();
 #else                                                           /* Only run PVT on CPU. */
     BOARD_EnterDeepSleep(APP_EXCLUDE_FROM_DEEPSLEEP);
-
-    PVTS_ClearAlertCount(kPVTS_Sensor0);
-    PVTS_ClearAlertCount(kPVTS_Sensor1);
 #endif
 }
 
@@ -195,14 +193,15 @@ int main(void)
     BOARD_InitHardware();
     POWER_ClearEventFlags(0xFFFFFFFF);
 
-    ret = PVTS_ReadDelayFromOTP(false, kPVTS_Vdd2Com, DEMO_MAINCLK_FREQ, &delay);
-    if ((kStatus_Success != ret) || (delay == 0U))
-    {
-        DEMO_LOG("Failed to read PVTS delay, please check the sample!\r\n");
-        while (1)
-        {
-        }
-    }
+    /* Define the init structure for the output LED pin*/
+    gpio_pin_config_t led_config = {
+        kGPIO_DigitalOutput,
+        0,
+    };
+    /*Add code to let DSP toggle blue led to show it work normally*/
+    GPIO_PinInit(BOARD_LED_BLUE_GPIO, BOARD_LED_BLUE_GPIO_PIN, &led_config);
+    GPIO_EnablePinControlNonPrivilege(BOARD_LED_BLUE_GPIO, (1 << BOARD_LED_BLUE_GPIO_PIN));
+    GPIO_EnablePinControlNonSecure(BOARD_LED_BLUE_GPIO, (1 << BOARD_LED_BLUE_GPIO_PIN));
 
     DEMO_LOG(
         "PVT Application Demo\r\n\n"
@@ -211,6 +210,19 @@ int main(void)
         "Build Time: %s--%s \r\n",
         (SYSCON3->SILICONREV_ID & SYSCON3_SILICONREV_ID_MAJOR_MASK) >> SYSCON3_SILICONREV_ID_MAJOR_SHIFT,
         SYSCON3->SILICONREV_ID & SYSCON3_SILICONREV_ID_MINOR_MASK, __DATE__, __TIME__);
+
+    ret = PVTS_ReadDelayFromOTP(false, kPVTS_Vdd2Com, DEMO_MAINCLK_FREQ, &delay);
+    
+    /* !!!NOTE!!!
+     * Use typical value to run the demo if failed to read delay value from OTP.
+     * This is only used to allow runing the demo on some early samples which without delay values programed in fuse
+     * and can't be used in production. The function may not work for some samples and temperature. 
+     */
+    if (ret == kStatus_Fail)
+    {
+        DEMO_LOG("\r\nFailed to read PVTS delay, please check the sample!\r\n\n");
+        delay = DEMO_TYPICAL_DELAY;
+    }
 
     PRINTF("PVTS delay = %d\r\n", delay);
 

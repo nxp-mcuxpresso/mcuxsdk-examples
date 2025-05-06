@@ -25,7 +25,7 @@
  */
 #define WORKLOAD_DELAY_MS 5000U
 
-#define DEMO_PRINTF_INTERRUPT_STATUS 1U /* Print in interrupt. */
+#define DEMO_PRINTF_INTERRUPT_STATUS 0U /* Print in interrupt. */
 
 #define DEMO_MAINCLK_FREQ DEMO_MAINCLK_FREQ_SP1
 /*----------------------------------------------------------*/
@@ -61,9 +61,23 @@
 
 #define BOOT_FLAG                     0x1U      /* Flag indicates Core1 Boot Up*/
 #define DEMO_SENSE_M33_CPU_CLOCK_FREQ 32000000U /* CPU1 clock frequency. */
+#define DEMO_SENSE_MIN_VDD1_VOLT      750000U   /* Minimum CPU1 deep sleep voltage. */ 
 
 #define DEMO_POWER_CPU1_PRINT_ENABLE 1U         /* Enable CPU1 log print or not, disable the log can save power. */
 #define DEMO_POWER_ENABLE_DEBUG      1U /* Enable debug or not, disable the debug function/clock can save power. */
+
+/* Some typical delay value for TT samples.
+ * !!!NOTE!!!
+ * This is only used to allow runing the demo on some early typical samples which are not burned with delay values in fuse
+ * and can't be used in production. The function may not work for some samples and temparautre. 
+ */
+#if (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP2)
+#define DEMO_TYPICAL_DELAY 16U
+#elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP1)
+#define DEMO_TYPICAL_DELAY 17U
+#elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
+#define DEMO_TYPICAL_DELAY 18U
+#endif
 /*******************************************************************************
  * API
  ******************************************************************************/

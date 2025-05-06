@@ -413,8 +413,12 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_ApplyPD();
 
     BOARD_SetPmicVdd1Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
+#if 0
     BOARD_SetPmicVdd1Voltage(
         POWER_CalcVoltLevel(kRegulator_Vdd1LDO, DEMO_SENSE_M33_CPU_CLOCK_FREQ, 0U)); /* CPU1 frequency 32MHZ. */
+#else
+    BOARD_SetPmicVdd1Voltage(DEMO_SENSE_MIN_VDD1_VOLT);  /* Sense shared main clock is running, add some margin for VDD1. */
+#endif
 }
 
 void DEMO_InitDebugConsole(void)

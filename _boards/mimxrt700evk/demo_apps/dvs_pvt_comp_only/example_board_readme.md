@@ -1,11 +1,3 @@
-<!--
- * @Author: Chay Guo changyi.guo@nxp.com
- * @Date: 2025-04-10 12:52:36
- * @LastEditors: Chay Guo changyi.guo@nxp.com
- * @LastEditTime: 2025-04-18 12:58:04
- * @FilePath: \sdk-next\mcuxsdk\examples\_boards\mimxrt700evk\demo_apps\dvs_pvt_comp_only\example_board_readme.md
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 Hardware requirements
 =====================
 - Micro USB cable
@@ -19,6 +11,12 @@ JP55(1-2) disconnected to ommit the impact of MCU-LINK during DPD and FDPD mode.
 
 Make sure the board is supplied by PMIC,
    Jumper setting - JP1(1-2), JP2(2-3), JP3(1-2), JP4(1-2).
+
+NOTE, 
+1. To rebuild the HiFi4's binary, use the main_dsp.c provided in the project root folder to replace the file in
+   dsp_examples/dsp_naturedsp/hifi4 and build dsp_naturedsp example to get the binaries for HiFi cores.
+2. To run the PVT only on CPU0, change the value of macro "DEMO_PVT_ON_CPU_DSP" in power_demo_config.h from "1" to "0".
+   When DEMO_PVT_ON_CPU_DSP = 0, the HIFI4 will not be booted. 
 
 Prepare the Demo
 ===============
@@ -46,6 +44,11 @@ Build Time: Apr 15 2025--17:50:38
 PVTS delay = 16
 Core Clock: 192000000Hz 
 Input any key to start
+```
+Input any key, and the following similar log will show the DVS works, 
+```
+PVT Task: Current VDDCORE = 0.881250 V
+Workload Task: Current VDDCORE = 0.881250 V
 ```
 
 The cm33_core1 terminal window shows the below log,
