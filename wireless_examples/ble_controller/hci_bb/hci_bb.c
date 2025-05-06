@@ -531,7 +531,11 @@ void main_task(uint32_t param)
     if (!platformInitialized)
     {
         platformInitialized = 1;
-
+#if defined(gBoardUse3MbOnUart0_d) && (gBoardUse3MbOnUart0_d > 0U)
+        // Uart Flow Control Watermark - Temp workaround while waiting for LL-1854 and MCUX-77821
+        LPUART0->MODIR &= ~LPUART_MODIR_RTSWATER_MASK;
+        LPUART0->MODIR |= LPUART_MODIR_RTSWATER(3);
+#endif
         /* Framework init */
         MEM_Init();
 
