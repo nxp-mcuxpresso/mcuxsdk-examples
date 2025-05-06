@@ -1,5 +1,6 @@
 mcux_add_configuration(
     CC "-DSERIAL_USE_CONFIGURE_STRUCTURE=1\
+       -DSERIAL_MANAGER_TASK_HANDLE_RX_AVAILABLE_NOTIFY=1\
        -DgButtonSupported_d=1\
        -DOSA_USED\
        -DSDK_DEBUGCONSOLE_UART\
