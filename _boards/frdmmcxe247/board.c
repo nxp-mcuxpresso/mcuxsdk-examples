@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -97,12 +97,30 @@ status_t BOARD_Accel_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_
 {
     uint8_t data = (uint8_t)txBuff;
 
-    return BOARD_LPI2C_Send(BOARD_ACCEL_I2C_BASEADDR, deviceAddress, subAddress, subaddressSize, &data, 1);
+    return BOARD_LPI2C_Send(BOARD_ACCEL_I2C_BASEADDR, deviceAddress, subAddress, subaddressSize, &data, 1U);
 }
 
 status_t BOARD_Accel_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
 {
     return BOARD_LPI2C_Receive(BOARD_ACCEL_I2C_BASEADDR, deviceAddress, subAddress, subaddressSize, rxBuff, rxBuffSize);
+}
+
+void BOARD_MagSwitch_I2C_Init(void)
+{
+    BOARD_LPI2C_Init(BOARD_MAGSWITCH_I2C_BASEADDR, BOARD_MAGSWITCH_I2C_CLOCK_FREQ);
+}
+
+status_t BOARD_MagSwitch_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff)
+{
+    uint8_t data = (uint8_t)txBuff;
+
+    return BOARD_LPI2C_Send(BOARD_MAGSWITCH_I2C_BASEADDR, deviceAddress, subAddress, subaddressSize, &data, 1U);
+}
+
+status_t BOARD_MagSwitch_I2C_Receive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
+{
+    return BOARD_LPI2C_Receive(BOARD_MAGSWITCH_I2C_BASEADDR, deviceAddress, subAddress, subaddressSize, rxBuff, rxBuffSize);
 }
 #endif /* SDK_I2C_BASED_COMPONENT_USED */

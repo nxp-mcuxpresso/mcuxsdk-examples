@@ -30,6 +30,10 @@
 #define BOARD_ACCEL_I2C_BASEADDR   LPI2C0
 #define BOARD_ACCEL_I2C_CLOCK_FREQ CLOCK_GetIpFreq(kCLOCK_Lpi2c0)
 
+/* @Brief Board I2C magnetic switch configuration */
+#define BOARD_MAGSWITCH_I2C_BASEADDR   LPI2C0
+#define BOARD_MAGSWITCH_I2C_CLOCK_FREQ CLOCK_GetIpFreq(kCLOCK_Lpi2c0)
+
 #ifndef BOARD_DEBUG_UART_BAUDRATE
 #define BOARD_DEBUG_UART_BAUDRATE 115200
 #endif /* BOARD_DEBUG_UART_BAUDRATE */
@@ -153,6 +157,11 @@ status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
 void BOARD_Accel_I2C_Init(void);
 status_t BOARD_Accel_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff);
 status_t BOARD_Accel_I2C_Receive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+
+void BOARD_MagSwitch_I2C_Init(void);
+status_t BOARD_MagSwitch_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff);
+status_t BOARD_MagSwitch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 

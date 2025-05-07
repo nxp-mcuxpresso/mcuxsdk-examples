@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+magnetic_switch:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/magnetic_switch/.
+    project-root-path: boards/${board}/demo_apps/magnetic_switch/${multicore_foldername}
+    document:
+      name: magnetic_switch${core_id_suffix_name}
+      category: demo_apps
+      brief: The magnetic_switch example demonstrates communication with the on-board I2C magnetic switch NMH1000.
+        The value of magnetic field strength is read from the magnetic switch and print to terminal.
+      example_readme:
+      - examples/demo_apps/magnetic_switch/readme.md
+      - ${board_root}/${board}/demo_apps/magnetic_switch/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe247: []
