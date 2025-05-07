@@ -77,8 +77,4 @@
 //@}
 //
 
-//! @def MU7_B_IRQHandler
-//!
-//! MU7_B_IRQHandler handled by application, rename the handler name in RPMsg.
-#define MU7_B_IRQHandler RPMsg_MU7_B_IRQHandler
 #endif /* _RPMSG_CONFIG_H */

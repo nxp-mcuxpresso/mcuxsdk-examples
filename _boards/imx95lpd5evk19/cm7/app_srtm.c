@@ -203,34 +203,6 @@ static void APP_SRTM_OtherSideResetHandler(void)
 }
 #endif
 
-/*
- * MU Interrrupt RPMsg handler
- * IPC between Cortex-M7 and Cortex-A55
- */
-#ifdef MU7_B_IRQHandler
-#undef MU7_B_IRQHandler
-#endif
-
-int32_t MU7_B_IRQHandler(void)
-{
-#if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
-    uint32_t status = MU_GetStatusFlags(RPMSG_LITE_MU);
-    if (status & kMU_OtherSideEnterRunInterruptFlag)
-    {
-        PRINTF("Other side is in Run\r\n");
-    }
-    if (status & kMU_OtherSideEnterWaitInterruptFlag)
-    {
-        PRINTF(" Other side is in Wait\r\n");
-    }
-    if (status & kMU_OtherSideEnterHaltInterruptFlag)
-    {
-        PRINTF("Other side is in Halt\r\n");
-    }
-#endif
-    return RPMsg_MU7_B_IRQHandler();
-}
-
 void APP_SRTM_HandleLmmPowerChange(uint32_t lm, uint32_t flags)
 {
     /*
@@ -614,12 +586,6 @@ void APP_SRTM_Init(void)
 
     /* Enable mu interrupts for remote(slave) side core */
     MU_Init(RPMSG_LITE_MU);
-#if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterRunInterruptEnable);
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterHaltInterruptEnable);
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterWaitInterruptEnable);
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterStopInterruptEnable);
-#endif
 
     /* Create SRTM dispatcher */
     disp = SRTM_Dispatcher_Create();

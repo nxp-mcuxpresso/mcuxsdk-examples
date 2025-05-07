@@ -509,13 +509,6 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
             MU_Init(RPMSG_LITE_M7_A55_MU);
             NVIC_SetPriority(RPMSG_LITE_M7_A55_MU_IRQn, RPMSG_LITE_MU_IRQ_PRIORITY);
             NVIC_EnableIRQ(RPMSG_LITE_M7_A55_MU_IRQn);
-#if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterPowerDownInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterRunInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterHaltInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterWaitInterruptEnable);
-            MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterStopInterruptEnable);
-#endif
         }
 
         /* re-enable A55 message unit */
