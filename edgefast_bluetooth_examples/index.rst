@@ -7,6 +7,7 @@ edgefast_bluetooth_examples
    :maxdepth: 1
 
 
+   a2dp_bridge/readme.md
    a2dp_sink/readme.md
    a2dp_source/readme.md
    audio_profile/readme.md

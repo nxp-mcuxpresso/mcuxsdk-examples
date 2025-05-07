@@ -22,10 +22,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES
-    examples/edgefast_bluetooth_examples/unicast_media_sender/app_a2dp_sink.c
-    examples/edgefast_bluetooth_examples/unicast_media_sender/app_a2dp_sink.h
-    examples/edgefast_bluetooth_examples/unicast_media_sender/app_connect.c
-    examples/edgefast_bluetooth_examples/unicast_media_sender/app_connect.h
     examples/edgefast_bluetooth_examples/unicast_media_sender/le_audio_common.c
     examples/edgefast_bluetooth_examples/unicast_media_sender/le_audio_common.h
     examples/edgefast_bluetooth_examples/unicast_media_sender/le_audio_service.c
