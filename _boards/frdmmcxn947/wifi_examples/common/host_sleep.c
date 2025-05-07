@@ -67,6 +67,7 @@ static void APP_GetWakeupConfig(app_power_mode_t targetMode);
 
 static void APP_PowerPreSwitchHook(void);
 static void APP_PowerPostSwitchHook(void);
+extern bool wlan_is_manual;
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -330,14 +331,17 @@ static void APP_PowerModeSwitch(app_power_mode_t targetPowerMode)
 
 void mcu_suspend()
 {
+    if (!wlan_is_manual)
+    {
+        PRINTF("Error: Maunal mode is not selected!\r\n");
+        return;
+    }
+
     if (wlan_host_sleep_pre_cfg)
     {
         wlan_host_sleep_pre_cfg();
     }
 
-#ifdef IW610
-    OSA_SemaphoreWait((osa_semaphore_handle_t)hs_config_sem, osaWaitForever_c);
-#endif
     APP_GetWakeupConfig(kAPP_PowerModeSleep);
     APP_PowerPreSwitchHook();
     APP_PowerModeSwitch(kAPP_PowerModeSleep);

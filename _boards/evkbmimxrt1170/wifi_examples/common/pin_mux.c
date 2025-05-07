@@ -192,6 +192,9 @@ void BOARD_InitPinsM2(void) {
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_31_GPIO9_IO30,           /* GPIO_AD_31 is configured as GPIO9_IO30 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+
+  IOMUXC_SetPinMux(IOMUXC_GPIO_AD_29_GPIO_MUX3_IO28, 0U);
+  IOMUXC_GPR->GPR43 |= (1u << 12);
 }
 
 /*

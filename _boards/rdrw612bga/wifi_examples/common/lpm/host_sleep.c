@@ -43,6 +43,7 @@ static struct cli_command host_sleep_commands[] = {
     {"wlan-suspend", "<power mode>", test_wlan_suspend},
 };
 extern bool wlan_is_manual;
+extern int wlan_send_host_sleep_int();
 extern int wakeup_by;
 #if CONFIG_POWER_MANAGER
 extern pm_handle_t pm_handle;
@@ -211,12 +212,23 @@ static void wlan_GetSleepConfig(power_sleep_config_t *config)
 int wlan_config_suspend_mode(int mode)
 {
     power_sleep_config_t config;
+    int ret = WM_SUCCESS;
 
     if (!wlan_is_manual)
     {
         PRINTF("Error: Maunal mode is not selected!\r\n");
         return -1;
     }
+
+    /* Start host sleep handshake here if manual mode is selected */
+    ret = wlan_send_host_sleep_int();
+    if (ret != WM_SUCCESS)
+    {
+        wlcm_e("Error: Failed to config host sleep");
+        return -1;
+    }
+    hs_config_get_sem();
+
     memset(&config, 0x0, sizeof(power_sleep_config_t));
     if (mode >= 2)
         wlan_GetSleepConfig(&config);

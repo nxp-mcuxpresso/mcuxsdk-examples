@@ -14,9 +14,9 @@
 #include "board.h"
 #include "host_sleep.h"
 #include "ncp_lpm.h"
+#include "wlan.h"
 #if CONFIG_NCP_WIFI
 #include "host_sleep_wifi.h"
-#include "wlan.h"
 #include "ncp_cmd_wifi.h"
 #endif
 #include "ncp_cmd_common.h"
@@ -76,6 +76,7 @@ uint64_t rtc_timeout = 0;
 static uart_clock_context_t s_uartClockCtx;
 #if CONFIG_NCP_WIFI
 extern int is_hs_handshake_done;
+extern int wlan_send_host_sleep_int();
 #endif
 #if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
 extern void USB_DevicePmStartResume(void);
@@ -431,6 +432,18 @@ static void ncp_suspend_task(void *argv)
         /* Wait for wlan-suspend command */
         (void)OSA_EventWait((osa_event_handle_t)ncp_suspend_event, SUSPEND_EVENT_TRIGGERS, 0, osaWaitForever_c, NULL);
         memset(&config, 0x0, sizeof(power_sleep_config_t));
+
+#if CONFIG_NCP_WIFI
+        /* Start host sleep handshake here if manual mode is selected */
+        ret = wlan_send_host_sleep_int();
+        if (ret != WM_SUCCESS)
+        {
+            wlcm_e("Error: Failed to config host sleep");
+            return;
+        }
+        hs_config_get_sem();
+#endif
+
         if (suspend_mode >= 2)
             ncp_GetSleepConfig(&config);
         host_sleep_pre_cfg(suspend_mode);
