@@ -9,6 +9,8 @@ coredump_fault:
       brief: The example demostrate usage of coredump component.
       example_readme:
         - examples/component_examples/coredump_fault/readme.md
+        - examples/component_examples/coredump_fault/Save_Memory_Data.png
+        - examples/component_examples/coredump_fault/Switch_memorydump.png
         - examples/_boards/${board}/component_examples/coredump_fault/example_board_readme.md
         - examples/_boards/${board}/examples_shared_readme.md
   boards:
