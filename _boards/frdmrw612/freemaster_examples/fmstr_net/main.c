@@ -66,6 +66,7 @@ int main(void)
 
     /* Board initialization */
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitNETPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
