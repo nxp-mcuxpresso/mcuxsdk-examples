@@ -1,17 +1,17 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- LPCXpresso55S16 board
+- LPCXpresso55S28 board
 - Personal Computer
 
 Board settings
 ============
-The jumper setting:
-    Default jumpers configuration does not work,  you will need to add JP20 and JP21 (JP22 optional for ADC use)
+No special settings are required.
 
 Prepare the Demo
 ===============
-1.  Connect a micro USB cable between the PC host and the CMSIS DAP USB port (J1) on the board
+Note: MCUXpresso IDE project default debug console is semihost
+1.  Connect a micro USB cable between the PC host and the CMSIS DAP USB port (P6) on the board
 2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
     - 115200 baud rate
     - 8 data bits

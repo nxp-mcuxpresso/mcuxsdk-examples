@@ -13,3 +13,10 @@ mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x4000\
         -Xlinker --defsym=__heap_size__=0x8000"
 )
+
+# ARMGCC debug target does not fit; slightly increase optimization as workaround
+mcux_add_armgcc_configuration(
+    TARGETS debug
+    CC "-O1"
+    CX "-O1"
+)
