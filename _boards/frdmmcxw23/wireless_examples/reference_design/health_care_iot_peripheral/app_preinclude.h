@@ -116,6 +116,12 @@
 /*! Defines total heap size used by the OS - 11k */
 #define gTotalHeapSize_c 0x5800
 
+/*! Overwrite FreeRTOSConfig (needed by mcxw23 power manager) */
+#define configUSE_TICKLESS_IDLE 1
+
+/*! Overwrite FreeRTOSConfig */
+#define configMINIMAL_STACK_SIZE ((unsigned short)260)
+
 /*! *********************************************************************************
  *     BLE Stack Configuration
  ********************************************************************************** */

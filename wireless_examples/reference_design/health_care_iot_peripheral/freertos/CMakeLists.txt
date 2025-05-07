@@ -17,7 +17,7 @@ mcux_add_configuration(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/wireless_examples/reference_design/health_care_iot_peripheral/main.c
-            examples/wireless_examples/reference_design/health_care_iot_peripheral/freertos/FreeRTOSConfig.h
+            middleware/wireless/bluetooth/application/common/freertos/FreeRTOSConfig.h
             examples/wireless_examples/reference_design/health_care_iot_peripheral/app_config.c
             examples/wireless_examples/reference_design/health_care_iot_peripheral/gatt_db.h
             examples/wireless_examples/reference_design/health_care_iot_peripheral/gatt_uuid128.h
@@ -46,10 +46,10 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/wireless_examples/reference_design/health_care_iot_peripheral
-             examples/wireless_examples/reference_design/health_care_iot_peripheral/freertos
              examples/wireless_examples/reference_design/health_care_iot_common
              ${board_root}/${board}/wireless_examples/reference_design/health_care_iot_peripheral
              middleware/wireless/bluetooth/boards/${board}
+             middleware/wireless/bluetooth/application/common/freertos
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/reference_design/health_care_iot_peripheral/reconfig.cmake OPTIONAL)
