@@ -54,6 +54,7 @@ mcux_add_source(
     SOURCES examples/ecat_examples/eoe/SSC/Src/objdef.h
     SOURCES examples/ecat_examples/eoe/SSC/Src/sdoserv.c
     SOURCES examples/ecat_examples/eoe/SSC/Src/sdoserv.h
+    SOURCES ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(

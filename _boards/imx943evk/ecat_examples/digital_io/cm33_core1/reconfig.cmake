@@ -1,17 +1,3 @@
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/ecat_examples/digital_io/digital_io.c
-)
-
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/ecat_examples/digital_io
-    INCLUDES ${board_root}/${board}/ecat_examples/digital_io/${core_id}
-)
-
-
-
 
 # Add additional configuration
 mcux_add_macro(

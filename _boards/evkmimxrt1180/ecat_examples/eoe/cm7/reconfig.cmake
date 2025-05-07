@@ -1,20 +1,3 @@
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/ecat_examples/eoe/eoe_freertos.c
-            examples/ecat_examples/eoe/FreeRTOSConfig.h
-            ${board_root}/${board}/FreeRTOSConfigBoard.h
-)
-
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/ecat_examples/eoe
-    INCLUDES examples/ecat_examples/eoe/webpage
-    INCLUDES ${board_root}/${board}/ecat_examples/eoe/${core_id}
-)
-
-
-
 
 # Add additional configuration
 mcux_add_macro(
