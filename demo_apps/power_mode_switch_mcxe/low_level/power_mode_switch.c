@@ -318,7 +318,7 @@ static void APP_DeinitWakeupPeripherals(void)
     /* Disable PIT if exits from PIT wake up last time */
     if (APP_RTIIsEnabled())
     {
-        PIT_Deinit(APP_PIT_RTI);
+        PIT_RTI_Deinit(APP_PIT_RTI);
     }
 
     /* Disable LPCMP if exits from LPCMP wake up last time */
@@ -498,9 +498,9 @@ static void APP_SetWakeupSWTConfiguration(uint8_t timeOut)
     SWT_Init(APP_SWT, &config);
 
     /* External reset pin is not asserted on a 'functional' reset SWT0_RST event */
-    APP_MC_RGM->FBRE |= MC_RGM_FBRE_BE_SWT0_RST_MASK;
+    MC_RGM_DisableBidirectionalReset(APP_MC_RGM, kMC_RGM_BidirectionalSwt0Reset);
     /* Functional reset event SWT0_RST generates an interrupt request */
-    APP_MC_RGM->FERD |= MC_RGM_FERD_D_SWT0_RST_MASK;
+    MC_RGM_DemoteFunctionalResetToInterrupt(APP_MC_RGM, kMC_RGM_Swt0Reset);
 
     SWT_ClearTimeoutResetFlag(APP_SWT);
 }
@@ -635,7 +635,11 @@ static void APP_SetWakeupRTIConfiguration(uint8_t timeOut)
     /* Init pit rti timer */
     PIT_RTI_Init(APP_PIT_RTI, &pitConfig);
     /* Set timer period for RTI */
+    PIT_ClearRtiSyncStatus(APP_PIT_RTI);
     PIT_SetRtiTimerPeriod(APP_PIT_RTI, USEC_TO_COUNT(timeOut * 1000000U, APP_TIMER_CLOCK_FFEQUENCY));
+    while(kPIT_RtiLoadValueSyncFlag != (PIT_GetRtiSyncStatus(APP_PIT_RTI)))
+    {
+    }
     /* Enable timer interrupts for RTI */
     PIT_ClearRtiStatusFlags(APP_PIT_RTI, kPIT_RtiTimerFlag);
     PIT_EnableRtiInterrupts(APP_PIT_RTI, kPIT_RtiTimerInterruptEnable);
