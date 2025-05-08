@@ -2,7 +2,7 @@
 <configuration name="MIMXRT1189xxxxx" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_14 http://mcuxpresso.nxp.com/XSD/mex_configuration_14.xsd" uuid="4df2e608-a454-4328-bc81-18baa0bee014" version="14" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>MIMXRT1189xxxxx</processor>
-      <package>MIMXRT1189CVM8B</package>
+      <package>MIMXRT1189CVM8C</package>
       <board>MIMXRT1180-EVK</board>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33">
