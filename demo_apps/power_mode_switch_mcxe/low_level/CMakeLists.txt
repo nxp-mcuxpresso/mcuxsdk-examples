@@ -8,7 +8,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/demo_apps/power_mode_switch_mcxe/low_level/power_mode_switch.c
+    SOURCES examples/demo_apps/power_mode_switch_mcxe/low_level/power_mode_switch.c examples/demo_apps/power_mode_switch_mcxe/low_level/power_mode_switch.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_switch/low_level/reconfig.cmake OPTIONAL)
