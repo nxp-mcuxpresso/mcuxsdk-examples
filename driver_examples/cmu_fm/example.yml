@@ -12,3 +12,5 @@ cmu_fm_interrupt:
       - examples/driver_examples/cmu_fm/readme.md
       - ${board_root}/${board}/driver_examples/cmu_fm/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []

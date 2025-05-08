@@ -12,3 +12,5 @@ cmu_fc:
       - examples/driver_examples/cmu_fc/readme.md
       - ${board_root}/${board}/driver_examples/cmu_fc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []
