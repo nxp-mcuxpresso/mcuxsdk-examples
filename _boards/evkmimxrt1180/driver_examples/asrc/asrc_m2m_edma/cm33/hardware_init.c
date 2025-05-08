@@ -61,7 +61,7 @@ const clock_audio_pll_config_t audioPllConfig = {
 /*${variable:end}*/
 
 /*${function:start}*/
-void SEI_EAR_TRDC_EDMA4_ResetPermissions()
+void TRDC_EDMA4_ResetPermissions()
 {
     uint8_t i, j;
     /* Set the master domain access configuration for eDMA4 */
@@ -113,7 +113,7 @@ void SEI_EAR_TRDC_EDMA4_ResetPermissions()
     }
 }
 
-void SEI_EAR_TRDC_EDMA3_ResetPermissions()
+void TRDC_EDMA3_ResetPermissions()
 {
     uint8_t i, j;
     /* Set the master domain access configuration for eDMA3 */
@@ -188,7 +188,7 @@ void BOARD_InitHardware(void)
     CLOCK_InitAudioPll(&audioPllConfig);
     
     BOARD_RequestTRDC(true, true, false);
-    SEI_EAR_TRDC_EDMA3_ResetPermissions();
+    TRDC_EDMA3_ResetPermissions();
 
     /*Clock setting for LPI2C*/
     CLOCK_SetRootClockMux(kCLOCK_Root_Lpi2c0102, kCLOCK_LPI2C0102_ClockRoot_MuxOscRc24M);

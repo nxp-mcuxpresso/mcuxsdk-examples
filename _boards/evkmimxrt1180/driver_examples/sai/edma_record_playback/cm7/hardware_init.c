@@ -67,7 +67,7 @@ const clock_audio_pll_config_t audioPllConfig = {
 
 /*${function:start}*/
 #if !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U))
-void SEI_EAR_TRDC_EDMA3_ResetPermissions()
+void TRDC_EDMA3_ResetPermissions()
 {
     uint8_t i, j;
     /* Set the master domain access configuration for eDMA3 */
@@ -138,7 +138,7 @@ void BOARD_SetDMA3Permission(void)
 
     BOARD_RequestTRDC(true, true, false);
 
-    SEI_EAR_TRDC_EDMA3_ResetPermissions();
+    TRDC_EDMA3_ResetPermissions();
 
 #endif /* !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
 }

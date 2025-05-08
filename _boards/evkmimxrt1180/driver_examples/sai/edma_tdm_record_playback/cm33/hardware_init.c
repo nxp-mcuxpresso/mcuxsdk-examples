@@ -41,7 +41,7 @@ const clock_audio_pll_config_t audioPllConfig = {
     .denominator = 1000, /* 30 bit denominator of fractional loop divider */
 };
 
-void SEI_EAR_TRDC_EDMA3_ResetPermissions()
+void TRDC_EDMA3_ResetPermissions()
 {
     uint8_t i, j;
     /* Set the master domain access configuration for eDMA3 */
@@ -113,7 +113,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     BOARD_RequestTRDC(true, true, false);
-    SEI_EAR_TRDC_EDMA3_ResetPermissions();
+    TRDC_EDMA3_ResetPermissions();
 
     /* Init Audio Pll. */
     CLOCK_InitAudioPll(&audioPllConfig);

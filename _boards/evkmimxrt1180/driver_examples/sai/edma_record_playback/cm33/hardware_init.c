@@ -61,7 +61,7 @@ const clock_audio_pll_config_t audioPllConfig = {
 /*${variable:end}*/
 
 /*${function:start}*/
-void SEI_EAR_TRDC_EDMA3_ResetPermissions()
+void TRDC_EDMA3_ResetPermissions()
 {
     uint8_t i, j;
     /* Set the master domain access configuration for eDMA3 */
@@ -136,7 +136,7 @@ void BOARD_InitHardware(void)
     CLOCK_InitAudioPll(&audioPllConfig);
 
     BOARD_RequestTRDC(true, true, false);
-    SEI_EAR_TRDC_EDMA3_ResetPermissions();
+    TRDC_EDMA3_ResetPermissions();
 
     EDMA_GetDefaultConfig(&dmaConfig);
     dmaConfig.enableMasterIdReplication           = true;

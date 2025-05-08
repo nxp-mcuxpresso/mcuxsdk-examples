@@ -95,7 +95,7 @@ const uint32_t customLUTOctalMode[CUSTOM_LUT_LENGTH] = {
 };
 
 #if !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U))
-static void SEI_EAR_TRDC_EDMA4_ResetPermissions()
+static void TRDC_EDMA4_ResetPermissions()
 {
     uint8_t i, j;
     /* Set the master domain access configuration for eDMA4 */
@@ -154,7 +154,7 @@ void BOARD_SetDMA4Permission(void)
 
     BOARD_RequestTRDC(true, true, false);
 
-    SEI_EAR_TRDC_EDMA4_ResetPermissions();
+    TRDC_EDMA4_ResetPermissions();
 
 #endif /* !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
 }
