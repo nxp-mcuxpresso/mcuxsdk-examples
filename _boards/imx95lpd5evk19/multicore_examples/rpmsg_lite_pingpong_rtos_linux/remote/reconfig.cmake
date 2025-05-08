@@ -10,7 +10,6 @@ mcux_add_source(
             ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/FreeRTOSConfig.h
             ${board_root}/${board}/srtm_config.h
 	    ${board_root}/${board}/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote/cm7/rpmsg_config.h
-            middleware/multicore/remoteproc/empty_rsc_table.c
             ${board_root}/${board}/rsc_table.c
             ${board_root}/${board}/rsc_table.h
             ${board_root}/${board}/cm7/app_srtm.c

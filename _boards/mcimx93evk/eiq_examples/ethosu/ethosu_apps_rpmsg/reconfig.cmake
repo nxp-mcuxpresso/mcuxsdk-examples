@@ -3,7 +3,6 @@ mcux_add_source(
     SOURCES ${board_root}/${board}/rsc_table.c
             ${board_root}/${board}/rsc_table.h
 	    ${board_root}/${board}/srtm_config.h
-            middleware/multicore/remoteproc/empty_rsc_table.c
             middleware/multicore/remoteproc/remoteproc.h
             ${board_root}/${board}/eiq_examples/ethosu/ethosu_apps_rpmsg/FreeRTOSConfig.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h

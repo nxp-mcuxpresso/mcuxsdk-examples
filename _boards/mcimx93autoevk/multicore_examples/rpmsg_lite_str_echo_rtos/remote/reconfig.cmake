@@ -10,7 +10,6 @@ mcux_add_source(
             ${board_root}/mcimx93autoevk/multicore_examples/rpmsg_lite_str_echo_rtos/FreeRTOSConfig.h
             ${board_root}/mcimx93autoevk/multicore_examples/rpmsg_lite_str_echo_rtos/remote/rpmsg_config.h
             ${board_root}/mcimx93autoevk/srtm_config.h
-            middleware/multicore/remoteproc/empty_rsc_table.c
             ${board_root}/${board}/rsc_table.c
             ${board_root}/${board}/rsc_table.h
 )
