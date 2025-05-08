@@ -40,8 +40,6 @@ static void UartInit(uint32_t ulBaudRate)
 {
     lpuart_config_t config;
 
-    uint8_t g_tipString[] = "Modbus RTU Server Example Start!\r\n";
-
     /*
      * config.baudRate_Bps = 115200U;
      * config.parityMode = kLPUART_ParityDisabled;
@@ -57,9 +55,6 @@ static void UartInit(uint32_t ulBaudRate)
     config.enableRx     = true;
 
     LPUART_Init(DEMO_LPUART, &config, DEMO_LPUART_CLK_FREQ);
-
-    /* Send g_tipString out. */
-    LPUART_WriteBlocking(DEMO_LPUART, g_tipString, sizeof(g_tipString) / sizeof(g_tipString[0]));
 
     /* Enable RX interrupt. */
     EnableIRQ(DEMO_LPUART_IRQn);

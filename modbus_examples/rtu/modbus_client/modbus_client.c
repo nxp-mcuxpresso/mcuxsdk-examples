@@ -15,6 +15,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_lpuart.h"
+#include "fsl_debug_console.h"
 #include "app.h"
 #include "port.h"
 
@@ -133,6 +134,7 @@ int main(void)
 	eMBErrorCode    eStatus;
 
     BOARD_InitHardware();
+    PRINTF("Modbus RTU Client Example Start!\r\n");
     TPM2_Init();
 
     /* Select either ASCII or RTU Mode. */

@@ -15,6 +15,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_lpuart.h"
+#include "fsl_debug_console.h"
 #include "app.h"
 #include "port.h"
 
@@ -140,12 +141,14 @@ eMBLedStatusCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNRegs, eM
                     led1_status =  *pucRegBuffer++ << 8;
                     led1_status |= *pucRegBuffer++;
                     RGPIO_WritePinOutput(BOARD_LED_RGPIO, BOARD_LED_RGPIO_PIN1, led1_status);
+                    PRINTF("LED1 status: %d\r\n", led1_status);
                 } 
                 else
                 {
                     led2_status =  *pucRegBuffer++ << 8;
                     led2_status |= *pucRegBuffer++;
                     RGPIO_WritePinOutput(BOARD_LED_RGPIO, BOARD_LED_RGPIO_PIN2, led2_status);
+                    PRINTF("LED2 status: %d\r\n", led2_status);
                 }
                 usNRegs--;
             }
@@ -228,6 +231,7 @@ int main(void)
 {
 	eMBErrorCode    eStatus;
     BOARD_InitHardware();
+    PRINTF("Modbus RTU Server Example Start!\r\n");
     
     /* Define the init structure for the output LED pin*/
     rgpio_pin_config_t led1_config = {

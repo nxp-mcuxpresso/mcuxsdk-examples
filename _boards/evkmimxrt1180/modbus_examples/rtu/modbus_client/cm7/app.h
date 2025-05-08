@@ -13,10 +13,10 @@
 #include "fsl_tpm.h"
 /*${header:end}*/
 
-#define DEMO_LPUART            LPUART1
-#define DEMO_LPUART_IRQn       LPUART1_IRQn
+#define DEMO_LPUART            LPUART12
+#define DEMO_LPUART_IRQn       LPUART12_IRQn
 #define DEMO_LPUART_CLK_FREQ   BOARD_DebugConsoleSrcFreq()
-#define DEMO_LPUART_IRQHandler LPUART1_IRQHandler
+#define DEMO_LPUART_IRQHandler LPUART12_IRQHandler
 
 #define BOARD_LED_RGPIO                 BOARD_USER_LED_GPIO
 #define BOARD_LED_RGPIO_PIN1            26U

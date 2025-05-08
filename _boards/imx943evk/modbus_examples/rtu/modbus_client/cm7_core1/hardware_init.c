@@ -39,8 +39,10 @@ void BOARD_InitHardware(void)
     hal_clk.clk_id = (hal_clk_id_e)BOARD_GetUartClkId(DEMO_LPUART_INSTANCE_IDX);
     SM_Platform_Init();
     BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
+    BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
+    BOARD_InitDebugConsole();
     HAL_ClockSetParent(&hal_clk);
     HAL_ClockSetRate(&hal_clk);
     HAL_ClockEnable(&hal_clk);

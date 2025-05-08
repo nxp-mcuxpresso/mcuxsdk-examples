@@ -12,9 +12,9 @@ Prepare the Demo
 ================
 1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
 2.  Use Dupont wire to connect the pin of the two MIMXRT1180-EVK boards
-        J39-2(RX)----J39-4(TX)
-        J39-4(TX)----J39-2(RX)
-        J39-3(GND)---J39-3(GND)
+        J44-18(TX)----J44-20(RX)
+        J44-20(RX)----J44-18(TX)
+        J44-17(GND)---J44-17(GND)
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
