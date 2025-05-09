@@ -45,7 +45,7 @@ mcux_add_include(
 mcux_add_source(
     PREINCLUDE TRUE
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wireless/bluetooth/boards/${board}/bluetooth/otac_l2cap/app_preinclude.h
+    SOURCES middleware/wireless/${bluetooth_root}/boards/${board}/bluetooth/otac_l2cap/app_preinclude.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/otac_l2cap/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)

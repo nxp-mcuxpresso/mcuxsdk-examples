@@ -48,7 +48,7 @@ mcux_add_include(
 mcux_add_source(
     PREINCLUDE TRUE
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wireless/bluetooth/boards/${board}/bluetooth/ancs_c/app_preinclude.h
+    SOURCES middleware/wireless/${bluetooth_root}/boards/${board}/bluetooth/ancs_c/app_preinclude.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/ancs_c/${multicore_foldername}/freertos/reconfig.cmake OPTIONAL)

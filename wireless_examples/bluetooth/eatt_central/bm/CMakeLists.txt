@@ -42,7 +42,7 @@ mcux_add_include(
 mcux_add_source(
     PREINCLUDE TRUE
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wireless/bluetooth/boards/${board}/bluetooth/eatt_central/app_preinclude.h
+    SOURCES middleware/wireless/${bluetooth_root}/boards/${board}/bluetooth/eatt_central/app_preinclude.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/eatt_central/${multicore_foldername}/bm/reconfig.cmake OPTIONAL)

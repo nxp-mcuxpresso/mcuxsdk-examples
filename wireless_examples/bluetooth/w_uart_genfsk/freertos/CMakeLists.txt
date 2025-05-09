@@ -6,6 +6,7 @@ project(wireless_uart_genfsk_freertos LANGUAGES C CXX ASM
     PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples 
     CUSTOM_PRJ_CONF_PATH ${board_root}/${board}/wireless_examples/bluetooth/
         ${board_root}/${board}/wireless_examples/freertos
+        ${board_root}/${board}/wireless_examples/bluetooth/w_uart_genfsk/${core_id}/freertos
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
@@ -50,7 +51,7 @@ mcux_add_include(
 mcux_add_source(
     PREINCLUDE TRUE
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wireless/bluetooth/boards/${board}/bluetooth/w_uart_genfsk/app_preinclude.h
+    SOURCES middleware/wireless/${bluetooth_root}/boards/${board}/bluetooth/w_uart_genfsk/app_preinclude.h
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/bluetooth/w_uart_genfsk/${multicore_foldername}/reconfig.cmake OPTIONAL)
