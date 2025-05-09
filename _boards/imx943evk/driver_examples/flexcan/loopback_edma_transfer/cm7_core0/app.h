@@ -17,8 +17,8 @@
 #define EXAMPLE_CAN_DMA_CHANNEL (kDma1RequestMuxCan1)
 #define FLEXCAN_DMA_REQUEST_SOURCE (kDma1RequestMuxCan1)
 
-#define FLEXCAN_CLOCK_ROOT         (hal_clock_can1)
-#define EXAMPLE_CAN_CLK_FREQ       HAL_ClockGetRate(FLEXCAN_CLOCK_ROOT)
+#define FLEXCAN_CLOCK_ROOT         (kCLOCK_Can1)
+#define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetRate(FLEXCAN_CLOCK_ROOT)
 #define USE_IMPROVED_TIMING_CONFIG (1U)
 /*${macro:end}*/
 

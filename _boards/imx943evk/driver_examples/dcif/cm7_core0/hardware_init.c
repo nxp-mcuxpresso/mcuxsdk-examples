@@ -10,7 +10,6 @@
 #include "clock_config.h"
 #include "pin_mux.h"
 #include "dcif_support.h"
-#include "hal_clock.h"
 #include "hal_power.h"
 
 /*${header:end}*/
@@ -20,30 +19,30 @@ void BOARD_InitHardware(void)
 {
     hal_pwr_st_e st = hal_power_state_off;
     /* clang-format off */
-    hal_clk_t hal_clk = {
-        .clk_id = hal_clock_invalid,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t clk = {
+        .clkId = kCLOCK_IpInvalid,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_lpi2cCLKCfg = {
-        .clk_id = hal_clock_lpi2c3,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpi2cCLKCfg = {
+        .clkId = kCLOCK_Lpi2c3,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_dispapbCLKCfg = {
-        .clk_id = hal_clock_dispapb,
-        .pclk_id = hal_clock_syspll1dfs1div2,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t dispapbCLKCfg = {
+        .clkId = kCLOCK_Dispapb,
+        .pclkId = kCLOCK_Syspll1dfs1div2,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 133333333UL,
     };
-    hal_clk_t hal_dispaxiCLKCfg = {
-        .clk_id = hal_clock_dispaxi,
-        .pclk_id = hal_clock_syspll1dfs2,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t dispaxiCLKCfg = {
+        .clkId = kCLOCK_Dispaxi,
+        .pclkId = kCLOCK_Syspll1dfs2,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 800000000UL,
     };
 
@@ -65,13 +64,13 @@ void BOARD_InitHardware(void)
     assert(st == hal_power_state_on);
     (void)st;
 
-    HAL_ClockSetRate(&hal_clk);
-    HAL_ClockEnable(&hal_clk);
-    HAL_ClockSetRate(&hal_lpi2cCLKCfg);
-    HAL_ClockEnable(&hal_lpi2cCLKCfg);
-    HAL_ClockSetRate(&hal_dispapbCLKCfg);
-    HAL_ClockEnable(&hal_dispapbCLKCfg);
-    HAL_ClockSetRate(&hal_dispaxiCLKCfg);
-    HAL_ClockEnable(&hal_dispaxiCLKCfg);
+    CLOCK_SetRate(&clk);
+    CLOCK_EnableClock(clk.clkId);
+    CLOCK_SetRate(&lpi2cCLKCfg);
+    CLOCK_EnableClock(lpi2cCLKCfg.clkId);
+    CLOCK_SetRate(&dispapbCLKCfg);
+    CLOCK_EnableClock(dispapbCLKCfg.clkId);
+    CLOCK_SetRate(&dispaxiCLKCfg);
+    CLOCK_EnableClock(dispaxiCLKCfg.clkId);
 }
 /*${function:end}*/

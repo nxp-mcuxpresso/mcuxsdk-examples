@@ -57,11 +57,11 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 void BOARD_InitHardware(void)
 {
     /* BiSS 20MHz */
-    hal_clk_t hal_bissClk = {
-        .clk_id = BISS_SYS_CLK_ROOT,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
+    clk_t bissClk = {
+        .clkId = BISS_SYS_CLK_ROOT,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
         .rate = BISS_SYS_CLK_FREQ,
-        .clk_round_opt = hal_clk_round_auto,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
     BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
@@ -73,9 +73,9 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetParent(&hal_bissClk);
-    HAL_ClockSetRate(&hal_bissClk);
-    HAL_ClockEnable(&hal_bissClk);
+    CLOCK_SetParent(&bissClk);
+    CLOCK_SetRate(&bissClk);
+    CLOCK_EnableClock(bissClk.clkId);
 
     // encoder 1 select BiSS
     blk_ctrl->DIAG_ENCODER_MUX_SEL =

@@ -58,23 +58,23 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 void BOARD_InitHardware(void)
 {
 	/* Hiperface 75MHz */
-	hal_clk_t hal_encoderplldfs0ctl = {
-		.clk_id = hal_clock_encoderplldfs0ctl,
+	clk_t encoderplldfs0ctl = {
+		.clkId = kCLOCK_Encoderplldfs0ctl,
 		.rate = 75000000UL,
-		.clk_round_opt = hal_clk_round_auto,
+		.clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
 	};
 
-	hal_clk_t hal_encoderplldfs0 = {
-		.clk_id = hal_clock_encoderplldfs0,
+	clk_t encoderplldfs0 = {
+		.clkId = kCLOCK_Encoderplldfs0,
 		.rate = 75000000UL,
-		.clk_round_opt = hal_clk_round_auto,
+		.clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
 	};
 
-	hal_clk_t hal_hiperfaceClk = {
-		.clk_id = HIPERFACE_CLOCK_ROOT,
-		.pclk_id = hal_clock_encoderplldfs0, /* 75 MHz */
+	clk_t hiperfaceClk = {
+		.clkId = HIPERFACE_CLOCK_ROOT,
+		.pclkId = kCLOCK_Encoderplldfs0, /* 75 MHz */
 		.rate = 75000000UL,
-		.clk_round_opt = hal_clk_round_auto,
+		.clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
 	};
 	BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
 
@@ -84,15 +84,15 @@ void BOARD_InitHardware(void)
 	BOARD_BootClockRUN();
 	BOARD_InitDebugConsole();
 
-	HAL_ClockSetRate(&hal_encoderplldfs0ctl);
-	HAL_ClockEnable(&hal_encoderplldfs0ctl);
+	CLOCK_SetRate(&encoderplldfs0ctl);
+	CLOCK_EnableClock(encoderplldfs0ctl.clkId);
 
-	HAL_ClockSetRate(&hal_encoderplldfs0);
-	HAL_ClockEnable(&hal_encoderplldfs0);
+	CLOCK_SetRate(&encoderplldfs0);
+	CLOCK_EnableClock(encoderplldfs0.clkId);
 
-	HAL_ClockSetParent(&hal_hiperfaceClk);
-	HAL_ClockSetRate(&hal_hiperfaceClk);
-	HAL_ClockEnable(&hal_hiperfaceClk);
+	CLOCK_SetParent(&hiperfaceClk);
+	CLOCK_SetRate(&hiperfaceClk);
+	CLOCK_EnableClock(hiperfaceClk.clkId);
 
 	blk_base->DIAG_ENCODER_MUX_SEL =
 		BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_HIPERFACE_DSL) |

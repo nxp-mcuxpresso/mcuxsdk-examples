@@ -9,7 +9,6 @@
 #include "clock_config.h"
 #include "board.h"
 #include "app.h"
-#include "hal_clock.h"
 #include "hal_power.h"
 /*${header:end}*/
 
@@ -28,79 +27,79 @@ status_t BOARD_InitHardware(void)
     
     /* clang-format off */
     /* busNetcMixClk 133MHz */
-    hal_clk_t hal_busmixClk = {
-        .clk_id = hal_clock_busnetcmix,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t busmixClk = {
+        .clkId = kCLOCK_Busnetcmix,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 133333333UL,
     };
     /* enetClk 666 MHz */
-    hal_clk_t hal_enetClk = {
-        .clk_id = hal_clock_enet,
-        .pclk_id = hal_clock_syspll1dfs2, /* 666 MHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t enetClk = {
+        .clkId = kCLOCK_Enet,
+        .pclkId = kCLOCK_Syspll1dfs2, /* 666 MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 666000000UL,
     };
     /* enetRefClk 250MHz */
-    hal_clk_t hal_enetrefClk = {
-        .clk_id = hal_clock_enetref,
-        .pclk_id = hal_clock_syspll1dfs0, /* 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t enetrefClk = {
+        .clkId = kCLOCK_Enetref,
+        .pclkId = kCLOCK_Syspll1dfs0, /* 1 GHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 250000000UL,
     };
     /* enetTimer1Clk 100MHz */
-    hal_clk_t hal_enettimer1Clk = {
-        .clk_id = hal_clock_enettimer1,
-        .pclk_id = hal_clock_syspll1dfs0div2, /* 500 MHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t enettimer1Clk = {
+        .clkId = kCLOCK_Enettimer1,
+        .pclkId = kCLOCK_Syspll1dfs0div2, /* 500 MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 100000000UL,
     };
 
     /* mac0Clk(netc_switch_port0) 250MHz */
-    hal_clk_t hal_mac0Clk = {
-        .clk_id = hal_clock_mac0,
-        .pclk_id = hal_clock_syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t mac0Clk = {
+        .clkId = kCLOCK_Mac0,
+        .pclkId = kCLOCK_Syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 250000000UL,
     };
 
     /* mac1Clk(netc_switch_port1) 250MHz */
-    hal_clk_t hal_mac1Clk = {
-        .clk_id = hal_clock_mac1,
-        .pclk_id = hal_clock_syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t mac1Clk = {
+        .clkId = kCLOCK_Mac1,
+        .pclkId = kCLOCK_Syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 250000000UL,
     };
 
     /* mac2Clk(netc_switch_port2) 250MHz */
-    hal_clk_t hal_mac2Clk = {
-        .clk_id = hal_clock_mac2,
-        .pclk_id = hal_clock_syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t mac2Clk = {
+        .clkId = kCLOCK_Mac2,
+        .pclkId = kCLOCK_Syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 250000000UL,
     };
 
     /* mac3Clk(enetc0) 250MHz */
-    hal_clk_t hal_mac3Clk = {
-        .clk_id = hal_clock_mac3,
-        .pclk_id = hal_clock_syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t mac3Clk = {
+        .clkId = kCLOCK_Mac3,
+        .pclkId = kCLOCK_Syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 250000000UL,
     };
 
     /* mac4Clk(enetc1) 250MHz */
-    hal_clk_t hal_mac4Clk = {
-        .clk_id = hal_clock_mac4,
-        .pclk_id = hal_clock_syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t mac4Clk = {
+        .clkId = kCLOCK_Mac4,
+        .pclkId = kCLOCK_Syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 250000000UL,
     };
 
     /* mac5Clk(enetc2) 250MHz */
-    hal_clk_t hal_mac5Clk = {
-        .clk_id = hal_clock_mac5,
-        .pclk_id = hal_clock_syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t mac5Clk = {
+        .clkId = kCLOCK_Mac5,
+        .pclkId = kCLOCK_Syspll1dfs0, /* syspll1 dfs0 = 1 GHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 250000000UL,
     };
 
@@ -130,45 +129,45 @@ status_t BOARD_InitHardware(void)
     };
 	RGPIO_PinInit(BOARD_LED_RGPIO, BOARD_LED_RGPIO_PIN, &led_config);
     
-	HAL_ClockSetParent(&hal_busmixClk);
-    HAL_ClockSetRate(&hal_busmixClk);
-    HAL_ClockEnable(&hal_busmixClk);
+	CLOCK_SetParent(&busmixClk);
+    CLOCK_SetRate(&busmixClk);
+    CLOCK_EnableClock(busmixClk.clkId);
 
-    HAL_ClockSetParent(&hal_enetClk);
-    HAL_ClockSetRate(&hal_enetClk);
-    HAL_ClockEnable(&hal_enetClk);
+    CLOCK_SetParent(&enetClk);
+    CLOCK_SetRate(&enetClk);
+    CLOCK_EnableClock(enetClk.clkId);
 
-    HAL_ClockSetParent(&hal_enetrefClk);
-    HAL_ClockSetRate(&hal_enetrefClk);
-    HAL_ClockEnable(&hal_enetrefClk);
+    CLOCK_SetParent(&enetrefClk);
+    CLOCK_SetRate(&enetrefClk);
+    CLOCK_EnableClock(enetrefClk.clkId);
 
-    HAL_ClockSetParent(&hal_enettimer1Clk);
-    HAL_ClockSetRate(&hal_enettimer1Clk);
-    HAL_ClockEnable(&hal_enettimer1Clk);
+    CLOCK_SetParent(&enettimer1Clk);
+    CLOCK_SetRate(&enettimer1Clk);
+    CLOCK_EnableClock(enettimer1Clk.clkId);
 
-    HAL_ClockSetParent(&hal_mac0Clk);
-    HAL_ClockSetRate(&hal_mac0Clk);
-    HAL_ClockEnable(&hal_mac0Clk);
+    CLOCK_SetParent(&mac0Clk);
+    CLOCK_SetRate(&mac0Clk);
+    CLOCK_EnableClock(mac0Clk.clkId);
 
-    HAL_ClockSetParent(&hal_mac1Clk);
-    HAL_ClockSetRate(&hal_mac1Clk);
-    HAL_ClockEnable(&hal_mac1Clk);
+    CLOCK_SetParent(&mac1Clk);
+    CLOCK_SetRate(&mac1Clk);
+    CLOCK_EnableClock(mac1Clk.clkId);
 
-    HAL_ClockSetParent(&hal_mac2Clk);
-    HAL_ClockSetRate(&hal_mac2Clk);
-    HAL_ClockEnable(&hal_mac2Clk);
+    CLOCK_SetParent(&mac2Clk);
+    CLOCK_SetRate(&mac2Clk);
+    CLOCK_EnableClock(mac2Clk.clkId);
 
-    HAL_ClockSetParent(&hal_mac3Clk);
-    HAL_ClockSetRate(&hal_mac3Clk);
-    HAL_ClockEnable(&hal_mac3Clk);
+    CLOCK_SetParent(&mac3Clk);
+    CLOCK_SetRate(&mac3Clk);
+    CLOCK_EnableClock(mac3Clk.clkId);
 
-    HAL_ClockSetParent(&hal_mac4Clk);
-    HAL_ClockSetRate(&hal_mac4Clk);
-    HAL_ClockEnable(&hal_mac4Clk);
+    CLOCK_SetParent(&mac4Clk);
+    CLOCK_SetRate(&mac4Clk);
+    CLOCK_EnableClock(mac4Clk.clkId);
 
-    HAL_ClockSetParent(&hal_mac5Clk);
-    HAL_ClockSetRate(&hal_mac5Clk);
-    HAL_ClockEnable(&hal_mac5Clk);
+    CLOCK_SetParent(&mac5Clk);
+    CLOCK_SetRate(&mac5Clk);
+    CLOCK_EnableClock(mac5Clk.clkId);
 
     /* Select ETH signals to use */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
@@ -276,7 +275,7 @@ status_t NETC_EP_MDIO_Init(void)
     netc_mdio_config_t mdioConfig = {
         .isPreambleDisable = false,
         .isNegativeDriven  = false,
-        .srcClockHz        = HAL_ClockGetRate(hal_clock_enet),
+        .srcClockHz        = CLOCK_GetRate(kCLOCK_Enet),
     };
 
     mdioConfig.mdio.type = kNETC_EMdio;

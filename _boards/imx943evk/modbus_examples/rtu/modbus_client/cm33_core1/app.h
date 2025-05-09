@@ -16,8 +16,8 @@
 /* Get source clock for LPIT driver */
 #define DEMO_LPUART            LPUART11
 #define DEMO_LPUART_INSTANCE_IDX (11U)
-#define LPUART_CLOCK_ROOT      hal_clock_lpuart11
-#define DEMO_LPUART_CLK_FREQ   HAL_ClockGetRate(LPUART_CLOCK_ROOT)
+#define LPUART_CLOCK_ROOT      kCLOCK_Lpuart11
+#define DEMO_LPUART_CLK_FREQ   CLOCK_GetRate(LPUART_CLOCK_ROOT)
 #define DEMO_LPUART_IRQn       LPUART11_IRQn
 #define DEMO_LPUART_IRQHandler LPUART11_IRQHandler
 
@@ -33,8 +33,8 @@
 #define BOARD_TPM_HANDLER TPM6_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM6_CLOCK_ROOT hal_clock_tpm6
-#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM6_CLOCK_ROOT)
+#define LPTPM6_CLOCK_ROOT kCLOCK_Tpm6
+#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM6_CLOCK_ROOT)
 
 #define MB_MASTER_DELAY_US_CONVERT              (200000 )
 #define MB_MASTER_TIMEOUT_US_RESPOND            (100000 )
@@ -45,7 +45,7 @@
 #define BOARD_TPM_SECOND_HANDLER TPM5_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM5_CLOCK_ROOT hal_clock_tpm5
+#define LPTPM5_CLOCK_ROOT kCLOCK_Tpm5
 
 #define TIME_PERIOD_US  1750U
 #ifndef TPM_PRESCALER

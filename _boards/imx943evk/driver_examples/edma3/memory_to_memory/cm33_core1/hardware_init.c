@@ -27,7 +27,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     /* DMA clocked by M33 clk, configurated by SM */
-    //HAL_ClockSetRate(&hal_edma3);
-    //HAL_ClockEnable(&hal_edma3);
+    //CLOCK_SetRate(&edma3Clk);
+    //CLOCK_EnableClock(kCLOCK_Edma3);
 }
 /*${function:end}*/

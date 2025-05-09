@@ -14,34 +14,34 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_clk = {
-        .clk_id = hal_clock_invalid,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t clk = {
+        .clkId = kCLOCK_IpInvalid,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_lptpmclk = {
-        .clk_id = LPTPM_CLOCK_ROOT,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lptpmclk = {
+        .clkId = LPTPM_CLOCK_ROOT,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
 
-    hal_clk.clk_id = (hal_clk_id_e)BOARD_GetUartClkId(DEMO_LPUART_INSTANCE_IDX);
+    clk.clkId = BOARD_GetUartClkId(DEMO_LPUART_INSTANCE_IDX);
     SM_Platform_Init();
     BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
-    HAL_ClockSetParent(&hal_clk);
-    HAL_ClockSetRate(&hal_clk);
-    HAL_ClockEnable(&hal_clk);
+    CLOCK_SetParent(&clk);
+    CLOCK_SetRate(&clk);
+    CLOCK_EnableClock(clk.clkId);
 
-    HAL_ClockSetRate(&hal_lptpmclk);
-    HAL_ClockEnable(&hal_lptpmclk);
+    CLOCK_SetRate(&lptpmclk);
+    CLOCK_EnableClock(lptpmclk.clkId);
 
     /* Select UART signals to use */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);

@@ -18,8 +18,8 @@
 #define DEMO_LPSPI_MASTER_PCS_FOR_TRANSFER (kLPSPI_MasterPcs0)
 #define DEMO_LPSPI_DEFAULT_VALUE           (0x7FU)
 
-#define DEMO_LPSPI_CLOCK hal_clock_lpspi3
-#define LPSPI_MASTER_CLK_FREQ HAL_ClockGetRate(DEMO_LPSPI_CLOCK)
+#define DEMO_LPSPI_CLOCK kCLOCK_Lpspi3
+#define LPSPI_MASTER_CLK_FREQ CLOCK_GetRate(DEMO_LPSPI_CLOCK)
 
 #define DEMO_SINC                 (SINC2)
 #define DEMO_SINC_IRQn            (SINC2_CH0_IRQn)

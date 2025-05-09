@@ -27,21 +27,21 @@
 #define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
 
 /* Get frequency of sai clock */
-#define SAI_CLOCK_ROOT          hal_clock_sai1
-#define DEMO_SAI_CLK_FREQ       HAL_ClockGetRate(SAI_CLOCK_ROOT)
+#define SAI_CLOCK_ROOT          kCLOCK_Sai1
+#define DEMO_SAI_CLK_FREQ       CLOCK_GetRate(SAI_CLOCK_ROOT)
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
 /* I2C instance and clock */
 #define DEMO_I2C                LPI2C3
-#define LPI2C_MASTER_CLOCK_ROOT hal_clock_lpi2c3
-#define DEMO_I2C_CLK_FREQ       HAL_ClockGetRate(LPI2C_MASTER_CLOCK_ROOT)
+#define LPI2C_MASTER_CLOCK_ROOT kCLOCK_Lpi2c3
+#define DEMO_I2C_CLK_FREQ       CLOCK_GetRate(LPI2C_MASTER_CLOCK_ROOT)
 
 /* DMA */
 #define DEMO_DMA               EDMA1
 #define DEMO_EDMA_CHANNEL      24U
 #define DEMO_SAI_EDMA_CHANNEL  kDma1RequestMuxSai1Tx
 #define DEMO_XFER_BUFFER_SIZE  (3200U)
-#define EXAMPLE_DMA_CLOCK_ROOT hal_clock_m33
+#define EXAMPLE_DMA_CLOCK_ROOT kCLOCK_M33
 #define BOARD_MASTER_CLOCK_CONFIG()
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/

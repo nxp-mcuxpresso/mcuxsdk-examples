@@ -14,24 +14,24 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_lpspiClkCfg = {
-        .clk_id = DEMO_LPSPI_CLOCK,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpspiClkCfg = {
+        .clkId = DEMO_LPSPI_CLOCK,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_flexioClkCfg = {
-        .clk_id = DEMO_FLEXIO_CLOCK,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t flexioClkCfg = {
+        .clkId = DEMO_FLEXIO_CLOCK,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_lpi2cClkCfg = {
-        .clk_id = hal_clock_lpi2c2,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpi2cClkCfg = {
+        .clkId = kCLOCK_Lpi2c2,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
@@ -42,9 +42,9 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_flexioClkCfg);
-    HAL_ClockEnable(&hal_flexioClkCfg);
-    HAL_ClockSetRate(&hal_lpspiClkCfg);
-    HAL_ClockEnable(&hal_lpspiClkCfg);
+    CLOCK_SetRate(&flexioClkCfg);
+    CLOCK_EnableClock(flexioClkCfg.clkId);
+    CLOCK_SetRate(&lpspiClkCfg);
+    CLOCK_EnableClock(lpspiClkCfg.clkId);
 }
 /*${function:end}*/

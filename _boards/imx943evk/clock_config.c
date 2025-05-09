@@ -5,7 +5,6 @@
  */
 
 #include "clock_config.h"
-#include "hal_clock.h"
 
 /*******************************************************************************
  * Variables
@@ -17,10 +16,10 @@
 
 static void BOARD_InitClock(void)
 {
-    hal_clk_id_e src_idx = hal_clock_ext;
-    for (; src_idx < HAL_CLOCK_PLATFORM_SOURCE_NUM; src_idx++)
+    clock_ip_name_t src_idx = kCLOCK_Ext;
+    for (; src_idx < CLOCK_NUM_SRC; src_idx++)
     {
-        HAL_ClockGetRate(src_idx);
+        CLOCK_GetRate(src_idx);
     }
 }
 

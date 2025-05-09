@@ -31,13 +31,13 @@
 #define ENDAT2P2_IRQHandler     Reserved165_IRQHandler
 #endif
 
-#define ENDAT2P2_SYS_CLK_ROOT   hal_clock_endat21
+#define ENDAT2P2_SYS_CLK_ROOT   kCLOCK_Endat21
 #define ENDAT2P2_SYS_CLOCK      ENDAT2P2_CLK_100M
 #define ENDAT2P2_FTCLK          2000000 /* 2MHz */
 
 /* The PWM base address */
 #define BOARD_PWM_BASEADDR              PWM1
-#define PWM_SRC_CLK_FREQ                HAL_ClockGetRate(hal_clock_busaon)
+#define PWM_SRC_CLK_FREQ                CLOCK_GetRate(kCLOCK_Busaon)
 #define DEMO_PWM_CLOCK_DEVIDER          kPWM_Prescale_Divide_128
 #define APP_DEFAULT_PWM_FREQUENCE       (16UL)
 #define TRANSACTION_TIME_US             10U

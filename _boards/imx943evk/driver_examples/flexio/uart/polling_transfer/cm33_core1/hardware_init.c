@@ -16,17 +16,17 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_flexioClkCfg = {
-        .clk_id = DEMO_FLEXIO_CLOCK,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t flexioClkCfg = {
+        .clkId = DEMO_FLEXIO_CLOCK,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     SM_Platform_Init();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
 
-    HAL_ClockSetRate(&hal_flexioClkCfg);
-    HAL_ClockEnable(&hal_flexioClkCfg);
+    CLOCK_SetRate(&flexioClkCfg);
+    CLOCK_EnableClock(flexioClkCfg.clkId);
 }
 /*${function:end}*/

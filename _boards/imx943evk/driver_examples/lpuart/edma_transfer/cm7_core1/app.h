@@ -13,8 +13,8 @@
 /* Get source clock for LPIT driver */
 #define DEMO_LPUART                 LPUART12
 #define DEMO_LPUART_INSTANCE_IDX (12U)
-#define LPUART_CLOCK_ROOT           hal_clock_lpuart12
-#define DEMO_LPUART_CLK_FREQ        HAL_ClockGetRate(LPUART_CLOCK_ROOT)
+#define LPUART_CLOCK_ROOT           kCLOCK_Lpuart12
+#define DEMO_LPUART_CLK_FREQ        CLOCK_GetRate(LPUART_CLOCK_ROOT)
 #define LPUART_TX_DMA_CHANNEL       0U
 #define LPUART_RX_DMA_CHANNEL       1U
 #define DEMO_LPUART_RX_EDMA_CHANNEL       kDma4RequestMuxLpuart12Rx

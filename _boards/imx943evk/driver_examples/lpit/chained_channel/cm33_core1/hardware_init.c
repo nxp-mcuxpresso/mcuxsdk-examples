@@ -15,10 +15,10 @@ void BOARD_InitHardware(void)
 {
     /* clang-format off */
 
-    hal_clk_t hal_lpit_clk = {
-        .clk_id = LPIT_MASTER_CLOCK_ROOT,
-	.pclk_id = hal_clock_syspll1dfs1div2,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpit_clk = {
+        .clkId = LPIT_MASTER_CLOCK_ROOT,
+	.pclkId = kCLOCK_Syspll1dfs1div2,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 133333333UL,
     };
 
@@ -30,7 +30,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_lpit_clk);
-    HAL_ClockEnable(&hal_lpit_clk);
+    CLOCK_SetRate(&lpit_clk);
+    CLOCK_EnableClock(lpit_clk.clkId);
 }
 /*${function:end}*/

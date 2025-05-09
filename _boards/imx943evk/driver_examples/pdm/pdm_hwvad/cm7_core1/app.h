@@ -11,8 +11,8 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define DEMO_PDM                      PDM
-#define PDM_CLOCK_ROOT                hal_clock_pdm
-#define DEMO_PDM_CLK_FREQ             HAL_ClockGetRate(PDM_CLOCK_ROOT)
+#define PDM_CLOCK_ROOT                kCLOCK_Pdm
+#define DEMO_PDM_CLK_FREQ             CLOCK_GetRate(PDM_CLOCK_ROOT)
 #define DEMO_PDM_FIFO_WATERMARK       (FSL_FEATURE_PDM_FIFO_DEPTH / 2U - 1U)
 #define DEMO_PDM_QUALITY_MODE         kPDM_QualityModeHigh
 #define DEMO_PDM_CIC_OVERSAMPLE_RATE  (16U)

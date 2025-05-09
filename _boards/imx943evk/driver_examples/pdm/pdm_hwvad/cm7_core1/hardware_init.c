@@ -14,20 +14,20 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_audiopll1vcoCLKCfg = {
-        .clk_id = hal_clock_audiopll1ctl,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t audiopll1vcoCLKCfg = {
+        .clkId = kCLOCK_Audiopll1ctl,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 3932160000,
     };
-    hal_clk_t hal_audiopll1CLKCfg = {
-        .clk_id = hal_clock_audiopll1,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t audiopll1CLKCfg = {
+        .clkId = kCLOCK_Audiopll1,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 393216000,
     };
-    hal_clk_t hal_pdmClkCfg = {
-        .clk_id = PDM_CLOCK_ROOT,
-        .pclk_id = hal_clock_audiopll1,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t pdmClkCfg = {
+        .clkId = PDM_CLOCK_ROOT,
+        .pclkId = kCLOCK_Audiopll1,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 393216000 / 2,
     };
     /* clang-format on */
@@ -37,15 +37,15 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_audiopll1vcoCLKCfg);
-    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
+    CLOCK_SetRate(&audiopll1vcoCLKCfg);
+    CLOCK_EnableClock(audiopll1vcoCLKCfg.clkId);
 
-    HAL_ClockSetRate(&hal_audiopll1CLKCfg);
-    HAL_ClockEnable(&hal_audiopll1CLKCfg);
+    CLOCK_SetRate(&audiopll1CLKCfg);
+    CLOCK_EnableClock(audiopll1CLKCfg.clkId);
 
-    HAL_ClockSetParent(&hal_pdmClkCfg);
-    HAL_ClockSetRate(&hal_pdmClkCfg);
-    HAL_ClockEnable(&hal_pdmClkCfg);
+    CLOCK_SetParent(&pdmClkCfg);
+    CLOCK_SetRate(&pdmClkCfg);
+    CLOCK_EnableClock(pdmClkCfg.clkId);
 
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN_PDM_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN_PDM_SEL);

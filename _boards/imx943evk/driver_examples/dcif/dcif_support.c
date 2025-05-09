@@ -15,21 +15,21 @@
 
 void BOARD_InitDisplayInterface(void)
 {
-    hal_clk_t hal_ldbpllvcoCLKCfg = {
-        .clk_id = hal_clock_ldbpllctl,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t ldbpllvcoCLKCfg = {
+        .clkId = kCLOCK_Ldbpllctl,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 2986200000UL,
     };
 
-    hal_clk_t hal_ldbpllCLKCfg = {
-        .clk_id = hal_clock_ldbpll,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t ldbpllCLKCfg = {
+        .clkId = kCLOCK_Ldbpll,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 497700000UL,
     };
-    HAL_ClockSetRate(&hal_ldbpllvcoCLKCfg);
-    HAL_ClockEnable(&hal_ldbpllvcoCLKCfg);
-    HAL_ClockSetRate(&hal_ldbpllCLKCfg);
-    HAL_ClockEnable(&hal_ldbpllCLKCfg);
+    CLOCK_SetRate(&ldbpllvcoCLKCfg);
+    CLOCK_EnableClock(ldbpllvcoCLKCfg.clkId);
+    CLOCK_SetRate(&ldbpllCLKCfg);
+    CLOCK_EnableClock(ldbpllCLKCfg.clkId);
 
     /* Select LVDS0 pin by using PCAL6416 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C3_S5_21_ID, LVDS_EN);

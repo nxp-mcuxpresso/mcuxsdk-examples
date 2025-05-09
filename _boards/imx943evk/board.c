@@ -44,7 +44,7 @@ static status_t BOARD_PCA6416_SetPinAsOutput(uint32_t i2cDevId, uint8_t pinIdx);
  * Variables
  ******************************************************************************/
 static LPI2C_Type * lpi2cBases[] = LPI2C_BASE_PTRS;
-static hal_clk_id_e lpi2cClkId[] = {hal_clock_invalid, hal_clock_lpi2c1, hal_clock_lpi2c2, hal_clock_lpi2c3, hal_clock_lpi2c4, hal_clock_lpi2c5, hal_clock_lpi2c6, hal_clock_lpi2c7, hal_clock_lpi2c8};
+static clock_ip_name_t lpi2cClkId[] = LPI2C_CLOCKS;
 
 static pca954x_handle_t g_pca954xHandle[BOARD_PCA9544_NUM + BOARD_PCA9548_NUM];
 static pcal6408_handle_t g_pca6408Handle[BOARD_PCA6408_NUM];
@@ -135,20 +135,20 @@ static pca64xx_t g_pca64xxData[] = {
 
 
 /* Get UART Clock Id. */
-uint32_t BOARD_GetUartClkId(uint32_t uartInstIdx)
+clock_ip_name_t BOARD_GetUartClkId(uint32_t uartInstIdx)
 {
-    hal_clk_id_e uart_clk_id[] = {hal_clock_invalid, hal_clock_lpuart1, hal_clock_lpuart2, hal_clock_lpuart3, hal_clock_lpuart4, hal_clock_lpuart5, hal_clock_lpuart6, hal_clock_lpuart7, hal_clock_lpuart8, hal_clock_lpuart9, hal_clock_lpuart10, hal_clock_lpuart11, hal_clock_lpuart12};
+    clock_ip_name_t uart_clk_id[] = LPUART_CLOCKS;
 
-    return (uint32_t)uart_clk_id[uartInstIdx];
+    return uart_clk_id[uartInstIdx];
 }
 
 /* Get SWO Clock Id. */
-uint32_t BOARD_GetSwoClkId(uint32_t swoPortIdx)
+clock_ip_name_t BOARD_GetSwoClkId(uint32_t swoPortIdx)
 {
     (void)swoPortIdx;
-    hal_clk_id_e swo_clk_id[1] = { hal_clock_swotrace }; /* There are 32 swo ports and share one clock root for all of swo ports */
+    clock_ip_name_t swo_clk_id[1] = { kCLOCK_Swotrace }; /* There are 32 swo ports and share one clock root for all of swo ports */
 
-    return (uint32_t)swo_clk_id[0];
+    return swo_clk_id[0];
 }
 
 /* Initialize debug console. */
@@ -156,9 +156,9 @@ void BOARD_InitDebugConsole(void)
 {
 
     /* clang-format off */
-    hal_clk_t hal_clk = {
-        .clk_id = hal_clock_invalid,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t clk = {
+        .clkId = kCLOCK_IpInvalid,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
@@ -166,16 +166,16 @@ void BOARD_InitDebugConsole(void)
     if (BOARD_DEBUG_CONSOLE_TYPE == BOARD_DEBUG_UART_TYPE)
     {
 
-        hal_clk.clk_id = (hal_clk_id_e)BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
+        clk.clkId = BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
     }
     else if (BOARD_DEBUG_CONSOLE_TYPE == BOARD_DEBUG_SWO_TYPE)
     {
-        hal_clk.clk_id = (hal_clk_id_e)BOARD_GetSwoClkId(BOARD_DEBUG_CONSOLE_PORT);
+        clk.clkId = BOARD_GetSwoClkId(BOARD_DEBUG_CONSOLE_PORT);
     }
-    HAL_ClockSetRate(&hal_clk);
-    HAL_ClockEnable(&hal_clk);
+    CLOCK_SetRate(&clk);
+    CLOCK_EnableClock(clk.clkId);
     DbgConsole_Init(BOARD_DEBUG_CONSOLE_PORT, BOARD_DEBUG_CONSOLE_BAUDRATE, BOARD_DEBUG_CONSOLE_TYPE,
-                    HAL_ClockGetRate(hal_clk.clk_id));
+                    CLOCK_GetRate(clk.clkId));
 }
 
 void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz)
@@ -311,8 +311,8 @@ void BOARD_InitI2cDevice(uint32_t i2cDevId)
     uint8_t i2cDevArrayIdx = (i2cDevId & I2C_DEVICE_ARRAY_IDX_MASK) >> I2C_DEVICE_ARRAY_IDX_SHIFT;
     uint8_t i2cInstIdx = (i2cDevId & I2C_INSTANCE_IDX_MASK) >> I2C_INSTANCE_IDX_SHIFT;
     LPI2C_Type *base = lpi2cBases[i2cInstIdx];
-    hal_clk_id_e clkId = lpi2cClkId[i2cInstIdx];
-    uint32_t clkFreq = HAL_ClockGetRate(clkId);
+    clock_ip_name_t clkId = lpi2cClkId[i2cInstIdx];
+    uint32_t clkFreq = CLOCK_GetRate(clkId);
     uint8_t i2cAddr = (i2cDevId & I2C_DEVICE_ADDR_MASK) >> I2C_DEVICE_ADDR_SHIFT;
     uint8_t deviceType = (i2cDevId & I2C_DEVICE_TYPE_MASK) >> I2C_DEVICE_TYPE_SHIFT;
 
@@ -1264,9 +1264,9 @@ void BOARD_DeinitLpuart12Pins(void) {                                /*!< Functi
 
 uint32_t BOARD_GetUartFreq(uint32_t uartInstIdx)
 {
-    hal_clk_id_e clkId = (hal_clk_id_e)BOARD_GetUartClkId(uartInstIdx);
+    clock_ip_name_t clkId = BOARD_GetUartClkId(uartInstIdx);
 
-    return HAL_ClockGetRate(clkId);
+    return CLOCK_GetRate(clkId);
 }
 
 uint32_t BOARD_Lpuart1GetFreq(void)

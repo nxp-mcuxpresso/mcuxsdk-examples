@@ -14,7 +14,7 @@
 /* The PWM base address */
 #define BOARD_PWM_BASEADDR PWM1
 
-#define PWM_SRC_CLK_FREQ       HAL_ClockGetRate(hal_clock_busaon)
+#define PWM_SRC_CLK_FREQ       CLOCK_GetRate(kCLOCK_Busaon)
 #define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_1
 #define APP_DEFAULT_PWM_FREQUENCE (16000UL)
 #define TRANSACTION_TIME_US 10U
@@ -36,8 +36,8 @@
 #define DEMO_HIPERFACE_POS_RCVD_IRQn			Reserved226_IRQn
 #define DEMO_HIPERFACE_POS_RCVD_IRQHandler		Reserved226_IRQHandler
 
-#define HIPERFACE_CLOCK_ROOT       	hal_clock_hiperface1
-#define HIPERFACE_SOURCE_CLOCK     	HAL_ClockGetFreq(HIPERFACE_CLOCK_ROOT)
+#define HIPERFACE_CLOCK_ROOT       	kCLOCK_Hiperface1
+#define HIPERFACE_SOURCE_CLOCK     	CLOCK_GetRate(HIPERFACE_CLOCK_ROOT)
 
 #define ENCODER_TYPE_ROTARY
 

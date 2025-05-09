@@ -71,7 +71,7 @@
 #define OSAL_TIMER_IRQ_ID     GPT1_IRQn
 #define OSAL_TIMER            GPT1
 #define OSAL_TIMER_IRQHandler GPT1_IRQHandler
-#define OSAL_TIMER_CLK_FREQ   HAL_ClockGetRate(hal_clock_gpt1)
+#define OSAL_TIMER_CLK_FREQ   CLOCK_GetRate(kCLOCK_Gpt1)
 
 /*******************************************************************************
  * Prototypes

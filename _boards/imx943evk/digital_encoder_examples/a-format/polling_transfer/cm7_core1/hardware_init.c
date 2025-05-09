@@ -16,10 +16,10 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_flexioClkCfg = {
-        .clk_id = DEMO_FLEXIO_CLOCK,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t flexioClkCfg = {
+        .clkId = DEMO_FLEXIO_CLOCK,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 80000000UL, /* 80 MHz */
     };
     /* clang-format on */
@@ -30,8 +30,8 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetParent(&hal_flexioClkCfg);
-    HAL_ClockSetRate(&hal_flexioClkCfg);
-    HAL_ClockEnable(&hal_flexioClkCfg);
+    CLOCK_SetParent(&flexioClkCfg);
+    CLOCK_SetRate(&flexioClkCfg);
+    CLOCK_EnableClock(flexioClkCfg.clkId);
 }
 /*${function:end}*/

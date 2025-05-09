@@ -14,7 +14,7 @@
 /* PIT setting */
 #define DEMO_LPIT_BASE          LPIT1
 #define DEMO_LPIT_CHANNEL       kLPIT_Chnl_0
-#define LPIT_SOURCECLOCK        HAL_ClockGetRate(hal_clock_busaon)
+#define LPIT_SOURCECLOCK        CLOCK_GetRate(kCLOCK_Busaon)
 
 /* XBAR setting */
 #define DEMO_XBAR_INPUT_PIT_SIGNAL    kXBAR2_InputLpit1LpitTrigOut0

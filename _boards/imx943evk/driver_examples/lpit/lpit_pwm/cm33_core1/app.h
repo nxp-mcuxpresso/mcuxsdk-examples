@@ -14,7 +14,7 @@
 #define DEMO_LPIT_Channel kLPIT_Chnl_0
 
 /* Get source clock for LPIT driver */
-#define LPIT_SOURCECLOCK HAL_ClockGetRate(hal_clock_buswakeup)
+#define LPIT_SOURCECLOCK CLOCK_GetRate(kCLOCK_Buswakeup)
 /*${macro:end}*/
 
 /*******************************************************************************

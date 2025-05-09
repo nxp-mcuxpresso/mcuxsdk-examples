@@ -14,17 +14,17 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_lpi2cclk = {
-        .clk_id = DEMO_LPI2C_CLOCK,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpi2cclk = {
+        .clkId = DEMO_LPI2C_CLOCK,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     
-    hal_clk_t hal_flexioclk = {
-        .clk_id = DEMO_FLEXIO_CLOCK,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t flexioclk = {
+        .clkId = DEMO_FLEXIO_CLOCK,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
@@ -36,9 +36,9 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_lpi2cclk);
-    HAL_ClockEnable(&hal_lpi2cclk);
-    HAL_ClockSetRate(&hal_flexioclk);
-    HAL_ClockEnable(&hal_flexioclk);
+    CLOCK_SetRate(&lpi2cclk);
+    CLOCK_EnableClock(lpi2cclk.clkId);
+    CLOCK_SetRate(&flexioclk);
+    CLOCK_EnableClock(flexioclk.clkId);
 }
 /*${function:end}*/

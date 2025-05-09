@@ -19,10 +19,10 @@
 void BOARD_InitHardware(void)
 {
     /* AUDIO PLL and SAI PDM clock be set by linux side when use aplay or record command, Mcore don't need configure this value in this case. */
-    hal_clk_t hal_lpi2cCLKCfg = {
-        .clk_id = LPI2C_MASTER_CLOCK_ROOT,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpi2cCLKCfg = {
+        .clkId = LPI2C_MASTER_CLOCK_ROOT,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     sai_master_clock_t saiMasterCfg = {
@@ -35,8 +35,8 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_lpi2cCLKCfg);
-    HAL_ClockEnable(&hal_lpi2cCLKCfg);
+    CLOCK_SetRate(&lpi2cCLKCfg);
+    CLOCK_EnableClock(lpi2cCLKCfg.clkId);
 
     /* Select i2c channel to access codec */
     BOARD_MUX_Select(BOARD_PCA9548_I2C3_ID, BOARD_S4_CHAN_IDX);

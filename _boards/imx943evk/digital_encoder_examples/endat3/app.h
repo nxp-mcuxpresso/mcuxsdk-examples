@@ -14,7 +14,7 @@
 /* The PWM base address */
 #define BOARD_PWM_BASEADDR PWM1
 
-#define PWM_SRC_CLK_FREQ       HAL_ClockGetRate(hal_clock_busaon)
+#define PWM_SRC_CLK_FREQ       CLOCK_GetRate(kCLOCK_Busaon)
 #define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_128
 #define APP_DEFAULT_PWM_FREQUENCE (16UL)
 #define TRANSACTION_TIME_US 10U
@@ -31,8 +31,8 @@
 #define DEMO_ENDAT3_BG_IRQn 	Reserved163_IRQn
 #define DEMO_BG_IRQ_IRQHandler 	Reserved163_IRQHandler
 
-#define ENDAT3_CLOCK_ROOT       hal_clock_endat31fast
-#define ENDAT3_SOURCE_CLOCK     HAL_ClockGetFreq(ENDAT3_CLOCK_ROOT)
+#define ENDAT3_CLOCK_ROOT       kCLOCK_Endat31fast
+#define ENDAT3_SOURCE_CLOCK     CLOCK_GetRate(ENDAT3_CLOCK_ROOT)
 #define ENDAT3_STRETCHER_CTRL_ASYNC_EN 1
 #define ENDAT3_STRETCHER_CTRL_POL_SEL 1
 #define ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER  7

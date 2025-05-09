@@ -15,7 +15,7 @@
 #define EXAMPLE_GPT_IRQHandler GPT1_IRQHandler
 
 /* Get source clock for GPT driver */
-#define EXAMPLE_GPT_CLK_FREQ HAL_ClockGetRate(hal_clock_gpt1)
+#define EXAMPLE_GPT_CLK_FREQ CLOCK_GetRate(kCLOCK_Gpt1)
 /*${macro:end}*/
 
 /*******************************************************************************

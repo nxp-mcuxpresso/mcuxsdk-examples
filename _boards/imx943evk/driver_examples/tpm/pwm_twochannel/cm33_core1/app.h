@@ -18,8 +18,8 @@
 #define BOARD_SECOND_TPM_CHANNEL kTPM_Chnl_3
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm2
-#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
+#define LPTPM_CLOCK_ROOT kCLOCK_Tpm2
+#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 
 /*******************************************************************************

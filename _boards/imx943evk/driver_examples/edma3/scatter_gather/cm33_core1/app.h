@@ -15,7 +15,7 @@
 /*${macro:start}*/
 #define EXAMPLE_DMA_CHANNEL    30U
 #define EXAMPLE_DMA_BASEADDR   EDMA1
-#define EXAMPLE_DMA_CLOCK_ROOT hal_clock_m33
+#define EXAMPLE_DMA_CLOCK_ROOT kCLOCK_M33
 /*${macro:end}*/
 
 /*******************************************************************************

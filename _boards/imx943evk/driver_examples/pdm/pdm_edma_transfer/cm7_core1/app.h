@@ -16,14 +16,14 @@
 #define DEMO_PDM_EDMA_SOURCE   kDma1RequestMuxPdm
 #define DEMO_EDMA_CHANNEL      kDma1RequestMuxPdm
 
-#define EXAMPLE_DMA_CLOCK_ROOT hal_clock_m33
+#define EXAMPLE_DMA_CLOCK_ROOT kCLOCK_M33
 /* Workaround for i.MX93 which has both DMA3 and DMA4(DMA3, DMA4 are dma hardware version) */
 #undef FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
 #define FSL_FEATURE_EDMA_HAS_CHANNEL_MUX (0)
 
 #define DEMO_PDM                      PDM
-#define PDM_CLOCK_ROOT                hal_clock_pdm
-#define DEMO_PDM_CLK_FREQ             HAL_ClockGetRate(PDM_CLOCK_ROOT)
+#define PDM_CLOCK_ROOT                kCLOCK_Pdm
+#define DEMO_PDM_CLK_FREQ             CLOCK_GetRate(PDM_CLOCK_ROOT)
 #define DEMO_PDM_FIFO_WATERMARK       (FSL_FEATURE_PDM_FIFO_DEPTH / 2U)
 #define DEMO_PDM_QUALITY_MODE         kPDM_QualityModeHigh
 #define DEMO_PDM_CIC_OVERSAMPLE_RATE  (16U)

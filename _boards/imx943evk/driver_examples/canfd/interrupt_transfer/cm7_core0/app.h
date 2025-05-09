@@ -15,8 +15,8 @@
 #define TX_MESSAGE_BUFFER_NUM (0)
 #define USE_CANFD             (1)
 
-#define FLEXCAN_CLOCK_ROOT         (hal_clock_can2)
-#define EXAMPLE_CAN_CLK_FREQ (HAL_ClockGetRate(FLEXCAN_CLOCK_ROOT))
+#define FLEXCAN_CLOCK_ROOT         (kCLOCK_Can2)
+#define EXAMPLE_CAN_CLK_FREQ (CLOCK_GetRate(FLEXCAN_CLOCK_ROOT))
 #define USE_IMPROVED_TIMING_CONFIG (1U)
 /*${macro:end}*/
 

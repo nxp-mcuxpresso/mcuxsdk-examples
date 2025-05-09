@@ -24,7 +24,7 @@
 #define FLEXIO_SPI_CLK_PIN                11U
 #define FLEXIO_SPI_PCS_PIN                8U
 
-#define DEMO_LPSPI_CLOCK hal_clock_lpspi5
+#define DEMO_LPSPI_CLOCK kCLOCK_Lpspi5
 #define SLAVE_LPSPI_BASEADDR         LPSPI5
 #define SLAVE_LPSPI_IRQ_HANDLE       LPSPI5_IRQHandler
 #define SLAVE_LPSPI_IRQN             LPSPI5_IRQn
@@ -34,15 +34,15 @@
 #define FLEXIO_SPI_CLK_PIN                2U
 #define FLEXIO_SPI_PCS_PIN                3U
 
-#define DEMO_LPSPI_CLOCK hal_clock_lpspi3
+#define DEMO_LPSPI_CLOCK kCLOCK_Lpspi3
 #define SLAVE_LPSPI_BASEADDR         LPSPI3
 #define SLAVE_LPSPI_IRQ_HANDLE       LPSPI3_IRQHandler
 #define SLAVE_LPSPI_IRQN             LPSPI3_IRQn
 #endif
 
 #define MASTER_FLEXIO_SPI_IRQ             FLEXIO1_IRQn
-#define DEMO_FLEXIO_CLOCK hal_clock_flexio1
-#define MASTER_FLEXIO_SPI_CLOCK_FREQUENCY HAL_ClockGetRate(DEMO_FLEXIO_CLOCK)
+#define DEMO_FLEXIO_CLOCK kCLOCK_Flexio1
+#define MASTER_FLEXIO_SPI_CLOCK_FREQUENCY CLOCK_GetRate(DEMO_FLEXIO_CLOCK)
 
 /*Slave related*/
 #define SLAVE_LPSPI_PCS_FOR_INIT     kLPSPI_Pcs0

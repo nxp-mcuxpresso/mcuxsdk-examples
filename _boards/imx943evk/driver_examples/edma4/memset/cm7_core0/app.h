@@ -12,7 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_DMA_BASEADDR   EDMA4
-#define EXAMPLE_DMA_CLOCK_ROOT hal_clock_wakeupaxi
+#define EXAMPLE_DMA_CLOCK_ROOT kCLOCK_Wakeupaxi
 #define DEMO_DMA_CHANNEL_0     0U
 #define APP_DMA_IRQ            EDMA4_CH0_IRQn
 #define APP_DMA_IRQ_HANDLER    EDMA4_CH0_IRQHandler

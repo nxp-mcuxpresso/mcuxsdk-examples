@@ -26,7 +26,7 @@
 #define QTMR_CLOCK_SOURCE_DIVIDER (128U)
 
 /* Get source clock for QTMR driver */
-#define QTMR_SOURCE_CLOCK (HAL_ClockGetRate(hal_clock_buswakeup) / QTMR_CLOCK_SOURCE_DIVIDER)
+#define QTMR_SOURCE_CLOCK (CLOCK_GetRate(kCLOCK_Buswakeup) / QTMR_CLOCK_SOURCE_DIVIDER)
 /*${macro:end}*/
 
 /*******************************************************************************

@@ -17,7 +17,7 @@
 #define DEMO_DMA_CHANNEL_0   0U
 #define APP_DMA_IRQ          EDMA1_CH0_IRQn
 #define APP_DMA_IRQ_HANDLER  EDMA1_CH0_IRQHandler
-#define EXAMPLE_DMA_CLOCK_ROOT hal_clock_m33
+#define EXAMPLE_DMA_CLOCK_ROOT kCLOCK_M33
 /*${macro:end}*/
 
 /*******************************************************************************

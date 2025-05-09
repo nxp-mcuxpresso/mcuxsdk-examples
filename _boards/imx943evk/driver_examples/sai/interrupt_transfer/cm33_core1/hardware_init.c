@@ -49,32 +49,29 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfi
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_audiopll1vcoCLKCfg = {
-        .clk_id = hal_clock_audiopll1ctl,
-        .clk_round_opt = hal_clk_round_auto,
-        .ratel = 3932160000,
-        .rateu = 0,
+    clk_t audiopll1vcoCLKCfg = {
+        .clkId = kCLOCK_Audiopll1ctl,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 3932160000,
     };
-    hal_clk_t hal_audiopll1CLKCfg = {
-        .clk_id = hal_clock_audiopll1,
-        .clk_round_opt = hal_clk_round_auto,
-        .ratel = 393216000,
-        .rateu = 0,
+    clk_t audiopll1CLKCfg = {
+        .clkId = kCLOCK_Audiopll1,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 393216000,
     };
-    hal_clk_t hal_lpi2cCLKCfg = {
-        .clk_id = LPI2C_MASTER_CLOCK_ROOT,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpi2cCLKCfg = {
+        .clkId = LPI2C_MASTER_CLOCK_ROOT,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_saiCLKCfg = {
-        .clk_id = SAI_CLOCK_ROOT,
-        .pclk_id = hal_clock_audiopll1, // select audiopll1out source(393216000 Hz)
-        .clk_round_opt = hal_clk_round_auto,
-        .div = 32, // output 12288000 Hz
-        .enable_clk = true,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t saiCLKCfg = {
+        .clkId = SAI_CLOCK_ROOT,
+        .pclkId = kCLOCK_Audiopll1, // select audiopll1out source(393216000 Hz)
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 12288000ULL, // output 12288000 Hz
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
     sai_master_clock_t saiMasterCfg = {
         .mclkOutputEnable = true,
@@ -86,15 +83,15 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetPllClk(&hal_audiopll1vcoCLKCfg);
-    HAL_ClockEnable(&hal_audiopll1vcoCLKCfg);
-    HAL_ClockSetPllClk(&hal_audiopll1CLKCfg);
-    HAL_ClockEnable(&hal_audiopll1CLKCfg);
-    HAL_ClockSetRate(&hal_lpi2cCLKCfg);
-    HAL_ClockEnable(&hal_lpi2cCLKCfg);
-    HAL_ClockSetRootClk(&hal_saiCLKCfg);
-    //HAL_ClockSetRate(&hal_saiCLKCfg);
-    HAL_ClockEnable(&hal_saiCLKCfg);
+    CLOCK_SetRate(&audiopll1vcoCLKCfg);
+    CLOCK_EnableClock(audiopll1vcoCLKCfg.clkId);
+    CLOCK_SetRate(&audiopll1CLKCfg);
+    CLOCK_EnableClock(audiopll1CLKCfg.clkId);
+    CLOCK_SetRate(&lpi2cCLKCfg);
+    CLOCK_EnableClock(lpi2cCLKCfg.clkId);
+    CLOCK_SetRate(&saiCLKCfg);
+    //CLOCK_SetRate(&saiCLKCfg);
+    CLOCK_EnableClock(saiCLKCfg.clkId);
 
     /* Select i2c channel to access codec */
     BOARD_MUX_Select(BOARD_PCA9548_I2C3_ID, BOARD_S4_CHAN_IDX);

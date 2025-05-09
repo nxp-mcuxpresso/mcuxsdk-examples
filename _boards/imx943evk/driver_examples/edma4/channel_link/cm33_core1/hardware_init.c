@@ -16,10 +16,10 @@ void BOARD_InitHardware(void)
 {
     /* clang-format off */
     /* 250MHz DMA clock */
-    hal_clk_t dmaClkCfg = {
-        .clk_id = hal_clock_wakeupaxi,
-	.pclk_id = hal_clock_syspll1dfs0,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t dmaClkCfg = {
+        .clkId = kCLOCK_Wakeupaxi,
+	.pclkId = kCLOCK_Syspll1dfs0,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
@@ -30,7 +30,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&dmaClkCfg);
-    HAL_ClockEnable(&dmaClkCfg);
+    CLOCK_SetRate(&dmaClkCfg);
+    CLOCK_EnableClock(dmaClkCfg.clkId);
 }
 /*${function:end}*/

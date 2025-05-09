@@ -73,7 +73,7 @@
 				((NETC_PSI == kNETC_ENETC1PSI0) ? 0x6U : 0x7U))
 #define EXAMPLE_PHY_OPS      &g_app_phy_rtl8211f_ops
 #define EXAMPLE_PHY_RESOURCE (void *)&g_phy_rtl8211f_resource
-#define EXAMPLE_CLOCK_FREQ   HAL_ClockGetRate(hal_clock_enet)
+#define EXAMPLE_CLOCK_FREQ   CLOCK_GetRate(kCLOCK_Enet)
 /*${macro:end}*/
 
 extern phy_rtl8211f_resource_t g_phy_rtl8211f_resource;

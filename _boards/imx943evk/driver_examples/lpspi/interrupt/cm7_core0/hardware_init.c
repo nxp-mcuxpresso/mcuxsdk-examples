@@ -15,17 +15,17 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_lpspiMstClkCfg = {
-        .clk_id = EXAMPLE_LPSPI_MASTER_CLK_ID,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpspiMstClkCfg = {
+        .clkId = EXAMPLE_LPSPI_MASTER_CLK_ID,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_lpspiSlvClkCfg = {
-        .clk_id = EXAMPLE_LPSPI_SLAVE_CLK_ID,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t lpspiSlvClkCfg = {
+        .clkId = EXAMPLE_LPSPI_SLAVE_CLK_ID,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
@@ -37,10 +37,10 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_lpspiMstClkCfg);
-    HAL_ClockEnable(&hal_lpspiMstClkCfg);
-    HAL_ClockSetRate(&hal_lpspiSlvClkCfg);
-    HAL_ClockEnable(&hal_lpspiSlvClkCfg);
+    CLOCK_SetRate(&lpspiMstClkCfg);
+    CLOCK_EnableClock(lpspiMstClkCfg.clkId);
+    CLOCK_SetRate(&lpspiSlvClkCfg);
+    CLOCK_EnableClock(lpspiSlvClkCfg.clkId);
 
     /* Route LPSPI8 of SoC to arduino interface */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);

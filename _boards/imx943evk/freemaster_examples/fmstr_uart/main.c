@@ -81,17 +81,17 @@ static void init_freemaster_lpuart(void)
     lpuart_config_t config;
 
     /* clang-format off */
-    hal_clk_t hal_clk = {
-        .clk_id = hal_clock_invalid,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t clk = {
+        .clkId = kCLOCK_IpInvalid,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
 
-    hal_clk.clk_id = (hal_clk_id_e)BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
+    clk.clkId = BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
 
-    HAL_ClockSetRate(&hal_clk);
-    HAL_ClockEnable(&hal_clk);
+    CLOCK_SetRate(&clk);
+    CLOCK_EnableClock(clk.clkId);
 
     /*
      * config.baudRate_Bps = 115200U;
@@ -107,7 +107,7 @@ static void init_freemaster_lpuart(void)
     config.enableTx     = false;
     config.enableRx     = false;
 
-    LPUART_Init(FMSTR_LPUART_BASE_ADDR(BOARD_DEBUG_UART_INSTANCE), &config, HAL_ClockGetRate(hal_clk.clk_id));
+    LPUART_Init(FMSTR_LPUART_BASE_ADDR(BOARD_DEBUG_UART_INSTANCE), &config, CLOCK_GetRate(clk.clkId));
 
     /* Register communication module used by FreeMASTER driver. */
     FMSTR_SerialSetBaseAddress(FMSTR_LPUART_BASE_ADDR(BOARD_DEBUG_UART_INSTANCE));

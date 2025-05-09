@@ -58,18 +58,18 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 void BOARD_InitHardware(void)
 {
     /* EnDat3.0 200MHz */
-    hal_clk_t hal_endat3Clk_rxtx = {
-        .clk_id = hal_clock_endat31fast,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
+    clk_t endat3Clk_rxtx = {
+        .clkId = kCLOCK_Endat31fast,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
         .rate = 200000000UL,
-        .clk_round_opt = hal_clk_round_auto,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
-    hal_clk_t hal_endat3Clk_sys = {
-        .clk_id = hal_clock_endat31slow,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
+    clk_t endat3Clk_sys = {
+        .clkId = kCLOCK_Endat31slow,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
         .rate = 100000000UL,
-        .clk_round_opt = hal_clk_round_auto,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
     BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX;
@@ -80,13 +80,13 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetParent(&hal_endat3Clk_rxtx);
-    HAL_ClockSetRate(&hal_endat3Clk_rxtx);
-    HAL_ClockEnable(&hal_endat3Clk_rxtx);
+    CLOCK_SetParent(&endat3Clk_rxtx);
+    CLOCK_SetRate(&endat3Clk_rxtx);
+    CLOCK_EnableClock(endat3Clk_rxtx.clkId);
 
-    HAL_ClockSetParent(&hal_endat3Clk_sys);
-    HAL_ClockSetRate(&hal_endat3Clk_sys);
-    HAL_ClockEnable(&hal_endat3Clk_sys);
+    CLOCK_SetParent(&endat3Clk_sys);
+    CLOCK_SetRate(&endat3Clk_sys);
+    CLOCK_EnableClock(endat3Clk_sys.clkId);
 
     blk_base->DIAG_ENCODER_MUX_SEL =
         BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT3);

@@ -24,7 +24,7 @@
 #define TIMER_IRQ_ID     GPT2_IRQn
 #define TIMER            (GPT_Type *) GPT2
 #define TIMER_IRQHandler GPT2_IRQHandler
-#define TIMER_CLK_FREQ   HAL_ClockGetRate(hal_clock_gpt2)
+#define TIMER_CLK_FREQ   CLOCK_GetRate(kCLOCK_Gpt2)
 
 UINT32 EcatTimerCnt;
 
@@ -48,12 +48,12 @@ static void Ecat_KickOff(void)
 
     SDK_DelayAtLeastUs(1000U, SystemCoreClock);
     
-    hal_rst_t hal_ecat_enable = {
+    hal_rst_t ecat_enable = {
         .id = 24,
         .flags = 0,
         .resetState = 0,
     };
-    HAL_Reset(&hal_ecat_enable);
+    HAL_Reset(&ecat_enable);
 }
 
 UINT16 HW_Init(void)
@@ -63,26 +63,26 @@ UINT16 HW_Init(void)
     gpt_config_t gptConfig;
 	SM_Platform_Init();	
 
-    hal_clk_t hal_ecatClk = {
-        .clk_id = hal_clock_ecat,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t ecatClk = {
+        .clkId = kCLOCK_Ecat,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 100000000UL,
     };
 
-    hal_clk_t hal_gpt2Clk = {
-        .clk_id = hal_clock_gpt2,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t gpt2Clk = {
+        .clkId = kCLOCK_Gpt2,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 50000000UL,
     };
 
-    HAL_ClockSetParent(&hal_ecatClk);
-    HAL_ClockSetRate(&hal_ecatClk);
-    HAL_ClockEnable(&hal_ecatClk);
-    HAL_ClockSetParent(&hal_gpt2Clk);
-    HAL_ClockSetRate(&hal_gpt2Clk);
-    HAL_ClockEnable(&hal_gpt2Clk);
+    CLOCK_SetParent(&ecatClk);
+    CLOCK_SetRate(&ecatClk);
+    CLOCK_EnableClock(ecatClk.clkId);
+    CLOCK_SetParent(&gpt2Clk);
+    CLOCK_SetRate(&gpt2Clk);
+    CLOCK_EnableClock(gpt2Clk.clkId);
 
     /* Init board hardware. */
     BOARD_InitBootPins();

@@ -19,11 +19,11 @@
 
 #define DEMO_SAI_EDMA_SOURCE   kDma1RequestMuxSai1Tx
 #define DEMO_SAI_EDMA_CHANNEL  kDma1RequestMuxSai1Tx
-#define EXAMPLE_DMA_CLOCK_ROOT hal_clock_m33
+#define EXAMPLE_DMA_CLOCK_ROOT kCLOCK_M33
 
 #define DEMO_PDM                      PDM
-#define PDM_CLOCK_ROOT                hal_clock_pdm
-#define DEMO_PDM_CLK_FREQ             HAL_ClockGetRate(PDM_CLOCK_ROOT)
+#define PDM_CLOCK_ROOT                kCLOCK_Pdm
+#define DEMO_PDM_CLK_FREQ             CLOCK_GetRate(PDM_CLOCK_ROOT)
 #define DEMO_PDM_FIFO_WATERMARK       (FSL_FEATURE_PDM_FIFO_DEPTH / 2U)
 #define DEMO_PDM_QUALITY_MODE         kPDM_QualityModeHigh
 #define DEMO_PDM_CIC_OVERSAMPLE_RATE  (16U)
@@ -48,15 +48,15 @@
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
 /* Get frequency of sai1 clock */
-#define SAI_CLOCK_ROOT    hal_clock_sai1
-#define DEMO_SAI_CLK_FREQ HAL_ClockGetRate(SAI_CLOCK_ROOT)
+#define SAI_CLOCK_ROOT    kCLOCK_Sai1
+#define DEMO_SAI_CLK_FREQ CLOCK_GetRate(SAI_CLOCK_ROOT)
 
 /* I2C instance and clock */
 #define DEMO_I2C LPI2C3
 
 /* Get frequency of lpi2c clock */
-#define LPI2C_MASTER_CLOCK_ROOT hal_clock_lpi2c3
-#define DEMO_I2C_CLK_FREQ       HAL_ClockGetRate(LPI2C_MASTER_CLOCK_ROOT)
+#define LPI2C_MASTER_CLOCK_ROOT kCLOCK_Lpi2c3
+#define DEMO_I2C_CLK_FREQ       CLOCK_GetRate(LPI2C_MASTER_CLOCK_ROOT)
 #define BOARD_MasterClockConfig()
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/

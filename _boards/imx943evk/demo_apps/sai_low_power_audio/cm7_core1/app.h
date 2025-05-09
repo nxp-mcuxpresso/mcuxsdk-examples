@@ -15,12 +15,12 @@
 #define DEMO_SAI              SAI1
 
 /* Get frequency of sai3 clock */
-#define SAI_CLOCK_ROOT          hal_clock_sai1
-#define DEMO_SAI_CLK_FREQ       HAL_ClockGetIpFreq(SAI_CLOCK_ROOT)
+#define SAI_CLOCK_ROOT          kCLOCK_Sai1
+#define DEMO_SAI_CLK_FREQ       CLOCK_GetRate(SAI_CLOCK_ROOT)
 
 /* Get frequency of lpi2c clock */
-#define LPI2C_MASTER_CLOCK_ROOT hal_clock_lpi2c3
-#define DEMO_I2C_CLK_FREQ       HAL_ClockGetRate(LPI2C_MASTER_CLOCK_ROOT)
+#define LPI2C_MASTER_CLOCK_ROOT kCLOCK_Lpi2c3
+#define DEMO_I2C_CLK_FREQ       CLOCK_GetRate(LPI2C_MASTER_CLOCK_ROOT)
 #define BOARD_MASTER_CLOCK_CONFIG()
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/

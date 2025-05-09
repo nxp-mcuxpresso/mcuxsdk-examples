@@ -13,10 +13,10 @@
 #define EXAMPLE_EWM EWM
 #define WDOG_EWM_IRQ       EWM_IRQn
 #define WDOG_EWM_IRQHandler EWM_IRQHandler
-#define EXAMPLE_TIMER_CLK_ID (hal_clock_buswakeup)
+#define EXAMPLE_TIMER_CLK_ID (kCLOCK_Buswakeup)
 /* unit: micro second*/
 #define EXAMPLE_TIMEOUT_PERIOD_COUNT (1000)
-#define EXAMPLE_TIMER_CLK_FREQ (HAL_ClockGetRate(EXAMPLE_TIMER_CLK_ID))
+#define EXAMPLE_TIMER_CLK_FREQ (CLOCK_GetRate(EXAMPLE_TIMER_CLK_ID))
 #define EXAMPLE_TIMER_INSTANCE (1)
 /*${macro:end}*/
 

@@ -23,9 +23,9 @@
 #define T_FORMAT_DR_TIMER_INDEX   0U
 #define T_FORMAT_TX_TIMER_INDEX   1U
 #define T_FORMAT_RX_TIMER_INDEX   2U
-#define DEMO_DFS_DIV2_CLOCK       (hal_clock_syspll1dfs0div2)
-#define DEMO_FLEXIO_CLOCK         (hal_clock_flexio1)
-#define FLEXIO_CLOCK_FREQUENCY    HAL_ClockGetRate(DEMO_FLEXIO_CLOCK)
+#define DEMO_DFS_DIV2_CLOCK       (kCLOCK_Syspll1dfs0div2)
+#define DEMO_FLEXIO_CLOCK         (kCLOCK_Flexio1)
+#define FLEXIO_CLOCK_FREQUENCY    CLOCK_GetRate(DEMO_FLEXIO_CLOCK)
 /*${macro:end}*/
 
 /*******************************************************************************

@@ -14,10 +14,10 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_flexcanClkCfg = {
-        .clk_id = FLEXCAN_CLOCK_ROOT,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t flexcanClkCfg = {
+        .clkId = FLEXCAN_CLOCK_ROOT,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
     /* clang-format on */
@@ -28,8 +28,8 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_flexcanClkCfg);
-    HAL_ClockEnable(&hal_flexcanClkCfg);
+    CLOCK_SetRate(&flexcanClkCfg);
+    CLOCK_EnableClock(flexcanClkCfg.clkId);
 
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, CAN1_ENABLE);
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, CAN1_STBY_B);

@@ -19,8 +19,8 @@
 #define BOARD_TPM_HANDLER TPM6_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm6
-#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
+#define LPTPM_CLOCK_ROOT kCLOCK_Tpm6
+#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 
 /*******************************************************************************

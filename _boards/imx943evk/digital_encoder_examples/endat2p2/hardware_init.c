@@ -57,11 +57,11 @@ void PWM_Trigger_Init(PWM_Type *PWMBase)
 void BOARD_InitHardware(void)
 {
     /* EnDat2.2 100MHz */
-    hal_clk_t hal_endat2p2Clk = {
-        .clk_id = ENDAT2P2_SYS_CLK_ROOT,
-        .pclk_id = hal_clock_syspll1dfs1div2, /* 400 MHz */
+    clk_t endat2p2Clk = {
+        .clkId = ENDAT2P2_SYS_CLK_ROOT,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
         .rate = ENDAT2P2_SYS_CLOCK,
-        .clk_round_opt = hal_clk_round_auto,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
     BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
@@ -73,9 +73,9 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetParent(&hal_endat2p2Clk);
-    HAL_ClockSetRate(&hal_endat2p2Clk);
-    HAL_ClockEnable(&hal_endat2p2Clk);
+    CLOCK_SetParent(&endat2p2Clk);
+    CLOCK_SetRate(&endat2p2Clk);
+    CLOCK_EnableClock(endat2p2Clk.clkId);
 
 #ifdef ENDAT2P2_USE_ENCODER_1
     blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |

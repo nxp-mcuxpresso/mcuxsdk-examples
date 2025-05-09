@@ -21,8 +21,8 @@
 #define FLEXIO_UART_TX_PIN     4U
 #define FLEXIO_UART_RX_PIN     5U
 #endif
-#define DEMO_FLEXIO_CLOCK (hal_clock_flexio1)
-#define FLEXIO_CLOCK_FREQUENCY HAL_ClockGetRate(DEMO_FLEXIO_CLOCK)
+#define DEMO_FLEXIO_CLOCK (kCLOCK_Flexio1)
+#define FLEXIO_CLOCK_FREQUENCY CLOCK_GetRate(DEMO_FLEXIO_CLOCK)
 /*${macro:end}*/
 
 /*******************************************************************************

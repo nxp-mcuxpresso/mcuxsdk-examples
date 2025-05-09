@@ -14,8 +14,8 @@
 #define DEMO_LPIT_IRQn       LPIT1_IRQn
 #define DEMO_LPIT_IRQHandler LPIT1_IRQHandler
 /* Get source clock for LPIT driver */
-#define LPIT_MASTER_CLOCK_ROOT hal_clock_busaon
-#define LPIT_SOURCECLOCK       HAL_ClockGetRate(LPIT_MASTER_CLOCK_ROOT)
+#define LPIT_MASTER_CLOCK_ROOT kCLOCK_Busaon
+#define LPIT_SOURCECLOCK       CLOCK_GetRate(LPIT_MASTER_CLOCK_ROOT)
 #define LED_INIT()
 #define LED_TOGGLE()
 /*${macro:end}*/

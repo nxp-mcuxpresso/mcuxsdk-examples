@@ -15,10 +15,10 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_clk = {
-        .clk_id = hal_clock_invalid,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t clk = {
+        .clkId = kCLOCK_IpInvalid,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
@@ -28,9 +28,9 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
 
-    hal_clk.clk_id = (hal_clk_id_e)BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
-    HAL_ClockSetParent(&hal_clk);
-    HAL_ClockSetRate(&hal_clk);
-    HAL_ClockEnable(&hal_clk);
+    clk.clkId = BOARD_GetUartClkId(BOARD_DEBUG_CONSOLE_PORT);
+    CLOCK_SetParent(&clk);
+    CLOCK_SetRate(&clk);
+    CLOCK_EnableClock(clk.clkId);
 }
 /*${function:end}*/
