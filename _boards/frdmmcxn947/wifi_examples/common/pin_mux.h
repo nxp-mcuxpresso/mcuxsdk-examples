@@ -55,6 +55,20 @@ void BOARD_InitPins(void);
 #define BOARD_INITPINSWIFI_WL_RST_PIN_MASK (1U << 21U)      /*!<@brief PORT pin mask */
                                                             /* @} */
 
+
+/*! @name PORT1_22 (coord L4), SDIO_RST
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINSWIFI_SDIO_RST_GPIO GPIO1                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINSWIFI_SDIO_RST_GPIO_PIN 22U              /*!<@brief GPIO pin number */
+#define BOARD_INITPINSWIFI_SDIO_RST_GPIO_PIN_MASK (1U << 22U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITPINSWIFI_SDIO_RST_PORT PORT1                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINSWIFI_SDIO_RST_PIN 22U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINSWIFI_SDIO_RST_PIN_MASK (1U << 22U)      /*!<@brief PORT pin mask */
+                                                            /* @} */
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *

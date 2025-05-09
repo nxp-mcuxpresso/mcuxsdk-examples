@@ -100,6 +100,8 @@ BOARD_InitPinsWifi:
   - {pin_num: K2, peripheral: USDHC0, signal: 'USDHC_DATA, 3', pin_signal: PIO2_6/TRIG_IN4/FC9_P4/SDHC0_D3/SCT0_OUT4/PWM1_A0/FLEXIO0_D14/EZH_PIO26/FLEXSPI0_B_DATA2/SINC0_MCLK2/SAI0_TX_BCLK}
   - {pin_num: L5, peripheral: GPIO1, signal: 'GPIO, 21', pin_signal: PIO1_21/TRIG_OUT2/FC5_P5/FC4_P1/CT3_MAT3/SCT0_OUT9/FLEXIO0_D29/EZH_PIO17/PLU_OUT7/ENET0_MDIO/SAI1_MCLK/CAN1_RXD/ADC1_A21/CMP2_IN3,
     direction: OUTPUT, gpio_init_state: 'false'}
+  - {pin_num: L4, peripheral: GPIO1, signal: 'GPIO, 22', pin_signal: PIO1_22/TRIG_IN3/FC5_P6/FC4_P2/CT_INP14/SCT0_OUT4/FLEXIO0_D30/SMARTDMA_PIO18/ADC1_A22,
+    direction: OUTPUT, gpio_init_state: 'false'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -133,6 +135,23 @@ void BOARD_InitPinsWifi(void)
                        /* Mask bits to zero which are setting */
                        (~(PORT_PCR_IBE_MASK)))
 
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    gpio_pin_config_t SDIO_RST_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_22 (pin L4)  */
+    GPIO_PinInit(BOARD_INITPINSWIFI_SDIO_RST_GPIO, BOARD_INITPINSWIFI_SDIO_RST_PIN, &SDIO_RST_config);
+              
+    /* PORT1_22 (pin L4) is configured as PIO1_22 */
+    PORT_SetPinMux(BOARD_INITPINSWIFI_SDIO_RST_PORT, BOARD_INITPINSWIFI_SDIO_RST_PIN, kPORT_MuxAlt0);
+                
+    PORT1->PCR[22] = ((PORT1->PCR[22] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+                
                       /* Input Buffer Enable: Enables. */
                       | PORT_PCR_IBE(PCR_IBE_ibe1));
 

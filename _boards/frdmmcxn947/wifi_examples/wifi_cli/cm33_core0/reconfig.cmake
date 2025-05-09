@@ -19,7 +19,7 @@ mcux_add_source(
             ${board_root}/${board}/wifi_examples/wifi_cli/${core_id}/app.h
             ${board_root}/${board}/sdmmc_config.c
             ${board_root}/${board}/sdmmc_config.h
-            ${board_root}/${board}/wifi_bt_config.c
+            ${board_root}/${board}/wifi_examples/common/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
             ${board_root}/${board}/wifi_examples/common/app_config/app_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
