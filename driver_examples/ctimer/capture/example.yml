@@ -18,6 +18,12 @@ ctimer_capture:
   boards:
     frdmrw612: []
     rdrw612bga: []
+    frdmmcxa153: []
+    frdmmcxa156: []
     frdmmcxa346: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
     frdmmcxw23: []
     mcxw23evk: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
