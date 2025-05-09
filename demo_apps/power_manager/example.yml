@@ -46,6 +46,7 @@ power_manager:
     frdmmcxc041: []
     frdmmcxc242: []
     frdmmcxc444: []
+    frdmmcxe247: []
     mimxrt685audevk@cm33: []
     twrkm34z50mv3: []
     twrkm34z75m: []
