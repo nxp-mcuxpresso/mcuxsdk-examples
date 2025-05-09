@@ -9,6 +9,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/soem_examples/soem_gpio_pulse/freertos/soem_gpio_pulse.c
+    SOURCES ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(

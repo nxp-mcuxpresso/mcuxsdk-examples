@@ -1,16 +1,3 @@
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/soem_examples/soem_gpio_pulse_netc/bm/soem_gpio_pulse.c
-)
-
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/soem_examples/soem_gpio_pulse_netc/bm
-)
-
-
-
 
 # Add additional configuration
 mcux_add_macro(
