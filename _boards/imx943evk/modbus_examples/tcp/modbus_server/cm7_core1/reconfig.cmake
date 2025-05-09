@@ -1,6 +1,5 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/modbus_examples/tcp/modbus_server/modbus_server.c
     SOURCES ${board_root}/${board}/modbus_examples/tcp/lwip_netc_port.h
 )
 
@@ -10,8 +9,6 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/modbus_examples/tcp
     INCLUDES examples/modbus_examples/tcp/modbus_server
 )
-
-
 
 # Add additional configuration
 mcux_add_macro(

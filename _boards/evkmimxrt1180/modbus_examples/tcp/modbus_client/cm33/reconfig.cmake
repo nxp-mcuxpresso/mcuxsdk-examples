@@ -1,16 +1,3 @@
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/modbus_examples/tcp/modbus_client/modbus_client.c
-)
-
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/modbus_examples/tcp/modbus_client
-)
-
-
-
 
 # Add additional configuration
 mcux_add_macro(
