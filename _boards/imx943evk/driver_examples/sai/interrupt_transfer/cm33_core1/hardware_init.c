@@ -89,8 +89,8 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(audiopll1CLKCfg.clkId);
     CLOCK_SetRate(&lpi2cCLKCfg);
     CLOCK_EnableClock(lpi2cCLKCfg.clkId);
+    CLOCK_SetParent(&saiCLKCfg);
     CLOCK_SetRate(&saiCLKCfg);
-    //CLOCK_SetRate(&saiCLKCfg);
     CLOCK_EnableClock(saiCLKCfg.clkId);
 
     /* Select i2c channel to access codec */

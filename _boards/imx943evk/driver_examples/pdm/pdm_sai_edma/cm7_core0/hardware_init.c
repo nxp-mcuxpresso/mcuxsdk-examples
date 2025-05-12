@@ -115,7 +115,7 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(pdmClkCfg.clkId);
     CLOCK_SetRate(&lpi2cCLKCfg);
     CLOCK_EnableClock(lpi2cCLKCfg.clkId);
-    //CLOCK_SetRate(&saiCLKCfg);
+    CLOCK_SetParent(&saiCLKCfg);
     CLOCK_SetRate(&saiCLKCfg);
     CLOCK_EnableClock(saiCLKCfg.clkId);
 
