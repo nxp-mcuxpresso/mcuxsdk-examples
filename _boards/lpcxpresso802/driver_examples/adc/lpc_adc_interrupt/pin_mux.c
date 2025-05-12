@@ -1,5 +1,5 @@
 /*
- * Copyright  2018 ,2021 NXP
+ * Copyright  2018,2021,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,16 +14,17 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: LPC802
 package_id: LPC802M001JDH20
 mcu_data: ksdk2_0
-processor_version: 9.0.0
+processor_version: 25.03.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
 
 #include "fsl_common.h"
+#include "fsl_iocon.h"
 #include "fsl_swm.h"
 #include "pin_mux.h"
 
@@ -46,7 +47,7 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: '6', peripheral: USART0, signal: TXD, pin_signal: PIO0_4/ADC_11}
   - {pin_num: '19', peripheral: USART0, signal: RXD, pin_signal: PIO0_0/ACMP_I1}
-  - {pin_num: '11', peripheral: ADC0, signal: 'CH, 8', pin_signal: PIO0_15/ADC_8}
+  - {pin_num: '11', peripheral: ADC0, signal: 'CH, 8', pin_signal: PIO0_15/ADC_8, mode: inactive, invert: disabled, hysteresis: disabled, opendrain: disabled}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -60,8 +61,21 @@ BOARD_InitPins:
 /* Function assigned for the Cortex-M0P */
 void BOARD_InitPins(void)
 {
+    /* Enables clock for IOCON.: enable */
+    CLOCK_EnableClock(kCLOCK_Iocon);
     /* Enables clock for switch matrix.: enable */
     CLOCK_EnableClock(kCLOCK_Swm);
+
+    const uint32_t IOCON_INDEX_PIO0_15_config = (/* No addition pin function */
+                                                 IOCON_PIO_MODE_INACT |
+                                                 /* Disable hysteresis */
+                                                 IOCON_PIO_HYS_DI |
+                                                 /* Input not invert */
+                                                 IOCON_PIO_INV_DI |
+                                                 /* Disables Open-drain function */
+                                                 IOCON_PIO_OD_DI);
+    /* PIO0 PIN15 (coords: 11) is configured as ADC0, CH, 8. */
+    IOCON_PinMuxSet(IOCON, IOCON_INDEX_PIO0_15, IOCON_INDEX_PIO0_15_config);
 
     /* USART0_TXD connect to P0_4 */
     SWM_SetMovablePinSelect(SWM0, kSWM_USART0_TXD, kSWM_PortPin_P0_4);
