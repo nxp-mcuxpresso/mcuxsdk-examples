@@ -30,6 +30,7 @@ Note: In flash boot mode, if you want to use the IDE reset program, please use s
 - [FRDM-KE16Z](../../_boards/frdmke16z/driver_examples/ewm/example_board_readme.md)
 - [FRDM-KE17Z](../../_boards/frdmke17z/driver_examples/ewm/example_board_readme.md)
 - [FRDM-KE17Z512](../../_boards/frdmke17z512/driver_examples/ewm/example_board_readme.md)
+- [FRDM-MCXE247](../../_boards/frdmmcxe247/driver_examples/ewm/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/driver_examples/ewm/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/driver_examples/ewm/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/driver_examples/ewm/example_board_readme.md)
