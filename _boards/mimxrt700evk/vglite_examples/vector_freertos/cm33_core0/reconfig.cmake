@@ -1,8 +1,7 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/vglite/vglite_sdk/example/vector_freertos/vector_freertos.c
-            middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
+    SOURCES middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.c
             ${board_root}/${board}/vglite_examples/vglite_support/pin_mux.c
             ${board_root}/${board}/vglite_examples/vglite_support/pin_mux.h
