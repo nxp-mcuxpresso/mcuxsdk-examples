@@ -8,7 +8,7 @@
 #define _APP_H_
 
 /*${header:start}*/
-#include "hal_clock.h"
+#include "fsl_clock.h"
 /*${header:end}*/
 
 /*******************************************************************************

@@ -18,11 +18,15 @@ config MCUX_HW_BOARD_imx943evk
     imply MCUX_HW_DEVICE_MIMX94398
     imply MCUX_COMPONENT_driver.wm8962
     imply MCUX_COMPONENT_component.ele_base_api
+    imply MCUX_COMPONENT_driver.mu1
+    imply MCUX_COMPONENT_component.sm.crc
+    imply MCUX_COMPONENT_component.sm.scmi
+    imply MCUX_COMPONENT_component.sm.smt
     select MCUX_COMPONENT_driver.srtm_config if MCUX_COMPONENT_driver.srtm
 
 config MCUX_COMPONENT_driver.sm_cfg
     bool
-    default y
+    default n
 
 config MCUX_COMPONENT_driver.non_sm_cfg
     bool

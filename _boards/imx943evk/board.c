@@ -16,7 +16,7 @@
 #if defined(BOARD_USE_PCA954X) && BOARD_USE_PCA954X
 #include "fsl_pca954x.h"
 #endif
-#include "hal_clock.h"
+#include "fsl_clock.h"
 #include "fsl_iomuxc.h"
 #if BOARD_ENABLE_ELE
 #include "fsl_ele_base_api.h"

@@ -5,7 +5,7 @@
  */
 /*${header:start}*/
 #include "sm_platform.h"
-#include "hal_clock.h"
+#include "fsl_clock.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"

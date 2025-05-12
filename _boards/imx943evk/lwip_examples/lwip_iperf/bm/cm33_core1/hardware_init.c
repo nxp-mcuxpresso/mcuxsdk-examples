@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 /*${header:start}*/
-#include "sm_platform.h"
+//#include "sm_platform.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"

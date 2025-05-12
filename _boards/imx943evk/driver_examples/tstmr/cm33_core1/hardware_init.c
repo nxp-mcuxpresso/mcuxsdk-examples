@@ -8,7 +8,7 @@
 #include "board.h"
 #include "sm_platform.h"
 #include "pin_mux.h"
-#include "hal_clock.h"
+#include "fsl_clock.h"
 /*${header:end}*/
 
 /*${function:start}*/

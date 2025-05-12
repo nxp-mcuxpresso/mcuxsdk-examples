@@ -7,7 +7,7 @@
 #define _APP_H_
 
 /*${header:start}*/
-#include "hal_clock.h"
+#include "fsl_clock.h"
 #include "fsl_phyrtl8211f.h"
 #include "lwip_netc_port.h"
 /*${header:end}*/

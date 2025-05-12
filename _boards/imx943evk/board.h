@@ -9,7 +9,7 @@
 
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
-#include "hal_clock.h"
+#include "fsl_clock.h"
 #include "clock_config.h"
 
 /*******************************************************************************
