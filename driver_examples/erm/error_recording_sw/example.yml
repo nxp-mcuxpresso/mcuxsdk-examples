@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+error_recording_sw:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/erm/error_recording_sw
+    project-root-path: boards/${board}/driver_examples/erm/error_recording_sw/${multicore_foldername}
+    document:
+      name: error_recording${core_id_suffix_name}
+      category: driver_examples/erm
+      brief: The ERM Single Error project is a simple demonstration program of the
+        SDK ERM driver. It shows how to show error events using the ERM driver.
+      example_readme:
+      - examples/driver_examples/erm/error_recording_sw/readme.md
+      - ${board_root}/${board}/driver_examples/erm/error_recording_sw/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm33: []
