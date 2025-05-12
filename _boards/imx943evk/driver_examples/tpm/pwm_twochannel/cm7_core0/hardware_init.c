@@ -24,7 +24,7 @@ void BOARD_InitHardware(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
-    SM_Platform_Init();
+    SystemPlatformInit();
     /* clang-format on */
     BOARD_InitBootPins();
     BOARD_BootClockRUN();

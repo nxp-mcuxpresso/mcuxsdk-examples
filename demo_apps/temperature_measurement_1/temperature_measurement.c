@@ -67,14 +67,14 @@ void DEMO_GetTemp(int descIdx)
     int32_t status;
     bool enabled = false;
 
-    status = SCMI_SensorConfigSet(SM_PLATFORM_A2P, desc[descIdx].sensorId, SCMI_SENSOR_CONFIG_SET_ENABLE(1U));
+    status = SCMI_SensorConfigSet(SCMI_A2P, desc[descIdx].sensorId, SCMI_SENSOR_CONFIG_SET_ENABLE(1U));
     if (SCMI_ERR_SUCCESS != status)
     {
         PRINTF("\r\n Sensor configuration failed!");
 	return;
     }
 
-    status = SCMI_SensorConfigGet(SM_PLATFORM_A2P, desc[descIdx].sensorId, &sensorConfig);
+    status = SCMI_SensorConfigGet(SCMI_A2P, desc[descIdx].sensorId, &sensorConfig);
     if (SCMI_ERR_SUCCESS != status)
     {
         enabled = SCMI_SENSOR_CONFIG_GET_ENABLED(sensorConfig);
@@ -88,7 +88,7 @@ void DEMO_GetTemp(int descIdx)
 
     GETCHAR();
 
-    status = SCMI_SensorReadingGet(SM_PLATFORM_A2P, desc[descIdx].sensorId, SCMI_SENSOR_READ_FLAGS_ASYNC(0U), readings);
+    status = SCMI_SensorReadingGet(SCMI_A2P, desc[descIdx].sensorId, SCMI_SENSOR_READ_FLAGS_ASYNC(0U), readings);
     if (status == SCMI_ERR_SUCCESS)
     {
 
@@ -149,7 +149,7 @@ int main(void)
 
     PRINTF("\r\n Temperature measurement example.");
 
-    status = SCMI_SensorDescriptionGet(SM_PLATFORM_A2P, 0U, &numSensorFlags, desc);
+    status = SCMI_SensorDescriptionGet(SCMI_A2P, 0U, &numSensorFlags, desc);
     if (SCMI_ERR_SUCCESS != status)
     {
         PRINTF("\r\n Sensor descriptor get failed!");

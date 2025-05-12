@@ -31,7 +31,7 @@ void BOARD_InitHardware(void)
         .rate = 393216000 / 2,
     };
     /* clang-format on */
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();

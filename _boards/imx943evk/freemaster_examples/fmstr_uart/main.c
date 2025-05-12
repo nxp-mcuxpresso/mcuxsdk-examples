@@ -54,7 +54,7 @@ static void init_freemaster_lpuart(void);
 int main(void)
 {
     /* Board initialization */
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();

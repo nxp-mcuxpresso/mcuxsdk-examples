@@ -18,7 +18,7 @@ void BOARD_InitHardware(void)
     uint32_t numVal = 1U;
     uint32_t val = 0x80U;
     
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();

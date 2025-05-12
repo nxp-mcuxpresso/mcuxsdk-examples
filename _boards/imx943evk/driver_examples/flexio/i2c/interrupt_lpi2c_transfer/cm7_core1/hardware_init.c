@@ -29,7 +29,7 @@ void BOARD_InitHardware(void)
     };
     /* clang-format on */
 
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_BootClockRUN();
     BOARD_InitBootPins();

@@ -30,7 +30,7 @@ void BOARD_InitHardware(void)
     /* clang-format on */
 
     clk.clkId = BOARD_GetUartClkId(DEMO_LPUART_INSTANCE_IDX);
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();

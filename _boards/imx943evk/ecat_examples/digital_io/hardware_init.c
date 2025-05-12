@@ -61,7 +61,7 @@ UINT16 HW_Init(void)
     UINT32 intMask;
     uint32_t gptFreq;
     gpt_config_t gptConfig;
-	SM_Platform_Init();	
+	SystemPlatformInit();	
 
     clk_t ecatClk = {
         .clkId = kCLOCK_Ecat,

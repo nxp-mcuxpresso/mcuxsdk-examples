@@ -66,7 +66,7 @@ void BOARD_InitHardware(void)
 
     BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
 
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();

@@ -29,7 +29,7 @@ void app_rpmsg_monitor(struct rpmsg_lite_instance *rpmsgHandle, bool ready, void
 
 void BOARD_InitHardware(void)
 {
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();

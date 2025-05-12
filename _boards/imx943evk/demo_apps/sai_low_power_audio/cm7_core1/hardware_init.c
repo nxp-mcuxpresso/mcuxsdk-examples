@@ -29,7 +29,7 @@ void BOARD_InitHardware(void)
         .mclkOutputEnable = true,
      };
 
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
