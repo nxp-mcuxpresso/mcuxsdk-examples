@@ -10,14 +10,14 @@
 #include "clock_config.h"
 #include "pin_mux.h"
 #include "dcif_support.h"
-#include "hal_power.h"
+#include "fsl_power.h"
 
 /*${header:end}*/
 
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    hal_pwr_st_e st = hal_power_state_off;
+    uint32_t st = SCMI_POWER_DOMAIN_STATE_OFF;
     /* clang-format off */
     clk_t clk = {
         .clkId = kCLOCK_IpInvalid,
@@ -46,9 +46,9 @@ void BOARD_InitHardware(void)
         .rate = 800000000UL,
     };
 
-    hal_pwr_s_t pwrst = {
-        .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_DISPLAY,
-        .st = hal_power_state_on,
+    pwr_s_t pwrst = {
+        .did =  POWER_MIX_SLICE_IDX_DISPLAY,
+        .st = SCMI_POWER_DOMAIN_STATE_ON,
     };
 
     /* clang-format on */
@@ -59,9 +59,9 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_PowerSetState(&pwrst);
-    st = HAL_PowerGetState(&pwrst);
-    assert(st == hal_power_state_on);
+    POWER_SetState(&pwrst);
+    st = POWER_GetState(&pwrst);
+    assert(st == SCMI_POWER_DOMAIN_STATE_ON);
     (void)st;
 
     CLOCK_SetRate(&clk);

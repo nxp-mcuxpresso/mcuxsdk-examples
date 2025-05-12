@@ -9,7 +9,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "app.h"
-#include "hal_power.h"
+#include "fsl_power.h"
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -23,7 +23,7 @@ status_t BOARD_InitHardware(void)
 {
     status_t result = kStatus_Success;
 	bool link;
-    hal_pwr_st_e st = hal_power_state_off;
+    uint32_t st = SCMI_POWER_DOMAIN_STATE_OFF;
     
     /* clang-format off */
     /* busNetcMixClk 133MHz */
@@ -103,9 +103,9 @@ status_t BOARD_InitHardware(void)
         .rate = 250000000UL,
     };
 
-    hal_pwr_s_t pwrst = {
-        .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_NETC,
-        .st = hal_power_state_on,
+    pwr_s_t pwrst = {
+        .did =  POWER_MIX_SLICE_IDX_NETC,
+        .st = SCMI_POWER_DOMAIN_STATE_ON,
     };
     /* clang-format on */
 
@@ -118,9 +118,9 @@ status_t BOARD_InitHardware(void)
 
     PRINTF("\r\n BOARD_Init success\r\n");
 
-    HAL_PowerSetState(&pwrst);
-    st = HAL_PowerGetState(&pwrst);
-    assert(st == hal_power_state_on);
+    POWER_SetState(&pwrst);
+    st = POWER_GetState(&pwrst);
+    assert(st == SCMI_POWER_DOMAIN_STATE_ON);
     (void)st;
     
     rgpio_pin_config_t led_config = {
