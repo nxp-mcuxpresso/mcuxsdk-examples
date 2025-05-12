@@ -7,7 +7,6 @@
 /*${header:start}*/
 #include "pin_mux.h"
 #include "board.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /********************** End of forword declaration. ***************/

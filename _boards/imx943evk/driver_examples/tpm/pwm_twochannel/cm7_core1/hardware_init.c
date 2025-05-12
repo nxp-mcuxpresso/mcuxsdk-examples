@@ -10,7 +10,6 @@
 #include "pin_mux.h"
 #include "fsl_common.h"
 #include "clock_config.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${function:start}*/

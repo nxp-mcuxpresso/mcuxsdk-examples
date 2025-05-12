@@ -12,7 +12,6 @@
 #include "fsl_mu.h"
 #include "rsc_table.h"
 #include "fsl_sai.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${function:start}*/

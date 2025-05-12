@@ -7,7 +7,6 @@
 #include "board.h"
 #include "pin_mux.h"
 #include "app.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${function:start}*/

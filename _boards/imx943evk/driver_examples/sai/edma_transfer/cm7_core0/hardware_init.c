@@ -11,7 +11,6 @@
 #include "fsl_wm8962.h"
 #include "fsl_codec_adapter.h"
 #include "fsl_sai.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${variable:start}*/

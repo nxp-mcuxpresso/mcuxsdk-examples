@@ -9,7 +9,6 @@
 #include "fsl_xbar.h"
 #include "fsl_pwm.h"
 #include "app.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 #define DIG_ENCODER_MUX_HIPERFACE_DSL   0x0

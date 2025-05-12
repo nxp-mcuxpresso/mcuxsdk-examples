@@ -9,7 +9,6 @@
 #include "app.h"
 #include "clock_config.h"
 #include "fsl_iomuxc.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${function:start}*/

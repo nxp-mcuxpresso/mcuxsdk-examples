@@ -7,7 +7,6 @@
 #ifndef _APP_H_
 #define _APP_H_
 
-#include "sm_platform.h"
 #include "fsl_cpu.h"
 #include "fsl_power.h"
 

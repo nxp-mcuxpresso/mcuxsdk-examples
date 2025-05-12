@@ -31,7 +31,6 @@
 #include "scmi_cpu.h"
 #include "scmi.h"
 #include "fsl_cpu.h"
-#include "sm_platform.h"
 
 #if SRTM_AUDIO_SERVICE_USED
 static uint8_t edmaUseCnt = 0U;

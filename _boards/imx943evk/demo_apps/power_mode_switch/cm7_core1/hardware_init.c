@@ -7,7 +7,6 @@
 /*${header:start}*/
 #include "pin_mux.h"
 #include "board.h"
-#include "sm_platform.h"
 #include "rsc_table.h"
 #include "app_srtm.h"
 /*${header:end}*/

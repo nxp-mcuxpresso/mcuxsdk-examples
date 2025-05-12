@@ -6,7 +6,6 @@
 /*${header:start}*/
 #include "pin_mux.h"
 #include "board.h"
-#include "sm_platform.h"
 #include "fsl_debug_console.h"
 
 /*${header:end}*/

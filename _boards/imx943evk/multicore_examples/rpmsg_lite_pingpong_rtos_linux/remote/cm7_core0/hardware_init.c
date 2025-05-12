@@ -8,7 +8,6 @@
 #include "board.h"
 #include "pin_mux.h"
 #include "rsc_table.h"
-#include "sm_platform.h"
 
 extern void app_create_task(void);
 extern void app_destroy_task(void);

@@ -5,7 +5,6 @@
  */
 /*${header:start}*/
 #include "pin_mux.h"
-#include "sm_platform.h"
 #include "board.h"
 /*${header:end}*/
 

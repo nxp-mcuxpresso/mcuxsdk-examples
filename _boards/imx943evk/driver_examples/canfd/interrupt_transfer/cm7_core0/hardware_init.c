@@ -6,7 +6,6 @@
 /*${header:start}*/
 #include "app.h"
 #include "board.h"
-#include "sm_platform.h"
 #include "pin_mux.h"
 #include "fsl_common.h"
 #include "clock_config.h"

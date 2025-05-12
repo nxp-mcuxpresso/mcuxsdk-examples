@@ -9,7 +9,6 @@
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${function:start}*/

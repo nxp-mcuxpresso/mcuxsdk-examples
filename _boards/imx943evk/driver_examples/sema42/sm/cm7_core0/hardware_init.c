@@ -8,7 +8,6 @@
 #include "pin_mux.h"
 #include "app.h"
 #include "board.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${variable:start}*/

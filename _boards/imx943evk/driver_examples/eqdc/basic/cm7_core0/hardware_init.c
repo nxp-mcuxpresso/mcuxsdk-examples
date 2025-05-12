@@ -8,7 +8,6 @@
 #include "board.h"
 #include "fsl_xbar.h"
 #include "app.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${function:start}*/

@@ -8,7 +8,6 @@
 #include "pin_mux.h"
 #include "board.h"
 #include "fsl_xbar.h"
-#include "sm_platform.h"
 /*${header:end}*/
 
 /*${function:start}*/

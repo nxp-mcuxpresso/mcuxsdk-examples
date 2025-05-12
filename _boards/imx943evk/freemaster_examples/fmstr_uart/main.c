@@ -14,7 +14,6 @@
 #include "pin_mux.h"
 #include "fsl_lpuart.h"
 #include "fsl_common.h"
-#include "sm_platform.h"
 #include "board.h"
 
 #include "freemaster.h"
