@@ -281,16 +281,7 @@ lvgl_demo_benchmark_bm:
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     mimxrt700evk@cm33_core0: []
-    frdmmcxn236: []
-    frdmmcxn947@cm33_core0: []
     frdmrw612:
-    - -armgcc@debug
-    - -armgcc@release
-    - -iar@debug
-    - -iar@release
-    - -mdk@debug
-    - -mdk@release
-    lpcxpresso54628:
     - -armgcc@debug
     - -armgcc@release
     - -iar@debug
@@ -306,8 +297,6 @@ lvgl_demo_benchmark_bm:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    mcxn5xxevk@cm33_core0: []
-    mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
     rdrw612bga:
     - -armgcc@debug

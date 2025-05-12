@@ -73,13 +73,18 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
                 middleware/lvgl/src/libs/qrcode/*.c
                 middleware/lvgl/src/libs/rle/*.c
                 middleware/lvgl/src/libs/rlottie/*.c
+                middleware/lvgl/src/libs/svg/*.c
+                middleware/lvgl/src/libs/svg/*.h
                 middleware/lvgl/src/libs/thorvg/*.c
                 middleware/lvgl/src/libs/tiny_ttf/*.c
                 middleware/lvgl/src/libs/tjpgd/*.c
                 middleware/lvgl/src/misc/cache/*.c
                 middleware/lvgl/src/misc/*.c
+                middleware/lvgl/src/misc/cache/class/*.c
+                middleware/lvgl/src/misc/cache/instance/*.c
                 middleware/lvgl/src/osal/*.c
                 middleware/lvgl/src/others/file_explorer/*.c
+                middleware/lvgl/src/others/font_manager/*.c
                 middleware/lvgl/src/others/fragment/*.c
                 middleware/lvgl/src/others/gridnav/*.c
                 middleware/lvgl/src/others/ime/*.c
@@ -136,6 +141,12 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
                 middleware/lvgl/src/*.h
                 middleware/lvgl/src/core/*.h
                 middleware/lvgl/src/display/*.h
+                middleware/lvgl/src/drivers/display/renesas_glcdc/*.h
+                middleware/lvgl/src/drivers/display/renesas_glcdc/*.c
+                middleware/lvgl/src/drivers/display/st_ltdc/*.c
+                middleware/lvgl/src/drivers/display/st_ltdc/*.h
+                middleware/lvgl/src/drivers/display/ft81x/*.h
+                middleware/lvgl/src/drivers/display/ft81x/*.c
                 middleware/lvgl/src/draw/*.h
                 middleware/lvgl/src/draw/nxp/pxp/*.h
                 middleware/lvgl/src/draw/nxp/vglite/*.h
@@ -163,6 +174,8 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
                 middleware/lvgl/src/drivers/glfw/*.h
                 middleware/lvgl/src/drivers/qnx/*.h
                 middleware/lvgl/src/drivers/wayland/*.h
+                middleware/lvgl/src/drivers/uefi/*.h
+                middleware/lvgl/src/drivers/uefi/*.c
                 middleware/lvgl/src/font/*.h
                 middleware/lvgl/src/indev/*.h
                 middleware/lvgl/src/layouts/flex/*.h
@@ -186,9 +199,14 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
                 middleware/lvgl/src/libs/tiny_ttf/*.h
                 middleware/lvgl/src/libs/tjpgd/*.h
                 middleware/lvgl/src/misc/cache/*.h
+                middleware/lvgl/src/misc/cache/class/*.h
+                middleware/lvgl/src/misc/cache/instance/*.h
+                middleware/lvgl/src/widgets/3dtexture/*.c
+                middleware/lvgl/src/widgets/3dtexture/*.h
                 middleware/lvgl/src/misc/*.h
                 middleware/lvgl/src/osal/*.h
                 middleware/lvgl/src/others/file_explorer/*.h
+                middleware/lvgl/src/others/font_manager/*.h
                 middleware/lvgl/src/others/fragment/*.h
                 middleware/lvgl/src/others/gridnav/*.h
                 middleware/lvgl/src/others/ime/*.h
@@ -197,6 +215,10 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
                 middleware/lvgl/src/others/observer/*.h
                 middleware/lvgl/src/others/snapshot/*.h
                 middleware/lvgl/src/others/sysmon/*.h
+                middleware/lvgl/src/others/xml/*.h
+                middleware/lvgl/src/others/xml/*.c
+                middleware/lvgl/src/others/test/*.c
+                middleware/lvgl/src/others/test/*.h
                 middleware/lvgl/src/others/vg_lite_tvg/*.h
                 middleware/lvgl/src/stdlib/builtin/*.h
                 middleware/lvgl/src/stdlib/clib/*.h

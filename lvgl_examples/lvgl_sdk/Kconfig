@@ -29,6 +29,24 @@ if MCUX_COMPONENT_middleware.lvgl
     config LV_PROFILER_INCLUDE
         default "\"lvgl/src/misc/lv_profiler_builtin.h\""
 
+    config LV_TXT_COLOR_CMD
+        default "\"#\""
+
+    config LV_MONDAY_STR
+        default "\"Mo\""
+    config LV_TUESDAY_STR
+        default "\"Tu\""
+    config LV_WEDNESDAY_STR
+        default "\"We\""
+    config LV_THURSDAY_STR
+        default "\"Th\""
+    config LV_FRIDAY_STR
+        default "\"Fr\""
+    config LV_SATURDAY_STR
+        default "\"Sa\""
+    config LV_SUNDAY_STR
+        default "\"Su\""
+
     osource "${SdkRootDirPath}/middleware/lvgl/Kconfig"
 
 endif
