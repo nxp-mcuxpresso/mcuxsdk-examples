@@ -30,6 +30,12 @@ UINT32 EcatTimerCnt;
 
 static void Ecat_KickOff(void)
 {
+    int32_t result = SCMI_ERR_SUCCESS;
+    uint32_t channel = SCMI_A2P;
+    uint32_t domainId = 24;
+    uint32_t flags = 0;
+    uint32_t resetState = 0;
+
     /* EtherCAT port0 is in MII mode */
     BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_RMII_SEL0_SHIFT);
     /* EtherCAT port1 is in MII mode */
@@ -48,12 +54,11 @@ static void Ecat_KickOff(void)
 
     SDK_DelayAtLeastUs(1000U, SystemCoreClock);
     
-    hal_rst_t ecat_enable = {
-        .id = 24,
-        .flags = 0,
-        .resetState = 0,
-    };
-    HAL_Reset(&ecat_enable);
+    result = SCMI_Reset(channel, domainId, flags, resetState);
+    if (result != SCMI_ERR_SUCCESS)
+    {
+        PRINTF("%s: %d, Failed to reset ecat\r\n", __func__, __LINE__);
+    }
 }
 
 UINT16 HW_Init(void)
