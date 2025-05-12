@@ -177,6 +177,13 @@ static void BOARD_ExitLowPowerCb(void)
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
     PLATFORM_ReinitAdc();
+    /* Trig temperature measurement on wake-up.
+     * If a temperature change is detected,
+     * the new value will be sent to the NBU for appropriate XTAL32M trimming.
+     * During channel sounding measurements, this temperature is also used for RTT compensation.
+     * Since this function runs with interrupts masked and the scheduler disabled,
+     * the unsafe variant must be used to avoid mutex acquisition.
+    */
     SENSORS_TriggerTemperatureMeasurementUnsafe();
 #endif
 
