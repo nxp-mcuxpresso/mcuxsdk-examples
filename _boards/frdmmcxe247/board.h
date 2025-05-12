@@ -61,6 +61,19 @@
 #define BOARD_SW2_IRQ_HANDLER PORTA_IRQHandler
 #define BOARD_SW2_NAME        "SW2"
 
+#ifndef BOARD_SW3_GPIO
+#define BOARD_SW3_GPIO GPIOC
+#endif
+#ifndef BOARD_SW3_PORT
+#define BOARD_SW3_PORT PORTC
+#endif
+#ifndef BOARD_SW3_GPIO_PIN
+#define BOARD_SW3_GPIO_PIN 10U
+#endif
+#define BOARD_SW3_IRQ         PORTC_IRQn
+#define BOARD_SW3_IRQ_HANDLER PORTC_IRQHandler
+#define BOARD_SW3_NAME        "SW3"
+
 /* Board RGB LED color mapping */
 #define LOGIC_LED_ON  0U
 #define LOGIC_LED_OFF 1U

@@ -20,12 +20,14 @@ mcu_data: ksdk2_0
 processor_version: 0.0.0
 pin_labels:
 - {pin_num: '55', pin_signal: PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4/QSPI_B_IO5, label: I2C1_SDA, identifier: I2C1_SDA}
-- {pin_num: '54', pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/MII_RXD2/FTM1_CH5/QSPI_B_IO4, label: I2C1_SCL, identifier: I2C1_SCL}
+- {pin_num: '54', pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5/QSPI_B_IO4, label: I2C1_SCL, identifier: I2C1_SCL}
 - {pin_num: '63', pin_signal: PTB3/FTM1_CH1/LPSPI0_SIN/FTM1_QD_PHA/TRGMUX_IN2/ADC0_SE7, label: SIN, identifier: SIN;LPSPI0_SIN}
 - {pin_num: '122', pin_signal: PTE2/LPSPI0_SOUT/LPTMR0_ALT3/FTM3_CH6/LPUART1_CTS/SAI1_SYNC/ADC1_SE10, label: LPSPI0_SIN, identifier: LPSPI0_SIN;LPSPI0_SOUT}
 - {pin_num: '138', pin_signal: PTE0/LPSPI0_SCK/TCLK1/LPI2C1_SDA/LPSPI1_SOUT/FTM1_FLT2/SAI0_D2, label: LPSPI0_SCK, identifier: LPSPI0_SCK}
 - {pin_num: '121', pin_signal: PTE6/LPSPI0_PCS2/FTM7_FLT1/FTM3_CH7/LPUART1_RTS/ADC1_SE11, label: LPSPI0_PCS2, identifier: LPSPI0_PCS2}
 - {pin_num: '42', pin_signal: PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4, label: PTC3_PIN42, identifier: PTC3_PIN42}
+- {pin_num: '143', pin_signal: PTA9/LPUART2_TX/LPSPI2_PCS0/FXIO_D7/FTM3_FLT2/FTM1_FLT3/FTM4_FLT0, label: SW2}
+- {pin_num: '75', pin_signal: PTC10/FTM3_CH4/TRGMUX_IN11, label: SW3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -74,7 +76,7 @@ BOARD_InitDEBUG_UARTPins:
 - options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '25', peripheral: LPUART2, signal: RX, pin_signal: PTD17/FTM0_FLT2/LPUART2_RX/FTM5_FLT1}
-  - {pin_num: '23', peripheral: LPUART2, signal: TX, pin_signal: PTE12/LPUART2_TX/FTM5_FLT0}
+  - {pin_num: '23', peripheral: LPUART2, signal: TX, pin_signal: PTE12/FTM0_FLT3/LPUART2_TX/FTM5_FLT0}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -141,7 +143,8 @@ void BOARD_InitLEDsPins(void)
 BOARD_InitBUTTONsPins:
 - options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '143', peripheral: GPIOA, signal: 'GPIO, 9', pin_signal: PTA9/LPUART2_TX/LPSPI2_PCS0/FXIO_D7/FTM3_FLT2/FTM4_FLT0}
+  - {pin_num: '143', peripheral: GPIOA, signal: 'GPIO, 9', pin_signal: PTA9/LPUART2_TX/LPSPI2_PCS0/FXIO_D7/FTM3_FLT2/FTM1_FLT3/FTM4_FLT0}
+  - {pin_num: '75', peripheral: GPIOC, signal: 'GPIO, 10', pin_signal: PTC10/FTM3_CH4/TRGMUX_IN11}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -156,9 +159,14 @@ void BOARD_InitBUTTONsPins(void)
 {
     /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
     CLOCK_EnableClock(kCLOCK_PortA);
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortC);
 
     /* PORTA9 (pin 143) is configured as PTA9 */
     PORT_SetPinMux(PORTA, 9U, kPORT_MuxAsGpio);
+
+    /* PORTC10 (pin 75) is configured as PTC10 */
+    PORT_SetPinMux(PORTC, 10U, kPORT_MuxAsGpio);
 }
 
 /* clang-format off */
@@ -169,8 +177,8 @@ BOARD_InitI2CPins:
 - pin_list:
   - {pin_num: '55', peripheral: LPI2C1, signal: SDA, pin_signal: PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4/QSPI_B_IO5, direction: INPUT, drive_strength: low,
     pull_select: up, pull_enable: enable, passive_filter: disable, digital_filter: disable}
-  - {pin_num: '54', peripheral: LPI2C1, signal: SCL, pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/MII_RXD2/FTM1_CH5/QSPI_B_IO4, direction: INPUT, drive_strength: low, pull_select: up,
-    pull_enable: enable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '54', peripheral: LPI2C1, signal: SCL, pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5/QSPI_B_IO4, direction: INPUT, drive_strength: low,
+    pull_select: up, pull_enable: enable, passive_filter: disable, digital_filter: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -431,12 +439,12 @@ BOARD_InitFlashPins:
     pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
   - {pin_num: '48', peripheral: QuadSPI, signal: 'DATA0, A', pin_signal: PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS/QSPI_A_IO0, drive_strength: high,
     pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
-  - {pin_num: '44', peripheral: QuadSPI, signal: 'DATA1, A', pin_signal: PTD7/LPUART2_TX/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6, drive_strength: high, pull_select: down,
-    pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '44', peripheral: QuadSPI, signal: 'DATA1, A', pin_signal: PTD7/LPUART2_TX/FTM2_FLT3/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6, drive_strength: high,
+    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
   - {pin_num: '47', peripheral: QuadSPI, signal: 'DATA2, A', pin_signal: PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS/QSPI_A_IO2, drive_strength: high,
     pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
-  - {pin_num: '43', peripheral: QuadSPI, signal: 'DATA3, A', pin_signal: PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/QSPI_A_IO3/ADC0_SE10/CMP0_IN5, drive_strength: high,
-    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '43', peripheral: QuadSPI, signal: 'DATA3, A', pin_signal: PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/ETM_TRACE_CLKOUT/QSPI_A_IO3/ADC0_SE10/CMP0_IN5,
+    drive_strength: high, pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -564,12 +572,12 @@ BOARD_InitENETPins:
 - options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '41', peripheral: ENET, signal: RMII_MDIO, pin_signal: PTB4/FTM0_CH4/LPSPI0_SOUT/MII_RMII_MDIO/TRGMUX_IN1/QSPI_B_IO0, pull_enable: disable}
-  - {pin_num: '43', peripheral: ENET, signal: RMII_TXD0, pin_signal: PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/QSPI_A_IO3/ADC0_SE10/CMP0_IN5}
-  - {pin_num: '44', peripheral: ENET, signal: RMII_TXD1, pin_signal: PTD7/LPUART2_TX/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6}
+  - {pin_num: '43', peripheral: ENET, signal: RMII_TXD0, pin_signal: PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/ETM_TRACE_CLKOUT/QSPI_A_IO3/ADC0_SE10/CMP0_IN5}
+  - {pin_num: '44', peripheral: ENET, signal: RMII_TXD1, pin_signal: PTD7/LPUART2_TX/FTM2_FLT3/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6}
   - {pin_num: '47', peripheral: ENET, signal: RMII_TXEN, pin_signal: PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS/QSPI_A_IO2}
   - {pin_num: '52', peripheral: ENET, signal: RMII_RXD0, pin_signal: PTC1/FTM0_CH1/LPSPI2_SOUT/MII_RMII_RXD1/MII_RMII_RXD0/FTM1_CH7/QSPI_B_SCK/ADC0_SE9}
   - {pin_num: '53', peripheral: ENET, signal: RMII_RXD1, pin_signal: PTC0/FTM0_CH0/LPSPI2_SIN/MII_RMII_RXD1/MII_RMII_RXD0/FTM1_CH6/QSPI_B_RWDS/ADC0_SE8}
-  - {pin_num: '56', peripheral: ENET, signal: RMII_CRS_DV, pin_signal: PTC17/CAN2_TX/LPI2C1_SCLS/MII_RMII_RX_DV/QSPI_B_IO6/ADC0_SE15}
+  - {pin_num: '56', peripheral: ENET, signal: RMII_CRS_DV, pin_signal: PTC17/FTM1_FLT3/CAN2_TX/LPI2C1_SCLS/MII_RMII_RX_DV/QSPI_B_IO6/ADC0_SE15}
   - {pin_num: '48', peripheral: ENET, signal: MII_TXCLK, pin_signal: PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS/QSPI_A_IO0}
   - {pin_num: '39', peripheral: ENET, signal: RMII_MDC, pin_signal: PTE8/FTM0_CH6/MII_RMII_MDC/CMP0_IN3}
   - {pin_num: '42', peripheral: GPIOC, signal: 'GPIO, 3', pin_signal: PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4, direction: OUTPUT,
