@@ -37,6 +37,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetRate(&hal_lptpmclk);
     CLOCK_EnableClock(hal_lptpmclk.clkId);
     CLOCK_SetRate(&hal_lpit_clk);
-    CLOCK_EnableClock(&hal_lpit_clk);
+    CLOCK_EnableClock(hal_lpit_clk.clkId);
 }
 /*${function:end}*/

@@ -45,9 +45,9 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     CLOCK_SetRate(&hal_lpspiMstClkCfg);
-    CLOCK_EnableClock(&hal_lpspiMstClkCfg);
+    CLOCK_EnableClock(hal_lpspiMstClkCfg.clkId);
     CLOCK_SetRate(&hal_lpspiSlvClkCfg);
-    CLOCK_EnableClock(&hal_lpspiSlvClkCfg);
+    CLOCK_EnableClock(hal_lpspiSlvClkCfg.clkId);
     CLOCK_SetRate(&hal_lptpmclk);
     CLOCK_EnableClock(hal_lptpmclk.clkId);
 

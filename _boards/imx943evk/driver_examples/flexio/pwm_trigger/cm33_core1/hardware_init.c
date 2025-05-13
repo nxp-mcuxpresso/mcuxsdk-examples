@@ -34,7 +34,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     CLOCK_SetRate(&hal_flexioClkCfg);
-    CLOCK_EnableClock(&hal_flexioClkCfg);
+    CLOCK_EnableClock(hal_flexioClkCfg.clkId);
     CLOCK_SetRate(&hal_lptpmclk);
     CLOCK_EnableClock(hal_lptpmclk.clkId);
 }

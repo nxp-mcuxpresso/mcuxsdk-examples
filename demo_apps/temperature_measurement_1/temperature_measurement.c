@@ -8,10 +8,15 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_common.h"
+#include "scmi.h"
+#include "scmi_internal.h"
 #include "app.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#ifndef SCMI_A2P
+#define SCMI_A2P (0U)
+#endif
 #define NUM_SENSOR_DESCS_MASK (0xFFFU)
 #define NUM_SENSOR_DESCS_SHIFT (0U)
 #define NUM_SENSOR_DESCS(x) (((uint32_t)(((uint32_t)(x)) << NUM_SENSOR_DESCS_SHIFT)) & NUM_SENSOR_DESCS_MASK)
