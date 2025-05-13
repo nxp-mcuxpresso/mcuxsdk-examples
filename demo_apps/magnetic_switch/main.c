@@ -7,7 +7,6 @@
 /* SDK Included Files */
 #include "board.h"
 #include "fsl_debug_console.h"
-#include "fsl_lpi2c.h"
 #include "app.h"
 #include "fsl_nmh1000.h"
 
