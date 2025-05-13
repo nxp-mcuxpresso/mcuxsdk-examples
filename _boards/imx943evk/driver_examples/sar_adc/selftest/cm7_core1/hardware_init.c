@@ -12,7 +12,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    uint32_t channel = SM_PLATFORM_A2P;
+    uint32_t channel = SCMI_A2P;
     uint32_t ctrlId = 7U;
     uint32_t numVal = 1U;
     uint32_t val = 0x80U;
