@@ -249,7 +249,7 @@ int32_t MU11_B_IRQHandler(void)
         uint32_t runMode, velow, vehigh;
         uint32_t sleepMode = 0;
         int32_t status = SCMI_ERR_SUCCESS;
-        status = SCMI_CpuInfoGet(SCMI_A2P, CPU_IDX_A55C0, &runMode, &sleepMode, &velow, &vehigh);
+        status = SCMI_CpuInfoGet(SCMI_A2P, SYSTEM_PLATFORM_AP_ID, &runMode, &sleepMode, &velow, &vehigh);
         if (status != SCMI_ERR_SUCCESS)
         {
             PRINTF("Get AP info fail\r\n");
