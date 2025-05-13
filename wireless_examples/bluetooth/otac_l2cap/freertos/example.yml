@@ -20,3 +20,6 @@ otap_client_l2cap_credit_freertos:
     mcxw72evk@cm33_core0: []
     frdmmcxw72@cm33_core0: []
     frdmmcxw23: []
+    kw43evk:
+    - -armgcc@debug
+    - -armgcc@release
