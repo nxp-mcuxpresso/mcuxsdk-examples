@@ -10,6 +10,7 @@ In this example, CTimer is used to generate a PWM signal.
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/driver_examples/ctimer/simple_pwm/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/ctimer/simple_pwm/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/ctimer/simple_pwm/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxa346/driver_examples/ctimer/simple_pwm_interrupt/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/ctimer/simple_pwm/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/ctimer/simple_pwm/example_board_readme.md)
 - [FRDM-MCXW23](../../../_boards/frdmmcxw23/driver_examples/ctimer/simple_pwm/example_board_readme.md)

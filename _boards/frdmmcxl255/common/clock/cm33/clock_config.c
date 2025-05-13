@@ -62,8 +62,10 @@ void BOARD_InitBootClocks(void)
     CLOCK_SetClockDiv(kCLOCK_DivCMP0_FUNC, 1U);            /* !< Set MRCC_CMP0_FUNC_DIV divider to value 1 */
     CLOCK_SetClockDiv(kCLOCK_DivTRACE, 1U);                /* !< Set MRCC_DBG_TRACE_DIV divider to value 1 */
     CLOCK_SetClockDiv(kCLOCK_DivADC0, 1U);                 /* !< Set MRCC_ADC0_DIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup0 , 1U);        /* !< Set MRCC_LPUART_DIV divider to value 1 */
-    CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup1 , 1U);        /* !< Set MRCC_LPUART_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup0, 1U);         /* !< Set MRCC_LPUART_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivPeriphGroup1, 1U);         /* !< Set MRCC_LPUART_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivCTIMER0, 1U);              /* !< Set MRCC_CTIMER_grp0_DIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivCTIMER1, 2U);              /* !< Set MRCC_CTIMER_grp1_DIV divider to value 2 */
     
     CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP0);
     CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);

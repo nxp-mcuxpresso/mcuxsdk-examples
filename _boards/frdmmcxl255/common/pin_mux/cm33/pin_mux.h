@@ -36,6 +36,10 @@ void BOARD_InitLCDPins(void);
 void BOARD_InitKPPPins(void);
 void BOARD_InitAonLpadcPins(void);
 void BOARD_InitBUTTONsPins(void);
+void BOARD_InitCtimerMatch0Pins(void);
+void BOARD_InitCtimerMatch1Pins(void);
+void BOARD_InitCtimerPwmPins(void);
+void BOARD_InitCtimerCapPins(void);
 
 #if defined(__cplusplus)
 }

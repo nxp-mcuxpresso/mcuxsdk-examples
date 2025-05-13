@@ -852,3 +852,197 @@ void BOARD_InitAonLpadcPins(void)
     /* PORT0_13 is configured as AON_LPADC0_A3 */
     PORT_SetPinConfig(AON__PORT0, 13U, &port0_13_config);
 }
+
+void BOARD_InitCtimerMatch0Pins(void)
+{
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+
+
+    /* LED RED as CTIMER1 match0*/
+    const port_pin_config_t port1_15_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as CT1_MAT0 */
+                                                     .mux = kPORT_MuxAlt6,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    PORT_SetPinConfig(PORT1, 15U, &port1_15_config);
+}
+
+void BOARD_InitCtimerMatch1Pins(void)
+{
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+
+    /* LED GREEN CTIMER1 match1*/
+    const port_pin_config_t port1_16_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as CT1_MAT1 */
+                                                     .mux = kPORT_MuxAlt6,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    PORT_SetPinConfig(PORT1, 16U, &port1_16_config);
+    PORT_SetPinConfig(PORT1, 18U, &port1_16_config);
+}
+
+void BOARD_InitCtimerPwmPins(void)
+{
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    CLOCK_EnableClock(kCLOCK_GateGPIO2);
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kGPIO2_RST_SHIFT_RSTn);
+
+    gpio_pin_config_t pin2_18_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin pin 2_18   */
+    GPIO_PinInit(GPIO2, 18, &pin2_18_config);
+
+    const port_pin_config_t port2_18_config = {/* Internal pull-up/down resistor is disabled */
+                                   .pullSelect = kPORT_PullDisable,
+                                   /* Low internal pull resistor value is selected. */
+                                   .pullValueSelect = kPORT_LowPullResistor,
+                                   /* Fast slew rate is configured */
+                                   .slewRate = kPORT_FastSlewRate,
+                                   /* Passive input filter is disabled */
+                                   .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                   /* Open drain output is disabled */
+                                   .openDrainEnable = kPORT_OpenDrainDisable,
+                                   /* Low drive strength is configured */
+                                   .driveStrength = kPORT_LowDriveStrength,
+                                   /* Normal drive strength is configured */
+                                   .driveStrength1 = kPORT_NormalDriveStrength,
+                                   /* Pin is configured as P2_18 */
+                                   .mux = kPORT_MuxAlt0,
+                                   /* Digital input enabled */
+                                   .inputBuffer = kPORT_InputBufferEnable,
+                                   /* Digital input is not inverted */
+                                   .invertInput = kPORT_InputNormal,
+                                   /* Pin Control Register fields [15:0] are not locked */
+                                   .lockRegister = kPORT_UnlockRegister};
+    /* PORT0_9  is configured as P0_9 */
+    PORT_SetPinConfig(PORT2, 18U, &port2_18_config);
+
+    /* J5-1 CTIMER2 match0*/
+    const port_pin_config_t port2_14_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as CT2_MAT0 */
+                                                     .mux = kPORT_MuxAlt6,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    PORT_SetPinConfig(PORT2, 14U, &port2_14_config);
+}
+
+void BOARD_InitCtimerCapPins(void)
+{
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    CLOCK_EnableClock(kCLOCK_GateGPIO2);
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kGPIO2_RST_SHIFT_RSTn);
+
+    gpio_pin_config_t pin2_2_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin pin 2_18   */
+    GPIO_PinInit(GPIO2, 2U, &pin2_2_config);
+
+    const port_pin_config_t port2_2_config = {/* Internal pull-up/down resistor is disabled */
+                                   .pullSelect = kPORT_PullDisable,
+                                   /* Low internal pull resistor value is selected. */
+                                   .pullValueSelect = kPORT_LowPullResistor,
+                                   /* Fast slew rate is configured */
+                                   .slewRate = kPORT_FastSlewRate,
+                                   /* Passive input filter is disabled */
+                                   .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                   /* Open drain output is disabled */
+                                   .openDrainEnable = kPORT_OpenDrainDisable,
+                                   /* Low drive strength is configured */
+                                   .driveStrength = kPORT_LowDriveStrength,
+                                   /* Normal drive strength is configured */
+                                   .driveStrength1 = kPORT_NormalDriveStrength,
+                                   /* Pin is configured as P2_18 */
+                                   .mux = kPORT_MuxAlt0,
+                                   /* Digital input enabled */
+                                   .inputBuffer = kPORT_InputBufferEnable,
+                                   /* Digital input is not inverted */
+                                   .invertInput = kPORT_InputNormal,
+                                   /* Pin Control Register fields [15:0] are not locked */
+                                   .lockRegister = kPORT_UnlockRegister};
+    /* PORT2_2  is configured as P2_2 */
+    PORT_SetPinConfig(PORT2, 2U, &port2_2_config);
+
+    /* J4-2 TRIG_IN3*/
+    const port_pin_config_t port2_17_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as CT2_MAT0 */
+                                                     .mux = kPORT_MuxAlt1,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    PORT_SetPinConfig(PORT2, 17U, &port2_17_config);
+}

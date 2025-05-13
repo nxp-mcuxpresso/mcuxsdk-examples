@@ -19,3 +19,4 @@ ctimer_dma_trigger:
   boards:
     frdmmcxa156: []
     frdmrw612: []
+    frdmmcxl255@cm33: []
