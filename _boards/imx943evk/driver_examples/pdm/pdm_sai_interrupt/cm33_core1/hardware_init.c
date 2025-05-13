@@ -109,8 +109,8 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(audiopll1vcoCLKCfg.clkId);
     CLOCK_SetRate(&audiopll1CLKCfg);
     CLOCK_EnableClock(audiopll1CLKCfg.clkId);
+    CLOCK_SetParent(&pdmClkCfg);
     CLOCK_SetRate(&pdmClkCfg);
-    //CLOCK_SetRate(&pdmClkCfg);
     CLOCK_EnableClock(pdmClkCfg.clkId);
     CLOCK_SetRate(&lpi2cCLKCfg);
     CLOCK_EnableClock(lpi2cCLKCfg.clkId);
