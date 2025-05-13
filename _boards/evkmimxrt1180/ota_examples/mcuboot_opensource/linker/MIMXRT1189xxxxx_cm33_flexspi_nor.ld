@@ -168,10 +168,7 @@ SECTIONS
     EXCLUDE_FILE (
         *mflash_drv.c.obj
         *fsl_flexspi.c.obj)
-    *(.text)                 /* .text sections (code) */
-    *(.text*)                /* .text* sections (code) */
-    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+      *(.text .rdata .text* .rodata*)
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
