@@ -23,7 +23,7 @@ mcux_add_source(
             ${board_root}/${board}/wifi_examples/common/cm33_core0/app.h
             ${board_root}/${board}/sdmmc_config.c
             ${board_root}/${board}/sdmmc_config.h
-            ${board_root}/${board}/wifi_examples/common/wifi_bt_config.c
+            ${board_root}/${board}/wifi_bt_config.c
             ${board_root}/${board}/wifi_bt_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
@@ -34,7 +34,7 @@ mcux_add_include(
              middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config
              middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config
              middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config
-             ${board_root}/${board}/wifi_examples/common
+             ${board_root}/${board}/wifi_examples/common/cm33_core0
 )
 
 mcux_add_source(
