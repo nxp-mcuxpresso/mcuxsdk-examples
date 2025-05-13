@@ -38,6 +38,7 @@ Note: The example echo every 8 characters, so input 8 characters every time.
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/cmsis_driver_examples/lpuart/edma_transfer/example_board_readme.md)
