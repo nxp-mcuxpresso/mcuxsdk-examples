@@ -6,28 +6,27 @@
 /*${header:start}*/
 #include "board.h"
 #include "pin_mux.h"
-#include "sm_platform.h"
 #include "app.h"
 /*${header:end}*/
 
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    hal_clk_t hal_lptpmclk = {
-        .clk_id = LPTPM_CLOCK_ROOT,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t hal_lptpmclk = {
+        .clkId = LPTPM_CLOCK_ROOT,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_lptpmclk);
-    HAL_ClockEnable(&hal_lptpmclk);
+    CLOCK_SetRate(&hal_lptpmclk);
+    CLOCK_EnableClock(hal_lptpmclk.clkId);
 }
 /*${function:end}*/

@@ -13,7 +13,7 @@
 /* The PWM base address */
 #define BOARD_PWM_BASEADDR PWM1
 
-#define PWM_SRC_CLK_FREQ       HAL_ClockGetRate(hal_clock_busaon)
+#define PWM_SRC_CLK_FREQ       CLOCK_GetRate(kCLOCK_Busaon)
 #define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_4
 /*${macro:end}*/
 
@@ -30,8 +30,8 @@
 #define TPM_LED_HANDLER      TPM6_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm6
-#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
+#define LPTPM_CLOCK_ROOT kCLOCK_Tpm6
+#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 
 /*******************************************************************************
  * Prototypes

@@ -26,7 +26,7 @@
 #define QTMR_CLOCK_SOURCE_DIVIDER (128U)
 
 /* Get source clock for QTMR driver */
-#define QTMR_SOURCE_CLOCK (HAL_ClockGetRate(hal_clock_buswakeup) / QTMR_CLOCK_SOURCE_DIVIDER)
+#define QTMR_SOURCE_CLOCK (CLOCK_GetRate(kCLOCK_Buswakeup) / QTMR_CLOCK_SOURCE_DIVIDER)
 /*${macro:end}*/
 
 /* define instance */
@@ -42,8 +42,8 @@
 #define TPM_LED_HANDLER      TPM6_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm6
-#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
+#define LPTPM_CLOCK_ROOT kCLOCK_Tpm6
+#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 
 /*******************************************************************************
  * Prototypes

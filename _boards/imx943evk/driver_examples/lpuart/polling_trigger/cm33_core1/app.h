@@ -13,8 +13,8 @@
 /* Get source clock for LPIT driver */
 #define DEMO_LPUART          LPUART12
 #define DEMO_LPUART_INSTANCE_IDX (12U)
-#define LPUART_CLOCK_ROOT    hal_clock_lpuart12
-#define DEMO_LPUART_CLK_FREQ HAL_ClockGetRate(LPUART_CLOCK_ROOT)
+#define LPUART_CLOCK_ROOT    kCLOCK_Lpuart12
+#define DEMO_LPUART_CLK_FREQ CLOCK_GetRate(LPUART_CLOCK_ROOT)
 /*${macro:end}*/
 
 /* define instance */
@@ -30,8 +30,8 @@
 #define TPM_LED_HANDLER      TPM6_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm6
-#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
+#define LPTPM_CLOCK_ROOT kCLOCK_Tpm6
+#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 
 /*******************************************************************************
  * Prototypes

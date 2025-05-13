@@ -16,8 +16,8 @@
 #define DEMO_FLEXIO_BASEADDR                  FLEXIO1
 #define DEMO_FLEXIO_OUTPUTPIN                 2U /* Select flexio1_3_1_flexio2 as PWM output */
 #define DEMO_FLEXIO_TIMER_CH                  0U /* Flexio timer0 used */
-#define DEMO_FLEXIO_CLOCK hal_clock_flexio1
-#define DEMO_FLEXIO_CLOCK_FREQUENCY HAL_ClockGetRate(DEMO_FLEXIO_CLOCK)
+#define DEMO_FLEXIO_CLOCK kCLOCK_Flexio1
+#define DEMO_FLEXIO_CLOCK_FREQUENCY CLOCK_GetRate(DEMO_FLEXIO_CLOCK)
 #define DEMO_FLEXIO_FREQUENCY       100000U
 /*${macro:end}*/
 

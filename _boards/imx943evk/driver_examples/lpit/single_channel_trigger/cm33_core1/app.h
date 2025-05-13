@@ -14,8 +14,8 @@
 #define DEMO_LPIT_IRQn       LPIT1_IRQn
 #define DEMO_LPIT_IRQHandler LPIT1_IRQHandler
 /* Get source clock for LPIT driver */
-#define LPIT_MASTER_CLOCK_ROOT hal_clock_busaon
-#define LPIT_SOURCECLOCK       HAL_ClockGetRate(LPIT_MASTER_CLOCK_ROOT)
+#define LPIT_MASTER_CLOCK_ROOT kCLOCK_Busaon
+#define LPIT_SOURCECLOCK       CLOCK_GetRate(LPIT_MASTER_CLOCK_ROOT)
 #define LED_INIT()
 #define LED_TOGGLE()
 /*${macro:end}*/
@@ -33,8 +33,8 @@
 #define DEMO_TPM_IRQHandler      TPM6_IRQHandler
 
 /* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT hal_clock_tpm6
-#define TPM_SOURCE_CLOCK HAL_ClockGetRate(LPTPM_CLOCK_ROOT)
+#define LPTPM_CLOCK_ROOT kCLOCK_Tpm6
+#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 
 /*******************************************************************************
  * Prototypes

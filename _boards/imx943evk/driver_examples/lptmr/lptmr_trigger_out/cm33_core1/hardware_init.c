@@ -5,7 +5,6 @@
  */
 /*${header:start}*/
 #include "board.h"
-#include "sm_platform.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 /*${header:end}*/
@@ -13,7 +12,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();

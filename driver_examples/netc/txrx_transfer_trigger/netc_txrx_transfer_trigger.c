@@ -576,7 +576,7 @@ void *netc_1588_init(void)
 
     memset(&timer_config, 0, sizeof(netc_timer_config_t));
     timer_config.clockSelect = kNETC_TimerExtRefClk;
-    timer_config.refClkHz = HAL_ClockGetRate(hal_clock_enettimer1);
+    timer_config.refClkHz = CLOCK_GetRate(kCLOCK_Enettimer1);
     timer_config.enableTimer = true;
 
     if (NETC_TimerInit(&timer_handle, &timer_config) != kStatus_Success)

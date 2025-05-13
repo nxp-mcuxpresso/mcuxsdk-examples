@@ -7,7 +7,6 @@
 #include "app.h"
 #include "board.h"
 #include "pin_mux.h"
-#include "sm_platform.h"
 
 /*${header:end}*/
 
@@ -15,42 +14,42 @@
 void BOARD_InitHardware(void)
 {
     /* clang-format off */
-    hal_clk_t hal_lpspiMstClkCfg = {
-        .clk_id = EXAMPLE_LPSPI_MASTER_CLK_ID,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t hal_lpspiMstClkCfg = {
+        .clkId = EXAMPLE_LPSPI_MASTER_CLK_ID,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_lpspiSlvClkCfg = {
-        .clk_id = EXAMPLE_LPSPI_SLAVE_CLK_ID,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t hal_lpspiSlvClkCfg = {
+        .clkId = EXAMPLE_LPSPI_SLAVE_CLK_ID,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
-    hal_clk_t hal_lptpmclk = {
-        .clk_id = LPTPM_CLOCK_ROOT,
-        .pclk_id = hal_clock_osc24m,
-        .clk_round_opt = hal_clk_round_auto,
+    clk_t hal_lptpmclk = {
+        .clkId = LPTPM_CLOCK_ROOT,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
     };
 
     /* clang-format on */
 
     BOARD_ConfigMPU();
-    SM_Platform_Init();
+    SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    HAL_ClockSetRate(&hal_lpspiMstClkCfg);
-    HAL_ClockEnable(&hal_lpspiMstClkCfg);
-    HAL_ClockSetRate(&hal_lpspiSlvClkCfg);
-    HAL_ClockEnable(&hal_lpspiSlvClkCfg);
-    HAL_ClockSetRate(&hal_lptpmclk);
-    HAL_ClockEnable(&hal_lptpmclk);
+    CLOCK_SetRate(&hal_lpspiMstClkCfg);
+    CLOCK_EnableClock(&hal_lpspiMstClkCfg);
+    CLOCK_SetRate(&hal_lpspiSlvClkCfg);
+    CLOCK_EnableClock(&hal_lpspiSlvClkCfg);
+    CLOCK_SetRate(&hal_lptpmclk);
+    CLOCK_EnableClock(hal_lptpmclk.clkId);
 
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL3);
