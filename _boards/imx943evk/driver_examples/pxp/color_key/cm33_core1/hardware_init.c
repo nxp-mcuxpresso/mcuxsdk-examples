@@ -57,8 +57,10 @@ void BOARD_InitHardware(void)
 
     CLOCK_SetRate(&lpi2cCLKCfg);
     CLOCK_EnableClock(lpi2cCLKCfg.clkId);
+    CLOCK_SetParent(&dispapbCLKCfg);
     CLOCK_SetRate(&dispapbCLKCfg);
     CLOCK_EnableClock(dispapbCLKCfg.clkId);
+    CLOCK_SetParent(&dispaxiCLKCfg);
     CLOCK_SetRate(&dispaxiCLKCfg);
     CLOCK_EnableClock(dispaxiCLKCfg.clkId);
 }
