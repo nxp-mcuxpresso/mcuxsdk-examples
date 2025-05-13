@@ -49,6 +49,7 @@ cmsis_lpi2c_edma_b2b_transfer_slave:
     frdmmcxa153: []
     frdmmcxa156: []
     frdmmcxa346: []
+    frdmmcxe247: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
