@@ -2,8 +2,8 @@
 
 ## Overview
 The WWDT Example project is to demonstrate usage of the KSDK wdog driver.
-In this example,quick test to show user how to feed watch dog.
-User need to feed the watch dog in time before it warning or timeout interrupt.
+In this example, quick test to show user how to feed the watch dog.
+User needs to feed the watch dog in time before warning or timeout interrupt.
 The WINDOW register determines the highest TV value allowed when a watchdog feed is
 performed.
 

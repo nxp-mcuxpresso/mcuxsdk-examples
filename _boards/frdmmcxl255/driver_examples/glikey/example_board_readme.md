@@ -10,7 +10,7 @@ No special settings are required.
 
 Prepare the Demo
 ===============
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link USB port on the target board.
+1.  Connect a Type-C USB cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

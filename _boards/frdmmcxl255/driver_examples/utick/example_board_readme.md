@@ -6,10 +6,11 @@ Hardware requirements
 
 Board settings
 ============
+No special settings are required.
 
 Prepare the Demo
 ===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -21,8 +22,7 @@ Prepare the Demo
 
 Running the demo
 ===============
-When the demo runs successfully, the log would be seen on the terminal like:
-
+The log below shows example output of the UTICK driver demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Utick example start...
 UTICK delay 1 second...
