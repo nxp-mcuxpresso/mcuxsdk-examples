@@ -218,6 +218,7 @@ AT_QUICKACCESS_SECTION_CODE(void BOARD_EnableSRAMExtraLatency(bool en))
 
 void BOARD_ClockPreConfig(void)
 {
+#if defined(FSL_FEATURE_PMC_HAS_LAST_MILE_REGULATOR) && (FSL_FEATURE_PMC_HAS_LAST_MILE_REGULATOR)
     /* Enables PMC last mile regulator before enable PLL.  */
     if ((PMC->LVSC & PMC_LVSC_LVD15S_MASK) != 0U)
     {
@@ -231,7 +232,7 @@ void BOARD_ClockPreConfig(void)
     while((PMC->CONFIG & PMC_CONFIG_LMSTAT_MASK) == 0u)
     {
     }
-
+#endif /* FSL_FEATURE_PMC_HAS_LAST_MILE_REGULATOR */
     BOARD_EnableSRAMExtraLatency(true);
 }
 

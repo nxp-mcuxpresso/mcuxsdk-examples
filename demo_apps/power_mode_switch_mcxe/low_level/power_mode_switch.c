@@ -734,7 +734,9 @@ static void APP_PullDownJTAGTDI()
 
 static void APP_SetStandbyPowerPMCVoltageRegulatorConfiguration(void)
 {
+#if defined(FSL_FEATURE_PMC_HAS_LAST_MILE_REGULATOR) && (FSL_FEATURE_PMC_HAS_LAST_MILE_REGULATOR)
     POWER_DisableLastMileRegulator();
+#endif
     POWER_DisableLPMV25Regulator();
 }
 
