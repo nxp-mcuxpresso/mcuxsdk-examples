@@ -49,6 +49,7 @@ BOARD_InitPins:
     mode: inactive, slew_rate: standard, invert: disabled, open_drain: disabled, ssel: signal3v3, filter_off: disabled, ecs: disabled, egp: gpio, i2cfilter: nonhighspeedmode}
   - {pin_num: '6', peripheral: FLEXCOMM1, signal: RXD_SDA_MOSI, pin_signal: PIO0_13/FC1_RXD_SDA_MOSI/FC2_CTS_SDA_SSEL0/SCT_OUT2/UTICK_CAP2/PLU_OUT1/SEC_PIO0_13/CTIMER3_MAT1/CTIMER_INP13,
     mode: inactive, slew_rate: standard, invert: disabled, open_drain: disabled, ssel: signal3v3, filter_off: disabled, ecs: disabled, egp: gpio, i2cfilter: nonhighspeedmode}
+  - {pin_num: '14', peripheral: PMC, signal: WAKEUP, pin_signal: PIO0_21/WAKEUP/SEC_PIO0_21/CTIMER_INP21, mode: inactive, slew_rate: standard, invert: disabled, open_drain: disabled}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -114,6 +115,21 @@ void BOARD_InitPins(void)
                                          IOCON_PIO_I2CFILTER_NONHIGHSPEED);
     /* PORT0 PIN14 (coords: 5) is configured as FC1_TXD_SCL_MISO */
     IOCON_PinMuxSet(IOCON, 0U, 14U, port0_pin14_config);
+
+    const uint32_t port0_pin21_config = (/* Pin is configured as WAKEUP */
+                                         IOCON_PIO_FUNC1 |
+                                         /* No addition pin function */
+                                         IOCON_PIO_MODE_INACT |
+                                         /* Standard mode, output slew rate control is enabled */
+                                         IOCON_PIO_SLEW_STANDARD |
+                                         /* Input function is not inverted */
+                                         IOCON_PIO_INV_DI |
+                                         /* Enables digital function */
+                                         IOCON_PIO_DIGITAL_EN |
+                                         /* Open drain is disabled */
+                                         IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN21 (coords: 14) is configured as WAKEUP */
+    IOCON_PinMuxSet(IOCON, 0U, 21U, port0_pin21_config);
 
     const uint32_t port0_pin3_config = (/* Pin is configured as FC0_TXD_SCL_MISO */
                                         IOCON_PIO_FUNC1 |
