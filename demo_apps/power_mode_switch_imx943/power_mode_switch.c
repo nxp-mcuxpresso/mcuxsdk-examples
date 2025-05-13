@@ -19,7 +19,7 @@
 #include "scmi.h"
 #include "pin_mux.h"
 #include "app_srtm.h"
-#include "sm_platform.h"
+//#include "sm_platform.h"
 #include "fsl_adapter_timer.h"
 #if defined(CPU_MIMX94398AVKM_cm7_core0)
 #include "fsl_lptmr.h"
@@ -44,7 +44,7 @@ extern void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-static IRQn_Type irqTbl[] = {SM_PLATFORM_MU_IRQ, RPMSG_LITE_MU_IRQ};
+static IRQn_Type irqTbl[] = {SYSTEM_PLATFORM_MU_IRQ, RPMSG_LITE_MU_IRQ};
 static uint32_t s_wakeupTimeout;           /* Wakeup timeout. (Unit: Second) */
 static app_wakeup_source_t s_wakeupSource; /* Wakeup source.                 */
 static SemaphoreHandle_t s_wakeupSig;
@@ -200,9 +200,9 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
         lpmConfig.lpmSetting = SCMI_CPU_LPM_SETTING_ON_ALWAYS;
         lpmConfig.retMask = 0U;
         lpmConfig.domainId = APP_UART_PWR_MIX_SLICE_IDX;
-        SCMI_CpuPdLpmConfigSet(SM_PLATFORM_A2P, APP_CPU_ID, 1U, &lpmConfig);
+        SCMI_CpuPdLpmConfigSet(SCMI_A2P, APP_CPU_ID, 1U, &lpmConfig);
         lpmConfig.domainId = APP_WAKEUP_TIMER_PWR_MIX_SLICE_IDX;
-        SCMI_CpuPdLpmConfigSet(SM_PLATFORM_A2P, APP_CPU_ID, 1U, &lpmConfig);
+        SCMI_CpuPdLpmConfigSet(SCMI_A2P, APP_CPU_ID, 1U, &lpmConfig);
 
         if (kAPP_WakeupSourceTimer == s_wakeupSource)
         {
@@ -210,7 +210,7 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
             HAL_TimerUpdateTimeout((hal_timer_handle_t)halWakupTimerHandle, s_wakeupTimeout * 1000U * 1000U);
             HAL_TimerEnable((hal_timer_handle_t)halWakupTimerHandle);
             /* Ensure not to be woken up by sm messages */
-	    DisableIRQ(SM_PLATFORM_MU_IRQ);
+	    DisableIRQ(SYSTEM_PLATFORM_MU_IRQ);
             /* Ensure not to be woken up by A55 messages */
             DisableIRQ(RPMSG_LITE_MU_IRQ);
         }
@@ -224,7 +224,7 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
             APP_UART->STAT &= ~LPUART_STAT_RXINV_MASK;
             APP_UART->BAUD |= LPUART_BAUD_RXEDGIE_MASK;
 
-	    DisableIRQ(SM_PLATFORM_MU_IRQ);
+	    DisableIRQ(SYSTEM_PLATFORM_MU_IRQ);
             /* Ensure not to be woken up by A55 messages */
             DisableIRQ(RPMSG_LITE_MU_IRQ);
 
@@ -236,7 +236,7 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
             scmi_per_lpm_config_t perLpmConfig;
             perLpmConfig.perId = APP_CPU_PER_LPI_IDX_UART;
             perLpmConfig.lpmSetting = SCMI_CPU_LPM_SETTING_ON_RUN_WAIT_STOP;
-            status = SCMI_CpuPerLpmConfigSet(SM_PLATFORM_A2P, APP_CPU_ID, 1U, &perLpmConfig);
+            status = SCMI_CpuPerLpmConfigSet(SCMI_A2P, APP_CPU_ID, 1U, &perLpmConfig);
             if (status != SCMI_ERR_SUCCESS)
             {
                 PRINTF("SCMI_CpuPerLpmConfigSet set fail\r\n");
@@ -249,13 +249,13 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
         /* Ensure not to be woken up by A55 messages */
         DisableIRQ(RPMSG_LITE_MU_IRQ);
         /* Mcu can be only woken by MU(between mcu and sm): MU5_A_IRQn=205, wakeMask data is 32bit width, 205 = 32 * 6 + 13, it means wakeMask[6] bit 13. */
-        wakeMaskIdx = SM_PLATFORM_MU_IRQ / 32;
-        wakeMaskBitPos = SM_PLATFORM_MU_IRQ % 32;
+        wakeMaskIdx = SYSTEM_PLATFORM_MU_IRQ / 32;
+        wakeMaskBitPos = SYSTEM_PLATFORM_MU_IRQ % 32;
         /* deal with MU interrupts, configure IRQ wake sources. */
         wakeMask[wakeMaskIdx] = ~(1 << wakeMaskBitPos);
     }
 
-     status = SCMI_CpuIrqWakeSet(SM_PLATFORM_A2P, APP_CPU_ID, APP_CPU_ID_MASK_IDX, GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT, wakeMask);
+     status = SCMI_CpuIrqWakeSet(SCMI_A2P, APP_CPU_ID, APP_CPU_ID_MASK_IDX, GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT, wakeMask);
      if (status != SCMI_ERR_SUCCESS)
      {
          PRINTF("SCMI_CpuIrqWakeSet set fail\r\n");
@@ -350,7 +350,7 @@ void PowerModeSwitchTask(void *pvParameters)
 
     for (;;)
     {
-        freq = HAL_ClockGetRate(MCU_HAL_CLOCK_ID);
+        freq = CLOCK_GetRate(MCU_HAL_CLOCK_ID);
         PRINTF("\r\n####################  Power Mode Switch Task ####################\n\r\n");
         PRINTF("    Build Time: %s--%s \r\n", __DATE__, __TIME__);
         PRINTF("    Core Clock: %dHz \r\n", freq);
@@ -411,7 +411,7 @@ void PowerModeSwitchTask(void *pvParameters)
             uint32_t sleepMode = CPU_SLEEP_MODE_RUN;
             int32_t status = SCMI_ERR_SUCCESS;
 
-            status = SCMI_CpuInfoGet(SM_PLATFORM_A2P, SM_PLATFORM_AP_ID, &runMode, &sleepMode, &velow, &vehigh);
+            status = SCMI_CpuInfoGet(SCMI_A2P, SYSTEM_PLATFORM_AP_ID, &runMode, &sleepMode, &velow, &vehigh);
             if (status != SCMI_ERR_SUCCESS)
             {
                 PRINTF("Get AP info fail\r\n");
@@ -424,7 +424,7 @@ void PowerModeSwitchTask(void *pvParameters)
             }
             else
             {
-                status = SCMI_LmmSuspend(SM_PLATFORM_A2P, SM_PLATFORM_AP_LMM_ID);
+                status = SCMI_LmmSuspend(SCMI_A2P, SM_PLATFORM_AP_LMM_ID);
                 if (status != SCMI_ERR_SUCCESS)
                 {
                     PRINTF("SCMI_LmmSuspend A55 fail\r\n");
@@ -433,7 +433,7 @@ void PowerModeSwitchTask(void *pvParameters)
         }
         else if ('W' == ch)
         { 
-            status = SCMI_LmmWake(SM_PLATFORM_A2P, SM_PLATFORM_AP_LMM_ID);
+            status = SCMI_LmmWake(SCMI_A2P, SM_PLATFORM_AP_LMM_ID);
             if (status != SCMI_ERR_SUCCESS)
             {
                 PRINTF("SCMI_LmmWake A55 fail\r\n");
@@ -516,7 +516,7 @@ void APP_PowerPreSwitchHook(lpm_power_mode_t targetMode)
     lpmConfig[0].lpmSetting = APP_LPM_SETTING;
     lpmConfig[0].retMask = 1U << APP_CPU_PWR_MEM_SLICE_IDX;
      /* Configure LPM setting */
-     status = SCMI_CpuPdLpmConfigSet(SM_PLATFORM_A2P, APP_CPU_ID, 1U, lpmConfig);
+     status = SCMI_CpuPdLpmConfigSet(SCMI_A2P, APP_CPU_ID, 1U, lpmConfig);
      if (status != SCMI_ERR_SUCCESS)
      {
          PRINTF("SCMI_CpuPdLpmConfigSet SET FAIL\r\n");
@@ -531,13 +531,13 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
     if (LPM_PowerModeRun != targetMode)
     {
         /* Set CPU sleep mode back to RUN */
-        status = SCMI_CpuSleepModeSet(SM_PLATFORM_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_RUN);
+        status = SCMI_CpuSleepModeSet(SCMI_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_RUN);
         if (status != SCMI_ERR_SUCCESS)
         {
             PRINTF("SCMI_CpuSleepModeSet into RUN STATE FAIL\r\n");
         }
     }
-    if (SM_Platform_GetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SM_Platform_GetSystemState() == SCMI_SYS_STATE_SUSPEND)
+    if (SystemPlatformGetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SystemPlatformGetSystemState() == SCMI_SYS_STATE_SUSPEND)
     {
         APP_ResumePeriperal();
     }
@@ -552,18 +552,18 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
     else
     {
         /* re-enable SM and A55 message unit */
-	EnableIRQ(SM_PLATFORM_MU_IRQ);
+	EnableIRQ(SYSTEM_PLATFORM_MU_IRQ);
         EnableIRQ(RPMSG_LITE_MU_IRQ);
     }
 
-    status = SCMI_CpuIrqWakeSet(SM_PLATFORM_A2P, APP_CPU_ID, APP_CPU_ID_MASK_IDX, GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT, wakeMask);
+    status = SCMI_CpuIrqWakeSet(SCMI_A2P, APP_CPU_ID, APP_CPU_ID_MASK_IDX, GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT, wakeMask);
     if (status != SCMI_ERR_SUCCESS)
     {
         PRINTF("cpu irq mask reset fail\r\n");
     }
-    if (SM_Platform_GetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SM_Platform_GetSystemState() == SCMI_SYS_STATE_SUSPEND)
+    if (SystemPlatformGetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SystemPlatformGetSystemState() == SCMI_SYS_STATE_SUSPEND)
     {
-        SM_Platform_SetSystemState(0xFFFFFFFF);
+        SystemPlatformSetSystemState(0xFFFFFFFF);
         /* Resume rtos task, Mcu PowerModeSwitch task will resume in getchar() side. */
         xSemaphoreGiveFromISR(s_wakeupSig, NULL);
         portYIELD_FROM_ISR(pdTRUE);
@@ -583,7 +583,7 @@ static void APP_SuspendTimerCallback(TimerHandle_t xTimer)
     int wakeMaskBitPos = 0;
 
     /* Start timer to poll suspend status. */
-    if (SM_Platform_GetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SM_Platform_GetSystemState() == SCMI_SYS_STATE_SUSPEND)
+    if (SystemPlatformGetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SystemPlatformGetSystemState() == SCMI_SYS_STATE_SUSPEND)
     {
         DisableIRQ(RPMSG_LITE_MU_IRQ);
         /* Default to no wakeup IRQs */
@@ -601,7 +601,7 @@ static void APP_SuspendTimerCallback(TimerHandle_t xTimer)
         wakeMaskBitPos = RPMSG_LITE_MU_IRQ % 32;
         wakeMask[wakeMaskIdx] |= (1 << wakeMaskBitPos);
 
-        status = SCMI_CpuIrqWakeSet(SM_PLATFORM_A2P, APP_CPU_ID, APP_CPU_ID_MASK_IDX, GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT, wakeMask);
+        status = SCMI_CpuIrqWakeSet(SCMI_A2P, APP_CPU_ID, APP_CPU_ID_MASK_IDX, GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT, wakeMask);
         if (status != SCMI_ERR_SUCCESS)
         {
             PRINTF("SCMI_CpuIrqWakeSet set fail\r\n");

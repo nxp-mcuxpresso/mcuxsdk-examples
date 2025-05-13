@@ -14,7 +14,7 @@
 #include "fsl_debug_console.h"
 #include "fsl_cache.h"
 #include "scmi.h"
-#include "sm_platform.h"
+//#include "sm_platform.h"
 #include "fsl_adapter_timer.h"
 #include "app.h"
 #if defined(CPU_MIMX94398AVKM_cm7_core0)
@@ -268,7 +268,7 @@ void LPM_SetReumeEntry(bool resume)
     }
 
     /* Setup M7 suspend resume Entry. */
-    status = SCMI_CpuResetVectorSet(SM_PLATFORM_A2P, APP_CPU_ID, SCMI_CPU_VEC_FLAGS_RESUME(1), vectorLow, vectorhigh);
+    status = SCMI_CpuResetVectorSet(SCMI_A2P, APP_CPU_ID, SCMI_CPU_VEC_FLAGS_RESUME(1), vectorLow, vectorhigh);
     if (status != SCMI_ERR_SUCCESS)
     {
         PRINTF("set cpu reset vector by sm fail\r\n");
@@ -340,7 +340,7 @@ void LPM_Vector_Copy()
 void LPM_Mcore_Suspend()
 {
     /* Put M core into suspend mode. */
-    SCMI_CpuSleepModeSet(SM_PLATFORM_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_SUSPEND);
+    SCMI_CpuSleepModeSet(SCMI_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_SUSPEND);
 
     __DSB();
     __WFI();
@@ -408,14 +408,14 @@ bool LPM_WaitForInterrupt(uint32_t timeoutMilliSec)
     switch (s_curMode)
     {
         case LPM_PowerModeWait:
-             status = SCMI_CpuSleepModeSet(SM_PLATFORM_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_WAIT);
+             status = SCMI_CpuSleepModeSet(SCMI_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_WAIT);
             __DSB();
             __WFI();
             __ISB();
             status = kStatus_Success;
             break;
         case LPM_PowerModeStop:
-            status = SCMI_CpuSleepModeSet(SM_PLATFORM_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_STOP);
+            status = SCMI_CpuSleepModeSet(SCMI_A2P, APP_CPU_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_STOP);
             __DSB();
             __WFI();
             __ISB();

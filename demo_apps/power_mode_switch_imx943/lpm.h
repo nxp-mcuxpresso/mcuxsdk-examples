@@ -13,11 +13,11 @@
  * Definitions
  ******************************************************************************/
 #if defined(CPU_MIMX94398AVKM_cm7_core0)
-#define APP_CPU_ID SM_PLATFORM_M70_ID
+#define APP_CPU_ID SYSTEM_PLATFORM_M70_ID
 #elif defined(CPU_MIMX94398AVKM_cm7_core1)
-#define APP_CPU_ID SM_PLATFORM_M71_ID
+#define APP_CPU_ID SYSTEM_PLATFORM_M71_ID
 #elif defined(CPU_MIMX94398AVKM_cm33_core1)
-#define APP_CPU_ID SM_PLATFORM_M33S_ID
+#define APP_CPU_ID SYSTEM_PLATFORM_M33S_ID
 #else
 #error "Pls define CPU macro!"
 #endif
