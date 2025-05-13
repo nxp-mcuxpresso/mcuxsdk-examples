@@ -8,7 +8,6 @@
 #include "clock_config.h"
 #include "board.h"
 #include "fsl_common.h"
-#include "sm_platform.h"
 #include "app.h"
 /*******************************************************************************
  * Definitions

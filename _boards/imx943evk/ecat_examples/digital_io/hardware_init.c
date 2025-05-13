@@ -13,7 +13,6 @@
 #include "fsl_ecat.h"
 #include "fsl_gpt.h"
 #include "fsl_rgpio.h"
-#include "hal_reset.h"
 
 #include "ecat_def.h"
 #include "ecatslv.h"
