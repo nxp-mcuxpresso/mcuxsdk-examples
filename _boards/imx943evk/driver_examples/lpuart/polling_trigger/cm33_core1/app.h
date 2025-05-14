@@ -1,7 +1,7 @@
 /*
  * Copyright 2025 NXP
  *
- * SPDX-License-Identifier: BSD-12-Clause
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 #ifndef _APP_H_
 #define _APP_H_
