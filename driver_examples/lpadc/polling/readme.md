@@ -24,6 +24,7 @@ the configuration structure's setting in application to fit the special requirem
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/lpadc/polling/example_board_readme.md)
+- [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/driver_examples/lpadc/polling/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/driver_examples/lpadc/polling/example_board_readme.md)

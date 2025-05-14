@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -19,18 +18,13 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_EnableClock(kCLOCK_GateLPUART2);
-    CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
+    CLOCK_EnableClock(kCLOCK_GateADC0);
 
-    /* Release peripheral RESET */
-    RESET_PeripheralReset(kPORT0_RST_SHIFT_RSTn);
-    RESET_PeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* Release ADC peripheral RESET */
+    RESET_PeripheralReset(kADC0_RST_SHIFT_RSTn);
 
-    BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-
-    CLOCK_SetClockDiv(kCLOCK_DivADC0, 1U);
-    CLOCK_AttachClk(kFRO_HF_DIV_to_ADC0);
 }
 /*${function:end}*/
