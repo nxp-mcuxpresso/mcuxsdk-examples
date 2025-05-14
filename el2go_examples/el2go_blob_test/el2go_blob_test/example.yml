@@ -16,6 +16,5 @@ el2go_blob_test:
       - examples/el2go_examples/el2go_blob_test/el2go_blob_test/readme.md
   boards:
     kw45b41zevk: []
-    kw45b41zloc: []
     frdmmcxw71: []
     mcxw71evk: []
