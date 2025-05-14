@@ -12,3 +12,5 @@ temp_measure:
       - examples/driver_examples/tempsense/temp_measure/readme.md
       - ${board_root}/${board}/driver_examples/tempsense/temp_measure/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []
