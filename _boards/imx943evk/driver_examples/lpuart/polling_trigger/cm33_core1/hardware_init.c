@@ -14,7 +14,7 @@ void BOARD_InitHardware(void)
 {
     /* clang-format off */
     clk_t hal_clk = {
-        .clkId = kCLOCK_Invalid,
+        .clkId = kCLOCK_IpInvalid,
         .pclkId = kCLOCK_Osc24m,
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 24000000UL,
@@ -27,7 +27,7 @@ void BOARD_InitHardware(void)
         .rate = 24000000UL,
     };
 
-    hal_clk.clkId = (hal_clk_id_e)BOARD_GetUartClkId(DEMO_LPUART_INSTANCE_IDX);
+    hal_clk.clkId = BOARD_GetUartClkId(DEMO_LPUART_INSTANCE_IDX);
     SystemPlatformInit();
     BOARD_InitLpuartPins(DEMO_LPUART_INSTANCE_IDX);
     BOARD_InitBootPins();
