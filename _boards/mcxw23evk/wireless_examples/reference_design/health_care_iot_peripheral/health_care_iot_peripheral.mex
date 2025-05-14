@@ -46,6 +46,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="PMC" description="Peripheral PMC is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="cm33_core0">
                         <data>true</data>
@@ -90,6 +95,14 @@
                         <pin_feature name="ecs" value="disabled"/>
                         <pin_feature name="egp" value="gpio"/>
                         <pin_feature name="i2cfilter" value="nonhighspeedmode"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="PMC" signal="WAKEUP" pin_num="14" pin_signal="PIO0_21/WAKEUP/SEC_PIO0_21/CTIMER_INP21">
+                     <pin_features>
+                        <pin_feature name="mode" value="inactive"/>
+                        <pin_feature name="slew_rate" value="standard"/>
+                        <pin_feature name="invert" value="disabled"/>
+                        <pin_feature name="open_drain" value="disabled"/>
                      </pin_features>
                   </pin>
                </pins>
