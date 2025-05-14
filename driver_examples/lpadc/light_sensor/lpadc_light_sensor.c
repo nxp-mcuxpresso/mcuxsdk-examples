@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -64,6 +64,11 @@ static void DEMO_LPADCInit(void)
     lpadc_conv_command_config_t mLpadcCommandConfigStruct;
 
     LPADC_GetDefaultConfig(&mLpadcConfigStruct);
+    /* Set to highest power level here, users need to properly match ADC clock and power level according 
+     * to application requirements. For specific correspondence, please refer to the data sheet. */
+#if defined(FSL_FEATURE_LPADC_HAS_CFG_PWRSEL) && (FSL_FEATURE_LPADC_HAS_CFG_PWRSEL == 1U)
+    mLpadcConfigStruct.powerLevelMode = kLPADC_PowerLevelAlt4;
+#endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     mLpadcConfigStruct.enableAnalogPreliminary = true;
     mLpadcConfigStruct.referenceVoltageSource  = DEMO_LPADC_VREF_SOURCE;
 #if defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS

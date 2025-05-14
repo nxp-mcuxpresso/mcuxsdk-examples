@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2022, 2024 NXP
+ * Copyright 2018-2022, 2024-2025 NXP
  * All rights reserved.
  *
  *
@@ -115,6 +115,12 @@ static void ADC_Configuration(void)
 
     /* Configure ADC. */
     LPADC_GetDefaultConfig(&lpadcConfigStruct);
+
+    /* Set to highest power level here, users need to properly match ADC clock and power level according 
+     * to application requirements. For specific correspondence, please refer to the data sheet. */
+#if defined(FSL_FEATURE_LPADC_HAS_CFG_PWRSEL) && (FSL_FEATURE_LPADC_HAS_CFG_PWRSEL == 1U)
+    lpadcConfigStruct.powerLevelMode = kLPADC_PowerLevelAlt4;
+#endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     lpadcConfigStruct.enableAnalogPreliminary = true;
 #if defined(DEMO_LPADC_VREF_SOURCE)
     lpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;

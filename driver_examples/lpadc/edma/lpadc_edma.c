@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2024 NXP
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -170,6 +170,11 @@ static void ADC_Configuration(void)
      * endcode
      */
     LPADC_GetDefaultConfig(&lpadcConfigStruct);
+    /* Set to highest power level here, users need to properly match ADC clock and power level according 
+     * to application requirements. For specific correspondence, please refer to the data sheet. */
+#if defined(FSL_FEATURE_LPADC_HAS_CFG_PWRSEL) && (FSL_FEATURE_LPADC_HAS_CFG_PWRSEL == 1U)
+    lpadcConfigStruct.powerLevelMode = kLPADC_PowerLevelAlt4;
+#endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     lpadcConfigStruct.enableAnalogPreliminary = true;
     lpadcConfigStruct.powerUpDelay            = 0x10U;
 #if defined(DEMO_LPADC_VREF_SOURCE)
