@@ -41,21 +41,11 @@ m_vector_table_size                 = 0x400;
 m_interrupts_start                  = m_flash_start;
 m_interrupts_end                    = m_interrupts_start + m_vector_table_size - 1;
 __VECTOR_TABLE                      = m_interrupts_start;
-/* This section is not enabled by default but you need it if gHwParamsProdDataPlacement_c is defined to
- * gHwParamsProdDataMainFlashMode_c or gHwParamsProdDataMainFlash2IfrMode_c in your project */
-/*
- * m_fsl_prodInfo_size                 = DEFINED(gUseProdInfoMainFlashMode_d) ? m_sector_size : 0;
- */
-m_fsl_prodInfo_size                 = m_sector_size;
-m_fsl_prodInfo_end                  = m_flash_end;
-m_fsl_prodInfo_start                = m_fsl_prodInfo_end - m_fsl_prodInfo_size + 1;
-
-PROD_DATA_BASE_ADDR                 = m_fsl_prodInfo_start;
 m_ot_settings_page_size             = m_sector_size;
 m_ot_settings_page_count            = DEFINED(gUseOtSettingsStorage_d) ? 2 : 0;
 m_ot_settings_size                  = DEFINED(gUseOtSettingsStorage_d) ? m_ot_settings_page_size * m_ot_settings_page_count : 0;
-m_ot_settings_start                 = m_fsl_prodInfo_start - m_ot_settings_size;
-m_ot_settings_end                   = m_fsl_prodInfo_start - 1;
+m_ot_settings_start                 = m_flash_end - m_ot_settings_size + 1;
+m_ot_settings_end                   = m_flash_end;
 NV_STORAGE_MAX_SECTORS              = DEFINED(gUseNVMLink_d) ? (DEFINED(gNVMSectorCountLink_d) ? gNVMSectorCountLink_d : 4) : 0;
 NV_STORAGE_SECTOR_SIZE              = m_sector_size;
 NV_STORAGE_END_ADDRESS              = m_ot_settings_start - 1;
@@ -153,7 +143,6 @@ MEMORY
   m_internal_storage    (RX)  : ORIGIN = INT_STORAGE_START, LENGTH = INT_STORAGE_SIZE
   fNVM_region           (RX)  : ORIGIN = NV_F_VIRTUAL_PAGE_START, LENGTH = NV_VIRTUAL_PAGE_SZ
   sNVM_region           (RX)  : ORIGIN = NV_S_VIRTUAL_PAGE_START, LENGTH = NV_VIRTUAL_PAGE_SZ
-  m_fsl_prod_info       (RX)  : ORIGIN = m_fsl_prodInfo_start, LENGTH = m_fsl_prodInfo_size
   m_cstack              (RW)  : ORIGIN = m_cstack_start, LENGTH = STACK_SIZE
   m_ram_interrupts      (RW)  : ORIGIN = m_interrupts_ram_start, LENGTH = m_ram_vector_table_size
   m_data0               (RW)  : ORIGIN = m_data0_start, LENGTH = m_data0_size
@@ -294,12 +283,6 @@ SECTIONS
 
   __etext = .;    /* define a global symbol at end of code */
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
-
-  .fsl_prod_info :
-  {
-    . = ALIGN(m_sector_size);
-    *(.PROD_DATA*)
-  } > m_fsl_prod_info
 
   /* Note that fEraseNVM and sEraseNVM sections are only there to be able to erase an NVM storage content when flashing a new firmware that might be incompatible.
    * This may raise an issue if the final output of the build is a binary image. Indeed, in this case, the linker pads the binary between the top of the text section

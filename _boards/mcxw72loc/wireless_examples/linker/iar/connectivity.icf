@@ -34,12 +34,6 @@
 
                              0x001F_FFFF    m_flash_end
                     - - - +---------------+ - - - - - - - -
-                          |               | m_fsl_prodInfo_end
-                          |               |
-                          | Product Info  | Enable with gUseProdInfoMainFlashMode_d=1
-                          |               |
-                          |               | m_fsl_prodInfo_start
-                    - - - +---------------+ - - - - - - - -
                           |               | m_ot_settings_end
                           |  OpenThread   |
                           |   Settings*   | Enable with gUseOtSettingsStorage_d=1
@@ -114,10 +108,6 @@ if (!isdefinedsymbol(gEnableCoverage_d)) {
     define symbol gEnableCoverage_d = 0;
 }
 
-if (!isdefinedsymbol(gUseProdInfoMainFlashMode_d)) {
-    define symbol gUseProdInfoMainFlashMode_d = 0;
-}
-
 /* Symbols RAM checks */
 
 
@@ -148,25 +138,6 @@ define symbol m_interrupts_start                        = m_flash_start;
 define symbol m_interrupts_end                          = m_interrupts_start + m_vector_table_size - 1;
 define exported symbol __VECTOR_TABLE                   = m_interrupts_start;
 
-/* This section is not enabled by default but you need it if gHwParamsProdDataPlacement_c is defined to
- * gHwParamsProdDataMainFlashMode_c or gHwParamsProdDataMainFlash2IfrMode_c in your project */
-/*
- * if(gUseProdInfoMainFlashMode_d){
- * define symbol m_fsl_prodInfo_size                       = m_sector_size;
- * }
- * else{
- * define symbol  m_fsl_prodInfo_size                      = 0;
- * }
- */
-
-define symbol m_fsl_prodInfo_size                       = m_sector_size;
-
-/* product info  (starting from end of flash) */
-define symbol m_fsl_prodInfo_end                        = m_flash_end;
-define symbol m_fsl_prodInfo_start                      = m_fsl_prodInfo_end - m_fsl_prodInfo_size + 1;
-
-define exported symbol PROD_DATA_BASE_ADDR              = m_fsl_prodInfo_start;
-
 /* OpenThread settings */
 define exported symbol m_ot_settings_page_size          = m_sector_size;
 if(gUseOtSettingsStorage_d) {
@@ -177,8 +148,8 @@ else {
     define exported symbol m_ot_settings_page_count     = 0;
     define exported symbol m_ot_settings_size           = 0;
 }
-define exported symbol m_ot_settings_start              = m_fsl_prodInfo_start - m_ot_settings_size;
-define exported symbol m_ot_settings_end                = m_fsl_prodInfo_start - 1;
+define exported symbol m_ot_settings_start              = m_flash_end - m_ot_settings_size + 1;
+define exported symbol m_ot_settings_end                = m_flash_end;
 
 /* NVM storage */
 if ( gUseNVMLink_d ) {
@@ -373,7 +344,6 @@ define exported symbol firmware_ram_lower_limit         = m_cstack_start;
 /* define all regions */
 define region VECT_region               = mem:[from m_interrupts_start to m_interrupts_end];
 define region TEXT_region               = mem:[from m_text_start to m_text_end];
-define region PROD_INFO_region          = mem:[from m_fsl_prodInfo_start to m_fsl_prodInfo_end];
 define region DATA0_region              = mem:[from m_data0_start to m_data0_end];
 define region DATA1_region              = mem:[from m_data1_start to m_data1_end];
 define region CSTACK_region             = mem:[from m_cstack_start to m_cstack_end];
@@ -381,7 +351,6 @@ define region CSTACK_region             = mem:[from m_cstack_start to m_cstack_e
 /* define blocks */
 define block VECT                                                   { readonly section .intvec };
 define block TEXT                                                   { readonly };
-define block PROD_INFO                                              { readonly section .PROD_DATA };
 
 /* Use DATA1_region for all connectivity code - DATA0_Region is 32K, can be used for customer specific code */
 define block DATA0                                                  {  };
@@ -401,7 +370,6 @@ do not initialize  { section .heap };
 
 place in VECT_region                            { block VECT };
 place in TEXT_region                            { block TEXT };
-place in PROD_INFO_region                       { block PROD_INFO };
 place in DATA0_region                           { block DATA0 };
 place in DATA1_region                           { block DATA1 };
 place in CSTACK_region                          { block CSTACK };
