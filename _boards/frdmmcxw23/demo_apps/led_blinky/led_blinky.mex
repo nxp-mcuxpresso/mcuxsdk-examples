@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
 <configuration name="" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_14 http://mcuxpresso.nxp.com/XSD/mex_configuration_14.xsd" uuid="77da88e1-8f9e-4f73-a3fa-3f7e3b826edb" version="14" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
-      <processor>MCXW716CxxxA</processor>
-      <package>MCXW716CMFTA</package>
+      <processor>MCXW236</processor>
+      <package>MCXW236BIHNAR</package>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33">
          <core name="Cortex-M33" id="cm33" description=""/>
