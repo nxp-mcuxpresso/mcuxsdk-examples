@@ -409,4 +409,6 @@ APP-EVT: Request Nwk Formation 00
 APP-BDB: NwkFormation Success
 APP-ZDO: Network started Channel = 12
 ```
-> **NOTE: More zigbee commands please refer [coordinator](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_coordinator/README.md), [router](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_router/README.md), [rx_on](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_ed_rx_on/README.md)**
+> **NOTE**:
+> For `coex_zigbee_coordinator` example during the power on start-up for FRDMRW612 V2 board, FC3 UART RXD wire generate a garbage signal that cause serial port prints 'Command not recognized...', please take it as normal printing and ignore it. 
+> More zigbee commands please refer [coordinator](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_coordinator/README.md), [router](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_router/README.md), [rx_on](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_ed_rx_on/README.md)

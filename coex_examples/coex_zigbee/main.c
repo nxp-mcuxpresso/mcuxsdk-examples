@@ -74,8 +74,8 @@ void coex_init_task(osa_task_param_t arg)
 #endif
     printSeparator();
 
-    coex_controller_init();
     coex_cli_init();
+    coex_controller_init();
 
     /* Initialization job is complete, destroy the task */
     OSA_TaskDestroy((osa_task_handle_t)coex_init_task_handle);
