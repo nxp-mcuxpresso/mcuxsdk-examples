@@ -24,6 +24,3 @@ flash_k4:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
-    frdmmcxn947@cm33_core0:
-    - -mdk@debug
-    - -mdk@release
