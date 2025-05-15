@@ -20,6 +20,7 @@
 #include "scmi.h"
 #include "pin_mux.h"
 #include "app_srtm.h"
+#include "sm_platform.h"
 
 /*******************************************************************************
  * Struct Definitions
@@ -233,6 +234,9 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
         DisableIRQ(MU7_B_IRQn);
         /* M7 can be only wakeup by MU5_A(SM): MU5_A_IRQn=205, wakeMask data is 32bit width, 205 = 32 * 6 + 13, it means wakeMask[6] bit 13. */
         wakeMask[6] = 0xFFFFDFFF;
+        /* Disable LMM notification from system manager before M7 enter low power state. */
+        SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
+			SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
     }
 
      status = SCMI_CpuIrqWakeSet(SCMI_A2P, CPU_IDX_M7P, 0U, 12U, wakeMask);
@@ -513,7 +517,9 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
 
         /* re-enable A55 message unit */
         EnableIRQ(MU7_B_IRQn);
-
+        /* Re-enable LMM notification from system manager after M7 exit low power state. */
+        SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(1U) |
+			SCMI_LMM_NOTIFY_SHUTDOWN(1U) | SCMI_LMM_NOTIFY_SUSPEND(1U) | SCMI_LMM_NOTIFY_WAKE(1U));
         xSemaphoreGiveFromISR(s_wakeupSig, NULL);
         portYIELD_FROM_ISR(pdTRUE);
     }
