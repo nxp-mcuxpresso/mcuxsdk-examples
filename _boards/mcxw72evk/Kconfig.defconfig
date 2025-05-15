@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -22,5 +22,6 @@ config HAL_RPMSG_SELECT_ROLE
 
 if MCUX_COMPONENT_utilities.gcov
     config MCUX_COMPONENT_utilities.gcov.board_init
+        select MCUX_COMPONENT_driver.cmc
         default y
 endif
