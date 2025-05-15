@@ -114,6 +114,15 @@ void lpm_setHandshakeState(uint8_t state)
 void lpm_pm3_exit_hw_reinit()
 {
     BOARD_InitBootPins();
+#if CONFIG_NCP
+    /* GPIO50 pin to wakeup external host */
+    BOARD_InitPins_NCP();
+#if CONFIG_NCP_SPI
+    BOARD_InitPins_NCP_SPI();
+#else
+    BOARD_InitPins_NCP_UART();
+#endif
+#endif
     if (BOARD_IS_XIP())
     {
         BOARD_BootClockLPR();
