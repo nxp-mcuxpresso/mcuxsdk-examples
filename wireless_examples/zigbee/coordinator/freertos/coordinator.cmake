@@ -115,7 +115,7 @@ add_custom_command(
         COMMAND ${PYTHON_EXECUTABLE} ${MEMSIZE} ARGS
 		${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
 		${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.map
-		${NXP_ZB_BASE}/examples/zigbee_coordinator/src/coordinator.json 2>&1 > /dev/null
+		${NXP_ZB_BASE}/examples/zigbee_coordinator/src/coordinator.json 2>&1 > NUL
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
