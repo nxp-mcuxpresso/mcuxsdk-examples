@@ -50,6 +50,11 @@
 #define BOARD_ACCEL_I2C_BASEADDR   LPI2C0
 #define BOARD_ACCEL_I2C_INSTANCE   0U
 #define BOARD_ACCEL_I2C_CLOCK_FREQ CLOCK_GetLpi2cClkFreq(BOARD_ACCEL_I2C_INSTANCE)
+
+/* @Brief Board I2C magnetic switch configuration */
+#define BOARD_MAGSWITCH_I2C_BASEADDR   AON__LPI2C0
+#define BOARD_MAGSWITCH_I2C_INSTANCE   2U
+#define BOARD_MAGSWITCH_I2C_CLOCK_FREQ CLOCK_GetLpi2cClkFreq(BOARD_MAGSWITCH_I2C_INSTANCE)
 #endif /*__CORTEX_M == (33U) */
 
 #if __CORTEX_M == (33U) /* Building on the main core */
@@ -157,5 +162,28 @@
  * API
  ******************************************************************************/
 void BOARD_InitDebugConsole(void);
+#if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
+void BOARD_LPI2C_Init(LPI2C_Type *base, uint32_t clkSrc_Hz);
+status_t BOARD_LPI2C_Send(LPI2C_Type *base,
+                          uint8_t deviceAddress,
+                          uint32_t subAddress,
+                          uint8_t subaddressSize,
+                          uint8_t *txBuff,
+                          uint8_t txBuffSize);
+status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
+                             uint8_t deviceAddress,
+                             uint32_t subAddress,
+                             uint8_t subaddressSize,
+                             uint8_t *rxBuff,
+                             uint8_t rxBuffSize);
+void BOARD_Accel_I2C_Init(void);
+status_t BOARD_Accel_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff);
+status_t BOARD_Accel_I2C_Receive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 
+void BOARD_MagSwitch_I2C_Init(void);
+status_t BOARD_MagSwitch_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff);
+status_t BOARD_MagSwitch_I2C_Receive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+#endif /* SDK_I2C_BASED_COMPONENT_USED */
 #endif /* _BOARD_H_ */

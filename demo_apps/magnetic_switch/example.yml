@@ -20,3 +20,4 @@ magnetic_switch:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxe247: []
+    frdmmcxl255@cm33: []
