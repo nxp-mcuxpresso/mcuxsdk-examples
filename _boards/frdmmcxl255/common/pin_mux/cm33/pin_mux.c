@@ -78,6 +78,66 @@ void BOARD_InitSWD_DEBUGPins(void)
 {
 }
 
+void BOARD_InitACCELPins(void)
+{
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    CLOCK_EnableClock(kCLOCK_GateLPI2C0);
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+    RESET_ReleasePeripheralReset(kLPI2C0_RST_SHIFT_RSTn);
+
+    /* LPI2C0_SDA */
+    const port_pin_config_t port2_25_config = {/* Internal pull-up resistor is enabled */
+                                                     kPORT_PullUp,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     kPORT_OpenDrainEnable,
+                                                     /* Low drive strength is configured */
+                                                     kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as LPI2C0_SDA */
+                                                     kPORT_MuxAlt3,
+                                                     /* Digital input enabled */
+                                                     kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     kPORT_UnlockRegister};
+
+    PORT_SetPinConfig(PORT2, 25U, &port2_25_config);
+
+    /* LPI2C0_SCL */
+    const port_pin_config_t port2_24_config = {/* Internal pull-up resistor is enabled */
+                                                     kPORT_PullUp,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     kPORT_OpenDrainEnable,
+                                                     /* Low drive strength is configured */
+                                                     kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as LPI2C0_SCL */
+                                                     kPORT_MuxAlt3,
+                                                     /* Digital input enabled */
+                                                     kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     kPORT_UnlockRegister};
+
+    PORT_SetPinConfig(PORT2, 24U, &port2_24_config);
+}
+
 void BOARD_InitI2CPins(void)
 {
     CLOCK_EnableClock(kCLOCK_GatePORT3);

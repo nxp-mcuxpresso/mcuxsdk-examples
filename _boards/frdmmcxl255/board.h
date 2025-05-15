@@ -45,6 +45,12 @@
 #define BOARD_DEBUG_UART_CLK_FREQ   CLOCK_GetLpuartClkFreq(BOARD_DEBUG_UART_INSTANCE)
 #endif /*__CORTEX_M == (33U) */
 
+#if __CORTEX_M == (33U) /* Building on the main core */
+/* @Brief Board accelerator sensor configuration */
+#define BOARD_ACCEL_I2C_BASEADDR   LPI2C0
+#define BOARD_ACCEL_I2C_INSTANCE   0U
+#define BOARD_ACCEL_I2C_CLOCK_FREQ CLOCK_GetLpi2cClkFreq(BOARD_ACCEL_I2C_INSTANCE)
+#endif /*__CORTEX_M == (33U) */
 
 #if __CORTEX_M == (33U) /* Building on the main core */
 /*! @brief GPIO for LED. */

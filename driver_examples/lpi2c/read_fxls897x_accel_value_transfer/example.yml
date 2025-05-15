@@ -18,3 +18,4 @@ lpi2c_read_fxls897x_accel_value_transfer:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxe247: []
+    frdmmcxl255@cm33: []
