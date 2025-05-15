@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2022 NXP
+ * Copyright 2016-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -1930,7 +1930,8 @@ static void RunRsaExample(CAAM_Type *base, caam_handle_t *handle, bool blacken, 
 
     caam_rsa_key_type_t rsaKeyType;
     caam_rsa_encryption_type_t rsaPrivateExponentType;
-    size_t rsaDecSize = 0;
+    size_t rsaDecSize            = 0;
+    size_t rsaPrivateExponentLen = 0;
 
     memset(s_RsaModulus, 0x00, sizeof(s_RsaModulus));
     memset(s_RsaPrivateExponent, 0x00, sizeof(s_RsaPrivateExponent));
@@ -1954,7 +1955,7 @@ static void RunRsaExample(CAAM_Type *base, caam_handle_t *handle, bool blacken, 
 
     status = CAAM_RSA_KeyPair(base, handle, s_RsaPrimeP, s_RsaPrimeQ, sizeof(s_RsaPrimeP), s_RsaPublicExponent,
                               sizeof(s_RsaPublicExponent), rsaKeyType, s_RsaModulus, sizeof(s_RsaModulus),
-                              s_RsaPrivateExponent, sizeof(s_RsaPrivateExponent));
+                              s_RsaPrivateExponent, &rsaPrivateExponentLen);
 
     if (status != kStatus_Success)
     {
@@ -1966,7 +1967,7 @@ static void RunRsaExample(CAAM_Type *base, caam_handle_t *handle, bool blacken, 
     PRINTF("The Rsa modulus: \r\n ");
     printArray(s_RsaModulus, sizeof(s_RsaModulus));
     PRINTF("The Rsa private exponent: \r\n ");
-    printArray(s_RsaPrivateExponent, sizeof(s_RsaPrivateExponent));
+    printArray(s_RsaPrivateExponent, rsaPrivateExponentLen);
 #endif /* PRINT_RSA_CONTENT */
 
     if (memcmp(s_RsaModulus, s_RsaModulusExpected, sizeof(s_RsaModulus)) != 0)
@@ -1975,8 +1976,8 @@ static void RunRsaExample(CAAM_Type *base, caam_handle_t *handle, bool blacken, 
         return;
     }
 
-    if ((blacken && (memcmp(s_RsaPrivateExponent, s_RsaPrivateExponentExpected, sizeof(s_RsaPrivateExponent)) != 0)) ||
-        (!blacken && (memcmp(s_RsaPrivateExponent, s_RsaPrivateExponentExpected, sizeof(s_RsaPrivateExponent)) == 0)))
+    if ((blacken && (memcmp(s_RsaPrivateExponent, s_RsaPrivateExponentExpected, rsaPrivateExponentLen) != 0)) ||
+        (!blacken && (memcmp(s_RsaPrivateExponent, s_RsaPrivateExponentExpected, rsaPrivateExponentLen) == 0)))
     {
         // PRINTF("done successfully.\r\n");
     }
@@ -2003,7 +2004,7 @@ static void RunRsaExample(CAAM_Type *base, caam_handle_t *handle, bool blacken, 
 #endif /* PRINT_RSA_CONTENT */
 
     status = CAAM_RSA_Decrypt(base, handle, s_RsaDataEncrypted, s_RsaModulus, sizeof(s_RsaModulus),
-                              s_RsaPrivateExponent, sizeof(s_RsaPrivateExponent), rsaPrivateExponentType,
+                              s_RsaPrivateExponent, rsaPrivateExponentLen, rsaPrivateExponentType,
                               kCAAM_Rsa_Encryption_Type_None, format, s_RsaDataDecrypted, &rsaDecSize);
 
     if (status != kStatus_Success)
@@ -2034,7 +2035,7 @@ static void RunRsaExample(CAAM_Type *base, caam_handle_t *handle, bool blacken, 
     memset(s_RsaDataDecrypted, 0x00, sizeof(s_RsaDataDecrypted));
 
     status = CAAM_RSA_Decrypt(base, handle, s_RsaData, s_RsaModulus, sizeof(s_RsaModulus), s_RsaPrivateExponent,
-                              sizeof(s_RsaPrivateExponent), rsaPrivateExponentType, kCAAM_Rsa_Encryption_Type_None,
+                              rsaPrivateExponentLen, rsaPrivateExponentType, kCAAM_Rsa_Encryption_Type_None,
                               kCAAM_Rsa_Format_Type_None, s_RsaDataEncrypted, &rsaDecSize);
 
     if (status != kStatus_Success)
