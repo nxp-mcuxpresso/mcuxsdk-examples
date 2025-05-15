@@ -131,15 +131,6 @@
 #define gMaxServiceCharCount_d 6
 
 /*! *********************************************************************************
- *   Xcvr Configuration
- ********************************************************************************** */
-
-/* Define the max tx power setting in dBm. Allowed values 0, 7 or 10 */
-#if !defined(gAppMaxTxPowerDbm_c)
-#define gAppMaxTxPowerDbm_c 10
-#endif /* !defined(gAppMaxTxPowerDbm_c) */
-
-/*! *********************************************************************************
  *     BLE LL Configuration
  ***********************************************************************************/
 /*  ble_ll_config.h file lists the parameters with their default values. User can override
