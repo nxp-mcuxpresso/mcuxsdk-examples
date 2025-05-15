@@ -11,4 +11,3 @@ config MCUX_HW_BOARD_frdmmcxe247
     default y
     imply MCUX_HW_DEVICE_MCXE247
     imply MCUX_COMPONENT_driver.port
-    imply MCUX_COMPONENT_driver.ela_csec
