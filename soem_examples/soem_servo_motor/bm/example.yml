@@ -37,3 +37,17 @@ soem_servo_motor_bm:
     - +armgcc@release
     - +iar@release
     - +iar@debug
+    frdmimxrt1186@cm33:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
+    frdmimxrt1186@cm7:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
