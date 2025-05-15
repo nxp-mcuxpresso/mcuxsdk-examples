@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+zigbee_router_ble_wuart_bm:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/zigbee/router_ble_wuart/bm
+    project-root-path: boards/${board}/wireless_examples/zigbee/router_ble_wuart/bm
+    document:
+      name: zigbee_router_ble_wuart_bm
+      category: wireless_examples/zigbee/router_ble_wuart/bm
+      brief: The Bluetooth® LE - Zigbee dynamic mode mode application showcases the Zigbee 
+             commissioning over Bluetooth LE use case. The zigbee application part is based on 
+             the Zigbee Router example and the Bluetooth LE application part is base on 
+             the Wireless UART peripheral demo.
+  boards:
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
