@@ -43,8 +43,8 @@ void BOARD_InitBootClocks(void)
     CLOCK_AttachClk(kSLOW_CLK_to_CLKOUT);                  /* !< Switch CLKOUT to SLOW_CLK */
     CLOCK_AttachClk(kFRO_HF_DIV_to_ADC0);                  /* !< Switch ADC0 to FRO_HF_DIV */
     CLOCK_AttachClk(kCLK_1M_to_UTICK0);                    /* !< Switch UTICK0 to CLK_1M */
-    CLOCK_AttachClk(kFRO_HF_DIV_to_CTIMER0);               /* !< Switch CTIMER0 to FRO_HF_DIV */
-    CLOCK_AttachClk(kFRO_HF_DIV_to_CTIMER1);               /* !< Switch CTIMER1 to FRO_HF_DIV */
+    CLOCK_AttachClk(kFRO_HF_DIV_to_CTIMERg0);               /* !< Switch CTIMER0 to FRO_HF_DIV */
+    CLOCK_AttachClk(kFRO_HF_DIV_to_CTIMERg1);               /* !< Switch CTIMER1,2 to FRO_HF_DIV */
     CLOCK_AttachClk(kFRO12M_to_CMP0);                  /* !< Switch CMP0 to FRO_HF_DIV */
     CLOCK_AttachClk(kFRO12M_to_PERIPH_GROUP0);             /* !< Switch PERIPH_GROUP0 to FRO_12M */
     CLOCK_AttachClk(kFRO_HF_DIV_to_PERIPH_GROUP1);         /* !< Switch PERIPH_GROUP1 to FRO_HF_DIV */
