@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2016-2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -85,7 +85,7 @@
  * Define common ADC control functions for motor 1
  ******************************************************************************/
 #define M1_MCDRV_ADC_PERIPH_INIT() (InitADC())
-#define M1_MCDRV_ADC_GET(par) MCDRV_CurrAndVoltDcBusGet(par);
+#define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par) MCDRV_CurrAndVoltDcBusGet(par);
 
 #define M1_MCDRV_CURR_3PH_CHAN_ASSIGN(par)
 #define M1_MCDRV_CURR_3PH_CALIB_INIT(par) (MCDRV_Curr3Ph2ShCalibInit(par))
@@ -123,7 +123,7 @@
 /******************************************************************************
  * Global variable definitions
  ******************************************************************************/
-extern mcdrv_adc_t g_sM1AdcSensor;
+extern mcdrv_adc_t g_sM1Curr3phDcBus;
 extern mcdrv_sctimer_pwm_t g_sM1Pwm3ph;
 
 /*******************************************************************************

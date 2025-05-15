@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2016-2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,7 +49,7 @@ static void InitInputmux(void);
 mcdrv_eflexpwm_t g_sM1Pwm3ph;
 
 /* structure for current and voltage measurement*/
-mcdrv_adc_t g_sM1AdcSensor;
+mcdrv_adc_t g_sM1Curr3phDcBus;
 
 /* Structure for Encoder driver */
 mcdrv_qd_enc_t g_sM1Enc;
@@ -269,7 +269,7 @@ clock_setup_t g_sClockSetup;
                        ADC_TCTRL_HTEN_MASK;      /* Trigger enable */
 
       /* ADC base address */
-      g_sM1AdcSensor.pToAdcBase = (ADC_Type *)ADC0;
+      g_sM1Curr3phDcBus.pToAdcBase = (ADC_Type *)ADC0;
 
       /* When data words stored in the FIFO is greater than 2, the STAT[RDY0] flag is asserted. */
       ADC0->FCTRL[0] = ADC_FCTRL_FWMARK(2U);
@@ -337,10 +337,10 @@ clock_setup_t g_sClockSetup;
       g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
       g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
       g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
-      M1_MCDRV_QD_SET_DIRECTION(&g_sM1Enc);
+      M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
       
       /* Initialization modulo counter*/
-      M1_MCDRV_QD_SET_PULSES(&g_sM1Enc);
+      M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
 
       /* Enable modulo counting and revolution counter increment on roll-over */
       ENC0->CTRL2 = (ENC_CTRL2_MOD_MASK | ENC_CTRL2_REVMOD_MASK);
@@ -552,7 +552,7 @@ clock_setup_t g_sClockSetup;
                        ADC_TCTRL_HTEN_MASK;      /* Trigger enable */
 
       /* ADC base address */
-      g_sM1AdcSensor.pToAdcBase = (ADC_Type *)ADC1;
+      g_sM1Curr3phDcBus.pToAdcBase = (ADC_Type *)ADC1;
       
       /* When data words stored in the FIFO is greater than 2, the STAT[RDY0] flag is asserted. */
       ADC1->FCTRL[0] = ADC_FCTRL_FWMARK(2U);
@@ -621,10 +621,10 @@ clock_setup_t g_sClockSetup;
       g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
       g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
       g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
-      M1_MCDRV_QD_SET_DIRECTION(&g_sM1Enc);
+      M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
       
       /* Initialization modulo counter*/
-      M1_MCDRV_QD_SET_PULSES(&g_sM1Enc);
+      M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
 
       /* Enable modulo counting and revolution counter increment on roll-over */
       ENC1->CTRL2 = (ENC_CTRL2_MOD_MASK | ENC_CTRL2_REVMOD_MASK);

@@ -40,7 +40,7 @@ static void InitQD(void);
 mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 
 /* Structure for current and voltage measurement*/
-mcdrv_adc_t g_sM1AdcSensor;
+mcdrv_adc_t g_sM1Curr3phDcBus;
 
 /* Structure for Encoder driver */
 mcdrv_eqd_enc_t g_sM1Enc;
@@ -316,7 +316,7 @@ static void InitADC(void)
     NVIC_EnableIRQ(ADC0_IRQn);
     
     /* ADC0 base address */
-    g_sM1AdcSensor.pToAdcBase = ADC0;
+    g_sM1Curr3phDcBus.pToAdcBase = ADC0;
 
 }
 
@@ -404,9 +404,9 @@ static void InitQD(void)
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
     
     /* Quadrature pulses per one revolution */
-    M1_MCDRV_QD_SET_PULSES(&g_sM1Enc); 
+    M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc); 
     /* Set encoder direction */
-    M1_MCDRV_QD_SET_DIRECTION(&g_sM1Enc); 
+    M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc); 
     /* Enable modulo counting and revolution counter increment on roll-over */
     QDC0->CTRL2 = EQDC_CTRL2_REVMOD_MASK;
 

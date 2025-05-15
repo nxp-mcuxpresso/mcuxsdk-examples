@@ -1,13 +1,12 @@
 /*
-    * Copyright 2024 NXP
+    * Copyright 2025 NXP 
     *
-    * SPDX-License-Identifier: BSD-3-Clause
+    * SPDX-License-Identifier: BSD-3-Clause 
 */
 
-
 /*
-    * FILE NAME: ../boards/lpcxpresso55s36/mc_pmsm/pmsm_enc_dual/m2_pmsm_appconfig.h
-    * DATE: Fri Jan 05 2024, 14:45:42
+    * FILE NAME: ../../../examples/_boards/lpcxpresso55s36/demo_apps/mc_pmsm/pmsm_enc_dual/m2_pmsm_appconfig.h
+    * DATE: Thu Apr 24 2025, 08:04:11
 */
 
 /*
@@ -60,14 +59,14 @@
         "speedLoopSLKi": 0.09,
         "speedLoopManualConstantTunning": false
     },
-    "sensors": {
-        "sensorEncPulseNumber": 1000,
-        "sensorEncDir": 0,
-        "sensorEncNmin": 0,
-        "sensorObsrvParSampleTime": 0.0001,
-        "sensorObsrvParF0": 100,
-        "sensorObsrvParKsi": 1,
-        "positionLoopPLKp": 0.12
+    "positionLoop": {
+        "positionLoopSampleTime": 0.001,
+        "positionLoopF0": 10,
+        "positionLoopKsi": 1,
+        "servo_positionLoopUpperLimit": 3000,
+        "servo_positionLoopLowerLimit": -3000,
+        "servo_speedLoopUpperLimit": 2,
+        "servo_speedLoopLowerLimit": -2
     },
     "sensorless": {
         "sensorlessBemfObsrvF0": 300,
@@ -90,8 +89,8 @@
 }
 */
 
-#ifndef __M2_PMSM_APPCONFIG_H
-#define __M2_PMSM_APPCONFIG_H
+#ifndef __M2_PMSM_APPCONFIG_H 
+#define __M2_PMSM_APPCONFIG_H 
 
 /* PARAMETERS*/
 #define M2_MOTOR_PP (2)
@@ -125,34 +124,44 @@
 #define M2_SCALAR_RAMP_DOWN (0.0166667F)
 /* CURRENTLOOP*/
 #define M2_D_KP_GAIN (0.907168F)
-#define M2_D_KI_GAIN (0.122794F)
+#define M2_D_KI_GAIN (0.0613968F)
 #define M2_Q_KP_GAIN (1.10260F)
-#define M2_Q_KI_GAIN (0.140476F)
+#define M2_Q_KI_GAIN (0.0702380F)
+#define M2_Q_IIR_ZC_B0 (0.0598872F)
+#define M2_Q_IIR_ZC_B1 (0.0598872F)
+#define M2_Q_IIR_ZC_A1 (0.880226F)
 #define M2_CLOOP_LIMIT (0.519615F)
 /* SPEEDLOOP*/
 #define M2_SPEED_RAMP_UP (1.04720F)
 #define M2_SPEED_RAMP_DOWN (1.04720F)
 #define M2_SPEED_LOOP_HIGH_LIMIT (2.0F)
 #define M2_SPEED_LOOP_LOW_LIMIT (-2.0F)
-#define M2_SPEED_PI_PROP_GAIN (0.00246648F)
-#define M2_SPEED_PI_INTEG_GAIN (0.0000216963F)
-#define M2_SPEED_IIR_B0 (0.0304590F)
-#define M2_SPEED_IIR_B1 (0.0304590F)
-#define M2_SPEED_IIR_A1 (0.939082F)
-/* SENSORS*/
-#define M2_POSPE_ENC_PULSES (1000)
-#define M2_POSPE_ENC_DIRECTION (0)
-#define M2_POSPE_ENC_N_MIN (0.0F)
-#define M2_POSPE_MECH_POS_GAIN ACC32(16.384)
-#define M2_POS_P_PROP_GAIN FRAC16(0.12)
-#define M2_POSPE_TO_KP_GAIN (1256.64F)
-#define M2_POSPE_TO_KI_GAIN (39.4784F)
-#define M2_POSPE_TO_THETA_GAIN (0.0000318310F)
+#define M2_SPEED_PI_PROP_GAIN (0.0203976F)
+#define M2_SPEED_PI_INTEG_GAIN (0.000897133F)
+#define M2_SPEED_IIR_B0 (0.239057F)
+#define M2_SPEED_IIR_B1 (0.239057F)
+#define M2_SPEED_IIR_A1 (0.521886F)
+#define M2_SPEED_IIR_ZC_B0 (0.0421294F)
+#define M2_SPEED_IIR_ZC_B1 (0.0421294F)
+#define M2_SPEED_IIR_ZC_A1 (0.915741F)
+/* POSITIONLOOP*/
+#define M2_SERVO_POSITION_P_HIGH_LIMIT (628.319F)
+#define M2_SERVO_POSITION_P_LOW_LIMIT (-628.319F)
+#define M2_SERVO_POSITION_P_PROP_GAIN (263.189F)
+#define M2_SERVO_FEED_FRWD_K1 (8.37758F)
+#define M2_SERVO_FEED_FRWD_K2 (0.0666667F)
+#define M2_SERVO_IIR_ZC_B0 (0.0304590F)
+#define M2_SERVO_IIR_ZC_B1 (0.0304590F)
+#define M2_SERVO_IIR_ZC_A1 (0.939082F)
+#define M2_SERVO_SPEED_PI_PROP_GAIN (0.0109273F)
+#define M2_SERVO_SPEED_PI_INTEG_GAIN (0.000343291F)
+#define M2_SERVO_SPEED_PI_HIGH_LIMIT (2.0F)
+#define M2_SERVO_SPEED_PI_LOW_LIMIT (-2.0F)
 /* SENSORLESS*/
 #define M2_OL_START_RAMP_INC (0.104720F)
 #define M2_OL_START_I (0.35F)
 #define M2_MERG_SPEED_TRH (62.8319F)
-#define M2_MERG_COEFF FRAC16(0.001)
+#define M2_MERG_COEFF FRAC16(0.00100708)
 #define M2_I_SCALE (0.892857F)
 #define M2_U_SCALE (0.238095F)
 #define M2_E_SCALE (0.238095F)
@@ -171,5 +180,4 @@
 #define CC 4
 #define DD 2
 /* USER INPUT END */
-
 #endif /* __M2_PMSM_APPCONFIG_H */

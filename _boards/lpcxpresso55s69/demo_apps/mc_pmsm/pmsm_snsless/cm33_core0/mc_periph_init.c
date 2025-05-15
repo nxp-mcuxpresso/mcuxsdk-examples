@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2016-2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -20,7 +20,7 @@
 mcdrv_sctimer_pwm_t g_sM1Pwm3ph;
 
 /* Structure for current and voltage measurement*/
-mcdrv_adc_t g_sM1AdcSensor;
+mcdrv_adc_t g_sM1Curr3phDcBus;
 
 uint32_t GCCa;
 uint32_t GCCb;
@@ -196,7 +196,7 @@ void InitADC(void)
                      ADC_TCTRL_HTEN_MASK;          /* Hardware trigger source enabled */
 
     /* Offset filter window */
-    g_sM1AdcSensor.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
+    g_sM1Curr3phDcBus.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
 
     /* Enable the watermark interrupt. */
     ADC0->IE |= ADC_IE_FWMIE0_MASK;

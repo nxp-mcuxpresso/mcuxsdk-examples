@@ -1,12 +1,12 @@
 /*
-	* Copyright 2024 NXP
+	* Copyright 2025 NXP
 	*
 	* SPDX-License-Identifier: BSD-3-Clause
 */
 
 /*
-    * FILE NAME: ../../../examples/lpcxpresso55s69/demo_apps/mc_pmsm/pmsm_snsless/cm33_core0/m2_pmsm_appconfig.h
-    * DATE: Tue Aug 20 2024, 06:48:49
+    * FILE NAME: ../../../examples/_boards/lpcxpresso55s69/demo_apps/mc_pmsm/pmsm_snsless/cm33_core0/m2_pmsm_appconfig.h
+    * DATE: Thu Apr 24 2025, 10:49:38
 */
 
 /*
@@ -58,6 +58,15 @@
         "speedLoopSLKp": 0.009202212,
         "speedLoopSLKi": 0.00008095,
         "speedLoopManualConstantTunning": false
+    },
+    "positionLoop": {
+        "positionLoopSampleTime": 0.001,
+        "positionLoopF0": 5,
+        "positionLoopKsi": 1,
+        "servo_positionLoopUpperLimit": 2000,
+        "servo_positionLoopLowerLimit": -2000,
+        "servo_speedLoopUpperLimit": 2,
+        "servo_speedLoopLowerLimit": -2
     },
     "sensorless": {
         "sensorlessBemfObsrvF0": 300,
@@ -115,25 +124,44 @@
 #define M1_SCALAR_RAMP_DOWN (0.0333333F)
 /* CURRENTLOOP*/
 #define M1_D_KP_GAIN (0.459831F)
-#define M1_D_KI_GAIN (0.106749F)
+#define M1_D_KI_GAIN (0.0533743F)
 #define M1_Q_KP_GAIN (0.344020F)
-#define M1_Q_KI_GAIN (0.0962702F)
+#define M1_Q_KI_GAIN (0.0481351F)
+#define M1_Q_IIR_ZC_B0 (0.122745F)
+#define M1_Q_IIR_ZC_B1 (0.122745F)
+#define M1_Q_IIR_ZC_A1 (0.754510F)
 #define M1_CLOOP_LIMIT (0.519615F)
 /* SPEEDLOOP*/
 #define M1_SPEED_RAMP_UP (2.09440F)
 #define M1_SPEED_RAMP_DOWN (2.09440F)
 #define M1_SPEED_LOOP_HIGH_LIMIT (2.0F)
 #define M1_SPEED_LOOP_LOW_LIMIT (-2.0F)
-#define M1_SPEED_PI_PROP_GAIN (0.00920221F)
-#define M1_SPEED_PI_INTEG_GAIN (0.0000809469F)
-#define M1_SPEED_IIR_B0 (0.0304590F)
-#define M1_SPEED_IIR_B1 (0.0304590F)
-#define M1_SPEED_IIR_A1 (0.939082F)
+#define M1_SPEED_PI_PROP_GAIN (0.0380508F)
+#define M1_SPEED_PI_INTEG_GAIN (0.00167356F)
+#define M1_SPEED_IIR_B0 (0.239057F)
+#define M1_SPEED_IIR_B1 (0.239057F)
+#define M1_SPEED_IIR_A1 (0.521886F)
+#define M1_SPEED_IIR_ZC_B0 (0.0421294F)
+#define M1_SPEED_IIR_ZC_B1 (0.0421294F)
+#define M1_SPEED_IIR_ZC_A1 (0.915741F)
+/* POSITIONLOOP*/
+#define M1_SERVO_POSITION_P_HIGH_LIMIT (837.758F)
+#define M1_SERVO_POSITION_P_LOW_LIMIT (-837.758F)
+#define M1_SERVO_POSITION_P_PROP_GAIN (263.189F)
+#define M1_SERVO_FEED_FRWD_K1 (16.7552F)
+#define M1_SERVO_FEED_FRWD_K2 (0.266667F)
+#define M1_SERVO_IIR_ZC_B0 (0.0154650F)
+#define M1_SERVO_IIR_ZC_B1 (0.0154650F)
+#define M1_SERVO_IIR_ZC_A1 (0.969070F)
+#define M1_SERVO_SPEED_PI_PROP_GAIN (0.0101922F)
+#define M1_SERVO_SPEED_PI_INTEG_GAIN (0.000160099F)
+#define M1_SERVO_SPEED_PI_HIGH_LIMIT (2.0F)
+#define M1_SERVO_SPEED_PI_LOW_LIMIT (-2.0F)
 /* SENSORLESS*/
 #define M1_OL_START_RAMP_INC (0.125664F)
 #define M1_OL_START_I (0.65F)
 #define M1_MERG_SPEED_TRH (209.440F)
-#define M1_MERG_COEFF FRAC16(0.00333333)
+#define M1_MERG_COEFF FRAC16(0.00332642)
 #define M1_I_SCALE (0.819095F)
 #define M1_U_SCALE (0.251256F)
 #define M1_E_SCALE (0.251256F)

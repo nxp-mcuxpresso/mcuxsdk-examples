@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2016-2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -54,7 +54,7 @@ static const AdcInitData_t AdcInitData[] =
 mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 
 /* structure for current and voltage measurement*/
-mcdrv_adc_t g_sM1AdcSensor;
+mcdrv_adc_t g_sM1Curr3phDcBus;
 
 /* Structure for Encoder driver */
 mcdrv_qd_enc_t g_sM1Enc;
@@ -299,7 +299,7 @@ static void InitAdc0(void)
     NVIC_EnableIRQ(ADC0_IRQn);
     
     /* ADC0 base address */
-    g_sM1AdcSensor.pToAdcBase = ADC0;
+    g_sM1Curr3phDcBus.pToAdcBase = ADC0;
 }
 
 
@@ -465,10 +465,10 @@ static void InitQD1(void)
     g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
       
-    M1_MCDRV_QD_SET_DIRECTION(&g_sM1Enc);
+    M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
       
     /* Initialization modulo counter*/
-    M1_MCDRV_QD_SET_PULSES(&g_sM1Enc);
+    M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
 
 }
 

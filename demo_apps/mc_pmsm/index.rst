@@ -9,5 +9,7 @@ mc_pmsm
 
    pmsm_enc/readme.md
    pmsm_enc_dual/readme.md
+   pmsm_servo/readme.md
+   pmsm_servo_dual/readme.md
    pmsm_enc_iopamp/readme.md
    pmsm_snsless/readme.md
