@@ -1,19 +1,18 @@
 /*
 ** ###################################################################
-**     Processors:          MCXA346VLH
-**                          MCXA346VLL
-**                          MCXA346VLQ
+**     Processors:          MCXL255VDF_cm33
+**                          MCXL255VLL_cm33
 **
 **     Compiler:            IAR ANSI C/C++ Compiler for ARM
-**     Reference manual:    MCXAP144M180FS6_RM_Rev.1_DraftC
-**     Version:             rev. 1.0, 2024-03-26
-**     Build:               b240326
+**     Reference manual:    MCXL25xRM DraftF
+**     Version:             rev. 1.0, 2023-01-09
+**     Build:               b241211
 **
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2024 NXP
+**     Copyright 2016-2025 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -37,22 +36,32 @@ if (isdefinedsymbol(__heap_size__)) {
 }
 
 define symbol m_interrupts_start               = 0x00000000;
-define symbol m_interrupts_end                 = 0x000003FF;
+define symbol m_interrupts_end                 = 0x000002C7;
 
-define symbol m_text_start                     = 0x00000400;
-define symbol m_text_end                       = 0x000FFFFF;
+define symbol m_text_start                     = 0x000002C8;
+define symbol m_text_end                       = 0x0005FFFF;
 
-define symbol m_data_start                     = 0x20002000;
-define symbol m_data_end                       = 0x2003BFFF;
+define exported symbol core1_image_start       = 0x00060000;
+define exported symbol core1_image_end         = 0x0007DFFF;
+
+// Left ECC mem  0x28000000 - 0x28001FFF without any code or data.
+define symbol m_data_start                     = 0x28002000;
+define symbol m_data_end                       = 0x2801DFFF;
 
 define symbol m_sramx0_start                   = 0x04000000;
 define symbol m_sramx0_end                     = 0x04001FFF;
+
+if (isdefinedsymbol(__use_shmem__)) {
+  define exported symbol rpmsg_sh_mem_start      = 0xA1006000;
+  define exported symbol rpmsg_sh_mem_end        = 0xA1007FFF;
+}
 
 define memory mem with size = 4G;
 
 define region TEXT_region             = mem:[from m_interrupts_start to m_interrupts_end]
                                       | mem:[from m_text_start to m_text_end];
-define region DATA_region = mem:[from m_data_start to m_data_end-__size_cstack__];
+define region DATA_region = mem:[from m_data_start to m_data_end-__size_cstack__]
+                          | mem:[from m_sramx0_start to m_sramx0_end];
 
 define region CSTACK_region = mem:[from m_data_end-__size_cstack__+1 to m_data_end];
 if (isdefinedsymbol(__use_shmem__)) {
@@ -64,6 +73,9 @@ define block HEAP      with alignment = 8, size = __size_heap__     { };
 define block RW        { readwrite };
 define block ZI        { zi };
 
+define region core1_region = mem:[from core1_image_start to core1_image_end];
+define block CORE1_IMAGE_WBLOCK          { section  __core1_image };
+
 initialize by copy { readwrite, section .textrw };
 
 if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
@@ -72,6 +84,9 @@ if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
   initialize by copy with packing = none { section __DLIB_PERTHREAD };
 }
 
+if (isdefinedsymbol(__use_shmem__)) {
+  do not initialize  { section rpmsg_sh_mem_section };
+}
 
 place at address mem: m_interrupts_start    { readonly section .intvec };
 place in TEXT_region                        { readonly };
@@ -80,4 +95,8 @@ place in DATA_region                        { block ZI };
 place in DATA_region                        { last block HEAP };
 place in CSTACK_region                      { block CSTACK };
 
+if (isdefinedsymbol(__use_shmem__)) {
+  place in rpmsg_sh_mem_region                { section rpmsg_sh_mem_section };
+}
+place in core1_region                       { block CORE1_IMAGE_WBLOCK };
 

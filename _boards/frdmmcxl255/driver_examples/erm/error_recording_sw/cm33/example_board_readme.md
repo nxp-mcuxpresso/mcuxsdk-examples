@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXA346 board
+- FRDM-MCXL255 board
 - Personal Computer
 
 Board settings

@@ -16,12 +16,12 @@
 
 #define APP_ERM_MEMORY_CHANNEL    kERM_MemoryChannelRAMA0
 #define APP_ERM_RAM_ECC_ENABLE    0x1U   /* Memory channel RAMA0 */
-#define APP_ERM_RAM_START_ADDR    0x20000000UL
+#define APP_ERM_RAM_START_ADDR    0x28000000UL
 #define APP_ERM_RAM_SIZE          0x800U /* 8KB */
 #define APP_ERM_MAGIC_NUMBER      0xAAAAAAAAU
 #define APP_ERM_RAM_INJECT_BIT	  0U
 
-#define APP_ERM_RAM_CHECK_ADDR 0x20000100UL /* The address of RAM to check, must be in selected RAM block. */
+#define APP_ERM_RAM_CHECK_ADDR 0x28001F00UL /* The address of RAM to check, must be in selected RAM block. */
 
 #define APP_ERM_MEMORY_RECODE_OFFSET                \
     (true) /* In MCXA, the offset of error location \
