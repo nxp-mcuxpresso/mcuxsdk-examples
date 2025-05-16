@@ -207,12 +207,16 @@ AT_QUICKACCESS_SECTION_CODE(void BOARD_EnableSRAMExtraLatency(bool en))
     {
         /* Configure SRAM read wait states. */
         PRAMC_0->PRCR1 |= PRAMC_PRCR1_FT_DIS_MASK;
+#if defined(PRAMC_1)
         PRAMC_1->PRCR1 |= PRAMC_PRCR1_FT_DIS_MASK;
+#endif
     }
     else
     {
         PRAMC_0->PRCR1 &= ~PRAMC_PRCR1_FT_DIS_MASK;
+#if defined(PRAMC_1)
         PRAMC_1->PRCR1 &= ~PRAMC_PRCR1_FT_DIS_MASK;
+#endif
     }
 }
 
