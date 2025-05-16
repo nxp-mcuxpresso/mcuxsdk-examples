@@ -352,5 +352,7 @@ void ncp_inet_deinit(void);
 #define LINUX_SO_BINDTODEVICE 25
 #define LINUX_SO_BROADCAST    6
 #define LINUX_IPV6_V6ONLY     26
+#define LINUX_IP_MULTICAST_IF   32
+#define LINUX_IP_MULTICAST_TTL  33
 
 #endif

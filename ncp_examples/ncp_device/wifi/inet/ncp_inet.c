@@ -327,6 +327,10 @@ static int sockopt_linuxtolwip(int sockopt)
             return SO_BROADCAST;
         case LINUX_IPV6_V6ONLY:
             return IPV6_V6ONLY;
+        case LINUX_IP_MULTICAST_IF:
+            return IP_MULTICAST_IF;
+        case LINUX_IP_MULTICAST_TTL:
+            return IP_MULTICAST_TTL;
         default:
             break;
     }
@@ -683,7 +687,7 @@ static int wlan_ncp_inet_sendto(void *data)
     memcpy(to->sa_data, linux_name->sa_data, NCP_IPADDR_DATA_LEN);
     if (tlv->socklen)
     {  
-        ret = sendto(tlv->socket, tlv->send_data, tlv->flags, tlv->size, to, tlv->socklen);
+        ret = sendto(tlv->socket, tlv->send_data, tlv->size, tlv->flags, to, tlv->socklen);
     }
     else
     {
