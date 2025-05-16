@@ -10,10 +10,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 
 mcux_add_iar_configuration(
-    TARGETS  release
-    CC "     -Oh "
-)
-mcux_add_iar_configuration(
     TARGETS  debug
     CC "     --debug "
 )
