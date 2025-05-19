@@ -14,7 +14,7 @@ mcux_add_source(
             middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwippools.h
             middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwiphooks.h
             middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config/wifi_config.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/${core_id}/hardware_init.c
             ${board_root}/${board}/wifi_examples/common/${core_id}/app.h
             ${board_root}/${board}/sdmmc_config.c
@@ -28,7 +28,7 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant
-             middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config
              ${board_root}/${board}/wifi_examples/common/${core_id}
              middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config
              middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config
