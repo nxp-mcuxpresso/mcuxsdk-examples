@@ -4,6 +4,7 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(connectivity_test_freertos LANGUAGES C CXX ASM 
     PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples
+    CUSTOM_PRJ_CONF_PATH    ${board_root}/${board}/wireless_examples/genfsk/connectivity_test
 )
 
 include(../CMakeLists.txt)
