@@ -18,7 +18,7 @@
 
 #define EXAMPLE_CAN                CAN0
 #define TX_MESSAGE_BUFFER_NUM      (8)
-#define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetFreq(kCLOCK_ScgSysOscClk)
+#define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetFreq(kCLOCK_ScgSysOscAsyncDiv2Clk)
 #define USE_IMPROVED_TIMING_CONFIG (1)
 /*${macro:end}*/
 

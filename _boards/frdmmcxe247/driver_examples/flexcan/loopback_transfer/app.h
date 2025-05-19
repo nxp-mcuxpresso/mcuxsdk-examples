@@ -16,7 +16,7 @@
 #define TX_MESSAGE_BUFFER_NUM      (1)
 
 /* Get frequency of flexcan clock */
-#define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetFreq(kCLOCK_CoreSysClk)
+#define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetFreq(kCLOCK_ScgSysOscAsyncDiv2Clk)
 /* Set USE_IMPROVED_TIMING_CONFIG macro to use api to calculates the improved CAN / CAN FD timing values. */
 #define USE_IMPROVED_TIMING_CONFIG (1U)
 /*${macro:end}*/

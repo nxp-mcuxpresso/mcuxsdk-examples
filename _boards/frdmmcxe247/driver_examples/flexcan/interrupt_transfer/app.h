@@ -15,7 +15,7 @@
 #define RX_MESSAGE_BUFFER_NUM      (0)
 #define TX_MESSAGE_BUFFER_NUM      (1)
 
-#define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetFreq(kCLOCK_CoreSysClk)
+#define EXAMPLE_CAN_CLK_FREQ       CLOCK_GetFreq(kCLOCK_ScgSysOscAsyncDiv2Clk)
 #define USE_IMPROVED_TIMING_CONFIG (1)
 /*${macro:end}*/
 
