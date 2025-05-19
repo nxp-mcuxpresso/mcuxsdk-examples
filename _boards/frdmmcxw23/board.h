@@ -46,7 +46,7 @@
  #define BOARD_DEBUG2_UART_BAUDRATE 115200U
  #endif
  
- #define BOARD_ACCEL_I2C_BASEADDR   I2C4
+ #define BOARD_ACCEL_I2C_BASEADDR   I2C1
  #define BOARD_ACCEL_I2C_CLOCK_FREQ 12000000
  
  /* Board led color mapping */

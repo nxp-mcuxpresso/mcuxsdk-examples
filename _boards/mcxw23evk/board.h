@@ -49,7 +49,7 @@
 #define BOARD_UART_IRQ_HANDLER      FLEXCOMM0_IRQHandler
 #define BOARD_UART_IRQ              FLEXCOMM0_IRQn
 
-#define BOARD_ACCEL_I2C_BASEADDR   I2C4
+#define BOARD_ACCEL_I2C_BASEADDR   I2C1
 #define BOARD_ACCEL_I2C_CLOCK_FREQ 12000000
 
 /* Board led color mapping */

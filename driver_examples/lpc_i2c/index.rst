@@ -15,3 +15,4 @@ lpc_i2c
    polling_b2b/index.rst
    polling_transfer/readme.md
    read_accel_value_transfer/readme.md
+   read_fxls89xx_accel_value_transfer/readme.md

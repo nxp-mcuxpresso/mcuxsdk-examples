@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+i2c_read_fxls89xx_accel_value_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_i2c/read_fxls89xx_accel_value_transfer
+    project-root-path: boards/${board}/driver_examples/i2c/read_fxls89xx_accel_value_transfer/${multicore_foldername}
+    document:
+      name: i2c_read_fxls89xx_accel_value_transfer${core_id_suffix_name}
+      category: driver_examples/lpc_i2c
+      brief: 'The i2c_read_fxls89xx_accel_value example shows how to use LPC I2C driver
+        to communicate with an lpc_i2c device: 1. How to use the lpc_i2c driver to read
+        a lpc_i2c device who_am_I register. 2. How to use the lpc_i2c driver to write/read
+        the device registers.In this example, the values of three-axis accelerometer
+        print to the serial terminal on PC throughthe virtual serial port on board.'
+      example_readme:
+      - examples/driver_examples/lpc_i2c/read_fxls89xx_accel_value_transfer/readme.md
+      - ${board_root}/${board}/driver_examples/i2c/read_fxls89xx_accel_value_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxw23: []
+    mcxw23evk: []
