@@ -16,7 +16,7 @@
  ******************************************************************************/
 
 /* Structure for current and voltage measurement*/
-mcdrv_adc_t g_sM1AdcSensor;
+mcdrv_adc_t g_sM1Curr3phDcBus;
 
 /* Structure for 3-phase PWM MC driver */
 mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
@@ -174,7 +174,7 @@ void InitADC(void)
     LPADC_SetConvTriggerConfig(ADC2, 4U, &mLpadcTriggerConfigStruct); /* Configurate the trigger4. */
 
     /* Offset filter window */
-    g_sM1AdcSensor.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
+    g_sM1Curr3phDcBus.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
     
     /* Enable the watermark interrupt. */
     LPADC_EnableInterrupts(ADC1, kLPADC_FIFO1WatermarkInterruptEnable);
@@ -408,7 +408,7 @@ void M1_InitQD(void)
     g_sM1Enc.f32PosMechOffset = FRAC32(0.0);
     
     
-    M1_MCDRV_QD_SET_DIRECTION(&g_sM1Enc);
+    M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
       
     /* Initialization modulo counter*/
     M1_MCDRV_QD_SET_PULSES(&g_sM1Enc);

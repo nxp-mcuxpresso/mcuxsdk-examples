@@ -19,7 +19,7 @@
 mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 
 /* structure for current and voltage measurement*/
-mcdrv_adc12_t g_sM1AdcSensor;
+mcdrv_adc12_t g_sM1Curr3phDcBus;
 
 /* structure for mc33937 driver setting via QSPI*/
 mcdrv_spi_drv3ph_t g_sM1Driver3ph;
@@ -113,43 +113,43 @@ void InitADC12(void)
     /* motor M1 ADC driver initialization */
     /**************************************/
     /* offset filter window */
-    g_sM1AdcSensor.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
+    g_sM1Curr3phDcBus.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
 
     /* adc base address */
-    g_sM1AdcSensor.pui32AdcBase = (ADC_Type *)ADC;
+    g_sM1Curr3phDcBus.pui32AdcBase = (ADC_Type *)ADC;
 
     /* Phase current measurement */
     /* Sector 1,6 - measured currents Ic & Ib */
     /* ADC0, channel Ic = M1_ADC0_PH_C, , SAMPLE & RESULT = 0 */
-    g_sM1AdcSensor.sCurrSec16.ui16ChanNumPhaC = M1_ADC1_PH_C;
-    g_sM1AdcSensor.sCurrSec16.ui16AdcNumPhaC  = ADC1;
+    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanNumPhaC = M1_ADC1_PH_C;
+    g_sM1Curr3phDcBus.sCurrSec16.ui16AdcNumPhaC  = ADC1;
     /* ADC1, channel Ib = M1_ADC1_PH_B, , SAMPLE & RESULT = 8 */
-    g_sM1AdcSensor.sCurrSec16.ui16ChanNumPhaB = M1_ADC0_PH_B;
-    g_sM1AdcSensor.sCurrSec16.ui16AdcNumPhaB  = ADC0;
+    g_sM1Curr3phDcBus.sCurrSec16.ui16ChanNumPhaB = M1_ADC0_PH_B;
+    g_sM1Curr3phDcBus.sCurrSec16.ui16AdcNumPhaB  = ADC0;
 
     /* Sector 2,3 - measured currents Ic & Ia*/
     /* ADC0, channel Ic = M1_ADC0_PH_C, SAMPLE & RESULT = 0 */
-    g_sM1AdcSensor.sCurrSec23.ui16ChanNumPhaC = M1_ADC1_PH_C;
-    g_sM1AdcSensor.sCurrSec23.ui16AdcNumPhaC  = ADC1;
+    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaC = M1_ADC1_PH_C;
+    g_sM1Curr3phDcBus.sCurrSec23.ui16AdcNumPhaC  = ADC1;
     /* ADC1, channel Ia = M1_ADC1_PH_A, SAMPLE & RESULT = 8 */
-    g_sM1AdcSensor.sCurrSec23.ui16ChanNumPhaA = M1_ADC0_PH_A;
-    g_sM1AdcSensor.sCurrSec23.ui16AdcNumPhaA  = ADC0;
+    g_sM1Curr3phDcBus.sCurrSec23.ui16ChanNumPhaA = M1_ADC0_PH_A;
+    g_sM1Curr3phDcBus.sCurrSec23.ui16AdcNumPhaA  = ADC0;
 
     /* Sector 4,5 - measured currents Ia & Ib */
     /* ADC0, channel Ia = M1_ADC0_PH_A, SAMPLE & RESULT = 0 */
-    g_sM1AdcSensor.sCurrSec45.ui16ChanNumPhaA = M1_ADC1_PH_A;
-    g_sM1AdcSensor.sCurrSec45.ui16AdcNumPhaA  = ADC1;
+    g_sM1Curr3phDcBus.sCurrSec45.ui16ChanNumPhaA = M1_ADC1_PH_A;
+    g_sM1Curr3phDcBus.sCurrSec45.ui16AdcNumPhaA  = ADC1;
     /* ADC1, channel Ib = M1_ADC1_PH_B, SAMPLE & RESULT = 8  */
-    g_sM1AdcSensor.sCurrSec45.ui16ChanNumPhaB = M1_ADC0_PH_B;
-    g_sM1AdcSensor.sCurrSec45.ui16AdcNumPhaB  = ADC0;
+    g_sM1Curr3phDcBus.sCurrSec45.ui16ChanNumPhaB = M1_ADC0_PH_B;
+    g_sM1Curr3phDcBus.sCurrSec45.ui16AdcNumPhaB  = ADC0;
 
     /* UDCbus channel measurement */
     /*  channel Udcb = M1_ADC1_UDCB, SAMPLE & RESULT = 9 */
-    g_sM1AdcSensor.ui16ChanNumVDcb = M1_ADC1_UDCB;
-    g_sM1AdcSensor.ui16AdcNumVDcb  = ADC1;
+    g_sM1Curr3phDcBus.ui16ChanNumVDcb = M1_ADC1_UDCB;
+    g_sM1Curr3phDcBus.ui16AdcNumVDcb  = ADC1;
 
     /* Assign channels and init all pointers */
-    MCDRV_Curr3Ph2ShChanAssignInit(&g_sM1AdcSensor);
+    MCDRV_Curr3Ph2ShChanAssignInit(&g_sM1Curr3phDcBus);
 }
 
 /*!

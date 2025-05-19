@@ -78,7 +78,7 @@ typedef struct _clock_setup
  ******************************************************************************/
 #define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par)    /* Need to be empty - SINC data are read and processed in SINC IRQ. */
 
-#define M1_MCDRV_ADC_GET(par)           /* Keep this macro to avoid project build error (macro is used in MID). */
+#define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par)           /* Keep this macro to avoid project build error (macro is used in MID). */
 
 #define M1_MCDRV_CURR_3PH_CHAN_ASSIGN(par)      /* Keep this macro to avoid project build error (macro is used in MID). */
 #define M1_MCDRV_CURR_3PH_CALIB_INIT(par) 

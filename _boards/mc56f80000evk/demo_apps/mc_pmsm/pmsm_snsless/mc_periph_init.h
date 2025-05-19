@@ -123,7 +123,7 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define motor 1 ADC control functions
  ******************************************************************************/
-#define M1_MCDRV_ADC_GET(par) \
+#define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par) \
     MCDRV_Curr3Ph2ShGet(par); \
     MCDRV_VoltDcBusGet(par);  \
     MCDRV_AuxValGet(par);
@@ -144,7 +144,7 @@ typedef struct _clock_setup
  * global variable definitions
  ******************************************************************************/
 extern mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
-extern mcdrv_adc12_t g_sM1AdcSensor;
+extern mcdrv_adc12_t g_sM1Curr3phDcBus;
 extern clock_setup_t g_sClockSetup;
 
 /*******************************************************************************

@@ -119,7 +119,7 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define motor 1 ADC control functions
  ******************************************************************************/
-#define M1_MCDRV_ADC_GET(par) \
+#define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par) \
     MCDRV_Curr3Ph2ShGet(par); \
     MCDRV_VoltDcBusGet(par);  \
     MCDRV_AuxValGet(par);
@@ -140,16 +140,16 @@ typedef struct _clock_setup
  * Define motor 1 Quadrature Decoder control functions
  ******************************************************************************/
 #define M1_MCDRV_QD_PERIPH_INIT() M1_InitQD()
-#define M1_MCDRV_QD_GET(par) (MCDRV_QtmrEncGet(par))
-#define M1_MCDRV_QD_SET_DIRECTION(par) (MCDRV_QtmrEncSetDirection(par))
-#define M1_MCDRV_QD_SET_PULSES(par) (MCDRV_QtmrEncSetPulses(par))
-#define M1_MCDRV_QD_CLEAR(par) (MCDRV_QtmrEncClear(par))
+#define M1_MCDRV_ENC_GET(par) (MCDRV_QtmrEncGet(par))
+#define M1_MCDRV_ENC_SET_DIRECTION(par) (MCDRV_QtmrEncSetDirection(par))
+#define M1_MCDRV_ENC_SET_PULSES(par) (MCDRV_QtmrEncSetPulses(par))
+#define M1_MCDRV_ENC_CLEAR(par) (MCDRV_QtmrEncClear(par))
 
 /******************************************************************************
  * global variable definitions
  ******************************************************************************/
 extern mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
-extern mcdrv_adc12_t g_sM1AdcSensor;
+extern mcdrv_adc12_t g_sM1Curr3phDcBus;
 extern clock_setup_t g_sClockSetup;
 extern mcdrv_qtmr_enc_t g_sM1Enc;
 

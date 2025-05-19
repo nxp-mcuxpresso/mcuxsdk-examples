@@ -114,7 +114,7 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define motor ADC control functions
  ******************************************************************************/
-#define M1_MCDRV_ADC_GET(par) MCDRV_CurrAndVoltDcBusGet(par)
+#define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par) MCDRV_CurrAndVoltDcBusGet(par)
 #define M1_MCDRV_CURR_3PH_CHAN_ASSIGN(par)
 #define M1_MCDRV_CURR_3PH_CALIB_INIT(par) (MCDRV_Curr3Ph2ShCalibInit(par))
 #define M1_MCDRV_CURR_3PH_CALIB(par) (MCDRV_Curr3Ph2ShCalib(par))
@@ -132,16 +132,16 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define position and speed sensor - quadrature encoder for motor 1
  ******************************************************************************/
-#define M1_MCDRV_QD_GET(par) (MCDRV_QdEncGet(par))
-#define M1_MCDRV_QD_SET_DIRECTION(par) (MCDRV_QdEncSetDirection(par))
-#define M1_MCDRV_QD_SET_PULSES(par) (MCDRV_QdEncSetPulses(par))
-#define M1_MCDRV_QD_CLEAR(par) (MCDRV_QdEncClear(par))
+#define M1_MCDRV_ENC_GET(par) (MCDRV_QdEncGet(par))
+#define M1_MCDRV_ENC_SET_DIRECTION(par) (MCDRV_QdEncSetDirection(par))
+#define M1_MCDRV_ENC_SET_PULSES(par) (MCDRV_QdEncSetPulses(par))
+#define M1_MCDRV_ENC_CLEAR(par) (MCDRV_QdEncClear(par))
     
 /******************************************************************************
  * global variable definitions
  ******************************************************************************/
 extern mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
-extern mcdrv_adc_t g_sM1AdcSensor;
+extern mcdrv_adc_t g_sM1Curr3phDcBus;
 extern mcdrv_eqd_enc_t g_sM1Enc;
 
 /*******************************************************************************

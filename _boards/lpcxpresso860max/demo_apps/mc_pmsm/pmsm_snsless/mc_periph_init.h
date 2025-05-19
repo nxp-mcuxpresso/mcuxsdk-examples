@@ -146,7 +146,7 @@ extern "C" {
 /******************************************************************************
  * Define motor ADC control functions
  ******************************************************************************/
-#define M1_MCDRV_ADC_GET(par) \
+#define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par) \
     MCDRV_CurrAndVoltDcBusGet(par)
 #define M1_MCDRV_CURR_3PH_CHAN_ASSIGN(par)
 #define M1_MCDRV_CURR_3PH_CALIB_INIT(par) (MCDRV_Curr3Ph2ShCalibInit(par))
@@ -165,7 +165,7 @@ extern "C" {
  * global variable definitions
  ******************************************************************************/
 extern mcdrv_pwm3ph_ftm_t g_sM1Pwm3ph;
-extern mcdrv_adc_t g_sM1AdcSensor;
+extern mcdrv_adc_t g_sM1Curr3phDcBus;
 
 /*******************************************************************************
  * API

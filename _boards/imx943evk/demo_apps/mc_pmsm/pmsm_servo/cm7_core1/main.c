@@ -16,12 +16,8 @@
 #include "fsl_lpuart.h"
 #include "m1_sm_servo.h"
 #include "board.h"
-// #include "mid_sm_states.h"
 
 #warning "Please, check whether macro SERVO_OPTIM is set in project options. Only position control is available when SERVO_OPTIM defined!"
-#warning "MID is disabled, because it is not working in servo examples yet."
-#warning "FreeMASTER communication via arduino interface: Connect usb2uart converter signals (Tx, Rx)) to arduino interface on the base board (M1_UART12_TXD, M1_UART12_RXD)."
-#warning "FreeMASTER communication via FTDI debug port: Call BOARD_SelectFTUART() function (e.g. in the BOARD_InitBootPins function) and set SW7-2 to ON."
 
 /*******************************************************************************
  * Definitions
@@ -86,8 +82,6 @@ static void DemoPositionStimulator(void);
 
 static void BOARD_InitSysTick(void);
 
-static void Application_Control_BL(void);
-
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -126,11 +120,7 @@ app_ver_t g_sAppIdFM = {
     FEATURE_SET,    /* example's feature-set */
 };
 
-//mid_app_cmd_t g_eMidCmd;                  /* Start/Stop MID command */
 ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
-
-volatile uint32_t  ui32CntSlow = 0U, ui32CntFast = 0U;
-volatile uint32_t ui32Sinc1_IRQ = 0U;
 
 /*******************************************************************************
  * Prototypes
@@ -177,9 +167,6 @@ int main(void)
 
     /* Turn off application */
     M1_SetAppSwitch(FALSE);
-
-    /* Spin state machine is default */
-    g_sSpinMidSwitch.eAppState = kAppStateSpin;
     
     /* Position demo ramp */
     sPositionDemoRampParams.fltRampUp   = 0.00375; // 1 [rev/s] / SlowLoopSampleTime = 1/4000 = 0.00025
@@ -193,10 +180,7 @@ int main(void)
         
     /* Infinite loop */
     while (1)
-    {
-      
-        /* Application_Control_BL(); */
-      
+    {      
         /* FreeMASTER Polling function */
         FMSTR_Poll();
     }
@@ -205,8 +189,6 @@ int main(void)
 RAM_FUNC_LIB
 void ENDAT2P2_IRQHandler(void)
 {
-  ui32CntFast++;
-  
   /* get position from EnDat2.2 */
   M1_MCDRV_ENDAT2P2_GET(&g_sM1Enc);
   
@@ -222,8 +204,8 @@ void ENDAT2P2_IRQHandler(void)
 RAM_FUNC_LIB
 void SINC1_CH0_IRQHandler(void)
 {
-  M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
-  ui32Sinc1_IRQ++;  
+  /* Read SINC results and process data */
+  M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);  
 }
 
 /*!
@@ -236,10 +218,7 @@ void SINC1_CH0_IRQHandler(void)
  */
 RAM_FUNC_LIB
 void TMR1_IRQHandler(void)
-{
-      
-    ui32CntSlow++;
-    
+{    
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
    
@@ -358,63 +337,6 @@ static void DemoPositionStimulator(void)
     g_sM1Drive.sPosition.a32PositionCmd = MLIB_Conv_A32f(GFLIB_Ramp_FLT(fltDemoPositionValue, &sPositionDemoRampParams));
     
 }
-
-/*!
- * @brief   Application_Control_BL
- *           - Control switching between Spin and MID
- *
- * @param   void
- *
- * @return  none
- */
-static void Application_Control_BL(void)
-{
-//  switch(g_sSpinMidSwitch.eAppState)
-//  {
-//    case kAppStateSpin:
-//        /* M1 state machine */
-//        if(g_sSpinMidSwitch.bCmdRunMid == TRUE)
-//        {
-//          if((kSM_AppStop == M1_GetAppState()) && (FALSE == M1_GetAppSwitch()) )
-//          {
-//            MID_Init_AR();
-//            g_sSpinMidSwitch.sFaultCtrlM1_Mid &= ~(FAULT_APP_SPIN);
-//            g_eMidCmd = kMID_Cmd_Stop;                          /* Reset MID control command */
-//            g_sSpinMidSwitch.eAppState = kAppStateMID;          /* MID routines will be processed */
-//          }
-//          else
-//            g_sSpinMidSwitch.sFaultCtrlM1_Mid |= FAULT_APP_SPIN;
-//
-//          g_sSpinMidSwitch.bCmdRunMid = FALSE;                  /* Always clear request */
-//        }
-//
-//        g_sSpinMidSwitch.bCmdRunM1 = FALSE;
-//        break;
-//    default:
-//        /* MID state machine */
-//        if(g_sSpinMidSwitch.bCmdRunM1 == TRUE)
-//        {
-//          if((g_eMidCmd == kMID_Cmd_Stop) && (kMID_Stop == MID_GetActualState()))
-//          {
-//            g_sSpinMidSwitch.sFaultCtrlM1_Mid &= ~(FAULT_APP_MID);
-//            g_sM1Ctrl.eState = kSM_AppInit;                      /* Set Init state for M1 state machine */
-//            g_sSpinMidSwitch.eAppState = kAppStateSpin;          /* Switch application state to Spin */
-//          }
-//          else
-//            g_sSpinMidSwitch.sFaultCtrlM1_Mid |= FAULT_APP_MID;
-//
-//           /* Always clear request */
-//          g_sSpinMidSwitch.bCmdRunM1 = FALSE;
-//          g_sSpinMidSwitch.bCmdRunMid = FALSE;
-//          break;
-//        }
-//
-//        g_sSpinMidSwitch.bCmdRunMid = FALSE;
-//        MID_Process_BL(&g_eMidCmd);
-//        break;
-//  }
-}
-
 
 /*!
  * @brief LPUART Module initialization (LPUART is a the standard block included e.g. in K66F)

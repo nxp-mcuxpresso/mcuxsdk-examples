@@ -26,7 +26,7 @@ static void InitCMP(void);
 mcdrv_pwm3ph_ftm_t g_sM1Pwm3ph;
 
 /* structure for current and voltage measurement*/
-mcdrv_adc_t g_sM1AdcSensor;
+mcdrv_adc_t g_sM1Curr3phDcBus;
 
 /*******************************************************************************
  * Code
