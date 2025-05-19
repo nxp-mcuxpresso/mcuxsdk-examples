@@ -64,16 +64,10 @@ void EXAMPLE_FLEXCAN_IRQHandler(void)
         rxComplete = true;
     }
 #endif
-#elif (defined(FSL_FEATURE_FLEXCAN_HAS_EXTENDED_FLAG_REGISTER) && FSL_FEATURE_FLEXCAN_HAS_EXTENDED_FLAG_REGISTER)
+#else
     if (0U != FLEXCAN_GetMbStatusFlags(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM))
     {
         FLEXCAN_ClearMbStatusFlags(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM);
-        rxComplete = true;
-    }
-#else
-    if (0U != FLEXCAN_GetMbStatusFlags(EXAMPLE_CAN, (uint32_t)1U << RX_MESSAGE_BUFFER_NUM))
-    {
-        FLEXCAN_ClearMbStatusFlags(EXAMPLE_CAN, (uint32_t)1U << RX_MESSAGE_BUFFER_NUM);
         rxComplete = true;
     }
 #endif
@@ -166,7 +160,7 @@ int main(void)
     FLEXCAN_SetRxMbConfig(EXAMPLE_CAN, RX_MESSAGE_BUFFER_NUM, &mbConfig, true);
 #endif
 
-/* Setup Tx Message Buffer. */
+    /* Setup Tx Message Buffer. */
 #if (defined(USE_CANFD) && USE_CANFD)
     FLEXCAN_SetFDTxMbConfig(EXAMPLE_CAN, TX_MESSAGE_BUFFER_NUM, true);
 #else
@@ -179,13 +173,9 @@ int main(void)
     FLEXCAN_EnableHigh64MbInterrupts(EXAMPLE_CAN, (uint64_t)1U << (RX_MESSAGE_BUFFER_NUM - 64U));
 #else
     FLEXCAN_EnableMbInterrupts(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM);
-
 #endif
-#elif (defined(FSL_FEATURE_FLEXCAN_HAS_EXTENDED_FLAG_REGISTER) && FSL_FEATURE_FLEXCAN_HAS_EXTENDED_FLAG_REGISTER)
-    FLEXCAN_EnableMbInterrupts(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM);
-
 #else
-    FLEXCAN_EnableMbInterrupts(EXAMPLE_CAN, (uint32_t)1U << RX_MESSAGE_BUFFER_NUM);
+    FLEXCAN_EnableMbInterrupts(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM);
 #endif
     (void)EnableIRQ(EXAMPLE_FLEXCAN_IRQn);
 
@@ -260,11 +250,8 @@ int main(void)
     FLEXCAN_DisableMbInterrupts(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM);
 
 #endif
-#elif (defined(FSL_FEATURE_FLEXCAN_HAS_EXTENDED_FLAG_REGISTER) && FSL_FEATURE_FLEXCAN_HAS_EXTENDED_FLAG_REGISTER)
-    FLEXCAN_DisableMbInterrupts(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM);
-
 #else
-    FLEXCAN_DisableMbInterrupts(EXAMPLE_CAN, (uint32_t)1U << RX_MESSAGE_BUFFER_NUM);
+    FLEXCAN_DisableMbInterrupts(EXAMPLE_CAN, (uint64_t)1U << RX_MESSAGE_BUFFER_NUM);
 #endif
 
     LOG_INFO("\r\n==FlexCAN loopback functional example -- Finish.==\r\n");
