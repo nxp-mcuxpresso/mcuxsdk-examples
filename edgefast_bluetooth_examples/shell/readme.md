@@ -986,6 +986,7 @@ Note:
 ## HCI command concurrency test
 Before run shell project, please set the following macros and rebuild shell project:
 - CONFIG_BT_HCI_TEST = 1
+- DEBUG_CONSOLE_TX_RELIABLE_ENABLE = 1
 1. Initialize the Host, press "bt.init",
 2. Press "bt.hci_test" to run hci command concurrency test, bellow message will not be printed:
    HCI command concurrency test start.
