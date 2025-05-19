@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(error_recording LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/erm/error_recording_sw)
+project(error_recording_sw LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/driver_examples/erm/error_recording_sw)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(

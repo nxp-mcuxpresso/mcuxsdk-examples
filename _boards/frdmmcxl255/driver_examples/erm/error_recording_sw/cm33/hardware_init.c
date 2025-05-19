@@ -36,4 +36,14 @@ void BOARD_MemoryInit(void)
     }
 }
 
+void APP_ecc_enable(void) 
+{
+  SYSCON->RAM_CTRL |= SYSCON_RAM_CTRL_RAMA_ECC_ENABLE_MASK;
+}
+
+void APP_ecc_disable(void) 
+{
+  SYSCON->RAM_CTRL &= ~(SYSCON_RAM_CTRL_RAMA_ECC_ENABLE_MASK);
+}
+
 /*${function:end}*/

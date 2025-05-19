@@ -21,24 +21,15 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows the output of the hello world demo in the terminal window:
+The log below shows the output of the demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ERM error recording example.
 
-Original ram data correct.
+Flipped bit was corrected.
 
-ERM error recording address is 0x20000000.
+ERM error recording address is 0x28001f00.
 
 ERM error recording example finished successfully.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Note:
-All system bus masters can access the programming model:
-1. Only in supervisor mode
-2. Using only 32-bit (word) accesses
-Any of the following attempted references to the programming model generates an error termination:
-1. In user mode
-2. Using non-32-bit access sizes
-3. To undefined (reserved) addresses

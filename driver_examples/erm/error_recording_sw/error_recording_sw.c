@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023, 2025 NXP
  * All rights reserved.
  *
  *
@@ -18,6 +18,9 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+
+extern void APP_ecc_enable(void);
+extern void APP_ecc_disable(void);
 
 /*******************************************************************************
  * Variables
@@ -66,28 +69,34 @@ int main(void)
     /* Inject single bit data ecc error. */
     injectvalue = *ramAddr;
     injectvalue ^= (1 << APP_ERM_RAM_INJECT_BIT);
+    
+    /* Disable ECC to prevent it from updating of RAM data checksum */
+    APP_ecc_disable();
+    
+    /* Store data with one flipped bit to RAM.*/
     *ramAddr = injectvalue;
 
     /* Enable ERM interrupt. */
     ERM_EnableInterrupts(APP_ERM, APP_ERM_MEMORY_CHANNEL, kERM_SingleCorrectionIntEnable);
     /* Enable ERM IRQ */
     EnableIRQ(APP_ERM_IRQ);
-
-    /* Read original data to trigger ERM single correction interrupt. */
+    
+    APP_ecc_enable();
+    /* Read data with ECC enabled. ECC will correct flipped bit and trigger interrupt. */
     temp = *ramAddr;
 
-    /* Check ram data */
+    /* Check if RAM data exuals to the original value */
     if (APP_ERM_MAGIC_NUMBER == temp)
     {
-        PRINTF("\r\nOriginal ram data correct.\r\n");
+        PRINTF("\r\nFlipped bit was corrected.\r\n");
     }
     else
     {
         errorFlag = true;
-        PRINTF("\r\nOriginal ram data incorrect.\r\n");
+        PRINTF("\r\nFlipped bit was not corrected.\r\n");
     }
 
-    /* Wait for error detected */
+    /* Wait for interrupt */
     while (s_ram_single_error == false)
     {
     }
