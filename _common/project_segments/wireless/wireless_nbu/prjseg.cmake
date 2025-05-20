@@ -14,6 +14,12 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.nbu.app.threadx)
         SOURCES
             app_common/iar/tx_initialize_low_level.s
     )
+    mcux_add_source(
+        TOOLCHAINS armgcc
+        BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/wireless_nbu
+        SOURCES
+            app_common/armgcc/tx_initialize_low_level.S
+    )
     mcux_add_include(
         BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/wireless_nbu
         INCLUDES

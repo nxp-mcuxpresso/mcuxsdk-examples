@@ -1,0 +1,122 @@
+/***************************************************************************
+ * Copyright 2025 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ **************************************************************************/
+
+/**************************************************************************/
+/**************************************************************************/
+/**                                                                       */
+/** ThreadX Component                                                     */
+/**                                                                       */
+/**   Initialize                                                          */
+/**                                                                       */
+/**************************************************************************/
+/**************************************************************************/
+
+#ifdef TX_INCLUDE_USER_DEFINE_FILE
+#include "tx_user.h"
+#endif
+
+/**************************************************************************/
+/*                                                                        */
+/*  FUNCTION                                               RELEASE        */
+/*                                                                        */
+/*    _tx_initialize_low_level                          Cortex-M33/GNU    */
+/*                                                                        */
+/*  DESCRIPTION                                                           */
+/*                                                                        */
+/*    This function is responsible for any low-level processor            */
+/*    initialization, including setting up interrupt vectors, setting     */
+/*    up a periodic timer interrupt source, saving the system stack       */
+/*    pointer for use in ISR processing later, and finding the first      */
+/*    available RAM memory address for tx_application_define.             */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    None                                                                */
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    None                                                                */
+/*                                                                        */
+/*  CALLS                                                                 */
+/*                                                                        */
+/*    None                                                                */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    _tx_initialize_kernel_enter           ThreadX entry function        */
+/*                                                                        */
+/**************************************************************************/
+// VOID   _tx_initialize_low_level(VOID)
+// {
+    .section .text
+    .balign 4
+    .syntax unified
+    .eabi_attribute Tag_ABI_align_preserved, 1
+    .global  _tx_initialize_low_level
+    .thumb_func
+.type _tx_initialize_low_level, function
+_tx_initialize_low_level:
+
+    /* Disable interrupts during ThreadX initialization.  */
+    CPSID   i
+
+    /* Setup Vector Table Offset Register.  */
+    MOV     r0, #0xE000E000                         // Build address of NVIC registers
+    LDR     r1, =__isr_vector                           // Pickup address of vector table
+    STR     r1, [r0, #0xD08]                        // Set vector table address
+
+    /* Set system stack pointer from vector value.  */
+    LDR     r0, =_tx_thread_system_stack_ptr        // Build address of system stack pointer
+    LDR     r1, =__isr_vector                           // Pickup address of vector table
+    LDR     r1, [r1]                                // Pickup reset stack pointer
+    STR     r1, [r0]                                // Save system stack pointer
+
+    /* SysTick are not configured here - to be done by the application  */
+
+    /* Configure handler priorities.  */
+    LDR     r1, =0x00000000                         // Rsrv, UsgF, BusF, MemM
+    STR     r1, [r0, #0xD18]                        // Setup System Handlers 4-7 Priority Registers
+    LDR     r1, =0xFF000000                         // SVCl, Rsrv, Rsrv, Rsrv
+    STR     r1, [r0, #0xD1C]                        // Setup System Handlers 8-11 Priority Registers
+                                                    // Note: SVC must be lowest priority, which is 0xFF
+    LDR     r1, =0x40FF0000                         // SysT, PnSV, Rsrv, DbgM
+    STR     r1, [r0, #0xD20]                        // Setup System Handlers 12-15 Priority Registers
+                                                    // Note: PnSV must be lowest priority, which is 0xFF
+
+    /* Configure system handlers */
+    LDR r1, [r0, #0xD24]                            // SHCSR
+    ORR r1, #0x70000                                // Enable UsageFault, BusFault, MemManage
+    STR r1, [r0, #0xD24]
+
+    /* Return to caller.  */
+    BX      lr
+// }
+
+    .section .text
+    .balign 4
+    .syntax unified
+    .eabi_attribute Tag_ABI_align_preserved, 1
+    .global  SysTick_Handler
+    .thumb_func
+.type SysTick_Handler, function
+SysTick_Handler:
+// VOID TimerInterruptHandler (VOID)
+// {
+    PUSH    {r0,lr}     // Save LR (and dummy r0 to maintain stack alignment)
+#if (defined(TX_ENABLE_EXECUTION_CHANGE_NOTIFY) || defined(TX_EXECUTION_PROFILE_ENABLE))
+    BL      _tx_execution_isr_enter             // Call the ISR enter function
+#endif
+    BL      _tx_timer_interrupt
+#if (defined(TX_ENABLE_EXECUTION_CHANGE_NOTIFY) || defined(TX_EXECUTION_PROFILE_ENABLE))
+    BL      _tx_execution_isr_exit              // Call the ISR exit function
+#endif
+    POP     {r0,lr}
+    BX      lr
+// }
+
+
+
+    .end
