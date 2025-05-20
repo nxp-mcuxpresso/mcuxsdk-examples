@@ -466,6 +466,46 @@ int wlan_reset_command(int argc, char **argv)
     return WM_SUCCESS;
 }
 
+#if CONFIG_NCP_SUPP
+int wlan_set_okc_command(int argc, char **argv)
+{
+    MCU_NCPCmd_DS_COMMAND *okc_command = ncp_host_get_cmd_buffer_wifi();
+    int enable                         = 0;
+
+    if (argc != 2)
+    {
+        (void)PRINTF("Usage: %s <okc: 0(default)/1>\r\n", argv[0]);
+        (void)PRINTF(
+            "\tOpportunistic Key Caching (also known as Proactive Key Caching) default\r\n"
+            "\tThis parameter can be used to set the default behavior for the\r\n"
+            "\tBy default, OKC is disabled unless enabled with the global okc=1 parameter \r\n"
+            "\tor with the per-network proactive_key_caching=1 parameter.\r\n"
+            "With okc=1, OKC is enabled by default, but can be disabled with per-network proactive_key_caching=0 "
+            "parameter.\r\n"
+            "\t# 0 = Disable OKC (default)\r\n"
+            "\t# 1 = Enable OKC\r\n");
+        return -WM_FAIL;
+    }
+
+    enable = atoi(argv[1]);
+    if (enable != 0 && enable != 1)
+    {
+        (void)PRINTF("Error! Invalid input of parameter <enable>\r\n");
+        return -WM_FAIL;
+    }
+
+    okc_command->header.cmd      = NCP_CMD_WLAN_STA_SET_OKC;
+    okc_command->header.size     = NCP_CMD_HEADER_LEN;
+    okc_command->header.result   = NCP_CMD_RESULT_OK;
+
+    NCP_CMD_OKC *okc = (NCP_CMD_OKC *)&okc_command->params.okc_cfg;
+    okc->enable      = enable;
+    okc_command->header.size += sizeof(NCP_CMD_OKC);
+
+    return WM_SUCCESS;
+}
+#endif
+
 static void dump_wlan_roaming_command(const char *str)
 {
     (void)PRINTF("Usage: %s <enable> <rssi_threshold>\r\n", str);
@@ -3368,6 +3408,23 @@ int wlan_process_roaming_response(uint8_t *res)
         (void)PRINTF("Set roaming successfully!\r\n");
     else
         (void)PRINTF("Failed to set roaming!\r\n");
+    return WM_SUCCESS;
+}
+
+/**
+ * @brief      This function processes OKC response from ncp device
+ *
+ * @param res  A pointer to uint8_t
+ * @return     Status returned
+ */
+int wlan_process_okc_response(uint8_t *res)
+{
+    MCU_NCPCmd_DS_COMMAND *cmd_res = (MCU_NCPCmd_DS_COMMAND *)res;
+
+    if (cmd_res->header.result == NCP_CMD_RESULT_OK)
+        (void)PRINTF("Set OKC successfully!\r\n");
+    else
+        (void)PRINTF("Failed to set OKC!\r\n");
     return WM_SUCCESS;
 }
 
@@ -8973,6 +9030,11 @@ int wlan_process_response(uint8_t *res)
         case NCP_RSP_WLAN_BASIC_WLAN_RESET:
             ret = wlan_process_wlan_reset_response(res);
             break;
+#if CONFIG_NCP_SUPP
+        case NCP_RSP_WLAN_STA_SET_OKC:
+            ret = wlan_process_okc_response(res);
+            break;
+#endif
         default:
             PRINTF("Invaild response cmd!\r\n");
             break;
@@ -9112,6 +9174,9 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-mbo-set-oce", "<oce: 1(default)/2>", wlan_mbo_set_oce},
 #endif
     {"wlan-mbo-nonprefer-ch", "<ch0> <Preference0: 0/1/255> <ch1> <Preference1: 0/1/255>", wlan_mbo_nonprefer_ch},
+#if (CONFIG_NCP_SUPP)
+    {"wlan-set-okc", "<okc: 0(default)/1>", wlan_set_okc_command},
+#endif
 };
 #endif
 

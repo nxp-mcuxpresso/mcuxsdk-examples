@@ -374,6 +374,22 @@ static int wlan_ncp_stat(void *tlv)
     return WM_SUCCESS;
 }
 
+#if CONFIG_WPA_SUPP
+static int wlan_ncp_set_okc(void *tlv)
+{
+    NCP_CMD_OKC *okc_cmd = (NCP_CMD_OKC *)tlv;
+    int ret              = 0;
+
+    ret = wlan_set_okc(okc_cmd->enable);
+    if (!ret)
+        wlan_ncp_prepare_status(NCP_RSP_WLAN_STA_SET_OKC, NCP_CMD_RESULT_OK);
+    else
+        wlan_ncp_prepare_status(NCP_RSP_WLAN_STA_SET_OKC, NCP_CMD_RESULT_ERROR);
+
+    return WM_SUCCESS;
+}
+#endif
+
 static int wlan_ncp_set_roaming(void *tlv)
 {
     NCP_CMD_ROAMING *roaming_cmd = (NCP_CMD_ROAMING *)tlv;
@@ -4510,6 +4526,9 @@ struct cmd_t wlan_cmd_sta[] = {
     {NCP_CMD_WLAN_MBO_SET_CELL_CAPA, "wlan-mbo-set-cell-capa", wlan_ncp_mbo_set_cell_capa, CMD_SYNC},
     {NCP_CMD_WLAN_MBO_SET_OCE, "wlan-mbo-set-oce", wlan_ncp_mbo_set_oce, CMD_SYNC},
 #endif
+#endif
+#if CONFIG_WPA_SUPP
+    {NCP_CMD_WLAN_STA_SET_OKC, "wlan-set-okc", wlan_ncp_set_okc, CMD_SYNC},
 #endif
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };

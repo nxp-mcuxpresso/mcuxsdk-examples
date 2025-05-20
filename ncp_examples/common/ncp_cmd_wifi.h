@@ -162,6 +162,10 @@
 #define NCP_CMD_WLAN_GET_IP_CINFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000039)
 /** Wi-Fi STA get ip config command response ID */
 #define NCP_RSP_WLAN_GET_IP_CINFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000039)
+/** Wi-Fi STA OKC command ID */
+#define NCP_CMD_WLAN_STA_SET_OKC    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x0000003A)
+/** Wi-Fi STA OKC command response ID */
+#define NCP_RSP_WLAN_STA_SET_OKC    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x0000003A)
 
 /** WLAN Basic command/response */
 /** Wi-Fi reset command ID */
@@ -1334,6 +1338,16 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_ROAMING
      */
     uint8_t rssi_threshold;
 } NCP_TLV_PACK_END NCP_CMD_ROAMING;
+
+/** This structure is used for OKC configuration. */
+typedef NCP_TLV_PACK_START struct _NCP_CMD_OKC
+{
+    /** STA OKC enable flag, \n
+     *  1: enable OKC,\n
+     *  0: disable OKC.
+     */
+    uint8_t enable;
+} NCP_TLV_PACK_END NCP_CMD_OKC;
 
 /** This structure is used for Wi-Fi reset option. */
 typedef NCP_TLV_PACK_START struct WLAN_RESET_ParaSet
@@ -2619,6 +2633,8 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_RSSI signal_rssi;
         /** Roaming configurations */
         NCP_CMD_ROAMING roaming_cfg;
+        /** OKC configurations */
+        NCP_CMD_OKC okc_cfg;
         /** MAX client count*/
         NCP_CMD_CLIENT_CNT max_client_count;
         /** Antenna config*/
