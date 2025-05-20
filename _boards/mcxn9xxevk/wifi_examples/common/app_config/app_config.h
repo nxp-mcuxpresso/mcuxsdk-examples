@@ -7,7 +7,6 @@
 
 /*
  * Supported Wi-Fi boards (modules):
- *     WIFI_88W8801_BOARD_MURATA_2DS_M2
  *     WIFI_IW416_BOARD_MURATA_1XK_M2
  *     WIFI_88W8987_BOARD_MURATA_1ZM_M2
  */

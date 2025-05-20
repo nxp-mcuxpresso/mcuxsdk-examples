@@ -1,9 +1,7 @@
 Supported Wi-Fi/BT/BLE modules
 ==============================
-  - AzureWave AW-NM191NF-uSD + uSD to SD adapter
   - AzureWave AW-AM510-uSD + uSD to SD adapter
   - AzureWave AW-CM358-uSD + uSD to SD adapter
-  - Murata uSD-M.2 Adapter (LBEE0ZZ1WE-uSD-M2) and Embedded Artists 2DS M.2 Module (EAR00386) + uSD to SD adapter
   - Murata uSD-M.2 Adapter (LBEE0ZZ1WE-uSD-M2) and Embedded Artists 1ZM M.2 Module (EAR00364) + uSD to SD adapter
   - Murata uSD-M.2 Adapter (LBEE0ZZ1WE-uSD-M2) and Embedded Artists 1XK M.2 Module (EAR00385) + uSD to SD adapter
 
@@ -13,7 +11,6 @@ Murata Solution Board settings
 Murata uSD-M.2 adapter resource page: https://www.murata.com/en-us/products/connectivitymodule/wi-fi-bluetooth/overview/lineup/usd-m2-adapter
 Murata uSD-M.2 adapter datasheet: https://www.murata.com/-/media/webrenewal/products/connectivitymodule/asset/pub/rfm/data/usd-m2_revb1.ashx
 Embedded Artists M.2 module resource page: https://www.embeddedartists.com/m2
-Embedded Artists 2DS module datasheet: https://www.embeddedartists.com/doc/ds/2DS_M2_Datasheet.pdf
 Embedded Artists 1XK module datasheet: https://www.embeddedartists.com/doc/ds/1XK_M2_Datasheet.pdf
 Embedded Artists 1ZM module datasheet: https://www.embeddedartists.com/doc/ds/1ZM_M2_Datasheet.pdf
 
@@ -24,10 +21,6 @@ Jumper settings for Murata uSD-M.2 adapter:
 
 Modules Settings
 ================
-Jumper settings on AzureWave AW-NM191NF-uSD Module:
-  - J11 1-2: VIO_SD 1.8V (Voltage level of SDIO pins is 1.8V)
-  - J2  1-2: 3.3V VIO_uSD (Power Supply from uSD connector)
-
 Jumper settings on AzureWave AW-AM510-uSD Module:
   - J4  1-2: VIO 1.8V (Voltage level of SDIO pins is 1.8V)
   - J2  1-2: 3.3V VIO_uSD (Power Supply from uSD connector)

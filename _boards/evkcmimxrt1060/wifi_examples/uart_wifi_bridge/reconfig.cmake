@@ -9,7 +9,6 @@ mcux_add_source(
     SOURCES middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwipopts.h
             middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwippools.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/mfg_wlan_bt_fw.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sd8801_mfg_wlan.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart8987_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartIW416_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart_nw61x_mfg_se.h

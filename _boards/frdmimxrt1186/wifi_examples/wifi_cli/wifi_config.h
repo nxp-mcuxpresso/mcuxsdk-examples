@@ -110,7 +110,7 @@
 #define CONFIG_IPV6               1
 #define CONFIG_MAX_IPV6_ADDRESSES 3
 
-#if defined(SD8978) || defined(SD8987) || defined(SD8801) || defined(SD9177)
+#if defined(SD8978) || defined(SD8987) || defined(SD9177)
 #define CONFIG_WIFI_CAPA        1
 #define CONFIG_ROAMING          1
 #define CONFIG_CLOUD_KEEP_ALIVE 1
@@ -121,14 +121,12 @@
 #define CONFIG_WIFI_IND_RESET 0
 #endif
 
-#if !defined(SD8801)
 #define CONFIG_EXT_SCAN_SUPPORT 1
 #define CONFIG_WIFI_EU_CRYPTO   1
 #if !defined(SD9177)
 #define CONFIG_11R 1
 #endif
 #define CONFIG_OWE 1
-#endif
 
 #define CONFIG_HOST_SLEEP 0
 #define CONFIG_MEF_CFG 0

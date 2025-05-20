@@ -1,13 +1,11 @@
 Supported Wi-Fi/BT/BLE modules
 ==============================
-  - Embedded Artists 2DS M.2 Module (EAR00386)
   - Embedded Artists 1XK M.2 Module (EAR00385)
 
 
 Murata Solution Board settings
 ==============================
 Embedded Artists M.2 module resource page: https://www.embeddedartists.com/m2
-Embedded Artists 2DS module datasheet: https://www.embeddedartists.com/doc/ds/2DS_M2_Datasheet.pdf
 Embedded Artists 1XK module datasheet: https://www.embeddedartists.com/doc/ds/1XK_M2_Datasheet.pdf
 
 
