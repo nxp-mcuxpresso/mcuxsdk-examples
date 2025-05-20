@@ -44,7 +44,7 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-pvts_delay_t delay;
+uint32_t delay;
 TaskHandle_t pvts_task_handle;
 volatile uint32_t cur_voltage           = MAX_VDDCORE;
 volatile static uint32_t workload_index = 0;
@@ -163,7 +163,7 @@ static void config_pvts(void)
     /* This is used to check if the PVT interrupt triggered when trying to optimize VDDCORE */
     PVTS_EnableAlertCount(kPVTS_Sensor0);
     /* Set the delay and start sensing */
-    PVTS_SetDelay(kPVTS_Sensor0, delay);
+    PVTS_SetDelay(kPVTS_Sensor0, PVTS_GET_DELAY0_FROM_FUSE_VALUE(delay));
 
     PVTS_Start(kPVTS_Sensor0);
 
@@ -174,7 +174,7 @@ static void config_pvts(void)
     /* This is used to check if the PVT interrupt triggered when trying to optimize VDDCORE */
     PVTS_EnableAlertCount(kPVTS_Sensor1);
     /* Set the delay and start sensing */
-    PVTS_SetDelay(kPVTS_Sensor1, delay);
+    PVTS_SetDelay(kPVTS_Sensor1, PVTS_GET_DELAY1_FROM_FUSE_VALUE(delay));
 
     PVTS_Start(kPVTS_Sensor1);
 #endif
@@ -212,7 +212,7 @@ int main(void)
         SYSCON3->SILICONREV_ID & SYSCON3_SILICONREV_ID_MINOR_MASK, __DATE__, __TIME__);
 
     ret = PVTS_ReadDelayFromOTP(false, kPVTS_Vdd2Com, DEMO_MAINCLK_FREQ, &delay);
-    
+
     /* !!!NOTE!!!
      * Use typical value to run the demo if failed to read delay value from OTP.
      * This is only used to allow runing the demo on some early samples which without delay values programed in fuse
@@ -224,7 +224,7 @@ int main(void)
         delay = DEMO_TYPICAL_DELAY;
     }
 
-    PRINTF("PVTS delay = %d\r\n", delay);
+    PRINTF("PVTS delay = 0x%x\r\n", delay);
 
     DEMO_LOG("Core Clock: %dHz \r\n", CLOCK_GetCoreSysClkFreq());
     DEMO_LOG("Input any key to start\r\n");

@@ -556,8 +556,10 @@ void BOARD_EnterSleep(void)
     if (!IS_XIP_XSPI0() && !IS_XIP_XSPI1())
     {
         /* XSPI0 and XSPI1 memory interface located in VDDN_COM. */
-        POWER_EnablePD(kPDRUNCFG_DSR_VDDN_COM);
-        POWER_EnableRunRBB(kPower_BodyBiasVddn);
+        /* PMIC DVS_CTRL pins are located in VDDN, if powered down, the warm reset will not able to reset 
+           the PMIC to DVS0 mode which with safe power supply. So the warm reset will fail to reset the board. */
+        /* POWER_EnablePD(kPDRUNCFG_DSR_VDDN_COM); */
+        /* POWER_EnableRunRBB(kPower_BodyBiasVddn); */
         POWER_EnablePD(kPDRUNCFG_SHUT_COMNN_MAINCLK);
         POWER_ApplyPD();
     }
@@ -577,8 +579,8 @@ void BOARD_EnterSleep(void)
     if (!IS_XIP_XSPI0() && !IS_XIP_XSPI1())
     {
         /* XSPI0 and XSPI1 memory interface located in VDDN_COM. */
-        POWER_DisablePD(kPDRUNCFG_DSR_VDDN_COM);
-        POWER_EnableRunAFBB(kPower_BodyBiasVddn);
+        /* POWER_DisablePD(kPDRUNCFG_DSR_VDDN_COM); */
+        /* POWER_EnableRunAFBB(kPower_BodyBiasVddn); */
         POWER_DisablePD(kPDRUNCFG_SHUT_COMNN_MAINCLK);
         POWER_ApplyPD();
     }

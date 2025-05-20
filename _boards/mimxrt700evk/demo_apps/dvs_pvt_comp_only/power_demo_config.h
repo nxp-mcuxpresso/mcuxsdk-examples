@@ -72,11 +72,11 @@
  * and can't be used in production. The function may not work for some samples and temparautre. 
  */
 #if (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP2)
-#define DEMO_TYPICAL_DELAY 16U
+#define DEMO_TYPICAL_DELAY (16U | (16U << 8U))
 #elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP1)
-#define DEMO_TYPICAL_DELAY 17U
+#define DEMO_TYPICAL_DELAY (17U | (17U << 8U))
 #elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
-#define DEMO_TYPICAL_DELAY 18U
+#define DEMO_TYPICAL_DELAY (18U | (18U << 8U))
 #endif
 /*******************************************************************************
  * API
