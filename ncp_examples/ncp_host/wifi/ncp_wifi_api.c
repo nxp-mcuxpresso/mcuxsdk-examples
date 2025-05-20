@@ -21,6 +21,7 @@ int mcu_create_mutex_scan_lock()
 {
     int ret;
     ret = OSA_MutexCreate((osa_mutex_handle_t)scan_lock);
+    return ret;
 }
 
 int mcu_get_scan_lock()
@@ -33,7 +34,7 @@ int mcu_put_scan_lock()
     return OSA_MutexUnlock(scan_lock);
 }
 
-static void wlan_ncp_get_conn_state_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_conn_state_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
     NCPCmd_DS_COMMAND * cmd_res = (NCPCmd_DS_COMMAND*) res;
     uint8_t sta_conn_stat = 0;
@@ -44,7 +45,7 @@ static void wlan_ncp_get_conn_state_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_no
     memcpy(cmd_node->resp_buf, &sta_conn_stat, sizeof(uint8_t));
 }
 
-static void wlan_ncp_remove_network_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_remove_network_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
     int8_t remove_state = 0;
     NCPCmd_DS_COMMAND * cmd_res = (NCPCmd_DS_COMMAND*) res;
@@ -54,71 +55,71 @@ static void wlan_ncp_remove_network_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_no
     memcpy(cmd_node->resp_buf, &remove_state, sizeof(int8_t));
 }
 
-static void wlan_ncp_get_cmd_result_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_cmd_result_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
-    memcpy(cmd_node->resp_buf, &res->result, sizeof(uint16_t));
+    NCP_COMMAND *cmd_res = (NCP_COMMAND*)res;
+    memcpy(cmd_node->resp_buf, &cmd_res->result, sizeof(uint16_t));
 }
 
-static void wlan_ncp_get_scan_result_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_scan_result_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
     NCPCmd_DS_COMMAND * cmd_res = (NCPCmd_DS_COMMAND*) res;
     memcpy(cmd_node->resp_buf, cmd_res, sizeof(NCP_COMMAND) + sizeof(NCP_CMD_SCAN_NETWORK_INFO));
 }
 
-static void wlan_ncp_get_current_network_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
-{
+static void wlan_ncp_get_current_network_cb(void *res, ncp_cmd_node_t * cmd_node)
+{  
     NCPCmd_DS_COMMAND * cmd_res       = (NCPCmd_DS_COMMAND*) res;
     ncp_current_network * sta_network = (ncp_current_network *)cmd_node->resp_buf;
     
-    sta_network->result = res->result;
+    sta_network->result = cmd_res->header.result;
     (void) memcpy(&sta_network->sta_network, &cmd_res->params.current_network, sizeof(NCP_CMD_GET_CURRENT_NETWORK));
 }
 
-static void wlan_ncp_get_mac_address_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_mac_address_cb(void *res, ncp_cmd_node_t * cmd_node)
 {  
     NCPCmd_DS_COMMAND * cmd_res       = (NCPCmd_DS_COMMAND*) res;
     ncp_get_mac_addr * get_mac_addr = (ncp_get_mac_addr *)cmd_node->resp_buf;
     
-    get_mac_addr->result = res->result;
+    get_mac_addr->result = cmd_res->header.result;
     (void) memcpy(&get_mac_addr->mac_addr, &cmd_res->params.get_mac_addr, sizeof(NCP_CMD_GET_MAC_ADDRESS));
 }
 
-static void wlan_ncp_get_pkt_stats_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_pkt_stats_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
     NCPCmd_DS_COMMAND * cmd_res       = (NCPCmd_DS_COMMAND*) res;
     ncp_pkt_stats * get_pkt_stats = (ncp_pkt_stats *)cmd_node->resp_buf;
     
-    get_pkt_stats->result = res->result;
+    get_pkt_stats->result = cmd_res->header.result;
     (void) memcpy(&get_pkt_stats->pkt_stats, &cmd_res->params.get_pkt_stats, sizeof(NCP_CMD_PKT_STATS));
 }
 
-static void wlan_ncp_get_current_rssi_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_current_rssi_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
     short rssi = 0;
     NCPCmd_DS_COMMAND * cmd_res       = (NCPCmd_DS_COMMAND*) res;
-    NCP_CMD_GET_CURRENT_RSSI *current_rssi = &cmd_res->params.current_rssi;
+    NCP_CMD_GET_CURRENT_RSSI *current_rssi = (NCP_CMD_GET_CURRENT_RSSI *)&cmd_res->params.current_rssi;
     rssi = current_rssi->rssi;
 
     (void) memcpy(cmd_node->resp_buf, &rssi, sizeof(short));
 }
 
-static void wlan_ncp_get_current_channel_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_current_channel_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
     uint8_t channel = 0;
     NCPCmd_DS_COMMAND * cmd_res       = (NCPCmd_DS_COMMAND*) res;
-    NCP_CMD_GET_CURRENT_CHANNEL *current_channel = &cmd_res->params.current_channel;
+    NCP_CMD_GET_CURRENT_CHANNEL *current_channel = (NCP_CMD_GET_CURRENT_CHANNEL *)&cmd_res->params.current_channel;
     channel = current_channel->channel;
 
     (void) memcpy(cmd_node->resp_buf, &channel, sizeof(uint8_t));
 }
 
-static void wlan_ncp_get_ip_config_cb(NCP_COMMAND *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_ip_config_cb(void *res, ncp_cmd_node_t * cmd_node)
 {
     NCPCmd_DS_COMMAND * cmd_res       = (NCPCmd_DS_COMMAND*) res;
-    ncp_ip_config *ip_config = (ncp_current_network *)cmd_node->resp_buf;
-    ip_config->result = res->result;
-    
-    (void) memcpy(&ip_config->ip_config, &cmd_res->params.ip_config, sizeof(NCP_CMD_IP_CONFIG));
+    NCP_CMD_IP_CONFIG *ip_config = (NCP_CMD_IP_CONFIG *)cmd_node->resp_buf;
+
+    (void) memcpy(ip_config, &cmd_res->params.ip_config, sizeof(NCP_CMD_IP_CONFIG));
 }
 
 char * wlan_ncp_get_state(void)
@@ -553,7 +554,7 @@ int wlan_ncp_get_current_network(NCP_WLAN_NETWORK * net_work)
     if(cmd_resp_buf == NULL)
     {
         PRINTF("failed to malloc cmd_resp_buf!\r\n");
-        return false;
+        return result;
     }
     (void) memset((uint8_t *) cmd_resp_buf, 0, sizeof(ncp_current_network));
 
@@ -573,7 +574,7 @@ int wlan_ncp_get_current_network(NCP_WLAN_NETWORK * net_work)
     ret = ncp_tlv_send_wait_resp(get_current_networks_command, cmd_resp_buf, wlan_ncp_get_current_network_cb);
     if(ret == NCP_STATUS_SUCCESS)
     {
-        result = (ncp_current_network *)cmd_resp_buf->result;
+        result = cmd_resp_buf->result;
         (void) memcpy(net_work, &cmd_resp_buf->sta_network, sizeof(NCP_CMD_GET_CURRENT_NETWORK));
     }
     else
@@ -647,7 +648,7 @@ int wlan_ncp_get_mac_address(uint8_t * dest)
     if(cmd_resp_buf == NULL)
     {
         PRINTF("failed to malloc cmd_resp_buf!\r\n");
-        return false;
+        return result;
     }
     (void) memset((uint8_t *) cmd_resp_buf, 0, sizeof(ncp_get_mac_addr));
 
@@ -667,7 +668,7 @@ int wlan_ncp_get_mac_address(uint8_t * dest)
     ret = ncp_tlv_send_wait_resp(get_mac_addr_command, cmd_resp_buf, wlan_ncp_get_mac_address_cb);
     if(ret == NCP_STATUS_SUCCESS)
     {
-        result = (ncp_get_mac_addr *)cmd_resp_buf->result;
+        result = cmd_resp_buf->result;
         (void) memcpy(dest, &cmd_resp_buf->mac_addr.sta_mac, sizeof(cmd_resp_buf->mac_addr.sta_mac));
     }
     else
@@ -695,7 +696,7 @@ int wlan_ncp_get_pkt_stats(NCP_CMD_PKT_STATS *stats)
     if(cmd_resp_buf == NULL)
     {
         PRINTF("failed to malloc cmd_resp_buf!\r\n");
-        return false;
+        return result;
     }
     (void) memset((uint8_t *) cmd_resp_buf, 0, sizeof(ncp_pkt_stats));
 
@@ -715,7 +716,7 @@ int wlan_ncp_get_pkt_stats(NCP_CMD_PKT_STATS *stats)
     ret = ncp_tlv_send_wait_resp(get_pkt_stats_command, cmd_resp_buf, wlan_ncp_get_pkt_stats_cb);
     if(ret == NCP_STATUS_SUCCESS)
     {
-        result = (ncp_pkt_stats *)cmd_resp_buf->result;
+        result = cmd_resp_buf->result;
         (void) memcpy(stats, &cmd_resp_buf->pkt_stats, sizeof(NCP_CMD_PKT_STATS));
     }
     else
@@ -743,7 +744,7 @@ int wlan_ncp_get_current_rssi(short * rssi)
     if(cmd_resp_buf == NULL)
     {
         PRINTF("failed to malloc cmd_resp_buf!\r\n");
-        return NULL;
+        return NCP_STATUS_ERROR;
     }
     (void) memset((short *) cmd_resp_buf, 0, sizeof(short));
 
@@ -752,7 +753,7 @@ int wlan_ncp_get_current_rssi(short * rssi)
     {
         PRINTF("failed to malloc cmd buff.\r\n");
         OSA_MemoryFree(cmd_resp_buf);
-        return NULL;
+        return NCP_STATUS_ERROR;
     }
     (void) memset((uint8_t *) get_rssi_command, 0, sizeof(NCP_COMMAND));
 
@@ -781,7 +782,7 @@ uint8_t wlan_ncp_get_current_channel()
     if(cmd_resp_buf == NULL)
     {
         PRINTF("failed to malloc cmd_resp_buf!\r\n");
-        return NULL;
+        return NCP_STATUS_ERROR;
     }
     (void) memset((uint8_t *) cmd_resp_buf, 0, sizeof(uint8_t));
 
@@ -790,7 +791,7 @@ uint8_t wlan_ncp_get_current_channel()
     {
         PRINTF("failed to malloc cmd buff.\r\n");
         OSA_MemoryFree(cmd_resp_buf);
-        return NULL;
+        return NCP_STATUS_ERROR;
     }
     (void) memset((uint8_t *) get_current_channel_command, 0, sizeof(NCP_COMMAND));
 
@@ -813,16 +814,16 @@ uint8_t wlan_ncp_get_current_channel()
 
 int wlan_ncp_get_ip_config(NCP_CMD_IP_CONFIG * ip_config)
 {
-    uint8_t result = NCP_STATUS_ERROR;
+    uint16_t result = NCP_STATUS_ERROR;
     uint16_t ret = NCP_STATUS_ERROR;
 
-    ncp_ip_config * cmd_resp_buf = OSA_MemoryAllocate(sizeof(ncp_ip_config));
+    NCP_CMD_IP_CONFIG * cmd_resp_buf = OSA_MemoryAllocate(sizeof(NCP_CMD_IP_CONFIG));
     if(cmd_resp_buf == NULL)
     {
         PRINTF("failed to malloc cmd_resp_buf!\r\n");
-        return false;
+        return result;
     }
-    (void) memset((uint8_t *) cmd_resp_buf, 0, sizeof(ncp_ip_config));
+    (void) memset((uint8_t *) cmd_resp_buf, 0, sizeof(NCP_CMD_IP_CONFIG));
 
     NCPCmd_DS_COMMAND * get_ip_config_command = OSA_MemoryAllocate(sizeof(NCP_COMMAND));
     if(get_ip_config_command == NULL)
@@ -840,8 +841,8 @@ int wlan_ncp_get_ip_config(NCP_CMD_IP_CONFIG * ip_config)
     ret = ncp_tlv_send_wait_resp(get_ip_config_command, cmd_resp_buf, wlan_ncp_get_ip_config_cb);
     if(ret == NCP_STATUS_SUCCESS)
     {
-        result = (ncp_ip_config *)cmd_resp_buf->result;
-        (void) memcpy(ip_config, &cmd_resp_buf->ip_config, sizeof(ncp_ip_config));
+        (void) memcpy(ip_config, cmd_resp_buf, sizeof(NCP_CMD_IP_CONFIG));
+        result = NCP_CMD_RESULT_OK;
     }
     else
     {

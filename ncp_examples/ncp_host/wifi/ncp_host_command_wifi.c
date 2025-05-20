@@ -9,6 +9,7 @@
  */
 #include "ncp_host_command.h"
 #include "ncp_host_command_wifi.h"
+#include "ncp_cmd_node.h"
 
 static uint8_t broadcast_mac[NCP_WLAN_MAC_ADDR_LENGTH] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 

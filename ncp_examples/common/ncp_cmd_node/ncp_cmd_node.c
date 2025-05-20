@@ -5,7 +5,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -173,7 +172,7 @@ out_clear:
     return ret;
 }
 
-void ncp_cmd_node_wakeup_pending_tasks(uint8_t *res)
+void ncp_cmd_node_wakeup_pending_tasks(void *res)
 {
     NCP_COMMAND *cmd_res = (NCP_COMMAND *)res;
     ncp_cmd_node_t * cmd_node  = NULL;

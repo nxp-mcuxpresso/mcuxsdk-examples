@@ -19,6 +19,7 @@
 #include "app.h"
 #include "ncp_host_app.h"
 #include "ncp_adapter.h"
+#include "ncp_cmd_node.h"
 
 /*******************************************************************************
  * Definitions

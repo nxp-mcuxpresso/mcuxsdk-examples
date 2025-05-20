@@ -201,5 +201,5 @@ uint8_t wlan_ncp_get_current_channel(void);
  * \return TRUE if success.
  * \return FALSE if failure.
  */
-int wlan_ncp_get_ip_config(NCP_CMD_IP_CONFIG * addr);
+int wlan_ncp_get_ip_config(NCP_CMD_IP_CONFIG * ip_config);
 #endif /* __NCP_WIFI_API__ */

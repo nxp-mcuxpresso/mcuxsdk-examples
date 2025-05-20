@@ -45,5 +45,5 @@ typedef struct {
 int ncp_cmd_node_list_init();
 void ncp_cmd_node_list_deinit();
 uint8_t ncp_tlv_send_wait_resp(void * cmd, void * cmd_resp_buf, Handle_respFunc cb);
-void ncp_cmd_node_wakeup_pending_tasks(uint8_t *cmd_res);
+void ncp_cmd_node_wakeup_pending_tasks(void *cmd_res);
 #endif /* __NCP_CMD_NODE__ */
