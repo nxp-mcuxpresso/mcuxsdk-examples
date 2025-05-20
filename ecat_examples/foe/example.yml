@@ -25,3 +25,10 @@ ecat_foe:
     - -mdk@release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    frdmimxrt1186@cm33:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
