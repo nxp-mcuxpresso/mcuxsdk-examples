@@ -27,11 +27,6 @@
     EXTERN  _tx_thread_stack_error_handler
     EXTERN  PendSV_Handler
 
-    RSEG    FREE_MEM:DATA
-    PUBLIC  __tx_free_memory_start
-__tx_free_memory_start
-    DS32    4
-
     SECTION `.text`:CODE:NOROOT(2)
     THUMB
 /**************************************************************************/
@@ -70,11 +65,6 @@ _tx_initialize_low_level:
 
     /* Disable interrupts during ThreadX initialization.  */
     CPSID   i
-
-    /* Set base of available memory to end of non-initialised RAM area.  */
-    LDR     r0, =_tx_initialize_unused_memory       // Build address of unused memory pointer
-    LDR     r1, =__tx_free_memory_start             // Build first free address
-    STR     r1, [r0]                                // Setup first unused memory pointer
 
     /* Setup Vector Table Offset Register.  */
     MOV     r0, #0xE000E000                         // Build address of NVIC registers
