@@ -96,7 +96,7 @@ void tx_application_define(void *first_unused_memory)
     InitSysTicks();
 
     /* Create the idle task */
-    if(TX_SUCCESS != tx_thread_create(&idle_task_handle, "idle_task", idle_task, NULL, idle_task_stack,
+    if(TX_SUCCESS != tx_thread_create(&idle_task_handle, "idle_task", idle_task, 0U, idle_task_stack,
                                         CONFIG_IDLE_TASK_STACK_SIZE, IDLE_TASK_PRIORITY, IDLE_TASK_PRIORITY,
                                         TX_NO_TIME_SLICE, TX_AUTO_START))
     {
@@ -104,7 +104,7 @@ void tx_application_define(void *first_unused_memory)
     }
 
     /* Create the main task - the PostKernel init stage will be done from this task */
-    if(TX_SUCCESS != tx_thread_create(&main_task_handle, "main_task", main_task, NULL, main_task_stack,
+    if(TX_SUCCESS != tx_thread_create(&main_task_handle, "main_task", main_task, 0U, main_task_stack,
                                         CONFIG_MAIN_TASK_STACK_SIZE, CONFIG_MAIN_TASK_PRIORITY,
                                         CONFIG_MAIN_TASK_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START))
     {
