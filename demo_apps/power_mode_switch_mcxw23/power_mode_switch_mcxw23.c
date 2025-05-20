@@ -31,7 +31,7 @@
 #define GINT0_ENA_MASK (1U << BOARD_INITPINS_BOARD_BUTTON1_GPIO_PIN_PIN)
 
 #define PLOTHEIGHT (20)
-#define VOLTAGEMIN (2400)
+#define VOLTAGEMIN (1000)
 #define VOLTAGEMAX (3100)
 
 /** wakeupVectorIndex Enum */

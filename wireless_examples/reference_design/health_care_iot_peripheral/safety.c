@@ -223,7 +223,12 @@ static void EnableLowBatteryDetection()
     POWER_ClearBOD1Interrupt();
 
     PRINTF("Low battery warning enabled at ");
-    if (s_supplyMode == kDCDC_MODE_XR_SM_SS || s_supplyMode == kDCDC_MODE_XR_SM_DS || s_supplyMode == kDCDC_MODE_LV_SM)
+    if (s_supplyMode == kDCDC_MODE_LV_SM)
+    {
+        POWER_SetBod1Level(kBOD_LEVEL_1200mv);
+        PRINTF("@1.2V\n");
+    }
+    else if (s_supplyMode == kDCDC_MODE_XR_SM_SS || s_supplyMode == kDCDC_MODE_XR_SM_DS)
     {
         POWER_SetBod1Level(kBOD_LEVEL_1700mv);
         PRINTF("@1.7V\n");
@@ -242,10 +247,19 @@ static void EnableLowBatteryDetection()
     NVIC_EnableIRQ(BOD1_IRQn);
 
     /* Configure BOD2 to reset device when battery level becomes critically low (minimum voltage for flash to work
-     * reliably is 1.55V)*/
-    POWER_SetBod2Level(kBOD_LEVEL_1550mv);
-    POWER_ConfigureBOD2(kBOD_RESET);
-    PRINTF("Low battery reset enabled at @1.55V\n");
+     * reliably is 1.55V, after DC/DC)*/
+    if (s_supplyMode == kDCDC_MODE_LV_SM)
+    {
+        POWER_SetBod2Level(kBOD_LEVEL_1125mv);
+        POWER_ConfigureBOD2(kBOD_RESET);
+        PRINTF("Low battery reset enabled at @1.125V\n");
+    }
+    else
+    {
+        POWER_SetBod2Level(kBOD_LEVEL_1550mv);
+        POWER_ConfigureBOD2(kBOD_RESET);
+        PRINTF("Low battery reset enabled at @1.55V\n");
+    }
 }
 
 static void BodIrqCheckerTimerCallback(void *pParam)
