@@ -242,6 +242,8 @@ void BOARD_ClockPreConfig(void)
 
 void BOARD_ClockPostConfig(void)
 {
+    /* Change MUX0 DIV trigger type to Immediate update. */
+    CLOCK_SetClkMux0DivTriggerType(KCLOCK_ImmediateUpdate);
 }
 
 inline static void i2c_release_bus_delay(void)
