@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- FRDM-MCXA156 board
+- FRDM-MCXE247 board
 - USB-C cable
 - Personal Computer
 
@@ -25,7 +25,7 @@ Board settings
     imgtool sign   --key sign-ecdsa-p256-priv.pem
                    --align 8
                    --version 1.1
-                   --slot-size 0xc8000
+                   --slot-size 0xb8000
                    --header-size 0x400
                    --pad-header
                    --max-sectors 200
