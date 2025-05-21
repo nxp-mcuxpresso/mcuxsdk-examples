@@ -83,13 +83,10 @@ west build -b frdmrw612 <sdk root>/examples/coex_examples/coex_zigbee/coordinato
 
 # For coex_zigbee_router example,
 west build -b frdmrw612 <sdk root>/examples/coex_examples/coex_zigbee/router/freertos --toolchain armgcc
-
-# For coex_zigbee_ed_rx_on example,
-west build -b frdmrw612 <sdk root>/examples/coex_examples/coex_zigbee/ed_rx_on/freertos --toolchain armgcc
 ```
 
 > **NOTE**: 
-> For `coex_zigbee_router`/`coex_zigbee_ed_rx_on` examples, still need to build `mcuboot_opensource` image.
+> For `coex_zigbee_router` examples, still need to build `mcuboot_opensource` image.
 ```bash
 # For mcuboot_opensource example,
 west build -b frdmrw612 examples/ota_examples/mcuboot_opensource
@@ -105,7 +102,7 @@ All these examples are located with the other SDK examples, in `<sdk_root>/examp
 | - | - | - | - |
 | `coex_zigbee_coordinator` | `<sdk_root>/examples/coex_examples/coex_zigbee/coordinator/freertos` | See [README](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_coordinator/README.md) | `frdmrw612` `rdrw612bga` |
 | `coex_zigbee_router` | `<sdk_root>/examples/coex_examples/coex_zigbee/router/freertos` | See [README](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_router/README.md) | `frdmrw612` `rdrw612bga` |
-| `coex_zigbee_ed_rx_on` | `<sdk_root>/examples/coex_examples/coex_zigbee/ed_rx_on/freertos` | See [README](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_ed_rx_on/README.md) | `frdmrw612` `rdrw612bga` |
+
 
 
 ### Flash Binaries
@@ -120,10 +117,6 @@ J-Link> loadfile coex_zigbee_coordinator.elf
 # Flash coex_zigbee_router,
 J-Link> loadfile mcuboot_opensource.elf
 J-Link> loadbin coex_zigbee_router_v1.signed.confirmed.bin 0x18020000
-
-# Flash coex_zigbee_ed_rx_on,
-J-Link> loadfile mcuboot_opensource.elf
-J-Link> loadbin coex_zigbee_ed_rx_on_v1.signed.confirmed.bin 0x18020000
 ```
 
 ## Running the example
@@ -411,4 +404,4 @@ APP-ZDO: Network started Channel = 12
 ```
 > **NOTE**:
 > For `coex_zigbee_coordinator` example during the power on start-up for FRDMRW612 V2 board, FC3 UART RXD wire generate a garbage signal that cause serial port prints 'Command not recognized...', please take it as normal printing and ignore it. 
-> More zigbee commands please refer [coordinator](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_coordinator/README.md), [router](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_router/README.md), [rx_on](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_ed_rx_on/README.md)
+> More zigbee commands please refer [coordinator](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_coordinator/README.md), [router](https://bitbucket.sw.nxp.com/projects/CONNINT/repos/zigbee_public/browse/examples/zigbee_router/README.md)
