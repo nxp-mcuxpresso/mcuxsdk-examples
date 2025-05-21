@@ -73,7 +73,7 @@
 #ifndef configMAC_ADDR
 #define configMAC_ADDR                     \
     {                                      \
-        0x00, 0x00, 0xfa, 0xfa, 0xdd, 0x05 \
+        0x00, 0x1a, 0x2a, 0x0a, 0xcd, 0x15 \
     }
 #endif
 

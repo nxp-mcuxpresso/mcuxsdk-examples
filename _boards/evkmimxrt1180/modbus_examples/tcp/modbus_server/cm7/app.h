@@ -101,12 +101,6 @@
 #endif
 
 /* Ethernet configuration. */
-
-#define configMAC_ADDR                     \
-    {                                      \
-        0x00, 0x00, 0xfa, 0xfa, 0xdd, 0x05 \
-    }
-
 #define EXAMPLE_PHY_ADDRESS  EXAMPLE_EP0_PHY_ADDR
 #define EXAMPLE_PHY_OPS      &g_app_phy_rtl8201_ops
 #define EXAMPLE_PHY_RESOURCE &g_phy_rtl8201_resource
