@@ -1064,7 +1064,6 @@ void BOARD_InitLpuart7Pins(void) {                                /*!< Function 
                         IOMUXC_PAD_DSE(15U));
 }
 
-#if BOARD_LPUART8_USE_GPIO_IO12_GPIO_IO13_PADS
 void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
@@ -1076,7 +1075,6 @@ void BOARD_InitI2C6Pins(void) {                                /*!< Function ass
                         IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
                         IOMUXC_PAD_OD_MASK);
 }
-#endif
 
 void BOARD_InitLpuart8Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
 #if BOARD_LPUART8_USE_JTAG_PADS
@@ -1450,5 +1448,6 @@ void BOARD_ShowEleFwInfo(void)
 
 void BOARD_SelectFTUART(void)
 {
+    BOARD_InitI2C6Pins();
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, UART_M_FT_SEL);
 }
