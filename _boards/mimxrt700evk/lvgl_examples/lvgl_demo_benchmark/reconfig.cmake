@@ -5,15 +5,12 @@ mcux_add_source(
             ${board_root}/${board}/lvgl_examples/pin_mux.h
             ${board_root}/${board}/lvgl_examples/hardware_init.c
             ${board_root}/${board}/lvgl_examples/app.h
-            examples/lvgl_examples/lvgl_freertos.c
-            examples/lvgl_examples/lvgl_freertos.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/_boards/${board}/lvgl_examples/lvgl_demo_benchmark
              examples/_boards/${board}/lvgl_examples
-             examples/lvgl_examples
 )
 
 mcux_add_iar_configuration(
