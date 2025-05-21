@@ -2,7 +2,7 @@
 <configuration name="MIMXRT1170-EVKB" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_10 http://mcuxpresso.nxp.com/XSD/mex_configuration_10.xsd" uuid="420a2589-949c-45f2-97bb-c66e53231c60" version="10" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>MIMXRT1176xxxxx</processor>
-      <package>MIMXRT1176DVMAA</package>
+      <package>MIMXRT1176DVMAB</package>
       <board>MIMXRT1170-EVKB</board>
       <board_revision>C</board_revision>
       <mcu_data>ksdk2_0</mcu_data>

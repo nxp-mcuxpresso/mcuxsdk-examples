@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 NXP
+ * Copyright 2020-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -15,7 +15,7 @@
 !!GlobalInfo
 product: Peripherals v9.0
 processor: MIMXRT1176xxxxx
-package_id: MIMXRT1176DVMAA
+package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
 processor_version: 9.0.0
 board: MIMXRT1170-EVKB

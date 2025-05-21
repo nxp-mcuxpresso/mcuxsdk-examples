@@ -15,7 +15,7 @@
 !!GlobalInfo
 product: Peripherals v12.0
 processor: MIMXRT1176xxxxx
-package_id: MIMXRT1176DVMAA
+package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
 processor_version: 0.13.3
 functionalGroups:

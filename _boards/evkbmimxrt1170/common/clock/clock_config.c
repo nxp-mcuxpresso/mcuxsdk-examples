@@ -19,7 +19,7 @@
 !!GlobalInfo
 product: Clocks v11.0
 processor: MIMXRT1176xxxxx
-package_id: MIMXRT1176DVMAA
+package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
 processor_version: 0.14.8
 board: MIMXRT1170-EVKB

@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2022 NXP
+ * Copyright 2016-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -21,7 +21,7 @@
 !!GlobalInfo
 product: Clocks v13.0
 processor: MIMXRT1176xxxxx
-package_id: MIMXRT1176DVMAA
+package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
 processor_version: 0.15.10
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
