@@ -1,6 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
- * All rights reserved.
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,11 +12,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v11.0
+product: Peripherals v15.0
 processor: MIMXRT1176xxxxx
 package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
-processor_version: 12.0.0
+processor_version: 0.2506.20
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: 7ee8fc36-68c9-403c-a923-44701e1362da
@@ -32,6 +31,7 @@ component:
 - global_system_definitions:
   - user_definitions: ''
   - user_includes: ''
+  - global_init: ''
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -69,13 +69,13 @@ instance:
 - type: 'qtmr'
 - mode: 'general'
 - custom_name_enabled: 'true'
-- type_id: 'qtmr_460dd7aa3f3371843c2548acd54252b0'
+- type_id: 'qtmr_2.0.0'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'TMR3'
 - config_sets:
   - fsl_qtmr:
     - clockSource: 'BusInterfaceClock'
-    - clockSourceFreq: 'BOARD_BootClockRUN'
+    - clockSourceFreq: 'custom:240000000'
     - qtmr_channels:
       - 0:
         - channel_prefix_id: 'Channel_0'
@@ -123,7 +123,7 @@ static void TIMER_init(void) {
   QTMR_SetupPwm(TIMER_PERIPHERAL, TIMER_CHANNEL_0_CHANNEL, 50676UL, 50U, false, TIMER_CHANNEL_0_CLOCK_SOURCE);
   /* Enable interrupt requests of the timer channel */
   QTMR_EnableInterrupts(TIMER_PERIPHERAL, TIMER_CHANNEL_0_CHANNEL, kQTMR_Compare1InterruptEnable | kQTMR_Compare2InterruptEnable);
-  /* Enable interrupt TMR3_IRQn request in the NVIC. */
+  /* Enable interrupt TIMER_IRQN request in the NVIC */
   EnableIRQ(TIMER_IRQN);
   /* Start the timer - select the timer counting mode */
   QTMR_StartTimer(TIMER_PERIPHERAL, TIMER_CHANNEL_0_CHANNEL, kQTMR_PriSrcRiseEdge);
@@ -139,13 +139,13 @@ instance:
 - type: 'lpi2c'
 - mode: 'master'
 - custom_name_enabled: 'true'
-- type_id: 'lpi2c_6b71962515c3208facfccd030afebc98'
+- type_id: 'lpi2c_2.2.0'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'LPI2C5'
 - config_sets:
   - main:
     - clockSource: 'Lpi2cClock'
-    - clockSourceFreq: 'BOARD_BootClockRUN'
+    - clockSourceFreq: 'custom:24000000'
   - interrupt_vector: []
   - master:
     - mode: 'transfer'
@@ -216,18 +216,18 @@ static void ACCEL_I2C_init(void) {
 }
 
 /***********************************************************************************************************************
- * NVIC initialization code
+ * CM7_NVIC initialization code
  **********************************************************************************************************************/
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 instance:
-- name: 'NVIC'
+- name: 'CM7_NVIC'
 - type: 'nvic'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'nvic_57b5eef3774cc60acaede6f5b8bddc67'
+- type_id: 'nvic'
 - functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'NVIC'
+- peripheral: 'CM7_NVIC'
 - config_sets:
   - nvic:
     - interrupt_table:
@@ -237,7 +237,7 @@ instance:
 /* clang-format on */
 
 /* Empty initialization function (commented out)
-static void NVIC_init(void) {
+static void CM7_NVIC_init(void) {
 } */
 
 /***********************************************************************************************************************
