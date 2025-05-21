@@ -194,11 +194,11 @@ static void BOARD_ExitLowPowerCb(void)
 #endif
 
 #if defined(BOARD_UART_CLKSRC) && (BOARD_UART_CLKSRC == BOARD_UART_CLKSRC_FRO192M)
-    /* UART over FRO-192M is not ready for usage after deep sleep exit
-     * Seems like SOSC clock has an impact on FRO-192M.
-     * This is a workaround waiting for SOSC to be ready.
+    /* UART over FRO-192M is not ready for usage after deep sleep exit.
+     * FIRC is trimmed by the SOSC clock, we should wait until FIRC
+     * auto trim is locked to the target frequency range.
      */
-    while (!CLOCK_IsSysOscValid())
+    while (!CLOCK_IsFIRCAutoTrimLocked())
     {
     }
 #endif
