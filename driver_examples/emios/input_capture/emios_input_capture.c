@@ -24,6 +24,7 @@ volatile bool captureFlag = false;
 uint32_t leadingEdge;
 uint32_t trailingEdge;
 uint32_t pulseWidth;
+volatile uint32_t count = 0U;
 
 /*******************************************************************************
  * Code
@@ -38,14 +39,19 @@ void EXAMPLE_EMIOS_IRQHandler(void)
     {
         EMIOS_ClearUCStatusFlag(EXAMPLE_EMIOS, kEMIOS_EventFlag, EXAMPLE_IC_CHANNEL);
 
-        /* Get leading edge and trailing edge capture value. */
-        trailingEdge = EMIOS_GetAn(EXAMPLE_EMIOS, EXAMPLE_IC_CHANNEL);
-        leadingEdge = EMIOS_GetBn(EXAMPLE_EMIOS, EXAMPLE_IC_CHANNEL);
+        /* Get fifth high pulse. */
+        count++;
+        if (count == 5U)
+        {
+            /* Get leading edge and trailing edge capture value. */
+            trailingEdge = EMIOS_GetAn(EXAMPLE_EMIOS, EXAMPLE_IC_CHANNEL);
+            leadingEdge = EMIOS_GetBn(EXAMPLE_EMIOS, EXAMPLE_IC_CHANNEL);
 
-        /* Disable interrupt and global prescaler clock. */
-        EMIOS_DisableUCInterruptAndDMA(EXAMPLE_EMIOS, EXAMPLE_IC_CHANNEL);
-        EMIOS_DisableGlobalPrescaler(EXAMPLE_EMIOS);
-        captureFlag = true;
+            /* Disable interrupt and global prescaler clock. */
+            EMIOS_DisableUCInterruptAndDMA(EXAMPLE_EMIOS, EXAMPLE_IC_CHANNEL);
+            EMIOS_DisableGlobalPrescaler(EXAMPLE_EMIOS);
+            captureFlag = true;
+        }
     }
 }
 

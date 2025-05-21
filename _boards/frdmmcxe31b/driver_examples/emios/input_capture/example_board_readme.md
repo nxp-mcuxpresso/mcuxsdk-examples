@@ -7,7 +7,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect J3-9 to external signal, can be 20kHz 20% duty cycle PWM signal.
+Connect J3-9 to external PWM signal, can be 20kHz 20% duty cycle PWM signal.
 
 Prepare the Demo
 ===============
