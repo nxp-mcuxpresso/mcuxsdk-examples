@@ -52,10 +52,15 @@ void SBL_DisablePeripherals(void)
 {
 }
 
+#ifndef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
+/*
+ * MCUBoot is located in IFR region -> Use TinyCrypt
+ */
 status_t CRYPTO_InitHardware(void)
 {
     return kStatus_Success;
 }
+#endif
 
 void SBL_EnableRemap(uint32_t start_addr, uint32_t end_addr, uint32_t off)
 {

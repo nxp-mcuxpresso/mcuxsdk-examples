@@ -18,7 +18,7 @@ Board settings
 
 - MCUBoot resides in the `Bank_1 IFR_0` region to utilize flash remap feature
 - MCUBoot header size is set to 1024 bytes
-- Signing algorithm is ECDSA-P256
+- Signing algorithm is ECDSA-P256 (TinyCrypt)
 - Write alignment is 16 bytes
 - MCUBoot is configured to use its `DIRECT_XIP` image handling strategy
 - Flash swapping HW feature is used for zero-overhead image swapping
@@ -63,7 +63,7 @@ the following commands:
 
 ### Custom layout setup - bootloader located in main flash
 
-Default layout setup using the IFR region limits usage of some hardware features such as mbedTLS (due size of IFR region) or encrypted XIP using NPX module. This custom configuration moves the bootloader to main flash array.
+Default layout setup using the IFR region limits usage of some features such as hardware accelerated mbedTLS (due size of IFR region) or encrypted XIP using NPX module. This custom configuration moves the bootloader to main flash array.
 
 | Region         | From       | To         | Size   |
 |----------------|------------|------------|--------|
@@ -72,13 +72,13 @@ Default layout setup using the IFR region limits usage of some hardware features
 | Secondary slot | 0x00120000 | 0x001FFFFF |  896kB |
 
 - MCUBoot header size is set to 1024 bytes
-- Signing algorithm is ECDSA-P256
+- Signing algorithm is RSA-2048 (note: current MCUboot version 2.1.0 doesn't support mbedTLS porting layer for ECDSA-P256)
 - Write alignment is 16 bytes
-- MCUBoot is configured to use its `OVERWRITE_ONLY` image update strategy
+- MCUBoot is configured to use its `SWAP_USING_MOVE` image update strategy
 
 Image signing example:
 
-    imgtool sign --key sign-ecdsa-p256-priv.pem
+    imgtool sign --key sign-rsa2048-priv.pem
                  --align 16
                  --version 1.1
                  --slot-size 0xE0000
@@ -93,7 +93,7 @@ The custom build can be generated using `west build` and supports only IAR and G
 Example:
 
 Bootloader:
-`west build -p always examples/ota_examples/mcuboot_opensource -b frdmmcxn947 --config debug --toolchain armgcc -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/mcuboot_opensource.conf"`
+`west build -p always examples/ota_examples/mcuboot_opensource -b mcxn9xxevk --config debug --toolchain armgcc -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/mcuboot_opensource.conf"`
 
 OTA application:
-`west build -p always examples/ota_examples/ota_mcuboot_basic -b frdmmcxn947 --config debug --toolchain armgcc -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/ota_mcuboot_basic.conf"`
+`west build -p always examples/ota_examples/ota_mcuboot_basic -b mcxn9xxevk --config debug --toolchain armgcc -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/ota_mcuboot_basic.conf"`

@@ -22,14 +22,26 @@
 #ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
 
 #ifndef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
-/* HW Flash Swapping feature is used if MCUBoot is located in IFR region */
+/* HW flash remap feature is used if MCUBoot is located in IFR region */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
-#else
-/* 
- * MCUBoot is located in main flash -> Use overwrite update strategy
- * Comment this out to enable swap update strategy (default)
+#endif
+
+/* Encrypted XIP support config */
+
+/*
+ * Uncomment to enable extension utilizing on-the-fly decryption of encrypted image.
+ * Note: This configuration is compatible only with MCUBoot placed in main flash
+ * array. Flash remap feature has to be disabled.
+ * For more information please see readme file of mcuboot_opensource example.
  */
-#define CONFIG_BOOT_OVERWRITE_ONLY
+//#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
+
+/*
+ * Automatically enable OVERWRITE_ONLY mode if encrypted XIP support is enabled.
+ * Note: Three slot mode is not supported on MCXN
+ */
+#ifdef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
 #endif
 
 /* MCUBoot Flash Config */
@@ -42,10 +54,36 @@
 /* Crypto Config */
 
 #define CONFIG_BOOT_SIGNATURE
+
+#ifdef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
+/*
+ * MCUBoot is located in main flash -> Use mbedTLS
+ */
+#define CONFIG_BOOT_SIGNATURE_TYPE_RSA
+#define CONFIG_BOOT_SIGNATURE_TYPE_RSA_LEN 2048
+#define COMPONENT_MBEDTLS
+#else
+/*
+ * MCUBoot is located in IFR region -> Use TinyCrypt
+ */
 #define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
-#define CONFIG_BOOT_BOOTSTRAP
 #define MCUBOOT_USE_TINYCRYPT
+#endif /* CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY */
+
+#define CONFIG_BOOT_BOOTSTRAP
+
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
+
+/* Config Guards */
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
+    !defined(CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY)
+#error "Encrypted XIP three slot mode is not supported on MCXN. Enable overwrite \
+only mode by CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY"
+#endif
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
+    !defined(CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY)
+#error "Encrypted XIP is not supported when MCUBoot is placed in IFR region."
+#endif
 
 #endif

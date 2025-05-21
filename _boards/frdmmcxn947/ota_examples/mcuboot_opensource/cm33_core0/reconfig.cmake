@@ -1,3 +1,8 @@
+# Add additional configuration
+mcux_add_macro(
+    CC "-DENCRYPTED_XIP_NPX"
+)
+
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/mbedtls_user_config.h
