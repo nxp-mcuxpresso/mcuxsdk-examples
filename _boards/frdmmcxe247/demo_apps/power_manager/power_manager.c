@@ -429,6 +429,30 @@ int main(void)
                 continue;
             }
 
+#if defined(FSL_FEATURE_SMC_HAS_ERRATA_011063) && (FSL_FEATURE_SMC_HAS_ERRATA_011063)
+            /* Check if transition is from RUN/VLPR to VLPS */
+            /* From VLPR to VLPS, the only clock source is SIRC 8MHz and maximum SYS_CLOCK is 4 MHz, so PREDIV_SYS_CLK/BUS_CLK must be >= 2 */
+            if ((targetPowerMode == kAPP_PowerModeVlps) && (currentPowerState == kSMC_PowerStateRun))
+            {
+                uint32_t rccr         = SCG->RCCR;
+                uint32_t divcore      = ((rccr & SCG_RCCR_DIVCORE_MASK) >> SCG_RCCR_DIVCORE_SHIFT) + 1;
+                uint32_t divbus       = ((rccr & SCG_RCCR_DIVBUS_MASK) >> SCG_RCCR_DIVBUS_SHIFT) + 1;
+                uint32_t currentRatio = divcore * divbus;
+                /* Check if PREDIV_SYS_CLK/BUS_CLK ratio >= 2 */
+                if (currentRatio < 2)
+                {
+                    PRINTF(
+                        "Because of ERR011063, PREDIV_SYS_CLK/BUS_CLK ratio must be >= 2 for RUN to VLPS or VLPR to "
+                        "VLPS transition, otherwise the MCU may hang in an undetermined state, which can only be "
+                        "recovered by a power-on reset event or a watchdog reset.\r\nThe current ratio is %d, please "
+                        "adjust configuration value for SCG_RCCR[DIVCORE] and SCG_RCCR[DIVBUS]. Application will skip "
+                        "this transition.",
+                        currentRatio);
+                    continue;
+                }
+            }
+#endif
+
             /* If target mode is RUN/VLPR/HSRUN, don't need to set wakeup source. */
             if ((kAPP_PowerModeRun == targetPowerMode) || (kAPP_PowerModeHsrun == targetPowerMode) ||
                 (kAPP_PowerModeVlpr == targetPowerMode))
