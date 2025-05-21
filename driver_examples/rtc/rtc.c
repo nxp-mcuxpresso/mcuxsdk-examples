@@ -203,8 +203,18 @@ int main(void)
         increments, thus there's possible 1 second maximum delay here. */
         currSeconds += sec;
 
+#if defined(FSL_FEATURE_RTC_HAS_ERRATA_010716) && (FSL_FEATURE_RTC_HAS_ERRATA_010716)
+        /* Disable time counter */
+        RTC_StopTimer(RTC);
+#endif /* FSL_FEATURE_RTC_HAS_ERRATA_010716 */
+
         /* Set alarm time in seconds */
         RTC->TAR = currSeconds;
+
+#if defined(FSL_FEATURE_RTC_HAS_ERRATA_010716) && (FSL_FEATURE_RTC_HAS_ERRATA_010716)
+        /* Reenable the time counter */
+        RTC_StartTimer(RTC);
+#endif /* FSL_FEATURE_RTC_HAS_ERRATA_010716 */
 
         /* Get alarm time */
         RTC_GetAlarm(RTC, &date);
