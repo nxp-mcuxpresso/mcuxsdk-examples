@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2016-2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -163,7 +163,6 @@ typedef struct _clock_setup
 extern mcdrv_adc_t g_sM1Curr3phDcBus;
 extern mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 extern mcdrv_eqd_enc_t g_sM1Enc;
-
 extern clock_setup_t g_sClockSetup;
 
 /*******************************************************************************
