@@ -85,8 +85,6 @@ mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
     "${board_root}/${board}/usb_examples/usb_host_hid_mouse_keyboard/freertos/${core_id}/hardware_init.c"
-    "${board_root}/${board}/usb_examples/usb_host_hid_mouse_keyboard/freertos/${core_id}/pin_mux.c"
-    "${board_root}/${board}/usb_examples/usb_host_hid_mouse_keyboard/freertos/${core_id}/pin_mux.h"
 )
 
 mcux_remove_armgcc_configuration(

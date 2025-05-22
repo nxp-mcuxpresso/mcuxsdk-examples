@@ -27,7 +27,7 @@ void BOARD_InitHardware(void)
     BOARD_ConfigMPU();
 
     BOARD_InitBootPins();
-    BOARD_BootClockRUN();
+    BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 }
 
@@ -36,10 +36,6 @@ void USB_OTG1_IRQHandler(void)
     USB_DeviceEhciIsrFunction(g_UsbDeviceHidMouse.deviceHandle);
 }
 
-void USB_OTG2_IRQHandler(void)
-{
-    USB_DeviceEhciIsrFunction(g_UsbDeviceHidMouse.deviceHandle);
-}
 
 #if (defined(USB_DEVICE_CONFIG_CHARGER_DETECT) && (USB_DEVICE_CONFIG_CHARGER_DETECT > 0U)) && \
     (defined(FSL_FEATURE_SOC_USBHSDCD_COUNT) && (FSL_FEATURE_SOC_USBHSDCD_COUNT > 0U))
@@ -48,13 +44,7 @@ void USBPHY1_IRQHandler(void)
     BLK_CTRL_WAKEUPMIX->USBPHY_MISC_CTRL |= BLK_CTRL_WAKEUPMIX_USBPHY_MISC_CTRL_USBPHY1_WAKEUP_IRQ_CLEAR_MASK;
     USB_DeviceEhciIsrHSDCDFunction(g_UsbDeviceHidMouse.deviceHandle);
 }
-void USBPHY2_IRQHandler(void)
-{
-    BLK_CTRL_WAKEUPMIX->USBPHY_MISC_CTRL |= BLK_CTRL_WAKEUPMIX_USBPHY_MISC_CTRL_USBPHY2_WAKEUP_IRQ_CLEAR_MASK;
-    USB_DeviceEhciIsrHSDCDFunction(g_UsbDeviceHidMouse.deviceHandle);
-}
 #endif
-
 void USB_DeviceClockInit(void)
 {
     uint32_t usbClockFreq;
@@ -64,16 +54,8 @@ void USB_DeviceClockInit(void)
         BOARD_USB_PHY_TXCAL45DM,
     };
     usbClockFreq = 24000000;
-    if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    {
-        CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
-    else
-    {
-        CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
+    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
+    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
     USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
 }
 void USB_DeviceIsrEnable(void)

@@ -21,7 +21,7 @@
 #include "board.h"
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_mdio.h"
-#include "fsl_phyrtl8201.h"
+#include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
 #include "fsl_phy.h"
 /*${header:end}*/
@@ -57,12 +57,30 @@ status_t APP_MDIO_Init(void)
         .srcClockHz        = CLOCK_GetRootClockFreq(kCLOCK_Root_Netc),
     };
 
+#ifdef EXAMPLE_PHY_USE_PORT_MDIO
+    /* Usually should call EP_Init/SWT_Init then init port MDIO, here just an quick enablement example. */
+    NETC_F2_PCI_HDR_TYPE0->PCI_CFH_CMD |=
+        (ENETC_PCI_TYPE0_PCI_CFH_CMD_MEM_ACCESS_MASK | ENETC_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER_EN_MASK);
+    NETC_F3_PCI_HDR_TYPE0->PCI_CFH_CMD |=
+        (ENETC_PCI_TYPE0_PCI_CFH_CMD_MEM_ACCESS_MASK | ENETC_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER_EN_MASK);
+
+    for (int i = 0U; i < 5U; i++)
+    {
+        mdioConfig.mdio.port = (netc_hw_eth_port_idx_t)((uint32_t)kNETC_ENETC0EthPort + i);
+        result               = NETC_MDIOInit(&s_mdio_handle[i], &mdioConfig);
+        if (result != kStatus_Success)
+        {
+            return result;
+        }
+    }
+#else
     mdioConfig.mdio.type = kNETC_EMdio;
     result               = NETC_MDIOInit(&s_mdio_handle, &mdioConfig);
     if (result != kStatus_Success)
     {
         return result;
     }
+#endif
 
     return result;
 }
@@ -71,17 +89,11 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitNETPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    if (((1U << 2) & EXAMPLE_SWT_USED_PORT_BITMAP) != 0U)
-    {
-        BOARD_InitSwtPort2Pins();
-    }
-    if (((1U << 3) & EXAMPLE_SWT_USED_PORT_BITMAP) != 0U)
-    {
-        BOARD_InitSwtPort3Pins();
-    }
     BOARD_NETC_Init();
+    
     APP_MDIO_Init();
 
     /* Reset all PHYs even some are not used in case unstable status has effect on other PHYs. */
@@ -106,11 +118,6 @@ void USB_OTG1_IRQHandler(void)
     USB_DeviceEhciIsrFunction(g_cdcVnic.deviceHandle);
 }
 
-void USB_OTG2_IRQHandler(void)
-{
-    USB_DeviceEhciIsrFunction(g_cdcVnic.deviceHandle);
-}
-
 void USB_DeviceClockInit(void)
 {
     uint32_t usbClockFreq;
@@ -120,16 +127,8 @@ void USB_DeviceClockInit(void)
         BOARD_USB_PHY_TXCAL45DM,
     };
     usbClockFreq = 24000000;
-    if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    {
-        CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
-    else
-    {
-        CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
+    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
+    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
     USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
 }
 void USB_DeviceIsrEnable(void)

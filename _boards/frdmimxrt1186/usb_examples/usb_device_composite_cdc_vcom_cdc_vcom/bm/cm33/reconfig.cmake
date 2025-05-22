@@ -53,6 +53,4 @@ mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
     "${board_root}/${board}/usb_examples/usb_device_composite_cdc_vcom_cdc_vcom/bm/${core_id}/hardware_init.c"
-    "${board_root}/${board}/usb_examples/usb_device_composite_cdc_vcom_cdc_vcom/bm/${core_id}/pin_mux.c"
-    "${board_root}/${board}/usb_examples/usb_device_composite_cdc_vcom_cdc_vcom/bm/${core_id}/pin_mux.h"
 )

@@ -34,7 +34,7 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
-    BOARD_BootClockRUN();
+    BOARD_InitBootClocks();
     HW_I2CReleaseBus();
     BOARD_InitDebugConsole();
     NVIC_SetPriority(BOARD_UART_IRQ, 5);

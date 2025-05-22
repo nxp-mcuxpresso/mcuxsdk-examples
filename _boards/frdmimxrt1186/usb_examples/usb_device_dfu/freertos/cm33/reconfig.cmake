@@ -53,8 +53,6 @@ mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
     "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/hardware_init.c"
-    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/pin_mux.c"
-    "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/pin_mux.h"
     "${board_root}/${board}/usb_examples/usb_device_dfu/freertos/${core_id}/usb_device_dfu_config.h"
     "middleware/usb/utility/usb_dfu_ram.c"
     "middleware/usb/utility/usb_flash.h"

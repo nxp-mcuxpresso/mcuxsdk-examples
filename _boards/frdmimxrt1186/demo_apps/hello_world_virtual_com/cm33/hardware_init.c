@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 /*${header:start}*/
+#include "pin_mux.h"
 #include "usb_device_config.h"
 #include "usb_device.h"
 #include "usb_device_class.h"
@@ -25,8 +26,9 @@ void USB_DeviceClockInit(void);
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
-
-    BOARD_BootClockRUN();
+	
+    BOARD_InitBootPins();
+    BOARD_InitBootClocks();
     USB_DeviceClockInit();
     DbgConsole_Init((uint8_t)CONTROLLER_ID, (uint32_t)NULL, kSerialPort_UsbCdc, (uint32_t)NULL);
 }
@@ -40,16 +42,9 @@ void USB_DeviceClockInit(void)
         BOARD_USB_PHY_TXCAL45DM,
     };
     usbClockFreq = 24000000;
-    if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    {
-        CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
-    else
-    {
-        CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
+
+    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
+    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
     USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
 }
 /*${function:end}*/

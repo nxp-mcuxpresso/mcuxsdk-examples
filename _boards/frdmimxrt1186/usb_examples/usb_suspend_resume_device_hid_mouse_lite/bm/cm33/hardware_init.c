@@ -8,6 +8,14 @@
 #include <stdbool.h>
 /*${standard_header:end}*/
 /*${header:start}*/
+#include "pin_mux.h"
+#include "clock_config.h"
+#include "board.h"
+#include "fsl_lpit.h"
+#include "fsl_gpc.h"
+#include "fsl_adapter_timer.h"
+#include "usb_phy.h"
+
 #include "usb_device_config.h"
 #include "usb.h"
 #include "usb_device.h"
@@ -16,20 +24,7 @@
 #include "usb_device_descriptor.h"
 #include "fsl_device_registers.h"
 #include "mouse.h"
-#include "usb_device_config.h"
-#include "usb.h"
-#include "usb_device.h"
-#include "usb_device_ch9.h"
-#include "usb_device_descriptor.h"
 
-#include "mouse.h"
-#include "pin_mux.h"
-#include "usb_phy.h"
-#include "clock_config.h"
-#include "board.h"
-#include "fsl_lpit.h"
-#include "fsl_gpc.h"
-#include "fsl_adapter_timer.h"
 /*${header:end}*/
 /*${variable:start}*/
 #define TIMER_SOURCE_CLOCK CLOCK_GetRootClockFreq(kCLOCK_Root_Bus_Aon)
@@ -41,12 +36,29 @@ void USB_WaitClockLocked(void);
 /*${prototype:end}*/
 extern usb_hid_mouse_struct_t g_UsbDeviceHidMouse;
 /*${function:start}*/
+
+void BOARD_InitPins(void)
+{
+    BOARD_InitBootPins();
+}
+
+/*!
+ * @brief De-initialize all pins used in this example
+ *
+ * @param disablePortClockAfterInit disable port clock after pin
+ * initialization or not.
+ */
+void BOARD_DeinitPins(void)
+{
+}
+   
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
 
-    BOARD_InitBootPins();
-    BOARD_BootClockRUN();
+    BOARD_InitPins();
+    BOARD_InitBUTTONsPins();
+    BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
     /* Define the init structure for the input switch pin */
@@ -71,15 +83,7 @@ void BOARD_InitHardware(void)
     GPC_CM_EnableIrqWakeup(kGPC_CPU0, BOARD_USER_BUTTON_IRQ, true);
 }
 
-/*!
- * @brief De-initialize all pins used in this example
- *
- * @param disablePortClockAfterInit disable port clock after pin
- * initialization or not.
- */
-void BOARD_DeinitPins(void)
-{
-}
+
 void BOARD_USER_BUTTON_IRQ_HANDLER(void)
 {
     /* Clear external interrupt flag. */
@@ -178,11 +182,6 @@ void USB_OTG1_IRQHandler(void)
     USB_DeviceEhciIsrFunction(g_UsbDeviceHidMouse.deviceHandle);
 }
 
-void USB_OTG2_IRQHandler(void)
-{
-    USB_DeviceEhciIsrFunction(g_UsbDeviceHidMouse.deviceHandle);
-}
-
 void USB_DeviceClockInit(void)
 {
     uint32_t usbClockFreq;
@@ -192,16 +191,8 @@ void USB_DeviceClockInit(void)
         BOARD_USB_PHY_TXCAL45DM,
     };
     usbClockFreq = 24000000;
-    if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    {
-        CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
-    else
-    {
-        CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
-        CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, usbClockFreq);
-    }
+    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, usbClockFreq);
+    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
     USB_EhciLowPowerPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
 }
 

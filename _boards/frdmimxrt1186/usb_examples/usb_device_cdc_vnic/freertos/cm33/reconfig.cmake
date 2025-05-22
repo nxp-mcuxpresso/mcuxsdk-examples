@@ -62,8 +62,6 @@ mcux_add_source(
   BASE_PATH "${SdkRootDirPath}"
   SOURCES
     "${board_root}/${board}/usb_examples/usb_device_cdc_vnic/freertos/${core_id}/hardware_init.c"
-    "${board_root}/${board}/usb_examples/usb_device_cdc_vnic/freertos/${core_id}/pin_mux.c"
-    "${board_root}/${board}/usb_examples/usb_device_cdc_vnic/freertos/${core_id}/pin_mux.h"
     "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enet_adapter.c"
     "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enet_adapter.h"
     "examples/usb_examples/usb_device_cdc_vnic/freertos/netc_adapter/virtual_nic_enetif.c"
