@@ -60,9 +60,9 @@
 #define FMSTR_FLEXCAN_TXMB      1
 #define FMSTR_FLEXCAN_RXMB      2
 
-/* Enable CAN-FD mode */
+//! Enable CAN-FD mode
 #define FMSTR_CAN_USE_CANFD     0
-// Use CAN FD flexible data rate for TX frames
+//! Enable CAN-FD Bit-rate Switch in CAN-FD mode
 #define FMSTR_CANFD_USE_BRS     0
 
 //! Input/output communication buffer size

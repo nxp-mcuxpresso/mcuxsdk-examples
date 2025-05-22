@@ -88,16 +88,6 @@ static void init_freemaster_can(void)
     uint32_t canSrcClock = EXAMPLE_CAN_CLOCK_FREQUENCY;
 
     /* Init FlexCAN module. */
-    /*
-     * flexcanConfig.clkSrc = kFLEXCAN_ClkSrcOsc;
-     * flexcanConfig.bitRate = 1000000U;
-     * flexcanConfig.bitRateFD = 2000000U;
-     * flexcanConfig.maxMbNum = 16;
-     * flexcanConfig.enableLoopBack = false;
-     * flexcanConfig.enableSelfWakeup = false;
-     * flexcanConfig.enableIndividMask = false;
-     * flexcanConfig.enableDoze = false;
-     */
     FLEXCAN_GetDefaultConfig(&flexcanConfig);
 
     flexcanConfig.clkSrc   = kFLEXCAN_ClkSrcPeri;
