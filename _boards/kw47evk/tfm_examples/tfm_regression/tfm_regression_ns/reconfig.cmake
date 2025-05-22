@@ -10,6 +10,11 @@ mcux_remove_armgcc_configuration(
     CC "-O0"
     CX "-O0"
 )
+mcux_remove_armgcc_configuration(
+    TARGETS debug
+    CC "-O1"
+    CX "-O1"
+)
 mcux_add_armgcc_configuration(
     TARGETS debug
     CC "-Os"
