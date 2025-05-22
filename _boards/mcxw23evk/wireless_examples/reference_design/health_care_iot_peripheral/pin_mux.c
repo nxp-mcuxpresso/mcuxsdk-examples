@@ -24,6 +24,7 @@ external_user_signals: {}
 
 #include "fsl_common.h"
 #include "fsl_iocon.h"
+#include "fsl_inputmux.h"
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
@@ -50,6 +51,8 @@ BOARD_InitPins:
   - {pin_num: '6', peripheral: FLEXCOMM1, signal: RXD_SDA_MOSI, pin_signal: PIO0_13/FC1_RXD_SDA_MOSI/FC2_CTS_SDA_SSEL0/SCT_OUT2/UTICK_CAP2/PLU_OUT1/SEC_PIO0_13/CTIMER3_MAT1/CTIMER_INP13,
     mode: inactive, slew_rate: standard, invert: disabled, open_drain: disabled, ssel: signal3v3, filter_off: disabled, ecs: disabled, egp: gpio, i2cfilter: nonhighspeedmode}
   - {pin_num: '14', peripheral: PMC, signal: WAKEUP, pin_signal: PIO0_21/WAKEUP/SEC_PIO0_21/CTIMER_INP21, mode: inactive, slew_rate: standard, invert: disabled, open_drain: disabled}
+  - {pin_num: '1', peripheral: PINT, signal: 'PINT, 1', pin_signal: PIO0_1/FC0_RTS_SCL_SSEL1/FC2_SCK/PLU_CLKIN/SEC_PIO0_1/CTIMER0_MAT1/CTIMER_INP1, mode: inactive,
+    slew_rate: standard, invert: disabled, open_drain: disabled}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -63,8 +66,27 @@ BOARD_InitPins:
 /* Function assigned for the Cortex-M33 */
 void BOARD_InitPins(void)
 {
+    /* Enables the clock for the Input Mux.: Enable Clock. */
+    CLOCK_EnableClock(kCLOCK_InputMux);
     /* Enables the clock for the I/O controller.: Enable Clock. */
     CLOCK_EnableClock(kCLOCK_Iocon);
+    /* PIO0_1 is selected for PINT input 1 */
+    INPUTMUX_AttachSignal(INPUTMUX, 1U, kINPUTMUX_GpioPort0Pin1ToPintsel);
+
+    const uint32_t port0_pin1_config = (/* Pin is configured as PIO0_1 */
+                                        IOCON_PIO_FUNC0 |
+                                        /* No addition pin function */
+                                        IOCON_PIO_MODE_INACT |
+                                        /* Standard mode, output slew rate control is enabled */
+                                        IOCON_PIO_SLEW_STANDARD |
+                                        /* Input function is not inverted */
+                                        IOCON_PIO_INV_DI |
+                                        /* Enables digital function */
+                                        IOCON_PIO_DIGITAL_EN |
+                                        /* Open drain is disabled */
+                                        IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN1 (coords: 1) is configured as PIO0_1 */
+    IOCON_PinMuxSet(IOCON, 0U, 1U, port0_pin1_config);
 
     const uint32_t port0_pin13_config = (/* Pin is configured as FC1_RXD_SDA_MOSI */
                                          IOCON_PIO_FUNC1 |
