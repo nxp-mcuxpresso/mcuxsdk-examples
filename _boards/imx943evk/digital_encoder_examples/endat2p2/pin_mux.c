@@ -73,19 +73,6 @@ void BOARD_InitEncoder2Pins(void)
     IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
 }
 
-void BOARD_InitI2C6Pins(void)
-{
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
-
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
 void BOARD_InitIPWM1(void)
 {
     IOMUXC_SetPinMux(

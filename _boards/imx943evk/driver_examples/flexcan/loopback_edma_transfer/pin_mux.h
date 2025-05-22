@@ -41,7 +41,6 @@ void BOARD_InitBootPins(void);
 
 void BOARD_InitCAN1Pins(void);                                /*!< Function assigned for the core: undefined[cm33] */
 
-void BOARD_InitI2C6Pins(void);                                /*!< Function assigned for the core: undefined[cm33] */
 #if defined(__cplusplus)
 }
 #endif

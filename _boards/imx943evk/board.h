@@ -709,6 +709,8 @@ uint32_t BOARD_Lpuart10GetFreq(void);
 uint32_t BOARD_Lpuart11GetFreq(void);
 uint32_t BOARD_Lpuart12GetFreq(void);
 
+void BOARD_InitI2C6Pins(void);
+
 void BOARD_InitLpuart1Pins(void);
 void BOARD_InitLpuart2Pins(void);
 void BOARD_InitLpuart3Pins(void);

@@ -136,19 +136,6 @@ void BOARD_Init_M1_ENDAT2P2(void)
   XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputEndat22StrN);
 }
 
-void BOARD_InitI2C6Pins(void) 
-{
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
-
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-}
-
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

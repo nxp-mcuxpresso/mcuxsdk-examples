@@ -22,8 +22,6 @@ processor_version: 0.14.7
 
 #include "pin_mux.h"
 
-void BOARD_InitI2C6Pins(void);
-
 /* FUNCTION ************************************************************************************************************
  * 
  * Function Name : BOARD_InitBootPins
@@ -65,18 +63,6 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_PAD_ETH3_TX_CTL__FLEXPWM1_PWMA2,      /* GPIO_AD_01 is configured as FLEXPWM1_PWMB00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-}
-
-void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
-
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
 }
 
 /***********************************************************************************************************************

@@ -44,7 +44,6 @@ void BOARD_InitSAI1Pins(void);                                /*!< Function assi
 
 void BOARD_InitI2C3Pins(void);                                /*!< Function assigned for the core: undefined[cm33] */
 
-void BOARD_InitI2C6Pins(void);                                /*!< Function assigned for the core: undefined[cm33] */
 
 void BOARD_InitPDMPins(void);                                /*!< Function assigned for the core: undefined[cm33] */
 

@@ -5,8 +5,6 @@
  */
 
  #include "pin_mux.h"
-
- void BOARD_InitI2C6Pins(void);
  void BOARD_InitI2C3Pins(void);
  void BOARD_InitPins(void);
  void BOARD_InitGPIOPins(void);
@@ -175,18 +173,6 @@
      IOMUXC_SetPinConfig(IOMUXC_PAD_ETH4_RXD2__NETC_PINMUX_ETH4_RXD2, 0x57eU);
      IOMUXC_SetPinConfig(IOMUXC_PAD_ETH4_RXD3__NETC_PINMUX_ETH4_RXD3, 0x57eU);
  
- }
- 
- void BOARD_InitI2C6Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL, 1U);
-     IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA, 1U);
- 
-     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO28__LPI2C6_SCL,
-                         IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                         IOMUXC_PAD_OD_MASK);
-     IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO29__LPI2C6_SDA,
-                         IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                         IOMUXC_PAD_OD_MASK);
  }
  
  void BOARD_InitI2C3Pins(void) {                                /*!< Function assigned for the core: undefined[cm33] */

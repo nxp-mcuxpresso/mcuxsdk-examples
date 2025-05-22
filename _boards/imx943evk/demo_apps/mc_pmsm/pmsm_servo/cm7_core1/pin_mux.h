@@ -38,7 +38,6 @@ void BOARD_Init_M1_ENDAT2P2(void);
 void BOARD_Init_M1_SINC(void);
 void BOARD_Init_M1_FAULTS(void);
 
-void BOARD_InitI2C6Pins(void);
 
 #if defined(__cplusplus)
 }

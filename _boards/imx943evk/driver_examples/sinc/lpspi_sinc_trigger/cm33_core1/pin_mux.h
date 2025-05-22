@@ -51,7 +51,6 @@ void BOARD_InitLpspi3Pins(void);
  *
  */
 void BOARD_InitSinc2Pins(void);
-void BOARD_InitI2C6Pins(void);
 
 #if defined(__cplusplus)
 }

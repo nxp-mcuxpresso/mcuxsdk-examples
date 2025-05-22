@@ -56,7 +56,6 @@ void BOARD_InitEncoder2Pins(void);
  * @brief Configures pin routing for I2C for pin MUX.
  *
  */
-void BOARD_InitI2C6Pins(void);
 
 /*!
  * @brief Configures pin routing for PWM1.
