@@ -57,7 +57,7 @@ MEMORY
   m_interrupts              (RX)  : ORIGIN = 0x0FFC0000, LENGTH = 0x00002000
   m_text                    (RX)  : ORIGIN = 0x0FFC2000, LENGTH = 0x0003E000
   m_data                    (RW)  : ORIGIN = 0x20003000, LENGTH = 0x0002B000
-  m_ncache                  (RW)  : ORIGIN = 0x80000000, LENGTH = 0x00FFFFFF
+  m_ncache                  (RW)  : ORIGIN = 0x80000000, LENGTH = 0x01000000
   m_rpmsg_shmem_m70_m33s    (RW)  : ORIGIN = 0x20039000, LENGTH = 0x00001800
   m_rpmsg_shmem_m71_m33s    (RW)  : ORIGIN = 0x2003A800, LENGTH = 0x00001800
   m_rsc_tbl                 (RW)  : ORIGIN = 0x2003C000, LENGTH = 0x00004000
