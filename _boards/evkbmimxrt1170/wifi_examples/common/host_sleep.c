@@ -160,8 +160,6 @@ void mcu_suspend()
 
 int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void))
 {
-    int ret = WM_SUCCESS;
-
     wlan_host_sleep_pre_cfg = wlan_hs_pre_cfg;
     wlan_host_sleep_post_cfg = wlan_hs_post_cfg;
 

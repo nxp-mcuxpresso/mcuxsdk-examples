@@ -272,7 +272,6 @@ void mcu_suspend()
 
 int hostsleep_init(void (*wlan_hs_pre_cfg)(void), void (*wlan_hs_post_cfg)(void))
 {
-    int ret = WM_SUCCESS;
     if (true != LPM_Init(s_curRunMode))
     {
         PRINTF("LPM Init Failed!\r\n");
