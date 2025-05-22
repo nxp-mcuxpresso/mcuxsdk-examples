@@ -15,13 +15,13 @@ and also instructions for running the included sample applications.
 =============================
 
 - Micro USB cable
-- RD-RW61X-BGA board
+- FRDM-RW612 board
 - Personal Computer
 
 ## 1.3 Board settings
 ======================
 
-U38 DIP 1,2,3,4 all off HD12 1-2, 3-4 connected
+No specail setting to do for wifi&ble coex.
 
 # 2. Build and flash
 =====================
@@ -32,12 +32,12 @@ U38 DIP 1,2,3,4 all off HD12 1-2, 3-4 connected
 > flash_debug:
 ```bash
 $ cd mcu-sdk-3.0
-$ west build -b rdrw612bga examples/coex_examples/coex_wifi_peripheral_ht --toolchain armgcc --config=flash_debug -d coex_wifi_peripheral_ht
+$ west build -b frdmrw612 examples/coex_examples/coex_wifi_peripheral_ht --toolchain armgcc --config=flash_debug -d coex_wifi_peripheral_ht
 ```
 > flash_release
 ```bash
 $ cd mcu-sdk-3.0
-$ west build -b rdrw612bga examples/coex_examples/coex_wifi_peripheral_ht --toolchain armgcc --config=flash_release -d coex_wifi_peripheral_ht
+$ west build -b frdmrw612 examples/coex_examples/coex_wifi_peripheral_ht --toolchain armgcc --config=flash_release -d coex_wifi_peripheral_ht
 ```
 
 **NOTE:**
@@ -97,7 +97,7 @@ Wi-Fi cau temperature : 29
 Bluetooth initialized
 Advertising successfully started
 STA MAC Address: C0:95:DA:01:07:36
-baord_type: 0, baord_type mapping:
+board_type: 0, board_type mapping:
 0----QFN
 1----CSP
 2----BGA
@@ -118,13 +118,14 @@ CLIs Available:
 ========================================
   0  Coex menu print
   w  Wifi Cli
+  p  Power manager MAIN MENU
 ========================================
 
 ```
 
 1. WiFi Test
 
-> Enter 'w' to enter Wi-Fi command mode. Enter '0' to return coex menu. Only support enter Wi-Fi commands.
+> Enter 'w' to enter Wi-Fi command mode. Enter '0' to return coex menu.
 
 - Get the Wi-Fi driver and firmware version:
 
@@ -179,3 +180,14 @@ Scan scheduled...
 >
 >The demo does not require user interaction. The application will automatically start advertising the Health Thermometer Service and it will accept the first connection request it receives. If the peer subscribes to receive temperature indications, these will be sent every 1 second. The temperature readings are simulated with values between 20 and 25 degrees Celsius.
 
+3. Low power manager test
+
+> Enter 'p' to enter pm command mode. Enter '0' to return coex menu.
+> 
+> Only support enable command now.
+
+```bash
+>enable 3 3000
+```
+
+> It may block serial port input.

@@ -89,10 +89,6 @@
 #include "ksdk_mbedtls.h"
 #endif
 #endif
-
-#if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0)
-#include "PWR_Interface.h"
-#endif /* APP_LOWPOWER_ENABLED */
 #endif /* RW612_SERIES */
 
 #if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0)
@@ -101,16 +97,7 @@
 #endif /* APP_LOWPOWER_ENABLED */
 
 #include <peripheral_ht.h>
-
-#ifndef CONFIG_DISABLE_BLE
-#define CONFIG_DISABLE_BLE 0 // needs to define CONFIG_DISABLE_BLE with value, 0 for enable BLE, 1 for disable BLE
-#endif
-
-#if (defined(HPS) || defined(IPSPR))
-#include "fsl_phyksz8081.h"
-#endif /* HPS | IPSPR */
-
-//#include "coex.h"
+#include "coex_pm.h"
 #include "coex_cli.h"
 
 /*******************************************************************************
@@ -121,18 +108,9 @@ const int TASK_MAIN_PRIO       = (configMAX_PRIORITIES-5);
 const int TASK_MAIN_STACK_SIZE = (2 * 1024);
 TaskHandle_t task_main_handle;
 
-#ifdef A2DP_SINK
-TaskHandle_t audio_task_handler;
-OSA_SEMAPHORE_HANDLE_DEFINE(xSemaphoreAudio);
-#endif /* A2DP_SINK */
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-
-#ifdef A2DP_SINK
-extern void (* a2dp_snk_cb)(UCHAR *data, UINT16 datalen);
-#endif /* A2DP_SINK */
 extern void BOARD_InitHardware(void);
 extern void coex_controller_init();
 extern void APP_InitServices(void);
@@ -144,62 +122,13 @@ extern void APP_InitServices(void);
 #ifdef RW612_SERIES
 #if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
 /* Tickless idle is allowed by default but can be disabled runtime with APP_SetTicklessIdle */
-static int ticklessIdleAllowed = 1;
+static int ticklessIdleAllowed = 0;
 #endif
 #endif
-
-/* Ethernet configuration. */
-#if (defined(HPS) || defined(IPSPR))
-phy_ksz8081_resource_t g_phy_resource;
-#define EXAMPLE_ENET ENET
-#endif /* HPS | IPSPR */
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
-
-#if (defined(HPS) || defined(IPSPR))
-void BOARD_InitModuleClock(void)
-{
-    /* Set 50MHz output clock required by PHY. */
-    CLOCK_EnableClock(kCLOCK_TddrMciEnetClk);
-}
-
-static void MDIO_Init(void)
-{
-    uint32_t i = ENET_GetInstance(EXAMPLE_ENET);
-
-    (void)CLOCK_EnableClock(s_enetClock[i]);
-    (void)CLOCK_EnableClock(s_enetExtraClock[i]);
-    ENET_SetSMI(EXAMPLE_ENET, CLOCK_GetMainClkFreq(), false);
-}
-
-static status_t MDIO_Write(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
-{
-    return ENET_MDIOWrite(EXAMPLE_ENET, phyAddr, regAddr, data);
-}
-
-static status_t MDIO_Read(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
-{
-    return ENET_MDIORead(EXAMPLE_ENET, phyAddr, regAddr, pData);
-}
-#endif /* HPS | IPSPR */
-
-#ifdef A2DP_SINK
-void AudioTask(void *handle)
-{
-    OSA_SemaphoreCreate(xSemaphoreAudio, 0);
-    while (1U)
-    {
-        OSA_SemaphoreWait(xSemaphoreAudio, osaWaitForever_c);
-        if(NULL != a2dp_snk_cb)
-        {
-            a2dp_snk_cb(NULL, 0);
-        }
-
-    }
-}
-#endif /* A2DP_SINK */
 
 static void printSeparator(void)
 {
@@ -216,18 +145,16 @@ void task_main(void *param)
 #endif
     printSeparator();
 
+#if CONFIG_COEX_ENABLE_MENU
     coex_cli_init();
+#endif
     coex_controller_init();
 
-#if(CONFIG_DISABLE_BLE == 0)
-    extern int USB_HostMsdFatfsInit(void);
-
-#if (defined(CONFIG_BT_SNOOP) && (CONFIG_BT_SNOOP > 0))
-    (void)USB_HostMsdFatfsInit();
-#endif
+#if CONFIG_COEX_ENABLE_PM_MENU
+    APP_LPTimerCreate();
 #endif
 
-#if ((CONFIG_COEX_ENABLE_WIFI == 1) || (CONFIG_OT_CLI == 1))
+#if CONFIG_COEX_ENABLE_MENU
     coex_menuPrint();
     while (1)
     {
@@ -236,13 +163,6 @@ void task_main(void *param)
         {
             coex_menuAction(ch);
         }
-    }
-#elif ((CONFIG_COEX_ENABLE_WIFI == 0) && (CONFIG_DISABLE_BLE == 0))
-    appl_main();
-
-    while(1)
-    {
-        OSA_TimeDelay(1000);
     }
 #endif
 }
@@ -268,33 +188,7 @@ int main(void)
     extern void BOARD_InitHardware(void);    /*fix build warning: function declared implicitly.*/
     BOARD_InitHardware();
 
-#if (defined(HPS) || defined(IPSPR))
-    gpio_pin_config_t gpio_config = {kGPIO_DigitalOutput, 1U};
-
-    BOARD_InitModuleClock();
-    ENET_ResetHardware();
-
-    GPIO_PortInit(GPIO, 0U);
-    GPIO_PortInit(GPIO, 1U);
-    GPIO_PinInit(GPIO, 0U, 21U, &gpio_config); /* ENET_RST */
-    gpio_config.pinDirection = kGPIO_DigitalInput;
-    gpio_config.outputLogic  = 0U;
-    GPIO_PinInit(GPIO, 1U, 23U, &gpio_config); /* ENET_INT */
-
-    GPIO_PinWrite(GPIO, 0U, 21U, 0U);
-    SDK_DelayAtLeastUs(1000000, CLOCK_GetCoreSysClkFreq());
-    GPIO_PinWrite(GPIO, 0U, 21U, 1U);
-
-    MDIO_Init();
-    g_phy_resource.read  = MDIO_Read;
-    g_phy_resource.write = MDIO_Write;
-#endif /* HPS | IPSPR */
-
 #ifdef RW612_SERIES
-    CRYPTO_InitHardware();
-
-    extern void APP_InitServices(void);
-    APP_InitServices();
 
 #ifdef OOB_WAKEUP
     Configure_H2C_gpio();
@@ -314,12 +208,6 @@ int main(void)
     result =
         xTaskCreate(task_main, "main", TASK_MAIN_STACK_SIZE, NULL, TASK_MAIN_PRIO, &task_main_handle);
     assert(pdPASS == result);
-
-#ifdef A2DP_SINK
-    result =
-        xTaskCreate(AudioTask, "audio", TASK_MAIN_STACK_SIZE, NULL, BT_TASK_PRIORITY, &audio_task_handler);
-    assert(pdPASS == result);
-#endif
 
 #if defined (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK) \
         && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U)

@@ -13,7 +13,5 @@
 
 #if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0)
 /* Defines the low power mode of BLE host when scanning and connecting */
-#define APP_LOW_POWER_MODE      PWR_DeepSleep
-/* If low power is enabled, force tickless idle enable in FreeRTOS */
-#define configUSE_TICKLESS_IDLE 1
+#define APP_LOW_POWER_MODE      PWR_PowerDown
 #endif

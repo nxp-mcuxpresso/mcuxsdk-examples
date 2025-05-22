@@ -28,6 +28,8 @@ mcux_add_source(
             middleware/wireless/coex/src/common/controller_coex_nxp.c
             middleware/wireless/coex/src/cli/coex_cli.c
             middleware/wireless/coex/src/cli/coex_cli.h
+            middleware/wireless/coex/src/coex_pm/coex_pm.c
+            middleware/wireless/coex/src/coex_pm/coex_pm.h
 )
 
 mcux_add_include(
@@ -35,6 +37,7 @@ mcux_add_include(
     INCLUDES examples/coex_examples/coex_wifi_peripheral_ht
              examples/edgefast_bluetooth_examples/peripheral_ht
              middleware/wireless/coex/src/cli
+             middleware/wireless/coex/src/coex_pm
 )
 
 mcux_add_macro(
