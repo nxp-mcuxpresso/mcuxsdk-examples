@@ -107,18 +107,25 @@ No special settings are required.
 
 5.  **[OPTIONAL]** Enable support for large blobs:
 
-    In order to maximize the TF-M ITS performance, the maximum supported blob size is set to 2908 bytes. In case you want to support larger blobs (8K is the maximum size supported by PSA), you need to adjust two TF-M parameters.
+    In order to maximize the TF-M ITS performance, the maximum supported blob size is set to 2908 bytes. In case you want to support larger blobs (8K is the maximum size supported by PSA), you need to adjust four TF-M parameters.
 
     [middleware/tfm/tf-m/platform/ext/target/nxp/[BOARD]/config_tfm_target.h](../../../../middleware/tfm/tf-m/platform/ext/target/nxp/frdmrw612/config_tfm_target.h)
 
     ```c
     #define ITS_MAX_ASSET_SIZE 3 * 0xC00
+    #define CRYPTO_ENGINE_BUF_SIZE 0x4500
     ```
 
     [middleware/tfm/tf-m/platform/ext/target/nxp/[BOARD]/partition/flash_layout.h](../../../../middleware/tfm/tf-m/platform/ext/target/nxp/frdmrw612/partition/flash_layout.h)
 
     ```c
     #define TFM_HAL_ITS_SECTORS_PER_BLOCK (3)
+    ```
+
+    [middleware/tfm/tf-m/platform/ext/target/nxp/[BOARD]/partition/region_defs.h](../../../../middleware/tfm/tf-m/platform/ext/target/nxp/frdmrw612/partition/region_defs.h)
+
+    ```c
+    #define NS_HEAP_SIZE (0x6000)
     ```
 
 6.  Enable secure boot:
