@@ -109,7 +109,7 @@ firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
 
 m_sqram_debug_size                  = 0x7C;  /*New section allowing to share debug info to CM33 (LL error/warnings).*/
-m_sqram_btblebuf_size               = 0x5400;
+m_sqram_btblebuf_size               = 0x5000;
 
 /* Section used to share a flag on both cores for lowpower purpose */
 m_lowpower_flag_size              = 0x08;

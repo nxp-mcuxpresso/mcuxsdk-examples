@@ -380,7 +380,7 @@ if(gUseOtSettingsStorage_d) {
 define symbol m_sqram_debug_size                = 0x7C;  /*New section allowing to share debug info to CM33 (LL error/warnings).*/
 define symbol m_lowpower_flag_size              = 0x04;  /* Section used to share a flag on both cores for lowpower purpose */
 define exported symbol m_lowpower_flag_start    = 0x489C0000 + m_sqram_debug_size;
-define symbol m_sqram_btblebuf_size             = 0x5400;
+define symbol m_sqram_btblebuf_size             = 0x5000;
 define symbol m_sqram_btblebuf_end              = m_lowpower_flag_start + m_lowpower_flag_size + m_sqram_btblebuf_size - 1;
 define exported symbol rpmsg_sh_mem_size        = 0x1800;
 define exported symbol rpmsg_sh_mem_end         = 0x489C9FFF;

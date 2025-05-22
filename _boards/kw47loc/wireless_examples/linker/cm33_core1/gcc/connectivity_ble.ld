@@ -73,8 +73,8 @@ __HEAP_end__                        = m_data1_end;
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
 
-m_sqram_debug_size                  = 0x7C;  /*New section allowing to share debug info to CM33 (LL error/warnings).*/
-m_sqram_btblebuf_size               = 0x5400;
+/*m_sqram_debug_size                  = 0x7C;*/
+/*m_sqram_btblebuf_size               = 0x5400;*/
 
 
 /********************************************** Computeur Engine (CE) Memory **********************************************/
@@ -84,6 +84,7 @@ m_shared_ram_start                = 0xB0000000;
 m_shared_ram_end                  = 0xB0013FFF;
 
 m_sqram_debug_start               = 0xB0000000;
+/*New section allowing to share debug info to CM33 (LL error/warnings).*/
 m_sqram_debug_size                = 0x7C;           /*31 x 4 bytes*/
 m_sqram_debug_end                 = m_sqram_debug_start + m_sqram_debug_size - 1;
 
@@ -93,9 +94,8 @@ m_lowpower_flag_start    = m_sqram_debug_end + 1;
 m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
 m_sqram_btblesqbuf_start          = m_lowpower_flag_end + 1;
-m_sqram_btblesqbuf_size           = 0x5400;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
-                                                                 /*Increased from 0x5400 to 0x6300 to hold 12 additionnal TX data buffers to support 24 connections (pairing)*/
-                                                                 /*Restored back to 0x5400 after fix on host. Comment kept until feature is validated.*/
+m_sqram_btblesqbuf_size           = 0x5000;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
+                                                   /*Was 0x5400, reduced to 0x5000 to hold 4 advertising set with max adv length = 1000 bytes in "sqram_btbleaesqbuf" region.*/
 m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
 
 /* Last reserved word of the debug section used for the sfc module */
@@ -121,10 +121,8 @@ m_sqram_btbuf_size                = 0x00;       /* was 0x200 but was reduced to 
 m_sqram_btbuf_end                 = m_sqram_btbuf_start + m_sqram_btbuf_size -1;
 
 m_sqram_btbleaesqbuf_start        = m_sqram_btbuf_end + 1;
-m_sqram_btbleaesqbuf_size         = DEFINED(gEnableCoverage_d)?0xF20:0x2804;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
-                                                                  /*Reduced from 0x2804 to 0x18c8 to allow holding 12 additionnal TX data buffers to support 24 connections.
-                                                                  As a consequence, max adv data len will be reduced from 1650 bytes to 1000 bytes in LL.*/
-                                                                  /*Restored back to 0x2804 after fix on host. Comment kept until feature is validated.*/
+m_sqram_btbleaesqbuf_size         = DEFINED(gEnableCoverage_d)?0xF20:0x2C00;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
+                                                                                   /*Increased to hold 4 advertising set with max adv length = 1000 bytes*/
 
 m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
 
