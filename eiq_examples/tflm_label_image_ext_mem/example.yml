@@ -23,5 +23,5 @@ tflm_label_image_ext_mem:
     - +armgcc@flash_release
     - +iar@flash_debug
     - +iar@flash_release
-    - -mdk@flash_debug
-    - -mdk@flash_release
+    - +mdk@flash_debug
+    - +mdk@flash_release
