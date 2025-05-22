@@ -15,6 +15,13 @@ mc_pmsm_enc:
   boards:
     evkmimxrt1180@cm7: []
     evkbmimxrt1170@cm7: []
+    frdmimxrt1186@cm7:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
     frdmmcxa153:
     - -armgcc@debug
     - -iar@debug

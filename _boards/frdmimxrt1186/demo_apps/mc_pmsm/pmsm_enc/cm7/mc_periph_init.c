@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -49,7 +48,7 @@ void MCDRV_Init_M1(void)
     InitClock();
 
     /* Init ADC */
-    M1_MCDRV_ADC_PERIPH_INIT();
+    M1_MCDRV_CURR_3PH_VOLT_DCB_INIT();
 
     /* Init TMR1 (slow loop counter) */
     M1_MCDRV_TMR_SLOWLOOP_INIT();
@@ -58,10 +57,10 @@ void MCDRV_Init_M1(void)
     M1_MCDRV_PWM_PERIPH_INIT();
 
     /* Qudrature decoder peripheral init */
-    M1_MCDRV_QD_PERIPH_INIT();
+    M1_MCDRV_ENC_INIT();
 
-    /* Comparator CMP */
-    M1_MCDRV_CMP_INIT();
+//    /* Comparator CMP */
+//    M1_MCDRV_CMP_INIT();
 }
 
 /*!
@@ -97,7 +96,7 @@ void InitClock(void)
  */
 void InitADC(void)
 {
-    #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 0))
+    #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 3))
     #warning Used a different fsl_lpadc driver version! An example may not work correctly! 
     #endif
   
@@ -120,7 +119,7 @@ void InitADC(void)
     LPADC_DoOffsetCalibration(ADC1);
     LPADC_DoAutoCalibration(ADC1);
     
-    LPADC_SetOffsetCalibrationMode(ADC1, kLPADC_OffsetCalibration16bitMode);
+    LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration16bitMode);
     LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration12bitMode);
     LPADC_DoOffsetCalibration(ADC2);
     LPADC_DoAutoCalibration(ADC2);
@@ -128,12 +127,12 @@ void InitADC(void)
     /* *********************************************************************************
      *  ADC1                                                                           *
      *                  FIFO0                            FIFO1                         *
-     *  Conversion 1    I_A   - ADC1_A5  GPIO_AD_06      I_B    - ADC1_B5  GPIO_AD_07  *
-     *  Conversion 2    -                                UDCBus - ADC1_B4  GPIO_AD_09  *
+     *  Conversion 1    I_A   - ADC1_A2  GPIO_AD_12      I_B    - ADC1_B2  GPIO_AD_13  *
+     *  Conversion 2    UDCBus - ADC1_A1  GPIO_AD_14     ----------------------------  *
      *                                                                                 *
      *  ADC2                                                                           *
      *                  FIFO0                            FIFO1                         *
-     *  Conversion 1    I_C   - ADC2_A2  GPIO_AD_22      I_A    - ADC2_B1  GPIO_AD_21  *
+     *  Conversion 1    I_C   - ADC2_B5  GPIO_AD_29      ----------------------------  *
      *                                                                                 *
      **********************************************************************************/
     
@@ -145,20 +144,20 @@ void InitADC(void)
     
     /* ADC1 */    
      /* Set conversion CMD1 configuration. */
-    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_PH_A; //ADC1_A5 (CUR_A) and ADC1_B5 (CUR_B)
+    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_PH_A; //ADC1_A2 (CUR_A) and ADC1_B2 (CUR_B)
     mLpadcCommandConfigStruct.chainedNextCommandNumber = 2U; /* Next execuited CMD will be CMD2 */
     mLpadcCommandConfigStruct.sampleChannelMode = kLPADC_SampleChannelDualSingleEndBothSide; /* two simultaneous conversions Channel A and Channel B */
     LPADC_SetConvCommandConfig(ADC1, 1U, &mLpadcCommandConfigStruct); //CONFIGURE CMD 1 (CMDL1, CMDH1)
 
     /* Set conversion CMD2 configuration. */
-    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_UDCB; //ADC1_B4 (UDCBus)
+    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_UDCB; //ADC1_A1 (UDCBus)
     mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U; /* This was last execuited command */
     mLpadcCommandConfigStruct.sampleChannelMode = kLPADC_SampleChannelDualSingleEndBothSide;
     LPADC_SetConvCommandConfig(ADC1, 2U, &mLpadcCommandConfigStruct);  /* Configure the CMD 2 */ //CONFIGURE CMD 2 (CMDL2, CMDH2)
 
     /* ADC2 */
-    mLpadcCommandConfigStruct.channelNumber = M1_ADC2_PH_C; //ADC2_A2 (CUR_C)
-    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U; /* Next execuited CMD will be CMD2 */
+    mLpadcCommandConfigStruct.channelNumber = M1_ADC2_PH_C; //ADC2_B5 (CUR_C)
+    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U; /* This was last execuited command */
     mLpadcCommandConfigStruct.sampleChannelMode = kLPADC_SampleChannelDualSingleEndBothSide; /* two simultaneous conversions Channel A and Channel B */
     LPADC_SetConvCommandConfig(ADC2, 1U, &mLpadcCommandConfigStruct); //CONFIGURE CMD 1 (CMDL1, CMDH1)
     
@@ -245,7 +244,7 @@ void InitTMR1(void)
 void M1_InitPWM(void)
 {
     /* PWM base pointer (affects the entire initialization) */
-    PWM_Type *PWMBase = (PWM_Type *)PWM1;
+    PWM_Type *PWMBase = (PWM_Type *)PWM4;
 
     /* Full and Half cycle reload */
     PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK|PWM_CTRL_HALF_MASK;
@@ -360,13 +359,8 @@ void M1_InitPWM(void)
  */
 void M1_InitQD(void)
 {
-  
     /* Enable clock to ENC modules */
     CLOCK_EnableClock(kCLOCK_Enc1);
-    CLOCK_EnableClock(kCLOCK_Xbar1);
-    
-    XBAR_SetSignalsConnection(kXBAR3_InputQtimer3Timer1, kXBAR1_OutputEqdc1Phasea);
-    XBAR_SetSignalsConnection(kXBAR3_InputQtimer3Timer2, kXBAR1_OutputEqdc1Phaseb);
     
     EQDC1->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
     EQDC1->CTRL &= ~EQDC_CTRL_LDOK_MASK;
@@ -377,13 +371,8 @@ void M1_InitQD(void)
     /* Pass initialization data into encoder driver structure */
     /* encoder position and speed measurement */
     g_sM1Enc.pui32QdBase   = (EQDC_Type *)EQDC1;
-    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
-    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
-    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
-    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
     g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
     g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
-    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
     g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
 
     /* Enable modulo counting and revolution counter increment on roll-over */
@@ -393,26 +382,20 @@ void M1_InitQD(void)
     EQDC1->FILT = EQDC_FILT_FILT_CNT(2) | EQDC_FILT_FILT_PER(1) | EQDC_FILT_PRSC(6);
     EQDC1->CTRL2 = EQDC_CTRL2_REVMOD_MASK | EQDC_CTRL2_PMEN_MASK;
     
-    /* Speed calculation (based on QDC HW) init */
-    g_sM1Enc.sSpeedEncFilter.sFltCoeff.f32B0 = M1_QDC_SPEED_FILTER_IIR_B0_FRAC;
-    g_sM1Enc.sSpeedEncFilter.sFltCoeff.f32B1 = M1_QDC_SPEED_FILTER_IIR_B1_FRAC;
-    g_sM1Enc.sSpeedEncFilter.sFltCoeff.f32A1 = M1_QDC_SPEED_FILTER_IIR_A1_FRAC;
-    GDFLIB_FilterIIR1Init_F16(&g_sM1Enc.sSpeedEncFilter); 
-    
     g_sM1Enc.ui32QDTimerFrequency = (CLOCK_GetRootClockFreq(kCLOCK_Root_Bus_Wakeup)) >> ((EQDC1->FILT & EQDC_FILT_PRSC_MASK) >> EQDC_FILT_PRSC_SHIFT);
-    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*(1*g_sM1Enc.ui16PulseNumber)))*1024); // #define M1_QDC_LINE_RECIPROCAL_4_POS_GEN
-    g_sM1Enc.f32SpeedCalConst = (frac32_t)((60.0*g_sM1Enc.ui32QDTimerFrequency/(g_sM1Enc.ui16Pp*(4*g_sM1Enc.ui16PulseNumber)*M1_N_MAX)) * 134217728); // #define M1_SPEED_CAL_CONST
-    g_sM1Enc.fltSpeedFrac16ToAngularCoeff = (float_t)(2*PI*M1_N_MAX*g_sM1Enc.ui16Pp/60.0); // #define M1_SPEED_FRAC_TO_ANGULAR_COEFF
+    
+    g_sM1Enc.i32Q10Cnt2PosGain = ((0xffffffffU/(4*(1*g_sM1Enc.ui16PulseNumber)))*1024);
+    g_sM1Enc.f32SpeedCalConst = (frac32_t)((60.0*g_sM1Enc.ui32QDTimerFrequency/(g_sM1Enc.ui16Pp*(4*g_sM1Enc.ui16PulseNumber)*M1_N_MAX)) * 134217728);
+    g_sM1Enc.fltSpeedFracToAngularCoeff = (float_t)(2*FLOAT_PI*M1_N_MAX*g_sM1Enc.ui16Pp/60.0);
     
     g_sM1Enc.f32PosMechInit = FRAC32(0.0);
     g_sM1Enc.f32PosMechOffset = FRAC32(0.0);
     
-    
     M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
       
     /* Initialization modulo counter*/
-    M1_MCDRV_QD_SET_PULSES(&g_sM1Enc);
-
+    M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
+    
 }
 
 /*!

@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -19,13 +18,13 @@
 #include "board.h"
 #include "mid_sm_states.h"
 
+#warning "OV fault is not available yet. GPIO_AD_15 not routed to CMP_IN."
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 /* Version info */
 #define MCRSP_VER "2.0.0" /* motor control package version */
-
-#define DAPENG_TEST /* Dapeng test */
 
 /* Example's feature set in form of bits inside ui16featureSet.
    This feature set is expected to be growing over time.
@@ -82,8 +81,6 @@ static void BOARD_InitSysTick(void);
 static void BOARD_InitGPIO(void);
 static void Application_Control_BL(void);
 
-lpadc_conv_result_t g_LpadcResultConfigStruct;
-
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -91,12 +88,6 @@ lpadc_conv_result_t g_LpadcResultConfigStruct;
 /* CPU load measurement using Systick */
 uint32_t g_ui32NumberOfCycles    = 0U;
 uint32_t g_ui32MaxNumberOfCycles = 0U;
-
-#ifdef DAPENG_TEST
-/* ISR counters */
-uint32_t ui32FastIsrCount = 0U;
-uint32_t ui32SlowIsrCount = 0U;
-#endif
 
 /* Demo mode enabled/disabled */
 bool_t bDemoModeSpeed    = FALSE;
@@ -111,7 +102,7 @@ static uint32_t ui32ButtonFilter = 0U;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
-    "../../../examples/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_enc",         /* User Path 1- the highest priority */
+    "../../../examples/_boards/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/cm7",         /* User Path 1- the highest priority */
     "",       /* User Path 2 */
     "frdmimxrt1186", /* board id */
     "pmsm_enc", /* example id */
@@ -206,8 +197,6 @@ void ADC1_IRQHandler(void)
     /* Start CPU tick number couting */
     SYSTICK_START_COUNT();
 
-    TP0_ON();
-
     switch(g_sSpinMidSwitch.eAppState)
     {
     case kAppStateSpin:
@@ -228,19 +217,6 @@ void ADC1_IRQHandler(void)
     /* Call FreeMASTER recorder */
     FMSTR_Recorder(0);
 
-#ifdef DAPENG_TEST
-    /* Increment ISR counter */
-    ui32FastIsrCount++;
-
-    if(ui32FastIsrCount > 16000U)
-    {
-       ui32FastIsrCount = 0;
-    }
-
-#endif
-
-    TP0_OFF();
-
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;
 }
@@ -257,8 +233,6 @@ RAM_FUNC_LIB
 void TMR1_IRQHandler(void)
 {
     static int16_t ui16i = 0;
-
-    TP2_ON();
 
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
@@ -294,19 +268,6 @@ void TMR1_IRQHandler(void)
     /* Demo position stimulator */
     DemoPositionStimulator();
 
-#ifdef DAPENG_TEST
-    /* Increment ISR counter */
-    ui32SlowIsrCount++;
-
-    if(ui32SlowIsrCount > 1000U)
-    {
-       ui32SlowIsrCount = 0;
-    }
-
-#endif
-
-    TP2_OFF();
-
     /* Clear the CSCTRL0[TCF1] flag */
     TMR1->CHANNEL[0].CSCTRL |= TMR_CSCTRL_TCF1(0x00);
     TMR1->CHANNEL[0].CSCTRL &= ~(TMR_CSCTRL_TCF1_MASK);
@@ -318,44 +279,44 @@ void TMR1_IRQHandler(void)
     M1_END_OF_ISR;
 }
 
-/*!
- * @brief   SW8 Button interrupt handler
- *
- * @param   void
- *
- * @return  none
- */
-RAM_FUNC_LIB
-void GPIO1_0_IRQHandler(void)
-{
-    /* Proceed only if pressing longer than timeout */
-    if (ui32ButtonFilter > 300)
-    {
-        ui32ButtonFilter = 0;
-
-        /* Speed demo */
-        if (bDemoModeSpeed)
-        {
-            /* Stop application */
-            M1_SetSpeed(0);
-            M1_SetAppSwitch(0);
-            bDemoModeSpeed = FALSE;
-        }
-        else
-        {
-            /* Start application */
-            M1_SetAppSwitch(1);
-            bDemoModeSpeed         = TRUE;
-            ui32SpeedStimulatorCnt = 0;
-        }
-    }
-
-    /* Clear external interrupt flag. */
-    RGPIO_ClearPinsInterruptFlags(BOARD_USER_BUTTON_GPIO, kRGPIO_InterruptOutput0, 1U << BOARD_USER_BUTTON_GPIO_PIN);
-
-    /* Add empty instructions for correct interrupt flag clearing */
-    M1_END_OF_ISR;
-}
+///*!
+// * @brief   SW8 Button interrupt handler
+// *
+// * @param   void
+// *
+// * @return  none
+// */
+//RAM_FUNC_LIB
+//void GPIO1_0_IRQHandler(void)
+//{
+//    /* Proceed only if pressing longer than timeout */
+//    if (ui32ButtonFilter > 300)
+//    {
+//        ui32ButtonFilter = 0;
+//
+//        /* Speed demo */
+//        if (bDemoModeSpeed)
+//        {
+//            /* Stop application */
+//            M1_SetSpeed(0);
+//            M1_SetAppSwitch(0);
+//            bDemoModeSpeed = FALSE;
+//        }
+//        else
+//        {
+//            /* Start application */
+//            M1_SetAppSwitch(1);
+//            bDemoModeSpeed         = TRUE;
+//            ui32SpeedStimulatorCnt = 0;
+//        }
+//    }
+//
+//    /* Clear external interrupt flag. */
+//    RGPIO_ClearPinsInterruptFlags(BOARD_USER_BUTTON_GPIO, kRGPIO_InterruptOutput0, 1U << BOARD_USER_BUTTON_GPIO_PIN);
+//
+//    /* Add empty instructions for correct interrupt flag clearing */
+//    M1_END_OF_ISR;
+//}
 
 /*!
  * @brief   DemoSpeedStimulator
@@ -555,24 +516,23 @@ static void BOARD_Init(void)
  */
 static void BOARD_InitGPIO(void)
 {
-
-    /* Define the init structure for the input switch pin */
-    rgpio_pin_config_t sw_config = {
-        kRGPIO_DigitalInput,
-        0,
-    };
-
-    /* Workaround: Disable interrupt which might be enabled by ROM. */
-    RGPIO_SetPinInterruptConfig(RGPIO1, 9U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
-    NVIC_ClearPendingIRQ(GPIO1_0_IRQn);
-
-    /* Init input switch GPIO. */
-    RGPIO_SetPinInterruptConfig(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, kRGPIO_InterruptOutput0, kRGPIO_InterruptFallingEdge);
-    RGPIO_PinInit(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, &sw_config);
-
-    /* Enable GPIO pin interrupt for SW8 button */
-    EnableIRQ(BOARD_USER_BUTTON_IRQ);
-    NVIC_SetPriority(BOARD_USER_BUTTON_IRQ, BOARD_USER_BUTTON_PRIORITY);
+//    /* Define the init structure for the input switch pin */
+//    rgpio_pin_config_t sw_config = {
+//        kRGPIO_DigitalInput,
+//        0,
+//    };
+//
+//    /* Workaround: Disable interrupt which might be enabled by ROM. */
+//    RGPIO_SetPinInterruptConfig(RGPIO2, 11U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+//    NVIC_ClearPendingIRQ(GPIO1_0_IRQn);
+//
+//    /* Init input switch GPIO. */
+//    RGPIO_SetPinInterruptConfig(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, kRGPIO_InterruptOutput0, kRGPIO_InterruptFallingEdge);
+//    RGPIO_PinInit(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, &sw_config);
+//
+//    /* Enable GPIO pin interrupt for SW8 button */
+//    EnableIRQ(BOARD_USER_BUTTON_IRQ);
+//    NVIC_SetPriority(BOARD_USER_BUTTON_IRQ, BOARD_USER_BUTTON_PRIORITY);
 }
 
 /*!
