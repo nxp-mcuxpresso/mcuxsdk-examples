@@ -51,8 +51,8 @@ void USB1_IRQHandler(void)
 
 static void USB_EusbInit(void)
 {
-    /* EUSB_CONFIG_NATIVE_REPEATER_MODE to enable native mode or repeater mode. 1: native; 0: repeater. */
-#if (defined(EUSB_CONFIG_NATIVE_REPEATER_MODE) && (EUSB_CONFIG_NATIVE_REPEATER_MODE > 0U))
+    /* EUSB_CONFIG_NATIVE_MODE to enable native mode or repeater mode. 1: native; 0: repeater. */
+#if (defined(EUSB_CONFIG_NATIVE_MODE) && (EUSB_CONFIG_NATIVE_MODE > 0U))
     /* enable eUSB native mode */
     USBNC1->EUSB_CTRL0 |= USBNC_EUSB_CTRL0_NATIVE_MODE_MASK;
 #else
