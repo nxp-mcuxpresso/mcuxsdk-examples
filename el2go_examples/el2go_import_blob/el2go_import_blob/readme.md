@@ -6,6 +6,9 @@
 
 This sample application shows how to import encrypted EdgeLock 2GO secure object blobs from flash to the Secure storage(ITS). The imported objects can then be validated by executing crypto operations.
 
+Max Blob Size:
+- **[KW45]**, **[MCX W71]** '1014 or 0x3F6' bytes.
+
 Additional information about EdgeLock 2GO Provisioning for MCUs can be found in AN14624 under the following link https://www.nxp.com/webapp/Download?colCode=AN14624&amp;location=null.
 
 ## Definitions
