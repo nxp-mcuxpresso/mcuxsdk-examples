@@ -212,6 +212,8 @@ eMBMasterReqErrCode eMBMasterWaitRequestFinish(void) {
         eErrStatus = MB_MRE_EXE_FUN;
         break;
     }
+    default:
+        break;
     }
     return eErrStatus;
 }

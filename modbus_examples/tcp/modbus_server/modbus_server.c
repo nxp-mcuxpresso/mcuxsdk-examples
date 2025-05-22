@@ -121,8 +121,6 @@ static StackType_t TimerTaskStack[configMINIMAL_STACK_SIZE];
 
 static StaticTask_t TimerTaskTCB;
 
-static QueueHandle_t QueueHandler;
-
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -256,7 +254,6 @@ eMBErrorCode
 eMBLedStatusCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNRegs, eMBRegisterMode eMode )
 {
     eMBErrorCode    eStatus = MB_ENOERR;
-    int             iRegIndex;
 
     /* it already plus one in modbus function method. */
     usAddress--;
@@ -375,8 +372,6 @@ static void modbus_task(void *arg)
 {
     struct netif *netif = (struct netif *)arg;
     struct dhcp *dhcp;
-    err_t err;
-    int i;
     int Time_dhcp=0;
 
     /* Wait for address from DHCP */

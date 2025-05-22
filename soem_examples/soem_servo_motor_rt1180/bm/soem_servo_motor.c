@@ -516,7 +516,6 @@ void control_task(char *ifname)
 			/* request OP state for all slaves */
 			ec_writestate(0);
 			chk = 500;
-			int led = 0;
 			/* wait for all slaves to reach OP state */
 			do {
 				ec_send_processdata();
@@ -606,8 +605,6 @@ void control_task(char *ifname)
  */
 int main(void)
 {
-	status_t result = kStatus_Success;
-	bool link;
 	BOARD_InitHardware();
 
 	PRINTF("Start the soem_servo_motor_rt1180 baremetal example...\r\n");

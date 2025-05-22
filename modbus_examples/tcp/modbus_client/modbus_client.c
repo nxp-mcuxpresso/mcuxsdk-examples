@@ -145,8 +145,6 @@ static StackType_t TimerTaskStack[configMINIMAL_STACK_SIZE];
 
 static StaticTask_t TimerTaskTCB;
 
-static QueueHandle_t QueueHandler;
-
 static uint8_t    sendTCPBuf[MB_TCP_BUF_SIZE];
 
 static uint8_t    recvTCPBuf[MB_TCP_BUF_SIZE];
@@ -242,7 +240,7 @@ uint8_t check_ip_addr(uint8_t *ip)
 		return -1;
 	}
 
-	for (uint8_t i = 0, count = 0; i < strlen(ip); i++) {
+	for (uint8_t i = 0, count = 0; i < (uint8_t)strlen(ip); i++) {
 		if ((ip[i] != '.') && (ip[i] < '0' || ip[i] > '9')) {
 			return -1;
 		}
@@ -264,7 +262,7 @@ uint8_t check_ip_addr(uint8_t *ip)
 	sscanf(ip_check[3], "%d", &ip_addr[3]);
 
 	for (uint8_t i = 0; i < 4; i++) {
-		if (strlen(ip_check[i]) == 0 || (ip_check[i][0] == '0' && ip_check[i][1] != '\0') || ip_addr[i] < 0 || ip_addr[i] > 255) {
+		if (((uint8_t)strlen(ip_check[i])) == 0 || (ip_check[i][0] == '0' && ip_check[i][1] != '\0') || ip_addr[i] < 0 || ip_addr[i] > 255) {
 			return -1;
 		}
 	}
@@ -280,10 +278,6 @@ uint8_t check_ip_addr(uint8_t *ip)
  */
 err_t eMBMasterRegHoldingCB(uint16_t addr, uint16_t data)
 {
-    uint8_t   *pucFrameCur;
-    uint8_t   *pucFrame;
-    uint16_t usLen = 0;
-
     sendTCPBuf[MB_TCP_TRANSACTION_HIGH] = 0x0;
     sendTCPBuf[MB_TCP_TRANSACTION_LOW] = 0x1;
     sendTCPBuf[MB_TCP_PROTOCOL_HIGH] = 0x0;
@@ -395,8 +389,6 @@ static void modbus_task(void *arg)
 {
     struct netif *netif = (struct netif *)arg;
     struct dhcp *dhcp;
-    err_t err;
-    int i;
     int Time_dhcp=0;
 
     /* Wait for address from DHCP */
@@ -464,7 +456,6 @@ static void modbus_task(void *arg)
 static void stack_init(void *arg)
 {
     static struct netif netif;
-    ip4_addr_t netif_ipaddr, netif_netmask, netif_gw;
     ethernetif_config_t enet_config = {
         .phyHandle   = &phyHandle,
         .phyAddr     = EXAMPLE_PHY_ADDRESS,

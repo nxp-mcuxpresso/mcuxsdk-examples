@@ -14,10 +14,6 @@
 /*${variable:start}*/
 struct netc_ep_if_port if_port;
 
-/* PHY operation. */
-//static netc_mdio_handle_t s_emdio_handle;
-/*${variable:end}*/
-
 status_t BOARD_InitHardware(void)
 {
     status_t result = kStatus_Success;

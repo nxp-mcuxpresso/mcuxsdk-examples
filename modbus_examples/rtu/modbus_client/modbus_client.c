@@ -56,13 +56,6 @@
 /* master mode: discrete's all address */
 #define          M_DI_RESERVE                     0
 
-/* ----------------------- Static variables ------------------------------- */
-static uint16_t     inputRegStart = INPUT_REGISTER_START_ADDR;
-static uint16_t     inputRegArrays[INPUT_REGISTER_NUMS];
-static uint16_t     holdingRegStart = HOLDING_REGISTER_START_ADDR;
-static uint16_t     holdingRegArrays[HOLDING_REGISTER_NUMS];
-static uint16_t     initArrays[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
 /* ------------------------ Implementation -------------------------------- */
 eMBErrorCode eMBMasterRegInputCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs )
 {
@@ -131,8 +124,6 @@ void TPM2_Init(void)
  */
 int main(void)
 {
-	eMBErrorCode    eStatus;
-
     BOARD_InitHardware();
     PRINTF("Modbus RTU Client Example Start!\r\n");
     TPM2_Init();

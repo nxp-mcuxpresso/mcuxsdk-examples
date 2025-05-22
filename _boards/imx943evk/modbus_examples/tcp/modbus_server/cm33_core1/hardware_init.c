@@ -171,6 +171,7 @@ void BOARD_InitHardware(void)
     POWER_SetState(&pwrst);
     st = POWER_GetState(&pwrst);
     assert(st == SCMI_POWER_DOMAIN_STATE_ON);
+    PRINTF("\r\nst: %d\r\n", st);
 
     CLOCK_SetParent(&busmixClk);
     CLOCK_SetRate(&busmixClk);

@@ -107,7 +107,6 @@ eMBErrorCode
 eMBLedStatusCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNRegs, eMBRegisterMode eMode )
 {
     eMBErrorCode    eStatus = MB_ENOERR;
-    int             iRegIndex;
 
     /* it already plus one in modbus function method. */
     usAddress--;
@@ -229,7 +228,6 @@ eMBRegDiscreteCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNDiscre
  */
 int main(void)
 {
-	eMBErrorCode    eStatus;
     BOARD_InitHardware();
     PRINTF("Modbus RTU Server Example Start!\r\n");
     
@@ -251,10 +249,10 @@ int main(void)
     RGPIO_WritePinOutput(BOARD_LED_RGPIO, BOARD_LED_RGPIO_PIN2, 1);
 
     /* Select either ASCII or RTU Mode. */
-    eStatus = eMBInit( MB_RTU, SLAVE_ADDRESS, SLAVE_PORT, BOARD_DEBUG_UART_BAUDRATE, MB_PAR_NONE );
+    eMBInit( MB_RTU, SLAVE_ADDRESS, SLAVE_PORT, BOARD_DEBUG_UART_BAUDRATE, MB_PAR_NONE );
 
     /* Enable the Modbus Protocol Stack. */
-    eStatus = eMBEnable(  );
+    eMBEnable(  );
 
     for( ;; )
     {
