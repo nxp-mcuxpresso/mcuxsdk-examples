@@ -61,6 +61,6 @@ mcux_remove_iar_configuration(
 )
 
 mcux_add_iar_configuration(
-    TARGETS debug
+    TARGETS debug release
     CC "-Oh"
 )

@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -60,6 +60,6 @@ mcux_remove_iar_configuration(
 )
 
 mcux_add_iar_configuration(
-    TARGETS debug
+    TARGETS debug release
     CC "-Oh"
 )
