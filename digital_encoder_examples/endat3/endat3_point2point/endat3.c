@@ -45,30 +45,27 @@ void BOARD_InitSysTick(void)
 	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 }
 
-
 void ENDAT3_RspDump(endat3_rsp_t *rsp)
 {
 	uint16_t errCode;
 
-	PRINTF("\tHPF.STATUS:   0x%02x(F: %d, W: %d, HPFV: %d,  RM: %d,  ERR_REQ: %d)\r\n", ENDAT3_READ_HPF_STATUS_F(rsp->hpf.hpf64),
+	PRINTF("\tHPF.STATUS: 0x%x(F: %d, W: %d, HPFV: %d, RM: %d, ERR_REQ: %d)\r\n", ENDAT3_READ_HPF_STATUS(rsp->hpf.hpf64), ENDAT3_READ_HPF_STATUS_F(rsp->hpf.hpf64),
 			ENDAT3_READ_HPF_STATUS_W(rsp->hpf.hpf64), ENDAT3_READ_HPF_STATUS_HPFV(rsp->hpf.hpf64),
 			ENDAT3_READ_HPF_STATUS_RM(rsp->hpf.hpf64), ENDAT3_READ_HPF_STATUS_ERR_REQ(rsp->hpf.hpf64));
-	PRINTF("\tHPF.DATA:	 0x%x\" PRIx64 \"\r\n", ENDAT3_READ_HPF_DATA(rsp->hpf.hpf64));
 	PRINTF("\tHPF.DATA:	 0x%x\r\n", ENDAT3_READ_HPF_DATA(rsp->hpf.hpf64));
-	PRINTF("\tHPF.CS:	   0x%02x\r\n", ENDAT3_READ_HPF_CS(rsp->hpf.hpf64));
+	PRINTF("\tHPF.CS:	 0x%x\r\n", ENDAT3_READ_HPF_CS(rsp->hpf.hpf64));
 
 	if (ENDAT3_READ_HPF_STATUS_HPFV(rsp->hpf.hpf64) == 0) {
 		errCode = ENDAT3_READ_HPF_ERRORCODE(rsp->hpf.hpf64);
-		PRINTF("\tHPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
-	}
-
-	PRINTF("\tLPH.STATUS:   0x%02x (BG_STATUS: %d  BG_ERR_EXEC: %d  ZACT: %d)\r\n", ENDAT3_READ_LPH_STATUS(rsp->lph.lph32),
+		PRINTF("\tHPF invalid [0x%x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+	} else {
+		PRINTF("\tLPH.STATUS: 0x%x (BG_STATUS: %d  BG_ERR_EXEC: %d  ZACT: %d)\r\n", ENDAT3_READ_LPH_STATUS(rsp->lph.lph32),
 			ENDAT3_READ_LPH_STATUS_BG_STATUS(rsp->lph.lph32), ENDAT3_READ_LPH_STATUS_BG_ERR_EXEC(rsp->lph.lph32),
 			ENDAT3_READ_LPH_STATUS_ZACT(rsp->lph.lph32));
-	PRINTF("\tLPH.NLPF:	 0x%02x (YACT: %2d  XDIM: %2d)\r\n", ENDAT3_READ_LPH_NLPF(rsp->lph.lph32),
+		PRINTF("\tLPH.NLPF:	  0x%x (YACT: %d  XDIM: %d)\r\n", ENDAT3_READ_LPH_NLPF(rsp->lph.lph32),
 			ENDAT3_READ_LPH_NLPF_YACT(rsp->lph.lph32), ENDAT3_READ_LPH_NLPF_XDIM(rsp->lph.lph32));
-	PRINTF("\tLPH.CS:	   0x%02x\r\n", ENDAT3_READ_LPH_CS(rsp->lph.lph32));
-
+		PRINTF("\tLPH.CS:	  0x%x\r\n", ENDAT3_READ_LPH_CS(rsp->lph.lph32));
+	}
 	uint8_t i;
 	char *str;
 	for (i = 0; i < rsp->xdim; i++) {
@@ -76,13 +73,14 @@ void ENDAT3_RspDump(endat3_rsp_t *rsp)
 		uint8_t lpfv = ENDAT3_READ_LPF_STATUS_LPFV(rsp->lpf[i].lpf64);
 		str = ENDAT3_FID2str(fid);
 		uint8_t status = ENDAT3_READ_LPF_STATUS(rsp->lpf[i].lpf64);
-		PRINTF("\tLPF[%2d].STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\r\n", i,status , fid, str, lpfv);
+		PRINTF("\tLPF[%d].STATUS: 0x%x (FID: 0x%x [%s] LPFV: %d)\r\n", i,status , fid, str, lpfv);
 		if (lpfv == 0) {
 			errCode = ENDAT3_READ_LPF_ERRORCODE(rsp->lpf[i].lpf64);
-			PRINTF("\t\tLPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+			PRINTF("\t\tLPF invalid [0x%x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+			continue;
 		}
-		PRINTF("\tLPF[%2d].DATA:		0x%012llx\r\n", i, ENDAT3_READ_LPF_DATA(rsp->lpf[i].lpf64));
-		PRINTF("\tLPF[%2d].CS:		  0x%02x\r\n", i, ENDAT3_READ_LPF_CS(rsp->lpf[i].lpf64));
+		PRINTF("\tLPF[%d].DATA:	0x%x\r\n", i, ENDAT3_READ_LPF_DATA(rsp->lpf[i].lpf64));
+		PRINTF("\tLPF[%d].CS:	0x%x\r\n", i, ENDAT3_READ_LPF_CS(rsp->lpf[i].lpf64));
 	 }
 }
 
@@ -124,8 +122,7 @@ void ENDAT3_PosDump(void)
 #ifdef ENCODER_TYPE_ROTARY
 	uint16_t multiturn  = position >> 32;
 	uint32_t singleturn = position & 0xFFFFFFFF;
-	float deg = 360.0 * singleturn / (float)0x100000000ull;
-	PRINTF("MT: %5u ST: %10u (%6.2f deg)\r\n", multiturn, singleturn, deg);
+	PRINTF("MT: %5u ST: %10u\r\n", multiturn, singleturn);
 #elif ENCODER_TYPE_LINEAR
 	int64_t nm = position >> 8;
 	/*Sign extension*/
@@ -154,25 +151,24 @@ void ENDAT3_SAFETY_MEM_Dump(ENDAT3_Type *base, uint8_t bus_addr, uint8_t packet,
 	PRINTF("FID_SD1:\r\n");
 	if (inHPF) {
 		struct HPF *hpf = ENDAT3_GET_SAFETY_FID_SD1_HPF(base, bus_addr, packet);
-		PRINTF("\tHPF.STATUS:   0x%02x(F: %d, W: %d, HPFV: %d,  RM: %d,  ERR_REQ: %d)\r\n", ENDAT3_READ_HPF_STATUS_F(hpf->hpf64),
+		PRINTF("\tHPF.STATUS:   0x%x(F: %d, W: %d, HPFV: %d,  RM: %d,  ERR_REQ: %d)\r\n", ENDAT3_READ_HPF_STATUS(hpf->hpf64), ENDAT3_READ_HPF_STATUS_F(hpf->hpf64),
 			ENDAT3_READ_HPF_STATUS_W(hpf->hpf64), ENDAT3_READ_HPF_STATUS_HPFV(hpf->hpf64),
 			ENDAT3_READ_HPF_STATUS_RM(hpf->hpf64), ENDAT3_READ_HPF_STATUS_ERR_REQ(hpf->hpf64));
-		PRINTF("\tHPF.DATA:	 0x%012\" PRIx64 \"\r\n", ENDAT3_READ_HPF_DATA(hpf->hpf64));
-		PRINTF("\tHPF.DATA:	 0x%012llx\r\n", ENDAT3_READ_HPF_DATA(hpf->hpf64));
-		PRINTF("\tHPF.CS:	   0x%02x\r\n", ENDAT3_READ_HPF_CS(hpf->hpf64));
+		PRINTF("\tHPF.DATA:	 0x%x\r\n", ENDAT3_READ_HPF_DATA(hpf->hpf64));
+		PRINTF("\tHPF.CS:	 0x%x\r\n", ENDAT3_READ_HPF_CS(hpf->hpf64));
 	} else {
 		lpf = ENDAT3_GET_SAFETY_FID_SD1_LPF(base, bus_addr, packet);
 		fid = ENDAT3_READ_LPF_STATUS_FID(lpf->lpf64);
 		lpfv = ENDAT3_READ_LPF_STATUS_LPFV(lpf->lpf64);
 		str = ENDAT3_FID2str(fid);
 		status = ENDAT3_READ_LPF_STATUS(lpf->lpf64);
-		PRINTF("\tLPF.STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\r\n", status , fid, str, lpfv);
+		PRINTF("\tLPF.STATUS:  0x%x (FID: 0x%x [%s]  LPFV: %d)\r\n", status , fid, str, lpfv);
 		if (lpfv == 0) {
 			errCode = ENDAT3_READ_LPF_ERRORCODE(lpf->lpf64);
-			PRINTF("\t\tLPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+			PRINTF("\t\tLPF invalid [0x%x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
 		}
 		PRINTF("\tLPF: singleturn = 0x%x.  multiturn = 0x%x\r\n", ENDAT3_READ_POS_SINGLETURN_LPF(lpf->lpf64), ENDAT3_READ_POS_MULTITURN_LPF(lpf->lpf64));
-		PRINTF("\tLPF[%2d].CS:		  0x%02x\r\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
+		PRINTF("\tLPF[%d].CS:  0x%x\r\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
 	}
 	PRINTF("FID_SD2:\r\n");
 	lpf = ENDAT3_GET_SAFETY_FID_SD2_LPF(base, bus_addr, packet);
@@ -180,13 +176,14 @@ void ENDAT3_SAFETY_MEM_Dump(ENDAT3_Type *base, uint8_t bus_addr, uint8_t packet,
 	lpfv = ENDAT3_READ_LPF_STATUS_LPFV(lpf->lpf64);
 	str = ENDAT3_FID2str(fid);
 	status = ENDAT3_READ_LPF_STATUS(lpf->lpf64);
-	PRINTF("\tLPF.STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\r\n", status , fid, str, lpfv);
+	PRINTF("\tLPF.STATUS: 0x%x (FID: 0x%x [%s]  LPFV: %d)\r\n", status , fid, str, lpfv);
 	if (lpfv == 0) {
 		errCode = ENDAT3_READ_LPF_ERRORCODE(lpf->lpf64);
-		PRINTF("\t\tLPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+		PRINTF("\t\tLPF invalid [0x%x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+	} else {
+		PRINTF("\tLPF: singleturn = 0x%x.  multiturn = 0x%x\r\n", ENDAT3_READ_POS_SINGLETURN_LPF(lpf->lpf64), ENDAT3_READ_POS_MULTITURN_LPF(lpf->lpf64));
+		PRINTF("\tLPF[%d].CS:  0x%x\r\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
 	}
-	PRINTF("\tLPF: singleturn = 0x%x.  multiturn = 0x%x\r\n", ENDAT3_READ_POS_SINGLETURN_LPF(lpf->lpf64), ENDAT3_READ_POS_MULTITURN_LPF(lpf->lpf64));
-	PRINTF("\tLPF[%2d].CS:		  0x%02x\r\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
 
 	PRINTF("FID_SF:\r\n");
 	lpf = ENDAT3_GET_SAFETY_FID_SF_LPF(base, bus_addr, packet);
@@ -194,10 +191,10 @@ void ENDAT3_SAFETY_MEM_Dump(ENDAT3_Type *base, uint8_t bus_addr, uint8_t packet,
 	lpfv = ENDAT3_READ_LPF_STATUS_LPFV(lpf->lpf64);
 	str = ENDAT3_FID2str(fid);
 	status = ENDAT3_READ_LPF_STATUS(lpf->lpf64);
-	PRINTF("\tLPF.STATUS:  0x%02x (FID: 0x%02x [%s]  LPFV: %d)\r\n", status , fid, str, lpfv);
+	PRINTF("\tLPF.STATUS: 0x%x (FID: 0x%x [%s]  LPFV: %d)\r\n", status , fid, str, lpfv);
 	if (lpfv == 0) {
 		errCode = ENDAT3_READ_LPF_ERRORCODE(lpf->lpf64);
-		PRINTF("\t\tLPF invalid [0x%04x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
+		PRINTF("\t\tLPF invalid [0x%x: %s]\r\n", errCode, ENDAT3_Err2str(errCode));
 	}
 
 	PRINTF("\tLPF: AA:0x%x F1:0x%x F2:0x%x IgF1:0x%x IgF2:0x%x SOL:0x%x CSS:0x%x\r\n",
@@ -208,9 +205,8 @@ void ENDAT3_SAFETY_MEM_Dump(ENDAT3_Type *base, uint8_t bus_addr, uint8_t packet,
 				ENDAT3_READ_LPF_DATA_SF_POS1_STATUS_IgF2(lpf->lpf64),
 				ENDAT3_READ_LPF_DATA_SF_POS1_SOL(lpf->lpf64),
 				ENDAT3_READ_LPF_DATA_SF_POS1_CSS(lpf->lpf64));
-	PRINTF("\tLPF[%2d].CS:		  0x%02x\r\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
+	PRINTF("\tLPF.CS: 0x%x\r\n", ENDAT3_READ_LPF_CS(lpf->lpf64));
 }
-
 
 /* Triggered by the second PWM trigger signal via XBAR */
 void DEMO_XBARA_IRQHandler(void)
@@ -283,13 +279,6 @@ int main(void)
 	cache->cacheMemSize = 0x200;
 	uint16_t phyDatarate;
 
-	// Master Version
-	//PRINTF("Version infomation of the EnDat 3 Master:\r\n");
-	//PRINTF("\tPHY Version: %d\r\n" (enc_dev.base->VERSION_INFO >> ENDAT3_PHY_VERSION_SHIFT) & ENDAT3_PHY_VERSION_MASK);
-	//PRINTF("\tCore Version: %d\r\n", (enc_dev.base->VERSION_INFO >> ENDAT3_CORE_VERSION_SHIFT) & ENDAT3_CORE_VERSION_MASK);
-	//PRINTF("\tMemory Interface Version: %d\r\n", (enc_dev.base->VERSION_INFO >> ENDAT3_MEMIF_VERSION_SHIFT) & ENDAT3_MEMIF_VERSION_MASK);
-	//PRINTF("\tBus Adapter Version: %d\r\n", (enc_dev.base->VERSION_INFO >> ENDAT3_BUS_IF_VERSION_SHIFT) & ENDAT3_BUS_IF_VERSION_MASK);
-
 	// Master Features
 	PRINTF("Instantiation information of connected EnDat 3 Master:\r\n");
 	PRINTF("\tNumber of supported bus nodes: %d\r\n", (enc_dev.base->INSTANTIATION_INFO) & ENDAT3_INSTANTIATION_INFO_NUM_BUS_NODES_SUPP_MASK);
@@ -301,12 +290,15 @@ int main(void)
 
 	PRINTF("Initialize master for 12.5 MBit operation.\r\n");
 	/* Initialize master for 12.5 MBit operation */
-	ENDAT3_RxTxClkConfig(enc_dev.base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS, 1000);
-
-
 	PRINTF("Test FG: Reset Request\r\n");
+	/* Try to send reset request with 25 MBit */
+	ENDAT3_RxTxClkConfig(enc_dev.base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_25MBPS, 1000);
 	ENDAT3_FG_Reset(enc_dev.base);
-	PRINTF("Test FG:  Reset Request successful\r\n");
+
+	/* Send reset request again with 12.5 MBit */
+	ENDAT3_RxTxClkConfig(enc_dev.base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS, 1000);
+	ENDAT3_FG_Reset(enc_dev.base);
+	PRINTF("Test FG: Reset Request successful\r\n");
 
 	/* Sending HELLO request to initialize the encoder*/
 	if (ENDAT3_FG_Hello(enc_dev.base) != kStatus_Success) {
@@ -320,13 +312,12 @@ int main(void)
 	}
 	PRINTF("\tACTIVATION HELLO is active.\r\n");
 
-
 	PRINTF("Test FG: Data0 Request under 12.5Mb/s.\r\n");
 	/* Test on 12.5Mbit operation */
 	ENDAT3_FG_Data(enc_dev.base, ENDAT3_FG_REQ_DATA0, &rsp);
 	ENDAT3_RspDump(&rsp);
 
-	 ENDAT3_BG_Handler_Enable(enc_dev.base);
+	ENDAT3_BG_Handler_Enable(enc_dev.base);
 	PRINTF("Try to switch 25Mb/s\r\n");
 	/* Switch to 25mBit/s if encoder supported. */
 	if (ENDAT3_memRead(enc_dev.base, enc_dev.bus_addr, ENDAT3_MEM_BASE_EL + ENDAT3_MEM_EL_PHYDATARATE_OFFSET,  1, &phyDatarate, 1) != kStatus_Success) {
@@ -353,6 +344,13 @@ int main(void)
 		 PRINTF("\tThe encoder isn't supported for 25Mb/s.\r\n");
 	}
 
+	PRINTF("Test FG: ECHO\r\n");
+	if (ENDAT3_FG_Echo(enc_dev.base, 0x4532) == kStatus_Success) {
+		PRINTF("\tSucceed to ECHO test\r\n");
+	} else {
+		PRINTF("\tFail to ECHO test\r\n");
+	}
+
 	PRINTF("Test BG: Auth\r\n");
 	// switch to OEM2 level
 	if (ENDAT3_BG_Auth(enc_dev.base, 0, ENDAT3_BG_ACCLEVEL_OEM2, 0, fg_strobes) == kStatus_Success) {
@@ -364,6 +362,7 @@ int main(void)
 		PRINTF("\tSucceed to switch to  user level again\r\n");
 
 	}
+
 	PRINTF("Test BG: Setpass\r\n");
 	// set the password for user level
 	if (ENDAT3_BG_Setpass(enc_dev.base, 0, ENDAT3_BG_ACCLEVEL_USER, 0x123, fg_strobes) == kStatus_Success) {
@@ -375,7 +374,7 @@ int main(void)
 		PRINTF("\tSucceed to cancel the password setting for user level\r\n");
 	}
 
-	PRINTF("Test BG: Nop");
+	PRINTF("Test BG: NOP\r\n");
 	uint64_t  nop_rsp = 0;
 	ENDAT3_BG_Nop(enc_dev.base, 0, 0x123567, &nop_rsp, fg_strobes);
 	if (nop_rsp == ((0x01ULL << 40) | 0x123567)) {
@@ -384,21 +383,20 @@ int main(void)
 		PRINTF("\tFail to NOP test. Recv: 0x%x\r\n", nop_rsp);
 	}
 
-	PRINTF("Test BG: Local\t\n");
+	PRINTF("Test BG: Local\r\n");
 	if (ENDAT3_BG_Locate(enc_dev.base, 0, 1, fg_strobes) == kStatus_Success) {
 		PRINTF("\tSucceed to Local test.\r\n");
 	} else {
 		PRINTF("\tFail to Local test.\r\n");
 	}
 
-	PRINTF("Test BG: Protect\t\n");
-	uint8_t al_write, al_read;
-	if (ENDAT3_BG_Protect(enc_dev.base, 0, ENDAT3_MEM_BASE_LPFLIVE, ENDAT3_BG_PROTECT_MODE_SET_READ, ENDAT3_BG_ACCLEVEL_USER, &al_write, &al_read, fg_strobes) == kStatus_Success) {
+	PRINTF("Test BG: Protect\r\n");
+	uint8_t al_write = 0, al_read = 0;
+	if (ENDAT3_BG_Protect(enc_dev.base, 0, ENDAT3_MEM_BASE_OEM1, ENDAT3_BG_PROTECT_MODE_SET_WRITE, ENDAT3_BG_ACCLEVEL_USER, &al_write, &al_read, fg_strobes) == kStatus_Success) {
 		PRINTF("\tSucceed to Protect test. al_write=%d al_read=%d\r\n", al_write, al_read);
 	} else {
-		 PRINTF("\tFail to Protect test.\r\n");
+		 PRINTF("\tFail to Protect test. al_write=%d al_read=%d\r\n", al_write, al_read);
 	}
-
 
 	PRINTF("Dump encoder identification data from electronic label\r\n");
 	/*Dump encoder identification data from electronic label*/
@@ -433,9 +431,6 @@ int main(void)
 	uint64_t ident;
 	ident = ENDAT3_MEM_CACHE_READ_EL_DEVICEIDENT(cache);
 	PRINTF("\tEL.deviceIdent  : %6u-%c%c\r\n", (uint32_t)(ident>>16), (uint8_t)(ident >> 8) & 0xFF, (uint8_t)(ident & 0xFF));
-//	uint64_t serial;
-//	serial = ENDAT3_MEM_CACHE_READ_EL_DEVICESERIAL(cache);
-//	PRINTF("\tEL.deviceSerial : %c%u%c\r\n", (uint8_t)(serial >> 40), (uint32_t)(serial>>8) & 0xFFFFFFFF, (uint8_t)(serial & 0xFF));
 
 	PRINTF("Dump encoder identification data from enhanced electronic label\r\n");
 	/*Dump encoder identification data from enhanced electronic label*/
@@ -465,13 +460,11 @@ int main(void)
 		default:	 PRINTF("\tXEL.encoderType: Reserved\r\n"); break;
 	}
 
-
-
 	uint32_t LPFMemBase;
-#ifdef LPF_CONFIGURE_XSET
-	LPFMemBase = ENDAT3_MEM_BASE_XSET;
-#else
+#ifdef LPF_CONFIGURE_LPFLIVE
 	LPFMemBase = ENDAT3_MEM_BASE_LPFLIVE;
+#else
+	LPFMemBase = ENDAT3_MEM_BASE_LPFSET;
 #endif
 
 	if (ENDAT3_memCacheInit(enc_dev.base, enc_dev.bus_addr, LPFMemBase, cache, memory_cache_buf, 200, 1) != kStatus_Success) {
@@ -485,7 +478,7 @@ int main(void)
 	}
 
 	if (ENDAT3_memCacheCheckCS(cache) != kStatus_Success) {
-		PRINTF("\tLPFLIVE cache CS check error\r\n");
+		PRINTF("\tLPF cache CS check error\r\n");
 		return 1;
 	}
 
@@ -498,7 +491,7 @@ int main(void)
 		ENDAT3_lpfCacheGetXdimYdim(z + 1, cache, &x_dim, &y_dim);
 		pointer = ENDAT3_lpfCacheGetPointer(z + 1, cache);
 		if (x_dim == 0) {
-			PRINTF("\tList%d: no LPFS will be output\r\n");
+			PRINTF("\tList%d: no LPFS will be output\r\n", z + 1);
 		} else {
 			PRINTF("\tList%d: pointer = 0x%x xdim = %d y_dim = %d\r\n", z + 1, pointer, x_dim, y_dim);
 			for (y = 0; y < y_dim; y++) {
@@ -573,9 +566,9 @@ int main(void)
 		return 1;
 	}
 
-	PRINTF("Dump ENDAT3_MEM_BASE_LPFLIVE again.\r\n");
+	PRINTF("Dump ENDAT3_MEM_BASE_LPFLIV/LPFSET again.\r\n");
 	/* Dump ENDAT3_MEM_BASE_LPFLIVE again. */
-	  if (ENDAT3_memCacheInit(enc_dev.base, enc_dev.bus_addr, ENDAT3_MEM_BASE_LPFLIVE, cache, memory_cache_buf, 200, 1) != kStatus_Success) {
+	if (ENDAT3_memCacheInit(enc_dev.base, enc_dev.bus_addr, ENDAT3_MEM_BASE_LPFLIVE, cache, memory_cache_buf, 200, 1) != kStatus_Success) {
 		PRINTF("\tMemory cache initialization failed\r\n");
 		return 1;
 	}
@@ -586,7 +579,7 @@ int main(void)
 	}
 
 	if (ENDAT3_memCacheCheckCS(cache) != kStatus_Success) {
-		PRINTF("\tLPFLIVE cache CS check error\r\n");
+		PRINTF("\tLPFLIVE/LPFSET cache CS check error\r\n");
 		return 1;
 	}
 
@@ -595,7 +588,7 @@ int main(void)
 		ENDAT3_lpfCacheGetXdimYdim(z + 1, cache, &x_dim, &y_dim);
 		pointer = ENDAT3_lpfCacheGetPointer(z + 1, cache);
 		if (x_dim == 0) {
-			PRINTF("\tList%d: no LPFS will be output\r\n");
+			PRINTF("\tList%d: no LPFS will be output\r\n", z + 1);
 		} else {
 			PRINTF("\tList%d: pointer = 0x%x xdim = %d y_dim = %d\r\n", z + 1, pointer, x_dim, y_dim);
 			for (y = 0; y < y_dim; y++) {
@@ -635,7 +628,6 @@ int main(void)
 		ENDAT3_FIDMEM_Dump(&fid_mem);
 	}
 
-
 	PRINTF("Endat3 Safety Collector 0 verification\r\n");
 
 	ENDAT3_Safety_Packet0_SF_Cfg(enc_dev.base, ENDAT3_FID_SF_POS1);
@@ -646,7 +638,6 @@ int main(void)
 	ENDAT3_RspDump(&rsp);
 	PRINTF("SC_STATUS_0: %d\r\n",ENDAT3_Safety_Packet_status(enc_dev.base, 0, 0));
 	ENDAT3_SAFETY_MEM_Dump(enc_dev.base, 0, 0, 1);
-
 
 	PRINTF("Endat3 Safety Collector 1 verification\r\n");
 	ENDAT3_Safety_Packet1_SF_Cfg(enc_dev.base, ENDAT3_FID_SF_POS1);
@@ -694,7 +685,6 @@ int main(void)
 		p = *pos;
 	}
 
-
 	PRINTF("Register reading: %d\r\n", SYSTICK_GET_COUNT());
 	pos = (uint32_t *)(&enc_dev.base->BG_REQ_1);
 	p = *pos;
@@ -704,7 +694,6 @@ int main(void)
 	}
 
 	PRINTF("Register writing: %d\r\n", SYSTICK_GET_COUNT());
-
 
 	EnableIRQ(DEMO_ENDAT3_FG_IRQn);
 	/* Enable the FG_IRQ0 when HPF received */
@@ -718,9 +707,9 @@ int main(void)
 	DisableIRQ(DEMO_ENDAT3_FG_IRQn);
 
 	PRINTF("Get the position data on sync mode\r\n");
- 	/* Get the position data on trigger mode */
+	/* Get the position data on trigger mode */
 
- 	ENDAT3_FG_Req_without_strobe(enc_dev.base, ENDAT3_FG_REQ_DATA0, 0);
+	ENDAT3_FG_Req_without_strobe(enc_dev.base, ENDAT3_FG_REQ_DATA0, 0);
 
 	/* Initialize FlexPWM to generate the trigger signalis. */
 	PWM_Trigger_Init(BOARD_PWM_BASEADDR);
