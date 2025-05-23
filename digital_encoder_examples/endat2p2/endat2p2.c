@@ -102,7 +102,8 @@ const int menu_cmd_to_mode_cmd[] = {
 
 static void ENDATDEV_PrintEncoderInfo(endat2p2_dev_t *dev)
 {
-    PRINTF("EnDat Encoder: %s\r\n", ENDAT2P2_GetTypeStr(dev->type));
+    PRINTF("EnDat Encoder: %s\r\n",
+           ENDAT2P2_GetTypeStr((encode_type_t) dev->type));
     PRINTF("Version: 2.%d\r\n", dev->cmd_set_2_2 ? 2 : 1);
 
     PRINTF("encoder ID: %u %s \tSN: %c %u %c\r\n",
@@ -244,7 +245,7 @@ static void ENDATDEV_DumpPosition(endat2p2_dev_t *dev,
     }
 }
 
-static void ENDATDEV_DumpRecvData(endat2p2_dev_t *dev, int cmd,
+static void ENDATDEV_DumpRecvData(endat2p2_dev_t *dev, endat2p2_mode_cmd_t cmd,
                                   endat2p2_recv_data_t *data)
 {
     uint32_t status = data->status;
@@ -383,7 +384,7 @@ static void ENDATDEV_DumpStatus(endat2p2_dev_t *dev, uint32_t status)
     }
 }
 
-static void ENDATDEV_HandleRx(endat2p2_dev_t *dev, int cmd)
+static void ENDATDEV_HandleRx(endat2p2_dev_t *dev, endat2p2_mode_cmd_t cmd)
 {
     endat2p2_recv_data_t data = {0};
 
@@ -781,7 +782,8 @@ static int ENDATDEV_HardwareStrobeLoop(endat2p2_dev_t *dev)
 int main(void)
 {
     int ret;
-    int frequency, menu_cmd, mode_cmd;
+    int frequency, menu_cmd;
+    endat2p2_mode_cmd_t mode_cmd;
     int data;
 
     BOARD_InitHardware();
@@ -877,7 +879,7 @@ int main(void)
         PRINTF("%d\r\n", menu_cmd);
         if(menu_cmd >= 1 && menu_cmd <= 14)
         {
-            mode_cmd = menu_cmd_to_mode_cmd[menu_cmd];
+            mode_cmd = (endat2p2_mode_cmd_t) menu_cmd_to_mode_cmd[menu_cmd];
             ENDATDEV_ProcessModeCommand(dev, mode_cmd);
             ENDATDEV_HandleRx(dev, mode_cmd);
             continue;
@@ -948,8 +950,4 @@ int main(void)
             continue;
         }
     }
-
-    PRINTF("Exit ENDAT2.2 Diagnostic application\r\n");
-
-    return 0;
 }
