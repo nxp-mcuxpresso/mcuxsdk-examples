@@ -7,7 +7,7 @@ Hardware requirements
 
 Board settings
 ==============
-For multiple boards cascades, R142 register needs to be removed.
+- 
 
 Prepare the Demo
 ================
@@ -15,16 +15,16 @@ Prepare the Demo
 	- Download Slave Stack Code Tool(SSC Tool) from BECKHOFF official website and install it
 	- Open Slave Stack Code Tool
 	- Click 'File' -> 'New' -> 'Import' to import the Congfig file
-		Select digital_io.xml under path '.\boards\evkmimxrt1180\ecat_examples\digital_io\<core>\SSC'.
+		Select digital_io.xml under path '.\boards\imx943evk\ecat_examples\digital_io\<core>\SSC'.
 	- Click 'Tool' -> 'Application' -> 'Import' to import Application information
-		Select digital_io.xlsx under path '.\boards\evkmimxrt1180\ecat_examples\digital_io\<core>\SSC'.
+		Select digital_io.xlsx under path '.\boards\imx943evk\ecat_examples\digital_io\<core>\SSC'.
 	- Click 'Project' -> 'Create new Slave Files'
-		'Source Folder'(default): '.\boards\evkmimxrt1180\ecat_examples\digital_io\<core>\SSC\Src'.
+		'Source Folder'(default): '.\boards\imx943evk\ecat_examples\digital_io\<core>\SSC\Src'.
 		Click 'Start'.
 	- Remove digital_io.c under Src folder
 	
 2. Connect EtherCAT Port0 with TwinCAT3
-	RJ45 interface labeled as J28 is the EtherCAT Port0 and RJ45 interface labeled as J32 is the EtherCAT Port1.
+	RJ45 interface labeled as J24 SH2 is the EtherCAT Port0 and RJ45 interface labeled as J24 SH1 is the EtherCAT Port1.
 
 3. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
 

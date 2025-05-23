@@ -10,7 +10,7 @@
 #include "mbport.h"
 
 /* ----------------------- Variables ----------------------------------------*/
-static eMBEventType eQueuedEvent;
+static uint32_t eQueuedEvent;
 static BOOL     xEventInQueue;
 
 /* ----------------------- Start implementation -----------------------------*/

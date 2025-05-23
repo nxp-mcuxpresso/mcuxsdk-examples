@@ -153,9 +153,9 @@ struct tcp_pcb *tcpPcb;
 
 uint16_t mbTCPWriteLen = 0;
 
-uint8_t input_ip[16];
+char input_ip[16];
 
-uint8_t ip_addr[4];
+int ip_addr[4];
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -234,13 +234,13 @@ static void linkStatusCallback(struct netif *netif_, netif_nsc_reason_t reason, 
     PRINTF("\r\n");
 }
 
-uint8_t check_ip_addr(uint8_t *ip)
+int check_ip_addr(char *ip)
 {
 	if (ip == NULL || ip[0] == '0' || ip[0] == '\0') {
 		return -1;
 	}
 
-	for (uint8_t i = 0, count = 0; i < (uint8_t)strlen(ip); i++) {
+	for (int i = 0, count = 0; i < strlen(ip); i++) {
 		if ((ip[i] != '.') && (ip[i] < '0' || ip[i] > '9')) {
 			return -1;
 		}
@@ -252,17 +252,17 @@ uint8_t check_ip_addr(uint8_t *ip)
 		}
 	}
 
-	uint8_t ip_check[4][4];
-	memset(ip_check, 0, sizeof(uint8_t[4]) * 4);
+	char ip_check[4][4];
+	memset(ip_check, 0, sizeof(char[4]) * 4);
 
 	sscanf(ip, "%[^.].%[^.].%[^.].%[^ ]", ip_check[0], ip_check[1], ip_check[2], ip_check[3]);
-	sscanf(ip_check[0], "%d", &ip_addr[0]);
-	sscanf(ip_check[1], "%d", &ip_addr[1]);
-	sscanf(ip_check[2], "%d", &ip_addr[2]);
-	sscanf(ip_check[3], "%d", &ip_addr[3]);
+    ip_addr[0] = atoi(ip_check[0]);
+    ip_addr[1] = atoi(ip_check[1]);
+    ip_addr[2] = atoi(ip_check[2]);
+    ip_addr[3] = atoi(ip_check[3]);
 
-	for (uint8_t i = 0; i < 4; i++) {
-		if (((uint8_t)strlen(ip_check[i])) == 0 || (ip_check[i][0] == '0' && ip_check[i][1] != '\0') || ip_addr[i] < 0 || ip_addr[i] > 255) {
+	for (int i = 0; i < 4; i++) {
+		if ((strlen(ip_check[i])) == 0 || (ip_check[i][0] == '0' && ip_check[i][1] != '\0') || ip_addr[i] < 0 || ip_addr[i] > 255) {
 			return -1;
 		}
 	}

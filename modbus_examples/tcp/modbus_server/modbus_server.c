@@ -258,7 +258,7 @@ eMBLedStatusCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNRegs, eM
     /* it already plus one in modbus function method. */
     usAddress--;
 
-    if( ( usAddress >= LED_START_ADDR ) && ( usAddress +  usNRegs <= LED_NUMS ) )
+    if( usAddress +  usNRegs <= LED_NUMS )
     {
         if ( eMode == MB_REG_READ)
         {

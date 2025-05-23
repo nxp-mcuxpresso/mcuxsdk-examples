@@ -72,7 +72,6 @@ AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t g_txFrame[EP_TXBUFF_SIZE], EP_BUFF_
 uint64_t rxBuffAddrArray[EP_RING_NUM][EP_RXBD_NUM];
 
 static netc_tx_frame_info_t g_txDirty[EP_RING_NUM][EP_TXBD_NUM];
-static netc_tx_frame_info_t txFrameInfo = {0};
 
 static char IOmap[1500];
 
@@ -307,7 +306,6 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
 
 static status_t ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame_info_t *frameInfo, void *userData)
 {
-    txFrameInfo = *frameInfo;
     return kStatus_Success;
 }
 

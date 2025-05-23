@@ -144,6 +144,4 @@ int main(void)
         eMBMasterReqWriteLedStatus(0x01, 0x1, 1, 100);
         SDK_DelayAtLeastUs(1000000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     }
-
-    return 0;
 }
