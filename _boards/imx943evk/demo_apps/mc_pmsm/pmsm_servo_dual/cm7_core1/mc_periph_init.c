@@ -222,10 +222,10 @@ void InitEndat2p2(void)
   
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
-        .clkId = kCLOCK_Endat21, //ENDAT2P2_SYS_CLK_ROOT
-        .pclkId = kCLOCK_Endat21, /* 400 MHz */
-        .rate = ENDAT2P2_CLK_48M, //ENDAT2P2_SYS_CLOCK //ENDAT2P2_CLK_64M
-        .pclkId = SCMI_CLOCK_ROUND_AUTO,
+        .clkId = kCLOCK_Endat21,
+        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+        .rate = ENDAT2P2_CLK_48M,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
     };
 
     BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
