@@ -466,6 +466,4 @@ int main(void)
            BISS_performance(10);
         }
     }
-
-    return 0;
 }
