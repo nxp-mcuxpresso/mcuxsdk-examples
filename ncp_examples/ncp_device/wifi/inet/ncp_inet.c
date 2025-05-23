@@ -542,8 +542,8 @@ static void socket_recv_task(void *arg)
     int recv_size = 0;
 
     char recv_buf[NCP_INET_SOCKET_RECV_SIZE] = {0};
-    socklen_t socklen;
-    struct sockaddr client_addr;
+    union ncp_sockaddr_aligned client_addr;
+    socklen_t socklen = sizeof(client_addr);
     memset(&client_addr, 0, sizeof(client_addr));
 
     while(1)
@@ -566,7 +566,7 @@ static void socket_recv_task(void *arg)
                 if (FD_ISSET(i, &readset))
                 {
                     /* read data from tcp/ip stack */
-                    ret = recvfrom(i, recv_buf, NCP_INET_SOCKET_RECV_SIZE, 0, &client_addr, &socklen);
+                    ret = recvfrom(i, recv_buf, NCP_INET_SOCKET_RECV_SIZE, 0, (struct sockaddr *)&client_addr.sin6, &socklen);
                     struct recv_send_data_t send_event;
                     send_event.ret = ret;
                     send_event.errno = errno;
@@ -577,7 +577,7 @@ static void socket_recv_task(void *arg)
                     else
                         send_event.recv_size = 0;
                     send_event.socklen = socklen;
-                    send_event.client_addr.sa = client_addr;
+                    send_event.client_addr = client_addr;
                     ncp_inet_recv_send_data(&send_event);
                 }
             }
