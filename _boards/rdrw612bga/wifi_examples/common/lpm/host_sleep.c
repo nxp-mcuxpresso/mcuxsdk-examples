@@ -236,6 +236,9 @@ int wlan_config_suspend_mode(int mode)
     if(mode == 3)
     {
 #if CONFIG_UART_INTERRUPT
+        usart_suspend_flag = true;
+        cli_uart_notify();
+        OSA_TimeDelay(1);
         cli_uart_deinit();
 #endif
         DbgConsole_Deinit();
@@ -245,6 +248,9 @@ int wlan_config_suspend_mode(int mode)
     {
         /* Perihperal state lost, need reinitialize in exit from PM3 */
         lpm_pm3_exit_hw_reinit();
+#if CONFIG_UART_INTERRUPT
+        usart_suspend_flag = false;
+#endif
     }
     if (wlan_is_started())
     {
