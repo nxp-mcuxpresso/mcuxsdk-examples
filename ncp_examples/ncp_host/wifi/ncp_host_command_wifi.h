@@ -2483,6 +2483,31 @@ int wlan_roaming_command(int argc, char **argv);
 int wlan_process_roaming_response(uint8_t *res);
 
 /**
+ * This API is used to enable/disable the Opportunistic Key Caching (OKC).
+ *
+ * \param[in] argc    Argument count, the number of strings pointed to by argv, \n
+ *                    argc should be 2.
+ * \param[in] argv    Argument vector, \n
+ *                    argv[0]: wlan-info \n
+ *                    argv[1]: enable/disable OKC \n
+ *                             0 -- Disable OKC (default) \n
+ *                             1 -- Enable OKC
+ *
+ * \return TRUE if success.
+ * \return FALSE if failure.
+ */
+int wlan_set_okc_command(int argc, char **argv);
+
+/**
+ * This API is used to process the response for the OKC command.
+ *
+ * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
+ *
+ * \return WM_SUCCESS.
+ */
+int wlan_process_okc_response(uint8_t *res);
+
+/**
  * This API is used to set/delete the MEF (memory efficient filtering) entries configuration.
  *
  * \note Use this API with command wlan-mcu-sleep with wakeup method MEF.

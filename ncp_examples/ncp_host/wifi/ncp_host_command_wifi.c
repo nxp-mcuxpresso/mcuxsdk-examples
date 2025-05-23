@@ -467,7 +467,6 @@ int wlan_reset_command(int argc, char **argv)
     return WM_SUCCESS;
 }
 
-#if CONFIG_NCP_SUPP
 int wlan_set_okc_command(int argc, char **argv)
 {
     MCU_NCPCmd_DS_COMMAND *okc_command = ncp_host_get_cmd_buffer_wifi();
@@ -505,7 +504,6 @@ int wlan_set_okc_command(int argc, char **argv)
 
     return WM_SUCCESS;
 }
-#endif
 
 static void dump_wlan_roaming_command(const char *str)
 {
@@ -9031,11 +9029,9 @@ int wlan_process_response(uint8_t *res)
         case NCP_RSP_WLAN_BASIC_WLAN_RESET:
             ret = wlan_process_wlan_reset_response(res);
             break;
-#if CONFIG_NCP_SUPP
         case NCP_RSP_WLAN_STA_SET_OKC:
             ret = wlan_process_okc_response(res);
             break;
-#endif
         default:
             PRINTF("Invaild response cmd!\r\n");
             break;
