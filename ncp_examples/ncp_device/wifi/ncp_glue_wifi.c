@@ -4388,6 +4388,37 @@ done:
     return ret;
 }
 
+static int wlan_ncp_get_sta_netif_flags(void *tlv)
+{
+    struct netif *netif = net_get_sta_interface();
+    uint8_t flags;
+    int ret = WM_SUCCESS;
+
+    flags = netif->flags;
+
+    NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
+    cmd_res->header.cmd        = NCP_RSP_WLAN_STA_GET_NETIF_FLAGS;
+    cmd_res->header.size       = NCP_CMD_HEADER_LEN;
+    cmd_res->header.seqnum     = 0x00;
+    cmd_res->header.result     = NCP_CMD_RESULT_OK;
+
+    NCP_CMD_GET_NETIF_FLAGS *netif_flags = (NCP_CMD_GET_NETIF_FLAGS *)&cmd_res->params.netif_flags;
+
+    (void)memcpy(&netif_flags->flags, &flags, sizeof(uint8_t));
+
+done:
+    if(ret == -WM_FAIL)
+    {
+        cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
+    }
+    else
+    {
+        cmd_res->header.size         += sizeof(NCP_CMD_GET_NETIF_FLAGS);
+    }
+
+    return ret;
+}
+
 static int wlan_ncp_get_current_rssi(void *tlv)
 {
     int ret = WM_SUCCESS;
@@ -4457,33 +4488,40 @@ done:
 
 static int wlan_ncp_get_ip_config(void *tlv)
 {
-    struct wlan_ip_config ip_config;
     int ret = WM_SUCCESS;
+    struct wlan_ip_config *ip_config = NULL;
+    
+    ip_config = (struct wlan_ip_config *)OSA_MemoryAllocate(sizeof(struct wlan_ip_config));
 
-    if(wlan_get_address(&ip_config) != WM_SUCCESS)
+    if (ip_config == NULL)
     {
+        ncp_e("failed to allocate memory for ip_config");
         ret = -WM_FAIL;
+        return ret;
     }
 
     NCPCmd_DS_COMMAND *cmd_res = wlan_ncp_get_response_buffer();
-    cmd_res->header.cmd        = NCP_RSP_WLAN_GET_IP_CINFIG;
+    cmd_res->header.cmd        = NCP_RSP_WLAN_GET_IP_CONFIG;
     cmd_res->header.size       = NCP_CMD_HEADER_LEN;
     cmd_res->header.seqnum     = 0x00;
     cmd_res->header.result     = NCP_CMD_RESULT_OK;
-
+    
     NCP_CMD_IP_CONFIG *ncp_ip_config = (NCP_CMD_IP_CONFIG *)&cmd_res->params.ip_config;
 
-    (void)memcpy(&ncp_ip_config, &ip_config, sizeof(uint8_t));
+    if(wlan_get_address(ip_config) != WM_SUCCESS)
+    {
+        OSA_MemoryFree(ip_config);
+        ret = -WM_FAIL;
+        return ret;
+    }
 
-done:
-    if(ret == -WM_FAIL)
+    (void)memcpy(ncp_ip_config, ip_config, sizeof(NCP_CMD_IP_CONFIG));
+
+    if(ip_config != NULL)
     {
-        cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
+        OSA_MemoryFree(ip_config);
     }
-    else
-    {
-        cmd_res->header.size         += sizeof(NCP_CMD_IP_CONFIG);
-    }
+    cmd_res->header.size         += sizeof(NCP_CMD_IP_CONFIG);
 
     return ret;
 }
@@ -4515,7 +4553,8 @@ struct cmd_t wlan_cmd_sta[] = {
     {NCP_CMD_WLAN_GET_PKT_STATS, "wlan-ncp-get-pkt-stats", wlan_ncp_get_pkt_stats, CMD_SYNC},
     {NCP_CMD_WLAN_STA_GET_CURRENT_RSSI, "wlan-ncp-get-current-rssi", wlan_ncp_get_current_rssi, CMD_SYNC},
     {NCP_CMD_WLAN_STA_GET_CURRENT_CHANNEL, "wlan-ncp-get-current-channel", wlan_ncp_get_current_channel, CMD_SYNC},
-    {NCP_CMD_WLAN_GET_IP_CINFIG, "wlan-ncp-get-ip-config", wlan_ncp_get_ip_config, CMD_SYNC},
+    {NCP_CMD_WLAN_GET_IP_CONFIG, "wlan-ncp-get-ip-config", wlan_ncp_get_ip_config, CMD_SYNC},
+    {NCP_CMD_WLAN_STA_GET_NETIF_FLAGS, "wlan-ncp-get-netif-flags", wlan_ncp_get_sta_netif_flags, CMD_SYNC},    
 #if CONFIG_NCP_SUPP_WPS
     {NCP_CMD_WLAN_STA_WPS_PBC, "wlan-start-wps-pbc", wlan_ncp_start_wps_pbc, CMD_SYNC},
     {NCP_CMD_WLAN_STA_GEN_WPS_PIN, "wlan-generate-wps-pin", wlan_ncp_wps_generate_pin, CMD_SYNC},

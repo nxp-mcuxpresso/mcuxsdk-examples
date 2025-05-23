@@ -834,7 +834,7 @@ int wlan_ncp_get_ip_config(NCP_CMD_IP_CONFIG * ip_config)
     }
     (void) memset((uint8_t *) get_ip_config_command, 0, sizeof(NCP_COMMAND));
 
-    get_ip_config_command->header.cmd    = NCP_CMD_WLAN_GET_IP_CINFIG;
+    get_ip_config_command->header.cmd    = NCP_CMD_WLAN_GET_IP_CONFIG;
     get_ip_config_command->header.size   = NCP_CMD_HEADER_LEN;
     get_ip_config_command->header.result = NCP_CMD_RESULT_OK;
 

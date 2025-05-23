@@ -41,7 +41,7 @@
 #define NCP_IPERF_END_TOKEN_SIZE 11
 
 /** This data structure represents an IPv4 address */
-struct ipv4_config
+NCP_TLV_PACK_START struct ipv4_config
 {
     /** Set to \ref ADDR_TYPE_DHCP to use DHCP to obtain the IP address or
      *  \ref ADDR_TYPE_STATIC to use a static IP. In case of static IP
@@ -49,7 +49,7 @@ struct ipv4_config
      *  using DHCP, the ip, gw, netmask and dns are overwritten by the
      *  values obtained from the DHCP server. They should be zeroed out if
      *  not used. */
-    unsigned addr_type : 2;
+    unsigned addr_type;
     /** The system's IP address in network order. */
     unsigned address;
     /** The system's default gateway in network order. */
@@ -60,11 +60,11 @@ struct ipv4_config
     unsigned dns1;
     /** The system's secondary dns server in network order. */
     unsigned dns2;
-};
+} NCP_TLV_PACK_END;
 
 #ifdef CONFIG_IPV6
 /** This data structure represents an IPv6 address */
-struct ipv6_config
+NCP_TLV_PACK_START struct  ipv6_config
 {
     /** The system's IPv6 address in network order. */
     unsigned address[4];
@@ -72,7 +72,7 @@ struct ipv6_config
     unsigned char addr_type;
     /** The state of IPv6 address (Tentative, Preferred, etc). */
     unsigned char addr_state;
-};
+} NCP_TLV_PACK_END;
 #endif
 
 /** This structure is used for station configuration. */

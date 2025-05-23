@@ -159,13 +159,18 @@
 /** Wi-Fi STA get current channel command response ID */
 #define NCP_RSP_WLAN_STA_GET_CURRENT_CHANNEL    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000038)
 /** Wi-Fi STA get ip config command ID */
-#define NCP_CMD_WLAN_GET_IP_CINFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000039)
+#define NCP_CMD_WLAN_GET_IP_CONFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x00000039)
 /** Wi-Fi STA get ip config command response ID */
-#define NCP_RSP_WLAN_GET_IP_CINFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000039)
+#define NCP_RSP_WLAN_GET_IP_CONFIG    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x00000039)
+/** Wi-Fi STA get netif flags command ID */
+#define NCP_CMD_WLAN_STA_GET_NETIF_FLAGS    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x0000003a)
+/** Wi-Fi STA get netif flags command response ID */
+#define NCP_RSP_WLAN_STA_GET_NETIF_FLAGS    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x0000003a)
 /** Wi-Fi STA OKC command ID */
-#define NCP_CMD_WLAN_STA_SET_OKC    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x0000003A)
+#define NCP_CMD_WLAN_STA_SET_OKC    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_CMD | 0x0000003b)
 /** Wi-Fi STA OKC command response ID */
-#define NCP_RSP_WLAN_STA_SET_OKC    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x0000003A)
+#define NCP_RSP_WLAN_STA_SET_OKC    (NCP_CMD_WLAN | NCP_CMD_WLAN_STA | NCP_MSG_TYPE_RESP | 0x0000003b)
+
 
 /** WLAN Basic command/response */
 /** Wi-Fi reset command ID */
@@ -1074,31 +1079,42 @@ typedef struct _NCP_CMD_PKT_STATS
 /** This structure is used for current rssi configuration. */
 typedef struct _NCP_CMD_GET_CURRENT_RSSI
 {
+    /** Current rssi */
     short rssi;
 } NCP_CMD_GET_CURRENT_RSSI;
 
 /** This structure is used for current channel configuration. */
 typedef struct _NCP_CMD_GET_CURRENT_CHANNEL
 {
+    /** Current channel */
     uint8_t channel;
 } NCP_CMD_GET_CURRENT_CHANNEL;
+
+/** This structure is used for store the netif flags. */
+typedef struct _NCP_CMD_GET_NETIF_FLAGS
+{
+    /** Netif flags */
+    uint8_t flags;
+} NCP_CMD_GET_NETIF_FLAGS;
 
 /** Network IP configuration.
  *
  *  This data structure represents the network IP configuration
  *  for IPv4 as well as IPv6 addresses
  */
-typedef struct _NCP_CMD_IP_CONFIG
+typedef NCP_TLV_PACK_START struct _NCP_CMD_IP_CONFIG
 {
 #ifdef CONFIG_IPV6
     /** The network IPv6 address configuration that should be
      * associated with this interface. */
-    struct ipv6_config ipv6[MAX_IPV6_ADDRESSES];
+    struct ipv6_config ipv6[CONFIG_MAX_IPV6_ADDRESSES];
+    /** The network IPv6 valid addresses count */
+    unsigned ipv6_count;
 #endif
     /** The network IPv4 address configuration that should be
      * associated with this interface. */
     struct ipv4_config ipv4;
-} NCP_CMD_IP_CONFIG;
+} NCP_TLV_PACK_END NCP_CMD_IP_CONFIG;
 
 /** This structure is used for MAC address configuration. */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_MAC_ADDRESS
@@ -2779,6 +2795,8 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_GET_CURRENT_CHANNEL current_channel;
         /** get ip config*/
         NCP_CMD_IP_CONFIG ip_config;
+        /** get netif flag*/
+        NCP_CMD_GET_NETIF_FLAGS netif_flags;
     } params;
 } NCP_TLV_PACK_END NCPCmd_DS_COMMAND, MCU_NCPCmd_DS_COMMAND;
 
