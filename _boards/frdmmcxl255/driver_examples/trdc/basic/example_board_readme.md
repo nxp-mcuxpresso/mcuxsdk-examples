@@ -1,16 +1,15 @@
 Hardware requirements
 =====================
 - Type-C USB cable
-- FRDM-MCXL255 Board
+- FRDM-MCXA156 Board
 - Personal Computer
 
 Board settings
 ============
-No special settings are required.
 
 Prepare the Demo
 ===============
-1.  Connect a USB Type-C cable between the host PC and the LPC-Link USB port (P6) on the target board.
+1.  Connect a USB cable between the host PC and the EVK board J21.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
