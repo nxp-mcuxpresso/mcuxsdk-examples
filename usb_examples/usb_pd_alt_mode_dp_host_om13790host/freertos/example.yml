@@ -33,6 +33,9 @@ usb_pd_alt_mode_dp_host_freertos_om13790host:
     evkmimxrt1180@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmk22f: []

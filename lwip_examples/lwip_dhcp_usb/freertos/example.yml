@@ -88,6 +88,10 @@ lwip_dhcp_usb_freertos:
     - -armgcc@debug
     - -armgcc@hyperram_debug
     - -iar@debug
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -iar@debug
     frdmmcxn947@cm33_core0: []
     frdmrw612: []
     lpcxpresso54628: []

@@ -32,6 +32,8 @@ dev_hid_mouse_lite_bm:
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmk22f: []
