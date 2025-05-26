@@ -14,3 +14,4 @@ RTS to CTS pin directly.
 - [LPCXpresso54628](../../../../_boards/lpcxpresso54628/driver_examples/usart/hardware_flow_control/example_board_readme.md)
 - [RD-RW612-BGA](../../../../_boards/rdrw612bga/driver_examples/usart/hardware_flow_control/example_board_readme.md)
 - [MCXW23-EVK](../../../../_boards/mcxw23evk/driver_examples/usart/hardware_flow_control/example_board_readme.md)
+- [MIMXRT685-EVK ](../../../../_boards/evkmimxrt685/driver_examples/usart/hardware_flow_control/example_board_readme.md)

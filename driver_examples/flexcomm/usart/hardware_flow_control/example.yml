@@ -23,3 +23,4 @@ usart_hardware_flow_control:
     mcxw23evk: []
     lpcxpresso54628: []
     rdrw612bga: []
+    evkmimxrt685@cm33: []
