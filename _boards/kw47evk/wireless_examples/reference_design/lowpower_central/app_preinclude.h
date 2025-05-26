@@ -225,7 +225,6 @@
 #define BUTTON_TASK_STACK_SIZE          364
 #define SERIAL_MANAGER_TASK_STACK_SIZE  300
 #define TM_TASK_STACK_SIZE              350
-#define gHost_TaskStackSize_c           1650
 
 /*! The Application main task blocks with a timeout of gAppTaskWaitTimeout_ms_c ms
  *  This demonstrates the FreeRTOS tickless support with low power. The device
