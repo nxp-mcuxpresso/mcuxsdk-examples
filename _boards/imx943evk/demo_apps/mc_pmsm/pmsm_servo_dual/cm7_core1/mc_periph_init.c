@@ -158,7 +158,6 @@ void InitBiSS1(void)
   status_t status;
   uint8_t slvID;
   biss_slave_info_t *slv;
-  status_t my_biss_status;
   biss_master_t *master;
 
   /* Disable BiSS_EOT interrupt */
@@ -169,7 +168,7 @@ void InitBiSS1(void)
   
   if (master == NULL)
   {
-      my_biss_status = kStatus_Fail;
+      return;
   }
   SDK_DelayAtLeastUs(100U, SystemCoreClock);
   
@@ -183,7 +182,7 @@ void InitBiSS1(void)
   status = BISS_SLVScan(master);
   if (status != kStatus_Success)
   {
-      my_biss_status = kStatus_Fail;
+      return;
   }
   
   for (slvID = 0; slvID < master->slvCnt; slvID++)
@@ -218,7 +217,7 @@ void InitBiSS1(void)
  */
 void InitEndat2p2(void)
 {
-    int ret, data;
+    int data;
   
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
@@ -276,15 +275,15 @@ void InitEndat2p2(void)
 
     ENDAT2P2_SetRecoveryTimer(g_sM2Enc.dev, 0);
          
-    ret = ENDAT2P2_GetEncoderError(g_sM2Enc.dev);
-    ret = ENDAT2P2_GetEncoderWarning(g_sM2Enc.dev);
+    ENDAT2P2_GetEncoderError(g_sM2Enc.dev);
+    ENDAT2P2_GetEncoderWarning(g_sM2Enc.dev);
 
     if(g_sM2Enc.dev->cmd_set_2_2)
     {
         ENDAT2P2_ClearEncoderErrorWithPos(g_sM2Enc.dev);
 
-        ret = ENDAT2P2_GetEncoderErrorWithPos(g_sM2Enc.dev);
-        ret = ENDAT2P2_GetParamWithPos(g_sM2Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
+        ENDAT2P2_GetEncoderErrorWithPos(g_sM2Enc.dev);
+        ENDAT2P2_GetParamWithPos(g_sM2Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
     }
 
     ////////////////////////////////////////////////////////////////////////////

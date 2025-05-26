@@ -334,7 +334,7 @@ void Sinc1_Init(void)
  */
 void InitEndat2p2(void)
 {
-    int ret, data;
+    int data;
   
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
@@ -392,15 +392,15 @@ void InitEndat2p2(void)
 
     ENDAT2P2_SetRecoveryTimer(g_sM1Enc.dev, 0);
          
-    ret = ENDAT2P2_GetEncoderError(g_sM1Enc.dev);
-    ret = ENDAT2P2_GetEncoderWarning(g_sM1Enc.dev);
+    ENDAT2P2_GetEncoderError(g_sM1Enc.dev);
+    ENDAT2P2_GetEncoderWarning(g_sM1Enc.dev);
 
     if(g_sM1Enc.dev->cmd_set_2_2)
     {
         ENDAT2P2_ClearEncoderErrorWithPos(g_sM1Enc.dev);
 
-        ret = ENDAT2P2_GetEncoderErrorWithPos(g_sM1Enc.dev);
-        ret = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
+        ENDAT2P2_GetEncoderErrorWithPos(g_sM1Enc.dev);
+        ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
     }
 
     ////////////////////////////////////////////////////////////////////////////

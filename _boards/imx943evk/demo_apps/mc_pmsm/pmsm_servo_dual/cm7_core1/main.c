@@ -18,8 +18,6 @@
 #include "m2_sm_servo.h"
 #include "board.h"
 
-#warning "Please, check whether macro SERVO_OPTIM is set in project options. Only position control is available when SERVO_OPTIM defined!"
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -83,12 +81,12 @@ void SINC2_CH0_IRQHandler(void);
 /* BiSS OET interrupt handler */
 RAM_FUNC_LIB
 void BISS_EOT_IRQHandler(void);
-/* Demo Speed Stimulator */
-RAM_FUNC_LIB
-static void DemoSpeedStimulator(void);
-/* Demo Position Stimulator */
-RAM_FUNC_LIB
-static void DemoPositionStimulator(void);
+///* Demo Speed Stimulator */
+//RAM_FUNC_LIB
+//static void DemoSpeedStimulator(void);
+///* Demo Position Stimulator */
+//RAM_FUNC_LIB
+//static void DemoPositionStimulator(void);
 
 static void BOARD_InitSysTick(void);
 
@@ -114,12 +112,12 @@ bool_t bDemoModePosition = FALSE;
 bool_t bM2DemoModeSpeed    = FALSE;
 bool_t bM2DemoModePosition = FALSE;
 
-/* Counters used for demo mode */
-static uint32_t ui32SpeedStimulatorCnt    = 0U;
-static uint32_t ui32PositionStimulatorCnt = 0U;
-
-/* Counter for button pressing */
-static uint32_t ui32ButtonFilter = 0U;
+///* Counters used for demo mode */
+//static uint32_t ui32SpeedStimulatorCnt    = 0U;
+//static uint32_t ui32PositionStimulatorCnt = 0U;
+//
+///* Counter for button pressing */
+//static uint32_t ui32ButtonFilter = 0U;
 
 GFLIB_RAMP_T_FLT sPositionDemoRampParams;       /* Position demo ramp parameters */
 float_t fltPositionDemoReqValue = 10.0F;
@@ -287,110 +285,110 @@ void TMR1_IRQHandler(void)
     M1_END_OF_ISR;
 }
 
-/*!
- * @brief   DemoSpeedStimulator
- *           - When demo mode is enabled it changes the required speed according
- *             to predefined profile
- *
- * @param   void
- *
- * @return  none
- */
-RAM_FUNC_LIB
-static void DemoSpeedStimulator(void)
-{
-    /* Increase push button pressing counter  */
-    if (ui32ButtonFilter < 1000)
-    {
-    	ui32ButtonFilter++;
-    }
-
-    ui32SpeedStimulatorCnt++;
-    switch (ui32SpeedStimulatorCnt)
-    {
-        case 10:
-            M1_SetAppSwitch(0);
-            break;
-        case 20:
-            g_sM1Drive.eControl                  = kControlMode_SpeedFOC;
-//            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_SENSORLESS_CTRL; //NEED DISCUSSION
-            M1_SetAppSwitch(1);
-            break;
-        case 1000:
-            M1_SetSpeed(1000.0F);
-            break;
-        case 5000:
-            M1_SetSpeed(2000.0F);
-            break;
-        case 10000:
-            M1_SetSpeed(-1000.0F);
-            break;
-        case 15000:
-            M1_SetSpeed(-2000.0F);
-            break;
-        case 19800:
-            M1_SetSpeed(0.0F);
-            break;
-        case 20000:
-            ui32SpeedStimulatorCnt = 0;
-            M1_SetAppSwitch(0);
-            break;
-        default:
-            ;
-            break;
-    }
-}
-
-/*!
- * @brief   DemoPositionStimulator
- *           - When demo mode is enabled it changes the required position according
- *             to predefined profile
- *
- * @param   void
- *
- * @return  none
- */
-RAM_FUNC_LIB
-static void DemoPositionStimulator(void)
-{
-    ui32PositionStimulatorCnt++;
-    static float_t fltDemoPositionValue;
-
-    switch (ui32PositionStimulatorCnt)
-    {
-        case 1:
-            M1_SetAppSwitch(0);
-            fltDemoPositionValue = 0.0F;
-            break;
-        case 20:
-            g_sM1Drive.eControl                  = kControlMode_PositionFOC;
-            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_ENC_CTRL;
-            M1_SetAppSwitch(1);
-            break;
-        case 4000:
-            fltDemoPositionValue = fltPositionDemoReqValue;
-            break;
-        case 8000:
-            fltDemoPositionValue = fltPositionDemoReqValue;
-            break;
-        case 12000:
-            fltDemoPositionValue = 0.0F;
-            break;
-        case 16000:
-            fltDemoPositionValue = 0.0F;
-            break;
-        case 20000:
-            fltDemoPositionValue = 0.0F;
-            ui32PositionStimulatorCnt = 3999U;
-            break;
-        default:
-            ;
-            break;
-    }
-    
-    g_sM1Drive.sPosition.a32PositionCmd = MLIB_Conv_A32f(GFLIB_Ramp_FLT(fltDemoPositionValue, &sPositionDemoRampParams));
-    
-}
+///*!
+// * @brief   DemoSpeedStimulator
+// *           - When demo mode is enabled it changes the required speed according
+// *             to predefined profile
+// *
+// * @param   void
+// *
+// * @return  none
+// */
+//RAM_FUNC_LIB
+//static void DemoSpeedStimulator(void)
+//{
+//    /* Increase push button pressing counter  */
+//    if (ui32ButtonFilter < 1000)
+//    {
+//    	ui32ButtonFilter++;
+//    }
+//
+//    ui32SpeedStimulatorCnt++;
+//    switch (ui32SpeedStimulatorCnt)
+//    {
+//        case 10:
+//            M1_SetAppSwitch(0);
+//            break;
+//        case 20:
+//            g_sM1Drive.eControl                  = kControlMode_SpeedFOC;
+////            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_SENSORLESS_CTRL; //NEED DISCUSSION
+//            M1_SetAppSwitch(1);
+//            break;
+//        case 1000:
+//            M1_SetSpeed(1000.0F);
+//            break;
+//        case 5000:
+//            M1_SetSpeed(2000.0F);
+//            break;
+//        case 10000:
+//            M1_SetSpeed(-1000.0F);
+//            break;
+//        case 15000:
+//            M1_SetSpeed(-2000.0F);
+//            break;
+//        case 19800:
+//            M1_SetSpeed(0.0F);
+//            break;
+//        case 20000:
+//            ui32SpeedStimulatorCnt = 0;
+//            M1_SetAppSwitch(0);
+//            break;
+//        default:
+//            ;
+//            break;
+//    }
+//}
+//
+///*!
+// * @brief   DemoPositionStimulator
+// *           - When demo mode is enabled it changes the required position according
+// *             to predefined profile
+// *
+// * @param   void
+// *
+// * @return  none
+// */
+//RAM_FUNC_LIB
+//static void DemoPositionStimulator(void)
+//{
+//    ui32PositionStimulatorCnt++;
+//    static float_t fltDemoPositionValue;
+//
+//    switch (ui32PositionStimulatorCnt)
+//    {
+//        case 1:
+//            M1_SetAppSwitch(0);
+//            fltDemoPositionValue = 0.0F;
+//            break;
+//        case 20:
+//            g_sM1Drive.eControl                  = kControlMode_PositionFOC;
+//            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_ENC_CTRL;
+//            M1_SetAppSwitch(1);
+//            break;
+//        case 4000:
+//            fltDemoPositionValue = fltPositionDemoReqValue;
+//            break;
+//        case 8000:
+//            fltDemoPositionValue = fltPositionDemoReqValue;
+//            break;
+//        case 12000:
+//            fltDemoPositionValue = 0.0F;
+//            break;
+//        case 16000:
+//            fltDemoPositionValue = 0.0F;
+//            break;
+//        case 20000:
+//            fltDemoPositionValue = 0.0F;
+//            ui32PositionStimulatorCnt = 3999U;
+//            break;
+//        default:
+//            ;
+//            break;
+//    }
+//    
+//    g_sM1Drive.sPosition.a32PositionCmd = MLIB_Conv_A32f(GFLIB_Ramp_FLT(fltDemoPositionValue, &sPositionDemoRampParams));
+//    
+//}
 
 /*!
  * @brief LPUART Module initialization (LPUART is a the standard block included e.g. in K66F)
