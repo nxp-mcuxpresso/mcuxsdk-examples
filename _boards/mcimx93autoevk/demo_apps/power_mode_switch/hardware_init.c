@@ -15,8 +15,6 @@
 #include "app.h"
 #include "lpm.h"
 #include "fsl_mu.h"
-#include "rsc_table.h"
-#include "app_srtm.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -47,9 +45,4 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_Lpi2c1);
     CLOCK_SetRootClock(BOARD_PCAL6524_I2C_CLOCK_ROOT, &lpi2cClkCfg);
     CLOCK_EnableClock(BOARD_PCAL6524_I2C_CLOCK_GATE);
-
-    /* copy resource table to destination address(TCM) */
-    copyResourceTable();
-    APP_SRTM_Init();
-    APP_SRTM_StartCommunication();
 }

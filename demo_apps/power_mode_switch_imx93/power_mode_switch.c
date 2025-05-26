@@ -288,6 +288,7 @@ void PowerModeSwitchTask(void *pvParameters)
         }
         else if ('M' == ch)
         {
+            PRINTF("Please do not perform M33 Root clock switching concurrently with A-core suspend operations!\r\n");
             PRINTF("Press O for OverDrive mode - choose M33 ROOT Clock freq as 250MHz\r\n");
             PRINTF("Press N for Nominal   mode - choose M33 ROOT Clock freq as 200MHz\r\n");
             PRINTF("\r\nWaiting for key press..\r\n\r\n");

@@ -15,8 +15,6 @@
 #include "app.h"
 #include "lpm.h"
 #include "fsl_mu.h"
-#include "rsc_table.h"
-#include "app_srtm.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -53,9 +51,4 @@ void BOARD_InitHardware(void)
     BOARD_InitADP5585(&handle);
     ADP5585_SetDirection(&handle, (1 << BOARD_ADP5585_PDM_MQS_SEL) | (1 << BOARD_ADP5585_EXP_SEL), kADP5585_Output);
     ADP5585_ClearPins(&handle, (1 << BOARD_ADP5585_PDM_MQS_SEL) | (1 << BOARD_ADP5585_EXP_SEL));
-
-    /* copy resource table to destination address(TCM) */
-    copyResourceTable();
-    APP_SRTM_Init();
-    APP_SRTM_StartCommunication();
 }

@@ -26,7 +26,7 @@ Prepare the Demo
     => bootaux 0x1ffe0000 0
 5.  Append "${mcore_clk}" in u-boot "mmcargs" env, before booting linux.
     => run prepare_mcore
-    => setenv mmcargs 'setenv bootargs ${jh_clk} ${mcore_clk} console=${console} root=${mmcroot} clk_ignore_unused'
+    => setenv mmcargs 'setenv bootargs ${jh_clk} ${mcore_clk} console=${console} root=${mmcroot}'
 6.  You can also test power_mode_switch function with flash.bin. After flash.bin compilation, please load the bianry by using "UUU" command.
     For flash.bin test mode, please skip step 4.
 
@@ -35,6 +35,7 @@ Running the demo
 Mcore debug console shows the menu to command the MCU to the target power mode. The target power mode can be wakeup by LPTMR and LPUART.
 SYSTEM SLEEP flow: In linux console use command "echo mem > /sys/power/state" to suspend A55, then select SUSPEND mode in Mcore debug console. The STBY LED on board will light with RED color.
 NOTE: M33 wakeup A55 by using MU interrupt "GCR[GIR1]". Please ensure the A55 already in SUSPEND mode, then press "W" button in Mcore debug console. Or you will meet call trace info in linux.
+NOTE: Please do not perform M33 Root clock switching concurrently with A-core suspend operations! If we change the M-core root clock while the A-core is suspended, the function for M-core to wake up A-core will hang.
 
 The log below shows the output of the power mode switch demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
