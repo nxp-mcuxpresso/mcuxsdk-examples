@@ -17,7 +17,7 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-
+void DSL_RDB_DumpNodeDefiningValue(dsl_rdb_node_t *node, int level);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -126,6 +126,45 @@ void DEMO_HIPERFACE_IRQHandler(void)
 	}
 }
 
+void DSL_RDB_DumpNodeDefiningValue(dsl_rdb_node_t *node, int level)
+{
+	int i;
+	for (i = 0; i < level * 4; i++)
+		PRINTF(" ");
+	PRINTF("RID: 0x%x\r\n", node->rid);
+
+	for (i = 0; i < level * 4; i++)
+		PRINTF(" ");
+	PRINTF(" |_ Resource Name: %s\r\n", node->resourceName);
+
+	for (i = 0; i < level * 4; i++)
+		PRINTF(" ");
+	PRINTF(" |_ Access:\r\n");
+
+	for (i = 0; i < level * 4; i++)
+		PRINTF(" ");
+	PRINTF(" |   |_ Read: %s\r\n", DSL_RDB_AccessLevelToStr(node->readAccessLevel));
+
+	for (i = 0; i < level * 4; i++)
+		PRINTF(" ");
+	PRINTF(" |   |_ Write: %s\r\n", DSL_RDB_AccessLevelToStr(node->writeAccessLevel));
+
+	for (i = 0; i < level * 4; i++)
+		PRINTF(" ");
+	PRINTF(" |_ Time overrun: %d\r\n", node->timeOverrun > 254 ? 255 : node->timeOverrun);
+
+	for (i = 0; i < level * 4; i++)
+		PRINTF(" ");
+	PRINTF(" |_ Data type: %s\r\n", DSL_RDB_DataTypeToStr(node->dataType));
+
+	if (node->dataType == RDB_DATA_TYPE_NODE_INDICATOR) {
+		level++;
+		for (i = 0; i < node->childrenNum; i++) {
+			DSL_RDB_DumpNodeDefiningValue(&node->nodes[i], level);
+		}
+	}
+}
+
 /*!
  * @brief Main function
  */
@@ -154,14 +193,6 @@ int main(void)
 	PRINTF("Register access performance test:\r\n");
 	BOARD_InitSysTick();
 	volatile uint32_t *pos_h = (uint32_t *)&BOARD_HIPERFACE_BASEADDR->POS_PRIM[0];
-	volatile uint32_t pos;
-	SYSTICK_START_COUNT();
-	for (int i =0 ; i< 1000; i++) {
-		pos = *pos_h;
-	}
-
-	PRINTF("\tRead access time: %d\r\n", SYSTICK_GET_COUNT());
-	volatile uint8_t *p = (uint8_t *)&BOARD_HIPERFACE_BASEADDR->PRIM[0];
 	uint8_t v;
 	v = *pos_h;
 	SYSTICK_START_COUNT();
@@ -173,7 +204,7 @@ int main(void)
 
 	/* Cache all RDB infomation */
 	DSL_RDB_ReadAllNodeDefiningValue(BOARD_HIPERFACE_BASEADDR, &enc);
-	DSL_RDB_DumpAllNodeDefiningValue(&enc);
+	DSL_RDB_DumpNodeDefiningValue(&enc.rootNode, 0);
 	dsl_rdb_node_t *node;
 	node = DSL_RDB_FindNodeFromCache(&enc.rootNode, DSL_RID_TypeOfEncoder);
 	if (node)

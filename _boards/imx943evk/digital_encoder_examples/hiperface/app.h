@@ -69,6 +69,10 @@
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
 void PWM_Trigger_Init(PWM_Type *PWMBase);
+void hiperface_fast_pos_irq_enable();
+void hiperface_fast_pos_irq_disable();
+void hiperface_clear_fast_pos_irq_status();
+
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
