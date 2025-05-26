@@ -181,6 +181,10 @@ void BOARD_Init_I2C(void)
 {
     /*Clock setting for LPI2C */
     CLOCK_AttachClk(kFCCLK0_to_FLEXCOMM2);
+
+#if defined(BOARD_Codec_I2C_ReleaseBus)
+    BOARD_Codec_I2C_ReleaseBus();
+#endif
 }
 
 void BOARD_Init_EDMA(void)
@@ -247,7 +251,6 @@ void  BOARD_InitHardware(void)
     BOARD_Init_BT_UART();
     BOARD_Init_I2C();
     BOARD_Init_EDMA();
-    BOARD_I2C_ReleaseBus(2);
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
     GlikeyWriteEnable(GLIKEY3, 1U);                                    /* Enable SYSCON0_SEC_CLK_CTRL write */
     SYSCON0->SEC_CLK_CTRL |= SYSCON0_SEC_CLK_CTRL_TRNG_REFCLK_EN_MASK; /* Enable TRNG REF CLOCK */
