@@ -7,6 +7,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.nbu.app.threadx)
         SOURCES
             app_common/main.c
             app_common/app.h
+            app_common/README.md
     )
     mcux_add_source(
         TOOLCHAINS iar
