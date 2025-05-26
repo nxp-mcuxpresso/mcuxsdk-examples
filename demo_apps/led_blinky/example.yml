@@ -31,6 +31,7 @@ led_blinky:
     frdmke17z512: []
     frdmmcxc242: []
     frdmmcxc444: []
+    frdmmcxe247: []
     frdmmcxw71: []
     mcxw71evk: []
     frdmmcxw72@cm33_core0: []
