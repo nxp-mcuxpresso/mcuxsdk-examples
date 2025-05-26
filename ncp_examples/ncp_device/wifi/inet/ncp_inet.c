@@ -566,6 +566,7 @@ static void socket_recv_task(void *arg)
                 if (FD_ISSET(i, &readset))
                 {
                     /* read data from tcp/ip stack */
+                    socklen = sizeof(client_addr);
                     ret = recvfrom(i, recv_buf, NCP_INET_SOCKET_RECV_SIZE, 0, (struct sockaddr *)&client_addr.sin6, &socklen);
                     struct recv_send_data_t send_event;
                     send_event.ret = ret;
