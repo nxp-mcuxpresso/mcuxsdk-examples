@@ -9,285 +9,290 @@
  * will be overwritten if the respective MCUXpresso Config Tools is used to update this file.
  **********************************************************************************************************************/
 
- #ifndef _PIN_MUX_H_
- #define _PIN_MUX_H_
- 
- /*!
-  * @addtogroup pin_mux
-  * @{
-  */
- 
- /***********************************************************************************************************************
-  * API
-  **********************************************************************************************************************/
- 
- #if defined(__cplusplus)
- extern "C" {
- #endif
- 
- /*!
-  * @brief Calls initialization functions.
-  *
-  */
- void BOARD_InitBootPins(void);
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitDEBUG_UARTPins(void);          /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief This is a de-initialization function for 'BOARD_InitDEBUG_UARTPins' function.
-  * It sets all pins features (routing, direction and electrical) to their after-reset state.
-  * It also tries to route the previous peripheral signals to their default pins.
-  *
-  */
- void BOARD_InitDEBUG_UARTPins_deinit(void);   /* Function assigned for the Cortex-M33 */
+#ifndef _PIN_MUX_H_
+#define _PIN_MUX_H_
+
+/*!
+ * @addtogroup pin_mux
+ * @{
+ */
+
+/***********************************************************************************************************************
+ * API
+ **********************************************************************************************************************/
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
+/*!
+ * @brief Calls initialization functions.
+ *
+ */
+void BOARD_InitBootPins(void);
  
  /*!
   * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitCANPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /* GPIO_AON_15 (coord B4), ETH0 */
- /* Routed pin properties */
- #define BOARD_INITNETPINS_ETH0_RESET_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
- #define BOARD_INITNETPINS_ETH0_RESET_SIGNAL                              gpio_io   /*!< Signal name */
- #define BOARD_INITNETPINS_ETH0_RESET_CHANNEL                                 15U   /*!< Signal channel */
- 
- /* Symbols to be used with GPIO driver */
- #define BOARD_INITNETPINS_ETH0_RESET_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
- #define BOARD_INITNETPINS_ETH0_RESET_INIT_GPIO_VALUE                          1U   /*!< GPIO output initial state */
- #define BOARD_INITNETPINS_ETH0_RESET_GPIO_PIN                                15U   /*!< GPIO pin number */
- #define BOARD_INITNETPINS_ETH0_RESET_GPIO_PIN_MASK                   (1U << 15U)   /*!< GPIO pin mask */
- 
- /* GPIO_AON_20 (coord C8), ETH2 */
- /* Routed pin properties */
- #define BOARD_INITNETPINS_ETH2_RESET_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
- #define BOARD_INITNETPINS_ETH2_RESET_SIGNAL                              gpio_io   /*!< Signal name */
- #define BOARD_INITNETPINS_ETH2_RESET_CHANNEL                                 20U   /*!< Signal channel */
- 
- /* Symbols to be used with GPIO driver */
- #define BOARD_INITNETPINS_ETH2_RESET_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
- #define BOARD_INITNETPINS_ETH2_RESET_INIT_GPIO_VALUE                          1U   /*!< GPIO output initial state */
- #define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN                                20U   /*!< GPIO pin number */
- #define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN_MASK                   (1U << 20U)   /*!< GPIO pin mask */
- 
- /* GPIO_AON_03 (coord A9), ETH0 */
- /* Routed pin properties */
- #define BOARD_INITNETPINS_ETH0_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
- #define BOARD_INITNETPINS_ETH0_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
- #define BOARD_INITNETPINS_ETH0_INT_B_CHANNEL                                  3U   /*!< Signal channel */
- 
- /* Symbols to be used with GPIO driver */
- #define BOARD_INITNETPINS_ETH0_INT_B_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
- #define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN                                 3U   /*!< GPIO pin number */
- #define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN_MASK                    (1U << 3U)   /*!< GPIO pin mask */
- 
- /* GPIO_AON_04 (coord B5), ETH2 */
- /* Routed pin properties */
- #define BOARD_INITNETPINS_ETH2_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
- #define BOARD_INITNETPINS_ETH2_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
- #define BOARD_INITNETPINS_ETH2_INT_B_CHANNEL                                  4U   /*!< Signal channel */
- 
- /* Symbols to be used with GPIO driver */
- #define BOARD_INITNETPINS_ETH2_INT_B_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
- #define BOARD_INITNETPINS_ETH2_INT_B_GPIO_PIN                                 4U   /*!< GPIO pin number */
- #define BOARD_INITNETPINS_ETH2_INT_B_GPIO_PIN_MASK                    (1U << 4U)   /*!< GPIO pin mask */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitNETPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitPWMPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitSPIPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief This is a de-initialization function for 'BOARD_InitSPIPins' function.
-  * It sets all pins features (routing, direction and electrical) to their after-reset state.
-  * It also tries to route the previous peripheral signals to their default pins.
-  *
-  */
- void BOARD_InitSPIPins_deinit(void);          /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitLEDsPins(void);                /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitBUTTONsPins(void);             /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitKPPPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitGPTPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLASHPins(void);               /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitHYPERRAMPins(void);            /* Function assigned for the Cortex-M33 */
- 
- #define XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_23_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT23 function direction select: XBAR_INOUT as input */
- #define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as input */
- #define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_37_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT37 function direction select: XBAR_INOUT as input */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitEQDCPins(void);                /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitI2CPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief This is a de-initialization function for 'BOARD_InitI2CPins' function.
-  * It sets all pins features (routing, direction and electrical) to their after-reset state.
-  * It also tries to route the previous peripheral signals to their default pins.
-  *
-  */
- void BOARD_InitI2CPins_deinit(void);          /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitADCPins(void);                 /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitVREFPins(void);                /* Function assigned for the Cortex-M33 */
- 
- #define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_XBAR 0x01U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as output */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitLPITPins(void);                /* Function assigned for the Cortex-M33 */
- 
- #define QTIMER_CTRL1_QTIMER3_TMR2_INPUT_SEL_IOMUX 0x00U /*!< QTIMER3 TMR2 input select: Input from IOMUX */
- #define QTIMER_CTRL1_QTIMER3_TMR3_INPUT_SEL_IOMUX 0x00U /*!< QTIMER3 TMR3 input select: Input from IOMUX */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitQTMRPins(void);                /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLEXIO_I2CPins(void);          /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLEXIO_PINOUTPUTPins(void);    /* Function assigned for the Cortex-M33 */
- 
- /* GPIO_EMC_B1_01 (coord H4), pin */
- /* Routed pin properties */
- #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_PERIPHERAL               RGPIO2   /*!< Peripheral name */
- #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_SIGNAL                  gpio_io   /*!< Signal name */
- #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_CHANNEL                      1U   /*!< Signal channel */
- 
- /* Symbols to be used with GPIO driver */
- #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO                     RGPIO2   /*!< GPIO peripheral base pointer */
- #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_INIT_GPIO_VALUE              0U   /*!< GPIO output initial state */
- #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN                     1U   /*!< GPIO pin number */
- #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN_MASK        (1U << 1U)   /*!< GPIO pin mask */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLEXIO_PININPUTPins(void);     /* Function assigned for the Cortex-M33 */
- 
- /* GPIO_AD_29 (coord L13), FLEXIO_SPI */
- /* Routed pin properties */
- #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_PERIPHERAL                    RGPIO4   /*!< Peripheral name */
- #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_SIGNAL                       gpio_io   /*!< Signal name */
- #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_CHANNEL                          29U   /*!< Signal channel */
- 
- /* Symbols to be used with GPIO driver */
- #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_GPIO                          RGPIO4   /*!< GPIO peripheral base pointer */
- #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_INIT_GPIO_VALUE                   0U   /*!< GPIO output initial state */
- #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_GPIO_PIN                         29U   /*!< GPIO pin number */
- #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_GPIO_PIN_MASK            (1U << 29U)   /*!< GPIO pin mask */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLEXIO_SPIPins(void);          /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLEXIO_UARTPins(void);         /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLEXIO_PWMPins(void);          /* Function assigned for the Cortex-M33 */
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
-  *
-  */
- void BOARD_InitFLEXSPI_FLRPins(void);         /* Function assigned for the Cortex-M33 */
- 
- #if defined(__cplusplus)
- }
- #endif
- 
- /*!
-  * @}
-  */
- #endif /* _PIN_MUX_H_ */
- 
- /***********************************************************************************************************************
-  * EOF
-  **********************************************************************************************************************/
- 
+ *
+ */
+void BOARD_InitDEBUG_UARTPins(void);          /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief This is a de-initialization function for 'BOARD_InitDEBUG_UARTPins' function.
+ * It sets all pins features (routing, direction and electrical) to their after-reset state.
+ * It also tries to route the previous peripheral signals to their default pins.
+ *
+ */
+void BOARD_InitDEBUG_UARTPins_deinit(void);   /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitCANPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/* GPIO_AON_15 (coord B4), ETH0 */
+/* Routed pin properties */
+#define BOARD_INITNETPINS_ETH0_RESET_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
+#define BOARD_INITNETPINS_ETH0_RESET_SIGNAL                              gpio_io   /*!< Signal name */
+#define BOARD_INITNETPINS_ETH0_RESET_CHANNEL                                 15U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITNETPINS_ETH0_RESET_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
+#define BOARD_INITNETPINS_ETH0_RESET_INIT_GPIO_VALUE                          1U   /*!< GPIO output initial state */
+#define BOARD_INITNETPINS_ETH0_RESET_GPIO_PIN                                15U   /*!< GPIO pin number */
+#define BOARD_INITNETPINS_ETH0_RESET_GPIO_PIN_MASK                   (1U << 15U)   /*!< GPIO pin mask */
+
+/* GPIO_AON_20 (coord C8), ETH2 */
+/* Routed pin properties */
+#define BOARD_INITNETPINS_ETH2_RESET_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
+#define BOARD_INITNETPINS_ETH2_RESET_SIGNAL                              gpio_io   /*!< Signal name */
+#define BOARD_INITNETPINS_ETH2_RESET_CHANNEL                                 20U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITNETPINS_ETH2_RESET_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
+#define BOARD_INITNETPINS_ETH2_RESET_INIT_GPIO_VALUE                          1U   /*!< GPIO output initial state */
+#define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN                                20U   /*!< GPIO pin number */
+#define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN_MASK                   (1U << 20U)   /*!< GPIO pin mask */
+
+/* GPIO_AON_03 (coord A9), ETH0 */
+/* Routed pin properties */
+#define BOARD_INITNETPINS_ETH0_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
+#define BOARD_INITNETPINS_ETH0_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
+#define BOARD_INITNETPINS_ETH0_INT_B_CHANNEL                                  3U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITNETPINS_ETH0_INT_B_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
+#define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN                                 3U   /*!< GPIO pin number */
+#define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN_MASK                    (1U << 3U)   /*!< GPIO pin mask */
+
+/* GPIO_AON_04 (coord B5), ETH2 */
+/* Routed pin properties */
+#define BOARD_INITNETPINS_ETH2_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
+#define BOARD_INITNETPINS_ETH2_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
+#define BOARD_INITNETPINS_ETH2_INT_B_CHANNEL                                  4U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITNETPINS_ETH2_INT_B_GPIO                                 RGPIO1   /*!< GPIO peripheral base pointer */
+#define BOARD_INITNETPINS_ETH2_INT_B_GPIO_PIN                                 4U   /*!< GPIO pin number */
+#define BOARD_INITNETPINS_ETH2_INT_B_GPIO_PIN_MASK                    (1U << 4U)   /*!< GPIO pin mask */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitNETPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitPWMPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSPIPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief This is a de-initialization function for 'BOARD_InitSPIPins' function.
+ * It sets all pins features (routing, direction and electrical) to their after-reset state.
+ * It also tries to route the previous peripheral signals to their default pins.
+ *
+ */
+void BOARD_InitSPIPins_deinit(void);          /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitLEDsPins(void);                /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitBUTTONsPins(void);             /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitKPPPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitGPTPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLASHPins(void);               /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitHYPERRAMPins(void);            /* Function assigned for the Cortex-M33 */
+
+#define XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_23_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT23 function direction select: XBAR_INOUT as input */
+#define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as input */
+#define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_37_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT37 function direction select: XBAR_INOUT as input */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitEQDCPins(void);                /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitI2CPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief This is a de-initialization function for 'BOARD_InitI2CPins' function.
+ * It sets all pins features (routing, direction and electrical) to their after-reset state.
+ * It also tries to route the previous peripheral signals to their default pins.
+ *
+ */
+void BOARD_InitI2CPins_deinit(void);          /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitADCPins(void);                 /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitVREFPins(void);                /* Function assigned for the Cortex-M33 */
+
+#define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_XBAR 0x01U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as output */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitLPITPins(void);                /* Function assigned for the Cortex-M33 */
+
+#define QTIMER_CTRL1_QTIMER3_TMR2_INPUT_SEL_IOMUX 0x00U /*!< QTIMER3 TMR2 input select: Input from IOMUX */
+#define QTIMER_CTRL1_QTIMER3_TMR3_INPUT_SEL_IOMUX 0x00U /*!< QTIMER3 TMR3 input select: Input from IOMUX */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitQTMRPins(void);                /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLEXIO_I2CPins(void);          /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLEXIO_PINOUTPUTPins(void);    /* Function assigned for the Cortex-M33 */
+
+/* GPIO_EMC_B1_01 (coord H4), pin */
+/* Routed pin properties */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_PERIPHERAL               RGPIO2   /*!< Peripheral name */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_SIGNAL                  gpio_io   /*!< Signal name */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_CHANNEL                      1U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO                     RGPIO2   /*!< GPIO peripheral base pointer */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_INIT_GPIO_VALUE              0U   /*!< GPIO output initial state */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN                     1U   /*!< GPIO pin number */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN_MASK        (1U << 1U)   /*!< GPIO pin mask */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLEXIO_PININPUTPins(void);     /* Function assigned for the Cortex-M33 */
+
+/* GPIO_AD_29 (coord L13), FLEXIO_SPI */
+/* Routed pin properties */
+#define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_PERIPHERAL                    RGPIO4   /*!< Peripheral name */
+#define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_SIGNAL                       gpio_io   /*!< Signal name */
+#define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_CHANNEL                          29U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_GPIO                          RGPIO4   /*!< GPIO peripheral base pointer */
+#define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_INIT_GPIO_VALUE                   0U   /*!< GPIO output initial state */
+#define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_GPIO_PIN                         29U   /*!< GPIO pin number */
+#define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_GPIO_PIN_MASK            (1U << 29U)   /*!< GPIO pin mask */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLEXIO_SPIPins(void);          /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLEXIO_UARTPins(void);         /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLEXIO_PWMPins(void);          /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitFLEXSPI_FLRPins(void);         /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitUSB_PDPins(void);              /* Function assigned for the Cortex-M33 */
+
+#if defined(__cplusplus)
+}
+#endif
+
+/*!
+ * @}
+ */
+#endif /* _PIN_MUX_H_ */
+
+/***********************************************************************************************************************
+ * EOF
+ **********************************************************************************************************************/
