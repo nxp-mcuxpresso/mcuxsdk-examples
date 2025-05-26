@@ -6,7 +6,7 @@ sdma_scatter_gather:
     project-root-path: boards/${board}/driver_examples/sdma/scatter_gather/${multicore_foldername}
     document:
       name: sdma_scatter_gather${core_id_suffix_name}
-      category: driver_examples/sdma/scatter_gather/
+      category: driver_examples/sdma
       brief: The SDMA scatter gather example is a simple demonstration program that
         uses the SDK software.It excuates several shots transfer from source buffer
         to destination buffer using the SDK SDMA drivers.The purpose of this example
