@@ -829,6 +829,205 @@ void BOARD_InitCANPins(void)
     /* PORT1_2 (pin 137) is configured as CAN0_TXD */
     PORT_SetPinConfig(PORT1, 2U, &port1_2_pin137_config);
 }
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitPins:
+- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '73', peripheral: GPIO3, signal: 'GPIO, 28', pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C3_SDA/LPUART4_RXD/CT_INP12/CT3_MAT2/FLEXIO0_D28/PWM1_B3/SmartDMA_PIO28,
+    identifier: ROW1, direction: INPUT}
+  - {pin_num: '74', peripheral: GPIO3, signal: 'GPIO, 27', pin_signal: P3_27/WUU0_IN30/TRIG_OUT7/LPI2C3_SCL/LPUART4_TXD/CT_INP13/CT3_MAT1/FLEXIO0_D27/PWM1_A3/SmartDMA_PIO27,
+    identifier: ROW2, direction: INPUT}
+  - {pin_num: '142', peripheral: GPIO1, signal: 'GPIO, 5', pin_signal: P1_5/FREQME_CLK_IN1/LPSPI0_PCS2/LPUART2_TXD/CT1_MAT3/FLEXIO0_D13/SmartDMA_PIO1/ADC0_A21/CMP1_IN2/LCD_VLL1,
+    identifier: ROW3, direction: INPUT}
+  - {pin_num: '141', peripheral: GPIO1, signal: 'GPIO, 4', pin_signal: P1_4/WUU0_IN8/FREQME_CLK_IN0/LPSPI0_PCS3/LPUART2_RXD/CT1_MAT2/FLEXIO0_D12/SmartDMA_PIO0/ADC0_A20/CMP0_IN2/LCD_VLL2,
+    identifier: ROW4, direction: INPUT}
+  - {pin_num: '136', peripheral: GPIO1, signal: 'GPIO, 1', pin_signal: P1_1/TRIG_IN1/LPSPI0_SCK/LPI2C1_SCL/CT_INP5/CT0_MAT3/FLEXIO0_D9/LCD_P1/CAN1_TXD/ADC0_A17/CMP1_IN3,
+    identifier: COL1, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: '137', peripheral: GPIO1, signal: 'GPIO, 2', pin_signal: P1_2/TRIG_OUT0/LPSPI0_SDI/LPI2C1_SDAS/CT1_MAT0/CT_INP0/FLEXIO0_D10/LCD_P2/CAN0_TXD/ADC0_A18/CMP2_IN3,
+    identifier: COL2, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: '135', peripheral: GPIO1, signal: 'GPIO, 0', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/FLEXIO0_D8/LCD_P0/CAN1_RXD/ADC0_A16/CMP0_IN3,
+    identifier: COL3, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: '143', peripheral: GPIO1, signal: 'GPIO, 6', pin_signal: P1_6/TRIG_IN2/LPSPI0_PCS1/LPUART2_RTS_B/CT_INP6/CT4_MAT0/FLEXIO0_D14/SmartDMA_PIO2/LCD_P4/CAN1_TXD/ADC0_A22,
+    identifier: COL4, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: '99', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 7', pin_signal: P3_7/TRIG_IN2/LPSPI1_PCS2/LPUART3_CTS_B/CT4_MAT3/PWM0_B3/FLEXIO0_D15/PWM1_B0/LCD_P35/SmartDMA_PIO7/ADC3_A13}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSmartDmaKeyPadPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitSmartDmaKeyPadPins(void)
+{
+    /* GPIO1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO1);
+    /* GPIO3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO3);
+    /* PORT1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* PORT3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT3);
+    /* GPIO1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+    /* GPIO3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+    /* PORT1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* PORT3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+
+    gpio_pin_config_t COL1_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_1 (pin 136)  */
+    GPIO_PinInit(GPIO1, 1U, &COL1_config);
+
+    gpio_pin_config_t COL2_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_2 (pin 137)  */
+    GPIO_PinInit(GPIO1, 2U, &COL2_config);
+
+    gpio_pin_config_t COL3_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_0 (pin 135)  */
+    GPIO_PinInit(GPIO1, 0U, &COL3_config);
+
+    gpio_pin_config_t COL4_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_6 (pin 143)  */
+    GPIO_PinInit(GPIO1, 6U, &COL4_config);
+
+    gpio_pin_config_t ROW1_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_28 (pin 73)  */
+    GPIO_PinInit(GPIO3, 28U, &ROW1_config);
+
+    gpio_pin_config_t ROW2_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_27 (pin 74)  */
+    GPIO_PinInit(GPIO3, 27U, &ROW2_config);
+
+    gpio_pin_config_t ROW3_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_5 (pin 142)  */
+    GPIO_PinInit(GPIO1, 5U, &ROW3_config);
+
+    gpio_pin_config_t ROW4_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_4 (pin 141)  */
+    GPIO_PinInit(GPIO1, 4U, &ROW4_config);
+
+    /* PORT1_1 (pin 136) is configured as P1_1 */
+    PORT_SetPinMux(PORT1, 1U, kPORT_MuxAlt0);
+
+    PORT1->PCR[1] = ((PORT1->PCR[1] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_2 (pin 137) is configured as P1_2 */
+    PORT_SetPinMux(PORT1, 2U, kPORT_MuxAlt0);
+
+    PORT1->PCR[2] = ((PORT1->PCR[2] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_0 (pin 135) is configured as P1_0 */
+    PORT_SetPinMux(PORT1, 0U, kPORT_MuxAlt0);
+
+    PORT1->PCR[0] = ((PORT1->PCR[0] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_6 (pin 143) is configured as P1_6 */
+    PORT_SetPinMux(PORT1, 6U, kPORT_MuxAlt0);
+
+    PORT1->PCR[6] = ((PORT1->PCR[6] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_28 (pin 73) is configured as P3_28 */
+    PORT_SetPinMux(PORT3, 28U, kPORT_MuxAlt0);
+
+    PORT3->PCR[28] = ((PORT3->PCR[28] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_27 (pin 74) is configured as P3_27 */
+    PORT_SetPinMux(PORT3, 27U, kPORT_MuxAlt0);
+
+    PORT3->PCR[27] = ((PORT3->PCR[27] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_5 (pin 142) is configured as P1_5 */
+    PORT_SetPinMux(PORT1, 5U, kPORT_MuxAlt0);
+
+    PORT1->PCR[5] = ((PORT1->PCR[5] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_4 (pin 141) is configured as P1_4 */
+    PORT_SetPinMux(PORT1, 4U, kPORT_MuxAlt0);
+
+    PORT1->PCR[4] = ((PORT1->PCR[4] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT3_7 (pin 99) is configured as SmartDMA_PIO7 */
+    PORT_SetPinMux(PORT3, 7U, kPORT_MuxAlt10);
+
+    PORT3->PCR[7] = ((PORT3->PCR[7] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
