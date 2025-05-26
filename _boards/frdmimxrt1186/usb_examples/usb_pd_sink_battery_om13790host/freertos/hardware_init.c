@@ -22,11 +22,11 @@ void HW_I2CReleaseBus(void);
 
 /* ${function:start} */
 #define I2C_RELEASE_BUS_COUNT 1000U
-#define PD_I2C_SCL            (16U)
-#define PD_I2C_SDA            (15U)
-#define PD_I2C_PORT           (1U)
+#define PD_I2C_SCL            (29U)
+#define PD_I2C_SDA            (30U)
+#define PD_I2C_PORT           (3U)
 /* Get frequency of lpi2c clock */
-#define LPI2C_CLOCK_FREQUENCY CLOCK_GetRootClockFreq(kCLOCK_Root_Lpi2c0102)
+#define LPI2C_CLOCK_FREQUENCY CLOCK_GetRootClockFreq(kCLOCK_Root_Lpi2c0304)
 /* Get source clock for GPT driver (GPT prescaler = 0) */
 #define USBPD_GPT_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Gpt1)
 
@@ -34,11 +34,13 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitUSB_PDPins();
     BOARD_InitBootClocks();
+    
     HW_I2CReleaseBus();
     BOARD_InitDebugConsole();
     NVIC_SetPriority(BOARD_UART_IRQ, 5);
-    LPI2C2_InitPins();
+    BOARD_InitI2CPins();
 }
 
 uint32_t HW_TimerGetFreq(void)
@@ -73,8 +75,8 @@ void HW_I2CReleaseBus(void)
     /* Config pin mux as gpio */
     CLOCK_EnableClock(kCLOCK_Iomuxc2);
 
-    IOMUXC_SetPinMux(IOMUXC_GPIO_AON_15_GPIO1_IO15, 0U);
-    IOMUXC_SetPinMux(IOMUXC_GPIO_AON_16_GPIO1_IO16, 0U);
+    IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_19_GPIO3_IO29, 0U);
+    IOMUXC_SetPinMux(IOMUXC_GPIO_EMC_B2_20_GPIO3_IO30, 0U);
 
     /* Init I2C GPIO */
 
@@ -131,7 +133,7 @@ void HW_I2CReleaseBus(void)
     HAL_GpioDeinit((hal_gpio_handle_t)pdI2cSdaGpio);
 
     /* re-configure pin mux as i2c */
-    LPI2C2_InitPins();
+    BOARD_InitI2CPins();
 }
 
 /*${function:end}*/

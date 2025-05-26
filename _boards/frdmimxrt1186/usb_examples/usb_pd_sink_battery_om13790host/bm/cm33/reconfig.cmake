@@ -2,8 +2,6 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm/hardware_init.c
-            ${board_root}/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm/pin_mux.c
-            ${board_root}/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm/pin_mux.h
             ${board_root}/${board}/usb_examples/usb_pd_sink_battery_om13790host/bm/pd_board_config.h
             examples/usb_examples/usb_pd_sink_battery_om13790host/bm/pd_app_demo.c
             examples/usb_examples/usb_pd_sink_battery_om13790host/bm/pd_app.h
