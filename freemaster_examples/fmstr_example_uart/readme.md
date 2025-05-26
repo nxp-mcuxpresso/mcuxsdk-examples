@@ -29,6 +29,7 @@ Example application demonstrates a plain serial transmission, typically connecti
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/freemaster_examples/fmstr_uart/example_board_readme.md)
+- [FRDM-MCXL255](../../_boards/frdmmcxl255/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXN236](../../_boards/frdmmcxn236/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/freemaster_examples/fmstr_uart/example_board_readme.md)
