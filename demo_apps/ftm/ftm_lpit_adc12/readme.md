@@ -34,3 +34,4 @@ g_adc12InterruptCounter: 10
 ## Supported Boards
 - [FRDM-KE17Z](../../../_boards/frdmke17z/demo_apps/ftm_lpit_adc12/example_board_readme.md)
 - [FRDM-KE17Z512](../../../_boards/frdmke17z512/demo_apps/ftm_lpit_adc12/example_board_readme.md)
+- [FRDM-MCXE247](../../../_boards/frdmmcxe247/demo_apps/ftm_lpit_adc12/example_board_readme.md)
