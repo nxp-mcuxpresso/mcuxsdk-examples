@@ -31,6 +31,12 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitPins(void); /* Function assigned for the Cortex-M33 */
+
 #define IOCON_PIO_DIGITAL_EN 0x0100u  /*!<@brief Enables digital function */
 #define IOCON_PIO_FUNC1 0x01u         /*!<@brief Selects pin function 1 */
 #define IOCON_PIO_INV_DI 0x00u        /*!<@brief Input function is not inverted */
@@ -38,11 +44,11 @@ void BOARD_InitBootPins(void);
 #define IOCON_PIO_OPENDRAIN_DI 0x00u  /*!<@brief Open drain is disabled */
 #define IOCON_PIO_SLEW_STANDARD 0x00u /*!<@brief Standard mode, output slew rate control is enabled */
 
-/*! @name FC0_RXD_SDA_MOSI (number 2), DEBUG_UART_RX
+/*! @name FC0_RXD_SDA_MOSI (number 2), J12[1]/J19[10]/J13[7]/R152/J14[6]/R157/J15[3]/R160/J15[6]/J24[9]/R118/R121/J24[4]/R124/J26[1]/DBGIF_TMS_SWDIO/R96/U22[4]/J36[1]
   @{ */
 /* @} */
 
-/*! @name FC0_TXD_SCL_MISO (number 3), DEBUG_UART_TX
+/*! @name FC0_TXD_SCL_MISO (number 3), J12[18]/J19[12]/J13[11]/R151/J14[5]/R158/J15[4]/R159/J15[5]/R116/J24[10]/J24[5]/R120/R123/J26[2]/R95/U22[5]/J36[3]
   @{ */
 /* @} */
 
@@ -59,16 +65,16 @@ void BOARD_InitDEBUG_UARTPins(void); /* Function assigned for the Cortex-M33 */
 #define IOCON_PIO_OPENDRAIN_DI 0x00u  /*!<@brief Open drain is disabled */
 #define IOCON_PIO_SLEW_STANDARD 0x00u /*!<@brief Standard mode, output slew rate control is enabled */
 
-/*! @name PIO0_19 (number 7), LED_RED
+/*! @name PIO0_19 (number 7), J12[9]/R14/Q1[G]/J36[7]
   @{ */
 
 /* Symbols to be used with GPIO driver */
-#define BOARD_INITLEDSPINS_LED_RED_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN_MASK (1U << 19U) /*!<@brief GPIO pin mask */
-#define BOARD_INITLEDSPINS_LED_RED_PORT 0U                   /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITLEDSPINS_LED_RED_PIN 19U                   /*!<@brief PORT pin number */
-#define BOARD_INITLEDSPINS_LED_RED_PIN_MASK (1U << 19U)      /*!<@brief PORT pin mask */
-                                                             /* @} */
+#define BOARD_INITLEDSPINS_LED_R_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_R_GPIO_PIN_MASK (1U << 19U) /*!<@brief GPIO pin mask */
+#define BOARD_INITLEDSPINS_LED_R_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_R_PIN 19U                   /*!<@brief PORT pin number */
+#define BOARD_INITLEDSPINS_LED_R_PIN_MASK (1U << 19U)      /*!<@brief PORT pin mask */
+                                                           /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
@@ -83,7 +89,7 @@ void BOARD_InitLEDsPins(void); /* Function assigned for the Cortex-M33 */
 #define IOCON_PIO_OPENDRAIN_DI 0x00u  /*!<@brief Open drain is disabled */
 #define IOCON_PIO_SLEW_STANDARD 0x00u /*!<@brief Standard mode, output slew rate control is enabled */
 
-/*! @name PIO0_18 (number 8), SW4
+/*! @name PIO0_18 (number 8), J36[5]/J12[8]/R21/SW4
   @{ */
 
 /* Symbols to be used with GPIO driver */
@@ -94,18 +100,7 @@ void BOARD_InitLEDsPins(void); /* Function assigned for the Cortex-M33 */
 #define BOARD_INITBUTTONSPINS_SW4_PIN_MASK (1U << 18U)      /*!<@brief PORT pin mask */
                                                             /* @} */
 
-/*! @name PIO0_20 (number 30), SW2
-  @{ */
-
-/* Symbols to be used with GPIO driver */
-#define BOARD_INITBUTTONSPINS_SW2_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITBUTTONSPINS_SW2_GPIO_PIN_MASK (1U << 20U) /*!<@brief GPIO pin mask */
-#define BOARD_INITBUTTONSPINS_SW2_PORT 0U                   /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITBUTTONSPINS_SW2_PIN 20U                   /*!<@brief PORT pin number */
-#define BOARD_INITBUTTONSPINS_SW2_PIN_MASK (1U << 20U)      /*!<@brief PORT pin mask */
-                                                            /* @} */
-
-/*! @name PIO0_21 (number 14), SW3
+/*! @name PIO0_21 (number 14), J8[19]/R16/SW3/D1
   @{ */
 
 /* Symbols to be used with GPIO driver */
@@ -114,6 +109,17 @@ void BOARD_InitLEDsPins(void); /* Function assigned for the Cortex-M33 */
 #define BOARD_INITBUTTONSPINS_SW3_PORT 0U                   /*!<@brief PORT peripheral base pointer */
 #define BOARD_INITBUTTONSPINS_SW3_PIN 21U                   /*!<@brief PORT pin number */
 #define BOARD_INITBUTTONSPINS_SW3_PIN_MASK (1U << 21U)      /*!<@brief PORT pin mask */
+                                                            /* @} */
+
+/*! @name PIO0_20 (number 30), R15/J8[17]/D17/R100/SW2
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITBUTTONSPINS_SW2_GPIO GPIO                 /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SW2_GPIO_PIN_MASK (1U << 20U) /*!<@brief GPIO pin mask */
+#define BOARD_INITBUTTONSPINS_SW2_PORT 0U                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SW2_PIN 20U                   /*!<@brief PORT pin number */
+#define BOARD_INITBUTTONSPINS_SW2_PIN_MASK (1U << 20U)      /*!<@brief PORT pin mask */
                                                             /* @} */
 
 /*!
@@ -131,6 +137,9 @@ void BOARD_InitBUTTONsPins(void); /* Function assigned for the Cortex-M33 */
 /*!
  * @brief GPIO mode */
 #define IOCON_PIO_EGP_GPIO 0x4000u
+/*!
+ * @brief Selects pin function 0 */
+#define IOCON_PIO_FUNC0 0x00u
 /*!
  * @brief Selects pin function 1 */
 #define IOCON_PIO_FUNC1 0x01u
@@ -156,19 +165,164 @@ void BOARD_InitBUTTONsPins(void); /* Function assigned for the Cortex-M33 */
  * @brief 3V3 signaling in I2C mode */
 #define IOCON_PIO_SSEL_3V3 0x00u
 
-/*! @name FC1_RXD_SDA_MOSI (number 6), I2C_SDA
+/*! @name FC1_RXD_SDA_MOSI (number 6), J13[9]/R141/J18[6]/R135/J17[3]/J17[6]/R134/U24[1]/J12[5]/J19[6]
   @{ */
 /* @} */
 
-/*! @name FC1_TXD_SCL_MISO (number 5), I2C_SCL
+/*! @name FC1_TXD_SCL_MISO (number 5), J13[13]/R140/R136/R137/J17[4]/J17[5]/U24[8]/J12[4]/J19[8]
   @{ */
 /* @} */
+
+/*! @name PIO0_1 (number 1), J13[3]/J12[3]
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITACCELPINS_SENSOR_INT_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITACCELPINS_SENSOR_INT_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
+#define BOARD_INITACCELPINS_SENSOR_INT_PORT 0U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITACCELPINS_SENSOR_INT_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITACCELPINS_SENSOR_INT_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                                /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitACCELPins(void); /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Enables digital function */
+#define IOCON_PIO_DIGITAL_EN 0x0100u
+/*!
+ * @brief IO is an open drain cell */
+#define IOCON_PIO_ECS_DI 0x00u
+/*!
+ * @brief GPIO mode */
+#define IOCON_PIO_EGP_GPIO 0x4000u
+/*!
+ * @brief Selects pin function 0 */
+#define IOCON_PIO_FUNC0 0x00u
+/*!
+ * @brief Selects pin function 1 */
+#define IOCON_PIO_FUNC1 0x01u
+/*!
+ * @brief I2C 50 ns glitch filter enabled. Typically used for Standard mode, Fast-mode and Fast-mode Plus I2C. */
+#define IOCON_PIO_I2CFILTER_NONHIGHSPEED 0x00u
+/*!
+ * @brief Input filter disabled */
+#define IOCON_PIO_INPFILT_OFF 0x1000u
+/*!
+ * @brief Input function is not inverted */
+#define IOCON_PIO_INV_DI 0x00u
+/*!
+ * @brief No addition pin function */
+#define IOCON_PIO_MODE_INACT 0x00u
+/*!
+ * @brief Open drain is disabled */
+#define IOCON_PIO_OPENDRAIN_DI 0x00u
+/*!
+ * @brief Standard mode, output slew rate control is enabled */
+#define IOCON_PIO_SLEW_STANDARD 0x00u
+/*!
+ * @brief 3V3 signaling in I2C mode */
+#define IOCON_PIO_SSEL_3V3 0x00u
+
+/*! @name FC1_RXD_SDA_MOSI (number 6), J13[9]/R141/J18[6]/R135/J17[3]/J17[6]/R134/U24[1]/J12[5]/J19[6]
+  @{ */
+/* @} */
+
+/*! @name FC1_TXD_SCL_MISO (number 5), J13[13]/R140/R136/R137/J17[4]/J17[5]/U24[8]/J12[4]/J19[8]
+  @{ */
+/* @} */
+
+/*! @name PIO0_1 (number 1), J13[3]/J12[3]
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITTEMP_SENSORPINS_SENSOR_INT_GPIO GPIO                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITTEMP_SENSORPINS_SENSOR_INT_GPIO_PIN_MASK (1U << 1U) /*!<@brief GPIO pin mask */
+#define BOARD_INITTEMP_SENSORPINS_SENSOR_INT_PORT 0U                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITTEMP_SENSORPINS_SENSOR_INT_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_INITTEMP_SENSORPINS_SENSOR_INT_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                                                      /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitTEMP_SENSORPins(void); /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Enables digital function */
+#define IOCON_PIO_DIGITAL_EN 0x0100u
+/*!
+ * @brief IO is an open drain cell */
+#define IOCON_PIO_ECS_DI 0x00u
+/*!
+ * @brief GPIO mode */
+#define IOCON_PIO_EGP_GPIO 0x4000u
+/*!
+ * @brief Selects pin function 0 */
+#define IOCON_PIO_FUNC0 0x00u
+/*!
+ * @brief Selects pin function 1 */
+#define IOCON_PIO_FUNC1 0x01u
+/*!
+ * @brief I2C 50 ns glitch filter enabled. Typically used for Standard mode, Fast-mode and Fast-mode Plus I2C. */
+#define IOCON_PIO_I2CFILTER_NONHIGHSPEED 0x00u
+/*!
+ * @brief Input filter disabled */
+#define IOCON_PIO_INPFILT_OFF 0x1000u
+/*!
+ * @brief Input function is not inverted */
+#define IOCON_PIO_INV_DI 0x00u
+/*!
+ * @brief No addition pin function */
+#define IOCON_PIO_MODE_INACT 0x00u
+/*!
+ * @brief Open drain is disabled */
+#define IOCON_PIO_OPENDRAIN_DI 0x00u
+/*!
+ * @brief Standard mode, output slew rate control is enabled */
+#define IOCON_PIO_SLEW_STANDARD 0x00u
+/*!
+ * @brief 3V3 signaling in I2C mode */
+#define IOCON_PIO_SSEL_3V3 0x00u
+
+/*! @name FC1_RXD_SDA_MOSI (number 6), J13[9]/R141/J18[6]/R135/J17[3]/J17[6]/R134/U24[1]/J12[5]/J19[6]
+  @{ */
+/* @} */
+
+/*! @name FC1_TXD_SCL_MISO (number 5), J13[13]/R140/R136/R137/J17[4]/J17[5]/U24[8]/J12[4]/J19[8]
+  @{ */
+/* @} */
+
+/*! @name PIO0_1 (number 1), J13[3]/J12[3]
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+/*!
+ * @brief GPIO peripheral base pointer */
+#define BOARD_INITPRESSURE_SENSORPINS_SENSOR_INT_GPIO GPIO
+/*!
+ * @brief GPIO pin mask */
+#define BOARD_INITPRESSURE_SENSORPINS_SENSOR_INT_GPIO_PIN_MASK (1U << 1U)
+/*!
+ * @brief PORT peripheral base pointer */
+#define BOARD_INITPRESSURE_SENSORPINS_SENSOR_INT_PORT 0U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITPRESSURE_SENSORPINS_SENSOR_INT_PIN 1U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITPRESSURE_SENSORPINS_SENSOR_INT_PIN_MASK (1U << 1U)
+/* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitPRESSURE_SENSORPins(void); /* Function assigned for the Cortex-M33 */
 
 /*!
  * @brief Enables digital function */
@@ -237,15 +391,15 @@ void BOARD_InitACCELPins(void); /* Function assigned for the Cortex-M33 */
  */
 #define PIO0_12_SLEW_STANDARD 0x00u
 
-/*! @name SWDIO (number 33), SWDIO
+/*! @name SWDIO (number 33), R53/R105/U25[4]/J8[18]/R23/J11[2]/D7
   @{ */
 /* @} */
 
-/*! @name SWCLK (number 34), SWCLK
+/*! @name SWCLK (number 34), R60/R24/D6/J11[4]/R109
   @{ */
 /* @} */
 
-/*! @name SWO (number 28), SWO
+/*! @name SWO (number 28), R52/R114/J12[17]/R22/D5/J11[6]
   @{ */
 /* @} */
 
@@ -254,54 +408,6 @@ void BOARD_InitACCELPins(void); /* Function assigned for the Cortex-M33 */
  *
  */
 void BOARD_InitSWD_DEBUGPins(void); /* Function assigned for the Cortex-M33 */
-
-/*!
- * @brief Enables digital function */
-#define IOCON_PIO_DIGITAL_EN 0x0100u
-/*!
- * @brief IO is an open drain cell */
-#define IOCON_PIO_ECS_DI 0x00u
-/*!
- * @brief GPIO mode */
-#define IOCON_PIO_EGP_GPIO 0x4000u
-/*!
- * @brief Selects pin function 1 */
-#define IOCON_PIO_FUNC1 0x01u
-/*!
- * @brief I2C 50 ns glitch filter enabled. Typically used for Standard mode, Fast-mode and Fast-mode Plus I2C. */
-#define IOCON_PIO_I2CFILTER_NONHIGHSPEED 0x00u
-/*!
- * @brief Input filter disabled */
-#define IOCON_PIO_INPFILT_OFF 0x1000u
-/*!
- * @brief Input function is not inverted */
-#define IOCON_PIO_INV_DI 0x00u
-/*!
- * @brief No addition pin function */
-#define IOCON_PIO_MODE_INACT 0x00u
-/*!
- * @brief Open drain is disabled */
-#define IOCON_PIO_OPENDRAIN_DI 0x00u
-/*!
- * @brief Standard mode, output slew rate control is enabled */
-#define IOCON_PIO_SLEW_STANDARD 0x00u
-/*!
- * @brief 3V3 signaling in I2C mode */
-#define IOCON_PIO_SSEL_3V3 0x00u
-
-/*! @name FC1_RXD_SDA_MOSI (number 6), I2C_SDA
-  @{ */
-/* @} */
-
-/*! @name FC1_TXD_SCL_MISO (number 5), I2C_SCL
-  @{ */
-/* @} */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitTEMP_SENSORPins(void); /* Function assigned for the Cortex-M33 */
 
 #if defined(__cplusplus)
 }
