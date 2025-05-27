@@ -23,5 +23,10 @@ mc_pmsm_snsless:
     - -iar@debug
     - -mdk@debug
     - -mcux@debug
+    frdmmcxe247:
+    - -armgcc@debug
+    - -iar@debug
+    - -mdk@debug
+    - -mcux@debug
     mc56f80000evk: []
     twrmc56f8200: []
