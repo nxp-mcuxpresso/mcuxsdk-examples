@@ -27,7 +27,7 @@
  */
 #define ENABLE_WORKAROUND_CM7_KICK_OFF 1U
 
-#define CONTAINER_BASE_ADDR   0x38001000UL /* For FlexSPI, base addr(0x38000000) + 0x1000 offset */
+#define CONTAINER_BASE_ADDR   0x14001000UL /* For FlexSPI, base addr(0x14000000) + 0x1000 offset */
 #define CONTAINER_MAX_NUM     2U
 #define CONTAINER_SIZE        0x400U /* in bytes */
 #define CONTAINER_HEADER_SIZE 16U    /* in bytes */
@@ -39,10 +39,10 @@
 #define CM7_ITCM_START_ADDR              0x0UL      /* from pespective of CM7 */
 #define CM7_ITCM_END_ADDR                0x80000UL  /* from pespective of CM7 */
 #define CM7_ITCM_ADDR_MAP_AT_CM33_DOMAIN 0x303C0000 /* from pespective of CM33 */
-#define FLEXSPI_START_ADDR_NS            0x28000000UL
-#define FLEXSPI_END_ADDR_NS              0x30000000UL
-#define FLEXSPI_START_ADDR_S             0x38000000UL
-#define FLEXSPI_END_ADDR_S               0x40000000UL
+#define FLEXSPI_START_ADDR_NS            0x04000000UL
+#define FLEXSPI_END_ADDR_NS              0x06000000UL
+#define FLEXSPI_START_ADDR_S             0x14000000UL
+#define FLEXSPI_END_ADDR_S               0x16000000UL
 
 /*${macro:end}*/
 

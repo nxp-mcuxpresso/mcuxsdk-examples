@@ -43,7 +43,7 @@ _FLEXSPI1_ClockInit()
     __writeMemory32(0x101, 0x44450A80, "Memory"); // CLOCK_ROOT[21].CONTROL, FlexSPI1
 }
 
-_FlexSPI1_SetPinForOctalMode()
+_FLEXSPI1_SetPinForOctalMode()
 {
     // Config IOMUX for HyperRAM
     __writeMemory32(0x00000011, 0x42A101D4, "Memory");// IOMUXC_GPIO_SD_B2_08_FLEXSPI1_BUS2BIT_B_DATA00
