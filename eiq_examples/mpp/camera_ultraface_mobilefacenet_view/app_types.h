@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -43,7 +43,7 @@ typedef struct _user_data_t {
     int detected_count;     /* number of detected boxes */
     int inference_time_ms;
     e_state state;          /* state-machine for the app */
-    person * db;            /* embeddings database */
+    face_t * db;            /* embeddings database */
     int db_max;             /* embeddings database max size. */
 } user_data_t;
 

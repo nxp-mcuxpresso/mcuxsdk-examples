@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -113,7 +113,7 @@ static void shell_database_init(void *params)
         return;
     }
 
-    init_database(Embedding_database);
+    init_database(g_embedding_db);
 
     /* Add new command to commands list */
     /* Definition of shell commands */
@@ -218,8 +218,8 @@ static void app_task(void *params)
 {
     user_data.cur_model = MODEL_ULTRAFACE;
     user_data.state = STATE_DETECTING;
-    user_data.db = Embedding_database;
-    user_data.db_max = DATABASE_MAX_PEOPLE;
+    user_data.db = g_embedding_db;
+    user_data.db_max = DATABASE_MAX_SIZE;
     int ret = 0;
     int last_time = 0;
     int face_registered = 1;
@@ -291,7 +291,7 @@ static void app_task(void *params)
     infer_conv_params.convert.out_buf.width = ULTRAFACE_WIDTH;
     infer_conv_params.convert.out_buf.height = ULTRAFACE_HEIGHT;
     /* color convert */
-    infer_conv_params.convert.pixel_format = MPP_PIXEL_RGB;
+    infer_conv_params.convert.pixel_format = ULTRAFACE_PIXEL_FORMAT;
     infer_conv_params.convert.ops = MPP_CONVERT_COLOR;
     /* crop center of image */
     infer_conv_params.convert.crop.top = CROP_TOP;
@@ -528,7 +528,7 @@ static void app_task(void *params)
             if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
             {
                 /* set new person embeddings */
-                set_new_person_embeddings((const float *)user_data.result.embedding);
+                set_new_face_embeddings((const float *)user_data.result.embedding);
 
                 int start_time = hal_get_exec_time();
                 /* wait for user to finish registration */
@@ -582,6 +582,7 @@ static void app_task(void *params)
             infer_conv_params.convert.out_buf.height = MOBILEFACENET_HEIGHT;
             infer_conv_params.convert.scale.width = MOBILEFACENET_WIDTH;
             infer_conv_params.convert.scale.height = MOBILEFACENET_HEIGHT;
+            infer_conv_params.convert.pixel_format = MOBILEFACENET_PIXEL_FORMAT; 
             ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params);
             if (ret) {
                 PRINTF("Failed to update element convert for mobilefacenet");
@@ -623,6 +624,7 @@ static void app_task(void *params)
             infer_conv_params.convert.out_buf.height = ULTRAFACE_HEIGHT;
             infer_conv_params.convert.scale.width = ULTRAFACE_WIDTH;
             infer_conv_params.convert.scale.height = ULTRAFACE_HEIGHT;
+            infer_conv_params.convert.pixel_format = ULTRAFACE_PIXEL_FORMAT;
             ret = mpp_element_update(mp_split, infer_conv_h, &infer_conv_params);
             if (ret) {
                 PRINTF("Failed to update element convert for ultraface");
@@ -647,9 +649,6 @@ static void app_task(void *params)
         	/* empty */
         }
     }
-
-    /* pause application task */
-    vTaskSuspend(NULL);
 
     err:
     for (;;) {

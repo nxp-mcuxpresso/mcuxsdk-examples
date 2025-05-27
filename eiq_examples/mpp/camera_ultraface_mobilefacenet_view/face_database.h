@@ -1,18 +1,17 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef EMBEDDING_DATABASE_H
-#define EMBEDDING_DATABASE_H
+#ifndef EMBEDDING_DB_H
+#define EMBEDDING_DB_H
 
-#include "mobilefacenet_output_postproc_quantized.h"
+#include <mobilefacenet_database_infos.h>
 
-#define DATABASE_MAX_PEOPLE 10
-#define DATABASE_NUM_PEOPLE 0
+#define DATABASE_MAX_SIZE 10
 
-static person Embedding_database[DATABASE_MAX_PEOPLE] = {0};
+static face_t g_embedding_db[DATABASE_MAX_SIZE] = {0};
 
-#endif /* EMBEDDING_DATABASE_H */
+#endif /* EMBEDDING_DB_H */

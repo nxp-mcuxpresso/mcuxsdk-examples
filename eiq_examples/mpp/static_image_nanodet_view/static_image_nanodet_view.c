@@ -491,9 +491,6 @@ static void app_task(void *params)
         }
     }
 
-    /* pause application task */
-    vTaskSuspend(NULL);
-
 err:
     for (;;)
     {

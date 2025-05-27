@@ -494,9 +494,6 @@ static void app_task(void *params)
 		}
 	}
 
-	/* pause application task */
-	vTaskSuspend(NULL);
-
 	err:
 	for (;;) {
 		PRINTF("Error building application pipeline : ret %d\r\n", ret);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -15,8 +15,10 @@
 /* TODO remove this HACK and and include model info header file */
 #define MOBILEFACENET_WIDTH 96
 #define MOBILEFACENET_HEIGHT 96
+#define MOBILEFACENET_PIXEL_FORMAT MPP_PIXEL_BGR
 #define ULTRAFACE_WIDTH 128
-#define ULTRAFACE_HEIGHT 128
+#define ULTRAFACE_HEIGHT 128 
+#define ULTRAFACE_PIXEL_FORMAT MPP_PIXEL_RGB
 /* end of TODO */
 
 /*

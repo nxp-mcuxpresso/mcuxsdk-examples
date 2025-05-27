@@ -205,8 +205,8 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 		inf_output = (const mpp_inference_cb_param_t *) evt_data;
 		MOBILEFACENET_ProcessOutput(
                 inf_output,
-                Embedding_database,
-                DATABASE_MAX_PEOPLE,
+                g_embedding_db,
+                NUM_FACES,
                 &result);
 		/* check that we can modify the user data (not accessed by other task) */
 		if (Atomic_CompareAndSwap_u32(&app_priv->accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
@@ -468,9 +468,6 @@ static void app_task(void *params)
 			__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 		}
 	}
-
-	/* pause application task */
-	vTaskSuspend(NULL);
 
 	err:
 	for (;;)
