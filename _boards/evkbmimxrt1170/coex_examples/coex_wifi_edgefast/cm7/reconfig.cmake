@@ -45,7 +45,6 @@ mcux_add_macro(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}
-             ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/coex_examples/coex_wifi_edgefast/cm7
              middleware/wireless/coex/src/configs/mimxrt1176/edgefast
              middleware/wireless/coex/src/configs/mimxrt1176/wifi
