@@ -78,7 +78,5 @@ void BOARD_PrepareDisplayController(void)
 {
 
     BOARD_InitDisplayInterface();
-    NVIC_ClearPendingIRQ(DEMO_DCIF_IRQ);
-    NVIC_SetPriority(DEMO_DCIF_IRQ, 3);
     EnableIRQ(DEMO_DCIF_IRQ);
 }

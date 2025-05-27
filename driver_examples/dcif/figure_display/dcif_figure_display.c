@@ -89,7 +89,7 @@ void DEMO_DCIF_Init(void)
 
     DCIF_EnableLayer(DEMO_DCIF, DEMO_DCIF_LAYER, true);
     
-    NVIC_EnableIRQ(DEMO_DCIF_IRQ);
+    EnableIRQ(DEMO_DCIF_IRQ);
 
     DCIF_EnableInterrupts(DEMO_DCIF, kDCIF_VerticalBlankingInterrupt);
 
