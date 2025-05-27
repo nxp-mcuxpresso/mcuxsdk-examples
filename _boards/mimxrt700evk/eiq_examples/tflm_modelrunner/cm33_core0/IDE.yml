@@ -3,8 +3,9 @@ armgcc:
 mdk:
   project_language: cpp
   project-templates:
-    - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core0.uvprojx
     - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core0.uvoptx
+    - scripts/guigenerator/templates/mdk/app_mimxrt700evk/app_mimxrt700evk_cm33_core0.uvprojx
+    - scripts/guigenerator/templates/mdk/app_mimxrt700evk/JLinkSettings.ini
 
 iar:
   project_language: auto
