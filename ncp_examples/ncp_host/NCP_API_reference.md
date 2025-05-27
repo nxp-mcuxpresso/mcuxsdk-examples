@@ -9,10 +9,12 @@ Developers can refer to NCP APIs for Wi-Fi, Bluetooth LE and 15.4 to
 implement their own sample application which runs on their host
 platform.
 
-Note: Default NCP host MCU platform: RT1060 EVKB. 
-NCP device supported two kinds redfinch boards: 
-RD-RW612-BGA: UART/SPI/USB/SDIO, 
-FRDM-RW612:UART/SPI/USB.
+Note: Default NCP host MCU platform: RT1060 EVKB. NCP device supported
+two kinds redfinch boards:
+
+RD-RW612-BGA: UART/SPI/USB/SDIO,
+
+FRDM-RW612: UART/SPI/USB.
 
 ### Abbreviations and acronyms
 
@@ -383,7 +385,7 @@ Here is a list of all documented files with brief descriptions:
 
 **ncp\_cmd\_ble.h (NCP Bluetooth LE command and structure definitions )**
 
-**ncp\_cmd\_system.h (This file provies power save commands for NCP system )**
+**ncp\_cmd\_system.h (This file provides power save commands for NCP system )**
 
 **ncp\_cmd\_wifi.h (NCP Wi-Fi command/response definitions )**
 
@@ -1278,21 +1280,17 @@ This structure is used for antenna configuration.
 
 ### Data Fields
 
-  - uint16\_t action
+  - uint8\_t action
 
-  - uint16\_t sub\_id
+  - uint8\_t bcast\_bet\_sta\_wait
 
-  - uint8\_t nominal\_wake
+  - uint16\_t bcast\_offset
 
-  - uint8\_t max\_sta\_support
+  - uint8\_t bcast\_twtli
 
-  - uint16\_t twt\_mantissa
+  - uint8\_t count
 
-  - uint16\_t twt\_offset
-
-  - uint8\_t twt\_exponent
-
-  - uint8\_t sp\_gap
+  - ncp\_btwt\_set\_t btwt\_sets \[BTWT\_AGREEMENT\_MAX\]
 
 ### Detailed Description
 
@@ -1308,37 +1306,29 @@ information.
 
 ### Field Documentation
 
-#### uint16\_t \_NCP\_CMD\_BTWT\_CFG::action
+#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::action
 
-> Action, only support 1: set.
+> Action 0: get, 1: set
 
-#### uint16\_t \_NCP\_CMD\_BTWT\_CFG::sub\_id
+#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::bcast\_bet\_sta\_wait
 
-> Subcommand ID, the subcommand ID of BTWT is 0x125.
+> Reserved
 
-#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::nominal\_wake
+#### uint16\_t \_NCP\_CMD\_BTWT\_CFG::bcast\_offset
 
-> Nominal minimum TWT wake duration.
+> Reserved
 
-#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::max\_sta\_support
+#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::bcast\_twtli
 
-> Maximum number of STAs supported.
+> Reserved
 
-#### uint16\_t \_NCP\_CMD\_BTWT\_CFG::twt\_mantissa
+#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::count
 
-> TWT wake interval mantissa, range: \[0 - (2^16-1)\].
+> Count of BTWT agreement sets
 
-#### uint16\_t \_NCP\_CMD\_BTWT\_CFG::twt\_offset
+#### ncp\_btwt\_set\_t \_NCP\_CMD\_BTWT\_CFG::btwt\_sets\[BTWT\_AGREEMENT\_MAX\]
 
-> TWT wake interval offset.
-
-#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::twt\_exponent
-
-> TWT wake interval exponent.
-
-#### uint8\_t \_NCP\_CMD\_BTWT\_CFG::sp\_gap
-
-> Service period gap.
+> BTWT agreement sets
 
 #### The documentation for this struct was generated from the following file:
 
@@ -1502,6 +1492,50 @@ completed.
 > connection timeout
 > 
 > Supervision timeout for the Bluetooth LE link
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
+## \_NCP\_CMD\_CONN\_REF Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE connection reference.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_CMD\_CONN\_REF::conn\_id
+
+> connection id
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
+## \_NCP\_CMD\_CONN\_UNREF Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE connection unreference.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_CMD\_CONN\_UNREF::conn\_id
+
+> connection id
 
 #### The documentation for this struct was generated from the following file:
 
@@ -1723,6 +1757,34 @@ configuration.
 
 #### 
 
+## \_NCP\_CMD\_DISCONN Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+  - uint8\_t reason
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE disconnection.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_CMD\_DISCONN::conn\_id
+
+> connection id
+
+#### uint8\_t \_NCP\_CMD\_DISCONN::reason
+
+> disconnect reason
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
 ## \_NCP\_CMD\_ED\_MAC Struct Reference
 
 ### Data Fields
@@ -1887,6 +1949,28 @@ This structure is used to store Wi-Fi driver and firmware version.
 
 #### 
 
+## \_NCP\_CMD\_GET\_CONN\_INDEX Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE get connection index.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_CMD\_GET\_CONN\_INDEX::conn\_id
+
+> connection id
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
 ## \_NCP\_CMD\_GET\_CURRENT\_NETWORK Struct Reference
 
 ### Data Fields
@@ -1927,6 +2011,28 @@ This structure is used for MAC address configuration.
 #### The documentation for this struct was generated from the following file:
 
   - ncp\_cmd\_wifi.h
+
+#### 
+
+## \_NCP\_CMD\_GET\_MTU Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE get mtu size.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_CMD\_GET\_MTU::conn\_id
+
+> connection id
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
 
 #### 
 
@@ -2204,6 +2310,45 @@ This structure is used for IEEE power save mode configuration.
 
 #### 
 
+## \_NCP\_CMD\_IP\_CONFIG Struct Reference
+
+### Data Fields
+
+  - struct ipv6\_config ipv6 \[CONFIG\_MAX\_IPV6\_ADDRESSES\]
+
+  - unsigned ipv6\_count
+
+  - struct ipv4\_config ipv4
+
+### Detailed Description
+
+Network IP configuration.
+
+This data structure represents the network IP configuration for IPv4 as
+well as IPv6 addresses
+
+### Field Documentation
+
+#### struct ipv6\_config \_NCP\_CMD\_IP\_CONFIG::ipv6\[CONFIG\_MAX\_IPV6\_ADDRESSES\]
+
+> The network IPv6 address configuration that should be associated with
+> this interface.
+
+#### unsigned \_NCP\_CMD\_IP\_CONFIG::ipv6\_count
+
+> The network IPv6 valid addresses count
+
+#### struct ipv4\_config \_NCP\_CMD\_IP\_CONFIG::ipv4
+
+> The network IPv4 address configuration that should be associated with
+> this interface.
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_wifi.h
+
+#### 
+
 ## \_NCP\_CMD\_MAC\_ADDRESS Struct Reference
 
 ### Data Fields
@@ -2223,6 +2368,41 @@ This structure is used for MAC address configuration.
 #### The documentation for this struct was generated from the following file:
 
   - ncp\_cmd\_wifi.h
+
+#### 
+
+## \_NCP\_CMD\_MATTER\_INDICATE Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+  - uint16\_t len
+
+  - uint8\_t data \[256\]
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE matter service send
+indicate.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_CMD\_MATTER\_INDICATE::conn\_id
+
+> connection id
+
+#### uint16\_t \_NCP\_CMD\_MATTER\_INDICATE::len
+
+> indicate data length
+
+#### uint8\_t \_NCP\_CMD\_MATTER\_INDICATE::data\[256\]
+
+> indicate data
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
 
 #### 
 
@@ -2643,6 +2823,32 @@ are connected to the UAP.
 #### wifi\_sta\_info\_t \_NCP\_CMD\_NETWORK\_UAP\_STA\_LIST::info\[MAX\_NUM\_CLIENTS\]
 
 > Information on the STAs connected to the UAP.
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_wifi.h
+
+#### 
+
+## \_NCP\_CMD\_OKC Struct Reference
+
+### Data Fields
+
+  - uint8\_t enable
+
+### Detailed Description
+
+This structure is used for OKC configuration.
+
+### Field Documentation
+
+#### uint8\_t \_NCP\_CMD\_OKC::enable
+
+> STA OKC enable flag,
+> 
+> 1: enable OKC,
+> 
+> 0: disable OKC.
 
 #### The documentation for this struct was generated from the following file:
 
@@ -4444,7 +4650,7 @@ This structure is used to store temperature of the device.
 
   - uint8\_t reserve \[2\]
 
-  - IEEE\_BTWT\_ParamSet\_t info \[4\]
+  - IEEE\_BTWT\_ParamSet\_t info \[6\]
 
 ### Detailed Description
 
@@ -4464,9 +4670,9 @@ This structure is used for TWT report.
 
 > Reserved fields.
 
-#### IEEE\_BTWT\_ParamSet\_t \_NCP\_CMD\_TWT\_REPORT::info\[4\]
+#### IEEE\_BTWT\_ParamSet\_t \_NCP\_CMD\_TWT\_REPORT::info\[6\]
 
-> TWT report payload for FW response to fill, 4 \* 9bytes.
+> TWT report payload for FW response to fill, 6 \* 9bytes.
 
 #### The documentation for this struct was generated from the following file:
 
@@ -5828,6 +6034,111 @@ This structure is used for NCP Bluetooth LE L2CAP send data.
 
 #### 
 
+## \_NCP\_MATTER\_CCC\_CFG\_RP Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+  - uint16\_t value
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE matter service ccc
+configuration.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_MATTER\_CCC\_CFG\_RP::conn\_id
+
+> connection id
+
+#### uint16\_t \_NCP\_MATTER\_CCC\_CFG\_RP::value
+
+> client configuration changed value
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
+## \_NCP\_MATTER\_IND\_CONFIRM\_RP Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+  - uint8\_t err
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE matter service indicate
+confirm.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_MATTER\_IND\_CONFIRM\_RP::conn\_id
+
+> connection id
+
+#### uint8\_t \_NCP\_MATTER\_IND\_CONFIRM\_RP::err
+
+> indicate confirm state
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
+## \_NCP\_MATTER\_RX\_WRITE\_RP Struct Reference
+
+### Data Fields
+
+  - uint16\_t conn\_id
+
+  - uint16\_t offset
+
+  - uint8\_t flags
+
+  - uint8\_t len
+
+  - uint8\_t data \[256\]
+
+### Detailed Description
+
+This structure is used for NCP Bluetooth LE matter service recieve rx
+write.
+
+### Field Documentation
+
+#### uint16\_t \_NCP\_MATTER\_RX\_WRITE\_RP::conn\_id
+
+> connection id
+
+#### uint16\_t \_NCP\_MATTER\_RX\_WRITE\_RP::offset
+
+> characteristics write offset
+
+#### uint8\_t \_NCP\_MATTER\_RX\_WRITE\_RP::flags
+
+> characteristics write flags
+
+#### uint8\_t \_NCP\_MATTER\_RX\_WRITE\_RP::len
+
+> characteristics write data length
+
+#### uint8\_t \_NCP\_MATTER\_RX\_WRITE\_RP::data\[256\]
+
+> characteristics write data
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
 ## \_NCP\_NCS\_INFO\_RP Struct Reference
 
 ### Data Fields
@@ -6913,6 +7224,8 @@ This structure is used to store the information of one scanned AP
 
   -   NCP\_CMD\_ROAMING roaming\_cfg
 
+  -   NCP\_CMD\_OKC okc\_cfg
+
   -   NCP\_CMD\_CLIENT\_CNT max\_client\_count
 
   -   NCP\_CMD\_ANTENNA\_CFG antenna\_cfg
@@ -7043,6 +7356,16 @@ This structure is used to store the information of one scanned AP
 
   -   NCP\_CMD\_GET\_CURRENT\_NETWORK current\_network
 
+  -   NCP\_CMD\_PKT\_STATS get\_pkt\_stats
+
+  -   NCP\_CMD\_GET\_CURRENT\_RSSI current\_rssi
+
+  -   NCP\_CMD\_GET\_CURRENT\_CHANNEL current\_channel
+
+  -   NCP\_CMD\_IP\_CONFIG ip\_config
+
+  -   NCP\_CMD\_GET\_NETIF\_FLAGS netif\_flags
+
   - } params
 
 ### Detailed Description
@@ -7130,6 +7453,10 @@ NCP command structure.
 #### NCP\_CMD\_ROAMING \_NCPCmd\_DS\_COMMAND::roaming\_cfg
 
 > Roaming configurations
+
+#### NCP\_CMD\_OKC \_NCPCmd\_DS\_COMMAND::okc\_cfg
+
+> OKC configurations
 
 #### NCP\_CMD\_CLIENT\_CNT \_NCPCmd\_DS\_COMMAND::max\_client\_count
 
@@ -7391,6 +7718,26 @@ NCP command structure.
 
 > Get current network
 
+#### NCP\_CMD\_PKT\_STATS \_NCPCmd\_DS\_COMMAND::get\_pkt\_stats
+
+> get pkt stats
+
+#### NCP\_CMD\_GET\_CURRENT\_RSSI \_NCPCmd\_DS\_COMMAND::current\_rssi
+
+> get current rssi
+
+#### NCP\_CMD\_GET\_CURRENT\_CHANNEL \_NCPCmd\_DS\_COMMAND::current\_channel
+
+> get current channel
+
+#### NCP\_CMD\_IP\_CONFIG \_NCPCmd\_DS\_COMMAND::ip\_config
+
+> get ip config
+
+#### NCP\_CMD\_GET\_NETIF\_FLAGS \_NCPCmd\_DS\_COMMAND::netif\_flags
+
+> get netif flag
+
 #### union { ... } \_NCPCmd\_DS\_COMMAND::params
 
 > Command body.
@@ -7432,6 +7779,16 @@ NCP command structure.
   -   NCP\_GATT\_READ\_CMD gatt\_read\_char
 
   -   NCP\_CMD\_SET\_NAME set\_dev\_name
+
+  -   NCP\_CMD\_GET\_CONN\_INDEX get\_conn\_index
+
+  -   NCP\_CMD\_CONN\_REF conn\_ref
+
+  -   NCP\_CMD\_CONN\_UNREF conn\_unref
+
+  -   NCP\_CMD\_GET\_MTU get\_mtu
+
+  -   NCP\_CMD\_DISCONN disconn
 
   -   NCP\_CMD\_SERVICE\_ADD host\_svc\_add
 
@@ -7569,6 +7926,26 @@ input to the Bluetooth LE TLV command.
 #### NCP\_CMD\_SET\_NAME \_NCPCmd\_DS\_COMMAND\_BLE::set\_dev\_name
 
 > NCP Bluetooth LE set device name
+
+#### NCP\_CMD\_GET\_CONN\_INDEX \_NCPCmd\_DS\_COMMAND\_BLE::get\_conn\_index
+
+> NCP Bluetooth LE get connection index
+
+#### NCP\_CMD\_CONN\_REF \_NCPCmd\_DS\_COMMAND\_BLE::conn\_ref
+
+> NCP Bluetooth LE connection reference
+
+#### NCP\_CMD\_CONN\_UNREF \_NCPCmd\_DS\_COMMAND\_BLE::conn\_unref
+
+> NCP Bluetooth LE connection unreference
+
+#### NCP\_CMD\_GET\_MTU \_NCPCmd\_DS\_COMMAND\_BLE::get\_mtu
+
+> NCP Bluetooth LE get MTU size
+
+#### NCP\_CMD\_DISCONN \_NCPCmd\_DS\_COMMAND\_BLE::disconn
+
+> NCP Bluetooth LE disconnect
 
 #### NCP\_CMD\_SERVICE\_ADD \_NCPCmd\_DS\_COMMAND\_BLE::host\_svc\_add
 
@@ -8809,6 +9186,8 @@ containing LL Data PDUs in either direction.
 
 ### Data Fields
 
+  - uint8\_t conn\_id
+
   - uint8\_t address\_type
 
   - uint8\_t address \[NCP\_BLE\_ADDR\_LENGTH\]
@@ -8825,6 +9204,10 @@ This structure contains the value of the Bluetooth LE connection
 complete event which indicates a new connection has been created.
 
 ### Field Documentation
+
+#### uint8\_t gap\_device\_connected\_ev::conn\_id
+
+> connection id
 
 #### uint8\_t gap\_device\_connected\_ev::address\_type
 
@@ -8865,9 +9248,13 @@ complete event which indicates a new connection has been created.
 
 ### Data Fields
 
+  - uint8\_t conn\_id
+
   - uint8\_t address\_type
 
   - uint8\_t address \[NCP\_BLE\_ADDR\_LENGTH\]
+
+  - uint8\_t reason
 
 ### Detailed Description
 
@@ -8875,6 +9262,10 @@ This structure contains the value of the Bluetooth LE disconnection
 complete event which indicates a connection is terminated.
 
 ### Field Documentation
+
+#### uint8\_t gap\_device\_disconnected\_ev::conn\_id
+
+> connection id
 
 #### uint8\_t gap\_device\_disconnected\_ev::address\_type
 
@@ -8887,6 +9278,10 @@ complete event which indicates a connection is terminated.
 #### uint8\_t gap\_device\_disconnected\_ev::address\[NCP\_BLE\_ADDR\_LENGTH\]
 
 > Bluetooth LE address
+
+#### uint8\_t gap\_device\_disconnected\_ev::reason
+
+> disconnect reason
 
 #### The documentation for this struct was generated from the following file:
 
@@ -10304,41 +10699,6 @@ characteristic data.
 
 #### 
 
-## gatt\_descriptor Struct Reference
-
-### Data Fields
-
-  - uint16\_t descriptor\_handle
-
-  - uint8\_t uuid\_length
-
-  - uint8\_t uuid \[SERVER\_MAX\_UUID\_LEN\]
-
-### Detailed Description
-
-This structure contains the configuration values of the Bluetooth LE
-descriptor data.
-
-### Field Documentation
-
-#### uint16\_t gatt\_descriptor::descriptor\_handle
-
-> descriptor handle
-
-#### uint8\_t gatt\_descriptor::uuid\_length
-
-> descriptor UUID length
-
-#### uint8\_t gatt\_descriptor::uuid\[SERVER\_MAX\_UUID\_LEN\]
-
-> descriptor UUID
-
-#### The documentation for this struct was generated from the following file:
-
-  - ncp\_cmd\_ble.h
-
-#### 
-
 ## GATT\_DESCRIPTOR Struct Reference
 
 ### Data Fields
@@ -10367,6 +10727,41 @@ descriptor data.
 #### uint8\_t GATT\_DESCRIPTOR::uuid\[SERVER\_MAX\_UUID\_LEN\]
 
 > descriptor UUID value
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_ble.h
+
+#### 
+
+## gatt\_descriptor Struct Reference
+
+### Data Fields
+
+  - uint16\_t descriptor\_handle
+
+  - uint8\_t uuid\_length
+
+  - uint8\_t uuid \[SERVER\_MAX\_UUID\_LEN\]
+
+### Detailed Description
+
+This structure contains the configuration values of the Bluetooth LE
+descriptor data.
+
+### Field Documentation
+
+#### uint16\_t gatt\_descriptor::descriptor\_handle
+
+> descriptor handle
+
+#### uint8\_t gatt\_descriptor::uuid\_length
+
+> descriptor UUID length
+
+#### uint8\_t gatt\_descriptor::uuid\[SERVER\_MAX\_UUID\_LEN\]
+
+> descriptor UUID
 
 #### The documentation for this struct was generated from the following file:
 
@@ -12461,6 +12856,96 @@ This structure is used for iperf configuration.
 
 #### 
 
+## ipv4\_config Struct Reference
+
+### Data Fields
+
+  - unsigned addr\_type
+
+  - unsigned address
+
+  - unsigned gw
+
+  - unsigned netmask
+
+  - unsigned dns1
+
+  - unsigned dns2
+
+### Detailed Description
+
+This data structure represents an IPv4 address
+
+### Field Documentation
+
+#### unsigned ipv4\_config::addr\_type
+
+> Set to ADDR\_TYPE\_DHCP to use DHCP to obtain the IP address or
+> ADDR\_TYPE\_STATIC to use a static IP. In case of static IP address
+> ip, gw, netmask and dns members must be specified. When using DHCP,
+> the ip, gw, netmask and dns are overwritten by the values obtained
+> from the DHCP server. They should be zeroed out if not used.
+
+#### unsigned ipv4\_config::address
+
+> The system's IP address in network order.
+
+#### unsigned ipv4\_config::gw
+
+> The system's default gateway in network order.
+
+#### unsigned ipv4\_config::netmask
+
+> The system's subnet mask in network order.
+
+#### unsigned ipv4\_config::dns1
+
+> The system's primary dns server in network order.
+
+#### unsigned ipv4\_config::dns2
+
+> The system's secondary dns server in network order.
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_host\_command\_wifi.h
+
+#### 
+
+## ipv6\_config Struct Reference
+
+### Data Fields
+
+  - unsigned address \[4\]
+
+  - unsigned char addr\_type
+
+  - unsigned char addr\_state
+
+### Detailed Description
+
+This data structure represents an IPv6 address
+
+### Field Documentation
+
+#### unsigned ipv6\_config::address\[4\]
+
+> The system's IPv6 address in network order.
+
+#### unsigned char ipv6\_config::addr\_type
+
+> The address type: linklocal, site-local or global.
+
+#### unsigned char ipv6\_config::addr\_state
+
+> The state of IPv6 address (Tentative, Preferred, etc).
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_host\_command\_wifi.h
+
+#### 
+
 ## l2cap\_connect\_cmd\_tag Struct Reference
 
 ### Data Fields
@@ -12903,6 +13388,568 @@ type.
 #### The documentation for this struct was generated from the following file:
 
   - ncp\_cmd\_ble.h
+
+#### 
+
+## NCP\_CMD\_GET\_CURRENT\_CHANNEL Struct Reference
+
+### Data Fields
+
+  - uint8\_t channel
+
+### Detailed Description
+
+This structure is used for current channel configuration.
+
+### Field Documentation
+
+#### uint8\_t NCP\_CMD\_GET\_CURRENT\_CHANNEL::channel
+
+> Current channel
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_wifi.h
+
+#### 
+
+## NCP\_CMD\_GET\_CURRENT\_RSSI Struct Reference
+
+### Data Fields
+
+  - short rssi
+
+### Detailed Description
+
+This structure is used for current rssi configuration.
+
+### Field Documentation
+
+#### short NCP\_CMD\_GET\_CURRENT\_RSSI::rssi
+
+> Current rssi
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_wifi.h
+
+#### 
+
+## NCP\_CMD\_GET\_NETIF\_FLAGS Struct Reference
+
+### Data Fields
+
+  - uint8\_t flags
+
+### Detailed Description
+
+This structure is used for store the netif flags.
+
+### Field Documentation
+
+#### uint8\_t NCP\_CMD\_GET\_NETIF\_FLAGS::flags
+
+> Netif flags
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_wifi.h
+
+#### 
+
+## NCP\_CMD\_PKT\_STATS Struct Reference
+
+### Data Fields
+
+  - uint32\_t mcast\_tx\_frame
+
+  - uint32\_t failed
+
+  - uint32\_t retry
+
+  - uint32\_t multi\_retry
+
+  - uint32\_t frame\_dup
+
+  - uint32\_t rts\_success
+
+  - uint32\_t rts\_failure
+
+  - uint32\_t ack\_failure
+
+  - uint32\_t rx\_frag
+
+  - uint32\_t mcast\_rx\_frame
+
+  - uint32\_t fcs\_error
+
+  - uint32\_t tx\_frame
+
+  - uint32\_t wep\_icv\_error \[4\]
+
+  - uint32\_t bcn\_rcv\_cnt
+
+  - uint32\_t bcn\_miss\_cnt
+
+  - uint32\_t amsdu\_rx\_cnt
+
+  - uint32\_t msdu\_in\_rx\_amsdu\_cnt
+
+  - uint32\_t amsdu\_tx\_cnt
+
+  - uint32\_t msdu\_in\_tx\_amsdu\_cnt
+
+  - uint32\_t tx\_frag\_cnt
+
+  - uint32\_t qos\_tx\_frag\_cnt \[8\]
+
+  - uint32\_t qos\_failed\_cnt \[8\]
+
+  - uint32\_t qos\_retry\_cnt \[8\]
+
+  - uint32\_t qos\_multi\_retry\_cnt \[8\]
+
+  - uint32\_t qos\_frm\_dup\_cnt \[8\]
+
+  - uint32\_t qos\_rts\_suc\_cnt \[8\]
+
+  - uint32\_t qos\_rts\_failure\_cnt \[8\]
+
+  - uint32\_t qos\_ack\_failure\_cnt \[8\]
+
+  - uint32\_t qos\_rx\_frag\_cnt \[8\]
+
+  - uint32\_t qos\_tx\_frm\_cnt \[8\]
+
+  - uint32\_t qos\_discarded\_frm\_cnt \[8\]
+
+  - uint32\_t qos\_mpdus\_rx\_cnt \[8\]
+
+  - uint32\_t qos\_retries\_rx\_cnt \[8\]
+
+  - uint32\_t cmacicv\_errors
+
+  - uint32\_t cmac\_replays
+
+  - uint32\_t mgmt\_ccmp\_replays
+
+  - uint32\_t tkipicv\_errors
+
+  - uint32\_t tkip\_replays
+
+  - uint32\_t ccmp\_decrypt\_errors
+
+  - uint32\_t ccmp\_replays
+
+  - uint32\_t tx\_amsdu\_cnt
+
+  - uint32\_t failed\_amsdu\_cnt
+
+  - uint32\_t retry\_amsdu\_cnt
+
+  - uint32\_t multi\_retry\_amsdu\_cnt
+
+  - uint64\_t tx\_octets\_in\_amsdu\_cnt
+
+  - uint32\_t amsdu\_ack\_failure\_cnt
+
+  - uint32\_t rx\_amsdu\_cnt
+
+  - uint64\_t rx\_octets\_in\_amsdu\_cnt
+
+  - uint32\_t tx\_ampdu\_cnt
+
+  - uint32\_t tx\_mpdus\_in\_ampdu\_cnt
+
+  - uint64\_t tx\_octets\_in\_ampdu\_cnt
+
+  - uint32\_t ampdu\_rx\_cnt
+
+  - uint32\_t mpdu\_in\_rx\_ampdu\_cnt
+
+  - uint64\_t rx\_octets\_in\_ampdu\_cnt
+
+  - uint32\_t ampdu\_delimiter\_crc\_error\_cnt
+
+  - uint32\_t rx\_stuck\_issue\_cnt \[2\]
+
+  - uint32\_t rx\_stuck\_recovery\_cnt
+
+  - uint64\_t rx\_stuck\_tsf \[2\]
+
+  - uint32\_t tx\_watchdog\_recovery\_cnt
+
+  - uint64\_t tx\_watchdog\_tsf \[2\]
+
+  - uint32\_t channel\_switch\_ann\_sent
+
+  - uint32\_t channel\_switch\_state
+
+  - uint32\_t reg\_class
+
+  - uint32\_t channel\_number
+
+  - uint32\_t channel\_switch\_mode
+
+  - uint32\_t rx\_reset\_mac\_recovery\_cnt
+
+  - uint32\_t rx\_Isr2\_NotDone\_Cnt
+
+  - uint32\_t gdma\_abort\_cnt
+
+  - uint32\_t g\_reset\_rx\_mac\_cnt
+
+  - uint32\_t dwCtlErrCnt
+
+  - uint32\_t dwBcnErrCnt
+
+  - uint32\_t dwMgtErrCnt
+
+  - uint32\_t dwDatErrCnt
+
+  - uint32\_t bigtk\_mmeGoodCnt
+
+  - uint32\_t bigtk\_replayErrCnt
+
+  - uint32\_t bigtk\_micErrCnt
+
+  - uint32\_t bigtk\_mmeNotFoundCnt
+
+  - uint32\_t rx\_unicast\_cnt
+
+  - uint32\_t tx\_overrun\_cnt
+
+  - uint32\_t rx\_overrun\_cnt
+
+### Detailed Description
+
+This structure is used for store the information about the pkt stats.
+
+### Field Documentation
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::mcast\_tx\_frame
+
+> Multicast transmitted frame count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::failed
+
+> Failure count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::retry
+
+> Retry count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::multi\_retry
+
+> Multi entry count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::frame\_dup
+
+> Duplicate frame count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rts\_success
+
+> RTS success count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rts\_failure
+
+> RTS failure count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::ack\_failure
+
+> Ack failure count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_frag
+
+> Rx fragmentation count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::mcast\_rx\_frame
+
+> Multicast Tx frame count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::fcs\_error
+
+> FCS error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_frame
+
+> Tx frame count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::wep\_icv\_error\[4\]
+
+> WEP ICV error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::bcn\_rcv\_cnt
+
+> beacon recv count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::bcn\_miss\_cnt
+
+> beacon miss count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::amsdu\_rx\_cnt
+
+> received amsdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::msdu\_in\_rx\_amsdu\_cnt
+
+> received msdu count in amsdu
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::amsdu\_tx\_cnt
+
+> tx amsdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::msdu\_in\_tx\_amsdu\_cnt
+
+> tx msdu count in amsdu
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_frag\_cnt
+
+> Tx frag count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_tx\_frag\_cnt\[8\]
+
+> Qos Tx frag count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_failed\_cnt\[8\]
+
+> Qos failed count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_retry\_cnt\[8\]
+
+> Qos retry count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_multi\_retry\_cnt\[8\]
+
+> Qos multi retry count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_frm\_dup\_cnt\[8\]
+
+> Qos frame dup count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_rts\_suc\_cnt\[8\]
+
+> Qos rts success count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_rts\_failure\_cnt\[8\]
+
+> Qos rts failure count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_ack\_failure\_cnt\[8\]
+
+> Qos ack failure count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_rx\_frag\_cnt\[8\]
+
+> Qos Rx frag count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_tx\_frm\_cnt\[8\]
+
+> Qos Tx frame count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_discarded\_frm\_cnt\[8\]
+
+> Qos discarded frame count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_mpdus\_rx\_cnt\[8\]
+
+> Qos mpdus Rx count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::qos\_retries\_rx\_cnt\[8\]
+
+> Qos retry rx count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::cmacicv\_errors
+
+> CMACICV errors count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::cmac\_replays
+
+> CMAC replays count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::mgmt\_ccmp\_replays
+
+> mgmt CCMP replays count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tkipicv\_errors
+
+> TKIP ICV errors count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tkip\_replays
+
+> TKIP replays count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::ccmp\_decrypt\_errors
+
+> CCMP decrypt errors count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::ccmp\_replays
+
+> CCMP replays count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_amsdu\_cnt
+
+> Tx amsdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::failed\_amsdu\_cnt
+
+> failed amsdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::retry\_amsdu\_cnt
+
+> retry amsdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::multi\_retry\_amsdu\_cnt
+
+> multi-retry amsdu count
+
+#### uint64\_t NCP\_CMD\_PKT\_STATS::tx\_octets\_in\_amsdu\_cnt
+
+> Tx octets in amsdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::amsdu\_ack\_failure\_cnt
+
+> amsdu ack failure count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_amsdu\_cnt
+
+> Rx amsdu count
+
+#### uint64\_t NCP\_CMD\_PKT\_STATS::rx\_octets\_in\_amsdu\_cnt
+
+> Rx octets in amsdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_ampdu\_cnt
+
+> Tx ampdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_mpdus\_in\_ampdu\_cnt
+
+> tx mpdus in ampdu count
+
+#### uint64\_t NCP\_CMD\_PKT\_STATS::tx\_octets\_in\_ampdu\_cnt
+
+> tx octets in ampdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::ampdu\_rx\_cnt
+
+> ampdu Rx count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::mpdu\_in\_rx\_ampdu\_cnt
+
+> mpdu in Rx ampdu count
+
+#### uint64\_t NCP\_CMD\_PKT\_STATS::rx\_octets\_in\_ampdu\_cnt
+
+> Rx octets ampdu count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::ampdu\_delimiter\_crc\_error\_cnt
+
+> ampdu delimiter CRC error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_stuck\_issue\_cnt\[2\]
+
+> Rx Stuck Related Info Rx Stuck Issue count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_stuck\_recovery\_cnt
+
+> Rx Stuck Recovery count
+
+#### uint64\_t NCP\_CMD\_PKT\_STATS::rx\_stuck\_tsf\[2\]
+
+> Rx Stuck TSF
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_watchdog\_recovery\_cnt
+
+> Tx Watchdog Recovery Related Info Tx Watchdog Recovery count
+
+#### uint64\_t NCP\_CMD\_PKT\_STATS::tx\_watchdog\_tsf\[2\]
+
+> Tx Watchdog TSF
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::channel\_switch\_ann\_sent
+
+> Channel Switch Related Info Channel Switch Announcement Sent
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::channel\_switch\_state
+
+> Channel Switch State
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::reg\_class
+
+> Register Class
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::channel\_number
+
+> Channel Number
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::channel\_switch\_mode
+
+> Channel Switch Mode
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_reset\_mac\_recovery\_cnt
+
+> Reset Rx Mac Recovery Count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_Isr2\_NotDone\_Cnt
+
+> ISR2 Not Done Count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::gdma\_abort\_cnt
+
+> GDMA Abort Count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::g\_reset\_rx\_mac\_cnt
+
+> Rx Reset MAC Count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::dwCtlErrCnt
+
+> Error Ownership error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::dwBcnErrCnt
+
+> Control Ownership error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::dwMgtErrCnt
+
+> Control Ownership error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::dwDatErrCnt
+
+> Control Ownership error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::bigtk\_mmeGoodCnt
+
+> BIGTK MME good count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::bigtk\_replayErrCnt
+
+> BIGTK Replay error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::bigtk\_micErrCnt
+
+> BIGTK MIC error count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::bigtk\_mmeNotFoundCnt
+
+> BIGTK MME not included count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_unicast\_cnt
+
+> RX unicast count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_overrun\_cnt
+
+> TX Buffer Overrun Dropped Count
+
+#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_overrun\_cnt
+
+> RX Buffer Overrun Dropped Count
+
+#### The documentation for this struct was generated from the following file:
+
+  - ncp\_cmd\_wifi.h
 
 #### 
 
@@ -13363,7 +14410,11 @@ NCP Bluetooth LE command and structure definitions.
 
 > NCP Bluetooth LE subclass type for vendor command
 
-#### \#define NCP\_CMD\_BLE\_OTHER  0x00600000
+#### \#define NCP\_CMD\_BLE\_MATTER  0x00600000
+
+> NCP Bluetooth LE subclass type for matter command
+
+#### \#define NCP\_CMD\_BLE\_OTHER  0x00700000
 
 > NCP Bluetooth LE subclass type for other command
 
@@ -13677,6 +14728,86 @@ NCP Bluetooth LE command and structure definitions.
 #### \#define NCP\_RSP\_BLE\_VENDOR\_CFG\_MULTI\_ADV  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_VENDOR | NCP\_MSG\_TYPE\_RESP | 0x00000005)
 
 > Bluetooth LE Vendor config multi-advertising command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_GET\_DEVICE\_NAME  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000001)
+
+> Bluetooth LE Matter get device name command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_GET\_DEVICE\_NAME  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000001)
+
+> Bluetooth LE Matter get device name command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_GET\_CONN\_INDEX  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000002)
+
+> Bluetooth LE Matter get connection index command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_GET\_CONN\_INDEX  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000002)
+
+> Bluetooth LE Matter get connection index command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_CONN\_REF  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000003)
+
+> Bluetooth LE Matter connection reference command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_CONN\_REF  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000003)
+
+> Bluetooth LE Matter connection reference command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_CONN\_UNREF  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000004)
+
+> Bluetooth LE Matter connection unreference command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_CONN\_UNREF  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000004)
+
+> Bluetooth LE Matter connection unreference command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_GET\_MTU  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000005)
+
+> Bluetooth LE Matter get mtu size command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_GET\_MTU  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000005)
+
+> Bluetooth LE Matter get mtu size command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_DISCONN  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000006)
+
+> Bluetooth LE Matter disconnect command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_DICONN  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000006)
+
+> Bluetooth LE Matter disconnect command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_INDICATE  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000007)
+
+> Bluetooth LE Matter send indication command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_INDICATE  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000007)
+
+> Bluetooth LE Matter send indication command response ID
+
+#### \#define NCP\_CMD\_BLE\_MATTER\_UNREGISTER  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_CMD | 0x00000008)
+
+> Bluetooth LE Matter unregister service command ID
+
+#### \#define NCP\_RSP\_BLE\_MATTER\_UNREGISTER  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_RESP | 0x00000008)
+
+> Bluetooth LE Matter unregister service command response ID
+
+#### \#define NCP\_EVENT\_BLE\_MATTER\_RX\_WRITE  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_EVENT | 0x00000001)
+
+> Bluetooth LE Matter service receive rx write event
+
+#### \#define NCP\_EVENT\_BLE\_MATTER\_CCC\_CFG  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_EVENT | 0x00000002)
+
+> Bluetooth LE Matter service ccc config event
+
+#### \#define NCP\_EVENT\_BLE\_MATTER\_IND\_CONFIRM  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_EVENT | 0x00000003)
+
+> Bluetooth LE Matter ervice indicatie confirm event
+
+#### \#define NCP\_EVENT\_BLE\_MATTER\_C3\_READ  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_MATTER | NCP\_MSG\_TYPE\_EVENT | 0x00000004)
+
+> Bluetooth LE Matter service C3 read event
 
 #### \#define NCP\_EVENT\_IUT\_READY  (NCP\_CMD\_BLE | NCP\_CMD\_BLE\_EVENT | NCP\_MSG\_TYPE\_EVENT | CORE\_EV\_IUT\_READY)
 
@@ -14539,6 +15670,10 @@ NCP Wi-Fi command/response definitions.
 
 > subclass type for http commands
 
+#### \#define NCP\_CMD\_WLAN\_INET  0x01000000
+
+> subclass type for inet commands
+
 #### \#define NCP\_CMD\_WLAN\_ASYNC\_EVENT  0x00f00000
 
 > subclass type for async events.
@@ -14750,6 +15885,54 @@ NCP Wi-Fi command/response definitions.
 #### \#define NCP\_RSP\_WLAN\_NETWORKS\_REMOVE\_ALL  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_RESP | 0x00000035)
 
 > Wi-Fi STA remove all network command response ID
+
+#### \#define NCP\_CMD\_WLAN\_GET\_PKT\_STATS  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_CMD | 0x00000036)
+
+> Wi-Fi STA get pkt stats command ID
+
+#### \#define NCP\_RSP\_WLAN\_GET\_PKT\_STATS  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_RESP | 0x00000036)
+
+> Wi-Fi STA get pkt stats command response ID
+
+#### \#define NCP\_CMD\_WLAN\_STA\_GET\_CURRENT\_RSSI  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_CMD | 0x00000037)
+
+> Wi-Fi STA get current rssi command ID
+
+#### \#define NCP\_RSP\_WLAN\_STA\_GET\_CURRENT\_RSSI  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_RESP | 0x00000037)
+
+> Wi-Fi STA get current rssi command response ID
+
+#### \#define NCP\_CMD\_WLAN\_STA\_GET\_CURRENT\_CHANNEL  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_CMD | 0x00000038)
+
+> Wi-Fi STA get current channel command ID
+
+#### \#define NCP\_RSP\_WLAN\_STA\_GET\_CURRENT\_CHANNEL  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_RESP | 0x00000038)
+
+> Wi-Fi STA get current channel command response ID
+
+#### \#define NCP\_CMD\_WLAN\_GET\_IP\_CONFIG  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_CMD | 0x00000039)
+
+> Wi-Fi STA get ip config command ID
+
+#### \#define NCP\_RSP\_WLAN\_GET\_IP\_CONFIG  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_RESP | 0x00000039)
+
+> Wi-Fi STA get ip config command response ID
+
+#### \#define NCP\_CMD\_WLAN\_STA\_GET\_NETIF\_FLAGS  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_CMD | 0x0000003a)
+
+> Wi-Fi STA get netif flags command ID
+
+#### \#define NCP\_RSP\_WLAN\_STA\_GET\_NETIF\_FLAGS  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_RESP | 0x0000003a)
+
+> Wi-Fi STA get netif flags command response ID
+
+#### \#define NCP\_CMD\_WLAN\_STA\_SET\_OKC  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_CMD | 0x0000003b)
+
+> Wi-Fi STA OKC command ID
+
+#### \#define NCP\_RSP\_WLAN\_STA\_SET\_OKC  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_STA | NCP\_MSG\_TYPE\_RESP | 0x0000003b)
+
+> Wi-Fi STA OKC command response ID
 
 #### \#define NCP\_CMD\_WLAN\_BASIC\_WLAN\_RESET  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_BASIC | NCP\_MSG\_TYPE\_CMD | 0x00000001) /\* wlan-reset \*/
 
@@ -15500,6 +16683,28 @@ NCP Wi-Fi command/response definitions.
 #### \#define HTTP\_URI\_LEN  512
 
 > NCP Wi-Fi http request
+
+#### \#define BTWT\_AGREEMENT\_MAX  5
+
+> This structure is used for broadcast various TWT config sets
+
+### Variable Documentation
+
+#### uint8\_t btwt\_id
+
+> BTWT ID
+
+#### uint16\_t bcast\_mantissa
+
+> BTWT Mantissa
+
+#### uint8\_t bcast\_exponent
+
+> BTWT Exponent
+
+#### uint8\_t nominal\_wake
+
+> Range 64-255
 
 #### 
 
@@ -19527,17 +20732,10 @@ NCP host command interfaces.
 > 
 > \-WM\_FAIL if failure.
 
-#### int wlan\_set\_btwt\_command (int *argc*, char \*\* *argv*)
+#### int wlan\_bcast\_twt\_command (int *argc*, char \*\* *argv*)
 
-> This API is used to modify and set Wi-Fi BTWT (broadcast target awake
+> This API is used to get and set Wi-Fi BTWT (broadcast target awake
 > time) config.
-
-##### Note
-
-> Implemented as global variable arrays with default config. This API
-> can get and change one parameter and it will be restored until reboot.
-> Then this config data can be sent to Wi-Fi. Refer to
-> NCP\_CMD\_BTWT\_CFG\_INFO for config parameter usage and length.
 
 ##### Parameters
 
@@ -19553,12 +20751,19 @@ NCP host command interfaces.
 <td>in</td>
 <td><em>argv</em></td>
 <td><p>Argument vector,</p>
-<p>argv[0]: wlan-set-btwt-cfg</p>
-<p>argv[1]: action in string (Required) help: show helper dump: dump parameter data currently restored set: set one parameter done: configure current data to Wi-Fi</p>
-<p>argv[2]: parameter name (Required when action is "set")</p>
-<p>argv[3]: parameter value in hexadecimal, have more argvs when value is more than one byte, like a byte array or uint16_t, uint32_t, uint16_t and uint32_t is ordered in little-endian (Required when action is "set")</p>
+<p>argv[0]: wlan-bcast-twt</p>
+<p>argv[1]: get/set (Required)</p>
+<p>argv[2]: Reserved for now, 0 (Required when action is "set")</p>
+<p>argv[3]: Reserved for now, 0</p>
+<p>argv[4]: Reserved for now, 0</p>
+<p>argv[5]: TWT Session number, range [2 - 5]</p>
+<p>argv[6]: Session 0 id, 0</p>
+<p>argv[7]: Session 0 mantissa</p>
+<p>argv[8]: Session 0 exponent</p>
+<p>argv[9]: Session 0 nominal wake</p>
+<p>argv[10]: Session 1 id, 1</p>
 <p>...</p>
-<p>argv[x]: parameter value in hexadecimal, uint16_t and uint32_t is ordered in little-endian</p></td>
+<p>argv[25]: Session 4 nominal wake, if there are 5 sessions</p></td>
 </tr>
 </tbody>
 </table>
@@ -20092,6 +21297,59 @@ NCP host command interfaces.
 
 > WM\_SUCCESS.
 
+#### int wlan\_set\_okc\_command (int *argc*, char \*\* *argv*)
+
+> This API is used to enable/disable the Opportunistic Key Caching
+> (OKC).
+
+##### Parameters
+
+<table>
+<tbody>
+<tr class="odd">
+<td>in</td>
+<td><em>argc</em></td>
+<td><p>Argument count, the number of strings pointed to by argv,</p>
+<p>argc should be 2.</p></td>
+</tr>
+<tr class="even">
+<td>in</td>
+<td><em>argv</em></td>
+<td><p>Argument vector,</p>
+<p>argv[0]: wlan-info</p>
+<p>argv[1]: enable/disable OKC</p>
+<p>0 – Disable OKC (default)</p>
+<p>1 – Enable OKC</p></td>
+</tr>
+</tbody>
+</table>
+
+##### Returns
+
+> TRUE if success.
+> 
+> FALSE if failure.
+
+#### int wlan\_process\_okc\_response (uint8\_t \* *res*)
+
+> This API is used to process the response for the OKC command.
+
+##### Parameters
+
+<table>
+<tbody>
+<tr class="odd">
+<td>in</td>
+<td><em>res</em></td>
+<td>A pointer to MCU_NCPCmd_DS_COMMAND response.</td>
+</tr>
+</tbody>
+</table>
+
+##### Returns
+
+> WM\_SUCCESS.
+
 #### int wlan\_multi\_mef\_command (int *argc*, char \*\* *argv*)
 
 > This API is used to set/delete the MEF (memory efficient filtering)
@@ -20215,78 +21473,6 @@ NCP host command interfaces.
 
 > This API is used to process the response for the configure Wi-Fi
 > wakeup condition command.
-
-##### Parameters
-
-<table>
-<tbody>
-<tr class="odd">
-<td>in</td>
-<td><em>res</em></td>
-<td>A pointer to MCU_NCPCmd_DS_COMMAND response.</td>
-</tr>
-</tbody>
-</table>
-
-##### Returns
-
-> WM\_SUCCESS.
-
-#### int wlan\_suspend\_command (int *argc*, char \*\* *argv*)
-
-> This API is used to request NCP device enter specific low power mode.
-
-##### Note
-
-> Should be used after API ncp\_mcu\_sleep\_command with manual mode.
-
-##### Parameters
-
-<table>
-<tbody>
-<tr class="odd">
-<td>in</td>
-<td><em>argc</em></td>
-<td>Argument count, the number of strings pointed to by argv, argc should be 2.</td>
-</tr>
-<tr class="even">
-<td>in</td>
-<td><em>argv</em></td>
-<td><p>Argument vector.</p>
-<p>argv[0]: wlan-suspend</p>
-<p>argv[1]: String value of low power mode</p>
-<p>1 – PM1</p>
-<p>2 – PM2</p>
-<p>3 – PM3</p></td>
-</tr>
-</tbody>
-</table>
-
-##### Note
-
-> The allowed low power mode is controlled by configuration of
-> ncp\_wake\_cfg\_command.
-> 
-> For INTF wake mode, the allowed \<power\_mode\> are PM1 and PM2.
-> 
-> For GPIO wake mode and RDRW612 as NCP device, the allowed
-> \<power\_mode\> are PM1, PM2 and PM3.
-> 
-> For GPIO wake mode and FRDMRW612 as NCP device, the allowed
-> \<power\_mode\> are PM1 and PM2.
-> 
-> For WIFI-NB wake mode and FRDRW612 as NCP device, the allowed
-> \<power\_mode\> are PM1, PM2 and PM3.
-
-##### Returns
-
-> WM\_SUCCESS if the call was successful.
-> 
-> \-WM\_FAIL if failed.
-
-#### int wlan\_process\_suspend\_response (uint8\_t \* *res*)
-
-> This API is used to process suspend response.
 
 ##### Parameters
 
@@ -22263,6 +23449,10 @@ NCP host command interfaces.
 
 > MAC address length.
 
+#### \#define MAX\_IPV6\_ADDRESSES  3
+
+> The maximum number of IPV6 addresses that will be stored
+
 #### \#define WLAN\_NETWORK\_NAME\_MAX\_LENGTH  32
 
 > Maximum length of network name.
@@ -22280,6 +23470,10 @@ NCP host command interfaces.
 #### \#define MAX\_NUM\_CLIENTS  16
 
 > Maximum number of STAs are connected to the UAP.
+
+#### \#define NCP\_MAX\_AP\_ENTRIES  10
+
+> Maximum number of STAs can be saved in the scan table.
 
 #### \#define CSI\_FILTER\_MAX  16
 
@@ -22407,6 +23601,14 @@ NCP host command interfaces.
 <tr class="odd">
 <td>WLAN_SECURITY_EAP_PEAP_MSCHAPV2</td>
 <td>The network uses WPA2 Enterprise EAP-PEAP-MSCHAPV2 security The anonymous identity, identity and password fields in wlan_network structure are used</td>
+</tr>
+<tr class="even">
+<td>WLAN_SECURITY_EAP_PEAP_TLS</td>
+<td>The network uses WPA2 enterprise EAP-PEAP-TLS security The anonymous identity, identity and password fields in wlan_network structure are used</td>
+</tr>
+<tr class="odd">
+<td>WLAN_SECURITY_DPP</td>
+<td>The network uses DPP (device provisioning protocol) security with NAK (net access key)</td>
 </tr>
 <tr class="even">
 <td>WLAN_SECURITY_WILDCARD</td>
