@@ -89,6 +89,11 @@ lwip_iperf_bm:
     - -mdk@release
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1180@cm7: []
     frdmmcxe247: []
     frdmmcxn947@cm33_core0: []
