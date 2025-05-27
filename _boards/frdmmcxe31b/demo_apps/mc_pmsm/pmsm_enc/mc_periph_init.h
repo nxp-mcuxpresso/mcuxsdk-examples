@@ -32,7 +32,7 @@
 //#include "fsl_device_registers.h"
 //#include "mcdrv_pwm3ph_epwm.h"
 //#include "mcdrv_adc_mcxa20.h"
-//#include "mcdrv_enc_eqd.h"
+#include "mcdrv_enc_emios.h"
 //#include "fsl_clock.h"
 //#include "fsl_lpcmp.h"
 //#include "fsl_inputmux.h"
@@ -94,7 +94,7 @@ typedef struct _clock_setup
 #define M1_PWM_DEADTIME_LENGTH_DTVAL    (67U)
 
 /* Over-current Fault enable */
-#define M1_FAULT_ENABLE         (1U)
+#define M1_FAULT_ENABLE         (0U)
 /* Over-current Fault detection number */
 #define M1_FAULT_NUM            (0U)
 /* Over-current CMP input channel */   
@@ -124,7 +124,7 @@ typedef struct _clock_setup
 /******************************************************************************
  * Define motor ADC control functions
  ******************************************************************************/
-#define M1_MCDRV_ADC_GET(par) MCDRV_CurrAndVoltDcBusGet(par)
+#define M1_MCDRV_CURR_3PH_VOLT_DCB_GET(par) MCDRV_CurrAndVoltDcBusGet(par)
 #define M1_MCDRV_CURR_3PH_CHAN_ASSIGN(par)
 #define M1_MCDRV_CURR_3PH_CALIB_INIT(par) (MCDRV_Curr3Ph2ShCalibInit(par))
 #define M1_MCDRV_CURR_3PH_CALIB(par) (MCDRV_Curr3Ph2ShCalib(par))
@@ -137,23 +137,31 @@ typedef struct _clock_setup
 #define M1_MCDRV_PWM3PH_SET(par) (MCDRV_eMIOS_PhSet(par))
 #define M1_MCDRV_PWM3PH_EN(void) (MCDRV_LCU_PhOutEn())
 #define M1_MCDRV_PWM3PH_DIS(void) (MCDRV_LCU_PhOutDis())
-#define M1_MCDRV_PWM3PH_FLT_GET(par) //(MCDRV_eFlexPwm3PhFltGet(par))
+#define M1_MCDRV_PWM3PH_FLT_GET(par) (MCDRV_eMIOS_PhFltGet(par))
 
 /******************************************************************************
  * Define position and speed sensor - quadrature encoder for motor 1
  ******************************************************************************/
-#define M1_MCDRV_QD_GET(par) //(MCDRV_QdEncGet(par))
-#define M1_MCDRV_QD_SET_DIRECTION(par) //(MCDRV_QdEncSetDirection(par))
-#define M1_MCDRV_QD_SET_PULSES(par) //(MCDRV_QdEncSetPulses(par))
-#define M1_MCDRV_QD_CLEAR(par) //(MCDRV_QdEncClear(par))
+#define M1_MCDRV_ENC_GET(par) //(MCDRV_QdEncGet(par))
+#define M1_MCDRV_ENC_SET_DIRECTION(par) //(MCDRV_QdEncSetDirection(par))
+#define M1_MCDRV_ENC_SET_PULSES(par) //(MCDRV_QdEncSetPulses(par))
+#define M1_MCDRV_ENC_CLEAR(par) //(MCDRV_QdEncClear(par))
  
+/* SENSORS constants moved from MCAT calculations */
+#define M1_POSPE_ENC_PULSES (1000)
+#define M1_POSPE_ENC_DIRECTION (0)
+#define M1_POSPE_ENC_N_MIN (0.0F)
+#define M1_POSPE_MECH_POS_GAIN ACC32(16.384)
+#define M1_POSPE_TO_KP_GAIN (1256.64F)
+#define M1_POSPE_TO_KI_GAIN (24.6740F)
+#define M1_POSPE_TO_THETA_GAIN (0.0000198944F)
 /******************************************************************************
  * Global variable definitions
  ******************************************************************************/
         
 extern mcdrv_pwm3ph_emios_t g_sM1Pwm3ph;
-extern mcdrv_adc_t g_sM1AdcSensor;
-//extern mcdrv_eqd_enc_t g_sM1Enc;
+extern mcdrv_adc_t g_sM1Curr3phDcBus;
+extern mcdrv_qd_enc_t g_sM1Enc;
 extern clock_setup_t g_sClockSetup;
 
 /*******************************************************************************

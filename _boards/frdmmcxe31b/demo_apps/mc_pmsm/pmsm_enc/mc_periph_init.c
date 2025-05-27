@@ -20,7 +20,7 @@ static void InitADC(void);
 static void InitBCTU(void);
 static void InitLCU(void);
 static void InitEMIOS(void);
-static void InitPWM(void);
+//static void InitPWM(void);
 static void InitTRGMUX(void);
 static void InitClock(void);
 static void InitPIT(void);
@@ -43,10 +43,10 @@ static void InitQD(void);
 mcdrv_pwm3ph_emios_t g_sM1Pwm3ph;
 
 /* Structure for current and voltage measurement*/
-mcdrv_adc_t g_sM1AdcSensor;
+mcdrv_adc_t g_sM1Curr3phDcBus;
 
-///* Structure for Encoder driver */
-//mcdrv_eqd_enc_t g_sM1Enc;
+/* Structure for Encoder driver */
+mcdrv_qd_enc_t g_sM1Enc;
 
 /* Clock setup structure */
 clock_setup_t g_sClockSetup;
@@ -91,9 +91,9 @@ void MCDRV_Init_M1(void)
     /* Slow loop timer init */
     InitPIT();
 	
-//    /* Qudrature decoder peripheral init */
-//    InitQD();
-//    
+    /* Qudrature decoder peripheral init */
+    InitQD();
+    
 //#if M1_FAULT_ENABLE    
 //    /* Comparator CMP */
 //    InitCMP();   
@@ -111,7 +111,7 @@ void MCDRV_Init_M1(void)
  */
 void InitClock(void)
 {
-    uint32_t ui32CyclesNumber = 0U;
+//    uint32_t ui32CyclesNumber = 0U;
    
     /* The following peripherals use SYSTEM_CLK as APB/IPS clock: FlexPWM0/1, ADC0~3 */
     g_sClockSetup.ui32FastPeripheralClock = CLOCK_GetFreq(kCLOCK_CoreSysClk);
@@ -462,7 +462,7 @@ static void InitADC(void)
 //    NVIC_EnableIRQ(ADC1_IRQn);  
 //      
 //    /* ADC0 base address */
-//    g_sM1AdcSensor.pToAdcBase = ADC0;
+//    g_sM1Curr3phDcBus.pToAdcBase = ADC0;
 
 }
 
@@ -547,17 +547,17 @@ static void InitQD(void)
 //    CLOCK_EnableClock(kCLOCK_GateQDC0);    
 //    RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
 //    
-//    /* Pass initialization data into encoder driver structure */
-//    /* encoder position and speed measurement */
-//    g_sM1Enc.pui32QdBase   = (EQDC_Type *)EQDC0;
-//    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
-//    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
-//    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
-//    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
-//    g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
-//    g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
-//    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
-//    g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
+    /* Pass initialization data into encoder driver structure */
+    /* encoder position and speed measurement */
+//    g_sM1Enc.pui32QdBase   = (EQDC_Type *)QDC0;
+    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
+    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
+    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
+    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
+    g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
+    g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
+    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
+    g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
 //    
 //    /* Quadrature pulses per one revolution */
 //    M1_MCDRV_QD_SET_PULSES(&g_sM1Enc); 
