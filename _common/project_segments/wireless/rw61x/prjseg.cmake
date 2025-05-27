@@ -26,6 +26,8 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.lowpower)
         INCLUDES examples/_common/project_segments/wireless/rw61x/low_power
 
     )
+    # Needed to restore UART after power down mode
+    mcux_add_macro(HAL_UART_ADAPTER_LOWPOWER=1)
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.app_services)
