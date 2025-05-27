@@ -82,7 +82,7 @@
 #define APP_CAMERA_HEIGHT  720
 #define APP_CAMERA_FORMAT  MPP_PIXEL_YUV1P444
 /* camera parameters (other supported values) */
-#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRA
+#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRX
 
 /* display parameters */
 #define APP_DISPLAY_NAME   "Lcdifv2Rk055"

@@ -1,4 +1,4 @@
-/* Copyright 2024 NXP
+/* Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -105,8 +105,8 @@
 #define APP_GFX_BACKEND_NAME "gfx_GPU"
 
 /* Tensorflow lite Model data */
-#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_tflite_npu64.h"
-#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_tflite_npu64_info.h"
+#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_npu64_tflite.h"
+#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_npu64_tflite_info.h"
 
 /* source image */
 #define APP_SRC_IMAGE_NAME "stopwatch128_128_rgb.h"
@@ -114,11 +114,11 @@
 
 /* Tensorflow lite Model data */
 #ifdef APP_USE_NEUTRON64_MODEL
-#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_tflite_npu64.h"
-#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_tflite_npu64_info.h"
+#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_npu64_tflite.h"
+#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_npu64_tflite_info.h"
 #elif defined(APP_USE_NEUTRON16_MODEL)
-#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_tflite_npu16.h"
-#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_tflite_npu16_info.h"
+#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_npu16_tflite.h"
+#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_npu16_tflite_info.h"
 #else
 #define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_tflite.h"
 #define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_tflite_info.h"

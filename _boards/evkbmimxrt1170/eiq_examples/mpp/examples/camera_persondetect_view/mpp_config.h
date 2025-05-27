@@ -100,7 +100,7 @@
 #define APP_CAMERA_HEIGHT 720
 #define APP_CAMERA_FORMAT MPP_PIXEL_YUV1P444
 /* camera params (other supported values) */
-#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRA
+#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRX
 
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */

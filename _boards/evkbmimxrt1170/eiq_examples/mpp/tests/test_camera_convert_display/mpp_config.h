@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 NXP
+ * Copyright 2021-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -26,7 +26,7 @@
 #define HAL_ENABLE_2D_IMGPROC
 #define HAL_ENABLE_GFX_DEV_Pxp                1
 #define HAL_ENABLE_GFX_DEV_Cpu                0
-#define HAL_ENABLE_GFX_DEV_GPU                0
+#define HAL_ENABLE_GFX_DEV_GPU                1
 
 /**
  * This is the inference HAL configuration
@@ -45,6 +45,15 @@
 /**
  * This is HAL debug configuration
  */
+
+/**
+ * VGLite heap size for MIMXRT1170 CM7.
+ */
+#define HAL_VGLITE_HEAP_SZ                    2097152 /* 2 MB */
+#define HAL_VGLITE_BUFFER_ALIGN               64
+
+/* GPU chip ID for EVKMIMXRT1170 board.*/
+#define HAL_GPU_CHIPID                        0x355
 
 /* Log level configuration
  * ERR:   0
@@ -74,7 +83,7 @@
 #define APP_CAMERA_HEIGHT  720
 #define APP_CAMERA_FORMAT  MPP_PIXEL_YUV1P444
 /* camera parameters (other supported values) */
-#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRA
+#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRX
 
 /* display parameters */
 #define APP_DISPLAY_NAME   "Lcdifv2Rk055"

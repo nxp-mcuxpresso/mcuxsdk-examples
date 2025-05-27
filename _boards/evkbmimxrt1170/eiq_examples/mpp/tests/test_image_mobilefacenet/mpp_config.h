@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -63,6 +63,6 @@
 #define APP_DATABASE_INFOS "mobilefacenet_database_infos.h"
 
 /* define a static image that will be included if needed */
-#define APP_STATIC_IMAGE_NAME "thispersondoesnotexist_4_96_rgb.h"
+#define APP_STATIC_IMAGE_NAME "thispersondoesnotexist_4_96_bgr.h"
 
 #endif /* _MPP_CONFIG_H */

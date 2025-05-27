@@ -1,4 +1,4 @@
-/* Copyright 2024 NXP
+/* Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -110,6 +110,6 @@
 #define APP_GFX_BACKEND_NAME "gfx_GPU"
 
 /* Tensorflow lite Model data */
-#define APP_TFLITE_MODEL_NAME "models/mobilenet_v1_0.25_128_quant_int8/mobilenetv1_model_data_tflite_npu64.h"
+#define APP_TFLITE_MODEL_NAME "models/mobilenet_v1_0.25_128_quant_int8/mobilenetv1_model_data_npu64_tflite.h"
 
 #endif /* _MPP_CONFIG_H */

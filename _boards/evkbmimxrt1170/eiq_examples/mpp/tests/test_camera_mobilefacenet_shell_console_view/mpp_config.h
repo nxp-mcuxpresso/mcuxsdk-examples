@@ -39,8 +39,8 @@
 /* minimum required arena size for mobilefacenet */
 #define HAL_TFLM_TENSOR_ARENA_SIZE_KB            686
 
-/* maximum allowed number of people in the database */
-#define MAX_PEOPLE								 1000
+/* maximum allowed number of faces in the database */
+#define MAX_FACES								 1000
 
 /* maximum string size for names */
 #define MAX_STR_SIZE							 32

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -73,7 +73,7 @@
 #define APP_USE_NEUTRON64_MODEL
 
 /* define a Tensorflow lite model data input */
-#define APP_TFLITE_PERSONDETECT_DATA "models/persondetect/persondetect_220x220_npu64_tflite.h"
+#define APP_TFLITE_PERSONDETECT_DATA "models/persondetect/persondetect_220_220_npu64_tflite.h"
 #define APP_TFLITE_PERSONDETECT_INFO "models/persondetect/persondetect_220_220_npu64_tflite_info.h"
 #define APP_TFLITE_ULTRAFACE_DATA "models/ultraface_slim_quant_int8/ultraface_slim_ultraslim_npu64_tflite.h"
 #define APP_TFLITE_ULTRAFACE_INFO "models/ultraface_slim_quant_int8/ultraface_slim_ultraslim_npu64_tflite_info.h"

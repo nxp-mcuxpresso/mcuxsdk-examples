@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2025 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -22,29 +22,16 @@
 #define HAL_ENABLE_CAMERA
 #define HAL_ENABLE_CAMERA_DEV_MipiOv5640      1
 #define HAL_ENABLE_DISPLAY
-#define HAL_ENABLE_DISPLAY_DEV_Lcdifv2Rk055   1
+#define HAL_ENABLE_DISPLAY_DEV_Lvgl           1
 #define HAL_ENABLE_2D_IMGPROC
-#define HAL_ENABLE_GFX_DEV_Pxp                1
+#define HAL_ENABLE_GFX_DEV_Pxp                0
 #define HAL_ENABLE_GFX_DEV_Cpu                0
-#define HAL_ENABLE_GFX_DEV_GPU                0
+#define HAL_ENABLE_GFX_DEV_GPU                1
 
 /**
  * This is the inference HAL configuration
  */
-
-/* enable TFlite by default */
-#define HAL_ENABLE_INFERENCE_TFLITE           1
-
-/* The size of Tensor Arena buffer for TensorFlowLite-Micro */
-/* minimum required arena size for MobileNetv1 */
-#define HAL_TFLM_TENSOR_ARENA_SIZE_KB         512
-
-/**
- * This is the PXP HAL configuration
- */
-
-/* Workaround for the PXP bug where BGR888 is output instead of RGB888 [MPP-97] */
-#define HAL_PXP_WORKAROUND_OUT_RGB            1
+#define HAL_ENABLE_INFERENCE_TFLITE           0
 
 /**
  * This is the display HAL configuration
@@ -53,6 +40,18 @@
 /* The display max byte per pixel */
 #define HAL_DISPLAY_MAX_BPP                   2
 
+/**
+ * This is HAL debug configuration
+ */
+
+/**
+ * VGLite heap size for MIMXRT1170 CM7.
+ */
+#define HAL_VGLITE_HEAP_SZ                    2097152 /* 2 MB */
+#define HAL_VGLITE_BUFFER_ALIGN               64
+
+/* GPU chip ID for EVKMIMXRT1170 board.*/
+#define HAL_GPU_CHIPID                        0x355
 
 /* Log level configuration
  * ERR:   0
@@ -80,10 +79,15 @@
 #define APP_CAMERA_NAME    "MipiOv5640"
 #define APP_CAMERA_WIDTH   1280
 #define APP_CAMERA_HEIGHT  720
-#define APP_CAMERA_FORMAT  MPP_PIXEL_YUV1P444
+#define APP_CAMERA_FORMAT MPP_PIXEL_BGRX
+/* camera alternate parameters (not supported by VGlite on rt1170) */
+#define APP_CAMERA_FORMAT1  MPP_PIXEL_YUV1P444
+
+/* select GPU as gfx backend, leave PXP for LVGL */
+#define APP_GFX_BACKEND_NAME "gfx_GPU"
 
 /* display parameters */
-#define APP_DISPLAY_NAME   "Lcdifv2Rk055"
+#define APP_DISPLAY_NAME   "Lvgl"
 #define APP_DISPLAY_WIDTH  720
 #define APP_DISPLAY_HEIGHT 1280
 #define APP_DISPLAY_FORMAT MPP_PIXEL_RGB565
@@ -92,17 +96,9 @@
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
 
-
-/* Tensorflow lite Model data */
-#ifdef APP_USE_NEUTRON64_MODEL
-#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_npu64_tflite.h"
-#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_npu64_tflite_info.h"
-#elif defined(APP_USE_NEUTRON16_MODEL)
-#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_npu16_tflite.h"
-#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_npu16_tflite_info.h"
-#else
-#define APP_TFLITE_MOBILENET_DATA "mobilenetv1_model_data_tflite.h"
-#define APP_TFLITE_MOBILENET_INFO "mobilenetv1_model_data_tflite_info.h"
-#endif  // APP_USE_NEUTRON16_MODEL
+/* enable checksum computation on display framebuffer [TESTS ONLY] */
+#ifndef ENABLE_FB_CHEKSUM
+#define ENABLE_FB_CHEKSUM 0
+#endif
 
 #endif /* _MPP_CONFIG_H */

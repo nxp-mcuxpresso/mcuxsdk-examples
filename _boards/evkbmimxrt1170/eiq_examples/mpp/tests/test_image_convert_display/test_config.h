@@ -21,6 +21,7 @@
 #define IMG_stopwatch168_208_rgb565  4
 #define IMG_stopwatch168_208_uyvy422 5
 #define IMG_stopwatch168_208_vyuy422 6
+#define IMG_stopwatch168_208_gray    7
 
 /* Set to the image type used for testing. */
 #ifndef IMAGE_TYPE
@@ -191,6 +192,30 @@
 #include "images/skigirl_COCO_320_256_rgb565.h"
 #define IMAGE_NAME "skigirl_COCO_320_256_rgb565.h"
 #define EXPECTED_CHECKSUM 0x0
+#elif (APP_CONFIG==40)
+#include "images/stopwatch168_208_gray.h"
+#define IMAGE_NAME "stopwatch168_208_gray.h"
+#define EXPECTED_CHECKSUM 0x0
+#elif (APP_CONFIG==41)
+#include "images/stopwatch168_208_gray.h"
+#define IMAGE_NAME "stopwatch168_208_gray.h"
+#define EXPECTED_CHECKSUM 0xccad358b
+#elif (APP_CONFIG==42)
+#include "images/stopwatch168_208_gray.h"
+#define IMAGE_NAME "stopwatch168_208_gray.h"
+#define EXPECTED_CHECKSUM 0x7b4a9e63
+#elif (APP_CONFIG==43)
+#include "images/stopwatch168_208_gray.h"
+#define IMAGE_NAME "stopwatch168_208_gray.h"
+#define EXPECTED_CHECKSUM 0xff3077b9
+#elif (APP_CONFIG==44)
+#include "images/stopwatch168_208_gray.h"
+#define IMAGE_NAME "stopwatch168_208_gray.h"
+#define EXPECTED_CHECKSUM 0x55b6e0cd
+#elif (APP_CONFIG==45)
+#include "images/stopwatch168_208_gray.h"
+#define IMAGE_NAME "stopwatch168_208_gray.h"
+#define EXPECTED_CHECKSUM 0x47a61e63
 #else
 #pragma message "configuration APP_CONFIG value is not supported by test"
 #endif

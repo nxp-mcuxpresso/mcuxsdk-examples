@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 NXP
+ * Copyright 2021-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -74,7 +74,7 @@
 #define APP_CAMERA_HEIGHT  720
 #define APP_CAMERA_FORMAT  MPP_PIXEL_YUV1P444
 /* camera parameters (other supported values) */
-#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRA
+#define APP_CAMERA_FORMAT1 MPP_PIXEL_BGRX
 
 /* display parameters */
 #define APP_DISPLAY_NAME   "Lcdifv2Rk055"
