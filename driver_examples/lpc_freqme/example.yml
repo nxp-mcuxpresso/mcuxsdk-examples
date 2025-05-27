@@ -6,7 +6,7 @@ freqme_interrupt:
     project-root-path: boards/${board}/driver_examples/freqme/${multicore_foldername}
     document:
       name: freqme_interrupt${core_id_suffix_name}
-      category: driver_examples/freqme/
+      category: driver_examples/freqme
       brief: The freqme_interrupt is a demonstration program of the SDK LPC_FREQME
         driver's features. The example demostrate the usage of frequency measurement
         operate mode and pulse width measurement operate mode.

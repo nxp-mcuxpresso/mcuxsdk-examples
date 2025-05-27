@@ -6,7 +6,7 @@ rtwdog:
     project-root-path: boards/${board}/driver_examples/rtwdog/${multicore_foldername}
     document:
       name: rtwdog${core_id_suffix_name}
-      category: driver_examples/rtwdog/
+      category: driver_examples/rtwdog
       brief: The RTWDOG Example project is to demonstrate usage of the KSDK rtwdog
         driver.In this example, fast testing is first implemented to test the rtwdog.After
         this, refreshing the watchdog in None-window mode and window mode is executed.Note

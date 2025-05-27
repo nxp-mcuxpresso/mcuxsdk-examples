@@ -6,7 +6,7 @@ rit_example:
     project-root-path: boards/${board}/driver_examples/rit/${multicore_foldername}
     document:
       name: rit_example${core_id_suffix_name}
-      category: driver_examples/rit/
+      category: driver_examples/rit
       brief: The RIT project is a simple demonstration program of the SDK RIT driver.
         It sets up the RIThardware block to trigger a periodic interrupt at 1 second
         period interval to toggel a specifiedLED on board.

@@ -6,7 +6,7 @@ aoi_input_mux:
     project-root-path: boards/${board}/driver_examples/aoi/input_mux/${multicore_foldername}
     document:
       name: aoi_input_mux${core_id_suffix_name}
-      category: driver_examples/aoi/input_mux
+      category: driver_examples/aoi
       brief: The AOI Example shows the simplest way to use AOI driver
       example_readme:
       - examples/driver_examples/aoi/input_mux/readme.md

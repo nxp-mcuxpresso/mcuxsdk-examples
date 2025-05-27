@@ -6,7 +6,7 @@ flash_component_nand_semc:
     project-root-path: boards/${board}/component_examples/flash_component/semc_nand/${multicore_foldername}
     document:
       name: flash_component_nand_semc${core_id_suffix_name}
-      category: component_examples/flash_component/semc_nand/
+      category: component_examples/flash_component/semc_nand
       brief: nand flash demo shows the use of nand flash component to erase, program,
         and read anexternal nand flash device.
       example_readme:

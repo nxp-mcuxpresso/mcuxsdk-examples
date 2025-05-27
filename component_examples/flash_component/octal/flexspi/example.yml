@@ -6,7 +6,7 @@ flash_component_octal_flexspi:
     project-root-path: boards/${board}/component_examples/flash_component/flexspi_octal/${multicore_foldername}
     document:
       name: flash_component_octal_flexspi${core_id_suffix_name}
-      category: component_examples/flash_component/flexspi_octal/
+      category: component_examples/flash_component/flexspi_octal
       brief: octal flash demo shows the use of nor flash component to erase, program,
         and read an external serial nor flash device.
       example_readme:

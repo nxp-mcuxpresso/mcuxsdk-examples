@@ -6,7 +6,7 @@ aoi_io_and:
     project-root-path: boards/${board}/driver_examples/aoi/io_and/${multicore_foldername}
     document:
       name: aoi_io_and${core_id_suffix_name}
-      category: driver_examples/aoi/io_and
+      category: driver_examples/aoi
       brief: This example demos the AOI uses two IO, the AOI_OUT = (IO0 & IO1).
       example_readme:
       - examples/driver_examples/aoi/io_and/readme.md

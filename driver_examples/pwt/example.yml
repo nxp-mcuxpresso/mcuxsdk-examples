@@ -6,7 +6,7 @@ pwt_example:
     project-root-path: boards/${board}/driver_examples/pwt/${multicore_foldername}
     document:
       name: pwt_example${core_id_suffix_name}
-      category: driver_examples/pwt/
+      category: driver_examples/pwt
       brief: The PWT project is a simple demonstration program of the SDK PWT driver.
         It sets up the PWThardware block to edge detection, capture control part and
         detects measurement trigger edges andcontrols when and which pulse width register(s)

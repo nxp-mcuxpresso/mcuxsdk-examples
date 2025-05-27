@@ -6,7 +6,7 @@ lpit_adc:
     project-root-path: boards/${board}/driver_examples/lpadc/lpit_adc/${multicore_foldername}
     document:
       name: lpit_adc${core_id_suffix_name}
-      category: driver_examples/lpadc/lpit_adc
+      category: driver_examples/lpadc
       brief: The lpit_adc example shows how to use LPIT to generate ADC triggers.
         On top of the basic counter, to use the ADC trigger, simply enable the "milestone"
         of the ADC trigger and set it with a user-defined value. When the LPIT counter

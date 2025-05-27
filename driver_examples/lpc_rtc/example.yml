@@ -6,7 +6,7 @@ rtc_example:
     project-root-path: boards/${board}/driver_examples/rtc/${multicore_foldername}
     document:
       name: rtc_example${core_id_suffix_name}
-      category: driver_examples/rtc/
+      category: driver_examples/rtc
       brief: The RTC project is a simple demonstration program of the SDK RTC driver.
         It sets up the RTChardware block to trigger an alarm after a user specified
         time period. The test will set the currentdate and time to a predefined value.

@@ -6,7 +6,7 @@ mmccard_boot_non_blocking:
     project-root-path: boards/${board}/driver_examples/mmccard/boot/non_blocking/${multicore_foldername}
     document:
       name: mmccard_boot_non_blocking${core_id_suffix_name}
-      category: driver_examples/mmccard/boot/non_blocking/
+      category: driver_examples/mmccard/boot/non_blocking
       brief: 'The MMCCARD Boot project is a demonstration program that uses the SDK
         software.The purpose of this example is to show how to use MMCCARD driver
         andshow how to use interrupt/polling based transfer API in SDK software driver

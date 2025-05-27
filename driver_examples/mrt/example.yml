@@ -6,7 +6,7 @@ mrt_example:
     project-root-path: boards/${board}/driver_examples/mrt/${multicore_foldername}
     document:
       name: mrt_example${core_id_suffix_name}
-      category: driver_examples/mrt/
+      category: driver_examples/mrt
       brief: The MRT project is a simple demonstration program of the SDK MRT driver.
         It sets up the MRThardware block to trigger a periodic interrupt after every
         250 milliseconds. When the PIT interrupt is triggereda message a printed on

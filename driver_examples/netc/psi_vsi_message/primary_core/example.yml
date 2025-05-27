@@ -7,7 +7,7 @@ netc_psi_vsi_message_primary_core:
     project-root-path: boards/${board}/driver_examples/netc/psi_vsi_message/${multicore_foldername}
     document:
       name: netc_psi_vsi_message_primary_core${core_id_suffix_name}
-      category: driver_examples/
+      category: driver_examples/netc
       brief: The Multicore NETC PSI-VSI demo application demonstrates how to set up
         projects for individual cores on a multicore system. In this demo, the primary
         core use NETC PSI to send/receive frames. It also releases the secondary core

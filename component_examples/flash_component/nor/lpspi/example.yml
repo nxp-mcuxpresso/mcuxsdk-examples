@@ -6,7 +6,7 @@ flash_component_nor_lpspi:
     project-root-path: boards/${board}/component_examples/flash_component/lpspi_nor/${multicore_foldername}
     document:
       name: flash_component_nor_lpspi${core_id_suffix_name}
-      category: component_examples/flash_component/lpspi_nor/
+      category: component_examples/flash_component/lpspi_nor
       brief: nor flash demo shows the use of nor flash component to erase, program,
         and read an external nor flash device.
       example_readme:

@@ -6,7 +6,7 @@ plu_combination:
     project-root-path: boards/${board}/driver_examples/plu/combination/${multicore_foldername}
     document:
       name: plu_combination${core_id_suffix_name}
-      category: driver_examples/plu/
+      category: driver_examples/plu
       brief: The PLU combination project is a simple demonstration program of the
         SDK PLU driver. In this example, a number of GPIO pins are connected to PLU
         inputs and the LED is used to monitor the PLU outputs to demonstrate the configuration

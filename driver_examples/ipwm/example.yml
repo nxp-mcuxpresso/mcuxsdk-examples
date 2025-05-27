@@ -6,7 +6,7 @@ ipwm:
     project-root-path: boards/${board}/driver_examples/pwm/${multicore_foldername}
     document:
       name: ipwm${core_id_suffix_name}
-      category: driver_examples/pwm/
+      category: driver_examples/pwm
       brief: The PWM project is a simple demonstration program of the SDK PWM driver.
         It sets up the PWM hardwareblock to output PWM signals on one PWM channel.
         The example also shows PWM duty cycle is increase or decrease.The FIFO empty

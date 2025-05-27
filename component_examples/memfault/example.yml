@@ -5,7 +5,7 @@ memfault:
     project-root-path: boards/${board}/component_examples/memfault/
     document:
       name: memfault${core_id_suffix_name}
-      category: component_examples/memfault/
+      category: component_examples/memfault
       brief: The example demostrate usage of memfault component.
       example_readme:
       - examples/component_examples/memfault/readme.md

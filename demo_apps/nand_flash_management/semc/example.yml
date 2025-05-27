@@ -6,7 +6,7 @@ nand_flash_management:
     project-root-path: boards/${board}/demo_apps/nand_flash_management/semc/${multicore_foldername}
     document:
       name: nand_flash_management${core_id_suffix_name}
-      category: demo_apps/nand_flash_management/semc/
+      category: demo_apps/nand_flash_management/semc
       brief: nand flash management
       example_readme:
       - examples/demo_apps/nand_flash_management/semc/readme.md

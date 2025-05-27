@@ -6,7 +6,7 @@ mscan_interrupt_transfer:
     project-root-path: boards/${board}/driver_examples/mscan/interrupt_transfer/${multicore_foldername}
     document:
       name: mscan_interrupt_transfer${core_id_suffix_name}
-      category: driver_examples/mscan/interrupt_transfer/
+      category: driver_examples/mscan
       brief: The mscan_interrupt_transfer example shows how to use MSCAN driver in
         none-blocking interrupt way. In this example, 2 boards are connected through
         CAN bus. Endpoint A(board A) send a CAN Message to Endpoint B(board B) when

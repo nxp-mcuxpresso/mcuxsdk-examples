@@ -6,7 +6,7 @@ wkt_example:
     project-root-path: boards/${board}/driver_examples/wkt/${multicore_foldername}
     document:
       name: wkt_example${core_id_suffix_name}
-      category: driver_examples/wkt/
+      category: driver_examples/wkt
       brief: The WKT project is a simple demonstration program of the SDK WKT driver.
         It sets up the WKT hardware block to trigger a periodic interrupt after loading
         a counter value and counting down to 0. When the WKT interrupt is triggered
