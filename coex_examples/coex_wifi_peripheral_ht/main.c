@@ -97,8 +97,9 @@
 #endif /* APP_LOWPOWER_ENABLED */
 
 #include <peripheral_ht.h>
-#include "coex_pm.h"
+#include "coex_lpm.h"
 #include "coex_cli.h"
+#include "host_sleep.h"
 
 /*******************************************************************************
  * Definitions
@@ -144,6 +145,10 @@ void task_main(void *param)
     PRINTF("     Initialize Nighthwak-2LL (IW610) M2 Module\r\n");
 #endif
     printSeparator();
+
+#if CONFIG_POWER_MANAGER
+    coex_LowPowerInit();
+#endif
 
 #if CONFIG_COEX_ENABLE_MENU
     coex_cli_init();
