@@ -14,7 +14,6 @@ ble_fsci_black_box_freertos:
         supports the FSCI protocol is required.
   boards:
     kw45b41zevk: []
-    k32w148evk: []
     frdmmcxw71: []
     mcxw71evk: []
     kw47evk@cm33_core0: []

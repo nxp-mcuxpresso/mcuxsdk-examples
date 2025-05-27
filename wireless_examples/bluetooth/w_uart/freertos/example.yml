@@ -14,7 +14,6 @@ wireless_uart_freertos:
   boards:
     kw45b41zevk: []
     kw45b41zloc: []
-    k32w148evk: []
     frdmmcxw71: []
     mcxw71evk: []
     kw47evk@cm33_core0: []

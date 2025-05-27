@@ -13,7 +13,6 @@ beacon_bm:
         is available for both Android and iOS.
   boards:
     kw45b41zevk: []
-    k32w148evk: []
     frdmmcxw71: []
     mcxw71evk: []
     kw47evk@cm33_core0: []
