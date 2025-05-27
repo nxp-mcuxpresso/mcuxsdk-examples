@@ -51,6 +51,7 @@
 
 #define BOARD_ACCEL_I2C_BASEADDR   I2C1
 #define BOARD_ACCEL_I2C_CLOCK_FREQ 12000000
+#define BOARD_TEMP_SENSOR_I2C_BASEADDR I2C1
 
 /* Board led color mapping */
 #define LOGIC_LED_ON  1U

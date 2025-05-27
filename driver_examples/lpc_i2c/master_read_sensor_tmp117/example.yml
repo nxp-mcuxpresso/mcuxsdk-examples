@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+i2c_master_read_sensor_tmp117:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/lpc_i2c/master_read_sensor_tmp117
+    project-root-path: boards/${board}/driver_examples/i2c/master_read_sensor_tmp117/${multicore_foldername}
+    document:
+      name: i2c_master_read_sensor_tmp117${core_id_suffix_name}
+      category: driver_examples/lpc_i2c
+      brief: The i2c_master_read_sensor_tmp117 example shows how to use lpc_i2c driver
+        as master to communicate with sensor tmp117.
+      example_readme:
+      - examples/driver_examples/lpc_i2c/master_read_sensor_tmp117/readme.md
+      - ${board_root}/${board}/driver_examples/i2c/master_read_sensor_tmp117/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mcxw23evk: []
