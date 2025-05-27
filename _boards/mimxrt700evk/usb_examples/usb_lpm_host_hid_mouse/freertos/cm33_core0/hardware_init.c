@@ -157,7 +157,18 @@ void USB_PreLowpowerMode(void)
     {
         assert(false);
     }
-    EnableDeepSleepIRQ(USB0_IRQn);
+    if (CONTROLLER_ID == kUSB_ControllerEhci0)
+    { 
+        EnableDeepSleepIRQ(USB0_IRQn);
+    }
+    else if (CONTROLLER_ID == kUSB_ControllerEhci1)
+    {
+        EnableDeepSleepIRQ(USB1_IRQn);        
+    }
+    else
+    {
+        /* no action */
+    }
 }
 
 #if 0
