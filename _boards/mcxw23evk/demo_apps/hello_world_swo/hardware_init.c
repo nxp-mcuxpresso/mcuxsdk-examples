@@ -19,7 +19,7 @@
 /*${function:start}*/
 extern volatile bool g_userPress;
 
-void pint_intr_callback(pint_pin_int_t pintr, uint32_t pmatch_status)
+void pint_intr_callback(pint_pin_int_t pintr, pint_status_t* pmatch_status)
 {
     g_userPress = true;
 }
