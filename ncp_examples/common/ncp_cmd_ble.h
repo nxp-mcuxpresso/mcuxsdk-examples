@@ -2635,6 +2635,8 @@ typedef NCP_TLV_PACK_START struct _NCP_DEVICE_ADV_REPORT_EV {
 
 /** This structure contains the value of the Bluetooth LE connection complete event which indicates a new connection has been created. */
 typedef NCP_TLV_PACK_START struct _NCP_DEVICE_CONNECTED_EV {
+    /** connection id */
+    uint8_t conn_id;
     /** Bluetooth LE address type \n
       0: public \n
       1: random
@@ -2656,6 +2658,8 @@ typedef NCP_TLV_PACK_START struct _NCP_DEVICE_CONNECTED_EV {
 
 /** This structure contains the value of the Bluetooth LE disconnection complete event which indicates a connection is terminated. */
 typedef NCP_TLV_PACK_START struct _NCP_DEVICE_DISCONNECTED_EV {
+    /** connection id */
+    uint8_t conn_id;
     /** Bluetooth LE address type \n
       0: public \n
       1: random
@@ -2663,6 +2667,8 @@ typedef NCP_TLV_PACK_START struct _NCP_DEVICE_DISCONNECTED_EV {
     uint8_t address_type;
     /** Bluetooth LE address */
     uint8_t address[NCP_BLE_ADDR_LENGTH];
+    /** disconnect reason */
+    uint8_t reason;
 } NCP_TLV_PACK_END NCP_DEVICE_DISCONNECTED_EV;
 
 /** This structure contains the value of the Bluetooth LE user passkey notification event which is used to provide a passkey for the
