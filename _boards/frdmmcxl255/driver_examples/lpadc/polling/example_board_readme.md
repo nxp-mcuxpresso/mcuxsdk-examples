@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-- ADC CH0A input signal J2-9 (PIO0_23).
+- Provide 0-3.3V voltage to J6-1 "AN" pin (ADC ch0 P3_9).
 
 Prepare the Demo
 ===============

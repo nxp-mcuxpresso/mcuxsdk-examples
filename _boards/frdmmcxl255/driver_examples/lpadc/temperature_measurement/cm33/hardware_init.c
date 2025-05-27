@@ -6,6 +6,7 @@
  */
 /*${header:start}*/
 #include "pin_mux.h"
+#include "clock_config.h"
 #include "fsl_clock.h"
 #include "fsl_reset.h"
 #include "board.h"
@@ -75,18 +76,12 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
 
 void BOARD_InitHardware(void)
 {
-    CLOCK_EnableClock(kCLOCK_GateLPUART2);
-    CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
-
     /* Release peripheral RESET */
     RESET_PeripheralReset(kPORT1_RST_SHIFT_RSTn);
     RESET_PeripheralReset(kADC0_RST_SHIFT_RSTn);
 
-    BOARD_InitPins();
     BOARD_InitBootClocks();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
-
-    CLOCK_SetClockDiv(kCLOCK_DivADC0, 1U);
-    CLOCK_AttachClk(kFRO_HF_DIV_to_ADC0);
 }
 /*${function:end}*/

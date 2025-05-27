@@ -16,7 +16,7 @@
 #define DEMO_LPADC_IRQ_HANDLER_FUNC      ADC0_IRQHandler
 #define DEMO_LPADC_USER_CHANNEL          0U
 #define DEMO_LPADC_USER_CMDID            1U /* CMD1 */
-#define DEMO_LPADC_VREF_SOURCE           kLPADC_ReferenceVoltageAlt3
+#define DEMO_LPADC_VREF_SOURCE           kLPADC_ReferenceVoltageAlt3 /* VDD_ANA supply pin */
 #define DEMO_LPADC_DO_OFFSET_CALIBRATION true
 #define DEMO_LPADC_USE_HIGH_RESOLUTION   true
 /*${macro:end}*/

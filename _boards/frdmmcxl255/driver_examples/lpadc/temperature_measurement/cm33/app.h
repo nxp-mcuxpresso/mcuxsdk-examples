@@ -17,7 +17,7 @@
 #define DEMO_LPADC_TEMP_SENS_CHANNEL     26U
 #define DEMO_LPADC_USER_CMDID            1U /* CMD1 */
 #define DEMO_LPADC_SAMPLE_CHANNEL_MODE   kLPADC_SampleChannelSingleEndSideA
-#define DEMO_LPADC_VREF_SOURCE           kLPADC_ReferenceVoltageAlt3
+#define DEMO_LPADC_VREF_SOURCE           kLPADC_ReferenceVoltageAlt2 /* Internal reference*/
 #define DEMO_LPADC_DO_OFFSET_CALIBRATION true
 #define DEMO_LPADC_OFFSET_VALUE_A        0x10U
 #define DEMO_LPADC_OFFSET_VALUE_B        0x10U
@@ -25,6 +25,7 @@
 #define DEMO_LPADC_TEMP_PARAMETER_A      TEMP_PARAMETER_A
 #define DEMO_LPADC_TEMP_PARAMETER_B      TEMP_PARAMETER_B
 #define DEMO_LPADC_TEMP_PARAMETER_ALPHA  TEMP_PARAMETER_ALPHA
+#define DEMO_LPADC_HARDWARE_AVERAGE      kLPADC_HardwareAverageCount1024
 /*${macro:end}*/
 
 /*******************************************************************************

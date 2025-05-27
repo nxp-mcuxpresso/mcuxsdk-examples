@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
-- Micro USB cable
-- FRDM-MCXA153 board
+- Type-C USB cable
+- FRDM-MCXL255 board
 - Personal Computer
 
 Board settings
@@ -9,8 +9,8 @@ Board settings
 
 Prepare the Demo
 ===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link port(J15) on the target board.
-2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
+1.  Connect a USB Type-C cable between the host PC and the LPC-Link USB port (J16) on the target board.
+2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
     - No parity

@@ -18,13 +18,8 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_EnableClock(kCLOCK_GateADC0);
-
-    /* Release ADC peripheral RESET */
-    RESET_PeripheralReset(kADC0_RST_SHIFT_RSTn);
-
-    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
