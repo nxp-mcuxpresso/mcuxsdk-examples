@@ -98,7 +98,7 @@
 #define BOARD_SWT_PORT3_PHY_ADDR (0x07U)
 
 /*! @brief The Ethernet PHY type of the board */
-#define BOARD_USE_NETC_PHY_RTL8201
+#define BOARD_USE_NETC_PHY_YT8521
 
 /* USB PHY condfiguration */
 #define BOARD_USB_PHY_D_CAL     (0x07U)
