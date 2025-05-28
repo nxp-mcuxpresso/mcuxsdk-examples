@@ -38,3 +38,7 @@ easrc_m2m_sdma:
     - -armgcc@release
     - -iar@debug
     - -iar@release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release

@@ -15,7 +15,7 @@ dsc_i2c_polling_b2b_transfer_slave:
       - examples/driver_examples/dsc_i2c/polling_b2b_transfer/slave/readme.md
       - ${board_root}/${board}/driver_examples/i2c/polling_b2b_transfer/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f83000evk: []
     twrmc56f8200: []
     twrmc56f8400: []

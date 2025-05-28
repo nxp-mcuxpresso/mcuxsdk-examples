@@ -17,11 +17,29 @@ lpc_i2c_polling_b2b_slave:
       - ${board_root}/${board}/driver_examples/i2c/polling_b2b/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
-    evkmimxrt685@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxw23: []
     mcxw23evk: []
-    frdmrw612: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
@@ -31,8 +49,20 @@ lpc_i2c_polling_b2b_slave:
     lpcxpresso55s28: []
     lpcxpresso55s36: []
     lpcxpresso55s69@cm33_core0: []
-    mimxrt685audevk@cm33: []
-    rdrw612bga: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpcxpresso802: []
     lpcxpresso804: []
     lpcxpresso824max: []

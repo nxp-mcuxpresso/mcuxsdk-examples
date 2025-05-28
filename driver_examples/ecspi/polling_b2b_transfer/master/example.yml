@@ -18,7 +18,39 @@ ecspi_polling_b2b_transfer_master:
       - ${board_root}/${board}/driver_examples/ecspi/polling_b2b_transfer/master/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm: []
-    evkmimx8mn: []
-    evkmimx8mnddr3l: []
-    evkmimx8mp: []
+    evkmimx8mm:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mn:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mnddr3l:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mp:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release

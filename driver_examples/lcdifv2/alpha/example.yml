@@ -35,6 +35,12 @@ lcdifv2_alpha:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -54,6 +60,12 @@ lcdifv2_alpha:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1160@cm4:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -73,6 +85,12 @@ lcdifv2_alpha:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1160@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -92,3 +110,9 @@ lcdifv2_alpha:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

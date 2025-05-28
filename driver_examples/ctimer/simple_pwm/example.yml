@@ -14,8 +14,20 @@ ctimer_pwm_example:
       - ${board_root}/${board}/driver_examples/ctimer/simple_pwm/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
-    evkmimxrt685@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxa153: []
     frdmmcxa156: []
     frdmmcxa346: []
@@ -24,7 +36,13 @@ ctimer_pwm_example:
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []
     mcxw23evk: []
-    frdmrw612: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpc845breakout: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
@@ -40,7 +58,25 @@ ctimer_pwm_example:
     lpcxpresso845max: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
-    mimxrt685audevk@cm33: []
-    rdrw612bga: []
-    mimxrt700evk@cm33_core0: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     mimxrt700evk@cm33_core1: []

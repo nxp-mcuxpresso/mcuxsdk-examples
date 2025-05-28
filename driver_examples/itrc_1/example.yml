@@ -14,5 +14,17 @@ itrc_1:
       - ${board_root}/${board}/driver_examples/itrc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmrw612: []
-    rdrw612bga: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

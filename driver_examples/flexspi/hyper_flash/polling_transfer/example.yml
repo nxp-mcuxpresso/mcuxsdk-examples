@@ -20,7 +20,19 @@ flexspi_hyper_flash_polling_transfer:
       - ${board_root}/${board}/driver_examples/flexspi/hyper_flash/polling_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkbimxrt1050: []
+    evkbimxrt1050:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1060:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -28,6 +40,12 @@ flexspi_hyper_flash_polling_transfer:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkcmimxrt1060:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -35,4 +53,22 @@ flexspi_hyper_flash_polling_transfer:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    evkmimxrt1064: []
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1064:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

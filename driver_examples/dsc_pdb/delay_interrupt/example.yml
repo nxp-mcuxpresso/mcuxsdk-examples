@@ -14,5 +14,5 @@ dsc_pdb_delay_interrupt:
       - examples/driver_examples/dsc_pdb/delay_interrupt/readme.md
       - ${board_root}/${board}/driver_examples/pdb/delay_interrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8400: []

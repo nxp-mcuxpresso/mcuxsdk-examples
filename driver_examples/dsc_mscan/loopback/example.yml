@@ -17,5 +17,5 @@ dsc_mscan_loopback:
       - examples/driver_examples/dsc_mscan/loopback/readme.md
       - ${board_root}/${board}/driver_examples/mscan/loopback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8200: []

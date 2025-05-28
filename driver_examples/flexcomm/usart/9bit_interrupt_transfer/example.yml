@@ -19,7 +19,13 @@ usart_9bit_interrupt_transfer:
       - ${board_root}/${board}/driver_examples/usart/9bit_interrupt_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt685@cm33: []
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxw23: []
     mcxw23evk: []
     lpcxpresso51u68: []
@@ -30,4 +36,10 @@ usart_9bit_interrupt_transfer:
     lpcxpresso55s16: []
     lpcxpresso55s28: []
     lpcxpresso55s69@cm33_core0: []
-    mimxrt685audevk@cm33: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

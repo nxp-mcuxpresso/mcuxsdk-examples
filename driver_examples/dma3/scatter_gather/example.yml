@@ -17,8 +17,24 @@ dma3_scatter_gather:
       - ${board_root}/${board}/driver_examples/edma/scatter_gather/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evk9mimx8ulp@cm33: []
-    evkmimx8ulp@cm33: []
+    evk9mimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
     frdmmcxw71: []
     mcxw71evk: []
     k32w148evk:

@@ -24,5 +24,11 @@ irtc:
     twrkm34z50mv3: []
     twrkm34z75m: []
     twrkm35z75m: []
-    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     mimxrt700evk@cm33_core1: []

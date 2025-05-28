@@ -16,5 +16,17 @@ dmic_i2s_codec:
       - ${board_root}/${board}/driver_examples/dmic/dmic_i2s_codec/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
-    evkmimxrt685@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

@@ -14,11 +14,29 @@ i3c_bus_master:
       - ${board_root}/${board}/component_examples/i3c_bus/master/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
-    evkmimxrt685@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxa153: []
     frdmmcxa156: []
     lpcxpresso55s36: []
     lpcxpresso860max: []
-    mimxrt685audevk@cm33: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     mimxrt700evk@cm33_core1: []

@@ -18,5 +18,5 @@ pit_scout:
       - examples/driver_examples/dsc_pit/scout/readme.md
       - ${board_root}/${board}/driver_examples/pit/scout/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []

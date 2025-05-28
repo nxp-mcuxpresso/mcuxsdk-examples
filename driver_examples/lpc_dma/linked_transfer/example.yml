@@ -16,11 +16,29 @@ dma_linked_transfer:
       - ${board_root}/${board}/driver_examples/dma/linked_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
-    evkmimxrt685@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxw23: []
     mcxw23evk: []
-    frdmrw612: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpc845breakout: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
@@ -34,5 +52,17 @@ dma_linked_transfer:
     lpcxpresso824max: []
     lpcxpresso845max: []
     lpcxpresso860max: []
-    mimxrt685audevk@cm33: []
-    rdrw612bga: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

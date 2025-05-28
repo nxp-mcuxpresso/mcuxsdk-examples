@@ -27,7 +27,23 @@ enet_txrx_multiring_transfer:
       - ${board_root}/${board}/driver_examples/enet/txrx_multiring_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm: []
-    evkmimx8mp: []
+    evkmimx8mm:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8mp:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
     mcimx93autoevk: []
     mcimx93evk: []

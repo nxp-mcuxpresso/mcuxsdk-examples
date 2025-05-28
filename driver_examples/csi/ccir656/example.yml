@@ -36,6 +36,12 @@ csi_ccir656:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1060:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -55,6 +61,12 @@ csi_ccir656:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkcmimxrt1060:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -74,6 +86,12 @@ csi_ccir656:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1064:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -93,3 +111,9 @@ csi_ccir656:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

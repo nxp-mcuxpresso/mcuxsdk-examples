@@ -15,4 +15,10 @@ otfad_keyblob:
       - ${board_root}/${board}/driver_examples/otfad/keyblob/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt1010: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

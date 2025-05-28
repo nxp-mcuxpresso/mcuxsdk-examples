@@ -16,6 +16,6 @@ queued_spi_dma_b2b_transfer_slave:
       - examples/driver_examples/queued_spi/dma_b2b_transfer/slave/readme.md
       - ${board_root}/${board}/driver_examples/queued_spi/dma_b2b_transfer/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8200: []
     twrmc56f8400: []

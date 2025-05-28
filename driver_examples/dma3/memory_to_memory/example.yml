@@ -17,8 +17,24 @@ dma3_memory_to_memory:
       - ${board_root}/${board}/driver_examples/edma/memory_to_memory/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evk9mimx8ulp@cm33: []
-    evkmimx8ulp@cm33: []
+    evk9mimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
     frdmmcxw71: []
     mcxw71evk: []
     k32w148evk:

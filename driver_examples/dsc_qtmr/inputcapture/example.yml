@@ -14,7 +14,7 @@ qtmr_inputcapture:
       - examples/driver_examples/dsc_qtmr/inputcapture/readme.md
       - ${board_root}/${board}/driver_examples/qtmr/inputcapture/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []
     mc56f81000evk: []
     mc56f83000evk: []

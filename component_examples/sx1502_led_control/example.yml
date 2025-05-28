@@ -15,4 +15,10 @@ sx1502_led_control:
       - ${board_root}/${board}/component_examples/sx1502_led_control/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mimxrt685audevk@cm33: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

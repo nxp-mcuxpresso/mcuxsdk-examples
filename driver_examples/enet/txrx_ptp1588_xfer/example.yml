@@ -25,5 +25,17 @@ enet_txrx_ptp1588_xfer:
       - ${board_root}/${board}/driver_examples/enet/txrx_ptp1588_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmrw612: []
-    rdrw612bga: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

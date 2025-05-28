@@ -79,5 +79,11 @@ mu_interrupt_primary_core:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     frdmk32l3a6@cm4: []
-    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxl255@cm33: []

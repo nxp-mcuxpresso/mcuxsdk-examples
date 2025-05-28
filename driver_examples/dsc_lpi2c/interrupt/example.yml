@@ -12,5 +12,5 @@ dsc_lpi2c_interrupt:
       - examples/driver_examples/dsc_lpi2c/interrupt/readme.md
       - ${board_root}/${board}/driver_examples/lpi2c/interrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f81000evk: []

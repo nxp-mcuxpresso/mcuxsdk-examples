@@ -16,7 +16,13 @@ dmic_multi_channel:
       - ${board_root}/${board}/driver_examples/dmic/dmic_multi_channel/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt685@cm33:
     - -armgcc@flash_debug
     - -armgcc@flash_release
@@ -24,4 +30,10 @@ dmic_multi_channel:
     - -iar@flash_release
     - -mdk@flash_debug
     - -mdk@flash_release
-    mimxrt685audevk@cm33: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

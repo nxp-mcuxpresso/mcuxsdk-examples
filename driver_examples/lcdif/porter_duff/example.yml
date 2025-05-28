@@ -18,4 +18,10 @@ lcdif_porter_duff:
       - ${board_root}/${board}/driver_examples/lcdif/lcdif_examples_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

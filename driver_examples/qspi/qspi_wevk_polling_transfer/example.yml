@@ -23,4 +23,8 @@ qspi_wevk_polling_transfer:
       - ${board_root}/${board}/driver_examples/qspi/wevk_polling_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mq: []
+    evkmimx8mq:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release

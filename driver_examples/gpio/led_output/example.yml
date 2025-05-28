@@ -16,7 +16,11 @@ gpio_led_output:
       - ${board_root}/${board}/driver_examples/gpio/led_output/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmcimx7ulp: []
+    evkmcimx7ulp:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
     frdmk22f: []
     frdmk32l2a4s: []
     frdmk32l2b: []
@@ -50,5 +54,11 @@ gpio_led_output:
     twrkm34z50mv3: []
     twrkm34z75m: []
     twrkm35z75m: []
-    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxl255@cm33: []

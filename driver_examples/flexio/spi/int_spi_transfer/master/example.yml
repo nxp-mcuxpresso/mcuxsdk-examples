@@ -15,7 +15,13 @@ flexio_spi_int_spi_transfer_master:
       - ${board_root}/${board}/driver_examples/flexio/spi/int_spi_transfer/master/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmk32l2b: []
     frdmmcxc242: []
     frdmmcxc444: []

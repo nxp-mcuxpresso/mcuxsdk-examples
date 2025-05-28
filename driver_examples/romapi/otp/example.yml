@@ -13,6 +13,24 @@ romapi_otp:
       - ${board_root}/${board}/driver_examples/romapi/otp/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmrw612: []
-    mimxrt700evk@cm33_core0: []
-    rdrw612bga: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

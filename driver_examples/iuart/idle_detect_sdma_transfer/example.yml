@@ -17,19 +17,39 @@ iuart_idle_detect_sdma_transfer:
       - ${board_root}/${board}/driver_examples/uart/idle_detect_sdma_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mm: []
+    evkmimx8mm:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
     evkmimx8mn:
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
     evkmimx8mnddr3l:
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
     evkmimx8mp:
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release

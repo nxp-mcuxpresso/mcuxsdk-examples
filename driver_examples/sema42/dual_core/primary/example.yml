@@ -29,7 +29,13 @@ sema42_dualcore_primary_core:
     frdmmcxn947@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
-    mimxrt700evk@cm33_core0: []
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1180@cm33:
     - +armgcc@flexspi_nor_debug
     - +armgcc@flexspi_nor_release

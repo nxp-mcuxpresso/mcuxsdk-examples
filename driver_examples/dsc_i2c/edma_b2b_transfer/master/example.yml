@@ -15,5 +15,5 @@ dsc_i2c_edma_b2b_transfer_master:
       - examples/driver_examples/dsc_i2c/edma_b2b_transfer/master/readme.md
       - ${board_root}/${board}/driver_examples/i2c/edma_b2b_transfer/master/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f83000evk: []

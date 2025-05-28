@@ -15,4 +15,10 @@ flexio_i2c_interrupt_flexcomm_i2c_transfer:
       - ${board_root}/${board}/driver_examples/flexio/i2c/interrupt_i2c_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimxrt595@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

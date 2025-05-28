@@ -15,6 +15,6 @@ qsci_dma_rb_transfer:
       - examples/driver_examples/qsci/dma_rb_transfer/readme.md
       - ${board_root}/${board}/driver_examples/qsci/dma_rb_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8200: []
     twrmc56f8400: []

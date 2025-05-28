@@ -28,6 +28,10 @@ qspi_polling_transfer:
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
-    evkmimx8mq: []
+    evkmimx8mq:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
     frdmmcxe247: []
     frdmmcxe31b: []

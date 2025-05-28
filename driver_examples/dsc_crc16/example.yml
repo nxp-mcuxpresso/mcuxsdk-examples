@@ -13,5 +13,5 @@ crc16:
       - examples/driver_examples/dsc_crc16/readme.md
       - ${board_root}/${board}/driver_examples/crc16/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8200: []

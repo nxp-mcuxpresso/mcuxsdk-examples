@@ -16,4 +16,10 @@ i3c_master_read_sensor_icm42688p:
   boards:
     lpcxpresso55s36: []
     lpcxpresso860max: []
-    mimxrt685audevk@cm33: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

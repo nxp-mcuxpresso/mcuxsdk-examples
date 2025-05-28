@@ -15,6 +15,6 @@ dsc_i2c_dma_b2b_transfer_master:
       - examples/driver_examples/dsc_i2c/dma_b2b_transfer/master/readme.md
       - ${board_root}/${board}/driver_examples/i2c/dma_b2b_transfer/master/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8200: []
     twrmc56f8400: []

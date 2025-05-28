@@ -13,7 +13,7 @@ qsci_edma_transfer:
       - examples/driver_examples/qsci/edma_transfer/readme.md
       - ${board_root}/${board}/driver_examples/qsci/edma_transfer/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []
     mc56f81000evk: []
     mc56f83000evk: []

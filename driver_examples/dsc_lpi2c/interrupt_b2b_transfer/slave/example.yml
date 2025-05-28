@@ -15,6 +15,6 @@ dsc_lpi2c_interrupt_b2b_transfer_slave:
       - examples/driver_examples/dsc_lpi2c/interrupt_b2b_transfer/slave/readme.md
       - ${board_root}/${board}/driver_examples/lpi2c/interrupt_b2b_transfer/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []
     mc56f81000evk: []

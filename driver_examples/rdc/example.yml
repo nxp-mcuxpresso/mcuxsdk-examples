@@ -14,9 +14,41 @@ rdc:
       - ${board_root}/${board}/driver_examples/rdc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkbmimxrt1170@cm4: []
-    evkbmimxrt1170@cm7: []
-    evkmimx8mm: []
+    evkbmimxrt1170@cm4:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimx8mm:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release
     evkmimx8mn:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
@@ -44,6 +76,34 @@ rdc:
     - -iar@ddr_release
     - -iar@flash_debug
     - -iar@flash_release
-    evkmimx8mq: []
-    evkmimxrt1160@cm4: []
-    evkmimxrt1160@cm7: []
+    evkmimx8mq:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    evkmimxrt1160@cm4:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

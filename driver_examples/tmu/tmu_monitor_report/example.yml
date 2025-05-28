@@ -18,4 +18,8 @@ tmu_monitor_report:
       - ${board_root}/${board}/driver_examples/tmu/tmu_monitor_report/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmimx8mq: []
+    evkmimx8mq:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release

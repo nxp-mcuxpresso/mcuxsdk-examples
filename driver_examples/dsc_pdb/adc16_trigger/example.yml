@@ -14,5 +14,5 @@ dsc_pdb_adc16_trigger:
       - examples/driver_examples/dsc_pdb/adc16_trigger/readme.md
       - ${board_root}/${board}/driver_examples/pdb/adc16_trigger/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8400: []

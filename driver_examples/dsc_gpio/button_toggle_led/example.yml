@@ -11,7 +11,7 @@ dsc_gpio_button_toggle_led:
       - examples/driver_examples/dsc_gpio/button_toggle_led/readme.md
       - ${board_root}/${board}/driver_examples/gpio/button_toggle_led/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []
     mc56f81000evk: []
     mc56f83000evk: []

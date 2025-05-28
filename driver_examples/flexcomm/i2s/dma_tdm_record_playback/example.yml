@@ -15,4 +15,10 @@ i2s_dma_tdm_record_playback:
       - ${board_root}/${board}/driver_examples/i2s/dma_tdm_record_playback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mimxrt685audevk@cm33: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

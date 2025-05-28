@@ -17,6 +17,6 @@ dsc_flexcan_loopback:
       - examples/driver_examples/dsc_flexcan/loopback/readme.md
       - ${board_root}/${board}/driver_examples/flexcan/loopback/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f83000evk: []
     twrmc56f8400: []

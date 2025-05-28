@@ -22,4 +22,3 @@ aon_lpadc_interrupt:
   boards:
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
-

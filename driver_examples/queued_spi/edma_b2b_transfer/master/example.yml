@@ -17,7 +17,7 @@ queued_spi_edma_b2b_transfer_master:
       - examples/driver_examples/queued_spi/edma_b2b_transfer/master/readme.md
       - ${board_root}/${board}/driver_examples/queued_spi/edma_b2b_transfer/master/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []
     mc56f81000evk: []
     mc56f83000evk: []

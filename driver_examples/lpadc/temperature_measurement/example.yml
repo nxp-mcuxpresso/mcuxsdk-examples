@@ -21,10 +21,38 @@ lpadc_temperature_measurement:
       - ${board_root}/${board}/driver_examples/lpadc/temperature_measurement/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evk9mimx8ulp@cm33: []
-    evkmimx8ulp@cm33: []
-    evkmimxrt595@cm33: []
-    evkmimxrt685@cm33: []
+    evk9mimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxa153: []
     frdmmcxa156: []
     frdmmcxa346: []
@@ -47,4 +75,10 @@ lpadc_temperature_measurement:
     lpcxpresso55s69@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
-    mimxrt685audevk@cm33: []
+    mimxrt685audevk@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

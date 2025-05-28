@@ -21,17 +21,93 @@ flash_component_nor_flexspi:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    evkbmimxrt1060: []
-    evkcmimxrt1060: []
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1010:
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1015:
     - -armgcc@debug
     - -armgcc@flexspi_nor_debug
-    evkmimxrt1020: []
-    evkmimxrt1024: []
-    evkmimxrt1040: []
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1040:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1064:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -39,6 +115,12 @@ flash_component_nor_flexspi:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
@@ -46,6 +128,12 @@ flash_component_nor_flexspi:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1180@cm7:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
@@ -53,7 +141,49 @@ flash_component_nor_flexspi:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
-    frdmrw612: []
-    rdrw612bga: []
-    frdmimxrt1186@cm33: []
-    frdmimxrt1186@cm7: []
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
+    frdmimxrt1186@cm7:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release

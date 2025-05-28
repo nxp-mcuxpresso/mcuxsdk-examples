@@ -15,6 +15,6 @@ dsc_dma_memory_to_memory:
       - examples/driver_examples/dsc_dma/memory_to_memory/readme.md
       - ${board_root}/${board}/driver_examples/dma/memory_to_memory/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8200: []
     twrmc56f8400: []

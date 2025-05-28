@@ -17,7 +17,15 @@ pxp_blend:
       - ${board_root}/${board}/driver_examples/pxp/blend/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evk9mimx8ulp@cm33: []
+    evk9mimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
     evkbimxrt1050:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -37,6 +45,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1060:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -56,6 +70,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1170@cm4:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -75,6 +95,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1170@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -94,6 +120,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkcmimxrt1060:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -113,7 +145,21 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
-    evkmimx8ulp@cm33: []
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimx8ulp@cm33:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release
     evkmimxrt1040:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -133,6 +179,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1064:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -152,6 +204,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1160@cm4:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -171,6 +229,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1160@cm7:
     - +armgcc@flexspi_nor_sdram_debug
     - +armgcc@flexspi_nor_sdram_release
@@ -190,6 +254,12 @@ pxp_blend:
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
     - -mdk@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     imx943evk@cm7_core1:
     - +armgcc@debug
     - +armgcc@release

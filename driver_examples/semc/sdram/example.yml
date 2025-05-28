@@ -21,6 +21,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkbmimxrt1060:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -28,6 +34,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkbmimxrt1170@cm4:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -35,6 +47,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkbmimxrt1170@cm7:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -42,6 +60,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkcmimxrt1060:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -49,6 +73,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1020:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -56,6 +86,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1024:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -63,6 +99,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1040:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -70,6 +112,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1064:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -77,6 +125,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1160@cm4:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -84,6 +138,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1160@cm7:
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
@@ -91,6 +151,12 @@ semc:
     - -iar@sdram_release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1180@cm33:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
@@ -98,6 +164,12 @@ semc:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1180@cm7:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
@@ -105,3 +177,9 @@ semc:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

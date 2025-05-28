@@ -19,14 +19,34 @@ pdm_sai_sdma:
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
     evkmimx8mn:
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
     evkmimx8mnddr3l:
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -iar@flash_debug
     - -iar@flash_release
-    evkmimx8mp: []
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    evkmimx8mp:
+    - -armgcc@ddr_debug
+    - -armgcc@ddr_release
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@ddr_debug
+    - -iar@ddr_release
+    - -iar@flash_debug
+    - -iar@flash_release

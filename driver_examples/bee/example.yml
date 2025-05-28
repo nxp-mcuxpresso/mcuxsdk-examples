@@ -25,6 +25,12 @@ bee:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkbmimxrt1060:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -32,6 +38,12 @@ bee:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkcmimxrt1060:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -39,6 +51,12 @@ bee:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1015:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -53,6 +71,12 @@ bee:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1024:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -60,6 +84,12 @@ bee:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1040:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -67,6 +97,12 @@ bee:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     evkmimxrt1064:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -74,3 +110,9 @@ bee:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release

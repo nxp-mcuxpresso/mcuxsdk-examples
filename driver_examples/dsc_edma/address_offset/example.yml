@@ -15,7 +15,7 @@ edma_address_offset:
       - examples/driver_examples/dsc_edma/address_offset/readme.md
       - ${board_root}/${board}/driver_examples/edma/address_offset/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []
     mc56f81000evk: []
     mc56f83000evk: []

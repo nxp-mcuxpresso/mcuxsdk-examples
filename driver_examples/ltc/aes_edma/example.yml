@@ -14,4 +14,8 @@ ltc_aes_edma:
       - ${board_root}/${board}/driver_examples/ltc/aes_edma/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkmcimx7ulp: []
+    evkmcimx7ulp:
+    - -armgcc@flash_debug
+    - -armgcc@flash_release
+    - -iar@flash_debug
+    - -iar@flash_release

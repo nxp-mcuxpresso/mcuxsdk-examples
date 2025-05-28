@@ -25,6 +25,12 @@ flexspi_octal_edma_transfer:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1180@cm7:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -32,3 +38,9 @@ flexspi_octal_edma_transfer:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release

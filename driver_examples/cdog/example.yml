@@ -14,8 +14,32 @@ cdog:
       - ${board_root}/${board}/driver_examples/cdog/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkbmimxrt1170@cm7: []
-    evkmimxrt1160@cm7: []
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    evkmimxrt1160@cm7:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
     frdmmcxa153: []
     frdmmcxa156: []
     frdmmcxa346: []
@@ -24,12 +48,30 @@ cdog:
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []
     mcxw23evk: []
-    frdmrw612: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     lpcxpresso55s06: []
     lpcxpresso55s16: []
     lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
-    rdrw612bga: []
-    mimxrt700evk@cm33_core0: []
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     mimxrt700evk@cm33_core1: []

@@ -14,4 +14,10 @@ sdu_example:
       - ${board_root}/${board}/driver_examples/sdu/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    rdrw612bga: []
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

@@ -16,7 +16,7 @@ queued_spi_polling_b2b_transfer_slave:
       - examples/driver_examples/queued_spi/polling_b2b_transfer/slave/readme.md
       - ${board_root}/${board}/driver_examples/queued_spi/polling_b2b_transfer/slave/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     mc56f80000evk: []
     mc56f81000evk: []
     mc56f83000evk: []

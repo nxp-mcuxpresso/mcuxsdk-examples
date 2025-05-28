@@ -19,5 +19,5 @@ dsc_adc16_continuous_dma:
       - examples/driver_examples/dsc_adc16/continuous_dma/readme.md
       - ${board_root}/${board}/driver_examples/adc16/continuous_dma/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
-  boards: 
+  boards:
     twrmc56f8400: []

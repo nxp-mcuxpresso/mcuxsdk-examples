@@ -17,5 +17,17 @@ cns_dac_waveform_generator:
       - ${board_root}/${board}/driver_examples/dac/waveform_generator/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmrw612: []
-    rdrw612bga: []
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

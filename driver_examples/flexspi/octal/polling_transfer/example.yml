@@ -25,6 +25,12 @@ flexspi_octal_polling_transfer:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
     evkmimxrt1180@cm7:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
@@ -32,8 +38,26 @@ flexspi_octal_polling_transfer:
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    evkmimxrt595@cm33: []
-    evkmimxrt685@cm33: []
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxn947@cm33_core0: []
     imx95lpd5evk19@cm7: []
     imx95verdinevk@cm7: []

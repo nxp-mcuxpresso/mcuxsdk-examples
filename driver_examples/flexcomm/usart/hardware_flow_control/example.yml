@@ -22,5 +22,17 @@ usart_hardware_flow_control:
     frdmmcxw23: []
     mcxw23evk: []
     lpcxpresso54628: []
-    rdrw612bga: []
-    evkmimxrt685@cm33: []
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    evkmimxrt685@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
