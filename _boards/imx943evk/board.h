@@ -529,6 +529,7 @@ enum expander_pin_idx {
     M2_BT_WAKE_IN = P1_3,
     MQS_MIC_SEL = P1_3,
     ETH4CD_INH_B = P1_3,
+    ECAT_MII_SEL = P1_3,
     SAI3_SEL = P1_3,
     P1_4,
     M2_USB_SEL = P1_4,

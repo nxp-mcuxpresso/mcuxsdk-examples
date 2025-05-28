@@ -19,20 +19,28 @@
 #include "ecat_hw.h"
 #include "ecatappl.h"
 
-#define TIMER_IRQ_ID     GPT2_IRQn
-#define TIMER            (GPT_Type *) GPT2
-#define TIMER_IRQHandler GPT2_IRQHandler
-#define TIMER_CLK_FREQ   CLOCK_GetRate(kCLOCK_Gpt2)
+#define TIMER_IRQ_ID     GPT1_IRQn
+#define TIMER            (GPT_Type *) GPT1
+#define TIMER_IRQHandler GPT1_IRQHandler
+#define TIMER_CLK_FREQ   CLOCK_GetRate(kCLOCK_Gpt1)
+#define ECAT_CHANNEL            SCMI_A2P
+#define ECAT_DOMAIN_ID          24
+#define ECAT_DISABLE_FLAGS      0x2
+#define ECAT_ENABLE_FLAGS       0x0
+#define ECAT_REST_STATE         0
 
 UINT32 EcatTimerCnt;
 
 static void Ecat_KickOff(void)
 {
     int32_t result = SCMI_ERR_SUCCESS;
-    uint32_t channel = SCMI_A2P;
-    uint32_t domainId = 24;
-    uint32_t flags = 0;
-    uint32_t resetState = 0;
+    
+	result = SCMI_Reset(ECAT_CHANNEL, ECAT_DOMAIN_ID, ECAT_DISABLE_FLAGS, ECAT_REST_STATE);
+    if (result != SCMI_ERR_SUCCESS)
+    {
+        PRINTF("%s: %d, Failed to reset ecat\r\n", __func__, __LINE__);
+    }
+    SDK_DelayAtLeastUs(10000U, SystemCoreClock);
 
     /* EtherCAT port0 is in MII mode */
     BLK_CTRL_NETCMIX->CFG_ECAT &= ~(1 << BLK_CTRL_NETCMIX_CFG_ECAT_RMII_SEL0_SHIFT);
@@ -50,13 +58,14 @@ static void Ecat_KickOff(void)
     /* EtherCAT PHY_OFFSET_VEC */
     BLK_CTRL_NETCMIX->CFG_ECAT |= (BLK_CTRL_NETCMIX_CFG_ECAT_PHY_OFFSET_VEC(2));
 
-    SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+    SDK_DelayAtLeastUs(10000U, SystemCoreClock);
     
-    result = SCMI_Reset(channel, domainId, flags, resetState);
+    result = SCMI_Reset(ECAT_CHANNEL, ECAT_DOMAIN_ID, ECAT_ENABLE_FLAGS, ECAT_REST_STATE);
     if (result != SCMI_ERR_SUCCESS)
     {
         PRINTF("%s: %d, Failed to reset ecat\r\n", __func__, __LINE__);
     }
+    SDK_DelayAtLeastUs(10000U, SystemCoreClock);
 }
 
 UINT16 HW_Init(void)
@@ -95,6 +104,7 @@ UINT16 HW_Init(void)
     PRINTF("Start the SSC digital_io example...\r\n");
 
     /*Select ECAT1_CLK25*/
+#if USING_ECAT_CLK25
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
 
@@ -107,7 +117,25 @@ UINT16 HW_Init(void)
     SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
     SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    
+#else
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
+
+    BOARD_EXPANDER_SetPinToHigh(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
+    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
+    BOARD_EXPANDER_SetPinToHigh(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A1);
+    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+#endif
+
+	/* Select ECAT_MII_SEL */
+	BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ECAT_MII_SEL);
+
+    BOARD_EXPANDER_SetPinToHigh(BOARD_PCA6416_I2C6_S1_ID, ECAT_MII_SEL);
+    SDK_DelayAtLeastUs(20000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S1_ID, ECAT_MII_SEL);
+    SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+ 
     /*Open ECAT EEPROM*/
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
 
@@ -133,14 +161,6 @@ UINT16 HW_Init(void)
     /*Select Mode 1: LED_LINK = ON for Good Link, OFF for No Link*/
     ECAT_EscMdioWrite(ETHERCAT, 0x01, 0x19, (1 << 5));
 #endif
-
- //   do
-//    {
-//        intMask = 0x93;
-//        HW_EscWriteDWord(intMask, ESC_AL_EVENTMASK_OFFSET);
-//        intMask = 0;
-//        HW_EscReadDWord(intMask, ESC_AL_EVENTMASK_OFFSET);
-//    } while (intMask != 0x93);
 
     intMask = 0x00;
 
