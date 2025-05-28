@@ -15,7 +15,9 @@
 #define WIFI_BT_USE_IMU_INTERFACE 1
 #define RW610
 
+#ifndef RW612_SERIES
 #define RW612_SERIES
+#endif
 
 /* If OT or BLE is enabled, the vApplicationHook defined by the app should be used
  * instead of the private definition of WIFI, use CONFIG_COEX_APP macro to select.
