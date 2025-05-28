@@ -9,7 +9,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 - Enabled `ota_rom_basic` example for FRDM-MCXN947, MCX-N9XX-EVK, FRDM-RW612 and RD-RW612BGA
 - Enabled flash remap feature for MIMXRT700EVK
 - FRDM-MCXE247 basic MCUboot support
-- FRDM-MCXN947, MCX-N5XX-EVK and MCX-N9XX-EVK supports alternative build using MCUboot located in the internal flash instead of the IFR region (default) - see board readme for more information
+- FRDM-MCXN947, MCX-N5XX-EVK and MCX-N9XX-EVK supports alternative build using MCUboot located in the internal flash instead of the IFR region (default) - see board specific readme for more information
 
 ### Removed
 - Removed `ota_rom_server` (replaced by simpler `ota_rom_basic`)

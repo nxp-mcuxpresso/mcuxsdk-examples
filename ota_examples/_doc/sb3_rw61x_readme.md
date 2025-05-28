@@ -10,7 +10,9 @@
       + [3.2 MCUboot bootloader use case](#32-mcuboot-bootloader-use-case)
    * [Supported Boards](#supported-boards)
 
-In this walkthrough, if possible, the lifecycle of device is not changed for development purpose, so the device can be restored to its initial state. In real scenarios, transition the chips to the corresponding lifecycle is based on the requirements.
+In this walkthrough, if possible, the lifecycle of the device is not changed for development purposes, so the device can be restored to its initial state. In real scenarios, transitioning the chips to the corresponding lifecycle is based on specific requirements.
+
+Common information related to SB3 is available in the documentation ['OTA update by using SB3 file'](sb3_common_readme.md).
 
 ## 1. Provision the device
 
@@ -19,19 +21,21 @@ The device must be provisioned to support SB3 processing. To simplify the workfl
 To provision the device perform the following steps:
 
 1. Erase the device
-2. Build `mcuboot_opensource` or `ota_rom_basic` project depending what you want to evaluate
-3. Get the device into ISP mode - typically on development boards hold the ISP button and press the reset button
-4. Open the SEC tool and create new workspace for RW61x target device, test the ISP connection
+2. Build `mcuboot_opensource`+`ota_mcuboot_basic` or `ota_rom_basic` project depending what you want to evaluate
+3. Get the device into ISP mode 
+    * Typically on development boards hold the ISP button and press the reset button
+4. Open the SEC tool and create new workspace for RW61x target device
+    * Test the ISP connection in SEC tool
 5. Switch to PKI management tab
     * Click __Generate keys__ (leave default settings)
 
 ![Image](sb3_pics/1_prov_keys.jpg)
 
-RW61x doesn't properly support shadow registers to process SB3 files for development purpose so the correct __RKTH__ and __CUST_MK_SK__ has to be provisioned. To provision these keys and keep the device in __Develop lifecycle__ we will initially use __Encrypted (IPED) Plain__ boot type as a workaround. This initial operation provisions the device with RTKH and CUST_MK_SK permanently but the board will be still usable for development purpose as OTP BOOT_CFG0 (fuseword 15) remains intact.
+RW61x doesn't properly support shadow registers to process SB3 files for development purposes, so the correct __RKTH__ and __CUST_MK_SK__ have to be provisioned. To provision these keys and keep the device in the __Develop lifecycle__, we will initially use __Encrypted (IPED) Plain__ boot type as a workaround. This initial operation provisions the device with RTKH and CUST_MK_SK permanently, but the board will still be usable for development purposes as OTP BOOT_CFG0 (fuseword 15) remains intact.
 
 Note: User is advised to save SEC tool workspace (or atleast the keys somewhere) for future use
 
-6. Build Image tab
+6. Build Image
     * Boot: __Encrypted (IPED) Plain__
     * Select `ota_rom_basic` or `mcuboot_opensource` output binary or ELF image as __Source executable image__
     * Lifecycle: __Develop, OTP__
@@ -40,31 +44,34 @@ Note: User is advised to save SEC tool workspace (or atleast the keys somewhere)
 
 ![Image](sb3_pics/1_prov_mcuboot_rw61x.jpg.jpg)
 
-7. Write image tab
+7. Write image
     * Click __Write image__
 
 ![Image](sb3_pics/1_prov_write_rw61x.jpg.jpg)
 
-Now the device is provisioned with RKTH and CUST_MK_SK without transition of the lifecycle.
+Now the device is provisioned with __RKTH__ and __CUST_MK_SK__ without transition of the lifecycle.
 
 8. Enable dual image support
 
 __Note: This is needed only for ROM bootloader use case, otherwise skip this step__
 
-The correct image offset and size has to be programmed to OTP fuseword 17. In this example we use these values:
-FLEXSPI_IMAGE_SIZE = 0x0 (The size of the boot image is considered to be equal to the offset of the second image)
-FLEXSPI_IMAGE_OFFSET = 0x10 
+The correct image offset and size has to be programmed to OTP fuseword 17 (BOOT_CFG2). In this example we use these values:
 
-Note: We set 4MB offset here but final value is up to user as this operation is also permanent
+-  FLEXSPI_IMAGE_SIZE = 0x0 (The size of the boot image is considered to be equal to the offset of the second image)
+-  FLEXSPI_IMAGE_OFFSET = 0x10 
 
 Fuse the OTP using blhost:
 `blhost -p COM3,115200 -- efuse-program-once 17 00008000`
 
-Note: The device will be still usable for development purpose as ROM evaluates only valid image header of a signed image at zero and FLEXSPI_IMAGE_OFFSET offset
+Note: We set a 4MB offset here, but the final value is up to the user as this operation is also permanent. The device will still be usable for development purposes, as ROM evaluates only the valid image header of a signed image and looks for image version presence.
 
 9. Erase device
 
-In case of evaluating the MCUboot examples, load unencrypted and unsigned `mcuboot_opensource` to the device using a programmer as usual
+This will erase encrypted image from the workaround.
+
+10. Load MCUboot (only MCUboot use case)
+
+Load unencrypted and unsigned `mcuboot_opensource` to the device using a programmer as usual
 
 ## 2. Prepare OTA images
 
@@ -113,15 +120,15 @@ For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/e
 
 ### 3.1 ROM bootloader only use case
 
-1. Load and run initial `ota_rom_basic` application
-    * signed image via `blhost` commands: 
+1. Load and run initial the initial `ota_rom_basic` application with one of these ways:
+    * load signed image via `blhost` commands: 
         * `blhost -p COM3,115200 -- fill-memory 0x20001000 0x4 0xC0000004`
         * `blhost -p COM3,115200 -- configure-memory 0x9 0x20001000`
         * `blhost -p COM3,115200 -t 20000 receive-sb-file ota_rom_basic_image_0_v1`
 
     or
     
-    * unsigned application via debug session using preferred IDE (IAR, MCUX, VSCode) - in this case the `image` command returns invalid information as there is no valid image header to parse
+    * load unsigned application via debug session - in this case the `image` command returns invalid information as there is no valid image header to parse
 
 2. Check image state and active flag location with `image` command
     * See active flag location
@@ -138,15 +145,15 @@ For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/e
 
 ### 3.2 MCUboot bootloader use case
 
-1. Load and run initial `ota_mcuboot_basic` application
-    * signed image via `blhost` commands: 
+1. Load and run initial the initial `ota_mcuboot_basic` application with one of these ways:
+    * load signed image via `blhost` commands: 
         * `blhost -p COM3,115200 -- fill-memory 0x20001000 0x4 0xC0000004`
         * `blhost -p COM3,115200 -- configure-memory 0x9 0x20001000`
-        * `blhost -p COM3,115200 -t 20000 receive-sb-file ota_mcuboot_basic_primary.sb`
+        * `blhost -p COM3,115200 -t 20000 receive-sb-file signed_padded_ota_mcuboot_basic_primary_slot.sb`
 
     or
     
-    * unsigned application via debug session using preferred IDE (IAR, MCUX, VSCode) - in this case the `image` command returns invalid information as there is no valid image header to parse
+    * load unsigned application via debug session - in this case the `image` command returns invalid information as there is no valid image header to parse
     
 2. Check image state and active flag location with `image` command
 
@@ -154,7 +161,7 @@ For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/e
 
 3. Run `xmodem_sb3` command
     * Send a SB3 file via __Files Transfer/Xmodem (1k)__ 
-    * (Devices with flash remap overlay) Make sure the selected SB3 targets inactive slot otherwise the device can be bricked
+    * Make sure the selected SB3 targets inactive slot otherwise the device can be bricked
     * Mark written signed image as ready for install by `image test` command
     * Reboot
 

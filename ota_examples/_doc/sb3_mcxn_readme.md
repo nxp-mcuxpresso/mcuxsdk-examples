@@ -1,6 +1,18 @@
 # MCXN - OTA update by using SB3 file
 
-In this walkthrough, if possible, the lifecycle of device is not changed for development purpose, so the device can be restored to its initial state. In real scenarios, transition the chips to the corresponding lifecycle is based on the requirements.
+- [MCXN - OTA update by using SB3 file](#mcxn-ota-update-by-using-sb3-file)
+   * [1. Provision the device](#1-provision-the-device)
+   * [2. Prepare OTA images](#2-prepare-ota-images)
+      + [2.1 ROM bootloader only use case](#21-rom-bootloader-only-use-case)
+      + [2.2 MCUboot bootloader use case](#22-mcuboot-bootloader-use-case)
+   * [3. Firmware update](#3-firmware-update)
+      + [3.1 ROM bootloader only use case](#31-rom-bootloader-only-use-case)
+      + [3.2 MCUboot bootloader use case](#32-mcuboot-bootloader-use-case)
+   * [Supported Boards](#supported-boards)
+
+In this walkthrough, if possible, the lifecycle of the device is not changed for development purposes, so the device can be restored to its initial state. In real scenarios, transitioning the chips to the corresponding lifecycle is based on specific requirements.
+
+Common information related to SB3 is available in the documentation ['OTA update by using SB3 file'](sb3_common_readme.md).
 
 ## 1. Provision the device
 
@@ -9,7 +21,7 @@ The device must be provisioned to support SB3 processing. To simplify the workfl
 To provision the device perform the following steps:
 
 1. Erase the device
-2. Build `mcuboot_opensource` or `ota_rom_basic` project depending what you want to evaluate
+2. Build `mcuboot_opensource`+`ota_mcuboot_basic` or `ota_rom_basic` project depending what you want to evaluate
 3. Get the device into ISP mode - typically on development boards hold the ISP button and press the reset button
 4. Open the SEC tool and create new workspace for MCXN target device, test the ISP connection
 5. Switch to PKI management tab
@@ -63,8 +75,6 @@ MCXN uses flash remapping based on swap mechanism so SB3 OTA file always target 
 
 ![Image](sb3_pics/2_ota_create_mcuboot_mcxn_2.jpg)
 
-4. (Devices with flash remap overlay) Repeat 3th step for primary slot
-
 Note: Optionally, we can also create initial SB3 file containing initial (first) `ota_mcuboot_basic` application for primary/secondary slot (generated with additional __`--pad --confirm`__ imgtool arguments) to simulate manufacturing process, otherwise the initial signed image can be also loaded directly using ISP or other preferred method as usual.
 
 ## 3. Firmware update
@@ -100,7 +110,7 @@ For demonstration purpose we use [ExtraPutty](https://sourceforge.net/projects/e
 
 ![Image](sb3_pics/3_ota_mcuboot_mcxn_2.jpg)
 
-# Supported Boards
+## Supported Boards
 
 - [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
