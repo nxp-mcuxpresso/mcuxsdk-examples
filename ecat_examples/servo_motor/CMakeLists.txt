@@ -15,8 +15,8 @@ mcux_add_source(
     SOURCES examples/ecat_examples/servo_motor/freemaster_cfg.h
     SOURCES examples/ecat_examples/servo_motor/m1_pmsm_appconfig.h
     SOURCES examples/ecat_examples/servo_motor/m2_pmsm_appconfig.h
-    SOURCES examples/ecat_examples/servo_motor/mc_periph_init.c
-    SOURCES examples/ecat_examples/servo_motor/mc_periph_init.h
+    ${board_root}/${board}/ecat_examples/servo_motor/${multicore_foldername}/mc_periph_init.c
+    ${board_root}/${board}/ecat_examples/servo_motor/${multicore_foldername}/mc_periph_init.h
     SOURCES examples/ecat_examples/servo_motor/peripherals.c
     SOURCES examples/ecat_examples/servo_motor/peripherals.h
     SOURCES examples/ecat_examples/servo_motor/SSC/CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch
