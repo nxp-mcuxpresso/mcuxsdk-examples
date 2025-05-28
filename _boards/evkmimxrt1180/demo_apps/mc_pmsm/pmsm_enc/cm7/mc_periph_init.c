@@ -364,8 +364,8 @@ void M1_InitQD(void)
     CLOCK_EnableClock(kCLOCK_Enc1);
     CLOCK_EnableClock(kCLOCK_Xbar1);
     
-    XBAR_SetSignalsConnection(kXBAR3_InputQtimer3Timer1, kXBAR1_OutputEqdc1Phasea);
-    XBAR_SetSignalsConnection(kXBAR3_InputQtimer3Timer2, kXBAR1_OutputEqdc1Phaseb);
+	XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout17, kXBAR1_OutputEqdc1Phasea);
+    XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout18, kXBAR1_OutputEqdc1Phaseb);
     
     EQDC1->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
     EQDC1->CTRL &= ~EQDC_CTRL_LDOK_MASK;
