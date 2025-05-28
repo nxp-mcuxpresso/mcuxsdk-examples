@@ -27,7 +27,7 @@
 /* Clock pre divider for sai1 clock source */
 #define DEMO_SAI_CLOCK_SOURCE_PRE_DIVIDER (3U)
 /* Clock divider for sai1 clock source */
-#define DEMO_SAI_CLOCK_SOURCE_DIVIDER (15U)
+#define DEMO_SAI_CLOCK_SOURCE_DIVIDER (7U)
 /* Get frequency of sai1 clock */
 #define DEMO_SAI_CLK_FREQ                                                       \
     (CLOCK_GetFreq(kCLOCK_AudioPllClk) / (DEMO_SAI_CLOCK_SOURCE_DIVIDER + 1U) / \

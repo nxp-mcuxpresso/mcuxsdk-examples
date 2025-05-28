@@ -133,7 +133,7 @@ int main(void)
     PRINTF("Playback raw audio data\r\n");
     PRINTF("    sample rate : %d\r\n", DEMO_AUDIO_SAMPLE_RATE_IN);
     PRINTF("    channel number: %d\r\n", DEMO_AUDIO_DATA_CHANNEL);
-    PRINTF("    frequency: 215HZ.\r\n\r\n");
+    PRINTF("    frequency: 1000HZ.\r\n\r\n");
 
     /*  xfer structure */
     xfer.data     = (uint8_t *)music;
@@ -159,7 +159,7 @@ int main(void)
     PRINTF("Playback converted audio data\r\n");
     PRINTF("    sample rate : %d\r\n", DEMO_AUDIO_SAMPLE_RATE_OUT);
     PRINTF("    channel number: %d\r\n", DEMO_AUDIO_DATA_CHANNEL);
-    PRINTF("    frequency: 215HZ.\r\n\r\n");
+    PRINTF("    frequency: 1000HZ.\r\n\r\n");
 
     /* reset sample rate configuration */
     SAI_TxSetBitClockRate(DEMO_SAI, DEMO_AUDIO_MASTER_CLOCK, DEMO_AUDIO_SAMPLE_RATE_OUT, DEMO_AUDIO_BIT_WIDTH,

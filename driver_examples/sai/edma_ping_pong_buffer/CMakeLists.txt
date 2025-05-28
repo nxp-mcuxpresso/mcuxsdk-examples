@@ -8,13 +8,11 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/sai/edma_ping_pong_buffer/sai_edma_ping_pong_buffer.c
-            examples/driver_examples/sai/music.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/driver_examples/sai/edma_ping_pong_buffer
-             examples/driver_examples/sai
              ${board_root}/${board}/driver_examples/sai/edma_ping_pong_buffer/${core_id}
 )
 

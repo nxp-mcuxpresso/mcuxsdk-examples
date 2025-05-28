@@ -27,8 +27,8 @@
 
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 #define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
-#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
-#define DEMO_AUDIO_MASTER_CLOCK 12288000
+#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
+#define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
 /* Select Audio/Video PLL (786.48 MHz) as sai3 clock source */
 #define DEMO_SAI3_CLOCK_SOURCE_SELECT (2U)
@@ -36,7 +36,11 @@
 #define DEMO_SAI3_CLOCK_SOURCE_PRE_DIVIDER (3U)
 /* Clock divider for sai3 clock source */
 #define DEMO_SAI3_CLOCK_SOURCE_DIVIDER (15U)
-
+/* Get frequency of sai3 clock */
+#define DEMO_SAI_CLK_FREQ                                                        \
+    (CLOCK_GetFreq(kCLOCK_AudioPllClk) / (DEMO_SAI3_CLOCK_SOURCE_DIVIDER + 1U) / \
+     (DEMO_SAI3_CLOCK_SOURCE_PRE_DIVIDER + 1U))
+     
 /* I2C instance and clock */
 #define DEMO_I2C LPI2C1
 

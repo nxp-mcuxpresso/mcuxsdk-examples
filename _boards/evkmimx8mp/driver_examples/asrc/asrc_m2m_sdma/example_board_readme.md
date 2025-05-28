@@ -31,7 +31,7 @@ Prepare the Demo
 
 Running the demo
 ===============
-When the demo runs successfully, you will hear two audio clips, the first one is the original 48k, the second one is the converted 16K and the log would be seen on the terminal like:
+When the demo runs successfully, you will hear two audio clips, the first one is the original 48K, the second one is the converted 16K and the log would be seen on the terminal like:
 
 ~~~~~~~~~~~~~~~~~~~
 ASRC memory to memory SDMA example.

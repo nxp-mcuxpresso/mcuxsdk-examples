@@ -34,7 +34,7 @@ wm8962_config_t wm8962Config = {
     .slaveAddress = WM8962_I2C_ADDR,
     .bus          = kWM8962_BusI2S,
     .format       = {.mclk_HZ    = 24576000U,
-                     .sampleRate = kWM8962_AudioSampleRate48KHz,
+                     .sampleRate = kWM8962_AudioSampleRate32KHz,
                      .bitWidth   = kWM8962_AudioBitWidth16bit},
     .masterSlave  = false,
 };

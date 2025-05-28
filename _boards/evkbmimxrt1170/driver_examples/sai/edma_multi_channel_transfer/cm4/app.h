@@ -39,16 +39,10 @@
 
 #define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (7U)
 #define DEMO_SAI_MASTER_SLAVE          kSAI_Master
-#define DEMO_AUDIO_MASTER_CLOCK        24576000
-
-/* Select Audio/Video PLL (393.24 MHz) as sai1 clock source */
-#define DEMO_SAI1_CLOCK_SOURCE_SELECT (2U)
-/* Clock pre divider for sai1 clock source */
-#define DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER (0U)
+#define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
 /* Get frequency of sai1 clock */
-#define DEMO_SAI_CLK_FREQ \
-    (CLOCK_GetFreq(kCLOCK_AudioPll) / (DEMO_SAI1_CLOCK_SOURCE_DIVIDER + 1U) / (DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER + 1U))
+#define DEMO_SAI_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1)
 
 /* DMA */
 #define DEMO_DMA             DMA1

@@ -31,28 +31,28 @@ Prepare the Demo
 
 Running the demo
 ===============
-When the demo runs successfully, you can hear two audio clips, one is 16K, later one is 48K.
+When the demo runs successfully, you can hear two audio clips, one is 48K, later one is 16K.
 The log would be seen on the terminal like:
 ~~~~~~~~~~~~~~~~~~~
 ASRC memory to memory polling example.
 
 Playback raw audio data
 
-    sample rate : 16000
+    sample rate : 48000
 
     channel number: 2
 
-    frequency: 215HZ.
+    frequency: 1000HZ.
 
 
 
 Playback converted audio data
 
-    sample rate : 48000
+    sample rate : 16000
 
     channel number: 2
 
-    frequency: 215HZ.
+    frequency: 1000HZ.
 
 
 

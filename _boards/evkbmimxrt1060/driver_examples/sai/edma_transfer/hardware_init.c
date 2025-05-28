@@ -30,25 +30,25 @@ wm8960_config_t wm8960Config = {
     .playSource       = kWM8960_PlaySourceDAC,
     .slaveAddress     = WM8960_I2C_ADDR,
     .bus              = kWM8960_BusI2S,
-    .format = {.mclk_HZ = 12000000, .sampleRate = kWM8960_AudioSampleRate16KHz, .bitWidth = kWM8960_AudioBitWidth16bit},
+   .format = {.mclk_HZ = 12288000U, .sampleRate = kWM8960_AudioSampleRate48KHz, .bitWidth = kWM8960_AudioBitWidth16bit},
     .master_slave = true,
     .masterClock =
         {
             .sysclkSource = kWM8960_SysClkSourceInternalPLL,
-            .sysclkFreq   = DEMO_AUDIO_MASTER_CLOCK,
+            .sysclkFreq   = 12288000U,
         },
 };
 codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8960, .codecDevConfig = &wm8960Config};
 /*
- * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM)
- *                              = 24 * (30 + 200/100)
- *                              = 768 MHz
+ * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM) / Divider
+ *                              = 24 * (32 + 96/128) / 1
+ *                              = 786.375 MHz
  */
 const clock_audio_pll_config_t audioPllConfig = {
-    .loopDivider = 30,  /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
+    .loopDivider = 32,  /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
     .postDivider = 1,   /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
-    .numerator   = 200, /* 30 bit numerator of fractional loop divider. */
-    .denominator = 100, /* 30 bit denominator of fractional loop divider */
+    .numerator   = 96,  /* 30 bit numerator of fractional loop divider. */
+    .denominator = 125, /* 30 bit denominator of fractional loop divider */
 };
 #elif DEMO_CODEC_CS42448
 cs42448_config_t cs42448Config = {
@@ -57,22 +57,22 @@ cs42448_config_t cs42448Config = {
     .reset        = BORAD_CodecReset,
     .master       = false,
     .i2cConfig    = {.codecI2CInstance = DEMO_CS42448_I2C_INSTANCE, .codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ},
-    .format       = {.mclk_HZ = 16384000U, .sampleRate = 16000U, .bitWidth = 16U},
+    .format       = {.mclk_HZ = 24576000U, .sampleRate = 48000U, .bitWidth = 16U},
     .bus          = kCS42448_BusI2S,
     .slaveAddress = CS42448_I2C_ADDR,
 };
 
 codec_config_t boardCodecConfig = {.codecDevType = kCODEC_CS42448, .codecDevConfig = &cs42448Config};
 /*
- * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM)
- *                              = 24 * (32 + 768/1000)
- *                              = 786.432 MHz
+ * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM) / Divider
+ *                              = 24 * (32 + 96/128) / 1
+ *                              = 786.375 MHz
  */
 const clock_audio_pll_config_t audioPllConfig = {
-    .loopDivider = 32,   /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
-    .postDivider = 1,    /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
-    .numerator   = 768,  /* 30 bit numerator of fractional loop divider. */
-    .denominator = 1000, /* 30 bit denominator of fractional loop divider */
+    .loopDivider = 32,  /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
+    .postDivider = 1,   /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
+    .numerator   = 96,  /* 30 bit numerator of fractional loop divider. */
+    .denominator = 125, /* 30 bit denominator of fractional loop divider */
 };
 #else
 #error "no codec enabled, please check."

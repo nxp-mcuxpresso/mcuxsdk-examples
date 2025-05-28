@@ -34,6 +34,6 @@ When the demo runs successfully, you can hear the tone and the log would be seen
  MQS SAI example finished!
 ~~~~~~~~~~~~~~~~~~~
 
-Also sine curve on oscilloscope with period of 50Hz.
+Also sine curve on oscilloscope with period of 1000Hz.
 
 

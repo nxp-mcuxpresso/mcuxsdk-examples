@@ -21,7 +21,6 @@
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 /* demo audio bit width */
 #define DEMO_AUDIO_BIT_WIDTH          kSAI_WordWidth16bits
-#define DEMO_ASRC_INPUT_SAMPLES       (48000)
 #define DEMO_ASRC_CONVERT_BUFFER_SIZE (100 * 1000U)
 #ifndef DEMO_ASRC_INPUT_CLOCK_SOURCE
 #define DEMO_ASRC_INPUT_CLOCK_SOURCE kASRC_ClockSourceBitClock0_SAI1_TX
@@ -30,7 +29,7 @@
 #define DEMO_ASRC_OUTPUT_CLOCK_SOURCE kASRC_ClockSourceBitClock0_SAI1_TX
 #endif
 #ifndef DEMO_CODEC_VOLUME
-#define DEMO_CODEC_VOLUME 100U
+#define DEMO_CODEC_VOLUME 80U
 #endif
 
 edma_config_t dmaConfig = {0};
@@ -166,7 +165,7 @@ int main(void)
     PRINTF("Playback raw audio data\r\n");
     PRINTF("    sample rate : %d\r\n", DEMO_AUDIO_SAMPLE_RATE_IN);
     PRINTF("    channel number: %d\r\n", DEMO_AUDIO_DATA_CHANNEL);
-    PRINTF("    frequency: 215HZ.\r\n\r\n");
+    PRINTF("    frequency: 1000HZ.\r\n\r\n");
 
     /*  xfer structure */
     xfer.data     = audioData;
@@ -191,7 +190,7 @@ int main(void)
     PRINTF("Playback converted audio data\r\n");
     PRINTF("    sample rate : %d\r\n", DEMO_AUDIO_SAMPLE_RATE_OUT);
     PRINTF("    channel number: %d\r\n", DEMO_AUDIO_DATA_CHANNEL);
-    PRINTF("    frequency: 215HZ.\r\n\r\n");
+    PRINTF("    frequency: 1000HZ.\r\n\r\n");
 
     /* reset sample rate configuration */
     SAI_TxSetBitClockRate(DEMO_SAI, DEMO_AUDIO_MASTER_CLOCK, DEMO_AUDIO_SAMPLE_RATE_OUT, DEMO_AUDIO_BIT_WIDTH,

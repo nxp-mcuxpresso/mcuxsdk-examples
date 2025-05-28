@@ -27,7 +27,7 @@ wm8960_config_t wm8960Config = {
     .slaveAddress     = WM8960_I2C_ADDR,
     .bus              = kWM8960_BusI2S,
     .format           = {.mclk_HZ    = 12000000U,
-                         .sampleRate = kWM8960_AudioSampleRate16KHz,
+                         .sampleRate = kWM8960_AudioSampleRate48KHz,
                          .bitWidth   = kWM8960_AudioBitWidth16bit},
     .master_slave     = true,
     .masterClock =
@@ -126,8 +126,8 @@ void BOARD_I2C_ReleaseBus(void)
 void BOARD_MASTER_CLOCK_CONFIG(void)
 {
     mclkConfig.mclkOutputEnable = true;
-    mclkConfig.mclkHz           = 12000000U;
-    mclkConfig.mclkSourceClkHz  = 12000000U;
+    mclkConfig.mclkHz           = DEMO_AUDIO_MASTER_CLOCK;
+    mclkConfig.mclkSourceClkHz  = DEMO_SAI_CLK_FREQ;
     SAI_SetMasterClockConfig(DEMO_SAI, &mclkConfig);
 }
 /*${function:end}*/

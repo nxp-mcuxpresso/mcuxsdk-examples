@@ -107,7 +107,7 @@ int main(void)
     PRINTF("Playback raw audio data\r\n");
     PRINTF("    sample rate : %d\r\n", DEMO_ASRC_IN_SAMPLE_RATE);
     PRINTF("    channel number: %d\r\n", DEMO_AUDIO_DATA_CHANNEL);
-    PRINTF("    frequency: 215HZ.\r\n\r\n");
+    PRINTF("    frequency: 1000HZ.\r\n\r\n");
 
     /*  xfer structure */
     saiPlayAudio((uint8_t *)music, MUSIC_LEN);
@@ -126,7 +126,7 @@ int main(void)
     PRINTF("Playback converted audio data\r\n");
     PRINTF("    sample rate : %d\r\n", DEMO_ASRC_OUT_SAMPLE_RATE);
     PRINTF("    channel number: %d\r\n", DEMO_AUDIO_DATA_CHANNEL);
-    PRINTF("    frequency: 215HZ.\r\n\r\n");
+    PRINTF("    frequency: 1000HZ.\r\n\r\n");
 
     saiPlayAudio((uint8_t *)s_asrcOutBuffer,
                  ASRC_GetContextOutSampleSize(DEMO_ASRC_IN_SAMPLE_RATE, MUSIC_LEN, 2U, DEMO_ASRC_OUT_SAMPLE_RATE, 2U));

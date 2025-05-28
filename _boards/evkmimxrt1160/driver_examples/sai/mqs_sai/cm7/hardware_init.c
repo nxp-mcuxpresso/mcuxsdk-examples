@@ -14,15 +14,15 @@
 
 /*${function:start}*/
 /*
- * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM) / (2^POST)
- *                              = 24 * (32 + 768/1000)  / 2
- *                              = 393.216MHZ
+ * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM) / Divider
+ *                              = 24 * (32 + 96/128) / 1
+ *                              = 786.375 MHz
  */
 const clock_audio_pll_config_t audioPllConfig = {
-    .loopDivider = 32,   /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
-    .postDivider = 1,    /* Divider after the PLL, should only be 0, 1, 2, 3, 4, 5 */
-    .numerator   = 768,  /* 30 bit numerator of fractional loop divider. */
-    .denominator = 1000, /* 30 bit denominator of fractional loop divider */
+    .loopDivider = 32,  /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
+    .postDivider = 1,   /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
+    .numerator   = 96,  /* 30 bit numerator of fractional loop divider. */
+    .denominator = 125, /* 30 bit denominator of fractional loop divider */
 };
 
 void BOARD_EnableSaiMclkOutput(bool enable)

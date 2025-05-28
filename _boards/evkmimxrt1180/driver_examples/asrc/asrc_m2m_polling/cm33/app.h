@@ -27,10 +27,10 @@
 #define DEMO_SAI_MASTER_SLAVE   kSAI_Master
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 #define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
-#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
+#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 /* Get frequency of sai1 clock */
-#define DEMO_SAI_CLK_FREQ (12288000U)
+#define DEMO_SAI_CLK_FREQ (CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1) / 2U)
 /* I2C instance and clock */
 #define DEMO_I2C LPI2C2
 
@@ -52,7 +52,7 @@
 
 #define DEMO_AUDIO_MASTER_CLOCK 24576000U
 #endif
-#define DEMO_ASRC_OUTPUT_SOURCE_CLOCK_HZ (16 * 48000 * 2)
+#define DEMO_ASRC_OUTPUT_SOURCE_CLOCK_HZ (16 * DEMO_AUDIO_SAMPLE_RATE_IN * 2)
 #define DEMO_ASRC_PERIPHERAL_CLOCK       200000000U
 #define DEMO_ASRC                        ASRC
 #define DEMO_ASRC_CHANNEL_PAIR           kASRC_ChannelPairA

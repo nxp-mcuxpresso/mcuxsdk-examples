@@ -38,21 +38,21 @@ ASRC memory to memory polling example.
 
 Playback raw audio data
 
-    sample rate : 16000
+    sample rate : 48000
 
     channel number: 2
 
-    frequency: 215HZ.
+    frequency: 1000HZ.
 
 
 
 Playback converted audio data
 
-    sample rate : 48000
+    sample rate : 16000
 
     channel number: 2
 
-    frequency: 215HZ.
+    frequency: 1000HZ.
 
 
 

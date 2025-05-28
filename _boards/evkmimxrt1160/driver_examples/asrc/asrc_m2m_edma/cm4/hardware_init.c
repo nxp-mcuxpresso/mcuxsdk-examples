@@ -25,7 +25,7 @@ wm8960_config_t wm8960Config = {
     .playSource       = kWM8960_PlaySourceDAC,
     .slaveAddress     = WM8960_I2C_ADDR,
     .bus              = kWM8960_BusI2S,
-    .format = {.mclk_HZ = 24576000, .sampleRate = kWM8960_AudioSampleRate48KHz, .bitWidth = kWM8960_AudioBitWidth16bit},
+    .format = {.mclk_HZ = 24576000, .sampleRate = kWM8960_AudioSampleRate32KHz, .bitWidth = kWM8960_AudioBitWidth16bit},
     .master_slave = false,
 };
 codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8960, .codecDevConfig = &wm8960Config};

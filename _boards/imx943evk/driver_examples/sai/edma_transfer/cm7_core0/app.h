@@ -24,7 +24,7 @@
 
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 #define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
-#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
+#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
 
 /* Get frequency of sai clock */
 #define SAI_CLOCK_ROOT          kCLOCK_Sai1

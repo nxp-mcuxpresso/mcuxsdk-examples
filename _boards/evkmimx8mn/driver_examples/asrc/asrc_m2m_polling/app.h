@@ -38,8 +38,8 @@
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
 #define SDMA_FREQ_EQUALS_ARM      (1U)
-#define DEMO_ASRC_IN_SAMPLE_RATE  16000
-#define DEMO_ASRC_OUT_SAMPLE_RATE 48000
+#define DEMO_ASRC_IN_SAMPLE_RATE  48000
+#define DEMO_ASRC_OUT_SAMPLE_RATE 16000
 /*${macro:end}*/
 
 /*******************************************************************************

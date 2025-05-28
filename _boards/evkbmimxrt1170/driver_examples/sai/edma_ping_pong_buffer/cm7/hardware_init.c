@@ -38,7 +38,7 @@ wm8962_config_t wm8962Config = {
     .slaveAddress = WM8962_I2C_ADDR,
     .bus          = kWM8962_BusI2S,
     .format       = {.mclk_HZ    = 24576000U,
-                     .sampleRate = kWM8962_AudioSampleRate16KHz,
+                     .sampleRate = kWM8962_AudioSampleRate48KHz,
                      .bitWidth   = kWM8962_AudioBitWidth16bit},
     .masterSlave  = false,
 };
@@ -50,7 +50,7 @@ cs42448_config_t cs42448Config = {
     .reset        = BORAD_CodecReset,
     .master       = false,
     .i2cConfig    = {.codecI2CInstance = DEMO_CS42448_I2C_INSTANCE, .codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ},
-    .format       = {.mclk_HZ = 16384000U, .sampleRate = 16000U, .bitWidth = 16U},
+    .format       = {.mclk_HZ = 16384000U, .sampleRate = 48000U, .bitWidth = 16U},
     .bus          = kCS42448_BusI2S,
     .slaveAddress = CS42448_I2C_ADDR,
 };

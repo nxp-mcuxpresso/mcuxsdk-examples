@@ -39,7 +39,7 @@ wm8962_config_t wm8962Config = {
     .slaveAddress = WM8962_I2C_ADDR,
     .bus          = kWM8962_BusI2S,
     .format       = {.mclk_HZ    = 24576000U,
-                     .sampleRate = kWM8962_AudioSampleRate16KHz,
+                     .sampleRate = kWM8962_AudioSampleRate48KHz,
                      .bitWidth   = kWM8962_AudioBitWidth16bit},
     .masterSlave  = false,
 };
@@ -51,7 +51,7 @@ cs42448_config_t cs42448Config = {
     .reset        = BORAD_CodecReset,
     .master       = false,
     .i2cConfig    = {.codecI2CInstance = DEMO_CS42448_I2C_INSTANCE, .codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ},
-    .format       = {.mclk_HZ = 16384000U, .sampleRate = 16000U, .bitWidth = 16U},
+    .format       = {.mclk_HZ = 24576000U, .sampleRate = 48000U, .bitWidth = 16U}, 
     .bus          = kCS42448_BusI2S,
     .slaveAddress = CS42448_I2C_ADDR,
 };
@@ -62,14 +62,14 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_CS42448, .codecDevConf
 #endif
 /*
  * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM) / Divider
- *                              = 24 * (32 + 768/1000) / 2
- *                              = 393.216 MHz
+ *                              = 24 * (32 + 96/128) / 1
+ *                              = 786.375 MHz
  */
 const clock_audio_pll_config_t audioPllConfig = {
-    .loopDivider = 32,   /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
-    .postDivider = 2,    /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
-    .numerator   = 768,  /* 30 bit numerator of fractional loop divider. */
-    .denominator = 1000, /* 30 bit denominator of fractional loop divider */
+    .loopDivider = 32,  /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
+    .postDivider = 1,   /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
+    .numerator   = 96,  /* 30 bit numerator of fractional loop divider. */
+    .denominator = 125, /* 30 bit denominator of fractional loop divider */
 };
 /*${variable:end}*/
 

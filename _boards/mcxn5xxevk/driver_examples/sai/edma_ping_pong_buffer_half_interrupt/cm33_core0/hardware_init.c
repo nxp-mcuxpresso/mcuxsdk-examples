@@ -27,7 +27,7 @@ da7212_config_t da7212Config = {
     .dacSource    = kDA7212_DACSourceInputStream,
     .slaveAddress = DA7212_ADDRESS,
     .protocol     = kDA7212_BusI2S,
-    .format       = {.mclk_HZ = 12288000, .sampleRate = 16000, .bitWidth = 16},
+    .format       = {.mclk_HZ = 12288000 , .sampleRate = DEMO_AUDIO_SAMPLE_RATE, .bitWidth = DEMO_AUDIO_BIT_WIDTH},
     .pll          = &pllConfig,
     .sysClkSource = kDA7212_SysClkSourcePLL,
     .isMaster     = true,

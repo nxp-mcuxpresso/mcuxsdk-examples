@@ -15,7 +15,7 @@
  ******************************************************************************/
 #define OVER_SAMPLE_RATE (384U)
 /* demo audio sample rate */
-#define DEMO_AUDIO_SAMPLE_RATE (kSAI_SampleRate16KHz)
+#define DEMO_AUDIO_SAMPLE_RATE (kSAI_SampleRate48KHz)
 /* demo audio master clock */
 #if (defined FSL_FEATURE_SAI_HAS_MCLKDIV_REGISTER && FSL_FEATURE_SAI_HAS_MCLKDIV_REGISTER) || \
     (defined FSL_FEATURE_PCC_HAS_SAI_DIVIDER && FSL_FEATURE_PCC_HAS_SAI_DIVIDER)

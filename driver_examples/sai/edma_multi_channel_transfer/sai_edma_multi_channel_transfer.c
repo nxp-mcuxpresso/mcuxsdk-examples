@@ -45,7 +45,6 @@ AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t buffer[BUFFER_NUM * BUFFER_SIZE], 4
 volatile bool isFinished      = false;
 volatile uint32_t finishIndex = 0U;
 volatile uint32_t emptyBlock  = BUFFER_NUM;
-
 codec_handle_t codecHandle;
 /*******************************************************************************
  * Code

@@ -37,7 +37,7 @@ Steps for CS42448:
 
 Running the demo
 ===============
-Note: This demo outputs 215HZ sine wave audio signal.
+Note: This demo outputs 1000HZ sine wave audio signal.
 When the demo runs successfully, you can hear the tone and the log would be seen on the OpenSDA terminal like:
 
 ~~~~~~~~~~~~~~~~~~~

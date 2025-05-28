@@ -8,13 +8,14 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/asrc/asrc_m2m_polling/asrc_m2m_polling.c
-            examples/driver_examples/asrc/asrc_m2m_polling/music.h
+            examples/driver_examples/asrc/music.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/driver_examples/asrc/asrc_m2m_polling
              ${board_root}/${board}/driver_examples/asrc/asrc_m2m_polling/${core_id}
+	     examples/driver_examples/asrc
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/asrc/asrc_m2m_polling/reconfig.cmake OPTIONAL)

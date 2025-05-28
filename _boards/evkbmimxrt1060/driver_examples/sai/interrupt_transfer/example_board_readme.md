@@ -37,7 +37,7 @@ Steps for CS42448:
 
 Running the demo
 ===============
-note: This demo uses 44.1KHZ sample rate to play a wav music.
+note: This demo uses 48KHZ sample rate to play a wav music.
 This demo outputs 1KHZ sine wave audio signal.
 
 When the demo runs successfully, you can hear the tone and the log would be seen on the OpenSDA terminal like:

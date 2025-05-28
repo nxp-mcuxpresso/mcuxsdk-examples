@@ -24,7 +24,7 @@ Prepare the Demo
 
 Running the demo
 ===============
-note:This demo uses codec master mode(internal pll mode) and outputs 215HZ sine wave audio signal.
+note:This demo uses codec master mode(internal pll mode) and outputs 1000HZ sine wave audio signal.
 
 When the demo runs successfully, you can hear the tone and the log would be seen on the OpenSDA terminal like:
 

@@ -17,7 +17,7 @@
 /*${macro:start}*/
 #define DEMO_SAI          (I2S3)
 #define DEMO_ASRC         ASRC
-#define DEMO_SAI_CLK_FREQ 24576000U
+#define DEMO_SAI_CLK_FREQ (CLOCK_GetPllFreq(kCLOCK_AudioPll1Ctrl))
 
 #define DEMO_IRQn                  I2S3_IRQn
 #define SAI_UserIRQHandler         I2S3_IRQHandler
@@ -42,8 +42,8 @@
 #define I2C_RELEASE_BUS_COUNT 100U
 
 #define DEMO_AUDIO_MASTER_CLOCK        DEMO_SAI_CLK_FREQ
-#define DEMO_AUDIO_SAMPLE_RATE         (kSAI_SampleRate16KHz)
-#define DEMO_AUDIO_CONVERT_SAMPLE_RATE (kSAI_SampleRate48KHz)
+#define DEMO_AUDIO_SAMPLE_RATE         (kSAI_SampleRate48KHz)
+#define DEMO_AUDIO_CONVERT_SAMPLE_RATE (kSAI_SampleRate16KHz)
 #define DEMO_AUDIO_DATA_CHANNEL        (2U)
 #define DEMO_AUDIO_BIT_WIDTH           kSAI_WordWidth16bits
 /*${macro:end}*/

@@ -7,7 +7,6 @@
 
 #include "app.h"
 #include "board.h"
-#include "music.h"
 #if defined(FSL_FEATURE_SOC_DMAMUX_COUNT) && FSL_FEATURE_SOC_DMAMUX_COUNT
 #include "fsl_dmamux.h"
 #endif

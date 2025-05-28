@@ -17,7 +17,7 @@
 /*${macro:start}*/
 #define DEMO_SAI          (I2S3)
 #define DEMO_ASRC         ASRC
-#define DEMO_SAI_CLK_FREQ 24576000U
+#define DEMO_SAI_CLK_FREQ (CLOCK_GetPllFreq(kCLOCK_AudioPll1Ctrl))
 
 #define DEMO_IRQn             I2S3_IRQn
 #define DEMO_DMA              SDMAARM3
@@ -28,8 +28,8 @@
 /*set Bclk source to Mclk clock*/
 #define DEMO_SAI_CLOCK_SOURCE     (1U)
 #define SDMA_FREQ_EQUALS_ARM      (1U)
-#define DEMO_ASRC_IN_SAMPLE_RATE  16000
-#define DEMO_ASRC_OUT_SAMPLE_RATE 48000
+#define DEMO_ASRC_IN_SAMPLE_RATE  48000
+#define DEMO_ASRC_OUT_SAMPLE_RATE 16000
 
 #define I2C_RELEASE_SDA_GPIO  GPIO5
 #define I2C_RELEASE_SDA_PIN   19U

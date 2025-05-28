@@ -39,7 +39,7 @@
 
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 #define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
-#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate44100Hz)
+#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
 
 #if DEMO_CODEC_CS42448
@@ -49,17 +49,20 @@
 #define DEMO_CODEC_RESET_GPIO     GPIO1
 #define DEMO_CODEC_RESET_GPIO_PIN 2
 #define DEMO_SAI_MASTER_SLAVE     kSAI_Master
+/* Clock divider for sai1 clock source */
+#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (7U)
 #else
 #define DEMO_WM8960_I2C_INSTANCE 1
 #define DEMO_SAI_MASTER_SLAVE    kSAI_Master
+/* Clock divider for sai1 clock source */
+#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (15U)
 #endif
 
 /* Select Audio/Video PLL (767.69 MHz) as sai1 clock source */
 #define DEMO_SAI1_CLOCK_SOURCE_SELECT (2U)
 /* Clock pre divider for sai1 clock source */
 #define DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER (3U)
-/* Clock divider for sai1 clock source */
-#define DEMO_SAI1_CLOCK_SOURCE_DIVIDER (16U)
+
 /* Get frequency of sai1 clock */
 #define DEMO_SAI_CLK_FREQ                                                        \
     (CLOCK_GetFreq(kCLOCK_AudioPllClk) / (DEMO_SAI1_CLOCK_SOURCE_DIVIDER + 1U) / \

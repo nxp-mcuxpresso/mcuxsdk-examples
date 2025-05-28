@@ -33,8 +33,8 @@ wm8962_config_t wm8962Config = {
         },
     .slaveAddress = WM8962_I2C_ADDR,
     .bus          = kWM8962_BusI2S,
-    .format       = {.mclk_HZ    = 12288000U,
-                     .sampleRate = kWM8962_AudioSampleRate16KHz,
+    .format       = {.mclk_HZ    = 24576000U,
+                     .sampleRate = kWM8962_AudioSampleRate48KHz,
                      .bitWidth   = kWM8962_AudioBitWidth16bit},
     .masterSlave  = false,
 };
@@ -79,7 +79,7 @@ void BOARD_InitHardware(void)
 
     /*Clock setting for SAI1*/
     CLOCK_SetRootClockMux(kCLOCK_Root_Sai1, 4);
-    CLOCK_SetRootClockDiv(kCLOCK_Root_Sai1, 32);
+    CLOCK_SetRootClockDiv(kCLOCK_Root_Sai1, 16);
 
     CLOCK_SetRootClockMux(kCLOCK_Root_Mic, 6);
     CLOCK_SetRootClockDiv(kCLOCK_Root_Mic, 32);

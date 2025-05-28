@@ -23,7 +23,7 @@ cs42448_config_t cs42448Config = {
     .reset        = BORAD_CodecReset,
     .master       = false,
     .i2cConfig    = {.codecI2CInstance = DEMO_CS42448_I2C_INSTANCE, .codecI2CSourceClock = BOARD_CODEC_I2C_CLOCK_FREQ},
-    .format       = {.mclk_HZ = 24576000, .sampleRate = 48000U, .bitWidth = 16U},
+    .format       = {.mclk_HZ = 24576000U, .sampleRate = 48000U, .bitWidth = 16U},
     .bus          = kCS42448_BusI2S,
     .slaveAddress = CS42448_I2C_ADDR,
 };
@@ -36,7 +36,7 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_CS42448, .codecDevConf
  */
 const clock_audio_pll_config_t audioPllConfig = {
     .loopDivider = 32,   /* PLL loop divider. Valid range for DIV_SELECT divider value: 27~54. */
-    .postDivider = 2,    /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
+    .postDivider = 1,    /* Divider after the PLL, should only be 1, 2, 4, 8, 16. */
     .numerator   = 768,  /* 30 bit numerator of fractional loop divider. */
     .denominator = 1000, /* 30 bit denominator of fractional loop divider */
 };

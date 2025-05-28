@@ -8,13 +8,14 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/easrc/asrc_p2p_out_sdma/asrc_p2p_out_sdma.c
-            examples/driver_examples/easrc/asrc_p2p_out_sdma/music.h
+            examples/driver_examples/easrc/music.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/driver_examples/asrc/asrc_p2p_out_sdma
              ${board_root}/${board}/driver_examples/asrc/asrc_p2p_out_sdma/${core_id}
+	     examples/driver_examples/easrc
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/asrc/asrc_p2p_out_sdma/reconfig.cmake OPTIONAL)

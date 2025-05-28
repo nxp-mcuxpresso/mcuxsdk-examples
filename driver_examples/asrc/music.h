@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2025 NXP
+ * Copyright 2016-2019 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -8,45 +7,9 @@
 #ifndef _MUSIC_H_
 #define _MUSIC_H_
 
-#include "fsl_common.h"
+#define MUSIC_LEN 48000
 
-#if defined(__GNUC__) /* GNU Compiler */
-#ifndef __ALIGN_END
-#define __ALIGN_END __attribute__((aligned(4)))
-#endif
-#ifndef __ALIGN_BEGIN
-#define __ALIGN_BEGIN
-#endif
-#else
-#ifndef __ALIGN_END
-#define __ALIGN_END
-#endif
-#ifndef __ALIGN_BEGIN
-#if defined(__CC_ARM) || defined(__ARMCC_VERSION) /* ARM Compiler */
-#define __ALIGN_BEGIN __attribute__((aligned(4)))
-#elif defined(__ICCARM__) /* IAR Compiler */
-#define __ALIGN_BEGIN
-#endif
-#endif
-#endif
-
-#if defined(__ICCARM__)
-#pragma data_alignment = 4
-#endif
-__ALIGN_BEGIN int a __ALIGN_END;
-
-#define MUSIC_LEN (48000)
-
-#if defined DEMO_AUDIO_DATA_PUT_INTO_SECTION
-DEMO_AUDIO_DATA_PUT_INTO_SECTION(uint8_t music[], 4U) =
-#else
-#if defined FSL_FEATURE_SOC_MMDC_COUNT && FSL_FEATURE_SOC_MMDC_COUNT
-AT_NONCACHEABLE_SECTION_ALIGN_INIT(uint8_t music[], 4) =
-#else
-__ALIGN_BEGIN const uint8_t music[] __ALIGN_END =
-#endif
-#endif
-    {
+AT_NONCACHEABLE_SECTION_ALIGN_INIT(uint8_t music[], 4) = {
 0x00, 0x00, 0x00, 0x00, 0xb4, 0x10, 0xb4, 0x10, 0x20, 0x21, 0x20, 0x21, 0xfb, 0x30, 0xfb, 0x30, 0xff, 0x3f, 0xff, 
 0x3f, 0xeb, 0x4d, 0xeb, 0x4d, 0x81, 0x5a, 0x81, 0x5a, 0x8b, 0x65, 0x8b, 0x65, 0xd9, 0x6e, 0xd9, 0x6e, 0x40, 0x76, 
 0x40, 0x76, 0xa2, 0x7b, 0xa2, 0x7b, 0xe6, 0x7e, 0xe6, 0x7e, 0xff, 0x7f, 0xff, 0x7f, 0xe6, 0x7e, 0xe6, 0x7e, 0xa2, 

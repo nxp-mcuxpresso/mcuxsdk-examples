@@ -1,14 +1,12 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2025 NXP
+ * Copyright 2016-2017 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 #ifndef _MUSIC_H_
 #define _MUSIC_H_
-
-#include "fsl_common.h"
 
 #if defined(__GNUC__) /* GNU Compiler */
 #ifndef __ALIGN_END
@@ -37,14 +35,10 @@ __ALIGN_BEGIN int a __ALIGN_END;
 
 #define MUSIC_LEN (48000)
 
-#if defined DEMO_AUDIO_DATA_PUT_INTO_SECTION
-DEMO_AUDIO_DATA_PUT_INTO_SECTION(uint8_t music[], 4U) =
-#else
 #if defined FSL_FEATURE_SOC_MMDC_COUNT && FSL_FEATURE_SOC_MMDC_COUNT
 AT_NONCACHEABLE_SECTION_ALIGN_INIT(uint8_t music[], 4) =
 #else
 __ALIGN_BEGIN const uint8_t music[] __ALIGN_END =
-#endif
 #endif
     {
 0x00, 0x00, 0x00, 0x00, 0xb4, 0x10, 0xb4, 0x10, 0x20, 0x21, 0x20, 0x21, 0xfb, 0x30, 0xfb, 0x30, 0xff, 0x3f, 0xff, 
@@ -2575,4 +2569,5 @@ __ALIGN_BEGIN const uint8_t music[] __ALIGN_END =
 0x9a, 0x7f, 0xa5, 0x7f, 0xa5, 0x15, 0xb2, 0x15, 0xb2, 0x01, 0xc0, 0x01, 0xc0, 0x05, 0xcf, 0x05, 0xcf, 0xe0, 0xde, 
 0xe0, 0xde, 0x4c, 0xef, 0x4c, 0xef,
 };
+
 #endif
