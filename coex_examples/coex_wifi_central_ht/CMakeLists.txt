@@ -25,7 +25,7 @@ mcux_add_source(
   SOURCES examples/coex_examples/coex_wifi_central_ht/main.c
           examples/edgefast_bluetooth_examples/central_ht/central_ht.c
           examples/edgefast_bluetooth_examples/central_ht/central_ht.h
-          examples_int/coex_examples/coex_wifi_ble/src/controller_coex_nxp.c
+          middleware/wireless/coex/src/common/controller_coex_nxp.c
           middleware/wireless/coex/src/cli/coex_cli.c
           middleware/wireless/coex/src/cli/coex_cli.h
           middleware/wireless/coex/src/coex_pm/coex_pm.c
