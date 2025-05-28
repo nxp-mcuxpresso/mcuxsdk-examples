@@ -11,46 +11,65 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_POWER_MODE_NAME {"Active", "Sleep", "Deep Sleep", \
-                              "Power Down1", "Power Down2", \
-                              "Deep Power Down1", "Deep Power Down2", \
-                              "Deep Power Down3", "Shut Down"}
-#define DEMO_POWER_MODE_DESC { \
-      "Active: All power domains active", \
-      "Sleep:" ,\
-      "Deep Sleep: CM33 is off but the power and state of all registers are kept alive. Power consumption: 44uA ", \
-      "Power Down 1:", \
-      "Power Down 2:", \
-      "Deep Power Down 1: CM33 complete sub clusters is power off, AON domain is active. Power consumption: 13uA ", \
-      "Deep Power Down 2: Main domain is powered off, the AON subsystem is power off and the AON ADVC block is active. Power consumption: 7uA", \
-      "Deep Power Down 3: Both the AON and Main domain are powered off, only RTC and PMU analog control are alive.", \
-      "Shut Down: All blocks including CPU subsystems, AON and RTC are off and only the PAC is active."   \
-}
-#define DEMO_USER_DATA  (0xAU)
+#define DEMO_POWER_MODE_NAME                    \
+    {                                           \
+        "Active",           "Sleep",            \
+        "Deep Sleep",       "Power Down1",      \
+        "Power Down2",      "Deep Power Down1", \
+        "Deep Power Down2", "Deep Power Down3", \
+        "Shut Down"}
+#define DEMO_POWER_MODE_TRANS                                                               \
+    {                                                                                       \
+        "Active --> Sleep --> Active",                                                      \
+        "Active --> Deep Sleep --> Active",                                                 \
+        "Active --> Power Down1 --> Active",                                                \
+        "Active --> Power Down2 --> Active",                                                \
+        "Active --> Deep Power Down1 --> Active",                                           \
+        "Active --> Deep Power Down1 --> Deep Power Down2 --> Deep Power Down1 --> Active", \
+        "Active --> Deep Power Down1 --> Deep Power Down2 --> Active",                      \
+        "Active --> Deep Power Down2 --> Active",                                           \
+        "Active --> Deep Power Down2 --> Deep Power Down1 --> Active",                      \
+        "Active --> Deep Power Down3 --> Active",                                           \
+        "Active --> Shut Down --> Active",                                                  \
+    }
 
-#define DEMO_WAKEUP_REASON      {       \
-      "Deep Power Down1", \
-      "Deep Power Down2", \
-      "Deep Power Down3", \
-      "Shut Down Or POR", \
-}
+#define DEMO_POWER_MODE_DESC             \
+    {"Selected to enter Sleep(1.28mA@VDD_BAT), then wakeup to Active.", \
+      "Selected to enter Deep Sleep(441uA@VDD_BAT), then wakeup to Active. ",\
+      "Selected to enter Power Down1(63uA@VDD_BAT), then wakeup to Active.",   \
+     "Selected to enter Power Down2, then wakeup to Active.", \
+      "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT), then wakeup to Active.", \
+      "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to enter DPD2(All PLS SRAM retained, 9uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, press SW2 back to Active.",  \
+     "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to enter DPD2(No PLS SRAM retained, 5uA@VDD_BAT), wakeup to Active after 10s later with LPTMR.",  \
+     "Selected to enter DPD2(No PLS SRAM retained, 5uA@VDD_BAT), then wakeup to Active.",   \
+     "Selected to enter DPD2(All PLS SRAM retained, 9uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW2 back to Active.",   \
+     "Selected to enter DPD3(1uA@VDD_BAT).", \
+     "Selected to enter SD(500nA@VDD_BAT)."     \
+    }
 
-#define APP_MU MUA
+#define APP_MU         MUA
 #define APP_MU_CHANNEL (0U)
 
-//#define DEMO_CORE_FREQ_HZ (96000000U)
-//
-//
-//#define DEMO_WAKEUP_PIN_NAME ("SW2")
-//#define DEMO_WAKEUP_PIN_WS_ID (kPower_WS_P1_16FallEdgeInt)
-//
-//#define DEMO_EXT_INT_PIN_NAME ("SW4")
-//#define DEMO_EXT_INT_PIN_WS_ID (kPower_WS_ExternalINTFallEdge)
-//        
-//#define DEMO_DPD1_RETAINED_RAM_BLOCKS   (0x02U)
-//#define DEMO_DPD2_RETAINED_RAM_BLOCKS   (0x02U)
+#define APP_EXT_INT_BUTTON "SW2"
+#define APP_EXT_INT_IRQ    BOARD_SW2_IRQ
+#define APP_EXT_INT_ISR    BOARD_SW2_IRQ_HANDLER
+#define APP_EXT_INT_GPIO   BOARD_SW2_GPIO
+#define APP_EXT_INT_PIN    BOARD_SW2_GPIO_PIN
 
-#define CORE1_BOOT_ADDRESS      (0xA1000000UL)
+#define APP_WAKEUP_BUTTON      BOARD_SW5_NAME /*P1_14*/
+#define APP_WAKEUP_BUTTON_IRQ  BOARD_SW5_IRQ
+#define APP_WAKEUP_BUTTON_ISR  BOARD_SW5_IRQ_HANDLER
+#define APP_WAKEUP_BUTTON_GPIO BOARD_SW5_GPIO
+#define APP_WAKEUP_BUTTON_PIN  BOARD_SW5_GPIO_PIN
+
+#define APP_LPTMR_BASE     AON__LPTMR0
+#define LPTMR_USEC_COUNT   10000000U
+#define LPTMR_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_Fro16k))
+
+#define RTC_ALARM0_TIME_SEC 10U
+#define RTC_ALARM1_TIME_SEC 15U
+
+#define CORE1_BOOT_ADDRESS (0xA1000000UL)
 
 #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
 extern uint32_t Image$$CORE1_REGION$$Base;
@@ -72,7 +91,11 @@ extern int core1_image_size;
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+void APP_InitROSC(void);
 void BOARD_InitHardware(void);
+void BOARD_InitWakeupButtonAsGPIO(void);
+void BOARD_InitWakeupButtonAsWUUPin(void);
+void BOARD_InitExtIntButtonAsGPIO(void);
 void APP_BootCore1(void);
 uint32_t get_core1_image_size(void);
 /*${prototype:end}*/

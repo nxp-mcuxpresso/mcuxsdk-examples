@@ -18,6 +18,10 @@ mcux_add_include(
 
 include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_switch/cm0plus/reconfig.cmake OPTIONAL)
 
+mcux_add_linker_symbol(
+    SYMBOLS __use_shmem__=1
+)
+
 mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar
     BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_image.bin

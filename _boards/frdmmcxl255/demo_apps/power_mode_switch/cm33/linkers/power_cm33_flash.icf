@@ -45,7 +45,7 @@ define symbol m_text_end                       = 0x0001FFFF;
 define symbol m_data_start                     = 0x28002000;
 define symbol m_data_end                       = 0x2801DFFF;
 
-define symbol rpmsg_sh_mem_start               = 0xA1007000;
+define symbol rpmsg_sh_mem_start               = 0xA1006000;
 define symbol rpmsg_sh_mem_end                 = 0xA1007FFF;
 
 define exported symbol core1_image_start     = 0x000002C8;

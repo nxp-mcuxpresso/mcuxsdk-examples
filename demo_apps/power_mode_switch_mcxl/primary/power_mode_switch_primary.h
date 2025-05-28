@@ -8,24 +8,42 @@
 #define _POWER_MODE_SWITCH
 
 #include "fsl_common.h"
+#include "fsl_power.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-typedef enum _app_power_mode_select
-{
-    kAPP_PowerModeMin = 'A' - 1,
-    kAPP_PowerModeActive,
-    kAPP_PowerModeSleep,
-    kAPP_PowerModeDeepSleep,
-    kAPP_PowerModePowerDown1,
-    kAPP_PowerModePowerDown2,
-    kAPP_PowerModeDeepPowerDown1,
-    kAPP_PowerModeDeepPowerDown2,
-    kAPP_PowerModeDeepPowerDown3,
-    kAPP_PowerModeShutDown,
-    kAPP_PowerModeMax,
-} app_power_mode_select_t;
+#define APP_POWER_TRANS_COUNT 11U
+
+char *const g_modeTransArray[APP_POWER_TRANS_COUNT] = {
+    "Active --> Sleep --> Active",
+    "Active --> Deep Sleep --> Active",
+    "Active --> Power Down1 --> Active",
+    "Active --> Power Down2 --> Active",
+    "Active --> Deep Power Down1 --> Active",
+    "Active --> Deep Power Down1 --> Deep Power Down2 --> Deep Power Down1 --> Active",
+    "Active --> Deep Power Down1 --> Deep Power Down2 --> Active",
+    "Active --> Deep Power Down2 --> Active",
+    "Active --> Deep Power Down2 --> Deep Power Down1 --> Active",
+    "Active --> Deep Power Down3 --> Active",
+    "Active --> Shut Down --> Active",
+};
+uint32_t g_appPowerTrans[APP_POWER_TRANS_COUNT] = {
+    (uint32_t)kPower_Sleep | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+    (uint32_t)kPower_DeepSleep | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+    (uint32_t)kPower_PowerDown1 | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+    (uint32_t)kPower_PowerDown2 | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+    (uint32_t)kPower_DeepPowerDown1 | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+    (uint32_t)kPower_DeepPowerDown1 | (uint32_t)(kPower_DeepPowerDown2 << 4U) |
+        (uint32_t)(kPower_DeepPowerDown1 << 8U) | (uint32_t)(kPower_Active << 12U) | 0xFFFF0000UL,
+    (uint32_t)kPower_DeepPowerDown1 | (uint32_t)(kPower_DeepPowerDown2 << 4U) | (uint32_t)(kPower_Active << 8U) |
+        0xFFFFF000UL,
+    (uint32_t)kPower_DeepPowerDown2 | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+    (uint32_t)kPower_DeepPowerDown2 | (uint32_t)(kPower_DeepPowerDown1 << 4U) | (uint32_t)(kPower_Active << 8U) |
+        0xFFFFF000UL,
+    (uint32_t)kPower_DeepPowerDown3 | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+    (uint32_t)kPower_ShutDown | (uint32_t)(kPower_Active << 4U) | 0xFFFFFF00UL,
+};
 
 /*******************************************************************************
  * Prototypes

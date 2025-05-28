@@ -12,19 +12,123 @@
 #include "app.h"
 #include "fsl_mu.h"
 #include <stdbool.h>
+
+#include "fsl_gpio.h"
+#include "fsl_port.h"
+#include "fsl_power.h"
+
+#include "fsl_lptmr.h"
+
+#include "fsl_debug_console.h"
 /*${header:end}*/
 
 /*${function:start}*/
+
+void BOARD_BootAs2MHzClocks(void)
+{
+    CLOCK_SetupFROAonClocking(2000000U);
+    CLOCK_EnableClock(kCLOCK_GateAonPORT);
+    CLOCK_EnableClock(kCLOCK_GateAonGPIO);
+
+    AON__CGU->CLOCK_DIV |= CGU_CLOCK_DIV_CLK_DIV_EN_MASK;
+    CLOCK_EnableClock(kCLOCK_GateAonAPB);
+
+#if APP_ENABLE_DEBUG_LOG
+    AON__CGU->CLOCK_DIV |= 1UL << 1UL;
+    CLOCK_EnableClock(kCLOCK_GateAonUART);
+#endif
+
+    SystemCoreClock = 2000000U;
+}
+
+void BOARD_InitTamper_ButtonPins(void)
+{
+    /* GPIO0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateAonGPIO);
+    /* PORT0: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateAonPORT);
+    const port_pin_config_t port0_4_config = {/* Internal pull-up/down resistor is disabled */
+                                              kPORT_PullUp,
+                                              /* Low internal pull resistor value is selected. */
+                                              kPORT_HighPullResistor,
+                                              /* Fast slew rate is configured */
+                                              kPORT_FastSlewRate,
+                                              /* Passive input filter is disabled */
+                                              kPORT_PassiveFilterDisable,
+                                              /* Open drain output is disabled */
+                                              kPORT_OpenDrainDisable,
+                                              /* Low drive strength is configured */
+                                              kPORT_LowDriveStrength,
+                                              /* Normal drive strength is configured */
+                                              kPORT_NormalDriveStrength,
+                                              /* Pin is configured as GPIO */
+                                              kPORT_MuxAlt0,
+                                              /* Digital input enabled */
+                                              kPORT_InputBufferEnable,
+                                              /* Digital input is not inverted */
+                                              kPORT_InputNormal,
+                                              /* Pin Control Register fields [15:0] are not locked */
+                                              kPORT_UnlockRegister};
+
+    PORT_SetPinConfig(AON__PORT0, 4U, &port0_4_config);
+}
+
+void BOARD_DeinitTamper_ButtonPins(void)
+{
+    CLOCK_DisableClock(kCLOCK_GateAonGPIO);
+    CLOCK_DisableClock(kCLOCK_GateAonPORT);
+}
+
 void BOARD_InitHardware(void)
 {
-    BOARD_InitBootClocks();
+    BOARD_BootAs2MHzClocks();
     BOARD_InitSWD_DEBUGPins();
+#if APP_ENABLE_DEBUG_LOG
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
-    
-    
-    EnableIRQ(MU_B_RX_IRQn);
-    /* Enable transmit and receive interrupt */
-    MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable | kMU_Tx3EmptyInterruptEnable));
+#endif
+    const port_pin_config_t portCconfig = {/* Internal pull-up/down resistor is disabled */
+                                           kPORT_PullDown,
+                                           /* Low internal pull resistor value is selected. */
+                                           kPORT_HighPullResistor,
+                                           /* Fast slew rate is configured */
+                                           kPORT_FastSlewRate,
+                                           /* Passive input filter is disabled */
+                                           kPORT_PassiveFilterDisable,
+                                           /* Open drain output is disabled */
+                                           kPORT_OpenDrainDisable,
+                                           /* Low drive strength is configured */
+                                           kPORT_LowDriveStrength,
+                                           /* Normal drive strength is configured */
+                                           kPORT_NormalDriveStrength,
+                                           /* Pin is configured as LPUART_TXD */
+                                           kPORT_MuxAlt0,
+                                           /* Digital input enabled */
+                                           kPORT_InputBufferDisable,
+                                           /* Digital input is not inverted */
+                                           kPORT_InputNormal,
+                                           /* Pin Control Register fields [15:0] are not locked */
+                                           kPORT_UnlockRegister};
+    PORT_SetPinConfig(AON__PORT0, 0U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 1U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 2U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 3U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 4U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 5U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 8U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 9U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 10U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 11U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 12U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 13U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 14U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 15U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 16U, &portCconfig);
+    PORT_SetPinConfig(AON__PORT0, 17U, &portCconfig);
+    Power_ClearLpPowerSettings();
+
+    EnableIRQ(SMM_EXT_IRQn);
+
+    AON__SMM->PWDN_CONFIG &= ~SMM_PWDN_CONFIG_Q_TMT_EN_MASK;
 }
 /*${function:end}*/

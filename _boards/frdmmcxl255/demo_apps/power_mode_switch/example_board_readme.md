@@ -6,7 +6,9 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+1. Connect pin 9(RX) and pin 11(TX) of J8 to a serial port adapter to enable the UART function of the AON domain.
+2. The data of power consumption is measured on JP4(VDD_BAT).
+
 
 Prepare the Demo
 ===============
@@ -26,22 +28,27 @@ Running the demo
 when running the demo, the debug console shows the menu to command the MCU to the target power mode.
 
 ~~~~~~~~~~~~~~~~~~~~~
+
 ###########################  Power Mode Switch Demo Primary Core Boot  ###########################
 Normal Boot......
 Core Clock Frequency: 96000000
-Copy Secondary core image to address: 0xa1000000, size: 7720
+Reset Reasons: 6
+Copy Secondary core image to address: 0xa1000000, size: 11428
+Start to communication with secondary core...
 
 Select the desired operation...
-        Press A to enter: Active mode
-        Press B to enter: Sleep mode
-        Press C to enter: Deep Sleep mode
-        Press D to enter: Power Down1 mode
-        Press E to enter: Power Down2 mode
-        Press F to enter: Deep Power Down1 mode
-        Press G to enter: Deep Power Down2 mode
-        Press H to enter: Deep Power Down3 mode
-        Press I to enter: Shut Down mode
+        Press A to start transition: Active --> Sleep --> Active
+        Press B to start transition: Active --> Deep Sleep --> Active
+        Press C to start transition: Active --> Power Down1 --> Active
+        Press D to start transition: Active --> Power Down2 --> Active
+        Press E to start transition: Active --> Deep Power Down1 --> Active
+        Press F to start transition: Active --> Deep Power Down1 --> Deep Power Down2 --> Deep Power Down1 --> Active
+        Press G to start transition: Active --> Deep Power Down1 --> Deep Power Down2 --> Active
+        Press H to start transition: Active --> Deep Power Down2 --> Active
+        Press I to start transition: Active --> Deep Power Down2 --> Deep Power Down1 --> Active
+        Press J to start transition: Active --> Deep Power Down3 --> Active
+        Press K to start transition: Active --> Shut Down --> Active
 
-Waiting for power mode select...
+Waiting for selecting power transition...
 
 ~~~~~~~~~~~~~~~~~~~~~

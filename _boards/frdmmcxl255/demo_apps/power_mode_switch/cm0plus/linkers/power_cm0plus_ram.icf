@@ -39,10 +39,17 @@ define symbol m_interrupts_start               = 0x00000000;
 define symbol m_interrupts_end                 = 0x000000BF;
 
 define symbol m_text_start                     = 0x000000C0;
-define symbol m_text_end                       = 0x00005FFF;
+define symbol m_text_end                       = 0x00004FFF;
 
-define symbol m_data_start                     = 0x00006000;
-define symbol m_data_end                       = 0x00006FFF;
+if (isdefinedsymbol(__use_shmem__)) {
+  define symbol m_data_start                     = 0x00005000;
+  define symbol m_data_end                       = 0x00005FFF;
+  define exported symbol rpmsg_sh_mem_start      = 0x00006000;
+  define exported symbol rpmsg_sh_mem_end        = 0x00007FFF;
+} else {
+  define symbol m_data_start                     = 0x00005000;
+  define symbol m_data_end                       = 0x00007FFF;
+}
 
 define memory mem with size = 4G;
 
@@ -68,6 +75,9 @@ if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
   initialize by copy with packing = none { section __DLIB_PERTHREAD };
 }
 
+if (isdefinedsymbol(__use_shmem__)) {
+  do not initialize  { section rpmsg_sh_mem_section };
+}
 
 place at address mem: m_interrupts_start    { readonly section .intvec };
 place in TEXT_region                        { readonly };
@@ -76,5 +86,7 @@ place in DATA_region                        { block ZI };
 place in DATA_region                        { last block HEAP };
 place in CSTACK_region                      { block CSTACK };
 
-
+if (isdefinedsymbol(__use_shmem__)) {
+  place in rpmsg_sh_mem_region                { section rpmsg_sh_mem_section };
+}
 
