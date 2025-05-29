@@ -32,6 +32,12 @@ void BOARD_InitHardware(void)
 {
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+#if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
+    CLOCK_AttachClk(kRC32K_to_CLK32K);
+#else
+    CLOCK_EnableXtal32K(true);
+    CLOCK_AttachClk(kXTAL32K_to_CLK32K);
+#endif
     BOARD_InitDebugConsole();
     BOARD_InitSleepPinConfig();
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))

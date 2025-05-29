@@ -14,4 +14,12 @@
 #if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0)
 /* Defines the low power mode of BLE host when scanning and connecting */
 #define APP_LOW_POWER_MODE      PWR_PowerDown
+
+/* On RD-RW612-BGA boards, the Xtal32k is present and connected by default
+ * so we use it by default. If an hardware rework done on the board disconnects
+ * the Xtal32k, this flag should be set to 1 to fall back to the Fro32k */
+#ifndef gBoardUseFro32k_d
+#define gBoardUseFro32k_d 0
+#endif
+
 #endif
