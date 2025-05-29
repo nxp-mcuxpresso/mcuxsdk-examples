@@ -452,10 +452,14 @@ static void APP_SRTM_InitAudioService(void)
 
     /*  Set IRQ Priorities. */
     NVIC_SetPriority(APP_SRTM_IRQSTEER_DMA, APP_IRQSTEER_DMA_IRQ_PRIO);
-    NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_TX_DMA_CHANNEL), APP_SAI_TX_DMA_IRQ_PRIO);
-    NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_RX_DMA_CHANNEL), APP_SAI_RX_DMA_IRQ_PRIO);
+    /*
+     * a. The edma(edma1) interrupt is from irqsteer(interrupt extend controller) for cm7 core0/cm7 core1.
+     * b. The irqsteer doesn't support to setup priority.
+     */
+    //NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_TX_DMA_CHANNEL), APP_SAI_TX_DMA_IRQ_PRIO);
+    //NVIC_SetPriority(APP_DMA_IRQN(APP_SAI_RX_DMA_CHANNEL), APP_SAI_RX_DMA_IRQ_PRIO);
     NVIC_SetPriority(APP_SRTM_SAI_IRQn, APP_SAI_IRQ_PRIO);
-    NVIC_SetPriority(APP_DMA_IRQN(APP_PDM_RX_DMA_CHANNEL), APP_PDM_DMA_IRQ_PRIO);
+    //NVIC_SetPriority(APP_DMA_IRQN(APP_PDM_RX_DMA_CHANNEL), APP_PDM_DMA_IRQ_PRIO);
 
     /* Create SAI EDMA adapter */
     SAI_GetClassicI2SConfig(&saiTxConfig.config, kSAI_WordWidth16bits, kSAI_Stereo, kSAI_Channel0Mask);

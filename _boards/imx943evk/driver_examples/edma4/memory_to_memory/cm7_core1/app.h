@@ -17,7 +17,6 @@
 #define DEMO_DMA_CHANNEL_0   0U
 #define APP_DMA_IRQ            EDMA2_CH0_IRQn
 #define APP_DMA_IRQ_HANDLER  EDMA2_CH0_IRQHandler
-#define BUFFER_LENGTH 4U
 /*${macro:end}*/
 
 /*******************************************************************************

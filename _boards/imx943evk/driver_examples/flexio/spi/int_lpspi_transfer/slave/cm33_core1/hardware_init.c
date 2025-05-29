@@ -27,12 +27,6 @@ void BOARD_InitHardware(void)
         .rate = 24000000UL,
     };
 
-    clk_t lpi2cClkCfg = {
-        .clkId = kCLOCK_Lpi2c2,
-        .pclkId = kCLOCK_Osc24m,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 24000000UL,
-    };
     /* clang-format on */
 
     SystemPlatformInit();

@@ -123,6 +123,7 @@ static void APP_BuildBroadCastFrame(uint32_t dstPort, uint32_t srcPort)
 static status_t APP_ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame_info_t *frameInfo, void *userData)
 {
     txFrameInfo = *frameInfo;
+    (void)txFrameInfo;
     return kStatus_Success;
 }
 

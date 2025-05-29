@@ -37,7 +37,6 @@ static phy_handle_t s_phy_handle[EXAMPLE_PORT_NUM];
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    uint32_t st = SCMI_POWER_DOMAIN_STATE_OFF;
 
     /* clang-format off */
     /* busNetcMixClk 133MHz */
@@ -131,9 +130,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     POWER_SetState(&pwrst);
-    st = POWER_GetState(&pwrst);
-    assert(st == SCMI_POWER_DOMAIN_STATE_ON);
-    (void)st;
+    assert(POWER_GetState(&pwrst) == SCMI_POWER_DOMAIN_STATE_ON);
 
     CLOCK_SetParent(&busmixClk);
     CLOCK_SetRate(&busmixClk);
@@ -321,6 +318,7 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
     return NETC_MDIORead(&s_emdio_handle, phyAddr, regAddr, pData);
 }
 
+#if defined(EXAMPLE_USE_PHY_GPY215)
 static status_t APP_EMDIOC45Write(uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t data)
 {
     SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
@@ -332,6 +330,7 @@ static status_t APP_EMDIOC45Read(uint8_t portAddr, uint8_t devAddr, uint16_t reg
     SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     return NETC_MDIOC45Read(&s_emdio_handle, portAddr, devAddr, regAddr, pData);
 }
+#endif
 
 status_t APP_PHY_Init(void)
 {
