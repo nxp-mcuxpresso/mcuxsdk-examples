@@ -5,6 +5,7 @@ mcux_add_source(
 	    ${board_root}/${board}/srtm_config.h
             middleware/multicore/remoteproc/remoteproc.h
             ${board_root}/${board}/eiq_examples/ethosu/ethosu_apps_rpmsg/FreeRTOSConfig.h
+            ${board_root}/${board}/eiq_examples/ethosu/ethosu_apps_rpmsg/rpmsg_config.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 mcux_add_include(
