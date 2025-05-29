@@ -89,9 +89,10 @@
 #define CONFIG_OT_CLI 0 // needs to define CONFIG_OT_CLI with value, 0 for disable OT, 1 for enable OT
 #endif
 
-#include "coex_pm.h"
+#include "coex_lpm.h"
 #include "coex_cli.h"
 #include "central_ht.h"
+#include "host_sleep.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -137,6 +138,10 @@ void task_main(void *param)
     PRINTF("     Initialize Nighthwak-2LL (IW610) M2 Module\r\n");
 #endif
     printSeparator();
+
+#if CONFIG_POWER_MANAGER
+    coex_LowPowerInit();
+#endif
 
 #if CONFIG_COEX_ENABLE_MENU
     coex_cli_init();

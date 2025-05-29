@@ -28,8 +28,10 @@ mcux_add_source(
           middleware/wireless/coex/src/common/controller_coex_nxp.c
           middleware/wireless/coex/src/cli/coex_cli.c
           middleware/wireless/coex/src/cli/coex_cli.h
-          middleware/wireless/coex/src/coex_pm/coex_pm.c
-          middleware/wireless/coex/src/coex_pm/coex_pm.h
+          middleware/wireless/coex/src/coex_pm/coex_lpm.c
+          middleware/wireless/coex/src/coex_pm/coex_lpm.h
+          middleware/wireless/coex/src/coex_pm/host_sleep.c
+          middleware/wireless/coex/src/coex_pm/host_sleep.h
 )
 
 mcux_add_include(
