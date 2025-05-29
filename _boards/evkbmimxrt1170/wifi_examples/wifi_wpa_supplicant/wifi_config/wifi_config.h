@@ -13,10 +13,6 @@
 #define CONFIG_IPV6 1
 #define CONFIG_MAX_IPV6_ADDRESSES 3
 
-#if defined(IW610)
-#define CONFIG_WPA_SUPP_P2P 1
-#endif
-
 #if defined(SD9177) || defined(IW610)
 #define CONFIG_WMM 1
 #define CONFIG_SDIO_MULTI_PORT_TX_AGGR 1
