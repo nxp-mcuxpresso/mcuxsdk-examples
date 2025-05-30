@@ -12,13 +12,13 @@ mcux_add_source(
             ${board_root}/${board}/wifi_examples/common/host_sleep.h
             ${board_root}/${board}/wifi_examples/common/lpm.c
             ${board_root}/${board}/wifi_examples/common/lpm.h
-            ${board_root}/${board}/wifi_examples/wifi_cli/lwipopts.h
             ${board_root}/${board}/wifi_examples/common/pin_mux.c
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
-            middleware/wifi_nxp/example/wifi_cli/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_cli/wifi_config/wifi_config.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config/lwippools.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config/lwiphooks.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/freertos_config/FreeRTOSConfig.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/wifi_config/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
             ${board_root}/${board}/wifi_examples/common/./app.h
             ${board_root}/${board}/sdmmc_config.c
@@ -32,9 +32,9 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
              ${board_root}/${board}/wifi_examples/wifi_cli/
-             middleware/wifi_nxp/example/wifi_cli/wifi_config
-             middleware/wifi_nxp/example/wifi_cli/lwip_config
-             middleware/wifi_nxp/example/wifi_cli/freertos_config
+             ${board_root}/${board}/wifi_examples/wifi_cli/wifi_config
+             ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config
+             ${board_root}/${board}/wifi_examples/wifi_cli/freertos_config
 )
 
 
