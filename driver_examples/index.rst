@@ -263,6 +263,7 @@ driver_examples
    rtc/readme.md
    rtc_1/readme.md
    rtc_jdp/readme.md
+   rtc_analog/index.rst
    rtwdog/readme.md
    s3mu/readme.md
    sai/index.rst

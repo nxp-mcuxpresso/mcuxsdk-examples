@@ -1,0 +1,21 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rtc_freerun:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/rtc_analog/freerun
+    project-root-path: boards/${board}/driver_examples/rtc/freerun/${multicore_foldername}
+    document:
+      name: rtc_freerun${core_id_suffix_name}
+      category: driver_examples/rtc
+      brief: The RTC project is a demonstration program of the SDK RTC driver. It sets RTC
+        working on free run mode. It enables both alarm0 and alarm1. Alarm0 works in repeated mode,
+        alarm occurs every 2 seconds. Alarm1 works in single shot mode, alarm occurs in 5th second.
+      example_readme:
+      - examples/driver_examples/rtc_analog/freerun/readme.md
+      - ${board_root}/${board}/driver_examples/rtc/freerun/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm33: []

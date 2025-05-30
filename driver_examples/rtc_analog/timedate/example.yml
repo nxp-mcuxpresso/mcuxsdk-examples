@@ -1,0 +1,23 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+rtc_timedate:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/rtc_analog/timedate
+    project-root-path: boards/${board}/driver_examples/rtc/timedate/${multicore_foldername}
+    document:
+      name: rtc_timedate${core_id_suffix_name}
+      category: driver_examples/rtc
+      brief: The RTC project is a demonstration program of the SDK RTC driver working on time date mode. 
+        The program sets the time and date, watchdog and tamper. 3 alarms are enabled, alarm0 is single shot,
+        alarm1 and alarm2 are repeated. In the alarm interrupt handler, the watchdog is fed. When a tamper occurs,
+        the system will be reset, the time stamp of tamper will log out and the prestore security key will be erased
+        and log out.
+      example_readme:
+      - examples/driver_examples/rtc_analog/timedate/readme.md
+      - ${board_root}/${board}/driver_examples/rtc/timedate/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxl255@cm33: []
