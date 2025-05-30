@@ -6,8 +6,8 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwipopts.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwippools.h
+    SOURCES ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config/lwippools.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/mfg_wlan_bt_fw.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart8987_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartIW416_mfg_wlan_bt.h
@@ -16,8 +16,8 @@ mcux_add_source(
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sd_iw610_mfg_se.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartspi_iw610_mfg_se.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/uartspi_iw610_mfg_se.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config/wifi_config.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/wifi_config/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/${core_id}/hardware_init.c
             ${board_root}/${board}/wifi_examples/common/${core_id}/app.h
             ${board_root}/${board}/sdmmc_config.c
@@ -31,10 +31,10 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/uart_wifi_bridge
              middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware
-             middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/wifi_config
              ${board_root}/${board}/wifi_examples/common/${core_id}
-             middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config
-             middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/freertos_config
              ${board_root}/${board}
 )
 
