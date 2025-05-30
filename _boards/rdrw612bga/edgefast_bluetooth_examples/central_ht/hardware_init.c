@@ -19,6 +19,13 @@
 #endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
+/* On RD-RW612-BGA boards, the Xtal32k is present and connected by default
+ * so we use it by default. If an hardware rework done on the board disconnects
+ * the Xtal32k, this flag should be set to 1 to fall back to the Fro32k */
+#ifndef gBoardUseFro32k_d
+#define gBoardUseFro32k_d 0
+#endif
+
 /*${function:start}*/
 #if defined(__GIC_PRIO_BITS)
 #define USB_HOST_INTERRUPT_PRIORITY (25U)
