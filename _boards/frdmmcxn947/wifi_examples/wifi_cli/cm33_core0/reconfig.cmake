@@ -6,15 +6,15 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/wifi_examples/wifi_cli/wifi_config.h
+    SOURCES ${board_root}/${board}/wifi_examples/wifi_cli/wifi_config/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/pin_mux.c
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
             ${board_root}/${board}/wifi_examples/common/host_sleep.c
             ${board_root}/${board}/wifi_examples/common/host_sleep.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwiphooks.h
-            middleware/wifi_nxp/example/wifi_cli/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_cli/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config/lwippools.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config/lwiphooks.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/freertos_config/FreeRTOSConfig.h
+            ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config/lwipopts.h
             ${board_root}/${board}/wifi_examples/wifi_cli/${core_id}/hardware_init.c
             ${board_root}/${board}/wifi_examples/wifi_cli/${core_id}/app.h
             ${board_root}/${board}/sdmmc_config.c
@@ -29,11 +29,11 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/wifi_cli
              ${board_root}/${board}/wifi_examples/common
-             middleware/wifi_nxp/example/wifi_cli/wifi_config
+             ${board_root}/${board}/wifi_examples/wifi_cli/wifi_config
              ${board_root}/${board}/wifi_examples/wifi_cli/${core_id}
              ${board_root}/${board}/wifi_examples/common/app_config
-             middleware/wifi_nxp/example/wifi_cli/lwip_config
-             middleware/wifi_nxp/example/wifi_cli/freertos_config
+             ${board_root}/${board}/wifi_examples/wifi_cli/lwip_config
+             ${board_root}/${board}/wifi_examples/wifi_cli/freertos_config
 )
 
 mcux_add_armgcc_configuration(
