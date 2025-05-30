@@ -2,6 +2,7 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES middleware/vglite/vglite_sdk/example/toolkit_freertos/svgt12_test.h
+            middleware/vglite/vglite_sdk/example/toolkit_freertos/qoi.h
             middleware/vglite/vglite_sdk/example/vglite_layer/vglite_layer.h
             middleware/vglite/vglite_sdk/example/vglite_layer/vglite_layer.c
             middleware/vglite/vglite_sdk/example/vglite_window/vglite_window.h
