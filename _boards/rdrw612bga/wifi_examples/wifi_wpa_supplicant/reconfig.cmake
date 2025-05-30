@@ -20,17 +20,17 @@ mcux_add_source(
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
             ${board_root}/${board}/wifi_examples/common/./app.h
             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/hardware_init.c
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwippools.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwiphooks.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
-            middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwippools.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwiphooks.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config/FreeRTOSConfig.h
+            ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config/lwipopts.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     PREINCLUDE TRUE
-    SOURCES middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config/wifi_config.h
+    SOURCES ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config/wifi_config.h
 )
 
 mcux_add_include(
@@ -38,9 +38,9 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/wifi_examples/common/lpm/
              middleware/wifi_nxp/example/common/usb/usb_host_msd
              ${board_root}/${board}/wifi_examples/common
-             middleware/wifi_nxp/example/wifi_wpa_supplicant/wifi_config
-             middleware/wifi_nxp/example/wifi_wpa_supplicant/lwip_config
-             middleware/wifi_nxp/example/wifi_wpa_supplicant/freertos_config
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/wifi_config
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/lwip_config
+             ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant/freertos_config
              ${board_root}/${board}/wifi_examples/wifi_wpa_supplicant
 )
 

@@ -6,9 +6,9 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/wifi_cert/lwip_config/lwipopts.h
-            middleware/wifi_nxp/example/wifi_cert/lwip_config/lwippools.h
-            middleware/wifi_nxp/example/wifi_cert/freertos_config/FreeRTOSConfig.h
+    SOURCES ${board_root}/${board}/wifi_examples/wifi_cert/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/wifi_cert/lwip_config/lwippools.h
+            ${board_root}/${board}/wifi_examples/wifi_cert/freertos_config/FreeRTOSConfig.h
             ${board_root}/${board}/wifi_examples/common/pin_mux.c
             ${board_root}/${board}/wifi_examples/common/pin_mux.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
@@ -19,15 +19,15 @@ mcux_add_source(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     PREINCLUDE TRUE
-    SOURCES middleware/wifi_nxp/example/wifi_cert/wifi_config/wifi_config.h
+    SOURCES ${board_root}/${board}/wifi_examples/wifi_cert/wifi_config/wifi_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
-             middleware/wifi_nxp/example/wifi_cert/wifi_config
-             middleware/wifi_nxp/example/wifi_cert/lwip_config
-             middleware/wifi_nxp/example/wifi_cert/freertos_config
+             ${board_root}/${board}/wifi_examples/wifi_cert/wifi_config
+             ${board_root}/${board}/wifi_examples/wifi_cert/lwip_config
+             ${board_root}/${board}/wifi_examples/wifi_cert/freertos_config
 )
 
 mcux_add_mdk_configuration(

@@ -6,13 +6,13 @@
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwipopts.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config/lwippools.h
+    SOURCES ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config/lwipopts.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config/lwippools.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/mfg_wlan_bt_fw.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart8987_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartIW416_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart_nw61x_mfg_se.h
-            middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
+            ${board_root}/${board}/wifi_examples/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
             ${board_root}/${board}/wifi_examples/common/./app.h
             ${board_root}/${board}/FreeRTOSConfigBoard.h
@@ -21,16 +21,16 @@ mcux_add_source(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     PREINCLUDE TRUE
-    SOURCES middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config/wifi_config.h
+    SOURCES ${board_root}/${board}/wifi_examples/uart_wifi_bridge/wifi_config/wifi_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/wifi_examples/common
-             middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/wifi_config
              middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware
-             middleware/wifi_nxp/example/uart_wifi_bridge/lwip_config
-             middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/lwip_config
+             ${board_root}/${board}/wifi_examples/uart_wifi_bridge/freertos_config
 )
 
 mcux_add_mdk_configuration(
