@@ -11,9 +11,10 @@ dsp_examples
    hello_world_usart/readme.md
    mu_interrupt/readme.md
    mu_polling/readme.md
-   naturedsp/readme.md
    pdm_sai/readme.md
    sema42/readme.md
-   xaf_playback/readme.md
-   xaf_record/readme.md
-   xaf_usb_demo/readme.md
+   ../../middleware/cadence/multicore-xaf/doc/xaf_playback.md
+   ../../middleware/cadence/multicore-xaf/doc/xaf_record.md
+   ../../middleware/cadence/multicore-xaf/doc/xaf_usb.md
+   ../../examples_int/dsp_examples/naturedsp/readme.md
+   ../../examples_int/dsp_examples/voice_spot_demo/readme.md

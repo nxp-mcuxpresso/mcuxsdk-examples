@@ -7,8 +7,8 @@ audio_examples
    :maxdepth: 1
 
 
-   maestro_playback/readme.md
-   maestro_record/readme.md
-   maestro_sync/readme.md
-   maestro_usb_mic/readme.md
-   maestro_usb_speaker/readme.md
+   ../../middleware/audio_voice/maestro/doxygen/maestro_playback.md
+   ../../middleware/audio_voice/maestro/doxygen/maestro_record.md
+   ../../middleware/audio_voice/maestro/doxygen/maestro_sync.md
+   ../../middleware/audio_voice/maestro/doxygen/maestro_usb_mic.md
+   ../../middleware/audio_voice/maestro/doxygen/maestro_usb_speaker.md
