@@ -25,8 +25,7 @@ Prepare the Demo
 
 Running the demo
 ================
-When the example runs successfully, you can see the similar information from the terminal as below but you can't see LED toggled on the board
-because there is no led connected on the MCIMX7ULP-EVK board .
+When the example runs successfully, you can see the similar information from the terminal as below.
 
 ~~~~~~~~~~~~~~~~~~~~~
 Starting channel No.0 ...

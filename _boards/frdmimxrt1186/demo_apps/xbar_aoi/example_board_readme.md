@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-Please note that the input voltage to the CMP1_IN1(J45-13) should in the range of 0V to 1.8V.
+Please note that the input voltage to the CMP1_IN1(J52-13) should in the range of 0V to 1.8V.
 
 Prepare the Demo
 ===============
@@ -22,14 +22,14 @@ Prepare the Demo
 
 Running the demo
 ================
-If CMP1_IN1 (J45-13) connected to the input voltage that in the range of 0.9V to 1.8V then the XBAR interrupt will start.
-If CMP1_IN1 (J45-13) connected to the input voltage that in the range of 0V to 0.9V then XBAR interrupt will stop.
+If CMP1_IN1 (J52-13) connected to the input voltage that in the range of 0.9V to 1.8V then the XBAR interrupt will start.
+If CMP1_IN1 (J52-13) connected to the input voltage that in the range of 0V to 0.9V then XBAR interrupt will stop.
 The log below shows the output of the xbar aoi demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 XBAR and AOI Demo: Start...
 
 Then change CMP analog input.
-    - CMP1_IN1 (J45-13) connected to the input voltage that in the range of(0.9V to 1.8V): XBAR interrupt started
+    - CMP1_IN1 (J52-13) connected to the input voltage that in the range of(0.9V to 1.8V): XBAR interrupt started
 
 XBAR interrupt occurred
 

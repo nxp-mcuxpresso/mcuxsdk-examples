@@ -6,6 +6,7 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper R307 from 1-2 to 1-3, Jumper R317 from 1-2 to 1-3.
 SPI one board:
 Transfer data from one board instance to another board's instance.
 SPI4 pins are connected with SPI4 pins of another board

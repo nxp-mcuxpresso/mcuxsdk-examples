@@ -1,20 +1,21 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- Two FRDM-IMXRT1186 board
+- Two FRDM-IMXRT1186 boards
 - Personal Computer
 
 Board settings
 ============
+Change Jumper J31 from 1-2 to 2-3, Jumper J35 from 1-2 to 2-3.
 LPI2C one board:
   + Transfer data from MASTER_BOARD to SLAVE_BOARD of LPI2C interface, LPI2C3 pins of MASTER_BOARD are connected with
     LPI2C3 pins of SLAVE_BOARD
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MASTER_BOARD        CONNECTS TO         SLAVE_BOARD
 Pin Name     Board Location     Pin Name     Board Location
-LPI2C3_SCL   J2-18              LPI2C3_SCL    J2-18
-LPI2C3_SDA   J2-20              LPI2C3_SDA    J2-20
-GND          J2-14              GND           J2-14
+LPI2C3_SCL   J51-12              LPI2C3_SCL    J51-12
+LPI2C3_SDA   J51-10              LPI2C3_SDA    J51-10
+GND          J51-1               GND           J51-1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

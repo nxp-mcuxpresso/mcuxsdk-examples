@@ -7,7 +7,7 @@ Hardware requirements
 
 Board settings
 ============
-- Connect J10 pin 1-2.
+- Connect J37 pin 1-2.
 
 Prepare the Demo
 ===============

@@ -6,6 +6,7 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper J28, J31, J32, J35 from 1-2 to 2-3. 
 Matrix and Jumper settings for KPP:
 
 row5  <----->   J51 #4 (AD_16)

@@ -6,11 +6,13 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper J31 from 1-2 to 2-3, Jumper J35 from 1-2 to 2-3.
+Change Jumper R112 from 1-2 to 1-3, Jumper R334 from 1-2 to 1-3.
 To make this example work, connections needed to be as follows:
 
     FLEXIO_I2C        connected to  LPI2C2
-SCL     J61-5           -->        J2-18
-SDA     J61-6           -->        J2-20
+SCL     J61-5           -->        J51-12
+SDA     J61-6           -->        J51-10
 
 Prepare the Demo
 ===============

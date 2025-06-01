@@ -30,9 +30,9 @@ extern "C" {
  *
  */
 void BOARD_InitBootPins(void);
- 
- /*!
-  * @brief Configures pin routing and optionally pin electrical features.
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitDEBUG_UARTPins(void);          /* Function assigned for the Cortex-M33 */
@@ -193,6 +193,12 @@ void BOARD_InitADCPins(void);                 /* Function assigned for the Corte
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
+void BOARD_InitADC_2ndPins(void);             /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
 void BOARD_InitVREFPins(void);                /* Function assigned for the Cortex-M33 */
 
 #define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_XBAR 0x01U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as output */
@@ -283,6 +289,20 @@ void BOARD_InitFLEXSPI_FLRPins(void);         /* Function assigned for the Corte
  *
  */
 void BOARD_InitUSB_PDPins(void);              /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitUSB_PDI2CPins(void);           /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief This is a de-initialization function for 'BOARD_InitUSB_PDI2CPins' function.
+ * It sets all pins features (routing, direction and electrical) to their after-reset state.
+ * It also tries to route the previous peripheral signals to their default pins.
+ *
+ */
+void BOARD_InitUSB_PDI2CPins_deinit(void);    /* Function assigned for the Cortex-M33 */
 
 #if defined(__cplusplus)
 }

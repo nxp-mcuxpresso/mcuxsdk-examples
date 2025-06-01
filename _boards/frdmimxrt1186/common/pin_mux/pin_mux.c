@@ -31,19 +31,19 @@ pin_labels:
 #include "fsl_iomuxc.h"
 #include "fsl_rgpio.h"
 #include "pin_mux.h"
- 
- /* FUNCTION ************************************************************************************************************
-  * 
-  * Function Name : BOARD_InitBootPins
-  * Description   : Calls initialization functions.
-  * 
-  * END ****************************************************************************************************************/
- void BOARD_InitBootPins(void) {
-     BOARD_InitDEBUG_UARTPins();
- }
- 
- /*
-  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+
+/* FUNCTION ************************************************************************************************************
+ * 
+ * Function Name : BOARD_InitBootPins
+ * Description   : Calls initialization functions.
+ * 
+ * END ****************************************************************************************************************/
+void BOARD_InitBootPins(void) {
+    BOARD_InitDEBUG_UARTPins();
+}
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitDEBUG_UARTPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
@@ -186,8 +186,10 @@ BOARD_InitNETPins:
   - {pin_num: K6, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 1', pin_signal: GPIO_EMC_B2_10}
   - {pin_num: J9, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 2', pin_signal: GPIO_EMC_B2_01}
   - {pin_num: L9, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 3', pin_signal: GPIO_EMC_B2_02}
-  - {pin_num: L6, peripheral: NETC_SWT_ETH0, signal: RX_EN, pin_signal: GPIO_EMC_B2_11}
   - {pin_num: M7, peripheral: NETC_SWT_ETH0, signal: RX_ER, pin_signal: GPIO_EMC_B2_12}
+  - {pin_num: L6, peripheral: NETC_SWT_ETH0, signal: RX_EN, pin_signal: GPIO_EMC_B2_11}
+  - {pin_num: J7, peripheral: NETC_SWT_ETH0, signal: RX_CLK, pin_signal: GPIO_EMC_B2_00}
+  - {pin_num: H1, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 1', pin_signal: GPIO_EMC_B1_26}
   - {pin_num: H3, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 0', pin_signal: GPIO_EMC_B1_27}
   - {pin_num: D5, peripheral: NETC_SWT_ETH2, signal: TX_EN, pin_signal: GPIO_EMC_B1_28}
   - {pin_num: E4, peripheral: NETC_SWT_ETH2, signal: TX_CLK, pin_signal: GPIO_EMC_B1_29}
@@ -258,6 +260,9 @@ void BOARD_InitNETPins(void) {
       IOMUXC_GPIO_AD_31_NETC_EMDIO,           /* GPIO_AD_31 is configured as NETC_EMDIO */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_26_NETC_PINMUX_ETH2_TXD01,  /* GPIO_EMC_B1_26 is configured as NETC_PINMUX_ETH2_TXD01 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B1_27_NETC_PINMUX_ETH2_TXD00,  /* GPIO_EMC_B1_27 is configured as NETC_PINMUX_ETH2_TXD00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
@@ -292,6 +297,9 @@ void BOARD_InitNETPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B1_38_NETC_PINMUX_ETH2_RX_CLK,  /* GPIO_EMC_B1_38 is configured as NETC_PINMUX_ETH2_RX_CLK */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_00_NETC_PINMUX_ETH0_RX_CLK,  /* GPIO_EMC_B2_00 is configured as NETC_PINMUX_ETH0_RX_CLK */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B2_01_NETC_PINMUX_ETH0_RXD02,  /* GPIO_EMC_B2_01 is configured as NETC_PINMUX_ETH0_RXD02 */
@@ -845,8 +853,8 @@ void BOARD_InitEQDCPins(void) {
 BOARD_InitI2CPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M9, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_EMC_B2_19, software_input_on: Enable, pdrv_config: Normal_Driver, open_drain: Enable}
-  - {pin_num: M8, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_EMC_B2_20, software_input_on: Enable, pdrv_config: Normal_Driver, open_drain: Enable}
+  - {pin_num: K13, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Down, open_drain: Enable, drive_strength: Normal}
+  - {pin_num: L12, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Down, open_drain: Enable, drive_strength: Normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -860,21 +868,27 @@ void BOARD_InitI2CPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_19_LPI2C3_SCL,       /* GPIO_EMC_B2_19 is configured as LPI2C3_SCL */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_19 */
+      IOMUXC_GPIO_AD_18_LPI2C3_SCL,           /* GPIO_AD_18 is configured as LPI2C3_SCL */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_18 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_20_LPI2C3_SDA,       /* GPIO_EMC_B2_20 is configured as LPI2C3_SDA */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_20 */
+      IOMUXC_GPIO_AD_19_LPI2C3_SDA,           /* GPIO_AD_19 is configured as LPI2C3_SDA */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_19 */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B2_19_LPI2C3_SCL,       /* GPIO_EMC_B2_19 PAD functional properties : */
-      0x1AU);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: PD
-                                                 Open Drain Field: Enabled */
+      IOMUXC_GPIO_AD_18_LPI2C3_SCL,           /* GPIO_AD_18 PAD functional properties : */
+      0x14U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: normal driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Enabled
+                                                 Force ibe off Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B2_20_LPI2C3_SDA,       /* GPIO_EMC_B2_20 PAD functional properties : */
-      0x1AU);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: PD
-                                                 Open Drain Field: Enabled */
+      IOMUXC_GPIO_AD_19_LPI2C3_SDA,           /* GPIO_AD_19 PAD functional properties : */
+      0x14U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: normal driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Enabled
+                                                 Force ibe off Field: Disabled */
 }
 
 
@@ -889,42 +903,48 @@ void BOARD_InitI2CPins(void) {
 void BOARD_InitI2CPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration on GPIO_EMC_B2_19 (pin M9) */
-  rgpio_pin_config_t gpio3_pinM9_config = {
+  /* GPIO configuration on GPIO_AD_18 (pin K13) */
+  rgpio_pin_config_t gpio4_pinK13_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_EMC_B2_19 (pin M9) */
-  RGPIO_PinInit(RGPIO3, 29U, &gpio3_pinM9_config);
-  /* Configures GPIO pin interrupt/DMA request on GPIO_EMC_B2_19 (pin M9) */
-  RGPIO_SetPinInterruptConfig(RGPIO3, 29U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+  /* Initialize GPIO functionality on GPIO_AD_18 (pin K13) */
+  RGPIO_PinInit(RGPIO4, 18U, &gpio4_pinK13_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_18 (pin K13) */
+  RGPIO_SetPinInterruptConfig(RGPIO4, 18U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
-  /* GPIO configuration on GPIO_EMC_B2_20 (pin M8) */
-  rgpio_pin_config_t gpio3_pinM8_config = {
+  /* GPIO configuration on GPIO_AD_19 (pin L12) */
+  rgpio_pin_config_t gpio4_pinL12_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_EMC_B2_20 (pin M8) */
-  RGPIO_PinInit(RGPIO3, 30U, &gpio3_pinM8_config);
-  /* Configures GPIO pin interrupt/DMA request on GPIO_EMC_B2_20 (pin M8) */
-  RGPIO_SetPinInterruptConfig(RGPIO3, 30U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+  /* Initialize GPIO functionality on GPIO_AD_19 (pin L12) */
+  RGPIO_PinInit(RGPIO4, 19U, &gpio4_pinL12_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_19 (pin L12) */
+  RGPIO_SetPinInterruptConfig(RGPIO4, 19U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_19_GPIO3_IO29,       /* GPIO_EMC_B2_19 is configured as GPIO3_IO29 */
+      IOMUXC_GPIO_AD_18_GPIO4_IO18,           /* GPIO_AD_18 is configured as GPIO4_IO18 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_20_GPIO3_IO30,       /* GPIO_EMC_B2_20 is configured as GPIO3_IO30 */
+      IOMUXC_GPIO_AD_19_GPIO4_IO19,           /* GPIO_AD_19 is configured as GPIO4_IO19 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B2_19_GPIO3_IO29,       /* GPIO_EMC_B2_19 PAD functional properties : */
-      0x08U);                                 /* PDRV Field: high driver
-                                                 Pull Down Pull Up Field: PD
-                                                 Open Drain Field: Disabled */
+      IOMUXC_GPIO_AD_18_GPIO4_IO18,           /* GPIO_AD_18 PAD functional properties : */
+      0x06U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled
+                                                 Force ibe off Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B2_20_GPIO3_IO30,       /* GPIO_EMC_B2_20 PAD functional properties : */
-      0x08U);                                 /* PDRV Field: high driver
-                                                 Pull Down Pull Up Field: PD
-                                                 Open Drain Field: Disabled */
+      IOMUXC_GPIO_AD_19_GPIO4_IO19,           /* GPIO_AD_19 PAD functional properties : */
+      0x06U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled
+                                                 Force ibe off Field: Disabled */
 }
 
 
@@ -951,6 +971,38 @@ void BOARD_InitADCPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_15_GPIO4_IO15,           /* GPIO_AD_15 PAD functional properties : */
+      0x82U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled
+                                                 Force ibe off Field: Enabled */
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitADC_2ndPins:
+- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: M12, peripheral: ADC1, signal: 'A, 1_1', pin_signal: GPIO_AD_14, pull_keeper_select: Keeper, force_ibe_off: Enable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitADC_2ndPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitADC_2ndPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 is configured as GPIO4_IO14 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 PAD functional properties : */
       0x82U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
@@ -1476,6 +1528,96 @@ void BOARD_InitUSB_PDPins(void) {
       IOMUXC_GPIO_EMC_B1_17_GPIO2_IO17,       /* GPIO_EMC_B1_17 PAD functional properties : */
       0x0CU);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: No Pull
+                                                 Open Drain Field: Disabled */
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitUSB_PDI2CPins:
+- options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: M9, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_EMC_B2_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+    open_drain: Enable}
+  - {pin_num: M8, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_EMC_B2_20, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+    open_drain: Enable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitUSB_PDI2CPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitUSB_PDI2CPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_19_LPI2C3_SCL,       /* GPIO_EMC_B2_19 is configured as LPI2C3_SCL */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_19 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_20_LPI2C3_SDA,       /* GPIO_EMC_B2_20 is configured as LPI2C3_SDA */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_20 */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_19_LPI2C3_SCL,       /* GPIO_EMC_B2_19 PAD functional properties : */
+      0x1AU);                                 /* PDRV Field: normal driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Enabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_20_LPI2C3_SDA,       /* GPIO_EMC_B2_20 PAD functional properties : */
+      0x1AU);                                 /* PDRV Field: normal driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Enabled */
+}
+
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitUSB_PDI2CPins_deinit, assigned for the Cortex-M33 core.
+ * Description   : This is a de-initialization function for 'BOARD_InitUSB_PDI2CPins' function.
+ * It sets all pins features (routing, direction and electrical) to their after-reset state.
+ * It also tries to route the previous peripheral signals to their default pins.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitUSB_PDI2CPins_deinit(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  /* GPIO configuration on GPIO_EMC_B2_19 (pin M9) */
+  rgpio_pin_config_t gpio3_pinM9_config = {
+      .pinDirection = kRGPIO_DigitalInput,
+      .outputLogic = 0U,
+  };
+  /* Initialize GPIO functionality on GPIO_EMC_B2_19 (pin M9) */
+  RGPIO_PinInit(RGPIO3, 29U, &gpio3_pinM9_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_EMC_B2_19 (pin M9) */
+  RGPIO_SetPinInterruptConfig(RGPIO3, 29U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+
+  /* GPIO configuration on GPIO_EMC_B2_20 (pin M8) */
+  rgpio_pin_config_t gpio3_pinM8_config = {
+      .pinDirection = kRGPIO_DigitalInput,
+      .outputLogic = 0U,
+  };
+  /* Initialize GPIO functionality on GPIO_EMC_B2_20 (pin M8) */
+  RGPIO_PinInit(RGPIO3, 30U, &gpio3_pinM8_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_EMC_B2_20 (pin M8) */
+  RGPIO_SetPinInterruptConfig(RGPIO3, 30U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_19_GPIO3_IO29,       /* GPIO_EMC_B2_19 is configured as GPIO3_IO29 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B2_20_GPIO3_IO30,       /* GPIO_EMC_B2_20 is configured as GPIO3_IO30 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_19_GPIO3_IO29,       /* GPIO_EMC_B2_19 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B2_20_GPIO3_IO30,       /* GPIO_EMC_B2_20 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
 }
 

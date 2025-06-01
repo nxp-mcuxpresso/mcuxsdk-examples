@@ -6,6 +6,7 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper J27 from 1-2 to 2-3. 
 ADC1_IN1 is ADC input. Please sample voltage by J51-8 pin.
 
 Prepare the Demo

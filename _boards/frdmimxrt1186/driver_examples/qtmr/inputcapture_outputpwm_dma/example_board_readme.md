@@ -7,6 +7,7 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper R297, R299 from 1-2 to 1-3. 
 1. Input PWM signal to J2-18. PWM signal: 0-3.3V, default 1KHz.
 2. Use oscilloscope to monitor the signal at J2-20.
 

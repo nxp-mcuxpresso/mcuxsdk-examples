@@ -5,6 +5,7 @@ Hardware requirements
 - Personal Computer
 
 Board settings
+Change Jumper J27 from 1-2 to 2-3. 
 ============
 - ADC CH1B input signal J51-2(GPIO_AD_15).
 - ADC CH1A input signal J51-8(GPIO_AD_14).

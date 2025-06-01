@@ -6,7 +6,8 @@ Hardware requirements
 
 Board settings
 ============
-Populate R469 and set reset pin as open-drain to complete the PHY hardware reset properly.
+J18(1-2)/J17(2-3): ETH2 Function Via J56B.
+J12(1-2)/J13(2-3): ETH0 Function Via J56A.
 
 Prepare the Demo
 ===============

@@ -40,7 +40,7 @@ void BOARD_InitHardware(void)
     HW_I2CReleaseBus();
     BOARD_InitDebugConsole();
     NVIC_SetPriority(BOARD_UART_IRQ, 5);
-    BOARD_InitI2CPins();
+    BOARD_InitUSB_PDI2CPins();
 }
 
 uint32_t HW_TimerGetFreq(void)
@@ -133,7 +133,7 @@ void HW_I2CReleaseBus(void)
     HAL_GpioDeinit((hal_gpio_handle_t)pdI2cSdaGpio);
 
     /* re-configure pin mux as i2c */
-    BOARD_InitI2CPins();
+    BOARD_InitUSB_PDI2CPins();
 }
 
 /*${function:end}*/

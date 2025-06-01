@@ -6,6 +6,8 @@ Hardware requirements
 
 Board settings
 ==============
+Change Jumper R307 from 1-2 to 1-3, Jumper R317 from 1-2 to 1-3.
+Change Jumper R112 from 1-2 to 1-3, Jumper R334 from 1-2 to 1-3, Jumper R321 from 1-2 to 1-3, Jumper R138 from 1-2 to 1-3.
 To make the example work, connections needed to be as follows:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

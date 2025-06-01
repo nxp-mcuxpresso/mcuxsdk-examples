@@ -6,7 +6,8 @@ Hardware requirements
 
 Board settings
 ============
-Using instance 12 of LPUART interface to transfer data to itself.
+Change Jumper J41 from 1-2 to 2-3, Jumper J43 from 1-2 to 2-3.
+Using instance 1 of LPUART interface to transfer data to itself.
 TX pin is connected with RX pin.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPUART1    CONNECTS TO        LPUART1

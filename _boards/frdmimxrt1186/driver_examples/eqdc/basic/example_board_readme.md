@@ -7,6 +7,7 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper R297 from 1-2 to 1-3, Jumper R299 from 1-2 to 1-3.
 1. For pin connection between board and encoder,
       J2.18 -> kXBAR1_InputRESERVED36 -> kXBAR1_OutputEnc1Phasea -> EQDC_PHA
       J2.20 -> kXBAR1_InputRESERVED37 -> kXBAR1_OutputEnc1Phaseb -> EQDC_PHB
