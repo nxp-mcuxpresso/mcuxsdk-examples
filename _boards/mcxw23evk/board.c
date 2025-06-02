@@ -40,7 +40,7 @@ void BOARD_InitDebugConsole(void)
 
 void BOARD_UninitDebugConsole(void)
 {
-    CLOCK_DisableClock(BOARD_DEBUG_UART_CLKSRC);
+    CLOCK_DisableClock(kCLOCK_FlexComm0);
 }
 
 void BOARD_InitDebugConsole2(void)
@@ -52,7 +52,7 @@ void BOARD_InitDebugConsole2(void)
 
 void BOARD_UninitDebugConsole2(void)
 {
-    CLOCK_DisableClock(BOARD_DEBUG2_UART_CLKSRC);
+    CLOCK_DisableClock(kCLOCK_FlexComm2);
 }
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
