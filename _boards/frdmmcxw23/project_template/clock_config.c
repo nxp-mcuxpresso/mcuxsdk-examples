@@ -254,9 +254,6 @@ void BOARD_BootClockXTAL32M(void)
 
     /*!< Set SystemCoreClock variable. */
     SystemCoreClock = BOARD_BOOTCLOCKXTAL32M_CORE_CLOCK;
-
-    /*!< Disable FRO192M to save power */
-    POWER_PeripheralPowerOff(kPOWERCFG_FRO192M);
 }
 
 /*******************************************************************************
