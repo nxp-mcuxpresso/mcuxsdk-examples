@@ -193,12 +193,6 @@ void BOARD_InitADCPins(void);                 /* Function assigned for the Corte
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitADC_2ndPins(void);             /* Function assigned for the Cortex-M33 */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
 void BOARD_InitVREFPins(void);                /* Function assigned for the Cortex-M33 */
 
 #define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_XBAR 0x01U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as output */

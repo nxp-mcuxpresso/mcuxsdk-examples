@@ -954,6 +954,7 @@ BOARD_InitADCPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: M14, peripheral: ADC1, signal: 'B, 1_1', pin_signal: GPIO_AD_15, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, force_ibe_off: Enable}
+  - {pin_num: M12, peripheral: ADC1, signal: 'A, 1_1', pin_signal: GPIO_AD_14, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, force_ibe_off: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -967,42 +968,21 @@ void BOARD_InitADCPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 is configured as GPIO4_IO14 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_15_GPIO4_IO15,           /* GPIO_AD_15 is configured as GPIO4_IO15 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_15_GPIO4_IO15,           /* GPIO_AD_15 PAD functional properties : */
+      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 PAD functional properties : */
       0x82U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
                                                  Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled
                                                  Force ibe off Field: Enabled */
-}
-
-
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitADC_2ndPins:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
-- pin_list:
-  - {pin_num: M12, peripheral: ADC1, signal: 'A, 1_1', pin_signal: GPIO_AD_14, pull_keeper_select: Keeper, force_ibe_off: Enable}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-
-/* FUNCTION ************************************************************************************************************
- *
- * Function Name : BOARD_InitADC_2ndPins, assigned for the Cortex-M33 core.
- * Description   : Configures pin routing and optionally pin electrical features.
- *
- * END ****************************************************************************************************************/
-void BOARD_InitADC_2ndPins(void) {
-  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
-
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 is configured as GPIO4_IO14 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 PAD functional properties : */
+      IOMUXC_GPIO_AD_15_GPIO4_IO15,           /* GPIO_AD_15 PAD functional properties : */
       0x82U);                                 /* Slew Rate Field: Fast Slew Rate
                                                  Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Disable, Highz
