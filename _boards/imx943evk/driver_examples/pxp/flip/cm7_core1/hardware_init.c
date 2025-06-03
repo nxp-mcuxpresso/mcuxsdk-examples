@@ -15,7 +15,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    uint32_t st = SCMI_POWER_DOMAIN_STATE_OFF;
     /* clang-format off */
     clk_t lpi2cCLKCfg = {
         .clkId = kCLOCK_Lpi2c3,
@@ -51,9 +50,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     POWER_SetState(&pwrst);
-    st = POWER_GetState(&pwrst);
-    assert(st == SCMI_POWER_DOMAIN_STATE_ON);
-    (void)st;
+    assert(POWER_GetState(&pwrst) == SCMI_POWER_DOMAIN_STATE_ON);
 
     CLOCK_SetRate(&lpi2cCLKCfg);
     CLOCK_EnableClock(lpi2cCLKCfg.clkId);
