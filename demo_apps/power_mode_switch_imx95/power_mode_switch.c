@@ -472,9 +472,13 @@ void APP_PowerPreSwitchHook(lpm_power_mode_t targetMode)
      {
          PRINTF("SCMI_CpuPdLpmConfigSet SET FAIL\r\n");
      }
-    /* Disable LMM notification from system manager before M7 enter low power state. */
-    SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
-		SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
+
+    if (s_wakeupSource == kAPP_WakeupSourceSM)
+    {
+	/* Disable LMM notification from system manager before M7 enter low power state. */
+	SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
+			SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
+    }
 }
 
 void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
@@ -539,6 +543,9 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
 
     if (scmiRequestM7IntoSuspend == true)
     {
+        /* Re-enable LMM notification from system manager after M7 exit low power state. */
+        SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(1U) |
+                        SCMI_LMM_NOTIFY_SHUTDOWN(1U) | SCMI_LMM_NOTIFY_SUSPEND(1U) | SCMI_LMM_NOTIFY_WAKE(1U));
         scmiRequestM7IntoSuspend = false;
         /* Resume rtos task, M7 PowerModeSwitch task will resume in getchar() side. */
         xSemaphoreGiveFromISR(s_wakeupSig, NULL);
@@ -558,6 +565,9 @@ static void APP_SuspendTimerCallback(TimerHandle_t xTimer)
     /* Start timer to poll suspend status. */
     if (scmiRequestM7IntoSuspend == true)
     {
+        /* Disable LMM notification from system manager before M7 enter low power state. */
+        SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
+                        SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
         DisableIRQ(MU7_B_IRQn);
         /* Default to no wakeup IRQs */
         uint32_t wakeMask[12] =
