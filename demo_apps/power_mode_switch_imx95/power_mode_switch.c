@@ -472,9 +472,13 @@ void APP_PowerPreSwitchHook(lpm_power_mode_t targetMode)
      {
          PRINTF("SCMI_CpuPdLpmConfigSet SET FAIL\r\n");
      }
-    /* Disable LMM notification from system manager before M7 enter low power state. */
-    SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
-		SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
+
+    if (s_wakeupSource == kAPP_WakeupSourceSM)
+    {
+	/* Disable LMM notification from system manager before M7 enter low power state. */
+	SCMI_LmmNotify(SM_PLATFORM_A2P, SM_PLATFORM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
+			SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
+    }
 }
 
 void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
