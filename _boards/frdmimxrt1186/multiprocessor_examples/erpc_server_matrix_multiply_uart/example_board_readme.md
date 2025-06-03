@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- FRDM-IMXRT1186B board
+- FRDM-IMXRT1186 board
 - Personal Computer
 
 Board settings
