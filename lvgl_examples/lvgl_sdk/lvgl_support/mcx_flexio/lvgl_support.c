@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -10,9 +10,14 @@
 #endif
 
 #include "board.h"
-#include "fsl_gpio.h"
-
 #include "lvgl_support.h"
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+#include "fsl_siul2.h"
+#else
+#include "fsl_gpio.h"
+#include "fsl_port.h"
+#endif
+
 #include "lvgl.h"
 
 #if BOARD_USE_FLEXIO_SMARTDMA
@@ -22,7 +27,6 @@
 #endif
 #include "fsl_flexio_mculcd.h"
 #include "fsl_lpi2c.h"
-#include "fsl_port.h"
 
 #include "fsl_st7796s.h"
 #include "fsl_gt911.h"
@@ -99,12 +103,20 @@ SDK_ALIGN(static uint8_t s_frameBuffer[CONFIG_LVGL_SUPPORT_VDB_COUNT][LCD_VIRTUA
  ******************************************************************************/
 static void DEMO_SetCSPin(bool set)
 {
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, set);
+#else
     GPIO_PinWrite(BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, (uint8_t)set);
+#endif
 }
 
 static void DEMO_SetRSPin(bool set)
 {
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, set);
+#else
     GPIO_PinWrite(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, (uint8_t)set);
+#endif
 }
 
 static void DEMO_DbiMemoryDoneCallback(status_t status, void *userData)
@@ -142,10 +154,70 @@ void DEMO_TouchDelayMs(uint32_t delayMs)
 #if defined(SDK_OS_FREE_RTOS)
     vTaskDelay(pdMS_TO_TICKS(delayMs));
 #else
-    SDK_DelayAtLeastUs(delayMs * 1000, CLOCK_GetCoreSysClkFreq());
+    SDK_DelayAtLeastUs(delayMs * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 #endif
 }
 
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+void DEMO_TouchConfigIntPin(gt911_int_pin_mode_t mode)
+{
+    siul2_pin_settings_t pin_config =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = BOARD_LCD_INT_MSCR,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_NOT_AVAILABLE,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         BOARD_LCD_INT_IMCR
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+
+    switch (mode)
+    {
+        case kGT911_IntPinPullUp:
+            pin_config.pullConfig = kPORT_INTERNAL_PULL_UP_ENABLED;
+            break;
+        case kGT911_IntPinPullDown:
+            pin_config.pullConfig = kPORT_INTERNAL_PULL_DOWN_ENABLED;
+            break;
+        case kGT911_IntPinInput:
+            pin_config.pullConfig = kPORT_INTERNAL_PULL_NOT_ENABLED;
+            break;
+        default:
+            break;
+    };
+    SIUL2_PinInit(&pin_config);
+
+}
+#else
 void DEMO_TouchConfigIntPin(gt911_int_pin_mode_t mode)
 {
     port_pin_config_t int_config = {/* Internal pull-up/down resistor is disabled */
@@ -189,7 +261,7 @@ void DEMO_TouchConfigIntPin(gt911_int_pin_mode_t mode)
 
     PORT_SetPinConfig(BOARD_LCD_INT_PORT, BOARD_LCD_INT_PIN, &int_config);
 }
-
+#endif
 void DEMO_TouchConfigResetPin(bool pullUp)
 {
     /*
@@ -250,11 +322,12 @@ status_t DEMO_InitLcdController(void)
                                             .invertDisplay   = true,
                                             .flipDisplay     = true,
                                             .bgrFilter       = true};
-
+#if !defined(LVGL_USE_SIUL2)
     const gpio_pin_config_t pinConfig = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic  = 1,
     };
+#endif
 
 #if BOARD_USE_FLEXIO_SMARTDMA
     flexio_mculcd_smartdma_config_t flexioEzhConfig = {
@@ -263,10 +336,24 @@ status_t DEMO_InitLcdController(void)
     };
 #endif
 
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+    SIUL2_SetPinDirection(SIUL2, BOARD_LCD_RST_MSCR, kPORT_OUT);
+    SIUL2_SetPinOutputBuffer(SIUL2, BOARD_LCD_RST_MSCR, true, kPORT_MUX_AS_GPIO);
+    SIUL2_SetPinPullSel(SIUL2, BOARD_LCD_RST_MSCR, kPORT_INTERNAL_PULL_UP_ENABLED);
+
+    SIUL2_SetPinDirection(SIUL2, BOARD_LCD_CS_MSCR, kPORT_OUT);
+    SIUL2_SetPinOutputBuffer(SIUL2, BOARD_LCD_CS_MSCR, true, kPORT_MUX_AS_GPIO);
+    SIUL2_SetPinPullSel(SIUL2, BOARD_LCD_CS_MSCR, kPORT_INTERNAL_PULL_UP_ENABLED);
+
+    SIUL2_SetPinDirection(SIUL2, BOARD_LCD_RS_MSCR, kPORT_OUT);
+    SIUL2_SetPinOutputBuffer(SIUL2, BOARD_LCD_RS_MSCR, true, kPORT_MUX_AS_GPIO);
+    SIUL2_SetPinPullSel(SIUL2, BOARD_LCD_RS_MSCR, kPORT_INTERNAL_PULL_UP_ENABLED);
+#else
     /* Set SSD1963 CS, RS, and reset pin to output. */
     GPIO_PinInit(BOARD_LCD_RST_GPIO, BOARD_LCD_RST_PIN, &pinConfig);
     GPIO_PinInit(BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, &pinConfig);
     GPIO_PinInit(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, &pinConfig);
+#endif
 
     /* Initialize the flexio MCU LCD. */
     /*
@@ -302,8 +389,11 @@ status_t DEMO_InitLcdController(void)
     }
 
     /* Reset the SSD1963 LCD controller. */
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_RST_GPIO, BOARD_LCD_RST_PIN, 0);
+#else
     GPIO_PinWrite(BOARD_LCD_RST_GPIO, BOARD_LCD_RST_PIN, 0);
-
+#endif
     /* Required for GT911 I2C address mode 0 */
     DEMO_TouchConfigIntPin(kGT911_IntPinPullDown);
 
@@ -312,7 +402,11 @@ status_t DEMO_InitLcdController(void)
 #else
     SDK_DelayAtLeastUs(1000U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 #endif
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_RST_GPIO, BOARD_LCD_RST_PIN, 1);
+#else
     GPIO_PinWrite(BOARD_LCD_RST_GPIO, BOARD_LCD_RST_PIN, 1);
+#endif
 
     DEMO_TouchConfigIntPin(kGT911_IntPinInput);
 
@@ -439,8 +533,9 @@ void lv_port_indev_init(void)
 /*Initialize your touchpad*/
 static void DEMO_InitTouch(void)
 {
+#if !defined(LVGL_USE_SIUL2)
     const gpio_pin_config_t intPinConfig    = {.pinDirection = kGPIO_DigitalInput, .outputLogic = 0};
-
+#endif
     DEMO_LCD_I2C_Init();
 
     s_touchPending = false;
@@ -455,10 +550,16 @@ static void DEMO_InitTouch(void)
                                   .intTrigMode      = kGT911_IntFallingEdge};
 
     GT911_Init(&touchHandle, &touchConfig);
-
+#if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
+    SIUL2_EnableExtInterrupt(SIUL2, BOARD_LCD_INT_EIRQ, kSIUL2_InterruptFallingEdge, 1U);
+    SIUL2_ClearExtDmaInterruptStatusFlags(SIUL2, 1U << BOARD_LCD_INT_EIRQ);
+#else
     GPIO_PinInit(BOARD_LCD_INT_GPIO, BOARD_LCD_INT_PIN, &intPinConfig);
     GPIO_SetPinInterruptConfig(BOARD_LCD_INT_GPIO, BOARD_LCD_INT_PIN, kGPIO_InterruptFallingEdge);
     GPIO_PinClearInterruptFlag(BOARD_LCD_INT_GPIO, BOARD_LCD_INT_PIN);
+    NVIC_ClearPendingIRQ(BOARD_LCD_INT_IRQn);
+    EnableIRQ(BOARD_LCD_INT_IRQn);
+#endif
     NVIC_ClearPendingIRQ(BOARD_LCD_INT_IRQn);
     EnableIRQ(BOARD_LCD_INT_IRQn);
 }

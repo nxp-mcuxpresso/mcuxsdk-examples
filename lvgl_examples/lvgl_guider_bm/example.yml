@@ -288,6 +288,7 @@ lvgl_guider_bm:
     evkmimxrt685@cm33: []
     frdmk22f: []
     frdmmcxa156: []
+    frdmmcxe31b: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmrw612:

@@ -25,4 +25,4 @@ config MCUX_PRJSEG_module.board.lvgl
     select MCUX_COMPONENT_driver.lpflexcomm if MCUX_HAS_COMPONENT_driver.lpflexcomm
     select MCUX_COMPONENT_driver.lpi2c if MCUX_HAS_COMPONENT_driver.lpi2c
     select MCUX_COMPONENT_driver.st7796s
-    select MCUX_COMPONENT_driver.inputmux
+    select MCUX_COMPONENT_driver.inputmux if MCUX_HAS_COMPONENT_driver.inputmux
