@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../../../../scripts/data_schema/example_description_schema.json
+zigbee_coordinator_ble_wuart_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/wireless_examples/zigbee/coordinator_ble_wuart/freertos
+    project-root-path: boards/${board}/wireless_examples/zigbee/coordinator_ble_wuart/freertos
+    document:
+      name: zigbee_coordinator_ble_wuart_freertos
+      category: wireless_examples/zigbee/coordinator_ble_wuart_bm/freertos
+      brief: The Bluetooth® LE - Zigbee dynamic mode mode application showcases the Zigbee 
+             commissioning over Bluetooth LE use case. The zigbee application part is based on 
+             the Zigbee Coordinator example and the Bluetooth LE application part is base on 
+             the Wireless UART peripheral demo.
+  boards:
+    frdmmcxw71:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    mcxw71evk:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    mcxw72evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
+    frdmmcxw72@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@debug
+    - -iar@release
