@@ -7,7 +7,7 @@
 #if defined(RW610)
 #include "fsl_crc.h"
 #endif
-#include "crc.h"
+#include "ncp_crc.h"
 
 #if CONFIG_CRC32_HW_ACCELERATE
 void ncp_tlv_chksum_init(void)
