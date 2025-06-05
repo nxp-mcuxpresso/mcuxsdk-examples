@@ -1,6 +1,5 @@
 /*
- * Copyright 2022 NXP
- * All rights reserved.
+ * Copyright 2022-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,12 +12,12 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v11.0
-processor: MIMXRT1042xxxxB
-package_id: MIMXRT1042XJM5B
+product: Peripherals v15.0
+processor: MIMXRT1024xxxxx
+package_id: MIMXRT1024DAG5A
 mcu_data: ksdk2_0
-processor_version: 0.12.11
-board: MIMXRT1040-EVK
+processor_version: 25.03.10
+board: MIMXRT1024-EVK
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: 96c1cec6-3bd3-47a2-8301-f38e4b0dd25f
