@@ -5,8 +5,8 @@
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 
-#ifndef _CRC_H_
-#define _CRC_H_
+#ifndef _NCP_CRC_H_
+#define _NCP_CRC_H_
 
 #include "fsl_common.h"
 /*******************************************************************************

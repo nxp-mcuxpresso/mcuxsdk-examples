@@ -5,7 +5,7 @@
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 
-#include "crc.h"
+#include "ncp_crc.h"
 #include "ncp_tlv_adapter.h"
 #include "ncp_adapter.h"
 #include "fsl_os_abstraction.h"
