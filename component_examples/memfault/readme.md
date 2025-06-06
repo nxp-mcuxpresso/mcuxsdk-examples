@@ -56,12 +56,17 @@ such guide: https://docs.memfault.com/docs/mcu/export-chunks-over-console
    of this tool is: https://pypi.org/project/memfault-core-convert/
 2. Export the dumped data in flash, for example, using gdb command like,
    `dump binary memory memfault-core.bin 0x00010000 0x00018000`, fill the right flash
-   address according to your settings.
+   address according to your settings. An easy way is dump all memfault flash region,
+   the region base address is: `CONFIG_FLASH_BASE_ADDRESS`+`CONFIG_MEMFAULT_FLASH_BASE_OFFSET`,
+   the regioni size is: `CONFIG_MEMFAULT_FLASH_SIZE`. These values can be got
+   from the file "mcux\_config.h".
 3. Generate the core elf file use `memfault-core-convert --file memfault-core.bin --out_elf core.elf`
 4. Run GDB to debug: `arm-none-eabi-gdb -se memfault.elf --core core.elf`, here `memfault.elf`
    is current project image.
 
 Detailed steps can be found here: https://docs.memfault.com/docs/mcu/coredump-elf-with-gdb.
+
+**NOTE** Don't run step 2 after pressing 'B', because the flash will be cleaned when press 'B'.
 
 ## Supported Boards
 - [FRDM-RW612](../../_boards/frdmrw612/component_examples/memfault/example_board_readme.md)

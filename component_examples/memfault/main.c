@@ -119,7 +119,7 @@ static void main_task(void *pvParameters)
 static void trigger_fault(void)
 {
     /* Define a function pointer, point to a invalid address, call it */
-    void (*func_ptr)(void) = (void (*)(void))0xFFFFFFFF;
+    void (*func_ptr)(void) = (void (*)(void))0xFFFFFFF0;
     func_ptr();
 }
 
