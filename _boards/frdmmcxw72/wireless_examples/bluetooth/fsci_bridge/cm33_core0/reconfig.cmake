@@ -19,11 +19,12 @@ mcux_add_configuration(
 
 mcux_add_iar_configuration(
     CX "--diag_suppress Pa082,Pa050"
-    LD "--config_def=gEraseNVMLink_d=1\
-       --config_def=__ram_vector_table__=1\
-       --config_def=gUseProdInfoLegacyMode_d=1\
-       --config_def=__use_shmem__=1\
-       --config_def=gLowpowerPowerDownEnable_d=0"
+    LD "--config_def=gUseNVMLink_d=1\
+        --config_def=gEraseNVMLink_d=1\
+        --config_def=__ram_vector_table__=1\
+        --config_def=gUseProdInfoLegacyMode_d=1\
+        --config_def=__use_shmem__=1\
+        --config_def=gLowpowerPowerDownEnable_d=0"
 )
 
 mcux_add_armgcc_configuration(
