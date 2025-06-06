@@ -115,7 +115,15 @@ int main(void)
      * data frame. No automatic remote response frame will be generated. User need to setup another
      * message buffer to respond remote request.
      */
-    flexcanConfig.enableRemoteRequestFrameStored = false;
+    if ((node_type == 'A') || (node_type == 'a'))
+    {
+        /* Recommend configure node A to store Remote Frame, beacuse node B may respond with Remote Frame. */
+        flexcanConfig.enableRemoteRequestFrameStored = true;
+    }
+    else
+    {
+        flexcanConfig.enableRemoteRequestFrameStored = false;
+    }
 
 #if defined(EXAMPLE_CAN_CLK_SOURCE)
     flexcanConfig.clkSrc = EXAMPLE_CAN_CLK_SOURCE;
