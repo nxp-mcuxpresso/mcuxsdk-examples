@@ -15,7 +15,9 @@
 #define WIFI_BT_USE_IMU_INTERFACE 1
 #define RW610
 
+#ifndef RW612_SERIES
 #define RW612_SERIES
+#endif
 #define SHELL_BUFFER_SIZE 512
 #define SHELL_MAX_ARGS 48
 
