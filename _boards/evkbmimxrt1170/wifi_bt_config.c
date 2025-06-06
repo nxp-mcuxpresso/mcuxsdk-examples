@@ -15,7 +15,7 @@
  ******************************************************************************/
 #if defined(WIFI_IW612_BOARD_RD_USD) || defined(WIFI_IW612_BOARD_MURATA_2EL_USD) ||          \
     defined(WIFI_IW611_BOARD_MURATA_2DL_USD) || defined(WIFI_AW611_BOARD_UBX_JODY_W5_USD) || \
-    defined(WIFI_IW416_BOARD_AW_AM510_USD)
+    defined(WIFI_IW416_BOARD_AW_AM510_USD) || defined(WIFI_IW610_BOARD_MURATA_2LL_USD)
 #define CONTROLLER_RESET_GPIO GPIO3
 #define CONTROLLER_RESET_PIN  9U
 #endif
