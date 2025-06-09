@@ -65,5 +65,5 @@ mcux_add_macro(
 mcux_add_macro(
     TOOLCHAINS armgcc iar mdk
     TARGETS flexspi_nor_debug flexspi_nor_release
-    CC "-DDEMO_CODE_START_NS=0x2880B000U"
+    CC "-DDEMO_CODE_START_NS=0x2840B000U"
 )
