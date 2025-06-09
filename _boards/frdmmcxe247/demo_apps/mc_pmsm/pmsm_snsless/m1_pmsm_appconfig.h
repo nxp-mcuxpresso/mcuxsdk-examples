@@ -85,7 +85,7 @@
 /*
 {
     "motorName": "Teknic M-2311P-LN-08D",
-    "motorDescription": "Curent loop sample frequency 16KHz"
+    "motorDescription": ""
 }
 */
 
