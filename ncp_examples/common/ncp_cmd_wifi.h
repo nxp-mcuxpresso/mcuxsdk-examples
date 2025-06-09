@@ -524,6 +524,8 @@
 #define NCP_EVENT_WLAN_STA_DISCONNECT (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000007) /* wlan sta disconnect */
 /** Wi-Fi UAP stop network event ID */
 #define NCP_EVENT_WLAN_STOP_NETWORK   (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000008) /* wlan stop network */
+/** Wi-Fi Inet DAD complete */
+#define NCP_EVENT_INET_DAD_DONE       (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x0000000b) /* ipv6 dad done */
 
 /** NCP WLAN TLV */
 /** NCP network ssid tlv type */
