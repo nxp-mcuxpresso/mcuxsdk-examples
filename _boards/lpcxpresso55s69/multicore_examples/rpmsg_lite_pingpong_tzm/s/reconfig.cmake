@@ -18,6 +18,14 @@ mcux_add_source(
 )
 mcux_add_include(BASE_PATH ${SdkRootDirPath} INCLUDES ${project_board_core_path})
 
+mcux_add_source(
+    SOURCES tzm_config.c tzm_config.h
+)
+
+mcux_add_include(
+    INCLUDES .
+)
+
 mcux_add_mdk_configuration(
         CC "-DCORE1_IMAGE_COPY_TO_RAM"
         LD "--keep=*(*core1_code)"

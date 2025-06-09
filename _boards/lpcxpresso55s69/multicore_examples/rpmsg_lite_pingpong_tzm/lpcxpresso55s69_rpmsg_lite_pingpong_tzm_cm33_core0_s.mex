@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="LPC55S69" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_12 http://mcuxpresso.nxp.com/XSD/mex_configuration_12.xsd" uuid="b7d70f4d-3125-4fb5-ae10-e21cbcb5717f" version="12" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_12" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="LPC55S69" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="b7d70f4d-3125-4fb5-ae10-e21cbcb5717f" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>LPC55S69</processor>
       <package>LPC55S69JBD100</package>
@@ -12,19 +12,18 @@
    </common>
    <preferences>
       <validate_boot_init_only>true</validate_boot_init_only>
-      <generate_extended_information>false</generate_extended_information>
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
       <update_include_paths>true</update_include_paths>
       <generate_registers_defines>false</generate_registers_defines>
    </preferences>
    <tools>
-      <pins name="Pins" version="13.0" enabled="true" update_project_code="false">
+      <pins name="Pins" version="17.0" enabled="true" update_project_code="false">
          <generated_project_files>
             <file path="board/pin_mux.c" update_enabled="true"/>
             <file path="board/pin_mux.h" update_enabled="true"/>
          </generated_project_files>
          <pins_profile>
-            <processor_version>0.13.3</processor_version>
+            <processor_version>25.03.10</processor_version>
          </pins_profile>
          <functions_list>
             <function name="BOARD_InitPins_Core0">
@@ -35,7 +34,7 @@
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM0" description="Peripheral FLEXCOMM0 is not initialized" problem_level="1" source="Pins:BOARD_InitPins_Core0">
+                  <dependency resourceType="Peripheral" resourceId="FLEXCOMM0" description="Peripheral FLEXCOMM0 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins_Core0">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
@@ -72,13 +71,13 @@
             </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="11.0" enabled="true" update_project_code="false">
+      <clocks name="Clocks" version="16.0" enabled="true" update_project_code="false">
          <generated_project_files>
             <file path="board/clock_config.c" update_enabled="true"/>
             <file path="board/clock_config.h" update_enabled="true"/>
          </generated_project_files>
          <clocks_profile>
-            <processor_version>0.13.3</processor_version>
+            <processor_version>25.03.10</processor_version>
          </clocks_profile>
          <clock_configurations>
             <clock_configuration name="BOARD_BootClockFRO12M" id_prefix="" prefix_user_defined="false">
@@ -418,11 +417,12 @@
             <file path="trustzone/tzm_config.h" update_enabled="true"/>
          </generated_project_files>
          <tee_profile>
-            <processor_version>0.13.3</processor_version>
+            <processor_version>25.03.10</processor_version>
             <tool_options>
                <option id="_output_type_" value="c_code"/>
                <option id="_legacy_source_names_" value="yes"/>
                <option id="_resilient_code_reg_writes_" value="no"/>
+               <option id="_unaffected_strategy_" value="to_after_reset"/>
             </tool_options>
          </tee_profile>
          <functional_group name="BOARD_InitTEE" called_from_default_init="true" id_prefix="" prefix_user_defined="true">
@@ -458,7 +458,7 @@
                <peripherals>
                   <peripheral id="ADC0" security="ns_user"/>
                   <peripheral id="AHB_SECURE_CTRL" security="s_priv"/>
-                  <peripheral id="ANACTRL" security="ns_user"/>
+                  <peripheral id="ANACTRL" security="s_priv"/>
                   <peripheral id="CASPER" security="ns_user"/>
                   <peripheral id="CRC_ENGINE" security="ns_user"/>
                   <peripheral id="CTIMER0" security="ns_user"/>
@@ -489,7 +489,7 @@
                   <peripheral id="OSTIMER" security="ns_user"/>
                   <peripheral id="PINT" security="ns_user"/>
                   <peripheral id="PLU" security="ns_user"/>
-                  <peripheral id="PMC" security="ns_user"/>
+                  <peripheral id="PMC" security="s_priv"/>
                   <peripheral id="POWERQUAD" security="ns_user"/>
                   <peripheral id="PRINCE" security="ns_user"/>
                   <peripheral id="PUF" security="ns_user"/>
@@ -640,9 +640,9 @@
                      <pin_mask id="26" masked="Non-masked"/>
                      <pin_mask id="27" masked="Non-masked"/>
                      <pin_mask id="28" masked="Non-masked"/>
-                     <pin_mask id="29" masked="Non-masked"/>
+                     <pin_mask id="29" masked="Masked"/>
                      <pin_mask id="3" masked="Non-masked"/>
-                     <pin_mask id="30" masked="Non-masked"/>
+                     <pin_mask id="30" masked="Masked"/>
                      <pin_mask id="31" masked="Non-masked"/>
                      <pin_mask id="4" masked="Non-masked"/>
                      <pin_mask id="5" masked="Non-masked"/>
@@ -687,16 +687,18 @@
                   </port>
                </ports>
             </ahb>
-            <sau enabled="true" all_non_secure="false" generate_code_for_disabled_regions="false">
-               <region start="0" size="268435456" security="ns" enabled="true" index="0"/>
-               <region start="536870912" size="3221225472" security="ns" enabled="true" index="1"/>
-               <region start="268500480" size="512" security="nsc" enabled="true" index="2"/>
-               <region start="0" size="32" security="ns" enabled="false" index="3"/>
-               <region start="0" size="32" security="ns" enabled="false" index="4"/>
-               <region start="0" size="32" security="ns" enabled="false" index="5"/>
-               <region start="0" size="32" security="ns" enabled="false" index="6"/>
-               <region start="0" size="32" security="ns" enabled="false" index="7"/>
-            </sau>
+            <saus>
+               <sau enabled="true" all_non_secure="false" generate_code_for_disabled_regions="false">
+                  <region start="0" size="268435456" security="ns" enabled="true" index="0"/>
+                  <region start="536870912" size="3221225472" security="ns" enabled="true" index="1"/>
+                  <region start="268500480" size="512" security="nsc" enabled="true" index="2"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="3"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="4"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="5"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="6"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="7"/>
+               </sau>
+            </saus>
             <global_options>
                <option id="AIRCR_PRIS" value="no"/>
                <option id="AIRCR_BFHFNMINS" value="no"/>

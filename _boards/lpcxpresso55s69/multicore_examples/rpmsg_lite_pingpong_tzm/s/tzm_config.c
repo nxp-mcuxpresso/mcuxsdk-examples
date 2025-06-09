@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 NXP
+ * Copyright 2017-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -13,15 +13,16 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: TEE v4.0
+product: TEE v9.0
 processor: LPC55S69
 package_id: LPC55S69JBD100
 mcu_data: ksdk2_0
-processor_version: 0.13.3
+processor_version: 25.03.10
 toolOptions:
   _output_type_: c_code
   _legacy_source_names_: 'yes'
   _resilient_code_reg_writes_: 'no'
+  _unaffected_strategy_: to_after_reset
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -37,11 +38,11 @@ toolOptions:
 
 /* SAU region boundaries */
 #define SAU_REGION_0_BASE 0
-#define SAU_REGION_0_END  0x0FFFFFFFU
+#define SAU_REGION_0_END 0x0FFFFFFFU
 #define SAU_REGION_1_BASE 0x20000000U
-#define SAU_REGION_1_END  0xDFFFFFFFU
+#define SAU_REGION_1_END 0xDFFFFFFFU
 #define SAU_REGION_2_BASE 0x1000FE00U
-#define SAU_REGION_2_END  0x1000FFFFU
+#define SAU_REGION_2_END 0x1000FFFFU
 
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -63,7 +64,7 @@ functional_group:
           sec_hypervisor_call_irq, sec_int0, sec_int1, sec_vio_irq, sha_irq, sys_irq, usb0_irq, usb0_needclk_irq, usb1_irq, usb1_needclk_irq, usb1_utmi_irq, utick_irq]}}
   - ports:
     - pio0: {Non-masked: {id: ['0', '1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '26', '27', '28',
-          '29', '3', '30', '31', '4', '5', '6', '7', '8', '9']}}
+          '3', '31', '4', '5', '6', '7', '8', '9']}, Masked: {id: ['29', '30']}}
     - pio1: {Non-masked: {id: ['0', '1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '26', '27', '28',
           '29', '3', '30', '31', '4', '5', '6', '7', '8', '9']}}
   - regions: [{memory: PROGRAM_FLASH, security: s_priv, start: '0x00000000', size: '0x00010000'}, {memory: PROGRAM_FLASH, security: ns_user, start: '0x00010000',
@@ -75,19 +76,20 @@ functional_group:
       size: '0x00004000'}, {memory: AHBperipherals_port10_ahb_secure_ctrl_area, security: s_priv, start: '0x00000000', size: '0x00004000'}, {memory: USB_RAM, security: ns_user,
       start: '0x00000000', size: '0x00004000'}]
   - masters: {ns_user: {id: [HASH, PQ, SDIO, SDMA0, SDMA1, USBFSD, USBFSH]}, s_priv: {id: [MCM33C, MCM33S]}}
-  - peripherals: {ns_user: {id: [ADC0, ANACTRL, CASPER, CRC_ENGINE, CTIMER0, CTIMER1, CTIMER2, CTIMER3, CTIMER4, DBGMAILBOX, DMA0, DMA1, FLASH, FLEXCOMM1, FLEXCOMM2,
-        FLEXCOMM3, FLEXCOMM4, FLEXCOMM5, FLEXCOMM6, FLEXCOMM7, GINT0, GINT1, GPIO, HASHCRYPT, INPUTMUX, MRT0, OSTIMER, PINT, PLU, PMC, POWERQUAD, PRINCE, PUF, RNG,
-        RTC, SCT0, SDIF, SECGPIO, SECPINT, SPI8, SYSCTL, USB0, USBFSH, USBHSD, USBHSH, USBPHY, UTICK0, WWDT]}, s_priv: {id: [AHB_SECURE_CTRL, FLEXCOMM0, IOCON, MAILBOX,
+  - peripherals: {ns_user: {id: [ADC0, CASPER, CRC_ENGINE, CTIMER0, CTIMER1, CTIMER2, CTIMER3, CTIMER4, DBGMAILBOX, DMA0, DMA1, FLASH, FLEXCOMM1, FLEXCOMM2, FLEXCOMM3,
+        FLEXCOMM4, FLEXCOMM5, FLEXCOMM6, FLEXCOMM7, GINT0, GINT1, GPIO, HASHCRYPT, INPUTMUX, MRT0, OSTIMER, PINT, PLU, POWERQUAD, PRINCE, PUF, RNG, RTC, SCT0, SDIF,
+        SECGPIO, SECPINT, SPI8, SYSCTL, USB0, USBFSH, USBHSD, USBHSH, USBPHY, UTICK0, WWDT]}, s_priv: {id: [AHB_SECURE_CTRL, ANACTRL, FLEXCOMM0, IOCON, MAILBOX, PMC,
         SYSCON]}}
-- sau:
-  - enabled: 'true'
-  - all_non_secure: 'false'
-  - generate_code_for_disabled_regions: 'false'
-  - regions: [{index: '0', enabled: 'true', security: ns, start: '0x00000000', size: '0x10000000'}, {index: '1', enabled: 'true', security: ns, start: '0x20000000',
-      size: '0xC0000000'}, {index: '2', enabled: 'true', security: nsc, start: '0x1000FE00', size: '0x00000200'}, {index: '3', enabled: 'false', security: ns, start: '0x00000000',
-      size: '0x00000020'}, {index: '4', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '5', enabled: 'false', security: ns, start: '0x00000000',
-      size: '0x00000020'}, {index: '6', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '7', enabled: 'false', security: ns, start: '0x00000000',
-      size: '0x00000020'}]
+- saus:
+  - sau:
+    - enabled: 'true'
+    - all_non_secure: 'false'
+    - generate_code_for_disabled_regions: 'false'
+    - regions: [{index: '0', enabled: 'true', security: ns, start: '0x00000000', size: '0x10000000'}, {index: '1', enabled: 'true', security: ns, start: '0x20000000',
+        size: '0xC0000000'}, {index: '2', enabled: 'true', security: nsc, start: '0x1000FE00', size: '0x00000200'}, {index: '3', enabled: 'false', security: ns, start: '0x00000000',
+        size: '0x00000020'}, {index: '4', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '5', enabled: 'false', security: ns, start: '0x00000000',
+        size: '0x00000020'}, {index: '6', enabled: 'false', security: ns, start: '0x00000000', size: '0x00000020'}, {index: '7', enabled: 'false', security: ns, start: '0x00000000',
+        size: '0x00000020'}]
 - global_options:
   - no:
     - id: [AIRCR_PRIS, AIRCR_BFHFNMINS, AIRCR_SYSRESETREQS, SCR_SLEEPDEEPS, SHCSR_SECUREFAULTENA, NSACR_CP2, NSACR_CP3, NSACR_CP4, NSACR_CP5, NSACR_CP6, NSACR_CP7,
@@ -176,7 +178,7 @@ functional_group:
 /* FUNCTION ************************************************************************************************************
  *
  * Function Name : BOARD_InitTEE
- * Description   :
+ * Description   : 
  *
  * END ****************************************************************************************************************/
 
@@ -186,42 +188,46 @@ functional_group:
 void BOARD_InitTrustZone()
 {
     /* SAU configuration */
-
+    
     /* Set SAU Control register: Disable SAU and All Secure */
     SAU->CTRL = 0;
-
+    
     /* Set SAU region number */
     SAU->RNR = 0;
     /* Region base address */
     SAU->RBAR = SAU_REGION_0_BASE & SAU_RBAR_BADDR_Msk;
     /* Region end address */
-    SAU->RLAR = (SAU_REGION_0_END & SAU_RLAR_LADDR_Msk) | ((0U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk) |
-                ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
-
+    SAU->RLAR = (SAU_REGION_0_END & SAU_RLAR_LADDR_Msk)
+        | ((0U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk)
+        | ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
+    
     /* Set SAU region number */
     SAU->RNR = 1;
     /* Region base address */
     SAU->RBAR = SAU_REGION_1_BASE & SAU_RBAR_BADDR_Msk;
     /* Region end address */
-    SAU->RLAR = (SAU_REGION_1_END & SAU_RLAR_LADDR_Msk) | ((0U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk) |
-                ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
-
+    SAU->RLAR = (SAU_REGION_1_END & SAU_RLAR_LADDR_Msk)
+        | ((0U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk)
+        | ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
+    
     /* Set SAU region number */
     SAU->RNR = 2;
     /* Region base address */
     SAU->RBAR = SAU_REGION_2_BASE & SAU_RBAR_BADDR_Msk;
     /* Region end address */
-    SAU->RLAR = (SAU_REGION_2_END & SAU_RLAR_LADDR_Msk) | ((1U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk) |
-                ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
-
+    SAU->RLAR = (SAU_REGION_2_END & SAU_RLAR_LADDR_Msk)
+        | ((1U << SAU_RLAR_NSC_Pos) & SAU_RLAR_NSC_Msk)
+        | ((1U << SAU_RLAR_ENABLE_Pos) & SAU_RLAR_ENABLE_Msk);
+    
     /* Force memory writes before continuing */
     __DSB();
     /* Flush and refill pipeline with updated permissions */
     __ISB();
-
+    
     /* Set SAU Control register: Enable SAU and All Secure (applied only if disabled) */
-    SAU->CTRL = ((0U << SAU_CTRL_ALLNS_Pos) & SAU_CTRL_ALLNS_Msk) | ((1U << SAU_CTRL_ENABLE_Pos) & SAU_CTRL_ENABLE_Msk);
-
+    SAU->CTRL = ((0U << SAU_CTRL_ALLNS_Pos) & SAU_CTRL_ALLNS_Msk)
+        | ((1U << SAU_CTRL_ENABLE_Pos) & SAU_CTRL_ENABLE_Msk);
+    
     /* AHB configuration */
 
     /*--------------------------------------------------------------------
@@ -236,43 +242,43 @@ void BOARD_InitTrustZone()
     */
 
     /* Security level configuration of MPC checker */
-    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_FLASH_MEM_RULE[0]         = 0x00000033U;
-    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_FLASH_MEM_RULE[1]         = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_FLASH_MEM_RULE[2]         = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[0]           = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[1]           = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[2]           = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[3]           = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_RAMX[0].MEM_RULE[0]                             = 0x03000000U;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM0[0].MEM_RULE[0]                             = 0x33333333U;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM0[0].MEM_RULE[1]                             = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM1[0].MEM_RULE[0]                             = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM1[0].MEM_RULE[1]                             = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM2[0].MEM_RULE[0]                             = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM2[0].MEM_RULE[1]                             = 0;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM3[0].MEM_RULE[0]                             = 0x33333330U;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM3[0].MEM_RULE[1]                             = 0x33333333U;
-    AHB_SECURE_CTRL->SEC_CTRL_RAM4[0].MEM_RULE[0]                             = 0x00003333U;
+    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_FLASH_MEM_RULE[0] = 0x00000033U;
+    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_FLASH_MEM_RULE[1] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_FLASH_MEM_RULE[2] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[0] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[1] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[2] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_FLASH_ROM[0].SEC_CTRL_ROM_MEM_RULE[3] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_RAMX[0].MEM_RULE[0] = 0x03000000U;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM0[0].MEM_RULE[0] = 0x33333333U;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM0[0].MEM_RULE[1] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM1[0].MEM_RULE[0] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM1[0].MEM_RULE[1] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM2[0].MEM_RULE[0] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM2[0].MEM_RULE[1] = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM3[0].MEM_RULE[0] = 0x33333330U;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM3[0].MEM_RULE[1] = 0x33333333U;
+    AHB_SECURE_CTRL->SEC_CTRL_RAM4[0].MEM_RULE[0] = 0x00003333U;
     AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT10[0].SEC_CTRL_AHB_SEC_CTRL_MEM_RULE[0] = 0x00003333U;
-    AHB_SECURE_CTRL->SEC_CTRL_USB_HS[0].MEM_RULE[0]                           = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_USB_HS[0].MEM_RULE[0] = 0;
 
     /* Security level configuration of PPC checker */
-    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE0_MEM_CTRL0 = 0xFCCCCCFFU;
-    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE0_MEM_CTRL1 = 0xFCCCFFCCU;
-    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE0_MEM_CTRL2 = 0xFFFFCFFFU;
-    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL0 = 0xFFFFCFFCU;
-    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL1 = 0xFFCCFCCCU;
-    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL2 = 0xFFCCFFFFU;
-    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL3 = 0xFFCFCCFCU;
-    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT8_SLAVE0_RULE                        = 0xCFCCFCFFU;
-    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT8_SLAVE1_RULE                        = 0xFFFCFCCCU;
-    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT9_SLAVE0_RULE                        = 0xCCCCFFFFU;
-    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT9_SLAVE1_RULE                        = 0xCFFCCFFCU;
-    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT10[0].SLAVE0_RULE                    = 0xCCCCCCFCU;
-    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT10[0].SLAVE1_RULE                    = 0xFFFFFFFCU;
+    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE0_MEM_CTRL0 = 0x00000033U;
+    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE0_MEM_CTRL1 = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE0_MEM_CTRL2 = 0x00003000U;
+    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL0 = 0x00000003U;
+    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL1 = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL2 = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_APB_BRIDGE[0].SEC_CTRL_APB_BRIDGE1_MEM_CTRL3 = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT8_SLAVE0_RULE = 0x03000000U;
+    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT8_SLAVE1_RULE = 0x00003000U;
+    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT9_SLAVE0_RULE = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT9_SLAVE1_RULE = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT10[0].SLAVE0_RULE = 0;
+    AHB_SECURE_CTRL->SEC_CTRL_AHB_PORT10[0].SLAVE1_RULE = 0x00000030U;
 
     /* Security level configuration of masters */
-    AHB_SECURE_CTRL->MASTER_SEC_LEVEL        = 0x800000F0U;
+    AHB_SECURE_CTRL->MASTER_SEC_LEVEL = 0x800000F0U;
     AHB_SECURE_CTRL->MASTER_SEC_ANTI_POL_REG = 0xBFFFFF0FU;
 
     /*--------------------------------------------------------------------
@@ -281,7 +287,7 @@ void BOARD_InitTrustZone()
     /* Possible values for every pin:
      *  0b0    Deny
      *  0b1    Allow */
-    AHB_SECURE_CTRL->SEC_GPIO_MASK0 = 0xFFFFFFFFU;
+    AHB_SECURE_CTRL->SEC_GPIO_MASK0 = 0x9FFFFFFFU;
     AHB_SECURE_CTRL->SEC_GPIO_MASK1 = 0xFFFFFFFFU;
 
     /*--------------------------------------------------------------------
@@ -302,20 +308,20 @@ void BOARD_InitTrustZone()
     NVIC->ITNS[0] = 0;
     NVIC->ITNS[1] = 0;
 
-    /* GGlobal Options */
+    /* Global Options */
     SCB->AIRCR = (SCB->AIRCR & 0x00009FF7U) | 0x05FA0000U;
     SCB->SCR &= 0xFFFFFFF7U;
     SCB->SHCSR &= 0xFFF7FFFFU;
-    SCB->CPACR                               = 0x00F0000FU;
-    SCB->NSACR                               = 0x00000C03U;
-    SCnSCB->CPPWR                            = 0;
-    AHB_SECURE_CTRL->SEC_MASK_LOCK           = 0x00000AAAU;
-    AHB_SECURE_CTRL->MASTER_SEC_LEVEL        = (AHB_SECURE_CTRL->MASTER_SEC_LEVEL & 0x3FFFFFFFU) | 0x80000000U;
+    SCB->CPACR = 0x00F0000FU;
+    SCB->NSACR = 0x00000C03U;
+    SCnSCB->CPPWR = 0;
+    AHB_SECURE_CTRL->SEC_MASK_LOCK = 0x00000AAAU;
+    AHB_SECURE_CTRL->MASTER_SEC_LEVEL = (AHB_SECURE_CTRL->MASTER_SEC_LEVEL & 0x3FFFFFFFU) | 0x80000000U;
     AHB_SECURE_CTRL->MASTER_SEC_ANTI_POL_REG = (AHB_SECURE_CTRL->MASTER_SEC_ANTI_POL_REG & 0x3FFFFFFFU) | 0x80000000U;
-    AHB_SECURE_CTRL->CPU0_LOCK_REG           = 0x800002AAU;
-    AHB_SECURE_CTRL->CPU1_LOCK_REG           = 0x8000000AU;
-    AHB_SECURE_CTRL->MISC_CTRL_REG           = 0x0000AAA6U;
-    AHB_SECURE_CTRL->MISC_CTRL_DP_REG        = 0x0000AAA5U;
+    AHB_SECURE_CTRL->CPU0_LOCK_REG = 0x800002AAU;
+    AHB_SECURE_CTRL->CPU1_LOCK_REG = 0x8000000AU;
+    AHB_SECURE_CTRL->MISC_CTRL_REG = 0x0000AAA6U;
+    AHB_SECURE_CTRL->MISC_CTRL_DP_REG = 0x0000AAA5U;
 }
 
 /***********************************************************************************************************************
