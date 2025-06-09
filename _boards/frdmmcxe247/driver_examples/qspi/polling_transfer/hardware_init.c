@@ -151,7 +151,7 @@ void BOARD_QspiSocConfigure(QuadSPI_Type *base)
     config.divEnable      = true;
     config.internalClk    = kQSPI_PllDiv1Clock;
     config.clkMode        = kQSPI_SysClock;
-    config.clkDiv         = 3;
+    config.clkDiv         = 8;
 
     QSPI_Enable(base, false);
     QSPI_SocConfigure(base, &config);
