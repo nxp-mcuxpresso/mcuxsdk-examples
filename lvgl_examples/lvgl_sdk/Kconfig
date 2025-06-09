@@ -10,7 +10,7 @@ if MCUX_COMPONENT_middleware.lvgl
     # For MCUX SDK integration.
     # In MCUX SDK, the Kconfig string is translate macro with no quote,
     # to generate macro with quote, the Kconfig string value should be
-    # set as \""string\"".
+    # set as "\"string\"".
     config LV_OS_CUSTOM_INCLUDE
         default "\"stdint.h\""
 
@@ -28,6 +28,40 @@ if MCUX_COMPONENT_middleware.lvgl
 
     config LV_PROFILER_INCLUDE
         default "\"lvgl/src/misc/lv_profiler_builtin.h\""
+
+    config LV_TXT_COLOR_CMD
+        default "\"#\""
+
+    config LV_MONDAY_STR
+        default "\"Mo\""
+    config LV_TUESDAY_STR
+        default "\"Tu\""
+    config LV_WEDNESDAY_STR
+        default "\"We\""
+    config LV_THURSDAY_STR
+        default "\"Th\""
+    config LV_FRIDAY_STR
+        default "\"Fr\""
+    config LV_SATURDAY_STR
+        default "\"Sa\""
+    config LV_SUNDAY_STR
+        default "\"Su\""
+
+    # Kconfig default settings
+    config LV_USE_DRAW_SW
+        default n if LV_USE_DRAW_VGLITE
+
+    config LV_USE_DRAW_VGLITE
+        default y if MCUX_COMPONENT_middleware.vglite
+
+    config LV_USE_PXP
+        default y if MCUX_COMPONENT_driver.pxp
+
+    config LV_USE_DRAW_PXP
+        default n if LV_USE_DRAW_VGLITE
+
+    config LV_DEMO_BENCHMARK_ALIGNED_FONTS
+        default y if LV_USE_DRAW_VGLITE
 
     osource "${SdkRootDirPath}/middleware/lvgl/Kconfig"
 
