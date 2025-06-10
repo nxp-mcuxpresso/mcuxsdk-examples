@@ -15,6 +15,10 @@ modbus_rtu_server:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1180@cm7:
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
@@ -22,6 +26,10 @@ modbus_rtu_server:
     - -iar@hyperram_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     imx943evk@cm33_core1:
     - +armgcc@debug
     - +armgcc@release
