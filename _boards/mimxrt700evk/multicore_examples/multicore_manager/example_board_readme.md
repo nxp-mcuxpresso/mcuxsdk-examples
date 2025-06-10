@@ -29,8 +29,8 @@ Hello World from the Primary Core!
 Starting Secondary core.
 The secondary core application has been started.
 
-Press the SW1 button to Stop Secondary core.
-Press the SW2 button to Start Secondary core again.
+Press the SW5 button to Stop Secondary core.
+Press the SW7 button to Start Secondary core again.
 When no action is taken the secondary core application crashes intentionally after 100 LED toggles (simulated exception), generating the RemoteExceptionEvent to this core.
 Use the Stop and then the Start button to get it running again.
 
