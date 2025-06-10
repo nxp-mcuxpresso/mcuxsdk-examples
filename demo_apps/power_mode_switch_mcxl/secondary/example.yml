@@ -11,4 +11,8 @@ power_mode_switch_mcxl_secondary:
       - examples/demo_apps/power_mode_switch_mcxl/readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxl255@cm0plus: []
+    frdmmcxl255@cm0plus:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

@@ -45,6 +45,8 @@ void APP_SetTrdcAccessible(void)
     
     status = GLIKEY_ContinueEnable(GLIKEY0, GLIKEY_CODEWORD_STEP_EN);
     assert(kStatus_Success == status);
+
+    (void)status; /* In case of release build there is not assert. */
 }
 
 void BOARD_InitHardware(void)

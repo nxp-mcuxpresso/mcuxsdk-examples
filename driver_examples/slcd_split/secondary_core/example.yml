@@ -14,4 +14,8 @@ slcd_split_secondary_core:
       - ${board_root}/${board}/driver_examples/slcd_split/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxl255@cm0plus: []
+    frdmmcxl255@cm0plus:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

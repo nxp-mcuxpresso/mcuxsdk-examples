@@ -123,4 +123,8 @@ rpmsg_lite_pingpong_secondary_core:
     kw47loc@cm33_core1: []
     mcxw72loc@cm33_core1: []
     frdmmcxw72@cm33_core1: []
-    frdmmcxl255@cm0plus: []
+    frdmmcxl255@cm0plus:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
