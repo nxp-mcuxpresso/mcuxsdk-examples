@@ -18,6 +18,7 @@ freqme_interrupt:
     frdmmcxa153: []
     frdmmcxa156: []
     frdmmcxa346: []
+    frdmmcxl255@cm33: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     lpcxpresso55s36: []
