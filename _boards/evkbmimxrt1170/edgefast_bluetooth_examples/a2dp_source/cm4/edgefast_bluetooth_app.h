@@ -8,7 +8,7 @@
 #include "edgefast_bluetooth_config.h"
 
 #define FLASH_ADAPTER_SIZE    0x10000
-#define APP_FLEXSPI_AMBA_BASE FlexSPI1_ALIAS_BASE
+#define MFLASH_BASE_ADDRESS   FlexSPI1_ALIAS_BASE
 
 #if (defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
      defined(WIFI_IW612_BOARD_MURATA_2EL_M2))
