@@ -40,3 +40,37 @@ mcux_add_iar_configuration(
 #    CC "--diag_suppress Pa082,Pa050"
 #    CX "--diag_suppress Pa082,Pa050"
 #)
+
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/MCX/MCXN/MCXN547/iar/MCXN547_cm33_core0_flash.icf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/MCX/MCXN/MCXN547/arm/MCXN547_cm33_core0_flash.scf
+)
+
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/MCX/MCXN/MCXN547/gcc/MCXN547_cm33_core0_flash.ld
+)
+
+# Add or remove Linker File Configurations
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/audio_examples/common/linker/MCXN547_cm33_core0_flash.icf
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/audio_examples/common/linker/MCXN547_cm33_core0_flash.scf
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${board_root}/${board}/audio_examples/common/linker/MCXN547_cm33_core0_flash.ld
+)
