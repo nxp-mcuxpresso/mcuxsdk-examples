@@ -99,7 +99,7 @@
 #define M1_MCDRV_ENC_CLEAR(par) (MCDRV_QdEncClear(par))
 
 /* SENSORS constans moved from MCAT */
-#define M1_POSPE_ENC_PULSES (1000)
+#define M1_POSPE_ENC_PULSES (2000)
 #define M1_POSPE_ENC_DIRECTION (0)
 #define M1_POSPE_ENC_N_MIN (0.0F)
 #define M1_POSPE_MECH_POS_GAIN ACC32(16.384)
