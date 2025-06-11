@@ -373,6 +373,12 @@ static void app_notify_event_handler(void *argv)
                 if (!event_buf)
                     ret = -WM_FAIL;
                 break;
+            case APP_EVT_INET_DAD_DONE:
+                app_d("IPV6 DAD complete\r\n");
+                event_buf = wlan_ncp_evt_status(NCP_EVENT_INET_DAD_DONE, &msg);
+                if (!event_buf)
+                    ret = -WM_FAIL;
+                break;
             default:
                 app_d("no matching case");
                 ret = -WM_FAIL;
