@@ -30,17 +30,17 @@ void BOARD_InitHardware(void)
 
 void BOARD_SetCSPin(bool set)
 {
-    GPIO_PinWrite(BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, (uint8_t)set);
+    GPIO_PinWrite(BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, set ? 1U : 0U);
 }
 
 void BOARD_SetRSPin(bool set)
 {
-    GPIO_PinWrite(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, (uint8_t)set);
+    GPIO_PinWrite(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, set ? 1U : 0U);
 }
 
 void BOARD_SetResetPin(bool set)
 {
-    GPIO_PinWrite(BOARD_LCD_RST_GPIO, BOARD_LCD_RST_PIN, (uint8_t)set);
+    GPIO_PinWrite(BOARD_LCD_RST_GPIO, BOARD_LCD_RST_PIN, set ? 1U : 0U);
 }
 
 void BOARD_InitSmartDMA(void)

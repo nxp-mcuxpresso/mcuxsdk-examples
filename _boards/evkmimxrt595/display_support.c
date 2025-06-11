@@ -188,12 +188,12 @@ static FLEXIO_MCULCD_Type flexioLcdDev = {
 
 static void BOARD_SetCSPin(bool set)
 {
-    GPIO_PinWrite(GPIO, BOARD_SSD1963_CS_PORT, BOARD_SSD1963_CS_PIN, (uint8_t)set);
+    GPIO_PinWrite(GPIO, BOARD_SSD1963_CS_PORT, BOARD_SSD1963_CS_PIN, set ? 1U : 0U);
 }
 
 static void BOARD_SetRSPin(bool set)
 {
-    GPIO_PinWrite(GPIO, BOARD_SSD1963_RS_PORT, BOARD_SSD1963_RS_PIN, (uint8_t)set);
+    GPIO_PinWrite(GPIO, BOARD_SSD1963_RS_PORT, BOARD_SSD1963_RS_PIN, set ? 1U : 0U);
 }
 
 static void BOARD_InitFlexioClock(void)

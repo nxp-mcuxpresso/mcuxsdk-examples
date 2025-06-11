@@ -120,7 +120,11 @@ static void file_read_task(void *pvParameters)
     while (1)
     {
         /* format the filename */
-        sprintf(h264FileName, "/%03d.264", i++);
+        if (sprintf(h264FileName, "/%03d.264", i++) == 0U)
+        {
+            PRINTF("Could not get file name %03d.264\r\n", i);
+            continue;
+        }
 
         /* open it */
         error = f_open(&h264Fil, h264FileName, FA_READ | FA_OPEN_EXISTING);

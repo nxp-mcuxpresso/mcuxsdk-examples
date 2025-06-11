@@ -104,18 +104,18 @@ SDK_ALIGN(static uint8_t s_frameBuffer[CONFIG_LVGL_SUPPORT_VDB_COUNT][LCD_VIRTUA
 static void DEMO_SetCSPin(bool set)
 {
 #if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
-    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, set);
+    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, set ? 1U : 0U);
 #else
-    GPIO_PinWrite(BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, (uint8_t)set);
+    GPIO_PinWrite(BOARD_LCD_CS_GPIO, BOARD_LCD_CS_PIN, set ? 1U : 0U);
 #endif
 }
 
 static void DEMO_SetRSPin(bool set)
 {
 #if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
-    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, set);
+    SIUL2_PortPinWrite(BOARD_SIUL2_BASE, BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, set ? 1U : 0U);
 #else
-    GPIO_PinWrite(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, (uint8_t)set);
+    GPIO_PinWrite(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, set ? 1U : 0U);
 #endif
 }
 

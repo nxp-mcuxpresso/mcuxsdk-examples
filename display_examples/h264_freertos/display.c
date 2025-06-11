@@ -236,7 +236,7 @@ void DEMO_DisplayFrame(uint16_t width,
     s_pxpPsBufferConfig.bufferAddr  = (uint32_t)Y;
     s_pxpPsBufferConfig.bufferAddrU = (uint32_t)U;
     s_pxpPsBufferConfig.bufferAddrV = (uint32_t)V;
-    s_pxpPsBufferConfig.pitchBytes  = Y_Stride;
+    s_pxpPsBufferConfig.pitchBytes  = (uint16_t)Y_Stride;
 
     PXP_SetProcessSurfaceBufferConfig(PXP, &s_pxpPsBufferConfig);
 
@@ -266,7 +266,7 @@ void DEMO_DisplayFrame(uint16_t width,
             s_pxpOutputBufferConfig.height = lcdHeight;
 
             PXP_SetProcessSurfaceScaler(PXP, width, height, lcdWidth, lcdHeight);
-            PXP_SetProcessSurfacePosition(PXP, 0, 0, lcdWidth - 1, lcdHeight - 1);
+            PXP_SetProcessSurfacePosition(PXP, 0, 0, lcdWidth - 1U, lcdHeight - 1U);
         }
 
         oldInputHeight = height;

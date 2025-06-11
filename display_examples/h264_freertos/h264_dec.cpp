@@ -55,6 +55,11 @@ static int search_nalu(const uint8_t *data, int32_t len)
 {
     int i;
 
+    if (len < 5)
+    {
+        return -1;
+    }
+
     /* parse NALU 00 00 00 01 or 00 00 01 */
     for (i = 1; i < len - 4; i++)
     {

@@ -137,11 +137,11 @@ void APP_SetLayerConfig(uint32_t width, uint32_t height)
 {
     g_dc.ops->getLayerDefaultConfig(&g_dc, 0, &fbInfo);
     fbInfo.pixelFormat = APP_FB_FORMAT;
-    fbInfo.width       = width;
-    fbInfo.height      = height;
-    fbInfo.startX      = (APP_FB_WIDTH - width) / 2U;
-    fbInfo.startY      = (APP_FB_HEIGHT - height) / 2U;
-    fbInfo.strideBytes = width * APP_FB_BPP;
+    fbInfo.width       = (uint16_t)width;
+    fbInfo.height      = (uint16_t)height;
+    fbInfo.startX      = (APP_FB_WIDTH - (uint16_t)width) / 2U;
+    fbInfo.startY      = (APP_FB_HEIGHT - (uint16_t)height) / 2U;
+    fbInfo.strideBytes = (uint16_t)width * APP_FB_BPP;
     if (kStatus_Success != g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo))
     {
         PRINTF("Error: Could not configure the display controller\r\n");
@@ -189,12 +189,13 @@ void png_decode(FIL *file, uint8_t *buffer)
     while (bytesRemain > 0)
     {
         f_read(file, read_pos, bytesRemain, &bytesRead);
+        assert(bytesRemain >= bytesRead);
         bytesRemain -= bytesRead;
         read_pos += bytesRead;
     }
 
     /* Step 2: Set source buffer, buffer size and pixel draw callback function for PNG decoder handler. */
-    err = PNG_openRAM(&s_pngimage, png_buffer_aligned, png_size, NULL); // PNGDraw);//TODO
+    err = PNG_openRAM(&s_pngimage, png_buffer_aligned, png_size, NULL);
 
     if (err != 0)
     {

@@ -277,12 +277,12 @@ status_t BOARD_PrepareDisplayController(void)
 
 static void BOARD_SetCSPin(bool set)
 {
-    GPIO_PinWrite(BOARD_SSD1963_CS_GPIO, BOARD_SSD1963_CS_PIN, (uint8_t)set);
+    GPIO_PinWrite(BOARD_SSD1963_CS_GPIO, BOARD_SSD1963_CS_PIN, set ? 1U : 0U);
 }
 
 static void BOARD_SetRSPin(bool set)
 {
-    GPIO_PinWrite(BOARD_SSD1963_RS_GPIO, BOARD_SSD1963_RS_PIN, (uint8_t)set);
+    GPIO_PinWrite(BOARD_SSD1963_RS_GPIO, BOARD_SSD1963_RS_PIN, set ? 1U : 0U);
 }
 
 #else /* SSD1963_DRIVEN_BY_LCDIF */

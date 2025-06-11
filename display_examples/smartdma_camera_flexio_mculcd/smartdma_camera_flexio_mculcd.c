@@ -102,17 +102,17 @@ static void SDMA_CompleteCallback(void *param)
 
 void BOARD_SetCSPin(bool set)
 {
-    GPIO_PinWrite(DEMO_LCD_CS_GPIO, DEMO_LCD_CS_PIN, (uint8_t)set);
+    GPIO_PinWrite(DEMO_LCD_CS_GPIO, DEMO_LCD_CS_PIN, set ? 1U : 0U);
 }
 
 void BOARD_SetRSPin(bool set)
 {
-    GPIO_PinWrite(DEMO_LCD_RS_GPIO, DEMO_LCD_RS_PIN, (uint8_t)set);
+    GPIO_PinWrite(DEMO_LCD_RS_GPIO, DEMO_LCD_RS_PIN, set ? 1U : 0U);
 }
 
 void BOARD_SetResetPin(bool set)
 {
-    GPIO_PinWrite(DEMO_LCD_RST_GPIO, DEMO_LCD_RST_PIN, (uint8_t)set);
+    GPIO_PinWrite(DEMO_LCD_RST_GPIO, DEMO_LCD_RST_PIN, set ? 1U : 0U);
 }
 
 static status_t DEMO_LcdWriteCommand(void *dbiXferHandle, uint32_t command)
