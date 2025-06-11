@@ -142,10 +142,10 @@
 /******************************************************************************
  * SENSORS constants moved from MCAT calculation
  ******************************************************************************/
-#define M1_POSPE_ENC_PULSES (1000)
+#define M1_POSPE_ENC_PULSES (2000)
 #define M1_POSPE_ENC_DIRECTION (0)
 #define M1_POSPE_ENC_N_MIN (0.0F)
-#define M1_POSPE_MECH_POS_GAIN ACC32(16.384)
+#define M1_POSPE_MECH_POS_GAIN ACC32(32768.0/((M1_POSPE_ENC_PULSES*4.0)/2.0))
 #define M1_POSPE_TO_KP_GAIN (1256.64F)
 #define M1_POSPE_TO_KI_GAIN (39.4784F)
 #define M1_POSPE_TO_THETA_GAIN (0.0000318310F)
