@@ -47,12 +47,13 @@ if (isdefinedsymbol(__heap_size__)) {
 }
 
 /* The addition of the SMU size and the DMEM size is a constant but the sharing can change (see SMU_MEM_SEL)*/
-define symbol smu_and_dmem_size                = 0x00027FFE;
+define symbol smu_and_dmem_size                = 0x00028000;
 
 /* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
-define symbol m_dmem_size                      = 0x00013FFF;
+/*define symbol m_dmem_size                      = 0x00014000;*/  /*80 KB*/
+define symbol m_dmem_size                      = 0x00018000;  /*96 KB*/
 define symbol m_dmem_start                     = 0x00140000;
-define symbol m_dmem_end                       = m_dmem_start + m_dmem_size;
+define symbol m_dmem_end                       = m_dmem_start + m_dmem_size - 1;
 
 define symbol m_flash_start                    = 0x00000000;
 define symbol m_flash_end                      = 0x0007FFFF;
@@ -66,16 +67,18 @@ define symbol m_text_end                       = m_flash_end;
 define symbol m_data0_start                     = 0x00100000;
 define symbol m_data0_end                       = 0x001007FF;
 
-define symbol m_data1_start                     = 0x00140000;
-define symbol m_data1_end                       = m_dmem_end - __size_cstack__;
+/*Stack moved to the beginning of DMEM to allow for DMEM/SMU memory configuration at runtime.*/
+define symbol m_stack_start                       = 0x00140000;
+define symbol m_stack_end                         = m_stack_start + __size_cstack__ - 1;
 
-define symbol m_stack_start                     = m_data1_end + 1;
-define symbol m_stack_end                       = m_dmem_end;
+define symbol m_data1_start                       = m_stack_end + 1;
+define symbol m_data1_end                         = m_dmem_end;
+
 
 /* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
 define symbol m_shared_ram_size                 = smu_and_dmem_size - m_dmem_size;
 define symbol m_shared_ram_start                = 0xB0000000;
-define symbol m_shared_ram_end                  = 0xB0013FFF;
+define symbol m_shared_ram_end                  = m_shared_ram_start+m_shared_ram_size-1;
 
 /*New section allowing to share debug info to CM33 (LL error/warnings).*/
 define exported symbol m_sqram_debug_start      = 0xB0000000;

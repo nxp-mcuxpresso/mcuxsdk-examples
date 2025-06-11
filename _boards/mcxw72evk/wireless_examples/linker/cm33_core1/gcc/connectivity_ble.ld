@@ -46,9 +46,13 @@ __VECTOR_TABLE                      = m_interrupts_start;
 
 m_text_start                        = m_interrupts_end  + 1;
 m_text_end                          = m_flash_end;
-m_text_size                         = m_text_end - m_text_start;
+m_text_size                         = m_text_end - m_text_start + 1;
+
+/* The addition of SMU size and the DMEM size is a constant but the sharing can change (see SMU_MEM_SEL)*/
+smu_and_dmem_size                   = 0x00028000;
+m_dmem_size                         = 0x00018000;  /*96 KB*/
 m_ram1_start                        = 0x00140000;
-m_ram1_end                          = 0x00154000;
+m_ram1_end                          = m_ram1_start + m_dmem_size - 1;
 
 /* Used by the fwk_platform_lowpower module */
 gLowpowerPowerDownEnable_d          = DEFINED(gLowpowerPowerDownEnable_d) ? 1 : 0;
@@ -61,11 +65,11 @@ m_interrupts_ram_end                = m_interrupts_ram_start + m_ram_vector_tabl
 __VECTOR_RAM                        = m_interrupts_ram_start;
 __RAM_VECTOR_TABLE_SIZE_BYTES       = m_ram_vector_table_size;
 
-m_data1_start                       = m_ram1_start;
-m_data1_end                         = m_ram1_end - __size_cstack__-1;
-m_data1_size                        = m_data1_end - m_data1_start;
-m_cstack_start                      = m_data1_end + 1;
-m_cstack_end                        = m_ram1_end;
+m_cstack_start                      = m_ram1_start;
+m_cstack_end                        = m_cstack_start + __size_cstack__ - 1;
+m_data1_size                        = m_dmem_size - __size_cstack__;
+m_data1_start                       = m_cstack_end + 1;
+m_data1_end                         = m_ram1_end;
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
@@ -77,8 +81,9 @@ firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper
 /********************************************** Computeur Engine (CE) Memory **********************************************/
 /*New section allowing to share debug info to CM33 (LL error/warnings).*/
 /* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
+m_shared_ram_size                 = smu_and_dmem_size - m_dmem_size;
 m_shared_ram_start                = 0xB0000000;
-m_shared_ram_end                  = 0xB0013FFF;
+m_shared_ram_end                  = m_shared_ram_start + m_shared_ram_size - 1;
 
 m_sqram_debug_start               = 0xB0000000;
 /*New section allowing to share debug info to CM33 (LL error/warnings).*/
@@ -154,7 +159,7 @@ m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 m_free_data_end                   = rpmsg_sh_mem_start - 1;
 m_extra_data_start                = rpmsg_sh_mem_end + 1;
 m_extra_data_end                  = m_shared_ram_end;
-__HEAP_start__                      = m_extra_data_end - HEAP_SIZE;
+__HEAP_start__                      = m_extra_data_end - HEAP_SIZE + 1;
 __HEAP_end__                        = m_extra_data_end;
 
 /* Last reserved word of the debug section used for the sfc module */
@@ -168,18 +173,18 @@ MEMORY
   m_data1               (RW)  : ORIGIN = m_data1_start, LENGTH = m_data1_size
   rpmsg_sh_mem          (RW)  : ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
   m_lowpower_flag       (RW)  : ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size
-  sqram_debug_region (RX)  : ORIGIN = m_sqram_debug_start, LENGTH = m_sqram_debug_end-m_sqram_debug_start
-  lowpower_flag_region (RW): ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_end-m_lowpower_flag_start
-  sqram_btblesqbuf_region (RW): ORIGIN = m_sqram_btblesqbuf_start, LENGTH = m_sqram_btblesqbuf_end-m_sqram_btblesqbuf_start
-  sqram_btbuf_region (RW): ORIGIN = m_sqram_btbuf_start, LENGTH = m_sqram_btbuf_end-m_sqram_btbuf_start+1
-  sqram_btbleaesqbuf_region (RW): ORIGIN = m_sqram_btbleaesqbuf_start, LENGTH = m_sqram_btbleaesqbuf_end-m_sqram_btbleaesqbuf_start+1
-  sqram_region (RW): ORIGIN = m_sqram_start, LENGTH = m_sqram_end-m_sqram_start+1
-  sqram_bkup_region (RW): ORIGIN = m_sqram_bkup_start, LENGTH = m_sqram_bkup_end-m_sqram_bkup_start+1
-  sqram_rldat_ae_region (RW): ORIGIN = m_sqram_rldat_ae_start, LENGTH = m_sqram_rldat_ae_end-m_sqram_rldat_ae_start
-  sqram_rldat_region (RW): ORIGIN = m_sqram_rldat_start, LENGTH = m_sqram_rldat_end-m_sqram_rldat_start+1
-  rpmsg_sh_mem_region (RW): ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_end-rpmsg_sh_mem_start
-  sqram_dbg_ext_logging_region (RW):ORIGIN = dbg_ext_logging_start, LENGTH = dbg_ext_logging_end-dbg_ext_logging_start
-  extra_data (RW):ORIGIN = m_extra_data_start, LENGTH = m_extra_data_end-m_extra_data_start
+  sqram_debug_region (RX)  : ORIGIN = m_sqram_debug_start, LENGTH = m_sqram_debug_size
+  lowpower_flag_region (RW): ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size
+  sqram_btblesqbuf_region (RW): ORIGIN = m_sqram_btblesqbuf_start, LENGTH = m_sqram_btblesqbuf_size
+  sqram_btbuf_region (RW): ORIGIN = m_sqram_btbuf_start, LENGTH = m_sqram_btbuf_size
+  sqram_btbleaesqbuf_region (RW): ORIGIN = m_sqram_btbleaesqbuf_start, LENGTH = m_sqram_btbleaesqbuf_size
+  sqram_region (RW): ORIGIN = m_sqram_start, LENGTH = m_sqram_size
+  sqram_bkup_region (RW): ORIGIN = m_sqram_bkup_start, LENGTH = m_sqram_bkup_size
+  sqram_rldat_ae_region (RW): ORIGIN = m_sqram_rldat_ae_start, LENGTH = m_sqram_rldat_ae_size
+  sqram_rldat_region (RW): ORIGIN = m_sqram_rldat_start, LENGTH = m_sqram_rldat_size
+  rpmsg_sh_mem_region (RW): ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
+  sqram_dbg_ext_logging_region (RW):ORIGIN = dbg_ext_logging_start, LENGTH = dbg_ext_logging_size
+  extra_data (RW):ORIGIN = m_extra_data_start, LENGTH = m_extra_data_end-m_extra_data_start+1
 }
 
 /* Define output sections */
