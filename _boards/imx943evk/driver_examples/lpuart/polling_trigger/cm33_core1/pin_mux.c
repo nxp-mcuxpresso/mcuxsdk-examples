@@ -30,15 +30,6 @@ processor_version: 0.12.3
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void)
 {
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO26__LPUART12_TX, 1U);
-    IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO27__LPUART12_RX, 1U);
-
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO26__LPUART12_TX,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
-    IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO27__LPUART12_RX,
-                        IOMUXC_PAD_DSE(15U) | IOMUXC_PAD_FSEL1(2U) |
-                        IOMUXC_PAD_OD_MASK);
 }
 
 /*
