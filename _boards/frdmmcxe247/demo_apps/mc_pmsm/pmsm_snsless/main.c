@@ -76,8 +76,8 @@ static uint32_t ui32ButtonFilter = 0U;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
-    "../../../examples/frdmmcxe247/demo_apps/mc_pmsm/pmsm_snsless", /* User Path 1- the highest priority */
-    "",       /* User Path 2 */
+    "../../../examples/_boards/frdmmcxe247/demo_apps/mc_pmsm/pmsm_snsless",     /* User Path 1- the highest priority */
+    "../../../boards/frdmmcxe247/demo_apps/mc_pmsm/pmsm_snsless",       /* User Path 2 */
     "frdmmcxe247",   /* board id */
     "pmsm_snsless",  /* example id */
     MCRSP_VER,       /* sw version */
