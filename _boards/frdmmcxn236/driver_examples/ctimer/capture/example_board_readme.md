@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-Short J2-18(P1_8) and J2-20(P1_9).
+Short J2-18(P1_16) and J2-20(P1_17).
 
 Prepare the Demo
 ===============
