@@ -14,6 +14,6 @@ mcux_add_macro(
 	CC "-DPRINTF_ADVANCED_ENABLE=1"
 )
 
-include(${SdkRootDirPath}/${board_root}/${board}/digital_encoder_examples/hiperface/${core_id}/reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/digital_encoder_examples/hiperface/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
