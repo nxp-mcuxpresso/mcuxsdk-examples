@@ -1,0 +1,16 @@
+
+# Add additional configuration
+mcux_add_armgcc_configuration(
+    TARGETS debug release
+    LD "-Xlinker --defsym=__stack_size__=0x2000 -Xlinker --defsym=__heap_size__=0x10000"
+)
+
+mcux_add_iar_configuration(
+    TARGETS debug release
+    LD "--config_def=__stack_size__=0x2000 --config_def=__heap_size__=0x10000"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS debug release
+    LD "--predefine=\"-D__stack_size__=0x2000\" --predefine=\"-D__heap_size__=0x10000\""
+)
