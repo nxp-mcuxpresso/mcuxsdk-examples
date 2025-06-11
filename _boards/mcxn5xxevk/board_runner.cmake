@@ -15,7 +15,7 @@ elseif(${core_id} STREQUAL cm33_core1)
 endif()
 
 board_runner_args(linkserver  "--device=${CONFIG_MCUX_HW_DEVICE_ID}:MCX-N5XX-EVK")
-#board_runner_args(linkserver  "--core=${core_id}")
+board_runner_args(linkserver  "--core=${core_id}")
 
 include(${SdkRootDirPath}/cmake/extension/runner/linkserver.board.cmake)
 include(${SdkRootDirPath}/cmake/extension/runner/jlink.board.cmake)
