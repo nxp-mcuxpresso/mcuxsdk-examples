@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../boards/twrmc56f8400/mc_pmsm/pmsm_enc/m2_pmsm_appconfig.h
-    * DATE: Thu Jan 25 2024, 13:49:10
+    * FILE NAME: ../boards/twrmc56f8400/mc_pmsm/pmsm_enc/m1_pmsm_appconfig.h
+    * DATE: Thu Jan 25 2024, 14:07:16
 */
 
 /*
@@ -15,12 +15,12 @@
         "parametersNmax": 4400,
         "parametersImax": 8,
         "parametersEmax": 15.1,
-        "parametersPP": 4,
-        "parametersRs": 0.72,
-        "parametersLd": 0.000326,
-        "parametersLq": 0.000294,
-        "parametersKe": 0.0393,
-        "parametersJ": 0.000017,
+        "parametersPP": 2,
+        "parametersRs": 0.55,
+        "parametersLd": 0.000403,
+        "parametersLq": 0.000512,
+        "parametersKe": 0.0154,
+        "parametersJ": 0.0000016,
         "parametersIphNom": 2,
         "parametersUphNom": 15,
         "parametersNnom": 4000,
@@ -55,8 +55,8 @@
         "speedLoopIncUp": 3000,
         "speedLoopIncDown": 3000,
         "speedLoopCutOffFreq": 100,
-        "speedLoopUpperLimit": 2,
-        "speedLoopLowerLimit": -2,
+        "speedLoopUpperLimit": 3,
+        "speedLoopLowerLimit": -3,
         "speedLoopSLKp": 0.003,
         "speedLoopSLKi": 0.009,
         "speedLoopManualConstantTunning": true
@@ -86,8 +86,8 @@
 
 /*
 {
-    "motorName": "Teknic M-2310P",
-    "motorDescription": ""
+    "motorName": "Linix",
+    "motorDescription": "Configuration for LINIX motor."
 }
 */
 
@@ -96,11 +96,11 @@
 
 /* PARAMETERS*/
 #define M1_N_MAX (4400.0F)
-#define M1_FREQ_MAX (293.333F)
+#define M1_FREQ_MAX (146.667F)
 #define M1_I_MAX (8.0F)
 #define M1_U_MAX (20.9578F)
 #define M1_E_MAX (15.1F)
-#define M1_MOTOR_PP (4)
+#define M1_MOTOR_PP (2)
 #define M1_I_PH_NOM FRAC16(0.25)
 #define M1_N_NOM FRAC16(0.909091)
 #define M1_U_DCB_MAX (36.3F)
@@ -122,22 +122,22 @@
 #define M1_UDCB_IIR_A1 FRAC32(0.469541)
 #define M1_SCALAR_VHZ_FACTOR_GAIN FRAC16(0.787295)
 #define M1_SCALAR_VHZ_FACTOR_SHIFT (0)
-#define M1_SCALAR_INTEG_GAIN ACC32(0.0586667)
+#define M1_SCALAR_INTEG_GAIN ACC32(0.0293333)
 #define M1_SCALAR_RAMP_UP FRAC32(0.0000681818)
 #define M1_SCALAR_RAMP_DOWN FRAC32(0.0000681818)
 /* CURRENTLOOP*/
-#define M1_D_KP_GAIN ACC32(0.163016)
-#define M1_D_KI_GAIN ACC32(0.0192578)
-#define M1_Q_KP_GAIN ACC32(0.120037)
-#define M1_Q_KI_GAIN ACC32(0.0173675)
+#define M1_D_KP_GAIN ACC32(0.331328)
+#define M1_D_KI_GAIN ACC32(0.0238064)
+#define M1_Q_KP_GAIN ACC32(0.477727)
+#define M1_Q_KI_GAIN ACC32(0.0302454)
 #define M1_CLOOP_LIMIT FRAC16(0.9)
 /* SPEEDLOOP*/
 #define M1_SPEED_RAMP_UP FRAC32(0.000681818)
 #define M1_SPEED_RAMP_DOWN FRAC32(0.000681818)
-#define M1_SPEED_LOOP_HIGH_LIMIT FRAC16(0.25)
-#define M1_SPEED_LOOP_LOW_LIMIT FRAC16(-0.25)
-#define M1_SPEED_PI_PROP_GAIN ACC32(0.691150)
-#define M1_SPEED_PI_INTEG_GAIN ACC32(0.00207345)
+#define M1_SPEED_LOOP_HIGH_LIMIT FRAC16(0.375)
+#define M1_SPEED_LOOP_LOW_LIMIT FRAC16(-0.375)
+#define M1_SPEED_PI_PROP_GAIN ACC32(0.345575)
+#define M1_SPEED_PI_INTEG_GAIN ACC32(0.00103673)
 #define M1_SPEED_IIR_B0 FRAC32(0.119529)
 #define M1_SPEED_IIR_B1 FRAC32(0.119529)
 #define M1_SPEED_IIR_A1 FRAC32(0.260943)
@@ -157,18 +157,18 @@
 #define M1_OL_START_RAMP_INC FRAC32(0.0000227273)
 #define M1_OL_START_I FRAC16(0.075)
 #define M1_MERG_SPEED_TRH FRAC16(0.113636)
-#define M1_MERG_COEFF FRAC16(0.005)
-#define M1_I_SCALE ACC32(0.819095)
-#define M1_U_SCALE ACC32(0.658223)
-#define M1_E_SCALE ACC32(0.474246)
-#define M1_WI_SCALE ACC32(0.136146)
-#define M1_BEMF_DQ_KP_GAIN ACC32(0.269664)
-#define M1_BEMF_DQ_KI_GAIN ACC32(0.0613667)
-#define M1_TO_KP_SHIFT (-2)
+#define M1_MERG_COEFF FRAC16(0.0025)
+#define M1_I_SCALE ACC32(0.879913)
+#define M1_U_SCALE ACC32(0.571993)
+#define M1_E_SCALE ACC32(0.412118)
+#define M1_WI_SCALE ACC32(0.103019)
+#define M1_BEMF_DQ_KP_GAIN ACC32(0.513523)
+#define M1_BEMF_DQ_KI_GAIN ACC32(0.0758613)
+#define M1_TO_KP_SHIFT (-1)
 #define M1_TO_KP_GAIN FRAC16(0.681818)
-#define M1_TO_KI_SHIFT (-9)
+#define M1_TO_KI_SHIFT (-8)
 #define M1_TO_KI_GAIN FRAC16(0.685438)
-#define M1_TO_THETA_SHIFT (-4)
+#define M1_TO_THETA_SHIFT (-5)
 #define M1_TO_THETA_GAIN FRAC16(0.938667)
 #define M1_TO_SPEED_IIR_B0 FRAC32(0.0558176)
 #define M1_TO_SPEED_IIR_B1 FRAC32(0.0558176)
