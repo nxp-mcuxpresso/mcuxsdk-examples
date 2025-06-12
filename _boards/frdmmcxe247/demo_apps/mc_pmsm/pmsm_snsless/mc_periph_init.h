@@ -70,7 +70,7 @@
 /* Over-current Fault detection CMP instance */
 #define M1_FAULT_CMP_INSTANCE   (CMP0)
 /* Over-current Fault detection threshold */
-#define M1_FAULT_CMP_THRESHOLD  (61U)
+#define M1_FAULT_CMP_THRESHOLD  (200U)
 
 /* DC bus braking resistor control */
 #define M1_BRAKE_SET()          
