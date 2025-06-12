@@ -120,7 +120,7 @@ void InitADC(void)
     LPADC_DoOffsetCalibration(ADC1);
     LPADC_DoAutoCalibration(ADC1);
     
-    LPADC_SetOffsetCalibrationMode(ADC1, kLPADC_OffsetCalibration16bitMode);
+    LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration16bitMode);
     LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration12bitMode);
     LPADC_DoOffsetCalibration(ADC2);
     LPADC_DoAutoCalibration(ADC2);
