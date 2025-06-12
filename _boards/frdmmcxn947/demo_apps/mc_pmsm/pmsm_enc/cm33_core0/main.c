@@ -262,9 +262,6 @@ void CTIMER0_IRQHandler(void)
     /* Demo position stimulator */
     DemoPositionStimulator();
 
-    /* Call FreeMASTER recorder */
-    FMSTR_Recorder(0);
-
     /* Clear the match interrupt flag. */
     CTIMER0->IR |= CTIMER_IR_MR0INT(1U);
 

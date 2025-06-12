@@ -271,9 +271,6 @@ void ADC0_IRQHandler(void)
     /* Enable interrupts  */
     EnableGlobalIRQ(ui32PrimaskReg);
 
-    /* Call FreeMASTER recorder */
-    FMSTR_Recorder(0);
-
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;
 }
