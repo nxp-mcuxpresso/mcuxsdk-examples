@@ -11,7 +11,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "display_support.h"
-
+#include "pmic_support.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -38,6 +38,24 @@ void BOARD_Init(void)
     BOARD_InitBootPins();
     BOARD_InitPsRamPins_Xspi2();
 
+    BOARD_InitPmicPins();
+    BOARD_InitPmic();
+    BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1v for 325MHz clock. */
+
+    // Disable LDO
+    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
+    POWER_ApplyPD();
+
+    BOARD_BootClockHSRUN();
+    BOARD_InitDebugConsole();
+    BOARD_Init16bitsPsRam(XSPI2);
+
+    POWER_DisablePD(kPDRUNCFG_APD_NPU);
+    POWER_DisablePD(kPDRUNCFG_PPD_NPU);
+    POWER_ApplyPD();
+
 #if (DEMO_PANEL_TFT_PROTO_5 == DEMO_PANEL)
 #if (SSD1963_DRIVEN_BY == SSD1963_DRIVEN_BY_FLEXIO)
     BOARD_InitFlexIOPanelPins();
@@ -62,9 +80,5 @@ void BOARD_Init(void)
     CLOCK_EnableClock(kCLOCK_Gpio3);
     RESET_PeripheralReset(kGPIO3_RST_SHIFT_RSTn);
 
-    BOARD_BootClockRUN();
-    BOARD_InitDebugConsole();
-    BOARD_Init16bitsPsRam(XSPI2);
-    
 }
 /*${function:end}*/

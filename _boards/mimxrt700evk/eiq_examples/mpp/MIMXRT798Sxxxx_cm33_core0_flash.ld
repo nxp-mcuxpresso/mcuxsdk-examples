@@ -33,11 +33,11 @@ M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 m_ezhv_image_maximum_size = 0x00010000;
 
 DATA_START   = 0x20000000; /* SRAM P0 */
-DATA_SIZE    = 0x00300000;
+DATA_SIZE    = 0x00500000;
 DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
 
-NCACHE_START = 0x20400000; /* SRAM P14 */
-NCACHE_SIZE  = 0x00380000; /* SRAM P29 end - SRAM P14 start */
+NCACHE_START = 0x20500000; /* SRAM P14 */
+NCACHE_SIZE  = 0x00280000; /* SRAM P29 end - SRAM P14 start */
 NCACHE_END   = NCACHE_START + NCACHE_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0);
 
 EZHV_DATA_START = 0x24108000;
@@ -58,7 +58,6 @@ MEMORY
   m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
   m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x001FBD00
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
-  m_model               (RW)  : ORIGIN = 0x20300000, LENGTH = 0x00100000 /* SRAM P13 */
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_END - NCACHE_START + 1
   m_ezhv_data           (RW)  : ORIGIN = EZHV_DATA_START, LENGTH = EZHV_DATA_SIZE
   m_image_data          (RW)  : ORIGIN = IMAGE_DATA_START, LENGTH = IMAGE_DATA_SIZE
@@ -92,8 +91,6 @@ SECTIONS
     . = ALIGN(4);
     *(.text)                 /* .text sections (code) */
     *(.text*)                /* .text* sections (code) */
-    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -209,24 +206,14 @@ SECTIONS
     *(DataQuickAccess)       /* DataQuickAccess sections */
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
+    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
+    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(.modeldata)
+    *(.modeldata*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
-
-  __MDATA_REGION_START = ORIGIN(m_model);
-  __MDATA_REGION_SIZE  = LENGTH(m_model);
-  __MDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for model data initialization */
-
-  .modeldata : AT(__MDATA_ROM)
-  {
-    . = ALIGN(4);
-    __modeldata_start__ = .;   /* create a global symbol at model data start */
-    *(.modeldata)
-    *(.modeldata*)
-    . = ALIGN(4);
-    __modeldata_end__ = .;
-  } > m_model
 
   /* The ezhv cmd and data go into internal ram */
   .m_ezhv_data :
@@ -249,7 +236,7 @@ SECTIONS
 
   __NCACHE_REGION_START = ORIGIN(m_ncache);
   __NCACHE_REGION_SIZE  = NCACHE_SIZE;
-  __NDATA_ROM = __MDATA_ROM + (__modeldata_end__ - __modeldata_start__); /* Symbol is used by startup for ncache data initialization */
+  __NDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for ncache data initialization */
 
   .ncache.init : AT(__NDATA_ROM)
   {

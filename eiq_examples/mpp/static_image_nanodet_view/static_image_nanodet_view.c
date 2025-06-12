@@ -344,9 +344,6 @@ static void app_task(void *params)
     static mpp_stats_t nanodet_stats;
     memset(&nanodet_params, 0 , sizeof(mpp_element_params_t));
 
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_nanodet_to_ram();
-#endif
     nanodet_params.ml_inference.model_data = nanodet_m_0_5x_nhwc_nopermute_tflite;
     nanodet_params.ml_inference.model_size = nanodet_m_0_5x_nhwc_nopermute_tflite_len;
     nanodet_params.ml_inference.tensor_order = MPP_TENSOR_ORDER_NHWC;

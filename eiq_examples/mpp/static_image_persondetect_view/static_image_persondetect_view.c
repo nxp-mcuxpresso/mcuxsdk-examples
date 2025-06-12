@@ -350,9 +350,6 @@ static void app_task(void *params)
 	mpp_element_params_t persondetect_params;
 	memset(&persondetect_params, 0 , sizeof(mpp_element_params_t));
 
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_persondetect_to_ram();
-#endif
 	persondetect_params.ml_inference.model_data = persondetect_data;
 	persondetect_params.ml_inference.model_size = persondetect_data_len;
 	persondetect_params.ml_inference.model_input_mean = PERSONDETECT_INPUT_MEAN;
