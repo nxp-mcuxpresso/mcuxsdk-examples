@@ -934,6 +934,9 @@ static int wlan_ncp_add(void *tlv)
                             ret = -WM_FAIL;
                             goto done;
                         }
+
+                        network->channel = res->Channel;
+
                         if (res->WPA_WPA2_WEP.wepStatic || res->WPA_WPA2_WEP.wpa || res->WPA_WPA2_WEP.wpa2 || res->WPA_WPA2_WEP.wpa2_sha256)
                         {
                             network->security.psk_len = security_tlv->password_len;
