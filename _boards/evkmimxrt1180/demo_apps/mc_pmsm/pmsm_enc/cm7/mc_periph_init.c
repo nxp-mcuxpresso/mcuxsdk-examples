@@ -97,7 +97,7 @@ void InitClock(void)
  */
 void InitADC(void)
 {
-    #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 0))
+    #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 3))
     #warning Used a different fsl_lpadc driver version! An example may not work correctly! 
     #endif
   
