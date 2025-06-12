@@ -22,6 +22,13 @@
 
 #define gAppHighSystemClockFrequency_d 1
 
+/* To Use 3M baudrate on UART 0 with flow control */
+#define gBoardUse3MbOnUart0_d   0
+
+/* To use 460800 baudrate on UART 1 without flow control, increase SM Ring buffer size */
+// #define BOARD_APP_UART_BAUDRATE 460800
+// #define SERIAL_MANAGER_RING_BUFFER_SIZE (1024U)
+
 /*! *********************************************************************************
  * 	App Configuration
  ********************************************************************************** */
