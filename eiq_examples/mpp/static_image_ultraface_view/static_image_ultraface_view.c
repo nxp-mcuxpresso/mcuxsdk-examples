@@ -351,9 +351,6 @@ static void app_task(void *params)
     static mpp_stats_t ultraface_stats;
     memset(&ultraface_params, 0 , sizeof(mpp_element_params_t));
 
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_ultraface_to_ram();
-#endif
     ultraface_params.ml_inference.model_data = ultraface_data;
     ultraface_params.ml_inference.model_size = ultraface_data_len;
     ultraface_params.ml_inference.model_input_mean = ULTRAFACE_INPUT_MEAN;

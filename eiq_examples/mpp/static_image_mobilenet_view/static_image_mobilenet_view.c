@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -294,9 +294,6 @@ static void app_task(void *params)
     static mpp_stats_t mobilenet_stats;
     memset(&mobilenet_params, 0 , sizeof(mpp_element_params_t));
 
-#ifdef APP_USE_NEUTRON64_MODEL
-    copy_mobilenet_to_ram();
-#endif
     mobilenet_params.ml_inference.model_data = mobilenet_data;
     mobilenet_params.ml_inference.model_size = mobilenet_data_len;
     mobilenet_params.ml_inference.model_input_mean = MOBILENET_INPUT_MEAN;

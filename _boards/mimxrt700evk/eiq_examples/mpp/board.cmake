@@ -9,13 +9,11 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/eiq_examples/mpp/src/pin_mux.c
             ${board_root}/${board}/eiq_examples/mpp/src/hardware_init.c
-            ${board_root}/${board}/eiq_examples/mpp/src/clock_config.c
             ${board_root}/${board}/eiq_examples/mpp/src/utick_config.c
             ${board_root}/${board}/eiq_examples/mpp/inc/pin_mux.h
             ${board_root}/${board}/eiq_examples/mpp/inc/app.h
             ${board_root}/${board}/eiq_examples/mpp/inc/utick_config.h
             ${board_root}/${board}/eiq_examples/mpp/inc/FreeRTOSConfig.h
-            ${board_root}/${board}/eiq_examples/mpp/inc/clock_config.h
             middleware/eiq/mpp/hal/hal_${board}.c
 )
 
