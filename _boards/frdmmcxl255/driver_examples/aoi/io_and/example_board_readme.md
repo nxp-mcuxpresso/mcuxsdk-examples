@@ -8,7 +8,7 @@ Board settings
 ============
 IO0     = EXT_TRIG_IN1 P1_18 J2
 IO1     = EXT_TRIG_IN2 P1_19 J2
-AOI_OUT = EXT_TRIG_OUT0 P3_8 J2
+AOI_OUT = EXT_TRIG_OUT0 P3_8 J1
 
 AOI_OUT = IO0 & IO1
 

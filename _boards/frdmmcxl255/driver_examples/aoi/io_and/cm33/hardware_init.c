@@ -31,6 +31,7 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_GateAOI0);
 
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitAOIPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
