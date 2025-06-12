@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
 trdc_secondary_core:
+  skip_build: true
   section-type: application
   contents:
     meta_path: examples/driver_examples/trdc/multicore/secondary_core
