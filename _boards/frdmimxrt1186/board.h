@@ -91,11 +91,8 @@
 #define BOARD_FLASH_SIZE (0x1000000U)
 
 /*! @brief The Ethernet PHY addresses. */
-#define BOARD_EP0_PHY_ADDR       (0x03U)
-#define BOARD_SWT_PORT0_PHY_ADDR (0x02U)
-#define BOARD_SWT_PORT1_PHY_ADDR (0x05U)
+#define BOARD_SWT_PORT0_PHY_ADDR (0x05U)
 #define BOARD_SWT_PORT2_PHY_ADDR (0x04U)
-#define BOARD_SWT_PORT3_PHY_ADDR (0x07U)
 
 /*! @brief The Ethernet PHY type of the board */
 #define BOARD_USE_NETC_PHY_YT8521

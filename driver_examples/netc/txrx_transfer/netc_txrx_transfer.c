@@ -42,7 +42,9 @@ typedef uint8_t rx_buffer_t[EXAMPLE_EP_RXBUFF_SIZE_ALIGN];
  ******************************************************************************/
 /* EP resource. */
 static ep_handle_t g_ep_handle;
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
 static netc_hw_si_idx_t g_siIndex[EXAMPLE_EP_NUM] = EXAMPLE_EP_SI;
+#endif
 
 #if !(defined(FSL_FEATURE_NETC_HAS_NO_SWITCH) && FSL_FEATURE_NETC_HAS_NO_SWITCH)
 /* SWT resource. */
@@ -53,8 +55,6 @@ static swt_transfer_config_t swtTxRxConfig;
 
 /* Buffer descriptor resource. */
 AT_NONCACHEABLE_SECTION_ALIGN(static netc_rx_bd_t g_rxBuffDescrip[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_RXBD_NUM],
-                              EXAMPLE_EP_BD_ALIGN);
-AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_TXBD_NUM],
                               EXAMPLE_EP_BD_ALIGN);
 AT_NONCACHEABLE_SECTION_ALIGN(static rx_buffer_t g_rxDataBuff[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_RXBD_NUM],
                               EXAMPLE_EP_BUFF_SIZE_ALIGN);
@@ -69,7 +69,11 @@ static uint64_t rxBuffAddrArray[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_RXBD_NUM];
 static netc_tx_frame_info_t g_mgmtTxDirty[EXAMPLE_EP_TXBD_NUM];
 static netc_tx_frame_info_t mgmtTxFrameInfo;
 #endif
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
+AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_TXBD_NUM],
+                              EXAMPLE_EP_BD_ALIGN);
 static netc_tx_frame_info_t g_txDirty[EXAMPLE_EP_RING_NUM][EXAMPLE_EP_TXBD_NUM];
+#endif
 static netc_tx_frame_info_t txFrameInfo;
 static uint8_t txFrameNum, rxFrameNum;
 static volatile bool txOver;
@@ -140,6 +144,8 @@ static void APP_BuildBroadCastFrameSwtTag(uint8_t port)
 
 static status_t APP_ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame_info_t *frameInfo, void *userData)
 {
+    (void)txFrameInfo;
+
     txFrameInfo = *frameInfo;
     return kStatus_Success;
 }
@@ -167,6 +173,7 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     }
 }
 
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
 status_t APP_EP_XferLoopBack(uint32_t index)
 {
     status_t result                  = kStatus_Success;
@@ -317,6 +324,7 @@ status_t APP_EP_XferLoopBack(uint32_t index)
 
     return result;
 }
+#endif
 
 #if !(defined(FSL_FEATURE_NETC_HAS_NO_SWITCH) && FSL_FEATURE_NETC_HAS_NO_SWITCH)
 status_t APP_SWT_XferLoopBack(void)
@@ -398,12 +406,14 @@ status_t APP_SWT_XferLoopBack(void)
         {
             result = APP_PHY_GetLinkStatus(EXAMPLE_SWT_PORT0 + i, &link);
         } while ((result != kStatus_Success) || (!link));
+
         result = APP_PHY_GetLinkModeSpeedDuplex(EXAMPLE_SWT_PORT0 + i, &phyMode, &phySpeed, &phyDuplex);
         if (result != kStatus_Success)
         {
             PRINTF("\r\n%s: %d, Failed to get link status(mode, speed, dumplex)!\r\n", __func__, __LINE__);
             return result;
         }
+
         g_swt_config.ports[i].ethMac.miiMode   = phyMode;
         g_swt_config.ports[i].ethMac.miiSpeed  = phySpeed;
         g_swt_config.ports[i].ethMac.miiDuplex = phyDuplex;
@@ -570,16 +580,18 @@ int main(void)
 
     for (uint8_t ring = 0U; ring < EXAMPLE_EP_RING_NUM; ring++)
     {
-        for (uint8_t index = 0U; index < EXAMPLE_EP_RXBD_NUM; index++)
+        for (index = 0U; index < EXAMPLE_EP_RXBD_NUM; index++)
         {
             rxBuffAddrArray[ring][index] = (uint64_t)(uintptr_t)&g_rxDataBuff[ring][index];
         }
     }
 
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
     for (index = 0; index < EXAMPLE_EP_NUM; index++)
     {
         APP_EP_XferLoopBack(index);
     }
+#endif
 #if !(defined(FSL_FEATURE_NETC_HAS_NO_SWITCH) && FSL_FEATURE_NETC_HAS_NO_SWITCH)
     APP_SWT_XferLoopBack();
 #endif

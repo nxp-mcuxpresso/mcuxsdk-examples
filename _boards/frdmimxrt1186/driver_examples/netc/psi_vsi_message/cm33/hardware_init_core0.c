@@ -14,7 +14,7 @@
 /*${header:end}*/
 
 /*${macro:start}*/
-#define EXAMPLE_SWT_PORT1_PHY_RESET_PIN RGPIO6, 13
+#define EXAMPLE_SWT_PORT1_PHY_RESET_PIN RGPIO1, 15
 /*${macro:end}*/
 
 /*${variable:start}*/
@@ -97,7 +97,7 @@ status_t APP_PHY_Init(void)
     s_phy_resource.write   = APP_EMDIOWrite;
     s_phy_resource.read    = APP_EMDIORead;
     phyyt8521Config.resource = &s_phy_resource;
-    phyyt8521Config.phyAddr  = EXAMPLE_SWT_PORT1_PHY_ADDR;
+    phyyt8521Config.phyAddr  = BOARD_SWT_PORT0_PHY_ADDR;
 
     result = PHY_Init(&s_phy_handle, &phyyt8521Config);
     if (result != kStatus_Success)

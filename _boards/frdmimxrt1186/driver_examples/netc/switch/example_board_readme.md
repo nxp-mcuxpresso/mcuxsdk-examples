@@ -31,13 +31,9 @@ Wait for PHY link up...
 
 MAC learning.
 The frame received from port 0. Dest Address 54:27:8d:00:00:f0 Src Address 54:27:8d:00:00:00. Port 0 bounds to MAC 54:27:8d:00:00:00.
-The frame received from port 1. Dest Address 54:27:8d:00:00:f0 Src Address 54:27:8d:00:00:01. Port 1 bounds to MAC 54:27:8d:00:00:01.
 The frame received from port 2. Dest Address 54:27:8d:00:00:f0 Src Address 54:27:8d:00:00:02. Port 2 bounds to MAC 54:27:8d:00:00:02.
-The frame received from port 3. Dest Address 54:27:8d:00:00:f0 Src Address 54:27:8d:00:00:03. Port 3 bounds to MAC 54:27:8d:00:00:03.
 
 Frame forwarding.
 The frame received from pseudo port. Dest Address 54:27:8d:00:00:00 Src Address 54:27:8d:00:00:f0. Frame forwarding to port 0.
-The frame received from pseudo port. Dest Address 54:27:8d:00:00:01 Src Address 54:27:8d:00:00:f0. Frame forwarding to port 1.
 The frame received from pseudo port. Dest Address 54:27:8d:00:00:02 Src Address 54:27:8d:00:00:f0. Frame forwarding to port 2.
-The frame received from pseudo port. Dest Address 54:27:8d:00:00:03 Src Address 54:27:8d:00:00:f0. Frame forwarding to port 3.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

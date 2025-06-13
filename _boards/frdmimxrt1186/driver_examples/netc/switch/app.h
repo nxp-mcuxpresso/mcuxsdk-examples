@@ -20,18 +20,9 @@
 /*${macro:start}*/
 #define EXAMPLE_NETC_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
 
-/* Ethernet port identifier. */
-#define EXAMPLE_EP_NUM 1U
-#define EXAMPLE_EP_SI    \
-    {                    \
-        kNETC_ENETC0PSI0 \
-    }
 #define EXAMPLE_MSGINTR   MSGINTR1
-#define EXAMPLE_EP0_PORT  0x00U
 #define EXAMPLE_SWT_PORT0 0x01U
-#define EXAMPLE_SWT_PORT1 0x02U
 #define EXAMPLE_SWT_PORT2 0x03U
-#define EXAMPLE_SWT_PORT3 0x04U
 
 /* Buffer desciptor configuration. */
 #define EXAMPLE_EP_RING_NUM          3U
@@ -45,7 +36,7 @@
 #define EXAMPLE_EP_TXFRAME_NUM     20U
 #define EXAMPLE_SWT_MAX_PORT_NUM   4U
 #if !defined(EXAMPLE_SWT_USED_PORT_BITMAP)
-#define EXAMPLE_SWT_USED_PORT_BITMAP 0xFU /*! Enabled Switch port bit map, bit n represents port n. */
+#define EXAMPLE_SWT_USED_PORT_BITMAP 0x5U /*! Enabled Switch port bit map, bit n represents port n. */
 #endif
 /*${macro:end}*/
 

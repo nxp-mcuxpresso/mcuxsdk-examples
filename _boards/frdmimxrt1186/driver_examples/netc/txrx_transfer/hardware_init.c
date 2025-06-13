@@ -12,22 +12,18 @@
 
 /*${macro:start}*/
 /*!< PHY reset pins. */
-#define EXAMPLE_EP0_PORT_PHY_RESET_PIN  RGPIO4, 13
-#define EXAMPLE_SWT_PORT0_PHY_RESET_PIN RGPIO4, 25
-#define EXAMPLE_SWT_PORT1_PHY_RESET_PIN RGPIO6, 13
-#define EXAMPLE_SWT_PORT2_PHY_RESET_PIN RGPIO4, 28
-#define EXAMPLE_SWT_PORT3_PHY_RESET_PIN RGPIO6, 15
+#define EXAMPLE_SWT_PORT0_PHY_RESET_PIN RGPIO1, 15
+#define EXAMPLE_SWT_PORT2_PHY_RESET_PIN RGPIO1, 20
 
-#define PHY_PAGE_SELECT_REG 0x1FU /*!< The PHY page select register. */
+#define PHY_EXT_ADDR_REG             0x1EU
+#define PHY_EXT_DATA_REG             0x1FU
+#define PHY_RGMII_CONFIG1_REG        0xA003U
+#define PHY_RGMII_CONFIG1_TXDLY_MASK 0xFU
 /*${macro:end}*/
 
 /*${variable:start}*/
 /* PHY operation. */
-#ifdef EXAMPLE_PHY_USE_PORT_MDIO
-static netc_mdio_handle_t s_mdio_handle[5];
-#else
 static netc_mdio_handle_t s_emdio_handle;
-#endif
 static phy_yt8521_resource_t s_phy_resource[5];
 static phy_handle_t s_phy_handle[5];
 /*${variable:end}*/
@@ -54,105 +50,16 @@ status_t APP_MDIO_Init(void)
         .srcClockHz        = EXAMPLE_NETC_FREQ,
     };
 
-#ifdef EXAMPLE_PHY_USE_PORT_MDIO
-    /* Usually should call EP_Init/SWT_Init then init port MDIO, here just an quick enablement example. */
-    NETC_F2_PCI_HDR_TYPE0->PCI_CFH_CMD |=
-        (ENETC_PCI_TYPE0_PCI_CFH_CMD_MEM_ACCESS_MASK | ENETC_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER_EN_MASK);
-    NETC_F3_PCI_HDR_TYPE0->PCI_CFH_CMD |=
-        (ENETC_PCI_TYPE0_PCI_CFH_CMD_MEM_ACCESS_MASK | ENETC_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER_EN_MASK);
-
-    for (int i = 0U; i < 5U; i++)
-    {
-        mdioConfig.mdio.port = (netc_hw_eth_port_idx_t)((uint32_t)kNETC_ENETC0EthPort + i);
-        result               = NETC_MDIOInit(&s_mdio_handle[i], &mdioConfig);
-        if (result != kStatus_Success)
-        {
-            return result;
-        }
-    }
-#else
     mdioConfig.mdio.type = kNETC_EMdio;
     result               = NETC_MDIOInit(&s_emdio_handle, &mdioConfig);
     if (result != kStatus_Success)
     {
         return result;
     }
-#endif
 
     return result;
 }
 
-#ifdef EXAMPLE_PHY_USE_PORT_MDIO
-static status_t APP_PMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
-{
-    status_t result = kStatus_Success;
-    netc_mdio_handle_t *mdioHandle;
-
-    switch (phyAddr)
-    {
-        case BOARD_EP0_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[0];
-            break;
-        case BOARD_SWT_PORT0_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[1];
-            break;
-        case BOARD_SWT_PORT1_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[2];
-            break;
-        case BOARD_SWT_PORT2_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[3];
-            break;
-        case BOARD_SWT_PORT3_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[4];
-            break;
-        default:
-            result = kStatus_InvalidArgument;
-            break;
-    }
-
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
-
-    return NETC_MDIOWrite(mdioHandle, phyAddr, regAddr, data);
-}
-
-static status_t APP_PMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
-{
-    status_t result = kStatus_Success;
-    netc_mdio_handle_t *mdioHandle;
-
-    switch (phyAddr)
-    {
-        case BOARD_EP0_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[0];
-            break;
-        case BOARD_SWT_PORT0_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[1];
-            break;
-        case BOARD_SWT_PORT1_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[2];
-            break;
-        case BOARD_SWT_PORT2_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[3];
-            break;
-        case BOARD_SWT_PORT3_PHY_ADDR:
-            mdioHandle = &s_mdio_handle[4];
-            break;
-        default:
-            result = kStatus_InvalidArgument;
-            break;
-    }
-
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
-
-    return NETC_MDIORead(mdioHandle, phyAddr, regAddr, pData);
-}
-#else
 static status_t APP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
     return NETC_MDIOWrite(&s_emdio_handle, phyAddr, regAddr, data);
@@ -162,24 +69,27 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
     return NETC_MDIORead(&s_emdio_handle, phyAddr, regAddr, pData);
 }
-#endif
 
 static status_t APP_PHY_SetPort(uint32_t port, phy_config_t *phyConfig)
 {
     status_t result = kStatus_Success;
+    uint16_t regValue;
 
-#ifdef EXAMPLE_PHY_USE_PORT_MDIO
-    s_phy_resource[port].write = APP_PMDIOWrite;
-    s_phy_resource[port].read  = APP_PMDIORead;
-#else
     s_phy_resource[port].write = APP_EMDIOWrite;
     s_phy_resource[port].read  = APP_EMDIORead;
-#endif
+
     result = PHY_Init(&s_phy_handle[port], phyConfig);
     if (result != kStatus_Success)
     {
         return result;
     }
+
+    PHY_Write(&s_phy_handle[port], PHY_EXT_ADDR_REG, PHY_RGMII_CONFIG1_REG);
+    PHY_Read(&s_phy_handle[port], PHY_EXT_DATA_REG, &regValue);
+    regValue &= ~PHY_RGMII_CONFIG1_TXDLY_MASK;
+    /* 150ps per step. */
+    regValue |= 0x2;
+    PHY_Write(&s_phy_handle[port], PHY_EXT_DATA_REG, regValue);
 
     return PHY_EnableLoopback(&s_phy_handle[port], kPHY_LocalLoop, phyConfig->speed, true);
 }
@@ -198,17 +108,11 @@ status_t APP_PHY_Init(void)
     /* Reset all PHYs even some are not used in case unstable status has effect on other PHYs. */
     /* Reset PHY8201 for ETH4(EP), ETH0(Switch port0). Power on 150ms, reset 10ms, wait 150ms. */
     /* Reset PHY8211 for ETH1(Switch port1), ETH2(Switch port2), ETH3(Switch port3). Reset 10ms, wait 30ms. */
-    RGPIO_PinWrite(EXAMPLE_EP0_PORT_PHY_RESET_PIN, 0);
     RGPIO_PinWrite(EXAMPLE_SWT_PORT0_PHY_RESET_PIN, 0);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT1_PHY_RESET_PIN, 0);
     RGPIO_PinWrite(EXAMPLE_SWT_PORT2_PHY_RESET_PIN, 0);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT3_PHY_RESET_PIN, 0);
     SDK_DelayAtLeastUs(10000, CLOCK_GetFreq(kCLOCK_CpuClk));
-    RGPIO_PinWrite(EXAMPLE_EP0_PORT_PHY_RESET_PIN, 1);
     RGPIO_PinWrite(EXAMPLE_SWT_PORT0_PHY_RESET_PIN, 1);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT1_PHY_RESET_PIN, 1);
     RGPIO_PinWrite(EXAMPLE_SWT_PORT2_PHY_RESET_PIN, 1);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT3_PHY_RESET_PIN, 1);
     SDK_DelayAtLeastUs(150000, CLOCK_GetFreq(kCLOCK_CpuClk));
 
     /* Initialize PHY for switch port0. */

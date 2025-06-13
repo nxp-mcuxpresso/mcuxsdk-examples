@@ -810,18 +810,9 @@ void DCDC_SetVoltage(uint8_t core, uint8_t targetVoltage)
 #if defined(SDK_NETC_USED) && SDK_NETC_USED
 void BOARD_NETC_Init(void)
 {
-    /* EP and Switch port 0 use RMII interface. */
-    NETC_SocSetMiiMode(kNETC_SocLinkEp0, kNETC_RmiiMode);
-    NETC_SocSetMiiMode(kNETC_SocLinkSwitchPort0, kNETC_RmiiMode);
-
-    /* Switch port 1~3 use RGMII interface. */
-    NETC_SocSetMiiMode(kNETC_SocLinkSwitchPort1, kNETC_RgmiiMode);
+    /* Switch port 0~3 use RGMII interface. */
+    NETC_SocSetMiiMode(kNETC_SocLinkSwitchPort0, kNETC_RgmiiMode);
     NETC_SocSetMiiMode(kNETC_SocLinkSwitchPort2, kNETC_RgmiiMode);
-    NETC_SocSetMiiMode(kNETC_SocLinkSwitchPort3, kNETC_RgmiiMode);
-
-    /* Output reference clock for RMII interface. */
-    NETC_SocSetRmiiRefClk(kNETC_SocLinkEp0, true);
-    NETC_SocSetRmiiRefClk(kNETC_SocLinkSwitchPort0, true);
 
     /* Unlock the IERB. It will warm reset whole NETC. */
     if (NETC_IERBUnlock() == kStatus_Success)
@@ -836,11 +827,8 @@ void BOARD_NETC_Init(void)
     NETC_IERB->ARRAY_NUM_RC[0].RCMSIAMQR |= (1U << 27);
 
     /* Set PHY address in IERB to use MAC port MDIO, otherwise the access will be blocked. */
-    NETC_SocSetLinkAddr(kNETC_SocLinkEp0, BOARD_EP0_PHY_ADDR);
     NETC_SocSetLinkAddr(kNETC_SocLinkSwitchPort0, BOARD_SWT_PORT0_PHY_ADDR);
-    NETC_SocSetLinkAddr(kNETC_SocLinkSwitchPort1, BOARD_SWT_PORT1_PHY_ADDR);
     NETC_SocSetLinkAddr(kNETC_SocLinkSwitchPort2, BOARD_SWT_PORT2_PHY_ADDR);
-    NETC_SocSetLinkAddr(kNETC_SocLinkSwitchPort3, BOARD_SWT_PORT3_PHY_ADDR);
 
     /* Lock the IERB. */
     assert(NETC_IERBLock() == kStatus_Success);

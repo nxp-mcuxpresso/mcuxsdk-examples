@@ -740,7 +740,7 @@ void BOARD_BootClockRUN(void)
 
     /* Configure MAC0 using SYS_PLL1_DIV2_CLK */
     rootCfg.mux = kCLOCK_MAC0_ClockRoot_MuxSysPll1Div2;
-    rootCfg.div = 10;
+    rootCfg.div = 4;
     CLOCK_SetRootClock(kCLOCK_Root_Mac0, &rootCfg);
 
     /* Configure MAC1 using SYS_PLL1_DIV2_CLK */

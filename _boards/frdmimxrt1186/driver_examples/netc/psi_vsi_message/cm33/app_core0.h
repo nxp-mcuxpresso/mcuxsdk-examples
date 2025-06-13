@@ -34,7 +34,6 @@ extern int core1_image_size;
 #define CORE1_IMAGE_SIZE  ((void *)core1_image_size)
 #endif
 
-#define EXAMPLE_SWT_PORT1_PHY_ADDR 0x05U
 #define EXAMPLE_NETC_FREQ          CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
 
 #define EXAMPLE_EP_RING_NUM          3U
@@ -45,6 +44,8 @@ extern int core1_image_size;
 #define EXAMPLE_EP_RXBUFF_SIZE       1518U
 #define EXAMPLE_EP_RXBUFF_SIZE_ALIGN SDK_SIZEALIGN(EXAMPLE_EP_RXBUFF_SIZE, EXAMPLE_EP_BUFF_SIZE_ALIGN)
 #define EXAMPLE_EP_TEST_FRAME_SIZE   1000U
+
+#define EXAMPLE_SWT_PORT 0U
 /*${macro:end}*/
 /*******************************************************************************
  * Prototypes
