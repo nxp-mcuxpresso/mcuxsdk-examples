@@ -67,12 +67,12 @@ __RAM_VECTOR_TABLE_SIZE_BYTES       = m_ram_vector_table_size;
 
 m_cstack_start                      = m_ram1_start;
 m_cstack_end                        = m_cstack_start + __size_cstack__ - 1;
-m_data1_size                        = m_dmem_size - __size_cstack__ - __heap_size__;
+m_data1_size                        = m_dmem_size - __size_cstack__ - HEAP_SIZE;
 m_data1_start                       = m_cstack_end + 1;
-m_data1_end                         = m_ram1_end - __heap_size__;
+m_data1_end                         = m_ram1_end - HEAP_SIZE;
 
 __HEAP_start__                      = m_data1_end + 1;
-__HEAP_end__                        = __heap_size__ > 0?__HEAP_start__ + __heap_size__ - 1:__HEAP_start__;
+__HEAP_end__                        = HEAP_SIZE > 0?__HEAP_start__ + HEAP_SIZE - 1:__HEAP_start__;
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
@@ -99,8 +99,8 @@ m_lowpower_flag_start    = m_sqram_debug_end + 1;
 m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
 m_sqram_btblesqbuf_start          = m_lowpower_flag_end + 1;
-m_sqram_btblesqbuf_size           = 0x5000;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
-                                                   /*Was 0x5400, reduced to 0x5000 to hold 4 advertising set with max adv length = 1000 bytes in "sqram_btbleaesqbuf" region.*/
+m_sqram_btblesqbuf_size           = 0x5500;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
+                                                   /*Was 0x5000, increased to 0x5500 to hold 4 advertising set with max adv length = 800 bytes in "sqram_btbleaesqbuf" region and increase tx buffer to 20.*/
 m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
 
 /* Last reserved word of the debug section used for the sfc module */
@@ -126,8 +126,8 @@ m_sqram_btbuf_size                = 0x00;       /* was 0x200 but was reduced to 
 m_sqram_btbuf_end                 = m_sqram_btbuf_start + m_sqram_btbuf_size -1;
 
 m_sqram_btbleaesqbuf_start        = m_sqram_btbuf_end + 1;
-m_sqram_btbleaesqbuf_size         = DEFINED(gEnableCoverage_d)?0xF20:0x2C00;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
-                                                                                   /*Increased to hold 4 advertising set with max adv length = 1000 bytes*/
+m_sqram_btbleaesqbuf_size         = DEFINED(gEnableCoverage_d)?0xF20:0x2700;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
+                                                                                   /*Increased to hold 4 advertising set with max adv length = 800 bytes*/
 
 m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
 
@@ -183,7 +183,6 @@ MEMORY
   sqram_rldat_region (RW): ORIGIN = m_sqram_rldat_start, LENGTH = m_sqram_rldat_size
   rpmsg_sh_mem_region (RW): ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
   sqram_dbg_ext_logging_region (RW):ORIGIN = dbg_ext_logging_start, LENGTH = dbg_ext_logging_size
-  extra_data (RW):ORIGIN = m_extra_data_start, LENGTH = m_extra_data_end-m_extra_data_start+1
 }
 
 /* Define output sections */
