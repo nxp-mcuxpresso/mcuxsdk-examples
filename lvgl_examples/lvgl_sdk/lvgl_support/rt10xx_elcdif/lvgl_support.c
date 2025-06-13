@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2021, 2023 NXP
+ * Copyright 2019-2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -308,7 +308,10 @@ static void DEMO_SetLcdColorPalette(void)
 
     for (uint32_t i = 0; i < 256U; i++)
     {
-        palette[i] = (i << 16U) | (i << 8U) | (i << 0U);
+        /* Map the 8-bit pixel to RGB565, because the panel is connected to
+         *  eLCDIF's DATA0 - DATA15
+         */
+        palette[i] = (((i >> 3U)) << 11) | (((i >>2U)) << 5) | (((i >> 3)) << 0U);
     }
 
     ELCDIF_UpdateLut(LCDIF, kELCDIF_Lut0, 0, palette, 256);
