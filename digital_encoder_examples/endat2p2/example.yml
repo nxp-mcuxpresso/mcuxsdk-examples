@@ -5,7 +5,7 @@ endat2p2:
     project-root-path: boards/${board}/digital_encoder_examples/endat2p2/${multicore_foldername}
     document:
       name: endat2p2${core_id_suffix_name}
-      category: digital_encoder
+      category: digital_encoder_examples
       brief: EnDat2.2 interface example
       example_readme:
       - examples/digital_encoder_examples/endat2p2/readme.md
