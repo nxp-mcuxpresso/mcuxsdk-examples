@@ -167,8 +167,8 @@ void BOARD_ConfigPMICRegEnable(pca9422_handle_t *handle)
     PCA9422_GetDefaultRegEnableConfig(&cfg);
 
     /* All regulators enable in RUN state. */
-    cfg.sw2Enable  = true;
     cfg.sw1Enable  = true;
+    cfg.sw2Enable  = true;
     cfg.sw3Enable  = true;
     cfg.sw4Enable  = true;
     cfg.ldo1Enable = true;
@@ -369,7 +369,6 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnablePD(kPDRUNCFG_SHUT_MEDIA_MAINCLK);
     POWER_EnablePD(kPDRUNCFG_SHUT_RAM1_CLK);
 
-    POWER_EnablePD(kPDRUNCFG_LP_DCDC);
     POWER_EnablePD(kPDRUNCFG_APD_XSPI2);
     POWER_EnablePD(kPDRUNCFG_PPD_XSPI2);
     POWER_EnablePD(kPDRUNCFG_APD_DMA0_1_PKC_ETF);
@@ -479,6 +478,8 @@ void BOARD_InitHardware(void)
     POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
     POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
     POWER_DisableRegulators(kPower_SCPC);
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
 #if (MAX_VDDCORE > 1000000U)
     BOARD_SetPmicVdd2Voltage(MAX_VDDCORE);
 #endif

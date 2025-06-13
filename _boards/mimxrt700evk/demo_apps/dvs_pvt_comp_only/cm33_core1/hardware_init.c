@@ -107,7 +107,8 @@ void BOARD_InitPowerConfig(void)
         .VDD12.lvl3 = 900000, /* 900mv */
     };
     POWER_ConfigRegulatorSetpoints(kRegulator_Vdd1LDO, &ldo, &lvd);
-
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
     POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
