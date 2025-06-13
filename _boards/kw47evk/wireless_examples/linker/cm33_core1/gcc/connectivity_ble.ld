@@ -99,8 +99,8 @@ m_lowpower_flag_start    = m_sqram_debug_end + 1;
 m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
 m_sqram_btblesqbuf_start          = m_lowpower_flag_end + 1;
-m_sqram_btblesqbuf_size           = 0x5000;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
-                                                  /*Was 0x5400, reduced to 0x5000 to hold 4 advertising set with max adv length = 1000 bytes in "sqram_btbleaesqbuf" region.*/
+m_sqram_btblesqbuf_size           = 0x5500;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
+                                                   /*Was 0x5000, increased to 0x5500 to hold 4 advertising set with max adv length = 800 bytes in "sqram_btbleaesqbuf" region and increase tx buffer to 20.*/
 m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
 
 /* Last reserved word of the debug section used for the sfc module */
@@ -126,8 +126,8 @@ m_sqram_btbuf_size                = 0x00;       /* was 0x200 but was reduced to 
 m_sqram_btbuf_end                 = m_sqram_btbuf_start + m_sqram_btbuf_size -1;
 
 m_sqram_btbleaesqbuf_start        = m_sqram_btbuf_end + 1;
-m_sqram_btbleaesqbuf_size         = DEFINED(gEnableCoverage_d)?0xF20:0x2C00;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
-                                                                                   /*Increased to hold 4 advertising set with max adv length = 1000 bytes*/
+m_sqram_btbleaesqbuf_size         = DEFINED(gEnableCoverage_d)?0xF20:0x2700;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
+                                                                                   /*Increased to hold 4 advertising set with max adv length = 800 bytes*/
 
 m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
 
