@@ -76,29 +76,28 @@ void M1_InitQD(void){
 
 	/* Pass initialization data into encoder driver structure */
 	/* encoder position and speed measurement */
-
+	
 	g_sM1Enc.pui32QdBase = (QDC_Type *) QDC;
-
+	
 	g_sM1Enc.sTo.f16PGain = M1_POSPE_TO_KP_GAIN;
 	g_sM1Enc.sTo.i16PGainSh = M1_POSPE_TO_KP_SHIFT;
-	g_sM1Enc.sTo.f16IGain = M1_POSPE_TO_KI_GAIN;
+	g_sM1Enc.sTo.f16IGain = M1_POSPE_TO_KI_GAIN;	
 	g_sM1Enc.sTo.i16IGainSh = M1_POSPE_TO_KI_SHIFT;
 	g_sM1Enc.sTo.f16ThGain = M1_POSPE_TO_THETA_GAIN;
 	g_sM1Enc.sTo.i16ThGainSh = M1_POSPE_TO_THETA_SHIFT;
-
+	
 	g_sM1Enc.a32PosMeGain = M1_POSPE_MECH_POS_GAIN;
 	g_sM1Enc.ui16Pp = M1_MOTOR_PP;
 	g_sM1Enc.bDirection = M1_POSPE_ENC_DIRECTION;
 	g_sM1Enc.sTo.f32Speed = M1_POSPE_ENC_N_MIN;
 	g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
-	MCDRV_QdEncSetDirection(&g_sM1Enc);
-
-	/* Initialization modulo counter */
+	
+	/* ENC direction */
+	M1_MCDRV_ENC_SET_DIRECTION(&g_sM1Enc);
+	
+	/* ENC pulses per one revolution */
 	M1_MCDRV_ENC_SET_PULSES(&g_sM1Enc);
-
-	/* quadrature pulses per one revolution */
-	QDC->LMOD = QDC_LMOD_MOD((g_sM1Enc.ui16PulseNumber * 4U) - 1U);
-
+	
 	/* Enable modulo counting and revolution counter increment on roll-over */
 	QDC->CTRL2 = (ENC_CTRL2_MOD_MASK | ENC_CTRL2_REVMOD_MASK);
 }

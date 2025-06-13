@@ -64,7 +64,7 @@
     "sensorless": {
         "sensorlessBemfObsrvF0": 300,
         "sensorlessBemfObsrvKsi": 1,
-        "sensorlessTrackObsrvF0": 20,
+        "sensorlessTrackObsrvF0": 70,
         "sensorlessTrackObsrvKsi": 1,
         "sensorlessTrackObsrvIIRSpeedCutOff": 400,
         "sensorlessStartupRamp": 3000,
@@ -143,10 +143,10 @@
 #define M1_WI_SCALE ACC32(0.103129)
 #define M1_BEMF_DQ_KP_GAIN ACC32(0.384202)
 #define M1_BEMF_DQ_KI_GAIN ACC32(0.0631738)
-#define M1_TO_KP_SHIFT (-2)
-#define M1_TO_KP_GAIN FRAC16(0.545455)
-#define M1_TO_KI_SHIFT (-10)
-#define M1_TO_KI_GAIN FRAC16(0.877361)
+#define M1_TO_KP_SHIFT (-1)
+#define M1_TO_KP_GAIN FRAC16(0.954545)
+#define M1_TO_KI_SHIFT (-6)
+#define M1_TO_KI_GAIN FRAC16(0.671730)
 #define M1_TO_THETA_SHIFT (-4)
 #define M1_TO_THETA_GAIN FRAC16(0.938667)
 #define M1_TO_SPEED_IIR_B0 FRAC32(0.0558176)
