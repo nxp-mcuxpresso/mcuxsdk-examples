@@ -4,7 +4,8 @@
 
 This project is used to work with LVGL GUI Guider. The GUI Guider generated
 code is placed in the folder "generated". The example generated code shows a
-button in the panel.
+counter number and two buttons to increase or decrease the counter, press
+the button, then the counter changes.
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/lvgl_examples/lvgl_examples_readme.md)
