@@ -5,7 +5,7 @@ biss:
     project-root-path: boards/${board}/digital_encoder_examples/biss/${multicore_foldername}
     document:
       name: biss${core_id_suffix_name}
-      category: digital_encoder
+      category: digital_encoder_examples
       brief: BiSS interface example
       example_readme:
       - examples/digital_encoder_examples/biss/readme.md
