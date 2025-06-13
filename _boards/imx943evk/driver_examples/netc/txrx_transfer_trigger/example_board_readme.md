@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ==============
-No special settings are required.
+Connect J43-12 to oscilloscope to capture the trigger signal.
 
 Prepare the Demo
 ===============
@@ -18,33 +18,9 @@ Prepare the Demo
     - One stop bit
     - No flow control
 3.  Program flash.bin to boot source and start the board.
+4. Link up the swp2 phy.
 
 Running the demo
 ===============
-When the demo runs successfully, the log would be seen on the terminal like:
+When the demo runs successfully, can get timer FIPER signal on OSC.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-NETC EP0 frame loopback example start.
-Wait for PHY link up...
-The 1 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-The 2 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-...
-The 19 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-The 20 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-
-NETC EP1 frame loopback example start.
-Wait for PHY link up...
-The 1 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-The 2 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-...
-The 19 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-The 20 frame transmitted success!
- A frame received. The length is 1000  Dest Address ff:ff:ff:ff:ff:ff Src Address 54:27:8d:00:00:00
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

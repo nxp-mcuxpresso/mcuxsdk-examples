@@ -54,3 +54,12 @@ Destination Buffer:
 1       2       3       4
 ~~~~~~~~~~~~~~~~~~~~~
 
+If disable the trigger signal from XBAR, you can see the similar information from the terminal as below.
+~~~~~~~~~~~~~~~~~~~~~
+EDMA memory to memory transfer example begin.
+
+Destination Buffer:
+0       0       0       0
+
+EDMA memory to memory transfer example finish.
+~~~~~~~~~~~~~~~~~~~~~

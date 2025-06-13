@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+Connect J43-12 to oscilloscope to capture the trigger signal.
 
 Prepare the Demo
 ===============
@@ -22,27 +22,4 @@ Prepare the Demo
 
 Running the demo
 ================
-When the demo runs successfully, the following message is displayed in the terminal:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*********QUADTIMER EXAMPLE START*********
-****Timer use-case, 50 millisecond tick.****
-
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
-****Chain Timer use-case, 10 second tick.****
-
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
- Timer interrupt has occured !
-*********QUADTIMER EXAMPLE END.*********
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+When the demo runs successfully, output trigger signal will be captured on oscilloscope.

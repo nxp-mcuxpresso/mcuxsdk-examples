@@ -6,7 +6,10 @@ Hardware requirements
 
 Board settings
 ==============
-No special settings are required.
+Prepare two imx943evk boards
+Connect swp0-swp0, swp2-swp2.
+Connect swp1 of imx943evk board A to device A
+Connect swp1 of imx943evk board B to device B
 
 Prepare the Demo
 ===============
@@ -21,19 +24,15 @@ Prepare the Demo
 
 Running the demo
 ===============
-When the demo runs successfully, the log would be seen on the terminal like:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-NETC Switch frame loopback example start.
-Wait for PHY link up...
+On device A:
+ifconfig eth0 192.168.100.1 up
 
- Configure HSR!
+On device B:
+ifconfig eth0 192.168.100.2 up
+ping 192.168.100.1
+Can ping successfully.
 
- Press any key to start send a broadcast frame
-The frame transmitted success!
- A frame received. The length is 120  Dest Address 33:33:00:00:00:16 Src Address be:45:c8:9c:58:ad
- A frame received. The length is 80  Dest Address 33:33:00:00:00:02 Src Address 00:04:9f:08:49:3e
- A frame received. The length is 120  Dest Address 33:33:00:00:00:16 Src Address be:45:c8:9c:58:ad
- A frame received. The length is 272  Dest Address 01:80:c2:00:00:0e Src Address be:45:c8:9c:58:ad
-...
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Disconnect one link swp0-swp0 or swp2-swp2.
+ping 192.168.100.1 on device B, can ping successfully.
+

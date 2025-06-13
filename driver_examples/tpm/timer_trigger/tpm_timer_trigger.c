@@ -74,7 +74,7 @@ int main(void)
     LPIT_SetupChannel(DEMO_LPIT_BASE, kLPIT_Chnl_0, &lpitChannelConfig);
 
     /* Set timer period for channel 0 */
-    LPIT_SetTimerPeriod(DEMO_LPIT_BASE, kLPIT_Chnl_0, USEC_TO_COUNT(100U, LPIT_SOURCECLOCK));
+    LPIT_SetTimerPeriod(DEMO_LPIT_BASE, kLPIT_Chnl_0, USEC_TO_COUNT(1000U, LPIT_SOURCECLOCK));
     LPIT_EnableInterrupts(DEMO_LPIT_BASE, kLPIT_Channel0TimerInterruptEnable);
     LPIT_StartTimer(DEMO_LPIT_BASE, kLPIT_Chnl_0);
 

@@ -14,8 +14,8 @@ No special settings are required.
 
 Prepare the Demo
 ===============
-1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW301 to power on the board.
-2.  Connect a micro USB cable between the host PC and the J1401 USB port on the target board.
+1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board.
+2.  Connect a micro USB cable between the host PC and the J15(FTDI_DEBUG) USB port on the target board.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -38,4 +38,9 @@ Starting channel No.0 ...
  Channel No.0 interrupt is occurred !
  Channel No.0 interrupt is occurred !
  ........................
+~~~~~~~~~~~~~~~~~~~~~
+
+If disable the trigger signal from XBAR, you can see the similar information from the terminal as below
+~~~~~~~~~~~~~~~~~~~~~
+Starting channel No.0 ...
 ~~~~~~~~~~~~~~~~~~~~~

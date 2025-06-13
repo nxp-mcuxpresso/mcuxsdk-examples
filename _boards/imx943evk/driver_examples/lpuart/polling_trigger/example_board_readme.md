@@ -33,3 +33,8 @@ When the example runs successfully, you can see the similar information from the
 Lpuart polling example
 Board will send back received characters
 ~~~~~~~~~~~~~~~~~~~~~
+
+If disable the trigger signal from XBAR, you will see there is no output on terminal.
+
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~

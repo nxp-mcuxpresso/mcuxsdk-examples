@@ -58,3 +58,26 @@ LPSPI transfer all data matched!
 
 End of example.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If disable the trigger signal from XBAR, you will see the similar information from the terminal as below.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LPSPI functional interrupt example start.
+
+This example use one lpspi instance as master and another as slave on one board.
+
+Master uses interrupt way and slave uses interrupt way.
+
+
+Please make sure you make the correct line connection. Basically, the connection is:
+
+LPSPI_master -- LPSPI_slave
+
+   CLK      --    CLK
+
+   PCS      --    PCS
+
+   SOUT     --    SIN
+
+   SIN      --    SOUT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
