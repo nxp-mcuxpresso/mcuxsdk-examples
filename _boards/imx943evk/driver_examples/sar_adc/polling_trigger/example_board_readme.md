@@ -35,6 +35,8 @@ Use command "mm 0x442100B4 1" on System Manager to enable BLK_CTRL_NS_AONMIX->AD
 When the example runs successfully, you will see similar information from the terminal shown below.
 
 ~~~~~~~~~~~~~~~~~~~~~
+ IPSYNC trigger signal connected!
+
  ADC polling example.
  Please press any key to get the conversion result.
  The channel 4 ADC conversion data is 4084.

@@ -37,6 +37,8 @@ Running the demo
 When the example runs successfully, if the input duty cycle range is 0~100,
 You can see similar information from the terminal as follows:
 ~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+
 FLEXIO_PWM demo start.
 
 Please input a value (0 - 100) to set duty cycle: 10

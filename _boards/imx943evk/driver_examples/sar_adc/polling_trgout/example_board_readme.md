@@ -35,6 +35,8 @@ Running the demo
 When the example runs successfully, you will see similar information from the terminal shown below. You will also capture the trigger signal on OSC after ADC value get.
 
 ~~~~~~~~~~~~~~~~~~~~~
+ IPSYNC trigger signal connected to output
+
  ADC polling example.
  Please press any key to get the conversion result.
  The channel 4 ADC conversion data is 4084.

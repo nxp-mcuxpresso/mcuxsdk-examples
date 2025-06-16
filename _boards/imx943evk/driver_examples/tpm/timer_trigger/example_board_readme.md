@@ -33,6 +33,7 @@ start lpit
 
 TPM example to simulate a timer
 
+Press any key to start timer!
 You will see a "-" or "|" in terminal every 1 second:
 -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,5 +43,6 @@ If disable the trigger signal from XBAR, the following message is displayed in t
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TPM example to simulate a timer
 
+Press any key to start timer!
 You will see a "-" or "|" in terminal every 1 second:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

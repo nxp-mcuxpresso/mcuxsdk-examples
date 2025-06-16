@@ -30,6 +30,8 @@ Running the demo
 These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Low Power Timer Example
+IPSYNC trigger signal connected output!
+
 LPTMR interrupt No.1
 LPTMR interrupt No.2
 LPTMR interrupt No.3

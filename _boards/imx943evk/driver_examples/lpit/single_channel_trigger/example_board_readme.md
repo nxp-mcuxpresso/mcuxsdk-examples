@@ -31,6 +31,10 @@ When the example runs successfully, you can see the similar information from the
 because there is no led connected on the IMX943-EVK board .
 
 ~~~~~~~~~~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+
+Starting lpit example
+
 Starting channel No.0 ...
  Channel No.0 interrupt is occurred !
  Channel No.0 interrupt is occurred !
@@ -42,5 +46,7 @@ Starting channel No.0 ...
 
 If disable the trigger signal from XBAR, you can see the similar information from the terminal as below
 ~~~~~~~~~~~~~~~~~~~~~
+Starting lpit example
+
 Starting channel No.0 ...
 ~~~~~~~~~~~~~~~~~~~~~

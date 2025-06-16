@@ -54,6 +54,8 @@ LPSPI_master -- LPSPI_slave
 
    SIN      --    SOUT
 
+IPSYNC trigger signal connected!
+
 LPSPI transfer all data matched!
 
 End of example.

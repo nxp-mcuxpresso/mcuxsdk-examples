@@ -29,6 +29,8 @@ Running the demo
 ================
 When the example runs successfully, the following message is displayed in the terminal:
 ~~~~~~~~~~~~~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+
 FlexPWM driver example
 ~~~~~~~~~~~~~~~~~~~~~~~
 

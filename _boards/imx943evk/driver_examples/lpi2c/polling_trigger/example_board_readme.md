@@ -29,6 +29,8 @@ Running the demo
 When the example runs successfully, you can see the similar information from the terminal as below.
 
 ~~~~~~~~~~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+
 LPI2C example -- MasterPolling_SlaveInterrupt.
 Master will send data :
 0x 0  0x 1  0x 2  0x 3  0x 4  0x 5  0x 6  0x 7

@@ -30,6 +30,8 @@ Running the demo
 When the example runs successfully, you can see the similar information from the terminal as below.
 
 ~~~~~~~~~~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+
 Lpuart polling example
 Board will send back received characters
 ~~~~~~~~~~~~~~~~~~~~~
