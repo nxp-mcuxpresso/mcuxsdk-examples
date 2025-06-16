@@ -30,8 +30,6 @@ Embedded Artists 1ZM module datasheet: https://www.embeddedartists.com/doc/ds/1Z
 Embedded Artists 2EL module datasheet: https://www.embeddedartists.com/doc/ds/2EL_M2_Datasheet.pdf
 Embedded Artists 2LL module datasheet: https://www.embeddedartists.com/wp-content/uploads/2024/12/2LL_M2_Datasheet.pdf
 
-The hardware should be reworked according to the hardware rework guide for mimxrt700evk and Murata 1XK M.2 Adapter in document Hardware Rework Guide for EdgeFast BT PAL.
-
 Note:
 To ensure that the LITTLEFS flash region has been cleaned,
 all flash sectors need to be erased before downloading example code.

@@ -14,6 +14,7 @@ If you want to use Embedded Artists 2LL M.2 Module(EAR00500), please change the 
 
 Hardware rework guide:
 ======================
+The hardware should be reworked according to the Hardware Rework Guide for FRDM-MCXN947 and X-FRDM-WIFI-M.2 Adapter in document Hardware Rework Guide for EdgeFast BT PAL.
 The hardware should be reworked according to the Hardware Rework Guide for FRDM-MCXN947 with FRDM-IW416-AW-AM510 in document Hardware Rework Guide for EdgeFast BT PAL.
 
 FRDM-IW416-AW-AM510 Board settings
