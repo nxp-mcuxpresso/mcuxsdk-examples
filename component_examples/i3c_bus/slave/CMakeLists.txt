@@ -16,6 +16,10 @@ mcux_add_include(
              ${board_root}/${board}/component_examples/i3c_bus/slave/${core_id}
 )
 
+mcux_add_linker_symbol(
+    SYMBOLS "__heap_size__=0x800"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/component_examples/i3c_bus/slave/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
