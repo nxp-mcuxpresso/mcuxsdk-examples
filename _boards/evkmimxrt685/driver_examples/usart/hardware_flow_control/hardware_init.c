@@ -13,7 +13,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_AttachClk(kFFRO_to_FLEXCOMM2);
+    CLOCK_AttachClk(kFFRO_to_FLEXCOMM5);
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();

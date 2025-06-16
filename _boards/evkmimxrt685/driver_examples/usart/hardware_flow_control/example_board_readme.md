@@ -11,10 +11,10 @@ The USART sends data to itself(loopback), and hardware flow control function is
 enabled on this example. So please make sure the correct connection for example.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pin Name    Board Location    connect to     Pin Name    Board Location
-USART_TX    J36   pin 6       ----------     USART_RX    J36   pin 8
-USART_CTS   J28   pin 9       ----------     USART_RTS   J28   pin 10
+USART_TX    J28   pin 5       ----------     USART_RX    J28   pin 4
+USART_CTS   J28   pin 3       ----------     USART_RTS   J28   pin 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Remove jumper JP15.
+Remove jumper JP30.
 
 
 Prepare the Demo

@@ -49,10 +49,10 @@ BOARD_InitPins:
     pupdsel: pullDown, ibena: disabled, slew_rate: normal, drive: normal, amena: disabled, odena: disabled, iiena: disabled}
   - {pin_num: L16, peripheral: SWD, signal: SWO, pin_signal: PIO2_24/SWO/GPIO_INT_BMAT, pupdena: disabled, pupdsel: pullDown, ibena: disabled, slew_rate: normal,
     drive: normal, amena: disabled, odena: disabled, iiena: disabled}
-  - {pin_num: D6, peripheral: FLEXCOMM2, signal: RXD_SDA_MOSI_DATA, pin_signal: PIO0_16/FC2_RXD_SDA_MOSI_DATA/SCT0_GPI2/SCT0_OUT2/CTIMER2_MAT2/I2S_BRIDGE_DATA_IN/SEC_PIO0_16}
-  - {pin_num: A5, peripheral: FLEXCOMM2, signal: TXD_SCL_MISO_WS, pin_signal: PIO0_15/FC2_TXD_SCL_MISO_WS/SCT0_GPI1/SCT0_OUT1/CTIMER2_MAT1/I2S_BRIDGE_WS_IN/SEC_PIO0_15}
-  - {pin_num: D7, peripheral: FLEXCOMM2, signal: CTS_SDA_SSEL0, pin_signal: PIO0_17/FC2_CTS_SDA_SSEL0/SCT0_GPI3/SCT0_OUT3/CTIMER2_MAT3/FC5_SSEL2/SEC_PIO0_17}
-  - {pin_num: B7, peripheral: FLEXCOMM2, signal: RTS_SCL_SSEL1, pin_signal: PIO0_18/FC2_RTS_SCL_SSEL1/SCT0_GPI6/SCT0_OUT6/CTIMER_INP4/FC5_SSEL3/SEC_PIO0_18}
+  - {pin_num: G17, peripheral: FLEXCOMM5, signal: TXD_SCL_MISO_WS, pin_signal: PIO1_4/FC5_TXD_SCL_MISO_WS}
+  - {pin_num: J16, peripheral: FLEXCOMM5, signal: RXD_SDA_MOSI_DATA, pin_signal: PIO1_5/FC5_RXD_SDA_MOSI_DATA, ibena: enabled}
+  - {pin_num: J17, peripheral: FLEXCOMM5, signal: CTS_SDA_SSEL0, pin_signal: PIO1_6/FC5_CTS_SDA_SSEL0/SCT0_GPI4/SCT0_OUT4/FC4_SSEL2, ibena: enabled}
+  - {pin_num: J15, peripheral: FLEXCOMM5, signal: RTS_SCL_SSEL1, pin_signal: PIO1_7/FC5_RTS_SCL_SSEL1/SCT0_GPI5/SCT0_OUT5/CTIMER_INP9/FC4_SSEL3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -88,90 +88,6 @@ void BOARD_InitPins(void)
     /* PORT0 PIN1 (coords: G2) is configured as FC0_TXD_SCL_MISO_WS */
     IOPCTL_PinMuxSet(IOPCTL, 0U, 1U, port0_pin1_config);
 
-    const uint32_t port0_pin15_config = (/* Pin is configured as FC2_TXD_SCL_MISO_WS */
-                                         IOPCTL_PIO_FUNC1 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Normal drive */
-                                         IOPCTL_PIO_FULLDRIVE_DI |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT0 PIN15 (coords: A5) is configured as FC2_TXD_SCL_MISO_WS */
-    IOPCTL_PinMuxSet(IOPCTL, 0U, 15U, port0_pin15_config);
-
-    const uint32_t port0_pin16_config = (/* Pin is configured as FC2_RXD_SDA_MOSI_DATA */
-                                         IOPCTL_PIO_FUNC1 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Normal drive */
-                                         IOPCTL_PIO_FULLDRIVE_DI |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT0 PIN16 (coords: D6) is configured as FC2_RXD_SDA_MOSI_DATA */
-    IOPCTL_PinMuxSet(IOPCTL, 0U, 16U, port0_pin16_config);
-
-    const uint32_t port0_pin17_config = (/* Pin is configured as FC2_CTS_SDA_SSEL0 */
-                                         IOPCTL_PIO_FUNC1 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Normal drive */
-                                         IOPCTL_PIO_FULLDRIVE_DI |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT0 PIN17 (coords: D7) is configured as FC2_CTS_SDA_SSEL0 */
-    IOPCTL_PinMuxSet(IOPCTL, 0U, 17U, port0_pin17_config);
-
-    const uint32_t port0_pin18_config = (/* Pin is configured as FC2_RTS_SCL_SSEL1 */
-                                         IOPCTL_PIO_FUNC1 |
-                                         /* Disable pull-up / pull-down function */
-                                         IOPCTL_PIO_PUPD_DI |
-                                         /* Enable pull-down function */
-                                         IOPCTL_PIO_PULLDOWN_EN |
-                                         /* Disable input buffer function */
-                                         IOPCTL_PIO_INBUF_DI |
-                                         /* Normal mode */
-                                         IOPCTL_PIO_SLEW_RATE_NORMAL |
-                                         /* Normal drive */
-                                         IOPCTL_PIO_FULLDRIVE_DI |
-                                         /* Analog mux is disabled */
-                                         IOPCTL_PIO_ANAMUX_DI |
-                                         /* Pseudo Output Drain is disabled */
-                                         IOPCTL_PIO_PSEDRAIN_DI |
-                                         /* Input function is not inverted */
-                                         IOPCTL_PIO_INV_DI);
-    /* PORT0 PIN18 (coords: B7) is configured as FC2_RTS_SCL_SSEL1 */
-    IOPCTL_PinMuxSet(IOPCTL, 0U, 18U, port0_pin18_config);
-
     const uint32_t port0_pin2_config = (/* Pin is configured as FC0_RXD_SDA_MOSI_DATA */
                                         IOPCTL_PIO_FUNC1 |
                                         /* Disable pull-up / pull-down function */
@@ -192,6 +108,90 @@ void BOARD_InitPins(void)
                                         IOPCTL_PIO_INV_DI);
     /* PORT0 PIN2 (coords: G4) is configured as FC0_RXD_SDA_MOSI_DATA */
     IOPCTL_PinMuxSet(IOPCTL, 0U, 2U, port0_pin2_config);
+
+    const uint32_t port1_pin4_config = (/* Pin is configured as FC5_TXD_SCL_MISO_WS */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Disable input buffer function */
+                                        IOPCTL_PIO_INBUF_DI |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Normal drive */
+                                        IOPCTL_PIO_FULLDRIVE_DI |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
+    /* PORT1 PIN4 (coords: G17) is configured as FC5_TXD_SCL_MISO_WS */
+    IOPCTL_PinMuxSet(IOPCTL, 1U, 4U, port1_pin4_config);
+
+    const uint32_t port1_pin5_config = (/* Pin is configured as FC5_RXD_SDA_MOSI_DATA */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Enables input buffer function */
+                                        IOPCTL_PIO_INBUF_EN |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Normal drive */
+                                        IOPCTL_PIO_FULLDRIVE_DI |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
+    /* PORT1 PIN5 (coords: J16) is configured as FC5_RXD_SDA_MOSI_DATA */
+    IOPCTL_PinMuxSet(IOPCTL, 1U, 5U, port1_pin5_config);
+
+    const uint32_t port1_pin6_config = (/* Pin is configured as FC5_CTS_SDA_SSEL0 */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Enables input buffer function */
+                                        IOPCTL_PIO_INBUF_EN |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Normal drive */
+                                        IOPCTL_PIO_FULLDRIVE_DI |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
+    /* PORT1 PIN6 (coords: J17) is configured as FC5_CTS_SDA_SSEL0 */
+    IOPCTL_PinMuxSet(IOPCTL, 1U, 6U, port1_pin6_config);
+
+    const uint32_t port1_pin7_config = (/* Pin is configured as FC5_RTS_SCL_SSEL1 */
+                                        IOPCTL_PIO_FUNC1 |
+                                        /* Disable pull-up / pull-down function */
+                                        IOPCTL_PIO_PUPD_DI |
+                                        /* Enable pull-down function */
+                                        IOPCTL_PIO_PULLDOWN_EN |
+                                        /* Disable input buffer function */
+                                        IOPCTL_PIO_INBUF_DI |
+                                        /* Normal mode */
+                                        IOPCTL_PIO_SLEW_RATE_NORMAL |
+                                        /* Normal drive */
+                                        IOPCTL_PIO_FULLDRIVE_DI |
+                                        /* Analog mux is disabled */
+                                        IOPCTL_PIO_ANAMUX_DI |
+                                        /* Pseudo Output Drain is disabled */
+                                        IOPCTL_PIO_PSEDRAIN_DI |
+                                        /* Input function is not inverted */
+                                        IOPCTL_PIO_INV_DI);
+    /* PORT1 PIN7 (coords: J15) is configured as FC5_RTS_SCL_SSEL1 */
+    IOPCTL_PinMuxSet(IOPCTL, 1U, 7U, port1_pin7_config);
 
     const uint32_t port2_pin24_config = (/* Pin is configured as SWO */
                                          IOPCTL_PIO_FUNC1 |

@@ -11,8 +11,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_USART          USART2
-#define DEMO_USART_CLK_FREQ CLOCK_GetFlexCommClkFreq(2U)
+#define DEMO_USART          USART5
+#define DEMO_USART_CLK_FREQ CLOCK_GetFlexCommClkFreq(5U)
 #define DELAY_TIME          100000U
 /*${macro:end}*/
 
