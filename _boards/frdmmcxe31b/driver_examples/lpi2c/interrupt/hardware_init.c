@@ -18,9 +18,8 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitI2CPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    BOARD_InitI2C0Pins();
-    BOARD_InitI2C1Pins();
 }
 /*${function:end}*/

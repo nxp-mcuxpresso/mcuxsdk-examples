@@ -14,6 +14,7 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitUARTPins();
     BOARD_InitBootClocks();
 }
 /*${function:end}*/

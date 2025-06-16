@@ -16,8 +16,9 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitFLEXIO_SPIPins();
+    BOARD_InitSPIPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    BOARD_InitSPIPins();
 }
 /*${function:end}*/

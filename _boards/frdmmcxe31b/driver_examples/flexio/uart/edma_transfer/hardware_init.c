@@ -15,6 +15,7 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitFLEXIO_UARTPins();
     BOARD_InitBootClocks();
     
     /* Need explicitly enable TCD. */

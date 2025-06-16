@@ -16,7 +16,7 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
-    BOARD_InitLpcmpPins();
+    BOARD_InitCMPPins();
     BOARD_InitBootClocks();
 
     SXOSC->SXOSC_CTRL |= SXOSC_SXOSC_CTRL_OSCON_MASK;
