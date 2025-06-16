@@ -20,7 +20,7 @@ void BOARD_InitHardware(void)
     /* Set MRCC FLEXIO0 selection */
     CLOCK_SetIpSrc(kCLOCK_Flexio0, kCLOCK_IpSrcFro192M);
     /* Set MRCC FLEXIO0 fraction divider */
-    CLOCK_SetIpSrcDiv(kCLOCK_Flexio0, kSCG_SysClkDivBy16);
+    CLOCK_SetIpSrcDiv(kCLOCK_Flexio0, kSCG_SysClkDivBy1);
     /* Enable DMA0 clock */
     CLOCK_EnableClock(kCLOCK_Dma0);
 }
