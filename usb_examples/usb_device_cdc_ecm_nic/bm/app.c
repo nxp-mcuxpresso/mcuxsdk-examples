@@ -252,6 +252,17 @@ void APP_CheckLinkChange(void)
     if (ethNicHandle.linkStatus != link)
     {
         ethNicHandle.linkStatus = link;
+
+        if (ethNicHandle.linkStatus)
+        {
+            if (ETH_ADAPTER_Reset() != ETH_ADAPTER_OK)
+            {
+                (void)usb_echo("ETH_ADAPTER_Reset() occurs error.\r\n");
+
+                return;
+            }
+        }
+
         APP_ETH_NIC_EVENT_SET(appEvent, kAPP_NotifyNetworkChange);
     }
 }
@@ -331,16 +342,6 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
                 USB_DeviceSetSpeed(handle, ethNicHandle.deviceSpeed);
             }
 #endif
-
-            if (ETH_ADAPTER_FrameQueueClear(&ethNicHandle.ethHandle->txFrameQueue) != ETH_ADAPTER_OK)
-            {
-                break;
-            }
-
-            if (ETH_ADAPTER_FrameQueueClear(&ethNicHandle.ethHandle->rxFrameQueue) != ETH_ADAPTER_OK)
-            {
-                break;
-            }
 
             ethNicHandle.configuration = 0U;
             ethNicHandle.attachStatus = 0U;
@@ -458,18 +459,16 @@ usb_status_t USB_DeviceCdcEcmCallback(usb_device_handle handle, uint32_t event, 
             break;
 
         case kUSB_DeviceCdcEcmEventRecvResponse:
+            if (epMsg->length != USB_CANCELLED_TRANSFER_LENGTH)
             {
-                if (epMsg->length != USB_CANCELLED_TRANSFER_LENGTH)
+                eth_adapter_frame_buf_t frame;
+                frame.len = epMsg->length;
+                frame.payload = epMsg->buffer;
+                if (ETH_ADAPTER_FrameQueuePush(&ethNicHandle.ethHandle->txFrameQueue, &frame) != ETH_ADAPTER_OK)
                 {
-                    eth_adapter_frame_buf_t frame;
-                    frame.len = epMsg->length;
-                    frame.payload = epMsg->buffer;
-                    if (ETH_ADAPTER_FrameQueuePush(&ethNicHandle.ethHandle->txFrameQueue, &frame) != ETH_ADAPTER_OK)
-                    {
-                        (void)usb_echo("USB(DATA OUT CALLBACK): Lost frame.\r\n");
-                    }
-                    (void)USB_DeviceCdcEcmRecv(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER, dataOutBuffer, APP_ETH_FRAME_MAX_LENGTH);
+                    (void)usb_echo("USB(DATA OUT CALLBACK): Lost frame.\r\n");
                 }
+                (void)USB_DeviceCdcEcmRecv(ethNicHandle.cdcEcmHandle, USB_DEVICE_CDC_ECM_DATA_BULK_OUT_EP_NUMBER, dataOutBuffer, APP_ETH_FRAME_MAX_LENGTH);
             }
             break;
 

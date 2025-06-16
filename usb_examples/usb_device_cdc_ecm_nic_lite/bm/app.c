@@ -234,6 +234,17 @@ void APP_CheckLinkChange(void)
     if (ethNicHandle.linkStatus != link)
     {
         ethNicHandle.linkStatus = link;
+
+        if (ethNicHandle.linkStatus)
+        {
+            if (ETH_ADAPTER_Reset() != ETH_ADAPTER_OK)
+            {
+                (void)usb_echo("ETH_ADAPTER_Reset() occurs error.\r\n");
+
+                return;
+            }
+        }
+
         APP_ETH_NIC_EVENT_SET(appEvent, kAPP_NotifyNetworkChange);
     }
 }
@@ -318,16 +329,6 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
                 USB_DeviceSetSpeed(handle, ethNicHandle.deviceSpeed);
             }
 #endif
-
-            if (ETH_ADAPTER_FrameQueueClear(&ethNicHandle.ethHandle->txFrameQueue) != ETH_ADAPTER_OK)
-            {
-                break;
-            }
-
-            if (ETH_ADAPTER_FrameQueueClear(&ethNicHandle.ethHandle->rxFrameQueue) != ETH_ADAPTER_OK)
-            {
-                break;
-            }
 
             ethNicHandle.configuration = 0U;
             ethNicHandle.attachStatus = 0U;
