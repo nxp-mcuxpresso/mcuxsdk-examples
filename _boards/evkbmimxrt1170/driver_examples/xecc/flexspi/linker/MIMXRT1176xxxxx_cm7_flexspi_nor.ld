@@ -110,6 +110,9 @@ SECTIONS
         */flexspi_xecc_ops.c.obj
         */fsl_flexspi.c.obj
         */fsl_xecc.c.obj
+        */fsl_clock.c.obj
+        *libc_a-memset.o
+        *_aeabi_uldivmod.o
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
         /* Exclude flash and frequently executed functions from XIP */
@@ -117,9 +120,30 @@ SECTIONS
         */flexspi_xecc_ops.c.obj
         */fsl_flexspi.c.obj
         */fsl_xecc.c.obj
+        */fsl_clock.c.obj
+        *libc_a-memset.o
+        *_aeabi_uldivmod.o
     ) .text*)                /* .text* sections (code) */
-    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(
+        /* Exclude flash and frequently executed functions from XIP */
+        */flexspi_nor_flash_ops.c.obj
+        */flexspi_xecc_ops.c.obj
+        */fsl_flexspi.c.obj
+        */fsl_xecc.c.obj
+        */fsl_clock.c.obj
+        *libc_a-memset.o
+        *_aeabi_uldivmod.o
+    ) .rodata)
+    *(EXCLUDE_FILE(
+        /* Exclude flash and frequently executed functions from XIP */
+        */flexspi_nor_flash_ops.c.obj
+        */flexspi_xecc_ops.c.obj
+        */fsl_flexspi.c.obj
+        */fsl_xecc.c.obj
+        */fsl_clock.c.obj
+        *libc_a-memset.o
+        *_aeabi_uldivmod.o
+    ) .rodata*)
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -222,10 +246,13 @@ SECTIONS
     __data_start__ = .;      /* create a global symbol at data start */
     *(m_usb_dma_init_data)
     /* Explicit placement of flash and frequently executed functions in RAM */
-    */flexspi_nor_flash_ops.c.obj
-    */flexspi_xecc_ops.c.obj
-    */fsl_flexspi.c.obj
-    */fsl_xecc.c.obj
+    */flexspi_nor_flash_ops.c.obj(.text .text* .rodata .rodata*)
+    */flexspi_xecc_ops.c.obj(.text .text* .rodata .rodata*)
+    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+    */fsl_xecc.c.obj(.text .text* .rodata .rodata*)
+    */fsl_clock.c.obj(.text .text* .rodata .rodata*)
+    *libc_a-memset.o(.text .text* .rodata .rodata*)
+    *_aeabi_uldivmod.o(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))
