@@ -15,7 +15,6 @@
 static EIQ_AudioWorker_t* s_worker = NULL;
 /* Recording window is one frame */
 const int kRecordingWin = 1;
-static KWS_MFCC s_kws(kRecordingWin);
 static int s_sampleCount = 0;
 
 status_t AUDIO_GetSpectralSample(uint8_t* dstData, size_t size)
@@ -23,6 +22,7 @@ status_t AUDIO_GetSpectralSample(uint8_t* dstData, size_t size)
     /* Audio buffer size must be a multiple of audio block size.
        Otherwise the remaining non-complete part of the buffer will not be processed. */
     assert(SAMP_FREQ % s_kws.audio_block_size == 0);
+    KWS_MFCC s_kws(kRecordingWin);
 
     s_sampleCount++;
     /* Switch to microphone audio capture after two static samples. */
@@ -36,7 +36,7 @@ status_t AUDIO_GetSpectralSample(uint8_t* dstData, size_t size)
         const int16_t *staticData = (s_sampleCount == 1) ? off_sample_data : right_sample_data;
         PRINTF("Expected category: %s" EOL, AUDIO_GetSampleName());
 
-        AUDIO_PreprocessSample(staticData, NUM_FRAMES);
+        AUDIO_PreprocessSample(staticData, NUM_FRAMES, &s_kws);
         s_kws.store_features(dstData);
 
         if (s_sampleCount == 2)
@@ -54,20 +54,20 @@ status_t AUDIO_GetSpectralSample(uint8_t* dstData, size_t size)
         while (s_worker->base.isReady())
         {
             int16_t* sampleData = reinterpret_cast<int16_t*>(s_worker->base.getData());
-            AUDIO_PreprocessSample(sampleData - FRAME_SHIFT, FRAME_LEN / FRAME_SHIFT);
+            AUDIO_PreprocessSample(sampleData - FRAME_SHIFT, FRAME_LEN / FRAME_SHIFT, &s_kws);
         }
         s_kws.store_features(dstData);
     }
     return kStatus_Success;
 }
 
-void AUDIO_PreprocessSample(const int16_t* srcData, size_t audioBlocksPerBuffer)
+void AUDIO_PreprocessSample(const int16_t* srcData, size_t audioBlocksPerBuffer, KWS_MFCC* s_kws)
 {
     for (int i = 0; i < audioBlocksPerBuffer; i++)
     {
         /* Redirect the source for MFCC extraction to the shifted chunks of frame length */
-        s_kws.audio_buffer = srcData + i * s_kws.audio_block_size;
-        s_kws.extract_features();
+        s_kws->audio_buffer = srcData + i * s_kws->audio_block_size;
+        s_kws->extract_features();
     }
 }
 

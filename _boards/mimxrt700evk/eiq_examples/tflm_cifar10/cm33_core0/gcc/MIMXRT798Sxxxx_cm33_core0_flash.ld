@@ -208,6 +208,8 @@ SECTIONS
   .model.init : AT(__MDATA_ROM)
   {
     __modeldata_start__ = .;   /* create a global symbol at model data start */
+    *(.modeldata)
+    *(.modeldata*)
     . = ALIGN(4);
     __modeldata_init_end__ = .;   /* create a global symbol at initialized model data end */
   } > m_model
@@ -215,12 +217,10 @@ SECTIONS
   .model :
   {
     . = ALIGN(4);
-    *(.modeldata)
-    *(.modeldata*)
     __modeldata_end__ = .;
   } > m_model
 
-  __DATA_END = __MDATA_ROM + (__modeldata_init_end__ - __modeldata_start__);
+  __DATA_END = __MDATA_ROM + (__modeldata_end__ - __modeldata_start__);
 
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
