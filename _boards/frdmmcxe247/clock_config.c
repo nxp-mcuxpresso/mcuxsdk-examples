@@ -239,7 +239,7 @@ void BOARD_BootClockRUN_InitClockModule(clock_module_t module)
             break;
         case kClockModule_LPO:
             /* Enable LPO (enabled by default after power on reset). */
-            PMC->REGSC &= ~PMC_REGSC_LPODIS_MASK;
+            PMC->REGSC &= ~PMC_REGSC_LPODIS_MASK & 0xFFU;
             break;
         case kClockModule_RTCClkOut:
             /* Set RTC clock source. */
@@ -348,7 +348,7 @@ void BOARD_BootClockVLPR_InitClockModule(clock_module_t module)
             break;
         case kClockModule_LPO:
             /* Enable LPO (enabled by default after power on reset). */
-            PMC->REGSC &= ~PMC_REGSC_LPODIS_MASK;
+            PMC->REGSC &= ~PMC_REGSC_LPODIS_MASK & 0xFFU;
             break;
         case kClockModule_RTCClkOut:
             /* Set RTC clock source. */
@@ -519,7 +519,7 @@ void BOARD_BootClockHSRUN_InitClockModule(clock_module_t module)
             break;
         case kClockModule_LPO:
             /* Enable LPO (enabled by default after power on reset). */
-            PMC->REGSC &= ~PMC_REGSC_LPODIS_MASK;
+            PMC->REGSC &= ~PMC_REGSC_LPODIS_MASK & 0xFFU;
             break;
         case kClockModule_RTCClkOut:
             /* Set RTC clock source. */
