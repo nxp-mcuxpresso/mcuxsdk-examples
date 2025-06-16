@@ -118,6 +118,10 @@
 /* Clock divider for LPI2C clock source */
 #define BOARD_ACCEL_I2C_CLOCK_FREQ (CLOCK_GetFreq(kCLOCK_Lpi2c0Clk))
 
+/* @Brief Board I2C magnetic switch configuration */
+#define BOARD_MAGSWITCH_I2C_BASEADDR   LPI2C_0
+#define BOARD_MAGSWITCH_I2C_CLOCK_FREQ (CLOCK_GetFreq(kCLOCK_Lpi2c0Clk))
+
 /*******************************************************************************
  * API
  ******************************************************************************/
@@ -160,6 +164,10 @@ status_t BOARD_LPI2C_ReceiveSCCB(LPI2C_Type *base,
 void BOARD_Accel_I2C_Init(void);
 status_t BOARD_Accel_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff);
 status_t BOARD_Accel_I2C_Receive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+void BOARD_MagSwitch_I2C_Init(void);
+status_t BOARD_MagSwitch_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff);
+status_t BOARD_MagSwitch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 /*!

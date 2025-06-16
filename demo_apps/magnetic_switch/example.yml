@@ -21,3 +21,4 @@ magnetic_switch:
   boards:
     frdmmcxe247: []
     frdmmcxl255@cm33: []
+    frdmmcxe31b: []
