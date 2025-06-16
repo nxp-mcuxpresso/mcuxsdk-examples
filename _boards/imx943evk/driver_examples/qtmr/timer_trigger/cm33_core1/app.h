@@ -28,22 +28,14 @@
 /* Get source clock for QTMR driver */
 #define QTMR_SOURCE_CLOCK (CLOCK_GetRate(kCLOCK_Buswakeup) / QTMR_CLOCK_SOURCE_DIVIDER)
 /*${macro:end}*/
+#define DEMO_LPIT_BASE       LPIT1
+#define DEMO_LPIT_IRQn       LPIT1_IRQn
+#define DEMO_LPIT_IRQHandler LPIT1_IRQHandler
+/* Get source clock for LPIT driver */
+/* LPIT1 is clocked by AON bus */
+#define LPIT_MASTER_CLOCK_ROOT kCLOCK_Busaon
+#define LPIT_SOURCECLOCK       CLOCK_GetRate(LPIT_MASTER_CLOCK_ROOT)
 
-/* define instance */
-#define BOARD_TPM_BASEADDR TPM6
-#define BOARD_TPM_CHANNEL  kTPM_Chnl_0
-
-/* Interrupt to enable and flag to read; depends on the TPM channel used */
-#define TPM_CHANNEL_INTERRUPT_ENABLE kTPM_Chnl0InterruptEnable
-#define TPM_CHANNEL_FLAG             kTPM_Chnl0Flag
-
-/* Interrupt number and interrupt handler for the TPM instance used */
-#define TPM_INTERRUPT_NUMBER TPM6_IRQn
-#define TPM_LED_HANDLER      TPM6_IRQHandler
-
-/* Get source clock for TPM driver */
-#define LPTPM_CLOCK_ROOT kCLOCK_Tpm6
-#define TPM_SOURCE_CLOCK CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 
 /*******************************************************************************
  * Prototypes

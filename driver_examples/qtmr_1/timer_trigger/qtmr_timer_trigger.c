@@ -14,14 +14,12 @@
 #include "app.h"
 
 #include "fsl_qtmr.h"
-#include "fsl_tpm.h"
+#include "fsl_lpit.h"
 #include "fsl_xbar.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-
-#define DEMO_PWM_FREQUENCY (24000U)
 
 /*******************************************************************************
  * Prototypes
@@ -45,27 +43,27 @@ void QTMR_IRQ_HANDLER(void)
     SDK_ISR_EXIT_BARRIER;
 }
 
-void tpm_init(void)
+void lpit_init(void)
 {
-    tpm_config_t tpmInfo;
-    tpm_chnl_pwm_signal_param_t tpmParam;
-    int updatedDutycycle = 5;
-    uint8_t control;
+    lpit_config_t lpitConfig;
+    lpit_chnl_params_t lpitChannelConfig;
 
-    TPM_GetDefaultConfig(&tpmInfo);
-    tpmInfo.prescale = TPM_CalculateCounterClkDiv(BOARD_TPM_BASEADDR, DEMO_PWM_FREQUENCY, TPM_SOURCE_CLOCK);
-    TPM_Init(BOARD_TPM_BASEADDR, &tpmInfo);
-    tpmParam.chnlNumber = (tpm_chnl_t)BOARD_TPM_CHANNEL;
-    tpmParam.level            = kTPM_HighTrue;
-    tpmParam.dutyCyclePercent = updatedDutycycle;
-    if (kStatus_Success != TPM_SetupPwm(BOARD_TPM_BASEADDR, &tpmParam, 1U, kTPM_CenterAlignedPwm, DEMO_PWM_FREQUENCY, TPM_SOURCE_CLOCK)) {
-	    PRINTF("\r\nSetup PWM fail!\r\n");
-	    return;
-    }
-    TPM_StartTimer(BOARD_TPM_BASEADDR, kTPM_SystemClock);
-    control = TPM_GetChannelContorlBits(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL);
-    TPM_EnableChannel(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL, control);
-    TPM_EnableInterrupts(BOARD_TPM_BASEADDR, kTPM_TimeOverflowInterruptEnable);
+    LPIT_GetDefaultConfig(&lpitConfig);
+    LPIT_Init(DEMO_LPIT_BASE, &lpitConfig);
+    lpitChannelConfig.chainChannel          = false;
+    lpitChannelConfig.enableReloadOnTrigger = false;
+    lpitChannelConfig.enableStartOnTrigger  = false;
+    lpitChannelConfig.enableStopOnTimeout   = false;
+    lpitChannelConfig.timerMode             = kLPIT_PeriodicCounter;
+    /* Set default values for the trigger source */
+    lpitChannelConfig.triggerSelect = kLPIT_Trigger_TimerChn0;
+    lpitChannelConfig.triggerSource = kLPIT_TriggerSource_External;
+
+    /* Init lpit channel 0 */
+    LPIT_SetupChannel(DEMO_LPIT_BASE, kLPIT_Chnl_0, &lpitChannelConfig);
+    LPIT_SetTimerPeriod(DEMO_LPIT_BASE, kLPIT_Chnl_0, USEC_TO_COUNT(100U, LPIT_SOURCECLOCK));
+    LPIT_EnableInterrupts(DEMO_LPIT_BASE, kLPIT_Channel0TimerInterruptEnable);
+    LPIT_StartTimer(DEMO_LPIT_BASE, kLPIT_Chnl_0);
 }
 
 /*!
@@ -82,10 +80,11 @@ int main(void)
     PRINTF("\r\n*********QUADTIMER EXAMPLE START*********");
 
     XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputTpm6LptpmChTrigger0, kXBAR1_OutputQtimer1Tmr0Input);
+    BLK_CTRL_WAKEUPMIX->LPIT_TRIG_SEL |= BLK_CTRL_WAKEUPMIX_LPIT_TRIG_SEL_LPIT1_TRIG0_INPUT_SEL(1);
+    XBAR_SetSignalsConnection(kXBAR1_InputLpit1LpitTrigOut0, kXBAR1_OutputQtimer1Tmr0Input);
     PRINTF("\r\nIPSYNC trigger signal connected! \r\n");
 
-    tpm_init();
+    lpit_init();
 
     /*
      * qtmrConfig.debugMode = kQTMR_RunNormalInDebug;
@@ -125,7 +124,7 @@ int main(void)
     }
     QTMR_StopTimer(BOARD_QTMR_BASEADDR, BOARD_SECOND_QTMR_CHANNEL);
 
-    PRINTF("\r\n****Chain Timer use-case, 10 second tick.****\n");
+    PRINTF("\r\n****Chain Timer use-case, 20 second tick.****\n");
 
     qtmrConfig.primarySource = QTMR_PRIMARY_SOURCE;
     QTMR_Init(BOARD_QTMR_BASEADDR, BOARD_FIRST_QTMR_CHANNEL, &qtmrConfig);
@@ -135,10 +134,10 @@ int main(void)
     qtmrConfig.primarySource = QTMR_ClockCounterOutput;
     QTMR_Init(BOARD_QTMR_BASEADDR, BOARD_SECOND_QTMR_CHANNEL, &qtmrConfig);
 
-    /* Set the first channel period to be 1 millisecond */
+    /* Set the first channel period to be 2 millisecond */
     QTMR_SetTimerPeriod(BOARD_QTMR_BASEADDR, BOARD_FIRST_QTMR_CHANNEL, MSEC_TO_COUNT(1U, QTMR_SOURCE_CLOCK));
 
-    /* Set the second channel count which increases every millisecond, set compare event for 10 second */
+    /* Set the second channel count which increases every millisecond, set compare event for 20 second */
     QTMR_SetTimerPeriod(BOARD_QTMR_BASEADDR, BOARD_SECOND_QTMR_CHANNEL, 10000);
 
     /* Enable the second channel compare interrupt */
@@ -168,7 +167,7 @@ int main(void)
      * Workaround: using compare interrupt instead of overflow interrupt by setting compare value to 0xFFFF.
      * The compare interrupt has the same timing effect as overflow interrupt in this way.
      */
-    PRINTF("\r\n****Timer use-case, about 65.5s Over flow Test.****\n");
+    PRINTF("\r\n****Timer use-case, about 131s Over flow Test.****\n");
 
     qtmrConfig.primarySource = QTMR_PRIMARY_SOURCE;
     QTMR_Init(BOARD_QTMR_BASEADDR, BOARD_FIRST_QTMR_CHANNEL, &qtmrConfig);
@@ -181,7 +180,7 @@ int main(void)
     /* Set the first channel period to be 1 millisecond */
     QTMR_SetTimerPeriod(BOARD_QTMR_BASEADDR, BOARD_FIRST_QTMR_CHANNEL, MSEC_TO_COUNT(1U, QTMR_SOURCE_CLOCK));
 
-    /* Set the second channel count which increases every millisecond, set compare event for 65.5 second */
+    /* Set the second channel count which increases every millisecond, set compare event for 131 second */
     QTMR_SetTimerPeriod(BOARD_QTMR_BASEADDR, BOARD_SECOND_QTMR_CHANNEL, 0xFFFF);
 
     /* Enable timer compare interrupt */
