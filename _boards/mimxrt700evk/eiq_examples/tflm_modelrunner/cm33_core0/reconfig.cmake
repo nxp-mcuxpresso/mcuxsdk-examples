@@ -165,6 +165,6 @@ mcux_add_iar_configuration(
         --config_def=__heap_size__=0x150000"
 )
 mcux_add_armgcc_configuration(
-    LD "-Xlinker --defsym=__heap_size__=0x150000\
-        -Xlinker --defsym=__stack_size__=0x16000"
+    LD "-Xlinker --defsym=__heap_size__=0x200000\
+        -Xlinker --defsym=__stack_size__=0x10000"
 )
