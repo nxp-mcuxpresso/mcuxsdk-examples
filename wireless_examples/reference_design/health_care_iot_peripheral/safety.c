@@ -73,7 +73,7 @@
 /** The datastore in flash */
 extern uint32_t Image$$NVM_region_eventstore$$ZI$$Base[];
 #define EVENTSTORE_ADDRESS (const uint8_t *)(Image$$NVM_region_eventstore$$ZI$$Base)
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) || defined(__ICCARM__)
 extern uint32_t EVENTSTORE_START_ADDRESS[];
 #define EVENTSTORE_ADDRESS (const uint8_t *)(EVENTSTORE_START_ADDRESS)
 #endif /* Compiler choice. */
@@ -337,7 +337,7 @@ static status_t PrepareForLowPower(pm_event_type_t eventType, pm_mode_t mode, vo
 #endif /* DISABLE_POWER_DOWN_CPU */
     return kStatus_Success;
 }
-#endif 
+#endif
 
 #ifdef ENABLE_LOW_POWER
 /**
@@ -532,13 +532,13 @@ static void SafetyTask(void *argument)
         status_t status;
         (void)tmState;
         (void)status;
-        
+
         /* Capture the original systick reload value */
         s_systickLoad = SysTick->LOAD + 1;
 #ifdef SDK_OS_FREE_RTOS
 #ifdef ENABLE_LOW_POWER
         PMAPP_Init(s_systickLoad);
-#endif 
+#endif
 #endif /* SDK_OS_FREE_RTOS */
 
         /* Initialize timer manager */

@@ -65,6 +65,18 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
         TARGETS debug release
         LINKER linker/gcc/${gcc_wireless_linker_file_ble}
     )
+
+    mcux_remove_iar_linker_script(
+        BASE_PATH ${SdkRootDirPath}
+        TARGETS debug release
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+    )
+
+    mcux_add_iar_linker_script(
+        BASE_PATH ${SdkRootDirPath}
+        TARGETS debug release
+        LINKER ${board_root}/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
+    )
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.app_ble)

@@ -33,7 +33,7 @@
 /** The datastore in flash */
 extern uint32_t Image$$NVM_region_datastore$$ZI$$Base[];
 #define DATASTORE_ADDRESS (const uint8_t *)(Image$$NVM_region_datastore$$ZI$$Base)
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) || defined(__ICCARM__)
 extern uint32_t DATASTORE_START_ADDRESS[];
 #define DATASTORE_ADDRESS (const uint8_t *)(DATASTORE_START_ADDRESS)
 #else

@@ -1,6 +1,7 @@
 mcux_add_configuration(
     CC "-DgButtonSupported_d=1\
        -DOSA_USED\
+       -DSDK_DEBUGCONSOLE_UART\
        -DFSL_OSA_TASK_ENABLE=1\
        -DCR_INTEGER_PRINTF\
        -DCFG_BLE_PRJ=1\
