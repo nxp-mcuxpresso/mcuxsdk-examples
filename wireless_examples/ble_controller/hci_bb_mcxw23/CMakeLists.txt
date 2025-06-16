@@ -27,6 +27,11 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/wireless_examples/ble_controller/hci_bb
 )
 
+# temporarily ignore warnings from the ble controller sources
+mcux_add_iar_configuration(
+    CC "--diag_suppress=Pa084,Pe111,Pe167,Pe186,Pe188,Pe550"
+)
+
 # include(${SdkRootDirPath}/examples/_boards/${board}/wireless_examples/ble_controller/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
