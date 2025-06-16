@@ -8,6 +8,7 @@ Hardware requirements
 
 Board settings
 ==============
+Populate R742/743, don't populate R740/741 on SOM board
 
 **Please note this application can't support running with Linux BSP!**
 
