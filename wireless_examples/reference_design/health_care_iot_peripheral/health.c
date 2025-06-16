@@ -150,6 +150,7 @@ static void HealthMsgHandler(health_message_t *msg)
             (void)status;
             assert_equal(status, kStatus_Success);
             s_measurementOngoing = false;
+            (void)s_measurementOngoing;
             SAFETY_WatchdogFeed(s_watchdogHandle);
             break;
         }

@@ -140,7 +140,7 @@ status_t MEASUREMENT_Process(void)
     if (status == kStatus_Success)
     {
         /* Convert temperature to centigrades */
-        int temp_int = temperature * 100;
+        int temp_int = (int)(temperature * 100);
         PRINTF("Measurement done @ %lld: %d.%d\n", PLATFORM_GetTimeStamp(), (int)(temp_int / 100),
                        (int)((temp_int % 100) / 10));
         DATASTORE_Add(&temp_int);

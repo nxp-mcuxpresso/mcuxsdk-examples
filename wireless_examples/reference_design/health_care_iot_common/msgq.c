@@ -28,12 +28,12 @@ void *MSGQ_CreateMsg(msgq_handler_t handler, uint32_t size)
 
 void MSGQ_FreeMsg(void *message)
 {
-    OSA_MemoryFree(((void *)message) - DATA_OFFSET);
+    OSA_MemoryFree(((uint8_t *)message) - DATA_OFFSET);
 }
 
 msgq_handler_t MSGQ_GetHandler(void *message)
 {
-    return ((msgq_message_t *)(message - DATA_OFFSET))->handler;
+    return ((msgq_message_t *)((uint8_t *)message - DATA_OFFSET))->handler;
 }
 
 osa_status_t MSGQ_Put(msgq_handle_t handle, void *message)

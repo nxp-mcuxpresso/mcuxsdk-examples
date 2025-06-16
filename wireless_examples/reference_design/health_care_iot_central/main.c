@@ -178,7 +178,7 @@ static void GattClientIndicationCallback(deviceId_t serverDeviceId,
             /* Decode IEEE-11073 32 bit float */
             int8_t exponent   = *((int8_t *)(aValue + 4));
             uint32_t mantissa = (*((uint32_t *)(aValue + 1))) & 0x00FFFFFF;
-            uint32_t ctime_s  = CONVERT_CTIMER_COUNT_TO_SEC(CTIMER_GetTimerCountValue(CTIMER0));
+            uint32_t ctime_s  = (uint32_t)CONVERT_CTIMER_COUNT_TO_SEC(CTIMER_GetTimerCountValue(CTIMER0));
             PRINTF("Temperature indication received @%ds: %ld\n", ctime_s, (uint32_t)(mantissa * pow(10, exponent)));
         }
     }
