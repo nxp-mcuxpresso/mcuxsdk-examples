@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+audmix_sai_codec:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/audmix/sai_codec
+    project-root-path: boards/${board}/driver_examples/audmix/sai_codec/${multicore_foldername}
+    document:
+      name: audmix_sai_codec${core_id_suffix_name}
+      category: driver_examples/audmix
+      brief: The audmix_sai_codec example shows how to use the AUDMIX peripheral with SAI interfaces to mix audio streams.
+        In this example, three SAI instances are used - two for input to AUDMIX and one for receiving the mixed output.
+      example_readme:
+      - examples/driver_examples/audmix/sai_codec/readme.md
+      - ${board_root}/${board}/driver_examples/audmix/sai_codec/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards: {}
