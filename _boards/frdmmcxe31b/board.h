@@ -122,6 +122,9 @@
 #define BOARD_MAGSWITCH_I2C_BASEADDR   LPI2C_0
 #define BOARD_MAGSWITCH_I2C_CLOCK_FREQ (CLOCK_GetFreq(kCLOCK_Lpi2c0Clk))
 
+/*! @brief The EMAC PHY address. */
+#define BOARD_EMAC_PHY_ADDRESS (0x0U) /* Phy address of EMAC port. */
+
 /*******************************************************************************
  * API
  ******************************************************************************/

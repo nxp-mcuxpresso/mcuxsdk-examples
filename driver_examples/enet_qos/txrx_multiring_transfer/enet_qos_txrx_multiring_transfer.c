@@ -9,7 +9,9 @@
 #include "fsl_debug_console.h"
 #include "fsl_enet_qos.h"
 #include "fsl_phy.h"
+#if !APP_USER_DEFINED_MAC_ADDRESS
 #include "fsl_silicon_id.h"
+#endif
 #include "fsl_cache.h"
 
 /*******************************************************************************
@@ -17,8 +19,13 @@
  ******************************************************************************/
 #define ENET_QOS_RXBD_NUM                     (4)
 #define ENET_QOS_TXBD_NUM                     (4)
+#ifdef ENET_QOS_EMAC_USED_AS_ENET_QOS
+#define ENET_QOS_RXQUEUE_USE                  (1)
+#define ENET_QOS_TXQUEUE_USE                  (2)
+#else
 #define ENET_QOS_RXQUEUE_USE                  (3)
 #define ENET_QOS_TXQUEUE_USE                  (3)
+#endif /* ENET_QOS_EMAC_USED_AS_ENET_QOS */
 #define ENET_QOS_RXBUFF_SIZE                  (ENET_QOS_FRAME_MAX_FRAMELEN)
 #define ENET_QOS_TXBUFF_SIZE                  (ENET_QOS_FRAME_MAX_FRAMELEN)
 #define ENET_QOS_BuffSizeAlign(n)             ENET_QOS_ALIGN(n, ENET_QOS_BUFF_ALIGNMENT)
@@ -26,7 +33,7 @@
 #define ENET_QOS_DATA_LENGTH                  (1000)
 #define ENET_QOS_HEAD_LENGTH                  (14)
 #define ENET_QOS_FRAME_LENGTH                 ENET_QOS_DATA_LENGTH + ENET_QOS_HEAD_LENGTH
-#define ENET_QOS_TRANSMIT_DATA_NUM            (30)
+#define ENET_QOS_TRANSMIT_DATA_NUM            (ENET_QOS_TXQUEUE_USE * 10)
 #define ENET_QOS_ALIGN(x, align)              ((unsigned int)((x) + ((align)-1)) & (unsigned int)(~(unsigned int)((align)-1)))
 #define ENET_QOS_HEAD_TYPE_OFFSET             12U     /*!< ENET head type offset. */
 #define ENET_QOS_VLANTYPE                     0x8100U /*! @brief VLAN TYPE */
@@ -141,6 +148,7 @@ static void ENET_QOS_BuildFrame(void)
         g_frame[0][count] = count % 0xFFU;
     }
 
+#if ENET_QOS_TXQUEUE_USE > 1
     /* Second frame. */
     *(uint16_t *)&g_frame[1][ENET_QOS_HEAD_TYPE_OFFSET] = ENET_QOS_HTONS(ENET_QOS_VLANTYPE); /* VLAN TAG type. */
     *(uint16_t *)&g_frame[1][ENET_QOS_HEAD_TYPE_OFFSET + ENET_QOS_VLANTAGLEN / 2] =
@@ -155,7 +163,9 @@ static void ENET_QOS_BuildFrame(void)
     {
         g_frame[1][count] = count % 0xFFU;
     }
+#endif
 
+#if ENET_QOS_TXQUEUE_USE > 2
     /* Third frame - unicast frame. */
     memcpy(&g_frame[2][0], &g_macAddr2[0], 6U);
     memcpy(&g_frame[2][6], &g_macAddr[0], 6U);
@@ -165,11 +175,16 @@ static void ENET_QOS_BuildFrame(void)
     {
         g_frame[2][count] = count % 0xFFU;
     }
+#endif
 
     /* make sure the tx frames are written to memory before DMA bursts*/
     DCACHE_CleanByRange((uint32_t)g_frame[0], ENET_QOS_FRAME_LENGTH);
+#if ENET_QOS_TXQUEUE_USE > 1
     DCACHE_CleanByRange((uint32_t)g_frame[1], ENET_QOS_FRAME_LENGTH);
+#endif
+#if ENET_QOS_TXQUEUE_USE > 2
     DCACHE_CleanByRange((uint32_t)g_frame[2], ENET_QOS_FRAME_LENGTH);
+#endif
 }
 
 void ENET_QOS_IntCallback(
@@ -300,6 +315,7 @@ int main(void)
                                                                      true,
 
                                                                  },
+#if ENET_QOS_TXQUEUE_USE > 1
                                                                  {
                                                                      ENET_QOS_RXBD_NUM,
                                                                      ENET_QOS_TXBD_NUM,
@@ -312,6 +328,8 @@ int main(void)
                                                                      ENET_QOS_BuffSizeAlign(ENET_QOS_RXBUFF_SIZE),
                                                                      true,
                                                                  },
+#endif
+#if ENET_QOS_TXQUEUE_USE > 2
                                                                  {
                                                                      ENET_QOS_RXBD_NUM,
                                                                      ENET_QOS_TXBD_NUM,
@@ -323,7 +341,9 @@ int main(void)
                                                                      &rxbuffer[2][0],
                                                                      ENET_QOS_BuffSizeAlign(ENET_QOS_RXBUFF_SIZE),
                                                                      true,
-                                                                 }};
+                                                                 },
+#endif
+    };
 
     PRINTF("\r\nENET multi-ring txrx example start.\r\n");
 
@@ -414,6 +434,9 @@ int main(void)
             break;
     }
     config.miiDuplex = (enet_qos_mii_duplex_t)duplex;
+#ifdef EXAMPLE_MII_MODE
+    config.miiMode = EXAMPLE_MII_MODE;
+#endif
 
 #if !APP_USER_DEFINED_MAC_ADDRESS
     /* Set special address for each chip. */
@@ -443,18 +466,22 @@ int main(void)
                     .priority  = 0x0U,
                     .cbsConfig = NULL,
                 },
+#if ENET_QOS_TXQUEUE_USE > 1
                 {
                     .mode      = kENET_QOS_DCB_Mode,
                     .weight    = 0x10U,
                     .priority  = 0x1U,
                     .cbsConfig = NULL,
                 },
+#endif
+#if ENET_QOS_TXQUEUE_USE > 2
                 {
                     .mode      = kENET_QOS_DCB_Mode,
                     .weight    = 0x10U,
                     .priority  = 0x2U,
                     .cbsConfig = NULL,
                 },
+#endif
             },
         .rxQueueUse = ENET_QOS_RXQUEUE_USE,
         .mtlrxSche  = kENET_QOS_rxStrPrio,
@@ -466,25 +493,31 @@ int main(void)
                     .priority    = 0x0U,
                     .packetRoute = kENET_QOS_PacketNoQ,
                 },
+#if ENET_QOS_RXQUEUE_USE > 1
                 {
                     .mode        = kENET_QOS_AVB_Mode,
                     .mapChannel  = 0x1U,
                     .priority    = 0x1U,
                     .packetRoute = kENET_QOS_PacketNoQ,
                 },
+#endif
+#if ENET_QOS_RXQUEUE_USE > 2
                 {
                     .mode        = kENET_QOS_DCB_Mode,
                     .mapChannel  = 0x2U,
                     .priority    = 0x2U,
                     .packetRoute = kENET_QOS_PacketNoQ,
                 },
+#endif
             },
     };
     config.multiqueueCfg = &multiQueue;
 
     ENET_QOS_Init(EXAMPLE_ENET_QOS_BASE, &config, &g_macAddr[0], 1, ENET_PTP_REF_CLK);
 
-    enet_qos_rxp_config_t rxpConfig[3] = {
+#ifndef ENET_QOS_EMAC_USED_AS_ENET_QOS
+    enet_qos_rxp_config_t rxpConfig[ENET_QOS_TXQUEUE_USE] = {
+#if ENET_QOS_TXQUEUE_USE > 2
         {
             .matchData    = 0x45D9BED3U, /* match DA at frame offset 0 bytes in g_frame[2] */
             .matchEnable  = 0xFFFFFFFFU,
@@ -495,9 +528,11 @@ int main(void)
             .reserved     = 0,
             .frameOffset  = 0x0U,
             .okIndex      = 0U,
-            .dmaChannel   = kENET_QOS_Rxp_DMAChn2, /* Channel 2*/
+            .dmaChannel   = (ENET_QOS_RXQUEUE_USE > 2) ? kENET_QOS_Rxp_DMAChn2 : ((ENET_QOS_RXQUEUE_USE > 1) ? kENET_QOS_Rxp_DMAChn1 : kENET_QOS_Rxp_DMAChn0),
             .reserved2    = 0,
         },
+#endif
+#if ENET_QOS_TXQUEUE_USE > 1
         {
             .matchData    = 0x00A00081U, /* match frame pattern at offset 12 bytes in g_frame[1] */
             .matchEnable  = 0xFFFFFFFFU,
@@ -508,9 +543,10 @@ int main(void)
             .reserved     = 0,
             .frameOffset  = 0x3U,
             .okIndex      = 0U,
-            .dmaChannel   = kENET_QOS_Rxp_DMAChn1, /* Channel 1*/
+            .dmaChannel   = (ENET_QOS_RXQUEUE_USE > 1) ? kENET_QOS_Rxp_DMAChn1 : kENET_QOS_Rxp_DMAChn0,
             .reserved2    = 0,
         },
+#endif
         {
             .matchData    = 0xEEDD5533U, /* match frame pattern at offset 16 bytes in g_frame[0] */
             .matchEnable  = 0xFFFFFFFFU,
@@ -526,7 +562,8 @@ int main(void)
         }};
 
     /* Configure rx parser. */
-    ENET_QOS_ConfigureRxParser(EXAMPLE_ENET_QOS_BASE, &rxpConfig[0], 3);
+    ENET_QOS_ConfigureRxParser(EXAMPLE_ENET_QOS_BASE, &rxpConfig[0], ENET_QOS_TXQUEUE_USE);
+#endif
 
     /* Enable the rx interrupt. */
     ENET_QOS_EnableInterrupts(EXAMPLE_ENET_QOS_BASE, kENET_QOS_DmaRx);
@@ -545,12 +582,12 @@ int main(void)
 
     /* Delay some time before executing send and receive operation. */
     SDK_DelayAtLeastUs(1000000ULL, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    PRINTF("\r\n%d frames will be sent in %d queues, and frames will be received in %d queues.\r\n",
+    PRINTF("\r\n%d frames will be sent in %d queue(s), and frames will be received in %d queue(s).\r\n",
            ENET_QOS_TRANSMIT_DATA_NUM, ENET_QOS_TXQUEUE_USE, ENET_QOS_RXQUEUE_USE);
 
-    /* Start with Ring 2 because ring(queue) 2 has higher priority on tx DMA channel.
+    /* Start with last Ring because ring(queue) with higher number has higher priority on tx DMA channel.
     tx Ring N uses DMA channel N and channel N has higher priority than N-1. */
-    ringId = 2;
+    ringId = ENET_QOS_TXQUEUE_USE - 1;
     while (1)
     {
         if (testTxNum < ENET_QOS_TRANSMIT_DATA_NUM)
@@ -567,23 +604,36 @@ int main(void)
                 /* Wait for Rx over every three frames to prevent Rx FIFO overflow when Rx interrupt handling is slow. */
                 if (ringId == 0U)
                 {
-                    while (g_rxIndex != (testTxNum / 3U));
+                    while ((g_rxIndex + g_rxIndex1 + g_rxIndex2) != testTxNum);
                 }
 
-                ringId = (ringId + 2) % 3;
+                ringId = (ringId + (ENET_QOS_TXQUEUE_USE - 1)) % ENET_QOS_TXQUEUE_USE;
             }
         }
         if (g_txSuccessFlag)
         {
-            PRINTF("The frame transmitted from the ring 0, 1, 2 is %d, %d, %d!\r\n", g_txIndex, g_txIndex1, g_txIndex2);
-            PRINTF("%d frames transmitted succeed!\r\n", ENET_QOS_TRANSMIT_DATA_NUM);
+            PRINTF("The number of frames transmitted from the ring ");
+#if ENET_QOS_TXQUEUE_USE > 2
+            PRINTF("0, 1, 2 is %d, %d, %d!\r\n", g_txIndex, g_txIndex1, g_txIndex2);
+#elif ENET_QOS_TXQUEUE_USE > 1
+            PRINTF("0, 1 is %d, %d!\r\n", g_txIndex, g_txIndex1);
+#else
+            PRINTF("0 is %d!\r\n", g_txIndex);
+#endif
+            PRINTF("%d frames transmitted successfully!\r\n", ENET_QOS_TRANSMIT_DATA_NUM);
             g_txSuccessFlag = false;
             g_txMessageOut  = true;
         }
         if (g_txMessageOut && g_rxSuccessFlag)
         {
-            PRINTF("The frames successfully received from the ring 0, 1, 2 is %d, %d, %d!\r\n", g_rxIndex, g_rxIndex1,
-                   g_rxIndex2);
+            PRINTF("The number of frames successfully received from the ring ");
+#if ENET_QOS_RXQUEUE_USE > 2
+            PRINTF("0, 1, 2 is %d, %d, %d!\r\n", g_rxIndex, g_rxIndex1, g_rxIndex2);
+#elif ENET_QOS_RXQUEUE_USE > 1
+            PRINTF("0, 1 is %d, %d!\r\n", g_rxIndex, g_rxIndex1);
+#else
+            PRINTF("0 is %d!\r\n", g_rxIndex);
+#endif
             g_rxSuccessFlag = false;
             g_txMessageOut  = false;
         }

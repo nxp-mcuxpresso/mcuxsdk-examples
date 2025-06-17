@@ -10,7 +10,9 @@
 #include "fsl_debug_console.h"
 #include "fsl_enet_qos.h"
 #include "fsl_phy.h"
+#if !APP_USER_DEFINED_MAC_ADDRESS
 #include "fsl_silicon_id.h"
+#endif
 #include "fsl_cache.h"
 
 /*******************************************************************************
@@ -286,6 +288,9 @@ int main(void)
             break;
     }
     config.miiDuplex = (enet_qos_mii_duplex_t)duplex;
+#ifdef EXAMPLE_MII_MODE
+    config.miiMode = EXAMPLE_MII_MODE;
+#endif
 
 #if !APP_USER_DEFINED_MAC_ADDRESS
     /* Set special address for each chip. */
