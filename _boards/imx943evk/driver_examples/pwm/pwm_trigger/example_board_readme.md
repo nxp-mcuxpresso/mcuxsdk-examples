@@ -8,9 +8,10 @@ Hardware requirements
 Board settings
 ==============
 * Probe the pwm signal using an oscilloscope
- - At J49-15 (pwma0)
- - At J49-7 (pwma1)
- - At J49-15 (pwma2)
+ - At J49-15 (PWM Submodule0)
+ - At J49-11 (PWM Submodule1)
+ - At J49-7  (PWM Submodule2)
+ - J45-12    (GND)
 
 Prepare the Demo
 ================
@@ -28,5 +29,9 @@ Running the demo
 ================
 When the example runs successfully, the following message is displayed in the terminal:
 ~~~~~~~~~~~~~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+
 FlexPWM driver example
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+You can capture the PWM on OSC with trigger signal. If disable trigger signal from XBAR, the PWM will not be get on OSC.

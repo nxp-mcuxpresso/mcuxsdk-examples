@@ -8,14 +8,14 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+Connect J43-12 to oscilloscope to capture the trigger signal.
 
 #### Please note this application can't support running with Linux BSP! ####
 
 Prepare the Demo
 ===============
-1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW301 to power on the board.
-2.  Connect a micro USB cable between the host PC and the J1401 USB port on the target board.
+1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board.
+2.  Connect a micro USB cable between the host PC and the J15(FTDI_DEBUG) USB port on the target board.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -30,9 +30,13 @@ Running the demo
 These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Low Power Timer Example
+IPSYNC trigger signal connected output!
+
 LPTMR interrupt No.1
 LPTMR interrupt No.2
 LPTMR interrupt No.3
 ....................
 ....................
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+You will also capture the trigger signal on OSC.

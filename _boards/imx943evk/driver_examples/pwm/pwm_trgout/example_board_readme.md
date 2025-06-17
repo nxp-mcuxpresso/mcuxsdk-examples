@@ -7,10 +7,8 @@ Hardware requirements
 
 Board settings
 ==============
-* Probe the pwm signal using an oscilloscope
- - At J49-15 (pwma0)
- - At J49-7 (pwma1)
- - At J49-15 (pwma2)
+* Probe the pwm trigger signal using an oscilloscope
+ - At J43-12 (PWM trigger signal)
 
 Prepare the Demo
 ================
@@ -30,3 +28,5 @@ When the example runs successfully, the following message is displayed in the te
 ~~~~~~~~~~~~~~~~~~~~~~~~
 FlexPWM driver example
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+You can capture the PWM trigger out signal on OSC.

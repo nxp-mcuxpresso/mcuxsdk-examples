@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect J27-3 to Oscilloscope or Logic Analyzer.
+Connect J44-10 to Oscilloscope or Logic Analyzer.
 
 #### Please note this application can't support running with Linux BSP! ####
 
@@ -21,8 +21,8 @@ conflict.
 
 Prepare the Demo
 ===============
-1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW301 to power on the board.
-2.  Connect a micro USB cable between the host PC and the J1401 USB port on the target board.
+1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board.
+2.  Connect a micro USB cable between the host PC and the J15(FTDI_DEBUG) USB port on the target board.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -37,6 +37,8 @@ Running the demo
 When the example runs successfully, if the input duty cycle range is 0~100,
 You can see similar information from the terminal as follows:
 ~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+
 FLEXIO_PWM demo start.
 
 Please input a value (0 - 100) to set duty cycle: 10
@@ -59,6 +61,9 @@ PWM leave is: 1
 Please input a value (0 - 100) to set duty cycle:
 ......
 ~~~~~~~~~~~~
+
+PWM can be captured on OSC in this demo. If disable the trigger in signal from XBAR, PWM signal can't be captured on OSC.
+
 Note:
 1. The duty cycle of the PWM is variable, except for the idle state, 0 and 100.
 2. If the input duty cycle range exceeds 100, the pwm will be set to idle state
