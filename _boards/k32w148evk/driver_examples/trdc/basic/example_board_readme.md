@@ -27,19 +27,19 @@ The following lines are printed to the serial terminal when the demo program is 
 If the silicon of the SOC is NXP Fab or NXP Provisioned:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TRDC example start
-Set the MRC selected memory region not accessiable
+Set the MRC selected memory region not accessible
 Violent access at address: 0x48800000
-The MRC selected region is accessiable now
-Set the MBC selected memory block not accessiable
+The MRC selected region is accessible now
+Set the MBC selected memory block not accessible
 Violent access at address: 0x 2000000
-The MBC selected block is accessiable now
+The MBC selected block is accessible now
 TRDC example Success
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Otherwise the memory 0x48800000-0x48A00000 controlled by MRC0 cannot be accessed by CM33 core, the log should be:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TRDC example start
-Set the MBC selected memory block not accessiable
+Set the MBC selected memory block not accessible
 Violent access at address: 0x 2000000
-The MBC selected block is accessiable now
+The MBC selected block is accessible now
 TRDC example Success
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

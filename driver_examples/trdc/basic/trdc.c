@@ -84,7 +84,7 @@ int main(void)
 #endif
     {
         /* Set the MRC unaccessible. */
-        PRINTF("Set the MRC selected memory region not accessiable\r\n");
+        PRINTF("Set the MRC selected memory region not accessible\r\n");
         APP_SetMrcUnaccessible();
 
         /* Touch the MRC, there will be hardfault. */
@@ -96,13 +96,13 @@ int main(void)
         while (!g_hardfaultFlag)
         {
         }
-        PRINTF("The MRC selected region is accessiable now\r\n");
+        PRINTF("The MRC selected region is accessible now\r\n");
     }
 #endif
 
 #if defined(FSL_FEATURE_TRDC_HAS_MBC) && FSL_FEATURE_TRDC_HAS_MBC
     /* Set the MBC unaccessible. */
-    PRINTF("Set the MBC selected memory block not accessiable\r\n");
+    PRINTF("Set the MBC selected memory block not accessible\r\n");
     APP_SetMbcUnaccessible();
 
     /* Touch the MBC, there will be hardfault. */
@@ -115,7 +115,7 @@ int main(void)
     {
     }
 
-    PRINTF("The MBC selected block is accessiable now\r\n");
+    PRINTF("The MBC selected block is accessible now\r\n");
 #endif
 
     PRINTF("TRDC example Success\r\n");

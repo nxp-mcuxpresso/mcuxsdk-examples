@@ -13,12 +13,12 @@ The log below shows the output of the example in the terminal window.
 **NOTE** The access address might be different by platforms.
 ```
 XRDC example start
-Set the peripheral not accessiable
+Set the peripheral not accessible
 Violent access at address: 0x40032000
-The peripheral is accessiable now
-Set the memory not accessiable
+The peripheral is accessible now
+Set the memory not accessible
 Violent access at address: 0x08000000
-The memory is accessiable now
+The memory is accessible now
 XRDC example Success
 ```
 

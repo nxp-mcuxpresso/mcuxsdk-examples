@@ -28,7 +28,7 @@ The following lines are printed to the serial terminal when the demo program is 
 TRDC flash logical window example start
 Set the flash logical window
 Violent access at address: 0x 1080000
-The flash memory is accessiable now
+The flash memory is accessible now
 The data between physical address window and programmable flash address are identical.
 TRDC flash logical window example success
 ~~~~~~~~~~~~~~~

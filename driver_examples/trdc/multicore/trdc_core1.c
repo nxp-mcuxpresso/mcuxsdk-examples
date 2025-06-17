@@ -145,7 +145,7 @@ int main(void)
     {
     }
 
-    PRINTF("The MBC selected block is accessiable for secure master now\r\n");
+    PRINTF("The MBC selected block is accessible for secure master now\r\n");
 
     /* 3.3 MRC function demonstration. */
     PRINTF("Set the selected MRC region to non-secure for domain that is secure access only\r\n");
@@ -163,7 +163,7 @@ int main(void)
     while (!g_hardfaultFlag)
     {
     }
-    PRINTF("The MRC selected region is accessiable for secure master now\r\n");
+    PRINTF("The MRC selected region is accessible for secure master now\r\n");
 
     PRINTF("Secondary core non-secure access demo starts.\r\n");
     /* 4. Access demo for non-secure master. */
@@ -192,7 +192,7 @@ int main(void)
     {
     }
 
-    PRINTF("The MBC selected block is accessiable for non-secure master now\r\n");
+    PRINTF("The MBC selected block is accessible for non-secure master now\r\n");
 
     /* 4.5 Cofigure the domain access control for MRC for non-secure domain.
        Notice once this configuration is done, the processor master is forced to be non-secure,
@@ -208,7 +208,7 @@ int main(void)
     while ((*(volatile uint32_t *)EXAMPLE_NONSECURE_MRC_RESOLVED_FLAG_ADDRESS) == 0U)
     {
     }
-    PRINTF("The MRC selected region is accessiable for non-secure master now\r\n");
+    PRINTF("The MRC selected region is accessible for non-secure master now\r\n");
 
     PRINTF("TRDC example succeeds on secondary core\r\n");
 

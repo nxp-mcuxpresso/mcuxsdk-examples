@@ -30,10 +30,10 @@ TRDC example starts on primary core
 In primary core example we use 1 domain for secure access only.
 Set the selected MBC block to non-secure for domain that is secure access only
 Core0 MBC violent access at address: 0x47400000
-The MBC selected block is accessiable for secure master now
+The MBC selected block is accessible for secure master now
 Set the selected MRC region to non-secure for domain that is secure access only
 Core0 MRC violent access at address: 0x 4100000
-The MRC selected region is accessiable for secure master now
+The MRC selected region is accessible for secure master now
 TRDC example succeeds on primary core
 Copy Secondary core image to address: 0x303c0000, size: 16208
 Starting Secondary core.
@@ -43,17 +43,17 @@ In secondary core demo we use 2 domains, one is for secure access only, and the 
 Secondary core secure access demo starts.
 Set the selected MBC block to non-secure for domain that is secure access only
 Core1 MBC violent access at address: 0x42000000
-The MBC selected block is accessiable for secure master now
+The MBC selected block is accessible for secure master now
 Set the selected MRC region to non-secure for domain that is secure access only
 Core1 MRC violent access at address: 0x60000000
-The MRC selected region is accessiable for secure master now
+The MRC selected region is accessible for secure master now
 Secondary core non-secure access demo starts.
 Set the selected MBC block to non-secure for domain that is secure access only
 Set the selected MRC region to non-secure for domain that is secure access only
 Core1 MBC violent access at address: 0x42000000
-The MBC selected block is accessiable for non-secure master now
+The MBC selected block is accessible for non-secure master now
 Core1 MRC violent access at address: 0x60000000
-The MRC selected region is accessiable for non-secure master now
+The MRC selected region is accessible for non-secure master now
 TRDC example succeeds on secondary core
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

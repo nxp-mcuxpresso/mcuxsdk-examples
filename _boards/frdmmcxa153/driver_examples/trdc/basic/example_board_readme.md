@@ -26,9 +26,9 @@ When the demo runs successfully, will get the similar messages on the terminal.
 
 ~~~~~~~~~~~~~~~~~~~~~~
 TRDC example start
-Set the MBC selected memory block not accessiable
+Set the MBC selected memory block not accessible
 Resolve access error
-The MBC selected block is accessiable now
+The MBC selected block is accessible now
 TRDC example Success
 ~~~~~~~~~~~~~~~~~~~~~~
 

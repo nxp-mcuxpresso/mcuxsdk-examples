@@ -32,11 +32,11 @@ When the demo runs successfully, will get the similar messages on the terminal.
 
 ~~~~~~~~~~~~~~~~~~~~~~
 TRDC example start
-Set the MRC selected memory region not accessiable
+Set the MRC selected memory region not accessible
 Violent access at address: 0x40000000
-The MRC selected region is accessiable now
-Set the MBC selected memory block not accessiable
+The MRC selected region is accessible now
+Set the MBC selected memory block not accessible
 Violent access at address: 0x28800000
-The MBC selected block is accessiable now
+The MBC selected block is accessible now
 TRDC example Success
 ~~~~~~~~~~~~~~~~~~~~~~

@@ -60,7 +60,7 @@ int main(void)
     {
     }
 
-    PRINTF("The flash memory is accessiable now\r\n");
+    PRINTF("The flash memory is accessible now\r\n");
 
     if (APP_CheckMemoryMap())
     {

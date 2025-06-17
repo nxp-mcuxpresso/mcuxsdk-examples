@@ -62,7 +62,7 @@ int main(void)
     XRDC_SetGlobalValid(XRDC, true);
 
     /* Set the unaccessible peripheral. */
-    PRINTF("Set the peripheral not accessiable\r\n");
+    PRINTF("Set the peripheral not accessible\r\n");
     APP_SetPeriphUnaccessible();
 
     /* Touch the peripheral, there will be hardfault. */
@@ -74,10 +74,10 @@ int main(void)
     while (!g_hardfaultFlag)
     {
     }
-    PRINTF("The peripheral is accessiable now\r\n");
+    PRINTF("The peripheral is accessible now\r\n");
 
     /* Set the unaccessible memory region. */
-    PRINTF("Set the memory not accessiable\r\n");
+    PRINTF("Set the memory not accessible\r\n");
     APP_SetMemoryUnaccessible();
 
     /* Touch the memory, there will be hardfault. */
@@ -90,7 +90,7 @@ int main(void)
     {
     }
 
-    PRINTF("The memory is accessiable now\r\n");
+    PRINTF("The memory is accessible now\r\n");
 
     /* XRDC is global invalid */
     XRDC_SetGlobalValid(XRDC, false);

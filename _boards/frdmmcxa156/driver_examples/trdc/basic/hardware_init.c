@@ -19,7 +19,7 @@ static trdc_mbc_memory_block_config_t mbcBlockConfig;
 /*${function:start}*/
 void APP_SetTrdcAccessible(void)
 {
-    /* Configure in GLIKEY to make the TRDC accessiable. */
+    /* Configure in GLIKEY to make the TRDC accessible. */
     *(volatile uint32_t *)0x40091D00 = 0x00060000;
     *(volatile uint32_t *)0x40091D00 = 0x0002000F;
     *(volatile uint32_t *)0x40091D00 = 0x0001000F;
@@ -42,7 +42,7 @@ void APP_SetTrdcGlobalConfig(void)
 {
     TRDC_Init(EXAMPLE_TRDC_INSTANCE);
 
-    /* Make the all flash region accessiable. */
+    /* Make the all flash region accessible. */
     *(volatile uint32_t *)0x4008E020 = 0x00007777;
     *(volatile uint32_t *)0x4008E040 = 0x00000000;
     *(volatile uint32_t *)0x4008E044 = 0x00000000;
