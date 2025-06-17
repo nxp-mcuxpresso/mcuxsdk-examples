@@ -6,6 +6,7 @@
 
 #include "msgq.h"
 #include "fsl_os_abstraction.h"
+#include "fsl_component_mem_manager.h"
 
 #define DATA_OFFSET ((uint32_t)(&(((msgq_message_t *)0x0)->data)))
 
@@ -17,7 +18,7 @@ typedef struct
 
 void *MSGQ_CreateMsg(msgq_handler_t handler, uint32_t size)
 {
-    msgq_message_t *msg = OSA_MemoryAllocate(sizeof(msgq_message_t) + size);
+    msgq_message_t *msg = MEM_BufferAlloc(sizeof(msgq_message_t) + size);
     if (msg)
     {
         msg->handler = handler;
@@ -28,7 +29,7 @@ void *MSGQ_CreateMsg(msgq_handler_t handler, uint32_t size)
 
 void MSGQ_FreeMsg(void *message)
 {
-    OSA_MemoryFree(((uint8_t *)message) - DATA_OFFSET);
+    MEM_BufferFree(((uint8_t *)message) - DATA_OFFSET);
 }
 
 msgq_handler_t MSGQ_GetHandler(void *message)

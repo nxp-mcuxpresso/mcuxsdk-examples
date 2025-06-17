@@ -335,7 +335,7 @@ uint32_t CONNECTIVITY_GetRadioIdleTime()
  */
 void *CONNECTIVITY_ScheduleIdleTask(uint32_t idleTime, connectivity_idle_task_t task, void *context)
 {
-    connectivity_idle_task_info_t *idleInfo = OSA_MemoryAllocate(sizeof(connectivity_idle_task_info_t));
+    connectivity_idle_task_info_t *idleInfo = MEM_BufferAlloc(sizeof(connectivity_idle_task_info_t));
     assert(idleInfo != NULL);
     idleInfo->idleTime = idleTime;
     idleInfo->task     = task;
@@ -375,7 +375,7 @@ void CONNECTIVITY_FinishIdleTask(void *idleTaskHandle)
 {
     assert_equal(idleTaskHandle, s_currentIdleTask);
     s_currentIdleTask = NULL;
-    OSA_MemoryFree(idleTaskHandle);
+    MEM_BufferFree(idleTaskHandle);
     void *msg = MSGQ_CreateMsg(StartIdleTaskScheduler, 0);
     assert(msg);
     MSGQ_Put(s_messageQueue, msg);

@@ -426,7 +426,7 @@ static void SafetyMsgHandler(safety_message_t *msg)
                                                                       msg->data.writeFlashInfo.flashInfo->length,
                                                                       msg->data.writeFlashInfo.flashInfo->context);
                     }
-                    OSA_MemoryFree(msg->data.writeFlashInfo.flashInfo);
+                    MEM_BufferFree(msg->data.writeFlashInfo.flashInfo);
                     PRINTF("Flash write done\n");
                 }
                 /* Idle task is finished */
@@ -723,7 +723,7 @@ void SAFETY_WriteFlash(
 {
     if (length > 0)
     {
-        flash_info_t *flashInfo = OSA_MemoryAllocate(sizeof(flash_info_t));
+        flash_info_t *flashInfo = MEM_BufferAlloc(sizeof(flash_info_t));
         assert(flashInfo != NULL);
         flashInfo->address    = address;
         flashInfo->data       = data;
