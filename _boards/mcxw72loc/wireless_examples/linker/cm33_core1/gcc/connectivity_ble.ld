@@ -246,7 +246,9 @@ SECTIONS
   }>sqram_rldat_ae_region
   .sqram_rldat_region (NOLOAD) : ALIGN(4)
   {
+      __rldat_start__ = .;    /* create a global symbol at rl data start */
       *(.rl_conn)
+      __rldat_end__ = .;      /* create a global symbol at rl data end */
   }>sqram_rldat_region
   /*.logging (NOLOAD) : ALIGN(4)
   {
