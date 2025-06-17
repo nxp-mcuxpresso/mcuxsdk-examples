@@ -18,10 +18,10 @@ processor: MCXE31B
 package_id: MCXE31BMPB
 mcu_data: ksdk2_0
 processor_version: 0.2506.30
-external_user_signals: {}
 pin_labels:
 - {pin_num: '27', pin_signal: PTE3, label: pin_pte3_config, identifier: pin_pte3_config}
 - {pin_num: '26', pin_signal: PTE14, label: dsa, identifier: dsa}
+- {pin_num: '49', pin_signal: PTC3, label: ENET_PHY_RST, identifier: ENET_PHY_RST}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -3384,7 +3384,7 @@ void BOARD_InitFLASHPins(void)
     SIUL2_PinInit(&BOARD_INITFLASHPINS_PTD10);
     
     /* PTC3 (pin 49) is configured as QUADSPI PCS, FA */
-    const siul2_pin_settings_t BOARD_INITFLASHPINS_PTC3 =
+    const siul2_pin_settings_t BOARD_INITFLASHPINS_ENET_PHY_RST =
     {
         .base                        = SIUL2,
         .pinPortIdx                  = 67u,
@@ -3401,7 +3401,7 @@ void BOARD_InitFLASHPins(void)
         .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
         .initValue                   = 2u
     };
-    SIUL2_PinInit(&BOARD_INITFLASHPINS_PTC3);
+    SIUL2_PinInit(&BOARD_INITFLASHPINS_ENET_PHY_RST);
     
     /* PTD11 (pin 55) is configured as QUADSPI IO0, FA */
     const siul2_pin_settings_t BOARD_INITFLASHPINS_PTD11 =
@@ -4154,6 +4154,360 @@ void BOARD_InitFLEXIO_UARTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_UARTPINS_PTB18);
+    
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitEMACPins:
+- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '48', peripheral: EMAC, signal: MII_RMII_MDIO, pin_signal: PTB4, direction: INPUT/OUTPUT}
+  - {pin_num: '47', peripheral: EMAC, signal: MII_RMII_MDC, pin_signal: PTB5}
+  - {pin_num: '50', peripheral: EMAC, signal: MII_RMII_TXD0, pin_signal: PTC2, slewRate: slowestSetting}
+  - {pin_num: '51', peripheral: EMAC, signal: MII_RMII_TXD1, pin_signal: PTD7, slewRate: slowestSetting}
+  - {pin_num: '54', peripheral: EMAC, signal: MII_RMII_TX_EN, pin_signal: PTD12, slewRate: slowestSetting}
+  - {pin_num: '65', peripheral: EMAC, signal: MII_RMII_RX_DV, pin_signal: PTC17}
+  - {pin_num: '61', peripheral: EMAC, signal: MII_RMII_RXD0, pin_signal: PTC1}
+  - {pin_num: '62', peripheral: EMAC, signal: MII_RMII_RXD1, pin_signal: PTC0}
+  - {pin_num: '49', peripheral: SIUL2, signal: 'GPIO, 67', pin_signal: PTC3, direction: INPUT/OUTPUT, initValue: state_1, slewRate: slowestSetting}
+  - {pin_num: '55', peripheral: EMAC, signal: MII_RMII_TX_CLK, pin_signal: PTD11, safeMode: outputOff, slewRate: slowestSetting}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitEMACPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitEMACPins(void)
+{
+    
+    /* PTB4 (pin 48) is configured as EMAC MII_RMII_MDIO */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTB4 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 36u,
+        .mux                         = kPORT_MUX_ALT5,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         291u
+                                       },
+        .inputMux                    = { 
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTB4);
+    
+    /* PTB5 (pin 47) is configured as EMAC MII_RMII_MDC */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTB5 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 37u,
+        .mux                         = kPORT_MUX_ALT7,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_DISABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTB5);
+    
+    /* PTC2 (pin 50) is configured as EMAC MII_RMII_TXD0 */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTC2 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 66u,
+        .mux                         = kPORT_MUX_ALT5,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_DISABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTC2);
+    
+    /* PTD7 (pin 51) is configured as EMAC MII_RMII_TXD1 */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTD7 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 103u,
+        .mux                         = kPORT_MUX_ALT5,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_DISABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTD7);
+    
+    /* PTD12 (pin 54) is configured as EMAC MII_RMII_TX_EN */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTD12 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 108u,
+        .mux                         = kPORT_MUX_ALT5,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_DISABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTD12);
+    
+    /* PTC17 (pin 65) is configured as EMAC MII_RMII_RX_DV */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTC17 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 81u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         292u
+                                       },
+        .inputMux                    = { 
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTC17);
+    
+    /* PTC1 (pin 61) is configured as EMAC MII_RMII_RXD0 */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTC1 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 65u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         294u
+                                       },
+        .inputMux                    = { 
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTC1);
+    
+    /* PTC0 (pin 62) is configured as EMAC MII_RMII_RXD1 */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTC0 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 64u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         295u
+                                       },
+        .inputMux                    = { 
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTC0);
+    
+    /* PTC3 (pin 49) is configured as SIUL2 GPIO, 67 */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_ENET_PHY_RST =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 67u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 1u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_ENET_PHY_RST);
+    
+    /* PTD11 (pin 55) is configured as EMAC MII_RMII_TX_CLK */
+    const siul2_pin_settings_t BOARD_INITEMACPINS_PTD11 =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 107u,
+        .mux                         = kPORT_MUX_AS_GPIO,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         296u
+                                       },
+        .inputMux                    = { 
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITEMACPINS_PTD11);
     
 }
 /***********************************************************************************************************************

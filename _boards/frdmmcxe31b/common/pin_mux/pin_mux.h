@@ -163,6 +163,15 @@ void BOARD_InitFlexCANPins(void);
  */
 void BOARD_InitEMIOSPins(void);
 
+/*! @name PTC3 (number 49), ENET_PHY_RST
+  @{ */
+
+/* Defined symbols */
+#define BOARD_INITFLASHPINS_ENET_PHY_RST_PORT PTC                 /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITFLASHPINS_ENET_PHY_RST_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITFLASHPINS_ENET_PHY_RST_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                                  /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -198,6 +207,26 @@ void BOARD_InitFLEXIO_SPIPins(void);
  *
  */
 void BOARD_InitFLEXIO_UARTPins(void);
+
+/*! @name PTC3 (number 49), ENET_PHY_RST
+  @{ */
+
+/* Symbols to be used with SIUL2 driver */
+#define BOARD_INITEMACPINS_ENET_PHY_RST_SIUL2_BASE SIUL2         /*!<@brief SIUL2 peripheral base pointer */
+#define BOARD_INITEMACPINS_ENET_PHY_RST_GPIO kSIUL2_PTC          /*!<@brief GPIO peripheral port */
+#define BOARD_INITEMACPINS_ENET_PHY_RST_GPIO_PIN_MASK (1U << 67U) /*!<@brief GPIO pin mask */
+
+/* Defined symbols */
+#define BOARD_INITEMACPINS_ENET_PHY_RST_PORT PTC                 /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITEMACPINS_ENET_PHY_RST_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITEMACPINS_ENET_PHY_RST_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                                 /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitEMACPins(void);
 
 #if defined(__cplusplus)
 }
