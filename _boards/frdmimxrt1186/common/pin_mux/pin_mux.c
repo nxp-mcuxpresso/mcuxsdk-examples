@@ -35,10 +35,10 @@ pin_labels:
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
- * 
+ *
  * Function Name : BOARD_InitBootPins
  * Description   : Calls initialization functions.
- * 
+ *
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
     BOARD_InitDEBUG_UARTPins();
@@ -1341,28 +1341,17 @@ void BOARD_InitFLEXIO_PWMPins(void) {
 BOARD_InitFLEXSPI_FLRPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: J11, peripheral: FLEXSPI1, signal: FLEXSPI_B_SCLK, pin_signal: GPIO_SD_B2_07}
-  - {pin_num: E11, peripheral: FLEXSPI1, signal: FLEXSPI_B_SS0_B, pin_signal: GPIO_SD_B2_06}
-  - {pin_num: G11, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA0, pin_signal: GPIO_SD_B2_08}
-  - {pin_num: E12, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA1, pin_signal: GPIO_SD_B2_09}
-  - {pin_num: F12, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA2, pin_signal: GPIO_SD_B2_10}
-  - {pin_num: E13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA3, pin_signal: GPIO_SD_B2_11}
-  - {pin_num: G13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA4, pin_signal: GPIO_SD_B2_00}
-  - {pin_num: F14, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA5, pin_signal: GPIO_SD_B2_01}
-  - {pin_num: F13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA6, pin_signal: GPIO_SD_B2_02}
-  - {pin_num: H11, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA7, pin_signal: GPIO_SD_B2_03}
-  - {pin_num: D13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DQS, pin_signal: GPIO_SD_B2_05}
-  - {pin_num: A12, peripheral: FLEXSPI_SLV, signal: 'DATA, 4', pin_signal: GPIO_B2_03}
-  - {pin_num: B12, peripheral: FLEXSPI_SLV, signal: 'DATA, 5', pin_signal: GPIO_B2_04}
-  - {pin_num: C12, peripheral: FLEXSPI_SLV, signal: 'DATA, 6', pin_signal: GPIO_B2_05}
-  - {pin_num: C10, peripheral: FLEXSPI_SLV, signal: DQS, pin_signal: GPIO_B2_07}
-  - {pin_num: A13, peripheral: FLEXSPI_SLV, signal: CLK, pin_signal: GPIO_B2_08, software_input_on: Enable}
-  - {pin_num: B13, peripheral: FLEXSPI_SLV, signal: CS, pin_signal: GPIO_B2_09, software_input_on: Enable}
-  - {pin_num: C13, peripheral: FLEXSPI_SLV, signal: 'DATA, 0', pin_signal: GPIO_B2_10}
-  - {pin_num: D11, peripheral: FLEXSPI_SLV, signal: 'DATA, 1', pin_signal: GPIO_B2_11}
-  - {pin_num: E10, peripheral: FLEXSPI_SLV, signal: 'DATA, 2', pin_signal: GPIO_B2_12}
-  - {pin_num: F10, peripheral: FLEXSPI_SLV, signal: 'DATA, 3', pin_signal: GPIO_B2_13}
-  - {pin_num: D10, peripheral: FLEXSPI_SLV, signal: 'DATA, 7', pin_signal: GPIO_B2_06}
+  - {pin_num: J11, peripheral: FLEXSPI_SLV, signal: CLK, pin_signal: GPIO_SD_B2_07}
+  - {pin_num: E11, peripheral: FLEXSPI_SLV, signal: CS, pin_signal: GPIO_SD_B2_06}
+  - {pin_num: D13, peripheral: FLEXSPI_SLV, signal: DQS, pin_signal: GPIO_SD_B2_05}
+  - {pin_num: G11, peripheral: FLEXSPI_SLV, signal: 'DATA, 0', pin_signal: GPIO_SD_B2_08}
+  - {pin_num: E12, peripheral: FLEXSPI_SLV, signal: 'DATA, 1', pin_signal: GPIO_SD_B2_09}
+  - {pin_num: F12, peripheral: FLEXSPI_SLV, signal: 'DATA, 2', pin_signal: GPIO_SD_B2_10}
+  - {pin_num: E13, peripheral: FLEXSPI_SLV, signal: 'DATA, 3', pin_signal: GPIO_SD_B2_11}
+  - {pin_num: G13, peripheral: FLEXSPI_SLV, signal: 'DATA, 4', pin_signal: GPIO_SD_B2_00}
+  - {pin_num: F14, peripheral: FLEXSPI_SLV, signal: 'DATA, 5', pin_signal: GPIO_SD_B2_01}
+  - {pin_num: F13, peripheral: FLEXSPI_SLV, signal: 'DATA, 6', pin_signal: GPIO_SD_B2_02}
+  - {pin_num: H11, peripheral: FLEXSPI_SLV, signal: 'DATA, 7', pin_signal: GPIO_SD_B2_03}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1376,70 +1365,37 @@ void BOARD_InitFLEXSPI_FLRPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_03_XSPI_SLV_DATA04,      /* GPIO_B2_03 is configured as XSPI_SLV_DATA04 */
+      IOMUXC_GPIO_SD_B2_00_XSPI_SLV_DATA04,   /* GPIO_SD_B2_00 is configured as XSPI_SLV_DATA04 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_04_XSPI_SLV_DATA05,      /* GPIO_B2_04 is configured as XSPI_SLV_DATA05 */
+      IOMUXC_GPIO_SD_B2_01_XSPI_SLV_DATA05,   /* GPIO_SD_B2_01 is configured as XSPI_SLV_DATA05 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_05_XSPI_SLV_DATA06,      /* GPIO_B2_05 is configured as XSPI_SLV_DATA06 */
+      IOMUXC_GPIO_SD_B2_02_XSPI_SLV_DATA06,   /* GPIO_SD_B2_02 is configured as XSPI_SLV_DATA06 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_06_XSPI_SLV_DATA07,      /* GPIO_B2_06 is configured as XSPI_SLV_DATA07 */
+      IOMUXC_GPIO_SD_B2_03_XSPI_SLV_DATA07,   /* GPIO_SD_B2_03 is configured as XSPI_SLV_DATA07 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_07_XSPI_SLV_DQS,         /* GPIO_B2_07 is configured as XSPI_SLV_DQS */
+      IOMUXC_GPIO_SD_B2_05_XSPI_SLV_DQS,      /* GPIO_SD_B2_05 is configured as XSPI_SLV_DQS */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_08_XSPI_SLV_CLK,         /* GPIO_B2_08 is configured as XSPI_SLV_CLK */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_08 */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_09_XSPI_SLV_CS,          /* GPIO_B2_09 is configured as XSPI_SLV_CS */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_B2_09 */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_10_XSPI_SLV_DATA00,      /* GPIO_B2_10 is configured as XSPI_SLV_DATA00 */
+      IOMUXC_GPIO_SD_B2_06_XSPI_SLV_CS,       /* GPIO_SD_B2_06 is configured as XSPI_SLV_CS */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_11_XSPI_SLV_DATA01,      /* GPIO_B2_11 is configured as XSPI_SLV_DATA01 */
+      IOMUXC_GPIO_SD_B2_07_XSPI_SLV_CLK,      /* GPIO_SD_B2_07 is configured as XSPI_SLV_CLK */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_12_XSPI_SLV_DATA02,      /* GPIO_B2_12 is configured as XSPI_SLV_DATA02 */
+      IOMUXC_GPIO_SD_B2_08_XSPI_SLV_DATA00,   /* GPIO_SD_B2_08 is configured as XSPI_SLV_DATA00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_B2_13_XSPI_SLV_DATA03,      /* GPIO_B2_13 is configured as XSPI_SLV_DATA03 */
+      IOMUXC_GPIO_SD_B2_09_XSPI_SLV_DATA01,   /* GPIO_SD_B2_09 is configured as XSPI_SLV_DATA01 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_00_FLEXSPI1_BUS2BIT_B_DATA04,  /* GPIO_SD_B2_00 is configured as FLEXSPI1_BUS2BIT_B_DATA04 */
+      IOMUXC_GPIO_SD_B2_10_XSPI_SLV_DATA02,   /* GPIO_SD_B2_10 is configured as XSPI_SLV_DATA02 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_01_FLEXSPI1_BUS2BIT_B_DATA05,  /* GPIO_SD_B2_01 is configured as FLEXSPI1_BUS2BIT_B_DATA05 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_02_FLEXSPI1_BUS2BIT_B_DATA06,  /* GPIO_SD_B2_02 is configured as FLEXSPI1_BUS2BIT_B_DATA06 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_03_FLEXSPI1_BUS2BIT_B_DATA07,  /* GPIO_SD_B2_03 is configured as FLEXSPI1_BUS2BIT_B_DATA07 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_05_FLEXSPI1_BUS2BIT_B_DQS,  /* GPIO_SD_B2_05 is configured as FLEXSPI1_BUS2BIT_B_DQS */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_06_FLEXSPI1_BUS2BIT_B_SS0_B,  /* GPIO_SD_B2_06 is configured as FLEXSPI1_BUS2BIT_B_SS0_B */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_07_FLEXSPI1_BUS2BIT_B_SCLK,  /* GPIO_SD_B2_07 is configured as FLEXSPI1_BUS2BIT_B_SCLK */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_08_FLEXSPI1_BUS2BIT_B_DATA00,  /* GPIO_SD_B2_08 is configured as FLEXSPI1_BUS2BIT_B_DATA00 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_09_FLEXSPI1_BUS2BIT_B_DATA01,  /* GPIO_SD_B2_09 is configured as FLEXSPI1_BUS2BIT_B_DATA01 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_10_FLEXSPI1_BUS2BIT_B_DATA02,  /* GPIO_SD_B2_10 is configured as FLEXSPI1_BUS2BIT_B_DATA02 */
-      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-  IOMUXC_SetPinMux(
-      IOMUXC_GPIO_SD_B2_11_FLEXSPI1_BUS2BIT_B_DATA03,  /* GPIO_SD_B2_11 is configured as FLEXSPI1_BUS2BIT_B_DATA03 */
+      IOMUXC_GPIO_SD_B2_11_XSPI_SLV_DATA03,   /* GPIO_SD_B2_11 is configured as XSPI_SLV_DATA03 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 

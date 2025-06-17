@@ -1,13 +1,15 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- FRDM-IMXRT1186 board
+- Two FRDM-IMXRT1186 boards
 - Personal Computer
 
 Board settings
 ============
 To Enable FlexSPI Follower:
-R113, R117, 131~R135, R160~R163, R182 Change to 1-3
+R113, R117, R131~133, R135, R160~R163, R182 Change to 1-3.
+Connect the J39 of two boards with cable.
+Note: ​As a high-speed bus requiring signal integrity, this external connection may not support optimal performance.​
 
 Prepare the Demo
 ===============
@@ -27,32 +29,33 @@ Running the demo
 When the example runs successfully, you can see the similar information from the terminal as below.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Default project uses Follower code. Define EXAMPLE_RUN_FLEXSPI_LEADER in project to run leader code.
 
-FLEXSPI Follower(Root Clock: 400MHz, IO Mode: DDRx8, Leader Root Clock: 400000000Hz) example started!
-FLEXSPI follower is initialized!
-FLEXSPI leader is initialized!
+Follower Log
+===============
+FLEXSPI Follower(Root Clock: 400MHz, IO Mode: DDRx8) example started!
+FLEXSPI Follower is initialized!
+[Follower](interrupt) Mailbox data: Box[0] 0x0. Box[1] 0x1. Box[2] 0x2. Box[3] 0x3. Box[4] 0x4. Box[5] 0x5. Box[6] 0x6. Box[7] 0x7. Box[8] 0x8.
+
+Leader Log
+===============
+FLEXSPI leader is initialized! Clock is 100000000
 
 [Leader] The follower status: 0x3006
-[Leader] The follower AXI read/write access is allowed!
+[Leader] Sending mailbox messages to the follower...
 
-[Leader] Waiting that the AXI bus write is idle...
-[Leader] Original string: [18:40:43] This string is used to verify the memory write!
-[Leader] Writing follower's memory...
+[Leader] Waiting the AXI bus write is idle...
+[Leader] Original string: [18:23:33] This string is used to verify the memory write!
+[Leader] Writing follower memory...
 [Leader] Write finished!
-
-[Leader] Waiting that the follower mailbox is idle...
-[Leader] Sending a mailbox to the follower...
-[Follower] Mailbox data(interrupt): 256.
-[Leader] Send finished -- 0x100!
 
 [Leader] Waiting that the AXI bus read is idle...
 [Leader] Reading the data from the follower memory...
-[Leader] The read data: [18:40:43] This string is used to verify the memory write!
+[Leader] The read data: [18:23:33] This string is used to verify the memory write!
 
-[Leader] Original string(AHB): [18:40:43] Verified the memory write via the AHB bus!
-[Leader] Writing follower's memory via AHB bus...
+[Leader] Original string(AHB): [18:23:33] Verified the memory write via the AHB bus!
+[Leader] Writing follower memory via AHB bus...
 [Leader] Write finished(AHB)!
-
 [Leader] Reading the data from the follower memory via AHB bus...
-[Leader] The read data(AHB): [18:40:43] Verified the memory write via the AHB bus!
+[Leader] The read data(AHB): [18:23:33] Verified the memory write via the AHB bus!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

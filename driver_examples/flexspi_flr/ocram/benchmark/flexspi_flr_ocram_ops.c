@@ -1,7 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
- *
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -123,7 +121,7 @@ void flexspi_ocram_init(FLEXSPI_Type *base)
     uint32_t tempLUT[CUSTOM_LUT_LENGTH] = {0x00U};
 
 #if defined(CACHE_MAINTAIN) && CACHE_MAINTAIN
-    flexspi_cache_status_t cacheStatus;
+    flexspi_cache_status_t cacheStatus = {0};
     flexspi_disable_cache(&cacheStatus);
 #endif
 
@@ -131,12 +129,10 @@ void flexspi_ocram_init(FLEXSPI_Type *base)
      * and load wrong LUT table from FLASH region. */
     memcpy(tempLUT, customLUT, sizeof(tempLUT));
 
-    flexspi_clock_init();
-
     /*Get FLEXSPI default settings and configure the flexspi. */
     FLEXSPI_GetDefaultConfig(&config);
 
-    /*Set AHB buffer size for reading data through AHB bus. */
+    /* Set AHB buffer size for reading data through AHB bus. */
     config.ahbConfig.enableAHBPrefetch    = true;
     config.ahbConfig.enableAHBBufferable  = true;
     config.ahbConfig.enableReadAddressOpt = true;
@@ -158,13 +154,11 @@ void flexspi_ocram_init(FLEXSPI_Type *base)
 #endif
 }
 
-volatile bool gptIsrFlag = false;
 void EXAMPLE_GPT_IRQHandler(void)
 {
     /* Clear interrupt flag.*/
     GPT_ClearStatusFlags(EXAMPLE_GPT, kGPT_OutputCompare1Flag);
 
-    gptIsrFlag = true;
 /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F, Cortex-M7, Cortex-M7F Store immediate overlapping
   exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U || __CORTEX_M == 7U)
@@ -176,7 +170,7 @@ void EXAMPLE_GPT_IRQHandler(void)
  * frequency.
  */
 uint32_t gptFreq;
-void setupTimerInterrupt( void )
+void setupTimerInterrupt(void)
 {
     gpt_config_t gptConfig;
 
@@ -187,7 +181,7 @@ void setupTimerInterrupt( void )
     /* Divide GPT clock source frequency by 3 inside GPT module */
     GPT_SetClockDivider(EXAMPLE_GPT, 3);
     /* Get GPT clock frequency */
-    gptFreq = EXAMPLE_GPT_CLK_FREQ / 3;
+    gptFreq = EXAMPLE_GPT_CLK_FREQ / 3U;
 
     /* Set both GPT modules to 1 second duration */
     GPT_SetOutputCompareValue(EXAMPLE_GPT, kGPT_OutputCompare_Channel1, gptFreq * 50);
@@ -196,7 +190,7 @@ void setupTimerInterrupt( void )
     GPT_EnableInterrupts(EXAMPLE_GPT, kGPT_OutputCompare1InterruptEnable);
 
     /* Enable at the Interrupt */
-    EnableIRQ(GPT_IRQ_ID);
+    EnableIRQ(EXAMPLE_GPT_IRQ_ID);
 
     /* Start Timer */
     GPT_StartTimer(EXAMPLE_GPT);

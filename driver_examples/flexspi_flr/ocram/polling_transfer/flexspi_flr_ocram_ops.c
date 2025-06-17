@@ -1,7 +1,5 @@
 /*
- * Copyright 2023 NXP
- * All rights reserved.
- *
+ * Copyright 2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -27,7 +25,6 @@
  *****************************************************************************/
 extern flexspi_device_config_t deviceconfig;
 extern const uint32_t customLUT[CUSTOM_LUT_LENGTH];
-uint32_t xTickCount = 0;
 
 /*******************************************************************************
  * Code
@@ -118,12 +115,13 @@ void flexspi_enable_cache(flexspi_cache_status_t cacheStatus)
 
 uint8_t get_lut_seqIndex(uint8_t cmd_type)
 {
-#if defined(EXAMPLE_FLEXSPI_SLV_MODE) && (EXAMPLE_FLEXSPI_SLV_MODE >= kFLEXSPI_SLV_IOMODE_SDRx4) && (EXAMPLE_FLEXSPI_SLV_MODE <= kFLEXSPI_SLV_IOMODE_DDRx8)
+#if defined(EXAMPLE_FLEXSPI_SLV_MODE) && (EXAMPLE_FLEXSPI_SLV_MODE >= kFLEXSPI_SLV_IOMODE_SDRx4) && \
+    (EXAMPLE_FLEXSPI_SLV_MODE <= kFLEXSPI_SLV_IOMODE_DDRx8)
     if (cmd_type == READ_REG_STATUS)
     {
         return FOLLOWER_CMD_LUT_SEQ_IDX_READ_REG_STATUS(EXAMPLE_FLEXSPI_SLV_MODE);
     }
-    else if(cmd_type == READ_MEMORY)
+    else if (cmd_type == READ_MEMORY)
     {
         return FOLLOWER_CMD_LUT_SEQ_IDX_READ_MEMORY(EXAMPLE_FLEXSPI_SLV_MODE);
     }
@@ -131,14 +129,16 @@ uint8_t get_lut_seqIndex(uint8_t cmd_type)
     {
         return FOLLOWER_CMD_LUT_SEQ_IDX_SEND_MAILBOX(EXAMPLE_FLEXSPI_SLV_MODE);
     }
-    else if(cmd_type == WRITE_MEMORY)
+    else if (cmd_type == WRITE_MEMORY)
     {
         return FOLLOWER_CMD_LUT_SEQ_IDX_WRITE_MEMORY(EXAMPLE_FLEXSPI_SLV_MODE);
     }
     else
     {
         PRINTF("[Error] %s: %s: %s\r\n", __FILE__, __FUNCTION__, __LINE__);
-        while(1);
+        while (1)
+        {
+        }
     }
 #else
 #error EXAMPLE_FLEXSPI_SLV_MODE != kFLEXSPI_SLV_IOMODE_SDRx4 or kFLEXSPI_SLV_IOMODE_SDRx8 or kFLEXSPI_SLV_IOMODE_DDRx4 or kFLEXSPI_SLV_IOMODE_DDRx8
@@ -149,7 +149,7 @@ status_t flexspi_ocram_send_mailbox(FLEXSPI_Type *base, uint8_t index, uint32_t 
 {
     flexspi_transfer_t flashXfer;
 
-    /* Send a mailbox */
+    /* Send a mailbox. */
     flashXfer.deviceAddress = 0x40 + index * 4;
     flashXfer.port          = FLASH_PORT;
     flashXfer.cmdType       = kFLEXSPI_Write;
@@ -161,7 +161,23 @@ status_t flexspi_ocram_send_mailbox(FLEXSPI_Type *base, uint8_t index, uint32_t 
     return FLEXSPI_TransferBlocking(base, &flashXfer);
 }
 
-status_t flexspi_ocram_status_get(FLEXSPI_Type *base, uint32_t *readValue)
+status_t flexspi_ocram_get_mailbox(FLEXSPI_Type *base, uint8_t index, uint32_t *value)
+{
+    flexspi_transfer_t flashXfer;
+
+    /* Get mailbox content. */
+    flashXfer.deviceAddress = 0x40 + index * 4;
+    flashXfer.port          = FLASH_PORT;
+    flashXfer.cmdType       = kFLEXSPI_Read;
+    flashXfer.SeqNumber     = 1;
+    flashXfer.seqIndex      = get_lut_seqIndex(READ_REG_STATUS);
+    flashXfer.data          = value;
+    flashXfer.dataSize      = 4;
+
+    return FLEXSPI_TransferBlocking(base, &flashXfer);
+}
+
+status_t flexspi_ocram_status_get(FLEXSPI_Type *base, uint32_t *value)
 {
     flexspi_transfer_t flashXfer;
 
@@ -170,7 +186,7 @@ status_t flexspi_ocram_status_get(FLEXSPI_Type *base, uint32_t *readValue)
     flashXfer.cmdType       = kFLEXSPI_Read;
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = get_lut_seqIndex(READ_REG_STATUS);
-    flashXfer.data          = readValue;
+    flashXfer.data          = value;
     flashXfer.dataSize      = 4;
 
     return FLEXSPI_TransferBlocking(base, &flashXfer);
@@ -182,11 +198,11 @@ status_t flexspi_ocram_read_memory(FLEXSPI_Type *base, uint32_t dstAddr, const u
     flexspi_transfer_t flashXfer;
 
 #if defined(CACHE_MAINTAIN) && CACHE_MAINTAIN
-    flexspi_cache_status_t cacheStatus;
+    flexspi_cache_status_t cacheStatus = {0};
     flexspi_disable_cache(&cacheStatus);
 #endif
 
-    /* Prepare page program command */
+    /* Prepare page program command. */
     flashXfer.deviceAddress = dstAddr;
     flashXfer.port          = FLASH_PORT;
     flashXfer.cmdType       = kFLEXSPI_Read;
@@ -223,7 +239,7 @@ status_t flexspi_ocram_write_memory(FLEXSPI_Type *base, uint32_t dstAddr, const 
     flexspi_transfer_t flashXfer;
 
 #if defined(CACHE_MAINTAIN) && CACHE_MAINTAIN
-    flexspi_cache_status_t cacheStatus;
+    flexspi_cache_status_t cacheStatus = {0};
     flexspi_disable_cache(&cacheStatus);
 #endif
 
@@ -265,7 +281,7 @@ void flexspi_ocram_init(FLEXSPI_Type *base)
     uint32_t tempLUT[CUSTOM_LUT_LENGTH] = {0x00U};
 
 #if defined(CACHE_MAINTAIN) && CACHE_MAINTAIN
-    flexspi_cache_status_t cacheStatus;
+    flexspi_cache_status_t cacheStatus = {0};
     flexspi_disable_cache(&cacheStatus);
 #endif
 
@@ -273,9 +289,7 @@ void flexspi_ocram_init(FLEXSPI_Type *base)
      * and load wrong LUT table from FLASH region. */
     memcpy(tempLUT, customLUT, sizeof(tempLUT));
 
-    flexspi_clock_init();
-
-    /*Get FLEXSPI default settings and configure the flexspi. */
+    /* Get FLEXSPI default settings and configure the flexspi. */
     FLEXSPI_GetDefaultConfig(&config);
 
     /*Set AHB buffer size for reading data through AHB bus. */

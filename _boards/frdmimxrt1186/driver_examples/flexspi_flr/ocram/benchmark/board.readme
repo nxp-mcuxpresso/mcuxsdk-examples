@@ -1,13 +1,15 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- FRDM-IMXRT1186 board
+- Two FRDM-IMXRT1186 boards
 - Personal Computer
 
 Board settings
 ============
 To Enable FlexSPI Follower:
-R113, R117, 131~R135, R160~R163, R182 Change to 1-3
+R113, R117, R131~133, R135, R160~R163, R182 Change to 1-3.
+Connect the J39 of two boards with cable.
+Note: ​As a high-speed bus requiring signal integrity, this external connection may not support optimal performance.​
 
 Prepare the Demo
 ===============
@@ -27,43 +29,35 @@ Running the demo
 When the example runs successfully, you can see the similar information from the terminal as below.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Default project uses Follower code. Define EXAMPLE_RUN_FLEXSPI_LEADER in project to run leader code.
 
-FLEXSPI Follower(Root Clock: 400MHz, IO Mode: DDRx8, Leader Root Clock: 400000000Hz) example started!
-FLEXSPI follower is initialized!
-FLEXSPI leader is initialized!
+Follower Log
+===============
+FLEXSPI Follower(Root Clock: 400MHz, IO Mode: DDRx8) example started!
+FLEXSPI Follower is initialized!
 ------GPT clock is 80000000Hz
-Testing bandwidth of OCRAM-RD
-read 500 MB in 3100 ms, bandwidth=161 MB per second
-read 500 MB in 3100 ms, bandwidth=161 MB per second
-read 500 MB in 3100 ms, bandwidth=161 MB per second
-Testing bandwidth of OCRAM-WR
-read 500 MB in 7369 ms, bandwidth=67 MB per second
-read 500 MB in 7369 ms, bandwidth=67 MB per second
-read 500 MB in 7369 ms, bandwidth=67 MB per second
-Testing bandwidth of OCRAM-FRD
-read 500 MB in 4544 ms, bandwidth=110 MB per second
-read 500 MB in 4544 ms, bandwidth=110 MB per second
-read 500 MB in 4544 ms, bandwidth=110 MB per second
-Testing bandwidth of OCRAM-FWR
-read 500 MB in 7551 ms, bandwidth=66 MB per second
-read 500 MB in 7551 ms, bandwidth=66 MB per second
-read 500 MB in 7551 ms, bandwidth=66 MB per second
+Testing bandwidth of OCRAM-READ
+Read 100 MB in 1040 ms, bandwidth=96 MB per second
+Read 100 MB in 1040 ms, bandwidth=96 MB per second
+Read 100 MB in 1040 ms, bandwidth=96 MB per second
+Testing bandwidth of OCRAM-WRITE
+Read 100 MB in 1436 ms, bandwidth=69 MB per second
+Read 100 MB in 1436 ms, bandwidth=69 MB per second
+Read 100 MB in 1441 ms, bandwidth=69 MB per second
 **************Testing End*************
-Testing bandwidth of Follower-RD
-read 500 MB in 3178 ms, bandwidth=157 MB per second
-read 500 MB in 3178 ms, bandwidth=157 MB per second
-read 500 MB in 3178 ms, bandwidth=157 MB per second
-Testing bandwidth of Follower-WR
-read 500 MB in 8892 ms, bandwidth=56 MB per second
-read 500 MB in 8892 ms, bandwidth=56 MB per second
-read 500 MB in 8892 ms, bandwidth=56 MB per second
-Testing bandwidth of Follower-FRD
-read 500 MB in 4562 ms, bandwidth=109 MB per second
-read 500 MB in 4562 ms, bandwidth=109 MB per second
-read 500 MB in 4562 ms, bandwidth=109 MB per second
-Testing bandwidth of Follower-FWR
-read 500 MB in 25653 ms, bandwidth=19 MB per second
-read 500 MB in 25651 ms, bandwidth=19 MB per second
-read 500 MB in 25653 ms, bandwidth=19 MB per second
+
+Leader Log
+===============
+FLEXSPI Leader(Root Clock: 100000000Hz) example started!
+FLEXSPI Leader is initialized!
+GPT clock is 80000000Hz
+Testing bandwidth of Follower-READ
+Read 100 MB in 1062 ms, bandwidth=94 MB per second
+Read 100 MB in 1062 ms, bandwidth=94 MB per second
+Read 100 MB in 1062 ms, bandwidth=94 MB per second
+Testing bandwidth of Follower-WRITE
+Read 100 MB in 5472 ms, bandwidth=18 MB per second
+Read 100 MB in 5471 ms, bandwidth=18 MB per second
+Read 100 MB in 5471 ms, bandwidth=18 MB per second
 **************Testing End*************
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
