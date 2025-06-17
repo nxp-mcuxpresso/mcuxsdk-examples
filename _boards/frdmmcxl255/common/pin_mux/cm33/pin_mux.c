@@ -755,9 +755,10 @@ void BOARD_InitBUTTONsPins(void)
     PORT_SetPinConfig(PORT1, BOARD_SW5_GPIO_PIN, &SW5);
 }
 
+/* This uses lpcmp */
 void BOARD_InitACMPPins()
 {
-    const port_pin_config_t port2_15_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port2_22_config = {/* Internal pull-up/down resistor is disabled */
                                                  kPORT_PullDisable,
                                                  /* Low internal pull resistor value is selected. */
                                                  kPORT_LowPullResistor,
@@ -771,7 +772,7 @@ void BOARD_InitACMPPins()
                                                  kPORT_LowDriveStrength,
                                                  /* Normal drive strength is configured */
                                                  kPORT_NormalDriveStrength,
-                                                 /* Pin is configured as CMP0_IN5 */
+                                                 /* Pin is configured as CMP0_IN0 */
                                                  kPORT_MuxAlt0,
                                                  /* Digital input disabled; it is required for analog functions */
                                                  kPORT_InputBufferDisable,
@@ -779,8 +780,8 @@ void BOARD_InitACMPPins()
                                                  kPORT_InputNormal,
                                                  /* Pin Control Register fields [15:0] are not locked */
                                                  kPORT_UnlockRegister};
-    /* PORT2_15 is configured as CMP0_IN3 */
-    PORT_SetPinConfig(PORT2, 5U, &port2_15_config);
+    /* PORT2_22 is configured as CMP0_IN0 */
+    PORT_SetPinConfig(PORT2, 22U, &port2_22_config);
 }
 
 void BOARD_InitLCDPins()

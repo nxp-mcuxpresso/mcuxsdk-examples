@@ -7,13 +7,15 @@ Hardware requirements
 Board settings
 ==============
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Pin Name          Board Location    Pin Name
-CMP0_IN0/P0_12    J2-5              VDD or GND
+Core     Pin Name          Board Location
+CM33   CMP0_IN0/P2_22          J2-11
+CM0+   AON_ACMP0_IN3/P0_4      J8-21
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This example project uses LPCMP0 to compare the voltage signal input from CMP0_IN0(P0_12, J2-5)
-with the voltage signal(half of VREFI) output by LPCMP's internal DAC.
-Change the IO state of J2-5(P0_12, CMP0_IN0) will toggle the BLUE LED.
+This example project uses LPCMP0 to compare the voltage signal input
+with the voltage signal(half of the VREFI) output by LPCMP's internal DAC.
+Change the IO state of the input pin will toggle the BLUE LED on cm33 or
+prints H or L into console on CM0+.
 
 Prepare the Demo
 ================

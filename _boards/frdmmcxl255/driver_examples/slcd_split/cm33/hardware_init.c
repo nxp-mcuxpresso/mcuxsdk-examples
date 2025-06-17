@@ -17,7 +17,7 @@
  ******************************************************************************/
 /*${variable:start}*/
 SLCD_Type g_slcd = {
-    .fault   = SGLCD0_MAIN,
+    .fault   = SGLCD_FAULT_DETECT,
     .control = AON__SGLCD0_AON,
 };
 
