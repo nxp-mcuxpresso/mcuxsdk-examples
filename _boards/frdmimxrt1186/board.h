@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2024 NXP
- * All rights reserved.
+ * Copyright 2021-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -91,8 +90,11 @@
 #define BOARD_FLASH_SIZE (0x1000000U)
 
 /*! @brief The Ethernet PHY addresses. */
+#define BOARD_EP0_PHY_ADDR       (0x00U) // TODO: Useless, should be removed
 #define BOARD_SWT_PORT0_PHY_ADDR (0x05U)
+#define BOARD_SWT_PORT1_PHY_ADDR (0x00U) // TODO: Useless, should be removed
 #define BOARD_SWT_PORT2_PHY_ADDR (0x04U)
+#define BOARD_SWT_PORT3_PHY_ADDR (0x00U) // TODO: Useless, should be removed
 
 /*! @brief The Ethernet PHY type of the board */
 #define BOARD_USE_NETC_PHY_YT8521
