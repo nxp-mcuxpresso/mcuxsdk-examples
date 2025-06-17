@@ -3323,12 +3323,12 @@ void BOARD_InitEMIOSPins(void)
 BOARD_InitFLASHPins:
 - options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'false'}
 - pin_list:
-  - {pin_num: '56', peripheral: QUADSPI, signal: 'SCK, FA', pin_signal: PTD10, direction: INPUT/OUTPUT, outputBufferEnable: enabled}
-  - {pin_num: '49', peripheral: QUADSPI, signal: 'PCS, FA', pin_signal: PTC3, inputBufferEnable: disabled, outputBufferEnable: enabled}
-  - {pin_num: '55', peripheral: QUADSPI, signal: 'IO0, FA', pin_signal: PTD11, direction: INPUT/OUTPUT, outputBufferEnable: enabled}
-  - {pin_num: '51', peripheral: QUADSPI, signal: 'IO1, FA', pin_signal: PTD7, direction: INPUT/OUTPUT, outputBufferEnable: enabled}
-  - {pin_num: '54', peripheral: QUADSPI, signal: 'IO2, FA', pin_signal: PTD12, direction: INPUT/OUTPUT, outputBufferEnable: enabled}
-  - {pin_num: '50', peripheral: QUADSPI, signal: 'IO3, FA', pin_signal: PTC2, direction: INPUT/OUTPUT, outputBufferEnable: enabled}
+  - {pin_num: '56', peripheral: QUADSPI, signal: 'SCK, FA', pin_signal: PTD10, direction: INPUT/OUTPUT, outputBufferEnable: enabled, slewRate: fastestSetting}
+  - {pin_num: '49', peripheral: QUADSPI, signal: 'PCS, FA', pin_signal: PTC3, inputBufferEnable: disabled, outputBufferEnable: enabled, slewRate: fastestSetting}
+  - {pin_num: '55', peripheral: QUADSPI, signal: 'IO0, FA', pin_signal: PTD11, direction: INPUT/OUTPUT, outputBufferEnable: enabled, slewRate: fastestSetting}
+  - {pin_num: '51', peripheral: QUADSPI, signal: 'IO1, FA', pin_signal: PTD7, direction: INPUT/OUTPUT, outputBufferEnable: enabled, slewRate: fastestSetting}
+  - {pin_num: '54', peripheral: QUADSPI, signal: 'IO2, FA', pin_signal: PTD12, direction: INPUT/OUTPUT, outputBufferEnable: enabled, slewRate: fastestSetting}
+  - {pin_num: '50', peripheral: QUADSPI, signal: 'IO3, FA', pin_signal: PTC2, direction: INPUT/OUTPUT, outputBufferEnable: enabled, slewRate: fastestSetting}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -3352,7 +3352,7 @@ void BOARD_InitFLASHPins(void)
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
-        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_FASTEST,
         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
         .invert                      = kPORT_INVERT_DISABLED,
         .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
@@ -3393,7 +3393,7 @@ void BOARD_InitFLASHPins(void)
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
-        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_FASTEST,
         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
         .invert                      = kPORT_INVERT_DISABLED,
         .inputBuffer                 = kPORT_INPUT_BUFFER_DISABLED,
@@ -3413,7 +3413,7 @@ void BOARD_InitFLASHPins(void)
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
-        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_FASTEST,
         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
         .invert                      = kPORT_INVERT_DISABLED,
         .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
@@ -3454,7 +3454,7 @@ void BOARD_InitFLASHPins(void)
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
-        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_FASTEST,
         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
         .invert                      = kPORT_INVERT_DISABLED,
         .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
@@ -3495,7 +3495,7 @@ void BOARD_InitFLASHPins(void)
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
-        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_FASTEST,
         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
         .invert                      = kPORT_INVERT_DISABLED,
         .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
@@ -3536,7 +3536,7 @@ void BOARD_InitFLASHPins(void)
         .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
         .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
         .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
-        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_FASTEST,
         .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
         .invert                      = kPORT_INVERT_DISABLED,
         .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
