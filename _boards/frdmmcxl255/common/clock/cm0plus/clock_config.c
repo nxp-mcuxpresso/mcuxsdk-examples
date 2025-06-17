@@ -48,9 +48,9 @@ void BOARD_InitBootClocks(void)
     
     /* 2.5M to CMP0 */
     CLOCK_AttachClk(kFROdiv4_to_AON_CMP0);
-    CLOCK_EnableClock(kCLOCK_GateAonCMP0);    
-    CLOCK_SetClockDiv(kCLOCK_DIVAonCMP0CLK0, 1U);
-    CLOCK_SetClockDiv(kCLOCK_DIVAonCMP0CLK1, 1U);
+    CLOCK_EnableClock(kCLOCK_GateAonACMP0);    
+    CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK0, 1U);
+    CLOCK_SetClockDiv(kCLOCK_DIVAonACMP0CLK1, 1U);
 
     /* 2.5M to to LPADC */
     CLOCK_AttachClk(kFROdiv4_to_AON_LPADC);

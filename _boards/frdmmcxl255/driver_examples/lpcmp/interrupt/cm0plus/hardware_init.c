@@ -16,7 +16,7 @@
 void BOARD_InitHardware(void)
 {
     /* Release peripheral RESET */
-    RESET_PeripheralReset(kAonCMP0_RST_SHIFT_RSTn);
+    RESET_PeripheralReset(kAonACMP0_RST_SHIFT_RSTn);
     
     BOARD_InitBootClocks();
     BOARD_InitSWD_DEBUGPins();

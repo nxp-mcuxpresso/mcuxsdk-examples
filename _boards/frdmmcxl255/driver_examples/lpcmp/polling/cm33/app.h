@@ -13,7 +13,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_LPCMP_BASE             CMP0
+#define DEMO_LPCMP_BASE             ACMP0
 #define DEMO_LPCMP_USER_CHANNEL     3U
 #define DEMO_LPCMP_DAC_CHANNEL      7U
 #define DEMO_LPCMP_REFERENCE        kLPCMP_VrefSourceVin1 /* VDD as reference*/
