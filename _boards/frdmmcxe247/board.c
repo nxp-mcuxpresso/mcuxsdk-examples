@@ -111,10 +111,8 @@ void BOARD_MagSwitch_I2C_Init(void)
     BOARD_LPI2C_Init(BOARD_MAGSWITCH_I2C_BASEADDR, BOARD_MAGSWITCH_I2C_CLOCK_FREQ);
 }
 
-status_t BOARD_MagSwitch_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint32_t txBuff)
+status_t BOARD_MagSwitch_I2C_Send(uint8_t deviceAddress, uint32_t subAddress, uint8_t subaddressSize, uint8_t data)
 {
-    uint8_t data = (uint8_t)txBuff;
-
     return BOARD_LPI2C_Send(BOARD_MAGSWITCH_I2C_BASEADDR, deviceAddress, subAddress, subaddressSize, &data, 1U);
 }
 
