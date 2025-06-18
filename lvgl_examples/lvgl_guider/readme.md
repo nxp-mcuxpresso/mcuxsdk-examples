@@ -4,7 +4,7 @@
 
 This project is used to work with LittleVGL GUI Guider. The GUI Guider generated
 code is placed in the folder "generated". The example generated code shows a
-button in the panel.
+rectangle in the panel, drag it, then it will move in the screen.
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/lvgl_examples/lvgl_examples_readme.md)
