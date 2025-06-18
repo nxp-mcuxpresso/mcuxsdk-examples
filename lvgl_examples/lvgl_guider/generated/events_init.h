@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2025 NXP
+ * Copyright 2020 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -14,8 +14,6 @@ extern "C" {
 #endif
 
 void events_init(lv_ui *ui);
-
-void events_init_blueCounter(lv_ui *ui);
 
 #ifdef __cplusplus
 }

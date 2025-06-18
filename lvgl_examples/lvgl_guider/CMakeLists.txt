@@ -15,13 +15,17 @@ mcux_add_include(
 
 mcux_add_source(
     SOURCES ./lvgl_guider.c
-            ./generated/guider_customer_fonts/*.h
-            ./generated/images/*.h
-            ./generated/images/*.c
-            ./generated/*.c
-            ./generated/*.h
-            ./custom/*.c
-            ./custom/*.h
+            ./generated/guider_customer_fonts/guider_customer_fonts.h
+            ./generated/gui_guider.c
+            ./generated/gui_guider.h
+            ./generated/events_init.c
+            ./generated/events_init.h
+            ./generated/setup_scr_screen.c
+            ./generated/widgets_init.c
+            ./generated/widgets_init.h
+            ./custom/custom.c
+            ./custom/custom.h
+            ./custom/lv_conf_ext.h
             ./../lvgl_demo_utils.c
             ./../lvgl_demo_utils.h
             ./../lvgl_freertos.c
