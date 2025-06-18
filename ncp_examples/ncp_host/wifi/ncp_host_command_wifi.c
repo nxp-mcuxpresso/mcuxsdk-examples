@@ -8182,6 +8182,15 @@ int wlan_process_stop_network_event(uint8_t *res)
     return WM_SUCCESS;
 }
 
+int wlan_process_dad_done_event(uint8_t *res)
+{
+    MCU_NCPCmd_DS_COMMAND *evt_res = (MCU_NCPCmd_DS_COMMAND *)res;
+
+    (void)PRINTF("IPV6 DAD complete, result %d\r\n",evt_res->header.result);
+
+    return WM_SUCCESS;
+}
+
 int wlan_list_command(int argc, char **argv)
 {
     mcu_get_command_lock();
@@ -8702,6 +8711,9 @@ int wlan_process_ncp_event(uint8_t *res)
             break;
         case NCP_EVENT_WLAN_STOP_NETWORK:
             ret = wlan_process_stop_network_event(res);
+            break;
+        case NCP_EVENT_INET_DAD_DONE:
+            ret = wlan_process_dad_done_event(res);
             break;
         default:
             PRINTF("Invaild event!\r\n");
