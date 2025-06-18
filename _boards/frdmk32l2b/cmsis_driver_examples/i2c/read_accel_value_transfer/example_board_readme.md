@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-No special is needed.
+FXOS8700 must be available on board to run this example. If it's not soldered, the example cannot work.
 
 Prepare the Demo
 ===============
