@@ -2,6 +2,19 @@
 
 All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples will be documented in this file.
 
+## [25.09.0] - 09/2025
+
+### Added
+- ...
+
+### Changed
+
+- Update MCUboot to 2.2.0
+- Encrypted XIP: reworked the layer to use only the overwrite mode
+
+### Removed
+- Encrypted XIP: removed the experimental three-slot mode
+
 ## [25.06.0] - 06/2025
 
 ### Added
