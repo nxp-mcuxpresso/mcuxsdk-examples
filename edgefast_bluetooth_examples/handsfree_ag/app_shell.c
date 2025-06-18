@@ -200,18 +200,18 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 
         index_str = argv[2];
 
-        if ((index_str[0] == '1') || (index_str[0] == '2'))
+        if ((index_str[0] == '0') || (index_str[0] == '1'))
         {
             index = index_str[0] - '0';
         }
 
-        if ((index != 1U) && (index != 2U))
+        if ((index != 0U) && (index != 1U))
         {
             PRINTF("the parameter is wrong\r\n");
             return kStatus_SHELL_Error;
         }
 
-        app_hfp_ag_select_conn(index - 1U);
+        app_hfp_ag_select_conn(index);
         PRINTF("success\r\n");
     }
     else if (strcmp(argv[1], "openaudio") == 0)

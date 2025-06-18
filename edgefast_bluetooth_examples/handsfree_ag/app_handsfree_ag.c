@@ -547,7 +547,18 @@ int app_hfp_ag_set_hf_indicator(uint8_t indicator, uint8_t control)
 
 void app_hfp_ag_select_conn(uint8_t index)
 {
-    g_HfpAg = &g_HfpAgs[index];
+    struct bt_conn *acl_conn;
+
+    acl_conn = bt_hfp_ag_get_conn(g_HfpAgs[index].hfp_agHandle);
+
+    if (acl_conn == NULL)
+    {
+        PRINTF("connection %d is invalid",index);
+    }
+    else
+    {
+        g_HfpAg = &g_HfpAgs[index];
+    }
 }
 
 void peripheral_hfp_ag_task(void *pvParameters)
