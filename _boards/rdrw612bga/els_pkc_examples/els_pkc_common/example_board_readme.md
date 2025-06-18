@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -27,15 +27,15 @@ When the demo runs successfully, the terminal will display similar information l
 ELS PKC common example
 
 ============================
-ELS get info:pass 
-RNG PRNG random:pass 
-Flow protection:pass 
-Memory data invariant compare:pass 
-Memory data invariant copy:pass 
-Key component operations:pass 
-PKC power down wake-up init:pass 
+ELS get info:pass
+RNG PRNG random:pass
+Flow protection:pass
+Memory data invariant compare:pass
+Memory data invariant copy:pass
+Key component operations:pass
+PKC power down wake-up init:pass
 
 ============================
 RESULT: All 7 test PASS!!
-ELS example END 
+ELS example END
 

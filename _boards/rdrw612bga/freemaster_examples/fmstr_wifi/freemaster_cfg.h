@@ -65,7 +65,7 @@
 #define FMSTR_NET_BLOCKING_TIMEOUT 250 // Blocking timeout (ms) of network calls used in FMSTR_Poll
 #define FMSTR_NET_AUTODISCOVERY 1      // Enable automatic board discovery via UDP protocol
 
-#define FMSTR_APPLICATION_STR "FreeMASTER RD-RW61X-BGA"
+#define FMSTR_APPLICATION_STR "FreeMASTER RD-RW612-BGA"
 
 //! FlexCAN-specific, communication message buffers
 #define FMSTR_FLEXCAN_TXMB      0

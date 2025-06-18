@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 - headphones with 3.5 mm stereo jack
 - source of sound (line output to 3.5 mm stereo jack)

@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -22,8 +22,8 @@ Prepare the Demo
 
 Running the demo
 ================
-Purpose of this demo is to test valid multithread support for mbedTLS Hardware implementation. For that, two tasks performs in parallel cryptographic 
-algorithm testing. When the demo runs successfully, the terminal will display similar information 
+Purpose of this demo is to test valid multithread support for mbedTLS Hardware implementation. For that, two tasks performs in parallel cryptographic
+algorithm testing. When the demo runs successfully, the terminal will display similar information
 like the following:
 
 
@@ -80,6 +80,6 @@ Create thread successfully
   Task 1 is running
 
   Task 2 is running
-  
-  Task 1 is running  
+
+  Task 1 is running
 

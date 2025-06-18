@@ -24,7 +24,7 @@ Prepare the Demo
 
 Running the demo
 ================
-Note: As the RD-RW61X-BGA support two on board dmic, so the demo provide a macro DEMO_DMIC_NUMS to control the counts of the DMIC to be used, such as
+Note: As the RD-RW612-BGA support two on board dmic, so the demo provide a macro DEMO_DMIC_NUMS to control the counts of the DMIC to be used, such as
 #define DEMO_DMIC_NUMS 2U /* two dmic enabled */
 If the macro not defined by application, then only one dmic will be enabled by default.
 

@@ -15,7 +15,7 @@ and also instructions for running the included sample applications.
 =============================
 
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 ## 1.3 Board settings
@@ -59,9 +59,9 @@ J-Link> loadbin C:\xxx\coex_wifi_central_ht.bin, 0x08000000
 
 **NOTE:**
 
-Monolithic feature is default enabled, this means it's no need to flash binaries manually. 
+Monolithic feature is default enabled, this means it's no need to flash binaries manually.
 
-If disable Wi-Fi or BLE monolithic feature, download firmware manually. 
+If disable Wi-Fi or BLE monolithic feature, download firmware manually.
 
 SB firmware path: mcu-sdk-3.0/components/conn_fwloader/fw_bin
 
@@ -183,7 +183,7 @@ Scan scheduled...
 3. Low power manager test
 
 > Enter 'p' to enter pm command mode. Enter '0' to return coex menu.
-> 
+>
 > Only support enable command now.
 
 ```bash

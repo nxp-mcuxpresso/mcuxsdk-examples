@@ -38,8 +38,8 @@ can be found on the Edgelock 2GO web interface under the "Documentation" tab.
 
 ## Hardware requirements
 
-- FRDM-RW612 or RD-RW61X-BGA board
-- USB-C (FRDM-RW612) or Micro-USB (RD-RW61X-BGA) cable
+- FRDM-RW612 or RD-RW612-BGA board
+- USB-C (FRDM-RW612) or Micro-USB (RD-RW612-BGA) cable
 - Personal Computer
 
 ## Board settings
@@ -86,7 +86,7 @@ No special settings are required.
 4.  **[OPTIONAL]** Enable MQTT demo:
 
     In case you want to use provisioned ECC key pairs and corresponding X.509 certificates to execute TLS mutual-authentication and MQTT message exchange with AWS and/or Azure clouds, enable the corresponding macro.
-    
+
     [middleware/nxp_iot_agent/ex/inc/iot_agent_demo_config.h](../../../../middleware/nxp_iot_agent/ex/inc/iot_agent_demo_config.h)
 
     ```c
@@ -141,7 +141,7 @@ No special settings are required.
     - **[GITHUB]** Compile the *el2go_agent_ns* project with your desired toolchain using `--sysbuild`.
     - **[ZIP]** First compile the *el2go_agent_s* project and then the *el2go_agent_ns* project.
 
-8.  Connect the USB-C (FRDM-RW612) or Micro-USB (RD-RW61X-BGA) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612] or J7 [RD-RW61X-BGA]) on the board.
+8.  Connect the USB-C (FRDM-RW612) or Micro-USB (RD-RW612-BGA) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612] or J7 [RD-RW612-BGA]) on the board.
 
 9.  Open a serial terminal with the following settings:
 
@@ -153,7 +153,7 @@ No special settings are required.
 
 10. Download the application to the target board:
 
-    - **[GITHUB]** `west flash` will download both the S and the NS image. 
+    - **[GITHUB]** `west flash` will download both the S and the NS image.
     - **[ZIP]** Downloading the S image will also download the NS image.
 
 11. Press the reset button on the board or launch the debugger in your IDE to run the application.

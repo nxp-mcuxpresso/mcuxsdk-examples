@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -9,7 +9,7 @@ Board settings
 
 Prepare the Demo
 ================
-1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board. 
+1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -117,4 +117,4 @@ Using following implementations:
   ECDHE-secp224r1          :   36.33 full handshake/s
   ECDHE-secp224k1          :   36.33 full handshake/s
   ECDHE-secp192r1          :   53.67 full handshake/s
-  ECDHE-secp192k1          :   54.00 full handshake/s    
+  ECDHE-secp192k1          :   54.00 full handshake/s

@@ -14,7 +14,7 @@
  * Definitions
  ******************************************************************************/
 /*! @brief The board name */
-#define BOARD_NAME "RD-RW61X-BGA"
+#define BOARD_NAME "RD-RW612-BGA"
 
 /*! @brief Macro to judge XIP */
 #define BOARD_IS_XIP()                                                                                          \

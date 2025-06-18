@@ -2,7 +2,7 @@ Hardware requirements
 ===================
 - Micro USB cable
 - Loopback network cable RJ45 standard
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings

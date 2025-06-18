@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -27,8 +27,8 @@ When the example runs successfully, you can see the similar information from the
 FLEXSPI dma example started!
 Vendor ID: 0xc2
 Erasing Serial NOR over FlexSPI...
-Erase data - successfully. 
-Program data - successfully. 
+Erase data - successfully.
+Program data - successfully.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 NOTE:

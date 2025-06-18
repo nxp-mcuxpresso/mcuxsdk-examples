@@ -27,8 +27,8 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
 ## Hardware requirements
 
-- FRDM-RW612, RD-RW61X-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 board
-- USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
+- FRDM-RW612, RD-RW612-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 board
+- USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
 - Ethernet cable (FRDM-MCXN947, MCX-N5XX-EVK or MCX-N9XX-EVK)
 - Personal Computer
 
@@ -81,7 +81,7 @@ No special settings are required.
     - **[GITHUB]** Compile the *el2go_mqtt_demo_ns* project with your desired toolchain using `--sysbuild`.
     - **[ZIP]** First compile the *el2go_mqtt_demo_s* project and then the *el2go_mqtt_demo_ns* project.
 
-5.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW61X-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
+5.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW612-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
 
 6.  Open a serial terminal with the following settings:
 
@@ -98,7 +98,7 @@ No special settings are required.
 
 8.  Download the application to the target board:
 
-    - **[GITHUB]** `west flash` will download both the S and the NS image. 
+    - **[GITHUB]** `west flash` will download both the S and the NS image.
     - **[ZIP]** Downloading the S image will also download the NS image.
 
 9.  Press the reset button on the board or launch the debugger in your IDE to run the application.
@@ -121,12 +121,12 @@ Lazy stacking enabled
 **[RW61X]** Jumping to the NS project, loading the Wi-Fi firmware and connecting to an access point:
 
 ```
-Initializing Wi-Fi connection... 
+Initializing Wi-Fi connection...
 
 Wi-Fi cau temperature : 28
-MAC Address: 00:50:43:02:FF:01 
+MAC Address: 00:50:43:02:FF:01
 PKG_TYPE: BGA
-Set BGA tx power table data 
+Set BGA tx power table data
 [i] Successfully initialized Wi-Fi module
 
 Connecting as client to ssid: XXX

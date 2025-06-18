@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -22,7 +22,7 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows the output of the ELS-PKC Benchmark demo in the terminal window, 
+The log below shows the output of the ELS-PKC Benchmark demo in the terminal window,
 when run in debug mode and in RAM:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #################################

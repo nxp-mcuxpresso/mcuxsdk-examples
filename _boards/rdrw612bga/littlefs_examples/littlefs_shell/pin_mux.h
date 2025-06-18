@@ -31,6 +31,29 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
+/*! @name GPIO_24 (coord E5), J6[1]/J11[3]/HD2[13]/FC3_UART_RXD_ML
+  @{ */
+/* Routed pin properties */
+/*!
+ * @brief Peripheral name */
+#define BOARD_INITPINS_UART_RXD_PERIPHERAL FLEXCOMM3
+/*!
+ * @brief Signal name */
+#define BOARD_INITPINS_UART_RXD_SIGNAL USART_RXD
+/*!
+ * @brief GPIO pin number */
+#define BOARD_INITPINS_UART_RXD_GPIO_PIN 24U
+/*!
+ * @brief PORT number */
+#define BOARD_INITPINS_UART_RXD_PORT 0U
+/*!
+ * @brief PORT pin number */
+#define BOARD_INITPINS_UART_RXD_PIN 24U
+/*!
+ * @brief PORT pin mask */
+#define BOARD_INITPINS_UART_RXD_PIN_MASK (1U << 24U)
+/* @} */
+
 /*!
  * @brief 
  *

@@ -27,8 +27,8 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
 ## Hardware requirements
 
-- FRDM-RW612, RD-RW61X-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 or FRDM-MCXN236 board
-- USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
+- FRDM-RW612, RD-RW612-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK or FRDM-MCXN947 or FRDM-MCXN236 board
+- USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
 - Personal Computer
 
 ## Board settings
@@ -120,7 +120,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
     - **[GITHUB]** Compile the *el2go_blob_test_ns* project with your desired toolchain using `--sysbuild`.
     - **[ZIP]** First compile the *el2go_blob_test_s* project and then the *el2go_blob_test_ns* project.
 
-6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW61X-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
+6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947, FRDM-MCXN236) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW612-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
 
 7.  Open a serial terminal with the following settings:
 
@@ -132,7 +132,7 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
 8.  Download the application to the target board:
 
-    - **[GITHUB]** `west flash` will download both the S and the NS image. 
+    - **[GITHUB]** `west flash` will download both the S and the NS image.
     - **[ZIP]** Downloading the S image will also download the NS image.
 
 9.  Press the reset button on the board or launch the debugger in your IDE to run the application.
@@ -166,10 +166,10 @@ Jumping to the NS project, running the blob test suite:
 ```
 #### Start EL2GO blob tests ####
 Running test suite GENERIC (EL2GO_BLOB_TEST_GENERIC_XXXX)
-> Executing test EL2GO_BLOB_TEST_GENERIC_0001 
+> Executing test EL2GO_BLOB_TEST_GENERIC_0001
   Description: 'External CERTIFICATE 425B EXPORT NONE'
   Test EL2GO_BLOB_TEST_GENERIC_0001 - PASSED (16 ms)
-> Executing test EL2GO_BLOB_TEST_GENERIC_0002 
+> Executing test EL2GO_BLOB_TEST_GENERIC_0002
   Description: 'External KEYPAIR BRAINPOOLP384R1 SIGVERMSG ECDSAANYHASH'
   > Executing variation SHA_224
     Variation SHA_224 - PASSED (126 ms)
@@ -184,16 +184,16 @@ Running test suite GENERIC (EL2GO_BLOB_TEST_GENERIC_XXXX)
   > Executing variation SHA_512
     Variation SHA_512 - PASSED (125 ms)
   Test EL2GO_BLOB_TEST_GENERIC_0002 - PASSED (814 ms)
-> Executing test EL2GO_BLOB_TEST_GENERIC_0003 
+> Executing test EL2GO_BLOB_TEST_GENERIC_0003
   Description: 'External KEYPAIR ECCMONTDH25519 DERIVE ECDH'
   Test EL2GO_BLOB_TEST_GENERIC_0003 - PASSED (52 ms)
-> Executing test EL2GO_BLOB_TEST_GENERIC_0004 
+> Executing test EL2GO_BLOB_TEST_GENERIC_0004
   Description: 'Internal KEYPAIR NISTP256 SIGHASH ECDSASHA256'
   Test EL2GO_BLOB_TEST_GENERIC_0004 - PASSED (21 ms)
-> Executing test EL2GO_BLOB_TEST_GENERIC_0005 
+> Executing test EL2GO_BLOB_TEST_GENERIC_0005
   Description: 'Internal KEYPAIR NISTP256 SIGHASH ECDSASHA256'
   Test EL2GO_BLOB_TEST_GENERIC_0005 - PASSED (19 ms)
-> Executing test EL2GO_BLOB_TEST_GENERIC_0006 
+> Executing test EL2GO_BLOB_TEST_GENERIC_0006
   Description: 'External CERTIFICATE 420B EXPORT NONE'
   psa_import_key returned -149
   Failed at psa_blob_export_test:1526

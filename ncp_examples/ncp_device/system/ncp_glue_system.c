@@ -164,7 +164,7 @@ static int ncp_sys_wake_cfg(void *tlv)
     int ret = 0;
     NCP_CMD_POWERMGMT_WAKE_CFG *wake_config = (NCP_CMD_POWERMGMT_WAKE_CFG *)tlv;
 
-    if (strcmp(BOARD_NAME, "RD-RW61X-BGA") == 0 && wake_config->wake_mode == WAKE_MODE_WIFI_NB)
+    if (strcmp(BOARD_NAME, "RD-RW612-BGA") == 0 && wake_config->wake_mode == WAKE_MODE_WIFI_NB)
     {
         ncp_e("Invalid wake mode. The WIFI-NB mode is for FRDMRW612 only.");
         ret = -WM_E_INVAL;

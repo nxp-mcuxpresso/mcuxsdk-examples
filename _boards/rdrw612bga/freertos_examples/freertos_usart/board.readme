@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -24,7 +24,7 @@ Prepare the Demo
 
 Running the demo
 ================
-When the example runs successfully, you can see the similar information from the terminal as below. 
+When the example runs successfully, you can see the similar information from the terminal as below.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 FreeRTOS USART driver example!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

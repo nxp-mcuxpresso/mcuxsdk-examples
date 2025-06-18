@@ -1,13 +1,13 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
 ============
 USART hardware flow control on one board.
-The USART sends data to itself(loopback), and hardware flow control function is 
+The USART sends data to itself(loopback), and hardware flow control function is
 enabled on this example. So please make sure the correct connection for example.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pin Name    Board Location    connect to     Pin Name    Board Location

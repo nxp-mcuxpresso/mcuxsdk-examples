@@ -23,8 +23,8 @@ can be found on the Edgelock 2GO web interface under the "Documentation" tab.
 
 ## Hardware requirements
 
-- FRDM-RW612 or RD-RW61X-BGA board
-- USB-C (FRDM-RW612) or Micro-USB (RD-RW61X-BGA) cable
+- FRDM-RW612 or RD-RW612-BGA board
+- USB-C (FRDM-RW612) or Micro-USB (RD-RW612-BGA) cable
 - Personal Computer
 
 ## Board settings
@@ -41,7 +41,7 @@ No special settings are required.
     #define IOT_AGENT_CLAIMCODE_STRING "insert_claimcode_from_el2go"
     ```
 
-2.  Provide the EdgeLock 2GO claim code public key as obtained from the EdgeLock 2GO service (in the format of a hexadecimal byte array): 
+2.  Provide the EdgeLock 2GO claim code public key as obtained from the EdgeLock 2GO service (in the format of a hexadecimal byte array):
 
     [middleware/nxp_iot_agent/inc/nxp_iot_agent_config_credentials.h](../../../middleware/nxp_iot_agent/inc/nxp_iot_agent_config_credentials.h)
 
@@ -70,7 +70,7 @@ No special settings are required.
 
 5.  Build the application.
 
-6.  Connect the USB-C (FRDM-RW612) or Micro-USB (RD-RW61X-BGA) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612] or J7 [RD-RW61X-BGA]) on the board.
+6.  Connect the USB-C (FRDM-RW612) or Micro-USB (RD-RW612-BGA) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612] or J7 [RD-RW612-BGA]) on the board.
 
 7.  Open a serial terminal with the following settings:
 

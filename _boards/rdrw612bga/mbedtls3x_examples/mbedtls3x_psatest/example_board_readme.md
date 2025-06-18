@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -10,7 +10,7 @@ No special settings are required.
 
 Prepare the Demo
 ================
-1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board. 
+1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -33,7 +33,7 @@ TEST: 201 | DESCRIPTION: Testing crypto key management APIs | UT:  psa_crypto_in
 [Info] Executing tests from non-secure
 [Check 1] Test calling crypto functions before psa_crypto_init
 [Check 2] Test psa_crypto_init
-[Check 3] Test multiple psa_crypto_init 
+[Check 3] Test multiple psa_crypto_init
 
 TEST RESULT: PASSED
 
@@ -178,7 +178,7 @@ TEST: 212 | DESCRIPTION: Testing crypto hash functions APIs | UT: psa_hash_updat
 [Check 2] Test psa_hash_update with SHA384 algorithm
 [Check 3] Test psa_hash_update with SHA512 algorithm
 [Check 4] Test psa_hash_update without hash setup
-[Check 5] Test psa_hash_update with completed opertaion handle 
+[Check 5] Test psa_hash_update with completed opertaion handle
 
 TEST RESULT: PASSED
 
@@ -950,4 +950,4 @@ TOTAL FAILED    : 0
 TOTAL SKIPPED   : 0
 ******************************************
 
-Entering standby.. 
+Entering standby..

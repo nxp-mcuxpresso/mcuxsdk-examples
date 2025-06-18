@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -27,4 +27,4 @@ SCTimer example to output center-aligned PWM signal
 You will see a change in LED brightness if an LED is connected to the SCTimer output pin
 If no LED is connected to the pin, then probe the signal using an oscilloscope
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Observe the output at HD2-4 to see the SCTimer pwm signal. 
+Observe the output at HD2-4 to see the SCTimer pwm signal.

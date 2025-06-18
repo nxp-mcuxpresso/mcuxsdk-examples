@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 - Adafruit TFT LCD shield w/Cap Touch
 - LCD-PAR-S035 panel

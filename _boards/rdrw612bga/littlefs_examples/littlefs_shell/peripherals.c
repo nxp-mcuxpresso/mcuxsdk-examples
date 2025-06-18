@@ -16,8 +16,8 @@ product: Peripherals v15.0
 processor: RW612
 package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 24.12.10
-board: RD-RW61X-BGA
+processor_version: 0.2506.50
+board: RD-RW612-BGA
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: 65c69a75-6687-4d60-9cba-6b87ca7b8e8d
@@ -68,6 +68,30 @@ component:
 /***********************************************************************************************************************
  * BOARD_InitPeripherals functional group
  **********************************************************************************************************************/
+/***********************************************************************************************************************
+ * NVIC initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'NVIC'
+- type: 'nvic'
+- mode: 'general'
+- custom_name_enabled: 'false'
+- type_id: 'nvic'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'NVIC'
+- config_sets:
+  - nvic:
+    - interrupt_table: []
+    - interrupts: []
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/* Empty initialization function (commented out)
+static void NVIC_init(void) {
+} */
+
 /***********************************************************************************************************************
  * LittleFS initialization code
  **********************************************************************************************************************/

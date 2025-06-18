@@ -575,7 +575,7 @@ void ncp_gpio_init()
         /* Keep GPIO 42 in high level to avoid unexpected level change in PM3. */
         IO_MUX_SetPinOutLevelInSleep(42U, IO_MUX_SleepPinLevelHigh);
     }
-    else if (strcmp(BOARD_NAME, "RD-RW61X-BGA") == 0)
+    else if (strcmp(BOARD_NAME, "RD-RW612-BGA") == 0)
     {
 #if defined(BOARD_SW4_GPIO)
         GPIO_PinInit(GPIO, BOARD_SW4_GPIO_PORT, BOARD_SW4_GPIO_PIN, &gpio_in_config);

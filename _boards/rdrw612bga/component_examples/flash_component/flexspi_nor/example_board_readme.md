@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -9,7 +9,7 @@ Board settings
 
 Prepare the Demo
 ===============
-1.  Connect a USB cable between the host PC and the MCU-Link USB port (J7) on the board. 
+1.  Connect a USB cable between the host PC and the MCU-Link USB port (J7) on the board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -20,7 +20,7 @@ Prepare the Demo
 4.  Launch the debugger in your IDE to begin running the demo.
 
 Running the demo
-================   
+================
 The log below shows the output of the demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ***NOR Flash Component Demo Start!***

@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA boards
+- RD-RW612-BGA boards
 - Personal Computer
 
 Board settings

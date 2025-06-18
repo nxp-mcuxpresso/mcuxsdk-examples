@@ -30,8 +30,8 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
 ## Hardware requirements
 
-- FRDM-RW612, RD-RW61X-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK, FRDM-MCXN947 or FRDM-MCXN236 board
-- USB-C (FRDM-RW612, FRDM-MCXN947 or FRDM-MCXN236) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
+- FRDM-RW612, RD-RW612-BGA, MCX-N5XX-EVK, MCX-N9XX-EVK, FRDM-MCXN947 or FRDM-MCXN236 board
+- USB-C (FRDM-RW612, FRDM-MCXN947 or FRDM-MCXN236) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable
 - Personal Computer
 
 ## Board settings
@@ -105,7 +105,7 @@ No special settings are required.
     - **[GITHUB]** Compile the *el2go_import_blob_ns* project with your desired toolchain using `--sysbuild`.
     - **[ZIP]** First compile the *el2go_import_blob_s* project and then the *el2go_import_blob_ns* project.
 
-6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW61X-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW61X-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
+6.  Connect the USB-C (FRDM-RW612, FRDM-MCXN947) or Micro-USB (RD-RW612-BGA, MCX-N5XX-EVK or MCX-N9XX-EVK) cable to the PC host and the MCU-Link USB port (J10 [FRDM-RW612], J7 [RD-RW612-BGA], J5 [MCX-N5XX-EVK or MCX-N9XX-EVK] or J17 [FRDM-MCXN947]) on the board.
 
 7.  Open a serial terminal with the following settings:
 
@@ -117,7 +117,7 @@ No special settings are required.
 
 8.  Download the application to the target board:
 
-    - **[GITHUB]** `west flash` will download both the S and the NS image. 
+    - **[GITHUB]** `west flash` will download both the S and the NS image.
     - **[ZIP]** Downloading the S image will also download the NS image.
 
 9.  Press the reset button on the board or launch the debugger in your IDE to run the application.

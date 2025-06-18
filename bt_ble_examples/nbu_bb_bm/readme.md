@@ -2,7 +2,7 @@
 
 ## Overview
 This is the nbu_bb_bm example, as a transparent transmission tool, to convenient to communicate using the standard HCI command.
-Following is an example with RD-RW61X-BGA board.
+Following is an example with RD-RW612-BGA board.
 
 ## Prepare the Demo
 1.  Connect a micro USB cable between the PC host and the MCU-Link USB port (J7) on the board.

@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -27,9 +27,9 @@ When the demo runs successfully, the terminal will display similar information l
 ELS symmetric cipher example
 
 ============================
-AES128-CBC encryption:pass 
-AES128-ECB encryption:pass 
-CMAC AES128:pass 
+AES128-CBC encryption:pass
+AES128-ECB encryption:pass
+CMAC AES128:pass
 
 ============================
 RESULT: All 3 test PASS!!

@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
 - Micro USB cable
-- RD-RW61X-BGA board
+- RD-RW612-BGA board
 - Personal Computer
 
 Board settings
@@ -27,15 +27,15 @@ When the demo runs successfully, the terminal will display similar information l
 ELS PKC asymmetric cipher example
 
 ============================
-PKC ECC keygen sign verify:pass 
-PKC RSA no-verify:pass 
-PKC RSA sign no-encode:pass 
-PKC RSA-PSS sign SHA256:pass 
-PKC RSA-PSS verify SHA256:pass 
-PKC ECC Curve25519:pass 
-TLS Master session keys:pass 
+PKC ECC keygen sign verify:pass
+PKC RSA no-verify:pass
+PKC RSA sign no-encode:pass
+PKC RSA-PSS sign SHA256:pass
+PKC RSA-PSS verify SHA256:pass
+PKC ECC Curve25519:pass
+TLS Master session keys:pass
 
 ============================
 RESULT: All 7 test PASS!!
-ELS example END 
+ELS example END
 
