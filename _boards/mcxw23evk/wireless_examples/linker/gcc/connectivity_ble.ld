@@ -46,7 +46,7 @@ MEMORY
   NVM_region            (RW)  : ORIGIN = NV_STORAGE_START_ADDRESS, LENGTH = NV_STORAGE_SIZE
   NVM_region_datastore  (RW)  : ORIGIN = DATASTORE_START_ADDRESS, LENGTH = DATASTORE_SIZE
   NVM_region_eventstore (RW)  : ORIGIN = EVENTSTORE_START_ADDRESS, LENGTH = EVENTSTORE_SIZE
-  m_data                (RW)  : ORIGIN = 0x20008000, LENGTH = 0x00018000
+  m_data                (RW)  : ORIGIN = 0x20004000, LENGTH = 0x0001C000
 }
 
 /* Define output sections */
@@ -250,7 +250,7 @@ SECTIONS
     . += STACK_SIZE;
     _vStackTop = . + STACK_SIZE;
   } > m_data
-  
+
   /* Initializes stack on the end of block */
   __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
   __StackLimit = __StackTop - STACK_SIZE;
@@ -259,7 +259,7 @@ SECTIONS
   .ARM.attributes 0 : { *(.ARM.attributes) }
 
   /* Symbol needed by mem_manager_light to know where theoretical end of heap is*/
-  __HEAP_end__             = LAST_HEAP_ADDRESS - STACK_SIZE; 
+  __HEAP_end__             = LAST_HEAP_ADDRESS - STACK_SIZE;
 
   ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
 }

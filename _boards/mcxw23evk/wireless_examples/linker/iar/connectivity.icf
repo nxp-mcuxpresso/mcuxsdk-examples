@@ -71,7 +71,7 @@ define symbol m_interrupts_end                 = m_interrupts_start + m_interrup
 define symbol m_text_start                     = m_interrupts_end + 1;
 define symbol m_text_end                       = INT_STORAGE_START - 1;
 
-define symbol m_data_start                     = 0x20008000;
+define symbol m_data_start                     = 0x20004000;
 define symbol m_data_end                       = 0x2001FFFF;
 
 define exported symbol __VECTOR_TABLE          = m_interrupts_start;

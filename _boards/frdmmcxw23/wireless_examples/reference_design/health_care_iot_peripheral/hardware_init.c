@@ -20,7 +20,6 @@ void BOARD_InitHardware(void)
 {
     POWER_Init();
 
-    POWER_DisableSRAM(kSRAM_CTRL_RAM00 | kSRAM_CTRL_RAMX0 | kSRAM_CTRL_RAMX1 | kSRAM_CTRL_RAMX3);
     CLOCK_EnableClock(kCLOCK_Gpio0);
     GPIO_PortInit(GPIO, 0);
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM1);
@@ -30,8 +29,7 @@ void BOARD_InitHardware(void)
     /* Enable watchdog clock */
     CLOCK_Enable1MFRO(true);
     CLOCK_SetClkDiv(kCLOCK_DivWdtClk, 10U, true);
-    
-    
+
     BOARD_BootClockXTAL32M();
     CLOCK_AttachClk(kOSC32K_to_CTIMER0);
     BOARD_InitPins();
