@@ -43,9 +43,9 @@ define symbol m_data_tcm_start         = 0x00030000;
 define symbol m_data_tcm_end           = 0x00040000;
 
 define symbol m_data_dram_start        = 0x80000000;
-define symbol m_data_dram_end          = 0x8E000000;
+define symbol m_data_dram_end          = 0x8E800000;
 
-define symbol m_ncache_start           = 0x8E000000;
+define symbol m_ncache_start           = 0x8E7FFFFF;
 define symbol m_ncache_end             = 0x8F000000;
 
 define symbol m_reserved_start         = 0x2002E000;
@@ -69,7 +69,7 @@ if (isdefinedsymbol(__stack_size__)) {
 if (isdefinedsymbol(__heap_size__)) {
   define symbol __size_heap__          = __heap_size__;
 } else {
-  define symbol __size_heap__          = 0x0C000000;
+  define symbol __size_heap__          = 0x0E000000;
 }
 
 define exported symbol __VECTOR_TABLE  = m_interrupts_start;

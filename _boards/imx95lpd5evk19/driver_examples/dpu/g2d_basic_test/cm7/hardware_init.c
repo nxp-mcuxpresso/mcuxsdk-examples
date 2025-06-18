@@ -10,7 +10,6 @@
 #include "clock_config.h"
 #include "hal_power.h"
 #include "hal_clock.h"
-#include "display_support.h"
 #include "sm_platform.h"
 #include "fsl_debug_console.h"
 /*${header:end}*/
@@ -41,16 +40,6 @@ void BOARD_InitHardware(void)
         .enable_clk = true,
         .clk_round_opt = hal_clk_round_auto,
     };
-    hal_pwr_s_t pwrst = {
-        .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_DISPLAY,
-        .st = hal_power_state_on,
-    };
-
-    hal_pwr_s_t campwrst = {
-        .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_CAMERA,
-        .st = hal_power_state_on,
-    };
-
     hal_clk_t hal_lpi2cClkCfg = {
         .clk_id = hal_clock_lpi2c2,
         .pclk_id = hal_clock_osc24m,
@@ -58,16 +47,22 @@ void BOARD_InitHardware(void)
         .enable_clk = true,
         .clk_round_opt = hal_clk_round_auto,
     };
+    hal_pwr_s_t pwrst = {
+        .did = HAL_POWER_PLATFORM_MIX_SLICE_IDX_DISPLAY,
+        .st = hal_power_state_on,
+    };
     /* clang-format on */
 
     SM_Platform_Init();
 
     /* Power on the Displaymix */
     HAL_PowerSetState(&pwrst);
-    while (HAL_PowerGetState(&pwrst));
-
-    HAL_PowerSetState(&campwrst);
-    while (HAL_PowerGetState(&campwrst));
+    if (HAL_PowerSetState(&pwrst) != SCMI_ERR_SUCCESS) {
+        PRINTF("Set Displaymix power failed: %d\r\n", HAL_PowerGetState(&pwrst));
+    }
+    if (HAL_PowerGetState(&pwrst) != hal_power_state_on) {
+        PRINTF("Get Displaymix power failed: %d\r\n", HAL_PowerGetState(&pwrst));
+    }
 
     // BOARD_ConfigMPU();
     BOARD_InitBootPins();
@@ -78,7 +73,5 @@ void BOARD_InitHardware(void)
     HAL_ClockSetRootClk(&hal_dispaxiCLKCfg);
     HAL_ClockSetRootClk(&hal_dispocramCLKCfg);
     HAL_ClockSetRootClk(&hal_lpi2cClkCfg);
-
-    BOARD_PrepareDisplay();
 }
 /*${function:end}*/
