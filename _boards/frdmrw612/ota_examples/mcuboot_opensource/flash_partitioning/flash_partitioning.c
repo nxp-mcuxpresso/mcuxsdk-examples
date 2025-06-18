@@ -9,6 +9,7 @@
 #include "flash_map.h"
 #include "mcuboot_config.h"
 #include "sysflash/sysflash.h"
+#include "mflash_drv.h"
 
 const char *boot_image_names[MCUBOOT_IMAGE_NUMBER] = {"APP"};
 
@@ -35,16 +36,5 @@ struct flash_area boot_flash_meta_map[1] = {
      .fa_device_id = FLASH_DEVICE_ID,
      .fa_off       = BOOT_FLASH_ENC_META - BOOT_FLASH_BASE,
      .fa_size      = MFLASH_SECTOR_SIZE,
-     .fa_name      = "METADATA"}};
-
-#ifndef CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
-struct flash_area boot_flash_exec_map[1] = {
-    /* Encrypted XIP execution slot */
-    {.fa_id        = 0,
-     .fa_device_id = FLASH_DEVICE_ID,
-     .fa_off       = BOOT_FLASH_EXEC_APP - BOOT_FLASH_BASE,
-     .fa_size      = BOOT_FLASH_CAND_APP - BOOT_FLASH_ACT_APP,
-     .fa_name      = "APP_ENCRYPTED"}};
-#endif
-
+     .fa_name      = "ENC_METADATA"}};
 #endif

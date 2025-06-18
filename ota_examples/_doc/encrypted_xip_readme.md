@@ -4,9 +4,8 @@
 - [2. MCUboot encrypted image](#2-mcuboot-encrypted-image)
 - [3. Encrypted XIP extension for MCUboot](#3-encrypted-xip-extension-for-mcuboot)
    * [3.1 Configuration structures](#31-configuration-structures)
-   * [3.2 Modes of the extension](#32-modes-of-the-extension)
-      + [3.2.1 Three slot configuration](#321-three-slot-configuration)
-      + [3.2.2 Overwrite-only mode](#322-overwrite-only-mode)
+   * [3.2 Partition layout](#32-partition-layout)
+   * [3.3 Flow of modified overwrite only mode](#33-flow-of-modified-overwrite-only-mode)
 - [4. NXP encryption engines](#4-nxp-encryption-engines)
    * [4.1 BEE (Bus Encryption Engine)](#41-bee-bus-encryption-engine)
       + [4.1.1 Supported boards](#411-supported-boards)
@@ -74,36 +73,24 @@ The metadata sector consists of platform-specific configuration blocks and a com
 
 During an OTA update, the extension generates a new configuration block with IV, writes it at a particular flash offset, and reconfigures the encryption unit for the execution area. If the update and verification of the execution area are successful, the configuration block is then hashed and confirmed by writing the confirmation block.
 
-### 3.2 Modes of the extension
+### 3.2 Partition layout
 
-The extension utilizes a partition layout with one execution slot for encrypted XIP and one or two slots for staging OTA images. The partition layout can be configured in two configuration modes, which are summarized in the following table.
+The extension utilizes a partition layout with one execution slot for encrypted XIP and one slot for staging an OTA image.
 
-| **Extension mode** | **required flash size**               | **revert (self-test) support** | MCUBOOT update mode    |
-|--------------------|---------------------------------------|--------------------------------|------------------------|
-| **Three slot**     | SBL + 3 x slot size + metadata sector | yes                            | DIRECT-XIP             |
-| **Overwrite-only** | SBL + 2 x slot size + metadata sector | no                             | MCUBOOT_OVERWRITE_ONLY |
+| **Extension mode**          | **required flash size**               | **revert (self-test) support** |
+|-----------------------------|---------------------------------------|--------------------------------|
+| **Modified overwrite-only** | SBL + 2 x slot size + metadata sector | no                             |
 
-#### 3.2.1 Three slot configuration
 
-Following image shows flash memory layout using MCUboot bootloader in [DIRECT-XIP](https://docs.mcuboot.com/design.html#direct-xip) mode and encrypted XIP extension using three slot configuration.
-
-![Image](encrypted_xip_pics/three_slot.jpg)
-
-Primary and secondary slots act as a staging area for encrypted OTA images. The execution slot is used as an execution area of the encrypted image using platform on-the-fly decryption. The encrypted XIP is emulated by execution of a working copy of the authenticated image by MCUboot.
-
-The initial process of authentication and selection (active flag) of an image by MCUboot is then extended by re-encryption of the selected image to the execution slot. This operation is handled by a post-bootloader process which is outside the context of MCUboot, and it is basically plugged in just before MCUboot jumps to the selected image. The re-encryption is only done for new image selection; otherwise, the content of the execution slot is just validated for integrity against the selected image in the staging area. The process is demonstrated in the module `encrypted_xip_mcuboot_support.c`.
-
-The following image shows the direct-xip flow of MCUboot extended with encrypted XIP support.
-
-![Image](encrypted_xip_pics/three_slot_flow.jpg)
-
-Note: the placement of metadata in this mode is up to user. The metadata block can be stored at the end of the execution slot as the original mcuboot trailer is not used there anyway.
-
-#### 3.2.2 Overwrite-only mode
-
-This mode is much simpler but lacks revert functionality because there is only one staging slot.
+Following image shows flash memory layout using MCUboot bootloader in [MCUBOOT_OVERWRITE_ONLY](https://docs.mcuboot.com/design.html#image-slots) mode and the encrypted XIP extension.
 
 ![Image](encrypted_xip_pics/overwrite_only.jpg)
+
+Secondary slots act as a staging area for encrypted OTA image by MCUboot. The execution slot is used as an execution area of the encrypted image using platform on-the-fly decryption.
+
+Note: the placement of metadata in this mode is up to user. 
+
+### 3.3 Flow of modified overwrite only mode
 
 Following image shows simplified flow of MCUboot overwrite-only mode extended with encrypted XIP extension.
 
@@ -222,25 +209,6 @@ Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\
 
 To sign and encrypt an application binary, imgtool must be provided with the respective key pairs and a set of parameters as in the following examples.
 
-For an initial image, use the following set of command:
-~~~
- imgtool sign --key sign-rsa2048-priv.pem
-	      --align 4
-	      --header-size 0x400
-	      --pad-header
-	      --slot-size 0x200000
-	      --max-sectors 800
-	      --version "1.0"
-	      --pad
-	      --confirm
-	      -E enc-rsa2048-pub.pem
-	      app_binary.bin
-	      app_binary_SIGNED_ENCRYPTED_INITIAL.bin
-~~~
-
-Note: The initial image must be loaded using the `--pad --confirm` parameters regardless of whether using ISP or another method to write it. These parameters for an initial image apply only for __three slot mode__ as direct-xip setup is used and it requires the presence of the slot trailer - then the generated image has a size of the slot. For overwrite only mode, an OTA image can be used as an initial image as the slot trailer is not required.
-
-For an OTA image just remove the parameters `--pad --confirm` and increase the version number as in the following command example:
 ~~~
  imgtool sign --key sign-rsa2048-priv.pem
 	      --align 4
@@ -264,21 +232,6 @@ There are two methods how to run device for first time when application uses enc
 
 See `flash_partitioning.h` for your board.
 
-Three slot configuration:
-
-~~~
-/* Encrypted XIP extension: Three slot mode */
-
-#define BOOT_FLASH_EXEC_APP             0x60040000  -- execution slot address
-#define BOOT_FLASH_ACT_APP              0x60240000  -- primary staging slot address
-#define BOOT_FLASH_CAND_APP             0x60440000  -- secondary staging slot address
-#define BOOT_FLASH_ENC_META             0x60640000  -- encryption metadata address
-~~~
-
-Image generated with additional `--pad --confirm` can be loaded to __primary__ or __secondary__ slot.
-
-Overwrite-only configuration:
-
 ~~~
 /* Encrypted XIP extension: modified overwrite-only mode */
 
@@ -288,67 +241,18 @@ Overwrite-only configuration:
 #define BOOT_FLASH_EXEC_APP             BOOT_FLASH_ACT_APP
 ~~~
 
-Image has to be loaded always to __candidate__ slot address. Additional `--pad --confirm` parameters are not needed here.
+Encrypted image by MCUboot has to be loaded always to __candidate__ slot address defined as `BOOT_FLASH_CAND_APP`.
 
 To load image the pyocd, blhost or MCUXpresso Secure Provisioning Tool can be used.
 
-Note: Is possible to attach to running encrypted application for debug purpose.
-
 #### 5.4.2 Run unsigned unencrypted OTA application (debug session)
 
-An unsigned unencrypted application can be loaded and run from execution area using a debug session. When performing an OTA update the application responses with warning:
-~~~
-WARNING: invalid metadata of execution slot - debug session?
-WARNING: OTA image will be downloaded to secondary slot
-~~~
-This is expected as there is no encryption metadata during the initial debug session, so the application has no reference to link to the referenced image in the staging area.
+An unsigned unencrypted application can be loaded and run from execution area using a debug session as usual.
 
 ### 5.5 Running encrypted image
 
 These are expected outputs when an OTA image is detected and then re-encrypted
 
-Three slot configuration:
-~~~
-hello sbl.
-Bootloader Version 2.1.0
-Primary   slot: version=1.0.0+0
-Image 0 Secondary slot: Image not found
-writing copy_done; fa_id=0 off=0x1fffe0 (0x43ffe0)
-Image 0 loaded from the primary slot
-
-Starting post-bootloader process of encrypted image...
-Referenced image is located in the primary slot
-Decrypting and loading the MCUBOOT AES-CTR key for staged image...
-AES-CTR key loaded
-Checking the execution slot...
-No valid image found in staging area...
-Preparing execution slot for new image
-BEE configuration found and successfully configured...
-Installing new image into execution slot from staged area...
-Erasing the execution slot...
-erased 12/12 sectors
-Re-encrypting staged image to execution slot...
-processed 38724/38724 bytes
-Loading image successful
-Image verification successful
-Post-bootloader process of encrypted image successful
-
-Bootloader chainload address offset: 0x40000
-Reset_Handler address offset: 0x40400
-Jumping to the image
-
-
-
-*************************************
-* Basic MCUBoot application example *
-*************************************
-
-Built Feb 13 2025 16:06:06
-
-$
-~~~
-
-Overwrite-only mode:
 ~~~
 hello sbl.
 Bootloader Version 2.1.0

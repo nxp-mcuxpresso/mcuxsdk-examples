@@ -36,14 +36,6 @@
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
 
-/*
- * Automatically enable OVERWRITE_ONLY mode if encrypted XIP support is enabled.
- * Note: Three slot mode is not supported on MCXN
- */
-#ifdef CONFIG_ENCRYPT_XIP_EXT_ENABLE
-#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
-#endif
-
 /* MCUBoot Flash Config */
 
 /* Slot size being 896 kB divided by 8 kB sector size gives 112 sectors as minimum value */
@@ -59,8 +51,7 @@
 /*
  * MCUBoot is located in main flash -> Use mbedTLS
  */
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA_LEN 2048
+#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
 #define COMPONENT_MBEDTLS
 #else
 /*
@@ -77,13 +68,8 @@
 
 /* Config Guards */
 #if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
-    !defined(CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY)
-#error "Encrypted XIP three slot mode is not supported on MCXN. Enable overwrite \
-only mode by CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY"
-#endif
-#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
     !defined(CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY)
 #error "Encrypted XIP is not supported when MCUBoot is placed in IFR region."
 #endif
 
-#endif
+#endif /* SBL_CONFIG_H__ */

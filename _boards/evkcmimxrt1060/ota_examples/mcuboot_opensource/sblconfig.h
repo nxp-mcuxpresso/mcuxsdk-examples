@@ -16,7 +16,6 @@
 /*******************************************************************/
 #ifndef CONFIG_BOOT_CUSTOM_DEVICE_SETUP
 
-
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 1028
 
 /* MCUBoot upgrade mode */
@@ -29,20 +28,12 @@
  */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
 
-
-/* Encrypted XIP support config */
-
 /*
- * Enable extension utilizing on-the-fly decryption of encrypted image.
- * For more information please see readme file.
+ * Enable the encrypted XIP extension. This extension is not compatible with the 
+ * flash remapping feature as it implicitly uses overwrite only mode.
+ * For more information, please see readme file.
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
-
-/*
- * Encrypted XIP extension uses simpler OVERWRITE_ONLY mode instead of three
- * slot configuration.
- */
-//#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
 
 /* Crypto Config */
 

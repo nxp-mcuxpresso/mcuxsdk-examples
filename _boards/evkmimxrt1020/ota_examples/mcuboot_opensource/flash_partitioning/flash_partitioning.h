@@ -26,29 +26,27 @@
 
 /* Default layout setup */
 
-#elif !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
-/* Overwrite-only, swap or direct-xip mode with flash remapping */
+#else
+/* Default layout setup
+
+The memory is allocated as follows:
+    - BOOTLOADER:  0x020000 bytes @ 0x60000000 - MCUboot
+    - APP_ACT:     0x200000 bytes @ 0x60040000 - primary slot
+    - APP_CAND:    0x200000 bytes @ 0x60240000 - secondary slot
+    Encrypted XIP support:
+    - ENC_META:    0x001000 bytes @ 0x60440000 - encrypted XIP metadata
+*/
 
 #define BOOT_FLASH_ACT_APP              0x60040000
 #define BOOT_FLASH_CAND_APP             0x60240000
 
-#elif defined(CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY)
-/* Encrypted XIP extension: modified overwrite-only mode */
-
-#define BOOT_FLASH_ACT_APP              0x60040000
-#define BOOT_FLASH_CAND_APP             0x60240000
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
+/* Encrypted XIP extension: define metadata and execution region */
 #define BOOT_FLASH_ENC_META             0x60440000
 #define BOOT_FLASH_EXEC_APP             BOOT_FLASH_ACT_APP
+#endif
 
-#else
-/* Encrypted XIP extension: Three slot mode */
-
-#define BOOT_FLASH_EXEC_APP             0x60040000
-#define BOOT_FLASH_ACT_APP              0x60240000
-#define BOOT_FLASH_CAND_APP             0x60440000
-#define BOOT_FLASH_ENC_META             0x60640000
-
-#endif /* !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) */
+#endif /* defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP) */
 
 #endif /* _FLASH_PARTITIONING_H_ */
 

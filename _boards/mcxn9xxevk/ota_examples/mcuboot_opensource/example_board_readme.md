@@ -72,13 +72,13 @@ Default layout setup using the IFR region limits usage of some features such as 
 | Secondary slot | 0x00120000 | 0x001FFFFF |  896kB |
 
 - MCUBoot header size is set to 1024 bytes
-- Signing algorithm is RSA-2048 (note: current MCUboot version 2.1.0 doesn't support mbedTLS porting layer for ECDSA-P256)
+- Signing algorithm is ECDSA-P256 (mbedTLS)
 - Write alignment is 16 bytes
 - MCUBoot is configured to use its `SWAP_USING_MOVE` image update strategy
 
 Image signing example:
 
-    imgtool sign --key sign-rsa2048-priv.pem
+    imgtool sign --key sign-ecdsa-p256-priv.pem
                  --align 16
                  --version 1.1
                  --slot-size 0xE0000

@@ -10,14 +10,14 @@ Make sure the board is setup to boot from flash.
 ### MCUBoot memory layout
 
 In all cases, the MCUBOOT bootloader reserves 128kB at the beginning of the external flash
-followed by 4.4MB slots for application.
+followed by 2MB slots for application.
 The resulting layout for the monolithic application will be as follows:
 
 | Region         | From       | To         | Size   |
 |----------------|------------|------------|--------|
 | MCUboot code   | 0x08000000 | 0x0801FFFF |  128kB |
-| Primary slot   | 0x08020000 | 0x0845FFFF | 4352kB |
-| Secondary slot | 0x08460000 | 0x0889FFFF | 4352kB |
+| Primary slot   | 0x08020000 | 0x0821FFFF | 2048kB |
+| Secondary slot | 0x08220000 | 0x0841FFFF | 2048kB |
 
 
 - MCUBoot is configured to use its `DIRECT_XIP` image handling strategy together with FlexSPI flash remapping
@@ -34,7 +34,7 @@ The resulting layout for the monolithic application will be as follows:
     imgtool sign   --key sign-rsa2048-priv.pem
                    --align 4
                    --version 1.1
-                   --slot-size 0x440000
+                   --slot-size 0x200000
                    --header-size 0x400
                    --pad-header
                    ota_mcuboot_basic.bin

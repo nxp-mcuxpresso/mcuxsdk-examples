@@ -33,44 +33,27 @@
 The memory is allocated as follows:
     Default:
     - BOOTLOADER:  0x020000 bytes @ 0x08000000
-    - APP_ACT:     0x440000 bytes @ 0x08020000
-    - APP_CAND:    0x440000 bytes @ 0x08460000
-    Encrypted XIP - three slot mode:
+    - APP_ACT:     0x200000 bytes @ 0x08020000
+    - APP_CAND:    0x200000 bytes @ 0x08220000
+    Encrypted XIP:
     - BOOTLOADER:  0x020000 bytes @ 0x08000000
-    - EXEC_ACT:    0x440000 bytes @ 0x08020000
-    - APP_ACT:     0x440000 bytes @ 0x08460000
-    - APP_CAND:    0x440000 bytes @ 0x088A0000
-    - ENC_META:    0x001000 bytes @ 0x08CE0000
-    Encrypted XIP - overwrite-only mode:
-    - BOOTLOADER:  0x020000 bytes @ 0x08000000
-    - APP_ACT:     0x440000 bytes @ 0x08020000
-    - APP_CAND:    0x440000 bytes @ 0x08460000
-    - ENC_META:    0x001000 bytes @ 0x088A0000
+    - APP_ACT:     0x200000 bytes @ 0x08020000
+    - APP_CAND:    0x200000 bytes @ 0x08220000
+    - ENC_META:    0x001000 bytes @ 0x08420000
 */
 
-#elif !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
+#else
 /* Overwrite-only, swap or direct-xip mode with flash remapping */
 
 #define BOOT_FLASH_ACT_APP  0x08020000
-#define BOOT_FLASH_CAND_APP 0x08460000
+#define BOOT_FLASH_CAND_APP 0x08220000
 
-#elif defined(CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY)
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
 /* Encrypted XIP extension: modified overwrite-only mode */
-
-#define BOOT_FLASH_ACT_APP  0x08020000
-#define BOOT_FLASH_CAND_APP 0x08460000
-#define BOOT_FLASH_ENC_META 0x088A0000
+#define BOOT_FLASH_ENC_META 0x08420000
 #define BOOT_FLASH_EXEC_APP BOOT_FLASH_ACT_APP
+#endif
 
-#else
-/* Encrypted XIP extension: Three slot mode */
-
-#define BOOT_FLASH_EXEC_APP 0x08020000
-#define BOOT_FLASH_ACT_APP  0x08460000
-#define BOOT_FLASH_CAND_APP 0x088A0000
-#define BOOT_FLASH_ENC_META 0x08CE0000
-
-#endif /* !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) */
+#endif /* !defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP) */
 
 #endif /* _FLASH_PARTITIONING_H_ */
-

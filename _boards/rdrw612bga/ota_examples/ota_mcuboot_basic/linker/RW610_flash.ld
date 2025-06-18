@@ -37,7 +37,7 @@ M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000280 : 0;
 MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x08020400, LENGTH = 0x00000280
-  m_text                (RX)  : ORIGIN = 0x08020680, LENGTH = 0x001EF980
+  m_text                (RX)  : ORIGIN = 0x08020680, LENGTH = 0x001FE980
   m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00130000
   m_mbox1               (RW) : ORIGIN = 0x41380000, LENGTH = 0x00000488
   m_txq1                (RW) : ORIGIN = 0x41380488, LENGTH = 0x00001000

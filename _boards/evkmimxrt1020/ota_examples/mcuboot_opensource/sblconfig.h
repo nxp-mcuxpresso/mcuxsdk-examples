@@ -25,19 +25,12 @@
 #define COMPONENT_MBEDTLS
 #define CONFIG_BOOT_BOOTSTRAP
 
-/* Encrypted XIP support config */
-
 /*
- * Enable extension utilizing on-the-fly decryption of encrypted image.
- * For more information please see readme file.
+ * Enable the encrypted XIP extension. This extension is not compatible with the 
+ * flash remapping feature as it implicitly uses overwrite only mode.
+ * For more information, please see readme file.
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
-
-/*
- * Encrypted XIP extension uses simpler OVERWRITE_ONLY mode instead of three
- * slot configuration.
- */
-//#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 

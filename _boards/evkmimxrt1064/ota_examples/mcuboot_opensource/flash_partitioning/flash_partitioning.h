@@ -11,13 +11,6 @@
 
 #include "sblconfig.h"
 
-/*
-The memory is allocated as follows:
-    - BOOTLOADER:  0x040000 bytes @ 0x70000000
-    - APP_ACT:     0x100000 bytes @ 0x70040000
-    - APP_CAND:    0x100000 bytes @ 0x70140000
-*/
-
 #define BOOT_FLASH_BASE                 0x70000000
 
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
@@ -30,31 +23,27 @@ The memory is allocated as follows:
 #define BOOT_FLASH_EXEC_APP             CONFIG_BOOT_FLASH_EXEC_APP_ADDRESS
 #define BOOT_FLASH_ENC_META             CONFIG_BOOT_FLASH_ENC_META_ADDRESS
 #endif
-  
-/* Default layout setup */
-
-#elif !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
-/* Overwrite-only, swap or direct-xip mode with flash remapping */
-
-#define BOOT_FLASH_ACT_APP              0x70040000
-#define BOOT_FLASH_CAND_APP             0x70140000
-   
-#elif defined(CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY)
-/* Encrypted XIP extension: modified overwrite-only mode */
-
-#define BOOT_FLASH_ACT_APP              0x70040000
-#define BOOT_FLASH_CAND_APP             0x70140000
-#define BOOT_FLASH_ENC_META             0x70240000
-#define BOOT_FLASH_EXEC_APP             BOOT_FLASH_ACT_APP
 
 #else
-/* Encrypted XIP extension: Three slot mode */
+/* Default layout setup
 
-#define BOOT_FLASH_EXEC_APP             0x70040000
-#define BOOT_FLASH_ACT_APP              0x70140000
-#define BOOT_FLASH_CAND_APP             0x70240000
-#define BOOT_FLASH_ENC_META             0x70340000
+The memory is allocated as follows:
+    - BOOTLOADER:  0x020000 bytes @ 0x70000000 - MCUboot
+    - APP_ACT:     0x100000 bytes @ 0x70040000 - primary slot
+    - APP_CAND:    0x100000 bytes @ 0x70140000 - secondary slot
+    Encrypted XIP support:
+    - ENC_META:    0x001000 bytes @ 0x70240000 - encrypted XIP metadata
+*/
 
-#endif /* !defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) */
+#define BOOT_FLASH_ACT_APP              0x70040000
+#define BOOT_FLASH_CAND_APP             0x70140000
 
+#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
+/* Encrypted XIP extension: define metadata and execution region */
+#define BOOT_FLASH_ENC_META             0x70240000
+#define BOOT_FLASH_EXEC_APP             BOOT_FLASH_ACT_APP
 #endif
+
+#endif /* defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP) */
+
+#endif /* _FLASH_PARTITIONING_H_ */
