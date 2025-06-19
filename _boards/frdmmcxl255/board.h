@@ -82,26 +82,26 @@
 #endif /*__CORTEX_M == (33U) */
 
 /*! @brief GPIO for SW. */
-#ifndef BOARD_SW2_GPIO
-#define BOARD_SW2_GPIO AON__GPIO0
-#endif
-#ifndef BOARD_SW2_GPIO_PIN
-#define BOARD_SW2_GPIO_PIN 9U
-#endif
-#define BOARD_SW2_NAME        "SW2"
-#define BOARD_SW2_IRQ         GPIO00_AON_IRQn
-#define BOARD_SW2_IRQ_HANDLER GPIO00_AON_IRQHandler
-
-#if __CORTEX_M == (33U) /* Building on the main core */
 #ifndef BOARD_SW5_GPIO
-#define BOARD_SW5_GPIO GPIO1
+#define BOARD_SW5_GPIO AON__GPIO0
 #endif
 #ifndef BOARD_SW5_GPIO_PIN
-#define BOARD_SW5_GPIO_PIN 14U
+#define BOARD_SW5_GPIO_PIN 9U
 #endif
 #define BOARD_SW5_NAME        "SW5"
-#define BOARD_SW5_IRQ         GPIO10_IRQn
-#define BOARD_SW5_IRQ_HANDLER GPIO10_IRQHandler
+#define BOARD_SW5_IRQ         GPIO00_AON_IRQn
+#define BOARD_SW5_IRQ_HANDLER GPIO00_AON_IRQHandler
+
+#if __CORTEX_M == (33U) /* Building on the main core */
+#ifndef BOARD_SW2_GPIO
+#define BOARD_SW2_GPIO GPIO1
+#endif
+#ifndef BOARD_SW2_GPIO_PIN
+#define BOARD_SW2_GPIO_PIN 14U
+#endif
+#define BOARD_SW2_NAME        "SW2"
+#define BOARD_SW2_IRQ         GPIO10_IRQn
+#define BOARD_SW2_IRQ_HANDLER GPIO10_IRQHandler
 #endif /*__CORTEX_M == (33U) */
 
 #if __CORTEX_M == (33U) /* Building on the main core */

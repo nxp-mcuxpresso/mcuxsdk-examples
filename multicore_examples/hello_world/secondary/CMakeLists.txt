@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -12,6 +12,7 @@ project(hello_world_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH $
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/hello_world/${core_id}/reconfig.cmake OPTIONAL)
 
 mcux_add_source(
     SOURCES main.c

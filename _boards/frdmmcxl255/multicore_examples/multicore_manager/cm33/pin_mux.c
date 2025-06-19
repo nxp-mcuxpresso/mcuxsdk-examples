@@ -408,22 +408,22 @@ void BOARD_InitBUTTONsPins(void)
     /* PORT1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
 
-    gpio_pin_config_t SW2_config = {
-        .pinDirection = kGPIO_DigitalInput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO0_9   */
-    GPIO_PinInit(BOARD_SW2_GPIO, BOARD_SW2_GPIO_PIN, &SW2_config);
-
     gpio_pin_config_t SW5_config = {
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
     };
-    /* Initialize GPIO functionality on pin PIO1_14   */
+    /* Initialize GPIO functionality on pin PIO0_9   */
     GPIO_PinInit(BOARD_SW5_GPIO, BOARD_SW5_GPIO_PIN, &SW5_config);
 
+    gpio_pin_config_t SW2_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_14   */
+    GPIO_PinInit(BOARD_SW2_GPIO, BOARD_SW2_GPIO_PIN, &SW2_config);
 
-    const port_pin_config_t SW2 = {/* Internal pull-up/down resistor is disabled */
+
+    const port_pin_config_t SW5 = {/* Internal pull-up/down resistor is disabled */
                                    .pullSelect = kPORT_PullDisable,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = kPORT_LowPullResistor,
@@ -446,9 +446,9 @@ void BOARD_InitBUTTONsPins(void)
                                    /* Pin Control Register fields [15:0] are not locked */
                                    .lockRegister = kPORT_UnlockRegister};
     /* PORT0_9  is configured as P0_9 */
-    PORT_SetPinConfig(AON__PORT0, BOARD_SW2_GPIO_PIN, &SW2);
+    PORT_SetPinConfig(AON__PORT0, BOARD_SW5_GPIO_PIN, &SW5);
 
-    const port_pin_config_t SW5 = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t SW2 = {/* Internal pull-up/down resistor is disabled */
                                    .pullSelect = kPORT_PullDisable,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = kPORT_LowPullResistor,
@@ -471,7 +471,7 @@ void BOARD_InitBUTTONsPins(void)
                                    /* Pin Control Register fields [15:0] are not locked */
                                    .lockRegister = kPORT_UnlockRegister};
     /* PORT1_14 is configured as P1_14 */
-    PORT_SetPinConfig(PORT1, BOARD_SW5_GPIO_PIN, &SW5);
+    PORT_SetPinConfig(PORT1, BOARD_SW2_GPIO_PIN, &SW2);
 }
 
 void BOARD_InitLPCMPPins()

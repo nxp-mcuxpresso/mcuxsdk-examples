@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -14,7 +14,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 # This will point to: ${SdkRootDirPath}/${board_root}/${board}/multicore_examples/reconfig.cmake
 # where common board multicore properties are set.
 include(${CMAKE_CURRENT_LIST_DIR}/../../config.cmake)
-
+include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/erpc_matrix_multiply_rpmsg_rtos/${core_id}/reconfig.cmake OPTIONAL)
 include(${SdkRootDirPath}/${board_root}/${board}/multicore_examples/erpc_matrix_multiply_rpmsg_rtos/reconfig.cmake OPTIONAL)
 
 mcux_add_source(

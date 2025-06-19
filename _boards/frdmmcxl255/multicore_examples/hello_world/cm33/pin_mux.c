@@ -10,6 +10,7 @@
 #include "fsl_gpio.h"
 #include "pin_mux.h"
 #include "fsl_reset.h"
+#include "board.h"
 
 void BOARD_InitDEBUG_UARTPins(void)
 {
@@ -394,7 +395,6 @@ void BOARD_InitACMPPins()
 
 void BOARD_InitBUTTONsPins(void)
 {
-#if 0
     /* GPIO0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateAonGPIO);
     /* GPIO1: Peripheral clock is enabled */
@@ -408,22 +408,22 @@ void BOARD_InitBUTTONsPins(void)
     /* PORT1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
 
-    gpio_pin_config_t SW2_config = {
-        .pinDirection = kGPIO_DigitalInput,
-        .outputLogic = 0U
-    };
-    /* Initialize GPIO functionality on pin PIO0_9   */
-    GPIO_PinInit(BOARD_INITBUTTONSPINS_SW2_GPIO, BOARD_INITBUTTONSPINS_SW2_PIN, &SW2_config);
-
     gpio_pin_config_t SW5_config = {
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
     };
+    /* Initialize GPIO functionality on pin PIO0_9   */
+    GPIO_PinInit(BOARD_SW5_GPIO, BOARD_SW5_GPIO_PIN, &SW5_config);
+
+    gpio_pin_config_t SW2_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
     /* Initialize GPIO functionality on pin PIO1_14   */
-    GPIO_PinInit(BOARD_INITBUTTONSPINS_SW5_GPIO, BOARD_INITBUTTONSPINS_SW5_PIN, &SW5_config);
+    GPIO_PinInit(BOARD_SW2_GPIO, BOARD_SW2_GPIO_PIN, &SW2_config);
 
 
-    const port_pin_config_t SW2 = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t SW5 = {/* Internal pull-up/down resistor is disabled */
                                    .pullSelect = kPORT_PullDisable,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = kPORT_LowPullResistor,
@@ -446,9 +446,9 @@ void BOARD_InitBUTTONsPins(void)
                                    /* Pin Control Register fields [15:0] are not locked */
                                    .lockRegister = kPORT_UnlockRegister};
     /* PORT0_9  is configured as P0_9 */
-    PORT_SetPinConfig(BOARD_INITBUTTONSPINS_SW2_PORT, BOARD_INITBUTTONSPINS_SW2_PIN, &SW2);
+    PORT_SetPinConfig(AON__PORT0, BOARD_SW5_GPIO_PIN, &SW5);
 
-    const port_pin_config_t SW5 = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t SW2 = {/* Internal pull-up/down resistor is disabled */
                                    .pullSelect = kPORT_PullDisable,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = kPORT_LowPullResistor,
@@ -471,8 +471,7 @@ void BOARD_InitBUTTONsPins(void)
                                    /* Pin Control Register fields [15:0] are not locked */
                                    .lockRegister = kPORT_UnlockRegister};
     /* PORT1_14 is configured as P1_14 */
-    PORT_SetPinConfig(BOARD_INITBUTTONSPINS_SW5_PORT, BOARD_INITBUTTONSPINS_SW5_PIN, &SW5);
-#endif
+    PORT_SetPinConfig(PORT1, BOARD_SW2_GPIO_PIN, &SW2);
 }
 
 void BOARD_InitLPCMPPins()
