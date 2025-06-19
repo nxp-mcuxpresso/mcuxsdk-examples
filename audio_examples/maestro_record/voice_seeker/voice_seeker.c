@@ -28,7 +28,12 @@
 #else
 #error "No platform selected"
 #endif
+
+#if (defined(DEMO_CODEC_CS42448) && (DEMO_CODEC_CS42448 == 1) && DEMO_MIC_CHANNEL_NUM > 2)
+#define RDSP_NUM_MIC 2
+#else
 #define RDSP_NUM_MIC DEMO_MIC_CHANNEL_NUM
+#endif
 
 RETUNE_VOICESEEKERLIGHT_plugin_t vsl             = {0};
 static rdsp_voiceseekerlight_config_t vsl_config = {0};
