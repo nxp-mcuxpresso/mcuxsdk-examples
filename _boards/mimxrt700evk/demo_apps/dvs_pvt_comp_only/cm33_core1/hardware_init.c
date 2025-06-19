@@ -39,6 +39,33 @@ void BOARD_NotifyBoot(void)
     MU_EnableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
 }
 
+static inline void BOARD_ConfigSupplySetpoints(void)
+{
+    const power_regulator_voltage_t ldo = {
+        .LDO.vsel0 = 630000,  /* 630mv, 0.45 V + 12.5 mV * x */
+        .LDO.vsel1 = 700000,  /* 700mv*/
+        .LDO.vsel2 = 900000,  /* 900mv */
+        .LDO.vsel3 = 1000000, /* 1000mv */
+    };
+
+    const power_lvd_voltage_t lvd = {
+        .VDD12.lvl0 = 500000, /* 500mv */
+        .VDD12.lvl1 = 600000, /* 600mv */
+        .VDD12.lvl2 = 800000, /* 800mv */
+        .VDD12.lvl3 = 900000, /* 900mv */
+    };
+    POWER_ConfigRegulatorSetpoints(kRegulator_Vdd1LDO, &ldo, &lvd);
+    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+    POWER_ApplyPD();
+}
+
 void BOARD_InitPowerConfig(void)
 {
     /* Enable the used modules in sense side. */
@@ -93,27 +120,7 @@ void BOARD_InitPowerConfig(void)
 
     SYSCON3->SENSE_AUTOGATE_EN = 0x3U;
 
-    const power_regulator_voltage_t ldo = {
-        .LDO.vsel0 = 630000,  /* 630mv, 0.45 V + 12.5 mV * x */
-        .LDO.vsel1 = 700000,  /* 700mv*/
-        .LDO.vsel2 = 900000,  /* 900mv */
-        .LDO.vsel3 = 1000000, /* 1000mv */
-    };
-
-    const power_lvd_voltage_t lvd = {
-        .VDD12.lvl0 = 500000, /* 500mv */
-        .VDD12.lvl1 = 600000, /* 600mv */
-        .VDD12.lvl2 = 800000, /* 800mv */
-        .VDD12.lvl3 = 900000, /* 900mv */
-    };
-    POWER_ConfigRegulatorSetpoints(kRegulator_Vdd1LDO, &ldo, &lvd);
-    POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
-    POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_ApplyPD();
+    BOARD_ConfigSupplySetpoints();
 
     CLOCK_DisableClock(kCLOCK_Rtc);
     CLOCK_DisableClock(kCLOCK_Syscon1);

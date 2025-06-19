@@ -381,6 +381,30 @@ void BOARD_NotifyBoot(void)
     MU_Deinit(MU1_MUB);
 }
 
+static inline void BOARD_ConfigSupplySetpoints(void)
+{
+    /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order*/
+    uint32_t freqs[4U] = {0U};
+    freqs[0] = 0U; /* For DeepSleep. */
+    freqs[1] = 64000000U; /* 64MHz */
+    freqs[2] = SystemCoreClock; /* Only setpoint 2 and 0 are used. */
+    freqs[3] = 250000000U;
+
+    uint32_t miniVolts[4] = {0U}; 
+    miniVolts[0] = 630000U; /* For DeepSleep, 0.63V. */
+
+    POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd1LDO, freqs, miniVolts, 0U, 4U);
+
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 2U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+
+    POWER_ApplyPD();
+}
+
 void BOARD_InitPowerConfig(void)
 {
     /* Enable the used modules in sense side. */
@@ -429,44 +453,21 @@ void BOARD_InitPowerConfig(void)
                          kPower_BodyBiasVdd1Sram);
     POWER_ApplyPD();
 
-    /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order*/
-    uint32_t freqs[4] = {0};
-    freqs[0] = 0U; /* For DeepSleep. */
-    freqs[1] = 64000000U; /* 64MHz */
-    freqs[2] = SystemCoreClock; /* Only setpoint 2 and 0 are used. */
-    freqs[3] = 250000000U;
-
-    uint32_t miniVolts[4] = {0U}; 
-    miniVolts[0] = 630000U; /* For DeepSleep, 0.63V. */
-
-    POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd1LDO, freqs, miniVolts, 0U, 4U);
-
-    g_runVolt = POWER_CalcVoltLevel(kRegulator_Vdd1LDO, SystemCoreClock, 0U); /* Calculate the voltage per frequency. */
+    BOARD_ConfigSupplySetpoints();
 
 #if defined(DEMO_POWER_SUPPLY_OPTION) && ((DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_MIXED) || (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMC))
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_LP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 2U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
-    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
     POWER_ApplyPD();
 #elif defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_DisableLPRequestMask(kPower_MaskLpi2c15);
     BOARD_InitPmic();
-    /* Select the lowest LVD setpoint. */
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
-    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
-    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+
     POWER_ApplyPD();
 
+    g_runVolt = POWER_CalcVoltLevel(kRegulator_Vdd1LDO, SystemCoreClock, 0U); /* Calculate the voltage per frequency. */
     BOARD_SetPmicVdd1Voltage(g_runVolt);
 #endif
 

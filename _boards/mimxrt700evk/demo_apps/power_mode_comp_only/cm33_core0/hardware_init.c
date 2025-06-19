@@ -285,6 +285,51 @@ static void BOARD_DisableCache(CACHE64_CTRL_Type *base)
     }
 }
 
+static inline void BOARD_ConfigSupplySetpoints(void)
+{
+    /* The LVD need correctly configured even using PMIC supply. */
+    status_t ret = kStatus_Success;
+    power_regulator_voltage_t dcdc = {
+                                        .DCDC.vsel1 = 1100000U,
+                                        .DCDC.vsel0 = 600000U,
+                                     };
+    power_lvd_voltage_t lvd = {
+      .VDDN.lvl1 = 900000U,
+      .VDDN.lvl0 = 500000U,
+    };
+
+    ret = POWER_ConfigRegulatorSetpoints(kRegulator_DCDC,  &dcdc, &lvd);
+    if (ret != kStatus_Success)
+    {
+        PRINTF("DCDC configuration failed %d\r\n", ret);
+    }
+
+    /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order*/
+    uint32_t freqs[4] = {0};
+    freqs[0] = 0U; /* Used for DeepSleep mode */
+    freqs[1] = 32000000U;
+    freqs[2] = SystemCoreClock; /* Only setpoint 2 and 0 are used. */
+    freqs[3] = 325000000U;
+
+    uint32_t miniVolts[4] = {0U}; 
+    miniVolts[0] = 630000U; /* 0.63V for DeepSleep mode. */
+
+    ret = POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd2LDO, freqs, miniVolts, 0U, 4U);
+    if (kStatus_Success != ret)
+    {
+        PRINTF("LDO2 configuration failed %d\r\n", ret);
+    }
+
+    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 2U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+
+    POWER_ApplyPD();
+}
+
 void BOARD_PowerConfigAfterCPU1Booted(void)
 {
     /* Turn off unused resources. */
@@ -360,8 +405,7 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnableSleepRBB(kPower_BodyBiasVddn | kPower_BodyBiasVdd2Sram | kPower_BodyBiasVdd2 | kPower_BodyBiasVdd1 |
                          kPower_BodyBiasVdd1Sram);
 
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+    BOARD_ConfigSupplySetpoints();
 
     POWER_ApplyPD();
 
@@ -373,9 +417,6 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
     POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
     POWER_DisableRegulators(kPower_SCPC);
-
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
     POWER_ApplyPD();
 
     BOARD_SetPmicVdd2Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
@@ -385,48 +426,15 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_SetVddnSupplySrc(kVddSrc_PMC);
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_LP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
-    
-    status_t ret = kStatus_Success;
-    power_regulator_voltage_t dcdc = {
-                                        .DCDC.vsel1 = 1100000U,
-                                        .DCDC.vsel0 = 600000U,
-                                     };
-    power_lvd_voltage_t lvd = {
-      .VDDN.lvl1 = 900000U,
-      .VDDN.lvl0 = 500000U,
-    };
 
-    ret = POWER_ConfigRegulatorSetpoints(kRegulator_DCDC,  &dcdc, &lvd);
-    if (ret != kStatus_Success)
-    {
-        PRINTF("DCDC configuration failed %d\r\n", ret);
-    }
-    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
-    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
     POWER_DisableSleepRegulators(kPower_DCDC_FDSR); /* DCDC power down in FDSR. */
-    POWER_ApplyPD();
 #else /* VDDN powered by external PMIC. */
     POWER_SetVddnSupplySrc(kVddSrc_PMIC);
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
 #endif
-    /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order*/
-    uint32_t freqs[4] = {0};
-    freqs[0] = 0U; /* Used for DeepSleep mode */
-    freqs[1] = 32000000U;
-    freqs[2] = SystemCoreClock; /* Only setpoint 2 and 0 are used. */
-    freqs[3] = 325000000U;
-
-    uint32_t miniVolts[4] = {0U}; 
-    miniVolts[0] = 630000U; /* 0.63V for DeepSleep mode. */
-
-    POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd2LDO, freqs, miniVolts, 0U, 4U);
-
     POWER_SetVdd1SupplySrc(kVddSrc_PMC);
     POWER_SetVdd2SupplySrc(kVddSrc_PMC);
-
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 2U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
     POWER_ApplyPD();
 #endif
 }

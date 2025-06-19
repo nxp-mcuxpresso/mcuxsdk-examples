@@ -330,6 +330,46 @@ static void BOARD_DisableCache(CACHE64_CTRL_Type *base)
     }
 }
 
+static inline void BOARD_ConfigSupplySetpoints(void)
+{
+    /* The LVD need correctly configured even using PMIC supply. */
+    status_t ret = kStatus_Success;
+
+    power_lvd_voltage_t dcdcLvd = {
+      .VDDN.lvl1 = 900000U,
+      .VDDN.lvl0 = 500000U,
+    };
+
+    ret = POWER_ConfigLvdSetpoints(kRegulator_DCDC, &dcdcLvd);
+    if (ret != kStatus_Success)
+    {
+        PRINTF("VDDNLVD configuration failed %d\r\n", ret);
+    }
+
+    power_lvd_voltage_t vdd2Lvd = {
+      .VDD12.lvl3 = 800000U,
+      .VDD12.lvl2 = 700000U,
+      .VDD12.lvl1 = 600000U,
+      .VDD12.lvl0 = 500000U,
+    };
+
+    ret = POWER_ConfigLvdSetpoints(kRegulator_Vdd2LDO, &vdd2Lvd);
+    if (kStatus_Success != ret)
+    {
+        PRINTF("VDD2LVD configuration failed %d\r\n", ret);
+    }
+
+    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+
+    POWER_ApplyPD();
+}
+
+
 void BOARD_PowerConfigAfterCPU1Booted(void)
 {
     /* Turn off unused resources. */
@@ -402,14 +442,7 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnableSleepRBB(kPower_BodyBiasVddn | kPower_BodyBiasVdd2Sram | kPower_BodyBiasVdd2 | kPower_BodyBiasVdd1 |
                          kPower_BodyBiasVdd1Sram);
 
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 1U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
-
-    POWER_ApplyPD();
-
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_ApplyPD();
+    BOARD_ConfigSupplySetpoints();
 
     BOARD_SetPmicVdd1Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
 #if 0

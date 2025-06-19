@@ -249,14 +249,6 @@ void BOARD_InitPowerConfig(void)
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
     /* Switch to a new DVS mode before re-configuring the VDD1/VDD2 per CPU frequency. */
     BOARD_SetPmicDVSPinStatus(0x1);
-    /* PMIC is used. When using On-Chip regulator, need to be changed to kVddSrc_PMC. */
-    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
-    POWER_DisableRegulators(kPower_SCPC);
-
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
 #endif
 
     /* Keep the used resources on. */
@@ -286,6 +278,60 @@ static void BOARD_DisableCache(CACHE64_CTRL_Type *base)
         /* Now disable the cache. */
         base->CCR &= ~CACHE64_CTRL_CCR_ENCACHE_MASK;
     }
+}
+
+static inline void BOARD_ConfigSupplySetpoints(void)
+{
+    /* The LVD need correctly configured even using PMIC supply. */
+    status_t ret = kStatus_Success;
+    power_regulator_voltage_t dcdc = {
+                                        .DCDC.vsel1 = 1100000U,
+                                        .DCDC.vsel0 = 600000U,
+                                     };
+    power_lvd_voltage_t lvd = {
+      .VDDN.lvl1 = 900000U,
+      .VDDN.lvl0 = 500000U,
+    };
+
+    ret = POWER_ConfigRegulatorSetpoints(kRegulator_DCDC,  &dcdc, &lvd);
+    if (ret != kStatus_Success)
+    {
+        PRINTF("DCDC configuration failed %d\r\n", ret);
+    }
+
+    /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order*/
+    uint32_t freqs[4] = {0};
+    freqs[0] = 0U; /* Used for DeepSleep mode */
+    freqs[1] = 32000000U;
+    freqs[2] = SystemCoreClock; /* Only setpoint 2 and 0 are used. */
+    freqs[3] = 325000000U;
+
+    uint32_t miniVolts[4] = {0U}; 
+    miniVolts[0] = 630000U; /* 0.63V for DeepSleep mode. */
+
+    ret = POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd2LDO, freqs, miniVolts, 0U, 4U);
+    if (kStatus_Success != ret)
+    {
+        PRINTF("LDO2 configuration failed %d\r\n", ret);
+    }
+
+    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 2U);
+#if defined(DEMO_POWER_HIFI4_USED) && (DEMO_POWER_HIFI4_USED != 0U)
+    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 2U); /* HIFI4 can keep running in deep sleep mode. */
+#else
+    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+#endif                                                 /* DEMO_POWER_HIFI4_USED */
+    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
+#if defined(DEMO_POWER_HIFI4_USED) && (DEMO_POWER_HIFI4_USED != 0U)
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 1U);
+#else
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+#endif
+    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+
+    POWER_ApplyPD();
 }
 
 void BOARD_PowerConfigAfterCPU1Booted(void)
@@ -370,25 +416,17 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 
     POWER_ApplyPD();
 
-    /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order. */
-    uint32_t freqs[4] = {0};
-    freqs[0] = 0U; /* For DeepSleep. */
-    freqs[1] = 64000000U;
-    freqs[2] = SystemCoreClock; /* Only setpoint 2 and 0 are used. */
-    freqs[3] = 325000000U;
-
-    uint32_t miniVolts[4] = {0U};
-    miniVolts[0] = 630000U; /* For DeepSleep. */
-
-    POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd2LDO, freqs, miniVolts, 0U, 4U);
-
-    g_runVolt = POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U); /* Calculate the voltage per frequency. */
+    BOARD_ConfigSupplySetpoints();
 
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
+
+    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
+    POWER_DisableRegulators(kPower_SCPC);
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
+
     POWER_ApplyPD();
 
     BOARD_SetPmicVdd2Voltage(g_runVolt);
@@ -397,28 +435,6 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_SetVddnSupplySrc(kVddSrc_PMC);
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_HP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_HP);
-
-    status_t ret = kStatus_Success;
-    power_regulator_voltage_t dcdc = {
-                                        .DCDC.vsel1 = 1100000U,
-                                        .DCDC.vsel0 = 600000U,
-                                     };
-    power_lvd_voltage_t lvd = {
-      .VDDN.lvl1 = 900000U,
-      .VDDN.lvl0 = 500000U,
-    };
-
-    ret = POWER_ConfigRegulatorSetpoints(kRegulator_DCDC,  &dcdc, &lvd);
-    if (ret != kStatus_Success)
-    {
-        PRINTF("DCDC configuration failed %d\r\n", ret);
-    }
-    POWER_SelectRunSetpoint(kRegulator_DCDC, 1U);
-#if defined(DEMO_POWER_HIFI4_USED) && (DEMO_POWER_HIFI4_USED != 0U)
-    POWER_SelectSleepSetpoint(kRegulator_DCDC, 1U);
-#else
-    POWER_SelectSleepSetpoint(kRegulator_DCDC, 1U);
-#endif
     POWER_DisableSleepRegulators(kPower_DCDC_FDSR); /* DCDC power down in FDSR. */
     POWER_ApplyPD();
 #else  /* VDDN powered by external PMIC. */
@@ -428,14 +444,7 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 #endif
     POWER_SetVdd1SupplySrc(kVddSrc_PMC);
     POWER_SetVdd2SupplySrc(kVddSrc_PMC);
-    POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 2U);
-#if defined(DEMO_POWER_HIFI4_USED) && (DEMO_POWER_HIFI4_USED != 0U)
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 2U); /* HIFI4 can keep running in deep sleep mode. */
-#else
-    POWER_SelectSleepSetpoint(kRegulator_Vdd2LDO, 0U);
-#endif                                                 /* DEMO_POWER_HIFI4_USED */
-    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
-    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
+
     POWER_ApplyPD();
 #endif /* DEMO_POWER_SUPPLY_PMIC */
 }
