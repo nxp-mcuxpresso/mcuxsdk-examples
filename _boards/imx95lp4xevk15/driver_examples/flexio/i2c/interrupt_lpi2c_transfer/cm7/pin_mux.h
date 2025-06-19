@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -26,6 +26,7 @@
 extern "C" {
 #endif
 
+
 /*!
  * @brief Calls initialization functions.
  *
@@ -36,13 +37,7 @@ void BOARD_InitBootPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPins(void); /*!< Function assigned for the core: Cortex-M33[cm33] */
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_I2C_ConfigurePins(void);                        /*!< Function assigned for the core: Cortex-M33[cm33] */
+void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M7F[cm7] */
 
 #if defined(__cplusplus)
 }
@@ -52,3 +47,7 @@ void BOARD_I2C_ConfigurePins(void);                        /*!< Function assigne
  * @}
  */
 #endif /* _PIN_MUX_H_ */
+
+/***********************************************************************************************************************
+ * EOF
+ **********************************************************************************************************************/

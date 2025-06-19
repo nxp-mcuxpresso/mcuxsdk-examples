@@ -713,8 +713,8 @@ BOARD_InitPDMPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPDMPins(void) {                             /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM0_BIT0, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM0_BIT0, 
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U));
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
