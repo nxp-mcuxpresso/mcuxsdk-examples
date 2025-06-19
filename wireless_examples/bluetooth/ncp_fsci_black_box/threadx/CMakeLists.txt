@@ -9,6 +9,13 @@ project(ncp_fsci_black_box LANGUAGES C CXX ASM
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 
+mcux_add_configuration(
+# define to force initialization of sqram_rldat_region after reset
+# only required for GCC as IAR already initialize correctly this region
+    TOOLCHAINS armgcc
+    AS "        -DINIT_BLE_RL_DAT"
+)
+
 mcux_add_iar_configuration(
     TARGETS  debug
     CC "     --debug "
