@@ -109,20 +109,16 @@ static void APP_BuildBroadCastFrame(void)
 /*! @brief Build Frame for single ring transmit. */
 static void APP_BuildBroadCastFrameSwtTag(uint8_t port)
 {
-    netc_swt_tag_port_no_ts_t tag = {
-        .comTag = {
-            .tpid = NETC_SWITCH_DEFAULT_ETHER_TYPE,
-            .subType = kNETC_TagToPortNoTs,
-            .type = kNETC_TagToPort,
-            .qv = 1,
-            .ipv = 0,
-            .dr = 0,
-            .swtId = 1,
-            .port = port
-        }
-    };
-    uint32_t headerSize = 14U + sizeof(tag);
-    uint32_t length = EXAMPLE_EP_TEST_FRAME_SIZE - headerSize;
+    netc_swt_tag_port_no_ts_t tag = {.comTag = {.tpid    = NETC_SWITCH_DEFAULT_ETHER_TYPE,
+                                                .subType = kNETC_TagToPortNoTs,
+                                                .type    = kNETC_TagToPort,
+                                                .qv      = 1,
+                                                .ipv     = 0,
+                                                .dr      = 0,
+                                                .swtId   = 1,
+                                                .port    = port}};
+    uint32_t headerSize           = 14U + sizeof(tag);
+    uint32_t length               = EXAMPLE_EP_TEST_FRAME_SIZE - headerSize;
     uint32_t count;
 
     for (count = 0; count < 6U; count++)
@@ -145,7 +141,7 @@ static void APP_BuildBroadCastFrameSwtTag(uint8_t port)
 #if !(defined(FSL_FEATURE_NETC_HAS_NO_SWITCH) && FSL_FEATURE_NETC_HAS_NO_SWITCH)
 static status_t APP_SWT_AddTableEntry()
 {
-    status_t result  = kStatus_Success;
+    status_t result = kStatus_Success;
     uint32_t entryID;
 
 #if defined(EXAMPLE_SWT_USE_IPF) && EXAMPLE_SWT_USE_IPF
@@ -153,8 +149,8 @@ static status_t APP_SWT_AddTableEntry()
 
     memset(&ipfEntryCfg, 0U, sizeof(netc_tb_ipf_config_t));
     ipfEntryCfg.keye.srcPortMask = EXAMPLE_SWT_USED_PORT_BITMAP;
-    ipfEntryCfg.cfge.hr = kNETC_SoftwareDefHR0;
-    ipfEntryCfg.cfge.fltfa = kNETC_IPFRedirectToMgmtPort;
+    ipfEntryCfg.cfge.hr          = kNETC_SoftwareDefHR0;
+    ipfEntryCfg.cfge.fltfa       = kNETC_IPFRedirectToMgmtPort;
 
     /* Frame from used port redirect to management port. */
     for (uint32_t i = 0; i < EXAMPLE_SWT_MAX_PORT_NUM; i++)
@@ -166,21 +162,24 @@ static status_t APP_SWT_AddTableEntry()
         }
 
         ipfEntryCfg.keye.srcPort = i;
-        result = SWT_RxIPFAddTableEntry(&g_swt_handle, &ipfEntryCfg, &entryID);
+        result                   = SWT_RxIPFAddTableEntry(&g_swt_handle, &ipfEntryCfg, &entryID);
         if ((kStatus_Success != result) && (entryID != 0xFFFFFFFF))
         {
-            PRINTF("\r\n%s: %d, Failed to add IPF table!, result = %u\r\n, entryID = %u", __func__, __LINE__, result, entryID);
+            PRINTF("\r\n%s: %d, Failed to add IPF table!, result = %u\r\n, entryID = %u", __func__, __LINE__, result,
+                   entryID);
             return kStatus_Fail;
         }
     }
 #else
     /* Set FDB table, input frame only forwards to pseudo MAC port. */
-    netc_tb_fdb_config_t fdbEntryCfg = {.keye.fid = EXAMPLE_FRAME_FID, .cfge.portBitmap = (1U << EXAMPLE_SWT_PSEUDO_PORT), .cfge.dynamic = 1};
+    netc_tb_fdb_config_t fdbEntryCfg = {
+        .keye.fid = EXAMPLE_FRAME_FID, .cfge.portBitmap = (1U << EXAMPLE_SWT_PSEUDO_PORT), .cfge.dynamic = 1};
     memset(&fdbEntryCfg.keye.macAddr[0], 0xFF, 6U);
     result = SWT_BridgeAddFDBTableEntry(&g_swt_handle, &fdbEntryCfg, &entryID);
     if ((kStatus_Success != result) || (0xFFFFFFFFU == entryID))
     {
-        PRINTF("\r\n%s: %d, Failed to add FDB table!, result = %d, entryID = %d\r\n", __func__, __LINE__, result, entryID);
+        PRINTF("\r\n%s: %d, Failed to add FDB table!, result = %d, entryID = %d\r\n", __func__, __LINE__, result,
+               entryID);
         return kStatus_Fail;
     }
 #endif
@@ -299,10 +298,10 @@ status_t APP_EP_XferLoopBack(uint32_t index)
 #endif
 #if (defined(FSL_FEATURE_NETC_HAS_ERRATA_052167) && FSL_FEATURE_NETC_HAS_ERRATA_052167)
     /* ERR052167: Actual MAC Tx IPG is longer than configured when transmitting back-to-back packets in MII half duplex
-    mode by approximately 15 extra bytes. For example, when configured for IPG=12, the actual IPG will be approximately 27.
-    The net result is that maximum throughput will be reduced also in the absence of half-duplex collision/retry events.
-    When using MII protocol, using full-duplex mode is recommended instead of half-duplex. If using MII half-duplex mode,
-    additional bandwidth loss should be expected and accounted for due to extended IPG. */
+    mode by approximately 15 extra bytes. For example, when configured for IPG=12, the actual IPG will be
+    approximately 27. The net result is that maximum throughput will be reduced also in the absence of half-duplex
+    collision/retry events. When using MII protocol, using full-duplex mode is recommended instead of half-duplex. If
+    using MII half-duplex mode, additional bandwidth loss should be expected and accounted for due to extended IPG. */
     assert(!((phyMode == kNETC_MiiMode) && (phyDuplex == kNETC_MiiHalfDuplex)));
 #endif
     result = EP_Init(&g_ep_handle, &g_macAddr[0], &ep_config, &bdrConfig);
@@ -381,13 +380,13 @@ status_t APP_SWT_XferLoopBack(void)
     netc_tx_bdr_config_t txBdrConfig = {0};
     netc_bdr_config_t bdrConfig      = {.rxBdrConfig = &rxBdrConfig, .txBdrConfig = &txBdrConfig};
 #if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
-    uint32_t dataOffset              = 12U + sizeof(netc_swt_tag_port_no_ts_t);
+    uint32_t dataOffset = 12U + sizeof(netc_swt_tag_port_no_ts_t);
 #else
-    swt_mgmt_tx_arg_t txArg          = {0};
+    swt_mgmt_tx_arg_t txArg = {0};
 #endif
-    netc_buffer_struct_t txBuff      = {.buffer = &g_txFrame, .length = sizeof(g_txFrame)};
-    netc_frame_struct_t txFrame      = {.buffArray = &txBuff, .length = 1};
-    bool link                        = false;
+    netc_buffer_struct_t txBuff = {.buffer = &g_txFrame, .length = sizeof(g_txFrame)};
+    netc_frame_struct_t txFrame = {.buffArray = &txBuff, .length = 1};
+    bool link                   = false;
     netc_msix_entry_t msixEntry[2];
     netc_hw_mii_mode_t phyMode;
     netc_hw_mii_speed_t phySpeed;
@@ -474,9 +473,9 @@ status_t APP_SWT_XferLoopBack(void)
     g_swt_config.ports[2].commonCfg.ipfCfg.enIPFTable = true;
 #else
     g_swt_config.bridgeCfg.dVFCfg.enUseFilterID = true;
-    g_swt_config.bridgeCfg.dVFCfg.filterID = EXAMPLE_FRAME_FID;
-    g_swt_config.bridgeCfg.dVFCfg.mfo = kNETC_FDBLookUpWithDiscard;
-    g_swt_config.bridgeCfg.dVFCfg.mlo = kNETC_DisableMACLearn;
+    g_swt_config.bridgeCfg.dVFCfg.filterID      = EXAMPLE_FRAME_FID;
+    g_swt_config.bridgeCfg.dVFCfg.mfo           = kNETC_FDBLookUpWithDiscard;
+    g_swt_config.bridgeCfg.dVFCfg.mlo           = kNETC_DisableMACLearn;
 #endif
 
     g_swt_config.cmdRingUse            = 1U;
@@ -541,12 +540,13 @@ status_t APP_SWT_XferLoopBack(void)
         APP_BuildBroadCastFrameSwtTag(i);
 #endif
 
-        txOver     = false;
+        txOver = false;
 #if defined(FSL_FEATURE_NETC_HAS_SWITCH_TAG) && FSL_FEATURE_NETC_HAS_SWITCH_TAG
-        result     = SWT_SendFrame(&g_swt_handle, &txFrame, NULL, NULL);
+        result = SWT_SendFrame(&g_swt_handle, &txFrame, NULL, NULL);
 #else
         txArg.ring = 0;
-        result     = SWT_SendFrame(&g_swt_handle, txArg, (netc_hw_port_idx_t)(kNETC_SWITCH0Port0 + i), false, &txFrame, NULL, NULL);
+        result     = SWT_SendFrame(&g_swt_handle, txArg, (netc_hw_port_idx_t)(kNETC_SWITCH0Port0 + i), false, &txFrame,
+                                   NULL, NULL);
 #endif
         if (result != kStatus_Success)
         {
