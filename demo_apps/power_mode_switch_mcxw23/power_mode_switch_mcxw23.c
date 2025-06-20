@@ -86,12 +86,12 @@ static status_t DeepSleep(wakeup_vector_index_t wakeupVectorIndex);
 static status_t PowerDown(wakeup_vector_index_t wakeupVectorIndex);
 static status_t DeepPowerDown(wakeup_vector_index_t wakeupVectorIndex);
 static status_t PowerOff(wakeup_vector_index_t wakeupVectorIndex);
-static status_t Reset(uint8_t param);
-static status_t Calibrate(uint8_t param);
-static status_t GetPowerLibVersion(uint8_t param);
-static status_t GetChipVersion(uint8_t param);
-static status_t DemoBODs(uint8_t param);
-static status_t VoltageMeasurement(uint8_t param);
+static status_t Reset(wakeup_vector_index_t param);
+static status_t Calibrate(wakeup_vector_index_t param);
+static status_t GetPowerLibVersion(wakeup_vector_index_t param);
+static status_t GetChipVersion(wakeup_vector_index_t param);
+static status_t DemoBODs(wakeup_vector_index_t param);
+static status_t VoltageMeasurement(wakeup_vector_index_t param);
 
 static void InitRTC(bool init);
 static void InitOSTimer(bool init);
@@ -544,7 +544,7 @@ static void DeInitWakupSource(int wakeupVectorIndex)
     }
 }
 
-static status_t GetPowerLibVersion(uint8_t param)
+static status_t GetPowerLibVersion(wakeup_vector_index_t param)
 {
     uint32_t libVersion = POWER_GetLibVersion();
     uint8_t major       = libVersion >> 16;
@@ -554,21 +554,21 @@ static status_t GetPowerLibVersion(uint8_t param)
     return kStatus_Success;
 }
 
-static status_t GetChipVersion(uint8_t param)
+static status_t GetChipVersion(wakeup_vector_index_t param)
 {
     uint32_t chipVersion = SYSTEM_GetChipVersion();
     PRINTF("Chip version: MCXW23 %0x\n", chipVersion);
     return kStatus_Success;
 }
 
-static status_t Reset(uint8_t param)
+static status_t Reset(wakeup_vector_index_t param)
 {
     PRINTF("Resetting device. Here we go!\n");
     POWER_Reset();
     return kStatus_Success;
 }
 
-static status_t Calibrate(uint8_t param)
+static status_t Calibrate(wakeup_vector_index_t param)
 {
     uint32_t measuredFreq;
     PRINTF("Calibrate 32k FRO:\n");
@@ -600,7 +600,7 @@ static status_t Calibrate(uint8_t param)
     return kStatus_Success;
 }
 
-static status_t DemoBODs(uint8_t param)
+static status_t DemoBODs(wakeup_vector_index_t param)
 {
     /* BODs will be enabled for about 5 minutes. */
     int demoLoopTimeout = 300;
@@ -848,7 +848,7 @@ static void DrawBar(uint32_t col, uint32_t voltage)
     PRINTF("\n");
 }
 
-static status_t VoltageMeasurement(uint8_t param)
+static status_t VoltageMeasurement(wakeup_vector_index_t param)
 {
     uint32_t measurements[80];
     uint32_t measurementPos = 0;
@@ -956,7 +956,7 @@ static status_t ExecuteMenuItem(const menu_item_t *item)
     PRINTF("SELECTED: %s\n", item->title);
     PRINTF("----------------------------------------------------\n");
 
-    status_t status = item->func(item->param);
+    status_t status = item->func((wakeup_vector_index_t)item->param);
     return status;
 }
 
@@ -1122,5 +1122,4 @@ int main(void)
     {
         HandleMenu();
     }
-    return 0;
 }
