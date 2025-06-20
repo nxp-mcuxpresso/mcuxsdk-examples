@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- LPCXpresso860Max board
+- FRDM-MCXE247 board
 - FRDM-MC-LVPMSM board
 - Power supply 24V
 - Mini/micro USB cable

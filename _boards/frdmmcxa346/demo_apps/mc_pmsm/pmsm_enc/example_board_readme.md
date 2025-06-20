@@ -1,6 +1,6 @@
 Hardware requirements
 =====================
-- FRDMMCXA346 board
+- FRDM-MCXA346 board
 - FRDM-MC-LVPMSM board
 - Power supply 24V
 - Mini/micro USB cable
