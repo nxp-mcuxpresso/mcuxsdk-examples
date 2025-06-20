@@ -45,8 +45,8 @@ void SystemInit(void)
 
     SCB->NSACR |= ((3UL << 0) | (3UL << 10)); /* enable CP0, CP1, CP10, CP11 Non-secure Access */
 
-    extern void *__Vectors;
-    SCB->VTOR = (uint32_t)&__Vectors;
+    extern void *__VECTOR_TABLE[];
+    SCB->VTOR = (uint32_t) & (__VECTOR_TABLE[0]);
 
     SYSCON->TRACECLKDIV = 0;
 /* Optionally enable RAM banks that may be off by default at reset */

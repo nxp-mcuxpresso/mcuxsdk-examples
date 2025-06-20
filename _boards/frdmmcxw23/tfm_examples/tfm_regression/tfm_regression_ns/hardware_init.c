@@ -19,8 +19,8 @@ void BOARD_InitHardware(void)
 
 void SystemInit(void)
 {
-    extern void *__Vectors;
-    SCB->VTOR = (uint32_t)&__Vectors;
+    extern void *__VECTOR_TABLE[];
+    SCB->VTOR = (uint32_t) & (__VECTOR_TABLE[0]);
 
     BOARD_InitHardware();
 }
