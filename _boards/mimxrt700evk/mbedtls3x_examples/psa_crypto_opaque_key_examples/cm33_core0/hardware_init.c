@@ -32,5 +32,8 @@ void BOARD_InitHardware(void)
 
     XCACHE_DisableCache(XCACHE0);
     XCACHE_DisableCache(XCACHE1);
+
+    __DSB();
+    __ISB();
 }
 /*${function:end}*/
