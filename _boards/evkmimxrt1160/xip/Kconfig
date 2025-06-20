@@ -1,4 +1,6 @@
-menu "Board Boot Header"
-    config MCUX_COMPONENT_board.boot_header
-        bool "Use board boot header"
-endmenu
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_COMPONENT_board.boot_header
+    bool "Use board boot header"

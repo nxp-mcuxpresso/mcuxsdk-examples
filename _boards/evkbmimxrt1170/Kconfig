@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-rsource "${core_id}/Kconfig"
+orsource "${core_id}/Kconfig"
 rsource "Kconfig.defconfig"
 
 config MCUX_HW_BOARD_evkbmimxrt1170
