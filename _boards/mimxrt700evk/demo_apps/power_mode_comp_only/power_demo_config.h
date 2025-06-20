@@ -15,7 +15,7 @@
  *  - DEMO_POWER_SUPPLY_MIXED, the VDDN is supplied by external PMIC. VDD1 and VDD2 are supplied by internal LDOs.
  *  - DEMO_POWER_SUPPLY_PMIC, the VDDN, VDD1 and VDD2 are supplied by PMIC.
  */
-#define DEMO_POWER_SUPPLY_OPTION DEMO_POWER_SUPPLY_PMC
+#define DEMO_POWER_SUPPLY_OPTION DEMO_POWER_SUPPLY_PMIC
 
 #define DEMO_POWER_SUPPLY_PMC   1U
 #define DEMO_POWER_SUPPLY_PMIC  2U
