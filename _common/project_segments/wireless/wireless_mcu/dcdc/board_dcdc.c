@@ -1,6 +1,5 @@
 /* -------------------------------------------------------------------------- */
-/*                           Copyright 2021-2024 NXP                          */
-/*                            All rights reserved.                            */
+/*                           Copyright 2021-2025 NXP                          */
 /*                    SPDX-License-Identifier: BSD-3-Clause                   */
 /* -------------------------------------------------------------------------- */
 
@@ -162,14 +161,15 @@ static void BOARD_InitDcdcBuck(void)
 #if (!defined (gBoardDcdcRampTrim_c)) || (gBoardDcdcRampTrim_c == 0) \
     || (!defined (gBoardDcdcEnableHighPowerModeOnNbu_d)) || (gBoardDcdcEnableHighPowerModeOnNbu_d == 0)
 #if defined(gAppMaxTxPowerDbm_c) && (gAppMaxTxPowerDbm_c <= 0)
-#if defined(gAppHighSystemClockFrequency_d) && (gAppHighSystemClockFrequency_d >= 0)
+#if (defined(gAppHighSystemClockFrequency_d) && (gAppHighSystemClockFrequency_d >= 0)) \
+    || (defined(gAppHighNBUClockFrequency_d) && (gAppHighNBUClockFrequency_d > 0))
     /* 0 dBm, 96MHz 1.35V  */
     /* A drop of 250mV is needed between DCDC output voltage and LDO core voltage, see datasheet */
     BOARD_DCDC_config(kSPC_DCDC_LowDriveStrength, kSPC_DCDC_MidVoltage, false);
 #else
     /* 0 dBm, 48MHz, 1.25V - 15mA maximum on DCDC output*/
     BOARD_DCDC_config(kSPC_DCDC_LowDriveStrength, kSPC_DCDC_LowUnderVoltage, false);
-#endif /* gAppHighSystemClockFrequency_d */
+#endif /* gAppHighSystemClockFrequency_d || gAppHighNBUClockFrequency_d */
 #elif defined(gAppMaxTxPowerDbm_c) && (gAppMaxTxPowerDbm_c <= 7)
     /* 7dBm, 1.8V */
     BOARD_DCDC_config(kSPC_DCDC_NormalDriveStrength, kSPC_DCDC_SafeModeVoltage, false);

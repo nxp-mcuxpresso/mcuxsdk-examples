@@ -224,6 +224,10 @@ static void BOARD_ExitPowerDownCb(void)
 #else
     /* Set Core frequency to 48Mhz , core voltage to 1.0v */
     BOARD_BootClockRUN();
+#if defined(gAppHighNBUClockFrequency_d) && (gAppHighNBUClockFrequency_d > 0)
+    /* Increase LDO core voltage to 1.1v */
+    PLATFORM_SetLdoCoreNormalDriveVoltage();
+#endif /* defined(gAppHighNBUClockFrequency_d) && (gAppHighNBUClockFrequency_d > 0) */
 #endif
 
 #if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
