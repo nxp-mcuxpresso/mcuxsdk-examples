@@ -52,10 +52,10 @@ const uint32_t customLUT[CUSTOM_LUT_LENGTH] = {
      * However, other non XIP boot targets are not suitable for XIP boot flow, uses flash default configuration */
 #if defined(XIP_BOOT_HEADER_ENABLE) && XIP_BOOT_HEADER_ENABLE
     [4 * NOR_CMD_LUT_SEQ_IDX_READ_FAST + 1] = FLEXSPI_LUT_SEQ(
-        kFLEXSPI_Command_DUMMY_SDR, kFLEXSPI_1PAD, 0x0A, kFLEXSPI_Command_READ_SDR, kFLEXSPI_1PAD, 0x04),
+        kFLEXSPI_Command_DUMMY_SDR, kFLEXSPI_1PAD, 0x08, kFLEXSPI_Command_READ_SDR, kFLEXSPI_1PAD, 0x04),
 #else
     [4 * NOR_CMD_LUT_SEQ_IDX_READ_FAST + 1] = FLEXSPI_LUT_SEQ(
-        kFLEXSPI_Command_DUMMY_SDR, kFLEXSPI_1PAD, 0x08, kFLEXSPI_Command_READ_SDR, kFLEXSPI_1PAD, 0x04),
+        kFLEXSPI_Command_DUMMY_SDR, kFLEXSPI_1PAD, 0x06, kFLEXSPI_Command_READ_SDR, kFLEXSPI_1PAD, 0x04),
 #endif
 
     /* Fast read quad mode - SDR */
