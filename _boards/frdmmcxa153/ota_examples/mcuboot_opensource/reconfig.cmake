@@ -30,7 +30,7 @@ mcux_add_mdk_configuration(
 )
 mcux_add_armgcc_configuration(
     TARGETS debug
-    CC "-Og"
+    CC "-O1"
 )
 
 
