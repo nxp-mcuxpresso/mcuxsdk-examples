@@ -7,28 +7,34 @@
 #include "pin_mux.h"
 #include "fsl_clock.h"
 #include "fsl_reset.h"
+#include "fsl_power.h"
 #include "board.h"
-#include <stdbool.h>
+#include "app.h"
 /*${header:end}*/
 
 /*${function:start}*/
 void BOARD_InitHardware(void)
-{
-    /* Release peripheral reset */
+{   
     RESET_ReleasePeripheralReset(kOSTIMER0_RST_SHIFT_RSTn);
-
-    BOARD_InitBootClocks();
+    CLOCK_EnableClock(kCLOCK_GateOSTIMER0);
+    
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 }
+
 /* Enter deep sleep mode. */
 void EXAMPLE_EnterDeepSleep()
 {
-    /* TODO: enter deep sleep */
+    while (OSTIMER0->OSEVENT_CTRL & OSTIMER_OSEVENT_CTRL_MATCH_WR_RDY_MASK);
+
+    power_ds_config_t dsConfig;
+
+    Power_EnterDeepSleep(&dsConfig);
 }
 /* Enable OSTIMER IRQ under deep mode */
 void EXAMPLE_EnableDeepSleepIRQ(void)
 {
-    EnableIRQ(OS_EVENT_IRQn);
+    EnableIRQ(EXAMPLE_OSTIMER_IRQn);
 }
 /*${function:end}*/

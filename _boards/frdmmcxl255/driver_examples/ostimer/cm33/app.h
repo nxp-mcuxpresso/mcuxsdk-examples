@@ -10,9 +10,9 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_OSTIMER_FREQ 16384
-#define EXAMPLE_OSTIMER      OSTIMER0
-#define EXAMPLE_OSTIMER_IRQn OS_EVENT_IRQn
+#define EXAMPLE_OSTIMER_FREQ  16384U
+#define EXAMPLE_OSTIMER       OSTIMER0
+#define EXAMPLE_OSTIMER_IRQn  OS_EVENT_IRQn
 /*${macro:end}*/
 
 /*******************************************************************************
