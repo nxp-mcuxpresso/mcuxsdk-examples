@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, 2023 NXP
+ * Copyright 2019, 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -23,6 +23,11 @@
 
 #ifndef EXAMPLE_ENABLE_CACHE_OF_FLASH
 #define EXAMPLE_ENABLE_CACHE_OF_FLASH
+#endif
+
+/* Some flash chip needs long time to do a full erase, make it optional. */
+#ifndef EXAMPLE_DISABLE_FLASH_CHIP_ERASE
+#define EXAMPLE_DISABLE_FLASH_CHIP_ERASE 0
 #endif
 
 /*******************************************************************************
@@ -72,7 +77,7 @@ int main(void)
 
     PRINTF("\r\n***NOR Flash Component Demo Start!***\r\n");
 
-#if !(defined(XIP_EXTERNAL_FLASH))
+#if (!(defined(XIP_EXTERNAL_FLASH)) && (!EXAMPLE_DISABLE_FLASH_CHIP_ERASE))
     /* Erase whole chip */
     PRINTF("\r\n***NOR Flash Erase Chip Start!***\r\n");
     status = Nor_Flash_Erase_Chip(&norHandle);
