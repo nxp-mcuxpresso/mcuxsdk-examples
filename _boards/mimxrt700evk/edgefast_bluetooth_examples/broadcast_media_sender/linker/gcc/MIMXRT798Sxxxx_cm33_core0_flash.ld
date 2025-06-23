@@ -37,7 +37,7 @@ NCACHE_START = 0x20200000;
 NCACHE_SIZE  = 0x00200000;
 
 HEAP_SIZE    = DEFINED(__heap_size__)  ? __heap_size__  : 0x1000;
-STACK_SIZE   = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
+STACK_SIZE   = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
 
 RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x10000 : 0;
 
