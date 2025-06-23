@@ -36,7 +36,11 @@ if (isdefinedsymbol(__heap_size__)) {
 }
 
 define symbol FLASH_START       = 0x0;
-define symbol FLASH_SIZE        = 0xFE000;
+if (isdefinedsymbol(MCXW235)) {
+    define symbol FLASH_SIZE        = 0xA0000;
+} else {
+    define symbol FLASH_SIZE        = 0xFE000;
+}
 define symbol FLASH_END         = FLASH_START + FLASH_SIZE - 1;
 define symbol FLASH_SECTOR_SIZE = 0x2000; /* 8KB */
 
@@ -72,12 +76,17 @@ define symbol m_text_start                     = m_interrupts_end + 1;
 define symbol m_text_end                       = INT_STORAGE_START - 1;
 
 define symbol m_data_start                     = 0x20004000;
-define symbol m_data_end                       = 0x2001FFFF;
+if (isdefinedsymbol(MCXW235)) {
+    define symbol m_data_size                  = 0x14000;
+} else {
+    define symbol m_data_size                  = 0x1C000;
+}
+define symbol m_data_end                       = m_data_start + m_data_size - 1;
 
 define exported symbol __VECTOR_TABLE          = m_interrupts_start;
 define exported symbol __RAM_VECTOR_TABLE_SIZE = 0x00000140;
 
-define symbol LAST_HEAP_ADDRESS = 0x2001FFFF; /* Needs to be known to calculate __HEAP_end__ below */
+define symbol LAST_HEAP_ADDRESS = m_data_end; /* Needs to be known to calculate __HEAP_end__ below */
 define exported symbol __HEAP_end__             = LAST_HEAP_ADDRESS - __size_cstack__;
 
 define memory mem with size = 4G;

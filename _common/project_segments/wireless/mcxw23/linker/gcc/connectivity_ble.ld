@@ -6,7 +6,7 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 FLASH_START                  = 0x0;
-FLASH_SIZE                   = 0xFE000;
+FLASH_SIZE                   = DEFINED(MCXW235) ? 0xA0000 : 0xFE000;
 FLASH_END                    = FLASH_START + FLASH_SIZE - 1;
 FLASH_SECTOR_SIZE            = 0x2000; /* 8KB */
 
@@ -33,10 +33,14 @@ m_text_end                   = INT_STORAGE_START - 1;
 m_text_start                 = 0x200;
 m_text_size                  = m_text_end - m_text_start + 1;
 
+m_data_start                 = 0x20004000;
+m_data_size                  = DEFINED(MCXW235) ? 0x14000 : 0x1C000;
+m_data_end                   = m_data_start + m_data_size - 1;
+
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0800;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
 M_VECTOR_RAM_SIZE = 0x00000140;
-LAST_HEAP_ADDRESS = 0x2001FFFF; /* Needs to be known to calculate __HEAP_end__ below */
+LAST_HEAP_ADDRESS = m_data_end; /* Needs to be known to calculate __HEAP_end__ below */
 
 /* Specify the memory areas */
 MEMORY
@@ -46,7 +50,7 @@ MEMORY
   NVM_region            (RW)  : ORIGIN = NV_STORAGE_START_ADDRESS, LENGTH = NV_STORAGE_SIZE
   NVM_region_datastore  (RW)  : ORIGIN = DATASTORE_START_ADDRESS, LENGTH = DATASTORE_SIZE
   NVM_region_eventstore (RW)  : ORIGIN = EVENTSTORE_START_ADDRESS, LENGTH = EVENTSTORE_SIZE
-  m_data                (RW)  : ORIGIN = 0x20004000, LENGTH = 0x0001C000
+  m_data                (RW)  : ORIGIN = m_data_start, LENGTH = m_data_size
 }
 
 /* Define output sections */
