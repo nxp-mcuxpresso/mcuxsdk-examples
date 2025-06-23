@@ -31,6 +31,5 @@ Board wakeup from deep sleep mode.
 
 OS timer match value reached
 OS timer match value reached
-OS timer match value reached
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
