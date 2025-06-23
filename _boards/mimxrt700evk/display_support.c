@@ -887,13 +887,15 @@ status_t BOARD_PrepareDisplayController(void)
 
     status = BOARD_InitDisplayInterface();
 
-    if (kStatus_Success == status)
+    if (kStatus_Success != status)
     {
-        NVIC_SetPriority(LCDIF_IRQn, 3);
-        EnableIRQ(LCDIF_IRQn);
+        PRINTF("ERROR: Display interface initialization failed\r\n");
     }
 
-    return kStatus_Success;
+    NVIC_SetPriority(LCDIF_IRQn, 3);
+    EnableIRQ(LCDIF_IRQn);
+
+    return status;
 }
 
 #elif ((DEMO_PANEL_RM67162 == DEMO_PANEL) || (DEMO_PANEL_CO5300 == DEMO_PANEL))

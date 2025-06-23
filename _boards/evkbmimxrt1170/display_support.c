@@ -588,18 +588,20 @@ status_t BOARD_PrepareDisplayController(void)
 
     status = BOARD_InitDisplayInterface();
 
-    if (kStatus_Success == status)
+    if (kStatus_Success != status)
     {
-#if (DEMO_DISPLAY_CONTROLLER == DEMO_DISPLAY_CONTROLLER_LCDIFV2)
-        NVIC_ClearPendingIRQ(LCDIFv2_IRQn);
-        NVIC_SetPriority(LCDIFv2_IRQn, 3);
-        EnableIRQ(LCDIFv2_IRQn);
-#else
-        NVIC_ClearPendingIRQ(eLCDIF_IRQn);
-        NVIC_SetPriority(eLCDIF_IRQn, 3);
-        EnableIRQ(eLCDIF_IRQn);
-#endif
+        PRINTF("ERROR: Display interface initialization failed\r\n");
     }
 
-    return kStatus_Success;
+#if (DEMO_DISPLAY_CONTROLLER == DEMO_DISPLAY_CONTROLLER_LCDIFV2)
+    NVIC_ClearPendingIRQ(LCDIFv2_IRQn);
+    NVIC_SetPriority(LCDIFv2_IRQn, 3);
+    EnableIRQ(LCDIFv2_IRQn);
+#else
+    NVIC_ClearPendingIRQ(eLCDIF_IRQn);
+    NVIC_SetPriority(eLCDIF_IRQn, 3);
+    EnableIRQ(eLCDIF_IRQn);
+#endif
+
+    return status;
 }
