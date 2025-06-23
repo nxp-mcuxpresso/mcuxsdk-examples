@@ -9,6 +9,10 @@
 
 #include "hal_pinctrl.h"
 
+/***********************************************************************************************************************
+ * Definitions
+ **********************************************************************************************************************/
+
 /*!
  * @addtogroup pin_mux
  * @{
@@ -22,6 +26,7 @@
 extern "C" {
 #endif
 
+
 /*!
  * @brief Calls initialization functions.
  *
@@ -32,7 +37,7 @@ void BOARD_InitBootPins(void);
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
-void BOARD_InitPins(void);                    /* Function assigned for the Cortex-M33 */
+void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M7F[cm7] */
 
 #if defined(__cplusplus)
 }

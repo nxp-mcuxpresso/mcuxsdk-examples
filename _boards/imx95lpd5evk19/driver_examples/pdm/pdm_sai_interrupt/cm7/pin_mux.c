@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v12.0
-processor: MIMX9352xxxxM
-package_id: MIMX9352DVUXM
+product: Pins v16.0
+processor: MIMX9596xxxxN
+package_id: MIMX9596AVZXN
 mcu_data: ksdk2_0
-processor_version: 0.12.3
+processor_version: 16.1.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -29,34 +29,26 @@ processor_version: 0.12.3
  *
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void)
-{   
+{
     BOARD_InitPins();
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
-
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
 }
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm33}
+- options: {callFromInitBoot: 'true', coreID: cm7}
 - pin_list:
-  - {pin_num: F20, peripheral: LPUART2, signal: lpuart_rx, pin_signal: UART2_RXD, HYS: DISABLED, FSEL1: SlOW_SLEW_RATE, DSE: NO_DRIVE}
-  - {pin_num: F21, peripheral: LPUART2, signal: lpuart_tx, pin_signal: UART2_TXD, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: D20, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: D21, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, HYS: DISABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: J17, peripheral: PDM, signal: 'pdm_bit_stream, 00', pin_signal: PDM_BIT_STREAM0, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: G18, peripheral: PDM, signal: 'pdm_bit_stream, 01', pin_signal: PDM_BIT_STREAM1, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: G17, peripheral: PDM, signal: pdm_clk, pin_signal: PDM_CLK, HYS: DISABLED, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
-  - {pin_num: R20, peripheral: SAI3, signal: sai_mclk, pin_signal: GPIO_IO17, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: R21, peripheral: SAI3, signal: sai_tx_bclk, pin_signal: GPIO_IO16, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: V20, peripheral: SAI3, signal: sai_tx_sync, pin_signal: GPIO_IO26, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: R17, peripheral: SAI3, signal: 'sai_tx_data, 00', pin_signal: GPIO_IO19, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
-  - {pin_num: T20, peripheral: SAI3, signal: 'sai_rx_data, 00', pin_signal: GPIO_IO20, HYS: DISABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, OD: DISABLED, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
+  - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
+  - {pin_num: V48, peripheral: LPI2C4, signal: lpi2c_scl, pin_signal: GPIO_IO31, SION: ENABLED, OD: DISABLED, PD: DISABLED}
+  - {pin_num: V46, peripheral: LPI2C4, signal: lpi2c_sda, pin_signal: GPIO_IO30, SION: ENABLED, OD: DISABLED, PD: DISABLED}
+  - {pin_num: G45, peripheral: PDM, signal: 'pdm_bit_stream_bit, 0', pin_signal: PDM_BIT_STREAM0, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
+  - {pin_num: F46, peripheral: PDM, signal: pdm_clk, pin_signal: PDM_CLK, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
+  - {pin_num: P46, peripheral: SAI3, signal: sai_tx_bclk, pin_signal: GPIO_IO16, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: P48, peripheral: SAI3, signal: sai_mclk, pin_signal: GPIO_IO17, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: R49, peripheral: SAI3, signal: 'sai_rx_data_bit, 0', pin_signal: GPIO_IO20, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: R51, peripheral: SAI3, signal: 'sai_tx_data_bit, 0', pin_signal: GPIO_IO21, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
+  - {pin_num: U45, peripheral: SAI3, signal: sai_tx_sync, pin_signal: GPIO_IO26, SION: ENABLED, PD: DISABLED, FSEL1: SlOW_SLEW_RATE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -66,42 +58,48 @@ BOARD_InitPins:
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
-void BOARD_InitPins(void) {                                /*!< Function assigned for the core: undefined[cm33] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0, 0U);
-    //HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM_BIT1, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
-
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U));
-    //HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM1__PDM_BIT_STREAM_BIT1,
-    //                    HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U));
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_CLK__PDM_CLK,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U));
-
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 1U);
+void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__SAI3_TX_BCLK, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__SAI3_MCLK, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA_BIT0, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO21__SAI3_TX_DATA_BIT0, 1U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC, 1U);
-
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA,
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) | HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO16__SAI3_TX_BCLK, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__SAI3_MCLK, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO17__SAI3_MCLK, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA_BIT0, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO20__SAI3_RX_DATA_BIT0, 
-                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO21__SAI3_TX_DATA_BIT0, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO21__SAI3_TX_DATA_BIT0, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC, 1U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO26__SAI3_TX_SYNC, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U));
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_CLK__PDM_CLK, 0U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_CLK__PDM_CLK, 
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(3U));
 }
 
 /***********************************************************************************************************************
