@@ -61,7 +61,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
     )
 
     mcux_add_armgcc_linker_script(
-        BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/wireless_examples
+        BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/mcxw23
         TARGETS debug release
         LINKER linker/gcc/${gcc_wireless_linker_file_ble}
     )
@@ -73,9 +73,9 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
     )
 
     mcux_add_iar_linker_script(
-        BASE_PATH ${SdkRootDirPath}
+        BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/mcxw23
         TARGETS debug release
-        LINKER ${board_root}/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
+        LINKER linker/iar/${iar_wireless_linker_file}
     )
 endif()
 

@@ -4,15 +4,15 @@ mcux_add_source(
 )
 
 mcux_remove_armgcc_linker_script(
-    TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/MCXW236_flash.ld
+    TARGETS debug release
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
 )
 
 mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/mcxw23
     TARGETS debug release
-    BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/wireless_examples/linker/gcc/connectivity_ble.ld
+    LINKER linker/gcc/${gcc_wireless_linker_file_ble}
 )
 
 mcux_remove_iar_linker_script(
@@ -22,7 +22,7 @@ mcux_remove_iar_linker_script(
 )
 
 mcux_add_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
+    BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/mcxw23
     TARGETS debug release
-    LINKER ${board_root}/${board}/wireless_examples/linker/iar/${iar_wireless_linker_file}
+    LINKER linker/iar/${iar_wireless_linker_file}
 )
