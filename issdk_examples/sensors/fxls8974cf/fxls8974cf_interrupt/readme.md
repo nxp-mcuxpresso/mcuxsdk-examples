@@ -9,4 +9,3 @@ wait for data ready event and read out samples. The dataready event is routed to
 INT pin when samples are available sensor reads samples.
 
 ## Supported Boards
-- MIMXRT700-EVK

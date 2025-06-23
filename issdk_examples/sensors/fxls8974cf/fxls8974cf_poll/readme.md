@@ -9,4 +9,3 @@ out samples. The polls for dataready and when samples are available sensor reads
 samples.
 
 ## Supported Boards
-- MIMXRT700-EVK

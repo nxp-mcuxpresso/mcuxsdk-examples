@@ -10,4 +10,3 @@ autonomously switch back to SLEEP mode on no-motion detection for configured
 ASLP counter.
 
 ## Supported Boards
-- MIMXRT700-EVK

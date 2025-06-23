@@ -16,6 +16,4 @@ fxls8974cf_interrupt:
       - ${board_root}/${board}_a8974/issdk_examples/sensors/fxls8974cf/fxls8974cf_interrupt/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    mimxrt700evk@cm33_core0: []
   shields:
-    a8974: []
