@@ -197,8 +197,10 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
     lv_coord_t y2 = area->y2;
 
     uint8_t data[4];
-    const uint8_t *pdata = (const uint8_t *)color_p;
-    uint32_t send_size   = (x2 - x1 + 1) * (y2 - y1 + 1) * LCD_FB_BYTE_PER_PIXEL;
+    uint32_t pixel_count = (x2 - x1 + 1) * (y2 - y1 + 1);
+    uint32_t send_size   = pixel_count * LCD_FB_BYTE_PER_PIXEL;
+
+    lv_draw_sw_rgb565_swap(color_p, pixel_count);
 
     /*Column addresses*/
     DEMO_SPI_LCD_WriteCmd(ILI9341_CMD_COLADDR);
@@ -218,7 +220,7 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 
     /*Memory write*/
     DEMO_SPI_LCD_WriteCmd(ILI9341_CMD_GRAM);
-    DEMO_SPI_LCD_WriteMultiData(pdata, send_size);
+    DEMO_SPI_LCD_WriteMultiData((const uint8_t *)color_p, send_size);
 
     lv_disp_flush_ready(disp_drv);
 }
