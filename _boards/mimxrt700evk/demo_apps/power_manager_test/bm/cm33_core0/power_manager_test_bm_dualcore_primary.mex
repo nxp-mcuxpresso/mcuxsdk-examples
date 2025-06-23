@@ -2,7 +2,7 @@
 <configuration name="MIMXRT798S" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="56e9675e-b49f-4a3f-b473-3be6c7963822" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
       <processor>MIMXRT798S</processor>
-      <package>MIMXRT798SGFOA</package>
+      <package>MIMXRT798SGFOB</package>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33_core0">
          <core name="Cortex-M33 (Core #0)" id="cm33_core0" description=""/>
