@@ -166,12 +166,13 @@ void lv_port_indev_init(void)
 {
     /*Initialize your touchpad */
     BOARD_PrepareTouchPanel();
-    BOARD_InitTouchPanel();
-
-    /*Register a touchpad input device*/
-    lv_indev_t * indev = lv_indev_create();
-    lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
-    lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    if (kStatus_Success == BOARD_InitTouchPanel())
+    {
+        /*Register a touchpad input device*/
+        lv_indev_t * indev = lv_indev_create();
+        lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
+        lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    }
 }
 
 /* Will be called by the library to read the touchpad */

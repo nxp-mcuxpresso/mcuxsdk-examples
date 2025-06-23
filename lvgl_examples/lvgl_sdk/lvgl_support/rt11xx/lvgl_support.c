@@ -87,7 +87,7 @@
  ******************************************************************************/
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p);
 
-static void DEMO_InitTouch(void);
+static bool DEMO_InitTouch(void);
 
 static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data);
 
@@ -410,12 +410,13 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 void lv_port_indev_init(void)
 {
     /*Initialize your touchpad */
-    DEMO_InitTouch();
-
-    /*Register a touchpad input device*/
-    lv_indev_t * indev = lv_indev_create();
-    lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
-    lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    if (DEMO_InitTouch())
+    {
+        /*Register a touchpad input device*/
+        lv_indev_t * indev = lv_indev_create();
+        lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
+        lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    }
 }
 #if (DEMO_PANEL_RASPI_7INCH != DEMO_PANEL)
 static void BOARD_PullMIPIPanelTouchResetPin(bool pullUp)
@@ -453,7 +454,7 @@ static void BOARD_ConfigMIPIPanelTouchIntPin(gt911_int_pin_mode_t mode)
 #endif
 /*Initialize your touchpad*/
 #if (DEMO_PANEL_RASPI_7INCH == DEMO_PANEL)
-static void DEMO_InitTouch(void)
+static bool DEMO_InitTouch(void)
 {
     status_t status;
 
@@ -462,10 +463,13 @@ static void DEMO_InitTouch(void)
     if (status != kStatus_Success)
     {
         PRINTF("Touch IC initialization failed\r\n");
+        return false;
     }
+
+    return true;
 }
 #else
-static void DEMO_InitTouch(void)
+static bool DEMO_InitTouch(void)
 {
     status_t status;
 
@@ -479,10 +483,12 @@ static void DEMO_InitTouch(void)
     if (kStatus_Success != status)
     {
         PRINTF("Touch IC initialization failed\r\n");
-        assert(false);
+        return false;
     }
 
     GT911_GetResolution(&s_touchHandle, &s_touchResolutionX, &s_touchResolutionY);
+
+    return true;
 }
 #endif
 

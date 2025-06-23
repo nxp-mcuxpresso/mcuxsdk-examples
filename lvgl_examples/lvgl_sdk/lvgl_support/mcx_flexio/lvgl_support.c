@@ -50,7 +50,7 @@ static status_t DEMO_InitLcdController(void);
 
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p);
 
-static void DEMO_InitTouch(void);
+static bool DEMO_InitTouch(void);
 
 static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data);
 
@@ -522,16 +522,17 @@ void lv_port_disp_init(void)
 void lv_port_indev_init(void)
 {
     /*Initialize your touchpad */
-    DEMO_InitTouch();
-
-    /*Register a touchpad input device*/
-    lv_indev_t * indev = lv_indev_create();
-    lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
-    lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    if (DEMO_InitTouch())
+    {
+        /*Register a touchpad input device*/
+        lv_indev_t * indev = lv_indev_create();
+        lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
+        lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    }
 }
 
 /*Initialize your touchpad*/
-static void DEMO_InitTouch(void)
+static bool DEMO_InitTouch(void)
 {
 #if !defined(LVGL_USE_SIUL2)
     const gpio_pin_config_t intPinConfig    = {.pinDirection = kGPIO_DigitalInput, .outputLogic = 0};
@@ -549,7 +550,11 @@ static void DEMO_InitTouch(void)
                                   .i2cAddrMode      = kGT911_I2cAddrMode0,
                                   .intTrigMode      = kGT911_IntFallingEdge};
 
-    GT911_Init(&touchHandle, &touchConfig);
+    if (kStatus_Success != GT911_Init(&touchHandle, &touchConfig))
+    {
+        return false;
+    }
+
 #if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
     SIUL2_EnableExtInterrupt(SIUL2, BOARD_LCD_INT_EIRQ, kSIUL2_InterruptFallingEdge, 1U);
     SIUL2_ClearExtDmaInterruptStatusFlags(SIUL2, 1U << BOARD_LCD_INT_EIRQ);
@@ -562,6 +567,8 @@ static void DEMO_InitTouch(void)
 #endif
     NVIC_ClearPendingIRQ(BOARD_LCD_INT_IRQn);
     EnableIRQ(BOARD_LCD_INT_IRQn);
+
+    return true;
 }
 
 /* Will be called by the library to read the touchpad */

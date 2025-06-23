@@ -75,7 +75,7 @@
  ******************************************************************************/
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p);
 
-static void DEMO_InitTouch(void);
+static bool DEMO_InitTouch(void);
 
 static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data);
 
@@ -472,12 +472,13 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 void lv_port_indev_init(void)
 {
     /*Initialize your touchpad */
-    DEMO_InitTouch();
-
-    /*Register a touchpad input device*/
-    lv_indev_t * indev = lv_indev_create();
-    lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
-    lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    if (DEMO_InitTouch())
+    {
+        /*Register a touchpad input device*/
+        lv_indev_t * indev = lv_indev_create();
+        lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
+        lv_indev_set_read_cb(indev, DEMO_ReadTouch);
+    }
 }
 
 #if ((DEMO_PANEL == DEMO_PANEL_RM67162) || (DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || \
@@ -502,7 +503,7 @@ void BOARD_TouchIntHandler(void)
 }
 
 /*Initialize your touchpad*/
-static void DEMO_InitTouch(void)
+static bool DEMO_InitTouch(void)
 {
     status_t status;
 
@@ -517,12 +518,14 @@ static void DEMO_InitTouch(void)
     if (kStatus_Success != status)
     {
         PRINTF("Touch IC initialization failed\r\n");
-        assert(false);
+        return false;
     }
 
     GPIO_PinInit(GPIO, BOARD_MIPI_PANEL_TOUCH_INT_PORT, BOARD_MIPI_PANEL_TOUCH_INT_PIN, &intPinConfig);
     GPIO_SetPinInterruptConfig(GPIO, BOARD_MIPI_PANEL_TOUCH_INT_PORT, BOARD_MIPI_PANEL_TOUCH_INT_PIN, &intPinIntConfig);
     GPIO_PinEnableInterrupt(GPIO, BOARD_MIPI_PANEL_TOUCH_INT_PORT, BOARD_MIPI_PANEL_TOUCH_INT_PIN, kGPIO_InterruptA);
+
+    return true;
 }
 
 /* Will be called by the library to read the touchpad */
@@ -579,7 +582,7 @@ static void BOARD_ConfigMIPIPanelTouchIntPin(gt911_int_pin_mode_t mode)
 }
 
 /*Initialize your touchpad*/
-static void DEMO_InitTouch(void)
+static bool DEMO_InitTouch(void)
 {
     status_t status;
 
@@ -593,10 +596,12 @@ static void DEMO_InitTouch(void)
     if (kStatus_Success != status)
     {
         PRINTF("Touch IC initialization failed\r\n");
-        assert(false);
+        return false;
     }
 
     GT911_GetResolution(&s_touchHandle, &s_touchResolutionX, &s_touchResolutionY);
+
+    return true;
 }
 
 /* Will be called by the library to read the touchpad */
@@ -629,7 +634,7 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data)
 static ft5406_handle_t touch_handle;
 
 /*Initialize your touchpad*/
-static void DEMO_InitTouch(void)
+static bool DEMO_InitTouch(void)
 {
     status_t status;
     i2c_master_config_t masterConfig;
@@ -647,7 +652,10 @@ static void DEMO_InitTouch(void)
     if (status != kStatus_Success)
     {
         PRINTF("Touch panel init failed\n");
+        return false;
     }
+
+    return true;
 }
 
 /* Will be called by the library to read the touchpad */
