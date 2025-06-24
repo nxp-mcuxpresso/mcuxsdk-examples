@@ -92,3 +92,7 @@ $lp_test_sleep_mode
 #define gAppLowPowerConstraintInAdvertising_c          1
 #define gAppLowPowerConstraintInNoBleActivity_c        1
 #define gAppLowPowerConstraintInNoBleActivity_c        1
+
+// No change on app behaviour, the core voltage will be set to 1.1v and the NBU core will run to 64MHz 
+$lp_test_nbu_speed_64MHz
+#define gAppHighNBUClockFrequency_d 1
