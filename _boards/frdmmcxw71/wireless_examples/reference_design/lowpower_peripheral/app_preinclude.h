@@ -78,12 +78,6 @@
     Warning   : Memory usage is increased  when set to 1 , roughly :
       1KB of RAM, several KB of Flash (depend of the string size)     */
 #define gAppUseSerialManager_c          1
-
-/**********************************************************************************
- *     Mbedtls Configuration
- ***********************************************************************************/
- 
- #define MBEDTLS_USER_CONFIG_FILE "SecLib_mbedtls_config.h"
  
 /**********************************************************************************
  *     BLE Application Configuration
