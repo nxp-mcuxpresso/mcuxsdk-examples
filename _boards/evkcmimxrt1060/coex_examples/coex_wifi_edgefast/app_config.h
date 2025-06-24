@@ -16,9 +16,3 @@
 
 #include "app_bluetooth_config.h"
 #include "wifi_config.h"
-
-#define CONFIG_WIFI_IND_DNLD 1
-#define CONFIG_WIFI_IND_RESET 1
-
-#undef CONFIG_BT_IND_DNLD
-#define CONFIG_BT_IND_DNLD 1

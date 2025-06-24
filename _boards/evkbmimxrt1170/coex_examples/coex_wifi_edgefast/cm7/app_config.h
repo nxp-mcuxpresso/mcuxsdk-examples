@@ -18,9 +18,3 @@
 #include "wifi_bt_module_config.h"
 #include "wifi_config.h"
 
-#undef CONFIG_WIFI_IND_DNLD
-#define CONFIG_WIFI_IND_DNLD 1
-
-#undef CONFIG_BT_IND_DNLD
-#define CONFIG_BT_IND_DNLD 1
-
