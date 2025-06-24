@@ -85,12 +85,12 @@ static int PrintMainMenu(void)
 {
 	PRINTF("|-------------------------------------------------------------------------\r\n");
 	PRINTF("|	 Operation mode selection: Data Rate: %sMbps\r\n", clk_rxtx == 0 ? "12.5" : "25");
-	PRINTF("|-------------------------------------------------------------------------\r\n");
+	PRINTF("|--------------------------------------------------------------------------\r\n");
 	PRINTF("|\t 1: Point to Point                                                      \r\n");
 	PRINTF("|\t 2: Bus operation                                                       \r\n");
-	PRINTF("|\t 3: Set the master clk_rxtx to 25Mhz(default: 12.5Mhz)                  \r\n");
-	PRINTF("|\t 4: Set the master clk_rxtx to 12.5Mhz                                  \r\n");
-	PRINTF("|-------------------------------------------------------------------------\r\n");
+	PRINTF("|\t 3: Set the master clk_rxtx to 25Mbps (default: 12.5Mbps)               \r\n");
+	PRINTF("|\t 4: Set the master clk_rxtx to 12.5Mbps                                 \r\n");
+	PRINTF("|--------------------------------------------------------------------------\r\n");
 	PRINTF("Please input: ");
 	return getIntAndEcho();
 }
@@ -100,22 +100,22 @@ static int PrintMenuForBus(void)
 	PRINTF("|-------------------------------------------------------------------------\r\n");
 	PRINTF("|	 Bus Operation: Participants number: %d, Data Rate: %sMbps\r\n", nodes_num, clk_rxtx == 0 ? "12.5" : "25");
 	PRINTF("|-------------------------------------------------------------------------\r\n");
-	PRINTF("|	 1: Set the number of participants (defaule: 2)                        \r\n");
-	PRINTF("|	 2: Clear the address for all the participants                         \r\n");
-	PRINTF("|	 3: Assign the address for all the participants                        \r\n");
-	PRINTF("|	 4: Scan the address for all the participants                          \r\n");
-	PRINTF("|	 5: Switch the data transfer rate to  25Mhz                            \r\n");
-	PRINTF("|	 6: Switch the data transfer rate to  12.5Mhz                          \r\n");
-	PRINTF("|	 7: Dump the basic information of the participant                      \r\n");
-	PRINTF("|	 8: Access the memory of the participant                               \r\n");
-	PRINTF("|	 9: FG requests                                                        \r\n");
-	PRINTF("|	10: BG requests                                                        \r\n");
-	PRINTF("|	11: LPF configuration                                                  \r\n");
-	PRINTF("|	12: FID-based response memory dump                                     \r\n");
-	PRINTF("|	13: Safety response memory dump                                        \r\n");
-	PRINTF("|	16: Get Position in irq mode (10 times)                                \r\n");
-	PRINTF("|	17: Get Position in sync mode (Entry any key to stop)                  \r\n");
-	PRINTF("|	18: Exit to Main Menu                                                  \r\n");
+	PRINTF("|\t 1: Set the number of participants (defaule: 2)                        \r\n");
+	PRINTF("|\t 2: Clear the address for all the participants                         \r\n");
+	PRINTF("|\t 3: Assign the address for all the participants                        \r\n");
+	PRINTF("|\t 4: Scan the address for all the participants                          \r\n");
+	PRINTF("|\t 5: Switch the data transfer rate to  25Mbps                           \r\n");
+	PRINTF("|\t 6: Switch the data transfer rate to  12.5Mbps                         \r\n");
+	PRINTF("|\t 7: Dump the basic information of the participant                      \r\n");
+	PRINTF("|\t 8: Access the memory of the participant                               \r\n");
+	PRINTF("|\t 9: FG requests                                                        \r\n");
+	PRINTF("|\t10: BG requests                                                        \r\n");
+	PRINTF("|\t11: LPF configuration                                                  \r\n");
+	PRINTF("|\t12: FID-based response memory dump                                     \r\n");
+	PRINTF("|\t13: Safety response memory dump                                        \r\n");
+	PRINTF("|\t16: Get Position in irq mode (10 times)                                \r\n");
+	PRINTF("|\t17: Get Position in sync mode (Entry any key to stop)                  \r\n");
+	PRINTF("|\t18: Exit to Main Menu                                                  \r\n");
 	PRINTF("|--------------------------------------------------------------------------\r\n");
 	PRINTF("Please input: ");
 	return getIntAndEcho();
@@ -126,19 +126,19 @@ static int PrintMenuForP2P(void)
 	PRINTF("|-------------------------------------------------------------------------\r\n");
 	PRINTF("|	 P2P Operation:  Data Rate: %sMbps\r\n", clk_rxtx == 0 ? "12.5" : "25");
 	PRINTF("|-------------------------------------------------------------------------\r\n");
-	PRINTF("|	 1: Active encoder							   	                       \r\n");
-	PRINTF("|	 2: Switch the data transfer rate to  25Mhz                            \r\n");
-	PRINTF("|	 3: Switch the data transfer rate to  12.5Mhz                          \r\n");
-	PRINTF("|	 4: Dump the basic information of the participant                      \r\n");
-	PRINTF("|	 5: Access the memory of the participant                               \r\n");
-	PRINTF("|	 6: FG requests                                                        \r\n");
-	PRINTF("|	 7: BG requests                                                        \r\n");
-	PRINTF("|	 8: LPF configuration                                                  \r\n");
-	PRINTF("|	 9: FID-based response memory dump                                     \r\n");
-	PRINTF("|	10: Safety response memory dump                                        \r\n");
-	PRINTF("|	11: Get Position in irq mode (10 times)                                \r\n");
-	PRINTF("|	12: Get Position in sync mode (Entry any key to stop)                  \r\n");
-	PRINTF("|	13: Exit to Main Menu                                                  \r\n");
+	PRINTF("|\t 1: Active encoder                                                     \r\n");
+	PRINTF("|\t 2: Switch the data transfer rate to  25Mbps                           \r\n");
+	PRINTF("|\t 3: Switch the data transfer rate to  12.5Mbps                         \r\n");
+	PRINTF("|\t 4: Dump the basic information of the participant                      \r\n");
+	PRINTF("|\t 5: Access the memory of the participant                               \r\n");
+	PRINTF("|\t 6: FG requests                                                        \r\n");
+	PRINTF("|\t 7: BG requests                                                        \r\n");
+	PRINTF("|\t 8: LPF configuration                                                  \r\n");
+	PRINTF("|\t 9: FID-based response memory dump                                     \r\n");
+	PRINTF("|\t10: Safety response memory dump                                        \r\n");
+	PRINTF("|\t11: Get Position in irq mode (10 times)                                \r\n");
+	PRINTF("|\t12: Get Position in sync mode (Entry any key to stop)                  \r\n");
+	PRINTF("|\t13: Exit to Main Menu                                                  \r\n");
 	PRINTF("|--------------------------------------------------------------------------\r\n");
 	PRINTF("Please input: ");
 	return getIntAndEcho();
@@ -737,7 +737,6 @@ void dump_postion(void)
 
 	PRINTF("Enc %d: ", 0);
 	ENDAT3_getRsp(endat3_base, 0, &rsp);
-	//	ENDAT3_RspDump(&rsp);
 	ENDAT3_PosDump(&rsp);
 }
 
@@ -747,7 +746,6 @@ void dump_bus_postion(void)
 	for (int i = nodes_num; i > 0; i--) {
 		 PRINTF("Enc %d: ", i);
 		ENDAT3_getRsp(endat3_base, i, &rsp);
-	//	ENDAT3_RspDump(&rsp);
 		ENDAT3_PosDump(&rsp);
 	}
 }

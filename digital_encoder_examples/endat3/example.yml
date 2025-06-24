@@ -1,14 +1,14 @@
-endat3_point2point:
+endat3:
   section-type: application
   contents:
-    meta_path: examples/digital_encoder_examples/endat3/endat3_point2point/
+    meta_path: examples/digital_encoder_examples/endat3/
     project-root-path: boards/${board}/digital_encoder_examples/endat3/${multicore_foldername}
     document:
-      name: endat3_point2point${core_id_suffix_name}
+      name: endat3${core_id_suffix_name}
       category: digital_encoder_examples
       brief: Digital encoder Endat3 example
       example_readme:
-      - examples/digital_encoder_examples/endat3/endat3_point2point_examples/readme.md
+      - examples/digital_encoder_examples/endat3/readme.md
       - ${board_root}/${board}/digital_encoder_examples/endat3/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
