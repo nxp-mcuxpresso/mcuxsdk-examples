@@ -230,6 +230,24 @@ flashloader:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
     frdmk22f: []
     frdmke17z: []
     frdmke17z512: []
