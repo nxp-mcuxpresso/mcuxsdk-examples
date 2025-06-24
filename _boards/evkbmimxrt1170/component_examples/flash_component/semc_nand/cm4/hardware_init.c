@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 NXP
+ * Copyright 2020, 2025 NXP
  * All rights reserved.
  *
  *
@@ -38,9 +38,9 @@ void delayUs(uint32_t delay_us)
 semc_nand_config_t semcNandConfig = {
     .cePinMux          = kSEMC_MUXCSX0,                       /*!< The CE# pin mux setting. */
     .axiAddress        = EXAMPLE_SEMC_NAND_AXI_START_ADDRESS, /*!< The base address. */
-    .axiMemsize_kbytes = 2 * 1024 * 1024,                     /*!< The memory size is 8*1024*2*1024*1024 = 16Gb. */
+    .axiMemsize_kbytes = 256 * 1024,                          /*!< The memory size is 8*1024*256*1024 = 2Gb. */
     .ipgAddress        = EXAMPLE_SEMC_NAND_IPG_START_ADDRESS, /*!< The base address. */
-    .ipgMemsize_kbytes = 2 * 1024 * 1024,                     /*!< The memory size is 8*1024*2*1024*1024 = 16Gb. */
+    .ipgMemsize_kbytes = 256 * 1024,                          /*!< The memory size is 8*1024*256*1024 = 2Gb. */
     .rdyactivePolarity = kSEMC_RdyActiveLow,                  /*!< Wait ready polarity. */
     .arrayAddrOption   = kSEMC_NandAddrOption_5byte_CA2RA3,
     .edoModeEnabled    = false,                               /*!< Address mode. */
