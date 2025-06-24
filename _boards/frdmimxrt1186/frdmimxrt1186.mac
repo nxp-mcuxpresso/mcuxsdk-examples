@@ -40,7 +40,7 @@ _FLEXSPI1_ClockInit()
     __writeMemory32(0x0, 0x54484350, "Memory");  // ROSC400M_CTRL1
 
     // Set flexspi1 root clock, use ROSC400, div = 2 = 1+1
-    __writeMemory32(0x101, 0x44450A80, "Memory"); // CLOCK_ROOT[21].CONTROL, FlexSPI1
+    __writeMemory32(0x101, 0x54450A80, "Memory"); // CLOCK_ROOT[21].CONTROL, FlexSPI1
 }
 
 _FLEXSPI1_SetPinForOctalMode()
@@ -59,10 +59,10 @@ _FLEXSPI1_SetPinForOctalMode()
     __writeMemory32(0x00000011, 0x42A101D0, "Memory");// IOMUXC_GPIO_SD_B2_07_FLEXSPI1_BUS2BIT_B_SCLK
 
     //The input daisy!!
-    __writeMemory32(0x00000001, 0x42A10548, "Memory");// FLEXSPI1_B_DQS
-    __writeMemory32(0x00000001, 0x42A1054C, "Memory");// FLEXSPI1_B_DATA00
-    __writeMemory32(0x00000001, 0x42A10550, "Memory");// FLEXSPI1_B_DATA01
-    __writeMemory32(0x00000001, 0x42A10554, "Memory");// FLEXSPI1_B_DATA02
+    __writeMemory32(0x00000000, 0x42A10548, "Memory");// FLEXSPI1_B_DQS
+    __writeMemory32(0x00000000, 0x42A1054C, "Memory");// FLEXSPI1_B_DATA00
+    __writeMemory32(0x00000000, 0x42A10550, "Memory");// FLEXSPI1_B_DATA01
+    __writeMemory32(0x00000000, 0x42A10554, "Memory");// FLEXSPI1_B_DATA02
     __writeMemory32(0x00000000, 0x42A10558, "Memory");// FLEXSPI1_B_DATA03
     __writeMemory32(0x00000000, 0x42A1055C, "Memory");// FLEXSPI1_B_DATA04
     __writeMemory32(0x00000000, 0x42A10560, "Memory");// FLEXSPI1_B_DATA05
@@ -192,7 +192,6 @@ _FLEXSPI1_ModuleInit()
     _FLEXSPI1_ModuleReset();
 }
 
-
 _FLEXSPI2_ModuleReset()
 {
     __var reg;
@@ -225,14 +224,19 @@ _FLEXSPI2_WaitBusIdle()
 
 _FLEXSPI2_SetPinForQuadMode() {
     // Set 4 Pin Mode for JLink
-    __writeMemory32(0x18, 0x42A10054, "Memory");  // IOMUXC_GPIO_AON_21_FLEXSPI2_BUS2BIT_A_DQS
-    __writeMemory32(0x1,  0x42A10570, "Memory");
-    __writeMemory32(0x17, 0x42A1005C, "Memory");  // IOMUXC_GPIO_AON_23_FLEXSPI2_BUS2BIT_A_SCLK
-    __writeMemory32(0x17, 0x42A10058, "Memory");  // IOMUXC_GPIO_AON_22_FLEXSPI2_BUS2BIT_A_SS0_B
-    __writeMemory32(0x17, 0x42A10060, "Memory");  // IOMUXC_GPIO_AON_24_FLEXSPI2_BUS2BIT_A_DATA00
-    __writeMemory32(0x17, 0x42A10064, "Memory");  // IOMUXC_GPIO_AON_25_FLEXSPI2_BUS2BIT_A_DATA01
-    __writeMemory32(0x17, 0x42A10068, "Memory");  // IOMUXC_GPIO_AON_26_FLEXSPI2_BUS2BIT_A_DATA02
-    __writeMemory32(0x17, 0x42A1006C, "Memory");  // IOMUXC_GPIO_AON_27_FLEXSPI2_BUS2BIT_A_DATA03
+    __writeMemory32(0x00000018, 0x443C0054, "Memory");  // IOMUXC_GPIO_AON_21_FLEXSPI2_BUS2BIT_A_DQS
+    __writeMemory32(0x00000001, 0x42A10570, "Memory");  // daisy
+    __writeMemory32(0x00000010, 0x443C005C, "Memory");  // IOMUXC_GPIO_AON_23_FLEXSPI2_BUS2BIT_A_SCLK
+    __writeMemory32(0x00000001, 0x42A10598, "Memory");  // daisy
+    __writeMemory32(0x00000010, 0x443C0058, "Memory");  // IOMUXC_GPIO_AON_22_FLEXSPI2_BUS2BIT_A_SS0_B
+    __writeMemory32(0x00000010, 0x443C0060, "Memory");  // IOMUXC_GPIO_AON_24_FLEXSPI2_BUS2BIT_A_DATA00
+    __writeMemory32(0x00000001, 0x42A10578, "Memory");  // daisy
+    __writeMemory32(0x00000010, 0x443C0064, "Memory");  // IOMUXC_GPIO_AON_25_FLEXSPI2_BUS2BIT_A_DATA01
+    __writeMemory32(0x00000001, 0x42A1057C, "Memory");  // daisy
+    __writeMemory32(0x00000010, 0x443C0068, "Memory");  // IOMUXC_GPIO_AON_26_FLEXSPI2_BUS2BIT_A_DATA02
+    __writeMemory32(0x00000001, 0x42A10580, "Memory");  // daisy
+    __writeMemory32(0x00000010, 0x443C006C, "Memory");  // IOMUXC_GPIO_AON_27_FLEXSPI2_BUS2BIT_A_DATA03
+    __writeMemory32(0x00000001, 0x42A10584, "Memory");  // daisy
 }
 
 _FLEXSPI2_ClockInit()
