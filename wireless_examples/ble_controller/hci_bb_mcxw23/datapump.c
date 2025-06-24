@@ -38,7 +38,7 @@ typedef enum
 #define PAYLOAD_FREQUENCY_PERIODIC (0x2)
 #define MIN_REPORT_INTERVAL (0x1f4 * 1000)   // 500 ms
 #define MAX_REPORT_INTERVAL (0x493E0 * 1000) // 5 minutes
-#define MAX_TIMER_CHANNELS (4)
+#define MAX_TIMER_CHANNELS_USED (3)
 #define NO_TIMER_EVENT     (0)
 #define HCI_ACL   (2)
 #define HCI_EVENT (4)
@@ -287,7 +287,7 @@ static void DatapumpInit(void);
 static bool s_isInitialized;
 static datapump_context_t s_contexts[MAX_CONN];
 static acl_packet_t s_acl[MAX_ACL_DATA_BUFFER];
-static int s_timerIds[MAX_TIMER_CHANNELS] = {
+static int s_timerIds[MAX_TIMER_CHANNELS_USED] = {
     0}; /* When a timer is in use, the associated s_timerIds[] slot is non zero. */
 static uint32_t s_txTimerReferences;
 static uint8_t s_dataPattern[MAX_ACL_DATA_BUFFER];
@@ -344,7 +344,7 @@ static void DATAPUMP_ProgramTxTimer(void)
      * 2500 offers good granularity for all the current tests
      */
     static const uint32_t txTimerUs = 2500;
-    assert(s_txTimerId <= MAX_TIMER_CHANNELS);
+    assert(s_txTimerId < MAX_TIMER_CHANNELS_USED);
     ProgramTimer(s_ctimerIdTx, s_txTimerId, txTimerUs);
 }
 
@@ -387,7 +387,7 @@ static receive_params_t *GetReceiveContextFromTimerId(uint8_t timerId)
 static status_t DATAPUMP_AllocateTimerId(uint8_t *timerId)
 {
     status_t status = kStatus_Fail;
-    for (int i = 0; i < MAX_TIMER_CHANNELS; i++)
+    for (int i = 0; i < MAX_TIMER_CHANNELS_USED; i++)
     {
         if (!s_timerIds[i]) /* Zero value for s_timerIds[x] means it is not in use. */
         {
@@ -498,13 +498,10 @@ static void DATAPUMP_Transmit(transmit_params_t *transmit)
                                         ||
                                         transmit->numPacketsSent < transmit->numPackets))
         {
-            /* The following is a hack to work around the compiler warning of taking the address out of an unaligned
-             * structure. */
-            packet_info_t *info                    = (packet_info_t *)(void *)&s_acl[s_aclDataQueue].pad[2];
+            s_acl[s_aclDataQueue].packetInfo.sequenceNumber = transmit->numPacketsSent;
+            s_acl[s_aclDataQueue].packetInfo.sentTimestamp = DATAPUMP_GetTimeUs();
             s_acl[s_aclDataQueue].connectionHandle = transmit->connHandle;
             s_acl[s_aclDataQueue].dataTotalLength  = transmit->length;
-            info->sentTimestamp                    = DATAPUMP_GetTimeUs();
-            info->sequenceNumber                   = transmit->numPacketsSent;
             ble_buff_hdr_t *ble_buff_hdr           = (ble_buff_hdr_t *)hci_alloc_msg();
             assert(ble_buff_hdr != NULL);
             ble_buff_hdr->data_size  = sizeof(s_acl[0]) - sizeof(s_acl[0].lc);
@@ -638,8 +635,7 @@ static bool DATAPUMP_ProcessAclPacket(const acl_packet_t *aclPacket)
 
         packet_info_t Info;
 
-        memcpy(&Info, &aclPacket->pad[2],
-               sizeof(packet_info_t)); /* To overcome alignment issues, bytecopy into local struct. */
+        memcpy(&Info, &aclPacket->packetInfo, sizeof(packet_info_t));
 
         if (Info.sequenceNumber != rxp->expSequenceNumber)
         {
@@ -726,7 +722,7 @@ static void DATAPUMP_TransmitTimeoutCb(void)
 */
 static void DATAPUMP_ProcessEventTimer(uint32_t flags)
 {
-    for (int timerId = 0; timerId < MAX_TIMER_CHANNELS; timerId++)
+    for (int timerId = 0; timerId < MAX_TIMER_CHANNELS_USED; timerId++)
     {
         if ((flags >> timerId) & 0x1)
         {
