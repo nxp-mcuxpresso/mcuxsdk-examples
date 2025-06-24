@@ -15,11 +15,11 @@
 
 void TIMER_Init()
 {
-#if (defined(CPU_MIMXRT798SGAWAR_hifi4) || defined(CPU_MIMXRT798SGFOA_hifi4))
+#if (defined(MIMXRT798S_hifi4_SERIES))
 	xos_set_clock_freq(CLOCK_GetFreq(kCLOCK_Hifi4CpuClk));
-#elif  (defined(CPU_MIMXRT798SGAWAR_hifi1) || defined(CPU_MIMXRT798SGFOA_hifi1))
+#elif  (defined(MIMXRT798S_hifi1_SERIES))
 	xos_set_clock_freq(CLOCK_GetFreq(kCLOCK_Hifi1CpuClk));
-#elif (defined(CPU_MIMXRT685SFAWBR_dsp) || defined(CPU_MIMXRT685SFFOB_dsp) || defined(CPU_MIMXRT685SFVKB_dsp) || defined(CPU_MIMXRT685SVFVKB_dsp) ||(defined(CPU_MIMXRT595SFAWC_dsp) || defined(CPU_MIMXRT595SFFOC_dsp)))
+#elif (defined(MIMXRT595S_dsp_SERIES) || defined(MIMXRT685S_dsp_SERIES))
 	xos_set_clock_freq(CLOCK_GetFreq(kCLOCK_DspCpuClk));
 #endif
     xos_start_system_timer(-1, 0);
