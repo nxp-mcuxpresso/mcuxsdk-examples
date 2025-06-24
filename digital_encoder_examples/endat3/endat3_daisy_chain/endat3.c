@@ -16,13 +16,13 @@
  ******************************************************************************/
 #define SYSTICK_START_COUNT() (SysTick->VAL = SysTick->LOAD)
 
-#define getHexAndEcho() getvalueAndEcho(1)
-#define getIntAndEcho() getvalueAndEcho(0)
+#define getHexAndEcho() getValueAndEcho(1)
+#define getIntAndEcho() getValueAndEcho(0)
 
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
- int getvalueAndEcho(int isHex);
+ int getValueAndEcho(int isHex);
  void ENDAT3_RspDump(endat3_rsp_t *rsp);
 
 /*******************************************************************************
@@ -34,14 +34,27 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-uint32_t SYSTICK_GET_COUNT()
+ static void BOARD_InitSysTick(void)
+{
+	/* Initialize SysTick core timer to run free */
+	/* Set period to maximum value 2^24*/
+	SysTick->LOAD = 0xFFFFFF;
+
+	/*Clock source - System Clock*/
+	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+
+	/*Start Sys Timer*/
+	SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+}
+
+static uint32_t SYSTICK_GET_COUNT()
 {
 	uint32_t val  = SysTick->VAL;
 	uint32_t load = SysTick->LOAD;
 	return load - val;
 }
 
-int getvalueAndEcho(int isHex)
+int getValueAndEcho(int isHex)
 {
 	char str[16] = {0};
 	int index = 0;
@@ -68,10 +81,10 @@ int getvalueAndEcho(int isHex)
 	return v32;
 }
 
-static int ENDAT3_PrintMainMenu(void)
+static int PrintMainMenu(void)
 {
 	PRINTF("|-------------------------------------------------------------------------\r\n");
-	PRINTF("|	 Operation mode selection: Data Rate: %sMhz\r\n", clk_rxtx == 0 ? "12.5" : "25");
+	PRINTF("|	 Operation mode selection: Data Rate: %sMbps\r\n", clk_rxtx == 0 ? "12.5" : "25");
 	PRINTF("|-------------------------------------------------------------------------\r\n");
 	PRINTF("|\t 1: Point to Point                                                      \r\n");
 	PRINTF("|\t 2: Bus operation                                                       \r\n");
@@ -82,10 +95,10 @@ static int ENDAT3_PrintMainMenu(void)
 	return getIntAndEcho();
 }
 
-static int ENDAT3_PrintMenuForBus(void)
+static int PrintMenuForBus(void)
 {
 	PRINTF("|-------------------------------------------------------------------------\r\n");
-	PRINTF("|	 Bus Operation: Participants number: %d, Data Rate: %sMhz\r\n", nodes_num, clk_rxtx == 0 ? "12.5" : "25");
+	PRINTF("|	 Bus Operation: Participants number: %d, Data Rate: %sMbps\r\n", nodes_num, clk_rxtx == 0 ? "12.5" : "25");
 	PRINTF("|-------------------------------------------------------------------------\r\n");
 	PRINTF("|	 1: Set the number of participants (defaule: 2)                        \r\n");
 	PRINTF("|	 2: Clear the address for all the participants                         \r\n");
@@ -108,7 +121,30 @@ static int ENDAT3_PrintMenuForBus(void)
 	return getIntAndEcho();
 }
 
-static int ENDAT3_PrintMemorySel(void)
+static int PrintMenuForP2P(void)
+{
+	PRINTF("|-------------------------------------------------------------------------\r\n");
+	PRINTF("|	 P2P Operation:  Data Rate: %sMbps\r\n", clk_rxtx == 0 ? "12.5" : "25");
+	PRINTF("|-------------------------------------------------------------------------\r\n");
+	PRINTF("|	 1: Active encoder							   	                       \r\n");
+	PRINTF("|	 2: Switch the data transfer rate to  25Mhz                            \r\n");
+	PRINTF("|	 3: Switch the data transfer rate to  12.5Mhz                          \r\n");
+	PRINTF("|	 4: Dump the basic information of the participant                      \r\n");
+	PRINTF("|	 5: Access the memory of the participant                               \r\n");
+	PRINTF("|	 6: FG requests                                                        \r\n");
+	PRINTF("|	 7: BG requests                                                        \r\n");
+	PRINTF("|	 8: LPF configuration                                                  \r\n");
+	PRINTF("|	 9: FID-based response memory dump                                     \r\n");
+	PRINTF("|	10: Safety response memory dump                                        \r\n");
+	PRINTF("|	11: Get Position in irq mode (10 times)                                \r\n");
+	PRINTF("|	12: Get Position in sync mode (Entry any key to stop)                  \r\n");
+	PRINTF("|	13: Exit to Main Menu                                                  \r\n");
+	PRINTF("|--------------------------------------------------------------------------\r\n");
+	PRINTF("Please input: ");
+	return getIntAndEcho();
+}
+
+static int PrintMemorySel(void)
 {
 	PRINTF("\tPlease select the encoder memory:\r\n");
 	PRINTF("\t1: XL\r\n\t2: XEL\r\n\t3: SET\r\n\t4: XSET\r\n\t5: LPFSET\r\n");
@@ -124,7 +160,7 @@ static int ENDAT3_PrintMemorySel(void)
 	}
 }
 
-static int ENDAT3_PrintLPFMemorySel(void)
+static int PrintLPFMemorySel(void)
 {
 	PRINTF("\tPlease select the LPF memory:\r\n");
 	PRINTF("\t1: LPFSET\r\n");
@@ -139,7 +175,7 @@ static int ENDAT3_PrintLPFMemorySel(void)
 	}
 }
 
-static int ENDAT3_PrintParticipantSel(void)
+static int PrintParticipantSel(void)
 {
 	PRINTF("\tPlease intput the address of the participants: ");
 	int ch = getIntAndEcho();
@@ -150,17 +186,93 @@ static int ENDAT3_PrintParticipantSel(void)
 	return ch;
 }
 
-static void BOARD_InitSysTick(void)
+static int PrintFidSel(uint8_t *fid)
 {
-    /* Initialize SysTick core timer to run free */
-    /* Set period to maximum value 2^24*/
-    SysTick->LOAD = 0xFFFFFF;
+	uint8_t fidstr[20][18] = {"NOP              ", "POS1             ", "POS2             ", "TOUCHPROBE       ", "POS_ABS          ",
+							  "ZERODATA         ", "ERRMSG           ", "EVALNUM          ", "MOUNT0           ", "MOUNT1           ",
+							  "COMMU            ", "SENSOR_TEMP_MAX  ", "SENSOR_TEMP_INT  ", "SENSOR_TEMP_M1   ", "SENSOR_TEMP_M2   ",
+							  "SENSOR_TEMP_M3   ", "SF_POS1          ", "BGRSP            ", "BGREQ            ", "BUS_ADDR         "};
+	uint8_t fid_array[20] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x0A, 0x11, 0x12, 0x13, 0x1A, 0x20, 0x21, 0x22, 0x23, 0x24, 0x50, 0x60, 0x68, 0x70};
+	while (1) {
+		int i;
+		for (i = 0; i < 20; i++) {
+			if (i % 5 == 0) {
+				PRINTF("\r\n\t");
+			}
+			PRINTF("%2d: %s", i, fidstr[i]);
+		}
+		PRINTF("\r\n\t21: Exit..\r\n");
+		PRINTF("\r\n\t Please input: ");
+		int index = getIntAndEcho();
+		if (index > 22) {
+			PRINTF("\r\n\tinvalid input\r\n");
+			continue;
+		}
+		if (index == 21) {
+			return -1;
+		} else {
+			*fid = fid_array[index];
+			return 0;
+		}
+	}
+}
 
-    /*Clock source - System Clock*/
-    SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+static uint8_t PrintSendlistSel(void)
+{
+	uint8_t	 fgReqCodestr[10][22] = {"DATA0     ", "DATA1     ", "DATA2     ", "DATA3      ", "DATA4        ",
+									 "DATA5     ", "DATA6     ", "DATA7     ", "DATA       ", "DATANOP      "};
+	uint8_t fgReqCode[10] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09};
 
-    /*Start Sys Timer*/
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+	while (1) {
+		PRINTF("\tPlease select the send list :\r\n");
+		int i;
+		for (i = 0; i < 10; i++) {
+			if (i % 5 == 0) {
+				PRINTF("\r\n\t");
+			}
+			PRINTF("%2d: %s", i, fgReqCodestr[i]);
+		}
+		PRINTF("\r\n\t Please input: ");
+		int index = getIntAndEcho();
+		if (index > 9) {
+			PRINTF("\r\n\tinvalid input\r\n");
+			continue;
+		}
+
+		return fgReqCode[index];
+	}
+}
+
+static int PrintBgReqSel(uint8_t *req_code)
+{
+	uint8_t bgReqCodestr[8][16] = {"NOP       ", "READ     ", "WRITE      ", "RECONFIGURE ", "AUTH     ",
+									"PROTECT   ", "SETPASS  ", "LOCATE     "};
+	uint8_t bgReqCode[8] = {0x01, 0x02, 0x03, 0x04, 0x80, 0x81, 0x83, 0x84};
+	int index;
+	while (1) {
+		int i;
+		for (i = 0; i < 8; i++) {
+			if (i % 5 == 0) {
+				PRINTF("\r\n\t");
+			}
+
+			PRINTF("%2d: %s", i, bgReqCodestr[i]);
+		}
+		PRINTF("\r\n\t%2d: Back to previous Menu", 9);
+		PRINTF("\r\n\tPlease input: ");
+		index = getIntAndEcho();
+		if (index > 9) {
+			PRINTF("\r\n\tinvalid input\r\n");
+			continue;
+		} else {
+			break;
+		}
+	}
+	if (index == 9)
+		return -1;
+
+	*req_code = bgReqCode[index];
+	return 0;
 }
 
 void ENDAT3_ClearAddressForAllParticipants(ENDAT3_Type *base, int nodes_num)
@@ -213,33 +325,17 @@ void ENDAT3_FIDMEM_Dump(struct FID *fid_res)
     PRINTF("\tFID_MEM: LPF_DATA = 0x%x%x\r\n", (uint32_t)(v64 >> 32), (uint32_t)(v64 & 0xFFFFFFFF));
 }
 
-void ENDAT3_Bus_DumpParticipantInfomation(ENDAT3_Type *base, uint8_t bus_addr)
+
+void Endat3_DeviceInfoDump(endat3_mem_cache_t *mem_cache)
 {
-	status_t status;
-	uint16_t cache_buf[0x100] = {0};
-	endat3_mem_cache_t mem_cache;
 	uint8_t devName[11] = {0};
 	uint8_t serial[6];
 	uint32_t sn;
 	uint64_t ident;
-	uint16_t value_u16, phyDatarate, encoder_type;
-	if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, ENDAT3_MEM_BASE_EL, &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
-		PRINTF("%s failed: status=%d\r\n", __func__, status);
-		return;
-	}
+	uint16_t value_u16, phyDatarate;
 
-	if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
-		PRINTF("%s failed: status=%d\r\n", __func__, status);
-		return;
-	}
-
-	if (ENDAT3_memCacheCheckCS(&mem_cache) != kStatus_Success) {
-		PRINTF("\tAddress%d : EL cache CS check error\t\n", bus_addr);
-		return;
-	}
-
-	value_u16 = ENDAT3_MEM_CACHE_READ_EL_MANUFACTURER(&mem_cache);
-	PRINTF("Address%d :\r\n\tEL.manufacturer : ", bus_addr);
+	value_u16 = ENDAT3_MEM_CACHE_READ_EL_MANUFACTURER(mem_cache);
+	PRINTF("Encoder :\r\n\tEL.manufacturer : ");
 	switch (value_u16) {
 		case 0x0000: PRINTF("Vacant\r\n"); 			break;
 		case 0x0001: PRINTF("HEIDENHAIN\r\n"); 		break;
@@ -252,67 +348,56 @@ void ENDAT3_Bus_DumpParticipantInfomation(ENDAT3_Type *base, uint8_t bus_addr)
 			break;
 	}
 
-	devName[0] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_0(&mem_cache);
-	devName[1] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_1(&mem_cache);
-	devName[2] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_2(&mem_cache);
-	devName[3] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_3(&mem_cache);
-	devName[4] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_4(&mem_cache);
-	devName[5] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_5(&mem_cache);
-	devName[6] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_6(&mem_cache);
-	devName[7] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_7(&mem_cache);
-	devName[8] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_8(&mem_cache);
-	devName[9] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_9(&mem_cache);
+	devName[0] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_0(mem_cache);
+	devName[1] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_1(mem_cache);
+	devName[2] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_2(mem_cache);
+	devName[3] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_3(mem_cache);
+	devName[4] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_4(mem_cache);
+	devName[5] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_5(mem_cache);
+	devName[6] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_6(mem_cache);
+	devName[7] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_7(mem_cache);
+	devName[8] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_8(mem_cache);
+	devName[9] = ENDAT3_MEM_CACHE_READ_EL_DEVICENAME_CHAR_9(mem_cache);
 	PRINTF("\tEL.deviceName : %s\r\n", devName);
 
-	ident = ENDAT3_MEM_CACHE_READ_EL_DEVICEIDENT(&mem_cache);
+	ident = ENDAT3_MEM_CACHE_READ_EL_DEVICEIDENT(mem_cache);
 	PRINTF("\tEL.deviceIdent : %6u-%c%c\r\n", (uint32_t)(ident>>16), (uint8_t)(ident >> 8) & 0xFF, (uint8_t)(ident & 0xFF));
 
-	memcpy(serial, (uint8_t *)&mem_cache.cacheMem[ENDAT3_MEM_EL_DEVICESERIAL_OFFSET], 6);
+	memcpy(serial, (uint8_t *)&(mem_cache->cacheMem[ENDAT3_MEM_EL_DEVICESERIAL_OFFSET]), 6);
 	sn = (serial[4] << 24) + (serial[3] << 16) + (serial[2] << 8) +serial[1];
 	PRINTF("\tEL.deviceSerial : %c%u%c\r\n",serial[0], sn, serial[5]);
 
-	value_u16 = mem_cache.cacheMem[ENDAT3_MEM_EL_PROTOCOLFEATURES_OFFSET];
+	value_u16 = mem_cache->cacheMem[ENDAT3_MEM_EL_PROTOCOLFEATURES_OFFSET];
 	PRINTF("\tEL.protocolFeatures :\r\n\t\tSupport of bus in daisy-chain mode: %s\r\n", value_u16 & 0x01 ? "Yes": "No");
 
-	phyDatarate = mem_cache.cacheMem[ENDAT3_MEM_EL_PHYDATARATE_OFFSET];
+	phyDatarate = mem_cache->cacheMem[ENDAT3_MEM_EL_PHYDATARATE_OFFSET];
 	PRINTF("\tEL.phyDatarate :\r\n\t\tSupport of 12.5 Mbps: %s\r\n", phyDatarate & 0x01 ? "Yes": "No");
 	PRINTF("\t\tSupport of 25 Mbps: %s\r\n", phyDatarate & 0x02 ? "Yes": "No");
 
-	value_u16 = mem_cache.cacheMem[ENDAT3_MEM_EL_SUPPORTHPF_0_OFFSET];
+	value_u16 = mem_cache->cacheMem[ENDAT3_MEM_EL_SUPPORTHPF_0_OFFSET];
 	PRINTF("\tEL.supportHpf :\r\n\t\tFirst supported HPF-FID : 0x%x: %s\r\n", value_u16 & 0xFF, ENDAT3_FID2str(value_u16 & 0xFF));
 	PRINTF("\t\tSecond supported HPF-FID : 0x%x: %s\r\n", value_u16 >> 8,ENDAT3_FID2str(value_u16 >> 8));
-	value_u16 = mem_cache.cacheMem[ENDAT3_MEM_EL_SUPPORTHPF_1_OFFSET];
+	value_u16 = mem_cache->cacheMem[ENDAT3_MEM_EL_SUPPORTHPF_1_OFFSET];
 	PRINTF("\t\tThird supported HPF-FID : 0x%x: %s\r\n", value_u16 & 0xFF, ENDAT3_FID2str(value_u16 & 0xFF));
 	PRINTF("\t\tFourth supported HPF-FID : 0x%x: %s\r\n", value_u16 >> 8, ENDAT3_FID2str(value_u16 >> 8));
+}
 
-	if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, ENDAT3_MEM_BASE_XEL, &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
-		PRINTF("%s failed: status=%d\r\n", __func__, status);
-		return;
-	}
-
-	if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
-		PRINTF("%s failed: status=%d\r\n", __func__, status);
-		return;
-	}
-
-	if (ENDAT3_memCacheCheckCS(&mem_cache) != kStatus_Success) {
-		PRINTF("\tCS check error\r\n", bus_addr);
-		return;
-	}
-
+void Endat3_DeviceFeatureDump(endat3_mem_cache_t *mem_cache, uint16_t phyDatarate)
+{
+	uint16_t value_u16, encoder_type;
 	if (phyDatarate & 0x01) {
-		value_u16 = mem_cache.cacheMem[ENDAT3_MEM_XEL_TIMEHPFOUT_RATE_0_OFFSET];
+		value_u16 = mem_cache->cacheMem[ENDAT3_MEM_XEL_TIMEHPFOUT_RATE_0_OFFSET];
 		if (value_u16 != 0)
 			PRINTF("\r\n\tXEL.timeHPFout[0] : %dns for 12.5Mhz\r\n", value_u16 * 10);
 	}
 
 	if (phyDatarate & 0x02) {
-		value_u16 = mem_cache.cacheMem[ENDAT3_MEM_XEL_TIMEHPFOUT_RATE_1_OFFSET];
+		value_u16 = mem_cache->cacheMem[ENDAT3_MEM_XEL_TIMEHPFOUT_RATE_1_OFFSET];
 		if (value_u16 != 0x0000)
 			PRINTF("\tXEL.timeHPFout[1] : %dns for 25Mhz\r\n", value_u16 * 10);
 	}
 
-	encoder_type = ENDAT3_MEM_CACHE_READ_XEL_ENCODERTYPE(&mem_cache);
+	encoder_type = ENDAT3_MEM_CACHE_READ_XEL_ENCODERTYPE(mem_cache);
 	switch (encoder_type) {
 		case 0x0000: PRINTF("\tXEL.encoderType: Not available\r\n"); break;
 		case 0x0001: PRINTF("\tXEL.encoderType: Rotary absolute\r\n"); break;
@@ -322,7 +407,49 @@ void ENDAT3_Bus_DumpParticipantInfomation(ENDAT3_Type *base, uint8_t bus_addr)
 		default:     PRINTF("\tXEL.encoderType: Reserved\r\n"); break;
 	}
 
-	value_u16 = mem_cache.cacheMem[ENDAT3_MEM_XEL_FORMATPOS1ABS_OFFSET];
+	PRINTF("\tSupport of 1 Vpp analog signals: ");
+	if (ENDAT3_MEM_CACHE_READ_XEL_DEVICEFEATURE_SUPP_1VPP(mem_cache)) {
+		PRINTF("y\r\n");
+	} else {
+		PRINTF("n\r\n");
+	}
+
+	PRINTF("\tSupport of 1 TTL/HTL signals: ");
+	if (ENDAT3_MEM_CACHE_READ_XEL_DEVICEFEATURE_SUPP_TTL(mem_cache)) {
+		PRINTF("y\r\n");
+	} else {
+		PRINTF("n\r\n");
+	}
+
+	PRINTF("\tSupport of XSET.offsetPos: ");
+	if (ENDAT3_MEM_CACHE_READ_XEL_DEVICEFEATURE_SUPP_OFFSETPOS(mem_cache)) {
+		PRINTF("y\r\n");
+	} else {
+		PRINTF("n\r\n");
+	}
+
+	PRINTF("\tSupport of XSET.tempWarnLevel: ");
+	if (ENDAT3_MEM_CACHE_READ_XEL_DEVICEFEATURE_SUPP_TEMPWARN(mem_cache)) {
+		PRINTF("y\r\n");
+	} else {
+		PRINTF("n\r\n");
+	}
+
+	PRINTF("\tSupport of a battery-buffered multiturn (BBMT): ");
+	if (ENDAT3_MEM_CACHE_READ_XEL_DEVICEFEATURE_SUPP_BBMT(mem_cache)) {
+		PRINTF("y\r\n");
+	} else {
+		PRINTF("n\r\n");
+	}
+
+	PRINTF("\tFunctional safety is supported: ");
+	if (ENDAT3_MEM_CACHE_READ_XEL_SAFETYBITS(mem_cache)) {
+		PRINTF("y\r\n");
+	} else {
+		PRINTF("n\r\n");
+	}
+
+	value_u16 = mem_cache->cacheMem[ENDAT3_MEM_XEL_FORMATPOS1ABS_OFFSET];
 	PRINTF("");
 	if (encoder_type == 0x0001 || encoder_type == 0x0002) {
 		/* Format for angles */
@@ -331,6 +458,81 @@ void ENDAT3_Bus_DumpParticipantInfomation(ENDAT3_Type *base, uint8_t bus_addr)
 		/* Format for Linear */
 		PRINTF("\tXEL.formatPos1Abs : resolution:%d\r\n" , 32 - (value_u16 & 0xFF));
 	}
+}
+
+void ENDAT3_DumpParticipantInfomation(ENDAT3_Type *base, uint8_t bus_addr)
+{
+	status_t status;
+	uint16_t cache_buf[0x100] = {0};
+	endat3_mem_cache_t mem_cache;
+	uint16_t phyDatarate;
+
+	if (bus_addr > 0) {
+		if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, ENDAT3_MEM_BASE_EL, &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+	
+		if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+	} else {
+		if ((status = ENDAT3_memCacheInit(base, ENDAT3_MEM_BASE_EL, &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+
+		if ((status = ENDAT3_memCacheFetch(base, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+	}
+
+	if (ENDAT3_memCacheCheckCS(&mem_cache) != kStatus_Success) {
+		PRINTF("\tAddress : EL cache CS check error\t\n");
+		return;
+	}
+
+	Endat3_DeviceInfoDump(&mem_cache);
+
+	if (bus_addr > 0) {
+		if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, ENDAT3_MEM_BASE_XEL, &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+
+		if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+	} else {
+		if ((status = ENDAT3_memCacheInit(base, ENDAT3_MEM_BASE_XEL, &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+
+		if ((status = ENDAT3_memCacheFetch(base, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("%s failed: status=%d\r\n", __func__, status);
+			return;
+		}
+	}
+
+	if (ENDAT3_memCacheCheckCS(&mem_cache) != kStatus_Success) {
+		PRINTF("\tCS check error\r\n", bus_addr);
+		return;
+	}
+
+	if (bus_addr > 0) {
+		status = ENDAT3_Bus_P2P_memRead(base, bus_addr, ENDAT3_MEM_BASE_EL + ENDAT3_MEM_EL_PHYDATARATE_OFFSET, 1, &phyDatarate, 1);
+	} else {
+		status = ENDAT3_memRead(base, ENDAT3_MEM_BASE_EL + ENDAT3_MEM_EL_PHYDATARATE_OFFSET,  1, &phyDatarate, 1);
+	}
+	if (status != kStatus_Success) {
+		PRINTF("\tMemory Read Error\r\n");
+		return;
+	}
+	Endat3_DeviceFeatureDump(&mem_cache, phyDatarate);
 }
 
 void ENDAT3_ModifyMemory_Help()
@@ -343,7 +545,7 @@ void ENDAT3_ModifyMemory_Help()
 	PRINTF("\texit ; Exit without saving\r\n");
 }
 
-void ENDAT3_Bus_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_index)
+void ENDAT3_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_index)
 {
 	uint32_t mem_base_array[14] = {ENDAT3_MEM_BASE_EL, ENDAT3_MEM_BASE_XEL, ENDAT3_MEM_BASE_SET,
 		ENDAT3_MEM_BASE_XSET, ENDAT3_MEM_BASE_LPFSET, ENDAT3_MEM_BASE_OEM1,
@@ -353,14 +555,26 @@ void ENDAT3_Bus_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_i
 	uint16_t cache_buf[0x100] = {0};
 	endat3_mem_cache_t mem_cache;
 
-	if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, mem_base_array[mem_index], &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
-		PRINTF("\tAddress%d : Failed to initialize memory cache.\r\n", bus_addr);
-		return;
-	}
+	if (bus_addr > 0) {
+		if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, mem_base_array[mem_index], &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("\tAddress%d : Failed to initialize memory cache.\r\n", bus_addr);
+			return;
+		}
 
-	if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
-		PRINTF("\tAddress%d : Failed to fetch memory cache.\r\n", bus_addr);
-		return;
+		if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("\tAddress%d : Failed to fetch memory cache.\r\n", bus_addr);
+			return;
+		}
+	} else {
+		if ((status = ENDAT3_memCacheInit(base, mem_base_array[mem_index], &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("\tEncoder : Failed to initialize memory cache.\r\n");
+			return;
+		}
+
+		if ((status = ENDAT3_memCacheFetch(base, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("\tEncoder : Failed to fetch memory cache.\r\n");
+			return;
+		}
 	}
 
 	if (ENDAT3_memCacheCheckCS(&mem_cache) != kStatus_Success) {
@@ -443,9 +657,16 @@ void ENDAT3_Bus_ModifyMemory(ENDAT3_Type *base, uint8_t bus_addr, uint32_t mem_i
 		} else if (num == 1) {
 			if (strncmp(cmd, "save", 16) == 0) {
 				ENDAT3_memCacheUpdataCS(&mem_cache);
-				ENDAT3_Bus_P2P_memCacheFlush(base, bus_addr, &mem_cache, 1);
-				if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
-					PRINTF("\tAddress%d : Failed to fetch memory cache.\r\n", bus_addr);
+				if (bus_addr > 0) {
+					ENDAT3_Bus_P2P_memCacheFlush(base, bus_addr, &mem_cache, 1);
+					if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
+						PRINTF("\tAddress%d : Failed to fetch memory cache.\r\n", bus_addr);
+					}
+				} else {
+					ENDAT3_memCacheFlush(base, &mem_cache, 1);
+					if ((status = ENDAT3_memCacheFetch(base, &mem_cache, 1)) != kStatus_Success) {
+						PRINTF("\tEncoder : Failed to fetch memory cache.\r\n");
+					}
 				}
 
 				if (ENDAT3_memCacheCheckCS(&mem_cache) != kStatus_Success) {
@@ -510,13 +731,23 @@ void ENDAT3_PosDump(endat3_rsp_t *rsp)
 	PRINTF("\tMT: %5u ST: %10u\r\n", multiturn, singleturn);
 }
 
+void dump_postion(void)
+{
+	endat3_rsp_t rsp;
+
+	PRINTF("Enc %d: ", 0);
+	ENDAT3_getRsp(endat3_base, 0, &rsp);
+	//	ENDAT3_RspDump(&rsp);
+	ENDAT3_PosDump(&rsp);
+}
+
 void dump_bus_postion(void)
 {
 	endat3_rsp_t rsp;
 	for (int i = nodes_num; i > 0; i--) {
 		 PRINTF("Enc %d: ", i);
 		ENDAT3_getRsp(endat3_base, i, &rsp);
-		ENDAT3_RspDump(&rsp);
+	//	ENDAT3_RspDump(&rsp);
 		ENDAT3_PosDump(&rsp);
 	}
 }
@@ -631,7 +862,11 @@ void ENDAT3_SAFETY_MEM_Dump(ENDAT3_Type *base, uint8_t bus_addr, uint8_t packet,
 /* Triggered by the second PWM trigger signal via XBAR */
 void DEMO_XBARA_IRQHandler(void)
 {
-	dump_bus_postion();
+	if (nodes_num > 0) {
+		dump_bus_postion();
+	} else {
+		dump_postion();
+	}
 	XBAR_ClearOutputStatusFlag(kXBAR1_OutputEdma4IpdReq76);
 	SDK_ISR_EXIT_BARRIER;
 }
@@ -641,7 +876,11 @@ void FG_IRQ0_IRQHandler(void)
 {
 	uint32_t time = SYSTICK_GET_COUNT();
 	PRINTF("The minimal communication cycle: %d\r\n", time);
-	dump_bus_postion();
+	if (nodes_num > 0) {
+		dump_bus_postion(); 
+	} else {
+		dump_postion();
+	}
 	ENDAT3_IRQ_Clear(endat3_base, CLEAR_FG_IRQ0);
 }
 
@@ -683,6 +922,20 @@ void DEMO_FG_IRQ_IRQHandler(void)
 
 void ENDAT3_DumpPostionInSync(ENDAT3_Type *base, uint8_t data_req)
 {
+	ENDAT3_FG_Req(base, data_req, 0);
+	/* Initialize FlexPWM to generate the trigger signalis. */
+	PWM_Trigger_Init(BOARD_PWM_BASEADDR);
+	// Enable Interrupt
+	EnableIRQ(DEMO_XBARA_IRQn);
+	ENDAT3_HW_Strobe_Enable(base);
+
+	GETCHAR();
+	DisableIRQ(DEMO_XBARA_IRQn);
+	ENDAT3_HW_Strobe_Disable(base);
+}
+
+void ENDAT3_Bus_DumpPostionInSync(ENDAT3_Type *base, uint8_t data_req)
+{
 	for (int i = nodes_num; i > 0; i--) {
 		ENDAT3_FG_Bus_BC_with_FG_Req_Rsp(base, i, data_req, 0);
 	}
@@ -699,7 +952,26 @@ void ENDAT3_DumpPostionInSync(ENDAT3_Type *base, uint8_t data_req)
 	ENDAT3_HW_Strobe_Disable(base);
 }
 
-void ENDAT3_DumpPostionInIrq(ENDAT3_Type *base, int32_t nodes_num, uint8_t data_req)
+void ENDAT3_DumpPostionInIrq(ENDAT3_Type *base, uint8_t data_req)
+{
+	BOARD_InitSysTick();
+	EnableIRQ(DEMO_ENDAT3_FG_IRQn);
+	/* Enable the FG_IRQ0 when HPF received */
+	ENDAT3_FG_IRQ_Enable_With_FIxM_Frame_Count(base, 0, 1);
+
+	for (int i = 0; i < 10; i++) {
+		PRINTF("Test %d\r\n", i);
+		SYSTICK_START_COUNT();
+		ENDAT3_FG_Req(base, data_req, 0);
+		SDK_DelayAtLeastUs(2000000, SystemCoreClock);
+		PRINTF("\r\n");
+	}
+
+	ENDAT3_FG_IRQ_Disable(base, 0, FIxM_FRAME_CNT_EN);
+	DisableIRQ(DEMO_ENDAT3_FG_IRQn);
+}
+
+void ENDAT3_Bus_DumpPostionInIrq(ENDAT3_Type *base, int32_t nodes_num, uint8_t data_req)
 {
 	BOARD_InitSysTick();
 	EnableIRQ(DEMO_ENDAT3_FG_IRQn);
@@ -810,6 +1082,34 @@ int PrintFgReqSel(uint8_t *req_code, uint16_t *req_data)
 	return 0;
 }
 
+void Endat3_FG_REQ(ENDAT3_Type *base)
+{
+	uint8_t req_code;
+	uint16_t req_data;
+
+	endat3_rsp_t rsp;
+	while (1) {
+		if (PrintFgReqSel(&req_code, &req_data) < 0) {
+			return;
+		}
+
+		switch (req_code) {
+			case ENDAT3_FG_REQ_ECHO:
+				if (ENDAT3_FG_Echo(base, req_data) == kStatus_Success) {
+					PRINTF("\tECHO test successful \r\n");
+				} else {
+					PRINTF("\tECHO test failed \r\n");
+				}
+				break;
+			default:
+				if (ENDAT3_FG_Req_Rsp(base, req_code, req_data, &rsp) == kStatus_Success) {
+					ENDAT3_RspDump(&rsp);
+				}
+				break;
+
+		}
+	}
+}
 
 void Endat3_BUS_FG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 {
@@ -838,38 +1138,6 @@ void Endat3_BUS_FG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 
 		}
 	}
-}
-
-int PrintBgReqSel(uint8_t *req_code)
-{
-	uint8_t bgReqCodestr[8][16] = {"NOP       ", "READ     ", "WRITE      ", "RECONFIGURE ", "AUTH     ",
-									"PROTECT   ", "SETPASS  ", "LOCATE     "};
-	uint8_t bgReqCode[8] = {0x01, 0x02, 0x03, 0x04, 0x80, 0x81, 0x83, 0x84};
-	int index;
-	while (1) {
-		int i;
-		for (i = 0; i < 8; i++) {
-			if (i % 5 == 0) {
-				PRINTF("\r\n\t");
-		}
-
-		PRINTF("%2d: %s", i, bgReqCodestr[i]);
-		}
-		PRINTF("\r\n\t%2d: Back to previous Menu", 9);
-		PRINTF("\r\n\tPlease input: ");
-		index = getIntAndEcho();
-		if (index > 9) {
-			PRINTF("\r\n\tinvalid input\r\n");
-			continue;
-		} else {
-			break;
-		}
-	}
-	if (index == 9)
-		return -1;
-
-	*req_code = bgReqCode[index];
-	return 0;
 }
 
 void getBGREQ_Nop(uint64_t *arbitrary)
@@ -949,6 +1217,107 @@ void getBGREQ_Locate(uint8_t *ctrl)
 {
 	PRINTF("\tPlease input the ctrl value : 0x");
 	*ctrl = getHexAndEcho();
+}
+
+
+void Endat3_BG_REQ(ENDAT3_Type *base)
+{
+	uint8_t req_code;
+
+	while (1) {
+		if (PrintBgReqSel(&req_code) < 0) {
+			return;
+		}
+
+		switch (req_code) {
+			case ENDAT3_BG_OPCODE_NOP:
+				uint64_t arbitrary_req = 0;
+				uint64_t arbitrary_res = 0;
+				getBGREQ_Nop(&arbitrary_req);
+				ENDAT3_BG_Nop(base, arbitrary_req, &arbitrary_res, 1);
+				if (arbitrary_res == ((0x01ULL << 40) | arbitrary_req)) {
+					PRINTF("\tNOP request successful.\r\n");
+				} else {
+					PRINTF("\tNOP request failed.\r\n");
+				}
+				break;
+			case ENDAT3_BG_OPCODE_RECONFIGURE:
+				if (ENDAT3_BG_Reconfigure(base, 1) == kStatus_Success) {
+					PRINTF("\tBG Reconfigure request successful \r\n");
+				} else {
+					PRINTF("\tBG Reconfigure request failed \r\n");
+				}
+				break;
+			case ENDAT3_BG_OPCODE_READ:
+				uint32_t address_read;
+				uint8_t num_read;
+				uint16_t words_read[3];
+				getBGREQ_Read(&address_read, &num_read);
+				if (ENDAT3_BG_Read(base, address_read, num_read, words_read, 1) == kStatus_Success) {
+					for (int i = 0; i < num_read; i++) {
+						PRINTF("\t word[%d]: 0x%x", i, words_read[i]);
+					}
+				} else {
+					PRINTF("\tBG Read request failed\r\n");
+				}
+				break;
+			case ENDAT3_BG_OPCODE_WRITE:
+				uint32_t address_write;
+				uint16_t word_write;
+				getBGREQ_Write(&address_write, &word_write);
+				if (ENDAT3_BG_Write(base, address_write, word_write, 1) == kStatus_Success) {
+					PRINTF("\tBG write request successful \r\n");
+				} else {
+					PRINTF("\tBG write request failed \r\n");
+				}
+				break;
+			case ENDAT3_BG_OPCODE_AUTH:
+				uint16_t usrlevel_auth;
+				uint16_t pass_auth;
+				getBGREQ_Auth_SetPass(&usrlevel_auth, &pass_auth);
+				if (ENDAT3_BG_Auth(base, usrlevel_auth, pass_auth, 1) == kStatus_Success) {
+					PRINTF("\tBG Auth request successful \r\n");
+				} else {
+					PRINTF("\tBG Auth request failed \r\n");
+				}
+				break;
+			case ENDAT3_BG_OPCODE_SETPASS:
+				uint16_t usrlevel_set;
+				uint16_t pass_set;
+				getBGREQ_Auth_SetPass(&usrlevel_set, &pass_set);
+				if (ENDAT3_BG_Setpass(base, usrlevel_set, pass_set, 1) == kStatus_Success) {
+					PRINTF("\tBG Auth request successful \r\n");
+				} else {
+					PRINTF("\tBG Auth request failed \r\n");
+				}
+				break;
+			case ENDAT3_BG_OPCODE_PROTECT:
+				uint32_t address_pro;
+				uint8_t mode;
+				uint16_t acclevel;
+				uint8_t al_write, al_read;
+				char acclevelStr[4][16] = {"USER", "OEM2","OEM1", "MANUFACTURER"};
+				getBGREQ_Protect(&address_pro, &mode, &acclevel);
+				if (ENDAT3_BG_Protect(base, address_pro, mode, acclevel, &al_write, &al_read, 1) == kStatus_Success) {
+					PRINTF("\tBG Protect request successful. Effective access level: al_write: %s al_read: %s.\r\n", acclevelStr[al_write], acclevelStr[al_read]);
+				} else {
+					PRINTF("\tBG Auth request failed \r\n");
+				}
+				break;
+			case ENDAT3_BG_OPCODE_LOCATE:
+				uint8_t ctrl;
+				getBGREQ_Locate(&ctrl);
+				if (ENDAT3_BG_Locate(base, ctrl, 1) == kStatus_Success) {
+					PRINTF("\tBG Auth request successful \r\n");
+				} else {
+					PRINTF("\tBG Auth request failed \r\n");
+				}
+				break;
+			default:
+				break;
+
+		}
+	}
 }
 
 void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
@@ -1051,37 +1420,6 @@ void Endat3_BUS_BG_REQ(ENDAT3_Type *base, int32_t bus_addr)
 	}
 }
 
-int PrintFidSel(uint8_t *fid)
-{
-	uint8_t fidstr[20][18] = {"NOP              ", "POS1             ", "POS2             ", "TOUCHPROBE       ", "POS_ABS          ",
-							  "ZERODATA         ", "ERRMSG           ", "EVALNUM          ", "MOUNT0           ", "MOUNT1           ",
-							  "COMMU            ", "SENSOR_TEMP_MAX  ", "SENSOR_TEMP_INT  ", "SENSOR_TEMP_M1   ", "SENSOR_TEMP_M2   ",
-							  "SENSOR_TEMP_M3   ", "SF_POS1          ", "BGRSP            ", "BGREQ            ", "BUS_ADDR         "};
-	uint8_t fid_array[20] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x0A, 0x11, 0x12, 0x13, 0x1A, 0x20, 0x21, 0x22, 0x23, 0x24, 0x50, 0x60, 0x68, 0x70};
-	while (1) {
-		int i;
-		for (i = 0; i < 20; i++) {
-			if (i % 5 == 0) {
-				PRINTF("\r\n\t");
-			}
-			PRINTF("%2d: %s", i, fidstr[i]);
-		}
-		PRINTF("\r\n\t21: Exit..\r\n");
-		PRINTF("\r\n\t Please input: ");
-		int index = getIntAndEcho();
-		if (index > 22) {
-			PRINTF("\r\n\tinvalid input\r\n");
-			continue;
-		}
-		if (index == 21) {
-			return -1;
-		} else {
-			*fid = fid_array[index];
-			return 0;
-		}
-	}
-}
-
 void Endat3_LPF_Configuration(ENDAT3_Type *base, int32_t bus_addr, uint32_t mem_index)
 {
 	uint32_t mem_base_array[2] = {ENDAT3_MEM_BASE_LPFSET, ENDAT3_MEM_BASE_LPFLIVE};
@@ -1089,14 +1427,26 @@ void Endat3_LPF_Configuration(ENDAT3_Type *base, int32_t bus_addr, uint32_t mem_
 	uint16_t cache_buf[0x100] = {0};
 	endat3_mem_cache_t mem_cache;
 
-	if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, mem_base_array[mem_index], &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
-		PRINTF("\tAddress%d : Failed to initialize memory cache.\r\n", bus_addr);
-		return;
-	}
+	if (bus_addr > 0) {
+		if ((status = ENDAT3_Bus_P2P_memCacheInit(base, bus_addr, mem_base_array[mem_index], &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("\tAddress%d : Failed to initialize memory cache.\r\n", bus_addr);
+			return;
+		}
 
-	if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
-		PRINTF("\tAddress%d : Failed to fetch memory cache.\r\n", bus_addr);
-		return;
+		if ((status = ENDAT3_Bus_P2P_memCacheFetch(base, bus_addr, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("\tAddress%d : Failed to fetch memory cache.\r\n", bus_addr);
+			return;
+		}
+	} else {
+		if ((status = ENDAT3_memCacheInit(base, mem_base_array[mem_index], &mem_cache, cache_buf, 0x100, 1)) != kStatus_Success) {
+			PRINTF("\tEncoder : Failed to initialize memory cache.\r\n");
+			return;
+		}
+
+		if ((status = ENDAT3_memCacheFetch(base, &mem_cache, 1)) != kStatus_Success) {
+			PRINTF("\tEncoder : Failed to fetch memory cache.\r\n");
+			return;
+		}
 	}
 
 	if (ENDAT3_memCacheCheckCS(&mem_cache) != kStatus_Success) {
@@ -1220,14 +1570,26 @@ void Endat3_LPF_Configuration(ENDAT3_Type *base, int32_t bus_addr, uint32_t mem_
 	if (ch == 'n' || ch == 'N')
 		return;
 
-	if (ENDAT3_Bus_P2P_lpfCacheFlushToEncoder(base, bus_addr, &mem_cache, 1) != kStatus_Success) {
+	if (bus_addr > 0) {
+		status = ENDAT3_Bus_P2P_lpfCacheFlushToEncoder(base, bus_addr, &mem_cache, 1);
+	} else {
+		status = ENDAT3_lpfCacheFlushToEncoder(base, &mem_cache, 1);
+	}
+
+	if (status != kStatus_Success) {
 		PRINTF("\tFlush cache to FID Memory failed\r\n");
 		return;
 	}
 
 	if (mem_index == 0) { /* LPFSET is activated by a RECONFIGURE command.*/
 		/* Active the new LPF configuration */
-		if (ENDAT3_BG_Bus_P2P_Reconfigure(base, bus_addr, 1) != kStatus_Success) {
+		if (bus_addr > 0) {
+			status = ENDAT3_BG_Bus_P2P_Reconfigure(base, bus_addr, 1);
+		} else {
+			status = ENDAT3_BG_Reconfigure(base, 1);
+		}
+
+		if (status != kStatus_Success) {
 			PRINTF("\tReconfigure failed\r\n");
 			return;
 		}
@@ -1254,6 +1616,7 @@ void ENDAT3_Safety_Packet(ENDAT3_Type *base, int32_t bus_addr)
 {
 	uint8_t collector, fid_sf, fid_sd2, fid_sd1, isHPF;
 	char ch;
+	status_t status;
 	endat3_rsp_t rsp;
 	while (1) {
 		PRINTF("\tPlease select safety collector : 1, safety collector 1; 2, safety collector 2;\r\n");
@@ -1322,7 +1685,13 @@ void ENDAT3_Safety_Packet(ENDAT3_Type *base, int32_t bus_addr)
 		}
 	}
 
-	if (ENDAT3_FG_Bus_P2P_Req_Rsp(base, bus_addr, fgReqCode[index], 0, &rsp) == kStatus_Success) {
+	if (bus_addr > 0) {
+		status = ENDAT3_FG_Bus_P2P_Req_Rsp(base, bus_addr, fgReqCode[index], 0, &rsp);
+	} else {
+		status = ENDAT3_FG_Req_Rsp(base, fgReqCode[index], 0, &rsp);
+	}
+
+	if (status == kStatus_Success) {
 		ENDAT3_RspDump(&rsp);
 		PRINTF("SC_STATUS_0: 0x%x %d\r\n", base->SC_STATUS[collector], ENDAT3_Safety_Packet_status(base, collector, bus_addr));
 		ENDAT3_SAFETY_MEM_Dump(base, bus_addr, collector, isHPF);
@@ -1365,13 +1734,95 @@ int main(void)
 	ENDAT3_RxTxClkConfig(endat3_base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS, 0);
 	while(1) {
 		running = 1;
-		ch = ENDAT3_PrintMainMenu();
+		ch = PrintMainMenu();
 
 		if (ch == 1) {
-			nodes_num = 1;
+			ENDAT3_FG_Hello(endat3_base);
+			nodes_num = 0;
 			while (running) {
+				ch = PrintMenuForP2P();
 				switch (ch) {
+					case 1:
+						if (ENDAT3_FG_Hello(endat3_base) == kStatus_Success) {
+							PRINTF("\tEncoder: active\r\n");
+						} else {
+							PRINTF("\tEncoder: inactive\r\n");
+						}
+						break;
+					case 2:
+						if (ENDAT3_FG_Rate(endat3_base, ENDAT3_RXTX_RATE_25MBPS) != kStatus_Success) {
+							PRINTF("Failed to switch to 25Mbps\r\n");
+							break;
+						}
+						ENDAT3_RxTxClkConfig(endat3_base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_25MBPS,  0);
+						SDK_DelayAtLeastUs(ENDAT3_RATE_TIMEOUT * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
+						if (ENDAT3_FG_Hello(endat3_base) == kStatus_Success) {
+							PRINTF("Switch to 25Mbps\r\n");
+							clk_rxtx = ENDAT3_RXTX_RATE_25MBPS;
+						} else {
+							ENDAT3_RxTxClkConfig(endat3_base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS, 0);
+							PRINTF("Failed to switch to 25Mbps\r\n");
+						}
+						break;
+					case 3:
+						if (ENDAT3_FG_Rate(endat3_base, ENDAT3_RXTX_RATE_12_5MBPS) != kStatus_Success) {
+							PRINTF("Failed to switch to 12.5Mbps\r\n");
+							break;
+						}
+						ENDAT3_RxTxClkConfig(endat3_base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS,  0);
+						SDK_DelayAtLeastUs(ENDAT3_RATE_TIMEOUT * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
+						if (ENDAT3_FG_Hello(endat3_base) == kStatus_Success) {
+							PRINTF("Switch to 12.5Mbps\r\n");
+							clk_rxtx = ENDAT3_RXTX_RATE_12_5MBPS;
+						} else {
+							ENDAT3_RxTxClkConfig(endat3_base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_25MBPS, 0);
+							PRINTF("Failed to switch to 12.5Mbps\r\n");
+						}
+						break;
+					case 4:
+						ENDAT3_DumpParticipantInfomation(endat3_base, 0);
+						break;
+					case 5:
+						memory_index = PrintMemorySel();
+						if (memory_index < 0) {
+							PRINTF("invalid input: %d\r\n", memory_index);
+						} else {
+							ENDAT3_ModifyMemory(endat3_base, 0, memory_index);
+						}
+						break;
+					case 6:
+						Endat3_FG_REQ(endat3_base);
+						break;
+					case 7:
+						Endat3_BG_REQ(endat3_base);
+						break;
+					case 8:
+						memory_index = PrintLPFMemorySel();
+						if (memory_index < 0) {
+							PRINTF("\tinvalid input: %d\r\n", memory_index);
+						} else {
+							Endat3_LPF_Configuration(endat3_base, 0, memory_index);
+						}
+						break;
+					case 9:
+						ENDAT3_dump_FID(endat3_base, 0);
+						break;
+					case 10:
+						ENDAT3_Safety_Packet(endat3_base, 0);
+						break;
+					case 11:
+						ch = PrintSendlistSel();
+						ENDAT3_DumpPostionInIrq(endat3_base, ch);
+						break;
+					case 12:
+						ch = PrintSendlistSel();
+						ENDAT3_DumpPostionInSync(endat3_base, ch);
+							break;
+					case 13:
+						running = 0;
+						break;
 				}
 			}
 		}  else if (ch == 3) {
@@ -1385,7 +1836,7 @@ int main(void)
 			ENDAT3_Set_Bus_Participants_Num(endat3_base, nodes_num);
 			ENDAT3_Bus_Hello_ForAllParticipants(endat3_base, nodes_num);
 			while (running) {
-				ch = ENDAT3_PrintMenuForBus();
+				ch = PrintMenuForBus();
 				switch (ch) {
 					case 1:
 						PRINTF("\tPlease intput the number of the participants:");
@@ -1404,7 +1855,7 @@ int main(void)
 						ENDAT3_ScanAddressForAllParticipants(endat3_base, nodes_num);
 						break;
 					case 5:
-						ENDAT3_FG_Bus_BC_Rate_Switch(endat3_base, nodes_num, ENDAT3_RXTX_RATE_25MBPS);
+						ENDAT3_FG_Bus_Rate_Switch(endat3_base, nodes_num, ENDAT3_RXTX_RATE_25MBPS);
 						ENDAT3_RxTxClkConfig(endat3_base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_25MBPS,  0);
 						SDK_DelayAtLeastUs(ENDAT3_RATE_TIMEOUT * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
@@ -1417,7 +1868,7 @@ int main(void)
 						}
 						break;
 					case 6:
-						ENDAT3_FG_Bus_BC_Rate_Switch(endat3_base, nodes_num, ENDAT3_RXTX_RATE_12_5MBPS);
+						ENDAT3_FG_Bus_Rate_Switch(endat3_base, nodes_num, ENDAT3_RXTX_RATE_12_5MBPS);
 						SDK_DelayAtLeastUs(ENDAT3_RATE_TIMEOUT * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 						ENDAT3_RxTxClkConfig(endat3_base, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS,  0);
 
@@ -1430,43 +1881,43 @@ int main(void)
 						}
 						break;
 					case 7:
-						ch = ENDAT3_PrintParticipantSel();
+						ch = PrintParticipantSel();
 						if (ch > 0) {
-							ENDAT3_Bus_DumpParticipantInfomation(endat3_base, ch);
+							ENDAT3_DumpParticipantInfomation(endat3_base, ch);
 						}
 						break;
 					case 8:
-						ch = ENDAT3_PrintParticipantSel();
+						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
-						memory_index = ENDAT3_PrintMemorySel();
+						memory_index = PrintMemorySel();
 						if (memory_index < 0) {
 							PRINTF("invalid input: %d\r\n", memory_index);
 						} else {
-							ENDAT3_Bus_ModifyMemory(endat3_base, ch, memory_index);
+							ENDAT3_ModifyMemory(endat3_base, ch, memory_index);
 						}
 						break;
 					case 9:
-						ch = ENDAT3_PrintParticipantSel();
+						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
 						Endat3_BUS_FG_REQ(endat3_base, ch);
 						break;
 					case 10:
-						ch = ENDAT3_PrintParticipantSel();
+						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
 						Endat3_BUS_BG_REQ(endat3_base, ch);
 						break;
 					case 11:
-						ch = ENDAT3_PrintParticipantSel();
+						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
-						memory_index = ENDAT3_PrintLPFMemorySel();
+						memory_index = PrintLPFMemorySel();
 						if (memory_index < 0) {
 							PRINTF("\tinvalid input: %d\r\n", memory_index);
 						} else {
@@ -1474,36 +1925,26 @@ int main(void)
 						}
 						break;
 					case 12:
-						ch = ENDAT3_PrintParticipantSel();
+						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
 						ENDAT3_dump_FID(endat3_base, ch);
 						break;
 					case 13:
-						ch = ENDAT3_PrintParticipantSel();
+						ch = PrintParticipantSel();
 						if (ch < 0) {
 							break;
 						}
 						ENDAT3_Safety_Packet(endat3_base, ch);
 						break;
 					case 16:
-						PRINTF("\tPlease select the send list :\r\n");
-						PRINTF("\t1, DATA0; 2, DATA1; 3, DATA2; 4, DATA3\r\n");
-						PRINTF("\t5, DATA4; 6, DATA5; 7, DATA6; 8, DATA7\r\n");
-						PRINTF("\r\n\tPlease input: ");
-						ch = getIntAndEcho();
-						PRINTF("\r\n");
-						ENDAT3_DumpPostionInIrq(endat3_base, nodes_num, ch -1);
+						ch = PrintSendlistSel();
+						ENDAT3_Bus_DumpPostionInIrq(endat3_base, nodes_num, ch);
 						break;
 					case 17:
-						PRINTF("\tPlease select the send list :\r\n");
-						PRINTF("\t1, DATA0; 2, DATA1; 3, DATA2; 4, DATA3\r\n");
-						PRINTF("\t5, DATA4; 6, DATA5; 7, DATA6; 8, DATA7\r\n");
-						PRINTF("\r\n\tPlease input: ");
-						ch = getIntAndEcho();
-						PRINTF("\r\n");
-						ENDAT3_DumpPostionInSync(endat3_base, ch - 1);
+						ch = PrintSendlistSel();
+						ENDAT3_Bus_DumpPostionInSync(endat3_base, ch);
 						break;
 					case 18:
 						running = 0;
