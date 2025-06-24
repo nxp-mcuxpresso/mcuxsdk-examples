@@ -258,6 +258,13 @@ void BOARD_InitPowerConfig(void)
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
     /* Switch to a new DVS mode before re-configuring the VDD1/VDD2 per CPU frequency. */
     BOARD_SetPmicDVSPinStatus(0x1);
+    /* CPU0 may change it's voltage, need switch to PMIC first. */
+    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
+    POWER_DisableRegulators(kPower_SCPC);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
 #endif
 
     /* Keep the used resources on. */
@@ -413,25 +420,9 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 
     POWER_ApplyPD();
 
-    /* Set the four LDO setpoints per predefined CPU frequency, must in ascending order. */
-    uint32_t freqs[4] = {0};
-    freqs[0] = 0U; /* For DeepSleep. */
-    freqs[1] = 64000000U;
-    freqs[2] = SystemCoreClock; /* Only setpoint 2 and 0 are used. */
-    freqs[3] = 325000000U;
-
-    uint32_t miniVolts[4] = {0U};
-    miniVolts[0] = 630000U; /* For DeepSleep. */
-
-    POWER_ConfigRegulatorSetpointsForFreq(kRegulator_Vdd2LDO, freqs, miniVolts, 0U, 4U);
-
-    g_runVolt = POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U); /* Calculate the voltage per frequency. */
+    BOARD_ConfigSupplySetpoints();
 
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
-    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
-    POWER_DisableRegulators(kPower_SCPC);
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
 

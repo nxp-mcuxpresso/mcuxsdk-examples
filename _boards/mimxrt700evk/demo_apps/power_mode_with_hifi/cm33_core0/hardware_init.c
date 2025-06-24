@@ -249,6 +249,13 @@ void BOARD_InitPowerConfig(void)
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
     /* Switch to a new DVS mode before re-configuring the VDD1/VDD2 per CPU frequency. */
     BOARD_SetPmicDVSPinStatus(0x1);
+    /* CPU0 may change it's voltage, need switch to PMIC first. */
+    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
+    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
+    POWER_DisableRegulators(kPower_SCPC);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
+    POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
 #endif
 
     /* Keep the used resources on. */
@@ -327,7 +334,6 @@ static inline void BOARD_ConfigSupplySetpoints(void)
 #else
     POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
 #endif
-    POWER_SelectSleepSetpoint(kRegulator_DCDC, 0U);
     POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U);
     POWER_SelectSleepSetpoint(kRegulator_Vdd1LDO, 0U);
 
@@ -419,11 +425,6 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     BOARD_ConfigSupplySetpoints();
 
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
-
-    POWER_SetVddnSupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd1SupplySrc(kVddSrc_PMIC);
-    POWER_SetVdd2SupplySrc(kVddSrc_PMIC);
-    POWER_DisableRegulators(kPower_SCPC);
     POWER_SetRunRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
     POWER_SetSleepRegulatorMode(kRegulator_DCDC, kPower_DCDCMode_ULP);
 
