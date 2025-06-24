@@ -14,7 +14,7 @@ mcux_add_macro(
 )
 mcux_add_iar_configuration(
     TARGETS debug
-    CC "-Om"
+    CC "-Oh"
 )
 mcux_add_iar_configuration(
     TARGETS debug release
