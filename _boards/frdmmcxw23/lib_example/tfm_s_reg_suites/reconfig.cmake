@@ -8,6 +8,7 @@ include (${SdkRootDirPath}/drivers/flexcomm/CMakeLists.txt OPTIONAL)
 include (${SdkRootDirPath}/drivers/flexcomm/usart/CMakeLists.txt OPTIONAL)
 include (${SdkRootDirPath}/drivers/flexcomm/spi/CMakeLists.txt OPTIONAL)
 include (${SdkRootDirPath}/drivers/flexcomm/i2c/CMakeLists.txt OPTIONAL)
+include (${SdkRootDirPath}/drivers/lpc_iocon/CMakeLists.txt OPTIONAL)
 
 mcux_add_include(
         INCLUDES examples/_boards/${board}/
