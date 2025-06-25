@@ -28,8 +28,8 @@ mcux_remove_mdk_configuration(
 )
 mcux_add_mdk_configuration(
     TARGETS debug release
-    CC "-Oz"
-    CX "-Oz"
+    CC "-O0"
+    CX "-O0"
 )
 
 #armgcc configurations
