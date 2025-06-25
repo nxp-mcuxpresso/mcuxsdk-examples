@@ -111,7 +111,7 @@ float_t fltPositionDemoReqValue = 10.0F;
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
     "../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo/cm7_core1",        /* User Path 1- the highest priority */
-    "",       /* User Path 2 */
+    "../../../boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo/cm7_core1",       /* User Path 2 */
     "imx943evk", /* board id */
     "pmsm_servo",     /* example id */
     MCRSP_VER,      /* sw version */

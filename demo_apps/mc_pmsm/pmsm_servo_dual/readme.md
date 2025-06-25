@@ -2,7 +2,7 @@
 
 ## Overview
 
-This example demonstrates the dual control of the PMSM.
+This example demonstrates the servo dual control of the PMSM.
 
 ## Supported Boards
--
+- [i.MX943-EVK](../../../_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo_dual/example_board_readme.md)

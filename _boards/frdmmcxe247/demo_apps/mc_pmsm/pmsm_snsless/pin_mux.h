@@ -37,6 +37,27 @@ void BOARD_InitPins(void);
  */
 void BOARD_InitDEBUG_UARTPins(void);
 
+/*! @name PORTA0 (number 115), VOLT_DCB
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITCMPPINS_VOLT_DCB_PORT PORTA               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITCMPPINS_VOLT_DCB_PIN 0U                   /*!<@brief PORT pin number */
+#define BOARD_INITCMPPINS_VOLT_DCB_PIN_MASK (1U << 0U)      /*!<@brief PORT pin mask */
+                                                            /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitCMPPins(void);
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOAED_InitLEDPins(void);
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -75,6 +96,8 @@ void BOARD_InitBUTTONsPins(void);
  *
  */
 void BOARD_InitI2CPins(void);
+
+#define FTMOPT0_FTM0FLTxSEL_0b000 0x00u /*!<@brief FTM0 Fault X Select: FTM0_FLTx pin */
 
 /*! @name PORTD15 (number 29), PWM_AT_CH0
   @{ */

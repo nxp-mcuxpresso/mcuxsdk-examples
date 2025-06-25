@@ -384,11 +384,11 @@ static void InitCMP(void)
     /* DAC output set to M1_FAULT_CMP_THRESHOLD */
     /* Reference voltage will be VDD */
     /* Enable DAC */    
-    M1_FAULT_CMP_INSTANCE->C1 = CMP_C1_VOSEL(M1_FAULT_CMP_THRESHOLD) | CMP_C1_VRSEL_MASK | CMP_C1_DACEN_MASK;   
+    M1_FAULT_CMP_INSTANCE->C1 = CMP_C1_VOSEL(M1_FAULT_CMP_THRESHOLD) | CMP_C1_DACEN_MASK;   
 
     /* Plus is CMP1_IN1 ~ overcurrent pin */
     /* Minus is CMP1_IN0 ~ 6bit reference */
-    M1_FAULT_CMP_INSTANCE->C1 |= CMP_C1_INPSEL(0) | CMP_C1_INNSEL(1) | CMP_C1_PSEL(0) | CMP_C1_MSEL(1);
+    M1_FAULT_CMP_INSTANCE->C1 |= CMP_C1_INPSEL(1) | CMP_C1_INNSEL(0) | CMP_C1_PSEL(1) | CMP_C1_MSEL(0);
 
     /* Enable analog comparator */
     M1_FAULT_CMP_INSTANCE->C0 |= CMP_C0_EN_MASK;

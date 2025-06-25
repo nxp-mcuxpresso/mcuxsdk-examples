@@ -167,7 +167,7 @@ void ADC_A_IRQHANDLER(void) {
 #pragma interrupt alignsp saveall
 void PIT0_IRQHANDLER(void)
 {
-	static int16_t ui16i = 0U;
+	static int16_t i16i = 0;
 
 	/* Clear PIT roll-over bit. */
 	PIT0->CTRL &= ~PIT_CTRL_PRF_MASK;
@@ -188,11 +188,11 @@ void PIT0_IRQHANDLER(void)
 	/* If in FAULT state red blinking*/
 	else if (M1_GetAppState() == 0U)
 	{
-		if (ui16i-- < 0U)
+		if (i16i-- < 0)
 		{
 			/* toggle red LED */
 			GPIO_PinToggle(MISC_PINS_LED_USER_GPIO, MISC_PINS_LED_USER_PIN_MASK);
-			ui16i = 125U;
+			i16i = 125;
 		}
 	}
 

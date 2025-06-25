@@ -1,12 +1,12 @@
 /*
-    * Copyright 2025 NXP 
+    * Copyright 2025 NXP
     *
-    * SPDX-License-Identifier: BSD-3-Clause 
+    * SPDX-License-Identifier: BSD-3-Clause
 */
 
 /*
-    * FILE NAME: ../../../examples/_boards/lpcxpresso55s36/demo_apps/mc_pmsm/pmsm_enc_dual/m2_pmsm_appconfig.h
-    * DATE: Thu Apr 24 2025, 08:04:11
+    * FILE NAME: ../../../examples/_boards/lpcxpresso55s36/demo_apps/mc_pmsm/pmsm_enc/m2_pmsm_appconfig.h
+    * DATE: Wed Jun 11 2025, 13:31:19
 */
 
 /*
@@ -48,7 +48,7 @@
     },
     "speedLoop": {
         "speedLoopSampleTime": 0.001,
-        "speedLoopF0": 28,
+        "speedLoopF0": 5,
         "speedLoopKsi": 1,
         "speedLoopIncUp": 5000,
         "speedLoopIncDown": 5000,
@@ -61,10 +61,10 @@
     },
     "positionLoop": {
         "positionLoopSampleTime": 0.001,
-        "positionLoopF0": 10,
+        "positionLoopF0": 5,
         "positionLoopKsi": 1,
-        "servo_positionLoopUpperLimit": 3000,
-        "servo_positionLoopLowerLimit": -3000,
+        "servo_positionLoopUpperLimit": 2000,
+        "servo_positionLoopLowerLimit": -2000,
         "servo_speedLoopUpperLimit": 2,
         "servo_speedLoopLowerLimit": -2
     },
@@ -136,25 +136,25 @@
 #define M2_SPEED_RAMP_DOWN (1.04720F)
 #define M2_SPEED_LOOP_HIGH_LIMIT (2.0F)
 #define M2_SPEED_LOOP_LOW_LIMIT (-2.0F)
-#define M2_SPEED_PI_PROP_GAIN (0.0203976F)
-#define M2_SPEED_PI_INTEG_GAIN (0.000897133F)
+#define M2_SPEED_PI_PROP_GAIN (0.00364243F)
+#define M2_SPEED_PI_INTEG_GAIN (0.0000286075F)
 #define M2_SPEED_IIR_B0 (0.239057F)
 #define M2_SPEED_IIR_B1 (0.239057F)
 #define M2_SPEED_IIR_A1 (0.521886F)
-#define M2_SPEED_IIR_ZC_B0 (0.0421294F)
-#define M2_SPEED_IIR_ZC_B1 (0.0421294F)
-#define M2_SPEED_IIR_ZC_A1 (0.915741F)
+#define M2_SPEED_IIR_ZC_B0 (0.00779278F)
+#define M2_SPEED_IIR_ZC_B1 (0.00779278F)
+#define M2_SPEED_IIR_ZC_A1 (0.984414F)
 /* POSITIONLOOP*/
-#define M2_SERVO_POSITION_P_HIGH_LIMIT (628.319F)
-#define M2_SERVO_POSITION_P_LOW_LIMIT (-628.319F)
-#define M2_SERVO_POSITION_P_PROP_GAIN (263.189F)
+#define M2_SERVO_POSITION_P_HIGH_LIMIT (418.879F)
+#define M2_SERVO_POSITION_P_LOW_LIMIT (-418.879F)
+#define M2_SERVO_POSITION_P_PROP_GAIN (131.595F)
 #define M2_SERVO_FEED_FRWD_K1 (8.37758F)
-#define M2_SERVO_FEED_FRWD_K2 (0.0666667F)
-#define M2_SERVO_IIR_ZC_B0 (0.0304590F)
-#define M2_SERVO_IIR_ZC_B1 (0.0304590F)
-#define M2_SERVO_IIR_ZC_A1 (0.939082F)
-#define M2_SERVO_SPEED_PI_PROP_GAIN (0.0109273F)
-#define M2_SERVO_SPEED_PI_INTEG_GAIN (0.000343291F)
+#define M2_SERVO_FEED_FRWD_K2 (0.133333F)
+#define M2_SERVO_IIR_ZC_B0 (0.0154650F)
+#define M2_SERVO_IIR_ZC_B1 (0.0154650F)
+#define M2_SERVO_IIR_ZC_A1 (0.969070F)
+#define M2_SERVO_SPEED_PI_PROP_GAIN (0.00546364F)
+#define M2_SERVO_SPEED_PI_INTEG_GAIN (0.0000858226F)
 #define M2_SERVO_SPEED_PI_HIGH_LIMIT (2.0F)
 #define M2_SERVO_SPEED_PI_LOW_LIMIT (-2.0F)
 /* SENSORLESS*/

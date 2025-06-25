@@ -6,7 +6,7 @@
 
 /*
     * FILE NAME: ../../../examples/_boards/imx943evk/demo_apps/mc_pmsm/pmsm_servo_dual/cm7_core1/m2_pmsm_appconfig.h
-    * DATE: Thu Apr 03 2025, 10:20:54
+    * DATE: Mon Jun 02 2025, 09:33:41
 */
 
 /*
@@ -24,8 +24,8 @@
         "parametersImax": 34.2,
         "parametersUdcbMax": 77.35,
         "parametersUdcbTrip": 28,
-        "parametersUdcbUnder": 16,
-        "parametersUdcbOver": 30,
+        "parametersUdcbUnder": 12,
+        "parametersUdcbOver": 34,
         "parametersNover": 5999,
         "parametersNmin": 300,
         "parametersEblock": 0.2,
@@ -42,7 +42,7 @@
     },
     "currentLoop": {
         "currentLoopSampleTime": 0.00003125,
-        "currentLoopF0": 500,
+        "currentLoopF0": 400,
         "currentLoopKsi": 1,
         "currentLoopOutputLimit": 90
     },
@@ -99,8 +99,8 @@
 #define M2_I_MAX (34.2F)
 #define M2_U_DCB_MAX (77.35F)
 #define M2_U_DCB_TRIP (28.0F)
-#define M2_U_DCB_UNDERVOLTAGE (16.0F)
-#define M2_U_DCB_OVERVOLTAGE (30.0F)
+#define M2_U_DCB_UNDERVOLTAGE (12.0F)
+#define M2_U_DCB_OVERVOLTAGE (32.0F)
 #define M2_N_OVERSPEED (1884.64F)
 #define M2_N_MIN (94.2478F)
 #define M2_E_BLOCK_TRH (0.2F)
@@ -123,13 +123,13 @@
 #define M2_SCALAR_RAMP_UP (0.00625F)
 #define M2_SCALAR_RAMP_DOWN (0.00781250F)
 /* CURRENTLOOP*/
-#define M2_D_KP_GAIN (0.621284F)
-#define M2_D_KI_GAIN (0.0179607F)
-#define M2_Q_KP_GAIN (0.734538F)
-#define M2_Q_KI_GAIN (0.0207404F)
-#define M2_Q_IIR_ZC_B0 (0.0274605F)
-#define M2_Q_IIR_ZC_B1 (0.0274605F)
-#define M2_Q_IIR_ZC_A1 (0.945079F)
+#define M2_D_KP_GAIN (0.474927F)
+#define M2_D_KI_GAIN (0.0114948F)
+#define M2_Q_KP_GAIN (0.565531F)
+#define M2_Q_KI_GAIN (0.0132738F)
+#define M2_Q_IIR_ZC_B0 (0.0229332F)
+#define M2_Q_IIR_ZC_B1 (0.0229332F)
+#define M2_Q_IIR_ZC_A1 (0.954134F)
 #define M2_CLOOP_LIMIT (0.519615F)
 /* SPEEDLOOP*/
 #define M2_SPEED_RAMP_UP (0.314159F)

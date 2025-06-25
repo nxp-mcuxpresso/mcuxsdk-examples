@@ -11,18 +11,26 @@ product: Pins v17.0
 processor: MCXE247
 package_id: MCXE247VLQ
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2506.30
 pin_labels:
 - {pin_num: '55', pin_signal: PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4/QSPI_B_IO5, label: I2C1_SDA, identifier: I2C1_SDA}
-- {pin_num: '54', pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/MII_RXD2/FTM1_CH5/QSPI_B_IO4, label: I2C1_SCL, identifier: I2C1_SCL}
+- {pin_num: '54', pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5/QSPI_B_IO4, label: I2C1_SCL, identifier: I2C1_SCL}
+- {pin_num: '121', pin_signal: PTE6/LPSPI0_PCS2/FTM7_FLT1/FTM3_CH7/LPUART1_RTS/ADC1_SE11, label: LPSPI0_PCS2, identifier: LPSPI0_PCS2}
+- {pin_num: '63', pin_signal: PTB3/FTM1_CH1/LPSPI0_SIN/FTM1_QD_PHA/TRGMUX_IN2/ADC0_SE7, label: LPSPI0_SIN, identifier: LPSPI0_SIN}
+- {pin_num: '122', pin_signal: PTE2/LPSPI0_SOUT/LPTMR0_ALT3/FTM3_CH6/LPUART1_CTS/SAI1_SYNC/ADC1_SE10, label: LPSPI0_SOUT, identifier: LPSPI0_SOUT}
+- {pin_num: '138', pin_signal: PTE0/LPSPI0_SCK/TCLK1/LPI2C1_SDA/LPSPI1_SOUT/FTM1_FLT2/SAI0_D2, label: LPSPI0_SCK, identifier: LPSPI0_SCK}
+- {pin_num: '1', pin_signal: PTE16/LPUART1_RTS/LPSPI2_SIN/FTM2_CH7/FTM4_FLT0/FXIO_D3/TRGMUX_OUT7, label: LPSPI2_SIN, identifier: LPSPI2_SIN}
+- {pin_num: '144', pin_signal: PTA8/LPUART2_RX/LPSPI2_SOUT/FXIO_D6/FTM3_FLT3/FTM4_FLT1, label: LPSPI2_SOUT, identifier: LPSPI2_SOUT}
+- {pin_num: '59', pin_signal: PTC15/FTM1_CH3/LPSPI2_SCK/MII_CRS/TRGMUX_IN8/QSPI_B_CS/ADC0_SE13, label: LPSPI2_SCK, identifier: LPSPI2_SCK}
+- {pin_num: '6', pin_signal: PTE10/CLKOUT/LPSPI2_PCS1/FTM2_CH4/FXIO_D4/TRGMUX_OUT4, label: LPSPI2_PCS1, identifier: LPSPI2_PCS1}
 - {pin_num: '29', pin_signal: PTD15/FTM0_CH0/ETM_TRACE_D3/LPSPI0_SCK/ENET_TMR2, label: PWM_AT_CH0, identifier: PWM_AT;PWM_AT_CH0}
-- {pin_num: '28', pin_signal: PTD16/FTM0_CH1/ETM_TRACE_D2/LPSPI0_SIN/CMP0_RRT, label: PWM_AB_CH1, identifier: PWM_AB;PWM_AB_CH1}
+- {pin_num: '28', pin_signal: PTD16/FTM0_CH1/ETM_TRACE_D2/LPSPI0_SIN/CMP0_RRT/ETM_TRACE_CLKOUT, label: PWM_AB_CH1, identifier: PWM_AB;PWM_AB_CH1}
 - {pin_num: '94', pin_signal: PTB16/FTM0_CH4/LPSPI1_SOUT/ADC1_SE15, label: PWM_BT_CH4, identifier: PWM_BT_CH4}
 - {pin_num: '93', pin_signal: PTB17/FTM0_CH5/LPSPI1_PCS3/FTM5_FLT1, label: PWM_BB_CH5, identifier: PWM_BB_CH5}
 - {pin_num: '92', pin_signal: PTA17/FTM0_CH6/FTM3_FLT0/EWM_OUT_b/FTM5_FLT0, label: PWM_CT_CH6, identifier: PWM_CT_CH6}
 - {pin_num: '87', pin_signal: PTE7/FTM0_CH7/FTM3_FLT0, label: PWM_CB_CH7, identifier: PWM_CB_CH7}
 - {pin_num: '77', pin_signal: PTB1/LPUART0_TX/LPSPI0_SOUT/TCLK0/CAN0_TX/FTM4_CH5/ADC0_SE5/ADC1_SE15, label: VOLT_DCB, identifier: VOLT_DCB}
-- {pin_num: '100', pin_signal: PTD4/ADC1_SE6, label: CUR_C, identifier: CUR_C}
+- {pin_num: '100', pin_signal: PTD4/FTM0_FLT3/FTM3_FLT3/ADC1_SE6, label: CUR_C, identifier: CUR_C}
 - {pin_num: '85', pin_signal: PTA6/FTM0_FLT1/LPSPI1_PCS1/FTM5_CH5/LPUART1_CTS/ADC0_SE2, label: CUR_B, identifier: CUR_B}
 - {pin_num: '120', pin_signal: PTA15/FTM1_CH2/LPSPI0_PCS3/LPSPI2_PCS3/FTM7_FLT0/ADC1_SE12, label: CUR_A, identifier: CUR_A}
 - {pin_num: '115', pin_signal: PTA0/FTM2_CH1/LPI2C0_SCLS/FXIO_D2/FTM2_QD_PHA/LPUART0_CTS/TRGMUX_OUT3/ADC0_SE0/CMP0_IN0, label: VOLT_DCB, identifier: VOLT_DCB}
@@ -47,6 +55,8 @@ void BOARD_InitBootPins(void)
 {
     BOARD_InitPins();
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitCMPPins();
+    BOAED_InitLEDPins();
     BOARD_InitLEDsPins();
     BOARD_InitBUTTONsPins();
     BOARD_InitFTM();
@@ -82,7 +92,7 @@ BOARD_InitDEBUG_UARTPins:
 - options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '25', peripheral: LPUART2, signal: RX, pin_signal: PTD17/FTM0_FLT2/LPUART2_RX/FTM5_FLT1}
-  - {pin_num: '23', peripheral: LPUART2, signal: TX, pin_signal: PTE12/LPUART2_TX/FTM5_FLT0}
+  - {pin_num: '23', peripheral: LPUART2, signal: TX, pin_signal: PTE12/FTM0_FLT3/LPUART2_TX/FTM5_FLT0}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -105,6 +115,62 @@ void BOARD_InitDEBUG_UARTPins(void)
 
     /* PORTE12 (pin 23) is configured as LPUART2_TX */
     PORT_SetPinMux(PORTE, 12U, kPORT_MuxAlt3);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCMPPins:
+- options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '115', peripheral: CMP0, signal: 'IN, 0', pin_signal: PTA0/FTM2_CH1/LPI2C0_SCLS/FXIO_D2/FTM2_QD_PHA/LPUART0_CTS/TRGMUX_OUT3/ADC0_SE0/CMP0_IN0}
+  - {pin_num: '113', peripheral: CMP0, signal: 'IN, 1', pin_signal: PTA1/FTM1_CH1/LPI2C0_SDAS/FXIO_D3/FTM1_QD_PHA/LPUART0_RTS/TRGMUX_OUT0/ADC0_SE1/CMP0_IN1}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCMPPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCMPPins(void)
+{
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortA);
+
+    /* PORTA0 (pin 115) is configured as CMP0_IN0 */
+    PORT_SetPinMux(BOARD_INITCMPPINS_VOLT_DCB_PORT, BOARD_INITCMPPINS_VOLT_DCB_PIN, kPORT_PinDisabledOrAnalog);
+
+    /* PORTA1 (pin 113) is configured as CMP0_IN1 */
+    PORT_SetPinMux(PORTA, 1U, kPORT_PinDisabledOrAnalog);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOAED_InitLEDPins:
+- options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '107', peripheral: GPIOB, signal: 'GPIO, 11', pin_signal: PTB11/FTM3_CH3/LPI2C0_HREQ}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOAED_InitLEDPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOAED_InitLEDPins(void)
+{
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortB);
+
+    /* PORTB11 (pin 107) is configured as PTB11 */
+    PORT_SetPinMux(PORTB, 11U, kPORT_MuxAsGpio);
 }
 
 /* clang-format off */
@@ -149,7 +215,7 @@ void BOARD_InitLEDsPins(void)
 BOARD_InitBUTTONsPins:
 - options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '143', peripheral: GPIOA, signal: 'GPIO, 9', pin_signal: PTA9/LPUART2_TX/LPSPI2_PCS0/FXIO_D7/FTM3_FLT2/FTM4_FLT0}
+  - {pin_num: '143', peripheral: GPIOA, signal: 'GPIO, 9', pin_signal: PTA9/LPUART2_TX/LPSPI2_PCS0/FXIO_D7/FTM3_FLT2/FTM1_FLT3/FTM4_FLT0}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -177,8 +243,8 @@ BOARD_InitI2CPins:
 - pin_list:
   - {pin_num: '55', peripheral: LPI2C1, signal: SDA, pin_signal: PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4/QSPI_B_IO5, direction: INPUT, drive_strength: low,
     pull_select: up, pull_enable: enable, passive_filter: disable, digital_filter: disable}
-  - {pin_num: '54', peripheral: LPI2C1, signal: SCL, pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/MII_RXD2/FTM1_CH5/QSPI_B_IO4, direction: INPUT, drive_strength: low, pull_select: up,
-    pull_enable: enable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '54', peripheral: LPI2C1, signal: SCL, pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5/QSPI_B_IO4, direction: INPUT, drive_strength: low,
+    pull_select: up, pull_enable: enable, passive_filter: disable, digital_filter: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -238,7 +304,7 @@ BOARD_InitFTM:
 - options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '29', peripheral: FTM0, signal: 'CH, 0', pin_signal: PTD15/FTM0_CH0/ETM_TRACE_D3/LPSPI0_SCK/ENET_TMR2, identifier: PWM_AT_CH0, direction: OUTPUT}
-  - {pin_num: '28', peripheral: FTM0, signal: 'CH, 1', pin_signal: PTD16/FTM0_CH1/ETM_TRACE_D2/LPSPI0_SIN/CMP0_RRT, identifier: PWM_AB_CH1, direction: OUTPUT}
+  - {pin_num: '28', peripheral: FTM0, signal: 'CH, 1', pin_signal: PTD16/FTM0_CH1/ETM_TRACE_D2/LPSPI0_SIN/CMP0_RRT/ETM_TRACE_CLKOUT, identifier: PWM_AB_CH1, direction: OUTPUT}
   - {pin_num: '94', peripheral: FTM0, signal: 'CH, 4', pin_signal: PTB16/FTM0_CH4/LPSPI1_SOUT/ADC1_SE15, direction: OUTPUT}
   - {pin_num: '93', peripheral: FTM0, signal: 'CH, 5', pin_signal: PTB17/FTM0_CH5/LPSPI1_PCS3/FTM5_FLT1, direction: OUTPUT}
   - {pin_num: '92', peripheral: FTM0, signal: 'CH, 6', pin_signal: PTA17/FTM0_CH6/FTM3_FLT0/EWM_OUT_b/FTM5_FLT0, direction: OUTPUT}
@@ -246,6 +312,7 @@ BOARD_InitFTM:
   - {peripheral: PDB0, signal: TRG, pin_signal: TRGMUX_FTM0_INIT_TRIG}
   - {peripheral: PDB1, signal: TRG, pin_signal: TRGMUX_FTM0_INIT_TRIG}
   - {peripheral: FTM0, signal: 'TRG, 1', pin_signal: TRGMUX_CMP0_OUT}
+  - {pin_num: '21', peripheral: FTM0, signal: 'FLT, 0', pin_signal: PTE3/FTM0_FLT0/LPUART2_RTS/FTM2_FLT0/TRGMUX_IN6/CMP0_OUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -282,8 +349,18 @@ void BOARD_InitFTM(void)
     /* PORTD16 (pin 28) is configured as FTM0_CH1 */
     PORT_SetPinMux(BOARD_INITFTM_PWM_AB_CH1_PORT, BOARD_INITFTM_PWM_AB_CH1_PIN, kPORT_MuxAlt2);
 
+    /* PORTE3 (pin 21) is configured as FTM0_FLT0 */
+    PORT_SetPinMux(PORTE, 3U, kPORT_MuxAlt2);
+
     /* PORTE7 (pin 87) is configured as FTM0_CH7 */
     PORT_SetPinMux(BOARD_INITFTM_PWM_CB_CH7_PORT, BOARD_INITFTM_PWM_CB_CH7_PIN, kPORT_MuxAlt2);
+
+    SIM->FTMOPT0 = ((SIM->FTMOPT0 &
+                     /* Mask bits to zero which are setting */
+                     (~(SIM_FTMOPT0_FTM0FLTXSEL_MASK)))
+
+                    /* FTM0 Fault X Select: FTM0_FLTx pin. */
+                    | SIM_FTMOPT0_FTM0FLTXSEL(FTMOPT0_FTM0FLTxSEL_0b000));
     /* CMP0 Output is selected as FTM0 device trigger input 1 */
     TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_Ftm0, kTRGMUX_TriggerInput1, kTRGMUX_SourceCmp0Output);
     /* FTM0 init trigger is selected as PDB0 device trigger input 0 */
@@ -300,7 +377,7 @@ BOARD_InitADC:
 - pin_list:
   - {pin_num: '120', peripheral: ADC1, signal: 'SE, 12', pin_signal: PTA15/FTM1_CH2/LPSPI0_PCS3/LPSPI2_PCS3/FTM7_FLT0/ADC1_SE12}
   - {pin_num: '85', peripheral: ADC0, signal: 'SE, 2', pin_signal: PTA6/FTM0_FLT1/LPSPI1_PCS1/FTM5_CH5/LPUART1_CTS/ADC0_SE2}
-  - {pin_num: '100', peripheral: ADC1, signal: 'SE, 6', pin_signal: PTD4/ADC1_SE6}
+  - {pin_num: '100', peripheral: ADC1, signal: 'SE, 6', pin_signal: PTD4/FTM0_FLT3/FTM3_FLT3/ADC1_SE6}
   - {pin_num: '115', peripheral: ADC0, signal: 'SE, 0', pin_signal: PTA0/FTM2_CH1/LPI2C0_SCLS/FXIO_D2/FTM2_QD_PHA/LPUART0_CTS/TRGMUX_OUT3/ADC0_SE0/CMP0_IN0}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */

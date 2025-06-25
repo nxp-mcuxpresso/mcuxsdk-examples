@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../../../examples/_boards/evkmimxrt1180/demo_apps/mc_pmsm/pmsm_enc/cm7/m2_pmsm_appconfig.h
-    * DATE: Thu Apr 24 2025, 09:28:30
+    * FILE NAME: ../../../examples/_boards/evkmimxrt1180/demo_apps/mc_pmsm/pmsm_enc/cm7/m1_pmsm_appconfig.h
+    * DATE: Wed Jun 11 2025, 14:17:09
 */
 
 /*
@@ -28,7 +28,7 @@
         "parametersUdcbOver": 32,
         "parametersNover": 4399,
         "parametersNmin": 300,
-        "parametersEblock": 0.8,
+        "parametersEblock": 1.4,
         "parametersEblockPer": 2000,
         "parametersNmax": 4400,
         "parametersUdcbIIRf0": 100,
@@ -48,7 +48,7 @@
     },
     "speedLoop": {
         "speedLoopSampleTime": 0.001,
-        "speedLoopF0": 32,
+        "speedLoopF0": 5,
         "speedLoopKsi": 1,
         "speedLoopIncUp": 5000,
         "speedLoopIncDown": 5000,
@@ -61,12 +61,12 @@
     },
     "positionLoop": {
         "positionLoopSampleTime": 0.001,
-        "positionLoopF0": 20,
+        "positionLoopF0": 5,
         "positionLoopKsi": 1,
-        "servo_positionLoopUpperLimit": 3000,
-        "servo_positionLoopLowerLimit": -3000,
-        "servo_speedLoopUpperLimit": 4,
-        "servo_speedLoopLowerLimit": -4
+        "servo_positionLoopUpperLimit": 2000,
+        "servo_positionLoopLowerLimit": -2000,
+        "servo_speedLoopUpperLimit": 2,
+        "servo_speedLoopLowerLimit": -2
     },
     "sensorless": {
         "sensorlessBemfObsrvF0": 300,
@@ -103,7 +103,7 @@
 #define M1_U_DCB_OVERVOLTAGE (32.0F)
 #define M1_N_OVERSPEED (921.324F)
 #define M1_N_MIN (62.8319F)
-#define M1_E_BLOCK_TRH (0.8F)
+#define M1_E_BLOCK_TRH (1.4F)
 #define M1_E_BLOCK_PER (2000)
 #define M1_N_MAX (921.534F)
 #define M1_CALIB_DURATION (200)
@@ -136,27 +136,27 @@
 #define M1_SPEED_RAMP_DOWN (1.04720F)
 #define M1_SPEED_LOOP_HIGH_LIMIT (2.0F)
 #define M1_SPEED_LOOP_LOW_LIMIT (-2.0F)
-#define M1_SPEED_PI_PROP_GAIN (0.0233115F)
-#define M1_SPEED_PI_INTEG_GAIN (0.00117177F)
+#define M1_SPEED_PI_PROP_GAIN (0.00364243F)
+#define M1_SPEED_PI_INTEG_GAIN (0.0000286075F)
 #define M1_SPEED_IIR_B0 (0.239057F)
 #define M1_SPEED_IIR_B1 (0.239057F)
 #define M1_SPEED_IIR_A1 (0.521886F)
-#define M1_SPEED_IIR_ZC_B0 (0.0478598F)
-#define M1_SPEED_IIR_ZC_B1 (0.0478598F)
-#define M1_SPEED_IIR_ZC_A1 (0.904280F)
+#define M1_SPEED_IIR_ZC_B0 (0.00779278F)
+#define M1_SPEED_IIR_ZC_B1 (0.00779278F)
+#define M1_SPEED_IIR_ZC_A1 (0.984414F)
 /* POSITIONLOOP*/
-#define M1_SERVO_POSITION_P_HIGH_LIMIT (628.319F)
-#define M1_SERVO_POSITION_P_LOW_LIMIT (-628.319F)
-#define M1_SERVO_POSITION_P_PROP_GAIN (526.379F)
+#define M1_SERVO_POSITION_P_HIGH_LIMIT (418.879F)
+#define M1_SERVO_POSITION_P_LOW_LIMIT (-418.879F)
+#define M1_SERVO_POSITION_P_PROP_GAIN (131.595F)
 #define M1_SERVO_FEED_FRWD_K1 (8.37758F)
-#define M1_SERVO_FEED_FRWD_K2 (0.0333333F)
-#define M1_SERVO_IIR_ZC_B0 (0.0591174F)
-#define M1_SERVO_IIR_ZC_B1 (0.0591174F)
-#define M1_SERVO_IIR_ZC_A1 (0.881765F)
-#define M1_SERVO_SPEED_PI_PROP_GAIN (0.0218546F)
-#define M1_SERVO_SPEED_PI_INTEG_GAIN (0.00137316F)
-#define M1_SERVO_SPEED_PI_HIGH_LIMIT (4.0F)
-#define M1_SERVO_SPEED_PI_LOW_LIMIT (-4.0F)
+#define M1_SERVO_FEED_FRWD_K2 (0.133333F)
+#define M1_SERVO_IIR_ZC_B0 (0.0154650F)
+#define M1_SERVO_IIR_ZC_B1 (0.0154650F)
+#define M1_SERVO_IIR_ZC_A1 (0.969070F)
+#define M1_SERVO_SPEED_PI_PROP_GAIN (0.00546364F)
+#define M1_SERVO_SPEED_PI_INTEG_GAIN (0.0000858226F)
+#define M1_SERVO_SPEED_PI_HIGH_LIMIT (2.0F)
+#define M1_SERVO_SPEED_PI_LOW_LIMIT (-2.0F)
 /* SENSORLESS*/
 #define M1_OL_START_RAMP_INC (0.0654498F)
 #define M1_OL_START_I (0.35F)

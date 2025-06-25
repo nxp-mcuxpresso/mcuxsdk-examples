@@ -97,7 +97,7 @@ void InitClock(void)
  */
 void InitADC(void)
 {
-    #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 0))
+    #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 3))
     #warning Used a different fsl_lpadc driver version! An example may not work correctly! 
     #endif
   
@@ -120,7 +120,7 @@ void InitADC(void)
     LPADC_DoOffsetCalibration(ADC1);
     LPADC_DoAutoCalibration(ADC1);
     
-    LPADC_SetOffsetCalibrationMode(ADC1, kLPADC_OffsetCalibration16bitMode);
+    LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration16bitMode);
     LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration12bitMode);
     LPADC_DoOffsetCalibration(ADC2);
     LPADC_DoAutoCalibration(ADC2);

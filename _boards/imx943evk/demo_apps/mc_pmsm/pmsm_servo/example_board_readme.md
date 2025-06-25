@@ -1,10 +1,10 @@
 Hardware requirements
 =====================
-- IMX943-EVK board
-- FRDM-MC-LVPMSM board
+- i.MX943-EVK board
+- FRDM-LVPMSM-FA board
 - Power supply 24V
-- Mini/micro USB cable
-- Low-voltage 3-phase permanent magnet motor
+- USB Type-C cable
+- Low-voltage 3-phase permanent magnet motor with EnDat2.2 sensor
 - Personal Computer
 
 Overview

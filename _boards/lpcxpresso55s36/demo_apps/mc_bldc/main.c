@@ -70,8 +70,8 @@ static uint32_t ui32SpeedStimulatorCnt    = 0U;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
-    "../../../examples/lpcxpresso55s36/demo_apps/mc_bldc",     /* User Path 1- the highest priority */
-    "",       /* User Path 2 */
+    "../../../examples/_boards/lpcxpresso55s36/demo_apps/mc_bldc",     /* User Path 1- the highest priority */
+    "../../../boards/lpcxpresso55s36/demo_apps/mc_bldc",       /* User Path 2 */
     "lpcxpresso55s36",  /* board id */
     "mc_bldc",             /* example id */
     MCRSP_VER,          /* sw version */

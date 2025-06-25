@@ -81,7 +81,7 @@ static uint32_t ui32PositionStimulatorCnt = 0U;
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
     "../../../examples/_boads/frdmmcxn947/demo_apps/mc_pmsm/pmsm_enc/cm33_core0",                /* User Path 1- the highest priority */
-    "",       /* User Path 2 */
+    "../../../boads/frdmmcxn947/demo_apps/mc_pmsm/pmsm_enc/cm33_core0",       /* User Path 2 */
     "frdmmcxn947", /* board id */
     "pmsm_enc", /* example id */
     MCRSP_VER,      /* sw version */
@@ -261,9 +261,6 @@ void CTIMER0_IRQHandler(void)
 
     /* Demo position stimulator */
     DemoPositionStimulator();
-
-    /* Call FreeMASTER recorder */
-    FMSTR_Recorder(0);
 
     /* Clear the match interrupt flag. */
     CTIMER0->IR |= CTIMER_IR_MR0INT(1U);
@@ -559,7 +556,6 @@ static void BOARD_InitGPIO(void)
 
     /* Init output LED GPIO. */
     GPIO_PinInit(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, &led_config);
-    GPIO_PinInit(BOARD_LED_BLUE_GPIO, BOARD_LED_BLUE_GPIO_PIN, &led_config);
     GPIO_PinInit(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, &led_config);
 
     /* Enable GPIO pin interrupt for SW3 button */
