@@ -51,7 +51,9 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.app_services)
     )
 endif()
 
-include(${SdkRootDirPath}/${board_root}/${board}/project_segments/wireless/prjseg.cmake)
+mcux_set_variable(gcc_wireless_linker_file_ble connectivity_ble.ld)
+mcux_set_variable(iar_wireless_linker_file connectivity.icf)
+mcux_set_variable(arm_wireless_linker_file connectivity.scf)
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
     mcux_remove_armgcc_linker_script(
@@ -76,6 +78,18 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.linker_script_ble)
         BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/mcxw23
         TARGETS debug release
         LINKER linker/iar/${iar_wireless_linker_file}
+    )
+
+    mcux_remove_mdk_linker_script(
+        BASE_PATH ${SdkRootDirPath}
+        TARGETS debug release
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+    )
+
+    mcux_add_mdk_linker_script(
+        BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/mcxw23
+        TARGETS debug release
+        LINKER linker/arm/${arm_wireless_linker_file}
     )
 endif()
 

@@ -26,3 +26,15 @@ mcux_add_iar_linker_script(
     TARGETS debug release
     LINKER linker/iar/${iar_wireless_linker_file}
 )
+
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS debug release
+    LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+)
+
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}/examples/_common/project_segments/wireless/mcxw23
+    TARGETS debug release
+    LINKER linker/arm/${arm_wireless_linker_file}
+)

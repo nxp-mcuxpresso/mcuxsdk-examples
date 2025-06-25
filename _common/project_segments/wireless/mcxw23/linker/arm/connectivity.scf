@@ -1,0 +1,141 @@
+#!armclang --target=arm-arm-none-eabi -march=armv8-m.main -E -x c
+/*
+** ###################################################################
+**     Processors:          MCXW236AIHNAR
+**                          MCXW236AIUKAR
+**                          MCXW236BIHNAR
+**                          MCXW236BIUKAR
+**
+**     Compiler:            Keil ARM C/C++ Compiler
+**     Reference manual:    MCXW23x User manual Rev.0.1  1 September 2022
+**     Version:             rev. 1.0, 2025
+**
+**     Abstract:
+**         Linker file for the Keil ARM C/C++ Compiler
+**
+**     Copyright 2025 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+
+/* Sizes */
+#if (defined(__stack_size__))
+  #define Stack_Size                   __stack_size__
+#else
+  #define Stack_Size                   0x0800
+#endif
+
+#if (defined(__heap_size__))
+  #define Heap_Size                    __heap_size__
+#else
+  #define Heap_Size                    0x0400
+#endif
+
+#define __ram_vector_table_size__      0x00000200
+
+/* Flash definitions */
+#define FLASH_START                    0x00000000
+#define FLASH_SECTOR_SIZE              0x2000 /* 8KB */
+
+#if (defined(MCXW235))
+  #define FLASH_SIZE                   0xA0000
+  #define RAM_SIZE                     0x14000
+#else
+  #define FLASH_SIZE                   0xFE000
+  #define RAM_SIZE                     0x1C000
+#endif
+
+#define FLASH_END                      (FLASH_START + FLASH_SIZE - 1)
+
+/* NV Storage definitions */
+#define NV_STORAGE_END_ADDRESS         FLASH_END
+#define NV_STORAGE_MAX_SECTORS         4
+#define NV_STORAGE_SECTOR_SIZE         FLASH_SECTOR_SIZE
+#define NV_STORAGE_SIZE                (FLASH_SECTOR_SIZE * NV_STORAGE_MAX_SECTORS)
+#define NV_STORAGE_START_ADDRESS       (NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1)
+
+/* Datastore definitions */
+#define DATASTORE_SIZE                 FLASH_SECTOR_SIZE
+#define DATASTORE_START_ADDRESS        (NV_STORAGE_START_ADDRESS - DATASTORE_SIZE)
+#define DATASTORE_END_ADDRESS          (DATASTORE_START_ADDRESS + DATASTORE_SIZE - 1)
+
+/* Eventstore definitions */
+#define EVENTSTORE_SIZE                (FLASH_SECTOR_SIZE * 2)
+#define EVENTSTORE_START_ADDRESS       (DATASTORE_START_ADDRESS - EVENTSTORE_SIZE)
+#define EVENTSTORE_END_ADDRESS         (EVENTSTORE_START_ADDRESS + EVENTSTORE_SIZE - 1)
+
+/* Internal storage definitions */
+#define INT_STORAGE_END                (EVENTSTORE_START_ADDRESS - 1)
+#if (defined(gUseInternalStorageLink_d))
+  #define INT_STORAGE_SIZE             (FLASH_SECTOR_SIZE * (((INT_STORAGE_END + 1 - FLASH_START) / 2) / FLASH_SECTOR_SIZE + 1))
+#else
+  #define INT_STORAGE_SIZE             0
+#endif
+#define INT_STORAGE_START              (INT_STORAGE_END - INT_STORAGE_SIZE + 1)
+#define INT_STORAGE_SECTOR_SIZE        FLASH_SECTOR_SIZE
+
+/* Memory regions */
+#define m_interrupts_start             FLASH_START
+#define m_interrupts_size              0x00000200
+
+#define m_text_start                   0x00000200
+#define m_text_size                    (INT_STORAGE_START - m_text_start)
+
+#define m_interrupts_ram_start         0x20004000
+#define m_interrupts_ram_size          __ram_vector_table_size__
+
+/* RAM definitions */
+#define m_data_start                   (m_interrupts_ram_start + m_interrupts_ram_size)
+#define m_data_size                    (RAM_SIZE - m_interrupts_ram_size)
+
+/* Scatter loading regions */
+LR_m_text m_interrupts_start m_text_size+m_interrupts_size {   ; load region size_region
+
+  VECTOR_ROM m_interrupts_start FIXED m_interrupts_size { ; load address = execution address
+    * (.isr_vector,+FIRST)
+  }
+
+  VECTOR_RAM m_interrupts_ram_start EMPTY m_interrupts_ram_size {
+  }
+
+  ER_m_text m_text_start FIXED m_text_size {
+    * (InRoot$$Sections)
+    .ANY (+RO)
+  }
+
+  RO_NVM_TABLE +0 { ;
+    * (NVM_TABLE)
+  }
+
+  NVM_region_eventstore EVENTSTORE_START_ADDRESS EMPTY (EVENTSTORE_SIZE) { ; load address = execution address
+  }
+
+  NVM_region_datastore DATASTORE_START_ADDRESS EMPTY (DATASTORE_SIZE) { ; load address = execution address
+  }
+
+  NVM_region NV_STORAGE_START_ADDRESS EMPTY (NV_STORAGE_SIZE) { ; load address = execution address
+  }
+
+  RW_m_data m_data_start (m_data_size - Stack_Size)
+  {
+    .ANY (+RW +ZI)
+  }
+
+  RW_NVM_TABLE +0 { ; RW data
+    * (NVM_TABLE_RW)
+  }
+
+  ARM_LIB_HEAP +0 {    ; Heap region growing up
+    * (.heap)          ; fsl_component_mem_manager_light heap must be placed before ARM_LIB_STACK
+  }
+
+  ARM_LIB_STACK m_data_start+m_data_size EMPTY -Stack_Size { ; Stack region growing down
+  }
+
+  ScatterAssert(ImageLimit(ARM_LIB_STACK) <= (m_data_start + m_data_size)); Check for RAM overflow. ARM_LIB_STACK is last segment in RAM, its limit may not exceed last RAM address.
+}
