@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2022,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -79,12 +79,12 @@
 
 /* Define as 1 in order to configure FEM to use external PA.
    FEM in NBU is activated by API function PLATFORM_InitFEM.
-   Remark: FEM may conflict with Localisation feature in term of RF_GPO use. */
+   Remark: FEM may conflict with Localisation/Coex features in term of RF_GPO use. */
 //#define gAppConfigureFEM                       1
 
 /* Define as 1 when use with an external WIFI chip offering Coexistence control to BLE.
    Coexistence in NBU is activated by API function PLATFORM_InitCOEX.
-   Remark: Coexistence may conflict with Localisation feature in term of RF_GPO use. */
+   Remark: Coexistence may conflict with Localisation/FEM feature in term of RF_GPO use. */
 //#define gAppConfigureCOEX                      1
 
 /*  ble_ll_config.h file lists the parameters with their default values. User can override

@@ -21,7 +21,7 @@
 #include "app.h"
 #include "fsl_os_abstraction.h"
 #include "fwk_platform_ble.h"
-#if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0))
+#if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0) || defined(CPU_MCXW727CMFTA_cm33_core0))
 #include "fwk_platform_lcl.h"
 #endif
 
@@ -96,7 +96,7 @@ int main(void)
     BOARD_InitHardware();
 
     PLATFORM_InitBle();
-#if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0))
+#if (defined(CPU_KW45B41Z83AFTA) || defined(CPU_KW47B42ZB7AFTA_cm33_core0) || defined(CPU_MCXW727CMFTA_cm33_core0))
     PLATFORM_InitLcl();
 #endif
 #if (defined(gAppConfigureCOEX) && (gAppConfigureCOEX == 1))
