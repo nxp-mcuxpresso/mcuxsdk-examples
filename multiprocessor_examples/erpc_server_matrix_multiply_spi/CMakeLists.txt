@@ -1,5 +1,5 @@
 #
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
@@ -10,6 +10,8 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 project(erpc_server_matrix_multiply_spi LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/multiprocessor_examples/erpc_server_matrix_multiply_spi)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
+
+include(${CMAKE_CURRENT_LIST_DIR}/../erpc_common/erpc_matrix_multiply/service/erpc_matrix_multiply.cmake)
 
 include(${SdkRootDirPath}/${board_root}/${board}/multiprocessor_examples/erpc_server_matrix_multiply_spi/reconfig.cmake OPTIONAL)
 

@@ -8,10 +8,12 @@
 from __future__ import print_function
 
 import sys
+import os
 import random
 import argparse
 from serial import SerialException
 import serial.tools.list_ports as list_ports
+
 try:
     import erpc
 except ImportError:
@@ -19,7 +21,7 @@ except ImportError:
     sys.exit()
 
 # eRPC service code
-import service
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../erpc_common/erpc_matrix_multiply")))
 from service import erpc_matrix_multiply
 
 # make input function independent on Python version
