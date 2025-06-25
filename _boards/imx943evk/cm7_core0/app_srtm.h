@@ -81,7 +81,6 @@
 typedef void (*app_rpmsg_monitor_t)(struct rpmsg_lite_instance *rpmsgHandle, bool ready, void *param);
 typedef void (*app_irq_handler_t)(IRQn_Type irq, void *param);
 
-extern int32_t RPMsg_MU11_B_IRQHandler(void);
 /*******************************************************************************
  * API
  ******************************************************************************/
@@ -107,6 +106,8 @@ void APP_SRTM_StartCommunication(void);
 /* Set RPMsg channel init/deinit monitor */
 void APP_SRTM_SetRpmsgMonitor(app_rpmsg_monitor_t monitor, void *param);
 
+/* Handle acore power mode changes */
+void APP_SRTM_HandleLmmPowerChange(uint32_t lm, uint32_t flags);
 #if defined(__cplusplus)
 }
 #endif

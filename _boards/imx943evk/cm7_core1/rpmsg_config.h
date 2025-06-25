@@ -76,9 +76,4 @@
 #define RL_DEBUG_CHECK_BUFFERS (0)
 //@}
 
-//! @def MU13_A_IRQHandler
-//!
-//! MU13_A_IRQHandler handled by application, rename the handler name in RPMsg.
-#define MU13_A_IRQHandler RPMsg_MU13_A_IRQHandler
-
 #endif /* RPMSG_CONFIG_H_ */

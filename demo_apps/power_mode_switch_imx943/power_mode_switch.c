@@ -284,13 +284,6 @@ void APP_ResumePeriperal()
     MU_Init(RPMSG_LITE_MU);
     NVIC_SetPriority(RPMSG_LITE_MU_IRQ, RPMSG_LITE_MU_IRQ_PRIORITY);
     NVIC_EnableIRQ(RPMSG_LITE_MU_IRQ);
-#if !(defined(FSL_FEATURE_MU_NO_CORE_STATUS) && (0 != FSL_FEATURE_MU_NO_CORE_STATUS))
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterPowerDownInterruptEnable);
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterRunInterruptEnable);
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterHaltInterruptEnable);
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterWaitInterruptEnable);
-    MU_EnableInterrupts(RPMSG_LITE_MU, kMU_OtherSideEnterStopInterruptEnable);
-#endif
 }
 
 /* TIMER(use as wakeup source) interrupt handler. */

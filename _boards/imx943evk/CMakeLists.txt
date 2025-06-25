@@ -51,6 +51,9 @@ if (CONFIG_MCUX_COMPONENT_driver.srtm)
             .
     )
 
+    mcux_add_configuration(
+            CC "-DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
+    )
 endif()
 
 if (CONFIG_MCUX_COMPONENT_driver.srtm_config)

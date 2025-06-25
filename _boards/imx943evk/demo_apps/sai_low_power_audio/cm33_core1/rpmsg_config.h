@@ -76,8 +76,4 @@
 //@}
 //
 
-//! @def MU15_A_IRQHandler
-//!
-//! MU15_A_IRQHandler handled by application, rename the handler name in RPMsg.
-#define MU15_A_IRQHandler RPMsg_MU15_A_IRQHandler
 #endif /* _RPMSG_CONFIG_H */
