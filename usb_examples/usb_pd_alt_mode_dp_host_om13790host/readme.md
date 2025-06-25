@@ -33,6 +33,7 @@ It recognize attached video adapters (like "Type-C to DisplayPort" or "Type-C to
 
 <br> For detailed instructions, see the appropriate board User's Guide.
 > Please reference to the re-worked document for hardware settings.
+> Please note that this case does not work with the SCH-32144 REV B shield board because this verison shield board uses wrong display redriver chip  PTN36502 not PTN36502A. Its I2C slave address is 0x1A not 0x12 (PTN36502A used).
 
 
 ### Prepare the example
