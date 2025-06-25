@@ -44,6 +44,7 @@ void BOARD_InitCtimerPwmPins(void);
 void BOARD_InitCtimerCapPins(void);
 void BOARD_InitAOIPins(void);
 void BOARD_InitLPACMPPins(void);
+void BOARD_InitFREQMEPins(void);
 
 #if defined(__cplusplus)
 }

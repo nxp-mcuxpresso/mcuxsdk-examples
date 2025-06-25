@@ -22,6 +22,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetClockDiv(kCLOCK_DivFRO_HF_DIV, 1U);
 
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitFREQMEPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 }

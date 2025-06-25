@@ -1251,6 +1251,63 @@ void BOARD_InitAOIPins(void) {
     PORT_SetPinConfig(PORT3, 8U, &port3_8_config);
 }
 
+void BOARD_InitFREQMEPins(void) {
+  
+    CLOCK_EnableClock(kCLOCK_GatePORT2);
+    
+    RESET_ReleasePeripheralReset(kPORT2_RST_SHIFT_RSTn);
+
+    /* P2_0 J2 FREQME_CLK_IN0 */
+    const port_pin_config_t port2_0_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as FREQME_CLK_IN */
+                                                     .mux = kPORT_MuxAlt1,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    PORT_SetPinConfig(PORT2, 0U, &port2_0_config);
+
+    /* P2_1 J2 FREQME_CLK_IN1 */
+    const port_pin_config_t port2_1_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as FREQME_CLK_IN */
+                                                     .mux = kPORT_MuxAlt1,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    PORT_SetPinConfig(PORT2, 1U, &port2_1_config);
+}
+
 void BOARD_InitLPACMPPins(void)
 {
     const port_pin_config_t port0_10_config = {/* Internal pull-up/down resistor is disabled */
