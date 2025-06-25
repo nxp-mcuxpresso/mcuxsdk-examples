@@ -514,6 +514,13 @@ void APP_PowerPreSwitchHook(lpm_power_mode_t targetMode)
      {
          PRINTF("SCMI_CpuPdLpmConfigSet SET FAIL\r\n");
      }
+
+    if (s_wakeupSource == kAPP_WakeupSourceSM)
+    {
+        /* Disable LMM notification from system manager before Mcore enter low power state. */
+        SCMI_LmmNotify(SCMI_A2P, SYSTEM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
+                        SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
+    }
 }
 
 void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
@@ -538,7 +545,9 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
     {
         /* re-enable A55 message unit */
         EnableIRQ(RPMSG_LITE_MU_IRQ);
-
+        /* Re-enable LMM notification from system manager after Mcore exit low power state. */
+        SCMI_LmmNotify(SCMI_A2P, SYSTEM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(1U) |
+                        SCMI_LMM_NOTIFY_SHUTDOWN(1U) | SCMI_LMM_NOTIFY_SUSPEND(1U) | SCMI_LMM_NOTIFY_WAKE(1U));
         xSemaphoreGiveFromISR(s_wakeupSig, NULL);
         portYIELD_FROM_ISR(pdTRUE);
     }
@@ -556,6 +565,9 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
     }
     if (SystemPlatformGetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SystemPlatformGetSystemState() == SCMI_SYS_STATE_SUSPEND)
     {
+        /* Re-enable LMM notification from system manager after Mcore exit low power state. */
+        SCMI_LmmNotify(SCMI_A2P, SYSTEM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(1U) |
+                        SCMI_LMM_NOTIFY_SHUTDOWN(1U) | SCMI_LMM_NOTIFY_SUSPEND(1U) | SCMI_LMM_NOTIFY_WAKE(1U));
         SystemPlatformSetSystemState(0xFFFFFFFF);
         /* Resume rtos task, Mcu PowerModeSwitch task will resume in getchar() side. */
         xSemaphoreGiveFromISR(s_wakeupSig, NULL);
@@ -578,6 +590,9 @@ static void APP_SuspendTimerCallback(TimerHandle_t xTimer)
     /* Start timer to poll suspend status. */
     if (SystemPlatformGetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SystemPlatformGetSystemState() == SCMI_SYS_STATE_SUSPEND)
     {
+        /* Disable LMM notification from system manager before Mcore enter low power state. */
+        SCMI_LmmNotify(SCMI_A2P, SYSTEM_LMID_A55, SCMI_LMM_NOTIFY_BOOT(0U) |
+                        SCMI_LMM_NOTIFY_SHUTDOWN(0U) | SCMI_LMM_NOTIFY_SUSPEND(0U) | SCMI_LMM_NOTIFY_WAKE(0U));
         DisableIRQ(RPMSG_LITE_MU_IRQ);
         /* Default to no wakeup IRQs */
         uint32_t wakeMask[GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT] =
