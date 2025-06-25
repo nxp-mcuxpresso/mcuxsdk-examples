@@ -248,11 +248,11 @@ static void APP_SetWakeupConfig(lpm_power_mode_t targetMode)
     {
         /* Ensure not to be woken up by A55 messages */
         DisableIRQ(RPMSG_LITE_MU_IRQ);
-        /* Mcu can be only woken by MU(between mcu and sm): MU5_A_IRQn=205, wakeMask data is 32bit width, 205 = 32 * 6 + 13, it means wakeMask[6] bit 13. */
-        wakeMaskIdx = SYSTEM_PLATFORM_MU_IRQ / 32;
-        wakeMaskBitPos = SYSTEM_PLATFORM_MU_IRQ % 32;
+        /* Mcu can be only woken by MU(between mcu and sm), set rpmsg channel irq from Acore as wakeup mask. */
+        wakeMaskIdx = RPMSG_LITE_MU_IRQ / 32;
+        wakeMaskBitPos = RPMSG_LITE_MU_IRQ % 32;
         /* deal with MU interrupts, configure IRQ wake sources. */
-        wakeMask[wakeMaskIdx] = ~(1 << wakeMaskBitPos);
+        wakeMask[wakeMaskIdx] |= (1 << wakeMaskBitPos);
     }
 
      status = SCMI_CpuIrqWakeSet(SCMI_A2P, APP_CPU_ID, APP_CPU_ID_MASK_IDX, GPC_CPU_CTRL_CMC_IRQ_WAKEUP_MASK_COUNT, wakeMask);
