@@ -10,12 +10,12 @@
 // Includes
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "board.h"
 #include "pin_mux.h"
-#include "clock_config.h"
+#include "board.h"
 #include "fsl_debug_console.h"
 
 #include "freemaster.h"
+
 #include "freemaster_example.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,17 +45,18 @@ int main(void)
     FMSTR_Example_Init();
 
     PRINTF(
-        "\nFreeMASTER PDBDM Example.\n"
-        "Connect using FreeMASTER Packet Driven JTAG/BDM Communication Plug-in.\n"
-        "This communication cannot be used along with existing debugger session.\n\n");
+        "\nFreeMASTER Segger RTT Example.\n"
+        "Connect using J-Link probe and use FreeMASTER Network plug-in configured for RTT.\n"
+        "This communication can also be used along with existing debugger session.\n\n");
 
-    while(1)
+    while (1)
     {
         /* FreeMASTER example increments several variables periodically,
            use the FreeMASTER PC Host tool to visualize the variables */
         FMSTR_Example_Poll();
     }
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 // EOF
 /////////////////////////////////////////////////////////////////////////////////
