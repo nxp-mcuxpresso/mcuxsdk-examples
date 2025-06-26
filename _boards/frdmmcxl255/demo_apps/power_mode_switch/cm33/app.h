@@ -39,10 +39,10 @@
       "Selected to enter Power Down1(63uA@VDD_BAT), then wakeup to Active.",   \
      "Selected to enter Power Down2, then wakeup to Active.", \
       "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT), then wakeup to Active.", \
-      "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to enter DPD2(All PLS SRAM retained, 9uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, press SW2 back to Active.",  \
+      "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to enter DPD2(All PLS SRAM retained, 9uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, press SW5 back to Active.",  \
      "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to enter DPD2(No PLS SRAM retained, 5uA@VDD_BAT), wakeup to Active after 10s later with LPTMR.",  \
      "Selected to enter DPD2(No PLS SRAM retained, 5uA@VDD_BAT), then wakeup to Active.",   \
-     "Selected to enter DPD2(All PLS SRAM retained, 9uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW2 back to Active.",   \
+     "Selected to enter DPD2(All PLS SRAM retained, 9uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW5 back to Active.",   \
      "Selected to enter DPD3(1uA@VDD_BAT).", \
      "Selected to enter SD(500nA@VDD_BAT)."     \
     }
@@ -50,17 +50,17 @@
 #define APP_MU         MUA
 #define APP_MU_CHANNEL (0U)
 
-#define APP_EXT_INT_BUTTON "SW2"
-#define APP_EXT_INT_IRQ    BOARD_SW2_IRQ
-#define APP_EXT_INT_ISR    BOARD_SW2_IRQ_HANDLER
-#define APP_EXT_INT_GPIO   BOARD_SW2_GPIO
-#define APP_EXT_INT_PIN    BOARD_SW2_GPIO_PIN
+#define APP_EXT_INT_BUTTON "SW5"
+#define APP_EXT_INT_IRQ    GPIO00_AON_IRQn
+#define APP_EXT_INT_ISR    GPIO00_AON_IRQHandler
+#define APP_EXT_INT_GPIO   AON__GPIO0
+#define APP_EXT_INT_PIN    9U
 
-#define APP_WAKEUP_BUTTON      BOARD_SW5_NAME /*P1_14*/
-#define APP_WAKEUP_BUTTON_IRQ  BOARD_SW5_IRQ
-#define APP_WAKEUP_BUTTON_ISR  BOARD_SW5_IRQ_HANDLER
-#define APP_WAKEUP_BUTTON_GPIO BOARD_SW5_GPIO
-#define APP_WAKEUP_BUTTON_PIN  BOARD_SW5_GPIO_PIN
+#define APP_WAKEUP_BUTTON      "SW2" /*P1_14*/
+#define APP_WAKEUP_BUTTON_IRQ  GPIO10_IRQn
+#define APP_WAKEUP_BUTTON_ISR  GPIO10_IRQHandler
+#define APP_WAKEUP_BUTTON_GPIO GPIO1
+#define APP_WAKEUP_BUTTON_PIN  14U
 
 #define APP_LPTMR_BASE     AON__LPTMR0
 #define LPTMR_USEC_COUNT   10000000U

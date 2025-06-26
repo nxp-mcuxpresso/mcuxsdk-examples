@@ -36,6 +36,12 @@ mcux_add_include(
     INCLUDES examples/demo_apps/power_mode_switch_mcxl/primary
 )
 
+mcux_add_include(
+    TOOLCHAINS mdk armgcc
+    BASE_PATH ${APPLICATION_BINARY_DIR}
+    INCLUDES ../power_mode_switch_mcxl_secondary/${CONFIG_TOOLCHAIN}/
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_switch/cm33/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
