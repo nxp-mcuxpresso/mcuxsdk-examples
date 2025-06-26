@@ -7,6 +7,7 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper J41 from 1-2 to 2-3, Jumper J43 from 1-2 to 2-3.
 Connect pin:
 - TX of USB2COM to J1-2
 - RX of USB2COM to J1-4
