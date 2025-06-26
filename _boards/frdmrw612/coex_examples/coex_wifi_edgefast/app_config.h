@@ -71,4 +71,7 @@
 #define gBoardUseFro32k_d 1
 #endif
 
+#define SERIAL_MANAGER_TASK_PRIORITY (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
+#define SHELL_TASK_PRIORITY          (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)))
+
 #include "wifi_config.h"
