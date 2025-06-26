@@ -30,7 +30,6 @@ mcux_add_mdk_configuration(
 )
 
 mcux_add_macro(
-    CC "-DXIP_BOOT_HEADER_DCD_ENABLE=0 \
-        -DGCID_REV_CID=gc355/0x0_1216 \
+    CC "-DGCID_REV_CID=gc355/0x0_1216 \
         -DCUSTOM_VGLITE_MEMORY_CONFIG=1"
 )
