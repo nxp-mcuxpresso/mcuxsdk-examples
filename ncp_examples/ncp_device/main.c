@@ -35,9 +35,9 @@
 #define NCP_INBUF_SIZE     4096
 
 #if (CONFIG_NCP_WIFI) && !(CONFIG_NCP_BLE)
-#define TASK_MAIN_PRIO         configMAX_PRIORITIES - 4
+#define TASK_MAIN_PRIO         (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-5)))
 #else
-#define TASK_MAIN_PRIO         OSA_TASK_PRIORITY_MIN - 2
+#define TASK_MAIN_PRIO         (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-9)))
 #endif
 #define TASK_MAIN_STACK_SIZE   3072
 

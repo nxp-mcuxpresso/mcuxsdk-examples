@@ -47,11 +47,7 @@
 
 #define configCPU_CLOCK_HZ                      (SystemCoreClock)
 #define configTICK_RATE_HZ                      ((TickType_t)1000)
-#if (CONFIG_NCP_WIFI) && !(CONFIG_NCP_BLE)
-#define configMAX_PRIORITIES                    5
-#else
 #define configMAX_PRIORITIES                    10
-#endif
 #define configMINIMAL_STACK_SIZE                ((unsigned short)1024)
 #define configMAX_TASK_NAME_LEN                 20
 #define configUSE_16_BIT_TICKS                  0

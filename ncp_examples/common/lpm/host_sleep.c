@@ -63,7 +63,7 @@ typedef struct
  ******************************************************************************/
 static void ncp_suspend_task(void *argv);
 OSA_TASK_HANDLE_DEFINE(ncp_suspend_thread);
-OSA_TASK_DEFINE(ncp_suspend_task, PRIORITY_RTOS_TO_OSA(1), 1, CONFIG_NCP_SUSPEND_STACK_SIZE, 0);
+OSA_TASK_DEFINE(ncp_suspend_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-9)), 1, CONFIG_NCP_SUSPEND_STACK_SIZE, 0);
 OSA_EVENT_HANDLE_DEFINE(ncp_suspend_event);
 int suspend_mode = 0;
 power_cfg_t global_power_config;

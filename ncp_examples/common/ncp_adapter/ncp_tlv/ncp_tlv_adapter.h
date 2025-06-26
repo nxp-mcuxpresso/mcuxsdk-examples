@@ -184,7 +184,7 @@ typedef NCP_TLV_PACK_START struct
 	(type *)( (char *)__mptr - offsetof(type,member) );})
 
 /* ADAPTER TLV TASK PRIORITY */
-#define NCP_TLV_TX_TASK_PRIORITY    7
+#define NCP_TLV_TX_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-6)))
 
 /* NCP ADAPTER TX queue max length */
 #define NCP_TLV_QUEUE_LENGTH 160

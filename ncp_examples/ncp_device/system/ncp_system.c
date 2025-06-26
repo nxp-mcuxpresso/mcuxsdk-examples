@@ -32,7 +32,7 @@ extern uint16_t g_cmd_seqno;
 extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 extern uint8_t sys_res_buf[NCP_SYS_INBUF_SIZE];
 
-#define SYSTEM_TASK_PRIO        3
+#define SYSTEM_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
 #define SYSTEM_NCP_STACK_SIZE   2048
 
 static OSA_TASK_HANDLE_DEFINE(system_ncp_handle);
