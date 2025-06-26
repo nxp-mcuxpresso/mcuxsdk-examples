@@ -864,8 +864,10 @@ void BOARD_InitEQDCPins(void) {
 BOARD_InitI2CPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K13, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Down, open_drain: Enable, drive_strength: Normal}
-  - {pin_num: L12, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Down, open_drain: Enable, drive_strength: Normal}
+  - {pin_num: K13, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Enable,
+    drive_strength: High}
+  - {pin_num: L12, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Enable,
+    drive_strength: High}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -886,18 +888,18 @@ void BOARD_InitI2CPins(void) {
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_19 */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_18_LPI2C3_SCL,           /* GPIO_AD_18 PAD functional properties : */
-      0x14U);                                 /* Slew Rate Field: Fast Slew Rate
-                                                 Drive Strength Field: normal driver
+      0x1EU);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
-                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Enabled
                                                  Force ibe off Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AD_19_LPI2C3_SDA,           /* GPIO_AD_19 PAD functional properties : */
-      0x14U);                                 /* Slew Rate Field: Fast Slew Rate
-                                                 Drive Strength Field: normal driver
+      0x1EU);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
-                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Enabled
                                                  Force ibe off Field: Disabled */
 }
