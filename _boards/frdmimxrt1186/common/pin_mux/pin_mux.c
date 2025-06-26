@@ -39,8 +39,27 @@ pin_labels:
  * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
+    BOARD_InitPins();
     BOARD_InitDEBUG_UARTPins();
 }
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitPins:
+- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
+- pin_list: []
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitPins(void) {
+}
+
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -143,8 +162,8 @@ void BOARD_InitDEBUG_UARTPins_deinit(void) {
 BOARD_InitCANPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: A8, peripheral: CAN1, signal: RX, pin_signal: GPIO_AON_01, software_input_on: Enable}
-  - {pin_num: A10, peripheral: CAN1, signal: TX, pin_signal: GPIO_AON_00, software_input_on: Enable}
+  - {pin_num: B7, peripheral: CAN1, signal: RX, pin_signal: GPIO_AON_07, software_input_on: Enable}
+  - {pin_num: B9, peripheral: CAN1, signal: TX, pin_signal: GPIO_AON_06, software_input_on: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -159,11 +178,11 @@ void BOARD_InitCANPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_00_CAN1_TX,             /* GPIO_AON_00 is configured as CAN1_TX */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_00 */
+      IOMUXC_GPIO_AON_06_CAN1_TX,             /* GPIO_AON_06 is configured as CAN1_TX */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_06 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AON_01_CAN1_RX,             /* GPIO_AON_01 is configured as CAN1_RX */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_01 */
+      IOMUXC_GPIO_AON_07_CAN1_RX,             /* GPIO_AON_07 is configured as CAN1_RX */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AON_07 */
 }
 
 
