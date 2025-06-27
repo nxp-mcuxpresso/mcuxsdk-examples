@@ -29,9 +29,7 @@ mcux_add_macro(
     FFU_DEVICE_LIMIT_VISIBILITY=1
     FPGA_TARGET=0
     PHY_15_4_LOW_POWER_ENABLED=1
-    CTX_SCHED
     TX_INCLUDE_USER_DEFINE_FILE
-    PHY_LP_TMR
 )
 
 mcux_add_iar_configuration(

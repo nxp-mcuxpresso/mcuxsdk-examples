@@ -9,12 +9,13 @@ project(nbu_ble_15_4_dyn_phy_split LANGUAGES C CXX ASM
         middleware/wireless/ble_controller/src/KW4x
     CUSTOM_PRJ_CONF_PATH
         ${board_root}/${board}/wireless_examples/ble_controller/nbu_ble
+        ${board_root}/${board}/wireless_examples/ieee-802.15.4/nbu_ble_15_4_dyn/phy_split
+)
+
+mcux_add_macro(
+    CTX_SCHED
 )
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/examples/wireless_examples/ieee-802.15.4/nbu_ble_15_4_dyn/nbu_ble_15_4_dyn.cmake)
-
-mcux_convert_binary(
-    TOOLCHAINS armgcc mdk iar
-    BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/nbu_ble_15_4_dyn_phy_split.bin
-)
+include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/ieee-802.15.4/nbu_ble_15_4_dyn/phy_split/reconfig.cmake)
