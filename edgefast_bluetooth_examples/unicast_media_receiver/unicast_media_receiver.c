@@ -19,6 +19,7 @@
 #include <bluetooth/audio/audio.h>
 #include <bluetooth/audio/bap.h>
 #include <bluetooth/audio/pacs.h>
+#include <bluetooth/audio/cap.h>
 #include <bluetooth/audio/csip.h>
 #include <sys/byteorder.h>
 
@@ -82,12 +83,29 @@ static uint8_t unicast_server_addata[] = {
 	0x00, /* Metadata length */
 };
 
+static const uint8_t cap_addata[] = {
+	BT_UUID_16_ENCODE(BT_UUID_CAS_VAL),
+	BT_AUDIO_UNICAST_ANNOUNCEMENT_TARGETED,
+};
+
 /* TODO: Expand with BAP data */
 static const struct bt_data ad[] = {
-	BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR)),
-	BT_DATA_BYTES(BT_DATA_GAP_APPEARANCE, BT_UUID_16_ENCODE(CONFIG_BT_DEVICE_APPEARANCE)),
-	BT_DATA(BT_DATA_CSIS_RSI, csip_rsi_data, BT_CSIP_RSI_SIZE),
-	BT_DATA_BYTES(BT_DATA_UUID16_ALL, BT_UUID_16_ENCODE(BT_UUID_ASCS_VAL), BT_UUID_16_ENCODE(BT_UUID_PACS_VAL), BT_UUID_16_ENCODE(BT_UUID_VCS_VAL)),
+	BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_LIMITED | BT_LE_AD_NO_BREDR)),
+	BT_DATA_BYTES(BT_DATA_GAP_APPEARANCE, BT_UUID_16_ENCODE(BT_APPEARANCE_WEARABLE_AUDIO_DEVICE_EARBUD)),
+	BT_DATA_BYTES(BT_DATA_UUID16_SOME, BT_UUID_16_ENCODE(BT_UUID_ASCS_VAL), BT_UUID_16_ENCODE(BT_UUID_PACS_VAL), BT_UUID_16_ENCODE(BT_UUID_VCS_VAL),BT_UUID_16_ENCODE(BT_UUID_CAS_VAL)),
+	BT_DATA(BT_DATA_CSIS_RSI, csip_rsi_data, ARRAY_SIZE(csip_rsi_data)),
+	BT_DATA(BT_DATA_SVC_DATA16, cap_addata, ARRAY_SIZE(cap_addata)),
+	BT_DATA(BT_DATA_SVC_DATA16, unicast_server_addata, ARRAY_SIZE(unicast_server_addata)),
+	BT_DATA(BT_DATA_NAME_COMPLETE, CONFIG_BT_DEVICE_NAME,
+		sizeof(CONFIG_BT_DEVICE_NAME) - 1),
+};
+
+static const struct bt_data ad2[] = {
+	BT_DATA_BYTES(BT_DATA_FLAGS, (BT_LE_AD_NO_BREDR)),
+	BT_DATA_BYTES(BT_DATA_GAP_APPEARANCE, BT_UUID_16_ENCODE(BT_APPEARANCE_WEARABLE_AUDIO_DEVICE_EARBUD)),
+	BT_DATA(BT_DATA_CSIS_RSI, csip_rsi_data, ARRAY_SIZE(csip_rsi_data)),
+	BT_DATA_BYTES(BT_DATA_UUID16_ALL, BT_UUID_16_ENCODE(BT_UUID_ASCS_VAL), BT_UUID_16_ENCODE(BT_UUID_PACS_VAL), BT_UUID_16_ENCODE(BT_UUID_VCS_VAL),BT_UUID_16_ENCODE(BT_UUID_CAS_VAL)),
+	BT_DATA(BT_DATA_SVC_DATA16, cap_addata, ARRAY_SIZE(cap_addata)),
 	BT_DATA(BT_DATA_SVC_DATA16, unicast_server_addata, ARRAY_SIZE(unicast_server_addata)),
 	BT_DATA(BT_DATA_NAME_COMPLETE, CONFIG_BT_DEVICE_NAME,
 		sizeof(CONFIG_BT_DEVICE_NAME) - 1),
@@ -138,8 +156,6 @@ static OSA_SEMAPHORE_HANDLE_DEFINE(sem_stream_enabled);
 static OSA_SEMAPHORE_HANDLE_DEFINE(sem_security_changed);
 static OSA_SEMAPHORE_HANDLE_DEFINE(sem_mcs_server_discovered);
 
-static bool stream_stop = false;
-
 static int get_channel_count_from_allocation(uint32_t allocation)
 {
 	int count = 0;
@@ -188,10 +204,10 @@ static int audio_stream_decode(void)
 	int frame_flags = LC3_FRAME_FLAG_BAD;
 	uint8_t *temp_audio_buff;
 
-	osa_status_t status = OSA_MsgQGet(sdu_fifo, &sdu_buf, osaWaitForever_c);
+	osa_status_t status = OSA_MsgQGet(sdu_fifo, &sdu_buf, 100);
 	if(KOSA_StatusSuccess != status)
 	{
-		return -1;
+		return 0;
 	}
 
 	sdu = (sdu_packet_t *)sdu_buf->data;
@@ -540,7 +556,7 @@ static int lc3_stop(struct bt_bap_stream *stream, struct bt_bap_ascs_rsp *rsp)
 static int lc3_release(struct bt_bap_stream *stream, struct bt_bap_ascs_rsp *rsp)
 {
 	PRINTF("Release: stream %p\n", stream);
-	stream_stop = true;
+
 	return 0;
 }
 
@@ -686,24 +702,6 @@ static void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_
 
 	(void)OSA_SemaphorePost(sem_security_changed);
 }
-
-static void auth_passkey_display(struct bt_conn *conn, unsigned int passkey)
-{
-    char addr[BT_ADDR_LE_STR_LEN];
-
-    bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
-
-    PRINTF("Passkey for %s: %06u\n", addr, passkey);
-}
-
-static void auth_cancel(struct bt_conn *conn)
-{
-    char addr[BT_ADDR_LE_STR_LEN];
-
-    bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
-
-    PRINTF("Pairing cancelled: %s\n", addr);
-}
 #endif
 
 static struct bt_conn_cb conn_callbacks = {
@@ -713,14 +711,6 @@ static struct bt_conn_cb conn_callbacks = {
     .security_changed = security_changed,
 #endif
 };
-
-#if CONFIG_BT_SMP
-static struct bt_conn_auth_cb auth_cb_display = {
-    .passkey_display = auth_passkey_display,
-    .passkey_entry = NULL,
-    .cancel = auth_cancel,
-};
-#endif
 
 static struct bt_pacs_cap cap_sink = {
 	.codec_cap = lc3_codec_cap,
@@ -838,7 +828,7 @@ void unicast_media_receiver_task(void *param)
 
 	bt_conn_cb_register(&conn_callbacks);
 #if CONFIG_BT_SMP
-    bt_conn_auth_cb_register(&auth_cb_display);
+	bt_conn_auth_cb_register(NULL);
 #endif
 
 	PRINTF("Bluetooth initialized\n");
@@ -852,7 +842,8 @@ void unicast_media_receiver_task(void *param)
 		case AUDIO_SINK_ROLE_LEFT : csip_set_memeber_param.rank = 1;  break;
 		case AUDIO_SINK_ROLE_RIGHT: csip_set_memeber_param.rank = 2;  break;
 	}
-	err = bt_csip_set_member_register(&csip_set_memeber_param, &csip_set_member);
+
+	err = bt_cap_acceptor_register(&csip_set_memeber_param, &csip_set_member);
 	if(err)
 	{
 		PRINTF("csip set member register fail with err %d\n", err);
@@ -910,7 +901,15 @@ void unicast_media_receiver_task(void *param)
 		while(1);
 	}
 
-	err = bt_le_ext_adv_set_data(adv, ad, ARRAY_SIZE(ad), NULL, 0);
+	if (AUDIO_SINK_ROLE_LEFT == le_audio_sink_role_get())
+	{
+		err = bt_le_ext_adv_set_data(adv, ad, ARRAY_SIZE(ad), NULL, 0);
+	}
+	else
+	{
+		err = bt_le_ext_adv_set_data(adv, ad2, ARRAY_SIZE(ad2), NULL, 0);
+	}
+
 	if (err) {
 		PRINTF("Failed to set advertising data (err %d)\n", err);
 		while(1);
@@ -953,7 +952,7 @@ void unicast_media_receiver_task(void *param)
 		int res;
 		do {
 			res = audio_stream_decode();
-			if(stream_stop)
+			if(default_conn == NULL)
 				break;
 		} while(res == 0);
 

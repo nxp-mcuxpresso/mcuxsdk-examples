@@ -19,6 +19,8 @@ extern uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate);
 static uint8_t volume_step = 10;
 static uint8_t volume      = 90;
 
+static bool init = false;
+
 int hw_codec_init(int sample_rate, int channels, int bits)
 {
     status_t status;
@@ -31,6 +33,8 @@ int hw_codec_init(int sample_rate, int channels, int bits)
 	{
 		return HW_CODEC_ERROR;
 	}
+
+    init = true;
 
     if(hw_codec_mute())
     {
@@ -89,6 +93,11 @@ int hw_codec_vol_set(uint8_t vol)
 {
     status_t status;
 
+    if(!init)
+    {
+        return HW_CODEC_ERROR;
+    }
+
     status = CODEC_SetVolume(&codec_handle, kCODEC_VolumeHeadphoneLeft | kCODEC_VolumeHeadphoneRight, vol);
     if (kStatus_Success != status)
 	{
@@ -118,6 +127,11 @@ int hw_codec_mute(void)
 {
     status_t status;
 
+    if(!init)
+    {
+        return HW_CODEC_ERROR;
+    }
+
     status = CODEC_SetMute(&codec_handle, kCODEC_VolumeHeadphoneLeft | kCODEC_VolumeHeadphoneRight, true);
     if (kStatus_Success != status)
 	{
@@ -130,6 +144,11 @@ int hw_codec_mute(void)
 int hw_codec_unmute(void)
 {
     status_t status;
+
+    if(!init)
+    {
+        return HW_CODEC_ERROR;
+    }
 
     status = CODEC_SetMute(&codec_handle, kCODEC_VolumeHeadphoneLeft | kCODEC_VolumeHeadphoneRight, false);
     if (kStatus_Success != status)

@@ -634,7 +634,9 @@ static bool scan_check_and_sync_broadcast(struct bt_data *data, void *user_data)
 	bool *found = user_data;
 	char device_name[CONFIG_BT_DEVICE_NAME_MAX];
 
-	if(data->type == BT_DATA_NAME_COMPLETE)
+	if( (data->type == BT_DATA_NAME_COMPLETE) || \
+		(data->type	== BT_DATA_NAME_SHORTENED) || \
+		(data->type	== BT_DATA_BROADCAST_NAME) )
 	{
 		memset(device_name, 0, sizeof(device_name));
 		memcpy(device_name, data->data, data->data_len);

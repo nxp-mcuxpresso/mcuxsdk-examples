@@ -718,7 +718,7 @@ void broadcast_media_sender_task(void *param)
 		NET_BUF_SIMPLE_DEFINE(ad_buf,
 				      BT_UUID_SIZE_16 + BT_AUDIO_BROADCAST_ID_SIZE);
 		NET_BUF_SIMPLE_DEFINE(base_buf, 128);
-		struct bt_data ext_ad[2];
+		struct bt_data ext_ad[3];
 		struct bt_data per_ad;
 		uint32_t broadcast_id;
 
@@ -759,6 +759,8 @@ void broadcast_media_sender_task(void *param)
 		ext_ad[0].data = ad_buf.data;
 		ext_ad[1] = (struct bt_data)BT_DATA(BT_DATA_NAME_COMPLETE, CONFIG_BT_DEVICE_NAME,
 						    sizeof(CONFIG_BT_DEVICE_NAME) - 1);
+		ext_ad[2] = (struct bt_data)BT_DATA(BT_DATA_BROADCAST_NAME, CONFIG_BT_DEVICE_NAME,
+							sizeof(CONFIG_BT_DEVICE_NAME) - 1);
 		err = bt_le_ext_adv_set_data(adv, ext_ad, ARRAY_SIZE(ext_ad), NULL, 0);
 		if (err != 0) {
 			printk("Failed to set extended advertising data: %d\n",
