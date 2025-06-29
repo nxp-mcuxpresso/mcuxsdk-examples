@@ -458,15 +458,13 @@ void BOARD_BootClockRUN(void)
 #ifndef USE_HYPERRAM
     /* Init Sys Pll3. */
     CLOCK_InitSysPll3();
-#endif
     /* Init System Pll3 pfd0. */
     CLOCK_InitPfd(kCLOCK_PllSys3, kCLOCK_Pfd0, 22);
+#endif
     /* Init System Pll3 pfd1. */
     CLOCK_InitPfd(kCLOCK_PllSys3, kCLOCK_Pfd1, 33);
-#ifndef USE_HYPERRAM
     /* Init System Pll3 pfd2. */
     CLOCK_InitPfd(kCLOCK_PllSys3, kCLOCK_Pfd2, 22);
-#endif
     /* Init System Pll3 pfd3. */
     CLOCK_InitPfd(kCLOCK_PllSys3, kCLOCK_Pfd3, 18);
 
@@ -587,13 +585,13 @@ void BOARD_BootClockRUN(void)
     rootCfg.div = 1;
     CLOCK_SetRootClock(kCLOCK_Root_Gpt2, &rootCfg);
 
-    /* Configure FLEXSPI1 using SYS_PLL3_PFD0_CLK */
-    BOARD_SetFlexspiClock(FLEXSPI1, kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll3Pfd0, 3U);
-
-    /* Configure FLEXSPI2 using SYS_PLL3_PFD2_CLK */
 #ifndef USE_HYPERRAM
-    BOARD_SetFlexspiClock(FLEXSPI2, kCLOCK_FLEXSPI2_ClockRoot_MuxSysPll3Pfd2, 2U);
+    /* Configure FLEXSPI1 using SYS_PLL3_PFD2_CLK, 166MHz */
+    BOARD_SetFlexspiClock(FLEXSPI1, kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll3Pfd0, 2U);
 #endif
+
+    /* Configure FLEXSPI1 using SYS_PLL3_PFD0_CLK, 133MHz */
+    BOARD_SetFlexspiClock(FLEXSPI2, kCLOCK_FLEXSPI2_ClockRoot_MuxSysPll3Pfd2, 3U);
 
     /* Configure FLEXSPI_SLV using SYS_PLL2_CLK */
     rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;
