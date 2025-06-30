@@ -164,7 +164,35 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         /* Re-enable interrupts - see comments above __disable_irq()
         call above. */
         __enable_irq();
-        __NOP();
+
+        /*
+         * CRITICAL TIMING SECTION:
+         * When the CPU wakes from WFI, interrupts are still disabled but pending.
+         * After enabling interrupts above, the pending interrupt doesn't execute immediately.
+         * Instead, there's a latency before the interrupt handler starts executing.
+         *
+         * The issue is:
+         * 1. We enable interrupts with __enable_irq()
+         * 2. The code continues execution immediately
+         * 3. The pending interrupt handler starts executing in parallel
+         * 4. We check ulLPTimerInterruptFired before the interrupt handler has had time to set it
+         *
+         * This creates a race condition where the code might check the flag
+         * before the interrupt handler has had a chance to set it, especially
+         * in highly optimized release builds.
+         *
+         * The loop below creates a window of time for the interrupt handler to execute
+         * and set the flag before we check it, avoiding the race condition.
+         */
+        for (volatile int i = 0; i < 100; i++)
+        {
+            if (ulLPTimerInterruptFired)
+            {
+                break;
+            }
+            __NOP();
+        }
+
         if (ulLPTimerInterruptFired)
         {
             /* The tick interrupt handler will already have pended the tick
