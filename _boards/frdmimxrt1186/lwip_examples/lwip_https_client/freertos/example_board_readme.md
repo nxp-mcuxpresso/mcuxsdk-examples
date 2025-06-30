@@ -8,4 +8,5 @@ Hardware requirements
 
 Board settings
 ============
-This example uses Ethernet RJ45 port J32.
+J18(1-2)/J17(2-3): ETH2 Function Via J56B.
+J12(1-2)/J13(2-3): ETH0 Function Via J56A.

@@ -11,7 +11,6 @@
 /*${header:end}*/
 
 /*${macro:start}*/
-#define PHY_PAGE_SELECT_REG 0x1FU /*!< The PHY page select register. */
 /*!< PHY reset pins. */
 #define EXAMPLE_SWT_PORT0_PHY_RESET_PIN RGPIO1, 15
 /*${macro:end}*/
@@ -23,7 +22,6 @@ static phy_handle_t g_phy_yt8521;
 /*${variable:end}*/
 
 /*${function:start}*/
-
 static status_t APP_EMDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
     return NETC_MDIOWrite(&s_emdio_handle, phyAddr, regAddr, data);
@@ -36,18 +34,10 @@ static status_t APP_EMDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 
 static status_t APP_PHY_SetPort(uint32_t port, phy_config_t *phyConfig)
 {
-    status_t result = kStatus_Success;
-
     g_phy_yt8521_resource.write = APP_EMDIOWrite;
     g_phy_yt8521_resource.read  = APP_EMDIORead;
 
-    result = PHY_Init(&g_phy_yt8521, phyConfig);
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
-
-    return PHY_EnableLoopback(&g_phy_yt8521, kPHY_LocalLoop, phyConfig->speed, true);
+    return PHY_Init(&g_phy_yt8521, phyConfig);
 }
 
 status_t APP_PHY_Init(void)
@@ -101,32 +91,6 @@ static void APP_MDIO_Init(void)
     }
 }
 
-status_t APP_PHY_GetLinkStatus(uint32_t port, bool *link)
-{
-    return PHY_GetLinkStatus(&g_phy_yt8521, link);
-}
-
-status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port,
-                                        netc_hw_mii_mode_t *mode,
-                                        netc_hw_mii_speed_t *speed,
-                                        netc_hw_mii_duplex_t *duplex)
-{
-    switch (port)
-    {
-        case EXAMPLE_SWT_PORT0:
-            *mode = kNETC_RgmiiMode;
-            break;
-        case EXAMPLE_SWT_PORT2:
-            *mode = kNETC_RgmiiMode;
-            break;
-        default:
-            assert(false);
-            break;
-    }
-
-    return PHY_GetLinkSpeedDuplex(&g_phy_yt8521, (phy_speed_t *)speed, (phy_duplex_t *)duplex);
-}
-
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
@@ -159,12 +123,6 @@ void BOARD_InitHardware(void)
 
     APP_MDIO_Init();
     APP_PHY_Init();
-    status_t APP_PHY_GetLinkStatus(uint32_t port, bool *link);
-    status_t APP_PHY_GetLinkModeSpeedDuplex(uint32_t port,
-                                        netc_hw_mii_mode_t *mode,
-                                        netc_hw_mii_speed_t *speed,
-                                        netc_hw_mii_duplex_t *duplex);
 }
-
 
 /*${function:end}*/

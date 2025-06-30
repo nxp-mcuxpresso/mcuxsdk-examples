@@ -1,3 +1,7 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Override heap and stack size
 mcux_remove_linker_symbol(
     SYMBOLS "__stack_size__=1000 __heap_size__=40000"
