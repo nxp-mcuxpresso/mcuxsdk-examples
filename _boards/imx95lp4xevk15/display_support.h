@@ -105,8 +105,7 @@
 /* The MIPI DSI support 4 line. */
 #define APP_MIPI_DSI_LANE_NUM 4
 #define BYTE_PER_PIXEL        3
-#define MIPI_DSI_BPP          24
-#define MIPI_DSI_DIV          32
+#define BPP                   24
 #elif DPU_EXAMPLE_DI == DPU_DI_LVDS
 #define APP_LDB_BASE LVDS_BASE
 #define APP_LDB      ((LDB_Type *)APP_LDB_BASE)
