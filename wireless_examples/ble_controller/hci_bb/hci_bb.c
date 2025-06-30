@@ -29,6 +29,10 @@
 #include "hybrid_gfsk.h"
 #endif
 
+#if (defined(gValidationBuildOptions) && (gValidationBuildOptions == 1))
+#define HCIBB_ENABLE_DEBUG_FEATURES
+#endif
+
 #include "ble_general.h"
 #define PKT_THRESHOLD_TO_DROP_ADV_REPORT 64U
 #define HCI_PKT_TYPE_EVENT 4U
