@@ -58,6 +58,7 @@ TickType_t LPM_EnterTicklessIdle(TickType_t xExpectedIdleTime, uint64_t *pCounte
     /* Calculate the reload value required to wait xExpectedIdleTime
     tick periods.  -1 is used because this code will execute part way
     through one of the tick periods. */
+    assert(xExpectedIdleTime < (UINT32_MAX / ulLPTimerCountsForOneTick + 1UL));
     ulReloadValue = ulLPTimerCountsForOneTick * (xExpectedIdleTime - 1UL);
 
     OSTIMER_Init(TICKLESS_OSTIMER_BASE_PTR);
@@ -65,7 +66,8 @@ TickType_t LPM_EnterTicklessIdle(TickType_t xExpectedIdleTime, uint64_t *pCounte
     EnableDeepSleepIRQ(TICKLESS_OSTIMER_IRQn);
 
     xOstimerStartValue = OSTIMER_GetCurrentTimerValue(TICKLESS_OSTIMER_BASE_PTR);
-    status             = OSTIMER_SetMatchValue(TICKLESS_OSTIMER_BASE_PTR, (xOstimerStartValue + ulReloadValue), NULL);
+    assert((xOstimerStartValue + ulReloadValue) < UINT64_MAX);
+    status = OSTIMER_SetMatchValue(TICKLESS_OSTIMER_BASE_PTR, (xOstimerStartValue + ulReloadValue), NULL);
 
     if (status != kStatus_Success)
     {
