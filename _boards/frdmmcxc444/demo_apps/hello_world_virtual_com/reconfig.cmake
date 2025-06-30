@@ -2,7 +2,6 @@
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/demo_apps/hello_world_virtual_com/usb_device_board_config.h
-            ${board_root}/${board}/FlashKLxx256KROM_with_config_write_enabled.board
 )
 
 mcux_add_macro(

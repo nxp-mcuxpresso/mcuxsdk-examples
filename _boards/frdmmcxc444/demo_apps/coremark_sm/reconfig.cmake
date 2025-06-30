@@ -9,7 +9,6 @@ mcux_add_source(
             examples/demo_apps/coremark/coremark_config/core_portme.c
             examples/demo_apps/coremark/coremark_config/core_portme.h
             examples/demo_apps/coremark/coremark_config/core_type.h
-            ${board_root}/${board}/FlashKLxx256KROM_with_config_write_enabled.board
 )
 
 mcux_add_include(
