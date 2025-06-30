@@ -21,8 +21,12 @@ wireless_uart_bm:
     mcxw72evk@cm33_core0: []
     frdmmcxw72@cm33_core0: []
     mcxw72loc@cm33_core0: []
-    frdmmcxw23: []
+    frdmmcxw23:
+    - -mdk@debug
+    - -mdk@release
+    mcxw23evk:
+    - -mdk@debug
+    - -mdk@release
     kw43evk:
     - -armgcc@debug
     - -armgcc@release
-    mcxw23evk: []

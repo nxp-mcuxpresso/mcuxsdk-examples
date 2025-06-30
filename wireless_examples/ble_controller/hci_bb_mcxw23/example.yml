@@ -13,5 +13,9 @@ hci_bb_mcxw23:
       - ${board_root}/${board}/wireless_examples/ble_controller/hci_bb/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-     frdmmcxw23: []
-     mcxw23evk: []
+    frdmmcxw23:
+    - -mdk@debug
+    - -mdk@release
+    mcxw23evk:
+    - -mdk@debug
+    - -mdk@release
