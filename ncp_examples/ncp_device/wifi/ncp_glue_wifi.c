@@ -63,34 +63,6 @@ extern nw_conn_t nw_handles[MAX_HANDLES];
  * Code
  ******************************************************************************/
 
-#if CONFIG_NCP_DEBUG
-#define NCP_DEBUG_TIME_COUNT 512
-#define NCP_DEBUG_TIME_FUNC  128
-int ncp_debug_time_num                                             = 0;
-unsigned long ncp_debug_time[NCP_DEBUG_TIME_COUNT]                 = {0};
-char ncp_debug_time_pos[NCP_DEBUG_TIME_COUNT][NCP_DEBUG_TIME_FUNC] = {0};
-extern unsigned int os_get_timestamp(void);
-void print_ncp_debug_time(void)
-{
-    for (int i = 0; i < ncp_debug_time_num; i++)
-        (void)PRINTF("%d-%s-%lu\r\n", i, ncp_debug_time_pos[i], ncp_debug_time[i]);
-    for (int i = 1; i < ncp_debug_time_num; i++)
-        (void)PRINTF("[%d-%lu]\r\n", i, ncp_debug_time[i] - ncp_debug_time[i - 1]);
-    ncp_debug_time_num = 0;
-}
-void add_ncp_debug_time_item(const char *func)
-{
-    int func_len = strlen(func) + 1 <= NCP_DEBUG_TIME_FUNC ? strlen(func) + 1 : NCP_DEBUG_TIME_FUNC;
-    if (ncp_debug_time_num >= NCP_DEBUG_TIME_COUNT)
-    {
-        (void)PRINTF("the array is full, please increase NCP_DEBUG_TIME_COUNT\r\n");
-        return;
-    }
-    ncp_debug_time[ncp_debug_time_num] = os_get_timestamp();
-    memcpy(ncp_debug_time_pos[ncp_debug_time_num++], func, func_len);
-}
-#endif
-
 /*scan fuctions*/
 static int scan_cb(unsigned int count)
 {

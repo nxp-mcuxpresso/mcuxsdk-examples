@@ -24,4 +24,15 @@
  * @retval KOSA_StatusError   The queue was full or an invalid parameter was passed.
  */
 osa_status_t OSA_MsgQPutBlock(osa_msgq_handle_t msgqHandle, osa_msg_handle_t pMessage, uint32_t millisec);
+
+#if CONFIG_NCP_TP_DEBUG
+void print_ncp_debug_time(void);
+void add_ncp_debug_time_item(const char *func);
+
+#if CONFIG_NCP_DEBUG_SCHED
+void trace_task_switch_print();
+#endif
+
+#endif
+
 #endif
