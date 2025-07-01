@@ -7,4 +7,3 @@ mdk:
   project-templates:
   - scripts/guigenerator/templates/mdk/app_frdmmcxc242/frdmmcxc242.uvprojx
   - scripts/guigenerator/templates/mdk/app_frdmmcxc242/frdmmcxc242.uvoptx
-  - scripts/guigenerator/templates/mdk/app_frdmmcxc242/pemicro_connection_settings.ini
