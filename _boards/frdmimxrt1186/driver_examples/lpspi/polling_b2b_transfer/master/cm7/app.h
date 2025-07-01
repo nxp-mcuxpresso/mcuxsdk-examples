@@ -12,9 +12,9 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Master related */
-#define EXAMPLE_LPSPI_MASTER_BASEADDR   LPSPI4
-#define EXAMPLE_LPSPI_MASTER_IRQN       LPSPI4_IRQn
-#define EXAMPLE_LPSPI_MASTER_IRQHandler LPSPI4_IRQHandler
+#define EXAMPLE_LPSPI_MASTER_BASEADDR   LPSPI2
+#define EXAMPLE_LPSPI_MASTER_IRQN       LPSPI2_IRQn
+#define EXAMPLE_LPSPI_MASTER_IRQHandler LPSPI2_IRQHandler
 
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER (kLPSPI_MasterPcs0)

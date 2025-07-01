@@ -100,7 +100,7 @@ void BOARD_InitHardware(void)
     TRDC_EDMA4_ResetPermissions();
 }
 
-uint32_t LPSPI4_GetFreq(void)
+uint32_t LPSPI2_GetFreq(void)
 {
     return EXAMPLE_LPSPI_CLOCK_FREQ;
 }

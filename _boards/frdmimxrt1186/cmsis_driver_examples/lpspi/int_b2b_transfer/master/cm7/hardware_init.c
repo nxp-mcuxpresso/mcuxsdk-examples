@@ -26,7 +26,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 }
 
-uint32_t LPSPI4_GetFreq(void)
+uint32_t LPSPI2_GetFreq(void)
 {
     return EXAMPLE_LPSPI_CLOCK_FREQ;
 }

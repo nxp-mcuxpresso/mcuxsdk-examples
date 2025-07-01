@@ -6,18 +6,17 @@ Hardware requirements
 
 Board settings
 ============
-Change Jumper R307 from 1-2 to 1-3, Jumper R317 from 1-2 to 1-3.
 SPI one board:
 Transfer data from one board instance to another board's instance.
-SPI3 pins are connected with SPI3 pins of another board
+SPI2 pins are connected with SPI2 pins of another board
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-INSTANCE(LPSPI4)     CONNECTS TO    INSTANCE(LPSPI4)
+INSTANCE(LPSPI2)     CONNECTS TO    INSTANCE(LPSPI2)
 Pin Name   Board Location   Pin Name   Board Location
-SOUT       J2-8            SIN        J2-10
-SIN        J2-10           SOUT       J2-8
-SCK        J2-12           SCK        J2-12
-PCS0       J2-6            PCS0       J2-6 
-GND        J2-14           GND        J2-14
+SOUT       J3-16           SIN        J3-14
+SIN        J3-14           SOUT       J3-16
+SCK        J3-18           SCK        J3-18
+PCS0       J3-12           PCS0       J3-12
+GND        J2-19           GND        J2-19
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Prepare the Demo

@@ -12,8 +12,8 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Master related */
-#define DRIVER_SLAVE_SPI         Driver_SPI4
-#define EXAMPLE_LPSPI_SLAVE_IRQN (LPSPI4_IRQn)
+#define DRIVER_SLAVE_SPI         Driver_SPI2
+#define EXAMPLE_LPSPI_SLAVE_IRQN (LPSPI2_IRQn)
 
 #define EXAMPLE_LPSPI_CLOCK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Lpspi0304)
 /*${macro:end}*/

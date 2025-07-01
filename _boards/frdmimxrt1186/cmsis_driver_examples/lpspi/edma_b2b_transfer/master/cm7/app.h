@@ -12,8 +12,8 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* Master related */
-#define DRIVER_MASTER_SPI                 Driver_SPI4
-#define EXAMPLE_LPSPI_MASTER_IRQN         (LPSPI4_IRQn)
+#define DRIVER_MASTER_SPI                 Driver_SPI2
+#define EXAMPLE_LPSPI_MASTER_IRQN         (LPSPI2_IRQn)
 #define EXAMPLE_LPSPI_DEALY_COUNT         0xfffffU
 #define EXAMPLE_LPSPI_MASTER_DMA_BASEADDR DMA4
 

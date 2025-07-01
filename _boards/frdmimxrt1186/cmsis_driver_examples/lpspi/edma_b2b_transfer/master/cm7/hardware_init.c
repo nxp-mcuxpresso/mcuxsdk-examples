@@ -112,7 +112,7 @@ void BOARD_InitHardware(void)
 #endif /* !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
 }
 
-uint32_t LPSPI4_GetFreq(void)
+uint32_t LPSPI2_GetFreq(void)
 {
     return EXAMPLE_LPSPI_CLOCK_FREQ;
 }
