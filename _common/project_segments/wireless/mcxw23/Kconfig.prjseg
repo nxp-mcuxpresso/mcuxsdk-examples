@@ -12,6 +12,7 @@ config MCUX_PRJSEG_module.board.wireless.app_services
 config MCUX_PRJSEG_module.board.wireless.app_ble
     bool "Wireless BLE Application"
     depends on MCUX_PRJSEG_module.board.wireless.board
+    select MCUX_COMPONENT_middleware.wireless.framework.platform.ble
     help
       This is a collection of APP helpers used in wireless examples to abstract the initialization flow of
       NXP BLE software components.
