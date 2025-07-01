@@ -5,17 +5,18 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/demo_apps/safety_iec60730b/common/cm33
+    INCLUDES examples/demo_apps/safety_iec60730b/common/cm4_cm7
 )
 
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.c
-			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.h
-			examples/demo_apps/safety_iec60730b/common/cm33/main.c
+    SOURCES examples/demo_apps/safety_iec60730b/common/cm4_cm7/safety_cm4_cm7_mcx.c
+			examples/demo_apps/safety_iec60730b/common/cm4_cm7/safety_cm4_cm7_mcx.h
+			examples/demo_apps/safety_iec60730b/common/cm4_cm7/main.c
 			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
 )
+
 
 #----------------------------------------------
 # Project settings for all toolchains
@@ -30,37 +31,10 @@ mcux_add_macro(
     CC "-DSKIP_SYSCLK_INIT"
 )
 
+
 #----------------------------------------------
 # Project settings for IAR toolchain
 #----------------------------------------------
-
-mcux_remove_iar_configuration(
-    AS "--cpu=cortex-m33.no_se"
-    CC "--cpu=cortex-m33.no_se"
-    CX "--cpu=cortex-m33.no_se"
-)
-
-mcux_add_iar_configuration(
-    AS "--cpu=cortex-m33"
-    CC "--cpu=cortex-m33"
-    CX "--cpu=cortex-m33"
-)
-
-mcux_add_iar_configuration(
-    CC "--cmse"
-	CX "--cmse"
-)
-
-if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
-if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
-
-else()
-	# AS --cmse flag needs to be added when command line build is used
-	mcux_add_iar_configuration(
-		AS "--cmse"
-	)
-endif()
-endif()
 
 # optimization default setting needs to be removed first
 mcux_remove_iar_configuration(
@@ -73,11 +47,12 @@ mcux_add_iar_configuration(
 	CX "-Ol"
 )
 
+
 #----------------------------------------------
 # Project settings for MDK toolchain
 #----------------------------------------------
 
-# optimization default setting needs to be removed
+# default setting needs to be removed
 mcux_remove_mdk_configuration(
     CC "-O1"
     CX "-O1"
@@ -90,8 +65,8 @@ mcux_add_mdk_configuration(
 
 mcux_add_configuration(
     TOOLCHAINS mdk
-    CC "-gdwarf-3 -mcmse -g"
-	LD "--diag_suppress L6848E"
+    CC "-gdwarf-3 -g"
+	LD "--diag_suppress L6848E --library_type=standardlib"
 )
 
 
@@ -141,9 +116,9 @@ mcux_remove_configuration(
 # IAR post-build command
 if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
 add_custom_command(
-	TARGET ${MCUX_SDK_PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill 0xFF\;c_checksumStart-c_checksumEnd+3 --checksum __checksum:2,crc16,0x0\;c_checksumStart-c_checksumEnd+3  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+		TARGET ${MCUX_SDK_PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill 0xFF\;c_checksumStart-c_checksumEnd+3 --checksum __checksum:4,crc32:i,0xFFFFFFFF\;c_checksumStart-c_checksumEnd+3  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
 )
 endif()
 
@@ -182,10 +157,9 @@ if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
 	)
 else()
 	# Post-build generation .hex file - required for command line build option
-    add_custom_command(
-		TARGET ${MCUX_SDK_PROJECT_NAME}
-        POST_BUILD
-        COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/fromelf --i32combined --output=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+    add_custom_command(TARGET ${MCUX_SDK_PROJECT_NAME}
+            POST_BUILD
+            COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/fromelf --i32combined --output=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
     )
 	
 	# Safety application post-build command (build from command line)

@@ -11,10 +11,10 @@ mcux_add_include(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.c
-			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.h
+    SOURCES examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_lpc.c
+			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_lpc.h
 			examples/demo_apps/safety_iec60730b/common/cm33/main.c
-			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety.pmp
 )
 
 #----------------------------------------------
@@ -24,10 +24,6 @@ mcux_add_source(
 mcux_add_configuration(
     CC "--debug"
     CX "--debug"
-)
-
-mcux_add_macro(
-    CC "-DSKIP_SYSCLK_INIT"
 )
 
 #----------------------------------------------
@@ -108,7 +104,7 @@ mcux_remove_iar_linker_script(
 # add custom IAR linker
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety_flash.icf
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety.icf
 )
 
 # remove default MDK linker
@@ -120,8 +116,8 @@ mcux_remove_mdk_linker_script(
 # add custom MDK linker
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety_flash.sct
-)
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety.sct
+)# ../../devices/LPC/LPC5500/LPC55S69/arm/LPC55S69_cm33_core0_flash.scf
 
 # replace entry symbol for IAR
 mcux_remove_iar_configuration(LD "--entry Reset_Handler")
@@ -140,10 +136,9 @@ mcux_remove_configuration(
 
 # IAR post-build command
 if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
-add_custom_command(
-	TARGET ${MCUX_SDK_PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill 0xFF\;c_checksumStart-c_checksumEnd+3 --checksum __checksum:2,crc16,0x0\;c_checksumStart-c_checksumEnd+3  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+add_custom_command(TARGET ${MCUX_SDK_PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill 0xFF\;c_checksumStart-c_checksumEnd+3 --checksum __checksum:2,crc16,0x0\;c_checksumStart-c_checksumEnd+3  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
 )
 endif()
 
@@ -182,10 +177,9 @@ if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
 	)
 else()
 	# Post-build generation .hex file - required for command line build option
-    add_custom_command(
-		TARGET ${MCUX_SDK_PROJECT_NAME}
-        POST_BUILD
-        COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/fromelf --i32combined --output=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+    add_custom_command(TARGET ${MCUX_SDK_PROJECT_NAME}
+            POST_BUILD
+            COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/fromelf --i32combined --output=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
     )
 	
 	# Safety application post-build command (build from command line)

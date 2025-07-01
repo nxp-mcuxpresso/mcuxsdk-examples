@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+safety_iec60730b:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/safety_iec60730b
+    project-root-path: boards/${board}/demo_apps/safety_iec60730b/${multicore_foldername}
+    document:
+      name: safety_iec60730b${core_id_suffix_name}
+      category: demo_apps
+      brief: This example demonstrates the safety library usage.
+      example_readme:
+      - examples/demo_apps/safety_iec60730b/readme.md
+      - ${board_root}/${board}/demo_apps/safety_iec60730b/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxn236:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
+    frdmmcxe247:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
+    frdmmcxe31b:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
+    lpcxpresso55s69@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
