@@ -820,8 +820,8 @@ void BOARD_InitHYPERRAMPins(void) {
 BOARD_InitEQDCPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M9, peripheral: XBAR1, signal: 'IN, 36', pin_signal: GPIO_EMC_B2_19, software_input_on: Enable}
-  - {pin_num: M8, peripheral: XBAR1, signal: 'IN, 37', pin_signal: GPIO_EMC_B2_20, software_input_on: Enable}
+  - {pin_num: N14, peripheral: XBAR1, signal: 'IN, 18', pin_signal: GPIO_AD_12, software_input_on: Enable}
+  - {pin_num: L12, peripheral: XBAR1, signal: 'IN, 19', pin_signal: GPIO_AD_19, software_input_on: Enable}
   - {pin_num: J14, peripheral: XBAR1, signal: 'IN, 23', pin_signal: GPIO_SD_B1_03, software_input_on: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -836,20 +836,17 @@ void BOARD_InitEQDCPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 &
-    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_23_MASK))) /* Mask bits to zero which are setting */
+    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_18_MASK | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_19_MASK | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_23_MASK))) /* Mask bits to zero which are setting */
+      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_18(0x00U) /* IOMUXC XBAR_INOUT18 function direction select: XBAR_INOUT as input */
+      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_19(0x00U) /* IOMUXC XBAR_INOUT19 function direction select: XBAR_INOUT as input */
       | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_23(0x00U) /* IOMUXC XBAR_INOUT23 function direction select: XBAR_INOUT as input */
     );
-  BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 &
-    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_MASK | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_37_MASK))) /* Mask bits to zero which are setting */
-      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36(0x00U) /* IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as input */
-      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_37(0x00U) /* IOMUXC XBAR_INOUT37 function direction select: XBAR_INOUT as input */
-    );
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_19_XBAR1_XBAR_INOUT36,  /* GPIO_EMC_B2_19 is configured as XBAR1_XBAR_INOUT36 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_19 */
+      IOMUXC_GPIO_AD_12_XBAR1_XBAR_INOUT18,   /* GPIO_AD_12 is configured as XBAR1_XBAR_INOUT18 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_12 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_20_XBAR1_XBAR_INOUT37,  /* GPIO_EMC_B2_20 is configured as XBAR1_XBAR_INOUT37 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B2_20 */
+      IOMUXC_GPIO_AD_19_XBAR1_XBAR_INOUT19,   /* GPIO_AD_19 is configured as XBAR1_XBAR_INOUT19 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_AD_19 */
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B1_03_XBAR1_XBAR_INOUT23,  /* GPIO_SD_B1_03 is configured as XBAR1_XBAR_INOUT23 */
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_SD_B1_03 */

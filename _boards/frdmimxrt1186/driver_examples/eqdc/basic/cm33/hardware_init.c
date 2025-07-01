@@ -19,12 +19,13 @@ void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
+    BOARD_InitEQDCPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
     XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout36, kXBAR1_OutputEqdc1Phasea);
-    XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout37, kXBAR1_OutputEqdc1Phaseb);
+    XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout18, kXBAR1_OutputEqdc1Phasea);
+    XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout19, kXBAR1_OutputEqdc1Phaseb);
     XBAR_SetSignalsConnection(kXBAR1_InputIomuxXbarInout23, kXBAR1_OutputEqdc1Index);
 }
 /*${function:end}*/
