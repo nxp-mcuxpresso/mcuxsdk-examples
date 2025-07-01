@@ -128,14 +128,16 @@ static struct bt_sdp_record map_mce_rec = BT_SDP_RECORD(map_mce_attrs);
 The message can be used for testing with Android phone and boards with MSE function.
 The message may not delivered successfully by MSE(e.g. Android phone) because the
 phone number is 0000000000000. If wanting MSE to deliver this message successfully,
-users need to modify the phone number(FN, N, TEL and 000000000000f0 in the message)
-to the valid and modify the length(1080) accordingly.
+users need to modify the phone number(FN, N, TEL and 0d91000000000000f0 in the message)
+to the valid and modify the length(1080) accordingly. 0d is the length of phone
+number. 91 indicates the following phone number is international.
+000000000000f0 is a 13-digit phone number.
 For example, if users want to deliver the messsage to the phone number 123456,
-FN, N and TEL shall be +123456, 000000000000f0 shall be 214365 and
-the length(1080) shall be 1048(1080 - (14 - 6) * 4).
+FN, N and TEL shall be +123456, 0d91000000000000f0 shall be 0691214365 and
+the length(1080) shall be 1048(1080 - (18 - 10) * 4).
 For example, If users want to deliver the messsage to the phone number 1234567,
-FN, N and TEL shall be +1234567, 000000000000f0 shall be 214365f7 and
-the length(1080) shall be 1056(1080 - (14 - 8) * 4). */
+FN, N and TEL shall be +1234567, 0d91000000000000f0 shall be 0791214365f7 and
+the length(1080) shall be 1056(1080 - (18 - 12) * 4). */
 #define MAP_MCE_MSG_G_7BIT \
 "BEGIN:BMSG\r\n\
 VERSION:1.0\r\n\
