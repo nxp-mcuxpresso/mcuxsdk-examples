@@ -534,7 +534,7 @@ fd_set traverse_bitmap_and_setfd(uint64_t bitmap)
 
 static void socket_recv_task(void *arg)
 {
-#define NCP_SOCKET_RECEIVE_TIMEOUT_INTVAL  200
+#define NCP_SOCKET_RECEIVE_TIMEOUT_INTVAL  1000
     NCP_CMD_INET_RESP_RECVFROM_CFG *tlv_res = 0;
     uint8_t *buf = 0;
     int buf_len = 0;
@@ -576,7 +576,13 @@ static void socket_recv_task(void *arg)
                     if (ret > 0)
                         send_event.recv_size = ret;
                     else
+                    {
+                        /*if recvfrom fail, not to select socket*/
+                        if (ret < 0)
+                            ncp_inet_clear_bit(i);
                         send_event.recv_size = 0;
+                        continue;
+                    }
                     send_event.socklen = socklen;
                     send_event.client_addr = client_addr;
                     ncp_inet_recv_send_data(&send_event);
