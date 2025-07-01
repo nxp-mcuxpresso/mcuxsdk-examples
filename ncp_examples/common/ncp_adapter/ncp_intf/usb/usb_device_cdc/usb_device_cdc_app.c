@@ -76,17 +76,11 @@ extern usb_device_class_struct_t g_UsbDeviceCdcVcomConfig;
 usb_cdc_vcom_struct_t s_cdcVcom;
 
 #if USB_DEVICE_CONFIG_USE_TASK
-/*Hard code for debug, will delete later*/
-#define OS_PRIO_0                                4 /** High **/
-#define OS_PRIO_1                                (4 - 1)
-#define OS_PRIO_2                                (4 - 2)
-#define OS_PRIO_3                                (4 - 3)
-#define OS_PRIO_4                                (4 - 4) /** Low **/
 void USB_DeviceTaskFn(void *deviceHandle);
 
 /* NCP usb device task */
 static OSA_TASK_HANDLE_DEFINE(ncp_usb_device_thread);
-static OSA_TASK_DEFINE(USB_DeviceTask, OS_PRIO_3, 1, 1024, 0);
+static OSA_TASK_DEFINE(USB_DeviceTask, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, 1024, 0);
 
 #if ((defined(USB_DEVICE_CONFIG_LOW_POWER_MODE)) && (USB_DEVICE_CONFIG_LOW_POWER_MODE > 0U))
 /* NCP usb device pm task */
