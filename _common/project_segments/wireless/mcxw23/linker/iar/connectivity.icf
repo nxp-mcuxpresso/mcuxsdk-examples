@@ -45,7 +45,11 @@ define symbol FLASH_END         = FLASH_START + FLASH_SIZE - 1;
 define symbol FLASH_SECTOR_SIZE = 0x2000; /* 8KB */
 
 define exported symbol NV_STORAGE_END_ADDRESS       = FLASH_END;
-define exported symbol NV_STORAGE_MAX_SECTORS       = 4;
+if (isdefinedsymbol(MCXW235)) {
+    define exported symbol NV_STORAGE_MAX_SECTORS   = 2;
+} else {
+    define exported symbol NV_STORAGE_MAX_SECTORS   = 4;
+}
 define exported symbol NV_STORAGE_SECTOR_SIZE       = FLASH_SECTOR_SIZE;
 define exported symbol NV_STORAGE_SIZE              = FLASH_SECTOR_SIZE * NV_STORAGE_MAX_SECTORS;
 define exported symbol NV_STORAGE_START_ADDRESS     = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;

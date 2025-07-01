@@ -54,7 +54,11 @@
 
 /* NV Storage definitions */
 #define NV_STORAGE_END_ADDRESS         FLASH_END
-#define NV_STORAGE_MAX_SECTORS         4
+#if (defined(MCXW235))
+  #define NV_STORAGE_MAX_SECTORS       2
+#else
+  #define NV_STORAGE_MAX_SECTORS       4
+#endif
 #define NV_STORAGE_SECTOR_SIZE         FLASH_SECTOR_SIZE
 #define NV_STORAGE_SIZE                (FLASH_SECTOR_SIZE * NV_STORAGE_MAX_SECTORS)
 #define NV_STORAGE_START_ADDRESS       (NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1)
