@@ -10,11 +10,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v3.0
-processor: MKL43Z256xxx4
-package_id: MKL43Z256VLH4
+product: Pins v15.0
+processor: MCXC444
+package_id: MCXC444VLH
 mcu_data: ksdk2_0
-processor_version: 0.0.8
+processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */

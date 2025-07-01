@@ -1,7 +1,7 @@
 Hardware requirements
 =====================
-- Mini/micro USB cable
-- FRDM-KL43Z board
+- Type-C USB cable
+- FRDM-MCXC444 board
 - Personal Computer
 
 Board settings

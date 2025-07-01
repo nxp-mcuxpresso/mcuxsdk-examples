@@ -13,7 +13,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 
-#define SYSVIEW_DEVICE_NAME "FRDMKL43Z Cortex-M0Plus"
+#define SYSVIEW_DEVICE_NAME "FRDM_MCXC444 Cortex-M0Plus"
 #define SYSVIEW_RAM_BASE    (0x1FFFE000)
 
 /*${macro:end}*/

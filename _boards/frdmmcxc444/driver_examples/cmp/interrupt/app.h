@@ -17,7 +17,7 @@
 #define LED_OFF()  LED_RED_OFF()
 
 #define DEMO_CMP_BASE             CMP0
-#define DEMO_CMP_USER_CHANNEL     0U /* PTC6, CMP0_IN0 , J1-9 on board FRDM KL43Z */
+#define DEMO_CMP_USER_CHANNEL     0U /* PTC6, CMP0_IN0 , J1-9 on board FRDM MCXC444 */
 #define DEMO_CMP_DAC_CHANNEL      7U
 #define DEMO_CMP_IRQ_ID           CMP0_IRQn
 #define DEMO_CMP_IRQ_HANDLER_FUNC CMP0_IRQHandler

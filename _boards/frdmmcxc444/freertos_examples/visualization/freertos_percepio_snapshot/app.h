@@ -13,7 +13,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 
-#define APP_SYSVIEW_APP_NAME    "FRDMKL43Z System Viewer Demo"
+#define APP_SYSVIEW_APP_NAME    "FRDM_MCXC444 System Viewer Demo"
 #define APP_SYSVIEW_DEVICE_NAME "Cortex-M0Plus"
 #define APP_SYSVIEW_RAM_BASE    (0x1FFFE000)
 

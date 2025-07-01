@@ -138,12 +138,12 @@ pin_labels:
 - {pin_num: '2', pin_signal: PTE1/SPI1_MOSI/LPUART1_RX/SPI1_MISO/I2C1_SCL, label: 'J3[3]/UART1_RX'}
 - {pin_num: '42', pin_signal: PTB19/TPM2_CH1, label: 'J2[13]/LED_GREEN', identifier: LED_GREEN}
 - {pin_num: '16', pin_signal: VSSA, label: GND}
-- {pin_num: '3', pin_signal: VDD3, label: P3V3_KL27Z}
+- {pin_num: '3', pin_signal: VDD3, label: P3V3_MCXC242}
 - {pin_num: '4', pin_signal: VSS4, label: GND}
-- {pin_num: '30', pin_signal: VDD36, label: P3V3_KL27Z}
-- {pin_num: '48', pin_signal: VDD54, label: P3V3_KL27Z}
-- {pin_num: '13', pin_signal: VDDA, label: P3V3_KL27Z}
-- {pin_num: '7', pin_signal: USB_VDD, label: P3V3_KL27Z}
+- {pin_num: '30', pin_signal: VDD36, label: P3V3_MCXC242}
+- {pin_num: '48', pin_signal: VDD54, label: P3V3_MCXC242}
+- {pin_num: '13', pin_signal: VDDA, label: P3V3_MCXC242}
+- {pin_num: '7', pin_signal: USB_VDD, label: P3V3_MCXC242}
 - {pin_num: '57', pin_signal: PTD0/SPI0_PCS0/TPM0_CH0/FXIO0_D0, label: 'J1[1]'}
 - {pin_num: '58', pin_signal: ADC0_SE5b/PTD1/SPI0_SCK/TPM0_CH1/FXIO0_D1, label: 'J1[3]/ACCEL_WAKE'}
 - {pin_num: '59', pin_signal: PTD2/SPI0_MOSI/UART2_RX/TPM0_CH2/SPI0_MISO/FXIO0_D2, label: 'J1[5]'}
