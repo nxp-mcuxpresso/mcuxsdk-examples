@@ -194,14 +194,14 @@ void program_page(uint32_t dest_addr, uint32_t *src_addr)
     }
 
     /* First write some data into TXFIFO to prevent from underrun */
-    QSPI_WriteBlocking(EXAMPLE_QSPI, src_addr, FSL_FEATURE_QSPI_TXFIFO_DEPTH * 4);
+    QSPI_WriteBlocking(EXAMPLE_QSPI, src_addr, FSL_FEATURE_QSPI_TXFIFO_DEPTH * sizeof(uint32_t));
     src_addr += FSL_FEATURE_QSPI_TXFIFO_DEPTH;
 
     /* Start the program */
     QSPI_SetIPCommandSize(EXAMPLE_QSPI, FLASH_PAGE_SIZE);
     QSPI_ExecuteIPCommand(EXAMPLE_QSPI, QSPI_CMD_SEQ_PROGRAM_PAGE);
 
-    leftLongWords = FLASH_PAGE_SIZE - 16 * sizeof(uint32_t);
+    leftLongWords = FLASH_PAGE_SIZE - (FSL_FEATURE_QSPI_TXFIFO_DEPTH * sizeof(uint32_t));
     QSPI_WriteBlocking(EXAMPLE_QSPI, src_addr, leftLongWords);
 
     /* Wait until flash finished program */
