@@ -48,6 +48,7 @@ status_t callback0(notifier_notification_block_t *notify, void *dataPtr)
     switch (notify->notifyType)
     {
         case kNOTIFIER_NotifyBefore:
+            assert((userData->beforeNotificationCounter) < UINT32_MAX);
             userData->beforeNotificationCounter++;
             /* Wait for debug console output finished. */
             while (
@@ -71,6 +72,7 @@ status_t callback0(notifier_notification_block_t *notify, void *dataPtr)
         case kNOTIFIER_NotifyRecover:
             break;
         case kNOTIFIER_CallbackAfter:
+            assert((userData->afterNotificationCounter) < UINT32_MAX);
             userData->afterNotificationCounter++;
             if ((kAPP_PowerModeRun != targetMode) && (kAPP_PowerModeVlpr != targetMode))
             {
