@@ -1,0 +1,39 @@
+/*
+ * Copyright 2021, 2024-2025 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef __APPL_PERIPHERAL_HFP_HF_MAIN_H__
+#define __APPL_PERIPHERAL_HFP_HF_MAIN_H__
+
+#include <bluetooth/hfp_ag.h>
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+
+/*******************************************************************************
+ * API
+ ******************************************************************************/
+
+void hfp_hf_register_service();
+void peripheral_hfp_hf_task(void *param);
+void hfp_AnswerCall(void);
+void hfp_RejectCall(bool reject_with_msg);
+//void hfp_dial(const char *number); //TODO:needtoremove
+void dial_memory(int location);
+//void hfp_last_dial(void);//TODO:needtoremove
+void hfp_start_voice_recognition(void);
+void hfp_hf_get_last_voice_tag_number(void);
+void hfp_stop_voice_recognition(void);
+void hfp_volume_update(hf_volume_type_t type, int volume);
+void hfp_enable_ccwa( uint8_t enable);
+void hfp_enable_clip( uint8_t enable);
+void hfp_multiparty_call_option(uint8_t option);
+void hfp_trigger_codec_connection(void);
+int app_hfp_hf_discover(struct bt_conn *conn, uint8_t channel);
+void hfp_hf_init(void);
+void hfp_hf_query_list_current_calls(void);
+void hfp_set_hfp_nb_codec(void);
+
+#endif /* __APPL_PERIPHERAL_HFP_HF_MAIN_H__ */
