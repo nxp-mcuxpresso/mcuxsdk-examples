@@ -23,7 +23,7 @@
 
 #include "fsl_tickless_lpit.h"
 
-extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
+extern uint32_t SystemCoreClock; /* in MCUX SDK, this contains the system core clock speed */
 
 /*
  * LPIT timer base address and interrupt number
