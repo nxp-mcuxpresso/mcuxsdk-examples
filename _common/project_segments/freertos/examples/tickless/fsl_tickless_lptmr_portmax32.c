@@ -1,6 +1,6 @@
 /*
  * Copyright 2014-2016 Freescale Semiconductor, Inc.
- * Copyright 2016-2023 NXP
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -89,7 +89,26 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* Calculate the reload value required to wait xExpectedIdleTime
     tick periods.  -1 is used because this code will execute part way
     through one of the tick periods. */
-    ulReloadValue = LPTMR_GetCurrentTimerCount(pxLptmrBase) + (ulLPTimerCountsForOneTick * (xExpectedIdleTime - 1UL));
+    if ((xExpectedIdleTime > 1UL) && (ulLPTimerCountsForOneTick > (UINT32_MAX / (xExpectedIdleTime - 1UL))))
+    {
+        /* Would overflow, cap at maximum */
+        ulReloadValue = UINT32_MAX;
+    }
+    else
+    {
+        uint32_t multiplicationResult = ulLPTimerCountsForOneTick * (xExpectedIdleTime - 1UL);
+        uint32_t currentCount         = LPTMR_GetCurrentTimerCount(pxLptmrBase);
+
+        /* Check for addition overflow */
+        if (multiplicationResult > UINT32_MAX - currentCount)
+        {
+            ulReloadValue = UINT32_MAX;
+        }
+        else
+        {
+            ulReloadValue = currentCount + multiplicationResult;
+        }
+    }
 
     /* Stop the LPTMR and systick momentarily.  The time the LPTMR and systick is stopped for
     is accounted for as best it can be, but using the tickless mode will

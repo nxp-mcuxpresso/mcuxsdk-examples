@@ -1,6 +1,6 @@
 /*
  * Copyright 2014-2016 Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -104,7 +104,15 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* Calculate the reload value required to wait xExpectedIdleTime
     tick periods.  -1 is used because this code will execute part way
     through one of the tick periods. */
-    ulReloadValue = (ulEPITimerCountsForOneTick * (xExpectedIdleTime - 1UL));
+    if ((xExpectedIdleTime > 1UL) && (ulEPITimerCountsForOneTick > (UINT32_MAX / (xExpectedIdleTime - 1UL))))
+    {
+        /* Would overflow, cap at maximum */
+        ulReloadValue = UINT32_MAX;
+    }
+    else
+    {
+        ulReloadValue = (ulEPITimerCountsForOneTick * (xExpectedIdleTime - 1UL));
+    }
     if (ulReloadValue > ulStoppedTimerCompensation)
     {
         ulReloadValue -= ulStoppedTimerCompensation;

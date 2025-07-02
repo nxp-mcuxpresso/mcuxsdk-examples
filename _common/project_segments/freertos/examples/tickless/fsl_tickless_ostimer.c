@@ -1,6 +1,6 @@
 /*
  * Copyright 2014-2016 Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
+ * Copyright 2016-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -77,10 +77,10 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     uint32_t ulReloadValue, ulCompleteTickPeriods;
     TickType_t xModifiableIdleTime;
     OSTIMER_Type *pxOstimerBase;
-    uint64_t xOstimerStartValue = 0;
+    uint64_t xOstimerStartValue   = 0;
     uint64_t xOstimerCurrentValue = 0;
     uint32_t ulTimerCountsElapsed = 0;
-    bool timerExpired = false;
+    bool timerExpired             = false;
 
     pxOstimerBase = vPortGetOstimerBase();
     if (pxOstimerBase == 0 || xExpectedIdleTime <= 0)
@@ -95,7 +95,15 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* Calculate the reload value required to wait xExpectedIdleTime
      * tick periods. -1 is used because this code will execute part way
      * through one of the tick periods. */
-    ulReloadValue = ulLPTimerCountsForOneTick * (xExpectedIdleTime - 1UL);
+    if ((xExpectedIdleTime > 1UL) && (ulLPTimerCountsForOneTick > (UINT32_MAX / (xExpectedIdleTime - 1UL))))
+    {
+        /* Would overflow, cap at maximum */
+        ulReloadValue = UINT32_MAX;
+    }
+    else
+    {
+        ulReloadValue = ulLPTimerCountsForOneTick * (xExpectedIdleTime - 1UL);
+    }
 
     /* Compensate for timer startup/shutdown latency */
     if (ulReloadValue > ulStoppedTimerCompensation)
@@ -166,7 +174,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         xOstimerCurrentValue = OSTIMER_GetCurrentTimerValue(pxOstimerBase);
 
         /* Check if the timer interrupt fired */
-        timerExpired = ulLPTimerInterruptFired;
+        timerExpired            = ulLPTimerInterruptFired;
         ulLPTimerInterruptFired = false;
 
         /* Disable interrupts again while we update the tick count */
@@ -227,7 +235,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 void vPortSetupTimerInterrupt(void)
 {
     /* Calculate the constants required to configure the tick interrupt. */
-    ulTimerCountsForOneTick = (configCPU_CLOCK_HZ / configTICK_RATE_HZ);
+    ulTimerCountsForOneTick   = (configCPU_CLOCK_HZ / configTICK_RATE_HZ);
     ulLPTimerCountsForOneTick = (configOSTIMER_CLOCK_HZ / configTICK_RATE_HZ);
 
     /* Calculate the timer compensation factor */
@@ -250,7 +258,7 @@ void vPortSetupTimerInterrupt(void)
 
     /* Configure SysTick to interrupt at the requested rate. */
     SysTick->LOAD = ulTimerCountsForOneTick - 1UL;
-    SysTick->VAL = 0UL;
+    SysTick->VAL  = 0UL;
     SysTick->CTRL = (SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk);
 }
 #endif /* configUSE_TICKLESS_IDLE */
