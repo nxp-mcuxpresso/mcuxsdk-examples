@@ -5,15 +5,9 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-/* @TEST_ANCHOR */
-#ifndef WIFI_BOARD_RW610
-#define WIFI_BOARD_RW610
-#endif
-/* @END_TEST_ANCHOR */
+#include "wifi_bt_module_config.h"
 
 #if defined(WIFI_BOARD_RW610)
-#define RW610
-#define WIFI_BT_USE_IMU_INTERFACE  1
 
 #define WIFI_BT_TX_PWR_LIMITS "wlan_txpwrlimit_cfg_WW_rw610.h"
 #else

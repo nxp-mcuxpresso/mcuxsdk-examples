@@ -5,15 +5,9 @@
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 
-/* @TEST_ANCHOR */
-#ifndef WIFI_BOARD_RW610
-#define WIFI_BOARD_RW610
-#endif
-/* @END_TEST_ANCHOR */
+#include "wifi_bt_module_config.h"
 
 #if defined(WIFI_BOARD_RW610)
-#define WIFI_BT_USE_IMU_INTERFACE 1
-#define RW610
 
 #ifndef RW612_SERIES
 #define RW612_SERIES
