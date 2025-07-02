@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -38,6 +38,18 @@ void BOARD_InitBootPins(void);
  *
  */
 void BOARD_InitPins(void);                                 /*!< Function assigned for the core: Cortex-M7F[cm7] */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void LPI2C6_InitPins(void);                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void LPI2C6_DeinitPins(void);                              /*!< Function assigned for the core: Cortex-M7F[cm7] */
 
 #if defined(__cplusplus)
 }
