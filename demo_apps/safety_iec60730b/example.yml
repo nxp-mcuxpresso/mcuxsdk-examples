@@ -31,6 +31,36 @@ safety_iec60730b:
     - -iar@release
     - -mdk@release
     - -mcux@release
+    frdmmcxa153:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
+    frdmmcxa156:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
+    frdmmcxc041:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
+    frdmmcxc242:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
+    frdmmcxc444:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    - -mcux@release
     lpcxpresso55s69@cm33_core0:
     - -armgcc@debug
     - -armgcc@release

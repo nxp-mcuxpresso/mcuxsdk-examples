@@ -5,16 +5,16 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/demo_apps/safety_iec60730b/common/cm33
+    INCLUDES examples/demo_apps/safety_iec60730b/common/cm0
 )
 
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.c
-			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_mcx.h
-			examples/demo_apps/safety_iec60730b/common/cm33/main.c
-			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
+    SOURCES examples/demo_apps/safety_iec60730b/common/cm0/safety_cm0_kinetis.c
+			examples/demo_apps/safety_iec60730b/common/cm0/safety_cm0_kinetis.h
+			examples/demo_apps/safety_iec60730b/common/cm0/main.c
+			examples/demo_apps/safety_iec60730b/common/cm0/safety.pmp
 )
 
 #----------------------------------------------
@@ -26,13 +26,10 @@ mcux_add_configuration(
     CX "--debug"
 )
 
-mcux_add_macro(
-    CC "-DSKIP_SYSCLK_INIT"
-)
-
 #----------------------------------------------
 # Project settings for IAR toolchain
 #----------------------------------------------
+
 
 # optimization default setting needs to be removed first
 mcux_remove_iar_configuration(
@@ -60,12 +57,6 @@ mcux_add_mdk_configuration(
     CX "-O0"
 )
 
-mcux_add_configuration(
-    TOOLCHAINS mdk
-    CC "-gdwarf-3 -mcmse -g"
-	LD "--diag_suppress L6848E"
-)
-
 
 #----------------------------------------------
 # Linker configurations for all toolchains
@@ -80,7 +71,7 @@ mcux_remove_iar_linker_script(
 # add custom IAR linker
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety_flash.icf
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety.icf
 )
 
 # remove default MDK linker
@@ -92,7 +83,7 @@ mcux_remove_mdk_linker_script(
 # add custom MDK linker
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety_flash.sct
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety.sct
 )
 
 # replace entry symbol for IAR
