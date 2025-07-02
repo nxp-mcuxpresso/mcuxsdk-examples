@@ -1050,6 +1050,26 @@ static srtm_status_t APP_IO_GetInput(srtm_service_t service,
     return SRTM_Status_Success;
 }
 
+static srtm_status_t APP_IO_GetDirection(srtm_service_t service,
+                                     srtm_peercore_t core,
+                                     uint16_t ioId,
+                                     srtm_io_direction_t *pIoDir)
+{
+    uint8_t gpioIdx = APP_GPIO_IDX(ioId);
+    uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    RGPIO_Type *base = 0U;
+
+    assert(gpioIdx < 2U); /* We only support GPIOA and GPIOB */
+    assert(pinIdx < 32U);
+    assert(pIoDir);
+
+    base = gpios[gpioIdx];
+
+    *pIoDir = (base->PDDR & (1UL << pinIdx)) ? SRTM_IoDirectionOutput : SRTM_IoDirectionInput;
+
+    return SRTM_Status_Success;
+}
+
 static srtm_status_t APP_IO_ConfInput(uint8_t inputIdx, srtm_io_event_t event, bool wakeup)
 {
     uint16_t ioId   = suspendContext.io.data[inputIdx].ioId;
@@ -2061,8 +2081,8 @@ static void APP_SRTM_InitIoKeyService(void)
     EnableIRQ(GPIOB_INT1_IRQn);
 
     ioService = SRTM_IoService_Create();
-    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTA19, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, NULL);
-    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB5, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTA19, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB5, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_Dispatcher_RegisterService(disp, ioService);
 
     keypadService = SRTM_KeypadService_Create();
