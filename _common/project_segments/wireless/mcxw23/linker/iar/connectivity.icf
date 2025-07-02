@@ -104,8 +104,13 @@ define block CSTACK    with alignment = 8, size = __size_cstack__   { };
 define block HEAP      with alignment = 8 { section .heap };
 define block RW        { readwrite };
 define block ZI        { zi };
+define block RAMFUNC   { section .ramfunc };
 
-initialize by copy { readwrite, section .textrw };
+initialize by copy {
+    readwrite,
+    section .textrw,
+    section .ramfunc
+};
 
 if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
 {
@@ -120,5 +125,6 @@ place at address mem: m_interrupts_start    { readonly section .intvec };
 place in TEXT_region                        { readonly };
 place in DATA_region                        { block RW };
 place in DATA_region                        { block ZI };
+place in DATA_region                        { block RAMFUNC };
 place in DATA_region                        { last block HEAP };
 place in CSTACK_region                      { block CSTACK };
