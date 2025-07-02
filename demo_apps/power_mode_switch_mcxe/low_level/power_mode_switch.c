@@ -826,7 +826,7 @@ static void APP_DisableUnusedPeripheralClock(void)
     CLOCK_DisableClock(kCLOCK_Stm1);     // Maps to MCME_STM1
 
     /* PRTN2_COFB1 peripherals */
-    CLOCK_DisableClock(kCLOCK_Enet);
+    CLOCK_DisableClock(kCLOCK_Emac);
 #if defined(FSL_FEATURE_SOC_LPUART_COUNT) && (FSL_FEATURE_SOC_LPUART_COUNT > 8U)
     CLOCK_DisableClock(kCLOCK_Lpuart8);
     CLOCK_DisableClock(kCLOCK_Lpuart9);
