@@ -643,6 +643,7 @@ void pvt_wait_timer_init(void)
 
 void pvt_wait_timer_start(uint32_t ms, utick_callback_t cb)
 {
+    assert(ms < UINT32_MAX / 1000U);
     UTICK_SetTick(UTICK0, kUTICK_Onetime, (ms * 1000U) - 1U, cb);
 }
 /*${function:end}*/
