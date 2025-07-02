@@ -34,3 +34,15 @@ mcux_add_mdk_linker_script(
     TARGETS flash_debug flash_release
     LINKER ./linkers/RW612_flash.scf
 )
+
+mcux_remove_configuration(
+    TARGETS flash_debug
+    TOOLCHAINS armgcc
+    CC "-O0"
+)
+
+mcux_add_configuration(
+    TARGETS flash_debug
+    TOOLCHAINS armgcc
+    CC "-Os"
+)

@@ -12,3 +12,15 @@ mcux_add_armgcc_linker_script(
     TARGETS debug release
     LINKER ./linkers/mcxw716_flash.ld
 )
+
+mcux_remove_configuration(
+    TARGETS debug
+    TOOLCHAINS armgcc
+    CC "-O0"
+)
+
+mcux_add_configuration(
+    TARGETS debug
+    TOOLCHAINS armgcc
+    CC "-Os"
+)
