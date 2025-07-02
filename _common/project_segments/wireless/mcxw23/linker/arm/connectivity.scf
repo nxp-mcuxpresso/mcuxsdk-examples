@@ -64,12 +64,20 @@
 #define NV_STORAGE_START_ADDRESS       (NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1)
 
 /* Datastore definitions */
-#define DATASTORE_SIZE                 FLASH_SECTOR_SIZE
+#if (defined(gUseDatastoreLink_d))
+  #define DATASTORE_SIZE               FLASH_SECTOR_SIZE
+#else
+  #define DATASTORE_SIZE               0
+#endif
 #define DATASTORE_START_ADDRESS        (NV_STORAGE_START_ADDRESS - DATASTORE_SIZE)
 #define DATASTORE_END_ADDRESS          (DATASTORE_START_ADDRESS + DATASTORE_SIZE - 1)
 
 /* Eventstore definitions */
-#define EVENTSTORE_SIZE                (FLASH_SECTOR_SIZE * 2)
+#if (defined(gUseEventstoreLink_d))
+  #define EVENTSTORE_SIZE              (FLASH_SECTOR_SIZE * 2)
+#else
+  #define EVENTSTORE_SIZE              0
+#endif
 #define EVENTSTORE_START_ADDRESS       (DATASTORE_START_ADDRESS - EVENTSTORE_SIZE)
 #define EVENTSTORE_END_ADDRESS         (EVENTSTORE_START_ADDRESS + EVENTSTORE_SIZE - 1)
 

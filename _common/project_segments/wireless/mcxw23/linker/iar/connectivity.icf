@@ -54,11 +54,19 @@ define exported symbol NV_STORAGE_SECTOR_SIZE       = FLASH_SECTOR_SIZE;
 define exported symbol NV_STORAGE_SIZE              = FLASH_SECTOR_SIZE * NV_STORAGE_MAX_SECTORS;
 define exported symbol NV_STORAGE_START_ADDRESS     = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;
 
-define exported symbol DATASTORE_SIZE               = FLASH_SECTOR_SIZE;
+if (isdefinedsymbol(gUseDatastoreLink_d)) {
+    define exported symbol DATASTORE_SIZE           = FLASH_SECTOR_SIZE;
+} else {
+    define exported symbol DATASTORE_SIZE           = 0;
+}
 define exported symbol DATASTORE_START_ADDRESS      = NV_STORAGE_START_ADDRESS - DATASTORE_SIZE;
 define exported symbol DATASTORE_END_ADDRESS        = DATASTORE_START_ADDRESS + DATASTORE_SIZE -1;
 
-define exported symbol EVENTSTORE_SIZE              = FLASH_SECTOR_SIZE*2;
+if (isdefinedsymbol(gUseEventstoreLink_d)) {
+    define exported symbol EVENTSTORE_SIZE          = FLASH_SECTOR_SIZE*2;
+} else {
+    define exported symbol EVENTSTORE_SIZE          = 0;
+}
 define exported symbol EVENTSTORE_START_ADDRESS     = DATASTORE_START_ADDRESS - EVENTSTORE_SIZE;
 define exported symbol EVENTSTORE_END_ADDRESS       = EVENTSTORE_START_ADDRESS + EVENTSTORE_SIZE -1;
 
