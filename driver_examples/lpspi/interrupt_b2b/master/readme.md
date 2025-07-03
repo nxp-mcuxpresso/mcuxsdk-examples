@@ -14,7 +14,7 @@ Note:
 
 ## Running the demo
 When the demo runs successfully, the log would be seen in the terminal window:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPSPI interrupt board to board (b2b) master example.
 This example use one board as master and another as slave.
 Please make sure you make the correct line connection. Basically, the connection is:
@@ -80,3 +80,5 @@ End of master example!
 - [FRDM-MCXE31B](../../../../_boards/frdmmcxe31b/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
 - [FRDM-MCXA344](../../../../_boards/frdmmcxa344/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
+- [KW47-LOC](../../../../_boards/kw47loc/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)
+- [MCXW72-LOC](../../../../_boards/mcxw72loc/driver_examples/lpspi/interrupt_b2b/master/example_board_readme.md)

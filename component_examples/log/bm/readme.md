@@ -53,3 +53,5 @@ work with semihosting.
 - [TWR-KM34Z50MV3](../../../_boards/twrkm34z50mv3/component_examples/log/bm/example_board_readme.md)
 - [TWR-KM34Z75M](../../../_boards/twrkm34z75m/component_examples/log/bm/example_board_readme.md)
 - [TWR-KM35Z75M](../../../_boards/twrkm35z75m/component_examples/log/bm/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/component_examples/log/bm/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/component_examples/log/bm/example_board_readme.md)

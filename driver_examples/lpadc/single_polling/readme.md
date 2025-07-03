@@ -24,3 +24,5 @@ the configuration structure's setting in application to fit the special requirem
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/lpadc/single_polling/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpadc/single_polling/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/lpadc/single_polling/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpadc/single_polling/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpadc/single_polling/example_board_readme.md)

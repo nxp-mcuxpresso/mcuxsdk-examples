@@ -27,7 +27,7 @@ LPSPI_master -- LPSPI_slave
 
 LPSPI slave transfer completed successfully.
 LPSPI transfer all data matched !
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../../_boards/evkbimxrt1050/freertos_driver_examples/freertos_lpspi_b2b/slave/example_board_readme.md)
@@ -42,3 +42,5 @@ LPSPI transfer all data matched !
 - [FRDM-KE17Z](../../../_boards/frdmke17z/freertos_driver_examples/freertos_lpspi_b2b/slave/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/freertos_driver_examples/freertos_lpspi_b2b/slave/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/freertos_driver_examples/freertos_lpspi_b2b/slave/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/freertos_driver_examples/freertos_lpspi_b2b/slave/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/freertos_driver_examples/freertos_lpspi_b2b/slave/example_board_readme.md)

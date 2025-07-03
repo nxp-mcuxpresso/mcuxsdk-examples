@@ -39,7 +39,9 @@ freertos_lpuart:
     # kw45b41zevk:
     kw45b41zloc: []
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     mcxn9xxevk: []
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     twrkm34z75m: []
     twrkm35z75m: []

@@ -238,6 +238,7 @@ fmstr_example_uart:
     - +iar@release
     - +armgcc@release
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     lpc845breakout: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
@@ -258,6 +259,7 @@ fmstr_example_uart:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []

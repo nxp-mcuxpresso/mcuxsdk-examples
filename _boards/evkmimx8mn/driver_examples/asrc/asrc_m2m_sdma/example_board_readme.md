@@ -32,7 +32,6 @@ Prepare the Demo
 
 Running the demo
 ===============
-<<<<<<< HEAD
 When the demo runs successfully, you will hear two audio clips, the first one is the original 44.1k, the second one is the converted 16K and the log would be seen on the terminal like:
 
 ~~~~~~~~~~~~~~~~~~~

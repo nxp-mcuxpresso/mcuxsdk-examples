@@ -32,3 +32,5 @@ I3C slave and check the data consistency.
 - [MCX-W72-EVK](../../../../_boards/mcxw72evk/driver_examples/i3c/polling_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../../_boards/mimxrt685audevk/driver_examples/i3c/polling_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/i3c/polling_b2b_transfer/slave/example_board_readme.md)
+- [KW47-LOC](../../../../_boards/kw47loc/driver_examples/i3c/polling_b2b_transfer/slave/example_board_readme.md)
+- [MCXW72-LOC](../../../../_boards/mcxw72loc/driver_examples/i3c/polling_b2b_transfer/slave/example_board_readme.md)

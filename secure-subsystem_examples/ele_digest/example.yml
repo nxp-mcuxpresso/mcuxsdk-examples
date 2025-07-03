@@ -29,6 +29,12 @@ ele_digest:
     mcxw72evk@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
+    mcxw72loc@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
     kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    kw47loc@cm33_core0:
     - +armgcc@debug
     - +armgcc@release

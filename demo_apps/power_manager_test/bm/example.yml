@@ -41,7 +41,9 @@ power_manager_test_bm:
     - +armgcc@debug
     - +armgcc@release
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     rdrw612bga: []
     frdmmcxn236: []

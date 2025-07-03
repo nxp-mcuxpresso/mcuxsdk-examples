@@ -28,3 +28,5 @@ them to the terminal by using EDMA mode. so, you can see the your pressed charac
 - [KW47-EVK](../../../_boards/kw47evk/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpuart/edma_rb_transfer/example_board_readme.md)

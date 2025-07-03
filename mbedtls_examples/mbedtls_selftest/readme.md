@@ -271,3 +271,5 @@ Using following implementations:
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/mbedtls_examples/mbedtls_selftest/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/mbedtls_examples/mbedtls_selftest/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/mbedtls_examples/mbedtls_selftest/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/mbedtls_examples/mbedtls_selftest/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/mbedtls_examples/mbedtls_selftest/example_board_readme.md)

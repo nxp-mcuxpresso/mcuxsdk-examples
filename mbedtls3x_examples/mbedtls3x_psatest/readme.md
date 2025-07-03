@@ -23,3 +23,5 @@ API behaviours are implemented correctly.
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
 - [MIMXRT1170-EVKB](../../_boards/evkbmimxrt1170/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/mbedtls3x_examples/mbedtls3x_psatest/example_board_readme.md)

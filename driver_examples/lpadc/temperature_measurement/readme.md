@@ -35,3 +35,5 @@ then the temperature can be calculated within the two results and a specific for
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpadc/temperature_measurement/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/lpadc/temperature_measurement/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/lpadc/temperature_measurement/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpadc/temperature_measurement/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpadc/temperature_measurement/example_board_readme.md)

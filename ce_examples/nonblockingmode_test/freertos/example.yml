@@ -43,12 +43,12 @@ ce_nonblockingmode_test_freertos:
     - +armgcc@release
     - +iar@debug
     - +iar@release
-    frdmmcxw72@cm33_core0:
+    mcxw72loc@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
     - +iar@debug
     - +iar@release
-    mcxw72loc@cm33_core0:
+    frdmmcxw72@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
     - +iar@debug

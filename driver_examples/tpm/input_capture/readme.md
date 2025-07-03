@@ -28,3 +28,5 @@ this example will print the capture value.
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/tpm/input_capture/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/tpm/input_capture/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/tpm/input_capture/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/tpm/input_capture/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/tpm/input_capture/example_board_readme.md)

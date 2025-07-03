@@ -68,3 +68,5 @@ Example application demonstrates a plain serial transmission, typically connecti
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [TWR-MC56F8200](../../_boards/twrmc56f8200/freemaster_examples/fmstr_uart/example_board_readme.md)
 - [TWR-MC56F8400](../../_boards/twrmc56f8400/freemaster_examples/fmstr_uart/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/freemaster_examples/fmstr_uart/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/freemaster_examples/fmstr_uart/example_board_readme.md)

@@ -39,3 +39,5 @@ example take turns to shine the LED.
 - [TWR-KM35Z75M](../../../_boards/twrkm35z75m/driver_examples/gpio/led_output/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/gpio/led_output/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/gpio/led_output/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/gpio/led_output/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/gpio/led_output/example_board_readme.md)

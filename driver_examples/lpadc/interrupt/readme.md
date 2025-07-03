@@ -41,3 +41,5 @@ be printed when the execution return to the main function.
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/lpadc/interrupt/example_board_readme.md)
 - [MIMXRT700-EVK](../../../_boards/mimxrt700evk/driver_examples/lpadc/interrupt/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/lpadc/interrupt/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpadc/interrupt/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpadc/interrupt/example_board_readme.md)

@@ -18,4 +18,6 @@ freertos_lpi2c_b2b_slave:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []

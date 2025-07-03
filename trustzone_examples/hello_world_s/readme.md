@@ -7,10 +7,10 @@ if TrustZone and FPU are used together, the used compiler should be checked for 
 If workaround is not available yet, then the actions described in CVE-2021-35465 should be applied manually.
 
 Actual compilers status for this vulnerability:
-MCUX IDE v11.5.0 – fix not available yet
+MCUX IDE v11.5.0 - fix not available yet
 GNU Arm Embedded Toolchain 10.3-2021.07 - fix not available yet
-EWARM v9.20.1 – already fixed
-ARM MDK v5.35 – check for new Arm compiler v6.17
+EWARM v9.20.1 - already fixed
+ARM MDK v5.35 - check for new Arm compiler v6.17
 
 
 ## Overview
@@ -48,3 +48,5 @@ so it demonstrates following techniques for TrustZone applications development:
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/trustzone_examples/hello_world/hello_world_s/example_board_readme.md)

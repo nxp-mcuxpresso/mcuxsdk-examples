@@ -21,3 +21,5 @@ Demonstrates littlefs functionality by commands executed from shell.
 - [MCX-W71-EVK](../../_boards/mcxw71evk/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)

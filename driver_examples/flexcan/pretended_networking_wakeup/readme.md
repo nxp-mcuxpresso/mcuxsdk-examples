@@ -22,3 +22,5 @@ the message content to terminal.
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/flexcan/pretended_networking_wakeup/example_board_readme.md)

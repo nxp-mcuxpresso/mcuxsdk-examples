@@ -20,10 +20,10 @@
 /* Initialize debug console. */
 void BOARD_InitDebugConsole(void)
 {
-    uint32_t uartClkSrcFreq = BOARD_DEBUG_UART_CLK_FREQ;
+    uint32_t uartClkSrcFreq = 0U;
 
-    CLOCK_EnableClock(kCLOCK_Lpuart1);
-    CLOCK_SetIpSrc(kCLOCK_Lpuart1, kCLOCK_IpSrcFro6M);
+    CLOCK_SetIpSrc(kCLOCK_Lpuart1, kCLOCK_IpSrcFro192M);
+    uartClkSrcFreq = CLOCK_GetIpFreq(kCLOCK_Lpuart1);
 
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, uartClkSrcFreq);
 }

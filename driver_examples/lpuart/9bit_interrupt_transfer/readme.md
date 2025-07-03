@@ -41,3 +41,5 @@ sent after the address can be received by itself.
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [TWR-KM34Z75M](../../../_boards/twrkm34z75m/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
 - [TWR-KM35Z75M](../../../_boards/twrkm35z75m/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpuart/9bit_interrupt_transfer/example_board_readme.md)

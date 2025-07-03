@@ -6,7 +6,7 @@ hardware block to trigger a periodic interrupt after every 1 second in the chann
 No.1 chained with channel No.0, if LPIT contain more than two channels, the channel No.2 chained with 
 channel No.1....the channel No.N chained with Channel No.N-1. 
 Chaining the timer channel causes them to work in a 'nested loop' manner thereby leading to an effective
-timeout value up to TVALn × ((TVALn-1) + 1) at channel No.N. The timer counts down for 5 (TVALn + 1) timer
+timeout value up to TVALn � ((TVALn-1) + 1) at channel No.N. The timer counts down for 5 (TVALn + 1) timer
 cycles until the timer reaches 0, then the timer generates an interrupt and loads the Timer Value register
 (TVALn) value again. The example sets the timer period of the channel to 5 by using the API LPIT_SetTimerPeriod().
 When the LPIT interrupt is triggered a message a printed on the serial terminal.
@@ -31,3 +31,5 @@ When the LPIT interrupt is triggered a message a printed on the serial terminal.
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/lpit/chained_channel/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/lpit/chained_channel/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpit/chained_channel/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpit/chained_channel/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpit/chained_channel/example_board_readme.md) 

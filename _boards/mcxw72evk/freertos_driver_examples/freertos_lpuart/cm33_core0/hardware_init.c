@@ -14,6 +14,7 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitPins();
+    BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     NVIC_SetPriority(LPUART1_IRQn, 5);
 }

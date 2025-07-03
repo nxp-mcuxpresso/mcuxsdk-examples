@@ -33,7 +33,9 @@ hello_world_ns:
     - +armgcc@debug
     - +armgcc@release
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

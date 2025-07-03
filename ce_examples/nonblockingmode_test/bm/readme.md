@@ -14,8 +14,8 @@ status buffer is placed at MEM address: 0x20028400
 This test is based on memory polling from both sides (CM33 and ZV)
 
 ## Supported Boards
-- [KW47-EVK](../../_boards/kw47evk/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
-- [KW47-LOC](../../_boards/kw47loc/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
-- [MCX-W72-EVK](../../_boards/mcxw72evk/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
-- [FRDM-MCXW72](../../_boards/frdmmcxw72/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
-- MCXW72-LOC
+- [KW47-EVK](../../../_boards/kw47evk/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
+- [MCX-W72-EVK](../../../_boards/mcxw72evk/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/ce_examples/nonblockingmode_test/bm/cm33_core0/example_board_readme.md)

@@ -82,6 +82,7 @@ freertos_sem:
     - +armgcc@release
     kw45b41zloc: []
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     lpcxpresso51u68: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
@@ -98,6 +99,7 @@ freertos_sem:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core1: []
     mimxrt700evk@cm33_core0: []

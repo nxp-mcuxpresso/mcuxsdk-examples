@@ -13,3 +13,5 @@ an external nor flash device.
 - [KW47-EVK](../../../../_boards/kw47evk/component_examples/flash_component/lpspi_nor/example_board_readme.md)
 - [MCX-W72-EVK](../../../../_boards/mcxw72evk/component_examples/flash_component/lpspi_nor/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../../_boards/evkmimxrt1180/component_examples/flash_component/lpspi_nor/example_board_readme.md)
+- [KW47-LOC](../../../../_boards/kw47loc/component_examples/flash_component/lpspi_nor/example_board_readme.md)
+- [MCXW72-LOC](../../../../_boards/mcxw72loc/component_examples/flash_component/lpspi_nor/example_board_readme.md)

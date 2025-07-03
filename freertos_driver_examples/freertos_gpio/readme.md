@@ -36,3 +36,5 @@ function.
 ## Supported Boards
 - [KW47-EVK](../../_boards/kw47evk/freertos_driver_examples/freertos_gpio/example_board_readme.md)
 - [MCX-W72-EVK](../../_boards/mcxw72evk/freertos_driver_examples/freertos_gpio/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/freertos_driver_examples/freertos_gpio/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/freertos_driver_examples/freertos_gpio/example_board_readme.md)

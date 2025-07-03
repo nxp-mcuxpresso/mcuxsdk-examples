@@ -44,3 +44,5 @@ Note: In flash boot mode, if you want to use the IDE reset program, please use s
 - [TWR-KM34Z50MV3](../../_boards/twrkm34z50mv3/driver_examples/ewm/example_board_readme.md)
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/driver_examples/ewm/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/driver_examples/ewm/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/driver_examples/ewm/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/driver_examples/ewm/example_board_readme.md)

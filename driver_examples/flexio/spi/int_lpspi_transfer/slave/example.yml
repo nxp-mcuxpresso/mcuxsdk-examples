@@ -228,7 +228,9 @@ flexio_spi_int_lpspi_transfer_slave:
     - +armgcc@debug
     - +armgcc@release
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

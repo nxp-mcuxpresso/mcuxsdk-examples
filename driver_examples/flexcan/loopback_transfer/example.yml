@@ -230,7 +230,9 @@ flexcan_loopback_transfer:
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
     kw47evk@cm33_core0: []
+    kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []
+    mcxw72loc@cm33_core0: []
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

@@ -24,3 +24,5 @@ Note: This example is only used for platforms that have the UTRIM[TRIM2V1] funct
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/vref_1/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/vref_1/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/vref_1/example_board_readme.md)
+- [KW47-LOC](../../../_boards/kw47loc/driver_examples/vref_1/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/vref_1/example_board_readme.md)

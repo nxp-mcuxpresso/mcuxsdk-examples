@@ -50,3 +50,5 @@ all characters that PC send to the board.
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
 - [MCX-W72-EVK](../../../../_boards/mcxw72evk/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
+- [KW47-LOC](../../../../_boards/kw47loc/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
+- [MCXW72-LOC](../../../../_boards/mcxw72loc/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)

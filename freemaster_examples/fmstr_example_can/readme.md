@@ -33,3 +33,5 @@ Example application demonstrates CAN bus communication. This requires a suitable
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/freemaster_examples/fmstr_can/example_board_readme.md)
 - [TWR-MC56F8200](../../_boards/twrmc56f8200/freemaster_examples/fmstr_can/example_board_readme.md)
 - [TWR-MC56F8400](../../_boards/twrmc56f8400/freemaster_examples/fmstr_can/example_board_readme.md)
+- [KW47-LOC](../../_boards/kw47loc/freemaster_examples/fmstr_can/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/freemaster_examples/fmstr_can/example_board_readme.md)
