@@ -52,6 +52,11 @@ To use MIPI RK055MHD091 panel, change the macro DEMO_PANEL to 2 in mcux_config.h
 To use RaspberryPi, change the macro DEMO_PANEL to 5 in mcux_config.h.
 To use ZC143AC72MIPI DBI panel, change the macro DEMO_PANEL to 6 in mcux_config.h.
 
+Frame buffer compression is supported for panels MIPI RK055MHD091 and MIPI RK055AHD091.
+In order to activate this support you have to select either MIPI RK055MHD091 or MIPI RK055AHD091
+in Kconfig and set either DEMO_RK055MHD091_USE_XRGB8888 / DEMO_RK055AHD091_USE_XRGB8888 to 1 in 
+mcux_config.h.
+
 Running the demo
 ===============
 When the example runs, you can see a cube object with each face having high render quality.
