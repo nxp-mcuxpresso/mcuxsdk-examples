@@ -1,3 +1,7 @@
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
@@ -8,16 +12,17 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES
-    examples/demo_apps/netc_share/netc_share.c
-    examples/demo_apps/netc_share/FreeRTOSConfig.h
-    examples/demo_apps/netc_share/lwipopts.h
+    SOURCES examples/demo_apps/netc_share/netc_share.c
 )
 
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES
-    examples/demo_apps/netc_share
+mcux_add_macro(
+    CC "-DUSE_RTOS=1\
+       -DPRINTF_ADVANCED_ENABLE=1"
+)
+
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=2048\
+             __heap_size__=25600"
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/netc_share/reconfig.cmake OPTIONAL)
