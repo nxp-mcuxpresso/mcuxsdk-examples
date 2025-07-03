@@ -298,6 +298,18 @@ void BOARD_InitUSB_PDI2CPins(void);           /* Function assigned for the Corte
  */
 void BOARD_InitUSB_PDI2CPins_deinit(void);    /* Function assigned for the Cortex-M33 */
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSRAMCPins(void);               /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSRAMC_FLEXIOPins(void);        /* Function assigned for the Cortex-M33 */
+
 #if defined(__cplusplus)
 }
 #endif

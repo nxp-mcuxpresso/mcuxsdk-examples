@@ -18,6 +18,6 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    BOARD_InitSramcPins();
+    BOARD_InitSRAMCPins();
 }
 /*${function:end}*/

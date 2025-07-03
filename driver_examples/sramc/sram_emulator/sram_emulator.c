@@ -52,11 +52,8 @@ int main(void)
 {
     flexio_sram_config_t config;
 
-    /* Init board hardware. */
-    BOARD_ConfigMPU();
-    BOARD_InitBootPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
+    /* Hardware initialize. */
+    BOARD_InitHardware();
     
     PRINTF("FELXIO SRAM EMULATOR EXAMPLE.\r\n");
 

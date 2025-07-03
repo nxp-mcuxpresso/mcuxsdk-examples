@@ -16,5 +16,6 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    BOARD_InitSRAMC_FLEXIOPins();
 }
 /*${function:end}*/
