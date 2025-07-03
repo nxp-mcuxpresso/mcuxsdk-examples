@@ -30,6 +30,16 @@ mcux_add_include(
     INCLUDES examples/_boards/${board}/coex_examples/coex_zigbee
 )
 
+mcux_remove_macro(
+    RW610
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    PREINCLUDE TRUE
+    SOURCES components/wifi_bt_module/incl/wifi_bt_module_config.h
+)
+
 mcux_add_armgcc_configuration(
     TARGETS flash_release
     AS "-g"
