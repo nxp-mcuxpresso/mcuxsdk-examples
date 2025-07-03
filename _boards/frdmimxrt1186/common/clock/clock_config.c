@@ -439,15 +439,15 @@ void BOARD_BootClockRUN(void)
     /* Init Arm Pll. */
     CLOCK_InitArmPll(&armPllConfig_BOARD_BootClockRUN);
 
+#ifndef USE_SDRAM
     /* Init Sys Pll1. */
     CLOCK_InitSysPll1(&sysPll1Config_BOARD_BootClockRUN);
+#endif
 
-#ifndef USE_SDRAM
     /* Init Sys Pll2. */
     CLOCK_InitSysPll2(&sysPll2Config_BOARD_BootClockRUN);
     /* Init System Pll2 pfd0. */
     CLOCK_InitPfd(kCLOCK_PllSys2, kCLOCK_Pfd0, 27);
-#endif
     /* Init System Pll2 pfd1. */
     CLOCK_InitPfd(kCLOCK_PllSys2, kCLOCK_Pfd1, 16);
     /* Init System Pll2 pfd2. */
