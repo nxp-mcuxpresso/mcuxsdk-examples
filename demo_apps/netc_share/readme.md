@@ -43,3 +43,4 @@ Initializing PHY...
 
 ## Supported Boards
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/demo_apps/netc_share/example_board_readme.md)
+- [IMX943EVK](../../_boards/imx943evk/demo_apps/netc_share/example_board_readme.md)
