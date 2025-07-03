@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2020, 2022-2024 NXP
+ * Copyright 2016-2020, 2022-2025 NXP
  * All rights reserved.
  *
  *
@@ -12,7 +12,6 @@
  ******************************************************************************/
 #include "pin_mux.h"
 #include "lwip/opt.h"
-#include "fsl_adapter_gpio.h"
 #include "fsl_debug_console.h"
 
 #if LWIP_IPV4 && LWIP_RAW && LWIP_SOCKET
@@ -22,6 +21,10 @@
 #include "lwip/tcpip.h"
 #include "netif/ethernet.h"
 #include "ethernetif.h"
+
+#if ETH_USE_GPIO_ADAPTER
+#include "fsl_adapter_gpio.h"
+#endif /* ETH_USE_GPIO_ADAPTER */
 
 #include "board.h"
 #include "app.h"
@@ -48,6 +51,9 @@
 
 /*! @brief Selection of GPIO perihperal and its pin for the reception of PHY interrupts. */
 #if ETH_LINK_POLLING_INTERVAL_MS == 0
+#if ETH_USE_GPIO_ADAPTER == 0
+#error "Interrupt-based link-state detection is enabled but GPIO adapter is not used."
+#endif /* ETH_USE_GPIO_ADAPTER */
 #ifndef EXAMPLE_PHY_INT_PORT
 #if (!defined(BOARD_NETWORK_USE_100M_ENET_PORT) || !BOARD_NETWORK_USE_100M_ENET_PORT) && \
     defined(BOARD_INITENET1GPINS_PHY_INTR_PERIPHERAL)
@@ -105,7 +111,7 @@ static void stack_init(void *arg)
 #ifdef configMAC_ADDR
         .macAddress = configMAC_ADDR,
 #endif
-#if ETH_LINK_POLLING_INTERVAL_MS == 0
+#if ETH_USE_GPIO_ADAPTER && (ETH_LINK_POLLING_INTERVAL_MS == 0)
         .phyIntGpio    = EXAMPLE_PHY_INT_PORT,
         .phyIntGpioPin = EXAMPLE_PHY_INT_PIN
 #endif
@@ -124,7 +130,9 @@ static void stack_init(void *arg)
 
     tcpip_init(NULL, NULL);
 
+#if ETH_USE_GPIO_ADAPTER
     HAL_GpioPreInit();
+#endif /* ETH_USE_GPIO_ADAPTER */
 
     netifapi_netif_add(&netif, &netif_ipaddr, &netif_netmask, &netif_gw, &enet_config, EXAMPLE_NETIF_INIT_FN,
                        tcpip_input);
