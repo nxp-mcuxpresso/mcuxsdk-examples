@@ -8,7 +8,8 @@
  *
  */
 #include "ncp_host_command_wifi.h"
-
+#include "ncp_inet.h"
+#include "ncp_utils.h"
 int ping_sock_handle = -1;
 
 void ping_sock_task(void *param);
@@ -21,11 +22,11 @@ static OSA_TASK_DEFINE(ping_sock_task, PING_SOCK_TASK_PRIO, 1, 1024, 0);
 
 #define NCP_IPERF_TX_TASK_PRIO   1
 static OSA_TASK_HANDLE_DEFINE(ncp_iperf_tx_thread);
-static OSA_TASK_DEFINE(ncp_iperf_tx_task, NCP_IPERF_TX_TASK_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(ncp_iperf_tx_task, NCP_IPERF_TX_TASK_PRIO, 1, 4096, 0);
 
 #define NCP_IPERF_RX_TASK_PRIO   1
 static OSA_TASK_HANDLE_DEFINE(ncp_iperf_rx_thread);
-static OSA_TASK_DEFINE(ncp_iperf_rx_task, NCP_IPERF_RX_TASK_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(ncp_iperf_rx_task, NCP_IPERF_RX_TASK_PRIO, 1, 4096, 0);
 
 OSA_EVENT_HANDLE_DEFINE(ping_events);
 OSA_EVENT_HANDLE_DEFINE(iperf_tx_events);
@@ -358,6 +359,7 @@ int iperf_send_setting(void)
     return true;
 }
 
+#if !CONFIG_INET_SOCKET
 int iperf_send_end_token(void)
 {
     if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_TCP_TX)
@@ -399,6 +401,7 @@ int iperf_send_end_token(void)
     ncp_host_send_tlv_command();
     return true;
 }
+#endif
 
 unsigned long iperf_timer_start = 0, iperf_timer_end = 0;
 void ncp_iperf_report(long long total_size)
@@ -495,6 +498,266 @@ void iperf_tcp_rx(void)
     ncp_host_send_tlv_command();
 }
 
+#if CONFIG_INET_SOCKET
+void ncp_iperf_tx_task(void *pvParameters)
+{
+    int ret = 0;
+    long long i               = 0;
+    unsigned int pkg_num      = 0;
+    long long send_total_size = 0;
+    long long udp_rate = 0;
+    int per_pkt_size      = 1470;
+    int pkt_num_per_xms            = 0;
+    unsigned int prev_time = 0;
+    unsigned int cur_time = 0;
+    int delta = 0;
+    unsigned int send_interval = 1;
+    int                client_sockfd;
+    struct sockaddr_in server_addr = {0};
+
+    while (1)
+    {
+        /* demo ping task wait for user input ping command from console */
+        (void)iperf_tx_wait_event(IPERF_TX_START);
+
+        udp_rate = iperf_msg.iperf_set.iperf_udp_rate;
+        {
+            if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_TCP_TX)
+            {
+                struct in_addr dest_addr;
+                inet_pton(AF_INET, iperf_msg.ip_addr, &dest_addr);
+                server_addr.sin_family		= AF_INET;
+                server_addr.sin_port		= PP_HTONS(5001);
+                server_addr.sin_addr.s_addr = dest_addr.s_addr;
+                client_sockfd = ncp_socket(PF_INET, (SOCK_STREAM | SOCK_CLOEXEC), IPPROTO_TCP);
+                if (ncp_connect(client_sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)))
+                {
+                    ncp_adap_e("connect to server failed!");
+                    ncp_close(client_sockfd);
+                    continue;
+                }
+                else
+                    ncp_adap_w("[OK] Connected to Server");
+            }
+            else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
+            {
+                struct in_addr dest_addr; // argv[1]
+                inet_pton(AF_INET, iperf_msg.ip_addr, &dest_addr);
+                client_sockfd = ncp_socket(PF_INET, (SOCK_DGRAM | SOCK_CLOEXEC), IPPROTO_UDP);
+                if (client_sockfd < 0)
+                {
+                    ncp_adap_e("socket creation failed!");
+                    continue;
+                }
+                else
+                {
+                    ncp_adap_w("\t[OK] socket Created: client_sockfd=%d", client_sockfd);
+                }
+                server_addr.sin_family = AF_INET;
+                server_addr.sin_port = PP_HTONS(5003);
+                server_addr.sin_addr.s_addr = dest_addr.s_addr;
+            }
+        }
+
+        udp_rate = iperf_msg.iperf_set.iperf_udp_rate;
+
+        if (udp_rate <= 120)
+            send_interval = 1000;
+        else if (udp_rate <= 2*1024)
+           send_interval = 60;
+        else if (udp_rate <= 10*1024)
+           send_interval = 12;
+        else if (udp_rate <= 20*1024)
+           send_interval = 6;
+        else if (udp_rate <= 30 * 1024)
+            send_interval = 4;
+        else if (udp_rate <= 60 * 1024)
+            send_interval = 2;
+        else
+            send_interval = 1;
+        pkt_num_per_xms = ((udp_rate * 1024 / 8) / per_pkt_size / (1000 / send_interval)); /*num pkt per send_interval(ms)*/
+
+        send_total_size = iperf_msg.iperf_set.iperf_count * iperf_msg.per_size;
+        /*send setting*/
+        memcpy(lwiperf_txbuf_const, (char *)(&iperf_msg.iperf_set), sizeof(iperf_set_t));
+
+        if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_TCP_TX)
+        {
+            ret = ncp_send(client_sockfd, lwiperf_txbuf_const, sizeof(iperf_set_t), 0);
+            if (ret < 0)
+            {
+                ncp_adap_e("[send iperf setting fail");
+                continue;
+            }
+        }
+        else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
+        {
+            ret = ncp_sendto(client_sockfd, lwiperf_txbuf_const, sizeof(iperf_set_t), 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+            if (ret < 0)
+            {
+                ncp_adap_e("[send iperf setting fail");
+                continue;
+            }
+        }
+        OSA_TimeDelay(1000);
+        (void)PRINTF("ncp iperf tx start\r\n");
+        pkg_num             = 0;
+        iperf_msg.status[0] = 0;
+        iperf_timer_start   = OSA_TimeGetMsec();
+        prev_time = OSA_TimeGetMsec();
+        while (pkg_num < iperf_msg.iperf_set.iperf_count)
+        {
+            if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_TCP_TX)
+            {
+                ret = ncp_send(client_sockfd, lwiperf_txbuf_const, iperf_msg.per_size, 0);
+                if (ret < 0)
+                    ncp_adap_e("[send iperf data fail");
+            }
+            else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
+            {
+                ret = ncp_sendto(client_sockfd, lwiperf_txbuf_const, iperf_msg.per_size, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+                if (ret < 0)
+                    ncp_adap_e("[send iperf data fail");
+            }
+
+            if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
+            {
+                cur_time = OSA_TimeGetMsec();
+
+                if ((i > 0) && (!(i % pkt_num_per_xms)))
+                {
+                    delta = prev_time + send_interval - cur_time;
+                    //PRINTF("prev_time_us = %d, cur_time_us = %d, delta = %d, pkt_num_per1ms = %d, i = %d\r\n",
+                    // prev_time, cur_time, delta, pkt_num_per_xms, i);
+                    if (delta > 0)
+                        OSA_TimeDelay(delta);
+                    prev_time += send_interval;
+                }
+            }
+
+            i++;
+            pkg_num++;
+        }
+        iperf_timer_end = OSA_TimeGetMsec();
+
+        /*Try to make data can recved success by peer*/
+        OSA_TimeDelay(1000);
+        /*End token*/
+        if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_TCP_TX)
+        {
+            ret = ncp_send(client_sockfd, lwiperf_end_token, NCP_IPERF_END_TOKEN_SIZE, 0);
+            if (ret < 0)
+                ncp_adap_e("[send iperf finish fail");
+        }
+        else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
+        {
+            ret = ncp_sendto(client_sockfd, lwiperf_end_token, NCP_IPERF_END_TOKEN_SIZE, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+            ncp_adap_e("[send iperf finish fail");
+        }
+
+        ncp_iperf_report(send_total_size);
+        (void)PRINTF("ncp iperf tx run end\r\n");
+    }
+}
+
+void ncp_iperf_rx_task(void *pvParameters)
+{
+    unsigned int pkg_num         = 0;
+    unsigned long long recv_size = 0, left_size = 0;
+    int                client_sockfd;
+    struct sockaddr_in server_addr = {0};
+    int ret = 0;
+    char buffer[1500];
+    while (1)
+    {
+        /* demo ping task wait for user input ping command from console */
+        (void)iperf_rx_wait_event(IPERF_RX_START);
+        (void)PRINTF("ncp iperf rx start\r\n");
+ 
+        {
+            if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_TCP_RX)
+            {
+                struct in_addr dest_addr;
+                inet_pton(AF_INET, iperf_msg.ip_addr, &dest_addr);
+                server_addr.sin_family		= AF_INET;
+                server_addr.sin_port		= PP_HTONS(NCP_IPERF_TCP_SERVER_PORT_DEFAULT);
+                server_addr.sin_addr.s_addr     = dest_addr.s_addr;
+                client_sockfd = ncp_socket(PF_INET, (SOCK_STREAM | SOCK_CLOEXEC), IPPROTO_TCP);
+                if (ncp_connect(client_sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)))
+                {
+                    ncp_adap_e("connect to server failed!");
+                    ncp_close(client_sockfd);
+                    continue;
+                }
+                else
+                    ncp_adap_w("[OK] Connected to Server");
+            }
+            else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_RX)
+            {
+                struct in_addr dest_addr; // argv[1]
+                inet_pton(AF_INET, iperf_msg.ip_addr, &dest_addr);
+                client_sockfd = ncp_socket(PF_INET, (SOCK_DGRAM | SOCK_CLOEXEC), IPPROTO_UDP);
+                if (client_sockfd < 0)
+                {
+                    ncp_adap_e("socket creation failed!'");
+                    continue;
+                }
+                else
+                {
+                    ncp_adap_w("\t[OK] socket Created: client_sockfd=%d", client_sockfd);
+                }
+                server_addr.sin_family = AF_INET;
+                server_addr.sin_port = PP_HTONS(5003);
+                server_addr.sin_addr.s_addr = dest_addr.s_addr;
+            }
+        }
+        /*send setting*/
+        memcpy(lwiperf_txbuf_const, (char *)(&iperf_msg.iperf_set), sizeof(iperf_set_t));
+        if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_TCP_RX)
+        {
+            ret = ncp_send(client_sockfd, lwiperf_txbuf_const, sizeof(iperf_set_t), 0);
+            if (ret < 0)
+            {
+                ncp_adap_e("[send iperf setting fail");
+                continue;
+            }
+        }
+        else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_RX)
+        {
+            ret = ncp_sendto(client_sockfd, lwiperf_txbuf_const, sizeof(iperf_set_t), 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+            {
+                ncp_adap_e("[send iperf setting fail");
+                continue;
+            }
+        }
+
+        OSA_TimeDelay(1000);
+        pkg_num             = 0;
+        iperf_msg.status[1] = 0;
+        recv_size           = 0;
+        left_size           = iperf_msg.per_size * iperf_msg.iperf_set.iperf_count;
+        iperf_timer_start   = OSA_TimeGetMsec();
+        while (left_size > 0)
+        {
+            if (left_size > 0)
+            {
+                ret = ncp_recv(client_sockfd, buffer, iperf_msg.per_size, 0);
+                if (ret  < 0)
+                    break;
+                else
+                {
+                    recv_size += ret;
+                    left_size -= ret;
+                }
+            }
+            pkg_num++;
+        }
+        iperf_timer_end = OSA_TimeGetMsec();
+        ncp_iperf_report(recv_size);
+        (void)PRINTF("ncp iperf rx end\r\n");
+    }
+}
+#else
 void ncp_iperf_tx_task(void *pvParameters)
 {
     long long i               = 0;
@@ -609,6 +872,7 @@ void ncp_iperf_rx_task(void *pvParameters)
             mcu_put_command_lock();
             continue;
         }
+
         OSA_TimeDelay(1000);
         pkg_num             = 0;
         iperf_msg.status[1] = 0;
@@ -644,6 +908,8 @@ void ncp_iperf_rx_task(void *pvParameters)
         (void)PRINTF("ncp iperf rx end\r\n");
     }
 }
+
+#endif
 
 void ping_wait_event(osa_event_flags_t flagsToWait)
 {
@@ -706,7 +972,7 @@ static void wifi_ncp_callback(void *tlv, size_t tlv_sz, int status)
     }
     memcpy(cmd_item.cmd_buff, tlv, tlv_sz);
 
-    ret = OSA_MsgQPut(wifi_ncp_command_queue, &cmd_item);
+    ret = OSA_MsgQPutBlock(wifi_ncp_command_queue, &cmd_item, osaWaitForever_c);
     if (ret != NCP_STATUS_SUCCESS)
     {
         ncp_e("send to wifi ncp cmd queue failed");
@@ -803,6 +1069,7 @@ int ncp_wifi_app_init()
         ncp_e("failed to init wifi cli: %d", ret);
         return -NCP_STATUS_ERROR;
     }
+    ncp_inet_init();
 
     return ret;
 }

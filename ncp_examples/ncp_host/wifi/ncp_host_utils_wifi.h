@@ -83,12 +83,16 @@ ne */
 
 #define inet_ntoa(addr)     ip4addr_ntoa((const ip4_addr_t *)&(addr))
 #define inet_aton(cp, addr) ip4addr_aton(cp, (ip4_addr_t *)addr)
+#define inet_ntop(af, src, dst, size) ip4addr_ntoa_r((const ip4_addr_t *)src, dst, size)
+#define inet_pton(af, src, dst) ip4addr_aton(src, (ip4_addr_t *)dst)
 #define inet6_ntoa(addr)    ip6addr_ntoa((const ip6_addr_t *)&(addr))
 #define xchar(i)            ((char)((i) < 10 ? '0' + (i) : 'A' + (i)-10))
 #define PP_HTONS(x)         ((uint16_t)((((x) & (uint16_t)0x00ffU) << 8) | (((x) & (uint16_t)0xff00U) >> 8)))
+#define PP_NTOHS(x)         PP_HTONS(x)
 #define PP_HTONL(x)                                                                   \
     ((((x) & (uint32_t)0x000000ffUL) << 24) | (((x) & (uint32_t)0x0000ff00UL) << 8) | \
      (((x) & (uint32_t)0x00ff0000UL) >> 8) | (((x) & (uint32_t)0xff000000UL) >> 24))
+#define PP_NTOHL(x) PP_HTONL(x)
 #define ip6_addr_isipv4mappedipv6(ip6addr) \
     (((ip6addr)->addr[0] == 0) && ((ip6addr)->addr[1] == 0) && (((ip6addr)->addr[2]) == PP_HTONL(0x0000FFFFUL)))
 
@@ -236,6 +240,75 @@ struct ip6_addr
 
 /** IPv6 address */
 typedef struct ip6_addr ip6_addr_t;
+
+#define AF_UNSPEC       0
+#define AF_INET         2
+#define AF_INET6        10
+#define PF_INET         AF_INET
+#define PF_INET6        AF_INET6
+#define PF_UNSPEC       AF_UNSPEC
+
+#define IPPROTO_IP      0
+#define IPPROTO_ICMP    1
+#define IPPROTO_TCP     6
+#define IPPROTO_UDP     17
+#define IPPROTO_IPV6    41
+#define IPPROTO_ICMPV6  58
+#define IPPROTO_NONE    59
+#define ENETUNREACH     114
+#define IPPROTO_UDPLITE 136
+#define IPPROTO_RAW     255
+#define INET_ADDRSTRLEN	 (16)
+#define INET6_ADDRSTRLEN (48)
+
+/* Socket protocol types (TCP/UDP/RAW) */
+#define SOCK_STREAM     1
+#define SOCK_DGRAM      2
+#define SOCK_RAW        3
+
+#define O_CLOEXEC       02000000   /* set close_on_exec */
+#define SOCK_CLOEXEC    O_CLOEXEC
+
+#define ENOTCONN 128
+
+typedef uint32_t socklen_t;
+
+typedef unsigned short __kernel_sa_family_t;
+typedef __kernel_sa_family_t    sa_family_t;
+struct sockaddr {
+    sa_family_t	sa_family;    /* address family, AF_xxx	*/
+    char    sa_data[14];    /* 14 bytes of protocol address	*/
+};
+
+typedef uint32_t in_addr_t;
+typedef uint16_t in_port_t;
+struct in_addr_ipv4 {
+    in_addr_t s_addr;
+};
+
+struct sockaddr_in {
+    __kernel_sa_family_t sin_family;   /* Address family */
+    in_port_t sin_port;
+    struct in_addr_ipv4 sin_addr;
+#define SIN_ZERO_LEN 8
+    char            sin_zero[SIN_ZERO_LEN];
+};
+
+struct in6_addr {
+    union {
+        uint32_t u32_addr[4];
+        uint8_t  u8_addr[16];
+    } un;
+#define s6_addr  un.u8_addr
+};
+
+struct sockaddr_in6 {
+    unsigned short int	sin6_family;    /* AF_INET6 */
+    in_port_t       sin6_port;     /* Transport layer port #      */
+    uint32_t           sin6_flowinfo; /* IPv6 flow information       */
+    struct in6_addr sin6_addr;     /* IPv6 address                */
+    uint32_t           sin6_scope_id; /* Set of interfaces for scope */
+};
 
 #define IEEEtypes_SSID_SIZE 32
 /* Min WPA2 passphrase can be upto 8 ASCII chars */

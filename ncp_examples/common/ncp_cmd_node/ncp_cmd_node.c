@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #include <FreeRTOS.h>
 #include <semphr.h>
 
@@ -16,6 +17,7 @@
 #include "ncp_adapter.h"
 #include "ncp_cmd_common.h"
 #include "fsl_os_abstraction.h"
+#include "ncp_tlv_adapter.h"
 
 ncp_cmd_node_list_t g_cmd_node_list;
 OSA_MUTEX_HANDLE_DEFINE(cmd_node_list_lock);
@@ -169,6 +171,19 @@ out_clear:
         match_cmd_node(cmd_node->ncp_cmd_id, cmd_node->seqnum);
     }
     OSA_MemoryFree(cmd_node);
+    return ret;
+}
+
+uint8_t ncp_tlv_send_no_resp(void * cmd)
+{
+    NCP_COMMAND * ncp_cmd = (NCP_COMMAND *) cmd;
+    uint8_t ret = NCP_STATUS_SUCCESS;
+
+    if (ncp_tlv_send(cmd, ncp_cmd->size) != NCP_STATUS_SUCCESS)
+    {
+        printf("ncp_tlv_send failed!\r\n");
+        ret = NCP_STATUS_ERROR;
+    }
     return ret;
 }
 

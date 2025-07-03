@@ -25,6 +25,8 @@ mcux_add_source(
             wifi/ncp_host_utils_wifi.h
             wifi/ncp_wifi_api.h
             wifi/ncp_wifi_api.c
+            ncp_inet/ncp_inet.c
+            ncp_inet/ncp_inet.h
             ble/ncp_host_app_ble.c
             ble/ncp_host_command_ble.h
             ble/ncp_host_command_ble.c
@@ -87,6 +89,7 @@ mcux_add_include(
     INCLUDES .
              system
              wifi
+             ncp_inet
              ble
              ble/ble_service
              ot

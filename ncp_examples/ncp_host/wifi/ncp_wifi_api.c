@@ -152,7 +152,7 @@ char * wlan_ncp_get_state(void)
     
     if(ret == NCP_STATUS_SUCCESS)
     {
-        sta_conn_stat = * cmd_resp_buf;
+        sta_conn_stat = *cmd_resp_buf;
     }
     else
     {

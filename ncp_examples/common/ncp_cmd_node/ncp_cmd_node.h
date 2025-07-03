@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <FreeRTOS.h>
+#include <stdint.h>
 #include "fsl_os_abstraction.h"
 
 #define NCP_COMMAND_LEN 4096
@@ -46,4 +47,5 @@ int ncp_cmd_node_list_init();
 void ncp_cmd_node_list_deinit();
 uint8_t ncp_tlv_send_wait_resp(void * cmd, void * cmd_resp_buf, Handle_respFunc cb);
 void ncp_cmd_node_wakeup_pending_tasks(void *cmd_res);
+uint8_t ncp_tlv_send_no_resp(void * cmd);
 #endif /* __NCP_CMD_NODE__ */

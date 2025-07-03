@@ -375,7 +375,7 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     if (!qbuf)
     {
         NCP_TLV_STATS_INC(drop);
-        ncp_adap_d("%s: failed to allocate memory for tlv queue element", __FUNCTION__);
+        ncp_adap_e("%s: failed to allocate memory for tlv queue element", __FUNCTION__);
         return NCP_STATUS_NOMEM;
     }
     qbuf->tlv_sz = tlv_sz + chksum_len;

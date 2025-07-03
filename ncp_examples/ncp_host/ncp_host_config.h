@@ -10,6 +10,8 @@
 
 #define PRINTF_FLOAT_ENABLE 1
 
+#define CONFIG_INET_SOCKET 0
+
 #define CONFIG_MAX_AP_ENTRIES   30
 #define CONFIG_NCP_5GHz_SUPPORT 1
 #define CONFIG_NCP_11AC         1

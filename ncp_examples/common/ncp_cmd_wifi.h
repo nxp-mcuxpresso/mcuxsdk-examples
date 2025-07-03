@@ -526,7 +526,8 @@
 #define NCP_EVENT_WLAN_STOP_NETWORK   (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000008) /* wlan stop network */
 /** Wi-Fi Inet DAD complete */
 #define NCP_EVENT_INET_DAD_DONE       (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x0000000b) /* ipv6 dad done */
-
+/** Wi-Fi Inet RECV complete */
+#define NCP_EVENT_WLAN_NCP_INET_RECV   (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000009) /* INET RECV event */
 /** NCP WLAN TLV */
 /** NCP network ssid tlv type */
 #define NCP_CMD_NETWORK_SSID_TLV         0x0001

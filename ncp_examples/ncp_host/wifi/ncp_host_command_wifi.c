@@ -10,6 +10,7 @@
 #include "ncp_host_command.h"
 #include "ncp_host_command_wifi.h"
 #include "ncp_cmd_node.h"
+#include "ncp_inet.h"
 
 static uint8_t broadcast_mac[NCP_WLAN_MAC_ADDR_LENGTH] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
@@ -200,7 +201,138 @@ static void ping_recv(NCP_CMD_SOCKET_RECVFROM_CFG *recv)
  *
  * @return Status returned
  */
+
 iperf_msg_t iperf_msg;
+#if CONFIG_INET_SOCKET
+int wlan_ncp_iperf_command(int argc, char **argv)
+{
+    unsigned int type        = -1;
+    unsigned int direction   = -1;
+    enum ncp_iperf_item item = FALSE_ITEM;
+    memset((char *)&iperf_msg, 0, sizeof(iperf_msg));
+    if (argc < 4)
+    {
+        (void)printf("Usage: %s handle [tcp|udp] [tx|rx]\r\n", __func__);
+        return -WM_FAIL;
+    }
+    iperf_msg.handle = 0;
+    memcpy(iperf_msg.ip_addr, argv[1], strlen(argv[1]) + 1);
+    if (!strncmp(argv[2], "tcp", 3))
+    {
+        type = 0;
+        if (argc == 5)
+        {
+            if (get_uint(argv[4], (unsigned int *)&iperf_msg.iperf_set.iperf_count, strlen(argv[4])))
+            {
+                (void)printf("tcp packet number format is error\r\n");
+                return -WM_FAIL;
+            }
+        }
+        else
+            iperf_msg.iperf_set.iperf_count = NCP_IPERF_PKG_COUNT;
+    }
+    else if (!strncmp(argv[2], "udp", 3))
+    {
+        type = 1;
+        if (argc < 3)
+        {
+            (void)printf("udp want ip and port, Usage: %s handle udp [tx|rx] ip port\r\n", __func__);
+            return -WM_FAIL;
+        }
+        iperf_msg.port = NCP_IPERF_UDP_SERVER_PORT_DEFAULT;
+        if (argc >= 5)
+        {
+            if (get_uint(argv[4], (unsigned int *)&iperf_msg.iperf_set.iperf_count, strlen(argv[4])))
+            {
+                printf("tcp packet number format is error\r\n");
+                return -WM_FAIL;
+            }
+        }
+        else
+            iperf_msg.iperf_set.iperf_count = NCP_IPERF_PKG_COUNT;
+
+        if (argc >= 6)
+        {
+            if (get_uint(argv[5], (unsigned int *)&iperf_msg.iperf_set.iperf_udp_rate, strlen(argv[5])))
+            {
+                printf("udp rate format is error\r\n");
+                return -WM_FAIL;
+            }
+        }
+        else
+            iperf_msg.iperf_set.iperf_udp_rate = NCP_IPERF_UDP_RATE;
+
+        if (argc >= 7)
+        {
+            if (get_uint(argv[6], (unsigned int *)&iperf_msg.iperf_set.iperf_udp_time, strlen(argv[6])))
+            {
+                printf("udp time format is error\r\n");
+                return -WM_FAIL;
+            }
+        }
+        else
+            iperf_msg.iperf_set.iperf_udp_time = NCP_IPERF_UDP_TIME;
+    }
+    else
+    {
+        (void)printf("Usage: %s handle [tcp|udp] [tx|rx]\r\n", __func__);
+        return -WM_FAIL;
+    }
+
+    if (!strncmp(argv[3], "tx", 3))
+        direction = 0;
+    else if (!strncmp(argv[3], "rx", 3))
+        direction = 1;
+    else
+    {
+        (void)printf("Usage: %s handle [tcp|udp] [tx|rx]\r\n", __func__);
+        return -WM_FAIL;
+    }
+
+    if (!type && direction == 0)
+        item = NCP_IPERF_TCP_TX;
+    else if (!type && direction == 1)
+        item = NCP_IPERF_TCP_RX;
+    else if (type == 1 && direction == 0)
+        item = NCP_IPERF_UDP_TX;
+    else if (type == 1 && direction == 1)
+        item = NCP_IPERF_UDP_RX;
+    switch (item)
+    {
+        case NCP_IPERF_TCP_TX:
+            iperf_msg.iperf_set.iperf_type = NCP_IPERF_TCP_TX;
+            iperf_msg.per_size             = NCP_IPERF_PER_TCP_PKG_SIZE;
+            if (iperf_msg.iperf_set.iperf_count == 0)
+                iperf_msg.iperf_set.iperf_count = NCP_IPERF_PKG_COUNT;
+            (void)iperf_tx_set_event(IPERF_TX_START);
+            break;
+        case NCP_IPERF_TCP_RX:
+            iperf_msg.iperf_set.iperf_type = NCP_IPERF_TCP_RX;
+            iperf_msg.per_size             = NCP_IPERF_PER_TCP_PKG_SIZE;
+            if (iperf_msg.iperf_set.iperf_count == 0)
+                iperf_msg.iperf_set.iperf_count = NCP_IPERF_PKG_COUNT;
+            (void)iperf_rx_set_event(IPERF_RX_START);
+            break;
+        case NCP_IPERF_UDP_TX:
+            iperf_msg.iperf_set.iperf_type = NCP_IPERF_UDP_TX;
+            iperf_msg.per_size             = NCP_IPERF_PER_UDP_PKG_SIZE;
+            if (iperf_msg.iperf_set.iperf_count == 0)
+                iperf_msg.iperf_set.iperf_count = NCP_IPERF_PKG_COUNT;
+            (void)iperf_tx_set_event(IPERF_TX_START);
+            break;
+        case NCP_IPERF_UDP_RX:
+            iperf_msg.iperf_set.iperf_type = NCP_IPERF_UDP_RX;
+            iperf_msg.per_size             = NCP_IPERF_PER_UDP_PKG_SIZE;
+            if (iperf_msg.iperf_set.iperf_count == 0)
+                iperf_msg.iperf_set.iperf_count = NCP_IPERF_PKG_COUNT;
+            (void)iperf_rx_set_event(IPERF_RX_START);
+            break;
+        default:
+            return -WM_FAIL;
+    }
+    return WM_SUCCESS;
+}
+#else
 int wlan_ncp_iperf_command(int argc, char **argv)
 {
     unsigned int handle      = 0;
@@ -345,6 +477,7 @@ int wlan_ncp_iperf_command(int argc, char **argv)
     }
     return WM_SUCCESS;
 }
+#endif
 
 /**
  * @brief This function prepares scan command
@@ -8429,7 +8562,6 @@ int wlan_mbo_set_cell_capa(int argc, char **argv)
 int wlan_mbo_set_oce(int argc, char **argv)
 {
     int errno = 0;
-    ;
     uint8_t oce;
 
     if (argc != 2)
@@ -8712,6 +8844,13 @@ int wlan_process_ncp_event(uint8_t *res)
         case NCP_EVENT_WLAN_STOP_NETWORK:
             ret = wlan_process_stop_network_event(res);
             break;
+#if CONFIG_INET_SOCKET
+        case NCP_EVENT_WLAN_NCP_INET_RECV:
+            ret = inet_sock_recv_event(res);
+            break;
+        case NCP_EVENT_WLAN_NCP_INET_SEND_FAIL:
+            ret = inet_sock_send_fail_event(res);
+#endif
         case NCP_EVENT_INET_DAD_DONE:
             ret = wlan_process_dad_done_event(res);
             break;
@@ -9045,7 +9184,6 @@ int wlan_process_response(uint8_t *res)
             ret = wlan_process_okc_response(res);
             break;
         default:
-            PRINTF("Invaild response cmd!\r\n");
             break;
     }
 
@@ -9054,6 +9192,387 @@ int wlan_process_response(uint8_t *res)
     return ret;
 }
 
+#if CONFIG_INET_SOCKET
+typedef enum inet_test_type
+{
+    TCP_SERVER = 0,
+    TCP_CLIENT,
+    UDP_SERVER,
+    UDP_CLIENT,
+} INET_TEST_TYPE;
+
+
+#ifdef NET_IPV6
+#define OPT_NUM_ARGS 4
+// IPv6 Specifics
+#define NET_IN_ADDR in6_addr
+#define NET_SOCKADDR_IN sockaddr_in6
+#define NET_PF_INET PF_INET6 /* IPv6 Internet Namespace also called Protocol Family (PF) */
+#define NET_AF_INET AF_INET6 /* Address Format (AF) for that namespace                   */
+#define NET_ADDRSTRLEN INET6_ADDRSTRLEN
+static int IF_num; // Network Interface number (check with 'ip a')
+#else
+#define OPT_NUM_ARGS 3
+// IPv4 Specifics
+#define NET_IN_ADDR in_addr
+#define NET_SOCKADDR_IN sockaddr_in
+#define NET_PF_INET PF_INET /* IPv4 Internet Namespace also called Protocol Family (PF) */
+#define NET_AF_INET AF_INET /* Address Format (AF) for that namespace                   */
+#define NET_ADDRSTRLEN INET_ADDRSTRLEN
+#endif
+typedef struct ncp_inet_test
+{
+    unsigned int type;
+    unsigned int port;
+    char addr[64];
+} NCP_INET_TEST;
+
+static void ncp_inet_tcp_server_test(char *addr, int port)
+{
+    char    buffer[1024] = {0};
+    int     recv_size;
+
+    struct NET_IN_ADDR dest_addr;
+    int  server_sockfd;
+    struct NET_SOCKADDR_IN server_addr = {0};
+
+    int  client_sockfd;
+    struct NET_SOCKADDR_IN client_addr = {0};
+    socklen_t  client_addr_size;
+
+    if (inet_pton(NET_AF_INET, addr, &dest_addr) == 0)
+    {
+        ncp_adap_e( "Invalid <dest_addr>");
+    }
+
+    server_sockfd = ncp_socket(NET_PF_INET, (SOCK_STREAM | SOCK_CLOEXEC), IPPROTO_TCP);
+    if (server_sockfd <0)
+    {
+        return ;
+    }
+    else
+    {
+        ncp_adap_w("[OK] socket Created");
+    }
+
+    server_addr.sin_family      = NET_AF_INET;
+    server_addr.sin_port        = PP_HTONS(port);
+    server_addr.sin_addr.s_addr = dest_addr.s_addr;
+
+    if (ncp_bind(server_sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)))
+    {
+        ncp_close(server_sockfd);
+        return ;
+    }
+    else
+    {
+        ncp_adap_w("[OK] bind");
+    }
+
+    if (ncp_listen(server_sockfd, 1))
+    {
+        ncp_close(server_sockfd);
+        return ;
+    }
+    else
+    {
+        ncp_adap_w("[OK] Listen");
+    }
+    ncp_adap_w("[...Blocked--Waiting for Connection Request...]");
+    client_addr_size = sizeof(client_addr);
+    client_sockfd = ncp_accept(server_sockfd, (struct sockaddr *) &client_addr, &client_addr_size);
+    if (client_sockfd  < 0)
+    {
+        ncp_close(server_sockfd);
+        return ;
+    }
+    else
+    {
+        ncp_adap_w("[OK] Client Connected");
+    }
+
+    ncp_adap_w("[...Blocked--Waiting for RX data...]");
+
+    for (int i = 0; i < 2; i++)
+    {
+        if ((recv_size = ncp_recv(client_sockfd, buffer, sizeof(buffer), 0)) < 0)
+        {
+            ncp_close(client_sockfd);
+            ncp_close(server_sockfd);
+        }
+        else
+        {
+            char          theClientIP[NET_ADDRSTRLEN];
+            unsigned int  theClientPort;
+            inet_ntop(NET_AF_INET, &client_addr.sin_addr,  theClientIP, sizeof(theClientIP));
+            theClientPort = PP_HTONS(client_addr.sin_port); // converts the uint16_t integer hostshort from network byte order to host byte order
+            ncp_adap_w("[OK] Data Received: (%ld Bytes) '%s' from @ '[%s]:%d'", recv_size, buffer, theClientIP, theClientPort);
+        }
+    }
+    if (ncp_close(client_sockfd) < 0)
+    {
+        return ;
+    }
+    else
+    {
+        ncp_adap_w("[OK] client socket Closed");
+    }
+
+    if (ncp_close(server_sockfd) < 0)
+    {
+        return ;
+    }
+    else
+    {
+        ncp_adap_w("[OK] server socket Closed");
+    }
+}
+
+static void ncp_inet_tcp_client_test(char *addr, int port)
+{
+    struct NET_IN_ADDR dest_addr;
+    int                client_sockfd;
+    struct NET_SOCKADDR_IN server_addr = {0};
+    char    buffer[1024] = "Hello TCP Server";
+    int nBytesTX;
+
+    if (inet_pton(NET_AF_INET, addr, &dest_addr) == 0)
+    {
+        ncp_adap_e( "Invalid <dest_addr>");
+    }
+
+    client_sockfd = ncp_socket(NET_PF_INET, (SOCK_STREAM | SOCK_CLOEXEC), IPPROTO_TCP);
+    if (client_sockfd < 0)
+        ncp_adap_e("socket creation failed!");
+    else
+        ncp_adap_w("[OK] socket Created");
+
+    server_addr.sin_family  = NET_AF_INET;
+    server_addr.sin_port    = PP_HTONS(port);
+    server_addr.sin_addr.s_addr = dest_addr.s_addr;
+
+    if (ncp_connect(client_sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)))
+    {
+        ncp_adap_e("connect to server failed!");
+        ncp_close(client_sockfd);
+    }
+    else
+       ncp_adap_w("[OK] Connected to Server");
+
+    if ((nBytesTX = ncp_send(client_sockfd, buffer, strlen(buffer), 0)) < 0)
+    {
+        ncp_adap_e("data send failed!");
+        ncp_close(client_sockfd);
+    }
+    else
+    {
+        struct NET_SOCKADDR_IN myAddr  = {0};
+        socklen_t  lenAddr = sizeof(myAddr);
+        
+        // Reading the Address of the client Socket
+        if (ncp_getsockname(client_sockfd, (struct sockaddr *) &myAddr, &lenAddr))
+        {
+            ncp_adap_e("getsockname() -- Reading the Address of a Socket failed!");
+            ncp_close(client_sockfd);
+        }
+        else
+        {
+            char  myIP[NET_ADDRSTRLEN];
+            unsigned int  myPort;
+    
+#ifdef NET_IPV6
+            inet_ntop(NET_AF_INET, &myAddr.sin6_addr.s6_addr, myIP, sizeof(myIP));
+            myPort = ntohs(myAddr.sin6_port); // converts the uint16_t integer hostshort from network byte order to host byte order
+#else
+            inet_ntop(NET_AF_INET, &myAddr.sin_addr.s_addr,   myIP, sizeof(myIP));
+            myPort = PP_HTONS(myAddr.sin_port); // converts the uint16_t integer hostshort from network byte order to host byte order
+#endif
+
+            ncp_adap_w("[OK] Data Sent: (%ld Bytes) '%s' to @ '[%s]:%d'", nBytesTX, buffer, myIP, myPort);
+        }
+    }
+    
+    if (ncp_close(client_sockfd) < 0)
+    {
+        ncp_adap_e("close() -- Client socket closing failed!");
+    } 
+}
+
+static int ncp_inet_udp_client_test(char *addr, int port)
+{
+    char buffer[1024] = "Hello UDP Client";
+    int nBytesTX;
+    struct NET_IN_ADDR dest_addr;
+    int client_sockfd;
+    struct NET_SOCKADDR_IN server_addr = {0};
+
+    if (inet_pton(NET_AF_INET, addr, &dest_addr) == 0)
+    {
+        ncp_adap_e( "Invalid <dest_addr>");
+    }
+    
+    client_sockfd = ncp_socket(NET_PF_INET, (SOCK_DGRAM | SOCK_CLOEXEC), IPPROTO_UDP);
+    if (client_sockfd < 0)
+    {
+        ncp_adap_e("socket creation failed!");
+    }
+    else
+    {
+        ncp_adap_w("\t[OK] socket Created: client_sockfd=%d", client_sockfd);
+    }
+
+    server_addr.sin_family = NET_AF_INET;
+    server_addr.sin_port = PP_HTONS(port); 			// converts the uint16_t integer hostshort from host byte order to network byte order
+    server_addr.sin_addr.s_addr = dest_addr.s_addr; // see inet_aton(const char *name, struct in_addr *addr) function above
+
+    if ((nBytesTX = ncp_sendto(client_sockfd, buffer, strlen(buffer), 0, (struct sockaddr *)&server_addr, sizeof(server_addr))) < 0)
+    {
+        ncp_close(client_sockfd);
+    }
+    else
+    {
+        char str_addr[NET_ADDRSTRLEN];
+        int  s_port;
+        inet_ntop(NET_AF_INET, &server_addr.sin_addr, str_addr, NET_ADDRSTRLEN);
+        s_port = PP_HTONS(server_addr.sin_port);
+        ncp_adap_w("[OK] Data Sent: (%ld Bytes) '%s' to @ '[%s]:%d'", nBytesTX, buffer, str_addr, s_port);
+    }
+
+    if (ncp_close(client_sockfd) < 0)
+    {
+        printf("close() -- socket closing failed!");
+    }
+    else
+    {
+        printf("\t[OK] socket Closed");
+    }
+    return WM_SUCCESS;
+}
+
+static int ncp_inet_udp_server_test(char *addr, int port)
+{
+    char buffer[1024] = "Hello UDP Server";
+    int nBytesRX;
+
+    struct NET_IN_ADDR dest_addr; // argv[1]
+
+    int server_sockfd;
+    struct NET_SOCKADDR_IN server_addr = {0};
+
+    struct NET_SOCKADDR_IN client_addr = {0};
+    socklen_t client_addr_size;
+
+    if (inet_pton(NET_AF_INET, addr, &dest_addr) == 0)
+    {
+        ncp_adap_e( "Invalid <dest_addr>");
+    }
+
+    server_sockfd = ncp_socket(NET_PF_INET, (SOCK_DGRAM | SOCK_CLOEXEC), IPPROTO_UDP);
+    if (server_sockfd < 0)
+    {
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        ncp_adap_w("[OK] socket Created: server_sockfd=%d", server_sockfd);
+    }
+
+    server_addr.sin_family = NET_AF_INET;
+    server_addr.sin_port = PP_HTONS(port);
+    server_addr.sin_addr.s_addr = dest_addr.s_addr;
+
+    if (ncp_bind(server_sockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)))
+    {
+        ncp_close(server_sockfd);
+    }
+    else
+    {
+        ncp_adap_w("[OK] bind");
+    }
+
+    ncp_adap_w("[...Blocked--Waiting for RX data...]");
+
+    for (int i = 0; i < 2; i++)
+    {
+        client_addr_size = sizeof(client_addr);
+        memset(buffer, 0, sizeof(buffer));
+        if ((nBytesRX = ncp_recvfrom(server_sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&client_addr, &client_addr_size)) < 0)
+        {
+            ncp_close(server_sockfd);
+            exit(EXIT_FAILURE);
+        }
+        else
+        {
+            char str_addr[NET_ADDRSTRLEN];
+            int  r_port;
+            inet_ntop(NET_AF_INET, &client_addr.sin_addr, str_addr, NET_ADDRSTRLEN);
+            r_port = PP_NTOHS(server_addr.sin_port);
+            ncp_adap_w("[OK] Data Received: (%ld Bytes) '%s' from @ '[%s]:%d'", nBytesRX, buffer, str_addr, r_port);
+        }
+    }
+
+    if (ncp_close(server_sockfd) < 0)
+    {
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        ncp_adap_w("[OK] socket Closed");
+    }
+
+    return WM_SUCCESS;
+}
+
+/* NCP adapter tx task */
+static OSA_TASK_HANDLE_DEFINE(ncp_inet_test_thread);
+static void ncp_inet_test_task(osa_task_param_t arg);
+static OSA_TASK_DEFINE(ncp_inet_test_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, 4096, 0);
+static void ncp_inet_test_task(void *data)
+{
+    NCP_INET_TEST *arg = (NCP_INET_TEST *)data;
+    switch (arg->type)
+    {
+        case TCP_SERVER:
+            ncp_inet_tcp_server_test(arg->addr, arg->port);
+        break;
+        case TCP_CLIENT:
+            ncp_inet_tcp_client_test(arg->addr, arg->port);
+        break;
+        case UDP_SERVER:
+            ncp_inet_udp_server_test(arg->addr, arg->port);
+        break;
+        case UDP_CLIENT:
+            ncp_inet_udp_client_test(arg->addr, arg->port);
+        break;
+    }
+    OSA_MemoryFree(arg);
+    OSA_TaskDestroy((osa_task_handle_t)ncp_inet_test_thread);
+}
+
+static int ncp_inet_test_command(int argc, char **argv)
+{
+    NCP_INET_TEST *arg = (NCP_INET_TEST *)OSA_MemoryAllocate(sizeof(NCP_INET_TEST));
+
+    if (get_uint(argv[1], &arg->type, strlen(argv[1])))
+    {
+        printf("Usage: %s handle ip_addr port\r\n", __func__);
+        return -WM_FAIL;
+    }
+    if (get_uint(argv[3], &arg->port, strlen(argv[3])))
+    {
+        printf("Usage: %s handle ip_addr port\r\n", __func__);
+        return -WM_FAIL;
+    }
+    if (strlen(argv[2]) + 1 > IP_ADDR_LEN)
+    {
+        printf("over buffer size\r\n");
+        return -WM_FAIL;
+    }
+    memcpy(arg->addr, argv[2], strlen(argv[2]) + 1);
+    (void)OSA_TaskCreate((osa_task_handle_t)ncp_inet_test_thread, OSA_TASK(ncp_inet_test_task), (void *)arg);
+    return WM_SUCCESS;
+}
+#endif
 #if !COFNIG_NCP_SDIO_TEST_LOOPBACK
 static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-ncp-iperf", NULL, wlan_ncp_iperf_command},
@@ -9075,6 +9594,9 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-socket-sendto", NULL, wlan_socket_sendto_command},
     {"wlan-socket-receive", NULL, wlan_socket_receive_command},
     {"wlan-socket-recvfrom", NULL, wlan_socket_recvfrom_command},
+#if CONFIG_INET_SOCKET
+    {"wlan-ncp-inet-test", NULL, ncp_inet_test_command},
+#endif
     {"wlan-http-connect", NULL, wlan_http_connect_command},
     {"wlan-http-disconnect", NULL, wlan_http_disconnect_command},
     {"wlan-http-req", NULL, wlan_http_req_command},
