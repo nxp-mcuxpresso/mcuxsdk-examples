@@ -289,6 +289,7 @@ driver_examples
    spdif/index.rst
    spi/index.rst
    spifi/index.rst
+   sramc/index.rst
    src/index.rst
    ssarc/index.rst
    stm/readme.md

@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+sram_emulator:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sramc/sram_emulator
+    project-root-path: boards/${board}/driver_examples/sramc/sram_emulator/${multicore_foldername}
+    document:
+      name: sram_emulator${core_id_suffix_name}
+      category: driver_examples/sramc
+      brief: The sram_emulator example uses flexio to emulate a sram device. It is used to assist in verifying that the SRAM controller reads and writes to external SRAM chip.
+      example_readme:
+      - examples/driver_examples/sramc/sram_emulator/readme.md
+      - ${board_root}/${board}/driver_examples/sramc/sram_emulator/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt1186@cm7:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release

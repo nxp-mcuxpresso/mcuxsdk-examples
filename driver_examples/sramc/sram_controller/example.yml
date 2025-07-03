@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sram_controller:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/sramc/sram_controller
+    project-root-path: boards/${board}/driver_examples/sramc/sram_controller/${multicore_foldername}
+    document:
+      name: sram_controller${core_id_suffix_name}
+      category: driver_examples/sram_controller
+      brief: The sramc example shows how to use SRAMC driver to initialize SRAMC module.
+      example_readme:
+      - examples/driver_examples/sramc/sram_controller/readme.md
+      - ${board_root}/${board}/driver_examples/sramc/sram_controller/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt1186@cm7:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
