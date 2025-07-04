@@ -3,21 +3,12 @@ mcux_add_macro(
     CC "-DSDK_I2C_BASED_COMPONENT_USED=1 \
        -DBOARD_USE_PCAL6524=1 \
        -DBOARD_USE_PCAL6408=1 \
-       -DNETC_PORT_USE_INCLUDES=1 \
-       -DUSE_RTOS=1 \
-       -DPRINTF_ADVANCED_ENABLE=1\
        -DSCMI_LMM_POWER_CHANGE_PROCESSED=1"
-)
-
-mcux_add_linker_symbol(
-    SYMBOLS "__stack_size__=2048\
-             __heap_size__=25600"
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES
-    ${board_root}/${board}/FreeRTOSConfigBoard.h
     ${board_root}/${board}/demo_apps/netc_share/cm7/app_srtm.c
     ${board_root}/${board}/demo_apps/netc_share/cm7/app_srtm.h
     ${board_root}/${board}/demo_apps/netc_share/cm7/rpmsg_config.h
