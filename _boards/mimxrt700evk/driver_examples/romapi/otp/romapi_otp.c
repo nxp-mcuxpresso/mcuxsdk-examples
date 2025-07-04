@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -61,7 +61,7 @@ void test_otp_init()
 {
     PRINTF("INFO: Starting Example %s \r\n", __func__);
 
-    otp_init();
+    otp_init(SystemCoreClock);
 
     PRINTF("INFO: Finished Example %s\r\n", __func__);
 }

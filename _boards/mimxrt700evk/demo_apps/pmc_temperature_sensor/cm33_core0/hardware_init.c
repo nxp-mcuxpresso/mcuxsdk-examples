@@ -33,7 +33,7 @@ status_t DEMO_TempsenorInit(void)
     /* Another 40us for the temperature sensor to sattle. */
     SDK_DelayAtLeastUs(40U, SystemCoreClock);
 
-    otp_init();
+    otp_init(SystemCoreClock);
 
     /* Read TSENS_CAL calibration constant value from OTP Fuse. */
     status = otp_fuse_read(TSENS_CAL_OTP_FUSE_INDEX, &tsensorCal);
