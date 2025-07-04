@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+netc_switch_standalone:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/netc_switch_standalone/.
+    project-root-path: boards/${board}/demo_apps/netc_switch_standalone/${multicore_foldername}
+    document:
+      name: netc_switch_standalone${core_id_suffix_name}
+      category: demo_apps
+      brief: 'The example shows the way to use NETC switch standalone for lowest power. '
+      example_readme:
+      - examples/demo_apps/netc_switch_standalone/readme.md
+      - ${board_root}/${board}/demo_apps/netc_switch_standalone/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
