@@ -1,6 +1,7 @@
 mcux_add_macro(
     CC "LPC_ENET\
-        EXAMPLE_USE_100M_ENET_PORT"
+        EXAMPLE_USE_100M_ENET_PORT\
+        MAC_ADDRESS_FROM_SILICON_ID"
 )
 
 mcux_add_source(
