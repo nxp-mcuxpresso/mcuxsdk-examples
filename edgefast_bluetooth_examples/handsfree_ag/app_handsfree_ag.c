@@ -202,6 +202,7 @@ static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
     app_hfp_ag->hfp_agHandle = hfp_ag;
     app_hfp_ag->hfp_in_calling_status = 1;
     app_hfp_ag->selectCodec = 1;
+    g_HfpAg = app_hfp_ag;
 }
 
 static void ag_disconnected(struct bt_hfp_ag *hfp_ag)
@@ -433,7 +434,6 @@ static void bt_ready(int err)
 
     bt_hfp_ag_init();
     bt_hfp_ag_register_cb(&ag_cb);
-    app_hfp_ag_select_conn(0);
     app_shell_init();
     for (uint8_t index = 0; index < CONFIG_BT_HFP_AG_MAX_CONN; index++)
     {
