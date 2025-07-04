@@ -1,3 +1,17 @@
+mcux_remove_armgcc_configuration(
+  CC "-O0"
+  TARGETS
+    "debug"
+    "sdram_debug"
+)
+
+mcux_add_armgcc_configuration(
+  CC "-O1"
+  TARGETS
+    "debug"
+    "sdram_debug"
+)
+
 mcux_remove_iar_configuration(
   CC "-On"
   TARGETS
