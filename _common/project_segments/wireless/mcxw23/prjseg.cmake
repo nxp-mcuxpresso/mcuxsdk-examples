@@ -105,6 +105,20 @@ mcux_add_include(
 )
 endif()
 
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.extflash)
+    mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES
+            examples/_common/project_segments/wireless/mcxw23/ext_flash/board_extflash.c
+            examples/_common/project_segments/wireless/mcxw23/ext_flash/board_extflash.h
+    )
+    mcux_add_include(
+        BASE_PATH ${SdkRootDirPath}
+        INCLUDES
+            examples/_common/project_segments/wireless/mcxw23/ext_flash
+    )
+endif()
+
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.lowpower)
 # Not implemented for MCXW23 but cmake definition needed for ecosystem build.
 endif()

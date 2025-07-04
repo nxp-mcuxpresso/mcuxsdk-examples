@@ -268,6 +268,102 @@ void BOARD_InitPins(void)
     /* PORT0 PIN4 (coords: 4) is configured as PIO0_4 */
     IOCON_PinMuxSet(IOCON, BOARD_INITPINS_RGB_BLUE_PORT, BOARD_INITPINS_RGB_BLUE_PIN, RGB_BLUE);
 }
+
+void BOARD_InitExtFlashPins(void)
+{
+    /* Enables the clock for the I/O controller.: Enable Clock. */
+    CLOCK_EnableClock(kCLOCK_Iocon);
+
+    const uint32_t port0_pin10_config = (/* Pin is configured as SPIFI_CLK */
+                                         IOCON_PIO_FUNC8 |
+                                         /* Selects pull-up function */
+                                         IOCON_PIO_MODE_PULLUP |
+                                         /* Standard mode, output slew rate control is enabled */
+                                         IOCON_PIO_SLEW_STANDARD |
+                                         /* Input function is not inverted */
+                                         IOCON_PIO_INV_DI |
+                                         /* Enables digital function */
+                                         IOCON_PIO_DIGITAL_EN |
+                                         /* Open drain is disabled */
+                                         IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN10 (coords: 11) is configured as SPIFI_CLK */
+    IOCON_PinMuxSet(IOCON, 0U, 10U, port0_pin10_config);
+
+    const uint32_t port0_pin5_config = (/* Pin is configured as SPIFI_CSN */
+                                        IOCON_PIO_FUNC8 |
+                                        /* Selects pull-up function */
+                                        IOCON_PIO_MODE_PULLUP |
+                                        /* Standard mode, output slew rate control is enabled */
+                                        IOCON_PIO_SLEW_STANDARD |
+                                        /* Input function is not inverted */
+                                        IOCON_PIO_INV_DI |
+                                        /* Enables digital function */
+                                        IOCON_PIO_DIGITAL_EN |
+                                        /* Open drain is disabled */
+                                        IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN5 (coords: 37) is configured as SPIFI_CSN */
+    IOCON_PinMuxSet(IOCON, 0U, 5U, port0_pin5_config);
+
+    const uint32_t port0_pin6_config = (/* Pin is configured as SPIFI_IO0 */
+                                        IOCON_PIO_FUNC8 |
+                                        /* Selects pull-up function */
+                                        IOCON_PIO_MODE_PULLUP |
+                                        /* Standard mode, output slew rate control is enabled */
+                                        IOCON_PIO_SLEW_STANDARD |
+                                        /* Input function is not inverted */
+                                        IOCON_PIO_INV_DI |
+                                        /* Enables digital function */
+                                        IOCON_PIO_DIGITAL_EN |
+                                        /* Open drain is disabled */
+                                        IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN6 (coords: 10) is configured as SPIFI_IO0 */
+    IOCON_PinMuxSet(IOCON, 0U, 6U, port0_pin6_config);
+
+    const uint32_t port0_pin7_config = (/* Pin is configured as SPIFI_IO1 */
+                                        IOCON_PIO_FUNC8 |
+                                        /* Selects pull-up function */
+                                        IOCON_PIO_MODE_PULLUP |
+                                        /* Standard mode, output slew rate control is enabled */
+                                        IOCON_PIO_SLEW_STANDARD |
+                                        /* Input function is not inverted */
+                                        IOCON_PIO_INV_DI |
+                                        /* Enables digital function */
+                                        IOCON_PIO_DIGITAL_EN |
+                                        /* Open drain is disabled */
+                                        IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN7 (coords: 38) is configured as SPIFI_IO1 */
+    IOCON_PinMuxSet(IOCON, 0U, 7U, port0_pin7_config);
+
+    const uint32_t port0_pin8_config = (/* Pin is configured as SPIFI_IO2 */
+                                        IOCON_PIO_FUNC8 |
+                                        /* Selects pull-up function */
+                                        IOCON_PIO_MODE_PULLUP |
+                                        /* Standard mode, output slew rate control is enabled */
+                                        IOCON_PIO_SLEW_STANDARD |
+                                        /* Input function is not inverted */
+                                        IOCON_PIO_INV_DI |
+                                        /* Enables digital function */
+                                        IOCON_PIO_DIGITAL_EN |
+                                        /* Open drain is disabled */
+                                        IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN8 (coords: 39) is configured as SPIFI_IO2 */
+    IOCON_PinMuxSet(IOCON, 0U, 8U, port0_pin8_config);
+
+    const uint32_t port0_pin9_config = (/* Pin is configured as SPIFI_IO3 */
+                                        IOCON_PIO_FUNC8 |
+                                        /* Selects pull-up function */
+                                        IOCON_PIO_MODE_PULLUP |
+                                        /* Standard mode, output slew rate control is enabled */
+                                        IOCON_PIO_SLEW_STANDARD |
+                                        /* Input function is not inverted */
+                                        IOCON_PIO_INV_DI |
+                                        /* Enables digital function */
+                                        IOCON_PIO_DIGITAL_EN |
+                                        /* Open drain is disabled */
+                                        IOCON_PIO_OPENDRAIN_DI);
+    /* PORT0 PIN9 (coords: 12) is configured as SPIFI_IO3 */
+    IOCON_PinMuxSet(IOCON, 0U, 9U, port0_pin9_config);
+}
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
