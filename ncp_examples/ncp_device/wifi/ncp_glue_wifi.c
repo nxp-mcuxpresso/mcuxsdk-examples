@@ -976,16 +976,6 @@ static int wlan_ncp_add(void *tlv)
                                 t = WLAN_SECURITY_NONE;
                                 network->security.type = t;
                         }
-#if CONFIG_WPA_SUPP
-                        if (res->wpa_mcstCipher.tkip || res->rsn_mcstCipher.tkip)
-                            network->security.group_cipher |= BIT(3); /*WPA_CIPHER_TKIP*/
-                        if (res->wpa_mcstCipher.ccmp || res->rsn_mcstCipher.ccmp)
-                            network->security.group_cipher |= BIT(4); /*WPA_CIPHER_CCMP*/
-                        if (res->wpa_ucstCipher.tkip || res->rsn_ucstCipher.tkip)
-                            network->security.pairwise_cipher |= BIT(3); /*WPA_CIPHER_TKIP*/
-                        if (res->wpa_ucstCipher.ccmp || res->rsn_ucstCipher.ccmp)
-                            network->security.pairwise_cipher |= BIT(4); /*WPA_CIPHER_CCMP*/
-#endif
                         break;
 #if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
 #if CONFIG_EAP_TLS || CONFIG_EAP_PEAP
