@@ -177,11 +177,15 @@ void BOARD_ConfigMPU(void)
         assert(nonCacheSize == (uint32_t)(1 << i));
         assert(i >= 5);
 
-        /* Region 11 setting: Memory with Normal type, not shareable, non-cacheable */
-        MPU->RBAR = ARM_MPU_RBAR(11, nonCacheStart);
+        /* Region 13 setting: Memory with Normal type, not shareable, non-cacheable */
+        MPU->RBAR = ARM_MPU_RBAR(13, nonCacheStart);
         MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 1, 0, 0, 0, 0, i - 1);
     }
 #endif
+    
+    /* Region 14 setting: with Normal type, not shareable, outer/inner write back. */
+    MPU->RBAR = ARM_MPU_RBAR(14, 0x1B000000U);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_8KB);
 
     /* Enable MPU */
     ARM_MPU_Enable(MPU_CTRL_PRIVDEFENA_Msk | MPU_CTRL_HFNMIENA_Msk);
