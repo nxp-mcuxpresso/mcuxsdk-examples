@@ -291,7 +291,7 @@ static int BOARD_AudioTaskInit(void)
         ret = OSA_SemaphoreCreate(s_audioTaskSync, 0);
         assert(KOSA_StatusSuccess == result);
 
-        result = xTaskCreate(BOARD_CodecTask, "BOARD_CodecTask", 1024, NULL, 5, NULL);
+        result = xTaskCreate(BOARD_CodecTask, "BOARD_CodecTask", 1024, NULL, configMAX_PRIORITIES / 2, NULL);
         assert(pdPASS == result);
 
     }
