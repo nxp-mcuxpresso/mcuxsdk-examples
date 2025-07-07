@@ -13,10 +13,10 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define BOARD_INPUT_PIN_FLEXIO     FLEXIO1
-#define BOARD_INPUT_PIN_FLEXIO_PIN 0U
+#define BOARD_INPUT_PIN_FLEXIO_PIN 12U
 
 #define BOARD_RGPIO_OUPUT_PORT     RGPIO2
-#define BOARD_RGPIO_OUPUT_PORT_PIN 1U
+#define BOARD_RGPIO_OUPUT_PORT_PIN 13U
 
 #define FLEXIO_PIN_UserCallback FLEXIO1_IRQHandler
 /*${macro:end}*/

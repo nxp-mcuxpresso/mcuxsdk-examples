@@ -24,6 +24,8 @@ pin_labels:
 - {pin_num: L13, pin_signal: GPIO_AD_29, label: FLEXIO_SPI, identifier: FLEXIO_SPI}
 - {pin_num: A9, pin_signal: GPIO_AON_03, label: ETH0, identifier: ETH0_INT_B}
 - {pin_num: B5, pin_signal: GPIO_AON_04, label: ETH2, identifier: ETH2_INT_B}
+- {pin_num: D2, pin_signal: GPIO_EMC_B1_11, label: LED, identifier: LED}
+- {pin_num: E3, pin_signal: GPIO_EMC_B1_13, label: flexio_pin, identifier: flexio_pin}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -366,7 +368,7 @@ BOARD_InitPWMPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: D7, peripheral: PWM4, signal: 'A, 0', pin_signal: GPIO_EMC_B1_12}
-  - {pin_num: E3, peripheral: PWM4, signal: 'B, 0', pin_signal: GPIO_EMC_B1_13}
+  - {pin_num: E3, peripheral: PWM4, signal: 'B, 0', pin_signal: GPIO_EMC_B1_13, identifier: ''}
   - {pin_num: E5, peripheral: PWM4, signal: 'A, 1', pin_signal: GPIO_EMC_B1_14}
   - {pin_num: C2, peripheral: PWM4, signal: 'A, 2', pin_signal: GPIO_EMC_B1_17}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -559,7 +561,7 @@ void BOARD_InitSPIPins_deinit(void) {
 BOARD_InitLEDsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D2, peripheral: RGPIO2, signal: 'gpio_io, 11', pin_signal: GPIO_EMC_B1_11}
+  - {pin_num: D2, peripheral: RGPIO2, signal: 'gpio_io, 11', pin_signal: GPIO_EMC_B1_11, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -571,6 +573,14 @@ BOARD_InitLEDsPins:
  * END ****************************************************************************************************************/
 void BOARD_InitLEDsPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  /* GPIO configuration of LED on GPIO_EMC_B1_11 (pin D2) */
+  rgpio_pin_config_t LED_config = {
+      .pinDirection = kRGPIO_DigitalOutput,
+      .outputLogic = 0U,
+  };
+  /* Initialize GPIO functionality on GPIO_EMC_B1_11 (pin D2) */
+  RGPIO_PinInit(RGPIO2, 11U, &LED_config);
 
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_EMC_B1_11_GPIO2_IO11,       /* GPIO_EMC_B1_11 is configured as GPIO2_IO11 */
@@ -683,7 +693,7 @@ void BOARD_InitKPPPins(void) {
 BOARD_InitGPTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M14, peripheral: GPT1, signal: 'gpt_compare, 2', pin_signal: GPIO_AD_15}
+  - {pin_num: M12, peripheral: GPT1, signal: 'gpt_compare, 1', pin_signal: GPIO_AD_14}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -697,7 +707,7 @@ void BOARD_InitGPTPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_AD_15_GPT1_COMPARE2,        /* GPIO_AD_15 is configured as GPT1_COMPARE2 */
+      IOMUXC_GPIO_AD_14_GPT1_COMPARE1,        /* GPIO_AD_14 is configured as GPT1_COMPARE1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
@@ -1036,7 +1046,7 @@ void BOARD_InitVREFPins(void) {
 BOARD_InitLPITPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M9, peripheral: XBAR1, signal: 'OUT, 36', pin_signal: GPIO_EMC_B2_19}
+  - {pin_num: L12, peripheral: XBAR1, signal: 'OUT, 19', pin_signal: GPIO_AD_19}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1049,12 +1059,12 @@ BOARD_InitLPITPins:
 void BOARD_InitLPITPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL2 &
-    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_MASK))) /* Mask bits to zero which are setting */
-      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36(0x01U) /* IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as output */
+  BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 = ((BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 &
+    (~(BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_19_MASK))) /* Mask bits to zero which are setting */
+      | BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_19(0x01U) /* IOMUXC XBAR_INOUT19 function direction select: XBAR_INOUT as output */
     );
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_19_XBAR1_XBAR_INOUT36,  /* GPIO_EMC_B2_19 is configured as XBAR1_XBAR_INOUT36 */
+      IOMUXC_GPIO_AD_19_XBAR1_XBAR_INOUT19,   /* GPIO_AD_19 is configured as XBAR1_XBAR_INOUT19 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
@@ -1097,8 +1107,9 @@ void BOARD_InitQTMRPins(void) {
 BOARD_InitFLEXIO_I2CPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
-  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
+  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
+  - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', software_input_on: Enable, pull_down_pull_up_config: Pull_Up,
+    open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1112,18 +1123,18 @@ void BOARD_InitFLEXIO_I2CPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 is configured as FLEXIO1_FLEXIO02 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_02 */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 is configured as FLEXIO1_FLEXIO12 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_12 */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 is configured as FLEXIO1_FLEXIO03 */
-      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_03 */
+      IOMUXC_GPIO_EMC_B1_13_FLEXIO1_FLEXIO13,  /* GPIO_EMC_B1_13 is configured as FLEXIO1_FLEXIO13 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_13 */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_13_FLEXIO1_FLEXIO13,  /* GPIO_EMC_B1_13 PAD functional properties : */
       0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
@@ -1159,8 +1170,8 @@ void BOARD_InitFLEXIO_PINOUTPUTPins(void) {
 BOARD_InitFLEXIO_PININPUTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G3, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00}
-  - {pin_num: H4, peripheral: RGPIO2, signal: 'gpio_io, 01', pin_signal: GPIO_EMC_B1_01, identifier: flexio_pin, direction: OUTPUT}
+  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12}
+  - {pin_num: E3, peripheral: RGPIO2, signal: 'gpio_io, 13', pin_signal: GPIO_EMC_B1_13, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1173,19 +1184,19 @@ BOARD_InitFLEXIO_PININPUTPins:
 void BOARD_InitFLEXIO_PININPUTPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration of flexio_pin on GPIO_EMC_B1_01 (pin H4) */
+  /* GPIO configuration of flexio_pin on GPIO_EMC_B1_13 (pin E3) */
   rgpio_pin_config_t flexio_pin_config = {
       .pinDirection = kRGPIO_DigitalOutput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_EMC_B1_01 (pin H4) */
-  RGPIO_PinInit(RGPIO2, 1U, &flexio_pin_config);
+  /* Initialize GPIO functionality on GPIO_EMC_B1_13 (pin E3) */
+  RGPIO_PinInit(RGPIO2, 13U, &flexio_pin_config);
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00,  /* GPIO_EMC_B1_00 is configured as FLEXIO1_FLEXIO00 */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 is configured as FLEXIO1_FLEXIO12 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_01_GPIO2_IO01,       /* GPIO_EMC_B1_01 is configured as GPIO2_IO01 */
+      IOMUXC_GPIO_EMC_B1_13_GPIO2_IO13,       /* GPIO_EMC_B1_13 is configured as GPIO2_IO13 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
@@ -1195,10 +1206,10 @@ void BOARD_InitFLEXIO_PININPUTPins(void) {
 BOARD_InitFLEXIO_SPIPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, pull_down_pull_up_config: Pull_Down}
-  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, pull_down_pull_up_config: Pull_Down}
-  - {pin_num: J4, peripheral: FLEXIO1, signal: 'IO, 04', pin_signal: GPIO_EMC_B1_04, pull_down_pull_up_config: Pull_Down}
-  - {pin_num: E7, peripheral: FLEXIO1, signal: 'IO, 05', pin_signal: GPIO_EMC_B1_05, pull_down_pull_up_config: Pull_Down}
+  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pull_down_pull_up_config: Pull_Down}
+  - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', pull_down_pull_up_config: Pull_Down}
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, pull_down_pull_up_config: Pull_Down}
+  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, pull_down_pull_up_config: Pull_Down}
   - {pin_num: L13, peripheral: RGPIO4, signal: 'gpio_io, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1224,34 +1235,34 @@ void BOARD_InitFLEXIO_SPIPins(void) {
       IOMUXC_GPIO_AD_29_GPIO4_IO29,           /* GPIO_AD_29 is configured as GPIO4_IO29 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 is configured as FLEXIO1_FLEXIO02 */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 is configured as FLEXIO1_FLEXIO12 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 is configured as FLEXIO1_FLEXIO03 */
+      IOMUXC_GPIO_EMC_B1_13_FLEXIO1_FLEXIO13,  /* GPIO_EMC_B1_13 is configured as FLEXIO1_FLEXIO13 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_04_FLEXIO1_FLEXIO04,  /* GPIO_EMC_B1_04 is configured as FLEXIO1_FLEXIO04 */
+      IOMUXC_GPIO_EMC_B1_14_FLEXIO1_FLEXIO14,  /* GPIO_EMC_B1_14 is configured as FLEXIO1_FLEXIO14 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_05_FLEXIO1_FLEXIO05,  /* GPIO_EMC_B1_05 is configured as FLEXIO1_FLEXIO05 */
+      IOMUXC_GPIO_EMC_B1_15_FLEXIO1_FLEXIO15,  /* GPIO_EMC_B1_15 is configured as FLEXIO1_FLEXIO15 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_13_FLEXIO1_FLEXIO13,  /* GPIO_EMC_B1_13 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_04_FLEXIO1_FLEXIO04,  /* GPIO_EMC_B1_04 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_14_FLEXIO1_FLEXIO14,  /* GPIO_EMC_B1_14 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_05_FLEXIO1_FLEXIO05,  /* GPIO_EMC_B1_05 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_15_FLEXIO1_FLEXIO15,  /* GPIO_EMC_B1_15 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
@@ -1263,8 +1274,8 @@ void BOARD_InitFLEXIO_SPIPins(void) {
 BOARD_InitFLEXIO_UARTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, pdrv_config: High_Driver}
-  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, pdrv_config: High_Driver}
+  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pdrv_config: High_Driver}
+  - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', pdrv_config: High_Driver}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1278,18 +1289,18 @@ void BOARD_InitFLEXIO_UARTPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 is configured as FLEXIO1_FLEXIO02 */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 is configured as FLEXIO1_FLEXIO12 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 is configured as FLEXIO1_FLEXIO03 */
+      IOMUXC_GPIO_EMC_B1_13_FLEXIO1_FLEXIO13,  /* GPIO_EMC_B1_13 is configured as FLEXIO1_FLEXIO13 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_13_FLEXIO1_FLEXIO13,  /* GPIO_EMC_B1_13 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
@@ -1301,7 +1312,7 @@ void BOARD_InitFLEXIO_UARTPins(void) {
 BOARD_InitFLEXIO_PWMPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver, open_drain: Disable}
+  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver, open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1315,10 +1326,10 @@ void BOARD_InitFLEXIO_PWMPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 is configured as FLEXIO1_FLEXIO02 */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 is configured as FLEXIO1_FLEXIO12 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
-      IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 PAD functional properties : */
+      IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 PAD functional properties : */
       0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
@@ -1444,7 +1455,8 @@ BOARD_InitUSB_PDPins:
   - {pin_num: E5, peripheral: RGPIO2, signal: 'gpio_io, 14', pin_signal: GPIO_EMC_B1_14, software_input_on: Disable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
   - {pin_num: D7, peripheral: RGPIO2, signal: 'gpio_io, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
   - {pin_num: E2, peripheral: RGPIO2, signal: 'gpio_io, 15', pin_signal: GPIO_EMC_B1_15, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
-  - {pin_num: E3, peripheral: RGPIO2, signal: 'gpio_io, 13', pin_signal: GPIO_EMC_B1_13, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
+  - {pin_num: E3, peripheral: RGPIO2, signal: 'gpio_io, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', software_input_on: Disable, pull_down_pull_up_config: No_Pull,
+    open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 

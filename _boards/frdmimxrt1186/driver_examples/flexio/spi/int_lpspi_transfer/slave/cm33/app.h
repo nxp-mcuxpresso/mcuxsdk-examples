@@ -15,8 +15,8 @@
 #define TRANSFER_SIZE     256U    /*! Transfer dataSize */
 #define TRANSFER_BAUDRATE 100000U /*! Transfer baudrate - 100k */
 
-#define MASTER_LPSPI_BASEADDR (LPSPI4)
-#define MASTER_LPSPI_IRQN     (LPSPI4_IRQn)
+#define MASTER_LPSPI_BASEADDR (LPSPI2)
+#define MASTER_LPSPI_IRQN     (LPSPI2_IRQn)
 
 #define MASTER_LPSPI_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define MASTER_LPSPI_PCS_FOR_TRANSFER (kLPSPI_MasterPcs0)
@@ -25,10 +25,10 @@
 
 /*Slave related*/
 #define SLAVE_FLEXIO_SPI_BASEADDR (FLEXIO1)
-#define FLEXIO_SPI_PCS_PIN        5U
-#define FLEXIO_SPI_SOUT_PIN       4U
-#define FLEXIO_SPI_SIN_PIN        3U
-#define FLEXIO_SPI_CLK_PIN        2U
+#define FLEXIO_SPI_PCS_PIN        15U
+#define FLEXIO_SPI_SOUT_PIN       14U
+#define FLEXIO_SPI_SIN_PIN        13U
+#define FLEXIO_SPI_CLK_PIN        12U
 
 #define SLAVE_FLEXIO_SPI_IRQ FLEXIO1_IRQn
 

@@ -123,6 +123,18 @@ void BOARD_InitSPIPins(void);                 /* Function assigned for the Corte
  */
 void BOARD_InitSPIPins_deinit(void);          /* Function assigned for the Cortex-M33 */
 
+/* GPIO_EMC_B1_11 (coord D2), LED */
+/* Routed pin properties */
+#define BOARD_INITLEDSPINS_LED_PERIPHERAL                                 RGPIO2   /*!< Peripheral name */
+#define BOARD_INITLEDSPINS_LED_SIGNAL                                    gpio_io   /*!< Signal name */
+#define BOARD_INITLEDSPINS_LED_CHANNEL                                       11U   /*!< Signal channel */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITLEDSPINS_LED_GPIO                                       RGPIO2   /*!< GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_INIT_GPIO_VALUE                                0U   /*!< GPIO output initial state */
+#define BOARD_INITLEDSPINS_LED_GPIO_PIN                                      11U   /*!< GPIO pin number */
+#define BOARD_INITLEDSPINS_LED_GPIO_PIN_MASK                         (1U << 11U)   /*!< GPIO pin mask */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
@@ -159,9 +171,9 @@ void BOARD_InitFLASHPins(void);               /* Function assigned for the Corte
  */
 void BOARD_InitHYPERRAMPins(void);            /* Function assigned for the Cortex-M33 */
 
+#define XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_18_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT18 function direction select: XBAR_INOUT as input */
+#define XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_19_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT19 function direction select: XBAR_INOUT as input */
 #define XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_23_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT23 function direction select: XBAR_INOUT as input */
-#define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as input */
-#define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_37_IOMUX 0x00U /*!< IOMUXC XBAR_INOUT37 function direction select: XBAR_INOUT as input */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
@@ -195,7 +207,7 @@ void BOARD_InitADCPins(void);                 /* Function assigned for the Corte
  */
 void BOARD_InitVREFPins(void);                /* Function assigned for the Cortex-M33 */
 
-#define XBAR_DIR_CTRL2_IOMUXC_XBAR_DIR_SEL_36_XBAR 0x01U /*!< IOMUXC XBAR_INOUT36 function direction select: XBAR_INOUT as output */
+#define XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_19_XBAR 0x01U /*!< IOMUXC XBAR_INOUT19 function direction select: XBAR_INOUT as output */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
@@ -218,23 +230,29 @@ void BOARD_InitQTMRPins(void);                /* Function assigned for the Corte
  */
 void BOARD_InitFLEXIO_I2CPins(void);          /* Function assigned for the Cortex-M33 */
 
+/* GPIO_EMC_B1_11 (coord D2), LED */
+/* Routed pin properties */
+#define BOARD_INITFLEXIO_PINOUTPUTPINS_LED_PERIPHERAL                    FLEXIO1   /*!< Peripheral name */
+#define BOARD_INITFLEXIO_PINOUTPUTPINS_LED_SIGNAL                             IO   /*!< Signal name */
+#define BOARD_INITFLEXIO_PINOUTPUTPINS_LED_CHANNEL                           11U   /*!< Signal channel */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitFLEXIO_PINOUTPUTPins(void);    /* Function assigned for the Cortex-M33 */
 
-/* GPIO_EMC_B1_01 (coord H4), pin */
+/* GPIO_EMC_B1_13 (coord E3), flexio_pin */
 /* Routed pin properties */
 #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_PERIPHERAL               RGPIO2   /*!< Peripheral name */
 #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_SIGNAL                  gpio_io   /*!< Signal name */
-#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_CHANNEL                      1U   /*!< Signal channel */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_CHANNEL                     13U   /*!< Signal channel */
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO                     RGPIO2   /*!< GPIO peripheral base pointer */
 #define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_INIT_GPIO_VALUE              0U   /*!< GPIO output initial state */
-#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN                     1U   /*!< GPIO pin number */
-#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN_MASK        (1U << 1U)   /*!< GPIO pin mask */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN                    13U   /*!< GPIO pin number */
+#define BOARD_INITFLEXIO_PININPUTPINS_flexio_pin_GPIO_PIN_MASK       (1U << 13U)   /*!< GPIO pin mask */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
@@ -303,6 +321,18 @@ void BOARD_InitUSB_PDI2CPins_deinit(void);    /* Function assigned for the Corte
  *
  */
 void BOARD_InitSRAMCPins(void);               /* Function assigned for the Cortex-M33 */
+
+/* GPIO_EMC_B1_11 (coord D2), LED */
+/* Routed pin properties */
+#define BOARD_INITSRAMC_FLEXIOPINS_LED_PERIPHERAL                        FLEXIO1   /*!< Peripheral name */
+#define BOARD_INITSRAMC_FLEXIOPINS_LED_SIGNAL                                 IO   /*!< Signal name */
+#define BOARD_INITSRAMC_FLEXIOPINS_LED_CHANNEL                               11U   /*!< Signal channel */
+
+/* GPIO_EMC_B1_13 (coord E3), flexio_pin */
+/* Routed pin properties */
+#define BOARD_INITSRAMC_FLEXIOPINS_flexio_pin_PERIPHERAL                 FLEXIO1   /*!< Peripheral name */
+#define BOARD_INITSRAMC_FLEXIOPINS_flexio_pin_SIGNAL                          IO   /*!< Signal name */
+#define BOARD_INITSRAMC_FLEXIOPINS_flexio_pin_CHANNEL                        13U   /*!< Signal channel */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

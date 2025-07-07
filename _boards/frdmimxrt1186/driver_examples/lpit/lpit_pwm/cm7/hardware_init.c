@@ -28,6 +28,6 @@ void BOARD_ConfigTriggerSource()
     XBAR_Init(kXBAR_DSC1);
 
     /* Configure the XBARA signal connections. */
-    XBAR_SetSignalsConnection(kXBAR1_InputPit3Trigger0, kXBAR1_OutputTriggerSyncIn6);
+    XBAR_SetSignalsConnection(kXBAR1_InputPit3Trigger0, kXBAR1_OutputIomuxXbarInout19);
 }
 /*${function:end}*/

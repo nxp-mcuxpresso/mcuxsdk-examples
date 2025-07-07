@@ -6,11 +6,10 @@ Hardware requirements
 
 Board settings
 ============
-Change Jumper R100 from 1-2 to 1-3, Jumper R373 from 1-2 to 1-3.
 To make this example work, connections needed to be as follows:
 
     FLEXIO_PIN        connected to  RGPIO
-PIN0     J61-3           -->        J61-4
+PIN0     J1-6           -->        J1-8
 
 Prepare the Demo
 ===============

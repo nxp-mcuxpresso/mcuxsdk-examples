@@ -13,8 +13,8 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define BOARD_FLEXIO_BASE  FLEXIO1
-#define FLEXIO_UART_TX_PIN 2U
-#define FLEXIO_UART_RX_PIN 3U
+#define FLEXIO_UART_TX_PIN 12U
+#define FLEXIO_UART_RX_PIN 13U
 
 #define FLEXIO_CLOCK_FREQUENCY (CLOCK_GetRootClockFreq(kCLOCK_Root_Flexio1))
 

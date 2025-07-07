@@ -7,11 +7,10 @@ Hardware requirements
 
 Board settings
 ============
-Change Jumper R112 from 1-2 to 1-3, Jumper R334 from 1-2 to 1-3.
 Connect pin:
-- RX of USB2COM to J61-5
-- TX of USB2COM to J61-6
-- GND of USB2COM to J61-49
+- RX of USB2COM to J1-6
+- TX of USB2COM to J1-8
+- GND of USB2COM to J1-15
 
 Prepare the Demo
 ===============

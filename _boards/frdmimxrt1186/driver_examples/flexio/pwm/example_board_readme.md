@@ -7,8 +7,7 @@ Hardware requirements
 
 Board settings
 ==============
-Change Jumper R112 from 1-2 to 1-3.
-Use oscilloscope to measure the output 48KHz PWM signal pin at J61-5 pin.
+Use oscilloscope to measure the output 48KHz PWM signal pin at J1-6 pin.
 
 Prepare the Demo
 ================

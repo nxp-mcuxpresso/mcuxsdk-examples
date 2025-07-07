@@ -6,8 +6,8 @@ Hardware requirements
 
 Board settings
 ==============
-Change Jumper R297 from 1-2 to 1-3. 
-Use oscilloscope to measure output the 1000Hz PWM signal pin at J2-18 pin of board,you can also
+Change Jumper J35 from 1-2 to 2-3.
+Use oscilloscope to measure output the 1000Hz PWM signal pin at J51-10 pin of board,you can also
 change pwm frequency and duty via terminal.
 
 Prepare the Demo

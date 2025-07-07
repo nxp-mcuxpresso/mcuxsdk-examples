@@ -16,7 +16,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define FlexSpiInstance           1U
+#define FlexSpiInstance           2U
 #define EXAMPLE_FLEXSPI_AMBA_BASE FlexSPI2_AMBA_BASE
 #define FLASH_SIZE                0x1000000UL /* 16MBytes */
 #define FLASH_PAGE_SIZE           256UL       /* 256Bytes */

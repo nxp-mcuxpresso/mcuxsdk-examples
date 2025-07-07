@@ -16,10 +16,10 @@
 #define TRANSFER_BAUDRATE 150000U /*! Transfer baudrate - 150k */
 
 #define MASTER_FLEXIO_SPI_BASEADDR (FLEXIO1)
-#define FLEXIO_SPI_PCS_PIN         5U
-#define FLEXIO_SPI_SOUT_PIN        4U
-#define FLEXIO_SPI_SIN_PIN         3U
-#define FLEXIO_SPI_CLK_PIN         2U
+#define FLEXIO_SPI_PCS_PIN         15U
+#define FLEXIO_SPI_SOUT_PIN        14U
+#define FLEXIO_SPI_SIN_PIN         13U
+#define FLEXIO_SPI_CLK_PIN         12U
 
 #define MASTER_FLEXIO_SPI_IRQ FLEXIO1_IRQn
 
@@ -34,9 +34,9 @@
 #define EXAMPLE_RX_DMA_SOURCE                 (kDma4RequestMuxFlexIO1Request2)
 
 /*Slave related*/
-#define SLAVE_LPSPI_BASEADDR   (LPSPI4)
-#define SLAVE_LPSPI_IRQ_HANDLE (LPSPI4_DriverIRQHandler)
-#define SLAVE_LPSPI_IRQN       (LPSPI4_IRQn)
+#define SLAVE_LPSPI_BASEADDR   (LPSPI2)
+#define SLAVE_LPSPI_IRQ_HANDLE (LPSPI2_DriverIRQHandler)
+#define SLAVE_LPSPI_IRQN       (LPSPI2_IRQn)
 
 #define SLAVE_LPSPI_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define SLAVE_LPSPI_PCS_FOR_TRANSFER (kLPSPI_SlavePcs0)

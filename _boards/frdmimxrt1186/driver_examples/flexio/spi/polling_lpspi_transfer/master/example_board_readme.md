@@ -6,17 +6,15 @@ Hardware requirements
 
 Board settings
 ==============
-Change Jumper R307 from 1-2 to 1-3, Jumper R317 from 1-2 to 1-3.
-Change Jumper R112 from 1-2 to 1-3, Jumper R334 from 1-2 to 1-3, Jumper R321 from 1-2 to 1-3, Jumper R138 from 1-2 to 1-3.
 To make the example work, connections needed to be as follows:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         SLAVE           connect to      MASTER
 Pin Name   Board Location     Pin Name    Board Location
-SCK        J2-12                SCK       J61-5
-SIN        J2-10                SOUT      J61-7
-SOUT       J2-8                 SIN       J61-6
-PCS0       J2-6                 PCS0      J61-8
+SCK        J3-18                SCK       J1-6
+SIN        J3-14                SOUT      J1-10
+SOUT       J3-16                SIN       J1-8
+PCS0       J3-12                PCS0      J1-12
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Prepare the Demo

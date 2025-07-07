@@ -20,8 +20,8 @@
 #define LPI2C_CLOCK_FREQUENCY  CLOCK_GetRootClockFreq(kCLOCK_Root_Lpi2c0304)
 #define FLEXIO_CLOCK_FREQUENCY CLOCK_GetRootClockFreq(kCLOCK_Root_Flexio1)
 
-#define FLEXIO_I2C_SDA_PIN 3U
-#define FLEXIO_I2C_SCL_PIN 2U
+#define FLEXIO_I2C_SDA_PIN 13U
+#define FLEXIO_I2C_SCL_PIN 12U
 
 /* I2C Baudrate 100K */
 #define I2C_BAUDRATE (100000)

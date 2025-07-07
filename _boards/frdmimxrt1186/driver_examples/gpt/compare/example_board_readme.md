@@ -6,8 +6,9 @@ Hardware requirements
 
 Board settings
 ============
+Change Jumper J27 from 1-2 to 2-3
 * Probe the signal using an oscilloscope
- - At J51-2
+ - At J51-8
 
 Prepare the Demo
 ================

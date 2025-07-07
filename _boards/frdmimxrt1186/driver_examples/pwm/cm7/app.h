@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -12,7 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* The PWM base address */
-#define BOARD_PWM_BASEADDR PWM1
+#define BOARD_PWM_BASEADDR PWM4
 
 #define PWM_SRC_CLK_FREQ       CLOCK_GetRootClockFreq(kCLOCK_Root_Bus_Aon)
 #define DEMO_PWM_CLOCK_DEVIDER kPWM_Prescale_Divide_4

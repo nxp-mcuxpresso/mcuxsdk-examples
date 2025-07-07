@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -21,8 +21,8 @@ void BOARD_InitHardware(void)
 
     /* Set the PWM Fault inputs to a low value */
     XBAR_Init(kXBAR_DSC1);
-    XBAR_SetSignalsConnection(kXBAR1_InputLogicHigh, kXBAR1_OutputFlexpwm1Fault0);
-    XBAR_SetSignalsConnection(kXBAR1_InputLogicHigh, kXBAR1_OutputFlexpwm1Fault1);
+    XBAR_SetSignalsConnection(kXBAR1_InputLogicHigh, kXBAR1_OutputFlexpwm4Fault0);
+    XBAR_SetSignalsConnection(kXBAR1_InputLogicHigh, kXBAR1_OutputFlexpwm4Fault1);
     XBAR_SetSignalsConnection(kXBAR1_InputLogicHigh, kXBAR1_OutputFlexpwm1234Fault2);
     XBAR_SetSignalsConnection(kXBAR1_InputLogicHigh, kXBAR1_OutputFlexpwm1234Fault3);
 }
