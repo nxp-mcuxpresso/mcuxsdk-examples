@@ -459,13 +459,13 @@ void BOARD_ConfigMPU(void)
 #if defined(USE_HYPERRAM)
     /*
        The default attribute of the background system address map for this address space:
-         normal, write through, read allocate, non-shareable, read/write in privilege and non-privilege, executable
+         normal, write back, write/read allocate, non-shareable, read/write in privilege and non-privilege, executable
     */
 
     /* Region 0 (FlexSPI1, Hyperram): [0x28000000, 0x287FFFFF, 8M] */
-#if !defined(CACHE_MODE_WRITE_THROUGH)
-    /* non-shareable, read/write in privilege and non-privilege, executable. Attr 3 */
-    ARM_MPU_SetRegion(0U, ARM_MPU_RBAR(0x28000000, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR(0x287FFFFF, 3U));
+#if defined(CACHE_MODE_WRITE_THROUGH)
+    /* non-shareable, read/write in privilege and non-privilege, executable. Attr 2 */
+    ARM_MPU_SetRegion(0U, ARM_MPU_RBAR(0x28000000, ARM_MPU_SH_NON, 0U, 1U, 0U), ARM_MPU_RLAR(0x287FFFFF, 2U));
 #endif
 #endif
 
