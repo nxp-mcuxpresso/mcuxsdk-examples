@@ -54,7 +54,7 @@ int main(void)
     PRINTF("\r\nSquare root of %d is %d\r\n", rcndval, sqrtresult);
 
     PRINTF("\r\nCalculation division to get remainder and quotient");
-    PRINTF("\r\nEnter dividend and divisor\r\n");
+    PRINTF("\r\nEnter dividend and divisor separated by comma, like: 89, 7\r\n");
     /* Import dividend value and divisor value */
     SCANF("%d, %d", &dendval, &dsorval);
     /* Check BUSY bit before Calculation begin. */
