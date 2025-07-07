@@ -163,7 +163,7 @@ static vg_lite_error_t init_vg_lite(void)
         return error;
     }
     /* Initialize the window */
-    error = VGLITE_CreateWindow(&display, &window);
+    error = VGLITE_CreateWindow(&display, &window, NULL);
     if (error)
     {
         PRINTF("VGLITE_CreateWindow() returned error %d\r\n", error);
