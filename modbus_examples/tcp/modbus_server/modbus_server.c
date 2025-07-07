@@ -53,17 +53,31 @@ static uint16_t     led2_status;
 #define EXAMPLE_TX_RX_INTERRUPT_HANDLE
 #define INIT_THREAD_STACKSIZE 1024
 
+#define REQUEST_IS_ZERO_BASED_INDEXING 1
+
 #define COIL_START_ADDR                 0           /*coil register start address*/
-#define COIL_NUMS                       10          /*coil register numbers*/
+#define COIL_NUMS                       2000          /*coil register numbers*/
+
  
 #define DISCRETE_INPUT_START_ADDR       10000	    /*discrete register start address*/
-#define DISCRETE_INPUT_NUMS             10          /*discrete register numbers*/
+#define DISCRETE_INPUT_NUMS             2000          /*discrete register numbers*/
  
 #define INPUT_REGISTER_START_ADDR       30000		/*input register start address*/
-#define INPUT_REGISTER_NUMS             10		    /*input register numbers*/
+#define INPUT_REGISTER_NUMS             125		    /*input register numbers*/
  
 #define HOLDING_REGISTER_START_ADDR     40000		/*holding register start address*/
-#define HOLDING_REGISTER_NUMS           10		    /*holding register numbers*/
+#define HOLDING_REGISTER_NUMS           125		    /*holding register numbers*/
+
+#define MAX_COILS 2000
+static uint8_t coilBuffer[(MAX_COILS + 7) / 8] = {0};  // 1 bit per coil, rounded up to nearest byte
+// 16 coils, indexed 0–15. for testing
+//coilBuffer[2] = {0xAA, 0x55}; // coilBuffer[0] = 0xAA (10101010), coilBuffer[1] = 0x55 (01010101)
+
+// Buffer to hold discrete inputs statuses (2000 inputs, each bit represents one input)
+static uint8_t discreteInputBuffer[DISCRETE_INPUT_NUMS / 8] = {0};
+//discreteInputBuffer[0] = 0x0F;  // 00001111 (inputs 10007...10000)
+//discreteInputBuffer[1] = 0xF0;  // 11110000 (inputs 10015...10008
+ 
 
 #ifndef EXAMPLE_NETIF_INIT_FN
 /*! @brief Network interface initialization function. */
@@ -129,7 +143,21 @@ static uint16_t     inputRegStart = INPUT_REGISTER_START_ADDR;
 static uint16_t     inputRegArrays[INPUT_REGISTER_NUMS];
 static uint16_t     holdingRegStart = HOLDING_REGISTER_START_ADDR;
 static uint16_t     holdingRegArrays[HOLDING_REGISTER_NUMS];
-static uint16_t     initArrays[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+static uint16_t initArrays[125] = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+    20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+    30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+    40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+    50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+    60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+    70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+    80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
+    90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
+    100, 101, 102, 103, 104, 105, 106, 107, 108, 109,
+    110, 111, 112, 113, 114, 115, 116, 117, 118, 119,
+    120, 121, 122, 123, 124
+};
 
 /* PHY operation. */
 
@@ -222,6 +250,10 @@ eMBRegInputCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNRegs )
     /* it already plus one in modbus function method. */
     usAddress--;
  
+#if REQUEST_IS_ZERO_BASED_INDEXING
+ 	usAddress = usAddress + 30000;
+#endif
+
     if( ( usAddress >= INPUT_REGISTER_START_ADDR )
         && ( usAddress + usNRegs <= INPUT_REGISTER_START_ADDR + INPUT_REGISTER_NUMS ) )
     {
@@ -322,6 +354,15 @@ eMBRegHoldingCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNRegs, e
  
     /* it already plus one in modbus function method. */
     usAddress--;
+
+    
+    /* If request follows zero byte addressing i.e  0x0000 or 0x0001 , then Update usAddress = usAddress + 40000 to match
+       starting address of simulation 40000 . Similarly follow for other data types */
+
+#if REQUEST_IS_ZERO_BASED_INDEXING
+ 	usAddress = usAddress + 40000;
+#endif
+
     if( ( usAddress >= HOLDING_REGISTER_START_ADDR ) &&
         ( usAddress + usNRegs <= HOLDING_REGISTER_START_ADDR + HOLDING_REGISTER_NUMS ) )
     {
@@ -355,17 +396,87 @@ eMBRegHoldingCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNRegs, e
     }
     return eStatus;
 }
+
  
 eMBErrorCode
 eMBRegCoilsCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNCoils, eMBRegisterMode eMode )
 {
-    return MB_ENOREG;
+  
+	eMBErrorCode eStatus = MB_ENOERR;
+
+	usAddress--;
+	uint16_t iCoil = usAddress - COIL_START_ADDR;
+
+	if ((usAddress >= COIL_START_ADDR) && (iCoil + usNCoils <= COIL_NUMS))
+	{
+		if (eMode == MB_REG_READ)
+		{
+			for (uint16_t i = 0; i < usNCoils; i++)
+			{
+				uint16_t idx = iCoil + i;
+				uint8_t bit = (coilBuffer[idx / 8] >> (idx % 8)) & 0x01;
+				if (i % 8 == 0)
+					pucRegBuffer[i / 8] = 0;
+
+				pucRegBuffer[i / 8] |= (bit << (i % 8));
+			}
+		}
+		else if (eMode == MB_REG_WRITE)
+		{
+			for (uint16_t i = 0; i < usNCoils; i++)
+			{
+				uint16_t idx = iCoil + i;
+				uint8_t bit = (pucRegBuffer[i / 8] >> (i % 8)) & 0x01;
+
+				if (bit)
+					coilBuffer[idx / 8] |= (1 << (idx % 8));
+				else
+					coilBuffer[idx / 8] &= ~(1 << (idx % 8));
+			}
+		}
+	}
+	else
+	{
+		eStatus = MB_ENOREG;
+	}
+
+	return eStatus;
 }
- 
+
+
+
 eMBErrorCode
 eMBRegDiscreteCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNDiscrete )
 {
-    return MB_ENOREG;
+  
+	eMBErrorCode eStatus = MB_ENOERR;
+
+	usAddress--;
+
+#if REQUEST_IS_ZERO_BASED_INDEXING
+ 	usAddress = usAddress + 10000;
+#endif
+
+	uint16_t iInput = usAddress - DISCRETE_INPUT_START_ADDR;
+	if ((usAddress >= DISCRETE_INPUT_START_ADDR) && (iInput + usNDiscrete <= DISCRETE_INPUT_NUMS))
+	{
+		for (uint16_t i = 0; i < usNDiscrete; i++)
+		{
+			uint16_t idx = iInput + i;
+			uint8_t bit = (discreteInputBuffer[idx / 8] >> (idx % 8)) & 0x01;
+
+			if (i % 8 == 0)
+				pucRegBuffer[i / 8] = 0;
+
+			pucRegBuffer[i / 8] |= (bit << (i % 8));
+		}
+	}
+	else
+	{
+		eStatus = MB_ENOREG;
+	}
+
+	return eStatus; 
 }
 
 static void modbus_task(void *arg)
