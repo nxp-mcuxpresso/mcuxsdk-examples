@@ -494,7 +494,7 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
             PRINTF("SCMI_CpuSleepModeSet into RUN STATE FAIL\r\n");
         }
     }
-    if (s_wakeupSource == kAPP_WakeupSourceSM)
+    if (s_wakeupSource == kAPP_WakeupSourceSM || scmiRequestM7IntoSuspend == true)
     {
         /*
          * if select SM as M7 wakeup source, M7 only support message from MU5(system manager).
