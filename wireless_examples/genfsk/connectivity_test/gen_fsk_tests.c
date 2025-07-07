@@ -2952,7 +2952,7 @@ bool_t CT_PllNumOffsetAdjust(ct_event_t evType, void* pAssociatedValue)
             u8UartData = *((uint8_t*)pAssociatedValue);
             if ( u8UartData == '\r' )
             {
-                int32_t val;
+                int32_t val = 0; /* initialized to default value */
                 bool_t status = GetPllNumOffset(&val, u8UartData);
                 if( !status )
                 {
