@@ -132,12 +132,19 @@ typedef struct
     void *taskHandle;
 } write_flash_info_t;
 
+/** Structure containing NvIdle command info */
+typedef struct
+{
+    void *taskHandle;
+} nvidle_info_t;
+
 /** The different safety messages */
 typedef enum
 {
     /** Message to write data to flash */
     kMSG_WriteFlash       = 0,
-    kMSG_RecordRadioState = 1
+    kMSG_RecordRadioState = 1,
+    kMSG_NvIdle           = 2
 } safety_message_type_t;
 
 /** Safety message structure */
@@ -151,6 +158,8 @@ typedef struct
         write_flash_info_t writeFlashInfo;
         /** Only valid for kMSG_RecordRadioState. Holds the state to record */
         safety_radio_state_t radioState;
+        /** Only valid for kMSG_NvIdle. Holds required information */
+        nvidle_info_t nvIdleInfo;
     } data;
 } safety_message_t;
 
@@ -163,6 +172,9 @@ static void ProfilingTimerCallback(void *pParam);
 
 static void SafetyTask(void *argument);
 static void FlashEraseWriteTask(void *taskHandle, void *context);
+#if defined(gAppUseNvm_d) && (gAppUseNvm_d > 0)
+static void NvIdleTask(void *taskHandle, void *context);
+#endif /* gAppUseNvm_d */
 void SysTick_Handler(void);
 #ifdef ENABLE_LOW_POWER
 static status_t PrepareForLowPower(pm_event_type_t eventType, pm_mode_t mode, void *data);
@@ -204,6 +216,10 @@ static TIMER_MANAGER_HANDLE_DEFINE(s_bodIrqCheckerTimerHandle);
 
 /** Holds used supply mode */
 static dcdc_mode_t s_supplyMode;
+
+#if defined(gAppUseNvm_d) && (gAppUseNvm_d > 0)
+static bool s_nvIdleScheduled = false;
+#endif
 
 /*******************************************************************************
  * Code
@@ -362,12 +378,25 @@ void EnterLowPower(uint32_t expectedIdleTimeUs)
 }
 #endif /*ENABLE_LOW_POWER */
 
-#if (gAppUseNvm_d)
 void vApplicationIdleHook(void)
 {
-    NvIdle();
+#if defined(gAppUseNvm_d) && (gAppUseNvm_d > 0)
+    if(NvIsPendingOperation() && (s_nvIdleScheduled == false))
+    {
+        /* There are pending operation in NVM module, schedule an idle task to be executed when the
+         * radio idle time will be large enough to perform the operation
+         * Since NVM doesn't provide the information about the operation type (erase or write), we
+         * assume the longest: ERASE_TIME
+         * We make sure to schedule the NvIdleTask only once with s_nvIdleScheduled
+         * It'll be reset when no NVM operations are pending */
+        uint32_t sr;
+        OSA_EnterCritical(&sr);
+        s_nvIdleScheduled = true;
+        OSA_ExitCritical(sr);
+        CONNECTIVITY_ScheduleIdleTask(ERASE_TIME, NvIdleTask, NULL);
+    }
+#endif
 }
-#endif /* gAppUseNvm_d */
 
 /**
  * Processes the health messages.
@@ -443,6 +472,31 @@ static void SafetyMsgHandler(safety_message_t *msg)
         case kMSG_RecordRadioState:
             EVENTSTORE_RecordRadioState(msg->data.radioState);
             break;
+        case kMSG_NvIdle:
+        {
+#if defined(gAppUseNvm_d) && (gAppUseNvm_d > 0)
+            uint32_t sr;
+            OSA_EnterCritical(&sr);
+            if (CONNECTIVITY_GetRadioIdleTime() > ERASE_TIME)
+            {
+                (void)NvIdle();
+            }
+            OSA_ExitCritical(sr);
+
+            if (NvIsPendingOperation())
+            {
+                CONNECTIVITY_RescheduleIdleTask(msg->data.nvIdleInfo.taskHandle);
+            }
+            else
+            {
+                CONNECTIVITY_FinishIdleTask(msg->data.nvIdleInfo.taskHandle);
+                OSA_EnterCritical(&sr);
+                s_nvIdleScheduled = false;
+                OSA_ExitCritical(sr);
+            }
+#endif /* gAppUseNvm_d */
+            break;
+        }
     }
 }
 
@@ -467,6 +521,22 @@ static void FlashEraseWriteTask(void *taskHandle, void *context)
         MSGQ_Put(s_messageQueue, msg);
     }
 }
+
+#if defined(gAppUseNvm_d) && (gAppUseNvm_d > 0)
+static void NvIdleTask(void *taskHandle, void *context)
+{
+    safety_message_t *msg   = MSGQ_CreateMsg((msgq_handler_t)SafetyMsgHandler, sizeof(safety_message_t));
+
+    if (msg)
+    {
+        msg->msgType                    = kMSG_NvIdle;
+        msg->data.nvIdleInfo.taskHandle = taskHandle;
+        MSGQ_Put(s_messageQueue, msg);
+    }
+
+    (void)context;
+}
+#endif
 
 /**
  * Switches the system to the requested device state
@@ -675,9 +745,7 @@ void SAFETY_Init(void)
 
         /* Before executing WFI, need to execute some connectivity background tasks
             (usually done in Idle thread) such as NVM save in Idle, etc.. */
-#if (gAppUseNvm_d)
-        NvIdle();
-#endif /* gAppUseNvm_d */
+        vApplicationIdleHook();
 
         /* We expect primask always to be 0 (irqs not masked) before disabling them for the low power section. */
         assert_equal(__get_PRIMASK(), 0);
