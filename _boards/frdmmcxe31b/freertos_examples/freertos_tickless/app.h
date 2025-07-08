@@ -21,6 +21,7 @@
 #define BOARD_RTC_TIMER_IRQ       RTC_IRQn
 #define BOARD_RTC_CLOCK_SOURCE    kRTC_SIRCClock
 #define BOARD_RTC_CLOCK_FFEQUENCY CLOCK_GetFreq(kCLOCK_SircClk)
+#define BOARD_TIMER_IRQ_HANDLER   RTC_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************

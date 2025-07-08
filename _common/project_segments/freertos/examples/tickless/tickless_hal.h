@@ -23,6 +23,8 @@
  */
 #define portMAX_32_BIT_NUMBER (0xffffffffUL)
 
+#if configUSE_TICKLESS_IDLE == 2
+
 /**
  * @brief Hardware Abstraction Layer (HAL) interface for timer implementations
  *
@@ -133,6 +135,8 @@ typedef struct
      */
     uint32_t (*calculate_elapsed_ticks)(void *base, uint32_t reload_value, uint32_t expected_idle_time);
 } tickless_timer_hal_t;
+
+#endif /* configUSE_TICKLESS_IDLE == 2 */
 
 /**
  * @brief Hardware Abstraction Layer (HAL) interface for GPIO/button operations

@@ -17,11 +17,9 @@
 #define BOARD_SW_NAME        BOARD_USER_BUTTON_NAME
 #define BOARD_SW_INT_OUTPUT  kRGPIO_InterruptOutput0
 
-/* GPT timer instance to use */
 #define BOARD_GPT_TIMER_INSTANCE GPT1
-
-/* GPT timer IRQ number */
-#define BOARD_GPT_TIMER_IRQ GPT1_IRQn
+#define BOARD_GPT_TIMER_IRQ      GPT1_IRQn
+#define BOARD_TIMER_IRQ_HANDLER  GPT1_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
@@ -29,9 +27,6 @@
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
-extern void vPortGptIsr(void);
-IRQn_Type vPortGetGptIrqn(void);
-GPT_Type *vPortGetGptBase(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

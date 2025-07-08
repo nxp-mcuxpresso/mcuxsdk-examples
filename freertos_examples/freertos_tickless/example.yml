@@ -19,8 +19,120 @@ freertos_tickless:
       - ${board_root}/${board}/freertos_examples/freertos_tickless/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    evkbimxrt1050: []
+    evkbmimxrt1060: []
+    evkbmimxrt1170@cm4:
+    - +armgcc@debug
+    - +armgcc@release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
+    - +armgcc@sdram_debug
+    - +armgcc@sdram_release
+    - +iar@debug
+    - +iar@release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
+    - +iar@sdram_debug
+    - +iar@sdram_release
+    - +mdk@debug
+    - +mdk@release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    - +mdk@sdram_debug
+    - +mdk@sdram_release
+    evkbmimxrt1170@cm7: []
+    evkcmimxrt1060: []
+    evkmcimx7ulp: []
+    evkmimx8mm: []
+    evkmimx8mn: []
+    evkmimx8mnddr3l: []
+    evkmimx8mp: []
+    evkmimx8mq: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@release
+    evkmimxrt1015:
+    - -armgcc@debug
+    - +armgcc@flexspi_nor_debug
+    - +armgcc@flexspi_nor_release
+    - -armgcc@release
+    - -iar@debug
+    - +iar@flexspi_nor_debug
+    - +iar@flexspi_nor_release
+    - -iar@release
+    - -mdk@debug
+    - +mdk@flexspi_nor_debug
+    - +mdk@flexspi_nor_release
+    - -mdk@release
+    evkmimxrt1020: []
+    evkmimxrt1024: []
+    evkmimxrt1040: []
+    evkmimxrt1064: []
+    evkmimxrt1160@cm4: []
+    evkmimxrt1160@cm7: []
+    frdmk22f: []
+    frdmk32l2a4s: []
+    frdmk32l2b: []
+    frdmk32l3a6@cm0plus: []
+    frdmk32l3a6@cm4: []
+    frdmke15z: []
+    frdmke16z: []
+    frdmke17z: []
+    frdmke17z512: []
+    frdmmcxa346: []
+    frdmmcxc242: []
+    frdmmcxc444: []
+    frdmmcxn236: []
+    frdmmcxn947@cm33_core0: []
+    frdmmcxw71: []
+    mcxw71evk: []
+    k32w148evk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw45b41zevk:
+    - +armgcc@debug
+    - +armgcc@release
+    kw45b41zloc: []
+    kw47evk@cm33_core0: []
+    mcxn5xxevk@cm33_core0: []
+    mcxn9xxevk@cm33_core0: []
+    mcxw72evk@cm33_core0: []
+    twrkm34z50mv3: []
+    twrkm34z75m: []
+    twrkm35z75m: []
+    frdmmcxl255@cm33: []
+    frdmmcxe247: []
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
     frdmimxrt1186@cm33: []
     frdmimxrt1186@cm7: []
     frdmmcxe31b: []
+    evkmimxrt595@cm33: []
+    evkmimxrt685@cm33: []
+    frdmmcxw23: []
+    mcxw23evk: []
+    frdmrw612: []
+    lpcxpresso51u68: []
+    lpcxpresso54628: []
+    lpcxpresso54s018: []
+    lpcxpresso54s018m: []
+    lpcxpresso55s06: []
+    lpcxpresso55s16: []
+    lpcxpresso55s28: []
+    lpcxpresso55s69@cm33_core0: []
+    mimxrt685audevk@cm33: []
+    lpcxpresso55s36: []
+    lpcxpresso860max: []
+    mimxrt700evk@cm33_core1: []
+    mimxrt700evk@cm33_core0: []
+    rdrw612bga: []

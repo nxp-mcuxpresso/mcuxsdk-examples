@@ -12,6 +12,7 @@
 
 #include "fsl_debug_console.h"
 #include "board.h"
+#include "app.h"
 #include "tickless_api.h"
 
 /*******************************************************************************
@@ -31,7 +32,9 @@
  * Prototypes
  ******************************************************************************/
 static void Tickless_task(void *pvParameters);
+#ifdef BOARD_SW_NAME
 static void SW_task(void *pvParameters);
+#endif
 
 /*******************************************************************************
  * Variables
@@ -55,15 +58,20 @@ int main(void)
     PRINTF("Tickless Demo example\r\n");
 #ifdef BOARD_SW_NAME
     PRINTF("Press or turn on %s to wake up the CPU\r\n", BOARD_SW_NAME);
-#endif
 
     /* Initialize GPIO/button HAL */
     const tickless_gpio_hal_t *gpio_hal = tickless_get_gpio_hal();
     gpio_hal->init();
 
-    /* Enable button interrupt */
+/* Enable button interrupt */
+#if defined(__CORTEX_M)
     NVIC_SetPriority(gpio_hal->get_irqn(), SW_NVIC_PRIO);
+#else
+    GIC_SetPriority(gpio_hal->get_irqn(), BOARD_SW_GIC_PRIO);
+#endif
+
     EnableIRQ(gpio_hal->get_irqn());
+#endif
 
     /* Create tickless task */
     if (xTaskCreate(Tickless_task, "Tickless_task", configMINIMAL_STACK_SIZE + 100, NULL, tickless_task_PRIORITY,
@@ -73,12 +81,14 @@ int main(void)
         while (1)
             ;
     }
+#ifdef BOARD_SW_NAME
     if (xTaskCreate(SW_task, "Switch_task", configMINIMAL_STACK_SIZE + 100, NULL, SW_task_PRIORITY, NULL) != pdPASS)
     {
         PRINTF("Task creation failed!.\r\n");
         while (1)
             ;
     }
+#endif
     PRINTF("\r\nTick count :\r\n");
     vTaskStartScheduler();
     for (;;)
@@ -95,6 +105,7 @@ static void Tickless_task(void *pvParameters)
     }
 }
 
+#ifdef BOARD_SW_NAME
 /* Switch Task */
 static void SW_task(void *pvParameters)
 {
@@ -108,6 +119,9 @@ static void SW_task(void *pvParameters)
     }
 }
 
+#ifndef BOARD_SW_IRQ_HANDLER
+#error "FreeRTOS Tickless Please define BOARD_SW_IRQ_HANDLER in app.h"
+#endif
 /*!
  * @brief Interrupt service function of switch.
  *
@@ -123,3 +137,21 @@ void BOARD_SW_IRQ_HANDLER(void)
 
     xSemaphoreGiveFromISR(xSWSemaphore, &xHigherPriorityTaskWoken);
 }
+#endif
+
+#if configUSE_TICKLESS_IDLE == 2
+
+#ifndef BOARD_TIMER_IRQ_HANDLER
+#error "FreeRTOS Tickless Please define BOARD_TIMER_IRQ_HANDLER in app.h"
+#endif
+/*!
+ * @brief Interrupt service fuction of timer.
+ *
+ * This function to call low power timer ISR
+ */
+void BOARD_TIMER_IRQ_HANDLER(void)
+{
+    vPortTimerISRHandler();
+}
+
+#endif /* configUSE_TICKLESS_IDLE */

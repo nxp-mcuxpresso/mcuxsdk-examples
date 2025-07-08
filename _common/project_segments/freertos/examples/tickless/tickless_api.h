@@ -15,6 +15,8 @@
 extern "C" {
 #endif
 
+#if configUSE_TICKLESS_IDLE == 2
+
 /**
  * @brief Timer ISR handler for tickless mode
  *
@@ -48,6 +50,8 @@ void vPortTimerISRHandler(void);
  * @note This function is implemented by the selected timer HAL module
  */
 const tickless_timer_hal_t *tickless_get_timer_hal(void);
+
+#endif /* configUSE_TICKLESS_IDLE == 2 */
 
 /**
  * @brief Get the GPIO HAL implementation for the current platform

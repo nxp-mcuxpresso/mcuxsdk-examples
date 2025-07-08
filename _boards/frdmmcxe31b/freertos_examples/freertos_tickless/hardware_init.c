@@ -15,7 +15,6 @@
 #include "app.h"
 #include "tickless_api.h"
 #endif
-
 /*${header:end}*/
 
 /*${variable:start}*/
@@ -29,12 +28,5 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-}
-
-/* RTC IRQ handler */
-void RTC_IRQHandler(void)
-{
-    /* Call the common timer ISR handler */
-    vPortTimerISRHandler();
 }
 /*${function:end}*/

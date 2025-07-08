@@ -1,0 +1,6 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+
+rsource "../../_common/project_segments/freertos/examples/tickless/Kconfig.prjseg"

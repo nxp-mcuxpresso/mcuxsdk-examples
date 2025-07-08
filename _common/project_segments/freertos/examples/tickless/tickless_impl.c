@@ -8,6 +8,8 @@
 #include "task.h"
 #include "tickless_api.h"
 
+#if configUSE_TICKLESS_IDLE == 2
+
 /* Static variables for tickless implementation */
 static uint32_t ulTimerCountsForOneTick         = 0;
 static uint32_t xMaximumPossibleSuppressedTicks = 0;
@@ -248,3 +250,5 @@ void vPortTimerISRHandler(void)
     const tickless_timer_hal_t *timer_hal = tickless_get_timer_hal();
     timer_hal->isr_handler();
 }
+
+#endif /* configUSE_TICKLESS_IDLE == 2 */

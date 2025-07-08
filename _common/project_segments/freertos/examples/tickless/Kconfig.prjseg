@@ -4,12 +4,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
-config TICKLESS_HAS_LEGACY_IMPL
-    bool
-    default n
-    help
-      Detect whether Tickless is using legacy implementation
-
 config MCUX_PRJSEG_ENABLE_FREERTOS_TICKLESS
     bool "Enable FreeRTOS Tickless Project Segments"
     default n
@@ -18,7 +12,7 @@ config MCUX_PRJSEG_ENABLE_FREERTOS_TICKLESS
 
 config MCUX_PRJSEG_FREERTOS_TICKLESS_HAL
     bool "Unified Tickless HAL Implementation"
-    default y if !TICKLESS_HAS_LEGACY_IMPL && MCUX_PRJSEG_ENABLE_FREERTOS_TICKLESS
+    default y if MCUX_PRJSEG_ENABLE_FREERTOS_TICKLESS
     help
       Unified Tickless HAL Implementation for FreeRTOS
 
@@ -28,12 +22,19 @@ choice MCUX_PRJSEG_TICKLESS_TIMER
     depends on MCUX_PRJSEG_FREERTOS_TICKLESS_HAL
     default MCUX_PRJSEG_TICKLESS_TIMER_GPT if MCUX_HAS_COMPONENT_driver.gpt
     default MCUX_PRJSEG_TICKLESS_TIMER_LPTMR if MCUX_HAS_COMPONENT_driver.lptmr
-    default MCUX_PRJSEG_TICKLESS_TIMER_RTC if MCUX_HAS_COMPONENT_driver.rtc
+    default MCUX_PRJSEG_TICKLESS_TIMER_OSTIMER if MCUX_HAS_COMPONENT_driver.ostimer
+    default MCUX_PRJSEG_TICKLESS_TIMER_RTC_LPC if MCUX_HAS_COMPONENT_driver.lpc_rtc
     default MCUX_PRJSEG_TICKLESS_TIMER_RTC_JDP if MCUX_HAS_COMPONENT_driver.rtc_jdp
+    default MCUX_PRJSEG_TICKLESS_TIMER_RTC if MCUX_HAS_COMPONENT_driver.rtc
+    default MCUX_PRJSEG_TICKLESS_TIMER_NONE
     help
       Select which timer peripheral to use for FreeRTOS tickless mode
 
-# config TICKLESS_TIMER_GPT
+config MCUX_PRJSEG_TICKLESS_TIMER_NONE
+    bool "None (GPIO only)"
+    help
+      No timer selected - only GPIO functionality available
+
 config MCUX_PRJSEG_TICKLESS_TIMER_GPT
     bool "GPT"
     select MCUX_COMPONENT_driver.gpt
@@ -46,6 +47,12 @@ config MCUX_PRJSEG_TICKLESS_TIMER_LPTMR
     help
       Use Low Power Timer (LPTMR) for tickless mode
 
+config MCUX_PRJSEG_TICKLESS_TIMER_OSTIMER
+    bool "OSTIMER"
+    select MCUX_COMPONENT_driver.ostimer
+    help
+      Use Low Power Timer (OSTIMER) for tickless mode
+
 config MCUX_PRJSEG_TICKLESS_TIMER_RTC
     bool "RTC"
     select MCUX_COMPONENT_driver.lpc_rtc
@@ -53,22 +60,16 @@ config MCUX_PRJSEG_TICKLESS_TIMER_RTC
       Use Real Time Clock (RTC) for tickless mode
 
 config MCUX_PRJSEG_TICKLESS_TIMER_RTC_JDP
-    bool "RTC"
+    bool "RTC JDP"
     select MCUX_COMPONENT_driver.rtc_jdp
     help
       Use Real Time Clock (RTC) for tickless mode
 
-config MCUX_PRJSEG_TICKLESS_TIMER_OSTIMER
-    bool "OSTIMER"
-    select MCUX_COMPONENT_driver.ostimer
+config MCUX_PRJSEG_TICKLESS_TIMER_RTC_LPC
+    bool "RTC LPC"
+    select MCUX_COMPONENT_driver.lpc_rtc
     help
-      Use OS Timer for tickless mode
-
-config MCUX_PRJSEG_TICKLESS_TIMER_LPIT
-    bool "LPIT"
-    select MCUX_COMPONENT_driver.lpit
-    help
-      Use Low Power Interrupt Timer (LPIT) for tickless mode
+      Use Real Time Clock (RTC) for tickless mode
 
 endchoice
 
@@ -79,6 +80,7 @@ choice MCUX_PRJSEG_TICKLESS_GPIO
     default MCUX_PRJSEG_TICKLESS_GPIO_RGPIO if MCUX_HAS_COMPONENT_driver.rgpio
     default MCUX_PRJSEG_TICKLESS_GPIO_IGPIO if MCUX_HAS_COMPONENT_driver.igpio
     default MCUX_PRJSEG_TICKLESS_GPIO_SIUL2 if MCUX_HAS_COMPONENT_driver.siul2
+    default MCUX_PRJSEG_TICKLESS_GPIO_LPC if MCUX_HAS_COMPONENT_driver.lpc_gpio
     default MCUX_PRJSEG_TICKLESS_GPIO_STANDARD if MCUX_HAS_COMPONENT_driver.gpio
     help
       Select which GPIO peripheral to use for button input
@@ -86,6 +88,8 @@ choice MCUX_PRJSEG_TICKLESS_GPIO
 config MCUX_PRJSEG_TICKLESS_GPIO_STANDARD
     bool "Standard GPIO"
     select MCUX_COMPONENT_driver.gpio
+    select MCUX_COMPONENT_driver.inputmux if MCUX_HAS_COMPONENT_driver.inputmux
+    select MCUX_COMPONENT_driver.pint if MCUX_HAS_COMPONENT_driver.pint
     help
       Use standard GPIO interface
 
@@ -107,60 +111,12 @@ config MCUX_PRJSEG_TICKLESS_GPIO_SIUL2
     help
       Use SIUL2 interface
 
+config MCUX_PRJSEG_TICKLESS_GPIO_LPC
+    bool "LPC GPIO"
+    select MCUX_COMPONENT_driver.lpc_gpio
+    select MCUX_COMPONENT_driver.inputmux
+    select MCUX_COMPONENT_driver.pint
+    help
+      Use standard LPC GPIO interface
+
 endchoice
-
-config MCUX_PRJSEG_freertos_tickless_lpc_rtc_segment
-    bool "freertos_tickless_gpt_igpio_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-    select MCUX_COMPONENT_driver.lpc_rtc
-
-config MCUX_PRJSEG_freertos_tickless_ostimer_segment
-    bool "freertos_tickless_ostimer_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-    select MCUX_COMPONENT_driver.ostimer
-
-config MCUX_PRJSEG_freertos_tickless_lptmr_portmax32_segment
-    bool "freertos_tickless_lptmr_portmax32_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-    select MCUX_COMPONENT_driver.lptmr
-
-config MCUX_PRJSEG_freertos_tickless_lptmr_segment
-    bool "freertos_tickless_lptmr_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-    select MCUX_COMPONENT_driver.lptmr
-
-config MCUX_PRJSEG_freertos_tickless_lpit_segment
-    bool "freertos_tickless_lpit_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-    select MCUX_COMPONENT_driver.lpit
-    select MCUX_COMPONENT_driver.irqsteer
-    select MCUX_COMPONENT_driver.igpio
-
-config MCUX_PRJSEG_freertos_tickless_gpt_igpio_segment
-    bool "freertos_tickless_gpt_igpio_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-    select MCUX_COMPONENT_driver.gpt
-    select MCUX_COMPONENT_driver.igpio
-
-config MCUX_PRJSEG_freertos_tickless_epit_segment
-    bool "freertos_tickless_epit_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-
-config MCUX_PRJSEG_freertos_tickless_qn_rtc_segment
-    bool "freertos_tickless_gpt_igpio_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-
-config MCUX_PRJSEG_freertos_tickless_rgpio_gpt_segment
-    bool "freertos_tickless_gpt_igpio_segment"
-    default n
-    select TICKLESS_HAS_LEGACY_IMPL
-    select MCUX_COMPONENT_driver.gpt
-    select MCUX_COMPONENT_driver.rgpio

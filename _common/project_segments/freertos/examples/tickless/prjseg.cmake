@@ -4,6 +4,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 #
 
+if (CONFIG_MCUX_PRJSEG_ENABLE_FREERTOS_TICKLESS)
+    # Intentionally kept empty
+endif()
 
 # Add unified tickless segment
 if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
@@ -20,7 +23,7 @@ if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
     # Add timer HAL implementation based on configuration
     if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_GPT)
         mcux_add_source(
-            SOURCES tickless_gpt_hal.c
+            SOURCES tickless_timer_gpt_hal.c
         )
         mcux_add_macro(
             CC "CONFIG_TICKLESS_TIMER_GPT"
@@ -30,7 +33,7 @@ if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
 
     if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_LPTMR)
         mcux_add_source(
-            SOURCES tickless_lptmr_hal.c
+            SOURCES tickless_timer_lptmr_hal.c
         )
         mcux_add_macro(
             CC "CONFIG_TICKLESS_TIMER_LPTMR"
@@ -38,9 +41,19 @@ if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
         )
     endif()
 
+    if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_OSTIMER)
+        mcux_add_source(
+            SOURCES tickless_timer_ostimer_hal.c
+        )
+        mcux_add_macro(
+            CC "CONFIG_TICKLESS_TIMER_OSTIMER"
+            CX "CONFIG_TICKLESS_TIMER_OSTIMER"
+        )
+    endif()
+
     if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_RTC)
         mcux_add_source(
-            SOURCES tickless_rtc_hal.c
+            SOURCES tickless_timer_rtc_hal.c
         )
         mcux_add_macro(
             CC "CONFIG_TICKLESS_TIMER_RTC"
@@ -50,7 +63,7 @@ if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
 
     if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_RTC_JDP)
         mcux_add_source(
-            SOURCES tickless_rtc_jdp_hal.c
+            SOURCES tickless_timer_rtc_jdp_hal.c
         )
         mcux_add_macro(
             CC "CONFIG_TICKLESS_TIMER_RTC_JDP"
@@ -58,24 +71,18 @@ if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
         )
     endif()
 
-    if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_OSTIMER)
+    if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_RTC_LPC)
         mcux_add_source(
-            SOURCES tickless_ostimer_hal.c
+            SOURCES tickless_timer_rtc_lpc_hal.c
         )
         mcux_add_macro(
-            CC "CONFIG_TICKLESS_TIMER_OSTIMER"
-            CX "CONFIG_TICKLESS_TIMER_OSTIMER"
+            CC "CONFIG_TICKLESS_TIMER_RTC_LPC"
+            CX "CONFIG_TICKLESS_TIMER_RTC_LPC"
         )
     endif()
 
-    if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_LPIT)
-        mcux_add_source(
-            SOURCES tickless_lpit_hal.c
-        )
-        mcux_add_macro(
-            CC "CONFIG_TICKLESS_TIMER_LPIT"
-            CX "CONFIG_TICKLESS_TIMER_LPIT"
-        )
+    if(CONFIG_MCUX_PRJSEG_TICKLESS_TIMER_NONE)
+        # Intentionally kept empty
     endif()
 
     # Add GPIO HAL implementation based on configuration
@@ -89,19 +96,20 @@ if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
         )
     endif()
 
-    if(CONFIG_MCUX_PRJSEG_TICKLESS_GPIO_IGPIO)
+    if (CONFIG_MCUX_PRJSEG_TICKLESS_GPIO_IGPIO)
+        # Yes, this is same as CONFIG_MCUX_PRJSEG_TICKLESS_GPIO_STANDARD
         mcux_add_source(
-            SOURCES tickless_igpio_hal.c
+            SOURCES tickless_gpio_hal.c
         )
         mcux_add_macro(
-            CC "CONFIG_TICKLESS_GPIO_IGPIO"
-            CX "CONFIG_TICKLESS_GPIO_IGPIO"
+            CC "CONFIG_TICKLESS_GPIO_STANDARD"
+            CX "CONFIG_TICKLESS_GPIO_STANDARD"
         )
     endif()
 
     if(CONFIG_MCUX_PRJSEG_TICKLESS_GPIO_RGPIO)
         mcux_add_source(
-            SOURCES tickless_rgpio_hal.c
+            SOURCES tickless_gpio_rgpio_hal.c
         )
         mcux_add_macro(
             CC "CONFIG_TICKLESS_GPIO_RGPIO"
@@ -111,106 +119,21 @@ if(CONFIG_MCUX_PRJSEG_FREERTOS_TICKLESS_HAL)
 
     if(CONFIG_MCUX_PRJSEG_TICKLESS_GPIO_SIUL2)
         mcux_add_source(
-            SOURCES tickless_siul2_hal.c
+            SOURCES tickless_gpio_siul2_hal.c
         )
         mcux_add_macro(
             CC "CONFIG_TICKLESS_GPIO_SIUL2"
             CX "CONFIG_TICKLESS_GPIO_SIUL2"
         )
     endif()
-endif()
 
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_lpc_rtc_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_rtc.c
-                fsl_tickless_rtc.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
-endif()
-
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_ostimer_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_ostimer.c
-                fsl_tickless_ostimer.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
-endif()
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_lptmr_portmax32_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_lptmr_portmax32.c
-                fsl_tickless_lptmr_portmax32.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
-endif()
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_lptmr_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_lptmr.c
-                fsl_tickless_lptmr.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
-endif()
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_lpit_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_lpit.c
-                fsl_tickless_lpit.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
-endif()
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_gpt_igpio_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_gpt.c
-                fsl_tickless_gpt.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
-endif()
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_epit_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_epit.c
-                fsl_tickless_epit.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
-endif()
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_qn_rtc_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_qn_rtc.c
-    )
-endif()
-
-if(CONFIG_MCUX_PRJSEG_freertos_tickless_rgpio_gpt_segment)
-    mcux_add_source(
-        SOURCES fsl_tickless_gpt.c
-                fsl_tickless_gpt.h
-    )
-
-    mcux_add_include(
-        INCLUDES ./
-    )
+    if(CONFIG_MCUX_PRJSEG_TICKLESS_GPIO_LPC)
+        mcux_add_source(
+            SOURCES tickless_gpio_lpc_hal.c
+        )
+        mcux_add_macro(
+            CC "CONFIG_TICKLESS_GPIO_LPC"
+            CX "CONFIG_TICKLESS_GPIO_LPC"
+        )
+    endif()
 endif()
