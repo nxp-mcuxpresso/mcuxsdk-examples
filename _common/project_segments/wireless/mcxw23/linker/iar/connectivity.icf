@@ -116,6 +116,7 @@ define block RAMFUNC   { section .ramfunc };
 
 initialize by copy {
     readwrite,
+    readonly object fsl_spifi.o,
     section .textrw,
     section .ramfunc
 };

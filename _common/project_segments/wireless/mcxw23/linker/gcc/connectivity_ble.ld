@@ -96,10 +96,8 @@ SECTIONS
   .text :
   {
     . = ALIGN(4);
-    *(.text)                 /* .text sections (code) */
-    *(.text*)                /* .text* sections (code) */
-    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(*fsl_spifi.c.obj) .text .rodata)
+    *(EXCLUDE_FILE(*fsl_spifi.c.obj) .text* .rodata*)
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -206,6 +204,10 @@ SECTIONS
     __data_start__ = .;      /* create a global symbol at data start */
     *(.ramfunc*)             /* for functions in ram */
     *(RamFunction)           /* for functions in ram */
+    *fsl_spifi.c.obj(.text)
+    *fsl_spifi.c.obj(.text*)
+    *fsl_spifi.c.obj(.rodata)
+    *fsl_spifi.c.obj(.rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))
