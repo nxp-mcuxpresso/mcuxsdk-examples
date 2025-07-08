@@ -36,9 +36,15 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define NETC_EP0_PORT                0x00U
-#define NETC_EP0_PHY_ADDR            0x03U
-#define PHY_PAGE_SELECT_REG          0x1FU /*!< The PHY page select register. */
+#ifndef NETC_PHY_ADDR
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+#define NETC_PHY_ADDR BOARD_SWT_PORT0_PHY_ADDR
+#else
+#define NETC_PHY_ADDR BOARD_EP0_PHY_ADDR
+#endif
+#endif
+
+/*!< The PHY page select register. */
 #define EXAMPLE_EP_BUFF_SIZE_ALIGN   64U
 #define EXAMPLE_EP_RXBUFF_SIZE       1518U
 #define EXAMPLE_EP_RXBUFF_SIZE_ALIGN SDK_SIZEALIGN(EXAMPLE_EP_RXBUFF_SIZE, EXAMPLE_EP_BUFF_SIZE_ALIGN)
@@ -46,11 +52,34 @@
 #define EXAMPLE_RX_INTR_MSG_DATA     2U
 #define EXAMPLE_TX_MSIX_ENTRY_IDX    0U
 #define EXAMPLE_RX_MSIX_ENTRY_IDX    1U
-#define EXAMPLE_EP_TEST_FRAME_SIZE   1000U
 
 #ifndef PHY_STABILITY_DELAY_US
 #define PHY_STABILITY_DELAY_US (500000U)
 #endif
+
+#if defined(BOARD_USE_NETC_PHY_RTL8201)
+#define PHY_PAGE_SELECT_REG 0x1FU
+#endif
+
+#if defined(BOARD_USE_NETC_PHY_YT8521)
+#define PHY_EXT_ADDR_REG 0x1EU
+#define PHY_EXT_DATA_REG 0x1FU
+#define PHY_RGMII_CONFIG1_REG 0xA003U
+#define PHY_RGMII_CONFIG1_TXDLY_MASK 0xFU
+#endif
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+/* Switch pseudo port */
+#ifndef EXAMPLE_SWT_PSEUDO_PORT
+#define EXAMPLE_SWT_PSEUDO_PORT 0x4U
+#endif
+
+/*! Note: Be careful that some ports are multiplexed with SEMC. */
+#if !defined(EXAMPLE_SWT_USED_PORT_BITMAP)
+#define EXAMPLE_SWT_USED_PORT_BITMAP 0x5U /*! Enabled Switch port bit map, bit n represents port n. */
+#endif
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -58,11 +87,16 @@ void ENETIF_Input(pbuf_t *pbuffer);
 void VNIC_EnetCallback(pbuf_t *pbuffer);
 void VNIC_EnetRxBufFree(pbuf_t *pbuf);
 uint8_t *VNIC_EnetRxBufAlloc(void);
-extern NETC_ENETC_Type *BOARD_GetExampleEnetBase(void);
-extern uint32_t BOARD_GetPhySysClock(void);
 status_t APP_EP0_MDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data);
 status_t APP_EP0_MDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData);
 extern uint8_t g_hwaddr[ENET_MAC_ADDR_SIZE];
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+extern uint8_t BOARD_SwitchPortNum;
+extern uint32_t BOARD_SwtichFrameFID;
+extern uint8_t BOARD_PHYAddress;
+#endif
+
 status_t APP_PHY_Init(void);
 status_t APP_PHY_GetLinkModeSpeedDuplex(netc_hw_mii_mode_t *mode,
                                         netc_hw_mii_speed_t *speed,
@@ -74,10 +108,21 @@ status_t APP_PHY_SetPort(phy_config_t *phyConfig);
 ep_handle_t g_handle;
 netc_mdio_handle_t s_mdio_handle;
 ep_config_t g_ep_config;
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+swt_handle_t g_swt_handle;
+swt_config_t g_swt_config;
+#endif
+
 typedef uint8_t rx_buffer_t[EXAMPLE_EP_RXBUFF_SIZE_ALIGN];
 AT_NONCACHEABLE_SECTION_ALIGN(netc_rx_bd_t RxBuffDescrip[NETC_RXBD_NUM], NETC_EP_BD_ALIGN);
 AT_NONCACHEABLE_SECTION_ALIGN(netc_tx_bd_t TxBuffDescrip[NETC_TXBD_NUM], NETC_EP_BD_ALIGN);
 AT_NONCACHEABLE_SECTION_ALIGN(rx_buffer_t RxDataBuff[NETC_RXBD_NUM], EXAMPLE_EP_BUFF_SIZE_ALIGN);
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+AT_NONCACHEABLE_SECTION_ALIGN(netc_cmd_bd_t g_cmdBuffDescrip[NETC_TXBD_NUM], NETC_EP_BD_ALIGN);
+#endif
+
 uint64_t rxBuffAddr[NETC_RXBD_NUM];
 #if defined(BOARD_USE_NETC_PHY_RTL8201)
 static phy_rtl8201_resource_t s_phy_resource;
@@ -87,8 +132,9 @@ static phy_rtl8211f_resource_t s_phy_resource;
 static phy_yt8521_resource_t s_phy_resource;
 #endif
 static phy_handle_t s_phy_handle;
-static uint8_t s_phy_address = NETC_EP0_PHY_ADDR;
+static uint8_t s_phy_address = NETC_PHY_ADDR;
 static netc_tx_frame_info_t g_txDirty[NETC_TXBD_NUM];
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -158,18 +204,33 @@ enet_err_t NETCIF_Output(pbuf_t *packetBuffer)
     netc_buffer_struct_t txBuff = {.buffer = packetBuffer->payload, .length = packetBuffer->length};
     netc_frame_struct_t txFrame = {.buffArray = &txBuff, .length = 1};
 
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+    swt_mgmt_tx_arg_t txArg = {0};
+    txArg.ring = 0;
+#endif
+
     if (packetBuffer->length >= ENET_FRAME_MAX_FRAMELEN)
     {
         return ENET_ERROR;
     }
 
+    /* Send a frame out. */
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+    SWT_ReclaimTxDescriptor(&g_swt_handle, false, 0);
+
+    if (kStatus_Success == SWT_SendFrame(&g_swt_handle, txArg, (netc_hw_port_idx_t)(kNETC_SWITCH0Port0 + BOARD_SwitchPortNum), false, &txFrame, NULL, NULL))
+    {
+        return ENET_OK;
+    }
+#else
     EP_ReclaimTxDescriptor(&g_handle, 0);
 
-    /* Send a frame out. */
     if (kStatus_Success == EP_SendFrame(&g_handle, 0, &txFrame, NULL, NULL))
     {
         return ENET_OK;
     }
+#endif
+
     return ENET_ERROR;
 }
 
@@ -204,6 +265,13 @@ static status_t APP_ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_f
     return kStatus_Success;
 }
 
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+static status_t APP_SwtReclaimCallback(swt_handle_t *handle, netc_tx_frame_info_t *frameInfo, void *userData)
+{
+    return kStatus_Success;
+}
+#endif
+
 status_t APP_EP0_MDIOWrite(uint8_t phyAddr, uint8_t regAddr, uint16_t data)
 {
     return NETC_MDIOWrite(&s_mdio_handle, phyAddr, regAddr, data);
@@ -213,6 +281,32 @@ status_t APP_EP0_MDIORead(uint8_t phyAddr, uint8_t regAddr, uint16_t *pData)
 {
     return NETC_MDIORead(&s_mdio_handle, phyAddr, regAddr, pData);
 }
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+static status_t APP_SWT_AddTableEntry(void)
+{
+    status_t result = kStatus_Success;
+    uint32_t entryID;
+
+    netc_tb_ipf_config_t ipfEntryCfg;
+
+    memset(&ipfEntryCfg, 0U, sizeof(netc_tb_ipf_config_t));
+    ipfEntryCfg.keye.srcPortMask = EXAMPLE_SWT_USED_PORT_BITMAP;
+    ipfEntryCfg.cfge.hr          = kNETC_SoftwareDefHR0;
+    ipfEntryCfg.cfge.fltfa       = kNETC_IPFRedirectToMgmtPort;
+
+    ipfEntryCfg.keye.srcPort = BOARD_SwitchPortNum;
+    result                   = SWT_RxIPFAddTableEntry(&g_swt_handle, &ipfEntryCfg, &entryID);
+    if ((kStatus_Success != result) && (entryID != 0xFFFFFFFF))
+    {
+        PRINTF("\r\n%s: %d, Failed to add IPF table!, result = %u\r\n, entryID = %u", __func__, __LINE__, result,
+               entryID);
+        return kStatus_Fail;
+    }
+
+    return result;
+}
+#endif
 
 #ifdef BOARD_USE_NETC_PHY_RTL8201
 static status_t APP_Phy8201SetUp(phy_handle_t *handle)
@@ -260,14 +354,22 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
         g_handle.hw.si->BDR[0].RBIER &= ~ENETC_SI_RBIER_RXTIE_MASK;
         do
         {
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+            result = SWT_GetRxFrameSize(&g_swt_handle, &length);
+#else
             result = EP_GetRxFrameSize(&g_handle, 0, &length);
+#endif
             if (0U == length)
             {
                 break;
             }
             else if (result != kStatus_Success)
             {
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+                SWT_ReceiveFrameCopy(&g_swt_handle, NULL, 1, NULL);
+#else
                 EP_ReceiveFrameCopy(&g_handle, 0, NULL, 1, NULL);
+#endif
                 break;
             }
 
@@ -277,11 +379,19 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
             if (packetBuffer.payload == NULL)
             {
                 /* No packet buffer available, ignore this packet. */
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+                SWT_ReceiveFrameCopy(&g_swt_handle, NULL, 1, NULL);
+#else
                 EP_ReceiveFrameCopy(&g_handle, 0, NULL, 1, NULL);
+#endif
                 break;
             }
             packetBuffer.length = length;
-            result              = EP_ReceiveFrameCopy(&g_handle, 0, packetBuffer.payload, packetBuffer.length, NULL);
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+            result = SWT_ReceiveFrameCopy(&g_swt_handle, packetBuffer.payload, packetBuffer.length, NULL);
+#else
+            result = EP_ReceiveFrameCopy(&g_handle, 0, packetBuffer.payload, packetBuffer.length, NULL);
+#endif
             if (result != kStatus_Success)
             {
                 break;
@@ -305,10 +415,8 @@ status_t APP_PHY_GetLinkModeSpeedDuplex(netc_hw_mii_mode_t *mode,
 {
 #if defined(BOARD_USE_NETC_PHY_RTL8201)
     *mode = kNETC_RmiiMode;
-#elif defined(BOARD_USE_NETC_PHY_RTL8211F)
+#elif defined(BOARD_USE_NETC_PHY_RTL8211F) || defined(BOARD_USE_NETC_PHY_YT8521)
     *mode = kNETC_RgmiiMode;
-#elif defined(BOARD_USE_NETC_PHY_YT8521)
-    *mode = kNETC_RmiiMode;
 #endif
 
     return PHY_GetLinkSpeedDuplex(&s_phy_handle, (phy_speed_t *)speed, (phy_duplex_t *)duplex);
@@ -322,10 +430,16 @@ status_t APP_PHY_SetPort(phy_config_t *phyConfig)
     s_phy_resource.read  = APP_EP0_MDIORead;
 
     result = PHY_Init(&s_phy_handle, phyConfig);
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
+
+#if defined(BOARD_USE_NETC_PHY_YT8521)
+    uint16_t regValue;
+    PHY_Write(&s_phy_handle, PHY_EXT_ADDR_REG, PHY_RGMII_CONFIG1_REG);
+    PHY_Read(&s_phy_handle, PHY_EXT_DATA_REG, &regValue);
+    regValue &= ~PHY_RGMII_CONFIG1_TXDLY_MASK;
+    /* 150ps per step. */
+    regValue |= 0x2;
+    PHY_Write(&s_phy_handle, PHY_EXT_DATA_REG, regValue);
+#endif
 
     return result;
 }
@@ -347,7 +461,7 @@ status_t APP_PHY_Init(void)
 #endif    
     };
 
-    /* Initialize PHY for EP. */
+    /* Initialize PHY. */
     phyConfig.resource = &s_phy_resource;
     phyConfig.phyAddr  = s_phy_address;
     result             = APP_PHY_SetPort(&phyConfig);
@@ -355,6 +469,7 @@ status_t APP_PHY_Init(void)
     {
         return result;
     }
+
 #ifdef BOARD_USE_NETC_PHY_RTL8201
     result = APP_Phy8201SetUp(&s_phy_handle);
     if (result != kStatus_Success)
@@ -389,6 +504,10 @@ enet_err_t NETCIF_Init(void)
     netc_hw_mii_duplex_t phyDuplex;
     netc_msix_entry_t msixEntry[2];
     uint32_t msgAddr;
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+    swt_transfer_config_t swtTxRxConfig;
+#endif
 
     /* initialize the hardware */
     /* set MAC hardware address */
@@ -425,19 +544,47 @@ enet_err_t NETCIF_Init(void)
     /* BD ring configuration. */
     bdrConfig.rxBdrConfig[0].bdArray       = &RxBuffDescrip[0];
     bdrConfig.rxBdrConfig[0].len           = NETC_RXBD_NUM;
+    bdrConfig.rxBdrConfig[0].extendDescEn  = false;
     bdrConfig.rxBdrConfig[0].buffAddrArray = &rxBuffAddr[0];
     bdrConfig.rxBdrConfig[0].buffSize      = EXAMPLE_EP_RXBUFF_SIZE_ALIGN;
     bdrConfig.rxBdrConfig[0].msixEntryIdx  = EXAMPLE_RX_MSIX_ENTRY_IDX;
-    bdrConfig.rxBdrConfig[0].extendDescEn  = false;
     bdrConfig.rxBdrConfig[0].enThresIntr   = true;
     bdrConfig.rxBdrConfig[0].enCoalIntr    = true;
     bdrConfig.rxBdrConfig[0].intrThreshold = 1;
 
+#ifndef ETH_ADAPTER_USE_SWT_MGMT_IPF
     bdrConfig.txBdrConfig[0].bdArray      = &TxBuffDescrip[0];
     bdrConfig.txBdrConfig[0].len          = NETC_TXBD_NUM;
     bdrConfig.txBdrConfig[0].dirtyArray   = &g_txDirty[0];
     bdrConfig.txBdrConfig[0].msixEntryIdx = EXAMPLE_TX_MSIX_ENTRY_IDX;
     bdrConfig.txBdrConfig[0].enIntr       = true;
+#endif
+
+    /* Endpoint configuration. */
+    (void)EP_GetDefaultConfig(&g_ep_config);
+    g_ep_config.si                    = kNETC_ENETC1PSI0;
+    g_ep_config.siConfig.txRingUse    = 1;
+    g_ep_config.siConfig.rxRingUse    = 1;
+    g_ep_config.reclaimCallback       = APP_ReclaimCallback;
+    g_ep_config.msixEntry             = &msixEntry[0];
+    g_ep_config.entryNum              = 2;
+    g_ep_config.rxCacheMaintain       = true;
+    g_ep_config.txCacheMaintain       = true;
+
+#ifndef ETH_ADAPTER_USE_SWT_MGMT_IPF
+    g_ep_config.port.ethMac.miiMode   = phyMode;
+    g_ep_config.port.ethMac.miiSpeed  = phySpeed;
+    g_ep_config.port.ethMac.miiDuplex = phyDuplex;
+#endif
+
+    result                            = EP_Init(&g_handle, &g_hwaddr[0], &g_ep_config, &bdrConfig);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+    SWT_GetDefaultConfig(&g_swt_config);
 
     /* Wait PHY link up. */
     do
@@ -446,36 +593,60 @@ enet_err_t NETCIF_Init(void)
     } while ((result != kStatus_Success) || (!link));
 
     result = APP_PHY_GetLinkModeSpeedDuplex(&phyMode, &phySpeed, &phyDuplex);
+
     if (result != kStatus_Success)
     {
         return result;
     }
+
+    g_swt_config.ports[BOARD_SwitchPortNum].ethMac.miiMode   = phyMode;
+    g_swt_config.ports[BOARD_SwitchPortNum].ethMac.miiSpeed  = phySpeed;
+    g_swt_config.ports[BOARD_SwitchPortNum].ethMac.miiDuplex = phyDuplex;
 
     /* Wait a moment for PHY status to be stable. */
     SDK_DelayAtLeastUs(PHY_STABILITY_DELAY_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
-    /* Endpoint configuration. */
-    (void)EP_GetDefaultConfig(&g_ep_config);
-    g_ep_config.si                    = kNETC_ENETC0PSI0;
-    g_ep_config.siConfig.txRingUse    = 1;
-    g_ep_config.siConfig.rxRingUse    = 1;
-    g_ep_config.reclaimCallback       = APP_ReclaimCallback;
-    g_ep_config.msixEntry             = &msixEntry[0];
-    g_ep_config.entryNum              = 2;
-    g_ep_config.port.ethMac.miiMode   = phyMode;
-    g_ep_config.port.ethMac.miiSpeed  = phySpeed;
-    g_ep_config.port.ethMac.miiDuplex = phyDuplex;
-    g_ep_config.rxCacheMaintain       = true;
-    g_ep_config.txCacheMaintain       = true;
-    result                            = EP_Init(&g_handle, &g_hwaddr[0], &g_ep_config, &bdrConfig);
+    g_swt_config.bridgeCfg.dVFCfg.portMembership = (1U << EXAMPLE_SWT_PSEUDO_PORT) | EXAMPLE_SWT_USED_PORT_BITMAP;
+    g_swt_config.ports[BOARD_SwitchPortNum].commonCfg.ipfCfg.enIPFTable = true;
+
+    g_swt_config.cmdRingUse            = 1U;
+    g_swt_config.cmdBdrCfg[0].bdBase   = &g_cmdBuffDescrip[0];
+    g_swt_config.cmdBdrCfg[0].bdLength = 8U;
+
+    result = SWT_Init(&g_swt_handle, &g_swt_config);
     if (result != kStatus_Success)
     {
+        PRINTF("\r\n%s: %d, Failed to initialize switch!\r\n", __func__, __LINE__);
         return result;
     }
+
+    /* Configure switch transfer resource. */
+    swtTxRxConfig.enUseMgmtRxBdRing            = false;
+    swtTxRxConfig.enUseMgmtTxBdRing            = true;
+    swtTxRxConfig.mgmtTxBdrConfig.bdArray      = &TxBuffDescrip[0];
+    swtTxRxConfig.mgmtTxBdrConfig.len          = NETC_TXBD_NUM;
+    swtTxRxConfig.mgmtTxBdrConfig.dirtyArray   = &g_txDirty[0];
+    swtTxRxConfig.mgmtTxBdrConfig.msixEntryIdx = EXAMPLE_TX_MSIX_ENTRY_IDX;
+    swtTxRxConfig.mgmtTxBdrConfig.enIntr       = true;
+    swtTxRxConfig.reclaimCallback              = APP_SwtReclaimCallback;
+    swtTxRxConfig.rxCacheMaintain              = true;
+    swtTxRxConfig.txCacheMaintain              = true;
+
+    result = SWT_ManagementTxRxConfig(&g_swt_handle, &g_handle, &swtTxRxConfig);
+    if (kStatus_Success != result)
+    {
+        PRINTF("\r\n%s: %d, Failed to config TxRx!\r\n", __func__, __LINE__);
+        return result;
+    }
+#endif
 
     /* Unmask MSIX message interrupt. */
     EP_MsixSetEntryMask(&g_handle, EXAMPLE_TX_MSIX_ENTRY_IDX, false);
     EP_MsixSetEntryMask(&g_handle, EXAMPLE_RX_MSIX_ENTRY_IDX, false);
+
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
+    (void)APP_SWT_AddTableEntry();
+#endif
 
     return result;
 }

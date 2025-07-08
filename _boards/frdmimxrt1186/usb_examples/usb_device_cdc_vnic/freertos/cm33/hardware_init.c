@@ -1,88 +1,46 @@
 /*
- * Copyright 2022 - 2023 NXP
- * All rights reserved.
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-/*${header:start}*/
+
+#include "pin_mux.h"
+#include "clock_config.h"
+#include "board.h"
+
 #include "usb_device_config.h"
 #include "usb.h"
+#include "usb_phy.h"
 #include "usb_device.h"
 #include "usb_device_class.h"
 #include "usb_device_ch9.h"
-#include "usb_device_descriptor.h"
-#include "usb_device_cdc_acm.h"
 #include "usb_device_cdc_rndis.h"
+#include "usb_device_descriptor.h"
 #include "virtual_nic_enetif.h"
 #include "virtual_nic.h"
-#include "pin_mux.h"
-#include "usb_phy.h"
-#include "clock_config.h"
-#include "board.h"
-#include "fsl_netc_endpoint.h"
+
 #include "fsl_netc_mdio.h"
-#include "fsl_phyyt8521.h"
-#include "fsl_msgintr.h"
-#include "fsl_phy.h"
-/*${header:end}*/
 
-/*${macro:start}*/
 /*!< PHY reset pins. */
-#define EXAMPLE_EP0_PORT_PHY_RESET_PIN  RGPIO4, 13
-#define EXAMPLE_SWT_PORT0_PHY_RESET_PIN RGPIO4, 25
-#define EXAMPLE_SWT_PORT1_PHY_RESET_PIN RGPIO6, 13
-#define EXAMPLE_SWT_PORT2_PHY_RESET_PIN RGPIO4, 28
-#define EXAMPLE_SWT_PORT3_PHY_RESET_PIN RGPIO6, 15
+#define EXAMPLE_SWT_PORT0_PHY_RESET_PIN RGPIO1, 15
+#define EXAMPLE_SWT_PORT2_PHY_RESET_PIN RGPIO1, 20
 
-/*! Note: Be careful that some ports are multiplexed with SEMC. */
-#if !defined(EXAMPLE_SWT_USED_PORT_BITMAP)
-#define EXAMPLE_SWT_USED_PORT_BITMAP 0xFU /*! Enabled Switch port bit map, bit n represents port n. */
-#endif
-/*${macro:end}*/
-
-/*${variable:start}*/
-/*! @brief Enet PHY and MDIO interface handler. */
-extern netc_mdio_handle_t s_mdio_handle;
 extern usb_cdc_vnic_t g_cdcVnic;
-/*${variable:end}*/
+extern netc_mdio_handle_t s_mdio_handle;
+uint8_t BOARD_SwitchPortNum = 0;
+uint32_t BOARD_SwtichFrameFID = 1;
 
-/*${function:start}*/
 status_t APP_MDIO_Init(void)
 {
-    status_t result = kStatus_Success;
-
     netc_mdio_config_t mdioConfig = {
         .isPreambleDisable = false,
         .isNegativeDriven  = false,
-        .srcClockHz        = CLOCK_GetRootClockFreq(kCLOCK_Root_Netc),
+        .srcClockHz = CLOCK_GetRootClockFreq(kCLOCK_Root_Netc),
     };
 
-#ifdef EXAMPLE_PHY_USE_PORT_MDIO
-    /* Usually should call EP_Init/SWT_Init then init port MDIO, here just an quick enablement example. */
-    NETC_F2_PCI_HDR_TYPE0->PCI_CFH_CMD |=
-        (ENETC_PCI_TYPE0_PCI_CFH_CMD_MEM_ACCESS_MASK | ENETC_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER_EN_MASK);
-    NETC_F3_PCI_HDR_TYPE0->PCI_CFH_CMD |=
-        (ENETC_PCI_TYPE0_PCI_CFH_CMD_MEM_ACCESS_MASK | ENETC_PCI_TYPE0_PCI_CFH_CMD_BUS_MASTER_EN_MASK);
-
-    for (int i = 0U; i < 5U; i++)
-    {
-        mdioConfig.mdio.port = (netc_hw_eth_port_idx_t)((uint32_t)kNETC_ENETC0EthPort + i);
-        result               = NETC_MDIOInit(&s_mdio_handle[i], &mdioConfig);
-        if (result != kStatus_Success)
-        {
-            return result;
-        }
-    }
-#else
     mdioConfig.mdio.type = kNETC_EMdio;
-    result               = NETC_MDIOInit(&s_mdio_handle, &mdioConfig);
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
-#endif
 
-    return result;
+    return NETC_MDIOInit(&s_mdio_handle, &mdioConfig);
 }
 
 void BOARD_InitHardware(void)
@@ -92,24 +50,17 @@ void BOARD_InitHardware(void)
     BOARD_InitNETPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+
     BOARD_NETC_Init();
-    
     APP_MDIO_Init();
 
     /* Reset all PHYs even some are not used in case unstable status has effect on other PHYs. */
-    /* Reset PHY8201 for ETH4(EP), ETH0(Switch port0). Power on 150ms, reset 10ms, wait 150ms. */
-    /* Reset PHY8211 for ETH1(Switch port1), ETH2(Switch port2), ETH3(Switch port3). Reset 10ms, wait 30ms. */
-    RGPIO_PinWrite(EXAMPLE_EP0_PORT_PHY_RESET_PIN, 0);
+    /* Reset YT8521 for ETH0, ETH2. Reset 10ms, wait 150ms. */
     RGPIO_PinWrite(EXAMPLE_SWT_PORT0_PHY_RESET_PIN, 0);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT1_PHY_RESET_PIN, 0);
     RGPIO_PinWrite(EXAMPLE_SWT_PORT2_PHY_RESET_PIN, 0);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT3_PHY_RESET_PIN, 0);
     SDK_DelayAtLeastUs(10000, CLOCK_GetFreq(kCLOCK_CpuClk));
-    RGPIO_PinWrite(EXAMPLE_EP0_PORT_PHY_RESET_PIN, 1);
     RGPIO_PinWrite(EXAMPLE_SWT_PORT0_PHY_RESET_PIN, 1);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT1_PHY_RESET_PIN, 1);
     RGPIO_PinWrite(EXAMPLE_SWT_PORT2_PHY_RESET_PIN, 1);
-    RGPIO_PinWrite(EXAMPLE_SWT_PORT3_PHY_RESET_PIN, 1);
     SDK_DelayAtLeastUs(150000, CLOCK_GetFreq(kCLOCK_CpuClk));
 }
 
@@ -131,6 +82,7 @@ void USB_DeviceClockInit(void)
     CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, usbClockFreq);
     USB_EhciPhyInit(CONTROLLER_ID, BOARD_XTAL0_CLK_HZ, &phyConfig);
 }
+
 void USB_DeviceIsrEnable(void)
 {
     uint8_t irqNumber;
@@ -142,10 +94,10 @@ void USB_DeviceIsrEnable(void)
     NVIC_SetPriority((IRQn_Type)irqNumber, USB_DEVICE_INTERRUPT_PRIORITY);
     EnableIRQ((IRQn_Type)irqNumber);
 }
+
 #if USB_DEVICE_CONFIG_USE_TASK
 void USB_DeviceTaskFn(void *deviceHandle)
 {
     USB_DeviceEhciTaskFunction(deviceHandle);
 }
 #endif
-/*${function:end}*/

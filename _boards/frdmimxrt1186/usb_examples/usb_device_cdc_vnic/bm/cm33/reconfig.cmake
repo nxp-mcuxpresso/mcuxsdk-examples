@@ -48,7 +48,9 @@ mcux_add_macro(
 )
 
 mcux_add_macro(
-  CC "-DEXAMPLE_PORT_USE_100M_HALF_DUPLEX_MODE -DSDK_NETC_USED=1 -DDATA_SECTION_IS_CACHEABLE=0"
+  CC "-DSDK_NETC_USED=1\
+      -DDATA_SECTION_IS_CACHEABLE=0\
+      -DETH_ADAPTER_USE_SWT_MGMT_IPF"
 )
 
 mcux_add_mdk_configuration(

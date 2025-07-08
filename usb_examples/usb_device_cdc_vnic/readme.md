@@ -129,6 +129,7 @@ Step 7. Now the RNDIS driver should be installed successfully.
 - MIMXRT1040-EVK
 - EVKB-IMXRT1050
 - MIMXRT1024-EVK
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/usb_examples/usb_device_cdc_vnic/example_board_readme.md)
 - FRDM-MCXN947
 - FRDM-RW612
 - [MIMXRT1160-EVK](../../_boards/evkmimxrt1160/usb_examples/usb_device_cdc_vnic/example_board_readme.md)
