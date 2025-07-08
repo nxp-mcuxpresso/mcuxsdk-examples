@@ -6,7 +6,8 @@ Hardware requirements
 
 Board settings
 ============
-- ADC CH1B input signal J51-2(GPIO_AD_15).
+Change Jumper J27 from 1-2 to 2-3
+- ADC CHA1 input signal J51-8(GPIO_AD_14).
 
 Prepare the Demo
 ===============
