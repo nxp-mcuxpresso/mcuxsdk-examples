@@ -83,13 +83,20 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     bool timerExpired             = false;
 
     pxOstimerBase = vPortGetOstimerBase();
-    if (pxOstimerBase == 0 || xExpectedIdleTime <= 0)
+    if (pxOstimerBase == 0)
+    {
         return;
+    }
 
     /* Make sure the timer period doesn't overflow the counter. */
     if (xExpectedIdleTime > xMaximumPossibleSuppressedTicks)
     {
         xExpectedIdleTime = xMaximumPossibleSuppressedTicks;
+    }
+
+    if (xExpectedIdleTime <= 1)
+    {
+        return;
     }
 
     /* Calculate the reload value required to wait xExpectedIdleTime
@@ -193,7 +200,18 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
             /* Something other than the timer ended the sleep.
              * Work out how long the sleep lasted in timer counts, then
              * convert to ticks to calculate how many tick periods passed during sleep. */
-            ulTimerCountsElapsed = (uint32_t)(xOstimerCurrentValue - xOstimerStartValue);
+            uint64_t ulTimerCountsElapsed64 = xOstimerCurrentValue - xOstimerStartValue;
+
+            /* Check if the elapsed time fits in a 32-bit value */
+            if (ulTimerCountsElapsed64 > UINT32_MAX)
+            {
+                /* Handle overflow - limit to maximum value */
+                ulTimerCountsElapsed = UINT32_MAX;
+            }
+            else
+            {
+                ulTimerCountsElapsed = (uint32_t)ulTimerCountsElapsed64;
+            }
 
             /* How many complete tick periods passed while the processor was sleeping? */
             ulCompleteTickPeriods = ulTimerCountsElapsed / ulLPTimerCountsForOneTick;
