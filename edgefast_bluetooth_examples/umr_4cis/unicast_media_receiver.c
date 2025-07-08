@@ -118,7 +118,7 @@ lc3_decoder_t decoder[CONFIG_BT_ASCS_ASE_SNK_COUNT];
 
 #if defined(LE_AUDIO_SYNC_ENABLE) && (LE_AUDIO_SYNC_ENABLE > 0)
 #else
-static uint8_t audio_buff[MAX_AUDIO_CHANNEL_COUNT][PCM_AUDIO_BUFF_SIZE];
+SDK_ALIGN(static uint8_t audio_buff[MAX_AUDIO_CHANNEL_COUNT][PCM_AUDIO_BUFF_SIZE], 4);
 #endif
 static OSA_MSGQ_HANDLE_DEFINE(sdu_fifo, PCM_BUFF_COUNT, sizeof(void *));
 NET_BUF_POOL_FIXED_DEFINE(sdu_pool,

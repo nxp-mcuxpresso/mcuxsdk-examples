@@ -52,7 +52,7 @@ uint8_t wav_file_buff[MAX_AUDIO_CHANNEL_COUNT * MAX_AUDIO_BUFF_SIZE];
 #include "lc3_codec.h"
 lc3_encoder_t encoder[MAX_AUDIO_CHANNEL_COUNT];
 
-static uint8_t audio_buff[MAX_AUDIO_CHANNEL_COUNT][MAX_AUDIO_BUFF_SIZE];
+SDK_ALIGN(static uint8_t audio_buff[MAX_AUDIO_CHANNEL_COUNT][MAX_AUDIO_BUFF_SIZE], 4);
 static uint8_t sdu_buff[MAX_AUDIO_CHANNEL_COUNT][LC3_FRAME_SIZE_MAX];
 
 static lc3_codec_info_t lc3_codec_info;

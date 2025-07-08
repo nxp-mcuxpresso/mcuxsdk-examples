@@ -68,7 +68,7 @@ SrCvtFrm_t    upSrc[MAX_AUDIO_CHANNEL_COUNT];
 static uint8_t a2dp_audio_resample_buff[MAX_AUDIO_CHANNEL_COUNT][480 * 2];
 #endif
 
-static uint8_t audio_buff[MAX_AUDIO_CHANNEL_COUNT][MAX_AUDIO_BUFF_SIZE];
+SDK_ALIGN(static uint8_t audio_buff[MAX_AUDIO_CHANNEL_COUNT][MAX_AUDIO_BUFF_SIZE], 4);
 static uint8_t sdu_buff[MAX_AUDIO_CHANNEL_COUNT][LC3_FRAME_SIZE_MAX];
 
 static lc3_codec_info_t lc3_codec_info;
