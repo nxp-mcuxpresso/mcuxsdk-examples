@@ -100,3 +100,7 @@ safety_iec60730b:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    mcimx93evk:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
