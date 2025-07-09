@@ -9,7 +9,7 @@ Board settings
 ============
 Change Jumper J30 and J35 from 1-2 to 2-3
 1. For pin connection between board and encoder,
-      J2.1 -> kXBAR1_InputRESERVED18 -> kXBAR1_OutputEnc1Phasea -> EQDC_PHA
+      J1.14 -> kXBAR1_InputRESERVED18 -> kXBAR1_OutputEnc1Phasea -> EQDC_PHA
       J51.10 -> kXBAR1_InputRESERVED19 -> kXBAR1_OutputEnc1Phaseb -> EQDC_PHB
       J3.21 -> kXBAR1_InputRESERVED23 -> kXBAR1_OutputEnc1Index -> EQDC_INDEX
 
