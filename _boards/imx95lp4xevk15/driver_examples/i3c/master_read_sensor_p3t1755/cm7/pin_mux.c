@@ -40,8 +40,8 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: T29, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
   - {pin_num: T28, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: AJ17, peripheral: I3C2, signal: i3c_scl, pin_signal: ENET1_MDC}
-  - {pin_num: AH16, peripheral: I3C2, signal: i3c_sda, pin_signal: ENET1_MDIO}
+  - {pin_num: AJ17, peripheral: I3C2, signal: i3c_scl, pin_signal: ENET1_MDC, SION: ENABLED}
+  - {pin_num: AH16, peripheral: I3C2, signal: i3c_sda, pin_signal: ENET1_MDIO, SION: ENABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -52,8 +52,8 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_MDC__I3C2_SCL, 0U);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_MDIO__I3C2_SDA, 0U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_MDC__I3C2_SCL, 1U);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_ENET1_MDIO__I3C2_SDA, 1U);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
