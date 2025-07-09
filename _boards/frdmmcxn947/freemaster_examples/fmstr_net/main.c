@@ -68,7 +68,7 @@ int main(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    CLOCK_AttachClk(MUX_A(CM_ENETRMIICLKSEL, 0));
+    CLOCK_AttachClk(kNONE_to_ENETRMII);
     CLOCK_EnableClock(kCLOCK_Enet);
     SYSCON0->PRESETCTRL2 = SYSCON_PRESETCTRL2_ENET_RST_MASK;
     SYSCON0->PRESETCTRL2 &= ~SYSCON_PRESETCTRL2_ENET_RST_MASK;

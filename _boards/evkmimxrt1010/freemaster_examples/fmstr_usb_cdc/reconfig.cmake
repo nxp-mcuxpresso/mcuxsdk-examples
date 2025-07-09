@@ -10,5 +10,5 @@ mcux_add_linker_symbol(
 
 # MDK linker flags
 mcux_add_mdk_configuration(
-    LD "--legacyalign"
+    LD "--legacyalign --diag_suppress=3912"
 )

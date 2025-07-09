@@ -66,8 +66,8 @@
 #define WIFI_ADD_ON                  1
 #endif
 
-#define CONFIG_IPV6                  0
-//#define CONFIG_MAX_IPV6_ADDRESSES 3
+#define CONFIG_IPV6                  1
+#define CONFIG_MAX_IPV6_ADDRESSES    3
 
 /* Logs */
 #define CONFIG_ENABLE_ERROR_LOGS   1
