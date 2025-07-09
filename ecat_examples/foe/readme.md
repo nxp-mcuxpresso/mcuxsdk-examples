@@ -28,3 +28,4 @@ When FoE upgrade is successful, the serial port will output:
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/ecat_examples/foe/example_board_readme.md)
+- [FRDM-MIMXRT1186](../../_boards/frdmimxrt1186/ecat_examples/foe/example_board_readme.md)

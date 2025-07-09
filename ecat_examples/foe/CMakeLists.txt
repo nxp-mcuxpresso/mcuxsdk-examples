@@ -9,11 +9,10 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/ecat_examples/foe/foe.c
-    SOURCES examples/ecat_examples/foe/ecat_hw.c
     SOURCES examples/ecat_examples/foe/ecat_hw.h
-    SOURCES examples/ecat_examples/foe/bootutil_port/board_specific/flash_partitioning.c
-    SOURCES examples/ecat_examples/foe/bootutil_port/board_specific/flash_partitioning.h
-    SOURCES examples/ecat_examples/foe/bootutil_port/board_specific/sblconfig.h
+    SOURCES ${board_root}/${board}/ecat_examples/foe/flash_partitioning/flash_partitioning.c
+    SOURCES ${board_root}/${board}/ecat_examples/foe/flash_partitioning/flash_partitioning.h
+    SOURCES ${board_root}/${board}/ecat_examples/foe/sblconfig.h
     SOURCES examples/ecat_examples/foe/foe_support.c
     SOURCES examples/ecat_examples/foe/foe_support.h
     SOURCES examples/ecat_examples/foe/SSC/foe.xlsx
@@ -48,10 +47,7 @@ mcux_add_source(
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/ecat_examples/foe
-    INCLUDES examples/ecat_examples/foe/bootutil_port
-    INCLUDES examples/ecat_examples/foe/bootutil_port/board_specific
-    INCLUDES examples/ecat_examples/foe/bootutil_port/mcuboot_config
-    INCLUDES examples/ecat_examples/foe/bootutil_port/sysflash
+    INCLUDES ${board_root}/${board}/ecat_examples/foe/flash_partitioning
     INCLUDES examples/ecat_examples/foe/SSC
     INCLUDES examples/ecat_examples/foe/SSC/Src
 )
