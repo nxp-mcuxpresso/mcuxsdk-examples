@@ -20,9 +20,6 @@ Prepare the Demo
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
-Running the demo
-================
-${ANCHOR}
 
 Note:
 To debug in qspiflash, following steps are needed:

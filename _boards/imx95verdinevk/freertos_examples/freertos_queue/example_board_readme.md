@@ -24,7 +24,3 @@ Prepare the Demo
     - No flow control
 4.  Download the program to the target board.
 5.  Either re-power up your board or launch the debugger in your IDE to begin running the example.
-
-Running the demo
-================
-${ANCHOR}

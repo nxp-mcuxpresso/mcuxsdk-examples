@@ -25,9 +25,3 @@ Prepare the Demo
 4.  Download the program to the target board.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
-
-Running the demo
-================
-${ANCHOR}
-
-
