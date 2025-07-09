@@ -16,3 +16,9 @@ Prepare the Demo
 3.  Download the program to the target board.
 4.  Launch the debugger in your IDE to begin running the demo.
 
+USB example settings
+===================
+- For eUSB mode, please disable USB_DEVICE_CONFIG_CHARGER_DETECT macro and USB_DEVICE_CONFIG_DETACH_ENABLE. RT700 eUSB does not support DCD feature (device charger detect) and VBUS detection.
+- For eUSB repeater mode, please populate R417 and R418, and remove R409 and R410. This is default setting on the board. Besides, please use external 5V power adapter to the board to make sure the power supply for eUSB PTN3222 is enough.
+- For eUSB native mode, please populate R409 and R410, and remove R417 and R418.
+ 
