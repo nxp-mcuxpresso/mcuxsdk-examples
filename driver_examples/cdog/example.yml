@@ -75,3 +75,4 @@ cdog:
     - -mdk@debug
     - -mdk@release
     mimxrt700evk@cm33_core1: []
+    frdmmcxa344: []

@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 crc:
   section-type: application
   contents:
@@ -65,3 +64,4 @@ crc:
     - -mdk@debug
     - -mdk@release
     frdmmcxe31b: []
+    frdmmcxa344: []

@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 hello_world:
   section-type: application
   contents:
@@ -347,3 +346,4 @@ hello_world:
     frdmmcxl255@cm33: []
     frdmmcxl255@cm0plus: []
     frdmmcxe31b: []
+    frdmmcxa344: []

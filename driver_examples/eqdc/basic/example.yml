@@ -83,3 +83,4 @@ eqdc_basic:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa344: []

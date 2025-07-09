@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 flexcan_interrupt_transfer:
   section-type: application
   contents:
@@ -265,3 +264,4 @@ flexcan_interrupt_transfer:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa344: []

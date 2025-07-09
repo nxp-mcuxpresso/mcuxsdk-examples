@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 lpuart_polling:
   section-type: application
   contents:
@@ -316,3 +315,4 @@ lpuart_polling:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa344: []

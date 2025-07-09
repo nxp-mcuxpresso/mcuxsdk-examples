@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 flexcan_loopback:
   section-type: application
   contents:
@@ -275,3 +274,4 @@ flexcan_loopback:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa344: []

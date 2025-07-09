@@ -31,3 +31,4 @@ freqme_interrupt:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxa344: []

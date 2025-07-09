@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 lpspi_edma_b2b_transfer_master:
   section-type: application
   contents:
@@ -288,3 +287,4 @@ lpspi_edma_b2b_transfer_master:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa344: []

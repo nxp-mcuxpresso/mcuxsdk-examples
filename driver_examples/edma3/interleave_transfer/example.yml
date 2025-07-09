@@ -23,3 +23,4 @@ edma3_interleave_transfer:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxl255@cm33: []
+    frdmmcxa344: []

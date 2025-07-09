@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 lpi2c_interrupt:
   section-type: application
   contents:
@@ -221,3 +220,4 @@ lpi2c_interrupt:
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
     frdmmcxl255@cm33: []
+    frdmmcxa344: []

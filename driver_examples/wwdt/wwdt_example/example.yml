@@ -72,3 +72,4 @@ wwdt_example:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxa344: []
