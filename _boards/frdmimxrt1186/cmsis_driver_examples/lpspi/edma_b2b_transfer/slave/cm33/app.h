@@ -14,7 +14,7 @@
 /* Master related */
 #define DRIVER_SLAVE_SPI                 Driver_SPI2
 #define EXAMPLE_LPSPI_SLAVE_IRQN         (LPSPI2_IRQn)
-#define EXAMPLE_LPSPI_SLAVE_DMA_BASEADDR DMA4
+#define EXAMPLE_LPSPI_SLAVE_DMA_BASEADDR DMA3
 
 #define BOARD_GetEDMAConfig(config)                                              \
     {                                                                            \

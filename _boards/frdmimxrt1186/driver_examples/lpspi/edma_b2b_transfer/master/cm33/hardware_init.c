@@ -16,7 +16,7 @@
 /*${header:end}*/
 
 /*${function:start}*/
-static void TRDC_EDMA4_ResetPermissions(void)
+static void TRDC_EDMA3_ResetPermissions(void)
 {
     uint8_t i, j;
 
@@ -30,7 +30,7 @@ static void TRDC_EDMA4_ResetPermissions(void)
     edmaAssignment.bypassDomainId = true;
     edmaAssignment.lock           = false;
 
-    TRDC_SetNonProcessorDomainAssignment(TRDC2, kTRDC2_MasterDMA4, &edmaAssignment);
+    TRDC_SetNonProcessorDomainAssignment(TRDC1, kTRDC1_MasterDMA3, &edmaAssignment);
 
     /* Enable all access modes for MBC and MRC of TRDCA and TRDCW */
     trdc_hardware_config_t hwConfig;
@@ -96,6 +96,6 @@ void BOARD_InitHardware(void)
 
     BOARD_RequestTRDC(true, true, false);
 
-    TRDC_EDMA4_ResetPermissions();
+    TRDC_EDMA3_ResetPermissions();
 }
 /*${function:end}*/
