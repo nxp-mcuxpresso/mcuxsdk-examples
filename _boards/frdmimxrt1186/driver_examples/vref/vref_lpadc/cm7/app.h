@@ -12,7 +12,7 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define DEMO_LPADC_BASE                         ADC1
-#define DEMO_LPADC_USER_CHANNEL                 7U
+#define DEMO_LPADC_USER_CHANNEL                 1U
 #define DEMO_LPADC_USER_CMDID                   1U /* CMD1 */
 /* ERRATA051385: ADC INL/DNL degrade under high ADC clock frequency when VREFH selected as reference. */
 #define DEMO_LPADC_VREF_SOURCE                  kLPADC_ReferenceVoltageAlt2

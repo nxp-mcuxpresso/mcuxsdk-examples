@@ -6,7 +6,8 @@ Hardware requirements
 
 Board settings
 ============
-- Connect ADC CH7A (J51-2) to VREFO(J37-1).
+Change Jumper J27 from 1-2 to 2-3
+- Connect ADC CHA1 (J51-8)(GPIO_AD_14) to VREFO(J37-1).
 
 Prepare the Demo
 ===============
