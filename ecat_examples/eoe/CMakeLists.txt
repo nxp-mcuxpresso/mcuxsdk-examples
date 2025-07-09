@@ -9,7 +9,6 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/ecat_examples/eoe/eoe_freertos.c
-    SOURCES examples/ecat_examples/eoe/ecat_hw.c
     SOURCES examples/ecat_examples/eoe/ecat_hw.h
     SOURCES examples/ecat_examples/eoe/eoe_lwip_interface.c
     SOURCES examples/ecat_examples/eoe/eoe_lwip_interface.h

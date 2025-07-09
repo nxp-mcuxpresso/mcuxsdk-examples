@@ -1,13 +1,14 @@
 Hardware requirements
 =====================
-- FRDM-IMXRT1186 RevC
+- FRDM-IMXRT1186
 - RJ45 Network cable
 - Mini/micro USB cable
 - Personal Computer on which the TwinCat3 has been installed(Windows 10 is recommended)
 
 Board settings
 ==============
-No special settings are required.
+J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
+J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
 
 Prepare the Demo
 ================
@@ -24,7 +25,7 @@ Prepare the Demo
 	- Remove eoe_freertos.c under Src folder
 	
 2. Connect EtherCAT Port0 with TwinCAT3
-	RJ45 interface labeled as J28 is the EtherCAT Port0 and RJ45 interface labeled as J32 is the EtherCAT Port1.
+	RJ45 interface labeled as J57A is the EtherCAT Port0 and RJ45 interface labeled as J57B is the EtherCAT Port1.
 
 3. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
 
