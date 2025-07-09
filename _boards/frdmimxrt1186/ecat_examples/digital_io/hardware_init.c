@@ -19,21 +19,21 @@
 #include "ecat_hw.h"
 #include "ecatappl.h"
 
+#include "app.h"
+
 UINT32 EcatTimerCnt;
 
 static void Ecat_KickOff(void)
 {
-    BLK_CTRL_WAKEUPMIX->ECAT_MISC_CFG |= BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_RMII_REF_CLK_DIR0_MASK |
-                                         BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_RMII_REF_CLK_DIR1_MASK;
-    BLK_CTRL_WAKEUPMIX->ECAT_MISC_CFG |=
-        (BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_RMII_SEL0_MASK | BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_RMII_SEL1_MASK);
+    BLK_CTRL_WAKEUPMIX->ECAT_MISC_CFG &= ~BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_RMII_SEL0_MASK;
+    BLK_CTRL_WAKEUPMIX->ECAT_MISC_CFG &= ~BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_RMII_SEL1_MASK;
 
     BLK_CTRL_WAKEUPMIX->MISC_IO_CTRL &= ~(1 << BLK_CTRL_WAKEUPMIX_MISC_IO_CTRL_ECAT_LINK_ACT0_POL_SHIFT);
     BLK_CTRL_WAKEUPMIX->MISC_IO_CTRL &= ~(1 << BLK_CTRL_WAKEUPMIX_MISC_IO_CTRL_ECAT_LINK_ACT1_POL_SHIFT);
 
     BLK_CTRL_WAKEUPMIX->ECAT_MISC_CFG |= (1 << BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_EEPROM_SIZE_OPTION_SHIFT);
 
-    SRC_GENERAL_REG->SRMASK &= ~(0x1 << SRC_GENERAL_SRTMR_ECAT_RSTO_TRIG_MODE_SHIFT);
+    SRC_GENERAL_REG->SRMASK &= ~(0x1 << SRC_GENERAL_SRMASK_ECAT_RSTO_MASK_SHIFT);
 
     BLK_CTRL_WAKEUPMIX->ECAT_MISC_CFG |= (BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_PHY_OFFSET_VEC(2));
     BLK_CTRL_WAKEUPMIX->ECAT_MISC_CFG &= ~BLK_CTRL_WAKEUPMIX_ECAT_MISC_CFG_GLB_RST_MASK;
@@ -50,21 +50,22 @@ UINT16 HW_Init(void)
     rgpio_pin_config_t pinConfig = {.pinDirection = kRGPIO_DigitalOutput, .outputLogic = 0};
 
     /* Init board hardware. */
+    BOARD_ConfigMPU();
     BOARD_InitBootPins();
-    BOARD_BootClockRUN();
+    BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
     PRINTF("Start the SSC digital_io example...\r\n");
 
     /* Reset ecat PHY */
-    RGPIO_PinInit(RGPIO4, 25, &pinConfig);
-    RGPIO_PinInit(RGPIO4, 13, &pinConfig);
+    RGPIO_PinInit(RGPIO5, 6, &pinConfig);
+    // RGPIO_PinInit(RGPIO4, 13, &pinConfig);
     SDK_DelayAtLeastUs(15000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     Ecat_KickOff();
 
-    RGPIO_PinWrite(RGPIO4, 25, 1);
-    RGPIO_PinWrite(RGPIO4, 13, 1);
+    RGPIO_PinWrite(RGPIO5, 6, 1);
+    // RGPIO_PinWrite(RGPIO4, 13, 1);
     SDK_DelayAtLeastUs(90000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     /*set port0 page register*/
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 0x07);
@@ -88,8 +89,7 @@ UINT16 HW_Init(void)
     ECAT_EscMdioRead(ECAT, 0x01, 17, &led_startus);
     ECAT_EscMdioWrite(ECAT, 0x01, 17, led_startus | (1 << 3) | (1 << 5));
 
-    RGPIO_PinInit(RGPIO4, 27, &pinConfig);
-    RGPIO_PinInit(RGPIO4, 26, &pinConfig);
+    RGPIO_PinInit(GPIO_LED, GPIO_LED_PIN, &pinConfig);
 
     /*config Sync0/1 IRQ*/
     XBAR_Init(kXBAR_DSC1);
