@@ -212,6 +212,7 @@ int main(void)
     p3t1755Config.writeTransfer = I3C_WriteSensor;
     p3t1755Config.readTransfer  = I3C_ReadSensor;
     p3t1755Config.sensorAddress = SENSOR_ADDR;
+    p3t1755Config.oneshotMode   = false;
     P3T1755_Init(&p3t1755Handle, &p3t1755Config);
 
     while (1)
