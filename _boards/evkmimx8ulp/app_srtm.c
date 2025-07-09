@@ -1005,16 +1005,23 @@ static void APP_IO_SetPinConfig(uint16_t ioId, bool asInput)
                         pinFuncId[index][4], asInput ? (inputMask[index]) : (outputMask[index]));
 }
 
+#if APP_SRTM_USE_PIN_AS_OUTPUT
 static srtm_status_t APP_IO_ConfOutput(uint16_t ioId, srtm_io_value_t ioValue)
 {
     uint8_t gpioIdx = APP_GPIO_IDX(ioId);
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
+    RGPIO_Type *base = 0U;
 
     assert(gpioIdx < 2U); /* We only support GPIOA and GPIOB */
     assert(pinIdx < 32U);
 
     APP_IO_SetPinConfig(ioId, false);
+
     RGPIO_PinWrite(gpios[gpioIdx], pinIdx, (uint8_t)ioValue);
+
+    /* Set gpio direction as output */
+    base = gpios[gpioIdx];
+    base->PDDR |= (1UL << pinIdx);
 
     return SRTM_Status_Success;
 }
@@ -1032,6 +1039,7 @@ static srtm_status_t APP_IO_SetOutput(srtm_service_t service,
 
     return APP_IO_ConfOutput(ioId, ioValue);
 }
+#endif
 
 static srtm_status_t APP_IO_GetInput(srtm_service_t service,
                                      srtm_peercore_t core,
@@ -1077,6 +1085,7 @@ static srtm_status_t APP_IO_ConfInput(uint8_t inputIdx, srtm_io_event_t event, b
     uint8_t pinIdx  = APP_PIN_IDX(ioId);
     uint8_t wuuIdx  = APP_IO_GetWUUPin(ioId);
     wuu_external_wakeup_pin_config_t config;
+    RGPIO_Type *base = 0U;
 
     assert(gpioIdx < 2U);                  /* Only support GPIOA, GPIOB */
     assert(pinIdx < 32U);
@@ -1086,6 +1095,10 @@ static srtm_status_t APP_IO_ConfInput(uint8_t inputIdx, srtm_io_event_t event, b
     config.mode  = kWUU_ExternalPinActiveAlways;
 
     APP_IO_SetPinConfig(ioId, true);
+    /* Set gpio direction as input */
+    base = gpios[gpioIdx];
+    base->PDDR &= ~(1UL << pinIdx);
+
     switch (event)
     {
         case SRTM_IoEventRisingEdge:
@@ -2081,8 +2094,8 @@ static void APP_SRTM_InitIoKeyService(void)
     EnableIRQ(GPIOB_INT1_IRQn);
 
     ioService = SRTM_IoService_Create();
-    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTA19, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
-    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB5, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTA19, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB5, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_Dispatcher_RegisterService(disp, ioService);
 
     keypadService = SRTM_KeypadService_Create();
