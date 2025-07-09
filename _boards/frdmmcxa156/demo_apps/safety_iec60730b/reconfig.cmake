@@ -46,22 +46,6 @@ mcux_add_iar_configuration(
     CX "--cpu=cortex-m33"
 )
 
-mcux_add_iar_configuration(
-    CC "--cmse"
-	CX "--cmse"
-)
-
-if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
-if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
-
-else()
-	# AS --cmse flag needs to be added when command line build is used
-	mcux_add_iar_configuration(
-		AS "--cmse"
-	)
-endif()
-endif()
-
 # optimization default setting needs to be removed first
 mcux_remove_iar_configuration(
 	TARGETS debug

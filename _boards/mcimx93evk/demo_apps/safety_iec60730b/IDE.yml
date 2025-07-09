@@ -19,4 +19,4 @@ iar:
   config:
     __common__:
       debugger_setting:
-        cmsisdap_resetlist: software
+        cmsisdap_resetlist: hardware
