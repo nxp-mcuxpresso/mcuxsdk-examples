@@ -30,14 +30,14 @@ uint32_t get_core1_image_size(void)
 
 void GPIO_ClearStopRequest(void)
 {
-    CCM->GPR_SHARED8 &= ~CCM_GPR_SHARED8_m33_gpio1_ipg_stop_MASK;
-    CCM->GPR_SHARED12 &= ~CCM_GPR_SHARED12_m7_gpio1_ipg_stop_MASK;
+    CCM->GPR_SHARED8 &= ~CCM_GPR_SHARED8_m33_gpio4_ipg_stop_MASK;
+    CCM->GPR_SHARED12 &= ~CCM_GPR_SHARED12_m7_gpio4_ipg_stop_MASK;
 }
 
 void GPIO_SetStopRequest(void)
 {
-    CCM->GPR_SHARED8 |= CCM_GPR_SHARED8_m33_gpio1_ipg_stop_MASK;
-    CCM->GPR_SHARED12 |= CCM_GPR_SHARED12_m7_gpio1_ipg_stop_MASK;
+    CCM->GPR_SHARED8 |= CCM_GPR_SHARED8_m33_gpio4_ipg_stop_MASK;
+    CCM->GPR_SHARED12 |= CCM_GPR_SHARED12_m7_gpio4_ipg_stop_MASK;
 }
 
 void BOARD_InitHardware(void)
