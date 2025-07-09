@@ -6,11 +6,13 @@ Hardware requirements
 
 Board settings
 ==============
-This example project uses ACMP instance 3 to compare the voltage signal input from External Input2(J52-13)
+Remove Jumper J29.
+
+This example project uses ACMP instance 3 to compare the voltage signal input from External J29-2(GPIO_AD_29)
 with the voltage signal(half of VDDA) output by ACMP's internal DAC. Terminal will print information
 corresponding to different comparison result.
 Please note that the input voltage should in the range of 0 to 1.8V.
-Connect ACMP External Input2(J52-13) to stable external voltage generator to avoid floating voltage.
+Connect ACMP External Input2(GPIO_AD_29) to stable external voltage generator to avoid floating voltage.
 The example serial port output may be frequent change otherwise.
 
 **Please note this application can't support running with Linux BSP!**
