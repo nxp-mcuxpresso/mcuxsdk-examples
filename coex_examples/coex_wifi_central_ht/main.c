@@ -21,7 +21,6 @@
 
 #if !defined(RW612_SERIES)
 #include "wifi.h"
-#include "fsl_sai.h"
 #include "fsl_sdmmc_host.h"
 #endif /* RW612_SERIES */
 
@@ -89,10 +88,13 @@
 #define CONFIG_OT_CLI 0 // needs to define CONFIG_OT_CLI with value, 0 for disable OT, 1 for enable OT
 #endif
 
+#if APP_LOWPOWER_ENABLED
 #include "coex_lpm.h"
-#include "coex_cli.h"
-#include "central_ht.h"
 #include "host_sleep.h"
+#endif
+
+#include "central_ht.h"
+#include "coex_cli.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -225,7 +227,7 @@ int main(void)
 }
 
 
-#ifdef RW612_SERIES
+#if CONFIG_COEX_APP
 void vApplicationIdleHook(void)
 {
 #if(CONFIG_OT_CLI)
@@ -280,7 +282,7 @@ void APP_SetTicklessIdle(bool enable)
 }
 
 #endif /* configUSE_TICKLESS_IDLE */
-#endif /* RW612_SERIES*/
+#endif /* CONFIG_COEX_APP*/
 
 #ifndef APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK
 /**

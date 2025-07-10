@@ -21,7 +21,6 @@
 
 #if !defined(RW612_SERIES)
 #include "wifi.h"
-#include "fsl_sai.h"
 #include "fsl_sdmmc_host.h"
 #endif /* RW612_SERIES */
 
@@ -80,11 +79,13 @@
 #include "fwk_platform_lowpower.h"
 #endif /* APP_LOWPOWER_ENABLED */
 
-#include <peripheral_ht.h>
+#if APP_LOWPOWER_ENABLED
 #include "coex_lpm.h"
-#include "coex_cli.h"
 #include "host_sleep.h"
+#endif
 
+#include <peripheral_ht.h>
+#include "coex_cli.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -142,6 +143,13 @@ void task_main(void *param)
 #if CONFIG_COEX_ENABLE_PM_MENU
     APP_LPTimerCreate();
 #endif
+
+    if (xTaskCreate(peripheral_ht_task, "peripheral_ht_task", configMINIMAL_STACK_SIZE * 8, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
+    {
+        PRINTF("peripheral ht task creation failed!\r\n");
+        while (1)
+            ;
+    }
 
 #if CONFIG_COEX_ENABLE_MENU
     coex_menuPrint();
@@ -203,13 +211,6 @@ int main(void)
     EM_register_sof_handler(stackOverflowHookHandler);
 #endif /* #if defined (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK) && (APP_CONFIG_ENABLE_STACK_OVERFLOW_FREERTOS_HOOK == 1U) */
 
-    if (xTaskCreate(peripheral_ht_task, "peripheral_ht_task", configMINIMAL_STACK_SIZE * 8, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
-    {
-        PRINTF("peripheral ht task creation failed!\r\n");
-        while (1)
-            ;
-    }
-
     vTaskStartScheduler();
     for (;;)
     {
@@ -217,8 +218,7 @@ int main(void)
     }
 }
 
-
-#ifdef RW612_SERIES
+#if CONFIG_COEX_APP
 void vApplicationIdleHook(void)
 {
 #if(CONFIG_OT_CLI)

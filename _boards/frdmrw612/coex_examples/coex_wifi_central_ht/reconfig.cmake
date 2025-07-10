@@ -10,6 +10,10 @@ mcux_add_source(
             middleware/wireless/coex/src/configs/rw61x/lwip/lwipopts.h
             middleware/wireless/coex/src/configs/rw61x/lwip/lwiphooks.h
             middleware/wireless/coex/src/configs/rw61x/mbedtls/mbedtls_config_client.h
+            middleware/wireless/coex/src/coex_pm/coex_lpm.c
+            middleware/wireless/coex/src/coex_pm/coex_lpm.h
+            middleware/wireless/coex/src/coex_pm/host_sleep.c
+            middleware/wireless/coex/src/coex_pm/host_sleep.h
 )
 
 mcux_add_include(
@@ -20,6 +24,7 @@ mcux_add_include(
              middleware/wireless/coex/src/configs/rw61x/mbedtls
              examples/_boards/${board}/coex_examples/coex_wifi_central_ht
              examples/coex_examples/coex_wifi_central_ht
+             middleware/wireless/coex/src/coex_pm
 )
 
 mcux_add_macro(
