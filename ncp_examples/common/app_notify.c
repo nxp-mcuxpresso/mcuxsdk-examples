@@ -356,14 +356,6 @@ static void app_notify_event_handler(void *argv)
                 if (!event_buf)
                     ret = -WM_FAIL;
                 break;
-            case APP_EVT_INET_SOCKET_RECV:
-                if (msg.reason == APP_EVT_REASON_SUCCESS && msg.data != NULL)
-                {
-                    event_buf = ncp_inet_prepare_socket_recv_resp(msg.data);
-                }
-                if (!event_buf)
-                    ret = -WM_FAIL;
-                break;
             case APP_EVT_INET_SOCKET_SEND_FAIL:
                 app_d("socket send fail");
                 if (msg.reason == APP_EVT_REASON_SUCCESS && msg.data != NULL)

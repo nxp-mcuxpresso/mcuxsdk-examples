@@ -30,6 +30,8 @@
 void ncp_inet_set_bit(int bit_index);
 void ncp_inet_clear_bit(int bit_index);
 
+extern int wifi_ncp_send_response(uint8_t *pbuf);
+
 /* INET socket type */
 #define MAX_SOCKETS 64
 typedef struct {
@@ -471,13 +473,14 @@ static int ncp_inet_recv_send_data(struct recv_send_data_t *send_event)
     memcpy(linux_addr->sa_data, send_event->client_addr.sa.sa_data, NCP_IPADDR_DATA_LEN);
     tlv_res->socklen = send_event->socklen;
     memcpy(tlv_res->recv_data, send_event->recv_buf, send_event->recv_size);
-    if (app_notify_event(APP_EVT_INET_SOCKET_RECV, APP_EVT_REASON_SUCCESS, buf, send_event->recv_size+sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG)) !=
-            WM_SUCCESS)
+
+    ncp_inet_prepare_socket_recv_resp(buf);
+    if (wifi_ncp_send_response(buf) != WM_SUCCESS)
     {
-        ncp_e("NCP: APP_EVT_SOCKET_RECEIVE event fail\r\n");
-        OSA_MemoryFree(buf);
-        return -WM_FAIL;
+        ncp_e("ncp inet send receive event fail\r\n");
     }
+    OSA_MemoryFree(buf);
+    buf = NULL;
 exit:
     return -WM_FAIL;
 }

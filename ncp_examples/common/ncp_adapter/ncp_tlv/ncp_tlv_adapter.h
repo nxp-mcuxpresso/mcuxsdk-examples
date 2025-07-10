@@ -187,7 +187,7 @@ typedef NCP_TLV_PACK_START struct
 #define NCP_TLV_TX_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-6)))
 
 /* NCP ADAPTER TX queue max length */
-#define NCP_TLV_QUEUE_LENGTH 160
+#define NCP_TLV_QUEUE_LENGTH 40
 /* NCP ADAPTER TX task stack size */
 #define NCP_TLV_TX_TASK_STACK_SIZE 1024
 #endif /* __NCP_TLV_ADAPTER_H__ */

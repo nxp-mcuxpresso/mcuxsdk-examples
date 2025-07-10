@@ -73,7 +73,7 @@
 /* Memory allocation related definitions. */
 #define configSUPPORT_STATIC_ALLOCATION  1
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
-#define configTOTAL_HEAP_SIZE            ((size_t)((160 * 1024) + (80 * 2048)))
+#define configTOTAL_HEAP_SIZE            ((size_t)((160 * 1024) + (120 * 1024)))
 #define configAPPLICATION_ALLOCATED_HEAP 0
 
 /* Hook function related definitions. */
