@@ -18,3 +18,4 @@ Timeout
 - [FRDM-MCXA153](../../_boards/frdmmcxa153/driver_examples/waketimer/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/driver_examples/waketimer/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/driver_examples/waketimer/example_board_readme.md)
+- [FRDM-MCXA344](../../_boards/frdmmcxa344/driver_examples/waketimer/example_board_readme.md)

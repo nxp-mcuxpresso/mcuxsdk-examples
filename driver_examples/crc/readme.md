@@ -47,3 +47,4 @@ CRC-32 POSIX: 0x765e7680
 - [TWR-KM34Z75M](../../_boards/twrkm34z75m/driver_examples/crc/example_board_readme.md)
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/driver_examples/crc/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/driver_examples/crc/example_board_readme.md)
+- [FRDM-MCXA344](../../_boards/frdmmcxa344/driver_examples/crc/example_board_readme.md)

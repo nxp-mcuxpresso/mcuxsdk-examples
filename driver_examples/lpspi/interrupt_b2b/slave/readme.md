@@ -68,3 +68,4 @@ End of slave example!
 - [MCX-W72-EVK](../../../../_boards/mcxw72evk/driver_examples/lpspi/interrupt_b2b/slave/example_board_readme.md)
 - [FRDM-MCXE31B](../../../../_boards/frdmmcxe31b/driver_examples/lpspi/interrupt_b2b/slave/example_board_readme.md)
 - [FRDM-MCXL255](../../../../_boards/frdmmcxl255/driver_examples/lpspi/interrupt_b2b/slave/example_board_readme.md)
+- [FRDM-MCXA344](../../../../_boards/frdmmcxa344/driver_examples/lpspi/interrupt_b2b/slave/example_board_readme.md)

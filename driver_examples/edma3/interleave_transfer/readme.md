@@ -16,3 +16,4 @@ The example demostrates the interleave transfer by features:
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/edma3/interleave_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/edma3/interleave_transfer/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/edma3/interleave_transfer/example_board_readme.md)
+- [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/edma3/interleave_transfer/example_board_readme.md)

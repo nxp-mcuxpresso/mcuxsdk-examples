@@ -42,3 +42,4 @@ End of example.
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/lpspi/interrupt/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpspi/interrupt/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/lpspi/interrupt/example_board_readme.md)
+- [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/lpspi/interrupt/example_board_readme.md)

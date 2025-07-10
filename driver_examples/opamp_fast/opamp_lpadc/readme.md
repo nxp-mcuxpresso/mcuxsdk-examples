@@ -23,3 +23,4 @@ OPAMP1 input and output relationship formula: Vout = Vref + (R2 / R1 * (Vp - Vn)
 
 ## Supported Boards
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/opamp/opamp_lpadc/example_board_readme.md)
+- [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/opamp/opamp_lpadc/example_board_readme.md)
