@@ -14,7 +14,7 @@
 /*${macro:start}*/
 
 #define EXAMPLE_I2C_MASTER_BASE          (LPI2C0)
-#define LPI2C_MASTER_CLOCK_FREQUENCY     CLOCK_GetLpi2cClkFreq(2u)
+#define LPI2C_MASTER_CLOCK_FREQUENCY     CLOCK_GetLpi2cClkFreq(0u)
 #define EXAMPLE_LPI2C_MASTER_DMA         DMA0
 #define LPI2C_TRANSMIT_DMA_CHANNEL       2U
 #define LPI2C_RECEIVE_DMA_CHANNEL        3U
