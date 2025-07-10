@@ -52,6 +52,7 @@ If a supported board includes a link, click it to access the board-specific docu
    mbedtls3x_examples/index.rst
    mbedtls_examples/index.rst
    mmcau_examples/index.rst
+   modbus_examples/index.rst
    multicore_examples/index.rst
    multiprocessor_examples/index.rst
    ncp_examples/index.rst
