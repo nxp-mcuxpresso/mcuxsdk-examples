@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -37,11 +37,12 @@ void BOARD_InitBootPins(void);
  */
 void BOARD_InitDEBUG_UARTPins(void);
 
-/*! @name PORT3_18 (number 86), LED_RED
+/*! @name PORT3_18 (number 57), LED_RED
   @{ */
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO GPIO3                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_RED_INIT_GPIO_VALUE 1U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN 18U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN_MASK (1U << 18U) /*!<@brief GPIO pin mask */
 
@@ -51,11 +52,12 @@ void BOARD_InitDEBUG_UARTPins(void);
 #define BOARD_INITLEDSPINS_LED_RED_PIN_MASK (1U << 18U)      /*!<@brief PORT pin mask */
                                                              /* @} */
 
-/*! @name PORT3_19 (number 85), LED_GREEN
+/*! @name PORT3_19 (number 56), LED_GREEN
   @{ */
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO GPIO3                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_GREEN_INIT_GPIO_VALUE 1U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN 19U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN_MASK (1U << 19U) /*!<@brief GPIO pin mask */
 
@@ -65,11 +67,12 @@ void BOARD_InitDEBUG_UARTPins(void);
 #define BOARD_INITLEDSPINS_LED_GREEN_PIN_MASK (1U << 19U)      /*!<@brief PORT pin mask */
                                                                /* @} */
 
-/*! @name PORT3_21 (number 82), LED_BLUE
+/*! @name PORT3_21 (number 54), LED_BLUE
   @{ */
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO GPIO3                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_BLUE_INIT_GPIO_VALUE 1U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN 21U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN_MASK (1U << 21U) /*!<@brief GPIO pin mask */
 
@@ -85,7 +88,7 @@ void BOARD_InitDEBUG_UARTPins(void);
  */
 void BOARD_InitLEDsPins(void);
 
-/*! @name PORT1_7 (number 144), SW2
+/*! @name PORT1_7 (number 100), SW2
   @{ */
 
 /* Symbols to be used with GPIO driver */
@@ -99,7 +102,7 @@ void BOARD_InitLEDsPins(void);
 #define BOARD_INITBUTTONSPINS_SW2_PIN_MASK (1U << 7U)      /*!<@brief PORT pin mask */
                                                            /* @} */
 
-/*! @name PORT0_6 (number 115), SW3
+/*! @name PORT0_6 (number 80), SW3
   @{ */
 
 /* Symbols to be used with GPIO driver */

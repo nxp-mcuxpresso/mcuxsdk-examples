@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -56,6 +56,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetupFRO16KClocking(kCLKE_16K_SYSTEM | kCLKE_16K_COREMAIN);
 
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBUTTONsPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
