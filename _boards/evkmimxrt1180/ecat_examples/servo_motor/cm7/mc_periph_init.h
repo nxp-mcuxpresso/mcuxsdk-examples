@@ -142,7 +142,7 @@ typedef struct _clock_setup
 #define M1_MCDRV_ENC_GET(par) \
         MCDRV_QdEncGetPosition(par); \
         MCDRV_QdEncGetSpeed(par); 
-#define M1_MCDRV_ENC_SET_DIRECTION(par) (MCDRV_QdEncSetDirection(par))
+#define M1_MCDRV_ENC_SET_DIRECTION(par) (MCDRV_QdEncSetDirection(par)) 
 #define M1_MCDRV_ENC_SET_PULSES(par) \
         MCDRV_QdEncSetPulses(par);  \
         MCDRV_QdEncUpdateParameters(par);

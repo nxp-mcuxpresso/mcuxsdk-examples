@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ==============
-Board needs to rework, please refer to '.\docs\ecatServoMotor\eCAT_Servo_Motor_Example_User_Guide.pdf' to rework board.
+Board needs to rework, please refer to detailed eCAT_Servo_Motor_Example_User_Guide to rework board.
 
 Prepare the Demo
 ================
@@ -31,12 +31,12 @@ Prepare the Demo
 		3. Apply patch
 			patch -d Src <  CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch
 	Windows:
-		1. Download patch.exe and Unix2Dos.exe tool
+		4. Download patch.exe and Unix2Dos.exe tool
 			Download Windows Patch Utility from http://gnuwin32.sourceforge.net/downlinks/patch-bin-zip.php .
 			Download Dos2Unix/Unix2Dos-Text file format converters from https://sourceforge.net/projects/dos2unix/ .
-		2. Transfer the patch format
+		5. Transfer the patch format
 			$(Dos2Unix/Unix2Dos-DIR)/bin/unix2dos.exe CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch
-		3. Apply patch
+		6. Apply patch
 			patch.exe -i CiA402-combine-the-SSC-slave-with-ec_pmsm-support.patch -d ./Src
 
 3. Connect FRDM-MC-LVPMSM board

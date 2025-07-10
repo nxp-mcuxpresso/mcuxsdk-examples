@@ -10,7 +10,6 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/ecat_examples/servo_motor/servo_motor.c
     SOURCES examples/ecat_examples/servo_motor/servo_motor.h
-    SOURCES examples/ecat_examples/servo_motor/ecat_hw.c
     SOURCES examples/ecat_examples/servo_motor/ecat_hw.h
     SOURCES examples/ecat_examples/servo_motor/freemaster_cfg.h
     SOURCES examples/ecat_examples/servo_motor/m1_pmsm_appconfig.h

@@ -97,73 +97,71 @@ void InitClock(void)
  */
 void InitADC(void)
 {
+    #if FSL_LPADC_DRIVER_VERSION != (MAKE_VERSION(2, 9, 3))
+    #warning Used a different fsl_lpadc driver version! An example may not work correctly! 
+    #endif
+  
     lpadc_config_t mLpadcConfigStruct;
     lpadc_conv_trigger_config_t mLpadcTriggerConfigStruct;
     lpadc_conv_command_config_t mLpadcCommandConfigStruct;
-
-    /* Init ADC clock */
-    clock_root_config_t adc1ClkRoot;
-    adc1ClkRoot.mux      = 1U;
-    adc1ClkRoot.div      = 7U;
-    adc1ClkRoot.clockOff = false;
-    CLOCK_SetRootClock(kCLOCK_Root_Adc1, &adc1ClkRoot);
-    CLOCK_SetRootClock(kCLOCK_Root_Adc2, &adc1ClkRoot);
-
+    
     LPADC_GetDefaultConfig(&mLpadcConfigStruct);
 
     mLpadcConfigStruct.enableAnalogPreliminary = true;
-    mLpadcConfigStruct.referenceVoltageSource = kLPADC_ReferenceVoltageAlt1;
-    mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage1;
-    mLpadcConfigStruct.FIFO1Watermark = 1U;
-
+    mLpadcConfigStruct.referenceVoltageSource = kLPADC_ReferenceVoltageAlt2; // VDDA_ADC_1P8, please connect jumper J11 (1-2)
+    mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage1024; // Maximum HW average during the calibration 
+    mLpadcConfigStruct.FIFO1Watermark = 1U; 
+  
     LPADC_Init(ADC1, &mLpadcConfigStruct);
     LPADC_Init(ADC2, &mLpadcConfigStruct);
 
     LPADC_SetOffsetCalibrationMode(ADC1, kLPADC_OffsetCalibration16bitMode);
+    LPADC_SetOffsetCalibrationMode(ADC1, kLPADC_OffsetCalibration12bitMode);
     LPADC_DoOffsetCalibration(ADC1);
     LPADC_DoAutoCalibration(ADC1);
-
+    
     LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration16bitMode);
+    LPADC_SetOffsetCalibrationMode(ADC2, kLPADC_OffsetCalibration12bitMode);
     LPADC_DoOffsetCalibration(ADC2);
     LPADC_DoAutoCalibration(ADC2);
 
     /* *********************************************************************************
      *  ADC1                                                                           *
      *                  FIFO0                            FIFO1                         *
-     *  Conversion 1    I_A   - ADC1_A5  GPIO_AD_06      I_B    - ADC1_B5  GPIO_AD_07  *
-     *  Conversion 2                                     UDCBus - ADC1_B4  GPIO_AD_09  *
+     *  Conversion 1    I_A   - ADC1_A2  GPIO_AD_12      I_B    - ADC1_B2  GPIO_AD_13  *
+     *  Conversion 2    UDCBus - ADC1_A1  GPIO_AD_14     ----------------------------  *
      *                                                                                 *
      *  ADC2                                                                           *
      *                  FIFO0                            FIFO1                         *
-     *  Conversion 1    I_C   - ADC2_A2  GPIO_AD_22      I_A    - ADC2_B1  GPIO_AD_21  *
+     *  Conversion 1    I_C   - ADC2_B5  GPIO_AD_29      ----------------------------  *
      *                                                                                 *
      **********************************************************************************/
-
+    
     LPADC_GetDefaultConvCommandConfig(&mLpadcCommandConfigStruct);
-    mLpadcCommandConfigStruct.hardwareAverageMode = kLPADC_HardwareAverageCount1;
+    mLpadcCommandConfigStruct.hardwareAverageMode = kLPADC_HardwareAverageCount4;
     mLpadcCommandConfigStruct.sampleTimeMode = kLPADC_SampleTimeADCK3;
     mLpadcCommandConfigStruct.sampleScaleMode = kLPADC_SamplePartScale;
     mLpadcCommandConfigStruct.enableWaitTrigger = FALSE;
-
-    /* ADC1 */
+    
+    /* ADC1 */    
      /* Set conversion CMD1 configuration. */
-    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_PH_A; //ADC1_A5 (CUR_A) and ADC1_B5 (CUR_B)
+    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_PH_A; //ADC1_A2 (CUR_A) and ADC1_B2 (CUR_B)
     mLpadcCommandConfigStruct.chainedNextCommandNumber = 2U; /* Next execuited CMD will be CMD2 */
     mLpadcCommandConfigStruct.sampleChannelMode = kLPADC_SampleChannelDualSingleEndBothSide; /* two simultaneous conversions Channel A and Channel B */
     LPADC_SetConvCommandConfig(ADC1, 1U, &mLpadcCommandConfigStruct); //CONFIGURE CMD 1 (CMDL1, CMDH1)
 
     /* Set conversion CMD2 configuration. */
-    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_UDCB; //ADC1_B4 (UDCBus)
+    mLpadcCommandConfigStruct.channelNumber = M1_ADC1_UDCB; //ADC1_A1 (UDCBus)
     mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U; /* This was last execuited command */
     mLpadcCommandConfigStruct.sampleChannelMode = kLPADC_SampleChannelDualSingleEndBothSide;
     LPADC_SetConvCommandConfig(ADC1, 2U, &mLpadcCommandConfigStruct);  /* Configure the CMD 2 */ //CONFIGURE CMD 2 (CMDL2, CMDH2)
 
     /* ADC2 */
-    mLpadcCommandConfigStruct.channelNumber = M1_ADC2_PH_C; //ADC2_A2 (CUR_C)
-    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U; /* Next execuited CMD will be CMD2 */
+    mLpadcCommandConfigStruct.channelNumber = M1_ADC2_PH_C; //ADC2_B5 (CUR_C)
+    mLpadcCommandConfigStruct.chainedNextCommandNumber = 0U; /* This was last execuited command */
     mLpadcCommandConfigStruct.sampleChannelMode = kLPADC_SampleChannelDualSingleEndBothSide; /* two simultaneous conversions Channel A and Channel B */
     LPADC_SetConvCommandConfig(ADC2, 1U, &mLpadcCommandConfigStruct); //CONFIGURE CMD 1 (CMDL1, CMDH1)
-
+    
     /* Set trigger configuration. */
     LPADC_GetDefaultConvTriggerConfig(&mLpadcTriggerConfigStruct);
     mLpadcTriggerConfigStruct.targetCommandId = 1U; /* CMD1 is executed. */ //SET CMD CALLED FROM TRIGGER
@@ -172,17 +170,17 @@ void InitADC(void)
     mLpadcTriggerConfigStruct.channelBFIFOSelect = 1U; //Channels B store to FIFO1
     mLpadcTriggerConfigStruct.delayPower = 0U;
     mLpadcTriggerConfigStruct.priority = 0U; //Trigger priority highest
-    LPADC_SetConvTriggerConfig(ADC1, 0U, &mLpadcTriggerConfigStruct); /* Configurate the trigger0. */
+    LPADC_SetConvTriggerConfig(ADC1, 0U, &mLpadcTriggerConfigStruct); /* Configurate the trigger0. */  
     LPADC_SetConvTriggerConfig(ADC2, 4U, &mLpadcTriggerConfigStruct); /* Configurate the trigger4. */
 
     /* Offset filter window */
     g_sM1Curr3phDcBus.ui16OffsetFiltWindow = ADC_OFFSET_WINDOW;
-
+    
     /* Enable the watermark interrupt. */
     LPADC_EnableInterrupts(ADC1, kLPADC_FIFO1WatermarkInterruptEnable);
     EnableIRQ(ADC1_IRQn);
     NVIC_SetPriority(ADC1_IRQn, 1U);
-
+      
 }
 
 /*!
@@ -247,12 +245,12 @@ void InitTMR1(void)
 void M1_InitPWM(void)
 {
     /* PWM base pointer (affects the entire initialization) */
-    PWM_Type *PWMBase = (PWM_Type *)PWM1;
+    PWM_Type *PWMBase = (PWM_Type *)PWM4;
 
-    /* Full cycle reload */
-    PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK;
-    PWMBase->SM[1].CTRL |= PWM_CTRL_FULL_MASK;
-    PWMBase->SM[2].CTRL |= PWM_CTRL_FULL_MASK;
+    /* Full and Half cycle reload */
+    PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK|PWM_CTRL_HALF_MASK;
+    PWMBase->SM[1].CTRL |= PWM_CTRL_FULL_MASK|PWM_CTRL_HALF_MASK;
+    PWMBase->SM[2].CTRL |= PWM_CTRL_FULL_MASK|PWM_CTRL_HALF_MASK;
 
     /* Value register initial values, duty cycle 50% */
     PWMBase->SM[0].INIT = PWM_INIT_INIT((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
@@ -276,17 +274,16 @@ void M1_InitPWM(void)
     PWMBase->SM[2].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
 
     /* Trigger for ADC synchronization */
-    PWMBase->SM[0].VAL4 = PWM_VAL4_VAL4((uint16_t)((-(g_sClockSetup.ui16M1PwmModulo / 2) + 10)));
+    PWMBase->SM[0].VAL4 = PWM_VAL4_VAL4((uint16_t)((-(g_sClockSetup.ui16M1PwmModulo / 2) + (g_sClockSetup.ui16M1PwmDeadTime/2))));
     PWMBase->SM[1].VAL4 = PWM_VAL4_VAL4((uint16_t)(0));
     PWMBase->SM[2].VAL4 = PWM_VAL4_VAL4((uint16_t)(0));
 
-    PWMBase->SM[0].VAL5 = PWM_VAL5_VAL5((uint16_t)((-(g_sClockSetup.ui16M1PwmModulo / 2) + 10)));
+    PWMBase->SM[0].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
     PWMBase->SM[1].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
     PWMBase->SM[2].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
 
-    /* PWM0 module 0 trigger on VAL4 enabled for ADC synchronization */
+    /* PWM sub-module 0 trigger on VAL4 enabled for ADC synchronization */
     PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 4) | PWM_TCTRL_TRGFRQ(1);
-    PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 5) | PWM_TCTRL_TRGFRQ(1);
 
     /* Set dead-time register */
     PWMBase->SM[0].DTCNT0 = PWM_DTCNT0_DTCNT0(g_sClockSetup.ui16M1PwmDeadTime);
@@ -333,6 +330,11 @@ void M1_InitPWM(void)
        samples to activate */
     PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_PER_MASK) | PWM_FFILT_FILT_PER(5);
     PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_CNT_MASK) | PWM_FFILT_FILT_CNT(5);
+       
+    /* Start PWMs (set load OK flags and run) */
+    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0xF);
+    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0xF);
+    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x0);
 
     /* Initialize MC driver */
     g_sM1Pwm3ph.pui32PwmBaseAddress = (PWM_Type *)PWMBase;
@@ -343,6 +345,7 @@ void M1_InitPWM(void)
 
     g_sM1Pwm3ph.ui16FaultFixNum = M1_FAULT_NUM; /* PWMA fixed-value over-current fault number */
     g_sM1Pwm3ph.ui16FaultAdjNum = M1_FAULT_NUM; /* PWMA adjustable over-current fault number */
+    
 }
 
 void M1_OpenPWM(void)
@@ -370,10 +373,6 @@ void M1_InitQD(void)
 {
     /* Enable clock to ENC modules */
     CLOCK_EnableClock(kCLOCK_Enc1);
-    CLOCK_EnableClock(kCLOCK_Xbar1);
-    
-    XBAR_SetSignalsConnection(kXBAR3_InputQtimer3Timer1, kXBAR1_OutputEqdc1Phasea);
-    XBAR_SetSignalsConnection(kXBAR3_InputQtimer3Timer2, kXBAR1_OutputEqdc1Phaseb);
     
     EQDC1->CTRL2 &= ~EQDC_CTRL2_LDMOD_MASK;
     EQDC1->CTRL &= ~EQDC_CTRL_LDOK_MASK;
