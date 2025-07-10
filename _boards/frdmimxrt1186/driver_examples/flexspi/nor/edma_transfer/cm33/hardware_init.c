@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  *
@@ -16,11 +16,16 @@
 #include "fsl_trdc.h"
 /*${header:end}*/
 
+/*${macro:start}*/
+/* When CM33 set TRDC, CM7 must NOT require TRDC ownership from ELE */
+#define CM33_SET_TRDC 0U
+/*${macro:end}*/
+
 /*${function:start}*/
 /* For write DMA handler depanding on FLEXSPI_TX_DMA_CHANNEL. */
-extern void DMA4_CH0_CH1_CH32_CH33_DriverIRQHandler(void);
+extern void DMA3_CH0_DriverIRQHandler(void);
 /* For read DMA handler depanding on FLEXSPI_RX_DMA_CHANNEL. */
-extern void DMA4_CH2_CH3_CH34_CH35_DriverIRQHandler(void);
+extern void DMA3_CH1_DriverIRQHandler(void);
 flexspi_device_config_t deviceconfig = {
     .flexspiRootClk       = 12000000,
     .flashSize            = FLASH_SIZE,
@@ -95,25 +100,26 @@ const uint32_t customLUT[CUSTOM_LUT_LENGTH] = {
         FLEXSPI_LUT_SEQ(kFLEXSPI_Command_SDR, kFLEXSPI_1PAD, 0xC7, kFLEXSPI_Command_STOP, kFLEXSPI_1PAD, 0),
 };
 
-static void TRDC_EDMA4_ResetPermissions()
+#if !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U))
+void TRDC_EDMA3_ResetPermissions()
 {
     uint8_t i, j;
-    /* Set the master domain access configuration for eDMA4 */
-    trdc_non_processor_domain_assignment_t edma4Assignment;
-    (void)memset(&edma4Assignment, 0, sizeof(edma4Assignment));
-    edma4Assignment.domainId = 0x7U;
+    /* Set the master domain access configuration for eDMA3 */
+    trdc_non_processor_domain_assignment_t edma3Assignment;
+    (void)memset(&edma3Assignment, 0, sizeof(edma3Assignment));
+    edma3Assignment.domainId = 0x7U;
     /* Use the bus master's privileged/user attribute directly */
-    edma4Assignment.privilegeAttr = kTRDC_MasterPrivilege;
+    edma3Assignment.privilegeAttr = kTRDC_MasterPrivilege;
     /* Use the bus master's secure/nonsecure attribute directly */
-    edma4Assignment.secureAttr = kTRDC_MasterSecure;
+    edma3Assignment.secureAttr = kTRDC_MasterSecure;
     /* Use the DID input as the domain indentifier */
-    edma4Assignment.bypassDomainId = true;
-    edma4Assignment.lock           = false;
-    TRDC_SetNonProcessorDomainAssignment(TRDC2, kTRDC2_MasterDMA4, &edma4Assignment);
+    edma3Assignment.bypassDomainId = true;
+    edma3Assignment.lock           = false;
+    TRDC_SetNonProcessorDomainAssignment(TRDC1, kTRDC1_MasterDMA3, &edma3Assignment);
 
     /* Enable all access modes for MBC and MRC. */
     trdc_hardware_config_t hwConfig;
-    TRDC_GetHardwareConfig(TRDC2, &hwConfig);
+    TRDC_GetHardwareConfig(TRDC1, &hwConfig);
 
     trdc_memory_access_control_config_t memAccessConfig;
     (void)memset(&memAccessConfig, 0, sizeof(memAccessConfig));
@@ -134,7 +140,7 @@ static void TRDC_EDMA4_ResetPermissions()
     {
         for (j = 0U; j < 8; j++)
         {
-            TRDC_MrcSetMemoryAccessConfig(TRDC2, &memAccessConfig, i, j);
+            TRDC_MrcSetMemoryAccessConfig(TRDC1, &memAccessConfig, i, j);
         }
     }
 
@@ -142,16 +148,17 @@ static void TRDC_EDMA4_ResetPermissions()
     {
         for (j = 0U; j < 8; j++)
         {
-            TRDC_MbcSetMemoryAccessConfig(TRDC2, &memAccessConfig, i, j);
+            TRDC_MbcSetMemoryAccessConfig(TRDC1, &memAccessConfig, i, j);
         }
     }
 }
+#endif /* !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
 
-void BOARD_SetDMA4Permission(void)
+void BOARD_SetDMA3Permission(void)
 {
     BOARD_RequestTRDC(true, true, false);
 
-    TRDC_EDMA4_ResetPermissions();
+    TRDC_EDMA3_ResetPermissions();
 }
 
 void BOARD_InitHardware(void)
@@ -161,13 +168,13 @@ void BOARD_InitHardware(void)
     BOARD_InitFLASHPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    BOARD_SetDMA4Permission();
+    BOARD_SetDMA3Permission();
 
 #if defined(ENABLE_RAM_VECTOR_TABLE)
     /* For write DMA handler depanding on FLEXSPI_TX_DMA_CHANNEL. */
-    InstallIRQHandler(DMA4_CH0_CH1_CH32_CH33_IRQn, (uint32_t)DMA4_CH0_CH1_CH32_CH33_DriverIRQHandler);
+    InstallIRQHandler(DMA3_CH0_IRQn, (uint32_t)DMA3_CH0_DriverIRQHandler);
     /* For read DMA handler depanding on FLEXSPI_RX_DMA_CHANNEL. */
-    InstallIRQHandler(DMA4_CH2_CH3_CH34_CH35_IRQn, (uint32_t)DMA4_CH2_CH3_CH34_CH35_DriverIRQHandler);
+    InstallIRQHandler(DMA3_CH1_IRQn, (uint32_t)DMA3_CH1_DriverIRQHandler);
 #endif
 }
 
