@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-- ADC CH0A input signal SJ6_3(PIO2_0).
+- ADC CH0A input signal J4-9(PIO2_0).
 
 Prepare the Demo
 ===============

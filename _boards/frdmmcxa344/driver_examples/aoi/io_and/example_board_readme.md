@@ -12,6 +12,8 @@ IO1     = EXT_TRIG_IN1 P1_1 J6-4
 
 AOI_OUT = IO0 & IO1
 
+Short JP7
+
 Prepare the Demo
 ===============
 1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.

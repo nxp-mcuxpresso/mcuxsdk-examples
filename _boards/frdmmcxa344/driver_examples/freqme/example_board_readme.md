@@ -7,7 +7,7 @@ Hardware requirements
 Board settings
 ============
 To measure the frequency or pulse width of external input clock, please connect input clock signal to
-J1_7(P1_4, FREQME_CLK_IN0) or J2_19(P1_5, FREQME_CLK_IN1)
+J7_2(P1_4, FREQME_CLK_IN0) or J7_4(P1_5, FREQME_CLK_IN1)
 
 
 Prepare the Demo

@@ -14,10 +14,12 @@ Board to board connections needed to be as follows:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Node A           connect to      Node B
 Pin Name   Board Location         Pin Name    Board Location
-CANH       J16-1                  CANH        J16-1
-CANL       J16-2                  CANL        J16-2
-GND        J16-4                  GND         J16-4
+CANH       J14-1                  CANH        J14-1
+CANL       J14-2                  CANL        J14-2
+GND        J14-4                  GND         J14-4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Also need to short JP7 to disable USB to CAN.
 
 Prepare the Demo
 ================

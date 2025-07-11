@@ -6,6 +6,7 @@ Hardware requirements
 
 Board settings
 ============
+Short JP7
 
 LPSPI:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

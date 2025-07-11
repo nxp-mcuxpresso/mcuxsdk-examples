@@ -27,4 +27,4 @@ CTimer match example to toggle the output.
 This example uses interrupt to change the match period.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can see the red led and blue led will blinking alternating frequently and then return to the original status.
+You can see the red led and green led will blinking alternating frequently and then return to the original status.

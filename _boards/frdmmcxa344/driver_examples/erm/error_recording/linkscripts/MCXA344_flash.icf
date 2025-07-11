@@ -40,10 +40,10 @@ define symbol m_interrupts_start               = 0x00000000;
 define symbol m_interrupts_end                 = 0x000003FF;
 
 define symbol m_text_start                     = 0x00000400;
-define symbol m_text_end                       = 0x000FFFFF;
+define symbol m_text_end                       = 0x0001FFFF;
 
 define symbol m_data_start                     = 0x20002000;
-define symbol m_data_end                       = 0x2003BFFF;
+define symbol m_data_end                       = 0x20005FFF;
 
 define symbol m_sramx0_start                   = 0x04000000;
 define symbol m_sramx0_end                     = 0x04001FFF;
