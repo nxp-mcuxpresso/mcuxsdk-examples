@@ -18,9 +18,6 @@
 /*******************************************************************************
  * Definition
  ******************************************************************************/
-#ifndef FSL_FEATURE_SILICON_VERSION_A
-#define FSL_FEATURE_SILICON_VERSION_A (1U)
-#endif
 
 /* XSPI memory config block related defintions */
 #define FC_XSPI_CFG_BLK_TAG     (0x42464346UL) /* ascii "FCFB" Big Endian */
