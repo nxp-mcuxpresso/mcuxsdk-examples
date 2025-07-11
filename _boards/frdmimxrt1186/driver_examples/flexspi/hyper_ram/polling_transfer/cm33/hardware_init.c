@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  *
@@ -79,7 +79,7 @@ void BOARD_InitHardware(void)
 
     CLOCK_InitSysPll3();
     BOARD_SetFlexspiClock(FLEXSPI1, kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll3Pfd0, 2U);
-    CLOCK_InitPfd(kCLOCK_PllSys3, kCLOCK_Pfd2, 22);
+    CLOCK_InitPfd(kCLOCK_PllSys3, kCLOCK_Pfd0, 22);
 }
 
 /*${function:end}*/
