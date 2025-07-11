@@ -124,7 +124,7 @@ outputs:
 - {id: ECAT_PORT1_REF_CLK.outFreq, value: 50 MHz}
 - {id: EDGELOCK_CLK_ROOT.outFreq, value: 200 MHz}
 - {id: ENET_REFCLK_ROOT.outFreq, value: 125 MHz}
-- {id: FLEXIO1_CLK_ROOT.outFreq, value: 120 MHz}
+- {id: FLEXIO1_CLK_ROOT.outFreq, value: 48 MHz}
 - {id: FLEXIO2_CLK_ROOT.outFreq, value: 48 MHz}
 - {id: FLEXSPI1_CLK_ROOT.outFreq, value: 1440/11 MHz}
 - {id: FLEXSPI2_CLK_ROOT.outFreq, value: 2160/11 MHz}
@@ -527,7 +527,7 @@ void BOARD_BootClockRUN(void)
 
     /* Configure FLEXIO1 using SYS_PLL3_DIV2_CLK */
     rootCfg.mux = kCLOCK_FLEXIO1_ClockRoot_MuxSysPll3Div2;
-    rootCfg.div = 2;
+    rootCfg.div = 5;
     CLOCK_SetRootClock(kCLOCK_Root_Flexio1, &rootCfg);
 
     /* Configure FLEXIO2 using SYS_PLL3_DIV2_CLK */

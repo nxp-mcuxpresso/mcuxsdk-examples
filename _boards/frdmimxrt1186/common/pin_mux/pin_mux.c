@@ -1209,7 +1209,7 @@ BOARD_InitFLEXIO_SPIPins:
   - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pull_down_pull_up_config: Pull_Down}
   - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', pull_down_pull_up_config: Pull_Down}
   - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, pull_down_pull_up_config: Pull_Down}
-  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, pull_down_pull_up_config: Pull_Down}
+  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, pull_down_pull_up_config: No_Pull, pdrv_config: Normal_Driver, open_drain: Disable}
   - {pin_num: L13, peripheral: RGPIO4, signal: 'gpio_io, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1263,8 +1263,8 @@ void BOARD_InitFLEXIO_SPIPins(void) {
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_15_FLEXIO1_FLEXIO15,  /* GPIO_EMC_B1_15 PAD functional properties : */
-      0x08U);                                 /* PDRV Field: high driver
-                                                 Pull Down Pull Up Field: PD
+      0x0EU);                                 /* PDRV Field: normal driver
+                                                 Pull Down Pull Up Field: No Pull
                                                  Open Drain Field: Disabled */
 }
 
