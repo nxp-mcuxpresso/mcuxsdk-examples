@@ -12,13 +12,11 @@
 #include "fsl_power.h"
 #include "power_mode_switch_primary.h"
 #include "fsl_mu.h"
-
 #include "fsl_wuu.h"
-
 #include "fsl_lptmr.h"
 #include "fsl_cmc.h"
-
 #include "fsl_smm.h"
+#include "fsl_advc.h"
 
 /*******************************************************************************
  * Definitions
@@ -30,9 +28,10 @@
 static void APP_CopyCore1Image(void);
 static uint32_t DEMO_GetTargetPowerTransition(void);
 static power_low_power_mode_t DEMO_EnableWakeupSource(uint32_t powerTrans);
-static void APP_EnableLptmrWakeup(void);
-static void APP_EnableRTCAlarm0Wakeup(void);
-static void APP_EnableRTCAlarm1Wakeup(void);
+static void APP_EnableExtInternalWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
+static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
+static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
+static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static bool APP_GetWakeupReason(void);
 static void APP_ClearPlsRAM(void);
 /*******************************************************************************
@@ -52,27 +51,30 @@ power_handle_t powerHandle __attribute__((section(".noinit.$rpmsg_sh_mem")));
 #endif
 
 power_pd1_config_t pd1Config = {
-    .disableBandgap        = true,
-    .mainRamArraysToRetain = (uint32_t)kPower_MainDomainNoneRams,
+    .mainWakeupSource      = kPower_WS_NONE,
+    .mainRamArraysToRetain = kPower_MainDomainAllRams,
     .enableIVSMode         = false,
 };
 
 power_pd2_config_t pd2Config = {
-    .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
-    .mainRamArraysToRetain = kPower_MainDomainNoneRams,
-    .disableBandgap        = true,
+    .mainWakeupSource      = kPower_WS_NONE,
+    .aonWakeupSource       = kPower_WS_NONE,
+    .aonRamArraysToRetain  = kPower_AonDomainAllRams,
+    .mainRamArraysToRetain = kPower_MainDomainAllRams,
     .enableIVSMode         = false,
-    .switchToX32K          = true,
     .disableFRO10M         = false,
 };
 
 power_dpd1_config_t dpd1Config = {
+    .mainWakeupSource      = kPower_WS_NONE,
     .mainRamArraysToRetain = kPower_MainDomainNoneRams,
     .disableBandgap        = true,
     .enableIVSMode         = false,
 };
 
 power_dpd2_config_t dpd2Config = {
+    .mainWakeupSource      = kPower_WS_NONE,
+    .aonWakeupSource       = kPower_WS_NONE,
     .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
     .mainRamArraysToRetain = kPower_MainDomainNoneRams,
     .disableBandgap        = true,
@@ -81,9 +83,13 @@ power_dpd2_config_t dpd2Config = {
     .disableFRO10M         = false,
 };
 
-power_dpd3_config_t dpd3Config;
+power_dpd3_config_t dpd3Config = {
+    .wakeupSource = kPower_WS_NONE,
+};
 
-power_sd_config_t sdConfig;
+power_sd_config_t sdConfig = {
+    .wakeupSource = kPower_WS_NONE,
+};
 
 void *powerConfigs[8U] = {
     NULL,
@@ -100,9 +106,9 @@ void *powerConfigs[8U] = {
  ******************************************************************************/
 void MU_A_RX_IRQHandler(void)
 {
-    uint32_t msg = MU_ReceiveMsgNonBlocking(APP_MU, APP_MU_CHANNEL);
+    uint32_t msg = MU_ReceiveMsg(APP_MU, APP_MU_CHANNEL);
     MU_ClearStatusFlags(APP_MU, kMU_Rx0FullFlag);
-    Power_MuMessageCallback(msg, APP_MU_CHANNEL);
+    Power_InterpretResponse(msg);
 }
 
 void APP_WAKEUP_BUTTON_ISR(void)
@@ -113,24 +119,14 @@ void APP_WAKEUP_BUTTON_ISR(void)
 
 void APP_EXT_INT_ISR(void)
 {
+    Power_ClearLpPowerSettings();
     GPIO_GpioClearInterruptFlags(APP_EXT_INT_GPIO, 1U << APP_EXT_INT_PIN);
     DisableIRQ(APP_EXT_INT_IRQ);
 }
 
-void WUU0_IRQHandler(void)
-{
-    uint32_t externalPinFlag;
-    externalPinFlag = WUU_GetExternalWakeUpPinsFlag(WUU0);
-
-    if ((externalPinFlag & (1UL << 7UL)) != 0UL)
-    {
-        WUU_ClearExternalWakeUpPinsFlag(WUU0, externalPinFlag);
-    }
-    Power_DisableWakeupSource(kPower_WS_Main_P1_14AnyEdgeInt);
-}
-
 void LPTMR_AON_IRQHandler(void)
 {
+    Power_ClearLpPowerSettings();
     DisableIRQ(LPTMR_AON_IRQn);
     LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
     LPTMR_StopTimer(APP_LPTMR_BASE);
@@ -141,6 +137,7 @@ void LPTMR_AON_IRQHandler(void)
 
 void RTC_ALARM0_IRQHandler(void)
 {
+    Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM0_IRQn);
     AON__RTC_AON->CONFIG |= RTC_CONFIG_ALARM0_DIS_MASK;
     AON__RTC_AON->CONFIG &= ~RTC_CONFIG_EN_MASK;
@@ -152,6 +149,7 @@ void RTC_ALARM0_IRQHandler(void)
 
 void RTC_ALARM1_IRQHandler(void)
 {
+    Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM1_IRQn);
     AON__RTC_AON->CONFIG |= RTC_CONFIG_ALARM1_DIS_MASK;
     AON__RTC_AON->CONFIG &= ~RTC_CONFIG_EN_MASK;
@@ -166,7 +164,8 @@ int main(void)
     uint32_t powerTrans;
     power_low_power_mode_t targetLpMode;
     BOARD_InitHardware();
-    PRINTF("\r\n###########################  Power Mode Switch Demo Primary Core Boot  ###########################\r\n");
+    PRINTF(
+        "\r\n###########################  Power Mode Switch Demo Primary Core Boot  ###########################\r\n");
     PRINTF("Normal Boot......\r\n");
     PRINTF("Core Clock Frequency: %d\r\n", CLOCK_GetCoreSysClkFreq());
     CMC_ConfigFlashMode(CMC, true, true, false);
@@ -204,7 +203,7 @@ int main(void)
         powerTrans   = DEMO_GetTargetPowerTransition();
         targetLpMode = DEMO_EnableWakeupSource(powerTrans);
         Power_EnterLowPowerMode(targetLpMode, powerConfigs[(uint8_t)targetLpMode]);
-        Power_ClearTargatePowerMode();
+        Power_ClearTargetPowerMode();
         PRINTF("\r\n--------- Next Loop ---------\r\n");
     }
 }
@@ -241,6 +240,10 @@ static void APP_CopyCore1Image(void)
 static power_low_power_mode_t DEMO_EnableWakeupSource(uint32_t powerTrans)
 {
     bool wakeupSourceSupported = false;
+    bool printExtIntWakeup     = false;
+    bool printRtcWakeup        = false;
+    bool printLptmrWakeup      = false;
+    bool printButtonWakeup     = false;
     uint8_t firstMode          = (uint8_t)(powerTrans & 0xFUL);
     uint8_t secondMode         = (uint8_t)((powerTrans & 0xF0UL) >> 4UL);
     uint8_t thirdMode          = (uint8_t)((powerTrans & 0xF00UL) >> 8UL);
@@ -256,169 +259,89 @@ static power_low_power_mode_t DEMO_EnableWakeupSource(uint32_t powerTrans)
     do
     {
         PRINTF("Please Select Wakeup Source...\r\n");
-        if (secondMode != (uint8_t)kPower_DeepPowerDown1)
+        if ((secondMode != (uint8_t)kPower_DeepPowerDown1))
         {
-            /*In this transition, EXT_INT is used to wakeup from DPD1.*/
-            PRINTF("\t[1]: %s button.\r\n", APP_EXT_INT_BUTTON);
+            if ((firstMode != (uint8_t)kPower_PowerDown1) && (firstMode != (uint8_t)kPower_PowerDown2))
+            {
+                /*In this transition, EXT_INT is used to wakeup from DPD1.*/
+                PRINTF("\t[1]: %s button\r\n", APP_EXT_INT_BUTTON);
+                printExtIntWakeup = true;
+            }
         }
         if ((secondMode != (uint8_t)kPower_DeepPowerDown2) && (firstMode != (uint8_t)kPower_ShutDown))
         {
             /* In this transtion, timer is used to wakeup from DPD2. */
             PRINTF("\t[2]: RTC Alarm 0\r\n");
             PRINTF("\t[3]: RTC Alarm 1\r\n");
+            printRtcWakeup = true;
             if (firstMode <= (uint8_t)kPower_DeepPowerDown2)
             {
-                PRINTF("\t[4]: LPTMR.\r\n");
+                PRINTF("\t[4]: LPTMR\r\n");
+                printLptmrWakeup = true;
             }
             if (firstMode <= (uint8_t)kPower_DeepSleep)
             {
-                PRINTF("\t[5]: %s button,\r\n", APP_WAKEUP_BUTTON);
+                PRINTF("\t[5]: %s button\r\n", APP_WAKEUP_BUTTON);
+                printButtonWakeup = true;
             }
         }
-
+        PRINTF("\r\nWaiting for wakeup source select...\r\n");
         char ch = GETCHAR();
         switch (ch)
         {
             case '1': /* Ext_Int */
             {
-                wakeupSourceSupported = true;
-                PRINTF("Please Press %s Button to wakeup!\r\n", APP_EXT_INT_BUTTON);
-                if (firstMode <= (uint8_t)kPower_DeepSleep)
+                if (printExtIntWakeup)
                 {
-                    BOARD_InitExtIntButtonAsGPIO();
-                    EnableIRQ(APP_EXT_INT_IRQ);
-                    GPIO_SetPinInterruptConfig(APP_EXT_INT_GPIO, APP_EXT_INT_PIN, kGPIO_InterruptRisingEdge);
-                }
-                else if (firstMode == (uint8_t)kPower_DeepPowerDown1)
-                {
-                    Power_EnableWakeupSource(kPower_WS_Main_ExternalINTRiseEdge);
-                    if (secondMode == (uint8_t)kPower_DeepPowerDown2)
-                    {
-                        if (thirdMode == (uint8_t)kPower_DeepPowerDown1)
-                        {
-                            dpd1Config.nextTrans = kPower_Dpd1ToDpd2WakeToDpd1;
-                        }
-                        else
-                        {
-                            dpd1Config.nextTrans = kPower_Dpd1ToDpd2WakeToActive;
-                        }
-                    }
-                }
-                else
-                {
-                    Power_EnableWakeupSource(kPower_WS_Both_ExternalINTRiseEdge);
+                    wakeupSourceSupported = true;
+                    APP_EnableExtInternalWakeup(firstMode, secondMode, thirdMode);
                 }
                 break;
             }
             case '5': /* Wakeup Button */
             {
-                wakeupSourceSupported = true;
-                PRINTF("Please Press %s Button to wakeup!\r\n", APP_WAKEUP_BUTTON);
-                if (firstMode <= (uint8_t)kPower_DeepSleep)
+                if (printButtonWakeup)
                 {
-                    BOARD_InitWakeupButtonAsGPIO();
-                    EnableIRQ(APP_WAKEUP_BUTTON_IRQ);
-                    GPIO_SetPinInterruptConfig(APP_WAKEUP_BUTTON_GPIO, APP_WAKEUP_BUTTON_PIN,
-                                               kGPIO_InterruptFallingEdge);
-                }
-                else
-                {
-                    BOARD_InitWakeupButtonAsWUUPin();
-                    Power_EnableWakeupSource(kPower_WS_Main_P1_14AnyEdgeInt);
+                    wakeupSourceSupported = true;
+                    PRINTF("Please Press %s Button to wakeup!\r\n", APP_WAKEUP_BUTTON);
+                    if (firstMode <= (uint8_t)kPower_DeepSleep)
+                    {
+                        BOARD_InitWakeupButtonAsGPIO();
+                        EnableIRQ(APP_WAKEUP_BUTTON_IRQ);
+                        GPIO_SetPinInterruptConfig(APP_WAKEUP_BUTTON_GPIO, APP_WAKEUP_BUTTON_PIN,
+                                                   kGPIO_InterruptFallingEdge);
+                    }
+                    else
+                    {
+                        BOARD_InitWakeupButtonAsWUUPin();
+                    }
                 }
                 break;
             }
             case '4':
             { /* LPTMR wakeup */
-                wakeupSourceSupported = true;
-                APP_EnableLptmrWakeup();
-
-                if (firstMode >= (uint8_t)kPower_DeepPowerDown3)
+                if (printLptmrWakeup)
                 {
-                    Power_EnableWakeupSource(kPower_WS_Both_LptmrInt);
-                }
-                else if (secondMode == (uint8_t)kPower_DeepPowerDown1)
-                {
-                    Power_EnableWakeupSource(kPower_WS_Aon_LptmrInt);
-                    dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                    dpd2Config.enableIVSMode        = true;
-                    dpd2Config.wakeToDpd1           = true;
-                }
-                else if (firstMode == (uint8_t)kPower_DeepPowerDown1)
-                {
-                    Power_EnableWakeupSource(kPower_WS_Main_LptmrInt);
-                }
-                else if ((firstMode == (uint8_t)kPower_DeepPowerDown2) && (secondMode == (uint8_t)kPower_Active))
-                {
-                    Power_EnableWakeupSource(kPower_WS_Both_LptmrInt);
-                }
-                else if (firstMode == (uint8_t)kPower_PowerDown1)
-                {
-                    EnableIRQ(WUU0_IRQn);
-                    EnableIRQ(LPTMR_AON_IRQn);
-                    Power_EnableWakeupSource(kPower_WS_Main_LptmrInt);
-                    Power_EnableWakeupSource(kPower_WS_Main_Lptmr0Trig);
-                    Power_EnableWakeupSource(kPower_WS_Main_Lptmr0Int);
-                }
-                else
-                {
+                    wakeupSourceSupported = true;
+                    APP_EnableLptmrWakeup(firstMode, secondMode, thirdMode);
                 }
                 break;
             }
             case '2':
             { /* RTC Alarm0 */
-                wakeupSourceSupported = true;
-                APP_EnableRTCAlarm0Wakeup();
-
-                if (firstMode >= (uint8_t)kPower_DeepPowerDown3)
+                if (printRtcWakeup)
                 {
-                    Power_EnableWakeupSource(kPower_WS_Both_RtcAlarm0);
-                }
-                else if (secondMode == (uint8_t)kPower_DeepPowerDown1)
-                {
-                    Power_EnableWakeupSource(kPower_WS_Aon_RtcAlarm0);
-                    dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                    dpd2Config.enableIVSMode        = true;
-                    dpd2Config.wakeToDpd1           = true;
-                }
-                else if (firstMode == (uint8_t)kPower_DeepPowerDown1)
-                {
-                    Power_EnableWakeupSource(kPower_WS_Main_RtcAlarm0);
-                }
-                else if ((firstMode == (uint8_t)kPower_DeepPowerDown2) && (secondMode == (uint8_t)kPower_Active))
-                {
-                    Power_EnableWakeupSource(kPower_WS_Both_RtcAlarm0);
-                }
-                else
-                {
+                    wakeupSourceSupported = true;
+                    APP_EnableRTCAlarm0Wakeup(firstMode, secondMode, thirdMode);
                 }
                 break;
             }
             case '3':
             { /* RTC Alaram1 */
-                wakeupSourceSupported = true;
-                APP_EnableRTCAlarm1Wakeup();
-                if (firstMode >= (uint8_t)kPower_DeepPowerDown3)
+                if (printRtcWakeup)
                 {
-                    Power_EnableWakeupSource(kPower_WS_Both_RtcAlarm1);
-                }
-                else if (secondMode == (uint8_t)kPower_DeepPowerDown1)
-                {
-                    Power_EnableWakeupSource(kPower_WS_Aon_RtcAlarm1);
-                    dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                    dpd2Config.enableIVSMode        = true;
-                    dpd2Config.wakeToDpd1           = true;
-                }
-                else if (firstMode == (uint8_t)kPower_DeepPowerDown1)
-                {
-                    Power_EnableWakeupSource(kPower_WS_Main_RtcAlarm1);
-                }
-                else if ((firstMode == (uint8_t)kPower_DeepPowerDown2) && (secondMode == (uint8_t)kPower_Active))
-                {
-                    Power_EnableWakeupSource(kPower_WS_Both_RtcAlarm1);
-                }
-                else
-                {
+                    wakeupSourceSupported = true;
+                    APP_EnableRTCAlarm1Wakeup(firstMode, secondMode, thirdMode);
                 }
                 break;
             }
@@ -474,9 +397,105 @@ static uint32_t DEMO_GetTargetPowerTransition(void)
     return inputPowerTrans;
 }
 
-static void APP_EnableLptmrWakeup(void)
+static void APP_EnableExtInternalWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
+{
+    PRINTF("Please Press %s Button to wakeup!\r\n", APP_EXT_INT_BUTTON);
+    switch ((power_low_power_mode_t)firstMode)
+    {
+        case kPower_Sleep:
+        case kPower_DeepSleep:
+        {
+            BOARD_InitExtIntButtonAsGPIO();
+            EnableIRQ(APP_EXT_INT_IRQ);
+            GPIO_SetPinInterruptConfig(APP_EXT_INT_GPIO, APP_EXT_INT_PIN, kGPIO_InterruptRisingEdge);
+            break;
+        }
+        case kPower_DeepPowerDown1:
+        {
+            dpd1Config.mainWakeupSource = kPower_WS_Main_ExternalINTRiseEdge;
+            if (secondMode == (uint8_t)kPower_DeepPowerDown2)
+            {
+                if (thirdMode == (uint8_t)kPower_DeepPowerDown1)
+                {
+                    dpd1Config.nextTrans = kPower_Dpd1ToDpd2WakeToDpd1;
+                }
+                else
+                {
+                    dpd1Config.nextTrans = kPower_Dpd1ToDpd2WakeToActive;
+                }
+            }
+            break;
+        }
+        default:
+        {
+            Power_EnableWakeupSource(kPower_WS_Both_ExternalINTRiseEdge);
+            break;
+        }
+    }
+}
+
+static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
 {
     PRINTF("Will wakeup after 10s with LPTMR\r\n");
+
+    switch ((power_low_power_mode_t)firstMode)
+    {
+        case kPower_PowerDown1:
+        {
+            pd1Config.mainWakeupSource = kPower_WS_Main_LptmrInt;
+            break;
+        }
+        case kPower_PowerDown2:
+        {
+            pd2Config.aonWakeupSource  = kPower_WS_Aon_LptmrInt;
+            pd2Config.mainWakeupSource = kPower_WS_Main_LptmrInt;
+            break;
+        }
+        case kPower_DeepPowerDown1:
+        {
+            dpd1Config.mainWakeupSource = kPower_WS_Main_LptmrInt;
+            break;
+        }
+        case kPower_DeepPowerDown2:
+        {
+            if (secondMode == (uint8_t)kPower_DeepPowerDown1)
+            {
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainNoneRams;
+                dpd2Config.aonRamArraysToRetain  = kPower_AonDomainAllRams;
+                dpd2Config.enableIVSMode         = true;
+                dpd2Config.wakeToDpd1            = true;
+                dpd2Config.aonWakeupSource       = kPower_WS_Aon_LptmrInt;
+                dpd2Config.mainWakeupSource      = kPower_WS_Main_ExternalINTRiseEdge;
+                dpd2Config.disableFRO10M         = false;
+                dpd2Config.disableBandgap        = true;
+                dpd2Config.switchToX32K          = true;
+            }
+            else
+            {
+                dpd2Config.aonWakeupSource      = kPower_WS_Aon_LptmrInt;
+                dpd2Config.mainWakeupSource     = kPower_WS_Main_LptmrInt;
+                dpd2Config.wakeToDpd1           = false;
+                dpd2Config.aonRamArraysToRetain = kPower_AonDomainNoneRams;
+            }
+            break;
+        }
+        case kPower_DeepPowerDown3:
+        {
+            dpd3Config.wakeupSource = kPower_WS_Both_LptmrInt;
+            break;
+        }
+        case kPower_ShutDown:
+        {
+            sdConfig.wakeupSource = kPower_WS_Both_LptmrInt;
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+
     CLOCK_AttachClk(kFRO16K_to_AON_LPTMR);
     CLOCK_EnableClock(kCLOCK_GateAonLPTMR);
     RESET_ReleasePeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
@@ -490,9 +509,64 @@ static void APP_EnableLptmrWakeup(void)
     LPTMR_StartTimer(APP_LPTMR_BASE);
 }
 
-static void APP_EnableRTCAlarm0Wakeup(void)
+static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
 {
     PRINTF("Will wakeup after 10s with RTC Alarm0\r\n");
+
+    switch ((power_low_power_mode_t)firstMode)
+    {
+        case kPower_PowerDown1:
+        {
+            pd1Config.mainWakeupSource = kPower_WS_Main_RtcAlarm0;
+            break;
+        }
+        case kPower_PowerDown2:
+        {
+            pd2Config.mainWakeupSource = kPower_WS_Main_RtcAlarm0;
+            pd2Config.aonWakeupSource  = kPower_WS_Aon_RtcAlarm0;
+            break;
+        }
+        case kPower_DeepPowerDown1:
+        {
+            dpd1Config.mainWakeupSource = kPower_WS_Main_RtcAlarm0;
+            break;
+        }
+        case kPower_DeepPowerDown2:
+        {
+            if (secondMode == (uint8_t)kPower_DeepPowerDown1)
+            {
+                dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
+                dpd2Config.enableIVSMode        = true;
+                dpd2Config.wakeToDpd1           = true;
+                dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm0;
+                dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
+            }
+            else
+            {
+                dpd2Config.wakeToDpd1           = false;
+                dpd2Config.aonRamArraysToRetain = kPower_AonDomainNoneRams;
+                dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm0;
+                dpd2Config.mainWakeupSource     = kPower_WS_Main_RtcAlarm0;
+            }
+            break;
+        }
+        case kPower_DeepPowerDown3:
+        {
+            dpd3Config.wakeupSource = kPower_WS_Both_RtcAlarm0;
+            break;
+        }
+
+        case kPower_ShutDown:
+        {
+            sdConfig.wakeupSource = kPower_WS_Both_RtcAlarm0;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+
     AON__RTC_AON->CNT_H = 0x0000;
     AON__RTC_AON->CNT_M = 0x0000;
     AON__RTC_AON->CNT_L = 0x0000;
@@ -509,9 +583,63 @@ static void APP_EnableRTCAlarm0Wakeup(void)
     AON__RTC_AON->CONFIG |= RTC_CONFIG_EN_MASK | RTC_CONFIG_FREE_RUNNING_MASK;
 }
 
-static void APP_EnableRTCAlarm1Wakeup(void)
+static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
 {
     PRINTF("Will wakeup after 15s with RTC Alarm1\r\n");
+
+    switch ((power_low_power_mode_t)firstMode)
+    {
+        case kPower_PowerDown1:
+        {
+            pd1Config.mainWakeupSource = kPower_WS_Main_RtcAlarm1;
+            break;
+        }
+        case kPower_PowerDown2:
+        {
+            pd2Config.mainWakeupSource = kPower_WS_Main_RtcAlarm1;
+            pd2Config.aonWakeupSource  = kPower_WS_Aon_RtcAlarm1;
+            break;
+        }
+        case kPower_DeepPowerDown1:
+        {
+            dpd1Config.mainWakeupSource = kPower_WS_Main_RtcAlarm1;
+            break;
+        }
+        case kPower_DeepPowerDown2:
+        {
+            if (secondMode == (uint8_t)kPower_DeepPowerDown1)
+            {
+                dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
+                dpd2Config.enableIVSMode        = true;
+                dpd2Config.wakeToDpd1           = true;
+                dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm1;
+                dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
+            }
+            else
+            {
+                dpd2Config.wakeToDpd1           = false;
+                dpd2Config.aonRamArraysToRetain = kPower_AonDomainNoneRams;
+                dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm1;
+                dpd2Config.mainWakeupSource     = kPower_WS_Main_RtcAlarm1;
+            }
+            break;
+        }
+        case kPower_DeepPowerDown3:
+        {
+            dpd3Config.wakeupSource = kPower_WS_Both_RtcAlarm1;
+            break;
+        }
+        case kPower_ShutDown:
+        {
+            sdConfig.wakeupSource = kPower_WS_Both_RtcAlarm1;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+
     /* Enable RTC alarm 1 */
     AON__RTC_AON->ALARM_H   = RTC_ALARM_H_ALARM_REP(1) | RTC_ALARM_H_ALARM_NUM(1);
     AON__RTC_AON->ALARM_MID = 0x0000;

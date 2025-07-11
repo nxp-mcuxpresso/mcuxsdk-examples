@@ -125,11 +125,11 @@ void BOARD_InitExtIntButtonAsGPIO(void)
     /* PORT0: Peripheral clock is enabled */
     CLOCK_EnableClock(kCLOCK_GateAonPORT);
 
-    gpio_pin_config_t SW2_config = {.pinDirection = kGPIO_DigitalInput, .outputLogic = 0U};
+    gpio_pin_config_t SW5_config = {.pinDirection = kGPIO_DigitalInput, .outputLogic = 0U};
     /* Initialize GPIO functionality on pin PIO0_9   */
-    GPIO_PinInit(BOARD_SW2_GPIO, BOARD_SW2_GPIO_PIN, &SW2_config);
+    GPIO_PinInit(AON__GPIO0, 9U, &SW5_config);
 
-    const port_pin_config_t SW2 = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t SW5 = {/* Internal pull-up/down resistor is disabled */
                                    .pullSelect = kPORT_PullDisable,
                                    /* Low internal pull resistor value is selected. */
                                    .pullValueSelect = kPORT_LowPullResistor,
@@ -152,7 +152,7 @@ void BOARD_InitExtIntButtonAsGPIO(void)
                                    /* Pin Control Register fields [15:0] are not locked */
                                    .lockRegister = kPORT_UnlockRegister};
     /* PORT0_9  is configured as P0_9 */
-    PORT_SetPinConfig(AON__PORT0, BOARD_SW2_GPIO_PIN, &SW2);
+    PORT_SetPinConfig(AON__PORT0, 9U, &SW5);
 }
 
 void APP_InitROSC(void)
@@ -273,7 +273,7 @@ void BOARD_InitHardware(void)
     EnableIRQ(MU_A_RX_IRQn);
     MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
 
-    /* Adjust VDD Core voltage. */
+//    /* Adjust VDD Core voltage. */
     AON__PMU->VDD_CORE_PCONFIG = 0xA5E;
     
     APP_InitROSC();
