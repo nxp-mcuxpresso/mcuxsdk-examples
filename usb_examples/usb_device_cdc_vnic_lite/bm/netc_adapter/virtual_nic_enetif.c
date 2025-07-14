@@ -67,6 +67,14 @@
 #define PHY_RGMII_CONFIG1_TXDLY_MASK 0xFU
 #endif
 
+#ifndef ETH_ADAPTER_NETC_SI
+#ifndef ETH_ADAPTER_USE_SWT_MGMT_IPF
+#define ETH_ADAPTER_NETC_SI kNETC_ENETC0PSI0
+#else
+#define ETH_ADAPTER_NETC_SI kNETC_ENETC1PSI0
+#endif
+#endif
+
 #ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
 /* Switch pseudo port */
 #ifndef EXAMPLE_SWT_PSEUDO_PORT
@@ -560,7 +568,7 @@ enet_err_t NETCIF_Init(void)
 
     /* Endpoint configuration. */
     (void)EP_GetDefaultConfig(&g_ep_config);
-    g_ep_config.si                    = kNETC_ENETC1PSI0;
+    g_ep_config.si                    = ETH_ADAPTER_NETC_SI;
     g_ep_config.siConfig.txRingUse    = 1;
     g_ep_config.siConfig.rxRingUse    = 1;
     g_ep_config.reclaimCallback       = APP_ReclaimCallback;
