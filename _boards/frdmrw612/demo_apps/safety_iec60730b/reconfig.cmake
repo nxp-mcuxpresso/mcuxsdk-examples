@@ -39,18 +39,6 @@ mcux_add_macro(
 # Project settings for IAR toolchain
 #----------------------------------------------
 
-# mcux_remove_iar_configuration(
-    # AS "--cpu=cortex-m33.no_se"
-    # CC "--cpu=cortex-m33.no_se"
-    # CX "--cpu=cortex-m33.no_se"
-# )
-
-# mcux_add_iar_configuration(
-    # AS "--cpu=cortex-m33.no_dsp"
-    # CC "--cpu=cortex-m33.no_dsp"
-    # CX "--cpu=cortex-m33.no_dsp"
-# )
-
 mcux_add_iar_configuration(
     CC "--cmse"
 	CX "--cmse"
