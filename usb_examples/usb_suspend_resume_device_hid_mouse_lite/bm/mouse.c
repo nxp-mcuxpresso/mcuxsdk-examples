@@ -139,9 +139,16 @@ static usb_status_t USB_DeviceHidMouseAction(void)
         default:
             break;
     }
-    /* Send mouse report to the host */
-    return USB_DeviceSendRequest(g_UsbDeviceHidMouse.deviceHandle, USB_HID_MOUSE_ENDPOINT_IN,
-                                 g_UsbDeviceHidMouse.buffer, USB_HID_MOUSE_REPORT_LENGTH);
+
+    if (g_UsbDeviceHidMouse.mouseState)
+    {
+        /* Send mouse report to the host */
+        return USB_DeviceSendRequest(g_UsbDeviceHidMouse.deviceHandle, USB_HID_MOUSE_ENDPOINT_IN, g_UsbDeviceHidMouse.buffer, USB_HID_MOUSE_REPORT_LENGTH);
+    }
+    else
+    {
+        return kStatus_USB_Success;
+    }
 }
 
 /* HID mouse interrupt IN pipe callback */
@@ -407,14 +414,16 @@ static void USB_DeviceApplicationInit(void)
 #endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
 
     /* Set HID mouse default state */
-    g_UsbDeviceHidMouse.speed        = USB_SPEED_FULL;
-    g_UsbDeviceHidMouse.attach       = 0U;
-    g_UsbDeviceHidMouse.deviceHandle = NULL;
-    g_UsbDeviceHidMouse.buffer       = s_MouseBuffer;
-    g_UsbDeviceHidMouse.remoteWakeup = 0U;
-    g_UsbDeviceHidMouse.suspend      = kStatus_MouseIdle;
-    g_UsbDeviceHidMouse.selfWakeup   = 0U;
-    g_UsbDeviceHidMouse.isResume     = 0U;
+    g_UsbDeviceHidMouse.speed              = USB_SPEED_FULL;
+    g_UsbDeviceHidMouse.attach             = 0U;
+    g_UsbDeviceHidMouse.deviceHandle       = NULL;
+    g_UsbDeviceHidMouse.buffer             = s_MouseBuffer;
+    g_UsbDeviceHidMouse.remoteWakeup       = 0U;
+    g_UsbDeviceHidMouse.suspend            = kStatus_MouseIdle;
+    g_UsbDeviceHidMouse.selfWakeup         = 0U;
+    g_UsbDeviceHidMouse.isResume           = 0U;
+    g_UsbDeviceHidMouse.mouseState         = 1U;
+    g_UsbDeviceHidMouse.previousMouseState = g_UsbDeviceHidMouse.mouseState;
 
     /* Initialize the usb stack and class drivers */
     if (kStatus_USB_Success != USB_DeviceInit(CONTROLLER_ID, USB_DeviceCallback, &g_UsbDeviceHidMouse.deviceHandle))
@@ -424,7 +433,9 @@ static void USB_DeviceApplicationInit(void)
     }
     else
     {
-        usb_echo("USB device HID mouse demo\r\n");
+        usb_echo("USB device HID mouse demo\r\n"
+                 "Press switch(%s) to run/stop HID mouse drawing square.\r\n",
+                 SW_GetName());
     }
 
     /* Install isr, set priority, and enable IRQ. */
@@ -470,6 +481,24 @@ void USB_DeviceSuspendResumeTask(void)
     switch (g_UsbDeviceHidMouse.suspend)
     {
         case kStatus_MouseIdle:
+            if (g_UsbDeviceHidMouse.attach)
+            {
+                if (g_UsbDeviceHidMouse.previousMouseState != g_UsbDeviceHidMouse.mouseState)
+                {
+                    g_UsbDeviceHidMouse.previousMouseState = g_UsbDeviceHidMouse.mouseState;
+
+                    if (g_UsbDeviceHidMouse.previousMouseState)
+                    {
+                        usb_echo("HID mouse is running.\r\n");
+                    }
+                    else
+                    {
+                        usb_echo("HID mouse is stopped.\r\n");
+                    }
+
+                    USB_DeviceHidMouseAction();
+                }
+            }
             break;
         case kStatus_MouseStartSuspend:
             g_UsbDeviceHidMouse.suspend = kStatus_MouseSuspending;
@@ -548,7 +577,11 @@ void USB_DeviceSuspendResumeTask(void)
             usb_echo("USB device resumed.\r\n");
             if (g_UsbDeviceHidMouse.attach)
             {
+                usb_echo("Press switch(%s) to run/stop HID mouse drawing square.\r\n", SW_GetName());
+                g_UsbDeviceHidMouse.mouseState = 1U;
+                g_UsbDeviceHidMouse.previousMouseState = g_UsbDeviceHidMouse.mouseState;
                 USB_DeviceHidMouseAction();
+                SW_IntControl(1);
             }
             g_UsbDeviceHidMouse.suspend = kStatus_MouseIdle;
             break;

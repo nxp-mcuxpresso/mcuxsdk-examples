@@ -78,6 +78,8 @@ typedef struct _usb_hid_mouse_struct
     volatile uint8_t selfWakeup;
     volatile uint8_t isResume;
     volatile usb_hid_mouse_status_t suspend;
+    volatile uint8_t mouseState;
+    volatile uint8_t previousMouseState;
 } usb_hid_mouse_struct_t;
 
 /*******************************************************************************
