@@ -32,6 +32,7 @@ board: MIMXRT1180-EVK
  * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitGptPins();
 }
 
