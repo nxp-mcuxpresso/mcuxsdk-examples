@@ -43,9 +43,9 @@
  * needs to be greater than the secondary slot.
  */
 
-/* 3 extra sectors for primary slot to manage trailer data */
+/* 1 extra sector for primary slot to manage trailer data */
 #define BOOT_FLASH_ACT_SIZE   0xB8000
-#define BOOT_FLASH_CAND_SIZE  0xB5000
+#define BOOT_FLASH_CAND_SIZE  0xB7000
 
 #else
 
