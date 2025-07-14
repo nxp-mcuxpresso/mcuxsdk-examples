@@ -81,6 +81,7 @@ static void BOARD_ConfigPMICModes(pca9420_modecfg_t *cfg, uint32_t num)
 void pint_intr_callback(pint_pin_int_t pintr, pint_status_t *status)
 {
     g_UsbDeviceHidMouse.selfWakeup = 1U;
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
     /* Disable callbacks for PINT */
     PINT_DisableCallback(PINT);
 }

@@ -106,6 +106,7 @@ void GPIO00_IRQHandler(void)
     GPIO_PortClearInterruptFlags(BOARD_SW5_GPIO, 1U << BOARD_SW5_GPIO_PIN);
 #endif
     g_UsbDeviceHidMouse.selfWakeup = 1U;
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
     SDK_ISR_EXIT_BARRIER;
 }
 

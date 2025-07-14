@@ -69,7 +69,7 @@ void SW_IntControl(uint8_t enable)
 void APP_WakeupHandler(IRQn_Type irq)
 {
     g_UsbDeviceHidMouse.selfWakeup = 1U;
-    SW_IntControl(0);
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
 }
 
 void PIN1_INT_IRQHandler()

@@ -67,7 +67,7 @@ void SW_IntControl(uint8_t enable)
 void SW_Callback(void *param)
 {
     g_UsbDeviceHidMouse.selfWakeup = 1U;
-    SW_IntControl(0);
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
 }
 
 void SW_Init(void)

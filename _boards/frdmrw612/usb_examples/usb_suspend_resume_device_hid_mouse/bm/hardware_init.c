@@ -73,7 +73,7 @@ void GPIO_INTA_DriverIRQHandler()
     /* clear the interrupt status */
     GPIO_PinClearInterruptFlag(GPIO, BOARD_SW2_GPIO_PORT, BOARD_SW2_GPIO_PIN, 0);
     g_UsbDeviceHidMouse.selfWakeup = 1U;
-    SW_IntControl(0);
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
     SDK_ISR_EXIT_BARRIER;
 }
 

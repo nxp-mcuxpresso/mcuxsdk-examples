@@ -85,6 +85,7 @@ void BOARD_USER_BUTTON_IRQ_HANDLER(void)
     /* Clear external interrupt flag. */
     RGPIO_ClearPinsInterruptFlags(BOARD_USER_BUTTON_GPIO, kRGPIO_InterruptOutput0, 1U << BOARD_USER_BUTTON_GPIO_PIN);
     g_UsbDeviceHidMouse.selfWakeup = 1U;
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
     SDK_ISR_EXIT_BARRIER;
 }
 void SW_IntControl(uint8_t enable)
@@ -93,7 +94,7 @@ void SW_IntControl(uint8_t enable)
 void SW_Callback(void)
 {
     g_UsbDeviceHidMouse.selfWakeup = 1U;
-    SW_IntControl(0);
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
 }
 void SW_Init(void)
 {

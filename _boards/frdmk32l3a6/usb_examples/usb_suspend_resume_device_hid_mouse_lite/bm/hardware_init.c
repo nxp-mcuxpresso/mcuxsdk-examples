@@ -73,6 +73,7 @@ void BOARD_SW2_IRQ_HANDLER(void)
         PORT_SetPinInterruptConfig(BOARD_SW2_PORT, BOARD_SW2_GPIO_PIN, kPORT_InterruptOrDMADisabled);
         PORT_ClearPinsInterruptFlags(BOARD_SW2_PORT, (1U << BOARD_SW2_GPIO_PIN));
         g_UsbDeviceHidMouse.selfWakeup = 1U;
+        g_UsbDeviceHidMouse.mouseState ^= 1U;
     }
 }
 void SW_IntControl(uint8_t enable)
@@ -90,7 +91,7 @@ void SW_IntControl(uint8_t enable)
 void SW_Callback(void *param)
 {
     g_UsbDeviceHidMouse.selfWakeup = 1U;
-    SW_IntControl(0);
+    g_UsbDeviceHidMouse.mouseState ^= 1U;
 }
 void SW_Init(void)
 {
