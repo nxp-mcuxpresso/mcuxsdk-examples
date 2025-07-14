@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -67,11 +67,14 @@ void APP_SetTrdcGlobalConfig(void)
      * thus no access control to be configured. */
     uint32_t i, j;
 
-    TRDC_Init(EXAMPLE_TRDC_INSTANCE);
+    TRDC_Init(EXAMPLE_TRDC_MRC_INSTANCE);
+    TRDC_Init(EXAMPLE_TRDC_MBC_INSTANCE);
 
-    /* 1. Get the hardware configuration of the EXAMPLE_TRDC_INSTANCE module. */
-    trdc_hardware_config_t hwConfig;
-    TRDC_GetHardwareConfig(EXAMPLE_TRDC_INSTANCE, &hwConfig);
+    /* 1. Get the hardware configuration. */
+    trdc_hardware_config_t mrcHwConfig;
+    trdc_hardware_config_t mbcHwConfig;
+    TRDC_GetHardwareConfig(EXAMPLE_TRDC_MRC_INSTANCE, &mrcHwConfig);
+    TRDC_GetHardwareConfig(EXAMPLE_TRDC_MBC_INSTANCE, &mbcHwConfig);
 
     /* 2. Set control policies for MRC and MBC access control configuration registers. */
     trdc_memory_access_control_config_t memAccessConfig;
@@ -93,14 +96,14 @@ void APP_SetTrdcGlobalConfig(void)
 
     for (j = 0U; j < 8U; j++)
     {
-        for (i = 0U; i < hwConfig.mrcNumber; i++)
+        for (i = 0U; i < mrcHwConfig.mrcNumber; i++)
         {
-            TRDC_MrcSetMemoryAccessConfig(EXAMPLE_TRDC_INSTANCE, &memAccessConfig, i, j);
+            TRDC_MrcSetMemoryAccessConfig(EXAMPLE_TRDC_MRC_INSTANCE, &memAccessConfig, i, j);
         }
 
-        for (i = 0U; i < hwConfig.mbcNumber; i++)
+        for (i = 0U; i < mbcHwConfig.mbcNumber; i++)
         {
-            TRDC_MbcSetMemoryAccessConfig(EXAMPLE_TRDC_INSTANCE, &memAccessConfig, i, j);
+            TRDC_MbcSetMemoryAccessConfig(EXAMPLE_TRDC_MBC_INSTANCE, &memAccessConfig, i, j);
         }
     }
 
@@ -127,7 +130,7 @@ void APP_SetTrdcAccessControl(void)
     uint32_t i, j, m, n;
 
     trdc_hardware_config_t hwConfig;
-    TRDC_GetHardwareConfig(EXAMPLE_TRDC_INSTANCE, &hwConfig);
+    TRDC_GetHardwareConfig(EXAMPLE_TRDC_MRC_INSTANCE, &hwConfig);
 
     /* 1. Set the configuration for MRC. */
     trdc_mrc_region_descriptor_config_t mrcRegionConfig;
@@ -141,11 +144,11 @@ void APP_SetTrdcAccessControl(void)
     {
         mrcRegionConfig.domainIdx = i;
         /* Get region count for current MRC instance */
-        m = TRDC_GetMrcRegionNumber(EXAMPLE_TRDC_INSTANCE, EXAMPLE_TRDC_MRC_INDEX);
+        m = TRDC_GetMrcRegionNumber(EXAMPLE_TRDC_MRC_INSTANCE, EXAMPLE_TRDC_MRC_INDEX);
         for (j = 0U; j < m; j++)
         {
             mrcRegionConfig.regionIdx = j;
-            TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_INSTANCE, &mrcRegionConfig);
+            TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_MRC_INSTANCE, &mrcRegionConfig);
         }
     }
     /* Configure the access to EXAMPLE_TRDC_SECURE_DOMAIN to secure access only. */
@@ -157,12 +160,12 @@ void APP_SetTrdcAccessControl(void)
     mrcRegionConfig.regionIdx                 = EXAMPLE_TRDC_MRC_REGION_INDEX;
     mrcRegionConfig.startAddr                 = EXAMPLE_TRDC_MRC_START_ADDRESS;
     mrcRegionConfig.endAddr                   = EXAMPLE_TRDC_MRC_END_ADDRESS;
-    TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_INSTANCE, &mrcRegionConfig);
+    TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_MRC_INSTANCE, &mrcRegionConfig);
 
     /* Configure the access to EXAMPLE_TRDC_NONSECURE_DOMAIN to non-secure access only. */
     mrcRegionConfig.nseEnable = true; /* Enable nonsecure, meaning disable secure. */
     mrcRegionConfig.domainIdx = EXAMPLE_TRDC_NONSECURE_DOMAIN;
-    TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_INSTANCE, &mrcRegionConfig);
+    TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_MRC_INSTANCE, &mrcRegionConfig);
 
     /* 2. Set the configuration for MBC. */
     trdc_slave_memory_hardware_config_t mbcHwConfig;
@@ -193,7 +196,7 @@ void APP_SetTrdcAccessControl(void)
             mbcBlockConfig.domainIdx = j;
             for (m = 0U; m < 4; m++)
             {
-                TRDC_GetMbcHardwareConfig(EXAMPLE_TRDC_INSTANCE, &mbcHwConfig, i, m);
+                TRDC_GetMbcHardwareConfig(EXAMPLE_TRDC_MBC_INSTANCE, &mbcHwConfig, i, m);
                 if (mbcHwConfig.blockNum == 0U)
                 {
                     break;
@@ -202,7 +205,7 @@ void APP_SetTrdcAccessControl(void)
                 for (n = 0U; n < mbcHwConfig.blockNum; n++)
                 {
                     mbcBlockConfig.memoryBlockIdx = n;
-                    TRDC_MbcSetMemoryBlockConfig(EXAMPLE_TRDC_INSTANCE, &mbcBlockConfig);
+                    TRDC_MbcSetMemoryBlockConfig(EXAMPLE_TRDC_MBC_INSTANCE, &mbcBlockConfig);
                 }
             }
         }
@@ -252,7 +255,7 @@ void APP_SetTrdcDacConfigSecureDomain(void)
             kTRDC_ForceSecure, /* Force the master with PID that fits into EXAMPLE_TRDC_SECURE_DOMAIN to be secure. */
         .pid  = 0U,            /* Not used. */
         .lock = false};
-    TRDC_SetProcessorDomainAssignment(EXAMPLE_TRDC_INSTANCE, (uint8_t)kTRDC1_MasterCM33, 0U, &domainAssignment0);
+    TRDC_SetProcessorDomainAssignment(EXAMPLE_TRDC_DAC_INSTANCE, (uint8_t)kTRDC1_MasterCM33, 0U, &domainAssignment0);
 }
 
 void APP_SetTrdcDacConfigNonsecureDomain(void)
@@ -272,13 +275,13 @@ void APP_SetTrdcDacConfigNonsecureDomain(void)
             kTRDC_ForceNonSecure, /* Force the master that fits into EXAMPLE_TRDC_SECURE_DOMAIN to be non-secure. */
         .pid  = 0U,               /* Not used. */
         .lock = false};
-    TRDC_SetProcessorDomainAssignment(EXAMPLE_TRDC_INSTANCE, (uint8_t)kTRDC1_MasterCM33, 1U, &domainAssignment);
+    TRDC_SetProcessorDomainAssignment(EXAMPLE_TRDC_DAC_INSTANCE, (uint8_t)kTRDC1_MasterCM33, 1U, &domainAssignment);
 }
 
 void APP_SetPid(uint8_t pid)
 {
     const trdc_pid_config_t pidConfig = {.pid = pid, .lock = kTRDC_PidUnlocked0};
-    TRDC_SetPid(EXAMPLE_TRDC_INSTANCE, kTRDC1_MasterCM33, &pidConfig);
+    TRDC_SetPid(EXAMPLE_TRDC_DAC_INSTANCE, kTRDC1_MasterCM33, &pidConfig);
 }
 
 void APP_SetMrcUnaccessible(uint8_t domain, bool nseEnable)
@@ -294,7 +297,7 @@ void APP_SetMrcUnaccessible(uint8_t domain, bool nseEnable)
     mrcRegionConfig.domainIdx                 = domain;
     mrcRegionConfig.regionIdx                 = EXAMPLE_TRDC_MRC_REGION_INDEX;
 
-    TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_INSTANCE, &mrcRegionConfig);
+    TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_MRC_INSTANCE, &mrcRegionConfig);
 }
 
 void APP_TouchMrcMemory(void)
@@ -321,7 +324,7 @@ void APP_CheckAndResolveMrcAccessError(trdc_domain_error_t *error)
         mrcRegionConfig.mrcIdx                    = EXAMPLE_TRDC_MRC_INDEX;
         mrcRegionConfig.domainIdx                 = EXAMPLE_TRDC_SECURE_DOMAIN;
         mrcRegionConfig.regionIdx                 = EXAMPLE_TRDC_MRC_REGION_INDEX;
-        TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_INSTANCE, &mrcRegionConfig);
+        TRDC_MrcSetRegionDescriptorConfig(EXAMPLE_TRDC_MRC_INSTANCE, &mrcRegionConfig);
     }
 }
 
@@ -336,7 +339,7 @@ void APP_SetMbcUnaccessible(uint8_t domain, bool nseEnable)
     mbcBlockConfig.slaveMemoryIdx            = EXAMPLE_TRDC_MBC_SLAVE_INDEX;
     mbcBlockConfig.memoryBlockIdx            = EXAMPLE_TRDC_MBC_MEMORY_INDEX;
 
-    TRDC_MbcSetMemoryBlockConfig(EXAMPLE_TRDC_INSTANCE, &mbcBlockConfig);
+    TRDC_MbcSetMemoryBlockConfig(EXAMPLE_TRDC_MBC_INSTANCE, &mbcBlockConfig);
 }
 
 void APP_TouchMbcMemory(void)
@@ -362,7 +365,7 @@ void APP_CheckAndResolveMbcAccessError(trdc_domain_error_t *error)
         mbcBlockConfig.domainIdx      = EXAMPLE_TRDC_SECURE_DOMAIN;
         mbcBlockConfig.slaveMemoryIdx = EXAMPLE_TRDC_MBC_SLAVE_INDEX;
         mbcBlockConfig.memoryBlockIdx = EXAMPLE_TRDC_MBC_MEMORY_INDEX;
-        TRDC_MbcSetMemoryBlockConfig(EXAMPLE_TRDC_INSTANCE, &mbcBlockConfig);
+        TRDC_MbcSetMemoryBlockConfig(EXAMPLE_TRDC_MBC_INSTANCE, &mbcBlockConfig);
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2022-2023,2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -29,10 +29,14 @@ volatile bool g_hardfaultFlag = false;
 void Fault_handler()
 {
     trdc_domain_error_t error;
-    while (kStatus_Success == TRDC_GetAndClearFirstDomainError(EXAMPLE_TRDC_INSTANCE, &error))
+    while (kStatus_Success == TRDC_GetAndClearFirstDomainError(EXAMPLE_TRDC_MBC_INSTANCE, &error))
+    {
+        APP_CheckAndResolveMbcAccessError(&error);
+        g_hardfaultFlag = true;
+    }
+    while (kStatus_Success == TRDC_GetAndClearFirstDomainError(EXAMPLE_TRDC_MRC_INSTANCE, &error))
     {
         APP_CheckAndResolveMrcAccessError(&error);
-        APP_CheckAndResolveMbcAccessError(&error);
         g_hardfaultFlag = true;
     }
 }

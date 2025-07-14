@@ -52,6 +52,9 @@ extern int core1_image_size;
 #define EXAMPLE_TRDC_MBC_SLAVE_INDEX         2            /* GPIO1 */
 #define EXAMPLE_TRDC_MBC_MEMORY_INDEX        0
 #define EXAMPLE_TRDC_MBC_START_ADDRESS       0x47400000UL /* GPIO1 start address */
+#define EXAMPLE_TRDC_DAC_INSTANCE            EXAMPLE_TRDC_INSTANCE
+#define EXAMPLE_TRDC_MRC_INSTANCE            EXAMPLE_TRDC_INSTANCE
+#define EXAMPLE_TRDC_MBC_INSTANCE            EXAMPLE_TRDC_INSTANCE
 #define EXAMPLE_TRDC_SECONDARY_CORE_INSTANCE TRDC2
 /* These flags are stored in memory for the 2 cores to communicate, should align with the secondary core. */
 #define EXAMPLE_NONSECURE_MRC_NEED_RESOLVE_FLAG_ADDRESS 0x04000000UL
