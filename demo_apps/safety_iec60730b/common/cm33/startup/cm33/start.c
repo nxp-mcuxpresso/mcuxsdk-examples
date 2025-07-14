@@ -34,7 +34,7 @@ void start(void)
 #if WATCHDOG_ENABLED
     WatchdogEnable(WATCHDOG_TIMEOUT_VALUE);
 #else
-    WatchdogDisable();
+    //WatchdogDisable();
 #endif
 
     /* Copy any vector or data sections that need to be in RAM */
