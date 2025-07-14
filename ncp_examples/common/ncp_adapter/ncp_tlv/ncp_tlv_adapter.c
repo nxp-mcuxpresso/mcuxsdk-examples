@@ -15,7 +15,7 @@
 #include "mbedtls_common.h"
 #endif
 #include "ncp_cmd_system.h"
-
+#include "ncp_utils.h"
 
 /*******************************************************************************
  * Definitions
@@ -131,14 +131,8 @@ void ncp_tlv_process(osa_task_param_t arg)
 static ncp_status_t ncp_tlv_tx_enque(ncp_tlv_qelem_t *qelem)
 {
     ncp_status_t status = NCP_STATUS_SUCCESS;
-    OSA_MutexLock(ncp_tlv_queue_mutex, osaWaitForever_c);
-    if (ncp_tlv_queue_len == NCP_TLV_QUEUE_LENGTH)
-    {
-        ncp_adap_e("ncp tlv queue is full max queue length: %d", NCP_TLV_QUEUE_LENGTH);
-        status = NCP_STATUS_QUEUE_FULL;
-        goto Fail;
-    }
-    if (OSA_MsgQPut(ncp_tlv_msgq_handle, &qelem) != KOSA_StatusSuccess)
+
+    if (OSA_MsgQPutBlock(ncp_tlv_msgq_handle, &qelem, osaWaitForever_c) != KOSA_StatusSuccess)
     {
         ncp_adap_e("ncp tlv enqueue failure");
         NCP_TLV_STATS_INC(err);
@@ -147,15 +141,15 @@ static ncp_status_t ncp_tlv_tx_enque(ncp_tlv_qelem_t *qelem)
     }
     else
     {
+        OSA_MutexLock(ncp_tlv_queue_mutex, osaWaitForever_c);
         ncp_tlv_queue_len++;
-		NCP_TLV_STATS_INC(tx);
+        OSA_MutexUnlock((osa_mutex_handle_t)ncp_tlv_queue_mutex);
+        NCP_TLV_STATS_INC(tx);
         ncp_adap_d("enque tlv_buf success");
     }
 Fail:
-    OSA_MutexUnlock((osa_mutex_handle_t)ncp_tlv_queue_mutex);
     return status;
 }
-
 
 #if CONFIG_NCP_USE_ENCRYPT
 
