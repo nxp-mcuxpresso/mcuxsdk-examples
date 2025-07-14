@@ -71,6 +71,7 @@ freertos_tickless:
     frdmke16z: []
     frdmke17z: []
     frdmke17z512: []
+    frdmmcxa344: []
     frdmmcxa346: []
     frdmmcxc242: []
     frdmmcxc444: []

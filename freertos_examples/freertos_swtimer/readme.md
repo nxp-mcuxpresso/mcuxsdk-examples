@@ -50,6 +50,7 @@ Tick.
 - [FRDM-KE17Z512](../../_boards/frdmke17z512/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-MCXA153](../../_boards/frdmmcxa153/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/freertos_examples/freertos_swtimer/example_board_readme.md)
+- [FRDM-MCXA344](../../_boards/frdmmcxa344/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-MCXC242](../../_boards/frdmmcxc242/freertos_examples/freertos_swtimer/example_board_readme.md)
 - [FRDM-MCXC444](../../_boards/frdmmcxc444/freertos_examples/freertos_swtimer/example_board_readme.md)
