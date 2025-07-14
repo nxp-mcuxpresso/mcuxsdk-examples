@@ -31,6 +31,7 @@ The file 'cmsis_lpspi_edma_b2b_transfer_slave.c' includes the LPSPI slave code.
 - [FRDM-KE17Z512](../../../../_boards/frdmke17z512/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA153](../../../../_boards/frdmmcxa153/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA156](../../../../_boards/frdmmcxa156/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXA344](../../../../_boards/frdmmcxa344/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXA346](../../../../_boards/frdmmcxa346/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXE247](../../../../_boards/frdmmcxe247/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXN236](../../../../_boards/frdmmcxn236/cmsis_driver_examples/lpspi/edma_b2b_transfer/slave/example_board_readme.md)
