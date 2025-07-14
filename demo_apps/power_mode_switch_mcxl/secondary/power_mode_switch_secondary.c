@@ -19,6 +19,7 @@
 
 #include "pin_mux.h"
 
+#include "fsl_advc.h"
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -134,6 +135,7 @@ int main(void)
         {
             /* Wakeup from DPD2, current mode is DPD1. */
             BOARD_InitHardware();
+
             PRINTF("Wakeup from DPD2.\r\n");
             Power_RestoreHandleOffset(backupReg.word2);
             EnableIRQ(MU_B_RX_IRQn);
@@ -145,6 +147,13 @@ int main(void)
                 NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
             }
             wakeupFromDpd2 = true;
+#if APP_ENABLE_ADVC
+            if (ADVC_IsEnabled() == false)
+            {
+                PRINTF("Re-enable ADVC\r\n");
+                ADVC_Enable(kADVC_ModeOptimal, NULL);
+            }
+#endif
         }
     }
     while (1)
@@ -296,10 +305,7 @@ static void APP_DeepPowerDown1Ops(bool wakeFromDpd2)
             .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
             .mainWakeupSource      = kPower_WS_NONE,
         };
-        if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Success)
-        {
-            PRINTF("Wakeup From DPD2.\r\n");
-        }
+        (void)Power_EnterDeepPowerDown2(&dpd2Config);
     }
     else if (nextTrans == kPower_Dpd1ToDpd2WakeToActive)
     {
@@ -324,10 +330,7 @@ static void APP_DeepPowerDown1Ops(bool wakeFromDpd2)
         backupReg.word1 = 0x5A5AUL | (((uint32_t)kPower_DeepPowerDown2 << 16U));
         backupReg.word2 = off;
         SMM_WriteToBackupReg(AON__SMM, &backupReg);
-        if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Success)
-        {
-            PRINTF("Wakeup From DPD2.\r\n");
-        }
+        (void)Power_EnterDeepPowerDown2(&dpd2Config);
     }
     else
     {
@@ -348,6 +351,7 @@ static void APP_DeepPowerDown1Ops(bool wakeFromDpd2)
                 EnableIRQ(RTC_ALARM1_IRQn);
             }
         }
+
         PRINTF("Start to execute WFI\r\n");
         /* In DPD1, execute WFI to get lower power number. */
         __WFI();

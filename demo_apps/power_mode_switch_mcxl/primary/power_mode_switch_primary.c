@@ -164,9 +164,14 @@ int main(void)
     uint32_t powerTrans;
     power_low_power_mode_t targetLpMode;
     BOARD_InitHardware();
+#if APP_ENABLE_ADVC
+    ADVC_Init();
+    ADVC_Enable(kADVC_ModeOptimal, NULL);
+#endif
     PRINTF(
         "\r\n###########################  Power Mode Switch Demo Primary Core Boot  ###########################\r\n");
     PRINTF("Normal Boot......\r\n");
+
     PRINTF("Core Clock Frequency: %d\r\n", CLOCK_GetCoreSysClkFreq());
     CMC_ConfigFlashMode(CMC, true, true, false);
     bool wakeupReset = APP_GetWakeupReason();

@@ -86,6 +86,8 @@ extern int core1_image_size;
 #define CORE1_IMAGE_START ((void *)core1_image_start)
 #define CORE1_IMAGE_SIZE  ((void *)core1_image_size)
 #endif
+
+#define APP_ENABLE_ADVC (0)
 /*${macro:end}*/
 
 /*******************************************************************************

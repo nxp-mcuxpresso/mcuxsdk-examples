@@ -273,8 +273,10 @@ void BOARD_InitHardware(void)
     EnableIRQ(MU_A_RX_IRQn);
     MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
 
-//    /* Adjust VDD Core voltage. */
+#if !APP_ENABLE_ADVC
+    /* Adjust VDD Core voltage. */
     AON__PMU->VDD_CORE_PCONFIG = 0xA5E;
+#endif
     
     APP_InitROSC();
 }
