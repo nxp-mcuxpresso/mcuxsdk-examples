@@ -62,6 +62,8 @@ mcux_add_source(
             common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.c
             common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
             common/crc/ncp_crc.c
+            common/ncp_utils.c
+            common/ncp_utils.h
             common/crc/ncp_crc.h
             common/mbedtls/mbedtls_common.c
             common/mbedtls/mbedtls_common.h

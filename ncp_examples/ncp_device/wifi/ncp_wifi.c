@@ -36,6 +36,8 @@
 #include "app_notify.h"
 #include "ncp_inet.h"
 
+#include "ncp_utils.h"
+
 #if CONFIG_NCP_DEBUG
 #include "cli.h"
 #endif
@@ -213,7 +215,7 @@ static void wifi_ncp_callback(void *tlv, size_t tlv_sz, int status)
     }
     memcpy(cmd_item.cmd_buff, tlv, tlv_sz);
 
-    ret = OSA_MsgQPut(wifi_ncp_command_queue, &cmd_item);
+    ret = OSA_MsgQPutBlock(wifi_ncp_command_queue, &cmd_item, osaWaitForever_c);
     if (ret != kStatus_Success)
     {
         if (cmd_item.cmd_buff)

@@ -63,6 +63,8 @@ mcux_add_source(
             common/ncp_cmd_wifi.h
             common/ncp_cmd_ble.h
             common/ncp_glue_common.c
+            common/ncp_utils.c
+            common/ncp_utils.h
             common/app_notify.h
             common/app_notify.c
             common/ncp_adapter/ncp_adapter.h
