@@ -14,3 +14,4 @@ mau_cmsis:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa346: []
+    frdmmcxa344: []
