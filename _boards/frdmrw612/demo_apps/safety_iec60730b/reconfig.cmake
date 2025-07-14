@@ -1,72 +1,205 @@
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/safety_iec60730b/boards/${board}/main.c
-            middleware/safety_iec60730b/boards/${board}/linker/iar/frdmrw612_safety_flash.icf
-            middleware/safety_iec60730b/boards/${board}/isr.h
-            middleware/safety_iec60730b/boards/${board}/safety_config.h
-            middleware/safety_iec60730b/boards/${board}/device_information.h
-            middleware/safety_iec60730b/boards/${board}/project_setup_frdmrw612.h
-            middleware/safety_iec60730b/boards/${board}/project_setup_frdmrw612.c
-            middleware/safety_iec60730b/boards/common/cm33/safety_cm33_RW61x.c
-            middleware/safety_iec60730b/boards/common/cm33/safety_cm33_RW61x.h
-            middleware/safety_iec60730b/boards/${board}/freemaster/safety_flash.pmp
-            middleware/safety_iec60730b/boards/${board}/pin_mux.c
-            middleware/safety_iec60730b/boards/${board}/pin_mux.h
-            middleware/safety_iec60730b/boards/${board}/startup/start.c
-            middleware/safety_iec60730b/boards/${board}/startup/startup_iar.c
-            middleware/safety_iec60730b/boards/${board}/startup/vectors_iar.c
-            middleware/safety_iec60730b/boards/${board}/startup/vectors_iar.h
-            middleware/safety_iec60730b/boards/${board}/freemaster/freemaster_cfg.h
-)
+#----------------------------------------------
+# Source files and includes for all toolchains
+#----------------------------------------------
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/safety_iec60730b/boards/frdmrw612
-             middleware/safety_iec60730b/boards/common/cm33
-             middleware/safety_iec60730b/boards/${board}/startup
-             middleware/safety_iec60730b/boards/${board}/freemaster
+    INCLUDES examples/demo_apps/safety_iec60730b/common/cm33
 )
+
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_RW61x.c
+			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_RW61x.h
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/main.c
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
+)
+
+mcux_project_remove_source(
+  SOURCES source/core_test/cm33/register/iec60730b_cm33_reg_fpu.S
+  BASE_PATH ${SdkRootDirPath}/middleware/safety_iec60730b/
+)
+
+#----------------------------------------------
+# Project settings for all toolchains
+#----------------------------------------------
 
 mcux_add_configuration(
     CC "--debug"
     CX "--debug"
-)
-mcux_add_iar_configuration(
-    LD "--keep=__checksum\
-       --place_holder __checksum,4,.checksum,4\
-       --entry __iar_program_start\
-       --diag_suppress Lt069"
-    AS "-S"
-    CC "--cmse\
-       --diag_suppress Pa082,Pa050,Pe188,Pe069"
-    CX "--cmse\
-       -e\
-       --diag_suppress Pa082,Pa050,Pe188,Pe069"
 )
 
 mcux_add_macro(
     CC "-DSKIP_SYSCLK_INIT"
 )
 
+#----------------------------------------------
+# Project settings for IAR toolchain
+#----------------------------------------------
+
+# mcux_remove_iar_configuration(
+    # AS "--cpu=cortex-m33.no_se"
+    # CC "--cpu=cortex-m33.no_se"
+    # CX "--cpu=cortex-m33.no_se"
+# )
+
+# mcux_add_iar_configuration(
+    # AS "--cpu=cortex-m33.no_dsp"
+    # CC "--cpu=cortex-m33.no_dsp"
+    # CX "--cpu=cortex-m33.no_dsp"
+# )
+
+mcux_add_iar_configuration(
+    CC "--cmse"
+	CX "--cmse"
+)
+
+
+if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
+if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
+
+else()
+	# AS --cmse flag needs to be added when command line build is used
+	mcux_add_iar_configuration(
+		AS "--cmse"
+	)
+endif()
+endif()
+
+# optimization default setting needs to be removed first
 mcux_remove_iar_configuration(
-    LD "--entry Reset_Handler"
+	TARGETS debug
+	CC "-On"
 )
 
-mcux_remove_macro(
-    CC "-DMCUXPRESSO_SDK"
+mcux_add_iar_configuration(
+	CC "-Ol"
+	CX "-Ol"
 )
 
-# Add or remove Linker File Configurations
+#----------------------------------------------
+# Project settings for MDK toolchain
+#----------------------------------------------
+
+# optimization default setting needs to be removed
+mcux_remove_mdk_configuration(
+    CC "-O1"
+    CX "-O1"
+)
+
+mcux_add_mdk_configuration(
+    CC "-O0"
+    CX "-O0"
+)
+
+mcux_add_configuration(
+    TOOLCHAINS mdk
+    CC "-gdwarf-3 -mcmse -g"
+	LD "--diag_suppress L6848E"
+)
+
+
+#----------------------------------------------
+# Linker configurations for all toolchains
+#----------------------------------------------
+
+# remove default IAR linker
 mcux_remove_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug
-    LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_ram.icf
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram.icf
+		#LINKER ${device_root}/Wireless/RW/RW612/iar/RW612_ram.icf
 )
 
-# Add or remove Linker File Configurations
+# add custom IAR linker
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug
-    LINKER middleware/safety_iec60730b/boards/${board}/linker/iar/frdmrw612_safety_flash.icf
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety_flash.icf
 )
+
+# remove default MDK linker
+mcux_remove_mdk_linker_script(
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+)
+
+# add custom MDK linker
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety_flash.sct
+)
+
+# replace entry symbol for IAR
+mcux_remove_iar_configuration(LD "--entry Reset_Handler")
+mcux_add_iar_configuration(LD "--entry=__iar_program_start")
+
+# replace entry symbol for MDK, uncheck 'Report might fail...' in Linker setting
+mcux_remove_configuration(
+    TOOLCHAINS mdk
+	LD "--entry=Reset_Handler --strict"
+)
+
+
+#----------------------------------------------
+# Post-build configurations for all toolchains
+#----------------------------------------------
+
+# IAR post-build command
+if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
+add_custom_command(
+	TARGET ${MCUX_SDK_PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill 0xFF\;c_checksumStart-c_checksumEnd+3 --checksum __checksum:4,crc32,0xFFFFFFFF\;c_checksumStart-c_checksumEnd+3  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+)
+endif()
+
+## Prepare relative paths used in post-build commands - crc_hex.bat works with the relative paths
+
+# Get absolute path to CRC tool
+set(SAFETY_CRC_PATH_A "${SdkRootDirPath}/middleware/safety_iec60730b/tools/crc")
+
+# Get absolute path to SRECORD tool
+set(SAFETY_SRECORD_PATH_A "${SdkRootDirPath}/middleware/safety_iec60730b/tools/srecord")
+
+# Get relative path from project location to CRC tool - used when MDK GUI build
+file(RELATIVE_PATH SAFETY_CRC_TOOL_GUI_R ${APPLICATION_BINARY_DIR}/mdk ${SAFETY_CRC_PATH_A})
+
+# Get relative path from project location to CRC tool - used when MDK command line build
+file(RELATIVE_PATH SAFETY_CRC_TOOL_CMD_R ${APPLICATION_BINARY_DIR} ${SAFETY_CRC_PATH_A})
+
+# Relative path from CRC tool location to .hex file generated by MDK - used when GUI build
+file(RELATIVE_PATH SAFETY_HEX_PATH_GUI_R ${SAFETY_CRC_PATH_A} ${APPLICATION_BINARY_DIR}/mdk)
+
+# Relative path from CRC tool to SRECORD tool
+file(RELATIVE_PATH SAFETY_SRECORD_TOOL_R ${SAFETY_CRC_PATH_A} ${SAFETY_SRECORD_PATH_A})
+
+# Relative path from CRC tool location to .hex file generated by MDK - used when command line build
+file(RELATIVE_PATH SAFETY_HEX_PATH_CMD_R ${SAFETY_CRC_PATH_A} ${APPLICATION_BINARY_DIR})
+
+
+# MDK post-build commands
+if(${CONFIG_TOOLCHAIN} STREQUAL "mdk")
+if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
+	# Safety application post-build command (build from GUI)
+	mcux_add_custom_command(
+		TOOLCHAINS mdk
+		BUILD_EVENT  POST_BUILD
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_GUI_R}/crc_hex.bat -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe -CRC32
+	)
+else()
+	# Post-build generation .hex file - required for command line build option
+    add_custom_command(
+		TARGET ${MCUX_SDK_PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/fromelf --i32combined --output=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+    )
+	
+	# Safety application post-build command (build from command line)
+	mcux_add_custom_command(
+		TOOLCHAINS mdk
+		BUILD_EVENT  POST_BUILD
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_CMD_R}/crc_hex.bat -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe -CRC32
+	)
+endif()
+endif()

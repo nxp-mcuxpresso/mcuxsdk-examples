@@ -46,10 +46,10 @@ mcux_add_iar_configuration(
     CX "--cpu=cortex-m33"
 )
 
-mcux_add_iar_configuration(
-    CC "--cmse"
-	CX "--cmse"
-)
+# mcux_add_iar_configuration(
+    # CC "--cmse"
+	# CX "--cmse"
+# )
 
 if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
 if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)

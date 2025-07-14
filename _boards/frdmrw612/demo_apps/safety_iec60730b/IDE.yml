@@ -1,0 +1,16 @@
+initialization_file:
+  files:
+  - source: examples/demo_apps/safety_iec60730b/common/safety_debug.ini
+    attribute: initialization_file
+    toolchains: mdk
+
+flash_programming_file:
+  files:
+    - source: examples/demo_apps/safety_iec60730b/common/safety_debug.ini
+      attribute: flash_programming_file
+      toolchains: mdk
+       
+mdk:
+  config:
+    __common__:
+      createHexFile: true

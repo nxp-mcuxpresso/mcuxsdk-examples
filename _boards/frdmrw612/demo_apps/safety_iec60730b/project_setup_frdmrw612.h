@@ -1,0 +1,40 @@
+/*
+ * Copyright 2021 NXP.
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+#ifndef _PROJECT_SETUP_IMXRT_H_
+#define _PROJECT_SETUP_IMXRT_H_
+
+#include "safety_config.h"
+
+#include "fsl_usart.h"
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*!
+ * @name Project setup functions
+ * @{
+ */
+/*******************************************************************************
+ * API
+ ******************************************************************************/
+void CTIMER0_Init(void);
+void SystickInit(uint32_t compare);
+void SerialInit(void);
+void ClockInit(void);
+void PortSetup(uint32_t gpio, uint32_t port, uint32_t pinNum, uint8_t pinDir);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _PROJECT_SETUP_IMXRT_H_ */
