@@ -57,6 +57,12 @@ Or the device can remote wake-up the host by delivering the resume signal when t
         Remote wakeup the host.
         USB device start resume
         USB device resumed.
+        Press switch(SW3) to run/stop HID mouse drawing square.
+    ```
+    <br> Press the same button that can run/stop the HID mouse drawing square, when the USB is active.
+    ```
+        HID mouse is stopped.
+        HID mouse is running.
     ```
     <br> Or the device is waked up when the resume signal is detected on the bus.
     ```
@@ -65,6 +71,7 @@ Or the device can remote wake-up the host by delivering the resume signal when t
         USB device suspended.
         USB device start resume
         USB device resumed.
+        Press switch(SW3) to run/stop HID mouse drawing square.
     ```
 
 
