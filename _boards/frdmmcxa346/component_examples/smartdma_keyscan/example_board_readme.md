@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-Connect PmodKYPD J1 to the FRDM-MCXA276 board PMODE interface (J7).
+Connect PmodKYPD J1 to the FRDM board PMODE interface (J7).
 
 Prepare the Demo
 ===============
