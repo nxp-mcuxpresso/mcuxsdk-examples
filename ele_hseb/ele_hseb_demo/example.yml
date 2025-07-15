@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_hseb_demo:
+  section-type: application
+  contents:
+    meta_path: examples/ele_hseb/ele_hseb_demo
+    project-root-path: boards/${board}/ele_hseb/ele_hseb_demo/${multicore_foldername}
+    document:
+      name: ele_hseb_demo${core_id_suffix_name}
+      category: ele_hseb
+      brief: The ELE HSEB demo project is a demonstration program that uses the
+        MCUX SDK software to perform crypto operations with HSEB EdgeLock Enclave (ELE)
+        and usage of its services with direct use of Messaging Unit driver.
+      example_readme:
+      - examples/ele_hseb/ele_hseb_demo/readme.md
+      - ${board_root}/${board}/ele_hseb/ele_hseb_demo/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxe31b: []
