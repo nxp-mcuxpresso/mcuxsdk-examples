@@ -57,6 +57,15 @@ No special settings are required.
 
     Details on the different configuration options are explained in the file.
 
+    When creating the secure objects on EdgeLock 2GO, Custom policies should be chosen.
+    Additionally for the ECC key pair following options should be selected:
+    - Device Lifecycle should match the lifecycle of the device on which the application will run
+    - Permitted algorithm should be set to ECDSA SHA 256
+    - SIGN HASH usage should be selected
+    For the X.509 certificate following options should be selected:
+    - Device Lifecycle should match the lifecycle of the device on which the application will run
+    - EXPORT usage should be selected
+
 2.  **[RW61X]** Provide the Wi-Fi access point credentials:
 
     [middleware/nxp_iot_agent/ex/src/network/iot_agent_network_lwip_wifi.c](../../../../middleware/nxp_iot_agent/ex/src/network/iot_agent_network_lwip_wifi.c)

@@ -49,6 +49,16 @@ No special settings are required.
     - AES-ECB message encryption with a 256 bit key
     - ECDSA SHA-256 message signing
 
+    When creating the secure objects on EdgeLock 2GO, Custom policies should be chosen.
+    Additionally for the AES key following options should be selected:
+    - Device Lifecycle should match the lifecycle of the device on which the application will run
+    - Permitted algorithm should be set to ECB NO PADDING
+    - ENCRYPT usage should be selected
+    For the ECC key pair following options should be selected:
+    - Device Lifecycle should match the lifecycle of the device on which the application will run
+    - Permitted algorithm should be set to ECDSA SHA 256
+    - SIGN MESSAGE usage should be selected
+
 2.  Enable secure boot:
 
     To correctly run the application on RW61X, the secure boot mode on the device needs to be enabled. **For MCXN, this is optional**.

@@ -105,6 +105,15 @@ No special settings are required.
 
     The settings of other macros are server dependent and their meaning can be found in the AWS/Azure documentation. By default, the demo is executing a connection to both clouds when `IOT_AGENT_MQTT_ENABLE` is enabled; To enable or disable them individually, use the `AWS_ENABLE` and `AZURE_ENABLE` macros respectively.
 
+    When creating the secure objects on EdgeLock 2GO, Custom policies should be chosen.
+    Additionally for the ECC key pair following options should be selected:
+    - Device Lifecycle should match the lifecycle of the device on which the application will run
+    - Permitted algorithm should be set to ECDSA SHA 256
+    - SIGN HASH usage should be selected
+    For the X.509 certificate following options should be selected:
+    - Device Lifecycle should match the lifecycle of the device on which the application will run
+    - EXPORT usage should be selected
+
 5.  **[OPTIONAL]** Enable support for large blobs:
 
     In order to maximize the TF-M ITS performance, the maximum supported blob size is set to 2908 bytes. In case you want to support larger blobs (8K is the maximum size supported by PSA), you need to adjust four TF-M parameters.
