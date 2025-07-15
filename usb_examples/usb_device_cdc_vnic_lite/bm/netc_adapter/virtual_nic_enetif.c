@@ -577,41 +577,39 @@ enet_err_t NETCIF_Init(void)
     g_ep_config.rxCacheMaintain       = true;
     g_ep_config.txCacheMaintain       = true;
 
-#ifndef ETH_ADAPTER_USE_SWT_MGMT_IPF
-    g_ep_config.port.ethMac.miiMode   = phyMode;
-    g_ep_config.port.ethMac.miiSpeed  = phySpeed;
-    g_ep_config.port.ethMac.miiDuplex = phyDuplex;
-#endif
-
-    result                            = EP_Init(&g_handle, &g_hwaddr[0], &g_ep_config, &bdrConfig);
-    if (result != kStatus_Success)
-    {
-        return result;
-    }
-
-#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
-    SWT_GetDefaultConfig(&g_swt_config);
-
     /* Wait PHY link up. */
     do
     {
         result = PHY_GetLinkStatus(&s_phy_handle, &link);
     } while ((result != kStatus_Success) || (!link));
 
-    result = APP_PHY_GetLinkModeSpeedDuplex(&phyMode, &phySpeed, &phyDuplex);
+    /* Wait a moment for PHY status to be stable. */
+    SDK_DelayAtLeastUs(PHY_STABILITY_DELAY_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
+    result = APP_PHY_GetLinkModeSpeedDuplex(&phyMode, &phySpeed, &phyDuplex);
     if (result != kStatus_Success)
     {
         return result;
     }
 
+#ifndef ETH_ADAPTER_USE_SWT_MGMT_IPF
+    g_ep_config.port.ethMac.miiMode   = phyMode;
+    g_ep_config.port.ethMac.miiSpeed  = phySpeed;
+    g_ep_config.port.ethMac.miiDuplex = phyDuplex;
+#else
+    SWT_GetDefaultConfig(&g_swt_config);
     g_swt_config.ports[BOARD_SwitchPortNum].ethMac.miiMode   = phyMode;
     g_swt_config.ports[BOARD_SwitchPortNum].ethMac.miiSpeed  = phySpeed;
     g_swt_config.ports[BOARD_SwitchPortNum].ethMac.miiDuplex = phyDuplex;
+#endif
 
-    /* Wait a moment for PHY status to be stable. */
-    SDK_DelayAtLeastUs(PHY_STABILITY_DELAY_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+    result = EP_Init(&g_handle, &g_hwaddr[0], &g_ep_config, &bdrConfig);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
 
+#ifdef ETH_ADAPTER_USE_SWT_MGMT_IPF
     g_swt_config.bridgeCfg.dVFCfg.portMembership = (1U << EXAMPLE_SWT_PSEUDO_PORT) | EXAMPLE_SWT_USED_PORT_BITMAP;
     g_swt_config.ports[BOARD_SwitchPortNum].commonCfg.ipfCfg.enIPFTable = true;
 
