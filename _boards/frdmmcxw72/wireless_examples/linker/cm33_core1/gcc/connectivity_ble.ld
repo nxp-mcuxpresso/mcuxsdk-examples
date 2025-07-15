@@ -74,95 +74,110 @@ m_data1_end                         = m_ram1_end;
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
 
-/*m_sqram_debug_size                  = 0x7C;*/
-/*m_sqram_btblebuf_size               = 0x5400;*/
+/********************************************** NBU shared memory **********************************************
 
+                                            m_shared_ram_end
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_free_data_end
+                          |   free data   |
+                          |               |
+                          |               | m_free_data_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_rldat_end
+                          |     rldat     |
+                          |               |
+                          |               | m_sqram_rldat_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_rldat_ae_end
+                          |   rldat_ae    |
+                          |               |
+                          |               | m_sqram_rldat_ae_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_btbleaesqbuf_end
+                          |  btbleaesqbuf |
+                          |               |
+                          |               | m_sqram_btbleaesqbuf_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_btblesqbuf_end
+                          |   btblebuf    |
+                          |               |
+                          |               | m_sqram_btblesqbuf_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | dbg_ext_logging_end
+                          |  DBG logging  |
+                          |               |
+                          |               | dbg_ext_logging_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | rpmsg_sh_mem_end
+                          |     RPMSG     |
+                          |               | rpmsg_sh_mem_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | framework_info_sh_mem_end
+                          |    FWK Info   |
+                          |               | framework_info_sh_mem_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_debug_end
+                          |    LL Debug   |
+                          |               | m_sqram_debug_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_shared_ram_start
 
-/********************************************** Computeur Engine (CE) Memory **********************************************/
-/*New section allowing to share debug info to CM33 (LL error/warnings).*/
-/* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
-m_shared_ram_size                 = smu_and_dmem_size - m_dmem_size;
+/* Do not change shall be aligned with other core firmware */
 m_shared_ram_start                = 0xB0000000;
+m_shared_ram_size                 = 0x10000;
 m_shared_ram_end                  = m_shared_ram_start + m_shared_ram_size - 1;
 
-m_sqram_debug_start               = 0xB0000000;
-m_sqram_debug_size                = 0x7C;           /*31 x 4 bytes*/
-m_sqram_debug_end                 = m_sqram_debug_start + m_sqram_debug_size - 1;
+/* Section allowing to share debug info to CM33 (LL error/warnings).*/
+m_sqram_debug_start               = m_shared_ram_start;
+m_sqram_debug_size                = 0x200;
+m_sqram_debug_end                 = m_shared_ram_start + m_sqram_debug_size - 1;
 
+/* Section used to share platform/services (SFC, Lowpower) information on both cores */
+framework_info_sh_mem_start       = m_sqram_debug_end + 1;
+framework_info_sh_mem_size        = 0x20;
+framework_info_sh_mem_end         = framework_info_sh_mem_start + framework_info_sh_mem_size - 1;
 
+/* Section used for the sfc module intercore debug */
+m_sfc_log_start                   = framework_info_sh_mem_start; 
+m_sfc_log_size                    = 0x04;
+
+/* Section used to share a flag on both cores for lowpower purpose */
+m_lowpower_flag_start             = framework_info_sh_mem_start + m_sfc_log_size;
 m_lowpower_flag_size              = 0x04;
-m_lowpower_flag_start    = m_sqram_debug_end + 1;
 m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
 
-m_sqram_btblesqbuf_start          = m_lowpower_flag_end + 1;
-m_sqram_btblesqbuf_size           = 0x5500;        /* was 0x7700 but was reduced to give space to sh_mem and ext_log - can be readjusted if needed*/
-                                                   /*Was 0x5000, increased to 0x5500 to hold 4 advertising set with max adv length = 800 bytes in "sqram_btbleaesqbuf" region and increase tx buffer to 20.*/
+/* RPMSG section for intercore communication */
+rpmsg_sh_mem_size                 = 0x1100;
+rpmsg_sh_mem_start                = framework_info_sh_mem_end + 1;
+rpmsg_sh_mem_end                  = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
+
+dbg_ext_logging_size              = 0x700;
+dbg_ext_logging_start             = rpmsg_sh_mem_end + 1;
+dbg_ext_logging_end               = dbg_ext_logging_start + dbg_ext_logging_size - 1;
+
+m_sqram_btblesqbuf_start          = dbg_ext_logging_end + 1;
+m_sqram_btblesqbuf_size           = 0x5500;
 m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
 
-/* Last reserved word of the debug section used for the sfc module */
-m_sfc_log_start = 0xB0000078;
-
-
-m_sqram_coverage_start               = m_sqram_btblesqbuf_end + 1;
-m_sqram_coverage_size                = 0x4;
-m_sqram_coverage_end                 = m_sqram_coverage_start + m_sqram_coverage_size -1;
-
-/*if (gEnableCoverage_d) {
-  define exported symbol dbg_ext_logging_start    = m_sqram_coverage_end + 1;
-  define exported symbol dbg_ext_logging_size     = 0x00;      
-} else {*/
-dbg_ext_logging_start    = m_sqram_btblesqbuf_end + 1;
-dbg_ext_logging_size     = 0x200;       /* was 0xB00 but was reduced to 0x200 to increase btbleaesqbuf section. */
-
-dbg_ext_logging_end      = dbg_ext_logging_start + dbg_ext_logging_size - 1;
-
-m_sqram_btbuf_start               = dbg_ext_logging_end + 1;
-/* Classic BT buffers, should not be needed, reduce it to 1k for now */
-m_sqram_btbuf_size                = 0x00;       /* was 0x200 but was reduced to 0x0 as not needed. */
-m_sqram_btbuf_end                 = m_sqram_btbuf_start + m_sqram_btbuf_size -1;
-
-m_sqram_btbleaesqbuf_start        = m_sqram_btbuf_end + 1;
-m_sqram_btbleaesqbuf_size         = DEFINED(gEnableCoverage_d)?0xF20:0x2700;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
-                                                                                   /*Increased to hold 4 advertising set with max adv length = 800 bytes*/
-
+m_sqram_btbleaesqbuf_start        = m_sqram_btblesqbuf_end + 1;
+m_sqram_btbleaesqbuf_size         = 0x2700;     /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising.*/
 m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
 
-m_sqram_start                     = m_sqram_btbleaesqbuf_end + 1;
-/* Nothing placed in sqram region, reduce it to 1k for now */
-m_sqram_size                      = 0x00;       /* was 0x400 but was reduced to 0x0 as not needed. */
-m_sqram_end                       = m_sqram_start + m_sqram_size -1;
-
-m_sqram_bkup_start                = m_sqram_end + 1;
-/* Nothing placed in sqram bkup region, reduce it to 1k for now */
-m_sqram_bkup_size                 = 0x00;       /* was 0x400 but was reduced to 0x0 as not needed. */
-m_sqram_bkup_end                  = m_sqram_bkup_start + m_sqram_bkup_size -1;
-
-m_sqram_rldat_ae_start            = m_sqram_bkup_end + 1;
-m_sqram_rldat_ae_size             = DEFINED(gEnableCoverage_d)?0x00158:0x00258;
-
+m_sqram_rldat_ae_start            = m_sqram_btbleaesqbuf_end + 1;
+m_sqram_rldat_ae_size             = 0x00258;
 m_sqram_rldat_ae_end              = m_sqram_rldat_ae_start + m_sqram_rldat_ae_size -1;
 
 m_sqram_rldat_start               = m_sqram_rldat_ae_end + 1;
-m_sqram_rldat_size                = DEFINED(gEnableCoverage_d)?0x00100:0x005dc;  /*to hold 24 connection contexts*/
-
+m_sqram_rldat_size                = 0x005dc;  /*to hold 24 connection contexts*/
 m_sqram_rldat_end                 = m_sqram_rldat_start + m_sqram_rldat_size -1;
-
-rpmsg_sh_mem_end         = 0xB0009FFF;
-rpmsg_sh_mem_size        = 0x1800;
-rpmsg_sh_mem_start       = rpmsg_sh_mem_end - rpmsg_sh_mem_size + 1;
-
-
 
 m_free_data_start                 = m_sqram_rldat_end + 1;
 m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
-m_free_data_end                   = rpmsg_sh_mem_start - 1;
-m_extra_data_start                = rpmsg_sh_mem_end + 1;
-m_extra_data_end                  = m_shared_ram_end;
-__HEAP_start__                      = m_extra_data_end - HEAP_SIZE + 1;
-__HEAP_end__                        = m_extra_data_end;
+m_free_data_end                   = m_shared_ram_end;
 
-/* Last reserved word of the debug section used for the sfc module */
-m_sfc_log_start                     = 0x489C0078;
+/* The heap (if used) is using all the free_data section */
+__HEAP_end__                        = m_free_data_end;
+
 /* Specify the memory areas */
 MEMORY
 {
@@ -175,15 +190,12 @@ MEMORY
   sqram_debug_region (RX)  : ORIGIN = m_sqram_debug_start, LENGTH = m_sqram_debug_size
   lowpower_flag_region (RW): ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size
   sqram_btblesqbuf_region (RW): ORIGIN = m_sqram_btblesqbuf_start, LENGTH = m_sqram_btblesqbuf_size
-  sqram_btbuf_region (RW): ORIGIN = m_sqram_btbuf_start, LENGTH = m_sqram_btbuf_size
   sqram_btbleaesqbuf_region (RW): ORIGIN = m_sqram_btbleaesqbuf_start, LENGTH = m_sqram_btbleaesqbuf_size
-  sqram_region (RW): ORIGIN = m_sqram_start, LENGTH = m_sqram_size
-  sqram_bkup_region (RW): ORIGIN = m_sqram_bkup_start, LENGTH = m_sqram_bkup_size
   sqram_rldat_ae_region (RW): ORIGIN = m_sqram_rldat_ae_start, LENGTH = m_sqram_rldat_ae_size
   sqram_rldat_region (RW): ORIGIN = m_sqram_rldat_start, LENGTH = m_sqram_rldat_size
   rpmsg_sh_mem_region (RW): ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
   sqram_dbg_ext_logging_region (RW):ORIGIN = dbg_ext_logging_start, LENGTH = dbg_ext_logging_size
-  extra_data (RW):ORIGIN = m_extra_data_start, LENGTH = m_extra_data_end-m_extra_data_start+1
+  m_free_data_region (RW):ORIGIN = m_free_data_start, LENGTH = m_free_data_size
 }
 
 /* Define output sections */
@@ -226,19 +238,10 @@ SECTIONS
   {
      *(.btblesqbuf)
   }> sqram_btblesqbuf_region
-  .sqram_btbuf_region (NOLOAD) : ALIGN(4)
-  {
-      *(.btrxsqbuf)
-      *(.btscosqbuf)
-  }>sqram_btbuf_region
   .sqram_btbleaesqbuf_region (NOLOAD) : ALIGN(4)
   {
       *(.btbleaesqbuf)
   }>sqram_btbleaesqbuf_region
-  .sqram_region (NOLOAD) : ALIGN(4)
-  {
-      *(.sqbuf)
-  }>sqram_region
   .sqram_rldat_ae_region (NOLOAD) : ALIGN(4)
   {
       *(.rl_ae)
@@ -402,7 +405,7 @@ SECTIONS
     __END_BSS = .;
   } > m_data1
 
-  .heap (NOLOAD) :
+    .heap (NOLOAD) :
   {
     . = ALIGN(8);
     __end__ = .;
@@ -411,7 +414,7 @@ SECTIONS
     . += HEAP_SIZE;
     PROVIDE(__HeapLimit = .);
     *(.heap)
-  } > extra_data
+  } > m_free_data_region
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
 

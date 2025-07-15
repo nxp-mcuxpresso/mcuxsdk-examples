@@ -393,23 +393,87 @@ if(gUseOtSettingsStorage_d) {
     define region OT_SETTINGS_region    = mem:[from m_ot_settings_start to m_ot_settings_end];
 }
 
-/********************************************** NBU Memory **********************************************/
+/********************************************** NBU shared memory **********************************************
 
-/* Do not change shall be aligned with nbu firmware image*/
-define symbol m_sqram_debug_size                = 0x7C;  /*New section allowing to share debug info to CM33 (LL error/warnings).*/
-define symbol m_lowpower_flag_size              = 0x04;  /* Section used to share a flag on both cores for lowpower purpose */
-define exported symbol m_lowpower_flag_start    = 0x489C0000 + m_sqram_debug_size;
-define symbol m_sqram_btblebuf_size             = 0x5500;
-define symbol m_sqram_btblebuf_end              = m_lowpower_flag_start + m_lowpower_flag_size + m_sqram_btblebuf_size - 1;
-define exported symbol rpmsg_sh_mem_size        = 0x1800;
-define exported symbol rpmsg_sh_mem_end         = 0x489C9FFF;
-define exported symbol rpmsg_sh_mem_start       = rpmsg_sh_mem_end - rpmsg_sh_mem_size + 1;
+                                            m_shared_ram_end
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_free_data_end
+                          |   free data   |
+                          |               |
+                          |               | m_free_data_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_rldat_end
+                          |     rldat     |
+                          |               |
+                          |               | m_sqram_rldat_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_rldat_ae_end
+                          |   rldat_ae    |
+                          |               |
+                          |               | m_sqram_rldat_ae_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_btbleaesqbuf_end
+                          |  btbleaesqbuf |
+                          |               |
+                          |               | m_sqram_btbleaesqbuf_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_btblesqbuf_end
+                          |   btblebuf    |
+                          |               |
+                          |               | m_sqram_btblesqbuf_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | dbg_ext_logging_end
+                          |  DBG logging  |
+                          |               |
+                          |               | dbg_ext_logging_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | rpmsg_sh_mem_end
+                          |     RPMSG     |
+                          |               | rpmsg_sh_mem_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | framework_info_sh_mem_end
+                          |    FWK Info   |
+                          |               | framework_info_sh_mem_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_debug_end
+                          |    LL Debug   |
+                          |               | m_sqram_debug_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_shared_ram_start
 
-define exported symbol m_sfc_log_start          = 0x489C0078; /* Last reserved word of the debug section used for the sfc module */
+/* Do not change shall be aligned with other core firmware */
+define symbol m_shared_ram_start                = 0x489C0000;
+define symbol m_shared_ram_size                 = 0x10000;
+define symbol m_shared_ram_end                  = m_shared_ram_start + m_shared_ram_size - 1;
+
+/* Section allowing to share debug info to CM33 (LL error/warnings).*/
+define exported symbol m_sqram_debug_start      = m_shared_ram_start;
+define symbol m_sqram_debug_size                = 0x200;
+define symbol m_sqram_debug_end                 = m_shared_ram_start + m_sqram_debug_size - 1;
+
+/* Section used to share platform/services (SFC, Lowpower) information on both cores */
+define symbol framework_info_sh_mem_start       = m_sqram_debug_end + 1;
+define symbol framework_info_sh_mem_size        = 0x20;
+define symbol framework_info_sh_mem_end         = framework_info_sh_mem_start + framework_info_sh_mem_size - 1;
+
+/* Section used for the sfc module intercore debug */
+define exported symbol m_sfc_log_start          = framework_info_sh_mem_start; 
+define symbol m_sfc_log_size                    = 0x04;
+
+/* Section used to share a flag on both cores for lowpower purpose */
+define exported symbol m_lowpower_flag_start    = framework_info_sh_mem_start + m_sfc_log_size;
+define symbol m_lowpower_flag_size              = 0x04;
+define symbol m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
+
+/* RPMSG section for intercore communication */
+define exported symbol rpmsg_sh_mem_size        = 0x1100;
+define exported symbol rpmsg_sh_mem_start       = framework_info_sh_mem_end + 1;
+define exported symbol rpmsg_sh_mem_end         = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
+
 
 if (gEnableCoverage_d) {
 define exported symbol sh_mem_coverage_size     = 0x4;
-define exported symbol sh_mem_coverage_start    = m_sqram_btblebuf_end + 1;
+define exported symbol sh_mem_coverage_start    = rpmsg_sh_mem_end + 1;
 define exported symbol sh_mem_coverage_end      = sh_mem_coverage_start + sh_mem_coverage_size -1;
 }
 
@@ -417,10 +481,39 @@ if (gEnableCoverage_d) {
 define exported symbol dbg_ext_logging_size     = 0x000;
 define exported symbol dbg_ext_logging_start    = sh_mem_coverage_end + 1;
 } else {
-define exported symbol dbg_ext_logging_size     = 0x200;
-define exported symbol dbg_ext_logging_start    = m_sqram_btblebuf_end + 1;
+define exported symbol dbg_ext_logging_size     = 0x700;
+define exported symbol dbg_ext_logging_start    = rpmsg_sh_mem_end + 1;
 }
-define exported symbol dbg_ext_logging_end      = dbg_ext_logging_start + dbg_ext_logging_size;
+define exported symbol dbg_ext_logging_end      = dbg_ext_logging_start + dbg_ext_logging_size - 1;
+
+define symbol m_sqram_btblesqbuf_start          = dbg_ext_logging_end + 1;
+define symbol m_sqram_btblesqbuf_size           = 0x5500;
+define symbol m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
+
+define symbol m_sqram_btbleaesqbuf_start        = m_sqram_btblesqbuf_end + 1;
+define symbol m_sqram_btbleaesqbuf_size         = 0x2700;     /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising.*/
+define symbol m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
+
+define symbol m_sqram_rldat_ae_start            = m_sqram_btbleaesqbuf_end + 1;
+define symbol m_sqram_rldat_ae_size             = 0x00258;
+define symbol m_sqram_rldat_ae_end              = m_sqram_rldat_ae_start + m_sqram_rldat_ae_size -1;
+
+define symbol m_sqram_rldat_start               = m_sqram_rldat_ae_end + 1;
+if (gEnableCoverage_d) {
+define symbol m_sqram_rldat_size                = 0x00100;
+} else {
+define symbol m_sqram_rldat_size                = 0x005dc;  /*to hold 24 connection contexts*/
+}
+define symbol m_sqram_rldat_end                 = m_sqram_rldat_start + m_sqram_rldat_size -1;
+
+define symbol m_free_data_start                 = m_sqram_rldat_end + 1;
+define symbol m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
+define symbol m_free_data_end                   = m_shared_ram_end;
+
+if (m_sqram_rldat_end > m_shared_ram_end)
+{
+  error "Total allocated sections in shared ram do not fit in available shared ram!";
+}
 
 define region rpmsg_sh_mem_region               = mem:[from rpmsg_sh_mem_start to rpmsg_sh_mem_end];
 if (gEnableCoverage_d) {
