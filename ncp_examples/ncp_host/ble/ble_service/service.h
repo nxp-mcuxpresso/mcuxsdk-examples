@@ -16,7 +16,7 @@
 #include <stddef.h>
 
 /** NCP Bluetooth LE priority */
-#define NCP_BLE_SERVICE_PRIO   0
+#define NCP_BLE_SERVICE_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 1))
 
 /** NCP Bluetooth LE adv data type structure */
 typedef struct adv_data {

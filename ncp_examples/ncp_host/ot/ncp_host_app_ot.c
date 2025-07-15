@@ -31,7 +31,7 @@ extern uint32_t mcu_last_cmd_sent;
 #define OT_NCP_STACK_SIZE   4096
 static OSA_TASK_HANDLE_DEFINE(ot_ncp_task_handle);
 
-#define OT_NCP_TASK_PRIO   1
+#define OT_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
 void ot_ncp_task(void *pvParameters);
 static OSA_TASK_DEFINE(ot_ncp_task, OT_NCP_TASK_PRIO, 1, OT_NCP_STACK_SIZE, 0);
 

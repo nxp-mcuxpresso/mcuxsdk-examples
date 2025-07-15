@@ -56,7 +56,7 @@ OSA_MUTEX_HANDLE_DEFINE(ncp_tlv_queue_mutex);
 static OSA_TASK_HANDLE_DEFINE(ncp_tlv_thread);
 
 void ncp_tlv_process(osa_task_param_t arg);
-static OSA_TASK_DEFINE(ncp_tlv_process, NCP_TLV_TX_TASK_PRIORITY, 1, NCP_TLV_TX_TASK_STACK_SIZE, 0);
+static OSA_TASK_DEFINE(ncp_tlv_process, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, NCP_TLV_TX_TASK_STACK_SIZE, 0);
 /* NCP adapter tx queue counter */
 static int ncp_tlv_queue_len = 0;
 static bool ncp_initialized = false;

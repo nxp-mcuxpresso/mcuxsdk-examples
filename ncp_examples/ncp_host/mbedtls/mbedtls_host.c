@@ -25,7 +25,7 @@
 #include "mbedtls_common.h"
 
 static void ncp_encrypt_handshake_task(void *pvParameters);
-#define NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO   1
+#define NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
 static OSA_TASK_HANDLE_DEFINE(ncp_encrypt_handshake_thread);
 static OSA_TASK_DEFINE(ncp_encrypt_handshake_task, NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO, 1, 4096, 0);
 
