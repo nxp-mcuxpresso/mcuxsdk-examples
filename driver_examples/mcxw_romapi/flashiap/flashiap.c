@@ -26,9 +26,17 @@
  ******************************************************************************/
 /* Make sure these prototypes are placed in RAM.
  * Otherwise, symbols will be placed in the flash causing the application to fail*/
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION) || defined(__GNUC__)
 void SysTick_Handler(void) __attribute__((section(".ramfunc")));
 void GpioPinToggle(void) __attribute__((section(".ramfunc")));
 void GpioPinClear(void) __attribute__((section(".ramfunc")));
+#elif defined(__ICCARM__)
+__ramfunc void SysTick_Handler(void);
+__ramfunc void GpioPinToggle(void);
+__ramfunc void GpioPinClear(void);
+#else
+#error Unsupported toolchain!
+#endif //(__CC_ARM) || (__ARMCC_VERSION)
 
 /*******************************************************************************
  * Variables

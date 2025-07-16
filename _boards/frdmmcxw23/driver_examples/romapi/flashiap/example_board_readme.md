@@ -24,23 +24,24 @@ Running the demo
 ================
 The log below shows example output of the IAP Flash demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        ----- Flash driver IAP Demo Application -----
+ 	----- Flash driver IAP Demo Application -----
 Initializing Flash driver...
 Flash Init done with success !
-        PflashTotalSize = 1040384
-        PflashSectorSize = 8192
-        PflashPageSize = 128
-        PflashBlockSize = 1040384
-        PflashBlockCount = 1
-        PflashBlockBaseAddr = 0
-        PflashSystemFreqMHz = 32
+	PflashTotalSize = 1040384
+	PflashSectorSize = 8192
+	PflashPageSize = 128
+	PflashBlockSize = 1040384
+	PflashBlockCount = 1
+	PflashBlockBaseAddr = 0
+	PflashSystemFreqMHz = 32
 Flash Properties printed with success !
-Working on Flash Address : 0xFC000
+Working on Flash Address : 0xFC000 
 Finished 'Erase/Write' Scenario with success !
 Finished 'Read/Modify/Write' Scenario with success !
 Executing interrupts from RAM during flash operations: USER LED should start blinking ..
 Finished FlashEraseProgramDuringRAMInterrupt with success !
 1.Going from 32MHz (high freq) to 12MHz (low freq)
-2.Going from 12MHz (low freq)  to 32MHz (high freq)
+2.Going from 12MHz (low freq) to 32MHz (high freq)
 3.Going from 32MHz (high freq) to 12MHz (low freq)
 Finished FlashUpdateWaitStatesAccordingToMainClk with success !
+FLASH_CheckECC found no ECC errors !
