@@ -17,9 +17,16 @@ mcux_add_source(
 			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
 )
 
+# Remove common start.c
 mcux_project_remove_source(
-  SOURCES source/core_test/cm33/register/iec60730b_cm33_reg_fpu.S
-  BASE_PATH ${SdkRootDirPath}/middleware/safety_iec60730b/
+  BASE_PATH ${SdkRootDirPath}
+  SOURCES examples/demo_apps/safety_iec60730b/common/cm33/startup/cm33/start.c
+)
+
+# and use board specific start.c
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES ${board_root}/frdmrw612/demo_apps/safety_iec60730b/startup/start.c
 )
 
 #----------------------------------------------

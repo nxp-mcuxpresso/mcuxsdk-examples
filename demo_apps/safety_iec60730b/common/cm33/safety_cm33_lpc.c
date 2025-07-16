@@ -6,7 +6,9 @@
  */
 
 #include "safety_cm33_lpc.h"
+#if FMSTR_SERIAL_ENABLE
 #include "freemaster.h"
+#endif
 
 #if (defined(__GNUC__) && ( __ARMCC_VERSION >= 6010050)) /* KEIL */
     #include "linker_config.h"
@@ -598,6 +600,7 @@ void SafetyRamRuntimeTest(safety_common_t *psSafetyCommon, fs_ram_test_t *psSafe
 void SafetyPcTest(safety_common_t *psSafetyCommon, uint32_t pattern)
 {
     psSafetyCommon->PC_test_result = FS_CM33_PC_Test(pattern, FS_PC_Object, (uint32_t *)PC_TEST_FLAG);
+    
     if (psSafetyCommon->PC_test_result == FS_FAIL_PC)
     {
         psSafetyCommon->safetyErrors |= PC_TEST_ERROR;
@@ -619,6 +622,7 @@ void SafetyPcTest(safety_common_t *psSafetyCommon, uint32_t pattern)
  */
 void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
 {
+#if DSP_SUPPORT
     /* stacked CPU registers */
     psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register();
     if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
@@ -626,6 +630,16 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#else   
+    /* stacked CPU registers */
+    psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register_NDSP();
+    if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
+    {
+        psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+#endif
+    
     /* non-stacked CPU registers */
     psSafetyCommon->CPU_non_stacked_test_result = FS_CM33_CPU_NonStackedRegister();
     if (psSafetyCommon->CPU_non_stacked_test_result == FS_FAIL_CPU_NONSTACKED_REGISTER)
@@ -633,18 +647,7 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_NONSTACKED_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
-    /* SP main Secure */
-    FS_CM33_CPU_SPmain_S();
-
-    /* SP main limit Secure */
-    FS_CM33_CPU_SPmain_Limit_S();
-
-    /* SP process Secure */
-    FS_CM33_CPU_SPprocess_S();
-
-    /* SP process limit Secure */
-    FS_CM33_CPU_SPprocess_Limit_S();
-
+    
     /* PRIMASK Secure */
     psSafetyCommon->CPU_primask_s_test_result = FS_CM33_CPU_Primask_S();
     if (psSafetyCommon->CPU_primask_s_test_result == FS_FAIL_CPU_PRIMASK)
@@ -653,43 +656,7 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         SafetyErrorHandling(psSafetyCommon);
     }
 
-    /* Special Secure */
-    psSafetyCommon->CPU_special_s_test_result = FS_CM33_CPU_Special8PriorityLevels_S();
-    if (psSafetyCommon->CPU_special_s_test_result == FS_FAIL_CPU_SPECIAL)
-    {
-        psSafetyCommon->safetyErrors |= CPU_SPECIAL_ERROR;
-        SafetyErrorHandling(psSafetyCommon);
-    }
-
-#if TZ_SUPPORT /* If device supports TrustZone */
-    /* CONTROL Secure */
-    psSafetyCommon->CPU_control_s_test_result = FS_CM33_CPU_Control_S();
-    if (psSafetyCommon->CPU_control_s_test_result == FS_FAIL_CPU_CONTROL)
-    {
-        psSafetyCommon->safetyErrors |= CPU_CONTROL_ERROR;
-        SafetyErrorHandling(psSafetyCommon);
-    }
-    
-    /* CONTROL Non-Secure */
-    psSafetyCommon->CPU_control_ns_test_result = FS_CM33_CPU_Control_NS();
-    if (psSafetyCommon->CPU_control_ns_test_result == FS_FAIL_CPU_CONTROL)
-    {
-        psSafetyCommon->safetyErrors |= CPU_CONTROL_ERROR;
-        SafetyErrorHandling(psSafetyCommon);
-    }
-    
-    /* SP main Non-Secure */
-    FS_CM33_CPU_SPmain_NS();
-
-    /* SP main limit Non-Secure */
-    FS_CM33_CPU_SPmain_Limit_NS();
-
-    /* SP process Non-Secure */
-    FS_CM33_CPU_SPprocess_NS();
-
-    /* SP process limit Non-Secure */
-    FS_CM33_CPU_SPprocess_Limit_NS();
-
+#if TZ_SUPPORT
     /* PRIMASK Non-Secure */
     psSafetyCommon->CPU_primask_ns_test_result = FS_CM33_CPU_Primask_NS();
     if (psSafetyCommon->CPU_primask_ns_test_result == FS_FAIL_CPU_PRIMASK)
@@ -697,6 +664,66 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_PRIMASK_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#endif
+    
+    /* SP main Secure */
+    FS_CM33_CPU_SPmain_S();
+    
+#if TZ_SUPPORT
+    /* SP main Non-Secure */
+    FS_CM33_CPU_SPmain_NS();
+#endif
+
+    /* SP main limit Secure */
+    FS_CM33_CPU_SPmain_Limit_S();
+    
+#if TZ_SUPPORT
+    /* SP main limit Non-Secure */
+    FS_CM33_CPU_SPmain_Limit_NS();
+#endif
+
+    /* SP process Secure */
+    FS_CM33_CPU_SPprocess_S();
+    
+#if TZ_SUPPORT
+    /* SP process Non-Secure */
+    FS_CM33_CPU_SPprocess_NS();
+#endif
+
+    /* SP process limit Secure */
+    FS_CM33_CPU_SPprocess_Limit_S();
+    
+#if TZ_SUPPORT
+    /* SP process limit Non-Secure */
+    FS_CM33_CPU_SPprocess_Limit_NS();
+#endif
+
+    psSafetyCommon->CPU_control_s_test_result = FS_CM33_CPU_Control_S();
+    if (psSafetyCommon->CPU_control_s_test_result == FS_FAIL_CPU_CONTROL)
+    {
+        psSafetyCommon->safetyErrors |= CPU_CONTROL_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+    
+#if TZ_SUPPORT
+    /* CONTROL Non-Secure */
+    psSafetyCommon->CPU_control_ns_test_result = FS_CM33_CPU_Control_NS();
+    if (psSafetyCommon->CPU_control_ns_test_result == FS_FAIL_CPU_CONTROL)
+    {
+        psSafetyCommon->safetyErrors |= CPU_CONTROL_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+#endif
+
+    /* Special Secure */
+    psSafetyCommon->CPU_special_s_test_result = FS_CM33_CPU_Special8PriorityLevels_S();
+    if (psSafetyCommon->CPU_special_s_test_result == FS_FAIL_CPU_SPECIAL)
+    {
+        psSafetyCommon->safetyErrors |= CPU_SPECIAL_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+    
+#if TZ_SUPPORT
     /* Special Non-Secure */
     psSafetyCommon->CPU_special_ns_test_result = FS_CM33_CPU_Special8PriorityLevels_NS();
     if (psSafetyCommon->CPU_special_ns_test_result == FS_FAIL_CPU_SPECIAL)
@@ -704,17 +731,9 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_SPECIAL_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
-#else
-    /* CONTROL */
-    psSafetyCommon->CPU_control_s_test_result = FS_CM33_CPU_Control();
-    if (psSafetyCommon->CPU_control_s_test_result == FS_FAIL_CPU_CONTROL)
-    {
-        psSafetyCommon->safetyErrors |= CPU_CONTROL_ERROR;
-        SafetyErrorHandling(psSafetyCommon);
-    }
-#endif /* If device supports TrustZone */
+#endif
 
-#if __FPU_PRESENT
+#if FPU_SUPPORT
     psSafetyCommon->CPU_fpu_test_result = FS_CM33_CPU_Float1();
     if (psSafetyCommon->CPU_fpu_test_result == FS_FAIL_CPU_FLOAT_1)
     {
@@ -775,6 +794,7 @@ void SafetyCpuIsrTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_PRIMASK_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+	
     /* Special Non-Secure */
     psSafetyCommon->CPU_special_ns_test_result = FS_CM33_CPU_Special8PriorityLevels_NS();
     if (psSafetyCommon->CPU_special_ns_test_result == FS_FAIL_CPU_SPECIAL)
@@ -799,12 +819,23 @@ void SafetyCpuIsrTest(safety_common_t *psSafetyCommon)
  */
 void SafetyCpuBackgroundTest(safety_common_t *psSafetyCommon)
 {
+#if DSP_SUPPORT
+    /* stacked CPU registers */
     psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register();
     if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
     {
         psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#else   
+    /* stacked CPU registers */
+    psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register_NDSP();
+    if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
+    {
+        psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+#endif
 
     psSafetyCommon->CPU_non_stacked_test_result = FS_CM33_CPU_NonStackedRegister();
     if (psSafetyCommon->CPU_non_stacked_test_result == FS_FAIL_CPU_NONSTACKED_REGISTER)
@@ -1086,6 +1117,7 @@ void development_test_terminate(void)
         }
     }
 }
+
 /* This function is only for example validation during development */
 static void test_end(void)
 {

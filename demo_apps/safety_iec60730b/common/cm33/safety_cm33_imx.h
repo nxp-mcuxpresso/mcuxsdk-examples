@@ -143,7 +143,6 @@ extern "C" {
 /*******************************************************************************
  * API
  ******************************************************************************/
-void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTest);
 void SafetyWatchdogRuntimeRefresh(wd_test_t *psSafetyWdTest);
 void SafetyClockTestInit(safety_common_t *psSafetyCommon, fs_clock_test_t *psSafetyClockTest);
 void SafetyClockTestIsr(fs_clock_test_t *psSafetyClockTest);
@@ -173,12 +172,7 @@ void SafetyDigitalInputOutput_ShortAdjTest(safety_common_t *psSafetyCommon,
                                            fs_dio_test_rgpio_t *pAdjPin,
                                            uint32_t PinValue);
 
-void SafetyAnalogTest(safety_common_t *psSafetyCommon);
-
-uint32_t SafetyTsiChanelTest(safety_common_t *psSafetyCommon, fs_tsi_t *pObj);
-
 void SafetyIsrFunction(safety_common_t *psSafetyCommon, fs_ram_test_t *psSafetyRamTest, fs_ram_test_t *psSafetyRamStackTest);
-
 void development_test_terminate(void);
 void SafetyErrorHandling(safety_common_t *psSafetyCommon);
 

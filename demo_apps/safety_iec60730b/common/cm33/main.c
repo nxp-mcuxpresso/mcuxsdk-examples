@@ -107,8 +107,10 @@ int32_t main(void)
     /* Pin initialization */
     BOARD_InitBootPins();
 
+#if WATCHDOG_ENABLED
     /* Watchdog test */
     SafetyWatchdogTest(&g_sSafetyCommon, &g_sSafetyWdTest);
+#endif
 
     g_sSafetyCommon.safetyErrors        = 0; /* clear the variable that records safety error codes */
     g_sSafetyCommon.fastIsrSafetySwitch = 0;

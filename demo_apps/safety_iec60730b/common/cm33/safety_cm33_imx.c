@@ -32,9 +32,6 @@
 * Variables
 ******************************************************************************/
 #if (defined(__GNUC__) && ( __ARMCC_VERSION >= 6010050)) /* KEIL */
-    const uint32_t c_wdBackupAddress = (uint32_t)m_wd_test_backup;
-    #define WATCHDOG_TEST_VARIABLES ((fs_wdog_test_t *) c_wdBackupAddress)
-
     const uint32_t programCounterTestFlag = (uint32_t)m_pc_test_flag;
     #define PC_TEST_FLAG ((uint32_t *) programCounterTestFlag)
 
@@ -61,10 +58,6 @@
     };
 
 #else /* IAR + MCUXpresso */
-    extern uint32_t m_wd_test_backup;   /* from Linker command file */
-    const uint32_t c_wdBackupAddress = (uint32_t)&m_wd_test_backup;
-    #define WATCHDOG_TEST_VARIABLES ((fs_wdog_test_t *) c_wdBackupAddress)
-
     extern uint32_t m_pc_test_flag;   /* from Linker command file */
     const uint32_t programCounterTestFlag = (uint32_t)&m_pc_test_flag;
     #define PC_TEST_FLAG ((uint32_t *) programCounterTestFlag)
@@ -134,75 +127,6 @@ static void test_end(void);
  * Code
  ******************************************************************************/
 /*!
- * @brief   Safety watchdog test.
- *
- *          This function is used to test the Watchdog.
- *          Sets up LPTMR for the test.
- *          Calculates limit values for watchdog timeout.
- *          Performs the watchdog test.
- *
- * @param   psSafetyCommon - The pointer of the Common Safety structure
- * @param   psSafetyWdTest - The pointer of the Safety Watchdog test structure
- * @param   peClockFreq     - The pointer of the clock name enumeration
- *
- * @return  None
- */
-void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTest)
-{
-#if WATCHDOG_ENABLED
-    uint32_t counterLimitHigh;
-    uint32_t counterLimitLow;
-    uint32_t runTestCondition;
-    uint32_t checkTestCondition;
-
-    /* calculate counter limit values */
-    psSafetyWdTest->wdTestTemp1     = ((uint64_t)WATCHDOG_TIMEOUT_VALUE * (uint64_t)WD_REF_TIMER_CLOCK_FREQUENCY);
-    psSafetyWdTest->wdTestExpected  = psSafetyWdTest->wdTestTemp1 / (uint32_t)WATCHDOG_CLOCK;
-    psSafetyWdTest->wdTestTolerance = (psSafetyWdTest->wdTestExpected * (uint32_t)WD_TEST_TOLERANCE) / (uint32_t)100;
-    psSafetyWdTest->wdTestLimitHigh = psSafetyWdTest->wdTestExpected + psSafetyWdTest->wdTestTolerance;
-    psSafetyWdTest->wdTestLimitLow  = psSafetyWdTest->wdTestExpected - psSafetyWdTest->wdTestTolerance;
-    counterLimitHigh                = psSafetyWdTest->wdTestLimitHigh;
-    counterLimitLow                 = psSafetyWdTest->wdTestLimitLow;
-
-    /* Safety library structure initialization */
-    WATCHDOG_TEST_VARIABLES->RefTimerBase         = (uint32_t)WDOG_REF_TIMER_BASE;
-    WATCHDOG_TEST_VARIABLES->WdogBase             = (uint32_t)USED_WDOG;
-    WATCHDOG_TEST_VARIABLES->pResetDetectRegister = (uint32_t)(RESET_DETECT_REGISTER);
-    WATCHDOG_TEST_VARIABLES->ResetDetectMask      = (uint32_t)RESET_DETECT_MASK;
-
-    /* Conditions */
-    runTestCondition   = WD_RUN_TEST_CONDITION;
-    checkTestCondition = WD_CHECK_TEST_CONDITION;
-
-    /* CTIMER initialization */
-    CTIMER_initialisation();
-
-    if (*(RESET_DETECT_REGISTER)&runTestCondition) /* if non WD reset --- because of debugging--- in real it must be
-                                                      only after POR reset */
-    {
-        *SAFETY_ERROR_CODE = 0; /* clean the safety error code flag */
-        FS_WDOG_Setup_WWDT_CTIMER(WATCHDOG_TEST_VARIABLES);
-    }
-
-    if (*(RESET_DETECT_REGISTER)&checkTestCondition)
-    {
-        psSafetyCommon->WDOG_test_result = FS_WDOG_Check_WWDT_MCX(
-            counterLimitHigh, counterLimitLow, WATCHDOG_RESETS_LIMIT, ENDLESS_LOOP_ENABLE, WATCHDOG_TEST_VARIABLES);
-        if (psSafetyCommon->WDOG_test_result != FS_PASS) /* WDOG can return more error messages */
-        {
-            psSafetyCommon->safetyErrors |= WDOG_TEST_ERROR;
-            SafetyErrorHandling(psSafetyCommon);
-        }
-    }
-
-    psSafetyWdTest->watchdogResets       = WATCHDOG_TEST_VARIABLES->resets;
-    psSafetyWdTest->watchdogTimeoutCheck = WATCHDOG_TEST_VARIABLES->counter;
-    psSafetyWdTest->watchdogRefreshRatio = 0U;
-
-#endif /* WATCHDOG_ENABLED */
-}
-
-/*!
  * @brief Safety watchdog refresh.
  *
  * This function is used for adjusting of the watchdog refresh when using in fast interrupt.
@@ -213,15 +137,16 @@ void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTe
  */
 void SafetyWatchdogRuntimeRefresh(wd_test_t *psSafetyWdTest)
 {
+#if WATCHDOG_ENABLED
     psSafetyWdTest->watchdogRefreshRatio++;
     if (psSafetyWdTest->watchdogRefreshRatio == WATCHDOG_REFRESH_RATIO)
     {
-#if WATCHDOG_ENABLED
+
         Watchdog_refresh; /* refreshing the watchdog */
-#endif
 
         psSafetyWdTest->watchdogRefreshRatio = 0;
     }
+#endif
 }
 
 /*!
@@ -566,6 +491,7 @@ void SafetyPcTest(safety_common_t *psSafetyCommon, uint32_t pattern)
  */
 void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
 {
+#if DSP_SUPPORT
     /* stacked CPU registers */
     psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register();
     if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
@@ -573,6 +499,15 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#else   
+    /* stacked CPU registers */
+    psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register_NDSP();
+    if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
+    {
+        psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+#endif
     
     /* non-stacked CPU registers */
     psSafetyCommon->CPU_non_stacked_test_result = FS_CM33_CPU_NonStackedRegister();
@@ -590,6 +525,7 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         SafetyErrorHandling(psSafetyCommon);
     }
     
+#if TZ_SUPPORT
     /* PRIMASK Non-Secure */
     psSafetyCommon->CPU_primask_ns_test_result = FS_CM33_CPU_Primask_NS();
     if (psSafetyCommon->CPU_primask_ns_test_result == FS_FAIL_CPU_PRIMASK)
@@ -597,30 +533,39 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_PRIMASK_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#endif
     
     /* SP main Secure */
     FS_CM33_CPU_SPmain_S();
     
+#if TZ_SUPPORT
     /* SP main Non-Secure */
     FS_CM33_CPU_SPmain_NS();
+#endif
 
     /* SP main limit Secure */
     FS_CM33_CPU_SPmain_Limit_S();
     
+#if TZ_SUPPORT
     /* SP main limit Non-Secure */
     FS_CM33_CPU_SPmain_Limit_NS();
+#endif
 
     /* SP process Secure */
     FS_CM33_CPU_SPprocess_S();
     
+#if TZ_SUPPORT
     /* SP process Non-Secure */
     FS_CM33_CPU_SPprocess_NS();
+#endif
 
     /* SP process limit Secure */
     FS_CM33_CPU_SPprocess_Limit_S();
     
+#if TZ_SUPPORT
     /* SP process limit Non-Secure */
     FS_CM33_CPU_SPprocess_Limit_NS();
+#endif
 
     psSafetyCommon->CPU_control_s_test_result = FS_CM33_CPU_Control_S();
     if (psSafetyCommon->CPU_control_s_test_result == FS_FAIL_CPU_CONTROL)
@@ -629,6 +574,7 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         SafetyErrorHandling(psSafetyCommon);
     }
     
+#if TZ_SUPPORT
     /* CONTROL Non-Secure */
     psSafetyCommon->CPU_control_ns_test_result = FS_CM33_CPU_Control_NS();
     if (psSafetyCommon->CPU_control_ns_test_result == FS_FAIL_CPU_CONTROL)
@@ -636,6 +582,7 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_CONTROL_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#endif
 
     /* Special Secure */
     psSafetyCommon->CPU_special_s_test_result = FS_CM33_CPU_Special8PriorityLevels_S();
@@ -645,6 +592,7 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         SafetyErrorHandling(psSafetyCommon);
     }
     
+#if TZ_SUPPORT
     /* Special Non-Secure */
     psSafetyCommon->CPU_special_ns_test_result = FS_CM33_CPU_Special8PriorityLevels_NS();
     if (psSafetyCommon->CPU_special_ns_test_result == FS_FAIL_CPU_SPECIAL)
@@ -652,8 +600,9 @@ void SafetyCpuAfterResetTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_SPECIAL_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#endif
 
-#if __FPU_PRESENT
+#if FPU_SUPPORT
     psSafetyCommon->CPU_fpu_test_result = FS_CM33_CPU_Float1();
     if (psSafetyCommon->CPU_fpu_test_result == FS_FAIL_CPU_FLOAT_1)
     {
@@ -706,6 +655,7 @@ void SafetyCpuIsrTest(safety_common_t *psSafetyCommon)
     /* SP main limit Secure */
     FS_CM33_CPU_SPmain_Limit_S();
 
+#if TZ_SUPPORT /* If device supports TrustZone */
     /* PRIMASK Non-Secure */
     psSafetyCommon->CPU_primask_ns_test_result = FS_CM33_CPU_Primask_NS();
     if (psSafetyCommon->CPU_primask_ns_test_result == FS_FAIL_CPU_PRIMASK)
@@ -713,7 +663,7 @@ void SafetyCpuIsrTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_PRIMASK_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
-    
+	
     /* Special Non-Secure */
     psSafetyCommon->CPU_special_ns_test_result = FS_CM33_CPU_Special8PriorityLevels_NS();
     if (psSafetyCommon->CPU_special_ns_test_result == FS_FAIL_CPU_SPECIAL)
@@ -721,6 +671,7 @@ void SafetyCpuIsrTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_SPECIAL_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#endif /* If device supports TrustZone */
 }
 
 /*!
@@ -737,12 +688,23 @@ void SafetyCpuIsrTest(safety_common_t *psSafetyCommon)
  */
 void SafetyCpuBackgroundTest(safety_common_t *psSafetyCommon)
 {
+#if DSP_SUPPORT
+    /* stacked CPU registers */
     psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register();
     if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
     {
         psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+#else   
+    /* stacked CPU registers */
+    psSafetyCommon->CPU_reg_test_result = FS_CM33_CPU_Register_NDSP();
+    if (psSafetyCommon->CPU_reg_test_result == FS_FAIL_CPU_REGISTER)
+    {
+        psSafetyCommon->safetyErrors |= CPU_REGISTERS_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+#endif
 
     psSafetyCommon->CPU_non_stacked_test_result = FS_CM33_CPU_NonStackedRegister();
     if (psSafetyCommon->CPU_non_stacked_test_result == FS_FAIL_CPU_NONSTACKED_REGISTER)
@@ -873,48 +835,6 @@ void SafetyDigitalInputOutput_ShortSupplyTest(safety_common_t *psSafetyCommon,
     }
 
     PortSetup(pTestedPin->gpio, pTestedPin->pinNum, pTestedPin->pinDir);
-}
-
-/*!
- * @brief   ADC test.
- *
- *          This function calls functions from IEC60730 library to perform ADC test.
- *
- * @param   psSafetyCommon - The pointer of the Common Safety structure
- *
- * @return  None
- */
-void SafetyAnalogTest(safety_common_t *psSafetyCommon)
-{
-//  static int index = 0; /* Iteration variable for going through all ADC test items */
-//
-//  /* If state is FS_AIO_SCAN_COMPLETE, check limits, otherwise function has not effect */
-//  psSafetyCommon->AIO_test_result = FS_AIO_LimitCheck(g_aio_safety_test_items[index]->RawResult, &(g_aio_safety_test_items[index]->Limits), &(g_aio_safety_test_items[index]->state));
-//
-//  switch (psSafetyCommon->AIO_test_result)
-//  {
-//  case FS_AIO_INIT:
-//    FS_AIO_InputSet_A1(g_aio_safety_test_items[index], (fs_aio_a1_t *)TESTED_ADC);
-//    break;
-//  case FS_AIO_PROGRESS:
-//    FS_AIO_ReadResult_A1(g_aio_safety_test_items[index], (fs_aio_a1_t *)TESTED_ADC);
-//    break;
-//  case FS_PASS: /* successfull execution of test, call the trigger function again */
-//    if( g_aio_safety_test_items[++index] == NULL)
-//    {
-//      index = 0; /* again first channel*/
-//    }
-//    g_aio_safety_test_items[index]->state = FS_AIO_INIT;
-//    break;
-//  case FS_FAIL_AIO:
-//    psSafetyCommon->safetyErrors |= AIO_TEST_ERROR;
-//    SafetyErrorHandling(psSafetyCommon);
-//    break;
-//  default:
-//    __asm("NOP");
-//    break;
-//  }
-  
 }
 
 /*!

@@ -173,7 +173,7 @@ void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTe
 
     if (*(RESET_DETECT_REGISTER)&runTestCondition) /* If non WD reset */
     {
-      #if defined(MIMXRT1189_CM7_H_)
+      #if defined(MIMXRT1189_cm7_H_)
           /* Clear tested flags */
           SRC_GENERAL_REG->SRSR = runTestCondition;
 

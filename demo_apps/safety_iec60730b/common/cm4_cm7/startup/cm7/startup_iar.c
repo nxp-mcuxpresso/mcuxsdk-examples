@@ -100,7 +100,7 @@ void common_startup(void)
     Watchdog_refresh;
 #endif
 
-#if (defined(MECC1) || defined(MECC2)) && !defined(MIMXRT1189_CM7_H_)
+#if (defined(MECC1) || defined(MECC2)) && !defined(MIMXRT1189_cm7_H_)
     /* When ECC is enabled, SRC->SRSR need to be cleared since only correct SRSR value can trigger ROM ECC preload
        procedure. Save SRSR to SRC->GPR[10] so that application can still check SRSR value from SRC->GPR[10]. */
     SRC->GPR[10] = SRC->SRSR;
@@ -113,7 +113,7 @@ void common_startup(void)
     __ISB();
 #endif
 
-#if defined(MIMXRT1189_CM7_H_)
+#if defined(MIMXRT1189_cm7_H_)
     /* When ECC is enabled, SRC->SRSR need to be cleared since only correct SRSR value can trigger ROM ECC preload
        procedure. Save SRSR to SRC->GPR[10] so that application can still check SRSR value from SRC->GPR[10]. */
     SRC_GENERAL_REG->GPR[10] = SRC_GENERAL_REG->SRSR;
@@ -139,7 +139,7 @@ void write_vtor(uint32_t vtor)
 {
     uint32_t *pVTOR = (uint32_t *)0xE000ED08;
     
-    #if !defined(_MIMX8ML8_CM7_H_) && !defined(MIMXRT1189_CM7_H_) && !defined(MCXE31B_H_)
+    #if !defined(_MIMX8ML8_CM7_H_) && !defined(MIMXRT1189_cm7_H_) && !defined(MCXE31B_H_)
       *pVTOR          = 0x30002000;
     #endif
     
@@ -147,7 +147,7 @@ void write_vtor(uint32_t vtor)
       *pVTOR          = 0x00000000;
     #endif
       
-    #ifdef MIMXRT1189_CM7_H_
+    #ifdef MIMXRT1189_cm7_H_
       *pVTOR          = 0x00002000;
     #endif
       

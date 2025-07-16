@@ -43,6 +43,7 @@ __size_flash_crc__    = 0x10;
 __flash_cfg_size      = 0x10;
 
 __VECTOR_TABLE  = __ROM_start__;
+__Vectors  = __ROM_start__;
 __size_heap__   = 0x40;     /* 2x  heap and heap2stackfill */
 
 /******************************************************************************/
