@@ -41,6 +41,9 @@ void APP_DeinitDebugConsole(void)
      */
     PORT_SetPinMux(DEBUG_CONSOLE_RX_PORT, DEBUG_CONSOLE_RX_PIN, kPORT_PinDisabledOrAnalog);
     PORT_SetPinMux(DEBUG_CONSOLE_TX_PORT, DEBUG_CONSOLE_TX_PIN, kPORT_PinDisabledOrAnalog);
+
+    CLOCK_DeinitSysOsc();
+    CLOCK_DeinitSirc();
 }
 
 void APP_DeinitWakeupButton(void)
@@ -95,9 +98,6 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
     BOARD_InitBootPeripherals();
-
-    CLOCK_DeinitSysOsc();
-    CLOCK_DeinitSirc();
 
     if ((CMC_GetSystemResetStatus(APP_CMC) & kCMC_WakeUpReset) != 0UL)
     {
