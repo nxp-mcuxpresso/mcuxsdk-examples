@@ -894,7 +894,7 @@ void BOARD_InitKPPPins()
 
     PORT_SetPinConfig(AON__PORT0, 12U, &port0_12_config);
 
-      const port_pin_config_t port0_7_config = {/* Internal pull-up/down resistor is disabled */
+      const port_pin_config_t port0_3_config = {/* Internal pull-up/down resistor is disabled */
                                                       kPORT_PullDisable,
                                                       /* Low internal pull resistor value is selected. */
                                                       kPORT_LowPullResistor,
@@ -917,9 +917,9 @@ void BOARD_InitKPPPins()
                                                       /* Pin Control Register fields [15:0] are not locked */
                                                       kPORT_UnlockRegister};
 
-    PORT_SetPinConfig(AON__PORT0, 7U, &port0_7_config);
+    PORT_SetPinConfig(AON__PORT0, 3U, &port0_3_config);
 
-    const port_pin_config_t port0_6_config = {/* Internal pull-up/down resistor is disabled */
+    const port_pin_config_t port0_2_config = {/* Internal pull-up/down resistor is disabled */
                                                       kPORT_PullDisable,
                                                       /* Low internal pull resistor value is selected. */
                                                       kPORT_LowPullResistor,
@@ -942,7 +942,7 @@ void BOARD_InitKPPPins()
                                                       /* Pin Control Register fields [15:0] are not locked */
                                                       kPORT_UnlockRegister};
 
-    PORT_SetPinConfig(AON__PORT0, 6U, &port0_6_config);
+    PORT_SetPinConfig(AON__PORT0, 2U, &port0_2_config);
 }
 
 void BOARD_InitAonLpadcPins(void)

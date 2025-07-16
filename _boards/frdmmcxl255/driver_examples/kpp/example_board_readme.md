@@ -10,8 +10,8 @@ Matrix and Jumper settings for KPP:
 
 row1  <----->   J8_5  (P0_13)
 row0  <----->   J8_7  (P0_12)
-col1  <----->   J8_9  (P0_7)
-col0  <----->   J8_11 (P0_6)
+col1  <----->   J8_4  (P0_3)
+col0  <----->   J8_8  (P0_2)
 
 Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
