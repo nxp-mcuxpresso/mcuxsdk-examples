@@ -2040,6 +2040,110 @@ void BOARD_InitSRAMC_FLEXIOPins(void) {
                                                  Open Drain Field: Disabled */
 }
 
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitALT_UARTPins:
+- options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {peripheral: '', signal: '', pin_signal: ''}
+  - {pin_num: M12, peripheral: LPUART3, signal: RXD, pin_signal: GPIO_AD_14, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High}
+  - {pin_num: M13, peripheral: LPUART3, signal: TXD, pin_signal: GPIO_AD_13, pull_keeper_select: Keeper, drive_strength: High}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitALT_UARTPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitALT_UARTPins(void) {
+  /* There are conflicts or other incorrect settings in the configuration, the code below is generated only for 
+     those registers which are set correctly and without a conflict. Open this file in Pins Tool for more details. */
+
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AD_13_LPUART3_TX,           /* GPIO_AD_13 is configured as LPUART3_TX */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AD_14_LPUART3_RX,           /* GPIO_AD_14 is configured as LPUART3_RX */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_13_LPUART3_TX,           /* GPIO_AD_13 PAD functional properties : */
+      0x02U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled
+                                                 Force ibe off Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_14_LPUART3_RX,           /* GPIO_AD_14 PAD functional properties : */
+      0x02U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled
+                                                 Force ibe off Field: Disabled */
+}
+
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitALT_UARTPins_deinit, assigned for the Cortex-M33 core.
+ * Description   : This is a de-initialization function for 'BOARD_InitALT_UARTPins' function.
+ * It sets all pins features (routing, direction and electrical) to their after-reset state.
+ * It also tries to route the previous peripheral signals to their default pins.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitALT_UARTPins_deinit(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  /* GPIO configuration on GPIO_AD_13 (pin M13) */
+  rgpio_pin_config_t gpio4_pinM13_config = {
+      .pinDirection = kRGPIO_DigitalInput,
+      .outputLogic = 0U,
+  };
+  /* Initialize GPIO functionality on GPIO_AD_13 (pin M13) */
+  RGPIO_PinInit(RGPIO4, 13U, &gpio4_pinM13_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_13 (pin M13) */
+  RGPIO_SetPinInterruptConfig(RGPIO4, 13U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+
+  /* GPIO configuration on GPIO_AD_14 (pin M12) */
+  rgpio_pin_config_t gpio4_pinM12_config = {
+      .pinDirection = kRGPIO_DigitalInput,
+      .outputLogic = 0U,
+  };
+  /* Initialize GPIO functionality on GPIO_AD_14 (pin M12) */
+  RGPIO_PinInit(RGPIO4, 14U, &gpio4_pinM12_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_14 (pin M12) */
+  RGPIO_SetPinInterruptConfig(RGPIO4, 14U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AD_13_GPIO4_IO13,           /* GPIO_AD_13 is configured as GPIO4_IO13 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 is configured as GPIO4_IO14 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_13_GPIO4_IO13,           /* GPIO_AD_13 PAD functional properties : */
+      0x06U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled
+                                                 Force ibe off Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AD_14_GPIO4_IO14,           /* GPIO_AD_14 PAD functional properties : */
+      0x06U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled
+                                                 Force ibe off Field: Disabled */
+}
+
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/

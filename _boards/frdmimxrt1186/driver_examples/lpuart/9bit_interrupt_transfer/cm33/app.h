@@ -11,7 +11,7 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_LPUART          LPUART1
+#define DEMO_LPUART          LPUART3
 #define DEMO_LPUART_CLK_FREQ BOARD_DebugConsoleSrcFreq()
 /*${macro:end}*/
 

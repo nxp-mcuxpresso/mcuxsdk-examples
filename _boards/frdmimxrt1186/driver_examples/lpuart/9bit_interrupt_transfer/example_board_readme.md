@@ -6,13 +6,13 @@ Hardware requirements
 
 Board settings
 ============
-Change Jumper J41 from 1-2 to 2-3, Jumper J43 from 1-2 to 2-3.
-Using instance 1 of LPUART interface to transfer data to itself.
+Change Jumper J27 and J33 from 1-2 to 2-3.
+Using instance 3 of LPUART interface to transfer data to itself.
 TX pin is connected with RX pin.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPUART1    CONNECTS TO        LPUART1
 Pin Name   Board Location     Pin Name  Board Location
-TXD        J1-4             RXD       J1-2
+TXD        J1-16              RXD       J51-8
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Prepare the Demo
