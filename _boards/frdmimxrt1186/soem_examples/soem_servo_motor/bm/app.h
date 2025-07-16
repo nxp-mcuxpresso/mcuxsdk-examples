@@ -3,47 +3,44 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
 #ifndef _APP_H_
 #define _APP_H_
 
 /*${header:start}*/
-#include "board.h"
 #include "fsl_netc_endpoint.h"
+#include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
-#include "fsl_phyrtl8211f.h"
-#include "fsl_phyrtl8201.h"
+#include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
-#include "fsl_rgpio.h"
 #include "netc_ep/soem_netc_ep.h"
+#include "netc_swt/soem_netc_swt.h"
 /*${header:end}*/
 
-#define SOEM_PORT_NAME "ENET4"
-
-#define CLOCK_GRANULARITY_NS 25UL
-#define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
-#define CLOCK_INCREASE_PER_SEC 1000000000UL 
-
-#define BOARD_LED_RGPIO     BOARD_USER_LED_GPIO
-#define BOARD_LED_RGPIO_PIN BOARD_USER_LED_GPIO_PIN
-
+#define SOEM_PORT_NAME "ENET0"
+#define EXAMPLE_NETC_HAS_NO_SWITCH 0U
+#define EXAMPLE_EP_NUM    0U
 #define MSGINTR       MSGINTR1
+#define EXAMPLE_SWT_PORT0 0x01U
+#define EXAMPLE_SWT_PORT2 0x03U
 
-#define KNETC_EP_CONFIG_SI    kNETC_ENETC0PSI0
+ #define CLOCK_GRANULARITY_NS 25UL
+ #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
+ #define CLOCK_INCREASE_PER_SEC 1000000000UL 
+ 
+ #define BOARD_LED_RGPIO     BOARD_USER_LED_GPIO
+ #define BOARD_LED_RGPIO_PIN BOARD_USER_LED_GPIO_PIN
 
-#define KNETC_HW_MII_MODE     kNETC_RmiiMode
+#define KNETC_EP_CONFIG_SI    kNETC_ENETC1PSI0
+
+#define NETC_FREQ             CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
+
+#define KNETC_HW_MII_MODE     kNETC_RgmiiMode
 
 /*! @brief GPT timer will be used to calculate the system time and delay */
 #define OSAL_TIMER_IRQ_ID     GPT1_IRQn
 #define OSAL_TIMER            GPT1
 #define OSAL_TIMER_IRQHandler GPT1_IRQHandler
 #define OSAL_TIMER_CLK_FREQ   CLOCK_GetRootClockFreq(kCLOCK_Root_Gpt1)
-
-#define PHY_PAGE_SELECT_REG 0x1FU /*!< The PHY page select register. */
-#define EP0_PORT  0x00U
-
-#define EP0_PHY_ADDR       0x03U
-#define NETC_FREQ          CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
 
 #define EP_RING_NUM          3U
 #define EP_RXBD_NUM          8U
@@ -59,14 +56,21 @@
 #define RX_INTR_MSG_DATA  2U
 #define TX_MSIX_ENTRY_IDX 0U
 #define RX_MSIX_ENTRY_IDX 1U
+#define FRAME_FID         1U
+#define EXAMPLE_SWT_MAX_PORT_NUM   4U
+
+/*! Note: Be careful that some ports are multiplexed with SEMC. */
+#if !defined(EXAMPLE_SWT_USED_PORT_BITMAP)
+#define EXAMPLE_SWT_USED_PORT_BITMAP 0x5U /*! Enabled Switch port bit map, bit n represents port n. */
+#endif
 
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
 status_t BOARD_InitHardware(void);
-status_t NETC_EP_MDIO_Init(void);
-status_t NETC_EP_PHY_Init(void);
+status_t NETC_MDIO_Init(void);
+status_t NETC_PHY_Init(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

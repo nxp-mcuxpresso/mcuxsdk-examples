@@ -15,7 +15,7 @@ No special settings are required.
 Prepare the Demo
 ================
 1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
-2.  Power up the servo-motor and connect it to the target board(ENET4) via an Ethernet Cable.
+2.  Power up the servo-motor and connect it to the target board(J56-A) via an Ethernet Cable.
 3.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits

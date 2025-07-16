@@ -9,6 +9,7 @@
 /*${header:start}*/
 #include "board.h"
 #include "fsl_netc_endpoint.h"
+#include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
 #include "fsl_phyrtl8211f.h"
 #include "fsl_phyrtl8201.h"
@@ -24,6 +25,7 @@
 #define CLOCK_INCREASE_PER_SEC 1000000000UL 
 
 #define EXAMPLE_EP_NUM        2U
+#define EXAMPLE_NETC_HAS_NO_SWITCH 1U
 #define EP0_PORT      0U
 #define EP1_PORT      1U
 #define SOEM_PORT 		EP0_PORT
