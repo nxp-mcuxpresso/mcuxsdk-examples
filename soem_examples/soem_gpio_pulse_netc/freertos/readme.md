@@ -73,3 +73,4 @@ Operational state reached for all slaves.
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/soem_examples/soem_gpio_pulse/freertos/example_board_readme.md)
+- [FRDM-MIMXRT1186](../../../_boards/frdmimxrt1186/soem_examples/soem_gpio_pulse/freertos/example_board_readme.md)

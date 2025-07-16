@@ -12,18 +12,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "fsl_debug_console.h"
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "board.h"
-#include "fsl_netc_endpoint.h"
-#include "fsl_netc_switch.h"
-#include "fsl_netc_mdio.h"
-#include "fsl_phyrtl8211f.h"
-#include "fsl_phyrtl8201.h"
-#include "fsl_msgintr.h"
-#include "fsl_gpt.h"
-
 #include "nicdrv.h"
 #include "ethercattype.h"
 #include "ethercatbase.h"
@@ -35,10 +23,13 @@
 #include "ethercatprint.h"
 #include "netc_ep/soem_netc_ep.h"
 #include "netc_ep/netc_ep.h"
+#include "netc_swt/soem_netc_swt.h"
+#include "netc_swt/netc_swt.h"
 #include "soem_port.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "fsl_gpt.h"
 #include "app.h"
 
 /*******************************************************************************
@@ -54,27 +45,68 @@
 #define SOEM_PERIOD        1000 /* 500us */
 #define RT_TASK_STACK_SIZE 1024
 
+#ifndef PHY_STABILITY_DELAY_US
+#define PHY_STABILITY_DELAY_US (500000U)
+#endif
+
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+/* ENETC pseudo port for management */
+#ifndef EXAMPLE_SWT_SI
+#define EXAMPLE_SWT_SI kNETC_ENETC1PSI0
+#endif
+/* Switch pseudo port */
+#ifndef EXAMPLE_SWT_PSEUDO_PORT
+#define EXAMPLE_SWT_PSEUDO_PORT 0x4U
+#endif
+#endif
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/* Rx buffer memeory type. */
+typedef uint8_t rx_buffer_t[EP_RXBUFF_SIZE_ALIGN];
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
 extern struct netc_ep_if_port if_port;
+#endif
+
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+extern struct netc_swt_if_port if_port;
+#endif
 
 static uint32_t timer_irq_period = 0; /* unit: microsecond*/
 
 volatile struct timeval system_time_base = {.tv_sec = 0, .tv_usec = 0};
 
-/* Buffer descriptor and buffer memeory. */
-typedef uint8_t rx_buffer_t[EP_RXBUFF_SIZE_ALIGN];
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+/* SWT resource. */
+static swt_config_t g_swt_config;
+static swt_transfer_config_t swtTxRxConfig;
+#endif
 
-AT_NONCACHEABLE_SECTION_ALIGN(static netc_rx_bd_t g_rxBuffDescrip[EP_RING_NUM][EP_RXBD_NUM], EP_BD_ALIGN);
-AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EP_RING_NUM][EP_TXBD_NUM], EP_BD_ALIGN);
-AT_NONCACHEABLE_SECTION_ALIGN(static rx_buffer_t g_rxDataBuff[EP_RING_NUM][EP_RXBD_NUM], EP_BUFF_SIZE_ALIGN);
+/* Buffer descriptor resource. */
+AT_NONCACHEABLE_SECTION_ALIGN(static netc_rx_bd_t g_rxBuffDescrip[EP_RING_NUM][EP_RXBD_NUM],
+                              EP_BD_ALIGN);
+AT_NONCACHEABLE_SECTION_ALIGN(static rx_buffer_t g_rxDataBuff[EP_RING_NUM][EP_RXBD_NUM],
+                              EP_BUFF_SIZE_ALIGN);
 AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t g_txFrame[EP_TXBUFF_SIZE], EP_BUFF_SIZE_ALIGN);
-uint64_t rxBuffAddrArray[EP_RING_NUM][EP_RXBD_NUM];
-
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_mgmtTxBuffDescrip[EP_TXBD_NUM], EP_BD_ALIGN);
+AT_NONCACHEABLE_SECTION_ALIGN(static netc_cmd_bd_t g_cmdBuffDescrip[EP_TXBD_NUM], EP_BD_ALIGN);
+#endif
+AT_NONCACHEABLE_SECTION(static uint8_t g_rxFrame[EP_RXBUFF_SIZE_ALIGN]);
+static uint64_t rxBuffAddrArray[EP_RING_NUM][EP_RXBD_NUM];
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+static netc_tx_frame_info_t g_mgmtTxDirty[EP_TXBD_NUM];
+static netc_tx_frame_info_t mgmtTxFrameInfo;
+#endif
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
+AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EP_RING_NUM][EP_TXBD_NUM],
+                              EP_BD_ALIGN);
 static netc_tx_frame_info_t g_txDirty[EP_RING_NUM][EP_TXBD_NUM];
-//static netc_tx_frame_info_t txFrameInfo = {0};
-//static volatile bool txOver;
+#endif
 
 static netc_rx_bdr_config_t rxBdrConfig = {0};
 static netc_tx_bdr_config_t txBdrConfig = {0};
@@ -188,6 +220,14 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
 //    return kStatus_Success;
 //}
 
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+static status_t APP_SwtReclaimCallback(swt_handle_t *handle, netc_tx_frame_info_t *frameInfo, void *userData)
+{
+    mgmtTxFrameInfo = *frameInfo;
+    return kStatus_Success;
+}
+#endif
+
 void osal_gettime(struct timeval *current_time)
 {
     uint32_t usec_base;
@@ -210,7 +250,58 @@ void osal_gettime(struct timeval *current_time)
     return;
 }
 
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+static status_t APP_SWT_AddTableEntry()
+{
+    status_t result = kStatus_Success;
+    uint32_t entryID;
+
+#if defined(EXAMPLE_SWT_USE_IPF) && EXAMPLE_SWT_USE_IPF
+    netc_tb_ipf_config_t ipfEntryCfg;
+
+    memset(&ipfEntryCfg, 0U, sizeof(netc_tb_ipf_config_t));
+    ipfEntryCfg.keye.srcPortMask = EXAMPLE_SWT_USED_PORT_BITMAP;
+    ipfEntryCfg.cfge.hr          = kNETC_SoftwareDefHR0;
+    ipfEntryCfg.cfge.fltfa       = kNETC_IPFRedirectToMgmtPort;
+
+    /* Frame from used port redirect to management port. */
+    for (uint32_t i = 0; i < EXAMPLE_SWT_MAX_PORT_NUM; i++)
+    {
+        /* Only check the enabled port. */
+        if (((1U << i) & EXAMPLE_SWT_USED_PORT_BITMAP) == 0U)
+        {
+            continue;
+        }
+
+        ipfEntryCfg.keye.srcPort = i;
+        result                   = SWT_RxIPFAddTableEntry(&if_port.g_swt_handle, &ipfEntryCfg, &entryID);
+        if ((kStatus_Success != result) && (entryID != 0xFFFFFFFF))
+        {
+            PRINTF("\r\n%s: %d, Failed to add IPF table!, result = %u\r\n, entryID = %u", __func__, __LINE__, result,
+                   entryID);
+            return kStatus_Fail;
+        }
+    }
+#else
+    /* Set FDB table, input frame only forwards to pseudo MAC port. */
+    netc_tb_fdb_config_t fdbEntryCfg = {
+        .keye.fid = FRAME_FID, .cfge.portBitmap = (1U << EXAMPLE_SWT_PSEUDO_PORT), .cfge.dynamic = 1};
+    memset(&fdbEntryCfg.keye.macAddr[0], 0xFF, 6U);
+    result = SWT_BridgeAddFDBTableEntry(&if_port.g_swt_handle, &fdbEntryCfg, &entryID);
+    if ((kStatus_Success != result) || (0xFFFFFFFFU == entryID))
+    {
+        PRINTF("\r\n%s: %d, Failed to add FDB table!, result = %d, entryID = %d\r\n", __func__, __LINE__, result,
+               entryID);
+        return kStatus_Fail;
+    }
+#endif
+
+    return result;
+}
+#endif
+
 /* OSHW: register enet port to SOEM stack */
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
 static int if_port_init(void)
 {
 	struct soem_if_port soem_port;
@@ -284,6 +375,117 @@ static int if_port_init(void)
 	soem_port.port_pri = &if_port;
     return register_soem_port(&soem_port);
 }
+#endif
+
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+static int if_port_swt_init(void)
+{
+	struct soem_if_port soem_port;
+    status_t result                  = kStatus_Success;
+    bdrConfig.rxBdrConfig = &rxBdrConfig;
+	bdrConfig.txBdrConfig = &txBdrConfig;
+    uint32_t msgAddr;
+
+    PRINTF("\r\nNETC swtich frame loopback example start.\r\n");
+
+    /* MSIX and interrupt configuration. */
+    MSGINTR_Init(MSGINTR, &msgintrCallback);
+    msgAddr              = MSGINTR_GetIntrSelectAddr(MSGINTR, 0);
+    msixEntry[0].control = kNETC_MsixIntrMaskBit;
+    msixEntry[0].msgAddr = msgAddr;
+    msixEntry[0].msgData = TX_INTR_MSG_DATA;
+    msixEntry[1].control = kNETC_MsixIntrMaskBit;
+    msixEntry[1].msgAddr = msgAddr;
+    msixEntry[1].msgData = RX_INTR_MSG_DATA;
+
+    /* BD ring configuration. */
+    bdrConfig.rxBdrConfig[0].bdArray       = &g_rxBuffDescrip[0][0];
+    bdrConfig.rxBdrConfig[0].len           = EP_RXBD_NUM;
+    bdrConfig.rxBdrConfig[0].buffAddrArray = &rxBuffAddrArray[0][0];
+    bdrConfig.rxBdrConfig[0].buffSize      = EP_RXBUFF_SIZE_ALIGN;
+    bdrConfig.rxBdrConfig[0].msixEntryIdx  = RX_MSIX_ENTRY_IDX;
+    bdrConfig.rxBdrConfig[0].extendDescEn  = false;
+    bdrConfig.rxBdrConfig[0].enThresIntr   = true;
+    bdrConfig.rxBdrConfig[0].enCoalIntr    = true;
+    bdrConfig.rxBdrConfig[0].intrThreshold = 1;
+
+    /* Endpoint configuration. */
+    (void)EP_GetDefaultConfig(&ep_config);
+    ep_config.si                    = EXAMPLE_SWT_SI;
+    ep_config.siConfig.txRingUse    = 1;
+    ep_config.siConfig.rxRingUse    = 1;
+    //ep_config.reclaimCallback       = ReclaimCallback;
+    ep_config.msixEntry             = &msixEntry[0];
+    ep_config.entryNum              = 2;
+#ifdef EXAMPLE_ENABLE_CACHE_MAINTAIN
+    ep_config.rxCacheMaintain = true;
+    ep_config.txCacheMaintain = true;
+#endif
+
+    SWT_GetDefaultConfig(&g_swt_config);
+
+    for (int i = 0; i < EXAMPLE_SWT_MAX_PORT_NUM; i++)
+    {
+        g_swt_config.ports[i].ethMac.miiMode   = KNETC_HW_MII_MODE;
+        g_swt_config.ports[i].ethMac.miiSpeed  = kNETC_MiiSpeed100M;
+        g_swt_config.ports[i].ethMac.miiDuplex = kNETC_MiiFullDuplex;
+    }
+
+    /* Wait a moment for PHY status to be stable. */
+    SDK_DelayAtLeastUs(PHY_STABILITY_DELAY_US, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
+    g_swt_config.bridgeCfg.dVFCfg.portMembership = (1U << EXAMPLE_SWT_PSEUDO_PORT) | EXAMPLE_SWT_USED_PORT_BITMAP;
+#if defined(EXAMPLE_SWT_USE_IPF) && EXAMPLE_SWT_USE_IPF
+    g_swt_config.ports[0].commonCfg.ipfCfg.enIPFTable = true;
+    g_swt_config.ports[2].commonCfg.ipfCfg.enIPFTable = true;
+#else
+    g_swt_config.bridgeCfg.dVFCfg.enUseFilterID = true;
+    g_swt_config.bridgeCfg.dVFCfg.filterID      = FRAME_FID;
+    g_swt_config.bridgeCfg.dVFCfg.mfo           = kNETC_FDBLookUpWithDiscard;
+    g_swt_config.bridgeCfg.dVFCfg.mlo           = kNETC_DisableMACLearn;
+#endif
+
+    g_swt_config.cmdRingUse            = 1U;
+    g_swt_config.cmdBdrCfg[0].bdBase   = &g_cmdBuffDescrip[0];
+    g_swt_config.cmdBdrCfg[0].bdLength = 8U;
+
+    /* Configure switch transfer resource. */
+    swtTxRxConfig.enUseMgmtRxBdRing            = false;
+    swtTxRxConfig.enUseMgmtTxBdRing            = true;
+    swtTxRxConfig.mgmtTxBdrConfig.bdArray      = &g_mgmtTxBuffDescrip[0];
+    swtTxRxConfig.mgmtTxBdrConfig.len          = EP_TXBD_NUM;
+    swtTxRxConfig.mgmtTxBdrConfig.dirtyArray   = &g_mgmtTxDirty[0];
+    swtTxRxConfig.mgmtTxBdrConfig.msixEntryIdx = TX_MSIX_ENTRY_IDX;
+    swtTxRxConfig.mgmtTxBdrConfig.enIntr       = true;
+    swtTxRxConfig.reclaimCallback              = APP_SwtReclaimCallback;
+#ifdef EXAMPLE_ENABLE_CACHE_MAINTAIN
+    swtTxRxConfig.rxCacheMaintain = true;
+    swtTxRxConfig.txCacheMaintain = true;
+#endif
+
+	for (uint8_t ring = 0U; ring < EP_RING_NUM; ring++)
+    {
+        for (uint8_t index = 0U; index < EP_RXBD_NUM; index++)
+        {
+            rxBuffAddrArray[ring][index] = (uint64_t)(uintptr_t)&g_rxDataBuff[ring][index];
+        }
+    }
+	if_port.ep_config = &ep_config;
+    if_port.swt_config = &g_swt_config;
+	if_port.swtTxRxConfig = &swtTxRxConfig;
+    if_port.bdrConfig = &bdrConfig;
+	if_port.g_txFrame = g_txFrame;
+	strncpy(soem_port.ifname, SOEM_PORT_NAME, SOEM_IF_NAME_MAXLEN);
+	strncpy(soem_port.dev_name, "netc_swt", SOEM_DEV_NAME_MAXLEN);
+	soem_port.port_init = netc_swt_init;
+	soem_port.port_send = netc_swt_send;
+	soem_port.port_recv = netc_swt_recv;
+	soem_port.port_close = netc_swt_close;
+	soem_port.port_link_status= netc_swt_link_status;
+	soem_port.port_pri = &if_port;
+    return register_soem_port(&soem_port);
+}
+#endif
 
 void irq_wake_task(void)
 {
@@ -311,6 +513,13 @@ void control_task(void *ifname)
     /* initialise SOEM, and if_port */
     if (ec_init(ifname))
     {
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+        if (kStatus_Success != APP_SWT_AddTableEntry())
+        {
+            PRINTF("APP_SWT_AddTableEntry failed.\r\n");
+            return;
+        }
+#endif
         PRINTF("ec_init on %s succeeded.\r\n", ifname);
         if (ec_config_init(FALSE) > 0)
         {
@@ -391,7 +600,14 @@ int main(void)
     PRINTF("Start the soem_gpio_pulse FreeRTOS example...\r\n");
 
     osal_timer_init(SOEM_PERIOD, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY);
+    
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
     if_port_init();
+#endif
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+    if_port_swt_init();
+#endif
+
     rt_task = xTaskCreateStatic(/* The function that implements the task. */
                                 control_task, "RT_task", RT_TASK_STACK_SIZE, SOEM_PORT_NAME, configMAX_PRIORITIES - 1,
                                 rt_task_stack, &xTaskBuffer);

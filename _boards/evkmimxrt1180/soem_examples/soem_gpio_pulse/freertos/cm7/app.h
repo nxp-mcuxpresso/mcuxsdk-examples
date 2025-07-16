@@ -9,6 +9,7 @@
 /*${header:start}*/
 #include "board.h"
 #include "fsl_netc_endpoint.h"
+#include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
 #include "fsl_phyrtl8211f.h"
 #include "fsl_phyrtl8201.h"
@@ -17,6 +18,8 @@
 #include "netc_ep/soem_netc_ep.h"
 /*${header:end}*/
 
+#define EXAMPLE_EP_NUM    1U
+#define EXAMPLE_NETC_HAS_NO_SWITCH 1U
 #define SOEM_PORT_NAME "ENET4"
 
 #define MSGINTR       MSGINTR1

@@ -1,10 +1,9 @@
 
 # Add additional configuration
 mcux_add_macro(
-    CC "-DSDK_DEBUGCONSOLE_UART\
-        -DSERIAL_PORT_TYPE_UART=1\
-        -DEC_MAXSLAVE=32\
-       -DPRINTF_ADVANCED_ENABLE=1"
+    CC "-DEC_MAXSLAVE=32\
+       -DPRINTF_ADVANCED_ENABLE=1\
+       -DSDK_NETC_USED=1"
 )
 
 mcux_add_armgcc_configuration(
