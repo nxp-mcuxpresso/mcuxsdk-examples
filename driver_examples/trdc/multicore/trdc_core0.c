@@ -32,12 +32,16 @@ void Fault_handler()
     while (kStatus_Success == TRDC_GetAndClearFirstDomainError(EXAMPLE_TRDC_MBC_INSTANCE, &error))
     {
         APP_CheckAndResolveMbcAccessError(&error);
-        g_hardfaultFlag = true;
-    }
-    while (kStatus_Success == TRDC_GetAndClearFirstDomainError(EXAMPLE_TRDC_MRC_INSTANCE, &error))
-    {
         APP_CheckAndResolveMrcAccessError(&error);
         g_hardfaultFlag = true;
+    }
+    if (EXAMPLE_TRDC_MRC_INSTANCE != EXAMPLE_TRDC_MBC_INSTANCE)
+    {
+        while (kStatus_Success == TRDC_GetAndClearFirstDomainError(EXAMPLE_TRDC_MRC_INSTANCE, &error))
+        {
+            APP_CheckAndResolveMrcAccessError(&error);
+            g_hardfaultFlag = true;
+        }
     }
 }
 /*!
