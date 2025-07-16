@@ -7,55 +7,14 @@
 /************************************************************************************
  * Include
  ************************************************************************************/
-
 #include <stdint.h>
 #include "fwk_nbu_dbg.h"
 #include "fsl_debug_console.h"
+#include "fsl_device_registers.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-/* CFSR (Configurable Fault Status Register) bit definitions */
-#define CFSR_IACCVIOL_Pos    0U
-#define CFSR_IACCVIOL_Msk    (1UL << CFSR_IACCVIOL_Pos)
-#define CFSR_DACCVIOL_Pos    1U
-#define CFSR_DACCVIOL_Msk    (1UL << CFSR_DACCVIOL_Pos)
-#define CFSR_MUNSTKERR_Pos   3U
-#define CFSR_MUNSTKERR_Msk   (1UL << CFSR_MUNSTKERR_Pos)
-#define CFSR_MSTKERR_Pos     4U
-#define CFSR_MSTKERR_Msk     (1UL << CFSR_MSTKERR_Pos)
-#define CFSR_MLSPERR_Pos     5U
-#define CFSR_MLSPERR_Msk     (1UL << CFSR_MLSPERR_Pos)
-#define CFSR_MMARVALID_Pos   7U
-#define CFSR_MMARVALID_Msk   (1UL << CFSR_MMARVALID_Pos)
-
-#define CFSR_IBUSERR_Pos     8U
-#define CFSR_IBUSERR_Msk     (1UL << CFSR_IBUSERR_Pos)
-#define CFSR_PRECISERR_Pos   9U
-#define CFSR_PRECISERR_Msk   (1UL << CFSR_PRECISERR_Pos)
-#define CFSR_IMPRECISERR_Pos 10U
-#define CFSR_IMPRECISERR_Msk (1UL << CFSR_IMPRECISERR_Pos)
-#define CFSR_UNSTKERR_Pos    11U
-#define CFSR_UNSTKERR_Msk    (1UL << CFSR_UNSTKERR_Pos)
-#define CFSR_STKERR_Pos      12U
-#define CFSR_STKERR_Msk      (1UL << CFSR_STKERR_Pos)
-#define CFSR_LSPERR_Pos      13U
-#define CFSR_LSPERR_Msk      (1UL << CFSR_LSPERR_Pos)
-#define CFSR_BFARVALID_Pos   15U
-#define CFSR_BFARVALID_Msk   (1UL << CFSR_BFARVALID_Pos)
-
-#define CFSR_UNDEFINSTR_Pos  16U
-#define CFSR_UNDEFINSTR_Msk  (1UL << CFSR_UNDEFINSTR_Pos)
-#define CFSR_INVSTATE_Pos    17U
-#define CFSR_INVSTATE_Msk    (1UL << CFSR_INVSTATE_Pos)
-#define CFSR_INVPC_Pos       18U
-#define CFSR_INVPC_Msk       (1UL << CFSR_INVPC_Pos)
-#define CFSR_NOCP_Pos        19U
-#define CFSR_NOCP_Msk        (1UL << CFSR_NOCP_Pos)
-#define CFSR_UNALIGNED_Pos   24U
-#define CFSR_UNALIGNED_Msk   (1UL << CFSR_UNALIGNED_Pos)
-#define CFSR_DIVBYZERO_Pos   25U
-#define CFSR_DIVBYZERO_Msk   (1UL << CFSR_DIVBYZERO_Pos)
 
 /************************************************************************************
  * Private memory declarations
@@ -139,7 +98,7 @@ static void BOARD_NbuSystemNotifyCb(nbu_dbg_event_id_t event_id)
             PRINTF("\n  Memory Management Faults Detected:\n");
             DBG_PrintMemoryManagementFaults(regs->cfsr);
 
-            if (regs->cfsr & CFSR_MMARVALID_Msk)
+            if (regs->cfsr & SCB_CFSR_MMARVALID_Msk)
             {
                 PRINTF("    Faulting Address (MMFAR): 0x%08X\n", regs->xfar.mmfar);
             }
@@ -151,7 +110,7 @@ static void BOARD_NbuSystemNotifyCb(nbu_dbg_event_id_t event_id)
             PRINTF("\n  Bus Faults Detected:\n");
             DBG_PrintBusFaults(regs->cfsr);
 
-            if (regs->cfsr & CFSR_BFARVALID_Msk)
+            if (regs->cfsr & SCB_CFSR_BFARVALID_Msk)
             {
                 PRINTF("    Faulting Address (BFAR): 0x%08X\n", regs->xfar.bfar);
             }
@@ -182,31 +141,31 @@ static void BOARD_NbuSystemNotifyCb(nbu_dbg_event_id_t event_id)
 
 static void DBG_PrintMemoryManagementFaults(uint32_t cfsr)
 {
-    if (cfsr & CFSR_IACCVIOL_Msk)
+    if (cfsr & SCB_CFSR_IACCVIOL_Msk)
     {
         PRINTF("    - Instruction access violation\n");
         PRINTF("      Cause: Attempted to execute from a region marked as non-executable\n");
     }
 
-    if (cfsr & CFSR_DACCVIOL_Msk)
+    if (cfsr & SCB_CFSR_DACCVIOL_Msk)
     {
         PRINTF("    - Data access violation\n");
         PRINTF("      Cause: Attempted to access a memory region without proper permissions\n");
     }
 
-    if (cfsr & CFSR_MUNSTKERR_Msk)
+    if (cfsr & SCB_CFSR_MUNSTKERR_Msk)
     {
         PRINTF("    - Memory management fault on unstacking\n");
         PRINTF("      Cause: Error during exception return stack pop operation\n");
     }
 
-    if (cfsr & CFSR_MSTKERR_Msk)
+    if (cfsr & SCB_CFSR_MSTKERR_Msk)
     {
         PRINTF("    - Memory management fault on stacking\n");
         PRINTF("      Cause: Error during exception entry stack push operation\n");
     }
 
-    if (cfsr & CFSR_MLSPERR_Msk)
+    if (cfsr & SCB_CFSR_MLSPERR_Msk)
     {
         PRINTF("    - Memory management fault during lazy FP state preservation\n");
         PRINTF("      Cause: Error during floating-point context save\n");
@@ -215,37 +174,37 @@ static void DBG_PrintMemoryManagementFaults(uint32_t cfsr)
 
 static void DBG_PrintBusFaults(uint32_t cfsr)
 {
-    if (cfsr & CFSR_IBUSERR_Msk)
+    if (cfsr & SCB_CFSR_IBUSERR_Msk)
     {
         PRINTF("    - Instruction bus error\n");
         PRINTF("      Cause: Bus fault on instruction fetch\n");
     }
 
-    if (cfsr & CFSR_PRECISERR_Msk)
+    if (cfsr & SCB_CFSR_PRECISERR_Msk)
     {
         PRINTF("    - Precise data bus error\n");
         PRINTF("      Cause: Bus fault on data access (address in BFAR is valid)\n");
     }
 
-    if (cfsr & CFSR_IMPRECISERR_Msk)
+    if (cfsr & SCB_CFSR_IMPRECISERR_Msk)
     {
         PRINTF("    - Imprecise data bus error\n");
         PRINTF("      Cause: Bus fault on data access (address in BFAR may not be valid)\n");
     }
 
-    if (cfsr & CFSR_UNSTKERR_Msk)
+    if (cfsr & SCB_CFSR_UNSTKERR_Msk)
     {
         PRINTF("    - Bus fault on unstacking\n");
         PRINTF("      Cause: Bus error during exception return\n");
     }
 
-    if (cfsr & CFSR_STKERR_Msk)
+    if (cfsr & SCB_CFSR_STKERR_Msk)
     {
         PRINTF("    - Bus fault on stacking\n");
         PRINTF("      Cause: Bus error during exception entry\n");
     }
 
-    if (cfsr & CFSR_LSPERR_Msk)
+    if (cfsr & SCB_CFSR_LSPERR_Msk)
     {
         PRINTF("    - Bus fault during lazy FP state preservation\n");
         PRINTF("      Cause: Bus error during floating-point context save\n");
@@ -254,37 +213,37 @@ static void DBG_PrintBusFaults(uint32_t cfsr)
 
 static void DBG_PrintUsageFaults(uint32_t cfsr)
 {
-    if (cfsr & CFSR_UNDEFINSTR_Msk)
+    if (cfsr & SCB_CFSR_UNDEFINSTR_Msk)
     {
         PRINTF("    - Undefined instruction\n");
         PRINTF("      Cause: Attempted to execute an undefined instruction\n");
     }
 
-    if (cfsr & CFSR_INVSTATE_Msk)
+    if (cfsr & SCB_CFSR_INVSTATE_Msk)
     {
         PRINTF("    - Invalid state\n");
         PRINTF("      Cause: Attempted to execute instruction with invalid EPSR state\n");
     }
 
-    if (cfsr & CFSR_INVPC_Msk)
+    if (cfsr & SCB_CFSR_INVPC_Msk)
     {
         PRINTF("    - Invalid PC load\n");
         PRINTF("      Cause: Attempted to load invalid PC value\n");
     }
 
-    if (cfsr & CFSR_NOCP_Msk)
+    if (cfsr & SCB_CFSR_NOCP_Msk)
     {
         PRINTF("    - No coprocessor\n");
         PRINTF("      Cause: Attempted to access unavailable coprocessor\n");
     }
 
-    if (cfsr & CFSR_UNALIGNED_Msk)
+    if (cfsr & SCB_CFSR_UNALIGNED_Msk)
     {
         PRINTF("    - Unaligned access\n");
         PRINTF("      Cause: Unaligned memory access with UNALIGN_TRP set\n");
     }
 
-    if (cfsr & CFSR_DIVBYZERO_Msk)
+    if (cfsr & SCB_CFSR_DIVBYZERO_Msk)
     {
         PRINTF("    - Division by zero\n");
         PRINTF("      Cause: Division by zero with DIV_0_TRP set\n");
@@ -325,7 +284,7 @@ static void DBG_PrintRawData(const char* label, const char* start_marker, const 
 
 int BOARD_DbgNbuInit(void)
 {
-    NBUDBG_RegisterSystemErrorNotify(BOARD_NbuSystemNotifyCb);
+    NBUDBG_RegisterSystemErrorCb(BOARD_NbuSystemNotifyCb);
 
     return 0;
 }
