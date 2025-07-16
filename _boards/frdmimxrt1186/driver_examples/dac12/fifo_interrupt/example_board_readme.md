@@ -41,4 +41,4 @@ DAC next output: 1000
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Then user can measure the DAC0 output pin(TP9) to check responding voltage = 1.8v * 1000 / 4096
+Then user can measure the DAC0 output pin(TP14) to check responding voltage = 1.8v * 1000 / 4096

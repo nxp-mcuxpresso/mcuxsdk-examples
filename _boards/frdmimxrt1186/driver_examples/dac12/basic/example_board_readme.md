@@ -35,4 +35,4 @@ DAC out: 400
 Please input a value (0 - 4095) to output with DAC:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Then user can measure the DAC0 output pin(TP9) to check responding voltage = 1.8v * 400 / 4096
+Then user can measure the DAC0 output pin(TP14) to check responding voltage = 1.8v * 400 / 4096
