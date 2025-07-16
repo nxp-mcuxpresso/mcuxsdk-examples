@@ -33,7 +33,7 @@ The hardware should be reworked according to the hardware rework guide for evkcm
 
 1. To ensure that the LITTLEFS flash region has been cleaned, all flash sectors need to be erased before downloading example code.
 2. After downloaded binary into qspiflash and boot from qspiflash directly, please reset the board by pressing SW7 or power off and on the board to run the application.
-3. Nighthwak and Firecrest BT UART Rework (LPUART3)
+3. Nighthwak BT UART Rework (LPUART3)
   - Mount R93, R96
   - Remove R193
   - Connect J109, J76 2-3
@@ -81,7 +81,7 @@ J-Link> loadbin C:\xxx\coex_wifi_central_ht.bin, 0x60000000
 
 ### Prepare the Demo
 
-1. Connect a micro USB cable between the PC host and the MCU-Link USB port (J7) on the board.
+1. Connect a micro USB cable between the PC host and the MCU-Link USB port (J53) on the board.
 2. Open a serial terminal with the following settings:
    - 115200 baud rate
    - 8 data bits
@@ -93,7 +93,7 @@ J-Link> loadbin C:\xxx\coex_wifi_central_ht.bin, 0x60000000
 
 ### Running the example
 
-The log below shows the output of the coex examples (based on edgefast-shell) in the terminal window:
+The log below shows the output of the coex examples in the terminal window:
 
 ```bash
 ========================================
@@ -115,7 +115,7 @@ supplicant_main_task: 622 Starting wpa_supplicant thread with debug level: 6
   0  Coex menu print
   w  Wifi Cli
 ========================================
-BLE Peripheral HT demo start...
+BLE Central HT demo start...
                                board_type: 0, board_type mapping:
 0----CSP
 1----QFN
@@ -153,8 +153,8 @@ WLAN Firmware Version : rw610w-V2, IMU, FP99, 18.99.5.p66, PVE_FIX 1
 >wlan-mac
 wifi commands: wlan-mac
 MAC address
-STA MAC Address: C0:95:DA:01:07:36
-uAP MAC Address: C2:95:DA:01:08:36
+STA MAC Address: 78:F5:05:7B:BB:BC
+uAP MAC Address: 7A:F5:05:7B:BC:BC
 ```
 
 - Scan the network:
@@ -164,22 +164,26 @@ uAP MAC Address: C2:95:DA:01:08:36
 wifi commands: wlan-scan
 Scan scheduled...
 
->30 networks found:
-7C:10:C9:E0:D4:08  "test_ax88U" Infra
-        mode: 802.11N
-        channel: 1
-        rssi: -60 dBm
-        security: OPEN
+>10 networks found:
+AA:A9:30:5F:44:AE  (hidden) Infra
+        mode: 802.11AX
+        channel: 157
+        rssi: -37 dBm
+        security: WPA2
         WMM: YES
         802.11V: YES
         802.11W: NA
-04:A1:51:AB:07:1F  "netgear-2g" Infra
-        mode: 802.11BG
-        channel: 1
-        rssi: -56 dBm
-        security: WPA
+        WPS: NO
+CC:28:AA:2B:DB:D0  (hidden) Infra
+        mode: 802.11AX
+        channel: 10
+        rssi: -44 dBm
+        security: WPA2/WPA3 SAE Mixed
         WMM: YES
-        802.11W: NA
+        802.11K: YES
+        802.11V: YES
+        802.11W: Capable
+        WPS: NO
 ```
 
 2. BLE Test
@@ -188,4 +192,3 @@ Scan scheduled...
 >
 > No need enter any BLE commands.
 >
->The demo does not require user interaction. The application will automatically start advertising the Health Thermometer Service and it will accept the first connection request it receives. If the peer subscribes to receive temperature indications, these will be sent every 1 second. The temperature readings are simulated with values between 20 and 25 degrees Celsius.
