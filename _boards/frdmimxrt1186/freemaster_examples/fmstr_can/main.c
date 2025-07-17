@@ -90,7 +90,7 @@ static void init_freemaster_can(void)
     FLEXCAN_GetDefaultConfig(&flexcanConfig);
 
     /* Update configuration */
-    flexcanConfig.clkSrc   = kFLEXCAN_ClkSrcPeri;
+    flexcanConfig.clkSrc   = kFLEXCAN_ClkSrcOsc;
     flexcanConfig.bitRate = EXAMPLE_CAN_BITRATE;
 
     /* FD bitrate applied only if FMSTR_CAN_USE_CANFD enabled */
