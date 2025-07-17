@@ -58,8 +58,9 @@ ll_uart_write_prefilter_t s_uartTxPreFilter;
  * Code
  ******************************************************************************/
 
-static void HciUartRxTxHandler(void *par1, void *par2)
+static void HciUartRxTxHandler(USART_Type *base, void *par2)
 {
+    /* Rx */
     uint32_t remainingBytes = DMA_GetRemainingBytes(DMA0, HCI_UART_DMA_CHANNEL_RX);
 
     /* the amount of bytes received is (remaining bytes at last reading - actual remaining bytes) modulo
@@ -84,14 +85,28 @@ static void HciUartRxTxHandler(void *par1, void *par2)
             }
         }
     }
+
+    /* Tx */
+
+    /* Waiting for Idle and Idle */
+    if ((USART_GetEnabledInterrupts(base) & kUSART_TxIdleInterruptEnable) &&
+        (USART_GetStatusFlags(base) & kUSART_TxIdleInterruptEnable))
+    {
+        USART_DisableInterrupts(base, kUSART_TxIdleInterruptEnable);
+        if (s_hciUart_cb.txCb != NULL)
+        {
+            s_hciUart_cb.txCb();
+        }
+    }
 }
 
 /* User callback function for DMA transfer. */
 static void DMA_Callback(dma_handle_t *handle, void *param, bool transferDone, uint32_t tcds)
 {
-    if (transferDone && s_hciUart_cb.txCb != NULL)
+    if (transferDone)
     {
-        s_hciUart_cb.txCb();
+        /* Wait for Idle (All bytes out)*/
+        USART_EnableInterrupts((USART_Type *)param, kUSART_TxIdleInterruptEnable);
     }
 }
 
@@ -142,7 +157,7 @@ void ll_uart_init(hci_uart_cb_t uartCb)
     /* Configure DMA TX */
     DMA_EnableChannel(DMA0, HCI_UART_DMA_CHANNEL_TX);
     DMA_CreateHandle(&s_dmaHandleTx, DMA0, HCI_UART_DMA_CHANNEL_TX);
-    DMA_SetCallback(&s_dmaHandleTx, DMA_Callback, NULL);
+    DMA_SetCallback(&s_dmaHandleTx, DMA_Callback, (void*)HCI_UART);
 }
 
 void ll_uart_deinit(void)
