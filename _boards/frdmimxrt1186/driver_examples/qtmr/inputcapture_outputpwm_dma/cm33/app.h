@@ -13,9 +13,9 @@
  ******************************************************************************/
 /*${macro:start}*/
 /* The QTMR instance/channel used for board */
-#define BOARD_QTMR_BASEADDR              TMR3
-#define BOARD_QTMR_INPUT_CAPTURE_CHANNEL kQTMR_Channel_2
-#define BOARD_QTMR_PWM_CHANNEL           kQTMR_Channel_3
+#define BOARD_QTMR_BASEADDR              TMR1
+#define BOARD_QTMR_INPUT_CAPTURE_CHANNEL kQTMR_Channel_0
+#define BOARD_QTMR_PWM_CHANNEL           kQTMR_Channel_1
 #define QTMR_PWM_OUTPUT_FREQUENCY        50000
 #define QTMR_DUTYCYCLE_PERCENT           50
 #define QTMR_CounterInputPin             kQTMR_Counter0InputPin
@@ -29,8 +29,8 @@
 
 #define EXAMPLE_QTMR_DMA (DMA4)
 
-#define QTMR_EDMA_REQUEST_CAPT_SOURCE  kDma4RequestMuxQTIMER3CaptTimer2
-#define QTMR_EDMA_REQUEST_CMPLD_SOURCE kDma4RequestMuxQTIMER3Cmpld1Timer2Cmpld2Timer3
+#define QTMR_EDMA_REQUEST_CAPT_SOURCE  kDma4RequestMuxQTIMER1CaptTimer0
+#define QTMR_EDMA_REQUEST_CMPLD_SOURCE kDma4RequestMuxQTIMER1Cmpld1Timer0Cmpld2Timer1
 
 #define BOARD_SetEDMAConfig(config)                                              \
     {                                                                            \

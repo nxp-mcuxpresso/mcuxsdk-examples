@@ -1074,8 +1074,8 @@ void BOARD_InitLPITPins(void) {
 BOARD_InitQTMRPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M9, peripheral: TMR3, signal: 'TIMER, 2', pin_signal: GPIO_EMC_B2_19}
-  - {pin_num: M8, peripheral: TMR3, signal: 'TIMER, 3', pin_signal: GPIO_EMC_B2_20}
+  - {pin_num: C1, peripheral: TMR1, signal: 'TIMER, 0', pin_signal: GPIO_EMC_B1_18}
+  - {pin_num: E3, peripheral: TMR1, signal: 'TIMER, 1', pin_signal: GPIO_EMC_B1_13}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1089,15 +1089,15 @@ void BOARD_InitQTMRPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   BLK_CTRL_WAKEUPMIX->QTIMER_CTRL1 = ((BLK_CTRL_WAKEUPMIX->QTIMER_CTRL1 &
-    (~(BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER3_TMR2_INPUT_SEL_MASK | BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER3_TMR3_INPUT_SEL_MASK))) /* Mask bits to zero which are setting */
-      | BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER3_TMR2_INPUT_SEL(0x00U) /* QTIMER3 TMR2 input select: Input from IOMUX */
-      | BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER3_TMR3_INPUT_SEL(0x00U) /* QTIMER3 TMR3 input select: Input from IOMUX */
+    (~(BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER1_TMR0_INPUT_SEL_MASK | BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER1_TMR1_INPUT_SEL_MASK))) /* Mask bits to zero which are setting */
+      | BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER1_TMR0_INPUT_SEL(0x00U) /* QTIMER1 TMR0 input select: Input from IOMUX */
+      | BLK_CTRL_WAKEUPMIX_QTIMER_CTRL1_QTIMER1_TMR1_INPUT_SEL(0x00U) /* QTIMER1 TMR1 input select: Input from IOMUX */
     );
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_19_QTIMER3_TIMER2,   /* GPIO_EMC_B2_19 is configured as QTIMER3_TIMER2 */
+      IOMUXC_GPIO_EMC_B1_13_QTIMER1_TIMER1,   /* GPIO_EMC_B1_13 is configured as QTIMER1_TIMER1 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinMux(
-      IOMUXC_GPIO_EMC_B2_20_QTIMER3_TIMER3,   /* GPIO_EMC_B2_20 is configured as QTIMER3_TIMER3 */
+      IOMUXC_GPIO_EMC_B1_18_QTIMER1_TIMER0,   /* GPIO_EMC_B1_18 is configured as QTIMER1_TIMER0 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
 }
 
