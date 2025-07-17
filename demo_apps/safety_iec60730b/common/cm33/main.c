@@ -225,7 +225,7 @@ int32_t main(void)
     }
 #endif /* ADC_TEST_ENABLED */
 
-#if defined(_MCXN947_CM33_CORE0_H_)
+#if defined(MCXN947_cm33_core0_H_)
 #if TSI_TEST_ENABLED
     volatile uint32_t tsi_cnt_number = 0; /* Variables for runtime TSI test */
 
@@ -257,7 +257,7 @@ int32_t main(void)
     tsi_cnt_number = 0; /* Reset to 0 for RUNTIME test cnt */
 
 #endif                  /* TSI_TEST_ENABLED */
-#endif                  /* _MCXN947_CM33_CORE0_H_*/
+#endif                  /* MCXN947_cm33_core0_H_*/
 
 #if DIO_TEST_ENABLED
     /* Digital I/O test */
@@ -356,7 +356,7 @@ int32_t main(void)
 #endif
 
 #if TSI_TEST_ENABLED
-  #if defined(_MCXN947_CM33_CORE0_H_)
+  #if defined(MCXN947_cm33_core0_H_)
 
 
         /* Runtime TSI test */

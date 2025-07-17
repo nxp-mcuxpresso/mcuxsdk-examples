@@ -115,4 +115,13 @@ safety_iec60730b:
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
-    frdmmcxa346: []
+    frdmmcxa346:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
+    frdmmcxn947@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release

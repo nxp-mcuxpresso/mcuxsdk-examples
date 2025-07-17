@@ -1041,7 +1041,7 @@ void SafetyIsrFunction(safety_common_t *psSafetyCommon, fs_ram_test_t *psSafetyR
 }
 
 
-#if defined(_MCXN947_CM33_CORE0_H_)
+#if defined(MCXN947_cm33_core0_H_)
 
 #define BACKUP  0
 #define RESTORE 1
