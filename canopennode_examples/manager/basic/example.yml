@@ -1,0 +1,30 @@
+co_manager_basic:
+  section-type: application
+  contents:
+    meta_path: examples/canopennode_examples/manager/basic
+    project-root-path: boards/${board}/canopennode_examples/manager/basic/${multicore_foldername}
+    document:
+      name: co_manager_basic${core_id_suffix_name}
+      category: canopennode_examples
+      brief: The co_manager_basic example shows CANopen manager basic feature on the CANopenNode stack.
+      example_readme:
+      - examples/canopennode_examples/manager/basic/readme.md
+      - ${board_root}/${board}/canopennode_examples/manager/basic/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa156: []
+    frdmmcxe247: []
+    frdmmcxe31b: []
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
