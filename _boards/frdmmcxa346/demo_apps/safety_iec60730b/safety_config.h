@@ -15,7 +15,7 @@
 
 #include "safety_cm33_mcx.h"
 
-#include "MCXA166.h"
+#include "MCXA346.h"
 
 #include "clock_config.h"
 #include "pin_mux.h"

@@ -14,8 +14,8 @@
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Pins v16.0
-processor: MCXA166
-package_id: MCXA166VLQ
+processor: MCXA366
+package_id: MCXA366VLQ
 mcu_data: ksdk2_0
 processor_version: 0.16.2
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
