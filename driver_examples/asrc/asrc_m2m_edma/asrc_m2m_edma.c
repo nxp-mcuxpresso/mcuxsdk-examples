@@ -133,7 +133,9 @@ int main(void)
     SAI_TransferTxCreateHandleEDMA(DEMO_SAI, &saiHandle, sai_callback, NULL, &saiDmaHandle);
     /* I2S mode configurations */
     SAI_GetClassicI2SConfig(&config, DEMO_AUDIO_BIT_WIDTH, kSAI_Stereo, kSAI_Channel0Mask);
-    config.fifo.fifoWatermark = FSL_FEATURE_SAI_FIFO_COUNTn(DEMO_SAI) - 2U;
+    /* Get FIFO count and ensure it's valid before arithmetic */
+    int32_t fifoCount = FSL_FEATURE_SAI_FIFO_COUNTn(DEMO_SAI);
+    config.fifo.fifoWatermark = (fifoCount > 2) ? ((uint32_t)fifoCount - 2U) : 0U;
     SAI_TransferTxSetConfigEDMA(DEMO_SAI, &saiHandle, &config);
 
     /* set bit clock divider */
