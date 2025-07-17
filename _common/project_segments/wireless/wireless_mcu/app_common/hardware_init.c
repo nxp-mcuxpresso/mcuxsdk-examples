@@ -38,6 +38,10 @@
 #include "fwk_debug_swo.h"
 #endif
 
+#if defined(BOARD_DBG_NBU_ENABLE) && (BOARD_DBG_NBU_ENABLE != 0)
+#include "board_debug_nbu.h"
+#endif
+
 /*${header:end}*/
 
 /* -------------------------------------------------------------------------- */
@@ -130,6 +134,10 @@ void BOARD_InitHardware(void)
 
 #if defined(BOARD_DBG_SWO_PIN_ENABLE) && (BOARD_DBG_SWO_PIN_ENABLE != 0)
     BOARD_InitSWO();
+#endif
+
+#if defined(BOARD_DBG_NBU_ENABLE) && (BOARD_DBG_NBU_ENABLE != 0)
+    BOARD_DbgNbuInit();
 #endif
 
 #if defined(BOARD_DBG_SWO_CORE_FUNNEL) && (BOARD_DBG_SWO_CORE_FUNNEL != 0)

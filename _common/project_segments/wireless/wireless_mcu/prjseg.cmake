@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.clock)
@@ -70,6 +70,22 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug)
         INCLUDES
             examples/_common/project_segments/wireless/wireless_mcu/debug
     )
+endif()
+
+if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
+    mcux_add_source(
+        BASE_PATH ${SdkRootDirPath}
+        SOURCES
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu.c
+            examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu.h
+    )
+    mcux_add_include(
+        BASE_PATH ${SdkRootDirPath}
+        INCLUDES
+            examples/_common/project_segments/wireless/wireless_mcu/debug
+    )
+
+    mcux_add_macro(BOARD_DBG_NBU_ENABLE=1)
 endif()
 
 if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.extflash)
