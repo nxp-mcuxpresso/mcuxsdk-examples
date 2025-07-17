@@ -17,8 +17,8 @@ Prepare the Demo
     - No parity
     - One stop bit
     - No flow control
-3.  Download the program to the target board.
-4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+3.  Use Secure Provisioning Tool to combine this demo image with any CM7 demo image and program it into flash memory
+4.  Press the reset button on your board to begin running the demo.
 
 Note:
     1. This demo targets to run with CM7 image, it plays role as a trigger to boot CM7 image after POR.
@@ -31,6 +31,7 @@ Note:
     3. This demo use dedicated linker file to avoid conflicting with CM7 demo linkage.
        It targets to work with those CM7 standalone demos(with same/similar linkage as hello_world_cm7 demo) in this SDK out of box.
     4. If the CM7 demo is located in RAM(debug/release, sdram_debug/release, hyperram_debug/release), it is a must to SET the CM7 TCM ECC fuse.
+    5. Please refer to the Getting Started document for more detail on how to use Secure Provisioning Tool on this demo.
 
 Running the demo
 ================
