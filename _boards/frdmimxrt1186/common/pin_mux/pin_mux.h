@@ -340,6 +340,20 @@ void BOARD_InitSRAMCPins(void);               /* Function assigned for the Corte
  */
 void BOARD_InitSRAMC_FLEXIOPins(void);        /* Function assigned for the Cortex-M33 */
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitALT_UARTPins(void);            /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief This is a de-initialization function for 'BOARD_InitALT_UARTPins' function.
+ * It sets all pins features (routing, direction and electrical) to their after-reset state.
+ * It also tries to route the previous peripheral signals to their default pins.
+ *
+ */
+void BOARD_InitALT_UARTPins_deinit(void);     /* Function assigned for the Cortex-M33 */
+
 #if defined(__cplusplus)
 }
 #endif
