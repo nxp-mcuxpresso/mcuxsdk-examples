@@ -6,6 +6,9 @@
 mcux_set_variable(board evkmimx8mq)
 mcux_set_variable(board_root examples/_boards)
 
+# Remove the section '.stacktop_and_pc'
+mcux_set_variable(__EXTRA_ARGS "--remove-section=.stacktop_and_pc")
+
 if (NOT DEFINED device)
     mcux_set_variable(device MIMX8MQ6)
 endif()
