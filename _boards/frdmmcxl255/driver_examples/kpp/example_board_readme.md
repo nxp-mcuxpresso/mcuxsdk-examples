@@ -15,6 +15,7 @@ col0  <----->   J8_8  (P0_2)
 
 Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
+- 2-3 for AON core (cm0+)
 
 Prepare the Demo
 ===============
