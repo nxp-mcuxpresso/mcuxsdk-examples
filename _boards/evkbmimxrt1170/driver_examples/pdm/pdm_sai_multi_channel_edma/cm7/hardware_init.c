@@ -73,21 +73,25 @@ void GPIO13_Combined_0_31_IRQHandler(void)
 
     if (s_increaseGain)
     {
-        s_pdmGain++;
+        if (s_pdmGain < kPDM_DfOutputGain15)
+        {
+            s_pdmGain++;
+        }
+        if (s_pdmGain == kPDM_DfOutputGain15)
+        {
+            s_increaseGain = false;
+        }
     }
     else
     {
-        s_pdmGain--;
-    }
-
-    if (s_pdmGain == kPDM_DfOutputGain15)
-    {
-        s_increaseGain = false;
-    }
-
-    if (s_pdmGain == kPDM_DfOutputGain0)
-    {
-        s_increaseGain = true;
+        if (s_pdmGain > kPDM_DfOutputGain0)
+        {
+            s_pdmGain--;
+        }
+        if (s_pdmGain == kPDM_DfOutputGain0)
+        {
+            s_increaseGain = true;
+        }
     }
 
     PDM_SetChannelGain(DEMO_PDM, DEMO_PDM_ENABLE_CHANNEL_LEFT, (pdm_df_output_gain_t)s_pdmGain);
