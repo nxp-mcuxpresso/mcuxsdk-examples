@@ -20,13 +20,18 @@
 #include "ethercatconfig.h"
 #include "ethercatprint.h"
 #include "soem_port.h"
-#include "netc_ep/soem_netc_ep.h"
-#include "netc_ep/netc_ep.h"
-#include "netc_swt/soem_netc_swt.h"
-#include "netc_swt/netc_swt.h"
 
 #include "fsl_gpt.h"
 #include "app.h"
+
+#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
+#include "netc_ep/soem_netc_ep.h"
+#include "netc_ep/netc_ep.h"
+#endif
+#if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
+#include "netc_swt/soem_netc_swt.h"
+#include "netc_swt/netc_swt.h"
+#endif
 
 /*******************************************************************************
  * Definitions
