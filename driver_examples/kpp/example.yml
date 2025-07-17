@@ -186,6 +186,7 @@ kpp:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []
     frdmimxrt1186@cm33:
     - -armgcc@debug
     - -armgcc@hyperram_debug
