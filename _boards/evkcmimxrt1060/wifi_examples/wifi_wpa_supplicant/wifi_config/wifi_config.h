@@ -109,6 +109,10 @@
 #define CONFIG_RX_CHAN_INFO  1
 #define CONFIG_TXPD_RXPD_V3  1
 #endif
+
+#if defined(IW610)
+#define CONFIG_WPA_SUPP_NAN_USD 1
+#endif
 #endif
 
 #if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
