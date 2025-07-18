@@ -71,6 +71,7 @@ mcux_add_macro(
     ZPS_GENERATED_FILE=\\\"${APPLICATION_BINARY_DIR}/zps_gen.h\\\"
     PDUM_GENERATED_FILE=\\\"${APPLICATION_BINARY_DIR}/pdum_gen.h\\\"
     ZIGBEE_EVENT_IMPL
+    # DISABLE_SLEEP
 )
 
 mcux_add_include(
@@ -87,7 +88,7 @@ add_custom_command(
         ${APPLICATION_BINARY_DIR}/pdum_gen.h
         ${APPLICATION_BINARY_DIR}/pdum_apdu.S
         COMMAND ${PYTHON_EXECUTABLE} ${PDUMCONFIG}
-        ARGS 
+        ARGS
         -z enddevice_rxoff
         -e ENDIAN
         -f ${ZPSCFG}
