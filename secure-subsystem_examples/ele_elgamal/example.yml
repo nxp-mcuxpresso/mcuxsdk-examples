@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+ele_elgamal:
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_elgamal/.
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_elgamal/${multicore_foldername}
+    document:
+      name: ele_elgamal${core_id_suffix_name}
+      category: secure-subsystem_examples
+      brief: The ELE Elgamal application provides an example how to load loadable FW into ELE
+             and how to distingush when FW is loaded, then to import ElGamal blob and print
+             out the computed shared secret value.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_elgamal/readme.md
+      - ${board_root}/${board}/secure-subsystem_examples/ele_elgamal/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release

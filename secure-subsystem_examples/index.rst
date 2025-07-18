@@ -14,3 +14,4 @@ secure-subsystem_examples
    ele_spake2plus/readme.md
    ele_symmetric/readme.md
    ele_keystore/readme.md
+   ele_elgamal/readme.md
