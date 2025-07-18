@@ -365,17 +365,14 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     ncp_status_t status = NCP_STATUS_SUCCESS;
     ncp_tlv_qelem_t *qbuf = NULL;
     uint8_t *qbuf_tlv = NULL, *chksum_buf = NULL;
-    uint16_t qlen = 0, sdio_intf_head = 0, chksum_len = 4;
+    uint16_t qlen = 0, chksum_len = 4;
     uint32_t chksum = 0;
-#if CONFIG_NCP_SDIO
-    sdio_intf_head = 4;
-#endif
-    qlen = sizeof(ncp_tlv_qelem_t) + sdio_intf_head + tlv_sz + chksum_len;
+    qlen = sizeof(ncp_tlv_qelem_t) + tlv_sz + chksum_len;
     qbuf = (ncp_tlv_qelem_t *)OSA_MemoryAllocate(qlen);
     if (!qbuf)
     {
         NCP_TLV_STATS_INC(drop);
-        ncp_adap_e("%s: failed to allocate memory for tlv queue element", __FUNCTION__);
+        ncp_adap_e("%s: failed to allocate memory for tlv queue element qlen=%u", __FUNCTION__, qlen);
         return NCP_STATUS_NOMEM;
     }
     qbuf->tlv_sz = tlv_sz + chksum_len;
@@ -383,26 +380,26 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     qbuf_tlv = (uint8_t *)qbuf + sizeof(ncp_tlv_qelem_t);
 
 #if !CONFIG_NCP_USE_ENCRYPT
-    (void) memcpy(qbuf_tlv + sdio_intf_head, tlv_buf, tlv_sz);
+    (void) memcpy(qbuf_tlv, tlv_buf, tlv_sz);
 #else
     if ((!ncp_tlv_adapter.crypt) || (!ncp_tlv_adapter.crypt->flag))
     {
-        (void) memcpy(qbuf_tlv + sdio_intf_head, tlv_buf, tlv_sz);
+        (void) memcpy(qbuf_tlv, tlv_buf, tlv_sz);
     }
     else
     {
         struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv_buf;
         if (ncp_cmd_is_data_cmd(cmd_hdr->cmd))
         {
-            (void) memcpy(qbuf_tlv + sdio_intf_head, tlv_buf, tlv_sz);
+            (void) memcpy(qbuf_tlv, tlv_buf, tlv_sz);
         }
         else
         {
-            (void) memcpy(qbuf_tlv + sdio_intf_head, tlv_buf, TLV_CMD_HEADER_LEN);
+            (void) memcpy(qbuf_tlv, tlv_buf, TLV_CMD_HEADER_LEN);
             if (tlv_sz > TLV_CMD_HEADER_LEN)
             {
                 status = ncp_tlv_encrypt(tlv_buf + TLV_CMD_HEADER_LEN,
-                                qbuf_tlv + sdio_intf_head + TLV_CMD_HEADER_LEN, 
+                                qbuf_tlv + TLV_CMD_HEADER_LEN,
                                 tlv_sz - TLV_CMD_HEADER_LEN);
                 if (status != NCP_STATUS_SUCCESS)
                 {
@@ -416,12 +413,16 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
 #endif /* CONFIG_NCP_USE_ENCRYPT */
 
     qbuf->tlv_buf = qbuf_tlv;
-    chksum = ncp_tlv_chksum(qbuf_tlv + sdio_intf_head, (uint16_t)tlv_sz);
-    chksum_buf = qbuf_tlv + sdio_intf_head + tlv_sz;
+    chksum = ncp_tlv_chksum(qbuf_tlv, (uint16_t)tlv_sz);
+    chksum_buf = qbuf_tlv + tlv_sz;
     chksum_buf[0] = chksum & 0xff;
     chksum_buf[1] = (chksum & 0xff00) >> 8;
     chksum_buf[2] = (chksum & 0xff0000) >> 16;
     chksum_buf[3] = (chksum & 0xff000000) >> 24;
+#if CONFIG_WIFI_IO_DUMP
+    ncp_adap_e("%s: qbuf %p %u (%p %p %ld)", __FUNCTION__, qbuf, qlen, qbuf->priv, qbuf->tlv_buf, qbuf->tlv_sz);
+    dump_hex(qbuf->tlv_buf, MIN(qbuf->tlv_sz, 128));
+#endif
 
     status = ncp_tlv_tx_enque(qbuf);
     if(status != NCP_STATUS_SUCCESS)

@@ -21,7 +21,7 @@
  ******************************************************************************/
 /*NCP Message Type*/
 #define NCP_MSG_TYPE_CMD   0x00010000
-#define NCP_MSG_TYPE_EVT   0x00020000
+#define NCP_MSG_TYPE_EVENT 0x00020000
 #define NCP_MSG_TYPE_RSP   0x00030000
 
 /*NCP command class*/
@@ -32,9 +32,12 @@
 #define NCP_CMD_SYSTEM 0x40000000
 
 #define NCP_CMD_WLAN_SOCKET      0x00900000
+#define NCP_CMD_WLAN_INET        0x01000000
+#define NCP_CMD_WLAN_ASYNC_EVENT 0x00f00000
 
 #define NCP_RSP_WLAN_SOCKET_SEND      (NCP_CMD_WLAN | NCP_CMD_WLAN_SOCKET | NCP_MSG_TYPE_RSP | 0x00000004)
 #define NCP_RSP_WLAN_SOCKET_SENDTO    (NCP_CMD_WLAN | NCP_CMD_WLAN_SOCKET | NCP_MSG_TYPE_RSP | 0x00000005)
+#define NCP_EVENT_WLAN_NCP_INET_RECV  (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000009)
 
 #define SDIO_GET_MSG_TYPE(cmd)        ((cmd) & 0x000f0000)
 
@@ -174,9 +177,10 @@ int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
       OSA_TimeDelay(1);
     }
 
-    res = (NCP_COMMAND *)(tlv_buf + sizeof(sdio_header_t));
+    res = (NCP_COMMAND *)(tlv_buf);
 
     msg_type = SDIO_GET_MSG_TYPE(res->cmd);
+    ncp_adap_d("%s: SDU_Send 0x%x start (%p %ld)", __FUNCTION__, msg_type, tlv_buf, tlv_sz);
     switch (msg_type)
     {
         case NCP_MSG_TYPE_RSP:
@@ -190,8 +194,15 @@ int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
                 ret = SDU_Send(SDU_TYPE_FOR_READ_CMD, (uint8_t *)res, tlv_sz);
             }
             break;
-        case NCP_MSG_TYPE_EVT:
-            ret = SDU_Send(SDU_TYPE_FOR_READ_EVENT, (uint8_t *)res, tlv_sz);
+        case NCP_MSG_TYPE_EVENT:
+            if (res->cmd == NCP_EVENT_WLAN_NCP_INET_RECV)
+            {
+                ret = SDU_Send(SDU_TYPE_FOR_READ_DATA, (uint8_t *)res, tlv_sz);
+            }
+            else
+            {
+                ret = SDU_Send(SDU_TYPE_FOR_READ_EVENT, (uint8_t *)res, tlv_sz);
+            }
             break;
         default:
             ncp_adap_e("%s: invalid msg_type %d", __FUNCTION__, msg_type);
@@ -207,6 +218,7 @@ int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
     }
 
     NCP_SDIO_STATS_INC(tx);
+    ncp_adap_d("%s: SDU_Send %u done (%p %ld)", __FUNCTION__, msg_type, tlv_buf, tlv_sz);
 
     return (int)NCP_STATUS_SUCCESS;
 }
