@@ -1,14 +1,6 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
-mcux_add_include(
-    INCLUDES ../../
-)
-
-mcux_add_source(
-    SOURCES ../../display_support.c
-)
 
 mcux_add_configuration(
         CC "-DSDK_I2C_BASED_COMPONENT_USED=1 -DBOARD_USE_ADP5585=1 -DRM67199_ENABLE=1"

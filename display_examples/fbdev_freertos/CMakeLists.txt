@@ -9,14 +9,11 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/display_examples/fbdev_freertos/fbdev_freertos.c
-            ${board_root}/${board}/display_support.h
-            ${board_root}/${board}/display_support.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}
-             ${board_root}/${board}/display_examples/fbdev_freertos
              ${board_root}/${board}/display_examples/fbdev_freertos/${multicore_foldername}
              examples/display_examples/fbdev_freertos
 )

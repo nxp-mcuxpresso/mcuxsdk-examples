@@ -8,14 +8,11 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/display_examples/mipi_dsi_compliant_test/mipi_dsi_compliant_test.c
-            ${board_root}/${board}/display_support.h
-            ${board_root}/${board}/display_support.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/${board}
-             ${board_root}/${board}/display_examples/mipi_dsi_compliant_test
+    INCLUDES ${board_root}/${board}/display_examples/mipi_dsi_compliant_test
              ${board_root}/${board}/display_examples/mipi_dsi_compliant_test/${multicore_foldername}
 )
 

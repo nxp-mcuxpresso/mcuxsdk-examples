@@ -18,9 +18,6 @@ mcux_add_iar_linker_script(
 mcux_add_source(
     SOURCES tzm_config.c
             tzm_config.h
-            hardware_init.c
-            app.h
-
 )
 
 mcux_add_include(

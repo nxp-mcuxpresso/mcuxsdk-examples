@@ -8,14 +8,11 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/pxp/rotate_output/pxp_rotate_output.c
-            ${board_root}/${board}/display_support.h
-            ${board_root}/${board}/display_support.c
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/driver_examples/pxp/rotate_output
-             ${board_root}/${board}
              ${board_root}/${board}/driver_examples/pxp/rotate_output/${core_id}
 )
 
