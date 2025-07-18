@@ -412,7 +412,7 @@ void ncp_iperf_report(long long total_size)
     total_time = iperf_timer_end - iperf_timer_start;
 
     rate = (total_size * 1000) / total_time;
-    rate = rate * 8 / 1024;
+    rate = rate * 8 / 1000;
 
     (void)PRINTF("iperf rate = %lu kbit/s\r\n", rate);
 }
@@ -563,15 +563,15 @@ void ncp_iperf_tx_task(void *pvParameters)
 
         if (udp_rate <= 120)
             send_interval = 1000;
-        else if (udp_rate <= 2*1024)
+        else if (udp_rate <= 2*1000)
            send_interval = 60;
-        else if (udp_rate <= 10*1024)
+        else if (udp_rate <= 10*1000)
            send_interval = 12;
-        else if (udp_rate <= 20*1024)
+        else if (udp_rate <= 20*1000)
            send_interval = 6;
-        else if (udp_rate <= 30 * 1024)
+        else if (udp_rate <= 30 * 1000)
             send_interval = 4;
-        else if (udp_rate <= 60 * 1024)
+        else if (udp_rate <= 60 * 1000)
             send_interval = 2;
         else
             send_interval = 1;
@@ -718,15 +718,16 @@ void ncp_iperf_rx_task(void *pvParameters)
             ret = ncp_send(client_sockfd, lwiperf_txbuf_const, sizeof(iperf_set_t), 0);
             if (ret < 0)
             {
-                ncp_adap_e("[send iperf setting fail");
+                ncp_adap_e("send iperf setting fail");
                 continue;
             }
         }
         else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_RX)
         {
             ret = ncp_sendto(client_sockfd, lwiperf_txbuf_const, sizeof(iperf_set_t), 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+            if (ret < 0)
             {
-                ncp_adap_e("[send iperf setting fail");
+                ncp_adap_e("send iperf setting fail");
                 continue;
             }
         }
@@ -751,6 +752,11 @@ void ncp_iperf_rx_task(void *pvParameters)
                 }
             }
             pkg_num++;
+            /* udp rx finish */
+            if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_RX && ret == 11)
+            {
+                break;
+            }
         }
         iperf_timer_end = OSA_TimeGetMsec();
         ncp_iperf_report(recv_size);
