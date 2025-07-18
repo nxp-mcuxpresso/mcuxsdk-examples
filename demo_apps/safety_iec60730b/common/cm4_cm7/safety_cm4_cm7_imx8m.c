@@ -743,7 +743,7 @@ void SafetyStackTest(safety_common_t *psSafetyCommon)
  */
 void SafetyDigitalOutputTest(safety_common_t *psSafetyCommon, fs_dio_test_imx_t *pTestedPin)
 {
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pTestedPin->gpio, pTestedPin->pinNum, PIN_DIRECTION_OUT, (uint32_t *)pTestedPin->muxAddr);  
     #else
@@ -762,7 +762,7 @@ void SafetyDigitalOutputTest(safety_common_t *psSafetyCommon, fs_dio_test_imx_t 
     }
 
     /* Restore pin settings */   
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pTestedPin->gpio, pTestedPin->pinNum, pTestedPin->pinDir, (uint32_t *)pTestedPin->muxAddr);  
     #else
@@ -791,7 +791,7 @@ void SafetyDigitalInputOutput_ShortAdjTest(safety_common_t *psSafetyCommon,
 
 {
   
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pTestedPin->gpio, pTestedPin->pinNum, PIN_DIRECTION_IN, (uint32_t *)pTestedPin->muxAddr);  
     #else
@@ -800,7 +800,7 @@ void SafetyDigitalInputOutput_ShortAdjTest(safety_common_t *psSafetyCommon,
     #endif
       
       
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pAdjPin->gpio, pAdjPin->pinNum, PIN_DIRECTION_OUT, (uint32_t *)pTestedPin->muxAddr);  
     #else
@@ -830,7 +830,7 @@ void SafetyDigitalInputOutput_ShortAdjTest(safety_common_t *psSafetyCommon,
     
     
     /* Restore pin settings */   
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pTestedPin->gpio, pTestedPin->pinNum, pTestedPin->pinDir, (uint32_t *)pTestedPin->muxAddr);  
     #else
@@ -840,7 +840,7 @@ void SafetyDigitalInputOutput_ShortAdjTest(safety_common_t *psSafetyCommon,
       
 
     /* Restore pin settings */   
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pAdjPin->gpio, pAdjPin->pinNum, pAdjPin->pinDir, (uint32_t *)pTestedPin->muxAddr);  
     #else
@@ -865,7 +865,7 @@ void SafetyDigitalInputOutput_ShortSupplyTest(safety_common_t *psSafetyCommon,
                                               fs_dio_test_imx_t *pTestedPin,
                                               uint8_t polarity)
 { 
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pTestedPin->gpio, pTestedPin->pinNum, PIN_DIRECTION_IN, (uint32_t *)pTestedPin->muxAddr);  
     #else
@@ -895,7 +895,7 @@ void SafetyDigitalInputOutput_ShortSupplyTest(safety_common_t *psSafetyCommon,
     
     
     /* Restore pin settings */   
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       /* Setup port for testing */
       PortSetup(pTestedPin->gpio, pTestedPin->pinNum, pTestedPin->pinDir, (uint32_t *)pTestedPin->muxAddr);  
     #else

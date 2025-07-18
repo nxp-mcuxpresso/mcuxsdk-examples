@@ -139,11 +139,11 @@ void write_vtor(uint32_t vtor)
 {
     uint32_t *pVTOR = (uint32_t *)0xE000ED08;
     
-    #if !defined(_MIMX8ML8_CM7_H_) && !defined(MIMXRT1189_cm7_H_) && !defined(MCXE31B_H_)
+    #if !defined(MIMX8ML8_cm7_H_) && !defined(MIMXRT1189_cm7_H_) && !defined(MCXE31B_H_)
       *pVTOR          = 0x30002000;
     #endif
     
-    #ifdef _MIMX8ML8_CM7_H_
+    #ifdef MIMX8ML8_cm7_H_
       *pVTOR          = 0x00000000;
     #endif
       
