@@ -16,11 +16,13 @@
 #if defined(SD9177) || defined(IW610)
 #define CONFIG_WMM 1
 #define CONFIG_SDIO_MULTI_PORT_TX_AGGR 1
+#if defined(SD9177)
 #define CONFIG_WIFI_FEATURES 1
 #define CONFIG_OFFLOAD       1
 #endif
+#endif
 
-#if defined(SD8978) || defined(SD8987) || defined(SD9177) || defined(IW610)
+#if defined(SD8978) || defined(SD8987) || defined(SD9177)
 #define CONFIG_WIFI_AUTO_POWER_SAVE 1
 #define CONFIG_WIFI_CAPA 1
 #define CONFIG_ROAMING    1
@@ -34,18 +36,20 @@
 #define CONFIG_11V 1
 #endif
 
-#if defined(RW610)
+#if defined(RW610) || defined(IW610)
 #define CONFIG_MAX_RESCAN_LIMIT 30
 #define PRINTF_FLOAT_ENABLE 1
 #define CONFIG_HOST_SLEEP 1
-#define CONFIG_POWER_MANAGER 1
 #define CONFIG_MEF_CFG 1
+#if defined(RW610)
+#define CONFIG_POWER_MANAGER 1
 /** If define CONFIG_TX_RX_ZERO_COPY 1, please make sure
  *  #define PBUF_POOL_BUFSIZE 1752
  *  in lwipopts.h
  */
 #define CONFIG_TX_RX_ZERO_COPY 1
 #define CONFIG_ANT_DETECT 1
+#endif
 #endif
 
 #if defined(SD8978) || defined(SD8987) || defined(SD9177) || defined(IW610)
