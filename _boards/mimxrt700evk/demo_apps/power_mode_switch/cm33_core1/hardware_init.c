@@ -296,6 +296,8 @@ static inline void BOARD_PrepareForDS(void)
     CLOCK_AttachClk(kSENSE_BASE_to_SENSE_MAIN);
     CLOCK_EnableFroClkOutput(FRO2, kCLOCK_FroDiv6OutEn); /* Need Keep DIV6. */
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U); /* Select lowest LVD. */
+    POWER_ApplyPD();
     BOARD_SetPmicVdd1Voltage(DEMO_LOW_POWER_RUN_VOLT);
 #endif
 #if (defined(BOARD_PMIC_CONFIG_USE_SEMA4) && (BOARD_PMIC_CONFIG_USE_SEMA4 != 0U))
@@ -314,6 +316,8 @@ static inline void BOARD_RestoreAfterDS(void)
     CLOCK_EnableClock(kCLOCK_LPI2c15);
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
     BOARD_SetPmicVdd1Voltage(g_runVolt);
+    POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 2U); /* Restore LVD. */
+    POWER_ApplyPD();
 #endif
     CLOCK_EnableFroClkOutput(FRO2, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
     CLOCK_AttachClk(kFRO2_DIV1_to_SENSE_MAIN);

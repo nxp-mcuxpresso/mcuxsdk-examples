@@ -568,7 +568,9 @@ static inline uint32_t BOARD_PrepareForDS(void)
     if (!IS_XIP_XSPI0() && !IS_XIP_XSPI1())
     {
         CLOCK_SetClkDiv(kCLOCK_DivCmptMainClk, (SystemCoreClock + 31999999U) / 32000000U);
-        BOARD_SetPmicVdd2Voltage(g_runVolt);
+        POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 0U); /* Select lowest LVD. */
+        POWER_ApplyPD();
+        BOARD_SetPmicVdd2Voltage(DEMO_LOW_POWER_RUN_VOLT);
     }
 #endif /* DEMO_POWER_SUPPLY_OPTION */
 
@@ -601,6 +603,8 @@ static inline void BOARD_RestoreAfterDS(uint32_t mainDiv)
     {
         /* Restore VDD2 supply and CPU clock. */
         BOARD_SetPmicVdd2Voltage(g_runVolt); /* Restore VDD2 supply. */
+        POWER_SelectRunSetpoint(kRegulator_Vdd2LDO, 2U); /* Restore LVD. */
+        POWER_ApplyPD();
         CLOCK_SetClkDiv(kCLOCK_DivCmptMainClk, mainDiv);
     }
 
