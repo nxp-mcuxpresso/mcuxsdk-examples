@@ -45,3 +45,4 @@ the configuration structure's setting in application to fit the special requirem
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/lpadc/polling/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpadc/polling/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpadc/polling/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/lpadc/polling/example_board_readme.md)

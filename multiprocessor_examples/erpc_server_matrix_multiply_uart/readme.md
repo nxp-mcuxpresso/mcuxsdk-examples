@@ -68,3 +68,4 @@ west build examples/multiprocessor_examples/erpc_server_matrix_multiply_uart --t
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/multiprocessor_examples/erpc_server_matrix_multiply_uart/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/multiprocessor_examples/erpc_server_matrix_multiply_uart/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/multiprocessor_examples/erpc_server_matrix_multiply_uart/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/multiprocessor_examples/erpc_server_matrix_multiply_uart/example_board_readme.md)

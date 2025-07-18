@@ -10,3 +10,4 @@ example uses the software button to control/toggle the LED.
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/rgpio/input_interrupt/example_board_readme.md)
 - [EVK-MIMX8ULP](../../../_boards/evkmimx8ulp/driver_examples/rgpio/input_interrupt/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/rgpio/input_interrupt/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/rgpio/input_interrupt/example_board_readme.md)

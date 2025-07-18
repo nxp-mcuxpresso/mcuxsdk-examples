@@ -59,3 +59,4 @@ slave is correct.
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/cmsis_driver_examples/lpi2c/int_b2b_transfer/slave/example_board_readme.md)
 - [KW47-LOC](../../../../_boards/kw47loc/cmsis_driver_examples/lpi2c/int_b2b_transfer/slave/example_board_readme.md)
 - [MCXW72-LOC](../../../../_boards/mcxw72loc/cmsis_driver_examples/lpi2c/int_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/cmsis_driver_examples/lpi2c/int_b2b_transfer/slave/example_board_readme.md)

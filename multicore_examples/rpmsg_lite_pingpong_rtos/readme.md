@@ -48,3 +48,4 @@ west build --sysbuild examples/multicore_examples/rpmsg_lite_pingpong_rtos/prima
 - [MCX-W72-EVK](../../_boards/mcxw72evk/multicore_examples/rpmsg_lite_pingpong_rtos/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/multicore_examples/rpmsg_lite_pingpong_rtos/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/multicore_examples/rpmsg_lite_pingpong_rtos/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/multicore_examples/rpmsg_lite_pingpong_rtos/example_board_readme.md)

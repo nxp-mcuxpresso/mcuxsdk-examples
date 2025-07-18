@@ -118,3 +118,4 @@ Consumer 2 accepted item.
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/freertos_examples/freertos_sem_static/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/freertos_examples/freertos_sem_static/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/freertos_examples/freertos_sem_static/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/freertos_examples/freertos_sem_static/example_board_readme.md)

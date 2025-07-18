@@ -39,3 +39,4 @@ FreeRTOS Message Buffers at a fixed location that is then known for both cores.
 - [LPCXpresso55S69](../../_boards/lpcxpresso55s69/multicore_examples/freertos_message_buffers/example_board_readme.md)
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/multicore_examples/freertos_message_buffers/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/multicore_examples/freertos_message_buffers/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/multicore_examples/freertos_message_buffers/example_board_readme.md)

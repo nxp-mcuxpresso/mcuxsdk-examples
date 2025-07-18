@@ -25,3 +25,4 @@ number to the terminal after any queue is full.
 - [MCIMX93AUTO-EVK](../../../_boards/mcimx93autoevk/driver_examples/canfd/ping_pong_buffer_transfer/example_board_readme.md)
 - [MCIMX93-EVK](../../../_boards/mcimx93evk/driver_examples/canfd/ping_pong_buffer_transfer/example_board_readme.md)
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/canfd/ping_pong_buffer_transfer/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/canfd/ping_pong_buffer_transfer/example_board_readme.md)

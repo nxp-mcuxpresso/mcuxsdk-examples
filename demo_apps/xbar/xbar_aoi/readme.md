@@ -18,3 +18,4 @@ the message "PIT periodic interrupt occurs" will be printed when the PIT timer p
 - [EVK-MIMXRT1064](../../../_boards/evkmimxrt1064/demo_apps/xbar_aoi/example_board_readme.md)
 - [MIMXRT1160-EVK](../../../_boards/evkmimxrt1160/demo_apps/xbar_aoi/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/demo_apps/xbar_aoi/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/demo_apps/xbar_aoi/example_board_readme.md)

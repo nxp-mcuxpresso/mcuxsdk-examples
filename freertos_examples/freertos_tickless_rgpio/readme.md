@@ -55,3 +55,4 @@ The period of time delay is not changed after the external interrupt occurs.
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/freertos_examples/freertos_tickless_rgpio/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/freertos_examples/freertos_tickless_rgpio/example_board_readme.md)

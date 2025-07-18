@@ -11,3 +11,4 @@ at 3 second and 5 second.
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/driver_examples/sysctr/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/driver_examples/sysctr/example_board_readme.md)

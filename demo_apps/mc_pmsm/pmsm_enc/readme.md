@@ -20,3 +20,4 @@ This example demonstrates the control of the PMSM.
 - [MC56F81000-EVK](../../../_boards/mc56f81000evk/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [MC56F83000-EVK](../../../_boards/mc56f83000evk/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [TWR-MC56F8400](../../../_boards/twrmc56f8400/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)

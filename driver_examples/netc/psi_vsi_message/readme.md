@@ -8,3 +8,4 @@ indicating that the secondary core is running and uses NETC VSI to send/receive 
 
 ## Supported Boards
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/driver_examples/netc/psi_vsi_message/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/netc/psi_vsi_message/example_board_readme.md)

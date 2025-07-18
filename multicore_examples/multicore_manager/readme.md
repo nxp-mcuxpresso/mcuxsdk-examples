@@ -47,3 +47,4 @@ west build --sysbuild examples/multicore_manager/hello_world/primary --toolchain
 - [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/multicore_examples/multicore_manager/example_board_readme.md)
 - [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/multicore_examples/multicore_manager/example_board_readme.md)
 - [FRDM-MCXL255](../../_boards/frdmmcxl255/multicore_examples/multicore_manager/example_board_readme.md)
+- [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/multicore_examples/multicore_manager/example_board_readme.md)

@@ -22,3 +22,4 @@ Example will first erase the sector and program a page into the flash, at last c
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/driver_examples/flexspi/nor/edma_transfer/example_board_readme.md)
 - [MCIMX93-EVK](../../../../_boards/mcimx93evk/driver_examples/flexspi/nor/edma_transfer/example_board_readme.md)
 - [MCIMX93-QSB](../../../../_boards/mcimx93qsb/driver_examples/flexspi/nor/edma_transfer/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/driver_examples/flexspi/nor/edma_transfer/example_board_readme.md)

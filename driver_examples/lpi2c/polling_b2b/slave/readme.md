@@ -57,3 +57,4 @@ slave is correct.
 - [FRDM-MCXA344](../../../../_boards/frdmmcxa344/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)
 - [KW47-LOC](../../../../_boards/kw47loc/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)
 - [MCXW72-LOC](../../../../_boards/mcxw72loc/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/driver_examples/lpi2c/polling_b2b/slave/example_board_readme.md)

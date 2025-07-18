@@ -14,3 +14,4 @@ The example take turns to shine the LED.
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/driver_examples/flexio/pin/led_output/example_board_readme.md)
 - [MCIMX93-EVK](../../../../_boards/mcimx93evk/driver_examples/flexio/pin/led_output/example_board_readme.md)
 - [MCIMX93-QSB](../../../../_boards/mcimx93qsb/driver_examples/flexio/pin/led_output/example_board_readme.md)
+- [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/driver_examples/flexio/pin/led_output/example_board_readme.md)
