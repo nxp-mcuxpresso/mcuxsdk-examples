@@ -91,9 +91,9 @@ void MCDRV_Init_M1(void)
     /* Slow loop timer init */
     InitPIT();
 	
-    /* Qudrature decoder peripheral init */
-    InitQD();
-    
+//    /* Qudrature decoder peripheral init */
+//    InitQD();
+//    
 //#if M1_FAULT_ENABLE    
 //    /* Comparator CMP */
 //    InitCMP();   
@@ -245,7 +245,8 @@ static void InitBCTU(void)
             .lastChanPlusOne    = true,
             .waitTrig           = false,
             .waitTrigPlusOne    = false,
-            .adcChan            = 88U, // VOLT_DCB
+            .adcChan            = 88U, // VOLT_DCB ADC0
+//            .adcChan            = 7U, // PTA9 ADC0 J1-4
             .adcChanPlusOne     = 0U, // Dummy
       },
 

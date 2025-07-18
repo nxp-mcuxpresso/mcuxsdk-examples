@@ -116,10 +116,10 @@ typedef struct _clock_setup
  * ADC measurement definition
  ******************************************************************************/
 /* Configuration of ADC channels according to the input pin signal */
-#define CUR_A_CHANNEL_NUMBER    (7U)  //ADC1
-#define CUR_B_CHANNEL_NUMBER    (8U)  //ADC1
-#define CUR_C_CHANNEL_NUMBER    (21U) //ADC1
-#define VOLT_DCB_CHANNEL_NUMBER (20U) //ADC0  
+//#define CUR_A_CHANNEL_NUMBER    (7U)  //ADC1
+//#define CUR_B_CHANNEL_NUMBER    (8U)  //ADC1
+//#define CUR_C_CHANNEL_NUMBER    (21U) //ADC1
+//#define VOLT_DCB_CHANNEL_NUMBER (20U) //ADC0  
 
 /******************************************************************************
  * Define motor ADC control functions
