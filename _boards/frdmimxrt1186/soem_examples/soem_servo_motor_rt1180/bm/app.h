@@ -12,7 +12,6 @@
 #include "fsl_netc_mdio.h"
 #include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
-#include "netc_ep/soem_netc_ep.h"
 #include "netc_swt/soem_netc_swt.h"
 /*${header:end}*/
 
