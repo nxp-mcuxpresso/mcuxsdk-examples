@@ -222,7 +222,7 @@ int32_t main(void)
     }
 #endif /* ADC_TEST_ENABLED */
 
-#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(_MKE17Z9_H_)
+#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(MKE17Z9_H_)
 #if TSI_TEST_ENABLED
     volatile uint32_t tsi_cnt_number = 0; /* Variables for runtime TSI test */
 
@@ -254,7 +254,7 @@ int32_t main(void)
     }
     tsi_cnt_number = 0; /* Reset to 0 for RUNTIME test cnt */
 #endif                  /* TSI_TEST_ENABLED */
-#endif                  /* _MKE15Z7_H_ _MKE17Z7_H_ _MKE17Z9_H_ */
+#endif                  /* _MKE15Z7_H_ _MKE17Z7_H_ MKE17Z9_H_ */
 
 #if DIO_TEST_ENABLED
     /* Digital I/O test */
@@ -277,7 +277,7 @@ int32_t main(void)
     SafetyDigitalInputOutput_ShortAdjTest(&g_sSafetyCommon, g_dio_safety_test_items[0], g_dio_safety_test_items[1],
                                           LOGICAL_ZERO);
 
-#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(_MKE17Z9_H_)
+#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(MKE17Z9_H_)
     SafetyDigitalInputOutput_ShortAdjTest(&g_sSafetyCommon, g_dio_safety_test_items[2], g_dio_safety_test_items[3],
                                           LOGICAL_ZERO);
     SafetyDigitalInputOutput_ShortAdjTest(&g_sSafetyCommon, g_dio_safety_test_items[6], g_dio_safety_test_items[7],
@@ -345,7 +345,7 @@ int32_t main(void)
 #endif
 
 #if TSI_TEST_ENABLED
-  #if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(_MKE17Z9_H_)
+  #if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(MKE17Z9_H_)
         
 
         /* Runtime TSI test */
@@ -366,7 +366,7 @@ int32_t main(void)
         {
             tsi_cnt_number = 0;
         }
-  #endif /* _MKE15Z7_H_ _MKE17Z7_H_ _MKE17Z9_H_ */  
+  #endif /* _MKE15Z7_H_ _MKE17Z7_H_ MKE17Z9_H_ */  
 #else /* TSI_TEST_ENABLED */
 
 #if DIO_TEST_ENABLED

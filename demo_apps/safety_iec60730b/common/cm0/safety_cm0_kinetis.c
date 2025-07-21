@@ -221,7 +221,7 @@ void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTe
     }
 #endif /* _MKE02Z4_H_ */
 
-#if defined(K32L2A41A_H_) | defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(_MKE17Z9_H_)
+#if defined(K32L2A41A_H_) | defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(MKE17Z9_H_)
 
     ReferenceTimerInit(WDOG_TEST);
 
@@ -245,7 +245,7 @@ void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTe
         }
     }
 
-#endif /* _MKE15Z7_H_ _MKE17Z7_H_ _MKE17Z9_H_ K32L2A41A_H_*/
+#endif /* _MKE15Z7_H_ _MKE17Z7_H_ MKE17Z9_H_ K32L2A41A_H_*/
 
 #ifdef K32L3A60_CM0PLUS_H_
     ReferenceTimerInit(WDOG_TEST);
@@ -266,7 +266,7 @@ void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTe
 #ifndef K32L2A41A_H_
 #ifndef _MKE15Z7_H_
 #ifndef _MKE17Z7_H_
-#ifndef _MKE17Z9_H_
+#ifndef MKE17Z9_H_
 #ifndef K32L3A60_CM0PLUS_H_
 
     uint32_t runTestConditionSRS1;
@@ -293,7 +293,7 @@ void SafetyWatchdogTest(safety_common_t *psSafetyCommon, wd_test_t *psSafetyWdTe
 #endif /* K32L2A41A_H_ */
 #endif /* _MKE15Z7_H_ */
 #endif /* _MKE17Z7_H_ */
-#endif /* _MKE17Z9_H_ */
+#endif /* MKE17Z9_H_ */
 #endif /* K32L3A60_CM0PLUS_H_ */
 
 
@@ -1048,7 +1048,7 @@ void SafetyAnalogTest(safety_common_t *psSafetyCommon )
 
 #ifndef _MKE15Z7_H_
 #ifndef _MKE17Z7_H_
-#ifndef _MKE17Z9_H_
+#ifndef MKE17Z9_H_
 
   switch (psSafetyCommon->AIO_test_result)
   {
@@ -1076,16 +1076,16 @@ void SafetyAnalogTest(safety_common_t *psSafetyCommon )
 
 #endif /* _MKE15Z7_H_ */
 #endif /* _MKE17Z7_H_ */
-#endif /* _MKE17Z9_H_ */
+#endif /* MKE17Z9_H_ */
 
 
-#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(_MKE17Z9_H_)
+#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(MKE17Z9_H_)
   switch (psSafetyCommon->AIO_test_result)
   {
   case FS_AIO_INIT:
     #if defined(_MKE15Z7_H_) || defined(_MKE17Z7_H_)
         FS_AIO_InputSet_A4(g_aio_safety_test_items[index], (fs_aio_a4_t *)TESTED_ADC);
-    #elif defined(_MKE17Z9_H_)
+    #elif defined(MKE17Z9_H_)
         FS_AIO_InputSet_A4_2(g_aio_safety_test_items[index], (fs_aio_a4_t *)TESTED_ADC);
     #endif 
     break;
@@ -1154,7 +1154,7 @@ void SafetyIsrFunction(safety_common_t *psSafetyCommon,
         psSafetyCommon->fastIsrSafetySwitch = 0;
 }
 
-#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(_MKE17Z9_H_)
+#if defined(_MKE15Z7_H_) | defined(_MKE17Z7_H_) | defined(MKE17Z9_H_)
 
 /* TSI v5 */
 /* TSI_Register_Accessor_Macros */

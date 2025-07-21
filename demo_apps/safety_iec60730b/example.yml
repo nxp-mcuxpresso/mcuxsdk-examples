@@ -136,3 +136,7 @@ safety_iec60730b:
     - -iar@flash_debug
     - -iar@flash_release
     - -iar@release
+    frdmke17z512:
+    - -armgcc@release
+    - -iar@release
+    - -mdk@release
