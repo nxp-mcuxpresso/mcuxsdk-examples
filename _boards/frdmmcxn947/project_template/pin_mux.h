@@ -93,6 +93,7 @@ void BOARD_InitSWD_DEBUGPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO GPIO1               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_BLUE_INIT_GPIO_VALUE 0U       /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN 2U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN_MASK (1U << 2U) /*!<@brief GPIO pin mask */
 
@@ -107,6 +108,7 @@ void BOARD_InitSWD_DEBUGPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO GPIO0                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_RED_INIT_GPIO_VALUE 0U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN 10U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN_MASK (1U << 10U) /*!<@brief GPIO pin mask */
 
@@ -121,6 +123,7 @@ void BOARD_InitSWD_DEBUGPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO GPIO0                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_GREEN_INIT_GPIO_VALUE 0U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN 27U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN_MASK (1U << 27U) /*!<@brief GPIO pin mask */
 
