@@ -13,6 +13,9 @@
 #if (defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U))
 #include "fsl_cache.h"
 #endif
+
+#define ALL_CHANNELS (0xFFU)
+
 #if (defined(DEMO_CODEC_WM8962) && (DEMO_CODEC_WM8962 == 1))
 extern codec_config_t boardCodecConfig;
 #endif
@@ -202,6 +205,12 @@ int streamer_pcm_setparams(
     pcmHandle.num_channels    = num_channels;
     pcmHandle.dummy_tx_enable = dummy_tx;
 
+    if (sample_rate < 0)
+    {
+        /* Invalid sample rate */
+        return -1;
+    }
+
     masterClockHz = streamer_set_master_clock(sample_rate);
 
     format.channel       = 0U;
@@ -280,7 +289,7 @@ void streamer_pcm_getparams(uint32_t *sample_rate, uint32_t *bit_width, uint8_t 
 
 int streamer_pcm_mute(bool mute)
 {
-    CODEC_SetMute(&codecHandle, ~0U, mute);
+    CODEC_SetMute(&codecHandle, ALL_CHANNELS, mute);
 
     return 0;
 }
@@ -302,12 +311,12 @@ int streamer_pcm_set_volume(int volume)
         case 8:
             /* Intentional fall */
         default:
-            channel = ~0U;
+            channel = ALL_CHANNELS;
             break;
     }
 
     if (volume <= 0)
-        CODEC_SetMute(&codecHandle, ~0U, true);
+        CODEC_SetMute(&codecHandle, ALL_CHANNELS, true);
     else
         CODEC_SetVolume(&codecHandle, channel, volume > CODEC_VOLUME_MAX_VALUE ? CODEC_VOLUME_MAX_VALUE : volume);
 

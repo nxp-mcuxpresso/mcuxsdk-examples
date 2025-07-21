@@ -22,6 +22,7 @@ volatile bool rx_sem_take   = false; /* Indicates that RX semaphore has been tak
 #define RECORD_BUFFER_SIZE (3840)    // 16kHz * 4bytes * 2channels * 30ms
 #define BUFFER_NUM         (3U)
 #define BUFFER_SIZE        (RECORD_BUFFER_SIZE * BUFFER_NUM)
+#define ALL_CHANNELS       (0xFFU)
 
 AT_NONCACHEABLE_SECTION_INIT(static pcm_rtos_t pcmHandle) = {0};
 AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_buffer[BUFFER_SIZE], 32);
@@ -357,12 +358,12 @@ int streamer_pcm_set_volume(int volume)
         case 8:
             /* Intentional fall */
         default:
-            channel = ~0U;
+            channel = ALL_CHANNELS;
             break;
     }
 
     if (volume <= 0)
-        CODEC_SetMute(&codecHandle, ~0U, true);
+        CODEC_SetMute(&codecHandle, ALL_CHANNELS, true);
     else
         CODEC_SetVolume(&codecHandle, channel, volume > CODEC_VOLUME_MAX_VALUE ? CODEC_VOLUME_MAX_VALUE : volume);
 

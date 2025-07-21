@@ -7,6 +7,9 @@
 
 /*${header:start}*/
 #include "cmd.h"
+#ifdef OPUS_ENCODE
+#include "opusmem2mem_file.h"
+#endif
 
 #include <string.h>
 #include <stdint.h>

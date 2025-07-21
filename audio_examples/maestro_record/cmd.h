@@ -10,9 +10,6 @@
 
 /*${header:start}*/
 #include "main.h"
-#ifdef OPUS_ENCODE
-#include "opusmem2mem_file.h"
-#endif
 /*${header:end}*/
 
 /*******************************************************************************
