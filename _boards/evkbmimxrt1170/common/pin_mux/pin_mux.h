@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -513,6 +513,22 @@ void BOARD_InitSDHCPins(void);                /* Function assigned for the Corte
  *
  */
 void BOARD_InitFLASHPins(void);               /* Function assigned for the Cortex-M7F */
+
+/* GPIO_EMC_B1_40 (coord K1), SEMC_RDY/U14A[C8] */
+/* Routed pin properties */
+#define BOARD_INITCLOCKOUTPINS_SEMC_RDY_PERIPHERAL                           CCM   /*!< Peripheral name */
+#define BOARD_INITCLOCKOUTPINS_SEMC_RDY_SIGNAL                             CLKO1   /*!< Signal name */
+
+/* GPIO_EMC_B1_41 (coord L1), SEMC_CSX0/U14A[C6] */
+/* Routed pin properties */
+#define BOARD_INITCLOCKOUTPINS_SEMC_CSX0_PERIPHERAL                          CCM   /*!< Peripheral name */
+#define BOARD_INITCLOCKOUTPINS_SEMC_CSX0_SIGNAL                            CLKO2   /*!< Signal name */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitCLOCKOUTPins(void);            /* Function assigned for the Cortex-M7F */
 
 #if defined(__cplusplus)
 }

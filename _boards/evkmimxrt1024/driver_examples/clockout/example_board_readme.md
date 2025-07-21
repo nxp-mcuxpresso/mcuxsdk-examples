@@ -28,35 +28,35 @@ These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~
 Clock Output Driver Example.
 Please Choose one clock to be outputted on CLKO1.
-	A -- PLL3 SW Clock.
-	B -- PLL2(divided by 2).
-	C -- ENET PLL(divided by 2).
-	D -- Semc Clock Root.
-	E -- AHB Clock Root.
-	F -- IPG Clock Root.
-	G -- Perclk Root.
-	H -- PLL4 Main Clock.
-a
+	1 -- PLL3 SW Clock.
+	2 -- PLL2(divided by 2).
+	3 -- ENET PLL(divided by 2).
+	4 -- Semc Clock Root.
+	5 -- AHB Clock Root.
+	6 -- IPG Clock Root.
+	7 -- Perclk Root.
+	8 -- PLL4 Main Clock.
+1
 
 Please set the clock divider, range from 1 to 8.
 3
 
 Theoretically, the output frequency of CLKO1 is 80000000 Hz.
 Please Choose one clock to be outputted on CLKO2.
-	A -- Usdhc1 Clock Root.
-	B -- IPI2C Clock Root.
-	C -- OSC Clock.
-	D -- LPSPI Clock Root.
-	E -- Usdhc2 Clock Root.
-	F -- SAI1 Clock Root.
-	G -- SAI2 Clock Root.
-	H -- SAI3 Clock Root.
-	I -- Trace Clock Root.
-	J -- Can Clock Root.
-	K -- Flexspi Clock Root.
-	L -- UART Clock Root.
-	M -- Spdif0 Clock Root.
-m
+	1 -- Usdhc1 Clock Root.
+	2 -- IPI2C Clock Root.
+	3 -- OSC Clock.
+	4 -- LPSPI Clock Root.
+	5 -- Usdhc2 Clock Root.
+	6 -- SAI1 Clock Root.
+	7 -- SAI2 Clock Root.
+	8 -- SAI3 Clock Root.
+	9 -- Trace Clock Root.
+	10 -- Can Clock Root.
+	11 -- Flexspi Clock Root.
+	12 -- UART Clock Root.
+	13 -- Spdif0 Clock Root.
+13
 
 Please set the clock divider, range from 1 to 8.
 2

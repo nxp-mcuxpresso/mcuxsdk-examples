@@ -27,34 +27,34 @@ These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Clock Output Driver Example.
 Please Choose one clock to be outputted on CLKO1.
-        A -- USB1 PLL Clock(Divided by 2).
-        B -- SYS PLL Clock(Divided by 2).
-        C -- VIDEO PLL Clock(Divided by 2).
-        D -- Semc Clock Root.
-        E -- Lcdif Pix Clock Root.
-        F -- AHB Clock Root.
-        G -- IPG Clock Root.
-        H -- Perclk Root.
-        I -- Ckil Sync Clock Root.
-        J -- PLL4 Main Clock.
-a
+        1 -- USB1 PLL Clock(Divided by 2).
+        2 -- SYS PLL Clock(Divided by 2).
+        3 -- VIDEO PLL Clock(Divided by 2).
+        4 -- Semc Clock Root.
+        5 -- Lcdif Pix Clock Root.
+        6 -- AHB Clock Root.
+        7 -- IPG Clock Root.
+        8 -- Perclk Root.
+        9 -- Ckil Sync Clock Root.
+        10 -- PLL4 Main Clock.
+1
 
 Please set the clock divider, range from 1 to 8.
 5
 
 Theoretically, the output frequency of CLKO1 is 48000000 Hz.
 Please Choose one clock to be outputted on CLKO2.
-        A -- Usdhc1 Clock Root.
-        B -- LPI2C Clock Root.
-        C -- CSI Clock Root.
-        D -- OSC Clock.
-        E -- Usdhc2 Clock Root.
-        F -- SAI1 Clock Root.
-        G -- SAI2 Clock Root.
-        H -- SAI3 Clock Root(Shared with ADC1 and ADC2 alt_clk root).
-        I -- Can Clock Root(FlexCAN, shared with CANFD).
-        J -- Flexspi Clock Root.
-        K -- UART Clock Root.
-        L -- Spdif0 Clock Root.
+        1 -- Usdhc1 Clock Root.
+        2 -- LPI2C Clock Root.
+        3 -- CSI Clock Root.
+        4 -- OSC Clock.
+        5 -- Usdhc2 Clock Root.
+        6 -- SAI1 Clock Root.
+        7 -- SAI2 Clock Root.
+        8 -- SAI3 Clock Root(Shared with ADC1 and ADC2 alt_clk root).
+        9 -- Can Clock Root(FlexCAN, shared with CANFD).
+        10 -- Flexspi Clock Root.
+        11 -- UART Clock Root.
+        12 -- Spdif0 Clock Root.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

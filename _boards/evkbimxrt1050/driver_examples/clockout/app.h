@@ -40,6 +40,9 @@
             kCLOCK_OutputUsdhc2Clk, kCLOCK_OutputSai1Clk, kCLOCK_OutputSai2Clk, kCLOCK_OutputSai3Clk,   \
             kCLOCK_OutputCanClk, kCLOCK_OutputFlexspiClk, kCLOCK_OutputUartClk, kCLOCK_OutputSpdif0Clk, \
     }
+
+#define EXAMPLE_CLKO1_MAX_DIVIDER_VALUE 8U
+#define EXAMPLE_CLKO2_MAX_DIVIDER_VALUE 8U
 /*${macro:end}*/
 
 /*******************************************************************************

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -317,6 +317,7 @@ void BOARD_InitCANPins(void);                 /* Function assigned for the Corte
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITSDHCPINS_SD1_CD_B_GPIO                                  RGPIO4   /*!< GPIO peripheral base pointer */
+#define BOARD_INITSDHCPINS_SD1_CD_B_INIT_GPIO_VALUE                           0U   /*!< GPIO output initial state */
 #define BOARD_INITSDHCPINS_SD1_CD_B_GPIO_PIN                                 15U   /*!< GPIO pin number */
 #define BOARD_INITSDHCPINS_SD1_CD_B_GPIO_PIN_MASK                    (1U << 15U)   /*!< GPIO pin mask */
 
@@ -328,6 +329,7 @@ void BOARD_InitCANPins(void);                 /* Function assigned for the Corte
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITSDHCPINS_SD_PWREN_B_GPIO                                RGPIO4   /*!< GPIO peripheral base pointer */
+#define BOARD_INITSDHCPINS_SD_PWREN_B_INIT_GPIO_VALUE                         0U   /*!< GPIO output initial state */
 #define BOARD_INITSDHCPINS_SD_PWREN_B_GPIO_PIN                               14U   /*!< GPIO pin number */
 #define BOARD_INITSDHCPINS_SD_PWREN_B_GPIO_PIN_MASK                  (1U << 14U)   /*!< GPIO pin mask */
 
@@ -339,6 +341,7 @@ void BOARD_InitCANPins(void);                 /* Function assigned for the Corte
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITSDHCPINS_SD1_VSELECT_GPIO                               RGPIO4   /*!< GPIO peripheral base pointer */
+#define BOARD_INITSDHCPINS_SD1_VSELECT_INIT_GPIO_VALUE                        0U   /*!< GPIO output initial state */
 #define BOARD_INITSDHCPINS_SD1_VSELECT_GPIO_PIN                              29U   /*!< GPIO pin number */
 #define BOARD_INITSDHCPINS_SD1_VSELECT_GPIO_PIN_MASK                 (1U << 29U)   /*!< GPIO pin mask */
 
@@ -711,6 +714,12 @@ void BOARD_InitSPIPins(void);                 /* Function assigned for the Corte
  *
  */
 void BOARD_InitDMICPins(void);                /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitCLOCKOUTPins(void);            /* Function assigned for the Cortex-M33 */
 
 #if defined(__cplusplus)
 }

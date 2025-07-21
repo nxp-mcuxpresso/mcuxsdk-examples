@@ -1,12 +1,11 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- EVK-MIMXRT1015 board
+- MIMXRT1180-EVK board
 - Personal Computer
 
 Board settings
 ============
-No special settings are required.
 
 Prepare the Demo
 ===============
@@ -22,42 +21,35 @@ Prepare the Demo
 
 Running the demo
 ================
-To measure the output signal of CLKO1, please use the oscilloscope to probe D27;
-To measure the output signal of CLKO2, please use the oscilloscope to probe TP31.
+To measure the output signal of CLKO1, please use the oscilloscope to probe TP94;
+To measure the output signal of CLKO2, please use the oscilloscope to probe TP95.
 These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Clock Output Driver Example.
 Please Choose one clock to be outputted on CLKO1.
-	1 -- PLL3 SW Clock.
-	2 -- PLL2(divided by 2).
-	3 -- ENET PLL(divided by 2).
-	4 -- AHB Clock Root.
-	5 -- IPG Clock Root.
-	6 -- Perclk Root.
-	7 -- PLL4 Main Clock.
+	1 -- OSC_RC_24M.
+	2 -- OSC_RC_400M.
+	3 -- PLL_480_DIV2.
+	4 -- PLL_1G_DIV2.
 1
 
-Please set the clock divider, range from 1 to 8.
-1
+Please set the clock divider, range from 1 to 256.
+12
 
-Theoretically, the output frequency of CLKO1 is 240000000 Hz.
+Theoretically, the output frequency of CLKO1 is 33333333 Hz.
 Please Choose one clock to be outputted on CLKO2.
-	1 -- IPI2C Clock Root.
-	2 -- OSC Clock.
-	3 -- LPSPI Clock Root.
-	4 -- SAI1 Clock Root.
-	5 -- SAI2 Clock Root.
-	6 -- SAI3 Clock Root.
-	7 -- Trace Clock Root.
-	8 -- Flexspi Clock Root.
-	9 -- UART Clock Root.
-	10 -- Spdif0 Clock Root.
-3
+	1 -- OSC_RC_24M.
+	2 -- OSC_RC_400M.
+	3 -- PLL_1G_DIV5.
+	4 -- PLL_ARM.
+4
 
-Please set the clock divider, range from 1 to 8.
-2
+Please set the clock divider, range from 1 to 256.
+10
 
-Theoretically, the output frequency of CLKO2 is 52800000 Hz.
+Theoretically, the output frequency of CLKO2 is 2400000 Hz.
 
 Please press any key to continue.
+
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,12 +1,11 @@
 Hardware requirements
 =====================
 - Mini/micro USB cable
-- EVK-MIMXRT1015 board
+- MIMXRT1160-EVK board
 - Personal Computer
 
 Board settings
 ============
-No special settings are required.
 
 Prepare the Demo
 ===============
@@ -22,42 +21,42 @@ Prepare the Demo
 
 Running the demo
 ================
-To measure the output signal of CLKO1, please use the oscilloscope to probe D27;
-To measure the output signal of CLKO2, please use the oscilloscope to probe TP31.
+To measure the output signal of CLKO1, please use the oscilloscope to probe TP1002;
+To measure the output signal of CLKO2, please use the oscilloscope to probe TP1003.
 These instructions are displayed/shown on the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Clock Output Driver Example.
 Please Choose one clock to be outputted on CLKO1.
-	1 -- PLL3 SW Clock.
-	2 -- PLL2(divided by 2).
-	3 -- ENET PLL(divided by 2).
-	4 -- AHB Clock Root.
-	5 -- IPG Clock Root.
-	6 -- Perclk Root.
-	7 -- PLL4 Main Clock.
-1
+	1 -- OSC_RC_48M_DIV2.
+	2 -- OSC_24M.
+	3 -- OSC_RC_400M.
+	4 -- OSC_RC_16M.
+	5 -- SYS_PLL2_PFD2.
+	6 -- SYS_PLL2_CLK.
+	7 -- SYS_PLL3_PFD1.
+	8 -- SYS_PLL1_DIV5.
+5
 
-Please set the clock divider, range from 1 to 8.
-1
+Please set the clock divider, range from 1 to 256.
+5
 
-Theoretically, the output frequency of CLKO1 is 240000000 Hz.
+Theoretically, the output frequency of CLKO1 is 105600000 Hz.
 Please Choose one clock to be outputted on CLKO2.
-	1 -- IPI2C Clock Root.
-	2 -- OSC Clock.
-	3 -- LPSPI Clock Root.
-	4 -- SAI1 Clock Root.
-	5 -- SAI2 Clock Root.
-	6 -- SAI3 Clock Root.
-	7 -- Trace Clock Root.
-	8 -- Flexspi Clock Root.
-	9 -- UART Clock Root.
-	10 -- Spdif0 Clock Root.
-3
+	1 -- OSC_RC_48M_DIV2.
+	2 -- OSC_24M.
+	3 -- OSC_RC_400M.
+	4 -- OSC_RC_16M.
+	5 -- SYS_PLL2_PFD3.
+	6 -- OSC_RC_48M.
+	7 -- SYS_PLL3_PFD1.
+	8 -- AUDIO_PLL_CLK.
+5
 
-Please set the clock divider, range from 1 to 8.
-2
+Please set the clock divider, range from 1 to 256.
+5
 
-Theoretically, the output frequency of CLKO2 is 52800000 Hz.
+Theoretically, the output frequency of CLKO2 is 9600000 Hz.
 
 Please press any key to continue.
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

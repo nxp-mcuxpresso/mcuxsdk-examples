@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MIMXRT1176xxxxx
 package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
-processor_version: 0.15.13
+processor_version: 0.2506.40
 board: MIMXRT1170-EVKB
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -476,6 +476,47 @@ void BOARD_InitFLASHPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_SD_B2_11_FLEXSPI1_A_DATA03,  /* GPIO_SD_B2_11 is configured as FLEXSPI1_A_DATA03 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+}
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCLOCKOUTPins:
+- options: {callFromInitBoot: 'false', coreID: cm7, enableClock: 'true'}
+- pin_list:
+  - {pin_num: K1, peripheral: CCM, signal: CLKO1, pin_signal: GPIO_EMC_B1_40, pull_down_pull_up_config: Pull_Down}
+  - {pin_num: L1, peripheral: CCM, signal: CLKO2, pin_signal: GPIO_EMC_B1_41, pull_down_pull_up_config: Pull_Down}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCLOCKOUTPins, assigned for the Cortex-M7F core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCLOCKOUTPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc);           /* LPCG on: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_40_CCM_CLKO1,        /* GPIO_EMC_B1_40 is configured as CCM_CLKO1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_41_CCM_CLKO2,        /* GPIO_EMC_B1_41 is configured as CCM_CLKO2 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B1_40_CCM_CLKO1,        /* GPIO_EMC_B1_40 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high drive strength
+                                                 Pull Down Pull Up Field: Internal pulldown resistor enabled
+                                                 Open Drain Field: Disabled
+                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection lock: Neither of DWP bits is locked */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B1_41_CCM_CLKO2,        /* GPIO_EMC_B1_41 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high drive strength
+                                                 Pull Down Pull Up Field: Internal pulldown resistor enabled
+                                                 Open Drain Field: Disabled
+                                                 Domain write protection: Both cores are allowed
+                                                 Domain write protection lock: Neither of DWP bits is locked */
 }
 /***********************************************************************************************************************
  * EOF

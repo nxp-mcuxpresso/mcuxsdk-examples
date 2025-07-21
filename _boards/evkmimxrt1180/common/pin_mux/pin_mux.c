@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MIMXRT1189xxxxx
 package_id: MIMXRT1189CVM8C
 mcu_data: ksdk2_0
-processor_version: 15.0.0
+processor_version: 0.2506.40
 board: MIMXRT1180-EVK
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -520,9 +520,9 @@ BOARD_InitSDHCPins:
   - {pin_num: C15, peripheral: USDHC1, signal: 'usdhc_data, 1', pin_signal: GPIO_SD_B1_03, software_input_on: Enable, pdrv_config: High_Driver}
   - {pin_num: B15, peripheral: USDHC1, signal: 'usdhc_data, 2', pin_signal: GPIO_SD_B1_04, software_input_on: Enable, pdrv_config: High_Driver}
   - {pin_num: A16, peripheral: USDHC1, signal: 'usdhc_data, 3', pin_signal: GPIO_SD_B1_05, software_input_on: Enable, pdrv_config: High_Driver}
-  - {pin_num: N16, peripheral: RGPIO4, signal: 'gpio_io, 15', pin_signal: GPIO_AD_15, direction: OUTPUT, software_input_on: Disable, pull_up_down_config: no_init}
-  - {pin_num: N14, peripheral: RGPIO4, signal: 'gpio_io, 14', pin_signal: GPIO_AD_14, direction: OUTPUT, pull_up_down_config: no_init}
-  - {pin_num: L15, peripheral: RGPIO4, signal: 'gpio_io, 29', pin_signal: GPIO_AD_29, direction: OUTPUT, pull_up_down_config: no_init}
+  - {pin_num: N16, peripheral: RGPIO4, signal: 'gpio_io, 15', pin_signal: GPIO_AD_15, direction: OUTPUT, software_input_on: Disable}
+  - {pin_num: N14, peripheral: RGPIO4, signal: 'gpio_io, 14', pin_signal: GPIO_AD_14, direction: OUTPUT}
+  - {pin_num: L15, peripheral: RGPIO4, signal: 'gpio_io, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1026,6 +1026,44 @@ void BOARD_InitDMICPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_GPIO_AD_04_MIC_BITSTREAM03,      /* GPIO_AD_04 is configured as MIC_BITSTREAM03 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitCLOCKOUTPins:
+- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: B16, peripheral: CCM, signal: CLKO1, pin_signal: GPIO_SD_B1_00, pull_down_pull_up_config: Pull_Forbidden}
+  - {pin_num: D15, peripheral: CCM, signal: CLKO2, pin_signal: GPIO_SD_B1_01, pull_down_pull_up_config: Pull_Down}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitCLOCKOUTPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitCLOCKOUTPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_SD_B1_00_CCM_CLKO1,         /* GPIO_SD_B1_00 is configured as CCM_CLKO1 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_SD_B1_01_CCM_CLKO2,         /* GPIO_SD_B1_01 is configured as CCM_CLKO2 */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_SD_B1_00_CCM_CLKO1,         /* GPIO_SD_B1_00 PAD functional properties : */
+      0x00U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: Forbidden
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_SD_B1_01_CCM_CLKO2,         /* GPIO_SD_B1_01 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
 }
 
 /***********************************************************************************************************************
