@@ -4,3 +4,6 @@
 
   - PMIC is the default power supply for RT700 REVB, you need to make sure PMIC is present before running this case.
   - Please note that when power supply is changed from PMIC to PMC, in this case if PMIC is set to be disabled mode in deep sleep mode, then to run this case you need to power cycle the board and set the jumpers as default so that PMIC power supply is available.
+
+NOTE,
+1. For eUSB mode, USB host can not be waked up by the disconnection of eUSB device even though remote wakeup feature is enabled.
