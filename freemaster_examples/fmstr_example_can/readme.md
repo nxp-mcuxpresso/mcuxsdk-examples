@@ -9,6 +9,7 @@ Example application demonstrates CAN bus communication. This requires a suitable
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-KE16Z](../../_boards/frdmke16z/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/freemaster_examples/fmstr_can/example_board_readme.md)
+- [FRDM-MCXA344](../../_boards/frdmmcxa344/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXE247](../../_boards/frdmmcxe247/freemaster_examples/fmstr_can/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/freemaster_examples/fmstr_can/example_board_readme.md)
