@@ -39,6 +39,14 @@ int main(void)
 
     CLOCK_AttachClk(kMAIN_PLL_PFD1_to_XSPI0);
     CLOCK_SetClkDiv(kCLOCK_DivXspi0Clk, 1u);     /*400MHz*/
+    
+#ifdef CONFIG_BOOT_USE_PSA_CRYPTO
+    /* Disable system cache */
+    XCACHE_DisableCache(XCACHE0);
+    /* flush pipeline */
+    __DSB();
+    __ISB();
+#endif
 
     PRINTF("hello sbl.\r\n");
 
@@ -170,15 +178,10 @@ void SBL_EnableRemap(uint32_t start_addr, uint32_t end_addr, uint32_t off)
 }
 void SBL_DisableRemap(void)
 {
-    /* Nothing to do here as MMU is disabled during reset */
+    MMU_Deinit(MMU0);
 }
 
 void SBL_DisablePeripherals(void)
 {
     DbgConsole_Deinit();
-}
-
-status_t CRYPTO_InitHardware(void)
-{
-    return kStatus_Success;
 }

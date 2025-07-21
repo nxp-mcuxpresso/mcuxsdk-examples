@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -7,6 +7,7 @@
 
 #ifndef SBL_CONFIG_H__
 #define SBL_CONFIG_H__
+#include "mflash_drv.h"
 
 /* Board specific register for flash remap functionality */
 #define FLASH_REMAP_START_REG           0x40134420      /* RW61x flash remap start address register */
@@ -17,24 +18,27 @@
  * Maximum size of IPED region
  *
  * The PRINCE variant used in RW61x is based on AES in Galois/Counter Mode (GCM)
- * Algortihm of encryption unit consumes 1.25 (5/4) time of physical memory.
- * Also we need to take into account one sector for mcuboot trailer.
+ * Algorithm of encryption unit consumes 1.25 (5/4) time of physical memory.
+ * Also we need to take into account one sector reserved for the mcuboot trailer.
+ *
  * Calculation: 
- * 4.25MB~4352kB slot size = 1088 sectors
- * 1088 sectors - 1 trailer sector = 1087 sectors
- * Aligning down to 1085 sectors so value is a multiple of 5 sectors in size
- * 1085 sectors / 1.25 = 868 sectors ~ 3472 kB is then size of IPED region
- * 3472kB of plaintext generates 868kB of IPED tags. Both values suits
- * the boundaries of pages, sectors and the boundaries of encryption alignment
+ * 2MB~2048kB slot size = 512 sectors
+ * 512 sectors - 1 reserved sector for the trailer = 511 sectors
+ * Aligning down to 510 sectors (2040kB) so the value is a multiple of 5 sectors
+ * in size.
+ * 510 sectors / 1.25 = 408 sectors ~ 1632kB is then size of IPED region usable
+ * for a payload.
+ * 1632kB of plaintext then generates 408kB of IPED tags. Both values suits
+ * the boundaries of pages, sectors and the boundaries of encryption alignment.
  */
 #define CONFIG_ENCRYPT_XIP_IPED_REGION_MAX_SIZE  0x364000
 
 /*
- * Size of write buffer used for overwrite-only mode has to be adjusted if IPED
- * encryption unit is used so size of data chunks written to flash are always
- * a multiple of 4 pages in size.
+ * Size of write buffer used for overwrite-only mode has to be adjusted if IPED 
+ * encryption unit is used so that the size of data chunks written to flash are 
+ * always a multiple of 4 pages in size.
  */
-#define CONFIG_ENCRYPT_XIP_OVERWRITE_ONLY_BUF_SIZE      (4*256)
+#define CONFIG_ENCRYPT_XIP_OVERWRITE_ONLY_BUF_SIZE      (4*MFLASH_PAGE_SIZE)
 
 
 /*******************************************************************/
@@ -63,51 +67,35 @@
  */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
 
-/* Encrypted XIP support config */
-
 /*
- * Uncomment to enable extension utilizing on-the-fly decryption of encrypted image.
- * Note: Flash remap feature has to be disabled.
- * For more information please see readme file of mcuboot_opensource example.
+ * Enable the encrypted XIP extension. This extension is not compatible with the 
+ * flash remapping feature as it implicitly uses overwrite only mode.
+ * For more information, please see readme file.
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
 
-/*
- * Optional:
- * Uncomment to use simpler OVERWRITE_ONLY mode instead of three slot configuration.
- */
-//#define CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY
-
+#define CONFIG_BOOT_BOOTSTRAP
 
 /* Crypto Config */
-// #define CONFIG_BOOT_OTA_TEST
 /* uncomment to generate MCU boot for testing without image signature verification */
+// #define CONFIG_BOOT_OTA_TEST
 
 #ifdef CONFIG_BOOT_OTA_TEST
 #define CONFIG_BOOT_NO_SIGNATURE
 #endif
 #ifndef CONFIG_BOOT_NO_SIGNATURE
-#define COMPONENT_MCUBOOT_SECURE
 #define CONFIG_BOOT_SIGNATURE
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA_LEN 2048
 #endif
-#define COMPONENT_MBEDTLS
-#define CONFIG_BOOT_BOOTSTRAP
+
+#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
+
+#ifndef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#define CONFIG_BOOT_USE_PSA_CRYPTO
+#else
+#define CONFIG_BOOT_USE_MBEDTLS
+#define CONFIG_BOOT_ENCRYPT_EC256
+#endif
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 
-
-/* Config Guards */
-
-#if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
-    (!defined(MBEDTLS_MCUX_DISABLE_HW_ALT) || \
-      defined(MBEDTLS_MCUX_USE_ELS) ||        \
-      defined(MBEDTLS_MCUX_USE_PKC))
-#error "There is currently an issue in mbedTLS if hardware acceleration and IPED \
-are enabled on RW61x, please remove global defines MBEDTLS_MCUX_USE_ELS and \
-MBEDTLS_MCUX_USE_PKC and add MBEDTLS_MCUX_DISABLE_HW_ALT in your build."
-#endif
-
-#endif
-
+#endif /* SBL_CONFIG_H__ */

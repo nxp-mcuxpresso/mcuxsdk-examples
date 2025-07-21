@@ -46,7 +46,7 @@ To sign and encrypt an application binary, imgtool must be provided with the res
 
 Build an unencrypted initial MCUboot image which will be used as initial application together with the bootloader:
 ~~~
- imgtool sign --key sign-rsa2048-priv.pem
+ imgtool sign --key sign-ecdsa-p256-priv.pem
 	      --align 16
 	      --header-size 0x400
 	      --pad-header
@@ -59,14 +59,14 @@ Build an unencrypted initial MCUboot image which will be used as initial applica
 
 Build an encrypted MCUboot image for OTA:
 ~~~
- imgtool sign --key sign-rsa2048-priv.pem
+ imgtool sign --key sign-ecdsa-p256-priv.pem
 	      --align 16
 	      --header-size 0x400
 	      --pad-header
 	      --slot-size 0xE0000
 	      --max-sectors 111
 	      --version "1.1"
-	      -E enc-rsa2048-pub.pem
+	      -E enc-ec256-pub.pem
 	      app_binary.bin
 	      app_binary_SIGNED_ENCRYPTED_OTA.bin
 ~~~

@@ -13,12 +13,9 @@
 #include "board.h"
 #include "boot.h"
 
-#if defined(FSL_FEATURE_SOC_DCP_COUNT) && (FSL_FEATURE_SOC_DCP_COUNT > 0)
 #include "fsl_dcp.h"
-#endif
-#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
 #include "fsl_trng.h"
-#endif
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -40,7 +37,6 @@ int main(void)
     /* Init board hardware. */
     BOARD_ConfigMPU();
     BOARD_InitPins();
-
     BOARD_InitDebugConsole();
 
     SCB_DisableDCache();
@@ -55,14 +51,8 @@ int main(void)
 void SBL_DisablePeripherals(void)
 {
     DbgConsole_Deinit();
-#if defined(COMPONENT_MCUBOOT_SECURE)
-#if defined(FSL_FEATURE_SOC_DCP_COUNT) && (FSL_FEATURE_SOC_DCP_COUNT > 0)
     DCP_Deinit(DCP);
-#endif
-#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
     TRNG_Deinit(TRNG);
-#endif
-#endif
     SCB_DisableDCache();
     SCB_DisableICache();
     ARM_MPU_Disable();

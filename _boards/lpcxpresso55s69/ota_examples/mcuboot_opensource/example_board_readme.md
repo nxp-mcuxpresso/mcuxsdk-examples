@@ -21,9 +21,14 @@ to use any of the MCUBoot's revert strategies like image swapping by move or str
 | Primary slot   | 0x00020000 | 0x0004FFFF | 192kB |
 | Secondary slot | 0x00050000 | 0x0007FFFF | 192kB |
 
+- MCUBoot header size is set to 1024 bytes
+- Signing algorithm is ECDSA-P256
+- Write alignment is 4 bytes
+- MCUBoot is configured to use its OVERWRITE_ONLY image handling strategy
+
 ### Image signing example
 
-    imgtool sign   --key sign-rsa2048-priv.pem
+    imgtool sign   --key sign-ecdsa-p256-priv.pem
                    --align 4
                    --version 1.1
                    --slot-size 0x30000

@@ -184,18 +184,18 @@ See separate [documentation for NPX](encrypted_xip_npx_readme.md).
 
 Start preferentially with an empty board, erasing original content if needed.
 
-### 5.1 Generate RSA key pairs for encrypted image containers
+### 5.1 Generate ECIES-P256 key pairs for encrypted image containers
 
 Note: This part can be skipped as OTA examples in SDK uses pre-generated key pairs.
 
-1. Generate private key using imgtool: `imgtool keygen -k enc-rsa2048-priv.pem -t rsa-2048`
-    * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-rsa2048-priv.pem` accordingly.
+1. Generate private key using imgtool: `imgtool keygen -k enc-ec256-priv.pem -t rsa-2048`
+    * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-priv.pem` accordingly.
 
-3. Extract private key to a C array: `imgtool getpriv --minimal -k enc-rsa2048-priv.pem`
-    * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-rsa2048-priv-minimal.c` accordingly.
+3. Extract private key to a C array: `imgtool getpriv --minimal -k enc-ec256-priv.pem`
+    * Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-priv-minimal.c` accordingly.
 
-5. Derive public key key: `imgtool getpub -k enc-rsa2048-pub.pem -e pem`
-Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-rsa2048-pub.pem` accordingly.
+5. Derive public key key: `imgtool getpub -k enc-ec256-pub.pem -e pem`
+Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-pub.pem` accordingly.
 
 ### 5.2 Enable encrypted XIP support and build projects
 
@@ -210,14 +210,14 @@ Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\
 To sign and encrypt an application binary, imgtool must be provided with the respective key pairs and a set of parameters as in the following examples.
 
 ~~~
- imgtool sign --key sign-rsa2048-priv.pem
+ imgtool sign --key sign-ecdsa-p256-priv.pem
 	      --align 4
 	      --header-size 0x400
 	      --pad-header
 	      --slot-size 0x200000
 	      --max-sectors 800
 	      --version "1.1"
-	      -E enc-rsa2048-pub.pem
+	      -E enc-ec256-pub.pem
 	      app_binary.bin
 	      app_binary_SIGNED_ENCRYPTED_OTA.bin
 ~~~

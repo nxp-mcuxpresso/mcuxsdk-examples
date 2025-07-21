@@ -1,18 +1,6 @@
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/mbedtls_user_config.h
-)
-
-
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/ota_examples/mcuboot_opensource
-)
-
-
-# Add additional configuration
-mcux_add_macro(
-    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
 )
 
 # Add additional configuration
@@ -29,7 +17,6 @@ mcux_remove_armgcc_configuration(
     TARGETS flash_release
     CC "-Os"
 )
-
 
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(

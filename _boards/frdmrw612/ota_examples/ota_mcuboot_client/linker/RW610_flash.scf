@@ -45,10 +45,10 @@
   #define __ram_vector_table_size__    0x00000000
 #endif
 
-#define  m_interrupts_start            0x08020400
+#define  m_interrupts_start            0x08040400
 #define  m_interrupts_size             0x00000280
 
-#define  m_text_start                  0x08020680
+#define  m_text_start                  0x08040680
 #define  m_text_size                   0x001EF980
 
 #define m_interrupts_ram_start         0x20000000

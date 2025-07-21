@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -20,15 +20,12 @@
 
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 800
 
-#define CONFIG_UPDATEABLE_IMAGE_NUMBER 1
-
-/* MCUBoot upgrade mode */
-
 /*
+ * MCUBoot upgrade mode
+ *
  * The default MCUBoot configuration is to use swap mechanism. In case the flash
  * remapping functionality is supported by processor the alternative mechanism
  * using direct-xip mode can be used and evaluated by user.
- * Comment this to enable swap mode.
  */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
 
@@ -39,13 +36,19 @@
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
 
+#define CONFIG_BOOT_BOOTSTRAP
+
 /* Crypto Config */
 
 #define CONFIG_BOOT_SIGNATURE
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA_LEN 2048
-#define COMPONENT_MBEDTLS
-#define CONFIG_BOOT_BOOTSTRAP
+#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
+
+#ifndef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#define CONFIG_BOOT_USE_PSA_CRYPTO
+#else
+#define CONFIG_BOOT_USE_MBEDTLS
+#define CONFIG_BOOT_ENCRYPT_EC256
+#endif
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 

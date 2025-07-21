@@ -6,6 +6,8 @@ project(mcuboot_opensource LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_r
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
+# Board specific
+
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/ota_examples/mcuboot_opensource
     INCLUDES
@@ -28,7 +30,6 @@ mcux_add_source(
 mcux_add_macro(
     CC "-DPRINTF_ADVANCED_ENABLE=1\
        -DSHELL_PRINT_COPYRIGHT=0"
-
 )
 mcux_add_iar_configuration(
     CC "--diag_suppress=Pe257,Pa039"

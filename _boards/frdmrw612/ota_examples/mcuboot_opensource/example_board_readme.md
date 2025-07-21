@@ -9,17 +9,20 @@ Make sure the board is setup to boot from flash.
 
 ### MCUBoot memory layout
 
-In all cases, the MCUBOOT bootloader reserves 128kB at the beginning of the external flash
+In all cases, the MCUBOOT bootloader reserves 256kB at the beginning of the external flash
 followed by 2MB slots for application.
 The resulting layout for the monolithic application will be as follows:
 
 | Region         | From       | To         | Size   |
 |----------------|------------|------------|--------|
-| MCUboot code   | 0x08000000 | 0x0801FFFF |  128kB |
-| Primary slot   | 0x08020000 | 0x0821FFFF | 2048kB |
-| Secondary slot | 0x08220000 | 0x0841FFFF | 2048kB |
+| MCUboot code   | 0x08000000 | 0x0803FFFF |  256kB |
+| Primary slot   | 0x08040000 | 0x0821FFFF | 2048kB |
+| Secondary slot | 0x08240000 | 0x0841FFFF | 2048kB |
 
 
+- MCUBoot header size is set to 1024 bytes
+- Signing algorithm is ECDSA-P256
+- Write alignment is 4 bytes
 - MCUBoot is configured to use its `DIRECT_XIP` image handling strategy together with FlexSPI flash remapping
 - For testing purposes, the image authentication may be disabled in sblconfig.h by uncommenting the `CONFIG_BOOT_OTA_TEST` definition so that
   the following is defined:
@@ -31,7 +34,7 @@ The resulting layout for the monolithic application will be as follows:
 
 ### Image signing example
 
-    imgtool sign   --key sign-rsa2048-priv.pem
+    imgtool sign   --key sign-ecdsa-p256-priv.pem
                    --align 4
                    --version 1.1
                    --slot-size 0x200000

@@ -13,13 +13,6 @@
 #include "board.h"
 #include "boot.h"
 
-#if defined(FSL_FEATURE_SOC_CAAM_COUNT) && (FSL_FEATURE_SOC_CAAM_COUNT > 0)
-#include "fsl_caam.h"
-#endif
-#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
-#include "fsl_trng.h"
-#endif
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -91,12 +84,4 @@ int main(void)
 
 void SBL_DisablePeripherals(void)
 {
-#if defined(COMPONENT_MCUBOOT_SECURE)
-#if defined(FSL_FEATURE_SOC_CAAM_COUNT) && (FSL_FEATURE_SOC_CAAM_COUNT > 0) && defined(CRYPTO_USE_DRIVER_CAAM)
-    CAAM_Deinit(CAAM);
-#endif
-#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
-    TRNG_Deinit(TRNG);
-#endif
-#endif
 }

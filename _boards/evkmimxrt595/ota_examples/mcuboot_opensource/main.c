@@ -17,6 +17,11 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+/* Board specific register for flash remap functionality */
+#define FLASH_REMAP_START_REG           0x40134420
+#define FLASH_REMAP_END_REG             0x40134424
+#define FLASH_REMAP_OFFSET_REG          0x40134428
+
 #ifdef CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
 void SBL_EnableRemap(uint32_t start_addr, uint32_t end_addr, uint32_t off)
 {

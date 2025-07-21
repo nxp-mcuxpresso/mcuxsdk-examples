@@ -1,10 +1,4 @@
 
-
-# Add additional configuration
-mcux_add_macro(
-    CC "-DMBEDTLS_CONFIG_FILE=\\\"ele_s400_mbedtls_config.h\\\"\
-       -DMBEDTLS_KEY_EXCHANGE_RSA_ENABLED"
-)
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
@@ -12,8 +6,6 @@ mcux_add_armgcc_configuration(
     TARGETS flexspi_nor_debug
     CC "-Og"
 )
-
-
 
 # Remove additional configuration
 mcux_remove_armgcc_configuration(

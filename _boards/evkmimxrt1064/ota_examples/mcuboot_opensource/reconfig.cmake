@@ -1,5 +1,3 @@
-
-
 # Add additional configuration
 mcux_add_macro(
     CC "-DENCRYPTED_XIP_BEE"

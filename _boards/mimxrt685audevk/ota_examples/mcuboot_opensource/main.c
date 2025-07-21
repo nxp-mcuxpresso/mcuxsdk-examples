@@ -14,16 +14,13 @@
 #include "board.h"
 #include "boot.h"
 
-#if defined(FSL_FEATURE_SOC_CAAM_COUNT) && (FSL_FEATURE_SOC_CAAM_COUNT > 0)
-#include "fsl_caam.h"
-#endif
-#if defined(FSL_FEATURE_SOC_TRNG_COUNT) && (FSL_FEATURE_SOC_TRNG_COUNT > 0)
-#include "fsl_trng.h"
-#endif
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+/* Board specific register for flash remap functionality */
+#define FLASH_REMAP_START_REG           0x40134420
+#define FLASH_REMAP_END_REG             0x40134424
+#define FLASH_REMAP_OFFSET_REG          0x40134428
 
 /*******************************************************************************
  * Prototypes

@@ -22,14 +22,14 @@ this should be done automatically by the tool.
 | Secondary slot | 0x28240000 | 0x2843FFFF | 2048kB |
 
 - MCUBoot header size is set to 1024 bytes
-- Signing algorithm is RSA-2048
+- Signing algorithm is ECDSA-P256
 - Write alignment is 4 bytes
 - MCUBoot is configured to use `SWAP_MOVE` image handling strategy
 
 
 ### Image signing example
 
-    imgtool sign   --key sign-rsa2048-priv.pem
+    imgtool sign   --key sign-ecdsa-p256-priv.pem
                    --align 4
                    --version 1.1
                    --slot-size 0x200000

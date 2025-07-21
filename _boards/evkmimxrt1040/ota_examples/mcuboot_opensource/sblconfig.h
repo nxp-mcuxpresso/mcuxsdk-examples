@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -10,7 +10,6 @@
 
 /* Board specific register for flash remap functionality */
 #define FLASH_REMAP_OFFSET_REG 0x400AC080 /* RT1040 flash remap offset register */
-
 
 /*******************************************************************/
 /* Use default configuration if setup from Kconfig is not provided */
@@ -37,14 +36,19 @@
  */
 //#define CONFIG_ENCRYPT_XIP_EXT_ENABLE
 
+#define CONFIG_BOOT_BOOTSTRAP
+
 /* Crypto Config */
 
-#define COMPONENT_MCUBOOT_SECURE
 #define CONFIG_BOOT_SIGNATURE
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA_LEN 2048
-#define COMPONENT_MBEDTLS
-#define CONFIG_BOOT_BOOTSTRAP
+#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
+
+#ifndef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#define CONFIG_BOOT_USE_PSA_CRYPTO
+#else
+#define CONFIG_BOOT_USE_MBEDTLS
+#define CONFIG_BOOT_ENCRYPT_EC256
+#endif
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 

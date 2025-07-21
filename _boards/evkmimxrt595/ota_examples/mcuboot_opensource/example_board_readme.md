@@ -25,7 +25,7 @@ Debug console UART is configured to use pins of J27, connect the board with PC b
 | Secondary slot | 0x80240000 | 0x8043FFFF | 2048kB |
 
 - MCUBoot header size is set to 1024 bytes
-- Signing algorithm is RSA-2048
+- Signing algorithm is ECDSA-P256
 - Write alignment is 4 bytes
 - MCUBoot is configured to use its `DIRECT_XIP` image handling strategy
 - Flash remapping HW feature is used for zero-overhead image swapping
@@ -33,7 +33,7 @@ Debug console UART is configured to use pins of J27, connect the board with PC b
 
 ### Image signing example
 
-    imgtool sign   --key sign-rsa2048-priv.pem
+    imgtool sign   --key sign-ecdsa-p256-priv.pem
                    --align 4
                    --version 1.1
                    --slot-size 0x200000

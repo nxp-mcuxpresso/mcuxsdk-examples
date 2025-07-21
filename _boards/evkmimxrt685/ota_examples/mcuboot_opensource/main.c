@@ -8,15 +8,19 @@
 
 #include "fsl_device_registers.h"
 #include "fsl_debug_console.h"
+#include "fsl_power.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
-#include "fsl_power.h"
 #include "boot.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+/* Board specific register for flash remap functionality */
+#define FLASH_REMAP_START_REG           0x40134420
+#define FLASH_REMAP_END_REG             0x40134424
+#define FLASH_REMAP_OFFSET_REG          0x40134428
 
 /*******************************************************************************
  * Prototypes

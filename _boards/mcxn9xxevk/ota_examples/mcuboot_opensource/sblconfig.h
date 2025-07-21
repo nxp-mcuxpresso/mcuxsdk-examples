@@ -43,33 +43,43 @@
 
 #define CONFIG_MCUBOOT_MAX_IMG_SECTORS 256
 
+#define CONFIG_BOOT_BOOTSTRAP
+
 /* Crypto Config */
 
 #define CONFIG_BOOT_SIGNATURE
+#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
 
 #ifdef CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY
+
 /*
  * MCUBoot is located in main flash -> Use mbedTLS
  */
-#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
-#define COMPONENT_MBEDTLS
+#ifdef CONFIG_ENCRYPT_XIP_EXT_ENABLE
+#define CONFIG_BOOT_USE_MBEDTLS
+#define CONFIG_BOOT_ENCRYPT_EC256
 #else
+#define CONFIG_BOOT_USE_PSA_CRYPTO
+#endif
+
+#else
+
 /*
  * MCUBoot is located in IFR region -> Use TinyCrypt
  */
-#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
-#define MCUBOOT_USE_TINYCRYPT
+#define CONFIG_BOOT_USE_TINYCRYPT
 #endif /* CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY */
-
-#define CONFIG_BOOT_BOOTSTRAP
-
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 
 /* Config Guards */
 #if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE) && \
     !defined(CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY)
-#error "Encrypted XIP is not supported when MCUBoot is placed in IFR region."
+#error "Encrypted XIP using NPX is not supported when MCUBoot is placed in IFR region."
+#endif
+#if defined(CONFIG_MCUBOOT_FLASH_REMAP_ENABLE) && \
+    defined(CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY)
+#error "Flash remap is not supported when MCUBoot is placed in main flash region."
 #endif
 
 #endif /* SBL_CONFIG_H__ */

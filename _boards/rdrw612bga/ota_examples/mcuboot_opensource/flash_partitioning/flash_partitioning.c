@@ -9,6 +9,7 @@
 #include "flash_map.h"
 #include "mcuboot_config.h"
 #include "sysflash/sysflash.h"
+#include "mflash_drv.h"
 
 const char *boot_image_names[MCUBOOT_IMAGE_NUMBER] = {"APP"};
 
@@ -35,5 +36,5 @@ struct flash_area boot_flash_meta_map[1] = {
      .fa_device_id = FLASH_DEVICE_ID,
      .fa_off       = BOOT_FLASH_ENC_META - BOOT_FLASH_BASE,
      .fa_size      = MFLASH_SECTOR_SIZE,
-     .fa_name      = "METADATA"}};
+     .fa_name      = "ENC_METADATA"}};
 #endif

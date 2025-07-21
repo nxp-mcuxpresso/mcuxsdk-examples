@@ -9,8 +9,6 @@
 #define SBL_CONFIG_H__
 
 /* Board specific register for flash remap functionality */
-#define FLASH_REMAP_START_REG           0x40134420      /* RW61x flash remap start address register */
-#define FLASH_REMAP_END_REG             0x40134424      /* RW61x flash remap end address register */
 #define FLASH_REMAP_OFFSET_REG          0x40134428      /* RW61x flash remap offset register */
 
 /*******************************************************************/
@@ -31,13 +29,13 @@
  */
 #define CONFIG_MCUBOOT_FLASH_REMAP_ENABLE
 
+#define CONFIG_BOOT_BOOTSTRAP
+
 /* Crypto Config */
 
 #define CONFIG_BOOT_SIGNATURE
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA
-#define CONFIG_BOOT_SIGNATURE_TYPE_RSA_LEN 2048
-#define COMPONENT_MBEDTLS
-#define CONFIG_BOOT_BOOTSTRAP
+#define CONFIG_BOOT_USE_PSA_CRYPTO
+#define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 
