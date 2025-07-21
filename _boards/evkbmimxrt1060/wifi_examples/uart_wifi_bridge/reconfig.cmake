@@ -12,6 +12,9 @@ mcux_add_source(
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart8987_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartIW416_mfg_wlan_bt.h
             middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduart_nw61x_mfg_se.h
+            middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sduartspi_iw610_mfg_se.h
+            middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/uartspi_iw610_mfg_se.h
+            middleware/wifi_nxp/example/uart_wifi_bridge/mfg_wifi_bt_firmware/sd_iw610_mfg_se.h
             middleware/wifi_nxp/example/uart_wifi_bridge/freertos_config/FreeRTOSConfig.h
             middleware/wifi_nxp/example/uart_wifi_bridge/wifi_config/wifi_config.h
             ${board_root}/${board}/wifi_examples/common/./hardware_init.c
