@@ -9,7 +9,7 @@
 #define _DEVICE_INFORMATION_H_
 
 
-#define FPU_SUPPORT 0
+#define FPU_SUPPORT 1
 #define DSP_SUPPORT 0
 #define TZ_SUPPORT  1
 

@@ -171,7 +171,16 @@ int32_t main(void)
          * while */
         /* - see IEC60730 library documentation for CPU errors handling ! */
         __asm("CPSID i");
-        g_sSafetyCommon.CPU_control_s_test_result = FS_CM33_CPU_Control_S();       
+#if TZ_SUPPORT /* If device supports TrustZone */
+        g_sSafetyCommon.CPU_control_s_test_result = FS_CM33_CPU_Control_S();
+#else
+    #if FPU_SUPPORT
+        g_sSafetyCommon.CPU_control_s_test_result = FS_CM33_CPU_Control();
+    #else
+        g_sSafetyCommon.CPU_control_s_test_result = FS_CM33_CPU_Control_NFPU();
+    #endif
+#endif /* If device supports TrustZone */
+        
         __asm("CPSIE i");
         if (g_sSafetyCommon.CPU_control_s_test_result == FS_FAIL_CPU_CONTROL)
         {
@@ -183,7 +192,12 @@ int32_t main(void)
          * for a while */
         /* - see IEC60730 library documentation for CPU errors handling ! */
         __asm("CPSID i");
+#if TZ_SUPPORT /* If device supports TrustZone */
         FS_CM33_CPU_SPprocess_S();
+        FS_CM33_CPU_SPprocess_NS();
+#else
+        FS_CM33_CPU_SPprocess_S();
+#endif /* If device supports TrustZone */
         __asm("CPSIE i");
 
 

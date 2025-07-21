@@ -31,8 +31,6 @@
 /*******************************************************************************
 * Variables
 ******************************************************************************/
-volatile bool g_conversionDataReady = false;
-
 #if (defined(__GNUC__) && ( __ARMCC_VERSION >= 6010050)) /* KEIL */
     const uint32_t programCounterTestFlag = (uint32_t)m_pc_test_flag;
     #define PC_TEST_FLAG ((uint32_t *) programCounterTestFlag)
@@ -412,6 +410,7 @@ void SafetyRamAfterResetTest(safety_common_t *psSafetyCommon, fs_ram_test_t *psS
     psSafetyCommon->RAM_test_result = FS_CM33_RAM_AfterReset(
         psSafetyRamTest->ramTestStartAddress, psSafetyRamTest->ramTestEndAddress, psSafetyRamTest->defaultBlockSize,
         psSafetyRamTest->backupAddress, FS_CM33_RAM_SegmentMarchC);
+    
     if (psSafetyCommon->RAM_test_result == FS_FAIL_RAM)
     {
         psSafetyCommon->safetyErrors |= RAM_TEST_ERROR;
@@ -468,6 +467,7 @@ void SafetyRamRuntimeTest(safety_common_t *psSafetyCommon, fs_ram_test_t *psSafe
 void SafetyPcTest(safety_common_t *psSafetyCommon, uint32_t pattern)
 {
     psSafetyCommon->PC_test_result = FS_CM33_PC_Test(pattern, FS_PC_Object, (uint32_t *)PC_TEST_FLAG);
+    
     if (psSafetyCommon->PC_test_result == FS_FAIL_PC)
     {
         psSafetyCommon->safetyErrors |= PC_TEST_ERROR;
@@ -710,6 +710,22 @@ void SafetyCpuBackgroundTest(safety_common_t *psSafetyCommon)
         psSafetyCommon->safetyErrors |= CPU_NONSTACKED_ERROR;
         SafetyErrorHandling(psSafetyCommon);
     }
+    
+#if FPU_SUPPORT
+    psSafetyCommon->CPU_fpu_test_result = FS_CM33_CPU_Float1();
+    if (psSafetyCommon->CPU_fpu_test_result == FS_FAIL_CPU_FLOAT_1)
+    {
+        psSafetyCommon->safetyErrors |= CPU_FLOAT_1_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+
+    psSafetyCommon->CPU_fpu_test_result = FS_CM33_CPU_Float2();
+    if (psSafetyCommon->CPU_fpu_test_result == FS_FAIL_CPU_FLOAT_2)
+    {
+        psSafetyCommon->safetyErrors |= CPU_FLOAT_2_ERROR;
+        SafetyErrorHandling(psSafetyCommon);
+    }
+#endif
 }
 
 /*!

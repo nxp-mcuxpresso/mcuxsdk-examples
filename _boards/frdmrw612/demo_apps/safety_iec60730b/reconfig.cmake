@@ -21,6 +21,7 @@ mcux_add_source(
 mcux_project_remove_source(
   BASE_PATH ${SdkRootDirPath}
   SOURCES examples/demo_apps/safety_iec60730b/common/cm33/startup/cm33/start.c
+  CORES cm33
 )
 
 # and use board specific start.c
@@ -28,6 +29,15 @@ mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/frdmrw612/demo_apps/safety_iec60730b/startup/start.c
 )
+
+# remove safety_test_items sources - not used on frdmrw612
+mcux_project_remove_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES
+		${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/safety_test_items.h
+		${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/safety_test_items.c
+)
+
 
 #----------------------------------------------
 # Project settings for all toolchains
@@ -95,6 +105,12 @@ mcux_add_configuration(
 	LD "--diag_suppress L6848E"
 )
 
+# Project settings for ARMGCC toolchain
+#----------------------------------------------
+
+# enable TrustZone
+mcux_add_armgcc_configuration(CC "-mcmse")
+
 
 #----------------------------------------------
 # Linker configurations for all toolchains
@@ -135,6 +151,17 @@ mcux_remove_configuration(
 	LD "--entry=Reset_Handler --strict"
 )
 
+# remove default armgcc linker
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram.ld
+)
+
+# add custom armgcc linker
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/armgcc/${board}_safety_flash.ld
+)
 
 #----------------------------------------------
 # Post-build configurations for all toolchains
@@ -198,3 +225,13 @@ else()
 	)
 endif()
 endif()
+
+
+# # armgcc post build command - not working yet
+# mcux_add_custom_command(
+	# TOOLCHAINS armgcc
+	# BUILD_EVENT  POST_BUILD
+	# BUILD_COMMAND arm-none-eabi-objcopy -v -O ihex "${BuildArtifactFileName}"
+            # "${BuildArtifactFileBaseName}.hex"; ${ProjDirPath}/crc_hex.bat -${ConfigName}/${BuildArtifactFileBaseName}.hex
+            # -${ConfigName}/${BuildArtifactFileBaseName}_crc.hex -tools\\srecord\\srec_cat.exe -CRC32
+# )

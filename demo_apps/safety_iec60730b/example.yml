@@ -105,7 +105,6 @@ safety_iec60730b:
     - -armgcc@release
     - -iar@release
     frdmrw612:
-    - -armgcc@debug
     - -armgcc@release
     - -armgcc@flash_debug
     - -armgcc@flash_release
