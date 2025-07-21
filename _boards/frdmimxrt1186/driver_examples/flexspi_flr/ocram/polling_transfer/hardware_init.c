@@ -132,31 +132,30 @@ const uint32_t customLUT[CUSTOM_LUT_LENGTH] = {
         FLEXSPI_LUT_SEQ(kFLEXSPI_Command_WRITE_DDR, kFLEXSPI_8PAD, 0x04, kFLEXSPI_Command_STOP, kFLEXSPI_1PAD, 0),
 };
 
-uint32_t FLEXSPI_GetRootClockFreqHz(clock_root_mux_source_t clk_name)
+uint32_t FLEXSPI_GetRootClockFreqHz(clock_root_mux_source_t clkName)
 {
-    switch (clk_name)
+    uint32_t clock = 0;
+
+    switch (clkName)
     {
         case kCLOCK_FLEXSPI1_ClockRoot_MuxOscRc24M:
-        {
-            return CLOCK_GetFreq(kCLOCK_OscRc24M) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
-        }
+            clock = CLOCK_GetFreq(kCLOCK_OscRc24M) / (uint32_t)EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+            break;
         case kCLOCK_FLEXSPI1_ClockRoot_MuxOscRc400M:
-        {
-            return CLOCK_GetFreq(kCLOCK_OscRc400M) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
-        }
+            clock = CLOCK_GetFreq(kCLOCK_OscRc400M) / (uint32_t)EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+            break;
         case kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll3Pfd0:
-        {
-            return CLOCK_GetFreq(kCLOCK_SysPll3Pfd0) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
-        }
+            clock = CLOCK_GetFreq(kCLOCK_SysPll3Pfd0) / (uint32_t)EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+            break;
         case kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll2Pfd0:
-        {
-            return CLOCK_GetFreq(kCLOCK_SysPll2Pfd0) / EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
-        }
+            clock = CLOCK_GetFreq(kCLOCK_SysPll2Pfd0) / (uint32_t)EXAMPLE_FLEXSPI_ROOT_CLOCK_DIV;
+            break;
         default:
-        {
-            return 0;
-        }
+            clock = 0;
+            break;
     }
+
+    return clock;
 }
 
 void FLEXSPI_SLV_ClkRootFrq(flexspi_slv_clock_freq_t clock_freq)
@@ -167,49 +166,49 @@ void FLEXSPI_SLV_ClkRootFrq(flexspi_slv_clock_freq_t clock_freq)
     {
         case kFLEXSPI_SLV_RootClock_50M:
             /* Configure FLEXSPI_SLV using OSC_RC_400M */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
             rootCfg.div = 8;
             break;
 
         case kFLEXSPI_SLV_RootClock_66M:
             /* Configure FLEXSPI_SLV using SYS_PLL2_CLK */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;
             rootCfg.div = 8;
             break;
 
         case kFLEXSPI_SLV_RootClock_80M:
             /* Configure FLEXSPI_SLV using OSC_RC_400M */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
             rootCfg.div = 5;
             break;
 
         case kFLEXSPI_SLV_RootClock_100M:
             /* Configure FLEXSPI_SLV using OSC_RC_400M */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
             rootCfg.div = 4;
             break;
 
         case kFLEXSPI_SLV_RootClock_166M:
             /* Configure FLEXSPI_SLV using SYS_PLL1_CLK */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll1Out;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll1Out;
             rootCfg.div = 6;
             break;
 
         case kFLEXSPI_SLV_RootClock_200M:
             /* Configure FLEXSPI_SLV using SYS_PLL1_CLK */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll1Out;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll1Out;
             rootCfg.div = 5;
             break;
 
         case kFLEXSPI_SLV_RootClock_400M:
             /* Configure FLEXSPI_SLV using OSC_RC_400M */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxOscRc400M;
             rootCfg.div = 1;
             break;
 
         default:
             /* RootClock_133M: Configure FLEXSPI_SLV using SYS_PLL2_CLK */
-            rootCfg.mux = kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;
+            rootCfg.mux = (uint8_t)kCLOCK_FLEXSPI_SLV_ClockRoot_MuxSysPll2Out;
             rootCfg.div = 4;
             break;
     }

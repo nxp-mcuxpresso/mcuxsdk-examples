@@ -88,7 +88,7 @@ typedef struct _flexspi_cache_status
  ******************************************************************************/
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
-uint32_t FLEXSPI_GetRootClockFreqHz(clock_root_mux_source_t clk_name);
+uint32_t FLEXSPI_GetRootClockFreqHz(clock_root_mux_source_t clkName);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

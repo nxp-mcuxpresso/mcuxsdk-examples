@@ -26,7 +26,7 @@
  ******************************************************************************/
 extern status_t flexspi_ocram_send_mailbox(FLEXSPI_Type *base, uint8_t index, uint32_t value);
 extern status_t flexspi_ocram_get_mailbox(FLEXSPI_Type *base, uint8_t index, uint32_t *value);
-extern status_t flexspi_ocram_status_get(FLEXSPI_Type *base, uint32_t *readValue);
+extern status_t flexspi_ocram_status_get(FLEXSPI_Type *base, uint32_t *value);
 extern status_t flexspi_ocram_read_memory(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src, uint32_t length);
 extern status_t flexspi_ocram_write_memory(FLEXSPI_Type *base, uint32_t dstAddr, const uint32_t *src, uint32_t length);
 extern void flexspi_ocram_init(FLEXSPI_Type *base);
@@ -52,24 +52,24 @@ void flexspi_flr_callback(FLEXSPI_SLV_Type *base, flexspi_slv_handle_t *handle)
     uint32_t mailBox[FLEXSPI_SLV_SPIMAIL_COUNT] = {0};
     size_t rdCount, wrCount;
 
-    if ((handle->intrMask & kFLEXSPI_SLV_ErrorCommandFlag) != 0U)
+    if ((handle->intrMask & (uint32_t)kFLEXSPI_SLV_ErrorCommandFlag) != 0U)
     {
-        PRINTF("[Follower](interrupt) Error command!\r\n");
+        (void)PRINTF("[Follower](interrupt) Error command!\r\n");
     }
-    if ((handle->intrMask & (kFLEXSPI_SLV_WriteOverflowFlag | kFLEXSPI_SLV_ReadUnderflowFlag)) != 0U)
+    if ((handle->intrMask & ((uint32_t)kFLEXSPI_SLV_WriteOverflowFlag | (uint32_t)kFLEXSPI_SLV_ReadUnderflowFlag)) != 0U)
     {
         FLEXSPI_SLV_GetOutOfRangeCounts(base, &rdCount, &wrCount);
-        PRINTF("[Follower](interrupt) Write error count = %u. Read error count = %u!\r\n", wrCount, rdCount);
+        (void)PRINTF("[Follower](interrupt) Write error count = %u. Read error count = %u!\r\n", wrCount, rdCount);
     }
-    if ((handle->intrMask & kFLEXSPI_SLV_MailInterruptFlag) != 0U)
+    if ((handle->intrMask & (uint32_t)kFLEXSPI_SLV_MailInterruptFlag) != 0U)
     {
-        PRINTF("[Follower](interrupt) Mailbox data: ");
+        (void)PRINTF("[Follower](interrupt) Mailbox data: ");
         for (uint32_t i = 0; i < FLEXSPI_SLV_SPIMAIL_COUNT; i++)
         {
             mailBox[i] = FLEXSPI_SLV_GetMailboxData(base, i);
-            PRINTF("Box[%u] 0x%X. ", i, mailBox[i]);
+            (void)PRINTF("Box[%u] 0x%X. ", i, mailBox[i]);
         }
-        PRINTF("\r\n");
+        (void)PRINTF("\r\n");
     }
 }
 #endif

@@ -44,10 +44,12 @@ extern flexspi_device_config_t deviceconfig;
 /*******************************************************************************
  * Code
  ******************************************************************************/
+#ifdef EXAMPLE_USE_CUSTOMIZED_RW
 void useParameter(int param)
 {
     use_result_dummy += param;
 }
+#endif
 
 void readTest(iter_t iterations, void *cookie)
 {
@@ -66,7 +68,6 @@ void readTest(iter_t iterations, void *cookie)
             }
         }
     }
-    useParameter(sum);
 }
 
 void writeTest(iter_t iterations, void *cookie)
@@ -163,6 +164,9 @@ void cWriteTest(iter_t iterations, void *cookie)
 
 static void runFunc(char *func_name, test_func_t func, iter_t iter, void *cookie, uint32_t mb)
 {
+    assert(mb < ((UINT32_MAX) / 1000U));
+    assert(gptFreq < ((UINT32_MAX) / 50U));
+
     TickType_t start_tick = 0, end_tick = 0;
     uint32_t msecs;
     int i = 3;
@@ -175,7 +179,7 @@ static void runFunc(char *func_name, test_func_t func, iter_t iter, void *cookie
         func(iter, cookie);
         end_tick = GPT_GetCurrentTimerCount(EXAMPLE_GPT);
 
-        end_tick = end_tick > start_tick ? end_tick : gptFreq * 50 + end_tick;
+        end_tick = (end_tick > start_tick) ? end_tick : (gptFreq * 50U - start_tick + end_tick);
         msecs    = (end_tick - start_tick) / (gptFreq / 1000U);
 
         PRINTF("Read %d MB in %d ms, bandwidth=%d MB per second \r\n", mb, msecs, (mb * 1000U) / msecs);
@@ -197,11 +201,11 @@ static void benchmark_ocram(void)
     state.buf     = buf;
     state.lastone = (TYPE *)(start_addr + buf_len);
 
-    runFunc("OCRAM-READ", readTest, iter, (void *)&state, mb);
-    runFunc("OCRAM-WRITE", writeTest, iter, (void *)&state, mb);
+    runFunc((char *)"OCRAM-READ", readTest, iter, (void *)&state, mb);
+    runFunc((char *)"OCRAM-WRITE", writeTest, iter, (void *)&state, mb);
 #ifdef EXAMPLE_USE_CUSTOMIZED_RW
-    runFunc("OCRAM-Customized READ", cReadTest, iter, (void *)&state, mb);
-    runFunc("OCRAM-Customized WRITE", cWriteTest, iter, (void *)&state, mb);
+    runFunc((char *)"OCRAM-Customized READ", cReadTest, iter, (void *)&state, mb);
+    runFunc((char *)"OCRAM-Customized WRITE", cWriteTest, iter, (void *)&state, mb);
 #endif
     PRINTF("**************Testing End*************\r\n");
 }
@@ -263,7 +267,7 @@ int main(void)
     PRINTF("------GPT clock is %dHz\r\n", gptFreq);
     benchmark_ocram();
 #else
-    deviceconfig.flexspiRootClk = get_rootClock_freq_hz(EXAMPLE_FLEXSPI_ROOT_CLOCK_SRC);
+    deviceconfig.flexspiRootClk = FLEXSPI_GetRootClockFreqHz(EXAMPLE_FLEXSPI_ROOT_CLOCK_SRC);
     PRINTF("\r\nFLEXSPI Leader(Root Clock: %uHz) example started!\r\n", deviceconfig.flexspiRootClk);
 
     flexspi_ocram_init(EXAMPLE_FLEXSPI);

@@ -59,11 +59,7 @@ typedef enum _flexspi_slv_clock_freq
 #define FOLLOWER_CMD_SEND_MAILBOX 0xA6
 #define FOLLOWER_CMD_WRITE_MEMORY 0x5B
 
-#define EXAMPLE_GPT            GPT1
-#define EXAMPLE_GPT_IRQ_ID     GPT1_IRQn
-#define EXAMPLE_GPT_IRQHandler GPT1_IRQHandler
-
-/* Get source clock for GPT driver */
+#define EXAMPLE_GPT          GPT1
 #define EXAMPLE_GPT_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Gpt1)
 
 /*
@@ -95,7 +91,7 @@ typedef struct _flexspi_cache_status
 /*${prototype:start}*/
 void BOARD_InitHardware(void);
 void setupTimerInterrupt(void);
-uint32_t get_rootClock_freq_hz(clock_root_mux_source_t clk_name);
+uint32_t FLEXSPI_GetRootClockFreqHz(clock_root_mux_source_t clkName);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

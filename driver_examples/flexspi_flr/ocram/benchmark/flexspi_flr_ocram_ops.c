@@ -127,7 +127,7 @@ void flexspi_ocram_init(FLEXSPI_Type *base)
 
     /* Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read sequence(LUT[0])
      * and load wrong LUT table from FLASH region. */
-    memcpy(tempLUT, customLUT, sizeof(tempLUT));
+    (void)memcpy(tempLUT, customLUT, sizeof(tempLUT));
 
     /*Get FLEXSPI default settings and configure the flexspi. */
     FLEXSPI_GetDefaultConfig(&config);
@@ -154,17 +154,6 @@ void flexspi_ocram_init(FLEXSPI_Type *base)
 #endif
 }
 
-void EXAMPLE_GPT_IRQHandler(void)
-{
-    /* Clear interrupt flag.*/
-    GPT_ClearStatusFlags(EXAMPLE_GPT, kGPT_OutputCompare1Flag);
-
-/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F, Cortex-M7, Cortex-M7F Store immediate overlapping
-  exception return operation might vector to incorrect interrupt */
-#if defined __CORTEX_M && (__CORTEX_M == 4U || __CORTEX_M == 7U)
-    __DSB();
-#endif
-}
 /*
  * Setup the systick timer to generate the tick interrupts at the required
  * frequency.
@@ -183,14 +172,9 @@ void setupTimerInterrupt(void)
     /* Get GPT clock frequency */
     gptFreq = EXAMPLE_GPT_CLK_FREQ / 3U;
 
-    /* Set both GPT modules to 1 second duration */
-    GPT_SetOutputCompareValue(EXAMPLE_GPT, kGPT_OutputCompare_Channel1, gptFreq * 50);
-
-    /* Enable GPT Output Compare1 interrupt */
-    GPT_EnableInterrupts(EXAMPLE_GPT, kGPT_OutputCompare1InterruptEnable);
-
-    /* Enable at the Interrupt */
-    EnableIRQ(EXAMPLE_GPT_IRQ_ID);
+    assert(gptFreq < ((UINT32_MAX) / 50U));
+    /* Use long restart period in case counter is always over. */
+    GPT_SetOutputCompareValue(EXAMPLE_GPT, kGPT_OutputCompare_Channel1, gptFreq * 50U);
 
     /* Start Timer */
     GPT_StartTimer(EXAMPLE_GPT);
