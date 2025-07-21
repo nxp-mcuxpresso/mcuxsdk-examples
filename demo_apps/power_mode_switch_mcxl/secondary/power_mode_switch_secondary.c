@@ -304,6 +304,7 @@ static void APP_DeepPowerDown1Ops(bool wakeFromDpd2)
             .wakeToDpd1            = true,
             .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
             .mainWakeupSource      = kPower_WS_NONE,
+            .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
         };
         (void)Power_EnterDeepPowerDown2(&dpd2Config);
     }
@@ -324,6 +325,7 @@ static void APP_DeepPowerDown1Ops(bool wakeFromDpd2)
             .wakeToDpd1            = false,
             .mainWakeupSource      = kPower_WS_Main_LptmrInt,
             .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
+            .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
         };
         uint32_t off = Power_GetHandleOffset();
 

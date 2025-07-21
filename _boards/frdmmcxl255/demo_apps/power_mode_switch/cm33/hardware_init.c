@@ -172,25 +172,21 @@ void APP_InitROSC(void)
         SDK_DelayAtLeastUs(1000, SystemCoreClock);
     }
 
-    AON__SMM->RTC_XTAL_CONFG1 = SMM_RTC_XTAL_CONFG1_CRNT_MROR_EN_MASK;
+    AON__SMM->RTC_XTAL_CONFG1 = SMM_RTC_XTAL_CONFG1_CRNT_MROR_EN_MASK | SMM_RTC_XTAL_CONFG1_AMPSEL(2);
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
-    AON__SMM->RTC_XTAL_CONFG2 = SMM_RTC_XTAL_CONFG2_SUPDET_TM_SOX(2) | SMM_RTC_XTAL_CONFG2_HYSTEL_MASK;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
-    AON__SMM->RTC_XTAL_CONFG1 = 0x80d8;
+    AON__SMM->RTC_XTAL_CONFG1 |= SMM_RTC_XTAL_CONFG1_XTAL_EN_MASK;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
     AON__SMM->BIAS_CTRL = SMM_BIAS_CTRL_xtal_sox_4p_dis_MASK;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
-    AON__SMM->RTC_XTAL_CONFG1 = 0x80d9;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
-    AON__SMM->RTC_XTAL_CONFG2 =
-        SMM_RTC_XTAL_CONFG2_GMSEL_MASK | SMM_RTC_XTAL_CONFG2_SOX_EN_MASK | SMM_RTC_XTAL_CONFG2_CAP_BNK_EN_MASK;
+    
+    AON__SMM->RTC_XTAL_CONFG2 = SMM_RTC_XTAL_CONFG2_SUPDET_TM_SOX(2) | SMM_RTC_XTAL_CONFG2_CAP_BNK_EN_MASK;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
     AON__SMM->RTC_DCDC_CNTRL = SMM_RTC_DCDC_CNTRL_ISO_MASK | SMM_RTC_DCDC_CNTRL_DGTL_RST_N_MASK |
                                SMM_RTC_DCDC_CNTRL_ANA_RESET_N_MASK | SMM_RTC_DCDC_CNTRL_LDO_EN_MASK |
-                               SMM_RTC_DCDC_CNTRL_LDO_CONFIG(0x18);
+                               SMM_RTC_DCDC_CNTRL_LDO_CONFIG(0x30);
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
-
-    AON__SMM->RTC_DCDC_CNTRL |= SMM_RTC_DCDC_CNTRL_LDO_EN_MASK | SMM_RTC_DCDC_CNTRL_LDO_CONFIG(0x18);
 
     AON__SMM->RTC_DCDC_CNTRL &= ~SMM_RTC_DCDC_CNTRL_ISO_MASK;
 
@@ -198,23 +194,16 @@ void APP_InitROSC(void)
     AON__RTC_AON->RTC_ALV_DTCT |= RTC_RTC_ALV_DTCT_DTCT_EN_MASK;
 
     SDK_DelayAtLeastUs(6400, SystemCoreClock);
-    SDK_DelayAtLeastUs(6400, SystemCoreClock);
-
     /* wait until XTTAL FAIL goes away */
     do
     {
         AON__RTC_AON->INT = 0x001F; // clear all interrupts
         SDK_DelayAtLeastUs(6400, SystemCoreClock);
-        // AON__SMM->RTC_XTAL_CONFG2 &= ~SMM_RTC_XTAL_CONFG2_XTM_MASK;
-        // SDK_DelayAtLeastUs(6400, SystemCoreClock);
-        // AON__SMM->RTC_XTAL_CONFG2 = SMM_RTC_XTAL_CONFG2_XTM_MASK;
     } while (AON__RTC_AON->INT & RTC_INT_XTAL_FAIL_IF_MASK);
 
     AON__RTC_AON->CONFIG = RTC_CONFIG_K_EN_MASK | RTC_CONFIG_XTAL32_EN_MASK | RTC_CONFIG_FREE_RUNNING_MASK;
 
     AON__SMM->CNFG &= 0xff3f;
-    SDK_DelayAtLeastUs(100000, SystemCoreClock);
-    AON__SMM->CNFG |= 0x00C0;
     SDK_DelayAtLeastUs(100000, SystemCoreClock);
 }
 
@@ -258,10 +247,13 @@ void BOARD_Init96MClocksBoot(void)
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = 96000000U;
+    
+    
+    FMU0->FCTRL = (FMU0->FCTRL & ~FMU_FCTRL_RWSC_MASK) | FMU_FCTRL_RWSC(2);
 }
 
 void BOARD_InitHardware(void)
-{
+{       
     BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_Init96MClocksBoot();
@@ -272,11 +264,6 @@ void BOARD_InitHardware(void)
 
     EnableIRQ(MU_A_RX_IRQn);
     MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
-
-#if !APP_ENABLE_ADVC
-    /* Adjust VDD Core voltage. */
-    AON__PMU->VDD_CORE_PCONFIG = 0xA5E;
-#endif
     
     APP_InitROSC();
 }

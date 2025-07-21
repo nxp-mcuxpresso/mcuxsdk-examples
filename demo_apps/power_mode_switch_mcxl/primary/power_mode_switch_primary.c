@@ -63,6 +63,11 @@ power_pd2_config_t pd2Config = {
     .mainRamArraysToRetain = kPower_MainDomainAllRams,
     .enableIVSMode         = false,
     .disableFRO10M         = false,
+#if APP_ENABLE_ADVC
+    .vddCoreAonVoltage     = kPower_VddCoreAon_AdvcControl
+#else
+    .vddCoreAonVoltage     = kPower_VddCoreAon_630mV,
+#endif
 };
 
 power_dpd1_config_t dpd1Config = {
@@ -70,6 +75,11 @@ power_dpd1_config_t dpd1Config = {
     .mainRamArraysToRetain = kPower_MainDomainNoneRams,
     .disableBandgap        = true,
     .enableIVSMode         = false,
+#if APP_ENABLE_ADVC
+    .vddCoreAonVoltage     = kPower_VddCoreAon_AdvcControl
+#else
+    .vddCoreAonVoltage     = kPower_VddCoreAon_592mV,
+#endif 
 };
 
 power_dpd2_config_t dpd2Config = {
@@ -81,6 +91,7 @@ power_dpd2_config_t dpd2Config = {
     .enableIVSMode         = false,
     .switchToX32K          = true,
     .disableFRO10M         = false,
+    .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
 };
 
 power_dpd3_config_t dpd3Config = {
@@ -89,6 +100,7 @@ power_dpd3_config_t dpd3Config = {
 
 power_sd_config_t sdConfig = {
     .wakeupSource = kPower_WS_NONE,
+    .fro16KOutputFreq = kPMU_FRO16KOutput8KHz,
 };
 
 void *powerConfigs[8U] = {
@@ -173,7 +185,7 @@ int main(void)
     PRINTF("Normal Boot......\r\n");
 
     PRINTF("Core Clock Frequency: %d\r\n", CLOCK_GetCoreSysClkFreq());
-    CMC_ConfigFlashMode(CMC, true, true, false);
+    CMC_ConfigFlashMode(CMC, true, true, true);
     bool wakeupReset = APP_GetWakeupReason();
     smm_backup_reg_content_t backupReg;
 
