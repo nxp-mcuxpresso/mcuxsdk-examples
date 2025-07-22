@@ -31,7 +31,7 @@ Set the selected MBC block to non-secure for domain that is secure access only
 Core0 MBC violent access at address: 0x47400000
 The MBC selected block is accessible for secure master now
 Set the selected MRC region to non-secure for domain that is secure access only
-Core0 MRC violent access at address: 0x 4100000
+Core0 MRC violent access at address: 0x28100000
 The MRC selected region is accessible for secure master now
 TRDC example succeeds on primary core
 Copy Secondary core image to address: 0x303c0000, size: 16208

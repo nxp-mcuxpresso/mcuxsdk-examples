@@ -27,7 +27,7 @@ status_t FLEXSPI_NorFlash_GetVendorID(uint32_t instance, uint32_t *vendorID);
  ******************************************************************************/
 /*! @brief config serial NOR option  */
 static serial_nor_config_option_t option = {
-    .option0.U = 0xc0000005U,
+    .option0.U = 0xc0000000U,
     .option1.U = 0U,
 };
 
