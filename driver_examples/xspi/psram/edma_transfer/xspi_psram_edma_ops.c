@@ -173,6 +173,7 @@ status_t xspi_hyper_ram_reset(XSPI_Type *base)
     flashXfer.targetGroup     = kXSPI_TargetGroup0;
     flashXfer.lockArbitration = false;
     flashXfer.dataSize        = 4;
+    flashXfer.data            = NULL;
 
     status = XSPI_TransferBlocking(base, &flashXfer);
 
