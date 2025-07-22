@@ -137,18 +137,11 @@ void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
     /* Configure ENMODE */
     PCA9422_GetDefaultEnModeConfig(&cfg);
 
-#if (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
-    cfg.sw1OutEnMode = kPCA9422_EnmodeOnActiveSleep;
-    cfg.sw3OutEnMode = kPCA9422_EnmodeOnActiveSleep;
-#else
-    cfg.sw1OutEnMode = kPCA9422_EnmodeOnActive;
-    cfg.sw3OutEnMode = kPCA9422_EnmodeOnActive;
-#endif
-#if (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMC)
-    cfg.sw2OutEnMode  = kPCA9422_EnmodeOnActive; /* Use internal DCDC. */
-#else
+    /* When internal(DCDC or LDO) power supply is used, the corresponding PMIC SW or LDO
+      is not used and can be turned off. Here, keep all on for active and deepsleep mode as default. */
+    cfg.sw1OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
     cfg.sw2OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
-#endif
+    cfg.sw3OutEnMode  = kPCA9422_EnmodeOnActiveSleep;
     cfg.sw4OutEnMode  = kPCA9422_EnmodeOnActiveSleepStandby;
     cfg.ldo1OutEnMode = kPCA9422_EnmodeOnAll;
     cfg.ldo2OutEnMode = kPCA9422_EnmodeOnActiveSleepStandby;
@@ -239,6 +232,7 @@ void BOARD_InitPowerConfig(void)
     CLOCK_AttachClk(kNONE_to_SDIO0);
     CLOCK_AttachClk(kNONE_to_SDIO1);
 
+    /* Always initialize the PMIC, as some power rails are powered by it on the EVK by default. */
     BOARD_InitPmic();
     for (i = 0; i < ARRAY_SIZE(pca9422ModeCfg); i++)
     {
