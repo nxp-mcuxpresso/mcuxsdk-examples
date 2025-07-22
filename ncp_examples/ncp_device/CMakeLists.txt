@@ -51,9 +51,18 @@ mcux_add_source(
             mbedtls/mbedtls_device.c
             mbedtls/mbedtls_device.h
             mbedtls/key_cert.h
-            ot/peripherals.c
-            ot/peripherals.h
             ot/third_party/ot_config.cmake
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_device/
+    SOURCES ot/peripherals.c
+            ot/peripherals.h
+)
+
+mcux_add_include(
+    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/ncp_examples/ncp_device/
+    INCLUDES ot
 )
 
 mcux_add_source(
