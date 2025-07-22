@@ -20,6 +20,7 @@
 #include "ecatappl.h"
 
 #include "app.h"
+#include "servo_motor.h"
 
 UINT32 EcatTimerCnt;
 
@@ -134,6 +135,7 @@ UINT16 HW_Init(void)
     EnableIRQ(ECAT_INT_IRQn);
     NVIC_EnableIRQ(XBAR1_CH0_CH1_IRQn);
     GPT_StartTimer(GPT1);
+    servo_motor_init();
     return 0;
 }
 
@@ -153,6 +155,7 @@ void XBAR1_CH0_CH1_IRQHandler(void)
     {
         XBAR_ClearOutputStatusFlag(kXBAR1_OutputDma4MuxReq154);
         Sync0_Isr();
+        SM_StateMachineSlowTask();
     }
 
     XBAR_GetOutputStatusFlag(kXBAR1_OutputDma4MuxReq155, &status);

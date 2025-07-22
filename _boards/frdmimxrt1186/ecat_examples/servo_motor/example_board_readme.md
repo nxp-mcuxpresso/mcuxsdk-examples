@@ -11,6 +11,7 @@ Board settings
 ==============
 J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
 J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
+J27(2-3), J29(2-3), J30(2-3), J33(2-3)
 
 Prepare the Demo
 ================
