@@ -1582,26 +1582,26 @@ void BOARD_InitUSB_PDI2CPins_deinit(void) {
 BOARD_InitSRAMCPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G3, peripheral: SRAMC, signal: 'DATA, 0', pin_signal: GPIO_EMC_B1_00, pdrv_config: Normal_Driver}
-  - {pin_num: H4, peripheral: SRAMC, signal: 'DATA, 1', pin_signal: GPIO_EMC_B1_01, pdrv_config: Normal_Driver}
-  - {pin_num: K2, peripheral: SRAMC, signal: 'DATA, 2', pin_signal: GPIO_EMC_B1_02, pdrv_config: Normal_Driver}
-  - {pin_num: F3, peripheral: SRAMC, signal: 'DATA, 3', pin_signal: GPIO_EMC_B1_03, pdrv_config: Normal_Driver}
-  - {pin_num: J4, peripheral: SRAMC, signal: 'DATA, 4', pin_signal: GPIO_EMC_B1_04, pdrv_config: Normal_Driver}
-  - {pin_num: E7, peripheral: SRAMC, signal: 'DATA, 5', pin_signal: GPIO_EMC_B1_05, pdrv_config: Normal_Driver}
-  - {pin_num: K3, peripheral: SRAMC, signal: 'DATA, 6', pin_signal: GPIO_EMC_B1_06, pdrv_config: Normal_Driver}
-  - {pin_num: J3, peripheral: SRAMC, signal: 'DATA, 7', pin_signal: GPIO_EMC_B1_07, pdrv_config: Normal_Driver}
-  - {pin_num: F2, peripheral: SRAMC, signal: 'DATA, 8', pin_signal: GPIO_EMC_B1_30, pdrv_config: Normal_Driver}
-  - {pin_num: G2, peripheral: SRAMC, signal: 'DATA, 9', pin_signal: GPIO_EMC_B1_31, pdrv_config: Normal_Driver}
-  - {pin_num: J1, peripheral: SRAMC, signal: 'DATA, 10', pin_signal: GPIO_EMC_B1_32, pdrv_config: Normal_Driver}
-  - {pin_num: K1, peripheral: SRAMC, signal: 'DATA, 11', pin_signal: GPIO_EMC_B1_33, pdrv_config: Normal_Driver}
-  - {pin_num: L2, peripheral: SRAMC, signal: 'DATA, 12', pin_signal: GPIO_EMC_B1_34, pdrv_config: Normal_Driver}
-  - {pin_num: L1, peripheral: SRAMC, signal: 'DATA, 13', pin_signal: GPIO_EMC_B1_35, pdrv_config: Normal_Driver}
-  - {pin_num: F5, peripheral: SRAMC, signal: 'DATA, 14', pin_signal: GPIO_EMC_B1_36, pdrv_config: Normal_Driver}
-  - {pin_num: H2, peripheral: SRAMC, signal: 'DATA, 15', pin_signal: GPIO_EMC_B1_37, pdrv_config: Normal_Driver}
-  - {pin_num: H1, peripheral: SRAMC, signal: sramc_we, pin_signal: GPIO_EMC_B1_26, pdrv_config: Normal_Driver}
-  - {pin_num: H3, peripheral: SRAMC, signal: sramc_oeb, pin_signal: GPIO_EMC_B1_27, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
-  - {pin_num: D5, peripheral: SRAMC, signal: sramc_adv, pin_signal: GPIO_EMC_B1_28, pdrv_config: Normal_Driver}
-  - {pin_num: E4, peripheral: SRAMC, signal: 'CS, 0', pin_signal: GPIO_EMC_B1_29, pull_down_pull_up_config: Pull_Up, pdrv_config: Normal_Driver}
+  - {pin_num: G3, peripheral: SRAMC, signal: 'DATA, 0', pin_signal: GPIO_EMC_B1_00, pdrv_config: High_Driver}
+  - {pin_num: H4, peripheral: SRAMC, signal: 'DATA, 1', pin_signal: GPIO_EMC_B1_01, pdrv_config: High_Driver}
+  - {pin_num: K2, peripheral: SRAMC, signal: 'DATA, 2', pin_signal: GPIO_EMC_B1_02, pdrv_config: High_Driver}
+  - {pin_num: F3, peripheral: SRAMC, signal: 'DATA, 3', pin_signal: GPIO_EMC_B1_03, pdrv_config: High_Driver}
+  - {pin_num: J4, peripheral: SRAMC, signal: 'DATA, 4', pin_signal: GPIO_EMC_B1_04, pdrv_config: High_Driver}
+  - {pin_num: E7, peripheral: SRAMC, signal: 'DATA, 5', pin_signal: GPIO_EMC_B1_05, pdrv_config: High_Driver}
+  - {pin_num: K3, peripheral: SRAMC, signal: 'DATA, 6', pin_signal: GPIO_EMC_B1_06, pdrv_config: High_Driver}
+  - {pin_num: J3, peripheral: SRAMC, signal: 'DATA, 7', pin_signal: GPIO_EMC_B1_07, pdrv_config: High_Driver}
+  - {pin_num: F2, peripheral: SRAMC, signal: 'DATA, 8', pin_signal: GPIO_EMC_B1_30, pdrv_config: High_Driver}
+  - {pin_num: G2, peripheral: SRAMC, signal: 'DATA, 9', pin_signal: GPIO_EMC_B1_31, pdrv_config: High_Driver}
+  - {pin_num: J1, peripheral: SRAMC, signal: 'DATA, 10', pin_signal: GPIO_EMC_B1_32, pdrv_config: High_Driver}
+  - {pin_num: K1, peripheral: SRAMC, signal: 'DATA, 11', pin_signal: GPIO_EMC_B1_33, pdrv_config: High_Driver}
+  - {pin_num: L2, peripheral: SRAMC, signal: 'DATA, 12', pin_signal: GPIO_EMC_B1_34, pdrv_config: High_Driver}
+  - {pin_num: L1, peripheral: SRAMC, signal: 'DATA, 13', pin_signal: GPIO_EMC_B1_35, pdrv_config: High_Driver}
+  - {pin_num: F5, peripheral: SRAMC, signal: 'DATA, 14', pin_signal: GPIO_EMC_B1_36, pdrv_config: High_Driver}
+  - {pin_num: H2, peripheral: SRAMC, signal: 'DATA, 15', pin_signal: GPIO_EMC_B1_37, pdrv_config: High_Driver}
+  - {pin_num: H1, peripheral: SRAMC, signal: sramc_we, pin_signal: GPIO_EMC_B1_26, pdrv_config: High_Driver}
+  - {pin_num: H3, peripheral: SRAMC, signal: sramc_oeb, pin_signal: GPIO_EMC_B1_27, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver}
+  - {pin_num: D5, peripheral: SRAMC, signal: sramc_adv, pin_signal: GPIO_EMC_B1_28, pdrv_config: High_Driver}
+  - {pin_num: E4, peripheral: SRAMC, signal: 'CS, 0', pin_signal: GPIO_EMC_B1_29, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1676,102 +1676,102 @@ void BOARD_InitSRAMCPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_00_AHB_SRAMC_DATA00,  /* GPIO_EMC_B1_00 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_01_AHB_SRAMC_DATA01,  /* GPIO_EMC_B1_01 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_02_AHB_SRAMC_DATA02,  /* GPIO_EMC_B1_02 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_03_AHB_SRAMC_DATA03,  /* GPIO_EMC_B1_03 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_04_AHB_SRAMC_DATA04,  /* GPIO_EMC_B1_04 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_05_AHB_SRAMC_DATA05,  /* GPIO_EMC_B1_05 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_06_AHB_SRAMC_DATA06,  /* GPIO_EMC_B1_06 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_07_AHB_SRAMC_DATA07,  /* GPIO_EMC_B1_07 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_26_AHB_SRAMC_WE,     /* GPIO_EMC_B1_26 PAD functional properties : */
-      0x06U);                                 /* PDRV Field: normal driver
+      0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_27_AHB_SRAMC_OEB,    /* GPIO_EMC_B1_27 PAD functional properties : */
-      0x06U);                                 /* PDRV Field: normal driver
+      0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_28_AHB_SRAMC_ADV,    /* GPIO_EMC_B1_28 PAD functional properties : */
-      0x06U);                                 /* PDRV Field: normal driver
+      0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_29_AHB_SRAMC_CS0,    /* GPIO_EMC_B1_29 PAD functional properties : */
-      0x06U);                                 /* PDRV Field: normal driver
+      0x04U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PU
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_30_AHB_SRAMC_DATA08,  /* GPIO_EMC_B1_30 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_31_AHB_SRAMC_DATA09,  /* GPIO_EMC_B1_31 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_32_AHB_SRAMC_DATA10,  /* GPIO_EMC_B1_32 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_33_AHB_SRAMC_DATA11,  /* GPIO_EMC_B1_33 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_34_AHB_SRAMC_DATA12,  /* GPIO_EMC_B1_34 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_35_AHB_SRAMC_DATA13,  /* GPIO_EMC_B1_35 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_36_AHB_SRAMC_DATA14,  /* GPIO_EMC_B1_36 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_37_AHB_SRAMC_DATA15,  /* GPIO_EMC_B1_37 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
 }
@@ -1782,45 +1782,45 @@ void BOARD_InitSRAMCPins(void) {
 BOARD_InitSRAMC_FLEXIOPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: G3, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: G3, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: H4, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: H4, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: K2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: K2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: J4, peripheral: FLEXIO1, signal: 'IO, 04', pin_signal: GPIO_EMC_B1_04, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: J4, peripheral: FLEXIO1, signal: 'IO, 04', pin_signal: GPIO_EMC_B1_04, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E7, peripheral: FLEXIO1, signal: 'IO, 05', pin_signal: GPIO_EMC_B1_05, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: E7, peripheral: FLEXIO1, signal: 'IO, 05', pin_signal: GPIO_EMC_B1_05, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: K3, peripheral: FLEXIO1, signal: 'IO, 06', pin_signal: GPIO_EMC_B1_06, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: K3, peripheral: FLEXIO1, signal: 'IO, 06', pin_signal: GPIO_EMC_B1_06, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: J3, peripheral: FLEXIO1, signal: 'IO, 07', pin_signal: GPIO_EMC_B1_07, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: J3, peripheral: FLEXIO1, signal: 'IO, 07', pin_signal: GPIO_EMC_B1_07, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D6, peripheral: FLEXIO1, signal: 'IO, 08', pin_signal: GPIO_EMC_B1_08, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: D6, peripheral: FLEXIO1, signal: 'IO, 08', pin_signal: GPIO_EMC_B1_08, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D1, peripheral: FLEXIO1, signal: 'IO, 09', pin_signal: GPIO_EMC_B1_09, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: D1, peripheral: FLEXIO1, signal: 'IO, 09', pin_signal: GPIO_EMC_B1_09, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D3, peripheral: FLEXIO1, signal: 'IO, 10', pin_signal: GPIO_EMC_B1_10, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: D3, peripheral: FLEXIO1, signal: 'IO, 10', pin_signal: GPIO_EMC_B1_10, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D2, peripheral: FLEXIO1, signal: 'IO, 11', pin_signal: GPIO_EMC_B1_11, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: D2, peripheral: FLEXIO1, signal: 'IO, 11', pin_signal: GPIO_EMC_B1_11, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, software_input_on: Enable, pull_down_pull_up_config: Pull_Forbidden, pdrv_config: Normal_Driver,
+  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 16', pin_signal: GPIO_EMC_B1_16, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 16', pin_signal: GPIO_EMC_B1_16, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: C2, peripheral: FLEXIO1, signal: 'IO, 17', pin_signal: GPIO_EMC_B1_17, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: C2, peripheral: FLEXIO1, signal: 'IO, 17', pin_signal: GPIO_EMC_B1_17, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: C1, peripheral: FLEXIO1, signal: 'IO, 18', pin_signal: GPIO_EMC_B1_18, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: C1, peripheral: FLEXIO1, signal: 'IO, 18', pin_signal: GPIO_EMC_B1_18, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: F4, peripheral: FLEXIO1, signal: 'IO, 19', pin_signal: GPIO_EMC_B1_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: F4, peripheral: FLEXIO1, signal: 'IO, 19', pin_signal: GPIO_EMC_B1_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1896,102 +1896,102 @@ void BOARD_InitSRAMC_FLEXIOPins(void) {
       1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_19 */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00,  /* GPIO_EMC_B1_00 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_01_FLEXIO1_FLEXIO01,  /* GPIO_EMC_B1_01 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_02_FLEXIO1_FLEXIO02,  /* GPIO_EMC_B1_02 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_04_FLEXIO1_FLEXIO04,  /* GPIO_EMC_B1_04 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_05_FLEXIO1_FLEXIO05,  /* GPIO_EMC_B1_05 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_06_FLEXIO1_FLEXIO06,  /* GPIO_EMC_B1_06 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_07_FLEXIO1_FLEXIO07,  /* GPIO_EMC_B1_07 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_08_FLEXIO1_FLEXIO08,  /* GPIO_EMC_B1_08 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_09_FLEXIO1_FLEXIO09,  /* GPIO_EMC_B1_09 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_10_FLEXIO1_FLEXIO10,  /* GPIO_EMC_B1_10 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_11_FLEXIO1_FLEXIO11,  /* GPIO_EMC_B1_11 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_12_FLEXIO1_FLEXIO12,  /* GPIO_EMC_B1_12 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_13_FLEXIO1_FLEXIO13,  /* GPIO_EMC_B1_13 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_14_FLEXIO1_FLEXIO14,  /* GPIO_EMC_B1_14 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_15_FLEXIO1_FLEXIO15,  /* GPIO_EMC_B1_15 PAD functional properties : */
-      0x02U);                                 /* PDRV Field: normal driver
-                                                 Pull Down Pull Up Field: Forbidden
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_16_FLEXIO1_FLEXIO16,  /* GPIO_EMC_B1_16 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_17_FLEXIO1_FLEXIO17,  /* GPIO_EMC_B1_17 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_18_FLEXIO1_FLEXIO18,  /* GPIO_EMC_B1_18 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_EMC_B1_19_FLEXIO1_FLEXIO19,  /* GPIO_EMC_B1_19 PAD functional properties : */
-      0x0AU);                                 /* PDRV Field: normal driver
+      0x08U);                                 /* PDRV Field: high driver
                                                  Pull Down Pull Up Field: PD
                                                  Open Drain Field: Disabled */
 }

@@ -68,6 +68,9 @@ static status_t SRAMC_ReadWrite8Bit(void)
 
     /* Get Default Configuration */
     SRAMC_GetDefaultConfig(&config);
+    /* Adjust timing parameters depends on boards wire connection*/
+    config.addressHoldTime  = 2U;
+    config.addressSetupTime = 6U;
     config.portSize = kSRAMC_PortSize8Bit;
     
     /* Initialize SRAMC */
