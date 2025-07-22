@@ -63,7 +63,7 @@ mcux_add_mdk_configuration(
 
 mcux_add_configuration(
     TOOLCHAINS mdk
-    CC "-gdwarf-3 -mcmse -g"
+    CC "-gdwarf-3 -g"
 	LD "--diag_suppress L6848E --library_type=standardlib"
 )
 

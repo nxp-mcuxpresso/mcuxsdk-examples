@@ -29,7 +29,6 @@ safety_iec60730b:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
-    - -mdk@debug        # remove mdk debug configuration - error due to missing template file
     - -mdk@release
     - -mcux@release
     frdmmcxa153:
