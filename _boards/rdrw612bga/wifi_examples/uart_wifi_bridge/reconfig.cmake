@@ -46,7 +46,6 @@ mcux_add_iar_configuration(
 
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
-       -DCONFIG_MONOLITHIC_WIFI=1\
        -DPRINTF_ADVANCED_ENABLE=1"
 )
 
