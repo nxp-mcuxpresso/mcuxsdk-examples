@@ -73,6 +73,8 @@ static inline void flexspi_clock_init(void)
     CLOCK_SetRootClockDiv(kCLOCK_Root_Flexspi1, 2);
     CLOCK_SetRootClockMux(kCLOCK_Root_Flexspi1, 0);
 #if !(defined(XIP_EXTERNAL_FLASH))  /* If not XIP, set the clock divider to 1 */
+    FLEXSPI_Enable(EXAMPLE_FLEXSPI, true);
+
     flexspi_transfer_t flashXfer;
 
     uint32_t ResetFlashCommandSeq[8] = {0U};
