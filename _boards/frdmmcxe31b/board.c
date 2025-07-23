@@ -160,7 +160,7 @@ void BOARD_ConfigMPU(void)
 #if defined(SDK_USE_QSPI) /* Only configure QSPI memory when used. Refer to Arm errata 1013783-B */
     /* Region 12 setting: Memory with Normal type, not shareable, outer/inner write back, QSPI AHB */
     MPU->RBAR = ARM_MPU_RBAR(12, 0x68000000U);
-    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_128MB);
+    MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 0, 1, 0, ARM_MPU_REGION_SIZE_128MB);
 #endif
 
 #if defined(SDK_SRAM_NONCACHE_SECTION)

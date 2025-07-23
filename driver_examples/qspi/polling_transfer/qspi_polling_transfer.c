@@ -128,8 +128,7 @@ void qspi_polling(void)
     {
         if (((uint32_t *)addr)[i] != buff[i % 64])
         {
-            PRINTF("The data in %d is wrong!!\r\n", i);
-            PRINTF("The flash value in %d is %d\r\n", i, ((uint32_t *)addr)[i]);
+            PRINTF("The flash data in word %u is 0x%X. Should be 0x%X\r\n", i, ((uint32_t *)addr)[i], buff[i % 64]);
             err++;
         }
     }

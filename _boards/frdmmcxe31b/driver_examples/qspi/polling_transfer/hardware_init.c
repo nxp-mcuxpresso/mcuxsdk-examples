@@ -25,7 +25,7 @@ uint32_t lut[FSL_FEATURE_QSPI_LUT_DEPTH] =
 
     /* Seq1: Write enable or Erase Sector */
     [QSPI_CMD_SEQ_WRITE_ENABLE] = QSPI_LUT_SEQ(QSPI_CMD, QSPI_PAD_1, 0x06, 0, 0, 0),
-    //[QSPI_CMD_SEQ_ERASE_SECTOR] = QSPI_LUT_SEQ(QSPI_CMD, QSPI_PAD_1, 0xD8, QSPI_ADDR, QSPI_PAD_1, 0x18),
+    //[QSPI_CMD_SEQ_ERASE_SECTOR] = QSPI_LUT_SEQ(QSPI_CMD, QSPI_PAD_1, 0x20, QSPI_ADDR, QSPI_PAD_1, 0x18),
 
     /* Seq2: Read Status */
     /* CMD:    0x05 - Read Status, single pad */
@@ -60,8 +60,8 @@ uint32_t lut[FSL_FEATURE_QSPI_LUT_DEPTH] =
     //[x] = QSPI_LUT_SEQ(QSPI_READ, QSPI_PAD_1, 0x2, 0, 0, 0),
 };
 
-qspi_flash_config_t single_config = {.flashA1Size = FLASH_SIZE,
-                                     .flashA2Size = 0,
+qspi_flash_config_t single_config = {.flashA1Size       = FLASH_SIZE,
+                                     .flashA2Size       = 0,
                                      .CSHoldTime        = 3,
                                      .CSSetupTime       = 3,
                                      .cloumnspace       = 0,
@@ -97,7 +97,7 @@ void BOARD_QspiUpdateLUT(uint8_t seqID, uint8_t cmdType)
             cmd[0] = QSPI_LUT_SEQ(QSPI_CMD, QSPI_PAD_1, 0x06, 0, 0, 0);
             break;
         case QSPI_CMD_TYPE_ERASE_SECTOR:
-            cmd[0] = QSPI_LUT_SEQ(QSPI_CMD, QSPI_PAD_1, 0xD8, QSPI_ADDR, QSPI_PAD_1, 0x18);
+            cmd[0] = QSPI_LUT_SEQ(QSPI_CMD, QSPI_PAD_1, 0x20, QSPI_ADDR, QSPI_PAD_1, 0x18);
             break;
         default:
             assert(false);
