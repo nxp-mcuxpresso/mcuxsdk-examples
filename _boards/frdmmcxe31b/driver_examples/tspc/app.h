@@ -15,7 +15,7 @@
 #define DEMO_TSPC_GROUP           kTSPC_Group1
 #define DEMO_TSPC_PAD1            kTSPC_Group1PTC8
 #define DEMO_TSPC_PAD2            kTSPC_Group1PTC9
-#define DEMO_TSPC_PAD2_IRQHandler SIUL2_2_DriverIRQHandler
+#define DEMO_TSPC_PAD2_IRQHandler SIUL2_2_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
