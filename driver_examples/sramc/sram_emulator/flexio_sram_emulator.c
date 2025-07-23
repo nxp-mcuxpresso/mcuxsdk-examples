@@ -184,7 +184,7 @@ AT_QUICKACCESS_SECTION_CODE(void FLEXIO_SRAM_ISR(FLEXIO_SRAM_Type *base))
     register uint32_t address;
     register uint32_t rxData;
     
-    /* When OE pin interrupt happens, send data accordint to address */
+    /* When OE pin interrupt happens, send data according to address */
     if (oeFlagSet != 0U)
     {
         /* Check if the OE pin has transitioned from high to low */

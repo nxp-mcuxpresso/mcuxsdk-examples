@@ -68,10 +68,14 @@ static status_t SRAMC_ReadWrite8Bit(void)
 
     /* Get Default Configuration */
     SRAMC_GetDefaultConfig(&config);
-    /* Adjust timing parameters depends on boards wire connection*/
-    config.addressHoldTime  = 2U;
-    config.addressSetupTime = 6U;
     config.portSize = kSRAMC_PortSize8Bit;
+    /* Adjust timing parameters depends on boards wire connection, to give 
+     * enough time for flexio data sample.
+     */
+    config.turnaroundTime    = EXAMPLE_TURN_AROUND_TIME;
+    config.addressHoldTime   = EXAMPLE_ADDRESS_HOLD_TIME;
+    config.addressSetupTime  = EXAMPLE_ADDRESS_SETUP_TIME;
+    config.readEnableLowTime = EXAMPLE_READ_ENABLE_LOW_TIME;
     
     /* Initialize SRAMC */
     SRAMC_Init(EXAMPLE_SRAMC_BASE, &config);
