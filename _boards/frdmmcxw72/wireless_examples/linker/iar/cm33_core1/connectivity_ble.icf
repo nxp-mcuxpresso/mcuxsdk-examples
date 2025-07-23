@@ -191,7 +191,7 @@ define symbol m_free_data_start                 = m_sqram_rldat_end + 1;
 define symbol m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 define symbol m_free_data_end                   = m_shared_ram_end;
 
-define exported symbol /* The heap (if used) is using all the free_data section */
+/* The heap (if used) is using all the free_data section */
 define exported symbol __HEAP_end__              = m_free_data_end;
 
 if (m_sqram_rldat_end > m_shared_ram_end)
