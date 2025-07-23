@@ -77,6 +77,10 @@
 #endif
 #define CONFIG_WPA_SUPP_P2P 0
 
+#if defined(IW610)
+#define CONFIG_WPA_SUPP_NAN_USD 0
+#endif
+
 #if (CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE || CONFIG_WPA_SUPP_CRYPTO_AP_ENTERPRISE)
 #define CONFIG_EAP_TLS 1
 #define CONFIG_EAP_PEAP 1
@@ -108,10 +112,6 @@
 #define CONFIG_WPA_SUPP_DPP3 1
 #define CONFIG_RX_CHAN_INFO  1
 #define CONFIG_TXPD_RXPD_V3  1
-#endif
-
-#if defined(IW610)
-#define CONFIG_WPA_SUPP_NAN_USD 1
 #endif
 #endif
 
