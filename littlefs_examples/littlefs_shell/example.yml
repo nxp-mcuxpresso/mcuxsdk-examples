@@ -15,13 +15,15 @@ littlefs_shell:
   boards:
     evkmimxrt1020:
     - -armgcc@debug
+    - -armgcc@release
     - -armgcc@sdram_debug
-    - -armgcc@flexspi_nor_debug
-    - -armgcc@flexspi_nor_release
-    - -iar@flexspi_nor_debug
-    - -iar@flexspi_nor_release
-    - -mdk@flexspi_nor_debug
-    - -mdk@flexspi_nor_release
+    - -armgcc@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -iar@debug
+    - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
     evkmimxrt1024:
@@ -123,14 +125,14 @@ littlefs_shell:
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
-    frdmimxrt1186@cm33: 
+    frdmimxrt1186@cm33:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
-    frdmimxrt1186@cm7: 
+    frdmimxrt1186@cm7:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
     - -iar@flexspi_nor_debug
