@@ -19,15 +19,15 @@ int64_t os_clock_now(){
 void BOARD_InitHardware(void)
 {
     BOARD_InitPins();
-    //BOARD_InitBootClocks();
-    //BOARD_InitDebugConsole();
+    BOARD_InitAHBSC();
+    BOARD_InitBootClocks();
+    BOARD_ConfigMPU();
     BOARD_InitPmicPins();
     BOARD_InitPmic();
     BOARD_SetPmicVdd2Voltage(1100000U); /* 1.1v for 325MHz clock. */
 
     BOARD_BootClockHSRUN();
     BOARD_InitDebugConsole();
-    BOARD_InitAHBSC();
 
     POWER_DisablePD(kPDRUNCFG_APD_NPU);
     POWER_DisablePD(kPDRUNCFG_PPD_NPU);

@@ -7,89 +7,321 @@
 #include "modelrunner.h"
 #include "cJSON.h"
 #include <string.h>
+#include "stdio.h"
 #include "base64.h"
+#include "fsl_debug_console.h"
+#ifdef MODELRUNNER_HTTP
+#include <lwip/sockets.h>
+#endif
 
-char* inference_results(NNServer* server, size_t* data_len, int outputs_idx[], int n_outputs){
-    cJSON *results = cJSON_CreateObject();
-    cJSON *timing = cJSON_CreateNumber(server->run_ns*1e3);
-    if (n_outputs > 0) {
-        cJSON *outputs = cJSON_AddArrayToObject(results, "outputs");
-        for (int i = 0; i < n_outputs; i++){
-            if (server->output.data[outputs_idx[i]]){
-                cJSON *output = cJSON_CreateObject();
-                cJSON_AddStringToObject(output, "name", server->output.name[server->output.index[outputs_idx[i]]]);
-                cJSON_AddStringToObject(output, "type", server->output.type[server->output.index[outputs_idx[i]]]);
-                cJSON_AddStringToObject(output, "datatype", server->output.data_type [i]);
-                cJSON *shape = cJSON_AddArrayToObject(output, "shape");
-                for (int dim = 0; dim < server->output.shape_size [outputs_idx [i]]; ++dim) {
-                  cJSON* s = cJSON_CreateNumber(server->output.shape_data[outputs_idx [i]] [dim]);
-                  cJSON_AddItemToArray(shape, s);
-                }
-                char* data = (char*)base64_encode((const unsigned char*)server->output.data[outputs_idx[i]], server->output.bytes[outputs_idx[i]], NULL);
-                cJSON_AddStringToObject(output, "data", data);
-                free(data);
-                cJSON_AddItemToArray(outputs, output);
-            }
-        }
-    }
 
-    cJSON_AddItemToObject(results, "timing", timing);
+static const char base64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-    char* string = cJSON_PrintUnformatted(results);
-    *data_len = strlen(string);
-    cJSON_Delete(results);
-    return string;
+void base64_encode_block(const uint8_t in[3], char out[4], int len) {
+    out[0] = base64_table[in[0]>>2];
+    out[1] = base64_table[((in[0] & 0x03) << 4) | (len > 1 ? (in[1] >> 4) : 0)];
+    out[2] = (len > 1) ? base64_table[((in[1] & 0x0F) << 2) | (len > 2 ? (in[2] >> 6) : 0)] : '=';
+    out[3] = (len > 2) ? base64_table[in[2] & 0x3F] : '=';
 }
 
-char* model_info(NNServer* server, size_t* data_len){
-    cJSON *model = cJSON_CreateObject();
-    cJSON_AddNumberToObject(model, "timing", server->run_ns*1e3);
-    cJSON_AddNumberToObject(model, "ktensor_arena_size", server->kTensorArenaSize);
-    cJSON *inputs = cJSON_AddArrayToObject(model, "inputs");
+int write_chunk(int sock, const char* data, size_t len) {
+#ifdef MODELRUNNER_HTTP
+    char header[16];
+    int header_len = snprintf(header, sizeof(header), "%X\r\n", len);
+
+    if (write(sock, header, header_len) < 0) return -1;
+    if (write(sock, data, len) < 0) return -1;
+    if (write(sock, "\r\n", 2) < 0) return -1;
+#else
+        PRINTF(data);
+#endif
+    return 0;
+}
+
+int base64_encode_chunks(int sock, uint8_t *data, size_t data_len){
+    char encoded[25];
+    const size_t chunk_size = 16;
+    size_t offset = 0;
+
+    while (offset < data_len) {
+	    size_t current_chunk_size = (data_len - offset) < chunk_size ? (data_len - offset) : chunk_size;
+
+	    int out_pos = 0;
+	    for(size_t i = 0; i < current_chunk_size; i += 3){
+		    size_t remaining = current_chunk_size - i;
+		    size_t block_len = (remaining < 3) ? remaining : 3;
+		    base64_encode_block(data + offset +i, encoded +out_pos, (int)block_len);
+		    out_pos += 4;
+	    }
+	    encoded[out_pos] = '\0';
+            if (write_chunk(sock, encoded, strlen(encoded)) < 0) return -1;
+	    offset += current_chunk_size;
+    }
+    return 0;
+}
+
+int inference_results(int sock, NNServer* server, int outputs_idx[], int n_outputs){
+    char data[1500];
+    size_t data_len = 0;
+
+#ifdef MODELRUNNER_HTTP
+    data_len = snprintf(data, sizeof(data),
+                   "HTTP/1.1 200 OK\r\n"
+                   "Content-Type: application/json\r\n"
+                   "Transfer-Encoding: chunked\r\n"
+                   "\r\n");
+    if (write(sock, data, data_len)<0) return -1;
+#endif
+
+    data_len = snprintf(data, sizeof(data), "{");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+    if (n_outputs > 0) {
+        data_len = snprintf(data, sizeof(data), "\"outputs\":[");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+        for (int i = 0; i < n_outputs; i++){
+	    if (i !=0) {
+                data_len = snprintf(data, sizeof(data), ",");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+	    }
+            if (server->output.data[outputs_idx[i]]){
+                data_len = snprintf(data, sizeof(data), "{");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+
+                data_len = snprintf(data, sizeof(data), "\"name\":\"%s\",", server->output.name[outputs_idx[i]]);
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+
+                data_len = snprintf(data, sizeof(data), "\"datatype\":\"%s\",", server->output.data_type [outputs_idx[i]]);
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+
+                data_len = snprintf(data, sizeof(data), "\"shape\":[");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+                for (int dim = 0; dim < server->output.shape_size [outputs_idx [i]]; ++dim) {
+		    if (dim != 0){
+                        data_len = snprintf(data, sizeof(data), ",");
+                        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                        if (write_chunk(sock, data, data_len) < 0) return -1;
+		    }
+                    data_len = snprintf(data, sizeof(data), "%ld", server->output.shape_data[outputs_idx [i]] [dim]);
+                    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                    if (write_chunk(sock, data, data_len) < 0) return -1;
+                }
+                data_len = snprintf(data, sizeof(data), "],");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+
+                data_len = snprintf(data, sizeof(data), "\"data\":\"");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+
+                size_t data_size = server->output.bytes[outputs_idx[i]];
+		uint8_t *data_output = (uint8_t*)server->output.data[outputs_idx[i]];
+
+		base64_encode_chunks(sock, data_output, data_size);
+                data_len = snprintf(data, sizeof(data), "\"}");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+            }
+        }
+        data_len = snprintf(data, sizeof(data), "],");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+    }
+
+    data_len = snprintf(data, sizeof(data), "\"timing\":%lld}",server->run_ns);
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+#ifdef MODELRUNNER_HTTP
+    const char* end_chunk = "0\r\n\r\n";
+    write(sock, end_chunk, strlen(end_chunk));
+#endif
+
+    return 0;
+}
+
+int model_info(int sock, NNServer* server){
+    char data[1500];
+    size_t data_len = 0;
+#ifdef MODELRUNNER_HTTP
+    data_len = snprintf(data, sizeof(data),
+                   "HTTP/1.1 200 OK\r\n"
+                   "Content-Type: application/json\r\n"
+                   "Transfer-Encoding: chunked\r\n"
+                   "\r\n");
+    if (write(sock, data, data_len)<0) return -1;
+#endif
+
+    data_len = snprintf(data, sizeof(data), "{");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+    data_len = snprintf(data, sizeof(data), "\"timing\": %lld", server->run_ns);
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+    data_len = snprintf(data, sizeof(data), ",\"ktensor_arena_size\": %d", server->kTensorArenaSize);
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+    data_len = snprintf(data, sizeof(data), ",\"inputs\": [");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
     for (int i=0; i < server->input.inputs_size; i++){
-        cJSON *input = cJSON_CreateObject();
-        cJSON_AddStringToObject(input, "name", server->input.name[i]);
-        cJSON_AddNumberToObject(input, "scale", server->input.scale[i]);
-        cJSON_AddNumberToObject(input, "zero_points", server->input.zero_point[i]);
-        cJSON_AddStringToObject(input, "datatype", server->input.data_type[i]);
-        cJSON *shape = cJSON_AddArrayToObject(input, "shape");
+        if (i != 0){
+                data_len = snprintf(data, sizeof(data), ",");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+	}
+        data_len = snprintf(data, sizeof(data), "{");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), "\"name\": \"%s\"",server->input.name[i]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data,sizeof(data), ",\"scale\": %f", server->input.scale[i]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"zero_points\": %ld", server->input.zero_point[i]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"data_type\": \"%s\"", server->input.data_type[i]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"shape\": [");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
         for (int dim = 0; dim < server->input.shape_size [i]; ++dim) {
-            cJSON* s = cJSON_CreateNumber(server->input.shape_data[i][dim]);
-            cJSON_AddItemToArray(shape, s);
+            if (dim != 0){
+                    data_len = snprintf(data, sizeof(data), ",");
+                    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                    if (write_chunk(sock, data, data_len) < 0) return -1;
+            }
+            data_len = snprintf(data, sizeof(data), "%ld", server->input.shape_data[i][dim]);
+            if (data_len < 0 || data_len >= sizeof(data)) return -1;
+            if (write_chunk(sock, data, data_len) < 0) return -1;
         }
-        cJSON_AddItemToArray(inputs, input);
+
+        data_len = snprintf(data, sizeof(data), "]}");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
     }
 
-    cJSON *outputs = cJSON_AddArrayToObject(model, "outputs");
-    for (int i=0; i < server->input.inputs_size; i++){
-        cJSON *output = cJSON_CreateObject();
-        cJSON_AddStringToObject(output, "name", server->output.name[server->output.index[i]]);
-        cJSON_AddNumberToObject(output, "scale", server->output.scale[i]);
-        cJSON_AddNumberToObject(output, "zero_points", server->output.zero_point[i]);
-        cJSON_AddStringToObject(output, "datatype", server->output.data_type[i]);
-        cJSON *shape = cJSON_AddArrayToObject(output, "shape");
-        for (int dim = 0; dim < server->output.shape_size [i]; ++dim) {
-            cJSON* s = cJSON_CreateNumber(server->output.shape_data[i][dim]);
-            cJSON_AddItemToArray(shape, s);
+    data_len = snprintf(data, sizeof(data), "]");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+    data_len = snprintf(data, sizeof(data), ",\"outputs\": [");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+    for (int i=0; i < server->output.outputs_size; i++){
+        if (i != 0){
+                data_len = snprintf(data, sizeof(data), ",");
+                if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                if (write_chunk(sock, data, data_len) < 0) return -1;
+	}
+        data_len = snprintf(data, sizeof(data), "{");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+	int idx = server->output.index[i];
+
+        data_len = snprintf(data,sizeof(data), "\"name\": \"%s\"",server->output.name[idx]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"scale\": %f", server->output.scale[idx]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"zero_points\": %ld", server->output.zero_point[idx]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"data_type\": \"%s\"", server->output.data_type[idx]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"shape\": [");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        for (int dim = 0; dim < server->output.shape_size [idx]; ++dim) {
+            if (dim != 0){
+                    data_len = snprintf(data, sizeof(data), ",");
+                    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+                    if (write_chunk(sock, data, data_len) < 0) return -1;
+	    }
+            data_len = snprintf(data, sizeof(data), "%ld", server->output.shape_data[idx][dim]);
+            if (data_len < 0 || data_len >= sizeof(data)) return -1;
+            if (write_chunk(sock, data, data_len) < 0) return -1;
         }
-        cJSON_AddItemToArray(outputs, output);
+        data_len = snprintf(data, sizeof(data), "]}");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
     }
+    data_len = snprintf(data, sizeof(data), "]");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
 
 
-    cJSON_AddNumberToObject(model, "layer_count", server->output.num_outputs);
-    cJSON *layers = cJSON_AddArrayToObject(model, "layers");
+    data_len = snprintf(data, sizeof(data), ",\"layer_count\": %ld", server->output.num_outputs);
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
 
-    for (int i = 0; i < server->output.num_outputs;  i++){
-        cJSON *layer = cJSON_CreateObject();
-        cJSON_AddStringToObject(layer, "name", server->output.name[i]);
-        cJSON_AddStringToObject(layer, "type", server->output.type[i]);
-        cJSON_AddNumberToObject(layer, "avg_timing", server->output.timing[i]/server->inference_count*1e3);
-        cJSON *tensor = cJSON_AddObjectToObject(layer, "tensor");
-        cJSON_AddNumberToObject(tensor, "timing", server->output.timing[i]/server->inference_count*1e3);
-        cJSON_AddItemToArray(layers, layer);
+    data_len = snprintf(data, sizeof(data), ",\"layers\": [");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+    for (int i = 0; i < server->layers.num_layers;  i++){
+        if (i != 0){
+            data_len = snprintf(data, sizeof(data), ",");
+            if (data_len < 0 || data_len >= sizeof(data)) return -1;
+            if (write_chunk(sock, data, data_len) < 0) return -1;
+	}
+        data_len = snprintf(data, sizeof(data), "{");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), "\"name\": \"%s\"",server->output.name[server->layers.output_idx[i][0]]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"type\": \"%s\"",server->layers.type[i]);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), ",\"timing\": %lld", server->layers.timing[i]/server->inference_count);
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
+
+        data_len = snprintf(data, sizeof(data), "}");
+        if (data_len < 0 || data_len >= sizeof(data)) return -1;
+        if (write_chunk(sock, data, data_len) < 0) return -1;
     } 
-    char *string = cJSON_PrintUnformatted(model);
-    *data_len = strlen(string);
-    cJSON_Delete(model);
-    return string;
+    data_len = snprintf(data, sizeof(data), "]}");
+    if (data_len < 0 || data_len >= sizeof(data)) return -1;
+    if (write_chunk(sock, data, data_len) < 0) return -1;
+
+#ifdef MODELRUNNER_HTTP
+    const char* end_chunk = "0\r\n\r\n";
+    write(sock, end_chunk, strlen(end_chunk));
+#endif
+    return 0;
 }

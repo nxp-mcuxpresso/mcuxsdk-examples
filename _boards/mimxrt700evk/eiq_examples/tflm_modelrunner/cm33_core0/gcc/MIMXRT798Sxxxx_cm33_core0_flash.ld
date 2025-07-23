@@ -1,18 +1,18 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT798SGAWAR_cm33_core0
-**                          MIMXRT798SGFOA_cm33_core0
+**     Processors:          MIMXRT798SGAWBR_cm33_core0
+**                          MIMXRT798SGFOB_cm33_core0
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    iMXRT700RM Rev.1, 06/2023
-**     Version:             rev. 1.0, 2022-08-01
-**     Build:               b231012
+**     Reference manual:    iMXRT700RM Rev.2 DraftA, 05/2024
+**     Version:             rev. 3.0, 2025-06-06
+**     Build:               b250606
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2023 NXP
+**     Copyright 2016-2025 NXP
 **     SPDX-License-Identifier: BSD-3-Clause
 **
 **     http:                 www.nxp.com
@@ -26,20 +26,41 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 
-HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
+m_core1_image_maximum_size = 0x00080000;
+m_ezhv_image_maximum_size = 0x00010000;
+
+DATA_START   = 0x20080000;
+DATA_SIZE    = 0x00010000;
+
+NCACHE_START = DEFINED(__use_shmem__) ? 0x20202000 : 0x20090000;
+NCACHE_SIZE  = DEFINED(__use_shmem__) ? 0x001FE000 : 0x004F0000;
+
+HEAP_SIZE    = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
+STACK_SIZE   = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
+
+RPMSG_SHMEM_START = 0x20200000;
+RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x2000 : 0;
+
+DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
+NCACHE_END   = NCACHE_START + NCACHE_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0);
+HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
+
 /* Specify the memory areas */
-/* The SRAM region [0x0-0x7FFFF] is reserved for Non-cached shared memory between M33 and DSP. */
+/* The SRAM region [0x000000-0x013FFF] is reserved for ROM bootloader execution. Can be reused after boot. */
+/* The SRAM region [0x014000-0x07FFFF] is reserved for Non-cached shared memory or application data. */
+/* The SRAM region [0x080000-0x3FFFFF] is reserved for CPU0 application, last 2MB non-cacheable data for NPU/GPU/Display etc. */
+/* The SRAM region [0x400000-0x57FFFF] is reserved for HiFi4 application. */
 MEMORY
 {
   m_flash_config        (RX)  : ORIGIN = 0x28000000, LENGTH = 0x00004000
   m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
   m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x001FBD00
-  m_data                (RW)  : ORIGIN = 0x20100000, LENGTH = 0x00300000
-  m_ncache              (RW)  : ORIGIN = 0x20400000, LENGTH = 0x00240000
-  m_model               (RW)  : ORIGIN = 0x60000000, LENGTH = 0x02000000
+  m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
+  m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_SIZE
+  m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE
+  rpmsg_sh_mem          (RW)  : ORIGIN = RPMSG_SHMEM_START, LENGTH = RPMSG_SHMEM_SIZE
 }
 
 /* Define output sections */
@@ -67,24 +88,32 @@ SECTIONS
   .text :
   {
     . = ALIGN(4);
-    EXCLUDE_FILE (
-        *xspi_octal_flash_edma_ops.c.obj
-        *fsl_xspi.c.obj
-        *fsl_xspi_edma.c.obj
-        *fsl_reset.c obj
-        *fsl_edma.c.obj
-        *fsl_memcpy.S.obj
-        *libc_a-memcpy-stub.o
-        *libc_a-memset.o)
-      *(.text .rdata .text* .rodata*)
-
+    *(.text)                 /* .text sections (code) */
+    *(.text*)                /* .text* sections (code) */
+    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
+    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
     KEEP (*(.init))
     KEEP (*(.fini))
+
+    . = ALIGN(16);
+    core1_image_start = .;
+    KEEP (*(.core1_code))
+    *(.core1_code*)
+    core1_image_end = .;
+    . = ALIGN(4);
+
+    ezhv_image_start = .;
+    KEEP (*(.ezhv_code))
+    *(.ezhv_code*)
+    ezhv_image_end = .;
     . = ALIGN(4);
   } > m_text
+
+  ASSERT((core1_image_end - core1_image_start) <= m_core1_image_maximum_size, "Core1 image size exceeds the limit")
+  ASSERT((ezhv_image_end - ezhv_image_start) <= m_ezhv_image_maximum_size, "EZHV image size exceeds the limit")
 
   .ARM.extab :
   {
@@ -181,17 +210,10 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
+    *(CacheLineData.init)    /* CacheLineData.init sections */
+    . = ALIGN(16);           /* cache line size = 16 bytes */
     *(CodeQuickAccess)       /* CodeQuickAccess sections */
     *(DataQuickAccess)       /* DataQuickAccess sections */
-    /* Explicit placement of flash and frequently executed functions in RAM */
-    *fsl_xspi.c.obj(.text .text* .rodata .rodata*)
-    *fsl_xspi_edma.c.obj(.text .text* .rodata .rodata*)
-    *fsl_reset.c.obj(.text .text* .rodata .rodata*)
-    *fsl_memcpy.S.obj(.text .text* .rodata .rodata*)
-    *libc_a-memcpy-stub.o(.text .text* .rodata .rodata*)
-    *libc_a-memset.o(.text .text* .rodata .rodata*)
-    *xspi_octal_flash_edma_ops.c.obj(.text .text* .rodata .rodata*)
-    *fsl_edma.c.obj(.text .text* .rodata .rodata*)
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))
@@ -199,8 +221,8 @@ SECTIONS
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
 
-  __NCACHE_REGION_START = ORIGIN(m_ncache);
-  __NCACHE_REGION_SIZE  = LENGTH(m_ncache);
+  __NCACHE_REGION_START = NCACHE_START;
+  __NCACHE_REGION_SIZE  = NCACHE_SIZE;
   __NDATA_ROM = __DATA_ROM + (__data_end__ - __data_start__); /* Symbol is used by startup for ncache data initialization */
 
   .ncache.init : AT(__NDATA_ROM)
@@ -218,43 +240,42 @@ SECTIONS
     __noncachedata_end__ = .;     /* define a global symbol at ncache data end */
   } > m_ncache
 
-  __MDATA_REGION_START = ORIGIN(m_model);
-  __MDATA_REGION_SIZE  = LENGTH(m_model);
-  __MDATA_ROM = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__); /* Symbol is used by startup for model data initialization */
-  .model.init : AT(__MDATA_ROM)
-  {
-    __modeldata_start__ = .;   /* create a global symbol at model data start */
-    . = ALIGN(4);
-    __modeldata_init_end__ = .;   /* create a global symbol at initialized model data end */
-  } > m_model
-  . = __modeldata_init_end__;
-  .model :
-  {
-    . = ALIGN(4);
-    *(.modeldata)
-    *(.modeldata*)
-    __modeldata_end__ = .;
-  } > m_model
-
-  __DATA_END = __MDATA_ROM + (__modeldata_init_end__ - __modeldata_start__);
+  __DATA_END = __NDATA_ROM + (__noncachedata_init_end__ - __noncachedata_start__);
 
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
   _image_size = __DATA_END - __VECTOR_TABLE;
 
   /* Uninitialized data section */
+  /* NOINIT section for rpmsg_sh_mem */
+  .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)
+  {
+     __RPMSG_SH_MEM_START__ = .;
+     *(.noinit.$rpmsg_sh_mem*)
+     . = ALIGN(4) ;
+     __RPMSG_SH_MEM_END__ = .;
+  } > rpmsg_sh_mem
+
   .bss :
   {
     /* This is used by the startup in order to initialize the .bss section */
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
+    *(CacheLineData)
+    . = ALIGN(16); /* cache line size = 16 bytes */
     *(.bss)
     *(.bss*)
     *(COMMON)
     . = ALIGN(4);
     __bss_end__ = .;
     __END_BSS = .;
+  } > m_data
+
+  .stack :
+  {
+    . = ALIGN(8);
+    . += STACK_SIZE;
   } > m_data
 
   .heap :
@@ -266,13 +287,7 @@ SECTIONS
     . += HEAP_SIZE;
     __HeapLimit = .;
     __heap_limit = .; /* Add for _sbrk */
-  } > m_data
-
-  .stack :
-  {
-    . = ALIGN(8);
-    . += STACK_SIZE;
-  } > m_data
+  } > m_heap
 
   /* Initializes stack on the end of block */
   __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
@@ -280,6 +295,4 @@ SECTIONS
   PROVIDE(__stack = __StackTop);
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
-
-  ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
 }

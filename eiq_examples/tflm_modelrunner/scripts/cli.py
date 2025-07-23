@@ -47,12 +47,12 @@ def parse_cmd(cmd):
             d.cli.write("\r")
             d.cli.expect(".*=> ")
         elif c[0] == "run":
-            d.cli.logfile_read = None
+            #d.cli.logfile_read = None
             results = d.send_cmd(cmd)
             j = json.loads(results)
             bj = json.dumps(j,sort_keys=True,indent=2)
             print(bj)
-            d.cli.logfile_read = sys.stdout.buffer
+            #d.cli.logfile_read = sys.stdout.buffer
             d.cli.expect(".*=> ", timeout=0.1)
             d.cli.write("\r")
             d.cli.expect(".*=> ")

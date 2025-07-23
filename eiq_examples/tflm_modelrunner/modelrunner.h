@@ -28,20 +28,28 @@ struct nn_server {
         int64_t input;
         int64_t output;
     } timing;
+    struct{
+	char* name[256];
+	char* type[256];
+        int64_t timing[256];
+        int32_t num_layers;
+	int32_t output_idx[256][20];
+	size_t output_size[256];
+    }layers;
     struct {
         int32_t num_outputs;
         char* name[256];
         char* type[256];
-        int64_t timing[256];
+        size_t bytes[256];
+        char* data[256];
+        char data_type[256][20];
+        const int32_t* shape_data[256];
+        int32_t shape_size[256];
+        float scale[256];
+        int32_t zero_point[256];
+        int32_t tensor_idx[256];
         int32_t index[16];
-        size_t bytes[16];
-        char* data[16];
-        char data_type[16][20];
         int32_t outputs_size;
-        int* shape_data[16];
-        int32_t shape_size[16];
-        float scale[16];
-        int32_t zero_point[16];
     } output;
     struct {
         char* name[16];
@@ -59,9 +67,11 @@ struct nn_server {
     char* model_upload;
     int inference_count;
     bool model_flash_load;
+    bool input_tensor_load;
 
     FlashConfig* flash_config;
-	char* rem_mem;
+    char* m_tensor_arena;
+    int m_tensor_arena_size;
     int64_t run_ns;
 };
 
@@ -70,8 +80,8 @@ typedef struct nn_server NNServer;
 int cmd_router(char* cmd, NNServer* server);
 void parse_cmd(void* arg);
 int modelrunner();
-char* inference_results(NNServer* server, size_t* data_len, int outputs_idx[], int n_outputs);
-char* model_info(NNServer* server, size_t* data_len);
+int inference_results(int sock, NNServer* server, int outputs_idx[], int n_outputs);
+int model_info(int sock, NNServer* server);
 
 int64_t os_clock_now();
 

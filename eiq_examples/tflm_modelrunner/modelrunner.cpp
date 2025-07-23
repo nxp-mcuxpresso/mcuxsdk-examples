@@ -32,6 +32,7 @@ bool echo = 1;
 
 static size_t s_recv(char* buf, int size, NNServer* server);
 static int do_cmd_model_loadb(char* buf, NNServer* server);
+static int do_cmd_model_addr_set(NNServer* server);
 static int do_cmd_tensor_loadb(NNServer* server);
 static int do_cmd_model_run(NNServer* server);
 static int do_cmd_model_print(NNServer* server);
@@ -127,6 +128,8 @@ int cmd_router(char* cmd, NNServer* server){
         do_cmd_model_print(server);
     }else if( strcmp(r, "echo") == 0){
         do_cmd_echo(server);
+    }else if( strcmp(r, "model_addr") == 0){
+        do_cmd_model_addr_set(server);
     }else if( strcmp(r, "reset") == 0){
         do_cmd_reset();
     }
@@ -159,19 +162,32 @@ static int do_cmd_echo(NNServer* server){
     return 0;
 }
 
+static int do_cmd_model_addr_set(NNServer* server){
+    int addr = atoi(strtok(server->params , " "));
+    server->model_upload = (char*)(addr);
+    server->model_flash_load = true;
+    Model_Setup(server);
+    return 0;
+}
+
 static int do_cmd_tensor_loadb(NNServer* server){
     char* name;
     int size = 1;
     name =  strtok(server->params , " ");
-
+    
     for (int i=0; i<server->input.inputs_size; i++){
         if (strcmp (name, server->input.name [i] ) == 0){
             for(int j=0; j<server->input.shape_size[i]; j++){
                 size *= server->input.shape_data[i][j];
             }
-            server->input.input_data [i] = (char*) malloc(size * server->input.bytes[i] + 8);
+	    size *= server->input.bytes[i];
+            if(!server->input.input_data [i]){
+		    PRINTF("tensor arena not \r\n");
+		    return 1;
+            }
             PRINTF("\r\n######### Ready for %s tensor download ", server->input.name[i]);
             s_recv(server->input.input_data[i], size, server);
+	    server->input_tensor_load = 1;
             return 0;
         }
     }
@@ -181,19 +197,21 @@ static int do_cmd_tensor_loadb(NNServer* server){
 }
 
 static int do_cmd_model_loadb(char* model_buf, NNServer* server){
-    PRINTF("\r\n######### Ready for TFLite model download");
     int size = atoi(strtok(server->params , " "));
-
-    if (model_buf){
-        free(model_buf);
-        model_buf = nullptr;
+    if (server->model_upload && !server->model_flash_load){
+        free(server->model_upload);
+        server->model_upload = nullptr;
     }
+    if (server->m_tensor_arena){
+	free(server->m_tensor_arena);
+	server->m_tensor_arena = nullptr;
+    }
+    PRINTF("\r\n######### Ready for TFLite model download");
 
     if (size <= MODEL_SIZE){
-        if(model_buf)
-            free(model_buf);
         model_buf = (char*)malloc(size+8);
         server->model_upload = model_buf;
+        server->model_flash_load = false;
     } else {
 #ifndef __XCC__
     server->model_upload = (char*)(FLASH_BASE_ADDR + FLASH_MODEL_ADDR);
@@ -203,15 +221,12 @@ static int do_cmd_model_loadb(char* model_buf, NNServer* server){
 #endif
     }
     s_recv(model_buf, size, server);
-    Model_Setup(server);
-    return 0;
+    return Model_Setup(server);
 }
 
 static int do_cmd_model_print(NNServer* server){
-    size_t size;
-    char* data = model_info(server, &size);
-    print_results(data);
-    free(data);
+    print_results(nullptr);
+    model_info(0, server);
     return 0;
 }
 
@@ -253,7 +268,7 @@ static int do_cmd_model_run(NNServer* server){
             for (int i=0; i < server->output.outputs_size; i++) {
                 if (strcmp (out_tensor_name, server->output.name[server->output.index[i]]) == 0 ){
                     output = 1;
-                    outputs_idx[n_outputs] = i;
+                    outputs_idx[n_outputs] = server->output.index[i];
                     n_outputs++;
                     break;
                 }
@@ -266,10 +281,8 @@ static int do_cmd_model_run(NNServer* server){
     }
 
     Model_RunInference(server);
-    size_t data_len;
-    char* data = inference_results(server, &data_len, outputs_idx, n_outputs);
-    print_results(data);
-    free(data);
+    print_results(nullptr);
+    inference_results(0, server, outputs_idx, n_outputs);
     return 0;
 }
 

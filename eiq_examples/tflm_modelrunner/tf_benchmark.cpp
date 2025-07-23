@@ -37,8 +37,8 @@ static int kTensorArenaSize = 4;
 constexpr int kTensorArenaSize_mem = KTENSOR_ARENA_SIZE_MEM;
 constexpr int kTensorArenaSize_flash = KTENSOR_ARENA_SIZE_FLASH;
 #else
-constexpr int kTensorArenaSize_mem = 300 * 1024;
-constexpr int kTensorArenaSize_flash = (300 + 1024)  * 1024;
+constexpr int kTensorArenaSize_mem = 5*1024 * 1024;
+constexpr int kTensorArenaSize_flash = 5*1024 * 1024;
 #endif
 
 class BProfiler : public tflite::MicroProfilerInterface {
@@ -46,9 +46,9 @@ public:
     explicit BProfiler(NNServer* server): server_(server){}
 
     uint32_t BeginEvent(const char* tag) {
-        start_time_ = os_clock_now();
         TFLITE_DCHECK(tag != nullptr);
         event_tag_ = tag;
+        start_time_ = os_clock_now();
         return 0;
     }
 
@@ -56,11 +56,11 @@ public:
         int64_t end_time = os_clock_now() - start_time_;
         server_->run_ns += end_time;
 #ifdef DEBUG
-        PRINTF("%s - %s took %u us\r\n", server_->output.name[server_->output.num_outputs], event_tag_, (int32_t)(end_time));
+        PRINTF("%s - %s took %u us\r\n", server_->output.name[server_->layers.num_layers], event_tag_, (int32_t)(end_time));
 #endif
-        server_->output.timing[server_->output.num_outputs] += end_time;
-        server_->output.type[server_->output.num_outputs] = (char*)event_tag_;
-        server_->output.num_outputs++;
+        server_->layers.timing[server_->layers.num_layers] += end_time;
+        server_->layers.type[server_->layers.num_layers] = (char*)event_tag_;
+        server_->layers.num_layers++;
 	}
 
 private:
@@ -83,16 +83,56 @@ int Model_Setup(NNServer* server) {
     const tflite::SubGraph* subgraph = (*subgraphs)[0];
     auto tensors = subgraph->tensors();
     const flatbuffers::Vector<flatbuffers::Offset<tflite::Operator>>* operators = subgraph->operators();
+    server->output.num_outputs = 0;
     for (size_t i = 0; i < operators->size(); i++) {
         const tflite::Operator* cur_operator = (*operators)[i];
         auto* outputs = cur_operator->outputs();
+	server->layers.output_size[i] = outputs->size();
         for (size_t j = 0; j<outputs->size(); j++)
         {
             int idx = (int)(*outputs)[j];
             const tflite::Tensor* tensor = (*tensors)[idx];
             char* name = (char*)tensor->name()->c_str();
-            server->output.name[i] =  name;
-            break;
+            server->output.name[server->output.num_outputs] = name;
+            server->output.shape_data[server->output.num_outputs] = tensor->shape()->data();
+            server->output.shape_size[server->output.num_outputs] = tensor->shape()->size();
+            server->output.tensor_idx[server->output.num_outputs] = idx;
+	    server->layers.output_idx[i][j] = server->output.num_outputs;
+            switch (tensor->type()){
+            case kTfLiteFloat32:
+                strcpy(server->output.data_type [server->output.num_outputs], "FLOAT32");
+                break;
+            case kTfLiteUInt8:
+                strcpy(server->output.data_type [server->output.num_outputs], "UINT8");
+                break;
+            case kTfLiteInt8:
+                strcpy(server->output.data_type [server->output.num_outputs], "INT8");
+                break;
+            case kTfLiteInt16:
+                strcpy(server->output.data_type [server->output.num_outputs], "INT16");
+                break;
+            case kTfLiteInt4:
+                strcpy(server->output.data_type [server->output.num_outputs], "INT4");
+                break;
+            default:
+                strcpy(server->output.data_type [server->output.num_outputs], "NoType");
+                break;
+            }
+	    server->layers.output_size[i]++;
+	    server->output.num_outputs++;
+        }
+    }
+
+    server->output.outputs_size = subgraph->outputs()->size();
+    for (int i = 0; i < server->output.outputs_size; i++)
+    {
+        int idx = (int)(*subgraph->outputs())[i];
+        auto tensor = (*tensors)[idx];
+        char* name = (char*) tensor->name ()->c_str();
+        for (int j = server->output.num_outputs-1; j >= 0; j--){
+            if ( strcmp (server->output.name[j], name) == 0){
+                server->output.index[i] = j;
+            }
         }
     }
 
@@ -121,28 +161,19 @@ int Model_Setup(NNServer* server) {
             strcpy(server->input.data_type [i], "INT16");
             server->input.bytes[i] = 2;
             break;
+        case tflite::TensorType_INT4:
+            strcpy(server->input.data_type [i], "INT4");
+            server->input.bytes[i] = 0.5;
+            break;
         default:
             break;
         }
     }
 
-    server->output.outputs_size = subgraph->outputs()->size();
-    for (int i = 0; i < server->output.outputs_size; i++)
-    {
-        int idx = (int)(*subgraph->outputs())[i];
-        auto tensor = (*tensors)[idx];
-        char* name = (char*) tensor->name ()->c_str();
-        for (int j = operators->size()-1; j >= 0; j--){
-            if ( strcmp (server->output.name[j], name) == 0){
-                server->output.index[i] = j;
-            }
-        }
-    }
-
     kTensorArenaSize = 4;
     server->inference_count = 1;
-    Model_RunInference (server);
-    return 0;
+    int ret = Model_RunInference (server);
+    return ret;
 }
 
 tflite::MicroOpResolver &MODEL_GetOpsResolver()
@@ -274,49 +305,47 @@ tflite::MicroOpResolver &MODEL_GetOpsResolver()
 }
 
 int Model_RunInference(NNServer* server) {
-    BProfiler profiler(server);
+    static BProfiler profiler(server);
 
     tflite::MicroOpResolver &resolver = MODEL_GetOpsResolver();
 
-    if(kTensorArenaSize == 4){
-        if(server->model_flash_load){
-        	kTensorArenaSize = kTensorArenaSize_flash;
-        }else{
-        	kTensorArenaSize = kTensorArenaSize_mem;
+    if ( !server->m_tensor_arena){
+        if(kTensorArenaSize == 4){
+            if(server->model_flash_load){
+            	kTensorArenaSize = kTensorArenaSize_flash;
+            }else{
+            	kTensorArenaSize = kTensorArenaSize_mem;
+            }
         }
-    }
-    if (server->rem_mem) {
-        free(server->rem_mem);
-        server->rem_mem = nullptr;
-    }
-    uint8_t* tensor_arena; 
-    tensor_arena = (uint8_t*)malloc(kTensorArenaSize);
-    while(!tensor_arena){
-        tensor_arena = (uint8_t*)malloc(kTensorArenaSize);
-        kTensorArenaSize -= 1024;
-        if (kTensorArenaSize < 0){
-    	    PRINTF("tensor_arena alloc failed.");
-            return kStatus_Fail;
+
+        server->m_tensor_arena = (char*)aligned_alloc(8, kTensorArenaSize);
+        while(!server->m_tensor_arena){
+            server->m_tensor_arena = (char*)aligned_alloc(8, kTensorArenaSize);
+            kTensorArenaSize -= 1024;
+            if (kTensorArenaSize < 0){
+        	    PRINTF("tensor_arena alloc failed.");
+                return kStatus_Fail;
+            }
+
         }
+	server->m_tensor_arena_size = kTensorArenaSize;
     }
 
     // Build an interpreter to run the model with.
-    tflite::MicroInterpreter static_interpreter(
-					model, resolver, tensor_arena, kTensorArenaSize, nullptr, &profiler);
-    interpreter = &static_interpreter;
+    tflite::MicroInterpreter d_interpreter(
+					model, resolver, (uint8_t*)server->m_tensor_arena, server->m_tensor_arena_size, nullptr, &profiler);
+    interpreter = &d_interpreter;
 
     // Allocate memory from the tensor_arena for the model's tensors.
+    
     TfLiteStatus allocate_status = interpreter->AllocateTensors();
     if (allocate_status != kTfLiteOk) {
-        PRINTF("tflite allocate tensors failed.\r\n");
-        free(tensor_arena);
+        free(server->m_tensor_arena);
+	server->m_tensor_arena = nullptr;
         return kStatus_Fail;
     }
 
     server->kTensorArenaSize = interpreter->arena_used_bytes();
-
-    input = interpreter->input(0);
-    output = interpreter->output(0);
 
     for (size_t i = 0; i<interpreter->inputs_size(); i++){
         server->input.scale [i] = interpreter->input(i)->params.scale;
@@ -324,34 +353,35 @@ int Model_RunInference(NNServer* server) {
     }
 
     for (size_t i=0; i<interpreter->outputs_size(); i++){
-        server->output.scale [i] = interpreter->output(i)->params.scale;
-        server->output.zero_point [i] = interpreter->output(i)->params.zero_point;
+        server->output.scale [server->output.index[i]] = interpreter->output(i)->params.scale;
+        server->output.zero_point [server->output.index[i]] = interpreter->output(i)->params.zero_point;
     }
 
     for (size_t i = 0; i<interpreter->inputs_size(); i++){
-        if ( server->input.input_data [i] ){
-            memcpy ( interpreter->input(i)->data.raw, server->input.input_data[i], interpreter->input(i)->bytes);
-            free (server->input.input_data [i]);
-            server->input.input_data[i] = nullptr;
+        if ( !server-> input_tensor_load){
+                memset ( interpreter->input(i)->data.raw, 0, interpreter->input(i)->bytes);
+        }else{
+            server-> input_tensor_load = 0;
         }
+        server->input.input_data[i] = interpreter->input(i)->data.raw;
     }
-
     server->input_dims_data = input->dims->data;
 
+
     // Obtain pointers to the model's input and output tensors.
-    int64_t run_ns = 0, rem_size = 0;;
-    for(int i=0; i< server->output.num_outputs; i++)
+    int64_t run_ns = 0;
+    for(int i=0; i< server->layers.num_layers; i++)
     {
-        server->output.timing[i] = 0;
+        server->layers.timing[i] = 0;
     }
     for(int i = 1; i <= server->inference_count; i++)
     {
-        server->output.num_outputs = 0;
 #ifdef DEBUG
         PRINTF("\r\nloop %d: \r\n", i);
 #endif
 
         server->run_ns = 0;
+        server->layers.num_layers = 0;
         // Run inference, and report any error
         TfLiteStatus invoke_status = interpreter->Invoke();
         if (invoke_status != kTfLiteOk) {
@@ -366,29 +396,30 @@ int Model_RunInference(NNServer* server) {
         run_ns += server->run_ns;
 
         for(size_t i = 0; i<interpreter->outputs().size(); i++){
-            server->output.data [i] = interpreter->output(i)->data.raw;
-            server->output.bytes [i] = interpreter->output(i)->bytes;
-            server->output.shape_data [i] = interpreter->output (i)->dims->data;
-            server->output.shape_size [i] = interpreter->output (i)->dims->size;
-            switch (interpreter->output (i)->type){
+            server->output.data [server->output.index[i]] = interpreter->output(i)->data.raw;
+            server->output.bytes [server->output.index[i]] = interpreter->output(i)->bytes;
+	    switch (interpreter->output (i)->type){
             case kTfLiteFloat32:
-                strcpy(server->output.data_type [i], "FLOAT32");
+                strcpy(server->output.data_type [server->output.index[i]], "FLOAT32");
                 break;
             case kTfLiteUInt8:
-                strcpy(server->output.data_type [i], "UINT8");
+                strcpy(server->output.data_type [server->output.index[i]], "UINT8");
                 break;
             case kTfLiteInt8:
-                strcpy(server->output.data_type [i], "INT8");
+                strcpy(server->output.data_type [server->output.index[i]], "INT8");
+                break;
+            case kTfLiteInt16:
+                strcpy(server->output.data_type [server->output.index[i]], "INT16");
+                break;
+            case kTfLiteInt4:
+                strcpy(server->output.data_type [server->output.index[i]], "INT4");
                 break;
             default:
+                strcpy(server->output.data_type [server->output.index[i]], "");
                 break;
             }
-            int max_size = (interpreter->output(i)->data.raw + interpreter->output(i)->bytes - (char*)tensor_arena);
-            rem_size = max_size >  rem_size ? max_size : rem_size ;
         }
-
     }
-    server->rem_mem = (char*)realloc(tensor_arena, rem_size);
     server->run_ns = (int64_t)(run_ns/(int64_t)server->inference_count);
     return 0;
 }

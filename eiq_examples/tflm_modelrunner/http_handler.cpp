@@ -70,6 +70,15 @@ int http_response(int sock, int status_code, char** headers,
     return 0;
 }
 
+int http_response_trunk(int sock){
+    size_t offset = 0;
+    char h[150];
+    offset += sprintf(h+offset, "HTTP/1.1 200 OK\r\n");
+    offset += sprintf(h+offset, "Transfer-Encoding: chunked\r\n");
+    offset += sprintf(h+offset, "Content-Type: text/html\r\n");
+    return write(sock, h, offset);
+}
+
 int http_readline(int sock, char* buf, size_t* len,
                   size_t* content_length) {
     char c[1];
@@ -141,6 +150,20 @@ int http_parse_mime(NNServer* server, int sock, char* boundary,
                 strcpy(filename, val);
             }
         }
+    }
+
+
+    if (!data_buf){
+        for (int i=0; i<server->input.inputs_size; i++){
+            if (strcmp (name, server->input.name [i] ) == 0){
+                //for(int j=0; j<server->input.shape_size[i]; j++){
+                //    size *= server->input.shape_data[i][j];
+                //}
+                //size *= server->input.bytes[i];
+                data_buf = server->input.input_data [i];
+		server->input_tensor_load = 1;
+	    }
+	}
     }
 
     while(len>1 && *content_length >0){
@@ -297,12 +320,17 @@ int v1_handler_put(int                sock,
     size_t data_buf_len;
     if(*content_length > MODEL_SIZE){
         server->model_flash_load = true;
-        if(server->model_upload && !server->model_flash_load)
+        if(server->model_upload && !server->model_flash_load){
             free(server->model_upload);
+	    server->model_upload = nullptr;
+	}
         server->model_upload = (char*)(FLASH_BASE_ADDR + FLASH_MODEL_ADDR);
     }else{
         if(server->model_upload && !server->model_flash_load){
             free(server->model_upload);
+	    free(server->m_tensor_arena);
+	    server->m_tensor_arena = nullptr;
+	    server->model_upload = nullptr;
         }
         server->model_flash_load = false;
         server->model_upload = (char*) malloc(*content_length);
@@ -380,36 +408,13 @@ int v1_handler_post(int                sock,
 
         char name[50];
         char filename[50];
-        char*  tmp = (char*)malloc(*content_length + 100);
-        char*  tensor = (char*)malloc(*content_length);
-		free(tmp);
-        size_t tensor_len, size=1;
+	size_t tensor_len = 0;
 
         do{
             ret = http_parse_mime(server, sock, boundary, boundary_len,
-                                  name, filename, tensor, &tensor_len,
+                                  name, filename, nullptr, &tensor_len,
                                   content_length, false);
-            for (int i=0; i<server->input.inputs_size; i++){
-                size=1;
-                if (strcmp (name, server->input.name [i] ) == 0){
-                    for(int j=0; j<server->input.shape_size[i]; j++){
-                        size *= server->input.shape_data[i][j];
-                    }
-                    size *= server->input.bytes[i];
-                    server->input.input_data [i] = (char*) malloc(size);
-                    if(size == tensor_len){
-                        memcpy(server->input.input_data[i], tensor, size);
-                    }else{
-                        free(tensor);
-                        char errmsg[100];
-                        sprintf(errmsg, "\"error\": \"invalid tensor size %d %d\"", size, tensor_len);
-                        http_response(sock, 200, NULL, errmsg, strlen(errmsg));
-                        return 0;
-                    }
-                }
-            }
         }while(ret!=2);
-        free(tensor);
     }
 
     int n_outputs = 0;
@@ -444,7 +449,7 @@ int v1_handler_post(int                sock,
             for (int i=0; i < server->output.outputs_size; i++) {
                 if (strcmp (out_tensor_name, server->output.name[server->output.index[i]]) == 0 ){
                     output = 1;
-                    outputs_idx[n_outputs] = i;
+                    outputs_idx[n_outputs] = server->output.index[i];
                     n_outputs++;
                     break;
                 }
@@ -463,15 +468,12 @@ int v1_handler_post(int                sock,
         return 0;
     }
 
-    size_t data_len;
-    char* data = inference_results(server, &data_len, outputs_idx, n_outputs);
-	if (!data){
+    ret = inference_results(sock, server, outputs_idx, n_outputs);
+	if (ret){
         char msg[40] = "\"error\": \"json results to large\"";
         ret = http_response(sock, 200, NULL, msg, strlen(msg));
 		return 0;
 	}
-    ret = http_response(sock, 200, NULL, data, data_len);
-    free(data);
     return 0;
 }
 
@@ -482,10 +484,7 @@ int v1_model_handler_get(int                sock,
                          size_t             n_headers,
                          NNServer*          server){
 
-    size_t size;
-    char* data = model_info(server, &size);
-    http_response(sock, 200, NULL, data, size);
-    free(data);
+    model_info(sock, server);
     return 0;
 }
 

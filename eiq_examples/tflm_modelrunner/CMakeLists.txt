@@ -53,6 +53,10 @@ mcux_add_mdk_configuration(
   CC "-std=gnu++17"
 )
 
+mcux_remove_armgcc_configuration(
+  CX "--specs=nano.specs"
+)
+
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_modelrunner/reconfig.cmake OPTIONAL)
 
