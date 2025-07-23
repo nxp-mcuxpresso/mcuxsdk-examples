@@ -20,3 +20,4 @@ mcux_add_include(
              ${board_root}/evkmimx8mq/multicore_examples/rpmsg_lite_pingpong_rtos_linux
              ${board_root}/evkmimx8mq/multicore_examples/rpmsg_lite_pingpong_rtos_linux/remote
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)
