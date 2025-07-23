@@ -25,3 +25,4 @@ mcux_remove_armgcc_configuration(
     TARGETS flash_release
     CC "-Os"
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

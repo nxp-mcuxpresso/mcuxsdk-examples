@@ -13,3 +13,4 @@ mcux_add_include(
     INCLUDES ${board_root}/evkmimx8mn/demo_apps/hello_world
              ${board_root}/evkmimx8mn
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

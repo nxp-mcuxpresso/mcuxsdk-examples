@@ -18,3 +18,4 @@ mcux_add_include(
     INCLUDES ${board_root}/evkmimx8mn/cmsis_driver_examples/i2c/int_b2b_transfer/slave
              ${board_root}/evkmimx8mn
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

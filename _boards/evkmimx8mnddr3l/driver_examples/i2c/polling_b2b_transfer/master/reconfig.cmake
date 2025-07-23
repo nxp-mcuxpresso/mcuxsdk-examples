@@ -13,3 +13,4 @@ mcux_add_include(
     INCLUDES ${board_root}/evkmimx8mn/driver_examples/i2c/polling_b2b_transfer/master
              ${board_root}/evkmimx8mn
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

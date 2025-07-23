@@ -14,3 +14,4 @@ mcux_add_include(
              examples/driver_examples/easrc/asrc_m2m_sdma
              ${board_root}/evkmimx8mn
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

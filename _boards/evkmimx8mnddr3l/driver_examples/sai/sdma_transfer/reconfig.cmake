@@ -17,3 +17,4 @@ mcux_add_include(
 mcux_remove_armgcc_configuration(
                 AS "-D__STARTUP_INITIALIZE_NONCACHEDATA"
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)
