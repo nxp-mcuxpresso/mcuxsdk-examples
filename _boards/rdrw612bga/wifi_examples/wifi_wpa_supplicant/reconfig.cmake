@@ -59,6 +59,9 @@ mcux_add_macro(
 )
 
 
+mcux_add_mdk_configuration(
+    CC "-mfloat-abi=hard"
+)
 
 mcux_add_mdk_configuration(
     TARGETS flash_release flash_debug

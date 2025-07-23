@@ -32,6 +32,7 @@
  */
 #define CONFIG_TX_RX_ZERO_COPY 1
 #define CONFIG_ANT_DETECT 1
+#define CONFIG_CSI_AMI 0
 #endif
 
 #if defined(SD8978) || defined(SD8987) || defined(SD9177) || defined(IW610)

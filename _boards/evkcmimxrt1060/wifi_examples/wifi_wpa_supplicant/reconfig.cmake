@@ -47,6 +47,7 @@ mcux_add_iar_configuration(
 )
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
+    CC "-mfloat-abi=hard"
 )
 mcux_add_mdk_configuration(
     TARGETS flexspi_nor_release

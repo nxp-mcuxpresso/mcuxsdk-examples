@@ -42,6 +42,11 @@ mcux_add_armgcc_configuration(
     CC "-g"
     CX "-g"
 )
+
+mcux_add_mdk_configuration(
+    CC "-mfloat-abi=hard"
+)
+
 mcux_add_mdk_configuration(
     TARGETS debug flash_debug
     CC "-O0"

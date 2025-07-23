@@ -45,6 +45,11 @@ mcux_add_iar_configuration(
 	CX "--no_clustering"
 	LD "--semihosting"
 )
+
+mcux_add_mdk_configuration(
+    CC "-mfloat-abi=hard"
+)
+
 mcux_add_mdk_configuration(
     TARGETS flexspi_nor_release
     CC "-Os"
