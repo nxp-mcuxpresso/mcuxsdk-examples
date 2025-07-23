@@ -124,21 +124,67 @@ static struct bt_sdp_attribute map_mce_attrs[] = {
 
 static struct bt_sdp_record map_mce_rec = BT_SDP_RECORD(map_mce_attrs);
 
+#define _MAP_NUM_ARGS(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, N, ...) N
+#define MAP_NUM_ARGS(...) _MAP_NUM_ARGS(__VA_ARGS__, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+#define MAP_NUM_ARGS_HEX(...) _MAP_NUM_ARGS(__VA_ARGS__, f, e, d, c, b, a, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+
+#define MAP_MSG_LEN_1  1032
+#define MAP_MSG_LEN_2  1032
+#define MAP_MSG_LEN_3  1040
+#define MAP_MSG_LEN_4  1040
+#define MAP_MSG_LEN_5  1048
+#define MAP_MSG_LEN_6  1048
+#define MAP_MSG_LEN_7  1056
+#define MAP_MSG_LEN_8  1056
+#define MAP_MSG_LEN_9  1064
+#define MAP_MSG_LEN_10 1064
+#define MAP_MSG_LEN_11 1072
+#define MAP_MSG_LEN_12 1072
+#define MAP_MSG_LEN_13 1080
+#define MAP_MSG_LEN_14 1080
+#define MAP_MSG_LEN_15 1088
+
+#define MAP_TEL_BCD_PAIR(a, b) _CONCAT(b, a)
+#define MAP_TEL_BCD_LAST(a) _CONCAT(f, a)
+
+#define MAP_TEL_BCD_1(a) MAP_TEL_BCD_LAST(a)
+#define MAP_TEL_BCD_2(a, b) MAP_TEL_BCD_PAIR(a, b)
+#define MAP_TEL_BCD_3(a, b, ...)  _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_1(__VA_ARGS__))
+#define MAP_TEL_BCD_4(a, b, ...)  _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_2(__VA_ARGS__))
+#define MAP_TEL_BCD_5(a, b, ...)  _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_3(__VA_ARGS__))
+#define MAP_TEL_BCD_6(a, b, ...)  _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_4(__VA_ARGS__))
+#define MAP_TEL_BCD_7(a, b, ...)  _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_5(__VA_ARGS__))
+#define MAP_TEL_BCD_8(a, b, ...)  _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_6(__VA_ARGS__))
+#define MAP_TEL_BCD_9(a, b, ...)  _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_7(__VA_ARGS__))
+#define MAP_TEL_BCD_10(a, b, ...) _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_8(__VA_ARGS__))
+#define MAP_TEL_BCD_11(a, b, ...) _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_9(__VA_ARGS__))
+#define MAP_TEL_BCD_12(a, b, ...) _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_10(__VA_ARGS__))
+#define MAP_TEL_BCD_13(a, b, ...) _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_11(__VA_ARGS__))
+#define MAP_TEL_BCD_14(a, b, ...) _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_12(__VA_ARGS__))
+#define MAP_TEL_BCD_15(a, b, ...) _CONCAT(MAP_TEL_BCD_PAIR(a, b), MAP_TEL_BCD_13(__VA_ARGS__))
+
+#define _MAP_PLAIN_TEXT(a) a
+/* Return telephone number string */
+#define MAP_TEL(...) STRINGIFY(MACRO_MAP_CAT(_MAP_PLAIN_TEXT, __VA_ARGS__))
+/* Return telephone number length as a hexadecimal format string */
+#define MAP_TEL_LEN(...) STRINGIFY(MAP_NUM_ARGS_HEX(__VA_ARGS__))
+/* Return message length string */
+#define MAP_MSG_LEN(...) STRINGIFY(_CONCAT(MAP_MSG_LEN_, MAP_NUM_ARGS(__VA_ARGS__)))
+/* Return BCD number string */
+#define MAP_TEL_BCD(...) STRINGIFY(_CONCAT(MAP_TEL_BCD_, MAP_NUM_ARGS(__VA_ARGS__))(__VA_ARGS__))
+
 /* The following message is encoded by G-7bit including twenty "Bluetooth MAP Test!".
-The message can be used for testing with Android phone and boards with MSE function.
-The message may not delivered successfully by MSE(e.g. Android phone) because the
-phone number is 0000000000000. If wanting MSE to deliver this message successfully,
-users need to modify the phone number(FN, N, TEL and 0d91000000000000f0 in the message)
-to the valid and modify the length(1080) accordingly. 0d is the length of phone
-number. 91 indicates the following phone number is international.
-000000000000f0 is a 13-digit phone number.
-For example, if users want to deliver the messsage to the phone number 123456,
-FN, N and TEL shall be +123456, 0d91000000000000f0 shall be 0691214365 and
-the length(1080) shall be 1048(1080 - (18 - 10) * 4).
-For example, If users want to deliver the messsage to the phone number 1234567,
-FN, N and TEL shall be +1234567, 0d91000000000000f0 shall be 0791214365f7 and
-the length(1080) shall be 1056(1080 - (18 - 12) * 4). */
-#define MAP_MCE_MSG_G_7BIT \
+The message can be tested with an Android phone or a board with MSE functionality.
+iPhone may not support G-7bit message. Please use MAP_MCE_MSG_UTF_8 to test with an iPhone.
+The message may not be delivered successfully by Android phone because the phone number
+is 0000000000000. If wanting Android phone to deliver this message successfully,
+users need to change the phone number to a valid number. For example, change the phone
+number to 123456: MAP_MCE_MSG_G_7BIT_IMPL(1, 2, 3, 4, 5, 6), change the phone
+number to 123456789: MAP_MCE_MSG_G_7BIT_IMPL(1, 2, 3, 4, 5, 6, 7, 8, 9) or change
+the phone number to other valid numbers. MAP_MCE_MSG_G_7BIT_IMPL supports up to 15
+digit phone numbers. */
+#define MAP_MCE_MSG_G_7BIT  MAP_MCE_MSG_G_7BIT_IMPL(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#define MAP_MCE_MSG_G_7BIT_IMPL(...) \
 "BEGIN:BMSG\r\n\
 VERSION:1.0\r\n\
 STATUS:READ\r\n\
@@ -147,37 +193,41 @@ FOLDER:\r\n\
 BEGIN:BENV\r\n\
 BEGIN:VCARD\r\n\
 VERSION:3.0\r\n\
-FN:+0000000000000\r\n\
-N:+0000000000000\r\n\
-TEL:+0000000000000\r\n\
+FN:+" MAP_TEL(__VA_ARGS__) "\r\n\
+N:+" MAP_TEL(__VA_ARGS__) "\r\n\
+TEL:+" MAP_TEL(__VA_ARGS__) "\r\n\
 END:VCARD\r\n\
 BEGIN:BBODY\r\n\
 ENCODING:G-7BIT\r\n\
-LENGTH:1080\r\n\
+LENGTH:" MAP_MSG_LEN(__VA_ARGS__) "\r\n\
 BEGIN:MSG\r\n\
-0041000d91000000000000f00000a0050003080401622e90905d2fd3df6f3a1ad40c4241d4f29c1e52c85c2021bb5ea6bfdf7434a8198482a8e5393da498b9404276bd4c7fbfe9685033080551cb737a4841738184ec7a99fe7ed3d1a066100aa296e7f490a2e60209d9f532fdfda6a341cd2014442dcfe92185cd0512b2eb65fafb4d47839a4128885a9ed3438a9b0b2464d7cbf4f79b8e063583\r\n\
+0041000" MAP_TEL_LEN(__VA_ARGS__) "91" MAP_TEL_BCD(__VA_ARGS__) "0000a0050003080401622e90905d2fd3df6f3a1ad40c4241d4f29c1e52c85c2021bb5ea6bfdf7434a8198482a8e5393da498b9404276bd4c7fbfe9685033080551cb737a4841738184ec7a99fe7ed3d1a066100aa296e7f490a2e60209d9f532fdfda6a341cd2014442dcfe92185cd0512b2eb65fafb4d47839a4128885a9ed3438a9b0b2464d7cbf4f79b8e063583\r\n\
 END:MSG\r\n\
 BEGIN:MSG\r\n\
-0041000d91000000000000f00000a0050003080402a0206a794e0f29702e90905d2fd3df6f3a1ad40c4241d4f29c1e52e45c2021bb5ea6bfdf7434a8198482a8e5393da488c15c2021bb5ea6bfdf7434a8198482a8e5393da488c55c2021bb5ea6bfdf7434a8198482a8e5393da488c95c2021bb5ea6bfdf7434a8198482a8e5393da488cd5c2021bb5ea6bfdf7434a8198482a8e5393da488d15c\r\n\
+0041000" MAP_TEL_LEN(__VA_ARGS__) "91" MAP_TEL_BCD(__VA_ARGS__) "0000a0050003080402a0206a794e0f29702e90905d2fd3df6f3a1ad40c4241d4f29c1e52e45c2021bb5ea6bfdf7434a8198482a8e5393da488c15c2021bb5ea6bfdf7434a8198482a8e5393da488c55c2021bb5ea6bfdf7434a8198482a8e5393da488c95c2021bb5ea6bfdf7434a8198482a8e5393da488cd5c2021bb5ea6bfdf7434a8198482a8e5393da488d15c\r\n\
 END:MSG\r\n\
 BEGIN:MSG\r\n\
-0041000d91000000000000f00000a0050003080403404276bd4c7fbfe9685033080551cb737a4811abb9404276bd4c7fbfe9685033080551cb737a4811b3b9404276bd4c7fbfe9685033080551cb737a4811bbb9404276bd4c7fbfe9685033080551cb737a4811c3b9404276bd4c7fbfe9685033080551cb737a4811cbb9404276bd4c7fbfe9685033080551cb737a482183b9404276bd4c7fbfe9\r\n\
+0041000" MAP_TEL_LEN(__VA_ARGS__) "91" MAP_TEL_BCD(__VA_ARGS__) "0000a0050003080403404276bd4c7fbfe9685033080551cb737a4811abb9404276bd4c7fbfe9685033080551cb737a4811b3b9404276bd4c7fbfe9685033080551cb737a4811bbb9404276bd4c7fbfe9685033080551cb737a4811c3b9404276bd4c7fbfe9685033080551cb737a4811cbb9404276bd4c7fbfe9685033080551cb737a482183b9404276bd4c7fbfe9\r\n\
 END:MSG\r\n\
 BEGIN:MSG\r\n\
-0041000d91000000000000f0000012050003080404d0a066100aa296e7f410\r\n\
+0041000" MAP_TEL_LEN(__VA_ARGS__) "91" MAP_TEL_BCD(__VA_ARGS__) "000012050003080404d0a066100aa296e7f410\r\n\
 END:MSG\r\n\
 END:BBODY\r\n\
 END:BENV\r\n\
 END:BMSG"
 
 /* The following message is encoded by UTF-8 including twenty "Bluetooth MAP Test!".
-The message can be used for testing with iPhone and boards with MSE function.
-The message may not delivered successfully by MSE(e.g. iPhone) because the
-phone number is 0000000000000. If wanting MSE to deliver this message successfully,
-users need to modify the phone number(FN, N, TEL).
-For example, if users want to deliver the messsage to the phone number 123456,
-FN, N and TEL shall be +123456. */
-#define MAP_MCE_MSG_UTF_8 \
+The message can be tested with an iPhone or a board with MSE functionality. Android phone
+may not support UTF-8 message. Please use MAP_MCE_MSG_G_7BIT to test with an Android phone.
+The message may not be delivered successfully by iPhone because the phone number
+is 0000000000000. If wanting iPhone to deliver this message successfully,
+users need to change the phone number to a valid number. For example, change the phone
+number to 123456: MAP_MCE_MSG_UTF_8_IMPL(1, 2, 3, 4, 5, 6), change the phone
+number to 123456789: MAP_MCE_MSG_UTF_8_IMPL(1, 2, 3, 4, 5, 6, 7, 8, 9) or change
+the phone number to other valid numbers. MAP_MCE_MSG_UTF_8_IMPL supports up to 15
+digit phone numbers. */
+#define MAP_MCE_MSG_UTF_8  MAP_MCE_MSG_UTF_8_IMPL(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#define MAP_MCE_MSG_UTF_8_IMPL(...) \
 "BEGIN:BMSG\r\n\
 VERSION:1.0\r\n\
 STATUS:UNREAD\r\n\
@@ -191,9 +241,9 @@ END:VCARD\r\n\
 BEGIN:BENV\r\n\
 BEGIN:VCARD\r\n\
 VERSION:2.1\r\n\
-FN;CHARSET=UTF-8:+0000000000000\r\n\
-N;CHARSET=UTF-8:+0000000000000\r\n\
-TEL:+0000000000000\r\n\
+FN;CHARSET=UTF-8:+" MAP_TEL(__VA_ARGS__) "\r\n\
+N;CHARSET=UTF-8:+" MAP_TEL(__VA_ARGS__) "\r\n\
+TEL:+" MAP_TEL(__VA_ARGS__) "\r\n\
 END:VCARD\r\n\
 BEGIN:BBODY\r\n\
 CHARSET:UTF-8\r\n\
