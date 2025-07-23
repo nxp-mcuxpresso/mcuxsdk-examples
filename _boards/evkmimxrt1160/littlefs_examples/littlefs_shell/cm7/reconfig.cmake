@@ -1,4 +1,9 @@
 
+# Add additional configuration
+mcux_add_macro(
+    CC "-DXIP_BOOT_HEADER_DCD_ENABLE=1"
+)
+
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES ${board_root}/${board}/littlefs_examples/littlefs_shell/peripherals.c
