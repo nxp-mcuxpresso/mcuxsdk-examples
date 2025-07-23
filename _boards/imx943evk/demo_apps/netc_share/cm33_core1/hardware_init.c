@@ -15,6 +15,8 @@
 #include "fsl_netc_phy_wrapper.h"
 #include "fsl_phygpy215.h"
 #include "rsc_table.h"
+#include "FreeRTOS.h"
+#include "task.h"
 /*${header:end}*/
 
 /*${macro:start}*/
@@ -48,6 +50,9 @@ static phy_gpy215_resource_t s_phy_gpy215_resource;
 static uint8_t s_phy_addr[EXAMPLE_SWT_PORT_NUM] = EXAMPLE_SWT_PHY_ADDR;
 AT_NONCACHEABLE_SECTION_ALIGN(static netc_cmd_bd_t g_cmdBuffDescrip[EXAMPLE_EP_TXBD_NUM], EXAMPLE_EP_BD_ALIGN);
 
+static bool s_phy_link[EXAMPLE_SWT_PORT_NUM];
+static phy_speed_t s_phy_speed[EXAMPLE_SWT_PORT_NUM];
+static phy_duplex_t s_phy_duplex[EXAMPLE_SWT_PORT_NUM];
 /*${variable:end}*/
 
 /*${function:start}*/
@@ -180,6 +185,10 @@ static status_t SWT_PHY_Init(void)
 
 	/* Need to configure PHY SGMII mode */
         PHY_GPY215_WriteC45(&s_phy_handle[i], PHY_MMD_VSPEC1, VSPEC1_SGMII_CTRL_REG, 0x24faU);
+
+        s_phy_link[i] = false;
+        s_phy_speed[i] = kPHY_Speed2500M;
+        s_phy_duplex[i] = kPHY_FullDuplex;
     }
 
     return result;
@@ -214,6 +223,59 @@ static status_t SWT_MacLearning_Forwarding(void)
     }
 
     return result;
+}
+
+static void SWT_PollLinkTask(void *pvParameters)
+{
+    while (true) {
+        for (int i = 0; i < EXAMPLE_SWT_PORT_NUM; i++) {
+            phy_handle_t *phy = &s_phy_handle[i];
+            bool link;
+            phy_speed_t speed;
+            phy_duplex_t duplex;
+            status_t st = PHY_GetLinkStatus(phy, &link);
+
+            if (st != kStatus_Success)
+            {
+                continue;
+
+            }
+
+            /* handle link down */
+            if (!link)
+            {
+                if (s_phy_link[i] != link)
+                {
+                    PRINTF("Switch port %d link down\r\n", i);
+                    s_phy_link[i] = link;
+                }
+                continue;
+            }
+
+            /* handle link up */
+            st = PHY_GetLinkSpeedDuplex(phy, &speed, &duplex);
+            if (st != kStatus_Success)
+            {
+                continue;
+            }
+
+            if (s_phy_link[i] != link || s_phy_speed[i] != speed || s_phy_duplex[i] != duplex)
+            {
+                st = SWT_SetEthPortMII(&g_swt_handle, i, (netc_hw_mii_speed_t)speed, (netc_hw_mii_duplex_t)duplex);
+                if (st != kStatus_Success)
+                {
+                    continue;
+                }
+
+                PRINTF("Switch port %d link up\r\n", i);
+                s_phy_link[i] = link;
+                s_phy_speed[i] = speed;
+                s_phy_duplex[i] = duplex;
+            }
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(3000));
+    }
 }
 
 status_t APP_NETC_PreinitVsi(netc_enetc_hw_t *hw, netc_hw_si_idx_t si)
@@ -563,6 +625,8 @@ void BOARD_InitHardware(void)
     }
 
     PRINTF("\r\nSwitch is initialized.\r\n");
+
+    xTaskCreate(SWT_PollLinkTask, "Switch link polling", 512U, NULL, 3U, NULL);
 
     /* Init SRTM services */
     copyResourceTable();
