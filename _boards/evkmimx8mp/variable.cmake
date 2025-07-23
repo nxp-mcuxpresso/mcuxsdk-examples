@@ -6,11 +6,6 @@
 mcux_set_variable(board evkmimx8mp)
 mcux_set_variable(board_root examples/_boards)
 
-if (CONFIG_TOOLCHAIN STREQUAL "armgcc")
-# Remove the section '.stacktop_and_pc'
-mcux_set_variable(__EXTRA_ARGS "--remove-section=.stacktop_and_pc")
-endif()
-
 if (NOT DEFINED device)
     mcux_set_variable(device MIMX8ML8)
 endif()

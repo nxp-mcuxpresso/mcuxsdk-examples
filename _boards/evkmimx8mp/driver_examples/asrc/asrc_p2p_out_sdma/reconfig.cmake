@@ -8,3 +8,4 @@ mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/driver_examples/easrc/asrc_p2p_out_sdma
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

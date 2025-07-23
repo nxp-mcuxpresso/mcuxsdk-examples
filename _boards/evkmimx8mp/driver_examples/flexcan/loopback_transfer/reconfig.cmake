@@ -8,3 +8,4 @@ mcux_add_source(
 mcux_add_configuration(
         CC "-DCPU_MIMX8ML8DVNLZ=1"
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)
