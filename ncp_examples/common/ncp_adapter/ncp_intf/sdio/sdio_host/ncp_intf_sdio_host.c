@@ -1364,7 +1364,7 @@ ncp_status_t ncp_sdhost_send_data(uint8_t *buf, uint32_t length)
     sdioheader->pkttype = SDIO_TYPE_DATA;
     sdioheader->size    = length + SDIO_HEADER_LEN;
     calculate_sdio_write_params(sdioheader->size, &tx_blocks, &buflen);
-    (void)memcpy((void *)(sdh_outbuf + SDIO_HEADER_LEN), (const void *)(buf + SDIO_HEADER_LEN), length);
+    (void)memcpy((void *)(sdh_outbuf + SDIO_HEADER_LEN), (const void *)(buf), length);
 
     /*ret = get_free_port();
     if (ret == NCP_STATUS_ERROR)
@@ -1418,7 +1418,7 @@ ncp_status_t ncp_sdhost_send_cmd(uint8_t *buf, uint32_t length)
     uint32_t tx_blocks = 0, buflen = 0;
     calculate_sdio_write_params(sdioheader->size, &tx_blocks, &buflen);
 
-    (void)memcpy((void *)(sdh_outbuf + SDIO_HEADER_LEN), (const void *)(buf + SDIO_HEADER_LEN), length);
+    (void)memcpy((void *)(sdh_outbuf + SDIO_HEADER_LEN), (const void *)(buf), length);
     (void)sdio_drv_write(sdhost_ctrl.ioport | CMD_PORT_SLCT, 1, tx_blocks, buflen, (uint8_t *)sdh_outbuf, &resp);
     (void)OSA_MutexUnlock(&txrx_mutex);
 
@@ -1436,7 +1436,7 @@ int ncp_sdhost_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
     NCP_ASSERT(NULL != tlv_buf);
     NCP_ASSERT(0 != tlv_sz);
 
-    res = (NCP_COMMAND *)(tlv_buf + SDIO_HEADER_LEN);
+    res = (NCP_COMMAND *)(tlv_buf);
 
     msg_type = SDIO_GET_MSG_TYPE(res->cmd);
     switch (msg_type)
