@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../../../scripts/data_schema/example_description_schema.json
+
+all_reset_but_netc_switch:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/all_reset_but_netc/switch
+    project-root-path: boards/${board}/demo_apps/all_reset_but_netc/switch/${multicore_foldername}
+    document:
+      name: all_reset_but_netc_switch${core_id_suffix_name}
+      category: demo_apps
+      brief: 'The example shows that NETC works fine during the all_reset_but_netc reset.'
+      example_readme:
+      - examples/demo_apps/all_reset_but_netc/switch/readme.md
+      - ${board_root}/${board}/demo_apps/all_reset_but_netc/switch/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug

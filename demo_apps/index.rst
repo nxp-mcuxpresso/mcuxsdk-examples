@@ -11,6 +11,8 @@ demo_apps
    adc16/index.rst
    afe/index.rst
    aon_gpio_interrupt/readme.md
+   all_reset_but_netc/switch/readme.md
+   all_reset_but_netc/trigger/readme.md
    bubble/readme.md
    bubble_peripheral/readme.md
    cadc/index.rst
