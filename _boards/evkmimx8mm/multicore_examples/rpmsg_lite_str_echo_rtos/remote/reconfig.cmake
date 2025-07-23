@@ -21,3 +21,4 @@ mcux_add_include(
              ${board_root}/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos
              ${board_root}/evkmimx8mm/multicore_examples/rpmsg_lite_str_echo_rtos/remote
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

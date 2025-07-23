@@ -9,3 +9,4 @@ mcux_add_macro(
     TARGETS ddr_debug ddr_release
     CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1"
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)

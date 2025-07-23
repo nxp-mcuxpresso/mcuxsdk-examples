@@ -54,3 +54,4 @@ mcux_add_iar_linker_script(
     TARGETS debug release
     LINKER ${board_root}/${board}/iar/MIMX8MM6xxxxx_cm4_lpa_ram.icf
 )
+include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)
