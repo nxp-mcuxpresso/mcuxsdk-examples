@@ -15,37 +15,59 @@
 
 #if CONFIG_NCP_USB
 extern usb_cdc_vcom_struct_t s_cdcVcom;
+extern USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) uint8_t s_currRecvBuf[DATA_BUFF_SIZE];
 OSA_SEMAPHORE_HANDLE_DEFINE(usb_device_tx_sem);
-static uint8_t ncp_intf_usb_rxbuf[TLV_CMD_BUF_SIZE];
 
 void ncp_usb_put_tx_sem(void)
 {
     OSA_SemaphorePost(usb_device_tx_sem);
 }
 
-void ncp_usb_device_recv(uint8_t *recv_data, uint32_t packet_len)
+int ncp_usb_device_recv(uint8_t *recv_data, uint32_t packet_len)
 {
-    if (packet_len < TLV_CMD_HEADER_LEN)
+    static int usb_rx_len = 0;
+    static uint16_t usb_transfer_len = 0;
+
+    if (usb_rx_len < TLV_CMD_HEADER_LEN)
     {
-        ncp_adap_e("[%s] packet too short: %d", __func__, packet_len);
-        NCP_USB_STATS_INC(err);
-        return;
+        usb_rx_len += packet_len;
+        if(usb_rx_len >= TLV_CMD_HEADER_LEN)
+        {
+            usb_transfer_len = (recv_data[TLV_CMD_SIZE_HIGH_BYTES] << 8) | recv_data[TLV_CMD_SIZE_LOW_BYTES] + NCP_CHKSUM_LEN;
+        }
+        else
+        {
+            ncp_adap_d("[%s] packet too short: %d", __func__, packet_len);
+        }
+    }
+    else
+    {
+        if ((packet_len <= usb_transfer_len - usb_rx_len) && (usb_rx_len <= usb_transfer_len))
+        {
+            ncp_adap_d("[%s] incomplete packet. expected: %d, got: %d", __func__, usb_transfer_len, packet_len);
+            usb_rx_len = usb_rx_len + packet_len;
+        }
+        else
+        {
+            ncp_adap_e("[%s] transfer warning. data_len : %d  ", __func__, packet_len);
+            NCP_USB_STATS_INC(err);
+            usb_rx_len = 0;
+            usb_transfer_len = 0;
+            return 0;
+        }
     }
 
-    uint16_t tlv_len = (recv_data[TLV_CMD_SIZE_HIGH_BYTES] << 8) | recv_data[TLV_CMD_SIZE_LOW_BYTES];
-    uint32_t usb_transfer_len = tlv_len + NCP_CHKSUM_LEN;
-
-    if (packet_len < usb_transfer_len)
+    if (usb_rx_len >= usb_transfer_len && (usb_transfer_len >= TLV_CMD_HEADER_LEN))
     {
-        ncp_adap_e("[%s] incomplete packet. expected: %d, got: %d", __func__, usb_transfer_len, packet_len);
-        NCP_USB_STATS_INC(err);
-        return;
+        ncp_adap_d("recv data len: %d", packet_len);
+        ncp_tlv_dispatch(&s_currRecvBuf[0], usb_transfer_len - NCP_CHKSUM_LEN);
+        usb_rx_len = 0;
+        usb_transfer_len = 0;
+        NCP_USB_STATS_INC(rx);
+        ncp_adap_d("usb data recv success");
     }
 
-    ncp_adap_d("recv data len: %d", packet_len);
-    ncp_tlv_dispatch(recv_data, tlv_len);
-    NCP_USB_STATS_INC(rx);
-    ncp_adap_d("usb data recv success");
+    return usb_rx_len;
 }
 
 int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
