@@ -220,16 +220,21 @@ status_t APP_NETC_PreinitVsi(netc_enetc_hw_t *hw, netc_hw_si_idx_t si)
 {
     uint8_t macAddr0[] = { 0x00, 0x00, 0xfa, 0xfa, 0xdd, 0xa0 };
     uint8_t macAddr1[] = { 0x00, 0x00, 0xfa, 0xfa, 0xdd, 0xa1 };
+    uint8_t macAddr2[] = { 0x00, 0x00, 0xfa, 0xfa, 0xdd, 0xa2 };
     netc_hw_enetc_si_config_t vsi0Config = {
-        .txRingUse = 3U, .rxRingUse = 3U, .vlanCtrl = (uint32_t)kNETC_ENETC_StanCVlan | (uint32_t)kNETC_ENETC_StanSVlan};
+        .txRingUse = 4U, .rxRingUse = 4U, .vlanCtrl = (uint32_t)kNETC_ENETC_StanCVlan | (uint32_t)kNETC_ENETC_StanSVlan};
     netc_hw_enetc_si_config_t vsi1Config = {
+        .txRingUse = 4U, .rxRingUse = 4U, .vlanCtrl = (uint32_t)kNETC_ENETC_StanCVlan | (uint32_t)kNETC_ENETC_StanSVlan};
+    netc_hw_enetc_si_config_t vsi2Config = {
         .txRingUse = 4U, .rxRingUse = 4U, .vlanCtrl = (uint32_t)kNETC_ENETC_StanCVlan | (uint32_t)kNETC_ENETC_StanSVlan};
     netc_si_l2vf_config_t vlanConfig = {
         .acceptUntagged = true, .enPromis = true, .useOuterVlanTag = true};
-    uint32_t vsi0MsixNum = 4U;
+    uint32_t vsi0MsixNum = 5U;
     uint32_t vsi1MsixNum = 5U;
+    uint32_t vsi2MsixNum = 5U;
     uint8_t vsi0Num;
     uint8_t vsi1Num;
+    uint8_t vsi2Num;
     status_t result;
 
     switch (si)
@@ -237,6 +242,7 @@ status_t APP_NETC_PreinitVsi(netc_enetc_hw_t *hw, netc_hw_si_idx_t si)
         case kNETC_ENETC3PSI0:
             vsi0Num = getSiNum(kNETC_ENETC3VSI1);
             vsi1Num = getSiNum(kNETC_ENETC3VSI2);
+            vsi2Num = getSiNum(kNETC_ENETC3VSI3);
             break;
         default:
             assert(false);
@@ -288,6 +294,23 @@ status_t APP_NETC_PreinitVsi(netc_enetc_hw_t *hw, netc_hw_si_idx_t si)
     }
 
     NETC_EnetcEnableSI(hw->base, vsi1Num, true);
+
+    /* Preinit vsi2 for mac address, BDR num, and MSIX interrupt num */
+    NETC_EnetcSetSIMacAddr(hw->base, vsi2Num, macAddr2);
+
+    result = NETC_EnetcSetMsixEntryNum(hw->base, vsi2Num, vsi2MsixNum);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    result = NETC_EnetcConfigureSI(hw->base, vsi2Num, &vsi2Config);
+    if (result != kStatus_Success)
+    {
+        return result;
+    }
+
+    NETC_EnetcEnableSI(hw->base, vsi2Num, true);
 
     NETC_EnetcConfigureVlanFilter(hw->base, getSiNum(si), &vlanConfig);
     return result;

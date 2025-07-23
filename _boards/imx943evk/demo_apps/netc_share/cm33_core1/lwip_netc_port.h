@@ -11,7 +11,7 @@
 #include "app.h"
 
 #define NETC_PSI                kNETC_ENETC3PSI0
-#define NETC_VSI_NUM_USED       (2U)
+#define NETC_VSI_NUM_USED       (3U)
 #define NETC_VSI_PREINIT_FUNC   APP_NETC_PreinitVsi
 /* MII configuration is dummy as it is internal port */
 #define NETC_MII_MODE           kNETC_RgmiiMode
