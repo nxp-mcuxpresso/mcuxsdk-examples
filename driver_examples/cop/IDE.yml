@@ -1,0 +1,6 @@
+macro-file:
+  files:
+  - source: examples/driver_examples/cop/cop_enable_watchdog.mac
+    attribute: macro-file
+    toolchains: iar
+    choose: true
