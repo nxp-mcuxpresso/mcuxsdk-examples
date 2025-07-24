@@ -27,8 +27,10 @@ dev_composite_cdc_vcom_cdc_vcom_lite_bm:
     evkbmimxrt1060: []
     evkbmimxrt1170@cm7: []
     evkcmimxrt1060: []
-    evkmimxrt1010: []
-    evkmimxrt1015: []
+    evkmimxrt1010:
+    - -armgcc@debug
+    evkmimxrt1015:
+    - -armgcc@debug
     evkmimxrt1020: []
     evkmimxrt1024: []
     evkmimxrt1040: []
