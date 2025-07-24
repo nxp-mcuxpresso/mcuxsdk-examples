@@ -40,6 +40,23 @@ extern "C"
 #include "fsl_debug_console.h"
 #include "app.h"
 
+/**
+ * The following symbols are weakly defined to help some compilers deal with
+ * undefined symbols that are never referenced.
+ */
+__attribute__((weak)) void ProgramADKPService(void) { /* Dummy definition */ }
+__attribute__((weak)) void Advance_LifeCycle_Service(void) { /* Dummy definition */ }
+__attribute__((weak)) void Debug_Auth_Service(void) { /* Dummy definition */ }
+__attribute__((weak)) void ExtendCustomerSecurityPolicyService(void) { /* Dummy definition */ }
+__attribute__((weak)) void IVT_Auth_Service(void) { /* Dummy definition */ }
+__attribute__((weak)) void MU_EnablementService(void) { /* Dummy definition */ }
+__attribute__((weak)) void HSE_GetCapabilities_Example(uint8_t *phseCapabilites) { /* Dummy definition */ }
+__attribute__((weak)) eHSEFWAttributes gProgramAttributes = { NO_ATTRIBUTE_PROGRAMMED };
+__attribute__((weak)) eHSEFWAttributes gEnableIVTAuthBit = { NO_ATTRIBUTE_PROGRAMMED };
+__attribute__((weak)) uint32_t HSE_HOST_RAM_DST_START_ADDR[0] = {};
+__attribute__((weak)) uint32_t HSE_HOST_FLASH_SRC_START_ADDR[0] = {};
+__attribute__((weak)) uint32_t HSE_HOST_FLASH_SRC_END_ADDR[0] = {};
+
 /*=============================================================================
 *                 LOCAL TYPEDEFS (STRUCTURES, UNIONS, ENUMS)
 =============================================================================*/
