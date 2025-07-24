@@ -4,14 +4,15 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/${board}/el2go_examples/el2go_import_blob/el2go_import_blob/${core_id}
+    INCLUDES ${board_root}/${board}/el2go_examples/el2go_blob_test/el2go_blob_test/${core_id}
 )
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/el2go_examples/el2go_import_blob/el2go_import_blob/peripherals.c
-            ${board_root}/${board}/el2go_examples/el2go_import_blob/el2go_import_blob/peripherals.h
+    SOURCES ${board_root}/${board}/el2go_examples/el2go_blob_test/el2go_blob_test/peripherals.c
+            ${board_root}/${board}/el2go_examples/el2go_blob_test/el2go_blob_test/peripherals.h
 )
+
 
 
 # Add additional configuration

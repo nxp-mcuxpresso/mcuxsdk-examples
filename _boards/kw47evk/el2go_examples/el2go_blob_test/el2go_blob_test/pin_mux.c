@@ -14,8 +14,8 @@
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Pins v15.0
-processor: MCXW727CxxxA
-package_id: MCXW727CMFTA
+processor: KW47B42ZB7xxxA
+package_id: KW47B42ZB7AFTA
 mcu_data: ksdk2_0
 processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********

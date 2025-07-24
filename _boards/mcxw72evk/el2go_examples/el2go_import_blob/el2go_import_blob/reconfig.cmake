@@ -24,3 +24,8 @@ mcux_add_macro(
     TARGETS release
     CC "-DLFS_NO_ASSERT"
 )
+
+mcux_add_macro(
+    CC "PSA_WANT_ALG_GCM\
+        PSA_WANT_ALG_SHA_1"
+)

@@ -17,6 +17,7 @@
  **********************************************************************************************************************/
 #include "fsl_common.h"
 #include "lfs.h"
+#include "lfs_mflash.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -60,6 +61,10 @@ extern int lfs_mflash_prog(const struct lfs_config*, lfs_block_t, lfs_off_t, con
 extern int lfs_mflash_erase(const struct lfs_config*, lfs_block_t);
 /* LittleFS state sync callback*/
 extern int lfs_mflash_sync(const struct lfs_config*);
+/* LittleFS state lock callback*/
+extern int lfs_mflash_lock(const struct lfs_config*);
+/* LittleFS state unlock callback*/
+extern int lfs_mflash_unlock(const struct lfs_config*);
 
 /***********************************************************************************************************************
  * Initialization functions

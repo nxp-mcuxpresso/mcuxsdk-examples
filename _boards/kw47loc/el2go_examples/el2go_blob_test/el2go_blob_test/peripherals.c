@@ -12,31 +12,32 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v13.0
-processor: MCXW727CxxxA
-package_id: MCXW727CMFTA
+product: Peripherals v15.0
+processor: KW47B42ZB7xxxA
+package_id: KW47B42ZB7AFTA
 mcu_data: ksdk2_0
-processor_version: 0.14.2
+processor_version: 0.2412.40
 functionalGroups:
 - name: BOARD_InitPeripherals
-  UUID: 6dd267b6-3712-4ba0-b3d7-8cfe65e7bc33
+  UUID: 544e58c5-c9c8-4ffc-87b5-8e6de5f99f2e
   called_from_default_init: true
-  selectedCore: cm33
+  selectedCore: cm33_core0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 component:
 - type: 'system'
-- type_id: 'system_54b53072540eeeb8f8e9343e71f28176'
+- type_id: 'system'
 - global_system_definitions:
   - user_definitions: ''
   - user_includes: ''
+  - global_init: ''
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 component:
 - type: 'uart_cmsis_common'
-- type_id: 'uart_cmsis_common_9cb8e302497aa696fdbb5a4fd622c2a8'
+- type_id: 'uart_cmsis_common'
 - global_USART_CMSIS_common:
   - quick_selection: 'default'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
@@ -44,7 +45,7 @@ component:
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 component:
 - type: 'gpio_adapter_common'
-- type_id: 'gpio_adapter_common_57579b9ac814fe26bf95df0a384c36b6'
+- type_id: 'gpio_adapter_common'
 - global_gpio_adapter_common:
   - quick_selection: 'default'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
@@ -68,7 +69,7 @@ instance:
 - type: 'nvic'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'nvic_57b5eef3774cc60acaede6f5b8bddc67'
+- type_id: 'nvic'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'NVIC'
 - config_sets:
@@ -92,23 +93,24 @@ instance:
 - type: 'littlefs'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'littlefs_7e89bf6c938031bfd17176a3aacf1bc3'
+- type_id: 'littlefs_2.4.0'
 - functional_group: 'BOARD_InitPeripherals'
 - config_sets:
   - general_config:
-    - moduleInclude: ''
+    - moduleInclude: 'lfs_mflash.h'
     - lfsConfig:
       - enableUserContext: 'true'
       - userContext:
         - contextVar: '(void*)&LittleFS_ctx'
-        - contextDef: 'extern struct lfs_mflash_ctx LittleFS_ctx;'
+        - contextDef: 'extern struct lfs_mflash_ctx LittleFS_ctx; '
+        - contextExternalDef: ''
       - userCallbacks:
         - read: 'lfs_mflash_read'
         - prog: 'lfs_mflash_prog'
         - erase: 'lfs_mflash_erase'
         - sync: 'lfs_mflash_sync'
-        - lock: ''
-        - unlock: ''
+        - lock: 'lfs_mflash_lock'
+        - unlock: 'lfs_mflash_unlock'
       - readSize: '16'
       - progSize: '128'
       - blockSize: '8192'
@@ -129,7 +131,7 @@ instance:
       - enableOptionalSizes: 'false'
       - optionalSizes:
         - name_max: '255'
-        - file_max: '0x7FFFFFFF'
+        - file_max: '2147483647'
         - attr_max: '1022'
         - metadata_max: '4096'
     - initLFS: 'false'
@@ -139,7 +141,7 @@ instance:
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 /* LittleFS context */
-extern struct lfs_mflash_ctx LittleFS_ctx;
+extern struct lfs_mflash_ctx LittleFS_ctx; 
 const struct lfs_config LittleFS_config = {
   .context = (void*)&LittleFS_ctx,
   .read = lfs_mflash_read,
@@ -147,8 +149,8 @@ const struct lfs_config LittleFS_config = {
   .erase = lfs_mflash_erase,
   .sync = lfs_mflash_sync,
 #ifdef LFS_THREADSAFE
-  .lock = NULL,
-  .unlock = NULL,
+  .lock = lfs_mflash_lock,
+  .unlock = lfs_mflash_unlock,
 #endif
   .read_size = LITTLEFS_READ_SIZE,
   .prog_size = LITTLEFS_PROG_SIZE,
