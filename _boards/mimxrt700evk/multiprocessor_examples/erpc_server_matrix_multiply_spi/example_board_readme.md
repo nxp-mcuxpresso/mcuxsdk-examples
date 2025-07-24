@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+JP69 on (not populated by default)
 
 Prepare the Demo
 ===============

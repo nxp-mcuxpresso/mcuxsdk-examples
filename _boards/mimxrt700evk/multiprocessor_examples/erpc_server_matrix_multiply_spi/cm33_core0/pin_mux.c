@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -13,20 +13,22 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGFOB
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 25.03.10
 pin_labels:
 - {pin_num: N4, pin_signal: PIO0_31/LP_FLEXCOMM0_P0/UTICK0_CAP2/SCT0_OUT8/CTIMER4_MAT0, label: GPIO_BRIDGE, identifier: GPIO_BRIDGE}
-- {pin_num: R1, pin_signal: PIO1_12/LP_FLEXCOMM2_P1/SCT0_GPIN3/SCT0_OUT9/CTIMER1_MAT1/CLKCTL0_TRACEDATA1, label: GPIO_BRIDGE, identifier: GPIO_BRIDGE}
-- {pin_num: R2, pin_signal: PIO1_11/LP_FLEXCOMM2_P0/CTIMER2_MAT2/CLKCTL0_TRACEDATA0, label: GPIO_BRIDGE, identifier: GPIO_BRIDGE}
+- {pin_num: R1, pin_signal: PIO1_12/LP_FLEXCOMM2_P1/SCT0_GPIN3/SCT0_OUT9/CTIMER1_MAT1/SWD_TRACEDATA1, label: GPIO_BRIDGE, identifier: GPIO_BRIDGE}
+- {pin_num: R2, pin_signal: PIO1_11/LP_FLEXCOMM2_P0/CTIMER2_MAT2/SWD_TRACEDATA0, label: GPIO_BRIDGE, identifier: GPIO_BRIDGE}
+- {pin_num: R5, pin_signal: PIO1_18/LP_FLEXCOMM3_P0/USB0_PORTPWRN/CTIMER4_MAT0/I3C0_SDA, label: GPIO_BRIDGE, identifier: GPIO_BRIDGE2;GPIO_BRIDGE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
 
 #include "fsl_common.h"
+#include "fsl_gpio.h"
 #include "fsl_iopctl.h"
 #include "pin_mux.h"
 
@@ -51,7 +53,8 @@ BOARD_InitPins:
   - {pin_num: E2, peripheral: LPSPI14, signal: SCK, pin_signal: PIO3_1/LPSPI14_SCK/EZH_PIO17, input_buffer: enable}
   - {pin_num: D2, peripheral: LPSPI14, signal: SIN, pin_signal: PIO3_2/LPSPI14_SIN/EZH_PIO18, input_buffer: enable}
   - {pin_num: C3, peripheral: LPSPI14, signal: PCS0, pin_signal: PIO3_3/LPSPI14_PCS0/EZH_PIO19, input_buffer: enable}
-  - {pin_num: R2, peripheral: GPIO1, signal: 'GPIO, 11', pin_signal: PIO1_11/LP_FLEXCOMM2_P0/CTIMER2_MAT2/CLKCTL0_TRACEDATA0, direction: OUTPUT, gpio_init_state: 'false'}
+  - {pin_num: R5, peripheral: GPIO1, signal: 'GPIO, 18', pin_signal: PIO1_18/LP_FLEXCOMM3_P0/USB0_PORTPWRN/CTIMER4_MAT0/I3C0_SDA, identifier: GPIO_BRIDGE, direction: OUTPUT,
+    gpio_init_state: 'false'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -65,24 +68,20 @@ BOARD_InitPins:
 /* Function assigned for the Cortex-M33 (Core #0) */
 void BOARD_InitPins(void)
 {
+
+    /* Enables the clock for the GPIO1 module */
+    CLOCK_EnableClock(kCLOCK_Gpio1);
+
+    gpio_pin_config_t GPIO_BRIDGE_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_18 (pin R5)  */
+    GPIO_PinInit(BOARD_INITPINS_GPIO_BRIDGE_GPIO, BOARD_INITPINS_GPIO_BRIDGE_PIN, &GPIO_BRIDGE_config);
     /* Reset IOPCTL0 module */
     RESET_ClearPeripheralReset(kIOPCTL0_RST_SHIFT_RSTn);
 
-    GPIO1->PCOR = ((GPIO1->PCOR &
-                    /* Mask bits to zero which are setting */
-                    (~(GPIO_PCOR_PTCO11_MASK)))
-
-                   /* Port Clear Output: Corresponding field in PDOR becomes 0 */
-                   | GPIO_PCOR_PTCO11(PCOR_PTCO11_ptco1));
-
-    GPIO1->PDDR = ((GPIO1->PDDR &
-                    /* Mask bits to zero which are setting */
-                    (~(GPIO_PDDR_PDD11_MASK)))
-
-                   /* Port Data Direction: Output */
-                   | GPIO_PDDR_PDD11(PDDR_PDD11_pdd1));
-
-    const uint32_t GPIO_BRIDGE = (/* Pin is configured as GPIO1_GPIO11 */
+    const uint32_t GPIO_BRIDGE = (/* Pin is configured as PIO1_18 */
                                   IOPCTL_PIO_FUNC0 |
                                   /* Disable pull-up / pull-down function */
                                   IOPCTL_PIO_PUPD_DI |
@@ -96,7 +95,7 @@ void BOARD_InitPins(void)
                                   IOPCTL_PIO_INV_DI |
                                   /* Selects transmitter current drive 100ohm */
                                   IOPCTL_PIO_DRIVE_100OHM);
-    /* PORT1 PIN11 (coords: R2) is configured as GPIO1_GPIO11 */
+    /* PORT1 PIN18 (coords: R5) is configured as PIO1_18 */
     IOPCTL_PinMuxSet(BOARD_INITPINS_GPIO_BRIDGE_PORT, BOARD_INITPINS_GPIO_BRIDGE_PIN, GPIO_BRIDGE);
 
     const uint32_t port3_pin0_config = (/* Pin is configured as LPSPI14_SOUT */

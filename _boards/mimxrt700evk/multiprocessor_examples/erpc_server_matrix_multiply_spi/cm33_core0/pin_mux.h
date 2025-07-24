@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -43,22 +43,20 @@ void BOARD_InitBootPins(void);
 #define IOPCTL_PIO_PULLDOWN_EN 0x00u      /*!<@brief Enable pull-down function */
 #define IOPCTL_PIO_PUPD_DI 0x00u          /*!<@brief Disable pull-up / pull-down function */
 #define IOPCTL_PIO_SLEW_RATE_NORMAL 0x00u /*!<@brief Normal mode */
-#define PCOR_PTCO11_ptco1 0x01u           /*!<@brief Port Clear Output: Corresponding field in PDOR becomes 0 */
-#define PDDR_PDD11_pdd1 0x01u             /*!<@brief Port Data Direction: Output */
 
-/*! @name PIO1_11 (coord R2), GPIO_BRIDGE
+/*! @name PIO1_18 (coord R5), GPIO_BRIDGE
   @{ */
 /* Routed pin properties */
 #define BOARD_INITPINS_GPIO_BRIDGE_PERIPHERAL GPIO1                   /*!<@brief Peripheral name */
 #define BOARD_INITPINS_GPIO_BRIDGE_SIGNAL GPIO                        /*!<@brief Signal name */
-#define BOARD_INITPINS_GPIO_BRIDGE_CHANNEL 11                         /*!<@brief Signal channel */
+#define BOARD_INITPINS_GPIO_BRIDGE_CHANNEL 18                         /*!<@brief Signal channel */
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITPINS_GPIO_BRIDGE_GPIO GPIO1                         /*!<@brief GPIO peripheral base pointer */
-#define BOARD_INITPINS_GPIO_BRIDGE_GPIO_PIN_MASK (1U << 11U)          /*!<@brief GPIO pin mask */
+#define BOARD_INITPINS_GPIO_BRIDGE_GPIO_PIN_MASK (1U << 18U)          /*!<@brief GPIO pin mask */
 #define BOARD_INITPINS_GPIO_BRIDGE_PORT 1U                            /*!<@brief PORT peripheral base pointer */
-#define BOARD_INITPINS_GPIO_BRIDGE_PIN 11U                            /*!<@brief PORT pin number */
-#define BOARD_INITPINS_GPIO_BRIDGE_PIN_MASK (1U << 11U)               /*!<@brief PORT pin mask */
+#define BOARD_INITPINS_GPIO_BRIDGE_PIN 18U                            /*!<@brief PORT pin number */
+#define BOARD_INITPINS_GPIO_BRIDGE_PIN_MASK (1U << 18U)               /*!<@brief PORT pin mask */
                                                                       /* @} */
 
 /*!
