@@ -13,9 +13,6 @@ Prepare the Demo
 ================
 1.  Connect a USB cable between the host PC and the LOC board J3. Add a jumper on JP22 then the MCU-Link will detect the presence of JP22 and disable the MCU-Link debugger, allowing the external J-Link to enter into play.
 2.  Connect Jlink plus probe to the debug trace connector(J5).
-=======
-2.  Connect Jlink plus probe to the debug trace connector(J16).
->>>>>>> 4f7c0fa68 ([MCUX-80689][KW47] Enable the base SDK examples for LOC board)
 3.  Download the program to the target board.
 4.  Open JlinkerSWOView(Such as C:\Program Files (x86)\SEGGER\JLink\JlinkerSWOView.exe), select the target device, such as KW47B42ZB7_M33_0 and make sure the core clock and swo clock frequency are equal to the demo setting, the SWO clock frequency is defined in hello_world_swo.c by macro DEMO_DEBUG_CONSOLE_SWO_BAUDRATE(4MHz by default).
 5.  After swo/core clock frequency is measured successfully, press ok to continue, make sure the bit 0 is selected in "Data from stimulus port(s)" item.
