@@ -227,11 +227,13 @@ endif()
 endif()
 
 
-# # armgcc post build command - not working yet
-# mcux_add_custom_command(
-	# TOOLCHAINS armgcc
-	# BUILD_EVENT  POST_BUILD
-	# BUILD_COMMAND arm-none-eabi-objcopy -v -O ihex "${BuildArtifactFileName}"
-            # "${BuildArtifactFileBaseName}.hex"; ${ProjDirPath}/crc_hex.bat -${ConfigName}/${BuildArtifactFileBaseName}.hex
-            # -${ConfigName}/${BuildArtifactFileBaseName}_crc.hex -tools\\srecord\\srec_cat.exe -CRC32
-# )
+# armgcc post-build commands
+mcux_add_custom_command(
+	TOOLCHAINS armgcc
+	BUILD_EVENT  POST_BUILD
+	BUILD_COMMAND arm-none-eabi-objcopy -O ihex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex && 
+				  ${SAFETY_CRC_PATH_A}/crc_hex.bat 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_crc.hex 
+				  -../srecord/srec_cat.exe -CRC32
+)
