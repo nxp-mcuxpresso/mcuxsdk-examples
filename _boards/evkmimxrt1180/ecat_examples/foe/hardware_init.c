@@ -90,6 +90,24 @@ UINT16 HW_Init(void)
     ECAT_EscMdioRead(ECAT, 0x01, 17, &led_startus);
     ECAT_EscMdioWrite(ECAT, 0x01, 17, led_startus | (1 << 3) | (1 << 5));
 
+    /*Disable phy eee mode*/
+    ECAT_EscMdioWrite(ECAT, 0x00, 31, 4);
+    ECAT_EscMdioWrite(ECAT, 0x00, 16, 0x4077);
+    ECAT_EscMdioWrite(ECAT, 0x00, 31, 0);
+    ECAT_EscMdioWrite(ECAT, 0x00, 13, 0x0007);
+    ECAT_EscMdioWrite(ECAT, 0x00, 14, 0x003c);
+    ECAT_EscMdioWrite(ECAT, 0x00, 13, 0x4007);
+    ECAT_EscMdioWrite(ECAT, 0x00, 14, 0x0);
+    ECAT_EscMdioWrite(ECAT, 0x00, 0, 0x1200);
+    ECAT_EscMdioWrite(ECAT, 0x01, 31, 4);
+    ECAT_EscMdioWrite(ECAT, 0x01, 16, 0x4077);
+    ECAT_EscMdioWrite(ECAT, 0x01, 31, 0);
+    ECAT_EscMdioWrite(ECAT, 0x01, 13, 0x0007);
+    ECAT_EscMdioWrite(ECAT, 0x01, 14, 0x003c);
+    ECAT_EscMdioWrite(ECAT, 0x01, 13, 0x4007);
+    ECAT_EscMdioWrite(ECAT, 0x01, 14, 0x0);
+    ECAT_EscMdioWrite(ECAT, 0x01, 0, 0x1200);
+
     RGPIO_PinInit(RGPIO4, 27, &pinConfig);
     RGPIO_PinInit(RGPIO4, 26, &pinConfig);
 
