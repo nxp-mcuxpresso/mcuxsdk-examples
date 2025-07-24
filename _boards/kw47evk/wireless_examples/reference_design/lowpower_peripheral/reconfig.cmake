@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
 mcux_add_include(
@@ -14,6 +14,5 @@ mcux_add_source(
 
 mcux_add_macro(ECC_RAM_STCM8_INIT=1)
 
-# Power down mode is not supported yet on low power reference design applications
-# do not define gLowpowerPowerDownEnable_d
+mcux_add_linker_symbol(SYMBOLS "gLowpowerPowerDownEnable_d=1")
 
