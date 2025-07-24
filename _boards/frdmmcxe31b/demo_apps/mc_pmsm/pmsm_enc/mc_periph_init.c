@@ -20,11 +20,9 @@ static void InitADC(void);
 static void InitBCTU(void);
 static void InitLCU(void);
 static void InitEMIOS(void);
-//static void InitPWM(void);
 static void InitTRGMUX(void);
 static void InitClock(void);
 static void InitPIT(void);
-static void InitQD(void);
 
 #if M1_FAULT_ENABLE   
     static void InitCMP(void);
@@ -82,24 +80,12 @@ void MCDRV_Init_M1(void)
     /* Init eMIOS (PWM) */
     InitEMIOS();
     
-//    /* 6-channel PWM peripheral init */
-//    InitPWM();
-    
     /* Init INPUTMUX */
     InitTRGMUX();
     
     /* Slow loop timer init */
     InitPIT();
 	
-//    /* Qudrature decoder peripheral init */
-//    InitQD();
-//    
-//#if M1_FAULT_ENABLE    
-//    /* Comparator CMP */
-//    InitCMP();   
-//#endif /* M1_FAULT_ENABLE */
-
-    
 }
 
 /*!
@@ -111,18 +97,10 @@ void MCDRV_Init_M1(void)
  */
 void InitClock(void)
 {
-//    uint32_t ui32CyclesNumber = 0U;
-   
+
     /* The following peripherals use SYSTEM_CLK as APB/IPS clock: FlexPWM0/1, ADC0~3 */
     g_sClockSetup.ui32FastPeripheralClock = CLOCK_GetFreq(kCLOCK_CoreSysClk);
     g_sClockSetup.ui32CpuFrequency = CLOCK_GetFreq(kCLOCK_CoreSysClk);
-
-//    /* Parameters for motor M1 */
-//    g_sClockSetup.ui16M1PwmFreq   = M1_PWM_FREQ; /* 16 kHz */
-//    g_sClockSetup.ui16M1PwmModulo = (g_sClockSetup.ui32FastPeripheralClock) / g_sClockSetup.ui16M1PwmFreq;
-//    ui32CyclesNumber = ((M1_PWM_DEADTIME * (g_sClockSetup.ui32FastPeripheralClock / 1000000U)) / 1000U);
-//    g_sClockSetup.ui16M1PwmDeadTime   = ui32CyclesNumber;
-//    g_sClockSetup.ui16M1SpeedLoopFreq = M1_SPEED_LOOP_FREQ; /* 1kHz */
     
 }
 
@@ -136,13 +114,10 @@ void InitClock(void)
  */
 static void InitEMIOS(void)
 {
-//    uint32_t ui32EmiosClk;
   
     CLOCK_EnableClock(kCLOCK_Emios0);
-//    ui32EmiosClk = CLOCK_GetFreq(kCLOCK_EmiosClk);
        
     /* Ch1-Ch3 are used for PWMA-PWMC signal generation */
-    // EMIOS_Init(EMIOS0,EMIOS_CH1,EMIOS_MODE_OPWMB_TB(EMIOS_BUS_BCDE,EMIOS_B1M_F,EMIOS_EDPOL_OUT_A_SET_B_CLR,APP_OPWMB_A_DC_0,APP_OPWMB_B_DC_0));
     EMIOS_0->UC[1U].C |= EMIOS_C_MODE(0x60U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) | EMIOS_C_BSL(1U)| EMIOS_C_UCPRE(0U);
     EMIOS_0->UC[1U].C2 |= EMIOS_C2_UCRELDEL_INT(0U) | EMIOS_C2_UCPRECLK(0U) | EMIOS_C2_UCEXTPRE(0U);
     EMIOS_0->UC[1U].A = EMIOS_A_A(2000U);
@@ -150,7 +125,6 @@ static void InitEMIOS(void)
     EMIOS_0->UC[1U].ALTA = EMIOS_ALTA_ALTA(1U);
     EMIOS_0->UC[1U].CNT |= EMIOS_CNT_C(0U);
       
-    //EMIOS_Init(EMIOS0,EMIOS_CH2,EMIOS_MODE_OPWMB_TB(EMIOS_BUS_BCDE,EMIOS_B1M_F,EMIOS_EDPOL_OUT_A_SET_B_CLR,APP_OPWMB_A_DC_0,APP_OPWMB_B_DC_0));
     EMIOS_0->UC[2U].C |= EMIOS_C_MODE(0x60U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) | EMIOS_C_BSL(1U)| EMIOS_C_UCPRE(0U);
     EMIOS_0->UC[2U].C2 |= EMIOS_C2_UCRELDEL_INT(0U) | EMIOS_C2_UCPRECLK(0U) | EMIOS_C2_UCEXTPRE(0U);
     EMIOS_0->UC[2U].A = EMIOS_A_A(2000U);
@@ -158,7 +132,6 @@ static void InitEMIOS(void)
     EMIOS_0->UC[2U].ALTA = EMIOS_ALTA_ALTA(1U);
     EMIOS_0->UC[2U].CNT |= EMIOS_CNT_C(0U);
     
-    //EMIOS_Init(EMIOS0,EMIOS_CH3,EMIOS_MODE_OPWMB_TB(EMIOS_BUS_BCDE,EMIOS_B1M_F,EMIOS_EDPOL_OUT_A_SET_B_CLR,APP_OPWMB_A_DC_0,APP_OPWMB_B_DC_0));
     EMIOS_0->UC[3U].C |=  EMIOS_C_MODE(0x60U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) | EMIOS_C_BSL(1U)| EMIOS_C_UCPRE(0U);
     EMIOS_0->UC[3U].C2 |= EMIOS_C2_UCRELDEL_INT(0U) | EMIOS_C2_UCPRECLK(0U) | EMIOS_C2_UCEXTPRE(0U);
     EMIOS_0->UC[3U].A = EMIOS_A_A(2000U);
@@ -167,7 +140,6 @@ static void InitEMIOS(void)
     EMIOS_0->UC[3U].CNT |= EMIOS_CNT_C(0U);
     
     /* Ch0 is used for time base and reload signal generation */
-    //EMIOS_Init(EMIOS0,EMIOS_CH0,EMIOS_MODE_MCB_UP_ICLK(EMIOS_PRESC_1,EMIOS_PRESC_CLOCK,0x0001U,APP_MC_A1));
     EMIOS_0->UC[0U].C |= EMIOS_C_MODE(0x50U) | EMIOS_C_EDPOL(0U) | EMIOS_C_EDSEL(0U) | EMIOS_C_BSL(3U)| EMIOS_C_UCPRE(0U);
     EMIOS_0->UC[0U].C2 |= EMIOS_C2_UCRELDEL_INT(0U) | EMIOS_C2_UCPRECLK(0U) | EMIOS_C2_UCEXTPRE(0U);
     EMIOS_0->UC[0U].A = EMIOS_A_A(8000);
@@ -176,7 +148,6 @@ static void InitEMIOS(void)
     EMIOS_0->UC[0U].CNT |= EMIOS_CNT_C(0x0001U);
         
     /*Ch4 is used for ADC triggering through BCTU */
-    //EMIOS_Init(EMIOS0,EMIOS_CH4,EMIOS_MODE_OPWMB_TB(EMIOS_BUS_A,EMIOS_B1M_F,EMIOS_EDPOL_OUT_A_SET_B_CLR,APP_OPWMB_A_DC_0,APP_OPWMB_B_DC_0));
     EMIOS_0->UC[4U].C |= EMIOS_C_MODE(0x60U | 0x00U) | EMIOS_C_EDPOL(1U) | EMIOS_C_EDSEL(0U) | EMIOS_C_BSL(1U)| EMIOS_C_UCPRE(0U);
     EMIOS_0->UC[4U].C2 |= EMIOS_C2_UCRELDEL_INT(0U) | EMIOS_C2_UCPRECLK(0U) | EMIOS_C2_UCEXTPRE(0U);
     EMIOS_0->UC[4U].A = EMIOS_A_A(1U);
@@ -184,33 +155,17 @@ static void InitEMIOS(void)
     EMIOS_0->UC[4U].ALTA = EMIOS_ALTA_ALTA(0U);
     EMIOS_0->UC[4U].CNT |= EMIOS_CNT_C(0x0U);    
     
-    //EMIOS_EnableUpdate(EMIOS0, EMIOS_CH1|EMIOS_CH2|EMIOS_CH3|EMIOS_CH4);
     EMIOS_0->OUDIS |= EMIOS_OUDIS_OU1(0U);
     EMIOS_0->OUDIS |= EMIOS_OUDIS_OU2(0U);
     EMIOS_0->OUDIS |= EMIOS_OUDIS_OU3(0U);
     EMIOS_0->OUDIS |= EMIOS_OUDIS_OU4(0U);
   
-//    EMIOS_Enable(EMIOS0, EMIOS_CH0|EMIOS_CH23);
     EMIOS_0->UC[0].C |= EMIOS_C_UCPREN(1U);
 
-//    EMIOS_EnablePrescaler(EMIOS0, 1u);
     EMIOS_0->MCR |= EMIOS_MCR_GTBE_MASK | EMIOS_MCR_GPREN_MASK | EMIOS_MCR_GPRE(1U);
-    
-    
+     
     /* Initialize MC driver */
-//    g_sM1Pwm3ph.pui32PwmBaseAddress = (eMIOS_0_Type *)EMIOS_0;
     g_sM1Pwm3ph.pui32PwmBaseAddress = (EMIOS_Type *)EMIOS_0;
-
-//    g_sM1Pwm3ph.ui16PhASubNum = 0U; /* PWMA phase A sub-module number */
-//    g_sM1Pwm3ph.ui16PhBSubNum = 1U; /* PWMA phase B sub-module number */
-//    g_sM1Pwm3ph.ui16PhCSubNum = 2U; /* PWMA phase C sub-module number */
-//
-//    g_sM1Pwm3ph.ui16FaultFixNum = M1_FAULT_NUM; /* PWMA fixed-value over-current fault number */
-//    g_sM1Pwm3ph.ui16FaultAdjNum = M1_FAULT_NUM; /* PWMA adjustable over-current fault number */
-    
-    
-    
-    
 
 }
 
@@ -370,100 +325,19 @@ static void InitADC(void)
     ADC_Init(ADC_2, &adcConfig);
 
     calibrationConfig.enableAverage        = false;
-//    calibrationConfig.sampleTime           = kADC_SampleTime8;
-//    calibrationConfig.averageSampleNumbers = kADC_AverageSampleNumbers4;
 
     if (!(ADC_DoCalibration(ADC_0, &calibrationConfig)))
     {
-//        PRINTF("ADC 0 calibration failed\r\n");
+
     }
     if (!(ADC_DoCalibration(ADC_1, &calibrationConfig)))
     {
-//        PRINTF("ADC 1 calibration failed\r\n");
+
     }
     if (!(ADC_DoCalibration(ADC_2, &calibrationConfig)))
     {
-//        PRINTF("ADC 2 calibration failed\r\n");
-    }
-    
-    
-    
-    
 
-    /* Start the ADC conversion chain to execute the conversion. */
-//    ADC_StartConvChain(ADC_0, kADC_NormalConvScanMode);
-  
-//    lpadc_conv_trigger_config_t lpadcTriggerConfig;
-//    lpadc_conv_command_config_t lpadcCommandConfig;
-//    lpadc_config_t lpadcConfig;
-//    
-//    /* Init the lpadcConfig struct */
-//    LPADC_GetDefaultConfig(&lpadcConfig);
-//    lpadcConfig.enableAnalogPreliminary = true;
-//    lpadcConfig.referenceVoltageSource = kLPADC_ReferenceVoltageAlt3;
-//    lpadcConfig.conversionAverageMode = kLPADC_ConversionAverage1;
-//    
-//    /* Release peripheral reset */
-//    RESET_ReleasePeripheralReset(kADC0_RST_SHIFT_RSTn);
-//    RESET_ReleasePeripheralReset(kADC1_RST_SHIFT_RSTn);
-//
-//    /* Attach peripheral clock */
-//    CLOCK_SetClockDiv(kCLOCK_DivADC, 1u);
-//    CLOCK_AttachClk(kFRO_LF_DIV_to_ADC);
-//
-//    LPADC_Init(ADC0, &lpadcConfig);
-//    LPADC_DoOffsetCalibration(ADC0);
-//    LPADC_DoAutoCalibration(ADC0);
-//    
-//    LPADC_Init(ADC1, &lpadcConfig);
-//    LPADC_DoOffsetCalibration(ADC1);
-//    LPADC_DoAutoCalibration(ADC1);
-//        
-//    LPADC_GetDefaultConvCommandConfig(&lpadcCommandConfig);
-//    lpadcCommandConfig.sampleChannelMode = kLPADC_SampleChannelSingleEndSideA;
-//    lpadcCommandConfig.conversionResolutionMode = kLPADC_ConversionResolutionStandard;
-//    lpadcCommandConfig.sampleTimeMode = kLPADC_SampleTimeADCK3;
-//      
-//    /* SET VOLT_DCB_CHANNEL_NUMBER (ADC0) */
-//    lpadcCommandConfig.channelNumber = VOLT_DCB_CHANNEL_NUMBER;
-//    lpadcCommandConfig.chainedNextCommandNumber = 0U;
-//    LPADC_SetConvCommandConfig( ADC0, 1U, &lpadcCommandConfig );
-//    
-//    /* Init triggers (use trigger 0). */
-//    LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
-//    lpadcTriggerConfig.targetCommandId = 1U;
-//    lpadcTriggerConfig.enableHardwareTrigger = true;
-//    LPADC_SetConvTriggerConfig(ADC0, 0U, &lpadcTriggerConfig);
-//    
-//    /* SET CURRENTS CHANNELS (ADC1) */
-//    lpadcCommandConfig.channelNumber = CUR_A_CHANNEL_NUMBER;
-//    lpadcCommandConfig.chainedNextCommandNumber = 2U;
-//    LPADC_SetConvCommandConfig( ADC1, 1U, &lpadcCommandConfig );
-//
-//    lpadcCommandConfig.channelNumber = CUR_B_CHANNEL_NUMBER;
-//    lpadcCommandConfig.chainedNextCommandNumber = 3U;
-//    LPADC_SetConvCommandConfig( ADC1, 2U, &lpadcCommandConfig );        
-//                
-//    lpadcCommandConfig.channelNumber = CUR_C_CHANNEL_NUMBER;
-//    lpadcCommandConfig.chainedNextCommandNumber = 0U;
-//    LPADC_SetConvCommandConfig( ADC1, 3U, &lpadcCommandConfig ); 
-//    
-//    /* Init triggers (use trigger 0). */
-//    LPADC_GetDefaultConvTriggerConfig(&lpadcTriggerConfig);
-//    lpadcTriggerConfig.targetCommandId = 1U;
-//    lpadcTriggerConfig.enableHardwareTrigger = true;
-//    LPADC_SetConvTriggerConfig(ADC1, 0U, &lpadcTriggerConfig);
-//       
-//    /* Set watermark level selection */
-//    ADC1->FCTRL |= ADC_FCTRL_FWMARK(2);
-//    
-//    /* Enable the watermark interrupt. */
-//    LPADC_EnableInterrupts(ADC1, kLPADC_FIFO0WatermarkInterruptEnable);
-//    NVIC_SetPriority(ADC1_IRQn, 0U);
-//    NVIC_EnableIRQ(ADC1_IRQn);  
-//      
-//    /* ADC0 base address */
-//    g_sM1Curr3phDcBus.pToAdcBase = ADC0;
+    }
 
 }
 
@@ -529,43 +403,6 @@ static void InitPIT(void)
 
     /* Start channel 0 */
     PIT_StartTimer(PIT_0, kPIT_Chnl_0);
-
-}
-
-
-/*!
- * @brief   void InitQD1(void)
- *           - Initialization of the Quadrature Encoder 1 peripheral
- *           - performs speed and position sensor processing
- *
- * @param   void
- *
- * @return  none
- */
-static void InitQD(void)
-{      
-    /* Enable clock to ENC modules */
-//    CLOCK_EnableClock(kCLOCK_GateQDC0);    
-//    RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
-//    
-    /* Pass initialization data into encoder driver structure */
-    /* encoder position and speed measurement */
-//    g_sM1Enc.pui32QdBase   = (EQDC_Type *)QDC0;
-    g_sM1Enc.sTo.fltPGain  = M1_POSPE_TO_KP_GAIN;
-    g_sM1Enc.sTo.fltIGain  = M1_POSPE_TO_KI_GAIN;
-    g_sM1Enc.sTo.fltThGain = M1_POSPE_TO_THETA_GAIN;
-    g_sM1Enc.a32PosMeGain  = M1_POSPE_MECH_POS_GAIN;
-    g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
-    g_sM1Enc.bDirection    = M1_POSPE_ENC_DIRECTION;
-    g_sM1Enc.fltSpdEncMin  = M1_POSPE_ENC_N_MIN;
-    g_sM1Enc.ui16PulseNumber = M1_POSPE_ENC_PULSES;
-//    
-//    /* Quadrature pulses per one revolution */
-//    M1_MCDRV_QD_SET_PULSES(&g_sM1Enc); 
-//    /* Set encoder direction */
-//    M1_MCDRV_QD_SET_DIRECTION(&g_sM1Enc); 
-//    /* Enable modulo counting and revolution counter increment on roll-over */
-//    EQDC0->CTRL2 = EQDC_CTRL2_REVMOD_MASK;
 
 }
 

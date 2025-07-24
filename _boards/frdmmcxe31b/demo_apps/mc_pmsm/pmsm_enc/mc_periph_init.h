@@ -24,37 +24,15 @@
 #include "mcdrv_emios_mcxe.h"
 #include "mcdrv_sar_adc_mcxe.h"
 #include "mcdrv_lcu_mcxe.h"
-   
 
-
-
-//#include "fsl_eqdc.h"
-//#include "fsl_device_registers.h"
-//#include "mcdrv_pwm3ph_epwm.h"
-//#include "mcdrv_adc_mcxa20.h"
 #include "mcdrv_enc_emios.h"
-//#include "fsl_clock.h"
-//#include "fsl_lpcmp.h"
-//#include "fsl_inputmux.h"
-//#include "fsl_common_arm.h"
 #include "m1_pmsm_appconfig.h"
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
   
-  
-//#define DEMO_USED_CHANNELS      3U
-//#define DEMO_ADC_CHANNEL0       43U // CURR_A   // PTD4/ADC0_S19-MC_BEMF_A // Chnl number 43
-//#define DEMO_ADC_CHANNEL1       40U // CURR_B   // PTD2/ADC0_S16-MC_BEMF_B // Chnl number 40
-//#define DEMO_ADC_CHANNEL2       88U  // VOLT_DCB // PTB11/ADC0_X[3]/CMP2_IN0-MC_VOLT_DCB // Chnl number 88???
-//  
-//#define DEMO_ADC_CLOCK_FREQ             kADC_ModuleClockFreqDivide2
-//#define DEMO_ADC_BCTU_MODE              kADC_BctuTrig
-//#define DEMO_ADC_CONV_AVERAGE           kADC_ConvAvg32
-  
-  
-  /* Structure used during clocks and modulo calculations */
+/* Structure used during clocks and modulo calculations */
 typedef struct _clock_setup
 {
     uint32_t ui32FastPeripheralClock;
@@ -115,11 +93,6 @@ typedef struct _clock_setup
 /******************************************************************************
  * ADC measurement definition
  ******************************************************************************/
-/* Configuration of ADC channels according to the input pin signal */
-//#define CUR_A_CHANNEL_NUMBER    (7U)  //ADC1
-//#define CUR_B_CHANNEL_NUMBER    (8U)  //ADC1
-//#define CUR_C_CHANNEL_NUMBER    (21U) //ADC1
-//#define VOLT_DCB_CHANNEL_NUMBER (20U) //ADC0  
 
 /******************************************************************************
  * Define motor ADC control functions

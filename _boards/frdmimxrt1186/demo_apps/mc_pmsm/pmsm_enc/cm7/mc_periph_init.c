@@ -58,9 +58,11 @@ void MCDRV_Init_M1(void)
 
     /* Qudrature decoder peripheral init */
     M1_MCDRV_ENC_INIT();
-
+    
+//    OV and OC fault is not available yet.
 //    /* Comparator CMP */
 //    M1_MCDRV_CMP_INIT();
+    
 }
 
 /*!

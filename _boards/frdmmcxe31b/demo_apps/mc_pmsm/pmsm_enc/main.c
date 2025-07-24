@@ -152,17 +152,12 @@ int main(void)
     /* Enable interrupts  */
     EnableGlobalIRQ(ui32PrimaskReg);
     
-    /* Start PWM */
-//    g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF); 
-    
+    /* Start PWM */    
     BCTU_EnableModule(BCTU, true);
     BCTU_EnableGlobalTrig(BCTU, true);
     
     BCTU_EnableHardwareTrig(BCTU, kBCTU_TrigSourceEmios0Ch4, true);
-    
-    
-    
-
+   
     /* Infinite loop */
     while (1)
     {
@@ -202,19 +197,19 @@ void BCTU_IRQHandler(void)
     
     
     
-/* ********************************************************************** */    
+    /* ********************************************************************** */    
     
-//    switch(g_sSpinMidSwitch.eAppState)
-//    {
-//    case kAppStateSpin:
-//        /* M1 state machine */
+    switch(g_sSpinMidSwitch.eAppState)
+    {
+      case kAppStateSpin:
+        /* M1 state machine */
         SM_StateMachineFast(&g_sM1Ctrl);
-//      break;
-//    default:
-//        /* MID state machine */
-//        MID_ProcessFast_FL();
-//      break;
-//    }
+      break;
+      default:
+        /* MID state machine */
+        MID_ProcessFast_FL();
+      break;
+    }
         
     
     SIUL2->GPDO[120] = SIUL2_GPDO_PDO_n(0U);
@@ -244,42 +239,9 @@ void BCTU_IRQHandler(void)
  */
 void PIT0_IRQHandler(void)
 {
-    static int16_t ui16i = 0;
 
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
-
-    /* If in STOP state turn on RED */
-    if (M1_GetAppState() == 2)
-    {
-        /* Red LED on */
-//        GPIO_PinWrite(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, 0U);
-        /* Green LED off */
-//        GPIO_PinWrite(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, 1U);
-    }
-
-    /* If in FAULT state RED blinking*/
-    else if (M1_GetAppState() == 0)
-    {
-        if (ui16i-- < 0)
-        {
-            LED_RED_TOGGLE();
-            bDemoModeSpeed = FALSE;
-            bDemoModePosition = FALSE;
-            ui16i = 125;
-        }
-        /* Green LED off */
-//        GPIO_PinWrite(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, 1U);
-    }
-
-    /* If in RUN or INIT state turn on green */
-    else
-    {
-        /* Red LED off */
-//        GPIO_PinWrite(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, 1U);
-        /* Green LED on */
-//        GPIO_PinWrite(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, 0U);
-    }
 
     /* Demo speed stimulator */
     DemoSpeedStimulator();
@@ -426,9 +388,6 @@ void GPIO1_IRQHandler(void) {
         bDemoModeSpeed         = TRUE;
         ui32SpeedStimulatorCnt = 0;
     }
-
-    /* Clear external interrupt flag. */
-//    GPIO_GpioClearInterruptFlags(BOARD_INITPINS_SW2_GPIO, 1U << BOARD_INITPINS_SW2_PIN);
     
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;
@@ -445,26 +404,6 @@ void GPIO1_IRQHandler(void) {
  */
 static void BOARD_InitGPIO(void)
 {
-//    /* Define the init structure for the input switch pin */
-//    gpio_pin_config_t sw_config = {
-//        kGPIO_DigitalInput,
-//        0,
-//    };
-//  
-//    /* Init output LED GPIO */
-//    LED_RED_INIT(LOGIC_LED_OFF);
-//    LED_GREEN_INIT(LOGIC_LED_OFF);
-//    LED_BLUE_INIT(LOGIC_LED_OFF);
-//    
-//    /* Switch off all LEDs */
-//    GPIO_PinWrite(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, 1U);
-//    GPIO_PinWrite(BOARD_LED_BLUE_GPIO, BOARD_LED_BLUE_GPIO_PIN, 1U);
-//    GPIO_PinWrite(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, 1U);
-//
-//    /* Init input switch GPIO. */
-//    GPIO_SetPinInterruptConfig(BOARD_INITPINS_SW2_GPIO, BOARD_INITPINS_SW2_PIN, kGPIO_InterruptRisingEdge);
-//    GPIO_PinInit(BOARD_INITPINS_SW2_GPIO, BOARD_INITPINS_SW2_PIN, &sw_config);
-//    EnableIRQ(GPIO1_IRQn);
   
 }
 

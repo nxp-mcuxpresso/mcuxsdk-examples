@@ -18,8 +18,6 @@
 #include "board.h"
 #include "mid_sm_states.h"
 
-#warning "OV fault is not available yet. GPIO_AD_15 not routed to CMP_IN."
-
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -78,7 +76,6 @@ static void DemoPositionStimulator(void);
 
 static void BOARD_InitUART(uint32_t u32BaudRate);
 static void BOARD_InitSysTick(void);
-static void BOARD_InitGPIO(void);
 static void Application_Control_BL(void);
 
 /*******************************************************************************
@@ -279,45 +276,6 @@ void TMR1_IRQHandler(void)
     M1_END_OF_ISR;
 }
 
-///*!
-// * @brief   SW8 Button interrupt handler
-// *
-// * @param   void
-// *
-// * @return  none
-// */
-//RAM_FUNC_LIB
-//void GPIO1_0_IRQHandler(void)
-//{
-//    /* Proceed only if pressing longer than timeout */
-//    if (ui32ButtonFilter > 300)
-//    {
-//        ui32ButtonFilter = 0;
-//
-//        /* Speed demo */
-//        if (bDemoModeSpeed)
-//        {
-//            /* Stop application */
-//            M1_SetSpeed(0);
-//            M1_SetAppSwitch(0);
-//            bDemoModeSpeed = FALSE;
-//        }
-//        else
-//        {
-//            /* Start application */
-//            M1_SetAppSwitch(1);
-//            bDemoModeSpeed         = TRUE;
-//            ui32SpeedStimulatorCnt = 0;
-//        }
-//    }
-//
-//    /* Clear external interrupt flag. */
-//    RGPIO_ClearPinsInterruptFlags(BOARD_USER_BUTTON_GPIO, kRGPIO_InterruptOutput0, 1U << BOARD_USER_BUTTON_GPIO_PIN);
-//
-//    /* Add empty instructions for correct interrupt flag clearing */
-//    M1_END_OF_ISR;
-//}
-
 /*!
  * @brief   DemoSpeedStimulator
  *           - When demo mode is enabled it changes the required speed according
@@ -502,37 +460,7 @@ static void BOARD_Init(void)
     BOARD_InitBootClocks();
     /* Init peripherals set in peripherals file */
     BOARD_InitBootPeripherals();
-    /* Init GPIO pins */
-    BOARD_InitGPIO();
-}
 
-/*!
- * @brief   static void BOARD_InitGPIO(void)
- *           - Initialization of the GPIO peripherals
- *
- * @param   void
- *
- * @return  none
- */
-static void BOARD_InitGPIO(void)
-{
-//    /* Define the init structure for the input switch pin */
-//    rgpio_pin_config_t sw_config = {
-//        kRGPIO_DigitalInput,
-//        0,
-//    };
-//
-//    /* Workaround: Disable interrupt which might be enabled by ROM. */
-//    RGPIO_SetPinInterruptConfig(RGPIO2, 11U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
-//    NVIC_ClearPendingIRQ(GPIO1_0_IRQn);
-//
-//    /* Init input switch GPIO. */
-//    RGPIO_SetPinInterruptConfig(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, kRGPIO_InterruptOutput0, kRGPIO_InterruptFallingEdge);
-//    RGPIO_PinInit(BOARD_USER_BUTTON_GPIO, BOARD_USER_BUTTON_GPIO_PIN, &sw_config);
-//
-//    /* Enable GPIO pin interrupt for SW8 button */
-//    EnableIRQ(BOARD_USER_BUTTON_IRQ);
-//    NVIC_SetPriority(BOARD_USER_BUTTON_IRQ, BOARD_USER_BUTTON_PRIORITY);
 }
 
 /*!
