@@ -424,6 +424,7 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 
     POWER_ApplyPD();
 
+    g_runVolt = POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U); /* Calculate the voltage per frequency. */
     BOARD_SetPmicVdd2Voltage(g_runVolt);
 #else /* VDD1&VDD2 use internal LDO. */
 #if (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMC) /* VDDN use internal DCDC */
