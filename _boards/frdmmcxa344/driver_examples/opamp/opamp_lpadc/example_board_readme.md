@@ -5,10 +5,9 @@
 - Personal Computer
 
 Board settings
-Please connect SJ1 to B type (2-3).
-Please connect OPAMP1 positive input channel (SJ4 port 3) to a voltage source.
-Please connect OPAMP1 positive input channel (SJ4 port 3) to J2-9.
-Please connect OPAMP1 negative input channel (SJ5 port 3) to the GND.
+Please connect OPAMP1 positive input channel (SJ2-3) to the GND.
+Please connect OPAMP1 negative input channel (SJ3-3) to a voltage source.
+Please connect OPAMP1 negative input channel (SJ3-3) to J2-9.
 
 Prepare the Demo
 ===============
@@ -26,10 +25,25 @@ Running the demo
 ===============
  Opamp lpadc example.
  Please press any key to get opamp output value.
- opamp0OutputValue = 1644mv
- opamp1PositiveInputValue = 106mv
- Opamp1 output value measured by lpadc: 2703mv
- Opamp1 theoretical output value: 2704mv
-
+ Opamp output voltage = 818mv
+ Opamp negative input voltage = 80mv
+ Opamp theoretical output value = 903mv
+ Opamp output voltage = 611mv
+ Opamp negative input voltage = 100mv
+ Opamp theoretical output value = 699mv
+ Opamp output voltage = 416mv
+ Opamp negative input voltage = 120mv
+ Opamp theoretical output value = 495mv
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Note: the OPAMP1 maximum output voltage is 3.1v, users need to pay attention to the input voltage value of the positive channel.
+Note: the OPAMP1 maximum output voltage is 3.1v, users need to pay attention to the input voltage value of the negative channel.
+For FRDM-MCXA344 board:
+Inp = Vp + (Vdd - Vp) * 980 / (20000 + 980)
+Inn = Vn + (Vout - Vn) * 980 / (10000 + 980)
+Inp = Inn, VDD is about 3287mv.
+
+1. Set opamp negative input to 80mv, opamp theoretical output value is about 900.
+2. Set opamp negative input to 100mv, opamp theoretical output value is about 700.
+3. Set opamp negative input to 120mv, opamp theoretical output value is about 500,
+
+Slight changes in VDD, input voltage, peripheral circuits, the offset inside the OPAMP, and the LPADC measurement error will cause
+a difference between the theoretical value and the actual value. A difference within 100mv is considered normal.

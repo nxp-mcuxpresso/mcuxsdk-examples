@@ -6,5 +6,5 @@ opamp_fast
 .. toctree::
    :maxdepth: 1
 
-
    opamp_lpadc/readme.md
+   opamp_single_lpadc/readme.md
