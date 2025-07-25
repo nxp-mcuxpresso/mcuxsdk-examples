@@ -32,8 +32,7 @@ host_hid_mouse_keyboard_freertos:
     - -mdk@debug
     - -mdk@release
     evkmimxrt1020: []
-    evkmimxrt1024:
-    - -armgcc@sdram_debug
+    evkmimxrt1024: []
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []
