@@ -23,8 +23,8 @@
 // Variables
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifdef USE_SDRAM
-/* In SDRAM targets, the PDBDM buffer should be located in a non-cacheable section
+#ifdef USE_HYPERRAM
+/* In HYPERRAM targets, the PDBDM buffer should be located in a non-cacheable section
   (see the FMSTR_PDBDM_USER_BUFFER also defined in freemaster_cfg.h) */
 AT_NONCACHEABLE_SECTION(FMSTR_PDBDM_COMBUFF _pdbdm);
 #endif

@@ -48,7 +48,7 @@
 //! Select communication interface
 #define FMSTR_TRANSPORT         FMSTR_PDBDM    // Use PD BDM transport layer */
 
-#ifdef USE_SDRAM
+#ifdef USE_HYPERRAM
 #define FMSTR_PDBDM_USER_BUFFER 1              // PDBDM buffer is defined in main.c to put it to non-cacheable section
 #endif
 
