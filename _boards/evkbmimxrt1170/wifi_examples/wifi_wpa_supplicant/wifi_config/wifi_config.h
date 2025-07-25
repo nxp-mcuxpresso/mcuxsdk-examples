@@ -16,16 +16,19 @@
 #if defined(SD9177) || defined(IW610)
 #define CONFIG_WMM 1
 #define CONFIG_SDIO_MULTI_PORT_TX_AGGR 1
+#if defined(SD9177)
 #define CONFIG_WIFI_FEATURES 1
 #define CONFIG_OFFLOAD       1
 #endif
+#endif
 
-#if defined(RW610)
+#if defined(RW610) || defined(IW610)
 #define CONFIG_MAX_RESCAN_LIMIT 30
 #define PRINTF_FLOAT_ENABLE 1
 #define CONFIG_HOST_SLEEP 1
-#define CONFIG_POWER_MANAGER 1
 #define CONFIG_MEF_CFG 1
+#if defined(RW610)
+#define CONFIG_POWER_MANAGER 1
 /** If define CONFIG_TX_RX_ZERO_COPY 1, please make sure
  *  #define PBUF_POOL_BUFSIZE 1752
  *  in lwipopts.h
@@ -33,12 +36,12 @@
 #define CONFIG_TX_RX_ZERO_COPY 1
 #define CONFIG_ANT_DETECT 1
 #endif
+#endif
 
 #if defined(SD8978) || defined(SD8987) || defined(SD8801) || defined(SD9177) || defined(IW610)
 #define CONFIG_WIFI_AUTO_POWER_SAVE 1
 #define CONFIG_WIFI_CAPA        1
 #define CONFIG_ROAMING          1
-#define CONFIG_CLOUD_KEEP_ALIVE 1
 #define CONFIG_TURBO_MODE       1
 #define CONFIG_DRIVER_OWE       1
 #define CONFIG_EXT_SCAN_SUPPORT 1
@@ -46,6 +49,26 @@
 #define CONFIG_11R              1
 #define CONFIG_11K              1
 #define CONFIG_11V              1
+#if defined(IW610)
+#define CONFIG_MAX_AP_ENTRIES 30
+#define CONFIG_UNII4_BAND_SUPPORT 1
+#define CONFIG_WIFI_DTIM_PERIOD 1
+#define CONFIG_CSI 1
+#define CONFIG_RX_ABORT_CFG 1
+#define CONFIG_RX_ABORT_CFG_EXT 1
+#define CONFIG_CCK_DESENSE_CFG 1
+#define CONFIG_IPS 1
+#define CONFIG_SUBSCRIBE_EVENT_SUPPORT 1
+#define CONFIG_WIFI_FORCE_RTS 1
+#define CONFIG_TX_AMPDU_PROT_MODE 1
+#define CONFIG_TSP 1
+#define CONFIG_COEX_DUTY_CYCLE 1
+#define CONFIG_WIFI_CLOCKSYNC 1
+#define CONFIG_INACTIVITY_TIMEOUT_EXT 1
+#define CONFIG_AUTO_NULL_TX 1
+#else
+#define CONFIG_CLOUD_KEEP_ALIVE 1
+#endif
 #endif
 
 #if defined(SD8978) || defined(SD8987) || defined(SD9177) || defined(IW610)
@@ -63,13 +86,17 @@
 #define CONFIG_WPA_SUPP 1
 
 #if CONFIG_WPA_SUPP
-#ifdef RW610
+#if defined(RW610) || defined(IW610)
 #define CONFIG_WPA_SUPP_WPS               1
 #define CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE 1
 #define CONFIG_WPA_SUPP_CRYPTO_AP_ENTERPRISE 1
+#if defined(RW610)
 #define CONFIG_WIFI_USB_FILE_ACCESS       1
-
 #define CONFIG_WPA_SUPP_DPP 1
+#endif
+#if defined(IW610)
+#define CONFIG_WPA_SUPP_NAN_USD 0
+#endif
 
 #if (CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE || CONFIG_WPA_SUPP_CRYPTO_AP_ENTERPRISE)
 #define CONFIG_EAP_TLS 1
@@ -94,7 +121,7 @@
 #define CONFIG_WPA_SUPP_P2P 0
 #endif
 
-#if defined(SD9177) || defined(IW610)
+#if defined(SD9177)
 #define CONFIG_WPA_SUPP_DPP 0
 
 #if CONFIG_WPA_SUPP_DPP
