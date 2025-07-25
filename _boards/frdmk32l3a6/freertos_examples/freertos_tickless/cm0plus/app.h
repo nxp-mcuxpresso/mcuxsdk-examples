@@ -17,10 +17,10 @@
 #define BOARD_SW_IRQ_HANDLER BOARD_SW2_IRQ_HANDLER
 #define BOARD_SW_NAME        BOARD_SW2_NAME
 
-#define BOARD_LPTMR_TIMER_INSTANCE LPTMR0
-#define BOARD_LPTMR_TIMER_IRQ      LPTMR0_IRQn
+#define BOARD_LPTMR_TIMER_INSTANCE LPTMR2
+#define BOARD_LPTMR_TIMER_IRQ      LPTMR2_IRQn
 #define BOARD_LPTMR_CLOCK_SOURCE   kLPTMR_PrescalerClock_1
-#define BOARD_TIMER_IRQ_HANDLER    LPTMR0_IRQHandler
+#define BOARD_TIMER_IRQ_HANDLER    LPTMR2_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
