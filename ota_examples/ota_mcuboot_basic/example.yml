@@ -226,6 +226,9 @@ ota_mcuboot_basic:
     frdmmcxe247:
     - -mdk@debug
     - -mdk@release
+    frdmmcxe31b:
+    - -mdk@debug
+    - -mdk@release
 ota_mcuboot_basic@mcxn_mcuboot_in_main_flash:
   section-type: custom_application
   contents:

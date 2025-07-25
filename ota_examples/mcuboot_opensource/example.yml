@@ -226,6 +226,9 @@ mcuboot_opensource:
     frdmmcxe247:
     - -mdk@release
     - -mdk@debug
+    frdmmcxe31b:
+    - -mdk@release
+    - -mdk@debug
 mcuboot_opensource@mcxn_mcuboot_in_main_flash:
   section-type: custom_application
   contents:

@@ -10,7 +10,7 @@
 
 #include "mcuboot_config.h"
 
-#define BOOT_FLASH_BASE     0
+#define BOOT_FLASH_BASE     0x00400000
 
 
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)

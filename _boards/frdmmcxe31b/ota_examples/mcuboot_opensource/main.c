@@ -47,6 +47,12 @@ int main(void)
      * granularity of 64kB.
      */
 
+    /* Either the size of the slot must be aligned to super sector size or it must also clear
+       the protection on the last partly used sector. The current setup uses aligned slots
+    */
+
+    assert(BOOT_FLASH_ACT_SIZE % MFLASH_SUPER_SECTOR_SIZE == 0);
+
     for (int i=0; i < BOOT_FLASH_ACT_SIZE/MFLASH_SUPER_SECTOR_SIZE; i++)
     {
         FLASH_SetSectorProtection(NULL, BOOT_FLASH_ACT_APP + i*MFLASH_SUPER_SECTOR_SIZE, false);
@@ -54,8 +60,6 @@ int main(void)
     }
 
     PRINTF("hello sbl.\r\n");
-
-    PRINTF("DES %x; FES %x\n", (*(volatile uint32_t *)(0x4028c000)), (*(volatile uint32_t *)(0x4028c008)));
 
     (void)sbl_boot_main();
 
@@ -65,8 +69,49 @@ int main(void)
 void SBL_DisablePeripherals(void)
 {
     DbgConsole_Deinit();
-    SCB_DisableICache();
 
+    // Disable all interrupts
+    __disable_irq();
+    __asm volatile ("cpsid i");
+
+    // CM7 Cache Management
+    // Disable and clean D-Cache
+    if (SCB->CCR & SCB_CCR_DC_Msk)
+    {
+        SCB_DisableDCache();
+        SCB_CleanInvalidateDCache();
+    }
+    // Disable I-Cache
+    if (SCB->CCR & SCB_CCR_IC_Msk)
+    {
+        SCB_DisableICache();
+        SCB_InvalidateICache();
+    }
+
+    // MPU Management
+    #ifdef __MPU_PRESENT
+    if (MPU->CTRL & MPU_CTRL_ENABLE_Msk)
+    {
+        ARM_MPU_Disable();
+    }
+    #endif
+
+    // FPU Management
+    #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+    // Disable FPU if it was enabled
+    SCB->CPACR &= ~((3UL << 20) | (3UL << 22));  // Clear CP10 and CP11
+    #endif
+
+    // Reset NVIC - Clear all pending interrupts
+    for (int i = 0; i < 8; i++)
+    {
+        NVIC->ICER[i] = 0xFFFFFFFF;  // Disable all interrupts
+        NVIC->ICPR[i] = 0xFFFFFFFF;  // Clear all pending interrupts
+    }
+
+    // Memory barriers - Ensure all operations are completed
+    __DSB();  // Data Synchronization Barrier
+    __ISB();  // Instruction Synchronization Barrier
 }
 
 status_t CRYPTO_InitHardware(void)

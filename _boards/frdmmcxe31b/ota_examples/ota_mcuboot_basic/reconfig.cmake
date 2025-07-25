@@ -6,6 +6,11 @@ mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )
 
+mcux_add_macro(
+    CC "-DBYPASS_ECC_ITCM_INIT=1\
+        -DBYPASS_ECC_DTCM_INIT=1\
+        -DBYPASS_ECC_SRAM_INIT=1"
+)
 
 # Add or remove Linker File Configurations
 
@@ -24,7 +29,7 @@ mcux_remove_armgcc_linker_script(
 mcux_remove_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${device_root}/MCX/MCXE/MCXE31B/arm/MCXE31B_flash.csf
+    LINKER ${device_root}/MCX/MCXE/MCXE31B/arm/MCXE31B_flash.scf
 )
 
 mcux_add_iar_linker_script(

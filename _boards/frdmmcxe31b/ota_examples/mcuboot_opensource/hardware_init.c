@@ -14,7 +14,14 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootPins();
-    BOARD_InitBootClocks();
+
+    /* Bootloader uses default clock setup
+
+       It was observed that calling BOARD_InitBootClocks() in the bootloader and then again
+       in the app causes a reboot. This is because it creates an incompatible clock configuration sequence.
+
+     */
+
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
