@@ -156,3 +156,4 @@ psa_crypto_examples:
     - -mdk@sdram_debug
     evkbmimxrt1170@cm7: []
     frdmmcxw23: []
+    frdmmcxe31b: []
