@@ -1,6 +1,8 @@
 # Board Support Files
 
 ## board
+### [25.09.00]
+- Updated BOARD_ClockPreConfig, switching MUX0 to safe clock before any configuration.
 ### [25.09.00-pvw2]
 - Added UTEST memory configuration in BOARD_ConfigMPU.
 ### [25.09.00-pvw1]
