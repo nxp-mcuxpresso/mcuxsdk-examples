@@ -10,7 +10,6 @@ edgefast_bluetooth_examples
    a2dp_bridge/readme.md
    a2dp_sink/readme.md
    a2dp_source/readme.md
-   audio_profile/readme.md
    bms_4bis/readme.md
    bmr_4bis/readme.md
    broadcast_media_receiver/readme.md
