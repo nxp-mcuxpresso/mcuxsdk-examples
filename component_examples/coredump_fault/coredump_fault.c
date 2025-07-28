@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "fsl_device_registers.h"
-#include "fsl_debug_console.h"
 #include "board.h"
+#include "fsl_debug_console.h"
+#include "fsl_device_registers.h"
 #include "app.h"
 
 #include "fsl_os_abstraction.h"
@@ -28,7 +28,7 @@ union
 void DEMO_TriggerUseFault(void);
 
 void DEMO_MainTask(void *parameters);
-void DEMO_FaultTriggerTask(void *parameters);
+void DEMO_FaultTrigTask(void *parameters);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -39,7 +39,7 @@ static OSA_TASK_DEFINE(DEMO_MainTask, MAIN_TASK_PRIO, 1, 1024, 0);
 
 #define FAULT_TRIGGER_TASK_PRIO 2
 static OSA_TASK_HANDLE_DEFINE(fault_trigger_task);
-static OSA_TASK_DEFINE(DEMO_FaultTriggerTask, FAULT_TRIGGER_TASK_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(DEMO_FaultTrigTask, FAULT_TRIGGER_TASK_PRIO, 1, 1024, 0);
 
 /*******************************************************************************
  * Code
@@ -54,7 +54,7 @@ void DEMO_MainTask(void *parameters)
     }
 }
 
-void DEMO_FaultTriggerTask(void *parameters)
+void DEMO_FaultTrigTask(void *parameters)
 {
     while (1)
     {
@@ -76,7 +76,7 @@ int main(void)
         OSA_Init();
         PRINTF("Coredump Fault Example Start!\r\n");
         OSA_TaskCreate((osa_task_handle_t)main_task, OSA_TASK(DEMO_MainTask), (osa_task_param_t)NULL);
-        OSA_TaskCreate((osa_task_handle_t)fault_trigger_task, OSA_TASK(DEMO_FaultTriggerTask), (osa_task_param_t)NULL);
+        OSA_TaskCreate((osa_task_handle_t)fault_trigger_task, OSA_TASK(DEMO_FaultTrigTask), (osa_task_param_t)NULL);
 
         /* Start scheduler. */
         OSA_Start();
@@ -105,7 +105,9 @@ int main(void)
                 {
                     if (CoredumpHeader.u32CoredumpHeaderBuf[2] == K_ERR_ARM_USAGE_DIV_0)
                     {
-                        PRINTF("[Info] Reason: Usagefault caused by an integer divsion by zero!\r\n");
+                        PRINTF(
+                            "[Info] Reason: Usagefault caused by an integer divsion by "
+                            "zero!\r\n");
                     }
                 }
                 else
