@@ -8,6 +8,7 @@
 #define __PLATFORM_BINDINGS_H__
 
 #include "fsl_common.h"
+#include "fsl_power.h"
 #include "tinycrypt/sha256.h"
 #include "fsl_component_serial_manager.h"
 
@@ -22,5 +23,8 @@ int xmodem_putc(int);
 int xmodem_getc(void);
 int xmodem_canread(void);
 #define xmodem_canread_retries (SystemCoreClock/16)
+
+#undef NVIC_SystemReset
+#define NVIC_SystemReset() POWER_RequestResetMode(kMC_ME_FunctionalReset)
 
 #endif /*__PLATFORM_BINDINGS_H__*/

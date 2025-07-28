@@ -40,6 +40,12 @@
 
 int main(void)
 {
+    /* The app triggered a reset, clear the status */
+    if (MC_RGM->FES & MC_RGM_FES_SW_FUNC_MASK)
+    {
+        MC_RGM->FES = MC_RGM_FES_SW_FUNC_MASK;
+    }
+
     BOARD_InitHardware();
 
     /* Unlock application slots for flash erase/write.
@@ -118,4 +124,3 @@ status_t CRYPTO_InitHardware(void)
 {
     return kStatus_Success;
 }
-
