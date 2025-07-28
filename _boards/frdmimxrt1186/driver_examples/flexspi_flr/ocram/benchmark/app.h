@@ -35,12 +35,11 @@ typedef enum _flexspi_slv_clock_freq
 #define EXAMPLE_FLEXSPI_RX_SAMPLE_CLOCK kFLEXSPI_ReadSampleClkExternalInputFromDqsPad
 
 #define EXAMPLE_FLEXSPI_SLV             FLEXSPI_SLV
-#define EXAMPLE_FLEXSPI_SLV_MODE        kFLEXSPI_SLV_IOMODE_DDRx8
+#define EXAMPLE_FLEXSPI_SLV_MODE        kFLEXSPI_SLV_IOMODE_SDRx8
 #define EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK  kFLEXSPI_SLV_RootClock_400M
-#define EXAMPLE_MAILBOX_INDEX           0
 #define EXAMPLE_FLEXSPI_SLV_DUMMY_CYCLE 0x14
 #define OCRAM_BASEADDR                  0x20484000
-#define MEMORY_SIZE                     0x1F0 /* KByte */
+#define MEMORY_SIZE                     100 /* KByte */
 
 #define READ_REG_STATUS 0
 #define READ_MEMORY     1
@@ -79,6 +78,8 @@ typedef uint32_t TickType_t;
 #if (defined CACHE_MAINTAIN) && (CACHE_MAINTAIN == 1)
 typedef struct _flexspi_cache_status
 {
+    volatile bool DCacheEnableFlag;
+    volatile bool ICacheEnableFlag;
     volatile bool codeCacheEnableFlag;
     volatile bool systemCacheEnableFlag;
 } flexspi_cache_status_t;

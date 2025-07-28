@@ -33,14 +33,14 @@ Default project uses Follower code. Define EXAMPLE_RUN_FLEXSPI_LEADER in project
 
 Follower Log
 ===============
-FLEXSPI Follower(Root Clock: 400MHz, IO Mode: DDRx8) example started!
+FLEXSPI Follower example started!
+Root Clock: 400MHz, IO Mode: SDRx8.
 FLEXSPI Follower is initialized!
-------GPT clock is 80000000Hz
-Testing bandwidth of OCRAM-READ
+Testing bandwidth of READ
 Read 100 MB in 1040 ms, bandwidth=96 MB per second
 Read 100 MB in 1040 ms, bandwidth=96 MB per second
 Read 100 MB in 1040 ms, bandwidth=96 MB per second
-Testing bandwidth of OCRAM-WRITE
+Testing bandwidth of WRITE
 Read 100 MB in 1436 ms, bandwidth=69 MB per second
 Read 100 MB in 1436 ms, bandwidth=69 MB per second
 Read 100 MB in 1441 ms, bandwidth=69 MB per second
@@ -48,14 +48,14 @@ Read 100 MB in 1441 ms, bandwidth=69 MB per second
 
 Leader Log
 ===============
-FLEXSPI Leader(Root Clock: 100000000Hz) example started!
+FLEXSPI Leader example started!
+Root Clock: 100000000Hz.
 FLEXSPI Leader is initialized!
-GPT clock is 80000000Hz
-Testing bandwidth of Follower-READ
+Testing bandwidth of READ
 Read 100 MB in 1062 ms, bandwidth=94 MB per second
 Read 100 MB in 1062 ms, bandwidth=94 MB per second
 Read 100 MB in 1062 ms, bandwidth=94 MB per second
-Testing bandwidth of Follower-WRITE
+Testing bandwidth of WRITE
 Read 100 MB in 5472 ms, bandwidth=18 MB per second
 Read 100 MB in 5471 ms, bandwidth=18 MB per second
 Read 100 MB in 5471 ms, bandwidth=18 MB per second

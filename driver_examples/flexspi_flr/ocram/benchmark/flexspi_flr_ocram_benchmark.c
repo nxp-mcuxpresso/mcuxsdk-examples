@@ -20,6 +20,10 @@
 #endif
 #define TYPE int
 
+#ifndef EXAMPLE_USE_CUSTOMIZED_RW
+#define EXAMPLE_USE_CUSTOMIZED_RW 0
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -44,12 +48,10 @@ extern flexspi_device_config_t deviceconfig;
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#ifdef EXAMPLE_USE_CUSTOMIZED_RW
 void useParameter(int param)
 {
     use_result_dummy += param;
 }
-#endif
 
 void readTest(iter_t iterations, void *cookie)
 {
@@ -68,6 +70,7 @@ void readTest(iter_t iterations, void *cookie)
             }
         }
     }
+    useParameter(sum);
 }
 
 void writeTest(iter_t iterations, void *cookie)
@@ -90,7 +93,7 @@ void writeTest(iter_t iterations, void *cookie)
     }
 }
 
-#ifdef EXAMPLE_USE_CUSTOMIZED_RW
+#if defined (EXAMPLE_USE_CUSTOMIZED_RW) && (EXAMPLE_USE_CUSTOMIZED_RW == 1U)
 void cReadTest(iter_t iterations, void *cookie)
 {
     state_t *state         = (state_t *)cookie;
@@ -182,58 +185,69 @@ static void runFunc(char *func_name, test_func_t func, iter_t iter, void *cookie
         end_tick = (end_tick > start_tick) ? end_tick : (gptFreq * 50U - start_tick + end_tick);
         msecs    = (end_tick - start_tick) / (gptFreq / 1000U);
 
-        PRINTF("Read %d MB in %d ms, bandwidth=%d MB per second \r\n", mb, msecs, (mb * 1000U) / msecs);
+        if (msecs == 0U)
+        {
+            msecs = 1;
+            PRINTF("<Warning> Cost time is shorter than 1 ms! \r\n");
+        }
+
+        PRINTF("R/W %d MB in %d ms, bandwidth=%d MB per second \r\n", mb, msecs, (mb * 1000U) / msecs);
     }
 }
 
+void benchmark(void)
+{
 #ifndef EXAMPLE_RUN_FLEXSPI_LEADER
-static void benchmark_ocram(void)
-{
     uintptr_t start_addr = OCRAM_BASEADDR;
-    TYPE *buf            = (TYPE *)start_addr;
-    uint32_t buf_len_kb  = EXAMPLE_WR_BLOCK_SIZE_KB;
-    uint32_t buf_len     = buf_len_kb * 1024U;
-    iter_t iter          = 1024;
-    state_t state;
-    uint32_t mb;
-
-    mb            = iter * buf_len_kb / 1024U;
-    state.buf     = buf;
-    state.lastone = (TYPE *)(start_addr + buf_len);
-
-    runFunc((char *)"OCRAM-READ", readTest, iter, (void *)&state, mb);
-    runFunc((char *)"OCRAM-WRITE", writeTest, iter, (void *)&state, mb);
-#ifdef EXAMPLE_USE_CUSTOMIZED_RW
-    runFunc((char *)"OCRAM-Customized READ", cReadTest, iter, (void *)&state, mb);
-    runFunc((char *)"OCRAM-Customized WRITE", cWriteTest, iter, (void *)&state, mb);
-#endif
-    PRINTF("**************Testing End*************\r\n");
-}
-
 #else
-void benchmark_follower(void)
-{
-    state_t state;
     uintptr_t start_addr = EXAMPLE_FLEXSPI_AMBA_BASE;
+#endif
     TYPE *buf            = (TYPE *)start_addr;
     uint32_t buf_len_kb  = EXAMPLE_WR_BLOCK_SIZE_KB;
     uint32_t buf_len     = buf_len_kb * 1024U;
     iter_t iter          = 1024;
+    state_t state;
     uint32_t mb;
 
     mb            = iter * buf_len_kb / 1024U;
     state.buf     = buf;
     state.lastone = (TYPE *)(start_addr + buf_len);
 
-    runFunc("Follower-READ", readTest, iter, (void *)&state, mb);
-    runFunc("Follower-WRITE", writeTest, iter, (void *)&state, mb);
-#ifdef EXAMPLE_USE_CUSTOMIZED_RW
-    runFunc("Follower-Customized READ", cReadTest, iter, (void *)&state, mb);
-    runFunc("Follower-Customized WRITE", cWriteTest, iter, (void *)&state, mb);
+#if defined (EXAMPLE_USE_CUSTOMIZED_RW) && (EXAMPLE_USE_CUSTOMIZED_RW == 1U)
+    runFunc("READ", cReadTest, iter, (void *)&state, mb);
+    runFunc("WRITE", cWriteTest, iter, (void *)&state, mb);
+#else
+    runFunc("READ", readTest, iter, (void *)&state, mb);
+    runFunc("WRITE", writeTest, iter, (void *)&state, mb);
 #endif
     PRINTF("**************Testing End*************\r\n");
 }
-#endif
+
+void flexspi_flr_callback(FLEXSPI_SLV_Type *base, flexspi_slv_handle_t *handle)
+{
+    uint32_t mailBox[FLEXSPI_SLV_SPIMAIL_COUNT] = {0};
+    size_t rdCount, wrCount;
+
+    if ((handle->intrMask & (uint32_t)kFLEXSPI_SLV_ErrorCommandFlag) != 0U)
+    {
+        (void)PRINTF("[Follower](interrupt) Error command!\r\n");
+    }
+    if ((handle->intrMask & ((uint32_t)kFLEXSPI_SLV_WriteOverflowFlag | (uint32_t)kFLEXSPI_SLV_ReadUnderflowFlag)) != 0U)
+    {
+        FLEXSPI_SLV_GetOutOfRangeCounts(base, &rdCount, &wrCount);
+        (void)PRINTF("[Follower](interrupt) Write error count = %u. Read error count = %u!\r\n", wrCount, rdCount);
+    }
+    if ((handle->intrMask & (uint32_t)kFLEXSPI_SLV_MailInterruptFlag) != 0U)
+    {
+        (void)PRINTF("[Follower](interrupt) Mailbox data: ");
+        for (uint32_t i = 0; i < FLEXSPI_SLV_SPIMAIL_COUNT; i++)
+        {
+            mailBox[i] = FLEXSPI_SLV_GetMailboxData(base, i);
+            (void)PRINTF("Box[%u] 0x%X. ", i, mailBox[i]);
+        }
+        (void)PRINTF("\r\n");
+    }
+}
 
 int main(void)
 {
@@ -242,8 +256,8 @@ int main(void)
 #ifndef EXAMPLE_RUN_FLEXSPI_LEADER
     flexspi_slv_config_t config;
 
-    PRINTF("\r\nFLEXSPI Follower(Root Clock: %uMHz, IO Mode: %s) example started!\r\n", EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK,
-           io_mode[EXAMPLE_FLEXSPI_SLV_MODE]);
+    PRINTF("\r\nFLEXSPI Follower example started!\r\n");
+    PRINTF("Root Clock: %uMHz, IO Mode: %s.\r\n", EXAMPLE_FLEXSPI_SLV_ROOT_CLOCK, io_mode[EXAMPLE_FLEXSPI_SLV_MODE]);
 
     FLEXSPI_SLV_GetDefaultConfig(&config);
     config.ioMode             = EXAMPLE_FLEXSPI_SLV_MODE;
@@ -262,21 +276,20 @@ int main(void)
 
     FLEXSPI_SLV_Init(EXAMPLE_FLEXSPI_SLV, &config);
     PRINTF("FLEXSPI Follower is initialized!\r\n");
-
-    setupTimerInterrupt();
-    PRINTF("------GPT clock is %dHz\r\n", gptFreq);
-    benchmark_ocram();
+    flexspi_slv_handle_t handle;
+    FLEXSPI_SLV_InterruptCreateHandle(EXAMPLE_FLEXSPI_SLV, &handle, flexspi_flr_callback,
+                                      kFLEXSPI_SLV_AllInterruptFlags);
 #else
     deviceconfig.flexspiRootClk = FLEXSPI_GetRootClockFreqHz(EXAMPLE_FLEXSPI_ROOT_CLOCK_SRC);
-    PRINTF("\r\nFLEXSPI Leader(Root Clock: %uHz) example started!\r\n", deviceconfig.flexspiRootClk);
+    PRINTF("\r\nFLEXSPI Leader example started!\r\n");
+    PRINTF("Root Clock: %uHz.\r\n", deviceconfig.flexspiRootClk);
 
     flexspi_ocram_init(EXAMPLE_FLEXSPI);
     PRINTF("FLEXSPI Leader is initialized!\r\n");
-
-    setupTimerInterrupt();
-    PRINTF("GPT clock is %dHz\r\n", gptFreq);
-    benchmark_follower();
 #endif
+    setupTimerInterrupt();
+
+    benchmark();
 
     while (1)
     {
