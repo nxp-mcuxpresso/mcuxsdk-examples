@@ -1,9 +1,12 @@
-/*
- * Copyright 2022 NXP
- * All rights reserved.
+/** @file gap.c
  *
- * SPDX-License-Identifier: BSD-3-Clause
+ * Copyright (c) 2015-2016 Intel Corporation
+ * Copyright 2023-2025 NXP
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
  */
+
 #if CONFIG_NCP_BLE
 
 #include "ncp_ble.h"
