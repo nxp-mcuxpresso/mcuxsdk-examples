@@ -94,3 +94,16 @@ $lp_test_sleep_mode
 // No change on app behaviour, the core voltage will be set to 1.1v and the NBU core will run to 64MHz 
 $lp_test_nbu_speed_64MHz
 #define gAppHighNBUClockFrequency_d 1
+
+// Change in app behavior : only privacy enabled, the peer device needs the same configuration
+$lp_test_disable_bonding_pairing
+#define gAppUseBonding_d                               0
+#define gAppUsePairing_d                               0
+
+// The application core will not enter lowpower but only WFI
+$lp_test_lp_disabled
+#define gAppLowpowerEnabled_d                          0
+
+// The application will stop scanning after 30 seconds (Dapeng test will verify it)
+$lp_test_scanning_timeout
+#define gAppScanningTimeout_c                          30
