@@ -491,6 +491,8 @@ typedef struct _iperf_set_t
     uint32_t iperf_udp_rate;
     /** UDP time. */
     uint32_t iperf_udp_time;
+    /** Iperf per size. */
+    uint32_t iperf_per_size;
 } iperf_set_t;
 
 /** This structure is used for iperf message configuration. */

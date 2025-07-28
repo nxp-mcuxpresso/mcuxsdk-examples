@@ -257,7 +257,7 @@ void ping_sock_task(void *pvParameters)
 
 /*iperf command tx and rx */
 extern iperf_msg_t iperf_msg;
-#define NCP_IPERF_PER_PKG_SIZE 1448
+#define NCP_IPERF_PER_PKG_SIZE 3000
 #define IPERF_RECV_TIMEOUT     3000
 /** A const buffer to send from: we want to measure sending, not copying! */
 static char lwiperf_txbuf_const[NCP_IPERF_PER_PKG_SIZE] = {
@@ -667,7 +667,7 @@ void ncp_iperf_rx_task(void *pvParameters)
     int                client_sockfd;
     struct sockaddr_in server_addr = {0};
     int ret = 0;
-    char buffer[1500];
+    char buffer[3000];
     while (1)
     {
         /* demo ping task wait for user input ping command from console */
