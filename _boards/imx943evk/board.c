@@ -848,7 +848,7 @@ void BOARD_ConfigMPU(void)
     MPU->RBAR = ARM_MPU_RBAR(regionIdx, 0x86000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 0, 0, ARM_MPU_REGION_SIZE_64MB);
     regionIdx++;
-#elif defined(CACHE_MODE_WRITE_THROUGH) && CACHE_MODE_WRITE_BACK
+#elif defined(CACHE_MODE_WRITE_BACK) && CACHE_MODE_WRITE_BACK
     /* Region 11 setting: Memory with Normal type, not shareable, outer/inner write back */
     MPU->RBAR = ARM_MPU_RBAR(regionIdx, 0x86000000U);
     MPU->RASR = ARM_MPU_RASR(0, ARM_MPU_AP_FULL, 0, 0, 1, 1, 0, ARM_MPU_REGION_SIZE_64MB);
