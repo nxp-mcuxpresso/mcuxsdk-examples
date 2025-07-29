@@ -40,7 +40,7 @@ typedef struct {
     int sock_type;
 } socket_type_t;
 
-static socket_type_t socket_type_table[MAX_SOCKETS] = {-1};
+static socket_type_t socket_type_table[MAX_SOCKETS] = {{-1, 0}};
 static int socket_type_count = 0;
 
 static void set_socket_socket(int sockfd, int type)
@@ -434,57 +434,16 @@ static int wlan_ncp_inet_fcntl(void *data)
 
 /* INET recv command */
 static int ncp_inet_recv_create_task(void);
-
-#define SOCKET_SELECT_TASK_NAME "socket recv task"
-#define NCP_INET_SOCKET_RECV_SIZE          3000
-
 struct recv_send_data_t
 {
     int ret;
     int errno;
     int socket;
-    char *recv_buf;
+    uint8_t *recv_buf;
     int recv_size;
     socklen_t socklen;
     union ncp_sockaddr_aligned client_addr;
 };
-
-static int ncp_inet_recv_send_data(struct recv_send_data_t *send_event)
-{
-    uint8_t *buf = 0;
-    int buf_len = 0;
-    NCP_CMD_INET_RESP_RECVFROM_CFG *tlv_res = 0;
-
-    buf_len = send_event->recv_size+sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG)+sizeof(NCP_COMMAND);
-    buf = (uint8_t *)OSA_MemoryAllocate(buf_len);
-    if (!buf)
-    {
-        ncp_e("ncp socket receive buffer alloc fail\r\n");
-        goto exit;
-    }
-    memset(buf, '0', buf_len);
-    /* reserve memory for NCP_COMMAND */
-    tlv_res = (NCP_CMD_INET_RESP_RECVFROM_CFG *)(buf + sizeof(NCP_COMMAND));
-    tlv_res->ret = send_event->ret;
-    tlv_res->errno = send_event->errno;
-    tlv_res->socket = send_event->socket;
-    tlv_res->recv_size = send_event->recv_size;
-    struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
-    linux_addr->sa_family      = send_event->client_addr.sa.sa_family;
-    memcpy(linux_addr->sa_data, send_event->client_addr.sa.sa_data, NCP_IPADDR_DATA_LEN);
-    tlv_res->socklen = send_event->socklen;
-    memcpy(tlv_res->recv_data, send_event->recv_buf, send_event->recv_size);
-
-    ncp_inet_prepare_socket_recv_resp(buf);
-    if (wifi_ncp_send_response(buf) != WM_SUCCESS)
-    {
-        ncp_e("ncp inet send receive event fail\r\n");
-    }
-    OSA_MemoryFree(buf);
-    buf = NULL;
-exit:
-    return -WM_FAIL;
-}
 
 static uint64_t ncp_bitmap = 0;
 static int max_sock_fd = 0;
@@ -544,11 +503,8 @@ static void socket_recv_task(void *arg)
     int buf_len = 0;
     int ret = 0;
     int recv_size = 0;
-
-    char recv_buf[NCP_INET_SOCKET_RECV_SIZE] = {0};
-    union ncp_sockaddr_aligned client_addr;
-    socklen_t socklen = sizeof(client_addr);
-    memset(&client_addr, 0, sizeof(client_addr));
+    uint8_t *recv_buf = 0;
+    int chksum_len = 4;
 
     while(1)
     {
@@ -569,27 +525,48 @@ static void socket_recv_task(void *arg)
                     continue;
                 if (FD_ISSET(i, &readset))
                 {
-                    /* read data from tcp/ip stack */
+                    buf_len = ALIGN_D(NCP_INET_SOCKET_RECV_SIZE + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG)
+                      + sizeof(NCP_COMMAND) + chksum_len);
+                    recv_buf = (uint8_t *)OSA_MemoryAllocate(buf_len);
+                    if (!recv_buf)
+                    {
+                        ncp_e("ncp socket receive buffer alloc fail\r\n");
+                        OSA_TaskYield();
+                        continue;
+                    }
+                    union ncp_sockaddr_aligned client_addr;
+                    socklen_t socklen = sizeof(client_addr);
                     socklen = sizeof(client_addr);
-                    ret = recvfrom(i, recv_buf, NCP_INET_SOCKET_RECV_SIZE, 0, (struct sockaddr *)&client_addr.sin6, &socklen);
-                    struct recv_send_data_t send_event;
-                    send_event.ret = ret;
-                    send_event.errno = errno;
-                    send_event.socket = i;
-                    send_event.recv_buf = recv_buf;
+                    tlv_res = (NCP_CMD_INET_RESP_RECVFROM_CFG *)(recv_buf + sizeof(NCP_COMMAND));
+                    /* read data from tcp/ip stack */
+                    ret = recvfrom(i, tlv_res->recv_data, NCP_INET_SOCKET_RECV_SIZE, 0, (struct sockaddr *)&client_addr.sin6, &socklen);
+                    tlv_res->ret = ret;
+                    tlv_res->errno = errno;
+                    tlv_res->socket = i;
                     if (ret > 0)
-                        send_event.recv_size = ret;
+                        tlv_res->recv_size = ret;
                     else
                     {
                         /*if recvfrom fail, not to select socket*/
                         if (ret < 0)
                             ncp_inet_clear_bit(i);
-                        send_event.recv_size = 0;
+                        OSA_MemoryFree(recv_buf);
+                        recv_buf = 0;
+                        OSA_TaskYield();
                         continue;
                     }
-                    send_event.socklen = socklen;
-                    send_event.client_addr = client_addr;
-                    ncp_inet_recv_send_data(&send_event);
+                    struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
+                    linux_addr->sa_family      = client_addr.sa.sa_family;
+                    memcpy(linux_addr->sa_data, client_addr.sa.sa_data, NCP_IPADDR_DATA_LEN);
+                    tlv_res->socklen = socklen;
+                    ncp_inet_prepare_socket_recv_resp(recv_buf);
+                    if (wifi_ncp_send_response(recv_buf) != WM_SUCCESS)
+                    {
+                        ncp_e("ncp inet send receive event fail\r\n");
+                        OSA_MemoryFree(recv_buf);
+                        recv_buf = 0;
+                        OSA_TaskYield();
+                    }
                 }
             }
         }
