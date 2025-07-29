@@ -20,3 +20,8 @@ netc_share:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     imx95lpd5evk19@cm7: []
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@release
+    - -iar@debug
