@@ -19,7 +19,7 @@
 #define DEMO_SAI_CHANNEL (0)
 #define DEMO_SAI_CLK_FREQ                                                                  \
     CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) / (CLOCK_GetRootPreDivider(kCLOCK_RootSai2)) / \
-        (CLOCK_GetRootPostDivider(kCLOCK_RootSai2)) / 6
+        (CLOCK_GetRootPostDivider(kCLOCK_RootSai2)) / 3
 #define DEMO_CODEC_WM8524       (1)
 #define CODEC_USEGPIO           (1)
 #define DEMO_CODEC_BUS_PIN      (NULL)
@@ -35,7 +35,7 @@
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 #define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
 #define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
-#define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ
+#define DEMO_AUDIO_MASTER_CLOCK (DEMO_SAI_CLK_FREQ / 2)
 
 #define BOARD_MASTER_CLOCK_CONFIG()
 #define BOARD_SAI_RXCONFIG(config, mode)

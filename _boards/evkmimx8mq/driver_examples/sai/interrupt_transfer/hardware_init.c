@@ -39,7 +39,7 @@ void BOARD_InitHardware(void)
     BOARD_InitMemory();
 
     CLOCK_SetRootMux(kCLOCK_RootSai2, kCLOCK_SaiRootmuxSysPll1Div6); /* Set SAI source to SYS PLL1 Div6 133MHZ */
-    CLOCK_SetRootDivider(kCLOCK_RootSai2, 1U, 3U);                   /* Set root clock to 133MHZ / 3 = 44MHZ */
+    CLOCK_SetRootDivider(kCLOCK_RootSai2, 1U, 6U);                   /* Set root clock to 133MHZ / 3 = 44MHZ */
 
     /* gpio initialization */
     gpio_pin_config_t gpioConfig = {kGPIO_DigitalOutput, 1};

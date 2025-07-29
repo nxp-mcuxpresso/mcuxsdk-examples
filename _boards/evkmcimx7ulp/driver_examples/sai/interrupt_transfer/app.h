@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2020 NXP
+ * Copyright 2016-2020, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -27,8 +27,8 @@
 
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 #define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
-#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate16KHz)
-#define DEMO_AUDIO_MASTER_CLOCK 6144000U
+#define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
+#define DEMO_AUDIO_MASTER_CLOCK 12288000U
 
 #define DEMO_I2C          LPI2C0
 #define DEMO_SAI_CLK_FREQ CLOCK_GetIpFreq(kCLOCK_Sai0)
