@@ -24,12 +24,7 @@
 #include <bluetooth/hfp_hf.h>
 #include <bluetooth/sdp.h>
 #include <bluetooth/rfcomm.h>
-#include "BT_common.h"
-#include "BT_hci_api.h"
-#include "BT_sm_api.h"
-#include "BT_sdp_api.h"
 #include "app_handsfree.h"
-#include "db_gen.h"
 #include "app_shell.h"
 #include "app_connect.h"
 
@@ -261,7 +256,7 @@ void app_list_current_calls(struct bt_conn *conn, bt_hfp_hf_current_calls_state_
     printf("> current_calls : dir %d\n", current_calls->dir);
     printf("> current_calls : status %d\n", current_calls->status);
     printf("> current_calls : mode %d\n", current_calls->mode);
-    printf("> current_calls : mprty %s\n", current_calls->mprty);
+    printf("> current_calls : mprty %d\n", current_calls->mprty);
     printf("> current_calls : number %s\n", current_calls->number);
     printf("> current_calls : type %d\n", current_calls->type);
     printf("> current_calls : alpha %s\n", current_calls->alpha);  

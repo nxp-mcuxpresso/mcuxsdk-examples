@@ -24,12 +24,6 @@
 #include <bluetooth/hfp_ag.h>
 #include <bluetooth/sdp.h>
 #include <bluetooth/rfcomm.h>
-#include "BT_common.h"
-#include "BT_hci_api.h"
-#include "BT_sm_api.h"
-#include "BT_sdp_api.h"
-
-#include "BT_config.h"
 #include "app_handsfree_ag.h"
 #include "app_connect.h"
 #include "app_shell.h"
