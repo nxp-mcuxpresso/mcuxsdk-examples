@@ -4,6 +4,10 @@ include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
 project(safety_iec60730b LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/demo_apps/safety_iec60730b)
 
+# armgcc and MDK post-build command is disabled when 'SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD' set to 'false'
+# srecord tool not available now, so disable post-build command for armgcc and MDK
+mcux_set_variable(SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD false)
+
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
