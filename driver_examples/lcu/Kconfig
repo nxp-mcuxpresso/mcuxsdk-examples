@@ -6,7 +6,7 @@ menu "Project Settings"
 
 config DEMO_LCU_LUT_VALUE
     int "LCU lookup tdable value"
-    default 0x02
+    default 2
     help
         No prefix in generated macro
 
