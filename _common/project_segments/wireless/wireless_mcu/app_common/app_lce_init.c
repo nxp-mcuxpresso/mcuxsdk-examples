@@ -13,6 +13,10 @@
 #include "app_lce_init.h"
 
 /* -------------------------------------------------------------------------- */
+/*                              Public memory declarations                    */
+/* -------------------------------------------------------------------------- */
+uint8_t      g_ceHeap_id = 0U;
+/* -------------------------------------------------------------------------- */
 /*                              Private functions                             */
 /* -------------------------------------------------------------------------- */
 /* CE buffer definition */
@@ -79,7 +83,7 @@ static mem_status_t CE_MEM_Init(void)
     uint8_t      memHeap_id;
     if (st == kStatus_MemSuccess)
     {
-        st = MEM_RegisterExtendedArea(&mCeHeap, &memHeap_id, AREA_FLAGS_POOL_NOT_SHARED);
+        st = MEM_RegisterExtendedArea(&mCeHeap, &g_ceHeap_id, AREA_FLAGS_POOL_NOT_SHARED);
     }
     if (st == kStatus_MemSuccess)
     {
