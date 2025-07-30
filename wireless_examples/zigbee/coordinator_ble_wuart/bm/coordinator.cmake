@@ -7,12 +7,14 @@ include(${SdkRootDirPath}/examples/wireless_examples/bluetooth/CMakeLists.txt)
 if (CONFIG_ZB_COORD_R23_REVISION)
     mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL_R23.a)
     mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK_R23.a)
+    mcux_set_variable(ZPSCFG     ${NXP_ZB_BASE}/examples/zigbee_coordinator/src/coordinator_R23.zpscfg)
     message("R23 selected")
 endif()
 
 if (CONFIG_ZB_COORD_R22_REVISION)
     mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL.a)
     mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK.a)
+    mcux_set_variable(ZPSCFG     ${NXP_ZB_BASE}/examples/zigbee_coordinator/src/coordinator.zpscfg)
     message("R22 selected")
 endif()
 
@@ -35,6 +37,7 @@ mcux_add_source(
             zcl_options.h
             zigbee_config.h
             coordinator.zpscfg
+            coordinator_R23.zpscfg
 )
 
 mcux_add_source(
@@ -141,7 +144,7 @@ add_custom_command(
         ${APPLICATION_BINARY_DIR}/pdum_gen.h
         ${APPLICATION_BINARY_DIR}/pdum_apdu.S
         COMMAND ${PYTHON_EXECUTABLE} ${PDUMCONFIG}
-        ARGS 
+        ARGS
         -z coordinator
         -e ENDIAN
         -f ${ZPSCFG}

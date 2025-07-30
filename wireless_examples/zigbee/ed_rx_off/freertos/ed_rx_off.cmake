@@ -3,11 +3,15 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 if (CONFIG_ZB_ED_RXOFF_R23_REVISION)
     mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL_R23.a)
     mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK_ZED_R23.a)
+    mcux_set_variable(ZPSCFG     ${NXP_ZB_BASE}/examples/zigbee_ed_rx_off/src/enddevice_rxoff_R23.zpscfg)
+    message("R23 selected")
 endif()
 
 if (CONFIG_ZB_ED_RXOFF_R22_REVISION)
     mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL.a)
     mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK_ZED.a)
+    mcux_set_variable(ZPSCFG     ${NXP_ZB_BASE}/examples/zigbee_ed_rx_off/src/enddevice_rxoff.zpscfg)
+    message("R22 selected")
 endif()
 
 mcux_add_source(BASE_PATH ${SdkRootDirPath}/middleware/wireless/zigbee/platform/${CONFIG_ZB_PLATFORM}
@@ -32,6 +36,7 @@ mcux_add_source(
             zcl_options.h
             zigbee_config.h
             enddevice_rxoff.zpscfg
+            enddevice_rxoff_R23.zpscfg
             readme.txt
 )
 

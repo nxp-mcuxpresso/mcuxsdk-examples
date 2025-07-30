@@ -3,12 +3,14 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 if (CONFIG_ZB_ROUTER_R23_REVISION)
     mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL_R23.a)
     mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK_R23.a)
+    mcux_set_variable(ZPSCFG     ${NXP_ZB_BASE}/examples/zigbee_router/src/router_R23.zpscfg)
     message("R23 selected")
 endif()
 
 if (CONFIG_ZB_ROUTER_R22_REVISION)
     mcux_set_variable(ZPSAPL_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSAPL.a)
     mcux_set_variable(ZPSNWK_LIB ${NXP_ZB_BASE}/platform/${CONFIG_ZB_PLATFORM}/libs/libZPSNWK.a)
+    mcux_set_variable(ZPSCFG     ${NXP_ZB_BASE}/examples/zigbee_router/src/router.zpscfg)
     message("R22 selected")
 endif()
 
@@ -33,6 +35,7 @@ mcux_add_source(
             app_serial_commands.c
             app_serial_commands.h
             router.zpscfg
+            router_R23.zpscfg
             readme.txt
 )
 
@@ -88,7 +91,7 @@ add_custom_command(
         ${APPLICATION_BINARY_DIR}/pdum_gen.h
         ${APPLICATION_BINARY_DIR}/pdum_apdu.S
         COMMAND ${PYTHON_EXECUTABLE} ${PDUMCONFIG}
-        ARGS 
+        ARGS
         -z router
         -e ENDIAN
         -f ${ZPSCFG}

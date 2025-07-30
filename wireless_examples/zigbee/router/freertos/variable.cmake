@@ -2,7 +2,6 @@ mcux_set_variable(NXP_ZB_BASE ${SdkRootDirPath}/middleware/wireless/zigbee)
 mcux_set_variable(PDUMCONFIG  ${NXP_ZB_BASE}/tools/PDUMConfig/Source/PDUMConfig.py)
 mcux_set_variable(ZPSCONFIG   ${NXP_ZB_BASE}/tools/ZPSConfig/Source/ZPSConfig.py)
 mcux_set_variable(OTA_TOOL    ${NXP_ZB_BASE}/tools/OTA/nxpzbota.py)
-mcux_set_variable(ZPSCFG      ${NXP_ZB_BASE}/examples/zigbee_router/src/router.zpscfg)
 mcux_set_variable(MEMSIZE     ${NXP_ZB_BASE}/tools/memsize2/memsize.py)
 
 mcux_set_variable(ENCRYPTION_KEY 1234567890ABCDEFA1B2C3D4E5F6F1B4)
