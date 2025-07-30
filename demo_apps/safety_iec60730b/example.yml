@@ -14,49 +14,41 @@ safety_iec60730b:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     - -mcux@release
     frdmmcxe247:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     - -mcux@release
     frdmmcxe31b:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     - -mcux@release
     frdmmcxa153:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     - -mcux@release
     frdmmcxa156:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     - -mcux@release
     frdmmcxc041:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     - -mcux@release
     frdmmcxc242:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     - -mcux@release
     frdmmcxc444:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
@@ -100,7 +92,6 @@ safety_iec60730b:
     - -mdk@hyperram_release
     - -mdk@release
     mcimx93evk:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     frdmrw612:
@@ -114,19 +105,16 @@ safety_iec60730b:
     - -mdk@flash_debug
     - -mdk@flash_release
     frdmmcxa346:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     frdmmcxn947@cm33_core0:
-    - -armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@release
     evkmimx8mp:
     - -armgcc@ddr_debug
     - -armgcc@ddr_release
-    - -armgcc@debug
     - -armgcc@flash_debug
     - -armgcc@flash_release
     - -armgcc@release
@@ -139,3 +127,4 @@ safety_iec60730b:
     - -armgcc@release
     - -iar@release
     - -mdk@release
+    evkbmimxrt1170@cm7: []

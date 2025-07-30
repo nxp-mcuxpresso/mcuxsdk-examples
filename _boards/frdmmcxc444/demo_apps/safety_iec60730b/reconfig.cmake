@@ -26,41 +26,9 @@ mcux_add_configuration(
     CX "--debug"
 )
 
-# mcux_add_macro(
-    # CC "-DSKIP_SYSCLK_INIT"
-# )
-
 #----------------------------------------------
 # Project settings for IAR toolchain
 #----------------------------------------------
-
-# mcux_remove_iar_configuration(
-    # AS "--cpu=cortex-m33.no_se"
-    # CC "--cpu=cortex-m33.no_se"
-    # CX "--cpu=cortex-m33.no_se"
-# )
-
-# mcux_add_iar_configuration(
-    # AS "--cpu=cortex-m33"
-    # CC "--cpu=cortex-m33"
-    # CX "--cpu=cortex-m33"
-# )
-
-# mcux_add_iar_configuration(
-    # CC "--cmse"
-	# CX "--cmse"
-# )
-
-# if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
-# if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
-
-# else()
-	# # AS --cmse flag needs to be added when command line build is used
-	# mcux_add_iar_configuration(
-		# AS "--cmse"
-	# )
-# endif()
-# endif()
 
 # optimization default setting needs to be removed first
 mcux_remove_iar_configuration(
@@ -87,12 +55,6 @@ mcux_add_mdk_configuration(
     CC "-O0"
     CX "-O0"
 )
-
-# mcux_add_configuration(
-    # TOOLCHAINS mdk
-    # CC "-gdwarf-3 -g"
-	# LD "--diag_suppress L6848E"
-# )
 
 
 #----------------------------------------------
@@ -131,6 +93,18 @@ mcux_add_iar_configuration(LD "--entry=__iar_program_start")
 mcux_remove_configuration(
     TOOLCHAINS mdk
 	LD "--entry=Reset_Handler --strict"
+)
+
+# remove default armgcc linker
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+)
+
+# add custom armgcc linker
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/armgcc/${board}_safety.ld
 )
 
 
@@ -196,3 +170,14 @@ else()
 	)
 endif()
 endif()
+
+# armgcc post-build commands
+mcux_add_custom_command(
+	TOOLCHAINS armgcc
+	BUILD_EVENT  POST_BUILD
+	BUILD_COMMAND arm-none-eabi-objcopy -O ihex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex && 
+				  ${SAFETY_CRC_PATH_A}/crc_hex.bat 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_crc.hex 
+				  -../srecord/srec_cat.exe
+)

@@ -6,13 +6,17 @@
  */
 
 /*     
- *     Device:              MIMXRT1180
+ *     Device:              MIMXRT1170
  */
 
 /******************************************************************************/
 /******************     LIBRARY     *******************************************/
 /******************************************************************************/
-
+GROUP (
+  "libgcc.a"
+  "libc.a"
+  "libm.a"
+)
 
 /******************************************************************************/
 /******************     USER CONFIGURATION PART     ***************************/
@@ -93,6 +97,7 @@ SECTIONS
     /* MAIN TEXT SECTION */
     .text : ALIGN(4)
     {
+        ResetISR = . ;
         /**** IVT ****/
         FILL(0xff)
         KEEP(*(.intvec))
@@ -100,7 +105,7 @@ SECTIONS
 
         /**** Reserved space for PC test object ****/
         . = ALIGN(4);
-        KEEP(*iec60730b_cm4_cm7_pc_object.o)
+        KEEP(*iec60730b_cm4_cm7_pc_object*)
         . = ALIGN(4);
         /**** Reserved space for PC test object ****/    
 
@@ -109,7 +114,7 @@ SECTIONS
 /************************************************************************/
     .text : ALIGN(4)
     {
-        *EXCLUDE_FILE(*iec60730b_cm4_cm7_pc_object.o)
+        *EXCLUDE_FILE(*iec60730b_cm4_cm7_pc_object*)
         *(.text*)
         *(.rodata .rodata.* .constdata .constdata.*)
         . = ALIGN(4);

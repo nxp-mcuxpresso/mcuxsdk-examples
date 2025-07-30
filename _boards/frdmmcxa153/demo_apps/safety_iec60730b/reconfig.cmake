@@ -62,7 +62,7 @@ mcux_add_mdk_configuration(
 
 mcux_add_configuration(
     TOOLCHAINS mdk
-    CC "-gdwarf-3 -mcmse -g"
+    CC "-gdwarf-3 -g"
 	LD "--diag_suppress L6848E"
 )
 
@@ -103,6 +103,18 @@ mcux_add_iar_configuration(LD "--entry=__iar_program_start")
 mcux_remove_configuration(
     TOOLCHAINS mdk
 	LD "--entry=Reset_Handler --strict"
+)
+
+# remove default armgcc linker
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+)
+
+# add custom armgcc linker
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/armgcc/${board}_safety_flash.ld
 )
 
 
@@ -168,3 +180,14 @@ else()
 	)
 endif()
 endif()
+
+# armgcc post-build commands
+mcux_add_custom_command(
+	TOOLCHAINS armgcc
+	BUILD_EVENT  POST_BUILD
+	BUILD_COMMAND arm-none-eabi-objcopy -O ihex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex && 
+				  ${SAFETY_CRC_PATH_A}/crc_hex.bat 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_crc.hex 
+				  -../srecord/srec_cat.exe
+)

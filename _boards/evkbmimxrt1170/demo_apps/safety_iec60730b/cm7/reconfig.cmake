@@ -5,16 +5,24 @@
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/demo_apps/safety_iec60730b/common/cm0
+    INCLUDES examples/demo_apps/safety_iec60730b/common/cm4_cm7
 )
 
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/demo_apps/safety_iec60730b/common/cm0/safety_cm0_kinetis.c
-			examples/demo_apps/safety_iec60730b/common/cm0/safety_cm0_kinetis.h
-			examples/demo_apps/safety_iec60730b/common/cm0/main.c
-			examples/demo_apps/safety_iec60730b/common/cm0/safety.pmp
+    SOURCES examples/demo_apps/safety_iec60730b/common/cm4_cm7/safety_cm7_imxrt.c
+			examples/demo_apps/safety_iec60730b/common/cm4_cm7/safety_cm7_imxrt.h
+			examples/demo_apps/safety_iec60730b/common/cm4_cm7/main_imxrt.c
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
+)
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/xip/evkbmimxrt1170_flexspi_nor_config.c
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/xip/evkbmimxrt1170_flexspi_nor_config.h
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/xip/fsl_flexspi_nor_boot.c
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/xip/fsl_flexspi_nor_boot.h
 )
 
 #----------------------------------------------
@@ -26,6 +34,11 @@ mcux_add_configuration(
     CX "--debug"
 )
 
+mcux_add_macro(
+    CC "-DSKIP_SYSCLK_INIT\
+		-DXIP_EXTERNAL_FLASH=1\
+		-DXIP_BOOT_HEADER_ENABLE=1"
+)
 
 #----------------------------------------------
 # Project settings for IAR toolchain
@@ -57,6 +70,12 @@ mcux_add_mdk_configuration(
     CX "-O0"
 )
 
+mcux_add_configuration(
+    TOOLCHAINS mdk
+    CC "-gdwarf-3 -g"
+	LD "--diag_suppress L6848E"
+)
+
 
 #----------------------------------------------
 # Linker configurations for all toolchains
@@ -65,25 +84,25 @@ mcux_add_mdk_configuration(
 # remove default IAR linker
 mcux_remove_iar_linker_script(
         BASE_PATH ${SdkRootDirPath}
-        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram.icf
 )
 
 # add custom IAR linker
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety.icf
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety_flash.icf
 )
 
 # remove default MDK linker
 mcux_remove_mdk_linker_script(
         BASE_PATH ${SdkRootDirPath}
-        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram.scf
 )
 
 # add custom MDK linker
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety.sct
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety_flash.sct
 )
 
 # replace entry symbol for IAR
@@ -99,13 +118,13 @@ mcux_remove_configuration(
 # remove default armgcc linker
 mcux_remove_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.ld
+    LINKER devices/${soc_portfolio}/${soc_series}/${device}/gcc/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_ram.ld
 )
 
 # add custom armgcc linker
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/armgcc/${board}_safety.ld
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/armgcc/${board}_safety_flash.ld
 )
 
 
@@ -118,7 +137,7 @@ if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
 add_custom_command(
 	TARGET ${MCUX_SDK_PROJECT_NAME}
     POST_BUILD
-    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill 0xFF\;c_checksumStart-c_checksumEnd+3 --checksum __checksum:2,crc16,0x0\;c_checksumStart-c_checksumEnd+3  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill 0xFF\;c_checksumStart-c_checksumEnd+3 --checksum __checksum:4,crc32:i,0xFFFFFFFF\;c_checksumStart-c_checksumEnd+3  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
 )
 endif()
 
@@ -153,7 +172,7 @@ if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
 	mcux_add_custom_command(
 		TOOLCHAINS mdk
 		BUILD_EVENT  POST_BUILD
-		BUILD_COMMAND ${SAFETY_CRC_TOOL_GUI_R}/crc_hex.bat -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_GUI_R}/crc_hex.bat -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe -CRC32
 	)
 else()
 	# Post-build generation .hex file - required for command line build option
@@ -167,7 +186,7 @@ else()
 	mcux_add_custom_command(
 		TOOLCHAINS mdk
 		BUILD_EVENT  POST_BUILD
-		BUILD_COMMAND ${SAFETY_CRC_TOOL_CMD_R}/crc_hex.bat -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_CMD_R}/crc_hex.bat -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe -CRC32
 	)
 endif()
 endif()
@@ -180,5 +199,5 @@ mcux_add_custom_command(
 				  ${SAFETY_CRC_PATH_A}/crc_hex.bat 
 				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex 
 				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_crc.hex 
-				  -../srecord/srec_cat.exe
+				  -../srecord/srec_cat.exe -CRC32
 )
