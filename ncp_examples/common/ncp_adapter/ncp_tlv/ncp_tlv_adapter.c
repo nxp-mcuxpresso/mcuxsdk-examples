@@ -95,6 +95,8 @@ static void ncp_tlv_cb(void *arg)
 
 static void ncp_tlv_free_elmt(ncp_tlv_qelem_t **qbuf)
 {
+    if ((*qbuf)->is_ref)
+        OSA_MemoryFree((*qbuf)->tlv_buf);
     OSA_MemoryFree(*qbuf);
     *qbuf = NULL;
     OSA_MutexLock((osa_mutex_handle_t)ncp_tlv_queue_mutex, osaWaitForever_c);
@@ -376,7 +378,7 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
         return NCP_STATUS_NOMEM;
     }
     qbuf->tlv_sz = tlv_sz + chksum_len;
-    qbuf->priv = NULL;
+    qbuf->is_ref = 0;
     qbuf_tlv = (uint8_t *)qbuf + sizeof(ncp_tlv_qelem_t);
 
 #if !CONFIG_NCP_USE_ENCRYPT
@@ -420,7 +422,7 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     chksum_buf[2] = (chksum & 0xff0000) >> 16;
     chksum_buf[3] = (chksum & 0xff000000) >> 24;
 #if CONFIG_WIFI_IO_DUMP
-    ncp_adap_e("%s: qbuf %p %u (%p %p %ld)", __FUNCTION__, qbuf, qlen, qbuf->priv, qbuf->tlv_buf, qbuf->tlv_sz);
+    ncp_adap_e("%s: qbuf %p %u (%u %p %ld)", __FUNCTION__, qbuf, qlen, qbuf->is_ref, qbuf->tlv_buf, qbuf->tlv_sz);
     dump_hex(qbuf->tlv_buf, MIN(qbuf->tlv_sz, 128));
 #endif
 
@@ -428,6 +430,56 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     if(status != NCP_STATUS_SUCCESS)
     {
         ncp_adap_e("ncp tlv enque element fail");
+        if (qbuf)
+        {
+            OSA_MemoryFree(qbuf);
+            qbuf = NULL;
+        }
+    }
+
+    return status;
+}
+
+ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref)
+{
+    ncp_status_t status = NCP_STATUS_SUCCESS;
+    ncp_tlv_qelem_t *qbuf = NULL;
+    uint8_t *qbuf_tlv = NULL, *chksum_buf = NULL;
+    uint16_t qlen = 0, chksum_len = 4;
+    uint32_t chksum = 0;
+
+    if (is_ref == 0)
+        return ncp_tlv_send(tlv_buf, tlv_sz);
+
+    qlen = sizeof(ncp_tlv_qelem_t);
+    qbuf = (ncp_tlv_qelem_t *)OSA_MemoryAllocate(qlen);
+    if (!qbuf)
+    {
+        NCP_TLV_STATS_INC(drop);
+        ncp_adap_e("%s: failed to allocate memory for tlv queue element qlen=%u", __FUNCTION__, qlen);
+        return NCP_STATUS_NOMEM;
+    }
+
+    qbuf->tlv_sz = tlv_sz + chksum_len;
+    qbuf->is_ref = 1;
+    qbuf_tlv = (uint8_t *)tlv_buf;
+
+    qbuf->tlv_buf = qbuf_tlv;
+    chksum = ncp_tlv_chksum(qbuf_tlv, (uint16_t)tlv_sz);
+    chksum_buf = qbuf_tlv + tlv_sz;
+    chksum_buf[0] = chksum & 0xff;
+    chksum_buf[1] = (chksum & 0xff00) >> 8;
+    chksum_buf[2] = (chksum & 0xff0000) >> 16;
+    chksum_buf[3] = (chksum & 0xff000000) >> 24;
+#if CONFIG_WIFI_IO_DUMP
+    ncp_adap_e("%s: qbuf %p %u (%u %p %ld)", __FUNCTION__, qbuf, qlen, qbuf->is_ref, qbuf->tlv_buf, qbuf->tlv_sz);
+    dump_hex(qbuf->tlv_buf, MIN(qbuf->tlv_sz, 128));
+#endif
+
+    status = ncp_tlv_tx_enque(qbuf);
+    if (status != NCP_STATUS_SUCCESS)
+    {
+        ncp_adap_e("%s: ncp tlv enque element fail", __FUNCTION__);
         if (qbuf)
         {
             OSA_MemoryFree(qbuf);

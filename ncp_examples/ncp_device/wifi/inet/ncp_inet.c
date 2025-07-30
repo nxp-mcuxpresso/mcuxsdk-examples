@@ -31,6 +31,7 @@ void ncp_inet_set_bit(int bit_index);
 void ncp_inet_clear_bit(int bit_index);
 
 extern int wifi_ncp_send_response(uint8_t *pbuf);
+extern int wifi_ncp_forward_data(uint8_t *pbuf);
 
 /* INET socket type */
 #define MAX_SOCKETS 64

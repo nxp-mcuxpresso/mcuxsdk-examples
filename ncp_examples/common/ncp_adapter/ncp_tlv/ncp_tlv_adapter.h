@@ -169,11 +169,12 @@ void ncp_tlv_dispatch(void *tlv, size_t tlv_sz);
 
 /* NCP ADAPTER tlv send */
 ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz);
+ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref);
 
 /* NCP ADAPTER TX queue element */
 typedef NCP_TLV_PACK_START struct
 {
-    void *priv;
+    uint32_t is_ref;
     size_t tlv_sz;
     uint8_t *tlv_buf;
 } NCP_TLV_PACK_END ncp_tlv_qelem_t;

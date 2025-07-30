@@ -138,6 +138,45 @@ int wifi_ncp_send_response(uint8_t *pbuf)
     return ret;
 }
 
+int wifi_ncp_forward_data(uint8_t *pbuf)
+{
+    int ret                = WM_SUCCESS;
+    uint16_t transfer_len = 0;
+    NCP_COMMAND *res = (NCP_COMMAND *)pbuf;
+
+    /* set cmd response seqno */
+    res->seqnum = (GET_MSG_TYPE(res->cmd) == NCP_MSG_TYPE_RESP) ? g_cmd_seqno : 0;
+    transfer_len = res->size;
+    if (transfer_len >= NCP_CMD_HEADER_LEN)
+    {
+        /* write response to host */
+        ret = ncp_tlv_ref_send(pbuf, transfer_len, 1);
+        if (ret != WM_SUCCESS)
+        {
+            ncp_e("%s: failed to write response", __FUNCTION__);
+            ret = -WM_FAIL;
+        }
+    }
+    else
+    {
+        ncp_e("%s: command length is less than 12, cmd_len = %d", __FUNCTION__, transfer_len);
+        ret = -WM_FAIL;
+    }
+
+    if (GET_MSG_TYPE(res->cmd) != NCP_MSG_TYPE_EVENT)
+    {
+        /* Reset cmd_buf */
+        memset(cmd_buf, 0, sizeof(cmd_buf));
+        /* Reset wifi_res_buf */
+        memset(wifi_res_buf, 0, sizeof(wifi_res_buf));
+        OSA_SemaphorePost(wifi_ncp_lock);
+        ncp_d("put lock");
+        ncp_put_wifi_resp_buf_lock();
+    }
+
+    return ret;
+}
+
 static int wifi_ncp_command_handle_input(uint8_t *cmd)
 {
     NCP_COMMAND *input_cmd = (NCP_COMMAND *)cmd;
