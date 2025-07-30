@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ==============
-For MX8_DSI_OLED2 MIPI panel(1080*2340), connect MINISAS port J20 to panel.
+For MX9_DSI_OLED MIPI panel(1080*2340), connect MINISAS port J20 to panel.
 For MIPI2HDMI card(1920*1080), connect MINISAS port J20 to card.
 
 Prepare the Demo
@@ -29,7 +29,7 @@ Prepare the Demo
    ------------------------------------------------------------
    | panel name   | buffer address 1 |   buffer address 2     |
    ------------------------------------------------------------
-   |MX8_DSI_OLED2 |   0x80000000     |       0x809a3f80       |
+   | MX9_DSI_OLED |   0x80000000     |       0x809a3f80       |
    ------------------------------------------------------------
    | MIPI2HDMI    |   0x80000000     |       0x807e9000       |
    ------------------------------------------------------------

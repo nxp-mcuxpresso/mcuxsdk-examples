@@ -25,7 +25,7 @@ if (CONFIG_MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_DSI)
 
 endif()
 
-if (CONFIG_MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2)
+if (CONFIG_MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED)
 
 endif()
 

@@ -13,7 +13,7 @@ For DUAL LVDS panel(1920*1200), connect MINISAS ports J15 and J16 to panel.
 For LCD SPEC panel(1280*800), connect MINISAS port J15 to MINISAS2LVDS card as LVDS0. J16 to MINISAS2LVDS card for LVDS1.
 The MINISAS2LVDS card need jumper, please refer to the card datasheet.
 For LVDS2HDMI card(1920*1080), connect MINISAS port J16 to panel.
-For MX8_DSI_OLED2 MIPI panel(1080*2340), connect MINISAS port J14 to panel.
+For MX9_DSI_OLED MIPI panel(1080*2340), connect MINISAS port J14 to panel.
 For MIPI2HDMI card(1920*1080), connect MINISAS port J14 to panel.
 
 Prepare the Demo
@@ -37,7 +37,7 @@ Prepare the Demo
    ------------------------------------------------------------
    | LCD SPEC     |   0x80000000     |       0x803e8000       |
    ------------------------------------------------------------
-   |MX8_DSI_OLED2 |   0x80000000     |       0x809a3f80       |
+   | MX9_DSI_OLED |   0x80000000     |       0x809a3f80       |
    ------------------------------------------------------------
    | MIPI2HDMI    |   0x80000000     |       0x807e9000       |
    ------------------------------------------------------------
@@ -60,7 +60,7 @@ CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
 CONFIG_MCUX_PRJSEG_module.board.display_support.LVDS2HDMI=y
 For MIPI DSI panel(1080*2340):
 CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI=y
-CONFIG_MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2=y
+CONFIG_MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED=y
 For MIPI2HDMI card(1920*1080):
 CONFIG_MCUX_PRJSEG_module.board.display_support.DPU_DI_MIPI=y
 CONFIG_APP_DISPLAY_EXTERNAL_CONVERTOR=y
@@ -70,7 +70,7 @@ When package is used
 Below setting is for mcux_config.h.
 Setting DEMO_PANEL to LVDS_DUAL_PANEL to DUAL LVDS panel(1920*1200). You also need to set LDB_DUAL_PANEL to 1.
 Setting DEMO_PANEL to LVDS2HDMI to use LVDS2HDMI card(1920*1080), you need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
-Setting DEMO_PANEL to MX8_DSI_OLED2 to use MIPI DSI panel(1080*2340), you also need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
+Setting DEMO_PANEL to MX9_DSI_OLED to use MIPI DSI panel(1080*2340), you also need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
 Setting DEMO_PANEL to MIPI2HDMI to use MIPI2HDMI card(1920*1080), you need to set DPU_EXAMPLE_DI to DPU_DI_MIPI.
 And you also need to set APP_DISPLAY_EXTERNAL_CONVERTOR to 1.
 For default LCD_SPEC panel, you do not need to change anything.

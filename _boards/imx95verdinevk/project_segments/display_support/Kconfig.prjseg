@@ -36,7 +36,7 @@ if MCUX_PRJSEG_module.board.display_support
         string
 	default CAP_TOUCH_LVDS if MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_LVDS
 	default CAP_TOUCH_DSI if MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_DSI
-        default MX8_DSI_OLED2 if MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
+        default MX9_DSI_OLED if MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED
         default MIPI2HDMI if MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
         help
             Panel selection for display support
@@ -44,7 +44,7 @@ if MCUX_PRJSEG_module.board.display_support
 
     choice MCUX_PRJSEG_module.board.display_support.panel
         prompt "panel Selection"
-        default MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
+        default MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED
 
         config MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_LVDS
             bool "CAP_TOUCH_LVDS panel"
@@ -52,8 +52,8 @@ if MCUX_PRJSEG_module.board.display_support
         config MCUX_PRJSEG_module.board.display_support.CAP_TOUCH_DSI
             bool "CAP_TOUCH_DSI panel"
 
-        config MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
-            bool "MX8_DSI_OLED2 panel"
+        config MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED
+            bool "MX9_DSI_OLED panel"
 
         config MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
             bool "MIPI2HDMI convertor card"

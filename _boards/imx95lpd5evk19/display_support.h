@@ -13,7 +13,7 @@
 #define DPU_DI_LVDS     1
 #define LCD_SPEC        2
 #define LVDS_DUAL_PANEL 3
-#define MX8_DSI_OLED2   4
+#define MX9_DSI_OLED    4
 #define MIPI2HDMI       5
 #define LVDS2HDMI       6
 
@@ -67,7 +67,7 @@
 
 
 #if !APP_DISPLAY_EXTERNAL_CONVERTOR
-#if (DEMO_PANEL == MX8_DSI_OLED2)
+#if (DEMO_PANEL == MX9_DSI_OLED)
 /*
  * The pixel clock is (height + VSW + VFP + VBP) * (width + HSW + HFP + HBP) * frame rate.
  * (2340 + 4 + 10 + 10) * (1080 + 4 + 12 + 8) * x 60Hz = 2364 * 1104 * x 60Hz = 2,609,856 x 57 = 148,761,792 Hz

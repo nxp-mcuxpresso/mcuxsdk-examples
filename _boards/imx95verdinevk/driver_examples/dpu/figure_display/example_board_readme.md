@@ -10,8 +10,8 @@ Hardware requirements
 Board settings
 ==============
 Tips: Need to remove the default verdin DSI to HDMI adapter card first. Then set CSIDSI MINISAS card to DSI/CSI port.
-Settings: SW1 = 0 set card output as DSI port. The setting is for MX8_DSI_OLED2 panel and MIPI2HDMI card only.
-For MX8_DSI_OLED2 panel(1080*2340), connect MINISAS DSI port to panel.
+Settings: SW1 = 0 set card output as DSI port. The setting is for MX9_DSI_OLED panel and MIPI2HDMI card only.
+For MX9_DSI_OLED panel(1080*2340), connect MINISAS DSI port to panel.
 For MIPI2HDMI card(1920*1080), connect MINISAS DSI port to card.
 For CAP_TOUCH_LVDS panel(1280*800), connect LVDS port J24 and Touch port J25 to panel.
 Tips: Need to remove the default verdin DSI to HDMI adapter card first. The set Toradex Verdin DSI Display Adapter card to DSI/CSI port.
@@ -30,12 +30,12 @@ Prepare the Demo
     - No flow control
 4.  Download the program to the target board.
 5.  Launch the debugger in your IDE to begin running the example.
-6.  Load the figure binary file by using Jlink command "loadbin xxx.bin 0x80000000" and "loadbin xxx.bin 0x809a3f80"(default MX8_DSI_OLED2 panel).
+6.  Load the figure binary file by using Jlink command "loadbin xxx.bin 0x80000000" and "loadbin xxx.bin 0x809a3f80"(default MX9_DSI_OLED panel).
 
    ------------------------------------------------------------
    | panel name   | buffer address 1 |   buffer address 2     |
    ------------------------------------------------------------
-   |MX8_DSI_OLED2 |   0x80000000     |       0x809a3f80       |
+   | MX9_DSI_OLED |   0x80000000     |       0x809a3f80       |
    ------------------------------------------------------------
    | MIPI2HDMI    |   0x80000000     |       0x807e9000       |
    ------------------------------------------------------------

@@ -35,7 +35,7 @@ if MCUX_PRJSEG_module.board.display_support
         string
         default LCD_SPEC if MCUX_PRJSEG_module.board.display_support.LCD_SPEC
         default LVDS_DUAL_PANEL if MCUX_PRJSEG_module.board.display_support.LVDS_DUAL_PANEL
-        default MX8_DSI_OLED2 if MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
+        default MX9_DSI_OLED if MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED
         default MIPI2HDMI if MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
         default LVDS2HDMI if MCUX_PRJSEG_module.board.display_support.LVDS2HDMI
         help
@@ -52,8 +52,8 @@ if MCUX_PRJSEG_module.board.display_support
         config MCUX_PRJSEG_module.board.display_support.LVDS_DUAL_PANEL
             bool "LVDS_DUAL_PANEL panel"
 
-        config MCUX_PRJSEG_module.board.display_support.MX8_DSI_OLED2
-            bool "MX8_DSI_OLED2 panel"
+        config MCUX_PRJSEG_module.board.display_support.MX9_DSI_OLED
+            bool "MX9_DSI_OLED panel"
 
         config MCUX_PRJSEG_module.board.display_support.MIPI2HDMI
             bool "MIPI2HDMI convertor card"
