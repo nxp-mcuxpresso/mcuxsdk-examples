@@ -44,6 +44,8 @@ lwip_iperf_bm:
     - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug
@@ -52,11 +54,15 @@ lwip_iperf_bm:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1024:
     - -armgcc@debug
     - -armgcc@release
     - -armgcc@sdram_debug
     - -armgcc@sdram_release
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -iar@debug
     - -iar@release
     - -iar@sdram_debug
@@ -65,6 +71,8 @@ lwip_iperf_bm:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm4: []
@@ -109,9 +117,15 @@ lwip_iperf_bm:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
-    lpcxpresso54628: []
-    lpcxpresso54s018: []
-    lpcxpresso54s018m: []
+    lpcxpresso54628:
+    - -armgcc@debug
+    - -armgcc@release
+    lpcxpresso54s018:
+    - -armgcc@debug
+    - -armgcc@release
+    lpcxpresso54s018m:
+    - -armgcc@debug
+    - -armgcc@release
     mcimx93autoevk: []
     mcimx93evk: []
     mcxn5xxevk@cm33_core0: []
