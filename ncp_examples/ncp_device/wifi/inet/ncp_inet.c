@@ -560,7 +560,7 @@ static void socket_recv_task(void *arg)
                     memcpy(linux_addr->sa_data, client_addr.sa.sa_data, NCP_IPADDR_DATA_LEN);
                     tlv_res->socklen = socklen;
                     ncp_inet_prepare_socket_recv_resp(recv_buf);
-                    if (wifi_ncp_send_response(recv_buf) != WM_SUCCESS)
+                    if (wifi_ncp_forward_data(recv_buf) != WM_SUCCESS)
                     {
                         ncp_e("ncp inet send receive event fail\r\n");
                         OSA_MemoryFree(recv_buf);
