@@ -8,21 +8,28 @@
 #include "board.h"
 #include "fsl_debug_console.h"
 #include "app.h"
+
 /*${header:end}*/
 
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    clk_t hal_lpit_clk = {
+        .clkId = LPIT_MASTER_CLOCK_ROOT,
+	.pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 24000000UL,
+    };
+
     SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
-
-    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);
-    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL3);
-    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL1);
-    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SPI8_SEL3);
+    BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+    CLOCK_SetRate(&hal_lpit_clk);
+    CLOCK_EnableClock(hal_lpit_clk.clkId);
 }
 /*${function:end}*/

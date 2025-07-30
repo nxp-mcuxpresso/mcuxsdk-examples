@@ -31,7 +31,6 @@ void BOARD_InitBootPins(void) {
     BOARD_InitI2C6Pins();
     BOARD_InitPins();
 }
-
 void BOARD_InitPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_PAD_ETH3_TXD3__FLEXPWM1_PWMA0,      /* GPIO_AD_00 is configured as FLEXPWM1_PWMA00 */
@@ -42,12 +41,6 @@ void BOARD_InitPins(void) {
   IOMUXC_SetPinMux(
       IOMUXC_PAD_ETH3_TX_CTL__FLEXPWM1_PWMA2,      /* GPIO_AD_01 is configured as FLEXPWM1_PWMB00 */
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
-
-  IOMUXC_SetPinMux(IOMUXC_PAD_GPIO_IO15__XBAR1_XBAR_INOUT8, 1);
-  IOMUXC_SetPinConfig(IOMUXC_PAD_GPIO_IO15__XBAR1_XBAR_INOUT8,
-                        IOMUXC_PAD_DSE(63U) |
-                        IOMUXC_PAD_FSEL1(3U) |
-                        IOMUXC_PAD_PU_MASK);
 }
 
 /***********************************************************************************************************************

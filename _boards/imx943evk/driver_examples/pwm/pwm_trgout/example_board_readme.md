@@ -7,8 +7,6 @@ Hardware requirements
 
 Board settings
 ==============
-* Probe the pwm trigger signal using an oscilloscope
- - At J43-12 (PWM trigger signal)
 
 Prepare the Demo
 ================
@@ -26,7 +24,22 @@ Running the demo
 ================
 When the example runs successfully, the following message is displayed in the terminal:
 ~~~~~~~~~~~~~~~~~~~~~~~~
+IPSYNC trigger signal connected!
 FlexPWM driver example
+LPIT init
+Starting channel No.0 ...
+ Channel No.0 interrupt is occurred !
+ Channel No.0 interrupt is occurred !
+ ...
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-You can capture the PWM trigger out signal on OSC.
+Delete the below line in code to disconnect the trigger signal, the LPIT cannot be started.
+	"XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger0, kXBAR1_OutputLpit1LpitExtTrigIn0)"
+
+Log displayed in terminal:
+~~~~~~~~~~~~~~~~~~~~~~~~
+IPSYNC trigger signal connected!
+FlexPWM driver example
+LPIT init
+Starting channel No.0 ...
+~~~~~~~~~~~~~~~~~~~~~~~
