@@ -10,7 +10,7 @@ safety_iec60730b:
       brief: This example demonstrates the safety library usage.
       example_readme:
       - examples/demo_apps/safety_iec60730b/readme.md
-      - ${board_root}/${board}/demo_apps/safety_iec60730b/example_board_readme.md
+      # - ${board_root}/${board}/demo_apps/safety_iec60730b/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxn236:

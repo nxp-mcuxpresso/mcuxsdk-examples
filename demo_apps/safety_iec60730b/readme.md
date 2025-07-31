@@ -5,4 +5,19 @@
 This example demonstrates the safety library usage.
 
 ## Supported Boards
-- [FRDM-MCXN236](../../_boards/frdmmcxn236/demo_apps/safety_iec60730b/example_board_readme.md)
+- MIMXRT1170-EVKB
+- EVK-MIMX8MP
+- MIMXRT1180-EVK
+- FRDM-KE17Z512
+- FRDM-MCXA153
+- FRDM-MCXA156
+- FRDM-MCXA346
+- FRDM-MCXC041
+- FRDM-MCXC242
+- FRDM-MCXC444
+- FRDM-MCXE247
+- FRDM-MCXN236
+- FRDM-MCXN947
+- FRDM-RW612
+- MCIMX93-EVK
+- FRDM-MCXE31B
