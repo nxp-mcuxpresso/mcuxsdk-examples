@@ -39,10 +39,10 @@
       "Selected to enter Power Down1(470uA@VDD_BAT), then wakeup to Active.",   \
      "Selected to enter Power Down2(459uA@VDD_BAT), then wakeup to Active.", \
       "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 15.5uA@VDD_BAT), then wakeup to Active.", \
-      "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter DPD2(All PLS SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, press SW5 back to Active.",  \
-     "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter DPD2(No PLS SRAM retained, 3.6uA@VDD_BAT), wakeup to Active after 10s later with LPTMR.",  \
-     "Selected to enter DPD2(No PLS SRAM retained, 3.4uA@VDD_BAT), then wakeup to Active.",   \
-     "Selected to enter DPD2(All PLS SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW5 back to Active.",   \
+      "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter DPD2(All AON SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, press SW5 back to Active.",  \
+     "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter DPD2(No AON SRAM retained, 3.6uA@VDD_BAT), wakeup to Active after 10s later with LPTMR.",  \
+     "Selected to enter DPD2(No AON SRAM retained, 3.4uA@VDD_BAT), then wakeup to Active.",   \
+     "Selected to enter DPD2(All AON SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW5 back to Active.",   \
      "Selected to enter DPD3(695nA@VDD_BAT).", \
      "Selected to enter SD(413nA@VDD_BAT)."     \
     }
