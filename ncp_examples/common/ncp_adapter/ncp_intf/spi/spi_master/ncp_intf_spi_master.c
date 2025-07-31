@@ -32,7 +32,7 @@ edma_handle_t masterTxHandle;
 edma_handle_t masterRxHandle;
 
 #define NCP_SPI_TASK_PRIORITY     PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
-#define NCP_SPI_TASK_STACK_SIZE   1024
+#define NCP_SPI_TASK_STACK_SIZE   2048
 static void ncp_spi_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spiTaskHandle);
 static OSA_TASK_DEFINE(ncp_spi_intf_task, NCP_SPI_TASK_PRIORITY, 1, NCP_SPI_TASK_STACK_SIZE, 0);
@@ -97,8 +97,9 @@ int ncp_host_spi_master_tx(uint8_t *buff, uint16_t data_size)
 {
     int ret = 0;
     lpspi_transfer_t masterXfer;
-    uint16_t len = 0;
+    int16_t len = 0;
     uint8_t *p   = NULL;
+    uint8_t *first_buf = NULL;
     uint8_t hs_tx[4] = {'s', 'e', 'n', 'd'};
 
     /* spi slave and master handshake */
@@ -119,10 +120,17 @@ int ncp_host_spi_master_tx(uint8_t *buff, uint16_t data_size)
     OSA_SemaphoreWait(spi_slave_rx_ready, osaWaitForever_c);
     /* start to send valid data */
     len = data_size;
-    p   = buff;
+    if (data_size < SPI_DMA_MAX_TRANSFER_COUNT)
+    {
+        first_buf = OSA_MemoryAllocate(SPI_DMA_MAX_TRANSFER_COUNT);
+        memcpy(first_buf, buff, data_size);
+        p = first_buf;
+    }
+    else
+        p = buff;
     masterXfer.txData   = p;
     masterXfer.rxData   = NULL;
-    masterXfer.dataSize = NCP_CMD_HEADER_LEN;
+    masterXfer.dataSize = SPI_DMA_MAX_TRANSFER_COUNT;
     ret = (int)LPSPI_MasterTransferEDMALite(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterHandle, &masterXfer);
     if (ret)
     {
@@ -132,9 +140,9 @@ int ncp_host_spi_master_tx(uint8_t *buff, uint16_t data_size)
     OSA_SemaphoreWait(spi_slave_tx_complete, osaWaitForever_c);
     mcu_host_spi_debug("spi transfer complete-%d", __LINE__);
 
-    len -= NCP_CMD_HEADER_LEN;
-    p += NCP_CMD_HEADER_LEN;
-    while (len)
+    len -= SPI_DMA_MAX_TRANSFER_COUNT;
+    p = buff + SPI_DMA_MAX_TRANSFER_COUNT;
+    while (len > 0)
     {
         OSA_SemaphoreWait(spi_slave_rx_ready, osaWaitForever_c);
         masterXfer.txData = p;
@@ -156,6 +164,7 @@ int ncp_host_spi_master_tx(uint8_t *buff, uint16_t data_size)
     }
 
 done:
+    OSA_MemoryFree(first_buf);
     /*wait slave prepare the handshake dma*/
     OSA_SemaphoreWait(spi_slave_rx_ready, osaWaitForever_c);
     OSA_SemaphorePost(spi_slave_rtx_sync);
@@ -166,7 +175,7 @@ int ncp_host_spi_master_rx(uint8_t *buff, size_t *tlv_sz)
 {
     int ret = 0;
     lpspi_transfer_t masterXfer;
-    uint16_t total_len = 0, resp_len = 0, len = 0;
+    int total_len = 0, resp_len = 0, len = 0;
     uint8_t *p   = NULL;
     uint8_t hs_rx[4] = {'r', 'e', 'c', 'v'};
 
@@ -190,7 +199,7 @@ int ncp_host_spi_master_rx(uint8_t *buff, size_t *tlv_sz)
     p  = buff;
     masterXfer.txData   = NULL;
     masterXfer.rxData   = p;
-    masterXfer.dataSize = NCP_CMD_HEADER_LEN;
+    masterXfer.dataSize = SPI_DMA_MAX_TRANSFER_COUNT;
     ret = (int)LPSPI_MasterTransferEDMALite(EXAMPLE_LPSPI_MASTER_BASEADDR, &masterHandle, &masterXfer);
     if (ret)
     {
@@ -210,9 +219,9 @@ int ncp_host_spi_master_rx(uint8_t *buff, size_t *tlv_sz)
         ret = -1;
         goto done;
     }
-    len = total_len - NCP_CMD_HEADER_LEN;
-    p += NCP_CMD_HEADER_LEN;
-    while (len)
+    len = total_len - SPI_DMA_MAX_TRANSFER_COUNT;
+    p += SPI_DMA_MAX_TRANSFER_COUNT;
+    while (len > 0)
     {
         OSA_SemaphoreWait(&spi_slave_rx_ready, osaWaitForever_c);
         masterXfer.txData = NULL;

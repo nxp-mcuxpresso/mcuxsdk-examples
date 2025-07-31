@@ -48,13 +48,13 @@ OSA_EVENT_HANDLE_DEFINE(spi_slave_event);
 #define NCP_SPI_TASK_STACK_SIZE  1024
 static void ncp_spi_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spiTaskHandle);
-static OSA_TASK_DEFINE(ncp_spi_intf_task, PRIORITY_RTOS_TO_OSA(3), 1, NCP_SPI_TASK_STACK_SIZE, 0);
+static OSA_TASK_DEFINE(ncp_spi_intf_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)), 1, NCP_SPI_TASK_STACK_SIZE, 0);
 
 #define NCP_SPI_HS_TASK_PRIORITY 11
 #define NCP_SPI_HS_TASK_STACK_SIZE  1024
 static void ncp_spi_hs_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spihsTaskHandle);
-static OSA_TASK_DEFINE(ncp_spi_hs_intf_task, PRIORITY_RTOS_TO_OSA(4), 1, NCP_SPI_HS_TASK_STACK_SIZE, 0);
+static OSA_TASK_DEFINE(ncp_spi_hs_intf_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)), 1, NCP_SPI_HS_TASK_STACK_SIZE, 0);
 
 static int ncp_spi_pm_flag   = 0;
 static uint8_t hs_p[4] = {'\0'};
@@ -121,7 +121,7 @@ static int ncp_spi_tx(uint8_t *buff, size_t data_size)
     int ret = 0;
     status_t spi_ret;
     spi_transfer_t slaveXfer;
-    size_t left_len = 0;
+    int left_len = 0;
     uint8_t *p = NULL;
     osa_event_flags_t events;
     OSA_EventWait((osa_event_handle_t)spi_slave_event, SLAVE_TX_ENABLE_EVENT, 0, osaWaitForever_c, &events);
@@ -131,7 +131,7 @@ static int ncp_spi_tx(uint8_t *buff, size_t data_size)
     p = buff;
     slaveXfer.txData = p;
     slaveXfer.rxData = NULL;
-    slaveXfer.dataSize = TLV_CMD_HEADER_LEN;
+    slaveXfer.dataSize = DMA_MAX_TRANSFER_COUNT;
     slaveXfer.configFlags = kSPI_FrameAssert;
     spi_ret = (int)SPI_SlaveTransferDMA(NCP_SPI_SLAVE, &slaveHandle, &slaveXfer);
     if (spi_ret != kStatus_Success)
@@ -146,9 +146,9 @@ static int ncp_spi_tx(uint8_t *buff, size_t data_size)
     ncp_dev_spi("spi transfer complete-tx-%d", __LINE__);
 
     /* Prepare DMA for remaining bytes */
-    left_len -= TLV_CMD_HEADER_LEN;
-    p += TLV_CMD_HEADER_LEN;
-    while(left_len)
+    left_len -= DMA_MAX_TRANSFER_COUNT;
+    p += DMA_MAX_TRANSFER_COUNT;
+    while(left_len > 0)
     {
         slaveXfer.txData = p;
         slaveXfer.rxData = NULL;
@@ -189,7 +189,7 @@ static int ncp_spi_rx(uint8_t *buff, size_t *tlv_sz)
     int ret = 0;
     status_t spi_ret;
     spi_transfer_t slaveXfer;
-    size_t total_len = 0, cmd_len = 0, left_len = 0;
+    int total_len = 0, cmd_len = 0, left_len = 0;
     uint8_t *p = buff;
     osa_event_flags_t events;
 
@@ -200,7 +200,7 @@ static int ncp_spi_rx(uint8_t *buff, size_t *tlv_sz)
     /* start to spi transfer valid data */
     slaveXfer.txData = NULL;
     slaveXfer.rxData = p;
-    slaveXfer.dataSize = TLV_CMD_HEADER_LEN;
+    slaveXfer.dataSize = DMA_MAX_TRANSFER_COUNT;
     slaveXfer.configFlags = kSPI_FrameAssert;
     spi_ret = SPI_SlaveTransferDMA(NCP_SPI_SLAVE, &slaveHandle, &slaveXfer);
     if (spi_ret != kStatus_Success)
@@ -219,10 +219,10 @@ static int ncp_spi_rx(uint8_t *buff, size_t *tlv_sz)
         return -1;
     }
     /* p steps to next send pointer */
-    p += TLV_CMD_HEADER_LEN;
+    p += DMA_MAX_TRANSFER_COUNT;
     total_len = cmd_len + NCP_CHKSUM_LEN;
-    left_len = total_len - TLV_CMD_HEADER_LEN;
-    while(left_len)
+    left_len = total_len - DMA_MAX_TRANSFER_COUNT;
+    while(left_len > 0)
     {
         slaveXfer.txData = NULL;
         /* same as above */

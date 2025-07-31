@@ -98,6 +98,11 @@ SECTIONS
     *(.text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
         *port.c.obj
+        *ncp_intf_spi_slave.c.obj
+        *fsl_spi_dma.c.obj
+        *fsl_dma.c.obj
+        *ncp_tlv_adapter.c.obj
+        *ncp_inet.c.obj
         *portasm.c.obj
         *queue.c.obj
         *timers.c.obj
@@ -290,6 +295,11 @@ SECTIONS
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     *port.c.obj(.text*)
+    *ncp_intf_spi_slave.c.obj(.text*)
+    *fsl_spi_dma.c.obj(.text*)
+    *fsl_dma.c.obj(.text*)
+    *ncp_tlv_adapter.c.obj(.text*)
+    *ncp_inet.c.obj(.text*)
     *portasm.c.obj(.text*)
     *queue.c.obj(.text*)
     *timers.c.obj(.text*)

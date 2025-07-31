@@ -74,7 +74,7 @@ typedef enum
 } ncp_state;
 
 #if CONFIG_NCP_SPI_DEBUG
-#define mcu_host_spi_debug(...) wmlog("spi master", ##__VA_ARGS__)
+#define mcu_host_spi_debug(...) ncplog_w("spi master", ##__VA_ARGS__)
 #else
 #define mcu_host_spi_debug(...)
 #endif
