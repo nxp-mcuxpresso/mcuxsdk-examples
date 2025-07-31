@@ -107,12 +107,6 @@
  ********************************************************************************** */
 /* Defines the RTOS used */
 
-/*! Defines controller task stack size */
-#define gControllerTaskStackSize_c 4000
-
-/*! Defines controller high priority task stack size */
-#define gControllerHighPriorityTaskStackSize_c 2000
-
 /*! Defines total heap size used by the OS - 11k */
 #define gTotalHeapSize_c 0xc400
 

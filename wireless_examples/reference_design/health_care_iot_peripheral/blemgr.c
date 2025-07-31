@@ -158,12 +158,6 @@ static blemgr_event_cb_t s_eventCallback;
 static bleResult_t BleInitialize()
 {
     /* BLE Controller Init */
-    if (kBLEC_Success != BLEController_SetTaskStackSize((uint32_t)gControllerTaskStackSize_c,
-                                                        (uint32_t)gControllerHighPriorityTaskStackSize_c))
-    {
-        return gBleOsError_c;
-    }
-
     if (kBLEC_Success != BLEController_Init(NXPHoststackAdapter_hciControllerToHost, 0, NULL))
     {
         return gBleOsError_c;
