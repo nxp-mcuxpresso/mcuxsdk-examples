@@ -51,8 +51,8 @@ m_text_size                         = m_text_end - m_text_start + 1;
 /* The addition of SMU size and the DMEM size is a constant but the sharing can change (see SMU_MEM_SEL)*/
 smu_and_dmem_size                   = 0x00028000;
 m_dmem_size                         = 0x00018000;  /*96 KB*/
-m_ram1_start                        = 0x00140000;
-m_ram1_end                          = m_ram1_start + m_dmem_size - 1;
+m_dmem_start                        = 0x00140000;
+m_dmem_end                          = m_dmem_start + m_dmem_size - 1;
 
 /* Used by the fwk_platform_lowpower module */
 gLowpowerPowerDownEnable_d          = DEFINED(gLowpowerPowerDownEnable_d) ? 1 : 0;
@@ -65,11 +65,11 @@ m_interrupts_ram_end                = m_interrupts_ram_start + m_ram_vector_tabl
 __VECTOR_RAM                        = m_interrupts_ram_start;
 __RAM_VECTOR_TABLE_SIZE_BYTES       = m_ram_vector_table_size;
 
-m_cstack_start                      = m_ram1_start;
+m_cstack_start                      = m_dmem_start;
 m_cstack_end                        = m_cstack_start + __size_cstack__ - 1;
 m_data1_size                        = m_dmem_size - __size_cstack__;
 m_data1_start                       = m_cstack_end + 1;
-m_data1_end                         = m_ram1_end;
+m_data1_end                         = m_dmem_end;
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
