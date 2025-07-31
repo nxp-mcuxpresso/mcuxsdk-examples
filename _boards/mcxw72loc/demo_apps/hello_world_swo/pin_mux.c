@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2024 NXP
- * All rights reserved.
+ * Copyright 2021-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -14,13 +13,13 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v15.0
+product: Pins v17.0
 processor: MCXW727CxxxA
 package_id: MCXW727CMFTA
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2412.40
 pin_labels:
-- {pin_num: '44', pin_signal: ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22, label: SW3, identifier: SW3}
+- {pin_num: '45', pin_signal: PTC7/WUU0_P12/RF_NOT_ALLOWED/TRGMUX0_IN3/TRGMUX0_OUT3/SFA0_CLK/TPM1_CLKIN/TPM2_CLKIN/CLKOUT/FLEXIO0_D23/NMI_b, label: SW3, identifier: SW3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -49,8 +48,9 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: '10', peripheral: TPIU, signal: SWO, pin_signal: ADC0_A10/CMP0_IN0/PTA4/WUU0_P2/RF_XTAL_OUT_ENABLE/RF_GPO_9/TPM0_CLKIN/TRACE_SWO/FLEXIO0_D4/BOOT_CONFIG,
     pull_select: down, pull_enable: enable, slew_rate: fast, open_drain: disable, drive_strength: low, invert_input: disable}
-  - {pin_num: '44', peripheral: GPIOC, signal: 'GPIO, 6', pin_signal: ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22, direction: INPUT, gpio_per_interrupt: kGPIO_InterruptFallingEdge,
-    eft_interrupt: disable, pull_select: up, pull_enable: enable, slew_rate: fast, open_drain: disable, drive_strength: low, invert_input: disable}
+  - {pin_num: '45', peripheral: GPIOC, signal: 'GPIO, 7', pin_signal: PTC7/WUU0_P12/RF_NOT_ALLOWED/TRGMUX0_IN3/TRGMUX0_OUT3/SFA0_CLK/TPM1_CLKIN/TPM2_CLKIN/CLKOUT/FLEXIO0_D23/NMI_b,
+    direction: INPUT, gpio_per_interrupt: kGPIO_InterruptFallingEdge, pull_select: up, pull_enable: enable, slew_rate: fast, open_drain: disable, drive_strength: low,
+    invert_input: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -74,59 +74,56 @@ void BOARD_InitPins(void)
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
     };
-    /* Initialize GPIO functionality on pin PTC6 (pin 44)  */
+    /* Initialize GPIO functionality on pin PTC7 (pin 45)  */
     GPIO_PinInit(BOARD_INITPINS_SW3_GPIO, BOARD_INITPINS_SW3_PIN, &SW3_config);
 
-    /* Interrupt configuration on GPIOC6 (pin 44): Interrupt on falling edge */
+    /* Interrupt configuration on GPIOC7 (pin 45): Interrupt on falling edge */
     GPIO_SetPinInterruptConfig(BOARD_INITPINS_SW3_GPIO, BOARD_INITPINS_SW3_PIN, kGPIO_InterruptFallingEdge);
 
     const port_pin_config_t porta4_pin10_config = {/* Internal pull-down resistor is enabled */
-                                                   (uint16_t)kPORT_PullDown,
+                                                   .pullSelect = (uint16_t)kPORT_PullDown,
                                                    /* Low internal pull resistor value is selected. */
-                                                   (uint16_t)kPORT_LowPullResistor,
+                                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                                    /* Fast slew rate is configured */
-                                                   (uint16_t)kPORT_FastSlewRate,
+                                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
                                                    /* Passive input filter is disabled */
-                                                   (uint16_t)kPORT_PassiveFilterDisable,
+                                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
                                                    /* Open drain output is disabled */
-                                                   (uint16_t)kPORT_OpenDrainDisable,
+                                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
                                                    /* Low drive strength is configured */
-                                                   (uint16_t)kPORT_LowDriveStrength,
+                                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
                                                    /* Normal drive strength is configured */
-                                                   (uint16_t)kPORT_NormalDriveStrength,
+                                                   .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
                                                    /* Pin is configured as TRACE_SWO */
-                                                   (uint16_t)kPORT_MuxAlt5,
-                                                   /* Does not invert */
-                                                   (uint16_t)kPORT_InputNormal,
+                                                   .mux = (uint16_t)kPORT_MuxAlt5,
+                                                   /* Digital input is not inverted */
+                                                   .invertInput = (uint16_t)kPORT_InputNormal,
                                                    /* Pin Control Register fields [15:0] are not locked */
-                                                   (uint16_t)kPORT_UnlockRegister};
+                                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
     /* PORTA4 (pin 10) is configured as TRACE_SWO */
     PORT_SetPinConfig(PORTA, 4U, &porta4_pin10_config);
 
-    /* EFT detect interrupts configuration on PORTC */
-    PORT_DisableEFTDetectInterrupts(PORTC, 0x40u);
-
     const port_pin_config_t SW3 = {/* Internal pull-up resistor is enabled */
-                                   (uint16_t)kPORT_PullUp,
+                                   .pullSelect = (uint16_t)kPORT_PullUp,
                                    /* Low internal pull resistor value is selected. */
-                                   (uint16_t)kPORT_LowPullResistor,
+                                   .pullValueSelect = (uint16_t)kPORT_LowPullResistor,
                                    /* Fast slew rate is configured */
-                                   (uint16_t)kPORT_FastSlewRate,
+                                   .slewRate = (uint16_t)kPORT_FastSlewRate,
                                    /* Passive input filter is disabled */
-                                   (uint16_t)kPORT_PassiveFilterDisable,
+                                   .passiveFilterEnable = (uint16_t)kPORT_PassiveFilterDisable,
                                    /* Open drain output is disabled */
-                                   (uint16_t)kPORT_OpenDrainDisable,
+                                   .openDrainEnable = (uint16_t)kPORT_OpenDrainDisable,
                                    /* Low drive strength is configured */
-                                   (uint16_t)kPORT_LowDriveStrength,
+                                   .driveStrength = (uint16_t)kPORT_LowDriveStrength,
                                    /* Normal drive strength is configured */
-                                   (uint16_t)kPORT_NormalDriveStrength,
-                                   /* Pin is configured as PTC6 */
-                                   (uint16_t)kPORT_MuxAsGpio,
-                                   /* Does not invert */
-                                   (uint16_t)kPORT_InputNormal,
+                                   .driveStrength1 = (uint16_t)kPORT_NormalDriveStrength,
+                                   /* Pin is configured as PTC7 */
+                                   .mux = (uint16_t)kPORT_MuxAsGpio,
+                                   /* Digital input is not inverted */
+                                   .invertInput = (uint16_t)kPORT_InputNormal,
                                    /* Pin Control Register fields [15:0] are not locked */
-                                   (uint16_t)kPORT_UnlockRegister};
-    /* PORTC6 (pin 44) is configured as PTC6 */
+                                   .lockRegister = (uint16_t)kPORT_UnlockRegister};
+    /* PORTC7 (pin 45) is configured as PTC7 */
     PORT_SetPinConfig(BOARD_INITPINS_SW3_PORT, BOARD_INITPINS_SW3_PIN, &SW3);
 }
 /***********************************************************************************************************************

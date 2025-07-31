@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_11 http://mcuxpresso.nxp.com/XSD/mex_configuration_11.xsd" uuid="ac5fcd54-c9cb-468f-b278-19e93abf3701" version="11" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_11" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="KW47B42ZB7xxxA" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_17 http://mcuxpresso.nxp.com/XSD/mex_configuration_17.xsd" uuid="2433df31-cfef-4624-8559-2133c74f3de3" version="17" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
-      <processor>KW45B41Z83xxxA</processor>
-      <package>KW45B41Z83AFTA</package>
+      <processor>KW47B42ZB7xxxA</processor>
+      <package>KW47B42ZB7AFTA</package>
       <mcu_data>ksdk2_0</mcu_data>
-      <cores selected="cm33">
-         <core name="Cortex-M33" id="cm33" description=""/>
+      <cores selected="cm33_core0">
+         <core name="Cortex-M33 (Core #0)" id="cm33_core0" description=""/>
       </cores>
       <description></description>
    </common>
    <preferences>
       <validate_boot_init_only>true</validate_boot_init_only>
-      <generate_extended_information>false</generate_extended_information>
       <generate_code_modified_registers_only>false</generate_code_modified_registers_only>
       <update_include_paths>true</update_include_paths>
       <generate_registers_defines>false</generate_registers_defines>
    </preferences>
    <tools>
-      <pins name="Pins" version="12.0" enabled="true" update_project_code="true">
+      <pins name="Pins" version="17.0" enabled="true" update_project_code="true">
+         <generated_project_files>
+            <file path="board/pin_mux.c" update_enabled="true"/>
+            <file path="board/pin_mux.h" update_enabled="true"/>
+         </generated_project_files>
          <pins_profile>
-            <processor_version>0.12.3</processor_version>
+            <processor_version>0.2412.40</processor_version>
             <pin_labels>
-               <pin_label pin_num="44" pin_signal="ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22" label="SW3" identifier="SW3"/>
+               <pin_label pin_num="45" pin_signal="PTC7/WUU0_P12/RF_NOT_ALLOWED/TRGMUX0_IN3/TRGMUX0_OUT3/SFA0_CLK/TPM1_CLKIN/TPM2_CLKIN/CLKOUT/FLEXIO0_D23/NMI_b" label="SW3" identifier="SW3"/>
             </pin_labels>
          </pins_profile>
          <functions_list>
@@ -29,173 +32,125 @@
                <description>Configures pin routing and optionally pin electrical features.</description>
                <options>
                   <callFromInitBoot>true</callFromInitBoot>
-                  <coreID>cm33</coreID>
+                  <coreID>cm33_core0</coreID>
                   <enableClock>true</enableClock>
                </options>
                <dependencies>
-                  <dependency resourceType="Peripheral" resourceId="TPIU" description="Peripheral TPIU is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                  <dependency resourceType="Peripheral" resourceId="TPIU" description="Peripheral TPIU signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
-                  <dependency resourceType="Peripheral" resourceId="GPIOC" description="Peripheral GPIOC is not initialized" problem_level="1" source="Pins:BOARD_InitPins">
+                  <dependency resourceType="Peripheral" resourceId="GPIOC" description="Peripheral GPIOC signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
                      <feature name="initialized" evaluation="equal">
                         <data>true</data>
                      </feature>
                   </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
-                     <feature name="enabled" evaluation="equal" configuration="cm33">
+                     <feature name="enabled" evaluation="equal" configuration="cm33_core0">
                         <data>true</data>
                      </feature>
                   </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.port" description="Pins initialization requires the PORT Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
-                     <feature name="enabled" evaluation="equal" configuration="cm33">
+                     <feature name="enabled" evaluation="equal" configuration="cm33_core0">
                         <data>true</data>
                      </feature>
                   </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.gpio" description="Pins initialization requires the GPIO Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
-                     <feature name="enabled" evaluation="equal" configuration="cm33">
+                     <feature name="enabled" evaluation="equal" configuration="cm33_core0">
                         <data>true</data>
                      </feature>
                   </dependency>
                </dependencies>
                <pins>
-                  <pin peripheral="TPIU" signal="SWO" pin_num="10" pin_signal="ADC0_A10/CMP0_IN0/PTA4/WUU0_P2/RF_GPO_9/TPM0_CLKIN/TRACE_SWO/FLEXIO0_D4/BOOT_CONFIG">
+                  <pin peripheral="TPIU" signal="SWO" pin_num="10" pin_signal="ADC0_A10/CMP0_IN0/PTA4/WUU0_P2/RF_XTAL_OUT_ENABLE/RF_GPO_9/TPM0_CLKIN/TRACE_SWO/FLEXIO0_D4/BOOT_CONFIG">
                      <pin_features>
                         <pin_feature name="pull_select" value="down"/>
                         <pin_feature name="pull_enable" value="enable"/>
                         <pin_feature name="slew_rate" value="fast"/>
                         <pin_feature name="open_drain" value="disable"/>
                         <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="invert_input" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="GPIOC" signal="GPIO, 6" pin_num="44" pin_signal="ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22">
+                  <pin peripheral="GPIOC" signal="GPIO, 7" pin_num="45" pin_signal="PTC7/WUU0_P12/RF_NOT_ALLOWED/TRGMUX0_IN3/TRGMUX0_OUT3/SFA0_CLK/TPM1_CLKIN/TPM2_CLKIN/CLKOUT/FLEXIO0_D23/NMI_b">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
                         <pin_feature name="gpio_per_interrupt" value="kGPIO_InterruptFallingEdge"/>
-                        <pin_feature name="eft_interrupt" value="disable"/>
                         <pin_feature name="pull_select" value="up"/>
                         <pin_feature name="pull_enable" value="enable"/>
                         <pin_feature name="slew_rate" value="fast"/>
                         <pin_feature name="open_drain" value="disable"/>
                         <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="invert_input" value="disable"/>
                      </pin_features>
                   </pin>
                </pins>
             </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="10.0" enabled="true" update_project_code="true">
+      <clocks name="Clocks" version="15.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
          <clocks_profile>
-            <processor_version>0.12.3</processor_version>
+            <processor_version>0.2412.40</processor_version>
          </clocks_profile>
          <clock_configurations>
             <clock_configuration name="BOARD_BootClockRUN" id_prefix="" prefix_user_defined="false">
                <description></description>
                <options/>
-               <dependencies>
-                  <dependency resourceType="PinSignal" resourceId="CCM32K.EXTAL32K" description="&apos;EXTAL32K&apos; (Pins tool id: CCM32K.EXTAL32K, Clocks tool id: CCM32K.EXTAL32K) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="routed" evaluation="">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PinSignal" resourceId="CCM32K.EXTAL32K" description="&apos;EXTAL32K&apos; (Pins tool id: CCM32K.EXTAL32K, Clocks tool id: CCM32K.EXTAL32K) needs to have &apos;INPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="direction" evaluation="">
-                        <data>INPUT</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PinSignal" resourceId="CCM32K.XTAL32K" description="&apos;XTAL32K&apos; (Pins tool id: CCM32K.XTAL32K, Clocks tool id: CCM32K.XTAL32K) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="routed" evaluation="">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PinSignal" resourceId="CCM32K.XTAL32K" description="&apos;XTAL32K&apos; (Pins tool id: CCM32K.XTAL32K, Clocks tool id: CCM32K.XTAL32K) needs to have &apos;OUTPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="direction" evaluation="">
-                        <data>OUTPUT</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PinSignal" resourceId="SCG.EXTAL0" description="&apos;EXTAL0&apos; (Pins tool id: SCG.EXTAL0, Clocks tool id: SCG.EXTAL0) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="routed" evaluation="">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PinSignal" resourceId="SCG.EXTAL0" description="&apos;EXTAL0&apos; (Pins tool id: SCG.EXTAL0, Clocks tool id: SCG.EXTAL0) needs to have &apos;INPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="direction" evaluation="">
-                        <data>INPUT</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PinSignal" resourceId="SCG.XTAL0" description="&apos;XTAL0&apos; (Pins tool id: SCG.XTAL0, Clocks tool id: SCG.XTAL0) needs to be routed" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="routed" evaluation="">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="PinSignal" resourceId="SCG.XTAL0" description="&apos;XTAL0&apos; (Pins tool id: SCG.XTAL0, Clocks tool id: SCG.XTAL0) needs to have &apos;OUTPUT&apos; direction" problem_level="1" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="direction" evaluation="">
-                        <data>OUTPUT</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Clocks initialization requires the COMMON Driver in the project." problem_level="2" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="enabled" evaluation="equal" configuration="cm33">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
-                  <dependency resourceType="SWComponent" resourceId="platform.drivers.ccm32k" description="Clocks initialization requires the CCM32K Driver in the project." problem_level="2" source="Clocks:BOARD_BootClockRUN">
-                     <feature name="enabled" evaluation="equal" configuration="cm33">
-                        <data>true</data>
-                     </feature>
-                  </dependency>
-               </dependencies>
-               <clock_sources>
-                  <clock_source id="CCM32K.OSC_32K.outFreq" value="32.768 kHz" locked="false" enabled="true"/>
-                  <clock_source id="SCG.SOSC.outFreq" value="32 MHz" locked="false" enabled="true"/>
-               </clock_sources>
+               <dependencies/>
+               <clock_sources/>
                <clock_outputs>
-                  <clock_output id="BUS_CLK.outFreq" value="96 MHz" locked="false" accuracy=""/>
-                  <clock_output id="CPU_CLK.outFreq" value="96 MHz" locked="false" accuracy=""/>
+                  <clock_output id="BUS_CLK.outFreq" value="32 MHz" locked="false" accuracy=""/>
+                  <clock_output id="CPU_CLK.outFreq" value="32 MHz" locked="false" accuracy=""/>
                   <clock_output id="FIRC_CLK.outFreq" value="96 MHz" locked="false" accuracy=""/>
                   <clock_output id="FRO16K_CLK.outFreq" value="16 kHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_CAN0_CLK.outFreq" value="96 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_CAN1_CLK.outFreq" value="96 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_FLEXIO0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_I3C0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPADC0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPI2C0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPI2C1_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPIT0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPSPI0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPSPI1_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPUART0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_LPUART1_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_TPM0_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
+                  <clock_output id="MRCC.MRCC_TPM1_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
                   <clock_output id="RADIO_FRO192M_CLK.outFreq" value="32 MHz" locked="false" accuracy=""/>
                   <clock_output id="RADIO_FRO192M_FRODIV_CLK.outFreq" value="16 MHz" locked="false" accuracy=""/>
                   <clock_output id="ROSC_CLK.outFreq" value="32.768 kHz" locked="false" accuracy=""/>
-                  <clock_output id="SCGCLKOUT_CLK.outFreq" value="24 MHz" locked="false" accuracy=""/>
+                  <clock_output id="SCGCLKOUT_CLK.outFreq" value="16 MHz" locked="false" accuracy=""/>
                   <clock_output id="SIRC_CLK.outFreq" value="6 MHz" locked="false" accuracy=""/>
-                  <clock_output id="SLOW_CLK.outFreq" value="24 MHz" locked="false" accuracy=""/>
-                  <clock_output id="SOSC_CLK.outFreq" value="32 MHz" locked="false" accuracy=""/>
-                  <clock_output id="System_clock.outFreq" value="96 MHz" locked="false" accuracy=""/>
+                  <clock_output id="SLOW_CLK.outFreq" value="16 MHz" locked="false" accuracy=""/>
+                  <clock_output id="System_clock.outFreq" value="32 MHz" locked="false" accuracy=""/>
                </clock_outputs>
-               <clock_settings>
-                  <setting id="VDDCore" value="voltage_1v1" locked="false"/>
-                  <setting id="CCM32K.CCM32K_32K_SEL.sel" value="CCM32K.OSC_32K" locked="false"/>
-                  <setting id="CCM32K_FRO32K_CTRL_FRO_EN_CFG" value="Disabled" locked="false"/>
-                  <setting id="CCM32K_OSC32K_CTRL_CAP_SEL_EN_CFG" value="Enabled" locked="false"/>
-                  <setting id="CCM32K_OSC32K_CTRL_EXTAL_CAP_SEL_CFG" value="8PF" locked="false"/>
-                  <setting id="CCM32K_OSC32K_CTRL_OSC_EN_CFG" value="Enabled" locked="false"/>
-                  <setting id="CCM32K_OSC32K_CTRL_XTAL_CAP_SEL_CFG" value="8PF" locked="false"/>
-                  <setting id="SCG.DIVCORE.scale" value="1" locked="true"/>
-                  <setting id="SCG.DIVSLOW.scale" value="4" locked="true"/>
-                  <setting id="SCG_SOSCCSR_SOSCEN_CFG" value="Enabled" locked="false"/>
-               </clock_settings>
+               <clock_settings/>
                <called_from_default_init>true</called_from_default_init>
             </clock_configuration>
          </clock_configurations>
       </clocks>
-      <dcdx name="DCDx" version="3.0" enabled="false" update_project_code="true">
+      <dcdx name="DCDx" version="4.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
          <dcdx_profile>
             <processor_version>N/A</processor_version>
          </dcdx_profile>
          <dcdx_configurations/>
       </dcdx>
-      <periphs name="Peripherals" version="11.0" enabled="true" update_project_code="true">
+      <periphs name="Peripherals" version="15.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
          <peripherals_profile>
-            <processor_version>0.12.3</processor_version>
+            <processor_version>0.2412.40</processor_version>
          </peripherals_profile>
          <functional_groups>
-            <functional_group name="BOARD_InitPeripherals" uuid="fc6c7889-d19d-497f-812e-bf2abe3debf8" called_from_default_init="true" id_prefix="" core="cm33">
+            <functional_group name="BOARD_InitPeripherals" uuid="2f831285-b790-43d7-9422-fa81171b3442" called_from_default_init="true" id_prefix="" core="cm33_core0">
                <description></description>
                <options/>
                <dependencies/>
                <instances>
-                  <instance name="NVIC" uuid="7eb8895a-ebeb-4119-ac08-3ef8a085a427" type="nvic" type_id="nvic_57b5eef3774cc60acaede6f5b8bddc67" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                  <instance name="NVIC" uuid="78607552-105a-4000-80b5-03fd6ae9ef87" type="nvic" type_id="nvic" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
                      <config_set name="nvic">
                         <array name="interrupt_table"/>
                         <array name="interrupts"/>
@@ -205,211 +160,311 @@
             </functional_group>
          </functional_groups>
          <components>
-            <component name="system" uuid="a3b03b3a-3379-41fd-a43f-77a898a428f8" type_id="system_54b53072540eeeb8f8e9343e71f28176">
+            <component name="system" uuid="490d2c0e-bbb3-4184-b4a3-01de7c005227" type_id="system">
                <config_set_global name="global_system_definitions">
                   <setting name="user_definitions" value=""/>
                   <setting name="user_includes" value=""/>
+                  <setting name="global_init" value=""/>
                </config_set_global>
             </component>
-            <component name="uart_cmsis_common" uuid="602c92f7-6397-4ee7-a80f-056c4e2bb740" type_id="uart_cmsis_common_9cb8e302497aa696fdbb5a4fd622c2a8">
+            <component name="uart_cmsis_common" uuid="812be9b0-2687-414e-8d71-816e1fbd1f8b" type_id="uart_cmsis_common">
                <config_set_global name="global_USART_CMSIS_common" quick_selection="default"/>
             </component>
-            <component name="msg" uuid="2ee1bbf3-e0d0-4775-ab05-223aa999de6c" type_id="msg_6e2baaf3b97dbeef01c0043275f9a0e7">
+            <component name="msg" uuid="d73da65d-00ce-46a0-ad5e-09da1d573be2" type_id="msg">
                <config_set_global name="global_messages"/>
             </component>
-            <component name="gpio_adapter_common" uuid="5307a1a9-d2c8-45a5-a686-d708762a680c" type_id="gpio_adapter_common_57579b9ac814fe26bf95df0a384c36b6">
+            <component name="gpio_adapter_common" uuid="dbf80b38-5674-4eb9-8f65-e5746edfa7a7" type_id="gpio_adapter_common">
                <config_set_global name="global_gpio_adapter_common" quick_selection="default"/>
             </component>
-            <component name="generic_uart" uuid="7236fbae-6a61-499e-9d30-a5e05ba75c8d" type_id="generic_uart_8cae00565451cf2346eb1b8c624e73a6">
+            <component name="generic_uart" uuid="4801f0d9-9608-4c4f-9288-63c36e6fac1f" type_id="generic_uart">
                <config_set_global name="global_uart"/>
             </component>
-            <component name="generic_enet" uuid="19c38146-5cd9-4e39-b730-b62d2f9c4c01" type_id="generic_enet_74db5c914f0ddbe47d86af40cb77a619">
+            <component name="generic_enet" uuid="350c92eb-ac69-4187-bf26-e6172a64d45a" type_id="generic_enet">
                <config_set_global name="global_enet"/>
             </component>
-            <component name="generic_can" uuid="ee45f3e1-5a80-45b2-8475-bd499039690a" type_id="generic_can_1bfdd78b1af214566c1f23cf6a582d80">
+            <component name="generic_can" uuid="2832d4ad-e325-40ef-80d9-a758f04d4c48" type_id="generic_can">
                <config_set_global name="global_can"/>
             </component>
          </components>
       </periphs>
-      <tee name="TEE" version="4.0" enabled="false" update_project_code="true">
+      <tee name="TEE" version="8.0" enabled="false" update_project_code="true">
+         <generated_project_files/>
          <tee_profile>
-            <processor_version>0.0.0</processor_version>
+            <processor_version>0.2412.40</processor_version>
             <tool_options>
                <option id="_output_type_" value="c_code"/>
-               <option id="_legacy_source_names_" value="yes"/>
+               <option id="_unaffected_strategy_" value="to_after_reset"/>
+               <option id="_legacy_source_names_" value="no"/>
             </tool_options>
          </tee_profile>
-         <functional_group name="BOARD_InitTrustZone" called_from_default_init="true" id_prefix="" prefix_user_defined="true">
+         <functional_group name="BOARD_InitTEE" called_from_default_init="true" id_prefix="BOARD_INITTEE_" prefix_user_defined="false">
             <description></description>
             <options/>
             <trdc>
                <interrupts>
                   <security>
-                     <interrupt id="adc0_irq" secure="Secure"/>
-                     <interrupt id="can0_irq" secure="Secure"/>
-                     <interrupt id="cmc0_irq" secure="Secure"/>
-                     <interrupt id="cti_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch0_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch10_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch11_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch12_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch13_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch14_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch15_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch1_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch2_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch3_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch4_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch5_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch6_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch7_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch8_irq" secure="Secure"/>
-                     <interrupt id="dma0_ch9_irq" secure="Secure"/>
-                     <interrupt id="dsb_irq" secure="Secure"/>
-                     <interrupt id="ele_cmd_irq" secure="Secure"/>
-                     <interrupt id="ele_nonsecure_irq" secure="Secure"/>
-                     <interrupt id="ele_secure_irq" secure="Secure"/>
-                     <interrupt id="ewm0_irq" secure="Secure"/>
-                     <interrupt id="flexio0_irq" secure="Secure"/>
-                     <interrupt id="fmu0_irq" secure="Secure"/>
-                     <interrupt id="gpioa_int0_irq" secure="Secure"/>
-                     <interrupt id="gpioa_int1_irq" secure="Secure"/>
-                     <interrupt id="gpiob_int0_irq" secure="Secure"/>
-                     <interrupt id="gpiob_int1_irq" secure="Secure"/>
-                     <interrupt id="gpioc_int0_irq" secure="Secure"/>
-                     <interrupt id="gpioc_int1_irq" secure="Secure"/>
-                     <interrupt id="gpiod_int0_irq" secure="Secure"/>
-                     <interrupt id="gpiod_int1_irq" secure="Secure"/>
-                     <interrupt id="i3c0_irq" secure="Secure"/>
-                     <interrupt id="lpcmp0_irq" secure="Secure"/>
-                     <interrupt id="lpcmp1_irq" secure="Secure"/>
-                     <interrupt id="lpi2c0_irq" secure="Secure"/>
-                     <interrupt id="lpi2c1_irq" secure="Secure"/>
-                     <interrupt id="lpit0_irq" secure="Secure"/>
-                     <interrupt id="lpspi0_irq" secure="Secure"/>
-                     <interrupt id="lpspi1_irq" secure="Secure"/>
-                     <interrupt id="lptmr0_irq" secure="Secure"/>
-                     <interrupt id="lptmr1_irq" secure="Secure"/>
-                     <interrupt id="lpuart0_irq" secure="Secure"/>
-                     <interrupt id="lpuart1_irq" secure="Secure"/>
-                     <interrupt id="mcm0_irq" secure="Secure"/>
-                     <interrupt id="mscm0_irq" secure="Secure"/>
-                     <interrupt id="porta_irq" secure="Secure"/>
-                     <interrupt id="portb_irq" secure="Secure"/>
-                     <interrupt id="portc_irq" secure="Secure"/>
-                     <interrupt id="portd_irq" secure="Secure"/>
-                     <interrupt id="rf_bric_irq" secure="Secure"/>
-                     <interrupt id="rf_fmu_irq" secure="Secure"/>
-                     <interrupt id="rf_generic_irq" secure="Secure"/>
-                     <interrupt id="rf_imu0_irq" secure="Secure"/>
-                     <interrupt id="rf_imu1_irq" secure="Secure"/>
-                     <interrupt id="rf_lant_sw_irq" secure="Secure"/>
-                     <interrupt id="rf_nbu_irq" secure="Secure"/>
-                     <interrupt id="rf_wor_irq" secure="Secure"/>
-                     <interrupt id="rfmc_irq" secure="Secure"/>
-                     <interrupt id="rtc_alarm_irq" secure="Secure"/>
-                     <interrupt id="rtc_seconds_irq" secure="Secure"/>
-                     <interrupt id="scg0_irq" secure="Secure"/>
-                     <interrupt id="sfa0_irq" secure="Secure"/>
-                     <interrupt id="spc0_irq" secure="Secure"/>
-                     <interrupt id="tpm0_irq" secure="Secure"/>
-                     <interrupt id="tpm1_irq" secure="Secure"/>
-                     <interrupt id="trdc0_irq" secure="Secure"/>
-                     <interrupt id="vbat_irq" secure="Secure"/>
-                     <interrupt id="wdog0_irq" secure="Secure"/>
-                     <interrupt id="wdog1_irq" secure="Secure"/>
-                     <interrupt id="wuu0_irq" secure="Secure"/>
+                     <interrupt id="adc0" secure="Secure"/>
+                     <interrupt id="can0" secure="Secure"/>
+                     <interrupt id="can1" secure="Secure"/>
+                     <interrupt id="cmc0" secure="Secure"/>
+                     <interrupt id="cti" secure="Secure"/>
+                     <interrupt id="dma0_ch0" secure="Secure"/>
+                     <interrupt id="dma0_ch1" secure="Secure"/>
+                     <interrupt id="dma0_ch10" secure="Secure"/>
+                     <interrupt id="dma0_ch11" secure="Secure"/>
+                     <interrupt id="dma0_ch12" secure="Secure"/>
+                     <interrupt id="dma0_ch13" secure="Secure"/>
+                     <interrupt id="dma0_ch14" secure="Secure"/>
+                     <interrupt id="dma0_ch15" secure="Secure"/>
+                     <interrupt id="dma0_ch2" secure="Secure"/>
+                     <interrupt id="dma0_ch3" secure="Secure"/>
+                     <interrupt id="dma0_ch4" secure="Secure"/>
+                     <interrupt id="dma0_ch5" secure="Secure"/>
+                     <interrupt id="dma0_ch6" secure="Secure"/>
+                     <interrupt id="dma0_ch7" secure="Secure"/>
+                     <interrupt id="dma0_ch8" secure="Secure"/>
+                     <interrupt id="dma0_ch9" secure="Secure"/>
+                     <interrupt id="dsb" secure="Secure"/>
+                     <interrupt id="dsp" secure="Secure"/>
+                     <interrupt id="ele_cmd" secure="Secure"/>
+                     <interrupt id="ele_nonsecure" secure="Secure"/>
+                     <interrupt id="ele_secure" secure="Secure"/>
+                     <interrupt id="ewm0" secure="Secure"/>
+                     <interrupt id="flexio0" secure="Secure"/>
+                     <interrupt id="fmu0" secure="Secure"/>
+                     <interrupt id="gpioa_int0" secure="Secure"/>
+                     <interrupt id="gpioa_int1" secure="Secure"/>
+                     <interrupt id="gpiob_int0" secure="Secure"/>
+                     <interrupt id="gpiob_int1" secure="Secure"/>
+                     <interrupt id="gpioc_int0" secure="Secure"/>
+                     <interrupt id="gpioc_int1" secure="Secure"/>
+                     <interrupt id="gpiod_int0" secure="Secure"/>
+                     <interrupt id="gpiod_int1" secure="Secure"/>
+                     <interrupt id="i3c0" secure="Secure"/>
+                     <interrupt id="lpcmp0" secure="Secure"/>
+                     <interrupt id="lpcmp1" secure="Secure"/>
+                     <interrupt id="lpi2c0" secure="Secure"/>
+                     <interrupt id="lpi2c1" secure="Secure"/>
+                     <interrupt id="lpit0" secure="Secure"/>
+                     <interrupt id="lpspi0" secure="Secure"/>
+                     <interrupt id="lpspi1" secure="Secure"/>
+                     <interrupt id="lptmr0" secure="Secure"/>
+                     <interrupt id="lptmr1" secure="Secure"/>
+                     <interrupt id="lpuart0" secure="Secure"/>
+                     <interrupt id="lpuart1" secure="Secure"/>
+                     <interrupt id="mcm0" secure="Secure"/>
+                     <interrupt id="mscm0" secure="Secure"/>
+                     <interrupt id="porta_eft" secure="Secure"/>
+                     <interrupt id="portb_eft" secure="Secure"/>
+                     <interrupt id="portc_eft" secure="Secure"/>
+                     <interrupt id="portd_eft" secure="Secure"/>
+                     <interrupt id="rf_bric" secure="Secure"/>
+                     <interrupt id="rf_fmu" secure="Secure"/>
+                     <interrupt id="rf_generic" secure="Secure"/>
+                     <interrupt id="rf_imu0" secure="Secure"/>
+                     <interrupt id="rf_imu1" secure="Secure"/>
+                     <interrupt id="rf_lant_sw" secure="Secure"/>
+                     <interrupt id="rf_nbu" secure="Secure"/>
+                     <interrupt id="rf_wor" secure="Secure"/>
+                     <interrupt id="rfmc" secure="Secure"/>
+                     <interrupt id="rtc_alarm" secure="Secure"/>
+                     <interrupt id="rtc_seconds" secure="Secure"/>
+                     <interrupt id="scg0" secure="Secure"/>
+                     <interrupt id="sfa0" secure="Secure"/>
+                     <interrupt id="spc0" secure="Secure"/>
+                     <interrupt id="tpm0" secure="Secure"/>
+                     <interrupt id="tpm1" secure="Secure"/>
+                     <interrupt id="trdc0" secure="Secure"/>
+                     <interrupt id="vbat" secure="Secure"/>
+                     <interrupt id="wdog0" secure="Secure"/>
+                     <interrupt id="wdog1" secure="Secure"/>
+                     <interrupt id="wuu0" secure="Secure"/>
                   </security>
                </interrupts>
+               <ports>
+                  <port id="GPIOA">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="16" security="s_priv"/>
+                     <pin_security id="17" security="s_priv"/>
+                     <pin_security id="18" security="s_priv"/>
+                     <pin_security id="19" security="s_priv"/>
+                     <pin_security id="20" security="s_priv"/>
+                     <pin_security id="21" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+                  <port id="GPIOB">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="2" security="s_priv"/>
+                     <pin_security id="3" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_security id="5" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+                  <port id="GPIOC">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="2" security="s_priv"/>
+                     <pin_security id="3" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_security id="5" security="s_priv"/>
+                     <pin_security id="6" security="s_priv"/>
+                     <pin_security id="7" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+                  <port id="GPIOD">
+                     <pin_security id="0" security="s_priv"/>
+                     <pin_security id="1" security="s_priv"/>
+                     <pin_security id="2" security="s_priv"/>
+                     <pin_security id="3" security="s_priv"/>
+                     <pin_security id="4" security="s_priv"/>
+                     <pin_security id="5" security="s_priv"/>
+                     <pin_interrupt_security id="0" security="s_priv"/>
+                     <pin_interrupt_security id="1" security="s_priv"/>
+                  </port>
+               </ports>
+               <crossbar_switch>
+                  <masters>
+                     <master id="0" arbitrates_length="0"/>
+                     <master id="1" arbitrates_length="0"/>
+                     <master id="2" arbitrates_length="0"/>
+                     <master id="3" arbitrates_length="0"/>
+                     <master id="4" arbitrates_length="0"/>
+                     <master id="5" arbitrates_length="0"/>
+                     <master id="6" arbitrates_length="0"/>
+                  </masters>
+                  <slaves>
+                     <slave id="0" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                     <slave id="1" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                     <slave id="2" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                     <slave id="3" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                     <slave id="4" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                     <slave id="5" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                     <slave id="6" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                     <slave id="7" park="0" parking_control="0" arbitration_mode="0" halt_low_priority="0" read_only="0"/>
+                  </slaves>
+                  <priorities>
+                     <slave_priority id="0">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                     <slave_priority id="1">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                     <slave_priority id="2">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                     <slave_priority id="3">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                     <slave_priority id="4">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                     <slave_priority id="5">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                     <slave_priority id="6">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                     <slave_priority id="7">
+                        <master_priority id="0" value="0"/>
+                        <master_priority id="1" value="1"/>
+                        <master_priority id="2" value="2"/>
+                        <master_priority id="3" value="3"/>
+                        <master_priority id="4" value="4"/>
+                        <master_priority id="5" value="5"/>
+                        <master_priority id="6" value="6"/>
+                     </slave_priority>
+                  </priorities>
+               </crossbar_switch>
                <masters>
-                  <master id="cm33">
+                  <master id="CM33">
                      <domain_assignment enabled="false" locked="false" domain_id="0" domain_input="mda"/>
                   </master>
-                  <master id="dma3">
-                     <domain_assignment secure="bypass" privileged="bypass" enabled="false" locked="false" domain_id="0" domain_bypass="false"/>
+                  <master id="DMA0">
+                     <domain_assignment secure="ns" privileged="user" enabled="false" locked="false" domain_id="0" domain_bypass="false"/>
                   </master>
-                  <master id="dsb">
-                     <domain_assignment secure="bypass" privileged="bypass" enabled="false" locked="false" domain_id="0" domain_bypass="false"/>
+                  <master id="DSB">
+                     <domain_assignment secure="ns" privileged="user" enabled="false" locked="false" domain_id="0" domain_bypass="false"/>
                   </master>
-                  <master id="nbu">
-                     <domain_assignment secure="bypass" privileged="bypass" enabled="false" locked="false" domain_id="0" domain_bypass="false"/>
+                  <master id="NBU">
+                     <domain_assignment secure="ns" privileged="user" enabled="false" locked="false" domain_id="0" domain_bypass="false"/>
+                  </master>
+                  <master id="LCE">
+                     <domain_assignment secure="ns" privileged="user" enabled="false" locked="false" domain_id="0" domain_bypass="false"/>
                   </master>
                </masters>
-               <access_templates>
-                  <template id="NO_ACCESS" name="No access" locked="true">
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
-                  </template>
-                  <template id="R_s" name="R for S" locked="true">
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                     <access read="ALLOW" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                     <access read="ALLOW" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
-                  </template>
-                  <template id="RW_s_priv" name="RW for S-Priv" locked="true">
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_priv"/>
-                  </template>
-                  <template id="RW_s" name="RW for S" locked="true">
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_priv"/>
-                  </template>
-                  <template id="RW_s__R_ns_priv" name="RW for S, R for NS-Priv" locked="true">
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                     <access read="ALLOW" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_priv"/>
-                  </template>
-                  <template id="RW_s__R_ns" name="RW for S, R for NS" locked="true">
-                     <access read="ALLOW" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                     <access read="ALLOW" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_priv"/>
-                  </template>
-                  <template id="RW_s__RW_ns_priv" name="RW for S and NS-Priv" locked="true">
-                     <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="ns_priv"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="BLOCK" security_level="s_priv"/>
-                  </template>
-                  <template id="ALL" locked="true">
-                     <access read="ALLOW" write="ALLOW" execute="ALLOW" security_level="ns_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="ALLOW" security_level="ns_priv"/>
-                     <access read="ALLOW" write="ALLOW" execute="ALLOW" security_level="s_user"/>
-                     <access read="ALLOW" write="ALLOW" execute="ALLOW" security_level="s_priv"/>
-                  </template>
-               </access_templates>
                <mbcs>
                   <mbc checker_id="MBC0" using_global_templates="true">
                      <slaves>
                         <slave id="FLASH">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="1048576"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="2097152"/>
                         </slave>
                         <slave id="IFR0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                            <base_region start="0" size="32768"/>
                         </slave>
                         <slave id="IFR1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                            <base_region start="0" size="8192"/>
                         </slave>
                         <slave id="ROM_BOOT">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                            <base_region start="0" size="98304"/>
                         </slave>
                      </slaves>
@@ -417,357 +472,503 @@
                   <mbc checker_id="MBC1" using_global_templates="true">
                      <slaves>
                         <slave id="TCM_CODE">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="32768"/>
+                        </slave>
+                        <slave id="STCM0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                            <base_region start="0" size="16384"/>
                         </slave>
-                        <slave id="TCM_SYS">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="114688"/>
+                        <slave id="STCM1">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="16384"/>
+                        </slave>
+                        <slave id="STCM2">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="32768"/>
+                        </slave>
+                        <slave id="STCM3">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="32768"/>
+                        </slave>
+                        <slave id="STCM4">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="32768"/>
+                        </slave>
+                        <slave id="STCM5">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="32768"/>
+                        </slave>
+                        <slave id="STCM6">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="32768"/>
+                        </slave>
+                        <slave id="STCM7">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="32768"/>
+                        </slave>
+                        <slave id="STCM8">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <base_region start="0" size="8192"/>
                         </slave>
                      </slaves>
                   </mbc>
                   <mbc checker_id="MBC2" using_global_templates="true">
                      <slaves>
                         <slave id="AXBS0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="CMC0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                        </slave>
-                        <slave id="MP">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="EWM0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="MSCM">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="SMSCM">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="SPC0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="SYSPM">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="TRGMUX0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="WUU0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="WDOG0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="WDOG1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                        </slave>
-                        <slave id="MRCC">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="SFA0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="SCG0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="CCM32K">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="FMU0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="REGFILE0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="REGFILE1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="CRC0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="ELEMUA">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                        </slave>
-                        <slave id="NPX">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                        </slave>
-                        <slave id="TRDC">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="VBAT0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="RTC">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPTMR0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPTMR1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPIT0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="TSTMR0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="TPM0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="TPM1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPI2C0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPI2C1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="I3C">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                        <slave id="I3C0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPSPI0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPSPI1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPUART0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPUART1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="FLEXIO0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                        </slave>
-                        <slave id="CAN0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="SEMA42">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                        </slave>
-                        <slave id="RFMC">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                        </slave>
-                        <slave id="DSB0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="PORTA">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="PORTB">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="PORTC">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="PORTD">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="GPIOD">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="ADC0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPCMP0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="LPCMP1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="VREF0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_MP">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH1">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH2">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH3">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH4">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH5">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH6">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH7">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH8">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH9">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH10">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH11">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH12">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH13">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH14">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DMA0_CH15">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="MRCC0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="NPX0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="TRDC0_MGR">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="TRDC0_MBC0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="TRDC0_MBC1">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="TRDC0_MBC2">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="TRDC0_MRC0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="CAN0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="RFMC">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DSB0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="CAN1">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DSP0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                        </slave>
+                        <slave id="DBG">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="GPIOA">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="GPIOB">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                         <slave id="GPIOC">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="GENFSK">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                        <slave id="RF_ZIGBEELL">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="RADIO_CTRL">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                        <slave id="RF_GENLL">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="XCVR_RX_DIG">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                        <slave id="RF_GENLLREMAP0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="TX_PACKET_RAM">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
+                        <slave id="RF_GENLLREMAP1">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="ISP-AP0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="65536"/>
+                        <slave id="RF_GENLLREMAP2">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="FASTP1_bridge">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="12288" size="12288"/>
+                        <slave id="RF_CTRL">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="eDMA-TCD-CHx">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="65536"/>
+                        <slave id="RF_XCVR">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="TRDC-MBC0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="4096"/>
+                        <slave id="RF_PACKET_RAM_0">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
-                        <slave id="TRDC-MBC1">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="4096"/>
-                        </slave>
-                        <slave id="TRDC-MBC2">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="4096"/>
-                        </slave>
-                        <slave id="TRDC-MRC0">
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <domain security="s" template="NO_ACCESS"/>
-                           <base_region start="0" size="4096"/>
+                        <slave id="RF_PACKET_RAM_1">
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
+                           <domain security="ns" template="Template_1"/>
                         </slave>
                      </slaves>
                   </mbc>
@@ -776,142 +977,141 @@
                   <mrc checker_id="MRC0" using_global_templates="true">
                      <domains>
                         <domain>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="0"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="1"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="2"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="3"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="4"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="5"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="6"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="7"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="0"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="1"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="2"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="3"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="4"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="5"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="6"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="7"/>
                         </domain>
                         <domain>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="0"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="1"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="2"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="3"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="4"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="5"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="6"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="7"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="0"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="1"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="2"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="3"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="4"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="5"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="6"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="7"/>
                         </domain>
                         <domain>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="0"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="1"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="2"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="3"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="4"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="5"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="6"/>
-                           <region start="1216348160" size="2097152" security="s" template="NO_ACCESS" enabled="false" index="7"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="0"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="1"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="2"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="3"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="4"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="5"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="6"/>
+                           <region start="1216348160" size="2097152" security="ns" template="Template_1" enabled="false" index="7"/>
                         </domain>
                      </domains>
                   </mrc>
                </mrcs>
             </trdc>
-            <sau enabled="false" all_non_secure="false" generate_code_for_disabled_regions="false">
-               <region start="0" size="32" security="ns" enabled="false" index="0"/>
-               <region start="0" size="32" security="ns" enabled="false" index="1"/>
-               <region start="0" size="32" security="ns" enabled="false" index="2"/>
-               <region start="0" size="32" security="ns" enabled="false" index="3"/>
-               <region start="0" size="32" security="ns" enabled="false" index="4"/>
-               <region start="0" size="32" security="ns" enabled="false" index="5"/>
-               <region start="0" size="32" security="ns" enabled="false" index="6"/>
-               <region start="0" size="32" security="ns" enabled="false" index="7"/>
-            </sau>
+            <saus>
+               <sau enabled="false" all_non_secure="false" generate_code_for_disabled_regions="false" core="all">
+                  <region start="0" size="32" security="ns" enabled="false" index="0"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="1"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="2"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="3"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="4"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="5"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="6"/>
+                  <region start="0" size="32" security="ns" enabled="false" index="7"/>
+               </sau>
+            </saus>
             <global_options>
-               <option id="TRDC_CR_GVLDM" value="yes"/>
+               <option id="_crossbar_switch_" value="no"/>
+               <option id="TDRC_FLW_CTL_V" value="no"/>
+               <option id="TDRC_FLW_CTL_LK" value="no"/>
+               <option id="TRDC_FLW_ABASE" value="0x0000_0000"/>
+               <option id="TRDC_FLW_BCNT" value="0x0000_0000"/>
+               <option id="TRDC_CR_GVLDM" value="no"/>
                <option id="TRDC_CR_GVLDB" value="no"/>
                <option id="TRDC_CR_GVLDR" value="no"/>
-               <option id="TRDC_IDAU_CR_VLD" value="no"/>
+               <option id="TRDC_IDAU_CR_VLD" value="yes"/>
                <option id="TRDC_IDAU_CR_LKSAU" value="no"/>
                <option id="TRDC_IDAU_CR_LKNSMPU" value="no"/>
                <option id="TRDC_IDAU_CR_LKSMPU" value="no"/>
                <option id="TRDC_IDAU_CR_LKNSVTOR" value="no"/>
                <option id="TRDC_IDAU_CR_LKSVTAIRCR" value="no"/>
-               <option id="AIRCR_VECTRESET" value="no"/>
-               <option id="AIRCR_VECTCLRACTIVE" value="no"/>
-               <option id="AIRCR_SYSRESETREQ" value="no"/>
-               <option id="AIRCR_ENDIANNESS" value="no"/>
-               <option id="SCR_SLEEPONEXIT" value="no"/>
-               <option id="SCR_SLEEPDEEP" value="no"/>
-               <option id="SCR_SEVONPEND" value="no"/>
-               <option id="SHCSR_MEMFAULTENA" value="no"/>
-               <option id="SHCSR_BUSFAULTENA" value="no"/>
-               <option id="SHCSR_USGFAULTENA" value="no"/>
-               <option id="SHCSR_SVCALLACT" value="no"/>
-               <option id="SHCSR_MONITORACT" value="no"/>
-               <option id="SHCSR_PENDSVACT" value="no"/>
-               <option id="SHCSR_SYSTICKACT" value="no"/>
-               <option id="SHCSR_MEMFAULTACT" value="no"/>
-               <option id="SHCSR_BUSFAULTACT" value="no"/>
-               <option id="SHCSR_USGFAULTACT" value="no"/>
+               <option id="AIRCR_PRIS" value="no"/>
+               <option id="AIRCR_BFHFNMINS" value="no"/>
+               <option id="AIRCR_SYSRESETREQS" value="no"/>
+               <option id="SCR_SLEEPDEEPS" value="no"/>
+               <option id="SHCSR_SECUREFAULTENA" value="no"/>
+               <option id="CPACR_CP0" value="0"/>
+               <option id="CPACR_CP1" value="0"/>
+               <option id="CPACR_CP2" value="0"/>
+               <option id="CPACR_CP3" value="0"/>
+               <option id="CPACR_CP4" value="0"/>
+               <option id="CPACR_CP5" value="0"/>
+               <option id="CPACR_CP6" value="0"/>
+               <option id="CPACR_CP7" value="0"/>
+               <option id="CPACR_CP10" value="0"/>
+               <option id="CPACR_CP11" value="0"/>
+               <option id="NSACR_CP0" value="no"/>
+               <option id="NSACR_CP1" value="no"/>
+               <option id="NSACR_CP2" value="no"/>
+               <option id="NSACR_CP3" value="no"/>
+               <option id="NSACR_CP4" value="no"/>
+               <option id="NSACR_CP5" value="no"/>
+               <option id="NSACR_CP6" value="no"/>
+               <option id="NSACR_CP7" value="no"/>
+               <option id="NSACR_CP10" value="no"/>
+               <option id="NSACR_CP11" value="no"/>
+               <option id="CPPWR_SU0" value="no"/>
+               <option id="CPPWR_SUS0" value="no"/>
+               <option id="CPPWR_SU1" value="no"/>
+               <option id="CPPWR_SUS1" value="no"/>
+               <option id="CPPWR_SU2" value="no"/>
+               <option id="CPPWR_SUS2" value="no"/>
+               <option id="CPPWR_SU3" value="no"/>
+               <option id="CPPWR_SUS3" value="no"/>
+               <option id="CPPWR_SU4" value="no"/>
+               <option id="CPPWR_SUS4" value="no"/>
+               <option id="CPPWR_SU5" value="no"/>
+               <option id="CPPWR_SUS5" value="no"/>
+               <option id="CPPWR_SU6" value="no"/>
+               <option id="CPPWR_SUS6" value="no"/>
+               <option id="CPPWR_SU7" value="no"/>
+               <option id="CPPWR_SUS7" value="no"/>
+               <option id="CPPWR_SU10" value="no"/>
+               <option id="CPPWR_SUS10" value="no"/>
+               <option id="CPPWR_SU11" value="no"/>
+               <option id="CPPWR_SUS11" value="no"/>
+               <option id="GPIOA_PCNS" value="no"/>
+               <option id="GPIOA_ICNS" value="no"/>
+               <option id="GPIOA_PCNP" value="no"/>
+               <option id="GPIOA_ICNP" value="no"/>
+               <option id="GPIOB_PCNS" value="no"/>
+               <option id="GPIOB_ICNS" value="no"/>
+               <option id="GPIOB_PCNP" value="no"/>
+               <option id="GPIOB_ICNP" value="no"/>
+               <option id="GPIOC_PCNS" value="no"/>
+               <option id="GPIOC_ICNS" value="no"/>
+               <option id="GPIOC_PCNP" value="no"/>
+               <option id="GPIOC_ICNP" value="no"/>
+               <option id="GPIOD_PCNS" value="no"/>
+               <option id="GPIOD_ICNS" value="no"/>
+               <option id="GPIOD_PCNP" value="no"/>
+               <option id="GPIOD_ICNP" value="no"/>
             </global_options>
-            <user_memory_regions>
-               <user_memory_region start="1216348160" size="1048576" id="RF_Flash" description="Radio Flash/IFR ">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1217691648" size="4096" id="RF_CIU2" description="Radio NBU CIU2">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1217921024" size="4096" id="RF_FRO192M" description="Radio FRO192M">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1217925120" size="4096" id="RF_FMU" description="Radio Flash Memory Unit">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1217929216" size="4096" id="RF_FMCCFG" description="Radio FMC CFG ">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1217933312" size="4096" id="RF_CMC" description="Radio CMC">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1217937408" size="4096" id="TPM2" description="Radio Low-Power Timer">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1217941504" size="4096" id="RF_FMU_TST" description="Radio Flash Memory Unit - Test ">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-               <user_memory_region start="1218183168" size="4096" id="RF_NBU_SMU2" description="Radio NBU SMU2 0">
-                  <accesses domain="">
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                     <domain security="s" template="NO_ACCESS"/>
-                  </accesses>
-               </user_memory_region>
-            </user_memory_regions>
+            <disabled_global_options_groups>
+               <group name="GPIOC LOCK Register"/>
+               <group name="NSACR Register (Core SCB)"/>
+               <group name="CPPWR Register (Core SCnSCB)"/>
+               <group name="GPIOD LOCK Register"/>
+               <group name="AIRCR Register (Core SCB)"/>
+               <group name="FLW (TRDC)"/>
+               <group name="SHCR Register (Core SCB)"/>
+               <group name="SCR Register (Core SCB)"/>
+               <group name="CPACR Register (Core SCB)"/>
+               <group name="GPIOB LOCK Register"/>
+               <group name="GPIOA LOCK Register"/>
+            </disabled_global_options_groups>
             <mpus>
                <mpu enabled="false" priv_default_map="false" handler_enabled="false" id="s" generate_code_for_disabled_regions="false">
                   <attributes>
@@ -966,13 +1166,13 @@
                   </attributes>
                   <regions>
                      <region start="0" size="32" security="priv" enabled="false" index="0" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="1" executable="false" read_only="false" shareability="non_shareable" attributes_index="1"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="2" executable="false" read_only="false" shareability="non_shareable" attributes_index="2"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="3" executable="false" read_only="false" shareability="non_shareable" attributes_index="3"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="4" executable="false" read_only="false" shareability="non_shareable" attributes_index="4"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="5" executable="false" read_only="false" shareability="non_shareable" attributes_index="5"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="6" executable="false" read_only="false" shareability="non_shareable" attributes_index="6"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="7" executable="false" read_only="false" shareability="non_shareable" attributes_index="7"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="1" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="2" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="3" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="4" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="5" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="6" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="7" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
                   </regions>
                </mpu>
                <mpu enabled="false" priv_default_map="false" handler_enabled="false" id="ns" generate_code_for_disabled_regions="false">
@@ -1028,17 +1228,66 @@
                   </attributes>
                   <regions>
                      <region start="0" size="32" security="priv" enabled="false" index="0" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="1" executable="false" read_only="false" shareability="non_shareable" attributes_index="1"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="2" executable="false" read_only="false" shareability="non_shareable" attributes_index="2"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="3" executable="false" read_only="false" shareability="non_shareable" attributes_index="3"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="4" executable="false" read_only="false" shareability="non_shareable" attributes_index="4"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="5" executable="false" read_only="false" shareability="non_shareable" attributes_index="5"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="6" executable="false" read_only="false" shareability="non_shareable" attributes_index="6"/>
-                     <region start="0" size="32" security="priv" enabled="false" index="7" executable="false" read_only="false" shareability="non_shareable" attributes_index="7"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="1" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="2" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="3" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="4" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="5" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="6" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
+                     <region start="0" size="32" security="priv" enabled="false" index="7" executable="false" read_only="false" shareability="non_shareable" attributes_index="0"/>
                   </regions>
                </mpu>
             </mpus>
-            <dependencies/>
+            <access_templates>
+               <template id="Template_1" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+               <template id="Template_2" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+               <template id="Template_3" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+               <template id="Template_4" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+               <template id="Template_5" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+               <template id="Template_6" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+               <template id="Template_7" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+               <template id="Template_8" locked="false">
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="ns_priv"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_user"/>
+                  <access read="BLOCK" write="BLOCK" execute="BLOCK" security_level="s_priv"/>
+               </template>
+            </access_templates>
          </functional_group>
       </tee>
    </tools>
