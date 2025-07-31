@@ -1,0 +1,19 @@
+a-format_sync_transfer:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/a-format/sync_transfer
+    project-root-path: boards/${board}/digital_encoder_examples/a-format/sync_transfer/${multicore_foldername}
+    document:
+      name: a-format_sync_transfer${core_id_suffix_name}
+      category: digital_encoder_examples
+      brief: The a-format_sync example shows how to use flexio A-format driver
+        in sync way:In this example, a flexio simulated A-format connect to the encoder
+        through RS-485, the board will send requests to and receive responses from the encoder.
+      example_readme:
+      - examples/digital_encoder_examples/a-format/sync_transfer/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/a-format/sync_transfer/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
