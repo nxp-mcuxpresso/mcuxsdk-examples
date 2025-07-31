@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2019, 2023 NXP
+ * Copyright 2016-2019, 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -23,6 +23,9 @@
 #include "fsl_asmc.h"
 #elif defined(FSL_FEATURE_SOC_CMC_COUNT) && (FSL_FEATURE_SOC_CMC_COUNT) /* CMC */
 #include "fsl_cmc.h"
+#ifndef EXAMPLE_CMC_WDOG_RESET_SOURCE
+#define EXAMPLE_CMC_WDOG_RESET_SOURCE kCMC_Watchdog0Reset
+#endif
 #endif
 #endif
 
@@ -152,7 +155,7 @@ void Wdog32FastTesting(void)
 #elif defined(FSL_FEATURE_SOC_ASMC_COUNT) && (FSL_FEATURE_SOC_ASMC_COUNT)   /* ASMC */
             || ((ASMC_GetSystemResetStatusFlags(EXAMPLE_ASMC_BASE) & kASMC_WatchdogResetFlag) == 0)
 #elif defined(FSL_FEATURE_SOC_CMC_COUNT) && (FSL_FEATURE_SOC_CMC_COUNT)     /* CMC */
-            || ((CMC_GetSystemResetStatus(EXAMPLE_CMC_BASE) & kCMC_Watchdog0Reset) == 0)
+            || ((CMC_GetSystemResetStatus(EXAMPLE_CMC_BASE) & EXAMPLE_CMC_WDOG_RESET_SOURCE) == 0)
 #endif
 #else
             || !APP_WDOG_RESET_FLAG_SET()
@@ -185,7 +188,7 @@ void Wdog32FastTesting(void)
 #elif defined(FSL_FEATURE_SOC_ASMC_COUNT) && (FSL_FEATURE_SOC_ASMC_COUNT)   /* ASMC */
             || ((ASMC_GetSystemResetStatusFlags(EXAMPLE_ASMC_BASE) & kASMC_WatchdogResetFlag) == 0)
 #elif defined(FSL_FEATURE_SOC_CMC_COUNT) && (FSL_FEATURE_SOC_CMC_COUNT)     /* CMC */
-            || ((CMC_GetSystemResetStatus(EXAMPLE_CMC_BASE) & kCMC_Watchdog0Reset) == 0)
+            || ((CMC_GetSystemResetStatus(EXAMPLE_CMC_BASE) & EXAMPLE_CMC_WDOG_RESET_SOURCE) == 0)
 #endif
 #else
             || !APP_WDOG_RESET_FLAG_SET()
@@ -338,7 +341,7 @@ int main(void)
         RESET_CHECK_FLAG++;
     }
 #elif defined(FSL_FEATURE_SOC_CMC_COUNT) && (FSL_FEATURE_SOC_CMC_COUNT)
-    if ((CMC_GetSystemResetStatus(EXAMPLE_CMC_BASE) & kCMC_Watchdog0Reset))
+    if ((CMC_GetSystemResetStatus(EXAMPLE_CMC_BASE) & EXAMPLE_CMC_WDOG_RESET_SOURCE))
     {
         RESET_CHECK_FLAG++;
     }

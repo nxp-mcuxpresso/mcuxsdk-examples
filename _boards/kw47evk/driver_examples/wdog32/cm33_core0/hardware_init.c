@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,6 +14,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    CLOCK_EnableClock(kCLOCK_Wdog1);
     BOARD_InitPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
