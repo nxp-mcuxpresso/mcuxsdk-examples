@@ -35,7 +35,6 @@ freertos_lpuart:
     frdmk32l3a6: []
     frdmke15z: []
     frdmke17z: []
-    # k32w148evk:
     # kw45b41zevk:
     kw45b41zloc: []
     kw47evk@cm33_core0: []

@@ -96,9 +96,6 @@ freertos_tickless:
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
     mcxw71evk: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

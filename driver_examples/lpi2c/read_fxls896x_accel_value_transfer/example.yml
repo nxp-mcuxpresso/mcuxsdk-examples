@@ -20,9 +20,6 @@ lpi2c_read_fxls896x_accel_value_transfer:
     frdmmcxw71: []
     mcxw71evk: []
     frdmmcxw72@cm33_core0: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw47evk@cm33_core0: []
     mcxw72evk@cm33_core0: []
     kw45b41zevk:

@@ -120,9 +120,6 @@ lpuart_edma_rb_transfer:
     frdmmcxw71: []
     mcxw71evk: []
     frdmmcxe247: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []

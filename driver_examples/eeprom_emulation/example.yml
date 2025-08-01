@@ -16,9 +16,6 @@ eeprom_emulation:
   boards:
     frdmmcxw71: []
     mcxw71evk: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

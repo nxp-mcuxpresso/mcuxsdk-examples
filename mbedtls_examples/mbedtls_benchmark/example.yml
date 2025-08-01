@@ -173,8 +173,6 @@ mbedtls_benchmark:
     mcxw71evk:
     - -armgcc@debug
     frdmrw612: []
-    k32w148evk:
-    - +armgcc@release
     kw47evk@cm33_core0:
     - -armgcc@debug
     kw47loc@cm33_core0:

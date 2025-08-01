@@ -18,7 +18,6 @@ show how to use the swo, and to provide a simple project for debugging and furth
 - [EVK-MIMXRT685](../../_boards/evkmimxrt685/demo_apps/hello_world_swo/example_board_readme.md)
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/demo_apps/hello_world_swo/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/demo_apps/hello_world_swo/example_board_readme.md)
-- [K32W148-EVK](../../_boards/k32w148evk/demo_apps/hello_world_swo/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/demo_apps/hello_world_swo/example_board_readme.md)
 - [KW45B41Z-LOC](../../_boards/kw45b41zloc/demo_apps/hello_world_swo/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/demo_apps/hello_world_swo/example_board_readme.md)

@@ -70,9 +70,6 @@ freertos_swtimer:
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

@@ -17,7 +17,6 @@ source by following the debug console prompts. The purpose of this demo is to sh
 ## Supported Boards
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/demo_apps/power_mode_switch/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/demo_apps/power_mode_switch/example_board_readme.md)
-- [K32W148-EVK](../../_boards/k32w148evk/demo_apps/power_mode_switch/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/demo_apps/power_mode_switch/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/demo_apps/power_mode_switch/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/demo_apps/power_mode_switch/example_board_readme.md)

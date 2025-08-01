@@ -23,9 +23,6 @@ littlefs_shell_onchip_flash:
     lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

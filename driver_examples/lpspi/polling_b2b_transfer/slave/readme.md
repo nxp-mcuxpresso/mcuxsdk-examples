@@ -39,7 +39,6 @@ The file 'lpspi_polling_b2b_transfer_slave.c' includes the LPSPI slave code.
 - [FRDM-MCXW71](../../../../_boards/frdmmcxw71/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
 - [MCX-W71-EVK](../../../../_boards/mcxw71evk/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
 - [FRDM-MCXW72](../../../../_boards/frdmmcxw72/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
-- [K32W148-EVK](../../../../_boards/k32w148evk/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
 - [KW45B41Z-EVK](../../../../_boards/kw45b41zevk/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
 - [KW47-EVK](../../../../_boards/kw47evk/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)
 - [MCIMX93AUTO-EVK](../../../../_boards/mcimx93autoevk/driver_examples/lpspi/polling_b2b_transfer/slave/example_board_readme.md)

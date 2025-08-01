@@ -76,7 +76,6 @@ Log 9: Task2 Message 4
 - [IMX95LP4XEVK-15](../../_boards/imx95lp4xevk15/freertos_examples/freertos_queue/example_board_readme.md)
 - [IMX95LPD5EVK-19](../../_boards/imx95lpd5evk19/freertos_examples/freertos_queue/example_board_readme.md)
 - [imx95verdinevk](../../_boards/imx95verdinevk/freertos_examples/freertos_queue/example_board_readme.md)
-- [K32W148-EVK](../../_boards/k32w148evk/freertos_examples/freertos_queue/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/freertos_examples/freertos_queue/example_board_readme.md)
 - [KW45B41Z-LOC](../../_boards/kw45b41zloc/freertos_examples/freertos_queue/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/freertos_examples/freertos_queue/example_board_readme.md)

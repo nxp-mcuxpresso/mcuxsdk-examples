@@ -29,7 +29,6 @@ benchmarking and prints results to the terminal.
 - [FRDM-MCXW71](../../_boards/frdmmcxw71/mbedtls_examples/mbedtls_benchmark/example_board_readme.md)
 - [MCX-W71-EVK](../../_boards/mcxw71evk/mbedtls_examples/mbedtls_benchmark/example_board_readme.md)
 - [FRDM-RW612](../../_boards/frdmrw612/mbedtls_examples/mbedtls_benchmark/example_board_readme.md)
-- [K32W148-EVK](../../_boards/k32w148evk/mbedtls_examples/mbedtls_benchmark/example_board_readme.md)
 - [KW45B41Z-EVK](../../_boards/kw45b41zevk/mbedtls_examples/mbedtls_benchmark/example_board_readme.md)
 - [KW47-EVK](../../_boards/kw47evk/mbedtls_examples/mbedtls_benchmark/example_board_readme.md)
 - [LPCXpresso54628](../../_boards/lpcxpresso54628/mbedtls_examples/mbedtls_benchmark/example_board_readme.md)

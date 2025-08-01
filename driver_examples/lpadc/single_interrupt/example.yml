@@ -52,9 +52,6 @@ lpadc_single_interrupt:
     - -mdk@release
     frdmmcxw71: []
     mcxw71evk: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []

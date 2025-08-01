@@ -16,9 +16,6 @@ flash_component_nor_lpspi:
   boards:
     frdmmcxw71: []
     mcxw71evk: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     mcxw72evk@cm33_core0: []
     mcxw72loc@cm33_core0: []
     kw47evk@cm33_core0: []

@@ -16,9 +16,6 @@ power_mode_switch_k4:
     frdmmcxw71: []
     mcxw71evk: []
     frdmmcxw72@cm33_core0: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

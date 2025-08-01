@@ -19,7 +19,6 @@ By default, the first connected device is subscribed to temperature service and 
 
 ### Supported boards:
 - KW45B41Z-EVK
-- K32W148-EVK
 - FRDM-MCXW71
 - KW47-EVK
 - MCX-W72-EVK

@@ -34,9 +34,6 @@ power_manager_test_bm:
     frdmmcxw71: []
     mcxw71evk: []
     frdmrw612: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release

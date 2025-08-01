@@ -17,9 +17,6 @@ k4w1_romapi_lpspi:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     mcxw72evk@cm33_core0: []
     mcxw72loc@cm33_core0: []
     kw47evk@cm33_core0: []

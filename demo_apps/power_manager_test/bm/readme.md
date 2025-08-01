@@ -17,7 +17,6 @@ The demo shows how the various power mode switch to each other based on power ma
 - [FRDM-MCXN947](../../../_boards/frdmmcxn947/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [FRDM-MCXW71](../../../_boards/frdmmcxw71/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [FRDM-RW612](../../../_boards/frdmrw612/demo_apps/power_manager_test/bm/example_board_readme.md)
-- [K32W148-EVK](../../../_boards/k32w148evk/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [KW45B41Z-EVK](../../../_boards/kw45b41zevk/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [KW47-EVK](../../../_boards/kw47evk/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/demo_apps/power_manager_test/bm/example_board_readme.md)

@@ -17,9 +17,6 @@ ele_digest:
     kw45b41zevk:
     - +armgcc@debug
     - +armgcc@release
-    k32w148evk:
-    - +armgcc@debug
-    - +armgcc@release
     frdmmcxw71:
     - +armgcc@debug
     - +armgcc@release
