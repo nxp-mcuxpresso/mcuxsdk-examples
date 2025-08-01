@@ -3,7 +3,8 @@
 ## Overview
 The SD JPEG Demo application reads the JPEG pictures from the SD card, decodes
 them, and shows them in the LCD panel one by one.
-Note: Please make sure the card you are using is FAT32 format.
+Note: Please make sure the card you are using is FAT format. If the card is in exFAT
+format, uncomment and set the macro FF_USE_LFN and FF_FS_EXFAT to 1 in ffconf_gen.h
 
 ## Supported Boards
 - [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/display_examples/sd_jpeg/example_board_readme.md)
