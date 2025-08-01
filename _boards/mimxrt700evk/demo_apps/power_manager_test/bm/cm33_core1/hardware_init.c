@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -62,6 +62,7 @@ static inline void BOARD_PrepareForDS(void)
      * and still requires sense shared main clock. */
     CLOCK_AttachClk(kLPOSC_to_SENSE_BASE);
     CLOCK_AttachClk(kSENSE_BASE_to_SENSE_MAIN);
+    CLOCK_SetClkDiv(kCLOCK_DivSenseMainClk, 1U);
     CLOCK_EnableFroClkOutput(FRO2, kCLOCK_FroDiv6OutEn); /* Need Keep DIV6. */
 #if defined(DEMO_POWER_SUPPLY_OPTION) && (DEMO_POWER_SUPPLY_OPTION == DEMO_POWER_SUPPLY_PMIC)
     POWER_SelectRunSetpoint(kRegulator_Vdd1LDO, 0U); /* Select lowest LVD. */
@@ -94,6 +95,7 @@ static inline void BOARD_RestoreAfterDS(void)
     POWER_ApplyPD();
 #endif
     CLOCK_EnableFroClkOutput(FRO2, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
+    CLOCK_SetClkDiv(kCLOCK_DivSenseMainClk, 2U);
     CLOCK_AttachClk(kFRO2_DIV1_to_SENSE_MAIN);
     CLOCK_AttachClk(kFRO2_DIV3_to_SENSE_BASE);
 }

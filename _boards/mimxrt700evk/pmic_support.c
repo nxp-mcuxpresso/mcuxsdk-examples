@@ -22,7 +22,6 @@
  ******************************************************************************/
 pca9422_handle_t pca9422Handle;
 static pca9422_power_mode_t pca9422CurrMode;
-static pca9422_modecfg_t pca9422CurrModeCfg;
 
 /*******************************************************************************
  * Code
@@ -88,7 +87,7 @@ void BOARD_InitPmic(void)
     pca9422_regulator_config_t pca9422RegConfig;
 #if defined(PMC0) /* Only initialize I2C from Compute domain. */
     CLOCK_AttachClk(kSENSE_BASE_to_LPI2C15);
-    CLOCK_SetClkDiv(kCLOCK_DivLpi2c15Clk, 2U);
+    CLOCK_SetClkDiv(kCLOCK_DivLpi2c15Clk, 1U);
     RESET_ClearPeripheralReset(kLPI2C15_RST_SHIFT_RSTn);
     BOARD_PMIC_I2C_Init();
 
@@ -124,15 +123,59 @@ void BOARD_SetPmicVoltageBeforeDeepPowerDown(void)
 #endif
 }
 
+/* Get the output type for RegulatorSwitch1, 2, 3 for the given power mode. */
+static pca9422_vout_t BOARD_GetSW123VoutType(pca9422_power_mode_t curMode)
+{
+    pca9422_vout_t voutType = kPCA9422_SWDVS0Vout;
+    switch (curMode)
+    {
+        case kPCA9422_ActiveModeDVS0:
+            voutType = kPCA9422_SWDVS0Vout;
+            break;
+        case kPCA9422_ActiveModeDVS1:
+            voutType = kPCA9422_SWDVS1Vout;
+            break;
+        case kPCA9422_ActiveModeDVS2:
+            voutType = kPCA9422_SWDVS2Vout;
+            break;
+        case kPCA9422_ActiveModeDVS3:
+            voutType = kPCA9422_SWDVS3Vout;
+            break;
+        case kPCA9422_ActiveModeDVS4:
+            voutType = kPCA9422_SWDVS4Vout;
+            break;
+        case kPCA9422_ActiveModeDVS5:
+            voutType = kPCA9422_SWDVS5Vout;
+            break;
+        case kPCA9422_ActiveModeDVS6:
+            voutType = kPCA9422_SWDVS6Vout;
+            break;
+        case kPCA9422_ActiveModeDVS7:
+            voutType = kPCA9422_SWDVS7Vout;
+            break;
+        case kPCA9422_SleepMode:
+            voutType = kPCA9422_RegSleepVout;
+            break;
+        case kPCA9422_StandbyMode:
+        case kPCA9422_DPStandbyMode:
+            voutType = kPCA9422_RegStandbyVout;
+            break;
+        default:
+            voutType = kPCA9422_SWDVS0Vout; /* Default to DVS0 */
+            break;
+    }
+    return voutType;
+}
+
 void BOARD_SetPmicVdd2Voltage(uint32_t volt)
 {
+    pca9422_vout_t vout;
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Lock();
 #endif
     PCA9422_GetCurrentPowerMode(&pca9422Handle, &pca9422CurrMode);
-    PCA9422_ReadPowerModeConfigs(&pca9422Handle, pca9422CurrMode, &pca9422CurrModeCfg);
-    pca9422CurrModeCfg.sw1OutVolt = volt;
-    PCA9422_WritePowerModeConfigs(&pca9422Handle, pca9422CurrMode, pca9422CurrModeCfg);
+    vout = BOARD_GetSW123VoutType(pca9422CurrMode);
+    PCA9422_SetRegulatorVoltage(&pca9422Handle, kPCA9422_RegulatorSwitch1, vout, volt);
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Unlock();
 #endif
@@ -140,26 +183,29 @@ void BOARD_SetPmicVdd2Voltage(uint32_t volt)
 
 uint32_t BOARD_GetPmicVdd2Voltage(void)
 {
+    pca9422_vout_t vout;
+    uint32_t volt = 0U;
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Lock();
 #endif
     PCA9422_GetCurrentPowerMode(&pca9422Handle, &pca9422CurrMode);
-    PCA9422_ReadPowerModeConfigs(&pca9422Handle, pca9422CurrMode, &pca9422CurrModeCfg);
+    vout = BOARD_GetSW123VoutType(pca9422CurrMode);
+    PCA9422_GetRegulatorVoltage(&pca9422Handle, kPCA9422_RegulatorSwitch1, vout, &volt);
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Unlock();
 #endif
-    return pca9422CurrModeCfg.sw1OutVolt;
+    return volt;
 }
 
 void BOARD_SetPmicVdd1Voltage(uint32_t volt)
 {
+    pca9422_vout_t vout;
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Lock();
 #endif
     PCA9422_GetCurrentPowerMode(&pca9422Handle, &pca9422CurrMode);
-    PCA9422_ReadPowerModeConfigs(&pca9422Handle, pca9422CurrMode, &pca9422CurrModeCfg);
-    pca9422CurrModeCfg.sw3OutVolt = volt;
-    PCA9422_WritePowerModeConfigs(&pca9422Handle, pca9422CurrMode, pca9422CurrModeCfg);
+    vout = BOARD_GetSW123VoutType(pca9422CurrMode);
+    PCA9422_SetRegulatorVoltage(&pca9422Handle, kPCA9422_RegulatorSwitch3, vout, volt);
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Unlock();
 #endif
@@ -167,13 +213,16 @@ void BOARD_SetPmicVdd1Voltage(uint32_t volt)
 
 uint32_t BOARD_GetPmicVdd1Voltage(void)
 {
+    pca9422_vout_t vout;
+    uint32_t volt = 0U;
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Lock();
 #endif
     PCA9422_GetCurrentPowerMode(&pca9422Handle, &pca9422CurrMode);
-    PCA9422_ReadPowerModeConfigs(&pca9422Handle, pca9422CurrMode, &pca9422CurrModeCfg);
+    vout = BOARD_GetSW123VoutType(pca9422CurrMode);
+    PCA9422_GetRegulatorVoltage(&pca9422Handle, kPCA9422_RegulatorSwitch3, vout, &volt);
 #if BOARD_PMIC_CONFIG_USE_SEMA4
     BOARD_PmicCtrlSema4Unlock();
 #endif
-    return pca9422CurrModeCfg.sw3OutVolt;
+    return volt;
 }
