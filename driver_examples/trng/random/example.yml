@@ -178,3 +178,4 @@ trng_random:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxl255@cm33: []
