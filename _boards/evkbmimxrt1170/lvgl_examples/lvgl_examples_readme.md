@@ -70,6 +70,8 @@ in Kconfig, or modify mcux_config.h like:
 #define CONFIG_LV_USE_PXP 0
 #define CONFIG_LV_ATTRIBUTE_MEM_ALIGN_SIZE 1
 #define CONFIG_LV_DRAW_SW_DRAW_UNIT_CNT 1
+#define CONFIG_LV_USE_DRAW_SW 1
+#define CONFIG_LV_DRAW_SW_SUPPORT_L8 1
 ```
 2. When RGB565 or XRGB8888 is selected, changing `LV_COLOR_DEPTH` in Kconfig or mcux_config.h
 doesn't affect the real pixel format.
