@@ -44,8 +44,8 @@ define symbol m_flash_end                      = 0x0003FFFF;
 define symbol m_interrupts_start               = m_flash_start;
 define symbol m_interrupts_end                 = 0x000003FF;
 
-define symbol m_text_start                     = 0x00000400;
-define symbol m_text_end                       = m_flash_end;
+define exported symbol m_text_start             = 0x00000400;
+define exported symbol m_text_end               = m_flash_end;
 
 define symbol m_data0_start                     = 0x00100000;
 define symbol m_data0_end                       = 0x001007FF;
@@ -53,10 +53,10 @@ define symbol m_data0_end                       = 0x001007FF;
 define symbol m_data1_start                     = 0x00140000;
 define symbol m_data1_end                       = (m_dmem_end-__size_heap__) - __size_cstack__;
 
-define symbol m_stack_start                     = (m_dmem_end-__size_heap__+1) - __size_cstack__;
-define symbol m_stack_end                       = (m_dmem_end-__size_heap__);
+define symbol m_cstack_start                    = (m_dmem_end-__size_heap__+1) - __size_cstack__;
+define exported symbol m_cstack_end             = (m_dmem_end-__size_heap__);
 
-define exported symbol __HEAP_start__           = m_stack_end + 1;
+define exported symbol __HEAP_start__           = m_cstack_end + 1;
 define exported symbol __HEAP_end__             = __HEAP_start__ + __size_heap__;
 
 define symbol m_shared_ram_end                  = 0xB0009FFF;
@@ -162,7 +162,7 @@ define region DATA_region             = mem:[from m_data0_start to m_data0_end]
                                       | mem:[from m_data1_start to m_data1_end]
                                       | mem:[from __HEAP_start__ to __HEAP_end__]
                                       | mem:[from m_free_data_start to m_free_data_end];
-define region CSTACK_region           = mem:[from m_stack_start to m_stack_end];
+define region CSTACK_region           = mem:[from m_cstack_start to m_cstack_end];
 
 define region sqram_btblesqbuf_region           = mem:[from m_sqram_btblesqbuf_start      to m_sqram_btblesqbuf_end];
 define region lowpower_flag_region              = mem:[from m_lowpower_flag_start       to m_lowpower_flag_end];
