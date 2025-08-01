@@ -85,10 +85,12 @@ System will wake up from reset when wakeup event happening.
 
 Select the wake up source:
 Press T for Timer
-Press S for GPIO button SW8. 
+Press S for GPIO button SW8.
 
 Waiting for key press..
+
 
 Note
 ===============
 Reset event will happen when running this demo, so container header is needed. Please add container header by spsdk.
+In BBSM mode, if button wakeup is selected, need to use SOC wakeup key SW4 instead.

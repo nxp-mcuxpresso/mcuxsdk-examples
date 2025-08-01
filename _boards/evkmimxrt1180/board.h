@@ -87,6 +87,8 @@
 #define BOARD_USER_BUTTON_IRQ_HANDLER GPIO1_0_IRQHandler
 #define BOARD_USER_BUTTON_NAME        "SW8"
 
+#define BOARD_WAKEUP_BUTTON_NAME      "SW4"
+
 /*! @brief The board flash size */
 #define BOARD_FLASH_SIZE (0x1000000U)
 

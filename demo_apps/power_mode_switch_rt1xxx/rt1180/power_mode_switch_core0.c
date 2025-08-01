@@ -353,7 +353,7 @@ static void APP_SetBBSMModeWakeupConfig(void)
     }
     else
     {
-        PRINTF("Since GPIO button is not working in BBSM mode, Press WAKEUP button SW4 to wake up system.\r\n");
+        PRINTF("Since GPIO button is not working in BBSM mode, Press WAKEUP button %s to wake up system.\r\n", BOARD_WAKEUP_BUTTON_NAME);
     }
 }
 
