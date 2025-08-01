@@ -52,6 +52,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     /* Set the LLWU pin */
     GPIO_PinInit(BOARD_SW3_GPIO, BOARD_SW3_GPIO_PIN, &pinConfig);
+
+    PORT_SetPinInterruptConfig(BOARD_SW3_PORT, BOARD_SW3_GPIO_PIN, kPORT_InterruptFallingEdge);
 }
 /*!
  * @brief De-initialize all pins used in this example
@@ -72,8 +74,6 @@ void BOARD_SW3_IRQ_HANDLER(void)
 {
     if ((1U << BOARD_SW3_GPIO_PIN) & PORT_GetPinsInterruptFlags(BOARD_SW3_PORT))
     {
-        /* Disable interrupt. */
-        PORT_SetPinInterruptConfig(BOARD_SW3_PORT, BOARD_SW3_GPIO_PIN, kPORT_InterruptOrDMADisabled);
         PORT_ClearPinsInterruptFlags(BOARD_SW3_PORT, (1U << BOARD_SW3_GPIO_PIN));
         g_UsbDeviceHidMouse.selfWakeup = 1U;
         g_UsbDeviceHidMouse.mouseState ^= 1U;
@@ -90,11 +90,6 @@ void SW_IntControl(uint8_t enable)
     {
         PORT_SetPinInterruptConfig(BOARD_SW3_PORT, BOARD_SW3_GPIO_PIN, kPORT_InterruptOrDMADisabled);
     }
-}
-void SW_Callback(void *param)
-{
-    g_UsbDeviceHidMouse.selfWakeup = 1U;
-    g_UsbDeviceHidMouse.mouseState ^= 1U;
 }
 void SW_Init(void)
 {

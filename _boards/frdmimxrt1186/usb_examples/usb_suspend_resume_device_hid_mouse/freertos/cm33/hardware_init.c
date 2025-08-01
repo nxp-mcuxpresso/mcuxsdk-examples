@@ -97,11 +97,6 @@ void BOARD_USER_BUTTON_IRQ_HANDLER(void)
 void SW_IntControl(uint8_t enable)
 {
 }
-void SW_Callback(void)
-{
-    g_UsbDeviceHidMouse.selfWakeup = 1U;
-    g_UsbDeviceHidMouse.mouseState ^= 1U;
-}
 void SW_Init(void)
 {
     NVIC_SetPriority(BOARD_USER_BUTTON_IRQ, 1U);
