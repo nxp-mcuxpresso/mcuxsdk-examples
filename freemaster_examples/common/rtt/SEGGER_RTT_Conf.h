@@ -56,7 +56,7 @@ Revision: $Rev: 21386 $
 */
 
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * FreeMASTER RTT Configuration File
  */
 
@@ -110,11 +110,11 @@ Revision: $Rev: 21386 $
 #endif
 
 #ifndef   BUFFER_SIZE_UP
-  #define BUFFER_SIZE_UP                            (FMSTR_COMM_BUFFER_SIZE + 7)  // Size of the buffer for terminal output of target, up to host (Default: 1k)
+  #define BUFFER_SIZE_UP                            (FMSTR_COMM_BUFFER_SIZE + 8)  // Size of the buffer for terminal output of target, up to host (Default: 1k)
 #endif
 
 #ifndef   BUFFER_SIZE_DOWN
-  #define BUFFER_SIZE_DOWN                          (FMSTR_COMM_BUFFER_SIZE + 7)    // Size of the buffer for terminal input to target from host (Usually keyboard input) (Default: 16)
+  #define BUFFER_SIZE_DOWN                          (FMSTR_COMM_BUFFER_SIZE + 8)    // Size of the buffer for terminal input to target from host (Usually keyboard input) (Default: 16)
 #endif
 
 #ifndef   SEGGER_RTT_PRINTF_BUFFER_SIZE
