@@ -173,7 +173,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
     * (*NonCacheable)
     * (DataQuickAccess)
 }
-  RW_m_data3 +0 m_data_size-Stack_Size-Heap_Size-ImageLength(RW_m_ncache)-ImageLength(RW_m_ncache_unused)-ImageLength(RW_m_data2) { ;  
+  RW_m_data3 +0 EMPTY m_data_size-Stack_Size-Heap_Size-ImageLength(RW_m_ncache)-ImageLength(RW_m_ncache_unused)-ImageLength(RW_m_data2) { ;  
 }
   RW_net_buf_pool +0 { ;
     * (._net_buf_pool*)

@@ -172,7 +172,7 @@ LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; l
     * (*NonCacheable)
     * (DataQuickAccess)
 }
-  RW_m_data3 +0 m_data_size-Stack_Size-Heap_Size-ImageLength(RW_m_ncache)-ImageLength(RW_m_ncache_unused)-ImageLength(RW_m_ncachable) { ;  
+  RW_m_data3 +0 EMPTY m_data_size-Stack_Size-Heap_Size-ImageLength(RW_m_ncache)-ImageLength(RW_m_ncache_unused)-ImageLength(RW_m_ncachable) { ;  
 }
   ARM_LIB_HEAP +0 EMPTY Heap_Size {    ; Heap region growing up
   }
