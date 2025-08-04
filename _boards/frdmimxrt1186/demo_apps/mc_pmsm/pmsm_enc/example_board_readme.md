@@ -21,6 +21,9 @@ Board settings
 ==============
 Follow chapter "Hardware setup" in Application User's guide.
 
+Add zero resistors: R15, R17, R40, R21 , R243, R448
+Set jumpers: J30 2-3, J33 2-3, J29 2-3, J27 2-3 
+
 Running the demo
 ================
 Follow chapter "User interface" in Application User's guide.

@@ -21,6 +21,17 @@ Board settings
 ==============
 Follow chapter "Hardware setup" in Application User's guide.
 
+In this example, the LCU is used as a PWM output, therefore some additional wiring is required.
+Please connect the FRDM-MC-LVPMSM to the FRDM-MCXE31B, and then connect the LCU outputs on J8 to the Freedom board using wires.
+
+FRDM-MC-LVPMSM      FRDM-MCXE31B
+J3-15 (PWM_AT) with J8-9  (PTB1)
+J3-13 (PWM_AB) with J8-11 (PTB0)
+J3-11 (PWM_BT) with J8-6  (PTC9)
+J3-9  (PWM_BB) with J8-8  (PTC8)
+J3-7  (PWM_CT) with J8-10 (PTC11)
+J3-5  (PWM_CB) with J8-12 (PTC10)
+
 Running the demo
 ================
 Follow chapter "User interface" in Application User's guide.

@@ -101,6 +101,8 @@ void InitClock(void)
     /* The following peripherals use SYSTEM_CLK as APB/IPS clock: FlexPWM0/1, ADC0~3 */
     g_sClockSetup.ui32FastPeripheralClock = CLOCK_GetFreq(kCLOCK_CoreSysClk);
     g_sClockSetup.ui32CpuFrequency = CLOCK_GetFreq(kCLOCK_CoreSysClk);
+	g_sClockSetup.ui16M1PwmFreq = 10000U;
+    g_sClockSetup.ui16M1SpeedLoopFreq = 1000U;
     
 }
 
