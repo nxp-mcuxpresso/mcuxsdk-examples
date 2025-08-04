@@ -43,3 +43,5 @@ I3C master I3C HDR transfer finished.
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
 - [MIMXRT700-EVK](../../../../_boards/mimxrt700evk/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXA266](../../../../_boards/frdmmcxa266/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)
+- [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/i3c/edma_b2b_transfer/slave/example_board_readme.md)

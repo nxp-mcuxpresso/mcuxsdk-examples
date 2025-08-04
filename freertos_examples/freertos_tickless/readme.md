@@ -119,3 +119,5 @@ The period of time delay is not changed after the external interrupt occurs.
 - [RD-RW612-BGA](../../_boards/rdrw612bga/freertos_examples/freertos_tickless/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/freertos_examples/freertos_tickless/example_board_readme.md)
 - [FRDM-MCXE31B](../../_boards/frdmmcxe31b/freertos_examples/freertos_tickless/example_board_readme.md)
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/freertos_examples/freertos_tickless/example_board_readme.md)
+- [FRDM-MCXA366](../../_boards/frdmmcxa366/freertos_examples/freertos_tickless/example_board_readme.md)

@@ -53,3 +53,5 @@ End of PFlash Example!
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/driver_examples/romapi/flashiap/example_board_readme.md)
 - [FRDM-MCXL255](../../../_boards/frdmmcxl255/driver_examples/romapi/flashiap/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/romapi/flashiap/example_board_readme.md)
+- [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/romapi/flashiap/example_board_readme.md)
+- [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/romapi/flashiap/example_board_readme.md)

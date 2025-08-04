@@ -78,3 +78,5 @@ Press any key to run again
 - [FRDM-MCXA344](../../../../_boards/frdmmcxa344/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [KW47-LOC](../../../../_boards/kw47loc/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
 - [MCXW72-LOC](../../../../_boards/mcxw72loc/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXA266](../../../../_boards/frdmmcxa266/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)
+- [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/lpspi/interrupt_b2b_transfer/master/example_board_readme.md)

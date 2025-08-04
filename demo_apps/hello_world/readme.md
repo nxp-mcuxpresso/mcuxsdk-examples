@@ -100,3 +100,5 @@ debug_console supports this, debug_console_lite doesn't support).
 - [MCXW72-LOC](../../_boards/mcxw72loc/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-MCXA344](../../_boards/frdmmcxa344/demo_apps/hello_world/example_board_readme.md)
 - [FRDM-IMXRT1186](../../_boards/frdmimxrt1186/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/demo_apps/hello_world/example_board_readme.md)
+- [FRDM-MCXA366](../../_boards/frdmmcxa366/demo_apps/hello_world/example_board_readme.md)

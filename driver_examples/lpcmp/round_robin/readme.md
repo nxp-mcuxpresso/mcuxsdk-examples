@@ -18,3 +18,5 @@ changing the input voltage of checker channels.
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/lpcmp/round_robin/example_board_readme.md)
 - [FRDM-MCXE31B](../../../_boards/frdmmcxe31b/driver_examples/lpcmp/round_robin/example_board_readme.md)
 - [FRDM-MCXA344](../../../_boards/frdmmcxa344/driver_examples/lpcmp/round_robin/example_board_readme.md)
+- [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/lpcmp/round_robin/example_board_readme.md)
+- [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/lpcmp/round_robin/example_board_readme.md)

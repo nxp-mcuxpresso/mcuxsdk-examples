@@ -53,3 +53,5 @@ all characters that PC send to the board.
 - [KW47-LOC](../../../../_boards/kw47loc/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
 - [MCXW72-LOC](../../../../_boards/mcxw72loc/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../../_boards/frdmimxrt1186/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
+- [FRDM-MCXA266](../../../../_boards/frdmmcxa266/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)
+- [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/flexio/uart/polling_transfer/example_board_readme.md)

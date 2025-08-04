@@ -137,3 +137,5 @@ At this point the bootloader is in place, resident in the FLASH memory. You may 
 - [FRDM-MCXA153](../../_boards/frdmmcxa153/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-MCXA156](../../_boards/frdmmcxa156/ota_examples/mcuboot_opensource/example_board_readme.md)
 - [FRDM-MCXA346](../../_boards/frdmmcxa346/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-MCXA366](../../_boards/frdmmcxa366/ota_examples/mcuboot_opensource/example_board_readme.md)

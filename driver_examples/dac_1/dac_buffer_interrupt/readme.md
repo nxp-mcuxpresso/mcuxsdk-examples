@@ -16,3 +16,5 @@ With this example, user can define the DAC output array to generate the differen
 - [LPCXpresso55S36](../../../_boards/lpcxpresso55s36/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
 - [MCX-N5XX-EVK](../../../_boards/mcxn5xxevk/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../_boards/mcxn9xxevk/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
+- [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)
+- [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/dac/dac_buffer_interrupt/example_board_readme.md)

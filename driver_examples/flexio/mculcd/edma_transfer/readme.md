@@ -39,3 +39,5 @@ of each window one by one. The behavior is:
 - [MCX-N5XX-EVK](../../../../_boards/mcxn5xxevk/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
 - [MCX-N9XX-EVK](../../../../_boards/mcxn9xxevk/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
 - [FRDM-MCXE31B](../../../../_boards/frdmmcxe31b/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
+- [FRDM-MCXA266](../../../../_boards/frdmmcxa266/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
+- [FRDM-MCXA366](../../../../_boards/frdmmcxa366/driver_examples/flexio/mculcd/edma_transfer/example_board_readme.md)
