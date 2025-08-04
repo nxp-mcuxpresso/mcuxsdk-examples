@@ -21,7 +21,7 @@
 #define LED_INIT()                  LED_BLUE_INIT(LOGIC_LED_OFF)
 #define LED_ON()                    LED_BLUE_ON()
 #define LED_OFF()                   LED_BLUE_OFF()
-#define DEMO_LPCMP_IRQ_HANDLER_FUNC CMP0_IRQHandler
+#define DEMO_LPCMP_IRQ_HANDLER_FUNC ACMP0_IRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
