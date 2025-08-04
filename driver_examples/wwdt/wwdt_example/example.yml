@@ -73,3 +73,5 @@ wwdt_example:
     - -mdk@debug
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

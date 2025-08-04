@@ -52,3 +52,5 @@ flexcan_pretended_networking_wakeup:
     - +armgcc@release
     mcxn9xxevk@cm33_core0: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

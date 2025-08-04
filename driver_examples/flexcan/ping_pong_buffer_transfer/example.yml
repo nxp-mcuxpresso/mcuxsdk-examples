@@ -214,3 +214,5 @@ flexcan_ping_pong_buffer_transfer:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

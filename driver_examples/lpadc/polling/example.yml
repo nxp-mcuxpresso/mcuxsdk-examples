@@ -199,3 +199,5 @@ lpadc_polling:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

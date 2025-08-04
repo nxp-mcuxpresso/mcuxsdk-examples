@@ -1,0 +1,10 @@
+iar:
+  project-templates:
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33_jlink_swd/generic.ewp
+  - scripts/guigenerator/templates/iar/app_cmsisdap_m33_jlink_swd/generic.ewd
+  - scripts/guigenerator/templates/iar/general.eww
+mdk:
+  project-templates:
+  - scripts/guigenerator/templates/mdk/app_frdmmcxa366/app_frdmmcxa366.uvprojx
+  - scripts/guigenerator/templates/mdk/app_frdmmcxa366/app_frdmmcxa366.uvoptx
+  - scripts/guigenerator/templates/mdk/app_frdmmcxa366/JLinkSettings.JLinkScript

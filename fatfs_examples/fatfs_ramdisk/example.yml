@@ -2,7 +2,6 @@
 # Copyright 2024 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 fatfs_ramdisk:
   section-type: application
   contents:
@@ -11,7 +10,8 @@ fatfs_ramdisk:
     document:
       name: fatfs_ramdisk
       category: fatfs_examples
-      brief: The fatfs_ramdisk project is showing creation and usage of RAM allocated filesystem.
+      brief: The fatfs_ramdisk project is showing creation and usage of RAM allocated
+        filesystem.
       example_readme:
       - examples/fatfs_examples/fatfs_ramdisk/readme.md
       - ${board_root}/${board}/fatfs_examples/fatfs_ramdisk/example_board_readme.md
@@ -20,3 +20,5 @@ fatfs_ramdisk:
     evkbimxrt1050: []
     lpcxpresso54s018m: []
     frdmmcxa346: []
+    frdmmcxa266: []
+    frdmmcxa366: []

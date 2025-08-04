@@ -67,3 +67,5 @@ fmstr_example_rtt:
     mimxrt700evk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
     rdrw612bga: []
+    frdmmcxa266: []
+    frdmmcxa366: []

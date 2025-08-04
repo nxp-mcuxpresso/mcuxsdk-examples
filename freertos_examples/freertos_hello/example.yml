@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 freertos_hello:
   section-type: application
   contents:
@@ -127,3 +126,5 @@ freertos_hello:
     frdmimxrt1186@cm33: []
     frdmimxrt1186@cm7: []
     frdmmcxe247: []
+    frdmmcxa266: []
+    frdmmcxa366: []

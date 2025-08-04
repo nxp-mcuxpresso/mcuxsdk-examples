@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 flexio_mculcd_polling:
   section-type: application
   contents:
@@ -25,3 +24,5 @@ flexio_mculcd_polling:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     frdmmcxe31b: []
+    frdmmcxa266: []
+    frdmmcxa366: []

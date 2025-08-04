@@ -56,3 +56,5 @@ dev_suspend_resume_hid_mouse_freertos:
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
     frdmrw612: []
+    frdmmcxa266: []
+    frdmmcxa366: []

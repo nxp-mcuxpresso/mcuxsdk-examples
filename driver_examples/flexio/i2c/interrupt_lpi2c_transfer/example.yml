@@ -3,7 +3,6 @@
 # Copyright 2024-2025 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
-
 flexio_i2c_interrupt_lpi2c_transfer:
   section-type: application
   contents:
@@ -297,3 +296,5 @@ flexio_i2c_interrupt_lpi2c_transfer:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmmcxa266: []
+    frdmmcxa366: []

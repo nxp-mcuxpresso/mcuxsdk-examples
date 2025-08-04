@@ -303,3 +303,5 @@ lpuart_edma_transfer:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

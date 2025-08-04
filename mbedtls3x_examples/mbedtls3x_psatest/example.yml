@@ -143,3 +143,5 @@ mbedtls3x_psatest:
     - -mdk@sdram_release
     lpcxpresso55s28: []
     lpcxpresso55s69@cm33_core0: []
+    frdmmcxa266: []
+    frdmmcxa366: []

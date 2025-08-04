@@ -20,3 +20,5 @@ romapi_flashiap:
     frdmmcxa346: []
     frdmmcxl255@cm33: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

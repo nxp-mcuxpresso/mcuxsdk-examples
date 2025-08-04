@@ -16,3 +16,4 @@ mau_benchmark:
   boards:
     frdmmcxa346: []
     frdmmcxa344: []
+    frdmmcxa366: []

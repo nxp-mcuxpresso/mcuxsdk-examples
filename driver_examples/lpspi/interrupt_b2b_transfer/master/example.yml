@@ -126,3 +126,5 @@ lpspi_interrupt_b2b_transfer_master:
     frdmmcxl255@cm33: []
     frdmmcxe31b: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

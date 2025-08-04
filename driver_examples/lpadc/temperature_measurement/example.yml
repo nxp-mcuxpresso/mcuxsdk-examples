@@ -85,3 +85,5 @@ lpadc_temperature_measurement:
     - -mdk@debug
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

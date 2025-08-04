@@ -42,3 +42,5 @@ rtc:
     - +armgcc@debug
     - +armgcc@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

@@ -59,3 +59,5 @@ dev_hid_generic_freertos:
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
+    frdmmcxa266: []
+    frdmmcxa366: []

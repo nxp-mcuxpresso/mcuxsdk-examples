@@ -32,3 +32,5 @@ dev_hid_mouse_freertos_static:
     lpcxpresso55s69@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxa266: []
+    frdmmcxa366: []

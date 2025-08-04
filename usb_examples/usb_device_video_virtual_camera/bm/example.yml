@@ -91,3 +91,5 @@ dev_video_virtual_camera_bm:
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
+    frdmmcxa266: []
+    frdmmcxa366: []

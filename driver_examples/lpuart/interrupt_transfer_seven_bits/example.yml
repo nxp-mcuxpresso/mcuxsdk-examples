@@ -260,3 +260,5 @@ lpuart_interrupt_transfer_seven_bits:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

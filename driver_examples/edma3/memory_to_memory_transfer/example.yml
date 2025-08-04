@@ -26,3 +26,5 @@ edma3_memory_to_memory_transfer:
     mcxn9xxevk@cm33_core0: []
     frdmmcxl255@cm33: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

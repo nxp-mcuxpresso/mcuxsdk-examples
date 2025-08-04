@@ -1,0 +1,29 @@
+/*
+ * Copyright 2025 NXP
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+#ifndef _APP_H_
+#define _APP_H_
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
+/*${macro:start}*/
+#define TAMPER_INTERRUPT       TDET_IRQn
+
+#define TAMPER_PASSIVE        kTDET_TamperTamperPin4
+#define TAMPER_PASSIVE_STATUS kTDET_StatusTamperPinTamper4
+#define TAMPER_PASSIVE_EXTPIN kTDET_ExternalTamper4
+/*${macro:end}*/
+
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+/*${prototype:start}*/
+void BOARD_InitHardware(void);
+
+/*${prototype:end}*/
+
+#endif /* _APP_H_ */

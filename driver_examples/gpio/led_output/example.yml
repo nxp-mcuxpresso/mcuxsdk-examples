@@ -65,3 +65,5 @@ gpio_led_output:
     - -mdk@release
     frdmmcxl255@cm33: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

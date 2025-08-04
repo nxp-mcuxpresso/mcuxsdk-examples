@@ -1,0 +1,59 @@
+#!armclang --target=arm-arm-none-eabi -march=armv8-m.main -E -x c
+/*
+ * Copyright 2025 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/* Sizes */
+#if (defined(__stack_size__))
+  #define Stack_Size                   __stack_size__
+#else
+  #define Stack_Size                   0x0400
+#endif
+
+#if (defined(__heap_size__))
+  #define Heap_Size                    __heap_size__
+#else
+  #define Heap_Size                    0x0400
+#endif
+
+#define  m_interrupts_start            0x00000000
+#define  m_interrupts_size             0x00000400
+
+#define  m_text_start                  0x00000400
+#define  m_text_size                   0x000FFC00
+
+#define  m_data_start                  0x20002000 //RAMA1-A4
+#define  m_data_size                   0x00010000
+
+#define  m_data_always_on_start        0x20000000 //RAMA0
+#define  m_data_always_on_size         0x00002000
+
+LR_m_text m_interrupts_start m_interrupts_size+m_text_size {   ; load region size_region
+
+  VECTOR_ROM m_interrupts_start m_interrupts_size { ; load address = execution address
+    * (.isr_vector,+FIRST)
+  }
+
+  ER_m_text m_text_start FIXED m_text_size { ; load address = execution address
+    * (InRoot$$Sections)
+    .ANY (+RO)
+  }
+
+  RW_m_data m_data_start m_data_size-Stack_Size-Heap_Size { ; RW data
+    .ANY (+RW +ZI)
+  }
+
+  RW_m_data_always_on m_data_always_on_start UNINIT m_data_always_on_size { ; RW data
+    * (AlwaysOnData)
+    * (AlwaysOnData.init)
+  }
+
+  ARM_LIB_HEAP +0 EMPTY Heap_Size {    ; Heap region growing up
+  }
+
+  ARM_LIB_STACK m_data_start+m_data_size EMPTY -Stack_Size { ; Stack region growing down
+  }
+
+}

@@ -84,3 +84,5 @@ lpspi_interrupt:
     - +iar@debug
     frdmmcxl255@cm33: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

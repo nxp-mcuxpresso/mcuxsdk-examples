@@ -66,3 +66,5 @@ gpio_input_interrupt:
     mimxrt700evk@cm33_core1: []
     frdmmcxl255@cm33: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

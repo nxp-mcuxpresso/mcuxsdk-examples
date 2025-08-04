@@ -98,3 +98,5 @@ edma3_memory_to_memory:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

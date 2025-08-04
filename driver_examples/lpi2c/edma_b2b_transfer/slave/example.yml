@@ -296,3 +296,5 @@ lpi2c_edma_b2b_transfer_slave:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

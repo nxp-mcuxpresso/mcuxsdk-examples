@@ -298,3 +298,5 @@ lpi2c_polling_b2b_slave:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

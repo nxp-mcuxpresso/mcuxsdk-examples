@@ -56,3 +56,5 @@ dev_dfu_bm:
     mc56f83000evk:
     - -codewarrior@flash_sdm_lpm_debug
     - -codewarrior@flash_sdm_lpm_release
+    frdmmcxa266: []
+    frdmmcxa366: []

@@ -84,3 +84,5 @@ ctimer_pwm_interrupt_example:
     - -mdk@release
     mimxrt700evk@cm33_core1: []
     frdmmcxa344: []
+    frdmmcxa266: []
+    frdmmcxa366: []

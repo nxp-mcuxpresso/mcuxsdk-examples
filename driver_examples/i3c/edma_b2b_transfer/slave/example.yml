@@ -50,3 +50,5 @@ i3c_edma_b2b_transfer_slave:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt700evk@cm33_core1: []
+    frdmmcxa266: []
+    frdmmcxa366: []
