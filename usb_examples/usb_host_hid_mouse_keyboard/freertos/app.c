@@ -190,17 +190,17 @@ int main(void)
 
     USB_HostApplicationInit();
 
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, 4, NULL) != pdPASS)
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create host task error\r\n");
     }
-    if (xTaskCreate(USB_HostApplicationMouseTask, "mouse task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse, 3,
+    if (xTaskCreate(USB_HostApplicationMouseTask, "mouse task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse, APP_MOUSE_TASK_PRIORITY,
                     NULL) != pdPASS)
     {
         usb_echo("create mouse task error\r\n");
     }
     if (xTaskCreate(USB_HostApplicationKeyboardTask, "keyboard task", 2000L / sizeof(portSTACK_TYPE),
-                    &g_HostHidKeyboard, 3, NULL) != pdPASS)
+                    &g_HostHidKeyboard, APP_KEYBOARD_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create mouse task error\r\n");
     }

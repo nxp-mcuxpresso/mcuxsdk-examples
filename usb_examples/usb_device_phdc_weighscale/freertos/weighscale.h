@@ -43,6 +43,10 @@
 #else
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 #endif
+
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 /*! @brief Association request length */
 #define ASSOCIATION_REQUEST_LENGTH (54U)
 /*! @brief Configuration event report length */

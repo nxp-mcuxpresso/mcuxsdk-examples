@@ -645,14 +645,14 @@ static void pd_demo_task(void *arg)
     PD_DemoInit();
 
 #if (defined PD_CONFIG_COMMON_TASK) && (PD_CONFIG_COMMON_TASK)
-    if (xTaskCreate(PD_PortsTask, "PD", (2048u + 512u) / sizeof(portSTACK_TYPE), NULL, 5, NULL) != pdPASS)
+    if (xTaskCreate(PD_PortsTask, "PD", (2048u + 512u) / sizeof(portSTACK_TYPE), NULL, APP_PD_PORT_TASK_PRIORITY, NULL) != pdPASS)
     {
         PRINTF("create task error\r\n");
     }
 #else
     for (uint8_t index = 0; index < PD_DEMO_PORTS_COUNT; ++index)
     {
-        if (xTaskCreate(PD_PortTask, "port", (2048u + 512u) / sizeof(portSTACK_TYPE), g_PDAppInstanceArray[index], 5,
+        if (xTaskCreate(PD_PortTask, "port", (2048u + 512u) / sizeof(portSTACK_TYPE), g_PDAppInstanceArray[index], APP_PD_PORT_TASK_PRIORITY,
                         NULL) != pdPASS)
         {
             PRINTF("create task error\r\n");
@@ -660,17 +660,17 @@ static void pd_demo_task(void *arg)
     }
 #endif
 
-    if (xTaskCreate(PD_PortAltModeTask, "port_alt", (1024u) / sizeof(portSTACK_TYPE), NULL, 4, NULL) != pdPASS)
+    if (xTaskCreate(PD_PortAltModeTask, "port_alt", (1024u) / sizeof(portSTACK_TYPE), NULL, APP_PD_ALT_MODE_TASK_PRIORITY, NULL) != pdPASS)
     {
         PRINTF("create task error\r\n");
     }
 
-    if (xTaskCreate(PD_PortHPDDriverTask, "hpd task", (1024u) / sizeof(portSTACK_TYPE), NULL, 3, NULL) != pdPASS)
+    if (xTaskCreate(PD_PortHPDDriverTask, "hpd task", (1024u) / sizeof(portSTACK_TYPE), NULL, APP_PD_PORT_HPD_DRIVER_TASK_PRIORITY, NULL) != pdPASS)
     {
         PRINTF("create task error\r\n");
     }
 
-    if (xTaskCreate(pd_DemoConsoleReadFun, "console", (512u) / sizeof(portSTACK_TYPE), NULL, 3, NULL) != pdPASS)
+    if (xTaskCreate(pd_DemoConsoleReadFun, "console", (512u) / sizeof(portSTACK_TYPE), NULL, APP_PD_CONSOLE_TASK_PRIORITY, NULL) != pdPASS)
     {
         PRINTF("create task error\r\n");
     }
@@ -685,7 +685,7 @@ int main(void)
 {
     BOARD_InitHardware();
 
-    if (xTaskCreate(pd_demo_task, "demo", (1024u + 512u) / sizeof(portSTACK_TYPE), NULL, 6, NULL) != pdPASS)
+    if (xTaskCreate(pd_demo_task, "demo", (1024u + 512u) / sizeof(portSTACK_TYPE), NULL, APP_PD_DEMO_TASK_PRIORITY, NULL) != pdPASS)
     {
         PRINTF("create demo task error\r\n");
     }

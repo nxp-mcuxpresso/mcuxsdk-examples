@@ -260,7 +260,7 @@ static void PD_DemoPDReset(pd_app_t *pdAppInstance)
     PD_InstanceDeinit(pdTmpHandle);
     PD_AppPortInit(pdAppInstance);
 
-    if (xTaskCreate(PD_PortTask, "port", (1024u + 512u) / sizeof(portSTACK_TYPE), pdAppInstance, 5,
+    if (xTaskCreate(PD_PortTask, "port", (1024u + 512u) / sizeof(portSTACK_TYPE), pdAppInstance, APP_PD_PORT_TASK_PRIORITY,
                     &pdAppInstance->pdTaskHandler) != pdPASS)
     {
         PRINTF("create pd task error\r\n");

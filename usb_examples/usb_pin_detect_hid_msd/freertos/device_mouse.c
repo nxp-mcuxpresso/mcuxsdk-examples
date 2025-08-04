@@ -413,7 +413,7 @@ void Device_AppInit(void)
     USB_DeviceRun(g_UsbDeviceHidMouse.deviceHandle);
 
 #if USB_DEVICE_CONFIG_USE_TASK
-    if (xTaskCreate(Device_AppTask, "usb device task", 2000L / sizeof(portSTACK_TYPE), NULL, 4,
+    if (xTaskCreate(Device_AppTask, "usb device task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_DEVICE_APP_TASK_PRIORITY,
                     &g_UsbDeviceHidMouse.deviceAppTaskHandle) != pdPASS)
     {
         usb_echo("create usb device task error\r\n");

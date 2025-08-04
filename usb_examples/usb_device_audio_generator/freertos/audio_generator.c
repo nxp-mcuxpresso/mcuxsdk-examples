@@ -803,7 +803,7 @@ void APPTask(void *handle)
                         "usb device task",                 /* task name for kernel awareness debugging */
                         5000L / sizeof(portSTACK_TYPE),    /* task stack size */
                         s_audioGenerator.deviceHandle,     /* optional task startup argument */
-                        5,                                 /* initial priority */
+                        APP_USB_TASK_PRIORITY,             /* initial priority */
                         &s_audioGenerator.deviceTaskHandle /* optional task handle to create */
                         ) != pdPASS)
         {
@@ -836,7 +836,7 @@ void main(void)
                     "app task",                             /* task name for kernel awareness debugging */
                     5000L / sizeof(portSTACK_TYPE),         /* task stack size */
                     &s_audioGenerator,                      /* optional task startup argument */
-                    4,                                      /* initial priority */
+                    APP_MAIN_TASK_PRIORITY,                 /* initial priority */
                     &s_audioGenerator.applicationTaskHandle /* optional task handle to create */
                     ) != pdPASS)
     {

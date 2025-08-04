@@ -45,6 +45,10 @@
 #define USB_HOST_INTERRUPT_PRIORITY (3U)
 #endif
 
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_AUDIO_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+#define APP_KEYPAD_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 /*! @brief host app device attach/detach status */
 typedef enum _host_app_state
 {

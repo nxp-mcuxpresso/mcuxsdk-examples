@@ -18,7 +18,6 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define APP_TASK_PRIORITY (5)
 
 /*******************************************************************************
  * Prototypes
@@ -541,14 +540,14 @@ void APP_Task(void *param)
     usb_eth_nic_t *appHandle = (usb_eth_nic_t *)param;
 
 #if USB_DEVICE_CONFIG_USE_TASK
-    if (xTaskCreate(USB_DeviceTask, "USB_DeviceTask", 0x400, appHandle->deviceHandle, APP_TASK_PRIORITY + 1, NULL) != pdPASS)
+    if (xTaskCreate(USB_DeviceTask, "USB_DeviceTask", 0x400, appHandle->deviceHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
         (void)usb_echo("xTaskCreate() about USB_DeviceTask occurs error.\r\n");
         return;
     }
 #endif
 
-    if (xTaskCreate(APP_LinkCheckTask, "APP_LinkCheckTask", 0x400, appHandle, APP_TASK_PRIORITY, NULL) != pdPASS)
+    if (xTaskCreate(APP_LinkCheckTask, "APP_LinkCheckTask", 0x400, appHandle, APP_LINK_CHECK_TASK_PRIORITY, NULL) != pdPASS)
     {
         (void)usb_echo("xTaskCreate() about APP_LinkCheckTask occurs error.\r\n");
         return;
@@ -578,7 +577,7 @@ void main(void)
     BOARD_InitHardware();
     APP_Init();
 
-    if (xTaskCreate(APP_Task, "APP_Task", 0x400, &ethNicHandle, APP_TASK_PRIORITY, NULL) != pdPASS)
+    if (xTaskCreate(APP_Task, "APP_Task", 0x400, &ethNicHandle, APP_MAIN_TASK_PRIORITY, NULL) != pdPASS)
     {
         (void)usb_echo("xTaskCreate() about APP_Task occurs error.\r\n");
 

@@ -165,16 +165,16 @@ int main(void)
 
     APP_init();
 
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_hostHandle, 4U, NULL) != pdPASS)
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_hostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create host task error\r\n");
     }
-    if (xTaskCreate(Audio_AppTask, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, 3U, NULL) != pdPASS)
+    if (xTaskCreate(Audio_AppTask, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_AUDIO_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create audio task error\r\n");
     }
 
-    if (xTaskCreate(Keypad_AppTask, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, 3U, NULL) != pdPASS)
+    if (xTaskCreate(Keypad_AppTask, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_KEYPAD_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create keypad task error\r\n");
     }

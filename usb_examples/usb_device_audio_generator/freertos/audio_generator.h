@@ -62,6 +62,9 @@ Audio PLL contants
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 #endif
 
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 #define DATA_BUFF_SIZE (AUDIO_ENDPOINT_PACKET_SIZE)
 
 /* Define the types for application */

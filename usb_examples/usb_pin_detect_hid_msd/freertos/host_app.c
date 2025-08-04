@@ -232,12 +232,12 @@ void Host_AppInit(void)
     }
     USB_HostIsrEnable();
 
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), NULL, 5,
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_USB_TASK_PRIORITY,
                     &g_MsdFatfsInstance.hostStackTaskHandle) != pdPASS)
     {
         usb_echo("create task error\r\n");
     }
-    if (xTaskCreate(Host_AppTask, "host app task", 2000L / sizeof(portSTACK_TYPE), NULL, 4,
+    if (xTaskCreate(Host_AppTask, "host app task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_HOST_APP_TASK_PRIORITY,
                     &g_MsdFatfsInstance.hostAppTaskHandle) != pdPASS)
     {
         usb_echo("create task error\r\n");

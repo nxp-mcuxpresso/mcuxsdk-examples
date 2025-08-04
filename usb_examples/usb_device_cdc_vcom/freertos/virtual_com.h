@@ -54,6 +54,9 @@
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 #endif
 
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 /* Currently configured line coding */
 #define LINE_CODING_SIZE (0x07)
 #define LINE_CODING_DTERATE (115200)

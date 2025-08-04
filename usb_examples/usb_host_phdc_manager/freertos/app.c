@@ -180,11 +180,11 @@ int main(void)
     BOARD_InitHardware();
 
     USB_HostApplicationInit();
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), hostHandle, 4U, NULL) != pdPASS)
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), hostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create host task error\r\n");
     }
-    if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_phdcManagerInstance, 3U,
+    if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_phdcManagerInstance, APP_MAIN_TASK_PRIORITY,
                     NULL) != pdPASS)
     {
         usb_echo("create phdc manager task error\r\n");

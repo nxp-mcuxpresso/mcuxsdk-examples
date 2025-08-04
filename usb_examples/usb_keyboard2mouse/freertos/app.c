@@ -17,6 +17,7 @@
 #include "host_keyboard.h"
 #include "device_mouse.h"
 #include "board.h"
+#include "app.h"
 #if (defined(FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT > 0U))
 #include "fsl_sysmpu.h"
 #endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
@@ -193,7 +194,7 @@ int main(void)
     USB_DeviceApplicationInit();
     USB_HostApplicationInit();
 
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, 4, NULL) != pdPASS)
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, APP_USB_HOST_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create host task error\r\n");
     }
@@ -202,13 +203,13 @@ int main(void)
     if (NULL != g_UsbDeviceHidMouse.deviceHandle)
     {
         if (xTaskCreate(USB_DeviceTask, "usb device task", 2000L / sizeof(portSTACK_TYPE),
-                        g_UsbDeviceHidMouse.deviceHandle, 3, NULL) != pdPASS)
+                        g_UsbDeviceHidMouse.deviceHandle, APP_USB_DEVICE_TASK_PRIORITY, NULL) != pdPASS)
         {
             usb_echo("create mouse task error\r\n");
         }
     }
 #endif
-    if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidKeyboard, 3, NULL) !=
+    if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidKeyboard, APP_MAIN_TASK_PRIORITY, NULL) !=
         pdPASS)
     {
         usb_echo("create keybaord task error\r\n");

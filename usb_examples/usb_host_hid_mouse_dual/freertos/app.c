@@ -230,24 +230,24 @@ int main(void)
 
     USB_HostApplicationInit();
 
-    if (xTaskCreate(USB_HostTask_1, "usb host 1 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_1, 4, NULL) !=
+    if (xTaskCreate(USB_HostTask_1, "usb host 1 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_1, APP_USB_TASK1_PRIORITY, NULL) !=
         pdPASS)
     {
         usb_echo("create host 1 task error\r\n");
     }
 
-    if (xTaskCreate(USB_HostTask_2, "usb host 2 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_2, 4, NULL) !=
+    if (xTaskCreate(USB_HostTask_2, "usb host 2 task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle_2, APP_USB_TASK2_PRIORITY, NULL) !=
         pdPASS)
     {
         usb_echo("create host 2 task error\r\n");
     }
-    if (xTaskCreate(USB_HostApplicationTask_1, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse_1, 3,
+    if (xTaskCreate(USB_HostApplicationTask_1, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse_1, APP_MAIN_TASK1_PRIORITY,
                     NULL) != pdPASS)
     {
         usb_echo("create mouse 1 task error\r\n");
     }
 
-    if (xTaskCreate(USB_HostApplicationTask_2, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse_2, 3,
+    if (xTaskCreate(USB_HostApplicationTask_2, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse_2, APP_MAIN_TASK2_PRIORITY,
                     NULL) != pdPASS)
     {
         usb_echo("create mouse 2 task error\r\n");

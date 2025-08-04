@@ -750,7 +750,7 @@ void APP_task(void *handle)
                         (char const *)"usb device task", /* task name for kernel awareness debugging */
                         5000L / sizeof(portSTACK_TYPE),  /* task stack size */
                         g_mtp.deviceHandle,              /* optional task startup argument */
-                        5,                               /* initial priority */
+                        APP_USB_TASK_PRIORITY,           /* initial priority */
                         &g_mtp.device_task_handle        /* optional task handle to create */
                         ) != pdPASS)
         {
@@ -763,7 +763,7 @@ void APP_task(void *handle)
                         (char const *)"usb device event task", /* task name for kernel awareness debugging */
                         3000L / sizeof(portSTACK_TYPE),        /* task stack size */
                         &g_mtp,                                /* optional task startup argument */
-                        4,                                     /* initial priority */
+                        APP_EVENT_TASK_PRIORITY,               /* initial priority */
                         NULL                                   /* optional task handle to create */
                         ) != pdPASS)
         {
@@ -772,12 +772,12 @@ void APP_task(void *handle)
         }
 #endif
 #endif
-        if (xTaskCreate(USB_DeviceDiskOperationTask,    /* pointer to the task */
-                        (char const *)"usb disk task",  /* task name for kernel awareness debugging */
-                        5000L / sizeof(portSTACK_TYPE), /* task stack size */
-                        NULL,                           /* optional task startup argument */
-                        4,                              /* initial priority */
-                        &g_mtp.device_disk_task_handle  /* optional task handle to create */
+        if (xTaskCreate(USB_DeviceDiskOperationTask,              /* pointer to the task */
+                        (char const *)"usb disk task",            /* task name for kernel awareness debugging */
+                        5000L / sizeof(portSTACK_TYPE),           /* task stack size */
+                        NULL,                                     /* optional task startup argument */
+                        APP_DISK_OPERATION_TASK_PRIORITY,         /* initial priority */
+                        &g_mtp.device_disk_task_handle            /* optional task handle to create */
                         ) != pdPASS)
         {
             usb_echo("usb device disk task create failed!\r\n");
@@ -802,7 +802,7 @@ void main(void)
                     (char const *)"app task",       /* task name for kernel awareness debugging */
                     5000L / sizeof(portSTACK_TYPE), /* task stack size */
                     &g_mtp,                         /* optional task startup argument */
-                    3,                              /* initial priority */
+                    APP_MAIN_TASK_PRIORITY,         /* initial priority */
                     &g_mtp.application_task_handle  /* optional task handle to create */
                     ) != pdPASS)
     {

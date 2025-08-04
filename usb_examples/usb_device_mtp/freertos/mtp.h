@@ -39,6 +39,11 @@
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 #endif
 
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 2)
+#define APP_EVENT_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+#define APP_DISK_OPERATION_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 /****************** Macro definitions ***************/
 #include "usb_device_mtp_config.h"
 

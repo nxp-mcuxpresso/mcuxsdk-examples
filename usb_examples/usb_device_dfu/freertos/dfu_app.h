@@ -38,6 +38,10 @@
 #endif
 
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
+
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 typedef struct _usb_dfu_app_struct
 {
     usb_device_handle deviceHandle;

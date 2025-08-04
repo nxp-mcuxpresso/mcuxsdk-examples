@@ -160,7 +160,7 @@ void usb_host_task(void *hostHandle)
 void app_task(void *param)
 {
     APP_init();
-    if (xTaskCreate(usb_host_task, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_hostHandle, 4, NULL) != pdPASS)
+    if (xTaskCreate(usb_host_task, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_hostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create host task error\r\n");
     }
@@ -175,7 +175,7 @@ int main(void)
 {
     BOARD_InitHardware();
 
-    if (xTaskCreate(app_task, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, 3, NULL) != pdPASS)
+    if (xTaskCreate(app_task, "app task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_MAIN_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create cdc task error\r\n");
     }

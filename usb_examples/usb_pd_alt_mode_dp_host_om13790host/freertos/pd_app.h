@@ -14,6 +14,11 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define APP_PD_DEMO_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_PD_PORT_TASK_PRIORITY (APP_PD_DEMO_TASK_PRIORITY - 1)
+#define APP_PD_ALT_MODE_TASK_PRIORITY (APP_PD_DEMO_TASK_PRIORITY - 2)
+#define APP_PD_PORT_HPD_DRIVER_TASK_PRIORITY (APP_PD_DEMO_TASK_PRIORITY - 3)
+#define APP_PD_CONSOLE_TASK_PRIORITY (APP_PD_DEMO_TASK_PRIORITY - 3)
 
 #define PD_CONFIG_APP_MODE      (0x00000001u)
 #define PD_CONFIG_PID           (0x0100U)

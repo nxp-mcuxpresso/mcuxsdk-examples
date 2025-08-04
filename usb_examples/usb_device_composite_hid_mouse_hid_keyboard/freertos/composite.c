@@ -339,7 +339,7 @@ void APP_task(void *handle)
                         "usb device task",                     /* task name for kernel awareness debugging */
                         5000L / sizeof(portSTACK_TYPE),        /* task stack size */
                         g_UsbDeviceComposite.deviceHandle,     /* optional task startup argument */
-                        5U,                                    /* initial priority */
+                        APP_USB_TASK_PRIORITY,                 /* initial priority */
                         &g_UsbDeviceComposite.deviceTaskHandle /* optional task handle to create */
                         ) != pdPASS)
         {
@@ -366,7 +366,7 @@ void main(void)
                     "app task",                                 /* task name for kernel awareness debugging */
                     5000L / sizeof(portSTACK_TYPE),             /* task stack size */
                     &g_UsbDeviceComposite,                      /* optional task startup argument */
-                    4U,                                         /* initial priority */
+                    APP_MAIN_TASK_PRIORITY,                     /* initial priority */
                     &g_UsbDeviceComposite.applicationTaskHandle /* optional task handle to create */
                     ) != pdPASS)
     {

@@ -14,6 +14,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define APP_PD_PORT_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_PD_DEMO_TASK_PRIORITY (APP_PD_PORT_TASK_PRIORITY - 1)
 
 #define VDM_DP_SID 0xFF01
 #define VDM_DP_MODE 0x00000001u

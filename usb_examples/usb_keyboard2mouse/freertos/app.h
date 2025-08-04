@@ -14,5 +14,8 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define APP_USB_HOST_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_USB_DEVICE_TASK_PRIORITY (APP_USB_HOST_TASK_PRIORITY - 1)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_HOST_TASK_PRIORITY - 1)
 
 #endif /* __APP_H__ */

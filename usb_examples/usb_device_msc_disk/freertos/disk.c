@@ -531,7 +531,7 @@ void APP_task(void *handle)
                         (char const *)"usb device task", /* task name for kernel awareness debugging */
                         5000L / sizeof(portSTACK_TYPE),  /* task stack size */
                         g_msc.deviceHandle,              /* optional task startup argument */
-                        5,                               /* initial priority */
+                        APP_USB_TASK_PRIORITY,           /* initial priority */
                         &g_msc.device_task_handle        /* optional task handle to create */
                         ) != pdPASS)
         {
@@ -541,12 +541,12 @@ void APP_task(void *handle)
     }
 #endif
 #if (defined(USB_DEVICE_MSC_USE_WRITE_TASK) && (USB_DEVICE_MSC_USE_WRITE_TASK > 0))
-    if (xTaskCreate(USB_DeviceMscWriteTask,         /* pointer to the task */
-                    (char const *)"write task",     /* task name for kernel awareness debugging */
-                    2000L / sizeof(portSTACK_TYPE), /* task stack size */
-                    NULL,                           /* optional task startup argument */
-                    4,                              /* initial priority */
-                    &g_usbWriteTaskHandle           /* optional task handle to create */
+    if (xTaskCreate(USB_DeviceMscWriteTask,              /* pointer to the task */
+                    (char const *)"write task",          /* task name for kernel awareness debugging */
+                    2000L / sizeof(portSTACK_TYPE),      /* task stack size */
+                    NULL,                                /* optional task startup argument */
+                    APP_MSC_WRITE_TASK_PRIORITY,         /* initial priority */
+                    &g_usbWriteTaskHandle                /* optional task handle to create */
                     ) != pdPASS)
     {
         usb_echo("write task create failed!\r\n");
@@ -570,7 +570,7 @@ void main(void)
                     (char const *)"app task",       /* task name for kernel awareness debugging */
                     5000L / sizeof(portSTACK_TYPE), /* task stack size */
                     &g_msc,                         /* optional task startup argument */
-                    3,                              /* initial priority */
+                    APP_MAIN_TASK_PRIORITY,         /* initial priority */
                     &g_msc.application_task_handle  /* optional task handle to create */
                     ) != pdPASS)
     {

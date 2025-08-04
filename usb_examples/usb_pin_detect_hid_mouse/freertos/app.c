@@ -229,15 +229,15 @@ void main(void)
     APP_init();
     Pin_DetectTaskFunction();
 
-    if (xTaskCreate(Pin_DetectTask, "pin detect task", 2000L / sizeof(portSTACK_TYPE), NULL, 5, NULL) != pdPASS)
+    if (xTaskCreate(Pin_DetectTask, "pin detect task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_PIN_DETECT_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create pin detect task error\r\n");
     }
-    if (xTaskCreate(Device_AppTask, "usb device task", 2000L / sizeof(portSTACK_TYPE), NULL, 4, NULL) != pdPASS)
+    if (xTaskCreate(Device_AppTask, "usb device task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_DEVICE_APP_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create usb device task error\r\n");
     }
-    if (xTaskCreate(Host_AppTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), NULL, 4, NULL) != pdPASS)
+    if (xTaskCreate(Host_AppTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_HOST_APP_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create usb host task error\r\n");
     }

@@ -169,11 +169,11 @@ int main(void)
 
     USB_HostApplicationInit();
 
-    if (xTaskCreate(USB_HostTask, "usb host task", 2500L / sizeof(portSTACK_TYPE), g_HostHandle, 4, NULL) != pdPASS)
+    if (xTaskCreate(USB_HostTask, "usb host task", 2500L / sizeof(portSTACK_TYPE), g_HostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create host task error\r\n");
     }
-    if (xTaskCreate(USB_HostApplicationTask, "app task", 6000L / sizeof(portSTACK_TYPE), &g_Video, 3, NULL) != pdPASS)
+    if (xTaskCreate(USB_HostApplicationTask, "app task", 6000L / sizeof(portSTACK_TYPE), &g_Video, APP_MAIN_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create video task error\r\n");
     }

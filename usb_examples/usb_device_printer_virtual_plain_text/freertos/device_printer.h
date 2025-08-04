@@ -44,6 +44,9 @@
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
 #endif
 
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 #define USB_PRINTER_BUFFER_SIZE                                                                            \
     (HS_PRINTER_BULK_OUT_PACKET_SIZE > FS_PRINTER_BULK_OUT_PACKET_SIZE ? HS_PRINTER_BULK_OUT_PACKET_SIZE : \
                                                                          FS_PRINTER_BULK_OUT_PACKET_SIZE)

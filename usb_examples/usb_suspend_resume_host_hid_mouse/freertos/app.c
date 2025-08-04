@@ -526,13 +526,13 @@ static void USB_HostApplicationTask(void *param)
     usb_echo("Please Enter 's' to start suspend test\r\n");
 #endif
 
-    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, 4, NULL) != pdPASS)
+    if (xTaskCreate(USB_HostTask, "usb host task", 2000L / sizeof(portSTACK_TYPE), g_HostHandle, APP_USB_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("usb host task create failed!\r\n");
         return;
     }
 
-    if (xTaskCreate(USB_HostSuspendResume, "host suspend resume task", 2000L / sizeof(portSTACK_TYPE), param, 4,
+    if (xTaskCreate(USB_HostSuspendResume, "host suspend resume task", 2000L / sizeof(portSTACK_TYPE), param, APP_LOWPOWER_TASK_PRIORITY,
                     NULL) != pdPASS)
     {
         usb_echo("usb host suspend/resume task create failed!\r\n");
@@ -561,7 +561,7 @@ int main(void)
 {
     BOARD_InitHardware();
 
-    if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse, 3, NULL) !=
+    if (xTaskCreate(USB_HostApplicationTask, "app task", 2000L / sizeof(portSTACK_TYPE), &g_HostHidMouse, APP_MAIN_TASK_PRIORITY, NULL) !=
         pdPASS)
     {
         usb_echo("create mouse task error\r\n");

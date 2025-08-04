@@ -200,7 +200,7 @@ void main(void)
     APP_init();
     Pin_DetectTaskFunction();
 
-    if (xTaskCreate(Pin_DetectTask, "pin detect task", 2000L / sizeof(portSTACK_TYPE), NULL, 6, NULL) != pdPASS)
+    if (xTaskCreate(Pin_DetectTask, "pin detect task", 2000L / sizeof(portSTACK_TYPE), NULL, APP_PIN_DETECT_TASK_PRIORITY, NULL) != pdPASS)
     {
         usb_echo("create pin detect task error\r\n");
     }

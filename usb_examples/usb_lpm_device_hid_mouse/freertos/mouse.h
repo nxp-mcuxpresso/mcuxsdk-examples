@@ -41,6 +41,10 @@
 #endif
 
 #define USB_DEVICE_INTERRUPT_PRIORITY (3U)
+
+#define APP_USB_TASK_PRIORITY (tskIDLE_PRIORITY + 5)
+#define APP_MAIN_TASK_PRIORITY (APP_USB_TASK_PRIORITY - 1)
+
 #define USB_HID_MOUSE_REPORT_LENGTH (0x04U)
 
 typedef enum _usb_hid_mouse_status
