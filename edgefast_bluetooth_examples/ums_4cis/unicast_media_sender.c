@@ -1301,7 +1301,7 @@ static int configure_stream(struct bt_bap_stream *stream, struct bt_bap_ep *ep)
 {
 	int err;
 	int i;
-	enum bt_audio_location chan_allocation_value;
+	enum bt_audio_location chan_allocation_value = BT_AUDIO_LOCATION_MONO_AUDIO;
 
 	for(i = 0; i < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; i++)
 	{
@@ -1438,7 +1438,7 @@ static int set_stream_qos(int index)
 static int enable_streams(int index)
 {
 	int err;
-	enum bt_audio_location chan_allocation_value;
+	enum bt_audio_location chan_allocation_value = BT_AUDIO_LOCATION_MONO_AUDIO;
 
 	for(int i = 0; i < MAX_AUDIO_CHANNEL_COUNT; i++)
 	{

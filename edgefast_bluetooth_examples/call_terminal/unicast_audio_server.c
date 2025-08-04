@@ -259,7 +259,6 @@ static int unicast_server_qos(struct bt_bap_stream *stream, const struct bt_audi
 static int unicast_server_enable(struct bt_bap_stream *stream, const uint8_t meta[], size_t meta_len,
 		      struct bt_bap_ascs_rsp *rsp);
 static int unicast_server_start(struct bt_bap_stream *stream, struct bt_bap_ascs_rsp *rsp);
-static bool valid_metadata_type(uint8_t type, uint8_t len);
 static int unicast_server_metadata(struct bt_bap_stream *stream, const uint8_t meta[], size_t meta_len,
 			struct bt_bap_ascs_rsp *rsp);
 static int unicast_server_disable(struct bt_bap_stream *stream, struct bt_bap_ascs_rsp *rsp);
@@ -279,7 +278,6 @@ static int unicast_server_lc3_decoder_init(struct lc3_decoder *decoder);
 static int unicast_server_lc3_encoder_init(struct lc3_encoder *encoder);
 
 static void sink_recv_stream_task(void *param);
-static int lc3_decode_stream(struct net_buf *buf, uint8_t *pcm);
 
 int BOARD_StartCodec(codec_tx_callback_t tx_callback,codec_rx_callback_t rx_callback, uint32_t simpleBitRate, uint32_t simpleBits);
 uint8_t *BOARD_GetRxReadBuffer(void);
@@ -822,49 +820,6 @@ static int unicast_server_start(struct bt_bap_stream *stream, struct bt_bap_ascs
     return 0;
 }
 
-static bool valid_metadata_type(uint8_t type, uint8_t len)
-{
-    switch (type) {
-    case BT_AUDIO_METADATA_TYPE_PREF_CONTEXT:
-    case BT_AUDIO_METADATA_TYPE_STREAM_CONTEXT:
-        if (len != 2) {
-            return false;
-        }
-
-        return true;
-    case BT_AUDIO_METADATA_TYPE_LANG:
-        if (len != 3) {
-            return false;
-        }
-
-        return true;
-    case BT_AUDIO_METADATA_TYPE_PARENTAL_RATING:
-        if (len != 1) {
-            return false;
-        }
-
-        return true;
-    case BT_AUDIO_METADATA_TYPE_EXTENDED: /* 1 - 255 octets */
-    case BT_AUDIO_METADATA_TYPE_VENDOR: /* 1 - 255 octets */
-        if (len < 1) {
-            return false;
-        }
-
-        return true;
-    case BT_AUDIO_METADATA_TYPE_CCID_LIST: /* 2 - 254 octets */
-        if (len < 2) {
-            return false;
-        }
-
-        return true;
-    case BT_AUDIO_METADATA_TYPE_PROGRAM_INFO: /* 0 - 255 octets */
-    case BT_AUDIO_METADATA_TYPE_PROGRAM_INFO_URI: /* 0 - 255 octets */
-        return true;
-    default:
-        return false;
-    }
-}
-
 static bool data_func_cb(struct bt_data *data, void *user_data)
 {
 	struct bt_bap_ascs_rsp *rsp = (struct bt_bap_ascs_rsp *)user_data;
@@ -981,64 +936,6 @@ static void get_capability_from_codec(const struct bt_audio_codec_cfg *codec, st
     cap->channel_count = HW_CHANNEL_COUNT;
     PRINTF("    Channel count %d.", cap->channel_count);
 }
-
-#if 0
-static int lc3_decode_stream(struct net_buf *buf, uint8_t *pcm)
-{
-    /* LC3 decode. */
-    int32_t flg_bfi[MAX_AUDIO_CHANNEL_COUNT];
-    int32_t dec_byte_count[MAX_AUDIO_CHANNEL_COUNT];
-    int lc3_ret;
-    int16_t *p = (int16_t *)pcm;
-    uint8_t * in;
-
-    if (NULL == pcm)
-    {
-        return -EINVAL;
-    }
-
-    if ((NULL == connection.conn))
-    {
-        return -EINVAL;
-    }
-
-    if (!atomic_test_bit(connection.snk.stream.flags, BT_STREAM_STATE_STARTED))
-    {
-        return -EINVAL;
-    }
-
-    in = buf->data;
-
-    for (size_t index = 0; index < snk_config_cap.frame_blocks_per_sdu; index++)
-    {
-        p = p + index * (snk_config_cap.frequency * snk_config_cap.duration / 1000000) * snk_config_cap.channel_count;
-        in = in + index * snk_config_cap.frame_bytes * snk_config_cap.channel_count;
-
-        for (int i = 0; i < snk_config_cap.channel_count; i++)
-        {
-            flg_bfi[i] = 0;
-            dec_byte_count[i] = snk_config_cap.frame_bytes;
-
-            memcpy(connection.snk.decoder.enc_buf_in[i], &in[i * snk_config_cap.frame_bytes], snk_config_cap.frame_bytes);
-            lc3_ret = LC3_decoder_process(&connection.snk.decoder.decoder[i], &flg_bfi[i], &dec_byte_count[i]);
-            if(lc3_ret != LC3_DECODER_SUCCESS)
-            {
-                PRINTF("Fail to decoder stream! %d\n", lc3_ret);
-                return lc3_ret;
-            }
-        }
-
-        for (int j = 0; j < (snk_config_cap.frequency * snk_config_cap.duration / 1000000); j++)
-        {
-            for(int i = 0; i < snk_config_cap.channel_count; i++)
-            {
-                p[j * snk_config_cap.channel_count + i] = (int16_t)connection.snk.decoder.dec_buf_out[i][j];
-            }
-        }
-    }
-    return 0;
-}
-#endif
 
 #if (defined(UNICAST_AUDIO_SYNC_MODE) && (UNICAST_AUDIO_SYNC_MODE > 0))
 /* This value is measured externaly. */
@@ -1176,7 +1073,7 @@ static void sink_recv_stream_task(void *param)
             update_delta = connection.snk.status.output;
             float ideal_samples_per_frame = (snk_config_cap.frequency * snk_config_cap.duration / 1000000);
             float actual_samples_per_frame = (snk_config_cap.frequency * snk_config_cap.duration / 1000000) - update_delta;
-            update_delta = (ideal_samples_per_frame - actual_samples_per_frame) / ideal_samples_per_frame;
+            update_delta = (double)((ideal_samples_per_frame - actual_samples_per_frame) / ideal_samples_per_frame);
 #endif
             for (int i = 0; i < snk_config_cap.channel_count; i++)
             {
@@ -1452,7 +1349,7 @@ static void source_send_stream_task(void *param)
             update_delta = connection.src.status.output;
             ideal_samples_per_frame = (snk_config_cap.frequency * snk_config_cap.duration / 1000000);
             actual_samples_per_frame = (snk_config_cap.frequency * snk_config_cap.duration / 1000000) + update_delta;
-            update_delta = (ideal_samples_per_frame - actual_samples_per_frame) / ideal_samples_per_frame;
+            update_delta = (double)((ideal_samples_per_frame - actual_samples_per_frame) / ideal_samples_per_frame);
             src = (int16_t *)BOARD_GetRxReadBuffer();
 
             for (int i = 0; i < snk_config_cap.channel_count;i++)
@@ -1808,7 +1705,7 @@ static void unicast_server_stream_enabled(struct bt_bap_stream *stream)
                 sync_timer_started = 1U;
                 connection.info.bits_pre_sample = BITS_RATES_OF_SAMPLE;
                 connection.info.sample_rate = snk_config_cap.frequency;
-                connection.info.sample_duration_us = 1000000.0 / (float)connection.info.sample_rate;
+                connection.info.sample_duration_us = (float)1000000.0 / (float)connection.info.sample_rate;
 
                 BORAD_SyncTimer_Start(connection.info.sample_rate, connection.info.bits_pre_sample * snk_config_cap.channel_count);
             }
@@ -1891,7 +1788,7 @@ static void sync_timer_callback(uint32_t sync_index, uint64_t bclk_count)
             actual_samples -= connection.snk.status.mute_frame_samples * (double)snk_config_cap.channel_count;
 
             ideal_samples = (sync_index - connection.snk.status.start_slot) * (double)connection.info.iso_interval_us - (double)connection.snk.status.mute_frame_duration_us;
-            ideal_samples = ideal_samples / connection.info.sample_duration_us;
+            ideal_samples = ideal_samples / (double)connection.info.sample_duration_us;
             ideal_samples = ideal_samples * (double)snk_config_cap.channel_count;
 
             ideal_samples = ideal_samples + connection.snk.status.resampler_added_samples + connection.snk.status.resampler_internal_samples;
@@ -1901,7 +1798,7 @@ static void sync_timer_callback(uint32_t sync_index, uint64_t bclk_count)
             actual_samples = (double)(bclk_count- bclk_count_last) / (BITS_RATES_OF_SAMPLE);
 
             ideal_samples = (sync_index - sync_index_last) * (double)connection.info.iso_interval_us;
-            ideal_samples = ideal_samples / connection.info.sample_duration_us;
+            ideal_samples = ideal_samples / (double)connection.info.sample_duration_us;
             ideal_samples = ideal_samples * (double)snk_config_cap.channel_count;
 
             ideal_samples = ideal_samples + connection.snk.status.resampler_added_samples - resampler_added_samples_last  + connection.snk.status.resampler_internal_samples;
@@ -1961,7 +1858,7 @@ static void sync_timer_callback(uint32_t sync_index, uint64_t bclk_count)
             actual_samples = (double)(bclk_count- src_bclk_count_last) / (BITS_RATES_OF_SAMPLE);
 
             ideal_samples = (sync_index - src_sync_index_last) * (double)connection.info.iso_interval_us;
-            ideal_samples = ideal_samples / connection.info.sample_duration_us;
+            ideal_samples = ideal_samples / (double)connection.info.sample_duration_us;
             ideal_samples = ideal_samples * (double)snk_config_cap.channel_count;
 
             actual_samples = actual_samples + connection.src.status.resampler_added_samples - src_resampler_added_samples_last  + connection.src.status.resampler_internal_samples;

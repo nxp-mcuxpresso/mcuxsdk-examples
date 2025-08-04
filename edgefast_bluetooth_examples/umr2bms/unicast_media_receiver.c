@@ -57,8 +57,6 @@ static const struct bt_audio_codec_cap lc3_codec_cap[] = {BT_AUDIO_CODEC_CAP_LC3
 static struct bt_conn *default_conn;
 static struct bt_bap_stream sink_streams[CONFIG_BT_ASCS_ASE_SNK_COUNT];
 
-static struct bt_bap_lc3_preset lc3_preset;
-
 static const struct bt_audio_codec_qos_pref qos_pref =
 	BT_AUDIO_CODEC_QOS_PREF(true, BT_GAP_LE_PHY_2M, 0x02, 10, 10000, 70000, 10000, 70000);
 
@@ -89,18 +87,9 @@ static const struct bt_data ad[] = {
 #define PCM_AUDIO_BUFF_SIZE		(MAX_AUDIO_SAMPLE_RATE / 100 * MAX_AUDIO_CHANNEL_COUNT * MAX_AUDIO_BYTES_PER_SAMPLE)
 
 #if defined(LE_AUDIO_SYNC_ENABLE) && (LE_AUDIO_SYNC_ENABLE > 0)
-#else
-static uint8_t audio_i2s_buff[PCM_AUDIO_BUFF_SIZE];
-#endif
-static bool audio_codec_initialized = false;
-static bool audio_sync_initialized = false;
-
-#if defined(LE_AUDIO_SYNC_ENABLE) && (LE_AUDIO_SYNC_ENABLE > 0)
 #include "le_audio_sync.h"
 static frame_packet_t frame;
 #endif
-
-static lc3_codec_info_t lc3_codec_info;
 
 static OSA_SEMAPHORE_HANDLE_DEFINE(sem_disconnected);
 static OSA_SEMAPHORE_HANDLE_DEFINE(sem_security_changed);

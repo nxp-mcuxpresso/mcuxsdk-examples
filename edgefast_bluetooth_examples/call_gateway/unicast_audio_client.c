@@ -321,7 +321,6 @@ static void unicast_client_stream_recv(struct bt_bap_stream *stream, const struc
 
 static void parse_pacs_capability(const struct bt_audio_codec_cap *codec_cap, struct pacs_capability *cap);
 static void get_capability_from_codec(const struct bt_audio_codec_cfg *codec_cfg, struct codec_capability *cap);
-static int capability_compare(struct codec_capability *required_cap, struct codec_capability *discovered_cap);
 static int pac_capability_compare(struct bt_bap_lc3_preset *codec_configuration, struct codec_capability *required_cap, struct pacs_capability *discovered_cap);
 
 static int unicast_client_lc3_encoder_init(struct conn_state *state, struct lc3_encoder *encoder);
@@ -342,7 +341,6 @@ void BOARD_StartStream(void);
 static void codec_rx_callback(uint8_t *rx_buffer);
 static void codec_tx_callback(void);
 
-static int lc3_decode_stream(struct bt_conn * conn, struct net_buf *buf, uint8_t *pcm);
 static void sink_recv_stream_task(void *param);
 
 #if (defined(UNICAST_AUDIO_SYNC_MODE) && (UNICAST_AUDIO_SYNC_MODE > 0))
@@ -1643,79 +1641,6 @@ int unicast_client_stop_streams(void)
     return err;
 }
 
-#if 0
-static int lc3_decode_stream(struct bt_conn * conn, struct net_buf *buf, uint8_t *pcm)
-{
-    /* LC3 decode. */
-    int32_t flg_bfi[MAX_AUDIO_CHANNEL_COUNT];
-    int32_t dec_byte_count[MAX_AUDIO_CHANNEL_COUNT];
-    int lc3_ret;
-    struct conn_state *state = NULL;
-    int16_t *p = (int16_t *)pcm;
-    uint8_t * in;
-
-    for (uint32_t index = 0; index < ARRAY_SIZE(server_state); index++)
-    {
-        if ((conn == server_state[index].conn) || ((NULL == conn) && (NULL != server_state[index].conn)))
-        {
-            state = &server_state[index];
-            break;
-        }
-    }
-
-    if (NULL == pcm)
-    {
-        return -EINVAL;
-    }
-
-    if (NULL == state)
-    {
-        return -EINVAL;
-    }
-
-    if (NULL == state->src[0].stream)
-    {
-        return -EINVAL;
-    }
-
-    if (!atomic_test_bit(state->src[0].stream->flags, BT_STREAM_STATE_STARTED))
-    {
-        return -EINVAL;
-    }
-
-    in = buf->data;
-
-    for (size_t index = 0; index < src_cap_required.frame_blocks_per_sdu; index++)
-    {
-        p = p + index * (src_cap_required.frequency * src_cap_required.duration / 1000000) * src_cap_required.channel_count;
-        in = in + index * src_cap_required.frame_bytes * src_cap_required.channel_count;
-
-        for (int i = 0; i < src_cap_required.channel_count; i++)
-        {
-            flg_bfi[i] = 0;
-            dec_byte_count[i] = src_cap_required.frame_bytes;
-
-            memcpy(state->src[0].decoder->enc_buf_in[i], &in[i * src_cap_required.frame_bytes], src_cap_required.frame_bytes);
-            lc3_ret = LC3_decoder_process(&state->src[0].decoder->decoder[i], &flg_bfi[i], &dec_byte_count[i]);
-            if(lc3_ret != LC3_DECODER_SUCCESS)
-            {
-                PRINTF("Fail to decoder stream! %d\n", lc3_ret);
-                return lc3_ret;
-            }
-        }
-
-        for (int j = 0; j < (src_cap_required.frequency * src_cap_required.duration / 1000000); j++)
-        {
-            for(int i = 0; i < src_cap_required.channel_count; i++)
-            {
-                p[j * src_cap_required.channel_count + i] = (int16_t)state->src[0].decoder->dec_buf_out[i][j];
-            }
-        }
-    }
-    return 0;
-}
-#endif
-
 #if (defined(UNICAST_AUDIO_SYNC_MODE) && (UNICAST_AUDIO_SYNC_MODE > 0))
 /* This value is measured externaly. */
 static float System_Sync_offset(int sample_rate)
@@ -1869,7 +1794,7 @@ static void sink_recv_stream_task(void *param)
                 update_delta = state->src[0].status.output;
                 float ideal_samples_per_frame = (state->src_cap_required.frequency * state->src_cap_required.duration / 1000000);
                 float actual_samples_per_frame = (state->src_cap_required.frequency * state->src_cap_required.duration / 1000000) - update_delta;
-                update_delta = (ideal_samples_per_frame - actual_samples_per_frame) / ideal_samples_per_frame;
+                update_delta = (double)((ideal_samples_per_frame - actual_samples_per_frame) / ideal_samples_per_frame);
 #endif
                 for (int i = 0; i < state->src_cap_required.channel_count; i++)
                 {
@@ -2806,23 +2731,6 @@ static void parse_pacs_capability(const struct bt_audio_codec_cap *codec_cap, st
     PRINTF("    Pref context 0x%x\n", cap->pref_context);
 }
 
-static int capability_compare(struct codec_capability *required_cap, struct codec_capability *discovered_cap)
-{
-    if ((required_cap->channel_count == discovered_cap->channel_count) &&
-        (required_cap->duration == discovered_cap->duration) &&
-        (required_cap->frame_blocks_per_sdu == discovered_cap->frame_blocks_per_sdu) &&
-        (required_cap->frame_bytes == discovered_cap->frame_bytes) &&
-        (required_cap->frequency == discovered_cap->frequency)
-    )
-    {
-        return 0;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
 static int pac_capability_compare(struct bt_bap_lc3_preset *codec_configuration, struct codec_capability *required_cap, struct pacs_capability *discovered_cap)
 {
     size_t index;
@@ -2935,7 +2843,7 @@ static void unicast_client_stream_enabled(struct bt_bap_stream *stream)
                     BOARD_SyncTimer_Init(sync_timer_callback);
                     server_state[index].info.bits_pre_sample = BITS_RATES_OF_SAMPLE;
                     server_state[index].info.sample_rate = server_state[index].src_cap_required.frequency;
-                    server_state[index].info.sample_duration_us = 1000000.0 / (float)server_state[index].info.sample_rate;
+                    server_state[index].info.sample_duration_us = (float)1000000.0 / (float)server_state[index].info.sample_rate;
 
                     BORAD_SyncTimer_Start(server_state[index].info.sample_rate, server_state[index].info.bits_pre_sample * server_state[index].src_cap_required.channel_count);
                 }
@@ -4072,7 +3980,7 @@ static void sync_timer_callback(uint32_t sync_index, uint64_t bclk_count)
             actual_samples -= state->src[0].status.mute_frame_samples * (double)state->src_cap_required.channel_count;
 
             ideal_samples = (sync_index - state->src[0].status.start_slot) * (double)state->info.iso_interval_us - (double)state->src[0].status.mute_frame_duration_us;
-            ideal_samples = ideal_samples / state->info.sample_duration_us;
+            ideal_samples = ideal_samples / (double)state->info.sample_duration_us;
             ideal_samples = ideal_samples * (double)state->src_cap_required.channel_count;
 
             ideal_samples = ideal_samples + state->src[0].status.resampler_added_samples + state->src[0].status.resampler_internal_samples;
@@ -4082,7 +3990,7 @@ static void sync_timer_callback(uint32_t sync_index, uint64_t bclk_count)
             actual_samples = (double)(bclk_count- bclk_count_last) / (BITS_RATES_OF_SAMPLE);
 
             ideal_samples = (sync_index - sync_index_last) * (double)state->info.iso_interval_us;
-            ideal_samples = ideal_samples / state->info.sample_duration_us;
+            ideal_samples = ideal_samples / (double)state->info.sample_duration_us;
             ideal_samples = ideal_samples * (double)state->src_cap_required.channel_count;
 
             ideal_samples = ideal_samples + state->src[0].status.resampler_added_samples - resampler_added_samples_last  + state->src[0].status.resampler_internal_samples;
@@ -4142,7 +4050,7 @@ static void sync_timer_callback(uint32_t sync_index, uint64_t bclk_count)
             actual_samples = (double)(bclk_count- src_bclk_count_last) / (BITS_RATES_OF_SAMPLE);
 
             ideal_samples = (sync_index - src_sync_index_last) * (double)state->info.iso_interval_us;
-            ideal_samples = ideal_samples / state->info.sample_duration_us;
+            ideal_samples = ideal_samples / (double)state->info.sample_duration_us;
             ideal_samples = ideal_samples * (double)src_cap_required.channel_count;
 
             actual_samples = actual_samples + state->snk[0].status.resampler_added_samples - src_resampler_added_samples_last  + state->snk[0].status.resampler_internal_samples;

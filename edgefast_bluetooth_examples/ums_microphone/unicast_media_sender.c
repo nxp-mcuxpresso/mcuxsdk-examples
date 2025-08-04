@@ -51,8 +51,6 @@ static void codec_rx_callback(uint8_t *rx_buffer);
 #include "lc3_codec.h"
 lc3_encoder_t encoder;
 
-static uint8_t sdu_buff[1][LC3_FRAME_SIZE_MAX];
-
 static lc3_codec_info_t lc3_codec_info;
 
 /* When BROADCAST_ENQUEUE_COUNT > 1 we can enqueue enough buffers to ensure that
@@ -69,7 +67,6 @@ static bt_addr_le_t devices_list[16];
 static bt_addr_le_t target_devices[2];
 static int devices_list_count = 0;
 static uint8_t sirk[BT_CSIP_SIRK_SIZE];
-static bool set_sirk_set = false;
 
 static struct bt_bap_unicast_client_cb unicast_client_cbs;
 static struct bt_conn *default_conn[CONFIG_BT_MAX_CONN];
@@ -1192,7 +1189,6 @@ static int discover_sinks(int index)
 static int configure_stream(struct audio_sink *sink)
 {
 	int err;
-	int i;
 
 	/* change channel allocation. */
 	bt_audio_codec_cfg_set_chan_allocation(&lc3_preset.codec_cfg, sink->loc);
@@ -1508,47 +1504,6 @@ void mcs_server_state_cb(int state)
 		cis_stream_play = false;
 	}
 }
-
-static void csip_set_coordinator_discover_cb(
-	struct bt_conn *conn,
-	const struct bt_csip_set_coordinator_set_member *member,
-	int err, size_t set_count)
-{
-	if(err) {
-		PRINTF("CSIP conn %p csip discover err %d\r\n", conn, err);
-	}
-	else {
-		PRINTF("CSIP conn %p discovered set count %d\r\n", conn, set_count);
-		for(int i = 0; i < set_count; i++)
-		{
-			const struct bt_csip_set_coordinator_set_info *info = &member->insts[i].info;
-			PRINTF("set %d/%d info:\r\n", i+1, set_count);
-			PRINTF("\tsirk: ");
-			for(int j = 0; j < BT_CSIP_SIRK_SIZE; j++)
-			{
-				PRINTF("%02x ", info->sirk[j]);
-			}
-			PRINTF("\r\n");
-
-			PRINTF("\tset_size: %d\r\n", info->set_size);
-
-			PRINTF("\trank: %d\r\n", info->rank);
-
-			PRINTF("\tlockable: %d\r\n", info->lockable);
-
-			if(!set_sirk_set)
-			{
-				set_sirk_set = true;
-				memcpy(&sirk, &info->sirk[i], BT_CSIP_SIRK_SIZE);
-			}
-		}
-	}
-	(void)OSA_SemaphorePost(sem_csip_discovered);
-}
-
-static struct bt_csip_set_coordinator_cb csip_cb = {
-	.discover = csip_set_coordinator_discover_cb
-};
 
 void ums_microphone_task(void *param)
 {

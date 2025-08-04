@@ -309,7 +309,7 @@ static bool app_bt_tbs_originate_call_cb(struct bt_conn *conn,
     /* case 1: call has been accepted, notify client */
     /* case 2: call has been terminated, notify client */
     /* Accept the call */
-    if ((s_callIndex == 0))
+    if (s_callIndex == 0)
     {
         s_callIndex = call_index;
         /* TODO: */

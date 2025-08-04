@@ -35,6 +35,9 @@ struct lc3_msg_res_headr {
 } __attribute__((packed));
 
 #else
+
+#if defined(LC3_DSP) && (LC3_DSP == 0)
+#else
 static int input_precessing(lc3_encoder_t *encoder, void *input)
 {
     int samples_num = LC3_SAMPLES_PER_FRAME(encoder);
@@ -122,6 +125,8 @@ static int output_precessing(lc3_decoder_t *decoder, void *output)
 
     return 0;
 }
+#endif
+
 #endif
 
 int lc3_encoder_init(lc3_encoder_t *encoder, int sample_rate, int duration_us, int target_bytes, int sample_bits)

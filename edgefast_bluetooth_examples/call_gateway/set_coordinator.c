@@ -133,6 +133,8 @@ static struct set_coordinator_state *find_set_coordinator_state(struct bt_conn *
     return NULL;
 }
 
+#if (defined(CONFIG_BT_SETTINGS) && ((CONFIG_BT_SETTINGS) > 0U)) && \
+    (defined(CONFIG_BT_SMP) && ((CONFIG_BT_SMP) > 0U))
 static struct set_coordinator_state *find_set_coordinator_state_by_address(const bt_addr_le_t *addr)
 {
     for (uint32_t i = 0; i < ARRAY_SIZE(coordinator_state); i++)
@@ -147,6 +149,7 @@ static struct set_coordinator_state *find_set_coordinator_state_by_address(const
     }
     return NULL;
 }
+#endif
 
 static struct set_coordinator_state *find_discover_set_coordinator_state(void)
 {
@@ -160,6 +163,8 @@ static struct set_coordinator_state *find_discover_set_coordinator_state(void)
     return NULL;
 }
 
+#if (defined(CONFIG_BT_SETTINGS) && ((CONFIG_BT_SETTINGS) > 0U)) && \
+    (defined(CONFIG_BT_SMP) && ((CONFIG_BT_SMP) > 0U))
 static struct set_coordinator_state *find_scanning_set_coordinator_state(void)
 {
     for (uint32_t i = 0; i < ARRAY_SIZE(coordinator_state); i++)
@@ -171,6 +176,7 @@ static struct set_coordinator_state *find_scanning_set_coordinator_state(void)
     }
     return NULL;
 }
+#endif
 
 static struct set_coordinator_state *create_set_coordinator_state(struct bt_conn *conn)
 {
@@ -230,6 +236,8 @@ struct bond_data
     bool bond;
 };
 
+#if (defined(CONFIG_BT_SETTINGS) && ((CONFIG_BT_SETTINGS) > 0U)) && \
+    (defined(CONFIG_BT_SMP) && ((CONFIG_BT_SMP) > 0U))
 static void bond_cb(const struct bt_bond_info *info, void *user_data)
 {
     struct bond_data *data;
@@ -245,6 +253,7 @@ static void bond_cb(const struct bt_bond_info *info, void *user_data)
         data->bond = true;
     }
 }
+#endif
 
 static void set_coordinator_scan_delay_work_cb(struct k_work *work)
 {
@@ -287,6 +296,8 @@ static void set_coordinator_discover_work_cb(struct k_work *work)
     }
 }
 
+#if (defined(CONFIG_BT_SETTINGS) && ((CONFIG_BT_SETTINGS) > 0U)) && \
+    (defined(CONFIG_BT_SMP) && ((CONFIG_BT_SMP) > 0U))
 static void set_coordinator_scan_devce(const bt_addr_le_t *addr, int8_t rssi, uint8_t type, struct net_buf_simple *ad)
 {
     struct set_coordinator_state *state = find_scanning_set_coordinator_state();
@@ -335,6 +346,7 @@ static void set_coordinator_scan_devce(const bt_addr_le_t *addr, int8_t rssi, ui
         }
     }
 }
+#endif
 
 static void connected(struct bt_conn *conn, uint8_t err)
 {

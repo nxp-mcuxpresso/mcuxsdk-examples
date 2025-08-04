@@ -31,9 +31,9 @@ static int16_t sin_wav[480 * 3] = { 0 };
 
 void le_audio_sync_test_init(int sample_rate)
 {
-    float ts = 1.0 / sample_rate; /* Sample Rate. */
-    float Fr = 500.0; /* Sin wav frequency. */
-    float v;
+    double ts = 1.0 / sample_rate; /* Sample Rate. */
+    double Fr = 500.0; /* Sin wav frequency. */
+    double v;
     int n;
 
     if (audio_sync_test_mode == AUDIO_SYNC_TEST_MODE_10MS_SINE_20MS_MUTE)
@@ -208,7 +208,7 @@ static void sync_timer_callback(uint32_t sync_index, uint64_t bclk_count)
         audio_sync_info.i2s_output_samples -= audio_sync_info.mute_frame_samples;
         /* ideal samples output. */
         uint64_t ideal_played_us = Sync_Signal_Index_Timestamp(sync_index) - Sync_Signal_Index_Timestamp(audio_sync_info.sync_signal_index_to_start) - audio_sync_info.mute_frame_duration_us;
-        double ideal_played_samples = (double)ideal_played_us / audio_sync_info.sample_duration_us;
+        double ideal_played_samples = (double)ideal_played_us / (double)audio_sync_info.sample_duration_us;
         /* resampler output samples. */
         audio_sync_info.extra_samples_needed = audio_sync_info.i2s_output_samples - (ideal_played_samples + audio_sync_info.resampler_added_samples + audio_sync_info.resampler_internal_samples);
         /* PI loop. */
@@ -229,7 +229,7 @@ void le_audio_sync_start(int sample_rate, int samples_per_frame)
 {
     audio_sync_info.sample_rate           = sample_rate;
     audio_sync_info.samples_per_frame     = samples_per_frame;
-    audio_sync_info.sample_duration_us    = 1000000.0 / (float)sample_rate;
+    audio_sync_info.sample_duration_us    = (float)1000000.0 / (float)sample_rate;
 
     /* Start the sync timer. */
     BORAD_SyncTimer_Start(sample_rate, 16 * 2, 0);

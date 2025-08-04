@@ -26,9 +26,6 @@
 #include "broadcast_media_sender.h"
 #include "unicast_media_receiver.h"
 
-static StackType_t bms_stack[ configMINIMAL_STACK_SIZE * 8 ];
-static StaticTask_t bms_task_buffer;
-
 static StackType_t umr_stack[ configMINIMAL_STACK_SIZE * 8 ];
 static StaticTask_t umr_task_buffer;
 
