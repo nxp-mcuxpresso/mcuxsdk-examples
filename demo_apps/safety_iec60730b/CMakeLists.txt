@@ -8,6 +8,10 @@ project(safety_iec60730b LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_roo
 # srecord tool not available now, so disable post-build command for armgcc and MDK
 mcux_set_variable(SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD false)
 
+# IAR post-build command is disabled when 'SAFETY_IEC60730B_IAR_POSTBUILD' set to 'false', enabled when 'true'
+# Disable due to post-build command is not working on Dapeng tests now.
+mcux_set_variable(SAFETY_IEC60730B_IAR_POSTBUILD false)
+
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(

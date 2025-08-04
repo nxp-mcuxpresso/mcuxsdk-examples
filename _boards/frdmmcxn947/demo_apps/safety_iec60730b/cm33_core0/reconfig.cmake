@@ -141,7 +141,7 @@ mcux_remove_configuration(
 #----------------------------------------------
 
 # IAR post-build command
-if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
+if(${CONFIG_TOOLCHAIN} STREQUAL "iar" AND ${SAFETY_IEC60730B_IAR_POSTBUILD} STREQUAL "true")
 add_custom_command(
 	TARGET ${MCUX_SDK_PROJECT_NAME}
     POST_BUILD
