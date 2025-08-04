@@ -13,7 +13,4 @@ restriction)
 
 ## Supported Boards
 - [EVK-MIMXRT595](../../_boards/evkmimxrt595/sdmmc_examples/mmccard_fatfs/example_board_readme.md)
-- [LPCXpresso54628](../../_boards/lpcxpresso54628/sdmmc_examples/mmccard_fatfs/example_board_readme.md)
-- [LPCXpresso54S018](../../_boards/lpcxpresso54s018/sdmmc_examples/mmccard_fatfs/example_board_readme.md)
-- [LPCXpresso54S018M](../../_boards/lpcxpresso54s018m/sdmmc_examples/mmccard_fatfs/example_board_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/sdmmc_examples/mmccard_fatfs/example_board_readme.md)

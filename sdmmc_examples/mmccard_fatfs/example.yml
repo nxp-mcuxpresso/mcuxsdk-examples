@@ -21,7 +21,4 @@ mmccard_fatfs:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     evkmimxrt595@cm33: []
-    lpcxpresso54628: []
-    lpcxpresso54s018: []
-    lpcxpresso54s018m: []
     mimxrt700evk@cm33_core0: []

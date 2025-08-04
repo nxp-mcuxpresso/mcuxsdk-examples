@@ -17,15 +17,5 @@ mmccard_freertos:
       - ${board_root}/${board}/sdmmc_examples/mmccard_freertos/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    evkbimxrt1050: []
-    evkbmimxrt1060: []
-    evkcmimxrt1060: []
-    evkmimxrt1020: []
-    evkmimxrt1024: []
-    evkmimxrt1040: []
-    evkmimxrt1064: []
     evkmimxrt595@cm33: []
-    lpcxpresso54628: []
-    lpcxpresso54s018: []
-    lpcxpresso54s018m: []
     mimxrt700evk@cm33_core0: []
