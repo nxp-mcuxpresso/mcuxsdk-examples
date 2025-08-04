@@ -217,4 +217,15 @@ else()
 endif()
 endif()
 
+# armgcc post-build commands
+mcux_add_custom_command(
+	TOOLCHAINS armgcc
+	BUILD_EVENT  POST_BUILD
+	BUILD_COMMAND arm-none-eabi-objcopy -O ihex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex && 
+				  ${SAFETY_CRC_PATH_A}/crc_hex.bat 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_crc.hex 
+				  -../srecord/srec_cat.exe
+)
+
 endif() # armgcc and MDK post-build command
