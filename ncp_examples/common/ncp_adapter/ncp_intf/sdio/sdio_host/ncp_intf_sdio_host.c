@@ -205,11 +205,13 @@
 #define NCP_CMD_15D4   0x20000000
 #define NCP_CMD_MATTER 0x30000000
 #define NCP_CMD_SYSTEM 0x40000000
+#define NCP_CMD_WLAN_INET 0x01000000
 
 #define NCP_CMD_WLAN_SOCKET      0x00900000
 
 #define NCP_CMD_WLAN_SOCKET_SEND      (NCP_CMD_WLAN | NCP_CMD_WLAN_SOCKET | NCP_MSG_TYPE_CMD | 0x00000004)
 #define NCP_CMD_WLAN_SOCKET_SENDTO    (NCP_CMD_WLAN | NCP_CMD_WLAN_SOCKET | NCP_MSG_TYPE_CMD | 0x00000005)
+#define NCP_CMD_WLAN_INET_SENDTO      (NCP_CMD_WLAN | NCP_CMD_WLAN_INET | NCP_MSG_TYPE_CMD | 0x00000006)
 
 #define SDIO_GET_MSG_TYPE(cmd)        ((cmd) & 0x000f0000)
 
@@ -1443,7 +1445,8 @@ int ncp_sdhost_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
     {
         case NCP_MSG_TYPE_CMD:
             if ((res->cmd == NCP_CMD_WLAN_SOCKET_SEND)
-              || (res->cmd == NCP_CMD_WLAN_SOCKET_SENDTO))
+              || (res->cmd == NCP_CMD_WLAN_SOCKET_SENDTO)
+              || (res->cmd == NCP_CMD_WLAN_INET_SENDTO))
             {
                 ret = ncp_sdhost_send_data((uint8_t *)tlv_buf, tlv_sz);
             }
