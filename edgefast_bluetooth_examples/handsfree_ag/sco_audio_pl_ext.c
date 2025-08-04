@@ -430,7 +430,6 @@ static uint32_t count = 0;
 void SCO_Edma_Task(void *handle)
 {
     hal_audio_transfer_t xfer;
-    OSA_SR_ALLOC();
 
     while (1)
     {

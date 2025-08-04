@@ -278,11 +278,11 @@ void chup_response(struct bt_hfp_ag *hfp_ag)
 
 static void brva(struct bt_hfp_ag *hfp_ag, uint32_t value)
 {
-    printf("HFP voice recognition :%d\n", value);
+    printf("HFP voice recognition :%lu\n", value);
 }
 static void codec_negotiate(struct bt_hfp_ag *hfp_ag, uint32_t value)
 {
-    printf("HFP codec negotiate :%d\n", value);
+    printf("HFP codec negotiate :%lu\n", value);
 }
 
 static void chld(struct bt_hfp_ag *hfp_ag, uint8_t option, uint8_t index)

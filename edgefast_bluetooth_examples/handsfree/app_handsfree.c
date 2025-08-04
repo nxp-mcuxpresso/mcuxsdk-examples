@@ -165,7 +165,7 @@ static void disconnected(struct bt_conn *conn)
 
 static void service(struct bt_conn *conn, uint32_t value)
 {
-    printf("Service indicator value: %u\n", value);
+    printf("Service indicator value: %lu\n", value);
 }
 
 static void call(struct bt_conn *conn, uint32_t value)
@@ -178,17 +178,17 @@ static void call(struct bt_conn *conn, uint32_t value)
     {
         s_call_status = 0;
     }
-    printf("Call indicator value: %u\n", value);
+    printf("Call indicator value: %lu\n", value);
 }
 
 static void call_setup(struct bt_conn *conn, uint32_t value)
 {
-    printf("Call Setup indicator value: %u\n", value);
+    printf("Call Setup indicator value: %lu\n", value);
 }
 
 static void call_held(struct bt_conn *conn, uint32_t value)
 {
-    printf("Call Held indicator value: %u\n", value);
+    printf("Call Held indicator value: %lu\n", value);
     if (value == 1)
     {
         s_call_status = 2;
@@ -197,17 +197,17 @@ static void call_held(struct bt_conn *conn, uint32_t value)
 
 static void signal(struct bt_conn *conn, uint32_t value)
 {
-    printf("Signal indicator value: %u\n", value);
+    printf("Signal indicator value: %lu\n", value);
 }
 
 static void roam(struct bt_conn *conn, uint32_t value)
 {
-    printf("Roaming indicator value: %u\n", value);
+    printf("Roaming indicator value: %lu\n", value);
 }
 
 static void battery(struct bt_conn *conn, uint32_t value)
 {
-    printf("Battery indicator value: %u\n", value);
+    printf("Battery indicator value: %lu\n", value);
 }
 
 static void ring_cb(struct bt_conn *conn)
