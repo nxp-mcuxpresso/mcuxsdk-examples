@@ -216,7 +216,7 @@ m_ce_ctrl_size                      = 0x640;
 m_ce_ctrl_end                       = m_ce_ctrl_start + m_ce_ctrl_size -1;
 
 m_ce_heap_start                     = m_ce_ctrl_end + 1;
-m_ce_heap_size                      = 0x69C0;
+m_ce_heap_size                      = 0x39C0;
 m_ce_heap_end                       = m_ce_heap_start + m_ce_heap_size -1;
 
 m_upper_data1_start                 = m_ce_heap_end + 1;

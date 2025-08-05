@@ -192,9 +192,9 @@ Default address values are indicated between brackets they can be overridden if 
                           |               |
                           |               | Enable with gReserveCeRam_d=1
                           |               |
-            (0x20030000)  |               | m_upper_data1_start __HEAP_start__ (gReserveCeRam_d=1)
+            (0x2002D000)  |               | m_upper_data1_start __HEAP_start__ (gReserveCeRam_d=1)
                     - - - +---------------+ - - - - - - - -
-            (0x2002FFFF)  |               | m_ce_heap_end
+            (0x2002CFFF)  |               | m_ce_heap_end
                           |               |
                           |               | Enable with gReserveCeRam_d=1
                           |               |
@@ -548,7 +548,7 @@ if (gReserveCeRam_d)
     define symbol m_ce_ctrl_size                  = 0x640;
     define symbol m_ce_ctrl_end                   = m_ce_ctrl_start + m_ce_ctrl_size -1;
     define symbol m_ce_heap_start                 = m_ce_ctrl_end + 1;
-    define symbol m_ce_heap_size                  = 0x69C0;
+    define symbol m_ce_heap_size                  = 0x39C0;
     define symbol m_ce_heap_end                   = m_ce_heap_start + m_ce_heap_size -1;
     define symbol m_upper_data1_start             = m_ce_heap_end + 1;
     define symbol m_upper_data1_end               = m_ram1_end;
