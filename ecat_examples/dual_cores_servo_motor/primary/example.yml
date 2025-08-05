@@ -1,0 +1,19 @@
+dual_cores_ecat_servo_motor_primary_core:
+  section-type: application
+  contents:
+    meta_path: examples/ecat_examples/dual_cores_servo_motor/primary
+    project-root-path: boards/${board}/ecat_examples/dual_cores_servo_motor/${multicore_foldername}
+    document:
+      name: ecat_dual_cores_servo_motor${core_id_suffix_name}
+      category: ecat_examples
+      brief: EtherCAT dual cores servo motor example example
+      example_readme:
+      - examples/ecat_examples/dual_cores_servo_motor/readme.md
+      - ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release

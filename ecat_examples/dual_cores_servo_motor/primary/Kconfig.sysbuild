@@ -1,0 +1,14 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config secondary_board
+    string
+    default "$(board)"
+
+config secondary_toolchain
+    string
+    default "$(toolchain)"
+
+source "${SdkRootDirPath}/${board_root}/${board}/Kconfig.sysbuild"
