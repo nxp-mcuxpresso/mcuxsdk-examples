@@ -20,5 +20,12 @@ meterlibFFT3ph_test:
     lpcxpresso55s36:
     - -iar@debug
     - -iar@release
-    - -mdk@debug
-    - -mdk@release
+    frdmmcxn947:
+    - -iar@debug
+    - -iar@release
+    frdmmcxn236:
+    - -iar@debug
+    - -iar@release
+    frdmmcxa366:
+    - -iar@debug
+    - -iar@release

@@ -31,3 +31,6 @@ This example allows to measure the sense of rotation of the 3-ph mains.
 ## Supported Boards
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/demo_apps/meterlibFFT3ph_test/example_board_readme.md)
 - [LPCXpresso55S36](../../_boards/lpcxpresso55s36/demo_apps/meterlibFFT3ph_test/example_board_readme.md)
+- [FRDMMCXN947](../../_boards/lpcxpresso55s36/demo_apps/meterlibFFT3ph_test/example_board_readme.md)
+- [FRDMMCXN236](../../_boards/lpcxpresso55s36/demo_apps/meterlibFFT3ph_test/example_board_readme.md)
+- [FRDMMCXA366](../../_boards/lpcxpresso55s36/demo_apps/meterlibFFT3ph_test/example_board_readme.md)
