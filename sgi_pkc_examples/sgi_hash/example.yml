@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sgi_hash:
+  section-type: application
+  contents:
+    meta_path: examples/sgi_pkc_examples/sgi_hash/.
+    project-root-path: boards/${board}/sgi_pkc_examples/sgi_hash/${multicore_foldername}
+    document:
+      name: sgi_hash${core_id_suffix_name}
+      category: sgi_pkc_examples
+      brief: The SGI PKC application provides examples which demonstrate usage of
+        hash algorithms and a crypto library lightweight testing.
+      example_readme:
+      - examples/sgi_pkc_examples/sgi_hash/readme.md
+      - ${board_root}/${board}/sgi_pkc_examples/sgi_hash/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa266: []
+    frdmmcxa366: []

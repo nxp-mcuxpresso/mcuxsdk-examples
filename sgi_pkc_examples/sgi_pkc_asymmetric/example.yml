@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+sgi_pkc_asymmetric:
+  section-type: application
+  contents:
+    meta_path: examples/sgi_pkc_examples/sgi_pkc_asymmetric/.
+    project-root-path: boards/${board}/sgi_pkc_examples/sgi_pkc_asymmetric/${multicore_foldername}
+    document:
+      name: sgi_pkc_asymmetric${core_id_suffix_name}
+      category: sgi_pkc_examples
+      brief: The sgi PKC application provides examples which demonstrate usage of
+        asymmetric algorithms and a crypto library lightweight testing.
+      example_readme:
+      - examples/sgi_pkc_examples/sgi_pkc_asymmetric/readme.md
+      - ${board_root}/${board}/sgi_pkc_examples/sgi_pkc_asymmetric/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmmcxa266: []
+    frdmmcxa366: []
