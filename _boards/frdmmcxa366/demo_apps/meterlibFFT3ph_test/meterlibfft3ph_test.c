@@ -9,7 +9,6 @@
 #include "fsl_device_registers.h"
 #include "fsl_debug_console.h"
 #include "board.h"
-#include "app.h"
 
 #include "pin_mux.h"
 
@@ -119,7 +118,10 @@ tMETERLIBFFT3PH_DATA ui;               /* 3-PH main metering structure */
 int main(void)
 {
     /* Init board hardware. */
-    BOARD_InitHardware();
+    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootClocks();
+    BOARD_InitDebugConsole();
+    
     
     /* Init Pins */
     BOARD_InitPins();
