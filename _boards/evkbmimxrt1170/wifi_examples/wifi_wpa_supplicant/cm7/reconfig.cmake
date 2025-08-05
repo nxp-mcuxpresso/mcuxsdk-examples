@@ -83,6 +83,16 @@ mcux_add_iar_configuration(
     CC "-Ohz"
 )
 
+mcux_remove_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Oz"
+)
+
+mcux_add_mdk_configuration(
+    TARGETS flexspi_nor_release
+    CC "-Os"
+)
+
 # Add or remove Linker File Configurations
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
