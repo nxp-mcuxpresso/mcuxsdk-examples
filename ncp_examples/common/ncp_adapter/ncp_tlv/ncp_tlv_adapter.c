@@ -50,15 +50,11 @@ ncp_tlv_adapter_t ncp_tlv_adapter;
 static osa_msgq_handle_t ncp_tlv_msgq_handle; /* ncp adapter TX msgq */
 OSA_MSGQ_HANDLE_DEFINE(ncp_tlv_msgq_buff, NCP_TLV_QUEUE_LENGTH,  sizeof(void *));
 
-/* NCP adapter tx mutex for queue counter*/
-OSA_MUTEX_HANDLE_DEFINE(ncp_tlv_queue_mutex);
 /* NCP adapter tx task */
 static OSA_TASK_HANDLE_DEFINE(ncp_tlv_thread);
 
 void ncp_tlv_process(osa_task_param_t arg);
 static OSA_TASK_DEFINE(ncp_tlv_process, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, NCP_TLV_TX_TASK_STACK_SIZE, 0);
-/* NCP adapter tx queue counter */
-static int ncp_tlv_queue_len = 0;
 static bool ncp_initialized = false;
 
 /*******************************************************************************
@@ -99,12 +95,6 @@ static void ncp_tlv_free_elmt(ncp_tlv_qelem_t **qbuf)
         OSA_MemoryFree((*qbuf)->tlv_buf);
     OSA_MemoryFree(*qbuf);
     *qbuf = NULL;
-    OSA_MutexLock((osa_mutex_handle_t)ncp_tlv_queue_mutex, osaWaitForever_c);
-    if (ncp_tlv_queue_len <= 0)
-        ncp_adap_e("invalid ncp tlv queue length: %d", NCP_TLV_QUEUE_LENGTH);
-    else
-        ncp_tlv_queue_len--;
-    OSA_MutexUnlock(ncp_tlv_queue_mutex);
 }
 
 void ncp_tlv_process(osa_task_param_t arg)
@@ -143,9 +133,6 @@ static ncp_status_t ncp_tlv_tx_enque(ncp_tlv_qelem_t *qelem)
     }
     else
     {
-        OSA_MutexLock(ncp_tlv_queue_mutex, osaWaitForever_c);
-        ncp_tlv_queue_len++;
-        OSA_MutexUnlock((osa_mutex_handle_t)ncp_tlv_queue_mutex);
         NCP_TLV_STATS_INC(tx);
         ncp_adap_d("enque tlv_buf success");
     }
@@ -492,11 +479,6 @@ ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref)
 
 static ncp_status_t ncp_tlv_tx_init(void)
 {
-    if (OSA_MutexCreate(ncp_tlv_queue_mutex) != KOSA_StatusSuccess)
-    {
-        ncp_adap_e("%s, ncp tx mutex create fail");
-        return NCP_STATUS_ERROR;
-    }
     ncp_tlv_msgq_handle = (osa_msgq_handle_t)ncp_tlv_msgq_buff;
     if (OSA_MsgQCreate(ncp_tlv_msgq_handle, NCP_TLV_QUEUE_LENGTH,  sizeof(void *)) != KOSA_StatusSuccess)
     {
@@ -527,13 +509,6 @@ static void ncp_tlv_tx_deinit(void)
             ncp_adap_d("ncp adapter queue flush completed");
             break;
         }
-    }
-    OSA_MutexLock(ncp_tlv_queue_mutex, osaWaitForever_c);
-    ncp_tlv_queue_len = 0;
-    OSA_MutexUnlock(ncp_tlv_queue_mutex);
-    if (OSA_MutexDestroy(ncp_tlv_queue_mutex) != KOSA_StatusSuccess)
-    {
-        ncp_adap_e("ncp adapter tx deint queue mutex fail");
     }
     if (OSA_MsgQDestroy(ncp_tlv_msgq_handle) != KOSA_StatusSuccess)
     {
