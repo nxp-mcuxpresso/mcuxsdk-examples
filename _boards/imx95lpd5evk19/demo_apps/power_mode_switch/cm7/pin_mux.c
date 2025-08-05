@@ -40,8 +40,6 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, OD: DISABLED, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
   - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: V46, peripheral: LPI2C4, signal: lpi2c_sda, pin_signal: GPIO_IO30, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: V48, peripheral: LPI2C4, signal: lpi2c_scl, pin_signal: GPIO_IO31, SION: ENABLED, OD: ENABLED, PD: DISABLED}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -62,16 +60,6 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO30__LPI2C4_SDA, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO31__LPI2C4_SCL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
 }
 
 /***********************************************************************************************************************
