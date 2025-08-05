@@ -777,7 +777,7 @@ int wlan_ncp_get_current_rssi(short * rssi)
 uint8_t wlan_ncp_get_current_channel()
 {
     uint8_t ret = 0;
-    uint8_t current_channel;
+    uint8_t current_channel = 0;
     uint8_t * cmd_resp_buf = OSA_MemoryAllocate(sizeof(uint8_t));
     if(cmd_resp_buf == NULL)
     {

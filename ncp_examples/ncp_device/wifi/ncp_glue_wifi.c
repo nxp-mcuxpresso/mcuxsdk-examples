@@ -4338,7 +4338,7 @@ static int wlan_ncp_get_pkt_stats(void *tlv)
 
     NCP_CMD_PKT_STATS *pkt_stats = (NCP_CMD_PKT_STATS *)&cmd_res->params.get_pkt_stats;
 
-    (void)memcpy(&pkt_stats, &stats, sizeof(wlan_pkt_stats_t));
+    (void)memcpy(pkt_stats, &stats, sizeof(wlan_pkt_stats_t));
 
 done:
     if(ret == -WM_FAIL)

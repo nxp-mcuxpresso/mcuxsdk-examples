@@ -26,6 +26,7 @@
 #include "host_sleep.h"
 
 #include <lwip/sockets.h>
+#include <stddef.h>
 
 void ncp_inet_set_bit(int bit_index);
 void ncp_inet_clear_bit(int bit_index);
@@ -118,16 +119,18 @@ static int wlan_ncp_inet_socket(void *data)
 static int wlan_ncp_inet_connect(void *data)
 {
     int ret = 0;
+    int sa_data_offset = 0;
     ncp_d("NCP: run %s!\r\n", __func__);
     NCP_CMD_INET_CON_CFG *tlv = (NCP_CMD_INET_CON_CFG *)data;
     union ncp_sockaddr_aligned align_name;
     memset(&align_name, 0, sizeof(align_name));
-    struct sockaddr name = align_name.sa;
+    struct sockaddr *name = &align_name.sa;
     struct linux_sockaddr *linux_name = (struct linux_sockaddr *)tlv->sockaddr;
-    name.sa_family = linux_name->sa_family;
-    name.sa_len = tlv->socklen;
-    memcpy(name.sa_data, linux_name->sa_data, tlv->socklen);
-    ret = connect(tlv->socket, &name, tlv->socklen);
+    name->sa_family = linux_name->sa_family;
+    sa_data_offset = offsetof(struct sockaddr, sa_data);
+    name->sa_len = tlv->socklen;
+    memcpy(name->sa_data, linux_name->sa_data, tlv->socklen-sa_data_offset);
+    ret = connect(tlv->socket, name, tlv->socklen);
     /* for tcp socket, select this socket recv data after connect */
     if (!ret)
     {
@@ -154,17 +157,19 @@ static int wlan_ncp_inet_connect(void *data)
 static int wlan_ncp_inet_bind(void *data)
 {
     int ret = 0;
+    int sa_data_offset = 0;
     ncp_d("NCP: run %s!\r\n", __func__);
     NCP_CMD_INET_BIND_CFG *tlv = (NCP_CMD_INET_BIND_CFG *)data;
 
     union ncp_sockaddr_aligned align_name;
     memset(&align_name, 0, sizeof(align_name));
-    struct sockaddr name = align_name.sa;
+    struct sockaddr *name = &align_name.sa;
     struct linux_sockaddr *linux_name = (struct linux_sockaddr *)tlv->sockaddr;
-    name.sa_family = linux_name->sa_family;
-    name.sa_len = tlv->socklen;
-    memcpy(name.sa_data, linux_name->sa_data, NCP_IPADDR_DATA_LEN);
-    ret                          = bind(tlv->socket, &name, tlv->socklen);
+    name->sa_family = linux_name->sa_family;
+    name->sa_len = tlv->socklen;
+    sa_data_offset = offsetof(struct sockaddr, sa_data);
+    memcpy(name->sa_data, linux_name->sa_data, tlv->socklen-sa_data_offset);
+    ret                          = bind(tlv->socket, name, tlv->socklen);
     NCPCmd_DS_INET_COMMAND *cmd_res     = (NCPCmd_DS_INET_COMMAND *)wlan_ncp_get_response_buffer();
     NCP_CMD_INET_RESP_CON_CFG *tlv_res = (NCP_CMD_INET_RESP_CON_CFG *)&cmd_res->params.inet_bind;
     tlv_res->ret               = ret;
@@ -229,13 +234,13 @@ static int wlan_ncp_inet_accept(void *data)
     ncp_d("NCP: run %s!\r\n", __func__);
     int ret           = WM_SUCCESS;
     int new_socket    = -1;
-    socklen_t length;
-
+    socklen_t length = sizeof(union ncp_sockaddr_aligned);
+    unsigned long sa_data_offset = 0;
     union ncp_sockaddr_aligned align_name;
     memset(&align_name, 0, sizeof(align_name));
-    struct sockaddr client_addr = align_name.sa;
+    struct sockaddr *client_addr = &align_name.sa;
     NCP_CMD_INET_ACCEPT_CFG *tlv = (NCP_CMD_INET_ACCEPT_CFG *)data;
-    new_socket                  = accept(tlv->socket, &client_addr, &length);
+    new_socket                  = accept(tlv->socket, (struct sockaddr *)&align_name.sin6, &length);
     if (new_socket >= 0)
     {
         set_socket_socket(new_socket, SOCK_STREAM);
@@ -247,8 +252,9 @@ static int wlan_ncp_inet_accept(void *data)
     tlv_res->errno             = errno;
     tlv_res->socklen           = length;
     struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
-    linux_addr->sa_family      = client_addr.sa_family;
-    memcpy(linux_addr->sa_data, client_addr.sa_data, NCP_IPADDR_DATA_LEN);
+    linux_addr->sa_family      = client_addr->sa_family;
+    sa_data_offset = offsetof(struct sockaddr, sa_data);
+    memcpy(linux_addr->sa_data, ((char *)&align_name) +sa_data_offset, length-sa_data_offset);
     cmd_res->header.cmd        = NCP_RSP_WLAN_INET_ACCEPT;
     cmd_res->header.size       = NCP_CMD_HEADER_LEN;
     cmd_res->header.seqnum     = 0x00;
@@ -262,21 +268,22 @@ static int wlan_ncp_inet_getsockname(void *data)
 {
     ncp_d("NCP: run %s!\r\n", __func__);
     int ret           = WM_SUCCESS;
-    socklen_t length;
+    int sa_data_offset = 0;
+    socklen_t length = sizeof(union ncp_sockaddr_aligned);
     union ncp_sockaddr_aligned align_name;
     memset(&align_name, 0, sizeof(align_name));
-    struct sockaddr client_addr;
-    memset(&client_addr, 0, sizeof(client_addr));
+    struct sockaddr *client_addr = &align_name.sa;
     NCP_CMD_INET_GETSOCKNAME_CFG *tlv = (NCP_CMD_INET_GETSOCKNAME_CFG *)data;
-    ret                  = getsockname(tlv->socket, &client_addr, &length);
+    ret                  = getsockname(tlv->socket, client_addr, &length);
     NCPCmd_DS_INET_COMMAND *cmd_res     = (NCPCmd_DS_INET_COMMAND *)wlan_ncp_get_response_buffer();
     NCP_CMD_INET_RESP_GETSOCKNAME_CFG *tlv_res = (NCP_CMD_INET_RESP_GETSOCKNAME_CFG *)&cmd_res->params.inet_getsockname;
     tlv_res->ret               = ret;
     tlv_res->errno             = errno;
     tlv_res->socklen           = length;
     struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
-    linux_addr->sa_family      = client_addr.sa_family;
-    memcpy(linux_addr->sa_data, client_addr.sa_data, NCP_IPADDR_DATA_LEN);
+    linux_addr->sa_family      = client_addr->sa_family;
+    sa_data_offset = offsetof(struct sockaddr, sa_data);
+    memcpy(linux_addr->sa_data, ((char *)&align_name) +sa_data_offset, length-sa_data_offset);
     cmd_res->header.cmd        = NCP_RSP_WLAN_INET_GETSOCKNAME;
     cmd_res->header.size       = NCP_CMD_HEADER_LEN;
     cmd_res->header.seqnum     = 0x00;
@@ -290,21 +297,22 @@ static int wlan_ncp_inet_getpeername(void *data)
 {
     ncp_d("NCP: run %s!\r\n", __func__);
     int ret           = WM_SUCCESS;
-    socklen_t length;
+    int sa_data_offset = 0;
+    socklen_t length = sizeof(union ncp_sockaddr_aligned);
     union ncp_sockaddr_aligned align_name;
     memset(&align_name, 0, sizeof(align_name));
-    struct sockaddr client_addr;
-    memset(&client_addr, 0, sizeof(client_addr));
+    struct sockaddr *client_addr = &align_name.sa;
     NCP_CMD_INET_GETPEERNAME_CFG *tlv = (NCP_CMD_INET_GETPEERNAME_CFG *)data;
-    ret                  = getpeername(tlv->socket, &client_addr, &length);
+    ret                  = getpeername(tlv->socket, client_addr, &length);
     NCPCmd_DS_INET_COMMAND *cmd_res     = (NCPCmd_DS_INET_COMMAND *)wlan_ncp_get_response_buffer();
     NCP_CMD_INET_RESP_GETPEERNAME_CFG *tlv_res = (NCP_CMD_INET_RESP_GETPEERNAME_CFG *)&cmd_res->params.inet_getpeername;
     tlv_res->ret               = ret;
     tlv_res->errno             = errno;
     tlv_res->socklen           = length;
     struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
-    linux_addr->sa_family      = client_addr.sa_family;
-    memcpy(linux_addr->sa_data, client_addr.sa_data, NCP_IPADDR_DATA_LEN);
+    linux_addr->sa_family      = client_addr->sa_family;
+    sa_data_offset = offsetof(struct sockaddr, sa_data);
+    memcpy(linux_addr->sa_data, ((char *)&align_name) +sa_data_offset, length-sa_data_offset);
     cmd_res->header.cmd        = NCP_RSP_WLAN_INET_GETPEERNAME;
     cmd_res->header.size       = NCP_CMD_HEADER_LEN;
     cmd_res->header.seqnum     = 0x00;
@@ -312,7 +320,6 @@ static int wlan_ncp_inet_getpeername(void *data)
     cmd_res->header.size += sizeof(NCP_CMD_INET_RESP_GETPEERNAME_CFG);
     return WM_SUCCESS;
 }
-
 
 static int sockopt_linuxtolwip(int sockopt)
 {
@@ -345,7 +352,7 @@ static int wlan_ncp_inet_getsockopt(void *data)
 {
     ncp_d("NCP: run %s!\r\n", __func__);
     int ret           = WM_SUCCESS;
-    socklen_t length;
+    socklen_t length = 0;
     NCP_CMD_INET_GETSOCKOPT_CFG *tlv = (NCP_CMD_INET_GETSOCKOPT_CFG *)data;
     char optval[64] = {0};
     tlv->level = sockopt_linuxtolwip(tlv->level);
@@ -370,7 +377,7 @@ static int wlan_ncp_inet_setsockopt(void *data)
 {
     ncp_d("NCP: run %s!\r\n", __func__);
     int ret           = WM_SUCCESS;
-    socklen_t length;
+
     NCP_CMD_INET_SETSOCKOPT_CFG *tlv = (NCP_CMD_INET_SETSOCKOPT_CFG *)data;
     char optval[64] = {0};
     tlv->level = sockopt_linuxtolwip(tlv->level);
@@ -419,6 +426,7 @@ static int wlan_ncp_inet_fcntl(void *data)
     NCP_CMD_INET_FCNTL_CFG *tlv = (NCP_CMD_INET_FCNTL_CFG *)data;
     
     ret                  = lwip_fcntl(tlv->fd, tlv->cmd, tlv->val);
+
     NCPCmd_DS_INET_COMMAND *cmd_res     = (NCPCmd_DS_INET_COMMAND *)wlan_ncp_get_response_buffer();
     NCP_CMD_INET_RESP_FCNTL_CFG *tlv_res = (NCP_CMD_INET_RESP_FCNTL_CFG *)&cmd_res->params.inet_fcntl;
     tlv_res->ret               = ret;
@@ -505,6 +513,7 @@ static void socket_recv_task(void *arg)
     int recv_size = 0;
     uint8_t *recv_buf = 0;
     int chksum_len = 4;
+    int sa_data_offset = offsetof(struct sockaddr, sa_data);
 
     while(1)
     {
@@ -557,7 +566,7 @@ static void socket_recv_task(void *arg)
                     }
                     struct linux_sockaddr *linux_addr = (struct linux_sockaddr *)tlv_res->sockaddr;
                     linux_addr->sa_family      = client_addr.sa.sa_family;
-                    memcpy(linux_addr->sa_data, client_addr.sa.sa_data, NCP_IPADDR_DATA_LEN);
+                    memcpy(linux_addr->sa_data, client_addr.sa.sa_data, socklen-sa_data_offset);
                     tlv_res->socklen = socklen;
                     ncp_inet_prepare_socket_recv_resp(recv_buf);
                     if (wifi_ncp_forward_data(recv_buf) != WM_SUCCESS)
@@ -627,7 +636,7 @@ static int ncp_inet_send_fail_resp(int socket, int status, int errorno)
         goto exit;
     }
 
-    memset(buf, '0', buf_len);
+    memset(buf, 0, buf_len);
     /* reserve memory for NCP_COMMAND */
     tlv_res = (NCP_CMD_INET_RESP_SEND_CFG *)(buf + sizeof(NCP_COMMAND));
     tlv_res->ret = status;
@@ -668,13 +677,15 @@ static int wlan_ncp_inet_sendto(void *data)
     int ret = WM_SUCCESS;
     ncp_d("NCP: run %s!\r\n", __func__);
     NCP_CMD_INET_SENDTO_CFG *tlv = (NCP_CMD_INET_SENDTO_CFG *)data;
-    struct sockaddr *to = (struct sockaddr *)tlv->sockaddr;
+    union ncp_sockaddr_aligned align_name;
+    memset(&align_name, 0, sizeof(align_name));
+    struct sockaddr *to = &align_name.sa;
     struct linux_sockaddr *linux_name = (struct linux_sockaddr *)tlv->sockaddr;
     to->sa_family = linux_name->sa_family;
     to->sa_len = tlv->socklen;
-    memcpy(to->sa_data, linux_name->sa_data, NCP_IPADDR_DATA_LEN);
+    memcpy(to->sa_data, linux_name->sa_data, tlv->socklen);
     if (tlv->socklen)
-    {  
+    {
         ret = sendto(tlv->socket, tlv->send_data, tlv->size, tlv->flags, to, tlv->socklen);
     }
     else

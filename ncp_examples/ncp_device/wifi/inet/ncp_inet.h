@@ -329,9 +329,7 @@ typedef unsigned short int linux_sa_family_t;
 #define NCP_IPADDR_DATA_LEN   (2+3*4+3*4)
 struct linux_sockaddr {
     linux_sa_family_t	sa_family;	/* address family, AF_xxx	*/
-    char        sa_data[2];
-    u32_t       sa_data2[3];
-    u32_t       sa_data3[3];
+    char        sa_data[26];
 };
 
 union ncp_sockaddr_aligned {
