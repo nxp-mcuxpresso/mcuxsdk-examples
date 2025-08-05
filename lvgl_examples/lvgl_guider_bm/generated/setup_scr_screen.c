@@ -19,6 +19,7 @@ void setup_scr_screen(lv_ui *ui)
     ui->rect = lv_obj_create(ui->screen);
     lv_obj_align(ui->rect, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_size(ui->rect, LV_PCT(40), LV_PCT(40));
+    lv_obj_set_style_bg_color(ui->rect, lv_color_make(0, 0, 255), LV_PART_MAIN);
 
     ui->label = lv_label_create(ui->rect);
     lv_label_set_text(ui->label, "Drag Me");
