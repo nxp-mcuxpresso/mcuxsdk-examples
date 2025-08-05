@@ -1,15 +1,17 @@
+# yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
+
 co_device_basic:
   section-type: application
   contents:
     meta_path: examples/canopennode_examples/device/basic
-    project-root-path: boards/${board}/canopennode_examples/device/basic/${multicore_foldername}
+    project-root-path: boards/${board}/canopennode_examples/basic/${multicore_foldername}
     document:
       name: co_device_basic${core_id_suffix_name}
       category: canopennode_examples
       brief: The co_device_basic example shows CANopen device basic feature on the CANopenNode stack.
       example_readme:
       - examples/canopennode_examples/device/basic/readme.md
-      - ${board_root}/${board}/canopennode_examples/device/basic/example_board_readme.md
+      - ${board_root}/${board}/canopennode_examples/basic/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa156: []
