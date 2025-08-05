@@ -28,3 +28,10 @@ secure_faults_s:
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
+    mimxrt700evk@cm33_core0:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release

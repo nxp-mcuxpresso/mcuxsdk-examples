@@ -130,6 +130,7 @@
 #define BOARD_MIPI_TE_GPIO_IRQn        GPIO30_IRQn
 #define BOARD_MIPI_TE_GPIO_IRQ_Handler GPIO30_IRQHandler
 
+#if defined(GPIO8)
 #define LED_RED_INIT(output)                                           \
     GPIO_PinWrite(BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, output); \
     BOARD_LED_RED_GPIO->PDDR |= (1U << BOARD_LED_RED_GPIO_PIN)                         /*!< Enable target LED_RED */
@@ -137,6 +138,7 @@
 #define LED_RED_OFF() GPIO_PortClear(BOARD_LED_RED_GPIO, 1U << BOARD_LED_RED_GPIO_PIN) /*!< Turn off target LED_RED */
 #define LED_RED_TOGGLE() \
     GPIO_PortToggle(BOARD_LED_RED_GPIO, 1U << BOARD_LED_RED_GPIO_PIN)                  /*!< Toggle on target LED_RED1 */
+#endif
 
 #define LED_GREEN_INIT(output)                                             \
     GPIO_PinWrite(BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, output); \
