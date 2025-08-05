@@ -36,6 +36,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    TSTMR_Init(EXAMPLE_TSTMR);
+
     ts = TSTMR_ReadTimeStamp(EXAMPLE_TSTMR);
     PRINTF("\r\n Timestamp1 = %x%x\r\n", (uint32_t)(ts >> 32), (uint32_t)ts);
 
