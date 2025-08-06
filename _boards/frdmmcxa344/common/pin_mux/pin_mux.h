@@ -140,6 +140,12 @@ void BOARD_InitSPIPins(void);
  */
 void BOARD_InitCANPins(void);
 
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSmartDmaKeyPadPins(void);
+
 #if defined(__cplusplus)
 }
 #endif

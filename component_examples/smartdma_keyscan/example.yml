@@ -14,5 +14,6 @@ smartdma_keyscan:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxa266: []
+    frdmmcxa344: []
     frdmmcxa346: []
     frdmmcxa366: []

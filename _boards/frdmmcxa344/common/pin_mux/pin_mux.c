@@ -19,11 +19,11 @@ package_id: MCXA344VLL
 mcu_data: ksdk2_0
 processor_version: 0.0.0
 pin_labels:
-- {pin_num: '100', pin_signal: P1_7/WUU0_IN9/TRIG_OUT2/LPUART2_CTS_B/CT_INP7/CAN0_RXD/ADC0_A23, label: SW2, identifier: SW2}
-- {pin_num: '80', pin_signal: P0_6/ISPMODE_N/LPI2C0_HREQ/LPSPI0_PCS1/CT_INP2/CMP1_OUT/CLKOUT/ADC0_A15, label: SW3, identifier: SW3}
-- {pin_num: '57', pin_signal: P3_18/CT2_MAT0/PWM0_X0/PWM1_X0, label: LED_RED, identifier: LED_RED}
-- {pin_num: '56', pin_signal: P3_19/CT2_MAT1/PWM0_X1/PWM1_X1, label: LED_GREEN, identifier: LED_GREEN}
-- {pin_num: '54', pin_signal: P3_21/TRIG_OUT1/LPUART1_TXD/CT2_MAT3/PWM0_X3/PWM1_B3, label: LED_BLUE, identifier: LED_BLUE}
+- {pin_num: '100', pin_signal: P1_7/WUU0_IN9/TRIG_OUT2/LPUART2_CTS_B/CT_INP7/SMARTDMA_PIO3/CAN0_RXD/ADC0_A23, label: SW2, identifier: SW2}
+- {pin_num: '80', pin_signal: P0_6/ISPMODE_N/LPI2C0_HREQ/LPSPI0_PCS1/CT_INP2/SMARTDMA_PIO2/CMP1_OUT/CLKOUT/ADC0_A15, label: SW3, identifier: SW3}
+- {pin_num: '57', pin_signal: P3_18/CT2_MAT0/PWM0_X0/PWM1_X0/SMARTDMA_PIO18, label: LED_RED, identifier: LED_RED}
+- {pin_num: '56', pin_signal: P3_19/CT2_MAT1/PWM0_X1/PWM1_X1/SMARTDMA_PIO19, label: LED_GREEN, identifier: LED_GREEN}
+- {pin_num: '54', pin_signal: P3_21/TRIG_OUT1/LPUART1_TXD/CT2_MAT3/PWM0_X3/PWM1_B3/SMARTDMA_PIO21, label: LED_BLUE, identifier: LED_BLUE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -50,10 +50,10 @@ void BOARD_InitBootPins(void)
 BOARD_InitDEBUG_UARTPins:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '25', peripheral: LPUART2, signal: RX, pin_signal: P2_3/WUU0_IN19/TRIG_IN7/LPUART0_CTS_B/LPUART2_RXD/CT_INP13/CT2_MAT3/ADC0_A3/CMP1_IN0/ADC1_A4, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '24', peripheral: LPUART2, signal: TX, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/ADC0_A4/CMP0_IN0/CMP1_INN4/CMP2_INN4, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '25', peripheral: LPUART2, signal: RX, pin_signal: P2_3/WUU0_IN19/TRIG_IN7/LPUART0_CTS_B/LPUART2_RXD/CT_INP13/CT2_MAT3/SMARTDMA_PIO27/ADC0_A3/CMP1_IN0/ADC1_A4,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '24', peripheral: LPUART2, signal: TX, pin_signal: P2_2/TRIG_IN6/LPUART0_RTS_B/LPUART2_TXD/CT_INP12/CT2_MAT2/SMARTDMA_PIO26/ADC0_A4/CMP0_IN0/CMP1_INN4/CMP2_INN4,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -130,11 +130,11 @@ void BOARD_InitDEBUG_UARTPins(void)
 BOARD_InitLEDsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '57', peripheral: GPIO3, signal: 'GPIO, 18', pin_signal: P3_18/CT2_MAT0/PWM0_X0/PWM1_X0, direction: OUTPUT, gpio_init_state: 'true', slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '56', peripheral: GPIO3, signal: 'GPIO, 19', pin_signal: P3_19/CT2_MAT1/PWM0_X1/PWM1_X1, direction: OUTPUT, gpio_init_state: 'true', slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '54', peripheral: GPIO3, signal: 'GPIO, 21', pin_signal: P3_21/TRIG_OUT1/LPUART1_TXD/CT2_MAT3/PWM0_X3/PWM1_B3, direction: OUTPUT, gpio_init_state: 'true',
+  - {pin_num: '57', peripheral: GPIO3, signal: 'GPIO, 18', pin_signal: P3_18/CT2_MAT0/PWM0_X0/PWM1_X0/SMARTDMA_PIO18, direction: OUTPUT, gpio_init_state: 'true',
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '56', peripheral: GPIO3, signal: 'GPIO, 19', pin_signal: P3_19/CT2_MAT1/PWM0_X1/PWM1_X1/SMARTDMA_PIO19, direction: OUTPUT, gpio_init_state: 'true',
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '54', peripheral: GPIO3, signal: 'GPIO, 21', pin_signal: P3_21/TRIG_OUT1/LPUART1_TXD/CT2_MAT3/PWM0_X3/PWM1_B3/SMARTDMA_PIO21, direction: OUTPUT, gpio_init_state: 'true',
     slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -260,10 +260,10 @@ void BOARD_InitLEDsPins(void)
 BOARD_InitBUTTONsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '100', peripheral: GPIO1, signal: 'GPIO, 7', pin_signal: P1_7/WUU0_IN9/TRIG_OUT2/LPUART2_CTS_B/CT_INP7/CAN0_RXD/ADC0_A23, direction: INPUT, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '80', peripheral: GPIO0, signal: 'GPIO, 6', pin_signal: P0_6/ISPMODE_N/LPI2C0_HREQ/LPSPI0_PCS1/CT_INP2/CMP1_OUT/CLKOUT/ADC0_A15, direction: INPUT, slew_rate: fast,
-    open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '100', peripheral: GPIO1, signal: 'GPIO, 7', pin_signal: P1_7/WUU0_IN9/TRIG_OUT2/LPUART2_CTS_B/CT_INP7/SMARTDMA_PIO3/CAN0_RXD/ADC0_A23, direction: INPUT,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '80', peripheral: GPIO0, signal: 'GPIO, 6', pin_signal: P0_6/ISPMODE_N/LPI2C0_HREQ/LPSPI0_PCS1/CT_INP2/SMARTDMA_PIO2/CMP1_OUT/CLKOUT/ADC0_A15, direction: INPUT,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -364,14 +364,15 @@ void BOARD_InitBUTTONsPins(void)
 BOARD_InitI2CPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '2', peripheral: LPI2C0, signal: SCL, pin_signal: P1_9/FREQME_CLK_IN1/LPUART1_TXD/LPI2C0_SCL/CT_INP9/CT0_MAT3, slew_rate: fast, open_drain: disable,
+  - {pin_num: '2', peripheral: LPI2C0, signal: SCL, pin_signal: P1_9/FREQME_CLK_IN1/LPUART1_TXD/LPI2C0_SCL/CT_INP9/CT0_MAT3/SMARTDMA_PIO5, slew_rate: fast, open_drain: disable,
     drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '1', peripheral: LPI2C0, signal: SDA, pin_signal: P1_8/WUU0_IN10/FREQME_CLK_IN0/LPUART1_RXD/LPI2C0_SDA/CT_INP8/CT0_MAT2, slew_rate: fast, open_drain: disable,
-    drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '52', peripheral: LPI2C1, signal: SCL, pin_signal: P3_27/WUU0_IN30/TRIG_OUT7/LPI2C1_SCL/CT_INP13/PWM1_A3, slew_rate: fast, open_drain: disable, drive_strength: low,
-    extra_drive_strength: normal, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '51', peripheral: LPI2C1, signal: SDA, pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C1_SDA/CT_INP12/PWM1_B3, slew_rate: fast, open_drain: disable, drive_strength: low,
-    extra_drive_strength: normal, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '1', peripheral: LPI2C0, signal: SDA, pin_signal: P1_8/WUU0_IN10/FREQME_CLK_IN0/LPUART1_RXD/LPI2C0_SDA/CT_INP8/CT0_MAT2/SMARTDMA_PIO4, slew_rate: fast,
+    open_drain: disable, drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable,
+    invert_input: normal}
+  - {pin_num: '52', peripheral: LPI2C1, signal: SCL, pin_signal: P3_27/WUU0_IN30/TRIG_OUT7/LPI2C1_SCL/CT_INP13/PWM1_A3/SMARTDMA_PIO27, slew_rate: fast, open_drain: disable,
+    drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '51', peripheral: LPI2C1, signal: SDA, pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C1_SDA/CT_INP12/PWM1_B3/SMARTDMA_PIO28, slew_rate: fast, open_drain: disable,
+    drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -394,6 +395,8 @@ void BOARD_InitI2CPins(void)
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
     /* LPI2C1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kLPI2C1_RST_SHIFT_RSTn);
+    /* GPIO3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
     /* PORT3 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
 
@@ -504,14 +507,14 @@ void BOARD_InitI2CPins(void)
 BOARD_InitSPIPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '67', peripheral: LPSPI1, signal: SCK, pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2, slew_rate: fast, open_drain: disable, drive_strength: low,
-    pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '68', peripheral: LPSPI1, signal: IN, pin_signal: P3_9/TRIG_IN4/LPSPI1_SDI/LPUART1_TXD/CT_INP5/PWM0_B1, slew_rate: fast, open_drain: disable, drive_strength: low,
-    pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '69', peripheral: LPSPI1, signal: OUT, pin_signal: P3_8/WUU0_IN23/TRIG_IN3/LPSPI1_SDO/LPUART1_RXD/CT_INP4/PWM0_A1/CLKOUT, slew_rate: fast, open_drain: disable,
+  - {pin_num: '67', peripheral: LPSPI1, signal: SCK, pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2/SMARTDMA_PIO10, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '66', peripheral: LPSPI1, signal: PCS0, pin_signal: P3_11/WUU0_IN24/TRIG_IN6/LPSPI1_PCS0/LPUART1_CTS_B/CT1_MAT1/PWM0_B2, slew_rate: fast, open_drain: disable,
+  - {pin_num: '68', peripheral: LPSPI1, signal: IN, pin_signal: P3_9/TRIG_IN4/LPSPI1_SDI/LPUART1_TXD/CT_INP5/PWM0_B1/SMARTDMA_PIO9, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '69', peripheral: LPSPI1, signal: OUT, pin_signal: P3_8/WUU0_IN23/TRIG_IN3/LPSPI1_SDO/LPUART1_RXD/CT_INP4/PWM0_A1/SMARTDMA_PIO8/CLKOUT, slew_rate: fast,
+    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '66', peripheral: LPSPI1, signal: PCS0, pin_signal: P3_11/WUU0_IN24/TRIG_IN6/LPSPI1_PCS0/LPUART1_CTS_B/CT1_MAT1/PWM0_B2/SMARTDMA_PIO11, slew_rate: fast,
+    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: '92', peripheral: LPSPI0, signal: SCK, pin_signal: P1_1/TRIG_IN1/LPSPI0_SCK/LPI2C1_SCL/CT_INP5/CT0_MAT3/ADC0_A17/CMP1_IN3, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: '93', peripheral: LPSPI0, signal: IN, pin_signal: P1_2/TRIG_OUT0/LPSPI0_SDI/LPI2C1_SDAS/CT1_MAT0/CT_INP0/CAN0_TXD/ADC0_A18/CMP2_IN3, slew_rate: fast,
@@ -538,6 +541,8 @@ void BOARD_InitSPIPins(void)
     CLOCK_EnableClock(kCLOCK_GatePORT3);
     /* LPSPI0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kLPSPI0_RST_SHIFT_RSTn);
+    /* GPIO1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
     /* PORT1 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
     /* FLEXCAN0 peripheral is released from reset */
@@ -754,8 +759,8 @@ void BOARD_InitSPIPins(void)
 BOARD_InitCANPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
-  - {pin_num: '4', peripheral: CAN0, signal: RX, pin_signal: P1_11/WUU0_IN11/TRIG_OUT2/LPUART1_CTS_B/LPI2C0_SCLS/CT2_MAT1/CAN0_RXD/ADC1_A9, slew_rate: fast, open_drain: disable,
-    drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '4', peripheral: CAN0, signal: RX, pin_signal: P1_11/WUU0_IN11/TRIG_OUT2/LPUART1_CTS_B/LPI2C0_SCLS/CT2_MAT1/SMARTDMA_PIO7/CAN0_RXD/ADC1_A9, slew_rate: fast,
+    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: '93', peripheral: CAN0, signal: TX, pin_signal: P1_2/TRIG_OUT0/LPSPI0_SDI/LPI2C1_SDAS/CT1_MAT0/CT_INP0/CAN0_TXD/ADC0_A18/CMP2_IN3, slew_rate: fast,
     open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -778,6 +783,8 @@ void BOARD_InitCANPins(void)
     RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
     /* LPSPI0 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kLPSPI0_RST_SHIFT_RSTn);
+    /* GPIO1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
 
     const port_pin_config_t port1_11_pin4_config = {/* Internal pull-up/down resistor is disabled */
                                                     .pullSelect = kPORT_PullDisable,
@@ -828,6 +835,353 @@ void BOARD_InitCANPins(void)
                                                     .lockRegister = kPORT_UnlockRegister};
     /* PORT1_2 (pin 93) is configured as CAN0_TXD */
     PORT_SetPinConfig(PORT1, 2U, &port1_2_pin93_config);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitSmartDmaKeyPadPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '51', peripheral: GPIO3, signal: 'GPIO, 28', pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C1_SDA/CT_INP12/PWM1_B3/SMARTDMA_PIO28, direction: INPUT, slew_rate: fast,
+    open_drain: disable, drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '51', peripheral: WUU0, signal: 'P, 26', pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C1_SDA/CT_INP12/PWM1_B3/SMARTDMA_PIO28}
+  - {pin_num: '52', peripheral: GPIO3, signal: 'GPIO, 27', pin_signal: P3_27/WUU0_IN30/TRIG_OUT7/LPI2C1_SCL/CT_INP13/PWM1_A3/SMARTDMA_PIO27, direction: INPUT, slew_rate: fast,
+    open_drain: disable, drive_strength: low, extra_drive_strength: normal, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '52', peripheral: WUU0, signal: 'P, 30', pin_signal: P3_27/WUU0_IN30/TRIG_OUT7/LPI2C1_SCL/CT_INP13/PWM1_A3/SMARTDMA_PIO27}
+  - {pin_num: '98', peripheral: GPIO1, signal: 'GPIO, 5', pin_signal: P1_5/FREQME_CLK_IN1/LPSPI0_PCS2/LPUART2_TXD/CT1_MAT3/SMARTDMA_PIO1/ADC0_A21/CMP1_IN2, direction: INPUT,
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '97', peripheral: GPIO1, signal: 'GPIO, 4', pin_signal: P1_4/WUU0_IN8/FREQME_CLK_IN0/LPSPI0_PCS3/LPUART2_RXD/CT1_MAT2/SMARTDMA_PIO0/ADC0_A20/CMP0_IN2,
+    direction: INPUT, slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '97', peripheral: WUU0, signal: 'P, 8', pin_signal: P1_4/WUU0_IN8/FREQME_CLK_IN0/LPSPI0_PCS3/LPUART2_RXD/CT1_MAT2/SMARTDMA_PIO0/ADC0_A20/CMP0_IN2}
+  - {pin_num: '92', peripheral: GPIO1, signal: 'GPIO, 1', pin_signal: P1_1/TRIG_IN1/LPSPI0_SCK/LPI2C1_SCL/CT_INP5/CT0_MAT3/ADC0_A17/CMP1_IN3, direction: OUTPUT, gpio_init_state: 'true',
+    slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '93', peripheral: GPIO1, signal: 'GPIO, 2', pin_signal: P1_2/TRIG_OUT0/LPSPI0_SDI/LPI2C1_SDAS/CT1_MAT0/CT_INP0/CAN0_TXD/ADC0_A18/CMP2_IN3, direction: OUTPUT,
+    gpio_init_state: 'true', slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '91', peripheral: GPIO1, signal: 'GPIO, 0', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/ADC0_A16/CMP0_IN3,
+    direction: OUTPUT, gpio_init_state: 'true', slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable,
+    input_buffer: enable, invert_input: normal}
+  - {pin_num: '91', peripheral: WUU0, signal: 'P, 6', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/ADC0_A16/CMP0_IN3}
+  - {pin_num: '91', peripheral: LPTMR0, signal: 'ALT, 3', pin_signal: P1_0/WUU0_IN6/LPTMR0_ALT3/TRIG_IN0/LPSPI0_SDO/LPI2C1_SDA/CT_INP4/CT0_MAT2/ADC0_A16/CMP0_IN3}
+  - {pin_num: '99', peripheral: GPIO1, signal: 'GPIO, 6', pin_signal: P1_6/TRIG_IN2/LPSPI0_PCS1/LPUART2_RTS_B/CT_INP6/SMARTDMA_PIO2/CAN0_TXD/ADC0_A22, direction: OUTPUT,
+    gpio_init_state: 'true', slew_rate: fast, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+  - {pin_num: '70', peripheral: SmartDMA0, signal: 'SMARTDMA_PIO, 7', pin_signal: P3_7/TRIG_IN2/LPSPI1_PCS2/LPUART3_CTS_B/PWM0_B3/PWM1_B0/SMARTDMA_PIO7, slew_rate: fast,
+    open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSmartDmaKeyPadPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitSmartDmaKeyPadPins(void)
+{
+    /* GPIO1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO1);
+    /* GPIO3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GateGPIO3);
+    /* PORT1: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT1);
+    /* PORT3: Peripheral clock is enabled */
+    CLOCK_EnableClock(kCLOCK_GatePORT3);
+    /* GPIO1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO1_RST_SHIFT_RSTn);
+    /* GPIO3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+    /* LPSPI0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kLPSPI0_RST_SHIFT_RSTn);
+    /* PORT1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT1_RST_SHIFT_RSTn);
+    /* FLEXCAN0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kFLEXCAN0_RST_SHIFT_RSTn);
+    /* LPI2C1 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kLPI2C1_RST_SHIFT_RSTn);
+    /* PORT3 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
+
+    gpio_pin_config_t gpio1_pin91_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_0 (pin 91)  */
+    GPIO_PinInit(GPIO1, 0U, &gpio1_pin91_config);
+
+    gpio_pin_config_t gpio1_pin92_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_1 (pin 92)  */
+    GPIO_PinInit(GPIO1, 1U, &gpio1_pin92_config);
+
+    gpio_pin_config_t gpio1_pin93_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_2 (pin 93)  */
+    GPIO_PinInit(GPIO1, 2U, &gpio1_pin93_config);
+
+    gpio_pin_config_t gpio1_pin97_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_4 (pin 97)  */
+    GPIO_PinInit(GPIO1, 4U, &gpio1_pin97_config);
+
+    gpio_pin_config_t gpio1_pin98_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO1_5 (pin 98)  */
+    GPIO_PinInit(GPIO1, 5U, &gpio1_pin98_config);
+
+    gpio_pin_config_t gpio1_pin99_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 1U
+    };
+    /* Initialize GPIO functionality on pin PIO1_6 (pin 99)  */
+    GPIO_PinInit(GPIO1, 6U, &gpio1_pin99_config);
+
+    gpio_pin_config_t gpio3_pin52_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_27 (pin 52)  */
+    GPIO_PinInit(GPIO3, 27U, &gpio3_pin52_config);
+
+    gpio_pin_config_t gpio3_pin51_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PIO3_28 (pin 51)  */
+    GPIO_PinInit(GPIO3, 28U, &gpio3_pin51_config);
+
+    const port_pin_config_t port1_0_pin91_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as WUU0_IN6, LPTMR0_ALT3, P1_0 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_0 (pin 91) is configured as WUU0_IN6, LPTMR0_ALT3, P1_0 */
+    PORT_SetPinConfig(PORT1, 0U, &port1_0_pin91_config);
+
+    const port_pin_config_t port1_1_pin92_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as P1_1 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_1 (pin 92) is configured as P1_1 */
+    PORT_SetPinConfig(PORT1, 1U, &port1_1_pin92_config);
+
+    const port_pin_config_t port1_2_pin93_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as P1_2 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_2 (pin 93) is configured as P1_2 */
+    PORT_SetPinConfig(PORT1, 2U, &port1_2_pin93_config);
+
+    const port_pin_config_t port1_4_pin97_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as P1_4, WUU0_IN8 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_4 (pin 97) is configured as P1_4, WUU0_IN8 */
+    PORT_SetPinConfig(PORT1, 4U, &port1_4_pin97_config);
+
+    const port_pin_config_t port1_5_pin98_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as P1_5 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_5 (pin 98) is configured as P1_5 */
+    PORT_SetPinConfig(PORT1, 5U, &port1_5_pin98_config);
+
+    const port_pin_config_t port1_6_pin99_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as P1_6 */
+                                                    .mux = kPORT_MuxAlt0,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT1_6 (pin 99) is configured as P1_6 */
+    PORT_SetPinConfig(PORT1, 6U, &port1_6_pin99_config);
+
+    const port_pin_config_t port3_27_pin52_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as P3_27, WUU0_IN30 */
+                                                     .mux = kPORT_MuxAlt0,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT3_27 (pin 52) is configured as P3_27, WUU0_IN30 */
+    PORT_SetPinConfig(PORT3, 27U, &port3_27_pin52_config);
+
+    const port_pin_config_t port3_28_pin51_config = {/* Internal pull-up/down resistor is disabled */
+                                                     .pullSelect = kPORT_PullDisable,
+                                                     /* Low internal pull resistor value is selected. */
+                                                     .pullValueSelect = kPORT_LowPullResistor,
+                                                     /* Fast slew rate is configured */
+                                                     .slewRate = kPORT_FastSlewRate,
+                                                     /* Passive input filter is disabled */
+                                                     .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                     /* Open drain output is disabled */
+                                                     .openDrainEnable = kPORT_OpenDrainDisable,
+                                                     /* Low drive strength is configured */
+                                                     .driveStrength = kPORT_LowDriveStrength,
+                                                     /* Normal drive strength is configured */
+                                                     .driveStrength1 = kPORT_NormalDriveStrength,
+                                                     /* Pin is configured as P3_28, WUU0_IN26 */
+                                                     .mux = kPORT_MuxAlt0,
+                                                     /* Digital input enabled */
+                                                     .inputBuffer = kPORT_InputBufferEnable,
+                                                     /* Digital input is not inverted */
+                                                     .invertInput = kPORT_InputNormal,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     .lockRegister = kPORT_UnlockRegister};
+    /* PORT3_28 (pin 51) is configured as P3_28, WUU0_IN26 */
+    PORT_SetPinConfig(PORT3, 28U, &port3_28_pin51_config);
+
+    const port_pin_config_t port3_7_pin70_config = {/* Internal pull-up/down resistor is disabled */
+                                                    .pullSelect = kPORT_PullDisable,
+                                                    /* Low internal pull resistor value is selected. */
+                                                    .pullValueSelect = kPORT_LowPullResistor,
+                                                    /* Fast slew rate is configured */
+                                                    .slewRate = kPORT_FastSlewRate,
+                                                    /* Passive input filter is disabled */
+                                                    .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                    /* Open drain output is disabled */
+                                                    .openDrainEnable = kPORT_OpenDrainDisable,
+                                                    /* Low drive strength is configured */
+                                                    .driveStrength = kPORT_LowDriveStrength,
+                                                    /* Normal drive strength is configured */
+                                                    .driveStrength1 = kPORT_NormalDriveStrength,
+                                                    /* Pin is configured as SMARTDMA_PIO7 */
+                                                    .mux = kPORT_MuxAlt10,
+                                                    /* Digital input enabled */
+                                                    .inputBuffer = kPORT_InputBufferEnable,
+                                                    /* Digital input is not inverted */
+                                                    .invertInput = kPORT_InputNormal,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    .lockRegister = kPORT_UnlockRegister};
+    /* PORT3_7 (pin 70) is configured as SMARTDMA_PIO7 */
+    PORT_SetPinConfig(PORT3, 7U, &port3_7_pin70_config);
 }
 /***********************************************************************************************************************
  * EOF
