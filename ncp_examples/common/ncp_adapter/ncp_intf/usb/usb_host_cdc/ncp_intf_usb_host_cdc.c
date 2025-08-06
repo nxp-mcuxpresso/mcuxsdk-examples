@@ -88,46 +88,27 @@ int ncp_usb_host_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
 
 void usb_host_save_recv_data(uint8_t *recv_data, uint32_t packet_len)
 {
-    static uint32_t usb_transfer_len = 0;
-    static uint32_t usb_rx_len       = 0;
-
-    if (usb_rx_len < TLV_CMD_HEADER_LEN)
+    if (packet_len < TLV_CMD_HEADER_LEN)
     {
-        memcpy((uint8_t *)&ncp_intf_usb_rxbuf[0] + usb_rx_len, recv_data, packet_len);
-        usb_rx_len += packet_len;
-
-        if (usb_rx_len >= TLV_CMD_HEADER_LEN)
-        {
-            usb_transfer_len = ((ncp_intf_usb_rxbuf[TLV_CMD_SIZE_HIGH_BYTES] << 8) |
-                                ncp_intf_usb_rxbuf[TLV_CMD_SIZE_LOW_BYTES]) +
-                               NCP_CHKSUM_LEN;
-        }
-    }
-    else
-    {
-        if ((packet_len < (sizeof(ncp_intf_usb_rxbuf) - usb_rx_len)) && (usb_rx_len < usb_transfer_len))
-        {
-            memcpy((uint8_t *)&ncp_intf_usb_rxbuf[0] + usb_rx_len, recv_data, packet_len);
-            usb_rx_len += packet_len;
-        }
-        else
-        {
-            ncp_adap_e("[%s] transfer warning. data_len : %d ", __func__, packet_len);
-			NCP_USB_STATS_INC(err);
-        }
+        ncp_adap_e("[%s] packet too short: %d", __func__, packet_len);
+        NCP_USB_STATS_INC(err);
+        return;
     }
 
-    if ((usb_rx_len >= usb_transfer_len) && (usb_transfer_len >= TLV_CMD_HEADER_LEN))
-    {
-        ncp_adap_d("recv data len: %d ", usb_transfer_len);
-    
-        ncp_tlv_dispatch(&ncp_intf_usb_rxbuf[0],usb_transfer_len - NCP_CHKSUM_LEN);
+    uint16_t tlv_len = (recv_data[TLV_CMD_SIZE_HIGH_BYTES] << 8) | recv_data[TLV_CMD_SIZE_LOW_BYTES];
+    uint32_t usb_transfer_len = tlv_len + NCP_CHKSUM_LEN;
 
-        usb_rx_len       = 0;
-        usb_transfer_len = 0;
-        NCP_USB_STATS_INC(rx);
-        ncp_adap_d("data recv success ");
+    if (packet_len < usb_transfer_len)
+    {
+        ncp_adap_e("[%s] incomplete packet. expected: %d, got: %d", __func__, usb_transfer_len, packet_len);
+        NCP_USB_STATS_INC(err);
+        return;
     }
+
+    ncp_adap_d("recv data len: %d", packet_len);
+    ncp_tlv_dispatch(recv_data, tlv_len);
+    NCP_USB_STATS_INC(rx);
+    ncp_adap_d("usb data recv success");
 }
 
 /*callback in context of USB_HostTaskFn, so it can asynchronous*/
@@ -143,7 +124,7 @@ void ncp_usb_host_recv_cb(void *param, uint8_t *data, uint32_t dataLength, usb_s
 
     ncp_usb_put_rx_sem();
 
-    if (cdcInstance->bulkInMaxPacketSize == dataLength)
+    if ((dataLength != 0) && (dataLength % cdcInstance->bulkInMaxPacketSize == 0))
     {
         /* host will prime to receive zero length packet after recvive one maxpacketsize */
         ncp_usb_check_bus();
