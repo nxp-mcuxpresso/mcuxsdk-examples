@@ -24,5 +24,7 @@ The demo shows how the various power mode switch to each other based on power ma
 - [RD-RW612-BGA](../../../_boards/rdrw612bga/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [FRDM-MCXN236](../../../_boards/frdmmcxn236/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/demo_apps/power_manager_test/bm/example_board_readme.md)
-- [MCXW72-LOC](../../../_boards/mcxw72loc/demo_apps/power_manager_test/bm/example_board_readme.md)- [FRDM-MCXA266](../../../_boards/frdmmcxa266/demo_apps/power_manager_test/bm/example_board_readme.md)
+- [MCXW72-LOC](../../../_boards/mcxw72loc/demo_apps/power_manager_test/bm/example_board_readme.md)
+- [FRDM-MCXA266](../../../_boards/frdmmcxa266/demo_apps/power_manager_test/bm/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/demo_apps/power_manager_test/bm/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/demo_apps/power_manager_test/bm/example_board_readme.md)

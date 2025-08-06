@@ -20,6 +20,9 @@ ele_keystore:
     frdmmcxw71:
     - +armgcc@debug
     - +armgcc@release
+    frdmmcxw72@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
     mcxw71evk:
     - +armgcc@debug
     - +armgcc@release

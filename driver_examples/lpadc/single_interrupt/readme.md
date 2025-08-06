@@ -23,3 +23,4 @@ be printed when the execution return to the main function.
 - [MIMXRT685-AUD-EVK](../../../_boards/mimxrt685audevk/driver_examples/lpadc/single_interrupt/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpadc/single_interrupt/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpadc/single_interrupt/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpadc/single_interrupt/example_board_readme.md)

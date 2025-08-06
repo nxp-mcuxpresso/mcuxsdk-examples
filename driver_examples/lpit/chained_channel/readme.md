@@ -31,4 +31,5 @@ When the LPIT interrupt is triggered a message a printed on the serial terminal.
 - [MCIMX93-QSB](../../../_boards/mcimx93qsb/driver_examples/lpit/chained_channel/example_board_readme.md)
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/lpit/chained_channel/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/lpit/chained_channel/example_board_readme.md)
-- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpit/chained_channel/example_board_readme.md) 
+- [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpit/chained_channel/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpit/chained_channel/example_board_readme.md)

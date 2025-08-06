@@ -272,3 +272,4 @@ Using following implementations:
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/mbedtls_examples/mbedtls_selftest/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/mbedtls_examples/mbedtls_selftest/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/mbedtls_examples/mbedtls_selftest/example_board_readme.md)
+- [FRDM-MCXW72](../../_boards/frdmmcxw72/mbedtls_examples/mbedtls_selftest/example_board_readme.md)

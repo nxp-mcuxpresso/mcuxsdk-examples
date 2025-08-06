@@ -35,6 +35,13 @@ littlefs_shell_onchip_flash:
     - +iar@release
     - -armgcc@hyperram_release
     - -iar@hyperram_release
+    frdmmcxw72@cm33_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@debug
+    - +iar@release
+    - -armgcc@hyperram_release
+    - -iar@hyperram_release
     kw47evk@cm33_core0:
     - +armgcc@debug
     - +armgcc@release

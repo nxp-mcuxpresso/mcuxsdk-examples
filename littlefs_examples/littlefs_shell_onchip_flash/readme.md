@@ -22,5 +22,7 @@ Demonstrates littlefs functionality by commands executed from shell.
 - [MCX-W72-EVK](../../_boards/mcxw72evk/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
-- [MCXW72-LOC](../../_boards/mcxw72loc/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)- [FRDM-MCXA266](../../_boards/frdmmcxa266/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [MCXW72-LOC](../../_boards/mcxw72loc/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
 - [FRDM-MCXA366](../../_boards/frdmmcxa366/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)
+- [FRDM-MCXW72](../../_boards/frdmmcxw72/littlefs_examples/littlefs_shell_onchip_flash/example_board_readme.md)

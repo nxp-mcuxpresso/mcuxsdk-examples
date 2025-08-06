@@ -40,6 +40,7 @@ trdc:
     frdmmcxl255@cm33: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     mcxw72evk@cm33_core0: []
     mcxw72loc@cm33_core0: []

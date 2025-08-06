@@ -17,6 +17,7 @@ k4w1_romapi_flash:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []

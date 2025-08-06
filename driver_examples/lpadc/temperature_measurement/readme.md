@@ -38,3 +38,4 @@ then the temperature can be calculated within the two results and a specific for
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/lpadc/temperature_measurement/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/lpadc/temperature_measurement/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/lpadc/temperature_measurement/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpadc/temperature_measurement/example_board_readme.md)

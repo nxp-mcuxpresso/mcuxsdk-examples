@@ -57,3 +57,4 @@ Compile flag `--no_clustering` has been added to the build to disable static clu
 - [MCX-W72-EVK](../../_boards/mcxw72evk/secure-subsystem_examples/ele_derive_key/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/secure-subsystem_examples/ele_derive_key/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/secure-subsystem_examples/ele_derive_key/example_board_readme.md)
+- [FRDM-MCXW72](../../_boards/frdmmcxw72/secure-subsystem_examples/ele_derive_key/example_board_readme.md)

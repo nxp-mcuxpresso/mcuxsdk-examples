@@ -33,3 +33,4 @@ Example need only single LPUART instance.
 - [TWR-KM35Z75M](../../_boards/twrkm35z75m/freertos_driver_examples/freertos_lpuart/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/freertos_driver_examples/freertos_lpuart/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/freertos_driver_examples/freertos_lpuart/example_board_readme.md)
+- [FRDM-MCXW72](../../_boards/frdmmcxw72/freertos_driver_examples/freertos_lpuart/example_board_readme.md)

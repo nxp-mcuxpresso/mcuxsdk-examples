@@ -44,3 +44,4 @@ freertos_lpuart:
     mcxw72loc@cm33_core0: []
     twrkm34z75m: []
     twrkm35z75m: []
+    frdmmcxw72@cm33_core0: []

@@ -15,3 +15,4 @@ the virtual serial port on board.
 - [KW45B41Z-EVK](../../../../_boards/kw45b41zevk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/example_board_readme.md)
 - [KW47-EVK](../../../../_boards/kw47evk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/example_board_readme.md)
 - [MCX-W72-EVK](../../../../_boards/mcxw72evk/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/example_board_readme.md)
+- [FRDM-MCXW72](../../../../_boards/frdmmcxw72/driver_examples/flexio/i2c/read_fxls896x_accel_value_transfer/example_board_readme.md)

@@ -63,3 +63,4 @@ Slave received data :
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/freertos_driver_examples/freertos_lpi2c_b2b/slave/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/freertos_driver_examples/freertos_lpi2c_b2b/slave/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/freertos_driver_examples/freertos_lpi2c_b2b/slave/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/freertos_driver_examples/freertos_lpi2c_b2b/slave/example_board_readme.md)
