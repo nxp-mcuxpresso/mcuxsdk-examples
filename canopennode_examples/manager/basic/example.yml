@@ -4,7 +4,7 @@ co_manager_basic:
   section-type: application
   contents:
     meta_path: examples/canopennode_examples/manager/basic
-    project-root-path: boards/${board}/canopennode_examples/basic/${multicore_foldername}
+    project-root-path: boards/${board}/canopennode_examples/manager/basic/${multicore_foldername}
     document:
       name: co_manager_basic${core_id_suffix_name}
       category: canopennode_examples
