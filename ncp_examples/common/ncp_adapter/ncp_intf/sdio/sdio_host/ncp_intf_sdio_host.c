@@ -1225,9 +1225,10 @@ void sdhost_rescan_task(void *argv)
 
     for (;;)
     {
+        resp = 0;
+        pm_state = 0;
         (void)sdhost_rescan_wait_event(SDHOST_RESCAN_START);
 
-        OSA_TimeDelay(100);
         /* Read PM mode from device */
         ret = sdio_drv_creg_read(0xFC, 1, &resp);
         pm_state = resp & 0xffU;
@@ -1241,14 +1242,12 @@ void sdhost_rescan_task(void *argv)
         }
 
 retry:
-        OSA_TimeDelay(100);
         if (NCP_STATUS_SUCCESS != ncp_sdhost_CardDeinit())
         {
             ncp_adap_e("Failed to deinit sdio host");
         }
         ncp_adap_d("%s: ncp_sdhost_CardDeinit done", __FUNCTION__);
 
-        OSA_TimeDelay(100);
         if (NCP_STATUS_SUCCESS != ncp_sdhost_CardInit())
         {
             ncp_adap_e("Failed to re-enumerate sdio card");
