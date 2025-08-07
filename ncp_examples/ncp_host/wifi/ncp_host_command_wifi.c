@@ -5149,7 +5149,7 @@ const static test_cfg_param_t g_11ax_cfg_param[] = {
     {"he_mac_cap_info", 6, 6, NULL},
     {"he_phy_cap_info", 12, 11, NULL},
     {"he_mcs_nss_support", 23, 4, NULL},
-    {"pe", 27, 2, NULL},
+    {"pe", 27, 4, NULL},
 };
 
 static test_cfg_param_t g_twt_setup_cfg_param[] = {
@@ -5185,7 +5185,7 @@ static test_cfg_param_t g_twt_teardown_cfg_param[] = {
  */
 static test_cfg_table_t g_test_cfg_table_list[] = {
     /*  name         data                          total_len param_list          param_num*/
-    {"11axcfg", (uint8_t *)&g_11axcfg_params, 29, g_11ax_cfg_param, 8},
+    {"11axcfg", (uint8_t *)&g_11axcfg_params, 31, g_11ax_cfg_param, 8},
     {"twt_setup", (uint8_t *)&g_twt_setup_params, 12, g_twt_setup_cfg_param, 11},
     {"twt_teardown", (uint8_t *)&g_twt_teardown_params, 3, g_twt_teardown_cfg_param, 3},
     {NULL}};
