@@ -41,8 +41,27 @@ mcux_remove_configuration(
     CC "-O0"
 )
 
+mcux_remove_configuration(
+    TARGETS flash_debug
+    TOOLCHAINS mdk
+    CC "-O1"
+)
+
+
 mcux_add_configuration(
     TARGETS flash_debug
-    TOOLCHAINS armgcc
+    TOOLCHAINS armgcc mdk
+    CC "-Os"
+)
+
+mcux_remove_configuration(
+    TARGETS flash_release
+    TOOLCHAINS mdk
+    CC "-Oz"
+)
+
+mcux_add_configuration(
+    TARGETS flash_release
+    TOOLCHAINS mdk
     CC "-Os"
 )
