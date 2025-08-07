@@ -28,10 +28,12 @@ dev_msc_disk_freertos:
     - -armgcc@debug
     - -armgcc@sdram_debug
     - -iar@debug
+    - -mdk@debug
     evkmimxrt1024:
     - -armgcc@debug
     - -armgcc@sdram_debug
     - -iar@debug
+    - -mdk@debug
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []

@@ -30,12 +30,14 @@ usb_pd_sink_battery_freertos_om13790host:
     - -iar@debug
     - -mdk@debug
     - -mdk@sdram_debug
+    - -iar@sdram_debug
     evkmimxrt1024:
     - -armgcc@debug
     - -armgcc@sdram_debug
     - -iar@debug
     - -mdk@debug
     - -mdk@sdram_debug
+    - -iar@sdram_debug
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []

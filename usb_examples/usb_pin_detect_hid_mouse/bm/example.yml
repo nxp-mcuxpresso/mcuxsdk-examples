@@ -33,9 +33,12 @@ pin_detect_hid_mouse_bm:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    evkmimxrt1020: []
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
     evkmimxrt1024:
     - -armgcc@sdram_debug
+    - -armgcc@debug
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []

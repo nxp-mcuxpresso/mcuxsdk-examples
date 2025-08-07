@@ -33,6 +33,7 @@ dev_audio_speaker_lite_bm:
     - -armgcc@debug
     - -iar@debug
     - -mdk@debug
+    - -iar@release
     evkmimxrt1020: []
     evkmimxrt1024: []
     evkmimxrt1040: []

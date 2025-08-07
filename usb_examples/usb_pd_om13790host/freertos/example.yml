@@ -36,6 +36,7 @@ usb_pd_freertos_om13790host:
     - -iar@sdram_release
     - -mdk@debug
     - -mdk@sdram_debug
+    - -iar@release
     evkmimxrt1024:
     - -armgcc@debug
     - -armgcc@sdram_debug
@@ -44,6 +45,7 @@ usb_pd_freertos_om13790host:
     - -iar@sdram_release
     - -mdk@debug
     - -mdk@sdram_debug
+    - -iar@release
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []

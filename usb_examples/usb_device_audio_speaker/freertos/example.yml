@@ -42,9 +42,11 @@ dev_audio_speaker_freertos:
     evkmimxrt1020:
     - -armgcc@debug
     - -armgcc@sdram_debug
+    - -iar@debug
     evkmimxrt1024:
     - -armgcc@debug
     - -armgcc@sdram_debug
+    - -iar@debug
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []

@@ -38,11 +38,13 @@ pin_detect_hid_msd_bm:
     - -armgcc@sdram_debug
     - -iar@debug
     - -mdk@debug
+    - -iar@sdram_debug
     evkmimxrt1024:
     - -armgcc@debug
     - -armgcc@sdram_debug
     - -iar@debug
     - -mdk@debug
+    - -iar@sdram_debug
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []

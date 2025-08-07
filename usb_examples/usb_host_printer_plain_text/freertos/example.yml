@@ -33,17 +33,23 @@ host_printer_plain_text_freertos:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    evkmimxrt1020: []
-    evkmimxrt1024: []
+    evkmimxrt1020:
+    - -armgcc@sdram_debug
+    - -armgcc@debug
+    evkmimxrt1024:
+    - -armgcc@debug
+    - -armgcc@sdram_debug
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
-    frdmimxrt1186@cm33: []
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
+    frdmimxrt1186@cm33: []
     frdmk22f: []
     frdmk32l2a4s: []
+    frdmmcxa266: []
+    frdmmcxa366: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmrw612: []
@@ -59,5 +65,3 @@ host_printer_plain_text_freertos:
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
-    frdmmcxa266: []
-    frdmmcxa366: []

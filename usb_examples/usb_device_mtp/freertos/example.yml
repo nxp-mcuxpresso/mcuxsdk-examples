@@ -120,6 +120,8 @@ dev_mtp_freertos:
     - -iar@release
     - -mdk@debug
     - -mdk@hyperram_debug
+    - -mdk@release
+    - -mdk@hyperram_release
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmmcxn947@cm33_core0: []

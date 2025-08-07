@@ -29,24 +29,28 @@ dev_audio_generator_bm:
     evkmimxrt1010:
     - -armgcc@debug
     - -iar@debug
+    - -mdk@debug
     evkmimxrt1015:
     - -armgcc@debug
     - -iar@debug
+    - -mdk@debug
     evkmimxrt1020: []
     evkmimxrt1024: []
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
-    frdmimxrt1186@cm33: []
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
+    frdmimxrt1186@cm33: []
     frdmk22f: []
     frdmk32l2a4s: []
     frdmk32l2b: []
     frdmk32l3a6@cm4: []
     frdmmcxa153: []
     frdmmcxa156: []
+    frdmmcxa266: []
+    frdmmcxa366: []
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxn236: []
@@ -59,13 +63,11 @@ dev_audio_generator_bm:
     lpcxpresso55s28: []
     lpcxpresso55s36: []
     lpcxpresso55s69@cm33_core0: []
+    mc56f83000evk:
+    - -codewarrior@flash_sdm_lpm_debug
+    - -codewarrior@flash_sdm_lpm_release
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
-    mc56f83000evk:
-    - -codewarrior@flash_sdm_lpm_debug
-    - -codewarrior@flash_sdm_lpm_release
-    frdmmcxa266: []
-    frdmmcxa366: []

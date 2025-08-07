@@ -23,27 +23,32 @@ dev_suspend_resume_hid_mouse_bm:
     evkmimxrt1010:
     - -armgcc@debug
     - -iar@debug
+    - -mdk@debug
     evkmimxrt1015:
     - -armgcc@debug
     - -iar@debug
+    - -mdk@debug
     evkmimxrt1020: []
     evkmimxrt1024: []
     evkmimxrt1040: []
     evkmimxrt1064: []
     evkmimxrt1160@cm7: []
     evkmimxrt1180@cm33: []
-    frdmimxrt1186@cm33: []
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
+    frdmimxrt1186@cm33: []
     frdmk22f: []
     frdmk32l2a4s: []
     frdmk32l2b: []
     frdmmcxa153: []
     frdmmcxa156: []
+    frdmmcxa266: []
+    frdmmcxa366: []
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
+    frdmrw612: []
     lpcxpresso54628: []
     lpcxpresso54s018: []
     lpcxpresso54s018m: []
@@ -56,6 +61,3 @@ dev_suspend_resume_hid_mouse_bm:
     mimxrt685audevk@cm33: []
     mimxrt700evk@cm33_core0: []
     rdrw612bga: []
-    frdmrw612: []
-    frdmmcxa266: []
-    frdmmcxa366: []

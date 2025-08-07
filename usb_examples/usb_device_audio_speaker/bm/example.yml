@@ -29,6 +29,7 @@ dev_audio_speaker_bm:
     - -armgcc@debug
     - -iar@debug
     - -mdk@debug
+    - -iar@release
     evkmimxrt1015:
     - -armgcc@debug
     - -armgcc@release
