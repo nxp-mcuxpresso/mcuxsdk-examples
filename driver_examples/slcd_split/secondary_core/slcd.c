@@ -106,7 +106,11 @@ static void SLCD_Show_Letter(void)
     {
         for (position = 0; position < NUM_POSEND; position++)
         {
-            SLCD_Engine_Show_Letter(&slcdEngine, letter, position, 1);
+            if (SLCD_Engine_Show_Letter(&slcdEngine, letter, position, 1) == -2)
+            {
+                PRINTF("\r\nLetter '%c' is not supported by 7-segment display.\r\n", letter);
+                continue;
+            }
         }
 
         SLCD_TimeDelay(500);

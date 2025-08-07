@@ -51,6 +51,11 @@ void BOARD_SetSlcdBackPlanePhase(void)
 
 void BOARD_InitHardware(void)
 {
+    BOARD_InitDebugConsole();
+    BOARD_InitDEBUG_UARTPins();
+
+    /* Release peripheral reset */
+    RESET_ReleasePeripheralReset(kAonLCD_RST_SHIFT_RSTn);
 }
 
 /*!
