@@ -82,10 +82,10 @@ $lp_test_hwparam_to_ifr
 #define gHwParamsProdDataPlacement_c                   2
 
 // App will be able to connect with two central at the same time
-//$lp_test_peripheral_can_connect_to_two_central
-//#define gAppMaxConnections_c            2
-//#define gAppDisconnectOnTimeoutOnly_s   1
-//#define gAppConnectionTimeoutInSecs_c   30
+$lp_test_peripheral_can_connect_to_two_central
+#define gAppMaxConnections_c                           2
+#define gAppDisconnectOnTimeoutOnly_s                  1
+#define gAppConnectionTimeoutInSecs_c                  30
 
 // The app core will go in sleep mode during advertising, connecion and no ble activity. Not functional on KW45
 $lp_test_sleep_mode
