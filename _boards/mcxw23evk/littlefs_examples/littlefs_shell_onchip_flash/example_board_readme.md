@@ -6,7 +6,9 @@ Hardware requirements
 
 Board settings
 ============
-No special settings are required.
+If you want to run this example on the MCXW235 RDM module, please regenerate the peripherals.c .h of
+MCXW235 using the TEE tool. LITTLEFS_START_ADDR can be set to 0x3e000 because the flash size of
+MCXW235 is 512KB.
 
 Prepare the Demo
 ================
