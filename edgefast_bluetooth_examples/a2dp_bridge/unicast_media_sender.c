@@ -90,7 +90,7 @@ static uint8_t sirk[BT_CSIP_SIRK_SIZE];
 static bool set_sirk_set = false;
 
 static struct bt_bap_unicast_client_cb unicast_client_cbs;
-static struct bt_conn *default_conn[CONFIG_BT_MAX_CONN];
+static struct bt_conn *default_conn[CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT];
 static int default_conn_index;
 static struct bt_bap_unicast_group *unicast_group;
 static struct audio_sink {
@@ -227,7 +227,7 @@ static uint32_t get_sync_signal_timestamp(void)
 
 static uint16_t get_and_incr_seq_num(const struct bt_bap_stream *stream)
 {
-	for (size_t i = 0U; i < CONFIG_BT_MAX_CONN; i++) {
+	for (size_t i = 0U; i < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; i++) {
 		if (stream->ep == sinks[i].ep) {
 			return sinks[i].seq_num++;
 		}
@@ -728,7 +728,7 @@ static void stream_started(struct bt_bap_stream *stream)
 	PRINTF("Audio Stream %p started\n", stream);
 
 	/* Reset sequence number for sinks */
-	for (size_t i = 0U; i < CONFIG_BT_MAX_CONN; i++) {
+	for (size_t i = 0U; i < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; i++) {
 		if (stream->ep == sinks[i].ep) {
 			sinks[i].seq_num = 0U;
 			break;
@@ -854,7 +854,7 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 	{
 		PRINTF("LE Disconnected: %s (reason 0x%02x)\n", addr, reason);
 
-		for (i = 0; i < CONFIG_BT_MAX_CONN; i++)
+		for (i = 0; i < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; i++)
 		{
 			if(conn == default_conn[i])
 			{
@@ -862,7 +862,7 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 			}
 		}
 
-		if(i >= CONFIG_BT_MAX_CONN)
+		if(i >= CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT)
 		{
 			return;
 		}
@@ -921,7 +921,7 @@ static void unicast_client_location_cb(struct bt_conn *conn,
 {
 	PRINTF("dir %u loc %X\n", dir, loc);
 
-	for(int index = 0; index < CONFIG_BT_MAX_CONN; index++)
+	for(int index = 0; index < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; index++)
 	{
 		if(conn == default_conn[index])
 		{
@@ -948,7 +948,7 @@ static void endpoint_cb(struct bt_conn *conn, enum bt_audio_dir dir, struct bt_b
 {
 	int index;
 
-	for(index = 0; index < CONFIG_BT_MAX_CONN; index++)
+	for(index = 0; index < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; index++)
 	{
 		if(conn == default_conn[index])
 		{
@@ -1293,7 +1293,7 @@ static int configure_stream(struct bt_bap_stream *stream, struct bt_bap_ep *ep)
 	int i;
 	enum bt_audio_location chan_allocation_value;
 
-	for(i = 0; i < CONFIG_BT_MAX_CONN; i++)
+	for(i = 0; i < CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT; i++)
 	{
 		if(ep == sinks[i].ep)
 		{
@@ -1301,7 +1301,7 @@ static int configure_stream(struct bt_bap_stream *stream, struct bt_bap_ep *ep)
 		}
 	}
 
-	if(i >= CONFIG_BT_MAX_CONN)
+	if(i >= CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK_COUNT)
 	{
 		return -1;
 	}
