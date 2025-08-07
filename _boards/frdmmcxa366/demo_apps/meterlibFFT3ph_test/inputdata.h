@@ -1,11 +1,10 @@
 /************************************************************************************************
 *
-* Copyright 2015 Freescale Semiconductor, Inc.
+* Copyright 2015, Freescale Semiconductor, Inc.
+* Copyright 2025 NXP
+* All rights reserved.
 *
-* This software is owned or controlled by Freescale Semiconductor.
-* Use of this software is governed by the Freescale License
-* distributed with this Material.
-* See the LICENSE file distributed for more details.
+* SPDX-License-Identifier: BSD-3-Clause
 *
 *********************************************************************************************//*!
 *
