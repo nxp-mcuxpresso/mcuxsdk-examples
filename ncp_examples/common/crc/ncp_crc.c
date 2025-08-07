@@ -24,6 +24,8 @@ void ncp_tlv_chksum_init(void)
 
 uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len)
 {
+#if 0
+    /*Wait for rt1060evkb ncp-host support HW crc*/
     uint32_t crc;
 
     CRC_WriteSeed(CRC, 0xffffffffU);
@@ -31,6 +33,8 @@ uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len)
     crc = CRC_Get32bitResult(CRC);
 
     return ~crc;
+#endif
+    return 0;
 }
 #else
 static uint32_t crc32_table[256] = {0,};
@@ -49,11 +53,15 @@ void ncp_tlv_chksum_init(void)
 
 uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len)
 {
+#if 0
+    /*Wait for rt1060evkb ncp-host support HW crc*/
     uint8_t *p;
     unsigned int crc;
     crc = 0xffffffff;
     for (p = buf; len > 0; ++p, --len)
         crc = (crc << 8) ^ (crc32_table[(crc >> 24) ^ *p]);
     return ~crc;
+#endif
+    return 0;
 }
 #endif
