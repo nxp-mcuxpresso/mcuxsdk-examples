@@ -86,6 +86,8 @@ void BOARD_InitHardware(void)
 #if defined(FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS) && FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS
     activeModeRegulatorOption.CoreLDOOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
 #endif /* FSL_FEATURE_SPC_HAS_CORELDO_VDD_DS */
+
+    SDK_DelayAtLeastUs(1000, SystemCoreClock);
     if (SPC_SetActiveModeDCDCRegulatorConfig(APP_SPC, &activeModeRegulatorOption.DCDCOption) != kStatus_Success)
     {
         PRINTF("Fail to set DCDC in Active Mode!\r\n");
