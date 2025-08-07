@@ -354,7 +354,7 @@ void ncp_inet_deinit(void);
 #define LINUX_IP_MULTICAST_TTL  33
 
 #if CONFIG_NCP_USB || CONFIG_NCP_SDIO
-#define NCP_INET_SOCKET_RECV_SIZE 1472
+#define NCP_INET_SOCKET_RECV_SIZE (1448 + 1448)
 #else
 /* ip fragment doesn't include 8bytes udp header, so fragment packet size is 1480 */
 #define NCP_INET_SOCKET_RECV_SIZE (1472 + 1480)
