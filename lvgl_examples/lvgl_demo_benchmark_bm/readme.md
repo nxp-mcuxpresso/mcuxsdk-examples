@@ -30,3 +30,5 @@ A demo application runs different functions for benchmark test.
 - [MIMXRT685-AUD-EVK](../../_boards/mimxrt685audevk/lvgl_examples/lvgl_examples_readme.md)
 - [MIMXRT700-EVK](../../_boards/mimxrt700evk/lvgl_examples/lvgl_examples_readme.md)
 - [RD-RW612-BGA](../../_boards/rdrw612bga/lvgl_examples/lvgl_examples_readme.md)
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/lvgl_examples/lvgl_examples_readme.md)
+- [FRDM-MCXA366](../../_boards/frdmmcxa366/lvgl_examples/lvgl_examples_readme.md)

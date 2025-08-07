@@ -333,3 +333,5 @@ lvgl_guider:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxa266: []
+    frdmmcxa366: []

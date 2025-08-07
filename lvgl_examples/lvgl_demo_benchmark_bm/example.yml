@@ -265,3 +265,5 @@ lvgl_demo_benchmark_bm:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxa266: []
+    frdmmcxa366: []
