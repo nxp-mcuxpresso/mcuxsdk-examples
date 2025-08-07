@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+mcux_add_macro(
+    CC "-DSDK_NETC_USED=1"
+)
+
 # Override heap and stack size
 mcux_remove_linker_symbol(
     SYMBOLS "__stack_size__=1000 __heap_size__=40000"

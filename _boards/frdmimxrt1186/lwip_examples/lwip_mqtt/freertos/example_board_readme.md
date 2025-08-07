@@ -7,5 +7,4 @@ Hardware requirements
 
 Board settings
 ============
-J18(1-2)/J17(2-3): ETH2 Function Via J56B.
-J12(1-2)/J13(2-3): ETH0 Function Via J56A.
+Short jumpers J12 (1-2) and J13 (2-3) and connect network cable to J56A.
