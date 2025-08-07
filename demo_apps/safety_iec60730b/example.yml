@@ -13,57 +13,42 @@ safety_iec60730b:
       # - ${board_root}/${board}/demo_apps/safety_iec60730b/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxn236:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
     frdmmcxe247:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
-    frdmmcxe31b:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
-    frdmmcxa153:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
-    frdmmcxa156:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
-    frdmmcxc041:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
-    frdmmcxc242:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
-    frdmmcxc444:
-    - -armgcc@release
-    - -iar@release
-    - -mdk@release
-    - -mcux@release
-    lpcxpresso55s69@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
+    - -mdk@debug
     - -mdk@release
-    - -mcux@release
+    frdmmcxe31b:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    frdmmcxc041:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    frdmmcxc242:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    frdmmcxc444:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt1180@cm33:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
+    - -armgcc@debug
     - -armgcc@release
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
@@ -74,12 +59,14 @@ safety_iec60730b:
     - -mdk@flexspi_nor_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    - -mdk@debug
     - -mdk@release
     evkmimxrt1180@cm7:
     - -armgcc@flexspi_nor_debug
     - -armgcc@flexspi_nor_release
     - -armgcc@hyperram_debug
     - -armgcc@hyperram_release
+    - -armgcc@debug
     - -armgcc@release
     - -iar@flexspi_nor_debug
     - -iar@flexspi_nor_release
@@ -90,41 +77,39 @@ safety_iec60730b:
     - -mdk@flexspi_nor_release
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
+    - -mdk@debug
     - -mdk@release
     mcimx93evk:
+    - -armgcc@debug
     - -armgcc@release
     - -iar@release
-    frdmrw612:
-    - -armgcc@release
-    - -armgcc@flash_debug
-    - -armgcc@flash_release
-    - -iar@flash_debug
-    - -iar@flash_release
-    - -iar@release
-    - -mdk@release
-    - -mdk@flash_debug
-    - -mdk@flash_release
     frdmmcxa346:
+    - -armgcc@debug
     - -armgcc@release
     - -iar@release
+    - -mdk@debug
     - -mdk@release
     frdmmcxn947@cm33_core0:
+    - -armgcc@debug
     - -armgcc@release
     - -iar@release
+    - -mdk@debug
     - -mdk@release
-    evkmimx8mp:
-    - -armgcc@ddr_debug
-    - -armgcc@ddr_release
-    - -armgcc@flash_debug
-    - -armgcc@flash_release
+    evkbmimxrt1170@cm7:
+    - -armgcc@debug
+    - -armgcc@flexspi_nor_debug
+    - -armgcc@flexspi_nor_release
     - -armgcc@release
-    - -iar@ddr_debug
-    - -iar@ddr_release
-    - -iar@flash_debug
-    - -iar@flash_release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@flexspi_nor_debug
+    - -iar@flexspi_nor_release
     - -iar@release
-    frdmke17z512:
-    - -armgcc@release
-    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
     - -mdk@release
-    evkbmimxrt1170@cm7: []
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
