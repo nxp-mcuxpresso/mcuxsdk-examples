@@ -452,7 +452,10 @@ static void app_pull_phonebook_cb(struct bt_pbap_pse *pbap_pse,
         }
         else
         {
-            memcpy(g_PbapPse.name, name, strlen(name) + 1);
+            if (strlen(name) < NEMA_MAX_LEN)
+            {
+                memcpy(g_PbapPse.name, name, strlen(name) + 1);
+            }
         }
     }
     if (!(flag & BT_OBEX_REQ_UNSEG)) /* stack do not support now */
