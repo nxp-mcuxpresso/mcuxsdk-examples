@@ -14,6 +14,8 @@ Hardware references
 |-------------|-------|--------|----------|
 | FRDM-MCXW23 | SW4   | SW4    | Blue LED |
 
+>Note: MCXW235 SoC variant is not supported.
+
 Board settings
 ==============
 No special board setting.

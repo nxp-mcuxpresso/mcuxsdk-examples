@@ -12,3 +12,7 @@ mcux_add_configuration(
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+
+if(CONFIG_MCUX_HW_DEVICE_ID_MCXW235)
+    message(FATAL_ERROR "MCXW235 SoC variant is not supported for OTA examples.")
+endif()

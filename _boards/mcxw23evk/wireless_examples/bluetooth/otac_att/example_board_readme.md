@@ -14,6 +14,8 @@ Hardware references
 |-------------|-------|--------|----------|
 | MCXW23-EVK  | SW4   | SW4    | Red LED  |
 
+>Note: MCXW235 SoC variant is not supported.
+
 Board settings
 ==============
 No special board setting.
