@@ -17,6 +17,7 @@
 #include "fsl_os_abstraction.h"
 #include "fsl_component_led.h"
 #include "fsl_component_timer_manager.h"
+#include <string.h>
 
 /*******************************************************************************
  * Definitions
@@ -242,10 +243,13 @@ static void StartRadioTestSuiteMode(void)
         timer_status_t timerStatus;
         led_status_t ledStatus;
         
+        memset(&timerConfig, 0, sizeof(timerConfig));
         CLOCK_AttachClk(kMAIN_CLK_to_CTIMER0);
         timerConfig.instance              = TM_CTIMER_INSTANCE;
         timerConfig.srcClock_Hz           = CLOCK_GetCTimerClkFreq(TM_CTIMER_INSTANCE);
         timerConfig.clockSrcSelect        = 0;
+        timerConfig.hardwareTimerAlwaysOn = true;
+
         timerStatus = TM_Init(&timerConfig);
         assert_equal(kStatus_TimerSuccess, timerStatus);
         (void)timerStatus;
