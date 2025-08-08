@@ -5,18 +5,20 @@
 
 include(${SdkRootDirPath}/${board_root}/${board}/tfm_examples/reconfig.cmake OPTIONAL)
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/tfm_examples/tfm_secureboot
-    SOURCES 
-            README.txt
-            scripts/*.*
-            scripts/spt_workspace/bootable_images/*.*
-            scripts/spt_workspace/configs/*.*
-            scripts/spt_workspace/debug_auth/*.*
-            scripts/spt_workspace/input/*.*
-            scripts/spt_workspace/keys/*.*
-            scripts/steps/*.*
-)
+# Temp disable include of scripts for secureboot example, that helps is running tfm example as secure boot app
+# Only impact is, user has to manually do the setup for creating SB3 app
+#mcux_add_source(
+#    BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/tfm_examples/tfm_secureboot
+#    SOURCES 
+#            README.txt
+#            scripts/*.*
+#            scripts/spt_workspace/bootable_images/*.*
+#            scripts/spt_workspace/configs/*.*
+#            scripts/spt_workspace/debug_auth/*.*
+#            scripts/spt_workspace/input/*.*
+#            scripts/spt_workspace/keys/*.*
+#            scripts/steps/*.*
+#)
 
 #add cc-defines
 mcux_add_macro(
