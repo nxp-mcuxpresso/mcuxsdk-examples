@@ -52,6 +52,9 @@
 /*! We want printing in the panic function. */
 #define PANIC_ENABLE_LOG 1
 
+/*! Enable/Disable low power feature */
+#define ENABLE_LOW_POWER 1
+
 /*! *********************************************************************************
  *     Framework Configuration
  ********************************************************************************** */
