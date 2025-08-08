@@ -653,8 +653,8 @@ outputs:
 - {id: CPU_clock.outFreq, value: 240 MHz}
 - {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
 - {id: FRO_12M_clock.outFreq, value: 12 MHz}
-- {id: FRO_HF_DIV_clock.outFreq, value: 45 MHz}
-- {id: FRO_HF_clock.outFreq, value: 45 MHz}
+- {id: FRO_HF_DIV_clock.outFreq, value: 180 MHz}
+- {id: FRO_HF_clock.outFreq, value: 180 MHz}
 - {id: MAIN_clock.outFreq, value: 240 MHz}
 - {id: PLL1_DIV_clock.outFreq, value: 60 MHz}
 - {id: PLL1_clock.outFreq, value: 240 MHz}
@@ -676,6 +676,8 @@ settings:
 - {id: SCG.PLL1_CLKSEL.sel, value: SCG.FRO_12M_clock}
 - {id: SCG.SCGSCS_CLKSEL.sel, value: SCG.PLL1_clock}
 - {id: SYSCON.PLL1CLKDIV.scale, value: '4', locked: true}
+sources:
+- {id: SCG.FIRC.outFreq, value: 180 MHz}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -712,7 +714,7 @@ void BOARD_BootClockPLL240M(void)
     /*!< Set up system dividers */
     CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
     CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
-    CLOCK_SetupFROHFClocking(45000000U);               /*!< Enable FRO HF(45MHz) output */
+    CLOCK_SetupFROHFClocking(180000000U);              /*!< Enable FRO HF(180MHz) output */
     CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
 
     /*!< Set up PLL1 */

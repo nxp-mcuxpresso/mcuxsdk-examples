@@ -24,11 +24,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v14.0
+product: Clocks v16.0
 processor: MCXA366
 package_id: MCXA366VLQ
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 0.2503.50
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -51,7 +51,7 @@ extern uint32_t SystemCoreClock;
  ******************************************************************************/
 void BOARD_InitBootClocks(void)
 {
-    BOARD_BootClockFROHF180M();
+    BOARD_BootClockPLL240M();
 }
 
 /*******************************************************************************
@@ -435,7 +435,6 @@ void BOARD_BootClockFROHF90M(void)
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!Configuration
 name: BOARD_BootClockFROHF180M
-called_from_default_init: true
 outputs:
 - {id: BUS_clock.outFreq, value: 90 MHz}
 - {id: CLK_1M_clock.outFreq, value: 1 MHz}
@@ -638,4 +637,122 @@ void BOARD_BootClockPLL180M(void)
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = BOARD_BOOTCLOCKPLL180M_CORE_CLOCK;
+}
+/*******************************************************************************
+ ******************** Configuration BOARD_BootClockPLL240M *********************
+ ******************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+!!Configuration
+name: BOARD_BootClockPLL240M
+called_from_default_init: true
+outputs:
+- {id: BUS_clock.outFreq, value: 120 MHz}
+- {id: CLK_1M_clock.outFreq, value: 1 MHz}
+- {id: CLK_45M_clock.outFreq, value: 45 MHz}
+- {id: CPU_clock.outFreq, value: 240 MHz}
+- {id: FRO_12M_DIV_clock.outFreq, value: 12 MHz}
+- {id: FRO_12M_clock.outFreq, value: 12 MHz}
+- {id: FRO_HF_DIV_clock.outFreq, value: 180 MHz}
+- {id: FRO_HF_clock.outFreq, value: 180 MHz}
+- {id: MAIN_clock.outFreq, value: 240 MHz}
+- {id: PLL1_DIV_clock.outFreq, value: 60 MHz}
+- {id: PLL1_clock.outFreq, value: 240 MHz}
+- {id: Slow_clock.outFreq, value: 40 MHz}
+- {id: System_clock.outFreq, value: 240 MHz}
+- {id: TRACE_clock.outFreq, value: 80 MHz}
+- {id: UTICK0_clock.outFreq, value: 1 MHz}
+- {id: WWDT0_clock.outFreq, value: 1 MHz}
+settings:
+- {id: PLL_MODE, value: Normal}
+- {id: SCGMode, value: PLL1}
+- {id: VDD_CORE, value: voltage_1v2}
+- {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
+- {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
+- {id: MRCC.TRACE_CLKDIV.scale, value: '3', locked: true}
+- {id: PLL1CLKDIV_SYSCON_PLL1CLKDIV_HALT, value: RUN}
+- {id: SCG.MDIV.scale, value: '40', locked: true}
+- {id: SCG.NDIV.scale, value: '1', locked: true}
+- {id: SCG.PLL1_CLKSEL.sel, value: SCG.FRO_12M_clock}
+- {id: SCG.SCGSCS_CLKSEL.sel, value: SCG.PLL1_clock}
+- {id: SYSCON.PLL1CLKDIV.scale, value: '4', locked: true}
+sources:
+- {id: SCG.FIRC.outFreq, value: 180 MHz}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+/*******************************************************************************
+ * Variables for BOARD_BootClockPLL240M configuration
+ ******************************************************************************/
+/*******************************************************************************
+ * Code for BOARD_BootClockPLL240M configuration
+ ******************************************************************************/
+void BOARD_BootClockPLL240M(void)
+{
+    uint32_t coreFreq;
+    spc_active_mode_core_ldo_option_t ldoOption;
+    spc_sram_voltage_config_t sramOption;
+
+    /* Get the CPU Core frequency */
+    coreFreq = CLOCK_GetCoreSysClkFreq();
+
+    /* The flow of increasing voltage and frequency */
+    if (coreFreq <= BOARD_BOOTCLOCKPLL240M_CORE_CLOCK) {
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x4U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+    }
+
+
+    /*!< Set up system dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivAHBCLK, 1U);               /* !< Set SYSCON.AHBCLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_HF, 1U);               /* !< Set SYSCON.FROHFDIV divider to value 1 */
+    CLOCK_SetupFROHFClocking(180000000U);              /*!< Enable FRO HF(180MHz) output */
+    CLOCK_SetupFRO12MClocking();                /*!< Setup FRO12M clock */
+
+    /*!< Set up PLL1 */
+    const pll_setup_t pll1Setup = {
+        .pllctrl = SCG_SPLLCTRL_SOURCE(3U) | SCG_SPLLCTRL_SELI(23U) | SCG_SPLLCTRL_SELP(11U),
+        .pllndiv = SCG_SPLLNDIV_NDIV(1U),
+        .pllpdiv = SCG_SPLLPDIV_PDIV(1U),
+        .pllmdiv = SCG_SPLLMDIV_MDIV(40U),
+        .pllRate = 240000000U
+    };
+    CLOCK_SetPLL1Freq(&pll1Setup);                       /*!< Configure PLL1 to the desired values */
+    CLOCK_SetPll1MonitorMode(kSCG_Pll1MonitorDisable);    /* Pll1 Monitor is disabled */
+
+    CLOCK_AttachClk(kPll1Clk_to_MAIN_CLK);      /* !< Switch MAIN_CLK to kPll1Clk */
+
+    /* The flow of decreasing voltage and frequency */
+    if (coreFreq > BOARD_BOOTCLOCKPLL240M_CORE_CLOCK) {
+        /* Configure Flash to support different voltage level and frequency */
+        FMU0->FCTRL = (FMU0->FCTRL & ~((uint32_t)FMU_FCTRL_RWSC_MASK)) | (FMU_FCTRL_RWSC(0x4U));
+        /* Specifies the operating voltage for the SRAM's read/write timing margin */
+        sramOption.operateVoltage = kSPC_sramOperateAt1P2V;
+        sramOption.requestVoltageUpdate =  true;
+        (void)SPC_SetSRAMOperateVoltage(SPC0, &sramOption);
+        /* Set the LDO_CORE VDD regulator level */
+        ldoOption.CoreLDOVoltage = kSPC_CoreLDO_OverDriveVoltage;
+        ldoOption.CoreLDODriveStrength = kSPC_CoreLDO_NormalDriveStrength;
+        (void)SPC_SetActiveModeCoreLDORegulatorConfig(SPC0, &ldoOption);
+    }
+
+    /*!< Set up clock selectors - Attach clocks to the peripheries */
+    CLOCK_AttachClk(kCPU_CLK_to_TRACE);                    /* !< Switch TRACE to CPU_CLK */
+
+    /*!< Set up dividers */
+    CLOCK_SetClockDiv(kCLOCK_DivFRO_LF, 1U);               /* !< Set SYSCON.FROLFDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivPLL1CLK, 4U);              /* !< Set SYSCON.PLL1CLKDIV divider to value 4 */
+    CLOCK_SetClockDiv(kCLOCK_DivWWDT0, 1U);                /* !< Set MRCC.WWDT0_CLKDIV divider to value 1 */
+    CLOCK_SetClockDiv(kCLOCK_DivTRACE, 3U);                /* !< Set MRCC.TRACE_CLKDIV divider to value 3 */
+
+    /* Set SystemCoreClock variable */
+    SystemCoreClock = BOARD_BOOTCLOCKPLL240M_CORE_CLOCK;
 }

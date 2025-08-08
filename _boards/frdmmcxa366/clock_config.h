@@ -583,8 +583,8 @@ void BOARD_BootClockPLL180M(void);
 #define BOARD_BOOTCLOCKPLL240M_FREQME_TARGET_CLOCK    0UL            /* Clock consumers of FREQME_target_clock output : N/A */
 #define BOARD_BOOTCLOCKPLL240M_FRO_12M_DIV_CLOCK      12000000UL     /* Clock consumers of FRO_12M_DIV_clock output : N/A */
 #define BOARD_BOOTCLOCKPLL240M_FRO_12M_CLOCK          12000000UL     /* Clock consumers of FRO_12M_clock output : N/A */
-#define BOARD_BOOTCLOCKPLL240M_FRO_HF_DIV_CLOCK       45000000UL     /* Clock consumers of FRO_HF_DIV_clock output : N/A */
-#define BOARD_BOOTCLOCKPLL240M_FRO_HF_CLOCK           45000000UL     /* Clock consumers of FRO_HF_clock output : N/A */
+#define BOARD_BOOTCLOCKPLL240M_FRO_HF_DIV_CLOCK       180000000UL    /* Clock consumers of FRO_HF_DIV_clock output : N/A */
+#define BOARD_BOOTCLOCKPLL240M_FRO_HF_CLOCK           180000000UL    /* Clock consumers of FRO_HF_clock output : N/A */
 #define BOARD_BOOTCLOCKPLL240M_I3C_FCLK_CLOCK         0UL            /* Clock consumers of I3C_FCLK_clock output : I3C0 */
 #define BOARD_BOOTCLOCKPLL240M_I3C_SLOW_TC_CLOCK      0UL            /* Clock consumers of I3C_SLOW_TC_clock output : I3C0 */
 #define BOARD_BOOTCLOCKPLL240M_I3C_SLOW_CLOCK         0UL            /* Clock consumers of I3C_SLOW_clock output : I3C0 */

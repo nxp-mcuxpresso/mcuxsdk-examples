@@ -10,6 +10,9 @@
 #include "fsl_port.h"
 #include "app.h"
 #include "lvgl_support.h"
+#include "fsl_smartdma.h"
+#include "fsl_inputmux_connections.h"
+#include "fsl_inputmux.h"
 /*${header:end}*/
 
 /*${macro:start}*/
@@ -24,6 +27,22 @@
 
 /*${function:start}*/
 void BOARD_I2C_ReleaseBus(void);
+
+static void BOARD_InitSmartDMA(void)
+{
+    RESET_ClearPeripheralReset(kINPUTMUX0_RST_SHIFT_RSTn);
+
+    INPUTMUX_Init(INPUTMUX0);
+    INPUTMUX_AttachSignal(INPUTMUX0, 0, kINPUTMUX_FlexioIrqToSmartdma0Trigger);
+
+    /* Turnoff clock to inputmux to save power. Clock is only needed to make changes */
+    INPUTMUX_Deinit(INPUTMUX0);
+
+    SMARTDMA_InitWithoutFirmware();
+
+    NVIC_EnableIRQ(SMARTDMA_IRQn);
+    NVIC_SetPriority(SMARTDMA_IRQn, 3);
+}
 
 void BOARD_InitHardware(void)
 {
@@ -45,6 +64,9 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
+    
+    /* Init smartdma. */
+    BOARD_InitSmartDMA();
 }
 
 static void i2c_release_bus_delay(void)
