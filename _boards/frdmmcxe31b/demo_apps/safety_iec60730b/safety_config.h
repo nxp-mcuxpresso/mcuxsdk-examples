@@ -31,7 +31,7 @@
 
 /* TEST SWITCHES - for debugging it is better to turn the flash test and watchdog OFF */
 #define CLOCK_TEST_ENABLED    1
-#define DIO_TEST_ENABLED      1
+#define DIO_TEST_ENABLED      0
 #define FLASH_TEST_ENABLED    1
 #define RAM_TEST_ENABLED      1
 #define PC_TEST_ENABLED       1

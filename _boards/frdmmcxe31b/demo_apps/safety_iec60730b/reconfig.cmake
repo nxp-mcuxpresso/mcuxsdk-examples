@@ -14,6 +14,7 @@ mcux_add_source(
     SOURCES examples/demo_apps/safety_iec60730b/common/cm4_cm7/safety_cm4_cm7_mcx.c
 			examples/demo_apps/safety_iec60730b/common/cm4_cm7/safety_cm4_cm7_mcx.h
 			examples/demo_apps/safety_iec60730b/common/cm4_cm7/main.c
+			${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/safety_flash.pmp
 )
 
 

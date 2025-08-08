@@ -14,3 +14,12 @@ mdk:
   config:
     __common__:
       createHexFile: true
+      
+iar:
+  config:
+    __common__:
+      use_flash_loaders: false
+      debugger_setting:
+        verify_download: false
+        cmsisdap_resetlist: hardware
+      

@@ -14,3 +14,14 @@ mdk:
   config:
     __common__:
       createHexFile: true
+      
+mdk:
+  config:
+    __common__:
+      createHexFile: true
+      
+iar:
+  config:
+    __common__:
+      debugger_setting:
+        verify_download: false

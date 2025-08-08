@@ -10,7 +10,7 @@ mcux_set_variable(SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD false)
 
 # IAR post-build command is disabled when 'SAFETY_IEC60730B_IAR_POSTBUILD' set to 'false', enabled when 'true'
 # Disable due to post-build command is not working on Dapeng tests now.
-mcux_set_variable(SAFETY_IEC60730B_IAR_POSTBUILD false)
+mcux_set_variable(SAFETY_IEC60730B_IAR_POSTBUILD true)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 

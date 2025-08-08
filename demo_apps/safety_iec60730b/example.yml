@@ -25,18 +25,6 @@ safety_iec60730b:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    frdmmcxc041:
-    - -armgcc@debug
-    - -armgcc@release
-    - -iar@release
-    - -mdk@debug
-    - -mdk@release
-    frdmmcxc242:
-    - -armgcc@debug
-    - -armgcc@release
-    - -iar@release
-    - -mdk@debug
-    - -mdk@release
     frdmmcxc444:
     - -armgcc@debug
     - -armgcc@release
@@ -54,6 +42,7 @@ safety_iec60730b:
     - -iar@flexspi_nor_release
     - -iar@hyperram_debug
     - -iar@hyperram_release
+    - -iar@debug
     - -iar@release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
@@ -72,6 +61,7 @@ safety_iec60730b:
     - -iar@flexspi_nor_release
     - -iar@hyperram_debug
     - -iar@hyperram_release
+    - -iar@debug
     - -iar@release
     - -mdk@flexspi_nor_debug
     - -mdk@flexspi_nor_release
@@ -83,7 +73,19 @@ safety_iec60730b:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
+    frdmmcxa266:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     frdmmcxa346:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    frdmmcxa366:
     - -armgcc@debug
     - -armgcc@release
     - -iar@release
@@ -92,6 +94,7 @@ safety_iec60730b:
     frdmmcxn947@cm33_core0:
     - -armgcc@debug
     - -armgcc@release
+    - -iar@debug
     - -iar@release
     - -mdk@debug
     - -mdk@release
