@@ -8,12 +8,15 @@
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "app.h"
+#include "fsl_xbar.h"
+#include "fsl_tpm.h"
 #include "a-format.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define ENC_ADDR 0x03
+#define ENC_ADDR           0x03
+#define DEMO_PWM_FREQUENCY (5U)
 
 /*******************************************************************************
  * Prototypes
@@ -53,6 +56,29 @@ void FLEXIO_A_Format_UserCallback(FLEXIO_A_FORMAT_Type *base,
     }
 }
 
+void tpm_init(void)
+{
+    tpm_config_t tpmInfo;
+    tpm_chnl_pwm_signal_param_t tpmParam;
+    int updatedDutycycle = 50;
+    uint8_t control;
+
+    TPM_GetDefaultConfig(&tpmInfo);
+    tpmInfo.prescale = TPM_CalculateCounterClkDiv(BOARD_TPM_BASEADDR, DEMO_PWM_FREQUENCY, BOARD_TPM_SOURCE_CLOCK);
+    TPM_Init(BOARD_TPM_BASEADDR, &tpmInfo);
+    tpmParam.chnlNumber       = (tpm_chnl_t)BOARD_TPM_CHANNEL;
+    tpmParam.level            = kTPM_HighTrue;
+    tpmParam.dutyCyclePercent = updatedDutycycle;
+    if (kStatus_Success != TPM_SetupPwm(BOARD_TPM_BASEADDR, &tpmParam, 1U, kTPM_CenterAlignedPwm, DEMO_PWM_FREQUENCY, BOARD_TPM_SOURCE_CLOCK))
+    {
+        PRINTF("\r\nSetup PWM fail!\r\n");
+        return;
+    }
+    control = TPM_GetChannelContorlBits(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL);
+    TPM_EnableChannel(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL, control);
+    TPM_EnableInterrupts(BOARD_TPM_BASEADDR, BOARD_TPM_INTERRUPT_ENABLE);
+}
+
 /*!
  * @brief Main function
  */
@@ -67,10 +93,15 @@ int main(void)
     a_format_abs_multi_single_t enc_abs, abs_save;
     float temp;
     uint32_t enc_id;
+    uint32_t timeout = 0;
 
     BOARD_InitHardware();
 
-    PRINTF("Encoder A-format example (Interrupt mode)\r\n");
+    XBAR_Init(kXBAR_DSC1);
+    XBAR_SetSignalsConnection(kXBAR1_InputTpm6LptpmChTrigger0, kXBAR1_OutputFlexio1FlexioTriggerIn0);
+    PRINTF("Encoder A-format example (Sync mode)\r\n");
+
+    tpm_init();
 
     /* 
      * Config->enableA_Format   = true;
@@ -81,6 +112,7 @@ int main(void)
      * Config->userMode         = kFLEXIO_A_FORMAT_USERMODE_ONESHOT;
      */
     FLEXIO_A_Format_GetDefaultConfig(&devConfig);
+    devConfig.userMode = kFLEXIO_A_FORMAT_USERMODE_SYNC;
 
     encDev.flexioBase                          = BOARD_FLEXIO_BASE;
     encDev.TxPinIndex                          = FLEXIO_A_FORMAT_TX_PIN; 
@@ -91,6 +123,7 @@ int main(void)
     encDev.timerIndex[A_FORMAT_TIMER_TX_INDEX] = A_FORMAT_TX_TIMER_INDEX;
     encDev.timerIndex[A_FORMAT_TIMER_RX_INDEX] = A_FORMAT_RX_TIMER_INDEX;
     encDev.timerIndex[A_FORMAT_TIMER_DR_INDEX] = A_FORMAT_DR_TIMER_INDEX;
+    encDev.triggerIn                           = 0;
 
     encoder.controller = &encDev;
     encoder.singleTurnRevolution  = 20;
@@ -111,9 +144,18 @@ int main(void)
     PRINTF("****************\r\n* Test case  1 *\r\n****************\r\n");
     PRINTF("> Get the encoder ID ==> ");
     A_Format_Get_ID_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_id);
-    while (!cmdFlag);
+    TPM_StartTimer(BOARD_TPM_BASEADDR, kTPM_SystemClock);
+    while ((!cmdFlag) && (timeout < 50))
+    {
+        SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        timeout++;
+    }
     cmdFlag = false;
-    if (cmd_g == 0xFF)
+    if (timeout >= 50)
+    {
+        PRINTF("timeout\r\n");
+    }
+    else if (cmd_g == 0xFF)
     {
         PRINTF("failed\r\n");
     }
@@ -121,13 +163,22 @@ int main(void)
     {
         PRINTF("0x%06X (successful)\r\n", enc_id);
     }
+    timeout = 0;
 
     PRINTF("****************\r\n* Test case  2 *\r\n****************\r\n");
     PRINTF("> Read the status of the encoder 0x%02X ==> ", ENC_ADDR);
     A_Format_Readout_Encoder_status_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &statusData);
-    while (!cmdFlag);
+    while ((!cmdFlag) && (timeout < 50))
+    {
+        SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        timeout++;
+    }
     cmdFlag = false;
-    if (statusData.es == kFLEXIO_A_FORMAT_ES_FrameErr)
+    if (timeout >= 50)
+    {
+        PRINTF("timeout\r\n");
+    }
+    else if (statusData.es == kFLEXIO_A_FORMAT_ES_FrameErr)
     {
         PRINTF("failed\r\n");
     }
@@ -135,13 +186,22 @@ int main(void)
     {
         PRINTF("ES: 0x%02X, ALM: 0x%04X (successful)\r\n", statusData.es, statusData.status);
     }
+    timeout = 0;
 
     PRINTF("****************\r\n* Test case  3 *\r\n****************\r\n");
     PRINTF("> Get the temperature of the encoder ==> ");
     A_Format_Get_Temperature_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &temp);
-    while (!cmdFlag);
+    while ((!cmdFlag) && (timeout < 50))
+    {
+        SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        timeout++;
+    }
     cmdFlag = false;
-    if (cmd_g == 0xFF)
+    if (timeout >= 50)
+    {
+        PRINTF("timeout\r\n");
+    }
+    else if (cmd_g == 0xFF)
     {
         PRINTF("failed\r\n");
     }
@@ -149,13 +209,22 @@ int main(void)
     {
         PRINTF("%f (successful)\r\n", temp);
     }
+    timeout = 0;
 
     PRINTF("****************\r\n* Test case  4 *\r\n****************\r\n");
     PRINTF("> Get the multi-turn data of the encoder ==> ");
     A_Format_ABS_Readout_Multi_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &multiData);
-    while (!cmdFlag);
+    while ((!cmdFlag) && (timeout < 50))
+    {
+        SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        timeout++;
+    }
     cmdFlag = false;
-    if (multiData.es == kFLEXIO_A_FORMAT_ES_FrameErr)
+    if (timeout >= 50)
+    {
+        PRINTF("timeout\r\n");
+    }
+    else if (multiData.es == kFLEXIO_A_FORMAT_ES_FrameErr)
     {
         PRINTF("failed\r\n");
     }
@@ -163,13 +232,22 @@ int main(void)
     {
         PRINTF("ES: 0x%02X, Multi-turn: %d (successful)\r\n", multiData.es, multiData.multiTurn);
     }
+    timeout = 0;
 
     PRINTF("****************\r\n* Test case  5 *\r\n****************\r\n");
     PRINTF("> Get the single-turn data of the encoder ==> ");
     A_Format_ABS_Readout_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &single_data);
-    while (!cmdFlag);
+    while ((!cmdFlag) && (timeout < 50))
+    {
+        SDK_DelayAtLeastUs(1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+        timeout++;
+    }
     cmdFlag = false;
-    if (single_data.es == kFLEXIO_A_FORMAT_ES_FrameErr)
+    if (timeout >= 50)
+    {
+        PRINTF("timeout\r\n");
+    }
+    else if (single_data.es == kFLEXIO_A_FORMAT_ES_FrameErr)
     {
         PRINTF("failed\r\n");
     }
@@ -177,6 +255,7 @@ int main(void)
     {
         PRINTF("ES: 0x%02X, Single-turn data: %d (successful)\r\n", single_data.es, single_data.singleTurn);
     }
+    timeout = 0;
 
     PRINTF("\r\n******************** Running the loop test ********************\r\n");
     A_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_abs);
@@ -190,7 +269,6 @@ int main(void)
                 abs_save = enc_abs;
             }
             cmdFlag = false;
-            SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
             A_Format_ABS_Readout_Multi_Single_IRQ(&encoder, ENCODER_ADDRESS_IT(ENC_ADDR), &enc_abs);
         }
     }
