@@ -37,7 +37,7 @@ if (isdefinedsymbol(__heap_size__)) {
 
 define symbol FLASH_START       = 0x0;
 if (isdefinedsymbol(MCXW235)) {
-    define symbol FLASH_SIZE        = 0xA0000;
+    define symbol FLASH_SIZE        = 0x80000;
 } else {
     define symbol FLASH_SIZE        = 0xFE000;
 }

@@ -6,7 +6,7 @@
 /* Entry Point */
 ENTRY(Reset_Handler)
 FLASH_START                  = 0x0;
-FLASH_SIZE                   = DEFINED(MCXW235) ? 0xA0000 : 0xFE000;
+FLASH_SIZE                   = DEFINED(MCXW235) ? 0x80000 : 0xFE000;
 FLASH_END                    = FLASH_START + FLASH_SIZE - 1;
 FLASH_SECTOR_SIZE            = 0x2000; /* 8KB */
 
