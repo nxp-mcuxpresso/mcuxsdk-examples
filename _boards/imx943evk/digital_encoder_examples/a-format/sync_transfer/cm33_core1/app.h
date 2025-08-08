@@ -25,6 +25,17 @@
 #define A_FORMAT_RX_TIMER_INDEX   2U
 #define DEMO_FLEXIO_CLOCK         (kCLOCK_Flexio1)
 #define FLEXIO_CLOCK_FREQUENCY    CLOCK_GetRate(DEMO_FLEXIO_CLOCK)
+
+/* define instance */
+#define BOARD_TPM_BASEADDR           TPM6
+#define BOARD_TPM_CHANNEL            kTPM_Chnl_0
+
+/* Interrupt to enable; depends on the TPM channel used */
+#define BOARD_TPM_INTERRUPT_ENABLE   kTPM_TimeOverflowInterruptEnable
+
+/* Get source clock for TPM driver */
+#define LPTPM_CLOCK_ROOT             kCLOCK_Tpm6
+#define BOARD_TPM_SOURCE_CLOCK       CLOCK_GetRate(LPTPM_CLOCK_ROOT)
 /*${macro:end}*/
 
 /*******************************************************************************

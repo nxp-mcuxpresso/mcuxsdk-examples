@@ -21,6 +21,12 @@ void BOARD_InitHardware(void)
         .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
         .rate = 80000000UL, /* 80 MHz */
     };
+    clk_t lptpmClkCfg = {
+        .clkId = LPTPM_CLOCK_ROOT,
+        .pclkId = kCLOCK_Osc24m,
+        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+        .rate = 24000000UL,
+    };
     /* clang-format on */
 
     SystemPlatformInit();
@@ -32,5 +38,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetParent(&flexioClkCfg);
     CLOCK_SetRate(&flexioClkCfg);
     CLOCK_EnableClock(flexioClkCfg.clkId);
+    CLOCK_SetRate(&lptpmClkCfg);
+    CLOCK_EnableClock(lptpmClkCfg.clkId);
 }
 /*${function:end}*/
