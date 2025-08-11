@@ -88,6 +88,8 @@
 #endif
 #endif
 
+#define CONFIG_WPA_SUPP_P2P 0
+
 #else
 #define CONFIG_WPA_SUPP_WPS               1
 #define CONFIG_WPA_SUPP_WPA3              1
