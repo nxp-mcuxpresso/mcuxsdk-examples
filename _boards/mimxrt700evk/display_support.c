@@ -936,7 +936,7 @@ typedef struct _dsi_mem_write_ctx
     volatile bool onGoing;
     const uint8_t *txData;
     uint32_t leftByteLen;
-    uint8_t dscCmd;
+    uint8_t dcsCmd;
 } dsi_mem_write_ctx_t;
 
 #endif
@@ -1328,7 +1328,7 @@ static status_t BOARD_DsiMemWriteSendChunck(void)
         DEMO_DSI_TX_ARRAY_MAX > s_dsiMemWriteCtx.leftByteLen ? s_dsiMemWriteCtx.leftByteLen : DEMO_DSI_TX_ARRAY_MAX;
 
     s_dsiMemWriteXfer.txDataType = kDSI_TxDataDcsLongWr;
-    s_dsiMemWriteXfer.dscCmd     = s_dsiMemWriteCtx.dscCmd;
+    s_dsiMemWriteXfer.dcsCmd     = s_dsiMemWriteCtx.dcsCmd;
     s_dsiMemWriteXfer.txData     = s_dsiMemWriteTmpArray;
     s_dsiMemWriteXfer.txDataSize = curSendLen;
 
@@ -1345,7 +1345,7 @@ static status_t BOARD_DsiMemWriteSendChunck(void)
     }
 
     s_dsiMemWriteCtx.leftByteLen -= curSendLen;
-    s_dsiMemWriteCtx.dscCmd = kMIPI_DCS_WriteMemoryContinue;
+    s_dsiMemWriteCtx.dcsCmd = kMIPI_DCS_WriteMemoryContinue;
 
     return DSI_TransferNonBlocking(DEMO_MIPI_DSI, &s_dsiDriverHandle, &s_dsiMemWriteXfer);
 }
@@ -1377,12 +1377,12 @@ static status_t BOARD_DSI_MemWrite(uint8_t virtualChannel, const uint8_t *data, 
 
     s_dsiMemWriteXfer.virtualChannel = virtualChannel;
     s_dsiMemWriteXfer.flags          = kDSI_TransferUseHighSpeed;
-    s_dsiMemWriteXfer.sendDscCmd     = true;
+    s_dsiMemWriteXfer.sendDcsCmd     = true;
 
     s_dsiMemWriteCtx.onGoing     = true;
     s_dsiMemWriteCtx.txData      = data;
     s_dsiMemWriteCtx.leftByteLen = length;
-    s_dsiMemWriteCtx.dscCmd      = kMIPI_DCS_WriteMemoryStart;
+    s_dsiMemWriteCtx.dcsCmd      = kMIPI_DCS_WriteMemoryStart;
 
     status = BOARD_DsiMemWriteSendChunck();
 
