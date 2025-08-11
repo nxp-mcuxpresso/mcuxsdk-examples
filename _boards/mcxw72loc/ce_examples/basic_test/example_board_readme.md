@@ -26,7 +26,9 @@ Running the demo
 The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Status=DD000001, Reply=AA000002
-VECADD Test Passed: Status=DD000002, Reply=AA000003
-VECMULT Test Passed: Status=DD000003, Reply=AA000004
+VECADD F32 Test Passed: Status=DD000002, Reply=AA000003
+VECADD Q31 Test Passed: Status=DD000003, Reply=AA000004
+VECADD Q15 Test Passed: Status=DD000004, Reply=AA000005
+VECMULT Test Passed: Status=DD000005, Reply=AA000006
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

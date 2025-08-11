@@ -32,6 +32,15 @@ uint32_t status_buffer[128 + 6] @ "dspvB";
 float srcdata[25][2] @ "dspvC";
 float srcdata2[25][2] @ "dspvC";
 float dstdata[25][2] @ "dspvC";
+
+int32_t srcdataintA[80] @ "dspvC";
+int srcdataintA2[80] @ "dspvC";
+int32_t dstdata_int[80] @ "dspvC";
+
+int16_t srcdataintB[80] @ "dspvC";
+int16_t srcdataintB2[80] @ "dspvC";
+int16_t dstdata_int16[80] @ "dspvC";
+
 #elif (defined(__CC_ARM) || defined(__ARMCC_VERSION))
 __attribute__((section("dspvA"), zero_init)) uint32_t cmd_buffer[256];
 __attribute__((section("dspvB"), zero_init)) uint32_t status_buffer[128 + 6];
@@ -39,6 +48,14 @@ __attribute__((section("dspvB"), zero_init)) uint32_t status_buffer[128 + 6];
 __attribute__((section("dspvC"), zero_init)) float srcdata[25][2];
 __attribute__((section("dspvC"), zero_init)) float srcdata2[25][2];
 __attribute__((section("dspvC"), zero_init)) float dstdata[25][2];
+
+__attribute__((section("dspvC"), zero_init)) int32_t srcdataintA[80] @ "dspvC";
+__attribute__((section("dspvC"), zero_init)) int32_t srcdataintA2[80] @ "dspvC";
+__attribute__((section("dspvC"), zero_init)) int32_t dstdata_int[80] @ "dspvC";
+
+__attribute__((section("dspvC"), zero_init)) int16_t srcdataintB[80] @ "dspvC";
+__attribute__((section("dspvC"), zero_init)) int16_t srcdataintB2[80] @ "dspvC";
+__attribute__((section("dspvC"), zero_init)) int16_t dstdata_int16[80] @ "dspvC";
 #elif (defined(__GNUC__))
 __attribute__((section(".dspvA,\"aw\",%nobits @"))) uint32_t cmd_buffer[256];
 __attribute__((section(".dspvB,\"aw\",%nobits @"))) uint32_t status_buffer[128 + 6];
@@ -46,9 +63,19 @@ __attribute__((section(".dspvB,\"aw\",%nobits @"))) uint32_t status_buffer[128 +
 __attribute__((section(".dspvC,\"aw\",%nobits @"))) float srcdata[25][2];
 __attribute__((section(".dspvC,\"aw\",%nobits @"))) float srcdata2[25][2];
 __attribute__((section(".dspvC,\"aw\",%nobits @"))) float dstdata[25][2];
+
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) int32_t srcdataintA[80];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) int32_t srcdataintA2[80];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) int32_t dstdata_int[80];
+
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) int16_t srcdataintB[80];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) int16_t srcdataintB2[80];
+__attribute__((section(".dspvC,\"aw\",%nobits @"))) int16_t dstdata_int16[80];
 #endif
 
 float refdata[25][2];
+int refdata_int[80];
+int16_t refdata_int16[80];
 
 ce_cmdbuffer_t ce_cmd_buffer;
 
@@ -77,6 +104,15 @@ int main(void)
         }
     }
 
+    for (i = 0; i < 80; i++)
+    {
+        srcdataintA[i] = 25 * i + 1;
+        srcdataintA2[i] = 100 * i + 3;
+
+        srcdataintB[i] = 15 * i + 4;
+        srcdataintB2[i] = 10 * i + 7;
+    }
+
     status = CE_NullCmd();
     PRINTF("Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
 
@@ -98,14 +134,52 @@ int main(void)
     }
 
     if (copyerr > 0)
-        PRINTF("VECADD Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+        PRINTF("VECADD F32 Test Failed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
     else
-        PRINTF("VECADD Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+        PRINTF("VECADD F32 Test Passed: Status=%8X, Reply=%8X\r\n", status, status_buffer[0]);
+
+    for (i = 0; i < 80; i++)
+    {
+        refdata_int[i] = srcdataintA[i] + srcdataintA2[i];
+    }
+
+    status = CE_MatrixAdd_Q31(&dstdata_int[0], &srcdataintA[0], &srcdataintA2[0], 80, 1);
+
+    copyerr = 0;
+    for (i = 0; i < 80; i++)
+    {
+        copyerr += (refdata_int[i] - dstdata_int[i]) * (refdata_int[i] - dstdata_int[i]);
+    }
+
+    if (copyerr > 0)
+        PRINTF("VECADD Q31 Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    else
+        PRINTF("VECADD Q31 Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+
+    for (i = 0; i < 80; i++)
+    {
+        refdata_int16[i] = srcdataintB[i] + srcdataintB2[i];
+    }
+
+    status = CE_MatrixAdd_Q15(&dstdata_int16[0], &srcdataintB[0], &srcdataintB2[0], 80, 1);
+
+    copyerr = 0;
+    for (i = 0; i < 80; i++)
+    {
+        copyerr += (refdata_int16[i] - dstdata_int16[i]) * (refdata_int16[i] - dstdata_int16[i]);
+    }
+
+    if (copyerr > 0)
+        PRINTF("VECADD Q15 Test Failed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
+    else
+        PRINTF("VECADD Q15 Test Passed: Status=%8X, Reply=%8X\n", status, status_buffer[0]);
 
     for (i = 0; i < 25; i++)
     {
         for (j = 0; j < 2; j++)
+        {
             refdata[i][j] = srcdata[i][j] * srcdata2[i][j];
+        }
     }
 
     status = CE_MatrixElemMul_F32(&dstdata[0][0], &srcdata[0][0], &srcdata2[0][0], 25, 2);

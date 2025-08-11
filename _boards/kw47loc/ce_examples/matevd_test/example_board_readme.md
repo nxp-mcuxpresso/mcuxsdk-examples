@@ -26,6 +26,13 @@ Running the demo
 The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Status=DD000001, Reply=AA000002
-CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000003
+FULL WGN 40 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000003
+COMP WGN 40 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000004
+FULL LOC 40 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000005
+COMP LOC 40 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000006
+FULL WGN 17 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000007
+COMP WGN 17 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000008
+FULL LOC 17 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA000009
+COMP LOC 17 CF32 MAT EVD Test Passed: Status=DD000001, Reply=AA00000A
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

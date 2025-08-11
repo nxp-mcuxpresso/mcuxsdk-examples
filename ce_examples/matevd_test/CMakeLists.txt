@@ -12,25 +12,21 @@ mcux_add_source(
 
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input.txt
+    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_comp_loc_17.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_comp_loc_40.txt
+    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_comp_wgn_17.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_comp_wgn_40.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_loc.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_loc_18.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_loc_40.txt
+    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_rm_loc_17.txt
+    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_rm_loc_40.txt
+    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_rm_wgn_17.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_rm_wgn_40.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_wgn_17.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_wgn_18.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/evd_input_wgn_40.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_T_loc_18.txt
+    SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_T_loc_17.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_T_loc_40.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_T_wgn_17.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_T_wgn_18.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_T_wgn_40.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_U_loc_18.txt
+    SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_U_loc_17.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_U_loc_40.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_U_wgn_17.txt
-    SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_U_wgn_18.txt
     SOURCES ${board_root}/${board}/ce_examples/matevd_test/qr_output_U_wgn_40.txt
 )
 
