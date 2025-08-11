@@ -27,7 +27,7 @@
 static void ncp_encrypt_handshake_task(void *pvParameters);
 #define NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
 static OSA_TASK_HANDLE_DEFINE(ncp_encrypt_handshake_thread);
-static OSA_TASK_DEFINE(ncp_encrypt_handshake_task, NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO, 1, 4096, 0);
+static OSA_TASK_DEFINE(ncp_encrypt_handshake_task, NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO, 1, 8192, 0);
 
 extern MCU_NCPCmd_DS_SYS_COMMAND *ncp_host_get_cmd_buffer_sys();
 
