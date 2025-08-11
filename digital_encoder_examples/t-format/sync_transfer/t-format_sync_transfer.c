@@ -8,11 +8,14 @@
 #include "fsl_debug_console.h"
 #include "board.h"
 #include "app.h"
+#include "fsl_xbar.h"
+#include "fsl_tpm.h"
 #include "t-format.h"
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define DEMO_PWM_FREQUENCY (5U)
 
 /*******************************************************************************
  * Prototypes
@@ -46,6 +49,29 @@ void FLEXIO_T_Format_UserCallback(FLEXIO_T_FORMAT_Type *base,
     }
 }
 
+void tpm_init(void)
+{
+    tpm_config_t tpmInfo;
+    tpm_chnl_pwm_signal_param_t tpmParam;
+    int updatedDutycycle = 50;
+    uint8_t control;
+
+    TPM_GetDefaultConfig(&tpmInfo);
+    tpmInfo.prescale = TPM_CalculateCounterClkDiv(BOARD_TPM_BASEADDR, DEMO_PWM_FREQUENCY, BOARD_TPM_SOURCE_CLOCK);
+    TPM_Init(BOARD_TPM_BASEADDR, &tpmInfo);
+    tpmParam.chnlNumber       = (tpm_chnl_t)BOARD_TPM_CHANNEL;
+    tpmParam.level            = kTPM_HighTrue;
+    tpmParam.dutyCyclePercent = updatedDutycycle;
+    if (kStatus_Success != TPM_SetupPwm(BOARD_TPM_BASEADDR, &tpmParam, 1U, kTPM_CenterAlignedPwm, DEMO_PWM_FREQUENCY, BOARD_TPM_SOURCE_CLOCK))
+    {
+        PRINTF("\r\nSetup PWM fail!\r\n");
+        return;
+    }
+    control = TPM_GetChannelContorlBits(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL);
+    TPM_EnableChannel(BOARD_TPM_BASEADDR, (tpm_chnl_t)BOARD_TPM_CHANNEL, control);
+    TPM_EnableInterrupts(BOARD_TPM_BASEADDR, BOARD_TPM_INTERRUPT_ENABLE);
+}
+
 /*!
  * @brief Main function
  */
@@ -56,13 +82,16 @@ int main(void)
     FLEXIO_T_FORMAT_Type encDev;
     t_format_all_info_t enc_abs = {0}, abs_save = {0};
     uint32_t clock;
-    uint64_t time = 0;
 
     BOARD_InitHardware();
     clock = FLEXIO_CLOCK_FREQUENCY / 1000000;
 
-    PRINTF("Encoder T-format example\r\n");
+    XBAR_Init(kXBAR_DSC1);
+    XBAR_SetSignalsConnection(kXBAR1_InputTpm6LptpmChTrigger0, kXBAR1_OutputFlexio1FlexioTriggerIn0);
+    PRINTF("Encoder T-format example (Sync mode)\r\n");
     PRINTF("FlexIO Root Clock is %d MHz\r\n", clock);
+
+    tpm_init();
 
     /* 
      * Config->enableT_Format   = true;
@@ -73,6 +102,7 @@ int main(void)
      * Config->userMode         = kFLEXIO_A_FORMAT_USERMODE_ONESHOT;
      */
     FLEXIO_T_Format_GetDefaultConfig(&devConfig);
+    devConfig.userMode = kFLEXIO_T_FORMAT_USERMODE_SYNC;
 
     encDev.flexioBase      = BOARD_FLEXIO_BASE;
     encDev.TxPinIndex      = FLEXIO_T_FORMAT_TX_PIN;
@@ -83,6 +113,7 @@ int main(void)
     encDev.timerIndex[0]   = T_FORMAT_TX_TIMER_INDEX;
     encDev.timerIndex[1]   = T_FORMAT_RX_TIMER_INDEX;
     encDev.timerIndex[2]   = T_FORMAT_DR_TIMER_INDEX;
+    encDev.triggerIn       = 0;
 
     encoder.controller = &encDev;
     encoder.singleTurnRevolution  = 17;
@@ -98,18 +129,18 @@ int main(void)
 
     FLEXIO_T_Format_TransferCreateHandle(&encDev, &g_tformatHandle, FLEXIO_T_Format_UserCallback, NULL);
     T_Format_Readout_ABS_ABM_IRQ(&encoder, &enc_abs);
+
+    TPM_StartTimer(BOARD_TPM_BASEADDR, kTPM_SystemClock);
     while (1)
     {
         if (cmdFlag)
         {
             if ((abs(enc_abs.singleTurn - abs_save.singleTurn) > 500))
             {
-                PRINTF("[%fs] Multi-turn data: %d, single-turn data: %ld\r\n", time / 10.0, enc_abs.multiTurn, enc_abs.singleTurn);
+                PRINTF("Multi-turn data: %d, single-turn data: %ld\r\n", enc_abs.multiTurn, enc_abs.singleTurn);
+                abs_save = enc_abs;
             }
-            abs_save = enc_abs;
             cmdFlag = false;
-            SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-            time++;
             T_Format_Readout_ABS_ABM_IRQ(&encoder, &enc_abs);
         }
     }
