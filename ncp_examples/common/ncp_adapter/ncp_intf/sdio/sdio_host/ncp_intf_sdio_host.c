@@ -21,9 +21,14 @@
 /*******************************************************************************
  * Private macro
  ******************************************************************************/
+#ifndef BIT
+#define BIT(n) (1U << (n))
+#endif
+
 #define SDHOST_CORE_INPUT_PRIO   3
 #define SDHOST_CORE_STACK_SIZE   (1024)
-#define SDHOST_CORE_START        0x01
+#define SDHOST_CORE_START        BIT(0)
+#define SDHOST_DATA_DNLD_RDY     BIT(1)
 #define SDHOST_RESCAN_PRIO       3
 #define SDHOST_RESCAN_STACK_SIZE (1500)
 #define SDHOST_RESCAN_START      0x01
@@ -487,6 +492,11 @@ void sdhost_core_set_event(osa_event_flags_t flagsToWait)
     (void)OSA_EventSet((osa_event_handle_t)sdhost_core_events, flagsToWait);
 }
 
+void sdhost_core_clear_event(osa_event_flags_t flagsToWait)
+{
+    (void)OSA_EventClear((osa_event_handle_t)sdhost_core_events, flagsToWait);
+}
+
 static void SDIO_CardInterruptCallBack(void *userData)
 {
     SDMMCHOST_EnableCardInt(g_sdio_card.host, false);
@@ -723,6 +733,23 @@ static ncp_status_t get_rd_port(uint32_t *pport)
     return NCP_STATUS_SUCCESS;
 }
 
+static int get_free_port(void)
+{
+    /* Check if the port is available */
+    if (!((1 << txportno) & sdhost_ctrl.mp_wr_bitmap))
+    {
+        ncp_adap_d("No port: txportno=%u mp_wr_bitmap=0x%x",
+            txportno, sdhost_ctrl.mp_wr_bitmap);
+        return NCP_STATUS_ERROR;
+    }
+    else
+    {
+        /* Mark the port number we will use */
+        sdhost_ctrl.mp_wr_bitmap &= ~(1 << txportno);
+    }
+    return NCP_STATUS_SUCCESS;
+}
+
 /*
  * This function keeps on looping till all the packets are read
  */
@@ -845,6 +872,8 @@ ncp_status_t sdhost_process_int_status(void)
         sdhost_ctrl.mp_wr_bitmap |= ((uint32_t)sdhost_ctrl.mp_regs[WR_BITMAP_1U]) << 24;
         //ncp_adap_d("data sent");
         data_sent = false;
+        ncp_adap_d("set event DATA_DNLD_RDY soon");
+        (void)sdhost_core_set_event(SDHOST_DATA_DNLD_RDY);
     }
 
     if ((sdio_ireg & UP_LD_HOST_INT_STATUS) != 0U)
@@ -1354,6 +1383,33 @@ ncp_status_t ncp_sdhost_send_data(uint8_t *buf, uint32_t length)
     {
         ncp_adap_e("Insufficient buffer");
         return NCP_STATUS_ERROR;
+    }
+
+get_port:
+    ret = get_free_port();
+    ncp_adap_d("1st get_free_port ret=%d", ret);
+    if (ret != NCP_STATUS_SUCCESS)
+    {
+        (void)sdhost_core_wait_event(SDHOST_DATA_DNLD_RDY);
+        ncp_adap_d("FAIL: wait event DATA_DNLD_RDY done");
+        (void)sdhost_core_clear_event(SDHOST_DATA_DNLD_RDY);
+        ncp_adap_d("FAIL: clear event DATA_DNLD_RDY done");
+        ret = get_free_port();
+        ncp_adap_d("2nd get_free_port ret=%d", ret);
+    }
+    else
+    {
+        (void)sdhost_core_clear_event(SDHOST_DATA_DNLD_RDY);
+        ncp_adap_d("SUCCESS: clear event DATA_DNLD_RDY done");
+    }
+    if (ret != NCP_STATUS_SUCCESS)
+    {
+        ncp_adap_d("get_free_port %u fail ret=%d", txportno, ret);
+        goto get_port;
+    }
+    else
+    {
+        ncp_adap_d("get_free_port %d ok", txportno);
     }
 
     if (KOSA_StatusSuccess != OSA_MutexLock(&txrx_mutex, osaWaitForever_c))
