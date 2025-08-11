@@ -6,7 +6,7 @@ Hardware requirements
 
 Board settings
 ============
-1. To wakeup the chip via VBAT, please connect a signal to TP1, and the falling edge will wakeup the chip.
+1. To wakeup the chip via VBAT, please connect a signal to TP1 or press SW5, and the falling edge will wakeup the chip.
 2. To test PowerSwitchOff(Smart power switch) mode, cut the SH9 trace between P3V3_DUT and VDD_REG, then populate a
 0-ed ohm resistor in SH9 to connect VDD_REG and VOUT_SWITCH nodes.
 
