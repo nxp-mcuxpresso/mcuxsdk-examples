@@ -1,0 +1,324 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "created": "2025-08-11T05:38:49Z",
+    "creators": [
+      "Organization: NXP"
+    ],
+    "licenseListVersion": "3.20"
+  },
+  "name": "mcuxsdk-examples-v25.09.00-pvw2",
+  "dataLicense": "CC0-1.0",
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-e5b7758e-198f-4ef0-a1c0-449099001fd5",
+      "extractedText": "FatFs License\n=============\n\nFatFs module is a generic FAT file system module for small embedded systems. This\nis a free software that opened for education, research and commercial\ndevelopments under license policy of following trems.\n\nCopyright (C) 2013, ChaN, all right reserved.\n\n  * The FatFs module is a free software and there is NO WARRANTY.\n\n  *  No restriction on use. You can use, modify and redistribute it for personal,\n    non-profit or commercial products UNDER YOUR RESPONSIBILITY.\n\n  * Redistributions of source code must retain the above copyright notice.",
+      "name": "FatFs License"
+    }
+  ],
+  "documentNamespace": "https://nxp.com/spdx/df2ff821-96fc-4c22-baec-2ab0053e8429",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "name": "mcuxsdk-examples",
+      "versionInfo": "v25.09.00-pvw2",
+      "licenseConcluded": "(BSD-3-Clause)",
+      "licenseDeclared": "(BSD-3-Clause)",
+      "downloadLocation": "https://github.com/nxp-mcuxpresso/mcuxsdk-examples",
+      "originator": "Organization: NXP",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-74a6ea11-2dc3-4398-9916-9c629603da08",
+      "name": "Amazon FreeRTOS",
+      "versionInfo": "202012.01",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/aws/amazon-freertos",
+      "downloadLocation": "https://github.com/aws/amazon-freertos/releases/tag/202012.01",
+      "originator": "Organization: Amazon FreeRTOS",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:amazon_web_services_freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:aws:amazon-freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:o:amazon:freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-1d7506e9-ab7b-41f1-bd98-5beca80c1db9",
+      "name": "ARM-software/CMSIS-DSP",
+      "versionInfo": "v1.16.1",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: arm-software",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/arm-software/cmsis-dsp@v1.16.1",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "9c69fd9d-2088-4dab-8f6e-1f5116e7746e",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-6ce9c7ab-e1db-4fc6-b197-fc00d1966f85",
+      "name": "cJSON",
+      "versionInfo": "v1.7.6",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/DaveGamble/cJSON",
+      "downloadLocation": "https://github.com/DaveGamble/cJSON/tree/v1.7.6",
+      "originator": "Organization: davegamble",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/DaveGamble/cJSON@v1.7.6",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "d1374f92-9d22-4352-b1a9-17e04d5f528b",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:cjson_project:cjson:1.7.6:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-18f07cfa-2c43-47ad-b6c4-546506c7a5d7",
+      "name": "FatFs Module",
+      "versionInfo": "R0.15",
+      "licenseConcluded": "LicenseRef-e5b7758e-198f-4ef0-a1c0-449099001fd5",
+      "licenseDeclared": "LicenseRef-e5b7758e-198f-4ef0-a1c0-449099001fd5",
+      "homepage": "http://elm-chan.org/fsw/ff/00index_e.html",
+      "downloadLocation": "http://elm-chan.org/fsw/ff/00index_e.html",
+      "originator": "Organization: FatFs Module",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-6860d35e-9d89-4b6d-b8bb-33d8caf5250a",
+      "name": "FreeRTOS Real Time Kernel",
+      "versionInfo": "V11.1.0",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://sourceforge.net/projects/freertos",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: freertos",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:aws-freertos-kernel:11.1.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:o:amazon:freertos:11.1.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:freertos:11.1.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/FreeRTOS/FreeRTOS-Kernel@V11.1.0",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "787ec417-16a8-4a84-90a3-166358ca5713",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-87476701-cd7b-494c-a778-27bd8fecc90f",
+      "name": "lwIP",
+      "versionInfo": "2.2.1",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "homepage": "http://savannah.nongnu.org/projects/lwip/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: lwIP",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-83cbd343-73dd-44dc-8655-adc88fb3ccc6",
+      "name": "mbed TLS",
+      "versionInfo": "v3.6.3",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "https://www.trustedfirmware.org/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: mbed TLS",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libmbedtls-doc:3.6.3:1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libmbedcrypto16:3.6.3:1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:arm:mbed_tls:3.6.3:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libmbedtls21:3.6.3:1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:libmbedtls-dev:3.6.3:1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-63c0e6d6-c1f9-4271-b741-e870daafba82",
+      "name": "NXPmicro/rpmsg-lite",
+      "versionInfo": "v5.1.2",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: nxpmicro",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/NXPmicro/rpmsg-lite@v5.1.2",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "93944a6c-2412-4ff5-95e7-65db8d3fc495",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-1c059ee1-1664-4e35-90e0-69396af13d90",
+      "name": "systemview-target",
+      "versionInfo": "0.1.1",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://bern-rtos.org",
+      "downloadLocation": "https://crates.io/crates/systemview-target/0.1.1",
+      "originator": "Organization: crates",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/systemview-target@0.1.1",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "0288f5c7-a099-4f83-9005-67eaf26085c3",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-18f07cfa-2c43-47ad-b6c4-546506c7a5d7"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-74a6ea11-2dc3-4398-9916-9c629603da08"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-6ce9c7ab-e1db-4fc6-b197-fc00d1966f85"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-6860d35e-9d89-4b6d-b8bb-33d8caf5250a"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-83cbd343-73dd-44dc-8655-adc88fb3ccc6"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-1c059ee1-1664-4e35-90e0-69396af13d90"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-1d7506e9-ab7b-41f1-bd98-5beca80c1db9"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-63c0e6d6-c1f9-4271-b741-e870daafba82"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-df2ff821-96fc-4c22-baec-2ab0053e8429",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-87476701-cd7b-494c-a778-27bd8fecc90f"
+    }
+  ]
+}
