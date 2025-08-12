@@ -12,11 +12,12 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
-processor: MIMXRT1062xxxxA
-package_id: MIMXRT1062DVL6A
+product: Pins v13.0
+processor: MIMXRT1062xxxxB
+package_id: MIMXRT1062DVL6B
 mcu_data: ksdk2_0
-processor_version: 9.0.1
+processor_version: 13.0.1
+board: MIMXRT1060-EVKC
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
