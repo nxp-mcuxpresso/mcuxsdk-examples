@@ -53,12 +53,12 @@ ota_mcuboot_basic_psa:
     mcxn9xxevk@cm33_core0:
     - -mdk@debug
     - -mdk@release
-ota_mcuboot_basic_psa@mcxn_mcuboot_in_main_flash:
+ota_mcuboot_basic_psa@mcxn_encrypted_xip:
   section-type: custom_application
   contents:
     document:
       extra_build_args:
-      - -DCONF_FILE=examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/ota_mcuboot_basic_psa.conf
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/mcxn/ota_mcuboot_basic_psa.conf
   boards:
     mcxn5xxevk@cm33_core0:
     - -mdk@release

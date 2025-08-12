@@ -36,3 +36,48 @@ Board settings
 Note that for the first image flashed manually together with the bootloader
 additional imgtool options "--pad" and "--confirm" must be used. Otherwise
 the bootloader would reject the image for missing data in the trailer area.
+
+### Custom configuration - Encrypted XIP
+
+| Region              | From       | To         | Size   |
+|---------------------|------------|------------|--------|
+| MCUboot code        | 0x70000000 | 0x7003FFFF | 256kB  |
+| Primary slot        | 0x70040000 | 0x7013FFFF | 1024kB |
+| Secondary slot      | 0x70140000 | 0x7023FFFF | 1024kB |
+| Encryption metadata | 0x70240000 | 0x70240FFF | 4kB    |
+
+This custom build generates a project with predefined configuration to utilize Encrypted XIP mode. For more information please see [Encrypted XIP and MCUboot](../../../../ota_examples/_doc/encrypted_xip_readme.md).
+
+- MCUBoot header size is set to 1024 bytes
+- Signing algorithm is ECDSA-P256
+- Write alignment is 4 bytes
+- MCUBoot is configured for `Encrypted XIP mode` using modified `MCUBOOT_OVERWRITE_ONLY` image update strategy
+- MCUboot uses ECDH-P256 to secure AES key for image encryption
+- Primary slot is encrypted by BEE module to utilize encrypted XIP
+
+Image signing example:
+
+    imgtool sign --key sign-ecdsa-p256-priv.pem
+                 --align 4
+                 --version 1.1
+                 --slot-size 0x200000
+                 --header-size 0x400
+                 --max-sectors 59
+                 --pad-header
+                 -E enc-ec256-pub.pem
+                 ota_mcuboot_basic.bin
+                 ota_mcuboot_basic.SIGNED.bin
+
+Project building example:
+
+The project is built using `west` tool. For more information please see [MCUXpresso SDK documentation](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/introduction/README.html).
+
+Bootloader:
+~~~
+west build -p always examples/ota_examples/mcuboot_opensource --toolchain iar --config flexspi_nor_debug -b evkmimxrt1064 -t guiproject -DCONF_FILE="examples/ota_examples/_custom_cfg/rt1064/mcuboot_opensource.conf" -d builds/mcuboot
+~~~
+
+OTA application:
+~~~
+west build -p always examples/ota_examples/ota_mcuboot_basic --toolchain iar --config flexspi_nor_debug -b evkmimxrt1064 -t guiproject -DCONF_FILE="examples/ota_examples/_custom_cfg/rt1064/ota_mcuboot_basic.conf" -d builds/ota_mcuboot_basic
+~~~

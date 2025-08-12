@@ -18,7 +18,6 @@
 #define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
 
 #if CONFIG_ENCRYPT_XIP_EXT_ENABLE
-#define BOOT_FLASH_EXEC_APP             CONFIG_BOOT_FLASH_EXEC_APP_ADDRESS
 #define BOOT_FLASH_ENC_META             CONFIG_BOOT_FLASH_ENC_META_ADDRESS
 #endif
 
@@ -37,8 +36,7 @@ The memory is allocated as follows:
 #define BOOT_FLASH_CAND_APP 0x08240000
 
 #if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
-/* Encrypted XIP extension: modified overwrite-only mode */
-#define BOOT_FLASH_EXEC_APP BOOT_FLASH_ACT_APP
+/* Encrypted XIP extension: offset of metadata region */
 #define BOOT_FLASH_ENC_META 0x08440000
 #endif
 

@@ -20,7 +20,6 @@
 #define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
 
 #if CONFIG_ENCRYPT_XIP_EXT_ENABLE
-#define BOOT_FLASH_EXEC_APP             CONFIG_BOOT_FLASH_EXEC_APP_ADDRESS
 #define BOOT_FLASH_ENC_META             CONFIG_BOOT_FLASH_ENC_META_ADDRESS
 #endif
 
@@ -29,19 +28,18 @@
 
 The memory is allocated as follows:
     - BOOTLOADER:  0x020000 bytes @ 0x60000000 - MCUboot
-    - APP_ACT:     0x400000 bytes @ 0x60040000 - primary slot
-    - APP_CAND:    0x400000 bytes @ 0x60440000 - secondary slot
+    - APP_ACT:     0x200000 bytes @ 0x60040000 - primary slot
+    - APP_CAND:    0x200000 bytes @ 0x60240000 - secondary slot
     Encrypted XIP support:
-    - ENC_META:    0x001000 bytes @ 0x60840000 - encrypted XIP metadata
+    - ENC_META:    0x001000 bytes @ 0x60440000 - encrypted XIP metadata
 */
 
 #define BOOT_FLASH_ACT_APP              0x60040000
-#define BOOT_FLASH_CAND_APP             0x60440000
+#define BOOT_FLASH_CAND_APP             0x60240000
 
 #if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
-/* Encrypted XIP extension: define metadata and execution region */
-#define BOOT_FLASH_ENC_META             0x60840000
-#define BOOT_FLASH_EXEC_APP             BOOT_FLASH_ACT_APP
+/* Encrypted XIP extension: offset of metadata region */
+#define BOOT_FLASH_ENC_META             0x60440000
 #endif
 
 #endif /* defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP) */

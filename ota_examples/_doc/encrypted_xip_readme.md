@@ -1,28 +1,28 @@
 # Encrypted XIP and MCUboot
 
-- [1. Introduction](#1-introduction)
-- [2. MCUboot encrypted image](#2-mcuboot-encrypted-image)
-- [3. Encrypted XIP extension for MCUboot](#3-encrypted-xip-extension-for-mcuboot)
-   * [3.1 Configuration structures](#31-configuration-structures)
-   * [3.2 Partition layout](#32-partition-layout)
-   * [3.3 Flow of modified overwrite only mode](#33-flow-of-modified-overwrite-only-mode)
-- [4. NXP encryption engines](#4-nxp-encryption-engines)
-   * [4.1 BEE (Bus Encryption Engine)](#41-bee-bus-encryption-engine)
-      + [4.1.1 Supported boards](#411-supported-boards)
-   * [4.2 OTFAD (On-the-Fly AES Decryption Module)](#42-otfad-on-the-fly-aes-decryption-module)
-   * [4.3 IPED (Inline Prince Encryption/Decryption for off-chip flash)](#43-iped-inline-prince-encryptiondecryption-for-off-chip-flash)
-      + [4.3.1 Supported boards](#431-supported-boards)
-   * [4.4 NPX (PRINCE encryption/decryption for on-chip flash)](#44-npx-prince-encryptiondecryption-for-on-chip-flash)
-      + [4.4.1 Supported boards](#441-supported-boards)
-- [5. OTA examples instructions](#5-ota-examples-instructions)
-   * [5.1 Generate RSA key pairs for encrypted image containers](#51-generate-rsa-key-pairs-for-encrypted-image-containers)
-   * [5.2 Enable encrypted XIP support and build projects](#52-enable-encrypted-xip-support-and-build-projects)
-   * [5.3 Sign and encrypt image](#53-sign-and-encrypt-image)
-   * [5.4 Evaluate encrypted XIP example](#54-evaluate-encrypted-xip-example)
-      + [5.4.1 Load encrypted image container to flash memory](#541-load-encrypted-image-container-to-flash-memory)
-      + [5.4.2 Run unsigned unencrypted OTA application (debug session)](#542-run-unsigned-unencrypted-ota-application-debug-session)
-   * [5.5 Running encrypted image](#55-running-encrypted-image)
+- [Encrypted XIP and MCUboot](#encrypted-xip-and-mcuboot)
+   * [1. Introduction](#1-introduction)
+   * [2. MCUboot encrypted image](#2-mcuboot-encrypted-image)
+   * [3. Encrypted XIP extension for MCUboot](#3-encrypted-xip-extension-for-mcuboot)
+      + [3.1 Configuration structures](#31-configuration-structures)
+      + [3.2 Partition layout](#32-partition-layout)
+      + [3.3 Flow of modified overwrite only mode](#33-flow-of-modified-overwrite-only-mode)
+   * [4. NXP encryption engines](#4-nxp-encryption-engines)
+      + [4.1 BEE (Bus Encryption Engine)](#41-bee-bus-encryption-engine)
+      + [4.2 OTFAD (On-the-Fly AES Decryption Module)](#42-otfad-on-the-fly-aes-decryption-module)
+      + [4.3 IPED (Inline Prince Encryption/Decryption for off-chip flash)](#43-iped-inline-prince-encryptiondecryption-for-off-chip-flash)
+      + [4.4 NPX (PRINCE encryption/decryption for on-chip flash)](#44-npx-prince-encryptiondecryption-for-on-chip-flash)
+   * [5. OTA examples instructions](#5-ota-examples-instructions)
+      + [5.1 Generate ECIES-P256 key pairs for encrypted image containers (optional)](#51-generate-ecies-p256-key-pairs-for-encrypted-image-containers-optional)
+      + [5.2 Enable encrypted XIP support and build projects](#52-enable-encrypted-xip-support-and-build-projects)
+      + [5.3 Sign and encrypt image](#53-sign-and-encrypt-image)
+      + [5.4 Evaluate encrypted XIP example](#54-evaluate-encrypted-xip-example)
+         - [5.4.1 Load encrypted image container to flash memory](#541-load-encrypted-image-container-to-flash-memory)
+         - [5.4.2 Run unsigned unencrypted OTA application (debug session)](#542-run-unsigned-unencrypted-ota-application-debug-session)
+      + [5.5 Running encrypted image](#55-running-encrypted-image)
+   * [6. Supported boards](#6-supported-boards)
 
+<!-- TOC --><a name="1-introduction"></a>
 ## 1. Introduction
 
 To provide confidentiality of image data while in transport to the device or while residing on an non-secure storage such as external flash memory, MCUboot has support for encrypting/decrypting images on-the-fly while upgrading. MCUboot architecture expects that XIP is done from a secure memory so encrypted image is decrypted to a secure location such as internal Flash or RAM, however, size of an internal RAM is limited and there are devices with interfaces to only external flash memory.
@@ -31,6 +31,7 @@ Some NXP devices support encrypted XIP on an internal or external Flash device u
 
 This document describes an extension of MCUboot functionality to support encrypted XIP on NXP devices and its enablement in OTA examples in MCUXpresso SDK.
 
+<!-- TOC --><a name="2-mcuboot-encrypted-image"></a>
 ## 2. MCUboot encrypted image
 
 In the extension, the image encrypted by MCUboot is used as a secure capsule for transport and staging in the non-XIP area of a device.
@@ -45,6 +46,7 @@ As shown in the image, a user must securely embed the encryption private key int
 
 For more information please see [MCUboot Encrypted images documentation](https://docs.mcuboot.com/encrypted_images.html). 
 
+<!-- TOC --><a name="3-encrypted-xip-extension-for-mcuboot"></a>
 ## 3. Encrypted XIP extension for MCUboot
 
 The extension combines usage of platform specific encrypted XIP feature and funcionality of MCUboot encrypted images created by imgtool. 
@@ -55,6 +57,7 @@ Following image shows simplified OTA update flow of device fleet using encrypted
 
 The device fleet shares a common MCUboot private key used for decryption of encrypted OTA images residing in staging areas. The MCUboot AES key and hardware encryption module are then used for image re-encryption to the execution area. The hardware key is provisioned by NXP or the user and is typically unique per device instance to prevent image cloning
 
+<!-- TOC --><a name="31-configuration-structures"></a>
 ### 3.1 Configuration structures
 
 In summary, every NXP encryption module utilizing the encrypted XIP feature uses a scheme where on-the-fly decryption is configured by ROM. After device reset, the ROM investigates specific configuration structures typically expected at a particular flash offset in the header of the bootable image, which is MCUboot in our case. If configuration structures consisting of encrypted keys and IVs are valid, then the ROM configures the encryption module for encrypted XIP.
@@ -73,6 +76,7 @@ The metadata sector consists of platform-specific configuration blocks and a com
 
 During an OTA update, the extension generates a new configuration block with IV, writes it at a particular flash offset, and reconfigures the encryption unit for the execution area. If the update and verification of the execution area are successful, the configuration block is then hashed and confirmed by writing the confirmation block.
 
+<!-- TOC --><a name="32-partition-layout"></a>
 ### 3.2 Partition layout
 
 The extension utilizes a partition layout with one execution slot for encrypted XIP and one slot for staging an OTA image.
@@ -90,6 +94,7 @@ Secondary slots act as a staging area for encrypted OTA image by MCUboot. The ex
 
 Note: the placement of metadata in this mode is up to user. 
 
+<!-- TOC --><a name="33-flow-of-modified-overwrite-only-mode"></a>
 ### 3.3 Flow of modified overwrite only mode
 
 Following image shows simplified flow of MCUboot overwrite-only mode extended with encrypted XIP extension.
@@ -98,8 +103,10 @@ Following image shows simplified flow of MCUboot overwrite-only mode extended wi
 
 Before jumping to the booting process, the on-the-fly decryption is initialized so MCUboot is able to read and validate content in the primary slot. The re-encryption process is implemented in customized MCUboot code and in MCUboot hooks (see `flash_api.c` and `bootutil_hooks.c`).
 
+<!-- TOC --><a name="4-nxp-encryption-engines"></a>
 ## 4. NXP encryption engines
 
+<!-- TOC --><a name="41-bee-bus-encryption-engine"></a>
 ### 4.1 BEE (Bus Encryption Engine)
 
 This peripheral is specific for RT10xx (except RT1010) and supports up to two separate regions using two separate AES keys. In the examples, BEE region 1 is used for encrypting the execution slot and BEE region 0 is reserved for a bootloader.
@@ -130,19 +137,12 @@ The whole BEE initialization and encryption metadata handling is resolved in mod
 
 Additional information can be found in Security Reference Manual of target device and in application notes AN12800, AN12852 and AN12901.
 
-#### 4.1.1 Supported boards
-
-- [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/ota_examples/mcuboot_opensource/example_board_readme.md)
-
+<!-- TOC --><a name="42-otfad-on-the-fly-aes-decryption-module"></a>
 ### 4.2 OTFAD (On-the-Fly AES Decryption Module)
 
 To be implemented...
 
+<!-- TOC --><a name="43-iped-inline-prince-encryptiondecryption-for-off-chip-flash"></a>
 ### 4.3 IPED (Inline Prince Encryption/Decryption for off-chip flash)
 
 IPED is encryption unit for external flash specific for NXP RW61x, RT700 and MCXN MCUs. 
@@ -165,26 +165,18 @@ The whole IPED initialization and encryption metadata handling is resolved in mo
 
 Additional information for IPED in RW61x can be found in its reference manual.
 
-#### 4.3.1 Supported boards
-
-- [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
-
+<!-- TOC --><a name="44-npx-prince-encryptiondecryption-for-on-chip-flash"></a>
 ### 4.4 NPX (PRINCE encryption/decryption for on-chip flash)
 
 See separate [documentation for NPX](encrypted_xip_npx_readme.md).
 
-#### 4.4.1 Supported boards
-
-- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
-- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
-
+<!-- TOC --><a name="5-ota-examples-instructions"></a>
 ## 5. OTA examples instructions
 
 Start preferentially with an empty board, erasing original content if needed.
 
-### 5.1 Generate ECIES-P256 key pairs for encrypted image containers
+<!-- TOC --><a name="51-generate-ecies-p256-key-pairs-for-encrypted-image-containers-optional"></a>
+### 5.1 Generate ECIES-P256 key pairs for encrypted image containers (optional)
 
 Note: This part can be skipped as OTA examples in SDK uses pre-generated key pairs.
 
@@ -197,14 +189,20 @@ Note: This part can be skipped as OTA examples in SDK uses pre-generated key pai
 5. Derive public key key: `imgtool getpub -k enc-ec256-pub.pem -e pem`
 Adjust the content of the `middleware\mcuboot_opensource\boot\nxp_mcux_sdk\keys\enc-ec256-pub.pem` accordingly.
 
+<!-- TOC --><a name="52-enable-encrypted-xip-support-and-build-projects"></a>
 ### 5.2 Enable encrypted XIP support and build projects
 
-1. Enable the define `CONFIG_ENCRYPT_XIP_EXT_ENABLE` in `sblconfig.h`.
-    * Note: make sure that define `CONFIG_MCUBOOT_FLASH_REMAP_ENABLE` is disabled otherwise builds fails.
-2. (Optional) Enable simplified overwrite-only mode by `CONFIG_ENCRYPT_XIP_EXT_OVERWRITE_ONLY` in `sblconfig.h`.
-3. Build mcuboot_opensource and OTA application.
-4. Load mcuboot_opensource.
+There are three ways how to enable Encrypted XIP mode:
 
+1. Manually modify content of `sblconfig.h`
+    * Enable `CONFIG_ENCRYPT_XIP_EXT_ENABLE` 
+    * Disable `CONFIG_MCUBOOT_FLASH_REMAP_ENABLE` and `CONFIG_BOOT_CUSTOM_DEVICE_SETUP`
+2. Manually customize Kconfig configuration and generate the project - see [Kconfig and customization of OTA examples](kconfig_customization.md)
+3. Use pre-defined customized builds - see particular chapter in your board readme (see Supported boards)
+
+Then build and load the `mcuboot_opensource` application.
+
+<!-- TOC --><a name="53-sign-and-encrypt-image"></a>
 ### 5.3 Sign and encrypt image
 
 To sign and encrypt an application binary, imgtool must be provided with the respective key pairs and a set of parameters as in the following examples.
@@ -224,10 +222,12 @@ To sign and encrypt an application binary, imgtool must be provided with the res
 
 The values of parameters can be obtained from a readme file of target board. Example: `boards\BOARD\ota_examples\mcuboot_opensource\example_board_readme.md`
 
+<!-- TOC --><a name="54-evaluate-encrypted-xip-example"></a>
 ### 5.4 Evaluate encrypted XIP example
 
 There are two methods how to run device for first time when application uses encrypted XIP.
 
+<!-- TOC --><a name="541-load-encrypted-image-container-to-flash-memory"></a>
 #### 5.4.1 Load encrypted image container to flash memory
 
 See `flash_partitioning.h` for your board.
@@ -238,17 +238,18 @@ See `flash_partitioning.h` for your board.
 #define BOOT_FLASH_ACT_APP              0x60040000  -- active (execution) slot address
 #define BOOT_FLASH_CAND_APP             0x60240000  -- candidate slot address
 #define BOOT_FLASH_ENC_META             0x60440000  -- encryption metada address
-#define BOOT_FLASH_EXEC_APP             BOOT_FLASH_ACT_APP
 ~~~
 
 Encrypted image by MCUboot has to be loaded always to __candidate__ slot address defined as `BOOT_FLASH_CAND_APP`.
 
 To load image the pyocd, blhost or MCUXpresso Secure Provisioning Tool can be used.
 
+<!-- TOC --><a name="542-run-unsigned-unencrypted-ota-application-debug-session"></a>
 #### 5.4.2 Run unsigned unencrypted OTA application (debug session)
 
 An unsigned unencrypted application can be loaded and run from execution area using a debug session as usual.
 
+<!-- TOC --><a name="55-running-encrypted-image"></a>
 ### 5.5 Running encrypted image
 
 These are expected outputs when an OTA image is detected and then re-encrypted
@@ -278,3 +279,26 @@ Built Feb 13 2025 16:06:06
 
 $
 ~~~
+
+<!-- TOC --><a name="6-supported-boards"></a>
+# 6. Supported boards
+
+BEE:
+
+- [EVK-MIMXRT1020](../../_boards/evkmimxrt1020/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1040-EVK](../../_boards/evkmimxrt1040/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [EVKB-IMXRT1050](../../_boards/evkbimxrt1050/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1060-EVKB](../../_boards/evkbmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MIMXRT1060-EVKC](../../_boards/evkcmimxrt1060/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [EVK-MIMXRT1064](../../_boards/evkmimxrt1064/ota_examples/mcuboot_opensource/example_board_readme.md)
+
+IPED:
+
+- [RD-RW612-BGA](../../_boards/rdrw612bga/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [FRDM-RW612](../../_boards/frdmrw612/ota_examples/mcuboot_opensource/example_board_readme.md)
+
+NPX:
+
+- [FRDM-MCXN947](../../_boards/frdmmcxn947/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MCX-N5XX-EVK](../../_boards/mcxn5xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)
+- [MCX-N9XX-EVK](../../_boards/mcxn9xxevk/ota_examples/mcuboot_opensource/example_board_readme.md)

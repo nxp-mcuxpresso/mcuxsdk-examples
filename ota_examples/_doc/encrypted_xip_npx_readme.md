@@ -30,11 +30,11 @@ Note: Following instructions are for FRDM-MCXN947 as a reference.
 
 Bootloader:
 ~~~
-west build -p always examples/ota_examples/mcuboot_opensource -b frdmmcxn947 --config debug --toolchain iar --target guiproject -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/mcuboot_opensource.conf"
+west build -p always examples/ota_examples/mcuboot_opensource -b frdmmcxn947 --config debug --toolchain iar --target guiproject -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn/mcuboot_opensource.conf"
 ~~~
 OTA application:
 ~~~
-west build -p always examples/ota_examples/ota_mcuboot_basic -b frdmmcxn947 --config debug --toolchain iar --target guiproject -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/ota_mcuboot_basic.conf"
+west build -p always examples/ota_examples/ota_mcuboot_basic -b frdmmcxn947 --config debug --toolchain iar --target guiproject -Dcore_id=cm33_core0 -DCONF_FILE="examples/ota_examples/_custom_cfg/mcxn/ota_mcuboot_basic.conf"
 ~~~
 
 2. Enable the define `CONFIG_ENCRYPT_XIP_EXT_ENABLE` in `sblconfig.h`.

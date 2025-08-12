@@ -235,12 +235,12 @@ ota_mcuboot_basic:
     frdmmcxa366:
     - -mdk@release
     - -mdk@debug
-ota_mcuboot_basic@mcxn_mcuboot_in_main_flash:
+ota_mcuboot_basic@mcxn_encrypted_xip:
   section-type: custom_application
   contents:
     document:
       extra_build_args:
-      - -DCONF_FILE=examples/ota_examples/_custom_cfg/mcxn_mcuboot_in_main_flash/ota_mcuboot_basic.conf
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/mcxn/ota_mcuboot_basic.conf
   boards:
     mcxn5xxevk@cm33_core0:
     - -mdk@release
@@ -251,3 +251,132 @@ ota_mcuboot_basic@mcxn_mcuboot_in_main_flash:
     frdmmcxn947@cm33_core0:
     - -mdk@release
     - -mdk@debug
+ota_mcuboot_basic@rw61x_encrypted_xip:
+  section-type: custom_application
+  contents:
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/rw61x/ota_mcuboot_basic.conf
+  boards:
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+ota_mcuboot_basic@rt1064_encrypted_xip:
+  section-type: custom_application
+  contents:
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/rt1064/ota_mcuboot_basic.conf
+  boards:
+    evkmimxrt1064:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+ota_mcuboot_basic@rt10xx_encrypted_xip:
+  section-type: custom_application
+  contents:
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/rt10xx/ota_mcuboot_basic.conf
+  boards:
+    evkbimxrt1050:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkbmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkcmimxrt1060:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1020:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release
+    evkmimxrt1040:
+    - -armgcc@debug
+    - -armgcc@release
+    - -armgcc@sdram_debug
+    - -armgcc@sdram_release
+    - -iar@debug
+    - -iar@release
+    - -iar@sdram_debug
+    - -iar@sdram_release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@sdram_debug
+    - -mdk@sdram_release
+    - -mdk@flexspi_nor_debug
+    - -mdk@flexspi_nor_release

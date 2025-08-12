@@ -3,20 +3,11 @@ mcux_add_macro(
     CC "-DENCRYPTED_XIP_NPX"
 )
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/ota_examples/mcuboot_opensource/mbedtls_user_config.h
-)
-
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES ${board_root}/${board}/ota_examples/mcuboot_opensource
 )
 
-# Add additional configuration
-mcux_add_macro(
-    CC "-DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\""
-)
 mcux_add_mdk_configuration(
     LD "--diag_suppress=L6329W"
 )

@@ -20,6 +20,7 @@
 
 #define BOOT_FLASH_ACT_APP              CONFIG_BOOT_FLASH_ACT_APP_ADDRESS
 #define BOOT_FLASH_CAND_APP             CONFIG_BOOT_FLASH_CAND_APP_ADDRESS
+#define BOOT_FLASH_ENC_META             CONFIG_BOOT_FLASH_ENC_META_ADDRESS
 
 #else
 /*
@@ -61,8 +62,7 @@
 #define BOOT_FLASH_CAND_APP 0x00120000
 
 #if defined(CONFIG_ENCRYPT_XIP_EXT_ENABLE)
-#define BOOT_FLASH_EXEC_APP BOOT_FLASH_ACT_APP
-#define BOOT_FLASH_ENC_META (BOOT_FLASH_EXEC_APP - 8192U) /* Dummy area in this configuration, reserved for future use */
+#define BOOT_FLASH_ENC_META (BOOT_FLASH_ACT_APP - 8192U) /* Dummy area in this configuration, reserved for future use */
 #endif
 
 #endif /* !CONFIG_MCXN_CUSTOM_CFG_MAIN_FLASH_ONLY */

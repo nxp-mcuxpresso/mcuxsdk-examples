@@ -4,8 +4,13 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
 
 ## [25.09.0] - 09/2025
 
-### Changed
+### Fixed
+- (Encrypted XIP)(IPED) Fixed issue between IPED and PKC
 
+### Added
+- Added new doc [Kconfig and customization of OTA examples](_doc/kconfig_customization.md)
+
+### Changed
 - Update MCUboot to 2.2.0
 - Update Mbed TLS to 3.0 in mcuboot_opensource example
     - PSA Crypto API (MCUBOOT_USE_PSA_CRYPTO) is used in default configurations to utilize hardware acceleration
@@ -13,7 +18,7 @@ All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples w
     - EC256 made as default signature algorithm replacing obsolete RSA
         - it is still possible to manually setup RSA but only for legacy API
 - Encrypted XIP: reworked the layer to use only the overwrite mode
-- Changed default partition layout on FRDM-RW612 and RD-RW612BGA boards
+- Changed default partition layout on FRDM-RW612, RD-RW612BGA and EVKCMIMXRT1060:
     - mcuboot_opensource: 256kB
     - application: 2MB
 

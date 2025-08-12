@@ -29,3 +29,5 @@ The example typically demostrate Dual image feature (ROM utilizing flash remap) 
 ['MCUboot and Encrypted XIP'](_doc/encrypted_xip_readme.md)
 
 ['OTA update by using SB3 file'](_doc/sb3_common_readme.md)
+
+['Kconfig and customization of OTA examples'](_doc/kconfig_customization.md)

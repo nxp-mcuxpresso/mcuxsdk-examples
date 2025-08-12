@@ -53,3 +53,28 @@ ota_mcuboot_client_wifi:
     - -mdk@release
     - -mdk@flash_debug
     - -mdk@flash_release
+ota_mcuboot_client_wifi@rw61x_encrypted_xip:
+  section-type: custom_application
+  contents:
+    document:
+      extra_build_args:
+      - -DCONF_FILE=examples/ota_examples/_custom_cfg/rw61x/ota_mcuboot_client_wifi.conf
+  boards:
+    frdmrw612:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
+    rdrw612bga:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -mdk@flash_debug
+    - -mdk@flash_release
