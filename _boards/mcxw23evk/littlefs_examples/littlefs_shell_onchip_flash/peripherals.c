@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -112,7 +112,7 @@ instance:
       - readSize: '16'
       - progSize: '128'
       - blockSize: '8192'
-      - firstBlock: '0x80000'
+      - firstBlock: '0x3e000'
       - blockCount: '64'
       - blockCycles: '500'
       - cacheSize: '256'
