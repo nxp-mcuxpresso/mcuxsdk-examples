@@ -13,5 +13,5 @@ ncp_fsci_black_box:
         interface.To use the application with Test Tool 12, or any other application which
         supports the FSCI protocol, the fsci_bridge application is required to be running on core 0.
   boards:
-    mcxw72evk@cm33_core1:
-    frdmmcxw72@cm33_core1:
+    mcxw72evk@cm33_core1: []
+    frdmmcxw72@cm33_core1: []
