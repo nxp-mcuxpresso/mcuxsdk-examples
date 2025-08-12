@@ -56,6 +56,11 @@ static status_t APP_UartControl(pm_event_type_t eventType, uint8_t powerState, v
 {
     if (eventType == kPM_EventEnteringSleep)
     {
+        if (powerState == 3U)
+        {
+            PRINTF("\r\n Please note that exiting from deep power down will cause wakeup reset.");
+        }
+
         PRINTF("\r\n De-init UART.");
         while (!(kLPUART_TransmissionCompleteFlag & LPUART_GetStatusFlags((LPUART_Type *)BOARD_DEBUG_UART_BASEADDR)))
         {
