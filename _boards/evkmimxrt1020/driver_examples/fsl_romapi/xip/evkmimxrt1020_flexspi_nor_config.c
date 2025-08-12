@@ -33,7 +33,7 @@ const flexspi_nor_config_t qspiflash_config = {
             .controllerMiscOption = (1u << kFlexSpiMiscOffset_SafeConfigFreqEnable),
             .deviceType           = kFlexSpiDeviceType_SerialNOR,
             .sflashPadType        = kSerialFlash_4Pads,
-            .serialClkFreq        = kFlexSpiSerialClk_133MHz,
+            .serialClkFreq        = kFlexSpiSerialClk_100MHz,
             .sflashA1Size         = 8u * 1024u * 1024u,
             .lookupTable =
                 {
