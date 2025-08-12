@@ -220,7 +220,7 @@ define region sqram_btbleaesqbuf_region         = mem:[from m_sqram_btbleaesqbuf
 define region sqram_rldat_ae_region             = mem:[from m_sqram_rldat_ae_start      to m_sqram_rldat_ae_end];
 define region sqram_rldat_region                = mem:[from m_sqram_rldat_start         to m_sqram_rldat_end];
 if (gEnableCoverage_d) {
-define region sqram_coverage_region             = mem:[from m_sqram_coverage_start      to m_sqram_coverage_end];
+define region sqram_coverage_region             = mem:[from sh_mem_coverage_start      to sh_mem_coverage_end];
 }
 define region sqram_dbg_ext_logging_region      = mem:[from dbg_ext_logging_start       to dbg_ext_logging_end];
 

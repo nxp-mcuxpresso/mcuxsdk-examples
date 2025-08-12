@@ -208,7 +208,7 @@ define region lowpower_flag_region              = mem:[from m_lowpower_flag_star
 //define region sqram_rldat_ae_region             = mem:[from m_sqram_rldat_ae_start      to m_sqram_rldat_ae_end];
 define region sqram_rldat_region                = mem:[from m_sqram_rldat_start         to m_sqram_rldat_end];
 if (gEnableCoverage_d) {
-define region sqram_coverage_region             = mem:[from m_sqram_coverage_start      to m_sqram_coverage_end];
+define region sqram_coverage_region             = mem:[from sh_mem_coverage_start      to sh_mem_coverage_end];
 }
 
 /* Logging section appended at the end of the nbu binary (not flashed into the device)*/
