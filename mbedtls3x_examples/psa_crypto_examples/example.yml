@@ -146,6 +146,8 @@ psa_crypto_examples:
     - -iar@release
     - -iar@sdram_debug
     - -iar@sdram_release
+    - -armgcc@release
+    - -armgcc@sdram_release
     - -armgcc@debug
     - -armgcc@sdram_debug
     - -mdk@debug

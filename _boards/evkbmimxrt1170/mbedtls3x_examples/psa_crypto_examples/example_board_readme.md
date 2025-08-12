@@ -20,14 +20,24 @@ Prepare the Demo
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
-Running the demo
-================   
+Running the Demo
+===============
 The log below shows the output of the psa crypto example demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * PSA crypto example *
+
 cipher encrypt/decrypt AES CBC no padding:
         success!
 cipher encrypt/decrypt AES CBC PKCS7 multipart:
         success!
 cipher encrypt/decrypt AES CTR multipart:
         success!
+cipher encrypt/decrypt AES CBC no padding one go:
+        success!
+cipher encrypt/decrypt AES CBC PKCS7 padding one go:
+        success!
+Hash a message SHA-256:
+        success!
+
+ * Example End *
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
