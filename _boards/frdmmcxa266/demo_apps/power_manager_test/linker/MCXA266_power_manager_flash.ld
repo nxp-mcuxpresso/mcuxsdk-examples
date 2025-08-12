@@ -15,7 +15,7 @@ MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00000400
   m_text                (RX)  : ORIGIN = 0x00000400, LENGTH = 0x000FFC00
-  m_data                (RW)  : ORIGIN = 0x20002000, LENGTH = 0x00010000
+  m_data                (RW)  : ORIGIN = 0x20002000, LENGTH = 0x00030000
   m_data_always_on      (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00002000
 }
 
@@ -132,7 +132,19 @@ SECTIONS
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
 
-  __DATA_END = __DATA_ROM + (__data_end__ - __data_start__);
+  __DATA_GENERAL_END = __DATA_ROM + (__data_end__ - __data_start__);
+
+  .AlwaysOnData_init : AT(__DATA_GENERAL_END)
+  {
+    __data_aon_start__ = .;      /* create a global symbol at data start */
+    . = ALIGN(4);
+    *(.AlwaysOnData.init)
+    . = ALIGN(4);
+    __data_aon_end__ = .;        /* define a global symbol at data end */
+  } > m_data_always_on
+
+  __DATA_END = __DATA_GENERAL_END + (__data_aon_end__ - __data_aon_start__);
+
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
 
@@ -162,12 +174,6 @@ SECTIONS
     __heap_limit = .; /* Add for _sbrk */
   } > m_data
 
-  .stack :
-  {
-    . = ALIGN(8);
-    . += STACK_SIZE;
-  } > m_data
-
   .AlwaysOnData :
   {
     . = ALIGN(4);
@@ -177,12 +183,16 @@ SECTIONS
     __END_ALWAYSON = .;
   } > m_data_always_on
 
+  .stack :
+  {
+    . = ALIGN(8);
+    . += STACK_SIZE;
+  } > m_data_always_on
+
   /* Initializes stack on the end of block */
-  __StackTop   = ORIGIN(m_data) + LENGTH(m_data);
+  __StackTop   = ORIGIN(m_data_always_on) + LENGTH(m_data_always_on);
   __StackLimit = __StackTop - STACK_SIZE;
   PROVIDE(__stack = __StackTop);
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
-
-  ASSERT(__StackLimit >= __HeapLimit, "region m_data overflowed with stack and heap")
 }
