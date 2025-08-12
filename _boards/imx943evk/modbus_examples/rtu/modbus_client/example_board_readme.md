@@ -25,3 +25,4 @@ Prepare the Demo
 4.  Download the modbus_rtu_client program to IMX943-EVK board.
 5.  Download the modbus_rtu_server program to MIMXRT1180-EVK board.
 6.  Either re-power up your board or launch the debugger in your IDE to begin running the example.
+7.  Note: MODBUS_RTU uses LPUART11, which is cm7_core0 core default serial port, please make sure that there is no output on the serial port of cm7_0 image to avoid affecting the modbus function.

@@ -24,3 +24,4 @@ Prepare the Demo
     - No flow control
 4.  Download the program to the target board.
 5.  Either re-power up your board or launch the debugger in your IDE to begin running the example.
+6.  Note: MODBUS_RTU uses LPUART11, which is cm7_core0 core default serial port, please make sure that there is no output on the serial port of cm7_0 image to avoid affecting the modbus function.
