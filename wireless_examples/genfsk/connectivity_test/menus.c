@@ -476,6 +476,16 @@ void PrintPerRxFinal(uint16_t u16Received,
     Serial_Print(port, " of ", gAllowToBlock_d);
     Serial_PrintDec(port, (uint32_t)u16TotalPackets);
     Serial_Print(port, " packets transmitted \r\n", gAllowToBlock_d);
+    
+#if (gGenFskDefaultSyncAddress_c == 0x8E89BED6)
+    if (u16Received != u16TotalPackets)
+    {
+      Serial_Print(port, "\r\n******** Warning ********\r\n", gAllowToBlock_d);
+      Serial_Print(port, "The test packets are using the standard BLE ADV access address and\r\n", gAllowToBlock_d);
+      Serial_Print(port, "could be shadowed by the advertising packets from the surrounding devices.\r\n", gAllowToBlock_d);
+      Serial_Print(port, "Try to use a different address or different channel.\r\n", gAllowToBlock_d);
+    }
+#endif
 }
 
 /*! *********************************************************************************
