@@ -75,7 +75,7 @@
 /** Card Control Registers : Function 1 Block size 1 */
 #define FN1_BLOCK_SIZE_1 0x111
 
-#define SDIO_DATA_OUTBUF_LEN 2052U
+#define SDIO_DATA_OUTBUF_LEN (4096U - SDIO_HEADER_LEN)
 #define SDIO_CMD_OUTBUF_LEN  4100U
 
 /** Port for memory */
