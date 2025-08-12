@@ -75,7 +75,7 @@ static void BOARD_NbuSystemNotifyCb(nbu_dbg_event_id_t event_id)
     PRINTF("\nProcessor State:\n");
     PRINTF("  PC  (Program Counter): 0x%08X\n", regs->pc);
     PRINTF("  LR  (Link Register)  : 0x%08X\n", regs->lr);
-    PRINTF("  PSP (Process Stack)  : 0x%08X\n", regs->psp);
+    PRINTF("  SP  (Stack Pointer)  : 0x%08X\n", regs->sp);
     PRINTF("  PSR (Program Status) : 0x%08X\n", regs->psr);
 
     PRINTF("\nGeneral Purpose Registers:\n");
@@ -126,6 +126,20 @@ static void BOARD_NbuSystemNotifyCb(nbu_dbg_event_id_t event_id)
     else
     {
         PRINTF("  No fault status flags set in CFSR\n");
+    }
+
+    PRINTF("\nExecution Context:\n");
+    if (NBUDBG_IS_HANDLER_MODE(regs->execution_context.handler_irq))
+    {
+        uint32_t irq_number = NBUDBG_GET_IRQ_NUMBER(regs->execution_context.handler_irq);
+        PRINTF("  Mode: Handler Mode (Interrupt Context)\n");
+        PRINTF("  IRQ Number: %u\n", irq_number);
+    }
+    else
+    {
+        PRINTF("  Mode: Thread Mode\n");
+        PRINTF("  Thread Address: 0x%08X\n", regs->execution_context.thread_info.thread_addr);
+        PRINTF("  Thread Name: %.8s\n", regs->execution_context.thread_info.thread_name);
     }
 
     /* Raw dump of BLE debug data */
@@ -292,6 +306,12 @@ int BOARD_DbgNbuInit(void)
 void BOARD_DbgNbuProcess(void)
 {
     NBUDBG_StateCheck();
+}
+
+int fsl_assert_hook(const char *failedExpr, const char *file, int line)
+{
+    BOARD_DbgNbuProcess();
+    return 0;
 }
 
 /*******************************************************************************
