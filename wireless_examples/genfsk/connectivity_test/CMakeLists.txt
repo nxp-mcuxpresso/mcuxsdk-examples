@@ -17,6 +17,7 @@ mcux_add_configuration(
     CC "        -DHAL_RPMSG_SELECT_ROLE=0\
                 -DSDK_COMPONENT_INTEGRATION=1\
                 -DFSL_OSA_TASK_ENABLE=1\
+                -DENABLE_RAM_VECTOR_TABLE\
                 -DOSA_USED\
                 -DMCUXPRESSO_SDK"
 )
