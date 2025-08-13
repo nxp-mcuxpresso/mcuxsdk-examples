@@ -16,3 +16,4 @@ sgi_symmetric:
   boards:
     frdmmcxa266: []
     frdmmcxa366: []
+    frdmmcxl255@cm33: []

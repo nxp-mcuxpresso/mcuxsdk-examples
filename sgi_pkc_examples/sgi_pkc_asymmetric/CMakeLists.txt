@@ -14,7 +14,8 @@ mcux_add_source(
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES /.
+    INCLUDES ${board_root}/${board}/sgi_pkc_examples/sgi_pkc_asymmetric
+             ${board_root}/${board}/sgi_pkc_examples/sgi_pkc_asymmetric/${core_id}
 )
 
 mcux_add_linker_symbol(

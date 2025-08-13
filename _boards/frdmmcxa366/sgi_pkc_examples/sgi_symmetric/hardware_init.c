@@ -8,7 +8,6 @@
 #include "fsl_clock.h"
 #include "fsl_reset.h"
 #include "board.h"
-#include <stdbool.h>
 /*${header:end}*/
 
 /*${function:start}*/
@@ -19,5 +18,10 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     
     CLOCK_EnableClock(kCLOCK_GateSGI0);
+
+    CRC_Type *base = CRC0;
+    crc_config_t config;
+    CRC_GetDefaultConfig(&config);
+    CRC_Init(base, &config);
 }
 /*${function:end}*/

@@ -8,12 +8,13 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/sgi_pkc_examples/sgi_hash/sgi_hash.c
-    examples/sgi_pkc_examples/sgi_hash/sgi_hash.h
+            examples/sgi_pkc_examples/sgi_hash/sgi_hash.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES /.
+    INCLUDES ${board_root}/${board}/sgi_pkc_examples/sgi_hash
+             ${board_root}/${board}/sgi_pkc_examples/sgi_hash/${core_id}
 )
 
 mcux_add_linker_symbol(

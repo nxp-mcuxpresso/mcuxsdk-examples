@@ -22,7 +22,7 @@ Prepare the Demo
 
 Running the demo
 ===============
-The log below shows the output of the hello world demo in the terminal window:
+When the example runs successfully, you can see the similar information from the terminal as below.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SGI PKC asymmetric cipher example
 
