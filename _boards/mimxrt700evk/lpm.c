@@ -82,6 +82,8 @@ void LPM_ExitTicklessIdle(TickType_t xExpectedIdleTime, uint64_t base)
 {
     uint32_t ulCompleteTickPeriods;
 
+    assert(xExpectedIdleTime >= 1U);
+
     if ((OSTIMER_GetStatusFlags(TICKLESS_OSTIMER_BASE_PTR) & (uint32_t)kOSTIMER_MatchInterruptFlag) == 0U)
     {
         /* Not woken up from OSTMR, further alarm is not needed. */
