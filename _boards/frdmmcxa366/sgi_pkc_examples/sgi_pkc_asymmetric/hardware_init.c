@@ -9,7 +9,6 @@
 #include "fsl_reset.h"
 #include "fsl_crc.h"
 #include "board.h"
-#include "fsl_crc.h"
 
 #include "fsl_trng.h"
 /*${header:end}*/

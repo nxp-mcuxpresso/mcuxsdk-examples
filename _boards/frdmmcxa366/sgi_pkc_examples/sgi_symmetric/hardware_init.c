@@ -7,6 +7,7 @@
 #include "pin_mux.h"
 #include "fsl_clock.h"
 #include "fsl_reset.h"
+#include "fsl_crc.h"
 #include "board.h"
 /*${header:end}*/
 
