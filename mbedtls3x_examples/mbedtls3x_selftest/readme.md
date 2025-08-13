@@ -23,3 +23,4 @@ prints results to the terminal.
 - [RD-RW612-BGA](../../_boards/rdrw612bga/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [KW47-LOC](../../_boards/kw47loc/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
 - [MCXW72-LOC](../../_boards/mcxw72loc/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
+- [MCXW23-EVK](../../_boards/mcxw23evk/mbedtls3x_examples/mbedtls3x_selftest/example_board_readme.md)
