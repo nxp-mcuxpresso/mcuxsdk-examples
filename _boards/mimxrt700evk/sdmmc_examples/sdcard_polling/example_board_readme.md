@@ -8,6 +8,14 @@ Hardware requirements
 Board settings
 ============
 JP65 1-2 connected.
+Recommend SD Cards used to run the example
+| Brand      | Mode          | Size  | Speed Class | Video Speed Class | UHS | A1  | A2  |
+|------------|---------------|-------|-------------|-------------------|-----|-----|-----|
+| SanDisk    | Ultra         | 16GB  | 10          | -                 | -   | YES | -   |
+| SanDisk    | Extreme       | 64GB  | -           | V30               | 3   | -   | YES |
+| SanDisk    | Ultra Plus    | 32GB  | 10          | V10               | -   | YES | -   |
+| SanDisk    | ImageMate PRO | 32GB  | -           | V30               | 3   | YES | -   |
+| Kingston   | -             | 16GB  | 10          | -                 | 1   | -   | -   |
 
 Prepare the Demo
 ===============
