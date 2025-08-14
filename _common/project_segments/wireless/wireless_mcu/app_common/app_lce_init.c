@@ -24,19 +24,19 @@ uint8_t      g_ceHeap_id = 0U;
 volatile static struct
 {
     uint32_t ce_cmd_buffer[CE_CMD_BUF_SIZE];
-    uint32_t ce_status_buffer[CE_STATUS_BUF_SIZE];
+    int32_t ce_status_buffer[CE_STATUS_BUF_SIZE];
 } ce_buffers @ "ceCtrl";
 #elif defined(__GNUC__)
 volatile static struct
 {
     uint32_t ce_cmd_buffer[CE_CMD_BUF_SIZE];
-    uint32_t ce_status_buffer[CE_STATUS_BUF_SIZE];
+    int32_t ce_status_buffer[CE_STATUS_BUF_SIZE];
 } ce_buffers __attribute__((section("ceCtrl")));
 #elif defined(__CC_ARM)
 volatile static struct
 {
     uint32_t ce_cmd_buffer[CE_CMD_BUF_SIZE];
-    uint32_t ce_status_buffer[CE_STATUS_BUF_SIZE];
+    int32_t ce_status_buffer[CE_STATUS_BUF_SIZE];
 } ce_buffers __attribute__((section("ceCtrl")));
 #else
 #error "Compiler unknown!"
