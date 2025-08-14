@@ -18,6 +18,9 @@
  * Definitions
  ******************************************************************************/
 
+#define VDD_CORE_AON_0_7V_VOLTAGE   (0x20)  // 0.7V
+#define VDD_CORE_AON_0_8V_VOLTAGE   (0x14)  // 0.8V
+
 /*******************************************************************************
  ************************ BOARD_InitBootClocks function ************************
  ******************************************************************************/
@@ -31,6 +34,11 @@ extern "C" {
  *
  */
 void BOARD_InitBootClocks(void);
+
+/*!
+ * @brief Configures CM0+ core voltage based on system core frequency.
+ */
+static void CLOCK_ConfigureCoreVoltage(void);
 
 #if defined(__cplusplus)
 }

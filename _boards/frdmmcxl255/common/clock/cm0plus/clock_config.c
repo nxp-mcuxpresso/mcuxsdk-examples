@@ -6,6 +6,7 @@
  */
 
 #include "fsl_clock.h"
+#include "fsl_pmu.h"
 #include "clock_config.h"
 
 /*******************************************************************************
@@ -65,6 +66,37 @@ void BOARD_InitBootClocks(void)
     CLOCK_EnableClock(kCLOCK_GateAonLCD);
 
     SystemCoreClock = 10000000U;
+
+    CLOCK_ConfigureCoreVoltage();
+}
+
+/*!
+ * @brief Configures CM0+ core voltage based on system core frequency.
+ *
+ * Read the current CM0+ core frequency and adjusts the core voltage
+ * using the PMU driver to ensure stable operation.
+ * - 2 MHz: 0.7V
+ * - 10 MHz: 0.8V
+ *
+ */
+static void CLOCK_ConfigureCoreVoltage(void)
+{
+    uint32_t freq = CLOCK_GetAonCoreSysClkFreq();
+
+    if (freq <= 2000000U) 
+    {
+#if !defined(ADVC_DRIVER_USED) || !ADVC_DRIVER_USED
+        // Set 0.7V for Active Mode
+        PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_7V_VOLTAGE);
+#endif
+    }
+    else if (freq <= 10000000U)
+    {
+#if !defined(ADVC_DRIVER_USED) || !ADVC_DRIVER_USED
+        // Set 0.8V for Active Mode
+        PMU_UpdateVDDCoreInActiveMode(AON__PMU, VDD_CORE_AON_0_8V_VOLTAGE);
+#endif
+    }
 }
 
 /*******************************************************************************
