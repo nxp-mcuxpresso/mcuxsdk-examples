@@ -118,13 +118,9 @@ void task_main(void *param)
     hostsleep_init();
 #endif
 
-    while (1)
-    {
-        /* wait for interface up */
-        OSA_TimeDelay(portMAX_DELAY);
-    }
+    /* Initialization completed, destroy task */
+    OSA_TaskDestroy((osa_task_handle_t)main_task_handle);
 }
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/

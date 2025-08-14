@@ -114,11 +114,8 @@ void task_main(void *param)
 
     printSeparator();
 
-    while (1)
-    {
-        /* wait for interface up */
-        OSA_TimeDelay(5000);
-    }
+    /* Initialization completed, destroy task */
+    OSA_TaskDestroy((osa_task_handle_t)main_task_handle);
 }
 
 /*******************************************************************************
