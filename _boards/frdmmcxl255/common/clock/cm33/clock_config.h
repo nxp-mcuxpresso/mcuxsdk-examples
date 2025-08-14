@@ -18,6 +18,9 @@
  * Definitions
  ******************************************************************************/
 
+#define VDD_CORE_1P1_1V_VOLTAGE     (0x69U) // 105 * 9.5mV = 0.9975V
+#define VDD_CORE_1P1_1_1V_VOLTAGE   (0x74U) // 116 * 9.5mV = 1.102V
+
 /*******************************************************************************
  ************************ BOARD_InitBootClocks function ************************
  ******************************************************************************/
@@ -31,6 +34,12 @@ extern "C" {
  *
  */
 void BOARD_InitBootClocks(void);
+
+/*!
+ * @brief Configures CM33 core voltage and flash wait states based on system core frequency.
+ *
+ */
+static void CLOCK_ConfigureCoreVoltageAndFlashWaitStates(void);
 
 #if defined(__cplusplus)
 }

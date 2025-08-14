@@ -7,6 +7,7 @@
 
 
 #include "fsl_clock.h"
+#include "fsl_pmu.h"
 #include "clock_config.h"
 
 /*******************************************************************************
@@ -110,7 +111,33 @@ void BOARD_InitBootClocks(void)
     /* PMUIRC fro16k to KPP */
     CLOCK_AttachClk(kFRO16K_to_AON_LCD);
     CLOCK_EnableClock(kCLOCK_GateAonLCD);
-                                             
+
+    CLOCK_ConfigureCoreVoltageAndFlashWaitStates();
 }
 
+/*!
+ * @brief Configures CM33 core voltage and flash wait states based on system core frequency.
+ *
+ * Read the current CM33 core frequency and adjusts the core voltage
+ * using the PMU driver to ensure stable operation. It also sets the appropriate number
+ * of flash wait states based on the frequency:
+ * - 48 MHz: Mid Drive mode (1.0V), 1 wait state
+ * - 96 MHz: Normal Drive mode (1.1V), 2 wait state
+ *
+ */
+static void CLOCK_ConfigureCoreVoltageAndFlashWaitStates(void)
+{
+    uint32_t freq = CLOCK_GetCoreSysClkFreq();
 
+    if (freq <= 48000000U) 
+    {
+        // Mid Drive Mode 1.0V
+        PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, VDD_CORE_1P1_1V_VOLTAGE);
+    }
+    else if (freq <= 96000000U)
+    {
+        // Normal Drive Mode 1.1V
+        PMU_UpdateVDDCore1P1InActiveMode(AON__PMU, VDD_CORE_1P1_1_1V_VOLTAGE);
+    }
+    CLOCK_SetFlashWaitStateBasedOnFreq(freq);
+}
