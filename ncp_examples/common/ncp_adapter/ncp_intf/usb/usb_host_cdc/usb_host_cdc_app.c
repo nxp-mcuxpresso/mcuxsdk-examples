@@ -60,25 +60,24 @@ void usb_host_task(void *hostHandle);
 void app_task(void *param);
 
 /* NCP usb host task */
-#define USB_HOST_TASK_PRIO   2
+#define USB_HOST_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(usb_host_thread);
 static OSA_TASK_DEFINE(usb_host_task, USB_HOST_TASK_PRIO, 1, 1024, 0);
 
-#define APP_TASK_PRIO   1
+#define APP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(app_task_thread);
 static OSA_TASK_DEFINE(app_task, APP_TASK_PRIO, 1, 1024, 0);
 
 #if CONFIG_NCP_USB
 extern void usb_recv_task(void *param);
-#define USB_RECV_TASK_PRIO   2
+#define USB_RECV_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(usb_recv_thread);
 static OSA_TASK_DEFINE(usb_recv_task, USB_RECV_TASK_PRIO, 1, 1024, 0);
 
 void usb_pm_task(void *param);
 /* NCP usb host pm task */
-#define USB_PM_TASK_PRIO   2
 static OSA_TASK_HANDLE_DEFINE(usb_pm_task_thread);
-static OSA_TASK_DEFINE(usb_pm_task, USB_PM_TASK_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(usb_pm_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, 1024, 0);
 #endif
 
 OSA_EVENT_HANDLE_DEFINE(usb_host_events);

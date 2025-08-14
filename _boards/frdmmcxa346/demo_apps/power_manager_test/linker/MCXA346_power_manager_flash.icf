@@ -1,0 +1,54 @@
+/*
+ * Copyright 2025 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+/* Stack and Heap Sizes */
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__         = __stack_size__;
+} else {
+  define symbol __size_cstack__         = 0x0400;
+}
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__           = __heap_size__;
+} else {
+  define symbol __size_heap__           = 0x0400;
+}
+
+define symbol m_interrupts_start        = 0x00000000;
+define symbol m_interrupts_end          = 0x000003FF;
+
+define symbol m_text_start              = 0x00000400;
+define symbol m_text_end                = 0x000FFFFF;
+
+define symbol m_data_start              = 0x20002000; //RAMA1-A4
+define symbol m_data_end                = 0x2000FFFF;
+
+define symbol m_data_always_on_start    = 0x20000000; //RAMA0
+define symbol m_data_always_on_end      = 0x20001FFF;
+
+define memory mem with size = 4G;
+
+define region TEXT_region           = mem:[from m_interrupts_start to m_interrupts_end] | mem:[from m_text_start to m_text_end];
+define region DATA_region = mem:[from m_data_start to m_data_end-__size_cstack__];
+define region CSTACK_region         = mem:[from m_data_end - __size_cstack__ + 1 to m_data_end];
+define region ALWAY_ON_DATA_region  = mem:[from m_data_always_on_start to m_data_always_on_end];
+
+define block CSTACK         with alignment = 8, size = __size_cstack__        { };
+define block HEAP           with alignment = 8, size = __size_heap__          { };
+define block RW             { readwrite };
+define block ZI             { zi };
+define block ALWAYSON       { section AlwaysOnData, section AlwaysOnData.init};
+
+initialize by copy { readwrite, section .textrw };
+
+place at address mem: m_interrupts_start  { readonly section .intvec };
+place in TEXT_region                      { readonly };
+place in DATA_region                      { block RW };
+place in DATA_region                      { block ZI };
+place in DATA_region                      { last block HEAP };
+place in CSTACK_region                    { block CSTACK };
+place in ALWAY_ON_DATA_region             { block ALWAYSON };

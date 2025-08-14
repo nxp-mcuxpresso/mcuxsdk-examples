@@ -13,6 +13,10 @@
 #include "app_lce_init.h"
 
 /* -------------------------------------------------------------------------- */
+/*                              Public memory declarations                    */
+/* -------------------------------------------------------------------------- */
+uint8_t      g_ceHeap_id = 0U;
+/* -------------------------------------------------------------------------- */
 /*                              Private functions                             */
 /* -------------------------------------------------------------------------- */
 /* CE buffer definition */
@@ -45,35 +49,33 @@ static ce_cmdbuffer_t cpu_ce_cmdbuffer; /* Non-reentrant */
 #define MinimalCeHeapSize_c (4U)
 #endif
 #if defined(__IAR_SYSTEMS_ICC__)
-#pragma location = "ceHeap_1"
-static uint32_t ce_memHeap_1[MinimalCeHeapSize_c / sizeof(uint32_t)];
-#pragma location = "ceHeap_2"
-static uint32_t ce_memHeap_2[MinimalCeHeapSize_c / sizeof(uint32_t)];
+#pragma location = "ceHeap"
+static uint32_t ce_memHeap[MinimalCeHeapSize_c / sizeof(uint32_t)];
 #elif defined(__GNUC__)
-static uint32_t ce_memHeap_1[MinimalCeHeapSize_c / sizeof(uint32_t)] __attribute__((section("ceHeap_1")));
-static uint32_t ce_memHeap_2[MinimalCeHeapSize_c / sizeof(uint32_t)] __attribute__((section("ceHeap_2")));
+static uint32_t ce_memHeap[MinimalCeHeapSize_c / sizeof(uint32_t)] __attribute__((section("ceHeap")));
 #elif defined(__CC_ARM)
-static uint32_t ce_memHeap_1[MinimalCeHeapSize_c / sizeof(uint32_t)] __attribute__((section("ceHeap_1")));
-static uint32_t ce_memHeap_2[MinimalCeHeapSize_c / sizeof(uint32_t)] __attribute__((section("ceHeap_2")));
+static uint32_t ce_memHeap[MinimalCeHeapSize_c / sizeof(uint32_t)] __attribute__((section("ceHeap")));
 #else
 #error "Compiler unknown!"
 #endif
-extern uint32_t __CE_MEM_HEAP1_end__[];
-extern uint32_t __CE_MEM_HEAP2_end__[];
-/* Name must differ from section "ceHeap_1", otherwise gcc will complain */
-static memAreaCfg_t ceHeap1 = {
+extern uint32_t __CE_MEM_HEAP_end__[];
+extern uint32_t __SMU2_MEM_HEAP_start__[];
+extern uint32_t __SMU2_MEM_HEAP_end__[];
+/* Name must differ from section "ceHeap", otherwise gcc will complain */
+static memAreaCfg_t mCeHeap = {
     .next          = NULL,
-    .start_address = ce_memHeap_1,
-    .end_address   = __CE_MEM_HEAP1_end__,
-    .flags         = 0,
+    .start_address = ce_memHeap,
+    .end_address   = __CE_MEM_HEAP_end__,
+    .flags         = AREA_FLAGS_POOL_NOT_SHARED,
 };
-/* Name must differ from section "ceHeap_2", otherwise gcc will complain */
-static memAreaCfg_t ceHeap2 = {
+
+static memAreaCfg_t mSmuHeap = {
     .next          = NULL,
-    .start_address = ce_memHeap_2,
-    .end_address   = __CE_MEM_HEAP2_end__,
-    .flags         = 0,
+    .start_address = __SMU2_MEM_HEAP_start__,
+    .end_address   = __SMU2_MEM_HEAP_end__,
+    .flags         = 0U,
 };
+
 static mem_status_t CE_MEM_Init(void)
 {
     (void)MEM_Init();
@@ -81,11 +83,11 @@ static mem_status_t CE_MEM_Init(void)
     uint8_t      memHeap_id;
     if (st == kStatus_MemSuccess)
     {
-        st = MEM_RegisterExtendedArea(&ceHeap1, &memHeap_id, 0);
+        st = MEM_RegisterExtendedArea(&mCeHeap, &g_ceHeap_id, AREA_FLAGS_POOL_NOT_SHARED);
     }
     if (st == kStatus_MemSuccess)
     {
-        st = MEM_RegisterExtendedArea(&ceHeap2, &memHeap_id, 0);
+        st = MEM_RegisterExtendedArea(&mSmuHeap, &memHeap_id, 0);
     }
     return st;
 }

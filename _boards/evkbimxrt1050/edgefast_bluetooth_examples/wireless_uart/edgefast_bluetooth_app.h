@@ -26,9 +26,6 @@
  * If Murata Type 2EL module used, define macro WIFI_IW612_BOARD_MURATA_2EL_USD in following.
  */
 
-/* @TEST_ANCHOR */
-#define WIFI_IW612_BOARD_MURATA_2EL_USD
-/* @END_TEST_ANCHOR */
 /*#define WIFI_IW416_BOARD_AW_AM510_USD*/
 /*#define WIFI_IW416_BOARD_AW_AM457_USD*/
 /*#define WIFI_88W8987_BOARD_AW_CM358_USD*/

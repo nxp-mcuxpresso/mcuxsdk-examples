@@ -24,10 +24,21 @@ Running the demo
 ================   
 The log below shows the output of the psa crypto example demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * PSA crypto example *
+
 cipher encrypt/decrypt AES CBC no padding:
         success!
 cipher encrypt/decrypt AES CBC PKCS7 multipart:
         success!
 cipher encrypt/decrypt AES CTR multipart:
         success!
+cipher encrypt/decrypt AES CBC no padding one go:
+        success!
+cipher encrypt/decrypt AES CBC PKCS7 padding one go:
+        success!
+Hash a message SHA-256:
+        success!
+
+ * Example End *
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

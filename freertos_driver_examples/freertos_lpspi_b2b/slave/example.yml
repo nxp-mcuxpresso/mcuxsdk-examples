@@ -28,3 +28,4 @@ freertos_lpspi_b2b_slave:
     kw47loc@cm33_core0: []
     mcxw72evk@cm33_core0: []
     mcxw72loc@cm33_core0: []
+    frdmmcxw72@cm33_core0: []

@@ -7,8 +7,8 @@ project(psa_crypto_examples LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}/middleware/mbedtls3x
-    SOURCES programs/psa/crypto_examples.c
+    BASE_PATH ${SdkRootDirPath}/examples/mbedtls3x_examples
+    SOURCES psa_crypto_examples/crypto_examples.c
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/mbedtls3x_examples/psa_crypto_examples/reconfig.cmake OPTIONAL)

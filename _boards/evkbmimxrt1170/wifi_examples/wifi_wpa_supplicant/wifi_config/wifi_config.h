@@ -78,6 +78,7 @@
 #ifndef CONFIG_WIFI_IND_RESET
 #define CONFIG_WIFI_IND_RESET 1
 #endif
+#define CONFIG_CSI_AMI 0
 #endif
 
 /*

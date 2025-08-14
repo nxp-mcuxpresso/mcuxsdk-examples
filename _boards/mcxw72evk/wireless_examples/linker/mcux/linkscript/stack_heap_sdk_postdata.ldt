@@ -1,0 +1,26 @@
+<#if HEAP_STACK_STYLE?? && HEAP_STACK_STYLE == "sdk">
+    <#if HEAP_LOCATION == "Post Data">
+
+    /* Reserve and place Heap within memory map */
+    _HeapSize = ${HEAP_SIZE};
+    .heap (NOLOAD) :  ALIGN(${bss_align})
+    {
+        ${heap_symbol} = .;
+        . += _HeapSize;
+        . = ALIGN(${bss_align});
+        _pvHeapLimit = .;
+    } > sys_heap
+    </#if>
+    <#if STACK_LOCATION == "Post Data">
+
+    /* Reserve and place Stack within memory map */
+    _StackSize = ${STACK_SIZE};
+    .stack (NOLOAD) :  ALIGN(${bss_align})
+    {
+        _vStackBase = .;
+        . += _StackSize;
+        . = ALIGN(${bss_align});
+        _vStackTop = .;
+    } > ${STACK_REGION}
+    </#if>
+</#if>

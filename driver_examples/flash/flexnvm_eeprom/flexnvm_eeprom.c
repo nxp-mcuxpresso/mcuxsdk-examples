@@ -33,6 +33,14 @@
     #define EEPROM_DATA_SET_SIZE_CODE  CONFIG_IFLASH_EEESIZE_CODE
 #endif
 
+#ifdef CONFIG_IFLASH_EEPROM_QUICK_WRITE
+#ifdef FSL_FEATURE_FLASH_IS_FTFC
+#define QUICK_WRITE_MODE
+#else
+#error "EEPROM Quick Write mode not supported"
+#endif
+#endif
+
 /* Default setup */
 
 #ifndef EEPROM_DATA_SET_SIZE_CODE
@@ -230,7 +238,7 @@ int main(void)
                                               eepromDataSizeCode, flexnvmPartitionCode, 0, 0);
 #else
             result = FLEXNVM_ProgramPartition(&s_flashDriver, kFTFx_PartitionFlexramLoadOptLoadedWithValidEepromData,
-                                              eepromDataSizeCode, flexnvmPartitionCode); 
+                                              eepromDataSizeCode, flexnvmPartitionCode);
 #endif
 
             if (kStatus_FTFx_Success != result)
@@ -252,6 +260,7 @@ int main(void)
         PRINTF("\r\n EEprom Total Size:\t%d B", eepromTotalSize);
 
         PRINTF("\r\n Make FlexRAM available for EEPROM ");
+
         result = FLEXNVM_SetFlexramFunction(&s_flashDriver, kFTFx_FlexramFuncOptAvailableForEeprom);
         if (kStatus_FTFx_Success != result)
         {
@@ -259,6 +268,53 @@ int main(void)
         }
         PRINTF("\r\n Now EEPROM data is read and written by accessing the FlexRAM address space ");
         PRINTF("\r\n FlexRAM Base Address: (0x%x) ", flexramBlockBase);
+
+#ifdef QUICK_WRITE_MODE
+        {
+            ftfx_flexram_eeprom_qw_status qwStatus;
+
+            /* According to AN11983 the flow should be as follows: NormalMode -> QuickWriteStatusQuery -> QuickWriteMode */
+
+            /* Get quick write status to determine if last write operation was interrupted and needs to be completed */
+            result = FLEXNVM_SetFlexramFunction_QuickWrite(&s_flashDriver, kFTFx_FlexramFuncOptEepromQuickWriteStatus, 0, &qwStatus);
+            if (kStatus_FTFx_Success != result)
+            {
+                error_trap();
+            }
+
+            PRINTF("\r\n\r\n");
+            PRINTF(" EEPROM Quick Write Status:\r\n");
+            PRINTF("    BO status code: %u\r\n", qwStatus.brownoutStatus);
+            PRINTF("    Records requiring maintenance: %u\r\n", qwStatus.recordsRequireMaintenanceCount);
+            PRINTF("    EEPROM sector erase count: %u\r\n", qwStatus.sectorEraseCount);
+
+            if (qwStatus.brownoutStatus == kFTFx_EepromQW_BO_BeforeQW)
+            {
+                PRINTF(" !! Brownout occured before completing write of entire Quick Write record  !!\r\n");
+                PRINTF(" Recovery is not possible!\r\n");
+            }
+            else if (qwStatus.brownoutStatus == kFTFx_EepromQW_BO_BeforeQWMaintenance)
+            {
+                PRINTF(" !! Brownout occured before Quick Write maintenance !!\r\n");
+                PRINTF(" Going to perform Quick Write Maintenance...\r\n");
+
+                result = FLEXNVM_SetFlexramFunction_QuickWrite(&s_flashDriver, kFTFx_FlexramFuncOptEepromQuickWriteRecovery, 0, NULL);
+                if (kStatus_FTFx_Success != result)
+                {
+                    error_trap();
+                }
+            }
+
+            /* Switch to Quick Write mode */
+            result = FLEXNVM_SetFlexramFunction_QuickWrite(&s_flashDriver, kFTFx_FlexramFuncOptAvailableForEepromQuickWrite, sizeof(s_buffer), NULL);
+            if (kStatus_FTFx_Success != result)
+            {
+                error_trap();
+            }
+
+            PRINTF(" Switched to Quick Write mode with record size of %u bytes\n", sizeof(s_buffer));
+        }
+#endif
 
         /* Print message for user. */
         /* Prepare buffer. */

@@ -42,6 +42,12 @@ The log would be seen on the OpenSDA terminal like:
 
  Key SW12 was pressed.
 
+ Key SW11 was released.
+
+ Key SW12 was released.
+
+ All keys released.
+
  This was a long press.
 
    ......

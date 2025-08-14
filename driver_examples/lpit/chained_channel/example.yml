@@ -26,6 +26,7 @@ lpit_chained_channel:
     frdmke17z512: []
     frdmmcxe247: []
     frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []

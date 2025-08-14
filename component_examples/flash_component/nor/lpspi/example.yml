@@ -15,6 +15,7 @@ flash_component_nor_lpspi:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     mcxw72evk@cm33_core0: []
     mcxw72loc@cm33_core0: []

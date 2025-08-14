@@ -25,11 +25,11 @@
 #define BIT(n) (1U << (n))
 #endif
 
-#define SDHOST_CORE_INPUT_PRIO   3
+#define SDHOST_CORE_INPUT_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 #define SDHOST_CORE_STACK_SIZE   (1024)
 #define SDHOST_CORE_START        BIT(0)
 #define SDHOST_DATA_DNLD_RDY     BIT(1)
-#define SDHOST_RESCAN_PRIO       3
+#define SDHOST_RESCAN_PRIO       PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 #define SDHOST_RESCAN_STACK_SIZE (1500)
 #define SDHOST_RESCAN_START      0x01
 
@@ -75,7 +75,7 @@
 /** Card Control Registers : Function 1 Block size 1 */
 #define FN1_BLOCK_SIZE_1 0x111
 
-#define SDIO_DATA_OUTBUF_LEN 2052U
+#define SDIO_DATA_OUTBUF_LEN (4096U - SDIO_HEADER_LEN)
 #define SDIO_CMD_OUTBUF_LEN  4100U
 
 /** Port for memory */

@@ -55,7 +55,7 @@ if MCUX_PRJSEG_module.board.wireless.board
   config MCUX_PRJSEG_module.board.wireless.board.debug_nbu
       bool "NBU Debug support"
       select MCUX_COMPONENT_middleware.wireless.framework.dbg.nbu_debug_on_host
-      depends on MCUX_PRJSEG_middleware.wireless.framework.platform.kw47_mcxw72 
+      depends on MCUX_COMPONENT_middleware.wireless.framework.platform.kw47_mcxw72
       help
         Allows to extract and analyze NBU state in case a fault is detected
 

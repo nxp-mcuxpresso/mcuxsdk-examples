@@ -20,6 +20,8 @@ Prepare the Demo
 3. Download the program to the target board.
 4. Either press the reset button on your board or launch the debugger in your IDE to begin running the example.
 
+NOTE - *EEPROM Quick Write* feature can be enabled with `CONFIG_IFLASH_EEPROM_QUICK_WRITE` option.
+
 Running the demo
 ================
 When the example runs successfully, the following message is displayed in the terminal

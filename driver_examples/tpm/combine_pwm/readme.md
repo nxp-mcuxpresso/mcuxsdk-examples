@@ -27,3 +27,4 @@ And if the board do not support LEDs to show, the outputs can be observed by osc
 - [MCX-W72-EVK](../../../_boards/mcxw72evk/driver_examples/tpm/combine_pwm/example_board_readme.md)
 - [KW47-LOC](../../../_boards/kw47loc/driver_examples/tpm/combine_pwm/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/driver_examples/tpm/combine_pwm/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/tpm/combine_pwm/example_board_readme.md)

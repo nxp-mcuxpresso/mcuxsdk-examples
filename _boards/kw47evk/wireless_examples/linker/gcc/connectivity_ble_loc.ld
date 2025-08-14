@@ -1,0 +1,516 @@
+/*
+** ###################################################################
+**     Processors:          KW47B42Z83AFTA_cm33_core0
+**                          KW47B42Z96FTA_cm33_core0
+**                          KW47B42Z97AFTA_cm33_core0
+**                          KW47B42ZB2AFTA_cm33_core0
+**                          KW47B42ZB3AFTA_cm33_core0
+**                          KW47B42ZB6AFTA_cm33_core0
+**                          KW47B42ZB7AFTA_cm33_core0
+**                          MCXW727CAFTA_cm33_core0
+**                          MCXW727AAFTA_cm33_core0
+**                          MCXW727DAFTA_cm33_core0
+**
+**     Compiler:            GNU C Compiler
+**
+**     Abstract:
+**         Linker file for the GNU C Compiler
+**
+**     Copyright 2024 - 2025 NXP
+**
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+GROUP (
+  libm.a
+)
+
+/* Entry Point */
+ENTRY(Reset_Handler)
+
+m_flash_start                       = 0x00000000;
+m_flash_size                        = 0x00200000;
+m_flash_end                         = m_flash_start + m_flash_size - 1;
+m_sector_size                       = 0x2000;
+m_vector_table_size                 = 0x400;
+m_interrupts_start                  = m_flash_start;
+m_interrupts_end                    = m_interrupts_start + m_vector_table_size - 1;
+__VECTOR_TABLE                      = m_interrupts_start;
+m_ot_settings_page_size             = m_sector_size;
+m_ot_settings_page_count            = DEFINED(gUseOtSettingsStorage_d) ? 2 : 0;
+m_ot_settings_size                  = DEFINED(gUseOtSettingsStorage_d) ? m_ot_settings_page_size * m_ot_settings_page_count : 0;
+m_ot_settings_start                 = m_flash_end - m_ot_settings_size + 1;
+m_ot_settings_end                   = m_flash_end;
+NV_STORAGE_MAX_SECTORS              = DEFINED(gUseNVMLink_d) ? (DEFINED(gNVMSectorCountLink_d) ? gNVMSectorCountLink_d : 4) : 0;
+NV_STORAGE_SECTOR_SIZE              = m_sector_size;
+NV_STORAGE_END_ADDRESS              = m_ot_settings_start - 1;
+NV_STORAGE_SIZE                     = (NV_STORAGE_MAX_SECTORS * NV_STORAGE_SECTOR_SIZE);
+NV_STORAGE_START_ADDRESS            = NV_STORAGE_END_ADDRESS - NV_STORAGE_SIZE + 1;
+NV_VIRTUAL_PAGE_SZ                  = NV_STORAGE_SIZE / 2;
+NV_F_VIRTUAL_PAGE_START             = NV_STORAGE_START_ADDRESS;
+NV_S_VIRTUAL_PAGE_START             = NV_F_VIRTUAL_PAGE_START + NV_VIRTUAL_PAGE_SZ;
+INT_STORAGE_END                     = NV_STORAGE_START_ADDRESS - 1;
+INT_STORAGE_SIZE                    = DEFINED(gUseInternalStorageLink_d) ? m_sector_size * ( ( (INT_STORAGE_END + 1 - m_interrupts_start) / 2 ) / m_sector_size + 1) : 0;
+INT_STORAGE_START                   = INT_STORAGE_END - INT_STORAGE_SIZE + 1;
+INT_STORAGE_SECTOR_SIZE             = m_sector_size;
+m_text_start                        = m_interrupts_end  + 1;
+m_text_end                          = INT_STORAGE_START - 1;
+m_text_size                         = m_text_end - m_text_start;
+m_ram0_start                        = 0x14000000;
+m_ram0_end                          = 0x14007FFF;
+m_ram1_start                        = 0x20000000;
+m_ram1_end                          = 0x20039FFF;
+/* This region is used by bootrom when exiting power down modes */
+m_ram1_reserved_start               = m_ram1_start;
+m_ram1_reserved_size                = 0x4000;
+m_ram1_reserved_end                 = m_ram1_start + m_ram1_reserved_size - 1;
+m_warmboot_stack_start              = DEFINED(gLowpowerPowerDownEnable_d) ? m_ram1_reserved_end + 1 : m_ram1_start;
+m_warmboot_stack_size               = DEFINED(gLowpowerPowerDownEnable_d) ? 0x400 : 0;
+m_warmboot_stack_end                = m_warmboot_stack_start + m_warmboot_stack_size - 1;
+
+/* Used by the fwk_platform_lowpower module */
+gLowpowerPowerDownEnable_d          = DEFINED(gLowpowerPowerDownEnable_d) ? 1 : 0;
+m_ram_vector_table_size             = m_vector_table_size;
+HEAP_SIZE                           = DEFINED(__heap_size__)  ? __heap_size__  : 0x0800;
+STACK_SIZE                          = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
+
+m_cstack_start                      = DEFINED(m_cstack_start) ? m_cstack_start : m_warmboot_stack_end + 1;
+m_cstack_end                        = m_cstack_start + STACK_SIZE - 1;
+m_interrupts_ram_start              = m_cstack_end + 1;
+m_interrupts_ram_end                = m_interrupts_ram_start + m_ram_vector_table_size - 1;
+__VECTOR_RAM                        = m_interrupts_ram_start;
+__RAM_VECTOR_TABLE_SIZE_BYTES       = m_ram_vector_table_size;
+m_data0_start                       = m_ram0_start;
+m_data0_end                         = m_ram0_end;
+m_data0_size                        = m_ram0_end - m_data0_start + 1;
+
+m_ce_data_size                      = 0x1A000;
+m_data1_start                       = m_interrupts_ram_end + 1;
+m_data1_end                         = m_ram1_end - m_ce_data_size;
+m_data1_size                        = m_data1_end - m_data1_start + 1;
+
+__HEAP_start__                      = m_ram1_end - HEAP_SIZE;
+__HEAP_end__                        = m_ram1_end;
+
+firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
+firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_ram1_end;
+
+/********************************************** NBU shared memory **********************************************
+
+                                            m_shared_ram_end
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_free_data_end
+                          |   free data   |
+                          |               |
+                          |               | m_free_data_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_rldat_end
+                          |     rldat     |
+                          |               |
+                          |               | m_sqram_rldat_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_rldat_ae_end
+                          |   rldat_ae    |
+                          |               |
+                          |               | m_sqram_rldat_ae_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_btbleaesqbuf_end
+                          |  btbleaesqbuf |
+                          |               |
+                          |               | m_sqram_btbleaesqbuf_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_btblesqbuf_end
+                          |   btblebuf    |
+                          |               |
+                          |               | m_sqram_btblesqbuf_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | dbg_ext_logging_end
+                          |  DBG logging  |
+                          |               |
+                          |               | dbg_ext_logging_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | rpmsg_sh_mem_end
+                          |     RPMSG     |
+                          |               | rpmsg_sh_mem_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | framework_info_sh_mem_end
+                          |    FWK Info   |
+                          |               | framework_info_sh_mem_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_sqram_debug_end
+                          |    LL Debug   |
+                          |               | m_sqram_debug_start
+                    - - - +---------------+ - - - - - - - -
+                          |               | m_shared_ram_start
+
+/* Do not change shall be aligned with other core firmware */
+m_shared_ram_start                  = 0x489C0000;
+m_shared_ram_size                 = 0x10000;
+m_shared_ram_end                  = m_shared_ram_start + m_shared_ram_size - 1;
+
+/* Section allowing to share debug info to CM33 (LL error/warnings).*/
+m_sqram_debug_start               = m_shared_ram_start;
+m_sqram_debug_size                = 0x200;
+m_sqram_debug_end                 = m_shared_ram_start + m_sqram_debug_size - 1;
+
+/* Section used to share platform/services (SFC, Lowpower) information on both cores */
+framework_info_sh_mem_start       = m_sqram_debug_end + 1;
+framework_info_sh_mem_size        = 0x20;
+framework_info_sh_mem_end         = framework_info_sh_mem_start + framework_info_sh_mem_size - 1;
+
+/* Section used for the sfc module intercore debug */
+m_sfc_log_start                   = framework_info_sh_mem_start; 
+m_sfc_log_size                    = 0x04;
+
+/* Section used to share a flag on both cores for lowpower purpose */
+m_lowpower_flag_start             = framework_info_sh_mem_start + m_sfc_log_size;
+m_lowpower_flag_size              = 0x04;
+m_lowpower_flag_end               = m_lowpower_flag_start + m_lowpower_flag_size - 1;
+
+/* RPMSG section for intercore communication */
+rpmsg_sh_mem_size                 = 0x1100;
+rpmsg_sh_mem_start                = framework_info_sh_mem_end + 1;
+rpmsg_sh_mem_end                  = rpmsg_sh_mem_start + rpmsg_sh_mem_size - 1;
+
+dbg_ext_logging_size              = 0x700;
+dbg_ext_logging_start             = rpmsg_sh_mem_end + 1;
+dbg_ext_logging_end               = dbg_ext_logging_start + dbg_ext_logging_size - 1;
+
+m_sqram_btblesqbuf_start          = dbg_ext_logging_end + 1;
+m_sqram_btblesqbuf_size           = 0x5500;
+m_sqram_btblesqbuf_end            = m_sqram_btblesqbuf_start + m_sqram_btblesqbuf_size - 1;
+
+m_sqram_btbleaesqbuf_start        = m_sqram_btblesqbuf_end + 1;
+m_sqram_btbleaesqbuf_size         = 0x2700;     /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising.*/
+m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
+
+m_sqram_rldat_ae_start            = m_sqram_btbleaesqbuf_end + 1;
+m_sqram_rldat_ae_size             = 0x00258;
+m_sqram_rldat_ae_end              = m_sqram_rldat_ae_start + m_sqram_rldat_ae_size -1;
+
+m_sqram_rldat_start               = m_sqram_rldat_ae_end + 1;
+m_sqram_rldat_size                = 0x005dc;  /*to hold 24 connection contexts*/
+m_sqram_rldat_end                 = m_sqram_rldat_start + m_sqram_rldat_size -1;
+
+m_free_data_start                 = m_sqram_rldat_end + 1;
+m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
+m_free_data_end                   = m_shared_ram_end;
+
+
+/********************************************** Computeur Engine (CE) Memory **********************************************/
+m_ce_image_start                    = m_data1_end + 1;
+m_ce_image_size                     = 0x8000;
+m_ce_image_end                      = m_ce_image_start + m_ce_image_size - 1;
+
+m_ce_data_reserved_start            = m_ce_image_end + 1;
+m_ce_data_reserved_size             = 0x1000;
+m_ce_data_reserved_end              = m_ce_data_reserved_start + m_ce_data_reserved_size -1;
+
+m_ce_ctrl_start                     = m_ce_data_reserved_end + 1;
+m_ce_ctrl_size                      = 0x640;
+m_ce_ctrl_end                       = m_ce_ctrl_start + m_ce_ctrl_size -1;
+
+m_ce_heap_start                     = m_ce_ctrl_end + 1;
+m_ce_heap_size                      = 0x39C0;
+m_ce_heap_end                       = m_ce_heap_start + m_ce_heap_size -1;
+
+m_upper_data1_start                 = m_ce_heap_end + 1;
+m_upper_data1_size                  = m_ram1_end - m_upper_data1_start + 1;
+m_upper_data1_end                   = m_ram1_end;
+
+m_heap_start                       = m_upper_data1_start;
+m_heap_size                        = m_upper_data1_size;
+
+m_smu2_heap_start                   = m_free_data_start;
+m_smu2_heap_size                    = m_free_data_end - m_smu2_heap_start + 1;
+m_smu2_heap_end                     = m_free_data_end;
+
+__CE_MEM_HEAP_end__                = m_ce_heap_end;
+__SMU2_MEM_HEAP_start__            = m_smu2_heap_start;
+__SMU2_MEM_HEAP_end__              = m_smu2_heap_end;
+
+/* Specify the memory areas */
+MEMORY
+{
+  m_interrupts          (RX)  : ORIGIN = m_interrupts_start, LENGTH = m_vector_table_size
+  m_text                (RX)  : ORIGIN = m_text_start, LENGTH = m_text_size
+  m_internal_storage    (RX)  : ORIGIN = INT_STORAGE_START, LENGTH = INT_STORAGE_SIZE
+  fNVM_region           (RX)  : ORIGIN = NV_F_VIRTUAL_PAGE_START, LENGTH = NV_VIRTUAL_PAGE_SZ
+  sNVM_region           (RX)  : ORIGIN = NV_S_VIRTUAL_PAGE_START, LENGTH = NV_VIRTUAL_PAGE_SZ
+  m_cstack              (RW)  : ORIGIN = m_cstack_start, LENGTH = STACK_SIZE
+  m_ram_interrupts      (RW)  : ORIGIN = m_interrupts_ram_start, LENGTH = m_ram_vector_table_size
+  m_data0               (RW)  : ORIGIN = m_data0_start, LENGTH = m_data0_size
+  m_data1               (RW)  : ORIGIN = m_data1_start, LENGTH = m_data1_size
+  m_ce_image            (RW)  : ORIGIN = m_ce_image_start, LENGTH = m_ce_image_size
+  m_ce_ctrl             (RW)  : ORIGIN = m_ce_ctrl_start, LENGTH = m_ce_ctrl_size
+  m_ce_heap             (RW)  : ORIGIN = m_ce_heap_start, LENGTH = m_ce_heap_size
+  m_ce_data_reserved    (RW)  : ORIGIN = m_ce_data_reserved_start, LENGTH = m_ce_data_reserved_size
+  m_heap                (RW)  : ORIGIN = m_heap_start, LENGTH = m_heap_size
+  rpmsg_sh_mem          (RW)  : ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
+  m_lowpower_flag       (RW)  : ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size
+  m_smu2_heap           (RW)  : ORIGIN = m_smu2_heap_start, LENGTH = m_smu2_heap_size
+}
+
+/* Define output sections */
+SECTIONS
+{
+  /* NOINIT section for rpmsg_sh_mem */
+  .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)
+  {
+     __RPMSG_SH_MEM_START__ = .;
+     *(.noinit.$rpmsg_sh_mem*)
+     . = ALIGN(4) ;
+     __RPMSG_SH_MEM_END__ = .;
+  } > rpmsg_sh_mem
+  /* The startup code goes first into internal flash */
+  .interrupts :
+  {
+    __VECTOR_TABLE = .;
+    . = ALIGN(4);
+    KEEP(*(.isr_vector))     /* Startup code */
+    . = ALIGN(4);
+  } > m_interrupts
+
+  /* The program code and other data goes into internal flash */
+  .text :
+  {
+    . = ALIGN(4);
+    *(.text)                 /* .text sections (code) */
+    *(.text*)                /* .text* sections (code) */
+    *(.rodata)               /* .rodata sections (constants, strings, etc.) */
+    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(.glue_7)               /* glue arm to thumb code */
+    *(.glue_7t)              /* glue thumb to arm code */
+    *(.eh_frame)
+    KEEP (*(.init))
+    KEEP (*(.fini))
+    . = ALIGN(4);
+  } > m_text
+
+  .NVM_TABLE :
+  {
+    . = ALIGN(4);
+    PROVIDE(__start_NVM_TABLE = .);
+    KEEP(*(.NVM_TABLE));
+    PROVIDE(__stop_NVM_TABLE = .);
+    . = ALIGN(4);
+  } > m_text
+
+  .VERSION_TAGS :
+  {
+    . = ALIGN(4);
+    PROVIDE(__start_VERSION_TAGS = .);
+    KEEP(*(.VERSION_TAGS));
+    PROVIDE(__stop_VERSION_TAGS = .);
+    . = ALIGN(4);
+  } > m_text
+
+  .ARM.extab :
+  {
+    *(.ARM.extab* .gnu.linkonce.armextab.*)
+  } > m_text
+
+  .ARM :
+  {
+    __exidx_start = .;
+    *(.ARM.exidx*)
+    __exidx_end = .;
+  } > m_text
+
+ .ctors :
+  {
+    __CTOR_LIST__ = .;
+    /* gcc uses crtbegin.o to find the start of
+       the constructors, so we make sure it is
+       first.  Because this is a wildcard, it
+       doesn't matter if the user does not
+       actually link against crtbegin.o; the
+       linker won't look for a file to match a
+       wildcard.  The wildcard also means that it
+       doesn't matter which directory crtbegin.o
+       is in.  */
+    KEEP (*crtbegin.o(.ctors))
+    KEEP (*crtbegin?.o(.ctors))
+    /* We don't want to include the .ctor section from
+       from the crtend.o file until after the sorted ctors.
+       The .ctor section from the crtend file contains the
+       end of ctors marker and it must be last */
+    KEEP (*(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(.ctors))
+    __CTOR_END__ = .;
+  } > m_text
+
+  .dtors :
+  {
+    __DTOR_LIST__ = .;
+    KEEP (*crtbegin.o(.dtors))
+    KEEP (*crtbegin?.o(.dtors))
+    KEEP (*(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors))
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*(.dtors))
+    __DTOR_END__ = .;
+  } > m_text
+
+  .preinit_array :
+  {
+    PROVIDE_HIDDEN (__preinit_array_start = .);
+    KEEP (*(.preinit_array*))
+    PROVIDE_HIDDEN (__preinit_array_end = .);
+  } > m_text
+
+  .init_array :
+  {
+    PROVIDE_HIDDEN (__init_array_start = .);
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array*))
+    PROVIDE_HIDDEN (__init_array_end = .);
+  } > m_text
+
+  .fini_array :
+  {
+    PROVIDE_HIDDEN (__fini_array_start = .);
+    KEEP (*(SORT(.fini_array.*)))
+    KEEP (*(.fini_array*))
+    PROVIDE_HIDDEN (__fini_array_end = .);
+  } > m_text
+
+  __etext = .;    /* define a global symbol at end of code */
+  __DATA_ROM = .; /* Symbol is used by startup for data initialization */
+
+  /* Note that fEraseNVM and sEraseNVM sections are only there to be able to erase an NVM storage content when flashing a new firmware that might be incompatible.
+   * This may raise an issue if the final output of the build is a binary image. Indeed, in this case, the linker pads the binary between the top of the text section
+   * and fills the space with 0xff till the top of the NVM section, causing an increase in size.
+   * With IAR linker, undefining gEraseNVMLink_d linker symbol allows to remove the sections and thus prevent a binary image size increase.
+   * Unfortunately, gcc linker script has a limitation that does not allow conditional linkage.
+   * If a slim image is wanted, one can comment the .fEraseNVM and .sEraseNVM section definitions below.
+   * Alternately it is possible to leave the linker script as is with both EraseNVM sections, but modify the mcux_convert_binary
+   *  post-build rule in the application CMakeLists.txt as follows:
+   * mcux_convert_binary(
+   *  TOOLCHAINS armgcc
+   *  EXTRA_ARGS --remove-section .fEraseNVM --remove-section .sEraseNVM
+   *  BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_slim.bin)
+   * This results in removing the unwanted sections from the binary output.
+   */
+
+  .fEraseNVM :
+  {
+    . = ALIGN(m_sector_size);
+    KEEP(*(fEraseNVM))
+    FILL(0xFFFFFFFF)
+  } > fNVM_region
+
+  .sEraseNVM :
+  {
+    . = ALIGN(m_sector_size);
+    KEEP(*(sEraseNVM))
+    FILL(0xFFFFFFFF)
+  } > sNVM_region
+
+  .data : AT(__DATA_ROM)
+  {
+    . = ALIGN(4);
+    __DATA_RAM = .;
+    __data_start__ = .;      /* create a global symbol at data start */
+    *(.ramfunc*)             /* for functions in ram */
+    *(.data)                 /* .data sections */
+    *(.data*)                /* .data* sections */
+    KEEP(*(.jcr*))
+    . = ALIGN(4);
+    __data_end1__ = .;        /* define intermediate symbol at data end */
+  } > m_data1
+
+  .NVM_TABLE_RW : AT(__DATA_ROM + (__data_end1__ - __data_start__))
+  {
+    . = ALIGN(4);
+    PROVIDE(__start_NVM_TABLE_RW = .);
+    KEEP(*(.NVM_TABLE_RW));
+    PROVIDE(__stop_NVM_TABLE_RW = .);
+    . = ALIGN(4);
+    __data_end__ = .;
+  } > m_data1
+
+
+  __DATA_END = __DATA_ROM + (__data_end__ - __data_start__);
+
+  text_end = ORIGIN(m_text) + LENGTH(m_text);
+  ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
+
+  .stack :
+  {
+    . = ALIGN(8);
+    /* STACK_SIZE is assumed to be multiple of 8 bytes,
+     * thus __StackTop which is pointing to the end of
+     * this section should be 8 byte aligned.
+     */
+    . += STACK_SIZE;
+    __StackTop = .;
+  } > m_cstack
+
+  /* Initializes stack on the end of block */
+
+  /* m_cstack_end is manually calculated and in the end it's not 8 byte aligned
+   * breaking the AAPCS standard: 5.2.1.2 Stack constraints at a public interface
+   * thus breaking va_args for 64 bit values.
+   */
+  /* __StackTop   = m_cstack_end; */
+  __StackLimit = m_cstack_start;
+  PROVIDE(__stack = __StackTop);
+
+  .interrupts_ram :
+  {
+    . = ALIGN(4);
+    __interrupts_ram_start__ = .; /* Create a global symbol at data start */
+    *(.m_interrupts_ram)     /* This is a user defined section */
+    . = ALIGN(4);
+    __interrupts_ram_end__ = .; /* Define a global symbol at data end */
+  } > m_ram_interrupts
+
+  /* Uninitialized data section */
+  .bss :
+  {
+    /* This is used by the startup in order to initialize the .bss section */
+    . = ALIGN(4);
+    __START_BSS = .;
+    __bss_start__ = .;
+    *(.bss)
+    *(.bss*)
+    *(COMMON)
+    . = ALIGN(4);
+    __bss_end__ = .;
+    __END_BSS = .;
+  } > m_data1
+
+  .heap (NOLOAD) :
+  {
+    . = ALIGN(8);
+    __end__ = .;
+    PROVIDE(end = .);
+    PROVIDE(__HeapBase = .);
+    . += HEAP_SIZE;
+    PROVIDE(__HeapLimit = .);
+    *(.heap)
+  } > m_heap
+
+  .ceCtrl (NOLOAD) :
+  {
+    . = ALIGN(4);
+    *(ceCtrl)
+  } > m_ce_ctrl
+
+  .ceHeap (NOLOAD) :
+  {
+    . = ALIGN(4);
+    *(ceHeap)
+  } > m_ce_heap
+
+  .ARM.attributes 0 : { *(.ARM.attributes) }
+
+  /* ASSERT(__StackLimit >= __HeapLimit, "region m_data1 overflowed with stack and heap") */
+}
+

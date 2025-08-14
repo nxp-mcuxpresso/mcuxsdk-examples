@@ -266,8 +266,7 @@ settings:
 - {id: VDD_CORE, value: voltage_1v2}
 - {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
 - {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
-sources:
-- {id: SCG.FIRC.outFreq, value: 60 MHz}
+- {id: SCG.FREQ_SEL.scale, value: '3', locked: true}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -360,8 +359,7 @@ settings:
 - {id: VDD_CORE, value: voltage_1v2}
 - {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
 - {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
-sources:
-- {id: SCG.FIRC.outFreq, value: 90 MHz}
+- {id: SCG.FREQ_SEL.scale, value: '2', locked: true}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -455,8 +453,7 @@ settings:
 - {id: FROHFDIV_SYSCON_FROHFDIV_HALT, value: RUN}
 - {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
 - {id: MRCC.TRACE_CLKDIV.scale, value: '2', locked: true}
-sources:
-- {id: SCG.FIRC.outFreq, value: 180 MHz}
+- {id: SCG.FREQ_SEL.scale, value: '1', locked: true}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -555,6 +552,7 @@ settings:
 - {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
 - {id: MRCC.TRACE_CLKDIV.scale, value: '2', locked: true}
 - {id: PLL1CLKDIV_SYSCON_PLL1CLKDIV_HALT, value: RUN}
+- {id: SCG.FREQ_SEL.scale, value: '4', locked: true}
 - {id: SCG.MDIV.scale, value: '30', locked: true}
 - {id: SCG.NDIV.scale, value: '1', locked: true}
 - {id: SCG.PLL1_CLKSEL.sel, value: SCG.FRO_12M_clock}
@@ -671,13 +669,12 @@ settings:
 - {id: FROLFDIV_SYSCON_FROLFDIV_HALT, value: RUN}
 - {id: MRCC.TRACE_CLKDIV.scale, value: '3', locked: true}
 - {id: PLL1CLKDIV_SYSCON_PLL1CLKDIV_HALT, value: RUN}
+- {id: SCG.FREQ_SEL.scale, value: '1', locked: true}
 - {id: SCG.MDIV.scale, value: '40', locked: true}
 - {id: SCG.NDIV.scale, value: '1', locked: true}
 - {id: SCG.PLL1_CLKSEL.sel, value: SCG.FRO_12M_clock}
 - {id: SCG.SCGSCS_CLKSEL.sel, value: SCG.PLL1_clock}
 - {id: SYSCON.PLL1CLKDIV.scale, value: '4', locked: true}
-sources:
-- {id: SCG.FIRC.outFreq, value: 180 MHz}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 

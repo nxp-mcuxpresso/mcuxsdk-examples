@@ -23,21 +23,24 @@ Prepare the Demo
 3. Download the program to the target board.
 4. Either re-power up your board or launch the debugger in your IDE to begin running the example.
 
-Enable an option(Cannot enable them at the same time) in rpmsg_lite_pingpong_rtos_no_mcmgr/master/${core_id}/prj.conf and rpmsg_lite_pingpong_rtos_no_mcmgr/remote/${core_id}/prj.conf to select which core as master and which core as remote as the follow table:
-|         Option                       |   Master |   Remote   |
-|--------------------------------------|----------|------------|
-|  CONFIG_RPMSG_M71_M33S=y(default)    |    M71   |    M33S    |
-|--------------------------------------|----------|------------|
-|  CONFIG_RPMSG_M71_M70=y              |    M71   |    M70     |
-|--------------------------------------|----------|------------|
-|  CONFIG_RPMSG_M70_M71=y              |    M70   |    M71     |
-|--------------------------------------|----------|------------|
-|  CONFIG_RPMSG_M70_M33S=y             |    M70   |    M33S    |
-|--------------------------------------|----------|------------|
-|  CONFIG_RPMSG_M33S_M70=y             |    M33S  |    M70     |
-|--------------------------------------|----------|------------|
-|  CONFIG_RPMSG_M33S_M71=y             |    M33S  |    M71     |
-|--------------------------------------|----------|------------|
+Enable an option(Cannot enable them at the same time) in rpmsg_lite_pingpong_rtos_no_mcmgr/master/${core_id}/prj.conf(mcux_config.h) and rpmsg_lite_pingpong_rtos_no_mcmgr/remote/${core_id}/prj.conf(mcux_config.h) to select which core as master and which core as remote as the follow table:
++--------------------------------------------------------------------------------------------------+
+|                                   Option                                 |   Master |   Remote   |
+|--------------------------------------------------------------------------|          |            |
+|         prj.conf                     |           mcux_config.h           |          |            |
+|--------------------------------------------------------------------------|----------|------------|
+|  CONFIG_RPMSG_M71_M33S=y(default)    | #define CONFIG_RPMSG_M71_M33S 1   |    M71   |    M33S    |
+|--------------------------------------------------------------------------|----------|------------|
+|  CONFIG_RPMSG_M71_M70=y              | #define CONFIG_RPMSG_M71_M70 1    |    M71   |    M70     |
+|--------------------------------------------------------------------------|----------|------------|
+|  CONFIG_RPMSG_M70_M71=y              | #define CONFIG_RPMSG_M70_M71 1    |    M70   |    M71     |
+|--------------------------------------------------------------------------|----------|------------|
+|  CONFIG_RPMSG_M70_M33S=y             | #define CONFIG_RPMSG_M70_M33S 1   |    M70   |    M33S    |
+|--------------------------------------------------------------------------|----------|------------|
+|  CONFIG_RPMSG_M33S_M70=y             | #define CONFIG_RPMSG_M33S_M70 1   |    M33S  |    M70     |
+|--------------------------------------------------------------------------|----------|------------|
+|  CONFIG_RPMSG_M33S_M71=y             | #define CONFIG_RPMSG_M33S_M71 1   |    M33S  |    M71     |
+|--------------------------------------------------------------------------|----------|------------|
 
 Running the demo
 ===============

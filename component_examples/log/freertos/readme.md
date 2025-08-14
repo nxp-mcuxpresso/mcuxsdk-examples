@@ -54,3 +54,4 @@ work with semihosting.
 - [KW47-LOC](../../../_boards/kw47loc/component_examples/log/freertos/example_board_readme.md)
 - [MCXW72-LOC](../../../_boards/mcxw72loc/component_examples/log/freertos/example_board_readme.md)
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/component_examples/log/freertos/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/component_examples/log/freertos/example_board_readme.md)

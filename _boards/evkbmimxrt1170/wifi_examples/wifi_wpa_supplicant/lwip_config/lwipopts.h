@@ -162,7 +162,7 @@
  * CONFIG option available in the SDK
  */
 #if CONFIG_NETWORK_HIGH_PERF
-#define TCP_SND_BUF (24 * TCP_MSS)
+#define TCP_SND_BUF (40 * TCP_MSS)
 #else
 #define TCP_SND_BUF (TCP_SND_BUF_COUNT * TCP_MSS)
 #endif
@@ -207,7 +207,7 @@
  * this should be set high.
  */
 #if CONFIG_NETWORK_HIGH_PERF
-#define MEMP_NUM_PBUF 20
+#define MEMP_NUM_PBUF 40
 #else
 #define MEMP_NUM_PBUF 10
 #endif
@@ -225,7 +225,7 @@
  * (requires the LWIP_TCP option)
  */
 #if CONFIG_NETWORK_HIGH_PERF
-#define MEMP_NUM_TCP_SEG 96
+#define MEMP_NUM_TCP_SEG 160
 #else
 #define MEMP_NUM_TCP_SEG 12
 #endif

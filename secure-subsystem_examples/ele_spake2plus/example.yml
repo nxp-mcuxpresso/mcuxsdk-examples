@@ -26,3 +26,4 @@ ele_spake2plus:
     kw47loc@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
+    frdmmcxw72@cm33_core0: []

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -41,7 +41,7 @@ extern "C" {
 /* Minimum lookahead buffer size definition */
 #define LITTLEFS_LOOKAHEAD_SIZE 16
 /* Block starting address definition */
-#define LITTLEFS_START_ADDR 0x7e000
+#define LITTLEFS_START_ADDR 0x3e000
 
 /***********************************************************************************************************************
  * Global variables

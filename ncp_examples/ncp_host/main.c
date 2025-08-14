@@ -48,7 +48,7 @@ extern int mcu_create_mutex_scan_lock();
 
 #define TASK_MAIN_STACK_SIZE   1500
 
-#define TASK_MAIN_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
+#define TASK_MAIN_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(main_task_handle);
 void task_main(void *param);
 static OSA_TASK_DEFINE(task_main, TASK_MAIN_PRIO, 1, TASK_MAIN_STACK_SIZE, 0);
@@ -114,11 +114,8 @@ void task_main(void *param)
 
     printSeparator();
 
-    while (1)
-    {
-        /* wait for interface up */
-        OSA_TimeDelay(5000);
-    }
+    /* Initialization completed, destroy task */
+    OSA_TaskDestroy((osa_task_handle_t)main_task_handle);
 }
 
 /*******************************************************************************

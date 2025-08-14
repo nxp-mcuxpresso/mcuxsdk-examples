@@ -73,6 +73,7 @@ flexcan_efifo_interrupt_transfer:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     kw47evk@cm33_core0: []
     kw47loc@cm33_core0: []

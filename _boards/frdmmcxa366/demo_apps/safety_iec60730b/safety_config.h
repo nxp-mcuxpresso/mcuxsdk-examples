@@ -35,7 +35,7 @@
 #define SAFETY_ERROR_ACTION   1
 
 /* TEST SWITCHES - for debugging it is better to turn the flash test and watchdog OFF */
-#define ADC_TEST_ENABLED      1
+#define ADC_TEST_ENABLED      0
 #define CLOCK_TEST_ENABLED    1
 #define DIO_TEST_ENABLED      1
 #define FLASH_TEST_ENABLED    1
@@ -50,7 +50,7 @@
 #define CLOCK_DIVIDER             kCLOCK_DivCTIMER1
 #define CLOCK_DIVIDE_VALUE        4u
 #define REF_TIMER_CLOCK_FREQUENCY 45e06
-#define SYSTICK_RELOAD_VALUE      180000
+#define SYSTICK_RELOAD_VALUE      240000
 #define ISR_FREQUENCY             1000 /* Hz */
 #define CLOCK_TEST_TOLERANCE      20   /* % */
 /*********  Clock END *********/

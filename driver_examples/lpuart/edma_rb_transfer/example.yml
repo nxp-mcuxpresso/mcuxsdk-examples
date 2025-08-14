@@ -118,6 +118,7 @@ lpuart_edma_rb_transfer:
     frdmke17z: []
     frdmke17z512: []
     frdmmcxw71: []
+    frdmmcxw72@cm33_core0: []
     mcxw71evk: []
     frdmmcxe247: []
     kw47evk@cm33_core0: []

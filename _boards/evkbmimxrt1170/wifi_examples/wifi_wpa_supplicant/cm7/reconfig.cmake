@@ -36,6 +36,10 @@ mcux_add_include(
 
 
 
+mcux_add_mdk_configuration(
+    CC "-mfloat-abi=hard"
+)
+
 mcux_add_iar_configuration(
 	CC "--dlib_config full\
 		--no_inline"

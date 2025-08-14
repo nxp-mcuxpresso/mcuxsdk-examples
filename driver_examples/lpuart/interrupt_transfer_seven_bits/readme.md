@@ -44,3 +44,4 @@ NOTE: Please set com port format to "7 data bits without parity bit" in PC's com
 - [FRDM-IMXRT1186](../../../_boards/frdmimxrt1186/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
 - [FRDM-MCXA266](../../../_boards/frdmmcxa266/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
 - [FRDM-MCXA366](../../../_boards/frdmmcxa366/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)
+- [FRDM-MCXW72](../../../_boards/frdmmcxw72/driver_examples/lpuart/interrupt_transfer_seven_bits/example_board_readme.md)

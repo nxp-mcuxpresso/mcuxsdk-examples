@@ -12,7 +12,7 @@
 #include "ncp_cmd_system.h"
 #include "ncp_tlv_adapter.h"
 
-#define SYSTEM_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
+#define SYSTEM_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 #define SYSTEM_NCP_STACK_SIZE   1024
 
 static OSA_TASK_HANDLE_DEFINE(system_ncp_task_handle);
