@@ -18,7 +18,7 @@
 #include "mcdrv_eflexpwm_lpc.h"
 #include "mcdrv_adc_lpc55s36.h"
 #include "mcdrv_enc_qd.h"
-//#include "mcdrv_flash_lpc55s36.h"
+#include "mcdrv_flash_lpc55s36.h"
 #include "m1_pmsm_appconfig.h"
 
 
@@ -28,7 +28,7 @@
 #define M1_CONNECTOR_ID			(M1_CONNECTOR_ID_MC2)
 
 /* Enable/disable online update flash parameters */
-#define ENABLE_FLASH_PARAM_UPDATE (false)
+#define ENABLE_FLASH_PARAM_UPDATE (true)
 
 /******************************************************************************
  * Timing
