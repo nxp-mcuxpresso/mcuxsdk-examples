@@ -32,14 +32,14 @@
 #define FLASH_TEST_ENABLED    1
 #define RAM_TEST_ENABLED      1
 #define PC_TEST_ENABLED       1
-#define WATCHDOG_ENABLED      1
+#define WATCHDOG_ENABLED      0
 #define FMSTR_SERIAL_ENABLE   1
 
 #define LPTMR_USED                LPTMR0
 #define SYSTICK_RELOAD_VALUE      48000
 #define ISR_FREQUENCY             1000 /* Hz */
 #define CLOCK_TEST_TOLERANCE      20U /* % */
-#define REF_TIMER_CLOCK_FREQUENCY 62500
+#define REF_TIMER_CLOCK_FREQUENCY 8000000
 
 /*Macros for different reference timer setings*/
 #define CLOCK_TEST 1
