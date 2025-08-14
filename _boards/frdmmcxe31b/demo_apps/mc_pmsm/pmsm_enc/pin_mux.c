@@ -17,7 +17,7 @@ product: Pins v17.0
 processor: MCXE31B
 package_id: MCXE31BMPB
 mcu_data: ksdk2_0
-processor_version: 0.2506.30
+processor_version: 0.2509.10
 pin_labels:
 - {pin_num: '27', pin_signal: PTE3, label: pin_pte3_config, identifier: pin_pte3_config}
 - {pin_num: '26', pin_signal: PTE14, label: dsa, identifier: dsa}
@@ -43,6 +43,8 @@ void BOARD_InitBootPins(void)
 {
     BOARD_InitPins();
     BOARD_InitDEBUG_UARTPins();
+    BOARD_InitLEDsPins();
+    BOARD_InitBUTTONsPins();
     BOARD_MC_LCU_init();
     BOARD_MC_ADC_init();
 }
@@ -260,7 +262,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitLEDsPins:
-- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'false'}
+- options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'false'}
 - pin_list:
   - {pin_num: '66', peripheral: SIUL2, signal: 'GPIO, 80', pin_signal: PTC16, direction: OUTPUT, initValue: state_1}
   - {pin_num: '71', peripheral: SIUL2, signal: 'GPIO, 78', pin_signal: PTC14, direction: OUTPUT, initValue: state_1}
@@ -344,9 +346,9 @@ void BOARD_InitLEDsPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitBUTTONsPins:
-- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'false'}
+- options: {callFromInitBoot: 'true', coreID: core0, enableClock: 'false'}
 - pin_list:
-  - {pin_num: '53', peripheral: SIUL2, signal: 'GPIO, 101', pin_signal: PTD5, direction: INPUT}
+  - {pin_num: '53', peripheral: SIUL2, signal: 'EIRQ, 13', pin_signal: PTD5}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -360,7 +362,7 @@ BOARD_InitBUTTONsPins:
 void BOARD_InitBUTTONsPins(void)
 {
     
-    /* PTD5 (pin 53) is configured as SIUL2 GPIO, 101 */
+    /* PTD5 (pin 53) is configured as SIUL2 EIRQ, 13 */
     const siul2_pin_settings_t BOARD_INITBUTTONSPINS_BUTTON1 =
     {
         .base                        = SIUL2,
@@ -376,8 +378,11 @@ void BOARD_InitBUTTONsPins(void)
         .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
         .outputBuffer                = kPORT_OUTPUT_BUFFER_DISABLED,
         .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
-        .inputMux                    = {
-                                         kPORT_INPUT_MUX_NO_INIT,
+        .inputMuxReg                 = {
+                                         29u
+                                       },
+        .inputMux                    = { 
+                                         kPORT_INPUT_MUX_ALT3,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,

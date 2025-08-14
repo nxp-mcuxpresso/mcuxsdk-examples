@@ -239,10 +239,43 @@ void BCTU_IRQHandler(void)
  */
 void PIT0_IRQHandler(void)
 {
+    static int16_t ui16i = 0;
 
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
 
+    /* If in STOP state turn on RED */
+    if (M1_GetAppState() == 2)
+    {
+        /* Red LED on */
+    	SIUL2_PortPinWrite(SIUL2, BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, LOGIC_LED_ON);
+        /* Green LED off */
+    	SIUL2_PortPinWrite(SIUL2, BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, LOGIC_LED_OFF);
+    }
+
+    /* If in FAULT state RED blinking*/
+    else if (M1_GetAppState() == 0)
+    {
+        if (ui16i-- < 0)
+        {
+            LED_RED_TOGGLE();
+            bDemoModeSpeed = FALSE;
+            bDemoModePosition = FALSE;
+            ui16i = 125;
+        }
+        /* Green LED off */
+    	SIUL2_PortPinWrite(SIUL2, BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, LOGIC_LED_OFF);
+    }
+
+    /* If in RUN or INIT state turn on green */
+    else
+    {
+        /* Red LED off */
+        SIUL2_PortPinWrite(SIUL2, BOARD_LED_RED_GPIO, BOARD_LED_RED_GPIO_PIN, LOGIC_LED_OFF);
+        /* Green LED on */
+    	SIUL2_PortPinWrite(SIUL2, BOARD_LED_GREEN_GPIO, BOARD_LED_GREEN_GPIO_PIN, LOGIC_LED_ON);
+
+    }
     /* Demo speed stimulator */
     DemoSpeedStimulator();
 
@@ -357,7 +390,7 @@ static void DemoPositionStimulator(void)
                 ui32PositionStimulatorCnt = 0;
                 break;
             default:
-			    ;
+                ;
             	break;
         }
     }
@@ -371,8 +404,8 @@ static void DemoPositionStimulator(void)
  *
  * @return  none
  */
-void GPIO1_IRQHandler(void) {
-  
+void SIUL2_1_IRQHandler(void)
+{
     /* Speed demo */
     if (bDemoModeSpeed)
     {
@@ -388,6 +421,9 @@ void GPIO1_IRQHandler(void) {
         bDemoModeSpeed         = TRUE;
         ui32SpeedStimulatorCnt = 0;
     }
+
+    /* Clear external interrupt flag. */
+    SIUL2_ClearExtDmaInterruptStatusFlags(SIUL2, 1U << 13U);
     
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;
@@ -404,7 +440,16 @@ void GPIO1_IRQHandler(void) {
  */
 static void BOARD_InitGPIO(void)
 {
-  
+    /* Switch off all LEDs */
+    LED_RED_INIT(LOGIC_LED_OFF);
+    LED_GREEN_INIT(LOGIC_LED_OFF);
+    LED_BLUE_INIT(LOGIC_LED_OFF);
+
+    /* Init input switch GPIO. */
+    SIUL2_SetGlitchFilterPrescaler(SIUL2, 1U);
+    SIUL2_EnableExtInterrupt(SIUL2, 13U, kSIUL2_InterruptFallingEdge, 2U);
+    EnableIRQ(SIUL2_1_IRQn);
+
 }
 
 

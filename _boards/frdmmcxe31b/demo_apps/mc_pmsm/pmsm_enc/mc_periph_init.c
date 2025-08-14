@@ -179,32 +179,31 @@ static void InitBCTU(void)
 
     bctu_convlist_config_t convListConfig[3U] = {
       {
-            // LIST0
-            .lastChan           = false,
-            .lastChanPlusOne    = false,
-            .waitTrig           = false,
-            .waitTrigPlusOne    = false,
-            .adcChan            = 43U, // CURA_S19_ADC0_CHN43
-            .adcChanPlusOne     = 41U, // CURC_S17_ADC1_CHN41
+        // LIST0
+        .lastChan           = false,
+        .lastChanPlusOne    = false,
+        .waitTrig           = false,
+        .waitTrigPlusOne    = false,
+        .adcChan            = 43U, // CURA_S19_ADC0_CHN43
+        .adcChanPlusOne     = 41U, // CURC_S17_ADC1_CHN41
       },
       {     
-            // LIST1
-            .lastChan           = false,
-            .lastChanPlusOne    = false,
-            .waitTrig           = false,
-            .waitTrigPlusOne    = false,
-            .adcChan            = 40U, // CURB_S16_ADC0_CHN40
-            .adcChanPlusOne     = 41U, // CURC_S17_ADC1_CHN41
+        // LIST1
+        .lastChan           = false,
+        .lastChanPlusOne    = false,
+        .waitTrig           = false,
+        .waitTrigPlusOne    = false,
+        .adcChan            = 40U, // CURB_S16_ADC0_CHN40
+        .adcChanPlusOne     = 41U, // CURC_S17_ADC1_CHN41
       },
       {     
-            // LIST2
-            .lastChan           = false,
-            .lastChanPlusOne    = true,
-            .waitTrig           = false,
-            .waitTrigPlusOne    = false,
-            .adcChan            = 88U, // VOLT_DCB ADC0
-//            .adcChan            = 7U, // PTA9 ADC0 J1-4
-            .adcChanPlusOne     = 0U, // Dummy
+        // LIST2
+        .lastChan           = false,
+        .lastChanPlusOne    = true,
+        .waitTrig           = false,
+        .waitTrigPlusOne    = false,
+        .adcChan            = 88U, // VOLT_DCB ADC0
+        .adcChanPlusOne     = 0U, // Dummy
       },
 
     };
@@ -213,11 +212,10 @@ static void InitBCTU(void)
     config.writeProtect = kBCTU_ProtectDis_Permanent;
     BCTU_Init(BCTU, &config);
     
-    trigConfig.trigIndex = kBCTU_TrigSourceEmios0Ch4; //DEMO_BCTU_TRIGGER_INDEX;
-    trigConfig.chanAddr = 0U; //DEMO_BCTU_TRIG_CHAN_ADDR;
+    trigConfig.trigIndex = kBCTU_TrigSourceEmios0Ch4;
+    trigConfig.chanAddr = 0U;
     trigConfig.dataDest = kBCTU_DataDest_Fifo1;
     trigConfig.enableLoop = false;
-    //trigConfig.targetAdc = (kBCTU_TrigAdc_0 | kBCTU_TrigAdc_1 | kBCTU_TrigAdc_2);
     trigConfig.targetAdc = (kBCTU_TrigAdc_0 | kBCTU_TrigAdc_1);
     trigConfig.trigRes = kBCTU_TrigRes_ConvList;
     BCTU_SetTrigConfig(BCTU, &trigConfig);
@@ -356,7 +354,7 @@ static void InitTRGMUX(void)
   
     CLOCK_EnableClock(kCLOCK_Trgmux);   
      
-    //                              TRGMUX_OUT[0-3], OUT_1
+    // TRGMUX_OUT[0-3], OUT_1
     TRGMUX_SetTriggerSource(TRGMUX, kTRGMUX_ExtOut0, kTRGMUX_TriggerInput1, kTRGMUX_SourceEmios0IppDoEmiosCh4);
     
     // LCU1
@@ -378,9 +376,6 @@ static void InitTRGMUX(void)
  */
 static void InitPIT(void)
 {
-//    /* Clock setting */
-//    RESET_PeripheralReset(kCTIMER0_RST_SHIFT_RSTn);
-//    CLOCK_AttachClk(kFRO_HF_to_CTIMER0); 
   
     /* Structure of initialize PIT */
     pit_config_t pitConfig;

@@ -132,11 +132,6 @@ void BOARD_InitLEDsPins(void);
 /*! @name PTD5 (number 53), BUTTON1
   @{ */
 
-/* Symbols to be used with SIUL2 driver */
-#define BOARD_INITBUTTONSPINS_BUTTON1_SIUL2_BASE SIUL2         /*!<@brief SIUL2 peripheral base pointer */
-#define BOARD_INITBUTTONSPINS_BUTTON1_GPIO kSIUL2_PTD          /*!<@brief GPIO peripheral port */
-#define BOARD_INITBUTTONSPINS_BUTTON1_GPIO_PIN_MASK (1U << 101U) /*!<@brief GPIO pin mask */
-
 /* Defined symbols */
 #define BOARD_INITBUTTONSPINS_BUTTON1_PORT PTD                 /*!<@brief PORT peripheral base pointer */
 #define BOARD_INITBUTTONSPINS_BUTTON1_PIN 5U                   /*!<@brief PORT pin number */
