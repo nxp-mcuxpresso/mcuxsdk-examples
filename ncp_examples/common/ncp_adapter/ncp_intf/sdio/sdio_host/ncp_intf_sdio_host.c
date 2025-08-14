@@ -1241,6 +1241,8 @@ void sdhost_rescan_task(void *argv)
             continue;
         }
 
+        /* Protect the SDIO from other parallel activities */
+        (void)OSA_MutexLock(&txrx_mutex, osaWaitForever_c);
 retry:
         if (NCP_STATUS_SUCCESS != ncp_sdhost_CardDeinit())
         {
@@ -1254,6 +1256,8 @@ retry:
             OSA_TimeDelay(1000);
             goto retry;
         }
+        (void)OSA_MutexUnlock(&txrx_mutex);
+
         ncp_adap_d("%s: ncp_sdhost_CardInit done", __FUNCTION__);
     } /* for ;; */
 }
