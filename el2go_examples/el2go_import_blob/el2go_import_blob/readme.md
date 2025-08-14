@@ -7,7 +7,7 @@
 This sample application shows how to import encrypted EdgeLock 2GO secure object blobs from flash to the Secure storage(ITS). The imported objects can then be validated by executing crypto operations.
 
 Max Blob Size:
-- **[KW45]**, **[MCX W71]** '1014 or 0x3F6' bytes.
+- **[KW45]**, **[MCX W71]**, **[KW47]**, **[MCX W72]** '1014 or 0x3F6' bytes.
 
 Additional information about EdgeLock 2GO Provisioning for MCUs can be found in AN14624 under the following link https://www.nxp.com/webapp/Download?colCode=AN14624&amp;location=null.
 
@@ -24,17 +24,17 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 - EdgeLock 2GO secure object blobs stored in the devices flash memory
   - This can be achieved via the [SPSDK](https://www.nxp.com/design/design-center/software/development-software/secure-provisioning-sdk-spsdk:SPSDK)
   - The following default flash location should be used to store the EdgeLock 2GO blobs:
-    - **[KW45]**, **[MCX W71]** `0x0C0000`
+    - **[KW45]**, **[MCX W71]** , **[KW47]**, **[MCX W72]** `0x0C0000`
 
 ## Hardware requirements
 
-- KW45B41Z-EVK or FRDM-MCXW71 or MCXW71-EVK board
+- KW45B41Z-EVK or FRDM-MCXW71 or MCXW71-EVK or KW47-EVK or FRDM-MCXW72 or MCXW72-EVK board
 - Micro-USB cable
 - Personal Computer
 
 ## Board settings
 
-- **[KW45]**, **[MCX W71]** The board must be provisioned with an OEM Auth Key Hash.
+- **[KW45]**, **[MCX W71]**, **[KW47]**, **[MCX W72]** The board must be provisioned with an OEM Auth Key Hash.
 
 ## Preparing the application
 
@@ -49,13 +49,15 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
 
 2.  **[OPTIONAL]** Enable secure boot:
 
-    This feature is optional for **[KW45]** or **[MCX W71]**.
+    This feature is optional for **[KW45]** or **[MCX W71]** or **[KW47]** or **[MCX W72]**.
 
     The bootheader needs to be removed from the S image, it has to be merged with the NS image and the resulting image must be signed with the OEM key. Additionaly, if the application is supposed to run in the OEM CLOSED life cycle, the image needs to be encrypted with the OEM FW encryption key and loaded as an SB3.1 container.
 
     Details on how to execute these steps can be found in the following documents:
     - **[KW45]** Application note [AN14109 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW45) ("Documentation->Secure Files" section).
     - **[MCX W71]** Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/MCX-W71X) ("Documentation->Secure Files" section).
+    - **[KW47]**, Documentation in progress 
+    - **[MCX W72]**, Documentation in progress 
 
 4.  **[OPTIONAL]** Set the flash location of the EdgeLock 2GO blobs:
 
