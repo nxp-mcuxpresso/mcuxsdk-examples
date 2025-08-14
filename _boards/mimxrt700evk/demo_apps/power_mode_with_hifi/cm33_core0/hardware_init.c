@@ -649,10 +649,6 @@ static inline void BOARD_RestoreClocks(void)
 
 void BOARD_RunActiveTest(void)
 {
-#if (DEMO_POWER_HIFI4_USED == 0U) || (DEMO_POWER_HIFI_PRINT_ENABLE == 0U)
-    uint32_t pinCfg[3] = {0}; /* Used for IOPCTL configuration backup. */
-#endif
-
     DEMO_LOG("\r\nThis test mode will keep CPU in run mode but close all other unused modules for a while.\n");
     DEMO_LOG("\r\nPlease don't input any charator until the mode finished.\n");
 
@@ -662,10 +658,6 @@ void BOARD_RunActiveTest(void)
 #if (DEMO_POWER_HIFI4_USED == 0U) || (DEMO_POWER_HIFI_PRINT_ENABLE == 0U)
     DEMO_DeinitDebugConsole();
     CLOCK_AttachClk(kNONE_to_FCCLK0);
-
-    pinCfg[0] = IOPCTL0->PIO[0][31];
-    pinCfg[1] = IOPCTL0->PIO[1][0];
-    pinCfg[2] = IOPCTL0->PIO[0][9];
 #endif
 
     CLOCK_DisableClock(kCLOCK_Rtc);
@@ -707,9 +699,6 @@ void BOARD_RunActiveTest(void)
     BOARD_RestoreClocks();
     CLOCK_EnableClock(kCLOCK_Rtc);
 #if (DEMO_POWER_HIFI4_USED == 0U) || (DEMO_POWER_HIFI_PRINT_ENABLE == 0U)
-    IOPCTL0->PIO[0][31] = pinCfg[0];
-    IOPCTL0->PIO[1][0]  = pinCfg[1];
-    IOPCTL0->PIO[0][9]  = pinCfg[2];
     DEMO_InitDebugConsole();
 #endif
 #if (DEMO_POWER_USE_PLL == 0U) /* PLL located in VDDN. */
@@ -799,6 +788,9 @@ void BOARD_EnterSleep(void)
 static inline uint32_t BOARD_PrepareForDS(void)
 {
     uint32_t mainDiv = 0U;
+
+    BOARD_SetDeepSleepPinConfig();
+
 #if DEMO_POWER_USE_PLL
     /*
      * Special sequence is needed for the PLL power up/initialization. The application should manually handle the states
@@ -853,6 +845,7 @@ static inline void BOARD_RestoreAfterDS(uint32_t mainDiv)
     }
 
 #endif /* DEMO_POWER_SUPPLY_OPTION */
+    BOARD_RestoreDeepSleepPinConfig();
 #if DEMO_POWER_USE_PLL
     /* Restore Pll before enter deep sleep mode */
     BOARD_RestorePll();

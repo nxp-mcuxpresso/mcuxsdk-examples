@@ -37,6 +37,9 @@
 #if defined(MIMXRT798S_cm33_core0_SERIES)
 static uint32_t i2c_iomux[2] = {0U};
 #endif
+#if defined(MIMXRT798S_cm33_core0_SERIES) || defined(MIMXRT798S_cm33_core1_SERIES)
+static uint32_t s_pinCtrl[1];
+#endif
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -817,6 +820,83 @@ void BOARD_InitAHBSC(void)
     GlikeyClearConfig(GLIKEY1);
     GlikeyClearConfig(GLIKEY2);
 }
+#if defined(MIMXRT798S_cm33_core0_SERIES)
+void BOARD_SetDeepSleepPinConfig(void)
+{
+   bool ioClkEn = false;
+
+   ioClkEn = ((CLKCTL0->PSCCTL5 & CLKCTL0_PSCCTL5_IOPCTL0_MASK) != 0U);
+
+   if (ioClkEn)
+   {
+       s_pinCtrl[0] = IOPCTL0->PIO[0][31];
+       IOPCTL0->PIO[0][31] = 0U; /* Disable input buffer. */
+   }
+   else
+   {
+       CLOCK_EnableClock(kCLOCK_Iopctl0);
+       s_pinCtrl[0] = IOPCTL0->PIO[0][31];
+       IOPCTL0->PIO[0][31] = 0U; /* Disable input buffer. */
+       CLOCK_DisableClock(kCLOCK_Iopctl0);
+   }
+}
+
+void BOARD_RestoreDeepSleepPinConfig(void)
+{
+   bool ioClkEn = false;
+   
+   ioClkEn = ((CLKCTL0->PSCCTL5 & CLKCTL0_PSCCTL5_IOPCTL0_MASK) != 0U);
+   
+   if (ioClkEn)
+   {
+       IOPCTL0->PIO[0][31] = s_pinCtrl[0];
+   }
+   else
+   {
+       CLOCK_EnableClock(kCLOCK_Iopctl0);
+       IOPCTL0->PIO[0][31] = s_pinCtrl[0];
+       CLOCK_DisableClock(kCLOCK_Iopctl0);
+   }
+}
+#else
+void BOARD_SetDeepSleepPinConfig(void)
+{
+   bool ioClkEn = false;
+
+   ioClkEn = ((CLKCTL3->PSCCTL0_SENS & CLKCTL3_PSCCTL0_SENS_IOPCTL1_MASK) != 0U);
+
+   if (ioClkEn)
+   {
+       s_pinCtrl[0] = IOPCTL1->PIO[0][14];
+       IOPCTL1->PIO[0][14] = 0U; /* Disable input buffer for PIO8_14. */
+   }
+   else
+   {
+       CLOCK_EnableClock(kCLOCK_Iopctl1);
+       s_pinCtrl[0] = IOPCTL1->PIO[0][14];
+       IOPCTL1->PIO[0][14] = 0U; /* Disable input buffer for PIO8_14. */
+       CLOCK_DisableClock(kCLOCK_Iopctl1);
+   }
+}
+
+void BOARD_RestoreDeepSleepPinConfig(void)
+{
+   bool ioClkEn = false;
+   
+   ioClkEn = ((CLKCTL3->PSCCTL0_SENS & CLKCTL3_PSCCTL0_SENS_IOPCTL1_MASK) != 0U);
+   
+   if (ioClkEn)
+   {
+       IOPCTL1->PIO[0][14] = s_pinCtrl[0];
+   }
+   else
+   {
+       CLOCK_EnableClock(kCLOCK_Iopctl1);
+       IOPCTL1->PIO[0][14] = s_pinCtrl[0];
+       CLOCK_DisableClock(kCLOCK_Iopctl1);
+   }
+}
+#endif /* MIMXRT798S_cm33_core0_SERIES */
 #endif /* MIMXRT798S_cm33_core0_SERIES || MIMXRT798S_cm33_core1_SERIES */
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED

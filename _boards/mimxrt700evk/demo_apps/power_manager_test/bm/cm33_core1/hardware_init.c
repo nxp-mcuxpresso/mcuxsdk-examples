@@ -58,6 +58,8 @@ void BOARD_ClockLPPostConfig(void)
  */
 static inline void BOARD_PrepareForDS(void)
 {
+    BOARD_SetDeepSleepPinConfig();
+
     /* Change to a lower frequency to safely decrease the VDD1 voltage when CPU1 enter low power mode but CPU0 is active
      * and still requires sense shared main clock. */
     CLOCK_AttachClk(kLPOSC_to_SENSE_BASE);
@@ -98,6 +100,8 @@ static inline void BOARD_RestoreAfterDS(void)
     CLOCK_SetClkDiv(kCLOCK_DivSenseMainClk, 2U);
     CLOCK_AttachClk(kFRO2_DIV1_to_SENSE_MAIN);
     CLOCK_AttachClk(kFRO2_DIV3_to_SENSE_BASE);
+
+    BOARD_RestoreDeepSleepPinConfig();
 }
 
 void BOARD_RestorePeripheralsAfterDSR(void)

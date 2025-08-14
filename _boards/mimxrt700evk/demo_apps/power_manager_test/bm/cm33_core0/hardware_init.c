@@ -545,6 +545,9 @@ void BOARD_RestorePll(void)
 static inline uint32_t BOARD_PrepareForDS(void)
 {
     uint32_t mainDiv = 0U;
+
+    BOARD_SetDeepSleepPinConfig();
+
 #if DEMO_POWER_USE_PLL
     /*
      * Special sequence is needed for the PLL power up/initialization. The application should manually handle the states
@@ -601,8 +604,8 @@ static inline void BOARD_RestoreAfterDS(uint32_t mainDiv)
         POWER_ApplyPD();
         CLOCK_SetClkDiv(kCLOCK_DivCmptMainClk, mainDiv);
     }
-
 #endif /* DEMO_POWER_SUPPLY_OPTION */
+    BOARD_RestoreDeepSleepPinConfig();
 #if DEMO_POWER_USE_PLL
     /* Restore Pll before enter deep sleep mode */
     BOARD_RestorePll();

@@ -279,6 +279,18 @@ void GlikeyWriteEnable(GLIKEY_Type *base, uint8_t idx);
  * @param base GLIKEY peripheral base pointer
  */
 void GlikeyClearConfig(GLIKEY_Type *base);
+
+/*!
+ * @brief Set IOPCTL configuration before DS.
+ *
+ */
+void BOARD_SetDeepSleepPinConfig(void);
+
+/*!
+ * @brief Restore IOPCTL configuration after wake from DS.
+ *
+ */
+void BOARD_RestoreDeepSleepPinConfig(void);
 #endif
 
 #if defined(MIMXRT798S_cm33_core0_SERIES)

@@ -159,10 +159,12 @@ void BOARD_InitHardware(void)
 
 void BOARD_EnterDeepSleep(const uint32_t exclude_from_pd[7])
 {
+    BOARD_SetDeepSleepPinConfig();
     POWER_EnableSleepRBB(kPower_BodyBiasVdd1 | kPower_BodyBiasVdd2 | kPower_BodyBiasVddn | kPower_BodyBiasVdd1Sram |
                          kPower_BodyBiasVdd2Sram);
 
     POWER_EnterDeepSleep(exclude_from_pd);
+    BOARD_RestoreDeepSleepPinConfig();
 }
 
 void BOARD_RequestDPD(const uint32_t exclude_from_pd[7])
