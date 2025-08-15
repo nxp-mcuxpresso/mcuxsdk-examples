@@ -45,10 +45,6 @@
     (((const uint32_t[]){APP_DEEPSLEEP_SLEEPCFG, APP_DEEPSLEEP_PDSLEEPCFG0, APP_DEEPSLEEP_PDSLEEPCFG1, \
                          APP_DEEPSLEEP_RAM_APD, APP_DEEPSLEEP_RAM_PPD, APP_DEEPSLEEP_PDSLEEPCFG4,      \
                          APP_DEEPSLEEP_PDSLEEPCFG5}))
-
-/* @brief FreeRTOS tickless timer configuration. */
-#define TICKLESS_OSTIMER_BASE_PTR OSTIMER_CPU0  /*!< Tickless timer base address. */
-#define TICKLESS_OSTIMER_IRQn     OS_EVENT_IRQn /*!< Tickless timer IRQ number. */
 /************************************************************************/
 /*${macro:end}*/
 

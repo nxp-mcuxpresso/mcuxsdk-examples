@@ -76,7 +76,7 @@ uint32_t BOARD_GetPmicVdd2Voltage(void);
  *  @brief  Get current VDD1 voltage.
  *  @return  the voltage in uV.
  */
-uint32_t BOARD_GetPmicVdd2Voltage(void);
+uint32_t BOARD_GetPmicVdd1Voltage(void);
 
 #if defined(PMC0)
 /*!

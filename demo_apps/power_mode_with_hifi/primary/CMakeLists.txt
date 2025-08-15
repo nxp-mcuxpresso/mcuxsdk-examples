@@ -14,7 +14,7 @@ include(${SdkRootDirPath}/${board_root}/${board}/demo_apps/power_mode_with_hifi/
 mcux_add_include(
     TOOLCHAINS mdk armgcc
     BASE_PATH ${APPLICATION_BINARY_DIR}
-    INCLUDES ../power_mode_switch_secondary/${CONFIG_TOOLCHAIN}/
+    INCLUDES ../power_mode_with_hifi_secondary/${CONFIG_TOOLCHAIN}/
 )
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

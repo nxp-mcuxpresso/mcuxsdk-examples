@@ -41,7 +41,7 @@
 #elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP1)
 #define MAX_VDDCORE 900000U  /*0V9*/
 #elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
-#define MAX_VDDCORE 800000U  /*0V9*/
+#define MAX_VDDCORE 800000U  /*0V8*/
 #else
 #error "Unsupported frequency point for PVTS."
 #endif

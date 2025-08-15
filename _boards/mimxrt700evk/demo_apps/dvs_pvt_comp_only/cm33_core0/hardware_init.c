@@ -49,11 +49,11 @@ static void BOARD_BootClockRUN_InitFRO0(void)
 {
     const clock_fro_config_t g_fro0Config_BOARD_BootClockRUN = {
 #if (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP0)
-        .targetFreq = 220000000, /* FRO0 TUNER output clock frequency: 325000000Hz */
+        .targetFreq = 220000000, /* FRO0 TUNER output clock frequency: 220MHz */
 #elif (DEMO_MAINCLK_FREQ == DEMO_MAINCLK_FREQ_SP1)
-        .targetFreq = 192000000, /* FRO0 TUNER output clock frequency: 192000000Hz */
+        .targetFreq = 192000000, /* FRO0 TUNER output clock frequency: 192MHz */
 #else
-        .targetFreq = 325000000, /* FRO0 TUNER output clock frequency: 220000000Hz */
+        .targetFreq = 325000000, /* FRO0 TUNER output clock frequency: 325MHz */
 #endif
         .range         = 100,   /* FRO0 range value: 100counts */
         .trim1DelayUs  = 15,    /* FRO0 Trim1 delay: 15us */
@@ -100,8 +100,6 @@ void BOARD_ClockLPPostConfig(void)
     CLOCK_EnableFro0ClkForDomain(kCLOCK_Vdd2CompDomainEnable | kCLOCK_Vdd2ComDomainEnable | kCLOCK_VddnComDomainEnable |
                                  kCLOCK_Vdd2DspDomainEnable);
 #endif
-
-    SystemCoreClockUpdate();
 }
 
 void BOARD_ConfigPMICModes(pca9422_modecfg_t *cfg, pca9422_power_mode_t mode)
@@ -197,11 +195,6 @@ void BOARD_ConfigPMICEnMode(pca9422_handle_t *handle)
     PCA9422_WriteEnModeConfig(handle, cfg);
 }
 
-void BOARD_RestorePeripheralsAfterDSR(void)
-{
-    DEMO_InitDebugConsole();
-}
-
 void BOARD_WaitCPU1Booted(void)
 {
     RESET_ClearPeripheralReset(kMU1_RST_SHIFT_RSTn);
@@ -262,13 +255,6 @@ void BOARD_InitPowerConfig(void)
     /* BE CAUTIOUS TO SET CORRECT VOLTAGE RANGE ACCORDING TO YOUR BOARD/APPLICATION. PAD SUPPLY BEYOND THE RANGE DO
        HARM TO THE SILICON. */
     POWER_SetPio2VoltRange(kPadVol_300_360);
-
-    /* Disable PLL. */
-    CLKCTL2->MAINPLL0PFDDOMAINEN  = 0;
-    CLKCTL2->AUDIOPLL0PFDDOMAINEN = 0;
-    /* Disable PLL. */
-    CLOCK_DeinitMainPll();
-    CLOCK_DeinitAudioPll();
 
     /* Disable the clock for unused modules. */
     CLOCK_DisableClock(kCLOCK_Mmu0);
@@ -444,7 +430,7 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
 
     BOARD_ConfigSupplySetpoints();
 
-    BOARD_SetPmicVdd1Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
+    BOARD_SetPmicVdd2Voltage(POWER_CalcVoltLevel(kRegulator_Vdd2LDO, SystemCoreClock, 0U));
 #if 0
     BOARD_SetPmicVdd1Voltage(
         POWER_CalcVoltLevel(kRegulator_Vdd1LDO, DEMO_SENSE_M33_CPU_CLOCK_FREQ, 0U)); /* CPU1 frequency 32MHZ. */
@@ -518,6 +504,7 @@ void BOARD_InitHardware(void)
 #endif
 
     BOARD_BootClockRUN();
+    SystemCoreClockUpdate();
 
     DEMO_InitDebugConsole();
 
