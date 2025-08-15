@@ -5,8 +5,8 @@
 */
 
 /*
-    * FILE NAME: ../../../examples/_boards/frdmmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/cm7/m2_pmsm_appconfig.h
-    * DATE: Thu Apr 24 2025, 09:28:30
+    * FILE NAME: ../../../boards/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/cm7/m2_pmsm_appconfig.h
+    * DATE: Fri Aug 15 2025, 14:15:02
 */
 
 /*
@@ -48,7 +48,7 @@
     },
     "speedLoop": {
         "speedLoopSampleTime": 0.001,
-        "speedLoopF0": 32,
+        "speedLoopF0": 10,
         "speedLoopKsi": 1,
         "speedLoopIncUp": 5000,
         "speedLoopIncDown": 5000,
@@ -136,14 +136,14 @@
 #define M1_SPEED_RAMP_DOWN (1.04720F)
 #define M1_SPEED_LOOP_HIGH_LIMIT (2.0F)
 #define M1_SPEED_LOOP_LOW_LIMIT (-2.0F)
-#define M1_SPEED_PI_PROP_GAIN (0.0233115F)
-#define M1_SPEED_PI_INTEG_GAIN (0.00117177F)
+#define M1_SPEED_PI_PROP_GAIN (0.00728485F)
+#define M1_SPEED_PI_INTEG_GAIN (0.000114430F)
 #define M1_SPEED_IIR_B0 (0.239057F)
 #define M1_SPEED_IIR_B1 (0.239057F)
 #define M1_SPEED_IIR_A1 (0.521886F)
-#define M1_SPEED_IIR_ZC_B0 (0.0478598F)
-#define M1_SPEED_IIR_ZC_B1 (0.0478598F)
-#define M1_SPEED_IIR_ZC_A1 (0.904280F)
+#define M1_SPEED_IIR_ZC_B0 (0.0154650F)
+#define M1_SPEED_IIR_ZC_B1 (0.0154650F)
+#define M1_SPEED_IIR_ZC_A1 (0.969070F)
 /* POSITIONLOOP*/
 #define M1_SERVO_POSITION_P_HIGH_LIMIT (628.319F)
 #define M1_SERVO_POSITION_P_LOW_LIMIT (-628.319F)
