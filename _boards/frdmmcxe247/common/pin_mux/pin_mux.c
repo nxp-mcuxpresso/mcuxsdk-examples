@@ -17,7 +17,7 @@ product: Pins v17.0
 processor: MCXE247
 package_id: MCXE247VLQ
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 25.06.0
 pin_labels:
 - {pin_num: '55', pin_signal: PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4/QSPI_B_IO5, label: I2C1_SDA, identifier: I2C1_SDA}
 - {pin_num: '54', pin_signal: PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5/QSPI_B_IO4, label: I2C1_SCL, identifier: I2C1_SCL}
@@ -26,8 +26,10 @@ pin_labels:
 - {pin_num: '138', pin_signal: PTE0/LPSPI0_SCK/TCLK1/LPI2C1_SDA/LPSPI1_SOUT/FTM1_FLT2/SAI0_D2, label: LPSPI0_SCK, identifier: LPSPI0_SCK}
 - {pin_num: '121', pin_signal: PTE6/LPSPI0_PCS2/FTM7_FLT1/FTM3_CH7/LPUART1_RTS/ADC1_SE11, label: LPSPI0_PCS2, identifier: LPSPI0_PCS2}
 - {pin_num: '42', pin_signal: PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4, label: PTC3_PIN42, identifier: PTC3_PIN42}
-- {pin_num: '143', pin_signal: PTA9/LPUART2_TX/LPSPI2_PCS0/FXIO_D7/FTM3_FLT2/FTM1_FLT3/FTM4_FLT0, label: SW2}
-- {pin_num: '75', pin_signal: PTC10/FTM3_CH4/TRGMUX_IN11, label: SW3}
+- {pin_num: '137', pin_signal: PTE1/LPSPI0_SIN/LPI2C0_HREQ/LPI2C1_SCL/LPSPI1_PCS0/FTM1_FLT1/SAI0_D1, label: SAI0_TX_DAT}
+- {pin_num: '135', pin_signal: PTA11/FTM1_CH5/FXIO_D1/CMP0_RRT/SAI0_SYNC, label: SAI0_SYNC, identifier: SAI0_SYNC}
+- {pin_num: '134', pin_signal: PTA12/FTM1_CH6/CAN1_RX/LPI2C1_SDAS/FTM2_QD_PHB/SAI0_BCLK, label: SAI0_BCLK, identifier: SAI0_BCLK}
+- {pin_num: '127', pin_signal: PTA14/FTM0_FLT0/FTM3_FLT1/EWM_IN/FTM1_FLT0/SAI0_D3, label: SAI0_RX_DAT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -144,7 +146,6 @@ BOARD_InitBUTTONsPins:
 - options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '143', peripheral: GPIOA, signal: 'GPIO, 9', pin_signal: PTA9/LPUART2_TX/LPSPI2_PCS0/FXIO_D7/FTM3_FLT2/FTM1_FLT3/FTM4_FLT0}
-  - {pin_num: '75', peripheral: GPIOC, signal: 'GPIO, 10', pin_signal: PTC10/FTM3_CH4/TRGMUX_IN11}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -159,14 +160,9 @@ void BOARD_InitBUTTONsPins(void)
 {
     /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
     CLOCK_EnableClock(kCLOCK_PortA);
-    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
-    CLOCK_EnableClock(kCLOCK_PortC);
 
     /* PORTA9 (pin 143) is configured as PTA9 */
     PORT_SetPinMux(PORTA, 9U, kPORT_MuxAsGpio);
-
-    /* PORTC10 (pin 75) is configured as PTC10 */
-    PORT_SetPinMux(PORTC, 10U, kPORT_MuxAsGpio);
 }
 
 /* clang-format off */
@@ -646,6 +642,110 @@ void BOARD_InitENETPins(void)
 
     /* PORTE8 (pin 39) is configured as MII_RMII_MDC */
     PORT_SetPinMux(PORTE, 8U, kPORT_MuxAlt5);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitSAIPins:
+- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true', fullInit: 'true'}
+- pin_list:
+  - {pin_num: '137', peripheral: I2S0, signal: 'TXD, 1', pin_signal: PTE1/LPSPI0_SIN/LPI2C0_HREQ/LPI2C1_SCL/LPSPI1_PCS0/FTM1_FLT1/SAI0_D1, drive_strength: low, pull_select: down,
+    pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '135', peripheral: I2S0, signal: TX_FS, pin_signal: PTA11/FTM1_CH5/FXIO_D1/CMP0_RRT/SAI0_SYNC, direction: INPUT, drive_strength: low, pull_select: down,
+    pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '134', peripheral: I2S0, signal: TX_BCLK, pin_signal: PTA12/FTM1_CH6/CAN1_RX/LPI2C1_SDAS/FTM2_QD_PHB/SAI0_BCLK, direction: INPUT, drive_strength: low,
+    pull_select: down, pull_enable: disable, passive_filter: disable, digital_filter: disable}
+  - {pin_num: '127', peripheral: I2S0, signal: 'RXD, 3', pin_signal: PTA14/FTM0_FLT0/FTM3_FLT1/EWM_IN/FTM1_FLT0/SAI0_D3, drive_strength: low, pull_select: down, pull_enable: disable,
+    passive_filter: disable, digital_filter: disable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSAIPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitSAIPins(void)
+{
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortA);
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked and cannot be modified. */
+    CLOCK_EnableClock(kCLOCK_PortE);
+    /* Configure digital filter */
+    PORT_EnablePinsDigitalFilter(
+        /* Digital filter is configured on port A */
+        PORTA,
+        /* Digital filter is configured for PORTA0 */
+          PORT_DFER_DFE_11_MASK
+            /* Digital filter is configured for PORTA1 */
+            | PORT_DFER_DFE_12_MASK
+            /* Digital filter is configured for PORTA2 */
+            | PORT_DFER_DFE_14_MASK,
+        /* Disable digital filter */
+        false);
+
+    const port_pin_config_t SAI0_SYNC = {/* Internal pull-up/down resistor is disabled */
+                                         kPORT_PullDisable,
+                                         /* Passive filter is disabled */
+                                         kPORT_PassiveFilterDisable,
+                                         /* Low drive strength is configured */
+                                         kPORT_LowDriveStrength,
+                                         /* Pin is configured as SAI0_SYNC */
+                                         kPORT_MuxAlt6,
+                                         /* Pin Control Register fields [15:0] are not locked */
+                                         kPORT_UnlockRegister};
+    /* PORTA11 (pin 135) is configured as SAI0_SYNC */
+    PORT_SetPinConfig(BOARD_INITSAIPINS_SAI0_SYNC_PORT, BOARD_INITSAIPINS_SAI0_SYNC_PIN, &SAI0_SYNC);
+
+    const port_pin_config_t SAI0_BCLK = {/* Internal pull-up/down resistor is disabled */
+                                         kPORT_PullDisable,
+                                         /* Passive filter is disabled */
+                                         kPORT_PassiveFilterDisable,
+                                         /* Low drive strength is configured */
+                                         kPORT_LowDriveStrength,
+                                         /* Pin is configured as SAI0_BCLK */
+                                         kPORT_MuxAlt7,
+                                         /* Pin Control Register fields [15:0] are not locked */
+                                         kPORT_UnlockRegister};
+    /* PORTA12 (pin 134) is configured as SAI0_BCLK */
+    PORT_SetPinConfig(BOARD_INITSAIPINS_SAI0_BCLK_PORT, BOARD_INITSAIPINS_SAI0_BCLK_PIN, &SAI0_BCLK);
+
+    const port_pin_config_t porta14_pin127_config = {/* Internal pull-up/down resistor is disabled */
+                                                     kPORT_PullDisable,
+                                                     /* Passive filter is disabled */
+                                                     kPORT_PassiveFilterDisable,
+                                                     /* Low drive strength is configured */
+                                                     kPORT_LowDriveStrength,
+                                                     /* Pin is configured as SAI0_D3 */
+                                                     kPORT_MuxAlt7,
+                                                     /* Pin Control Register fields [15:0] are not locked */
+                                                     kPORT_UnlockRegister};
+    /* PORTA14 (pin 127) is configured as SAI0_D3 */
+    PORT_SetPinConfig(PORTA, 14U, &porta14_pin127_config);
+    /* Configure digital filter */
+    PORT_EnablePinsDigitalFilter(
+        /* Digital filter is configured on port E */
+        PORTE,
+        /* Digital filter is configured for PORTE0 */
+        PORT_DFER_DFE_1_MASK,
+        /* Disable digital filter */
+        false);
+
+    const port_pin_config_t porte1_pin137_config = {/* Internal pull-up/down resistor is disabled */
+                                                    kPORT_PullDisable,
+                                                    /* Passive filter is disabled */
+                                                    kPORT_PassiveFilterDisable,
+                                                    /* Low drive strength is configured */
+                                                    kPORT_LowDriveStrength,
+                                                    /* Pin is configured as SAI0_D1 */
+                                                    kPORT_MuxAlt7,
+                                                    /* Pin Control Register fields [15:0] are not locked */
+                                                    kPORT_UnlockRegister};
+    /* PORTE1 (pin 137) is configured as SAI0_D1 */
+    PORT_SetPinConfig(PORTE, 1U, &porte1_pin137_config);
 }
 /***********************************************************************************************************************
  * EOF

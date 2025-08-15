@@ -18,15 +18,19 @@
    <tools>
       <pins name="Pins" version="17.0" enabled="true" update_project_code="true">
          <pins_profile>
-            <processor_version>0.0.0</processor_version>
+            <processor_version>25.06.0</processor_version>
             <pin_labels>
-               <pin_label pin_num="55" pin_signal="PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4" label="I2C1_SDA" identifier="I2C1_SDA"/>
-               <pin_label pin_num="54" pin_signal="PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5" label="I2C1_SCL" identifier="I2C1_SCL"/>
+               <pin_label pin_num="55" pin_signal="PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4/QSPI_B_IO5" label="I2C1_SDA" identifier="I2C1_SDA"/>
+               <pin_label pin_num="54" pin_signal="PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5/QSPI_B_IO4" label="I2C1_SCL" identifier="I2C1_SCL"/>
                <pin_label pin_num="63" pin_signal="PTB3/FTM1_CH1/LPSPI0_SIN/FTM1_QD_PHA/TRGMUX_IN2/ADC0_SE7" label="SIN" identifier="SIN;LPSPI0_SIN"/>
                <pin_label pin_num="122" pin_signal="PTE2/LPSPI0_SOUT/LPTMR0_ALT3/FTM3_CH6/LPUART1_CTS/SAI1_SYNC/ADC1_SE10" label="LPSPI0_SIN" identifier="LPSPI0_SIN;LPSPI0_SOUT"/>
                <pin_label pin_num="138" pin_signal="PTE0/LPSPI0_SCK/TCLK1/LPI2C1_SDA/LPSPI1_SOUT/FTM1_FLT2/SAI0_D2" label="LPSPI0_SCK" identifier="LPSPI0_SCK"/>
                <pin_label pin_num="121" pin_signal="PTE6/LPSPI0_PCS2/FTM7_FLT1/FTM3_CH7/LPUART1_RTS/ADC1_SE11" label="LPSPI0_PCS2" identifier="LPSPI0_PCS2"/>
-               <pin_label pin_num="42" pin_signal="PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/ADC0_SE11/CMP0_IN4" label="PTC3_PIN42" identifier="PTC3_PIN42"/>
+               <pin_label pin_num="42" pin_signal="PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4" label="PTC3_PIN42" identifier="PTC3_PIN42"/>
+               <pin_label pin_num="137" pin_signal="PTE1/LPSPI0_SIN/LPI2C0_HREQ/LPI2C1_SCL/LPSPI1_PCS0/FTM1_FLT1/SAI0_D1" label="SAI0_TX_DAT"/>
+               <pin_label pin_num="135" pin_signal="PTA11/FTM1_CH5/FXIO_D1/CMP0_RRT/SAI0_SYNC" label="SAI0_SYNC" identifier="SAI0_SYNC"/>
+               <pin_label pin_num="134" pin_signal="PTA12/FTM1_CH6/CAN1_RX/LPI2C1_SDAS/FTM2_QD_PHB/SAI0_BCLK" label="SAI0_BCLK" identifier="SAI0_BCLK"/>
+               <pin_label pin_num="127" pin_signal="PTA14/FTM0_FLT0/FTM3_FLT1/EWM_IN/FTM1_FLT0/SAI0_D3" label="SAI0_RX_DAT"/>
             </pin_labels>
          </pins_profile>
          <functions_list>
@@ -149,7 +153,7 @@
                   </dependency>
                </dependencies>
                <pins>
-                  <pin peripheral="LPI2C1" signal="SDA" pin_num="55" pin_signal="PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4">
+                  <pin peripheral="LPI2C1" signal="SDA" pin_num="55" pin_signal="PTD8/LPI2C1_SDA/MII_RXD3/FTM2_FLT2/FXIO_D1/FTM1_CH4/QSPI_B_IO5">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
                         <pin_feature name="drive_strength" value="low"/>
@@ -159,7 +163,7 @@
                         <pin_feature name="digital_filter" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="LPI2C1" signal="SCL" pin_num="54" pin_signal="PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5">
+                  <pin peripheral="LPI2C1" signal="SCL" pin_num="54" pin_signal="PTD9/LPI2C1_SCL/FXIO_D0/FTM2_FLT3/MII_RXD2/FTM1_CH5/QSPI_B_IO4">
                      <pin_features>
                         <pin_feature name="direction" value="INPUT"/>
                         <pin_feature name="drive_strength" value="low"/>
@@ -340,7 +344,7 @@
                   </dependency>
                </dependencies>
                <pins>
-                  <pin peripheral="QuadSPI" signal="SCLK, A" pin_num="49" pin_signal="PTD10/FTM2_CH0/FTM2_QD_PHB/ETM_TRACE_D3/MII_RX_CLK/CLKOUT">
+                  <pin peripheral="QuadSPI" signal="SCLK, A" pin_num="49" pin_signal="PTD10/FTM2_CH0/FTM2_QD_PHB/ETM_TRACE_D3/MII_RX_CLK/CLKOUT/QSPI_A_SCK">
                      <pin_features>
                         <pin_feature name="drive_strength" value="high"/>
                         <pin_feature name="pull_select" value="down"/>
@@ -349,7 +353,7 @@
                         <pin_feature name="digital_filter" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="QuadSPI" signal="SS0, A" pin_num="42" pin_signal="PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/ADC0_SE11/CMP0_IN4">
+                  <pin peripheral="QuadSPI" signal="SS0, A" pin_num="42" pin_signal="PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4">
                      <pin_features>
                         <pin_feature name="drive_strength" value="high"/>
                         <pin_feature name="pull_select" value="down"/>
@@ -358,7 +362,7 @@
                         <pin_feature name="digital_filter" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="QuadSPI" signal="DATA0, A" pin_num="48" pin_signal="PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS">
+                  <pin peripheral="QuadSPI" signal="DATA0, A" pin_num="48" pin_signal="PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS/QSPI_A_IO0">
                      <pin_features>
                         <pin_feature name="drive_strength" value="high"/>
                         <pin_feature name="pull_select" value="down"/>
@@ -367,7 +371,7 @@
                         <pin_feature name="digital_filter" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="QuadSPI" signal="DATA1, A" pin_num="44" pin_signal="PTD7/LPUART2_TX/FTM2_FLT3/ETM_TRACE_D0/CMP0_IN6">
+                  <pin peripheral="QuadSPI" signal="DATA1, A" pin_num="44" pin_signal="PTD7/LPUART2_TX/FTM2_FLT3/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6">
                      <pin_features>
                         <pin_feature name="drive_strength" value="high"/>
                         <pin_feature name="pull_select" value="down"/>
@@ -376,7 +380,7 @@
                         <pin_feature name="digital_filter" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="QuadSPI" signal="DATA2, A" pin_num="47" pin_signal="PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS">
+                  <pin peripheral="QuadSPI" signal="DATA2, A" pin_num="47" pin_signal="PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS/QSPI_A_IO2">
                      <pin_features>
                         <pin_feature name="drive_strength" value="high"/>
                         <pin_feature name="pull_select" value="down"/>
@@ -385,7 +389,7 @@
                         <pin_feature name="digital_filter" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="QuadSPI" signal="DATA3, A" pin_num="43" pin_signal="PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/ETM_TRACE_CLKOUT/ADC0_SE10/CMP0_IN5">
+                  <pin peripheral="QuadSPI" signal="DATA3, A" pin_num="43" pin_signal="PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/ETM_TRACE_CLKOUT/QSPI_A_IO3/ADC0_SE10/CMP0_IN5">
                      <pin_features>
                         <pin_feature name="drive_strength" value="high"/>
                         <pin_feature name="pull_select" value="down"/>
@@ -426,20 +430,20 @@
                   </dependency>
                </dependencies>
                <pins>
-                  <pin peripheral="ENET" signal="RMII_MDIO" pin_num="41" pin_signal="PTB4/FTM0_CH4/LPSPI0_SOUT/MII_RMII_MDIO/TRGMUX_IN1">
+                  <pin peripheral="ENET" signal="RMII_MDIO" pin_num="41" pin_signal="PTB4/FTM0_CH4/LPSPI0_SOUT/MII_RMII_MDIO/TRGMUX_IN1/QSPI_B_IO0">
                      <pin_features>
                         <pin_feature name="pull_enable" value="disable"/>
                      </pin_features>
                   </pin>
-                  <pin peripheral="ENET" signal="RMII_TXD0" pin_num="43" pin_signal="PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/ETM_TRACE_CLKOUT/ADC0_SE10/CMP0_IN5"/>
-                  <pin peripheral="ENET" signal="RMII_TXD1" pin_num="44" pin_signal="PTD7/LPUART2_TX/FTM2_FLT3/ETM_TRACE_D0/CMP0_IN6"/>
-                  <pin peripheral="ENET" signal="RMII_TXEN" pin_num="47" pin_signal="PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS"/>
-                  <pin peripheral="ENET" signal="RMII_RXD0" pin_num="52" pin_signal="PTC1/FTM0_CH1/LPSPI2_SOUT/FTM1_CH7/ADC0_SE9"/>
-                  <pin peripheral="ENET" signal="RMII_RXD1" pin_num="53" pin_signal="PTC0/FTM0_CH0/LPSPI2_SIN/FTM1_CH6/ADC0_SE8"/>
-                  <pin peripheral="ENET" signal="RMII_CRS_DV" pin_num="56" pin_signal="PTC17/FTM1_FLT3/CAN2_TX/LPI2C1_SCLS/MII_RMII_RX_DV/ADC0_SE15"/>
-                  <pin peripheral="ENET" signal="MII_TXCLK" pin_num="48" pin_signal="PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS"/>
+                  <pin peripheral="ENET" signal="RMII_TXD0" pin_num="43" pin_signal="PTC2/FTM0_CH2/CAN0_RX/LPUART0_RX/MII_RMII_TXD0/ETM_TRACE_CLKOUT/QSPI_A_IO3/ADC0_SE10/CMP0_IN5"/>
+                  <pin peripheral="ENET" signal="RMII_TXD1" pin_num="44" pin_signal="PTD7/LPUART2_TX/FTM2_FLT3/MII_RMII_TXD1/ETM_TRACE_D0/QSPI_A_IO1/CMP0_IN6"/>
+                  <pin peripheral="ENET" signal="RMII_TXEN" pin_num="47" pin_signal="PTD12/FTM2_CH2/LPI2C1_HREQ/ETM_TRACE_D1/MII_RMII_TX_EN/LPUART2_RTS/QSPI_A_IO2"/>
+                  <pin peripheral="ENET" signal="RMII_RXD0" pin_num="52" pin_signal="PTC1/FTM0_CH1/LPSPI2_SOUT/MII_RMII_RXD1/MII_RMII_RXD0/FTM1_CH7/QSPI_B_SCK/ADC0_SE9"/>
+                  <pin peripheral="ENET" signal="RMII_RXD1" pin_num="53" pin_signal="PTC0/FTM0_CH0/LPSPI2_SIN/MII_RMII_RXD1/MII_RMII_RXD0/FTM1_CH6/QSPI_B_RWDS/ADC0_SE8"/>
+                  <pin peripheral="ENET" signal="RMII_CRS_DV" pin_num="56" pin_signal="PTC17/FTM1_FLT3/CAN2_TX/LPI2C1_SCLS/MII_RMII_RX_DV/QSPI_B_IO6/ADC0_SE15"/>
+                  <pin peripheral="ENET" signal="MII_TXCLK" pin_num="48" pin_signal="PTD11/FTM2_CH1/FTM2_QD_PHA/ETM_TRACE_D2/MII_RMII_TX_CLK/LPUART2_CTS/QSPI_A_IO0"/>
                   <pin peripheral="ENET" signal="RMII_MDC" pin_num="39" pin_signal="PTE8/FTM0_CH6/MII_RMII_MDC/CMP0_IN3"/>
-                  <pin peripheral="GPIOC" signal="GPIO, 3" pin_num="42" pin_signal="PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/ADC0_SE11/CMP0_IN4">
+                  <pin peripheral="GPIOC" signal="GPIO, 3" pin_num="42" pin_signal="PTC3/FTM0_CH3/CAN0_TX/LPUART0_TX/MII_TX_ER/QSPI_A_CS/QSPI_B_IO3/ADC0_SE11/CMP0_IN4">
                      <pin_features>
                         <pin_feature name="direction" value="OUTPUT"/>
                         <pin_feature name="gpio_init_state" value="true"/>
@@ -447,11 +451,77 @@
                   </pin>
                </pins>
             </function>
+            <function name="BOARD_InitSAIPins">
+               <description>Configures pin routing and optionally pin electrical features.</description>
+               <options>
+                  <callFromInitBoot>false</callFromInitBoot>
+                  <coreID>core0</coreID>
+                  <enableClock>true</enableClock>
+                  <fullInit>true</fullInit>
+               </options>
+               <dependencies>
+                  <dependency resourceType="Peripheral" resourceId="I2S0" description="Peripheral I2S0 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitSAIPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitSAIPins">
+                     <feature name="enabled" evaluation="equal" configuration="core0">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="SWComponent" resourceId="platform.drivers.port" description="Pins initialization requires the PORT Driver in the project." problem_level="2" source="Pins:BOARD_InitSAIPins">
+                     <feature name="enabled" evaluation="equal" configuration="core0">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
+               </dependencies>
+               <pins>
+                  <pin peripheral="I2S0" signal="TXD, 1" pin_num="137" pin_signal="PTE1/LPSPI0_SIN/LPI2C0_HREQ/LPI2C1_SCL/LPSPI1_PCS0/FTM1_FLT1/SAI0_D1">
+                     <pin_features>
+                        <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="pull_select" value="down"/>
+                        <pin_feature name="pull_enable" value="disable"/>
+                        <pin_feature name="passive_filter" value="disable"/>
+                        <pin_feature name="digital_filter" value="disable"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="I2S0" signal="TX_FS" pin_num="135" pin_signal="PTA11/FTM1_CH5/FXIO_D1/CMP0_RRT/SAI0_SYNC">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="pull_select" value="down"/>
+                        <pin_feature name="pull_enable" value="disable"/>
+                        <pin_feature name="passive_filter" value="disable"/>
+                        <pin_feature name="digital_filter" value="disable"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="I2S0" signal="TX_BCLK" pin_num="134" pin_signal="PTA12/FTM1_CH6/CAN1_RX/LPI2C1_SDAS/FTM2_QD_PHB/SAI0_BCLK">
+                     <pin_features>
+                        <pin_feature name="direction" value="INPUT"/>
+                        <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="pull_select" value="down"/>
+                        <pin_feature name="pull_enable" value="disable"/>
+                        <pin_feature name="passive_filter" value="disable"/>
+                        <pin_feature name="digital_filter" value="disable"/>
+                     </pin_features>
+                  </pin>
+                  <pin peripheral="I2S0" signal="RXD, 3" pin_num="127" pin_signal="PTA14/FTM0_FLT0/FTM3_FLT1/EWM_IN/FTM1_FLT0/SAI0_D3">
+                     <pin_features>
+                        <pin_feature name="drive_strength" value="low"/>
+                        <pin_feature name="pull_select" value="down"/>
+                        <pin_feature name="pull_enable" value="disable"/>
+                        <pin_feature name="passive_filter" value="disable"/>
+                        <pin_feature name="digital_filter" value="disable"/>
+                     </pin_features>
+                  </pin>
+               </pins>
+            </function>
          </functions_list>
       </pins>
-      <clocks name="Clocks" version="15.0" enabled="true" update_project_code="true">
+      <clocks name="Clocks" version="16.0" enabled="true" update_project_code="true">
          <clocks_profile>
-            <processor_version>0.0.0</processor_version>
+            <processor_version>25.06.0</processor_version>
          </clocks_profile>
          <clock_configurations>
             <clock_configuration name="BOARD_BootClockRUN" id_prefix="" prefix_user_defined="false">
@@ -489,6 +559,7 @@
                </clock_sources>
                <clock_outputs>
                   <clock_output id="Bus_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
+                  <clock_output id="CLKOUT.outFreq" value="12 MHz" locked="false" accuracy=""/>
                   <clock_output id="Core_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="FIRCDIV1_CLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
                   <clock_output id="FIRCDIV2_CLK.outFreq" value="48 MHz" locked="false" accuracy=""/>
@@ -505,6 +576,7 @@
                   <clock_output id="SOSCDIV2_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="SOSC_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="48 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACECLKIN.outFreq" value="48 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="SCG.DIVBUS.scale" value="1" locked="true"/>
@@ -519,6 +591,8 @@
                   <setting id="SCG.SPLL_mul.scale" value="32" locked="false"/>
                   <setting id="SCG_SOSCCFG_OSC_MODE_CFG" value="ModeOscLowPower" locked="false"/>
                   <setting id="SCG_SOSCCSR_SOSCEN_CFG" value="Enabled" locked="false"/>
+                  <setting id="SIM.CLKOUTDIV.scale" value="4" locked="true"/>
+                  <setting id="SIM_CHIPCTL_CLKOUTEN" value="Enabled" locked="false"/>
                </clock_settings>
                <called_from_default_init>true</called_from_default_init>
             </clock_configuration>
@@ -550,6 +624,7 @@
                   <clock_output id="SIRCDIV2_CLK.outFreq" value="4 MHz" locked="false" accuracy=""/>
                   <clock_output id="SIRC_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="4 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACECLKIN.outFreq" value="4 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="SCGMode" value="SIRC" locked="false"/>
@@ -619,6 +694,7 @@
                   <clock_output id="SOSCDIV2_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="SOSC_CLK.outFreq" value="8 MHz" locked="false" accuracy=""/>
                   <clock_output id="System_clock.outFreq" value="112 MHz" locked="false" accuracy=""/>
+                  <clock_output id="TRACECLKIN.outFreq" value="112 MHz" locked="false" accuracy=""/>
                </clock_outputs>
                <clock_settings>
                   <setting id="SCGMode" value="SPLL" locked="false"/>
@@ -655,14 +731,21 @@
       </dcdx>
       <periphs name="Peripherals" version="15.0" enabled="true" update_project_code="true">
          <peripherals_profile>
-            <processor_version>0.0.0</processor_version>
+            <processor_version>25.06.0</processor_version>
          </peripherals_profile>
          <functional_groups>
             <functional_group name="BOARD_InitPeripherals" uuid="f5edeea3-722d-43e5-81cf-9ec0f352d361" called_from_default_init="true" id_prefix="" core="core0">
                <description></description>
                <options/>
                <dependencies/>
-               <instances/>
+               <instances>
+                  <instance name="NVIC" uuid="2aac75fd-be6a-4bf7-bbdc-f26f44a98556" type="nvic" type_id="nvic" mode="general" peripheral="NVIC" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="nvic">
+                        <array name="interrupt_table"/>
+                        <array name="interrupts"/>
+                     </config_set>
+                  </instance>
+               </instances>
             </functional_group>
          </functional_groups>
          <components>

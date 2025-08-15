@@ -186,6 +186,36 @@ void BOARD_InitFlashPins(void);
  */
 void BOARD_InitENETPins(void);
 
+#define PORT_DFER_DFE_11_MASK 0x0800u /*!<@brief Digital Filter Enable Mask for item 11. */
+#define PORT_DFER_DFE_12_MASK 0x1000u /*!<@brief Digital Filter Enable Mask for item 12. */
+#define PORT_DFER_DFE_14_MASK 0x4000u /*!<@brief Digital Filter Enable Mask for item 14. */
+#define PORT_DFER_DFE_1_MASK 0x02u    /*!<@brief Digital Filter Enable Mask for item 1. */
+#define PORT_DFER_DFE_5_MASK 0x20u    /*!<@brief Digital Filter Enable Mask for item 5. */
+
+/*! @name PORTA11 (number 135), SAI0_SYNC
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITSAIPINS_SAI0_SYNC_PORT PORTA                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITSAIPINS_SAI0_SYNC_PIN 11U                   /*!<@brief PORT pin number */
+#define BOARD_INITSAIPINS_SAI0_SYNC_PIN_MASK (1U << 11U)      /*!<@brief PORT pin mask */
+                                                              /* @} */
+
+/*! @name PORTA12 (number 134), SAI0_BCLK
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITSAIPINS_SAI0_BCLK_PORT PORTA                /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITSAIPINS_SAI0_BCLK_PIN 12U                   /*!<@brief PORT pin number */
+#define BOARD_INITSAIPINS_SAI0_BCLK_PIN_MASK (1U << 12U)      /*!<@brief PORT pin mask */
+                                                              /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSAIPins(void);
+
 #if defined(__cplusplus)
 }
 #endif
