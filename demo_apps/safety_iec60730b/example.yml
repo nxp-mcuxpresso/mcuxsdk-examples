@@ -31,6 +31,12 @@ safety_iec60730b:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    # frdmk22f:
+    # - -armgcc@debug
+    # - -armgcc@release
+    # - -iar@release
+    # - -mdk@debug
+    # - -mdk@release
     # evkmimxrt1180@cm33:
     # - -armgcc@flexspi_nor_debug
     # - -armgcc@flexspi_nor_release
