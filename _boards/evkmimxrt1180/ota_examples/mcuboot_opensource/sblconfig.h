@@ -22,7 +22,9 @@
 /* Crypto */
 
 #define CONFIG_BOOT_SIGNATURE
-#define CONFIG_BOOT_USE_PSA_CRYPTO
+/* NXP MCUX-82181: there are hardcoded dependencies to fix - disable PSA API */
+//#define CONFIG_BOOT_USE_PSA_CRYPTO
+#define CONFIG_BOOT_USE_MBEDTLS
 #define CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
