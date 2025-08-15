@@ -26,3 +26,4 @@ PSA Crypto example to demonstrate cipher operation.
 - [MCXW72-LOC](../../_boards/mcxw72loc/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [FRDM-MCXW72](../../_boards/frdmmcxw72/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
 - [MCXW23-EVK](../../_boards/mcxw23evk/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)
+- [LPCXpresso55S36](../../_boards/lpcxpresso55s36/mbedtls3x_examples/psa_crypto_examples/example_board_readme.md)

@@ -41,6 +41,7 @@ mbedtls3x_selftest:
     - +armgcc@debug
     - +armgcc@release
     lpcxpresso55s16: []
+    lpcxpresso55s36: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     mimxrt685audevk@cm33: []

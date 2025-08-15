@@ -136,6 +136,7 @@ psa_crypto_examples:
     lpcxpresso55s06: []
     lpcxpresso55s16: []
     lpcxpresso55s28: []
+    lpcxpresso55s36: []
     lpcxpresso55s69@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
