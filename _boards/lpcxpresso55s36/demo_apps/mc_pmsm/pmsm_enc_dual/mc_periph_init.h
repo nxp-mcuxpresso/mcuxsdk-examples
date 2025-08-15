@@ -20,9 +20,13 @@
 #include "mcdrv_enc_qd.h"
 #include "m1_pmsm_appconfig.h"
 #include "m2_pmsm_appconfig.h"
+#include "mcdrv_flash_lpc55s36.h"
 
 /* LPC55S36's internal oamps are connected to motor connector 1 only. */
 #define USE_INTERNAL_OPAMPS     (true)
+
+/* Enable/disable online update flash parameters */
+#define ENABLE_FLASH_PARAM_UPDATE (true)
 
 /******************************************************************************
  * Timing - common for motor 1 and motor 2
@@ -157,6 +161,16 @@
 #define M2_POSPE_TO_KP_GAIN (1256.64F)
 #define M2_POSPE_TO_KI_GAIN (39.4784F)
 #define M2_POSPE_TO_THETA_GAIN (0.0000318310F)
+
+/******************************************************************************
+ * Define online update flash parameters functions
+ ******************************************************************************/
+#define M1_MCDRV_FLASH_CFG_INIT() (Drv_Flash_Init())
+#define M1_MCDRV_FLASH_CFG_READ(par) (Drv_Flash_Cfg_Read(par))
+#define M1_MCDRV_FLASH_CFG_CLEAR(par) (Drv_Flash_Cfg_Clear(par))
+#define M1_MCDRV_FLASH_CFG_WRITE(par) (Drv_Flash_Cfg_Write(par))
+#define M1_MCDRV_FLASH_CFG_SWAP(par) (Drv_ParamsSwap(par))
+#define M1_MCDRV_FLASH_CFG_BACKGROUND() (Drv_Flash_Cfg_Background())
 
 /******************************************************************************
  * Global typedefs

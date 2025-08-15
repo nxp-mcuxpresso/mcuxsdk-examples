@@ -19,6 +19,10 @@
 #include "mcdrv_adc_lpc55s36.h"
 #include "mcdrv_enc_qd.h"
 #include "m1_pmsm_appconfig.h"
+#include "mcdrv_flash_lpc55s36.h"
+
+/* Enable/disable online update flash parameters */
+#define ENABLE_FLASH_PARAM_UPDATE (true)
 
 /******************************************************************************
  * Timing
@@ -113,6 +117,16 @@ typedef struct _clock_setup
 #define M1_POSPE_TO_KP_GAIN (1256.64F)
 #define M1_POSPE_TO_KI_GAIN (39.4784F)
 #define M1_POSPE_TO_THETA_GAIN (0.0000318310F)
+
+/******************************************************************************
+ * Define online update flash parameters functions
+ ******************************************************************************/
+#define M1_MCDRV_FLASH_CFG_INIT() (Drv_Flash_Init())
+#define M1_MCDRV_FLASH_CFG_READ(par) (Drv_Flash_Cfg_Read(par))
+#define M1_MCDRV_FLASH_CFG_CLEAR(par) (Drv_Flash_Cfg_Clear(par))
+#define M1_MCDRV_FLASH_CFG_WRITE(par) (Drv_Flash_Cfg_Write(par))
+#define M1_MCDRV_FLASH_CFG_SWAP(par) (Drv_ParamsSwap(par))
+#define M1_MCDRV_FLASH_CFG_BACKGROUND() (Drv_Flash_Cfg_Background())
 
 /******************************************************************************
  * Global variable definitions
