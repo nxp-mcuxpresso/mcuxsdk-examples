@@ -543,10 +543,10 @@ static netc_timer_handle_t timer_handle;
 
 static void netc_fiper_init(void)
 {
-        netc_timer_fiper_config_t fiper_config;
-	netc_timer_fiper_t fiper;
+        netc_timer_fiper_config_t fiper_config = {0};
+	netc_timer_fiper_t fiper = {0};
 
-	fiper_config.startCondition = 0;//1;
+	fiper_config.startCondition = 0;
         fiper_config.prescale = 50;
         NETC_TimerConfigureFIPER(&timer_handle, &fiper_config);
 
