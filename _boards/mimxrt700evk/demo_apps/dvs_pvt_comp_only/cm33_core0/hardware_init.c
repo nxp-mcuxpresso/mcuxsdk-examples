@@ -428,9 +428,9 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnablePD(kPDRUNCFG_SHUT_RAM0_CLK);                        /* Sense access RAM arbiter0 clock. */
     POWER_EnablePD(kPDRUNCFG_SHUT_RAM1_CLK);                        /* Compute access RAM arbiter1 clock. */
 
-    POWER_EnableRunAFBB(kPower_BodyBiasVdd2 | kPower_BodyBiasVddn); /* Configure VDD2 AFBB mode during active.*/
+    POWER_EnableRunAFBB(kPower_BodyBiasVdd2 | kPower_BodyBiasVddn | kPower_BodyBiasVdd1); /* Configure VDD2 AFBB mode during active.*/
     POWER_EnableRunNBB(kPower_BodyBiasVdd2Sram);
-    POWER_EnableRunRBB(kPower_BodyBiasVdd1 | kPower_BodyBiasVdd1Sram);
+    POWER_EnableRunRBB(kPower_BodyBiasVdd1Sram);
     POWER_EnableSleepRBB(kPower_BodyBiasVddn | kPower_BodyBiasVdd2Sram | kPower_BodyBiasVdd2 | kPower_BodyBiasVdd1 |
                          kPower_BodyBiasVdd1Sram);
 

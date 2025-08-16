@@ -16,43 +16,44 @@
 /*
  * The number of SysTick increments that make up one tick period.
  */
-static uint32_t ulTimerCountsForOneTick = 0;
+static uint32_t ulTimerCountsForOneTick         = 0U;
+static uint32_t xMaximumPossibleSuppressedTicks = 0U;
 
 /*
  * The number of LPTIMER increments that make up one tick period.
  */
-static uint32_t ulLPTimerCountsForOneTick = 0;
+static uint32_t ulLPTimerCountsForOneTick = 0U;
 
 extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
 
 TickType_t LPM_EnterTicklessIdle(TickType_t xExpectedIdleTime, uint64_t *pCounter)
 {
-    uint64_t xOstimerStartValue = 0;
+    uint64_t xOstimerStartValue = 0U;
     status_t status;
     uint32_t ulReloadValue;
 
     assert(configTICK_RATE_HZ <= 1000U);
 
-    /* If timeout < 2 ticks, don't do tickless idle. */
+    /* If timeout < 2 ticks, don't do tickless idle. ulReloadValue can't be 0. */
     if (xExpectedIdleTime < 2U)
     {
-        return 0;
+        return 0U;
     }
 
-    /* Disable the SysTick clock without reading the
-    SysTick_CTRL_REG register to ensure the
-    portNVIC_SYSTICK_COUNT_FLAG_BIT is not cleared if it is set.
-    Stop the LPTimer and systick momentarily.  The time the LPTimer and systick is stopped for
-    is accounted for as best it can be, but using the tickless mode will
-    inevitably result in some tiny drift of the time maintained by the
-    kernel with respect to calendar time. */
-    /* SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk; */
-    SysTick->CTRL = SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_CLKSOURCE_Msk;
+    /* Make sure the SysTick reload value does not overflow the counter. */
+    if (xExpectedIdleTime > xMaximumPossibleSuppressedTicks)
+    {
+        xExpectedIdleTime = xMaximumPossibleSuppressedTicks;
+    }
+
+    /* Stop the LPTimer and systick momentarily. The time the LPTimer and systick is stopped for
+    is accounted for as best it can be, but using the tickless mode will inevitably result in some tiny drift of the
+    time maintained by the kernel with respect to calendar time. */
+    SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
 
     if ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) != 0U)
     {
         NVIC_ClearPendingIRQ(SysTick_IRQn);
-        xExpectedIdleTime -= 1U; /* One tick already done. */
     }
 
     /* Calculate the reload value required to wait xExpectedIdleTime
@@ -127,6 +128,10 @@ void vPortSetupTimerInterrupt(void)
         /* ulLPTimerCountsForOneTick is zero, not allowed state */
         while (1)
             ;
+    }
+    else
+    {
+        xMaximumPossibleSuppressedTicks = portMAX_32_BIT_NUMBER / ulLPTimerCountsForOneTick;
     }
 
     /* Configure SysTick to interrupt at the requested rate. */
