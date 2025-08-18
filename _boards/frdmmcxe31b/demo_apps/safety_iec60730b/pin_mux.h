@@ -12,7 +12,6 @@
 #ifndef _PIN_MUX_H_
 #define _PIN_MUX_H_
 
-#include "fsl_siul2.h"
 /*!
  * @addtogroup pin_mux
  * @{
@@ -38,107 +37,29 @@ void BOARD_InitBootPins(void);
  */
 void BOARD_InitPins(void);
 
+/*! @name PTE3 (number 27), PTE3/LPUART5_RX-MCU-LINK/U4[A9}/J2[19]
+  @{ */
+
+/* Defined symbols */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART_RX_PORT PTE                 /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART_RX_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART_RX_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                                                        /* @} */
+
+/*! @name PTE14 (number 26), PTE14/LPUART5_TX-MCU-LINK/U4[A4}/J2[17]
+  @{ */
+
+/* Defined symbols */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART_TX_PORT PTE                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART_TX_PIN 14U                   /*!<@brief PORT pin number */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART_TX_PIN_MASK (1U << 14U)      /*!<@brief PORT pin mask */
+                                                                         /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
 void BOARD_InitDEBUG_UARTPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitLEDsPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitBUTTONsPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitEXTIRQPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitCLOCKOUTPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitAdcPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitI2CPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitSPIPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitLCDPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitLpcmpPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitBctuTrigSrcPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitFlexCANPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitEMIOSPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitFLASHPins(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitDEBUG_UARTPins_deinit(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitSPIPins_deinit(void);
-
-/*!
- * @brief Configures pin routing and optionally pin electrical features.
- *
- */
-void BOARD_InitI2CPins_deinit(void);
 
 #if defined(__cplusplus)
 }
