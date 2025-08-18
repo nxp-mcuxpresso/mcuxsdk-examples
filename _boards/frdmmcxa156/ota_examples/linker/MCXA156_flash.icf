@@ -24,9 +24,8 @@
 
 /*
   MCUBoot region   0x000000 - 0x010000 : 64kB  (0x10000 bytes)
-  Primary slot     0x010000 - 0x082000 : 456kB (0x72000 bytes)
-  Secondary slot   0x082000 - 0x0F4000 : 456kB (0x72000 bytes)
-  Reserved         0x0F4000 - 0x100000 : 48kB  (0x0C000 bytes)
+  Primary slot     0x010000 - 0x080000 : 448kB (0x70000 bytes)
+  Secondary slot   0x080000 - 0x0F0000 : 448kB (0x70000 bytes)
 */
 
 /* Stack and Heap Sizes */
@@ -46,7 +45,7 @@ define symbol m_interrupts_start               = 0x00010200;
 define symbol m_interrupts_end                 = 0x000103FF;
 
 define symbol m_text_start                     = 0x00010400;
-define symbol m_text_end                       = 0x00081FFF;
+define symbol m_text_end                       = 0x0007FFFF;
 
 define symbol m_data_start                     = 0x20000000;
 define symbol m_data_end                       = 0x2001DFFF;
