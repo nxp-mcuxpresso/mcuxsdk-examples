@@ -13,7 +13,7 @@
  * Definitions
  ******************************************************************************/
 
-#define EXAMPLE_PHY_ADDRESS    BOARD_EP0_PHY_ADDR
+#define EXAMPLE_PHY_ADDRESS    BOARD_SWT_PORT0_PHY_ADDR
 #define EXAMPLE_ETHIF_INIT     ethernetif0_init
 #define EXAMPLE_NET_SPEED_100M 1
 

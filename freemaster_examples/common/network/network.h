@@ -60,6 +60,16 @@ extern "C" {
 #define EXAMPLE_PHY_PREFIX(m) PHY_LAN8741_##m
 #endif
 
+#elif defined(PHY_YT8521)
+
+#include "fsl_phyyt8521.h"
+#ifndef EXAMPLE_PHY_RES
+#define EXAMPLE_PHY_RES       phy_yt8521_resource_t
+#endif
+#ifndef EXAMPLE_PHY_PREFIX
+#define EXAMPLE_PHY_PREFIX(m) PHY_YT8521_##m
+#endif
+
 #else
 #error Undefined PHY
 #endif

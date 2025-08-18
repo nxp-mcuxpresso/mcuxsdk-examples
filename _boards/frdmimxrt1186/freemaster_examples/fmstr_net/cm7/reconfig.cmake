@@ -1,7 +1,7 @@
 
 # Define macro
 mcux_add_macro(
-    CC  "PHY_RTL8201=1"
+    CC  "PHY_YT8521=1"
 )
 # Heap configuration
 mcux_add_linker_symbol(
@@ -13,10 +13,5 @@ mcux_add_linker_symbol(
 )
 # Define macro
 mcux_add_macro(
-    TARGETS hyperram_debug hyperram_release
-    CC  "DATA_SECTION_IS_CACHEABLE=1"
-)
-# Define macro
-mcux_add_macro(
-    CC  "FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1  FSL_ETH_ENABLE_CACHE_CONTROL=1"
+    CC  "SDK_NETC_USED=1 FSL_ETH_ENABLE_CACHE_CONTROL=1"
 )
