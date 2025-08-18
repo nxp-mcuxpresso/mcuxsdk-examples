@@ -128,7 +128,7 @@ if(${CONFIG_TOOLCHAIN} STREQUAL "iar" AND ${SAFETY_IEC60730B_IAR_POSTBUILD} STRE
 add_custom_command(
 	TARGET ${MCUX_SDK_PROJECT_NAME}
     POST_BUILD
-    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill "0xFF;c_checksumStart-c_checksumEnd+3" --checksum "__checksum:4,crc32:i,0xFFFFFFFF;c_checksumStart-c_checksumEnd+3"  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+    COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill \"0xFF\;c_checksumStart-c_checksumEnd+3\" --checksum \"__checksum:4,crc32:i,0xFFFFFFFF\;c_checksumStart-c_checksumEnd+3\"  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
 )
 endif()
 

@@ -14,6 +14,3 @@ mdk:
   config:
     __common__:
       createHexFile: true
-      
-#iar:
-#  postbuild: ielftool --fill 0xFF;c_checksumStart-c_checksumEnd+3 --checksum __checksum:2,crc16,0x0;c_checksumStart-c_checksumEnd+3  --verbose "$TARGET_PATH$" "$TARGET_PATH$"
