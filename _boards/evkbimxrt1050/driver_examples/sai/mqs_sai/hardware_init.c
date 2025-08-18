@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NXP
+ * Copyright 2018, 2025 NXP
  * All rights reserved.
  *
  *
@@ -16,7 +16,7 @@
 
 /*
  * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM) / Divider
- *                              = 24 * (32 + 96/128) / 1
+ *                              = 24 * (32 + 96/125) / 1
  *                              = 786.375 MHz
  */
 const clock_audio_pll_config_t audioPllConfig = {

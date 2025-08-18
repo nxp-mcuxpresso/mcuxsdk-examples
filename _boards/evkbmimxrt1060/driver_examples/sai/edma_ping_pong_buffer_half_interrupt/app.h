@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2021, 2025 NXP
  * All rights reserved.
  *
  *
@@ -20,10 +20,10 @@
 /*${macro:start}*/
 /* SAI instance and clock */
 #ifndef DEMO_CODEC_WM8960
-#define DEMO_CODEC_WM8960 1
+#define DEMO_CODEC_WM8960 0
 #endif
 #ifndef DEMO_CODEC_CS42448
-#define DEMO_CODEC_CS42448 0
+#define DEMO_CODEC_CS42448 1
 #endif
 #if DEMO_CODEC_WM8960 && DEMO_CODEC_CS42448
 #error "Duplicate codec defined"

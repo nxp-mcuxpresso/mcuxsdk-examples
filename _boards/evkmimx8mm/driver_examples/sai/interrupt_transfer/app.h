@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 NXP
+ * Copyright 2018-2020, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -37,7 +37,7 @@
 #define DEMO_AUDIO_DATA_CHANNEL (2U)
 #define DEMO_AUDIO_BIT_WIDTH    kSAI_WordWidth16bits
 #define DEMO_AUDIO_SAMPLE_RATE  (kSAI_SampleRate48KHz)
-#define DEMO_AUDIO_MASTER_CLOCK (DEMO_SAI_CLK_FREQ / 4)
+#define DEMO_AUDIO_MASTER_CLOCK (DEMO_SAI_CLK_FREQ)
 
 #define BOARD_SAI_RXCONFIG(config, mode)
 

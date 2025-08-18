@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 NXP
+ * Copyright 2018, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,8 +18,8 @@
 #define DEMO_SAI              (I2S3)
 #define DEMO_SAI_MASTER_SLAVE kSAI_Master
 #define DEMO_SAI_CLK_FREQ                                                                  \
-    ((CLOCK_GetPllFreq(kCLOCK_AudioPll1Ctrl) / (CLOCK_GetRootPreDivider(kCLOCK_RootSai3)) / \
-     (CLOCK_GetRootPostDivider(kCLOCK_RootSai3)))) / 2
+    (CLOCK_GetPllFreq(kCLOCK_AudioPll1Ctrl) / (CLOCK_GetRootPreDivider(kCLOCK_RootSai3)) / \
+     (CLOCK_GetRootPostDivider(kCLOCK_RootSai3)))
 #define DEMO_CODEC_WM8524       (1)
 #define DEMO_CODEC_BUS_PIN      (NULL)
 #define DEMO_CODEC_BUS_PIN_NUM  (0)

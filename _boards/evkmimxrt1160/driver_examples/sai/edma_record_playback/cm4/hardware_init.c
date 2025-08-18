@@ -1,5 +1,6 @@
 /*
- * Copyright 2021 NXP
+
+* Copyright 2021, 2025 NXP
  * All rights reserved.
  *
  *
