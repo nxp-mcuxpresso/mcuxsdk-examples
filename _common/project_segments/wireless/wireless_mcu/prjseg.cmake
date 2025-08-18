@@ -78,6 +78,7 @@ if(CONFIG_MCUX_PRJSEG_module.board.wireless.board.debug_nbu)
         SOURCES
             examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu.c
             examples/_common/project_segments/wireless/wireless_mcu/debug/board_debug_nbu.h
+            examples/_common/project_segments/wireless/wireless_mcu/debug/readme.md
     )
     mcux_add_include(
         BASE_PATH ${SdkRootDirPath}
