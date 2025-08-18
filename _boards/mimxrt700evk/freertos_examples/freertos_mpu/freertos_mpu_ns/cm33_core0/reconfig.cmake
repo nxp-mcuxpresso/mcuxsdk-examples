@@ -55,15 +55,15 @@ mcux_remove_iar_linker_script(
 
 mcux_add_armgcc_linker_script(
     TARGETS flash_debug flash_release
-    LINKER linkscripts/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash_ns.ld
+    LINKER ../linkscripts/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash_ns.ld
 )
 
 mcux_add_mdk_linker_script(
     TARGETS flash_debug flash_release
-    LINKER linkscripts/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash_ns.scf
+    LINKER ../linkscripts/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash_ns.scf
 )
 
 mcux_add_iar_linker_script(
     TARGETS flash_debug flash_release
-    LINKER linkscripts/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash_ns.icf
+    LINKER ../linkscripts/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash_ns.icf
 )
