@@ -27,21 +27,21 @@
  ******************************************************************************/
 #if (defined(__ICCARM__))
 uint32_t cmd_buffer[256] @ "dspvA";
-int status_buffer[128 + 6] @ "dspvB";
+int32_t status_buffer[128 + 6] @ "dspvB";
 
 float srcdata[1024] @ "dspvC";
 float scratch[1024] @ "dspvC";
 float dstdata[1024] @ "dspvC";
 #elif (defined(__CC_ARM) || defined(__ARMCC_VERSION))
 __attribute__((section("dspvA"), zero_init)) uint32_t cmd_buffer[256];
-__attribute__((section("dspvB"), zero_init)) int status_buffer[128 + 6];
+__attribute__((section("dspvB"), zero_init)) int32_t status_buffer[128 + 6];
 
 __attribute__((section("dspvC"), zero_init)) float srcdata[1024];
 __attribute__((section("dspvC"), zero_init)) float scratch[1024];
 __attribute__((section("dspvC"), zero_init)) float dstdata[1024];
 #elif (defined(__GNUC__))
 __attribute__((section(".dspvA,\"aw\",%nobits @"))) uint32_t cmd_buffer[256];
-__attribute__((section(".dspvB,\"aw\",%nobits @"))) int status_buffer[128 + 6];
+__attribute__((section(".dspvB,\"aw\",%nobits @"))) int32_t status_buffer[128 + 6];
 
 __attribute__((section(".dspvC,\"aw\",%nobits @"))) float srcdata[1024];
 __attribute__((section(".dspvC,\"aw\",%nobits @"))) float scratch[1024];
