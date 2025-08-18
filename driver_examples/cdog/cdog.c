@@ -76,14 +76,6 @@ void CDOG_AppIRQHandler(void)
     NVIC_EnableIRQ(CDOG_IRQn);
 }
 
-#if defined(CDOG1)
-
-void CDOG1_DriverIRQHandler(void)
-{
-    /* CDOG1 is not used in example */
-}
-#endif
-
 void SecureCounterExample()
 {
     uint32_t reload = 0xFFFFFFU;

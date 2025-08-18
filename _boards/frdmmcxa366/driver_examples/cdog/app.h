@@ -10,9 +10,9 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define CDOG               CDOG0
-#define CDOG_IRQn          CDOG0_IRQn
-#define CDOG_AppIRQHandler CDOG0_DriverIRQHandler
+#define CDOG               CDOG1
+#define CDOG_IRQn          CDOG1_IRQn
+#define CDOG_AppIRQHandler CDOG1_DriverIRQHandler
 /*${macro:end}*/
 
 /*******************************************************************************
