@@ -1,0 +1,12 @@
+# ARMGCC debug target does not fit; slightly increase optimization as workaround
+mcux_add_armgcc_configuration(
+    TARGETS debug
+    CC "-O1"
+    CX "-O1"
+)
+
+mcux_add_iar_configuration(
+    TARGETS debug
+    CC "-Om"
+    CX "-Om"
+)
