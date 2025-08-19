@@ -25,7 +25,7 @@ extern usb_video_virtual_camera_struct_t g_UsbDeviceVideoVirtualCamera;
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 

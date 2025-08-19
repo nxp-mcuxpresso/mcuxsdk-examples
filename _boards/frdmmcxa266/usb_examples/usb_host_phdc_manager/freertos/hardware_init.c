@@ -24,7 +24,7 @@ extern usb_host_handle hostHandle;
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 #if defined(USB_HOST_CONFIG_KHCI) && (USB_HOST_CONFIG_KHCI > 0U)

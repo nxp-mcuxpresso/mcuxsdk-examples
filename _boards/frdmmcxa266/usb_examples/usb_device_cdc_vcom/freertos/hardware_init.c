@@ -25,7 +25,7 @@ extern usb_cdc_vcom_struct_t s_cdcVcom;
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 

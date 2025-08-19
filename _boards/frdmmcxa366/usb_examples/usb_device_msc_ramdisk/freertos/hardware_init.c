@@ -25,7 +25,7 @@ extern usb_msc_struct_t g_msc;
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 

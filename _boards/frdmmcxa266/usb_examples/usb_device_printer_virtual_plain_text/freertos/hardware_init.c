@@ -25,7 +25,7 @@ extern usb_device_printer_app_t g_DevicePrinterApp;
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 

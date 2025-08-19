@@ -24,7 +24,7 @@ extern usb_hid_generic_struct_t g_UsbDeviceHidGeneric;
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 

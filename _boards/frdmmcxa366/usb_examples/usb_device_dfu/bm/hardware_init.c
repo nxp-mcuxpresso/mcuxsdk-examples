@@ -26,7 +26,7 @@ extern usb_device_dfu_app_struct_t g_UsbDeviceDfu;
 void BOARD_InitHardware(void)
 {
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 

@@ -44,7 +44,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetupFRO16KClocking(0x3);
 
     BOARD_InitDEBUG_UARTPins();
-    BOARD_InitBootClocks();
+    BOARD_BootClockFROHF180M();
     BOARD_InitDebugConsole();
 }
 
