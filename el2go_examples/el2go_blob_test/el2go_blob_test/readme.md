@@ -65,10 +65,10 @@ Additional information about EdgeLock 2GO Provisioning for MCUs can be found in 
     The bootheader needs to be removed from the S image, it has to be merged with the NS image and the resulting image must be signed with the OEM key. Additionally, if the application is supposed to run in the OEM CLOSED life cycle, the image needs to be encrypted with the OEM FW encryption key and loaded as an SB3.1 container.
 
     Details on how to execute these steps can be found in the following documents:
-    - **[KW45]** Application note [AN14109 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW45) ("Documentation->Secure Files" section).
-    - **[MCX W71]**, Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/MCX-W71X) ("Documentation->Secure Files" section).
-    - **[KW47]**, Documentation in progress 
-    - **[MCX W72]**, Documentation in progress 
+    - **[KW45]** Application note [AN14109 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW45) ("Documentation->Public Files" section).
+    - **[MCX W71]**, Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/MCX-W71X) ("Documentation->Public Files" section).
+    - **[KW47]**, Application note [AN14371 "Secure Boot Using the SEC Tool"](https://www.nxp.com/products/KW47) ("Documentation->Public Files" section).
+    - **[MCX W72]**, Application note [AN14613 Secure Boot using the SEC Tool"](https://www.nxp.com/products/MCX-W72X) ("Documentation->Public Files" section).
 
 4.  Build the application:
 
