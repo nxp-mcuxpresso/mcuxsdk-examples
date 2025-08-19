@@ -657,6 +657,9 @@ void ncp_iperf_tx_task(void *pvParameters)
 
         ncp_iperf_report(send_total_size);
         (void)PRINTF("ncp iperf tx run end\r\n");
+
+        OSA_TimeDelay(1000);
+        ncp_close(client_sockfd);
     }
 }
 
@@ -761,6 +764,9 @@ void ncp_iperf_rx_task(void *pvParameters)
         iperf_timer_end = OSA_TimeGetMsec();
         ncp_iperf_report(recv_size);
         (void)PRINTF("ncp iperf rx end\r\n");
+
+        OSA_TimeDelay(1000);
+        ncp_close(client_sockfd);
     }
 }
 #else

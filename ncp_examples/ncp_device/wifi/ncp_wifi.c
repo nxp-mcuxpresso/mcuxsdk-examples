@@ -67,7 +67,7 @@ extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 extern uint8_t wifi_res_buf[NCP_INBUF_SIZE];
 
 /*WIFI NCP COMMAND TASK*/
-#define WIFI_NCP_COMMAND_QUEUE_NUM 160
+#define WIFI_NCP_COMMAND_QUEUE_NUM 80
 static osa_msgq_handle_t wifi_ncp_command_queue; /* ncp adapter TX msgq */
 OSA_MSGQ_HANDLE_DEFINE(wifi_ncp_command_queue_buff, WIFI_NCP_COMMAND_QUEUE_NUM,  sizeof(wifi_ncp_command_t));
 
