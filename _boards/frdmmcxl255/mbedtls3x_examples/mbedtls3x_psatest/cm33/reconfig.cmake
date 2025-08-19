@@ -5,7 +5,14 @@ mcux_add_armgcc_configuration(
     CX "-O1"
 )
 
+mcux_remove_iar_configuration(
+    TARGETS debug
+    CC "-On"
+    CX "-On"
+)
+
 mcux_add_iar_configuration(
     TARGETS debug
     CC "-Om"
+    CX "-Om"
 )
