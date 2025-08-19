@@ -1,20 +1,10 @@
 /*
 ** ###################################################################
-**     Processors:          KW47B42Z83AFTA_cm33_core1
-**                          KW47B42Z96FTA_cm33_core1
-**                          KW47B42Z97AFTA_cm33_core1
-**                          KW47B42ZB2AFTA_cm33_core1
-**                          KW47B42ZB3AFTA_cm33_core1
-**                          KW47B42ZB6AFTA_cm33_core1
-**                          KW47B42ZB7AFTA_cm33_core1
-**                          MCXW727CAFTA_cm33_core1
+**     Processors:          MCXW727CAFTA_cm33_core1
 **                          MCXW727AAFTA_cm33_core1
 **                          MCXW727DAFTA_cm33_core1
 **
 **     Compiler:            IAR ANSI C/C++ Compiler for ARM
-**     Reference manual:    K32W133G256RM, Rev. 0, Mar 2018
-**     Version:             rev. 1.0, 2020-05-12
-**     Build:               b200716
 **
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM
@@ -46,8 +36,40 @@ if (isdefinedsymbol(__heap_size__)) {
   define symbol __size_heap__          = 0x000;  /*Memory manager is not used. */
 }
 
-/* The addition of the SMU size and the DMEM size is a constant but the sharing can change (see SMU_MEM_SEL)*/
+/* The addition of SMU size and the DMEM size is a constant but the sharing can change (see SMU_MEM_SEL)*/
 define symbol smu_and_dmem_size                = 0x00028000;
+
+/* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
+/*define symbol m_dmem_size                      = 0x00014000;*/  /*80 KB*/
+define symbol m_dmem_size                      = 0x00018000;  /*96 KB*/
+define exported symbol m_dmem_start            = 0x00140000;
+define exported symbol m_dmem_end              = m_dmem_start + m_dmem_size - 1;
+
+define symbol m_flash_start                    = 0x00000000;
+define symbol m_flash_end                      = 0x0007FFFF;
+
+define symbol m_interrupts_start               = m_flash_start;
+define symbol m_interrupts_end                 = 0x000003FF;
+
+define exported symbol m_text_start             = 0x00000400;
+define exported symbol m_text_end               = m_flash_end;
+
+define symbol m_data0_start                     = 0x00100000;
+define symbol m_data0_end                       = 0x001007FF;
+
+/*Stack moved to the beginning of DMEM to allow for DMEM/SMU memory configuration at runtime.*/
+define symbol m_cstack_start                      = 0x00140000;
+define exported symbol m_cstack_end               = m_cstack_start + __size_cstack__ - 1;
+
+define symbol m_data1_start                       = m_cstack_end + 1;
+define symbol m_data1_end                         = m_dmem_end - __size_heap__;
+
+define exported symbol __HEAP_start__           = m_data1_end + 1;
+if (__size_heap__ > 0) {
+  define exported symbol __HEAP_end__             = __HEAP_start__ + __size_heap__ - 1;
+} else {
+  define exported symbol __HEAP_end__             = __HEAP_start__;
+}
 
 /********************************************** NBU shared memory **********************************************
 
@@ -171,38 +193,6 @@ if (m_sqram_rldat_end > m_shared_ram_end)
   error "Total allocated sections in shared ram do not fit in available shared ram!";
 }
 
-/* This size can be changed depending on the dmem shared mem muxing chosen (see SMU_MEM_SEL)*/
-/*define symbol m_dmem_size                      = 0x00014000;*/  /*80 KB*/
-define symbol m_dmem_size                      = smu_and_dmem_size - m_shared_ram_size;  /*96 KB*/
-define exported symbol m_dmem_start            = 0x00140000;
-define exported symbol m_dmem_end              = m_dmem_start + m_dmem_size - 1;
-
-define symbol m_flash_start                    = 0x00000000;
-define symbol m_flash_end                      = 0x0007FFFF;
-
-define symbol m_interrupts_start               = m_flash_start;
-define symbol m_interrupts_end                 = 0x000003FF;
-
-define exported symbol m_text_start             = 0x00000400;
-define exported symbol m_text_end               = m_flash_end;
-
-define symbol m_data0_start                     = 0x00100000;
-define symbol m_data0_end                       = 0x001007FF;
-
-/*Stack moved to the beginning of DMEM to allow for DMEM/SMU memory configuration at runtime.*/
-define symbol m_cstack_start                      = 0x00140000;
-define exported symbol m_cstack_end               = m_cstack_start + __size_cstack__ - 1;
-
-define symbol m_data1_start                       = m_cstack_end + 1;
-define symbol m_data1_end                         = m_dmem_end - __size_heap__;
-
-define exported symbol __HEAP_start__           = m_data1_end + 1;
-if (__size_heap__ > 0) {
-  define exported symbol __HEAP_end__             = __HEAP_start__ + __size_heap__ - 1;
-} else {
-  define exported symbol __HEAP_end__             = __HEAP_start__;
-}
-
 define memory mem with size = 4G;
 
 define region TEXT_region             = mem:[from m_interrupts_start to m_interrupts_end]
@@ -213,23 +203,19 @@ define region DATA_region             = mem:[from m_data0_start to m_data0_end]
                                       | mem:[from m_free_data_start to m_free_data_end];
 define region CSTACK_region           = mem:[from m_cstack_start to m_cstack_end];
 
-define region sqram_debug_region                = mem:[from m_sqram_debug_start         to m_sqram_debug_end];
 define region lowpower_flag_region              = mem:[from m_lowpower_flag_start       to m_lowpower_flag_end];
-define region sqram_btblesqbuf_region           = mem:[from m_sqram_btblesqbuf_start    to m_sqram_btblesqbuf_end];
-define region sqram_btbleaesqbuf_region         = mem:[from m_sqram_btbleaesqbuf_start  to m_sqram_btbleaesqbuf_end];
-define region sqram_rldat_ae_region             = mem:[from m_sqram_rldat_ae_start      to m_sqram_rldat_ae_end];
+//define region sqram_btbleaesqbuf_region         = mem:[from m_sqram_btbleaesqbuf_start  to m_sqram_btbleaesqbuf_end];
+//define region sqram_rldat_ae_region             = mem:[from m_sqram_rldat_ae_start      to m_sqram_rldat_ae_end];
 define region sqram_rldat_region                = mem:[from m_sqram_rldat_start         to m_sqram_rldat_end];
 if (gEnableCoverage_d) {
 define region sqram_coverage_region             = mem:[from sh_mem_coverage_start      to sh_mem_coverage_end];
 }
-define region sqram_dbg_ext_logging_region      = mem:[from dbg_ext_logging_start       to dbg_ext_logging_end];
 
 /* Logging section appended at the end of the nbu binary (not flashed into the device)*/
 define symbol logging_start                     = 0x80000;
 define symbol logging_end                       = 0x90000;
 define region logging                           = mem:[from logging_start               to logging_end];
 define region rpmsg_sh_mem_region               = mem:[from rpmsg_sh_mem_start          to rpmsg_sh_mem_end];
-
 
 define block CSTACK    with alignment = 8, size = __size_cstack__   { };
 define block RW        { readwrite };
@@ -253,13 +239,9 @@ place in DATA_region                        { block ZI };
 place in DATA_region                        { last section .heap };
 place in CSTACK_region                      { block CSTACK };
 
-place in sqram_debug_region                       { readwrite section .debugbuf } ;
-place in lowpower_flag_region                     { readwrite section .lpflag } ;
-place in sqram_btblesqbuf_region                  { readwrite section .btblesqbuf } ;
-place in sqram_btbleaesqbuf_region              { readwrite section .btbleaesqbuf } ;
-place in sqram_rldat_ae_region                  { readwrite section .rl_ae } ;
+//place in sqram_btbleaesqbuf_region              { readwrite section .btbleaesqbuf } ;
+//place in sqram_rldat_ae_region                  { readwrite section .rl_ae } ;
 place in sqram_rldat_region                     { readwrite section .rl_conn } ;
-place in sqram_dbg_ext_logging_region           { readwrite section .trackbuf } ;
 if (gEnableCoverage_d) {
 place in sqram_coverage_region                     { readwrite section .coverage } ;
 }

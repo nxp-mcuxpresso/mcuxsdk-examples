@@ -78,10 +78,6 @@ __HEAP_end__                        = HEAP_SIZE > 0?__HEAP_start__ + HEAP_SIZE -
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
 
-/*m_sqram_debug_size                  = 0x7C;*/
-/*m_sqram_btblesqbuf_size               = 0x5400;*/
-
-
 /********************************************** NBU shared memory **********************************************
 
                                             m_shared_ram_end
@@ -254,7 +250,7 @@ SECTIONS
   {
       __rldat_start__ = .;    /* create a global symbol at rl data start for INIT_BLE_RL_DAT section in startup file */
       *(.rl_conn)
-	  __rldat_end__ = .;      /* create a global symbol at rl data end */
+      __rldat_end__ = .;      /* create a global symbol at rl data end */
   }>sqram_rldat_region
   /*.logging (NOLOAD) : ALIGN(4)
   {

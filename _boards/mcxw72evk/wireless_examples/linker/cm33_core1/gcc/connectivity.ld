@@ -67,6 +67,7 @@ __RAM_VECTOR_TABLE_SIZE_BYTES       = m_ram_vector_table_size;
 
 m_cstack_start                      = m_dmem_start;
 m_cstack_end                        = m_cstack_start + __size_cstack__ - 1;
+
 m_data1_size                        = m_dmem_size - __size_cstack__ - HEAP_SIZE;
 m_data1_start                       = m_cstack_end + 1;
 m_data1_end                         = m_dmem_end - HEAP_SIZE;
@@ -76,10 +77,6 @@ __HEAP_end__                        = HEAP_SIZE > 0?__HEAP_start__ + HEAP_SIZE -
 
 firmware_ram_lower_limit            = DEFINED(lp_ram_lower_limit) ? lp_ram_lower_limit : m_cstack_start;
 firmware_ram_upper_limit            = DEFINED(lp_ram_upper_limit) ? lp_ram_upper_limit : m_data1_end;
-
-/*m_sqram_debug_size                  = 0x7C;*/  /*New section allowing to share debug info to CM33 (LL error/warnings).*/
-/*m_sqram_btblesqbuf_size               = 0x5400;*/
-
 
 /********************************************** NBU shared memory **********************************************
 

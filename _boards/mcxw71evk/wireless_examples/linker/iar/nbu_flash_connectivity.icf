@@ -106,7 +106,6 @@ if (gEnableCoverage_d) {
   define symbol m_sqram_btbleaesqbuf_size         = 0x2700;       /* was 0xF00 but was increased to hold 2 x 3 x 1650 bytes for advertising. */
                                                                   /*Increased to hold 4 advertising set with max adv length = 800 bytes*/
 }
-}
 define symbol m_sqram_btbleaesqbuf_end          = m_sqram_btbleaesqbuf_start + m_sqram_btbleaesqbuf_size -1;
 
 define symbol m_sqram_start                     = m_sqram_btbleaesqbuf_end + 1;
