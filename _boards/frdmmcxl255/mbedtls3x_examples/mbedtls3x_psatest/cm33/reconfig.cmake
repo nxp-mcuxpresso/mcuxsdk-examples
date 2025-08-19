@@ -8,5 +8,4 @@ mcux_add_armgcc_configuration(
 mcux_add_iar_configuration(
     TARGETS debug
     CC "-Om"
-    CX "-Om"
 )
