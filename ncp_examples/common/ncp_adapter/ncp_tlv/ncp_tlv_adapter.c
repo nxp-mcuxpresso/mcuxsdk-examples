@@ -451,6 +451,28 @@ ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref)
     qbuf->is_ref = 1;
     qbuf_tlv = (uint8_t *)tlv_buf;
 
+#if CONFIG_NCP_USE_ENCRYPT
+    if(ncp_tlv_adapter.crypt && ncp_tlv_adapter.crypt->flag)
+    {
+        struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv_buf;
+        if (ncp_cmd_is_data_cmd(cmd_hdr->cmd) == 0)
+        {
+            if (tlv_sz > TLV_CMD_HEADER_LEN)
+            {
+                status = ncp_tlv_encrypt(tlv_buf + TLV_CMD_HEADER_LEN,
+                                qbuf_tlv + TLV_CMD_HEADER_LEN,
+                                tlv_sz - TLV_CMD_HEADER_LEN);
+                if (status != NCP_STATUS_SUCCESS)
+                {
+                    NCP_TLV_STATS_INC(drop);
+                    ncp_adap_e("ncp tlv encrypt err %d", (int)status);
+                    return NCP_STATUS_ERROR;
+                }
+            }
+        }
+    }
+#endif /* CONFIG_NCP_USE_ENCRYPT */
+
     qbuf->tlv_buf = qbuf_tlv;
     chksum = ncp_tlv_chksum(qbuf_tlv, (uint16_t)tlv_sz);
     chksum_buf = qbuf_tlv + tlv_sz;
