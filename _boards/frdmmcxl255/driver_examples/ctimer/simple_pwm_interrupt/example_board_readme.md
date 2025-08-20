@@ -26,4 +26,4 @@ The log below shows example output of the CTimer simple PWM demo using interrupt
 CTimer example to generate a PWM signal
 This example uses interrupts to update the PWM duty cycle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You can measure 2kHz signal with changing duty cycle on the pin P2_14 (Arduino J1-6).
+You can measure 2kHz signal with changing duty cycle on the pin P2_14 (Arduino J1-12).

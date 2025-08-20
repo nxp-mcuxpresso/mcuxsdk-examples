@@ -25,4 +25,4 @@ The log below shows example output of the CTimer simple PWM demo in the terminal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CTimer example to generate a PWM signal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You can measure 20kHz signal with 20% duty cycle on the pin P2_14 (Arduino J1-6).
+You can measure 20kHz signal with 20% duty cycle on the pin P2_14 (Arduino J1-12).
