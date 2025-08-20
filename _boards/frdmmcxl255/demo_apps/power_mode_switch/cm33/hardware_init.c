@@ -180,7 +180,7 @@ void APP_InitROSC(void)
     AON__SMM->BIAS_CTRL = SMM_BIAS_CTRL_xtal_sox_4p_dis_MASK;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
-    
+
     AON__SMM->RTC_XTAL_CONFG2 = SMM_RTC_XTAL_CONFG2_SUPDET_TM_SOX(2) | SMM_RTC_XTAL_CONFG2_CAP_BNK_EN_MASK;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
     AON__SMM->RTC_DCDC_CNTRL = SMM_RTC_DCDC_CNTRL_ISO_MASK | SMM_RTC_DCDC_CNTRL_DGTL_RST_N_MASK |
@@ -247,24 +247,24 @@ void BOARD_Init96MClocksBoot(void)
 
     /* Set SystemCoreClock variable */
     SystemCoreClock = 96000000U;
-    
-    
+
     FMU0->FCTRL = (FMU0->FCTRL & ~FMU_FCTRL_RWSC_MASK) | FMU_FCTRL_RWSC(2);
 }
 
 void BOARD_InitHardware(void)
-{       
+{
     BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_Init96MClocksBoot();
     BOARD_InitDebugConsole();
 
     Power_ClearLpPowerSettings();
+
     CMC_EnableDebugOperation(CMC, false);
 
     EnableIRQ(MU_A_RX_IRQn);
     MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
-    
+
     APP_InitROSC();
 }
 

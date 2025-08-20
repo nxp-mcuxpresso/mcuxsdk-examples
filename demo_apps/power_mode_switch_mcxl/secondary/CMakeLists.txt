@@ -26,3 +26,8 @@ mcux_convert_binary(
     TOOLCHAINS armgcc mdk iar
     BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/core1_image.bin
 )
+
+mcux_add_configuration(
+    TOOLCHAINS armgcc iar mdk
+    AS "-D__ENABLE_LP_BOOT=1"
+)

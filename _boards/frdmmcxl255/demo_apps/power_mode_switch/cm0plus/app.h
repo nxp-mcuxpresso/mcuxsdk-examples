@@ -24,9 +24,11 @@
      "Deep Power Down3",    \
      "Shut Down",           \
      "Active"}
-#define APP_LPTMR_BASE       AON__LPTMR0
-#define LPTMR_SOURCE_CLOCK   (CLOCK_GetFreq(kCLOCK_Fro16k))
-#define LPTMR_USEC_COUNT     10000000
+#define APP_LPTMR_BASE     AON__LPTMR0
+#define LPTMR_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_Fro16k))
+#define LPTMR_USEC_COUNT   10000000
+
+#define APP_RTC_BASE AON__RTC_AON
 
 #define APP_TAMPER_BUTTON_NAME "SW6"
 #define APP_TAMPER_BUTTON_IRQ  GPIO00_AON_IRQn

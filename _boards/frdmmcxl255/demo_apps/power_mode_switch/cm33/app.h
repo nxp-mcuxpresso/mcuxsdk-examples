@@ -33,19 +33,22 @@
         "Active --> Shut Down --> Active",                                                  \
     }
 
-#define DEMO_POWER_MODE_DESC             \
-    {"Selected to enter Sleep(1.28mA@VDD_BAT), then wakeup to Active.", \
-      "Selected to enter Deep Sleep(473uA@VDD_BAT), then wakeup to Active. ",\
-      "Selected to enter Power Down1(470uA@VDD_BAT), then wakeup to Active.",   \
-     "Selected to enter Power Down2(459uA@VDD_BAT), then wakeup to Active.", \
-      "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 15.5uA@VDD_BAT), then wakeup to Active.", \
-      "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter DPD2(All AON SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, press SW5 back to Active.",  \
-     "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter DPD2(No AON SRAM retained, 3.6uA@VDD_BAT), wakeup to Active after 10s later with LPTMR.",  \
-     "Selected to enter DPD2(No AON SRAM retained, 3.4uA@VDD_BAT), then wakeup to Active.",   \
-     "Selected to enter DPD2(All AON SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW5 back to Active.",   \
-     "Selected to enter DPD3(695nA@VDD_BAT).", \
-     "Selected to enter SD(413nA@VDD_BAT)."     \
-    }
+#define DEMO_POWER_MODE_DESC                                                                                           \
+    {"Selected to enter Sleep(1.28mA@VDD_BAT), then wakeup to Active.",                                                \
+     "Selected to enter Deep Sleep(473uA@VDD_BAT), then wakeup to Active. ",                                           \
+     "Selected to enter Power Down1(470uA@VDD_BAT), then wakeup to Active.",                                           \
+     "Selected to enter Power Down2(459uA@VDD_BAT), then wakeup to Active.",                                           \
+     "Selected to enter DPD1(No CM33 SRAM retained, CM0P execute WFI, 15.5uA@VDD_BAT), then wakeup to Active.",        \
+     "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter " \
+     "DPD2(All AON SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 24uA) after 10s later with LPTMR, " \
+     "press SW5 back to Active.",                                                                                      \
+     "Selected to enter DPD1(No CM33 SRAM retained, CM0P active, 22uA@VDD_BAT), input any key with AON UART to enter " \
+     "DPD2(No AON SRAM retained, 3.6uA@VDD_BAT), wakeup to Active after 10s later with LPTMR.",                        \
+     "Selected to enter DPD2(No AON SRAM retained, 3.4uA@VDD_BAT), then wakeup to Active.",                            \
+     "Selected to enter DPD2(All AON SRAM retained, 7.8uA@VDD_BAT), wakeup to DPD1(No CM33 SRAM retained, CM0P "       \
+     "execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW5 back to Active.",                              \
+     "Selected to enter DPD3(695nA@VDD_BAT).",                                                                         \
+     "Selected to enter SD(413nA@VDD_BAT)."}
 
 #define APP_MU         MUA
 #define APP_MU_CHANNEL (0U)
@@ -62,11 +65,12 @@
 #define APP_WAKEUP_BUTTON_GPIO GPIO1
 #define APP_WAKEUP_BUTTON_PIN  14U
 
-#define APP_LPTMR_BASE     AON__LPTMR0
-#define LPTMR_USEC_COUNT   10000000U
+#define APP_LPTMR_BASE   AON__LPTMR0
+#define LPTMR_USEC_COUNT 10000000U
 
 #define LPTMR_SOURCE_CLOCK (CLOCK_GetFreq(kCLOCK_Fro16k))
 
+#define APP_RTC_BASE        AON__RTC_AON
 #define RTC_ALARM0_TIME_SEC 10U
 #define RTC_ALARM1_TIME_SEC 15U
 

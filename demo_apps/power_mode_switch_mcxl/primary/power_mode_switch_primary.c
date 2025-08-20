@@ -17,6 +17,7 @@
 #include "fsl_cmc.h"
 #include "fsl_smm.h"
 #include "fsl_advc.h"
+#include "fsl_rtc.h"
 
 /*******************************************************************************
  * Definitions
@@ -25,15 +26,15 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+static void APP_RTCAlaramCallback(rtc_callback_type_t type);
 static void APP_CopyCore1Image(void);
-static uint32_t DEMO_GetTargetPowerTransition(void);
-static power_low_power_mode_t DEMO_EnableWakeupSource(uint32_t powerTrans);
-static void APP_EnableExtInternalWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
+static uint32_t APP_GetTargetPowerTransition(void);
+static power_low_power_mode_t APP_EnableWakeupSource(uint32_t powerTrans);
+static void APP_EnableExtInterruptlWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static bool APP_GetWakeupReason(void);
-static void APP_ClearPlsRAM(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -56,30 +57,28 @@ power_pd1_config_t pd1Config = {
     .enableIVSMode         = false,
 };
 
-power_pd2_config_t pd2Config = {
-    .mainWakeupSource      = kPower_WS_NONE,
-    .aonWakeupSource       = kPower_WS_NONE,
-    .aonRamArraysToRetain  = kPower_AonDomainAllRams,
-    .mainRamArraysToRetain = kPower_MainDomainAllRams,
-    .enableIVSMode         = false,
-    .disableFRO10M         = false,
+power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
+                                .aonWakeupSource       = kPower_WS_NONE,
+                                .aonRamArraysToRetain  = kPower_AonDomainAllRams,
+                                .mainRamArraysToRetain = kPower_MainDomainAllRams,
+                                .enableIVSMode         = false,
+                                .disableFRO10M         = false,
 #if APP_ENABLE_ADVC
-    .vddCoreAonVoltage     = kPower_VddCoreAon_AdvcControl
+                                .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
     .vddCoreAonVoltage     = kPower_VddCoreAon_630mV,
 #endif
 };
 
-power_dpd1_config_t dpd1Config = {
-    .mainWakeupSource      = kPower_WS_NONE,
-    .mainRamArraysToRetain = kPower_MainDomainNoneRams,
-    .disableBandgap        = true,
-    .enableIVSMode         = false,
+power_dpd1_config_t dpd1Config = {.mainWakeupSource      = kPower_WS_NONE,
+                                  .mainRamArraysToRetain = kPower_MainDomainNoneRams,
+                                  .disableBandgap        = true,
+                                  .enableIVSMode         = false,
 #if APP_ENABLE_ADVC
-    .vddCoreAonVoltage     = kPower_VddCoreAon_AdvcControl
+                                  .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
     .vddCoreAonVoltage     = kPower_VddCoreAon_592mV,
-#endif 
+#endif
 };
 
 power_dpd2_config_t dpd2Config = {
@@ -99,7 +98,7 @@ power_dpd3_config_t dpd3Config = {
 };
 
 power_sd_config_t sdConfig = {
-    .wakeupSource = kPower_WS_NONE,
+    .wakeupSource     = kPower_WS_NONE,
     .fro16KOutputFreq = kPMU_FRO16KOutput8KHz,
 };
 
@@ -147,28 +146,27 @@ void LPTMR_AON_IRQHandler(void)
     __ISB();
 }
 
-void RTC_ALARM0_IRQHandler(void)
+static void APP_RTCAlaramCallback(rtc_callback_type_t type)
 {
     Power_ClearLpPowerSettings();
-    DisableIRQ(RTC_ALARM0_IRQn);
-    AON__RTC_AON->CONFIG |= RTC_CONFIG_ALARM0_DIS_MASK;
-    AON__RTC_AON->CONFIG &= ~RTC_CONFIG_EN_MASK;
-    AON__RTC_AON->INT = RTC_INT_ALARM0_IF_MASK;
-    AON__RTC_AON->INT &= ~RTC_INT_ALARM0_IE_MASK;
-    __DSB();
-    __ISB();
-}
+    if (type == kRTC_Alarm0Callback)
+    {
+        DisableIRQ(RTC_ALARM0_IRQn);
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_0);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
+    else if (type == kRTC_Alarm1Callback)
+    {
+        DisableIRQ(RTC_ALARM1_IRQn);
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_1);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
 
-void RTC_ALARM1_IRQHandler(void)
-{
-    Power_ClearLpPowerSettings();
-    DisableIRQ(RTC_ALARM1_IRQn);
-    AON__RTC_AON->CONFIG |= RTC_CONFIG_ALARM1_DIS_MASK;
-    AON__RTC_AON->CONFIG &= ~RTC_CONFIG_EN_MASK;
-    AON__RTC_AON->INT = RTC_INT_ALARM1_IF_MASK;
-    AON__RTC_AON->INT &= ~RTC_INT_ALARM1_IE_MASK;
-    __DSB();
-    __ISB();
+    SDK_ISR_EXIT_BARRIER;
 }
 
 int main(void)
@@ -187,38 +185,19 @@ int main(void)
     PRINTF("Core Clock Frequency: %d\r\n", CLOCK_GetCoreSysClkFreq());
     CMC_ConfigFlashMode(CMC, true, true, true);
     bool wakeupReset = APP_GetWakeupReason();
-    smm_backup_reg_content_t backupReg;
-
-    SMM_ReadFromBackupReg(AON__SMM, &backupReg);
-    if ((wakeupReset == true) && (backupReg.word1 == (0x5A5A | ((uint32_t)kPower_DeepPowerDown1 << 16U))))
+    APP_CopyCore1Image();
+    APP_BootCore1();
+    PRINTF("Start to communication with secondary core...\r\n");
+    if (Power_CreateHandle(&powerHandle, APP_MU_CHANNEL) != kStatus_Success)
     {
-        Power_RestoreHandleOffset(backupReg.word2);
-        /* Wakeup from DPD1 mode. */
-        backupReg.word1 = 0UL;
-        backupReg.word2 = 0UL;
-        SMM_WriteToBackupReg(AON__SMM, &backupReg);
-    }
-    else
-    {
-        backupReg.word1 = 0UL;
-        backupReg.word2 = 0UL;
-        SMM_WriteToBackupReg(AON__SMM, &backupReg);
-        APP_ClearPlsRAM();
-        APP_CopyCore1Image();
-        APP_BootCore1();
-        PRINTF("Start to communication with secondary core...\r\n");
-
-        if (Power_CreateHandle(&powerHandle, APP_MU_CHANNEL) != kStatus_Success)
-        {
-            PRINTF("Fail to sync with secondary core!\r\n");
-            return 0;
-        }
+        PRINTF("Fail to sync with secondary core!\r\n");
+        return 0;
     }
 
     while (1)
     {
-        powerTrans   = DEMO_GetTargetPowerTransition();
-        targetLpMode = DEMO_EnableWakeupSource(powerTrans);
+        powerTrans   = APP_GetTargetPowerTransition();
+        targetLpMode = APP_EnableWakeupSource(powerTrans);
         Power_EnterLowPowerMode(targetLpMode, powerConfigs[(uint8_t)targetLpMode]);
         Power_ClearTargetPowerMode();
         PRINTF("\r\n--------- Next Loop ---------\r\n");
@@ -254,7 +233,7 @@ static void APP_CopyCore1Image(void)
 #endif
 }
 
-static power_low_power_mode_t DEMO_EnableWakeupSource(uint32_t powerTrans)
+static power_low_power_mode_t APP_EnableWakeupSource(uint32_t powerTrans)
 {
     bool wakeupSourceSupported = false;
     bool printExtIntWakeup     = false;
@@ -311,7 +290,7 @@ static power_low_power_mode_t DEMO_EnableWakeupSource(uint32_t powerTrans)
                 if (printExtIntWakeup)
                 {
                     wakeupSourceSupported = true;
-                    APP_EnableExtInternalWakeup(firstMode, secondMode, thirdMode);
+                    APP_EnableExtInterruptlWakeup(firstMode, secondMode, thirdMode);
                 }
                 break;
             }
@@ -373,7 +352,7 @@ static power_low_power_mode_t DEMO_EnableWakeupSource(uint32_t powerTrans)
     return (power_low_power_mode_t)firstMode;
 }
 
-static uint32_t DEMO_GetTargetPowerTransition(void)
+static uint32_t APP_GetTargetPowerTransition(void)
 {
     uint8_t ch;
 
@@ -414,7 +393,7 @@ static uint32_t DEMO_GetTargetPowerTransition(void)
     return inputPowerTrans;
 }
 
-static void APP_EnableExtInternalWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
+static void APP_EnableExtInterruptlWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
 {
     PRINTF("Please Press %s Button to wakeup!\r\n", APP_EXT_INT_BUTTON);
     switch ((power_low_power_mode_t)firstMode)
@@ -430,6 +409,7 @@ static void APP_EnableExtInternalWakeup(uint8_t firstMode, uint8_t secondMode, u
         case kPower_DeepPowerDown1:
         {
             dpd1Config.mainWakeupSource = kPower_WS_Main_ExternalINTRiseEdge;
+            dpd1Config.nextTrans        = kPower_Dpd1ToActive;
             if (secondMode == (uint8_t)kPower_DeepPowerDown2)
             {
                 if (thirdMode == (uint8_t)kPower_DeepPowerDown1)
@@ -471,6 +451,7 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
         case kPower_DeepPowerDown1:
         {
             dpd1Config.mainWakeupSource = kPower_WS_Main_LptmrInt;
+            dpd1Config.nextTrans        = kPower_Dpd1ToActive;
             break;
         }
         case kPower_DeepPowerDown2:
@@ -546,6 +527,7 @@ static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uin
         case kPower_DeepPowerDown1:
         {
             dpd1Config.mainWakeupSource = kPower_WS_Main_RtcAlarm0;
+            dpd1Config.nextTrans        = kPower_Dpd1ToActive;
             break;
         }
         case kPower_DeepPowerDown2:
@@ -583,21 +565,24 @@ static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uin
             break;
         }
     }
+    rtc_config_t rtcConfig;
 
-    AON__RTC_AON->CNT_H = 0x0000;
-    AON__RTC_AON->CNT_M = 0x0000;
-    AON__RTC_AON->CNT_L = 0x0000;
-    /* Enable RTC alarm 0 */
-    AON__RTC_AON->ALARM_H   = RTC_ALARM_H_ALARM_REP(1) | RTC_ALARM_H_ALARM_NUM(0);
-    AON__RTC_AON->ALARM_MID = 0x0000;
-    AON__RTC_AON->ALARM_LOW = RTC_ALARM0_TIME_SEC * 100;
-    SDK_DelayAtLeastUs(6400, SystemCoreClock);
-    AON__RTC_AON->CONFIG &= ~RTC_CONFIG_ALARM0_DIS_MASK;
-    AON__RTC_AON->INT |= RTC_INT_ALARM0_IE_MASK;
+    RTC_GetDefaultConfig(&rtcConfig);
+    rtcConfig.operatingMode = kRTC_ModeFreeRunningCounter;
 
-    SDK_DelayAtLeastUs(6400, SystemCoreClock);
+    RTC_Init(APP_RTC_BASE, &rtcConfig);
+
+    RTC_RegisterCallBack(APP_RTCAlaramCallback);
+    RTC_SetFreeRunningCounter(APP_RTC_BASE, 0ULL);
+    RTC_StartTimer(APP_RTC_BASE);
+
+    rtc_free_run_alarm_config_t alarm0Config;
+    alarm0Config.alarmCounter = RTC_ALARM0_TIME_SEC * 100;
+    alarm0Config.enable       = true;
+    alarm0Config.mode         = kRTC_AlarmModeRepeat;
+    RTC_ConfigureFreeRunningAlarm(APP_RTC_BASE, kRTC_Alarm_0, &alarm0Config);
+    RTC_EnableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
     EnableIRQ(RTC_ALARM0_IRQn);
-    AON__RTC_AON->CONFIG |= RTC_CONFIG_EN_MASK | RTC_CONFIG_FREE_RUNNING_MASK;
 }
 
 static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
@@ -620,6 +605,7 @@ static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uin
         case kPower_DeepPowerDown1:
         {
             dpd1Config.mainWakeupSource = kPower_WS_Main_RtcAlarm1;
+            dpd1Config.nextTrans        = kPower_Dpd1ToActive;
             break;
         }
         case kPower_DeepPowerDown2:
@@ -657,17 +643,24 @@ static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uin
         }
     }
 
-    /* Enable RTC alarm 1 */
-    AON__RTC_AON->ALARM_H   = RTC_ALARM_H_ALARM_REP(1) | RTC_ALARM_H_ALARM_NUM(1);
-    AON__RTC_AON->ALARM_MID = 0x0000;
-    AON__RTC_AON->ALARM_LOW = RTC_ALARM1_TIME_SEC * 100;
-    SDK_DelayAtLeastUs(6400, SystemCoreClock);
-    AON__RTC_AON->CONFIG &= ~RTC_CONFIG_ALARM1_DIS_MASK;
-    AON__RTC_AON->INT |= RTC_INT_ALARM1_IE_MASK;
+    rtc_config_t rtcConfig;
 
-    SDK_DelayAtLeastUs(6400, SystemCoreClock);
+    RTC_GetDefaultConfig(&rtcConfig);
+    rtcConfig.operatingMode = kRTC_ModeFreeRunningCounter;
+
+    RTC_Init(APP_RTC_BASE, &rtcConfig);
+
+    RTC_RegisterCallBack(APP_RTCAlaramCallback);
+    RTC_SetFreeRunningCounter(APP_RTC_BASE, 0ULL);
+    RTC_StartTimer(APP_RTC_BASE);
+
+    rtc_free_run_alarm_config_t alarm1Config;
+    alarm1Config.alarmCounter = RTC_ALARM1_TIME_SEC * 100;
+    alarm1Config.enable       = true;
+    alarm1Config.mode         = kRTC_AlarmModeRepeat;
+    RTC_ConfigureFreeRunningAlarm(APP_RTC_BASE, kRTC_Alarm_1, &alarm1Config);
+    RTC_EnableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
     EnableIRQ(RTC_ALARM1_IRQn);
-    AON__RTC_AON->CONFIG |= RTC_CONFIG_EN_MASK | RTC_CONFIG_FREE_RUNNING_MASK;
 }
 
 static bool APP_GetWakeupReason(void)
@@ -704,9 +697,4 @@ static bool APP_GetWakeupReason(void)
     }
 
     return false;
-}
-
-static void APP_ClearPlsRAM(void)
-{
-    (void)memset((void *)0xA1000000UL, 0U, 32 * 1024);
 }

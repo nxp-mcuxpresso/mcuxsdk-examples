@@ -19,6 +19,7 @@ mcux_add_configuration(
     TOOLCHAINS armgcc iar mdk
     CC "-DCORE1_IMAGE_COPY_TO_RAM\
        -DFSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1"
+    AS "-D__ENABLE_LP_BOOT=1"
 )
 
 mcux_add_linker_symbol(

@@ -86,6 +86,11 @@ void BOARD_InitHardware(void)
 
     EnableIRQ(SMM_EXT_IRQn);
     AON__SMM->PWDN_CONFIG &= ~SMM_PWDN_CONFIG_Q_TMT_EN_MASK;
+
+    if ((AON__CGU->CLK_CONFIG & CGU_CLK_CONFIG_FRO10M_EN_MASK) != 0UL)
+    {
+        AON__CGU->CLK_CONFIG &= ~CGU_CLK_CONFIG_FRO10M_EN_MASK;
+    }
 }
 
 /*${function:end}*/
