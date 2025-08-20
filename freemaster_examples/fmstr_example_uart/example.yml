@@ -229,7 +229,6 @@ fmstr_example_uart:
     frdmmcxe247: []
     frdmmcxe31b: []
     frdmmcxl255@cm33: []
-    frdmmcxl255@cm0plus: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
