@@ -6,8 +6,6 @@
  */
 
 #include "fsl_debug_console.h"
-#include "fsl_flash.h"
-#include "fsl_flash_ffr.h"
 #include "fsl_common.h"
 #include "pin_mux.h"
 #include "board.h"
