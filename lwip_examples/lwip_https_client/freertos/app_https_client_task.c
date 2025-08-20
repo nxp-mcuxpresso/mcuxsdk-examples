@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -16,7 +16,9 @@
 
 static void client_task(void *args);
 
-void app_https_client_task_init(https_client_task_context_t *context)
+void app_https_client_task_init(https_client_task_context_t *context,
+                                const configSTACK_DEPTH_TYPE stack_depth,
+                                UBaseType_t priority)
 {
     https_client_task_context_t *args;
     BaseType_t result;
@@ -30,7 +32,7 @@ void app_https_client_task_init(https_client_task_context_t *context)
 
     memcpy(args, context, sizeof(https_client_task_context_t));
 
-    result = xTaskCreate(client_task, "client_task", 4096, args, 4, NULL);
+    result = xTaskCreate(client_task, "client_task", stack_depth, args, priority, NULL);
     if (result != pdTRUE)
     {
         vPortFree(args);

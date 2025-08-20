@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2024 NXP
+ * Copyright 2016-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -83,8 +83,18 @@
 
 #ifndef INIT_THREAD_PRIO
 /*! @brief Priority of the temporary initialization thread. */
-#define INIT_THREAD_PRIO 5
+#define INIT_THREAD_PRIO DEFAULT_THREAD_PRIO
 #endif /* INIT_THREAD_PRIO */
+
+#ifndef HTTPS_CLIENT_THREAD_STACKSIZE
+/*! @brief Stack size of the HTTPS client thread in words. */
+#define HTTPS_CLIENT_THREAD_STACKSIZE 4096
+#endif
+
+#ifndef HTTPS_CLIENT_THREAD_PRIO
+/*! @brief Priority of the HTTPS client thread. */
+#define HTTPS_CLIENT_THREAD_PRIO (configMAX_PRIORITIES - 14U)
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -236,7 +246,7 @@ static void init_task(void *arg)
     UNLOCK_TCPIP_CORE();
 
     /* Start application task */
-    app_https_client_task_init(&client_context);
+    app_https_client_task_init(&client_context, HTTPS_CLIENT_THREAD_STACKSIZE, HTTPS_CLIENT_THREAD_PRIO);
 
     vTaskDelete(NULL);
 }
