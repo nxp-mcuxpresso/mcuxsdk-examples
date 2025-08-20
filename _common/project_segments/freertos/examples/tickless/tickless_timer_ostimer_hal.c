@@ -168,11 +168,20 @@ static uint32_t ostimer_calculate_elapsed_ticks(void *base, uint32_t reload_valu
     /* Check if the match interrupt occurred */
     uint32_t status = OSTIMER_GetStatusFlags(ostimerBase);
 
+    /* Safety check with explicit bounds checking */
+    uint32_t max_allowed_ticks = 0U;
+
+    if (expected_idle_time > 1U)
+    {
+        /* Safe subtraction since expected_idle_time > 1 */
+        max_allowed_ticks = expected_idle_time - 1U;
+    }
+
     if (status & kOSTIMER_MatchInterruptFlag)
     {
         /* Timer expired - we slept for the full expected time minus 1
          * (since the tick interrupt will be processed after this function returns) */
-        complete_tick_periods = expected_idle_time - 1;
+        complete_tick_periods = max_allowed_ticks;
     }
     else
     {
@@ -215,9 +224,9 @@ static uint32_t ostimer_calculate_elapsed_ticks(void *base, uint32_t reload_valu
     }
 
     /* Safety check */
-    if (complete_tick_periods > expected_idle_time - 1)
+    if (complete_tick_periods > max_allowed_ticks)
     {
-        complete_tick_periods = expected_idle_time - 1;
+        complete_tick_periods = max_allowed_ticks;
     }
 
     return complete_tick_periods;

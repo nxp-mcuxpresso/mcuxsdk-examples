@@ -210,10 +210,19 @@ static uint32_t lptmr_calculate_elapsed_ticks(void *base, uint32_t reload_value,
     /* Calculate complete tick periods */
     uint32_t complete_tick_periods = current_count / timer_counts_for_one_tick;
 
-    /* Safety check */
-    if (complete_tick_periods > expected_idle_time - 1)
+    /* Safety check with explicit bounds checking */
+    uint32_t max_allowed_ticks = 0U;
+
+    if (expected_idle_time > 1U)
     {
-        complete_tick_periods = expected_idle_time - 1;
+        /* Safe subtraction since expected_idle_time > 1 */
+        max_allowed_ticks = expected_idle_time - 1U;
+    }
+
+    /* Safety check */
+    if (complete_tick_periods > max_allowed_ticks)
+    {
+        complete_tick_periods = max_allowed_ticks;
     }
 
     return complete_tick_periods;
