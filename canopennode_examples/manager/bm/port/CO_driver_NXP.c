@@ -368,8 +368,16 @@ static void prv_read_can_received_msg(CAN_Type *base, uint8_t mbIdx, uint32_t fi
     uint16_t index;            /* index of received message */
     uint32_t rcvMsgIdent;      /* identifier of the received message */
     uint8_t messageFound = 0;
-    flexcan_frame_t *pRxFrame = rxXfer[mbIdx - RX_MB_FIRST_INDEX].frame;
+    flexcan_frame_t *pRxFrame;
 
+    if (mbIdx >= RX_MB_FIRST_INDEX)
+    {
+        pRxFrame = rxXfer[mbIdx - RX_MB_FIRST_INDEX].frame;
+    }
+    else
+    {
+        return;
+    }
     /* Setup identifier (with RTR) and length */
     rcvMsg.ident = (pRxFrame->id >> CAN_ID_STD_SHIFT) | (pRxFrame->type == kFLEXCAN_FrameTypeRemote ? FLAG_RTR : 0x00);
     rcvMsg.dlc   = pRxFrame->length;

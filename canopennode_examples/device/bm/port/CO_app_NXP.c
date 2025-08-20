@@ -24,7 +24,7 @@ CANopenNodeNXP *canopenNodeNXP;
 CO_t *CO = NULL; /* CANopen object */
 
 /* Global variables */
-uint32_t time_old, time_current;
+uint64_t time_old, time_current;
 CO_ReturnError_t err;
 volatile uint64_t g_systickCounter = 0;
 volatile uint8_t g_reqFlag = 0;
@@ -272,7 +272,6 @@ int canopen_app_resetCommunication(void)
 
 void canopen_app_process(void)
 {
-    static int time = 0;
     static uint32_t testData = 0;
 
     testData++;
@@ -288,12 +287,11 @@ void canopen_app_process(void)
     /* get time difference since last function call */
     time_current = GetTickCounter();
 
-    if ((time_current - time_old) > 0)
+    if (time_current > time_old)
     {
-        time++;
         /* CANopen process */
         CO_NMT_reset_cmd_t reset_status;
-        uint32_t timeDifference_us = (time_current - time_old) * 1000;
+        uint64_t timeDifference_us = (time_current - time_old) * 1000;
         time_old = time_current;
         reset_status = CO_process(CO, false, timeDifference_us, NULL);
         canopenNodeNXP->outStatusLEDRed = CO_LED_RED(CO->LEDs, CO_LED_CANopen);
