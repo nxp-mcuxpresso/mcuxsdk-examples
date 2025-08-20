@@ -70,6 +70,8 @@
 #define MAX_CHARACTERISTICS 20
 /** Maximum number of character descriptors */
 #define MAX_CHAR_DESCRIPTORS 10
+/** Flash erase time in us */
+#define ERASE_TIME 20000U
 
 #define CONVERT_CTIMER_COUNT_TO_SEC(n) ((float)n / (float)CLOCK_GetCTimerClkFreq(0))
 
@@ -982,12 +984,36 @@ static void MainTask(void *argument)
     }
 }
 
-#if (gAppUseNvm_d)
 void vApplicationIdleHook(void)
 {
-    NvIdle();
+#if defined(gAppUseNvm_d) && (gAppUseNvm_d > 0)
+    uint32_t remainingTime = 0xFFFFFFFFU;
+
+    /* query the LL for the idle time */
+    blec_result_t status = BLEController_GetRemainingTimeForNextEvent(&remainingTime);
+    if (status != kBLEC_Success)
+    {
+        /* Consider the BLE LL busy if it returns an error */
+        remainingTime = 0;
+    }
+
+    /* Check if the next BLE event is far enough to perform NVM operations, we take ERASE_TIME as worst case scenario */
+    if(remainingTime > ERASE_TIME)
+    {
+        /* NvIdle returns the number of operation executed but we don't need this information */
+        (void)NvIdle();
+    }
+#endif
 }
-#endif /* gAppUseNvm_d */
+
+bool_t BluetoothLEHost_IsConnectivityTaskToProcess(void)
+{
+#if defined(gAppUseNvm_d) && (gAppUseNvm_d > 0)
+    return NvIsPendingOperation();
+#else
+    return FALSE;
+#endif
+}
 
 /*!
  * @brief Main function
@@ -1021,16 +1047,14 @@ int main(void)
         /* Handle OS tasks */
         OSA_ProcessTasks();
 
-        if (!gUseRtos_c)
-        {
-            //NvIdle();
-        }
+        /* Handle Idle tasks */
+        vApplicationIdleHook();
 
         OSA_DisableIRQGlobal();
 
         /* Check if some connectivity tasks have turned to ready state from interrupts or
               if messages are to be processed in Application process */
-        if ((OSA_TaskShouldYield() == FALSE) && BLEController_EmngrIsIdle())
+        if ((OSA_TaskShouldYield() == FALSE) && BLEController_EmngrIsIdle() && (BluetoothLEHost_IsConnectivityTaskToProcess() == FALSE))
         {
             __WFI();
         }
