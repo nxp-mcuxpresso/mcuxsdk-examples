@@ -1050,7 +1050,7 @@ static ncp_status_t sdio_card_init(void)
     ret = SDIO_CardInit(&g_sdio_card);
     if (ret != kStatus_Success)
     {
-        ncp_adap_e("%s: SDIO_CardInit fail ret=0x%x", __FUNCTION__, ret);
+        ncp_adap_d("%s: SDIO_CardInit fail ret=0x%x", __FUNCTION__, ret);
         return NCP_STATUS_ERROR;
     }
     ncp_adap_d("%s: SDIO_CardInit success", __FUNCTION__);
@@ -1094,7 +1094,7 @@ static ncp_status_t sdio_drvInit(void)
 
     if (sdio_card_init() != NCP_STATUS_SUCCESS)
     {
-        ncp_adap_e("Card initialization failed");
+        ncp_adap_d("Card initialization failed");
         return NCP_STATUS_ERROR;
     }
     else
@@ -1113,7 +1113,7 @@ static ncp_status_t sdio_hostInit(void)
     ret = sdio_drvInit();
     if (ret != NCP_STATUS_SUCCESS)
     {
-        ncp_adap_e("Failed to int sdio driver");
+        ncp_adap_d("Failed to int sdio driver");
         return NCP_STATUS_ERROR;
     }
 
@@ -1172,7 +1172,7 @@ static ncp_status_t ncp_sdhost_CardInit(void)
     ret = sdio_hostInit();
     if (ret != NCP_STATUS_SUCCESS)
     {
-        ncp_adap_e("Failed to init sdio host driver");
+        ncp_adap_d("Failed to init sdio host driver");
         return NCP_STATUS_ERROR;
     }
     ncp_adap_d("sdio_hostInit done");
@@ -1252,7 +1252,7 @@ retry:
 
         if (NCP_STATUS_SUCCESS != ncp_sdhost_CardInit())
         {
-            ncp_adap_e("Failed to re-enumerate sdio card");
+            ncp_adap_d("Failed to re-enumerate sdio card");
             OSA_TimeDelay(1000);
             goto retry;
         }
