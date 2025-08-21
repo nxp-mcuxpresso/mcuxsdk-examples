@@ -40,3 +40,5 @@ lwip_iperf_enet_qos_bm:
     frdmmcxe31b:
     - -armgcc@debug
     - -armgcc@release
+    - -mdk@debug
+    - -mdk@release
