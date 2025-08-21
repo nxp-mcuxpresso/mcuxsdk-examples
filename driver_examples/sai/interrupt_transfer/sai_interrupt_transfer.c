@@ -102,7 +102,7 @@ int main(void)
     /*  xfer structure */
     temp          = (uint32_t)music;
     xfer.data     = (uint8_t *)temp;
-    xfer.dataSize = 24000;
+    xfer.dataSize = MUSIC_LEN;
     SAI_TransferSendNonBlocking(DEMO_SAI, &txHandle, &xfer);
     /* Wait until finished */
     while (isFinished != true)
