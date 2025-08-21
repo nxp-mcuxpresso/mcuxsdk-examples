@@ -75,7 +75,7 @@ class Dut(object):
         if idx == 1:
             return json.dumps({"error": "timeout"})
         self.cli.write("%s\r" %cmd)
-        idx = self.cli.expect(["Results:(.*)=> ",  pexpect.TIMEOUT], timeout=10)
+        idx = self.cli.expect(["Results:(.*)=> ",  pexpect.TIMEOUT], timeout=300)
         if idx == 1:
             return json.dumps({"outputs": self.cli.match.group(1).strip().decode()})
         elif idx == 2:

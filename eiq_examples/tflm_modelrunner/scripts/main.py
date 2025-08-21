@@ -53,7 +53,7 @@ def v1_put(serialId):
         block_count = int(bc)
         buf = b''
         dut = Dut(serialId)
-        dut.reset()
+        #dut.reset()
         del(dut)
         return resp
     for filename in request.files.keys():
@@ -65,7 +65,7 @@ def v1_put(serialId):
             block_count = int(buf)
             buf = b''
             dut = Dut(serialId)
-            dut.reset()
+            #dut.reset()
             del(dut)
             return resp
     if block_count == 0:
