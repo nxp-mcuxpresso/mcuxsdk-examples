@@ -7,7 +7,6 @@ lwip_examples
    :maxdepth: 1
 
 
-   enet_iperf3/readme.md
    lwip_dhcp/index.rst
    lwip_dhcp_enet_qos/index.rst
    lwip_dhcp_usb/index.rst
