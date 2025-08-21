@@ -269,7 +269,7 @@ int ncp_tlv_adapter_is_encrypt_mode(void)
     return adapter->crypt && adapter->crypt->flag;
 }
 
-static ncp_status_t ncp_tlv_encrypt(void *input, void *output, size_t input_len)
+static ncp_status_t ncp_tlv_encrypt(unsigned char *input, unsigned char *output, size_t input_len)
 {
     ncp_tlv_adapter_t *adapter = &ncp_tlv_adapter;
     int ret = 0;  
@@ -294,7 +294,7 @@ static ncp_status_t ncp_tlv_encrypt(void *input, void *output, size_t input_len)
     return NCP_STATUS_SUCCESS;
 }
 
-static ncp_status_t ncp_tlv_decrypt(void *input, size_t input_len)
+static ncp_status_t ncp_tlv_decrypt(unsigned char *input, size_t input_len)
 {
     ncp_tlv_adapter_t *adapter = &ncp_tlv_adapter;
     int ret = 0;
@@ -387,8 +387,8 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
             (void) memcpy(qbuf_tlv, tlv_buf, TLV_CMD_HEADER_LEN);
             if (tlv_sz > TLV_CMD_HEADER_LEN)
             {
-                status = ncp_tlv_encrypt(tlv_buf + TLV_CMD_HEADER_LEN,
-                                qbuf_tlv + TLV_CMD_HEADER_LEN,
+                status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
+                                (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
                                 tlv_sz - TLV_CMD_HEADER_LEN);
                 if (status != NCP_STATUS_SUCCESS)
                 {
@@ -459,8 +459,8 @@ ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref)
         {
             if (tlv_sz > TLV_CMD_HEADER_LEN)
             {
-                status = ncp_tlv_encrypt(tlv_buf + TLV_CMD_HEADER_LEN,
-                                qbuf_tlv + TLV_CMD_HEADER_LEN,
+                status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
+                                (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
                                 tlv_sz - TLV_CMD_HEADER_LEN);
                 if (status != NCP_STATUS_SUCCESS)
                 {
@@ -635,7 +635,7 @@ void ncp_tlv_dispatch(void *tlv, size_t tlv_sz)
         struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv;
         if (!ncp_cmd_is_data_cmd(cmd_hdr->cmd))
         {
-            status = ncp_tlv_decrypt(tlv + TLV_CMD_HEADER_LEN, tlv_sz - TLV_CMD_HEADER_LEN);
+            status = ncp_tlv_decrypt((unsigned char *)tlv + TLV_CMD_HEADER_LEN, tlv_sz - TLV_CMD_HEADER_LEN);
             if (status != NCP_STATUS_SUCCESS)
             {
                 ncp_adap_e("ncp tlv decrypt err %d", (int)status);
