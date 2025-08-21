@@ -9,6 +9,6 @@
 /* Cortex-M33 core0 copies to HiFi4 */
 #define DSP_LITERAL_ADDRESS (uint32_t *)0x24000000
 #define DSP_BOOT_ADDRESS    (uint32_t *)0x24020000
-#define DSP_SRAM_ADDRESS    (uint32_t *)0x20400000
+#define DSP_SRAM_ADDRESS    (uint32_t *)0x00200000
 
 #endif
