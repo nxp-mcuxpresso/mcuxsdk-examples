@@ -13,15 +13,15 @@ Before using **ELE HSEB**, you must first install the **ELE HSEB Firmware (FW).*
 
 ### Firmware Installation Preparation
 To install the ELE HSEB FW, the flash must be programmed and a reset must be performed.
-  
+
 The most convenient way to program the firmware is by using **J-Link Commander** with the **on-board debugger**.
-  
+
 For detailed instructions on setting up the J-Link firmware for the on-board debugger, please refer to the **Getting Started** documentation. A simplified version of the setup steps is provided below:
   - Close jumper **JP3**
   - Use **MCU-Link scripts** (version v3.160 or higher) for J-Link programming
- 
+
 ### Firmware Location
-    <SDK_root>/firmware/edgelock/hseb
+    <SDK_root>/firmware/edgelock/ELE_HSEB
 
 ### Firmware Installation
 
