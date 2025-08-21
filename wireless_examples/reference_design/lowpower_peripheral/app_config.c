@@ -4,7 +4,7 @@
 ********************************************************************************** */
 /*! *********************************************************************************
 * Copyright (c) 2015, Freescale Semiconductor, Inc.
-* Copyright 2016-2019 NXP
+* Copyright 2016-2019, 2025 NXP
 * All rights reserved.
 *
 * \file
@@ -63,7 +63,9 @@ gapExtAdvertisingParameters_t gAppExtAdvParams =
     /* primaryPHY */                    (gapLePhyMode_t)gLePhy1M_c, \
     /* secondaryPHY */                  (gapLePhyMode_t)gLePhy1M_c, \
     /* secondaryAdvMaxSkip */           0, \
-    /* enableScanReqNotification*/      FALSE \
+    /* enableScanReqNotification*/      FALSE, \
+    /* primaryAdvPhyOptions */      gLeCodingNoPreference_c, \
+    /* secondaryAdvPhyOptions */    gLeCodingNoPreference_c \
 };
 #endif
 
