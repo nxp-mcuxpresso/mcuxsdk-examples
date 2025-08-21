@@ -33,6 +33,11 @@
     extern uint32_t SystemCoreClock;
 #endif
 
+/* check if RTOS_HEAP_SIZE is defined otherwise use default value which is 3MB */
+#ifndef RTOS_HEAP_SIZE
+#define RTOS_HEAP_SIZE (3 * 1024)
+#endif
+
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -70,7 +75,7 @@
 /* Memory allocation related definitions. */
 #define configSUPPORT_STATIC_ALLOCATION         0
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
-#define configTOTAL_HEAP_SIZE                   ((size_t)(3 * 1024 * 1024))
+#define configTOTAL_HEAP_SIZE                   ((size_t)(RTOS_HEAP_SIZE * 1024))
 #define configAPPLICATION_ALLOCATED_HEAP        0
 
 /* Hook function related definitions. */

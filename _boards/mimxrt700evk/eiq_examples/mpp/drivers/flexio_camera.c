@@ -115,7 +115,7 @@ void CAMERA_Init(void)
 
     /* make sure flexio root clock freq >= 4 * XCLK freq */
     CLOCK_AttachClk(kMAIN_PLL_PFD3_to_FLEXIO);
-    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 5U);
+    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 6U);
     RESET_PeripheralReset(kFLEXIO0_RST_SHIFT_RSTn);
 
     CAMERA_ResetPinInit();

@@ -39,14 +39,14 @@
 
 /* The size of Tensor Arena buffer for TensorFlowLite-Micro */
 /* minimum required arena size for ultraface > persondetect */
-#define HAL_TFLM_TENSOR_ARENA_SIZE_KB         255
+#define HAL_TFLM_TENSOR_ARENA_SIZE_KB        620
 
 /*
  * Enable this flag to define TFlite tensor arena non-cacheable.
  * Allocating tensor arena in non-cacheable memory may improve performance of
  * operators executed on NPU, but decreases performance on CPU.
  */
-#define HAL_TENSOR_ARENA_NCACHE               0
+#define HAL_TENSOR_ARENA_NCACHE               1
 
 /* Log level configuration
  * ERR:   0

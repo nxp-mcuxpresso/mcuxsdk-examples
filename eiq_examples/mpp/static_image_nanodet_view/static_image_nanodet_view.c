@@ -69,6 +69,11 @@ typedef struct _user_data_t {
 #include APP_TFLITE_NANODET_DATA
 
 #include "skigirl_COCO_320_320_bgra.h"
+#define SRC_IMAGE_FORMAT SRC_IMAGE_SKIGIRL_COCO_320_320_BGRA_FORMAT
+#define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_SKIGIRL_COCO_320_320_BGRA_CHANNELS_NUMBER
+#define SRC_IMAGE_HEIGHT SRC_IMAGE_SKIGIRL_COCO_320_320_BGRA_HEIGHT
+#define SRC_IMAGE_WIDTH SRC_IMAGE_SKIGIRL_COCO_320_320_BGRA_WIDTH
+void *image_data = (void *)skigirl_COCO_320_320_bgra_data;
 
 /*
  * SWAP_DIMS = 1 if source/display dims are reversed
@@ -298,7 +303,7 @@ static void app_task(void *params)
     img_params.format = SRC_IMAGE_FORMAT;
     img_params.width = SRC_IMAGE_WIDTH;
     img_params.height = SRC_IMAGE_HEIGHT;
-    mpp_static_img_add(mp, &img_params, (void *)image_data);
+    mpp_static_img_add(mp, &img_params, (void *)image_data, NULL);
 
     /* split the pipeline into 2 branches */
     mpp_t mp_split;
@@ -467,24 +472,29 @@ static void app_task(void *params)
     int i;
     const TickType_t xFrequency = STATS_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
     xLastWakeTime = xTaskGetTickCount();
+    uint32_t last_inf_frame_num = user_data.inference_frame_num;
     for (;;) {
         xTaskDelayUntil( &xLastWakeTime, xFrequency );
-        mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
-        PRINTF("Element stats --------------------------\r\n");
-        PRINTF("nanodet : exec_time %u ms\r\n", nanodet_stats.elem.elem_exec_time);
-        mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
-
-        if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0))
+        if (last_inf_frame_num != user_data.inference_frame_num)
         {
-            for (i = 0; i < NUM_BOXES_MAX; i++)
+            mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
+            PRINTF("Element stats --------------------------\r\n");
+            PRINTF("nanodet : exec_time %u ms\r\n", nanodet_stats.elem.elem_exec_time);
+            mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
+
+            if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0))
             {
-                if (user_data.boxes[i].area > 0)
+                for (i = 0; i < NUM_BOXES_MAX; i++)
                 {
-                    PRINTF("nanodet : box %d label %s score %d(%%)\r\n", i,
-                            nanodet_labels[user_data.boxes[i].label], (int)(user_data.boxes[i].score * 100.0f));
+                    if (user_data.boxes[i].area > 0)
+                    {
+                        PRINTF("nanodet : box %d label %s score %d(%%)\r\n", i,
+                                nanodet_labels[user_data.boxes[i].label], (int)(user_data.boxes[i].score * 100.0f));
+                    }
                 }
+                __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
             }
-            __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+            last_inf_frame_num = user_data.inference_frame_num;
         }
     }
 

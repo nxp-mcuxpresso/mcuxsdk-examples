@@ -18,7 +18,13 @@
  */
 
 #define HAL_ENABLE_CAMERA
+#ifdef USE_USB_CAMERA
+#define HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670     0
+#define HAL_ENABLE_CAMERA_DEV_USB             1
+#else /* Use Flexio camera */
 #define HAL_ENABLE_CAMERA_DEV_EzhV_Ov7670     1
+#define HAL_ENABLE_CAMERA_DEV_USB             0
+#endif
 #define HAL_ENABLE_DISPLAY
 #define HAL_ENABLE_DISPLAY_DEV_Lcdifv2Rk055   1
 #define HAL_ENABLE_2D_IMGPROC
@@ -69,10 +75,17 @@
 /* Set here all the static configuration of the Application */
 
 /* camera parameters */
+#ifdef USE_USB_CAMERA
+#define APP_CAMERA_NAME    "USB_cam"
+#define APP_CAMERA_WIDTH   320
+#define APP_CAMERA_HEIGHT  240
+#define APP_CAMERA_FORMAT  MPP_PIXEL_YUYV
+#else /* Flexio camera parameters */
 #define APP_CAMERA_NAME    "EzhV_Ov7670"
 #define APP_CAMERA_WIDTH   640
 #define APP_CAMERA_HEIGHT  480
 #define APP_CAMERA_FORMAT  MPP_PIXEL_RGB565
+#endif
 
 /* display parameters */
 #define APP_DISPLAY_NAME   "Lcdifv2Rk055"
@@ -84,10 +97,20 @@
 
 /* 30fps capture */
 #define APP_RC_CYCLE_INC 3
+#ifdef USE_USB_CAMERA
+#define APP_RC_CYCLE_MIN 200
+#else
 #define APP_RC_CYCLE_MIN 33
+#endif
 
 /* other parameters */
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_0
+
+#ifdef USE_USB_CAMERA
+#define APP_SRC_DISPLAY_FLIP                  FLIP_HORIZONTAL
+#else /* OV7670 */
+#define APP_SRC_DISPLAY_FLIP                  FLIP_NONE
+#endif
 
 #endif /* _MPP_CONFIG_H */

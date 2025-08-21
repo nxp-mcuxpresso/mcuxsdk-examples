@@ -45,7 +45,11 @@
 
 /* Input image */
 #include <couple_COCO_128_128_rgb.h>
-
+#define SRC_IMAGE_FORMAT SRC_IMAGE_COUPLE_COCO_128_128_RGB_FORMAT
+#define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_COUPLE_COCO_128_128_RGB_CHANNELS_NUMBER
+#define SRC_IMAGE_HEIGHT SRC_IMAGE_COUPLE_COCO_128_128_RGB_HEIGHT
+#define SRC_IMAGE_WIDTH SRC_IMAGE_COUPLE_COCO_128_128_RGB_WIDTH
+void *image_data = (void *)couple_COCO_128_128_rgb_data;
 
 /* model detected label */
 #define ULTRAFACE_DETECTION_LABEL "face"
@@ -308,7 +312,7 @@ static void app_task(void *params)
     img_params.format = SRC_IMAGE_FORMAT;
     img_params.width = SRC_IMAGE_WIDTH;
     img_params.height = SRC_IMAGE_HEIGHT;
-    mpp_static_img_add(mp, &img_params, (void *)image_data);
+    mpp_static_img_add(mp, &img_params, (void *)image_data, NULL);
 
     // split the pipeline into 2 branches
     mpp_t mp_split;
@@ -473,24 +477,28 @@ static void app_task(void *params)
     TickType_t xLastWakeTime;
     const TickType_t xFrequency = OUTPUT_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
     xLastWakeTime = xTaskGetTickCount();
+    uint32_t last_inf_frame_num = user_data.inference_frame_num;
     for (;;) {
     	xTaskDelayUntil( &xLastWakeTime, xFrequency );
-        mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
-        PRINTF("Element stats --------------------------\r\n");
-        PRINTF("ultraface: exec_time %u ms \r\n", ultraface_stats.elem.elem_exec_time);
-        mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
-    	if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0)) {
-            PRINTF("inference time %d ms \r\n", user_data.inference_time_ms);
-    		if (user_data.detected_count <= 0) {
-    			PRINTF("ultraface : no face detected\r\n");
-    		} else {
-    			for (int i = 0; i < user_data.detected_count; i++)
-    				PRINTF("ultraface : box %d label %s score %d(%%)\r\n", i,
-    						ULTRAFACE_DETECTION_LABEL, (int)(user_data.boxes[i].score * 100.0f));
-    		}
+        if (last_inf_frame_num != user_data.inference_frame_num) {
+            mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
+            PRINTF("Element stats --------------------------\r\n");
+            PRINTF("ultraface: exec_time %u ms \r\n", ultraface_stats.elem.elem_exec_time);
+            mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
+            if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0)) {
+                PRINTF("inference time %d ms \r\n", user_data.inference_time_ms);
+                if (user_data.detected_count <= 0) {
+                    PRINTF("ultraface : no face detected\r\n");
+                } else {
+                    for (int i = 0; i < user_data.detected_count; i++)
+                        PRINTF("ultraface : box %d label %s score %d(%%)\r\n", i,
+                                ULTRAFACE_DETECTION_LABEL, (int)(user_data.boxes[i].score * 100.0f));
+                }
 
-    		__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
-    	}
+                __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+            }
+            last_inf_frame_num = user_data.inference_frame_num;
+        }
     }
 
 err:

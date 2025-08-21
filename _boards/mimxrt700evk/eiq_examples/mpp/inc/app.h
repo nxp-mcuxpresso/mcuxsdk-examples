@@ -1,22 +1,104 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#ifndef _APP_H_
-#define _APP_H_
+
+#ifndef __APP_H__
+#define __APP_H__
+
+#include "fsl_device_registers.h"
+
+#ifdef USE_USB_CAMERA
+#include "usb_host_config.h"
+#include "usb_host.h"
+#endif
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-/*${macro:start}*/
-/*${macro:end}*/
+
+/* @TEST_ANCHOR */
+#ifdef USE_USB_CAMERA
+#if ((defined USB_HOST_CONFIG_KHCI) && (USB_HOST_CONFIG_KHCI))
+#ifndef CONTROLLER_ID
+#define CONTROLLER_ID kUSB_ControllerKhci0
+#endif
+#endif /* USB_HOST_CONFIG_KHCI */
+#if ((defined USB_HOST_CONFIG_EHCI) && (USB_HOST_CONFIG_EHCI))
+#ifndef CONTROLLER_ID
+#define CONTROLLER_ID kUSB_ControllerEhci0
+#endif
+#endif /* USB_HOST_CONFIG_EHCI */
+#if ((defined USB_HOST_CONFIG_OHCI) && (USB_HOST_CONFIG_OHCI))
+#ifndef CONTROLLER_ID
+#define CONTROLLER_ID kUSB_ControllerOhci0
+#endif
+#endif /* USB_HOST_CONFIG_OHCI */
+#if ((defined USB_HOST_CONFIG_IP3516HS) && (USB_HOST_CONFIG_IP3516HS))
+#ifndef CONTROLLER_ID
+#define CONTROLLER_ID kUSB_ControllerIp3516Hs0
+#endif
+#endif /* USB_HOST_CONFIG_IP3516HS */
+
+#if defined(__GIC_PRIO_BITS)
+#define USB_HOST_INTERRUPT_PRIORITY (25U)
+#else
+#define USB_HOST_INTERRUPT_PRIORITY (6U)
+#endif
+
+/*! @brief host app device attach/detach status */
+typedef enum _usb_host_app_state
+{
+    kStatus_DEV_Idle = 0, /*!< there is no device attach/detach */
+    kStatus_DEV_Attached, /*!< device is attached */
+    kStatus_DEV_Detached, /*!< device is detached */
+} usb_host_app_state_t;
+
+enum{
+	USB_CAMERA_FRAME_READY,
+	USB_CAMERA_FRAME_DONE,
+	USB_CAMERA_LAST = 0xFF
+};
+
+typedef struct usb_camera_msg_{
+	uint8_t cmd;
+	uint8_t reserved[3]; // for alignment
+	void* parameter;
+}usb_camera_msg_t;
+
+
+
+#define MATCH_FORMAT_ANY 0
+#define MATCH_FORMAT_MJPEG 1
+#define MATCH_FORMAT_UNCOMPRESSED 2
+
+
+#define MATCH_RESOLUTION_FIXED 1
+#define MATCH_RES_W 320 //1280 //640 //352
+#define MATCH_RES_H 240 // 720 //480 //288
+#define MATCH_FORMAT MATCH_FORMAT_UNCOMPRESSED
+#define NUM_FRAMES_TO_PROCESS -1 // -1 all frames, >0 process as many frames as requested
+
+#define USB_FRAME_INTERVAL_OVERRIDE 1
+//#define USB_FRAME_INTERVAL_VALUE 666666; /* 15FPS */
+#define USB_FRAME_INTERVAL_VALUE 1000000; /* 10FPS */
+//#define USB_FRAME_INTERVAL_VALUE 2000000; /* 5FPS */
+
+#ifdef USE_PSRAM_JPG_BUFFERS
+#define JPEG_BUFF0_ADDR 0x60400000U
+#define JPEG_BUFF1_ADDR 0x60600000U
+#endif /* USE_PSRAM_JPG_BUFFERS */
+
+#endif /* USE_USB_CAMERA */
 
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+
 /*${prototype:start}*/
 void BOARD_Init(void);
 /*${prototype:end}*/
 
-#endif /* _APP_H_ */
+#endif /* __APP_H__ */

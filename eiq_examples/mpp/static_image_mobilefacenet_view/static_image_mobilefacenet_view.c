@@ -44,6 +44,11 @@
 
 /* Input image */
 #include APP_STATIC_IMAGE_NAME
+#define SRC_IMAGE_FORMAT SRC_IMAGE_THISPERSONDOESNOTEXIST_4_96_BGRA_FORMAT
+#define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_THISPERSONDOESNOTEXIST_4_96_BGRA_CHANNELS_NUMBER
+#define SRC_IMAGE_HEIGHT SRC_IMAGE_THISPERSONDOESNOTEXIST_4_96_BGRA_HEIGHT
+#define SRC_IMAGE_WIDTH SRC_IMAGE_THISPERSONDOESNOTEXIST_4_96_BGRA_WIDTH
+void *image_data = (void *)thispersondoesnotexist_4_96_bgra_data;
 
 
 /*******************************************************************************
@@ -203,6 +208,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 		if (Atomic_CompareAndSwap_u32(&app_priv->accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
 		{
 			app_priv->inference_time_ms = inf_output->inference_time_ms;
+			app_priv->inference_frame_num++;
 			/* copy recognition results */
 			app_priv->result = result;
 			__atomic_store_n(&app_priv->accessing, 0, __ATOMIC_SEQ_CST);
@@ -265,7 +271,7 @@ static void app_task(void *params)
 	img_params.format = SRC_IMAGE_FORMAT;
 	img_params.width = SRC_IMAGE_WIDTH;
 	img_params.height = SRC_IMAGE_HEIGHT;
-	mpp_static_img_add(mp, &img_params, (void *)image_data);
+	mpp_static_img_add(mp, &img_params, (void *)image_data, NULL);
 
 	// split the pipeline into 2 branches
 	mpp_t mp_split;
@@ -441,28 +447,33 @@ static void app_task(void *params)
 	TickType_t x_last_awake_time;
 	const TickType_t x_frequency = OUTPUT_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
 	x_last_awake_time = xTaskGetTickCount();
+	uint32_t last_inf_frame_num = user_data.inference_frame_num;
 	for (;;) {
 		xTaskDelayUntil( &x_last_awake_time, x_frequency );
-		mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
-		PRINTF("Element stats --------------------------\r\n");
-		PRINTF("mobilefacenet : exec_time %u (ms)\r\n", mobilefacenet_stats.elem.elem_exec_time);
-		mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
-
-		if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
+		if (last_inf_frame_num != user_data.inference_frame_num)
 		{
-			PRINTF("inference time %d (ms) \r\n", user_data.inference_time_ms);
+			mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
+			PRINTF("Element stats --------------------------\r\n");
+			PRINTF("mobilefacenet : exec_time %u (ms)\r\n", mobilefacenet_stats.elem.elem_exec_time);
+			mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
 
-			if (user_data.result.recognized_name[0]=='\0')
+			if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
 			{
-				PRINTF("face not recognized. \r\n");
+				PRINTF("inference time %d (ms) \r\n", user_data.inference_time_ms);
+
+				if (user_data.result.recognized_name[0]=='\0')
+				{
+					PRINTF("face not recognized. \r\n");
+				}
+				else {
+					PRINTF("Recognized face: %s with similarity percentage: %d%%\r\n", user_data.result.recognized_name, user_data.result.similarity_percentage);
+				}
+				/* after reading, inference output should be cleared */
+				strcpy(user_data.result.recognized_name,"\0");
+				user_data.result.similarity_percentage = 0;
+				__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 			}
-			else {
-				PRINTF("Recognized face: %s with similarity percentage: %d%%\r\n", user_data.result.recognized_name, user_data.result.similarity_percentage);
-			}
-			/* after reading, inference output should be cleared */
-			strcpy(user_data.result.recognized_name,"\0");
-			user_data.result.similarity_percentage = 0;
-			__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+			last_inf_frame_num = user_data.inference_frame_num;
 		}
 	}
 

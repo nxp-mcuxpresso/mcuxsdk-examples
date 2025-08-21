@@ -21,7 +21,7 @@
 
 #define HAL_ENABLE_2D_IMGPROC
 #define HAL_ENABLE_GFX_DEV_Pxp                1
-#define HAL_ENABLE_GFX_DEV_Cpu                0
+#define HAL_ENABLE_GFX_DEV_Cpu                1
 #define HAL_ENABLE_GFX_DEV_GPU                0
 
 /**

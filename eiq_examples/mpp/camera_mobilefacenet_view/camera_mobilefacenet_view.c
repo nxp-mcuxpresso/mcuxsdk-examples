@@ -212,6 +212,7 @@ int mpp_event_listener(mpp_t mpp, mpp_evt_t evt, void *evt_data, void *user_data
 		if (Atomic_CompareAndSwap_u32(&app_priv->accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
 		{
 			app_priv->inference_time_ms = inf_output->inference_time_ms;
+			app_priv->inference_frame_num++;
 			/* copy recognition results */
 			app_priv->result = result;
 			__atomic_store_n(&app_priv->accessing, 0, __ATOMIC_SEQ_CST);
@@ -444,28 +445,33 @@ static void app_task(void *params)
 	TickType_t x_last_awake_time;
 	const TickType_t x_frequency = OUTPUT_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
 	x_last_awake_time = xTaskGetTickCount();
+	uint32_t last_inf_frame_num = user_data.inference_frame_num;
 	for (;;) {
 		xTaskDelayUntil( &x_last_awake_time, x_frequency );
-		mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
-		PRINTF("Element stats --------------------------\r\n");
-		PRINTF("mobilefacenet : exec_time %u (ms)\r\n", mobilefacenet_stats.elem.elem_exec_time);
-		mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
-
-		if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
+		if (last_inf_frame_num != user_data.inference_frame_num) 
 		{
-			PRINTF("inference time %d (ms) \r\n", user_data.inference_time_ms);
+			mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
+			PRINTF("Element stats --------------------------\r\n");
+			PRINTF("mobilefacenet : exec_time %u (ms)\r\n", mobilefacenet_stats.elem.elem_exec_time);
+			mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
 
-			if (user_data.result.recognized_name[0]=='\0')
+			if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
 			{
-				PRINTF("Face not recognized. \r\n");
+				PRINTF("inference time %d (ms) \r\n", user_data.inference_time_ms);
+
+				if (user_data.result.recognized_name[0]=='\0')
+				{
+					PRINTF("Face not recognized. \r\n");
+				}
+				else {
+					PRINTF("Recognized face: %s with similarity percentage: %d%%\r\n", user_data.result.recognized_name, user_data.result.similarity_percentage);
+				}
+				/* after reading, inference output should be cleared */
+				strcpy(user_data.result.recognized_name,"\0");
+				user_data.result.similarity_percentage = 0;
+				__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 			}
-			else {
-				PRINTF("Recognized face: %s with similarity percentage: %d%%\r\n", user_data.result.recognized_name, user_data.result.similarity_percentage);
-			}
-			/* after reading, inference output should be cleared */
-			strcpy(user_data.result.recognized_name,"\0");
-			user_data.result.similarity_percentage = 0;
-			__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+			last_inf_frame_num = user_data.inference_frame_num;
 		}
 	}
 

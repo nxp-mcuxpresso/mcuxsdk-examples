@@ -520,23 +520,26 @@ static void app_task(void *params)
 	TickType_t xLastWakeTime;
 	const TickType_t xFrequency = OUTPUT_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
 	xLastWakeTime = xTaskGetTickCount();
+	uint32_t last_inf_frame_num = user_data.inference_frame_num;
 	for (;;) {
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
 		if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0)) {
-			PRINTF("\ninference time %d ms \r\n", user_data.inference_time_ms);
-			if (user_data.detected_count <= 0) {
-				PRINTF("persondetect : no person detected\r\n");
-			} else {
-				for (int i = 0; i < NUM_BOXES_MAX; i++)
-				{
-					if (user_data.final_boxes[i].area > 0)
+			if (last_inf_frame_num != user_data.inference_frame_num) {
+				PRINTF("\ninference time %d ms \r\n", user_data.inference_time_ms);
+				if (user_data.detected_count <= 0) {
+					PRINTF("persondetect : no person detected\r\n");
+				} else {
+					for (int i = 0; i < NUM_BOXES_MAX; i++)
 					{
-						PRINTF("persondetect : box %d label %s score %d(%%)\r\n", i,
-								PERSONDETECT_DETECTION_LABEL, (int)(user_data.final_boxes[i].score * 100.0f));
+						if (user_data.final_boxes[i].area > 0)
+						{
+							PRINTF("persondetect : box %d label %s score %d(%%)\r\n", i,
+									PERSONDETECT_DETECTION_LABEL, (int)(user_data.final_boxes[i].score * 100.0f));
+						}
 					}
 				}
+				last_inf_frame_num = user_data.inference_frame_num;
 			}
-
 			__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 		}
 	}

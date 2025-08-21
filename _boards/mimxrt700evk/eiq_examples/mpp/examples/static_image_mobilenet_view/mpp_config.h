@@ -51,7 +51,7 @@
  * Allocating tensor arena in non-cacheable memory may improve performance of
  * operators executed on NPU, but decreases performance on CPU.
  */
-#define HAL_TENSOR_ARENA_NCACHE               0
+#define HAL_TENSOR_ARENA_NCACHE               1
 
 /**
  * VGLite heap size for MIMXRT700 EVK.

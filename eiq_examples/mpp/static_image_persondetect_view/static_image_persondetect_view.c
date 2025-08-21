@@ -46,6 +46,11 @@
 
 /* Input image */
 #include APP_STATIC_IMAGE_NAME
+#define SRC_IMAGE_FORMAT SRC_IMAGE_SKIGIRL_COCO_160_128_RGB_FORMAT
+#define SRC_IMAGE_CHANNELS_NUMBER SRC_IMAGE_SKIGIRL_COCO_160_128_RGB_CHANNELS_NUMBER
+#define SRC_IMAGE_HEIGHT SRC_IMAGE_SKIGIRL_COCO_160_128_RGB_HEIGHT
+#define SRC_IMAGE_WIDTH SRC_IMAGE_SKIGIRL_COCO_160_128_RGB_WIDTH
+void *image_data = (void *)skigirl_COCO_160_128_rgb_data;
 
 /*******************************************************************************
  * Variables declaration
@@ -303,7 +308,7 @@ static void app_task(void *params)
     img_params.format = SRC_IMAGE_FORMAT;
     img_params.width = SRC_IMAGE_WIDTH;
     img_params.height = SRC_IMAGE_HEIGHT;
-    mpp_static_img_add(mp, &img_params, (void *)image_data);
+    mpp_static_img_add(mp, &img_params, (void *)image_data, NULL);
 
 	/* split the pipeline into 2 branches:
 	 * - first for the conversion to model
@@ -470,23 +475,26 @@ static void app_task(void *params)
 	TickType_t xLastWakeTime;
 	const TickType_t xFrequency = OUTPUT_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
 	xLastWakeTime = xTaskGetTickCount();
+	uint32_t last_inf_frame_num = user_data.inference_frame_num;
 	for (;;) {
 		xTaskDelayUntil( &xLastWakeTime, xFrequency );
 		if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0)) {
-			PRINTF("\ninference time %d ms \r\n", user_data.inference_time_ms);
-			if (user_data.detected_count <= 0) {
-				PRINTF("persondetect : no person detected\r\n");
-			} else {
-				for (int i = 0; i < NUM_BOXES_MAX; i++)
-				{
-					if (user_data.final_boxes[i].area > 0)
+			if (last_inf_frame_num != user_data.inference_frame_num) {
+				PRINTF("\ninference time %d ms \r\n", user_data.inference_time_ms);
+				if (user_data.detected_count <= 0) {
+					PRINTF("persondetect : no person detected\r\n");
+				} else {
+					for (int i = 0; i < NUM_BOXES_MAX; i++)
 					{
-						PRINTF("persondetect : box %d label %s score %d(%%)\r\n", i,
-								PERSONDETECT_DETECTION_LABEL, (int)(user_data.final_boxes[i].score * 100.0f));
+						if (user_data.final_boxes[i].area > 0)
+						{
+							PRINTF("persondetect : box %d label %s score %d(%%)\r\n", i,
+									PERSONDETECT_DETECTION_LABEL, (int)(user_data.final_boxes[i].score * 100.0f));
+						}
 					}
 				}
+				last_inf_frame_num = user_data.inference_frame_num;
 			}
-
 			__atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 		}
 	}

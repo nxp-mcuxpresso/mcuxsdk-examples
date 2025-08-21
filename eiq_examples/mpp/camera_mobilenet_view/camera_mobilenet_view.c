@@ -472,35 +472,40 @@ static void app_task(void *params)
     TickType_t xLastWakeTime;
     const TickType_t xFrequency = STATS_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
     xLastWakeTime = xTaskGetTickCount();
+    uint32_t last_inf_frame_num = user_data.inference_frame_num;
 #if (configGENERATE_RUN_TIME_STATS == 1)
     static char task_stats_buf[512];
 #endif
     for (;;) {
         xTaskDelayUntil( &xLastWakeTime, xFrequency );
-        mpp_stats_disable(MPP_STATS_GRP_API);
-        mpp_stats_disable(MPP_STATS_GRP_MPP);
-        mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
-        PRINTF("API stats ------------------------------\r\n");
-        PRINTF("rc_cycle = %u ms rc_cycle_max %u ms\r\n",
-                api_stats.api.rc_cycle, api_stats.api.rc_cycle_max);
-        PRINTF("pr_slot  = %u ms pr_rounds %u app_slot %u ms\r\n",
-                api_stats.api.pr_slot, api_stats.api.pr_rounds, api_stats.api.app_slot);
-        PRINTF("MPP stats ------------------------------\r\n");
-        PRINTF("mp %p exec_time %u ms\r\n", mpp_stats.mpp.mpp, mpp_stats.mpp.mpp_exec_time);
-        PRINTF("mp_split %p exec_time %u ms\r\n", split_stats.mpp.mpp, split_stats.mpp.mpp_exec_time);
-        PRINTF("mp_bg %p exec_time %u ms\r\n", bg_stats.mpp.mpp, bg_stats.mpp.mpp_exec_time);
-        PRINTF("Element stats --------------------------\r\n");
-        PRINTF("Inference : exec_time %u ms\r\n", mobilenet_stats.elem.elem_exec_time);
-        if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
+        if (last_inf_frame_num != user_data.inference_frame_num) 
         {
-            PRINTF("Inference results --------------------------\r\n");
-            PRINTF("mobilenet : %s (%d%%)\r\n", user_data.inf_out.label, user_data.inf_out.score);
-            PRINTF("mobilenet : %d ms\r\n", user_data.inference_time_ms);
-            __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+            mpp_stats_disable(MPP_STATS_GRP_API);
+            mpp_stats_disable(MPP_STATS_GRP_MPP);
+            mpp_stats_disable(MPP_STATS_GRP_ELEMENT);
+            PRINTF("API stats ------------------------------\r\n");
+            PRINTF("rc_cycle = %u ms rc_cycle_max %u ms\r\n",
+                    api_stats.api.rc_cycle, api_stats.api.rc_cycle_max);
+            PRINTF("pr_slot  = %u ms pr_rounds %u app_slot %u ms\r\n",
+                    api_stats.api.pr_slot, api_stats.api.pr_rounds, api_stats.api.app_slot);
+            PRINTF("MPP stats ------------------------------\r\n");
+            PRINTF("mp %p exec_time %u ms\r\n", mpp_stats.mpp.mpp, mpp_stats.mpp.mpp_exec_time);
+            PRINTF("mp_split %p exec_time %u ms\r\n", split_stats.mpp.mpp, split_stats.mpp.mpp_exec_time);
+            PRINTF("mp_bg %p exec_time %u ms\r\n", bg_stats.mpp.mpp, bg_stats.mpp.mpp_exec_time);
+            PRINTF("Element stats --------------------------\r\n");
+            PRINTF("Inference : exec_time %u ms\r\n", mobilenet_stats.elem.elem_exec_time);
+            if (Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0) == ATOMIC_COMPARE_AND_SWAP_SUCCESS)
+            {
+                PRINTF("Inference results --------------------------\r\n");
+                PRINTF("mobilenet : %s (%d%%)\r\n", user_data.inf_out.label, user_data.inf_out.score);
+                PRINTF("mobilenet : %d ms\r\n", user_data.inference_time_ms);
+                __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
+            }
+            mpp_stats_enable(MPP_STATS_GRP_MPP);
+            mpp_stats_enable(MPP_STATS_GRP_API);
+            mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
+            last_inf_frame_num = user_data.inference_frame_num;
         }
-        mpp_stats_enable(MPP_STATS_GRP_MPP);
-        mpp_stats_enable(MPP_STATS_GRP_API);
-        mpp_stats_enable(MPP_STATS_GRP_ELEMENT);
 
 #if (configGENERATE_RUN_TIME_STATS == 1)
         vTaskGetRunTimeStats(task_stats_buf);

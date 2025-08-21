@@ -30,21 +30,15 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x1000;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x1000;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
-m_ezhv_image_maximum_size = 0x00010000;
+m_ezhv_image_maximum_size = 0x00008000;
 
-DATA_START   = 0x20000000; /* SRAM P0 */
-DATA_SIZE    = 0x00500000;
+DATA_START   = 0x20000000; /* SRAM P13 */
+DATA_SIZE    = 0x00400000;
 DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
 
-NCACHE_START = 0x20500000; /* SRAM P14 */
-NCACHE_SIZE  = 0x00280000; /* SRAM P29 end - SRAM P14 start */
+NCACHE_START = 0x20420000; /* SRAM P14 */
+NCACHE_SIZE  = 0x00270000; /* SRAM P27 end - SRAM P14 start */
 NCACHE_END   = NCACHE_START + NCACHE_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? HEAP_SIZE : 0);
-
-EZHV_DATA_START = 0x24108000;
-EZHV_DATA_SIZE  = 0x7FFF;
-
-IMAGE_DATA_START = 0x60000000;
-IMAGE_DATA_SIZE  = 0xFFFF;
 
 HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
 
@@ -59,8 +53,6 @@ MEMORY
   m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x001FBD00
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_END - NCACHE_START + 1
-  m_ezhv_data           (RW)  : ORIGIN = EZHV_DATA_START, LENGTH = EZHV_DATA_SIZE
-  m_image_data          (RW)  : ORIGIN = IMAGE_DATA_START, LENGTH = IMAGE_DATA_SIZE
   m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE
 }
 
@@ -96,8 +88,7 @@ SECTIONS
     *(.eh_frame)
     KEEP (*(.init))
     KEEP (*(.fini))
-
-    . = ALIGN(16);
+    
     ezhv_image_start = .;
     KEEP (*(.ezhvcode))
     *(.ezhvcode*)
@@ -202,6 +193,8 @@ SECTIONS
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
+    *(CacheLineData.init)    /* CacheLineData.init sections */
+    . = ALIGN(16);           /* cache line size = 16 bytes */
     *(CodeQuickAccess)       /* CodeQuickAccess sections */
     *(DataQuickAccess)       /* DataQuickAccess sections */
     *(.data)                 /* .data sections */
@@ -214,25 +207,6 @@ SECTIONS
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */
   } > m_data
-
-  /* The ezhv cmd and data go into internal ram */
-  .m_ezhv_data :
-  {
-    . = ALIGN(4);
-    ezhv_data_start = .;
-    KEEP (*(zv_cmd))
-    KEEP (*(zv_stat))
-    KEEP (*(zv_data))
-    ezhv_data_end = .;
-  } > m_ezhv_data
-
-  .m_image_data :
-  {
-    . = ALIGN(4);
-    image_data_start = .;
-    KEEP (*(image_data))
-    image_data_end = .;
-  } > m_image_data
 
   __NCACHE_REGION_START = ORIGIN(m_ncache);
   __NCACHE_REGION_SIZE  = NCACHE_SIZE;
@@ -258,7 +232,7 @@ SECTIONS
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
   _image_size = __DATA_END - __VECTOR_TABLE;
-
+  
   /* Uninitialized data section */
   .bss :
   {
@@ -266,6 +240,8 @@ SECTIONS
     . = ALIGN(4);
     __START_BSS = .;
     __bss_start__ = .;
+    *(CacheLineData)
+    . = ALIGN(16); /* cache line size = 16 bytes */
     *(.bss)
     *(.bss*)
     *(COMMON)

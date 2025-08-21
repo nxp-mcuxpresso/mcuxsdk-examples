@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 NXP
+ * Copyright 2022-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -162,7 +162,7 @@ static void app_task(void *params) {
     elem_params.convert.out_buf.width = APP_DISPLAY_WIDTH;
     elem_params.convert.out_buf.height = APP_DISPLAY_HEIGHT;
     elem_params.convert.angle = APP_DISPLAY_LANDSCAPE_ROTATE;
-    elem_params.convert.flip = FLIP_HORIZONTAL;
+    elem_params.convert.flip = APP_SRC_DISPLAY_FLIP;
     elem_params.convert.pixel_format = args->display_format;
     elem_params.convert.ops = MPP_CONVERT_COLOR | MPP_CONVERT_ROTATE;
     ret = mpp_element_add(mp, MPP_ELEMENT_CONVERT, &elem_params, NULL);

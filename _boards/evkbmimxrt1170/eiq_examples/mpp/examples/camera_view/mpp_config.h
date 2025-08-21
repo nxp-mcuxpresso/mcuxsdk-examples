@@ -84,4 +84,6 @@
 /* rotation is needed to display in landscape because display RK055 is portrait */
 #define APP_DISPLAY_LANDSCAPE_ROTATE ROTATE_90
 
+#define APP_SRC_DISPLAY_FLIP                  FLIP_HORIZONTAL
+
 #endif /* _MPP_CONFIG_H */

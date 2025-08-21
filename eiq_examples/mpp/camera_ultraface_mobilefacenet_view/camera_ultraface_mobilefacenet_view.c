@@ -491,14 +491,19 @@ static void app_task(void *params)
     TickType_t xLastPrintTime = 0, tick = 0, notifyTime = 0;
     const TickType_t xFrequency = OUTPUT_PRINT_PERIOD_MS / portTICK_PERIOD_MS;
     const TickType_t notifyDelay = OUTPUT_NOTIFY_PERIOD_MS / portTICK_PERIOD_MS;
+    uint32_t last_inf_frame_num = user_data.inference_frame_num;
     for (;;) {
 
         /* manage periodic print */
         tick = xTaskGetTickCount();
         if ((tick > (xLastPrintTime + xFrequency)) && Atomic_CompareAndSwap_u32(&user_data.accessing, 1, 0))
         {
-            xLastPrintTime = tick;
-            print_conditional(&user_data);
+            if (last_inf_frame_num != user_data.inference_frame_num)
+            {
+                xLastPrintTime = tick;
+                print_conditional(&user_data);
+                last_inf_frame_num = user_data.inference_frame_num;
+            }
         }
         __atomic_store_n(&user_data.accessing, 0, __ATOMIC_SEQ_CST);
 
