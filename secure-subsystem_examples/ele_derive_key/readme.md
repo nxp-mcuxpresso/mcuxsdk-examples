@@ -5,8 +5,40 @@ The ELE derive key application provides example how to use SSSAPI to derive keys
 utilising the HKDF functionality, as well as how to derive keys for an Elliptic Curve
 Diffie-Hellman key exchange operation.
 
+## Warning
+Please note that HKDF flow depends on the revision of your chip. Expected inputs
+for various steps of HKDF have changed with chip revision A2.1. Below is a brief
+overview of the two variants.
+
+The change relates only to the HKDF Extract step.
+
+### For revisions A0 through A2:
+When initializing a key derivation context for any variant of
+`kAlgorithm_SSS_HKDF_*_EXTRACT` via `sss_sscp_derive_key_context_init()`,
+salt is to be passed as a key object.
+Next, when calling `sss_sscp_derive_key()` for the Extract step,
+the Input Keying Material (IKM) is passed as an input buffer.
+
+### For revision A2.1:
+The order and approach to passing salt and IKM are swapped compared to
+previous revisions.
+
+When initializing a key derivation context for any variant of
+`kAlgorithm_SSS_HKDF_*_EXTRACT` via `sss_sscp_derive_key_context_init()`,
+IKM is to be passed as a key object.
+Next, when calling `sss_sscp_derive_key()` for the Extract step,
+the salt is passed as an input buffer.
+
+This approach allows for keeping the IKM opaque (e.g. taking
+IKM from the result of an ECDH or SPAKE2+ operation).
+
+## Note
+By default, IAR's "Static clustering" optimization option is enabled in the IAR `release` targets.
+Compile flag `--no_clustering` has been added to the build to disable static clustering due to it causing erroneous execution of this example.
+
 ## Running the demo
 The following lines are printed to the serial terminal when the demo program is executed.
+The output shown is the output of the example with chip revision A2.1.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ELE Derive Key via SSSAPI Example
 
@@ -27,13 +59,13 @@ Derived shared secret matches expected shared secret...OK
 Cleanup...OK
 
 **** HDKF key derivation ****
-Init salt key object...OK
+Init IKM key object...OK
 Init PRK key object...OK
 Init OKM key object...OK
-Allocate salt key handle...OK
+Allocate IKM key handle...OK
 Allocate PRK key handle...OK
 Allocate OKM key handle...OK
-Set salt...OK
+Set IKM...OK
 Initialize HKDF SHA256 extract step context...OK
 HKDF SHA256 extract...OK
 Free HKDF SHA256 extract step context...OK
@@ -47,10 +79,6 @@ End of Example with SUCCESS!!
 
 Example end
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-## Note
-By default, IAR's "Static clustering" optimization option is enabled in the IAR `release` targets.
-Compile flag `--no_clustering` has been added to the build to disable static clustering due to it causing erroneous execution of this example.
 
 ## Supported Boards
 - [KW47-EVK](../../_boards/kw47evk/secure-subsystem_examples/ele_derive_key/example_board_readme.md)
