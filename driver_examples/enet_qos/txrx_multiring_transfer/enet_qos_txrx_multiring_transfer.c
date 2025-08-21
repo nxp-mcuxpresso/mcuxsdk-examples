@@ -463,14 +463,14 @@ int main(void)
                 {
                     .mode      = kENET_QOS_DCB_Mode,
                     .weight    = 0x10U,
-                    .priority  = 0x0U,
+                    .priority  = 0x1U << 0U,
                     .cbsConfig = NULL,
                 },
 #if ENET_QOS_TXQUEUE_USE > 1
                 {
                     .mode      = kENET_QOS_DCB_Mode,
                     .weight    = 0x10U,
-                    .priority  = 0x1U,
+                    .priority  = 0x1U << 1U,
                     .cbsConfig = NULL,
                 },
 #endif
@@ -478,7 +478,7 @@ int main(void)
                 {
                     .mode      = kENET_QOS_DCB_Mode,
                     .weight    = 0x10U,
-                    .priority  = 0x2U,
+                    .priority  = 0x1U << 2U,
                     .cbsConfig = NULL,
                 },
 #endif
@@ -490,14 +490,14 @@ int main(void)
                 {
                     .mode        = kENET_QOS_DCB_Mode,
                     .mapChannel  = 0x0U,
-                    .priority    = 0x0U,
+                    .priority    = 0x1U << 0U,
                     .packetRoute = kENET_QOS_PacketNoQ,
                 },
 #if ENET_QOS_RXQUEUE_USE > 1
                 {
                     .mode        = kENET_QOS_AVB_Mode,
                     .mapChannel  = 0x1U,
-                    .priority    = 0x1U,
+                    .priority    = 0x1U << 1U,
                     .packetRoute = kENET_QOS_PacketNoQ,
                 },
 #endif
@@ -505,7 +505,7 @@ int main(void)
                 {
                     .mode        = kENET_QOS_DCB_Mode,
                     .mapChannel  = 0x2U,
-                    .priority    = 0x2U,
+                    .priority    = 0x1U << 2U,
                     .packetRoute = kENET_QOS_PacketNoQ,
                 },
 #endif
