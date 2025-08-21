@@ -451,6 +451,8 @@ status_t APP_SWT_Init(void)
         g_swt_config.ports[i].ethMac.miiSpeed             = phySpeed;
         g_swt_config.ports[i].ethMac.miiDuplex            = phyDuplex;
         g_swt_config.ports[i].bridgeCfg.isRxVlanAware     = true;
+        g_swt_config.ports[i].bridgeCfg.txVlanAction	  = kNETC_TxDelOuterVlan;
+        g_swt_config.ports[i].bridgeCfg.defaultVlan.vid	  = 1;
         g_swt_config.ports[i].commonCfg.ipfCfg.enIPFTable = true;
     }
 
