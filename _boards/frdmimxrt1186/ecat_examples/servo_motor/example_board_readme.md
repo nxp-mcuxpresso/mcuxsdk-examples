@@ -2,6 +2,7 @@ Hardware requirements
 =====================
 - FRDM-IMXRT1186
 - FRDM-MC-LVPMSM
+- Power supply 24V
 - Teknic2311P Motor
 - RJ45 Network cable
 - Mini/micro USB cable
@@ -11,7 +12,8 @@ Board settings
 ==============
 J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
 J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
-J27(2-3), J29(2-3), J30(2-3), J33(2-3)
+Add zero resistors: R15, R17, R40, R21, R243, R448
+Set jumpers: J30 2-3, J33 2-3, J29 2-3, J27 2-3 
 
 Prepare the Demo
 ================
@@ -45,7 +47,7 @@ Prepare the Demo
 	Connect the Teknic2311P motor to FRDM-MC-LVPMSM board and connect FRDM-MC-LVPMSM board to FRDM-IMXRT1186 board.
 	
 4. Connect EtherCAT Port0 with TwinCAT3
-	RJ45 interface labeled as J28 is the EtherCAT Port0.
+	RJ45 interface labeled as J57A is the EtherCAT Port0.
 
 5. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
 

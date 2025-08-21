@@ -3,7 +3,7 @@
 ## Overview
 This example demonstrates how to do motor control via EtherCAT on TwinCAT.
 
-This example uses TwinCAT as EtherCAT Master, RT1180 as EtherCAT Slave, controls the motor through PMSM 
+This example uses TwinCAT as EtherCAT Master, i.MXRT1180/FRDM-1186 as EtherCAT Slave, controls the motor through PMSM 
 and uses EtherCAT CIA402 protocal for data transmission to control the motor in real time.
 
 Note that the demo CAN NOT be built directly. Please see the below for more details.
