@@ -3,5 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 mcux_add_macro(
-    CC "-DFSL_ETH_ENABLE_CACHE_CONTROL"
+    CC "-DFSL_ETH_ENABLE_CACHE_CONTROL\
+        -DHAL_UART_TRANSFER_MODE=1"
 )

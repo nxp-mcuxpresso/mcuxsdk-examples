@@ -5,6 +5,7 @@
  */
 /*${header:start}*/
 #include "fsl_enet_qos.h"
+#include "fsl_lpuart.h"
 #include "fsl_phy.h"
 #include "fsl_siul2.h"
 #include "pin_mux.h"
@@ -79,6 +80,8 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_InitEMACPins();
     BOARD_InitBootClocks();
+
+    NVIC_SetPriority(s_lpuartIRQ[BOARD_DEBUG_UART_INSTANCE], 6);
 
     BOARD_InitDebugConsole();
     BOARD_InitModuleClock();
