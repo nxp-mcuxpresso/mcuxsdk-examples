@@ -1,3 +1,6 @@
+#### 25.09.00
+- [wireless_mcu] Register NBU event callback which will be called upon NBU event indication.
+
 #### 25.06.00-pvw2
 - [wireless_mcu][board_lp] Trig temperature measurement on each wakeup - call `SENSORS_TriggerTemperatureMeasurementUnsafe()`
 - [wireless_mcu][hardware_init.c] Implement a way to calibrate XTAL32M with temperature - call `PLATFORM_RegisterXtal32MTempCompLut()` when `gBoardUseXtal32MTempComp` is set

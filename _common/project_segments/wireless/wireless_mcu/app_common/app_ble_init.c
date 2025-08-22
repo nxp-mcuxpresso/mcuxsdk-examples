@@ -10,6 +10,11 @@
 #include "fwk_platform_ics.h" /* to get NbuInfo */
 #include "assert.h"
 #include "stdbool.h"
+#if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
+#include "fsl_debug_console.h"
+#else
+#define PRINTF(...)
+#endif
 
 /* -------------------------------------------------------------------------- */
 /*                              Private functions                             */
@@ -31,6 +36,19 @@ static bool App_CheckNbuCompatibility(NbuInfo_t *nbu_info_p)
     return true;
 }
 
+static void BOARD_NbuEventNotifyCb(NbuEvent_t *event)
+{
+    if (event != NULL)
+    {
+        if (event->eventType == gNbuWarningXtal32MhzNotReadyAtWakeUp)
+        {
+            PRINTF("NBU->Host |Warning: 32MHz XTAL is not ready at NBU wakeup.\n");
+            PRINTF("\t Please check 32MHz XTAL param values. @BOARD_LL_32MHz_WAKEUP_ADVANCE_HSLOT.\n");
+        }
+        /* New events check to be added here */
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /*                              Public functions                              */
 /* -------------------------------------------------------------------------- */
@@ -47,6 +65,8 @@ int APP_InitBle(void)
         {
             break;
         }
+
+        PLATFORM_RegisterNbuEventCb(BOARD_NbuEventNotifyCb);
 
         /* Start link layer firmware and set up HCI link */
         status = PLATFORM_InitBle();
