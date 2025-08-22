@@ -19,22 +19,22 @@
 void BOARD_InitHardware(void)
 {
     POWER_Init();
-    BOARD_InitPins();
-    
-    BOARD_BootClockXTAL32M();
 
     CLOCK_EnableClock(kCLOCK_Gpio0);
     GPIO_PortInit(GPIO, 0);
 
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM0);
     CLOCK_EnableClock(kCLOCK_FlexComm0);
-    
+
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM2);
     CLOCK_EnableClock(kCLOCK_FlexComm2);
 
     CLOCK_AttachClk(kOSC32K_to_CTIMER0);
 
     BOARD_Configure32kOsc();
+
+    BOARD_InitPins();
+    BOARD_BootClockXTAL32M();
 
 #if (defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1))
     BOARD_InitDebugConsole();
