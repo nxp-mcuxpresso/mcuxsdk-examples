@@ -15,7 +15,7 @@
 #define DEMO_XBIC_MASTER_PORT   kXbicAxbsMasterCortexM70Ahbm
 #define DEMO_XBIC_SLAVE_PORT    kXbicAxbsSlavePram0
 #define DEMO_XBIC_SYNDROMES     kXBIC_SynHwrite
-#define DEMO_XBIC_ERROR_ADDRESS 0x20408100
+#define DEMO_XBIC_ERROR_ADDRESS 0x20408200
 /*${macro:end}*/
 
 /*******************************************************************************
