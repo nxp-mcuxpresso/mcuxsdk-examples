@@ -20,6 +20,7 @@ mcux_add_source(
     SOURCES mu_ipc_shm_host.h
     SOURCES ipc_shm_host.c
     SOURCES ipc_shm_host.h
+	SOURCES ecat_hw.h
     SOURCES ../ipc_shm.c
     SOURCES ../ipc_shm.h
     SOURCES ../ipc_shm_mem.c
@@ -45,12 +46,6 @@ mcux_add_source(
     SOURCES SSC/Src/mailbox.c
     SOURCES SSC/Src/objdef.c
     SOURCES SSC/Src/sdoserv.c
-)
-
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/ecat_hw.c
-    SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/ecat_hw.h
 )
 
 mcux_add_include(

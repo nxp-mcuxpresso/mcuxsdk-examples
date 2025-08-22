@@ -377,7 +377,7 @@ int motor_slow_task(int axis, struct pdo_to_motor_t *pdo_m, struct pdo_to_esc_t 
         pdo_e->Actual_vel = (uint32_t)(g_sM1Drive.sSpeed.fltSpeedFilt);
 
     } else if (axis == 1) {
-        M2_SetPosition(GetM1PositionCmdValue(pdo_m->Target_pos));
+        M2_SetPosition(GetM2PositionCmdValue(pdo_m->Target_pos));
         SM_StateMachineSlow(&g_sM2Ctrl);
         pdo_e->Actual_pos = GetM2PositionActualValue();
         pdo_e->Actual_vel = (uint32_t)(g_sM2Drive.sSpeed.fltSpeedFilt);
