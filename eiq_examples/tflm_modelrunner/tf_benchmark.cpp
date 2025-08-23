@@ -318,9 +318,9 @@ int Model_RunInference(NNServer* server) {
             }
         }
 
-        server->m_tensor_arena = (char*)aligned_alloc(8, kTensorArenaSize);
+        server->m_tensor_arena = (char*)malloc(kTensorArenaSize);
         while(!server->m_tensor_arena){
-            server->m_tensor_arena = (char*)aligned_alloc(8, kTensorArenaSize);
+            server->m_tensor_arena = (char*)malloc(kTensorArenaSize);
             kTensorArenaSize -= 1024;
             if (kTensorArenaSize < 0){
         	    PRINTF("tensor_arena alloc failed.");
