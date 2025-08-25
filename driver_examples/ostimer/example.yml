@@ -33,7 +33,9 @@ ostimer_example:
     frdmmcxa153: []
     frdmmcxa156: []
     frdmmcxa346: []
-    frdmmcxl255@cm33: []
+    frdmmcxl255@cm33:
+    - -mdk@debug
+    - -mdk@release
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw23: []

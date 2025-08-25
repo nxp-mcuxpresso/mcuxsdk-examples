@@ -3,8 +3,8 @@ board.toolchains:
 - +iar@release
 #- +armgcc@debug
 #- +armgcc@release
-#- +mdk@debug
-#- +mdk@release
+- +mdk@debug
+- +mdk@release
 #
 # Non-multicore examples on CM0 supports only IAR because
 # tuning j-link script for loading code requires  insane

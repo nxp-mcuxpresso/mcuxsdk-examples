@@ -3,5 +3,5 @@ board.toolchains:
 - +armgcc@release
 - +iar@debug
 - +iar@release
-#- +mdk@debug
-#- +mdk@release
+- +mdk@debug
+- +mdk@release

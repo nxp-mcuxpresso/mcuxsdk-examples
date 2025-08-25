@@ -16,3 +16,5 @@ power_mode_switch_mcxl_secondary:
     - +armgcc@release
     - +iar@debug
     - +iar@release
+    - -mdk@debug
+    - -mdk@release
