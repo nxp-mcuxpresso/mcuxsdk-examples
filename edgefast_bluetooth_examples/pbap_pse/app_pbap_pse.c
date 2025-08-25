@@ -357,6 +357,8 @@ static bool app_app_param_cb(struct bt_data *data, void *user_data)
 static void app_connected(struct bt_pbap_pse *pbap_pse)
 {
     PRINTF("PABP connect successfully\r\n");
+    memset(&g_PbapPse.currentpath, 0, CURRENT_PATH_MAX_LEN);
+    memset(&g_PbapPse.name, 0, NAME_MAX_LEN);
     memcpy(g_PbapPse.currentpath, "root", 4);
     g_PbapPse.pbap_pseHandle         = pbap_pse;
     g_PbapPse.lcl_supported_features = CONFIG_BT_PBAP_PSE_SUPPORTED_FEATURES;
@@ -448,11 +450,14 @@ static void app_pull_phonebook_cb(struct bt_pbap_pse *pbap_pse,
         {
             memcpy(g_PbapPse.name, g_PbapPse.currentpath, strlen(g_PbapPse.currentpath));
             g_PbapPse.name[strlen(g_PbapPse.currentpath)] = '\0';
-            strcat(g_PbapPse.name, name);
+            if ((strlen(name) + strlen(g_PbapPse.name) + 1) <= NAME_MAX_LEN)
+            {
+                strcat(g_PbapPse.name, name);
+            }
         }
         else
         {
-            if (strlen(name) < NEMA_MAX_LEN)
+            if ((strlen(name) + 1) <= NAME_MAX_LEN)
             {
                 memcpy(g_PbapPse.name, name, strlen(name) + 1);
             }
@@ -592,8 +597,11 @@ static void app_set_phonebook_path_cb(struct bt_pbap_pse *pbap_pse, char *name)
         {
             if (strcmp(g_PbapPse.currentpath, "root") == 0)
             {
-                strcat(g_PbapPse.currentpath, "/");
-                strcat(g_PbapPse.currentpath, path_name);
+                if ((strlen(g_PbapPse.currentpath) + strlen(path_name) + 1) < CURRENT_PATH_MAX_LEN)
+                {
+                    strcat(g_PbapPse.currentpath, "/");
+                    strcat(g_PbapPse.currentpath, path_name);
+                }
                 result = BT_PBAP_SUCCESS_RSP;
             }
             else
@@ -610,7 +618,7 @@ static void app_set_phonebook_path_cb(struct bt_pbap_pse *pbap_pse, char *name)
                     if (endwith(g_PbapPse.currentpath, "root") || endwith(g_PbapPse.currentpath, "SIM1"))
                     {
                         strcat(g_PbapPse.currentpath, "/");
-                        if(strlen(g_PbapPse.currentpath) + strlen(path_name) > CURRENT_PATH_MAX_LEN)
+                        if((strlen(g_PbapPse.currentpath) + strlen(path_name)) > CURRENT_PATH_MAX_LEN)
                         {
                             result = BT_PBAP_NOT_FOUND_RSP;
                             break;
@@ -628,7 +636,7 @@ static void app_set_phonebook_path_cb(struct bt_pbap_pse *pbap_pse, char *name)
                 }
                 else
                 {
-                    if (endwith(g_PbapPse.currentpath, "telecom"))
+                    if (endwith(g_PbapPse.currentpath, "telecom") && ((strlen(g_PbapPse.currentpath) + strlen(path_name) + 1) < CURRENT_PATH_MAX_LEN))
                     {
                         strcat((char *)g_PbapPse.currentpath, "/");
                         strcat((char *)g_PbapPse.currentpath, path_name);
@@ -712,7 +720,7 @@ static void app_pull_vcard_listing_cb(struct bt_pbap_pse *pbap_pse,
     bt_pbap_pse_app_param_parse(buf, app_app_param_cb, NULL);
     net_buf_unref(buf);
     g_PbapPse.name[0] = 0;
-    if (name != NULL)
+    if (name != NULL && ((strlen(name) + 1) <= NAME_MAX_LEN))
     {
         memcpy(g_PbapPse.name, name, strlen(name) + 1);
     }
@@ -843,7 +851,7 @@ static void app_pull_vcard_entry_cb(struct bt_pbap_pse *pbap_pse,
     }
     bt_pbap_pse_app_param_parse(buf, app_app_param_cb, NULL);
     net_buf_unref(buf);
-    if (name != NULL)
+    if (name != NULL && (strlen(name) + 1) <= NAME_MAX_LEN)
     {
         memcpy(g_PbapPse.name, name, strlen(name) + 1);
     }
