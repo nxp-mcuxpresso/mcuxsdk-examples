@@ -14,3 +14,7 @@ iar:
     release:
       asym-multicore-debugger:
         slave-configuration: release
+mdk:
+  shared-workspace: power_mode_switch_mcxl_primary_cm33
+  sharing-workspace:
+  - ../../power_mode_switch_mcxl_secondary/mdk/power_mode_switch_mcxl_secondary_${SB_CONFIG_secondary_core_id}
