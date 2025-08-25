@@ -12,11 +12,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v13.0
+product: Peripherals v15.0
 processor: MCXA153
 package_id: MCXA153VLH
 mcu_data: ksdk2_0
-processor_version: 0.14.4
+processor_version: 0.2506.40
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: 9c69b39f-9abc-4e8a-8540-8e1714f5fb00
@@ -31,6 +31,7 @@ component:
 - global_system_definitions:
   - user_definitions: ''
   - user_includes: ''
+  - global_init: ''
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
@@ -68,7 +69,7 @@ instance:
 - type: 'nvic'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'nvic_57b5eef3774cc60acaede6f5b8bddc67'
+- type_id: 'nvic'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'NVIC'
 - config_sets:
@@ -93,13 +94,13 @@ instance:
 - type: 'systick'
 - mode: 'GENERAL'
 - custom_name_enabled: 'false'
-- type_id: 'systick_835fd8dd4fe722f5394f39cf587e71ab'
+- type_id: 'systick'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'SysTick'
 - config_sets:
   - fsl_systick:
     - timingConfig:
-      - clockSource: 'SYSTICKFunctionClock'
+      - clockSource: 'ProcessorClock'
       - clockSourceFreq: 'custom:12000000'
       - reload: '1s'
     - interrupt:
@@ -111,7 +112,9 @@ instance:
 
 static void SysTick_init(void) {
   /* Initialize the systick module. */
-  SysTick_Config(SYSTICK_TICKS);
+  SysTick->LOAD = (uint32_t)(SYSTICK_TICKS - 1UL);
+  SysTick->VAL = 0UL;
+  SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
 }
 
 /***********************************************************************************************************************
