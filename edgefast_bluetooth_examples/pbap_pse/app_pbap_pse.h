@@ -8,7 +8,7 @@
 #define __APP_PBAP_PCE_H__
 
 #define CURRENT_PATH_MAX_LEN 50
-#define NEMA_MAX_LEN         43
+#define NAME_MAX_LEN         60
 
 struct pbap_hdr
 {
@@ -138,7 +138,7 @@ typedef struct app_pbap_pse_
     char currentpath[CURRENT_PATH_MAX_LEN];
     uint32_t remaining_rsp;
     struct appl_params req_appl_params;
-    char name[NEMA_MAX_LEN];
+    char name[NAME_MAX_LEN];
     uint32_t send_rsp;
     uint32_t lcl_supported_features;
     uint32_t rem_supported_features;
