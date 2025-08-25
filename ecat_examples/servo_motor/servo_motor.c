@@ -76,12 +76,12 @@ uint32_t g_ui32MaxNumberOfCycles = 0U;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
-    "../../../boards/src/ecat_examples/servo_motor",   /* User Path 1- the highest priority */
-    "../../../boards/evkmimxrt1180/ecat_examples/servo_motor/cm7",   /* User Path 2 */
-    "evkmimxrt1180", /* board id */
-    "pmsm_enc",      /* example id */
-    MCRSP_VER,       /* sw version */
-    FEATURE_SET,     /* example's feature-set */
+    "../../../examples/_boards/frdmimxrt1186/ecat_examples/servo_motor/cm7",         /* User Path 1- the highest priority */
+    "../../../examples/ecat_examples/servo_motor",       /* User Path 2 */
+    "frdmimxrt1186", /* board id */
+    "pmsm_enc", /* example id */
+    MCRSP_VER,      /* sw version */
+    FEATURE_SET,    /* example's feature-set */
 };
 
 mid_app_cmd_t g_eMidCmd;        /* Start/Stop MID command */
@@ -145,7 +145,7 @@ int servo_motor_init(void)
     EnableGlobalIRQ(ui32PrimaskReg);
 
     /* Enable PWM clock */
-    PWM1->MCTRL |= PWM_MCTRL_RUN(0xF);
+    g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);
     
     return 0;
 }
@@ -163,8 +163,6 @@ void ADC1_IRQHandler(void)
 {
     /* Start CPU tick number couting */
     SYSTICK_START_COUNT();
-
-    TP0_ON();
 
     switch (g_sSpinMidSwitch.eAppState)
     {
@@ -186,8 +184,6 @@ void ADC1_IRQHandler(void)
     /* Call FreeMASTER recorder */
     FMSTR_Recorder(0);
 
-    TP0_OFF();
-
     /* Add empty instructions for correct interrupt flag clearing */
     M1_END_OF_ISR;
 }
@@ -203,12 +199,9 @@ void ADC1_IRQHandler(void)
 RAM_FUNC_LIB
 void SM_StateMachineSlowTask(void)
 {
-    TP2_ON();
-
     /* M1 Slow StateMachine call */
     SM_StateMachineSlow(&g_sM1Ctrl);
 
-    TP2_OFF();
 }
 
 /*!
