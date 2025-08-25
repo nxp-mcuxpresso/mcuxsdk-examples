@@ -254,7 +254,7 @@ void shellCmd(void)
 
 void cmdList()
 {
-    if (list_files(false) != kStatus_Success)
+    if (list_files() != kStatus_Success)
     {
         get_app_data()->lastError = kAppCodeOk;
     }

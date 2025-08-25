@@ -66,7 +66,7 @@ app_data_t *get_app_data()
     return &app_data;
 }
 
-status_t list_files(bool autoInput)
+status_t list_files()
 {
     FRESULT error;
     DIR directory           = {0};
@@ -151,14 +151,6 @@ status_t list_files(bool autoInput)
     if (error == FR_OK)
     {
         f_closedir(&directory);
-    }
-
-    if (autoInput == true)
-    {
-        if (strlen(get_app_data()->availableInputs[0]) > 0)
-        {
-            strcpy(get_app_data()->input, get_app_data()->availableInputs[0]);
-        }
     }
 
     return kStatus_Success;
