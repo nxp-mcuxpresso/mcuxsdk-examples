@@ -38,6 +38,6 @@ typedef struct _app_handle
     FIL fileObject;
 } app_handle_t;
 
-status_t list_files(bool autoInput);
+status_t list_files(void);
 
 #endif /* __MAIN_H__ */
