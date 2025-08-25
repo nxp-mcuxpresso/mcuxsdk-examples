@@ -332,7 +332,7 @@ void PowerModeSwitchTask(void *pvParameters)
         }
         targetPowerMode = (lpm_power_mode_t)(ch - 'A');
 
-        if (targetPowerMode <= LPM_PowerModeSuspend)
+        if ((targetPowerMode >= LPM_PowerModeRun) && (targetPowerMode <= LPM_PowerModeSuspend))
         {
             if (targetPowerMode == s_curMode)
             {
