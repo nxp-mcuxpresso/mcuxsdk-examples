@@ -68,8 +68,14 @@ static void BOARD_BootClockRUN_InitFRO0(void)
     POWER_DisablePD(kPDRUNCFG_GATE_FRO0);
     POWER_DisablePD(kPDRUNCFG_PD_FRO0);
     /* Configure FRO clock module in closed loop (autotrimming) mode */
-    CLOCK_EnableFroClkFreqCloseLoop(FRO0, &g_fro0Config_BOARD_BootClockRUN,
-                                    kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
+    if (kStatus_Success != CLOCK_EnableFroClkFreqCloseLoop(FRO0, &g_fro0Config_BOARD_BootClockRUN,
+                                    kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn))
+    {
+        /* If the close loop not lock, switch to open loop mode and search the nearest target frequency. */
+        CLOCK_FroFineTune(FRO0, g_fro0Config_BOARD_BootClockRUN.targetFreq, (uint16_t)(FRO0->AUTOTRIM.RW & FRO_AUTOTRIM_AUTOTRIM_MASK));
+        CLOCK_EnableFroClkOutput(FRO0, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
+    }
+
     /* Setup domain specific clock gates */
     CLOCK_EnableFro0ClkForDomain(kCLOCK_VddnComDomainEnable | kCLOCK_Vdd2CompDomainEnable);
 }

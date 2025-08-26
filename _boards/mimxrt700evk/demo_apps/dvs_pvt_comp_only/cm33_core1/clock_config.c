@@ -21,11 +21,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v15.0
+product: Clocks v17.0
 processor: MIMXRT798S
 package_id: MIMXRT798SGFOB
 mcu_data: ksdk2_0
-processor_version: 0.2503.110
+processor_version: 0.2509.40
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -72,7 +72,7 @@ outputs:
 - {id: baseclk_md2.outFreq, value: 1 MHz}
 - {id: baseclk_mdn.outFreq, value: 1 MHz}
 - {id: baseclk_sense.outFreq, value: 64 MHz}
-- {id: ckil_32k.outFreq, value: 976.5625 Hz}
+- {id: ckil_32k.outFreq, value: 31.25 kHz}
 - {id: fro0_div3.outFreq, value: 64 MHz}
 - {id: fro0_div6.outFreq, value: 32 MHz}
 - {id: fro0_max_vdd2_comp.outFreq, value: 192 MHz}
@@ -91,7 +91,7 @@ outputs:
 - {id: osc_clk.outFreq, value: 24 MHz}
 - {id: osc_clk_eusb.outFreq, value: 24 MHz}
 - {id: osc_clk_usb.outFreq, value: 24 MHz}
-- {id: wake32k_clk.outFreq, value: 976.5625 Hz}
+- {id: wake32k_clk.outFreq, value: 31.25 kHz}
 settings:
 - {id: AUDIO_PLL0_INIT_Config, value: custom}
 - {id: AUDIO_VDD1_CLK_SEL_INIT_Config, value: custom}
@@ -176,7 +176,7 @@ settings:
 - {id: FCCLK1_CLK_SEL_INIT_Config, value: custom}
 - {id: FCCLK2_CLK_SEL_INIT_Config, value: custom}
 - {id: FCCLK3_CLK_SEL_INIT_Config, value: custom}
-- {id: FRO0_INIT_Config, value: runtime}
+- {id: FRO0_INIT_Config, value: custom}
 - {id: FRO0_mode, value: ClosedLoop}
 - {id: FRO1_INIT_Config, value: custom}
 - {id: FRO2_CPU_Core_Config, value: cm33_core1}
@@ -280,8 +280,16 @@ void BOARD_BootClockRUN_InitClockModule(clock_module_t module)
             /* Enable power and ungate the FRO2. */
             POWER_DisablePD(kPDRUNCFG_GATE_FRO2);
             POWER_DisablePD(kPDRUNCFG_PD_FRO2);
-            /* Configure FRO clock module */
+            /* Configure FRO clock module in closed loop (autotrimming) mode. */
+#if (FSL_CLOCK_DRIVER_VERSION >= MAKE_VERSION(2, 5, 0))
+            if (kStatus_Success != CLOCK_EnableFroClkFreqCloseLoop(FRO2, &g_fro2Config_BOARD_BootClockRUN, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn)) {
+                /* If the close loop not lock, switch to open loop mode and search the nearest target frequency. */
+                CLOCK_FroFineTune(FRO2, g_fro2Config_BOARD_BootClockRUN.targetFreq, (uint16_t)(FRO2->AUTOTRIM.RW & FRO_AUTOTRIM_AUTOTRIM_MASK));
+                CLOCK_EnableFroClkOutput(FRO2, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
+            }
+#else
             CLOCK_EnableFroClkFreqCloseLoop(FRO2, &g_fro2Config_BOARD_BootClockRUN, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv3OutEn | kCLOCK_FroDiv6OutEn);
+#endif
             /* Setup domain specific clock gates */
             CLOCK_EnableFro2ClkForDomain(kCLOCK_Vdd1SenseDomainEnable);
             break;

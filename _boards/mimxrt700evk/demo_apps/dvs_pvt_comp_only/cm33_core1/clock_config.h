@@ -276,7 +276,7 @@ void BOARD_InitBootClocks(void);
 #define BOARD_BOOTCLOCKRUN_BASECLK_MD2                1000000UL      /* Clock consumers of baseclk_md2 output : N/A */
 #define BOARD_BOOTCLOCKRUN_BASECLK_MDN                1000000UL      /* Clock consumers of baseclk_mdn output : N/A */
 #define BOARD_BOOTCLOCKRUN_BASECLK_SENSE              64000000UL     /* Clock consumers of baseclk_sense output : N/A */
-#define BOARD_BOOTCLOCKRUN_CKIL_32K                   976UL          /* Clock consumers of ckil_32k output : USDHC0, USDHC1 */
+#define BOARD_BOOTCLOCKRUN_CKIL_32K                   31250UL        /* Clock consumers of ckil_32k output : USDHC0, USDHC1 */
 #define BOARD_BOOTCLOCKRUN_EUSB_WAKE_CLK              0UL            /* Clock consumers of eUSB_WAKE_CLK output : USB1 */
 #define BOARD_BOOTCLOCKRUN_FRO0_DIV2                  0UL            /* Clock consumers of fro0_div2 output : N/A */
 #define BOARD_BOOTCLOCKRUN_FRO0_DIV3                  64000000UL     /* Clock consumers of fro0_div3 output : N/A */
@@ -340,7 +340,7 @@ void BOARD_InitBootClocks(void);
 #define BOARD_BOOTCLOCKRUN_OSC_CLK                    24000000UL     /* Clock consumers of osc_clk output : N/A */
 #define BOARD_BOOTCLOCKRUN_OSC_CLK_EUSB               24000000UL     /* Clock consumers of osc_clk_eusb output : USB1 */
 #define BOARD_BOOTCLOCKRUN_OSC_CLK_USB                24000000UL     /* Clock consumers of osc_clk_usb output : USB0 */
-#define BOARD_BOOTCLOCKRUN_WAKE32K_CLK                976UL          /* Clock consumers of wake32k_clk output : N/A */
+#define BOARD_BOOTCLOCKRUN_WAKE32K_CLK                31250UL        /* Clock consumers of wake32k_clk output : N/A */
 
 /*! @brief Clock pre-initialization function.
  */
