@@ -66,7 +66,7 @@ struct duplex_channel
 	int handler_w;
 	int handler_r;
 	int start_tick;
-	uint8_t name[MAX_CHANNEL_NAME];
+	char name[MAX_CHANNEL_NAME];
 };
 
 void *ipc_shm_mailbox_write_start(int handler);

@@ -42,7 +42,6 @@ void MU_ipc_shm_client_init()
 void IPC_SHM_MU_IRQHandler(void)
 {
 	uint32_t flag = 0;
-	uint32_t status;
 	flag = MU_GetStatusFlags(IPC_SHM_MU);
 	/* PDO input */
 	if ((flag & MU_INT_PDO_COMM_FLAG) == MU_INT_PDO_COMM_FLAG)
@@ -70,12 +69,12 @@ void IPC_SHM_MU_IRQHandler(void)
 
 int obj_write_callback(uint16_t Index, uint8_t Subindex, uint8_t size, void *pData)
 {
-
+	return 0;
 }
 
 int obj_read_callback(uint16_t Index, uint8_t Subindex, uint8_t size, void *pData)
 {
-
+	return 0;
 }
 
 void obj_handler()
@@ -115,7 +114,7 @@ void obj_handler()
 
 int motor_slow_task(int axis, struct pdo_to_motor_t *pdo_m, struct pdo_to_esc_t *pdo_e, struct param_t *param)
 {
-
+	return 0;
 }
 
 void process_handler()
@@ -144,7 +143,7 @@ int Cia402_tran_action_quary(uint8_t axis)
 int func_call_handler()
 {
 	struct func_call_t call;
-	int len, ret;
+	int len, ret = 0;
 	len = ipc_shm_client_sdc_read(&func_call, &call, sizeof(call));
 	if (len >=2 && len >= call.argc + 1) {
 		if (call.func_id == FUNC_STATE_MACHINE_TRAN) {
@@ -158,4 +157,5 @@ int func_call_handler()
 		ret = -1;
 	}
 	ipc_shm_client_sdc_write(&func_call, &ret, sizeof(ret));
+	return ret;
 }

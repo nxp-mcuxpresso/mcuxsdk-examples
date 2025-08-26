@@ -94,7 +94,7 @@ int ipc_shm_client_sdc_write(struct duplex_channel *sdc, void *data, uint32_t si
 		do {
 			mem = ipc_shm_mailbox_write_start(sdc->handler_r);
 		} while (!mem);
-		memcpy(mem, data + index, len);
+		memcpy(mem, (char *)data + index, len);
 		index += len;
 		size -= len;
 		ipc_shm_mailbox_write_end(sdc->handler_r, len);
