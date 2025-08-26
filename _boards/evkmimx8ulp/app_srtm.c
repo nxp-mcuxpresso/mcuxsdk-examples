@@ -2816,3 +2816,8 @@ void APP_SRTM_SetWakeupPin(uint16_t ioId, uint16_t event)
     SRTM_Dispatcher_CallProc(disp, proc, SRTM_WAIT_FOR_EVER);
     SRTM_Procedure_Destroy(proc);
 }
+
+lpm_ad_power_mode_e APP_SRTM_GetCurADMode(void)
+{
+    return AD_CurrentMode;
+}

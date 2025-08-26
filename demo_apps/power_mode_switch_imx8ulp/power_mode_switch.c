@@ -764,12 +764,25 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         targetPowerMode = LPM_GetPowerMode();
         if (targetPowerMode != LPM_PowerModeActive)
         {
+            if (targetPowerMode == LPM_PowerModePowerDown ||
+                targetPowerMode == LPM_PowerModeDeepPowerDown ||
+                targetPowerMode == LPM_PowerModeDeepSleep)
+            {
+                /* Avoid the RTD entering DSL/PD/DPD mode when the AD is in Active mode. */
+                if (APP_SRTM_GetCurADMode() == AD_ACT)
+                {
+                    PRINTF("The M core can't enter DSL/PD/DPD mode when the A core is in Active mode!\r\n");
+                    xSemaphoreGive(s_wakeupSig);
+                    goto out;
+                }
+            }
             /* Only wait when target power mode is not running */
             APP_PowerPreSwitchHook(targetPowerMode);
             result = LPM_WaitForInterrupt((uint64_t)1000 * xExpectedIdleTime / configTICK_RATE_HZ);
             APP_PowerPostSwitchHook(targetPowerMode, result);
         }
     }
+out:
     EnableGlobalIRQ(irqMask);
     /* Recovery clock(switch clock source from FRO to PLL0/1) after interrupt is enabled */
     BOARD_ResumeClockInit();

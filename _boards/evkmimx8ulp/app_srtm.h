@@ -234,6 +234,7 @@ void APP_SRTM_DisableLPAV(void);
 void APP_SRTM_EnableLPAV(void);
 bool APP_SRTM_GetSupportDSLForApd(void);
 void APP_SRTM_SetSupportDSLForApd(bool support);
+lpm_ad_power_mode_e APP_SRTM_GetCurADMode(void);
 #if defined(__cplusplus)
 }
 #endif
