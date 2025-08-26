@@ -13,6 +13,9 @@
 #ifndef __LWIPOPTS_H__
 #define __LWIPOPTS_H__
 
+/* Get board specific configuration */
+#include "network_cfg.h"
+
 #if USE_RTOS
 
 /**
