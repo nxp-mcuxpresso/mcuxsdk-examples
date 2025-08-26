@@ -14,18 +14,15 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    CLOCK_EnableClock(kCLOCK_GateLPUART2);
-    CLOCK_EnableClock(kCLOCK_GatePERIPH_GROUP1);
+    CLOCK_AttachClk(kFRO12M_to_LPUART0);
 
-    /* Release peripheral RESET */
-    RESET_PeripheralReset(kPORT1_RST_SHIFT_RSTn);
-
-    BOARD_InitBootPins();
     BOARD_InitBootClocks();
+    BOARD_InitSWD_DEBUGPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 }
 
-uint32_t LPUART2_GetFreq()
+uint32_t LPUART0_GetFreq()
 {
     return DEMO_LPUART_CLK_FREQ;
 }

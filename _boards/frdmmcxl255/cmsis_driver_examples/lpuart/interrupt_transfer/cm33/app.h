@@ -15,8 +15,8 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_USART           Driver_USART2
-#define DEMO_LPUART_CLK_FREQ CLOCK_GetFreq(kCLOCK_Fro12M)
+#define DEMO_USART              Driver_USART0
+#define DEMO_LPUART_CLK_FREQ    CLOCK_GetFreq(kCLOCK_Fro12M)
 /*${macro:end}*/
 
 /*******************************************************************************

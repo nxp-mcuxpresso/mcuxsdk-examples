@@ -11,7 +11,7 @@ No special settings are required.
 Prepare the Demo
 ===============
 Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
+1.  Connect a Type-C USB cable between the host PC and the MCU-Link port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
