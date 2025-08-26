@@ -61,7 +61,6 @@ void *ipc_shm_mailbox_read_start(int handler, uint32_t *len)
 int ipc_shm_mailbox_read_end(int handler)
 {
 	struct channel_metadata *meta;
-	uint8_t *data;
 
 	meta = &ipc_shm->metadata[handler];
 	if (meta->status[meta->reading_index] != mem_entry_reading) {

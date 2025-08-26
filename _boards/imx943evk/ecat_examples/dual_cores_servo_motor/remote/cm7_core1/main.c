@@ -382,6 +382,7 @@ int motor_slow_task(int axis, struct pdo_to_motor_t *pdo_m, struct pdo_to_esc_t 
         pdo_e->Actual_pos = GetM2PositionActualValue();
         pdo_e->Actual_vel = (uint32_t)(g_sM2Drive.sSpeed.fltSpeedFilt);
     }
+	return 0;
 }
 
 /*!

@@ -24,9 +24,9 @@ int ipc_shm_host_init(uint32_t ipc_shm_base, uint32_t ipc_shm_size)
 	}
 
 	ipc_shm = (struct ipc_shm_t *)ipc_shm_mem.base;
-	ipc_shm->data_base = (void *)(ipc_shm_mem.base + sizeof(struct ipc_shm_t));
-	ipc_shm->data_top = (void *)(ipc_shm_mem.base + ipc_shm_mem.size);
-	ipc_shm->data_heap = (void *)(ipc_shm_mem.base + ipc_shm_mem.size);
+	ipc_shm->data_base = (void *)((char *)ipc_shm_mem.base + sizeof(struct ipc_shm_t));
+	ipc_shm->data_top = (void *)((char *)ipc_shm_mem.base + ipc_shm_mem.size);
+	ipc_shm->data_heap = (void *)((char *)ipc_shm_mem.base + ipc_shm_mem.size);
 	ipc_shm->size = ipc_shm_mem.size;
 	ipc_shm->channel_index = 0;	
 	ipc_shm->host_sync = 0;
@@ -54,8 +54,8 @@ int ipc_shm_host_alloc_channel(enum channel_type type, uint32_t data_size, char 
 		mem_number = BUFFER_MEM_NUMBER;
 
 	meta = &ipc_shm->metadata[ipc_shm->channel_index];
-	data = ipc_shm->data_heap - data_size * mem_number;
-	if (data < ipc_shm->data_base) {
+	data = (uint8_t *)ipc_shm->data_heap - data_size * mem_number;
+	if ((uint32_t)data < (uint32_t)ipc_shm->data_base) {
 		return -2;
 	}
 	ipc_shm->data_heap = data;
@@ -116,7 +116,7 @@ int ipc_shm_host_sdc_send(struct duplex_channel *sdc, void *data, uint32_t size)
 		do {
 			mem = ipc_shm_mailbox_write_start(sdc->handler_w);
 		} while (!mem);
-		memcpy(mem, data + index, len);
+		memcpy(mem, (char *)data + index, len);
 		index += len;
 		size -= len;
 		ipc_shm_mailbox_write_end(sdc->handler_w, len);
