@@ -28,7 +28,6 @@ void BOARD_InitBootClocks(void)
     /* Config 32k Crystal Oscillator */
     /* Monitor is disabled */
     CLOCK_SetRoscMonitorMode(kSCG_RoscMonitorDisable);
-    CLOCK_SetXtal32Freq(32768U);
     CLOCK_SetupFROHFClocking(96000000U, 0U);                    /* Setup FRO HF clock */
 
     CLOCK_SetupFRO12MClocking();                                /* Setup FRO12M clock */

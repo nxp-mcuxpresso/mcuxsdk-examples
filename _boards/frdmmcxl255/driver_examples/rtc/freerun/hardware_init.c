@@ -38,7 +38,7 @@ void APP_InitROSC(void)
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
     AON__SMM->RTC_XTAL_CONFG1 = 0x80d8;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
-    AON__SMM->BIAS_CTRL = SMM_BIAS_CTRL_xtal_sox_4p_dis_MASK;
+    AON__SMM->BIAS_CTRL = SMM_BIAS_CTRL_XTAL_SOX_4P_DIS_MASK;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
     AON__SMM->RTC_XTAL_CONFG1 = 0x80d9;
     SDK_DelayAtLeastUs(1000, SystemCoreClock);
@@ -83,7 +83,6 @@ void BOARD_Init96MClocksBoot(void)
     /* Config 32k Crystal Oscillator */
     /* Monitor is disabled */
     CLOCK_SetRoscMonitorMode(kSCG_RoscMonitorDisable);
-    CLOCK_SetXtal32Freq(32768U);
     CLOCK_SetupFROHFClocking(96000000U, 0U); /* Setup FRO HF clock */
 
     CLOCK_SetupFRO12MClocking();             /* Setup FRO12M clock */
