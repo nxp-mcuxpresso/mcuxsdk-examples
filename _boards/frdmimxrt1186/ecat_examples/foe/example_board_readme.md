@@ -9,6 +9,7 @@ Board settings
 ==============
 J12(2-3)/J13(2-3): eCAT0 Function Via J57A(Default).
 J18(2-3)/J17(2-3): eCAT1 Function Via J57B(Default).
+Note: Since it depends on "ota_examples\mcuboot_opensource" example, which has not been developed yet, it is not available yet.
 
 Prepare the Demo
 ================
