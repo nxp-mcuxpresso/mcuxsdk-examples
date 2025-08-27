@@ -30,8 +30,9 @@ mcux_add_iar_configuration(
 )
 mcux_add_mdk_configuration(
     LD "--predefine=-D__stack_size__=0x8000\
-       --predefine=-D__heap_size__=0x150000\
-       --library_type=nomicrolib"
+       --predefine=-D__heap_size__=0x300000\
+       --predefine=-D__heap_noncacheable__=1\
+       --library_type=standardlib"
 )
 mcux_add_mdk_configuration(
     TARGETS flash_release

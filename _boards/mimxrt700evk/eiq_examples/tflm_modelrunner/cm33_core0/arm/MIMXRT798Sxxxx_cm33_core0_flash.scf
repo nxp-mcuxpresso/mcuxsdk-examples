@@ -54,13 +54,13 @@
 #define m_text_size                    0x001FBD00
 
 #define m_data_start                   0x20080000
-#define m_data_size                    0x00280000
+#define m_data_size                    0x00180000
 
-#define m_model_start                  0x20400000
-#define m_model_size                   0x00100000
+#define m_model_start                  0x60000000
+#define m_model_size                   0x02000000
 
 #define m_ncache_start                 0x20200000
-#define m_ncache_size                  0x00060000
+#define m_ncache_size                  0x00500000
 
 #define m_boot_flash_conf_start        0x28000000
 
