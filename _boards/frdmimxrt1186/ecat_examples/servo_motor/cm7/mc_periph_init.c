@@ -108,8 +108,8 @@ void InitADC(void)
     LPADC_GetDefaultConfig(&mLpadcConfigStruct);
 
     mLpadcConfigStruct.enableAnalogPreliminary = true;
-    mLpadcConfigStruct.referenceVoltageSource = kLPADC_ReferenceVoltageAlt2; // VDDA_ADC_1P8, please connect jumper J11 (1-2)
-    mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage1024; // Maximum HW average during the calibration 
+    mLpadcConfigStruct.referenceVoltageSource = kLPADC_ReferenceVoltageAlt1; // VDDA_ADC_1P8, please connect jumper J11 (1-2)
+    mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage1; // Maximum HW average during the calibration 
     mLpadcConfigStruct.FIFO1Watermark = 1U; 
   
     LPADC_Init(ADC1, &mLpadcConfigStruct);
@@ -138,7 +138,7 @@ void InitADC(void)
      **********************************************************************************/
     
     LPADC_GetDefaultConvCommandConfig(&mLpadcCommandConfigStruct);
-    mLpadcCommandConfigStruct.hardwareAverageMode = kLPADC_HardwareAverageCount4;
+    mLpadcCommandConfigStruct.hardwareAverageMode = kLPADC_HardwareAverageCount1;
     mLpadcCommandConfigStruct.sampleTimeMode = kLPADC_SampleTimeADCK3;
     mLpadcCommandConfigStruct.sampleScaleMode = kLPADC_SamplePartScale;
     mLpadcCommandConfigStruct.enableWaitTrigger = FALSE;
@@ -274,11 +274,11 @@ void M1_InitPWM(void)
     PWMBase->SM[2].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
 
     /* Trigger for ADC synchronization */
-    PWMBase->SM[0].VAL4 = PWM_VAL4_VAL4((uint16_t)((-(g_sClockSetup.ui16M1PwmModulo / 2) + (g_sClockSetup.ui16M1PwmDeadTime/2))));
+    PWMBase->SM[0].VAL4 = PWM_VAL4_VAL4((uint16_t)((-(g_sClockSetup.ui16M1PwmModulo / 2) + 10)));
     PWMBase->SM[1].VAL4 = PWM_VAL4_VAL4((uint16_t)(0));
     PWMBase->SM[2].VAL4 = PWM_VAL4_VAL4((uint16_t)(0));
 
-    PWMBase->SM[0].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
+    PWMBase->SM[0].VAL5 = PWM_VAL5_VAL5((uint16_t)((-(g_sClockSetup.ui16M1PwmModulo / 2) + 10)));
     PWMBase->SM[1].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
     PWMBase->SM[2].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
 
@@ -330,11 +330,6 @@ void M1_InitPWM(void)
        samples to activate */
     PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_PER_MASK) | PWM_FFILT_FILT_PER(5);
     PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_CNT_MASK) | PWM_FFILT_FILT_CNT(5);
-       
-    /* Start PWMs (set load OK flags and run) */
-    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0xF);
-    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0xF);
-    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x0);
 
     /* Initialize MC driver */
     g_sM1Pwm3ph.pui32PwmBaseAddress = (PWM_Type *)PWMBase;
