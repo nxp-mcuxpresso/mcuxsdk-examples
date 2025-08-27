@@ -235,6 +235,12 @@ mcuboot_opensource:
     frdmmcxa366:
     - -mdk@release
     - -mdk@debug
+    kw47evk:
+    - -mdk@release
+    - -mdk@debug
+    mcxw72evk:
+    - -mdk@release
+    - -mdk@debug
 mcuboot_opensource@mcxn_encrypted_xip:
   section-type: custom_application
   contents:

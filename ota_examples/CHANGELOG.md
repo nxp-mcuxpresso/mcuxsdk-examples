@@ -2,6 +2,11 @@
 
 All notable changes to MCUboot fork in MCUXpresso SDK and related ota examples will be documented in this file.
 
+## [25.12.0] - 12/2025
+
+### Added
+- Added basic support for KW47-EVK and MCX-W72-EVK board
+
 ## [25.09.0] - 09/2025
 
 ### Fixed
