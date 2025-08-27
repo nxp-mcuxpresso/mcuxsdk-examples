@@ -1,5 +1,6 @@
 /*
- * Copyright 2022-2023 NXP
+ * Copyright 2025 NXP
+ * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,11 +13,11 @@
 /* clang-format off */
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Peripherals v14.0
-processor: MCXA156
-package_id: MCXA156VLL
+product: Peripherals v15.0
+processor: MCXA346
+package_id: MCXA346VLQ
 mcu_data: ksdk2_0
-processor_version: 0.15.2
+processor_version: 0.2509.40
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: 2dd69fef-6766-4bc7-a16b-5a7be98ba5bb
@@ -69,7 +70,7 @@ instance:
 - type: 'nvic'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'nvic_57b5eef3774cc60acaede6f5b8bddc67'
+- type_id: 'nvic'
 - functional_group: 'BOARD_InitPeripherals'
 - peripheral: 'NVIC'
 - config_sets:
@@ -93,7 +94,7 @@ instance:
 - type: 'littlefs'
 - mode: 'general'
 - custom_name_enabled: 'false'
-- type_id: 'littlefs_7e89bf6c938031bfd17176a3aacf1bc3'
+- type_id: 'littlefs_2.4.0'
 - functional_group: 'BOARD_InitPeripherals'
 - config_sets:
   - general_config:
