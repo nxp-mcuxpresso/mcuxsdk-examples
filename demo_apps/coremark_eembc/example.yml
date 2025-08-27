@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2024-2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+coremark_eembc:
+  section-type: application
+  contents:
+    meta_path: examples/demo_apps/coremark_eembc
+    project-root-path: boards/${board}/demo_apps/coremark_eembc/${multicore_foldername}
+    document:
+      name: coremark_eembc${core_id_suffix_name}
+      category: demo_apps
+      brief: The Coremark demo execute coremark routines to demo SOC performance.
+      example_readme:
+      - examples/demo_apps/coremark_eembc/readme.md
+      - ${board_root}/${board}/demo_apps/coremark_eembc/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt2660evk: []
