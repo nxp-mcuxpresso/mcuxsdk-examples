@@ -15,6 +15,10 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+/* Definition for default PWM frequence in hz. */
+#ifndef APP_DEFAULT_PWM_FREQUENCY
+#define APP_DEFAULT_PWM_FREQUENCY (12000U)
+#endif
 
 /*******************************************************************************
  * Prototypes
@@ -38,9 +42,11 @@ static void PWM_InitPhasePwm(void)
     /* Structure of setup PWM */
     pwm_signal_param_t pwmSignal;
     uint16_t deadTimeVal;
-    uint32_t pwmSourceClockInHz, pwmFrequencyInHz = 1U;
+    uint32_t pwmSourceClockInHz, pwmFrequencyInHz;
 
     pwmSourceClockInHz = PWM_SRC_CLK_FREQ;
+    pwmFrequencyInHz = APP_DEFAULT_PWM_FREQUENCY;
+
     /* Set deadtime count */
     deadTimeVal                = ((uint64_t)pwmSourceClockInHz * DEMO_DEADTIME_VAL) / 1000000000U;
     pwmSignal.pwmChannel       = DEMO_PWM_CHANNEL;
@@ -91,7 +97,6 @@ int main(void)
     cmp_dac_config_t mCmpDacConfigStruct;
 
     uint8_t ret     = 0U;
-    uint16_t i      = 0U;
     uint32_t pwmVal = 4U;
 
     BOARD_InitHardware();
@@ -164,11 +169,9 @@ int main(void)
 
     while (1)
     {
-        /* Time delay for update the duty cycle percentage */
-        for (i = 0U; i < DEMO_PWM_DELAY_VAL; i++)
-        {
-            __NOP();
-        }
+        /* Delay at least 1000 PWM periods. */
+        SDK_DelayAtLeastUs((1000000U / APP_DEFAULT_PWM_FREQUENCY) * 1000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+
         pwmVal = pwmVal + 4;
 
         /* Reset the duty cycle percentage */
