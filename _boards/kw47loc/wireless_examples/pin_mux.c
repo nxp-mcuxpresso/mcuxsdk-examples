@@ -42,7 +42,7 @@ pin_labels:
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinButton0:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINBUTTON0_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINBUTTON0_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '38', peripheral: GPIOC, signal: 'GPIO, 1', pin_signal: PTC1/WUU0_P8/LPSPI1_PCS3/CAN0_RX/I3C0_SCL/TPM1_CH1/LPI2C1_SDA/FLEXIO0_D17, pull_select: up,
     pull_enable: enable, slew_rate: fast, passive_filter: disable, open_drain: enable, drive_strength: low, drive_strength_1: normal}
@@ -87,7 +87,7 @@ void BOARD_InitPinButton0(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinButton1:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINBUTTON1_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINBUTTON1_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '45', peripheral: GPIOC, signal: 'GPIO, 7', pin_signal: PTC7/WUU0_P12/NMI_b/RF_NOT_ALLOWED/TRGMUX0_IN3/TRGMUX0_OUT3/SFA0_CLK/TPM1_CLKIN/TPM2_CLKIN/CLKOUT/FLEXIO0_D23,
     pull_select: up, pull_enable: enable, slew_rate: slow, open_drain: enable, drive_strength: low}
@@ -132,7 +132,7 @@ void BOARD_InitPinButton1(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinSWO:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINSWO_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINSWO_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '10', peripheral: GPIOA, signal: 'GPIO, 4', pin_signal: ADC0_A10/CMP0_IN0/PTA4/WUU0_P2/RF_XTAL_OUT_ENABLE/RF_GPO_9/TPM0_CLKIN/TRACE_SWO/FLEXIO0_D4/BOOT_CONFIG,
     pull_select: up, pull_enable: enable, slew_rate: slow, open_drain: enable, drive_strength: low}
@@ -177,7 +177,7 @@ void BOARD_InitPinSWO(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLED1:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED1_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED1_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '37', peripheral: GPIOC, signal: 'GPIO, 0', pin_signal: PTC0/WUU0_P7/LPSPI1_PCS2/CAN0_TX/I3C0_SDA/TPM1_CH0/LPI2C1_SCL/FLEXIO0_D16, pull_select: down,
     pull_enable: disable, pull_value: low, slew_rate: slow, passive_filter: disable, open_drain: disable, drive_strength: low, drive_strength_1: normal}
@@ -222,7 +222,7 @@ void BOARD_InitPinLED1(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLED2:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED2_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED2_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '44', peripheral: GPIOC, signal: 'GPIO, 6', pin_signal: ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22, pull_select: down, pull_enable: disable,
     slew_rate: slow, open_drain: disable, drive_strength: low}
@@ -267,7 +267,7 @@ void BOARD_InitPinLED2(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLED3:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED3_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED3_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -289,7 +289,7 @@ void BOARD_InitPinLED3(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLED4:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED4_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITPINLED4_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -311,7 +311,7 @@ void BOARD_InitPinLED4(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLPUART0_RX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '11', peripheral: LPUART0, signal: RX, pin_signal: ADC0_A12/PTA16/LPSPI0_PCS0/EWM0_OUT_b/LPI2C0_SCLS/TPM0_CH4/LPUART0_RX/RF_GPO_8/FLEXIO0_D5}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -337,7 +337,7 @@ void BOARD_InitPinLPUART0_RX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLPUART0_TX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '12', peripheral: LPUART0, signal: TX, pin_signal: ADC0_A13/PTA17/WUU0_P3/LPSPI0_SIN/EWM0_IN/LPI2C0_SDAS/TPM0_CH5/LPUART0_TX/RF_GPO_7/RF_GPO_8/FLEXIO0_D6}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -363,7 +363,7 @@ void BOARD_InitPinLPUART0_TX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLPUART1_RX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '39', peripheral: LPUART1, signal: RX, pin_signal: PTC2/WUU0_P9/LPSPI1_SOUT/LPUART1_RX/LPI2C1_SCLS/TPM1_CH2/I3C0_PUR/FLEXIO0_D18}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -389,7 +389,7 @@ void BOARD_InitPinLPUART1_RX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLPUART1_TX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '40', peripheral: LPUART1, signal: TX, pin_signal: PTC3/LPSPI1_SCK/LPUART1_TX/LPI2C1_SDAS/TPM1_CH3/FLEXIO0_D19}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -415,7 +415,7 @@ void BOARD_InitPinLPUART1_TX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLPUART0_RX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '11', peripheral: ADC0, signal: 'A, 12', pin_signal: ADC0_A12/PTA16/LPSPI0_PCS0/EWM0_OUT_b/LPI2C0_SCLS/TPM0_CH4/LPUART0_RX/RF_GPO_8/FLEXIO0_D5}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -441,7 +441,7 @@ void BOARD_UnInitPinLPUART0_RX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLPUART0_TX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '12', peripheral: ADC0, signal: 'A, 13', pin_signal: ADC0_A13/PTA17/WUU0_P3/LPSPI0_SIN/EWM0_IN/LPI2C0_SDAS/TPM0_CH5/LPUART0_TX/RF_GPO_7/RF_GPO_8/FLEXIO0_D6}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -467,7 +467,7 @@ void BOARD_UnInitPinLPUART0_TX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLPUART1_RX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '39', peripheral: n/a, signal: disabled, pin_signal: PTC2/WUU0_P9/LPSPI1_SOUT/LPUART1_RX/LPI2C1_SCLS/TPM1_CH2/I3C0_PUR/FLEXIO0_D18}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -493,7 +493,7 @@ void BOARD_UnInitPinLPUART1_RX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLPUART1_TX:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '40', peripheral: n/a, signal: disabled, pin_signal: PTC3/LPSPI1_SCK/LPUART1_TX/LPI2C1_SDAS/TPM1_CH3/FLEXIO0_D19}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -519,7 +519,7 @@ void BOARD_UnInitPinLPUART1_TX(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinButton1:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '44', peripheral: ADC0, signal: 'A, 8', pin_signal: ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22, identifier: SW3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -545,7 +545,7 @@ void BOARD_UnInitPinButton1(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinButton0:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '24', peripheral: ADC0, signal: 'B, 5', pin_signal: ADC0_B5/PTD1/SPC0_LPREQ/NMI_b/RF_GPO_4, identifier: SW2}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -571,7 +571,7 @@ void BOARD_UnInitPinButton0(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinSWO:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '10', peripheral: GPIOA, signal: 'GPIO, 4', pin_signal: ADC0_A10/CMP0_IN0/PTA4/WUU0_P2/RF_XTAL_OUT_ENABLE/RF_GPO_9/TPM0_CLKIN/TRACE_SWO/FLEXIO0_D4/BOOT_CONFIG,
     pull_select: up, pull_enable: enable, slew_rate: slow, open_drain: enable, drive_strength: low}
@@ -598,7 +598,7 @@ void BOARD_UnInitPinSWO(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLED1:
-- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED1_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED1_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '37', peripheral: n/a, signal: disabled, pin_signal: PTC0/WUU0_P7/LPSPI1_PCS2/CAN0_TX/I3C0_SDA/TPM1_CH0/LPI2C1_SCL/FLEXIO0_D16}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -624,7 +624,7 @@ void BOARD_UnInitPinLED1(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLED2:
-- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED2_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED2_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '44', peripheral: ADC0, signal: 'A, 8', pin_signal: ADC0_A8/PTC6/WUU0_P11/LPSPI1_PCS1/TPM1_CH5/FLEXIO0_D22}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -650,7 +650,7 @@ void BOARD_UnInitPinLED2(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLED3:
-- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED3_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED3_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -672,7 +672,7 @@ void BOARD_UnInitPinLED3(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLED4:
-- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED4_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_UNINITPINLED4_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -694,7 +694,7 @@ void BOARD_UnInitPinLED4(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitExtFlashPins:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '48', peripheral: LPSPI1, signal: SCK, pin_signal: ADC0_B12/PTB2/LPSPI1_SCK/LPUART1_TX/TPM1_CH2/FLEXIO0_D28, pull_select: down, pull_enable: disable,
     slew_rate: fast, open_drain: disable, drive_strength: high}
@@ -848,7 +848,7 @@ void BOARD_InitExtFlashPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_DeinitExtFlashPins:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '46', peripheral: GPIOB, signal: 'GPIO, 0', pin_signal: ADC0_B10/PTB0/WUU0_P13/LPSPI1_PCS0/TPM1_CH0/FLEXIO0_D26, identifier: LPSPI1_PCS0, direction: OUTPUT,
     gpio_init_state: 'false', pull_select: down, pull_enable: disable, slew_rate: fast, open_drain: disable, drive_strength: low}
@@ -1002,7 +1002,7 @@ void BOARD_DeinitExtFlashPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLPUART0_RTS:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '14', peripheral: LPUART0, signal: RTS, pin_signal: CMP1_IN0/PTA19/WUU0_P4/LPSPI0_SCK/LPUART0_RTS_b/LPI2C0_SCL/TPM0_CH2/RF_GPO_1, identifier: '', eft_interrupt: disable,
     pull_select: down, pull_enable: disable, pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable, drive_strength: low, drive_strength_1: normal}
@@ -1050,7 +1050,7 @@ void BOARD_InitPinLPUART0_RTS(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPinLPUART0_CTS:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '13', peripheral: LPUART0, signal: CTS, pin_signal: CMP1_IN1/PTA18/LPSPI0_SOUT/LPUART0_CTS_b/LPI2C0_SDA/TPM0_CH3/RF_GPO_0/LPUART0_RX, eft_interrupt: disable,
     pull_select: down, pull_enable: disable, pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable, drive_strength: low, drive_strength_1: normal}
@@ -1097,7 +1097,7 @@ void BOARD_InitPinLPUART0_CTS(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLPUART0_RTS:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '14', peripheral: GPIOA, signal: 'GPIO, 19', pin_signal: CMP1_IN0/PTA19/WUU0_P4/LPSPI0_SCK/LPUART0_RTS_b/LPI2C0_SCL/TPM0_CH2/RF_GPO_1, identifier: '',
     eft_interrupt: disable, pull_select: down, pull_enable: disable, pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable, drive_strength: low,
@@ -1146,7 +1146,7 @@ void BOARD_UnInitPinLPUART0_RTS(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_UnInitPinLPUART0_CTS:
-- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '13', peripheral: GPIOA, signal: 'GPIO, 18', pin_signal: CMP1_IN1/PTA18/LPSPI0_SOUT/LPUART0_CTS_b/LPI2C0_SDA/TPM0_CH3/RF_GPO_0/LPUART0_RX, eft_interrupt: disable,
     pull_select: down, pull_enable: disable, pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable, drive_strength: low, drive_strength_1: normal}
@@ -1194,7 +1194,7 @@ void BOARD_UnInitPinLPUART0_CTS(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitRFSwitchControlPins:
-- options: {callFromInitBoot: 'false', prefix: BOARD_INITRFSWITCHCONTROLPINS_, coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', prefix: BOARD_INITRFSWITCHCONTROLPINS_, coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '13', peripheral: GPIOA, signal: 'GPIO, 18', pin_signal: CMP1_IN1/PTA18/LPSPI0_SOUT/LPUART0_CTS_b/LPI2C0_SDA/TPM0_CH3/RF_GPO_0/LPUART0_RX, identifier: RF_GPO_0,
     direction: OUTPUT, gpio_init_state: 'false', pull_select: down, pull_enable: enable, pull_value: low, slew_rate: fast, passive_filter: disable, open_drain: disable,
@@ -1272,7 +1272,7 @@ void BOARD_InitRFSwitchControlPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
-- options: {callFromInitBoot: 'yes', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'yes', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '10', peripheral: GPIOA, signal: 'GPIO, 4', pin_signal: ADC0_A10/CMP0_IN0/PTA4/WUU0_P2/RF_XTAL_OUT_ENABLE/RF_GPO_9/TPM0_CLKIN/TRACE_SWO/FLEXIO0_D4/BOOT_CONFIG,
     pull_select: up, pull_enable: enable, slew_rate: slow, open_drain: enable, drive_strength: low}
