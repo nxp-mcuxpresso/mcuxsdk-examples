@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2007-2015 Freescale Semiconductor, Inc.
- * Copyright 2018-2023 NXP
+ * Copyright 2018-2023, 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -47,6 +47,7 @@ int main(void)
   
     /* Board initialization */
     BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
     BOARD_BootClockRUN();
 
     /* FreeMASTER communication layer initialization */

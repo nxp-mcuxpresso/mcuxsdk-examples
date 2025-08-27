@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -65,6 +65,7 @@ int main(void)
 
     /* Board initialization */
     BOARD_InitPins();
+    BOARD_InitDEBUG_UARTPins();
 
     if (BOARD_IS_XIP())
     {
