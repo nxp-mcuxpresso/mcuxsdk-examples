@@ -3,7 +3,7 @@
    <common>
       <processor>MCXN947</processor>
       <package>MCXN947VDF</package>
-      <board>FRDM-MCXN947</board>
+      <board>MCX-N9XX-EVK</board>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33_core0">
          <core name="Cortex-M33 (Core #0)" id="cm33_core0" description=""/>
