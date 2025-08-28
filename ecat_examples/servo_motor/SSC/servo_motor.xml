@@ -64,6 +64,7 @@
 				<Flags Visible="False"/>
 			</Setting>
 			<Setting CodeDefine="CiA402_SAMPLE_APPLICATION" Value="1"/>
+			<Setting CodeDefine="DEVICE_PROFILE_TYPE" Value="0x00000192"/>
 			<Setting CodeDefine="SYSTEM_HEADER_FILE" Value="#include &quot;board.h&quot;"/>
 			<Setting CodeDefine="STATIC_OBJECT_DIC" Value="0"/>
 			<Setting CodeDefine="ESC_EEPROM_ACCESS_SUPPORT" Value="0"/>
