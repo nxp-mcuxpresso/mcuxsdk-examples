@@ -83,9 +83,9 @@
 
 // Target-side address translation (TSA)
 #define FMSTR_USE_TSA           0   // Enable TSA functionality
-#define FMSTR_USE_TSA_INROM     1   // TSA tables declared as const (put to ROM)
-#define FMSTR_USE_TSA_SAFETY    1   // Enable/Disable TSA memory protection
-#define FMSTR_USE_TSA_DYNAMIC   1   // Enable/Disable TSA entries to be added also in runtime
+#define FMSTR_USE_TSA_INROM     0   // TSA tables declared as const (put to ROM)
+#define FMSTR_USE_TSA_SAFETY    0   // Enable/Disable TSA memory protection
+#define FMSTR_USE_TSA_DYNAMIC   0   // Enable/Disable TSA entries to be added also in runtime
 
 // Pipes as data streaming over FreeMASTER protocol
 #define FMSTR_USE_PIPES         3   // Specify number of supported pipe objects

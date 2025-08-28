@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -63,43 +62,19 @@
         __ISB();      \
     }
 
-/* Init SDK HW */
-//static void BOARD_Init(void);
-RAM_FUNC_LIB
-void PWM1_0_IRQHandler(void);
-RAM_FUNC_LIB
-void PWM2_0_IRQHandler(void);
-/* TMR1 reload ISR called with 1ms period */
-RAM_FUNC_LIB
-void TMR1_IRQHandler(void);
-/* SW8 Button interrupt handler */
-RAM_FUNC_LIB
-void GPIO1_0_IRQHandler(void);
-/* SINC conversation interrupt handler */
-RAM_FUNC_LIB
-void SINC1_CH0_IRQHandler(void);
-
-/* EnDat2.2 interrupt */
-RAM_FUNC_LIB
-void ENDAT2P2_IRQHandler(void);
-
-RAM_FUNC_LIB
-void SINC2_CH0_IRQHandler(void);
-/* BiSS OET interrupt handler */
-RAM_FUNC_LIB
-void BISS_EOT_IRQHandler(void);
-
-static void BOARD_InitSysTick(void);
-static void Application_Control_BL(void);
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-/* CPU load measurement using Systick */
-uint32_t g_ui32NumberOfCycles    = 0U;
-uint32_t g_ui32MaxNumberOfCycles = 0U;
-uint32_t g_ui32M2NumberOfCycles    = 0U;
-uint32_t g_ui32M2MaxNumberOfCycles = 0U;
+static int64_t i64EthercatPosTargetM1 = 0x0;
+static int64_t i64EthercatPosTargetM2 = 0x0;
+static int32_t i32EthercatM1PosCurrMT = 0x0;
+static int32_t i32EthercatM2PosCurrMT = 0x0;
+static int32_t i32EthercatM1PosOldST = -1;
+static int32_t i32EthercatM2PosOldST = -1;
+static int32_t i32InitializedM1 = 0;
+static int32_t i32InitializedM2 = 0;
+extern struct param_t *g_param;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
@@ -111,29 +86,32 @@ app_ver_t g_sAppIdFM = {
     FEATURE_SET,    /* example's feature-set */
 };
 
-//ctrl_m1_mid_t g_sSpinMidSwitch;           /* Control Spin/MID switching */
 
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
 static void init_freemaster_lpuart(void);
+/* EnDat2.2 interrupt */
+RAM_FUNC_LIB
+void M2_ENDAT2P2_IRQHandler(void);
+RAM_FUNC_LIB
+void M1_ENDAT2P2_IRQHandler(void);
+
+static void BOARD_InitSysTick(void);
 
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
 int32_t GetM1PositionActualValue(void)
 {
-    return g_sM1Enc.data.position.position & 0xFFFFFFFF;
+    return (g_sM1Enc.data.position.position | (i32EthercatM1PosCurrMT << 25))& 0xFFFFFFFF;
 }
 
 int32_t GetM2PositionActualValue(void)
 {
-    return g_sM2Enc.data.position.position & 0xFFFFFFFF;
-    // return g_sM2Enc.i64EndatPositionMT & 0xFFFFFFFF;
+   return (g_sM2Enc.data.position.position | (i32EthercatM2PosCurrMT << 25))& 0xFFFFFFFF;
 }
-
-static int64_t i64EthercatPosTargetM1 = 0x0;
-static int64_t i64EthercatPosTargetM2 = 0x0;
 
 acc32_t GetM1PositionCmdValue(int32_t targetPos)
 {
@@ -159,7 +137,7 @@ acc32_t GetM2PositionCmdValue(int32_t targetPos)
     return (acc32_t)((i32MultTurn << 15 ) + u16SingleTurn);
 }
 
-int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id)
+int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id, struct param_t *g_param)
 {
    int ret = 0;
    if (axis == 0) {
@@ -179,9 +157,8 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id)
                }
                break;
            case 5:
-               M1_SetAppSwitch(0);
-               break;
            case 6:
+               M1_SetAppSwitch(0);
                M1_ClosePWM();
                break;
            case 7:
@@ -193,7 +170,7 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id)
            case 13:
            case 14:
            case 15:
-               M2_ClosePWM();
+               M1_ClosePWM();
                break;
        }
    } else if (axis == 1){
@@ -201,9 +178,7 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id)
            case 0: break;
            case 1: break;
            case 2: break;
-           case 3:
-               M2_OpenPWM();
-               break;
+           case 3: M2_OpenPWM(); break;
            case 4:
                M2_SetAppSwitch(1);
                i64EthercatPosTargetM2 = g_sM2Enc.i64EndatPositionMT;
@@ -212,9 +187,8 @@ int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id)
                }
                break;
            case 5:
-               M2_SetAppSwitch(0);
-               break;
            case 6:
+               M2_SetAppSwitch(0);
                M2_ClosePWM();
                break;
            case 7:
@@ -250,7 +224,6 @@ int obj_write_callback(uint16_t Index, uint8_t Subindex, uint8_t size, void *pDa
 
 int obj_read_callback(uint16_t Index, uint8_t Subindex, uint8_t size, void *pData)
 {
-    PRINTF("read %d %d\r\n", Index, Subindex);
     uint32_t *p = pData;
     if (Index == 0x6064 && Subindex == 0x0) {
         *p = GetM1PositionActualValue();
@@ -285,11 +258,10 @@ int main(void)
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
-	BOARD_InitDebugConsole();
     MU_ipc_shm_client_init();
     /* FreeMASTER communication layer initialization */
-   // init_freemaster_lpuart();
-   // FMSTR_Init();
+    init_freemaster_lpuart();
+    FMSTR_Init();
 
     /* SysTick initialization for CPU load measurement */
     BOARD_InitSysTick();
@@ -299,47 +271,55 @@ int main(void)
     M1_SetAppSwitch(FALSE);
     M2_SetAppSwitch(FALSE);
 
-    /* Spin state machine is default */
-  //  g_sSpinMidSwitch.eAppState = kAppStateSpin;
-
     /* Enable interrupts */
     EnableGlobalIRQ(ui32PrimaskReg);
 
     /* Enable PWM clock */
     g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);    /* Enable PWM for Motor 1 */
     g_sM2Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);    /* Enable PWM for Motor 2 */
-    PRINTF("%s %s %d\r\n", __FILE__, __func__, __LINE__);
     /* Infinite loop */
     while (1)
     {
-        SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-        /* FreeMASTER Polling function */
-       // FMSTR_Poll();
+        if (!i32InitializedM1) {
+            if (g_param->axis[0].axis_is_active) {
+                M1_MCDRV_SINC_INIT();
+                M1_MCDRV_ENDAT2P2_PERIPH_INIT();
+                i32InitializedM1 = 1;
+            }
+        }
+        
+        if (!i32InitializedM2) {
+            if (g_param->axis[1].axis_is_active) {
+                M2_MCDRV_SINC_INIT();
+                M2_MCDRV_ENDAT2P2_PERIPH_INIT();
+                i32InitializedM2 = 1;
+            }
+        }
+
+       /* FreeMASTER Polling function */
+       FMSTR_Poll();
     }
 }
-
-// RAM_FUNC_LIB
-// void SINC1_CH0_IRQHandler(void)
-// {
-//     M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
-//     SDK_ISR_EXIT_BARRIER;
-// }
-
-// RAM_FUNC_LIB
-// void SINC2_CH0_IRQHandler(void)
-// {
-//     M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
-//     SDK_ISR_EXIT_BARRIER;
-// }
 
 RAM_FUNC_LIB
 void M1_ENDAT2P2_IRQHandler(void)
 {
-   // PRINTF("s");
-    /* Set M1 TP1 */
+    int32_t detal = 0;
     M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
     /* get position from EnDat2.2 */
     M1_MCDRV_ENDAT2P2_GET(&g_sM1Enc);
+
+    if (!(i32EthercatM1PosOldST < 0)) {
+        detal = (int32_t)g_sM1Enc.data.position.position - i32EthercatM1PosOldST;
+        if (detal < -16777216) {
+            i32EthercatM1PosCurrMT++;
+        }
+        else if (detal > 16777216) {
+            i32EthercatM1PosCurrMT--;
+        }
+    }
+    i32EthercatM1PosOldST = g_sM1Enc.data.position.position;
+
     /* M2 State machine */
     SM_StateMachineFast(&g_sM1Ctrl);
 
@@ -349,29 +329,38 @@ void M1_ENDAT2P2_IRQHandler(void)
 RAM_FUNC_LIB
 void M2_ENDAT2P2_IRQHandler(void)
 {
-    /* Set M1 TP1 */
-   // PRINTF("k");
+    int32_t detal = 0;
     M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
     /* get position from EnDat2.2 */
     M2_MCDRV_ENDAT2P2_GET(&g_sM2Enc);
+
+    if (!(i32EthercatM2PosOldST < 0)) {
+        detal = (int32_t)g_sM2Enc.data.position.position - i32EthercatM2PosOldST;
+        if (detal < -16777216) {
+            i32EthercatM2PosCurrMT++;
+        }
+        else if (detal > 16777216) {
+            i32EthercatM2PosCurrMT--;
+        }
+    }
+    i32EthercatM2PosOldST = g_sM2Enc.data.position.position;
+
     /* M2 State machine */
     SM_StateMachineFast(&g_sM2Ctrl);
+    FMSTR_Recorder(0);
 
     SDK_ISR_EXIT_BARRIER;
 }
+
 /*!
  * @brief   motor_slow_task called with EtherCAT DC period and processes following functions:
  *           - motor slow application machine function
- *
- * @param   void
- *
- * @return  none
  */
 RAM_FUNC_LIB
 int motor_slow_task(int axis, struct pdo_to_motor_t *pdo_m, struct pdo_to_esc_t *pdo_e, struct param_t *param)
 {
     if (axis == 0) {
-	M1_SetPosition(GetM1PositionCmdValue(pdo_m->Target_pos));
+        M1_SetPosition(GetM1PositionCmdValue(pdo_m->Target_pos));
         SM_StateMachineSlow(&g_sM1Ctrl);
         pdo_e->Actual_pos = GetM1PositionActualValue();
         pdo_e->Actual_vel = (uint32_t)(g_sM1Drive.sSpeed.fltSpeedFilt);
@@ -382,7 +371,7 @@ int motor_slow_task(int axis, struct pdo_to_motor_t *pdo_m, struct pdo_to_esc_t 
         pdo_e->Actual_pos = GetM2PositionActualValue();
         pdo_e->Actual_vel = (uint32_t)(g_sM2Drive.sSpeed.fltSpeedFilt);
     }
-	return 0;
+    return 0;
 }
 
 /*!

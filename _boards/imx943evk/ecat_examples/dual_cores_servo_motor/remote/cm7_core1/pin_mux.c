@@ -87,8 +87,8 @@ void BOARD_Init_M1_ENDAT2P2(void)
   /* Select Motor controller 1 */
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
   SDK_DelayAtLeastUs(100U, SystemCoreClock);
-  
-  /* EXTENDED PWM to trigger biss getsens */
+ 
+  /* EXTENDED PWM to trigger EnDat getsens */
   BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
   BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
   XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);

@@ -1,5 +1,4 @@
 /*
- * Copyright 2016, Freescale Semiconductor, Inc.
  * Copyright 2025 NXP
  * All rights reserved.
  *
@@ -127,7 +126,7 @@ typedef struct _clock_setup
  ******************************************************************************/
 
 /* Example specific position/speed sensor defines */
-#define M1_MCDRV_ENDAT2P2_PERIPH_INIT() (InitEndat2p2_1())
+#define M1_MCDRV_ENDAT2P2_PERIPH_INIT() (InitEndat2p2_2())
 #define M1_MCDRV_ENDAT2P2_GET(par) (MCDRV_Endat2p2DataRead(par))
 
 /* Common position/speed sensor defines */
@@ -233,7 +232,7 @@ typedef struct _clock_setup
  ******************************************************************************/
 
 /* Example specific position/speed sensor defines */
-#define M2_MCDRV_ENDAT2P2_PERIPH_INIT() (InitEndat2p2_2())
+#define M2_MCDRV_ENDAT2P2_PERIPH_INIT() (InitEndat2p2_1())
 #define M2_MCDRV_ENDAT2P2_GET(par)      (MCDRV_Endat2p2DataRead(par))
      
 /* Common position/speed sensor defines */

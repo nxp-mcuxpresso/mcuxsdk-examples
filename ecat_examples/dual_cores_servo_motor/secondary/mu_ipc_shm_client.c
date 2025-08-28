@@ -14,7 +14,7 @@
 
 __WEAK int obj_write_callback(uint16_t Index, uint8_t Subindex, uint8_t size, void *pData);
 __WEAK int obj_read_callback(uint16_t Index, uint8_t Subindex, uint8_t size, void *pData);
-__WEAK int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id);
+__WEAK int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id, struct param_t *g_param);
 __WEAK int Cia402_tran_action_quary(uint8_t axis);
 __WEAK int motor_slow_task(int axis, struct pdo_to_motor_t *pdo_m, struct pdo_to_esc_t *pdo_e, struct param_t *param);
 
@@ -130,7 +130,7 @@ void process_handler()
 	MU_TriggerInterrupts(IPC_SHM_MU, MU_INT_PDO_COMM_INDEX);
 }
 
-int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id)
+int Cia402_status_machine_trans(uint8_t axis, uint8_t trans_id, struct param_t *g_param)
 {
 	return 0;
 }
@@ -147,7 +147,7 @@ int func_call_handler()
 	len = ipc_shm_client_sdc_read(&func_call, &call, sizeof(call));
 	if (len >=2 && len >= call.argc + 1) {
 		if (call.func_id == FUNC_STATE_MACHINE_TRAN) {
-			ret = Cia402_status_machine_trans(call.argv[0], call.argv[1]);
+			ret = Cia402_status_machine_trans(call.argv[0], call.argv[1], g_param);
 		} else if (call.func_id == FUNC_TRAN_ACTION_QUARY) {
 			ret = Cia402_tran_action_quary(call.argv[0]);
 		} else {
