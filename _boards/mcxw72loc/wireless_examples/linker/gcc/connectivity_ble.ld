@@ -224,8 +224,6 @@ m_data1_unused_end                  = m_ram1_end;
 __CE_MEM_HEAP1_end__                = m_ce_data1_end;
 __CE_MEM_HEAP2_end__                = m_ce_data2_end;
 
-/* Last reserved word of the debug section used for the sfc module */
-m_sfc_log_start                     = 0x489C0078;
 /* Specify the memory areas */
 MEMORY
 {
