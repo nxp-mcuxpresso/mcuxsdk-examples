@@ -1,20 +1,13 @@
 /*
 ** ###################################################################
-**     Processors:          KW47B42Z96FTA_cm33_core0
-**                          KW47B42ZB2AFTA_cm33_core0
-**                          KW47B42ZB3AFTA_cm33_core0
-**                          KW47B42ZB6AFTA_cm33_core0
-**                          KW47B42ZB7AFTA_cm33_core0
-**                          MCXW727CAFTA_cm33_core0
-**                          MCXW727AAFTA_cm33_core0
-**                          MCXW727DAFTA_cm33_core0
+**     Processors:          KW47B42Z83AFTB_cm33_core0 
 **
 **     Compiler:            GNU C Compiler
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2024 - 2025 NXP
+**     Copyright 2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -31,8 +24,12 @@ GROUP (
 /* Entry Point */
 ENTRY(Reset_Handler)
 
+mReserveCeRam_d                     = DEFINED(gReserveCeRam_d) ? gReserveCeRam_d : 0;
+
+ASSERT(gReserveCeRam_d != 0, "There is no DSP on this phantom variant, we cannot use a section for compute engine!")
+
 m_flash_start                       = 0x00000000;
-m_flash_size                        = 0x00200000;
+m_flash_size                        = 0x00100000;
 m_flash_end                         = m_flash_start + m_flash_size - 1;
 m_sector_size                       = 0x2000;
 m_vector_table_size                 = 0x400;
@@ -62,8 +59,7 @@ m_text_size                         = m_text_end - m_text_start;
 m_ram0_start                        = 0x14000000;
 m_ram0_end                          = 0x14007FFF;
 m_ram1_start                        = 0x20000000;
-m_ram1_end                          = 0x20039FFF;
-mReserveCeRam_d                     = DEFINED(gReserveCeRam_d) ? gReserveCeRam_d : 0;
+m_ram1_end                          = 0x20019FFF;
 /* This region is used by bootrom when exiting power down modes */
 m_ram1_reserved_start               = m_ram1_start;
 m_ram1_reserved_size                = 0x4000;
@@ -88,9 +84,8 @@ m_data0_start                       = m_ram0_start;
 m_data0_end                         = m_ram0_end;
 m_data0_size                        = m_ram0_end - m_data0_start + 1;
 
-m_ce_data_size                      = mReserveCeRam_d ? 0x1A000 : 0x0;
 m_data1_start                       = m_interrupts_ram_end + 1;
-m_data1_end                         = m_ram1_end - m_ce_data_size;
+m_data1_end                         = m_ram1_end;
 m_data1_size                        = m_data1_end - m_data1_start + 1;
 
 __HEAP_start__                      = m_data1_end - HEAP_SIZE;
@@ -201,30 +196,6 @@ m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 m_free_data_end                   = m_shared_ram_end;
 
 
-/********************************************** Computeur Engine (CE) Memory **********************************************/
-m_ce_image_start                    = m_data1_end + 1;
-m_ce_image_size                     = mReserveCeRam_d ? 0x8000 : 0x0;
-m_ce_image_end                      = m_ce_image_start + m_ce_image_size - 1;
-m_ce_ctrl_start                     = m_ce_image_end + 1;
-m_ce_ctrl_size                      = mReserveCeRam_d ? 0x640 : 0x0;
-m_ce_ctrl_end                       = m_ce_ctrl_start + m_ce_ctrl_size -1;
-m_ce_data1_start                    = m_ce_ctrl_end + 1;
-m_ce_data1_size                     = mReserveCeRam_d ? 0x79C0 : 0x0;
-m_ce_data1_end                      = m_ce_data1_start + m_ce_data1_size -1;
-m_ce_data2_start                    = m_ce_data1_end + 1;
-m_ce_data2_size                     = mReserveCeRam_d ? 0x7000 : 0x0;
-m_ce_data2_end                      = m_ce_data2_start + m_ce_data2_size -1;
-m_ce_data_reserved_start            = m_ce_data2_end + 1;
-m_ce_data_reserved_size             = mReserveCeRam_d ? 0x1000 : 0x0;
-m_ce_data_reserved_end              = m_ce_data_reserved_start + m_ce_data_reserved_size -1;
-m_data1_unused_start                = m_ce_data_reserved_end + 1;
-m_data1_unused_size                 = mReserveCeRam_d ? (m_ram1_end - m_data1_unused_start + 1) : 0x0;
-m_data1_unused_end                  = m_ram1_end;
-__CE_MEM_HEAP1_end__                = m_ce_data1_end;
-__CE_MEM_HEAP2_end__                = m_ce_data2_end;
-
-/* Last reserved word of the debug section used for the sfc module */
-m_sfc_log_start                     = 0x489C0078;
 /* Specify the memory areas */
 MEMORY
 {
@@ -237,12 +208,6 @@ MEMORY
   m_ram_interrupts      (RW)  : ORIGIN = m_interrupts_ram_start, LENGTH = m_ram_vector_table_size
   m_data0               (RW)  : ORIGIN = m_data0_start, LENGTH = m_data0_size
   m_data1               (RW)  : ORIGIN = m_data1_start, LENGTH = m_data1_size
-  m_ce_image            (RW)  : ORIGIN = m_ce_image_start, LENGTH = m_ce_image_size
-  m_ce_ctrl             (RW)  : ORIGIN = m_ce_ctrl_start, LENGTH = m_ce_ctrl_size
-  m_ce_data1            (RW)  : ORIGIN = m_ce_data1_start, LENGTH = m_ce_data1_size
-  m_ce_data2            (RW)  : ORIGIN = m_ce_data2_start, LENGTH = m_ce_data2_size
-  m_ce_data_reserved    (RW)  : ORIGIN = m_ce_data_reserved_start, LENGTH = m_ce_data_reserved_size
-  m_ce_data_unused      (RW)  : ORIGIN = m_data1_unused_start, LENGTH = m_data1_unused_size
   rpmsg_sh_mem          (RW)  : ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
   m_lowpower_flag       (RW)  : ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size
 }
