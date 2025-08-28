@@ -17,7 +17,8 @@
 #define DEMO_LPADC_USER_CMDID   1U
 /* Use VDD_ANA. */
 #define DEMO_LPADC_VREF_SOURCE  kLPADC_ReferenceVoltageAlt1
-#define DEMO_LPADC_VREF_VOLTAGE 3.300f
+/* VDD_ANA is used as the ADC reference voltage, on the LOC board, the VDD_ANA is about 3.05v. */
+#define DEMO_LPADC_VREF_VOLTAGE 3.050f
 
 #define DEMO_VREF_BASE VREF0
 /*${macro:end}*/
