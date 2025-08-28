@@ -35,7 +35,7 @@ MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x000002C8
   m_text                (RX)  : ORIGIN = 0x00010000, LENGTH = 0x00020000
-  m_data                (RW)  : ORIGIN = 0x28002000, LENGTH = 0x0001C000
+  m_data                (RW)  : ORIGIN = 0x28004000, LENGTH = 0x0001A000
   rpmsg_sh_mem          (RW)  : ORIGIN = 0xA1007000, LENGTH = 0x1000
   m_sramx0              (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00002000
   m_core1_image         (RX)  : ORIGIN = 0x000002C8, LENGTH = 0xFD38

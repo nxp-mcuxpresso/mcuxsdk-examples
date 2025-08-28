@@ -30,6 +30,7 @@
  ******************************************************************************/
 static void APP_EnableLptmrWakeup(void);
 static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, void *ptrPowerConfig, void *userData);
+static void APP_ActiveOps(void);
 static void APP_DeepPowerDown1Ops(void);
 static void APP_DPD1ToActive(void);
 static void APP_DPD1ToDPD2BackToDPD1(void);
@@ -39,11 +40,10 @@ static void APP_WakeupFromDPD2(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-volatile bool tamperButtonTriggered = false;
-char *const g_modeNameArray[]       = APP_POWER_MODE_NAME;
-volatile bool g_MuBRxIsrHit         = false;
-volatile bool g_DualCoreSynced      = false;
-uint32_t g_MuBRxMsg                 = 0UL;
+char *const g_modeNameArray[]  = APP_POWER_MODE_NAME;
+volatile bool g_MuBRxIsrHit    = false;
+volatile bool g_DualCoreSynced = false;
+uint32_t g_MuBRxMsg            = 0UL;
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -112,6 +112,7 @@ static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, vo
 void SMM_EXT_IRQHandler(void)
 {
     SMM_ClearExternalIntFlag(AON__SMM);
+    Power_ClearLpPowerSettings();
 }
 
 void LPTMR_AON_IRQHandler(void)
@@ -172,41 +173,59 @@ int main(void)
     g_DualCoreSynced = false;
     while (1)
     {
-        do
+        if (Power_GetCurrentPowerMode(&curPowerMode) == kStatus_Success)
         {
-            if (Power_GetCurrentPowerMode(&curPowerMode) == kStatus_Success)
+            if (curPowerMode == kPower_Active)
             {
-                if (curPowerMode != prePowerMode)
-                {
-                    PRINTF("System Is In %s Mode!\r\n", g_modeNameArray[(uint8_t)curPowerMode]);
-                    prePowerMode = curPowerMode;
-                }
-
-                if (curPowerMode == kPower_Active)
-                {
-                    MU_EnableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
-                    APP_ClearPendingIRQs();
-                }
-                else if (curPowerMode == kPower_DeepPowerDown1)
-                {
-                    /* In DPD1 mode, waiting for input from AON_LPUART to do more
-                     * operations. */
-                    APP_DeepPowerDown1Ops();
-                }
+                PRINTF("System Is In Active Mode!\r\n");
+                APP_ActiveOps();
+            }
+            else if (curPowerMode == kPower_DeepPowerDown1)
+            {
+                /* In DPD1 mode, waiting for input from AON_LPUART to do more
+                 * operations. */
+                PRINTF("System Is In Deep Power Down1 Mode!\r\n");
+                APP_DeepPowerDown1Ops();
             }
             else
             {
-                PRINTF("System Is In %s Mode, Target Power Mode Is %s Mode!!!\r\n",
-                       g_modeNameArray[(uint8_t)curPowerMode], g_modeNameArray[(uint8_t)Power_GetTargetPowerMode()]);
-                PRINTF("Running with wrong mode!!!\r\n");
-                return -1;
+                if (prePowerMode != curPowerMode)
+                {
+                    PRINTF("System Is In %s Mode!\r\n", g_modeNameArray[(uint8_t)curPowerMode]);
+                }
+                prePowerMode = curPowerMode;
             }
-        } while (g_MuBRxIsrHit == false);
-
-        Power_InterpretRequest(g_MuBRxMsg);
-        g_MuBRxMsg    = 0UL;
-        g_MuBRxIsrHit = false;
+        }
     }
+}
+
+static void APP_ActiveOps(void)
+{
+    power_low_power_mode_t curLpMode;
+    MU_EnableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
+    APP_ClearPendingIRQs();
+    /* Loop until recevice any request from CM33. */
+    while (g_MuBRxIsrHit == false)
+    {
+        (void)Power_GetCurrentPowerMode(&curLpMode);
+        if (curLpMode != kPower_Active)
+        {
+            return;
+        }
+    }
+
+    /* Interpret request message. */
+    Power_InterpretRequest(g_MuBRxMsg);
+    g_MuBRxMsg    = 0UL;
+    g_MuBRxIsrHit = false;
+#if APP_ENABLE_CONTEXT_SAVING
+    if (Power_GetPreviousPowerMode() == kPower_DeepPowerDown2)
+    {
+        PRINTF("Wakeup from DPD2 with context saving enabled\r\n");
+        APP_WakeupFromDPD2();
+        BOARD_InitHardware();
+    }
+#endif
 }
 
 static void APP_DeepPowerDown1Ops(void)
@@ -214,13 +233,12 @@ static void APP_DeepPowerDown1Ops(void)
     if (Power_GetPreviousPowerMode() == kPower_DeepPowerDown2)
     {
         /* Wakeup from DPD2, now system is in DPD1. */
-        PRINTF("WAKEUP FROM DPD2\r\n");
-        APP_WakeupFromDPD2();
         __WFI();
     }
     else
     {
         power_dpd1_transition_t nextTrans = Power_GetDeepPowerDown1NextTransition();
+        MU_DisableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
         switch (nextTrans)
         {
             case kPower_Dpd1ToActive:
@@ -278,10 +296,15 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
     /* Set configuration in DPD2 mode, want to back to DPD1 mode, so
     some Ram blocks in AON domain should be retained. */
     power_dpd2_config_t dpd2Config = {
-        .aonRamArraysToRetain  = kPower_AonDomainAllRams,
-        .disableBandgap        = true,
+        .aonRamArraysToRetain = kPower_AonDomainAllRams,
+        .disableBandgap       = true,
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
         .mainRamArraysToRetain = 0U,
-        .enableIVSMode         = true,
+#else
+        .mainRamArraysToRetain = kPower_MainDomainAllRams,
+        .saveContext           = true,
+#endif
+        .enableIVSMode         = false,
         .switchToX32K          = true,
         .disableFRO10M         = false,
         .wakeToDpd1            = true,
@@ -292,6 +315,13 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
     if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Power_WakeupFromDPD2)
     {
         APP_WakeupFromDPD2();
+#if APP_ENABLE_ADVC
+        if (ADVC_IsEnabled() == false)
+        {
+            PRINTF("Re-enable ADVC\r\n");
+            ADVC_Enable(kADVC_ModeOptimal, NULL);
+        }
+#endif
     }
     else
     {
@@ -311,10 +341,16 @@ static void APP_DPD1ToDPD2BackToActive(void)
     /* Set configuration in DPD2 mode, want to back to active, no need to
     retain ram blocks. */
     power_dpd2_config_t dpd2Config = {
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
         .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
-        .disableBandgap        = true,
         .mainRamArraysToRetain = kPower_MainDomainNoneRams,
+#else
+        .aonRamArraysToRetain  = kPower_AonDomainAllRams,
+        .mainRamArraysToRetain = kPower_MainDomainAllRams,
+        .saveContext           = true,
+#endif
         .enableIVSMode         = false,
+        .disableBandgap        = true,
         .switchToX32K          = true,
         .disableFRO10M         = false,
         .wakeToDpd1            = false,
@@ -322,7 +358,15 @@ static void APP_DPD1ToDPD2BackToActive(void)
         .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
         .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
     };
-    (void)Power_EnterDeepPowerDown2(&dpd2Config);
+    if (Power_EnterDeepPowerDown2(&dpd2Config) == kStatus_Power_WakeupFromDPD2)
+    {
+        APP_WakeupFromDPD2();
+    }
+    else
+    {
+        PRINTF("Fail to enter DPD2!\r\n");
+        assert(false);
+    }
 }
 
 static void APP_EnableLptmrWakeup(void)
@@ -345,15 +389,15 @@ static void APP_ClearPendingIRQs(void)
 {
     if (NVIC_GetPendingIRQ(LPTMR_AON_IRQn) != 0U)
     {
-        NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
+        EnableIRQ(LPTMR_AON_IRQn);
     }
     if (NVIC_GetPendingIRQ(RTC_ALARM0_IRQn) != 0U)
     {
-        NVIC_ClearPendingIRQ(RTC_ALARM0_IRQn);
+        EnableIRQ(RTC_ALARM0_IRQn);
     }
     if (NVIC_GetPendingIRQ(RTC_ALARM1_IRQn) != 0U)
     {
-        NVIC_ClearPendingIRQ(RTC_ALARM1_IRQn);
+        EnableIRQ(RTC_ALARM1_IRQn);
     }
 }
 
@@ -363,17 +407,9 @@ static void APP_WakeupFromDPD2(void)
     EnableIRQ(SMM_EXT_IRQn);
     EnableIRQ(MU_B_RX_IRQn);
     /* Enable transmit and receive interrupt */
-    MU_EnableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
     if (NVIC_GetPendingIRQ(LPTMR_AON_IRQn) != 0U)
     {
         EnableIRQ(LPTMR_AON_IRQn);
         NVIC_ClearPendingIRQ(LPTMR_AON_IRQn);
     }
-#if APP_ENABLE_ADVC
-    if (ADVC_IsEnabled() == false)
-    {
-        PRINTF("Re-enable ADVC\r\n");
-        ADVC_Enable(kADVC_ModeOptimal, NULL);
-    }
-#endif
 }

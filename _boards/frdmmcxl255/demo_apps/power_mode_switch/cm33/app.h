@@ -33,6 +33,32 @@
         "Active --> Shut Down --> Active",                                                  \
     }
 
+#define APP_ENABLE_ADVC           (0)
+#define APP_ENABLE_CONTEXT_SAVING (0) /* Enable context saving will increase power consumption. */
+
+#if APP_ENABLE_CONTEXT_SAVING
+
+#define DEMO_POWER_MODE_DESC                                                                                       \
+    {"Selected to enter Sleep(1.28mA@VDD_BAT), then wakeup to Active.",                                            \
+     "Selected to enter Deep Sleep(473uA@VDD_BAT), then wakeup to Active. ",                                       \
+     "Selected to enter Power Down1(470uA@VDD_BAT), then wakeup to Active.",                                       \
+     "Selected to enter Power Down2(459uA@VDD_BAT), then wakeup to Active.",                                       \
+     "Selected to enter DPD1(All CM33 SRAM retained, CM0P execute WFI, 25.5uA@VDD_BAT), then wakeup to Active.",   \
+     "Selected to enter DPD1(All CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to "  \
+     "enter "                                                                                                      \
+     "DPD2(All AON SRAM retained, 10.5uA@VDD_BAT), wakeup to DPD1(CM0P execute WFI, 28uA) after 10s later with "   \
+     "LPTMR, "                                                                                                     \
+     "press SW5 back to Active.",                                                                                  \
+     "Selected to enter DPD1(All CM33 SRAM retained, CM0P active, 32uA@VDD_BAT), input any key with AON UART to "  \
+     "enter "                                                                                                      \
+     "DPD2(All AON SRAM retained, 10.5uA@VDD_BAT), wakeup to Active after 10s later with LPTMR.",                  \
+     "Selected to enter DPD2(All AON SRAM retained, 10.4uA@VDD_BAT), then wakeup to Active.",                      \
+     "Selected to enter DPD2(All AON SRAM retained, 10.4uA@VDD_BAT), wakeup to DPD1(All CM33 SRAM retained, CM0P " \
+     "execute WFI, 59uA@VDD_BAT) with selected wakeup source, press SW5 back to Active.",                          \
+     "Selected to enter DPD3(695nA@VDD_BAT).",                                                                     \
+     "Selected to enter SD(413nA@VDD_BAT)."}
+#else
+
 #define DEMO_POWER_MODE_DESC                                                                                           \
     {"Selected to enter Sleep(1.28mA@VDD_BAT), then wakeup to Active.",                                                \
      "Selected to enter Deep Sleep(473uA@VDD_BAT), then wakeup to Active. ",                                           \
@@ -49,6 +75,7 @@
      "execute WFI, 24uA@VDD_BAT) with selected wakeup source, press SW5 back to Active.",                              \
      "Selected to enter DPD3(695nA@VDD_BAT).",                                                                         \
      "Selected to enter SD(413nA@VDD_BAT)."}
+#endif /* APP_ENABLE_CONTEXT_SAVING */
 
 #define APP_MU         MUA
 #define APP_MU_CHANNEL (0U)
@@ -91,7 +118,6 @@ extern int core1_image_size;
 #define CORE1_IMAGE_SIZE  ((void *)core1_image_size)
 #endif
 
-#define APP_ENABLE_ADVC (0)
 /*${macro:end}*/
 
 /*******************************************************************************

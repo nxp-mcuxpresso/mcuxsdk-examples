@@ -70,10 +70,18 @@ power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
 #endif
 };
 
-power_dpd1_config_t dpd1Config = {.mainWakeupSource      = kPower_WS_NONE,
+power_dpd1_config_t dpd1Config = {.mainWakeupSource = kPower_WS_NONE,
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
                                   .mainRamArraysToRetain = kPower_MainDomainNoneRams,
                                   .disableBandgap        = true,
                                   .enableIVSMode         = false,
+#else
+                                  .mainRamArraysToRetain = kPower_MainDomainAllRams,
+                                  .disableBandgap        = true,
+                                  .enableIVSMode         = true,
+                                  .saveContext           = true,
+#endif
+
 #if APP_ENABLE_ADVC
                                   .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
@@ -82,12 +90,18 @@ power_dpd1_config_t dpd1Config = {.mainWakeupSource      = kPower_WS_NONE,
 };
 
 power_dpd2_config_t dpd2Config = {
-    .mainWakeupSource      = kPower_WS_NONE,
-    .aonWakeupSource       = kPower_WS_NONE,
+    .mainWakeupSource = kPower_WS_NONE,
+    .aonWakeupSource  = kPower_WS_NONE,
+    .enableIVSMode    = false,
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
     .aonRamArraysToRetain  = kPower_AonDomainNoneRams,
     .mainRamArraysToRetain = kPower_MainDomainNoneRams,
+#else
+    .aonRamArraysToRetain  = kPower_AonDomainAllRams,
+    .mainRamArraysToRetain = kPower_MainDomainAllRams,
+    .saveContext           = true,
+#endif
     .disableBandgap        = true,
-    .enableIVSMode         = false,
     .switchToX32K          = true,
     .disableFRO10M         = false,
     .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
@@ -173,6 +187,7 @@ int main(void)
 {
     uint32_t powerTrans;
     power_low_power_mode_t targetLpMode;
+
     BOARD_InitHardware();
 #if APP_ENABLE_ADVC
     ADVC_Init();
@@ -196,9 +211,27 @@ int main(void)
 
     while (1)
     {
-        powerTrans   = APP_GetTargetPowerTransition();
-        targetLpMode = APP_EnableWakeupSource(powerTrans);
-        Power_EnterLowPowerMode(targetLpMode, powerConfigs[(uint8_t)targetLpMode]);
+        powerTrans      = APP_GetTargetPowerTransition();
+        targetLpMode    = APP_EnableWakeupSource(powerTrans);
+        status_t status = Power_EnterLowPowerMode(targetLpMode, powerConfigs[(uint8_t)targetLpMode]);
+        if (status != kStatus_Fail)
+        {
+            BOARD_InitHardware();
+            CMC_ConfigFlashMode(CMC, true, true, true);
+#if APP_ENABLE_ADVC && APP_ENABLE_CONTEXT_SAVING
+            if (ADVC_IsEnabled() == false)
+            {
+                PRINTF("Re-enable ADVC\r\n");
+                ADVC_Init();
+                ADVC_Enable(kADVC_ModeOptimal, NULL);
+            }
+#endif
+        }
+        else
+        {
+            PRINTF("Fail to enter selected low power mode!\r\n");
+            return -1;
+        }
         Power_ClearTargetPowerMode();
         PRINTF("\r\n--------- Next Loop ---------\r\n");
     }
@@ -458,22 +491,33 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
         {
             if (secondMode == (uint8_t)kPower_DeepPowerDown1)
             {
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
                 dpd2Config.mainRamArraysToRetain = kPower_MainDomainNoneRams;
-                dpd2Config.aonRamArraysToRetain  = kPower_AonDomainAllRams;
-                dpd2Config.enableIVSMode         = true;
-                dpd2Config.wakeToDpd1            = true;
-                dpd2Config.aonWakeupSource       = kPower_WS_Aon_LptmrInt;
-                dpd2Config.mainWakeupSource      = kPower_WS_Main_ExternalINTRiseEdge;
-                dpd2Config.disableFRO10M         = false;
-                dpd2Config.disableBandgap        = true;
-                dpd2Config.switchToX32K          = true;
+#else
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
+                dpd2Config.saveContext           = true;
+#endif
+                dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
+                dpd2Config.enableIVSMode        = false;
+                dpd2Config.wakeToDpd1           = true;
+                dpd2Config.aonWakeupSource      = kPower_WS_Aon_LptmrInt;
+                dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
+                dpd2Config.disableFRO10M        = false;
+                dpd2Config.disableBandgap       = true;
+                dpd2Config.switchToX32K         = true;
             }
             else
             {
-                dpd2Config.aonWakeupSource      = kPower_WS_Aon_LptmrInt;
-                dpd2Config.mainWakeupSource     = kPower_WS_Main_LptmrInt;
-                dpd2Config.wakeToDpd1           = false;
+                dpd2Config.aonWakeupSource  = kPower_WS_Aon_LptmrInt;
+                dpd2Config.mainWakeupSource = kPower_WS_Main_LptmrInt;
+                dpd2Config.wakeToDpd1       = false;
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainNoneRams;
+#else
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
+                dpd2Config.saveContext           = true;
+                dpd2Config.enableIVSMode         = false;
+#endif
             }
             break;
         }
@@ -534,18 +578,30 @@ static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uin
         {
             if (secondMode == (uint8_t)kPower_DeepPowerDown1)
             {
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainNoneRams;
+#else
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
+                dpd2Config.saveContext           = true;
+#endif
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                dpd2Config.enableIVSMode        = true;
+                dpd2Config.enableIVSMode        = false;
                 dpd2Config.wakeToDpd1           = true;
                 dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm0;
                 dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
             }
             else
             {
-                dpd2Config.wakeToDpd1           = false;
+                dpd2Config.wakeToDpd1 = false;
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainNoneRams;
-                dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm0;
-                dpd2Config.mainWakeupSource     = kPower_WS_Main_RtcAlarm0;
+#else
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
+                dpd2Config.saveContext           = true;
+                dpd2Config.enableIVSMode         = false;
+#endif
+                dpd2Config.aonWakeupSource  = kPower_WS_Aon_RtcAlarm0;
+                dpd2Config.mainWakeupSource = kPower_WS_Main_RtcAlarm0;
             }
             break;
         }
@@ -612,18 +668,30 @@ static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uin
         {
             if (secondMode == (uint8_t)kPower_DeepPowerDown1)
             {
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainNoneRams;
+#else
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
+                dpd2Config.saveContext           = true;
+#endif
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainAllRams;
-                dpd2Config.enableIVSMode        = true;
+                dpd2Config.enableIVSMode        = false;
                 dpd2Config.wakeToDpd1           = true;
                 dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm1;
                 dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
             }
             else
             {
-                dpd2Config.wakeToDpd1           = false;
+                dpd2Config.wakeToDpd1 = false;
+#if (APP_ENABLE_CONTEXT_SAVING == 0)
                 dpd2Config.aonRamArraysToRetain = kPower_AonDomainNoneRams;
-                dpd2Config.aonWakeupSource      = kPower_WS_Aon_RtcAlarm1;
-                dpd2Config.mainWakeupSource     = kPower_WS_Main_RtcAlarm1;
+#else
+                dpd2Config.mainRamArraysToRetain = kPower_MainDomainAllRams;
+                dpd2Config.saveContext           = true;
+                dpd2Config.enableIVSMode         = false;
+#endif
+                dpd2Config.aonWakeupSource  = kPower_WS_Aon_RtcAlarm1;
+                dpd2Config.mainWakeupSource = kPower_WS_Main_RtcAlarm1;
             }
             break;
         }

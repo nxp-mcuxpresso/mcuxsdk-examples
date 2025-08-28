@@ -11,6 +11,9 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
+#define APP_ENABLE_ADVC           (0)
+#define APP_ENABLE_CONTEXT_SAVING (0)
+
 #define APP_MU         MUB
 #define APP_MU_CHANNEL (0)
 
@@ -36,7 +39,6 @@
 #define APP_TAMPER_BUTTON_PORT AON__PORT0
 #define APP_TAMPER_BUTTON_PIN  4
 
-#define APP_ENABLE_ADVC (0)
 /*${macro:end}*/
 
 /*******************************************************************************
