@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -63,12 +62,6 @@ void MCDRV_Init(void)
     M1_MCDRV_PWM_PERIPH_INIT();
     /* 6-channel PWM peripheral init for M2 */
     M2_MCDRV_PWM_PERIPH_INIT();
-    /* Init SINC filters */
-    M1_MCDRV_SINC_INIT();
-    M2_MCDRV_SINC_INIT();
-    /* Init EnDat2p2 */
-    M1_MCDRV_ENDAT2P2_PERIPH_INIT();
-    M2_MCDRV_ENDAT2P2_PERIPH_INIT();
 }
 
 
@@ -215,7 +208,7 @@ void InitEndat2p2_1(void)
 void InitEndat2p2_2(void)
 {
     int data;
-  
+
     /* EnDat2.2 100MHz */
     clk_t endat2p2Clk = {
         .clkId = kCLOCK_Endat22,
@@ -236,15 +229,15 @@ void InitEndat2p2_2(void)
     blk_ctrl->ENDAT_STRETCHER_CTRL =
     BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
     BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
-    
+
     g_sM1Enc.dev = ENDAT2P2_InitMaster(ENDAT2P2_2, ENDAT2P2_CLK_48M);
-      
+
     ////////////////////////////////////////////////////////////
     /* Init encoder - ENDAT2P2_InitEncoder(dev); */
-    
+
     ENDAT2P2_EncoderRest(g_sM1Enc.dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    
+
     ENDAT2P2_ClearEncoderError(g_sM1Enc.dev);
     SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
@@ -254,9 +247,9 @@ void InitEndat2p2_2(void)
     ENDAT2P2_GetEncoderInfo(g_sM1Enc.dev);
 
     ENDAT2P2_SetDataWordLength(g_sM1Enc.dev, g_sM1Enc.dev->pos_res);
-    
+
     //////////////////////////////////////////////////////////
-    
+
     //ENDAT2P2_EnableDelayCompensation(dev);
 
     ENDAT2P2_SetFTCLOCK(g_sM1Enc.dev, ENDAT2P2_CLK_8M); //ENDAT2P2_FTCLK
@@ -271,7 +264,7 @@ void InitEndat2p2_2(void)
     data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
 
     ENDAT2P2_SetRecoveryTimer(g_sM1Enc.dev, 0);
-         
+
     ENDAT2P2_GetEncoderError(g_sM1Enc.dev);
     ENDAT2P2_GetEncoderWarning(g_sM1Enc.dev);
 
@@ -414,12 +407,12 @@ void M1_InitPWM(void)
     PWMBase->SM[2].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M1PwmDeadTime);
 
     /* Channels A and B disabled when faults 0 and 1 occur */
-    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x1));
-    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x1));
-    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x1));
-    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x1));
-    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x1));
-    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x1));
+    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
+    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
+    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
 
     /* Modules one and two gets clock from module zero */
     PWMBase->SM[1].CTRL2 = (PWMBase->SM[1].CTRL2 & ~PWM_CTRL2_CLK_SEL_MASK) | PWM_CTRL2_CLK_SEL(0x2);
@@ -534,12 +527,12 @@ void M2_InitPWM(void)
     PWMBase->SM[2].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M2PwmDeadTime);
 
     /* Channels A and B disabled when faults 0 and 1 occur */
-    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x1));
-    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x1));
-    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x1));
-    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x1));
-    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x1));
-    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x1));
+    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
+    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
+    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
 
     /* Modules one and two gets clock from module zero */
     PWMBase->SM[1].CTRL2 = (PWMBase->SM[1].CTRL2 & ~PWM_CTRL2_CLK_SEL_MASK) | PWM_CTRL2_CLK_SEL(0x2);

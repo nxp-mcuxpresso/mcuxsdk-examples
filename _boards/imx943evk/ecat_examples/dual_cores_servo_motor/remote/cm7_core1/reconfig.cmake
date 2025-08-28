@@ -5,10 +5,6 @@ mcux_project_remove_source(
 	clock_config.c
 )
 
-mcux_add_macro(
-    CC "-DSERVO_OPTIM"
-)
-
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
