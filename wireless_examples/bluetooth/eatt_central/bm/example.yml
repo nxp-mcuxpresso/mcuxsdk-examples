@@ -6,7 +6,7 @@ eatt_central_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/eatt_central/bm/${multicore_foldername}
     document:
       name: eatt_central_bm
-      category: wireless_examples/bluetooth/eatt_central/bm/
+      category: wireless_examples/bluetooth/eatt_central/bm
       brief: This application implements a central device which receives data from
         2 custom GATT services on 2 enhanced ATT bearers.
   boards:

@@ -6,7 +6,7 @@ temperature_collector_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/temp_coll/freertos/${multicore_foldername}
     document:
       name: temperature_collector_freertos
-      category: wireless_examples/bluetooth/temp_coll/freertos/
+      category: wireless_examples/bluetooth/temp_coll/freertos
       brief: The BLE temperature collector application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a custom GATT based Temperature Profile.
   boards:

@@ -6,7 +6,7 @@ beacon_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/beacon/bm/${multicore_foldername}
     document:
       name: beacon_bm
-      category: wireless_examples/bluetooth/beacon/bm/
+      category: wireless_examples/bluetooth/beacon/bm
       brief: The BLE beacon application is a simple demonstration program based on
         the MCUXpresso SDK.This application implements a Beacon BLE Service.To test
         the service/profile the Kinetis BLE Toolbox application can be used which

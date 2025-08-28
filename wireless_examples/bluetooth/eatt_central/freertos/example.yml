@@ -6,7 +6,7 @@ eatt_central_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/eatt_central/freertos/${multicore_foldername}
     document:
       name: eatt_central_freertos
-      category: wireless_examples/bluetooth/eatt_central/freertos/
+      category: wireless_examples/bluetooth/eatt_central/freertos
       brief: This application implements a central device which receives data from
         2 custom GATT services on 2 enhanced ATT bearers.
   boards:

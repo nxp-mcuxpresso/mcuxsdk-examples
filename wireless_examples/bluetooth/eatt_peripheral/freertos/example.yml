@@ -6,7 +6,7 @@ eatt_peripheral_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/eatt_peripheral/freertos/${multicore_foldername}
     document:
       name: eatt_peripheral_freertos
-      category: wireless_examples/bluetooth/eatt_peripheral/freertos/
+      category: wireless_examples/bluetooth/eatt_peripheral/freertos
       brief: This application implements 2 custom GATT based Services and sends data
         for each profile on an enhanced ATT bearer.
   boards:

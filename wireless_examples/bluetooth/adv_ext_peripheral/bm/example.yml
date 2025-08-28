@@ -6,7 +6,7 @@ adv_ext_peripheral_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/adv_ext_peripheral/bm/${multicore_foldername}
     document:
       name: adv_ext_peripheral_bm
-      category: wireless_examples/bluetooth/adv_ext_peripheral/bm/
+      category: wireless_examples/bluetooth/adv_ext_peripheral/bm
       brief: The BLE adv ext peripheral application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a Bluetooth Low Energy
         extended advertising peripheral with a shell interface.

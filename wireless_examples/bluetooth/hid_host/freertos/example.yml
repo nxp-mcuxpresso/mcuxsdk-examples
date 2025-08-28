@@ -6,7 +6,7 @@ hid_host_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/hid_host/freertos/${multicore_foldername}
     document:
       name: hid_host_freertos
-      category: wireless_examples/bluetooth/hid_host/freertos/
+      category: wireless_examples/bluetooth/hid_host/freertos
       brief: The BLE hid host application is a simple demonstration program based
         on the MCUXpresso SDK.This application implements a GATT based HID Profile.This
         demo requires a serial port terminal application through a serial interface.

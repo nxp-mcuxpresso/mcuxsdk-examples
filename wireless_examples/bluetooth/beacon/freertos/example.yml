@@ -6,7 +6,7 @@ beacon_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/beacon/freertos/${multicore_foldername}
     document:
       name: beacon_freertos
-      category: wireless_examples/bluetooth/beacon/freertos/
+      category: wireless_examples/bluetooth/beacon/freertos
       brief: The BLE beacon application is a simple demonstration program based on
         the MCUXpresso SDK.This application implements a Beacon BLE Service.To test
         the service/profile the Kinetis BLE Toolbox application can be used which

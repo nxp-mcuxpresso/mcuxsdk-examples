@@ -6,7 +6,7 @@ temperature_sensor_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/temp_sens/bm/${multicore_foldername}
     document:
       name: temperature_sensor_bm
-      category: wireless_examples/bluetooth/temp_sens/bm/
+      category: wireless_examples/bluetooth/temp_sens/bm
       brief: The BLE temperature sensor application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a custom GATT based Temperature Profile.
   boards:

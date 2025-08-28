@@ -6,7 +6,7 @@ otap_server_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/otas/freertos/${multicore_foldername}
     document:
       name: otap_server_freertos
-      category: wireless_examples/bluetooth/otas/freertos/
+      category: wireless_examples/bluetooth/otas/freertos
       brief: The BLE otap server application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a custom GATT based OTAP
         Profile.To use the pplication Test Tool 12 or any other application which

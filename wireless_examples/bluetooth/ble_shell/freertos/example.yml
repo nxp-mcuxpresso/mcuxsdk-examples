@@ -6,7 +6,7 @@ ble_shell_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/ble_shell/freertos/${multicore_foldername}
     document:
       name: ble_shell_freertos
-      category: wireless_examples/bluetooth/ble_shell/freertos/
+      category: wireless_examples/bluetooth/ble_shell/freertos
       brief: The BLE ble shell application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a Bluetooth Low Energy Host
         with a shell inteface.

@@ -6,7 +6,7 @@ w_uart_host_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/w_uart_host/freertos/${multicore_foldername}
     document:
       name: w_uart_host_freertos
-      category: wireless_examples/bluetooth/w_uart_host/freertos/
+      category: wireless_examples/bluetooth/w_uart_host/freertos
       brief: The BLE wireless uart application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a custom GATT based Wireless
         UART Profile that emulates UART over BLE.To use the pplication Test Tool 12

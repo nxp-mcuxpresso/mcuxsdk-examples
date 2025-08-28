@@ -6,7 +6,7 @@ ble_shell_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/ble_shell/bm/${multicore_foldername}
     document:
       name: ble_shell_bm
-      category: wireless_examples/bluetooth/ble_shell/bm/
+      category: wireless_examples/bluetooth/ble_shell/bm
       brief: The BLE ble shell application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a Bluetooth Low Energy Host
         with a shell inteface.

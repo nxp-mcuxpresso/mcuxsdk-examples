@@ -6,7 +6,7 @@ digital_key_device_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/digital_key_device/freertos/${multicore_foldername}
     document:
       name: digital_key_device_freertos
-      category: wireless_examples/bluetooth/digital_key_device/freertos/
+      category: wireless_examples/bluetooth/digital_key_device/freertos
       brief: The BLE Digital Key Device application is a simple demonstration program
         based on the MCUXpresso SDK. The application implements the CCC Digital Key
         functionality.

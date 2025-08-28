@@ -6,7 +6,7 @@ fsci_bridge_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/fsci_bridge/freertos/${multicore_foldername}
     document:
       name: fsci_bridge_freertos
-      category: wireless_examples/bluetooth/fsci_bridge/freertos/
+      category: wireless_examples/bluetooth/fsci_bridge/freertos
       brief: The fsci bridge application is a simple demonstration program based
         on the MCUXpresso SDK.This application implements a Test Application for the
         BLE extended NBU which conveys the FSCI packets between the serial interface and RPMSG. To

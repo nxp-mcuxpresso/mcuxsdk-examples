@@ -6,7 +6,7 @@ otap_client_l2cap_credit_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/otac_l2cap/bm/${multicore_foldername}
     document:
       name: otap_client_l2cap_credit_bm
-      category: wireless_examples/bluetooth/otac_l2cap/bm/
+      category: wireless_examples/bluetooth/otac_l2cap/bm
       brief: The BLE otap client l2cap credit application is a simple demonstration
         program based on the MCUXpresso SDK.The application implements a custom GATT
         based OTAP Service.To test the service/profile the Kinetis BLE Toolbox application

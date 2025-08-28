@@ -6,7 +6,7 @@ hid_device_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/hid_device/bm/${multicore_foldername}
     document:
       name: hid_device_bm
-      category: wireless_examples/bluetooth/hid_device/bm/
+      category: wireless_examples/bluetooth/hid_device/bm
       brief: The BLE hid device application is a simple demonstration program based
         on the MCUXpresso SDK.This application implements a GATT based HID Service.To
         test the service the any mobile device which supports HID devices over BLE

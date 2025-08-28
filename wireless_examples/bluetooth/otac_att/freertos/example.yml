@@ -6,7 +6,7 @@ otap_client_att_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/otac_att/freertos/${multicore_foldername}
     document:
       name: otap_client_att_freertos
-      category: wireless_examples/bluetooth/otac_att/freertos/
+      category: wireless_examples/bluetooth/otac_att/freertos
       brief: The BLE otap client att application is a simple demonstration program
         based on the MCUXpresso SDK.The application implements a custom GATT based
         OTAP Service.To test the service/profile the Kinetis BLE Toolbox application

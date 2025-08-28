@@ -6,7 +6,7 @@ adv_ext_peripheral_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/adv_ext_peripheral/freertos/${multicore_foldername}
     document:
       name: adv_ext_peripheral_freertos
-      category: wireless_examples/bluetooth/adv_ext_peripheral/freertos/
+      category: wireless_examples/bluetooth/adv_ext_peripheral/freertos
       brief: The BLE ble adv ext peripheral application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a Bluetooth Low Energy
         extended advertising peripheral with a shell interface.

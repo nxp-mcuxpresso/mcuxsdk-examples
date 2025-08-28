@@ -6,7 +6,7 @@ ncp_fsci_black_box:
     project-root-path: boards/${board}/wireless_examples/bluetooth/ncp_fscibb/threadx/${multicore_foldername}
     document:
       name: ncp_fsci_black_box
-      category: wireless_examples/bluetooth/ncp_fsci_black_box/
+      category: wireless_examples/bluetooth/ncp_fsci_black_box
       brief: The BLE ncp fsci black box application is a simple demonstration program for core 1
         based on the MCUXpresso SDK.This application implements a Bluetooth Low Energy
         Host Black Box which can communicate using the FSCI protocol over a RPMSG serial

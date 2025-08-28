@@ -6,7 +6,7 @@ eatt_peripheral_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/eatt_peripheral/bm/${multicore_foldername}
     document:
       name: eatt_peripheral_bm
-      category: wireless_examples/bluetooth/eatt_peripheral/bm/
+      category: wireless_examples/bluetooth/eatt_peripheral/bm
       brief: This application implements 2 custom GATT based Services and sends data
         for each profile on an enhanced ATT bearer.
   boards:

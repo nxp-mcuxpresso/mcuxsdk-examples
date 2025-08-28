@@ -6,7 +6,7 @@ wireless_uart_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/w_uart/bm/${multicore_foldername}
     document:
       name: wireless_uart_bm
-      category: wireless_examples/bluetooth/w_uart/bm/
+      category: wireless_examples/bluetooth/w_uart/bm
       brief: The BLE wireless uart application is a simple demonstration program based
         on the MCUXpresso SDK.The application implements a custom GATT based Wireless
         UART Profile that emulates UART over BLE.To use the pplication Test Tool 12

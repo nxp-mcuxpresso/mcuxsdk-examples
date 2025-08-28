@@ -6,7 +6,7 @@ wireless_uart_genfsk_bm:
     project-root-path: boards/${board}/wireless_examples/bluetooth/w_uart_genfsk/bm/${multicore_foldername}
     document:
       name: wireless_uart_genfsk_bm
-      category: wireless_examples/bluetooth/w_uart_genfsk/bm/
+      category: wireless_examples/bluetooth/w_uart_genfsk/bm
       brief: The Hybrid (Dual-Mode) Bluetooth Low Energy and Generic FSK application demonstrates 
         Generic FSK transmission/reception and Bluetooth advertising/scanning/multiple connections 
         coexistence.The Bluetooth LE part of this demo implements a modified version of the 

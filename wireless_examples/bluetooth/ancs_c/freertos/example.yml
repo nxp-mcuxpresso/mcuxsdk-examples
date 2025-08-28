@@ -6,7 +6,7 @@ ancs_client_freertos:
     project-root-path: boards/${board}/wireless_examples/bluetooth/ancs_c/freertos/${multicore_foldername}
     document:
       name: ancs_client_freertos
-      category: wireless_examples/bluetooth/ancs_c/freertos/
+      category: wireless_examples/bluetooth/ancs_c/freertos
       brief: The BLE ancs client application is a simple demonstration program based
         on the MCUXpresso SDK.This application implements an ANCS Client.To test the
         service/profile a GAP Central device is required which has the ANCS service
