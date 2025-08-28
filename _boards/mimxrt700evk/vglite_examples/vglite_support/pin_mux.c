@@ -218,7 +218,7 @@ void BOARD_InitUARTPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitFlexIOPanelPins:
-- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: H6, peripheral: FLEXIO, signal: 'IO, 6', pin_signal: PIO2_6, slew_rate: slow, input_buffer: enable, pull_enable: enable}
   - {pin_num: G6, peripheral: FLEXIO, signal: 'IO, 7', pin_signal: PIO2_7, slew_rate: slow, input_buffer: enable, pull_enable: enable}
@@ -854,8 +854,8 @@ void BOARD_InitLcdDBIPanelPins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+BOARD_InitI2cPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: J5, peripheral: LP_FLEXCOMM8, signal: P0, pin_signal: PIO0_6, open_drain: enable, input_buffer: enable}
   - {pin_num: K5, peripheral: LP_FLEXCOMM8, signal: P1, pin_signal: PIO0_7, open_drain: enable, input_buffer: enable}
@@ -865,7 +865,7 @@ BOARD_InitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitPins
+ * Function Name : BOARD_InitI2cPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/

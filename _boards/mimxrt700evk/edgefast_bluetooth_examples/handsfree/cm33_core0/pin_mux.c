@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -883,9 +883,9 @@ BOARD_InitPinsSco:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: L4, peripheral: SAI2, signal: TX_BCLK, pin_signal: PIO0_11, InputBufferEnable: enable}
-  - {pin_num: L5, peripheral: SAI2, signal: TX_DATA, pin_signal: PIO0_12, InputBufferEnable: enable}
+  - {pin_num: L5, peripheral: SAI2, signal: TXD0, pin_signal: PIO0_12, InputBufferEnable: enable}
   - {pin_num: L3, peripheral: SAI2, signal: TX_SYNC, pin_signal: PIO0_13, InputBufferEnable: enable}
-  - {pin_num: L1, peripheral: SAI2, signal: RX_DATA, pin_signal: PIO0_14, InputBufferEnable: enable}
+  - {pin_num: L1, peripheral: SAI2, signal: RXD0, pin_signal: PIO0_14, InputBufferEnable: enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */

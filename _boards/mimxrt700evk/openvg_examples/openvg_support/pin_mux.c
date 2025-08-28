@@ -1,5 +1,5 @@
 /*
- * Copyright 2023, 2024 NXP
+ * Copyright 2023, 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -218,30 +218,7 @@ void BOARD_InitUARTPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitFlexIOPanelPins:
-- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
-- pin_list:
-  - {pin_num: H6, peripheral: FLEXIO, signal: 'IO, 6', pin_signal: PIO2_6, input_buffer: enable}
-  - {pin_num: G6, peripheral: FLEXIO, signal: 'IO, 7', pin_signal: PIO2_7, input_buffer: enable}
-  - {pin_num: G4, peripheral: FLEXIO, signal: 'IO, 8', pin_signal: PIO2_8, input_buffer: enable}
-  - {pin_num: G5, peripheral: FLEXIO, signal: 'IO, 9', pin_signal: PIO2_9, input_buffer: enable}
-  - {pin_num: F5, peripheral: FLEXIO, signal: 'IO, 10', pin_signal: PIO2_10, input_buffer: enable}
-  - {pin_num: F3, peripheral: FLEXIO, signal: 'IO, 11', pin_signal: PIO2_11, input_buffer: enable}
-  - {pin_num: E3, peripheral: FLEXIO, signal: 'IO, 12', pin_signal: PIO2_12, input_buffer: enable}
-  - {pin_num: E4, peripheral: FLEXIO, signal: 'IO, 13', pin_signal: PIO2_13, input_buffer: enable}
-  - {pin_num: H2, peripheral: GPIO2, signal: 'GPIO, 0', pin_signal: PIO2_0, direction: OUTPUT, gpio_direction: out}
-  - {pin_num: G2, peripheral: GPIO2, signal: 'GPIO, 1', pin_signal: PIO2_1, direction: OUTPUT, gpio_direction: out}
-  - {pin_num: D3, peripheral: GPIO2, signal: 'GPIO, 15', pin_signal: PIO2_15, direction: OUTPUT, gpio_direction: out}
-  - {pin_num: G1, peripheral: FLEXIO, signal: 'IO, 3', pin_signal: PIO2_3, input_buffer: enable}
-  - {pin_num: G3, peripheral: FLEXIO, signal: 'IO, 4', pin_signal: PIO2_4, slew_rate: slow, input_buffer: enable, pull_select: up, pull_enable: enable}
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
- */
-/* clang-format on */
-
-/* clang-format off */
-/*
- * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitFlexIOPanelPins:
-- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: H6, peripheral: FLEXIO, signal: 'IO, 6', pin_signal: PIO2_6, slew_rate: slow, input_buffer: enable, pull_enable: enable}
   - {pin_num: G6, peripheral: FLEXIO, signal: 'IO, 7', pin_signal: PIO2_7, slew_rate: slow, input_buffer: enable, pull_enable: enable}
@@ -877,8 +854,8 @@ void BOARD_InitLcdDBIPanelPins(void)
 /* clang-format off */
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-BOARD_InitPins:
-- options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
+BOARD_InitI2cPins:
+- options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: J5, peripheral: LP_FLEXCOMM8, signal: P0, pin_signal: PIO0_6, open_drain: enable, input_buffer: enable}
   - {pin_num: K5, peripheral: LP_FLEXCOMM8, signal: P1, pin_signal: PIO0_7, open_drain: enable, input_buffer: enable}
@@ -888,7 +865,7 @@ BOARD_InitPins:
 
 /* FUNCTION ************************************************************************************************************
  *
- * Function Name : BOARD_InitPins
+ * Function Name : BOARD_InitI2cPins
  * Description   : Configures pin routing and optionally pin electrical features.
  *
  * END ****************************************************************************************************************/
