@@ -1,20 +1,13 @@
 /*
 ** ###################################################################
-**     Processors:          KW47B42Z96FTA_cm33_core0
-**                          KW47B42ZB2AFTA_cm33_core0
-**                          KW47B42ZB3AFTA_cm33_core0
-**                          KW47B42ZB6AFTA_cm33_core0
-**                          KW47B42ZB7AFTA_cm33_core0
-**                          MCXW727CAFTA_cm33_core0
-**                          MCXW727AAFTA_cm33_core0
-**                          MCXW727DAFTA_cm33_core0
+**     Processors:          KW47B42Z97AFTB_cm33_core0 
 **
 **     Compiler:            IAR ANSI C/C++ Compiler for ARM
 **
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM for Connectivity Demo Applications
 **
-**     Copyright 2024-2025 NXP
+**     Copyright 2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -30,7 +23,7 @@
 
 /*************************** FLASH LAYOUT ***********************************
 
-                             0x001F_FFFF    m_flash_end
+                             0x000F_FFFF    m_flash_end
                     - - - +---------------+ - - - - - - - -
                           |               | m_ot_settings_end
                           |  OpenThread   |
@@ -126,7 +119,7 @@ if (!isdefinedsymbol(gReserveCeRam_d)) {
 
 /* Flash defines */
 define symbol m_flash_start                             = 0x00000000;
-define symbol m_flash_size                              = 0x200000;
+define symbol m_flash_size                              = 0x100000;
 define symbol m_flash_end                               = m_flash_start + m_flash_size - 1;
 define symbol m_sector_size                             = 0x2000;
 define symbol m_vector_table_size                       = 0x400;   /* define is used for warmboot stack size too */

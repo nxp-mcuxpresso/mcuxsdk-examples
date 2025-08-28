@@ -1,20 +1,13 @@
 /*
 ** ###################################################################
-**     Processors:          KW47B42Z96FTA_cm33_core0
-**                          KW47B42ZB2AFTA_cm33_core0
-**                          KW47B42ZB3AFTA_cm33_core0
-**                          KW47B42ZB6AFTA_cm33_core0
-**                          KW47B42ZB7AFTA_cm33_core0
-**                          MCXW727CAFTA_cm33_core0
-**                          MCXW727AAFTA_cm33_core0
-**                          MCXW727DAFTA_cm33_core0
+**     Processors:          KW47B42Z83AFTB_cm33_core0 
 **
 **     Compiler:            IAR ANSI C/C++ Compiler for ARM
 **
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM for Connectivity Demo Applications
 **
-**     Copyright 2024-2025 NXP
+**     Copyright 2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -28,9 +21,18 @@
  * This is a generic layout with optional region that could be needed for BLE or OpenThread applications.
  * This Linker file can be used for BLE/OT combo applications. */
 
+if (!isdefinedsymbol(gReserveCeRam_d)) {
+    define exported symbol gReserveCeRam_d = 0;
+}
+
+if (gReserveCeRam_d)
+{
+  error "There is no DSP on this phantom variant, we cannot use a section for compute engine!";
+}
+
 /*************************** FLASH LAYOUT ***********************************
 
-                             0x001F_FFFF    m_flash_end
+                             0x000F_FFFF    m_flash_end
                     - - - +---------------+ - - - - - - - -
                           |               | m_ot_settings_end
                           |  OpenThread   |
@@ -118,15 +120,11 @@ else {
     export symbol gLowpowerPowerDownEnable_d;
 }
 
-if (!isdefinedsymbol(gReserveCeRam_d)) {
-    define exported symbol gReserveCeRam_d = 0;
-}
-
 /********************************************** FLASH **********************************************/
 
 /* Flash defines */
 define symbol m_flash_start                             = 0x00000000;
-define symbol m_flash_size                              = 0x200000;
+define symbol m_flash_size                              = 0x100000;
 define symbol m_flash_end                               = m_flash_start + m_flash_size - 1;
 define symbol m_sector_size                             = 0x2000;
 define symbol m_vector_table_size                       = 0x400;   /* define is used for warmboot stack size too */
@@ -184,37 +182,7 @@ define exported symbol m_text_end                       = INT_STORAGE_START - 1;
 /*************************** RAM LAYOUT ***********************************
 Default address values are indicated between brackets they can be overridden if necessary by linker flags
 
-             0x20039FFF                     m_ram1_end
-                    - - - +---------------+ - - - - - - - -
-            (0x20039FFF)  |               | m_upper_data1_end __HEAP_end__
-                          |               |
-                          |               | Enable with gReserveCeRam_d=1
-                          |               |
-            (0x2002D000)  |               | m_upper_data1_start __HEAP_start__ (gReserveCeRam_d=1)
-                    - - - +---------------+ - - - - - - - -
-            (0x2002CFFF)  |               | m_ce_heap_end
-                          |               |
-                          |               | Enable with gReserveCeRam_d=1
-                          |               |
-            (0x20029640)  |               | m_ce_heap_start
-                    - - - +---------------+ - - - - - - - -
-            (0x2002963F)  |               | m_ce_ctrl_end
-                          |               |
-                          |               | Enable with gReserveCeRam_d=1
-                          |               |
-            (0x20029000)  |               | m_ce_ctrl_start
-                    - - - +---------------+ - - - - - - - -
-            (0x20028FFF)  |               | m_ce_data_reserved_end
-                          |               |
-                          |               | Enable with gReserveCeRam_d=1
-                          |               |
-            (0x20028000)  |               | m_ce_data_reserved_start
-                    - - - +---------------+ - - - - - - - -
-            (0x20027FFF)  |               | m_ce_image_end
-                          |               |
-                          |               | Enable with gReserveCeRam_d=1
-                          |               |
-            (0x20020000)  |               | m_ce_image_start
+             0x20019FFF                     m_ram1_end
                     - - - +---------------+ - - - - - - - -
               m_data1_end |               |
                           |               |
@@ -251,7 +219,7 @@ Default address values are indicated between brackets they can be overridden if 
 define symbol m_ram0_start                              = 0x14000000;
 define symbol m_ram0_end                                = 0x14007FFF;
 define symbol m_ram1_start                              = 0x20000000;
-define symbol m_ram1_end                                = 0x20039FFF;
+define symbol m_ram1_end                                = 0x20019FFF;
 
 /* This region is used by bootrom when exiting power down modes */
 define symbol m_ram1_reserved_start                     = m_ram1_start;
@@ -304,20 +272,10 @@ define symbol m_interrupts_ram_end                      = m_interrupts_ram_start
 define exported symbol __VECTOR_RAM                     = m_interrupts_ram_start;
 define exported symbol __RAM_VECTOR_TABLE_SIZE          = m_ram_vector_table_size;
 
-/* Data region Size for Compute Engine (CE) */
-if (gReserveCeRam_d)
-{
-    define symbol m_ce_data_size                        = 0x1A000;
-}
-else
-{
-    define symbol m_ce_data_size                        = 0x0;
-}
-
 /* data1 region */
 define symbol m_data1_start                             = m_interrupts_ram_end + 1;
 /* data1 region will end before CE data region if not null, Otherwise, use up to ram1 end */
-define symbol m_data1_end                               = m_ram1_end - m_ce_data_size;
+define symbol m_data1_end                               = m_ram1_end;
 
 /* Heap region start and end address symbols used by usual memory allocator (malloc(), free())
    Not used by fsl_component_memory_manager_light component, __heap_size__ can be NULL */
@@ -346,14 +304,7 @@ define block TEXT                                                   { readonly }
 
 /* Use DATA1_region for all connectivity code - DATA0_Region is 32K, can be used for customer specific code */
 define block DATA0                                                  {  };
-if (gReserveCeRam_d)
-{
-    define block DATA1                                                  { readwrite, zi };
-}
-else
-{
-    define block DATA1                                                  { readwrite, zi, last section .heap };
-}
+define block DATA1                                                  { readwrite, zi, last section .heap };
 
 define block CSTACK    with alignment = 8, size = __stack_size__    { };
 
@@ -531,47 +482,4 @@ if(gFlashNbuImage_d) {
     define block NBU_FLASH_IMAGE_BLOCK              { section  __nbu_flash };
 
     place in nbu_flash_region                       { block NBU_FLASH_IMAGE_BLOCK };
-}
-
-/********************************************** Computeur Engine (CE) Memory **********************************************/
-if (gReserveCeRam_d)
-{
-    define symbol m_ce_image_start                = m_data1_end + 1;
-    define symbol m_ce_image_size                 = 0x8000;
-    define symbol m_ce_image_end                  = m_ce_image_start + m_ce_image_size - 1;
-    define symbol m_ce_data_reserved_start        = m_ce_image_end + 1;
-    define symbol m_ce_data_reserved_size         = 0x1000;
-    define symbol m_ce_data_reserved_end          = m_ce_data_reserved_start + m_ce_data_reserved_size -1;
-    define symbol m_ce_ctrl_start                 = m_ce_data_reserved_end + 1;
-    define symbol m_ce_ctrl_size                  = 0x640;
-    define symbol m_ce_ctrl_end                   = m_ce_ctrl_start + m_ce_ctrl_size -1;
-    define symbol m_ce_heap_start                 = m_ce_ctrl_end + 1;
-    define symbol m_ce_heap_size                  = 0x39C0;
-    define symbol m_ce_heap_end                   = m_ce_heap_start + m_ce_heap_size -1;
-    define symbol m_upper_data1_start             = m_ce_heap_end + 1;
-    define symbol m_upper_data1_end               = m_ram1_end;
-    define symbol m_smu2_heap_start               = m_free_data_start;
-    define symbol m_smu2_heap_end                 = m_free_data_end;
-
-    define region CE_CTRL_region            = mem:[from m_ce_ctrl_start to m_ce_ctrl_end];
-    define region CE_HEAP_region            = mem:[from m_ce_heap_start to m_ce_heap_end];
-    define region CE_DATA_RESERVED_region   = mem:[from m_ce_data_reserved_start to m_ce_data_reserved_end];
-    define region UPPER_DATA1_region        = mem:[from m_upper_data1_start to m_upper_data1_end];
-
-    define block ce_ctrl_blk        { section ceCtrl };
-    define block ce_heap_blk        { section ceHeap };
-
-/*  UPPER_DATA1_region is 40K, can be used for customer specific data and heap */
-    define block UPPER_DATA1_blk    { last section .heap };
-
-    place in CE_CTRL_region         { block ce_ctrl_blk };
-    place in CE_HEAP_region         { block ce_heap_blk };
-    place in UPPER_DATA1_region     { block UPPER_DATA1_blk };
-
-    define exported symbol __CE_MEM_HEAP_end__            = m_ce_heap_end;
-    define exported symbol __SMU2_MEM_HEAP_start__        = m_smu2_heap_start;
-    define exported symbol __SMU2_MEM_HEAP_end__          = m_smu2_heap_end;
-
-/*  ce image will be loaded here in initialization stage */
-    define region ce_image_region  = mem:[from m_ce_image_start to m_ce_image_end];
 }

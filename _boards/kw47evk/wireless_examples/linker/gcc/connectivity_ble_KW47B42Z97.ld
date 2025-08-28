@@ -1,20 +1,13 @@
 /*
 ** ###################################################################
-**     Processors:          KW47B42Z96FTA_cm33_core0
-**                          KW47B42ZB2AFTA_cm33_core0
-**                          KW47B42ZB3AFTA_cm33_core0
-**                          KW47B42ZB6AFTA_cm33_core0
-**                          KW47B42ZB7AFTA_cm33_core0
-**                          MCXW727CAFTA_cm33_core0
-**                          MCXW727AAFTA_cm33_core0
-**                          MCXW727DAFTA_cm33_core0
+**     Processors:          KW47B42Z97AFTB_cm33_core0 
 **
 **     Compiler:            GNU C Compiler
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
-**     Copyright 2024 - 2025 NXP
+**     Copyright 2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -32,7 +25,7 @@ GROUP (
 ENTRY(Reset_Handler)
 
 m_flash_start                       = 0x00000000;
-m_flash_size                        = 0x00200000;
+m_flash_size                        = 0x00100000;
 m_flash_end                         = m_flash_start + m_flash_size - 1;
 m_sector_size                       = 0x2000;
 m_vector_table_size                 = 0x400;
