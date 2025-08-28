@@ -19,4 +19,6 @@ mcux_add_include(
     INCLUDES .
 )
 
+include(${SdkRootDirPath}/${board_root}/${board}/freertos_examples/freertos_event/reconfig.cmake OPTIONAL)
+
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
