@@ -1,11 +1,16 @@
+This file contains the general information which can be shared by the examples on this board.
+The example specific information can be found in *readme.md* or *example_board_readme.md*.
+
+General Example Settings
+========================
 Hardware requirements
-=====================
+---------------------
 - 2 x Micro USB cable
 - MC56F81000-EVK board
 - Personal Computer
 
 Prepare the Demo
-================
+----------------
 1.  Connect USB cable between the host PC and the USB(J26) port on the target board to setup USB to UART bridge.
 2.  Connect USB cable between the host PC and the USB(J12) port on the target baord to setup mulitlink debugger.
 3.  Open a serial terminal with the following settings:
@@ -17,4 +22,3 @@ Prepare the Demo
 4.  Download the program to the target board with PnE U-MultiLink debug configuration.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
     Please be noted default FCF(flash configuration field) makes the MCU boot from flash.
-
