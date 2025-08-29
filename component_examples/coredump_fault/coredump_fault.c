@@ -10,7 +10,7 @@
 #include "app.h"
 
 #include "fsl_os_abstraction.h"
-#include "zephyr/debug/coredump.h"
+#include "zephyr_headers/debug/coredump.h"
 
 /*******************************************************************************
  * Definitions
