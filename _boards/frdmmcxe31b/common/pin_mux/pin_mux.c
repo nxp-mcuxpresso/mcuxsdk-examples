@@ -17,11 +17,14 @@ product: Pins v17.0
 processor: MCXE31B
 package_id: MCXE31BMPB
 mcu_data: ksdk2_0
-processor_version: 0.2506.30
+processor_version: 0.2509.30
 pin_labels:
 - {pin_num: '27', pin_signal: PTE3, label: pin_pte3_config, identifier: pin_pte3_config}
 - {pin_num: '26', pin_signal: PTE14, label: dsa, identifier: dsa}
 - {pin_num: '49', pin_signal: PTC3, label: ENET_PHY_RST, identifier: ENET_PHY_RST}
+- {pin_num: '81', pin_signal: PTC13, label: SAI_0_SYNC, identifier: SAI_0_SYNC}
+- {pin_num: '79', pin_signal: PTB2, label: SAI_0_D0_TX, identifier: SAI_0_D0_TX}
+- {pin_num: '83', pin_signal: PTC12, label: SAI_0_BCLK, identifier: SAI_0_BCLK}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -82,7 +85,7 @@ BOARD_InitDEBUG_UARTPins:
  * END ****************************************************************************************************************/
 void BOARD_InitDEBUG_UARTPins(void)
 {
-    
+
     /* PTE3 (pin 27) is configured as LPUART_5 RX */
     const siul2_pin_settings_t BOARD_INITDEBUG_UARTPINS_PTE3 =
     {
@@ -102,7 +105,7 @@ void BOARD_InitDEBUG_UARTPins(void)
         .inputMuxReg                 = {
                                          192u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -123,7 +126,7 @@ void BOARD_InitDEBUG_UARTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITDEBUG_UARTPINS_PTE3);
-    
+
     /* PTE14 (pin 26) is configured as LPUART_5 TX */
     const siul2_pin_settings_t BOARD_INITDEBUG_UARTPINS_PTE14 =
     {
@@ -143,7 +146,7 @@ void BOARD_InitDEBUG_UARTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITDEBUG_UARTPINS_PTE14);
-    
+
 }
 
 /* FUNCTION ************************************************************************************************************
@@ -156,7 +159,7 @@ void BOARD_InitDEBUG_UARTPins(void)
  * END ****************************************************************************************************************/
 void BOARD_InitDEBUG_UARTPins_deinit(void)
 {
-    
+
     /* PTE3 (pin 27) is disabled */
     const siul2_pin_settings_t BOARD_INITDEBUG_UARTPINS_DEINIT_pin_pte3_config =
     {
@@ -181,7 +184,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void)
                                          350u,
                                          67u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -202,7 +205,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITDEBUG_UARTPINS_DEINIT_pin_pte3_config);
-    
+
     /* PTE14 (pin 26) is disabled */
     const siul2_pin_settings_t BOARD_INITDEBUG_UARTPINS_DEINIT_dsa =
     {
@@ -227,7 +230,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void)
                                          4u,
                                          67u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -248,7 +251,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITDEBUG_UARTPINS_DEINIT_dsa);
-    
+
 }
 
 /* clang-format off */
@@ -272,7 +275,7 @@ BOARD_InitLEDsPins:
  * END ****************************************************************************************************************/
 void BOARD_InitLEDsPins(void)
 {
-    
+
     /* PTC16 (pin 66) is configured as SIUL2 GPIO, 80 */
     const siul2_pin_settings_t BOARD_INITLEDSPINS_PTC16 =
     {
@@ -292,7 +295,7 @@ void BOARD_InitLEDsPins(void)
         .initValue                   = 1u
     };
     SIUL2_PinInit(&BOARD_INITLEDSPINS_PTC16);
-    
+
     /* PTC14 (pin 71) is configured as SIUL2 GPIO, 78 */
     const siul2_pin_settings_t BOARD_INITLEDSPINS_PTC14 =
     {
@@ -312,7 +315,7 @@ void BOARD_InitLEDsPins(void)
         .initValue                   = 1u
     };
     SIUL2_PinInit(&BOARD_INITLEDSPINS_PTC14);
-    
+
     /* PTB22 (pin 67) is configured as SIUL2 GPIO, 54 */
     const siul2_pin_settings_t BOARD_INITLEDSPINS_PTB22 =
     {
@@ -332,7 +335,7 @@ void BOARD_InitLEDsPins(void)
         .initValue                   = 1u
     };
     SIUL2_PinInit(&BOARD_INITLEDSPINS_PTB22);
-    
+
 }
 
 /* clang-format off */
@@ -354,7 +357,7 @@ BOARD_InitBUTTONsPins:
  * END ****************************************************************************************************************/
 void BOARD_InitBUTTONsPins(void)
 {
-    
+
     /* PTD5 (pin 53) is configured as SIUL2 GPIO, 101 */
     const siul2_pin_settings_t BOARD_INITBUTTONSPINS_PTD5 =
     {
@@ -392,7 +395,7 @@ void BOARD_InitBUTTONsPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITBUTTONSPINS_PTD5);
-    
+
 }
 
 /* clang-format off */
@@ -414,7 +417,7 @@ BOARD_InitEXTIRQPins:
  * END ****************************************************************************************************************/
 void BOARD_InitEXTIRQPins(void)
 {
-    
+
     /* PTD5 (pin 53) is configured as SIUL2 EIRQ, 13 */
     const siul2_pin_settings_t BOARD_INITEXTIRQPINS_PTD5 =
     {
@@ -434,7 +437,7 @@ void BOARD_InitEXTIRQPins(void)
         .inputMuxReg                 = {
                                          29u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT3,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -455,7 +458,7 @@ void BOARD_InitEXTIRQPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEXTIRQPINS_PTD5);
-    
+
 }
 
 /* clang-format off */
@@ -477,7 +480,7 @@ BOARD_InitCLOCKOUTPins:
  * END ****************************************************************************************************************/
 void BOARD_InitCLOCKOUTPins(void)
 {
-    
+
     /* PTD14 (pin 40) is configured as SYSTEM CLKOUT_RUN */
     const siul2_pin_settings_t BOARD_INITCLOCKOUTPINS_PTD14 =
     {
@@ -497,7 +500,7 @@ void BOARD_InitCLOCKOUTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITCLOCKOUTPINS_PTD14);
-    
+
 }
 
 /* clang-format off */
@@ -519,7 +522,7 @@ BOARD_InitAdcPins:
  * END ****************************************************************************************************************/
 void BOARD_InitAdcPins(void)
 {
-    
+
     /* PTE10 (pin 10) is configured as ADC_0 IN, 5 */
     const siul2_pin_settings_t BOARD_INITADCPINS_PTE10 =
     {
@@ -557,7 +560,7 @@ void BOARD_InitAdcPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITADCPINS_PTE10);
-    
+
 }
 
 /* clang-format off */
@@ -580,7 +583,7 @@ BOARD_InitUARTPins:
  * END ****************************************************************************************************************/
 void BOARD_InitUARTPins(void)
 {
-    
+
     /* PTA8 (pin 172) is configured as LPUART_2 RX */
     const siul2_pin_settings_t BOARD_INITUARTPINS_PTA8 =
     {
@@ -600,7 +603,7 @@ void BOARD_InitUARTPins(void)
         .inputMuxReg                 = {
                                          189u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT3,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -621,7 +624,7 @@ void BOARD_InitUARTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITUARTPINS_PTA8);
-    
+
     /* PTA9 (pin 171) is configured as LPUART_2 TX */
     const siul2_pin_settings_t BOARD_INITUARTPINS_PTA9 =
     {
@@ -641,7 +644,7 @@ void BOARD_InitUARTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITUARTPINS_PTA9);
-    
+
 }
 
 /* clang-format off */
@@ -668,7 +671,7 @@ BOARD_InitI2CPins:
  * END ****************************************************************************************************************/
 void BOARD_InitI2CPins(void)
 {
-    
+
     /* PTC6 (pin 141) is configured as LPI2C_1 SDA */
     const siul2_pin_settings_t BOARD_INITI2CPINS_PTC6 =
     {
@@ -688,7 +691,7 @@ void BOARD_InitI2CPins(void)
         .inputMuxReg                 = {
                                          219u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -709,7 +712,7 @@ void BOARD_InitI2CPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_PTC6);
-    
+
     /* PTC7 (pin 140) is configured as LPI2C_1 SCL */
     const siul2_pin_settings_t BOARD_INITI2CPINS_PTC7 =
     {
@@ -729,7 +732,7 @@ void BOARD_InitI2CPins(void)
         .inputMuxReg                 = {
                                          217u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -750,7 +753,7 @@ void BOARD_InitI2CPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_PTC7);
-    
+
     /* PTD13 (pin 41) is configured as LPI2C_0 SDA */
     const siul2_pin_settings_t BOARD_INITI2CPINS_PTD13 =
     {
@@ -770,7 +773,7 @@ void BOARD_InitI2CPins(void)
         .inputMuxReg                 = {
                                          214u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -791,7 +794,7 @@ void BOARD_InitI2CPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_PTD13);
-    
+
     /* PTD14 (pin 40) is configured as LPI2C_0 SCL */
     const siul2_pin_settings_t BOARD_INITI2CPINS_PTD14 =
     {
@@ -811,7 +814,7 @@ void BOARD_InitI2CPins(void)
         .inputMuxReg                 = {
                                          212u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -832,7 +835,7 @@ void BOARD_InitI2CPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_PTD14);
-    
+
 }
 
 /* FUNCTION ************************************************************************************************************
@@ -845,7 +848,7 @@ void BOARD_InitI2CPins(void)
  * END ****************************************************************************************************************/
 void BOARD_InitI2CPins_deinit(void)
 {
-    
+
     /* PTC6 (pin 141) is disabled */
     const siul2_pin_settings_t BOARD_INITI2CPINS_DEINIT_PTC6 =
     {
@@ -872,7 +875,7 @@ void BOARD_InitI2CPins_deinit(void)
                                          233u,
                                          86u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -893,7 +896,7 @@ void BOARD_InitI2CPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_DEINIT_PTC6);
-    
+
     /* PTC7 (pin 140) is disabled */
     const siul2_pin_settings_t BOARD_INITI2CPINS_DEINIT_PTC7 =
     {
@@ -919,7 +922,7 @@ void BOARD_InitI2CPins_deinit(void)
                                          364u,
                                          87u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -940,7 +943,7 @@ void BOARD_InitI2CPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_DEINIT_PTC7);
-    
+
     /* PTD13 (pin 41) is disabled */
     const siul2_pin_settings_t BOARD_INITI2CPINS_DEINIT_PTD13 =
     {
@@ -967,7 +970,7 @@ void BOARD_InitI2CPins_deinit(void)
                                          45u,
                                          68u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -988,7 +991,7 @@ void BOARD_InitI2CPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_DEINIT_PTD13);
-    
+
     /* PTD14 (pin 40) is disabled */
     const siul2_pin_settings_t BOARD_INITI2CPINS_DEINIT_PTD14 =
     {
@@ -1014,7 +1017,7 @@ void BOARD_InitI2CPins_deinit(void)
                                          46u,
                                          69u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1035,7 +1038,7 @@ void BOARD_InitI2CPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITI2CPINS_DEINIT_PTD14);
-    
+
 }
 
 /* clang-format off */
@@ -1064,7 +1067,7 @@ BOARD_InitSPIPins:
  * END ****************************************************************************************************************/
 void BOARD_InitSPIPins(void)
 {
-    
+
     /* PTB18 (pin 42) is configured as LPSPI_1 PCS1 */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTB18 =
     {
@@ -1084,7 +1087,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          233u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1105,7 +1108,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTB18);
-    
+
     /* PTA28 (pin 30) is configured as LPSPI_1 SCK */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTA28 =
     {
@@ -1125,7 +1128,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          238u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT4,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1146,7 +1149,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTA28);
-    
+
     /* PTA29 (pin 32) is configured as LPSPI_1 SDI */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTA29 =
     {
@@ -1166,7 +1169,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          239u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT4,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1187,7 +1190,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTA29);
-    
+
     /* PTA30 (pin 33) is configured as LPSPI_1 SDO */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTA30 =
     {
@@ -1207,7 +1210,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          240u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT5,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1228,7 +1231,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTA30);
-    
+
     /* PTE0 (pin 163) is configured as LPSPI_0 SDI */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTE0 =
     {
@@ -1248,7 +1251,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          230u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1269,7 +1272,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTE0);
-    
+
     /* PTE1 (pin 162) is configured as LPSPI_0 SCK */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTE1 =
     {
@@ -1289,7 +1292,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          229u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1310,7 +1313,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTE1);
-    
+
     /* PTE2 (pin 147) is configured as LPSPI_0 SDO */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTE2 =
     {
@@ -1330,7 +1333,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          231u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1351,7 +1354,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTE2);
-    
+
     /* PTE6 (pin 146) is configured as LPSPI_0 PCS2 */
     const siul2_pin_settings_t BOARD_INITSPIPINS_PTE6 =
     {
@@ -1371,7 +1374,7 @@ void BOARD_InitSPIPins(void)
         .inputMuxReg                 = {
                                          223u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1392,7 +1395,7 @@ void BOARD_InitSPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_PTE6);
-    
+
 }
 
 /* FUNCTION ************************************************************************************************************
@@ -1405,7 +1408,7 @@ void BOARD_InitSPIPins(void)
  * END ****************************************************************************************************************/
 void BOARD_InitSPIPins_deinit(void)
 {
-    
+
     /* PTB18 (pin 42) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTB18 =
     {
@@ -1429,7 +1432,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          376u,
                                          95u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1450,7 +1453,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTB18);
-    
+
     /* PTA28 (pin 30) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTA28 =
     {
@@ -1475,7 +1478,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          238u,
                                          91u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1496,7 +1499,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTA28);
-    
+
     /* PTA29 (pin 32) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTA29 =
     {
@@ -1520,7 +1523,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          365u,
                                          92u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1541,7 +1544,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTA29);
-    
+
     /* PTA30 (pin 33) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTA30 =
     {
@@ -1566,7 +1569,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          240u,
                                          93u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1587,7 +1590,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTA30);
-    
+
     /* PTE0 (pin 163) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTE0 =
     {
@@ -1610,7 +1613,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          194u,
                                          230u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1631,7 +1634,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTE0);
-    
+
     /* PTE1 (pin 162) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTE1 =
     {
@@ -1654,7 +1657,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          229u,
                                          370u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1675,7 +1678,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTE1);
-    
+
     /* PTE2 (pin 147) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTE2 =
     {
@@ -1701,7 +1704,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          51u,
                                          88u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1722,7 +1725,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTE2);
-    
+
     /* PTE6 (pin 146) is disabled */
     const siul2_pin_settings_t BOARD_INITSPIPINS_DEINIT_PTE6 =
     {
@@ -1746,7 +1749,7 @@ void BOARD_InitSPIPins_deinit(void)
                                          373u,
                                          94u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
                                          kPORT_INPUT_MUX_ALT0,
@@ -1767,7 +1770,7 @@ void BOARD_InitSPIPins_deinit(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITSPIPINS_DEINIT_PTE6);
-    
+
 }
 
 /* clang-format off */
@@ -1816,7 +1819,7 @@ BOARD_InitLCDPins:
  * END ****************************************************************************************************************/
 void BOARD_InitLCDPins(void)
 {
-    
+
     /* PTC6 (pin 141) is configured as LPI2C_1 SDA */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC6 =
     {
@@ -1836,7 +1839,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          219u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1857,7 +1860,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC6);
-    
+
     /* PTC7 (pin 140) is configured as LPI2C_1 SCL */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC7 =
     {
@@ -1877,7 +1880,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          217u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -1898,7 +1901,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC7);
-    
+
     /* PTB14 (pin 114) is configured as SIUL2 GPIO, 46 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTB14 =
     {
@@ -1936,7 +1939,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTB14);
-    
+
     /* PTC9 (pin 97) is configured as SIUL2 GPIO, 73 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC9 =
     {
@@ -1974,7 +1977,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC9);
-    
+
     /* PTB15 (pin 113) is configured as SIUL2 GPIO, 47 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTB15 =
     {
@@ -2012,7 +2015,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTB15);
-    
+
     /* PTC8 (pin 98) is configured as SIUL2 GPIO, 72 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC8 =
     {
@@ -2050,7 +2053,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC8);
-    
+
     /* PTB1 (pin 94) is configured as SIUL2 GPIO, 33 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTB1 =
     {
@@ -2088,7 +2091,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTB1);
-    
+
     /* PTC11 (pin 90) is configured as FLEXIO FXIO_D, 15 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC11 =
     {
@@ -2108,7 +2111,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          167u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT3,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2129,7 +2132,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC11);
-    
+
     /* PTB0 (pin 95) is configured as FLEXIO FXIO_D, 14 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTB0 =
     {
@@ -2149,7 +2152,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          166u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT3,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2170,7 +2173,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTB0);
-    
+
     /* PTC10 (pin 92) is configured as SIUL2 GPIO, 74 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC10 =
     {
@@ -2208,7 +2211,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 0u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC10);
-    
+
     /* PTC23 (pin 87) is configured as FLEXIO FXIO_D, 16 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC23 =
     {
@@ -2228,7 +2231,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          168u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2249,7 +2252,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC23);
-    
+
     /* PTC24 (pin 88) is configured as FLEXIO FXIO_D, 17 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC24 =
     {
@@ -2269,7 +2272,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          169u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2290,7 +2293,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC24);
-    
+
     /* PTC25 (pin 89) is configured as FLEXIO FXIO_D, 18 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC25 =
     {
@@ -2310,7 +2313,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          170u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2331,7 +2334,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC25);
-    
+
     /* PTC26 (pin 91) is configured as FLEXIO FXIO_D, 19 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC26 =
     {
@@ -2351,7 +2354,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          171u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2372,7 +2375,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC26);
-    
+
     /* PTC27 (pin 93) is configured as FLEXIO FXIO_D, 20 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC27 =
     {
@@ -2392,7 +2395,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          172u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2413,7 +2416,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC27);
-    
+
     /* PTC28 (pin 96) is configured as FLEXIO FXIO_D, 21 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC28 =
     {
@@ -2433,7 +2436,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          173u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2454,7 +2457,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC28);
-    
+
     /* PTC29 (pin 99) is configured as FLEXIO FXIO_D, 22 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC29 =
     {
@@ -2474,7 +2477,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          174u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2495,7 +2498,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC29);
-    
+
     /* PTC30 (pin 101) is configured as FLEXIO FXIO_D, 23 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC30 =
     {
@@ -2515,7 +2518,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          175u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2536,7 +2539,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC30);
-    
+
     /* PTC31 (pin 103) is configured as FLEXIO FXIO_D, 24 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTC31 =
     {
@@ -2556,7 +2559,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          176u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2577,7 +2580,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTC31);
-    
+
     /* PTD20 (pin 111) is configured as FLEXIO FXIO_D, 25 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTD20 =
     {
@@ -2597,7 +2600,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          177u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2618,7 +2621,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTD20);
-    
+
     /* PTD21 (pin 115) is configured as FLEXIO FXIO_D, 26 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTD21 =
     {
@@ -2638,7 +2641,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          178u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2659,7 +2662,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTD21);
-    
+
     /* PTD22 (pin 118) is configured as FLEXIO FXIO_D, 27 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTD22 =
     {
@@ -2679,7 +2682,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          179u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2700,7 +2703,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTD22);
-    
+
     /* PTD23 (pin 122) is configured as FLEXIO FXIO_D, 28 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTD23 =
     {
@@ -2720,7 +2723,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          180u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2741,7 +2744,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTD23);
-    
+
     /* PTD24 (pin 125) is configured as FLEXIO FXIO_D, 29 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTD24 =
     {
@@ -2761,7 +2764,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          181u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2782,7 +2785,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTD24);
-    
+
     /* PTD26 (pin 131) is configured as FLEXIO FXIO_D, 30 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTD26 =
     {
@@ -2802,7 +2805,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          182u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2823,7 +2826,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTD26);
-    
+
     /* PTD27 (pin 132) is configured as FLEXIO FXIO_D, 31 */
     const siul2_pin_settings_t BOARD_INITLCDPINS_PTD27 =
     {
@@ -2843,7 +2846,7 @@ void BOARD_InitLCDPins(void)
         .inputMuxReg                 = {
                                          183u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -2864,7 +2867,7 @@ void BOARD_InitLCDPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITLCDPINS_PTD27);
-    
+
 }
 
 /* clang-format off */
@@ -2888,7 +2891,7 @@ BOARD_InitCMPPins:
  * END ****************************************************************************************************************/
 void BOARD_InitCMPPins(void)
 {
-    
+
     /* PTA0 (pin 137) is configured as LPCMP_1 IN, 0 */
     const siul2_pin_settings_t BOARD_INITCMPPINS_PTA0 =
     {
@@ -2926,7 +2929,7 @@ void BOARD_InitCMPPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITCMPPINS_PTA0);
-    
+
     /* PTA1 (pin 135) is configured as SIUL2 GPIO, 1 */
     const siul2_pin_settings_t BOARD_INITCMPPINS_PTA1 =
     {
@@ -2964,7 +2967,7 @@ void BOARD_InitCMPPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITCMPPINS_PTA1);
-    
+
     /* PTA2 (pin 124) is configured as SIUL2 GPIO, 2 */
     const siul2_pin_settings_t BOARD_INITCMPPINS_PTA2 =
     {
@@ -3002,7 +3005,7 @@ void BOARD_InitCMPPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITCMPPINS_PTA2);
-    
+
 }
 
 /* clang-format off */
@@ -3024,7 +3027,7 @@ BOARD_InitBctuTrigSrcPins:
  * END ****************************************************************************************************************/
 void BOARD_InitBctuTrigSrcPins(void)
 {
-    
+
     /* PTE11 (pin 9) is configured as EMIOS_0 EMIOS_CH, 1_G */
     const siul2_pin_settings_t BOARD_INITBCTUTRIGSRCPINS_PTE11 =
     {
@@ -3062,7 +3065,7 @@ void BOARD_InitBctuTrigSrcPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITBCTUTRIGSRCPINS_PTE11);
-    
+
 }
 
 /* clang-format off */
@@ -3085,7 +3088,7 @@ BOARD_InitFlexCANPins:
  * END ****************************************************************************************************************/
 void BOARD_InitFlexCANPins(void)
 {
-    
+
     /* PTA7 (pin 100) is configured as FLEXCAN_0 TX */
     const siul2_pin_settings_t BOARD_INITFLEXCANPINS_PTA7 =
     {
@@ -3105,7 +3108,7 @@ void BOARD_InitFlexCANPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXCANPINS_PTA7);
-    
+
     /* PTA6 (pin 102) is configured as FLEXCAN_0 RX */
     const siul2_pin_settings_t BOARD_INITFLEXCANPINS_PTA6 =
     {
@@ -3125,7 +3128,7 @@ void BOARD_InitFlexCANPins(void)
         .inputMuxReg                 = {
                                          0u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3146,7 +3149,7 @@ void BOARD_InitFlexCANPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXCANPINS_PTA6);
-    
+
 }
 
 /* clang-format off */
@@ -3172,7 +3175,7 @@ BOARD_InitEMIOSPins:
  * END ****************************************************************************************************************/
 void BOARD_InitEMIOSPins(void)
 {
-    
+
     /* PTE11 (pin 9) is configured as EMIOS_0 EMIOS_CH, 1_G */
     const siul2_pin_settings_t BOARD_INITEMIOSPINS_PTE11 =
     {
@@ -3192,7 +3195,7 @@ void BOARD_InitEMIOSPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMIOSPINS_PTE11);
-    
+
     /* PTD0 (pin 8) is configured as EMIOS_0 EMIOS_CH, 2_G */
     const siul2_pin_settings_t BOARD_INITEMIOSPINS_PTD0 =
     {
@@ -3212,7 +3215,7 @@ void BOARD_InitEMIOSPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMIOSPINS_PTD0);
-    
+
     /* PTD1 (pin 7) is configured as EMIOS_0 EMIOS_CH, 3_G */
     const siul2_pin_settings_t BOARD_INITEMIOSPINS_PTD1 =
     {
@@ -3232,7 +3235,7 @@ void BOARD_InitEMIOSPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMIOSPINS_PTD1);
-    
+
     /* PTB16 (pin 112) is configured as EMIOS_0 EMIOS_CH, 4_G */
     const siul2_pin_settings_t BOARD_INITEMIOSPINS_PTB16 =
     {
@@ -3252,7 +3255,7 @@ void BOARD_InitEMIOSPins(void)
         .inputMuxReg                 = {
                                          52u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3273,7 +3276,7 @@ void BOARD_InitEMIOSPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMIOSPINS_PTB16);
-    
+
     /* PTA18 (pin 1) is configured as TRGMUX TRGMUX_IN, 12 */
     const siul2_pin_settings_t BOARD_INITEMIOSPINS_PTA18 =
     {
@@ -3293,7 +3296,7 @@ void BOARD_InitEMIOSPins(void)
         .inputMuxReg                 = {
                                          356u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3314,7 +3317,7 @@ void BOARD_InitEMIOSPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMIOSPINS_PTA18);
-    
+
 }
 
 /* clang-format off */
@@ -3341,7 +3344,7 @@ BOARD_InitFLASHPins:
  * END ****************************************************************************************************************/
 void BOARD_InitFLASHPins(void)
 {
-    
+
     /* PTD10 (pin 56) is configured as QUADSPI SCK, FA */
     const siul2_pin_settings_t BOARD_INITFLASHPINS_PTD10 =
     {
@@ -3361,7 +3364,7 @@ void BOARD_InitFLASHPins(void)
         .inputMuxReg                 = {
                                          309u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3382,7 +3385,7 @@ void BOARD_InitFLASHPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLASHPINS_PTD10);
-    
+
     /* PTC3 (pin 49) is configured as QUADSPI PCS, FA */
     const siul2_pin_settings_t BOARD_INITFLASHPINS_ENET_PHY_RST =
     {
@@ -3402,7 +3405,7 @@ void BOARD_InitFLASHPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLASHPINS_ENET_PHY_RST);
-    
+
     /* PTD11 (pin 55) is configured as QUADSPI IO0, FA */
     const siul2_pin_settings_t BOARD_INITFLASHPINS_PTD11 =
     {
@@ -3422,7 +3425,7 @@ void BOARD_InitFLASHPins(void)
         .inputMuxReg                 = {
                                          305u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3443,7 +3446,7 @@ void BOARD_InitFLASHPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLASHPINS_PTD11);
-    
+
     /* PTD7 (pin 51) is configured as QUADSPI IO1, FA */
     const siul2_pin_settings_t BOARD_INITFLASHPINS_PTD7 =
     {
@@ -3463,7 +3466,7 @@ void BOARD_InitFLASHPins(void)
         .inputMuxReg                 = {
                                          306u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3484,7 +3487,7 @@ void BOARD_InitFLASHPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLASHPINS_PTD7);
-    
+
     /* PTD12 (pin 54) is configured as QUADSPI IO2, FA */
     const siul2_pin_settings_t BOARD_INITFLASHPINS_PTD12 =
     {
@@ -3504,7 +3507,7 @@ void BOARD_InitFLASHPins(void)
         .inputMuxReg                 = {
                                          307u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3525,7 +3528,7 @@ void BOARD_InitFLASHPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLASHPINS_PTD12);
-    
+
     /* PTC2 (pin 50) is configured as QUADSPI IO3, FA */
     const siul2_pin_settings_t BOARD_INITFLASHPINS_PTC2 =
     {
@@ -3545,7 +3548,7 @@ void BOARD_InitFLASHPins(void)
         .inputMuxReg                 = {
                                          308u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3566,7 +3569,7 @@ void BOARD_InitFLASHPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLASHPINS_PTC2);
-    
+
 }
 
 /* clang-format off */
@@ -3589,7 +3592,7 @@ BOARD_InitACCELPins:
  * END ****************************************************************************************************************/
 void BOARD_InitACCELPins(void)
 {
-    
+
     /* PTD13 (pin 41) is configured as LPI2C_0 SDA */
     const siul2_pin_settings_t BOARD_INITACCELPINS_PTD13 =
     {
@@ -3609,7 +3612,7 @@ void BOARD_InitACCELPins(void)
         .inputMuxReg                 = {
                                          214u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3630,7 +3633,7 @@ void BOARD_InitACCELPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITACCELPINS_PTD13);
-    
+
     /* PTD14 (pin 40) is configured as LPI2C_0 SCL */
     const siul2_pin_settings_t BOARD_INITACCELPINS_PTD14 =
     {
@@ -3650,7 +3653,7 @@ void BOARD_InitACCELPins(void)
         .inputMuxReg                 = {
                                          212u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3671,7 +3674,7 @@ void BOARD_InitACCELPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITACCELPINS_PTD14);
-    
+
 }
 
 /* clang-format off */
@@ -3694,7 +3697,7 @@ BOARD_InitFLEXIO_I2CPins:
  * END ****************************************************************************************************************/
 void BOARD_InitFLEXIO_I2CPins(void)
 {
-    
+
     /* PTA8 (pin 172) is configured as FLEXIO FXIO_D, 6 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_I2CPINS_PTA8 =
     {
@@ -3714,7 +3717,7 @@ void BOARD_InitFLEXIO_I2CPins(void)
         .inputMuxReg                 = {
                                          158u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3735,7 +3738,7 @@ void BOARD_InitFLEXIO_I2CPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_I2CPINS_PTA8);
-    
+
     /* PTA9 (pin 171) is configured as FLEXIO FXIO_D, 7 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_I2CPINS_PTA9 =
     {
@@ -3755,7 +3758,7 @@ void BOARD_InitFLEXIO_I2CPins(void)
         .inputMuxReg                 = {
                                          159u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3776,7 +3779,7 @@ void BOARD_InitFLEXIO_I2CPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_I2CPINS_PTA9);
-    
+
 }
 
 /* clang-format off */
@@ -3799,7 +3802,7 @@ BOARD_InitFLEXIO_PWMPins:
  * END ****************************************************************************************************************/
 void BOARD_InitFLEXIO_PWMPins(void)
 {
-    
+
     /* PTA8 (pin 172) is configured as FLEXIO FXIO_D, 6 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_PWMPINS_PTA8 =
     {
@@ -3819,7 +3822,7 @@ void BOARD_InitFLEXIO_PWMPins(void)
         .inputMuxReg                 = {
                                          158u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3840,7 +3843,7 @@ void BOARD_InitFLEXIO_PWMPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_PWMPINS_PTA8);
-    
+
     /* PTA9 (pin 171) is configured as FLEXIO FXIO_D, 7 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_PWMPINS_PTA9 =
     {
@@ -3860,7 +3863,7 @@ void BOARD_InitFLEXIO_PWMPins(void)
         .inputMuxReg                 = {
                                          159u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT2,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3881,7 +3884,7 @@ void BOARD_InitFLEXIO_PWMPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_PWMPINS_PTA9);
-    
+
 }
 
 /* clang-format off */
@@ -3906,7 +3909,7 @@ BOARD_InitFLEXIO_SPIPins:
  * END ****************************************************************************************************************/
 void BOARD_InitFLEXIO_SPIPins(void)
 {
-    
+
     /* PTA31 (pin 39) is configured as FLEXIO FXIO_D, 0 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_SPIPINS_PTA31 =
     {
@@ -3926,7 +3929,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .inputMuxReg                 = {
                                          152u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT6,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3947,7 +3950,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_SPIPINS_PTA31);
-    
+
     /* PTB18 (pin 42) is configured as FLEXIO FXIO_D, 1 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_SPIPINS_PTB18 =
     {
@@ -3967,7 +3970,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .inputMuxReg                 = {
                                          153u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT6,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -3988,7 +3991,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_SPIPINS_PTB18);
-    
+
     /* PTB19 (pin 43) is configured as FLEXIO FXIO_D, 2 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_SPIPINS_PTB19 =
     {
@@ -4008,7 +4011,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .inputMuxReg                 = {
                                          154u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT5,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4029,7 +4032,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_SPIPINS_PTB19);
-    
+
     /* PTB20 (pin 44) is configured as FLEXIO FXIO_D, 3 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_SPIPINS_PTB20 =
     {
@@ -4049,7 +4052,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .inputMuxReg                 = {
                                          155u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT5,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4070,7 +4073,7 @@ void BOARD_InitFLEXIO_SPIPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_SPIPINS_PTB20);
-    
+
 }
 
 /* clang-format off */
@@ -4093,7 +4096,7 @@ BOARD_InitFLEXIO_UARTPins:
  * END ****************************************************************************************************************/
 void BOARD_InitFLEXIO_UARTPins(void)
 {
-    
+
     /* PTA31 (pin 39) is configured as FLEXIO FXIO_D, 0 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_UARTPINS_PTA31 =
     {
@@ -4113,7 +4116,7 @@ void BOARD_InitFLEXIO_UARTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_UARTPINS_PTA31);
-    
+
     /* PTB18 (pin 42) is configured as FLEXIO FXIO_D, 1 */
     const siul2_pin_settings_t BOARD_INITFLEXIO_UARTPINS_PTB18 =
     {
@@ -4133,7 +4136,7 @@ void BOARD_InitFLEXIO_UARTPins(void)
         .inputMuxReg                 = {
                                          153u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT6,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4154,7 +4157,7 @@ void BOARD_InitFLEXIO_UARTPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITFLEXIO_UARTPINS_PTB18);
-    
+
 }
 
 /* clang-format off */
@@ -4185,7 +4188,7 @@ BOARD_InitEMACPins:
  * END ****************************************************************************************************************/
 void BOARD_InitEMACPins(void)
 {
-    
+
     /* PTB4 (pin 48) is configured as EMAC MII_RMII_MDIO */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTB4 =
     {
@@ -4205,7 +4208,7 @@ void BOARD_InitEMACPins(void)
         .inputMuxReg                 = {
                                          291u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4226,7 +4229,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTB4);
-    
+
     /* PTB5 (pin 47) is configured as EMAC MII_RMII_MDC */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTB5 =
     {
@@ -4246,7 +4249,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTB5);
-    
+
     /* PTC2 (pin 50) is configured as EMAC MII_RMII_TXD0 */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTC2 =
     {
@@ -4266,7 +4269,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTC2);
-    
+
     /* PTD7 (pin 51) is configured as EMAC MII_RMII_TXD1 */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTD7 =
     {
@@ -4286,7 +4289,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTD7);
-    
+
     /* PTD12 (pin 54) is configured as EMAC MII_RMII_TX_EN */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTD12 =
     {
@@ -4306,7 +4309,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTD12);
-    
+
     /* PTC17 (pin 65) is configured as EMAC MII_RMII_RX_DV */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTC17 =
     {
@@ -4326,7 +4329,7 @@ void BOARD_InitEMACPins(void)
         .inputMuxReg                 = {
                                          292u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4347,7 +4350,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTC17);
-    
+
     /* PTC1 (pin 61) is configured as EMAC MII_RMII_RXD0 */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTC1 =
     {
@@ -4367,7 +4370,7 @@ void BOARD_InitEMACPins(void)
         .inputMuxReg                 = {
                                          294u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4388,7 +4391,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTC1);
-    
+
     /* PTC0 (pin 62) is configured as EMAC MII_RMII_RXD1 */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTC0 =
     {
@@ -4408,7 +4411,7 @@ void BOARD_InitEMACPins(void)
         .inputMuxReg                 = {
                                          295u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4429,7 +4432,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTC0);
-    
+
     /* PTC3 (pin 49) is configured as SIUL2 GPIO, 67 */
     const siul2_pin_settings_t BOARD_INITEMACPINS_ENET_PHY_RST =
     {
@@ -4467,7 +4470,7 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 1u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_ENET_PHY_RST);
-    
+
     /* PTD11 (pin 55) is configured as EMAC MII_RMII_TX_CLK */
     const siul2_pin_settings_t BOARD_INITEMACPINS_PTD11 =
     {
@@ -4487,7 +4490,7 @@ void BOARD_InitEMACPins(void)
         .inputMuxReg                 = {
                                          296u
                                        },
-        .inputMux                    = { 
+        .inputMux                    = {
                                          kPORT_INPUT_MUX_ALT1,
                                          kPORT_INPUT_MUX_NO_INIT,
                                          kPORT_INPUT_MUX_NO_INIT,
@@ -4508,7 +4511,154 @@ void BOARD_InitEMACPins(void)
         .initValue                   = 2u
     };
     SIUL2_PinInit(&BOARD_INITEMACPINS_PTD11);
-    
+
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitSAIPins:
+- options: {callFromInitBoot: 'false', coreID: core0, enableClock: 'true'}
+- pin_list:
+  - {pin_num: '83', peripheral: SAI_0, signal: BCLK, pin_signal: PTC12, direction: INPUT/OUTPUT, inputBufferEnable: enabled}
+  - {pin_num: '81', peripheral: SAI_0, signal: SYNC, pin_signal: PTC13, direction: INPUT/OUTPUT, inputBufferEnable: enabled}
+  - {pin_num: '79', peripheral: SAI_0, signal: D0, pin_signal: PTB2, direction: INPUT/OUTPUT, inputBufferEnable: enabled}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitSAIPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitSAIPins(void)
+{
+
+    /* PTC12 (pin 83) is configured as SAI_0 BCLK */
+    const siul2_pin_settings_t BOARD_INITSAIPINS_SAI_0_BCLK =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 76u,
+        .mux                         = kPORT_MUX_ALT7,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_SLOWEST,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         315u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITSAIPINS_SAI_0_BCLK);
+
+    /* PTC13 (pin 81) is configured as SAI_0 SYNC */
+    const siul2_pin_settings_t BOARD_INITSAIPINS_SAI_0_SYNC =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 77u,
+        .mux                         = kPORT_MUX_ALT7,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         321u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITSAIPINS_SAI_0_SYNC);
+
+    /* PTB2 (pin 79) is configured as SAI_0 D0 */
+    const siul2_pin_settings_t BOARD_INITSAIPINS_SAI_0_D0_TX =
+    {
+        .base                        = SIUL2,
+        .pinPortIdx                  = 34u,
+        .mux                         = kPORT_MUX_ALT6,
+        .safeMode                    = kPORT_SAFE_MODE_DISABLED,
+        .inputFilter                 = kPORT_INPUT_FILTER_NOT_AVAILABLE,
+        .driveStrength               = kPORT_DRIVE_STRENTGTH_DISABLED,
+        .pullConfig                  = kPORT_INTERNAL_PULL_NOT_ENABLED,
+        .slewRateCtrlSel             = kPORT_SLEW_RATE_NOT_AVAILABLE,
+        .pullKeep                    = kPORT_PULL_KEEP_DISABLED,
+        .invert                      = kPORT_INVERT_DISABLED,
+        .inputBuffer                 = kPORT_INPUT_BUFFER_ENABLED,
+        .outputBuffer                = kPORT_OUTPUT_BUFFER_ENABLED,
+        .adcInterleaves              = { kMUX_MODE_NOT_AVAILABLE, kMUX_MODE_NOT_AVAILABLE },
+        .inputMuxReg                 = {
+                                         316u
+                                       },
+        .inputMux                    = {
+                                         kPORT_INPUT_MUX_ALT1,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT,
+                                         kPORT_INPUT_MUX_NO_INIT
+                                       },
+        .initValue                   = 2u
+    };
+    SIUL2_PinInit(&BOARD_INITSAIPINS_SAI_0_D0_TX);
+
 }
 /***********************************************************************************************************************
  * EOF

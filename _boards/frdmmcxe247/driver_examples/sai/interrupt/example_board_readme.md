@@ -9,8 +9,8 @@ Hardware requirements
 Board settings
 ============
 For the successful audio output, make the following connections between the FRDM-MCXE247 board and the Waveshare WM8960 Audio Codec board:
-- WM8960 I2C_SCL    ←→    J2 Pin 20 (LPI2C1_SDA)
-- WM8960 I2C_SDA    ←→    J2 Pin 18 (LPI2C1_SCL)
+- WM8960 I2C_SCL    ←→    J2 Pin 20 (LPI2C1_SCL)
+- WM8960 I2C_SDA    ←→    J2 Pin 18 (LPI2C1_SDA)
 - WM8960 VCC_3V3    ←→    J2 Pin 16 (VVDA_MCU)
 - WM8960 GND        ←→    J2 Pin 14 (GND)
 - WM8960 I2S_CLK    ←→    J1 Pin 1  (SAI0_BCLK)

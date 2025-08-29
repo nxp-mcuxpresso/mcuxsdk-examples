@@ -14,7 +14,6 @@
 /*${macro:start}*/
 #define DEMO_SAI                I2S0
 #define DEMO_SAI_CHANNEL        1
-#define DEMO_SAI_CLK_FREQ       CLOCK_GetBusClkFreq()
 #define DEMO_SAI_IRQ            I2S0_Tx_IRQn
 #define DEMO_AUDIO_MASTER_CLOCK 12288000U
 #define DEMO_SAI_TX_SYNC_MODE   kSAI_ModeAsync

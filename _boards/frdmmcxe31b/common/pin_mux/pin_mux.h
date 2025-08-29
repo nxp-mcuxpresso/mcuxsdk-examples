@@ -228,6 +228,39 @@ void BOARD_InitFLEXIO_UARTPins(void);
  */
 void BOARD_InitEMACPins(void);
 
+/*! @name PTC12 (number 83), SAI_0_BCLK
+  @{ */
+
+/* Defined symbols */
+#define BOARD_INITSAIPINS_SAI_0_BCLK_PORT PTC                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITSAIPINS_SAI_0_BCLK_PIN 12U                   /*!<@brief PORT pin number */
+#define BOARD_INITSAIPINS_SAI_0_BCLK_PIN_MASK (1U << 12U)      /*!<@brief PORT pin mask */
+                                                               /* @} */
+
+/*! @name PTC13 (number 81), SAI_0_SYNC
+  @{ */
+
+/* Defined symbols */
+#define BOARD_INITSAIPINS_SAI_0_SYNC_PORT PTC                  /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITSAIPINS_SAI_0_SYNC_PIN 13U                   /*!<@brief PORT pin number */
+#define BOARD_INITSAIPINS_SAI_0_SYNC_PIN_MASK (1U << 13U)      /*!<@brief PORT pin mask */
+                                                               /* @} */
+
+/*! @name PTB2 (number 79), SAI_0_D0_TX
+  @{ */
+
+/* Defined symbols */
+#define BOARD_INITSAIPINS_SAI_0_D0_TX_PORT PTB                 /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITSAIPINS_SAI_0_D0_TX_PIN 2U                   /*!<@brief PORT pin number */
+#define BOARD_INITSAIPINS_SAI_0_D0_TX_PIN_MASK (1U << 2U)      /*!<@brief PORT pin mask */
+                                                               /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitSAIPins(void);
+
 #if defined(__cplusplus)
 }
 #endif

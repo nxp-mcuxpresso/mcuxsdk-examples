@@ -12,10 +12,10 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_SAI                I2S0
-#define DEMO_SAI_CHANNEL        1
-#define DEMO_SAI_IRQ            I2S0_Tx_IRQn
-#define DEMO_SAITxIRQHandler    I2S0_Tx_IRQHandler
+#define DEMO_SAI                SAI_0
+#define DEMO_SAI_CHANNEL        0
+#define DEMO_SAI_IRQ            SAI0_IRQn
+#define DEMO_SAITxIRQHandler    SAI0_IRQHandler
 #define DEMO_AUDIO_MASTER_CLOCK 12288000U
 #define DEMO_SAI_TX_SYNC_MODE   kSAI_ModeAsync
 #define DEMO_SAI_RX_SYNC_MODE   kSAI_ModeSync
