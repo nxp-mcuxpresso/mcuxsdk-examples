@@ -7,7 +7,19 @@ The flexcan_pingpang_buffer_transfer example shows how to use the FlexCAN queue 
 In this example, 2 boards are connected through CAN bus. Endpoint A(board A) send CAN/CANFD messages to
 Endpoint B(board B) when user inputs the number of CAN messages to be sent in terminal. Endpoint B uses
 two receiving queues to receive messages in turn, and prints the message content and the receiving queue
-number to the terminal after any queue is full.
+number to the terminal after any queue is full.  
+
+This example enables FlexCAN Individual RX Masking and Queue feature, which makes FlexCAN search for first 
+free-to-receive matched Rx MBs and last non-free-to-receive Rx MBs.  
+If not, matching winner is the first matched Rx MB.
+
+Node A transmit frame with ID 0x321. Node B Rx message buffer ID is 0x21, so Node B match ID 0x21 frames.  
+But masked by 0xFF in Receive Individual Mask register, Node B will match ID 0x321 frames.  
+
+When queue 1 finish receive, update queue 1 individual ID mask to 0x7FF, can only receive frame with ID 0x21. So queue 1 will ignore the next messages and the queue 2 start to receive frame.  
+When queue 2 finish receive, restore queue 1 individual ID mask to 0xFF, make it receive ID 0x321 frames again.  
+
+This example also demonstrates how to create custom FlexCAN IRQ handler.
 
 ## Supported Boards
 - [EVK9-MIMX8ULP](../../../_boards/evk9mimx8ulp/driver_examples/canfd/ping_pong_buffer_transfer/example_board_readme.md)
