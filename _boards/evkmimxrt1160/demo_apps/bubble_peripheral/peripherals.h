@@ -46,7 +46,7 @@ extern "C" {
 #define ACCEL_I2C_CLOCK_FREQ 24000000UL
 /* Transfer buffer size */
 #define ACCEL_I2C_MASTER_BUFFER_SIZE 1
-/* Definition of slave address */
+/* Definition of follower address */
 #define ACCEL_I2C_MASTER_SLAVE_ADDRESS 0
 
 /***********************************************************************************************************************
