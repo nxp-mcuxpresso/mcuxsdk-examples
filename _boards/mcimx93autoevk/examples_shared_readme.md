@@ -1,5 +1,10 @@
+This file contains the general information which can be shared by the examples on this board.
+The example specific information can be found in *readme.md* or *example_board_readme.md*.
+
+General Example Settings
+========================
 Hardware requirements
-=====================
+---------------------
 - USB Type-C cable
 - MCIMX93AUTO-EVK board
 - J-Link Debug Probe
@@ -7,7 +12,7 @@ Hardware requirements
 - Personal Computer
 
 Prepare the Demo
-===============
+---------------
 1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW2 to power on the board.
 2.  Connect a USB Type-C cable between the host PC and the J26 USB port on the target board.
 3.  Open a serial terminal with the following settings:
@@ -18,4 +23,3 @@ Prepare the Demo
     - No flow control
 4.  Download the program to the target board.
 5.  Either re-power up your board or launch the debugger in your IDE to begin running the example.
-
