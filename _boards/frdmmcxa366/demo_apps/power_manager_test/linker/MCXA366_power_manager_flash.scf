@@ -46,7 +46,7 @@ LR_m_text m_interrupts_start m_interrupts_size+m_text_size {   ; load region siz
   }
 
   RW_m_data_always_on m_data_always_on_start UNINIT m_data_always_on_size { ; RW data
-    * (AlwaysOnData)
+    * (.bss.AlwaysOnData)
     * (AlwaysOnData.init)
   }
 

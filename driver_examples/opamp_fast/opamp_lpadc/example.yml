@@ -22,6 +22,5 @@ opamp_fast_lpadc:
       - ${board_root}/${board}/driver_examples/opamp/opamp_lpadc/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
-    frdmmcxa266: []
     frdmmcxa346: []
     frdmmcxa366: []
