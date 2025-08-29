@@ -16,3 +16,15 @@ mcux_add_macro(
       SKIP_SYSCLK_INIT=1 \
       USE_SDRAM=1"
 )
+mcux_add_iar_configuration(
+  LD "--config_def=__heap_size__=0x8000\
+      --config_def=__stack_size__=0x2000"
+  )
+mcux_add_mdk_configuration(
+  LD "--predefine=-D__heap_size__=0x8000\
+     --predefine=-D__stack_size__=0x2000"
+  )
+mcux_add_armgcc_configuration(
+  LD "-Xlinker --defsym=__heap_size__=0x8000\
+      -Xlinker --defsym=__stack_size__=0x2000"
+  )
