@@ -35,10 +35,10 @@ pin_labels:
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
- *
+ * 
  * Function Name : BOARD_InitBootPins
  * Description   : Calls initialization functions.
- *
+ * 
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void) {
     BOARD_InitDEBUG_UARTPins();
@@ -403,10 +403,14 @@ void BOARD_InitPWMPins(void) {
 BOARD_InitSPIPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: C6, peripheral: LPSPI2, signal: PCS0, pin_signal: GPIO_AON_16, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, drive_strength: Normal}
-  - {pin_num: A2, peripheral: LPSPI2, signal: SCK, pin_signal: GPIO_AON_19, pull_up_down_config: Pull_Up, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: Normal}
-  - {pin_num: C7, peripheral: LPSPI2, signal: SIN, pin_signal: GPIO_AON_17, pull_keeper_select: Pull, drive_strength: Normal}
-  - {pin_num: B2, peripheral: LPSPI2, signal: SOUT, pin_signal: GPIO_AON_18, drive_strength: Normal}
+  - {pin_num: C6, peripheral: LPSPI2, signal: PCS0, pin_signal: GPIO_AON_16, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Fast}
+  - {pin_num: A2, peripheral: LPSPI2, signal: SCK, pin_signal: GPIO_AON_19, pull_up_down_config: Pull_Down, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Fast}
+  - {pin_num: C7, peripheral: LPSPI2, signal: SIN, pin_signal: GPIO_AON_17, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Fast}
+  - {pin_num: B2, peripheral: LPSPI2, signal: SOUT, pin_signal: GPIO_AON_18, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -433,31 +437,31 @@ void BOARD_InitSPIPins(void) {
       0U);                                    /* Software Input On Field: Input Path is determined by functionality */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AON_16_LPSPI2_PCS0,         /* GPIO_AON_16 PAD functional properties : */
-      0x08U);                                 /* Slew Rate Field: Fast Slew Rate
-                                                 Drive Strength Field: normal driver
-                                                 Pull / Keep Select Field: Pull Disable, Highz
+      0x0FU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
                                                  Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AON_17_LPSPI2_SDI,          /* GPIO_AON_17 PAD functional properties : */
-      0x04U);                                 /* Slew Rate Field: Fast Slew Rate
-                                                 Drive Strength Field: normal driver
+      0x0FU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
-                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AON_18_LPSPI2_SDO,          /* GPIO_AON_18 PAD functional properties : */
-      0x04U);                                 /* Slew Rate Field: Fast Slew Rate
-                                                 Drive Strength Field: normal driver
+      0x0FU);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
                                                  Pull / Keep Select Field: Pull Enable
-                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Pull Up / Down Config. Field: Weak pull up
                                                  Open Drain Field: Disabled */
   IOMUXC_SetPinConfig(
       IOMUXC_GPIO_AON_19_LPSPI2_SCK,          /* GPIO_AON_19 PAD functional properties : */
-      0x08U);                                 /* Slew Rate Field: Fast Slew Rate
-                                                 Drive Strength Field: normal driver
-                                                 Pull / Keep Select Field: Pull Disable, Highz
-                                                 Pull Up / Down Config. Field: Weak pull up
+      0x07U);                                 /* Slew Rate Field: Slow Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Enable
+                                                 Pull Up / Down Config. Field: Weak pull down
                                                  Open Drain Field: Disabled */
 }
 
@@ -2002,7 +2006,6 @@ void BOARD_InitSRAMC_FLEXIOPins(void) {
 BOARD_InitALT_UARTPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {peripheral: '', signal: '', pin_signal: ''}
   - {pin_num: M12, peripheral: LPUART3, signal: RXD, pin_signal: GPIO_AD_14, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High}
   - {pin_num: M13, peripheral: LPUART3, signal: TXD, pin_signal: GPIO_AD_13, pull_keeper_select: Keeper, drive_strength: High}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -2015,9 +2018,6 @@ BOARD_InitALT_UARTPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitALT_UARTPins(void) {
-  /* There are conflicts or other incorrect settings in the configuration, the code below is generated only for 
-     those registers which are set correctly and without a conflict. Open this file in Pins Tool for more details. */
-
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
   IOMUXC_SetPinMux(

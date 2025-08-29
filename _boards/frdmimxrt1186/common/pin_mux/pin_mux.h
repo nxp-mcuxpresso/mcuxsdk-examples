@@ -215,8 +215,14 @@ void BOARD_InitVREFPins(void);                /* Function assigned for the Corte
  */
 void BOARD_InitLPITPins(void);                /* Function assigned for the Cortex-M33 */
 
-#define QTIMER_CTRL1_QTIMER3_TMR2_INPUT_SEL_IOMUX 0x00U /*!< QTIMER3 TMR2 input select: Input from IOMUX */
-#define QTIMER_CTRL1_QTIMER3_TMR3_INPUT_SEL_IOMUX 0x00U /*!< QTIMER3 TMR3 input select: Input from IOMUX */
+#define QTIMER_CTRL1_QTIMER1_TMR0_INPUT_SEL_IOMUX 0x00U /*!< QTIMER1 TMR0 input select: Input from IOMUX */
+#define QTIMER_CTRL1_QTIMER1_TMR1_INPUT_SEL_IOMUX 0x00U /*!< QTIMER1 TMR1 input select: Input from IOMUX */
+
+/* GPIO_EMC_B1_13 (coord E3), flexio_pin */
+/* Routed pin properties */
+#define BOARD_INITQTMRPINS_flexio_pin_PERIPHERAL                            TMR1   /*!< Peripheral name */
+#define BOARD_INITQTMRPINS_flexio_pin_SIGNAL                               TIMER   /*!< Signal name */
+#define BOARD_INITQTMRPINS_flexio_pin_CHANNEL                                 1U   /*!< Signal channel */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
