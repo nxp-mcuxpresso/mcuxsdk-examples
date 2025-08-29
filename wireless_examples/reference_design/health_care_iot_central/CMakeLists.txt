@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(health_care_iot_central LANGUAGES C CXX ASM 
+project(health_care_iot_central LANGUAGES C CXX ASM
         PROJECT_BOARD_PORT_PATH ${board_root}/${board}/wireless_examples/reference_design/health_care_iot_central
         CUSTOM_PRJ_CONF_PATH examples/wireless_examples/reference_design/health_care_iot_common
 )
@@ -34,6 +34,8 @@ mcux_add_include(
     INCLUDES ${board_root}/${board}/wireless_examples/reference_design/health_care_iot_central
     INCLUDES middleware/wireless/${bluetooth_root}/boards/${board}
 )
+
+mcux_add_mdk_configuration(CC "-Wno-typedef-redefinition")
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/reference_design/health_care_iot_central/reconfig.cmake OPTIONAL)
 

@@ -44,6 +44,8 @@ mcux_add_include(
              middleware/wireless/${bluetooth_root}/boards/${board}
 )
 
+mcux_add_mdk_configuration(CC "-Wno-typedef-redefinition")
+
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/reference_design/health_care_iot_peripheral/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
