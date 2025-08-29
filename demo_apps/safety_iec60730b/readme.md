@@ -5,19 +5,11 @@
 This example demonstrates the safety library usage.
 
 ## Supported Boards
-- MIMXRT1170-EVKB
-- EVK-MIMX8MP
-- MIMXRT1180-EVK
-- FRDM-KE17Z512
-- FRDM-MCXA153
-- FRDM-MCXA156
-- FRDM-MCXA346
-- FRDM-MCXC041
-- FRDM-MCXC242
-- FRDM-MCXC444
-- FRDM-MCXE247
-- FRDM-MCXN236
-- FRDM-MCXN947
-- FRDM-RW612
-- MCIMX93-EVK
-- FRDM-MCXE31B
+- [FRDM-MCXA156](../../_boards/frdmmcxa156/demo_apps/safety_iec60730b/readme.md)
+- [FRDM-MCXA266](../../_boards/frdmmcxa266/demo_apps/safety_iec60730b/readme.md)
+- [FRDM-MCXA346](../../_boards/frdmmcxa346/demo_apps/safety_iec60730b/readme.md)
+- [FRDM-MCXA366](../../_boards/frdmmcxa366/demo_apps/safety_iec60730b/readme.md)
+- [FRDM-MCXC444](../../_boards/frdmmcxc444/demo_apps/safety_iec60730b/readme.md)
+- [FRDM-MCXE247](../../_boards/frdmmcxe247/demo_apps/safety_iec60730b/readme.md)
+- [MCIMX93-EVK](../../_boards/mcimx93evk/demo_apps/safety_iec60730b/readme.md)
+- [FRDM-MCXE31B](../../_boards/frdmmcxe31b/demo_apps/safety_iec60730b/readme.md)

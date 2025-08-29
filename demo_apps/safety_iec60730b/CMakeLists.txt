@@ -27,7 +27,7 @@ mcux_add_source(
 		${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/freemaster/freemaster_cfg.h
 		${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/pin_mux.c
 		${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/pin_mux.h
-		${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/readme.txt
+		${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/readme.md
 )
 
 mcux_add_include(
