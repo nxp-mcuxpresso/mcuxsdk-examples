@@ -17,6 +17,6 @@ mcux_add_source(
 )
 
 mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}/middleware/wireless/
-    INCLUDES bluetooth/boards/${board}
+    BASE_PATH ${SdkRootDirPath}
+    INCLUDES middleware/wireless/${bluetooth_root}/boards/${board}
 )
