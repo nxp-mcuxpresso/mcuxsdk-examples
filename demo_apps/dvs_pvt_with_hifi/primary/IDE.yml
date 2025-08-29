@@ -1,0 +1,27 @@
+mdk:
+  shared-workspace: dvs_pvt_with_hifi
+  sharing-workspace:
+  - ../../dvs_pvt_with_hifi_secondary/mdk/dvs_pvt_with_hifi_secondary_${SB_CONFIG_secondary_core_id}
+
+iar:
+  shared-workspace: dvs_pvt_with_hifi
+  sharing-workspace:
+  - ../../dvs_pvt_with_hifi_secondary/iar/dvs_pvt_with_hifi_secondary_${SB_CONFIG_secondary_core_id}
+  config:
+    __common__:
+      asym-multicore-debugger:
+        enable: true
+        slave-workspace: "../../dvs_pvt_with_hifi_secondary/iar/dvs_pvt_with_hifi_secondary_${SB_CONFIG_secondary_core_id}.eww"
+        slave-project: dvs_pvt_with_hifi_secondary_${SB_CONFIG_secondary_core_id}
+    debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    release:
+      asym-multicore-debugger:
+        slave-configuration: release
+    flash_debug:
+      asym-multicore-debugger:
+        slave-configuration: debug
+    flash_release:
+      asym-multicore-debugger:
+        slave-configuration: release

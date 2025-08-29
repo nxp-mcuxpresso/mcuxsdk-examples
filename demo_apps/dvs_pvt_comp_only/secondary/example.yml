@@ -12,7 +12,7 @@ dvs_pvt_comp_only_secondary:
         using PVT Sensor.'
       example_readme:
       - examples/demo_apps/dvs_pvt_comp_only/readme.md
-      - ${board_root}/${board}/demo_apps/pvt_comp_only/example_board_readme.md
+      - ${board_root}/${board}/demo_apps/dvs_pvt_comp_only/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     mimxrt700evk@cm33_core1: []

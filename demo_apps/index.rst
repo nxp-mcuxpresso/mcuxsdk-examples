@@ -24,6 +24,8 @@ demo_apps
    dsc_bootloader/readme.md
    dsc_dac/index.rst
    dspi/index.rst
+   dvs_pvt_comp_only/readme.md
+   dvs_pvt_with_hifi/readme.md
    ecompass/readme.md
    ecompass_peripheral/readme.md
    eeprom/readme.md

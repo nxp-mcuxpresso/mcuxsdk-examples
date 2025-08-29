@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dvs_pvt_with_hifi_primary:
+  section-type: application
+  use_sysbuild: true
+  contents:
+    meta_path: examples/demo_apps/dvs_pvt_with_hifi/primary
+    project-root-path: boards/${board}/demo_apps/dvs_pvt_with_hifi/${multicore_foldername}
+    document:
+      name: dvs_pvt_with_hifi_primary
+      category: demo_apps
+      brief: 'The application shows the usage of Dynamic Voltage Scalling using PVT Sensor'
+      example_readme:
+      - examples/demo_apps/dvs_pvt_with_hifi/readme.md
+      - ${board_root}/${board}/demo_apps/dvs_pvt_with_hifi/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    mimxrt700evk@cm33_core0: []
