@@ -1,7 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
- *
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,22 +7,21 @@
 #ifndef _RTE_DEVICE_H
 #define _RTE_DEVICE_H
 
-extern void LPSPI0_InitPins();
-extern void LPSPI0_InitPins_deinit();
+extern void LPSPI1_InitPins();
+extern void LPSPI1_DeinitPins();
 
 /*Driver name mapping.*/
-/* User needs to provide the implementation of LPSPIX_GetFreq/LPSPIX_InitPins/LPSPIX_DeinitPins for the enabled LPSPI
- * instance. */
-#define RTE_SPI0        1
-#define RTE_SPI0_DMA_EN 0
+/* User needs to provide the implementation of LPSPIX_GetFreq/LPSPIX_InitPins/LPSPIX_DeinitPins for the enabled LPSPI instance. */
+#define RTE_SPI1                        1
+#define RTE_SPI1_DMA_EN                 0
 
 /* SPI configuration. */
-#define RTE_SPI0_PCS_TO_SCK_DELAY       1000
-#define RTE_SPI0_SCK_TO_PSC_DELAY       1000
-#define RTE_SPI0_BETWEEN_TRANSFER_DELAY 1000
-#define RTE_SPI0_MASTER_PCS_PIN_SEL     (kLPSPI_MasterPcs0)
-#define RTE_SPI0_SLAVE_PCS_PIN_SEL      (kLPSPI_SlavePcs0)
-#define RTE_SPI0_PIN_INIT               LPSPI0_InitPins
-#define RTE_SPI0_PIN_DEINIT             LPSPI0_InitPins_deinit
+#define RTE_SPI1_PCS_TO_SCK_DELAY       1000
+#define RTE_SPI1_SCK_TO_PSC_DELAY       1000
+#define RTE_SPI1_BETWEEN_TRANSFER_DELAY 1000
+#define RTE_SPI1_MASTER_PCS_PIN_SEL     (kLPSPI_MasterPcs0)
+#define RTE_SPI1_SLAVE_PCS_PIN_SEL      (kLPSPI_SlavePcs0)
+#define RTE_SPI1_PIN_INIT               LPSPI1_InitPins
+#define RTE_SPI1_PIN_DEINIT             LPSPI1_DeinitPins
 
 #endif /* _RTE_DEVICE_H */

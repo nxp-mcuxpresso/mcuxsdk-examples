@@ -1,24 +1,24 @@
 Hardware requirements
-=====================
+==============
 - Type-C USB cable
 - FRDM-MCXL255 board
 - Personal Computer
 
 Board settings
 ==============
-To make the example work, connections needed to be as follows:
-Jumper setting:
-
 LPSPI:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER(SPI0)               connect to        SLAVE(SPI0)
-Pin Name   Board Location                    Pin Name    Board Location
-SOUT       J6-6                              SIN         J6-5
-SIN        J6-5                              SOUT        J6-6
-SCK        J6-4                              SCK         J6-4
-PCS0       J6-3                              PCS1        J6-3
-GND        J5-8                              GND         J5-8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MASTER (SPI1)                       SLAVE (SPI1)
+Pin Name        Board Location      Pin Name      Board Location
+SOUT            J2-8                SIN           J2-10
+SIN             J2-10               SOUT          J2-8
+SCK             J2-12               SCK           J2-12
+PCS0            J2-6                PCS1          J2-6
+GND             J2-14               GND           J2-14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Make sure you have solder bridges SJ1 and SJ2 set to
+- 2-1 for the main core (cm33)
 
 Prepare the Demo
 ================
@@ -36,6 +36,7 @@ Note: MCUXpresso IDE project default debug console is semihost
 Running the demo
 ================
 The following lines are printed to the serial terminal when the demo program is executed.
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPSPI CMSIS driver board to board interrupt example.
 
@@ -53,4 +54,3 @@ Slave transmit data to master has completed!
 
  Slave example is running...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
