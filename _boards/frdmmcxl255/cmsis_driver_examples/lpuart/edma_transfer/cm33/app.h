@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -15,10 +14,10 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define DEMO_USART                 Driver_USART2
+#define DEMO_USART                 Driver_USART0
 #define EXAMPLE_USART_DMA_BASEADDR DMA0
-#define EXAMPLE_DMA_CLOCK          kCLOCK_GateDMA
-#define DEMO_LPUART_CLK_FREQ       CLOCK_GetFreq(kCLOCK_Fro12M)
+#define EXAMPLE_DMA_CLOCK          kCLOCK_GateDMA0
+#define DEMO_LPUART_CLK_FREQ       BOARD_DEBUG_UART_CLK_FREQ
 /*${macro:end}*/
 
 /*******************************************************************************
@@ -29,3 +28,7 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+
+/***********************************************************************************************************************
+ * EOF
+ **********************************************************************************************************************/
