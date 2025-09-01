@@ -19,7 +19,7 @@ mcux_add_source(
             examples/wireless_examples/reference_design/health_care_iot_common/msgq.c
             examples/wireless_examples/reference_design/health_care_iot_common/msgq.h
             middleware/wireless/bluetooth/application/common/app_nvm.c
-            middleware/wireless/bluetooth/boards/${board}/app_preinclude_common.h
+            middleware/wireless/${bluetooth_root}/boards/${board}/app_preinclude_common.h
             examples/wireless_examples/reference_design/health_care_iot_peripheral/blemgr.c
             examples/wireless_examples/reference_design/health_care_iot_peripheral/blemgr.h
             examples/wireless_examples/reference_design/health_care_iot_peripheral/safety.c
@@ -41,7 +41,7 @@ mcux_add_include(
     INCLUDES examples/wireless_examples/reference_design/health_care_iot_peripheral
              examples/wireless_examples/reference_design/health_care_iot_common
              ${board_root}/${board}/wireless_examples/reference_design/health_care_iot_peripheral
-             middleware/wireless/bluetooth/boards/${board}
+             middleware/wireless/${bluetooth_root}/boards/${board}
 )
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/reference_design/health_care_iot_peripheral/reconfig.cmake OPTIONAL)
