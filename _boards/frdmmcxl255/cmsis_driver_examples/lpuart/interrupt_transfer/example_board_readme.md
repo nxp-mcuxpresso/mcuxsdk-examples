@@ -1,15 +1,15 @@
 Hardware requirements
-=====================
+================
 - Type-C USB cable
 - FRDM-MCXL255 board
 - Personal Computer
 
 Board settings
-============
+================
 No special settings are required.
 
 Prepare the Demo
-===============
+================
 Note: MCUXpresso IDE project default debug console is semihost
 1.  Connect a Type-C USB cable between the host PC and the MCU-Link port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
@@ -23,9 +23,10 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
-When the demo runs successfully, the log would be seen on the MCU-Link terminal like:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following lines are printed to the serial terminal when the demo program is executed.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 USART CMSIS interrupt example
 Board receives 8 characters then sends them out
 Now please input:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

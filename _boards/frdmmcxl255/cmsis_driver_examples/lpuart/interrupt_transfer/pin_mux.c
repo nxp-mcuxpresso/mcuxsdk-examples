@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -72,10 +71,6 @@ void BOARD_InitDEBUG_UARTPins(void)
                                                       kPORT_UnlockRegister};
     /* PORT2_10 is configured as LPUART0_RXD */
     PORT_SetPinConfig(PORT2, 10U, &port2_10_config);
-}
-
-void BOARD_InitSWD_DEBUGPins(void)
-{
 }
 
 void LPUART0_InitPins(void)

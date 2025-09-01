@@ -1,9 +1,9 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+ 
 /*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -17,7 +17,6 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(kFRO12M_to_LPUART0);
 
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
     BOARD_InitDEBUG_UARTPins();
     BOARD_InitDebugConsole();
 }
