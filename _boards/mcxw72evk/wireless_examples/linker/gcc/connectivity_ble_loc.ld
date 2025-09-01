@@ -227,8 +227,8 @@ m_heap_start                       = m_upper_data1_start;
 m_heap_size                        = m_upper_data1_size;
 
 m_smu2_heap_start                   = m_free_data_start;
-m_smu2_heap_size                    = m_free_data_end - m_smu2_heap_start + 1;
-m_smu2_heap_end                     = m_free_data_end;
+m_smu2_heap_size                    = DEFINED(gNBU_loc_d) ? (m_free_data_size / 2) : m_free_data_size;
+m_smu2_heap_end                     = m_smu2_heap_start + m_smu2_heap_size - 1;
 
 __CE_MEM_HEAP_end__                = m_ce_heap_end;
 __SMU2_MEM_HEAP_start__            = m_smu2_heap_start;

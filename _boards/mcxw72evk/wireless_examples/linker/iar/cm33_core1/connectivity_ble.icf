@@ -19,7 +19,7 @@
 **     Abstract:
 **         Linker file for the IAR ANSI C/C++ Compiler for ARM
 **
-**     Copyright 2024 NXP
+**     Copyright 2024-2025 NXP
 **
 **     SPDX-License-Identifier: BSD-3-Clause
 **
@@ -44,6 +44,10 @@ if (isdefinedsymbol(__heap_size__)) {
   define symbol __size_heap__          = __heap_size__;
 } else {
   define symbol __size_heap__          = 0x000;  /*Memory manager is not used. */
+}
+
+if (!isdefinedsymbol(gNBU_loc_d)) {
+    define exported symbol gNBU_loc_d = 0;
 }
 
 /* The addition of the SMU size and the DMEM size is a constant but the sharing can change (see SMU_MEM_SEL)*/
@@ -190,9 +194,19 @@ define symbol m_sqram_rldat_end                 = m_sqram_rldat_start + m_sqram_
 define symbol m_free_data_start                 = m_sqram_rldat_end + 1;
 define symbol m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 define symbol m_free_data_end                   = m_shared_ram_end;
+if (gNBU_loc_d)
+{
+    define symbol m_heap_start = m_free_data_start + m_free_data_size/2;
+}
+else
+{
+    define symbol m_heap_start = m_free_data_start;
+}
+
+define symbol m_heap_end = m_free_data_end;
 
 /* The heap (if used) is using all the free_data section */
-define exported symbol __HEAP_end__              = m_free_data_end;
+define exported symbol __HEAP_end__              = m_heap_end;
 
 if (m_sqram_rldat_end > m_shared_ram_end)
 {
@@ -204,8 +218,7 @@ define memory mem with size = 4G;
 define region TEXT_region             = mem:[from m_interrupts_start to m_interrupts_end]
                                       | mem:[from m_text_start to m_text_end];
 define region DATA_region             = mem:[from m_data0_start to m_data0_end]
-                                      | mem:[from m_data1_start to m_data1_end]
-                                      | mem:[from m_free_data_start to m_free_data_end];
+                                      | mem:[from m_data1_start to m_data1_end];
 define region CSTACK_region           = mem:[from m_cstack_start to m_cstack_end];
 
 define region sqram_debug_region                = mem:[from m_sqram_debug_start         to m_sqram_debug_end];
@@ -224,7 +237,7 @@ define symbol logging_start                     = 0x80000;
 define symbol logging_end                       = 0x90000;
 define region logging                           = mem:[from logging_start               to logging_end];
 define region rpmsg_sh_mem_region               = mem:[from rpmsg_sh_mem_start          to rpmsg_sh_mem_end];
-define region free_data_region                  = mem:[from m_free_data_start           to m_free_data_end];
+define region heap_region                       = mem:[from m_heap_start           to m_heap_end];
 
 define block CSTACK    with alignment = 8, size = __size_cstack__   { };
 define block RW        { readwrite };
@@ -245,7 +258,7 @@ place at address mem: m_interrupts_start    { readonly section .intvec };
 place in TEXT_region                        { readonly };
 place in DATA_region                        { block RW };
 place in DATA_region                        { block ZI };
-place in free_data_region                   { last section .heap };
+place in heap_region                        { last section .heap };
 place in CSTACK_region                      { block CSTACK };
 
 place in sqram_debug_region                       { readwrite section .debugbuf } ;
