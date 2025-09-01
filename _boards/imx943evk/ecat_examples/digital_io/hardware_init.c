@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -11,7 +11,6 @@
 #include "fsl_xbar.h"
 #include "fsl_iomuxc.h"
 #include "fsl_ecat.h"
-#include "fsl_gpt.h"
 #include "fsl_rgpio.h"
 
 #include "ecat_def.h"
@@ -19,10 +18,6 @@
 #include "ecat_hw.h"
 #include "ecatappl.h"
 
-#define TIMER_IRQ_ID     GPT1_IRQn
-#define TIMER            (GPT_Type *) GPT1
-#define TIMER_IRQHandler GPT1_IRQHandler
-#define TIMER_CLK_FREQ   CLOCK_GetRate(kCLOCK_Gpt1)
 #define ECAT_CHANNEL            SCMI_A2P
 #define ECAT_DOMAIN_ID          24
 #define ECAT_DISABLE_FLAGS      0x2
@@ -71,8 +66,6 @@ static void Ecat_KickOff(void)
 UINT16 HW_Init(void)
 {
     UINT32 intMask;
-    uint32_t gptFreq;
-    gpt_config_t gptConfig;
 	SystemPlatformInit();	
 
     clk_t ecatClk = {
@@ -82,19 +75,9 @@ UINT16 HW_Init(void)
         .rate = 100000000UL,
     };
 
-    clk_t gpt2Clk = {
-        .clkId = kCLOCK_Gpt2,
-        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-        .rate = 50000000UL,
-    };
-
     CLOCK_SetParent(&ecatClk);
     CLOCK_SetRate(&ecatClk);
     CLOCK_EnableClock(ecatClk.clkId);
-    CLOCK_SetParent(&gpt2Clk);
-    CLOCK_SetRate(&gpt2Clk);
-    CLOCK_EnableClock(gpt2Clk.clkId);
 
     /* Init board hardware. */
     BOARD_InitBootPins();
@@ -166,23 +149,13 @@ UINT16 HW_Init(void)
 
     HW_EscWriteDWord(intMask, ESC_AL_EVENTMASK_OFFSET);
 
-    /*Enable GPT*/
-    GPT_GetDefaultConfig(&gptConfig);
-
-    GPT_Init(TIMER, &gptConfig);
-
-    gptFreq = TIMER_CLK_FREQ;
-    GPT_SetClockDivider(TIMER, 100);
-
-    GPT_SetOutputCompareValue(TIMER, kGPT_OutputCompare_Channel1, gptFreq / 100000);
-    GPT_EnableInterrupts(TIMER, kGPT_OutputCompare1InterruptEnable);
-    EnableIRQ(TIMER_IRQ_ID);
+    /* Set systick reload value to generate 1ms interrupt */
+    SysTick_Config(SystemCoreClock / 1000U);
 
     /*Enable PDI IRQ*/
     EnableIRQ(Reserved192_IRQn);
     EnableIRQ(Reserved194_IRQn);
     EnableIRQ(Reserved195_IRQn);
-    GPT_StartTimer(TIMER);
     return 0;
 }
 
@@ -211,15 +184,13 @@ void HW_Release(void)
 {
 }
 
-void TIMER_IRQHandler(void)
+void SysTick_Handler(void)
 {
     /* Clear interrupt flag.*/
-    GPT_ClearStatusFlags(TIMER, kGPT_OutputCompare1Flag);
 #if ECAT_TIMER_INT
     ECAT_CheckTimer();
 #endif
     EcatTimerCnt++;
-
     SDK_ISR_EXIT_BARRIER;
 }
 
@@ -238,7 +209,6 @@ void ENABLE_ESC_INT(void)
     NVIC_EnableIRQ(Reserved192_IRQn);
     NVIC_EnableIRQ(Reserved194_IRQn);
     NVIC_EnableIRQ(Reserved195_IRQn);
-    NVIC_EnableIRQ(TIMER_IRQ_ID);
 }
 
 void DISABLE_ESC_INT(void)
@@ -246,7 +216,6 @@ void DISABLE_ESC_INT(void)
     NVIC_DisableIRQ(Reserved192_IRQn);
     NVIC_DisableIRQ(Reserved194_IRQn);
     NVIC_DisableIRQ(Reserved195_IRQn);
-    NVIC_DisableIRQ(TIMER_IRQ_ID);
 }
 
 void HW_SetLed(UINT8 RunLed, UINT8 ErrorLed)

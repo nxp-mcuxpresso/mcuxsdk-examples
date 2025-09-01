@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2025 NXP
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,7 +11,7 @@
 #include "fsl_xbar.h"
 #include "fsl_iomuxc.h"
 #include "fsl_ecat.h"
-#include "fsl_gpt.h"
+#include "fsl_ele_base_api.h"
 
 #include "ecat_def.h"
 #include "ecatslv.h"
@@ -21,6 +21,7 @@
 #include "app.h"
 
 UINT32 EcatTimerCnt;
+volatile uint32_t g_systickCounter;
 
 static void Ecat_KickOff(void)
 {
@@ -44,8 +45,6 @@ UINT16 HW_Init(void)
     UINT32 intMask;
     UINT16 led_startus = 0;
     xbar_control_config_t xbaraConfig;
-    uint32_t gptFreq;
-    gpt_config_t gptConfig;
     rgpio_pin_config_t pinConfig = {.pinDirection = kRGPIO_DigitalOutput, .outputLogic = 0};
 
     /* Init board hardware. */
@@ -58,13 +57,11 @@ UINT16 HW_Init(void)
 
     /* Reset ecat PHY */
     RGPIO_PinInit(RGPIO5, 6, &pinConfig);
-    // RGPIO_PinInit(RGPIO4, 13, &pinConfig);
     SDK_DelayAtLeastUs(15000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
     Ecat_KickOff();
 
     RGPIO_PinWrite(RGPIO5, 6, 1);
-    // RGPIO_PinWrite(RGPIO4, 13, 1);
     SDK_DelayAtLeastUs(90000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     /*set port0 page register*/
     ECAT_EscMdioWrite(ECAT, 0x00, 31, 0x07);
@@ -138,19 +135,12 @@ UINT16 HW_Init(void)
 
     HW_EscWriteDWord(intMask, ESC_AL_EVENTMASK_OFFSET);
 
-    /*Enable GPT1*/
-    GPT_GetDefaultConfig(&gptConfig);
-    GPT_Init(GPT1, &gptConfig);
-    gptFreq = CLOCK_GetRootClockFreq(kCLOCK_Root_Gpt1);
-    GPT_SetClockDivider(GPT1, 100);
-    GPT_SetOutputCompareValue(GPT1, kGPT_OutputCompare_Channel1, gptFreq / 100000);
-    GPT_EnableInterrupts(GPT1, kGPT_OutputCompare1InterruptEnable);
-    EnableIRQ(GPT1_IRQn);
+    /* Set systick reload value to generate 1ms interrupt */
+    SysTick_Config(SystemCoreClock / 1000U);
 
     /*Enable PDI IRQ*/
     EnableIRQ(ECAT_INT_IRQn);
     NVIC_EnableIRQ(XBAR1_CH0_CH1_IRQn);
-    GPT_StartTimer(GPT1);
     return 0;
 }
 
@@ -186,14 +176,33 @@ void HW_Release(void)
 {
 }
 
-void GPT1_IRQHandler(void)
+void SysTick_Handler(void)
 {
     /* Clear interrupt flag.*/
-    GPT_ClearStatusFlags(GPT1, kGPT_OutputCompare1Flag);
 #if ECAT_TIMER_INT
     ECAT_CheckTimer();
 #endif
     EcatTimerCnt++;
+    g_systickCounter++;
+
+    /*
+     *  RT118x ELE requires ping every 24 hours, which is mandatory,
+     *  otherwise soc may reset.
+     *
+     *  note:
+     *    1. This is generic rule for all RT118x demos.
+     *    2. Most of RT118x demos don't ping ELE every 24 hours, that
+     *       is because those demos focus on the function demonstrate only.
+     *       It is still MUST to ping ELE every 24 hours if demo run
+     *       duration > 24 hours.
+     *    3. Below is an example to ping the ELE every 23(but not 24)
+     *       hours, in case of any clock inaccuracy.
+     */
+    if (g_systickCounter >= (23 * 60 * 60 * 1000UL))
+    {
+        g_systickCounter = 0;
+        ELE_BaseAPI_Ping(MU_RT_S3MUA);
+    }
 
     SDK_ISR_EXIT_BARRIER;
 }
@@ -212,14 +221,12 @@ void ENABLE_ESC_INT(void)
 {
     NVIC_EnableIRQ(ECAT_INT_IRQn);
     NVIC_EnableIRQ(XBAR1_CH0_CH1_IRQn);
-    NVIC_EnableIRQ(GPT1_IRQn);
 }
 
 void DISABLE_ESC_INT(void)
 {
     NVIC_DisableIRQ(XBAR1_CH0_CH1_IRQn);
     NVIC_DisableIRQ(ECAT_INT_IRQn);
-    NVIC_DisableIRQ(GPT1_IRQn);
 }
 
 void HW_SetLed(UINT8 RunLed, UINT8 ErrorLed)
