@@ -28,6 +28,14 @@
  * Definitions
  ******************************************************************************/
 
+#if defined(__IAR_SYSTEMS_ICC__)
+#define __TOOLCHAIN__ __VERSION__
+#elif defined(__GNUC__)
+#define __TOOLCHAIN__ "GCC " __VERSION__
+#else
+#define __TOOLCHAIN__ "UNKNOWN"
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -528,7 +536,7 @@ static shell_status_t shellCmd_reboot(shell_handle_t shellHandle, int32_t argc, 
     PRINTF("System reset!\n");
     NVIC_SystemReset();
 
-    /* return kStatus_SHELL_Success; */
+    return kStatus_SHELL_Success;
 }
 
 static int flash_sha256(uint32_t offset, size_t size, uint8_t sha256[32])
@@ -584,7 +592,8 @@ int main(void)
            "* Basic MCUBoot application example *\n"
            "*************************************\n\n");
 
-    PRINTF("Built " __DATE__ " " __TIME__ "\n");
+    PRINTF("Built " __DATE__ " " __TIME__"\n");
+    PRINTF("Toolchain " __TOOLCHAIN__ "\n");
 
     ret = SHELL_Init(s_shellHandle, g_serialHandle, "$ ");
     if (ret != kStatus_SHELL_Success)
