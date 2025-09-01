@@ -7,8 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(dual_cores_servo_motor_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ecat_examples/dual_cores_servo_motor/remote)
-
+project(dual_cores_ecat_servo_motor_secondary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH examples/_boards/${board}/ecat_examples/dual_cores_servo_motor/remote)
 include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_source(
@@ -38,6 +37,7 @@ mcux_add_source(
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/freemaster_cfg.h
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/mc_periph_init.c
 	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/mc_periph_init.h
+	SOURCES ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/remote/${core_id}/app.h
 )
 
 mcux_add_include(

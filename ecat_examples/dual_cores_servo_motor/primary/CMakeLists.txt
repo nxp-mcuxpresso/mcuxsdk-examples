@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(dual_cores_ecat_motor LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/)
+project(dual_cores_ecat_servo_motor_primary_core LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/)
 
 include(${SdkRootDirPath}/CMakeLists.txt)
 
@@ -20,11 +20,13 @@ mcux_add_source(
     SOURCES mu_ipc_shm_host.h
     SOURCES ipc_shm_host.c
     SOURCES ipc_shm_host.h
-	SOURCES ecat_hw.h
+    SOURCES ecat_hw.h
     SOURCES ../ipc_shm.c
     SOURCES ../ipc_shm.h
     SOURCES ../ipc_shm_mem.c
     SOURCES ../ipc_shm_mem.h
+    SOURCES ../mu_ipc_shm.h
+    SOURCES ../cc.h
     SOURCES SSC/Src/cia402appl.c
     SOURCES SSC/Src/applInterface.h
     SOURCES SSC/Src/cia402appl.h
