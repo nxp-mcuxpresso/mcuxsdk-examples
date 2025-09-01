@@ -123,6 +123,9 @@ else {
 if (!isdefinedsymbol(gReserveCeRam_d)) {
     define exported symbol gReserveCeRam_d = 0;
 }
+if (!isdefinedsymbol(gNBU_loc_d)) {
+    define exported symbol gNBU_loc_d = 0;
+}
 
 /********************************************** FLASH **********************************************/
 
@@ -553,8 +556,14 @@ if (gReserveCeRam_d)
     define symbol m_upper_data1_start             = m_ce_heap_end + 1;
     define symbol m_upper_data1_end               = m_ram1_end;
     define symbol m_smu2_heap_start               = m_free_data_start;
-    define symbol m_smu2_heap_end                 = m_free_data_end;
-
+    if (gNBU_loc_d)
+    {
+        define symbol m_smu2_heap_end             = m_free_data_start + m_free_data_size/2 - 1;
+    }
+    else
+    {
+        define symbol m_smu2_heap_end                 = m_free_data_end;
+    }
     define region CE_CTRL_region            = mem:[from m_ce_ctrl_start to m_ce_ctrl_end];
     define region CE_HEAP_region            = mem:[from m_ce_heap_start to m_ce_heap_end];
     define region CE_DATA_RESERVED_region   = mem:[from m_ce_data_reserved_start to m_ce_data_reserved_end];
