@@ -19,4 +19,4 @@ Prepare the Demo
 Running the demo
 ================
 When the demo runs successfully, you will detect voltage toggle on J4.P31 of the EBB MB board.
-If the EVK board is used then the green led will blink.
+If the EVK board is used then the red led will blink.
