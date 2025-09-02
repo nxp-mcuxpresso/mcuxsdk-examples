@@ -138,6 +138,12 @@ void task_main(void *param)
     PRINTF("     Initialize RW612 Module\r\n");
 #elif defined(WIFI_IW610_BOARD_MURATA_2LL_M2)
     PRINTF("     Initialize Nighthwak-2LL (IW610) M2 Module\r\n");
+#elif defined(WIFI_IW612_BOARD_MURATA_2EL_M2)
+    PRINTF("     Initialize Firecrest-2EL (IW612) Direct-M2 Module\r\n");
+#elif defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2)
+    PRINTF("     Initialize 88W8987 1ZM Direct-M2 Module\r\n");
+#elif defined(WIFI_IW416_BOARD_MURATA_1XK_M2)
+    PRINTF("     Initialize IW416 1XK Direct-M2 Module\r\n");
 #endif
     printSeparator();
 

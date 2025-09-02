@@ -10,14 +10,29 @@ and also instructions for running the included sample applications.
 - Personal Computer
 - One of the following modules:
   - Embedded Artists 2LL M.2 Module (EAR00500) - direct M2 connection
+  - Embedded Artists 2EL M.2 Module (Rev-A1)   - direct M2 connection
+  - Embedded Artists 1ZM M.2 Module (EAR00364) - direct M2 connection
+  - Embedded Artists 1XK M.2 Module (EAR00385) - direct M2 connection
 
 ### Board settings
 
-Before building the example application define Wi-Fi module in the `_boards/evkcmimxrt1060/coex_examples/coex_wifi_edgefast/prj.conf`.
+Before building the example application define Wi-Fi module in the `_boards/evkcmimxrt1060/coex_examples/coex_wifi_peripheral_ht/prj.conf`.
 
 If you want to use Embedded Artists 2LL M.2 Module(EAR00500), please set CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_2ll_m2 to y.
 > `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.IW61X=y`
 > `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_2ll_m2=y`
+
+If you want to use Embedded Artists 2EL M.2 Module (Rev-A1), please set CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_2el_m2 to y.
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.IW61X=y`
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_2el_m2=y`
+
+If you want to use Embedded Artists 1ZM M.2 Module (EAR00364), please set CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_1zm_m2 to y.
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.88W8987=y`
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_1zm_m2=y`
+
+If you want to use Embedded Artists 1XK M.2 Module (EAR00385), please set CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_1xk_m2 to y.
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.IW416=y`
+> `CONFIG_MCUX_COMPONENT_component.wifi_bt_module.board_murata_1xk_m2=y`
 
 #### Jumper settings for RT1060-EVKC (enables external 5V supply):
 remove  J40 5-6
@@ -104,9 +119,9 @@ The log below shows the output of the coex examples in the terminal window:
 ========================================
 Download BT FW...
 download starts(140756)
-                       ...........................................................................................................................................
-                                                                                                                                                                  download success!
-                                                                                                                                                                                   Download WLAN FW...
+...........................................................................................................................................
+download success!
+Download WLAN FW...
 STA MAC Address: 78:F5:05:7B:BB:BC
 supplicant_main_task: 622 Starting wpa_supplicant thread with debug level: 6
 
