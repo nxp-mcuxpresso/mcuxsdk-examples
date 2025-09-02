@@ -135,10 +135,16 @@ void BOARD_InitHardware(void)
         ;
 
     /* Isolate some external power domain to save power. */
-    SPC_SetExternalVoltageDomainsConfig(APP_SPC, 0x7U, 0x0U);
+    SPC_SetExternalVoltageDomainsConfig(APP_SPC, 0x5U, 0x0U);
 
     /* Enable CORE VDD Voltage scaling. */
     SPC_EnableLowPowerModeCoreVDDInternalVoltageScaling(APP_SPC, true);
+    
+    RFMC->RF2P4GHZ_CFG |= RFMC_RF2P4GHZ_CFG_FORCE_DBG_PWRUP_ACK_MASK;
+    /* Set NBU into Deep Sleep Mode */
+    RFMC->RF2P4GHZ_CTRL =
+        (RFMC->RF2P4GHZ_CTRL & (~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK)) | RFMC_RF2P4GHZ_CTRL_LP_MODE(0x3);
+    RFMC->RF2P4GHZ_CTRL |= RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
 }
 
 status_t APP_EccReInitCallback(pm_event_type_t eventType, uint8_t powerState, void *data)
@@ -182,11 +188,6 @@ status_t APP_UartControlCallback(pm_event_type_t eventType, uint8_t powerState, 
          * Debug console TX pin: Don't need to change.
          */
         PORT_SetPinMux(DEBUG_CONSOLE_RX_PORT, DEBUG_CONSOLE_RX_PIN, kPORT_PinDisabledOrAnalog);
-
-        /* Set NBU into Deep Sleep Mode */
-        RFMC->RF2P4GHZ_CTRL =
-            (RFMC->RF2P4GHZ_CTRL & (~RFMC_RF2P4GHZ_CTRL_LP_MODE_MASK)) | RFMC_RF2P4GHZ_CTRL_LP_MODE(0x3);
-        RFMC->RF2P4GHZ_CTRL |= RFMC_RF2P4GHZ_CTRL_LP_ENTER_MASK;
     }
     else
     {
