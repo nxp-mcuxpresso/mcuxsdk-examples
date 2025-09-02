@@ -1,0 +1,443 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "created": "2025-09-01T12:52:35Z",
+    "creators": [
+      "Organization: NXP"
+    ],
+    "licenseListVersion": "3.20"
+  },
+  "name": "mcuxsdk-examples-v25.09.00",
+  "dataLicense": "CC0-1.0",
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-4eeaeab2-79ac-45ec-8e4c-e95c446c44fa",
+      "extractedText": "Amazon Software License\n=======================\n\n\n1. Definitions\n\n  “Licensor” means any person or entity that distributes its Work.\n\n  “Software” means the original work of authorship made available under this\n  License.\n\n  “Work” means the Software and any additions to or derivative works of the\n  Software that are made available under this License.\n\n  The terms “reproduce,” “reproduction,” “derivative works,” and “distribution”\n  have the meaning as provided under U.S. copyright law; provided, however, that\n  for the purposes of this License, derivative works shall not include works that\n  remain separable from, or merely link (or bind by name) to the interfaces of,\n  the Work.\n\n  Works, including the Software, are “made available” under this License by\n  including in or with the Work either\n\n    (a) a copyright notice referencing the applicability of this License to the\n    Work, or\n    (b) a copy of this License.\n\n\n2. License Grants\n\n2.1 Copyright Grant. Subject to the terms and conditions of this License, each\nLicensor grants to you a perpetual, worldwide, non-exclusive, royalty-free,\ncopyright license to reproduce, prepare derivative works of, publicly display,\npublicly perform, sublicense and distribute its Work and any resulting derivative\nworks in any form.\n\n2.2 Patent Grant. Subject to the terms and conditions of this License, each\nLicensor grants to you a perpetual, worldwide, non-exclusive, royalty-free patent\nlicense to make, have made, use, sell, offer for sale, import, and otherwise\ntransfer its Work, in whole or in part. The foregoing license applies only to the\npatent claims licensable by Licensor that would be infringed by Licensor’s Work\n(or portion thereof) individually and excluding any combinations with any other\nmaterials or technology.\n\n\n3. Limitations\n\n3.1 Redistribution. You may reproduce or distribute the Work only if\n\n  (a) you do so under this License,\n  (b) you include a complete copy of this License with your distribution, and\n  (c) you retain without modification any copyright, patent, trademark, or\n  attribution notices that are present in the Work.\n\n3.2 Derivative Works. You may specify that additional or different terms apply to\nthe use, reproduction, and distribution of your derivative works of the Work\n(“Your Terms”) only if\n\n  (a) Your Terms provide that the use limitation in Section 3.3 applies to your\n  derivative works, and\n  (b) you identify the specific derivative works that are subject to Your Terms.\n  Notwithstanding Your Terms, this License (including the redistribution\n  requirements in Section 3.1) will continue to apply to the Work itself.\n\n3.3 Use Limitation. The Work and any derivative works thereof only may be used or\nintended for use with the web services, computing platforms or applications\nprovided by Amazon.com, Inc. or its affiliates, including Amazon Web Services,\nInc.\n\n3.4 Patent Claims. If you bring or threaten to bring a patent claim against any\nLicensor (including any claim, cross-claim or counterclaim in a lawsuit) to\nenforce any patents that you allege are infringed by any Work, then your rights\nunder this License from such Licensor (including the grants in Sections 2.1 and\n2.2) will terminate immediately.\n3.5 Trademarks. This License does not grant any rights to use any Licensor’s or\nits affiliates’ names, logos, or trademarks, except as necessary to reproduce the\nnotices described in this License.\n3.6 Termination. If you violate any term of this License, then your rights under\nthis License (including the grants in Sections 2.1 and 2.2) will terminate\nimmediately.\n\n\n4. Disclaimer of Warranty.\n\nTHE WORK IS PROVIDED “AS IS” WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER\nEXPRESS OR IMPLIED, INCLUDING WARRANTIES OR CONDITIONS OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE, TITLE OR NON-INFRINGEMENT. YOU BEAR THE RISK OF\nUNDERTAKING ANY ACTIVITIES UNDER THIS LICENSE. SOME STATES’ CONSUMER LAWS DO NOT\nALLOW EXCLUSION OF AN IMPLIED WARRANTY, SO THIS DISCLAIMER MAY NOT APPLY TO YOU.\n\n\n5. Limitation of Liability.\n\nEXCEPT AS PROHIBITED BY APPLICABLE LAW, IN NO EVENT AND UNDER NO LEGAL THEORY,\nWHETHER IN TORT (INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE SHALL ANY LICENSOR\nBE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY DIRECT, INDIRECT, SPECIAL,\nINCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR RELATED TO THIS LICENSE,\nTHE USE OR INABILITY TO USE THE WORK (INCLUDING BUT NOT LIMITED TO LOSS OF\nGOODWILL, BUSINESS INTERRUPTION, LOST PROFITS OR DATA, COMPUTER FAILURE OR\nMALFUNCTION, OR ANY OTHER COMMERCIAL DAMAGES OR LOSSES), EVEN IF THE LICENSOR HAS\nBEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.\n\nEffective Date – April 18, 2008 © 2008 Amazon.com, Inc. or its affiliates. All\nrights reserved.",
+      "name": "Amazon Software License"
+    },
+    {
+      "licenseId": "LicenseRef-e5b7758e-198f-4ef0-a1c0-449099001fd5",
+      "extractedText": "FatFs License\n=============\n\nFatFs module is a generic FAT file system module for small embedded systems. This\nis a free software that opened for education, research and commercial\ndevelopments under license policy of following trems.\n\nCopyright (C) 2013, ChaN, all right reserved.\n\n  * The FatFs module is a free software and there is NO WARRANTY.\n\n  *  No restriction on use. You can use, modify and redistribute it for personal,\n    non-profit or commercial products UNDER YOUR RESPONSIBILITY.\n\n  * Redistributions of source code must retain the above copyright notice.",
+      "name": "FatFs License"
+    }
+  ],
+  "documentNamespace": "https://nxp.com/spdx/d841a997-5cec-4e51-a80f-193866ea6a25",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "name": "mcuxsdk-examples",
+      "versionInfo": "v25.09.00",
+      "licenseConcluded": "(BSD-3-Clause)",
+      "licenseDeclared": "(BSD-3-Clause)",
+      "downloadLocation": "https://github.com/nxp-mcuxpresso/mcuxsdk-examples",
+      "originator": "Organization: NXP",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-74a6ea11-2dc3-4398-9916-9c629603da08",
+      "name": "Amazon FreeRTOS",
+      "versionInfo": "202012.01",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/aws/amazon-freertos",
+      "downloadLocation": "https://github.com/aws/amazon-freertos/releases/tag/202012.01",
+      "originator": "Organization: Amazon FreeRTOS",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:amazon_web_services_freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:aws:amazon-freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:o:amazon:freertos:202012.01:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-5230cf5d-0a58-4284-9ce0-8e80530ede85",
+      "name": "Android Arch-Common",
+      "versionInfo": "2.0.0-alpha1",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: Android Arch-Common",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-103d52bd-8e24-40ae-b4eb-2a0232efdcac",
+      "name": "Android ConstraintLayout Solver",
+      "versionInfo": "1.1.3",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "http://tools.android.com",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: Android ConstraintLayout Solver",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-1d7506e9-ab7b-41f1-bd98-5beca80c1db9",
+      "name": "ARM-software/CMSIS-DSP",
+      "versionInfo": "v1.16.1",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: arm-software",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "9c69fd9d-2088-4dab-8f6e-1f5116e7746e",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/arm-software/cmsis-dsp@v1.16.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-caa51b11-f280-4344-9af4-ce24a32ea35f",
+      "name": "AssertJ",
+      "versionInfo": "1.2.0",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "http://joel-costigliola.github.io/assertj/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: AssertJ",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-51a2a7e4-1690-4a1e-af2a-b1948b9ecd07",
+      "name": "AssertJ for Android Design Support",
+      "versionInfo": "1.2.0",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "http://github.com/square/assertj-android/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: AssertJ for Android Design Support",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-981cdd39-15e6-4ce0-9ba6-1671fe617406",
+      "name": "AWS SDK for Android - AWS IoT",
+      "versionInfo": "2.22.3",
+      "licenseConcluded": "LicenseRef-4eeaeab2-79ac-45ec-8e4c-e95c446c44fa",
+      "licenseDeclared": "LicenseRef-4eeaeab2-79ac-45ec-8e4c-e95c446c44fa",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: AWS SDK for Android - AWS IoT",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-f3cf3033-f2c0-4ceb-bf04-d2d7423e4363",
+      "name": "cJSON",
+      "versionInfo": "1.7.15",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://github.com/DaveGamble/cJSON",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: cJSON",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:cjson:1.7.15:1\\+deb12u3:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:cjson:1.7.15:1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:cjson:1.7.15:1\\+deb12u2:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:debian_package:cjson:1.7.15:1\\+deb12u1:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:cjson_project:cjson:1.7.15:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-18f07cfa-2c43-47ad-b6c4-546506c7a5d7",
+      "name": "FatFs Module",
+      "versionInfo": "R0.15",
+      "licenseConcluded": "LicenseRef-e5b7758e-198f-4ef0-a1c0-449099001fd5",
+      "licenseDeclared": "LicenseRef-e5b7758e-198f-4ef0-a1c0-449099001fd5",
+      "homepage": "http://elm-chan.org/fsw/ff/00index_e.html",
+      "downloadLocation": "http://elm-chan.org/fsw/ff/00index_e.html",
+      "originator": "Organization: FatFs Module",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-ffeb59cb-d382-4acb-902c-d89a28b97839",
+      "name": "FlowLayout (Example)",
+      "versionInfo": "1.2",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "https://github.com/ApmeM/android-flowlayout/app",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: FlowLayout (Example)",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-6860d35e-9d89-4b6d-b8bb-33d8caf5250a",
+      "name": "FreeRTOS Real Time Kernel",
+      "versionInfo": "V11.1.0",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://sourceforge.net/projects/freertos",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: FreeRTOS Real Time Kernel",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:aws-freertos-kernel:11.1.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:o:amazon:freertos:11.1.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:amazon:freertos:11.1.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-87476701-cd7b-494c-a778-27bd8fecc90f",
+      "name": "lwIP",
+      "versionInfo": "2.2.1",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "homepage": "http://savannah.nongnu.org/projects/lwip/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: lwIP",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-fea2dbed-9f9b-4b25-92a4-808a7bec9a49",
+      "name": "mbed TLS",
+      "versionInfo": "v3.6.4",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "https://www.trustedfirmware.org/",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: mbed TLS",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:arm:mbed_tls:3.6.4:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:o:arm:mbed_tls:3.6.4:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:mbed:mbedtls:3.6.4:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-63c0e6d6-c1f9-4271-b741-e870daafba82",
+      "name": "NXPmicro/rpmsg-lite",
+      "versionInfo": "v5.1.2",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: nxpmicro",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/NXPmicro/rpmsg-lite@v5.1.2",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "93944a6c-2412-4ff5-95e7-65db8d3fc495",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-1e26f342-330d-407d-89e2-d342906ed0f7",
+      "name": "rangehttpserver",
+      "versionInfo": "1.2.0",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "https://github.com/danvk/RangeHTTPServer",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: rangehttpserver",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-1c059ee1-1664-4e35-90e0-69396af13d90",
+      "name": "systemview-target",
+      "versionInfo": "0.1.1",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://bern-rtos.org",
+      "downloadLocation": "https://crates.io/crates/systemview-target/0.1.1",
+      "originator": "Organization: crates",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "0288f5c7-a099-4f83-9005-67eaf26085c3",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:cargo/systemview-target@0.1.1",
+          "referenceType": "purl"
+        }
+      ],
+      "filesAnalyzed": false
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-ffeb59cb-d382-4acb-902c-d89a28b97839"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-5230cf5d-0a58-4284-9ce0-8e80530ede85"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-caa51b11-f280-4344-9af4-ce24a32ea35f"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-74a6ea11-2dc3-4398-9916-9c629603da08"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-981cdd39-15e6-4ce0-9ba6-1671fe617406"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-18f07cfa-2c43-47ad-b6c4-546506c7a5d7"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-1d7506e9-ab7b-41f1-bd98-5beca80c1db9"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-87476701-cd7b-494c-a778-27bd8fecc90f"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-63c0e6d6-c1f9-4271-b741-e870daafba82"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-fea2dbed-9f9b-4b25-92a4-808a7bec9a49"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-6860d35e-9d89-4b6d-b8bb-33d8caf5250a"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-1c059ee1-1664-4e35-90e0-69396af13d90"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-103d52bd-8e24-40ae-b4eb-2a0232efdcac"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "DYNAMIC_LINK",
+      "relatedSpdxElement": "SPDXRef-package-51a2a7e4-1690-4a1e-af2a-b1948b9ecd07"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-f3cf3033-f2c0-4ceb-bf04-d2d7423e4363"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-d841a997-5cec-4e51-a80f-193866ea6a25",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-1e26f342-330d-407d-89e2-d342906ed0f7"
+    }
+  ]
+}
