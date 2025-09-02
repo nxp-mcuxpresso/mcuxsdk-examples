@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,9 +11,9 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define EXAMPLE_I2C_MASTER Driver_I2C0
+#define EXAMPLE_I2C_MASTER      Driver_I2C0
 
-#define LPI2C_CLOCK_FREQUENCY CLOCK_GetLpi2cClkFreq()
+#define LPI2C_CLOCK_FREQUENCY   CLOCK_GetLpi2cClkFreq(1U)
 /*${macro:end}*/
 
 /*******************************************************************************
