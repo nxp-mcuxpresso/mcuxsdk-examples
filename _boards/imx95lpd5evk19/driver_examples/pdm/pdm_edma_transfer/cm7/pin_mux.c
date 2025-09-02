@@ -40,8 +40,8 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, OD: DISABLED, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE, DSE: X4}
   - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: E43, peripheral: LPI2C2, signal: lpi2c_scl, pin_signal: I2C2_SCL, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: E45, peripheral: LPI2C2, signal: lpi2c_sda, pin_signal: I2C2_SDA, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: K52, peripheral: LPI2C6, signal: lpi2c_scl, pin_signal: GPIO_IO03, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: K48, peripheral: LPI2C6, signal: lpi2c_sda, pin_signal: GPIO_IO02, SION: ENABLED, OD: ENABLED, PD: DISABLED}
   - {pin_num: G45, peripheral: PDM, signal: 'pdm_bit_stream_bit, 0', pin_signal: PDM_BIT_STREAM0, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
   - {pin_num: F46, peripheral: PDM, signal: pdm_clk, pin_signal: PDM_CLK, PD: DISABLED, FSEL1: FAST_SLEW_RATE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -54,26 +54,26 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
+    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 1U);
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL,
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
+                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 
+    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX,
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SCL__LPI2C2_SCL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_I2C2_SDA__LPI2C2_SDA, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__PDM_BIT_STREAM_BIT0, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
@@ -87,3 +87,4 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
 /***********************************************************************************************************************
  * EOF
  **********************************************************************************************************************/
+
