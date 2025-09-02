@@ -17,7 +17,7 @@
 /*${macro:start}*/
 #define DEMO_SAI                   (I2S3)
 #define DEMO_ASRC                  ASRC
-#define DEMO_SAI_CLK_FREQ          (CLOCK_GetPllFreq(kCLOCK_AudioPll1Ctrl))
+#define DEMO_SAI_CLK_FREQ          24576000U
 #define DEMO_CODEC_WM8960          (1)
 #define DEMO_IRQn                  I2S3_IRQn
 #define DEMO_DMA                   SDMAARM3
