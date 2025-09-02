@@ -14,6 +14,7 @@
 #include "clock_config.h"
 #include "board.h"
 #include "boot.h"
+#include "sblconfig.h"
 
 /*******************************************************************************
  * Definitions
@@ -178,9 +179,11 @@ int main(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
+#if defined(CONFIG_BOOT_USE_PSA_CRYPTO)
     /* Cache should be off until MbedTLS HW acceleration supports cache handling */
     XCACHE_DisableCache(XCACHE_PC);
     XCACHE_DisableCache(XCACHE_PS);
+#endif
 
     PRINTF("hello sbl.\r\n");
 
