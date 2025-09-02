@@ -69,7 +69,7 @@ static void BOARD_BootClockRUN_InitFRO0(void)
         .refDiv        = 1,     /* The FRO reference divider is 1 */
         .enableInt     = 0,     /* The FRO interrupts are disabled */
         .coarseTrimEn  = false, /* The coarse value autotrimming is disabled */
-        .fastStartupEn = true,  /* The fast startup is disabled */
+        .fastStartupEn = false, /* The fast startup is disabled */
     };
 
     /* Enable power and ungate the FRO0. */
