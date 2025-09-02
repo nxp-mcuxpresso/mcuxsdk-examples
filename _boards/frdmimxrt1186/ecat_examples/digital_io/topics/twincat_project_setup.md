@@ -131,6 +131,6 @@
 
         ![](../images/image37.png "PLC code initiates")
 
-        When the PLC code initiates, the D7 LED on the FRDM-IMXRT1186 board starts blinking with 0.5 Hz frequency.
+        When the PLC code initiates, the LED on the FRDM-IMXRT1186 board starts blinking with 0.5 Hz frequency.
 
 

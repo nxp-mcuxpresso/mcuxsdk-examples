@@ -7,7 +7,7 @@ To configure and download the MCUXpresso SDK for the servo motor example buildin
 
     ![](../images/image2.png "Select Development Board")
 
-3.  Type 1180 in the **Search for Hardware** field.
+3.  Type 1186 in the **Search for Hardware** field.
 4.  Select *FRDM-IMXRT1186* from the drop-down list. See, [Figure 3](#fig_asn_3fc_fzb).
 
     **Note:** The SDK version in the image is for reference only. Ensure to download the latest SDK version.

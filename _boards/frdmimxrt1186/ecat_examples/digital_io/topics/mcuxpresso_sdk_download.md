@@ -7,7 +7,7 @@ To configure and download the MCUXpresso SDK for the digital IO example building
 
     ![](../images/image1.png "Select the development board")
 
-3.  Type 1180 in the **Search for Hardware** field.
+3.  Type 1186 in the **Search for Hardware** field.
 4.  Select *FRDM-IMXRT1186* from the drop-down list. See, [Figure 2](#selecboard).
 
     ![](../images/select_board.png "Select a board")
