@@ -4,7 +4,7 @@ dual_cores_ecat_servo_motor_secondary_core:
     meta_path: examples/ecat_examples/dual_cores_servo_motor/secondary
     project-root-path: boards/${board}/ecat_examples/dual_cores_servo_motor/${multicore_foldername}
     document:
-      name: ecat_dual_cores_servo_motor${core_id_suffix_name}
+      name: dual_cores_ecat_servo_motor_secondary_core${core_id_suffix_name}
       category: ecat_examples
       brief: EtherCAT dual cores servo motor example example
       example_readme:
