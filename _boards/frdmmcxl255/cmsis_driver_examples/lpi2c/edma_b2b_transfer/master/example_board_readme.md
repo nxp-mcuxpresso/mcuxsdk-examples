@@ -1,24 +1,22 @@
 Hardware requirements
-=====================
+================
 - Type-C USB cable
 - FRDM-MCXL255 board
 - Personal Computer
 
 Board settings
-==============
-To make the example work, connections needed to be as follows:
-Jumper setting:
-
+================
 LPI2C:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER(LPI2C0)                connect to        SLAVE(LPI2C0)
-Pin Name    Board Location                      Pin Name    Board Location
-SDA         J5 pin 6                            SDA         J5 pin 6
-SCL         J5 pin 5                            SCL         J5 pin 5
-GND         J5 pin 8                            GND         J5 pin 8
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MASTER (LPI2C0)                     SLAVE (LPI2C0)
+Pin Name        Board Location      Pin Name        Board Location
+LPI2C0_SCL      J5-5                LPI2C0_SCL      J5-5
+LPI2C0_SDA      J5-6                LPI2C0_SDA      J5-6
+GND             J5-8                GND             J5-8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Other jumpers keep default configuration.
+Make sure you have solder bridges SJ1 and SJ2 set to
+- 2-1 for the main core (cm33)
 
 Prepare the Demo
 ================
@@ -36,7 +34,8 @@ Note: MCUXpresso IDE project default debug console is semihost
 Running the demo
 ================
 The following lines are printed to the serial terminal when the demo program is executed.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CMSIS LPI2C board2board EDMA example -- Master transfer.
 Master will send data :
 0x 0  0x 1  0x 2  0x 3  0x 4  0x 5  0x 6  0x 7  
@@ -52,4 +51,4 @@ Receive sent data from slave :
 
 
 End of LPI2C example .
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
