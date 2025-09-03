@@ -73,7 +73,7 @@ typedef struct _clock_setup
 #define M1_PWM_DEADTIME_LENGTH_DTVAL    (67U)
 
 /* Over-current Fault enable */
-#define M1_FAULT_ENABLE         (0U)
+#define M1_FAULT_ENABLE         (1U)
 /* Over-current Fault detection number */
 #define M1_FAULT_NUM            (0U)
 /* Over-current CMP input channel */   
