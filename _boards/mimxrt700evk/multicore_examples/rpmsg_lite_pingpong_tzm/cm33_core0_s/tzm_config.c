@@ -15,7 +15,7 @@
 !!GlobalInfo
 product: TEE v9.0
 processor: MIMXRT798S
-package_id: MIMXRT798SGFOA
+package_id: MIMXRT798SGFOB
 mcu_data: ksdk2_0
 processor_version: 25.03.10
 toolOptions:
