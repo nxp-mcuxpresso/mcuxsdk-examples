@@ -44,20 +44,8 @@ mcux_add_mdk_linker_script(
     LINKER examples/_boards/${board}/demo_apps/power_manager_test/linker/MCXA366_power_manager_flash.scf
 )
 
-mcux_project_remove_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES devices/MCX/MCXA/MCXA366/startup_MCXA366.c
-    TOOLCHAINS armgcc
-)
-
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES devices/MCX/MCXA/MCXA366/startup_MCXA366.c
-    EXCLUDE TRUE
-    TOOLCHAINS armgcc
-)
-
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/_boards/${board}/demo_apps/power_manager_test/startup/startup_power_manager.c
+    TOOLCHAINS armgcc iar mdk
 )
