@@ -191,7 +191,7 @@ static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
         PRINTF("Too many connections\n");
         return;
     }
-    printf("HFP AG (index:%d) Connected:%d!\n", app_ag_instance_index(hfp_ag), err);
+    PRINTF("HFP AG (index:%d) Connected:%d!\n", app_ag_instance_index(hfp_ag), err);
 
     app_hfp_ag->hfp_agHandle = hfp_ag;
     app_hfp_ag->hfp_in_calling_status = 1;
@@ -201,7 +201,7 @@ static void ag_connected(struct bt_hfp_ag *hfp_ag, int err)
 
 static void ag_disconnected(struct bt_hfp_ag *hfp_ag)
 {
-    printf("HFP AG (index:%d) Disconnected!\n", app_ag_instance_index(hfp_ag));
+    PRINTF("HFP AG (index:%d) Disconnected!\n", app_ag_instance_index(hfp_ag));
     app_ag_remove_instance(hfp_ag);
     bt_hfp_ag_disconnect(hfp_ag);
 }
@@ -221,7 +221,7 @@ static void bt_work_ata_response(struct k_work *work)
 {
     app_hfp_ag_t *app_hfp_ag = CONTAINER_OF(work, app_hfp_ag_t, ataRespWork);
 
-    printf("HFP HP have accepted the call\n");
+    PRINTF("HFP HP have accepted the call\n");
     app_hfp_ag->hfp_in_calling_status = 3;
     bt_hfp_ag_send_callsetup_indicator(app_hfp_ag->hfp_agHandle, 0);
     bt_hfp_ag_send_call_indicator(app_hfp_ag->hfp_agHandle, 1);
@@ -236,7 +236,7 @@ static void bt_work_ata_response(struct k_work *work)
 
 void dial(struct bt_hfp_ag *hfp_ag, char *number)
 {
-    printf("HFP HP have a in coming call :%s\n", number);
+    PRINTF("HFP HP have a in coming call :%s\n", number);
     if (g_HfpAg->hfp_in_calling_status == 1)
     {
         PRINTF("Simulate a outcoming calling!!\r\n");
@@ -264,7 +264,7 @@ void chup_response(struct bt_hfp_ag *hfp_ag)
         return;
     }
 
-    printf("HFP HP have ended the call\n");
+    PRINTF("HFP HP have ended the call\n");
     app_hfp_ag->hfp_in_calling_status = 1;
     bt_hfp_ag_call_status_pl(hfp_ag, hfp_ag_call_call_end);
     bt_hfp_ag_send_call_indicator(hfp_ag, 0);
@@ -278,11 +278,11 @@ void chup_response(struct bt_hfp_ag *hfp_ag)
 
 static void brva(struct bt_hfp_ag *hfp_ag, uint32_t value)
 {
-    printf("HFP voice recognition :%lu\n", value);
+    PRINTF("HFP voice recognition :%lu\n", value);
 }
 static void codec_negotiate(struct bt_hfp_ag *hfp_ag, uint32_t value)
 {
-    printf("HFP codec negotiate :%lu\n", value);
+    PRINTF("HFP codec negotiate :%lu\n", value);
 }
 
 static void chld(struct bt_hfp_ag *hfp_ag, uint8_t option, uint8_t index)
@@ -294,30 +294,30 @@ static void chld(struct bt_hfp_ag *hfp_ag, uint8_t option, uint8_t index)
         return;
     }
 
-    printf("AT_CHLD mutlipcall option  index :%d %d\n", option, index);
+    PRINTF("AT_CHLD mutlipcall option  index :%d %d\n", option, index);
     if (option == 0)
     {
-        printf(
+        PRINTF(
             " Release all Held Calls and set UUDB tone "
             "(Reject new incoming waiting call)\n");
     }
     else if (option == 1)
     {
-        printf("  Release Active Calls and accept held/waiting call\n");
+        PRINTF("  Release Active Calls and accept held/waiting call\n");
     }
     else if (option == 2)
     {
-        printf(
+        PRINTF(
             "  Hold Active Call and accept already "
             "held/new waiting call\n");
     }
     else if (option == 3)
     {
-        printf(" bt multipcall 3. Conference all calls\n");
+        PRINTF(" bt multipcall 3. Conference all calls\n");
     }
     else if (option == 4)
     {
-        printf(" bt multipcall 4. Connect other calls and disconnect self from TWC\n");
+        PRINTF(" bt multipcall 4. Connect other calls and disconnect self from TWC\n");
     }
     if (app_hfp_ag->xTwcTimers != 0)
     {
@@ -487,7 +487,7 @@ int app_hfp_ag_accept_incoming_call()
 {
     if (g_HfpAg->hfp_in_calling_status == 2)
     {
-        printf("HFP AG have accepted the incoming call\n");
+        PRINTF("HFP AG have accepted the incoming call\n");
         g_HfpAg->hfp_in_calling_status = 3;
         bt_hfp_ag_send_callsetup_indicator(g_HfpAg->hfp_agHandle, 0);
         bt_hfp_ag_send_call_indicator(g_HfpAg->hfp_agHandle, 1);
@@ -514,7 +514,7 @@ int app_hfp_ag_stop_incoming_call()
             g_HfpAg->xTimers = 0;
         }
         bt_hfp_ag_send_call_indicator(g_HfpAg->hfp_agHandle, 0);
-        printf("HFP AG have ended the call\n");
+        PRINTF("HFP AG have ended the call\n");
         g_HfpAg->hfp_in_calling_status = 1;
         return 0;
     }
