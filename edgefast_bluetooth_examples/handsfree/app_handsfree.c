@@ -141,7 +141,7 @@ static void connected(struct bt_conn *conn, int err)
     struct bt_conn_info info;
 #endif
 
-    printf("HFP HF Connected:%d!\n", err);
+    PRINTF("HFP HF Connected:%d!\n", err);
     if (err)
     {
         return;
@@ -165,7 +165,7 @@ static void disconnected(struct bt_conn *conn)
 
 static void service(struct bt_conn *conn, uint32_t value)
 {
-    printf("Service indicator value: %lu\n", value);
+    PRINTF("Service indicator value: %lu\n", value);
 }
 
 static void call(struct bt_conn *conn, uint32_t value)
@@ -178,17 +178,17 @@ static void call(struct bt_conn *conn, uint32_t value)
     {
         s_call_status = 0;
     }
-    printf("Call indicator value: %lu\n", value);
+    PRINTF("Call indicator value: %lu\n", value);
 }
 
 static void call_setup(struct bt_conn *conn, uint32_t value)
 {
-    printf("Call Setup indicator value: %lu\n", value);
+    PRINTF("Call Setup indicator value: %lu\n", value);
 }
 
 static void call_held(struct bt_conn *conn, uint32_t value)
 {
-    printf("Call Held indicator value: %lu\n", value);
+    PRINTF("Call Held indicator value: %lu\n", value);
     if (value == 1)
     {
         s_call_status = 2;
@@ -197,69 +197,69 @@ static void call_held(struct bt_conn *conn, uint32_t value)
 
 static void signal(struct bt_conn *conn, uint32_t value)
 {
-    printf("Signal indicator value: %lu\n", value);
+    PRINTF("Signal indicator value: %lu\n", value);
 }
 
 static void roam(struct bt_conn *conn, uint32_t value)
 {
-    printf("Roaming indicator value: %lu\n", value);
+    PRINTF("Roaming indicator value: %lu\n", value);
 }
 
 static void battery(struct bt_conn *conn, uint32_t value)
 {
-    printf("Battery indicator value: %lu\n", value);
+    PRINTF("Battery indicator value: %lu\n", value);
 }
 
 static void ring_cb(struct bt_conn *conn)
 {
-    printf("Incoming Call...\n");
+    PRINTF("Incoming Call...\n");
     s_call_status = 1;
 }
 static void call_phnum(struct bt_conn *conn, char *number)
 {
-    printf("Phone call number: %s\n", number);
+    PRINTF("Phone call number: %s\n", number);
 }
 static void voicetag_phnum(struct bt_conn *conn, char *number)
 {
-    printf("voice tag_phnum number: %s\n", number);
+    PRINTF("voice tag_phnum number: %s\n", number);
 }
 
 static void waiting_call(struct bt_conn *conn, hf_waiting_call_state_t *wcs)
 {
-    printf("> CALL WAITING Received Number : %s\n", wcs->number);
-    printf("> Please use <multipcall> to handle multipe call operation\n");
-    printf(
+    PRINTF("> CALL WAITING Received Number : %s\n", wcs->number);
+    PRINTF("> Please use <multipcall> to handle multipe call operation\n");
+    PRINTF(
         " bt multipcall 0. Release all Held Calls and set UUDB tone "
         "(Reject new incoming waiting call)\n");
-    printf(" bt multipcall 1. Release Active Calls and accept held/waiting call\n");
-    printf(
+    PRINTF(" bt multipcall 1. Release Active Calls and accept held/waiting call\n");
+    PRINTF(
         " bt multipcall 2. Hold Active Call and accept already "
         "held/new waiting call\n");
-    printf(" bt multipcall 3. Conference all calls\n");
-    printf(" bt multipcall 4. Connect other calls and disconnect self from TWC\n");
+    PRINTF(" bt multipcall 3. Conference all calls\n");
+    PRINTF(" bt multipcall 4. Connect other calls and disconnect self from TWC\n");
 }
 
 void indicator_status(struct bt_conn *conn, hf_indicator_status_t *status)
 {
-    printf("> ID : battchg %d\n", status->battchg);
-    printf("> ID : call %d\n", status->call);
-    printf("> ID : callheld %d\n", status->callheld);
-    printf("> ID : callsetup %d\n", status->callsetup);
-    printf("> ID : roam %d\n", status->roam);
-    printf("> ID : service %d\n", status->service);
-    printf("> ID : signal %d\n", status->signal);
+    PRINTF("> ID : battchg %d\n", status->battchg);
+    PRINTF("> ID : call %d\n", status->call);
+    PRINTF("> ID : callheld %d\n", status->callheld);
+    PRINTF("> ID : callsetup %d\n", status->callsetup);
+    PRINTF("> ID : roam %d\n", status->roam);
+    PRINTF("> ID : service %d\n", status->service);
+    PRINTF("> ID : signal %d\n", status->signal);
 }
 
 void app_list_current_calls(struct bt_conn *conn, bt_hfp_hf_current_calls_state_t *current_calls)
 {
-    printf("> current_calls : id %d\n", current_calls->id);
-    printf("> current_calls : dir %d\n", current_calls->dir);
-    printf("> current_calls : status %d\n", current_calls->status);
-    printf("> current_calls : mode %d\n", current_calls->mode);
-    printf("> current_calls : mprty %d\n", current_calls->mprty);
-    printf("> current_calls : number %s\n", current_calls->number);
-    printf("> current_calls : type %d\n", current_calls->type);
-    printf("> current_calls : alpha %s\n", current_calls->alpha);  
+    PRINTF("> current_calls : id %d\n", current_calls->id);
+    PRINTF("> current_calls : dir %d\n", current_calls->dir);
+    PRINTF("> current_calls : status %d\n", current_calls->status);
+    PRINTF("> current_calls : mode %d\n", current_calls->mode);
+    PRINTF("> current_calls : mprty %d\n", current_calls->mprty);
+    PRINTF("> current_calls : number %s\n", current_calls->number);
+    PRINTF("> current_calls : type %d\n", current_calls->type);
+    PRINTF("> current_calls : alpha %s\n", current_calls->alpha);  
 }
 
 static void app_hfp_hf_get_config( hfp_hf_get_config **config)
@@ -273,11 +273,11 @@ void app_cmd_complete_cb(struct bt_conn *conn, struct bt_hfp_hf_cmd_complete *cm
     {
         if (cmd->type == HFP_HF_CMD_ERR_FROM_AG)
         {
-                printf("> hfp api fail because peer device reject/return error\n");
+                PRINTF("> hfp api fail because peer device reject/return error\n");
         }
         else
         {
-                printf("> hfp api fail error :%d\n", cmd->type);
+                PRINTF("> hfp api fail error :%d\n", cmd->type);
         }
     }
 }
@@ -309,7 +309,7 @@ static void handsfree_enable(void)
     err = bt_hfp_hf_register(&hf_cb);
     if (err < 0)
     {
-        printf("HFP HF Registration failed (err %d)\n", err);
+        PRINTF("HFP HF Registration failed (err %d)\n", err);
     }
 }
 
