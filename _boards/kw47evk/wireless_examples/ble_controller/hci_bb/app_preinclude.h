@@ -45,8 +45,6 @@
 /* Defines Size for Timer Task*/
 #define gTmrTaskStackSize_c             384
 
-#define gAppUseSensors_d                0
-
 /* Enable debug throught SWO trace */
 #define gDbg_SwoEnabled_d       0
  

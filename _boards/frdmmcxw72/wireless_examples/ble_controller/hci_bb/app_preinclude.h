@@ -36,8 +36,6 @@
 /* Defines Size for Timer Task*/
 #define gTmrTaskStackSize_c             384
 
-#define gAppUseSensors_d                0
-
 /*
  * TimerManager Configuration
  */
