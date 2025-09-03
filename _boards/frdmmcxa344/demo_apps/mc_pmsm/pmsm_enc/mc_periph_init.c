@@ -84,8 +84,8 @@ void MCDRV_Init_M1(void)
     
 
 #if M1_FAULT_ENABLE    
-   /* Comparator CMP */
-   InitCMP();   
+     /* Comparator CMP */
+     InitCMP();   
 #endif /* M1_FAULT_ENABLE */
 
     

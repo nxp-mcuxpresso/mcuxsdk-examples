@@ -19,7 +19,8 @@ Application web page with the board specific Application User's guide and other 
 
 Board settings
 ==============
-Follow chapter "Hardware setup" in Application User's guide.
+Route the over-current fault signal by connection CMP0_IN1(P1_3, J2-17) with the MC1_CUR_DCB (P2_4, J2-9).
+Follow chapter "Hardware setup" in Application User's guide for more information.
 
 Running the demo
 ================

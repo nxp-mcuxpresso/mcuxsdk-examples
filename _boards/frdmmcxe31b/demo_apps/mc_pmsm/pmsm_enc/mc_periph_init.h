@@ -20,7 +20,6 @@
 #include "fsl_lcu.h"
 #include "fsl_bctu.h"
 
-#include "mcdrv_bctu_mcxe.h"
 #include "mcdrv_emios_mcxe.h"
 #include "mcdrv_sar_adc_mcxe.h"
 #include "mcdrv_lcu_mcxe.h"

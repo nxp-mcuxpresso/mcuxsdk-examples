@@ -305,6 +305,9 @@ void ADC1_IRQHandler(void)
     g_ui32MaxNumberOfCycles =
         g_ui32NumberOfCycles > g_ui32MaxNumberOfCycles ? g_ui32NumberOfCycles : g_ui32MaxNumberOfCycles;
 
+    /* Call FreeMASTER recorder */
+    FMSTR_Recorder(0);
+
     /* Clear the TCOMP INT flag */
     ADC1->STAT |= ADC_STAT_TCOMP_INT_MASK;
 

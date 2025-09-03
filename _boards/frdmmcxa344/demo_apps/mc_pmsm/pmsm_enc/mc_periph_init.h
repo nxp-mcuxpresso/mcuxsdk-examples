@@ -53,7 +53,7 @@ typedef struct _clock_setup
 #define M1_PWM_FREQ (16000)         /* PWM frequency - 16kHz */
 #define M1_FOC_FREQ_VS_PWM_FREQ (1) /* FOC calculation is called every n-th PWM reload */
 #define M1_SPEED_LOOP_FREQ (1000)   /* Speed loop frequency */
-#define M1_PWM_DEADTIME (500)       /* Output PWM deadtime value in nanoseconds */
+#define M1_PWM_DEADTIME (1000)       /* Output PWM deadtime value in nanoseconds */
 
 #define M1_FAST_LOOP_TS ((float_t)1.0 / (float_t)(M1_PWM_FREQ / M1_FOC_FREQ_VS_PWM_FREQ))
 #define M1_SLOW_LOOP_TS ((float_t)1.0 / (float_t)(M1_SLOW_LOOP_FREQ))
@@ -73,7 +73,7 @@ typedef struct _clock_setup
 #define M1_PWM_DEADTIME_LENGTH_DTVAL    (67U)
 
 /* Over-current Fault enable */
-#define M1_FAULT_ENABLE         (0U)
+#define M1_FAULT_ENABLE         (1U)
 /* Over-current Fault detection number */
 #define M1_FAULT_NUM            (0U)
 /* Over-current CMP input channel */   
@@ -129,14 +129,16 @@ typedef struct _clock_setup
 #define M1_MCDRV_ENC_CLEAR(par) (MCDRV_QdEncClear(par))
 
 /* SENSORS constants moved from MCAT calculations */
-#define M1_POSPE_ENC_PULSES (2000)
+#define PI (3.14159265358979323846)
+#define M1_POSPE_ENC_PULSES (2000) // Number of pulses - Teknic 2311P
 #define M1_POSPE_ENC_DIRECTION (0)
 #define M1_POSPE_ENC_N_MIN (0.0F)
-#define M1_POSPE_MECH_POS_GAIN ACC32(32768.0/((M1_POSPE_ENC_PULSES*4.0)/2.0))
-#define M1_POSPE_TO_KP_GAIN (1256.64F)
-#define M1_POSPE_TO_KI_GAIN (24.6740F)
-#define M1_POSPE_TO_THETA_GAIN (0.0000198944F)
- 
+#define M1_POSPE_MECH_POS_GAIN ACC32(32768.0/((M1_POSPE_ENC_PULSES*4.0)/2.0))       
+#define M1_POSPE_TO_F0 (100)       // Sensor TO bandwidth
+#define M1_POSPE_TO_KP_GAIN (4 * PI * M1_POSPE_TO_F0)
+#define M1_POSPE_TO_KI_GAIN ((2* PI * M1_POSPE_TO_F0) * (2* PI * M1_POSPE_TO_F0) * M1_FAST_LOOP_TS)
+#define M1_POSPE_TO_THETA_GAIN (M1_FAST_LOOP_TS / PI )
+        
 /******************************************************************************
  * Global variable definitions
  ******************************************************************************/

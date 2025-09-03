@@ -66,6 +66,10 @@ void MCDRV_Init_M1(void)
 {
     /* Init application clock dependent variables */
     InitClock();
+
+    /* Set FLASH_STALL_EN, DIS_LPCAC_WTBF and LIM_LPCAC_WTBF bits to 0 to get better performance. */
+    SYSCON->NVM_CTRL = SYSCON->NVM_CTRL & ~SYSCON_NVM_CTRL_FLASH_STALL_EN_MASK;
+    SYSCON->LPCAC_CTRL = SYSCON->LPCAC_CTRL & ~(SYSCON_LPCAC_CTRL_DIS_LPCAC_WTBF_MASK | SYSCON_LPCAC_CTRL_LIM_LPCAC_WTBF_MASK);
   
     /* Init ADC */
     InitADC();
@@ -451,8 +455,8 @@ static void InitCMP(void)
 {
     
     /* Attach peripheral clock */
-    CLOCK_AttachClk(kFRO_LF_DIV_to_CMP1);
-    CLOCK_SetClockDiv(kCLOCK_DivCMP1_FUNC, 1U);
+    CLOCK_AttachClk(kFRO_LF_DIV_to_CMP2);
+    CLOCK_SetClockDiv(kCLOCK_DivCMP2_FUNC, 1U);
 
     /* Enable CMP2 and CMP2_DAC */
     SPC0->ACTIVE_CFG1 |= ((1U << 18U) | (1U << 22U));
@@ -464,16 +468,16 @@ static void InitCMP(void)
     LPCMP_GetDefaultConfig(&mLpcmpConfigStruct);
     
     /* Init the LPCMP module. */
-    LPCMP_Init(CMP1, &mLpcmpConfigStruct);
+    LPCMP_Init(CMP2, &mLpcmpConfigStruct);
 
     /* Configure the internal DAC to output half of reference voltage. */
     mLpcmpDacConfigStruct.enableLowPowerMode     = false;
     mLpcmpDacConfigStruct.referenceVoltageSource = kLPCMP_VrefSourceVin1;
     mLpcmpDacConfigStruct.DACValue = (CMP_THRESHOLD); /* Overcurrent threshold */
-    LPCMP_SetDACConfig(CMP1, &mLpcmpDacConfigStruct);
+    LPCMP_SetDACConfig(CMP2, &mLpcmpDacConfigStruct);
 
     /* Configure LPCMP input channels. */
-    LPCMP_SetInputChannels(CMP1, CMP_INPUT_CHANNEL, CMP_DAC_CHANNEL);
+    LPCMP_SetInputChannels(CMP2, CMP_INPUT_CHANNEL, CMP_DAC_CHANNEL);
     
 }
 #endif /* M1_FAULT_ENABLE */
