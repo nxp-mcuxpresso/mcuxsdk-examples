@@ -113,7 +113,9 @@ initialize by copy {
   object wifi-imu.o,
   object fsl_adapter_rfimu.o,
   object fsl_cache.o,
-  object fsl_os_abstraction_free_rtos.o
+  object fsl_os_abstraction_free_rtos.o,
+  readonly object fsl_flexspi.o,
+  readonly object mflash_drv.o
 };
 
 do not initialize  { section .noinit, section .smu_cpu13_mbox, section .smu_cpu31_txq, section .smu_cpu23_mbox, section .smu_cpu32_txq};

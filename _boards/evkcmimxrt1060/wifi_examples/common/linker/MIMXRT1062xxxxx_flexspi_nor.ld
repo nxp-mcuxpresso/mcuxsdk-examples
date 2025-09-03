@@ -84,6 +84,8 @@ SECTIONS
   {
     . = ALIGN(4);
     *(EXCLUDE_FILE(
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
         *fsl_memcpy.S.obj
     ) .text)                 /* .text sections (code) */
     *(EXCLUDE_FILE(
@@ -111,6 +113,8 @@ SECTIONS
         *wifi_netif.c.obj
         *fsl_os_abstraction_free_rtos.c.obj
         *fsl_memcpy.S.obj
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
       ) .text*)              /* .text* sections (code) */
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
@@ -219,6 +223,8 @@ SECTIONS
     *(.data*)                /* .data* sections */
     *(DataQuickAccess)       /* quick access data section */
     *(.wlan_data .wlan_data.*)
+    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
+    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
     KEEP(*(.jcr*))
     . = ALIGN(4);
     __data_end__ = .;        /* define a global symbol at data end */

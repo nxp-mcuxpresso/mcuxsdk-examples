@@ -121,3 +121,18 @@ mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x400\
         -Xlinker --defsym=__heap_size__=0x400"
 )
+
+mcux_remove_macro(
+    TOOLCHAINS armgcc iar mdk
+    TARGETS flash_release
+    AS "-DNDEBUG"
+    CC "-DNDEBUG"
+    CX "-DNDEBUG"
+)
+
+mcux_add_armgcc_configuration(
+    TARGETS flexspi_nor_release
+    AS "-g"
+    CC "-g"
+    CX "-g"
+)

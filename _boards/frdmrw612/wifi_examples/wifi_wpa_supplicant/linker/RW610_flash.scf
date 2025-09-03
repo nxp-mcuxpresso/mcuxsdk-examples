@@ -100,6 +100,8 @@ LR_m_interrupts m_interrupts_start m_text_start+m_text_size-m_interrupts_start {
     * (CodeQuickAccess)
     * (DataQuickAccess)
 	/* Necessary to run flash routines from SRAM */
+	fsl_flexspi.o (+RO)
+	mflash_drv.o (+RO)
 	port.o (+RO)
 	portasm.o (+RO)
 	queue.o (+RO)

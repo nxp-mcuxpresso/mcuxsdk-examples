@@ -23,4 +23,6 @@
             *wifi.o
             *wifi_netif.o
             *fsl_memcpy.o
+            *mflash_drv.o
+            *fsl_flexspi.o
         ) .text*)

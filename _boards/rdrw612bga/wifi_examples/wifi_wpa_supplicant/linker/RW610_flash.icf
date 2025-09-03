@@ -117,7 +117,9 @@ initialize by copy {
   object ABImemcpy.o,
   object etharp.o,
   object ethernet.o,
-  object wifi_netif.o
+  object wifi_netif.o,
+  readonly object fsl_flexspi.o,
+  readonly object mflash_drv.o
 };
 
 do not initialize  { section .noinit, section .smu_cpu13_mbox, section .smu_cpu31_txq, section .smu_cpu23_mbox, section .smu_cpu32_txq};

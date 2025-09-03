@@ -96,9 +96,14 @@ SECTIONS
         *fsl_adapter_rfimu.c.obj
         *fsl_cache.c.obj
         *fsl_os_abstraction_free_rtos.c.obj
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
       ) .text*)              /* .text* sections (code) */
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
-    *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
+    *(EXCLUDE_FILE(
+        */mflash_drv.c.obj
+        */fsl_flexspi.c.obj
+    ) .rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
     *(.glue_7t)              /* glue thumb to arm code */
     *(.eh_frame)
@@ -203,6 +208,8 @@ SECTIONS
     *(DataQuickAccess)       /* DataQuickAccess sections */
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
+    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
     *port.c.obj(.text*)
     *portasm.c.obj(.text*)
     *queue.c.obj(.text*)

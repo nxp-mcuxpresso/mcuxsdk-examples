@@ -28,4 +28,6 @@
         *wifi.o(.text*)
         *wifi_netif.o(.text*)
         *fsl_memcpy.o(.text*)
+        *mflash_drv.o(.text*)
+        *fsl_flexspi.o(.text*)
         </#if>
