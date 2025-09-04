@@ -29,7 +29,7 @@ mcux_add_include(
 )
 
 mcux_add_iar_configuration(
-    CX "--diag_suppress=Pa082,Pa050"
+    CX "--diag_suppress=Pa082,Pa050,Ta021,Ta022,Ta023"
 )
 
 mcux_add_macro(
