@@ -11,3 +11,4 @@ ecat_examples
    eoe/readme.md
    foe/readme.md
    servo_motor/readme.md
+   dual_cores_servo_motor/readme.md

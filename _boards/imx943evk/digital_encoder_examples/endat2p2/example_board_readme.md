@@ -40,6 +40,11 @@ SW[3] ON 9V
 SW[4] ON 12V
 ~~~~~~~~~~~~~~~~
 
+Jumpers:
+~~~~~~~~~~~~~~~
+J300: pin1 <--> pin2
+~~~~~~~~~~~~~~~
+
 Prepare the Demo
 ===============
 1.  Connect 12V~20V power supply and J-Link Debug Probe to the board, switch SW1(SYS_PWR) to power on the board.

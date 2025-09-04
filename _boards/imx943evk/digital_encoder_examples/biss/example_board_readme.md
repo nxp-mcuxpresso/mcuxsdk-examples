@@ -54,6 +54,11 @@ SW[3] ON 9V
 SW[4] ON 12V
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Jumpers:
+~~~~~~~~~~~~~~~
+J300: pin1 <--> pin2
+~~~~~~~~~~~~~~~
+
 Prepare the Demo
 ===============
 1.  Connect a USB cable between the host PC and the MCU-LINK USB port on the target board.
