@@ -256,9 +256,14 @@ int main(void)
 
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
     BOARD_BootClockRUN();
+
+	/* Waiting until MU_ipc_shm_master_init() is completed on CM33 core */
     MU_ipc_shm_client_init();
+    /* BootPins must be initialzed after MU_ipc_shm_client_init
+     * due to BOARD_PCA6416_I2C6 is in conflicat with CM33 core.
+    */
+    BOARD_InitBootPins();
     /* FreeMASTER communication layer initialization */
     init_freemaster_lpuart();
     FMSTR_Init();
@@ -287,7 +292,7 @@ int main(void)
                 i32InitializedM1 = 1;
             }
         }
-        
+
         if (!i32InitializedM2) {
             if (g_param->axis[1].axis_is_active) {
                 M2_MCDRV_SINC_INIT();

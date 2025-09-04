@@ -28,3 +28,8 @@ mcux_add_armgcc_linker_script(
     TARGETS debug release
     LINKER ${board_root}/${board}/ecat_examples/dual_cores_servo_motor/master/${core_id}/MIMX94398_cm33_core1_ram.ld
 )
+
+mcux_add_armgcc_configuration(
+    TARGETS debug release
+    CC "-O0"
+)
