@@ -19,11 +19,12 @@
  #include "netc_ep/soem_netc_ep.h"
  /*${header:end}*/
  
+ #define MASTER_SLAVE_SYNC 1U
  #define EXAMPLE_EP_NUM    1U
  #define EXAMPLE_NETC_HAS_NO_SWITCH 1U
  #define SOEM_PORT_NAME "ENET4"
  
- #define CLOCK_GRANULARITY_NS 25UL
+ #define CLOCK_GRANULARITY_NS 5UL
  #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
  #define CLOCK_INCREASE_PER_SEC 1000000000UL 
  
@@ -70,6 +71,7 @@
  status_t BOARD_InitHardware(void);
  status_t NETC_EP_MDIO_Init(void);
  status_t NETC_EP_PHY_Init(void);
+ uint64_t system_time64_ns(void);
  /*${prototype:end}*/
  
  #endif /* _APP_H_ */

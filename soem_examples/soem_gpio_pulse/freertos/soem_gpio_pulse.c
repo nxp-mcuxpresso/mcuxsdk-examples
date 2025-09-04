@@ -144,7 +144,6 @@ void irq_wake_task(void)
     }
 }
 
-
 void OSAL_TIMER_IRQHandler(void)
 {
     /* Clear interrupt flag. */

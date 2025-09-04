@@ -10,7 +10,7 @@
 #include <string.h>
 #include <inttypes.h>
 
-#define TRAJECTORY_PLANNER_MAX  9
+#define TRAJECTORY_PLANNER_MAX  20
 #define NSEC_PER_SEC (1000000000)
 #define timespec_add(a, b, result)                          \
     do {                                                      \

@@ -15,6 +15,7 @@
 #include "netc_swt/soem_netc_swt.h"
 /*${header:end}*/
 
+#define MASTER_SLAVE_SYNC 1U
 #define SOEM_PORT_NAME "ENET0"
 #define EXAMPLE_NETC_HAS_NO_SWITCH 0U
 #define EXAMPLE_EP_NUM    0U
@@ -22,7 +23,7 @@
 #define EXAMPLE_SWT_PORT0 0x01U
 #define EXAMPLE_SWT_PORT2 0x03U
 
- #define CLOCK_GRANULARITY_NS 25UL
+ #define CLOCK_GRANULARITY_NS 5UL
  #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
  #define CLOCK_INCREASE_PER_SEC 1000000000UL 
  
@@ -70,6 +71,7 @@
 status_t BOARD_InitHardware(void);
 status_t NETC_MDIO_Init(void);
 status_t NETC_PHY_Init(void);
+uint64_t system_time64_ns(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

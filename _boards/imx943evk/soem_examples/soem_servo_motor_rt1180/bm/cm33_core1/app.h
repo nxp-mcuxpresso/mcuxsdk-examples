@@ -19,8 +19,9 @@
 /*${header:end}*/
 
 #define SOEM_PORT_NAME "J26"
+#define MASTER_SLAVE_SYNC 1U
 
-#define CLOCK_GRANULARITY_NS 250UL
+#define CLOCK_GRANULARITY_NS 50UL
 #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
 #define CLOCK_INCREASE_PER_SEC 1000000000UL 
 
@@ -87,6 +88,7 @@ status_t BOARD_InitHardware(void);
 status_t NETC_EP_MDIO_Init(void);
 status_t NETC_EP_PHY_Init(void);
 status_t NETC_EP_PHY_GetLinkStatus(phy_handle_t *handler, bool *link);
+uint64_t system_time64_ns(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

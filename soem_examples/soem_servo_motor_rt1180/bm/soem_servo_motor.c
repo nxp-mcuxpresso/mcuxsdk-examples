@@ -41,6 +41,8 @@
  * Definitions
  ******************************************************************************/
 #define CYCLE_PERIOD_NS 1000000 // 1ms
+#define CYCLE_SHIFT_NS  440000  // 440us
+#define DC_FILTER_CNT   64
 
 #define asda_b3_VendorId 0x000001dd
 #define asda_b3_ProductID 0x00006080
@@ -70,6 +72,18 @@
  ******************************************************************************/
 /* Rx buffer memeory type. */
 typedef uint8_t rx_buffer_t[EP_RXBUFF_SIZE_ALIGN];
+
+/* dc sync time */
+static uint64_t dc_start_time_ns = 0LL;
+static uint64_t dc_time_ns = 0;
+static uint8_t  dc_started = 0;
+static int32_t  dc_diff_ns = 0;
+static int32_t  prev_dc_diff_ns = 0;
+static int64_t  dc_diff_total_ns = 0LL;
+static int64_t  dc_delta_total_ns = 0LL;
+static int      dc_filter_idx = 0;
+static int64_t  dc_adjust_ns;
+static int64_t  system_time_offset = 0LL;
 
 /*******************************************************************************
  * Variables
@@ -229,55 +243,10 @@ static int nxp_servo_setup(uint16 slave) {
 		return -1;
 }
 
-static int asda_b3_servo_setup(uint16 slave) {
-	int i;
-	int ret = 0;
-	int chk = 10;
-	struct servo_t *svo = NULL;
-	for (i = 0; i < MAX_SERVO; i++) {
-		if (servo[i].slave_id + 1 == slave) {
-			svo = &servo[i];
-			break;
-		}
-	}
-	if (svo) {
-		while (chk--) {
-			ret = servo_pdo_remap(svo);
-			if (ret)
-				break;
-		}
-	}
-
-	if (!ret)
-		return 0;
-
-	int8_t  Obj60c2[9][2] = {{12, -5},{25, -5}, {37, -5}, {5, -4},{62, -5}, {75, -5},{87, -5},{1, -3}, {2, -3}};
-	int8_t num_8b[2];
-	int wkc = 0;
-	if (CYCLE_PERIOD_NS > 1000000) {
-		num_8b[0] = CYCLE_PERIOD_NS / 1000000;
-		num_8b[1] = -3;
-	} else {
-		int index = ((CYCLE_PERIOD_NS - 1) / 125000);
-		num_8b[0] = Obj60c2[index][0];
-		num_8b[1] = Obj60c2[index][1];
-	}
-	int obj_60c2_index = 0x60c2;
-	for ( i = 0; i < svo->axis_num; i++) {
-		obj_60c2_index += i * 0x800;
-		wkc += ec_SDOwrite(slave, obj_60c2_index, 0x01, 0, 1, &num_8b[0], EC_TIMEOUTSAFE);
-		wkc += ec_SDOwrite(slave, obj_60c2_index, 0x02, 0, 1, &num_8b[1], EC_TIMEOUTSAFE);
-	}
-	return wkc == svo->axis_num * 2 ? 1 : 0;
-}
-
 static void servo_setup(struct servo_t *servo, int servo_num) {
 	int i;
 	for (i = 0; i < servo_num; i++) {
-		if (servo[i].VendorId == asda_b3_VendorId && servo[i].ProductID == asda_b3_ProductID) {
-			servo[i].slave->PO2SOconfig = asda_b3_servo_setup;
-			PRINTF("\r\n delta_servo_setup success!\r\n");
-		} else if (servo[i].VendorId == nxp_VendorId && servo[i].ProductID == nxp_ProductID) {
+		if (servo[i].VendorId == nxp_VendorId && servo[i].ProductID == nxp_ProductID) {
 			servo[i].slave->PO2SOconfig = nxp_servo_setup;
 			PRINTF("\r\n nxp_servo_setup success!\r\n");
 		} else {
@@ -314,8 +283,6 @@ static void osal_timer_init(uint32_t priority)
 	GPT_GetDefaultConfig(&gptConfig);
 	GPT_Init(OSAL_TIMER, &gptConfig);
 	gptFreq = OSAL_TIMER_CLK_FREQ;
-	PRINTF("\r\nGPT freq: %d\r\n", gptFreq);
-	PRINTF("\r\nGPT divider: %d\r\n", gptFreq / CLOCK_GRANULARITY_FRE);
 	/* Divide GPT clock source frequency to 1MHz */
 	GPT_SetClockDivider(OSAL_TIMER, gptFreq / CLOCK_GRANULARITY_FRE);
 	/* Set both GPT modules to 1 second duration */
@@ -356,7 +323,7 @@ static status_t ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame
     return kStatus_Success;
 }
 
-static uint64_t gettime()
+uint64_t system_time64_ns()
 {
 	uint64_t nsec_base;
 	uint32_t cur_nsec;
@@ -369,17 +336,17 @@ static uint64_t gettime()
 		nsec_base  = system_time_ns;
 		cur_nsec   = GPT_GetCurrentTimerCount(OSAL_TIMER);
 	}
-	return nsec_base + cur_nsec * CLOCK_GRANULARITY_NS;
+	return nsec_base + cur_nsec * CLOCK_GRANULARITY_NS - system_time_offset;
 }
 
 static void nsleep_to (uint64_t nsec_target)
 {
-	while (nsec_target > gettime());
+	while (nsec_target > system_time64_ns());
 }
 
 void osal_gettime(struct timeval *current_time)
 {
-	uint64_t nsec = gettime();
+	uint64_t nsec = system_time64_ns();
 	
 	current_time->tv_sec  = nsec / CLOCK_INCREASE_PER_SEC;
 	current_time->tv_usec = (nsec % CLOCK_INCREASE_PER_SEC) / 1000;
@@ -635,6 +602,62 @@ void irq_wake_task(void)
     return;
 }
 
+uint64_t dc_diff_accu = 0;
+int32_t dc_diff_accu_arrary[DC_FILTER_CNT];
+int32_t dc_diff_accu_index = 0;
+void dc_diff_init(int32_t dc_diff_ns)
+{
+	int i;
+	for (i = 0; i < DC_FILTER_CNT; i++) {
+		dc_diff_accu_arrary[i] = dc_diff_ns;
+		dc_diff_accu += dc_diff_ns;
+	}
+}
+int32_t dc_diff_update(int32_t dc_diff_ns)
+{
+	dc_diff_accu += dc_diff_ns;
+	dc_diff_accu -= dc_diff_accu_arrary[dc_diff_accu_index];
+	dc_diff_accu_arrary[dc_diff_accu_index++] = dc_diff_ns;
+	if (dc_diff_accu_index >= DC_FILTER_CNT) {
+		dc_diff_accu_index = 0;
+	}
+	return dc_diff_accu / DC_FILTER_CNT;
+}
+
+#define PID_P  3 / 2
+#define PID_I  3 / 2
+#define PID_D  1 / 5 
+void update_master_clock()
+{
+	int32_t dc_diff_ns_avg;
+    // calc drift (via un-normalised time diff)
+    int32_t delta = dc_diff_ns - prev_dc_diff_ns;
+    prev_dc_diff_ns = dc_diff_ns;
+
+    if (dc_started == 2) {
+		dc_diff_ns_avg = dc_diff_update(dc_diff_ns);
+       dc_adjust_ns = dc_diff_ns * PID_P  + dc_diff_ns_avg * PID_I  + delta * PID_D;
+        if (dc_adjust_ns < -10000) {
+            dc_adjust_ns = -10000;
+        }
+        if (dc_adjust_ns > 10000) {
+            dc_adjust_ns =  10000;
+        }
+		// add cycles adjustment to time base (including a spot adjustment)
+        system_time_offset += dc_adjust_ns;
+    }
+    else {
+		if (dc_started == 0) {
+        	dc_started = (dc_diff_ns != 0);
+			system_time_offset = dc_diff_ns;
+		} else {
+			dc_started = 2;
+			dc_diff_init(dc_diff_ns);
+			system_time_offset += dc_diff_ns / 2;
+		}
+    }
+}
+
 void control_task(char *ifname)
 {
 	int expectedWKC;
@@ -680,7 +703,7 @@ void control_task(char *ifname)
 
 			for (i = 0; i < MAX_SERVO; i++) {
 				if(servo[i].slave->hasdc > 0) {
-				ec_dcsync0(servo[i].slave_id + 1, TRUE, CYCLE_PERIOD_NS, CYCLE_PERIOD_NS * 3);
+				ec_dcsync0(servo[i].slave_id + 1, TRUE, CYCLE_PERIOD_NS, CYCLE_SHIFT_NS);
 				}
 			}
 
@@ -736,20 +759,41 @@ void control_task(char *ifname)
 				ec_statecheck(1, EC_STATE_OPERATIONAL, 50000);
 			} while (chk-- && (ec_slave[0].state != EC_STATE_OPERATIONAL));
 
-			
+			int64_t last_dc_start_time_ns = 0, last_dc = 0;
+			int64_t diff_sys = 0, diff_dc = 0;
+			int l = 0;
 			if (ec_slave[0].state != EC_STATE_OPERATIONAL) {
 				PRINTF("Not all slaves reached operational state.\r\n");
 			} else {
 				PRINTF("Operational state reached for all slaves.\r\n");
-				/* send one valid process data to make outputs in slaves happy*/
-				ec_send_processdata();
+				chk = 100;
+				target_time = system_time64_ns();
+				do {
+					dc_start_time_ns = system_time64_ns();
+					ec_send_processdata();
+					if (ec_receive_processdata(EC_TIMEOUTRET) >= expectedWKC) {
+						dc_diff_ns = dc_start_time_ns - *ecx_context.DCtime;
+						update_master_clock();
+					}
+					target_time += CYCLE_PERIOD_NS;
+					nsleep_to(target_time);
+				} while (chk--);
 				
-				target_time = gettime();
+				target_time = system_time64_ns();
+				target_time += CYCLE_PERIOD_NS;
+				target_time = target_time/CYCLE_PERIOD_NS * CYCLE_PERIOD_NS;
+				nsleep_to(target_time);
+				dc_start_time_ns = system_time64_ns();
+				ec_send_processdata();
 				int op_num = 0;
 				while (1) {
 					target_time += CYCLE_PERIOD_NS;
 					/* SOEM receive data */
 					wkc = ec_receive_processdata(EC_TIMEOUTRET);
+					if (wkc >= expectedWKC) {
+						dc_diff_ns = dc_start_time_ns - *ecx_context.DCtime;
+						update_master_clock();
+					}
 
 					/* servo motor application processing code */
 					for(i = 0; i < MAX_AXIS; i++) {
@@ -778,10 +822,11 @@ void control_task(char *ifname)
 					} else {
 						op_num = 0;
 					}
+					dc_start_time_ns = system_time64_ns();
+					ec_send_processdata();
 
 					/* SOEM transmit data */
-					ec_send_processdata();
-					curr_time = gettime();
+					curr_time = system_time64_ns();
 
 					if (curr_time < target_time) {
 						nsleep_to(target_time);
