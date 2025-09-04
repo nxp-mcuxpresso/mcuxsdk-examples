@@ -1,4 +1,4 @@
-# TFLite ModelRunner User Guide
+# tflm_modelrunner
 
 ##  Overview
 ModelRunner is a benchmarking tool for running TensorFlow Lite models on NXP microcontrollers. It supports both HTTP and UART communication modes and provides detailed latency profiling for each model layer.
