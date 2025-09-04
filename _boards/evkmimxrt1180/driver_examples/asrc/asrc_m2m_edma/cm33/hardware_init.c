@@ -40,7 +40,7 @@ wm8962_config_t wm8962Config = {
         },
     .slaveAddress = WM8962_I2C_ADDR,
     .bus          = kWM8962_BusI2S,
-    .format       = {.mclk_HZ    = 12288000U,
+    .format       = {.mclk_HZ    = 24576000U,
                      .sampleRate = kWM8962_AudioSampleRate32KHz,
                      .bitWidth   = kWM8962_AudioBitWidth16bit},
     .masterSlave  = false,
@@ -189,7 +189,7 @@ void BOARD_InitHardware(void)
     
     BOARD_RequestTRDC(true, true, false);
     TRDC_EDMA3_ResetPermissions();
-
+    TRDC_EDMA4_ResetPermissions();
     /*Clock setting for LPI2C*/
     CLOCK_SetRootClockMux(kCLOCK_Root_Lpi2c0102, kCLOCK_LPI2C0102_ClockRoot_MuxOscRc24M);
 

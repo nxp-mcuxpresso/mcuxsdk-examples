@@ -22,14 +22,14 @@
 #define DEMO_SAI_IRQ     SAI1_IRQn
 #define SAI_TxIRQHandler SAI1_IRQHandler
 
-#define DEMO_AUDIO_MASTER_CLOCK          (CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1) / 2U)
-#define DEMO_ASRC_OUTPUT_SOURCE_CLOCK_HZ (16 * DEMO_AUDIO_SAMPLE_RATE_IN * 2)
+#define DEMO_AUDIO_MASTER_CLOCK          (CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1))
+#define DEMO_ASRC_OUTPUT_SOURCE_CLOCK_HZ (16 * DEMO_AUDIO_SAMPLE_RATE_OUT * 2)
 #define DEMO_ASRC_PERIPHERAL_CLOCK       200000000U
 #define DEMO_ASRC                        ASRC
 #define DEMO_ASRC_CHANNEL_PAIR           kASRC_ChannelPairA
 
-#define DEMO_AUDIO_SAMPLE_RATE_IN  (kSAI_SampleRate48KHz)
-#define DEMO_AUDIO_SAMPLE_RATE_OUT (kSAI_SampleRate32KHz)
+#define DEMO_AUDIO_SAMPLE_RATE_IN  (kSAI_SampleRate16KHz)
+#define DEMO_AUDIO_SAMPLE_RATE_OUT (kSAI_SampleRate48KHz)
 
 /* I2C instance and clock */
 #define DEMO_I2C LPI2C1

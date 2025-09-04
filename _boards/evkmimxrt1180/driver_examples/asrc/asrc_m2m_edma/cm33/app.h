@@ -23,10 +23,10 @@
 #define DEMO_SAI_IRQ          SAI1_IRQn
 #define SAI_TxIRQHandler      SAI1_IRQHandler
 #define DEMO_SAI_CHANNEL      0
-#define DEMO_ASRC_IN_CHANNEL  0
-#define DEMO_ASRC_OUT_CHANNEL 1
+#define DEMO_ASRC_IN_CHANNEL  1
+#define DEMO_ASRC_OUT_CHANNEL 4
 
-#define DEMO_AUDIO_MASTER_CLOCK          (CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1) / 2U)
+#define DEMO_AUDIO_MASTER_CLOCK          (CLOCK_GetRootClockFreq(kCLOCK_Root_Sai1))
 #define DEMO_ASRC_OUTPUT_SOURCE_CLOCK_HZ (16 * DEMO_AUDIO_SAMPLE_RATE_IN * 2)
 #define DEMO_ASRC_PERIPHERAL_CLOCK       200000000U
 #define DEMO_ASRC                        ASRC
