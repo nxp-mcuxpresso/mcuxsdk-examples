@@ -12,11 +12,11 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v14.0
+product: Pins v17.0
 processor: MIMXRT1189xxxxx
 package_id: MIMXRT1189CVM8C
 mcu_data: ksdk2_0
-processor_version: 0.15.4
+processor_version: 0.0.0
 pin_labels:
 - {pin_num: C7, pin_signal: GPIO_AON_05, label: SpiCsPin, identifier: SpiCsPin}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -44,7 +44,7 @@ BOARD_InitPins:
 - pin_list:
   - {pin_num: A5, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09}
   - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08}
-  - {pin_num: C7, peripheral: RGPIO1, signal: 'gpio_io, 5', pin_signal: GPIO_AON_05, direction: OUTPUT, gpio_init_state: 'true', pull_keeper_select: Pull, drive_strength: High}
+  - {pin_num: C7, peripheral: RGPIO1, signal: 'gpio_io, 05', pin_signal: GPIO_AON_05, direction: OUTPUT, gpio_init_state: 'true', pull_keeper_select: Pull, drive_strength: High}
   - {pin_num: B4, peripheral: LPSPI1, signal: SCK, pin_signal: GPIO_AON_04, pull_keeper_select: Pull, drive_strength: High}
   - {pin_num: E7, peripheral: LPSPI1, signal: SOUT, pin_signal: GPIO_AON_06, pull_keeper_select: Pull, drive_strength: High}
   - {pin_num: C6, peripheral: LPSPI1, signal: SIN, pin_signal: GPIO_AON_07, pull_keeper_select: Pull, drive_strength: High}
