@@ -7,4 +7,4 @@ In this example, a flexio simulated A-format connect to the encoder through RS-4
 will send requests to and receive responses from the board.
 
 ## Supported Boards
-- [i.MX943-BB](../../../_boards/imx943evk/digital_encoder_examples/a-format/sync_transfer/example_board_readme.md)
+- [IMX943-EVK](../../../_boards/imx943evk/digital_encoder_examples/a-format/sync_transfer/example_board_readme.md)
