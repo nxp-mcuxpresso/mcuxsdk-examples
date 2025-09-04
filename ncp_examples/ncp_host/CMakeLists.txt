@@ -63,7 +63,8 @@ mcux_add_source(
             common/ncp_adapter/ncp_intf/sdio/sdio_host/ncp_intf_sdio_host.h
             common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.c
             common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
-            common/crc/ncp_crc.c
+            common/crc/ncp_crc_dcp.c
+            common/crc/ncp_crc_sw.c
             common/ncp_utils.c
             common/ncp_utils.h
             common/crc/ncp_crc.h

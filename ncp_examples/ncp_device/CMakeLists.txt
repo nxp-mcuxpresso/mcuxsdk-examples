@@ -108,7 +108,8 @@ mcux_add_source(
             common/lpm/host_sleep.h
             common/lpm/host_sleep_wifi.c
             common/lpm/host_sleep_wifi.h
-            common/crc/ncp_crc.c
+            common/crc/ncp_crc_sw.c
+            common/crc/ncp_crc_hw.c
             common/crc/ncp_crc.h
             common/mbedtls/mbedtls_common.c
             common/mbedtls/mbedtls_common.h

@@ -29,9 +29,7 @@
 #include "fsl_gpio.h"
 #include "fsl_io_mux.h"
 #include "app_notify.h"
-#if CONFIG_CRC32_HW_ACCELERATE
-#include "fsl_crc.h"
-#endif
+#include "ncp_crc.h"
 #if CONFIG_NCP_USB
 #include "usb_device_config.h"
 #include "usb.h"
@@ -466,7 +464,7 @@ static void ncp_suspend_task(void *argv)
 #endif
             DbgConsole_Deinit();
 #if CONFIG_CRC32_HW_ACCELERATE
-            CRC_Reset(CRC);
+            ncp_tlv_chksum_reset();
 #endif
         }
         POWER_EnterPowerMode(suspend_mode, &config);
