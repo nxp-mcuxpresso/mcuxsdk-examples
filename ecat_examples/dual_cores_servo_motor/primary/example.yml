@@ -15,5 +15,5 @@ dual_cores_ecat_servo_motor_primary_core:
     imx943evk@cm33_core1:
     - +armgcc@debug
     - +armgcc@release
-    - +iar@debug
-    - +iar@release
+    - -iar@debug
+    - -iar@release
