@@ -26,9 +26,10 @@ void BOARD_InitHardware(void)
     CLOCK_EnableClock(kCLOCK_FlexComm0);
     CLOCK_AttachClk(kOSC32K_to_CTIMER0);
 
-    BOARD_BootClockXTAL32M();
     BOARD_Configure32kOsc();
+
     BOARD_InitPins();
+    BOARD_BootClockXTAL32M();
 
 #if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
     BOARD_InitDebugConsole();

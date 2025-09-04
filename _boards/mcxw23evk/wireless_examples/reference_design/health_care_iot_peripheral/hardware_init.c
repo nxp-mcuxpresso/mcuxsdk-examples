@@ -30,10 +30,12 @@ void BOARD_InitHardware(void)
     CLOCK_Enable1MFRO(true);
     CLOCK_SetClkDiv(kCLOCK_DivWdtClk, 10U, true);
 
-    BOARD_BootClockXTAL32M();
     CLOCK_AttachClk(kOSC32K_to_CTIMER0);
-    BOARD_InitPins();
+
     BOARD_Configure32kOsc();
+
+    BOARD_InitPins();
+    BOARD_BootClockXTAL32M();
 
 #if defined(gDebugConsoleEnable_d) && (gDebugConsoleEnable_d == 1)
     BOARD_InitDebugConsole();
