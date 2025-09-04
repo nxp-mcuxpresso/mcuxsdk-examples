@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2024 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -44,6 +43,7 @@ void BOARD_InitDEBUG_UARTPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO GPIO3                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_RED_INIT_GPIO_VALUE 1U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN 18U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_RED_GPIO_PIN_MASK (1U << 18U) /*!<@brief GPIO pin mask */
 
@@ -58,6 +58,7 @@ void BOARD_InitDEBUG_UARTPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO GPIO3                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_GREEN_INIT_GPIO_VALUE 1U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN 19U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_GREEN_GPIO_PIN_MASK (1U << 19U) /*!<@brief GPIO pin mask */
 
@@ -72,6 +73,7 @@ void BOARD_InitDEBUG_UARTPins(void);
 
 /* Symbols to be used with GPIO driver */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO GPIO3                /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITLEDSPINS_LED_BLUE_INIT_GPIO_VALUE 1U        /*!<@brief GPIO output initial state */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN 21U              /*!<@brief GPIO pin number */
 #define BOARD_INITLEDSPINS_LED_BLUE_GPIO_PIN_MASK (1U << 21U) /*!<@brief GPIO pin mask */
 
