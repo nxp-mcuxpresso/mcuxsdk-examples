@@ -8,7 +8,7 @@ include(${SdkRootDirPath}/CMakeLists.txt)
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/driver_examples/asrc/asrc_m2m_interrupt/asrc_m2m_interrupt.c
-            examples/driver_examples/asrc/music.h
+            examples/driver_examples/asrc/asrc_m2m_interrupt/music.h
 )
 
 mcux_add_include(
