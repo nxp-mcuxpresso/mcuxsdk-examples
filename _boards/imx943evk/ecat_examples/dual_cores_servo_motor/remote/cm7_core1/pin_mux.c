@@ -59,7 +59,10 @@ void BOARD_InitBootPins(void)
 void BOARD_Init_M1_PWM(void)
 {
   /* Select Motor controller 1 */
+  BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
   
   /* M1_PWM_AT	ETH2_TXD3 / SEMC_ADDR7 */
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_TXD3__FLEXPWM2_PWMA0, 0);
@@ -85,8 +88,10 @@ void BOARD_Init_M1_ENDAT2P2(void)
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH2_RXD3__DIG_ENCODER2_DATA_IN ,0U);
   
   /* Select Motor controller 1 */
+  BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
-  SDK_DelayAtLeastUs(100U, SystemCoreClock);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
  
   /* EXTENDED PWM to trigger EnDat getsens */
   BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
@@ -98,7 +103,10 @@ void BOARD_Init_M1_ENDAT2P2(void)
 void BOARD_Init_M1_SINC(void)
 {
   /* Select Motor controller 1 (SINC filer signals) */
+  BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SD1_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SD1_SEL);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
 
   /* M1_SINCA_D0	SD1_CMD */
   IOMUXC_SetPinMux(IOMUXC_PAD_SD1_CMD__SINC1_EMBIT0, 0);
@@ -116,12 +124,14 @@ void BOARD_Init_M1_FAULTS(void)
 {
  /* Select Motor controller 1 */
   BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, CAN5_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN5_SEL);
-  SDK_DelayAtLeastUs(100U, SystemCoreClock);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
 
   BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SAI3_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SAI3_SEL);
-  SDK_DelayAtLeastUs(100U, SystemCoreClock);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
 
   /* Over-currrent protection */
   BLK_CTRL_WAKEUPMIX->IOMUX_GPIO_CTRL_0 = ((BLK_CTRL_WAKEUPMIX->IOMUX_GPIO_CTRL_0 &
@@ -149,7 +159,10 @@ void BOARD_Init_M1_FAULTS(void)
 void BOARD_Init_M2_PWM(void)
 {
   /* Select Motor controller 2 (PWM signals) */
+  BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
   
   /* M2_PWM_AT	ETH3_TXD3 / SEMC_DATA8 */
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_TXD3__FLEXPWM1_PWMA0, 0);
@@ -173,9 +186,11 @@ void BOARD_Init_M2_ENDAT2P2(void)
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD1__DIG_ENCODER1_DATA_CLK, 0U);
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD2__DIG_ENCODER1_DATA_OUT, 0U);
   IOMUXC_SetPinMux(IOMUXC_PAD_ETH3_RXD3__DIG_ENCODER1_DATA_IN, 0U);
-  
+
+  BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);
-  SDK_DelayAtLeastUs(100U, SystemCoreClock);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
   
   /* EXTENDED PWM to trigger EnDat StrN */
   BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(2U);
@@ -189,7 +204,10 @@ void BOARD_Init_M2_ENDAT2P2(void)
 void BOARD_Init_M2_SINC(void)
 {
   /* Select Motor controller 2 (SINC filer signals) */
+  BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SD2_SEL);
+  SDK_DelayAtLeastUs(2000U, SystemCoreClock);
   BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SD2_SEL);
+  SDK_DelayAtLeastUs(10000U, SystemCoreClock);
   
   /* M2_SINCA_D0	SD2_CLK */
   IOMUXC_SetPinMux(IOMUXC_PAD_SD2_CLK__SINC2_EMBIT0, 0);

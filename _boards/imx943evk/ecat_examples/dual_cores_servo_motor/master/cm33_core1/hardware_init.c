@@ -90,7 +90,6 @@ UINT16 HW_Init(void)
     BOARD_InitDebugConsole();
 
     PRINTF("Start the SSC dual-cores servo motor example...\r\n");
-    MU_ipc_shm_init((uint32_t)ipc_shm_section, IPC_SHM_SIZE);
 
 #if USING_ECAT_CLK25
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S1_ID, ETHD_REFCLK_A0);
@@ -132,6 +131,8 @@ UINT16 HW_Init(void)
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, CAN2_SEL);
     SDK_DelayAtLeastUs(100000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
 
+   /* It must be called after BOARD_PCA6416_I2C6 accessing */
+    MU_ipc_shm_init((uint32_t)ipc_shm_section, IPC_SHM_SIZE);
     Ecat_KickOff();
 
     SDK_DelayAtLeastUs(90000, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
