@@ -34,7 +34,7 @@ void DEMO_InitCtimerInput(void)
 {
     /* Connect pin set as TRIG_IN3 to CTIMER2 capture */
     INPUTMUX_Init(INPUTMUX0);
-    INPUTMUX_AttachSignal(INPUTMUX0, kINPUTMUX_INDEX_CTIMER2CAP0, kINPUTMUX_CtInp3ToCTIMER2CAPn);
+    INPUTMUX_AttachSignal(INPUTMUX0, kINPUTMUX_INDEX_CTIMER2CAP0, kINPUTMUX_TrigInp3ToCTIMER2CAPn);
 }
 
 void DEMO_InitGpioPin(void)
