@@ -1342,6 +1342,56 @@ void BOARD_InitFLEXIO_PWMPins(void) {
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitFLEXIO_AFORMATPins:
+- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: G3, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+    open_drain: Disable}
+  - {pin_num: H4, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+    open_drain: Disable}
+  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+    open_drain: Disable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitFLEXIO_AFORMATPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitFLEXIO_AFORMATPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00,  /* GPIO_EMC_B1_00 is configured as FLEXIO1_FLEXIO00 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_00 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_FLEXIO01,  /* GPIO_EMC_B1_01 is configured as FLEXIO1_FLEXIO01 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_01 */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 is configured as FLEXIO1_FLEXIO03 */
+      1U);                                    /* Software Input On Field: Force input path of pad GPIO_EMC_B1_03 */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B1_00_FLEXIO1_FLEXIO00,  /* GPIO_EMC_B1_00 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B1_01_FLEXIO1_FLEXIO01,  /* GPIO_EMC_B1_01 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_EMC_B1_03_FLEXIO1_FLEXIO03,  /* GPIO_EMC_B1_03 PAD functional properties : */
+      0x08U);                                 /* PDRV Field: high driver
+                                                 Pull Down Pull Up Field: PD
+                                                 Open Drain Field: Disabled */
+}
+
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitFLEXSPI_FLRPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:

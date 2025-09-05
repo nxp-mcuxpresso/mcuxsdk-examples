@@ -300,6 +300,12 @@ void BOARD_InitFLEXIO_PWMPins(void);          /* Function assigned for the Corte
  * @brief Configures pin routing and optionally pin electrical features.
  *
  */
+void BOARD_InitFLEXIO_AFORMATPins(void);          /* Function assigned for the Cortex-M33 */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
 void BOARD_InitFLEXSPI_FLRPins(void);         /* Function assigned for the Cortex-M33 */
 
 /*!
