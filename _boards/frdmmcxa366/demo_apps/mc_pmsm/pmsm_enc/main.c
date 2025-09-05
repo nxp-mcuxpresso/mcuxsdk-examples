@@ -392,21 +392,21 @@ static void DemoPositionStimulator(void)
  */
 void GPIO1_IRQHandler(void) {
   
-    /* Speed demo */
-    if (bDemoModeSpeed)
-    {
-        /* Stop application */
-        M1_SetSpeed(0);
-        M1_SetAppSwitch(0);
-        bDemoModeSpeed = FALSE;
-    }
-    else
-    {
-        /* Start application */
-        M1_SetAppSwitch(1);
-        bDemoModeSpeed         = TRUE;
-        ui32SpeedStimulatorCnt = 0;
-    }
+//    /* Speed demo */
+//    if (bDemoModeSpeed)
+//    {
+//        /* Stop application */
+//        M1_SetSpeed(0);
+//        M1_SetAppSwitch(0);
+//        bDemoModeSpeed = FALSE;
+//    }
+//    else
+//    {
+//        /* Start application */
+//        M1_SetAppSwitch(1);
+//        bDemoModeSpeed         = TRUE;
+//        ui32SpeedStimulatorCnt = 0;
+//    }
 
     /* Clear external interrupt flag. */
     GPIO_GpioClearInterruptFlags(BOARD_INITPINS_SW2_GPIO, 1U << BOARD_INITPINS_SW2_PIN);
