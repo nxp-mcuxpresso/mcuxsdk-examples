@@ -74,14 +74,14 @@
 
 volatile unsigned char var8;
 volatile unsigned char var8rw;
-volatile unsigned char var8inc = 1;
+volatile unsigned char var8inc = 1U;
 volatile unsigned short var16;
 volatile unsigned short var16rw;
-volatile unsigned short var16inc = 1;
+volatile unsigned short var16inc = 1U;
 volatile unsigned short var16prv;
 volatile unsigned long var32;
 volatile unsigned long var32rw;
-volatile unsigned long var32inc = 100;
+volatile unsigned long var32inc = 100U;
 
 volatile unsigned char frac8;
 volatile unsigned short frac16;
@@ -103,7 +103,7 @@ volatile unsigned long arr32[ARR_SIZE];
 #if FMSTR_DEMO_SUPPORT_I64
 volatile unsigned long long var64;
 volatile unsigned long long var64rw;
-volatile unsigned long long var64inc = 10000;
+volatile unsigned long long var64inc = 10000U;
 volatile unsigned long long arr64[ARR_SIZE];
 volatile unsigned long long frac64;
 volatile unsigned long long ufrac64;
@@ -112,7 +112,7 @@ volatile unsigned long long ufrac64;
 #if FMSTR_DEMO_SUPPORT_FLT
 volatile float varFLT;
 volatile float varFLTrw;
-volatile float varFLTinc = 1.0;
+volatile float varFLTinc = 1.0f;
 volatile float arrFLT[ARR_SIZE_FLT];
 volatile unsigned int arrFLT_size = ARR_SIZE_FLT;
 #endif
@@ -491,43 +491,43 @@ void FMSTR_Example_Init(void)
 {
     int i;
 
-    var8     = 0;
-    var8rw   = 0;
-    var8inc  = 1;
-    var16    = 0;
-    var16rw  = 0;
-    var16inc = 1;
-    var32    = 0;
-    var32rw  = 0;
-    var32inc = 100;
+    var8     = 0U;
+    var8rw   = 0U;
+    var8inc  = 1U;
+    var16    = 0U;
+    var16rw  = 0U;
+    var16inc = 1U;
+    var32    = 0U;
+    var32rw  = 0U;
+    var32inc = 100U;
 
-    frac8   = 0;
-    frac16  = 0;
-    frac32  = 0;
-    ufrac8  = 0;
-    ufrac16 = 0;
-    ufrac32 = 0;
+    frac8   = 0U;
+    frac16  = 0U;
+    frac32  = 0U;
+    ufrac8  = 0U;
+    ufrac16 = 0U;
+    ufrac32 = 0U;
 
     arr_size = ARR_SIZE;
     
 #if FMSTR_DEMO_SUPPORT_I64
-    var64    = 0;
-    var64rw  = 0;
-    var64inc = 10000;
-    frac64   = 0;
-    ufrac64  = 0;
+    var64    = 0U;
+    var64rw  = 0U;
+    var64inc = 10000U;
+    frac64   = 0U;
+    ufrac64  = 0U;
 #endif
 
 #if FMSTR_DEMO_SUPPORT_FLT
-    varFLT    = 0;
-    varFLTrw  = 0;
-    varFLTinc = 1.0;
+    varFLT    = 0.0f;
+    varFLTrw  = 0.0f;
+    varFLTinc = 1.0f;
     arrFLT_size = ARR_SIZE_FLT;    
 #endif
 
 #if FMSTR_DEMO_SUPPORT_DBL
-    varDBL    = 0;
-    varDBLrw  = 0;
+    varDBL    = 0.0;
+    varDBLrw  = 0.0;
     varDBLinc = 1.0;
     arrDBL_size = ARR_SIZE_DBL;
 #endif
@@ -538,10 +538,10 @@ void FMSTR_Example_Init(void)
     for (i = 0; i < ARR_SIZE; i++)
     {
         arr8[i]  = (unsigned char)i;
-        arr16[i] = (unsigned short)i * 10;
-        arr32[i] = (unsigned long)i * 100;
+        arr16[i] = (unsigned short)(i * 10);
+        arr32[i] = (unsigned long)(i * 100);
 #if FMSTR_DEMO_SUPPORT_I64
-        arr64[i] = (unsigned long long)i * 1000;
+        arr64[i] = (unsigned long long)(i * 1000);
 #endif
     }
 
