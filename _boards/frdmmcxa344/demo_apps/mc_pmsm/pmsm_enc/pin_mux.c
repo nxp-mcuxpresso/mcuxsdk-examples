@@ -424,7 +424,7 @@ BOARD_InitENC:
 - options: {callFromInitBoot: 'true', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: '6', peripheral: eQDC0, signal: PHASEA, pin_signal: P1_13/TRIG_IN3/LPI2C1_SCL/LPUART2_TXD/CT2_MAT3/SMARTDMA_PIO9/CAN0_TXD/ADC1_A11}
-  - {pin_num: '70', peripheral: eQDC0, signal: PHASEB, pin_signal: P3_7/TRIG_IN2/LPSPI1_PCS2/LPUART3_CTS_B/PWM0_B3/PWM1_B0/SMARTDMA_PIO7}
+  - {pin_num: '48', peripheral: eQDC0, signal: PHASEB, pin_signal: P3_31/LPTMR0_ALT2/TRIG_IN10/LPI2C1_SDAS/CT0_MAT3/PWM1_B0/SMARTDMA_PIO31/ADC1_A20}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -451,8 +451,8 @@ void BOARD_InitENC(void)
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
     /*  TrigIn3 connect to Qdc0Phasea 0 */
     INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_TrigIn3ToQdc0Phasea);
-    /*  TrigIn2 connect to Qdc0Phaseb 0 */
-    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_TrigIn2ToQdc0Phaseb);
+    /*  TrigIn10 connect to Qdc0Phaseb 0 */
+    INPUTMUX_AttachSignal(INPUTMUX0, 0U, kINPUTMUX_TrigIn10ToQdc0Phaseb);
 
     /* PORT1_13 (pin 6) is configured as TRIG_IN3 */
     PORT_SetPinMux(PORT1, 13U, kPORT_MuxAlt1);
@@ -464,15 +464,15 @@ void BOARD_InitENC(void)
                       /* Input Buffer Enable: Enables. */
                       | PORT_PCR_IBE(PCR_IBE_ibe1));
 
-    /* PORT3_7 (pin 70) is configured as TRIG_IN2 */
-    PORT_SetPinMux(PORT3, 7U, kPORT_MuxAlt1);
+    /* PORT3_31 (pin 48) is configured as TRIG_IN10 */
+    PORT_SetPinMux(PORT3, 31U, kPORT_MuxAlt1);
 
-    PORT3->PCR[7] = ((PORT3->PCR[7] &
-                      /* Mask bits to zero which are setting */
-                      (~(PORT_PCR_IBE_MASK)))
+    PORT3->PCR[31] = ((PORT3->PCR[31] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
 
-                     /* Input Buffer Enable: Enables. */
-                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
 }
 /***********************************************************************************************************************
  * EOF
