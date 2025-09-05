@@ -48,6 +48,8 @@ mcux_add_source(
     SOURCES SSC/Src/mailbox.c
     SOURCES SSC/Src/objdef.c
     SOURCES SSC/Src/sdoserv.c
+    SOURCES SSC/0001-SSC-Servo-dual-cores-servo-motor-control-support.patch
+    SOURCES SSC/servo_motor.xml
 )
 
 mcux_add_include(
