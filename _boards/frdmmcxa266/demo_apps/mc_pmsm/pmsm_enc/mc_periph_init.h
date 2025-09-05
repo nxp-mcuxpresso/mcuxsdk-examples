@@ -72,12 +72,12 @@ typedef struct _clock_setup
 /* Output PWM deadtime register value */
 #define M1_PWM_DEADTIME_LENGTH_DTVAL    (67U)
 
-/* Over-current Fault enable */
+/* Over-current Fault enable - connect J2-17 with J2-9 to correct functionality. */
 #define M1_FAULT_ENABLE         (1U)
 /* Over-current Fault detection number */
 #define M1_FAULT_NUM            (0U)
 /* Over-current CMP input channel */   
-#define CMP_INPUT_CHANNEL       (0U)
+#define CMP_INPUT_CHANNEL       (1U)
 /* CMP DAC input channel */ 
 #define CMP_DAC_CHANNEL         (7U)
 /* CMP Overcurrent threshold */
