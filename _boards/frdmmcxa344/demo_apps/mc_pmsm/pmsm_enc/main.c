@@ -79,7 +79,7 @@ static uint32_t ui32PositionStimulatorCnt = 0U;
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
     "../../../examples/_boards/frdmmcxa344/demo_apps/mc_pmsm/pmsm_enc",                       /* User Path 1- the highest priority */
-    "../../../boards/frdmmcxa344/demo_apps/mc_pmsm/pmsm_enc",       /* User Path 2 */
+    "",       /* User Path 2 */
     "frdmmcxa344",    /* board id */
     "pmsm_enc", /* example id */
     MCRSP_VER,      /* sw version */
