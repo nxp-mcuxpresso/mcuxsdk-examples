@@ -69,8 +69,11 @@ int main(void)
     POWER_DisablePD(kPDRUNCFG_PPD_CASPER_SRAM);
     POWER_ApplyPD();
 
+    /* this is required by mflash_init() to be initialized before calling it */
+    GPIO_PortInit(GPIO, BOARD_FLASH_RESET_GPIO_PORT);
+
     PRINTF("hello sbl.\r\n");
-    
+
 #if defined(MCUBOOT_DIRECT_XIP) && defined(CONFIG_MCUBOOT_FLASH_REMAP_ENABLE)
     /* Make sure flash remapping function is disabled before running the
      * bootloader application .

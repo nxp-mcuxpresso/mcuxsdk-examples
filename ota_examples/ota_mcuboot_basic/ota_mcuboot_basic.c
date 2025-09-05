@@ -127,6 +127,11 @@ static void print_hash(const void *src, size_t size)
     }
 }
 
+static void do_reboot(void)
+{
+    NVIC_SystemReset();
+}
+
 
 static shell_status_t shellCmd_image(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
@@ -534,7 +539,7 @@ static shell_status_t shellCmd_xmodem_sb3(shell_handle_t shellHandle, int32_t ar
 static shell_status_t shellCmd_reboot(shell_handle_t shellHandle, int32_t argc, char **argv)
 {
     PRINTF("System reset!\n");
-    NVIC_SystemReset();
+    do_reboot();
 
     return kStatus_SHELL_Success;
 }
