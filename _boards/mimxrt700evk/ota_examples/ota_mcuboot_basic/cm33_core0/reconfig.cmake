@@ -1,4 +1,12 @@
-
+# MCUX-82395 problem with boot - decrease optimization
+mcux_add_armgcc_configuration(
+    TARGETS flash_release
+    CC "-O3"
+)
+mcux_remove_armgcc_configuration(
+    TARGETS flash_release
+    CC "-Os"
+)
 
 
 # Add additional configuration
