@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -16,10 +16,11 @@
 
 #define RESET_CHECK_FLAG       (*((uint32_t *)0x20014000))
 #define RESET_CHECK_INIT_VALUE 0x0D0D
-#define EXAMPLE_WDOG_BASE      WDOG0
+#define EXAMPLE_WDOG_BASE      WDOG1
 #define DELAY_TIME             100000U
-#define WDOG_IRQHandler        WDOG0_IRQHandler
+#define WDOG_IRQHandler        WDOG1_IRQHandler
 #define EXAMPLE_CMC_BASE       CMC0
+#define EXAMPLE_CMC_WDOG_RESET_SOURCE kCMC_Watchdog1Reset
 /*${macro:end}*/
 
 /*******************************************************************************
