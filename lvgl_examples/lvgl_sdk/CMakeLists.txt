@@ -5,14 +5,18 @@ if (CONFIG_MCUX_COMPONENT_middleware.lvgl)
         CX "-DLV_CONF_INCLUDE_SIMPLE=1"
     )
 
+    mcux_add_iar_configuration(
+        CX "--diag_suppress=Pe257,Pa039"
+    )
+
     mcux_add_armgcc_configuration(
-        CC "-fms-extensions"
-        CX "-fms-extensions"
+        CC "-fms-extensions" "-Wno-unused-variable"
+        CX "-fms-extensions" "-Wno-unused-variable"
     )
 
     mcux_add_mdk_configuration(
-        CC "-fms-extensions"
-        CX "-fms-extensions"
+        CC "-fms-extensions" "--diag_suppress=1296"
+        CX "-fms-extensions" "--diag_suppress=1296"
     )
 
     mcux_add_include(
