@@ -127,6 +127,7 @@ mbedtls_selftest:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    - -mdk@flexspi_nor_release
     evkmimxrt595@cm33: []
     evkmimxrt685@cm33: []
     frdmk32l2a4s: []
