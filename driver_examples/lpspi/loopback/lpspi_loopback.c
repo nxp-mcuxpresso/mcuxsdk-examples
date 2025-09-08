@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2013 - 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2017 NXP
+ * Copyright 2016-2017,2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -15,7 +15,7 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define TRANSFER_SIZE     (512U)    /*! Transfer dataSize.*/
+#define TRANSFER_SIZE     (128U)    /*! Transfer dataSize .*/
 #define TRANSFER_BAUDRATE (500000U) /*! Transfer baudrate - 500k */
 
 /*******************************************************************************
@@ -28,9 +28,27 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-void EXAMPLE_LPSPI_IRQHANDLER(void)
+static void LPSPI_Init(void)
 {
-    LPSPI_MasterTransferHandleIRQ(EXMPALE_LPSPI_BASE, &g_sLpspiHandle);
+    lpspi_master_config_t masterConfig;
+
+    /* Master config */
+    LPSPI_MasterGetDefaultConfig(&masterConfig);
+    masterConfig.baudRate                      = TRANSFER_BAUDRATE;
+    masterConfig.bitsPerFrame                  = 8;
+    masterConfig.cpol                          = kLPSPI_ClockPolarityActiveHigh;
+    masterConfig.cpha                          = kLPSPI_ClockPhaseFirstEdge;
+    masterConfig.direction                     = kLPSPI_MsbFirst;
+    masterConfig.whichPcs                      = EXAMPLE_LPSPI_PCS_FOR_INT;
+    masterConfig.pcsActiveHighOrLow            = kLPSPI_PcsActiveLow;
+    masterConfig.pinCfg                        = kLPSPI_SdiInSdoOut;
+    masterConfig.dataOutConfig                 = kLpspiDataOutTristate;
+    masterConfig.pcsToSckDelayInNanoSec        = 1000000000 / masterConfig.baudRate;
+    masterConfig.lastSckToPcsDelayInNanoSec    = 1000000000 / masterConfig.baudRate;
+    masterConfig.betweenTransferDelayInNanoSec = 1000000000 / masterConfig.baudRate;
+    masterConfig.enableInputDelay              = false;
+
+    LPSPI_MasterInit(EXAMPLE_LPSPI_BASEADDR, &masterConfig, EXAMPLE_LPSPI_CLOCK_FREQ);
 }
 
 /*!
@@ -38,28 +56,48 @@ void EXAMPLE_LPSPI_IRQHANDLER(void)
  */
 int main(void)
 {
+    uint8_t i;
+    lpspi_transfer_t masterXfer;
+    uint8_t masterRxData[TRANSFER_SIZE] = {0};
+    uint8_t masterTxData[TRANSFER_SIZE] = {0};
+
+    /* Init board hardware. */
     BOARD_InitHardware();
 
-    PRINTF("LPSPI polling example start.\r\n");
-    PRINTF("This example use one lpspi instance as master and another as slave on one board.\r\n");
-    PRINTF("Master uses polling way and slave uses interrupt way.\r\n");
-    PRINTF(
-        "Note that some LPSPI instances interrupt is in INTMUX ,"
-        "you should set the intmux when you porting this example accordingly \r\n");
+    PRINTF("\r\nLPSPI loopback example start\r\n");
+    LPSPI_Init();
 
-    PRINTF("Please make sure you make the correct line connection. Basically, the connection is: \r\n");
-    PRINTF("LPSPI_master -- LPSPI_slave   \r\n");
-    PRINTF("   CLK      --    CLK  \r\n");
-    PRINTF("   PCS      --    PCS \r\n");
-    PRINTF("   SOUT     --    SIN  \r\n");
-    PRINTF("   SIN      --    SOUT \r\n");
+    for (i = 0; i < TRANSFER_SIZE; i++)
+    {
+        masterTxData[i] = i;
+    }
+    /*Start master transfer*/
+    masterXfer.txData      = masterTxData;
+    masterXfer.rxData      = masterRxData;
+    masterXfer.dataSize    = TRANSFER_SIZE;
+    masterXfer.configFlags = EXAMPLE_LPSPI_PCS_FOR_TRANS | kLPSPI_MasterPcsContinuous;
+    LPSPI_MasterTransferBlocking(EXAMPLE_LPSPI_BASEADDR, &masterXfer);
 
-    EnableIRQ(EXAMPLE_LPSPI_IRQ);
-    LPSPI_MasterInit();
-    LPSPI_MasterTransferCreateHandle();
-    LPSPI_MasterTranserSendReceive();
+    /* Compare Tx and Rx data. */
+    for (i = 0; i < TRANSFER_SIZE; i++)
+    {
+        if (masterTxData[i] != masterRxData[i])
+        {
+            break;
+        }
+    }
+
+    if (TRANSFER_SIZE == i)
+    {
+        PRINTF("LPSPI loopback test pass!!!");
+    }
+    else
+    {
+        PRINTF("LPSPI loopback test fail!!!");
+    }
 
     while (1)
     {
+        __NOP();
     }
 }
