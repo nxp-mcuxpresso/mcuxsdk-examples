@@ -44,8 +44,8 @@ typedef struct the_message
  * Code
  ******************************************************************************/
 
-THE_MESSAGE volatile msg    = {0};
-static uint32_t remote_addr = 0U;
+static THE_MESSAGE volatile msg = {0};
+static uint32_t remote_addr     = 0U;
 #if CONFIG_SECONDARY_CORE_USES_TZM == 1
 extern struct rpmsg_lite_instance *rpmsg_lite_instance_s;
 #else
@@ -92,7 +92,7 @@ int main(void)
         status = MCMGR_GetStartupData(kMCMGR_Core0, &startupData);
     } while (status != kStatus_MCMGR_Success);
 
-    rpmsg_lite_instance_s = rpmsg_lite_remote_init((void *)(char *)startupData, RPMSG_LITE_LINK_ID, RL_NO_FLAGS, &rpmsg_lite_ctxt_s);
+    rpmsg_lite_instance_s = rpmsg_lite_remote_init((void *)(char *)(platform_patova(startupData)), RPMSG_LITE_LINK_ID, RL_NO_FLAGS, &rpmsg_lite_ctxt_s);
     if (rpmsg_lite_instance_s == NULL)
     {
         goto cleanup;

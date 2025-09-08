@@ -30,7 +30,7 @@ typedef struct the_message
 /*******************************************************************************
  * Code
  ******************************************************************************/
-THE_MESSAGE volatile msg = {0};
+static THE_MESSAGE volatile msg = {0};
 
 /* This is the read callback for the non-secure endpoint */
 static int32_t my_ept_read_cb_ns(void *payload, int32_t payload_len, uint32_t src, void *priv)

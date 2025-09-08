@@ -38,11 +38,11 @@ typedef struct the_message
 #define SH_MEM_TOTAL_SIZE (6144U)
 #if defined(__ICCARM__) /* IAR Workbench */
 #pragma location = "rpmsg_sh_mem_section"
-char rpmsg_lite_base[SH_MEM_TOTAL_SIZE];
-#elif defined(__GNUC__)
-char rpmsg_lite_base[SH_MEM_TOTAL_SIZE] __attribute__((section(".noinit.$rpmsg_sh_mem")));
+static char rpmsg_lite_base[SH_MEM_TOTAL_SIZE];
 #elif defined(__CC_ARM) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) /* Keil MDK */
-char rpmsg_lite_base[SH_MEM_TOTAL_SIZE] __attribute__((section("rpmsg_sh_mem_section")));
+static char rpmsg_lite_base[SH_MEM_TOTAL_SIZE] __attribute__((section("rpmsg_sh_mem_section")));
+#elif defined(__GNUC__)
+static char rpmsg_lite_base[SH_MEM_TOTAL_SIZE] __attribute__((section(".noinit.$rpmsg_sh_mem")));
 #else
 #error "RPMsg: Please provide your definition of rpmsg_lite_base[]!"
 #endif
@@ -54,7 +54,7 @@ char rpmsg_lite_base[SH_MEM_TOTAL_SIZE] __attribute__((section("rpmsg_sh_mem_sec
 /*******************************************************************************
  * Code
  ******************************************************************************/
-THE_MESSAGE volatile msg = {0};
+static THE_MESSAGE volatile msg = {0};
 extern struct rpmsg_lite_instance *rpmsg_lite_instance_s;
 struct rpmsg_lite_instance rpmsg_lite_ctxt_s;
 
@@ -69,8 +69,8 @@ static int32_t my_ept_read_cb(void *payload, uint32_t payload_len, uint32_t src,
         (void)memcpy((void *)&msg, payload, payload_len);
         *has_received = 1;
     }
-    PRINTF("Primary core received a msg\r\n");
-    PRINTF("Message: Size=%x, DATA = %i\r\n", (unsigned int)payload_len, (int)msg.DATA);
+    (void)PRINTF("Primary core received a msg\r\n");
+    (void)PRINTF("Message: Size=%x, DATA = %i\r\n", (unsigned int)payload_len, (int)msg.DATA);
     return RL_RELEASE;
 }
 

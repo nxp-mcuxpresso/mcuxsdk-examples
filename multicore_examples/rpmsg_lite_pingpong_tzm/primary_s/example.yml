@@ -58,3 +58,4 @@ rpmsg_lite_pingpong_tzm_primary_core_s:
     lpcxpresso55s69@cm33_core0: []
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
+    frdmmcxl255@cm33: []
