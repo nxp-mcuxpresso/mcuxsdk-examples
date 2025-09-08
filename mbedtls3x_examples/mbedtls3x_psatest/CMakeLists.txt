@@ -32,3 +32,8 @@ mcux_add_iar_configuration(
     CX "--diag_suppress Pe111,Pe188"
     CC "--diag_suppress Pe111,Pe188"
 )
+
+mcux_add_mdk_configuration(
+    CC "-Wno-typedef-redefinition"
+    CX "-Wno-typedef-redefinition"
+)
