@@ -409,6 +409,7 @@
 #define LWIP_STATS 0
 #else
 #define LWIP_STATS 1
+#define LWIP_STATS_LARGE 1
 #endif
 
 /**
