@@ -70,6 +70,8 @@ void PD_PowerGetVbusVoltage(uint32_t *partnerSourceCaps, pd_rdo_t rdo, pd_vbus_p
             break;
 
         default:
+            /* Clear all vbusPower fields for unsupported PDO types */
+            (void)memset((void *)vbusPower, 0U, sizeof(pd_vbus_power_t));
             break;
     }
 }

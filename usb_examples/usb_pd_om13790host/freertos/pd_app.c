@@ -470,6 +470,11 @@ static void PD_GpioInit(pd_app_t *pdAppInstance)
         },
 #endif
     };
+	
+    if (pdAppInstance->portNumber < 1U)
+    {
+       return;
+    }
     pd_demo_io_init_t *demoGpioPinConfig = &portsDemoPinConfigArray[pdAppInstance->portNumber - 1];
     hal_gpio_pin_config_t config;
 

@@ -372,7 +372,7 @@ static usb_status_t USB_DeviceBuildPath(usb_mtp_struct_t *mtp, uint32_t storageI
         }
 
         nameLen = USB_DeviceUnicodeStringLength(objHandleStruct.name);
-        if ((forwardOffset - nameLen) < 2U)
+        if (forwardOffset < (nameLen + 2U))
         {
             return kStatus_USB_Error;
         }
