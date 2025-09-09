@@ -28,6 +28,7 @@ typedef enum _lpm_power_mode
     LPM_PowerModeWait,    /* WAIT mode. */
     LPM_PowerModeStop,    /* STOP mode. */
     LPM_PowerModeSuspend, /* SUSPEND mode. */
+    LPM_PowerModeCount,
 } lpm_power_mode_t;
 
 typedef bool (*lpm_power_mode_callback_t)(lpm_power_mode_t curMode, lpm_power_mode_t newMode, void *data);

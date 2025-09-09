@@ -330,9 +330,17 @@ void PowerModeSwitchTask(void *pvParameters)
         {
             ch -= 'a' - 'A';
         }
-        targetPowerMode = (lpm_power_mode_t)(ch - 'A');
 
-        if ((targetPowerMode >= LPM_PowerModeRun) && (targetPowerMode <= LPM_PowerModeSuspend))
+        int modeIndex = ch - 'A';
+
+        if (modeIndex < 0 || modeIndex >= LPM_PowerModeCount)
+        {
+            PRINTF("Invalid power mode input: %c\r\n", ch);
+            continue;
+        }
+        targetPowerMode = (lpm_power_mode_t)modeIndex;
+
+        if (targetPowerMode < LPM_PowerModeCount)
         {
             if (targetPowerMode == s_curMode)
             {
