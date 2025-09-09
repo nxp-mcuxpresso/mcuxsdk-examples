@@ -134,7 +134,6 @@ int main(void)
     /* Structure of initialize PWM */
     pwm_config_t pwmConfig;
     pwm_fault_param_t faultConfig;
-    uint32_t pwmVal = 4;
 
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
