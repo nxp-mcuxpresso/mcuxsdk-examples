@@ -1,5 +1,5 @@
 iar:
-  shared-workspace: power_mode_switch_mcxl_primary_cm33
+  shared-workspace: power_mode_switch_mcxl
   sharing-workspace:
   - ../../power_mode_switch_mcxl_secondary/iar/power_mode_switch_mcxl_secondary_${SB_CONFIG_secondary_core_id}
   config:
@@ -15,6 +15,6 @@ iar:
       asym-multicore-debugger:
         slave-configuration: release
 mdk:
-  shared-workspace: power_mode_switch_mcxl_primary_cm33
+  shared-workspace: power_mode_switch_mcxl
   sharing-workspace:
   - ../../power_mode_switch_mcxl_secondary/mdk/power_mode_switch_mcxl_secondary_${SB_CONFIG_secondary_core_id}
