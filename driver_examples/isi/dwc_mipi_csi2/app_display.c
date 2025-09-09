@@ -9,7 +9,7 @@
 #include "isi_config.h"
 #include "isi_example.h"
 #include "fsl_dpu.h"
-#include "dpu_example.h"
+#include "display_support.h"
 #include "fsl_ldb.h"
 
 /*******************************************************************************

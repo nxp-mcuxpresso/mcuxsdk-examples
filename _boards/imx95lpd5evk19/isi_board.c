@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,7 +11,6 @@
 #include "fsl_camera_device.h"
 #include "fsl_ap1302.h"
 #include "fsl_lpi2c.h"
-#include "dpu_example.h"
 #include "isi_config.h"
 
 /*******************************************************************************

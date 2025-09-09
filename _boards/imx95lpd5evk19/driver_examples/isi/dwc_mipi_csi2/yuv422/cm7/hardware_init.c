@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,7 +9,7 @@
 #include "hal_power.h"
 #include "sm_platform.h"
 #include "isi_example.h"
-#include "dpu_example.h"
+#include "display_support.h"
 /*${header:end}*/
 
 /*${function:start}*/
