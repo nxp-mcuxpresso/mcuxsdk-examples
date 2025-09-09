@@ -19,3 +19,7 @@ mcux_add_include(
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/prince_rom/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+
+mcux_add_linker_symbol(
+    SYMBOLS "__stack_size__=0x2000"
+)
