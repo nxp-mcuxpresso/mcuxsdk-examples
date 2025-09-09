@@ -8,6 +8,7 @@ ezhv_examples
 
 
    arm2ezhv_int_chan/readme.md
+   bitfield_operate/readme.md
    blc_detect/readme.md
    flexio_dvp/readme.md
    gpio_toggle/readme.md

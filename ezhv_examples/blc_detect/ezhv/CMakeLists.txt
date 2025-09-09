@@ -16,11 +16,4 @@ mcux_add_source(
 
 include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/blc_detect/${core_id}/reconfig.cmake OPTIONAL)
 
-mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/ezhv_image.bin TOOLCHAINS riscvllvm)
-
-mcux_add_custom_command(
-    BUILD_EVENT POST_BUILD
-    TOOLCHAINS riscvllvm
-    BUILD_COMMAND 
-    ${CMAKE_COMMAND} -E copy ${APPLICATION_BINARY_DIR}/ezhv_image.bin ../binary/ezhv_image.bin
-)
+mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${CONFIG_TOOLCHAIN}/ezhv_image.bin TOOLCHAINS riscvllvm)
