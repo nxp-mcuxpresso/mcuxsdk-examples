@@ -30,6 +30,7 @@ cmsis_button_toggle_led:
     frdmmcxc242: []
     frdmmcxc444: []
     frdmmcxe247: []
+    frdmmcxl255@cm33: []
     frdmmcxw71: []
     mcxw71evk: []
     frdmmcxa266: []
