@@ -39,7 +39,7 @@ void BOARD_InitBootClocks(void);
  * @brief Configures CM33 core voltage and flash wait states based on system core frequency.
  *
  */
-static void CLOCK_ConfigureCoreVoltageAndFlashWaitStates(void);
+void CLOCK_ConfigureCoreVoltageAndFlashWaitStates(void);
 
 #if defined(__cplusplus)
 }

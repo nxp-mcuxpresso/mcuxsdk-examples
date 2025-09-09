@@ -79,7 +79,7 @@ void BOARD_InitBootClocks(void)
  * - 10 MHz: 0.8V
  *
  */
-static void CLOCK_ConfigureCoreVoltage(void)
+void CLOCK_ConfigureCoreVoltage(void)
 {
     uint32_t freq = CLOCK_GetAonCoreSysClkFreq();
 

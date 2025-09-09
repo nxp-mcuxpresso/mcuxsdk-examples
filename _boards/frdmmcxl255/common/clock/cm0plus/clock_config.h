@@ -38,7 +38,7 @@ void BOARD_InitBootClocks(void);
 /*!
  * @brief Configures CM0+ core voltage based on system core frequency.
  */
-static void CLOCK_ConfigureCoreVoltage(void);
+void CLOCK_ConfigureCoreVoltage(void);
 
 #if defined(__cplusplus)
 }

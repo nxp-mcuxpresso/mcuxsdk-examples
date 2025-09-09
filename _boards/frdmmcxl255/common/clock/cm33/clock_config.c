@@ -124,7 +124,7 @@ void BOARD_InitBootClocks(void)
  * - 96 MHz: Normal Drive mode (1.1V), 2 wait state
  *
  */
-static void CLOCK_ConfigureCoreVoltageAndFlashWaitStates(void)
+void CLOCK_ConfigureCoreVoltageAndFlashWaitStates(void)
 {
     uint32_t freq = CLOCK_GetCoreSysClkFreq();
 
