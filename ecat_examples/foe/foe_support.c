@@ -29,10 +29,6 @@ static uint32_t total_processed = 0;
 /* set flash information before update image */
 int32_t FoE_PartitionInit(void)
 {
-    int32_t retval = 0;
-    /* Preset result code to indicate "no error" */
-    int32_t mflash_result = 0;
-
     /* Check partition alignment */
     if (!mflash_drv_is_sector_aligned(storage.start) || !mflash_drv_is_sector_aligned(storage.size)) {
         PRINTF("%s: partition not aligned\r\n", __func__);

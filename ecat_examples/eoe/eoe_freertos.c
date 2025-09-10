@@ -425,7 +425,7 @@ void httpserv_task(void *arg)
  \brief    This is the main function
 
 *////////////////////////////////////////////////////////////////////////////////////////
-void main()
+int main()
 {
     HW_Init();
     EoE_EthernetInit();
@@ -457,4 +457,6 @@ void main()
 
     /* run RTOS */
     vTaskStartScheduler();
+    
+    return 0;
 }

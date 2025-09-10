@@ -117,7 +117,7 @@ UINT16 FoE_Read(UINT16 MBXMEM *pName, UINT16 nameSize, UINT32 password, UINT16 m
     /*copy the firmware information .. n*/
     MEMCPY(firmwareInformation, (void const *)FIRMWARE_INFO_FLASH, MAX_FIRMWARE_NAME_SIZE + 4);
 
-    if (firmwareInformation == NULL) {
+    if (firmwareInformation[0] == 0 || firmwareInformation[0] == 0xFF) {
         /* No file stored*/
         PRINTF("No file stored\r\n");
         return ECAT_FOE_ERRCODE_NOTFOUND;
@@ -185,7 +185,7 @@ UINT16 FoE_WriteData(UINT16 MBXMEM *pData, UINT16 Size, BOOL bDataFollowing)
     if (!bDataFollowing) {
         FoE_UpdateImage();
         /* Update new firmware information */
-        if (FoE_WriteFirmwareInformation(FIRMWARE_INFO_OFFSET, aFirmwareName, MAX_FIRMWARE_NAME_SIZE, nFirmwareWriteOffset)){
+        if (FoE_WriteFirmwareInformation(FIRMWARE_INFO_OFFSET, (uint8_t *)aFirmwareName, MAX_FIRMWARE_NAME_SIZE, nFirmwareWriteOffset)){
             PRINTF("FoE update new firmware information error\r\n");
             return ECAT_FOE_ERRCODE_DISKFULL;
         }
