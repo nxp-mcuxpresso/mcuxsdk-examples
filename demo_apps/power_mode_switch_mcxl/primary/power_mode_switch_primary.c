@@ -62,7 +62,7 @@ power_pd2_config_t pd2Config = {.mainWakeupSource      = kPower_WS_NONE,
                                 .aonRamArraysToRetain  = kPower_AonDomainAllRams,
                                 .mainRamArraysToRetain = kPower_MainDomainAllRams,
                                 .enableIVSMode         = false,
-                                .disableFRO10M         = false,
+                                .disableFRO10M         = true,
 #if APP_ENABLE_ADVC
                                 .vddCoreAonVoltage = kPower_VddCoreAon_AdvcControl
 #else
@@ -75,6 +75,7 @@ power_dpd1_config_t dpd1Config = {.mainWakeupSource = kPower_WS_NONE,
                                   .mainRamArraysToRetain = kPower_MainDomainNoneRams,
                                   .disableBandgap        = true,
                                   .enableIVSMode         = false,
+                                  .disableFRO10M         = true,
 #else
                                   .mainRamArraysToRetain = kPower_MainDomainAllRams,
                                   .disableBandgap        = true,
@@ -103,7 +104,7 @@ power_dpd2_config_t dpd2Config = {
 #endif
     .disableBandgap        = true,
     .switchToX32K          = true,
-    .disableFRO10M         = false,
+    .disableFRO10M         = true,
     .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
 };
 
@@ -502,7 +503,7 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
                 dpd2Config.wakeToDpd1           = true;
                 dpd2Config.aonWakeupSource      = kPower_WS_Aon_LptmrInt;
                 dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
-                dpd2Config.disableFRO10M        = false;
+                dpd2Config.disableFRO10M        = true;
                 dpd2Config.disableBandgap       = true;
                 dpd2Config.switchToX32K         = true;
             }
