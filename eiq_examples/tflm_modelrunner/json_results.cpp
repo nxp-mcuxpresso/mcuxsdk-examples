@@ -5,10 +5,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 #include "modelrunner.h"
-#include "cJSON.h"
 #include <string.h>
 #include "stdio.h"
-#include "base64.h"
 #include "fsl_debug_console.h"
 #ifdef MODELRUNNER_HTTP
 #include <lwip/sockets.h>
