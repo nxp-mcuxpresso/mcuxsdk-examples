@@ -79,6 +79,8 @@
 #define gTmrApplicationTimers_c 5
 #endif /* gRepeatedAttempts_d */
 
+#define gHost_TaskStackSize_c 1700
+
 /*! *********************************************************************************
  *   NVM Module Configuration - gAppUseNvm_d shall be defined above as 1 or 0
  ********************************************************************************** */
