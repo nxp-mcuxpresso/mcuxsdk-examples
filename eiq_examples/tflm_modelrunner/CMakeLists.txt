@@ -6,10 +6,6 @@ project(tflm_modelrunner LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_roo
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/eiq_examples/tflm_modelrunner
-             examples/eiq_examples/tflm_modelrunner/cJSON/
-             examples/eiq_examples/tflm_modelrunner/cJSON/
-             examples/eiq_examples/tflm_modelrunner/base64
-             examples/eiq_examples/tflm_modelrunner/base64
              examples/eiq_examples/tflm_modelrunner/picohttpparser
              ${board_root}/${board}/eiq_examples/tflm_modelrunner/
 )
@@ -26,10 +22,6 @@ mcux_add_source(
             examples/eiq_examples/tflm_modelrunner/modelrunner.cpp
             examples/eiq_examples/tflm_modelrunner/tf_benchmark.h
             examples/eiq_examples/tflm_modelrunner/tf_benchmark.cpp
-            examples/eiq_examples/tflm_modelrunner/cJSON/cJSON.h
-            examples/eiq_examples/tflm_modelrunner/cJSON/cJSON.c
-            examples/eiq_examples/tflm_modelrunner/base64/base64.h
-            examples/eiq_examples/tflm_modelrunner/base64/base64.c
             examples/eiq_examples/tflm_modelrunner/json_results.cpp
             examples/eiq_examples/tflm_modelrunner/http.h
             examples/eiq_examples/tflm_modelrunner/http.cpp
