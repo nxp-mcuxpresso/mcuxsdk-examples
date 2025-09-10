@@ -1,4 +1,4 @@
-# Copyright 2024 NXP
+# Copyright 2024-2025 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
 mcux_add_source(
@@ -17,14 +17,6 @@ mcux_add_source(
 mcux_add_linker_symbol(SYMBOLS "gUseNVMLink_d=1" )
 # Erase NVM partition (corrupt NVM meta data) during binary flashing
 mcux_add_linker_symbol(SYMBOLS "gEraseNVMLink_d=1" )
-
-mcux_add_iar_configuration(
-    CC "--warnings_are_errors"
-)
-
-mcux_add_armgcc_configuration(
-    CC "-Werror"
-)
 
 include(${SdkRootDirPath}/${board_root}/${board}/wireless_examples/reference_design/lowpower_peripheral/reconfig.cmake)
 
