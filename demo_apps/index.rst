@@ -111,6 +111,7 @@ demo_apps
    rled_blinky/readme.md
    rotary_encoder_ezh/readme.md
    rtc/index.rst
+   safety_iec60730b/index.rst
    sai/index.rst
    sai_low_power_audio/readme.md
    sai_low_power_audio_imx93/readme.md
