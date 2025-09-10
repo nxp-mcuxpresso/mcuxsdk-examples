@@ -23,6 +23,44 @@ Prepare the Demo
 3. Download the program to the target board.
 4. Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
+Demo Diagram
+============
+
+```
+                  [ SHMEM 0 @ 0x20200000 | 4KB ]
+                    [ RPMSG Inst 0 | SHMEM 0 ]
+
++------------------------+       MU4_A / MU4_B       +------------------+
+| CM33_core0             |<=========================>| HIFI4            |
+| rpmsg-master0,master1  |                           | rpmsg-slave0     |
++------------------------+                           +------------------+
+ ॥    \                                                    |
+ ॥     \  MU0_A / MU0_B                     /==============/
+ ॥      \                                   ^
+ ॥       \==================================================/
+ ॥            /============================/^               |
+ ॥ MU1_A /   /  MU2_A / MU2_B                               |
+ ॥ MU1_B    /                                               |
++------------------------+       MU3_A / MU3_B       +------------------+
+| CM33_core1             |<=========================>| HIFI1            |
+| rpmsg-slave1,master2   |                           | rpmsg-slave2     |
++------------------------+                           +------------------+
+[ SHMEM 1 @ 0x20201000 | 4KB ]
+  [ RPMSG Inst 1 | SHMEM 1 ]
+                                    [ SHMEM 2 @ 0x20588000 | 4KB ]
+                                      [ RPMSG Inst 2 | SHMEM 2 ]
+
+Communication (Default):
+CM33_core0 -> MU1_A/MU1_B -> CM33_core1
+CM33_core0 -> MU4_A/MU4_B -> HIFI4
+CM33_core1 -> MU3_A/MU3_B -> HIFI1
+
+Communication Cross-links (CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM=y):
+CM33_core0 -> MU1_A/MU1_B -> CM33_core1
+CM33_core0 -> MU0_A/MU0_B -> HIFI1
+CM33_core1 -> MU2_A/MU2_B -> HIFI4
+```
+
 Running the demo
 ================
 

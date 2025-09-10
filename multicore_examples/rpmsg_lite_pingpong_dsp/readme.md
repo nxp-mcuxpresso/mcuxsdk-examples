@@ -13,6 +13,10 @@ between Primary core and DSP core.
 The secondary core releases the other DSP from the reset.
 Then the inter-core communication is established between Secondary Core and Secondary core
 
+When using `CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM` the example will change the DSP cores 
+communication channels. It will use primary core to send messages to Hifi1 core and 
+secondary core will send messages to Hifi4 core.
+
 Once the RPMsg is initialized and endpoints are created the message exchange starts, incrementing a
 virtual counter that is part of the message payload.
 
@@ -41,6 +45,12 @@ For these parameters please see attribute `boards:`in `primary/example.yml`.
 
 ```bash
 west build -b mimxrt700evk examples/multicore_examples/rpmsg_lite_pingpong_dsp/primary/ -Dcore_id=cm33_core0 -p always --sysbuild --config flash_debug
+```
+
+To build the switched communication use the config option `CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM`.
+
+```bash
+west build -b mimxrt700evk examples/multicore_examples/rpmsg_lite_pingpong_dsp/primary/ -Dcore_id=cm33_core0 -p always --sysbuild --config flash_debug -DCONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM=y -Drpmsg_lite_pingpong_dsp_secondary_core_CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM=y -Drpmsg_lite_pingpong_dsp_hifi4_CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM=y -Drpmsg_lite_pingpong_dsp_hifi1_CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM=y
 ```
 
 ## Supported Boards

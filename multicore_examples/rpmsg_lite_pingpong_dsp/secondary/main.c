@@ -14,10 +14,13 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define LOCAL_EPT_ADDR_CM   (30U)
-#define LOCAL_EPT_ADDR_DSP  (32U)
+#define LOCAL_EPT_ADDR_CM  (30U)
+#define LOCAL_EPT_ADDR_DSP (32U)
+#if defined(CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM) && (CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM == 1)
+#define REMOTE_EPT_ADDR_DSP (31U)
+#else
 #define REMOTE_EPT_ADDR_DSP (42U)
-
+#endif
 #define APP_RPMSG_READY_EVENT_DATA    (1U)
 #define APP_RPMSG_EP_READY_EVENT_DATA (2U)
 
@@ -170,12 +173,13 @@ int main(void)
 
     /* Wait until the DSP Hifi1 application signals the rpmsg remote has been initialized and is ready to
      * communicate. */
-    while (APP_RPMSG_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_DSP_CORE])
+    while (APP_RPMSG_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_COMM_CORE])
     {
     };
 
-    dsp_rpmsg = rpmsg_lite_master_init(RPMSG_LITE_SHMEM_BASE_DSP, SH_MEM_TOTAL_SIZE, RPMSG_LITE_LINK_ID_DSP,
+    dsp_rpmsg = rpmsg_lite_master_init(RPMSG_LITE_SHMEM_BASE_COMM, SH_MEM_TOTAL_SIZE, RPMSG_LITE_LINK_ID_DSP,
                                        RL_NO_FLAGS, &dsp_rpmsg_ctxt);
+
     if (dsp_rpmsg == NULL)
     {
         (void)PRINTF("Failed to initialize DSP rpmsg\r\n");
@@ -195,11 +199,14 @@ int main(void)
     dsp_has_received = 0;
 
     /* Wait until the DSP Hifi1 application signals the rpmsg remote endpoint has been created. */
-    while (APP_RPMSG_EP_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_DSP_CORE])
+    while (APP_RPMSG_EP_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_COMM_CORE])
     {
     };
-
+#if defined(CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM) && (CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM == 1)
+    (void)PRINTF("Sending data to HIFI4 core...\r\n");
+#else
     (void)PRINTF("Sending data to HIFI1 core...\r\n");
+#endif
     /* Send the first message to the dsp core */
     dsp_msg.DATA = 200U;
     (void)PRINTF("Secondary core sending  a dsp_msg. Message: Size=%x, DATA = %i\r\n", sizeof(THE_MESSAGE),
@@ -263,19 +270,6 @@ cleanup:
     {
         (void)PRINTF("\r\nRPMsg demo ends\r\n");
     }
-
-    (void)rpmsg_lite_destroy_ept(cm_rpmsg, cm_ept);
-    cm_ept = ((void *)0);
-    (void)rpmsg_lite_deinit(cm_rpmsg);
-    cm_msg.DATA = 0U;
-
-    (void)rpmsg_lite_destroy_ept(dsp_rpmsg, dsp_ept);
-    dsp_ept = ((void *)0);
-    (void)rpmsg_lite_deinit(dsp_rpmsg);
-    dsp_msg.DATA = 0U;
-
-    /* Print the ending banner */
-    (void)PRINTF("\r\nRPMsg demo ends\r\n");
 
     /* End of the example */
     for (;;)

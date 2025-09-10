@@ -9,7 +9,10 @@
 #include <xtensa/xos.h>
 #include "pin_mux.h"
 #include "board.h"
+#include "app.h"
+#ifdef MCMGR_USED
 #include "mcmgr.h"
+#endif
 /*${header:end}*/
 
 /*${macro:start}*/
@@ -36,10 +39,12 @@ void BOARD_InitHardware(void)
  */
 void SystemInitHook(void)
 {
+    #ifdef MCMGR_USED
     /* Initialize MCMGR - low level multicore management library. Call this
        function as close to the reset entry as possible to allow CoreUp event
        triggering. The SystemInitHook() weak function overloading is used in this
        application. */
     (void)MCMGR_EarlyInit();
+    #endif
 }
 /*${function:end}*/

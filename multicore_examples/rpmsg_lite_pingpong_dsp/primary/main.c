@@ -131,9 +131,8 @@ int main(void)
                           kMCMGR_Start_Synchronous);
 
     /* Boot DSP Hifi4 core application */
-    (void)MCMGR_StartCore(APP_DSP_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, (uint32_t)RPMSG_LITE_SHMEM_BASE_DSP,
+    (void)MCMGR_StartCore(APP_DSP_CORE, (void *)(char *)CORE1_BOOT_ADDRESS, (uint32_t)RPMSG_LITE_SHMEM_BASE_COMM,
                           kMCMGR_Start_Synchronous);
-
     /* Print the initial banner */
     (void)PRINTF("\r\nRPMsg demo starts\r\n");
 
@@ -192,9 +191,9 @@ int main(void)
         }
     }
 
-    /* Wait until the DSP Hifi4 application signals the rpmsg remote has been initialized and is ready to
+    /* Wait until the DSP Hifi4/Hifi1 application signals the rpmsg remote has been initialized and is ready to
      * communicate. */
-    while (APP_RPMSG_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_DSP_CORE])
+    while (APP_RPMSG_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_COMM_CORE])
     {
     };
 
@@ -218,12 +217,15 @@ int main(void)
 
     dsp_has_received = 0;
 
-    /* Wait until the DSP Hifi4 application signals the rpmsg remote endpoint has been created. */
-    while (APP_RPMSG_EP_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_DSP_CORE])
+    /* Wait until the DSP Hifi4/Hifi1 application signals the rpmsg remote endpoint has been created. */
+    while (APP_RPMSG_EP_READY_EVENT_DATA != RPMsgRemoteReadyEventData[APP_COMM_CORE])
     {
     };
-
+#if defined(CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM) && (CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM == 1)
+    (void)PRINTF("Sending data to HIFI1 core...\r\n");
+#else
     (void)PRINTF("Sending data to HIFI4 core...\r\n");
+#endif
     /* Send the first message to the dsp core */
     dsp_msg.DATA = 100U;
     (void)PRINTF("Primary core sending  a dsp_msg. Message: Size=%x, DATA = %i\r\n", sizeof(THE_MESSAGE), dsp_msg.DATA);

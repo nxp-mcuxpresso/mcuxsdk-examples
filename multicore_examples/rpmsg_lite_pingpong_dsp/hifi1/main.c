@@ -12,14 +12,23 @@
 #include "rpmsg_lite.h"
 #include "board.h"
 #include "app.h"
+#ifdef MCMGR_USED
 #include "mcmgr.h"
+#endif
 
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define LOCAL_EPT_ADDR                (42U)
 #define APP_RPMSG_READY_EVENT_DATA    (1U)
 #define APP_RPMSG_EP_READY_EVENT_DATA (2U)
+
+#if defined(CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM) && (CONFIG_RPMSG_LITE_PINGPONG_SWITCH_COMM == 1)
+#define NO_MAX_DATA 199U
+#define LOCAL_EPT_ADDR                (31U)
+#else
+#define NO_MAX_DATA 299U
+#define LOCAL_EPT_ADDR                (42U)
+#endif
 
 typedef struct the_message
 {
@@ -98,7 +107,7 @@ int main(void)
     }
 
     /* Signal the cm33 core1 we are ready by triggering the event and passing the APP_RPMSG_READY_EVENT_DATA */
-    (void)MCMGR_TriggerEvent(APP_CM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_READY_EVENT_DATA);
+    (void)MCMGR_TriggerEvent(APP_COMM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_READY_EVENT_DATA);
 #else
     /* Otherwise the shared mem address is declared in app.h file. */
     my_rpmsg = rpmsg_lite_remote_init((void *)RPMSG_LITE_SHMEM_BASE, RPMSG_LITE_LINK_ID, RL_NO_FLAGS, &rpmsg_ctxt);
@@ -119,7 +128,7 @@ int main(void)
 #ifdef MCMGR_USED
     /* Signal the cm33 core1 the endpoint has been created by triggering the event and passing the
      * APP_RPMSG_READY_EP_EVENT_DATA */
-    (void)MCMGR_TriggerEvent(APP_CM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_EP_READY_EVENT_DATA);
+    (void)MCMGR_TriggerEvent(APP_COMM_CORE, kMCMGR_RemoteApplicationEvent, APP_RPMSG_EP_READY_EVENT_DATA);
 #endif /* MCMGR_USED */
 
 #ifdef RPMSG_LITE_NS_USED
@@ -136,7 +145,7 @@ int main(void)
             msg.DATA++;
             (void)rpmsg_lite_send(my_rpmsg, my_ept, remote_addr, (char *)&msg, sizeof(THE_MESSAGE), RL_DONT_BLOCK);
 
-            if (msg.DATA >= 299U)
+            if (msg.DATA >= NO_MAX_DATA)
             {
                 break;
             }
