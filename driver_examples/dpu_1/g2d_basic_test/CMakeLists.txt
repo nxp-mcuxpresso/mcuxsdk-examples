@@ -13,10 +13,4 @@ mcux_add_source(SOURCES
 
 include(${SdkRootDirPath}/${board_root}/${board}/driver_examples/dpu/g2d_basic_test/reconfig.cmake OPTIONAL)
 
-# link the G2D-DPU library
-target_link_libraries(${MCUX_SDK_PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/libs/libg2d.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/libs/libm.a
-)
-
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
