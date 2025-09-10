@@ -34,6 +34,22 @@ For detailed instructions on setting up the J-Link firmware for the on-board deb
 #### **(Optional) Verify Flag Write**
     Mem8 0x1b000000 8
 
+## **ELE HSEB Firmware Erasure**
+If the device is in the `CUST_DEL` lifecycle, the firmware may also be erased.
+The easiest way to delete such firmware is during runtime by utilizing the
+firmware erasure service. Below you can find a code snippet for utilizing this
+service. Note that this service erases Sys-Img, Backup FW as well Current
+running HSE FW from code flash.
+
+    #include "hse_host.h"
+    ...
+    uint8_t muIf                    = 0U;
+    uint8_t muChannelIdx            = 1U;
+    hseEraseFwSrv_t eraseSrv        = {0U};
+    hseSrvDescriptor_t* pHseSrvDesc = &gHseSrvDesc[muIf][muChannelIdx];
+    pHseSrvDesc->srvId              = HSE_SRV_ID_ERASE_FW;
+    hseSrvResponse_t response       = HSE_Send(muIf, muChannelIdx, gSyncTxOption, pHseSrvDesc);
+
 Prepare the Demo
 ===============
 1.  Connect a type-c USB cable between the host PC and the MCU-Link USB port (J13) on the target board.
