@@ -114,7 +114,6 @@ AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t g_txFrame[EP_TXBUFF_SIZE], EP_BUFF_
 AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_mgmtTxBuffDescrip[EP_TXBD_NUM], EP_BD_ALIGN);
 AT_NONCACHEABLE_SECTION_ALIGN(static netc_cmd_bd_t g_cmdBuffDescrip[EP_TXBD_NUM], EP_BD_ALIGN);
 #endif
-AT_NONCACHEABLE_SECTION(static uint8_t g_rxFrame[EP_RXBUFF_SIZE_ALIGN]);
 static uint64_t rxBuffAddrArray[EP_RING_NUM][EP_RXBD_NUM];
 #if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
 static netc_tx_frame_info_t g_mgmtTxDirty[EP_TXBD_NUM];
