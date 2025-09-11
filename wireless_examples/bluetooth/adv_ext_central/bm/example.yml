@@ -20,4 +20,9 @@ adv_ext_central_bm:
     kw43evk:
     - -armgcc@debug
     - -armgcc@release
-
+    frdmmcxw23:
+    - -mdk@debug
+    - -mdk@release
+    mcxw23evk:
+    - -mdk@debug
+    - -mdk@release
