@@ -1386,7 +1386,7 @@ void USB_DeviceCmdGetObjHandles(void *param)
         if (dataInfo->curPos < g_mtp.transferTotalSize)
         {
             offset = 0U;
-            if ((dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH - 4U) < 0U)
+            if (dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH < 4U)
             {
                 dataInfo->code = MTP_RESPONSE_INVALID_DATASET;
                 return;
@@ -1882,7 +1882,7 @@ void USB_DeviceCmdGetObj(void *param)
         offset = ((g_mtp.transferTotalSize - dataInfo->curPos) > USB_DEVICE_MTP_TRANSFER_BUFF_SIZE) ?
                      USB_DEVICE_MTP_TRANSFER_BUFF_SIZE :
                      (g_mtp.transferTotalSize - dataInfo->curPos);
-        if ((dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH) < 0U)
+        if (dataInfo->curPos < USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH)
         {
             dataInfo->code = MTP_RESPONSE_INVALID_DATASET;
             return;
@@ -2173,7 +2173,7 @@ void USB_DeviceCmdSendObj(void *param)
             }
             else
             {
-                if ((dataInfo->curPos - USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH) < 0U)
+                if (dataInfo->curPos < USB_DEVICE_MTP_MINIMUM_CONTAINER_LENGTH)
                 {
                     dataInfo->code = MTP_RESPONSE_INVALID_DATASET;
                     return;

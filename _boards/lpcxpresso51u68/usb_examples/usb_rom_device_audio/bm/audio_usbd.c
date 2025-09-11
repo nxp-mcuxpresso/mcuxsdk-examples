@@ -369,7 +369,7 @@ ErrorCode_t ADC_iso_out_hdlr(USBD_HANDLE_T hUsb, void *data, uint32_t event)
     uint32_t *addr;
     uint32_t cnt, idx;
 
-    if (/*(pAdcCtrl->flags & ADC_PLAYING) &&*/ (event == USB_EVT_OUT))
+    if (event == USB_EVT_OUT)
     {
         do
         {

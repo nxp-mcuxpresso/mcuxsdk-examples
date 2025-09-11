@@ -83,7 +83,7 @@ usb_status_t USB_DeviceMtpObjHandleRead(uint32_t objHandle, usb_mtp_obj_handle_t
     FRESULT result;
     uint32_t size;
 
-    if ((objHandle - 1U) < 0U)
+    if (objHandle == 0U)
     {
         return kStatus_USB_Error;
     }
@@ -107,7 +107,7 @@ usb_status_t USB_DeviceMtpObjHandleWrite(uint32_t objHandle, usb_mtp_obj_handle_
     FRESULT result;
     uint32_t size;
 
-    if ((objHandle - 1U) < 0U)
+    if (objHandle == 0U)
     {
         return kStatus_USB_Error;
     }

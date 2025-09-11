@@ -105,11 +105,11 @@ void USB_Comom_IRQHandler(void)
     }
     else
     {
-        if ((g_deviceMode == 0))
+        if (g_deviceMode == 0)
         {
             USB_HostEhciIsr();
         }
-        else if ((g_deviceMode == 1))
+        else if (g_deviceMode == 1)
         {
             USB_DeviceEhciIsr();
         }
