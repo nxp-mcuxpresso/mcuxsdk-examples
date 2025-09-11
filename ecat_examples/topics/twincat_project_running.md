@@ -3,8 +3,14 @@
 This document describes how to run the Servo_motor demo.
 
 ### Open the project
+If the project does not exist, please follow the [TwinCAT Project Setup](../topics/twincat_project_setup.md) to setup the project. If the project is closed, open it as steps below:  
+  - Click **File** \> **Open** \> **Project/Solution**.
+      ![](../images/project_open0.png "Open project")
+  - Select the **EtherCAT_sevor** project.
+      ![](../images/project_open1.png "Open project") 
 
 ### Activate the Configuration
+  Please make sure that the hardware setup is ready to start first.
   - Select **Activate Configuration** in the **TwinCAT** tab.
    ![](../images/ONLINE_CONIFIG20.png "Activate Configuration")     
 ### Check the state of EtherCAT state machine

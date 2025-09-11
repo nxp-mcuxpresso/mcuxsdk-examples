@@ -49,7 +49,7 @@ Now this servo system is ready to wait EtherCAT MainDevice connection.
 
 To demonstrate this servo system, TwinCAT is used as the EtherCAT MainDevice.
 - [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md)
-- [EEPROM Update](../topics/twincat_eeprom_update.md)
+- [TwinCAT EEPROM Update](../topics/twincat_eeprom_update.md)
 - [TwinCAT Project Setup](../topics/twincat_project_setup.md)
 - [TwinCAT Project Running](../topics/twincat_project_running.md)
 - [Note](../topics/note_about_the_source_code_in_the_document.md)

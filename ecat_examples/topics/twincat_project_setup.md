@@ -91,4 +91,7 @@ The cycle time of NC task depends on the cycle of slow task on subdevice.
         -  The resolution of the Encoder on servo_motor example is 8000.
    
       ![](../images/ONLINE_CONIFIG19.png "Enc 2 scaling factor setting")  
-## Svae the project 
+## Save the project  
+  - Click **File** \> **Save All** 
+  ![](../images/project_save0.png "Project save") 
+
