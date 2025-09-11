@@ -32,7 +32,6 @@
 /*set Bclk source to Mclk clock*/
 #define DEMO_SAI_CLOCK_SOURCE   (1U)
 #define SDMA_FREQ_EQUALS_ARM    (1U)
-#define DEMO_AUDIO_MASTER_CLOCK (DEMO_SAI_CLK_FREQ)
 
 #define BOARD_SAI_RXCONFIG(config, mode)
 /*${macro:end}*/

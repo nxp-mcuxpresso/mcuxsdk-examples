@@ -171,7 +171,7 @@ __attribute__((weak)) void BOARD_MASTER_CLOCK_CONFIG(void)
  * @param sample_rate Desired sample rate
  * @return master clock that has been set
  */
-int streamer_set_master_clock(int sample_rate);
+int streamer_set_master_clock(uint32_t sample_rate);
 
 #if defined(__cplusplus)
 }

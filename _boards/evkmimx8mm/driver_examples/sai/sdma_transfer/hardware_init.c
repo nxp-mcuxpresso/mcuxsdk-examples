@@ -54,7 +54,7 @@ void BOARD_WM8524_Mute_GPIO(uint32_t output)
 
 void BOARD_MASTER_CLOCK_CONFIG(void)
 {
-    mclkConfig.mclkOutputEnable = true, mclkConfig.mclkHz = DEMO_AUDIO_MASTER_CLOCK;
+    mclkConfig.mclkOutputEnable = true, mclkConfig.mclkHz = DEMO_SAI_CLK_FREQ;
     mclkConfig.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;
     SAI_SetMasterClockConfig(DEMO_SAI, &mclkConfig);
 }

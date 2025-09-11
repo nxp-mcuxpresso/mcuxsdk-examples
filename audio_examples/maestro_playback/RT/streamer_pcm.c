@@ -205,12 +205,6 @@ int streamer_pcm_setparams(
     pcmHandle.num_channels    = num_channels;
     pcmHandle.dummy_tx_enable = dummy_tx;
 
-    if (sample_rate < 0)
-    {
-        /* Invalid sample rate */
-        return -1;
-    }
-
     masterClockHz = streamer_set_master_clock(sample_rate);
 
     format.channel       = 0U;
@@ -323,7 +317,7 @@ int streamer_pcm_set_volume(int volume)
     return 0;
 }
 
-int streamer_set_master_clock(int sample_rate)
+int streamer_set_master_clock(uint32_t sample_rate)
 {
     int master_clock;
 #if (defined(DEMO_CODEC_CS42448) && (DEMO_CODEC_CS42448 == 1))
