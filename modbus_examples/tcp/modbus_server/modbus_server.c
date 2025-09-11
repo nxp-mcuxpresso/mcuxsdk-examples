@@ -403,12 +403,7 @@ eMBRegCoilsCB( uint8_t * pucRegBuffer, uint16_t usAddress, uint16_t usNCoils, eM
 {
   
 	eMBErrorCode eStatus = MB_ENOERR;
-
 	usAddress--;
-    if (usAddress < COIL_START_ADDR) {
-        eStatus = MB_ENOREG;
-        return eStatus;
-    }
 	uint16_t iCoil = usAddress - COIL_START_ADDR;
 
 	if (iCoil + usNCoils <= COIL_NUMS)
