@@ -23,7 +23,10 @@ FRDM-LVPMSM-FA board:
     | VENC                     | J70-1                         | UP - Power supply voltage|
     | GND                      | J70-6                         | GND               |
   - Motor connection:
-     (J140) <todo>
+
+     J140: pin3  <-->  Cable A: 1=U  
+     J140: pin2  <-->  Cable A: 3=W  
+     J140: pin1  <-->  Cable A: 4=V  
 
 i.MX943-EVK board:
   - SW4: based on used BOOT_MODE

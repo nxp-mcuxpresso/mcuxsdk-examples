@@ -11,16 +11,22 @@ Hardware requirements
 Board settings
 ==============
 - Jumper setting:
-  - J12(2-3)
-  - J13(2-3)
-  - J18(2-3)
-  - J17(2-3)
-  - J27(2-3)
-  - J29(2-3)
-  - J30(2-3)
-  - J33(2-3)
-- Solder zero resistors:  
-  R15, R17, R40, R21, R243, R448
+  | Jumper | Setting |
+	|--------|--------|
+	|   J12  |   2-3  |
+	|   J13  |   2-3  |
+	|   J17  |   2-3  |
+	|   J18  |   2-3  |
+  |   J27  |   2-3  |
+  |   J29  |   2-3  |
+  |   J30  |   2-3  |
+  |   J33  |   2-3  |
+
+- Remove and solder zero resistors:  
+  - Add zero resistors: R15, R17, R21, R40, R243, R448.
+
+- For detailed motor connection and motor control user guide, please refer:
+  -   http://www.nxp.com/sdkmotorcontrol 
 
 Prepare the Demo
 ================

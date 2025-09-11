@@ -7,7 +7,7 @@ Hardware requirements
 
 Board settings
 ==============
-- 
+- No special settings are required.
 
 Prepare the Demo
 ================
