@@ -38,9 +38,19 @@ void BOARD_InitDebugConsole(void)
     DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, BOARD_DEBUG_UART_CLK_FREQ);
 }
 
+void BOARD_InitAppConsole(void)
+{
+    BOARD_InitDebugConsole();
+}
+
 void BOARD_UninitDebugConsole(void)
 {
     CLOCK_DisableClock(kCLOCK_FlexComm0);
+}
+
+void BOARD_UninitAppConsole(void)
+{
+    BOARD_UninitDebugConsole();
 }
 
 void BOARD_InitDebugConsole2(void)

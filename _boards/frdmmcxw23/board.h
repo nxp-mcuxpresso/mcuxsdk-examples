@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -209,6 +209,8 @@
  void BOARD_InitBootPins(void);
  void BOARD_InitDebugConsole(void);
  void BOARD_UninitDebugConsole(void);
+ void BOARD_InitAppConsole(void); // Wrapper for BOARD_InitDebugConsole
+ void BOARD_UninitAppConsole(void); // Wrapper for BOARD_UninitDebugConsole
  void BOARD_InitDebugConsole2(void);
  void BOARD_UninitDebugConsole2(void);
  void BOARD_InitI2c(void);
