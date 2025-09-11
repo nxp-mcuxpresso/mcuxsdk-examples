@@ -342,7 +342,5 @@ int main(void)
                                 rt_task_stack, &xTaskBuffer);
 
     vTaskStartScheduler();
-    for (;;)
-        ;
     return 0;
 }

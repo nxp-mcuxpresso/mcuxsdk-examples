@@ -104,7 +104,6 @@ AT_NONCACHEABLE_SECTION_ALIGN(static netc_cmd_bd_t g_cmdBuffDescrip[EP_TXBD_NUM]
 static uint64_t rxBuffAddrArray[EP_RING_NUM][EP_RXBD_NUM];
 #if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
 static netc_tx_frame_info_t g_mgmtTxDirty[EP_TXBD_NUM];
-static netc_tx_frame_info_t mgmtTxFrameInfo;
 #endif
 #if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
 AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EP_RING_NUM][EP_TXBD_NUM],
@@ -218,16 +217,9 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
     }
 }
 
-//static status_t ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame_info_t *frameInfo, void *userData)
-//{
-//    txFrameInfo = *frameInfo;
-//    return kStatus_Success;
-//}
-
 #if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
 static status_t APP_SwtReclaimCallback(swt_handle_t *handle, netc_tx_frame_info_t *frameInfo, void *userData)
 {
-    mgmtTxFrameInfo = *frameInfo;
     return kStatus_Success;
 }
 #endif
@@ -385,7 +377,6 @@ static int if_port_init(void)
 static int if_port_swt_init(void)
 {
 	struct soem_if_port soem_port;
-    status_t result                  = kStatus_Success;
     bdrConfig.rxBdrConfig = &rxBdrConfig;
 	bdrConfig.txBdrConfig = &txBdrConfig;
     uint32_t msgAddr;
@@ -617,7 +608,5 @@ int main(void)
                                 rt_task_stack, &xTaskBuffer);
 
     vTaskStartScheduler();
-    for (;;)
-        ;
     return 0;
 }

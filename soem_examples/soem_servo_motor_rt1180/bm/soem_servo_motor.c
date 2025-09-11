@@ -75,13 +75,9 @@ typedef uint8_t rx_buffer_t[EP_RXBUFF_SIZE_ALIGN];
 
 /* dc sync time */
 static uint64_t dc_start_time_ns = 0LL;
-static uint64_t dc_time_ns = 0;
 static uint8_t  dc_started = 0;
 static int32_t  dc_diff_ns = 0;
 static int32_t  prev_dc_diff_ns = 0;
-static int64_t  dc_diff_total_ns = 0LL;
-static int64_t  dc_delta_total_ns = 0LL;
-static int      dc_filter_idx = 0;
 static int64_t  dc_adjust_ns;
 static int64_t  system_time_offset = 0LL;
 
@@ -117,7 +113,6 @@ AT_NONCACHEABLE_SECTION_ALIGN(static netc_cmd_bd_t g_cmdBuffDescrip[EP_TXBD_NUM]
 static uint64_t rxBuffAddrArray[EP_RING_NUM][EP_RXBD_NUM];
 #if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
 static netc_tx_frame_info_t g_mgmtTxDirty[EP_TXBD_NUM];
-static netc_tx_frame_info_t mgmtTxFrameInfo;
 #endif
 #if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
 AT_NONCACHEABLE_SECTION_ALIGN(static netc_tx_bd_t g_txBuffDescrip[EP_RING_NUM][EP_TXBD_NUM],
@@ -312,15 +307,9 @@ void msgintrCallback(MSGINTR_Type *base, uint8_t channel, uint32_t pendingIntr)
 #if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)
 static status_t APP_SwtReclaimCallback(swt_handle_t *handle, netc_tx_frame_info_t *frameInfo, void *userData)
 {
-    mgmtTxFrameInfo = *frameInfo;
     return kStatus_Success;
 }
 #endif
-
-static status_t ReclaimCallback(ep_handle_t *handle, uint8_t ring, netc_tx_frame_info_t *frameInfo, void *userData)
-{
-    return kStatus_Success;
-}
 
 uint64_t system_time64_ns()
 {
@@ -453,7 +442,7 @@ static int if_port_init(void)
     ep_config.si                    = KNETC_EP_CONFIG_SI;
     ep_config.siConfig.txRingUse    = 1;
     ep_config.siConfig.rxRingUse    = 1;
-    ep_config.reclaimCallback       = ReclaimCallback;
+    //ep_config.reclaimCallback       = ReclaimCallback;
     ep_config.msixEntry             = &msixEntry[0];
     ep_config.entryNum              = 2;
     ep_config.port.ethMac.miiMode   = KNETC_HW_MII_MODE;
@@ -490,7 +479,6 @@ static int if_port_init(void)
 static int if_port_swt_init(void)
 {
 	struct soem_if_port soem_port;
-    status_t result                  = kStatus_Success;
     bdrConfig.rxBdrConfig = &rxBdrConfig;
 	bdrConfig.txBdrConfig = &txBdrConfig;
     uint32_t msgAddr;
@@ -758,9 +746,6 @@ void control_task(char *ifname)
 				ec_statecheck(1, EC_STATE_OPERATIONAL, 50000);
 			} while (chk-- && (ec_slave[0].state != EC_STATE_OPERATIONAL));
 
-			int64_t last_dc_start_time_ns = 0, last_dc = 0;
-			int64_t diff_sys = 0, diff_dc = 0;
-			int l = 0;
 			if (ec_slave[0].state != EC_STATE_OPERATIONAL) {
 				PRINTF("Not all slaves reached operational state.\r\n");
 			} else {
