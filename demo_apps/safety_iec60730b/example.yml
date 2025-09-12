@@ -14,19 +14,19 @@ safety_iec60730b:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxe247:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
     frdmmcxe31b:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
     frdmmcxc444:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
@@ -76,29 +76,29 @@ safety_iec60730b:
     # - -mdk@debug
     # - -mdk@release
     mcimx93evk:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     frdmmcxa156:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
     frdmmcxa266:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
     frdmmcxa346:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
     - -mdk@release
     frdmmcxa366:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
@@ -129,7 +129,7 @@ safety_iec60730b:
     # - -mdk@sdram_debug
     # - -mdk@sdram_release
     lpcxpresso55s36:
-    - -armgcc@debug
+    - +armgcc@debug
     - -armgcc@release
     - -iar@release
     - -mdk@debug
