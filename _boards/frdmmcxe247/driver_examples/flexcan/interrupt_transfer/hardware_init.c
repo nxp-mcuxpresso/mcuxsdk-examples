@@ -17,7 +17,5 @@ void BOARD_InitHardware(void)
     BOARD_InitCANPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-
-    CLOCK_SetIpSrc(kCLOCK_Can0, kCLOCK_IpSrcSysOscAsync);
 }
 /*${function:end}*/

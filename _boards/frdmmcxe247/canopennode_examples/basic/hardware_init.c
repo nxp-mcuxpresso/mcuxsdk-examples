@@ -39,7 +39,6 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 
-    CLOCK_SetIpSrc(kCLOCK_Can0, kCLOCK_IpSrcSysOscAsync);
     CLOCK_SetIpSrc(kCLOCK_Lpit0, kCLOCK_IpSrcSircAsync);
 
     LPUART_TransferCreateHandle(EXAMPLE_LPUART, &g_lpuartHandle, LPUART_UserCallback, NULL);
