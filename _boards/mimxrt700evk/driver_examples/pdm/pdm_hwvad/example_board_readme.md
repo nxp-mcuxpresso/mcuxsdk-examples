@@ -39,3 +39,4 @@ PDM hwvad example finished!
 ~~~~~~~~~~~~~~~~~~~
 
 Note: There is a variable in this example which initial as 50, once voice detected, it will decrease by one until 0, then example finish.
+The sensitivity can be adjusted by Signal Gain, Input Gain, Noise Gain.
