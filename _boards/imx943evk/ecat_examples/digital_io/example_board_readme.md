@@ -46,6 +46,7 @@ Prepare the Demo
 
 8. Scan and load this device and create a PLC project in TwinCat3
 	The PLC Main code is as follows:
+
 		PROGRAM MAIN
 		VAR 
 			Delay : TON;
@@ -61,3 +62,9 @@ Prepare the Demo
 		
 9. Activate configuration and start PLC Main function
 
+Detailed User Guide
+================
+- [SSC Source Code Generate](./topics/ssc_source_code_generate.md)
+- [Install TwinCAT](./topics/download_and_install_the_twincat_software.md)
+- [TwinCAT Project Setup](./topics/twincat_project_setup.md)
+- [Note](./topics/note_about_the_source_code_in_the_document.md)
