@@ -13,5 +13,3 @@ power_mode_switch_mcxl_primary:
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
     frdmmcxl255@cm33:
-    - -mdk@debug
-    - -mdk@release

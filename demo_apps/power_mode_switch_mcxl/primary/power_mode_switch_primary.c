@@ -200,7 +200,7 @@ int main(void)
 
     PRINTF("Core Clock Frequency: %d\r\n", CLOCK_GetCoreSysClkFreq());
     CMC_ConfigFlashMode(CMC, true, true, true);
-    bool wakeupReset = APP_GetWakeupReason();
+    APP_GetWakeupReason();
     APP_CopyCore1Image();
     APP_BootCore1();
     PRINTF("Start to communication with secondary core...\r\n");
