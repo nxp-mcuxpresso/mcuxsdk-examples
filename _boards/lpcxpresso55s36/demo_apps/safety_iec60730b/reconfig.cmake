@@ -1,122 +1,207 @@
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES middleware/safety_iec60730b/boards/common/cm33/main.c
-            middleware/safety_iec60730b/boards/${board}/linker/iar/lpcxpresso55s36_safety.icf
-            middleware/safety_iec60730b/boards/${board}/linker/mdk/lpcxpresso55s36_safety.sct
-            middleware/safety_iec60730b/boards/${board}/linker/mcux/lpcxpresso55s36_safety.ld
-            middleware/safety_iec60730b/boards/${board}/linker/mdk/linker_config.h
-            middleware/safety_iec60730b/boards/${board}/safety_test_items.h
-            middleware/safety_iec60730b/boards/${board}/safety_test_items.c
-            middleware/safety_iec60730b/boards/${board}/isr.h
-            middleware/safety_iec60730b/boards/${board}/safety_config.h
-            middleware/safety_iec60730b/boards/${board}/device_information.h
-            middleware/safety_iec60730b/boards/${board}/project_setup_lpcxpresso55s36.h
-            middleware/safety_iec60730b/boards/${board}/project_setup_lpcxpresso55s36.c
-            middleware/safety_iec60730b/boards/common/cm33/safety_cm33_lpc.c
-            middleware/safety_iec60730b/boards/common/cm33/safety_cm33_lpc.h
-            middleware/safety_iec60730b/boards/common/cm33/safety.pmp
-            middleware/safety_iec60730b/boards/${board}/clock_config.c
-            middleware/safety_iec60730b/boards/${board}/clock_config.h
-            middleware/safety_iec60730b/boards/${board}/freemaster/freemaster_cfg.h
-            middleware/safety_iec60730b/boards/${board}/pin_mux.c
-            middleware/safety_iec60730b/boards/${board}/pin_mux.h
-            middleware/safety_iec60730b/tools/crc/crc_hex.bat
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/start.c
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/startup_iar.c
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/vectors_iar.c
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/vectors_iar.h
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/startup_mdk.c
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/vectors_mdk.c
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/vectors_mdk.h
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/startup_mcux.c
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/vectors_mcux.c
-            middleware/safety_iec60730b/boards/common/cm0/startup/cm0/vectors_mcux.h
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/start.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/startup_iar.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/vectors_iar.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/vectors_iar.h
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/startup_mdk.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/vectors_mdk.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/vectors_mdk.h
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/startup_mcux.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/vectors_mcux.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4/vectors_mcux.h
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/start.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/startup_iar.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/vectors_iar.h
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/vectors_iar.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/startup_mdk.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/vectors_mdk.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/vectors_mdk.h
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/startup_mcux.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/vectors_mcux.c
-            middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7/vectors_mcux.h
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/start.c
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/startup_iar.c
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/vectors_iar.c
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/vectors_iar.h
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/startup_mdk.c
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/vectors_mdk.c
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/vectors_mdk.h
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/startup_mcux.c
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/vectors_mcux.c
-            middleware/safety_iec60730b/boards/common/cm33/startup/cm33/vectors_mcux.h
-            middleware/safety_iec60730b/boards/common/safety_debug.ini
-)
+#----------------------------------------------
+# Source files and includes for all toolchains
+#----------------------------------------------
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
-    INCLUDES middleware/safety_iec60730b/boards/${board}/linker/mdk
-             middleware/safety_iec60730b/boards/lpcxpresso55s36
-             middleware/safety_iec60730b/boards/common/cm33
-             middleware/safety_iec60730b/boards/common/cm0/startup/cm0
-             middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm4
-             middleware/safety_iec60730b/boards/common/cm4_cm7/startup/cm7
-             middleware/safety_iec60730b/boards/common/cm33/startup/cm33
-             middleware/safety_iec60730b/boards/${board}/freemaster
+    INCLUDES examples/demo_apps/safety_iec60730b/common/cm33
 )
 
-mcux_add_iar_configuration(
-    LD "--keep=__checksum\
-       --place_holder __checksum,4,.checksum,4\
-       --entry __iar_program_start"
-    CC "--cmse"
-    CX "--cmse"
+
+mcux_add_source(
+    BASE_PATH ${SdkRootDirPath}
+    SOURCES examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_lpc.c
+			examples/demo_apps/safety_iec60730b/common/cm33/safety_cm33_lpc.h
+			examples/demo_apps/safety_iec60730b/common/cm33/main.c
+			examples/demo_apps/safety_iec60730b/common/cm33/safety.pmp
 )
 
-mcux_add_macro(
-    TOOLCHAINS mdk
-    CC "-D_DEBUG=1"
+#----------------------------------------------
+# Project settings for all toolchains
+#----------------------------------------------
+
+mcux_add_configuration(
+    CC "--debug"
+    CX "--debug"
 )
+
+#----------------------------------------------
+# Project settings for IAR toolchain
+#----------------------------------------------
 
 mcux_remove_iar_configuration(
     AS "--cpu=cortex-m33.no_se"
     CC "--cpu=cortex-m33.no_se"
     CX "--cpu=cortex-m33.no_se"
-    LD "--entry Reset_Handler"
 )
 
-# Add or remove Linker File Configurations
+mcux_add_iar_configuration(
+    AS "--cpu=cortex-m33"
+    CC "--cpu=cortex-m33"
+    CX "--cpu=cortex-m33"
+)
+
+mcux_add_iar_configuration(
+    CC "--cmse"
+	CX "--cmse"
+)
+
+if(${CONFIG_TOOLCHAIN} STREQUAL "iar")
+if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
+
+else()
+	# AS --cmse flag needs to be added when command line build is used
+	mcux_add_iar_configuration(
+		AS "--cmse"
+	)
+endif()
+endif()
+
+# optimization default setting needs to be removed first
+mcux_remove_iar_configuration(
+	TARGETS debug
+	CC "-On"
+)
+
+mcux_add_iar_configuration(
+	CC "-Ol"
+	CX "-Ol"
+)
+
+#----------------------------------------------
+# Project settings for MDK toolchain
+#----------------------------------------------
+
+# optimization default setting needs to be removed
+mcux_remove_mdk_configuration(
+    CC "-O1"
+    CX "-O1"
+)
+
+mcux_add_mdk_configuration(
+    CC "-O0"
+    CX "-O0"
+)
+
+mcux_add_configuration(
+    TOOLCHAINS mdk
+    CC "-gdwarf-3 -mcmse -g"
+	LD "--diag_suppress L6848E"
+)
+
+
+#----------------------------------------------
+# Linker configurations for all toolchains
+#----------------------------------------------
+
+# remove default IAR linker
 mcux_remove_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug
-    LINKER ${device_root}/LPC/LPC5500/LPC55S36/iar/LPC55S36_flash.icf
-)
-mcux_remove_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug
-    LINKER ${device_root}/LPC/LPC5500/LPC55S36/arm/LPC55S36_flash.scf
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/iar/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.icf
 )
 
-# Add or remove Linker File Configurations
+# add custom IAR linker
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug
-    LINKER middleware/safety_iec60730b/boards/${board}/linker/iar/lpcxpresso55s36_safety.icf
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/iar/${board}_safety.icf
 )
+
+# remove default MDK linker
+mcux_remove_mdk_linker_script(
+        BASE_PATH ${SdkRootDirPath}
+        LINKER ${device_root}/${soc_portfolio}/${soc_series}/${device}/arm/${CONFIG_MCUX_TOOLCHAIN_LINKER_DEVICE_PREFIX}_flash.scf
+)
+
+# add custom MDK linker
 mcux_add_mdk_linker_script(
     BASE_PATH ${SdkRootDirPath}
-    TARGETS debug
-    LINKER middleware/safety_iec60730b/boards/${board}/linker/mdk/lpcxpresso55s36_safety.sct
+    LINKER ${board_root}/${board}/demo_apps/safety_iec60730b/${multicore_foldername}/linker/mdk/${board}_safety.sct
+)# ../../devices/LPC/LPC5500/LPC55S69/arm/LPC55S69_cm33_core0_flash.scf
+
+# replace entry symbol for IAR
+mcux_remove_iar_configuration(LD "--entry Reset_Handler")
+mcux_add_iar_configuration(LD "--entry=__iar_program_start")
+
+# replace entry symbol for MDK, uncheck 'Report might fail...' in Linker setting
+mcux_remove_configuration(
+    TOOLCHAINS mdk
+	LD "--entry=Reset_Handler --strict"
 )
+
+
+#----------------------------------------------
+# Post-build configurations for all toolchains
+#----------------------------------------------
+
+# IAR post-build command
+if(${CONFIG_TOOLCHAIN} STREQUAL "iar" AND ${SAFETY_IEC60730B_IAR_POSTBUILD} STREQUAL "true")
+add_custom_command(TARGET ${MCUX_SDK_PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/ielftool --fill \"0xFF\;c_checksumStart-c_checksumEnd+3\" --checksum \"__checksum:2,crc16,0x0\;c_checksumStart-c_checksumEnd+3\"  --verbose ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+)
+endif()
+
+## Prepare relative paths used in post-build commands - crc_hex.bat works with the relative paths
+
+# Get absolute path to CRC tool
+set(SAFETY_CRC_PATH_A "${SdkRootDirPath}/middleware/safety_iec60730b/tools/crc")
+
+# Get absolute path to SRECORD tool
+set(SAFETY_SRECORD_PATH_A "${SdkRootDirPath}/middleware/safety_iec60730b/tools/srecord")
+
+# Get relative path from project location to CRC tool - used when MDK GUI build
+file(RELATIVE_PATH SAFETY_CRC_TOOL_GUI_R ${APPLICATION_BINARY_DIR}/mdk ${SAFETY_CRC_PATH_A})
+
+# Get relative path from project location to CRC tool - used when MDK command line build
+file(RELATIVE_PATH SAFETY_CRC_TOOL_CMD_R ${APPLICATION_BINARY_DIR} ${SAFETY_CRC_PATH_A})
+
+# Relative path from CRC tool location to .hex file generated by MDK - used when GUI build
+file(RELATIVE_PATH SAFETY_HEX_PATH_GUI_R ${SAFETY_CRC_PATH_A} ${APPLICATION_BINARY_DIR}/mdk)
+
+# Relative path from CRC tool to SRECORD tool
+file(RELATIVE_PATH SAFETY_SRECORD_TOOL_R ${SAFETY_CRC_PATH_A} ${SAFETY_SRECORD_PATH_A})
+
+# Relative path from CRC tool location to .hex file generated by MDK - used when command line build
+file(RELATIVE_PATH SAFETY_HEX_PATH_CMD_R ${SAFETY_CRC_PATH_A} ${APPLICATION_BINARY_DIR})
+
+# armgcc and MDK post-build command available only if 'SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD' set to 'true'
+if(${SAFETY_IEC60730B_ARMGCC_MDK_POSTBUILD} STREQUAL "true")
+
+# MDK post-build commands
+if(${CONFIG_TOOLCHAIN} STREQUAL "mdk")
+if(DEFINED GENERATE_GUI_PROJECT OR GENERATE_STANDALONE_PROJECT)
+	# Safety application post-build command (build from GUI)
+	mcux_add_custom_command(
+		TOOLCHAINS mdk
+		BUILD_EVENT  POST_BUILD
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_GUI_R}/crc_hex.bat -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_GUI_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe
+	)
+else()
+	# Post-build generation .hex file - required for command line build option
+    add_custom_command(TARGET ${MCUX_SDK_PROJECT_NAME}
+            POST_BUILD
+            COMMAND ${TOOLCHAIN_ROOT}/${TARGET_TRIPLET}/fromelf --i32combined --output=${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf
+    )
+	
+	# Safety application post-build command (build from command line)
+	mcux_add_custom_command(
+		TOOLCHAINS mdk
+		BUILD_EVENT  POST_BUILD
+		BUILD_COMMAND ${SAFETY_CRC_TOOL_CMD_R}/crc_hex.bat -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}.hex -${SAFETY_HEX_PATH_CMD_R}/${MCUX_SDK_PROJECT_NAME}_crc.hex -${SAFETY_SRECORD_TOOL_R}/srec_cat.exe
+	)
+endif()
+endif()
+
+# armgcc post-build commands
+mcux_add_custom_command(
+	TOOLCHAINS armgcc
+	BUILD_EVENT  POST_BUILD
+	BUILD_COMMAND arm-none-eabi-objcopy -O ihex ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.elf ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex && 
+				  ${SAFETY_CRC_PATH_A}/crc_hex.bat 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.hex 
+				  -${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}_crc.hex 
+				  -../srecord/srec_cat.exe
+)
+
+endif() # armgcc and MDK post-build command

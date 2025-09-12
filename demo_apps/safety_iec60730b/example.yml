@@ -128,3 +128,9 @@ safety_iec60730b:
     # - -mdk@release
     # - -mdk@sdram_debug
     # - -mdk@sdram_release
+    lpcxpresso55s36:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
