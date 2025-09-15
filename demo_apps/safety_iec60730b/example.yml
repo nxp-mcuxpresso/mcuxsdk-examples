@@ -146,3 +146,9 @@ safety_iec60730b:
     - -iar@release
     - -mdk@debug
     - -mdk@release
+    frdmmcxn236:
+    - +armgcc@debug
+    - -armgcc@release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
