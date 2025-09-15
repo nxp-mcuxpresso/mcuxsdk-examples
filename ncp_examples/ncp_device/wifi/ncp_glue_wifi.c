@@ -927,26 +927,40 @@ static int wlan_ncp_add(void *tlv)
                           */
                             enum wlan_security_type t;
                             if ((res->WPA_WPA2_WEP.wpa3_sae != 0U) && (res->WPA_WPA2_WEP.wpa2 != 0U))
+                            {
                                 t = WLAN_SECURITY_WPA2_WPA3_SAE_MIXED;
+                            }   
                             else if (res->WPA_WPA2_WEP.wpa3_sae != 0U)
+                            {
                                 t = WLAN_SECURITY_WPA3_SAE;
+                            }   
                             else if (res->WPA_WPA2_WEP.wpa2 != 0U)
+                            {
                                 t = WLAN_SECURITY_WPA2;
+                            }
                             /* Delete temporary
                                else if (res->WPA_WPA2_WEP.wpa2_sha256!= 0U)
                                t = WLAN_SECURITY_WPA2_SHA256;
                             */
                             else if (res->WPA_WPA2_WEP.wpa != 0U)
+                            {
                                 t = WLAN_SECURITY_WPA_WPA2_MIXED;
+                            }
                             else if (res->WPA_WPA2_WEP.wepStatic != 0U)
+                            {
                                 t = WLAN_SECURITY_WEP_OPEN;
+                            }
 #if CONFIG_DRIVER_OWE
                             else if (res->WPA_WPA2_WEP.wpa2 && res->WPA_WPA2_WEP.owe)
+                            {
                                 t = WLAN_SECURITY_OWE_ONLY;
+                            }
 #endif
                             else
+                            {
                                 t = WLAN_SECURITY_NONE;
                                 network->security.type = t;
+                            }
                         }
                         break;
 #if CONFIG_WPA_SUPP_CRYPTO_ENTERPRISE
@@ -4336,11 +4350,8 @@ static int wlan_ncp_get_pkt_stats(void *tlv)
     cmd_res->header.seqnum     = 0x00;
     cmd_res->header.result     = NCP_CMD_RESULT_OK;
 
-    NCP_CMD_PKT_STATS *pkt_stats = (NCP_CMD_PKT_STATS *)&cmd_res->params.get_pkt_stats;
+    (void)memcpy(&cmd_res->params.get_pkt_stats, &stats, sizeof(wlan_pkt_stats_t));
 
-    (void)memcpy(pkt_stats, &stats, sizeof(wlan_pkt_stats_t));
-
-done:
     if(ret == -WM_FAIL)
     {
         cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
@@ -4371,7 +4382,6 @@ static int wlan_ncp_get_sta_netif_flags(void *tlv)
 
     (void)memcpy(&netif_flags->flags, &flags, sizeof(uint8_t));
 
-done:
     if(ret == -WM_FAIL)
     {
         cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
@@ -4400,11 +4410,8 @@ static int wlan_ncp_get_current_rssi(void *tlv)
     cmd_res->header.seqnum     = 0x00;
     cmd_res->header.result     = NCP_CMD_RESULT_OK;
 
-    NCP_CMD_GET_CURRENT_RSSI *current_rssi = (NCP_CMD_GET_CURRENT_RSSI *)&cmd_res->params.current_rssi;
+    cmd_res->params.current_rssi.rssi = rssi;
 
-    (void)memcpy(&current_rssi->rssi, &rssi, sizeof(short));
-
-done:
     if(ret == -WM_FAIL)
     {
         cmd_res->header.result       = NCP_CMD_RESULT_ERROR;
@@ -4438,7 +4445,6 @@ static int wlan_ncp_get_current_channel(void *tlv)
 
     (void)memcpy(&current_channel->channel, &channel, sizeof(uint8_t));
 
-done:
     if(ret == -WM_FAIL)
     {
         cmd_res->header.result       = NCP_CMD_RESULT_ERROR;

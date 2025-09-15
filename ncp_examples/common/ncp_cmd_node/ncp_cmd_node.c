@@ -144,11 +144,6 @@ uint8_t ncp_tlv_send_wait_resp(void * cmd, void * cmd_resp_buf, Handle_respFunc 
 
     OSA_SemaphoreCreateBinary((osa_semaphore_handle_t)(cmd_node->sem));
 
-    if (cmd_node->sem == NULL) {
-        PRINTF("Failed to create semaphore.\n");
-        goto out_clear;
-    }
-
     add_cmd_node(cmd_node);
 
     if (ncp_tlv_send(cmd, ncp_cmd->size) != NCP_STATUS_SUCCESS)

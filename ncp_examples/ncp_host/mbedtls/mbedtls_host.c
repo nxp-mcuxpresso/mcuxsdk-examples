@@ -194,8 +194,7 @@ int ncp_process_encrypt_response(uint8_t *res)
     }
     else if (cmd_res->params.encrypt.action == NCP_CMD_ENCRYPT_ACTION_VERIFY)
     {
-        uint32_t num_recv = cmd_res->params.encrypt.arg;
-        ncp_d("NCP encrypt verify %s\r\n", _verify_num == num_recv ? "succ" : "fail");
+        ncp_d("NCP encrypt verify %s\r\n", _verify_num == cmd_res->params.encrypt.arg ? "succ" : "fail");
         (void) PRINTF("NCP encryption verify succ\r\n");
     }
     else if (cmd_res->params.encrypt.action == NCP_CMD_ENCRYPT_ACTION_STOP)

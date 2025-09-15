@@ -33,7 +33,7 @@ int ncp_usb_device_recv(uint8_t *recv_data, uint32_t packet_len)
         usb_rx_len += packet_len;
         if(usb_rx_len >= TLV_CMD_HEADER_LEN)
         {
-            usb_transfer_len = (recv_data[TLV_CMD_SIZE_HIGH_BYTES] << 8) | recv_data[TLV_CMD_SIZE_LOW_BYTES] + NCP_CHKSUM_LEN;
+            usb_transfer_len = ((recv_data[TLV_CMD_SIZE_HIGH_BYTES] << 8) | recv_data[TLV_CMD_SIZE_LOW_BYTES]) + NCP_CHKSUM_LEN;
         }
         else
         {

@@ -16,7 +16,6 @@
 
 #if CONFIG_NCP_USB
 extern cdc_instance_struct_t g_cdc;
-static uint8_t ncp_intf_usb_rxbuf[TLV_CMD_BUF_SIZE];
 
 OSA_SEMAPHORE_HANDLE_DEFINE(usb_host_tx_sem);
 OSA_SEMAPHORE_HANDLE_DEFINE(usb_host_rx_sem);

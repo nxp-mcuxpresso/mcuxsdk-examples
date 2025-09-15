@@ -94,14 +94,17 @@ static void wlan_ncp_get_pkt_stats_cb(void *res, ncp_cmd_node_t * cmd_node)
     (void) memcpy(&get_pkt_stats->pkt_stats, &cmd_res->params.get_pkt_stats, sizeof(NCP_CMD_PKT_STATS));
 }
 
-static void wlan_ncp_get_current_rssi_cb(void *res, ncp_cmd_node_t * cmd_node)
+static void wlan_ncp_get_current_rssi_cb(void *res, ncp_cmd_node_t *cmd_node)
 {
     short rssi = 0;
-    NCPCmd_DS_COMMAND * cmd_res       = (NCPCmd_DS_COMMAND*) res;
-    NCP_CMD_GET_CURRENT_RSSI *current_rssi = (NCP_CMD_GET_CURRENT_RSSI *)&cmd_res->params.current_rssi;
-    rssi = current_rssi->rssi;
+    NCPCmd_DS_COMMAND * cmd_res = (NCPCmd_DS_COMMAND *) res;
 
-    (void) memcpy(cmd_node->resp_buf, &rssi, sizeof(short));
+    NCP_CMD_GET_CURRENT_RSSI current_rssi;
+    memcpy(&current_rssi, &cmd_res->params.current_rssi, sizeof(NCP_CMD_GET_CURRENT_RSSI));
+
+    rssi = current_rssi.rssi;
+
+    memcpy(cmd_node->resp_buf, &rssi, sizeof(short));
 }
 
 static void wlan_ncp_get_current_channel_cb(void *res, ncp_cmd_node_t * cmd_node)

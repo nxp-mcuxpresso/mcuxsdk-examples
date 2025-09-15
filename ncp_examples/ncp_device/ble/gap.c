@@ -1993,8 +1993,6 @@ void matter_get_device_name(const uint8_t *data, uint16_t len)
  */
 void matter_get_conn_idx(const uint8_t *data, uint16_t len)
 {
-    struct _NCP_CMD_GET_CONN_INDEX *cmd = (void *) data;
-
     // no need to handle, conn idx is conn_id
     uint8_t status = NCP_CMD_RESULT_OK;
 
@@ -2039,7 +2037,6 @@ void matter_conn_unref(const uint8_t *data, uint16_t len)
  */
 void matter_get_mtu(const uint8_t *data, uint16_t len)
 {
-    uint8_t status = NCP_CMD_RESULT_OK;
     uint16_t mtu_size = 0;
     struct _NCP_CMD_GET_MTU *cmd = (void *) data;
 
