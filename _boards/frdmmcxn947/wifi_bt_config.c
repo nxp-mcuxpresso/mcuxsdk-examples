@@ -17,10 +17,6 @@
 #warning "uSD interface is not supported"
 #endif
 
-#ifdef WIFI_BT_USE_M2_INTERFACE
-#warning "M.2 interface is not supported"
-#endif
-
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
