@@ -27,9 +27,9 @@
 #if !((defined AUTO_CONNECT_USE_BOND_INFO) && (AUTO_CONNECT_USE_BOND_INFO))
 #include "lfs.h"
 #include "littlefs_pl.h"
+static int app_auto_connect_del_addr(bt_addr_t const *addr);
 #endif
 
-static int app_auto_connect_del_addr(bt_addr_t const *addr);
 static void connected(struct bt_conn *conn, uint8_t err);
 static void disconnected(struct bt_conn *conn, uint8_t reason);
 static void security_changed(struct bt_conn *conn, bt_security_t level,
