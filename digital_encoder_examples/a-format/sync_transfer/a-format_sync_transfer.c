@@ -207,7 +207,7 @@ int main(void)
     }
     else
     {
-        PRINTF("%f (successful)\r\n", temp);
+        PRINTF("%f (successful)\r\n", (double)temp);
     }
     timeout = 0;
 

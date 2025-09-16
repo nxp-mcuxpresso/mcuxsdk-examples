@@ -213,7 +213,7 @@ int main(void)
     }
     else
     {
-        PRINTF("%f (successful)\r\n", temp);
+        PRINTF("%f (successful)\r\n", (double)temp);
     }
 
     PRINTF("****************\r\n* Test case 11 *\r\n****************\r\n");
@@ -263,7 +263,7 @@ int main(void)
     else
     {
         PRINTF("ES: 0x%02X, Single-turn: %d, temperature: %f (successful)\r\n",
-               singleTemp.es, singleTemp.singleTurn, singleTemp.temperature);
+               singleTemp.es, singleTemp.singleTurn, (double)singleTemp.temperature);
     }
 
     PRINTF("****************\r\n* Test case 15 *\r\n****************\r\n");
@@ -318,13 +318,12 @@ int main(void)
         {
             continue;
         }
-        if ((abs(enc_abs[0].singleTurn - abs_save.singleTurn) > 500) || (fabs(temp - temp_save) > 0.1))
+        if ((abs(enc_abs[0].singleTurn - abs_save.singleTurn) > 500) || (fabs((double)temp - (double)temp_save) > 0.1))
         {
             PRINTF("[%.2fs] Multi-turn data: %d, single-turn data: %d\r\n\t Temperature: %f\r\n\r\n",
-                   time/10.0, enc_abs[0].multiTurn, enc_abs[0].singleTurn, temp);
+                   time/10.0, enc_abs[0].multiTurn, enc_abs[0].singleTurn, (double)temp);
             abs_save = enc_abs[0];
             temp_save = temp;
         }
     }
-    return 0;
 }

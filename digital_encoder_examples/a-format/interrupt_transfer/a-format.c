@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <string.h>
 #include "a-format.h"
 
 /*******************************************************************************
@@ -90,6 +91,8 @@ status_t A_Format_Get_ID_CMD(uint8_t enc_addr)
 
 status_t A_Format_Get_ID_Parse(encoder_a_format_t *enc, a_format_res2_t *res, uint32_t *id)
 {
+    uint32_t temp_val;
+
     crc8_para.message_len = 6;
     crc8_para.message     = (uint8_t const *)res;
     if ((A_FORMAT_GET_CMD_CODE_IF(res->IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
@@ -97,7 +100,8 @@ status_t A_Format_Get_ID_Parse(encoder_a_format_t *enc, a_format_res2_t *res, ui
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
 
-    *id = GET_ENCODER_ID(*(uint32_t *)res->DF);
+    memcpy(&temp_val, res->DF, sizeof(uint32_t));
+    *id = GET_ENCODER_ID(temp_val);
     return kStatus_Success;
 }
 
@@ -277,6 +281,7 @@ status_t A_Format_ABS_Readout_Multi_CMD(uint8_t enc_addr)
 status_t A_Format_ABS_Readout_Multi_Parse(encoder_a_format_t *enc, a_format_res2_t *res,
                                           a_format_abs_multi_t *multiData)
 {
+    uint32_t temp_val;
     cmdErr = 0;
 
     crc8_para.message_len = 6;
@@ -297,7 +302,8 @@ status_t A_Format_ABS_Readout_Multi_Parse(encoder_a_format_t *enc, a_format_res2
             cmdErr++;
         }
 
-        multiData[i].multiTurn = (uint16_t)((*(uint32_t *)res[i].DF >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
+        memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
+        multiData[i].multiTurn = (uint16_t)((temp_val >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;
@@ -351,6 +357,7 @@ status_t A_Format_ABS_Readout_Single_CMD(uint8_t enc_addr)
 status_t A_Format_ABS_Readout_Single_Parse(encoder_a_format_t *enc, a_format_res2_t *res,
                                            a_format_abs_single_t *single_data)
 {
+    uint32_t temp_val;
     cmdErr = 0;
 
     crc8_para.message_len = 6;
@@ -371,7 +378,8 @@ status_t A_Format_ABS_Readout_Single_Parse(encoder_a_format_t *enc, a_format_res
             cmdErr++;
         }
 
-        single_data[i].singleTurn = *(uint32_t *)res[i].DF & enc->single_turn_sign_mask;
+        memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
+        single_data[i].singleTurn = temp_val & enc->single_turn_sign_mask;
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;
@@ -403,6 +411,7 @@ status_t A_Format_ABS_Readout_Single_IRQ(encoder_a_format_t *enc, uint8_t enc_ad
 status_t A_Format_ABS_Readout_Multi_Single_Parse(encoder_a_format_t *enc, a_format_res3_t *res,
                                                  a_format_abs_multi_single_t *abs_data)
 {
+    uint32_t temp_val1, temp_val2;
     cmdErr = 0;
 
     crc8_para.message_len = 8;
@@ -423,8 +432,10 @@ status_t A_Format_ABS_Readout_Multi_Single_Parse(encoder_a_format_t *enc, a_form
             cmdErr++;
         }
 
-        abs_data[i].singleTurn = *(uint32_t *)res[i].DF & enc->single_turn_sign_mask;
-        abs_data[i].multiTurn  = (uint16_t)((*(uint32_t *)&(res[i].DF[1]) >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
+        memcpy(&temp_val1, res[i].DF, sizeof(uint32_t));
+        memcpy(&temp_val2, &(res[i].DF[1]), sizeof(uint32_t));
+        abs_data[i].singleTurn = temp_val1 & enc->single_turn_sign_mask;
+        abs_data[i].multiTurn  = (uint16_t)((temp_val2 >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;

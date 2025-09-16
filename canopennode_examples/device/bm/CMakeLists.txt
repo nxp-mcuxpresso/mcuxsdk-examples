@@ -28,6 +28,11 @@ mcux_add_linker_symbol(
     SYMBOLS "__heap_size__=0x4000"
 )
 
+mcux_add_iar_configuration(
+    CC "--diag_suppress=Pe188,Pa089"
+    CX "--diag_suppress=Pe188,Pa089"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/canopennode_examples/device/bm/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

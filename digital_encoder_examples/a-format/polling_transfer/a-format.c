@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include <string.h>
 #include "a-format.h"
 
 /*******************************************************************************
@@ -106,7 +107,6 @@ void A_Format_PrintfES(logFunc logES, uint8_t es)
 status_t A_Format_Set_Encoder_Address_1to1(encoder_a_format_t *enc, uint8_t enc_addr)
 {
     status_t status = kStatus_Success;
-    a_format_res2_t res;
 
     cmd = A_FORMAT_REQ_IT_SET_ENCODER_ADDR1;
     cdf = A_FORMAT_PACK_CDF((enc_addr & 0x7), A_FORMAT_REQ_IT_SET_ENCODER_ADDR1, 0);
@@ -118,14 +118,15 @@ status_t A_Format_Set_Encoder_Address_1to1(encoder_a_format_t *enc, uint8_t enc_
     FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
 
     crc8_para.message_len = 6;
-    crc8_para.message     = (uint8_t const *)&res;
+    crc8_para.message     = (uint8_t const *)res2;
 
+    memset(res2, 0, sizeof(a_format_res2_t));
     for (uint8_t i = 0; i < 8; i++)
     {
         FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
-        FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)&res, HALFWORD_NUM(a_format_res2_t));
+        FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
 
-        if ((A_FORMAT_GET_CMD_CODE_IF(res.IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
+        if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
         {
             return kStatus_FLEXIO_A_FORMAT_FrameErr;
         }
@@ -135,7 +136,7 @@ status_t A_Format_Set_Encoder_Address_1to1(encoder_a_format_t *enc, uint8_t enc_
 
 status_t A_Format_Set_ID_1to1(encoder_a_format_t *enc, uint32_t id)
 {
-    a_format_res2_t res;
+    uint32_t temp_val;
     uint16_t mdf[3] = {
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF0, id & 0x000000FF, 0),
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF1, (id & 0x0000FF00) >> 8, 0),
@@ -158,8 +159,9 @@ status_t A_Format_Set_ID_1to1(encoder_a_format_t *enc, uint32_t id)
     FLEXIO_A_Format_Config_DR_length(enc->controller, 4);
 
     crc8_para.message_len = 6;
-    crc8_para.message     = (uint8_t const *)&res;
+    crc8_para.message     = (uint8_t const *)res2;
 
+    memset(res2, 0, sizeof(a_format_res2_t));
     FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, mdf, 1);
@@ -167,10 +169,11 @@ status_t A_Format_Set_ID_1to1(encoder_a_format_t *enc, uint32_t id)
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[1], 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[2], 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)&res, HALFWORD_NUM(a_format_res2_t));
+    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
 
-    if ((A_FORMAT_GET_CMD_CODE_IF(res.IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
-        (GET_ENCODER_ID(*(uint32_t *)res.DF) != id))
+    memcpy(&temp_val, res2[0].DF, sizeof(uint32_t));
+    if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
+        (GET_ENCODER_ID(temp_val) != id))
     {
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
@@ -180,7 +183,7 @@ status_t A_Format_Set_ID_1to1(encoder_a_format_t *enc, uint32_t id)
 
 status_t A_Format_Get_ID_1to1(encoder_a_format_t *enc, uint32_t *id)
 {
-    a_format_res2_t res;
+    uint32_t temp_val;
 
     cmd = A_FORMAT_REQ_IT_ID_CODE_READ2;
     cdf = A_FORMAT_PACK_CDF(0, A_FORMAT_REQ_IT_ID_CODE_READ2, 0);
@@ -191,23 +194,25 @@ status_t A_Format_Get_ID_1to1(encoder_a_format_t *enc, uint32_t *id)
     FLEXIO_A_Format_Config_DR_length(enc->controller, 1);
 
     crc8_para.message_len = 6;
-    crc8_para.message     = (uint8_t const *)&res;
+    crc8_para.message     = (uint8_t const *)res2;
 
+    memset(res2, 0, sizeof(a_format_res2_t));
     FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)&res, HALFWORD_NUM(a_format_res2_t));
+    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
 
-    if ((A_FORMAT_GET_CMD_CODE_IF(res.IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
+    if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
     {
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
 
-    *id = GET_ENCODER_ID(*(uint32_t *)res.DF);
+    memcpy(&temp_val, res2[0].DF, sizeof(uint32_t));
+    *id = GET_ENCODER_ID(temp_val);
     return kStatus_Success;
 }
 
 status_t A_Format_Set_Encoder_Address_MATCH_ID(encoder_a_format_t *enc, uint32_t id, uint8_t enc_addr)
 {
-    a_format_res2_t res;
+    uint32_t temp_val;
     uint16_t mdf[3] = {
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF0, id & 0x000000FF, 0),
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF1, (id & 0x0000FF00) >> 8, 0),
@@ -230,8 +235,9 @@ status_t A_Format_Set_Encoder_Address_MATCH_ID(encoder_a_format_t *enc, uint32_t
     FLEXIO_A_Format_Config_DR_length(enc->controller, 4);
 
     crc8_para.message_len = 6;
-    crc8_para.message     = (uint8_t const *)&res;
+    crc8_para.message     = (uint8_t const *)res2;
 
+    memset(res2, 0, sizeof(a_format_res2_t));
     FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, mdf, 1);
@@ -239,10 +245,11 @@ status_t A_Format_Set_Encoder_Address_MATCH_ID(encoder_a_format_t *enc, uint32_t
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[1], 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[2], 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)&res, HALFWORD_NUM(a_format_res2_t));
+    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
 
-    if ((A_FORMAT_GET_CMD_CODE_IF(res.IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
-        (GET_ENCODER_ID(*(uint32_t *)res.DF) != id))
+    memcpy(&temp_val, res2[0].DF, sizeof(uint32_t));
+    if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
+        (GET_ENCODER_ID(temp_val) != id))
     {
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
@@ -252,7 +259,7 @@ status_t A_Format_Set_Encoder_Address_MATCH_ID(encoder_a_format_t *enc, uint32_t
 
 status_t A_Format_Set_ID(encoder_a_format_t *enc, uint8_t enc_addr, uint32_t id)
 {
-    a_format_res2_t res;
+    uint32_t temp_val;
     uint16_t mdf[3] = {
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF0, id & 0x000000FF, 0),
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF1, (id & 0x0000FF00) >> 8, 0),
@@ -275,8 +282,9 @@ status_t A_Format_Set_ID(encoder_a_format_t *enc, uint8_t enc_addr, uint32_t id)
     FLEXIO_A_Format_Config_DR_length(enc->controller, 4);
 
     crc8_para.message_len = 6;
-    crc8_para.message     = (uint8_t const *)&res;
+    crc8_para.message     = (uint8_t const *)res2;
 
+    memset(res2, 0, sizeof(a_format_res2_t));
     FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, mdf, 1);
@@ -284,10 +292,11 @@ status_t A_Format_Set_ID(encoder_a_format_t *enc, uint8_t enc_addr, uint32_t id)
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[1], 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[2], 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)&res, HALFWORD_NUM(a_format_res2_t));
+    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
 
-    if ((A_FORMAT_GET_CMD_CODE_IF(res.IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
-        (GET_ENCODER_ID(*(uint32_t *)res.DF) != id))
+    memcpy(&temp_val, res2[0].DF, sizeof(uint32_t));
+    if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
+        (GET_ENCODER_ID(temp_val) != id))
     {
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
@@ -318,6 +327,8 @@ status_t A_Format_Get_ID_CMD(uint8_t enc_addr)
 
 status_t A_Format_Get_ID_Parse(encoder_a_format_t *enc, a_format_res2_t *res, uint32_t *id)
 {
+    uint32_t temp_val;
+
     crc8_para.message_len = 6;
     crc8_para.message     = (uint8_t const *)res;
     if ((A_FORMAT_GET_CMD_CODE_IF(res->IF) != cmd) || (CRC_Calc(&crc8_para) != 0))
@@ -325,7 +336,8 @@ status_t A_Format_Get_ID_Parse(encoder_a_format_t *enc, a_format_res2_t *res, ui
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
 
-    *id = GET_ENCODER_ID(*(uint32_t *)res->DF);
+    memcpy(&temp_val, res->DF, sizeof(uint32_t));
+    *id = GET_ENCODER_ID(temp_val);
     return kStatus_Success;
 }
 
@@ -346,7 +358,6 @@ status_t A_Format_Get_ID(encoder_a_format_t *enc, uint8_t enc_addr, uint32_t *id
 
 status_t A_Format_Memory_Write(encoder_a_format_t *enc, uint8_t enc_addr, a_format_eeprom_t *eeprom)
 {
-    a_format_res2_t res;
     uint16_t mdf[3] = {
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF0, eeprom->data & 0x00FF, 0),
         A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF1, (eeprom->data & 0xFF00) >> 8, 0),
@@ -369,8 +380,9 @@ status_t A_Format_Memory_Write(encoder_a_format_t *enc, uint8_t enc_addr, a_form
     FLEXIO_A_Format_Config_DR_length(enc->controller, 4);
 
     crc8_para.message_len = 6;
-    crc8_para.message     = (uint8_t const *)&res;
+    crc8_para.message     = (uint8_t const *)res2;
 
+    memset(res2, 0, sizeof(a_format_res2_t));
     FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, mdf, 1);
@@ -378,10 +390,10 @@ status_t A_Format_Memory_Write(encoder_a_format_t *enc, uint8_t enc_addr, a_form
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[1], 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf[2], 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)&res, HALFWORD_NUM(a_format_res2_t));
+    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
 
-    if ((A_FORMAT_GET_CMD_CODE_IF(res.IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
-        (res.DF[0] != eeprom->data) || ((res.DF[1] & 0x00FF) != eeprom->address))
+    if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
+        (res2[0].DF[0] != eeprom->data) || ((res2[0].DF[1] & 0x00FF) != eeprom->address))
     {
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
@@ -391,7 +403,6 @@ status_t A_Format_Memory_Write(encoder_a_format_t *enc, uint8_t enc_addr, a_form
 
 status_t A_Format_Memory_Read(encoder_a_format_t *enc, uint8_t enc_addr, a_format_eeprom_t *eeprom)
 {
-    a_format_res2_t res;
     uint16_t mdf = A_FORMAT_PACK_MDF(A_FORMAT_FRAME_CODE_MDF2, eeprom->address, 0);
 
     cmd = A_FORMAT_REQ_IT_MEMORY_READ;
@@ -407,20 +418,21 @@ status_t A_Format_Memory_Read(encoder_a_format_t *enc, uint8_t enc_addr, a_forma
     FLEXIO_A_Format_Config_DR_length(enc->controller, 2);
 
     crc8_para.message_len = 6;
-    crc8_para.message     = (uint8_t const *)&res;
+    crc8_para.message     = (uint8_t const *)res2;
 
+    memset(res2, 0, sizeof(a_format_res2_t));
     FLEXIO_A_Format_WriteBlocking(enc->controller, &cdf, 1);
     SDK_DelayAtLeastUs(7, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
     FLEXIO_A_Format_WriteBlocking(enc->controller, &mdf, 1);
-    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)&res, HALFWORD_NUM(a_format_res2_t));
+    FLEXIO_A_Format_ReadBlocking(enc->controller, (uint16_t *)res2, HALFWORD_NUM(a_format_res2_t));
 
-    if ((A_FORMAT_GET_CMD_CODE_IF(res.IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
-        ((res.DF[1] & 0x00FF) != eeprom->address))
+    if ((A_FORMAT_GET_CMD_CODE_IF(res2[0].IF) != cmd) || (CRC_Calc(&crc8_para) != 0) ||
+        ((res2[0].DF[1] & 0x00FF) != eeprom->address))
     {
         return kStatus_FLEXIO_A_FORMAT_FrameErr;
     }
 
-    eeprom->data = res.DF[0];
+    eeprom->data = res2[0].DF[0];
     return kStatus_Success;
 }
 
@@ -563,6 +575,7 @@ status_t A_Format_ABS_Readout_Multi_CMD(uint8_t enc_addr)
 status_t A_Format_ABS_Readout_Multi_Parse(encoder_a_format_t *enc, a_format_res2_t *res,
                                           a_format_abs_multi_t *multiData)
 {
+    uint32_t temp_val;
     cmdErr = 0;
 
     crc8_para.message_len = 6;
@@ -583,7 +596,8 @@ status_t A_Format_ABS_Readout_Multi_Parse(encoder_a_format_t *enc, a_format_res2
             cmdErr++;
         }
 
-        multiData[i].multiTurn = (uint16_t)((*(uint32_t *)res[i].DF >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
+        memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
+        multiData[i].multiTurn = (uint16_t)((temp_val >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;
@@ -629,6 +643,7 @@ status_t A_Format_ABS_Readout_Single_CMD(uint8_t enc_addr)
 status_t A_Format_ABS_Readout_Single_Parse(encoder_a_format_t *enc, a_format_res2_t *res,
                                            a_format_abs_single_t *single_data)
 {
+    uint32_t temp_val;
     cmdErr = 0;
 
     crc8_para.message_len = 6;
@@ -649,7 +664,8 @@ status_t A_Format_ABS_Readout_Single_Parse(encoder_a_format_t *enc, a_format_res
             cmdErr++;
         }
 
-        single_data[i].singleTurn = *(uint32_t *)res[i].DF & enc->single_turn_sign_mask;
+        memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
+        single_data[i].singleTurn = temp_val & enc->single_turn_sign_mask;
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;
@@ -672,6 +688,7 @@ status_t A_Format_ABS_Readout_Single(encoder_a_format_t *enc, uint8_t enc_addr, 
 
 status_t A_Format_ABS_Readout_Single_with_status(encoder_a_format_t *enc, uint8_t enc_addr, a_format_single_stat_t *singleStat)
 {
+    uint32_t temp_val;
     a_format_res3_t *res = res3;
 
     cmdErr = 0;
@@ -709,7 +726,8 @@ status_t A_Format_ABS_Readout_Single_with_status(encoder_a_format_t *enc, uint8_
             cmdErr++;
         }
 
-        singleStat[i].singleTurn = *(uint32_t *)res[i].DF & enc->single_turn_sign_mask;
+        memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
+        singleStat[i].singleTurn = temp_val & enc->single_turn_sign_mask;
         singleStat[i].ALM = (res[i].DF[2] << 8) | (res[i].DF[1] >> 8);
     }
 
@@ -718,6 +736,7 @@ status_t A_Format_ABS_Readout_Single_with_status(encoder_a_format_t *enc, uint8_
 
 status_t A_Format_ABS_Readout_Single_with_temperature(encoder_a_format_t *enc, uint8_t enc_addr, a_format_single_temp_t *singleTemp)
 {
+    uint32_t temp_val;
     a_format_res3_t *res = res3;
     uint16_t temp;
 
@@ -756,7 +775,8 @@ status_t A_Format_ABS_Readout_Single_with_temperature(encoder_a_format_t *enc, u
             cmdErr++;
         }
 
-        singleTemp[i].singleTurn = *(uint32_t *)res[i].DF & enc->single_turn_sign_mask;
+        memcpy(&temp_val, res[i].DF, sizeof(uint32_t));
+        singleTemp[i].singleTurn = temp_val & enc->single_turn_sign_mask;
         temp = (res[i].DF[2] << 8) | (res[i].DF[1] >> 8);
         singleTemp[i].temperature = GET_TEMPERATURE_VALUE(temp);
     }
@@ -767,6 +787,7 @@ status_t A_Format_ABS_Readout_Single_with_temperature(encoder_a_format_t *enc, u
 status_t A_Format_ABS_Readout_Multi_Single_Parse(encoder_a_format_t *enc, a_format_res3_t *res,
                                                  a_format_abs_multi_single_t *abs_data)
 {
+    uint32_t temp_val1, temp_val2;
     cmdErr = 0;
 
     crc8_para.message_len = 8;
@@ -787,8 +808,10 @@ status_t A_Format_ABS_Readout_Multi_Single_Parse(encoder_a_format_t *enc, a_form
             cmdErr++;
         }
 
-        abs_data[i].singleTurn = *(uint32_t *)res[i].DF & enc->single_turn_sign_mask;
-        abs_data[i].multiTurn  = (uint16_t)((*(uint32_t *)&(res[i].DF[1]) >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
+        memcpy(&temp_val1, res[i].DF, sizeof(uint32_t));
+        memcpy(&temp_val2, &(res[i].DF[1]), sizeof(uint32_t));
+        abs_data[i].singleTurn = temp_val1 & enc->single_turn_sign_mask;
+        abs_data[i].multiTurn  = (uint16_t)((temp_val2 >> (enc->singleTurnRevolution - 16)) & enc->multi_turn_sign_mask);
     }
 
     return cmdErr ? kStatus_Fail : kStatus_Success;

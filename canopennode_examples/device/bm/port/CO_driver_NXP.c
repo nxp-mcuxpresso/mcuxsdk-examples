@@ -503,7 +503,11 @@ static FLEXCAN_CALLBACK(flexcan_callback)
             break;
 
         case kStatus_FLEXCAN_TxIdle:
+#if TX_MB_FIRST_INDEX
             if ((TX_MB_FIRST_INDEX <= result) && (result <= TX_MB_LAST_INDEX))
+#else
+            if (result <= TX_MB_LAST_INDEX)
+#endif
             {
                 txComplete = true;
                 CO_CANinterrupt_TX(CANModule_local, 0);

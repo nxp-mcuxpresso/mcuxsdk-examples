@@ -64,7 +64,7 @@ int main(void)
     a_format_status_t statusData;
     a_format_abs_multi_t multiData;
     a_format_abs_single_t single_data;
-    a_format_abs_multi_single_t enc_abs, abs_save;
+    a_format_abs_multi_single_t enc_abs, abs_save = {0};
     float temp;
     uint32_t enc_id;
 
@@ -147,7 +147,7 @@ int main(void)
     }
     else
     {
-        PRINTF("%f (successful)\r\n", temp);
+        PRINTF("%f (successful)\r\n", (double)temp);
     }
 
     PRINTF("****************\r\n* Test case  4 *\r\n****************\r\n");
