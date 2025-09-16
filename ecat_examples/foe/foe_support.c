@@ -47,7 +47,6 @@ static uint16_t buffer_index = 0;
 /* receive update image and store it in the flash partition */
 int32_t FoE_StoreImage(uint8_t *data, uint16_t size, uint32_t offset, uint8_t isEnd)
 {
-    int32_t retval = 0;
     /* Preset result code to indicate "no error" */
     int32_t mflash_result = 0;
     uint16_t data_size = size;
@@ -57,15 +56,15 @@ int32_t FoE_StoreImage(uint8_t *data, uint16_t size, uint32_t offset, uint8_t is
     uint32_t offset_base = offset / MFLASH_PAGE_SIZE;
 
     if (size == 0) {
-        retval = -1;
-        return retval;
+        mflash_result = -1;
+        return mflash_result;
     }
     
     if (offset + size >= storage.size) {
         /* Partition boundary exceeded */
         PRINTF("\n%s: partition boundary exceedded\r\n", __func__);
-        retval = -1;
-        return retval;
+        mflash_result = -1;
+        return mflash_result;
     }
 
     /* Perform erase when encountering next sector */
@@ -103,7 +102,7 @@ int32_t FoE_StoreImage(uint8_t *data, uint16_t size, uint32_t offset, uint8_t is
     }
     total_processed += size;
     PRINTF("\r%s: processed %i bytes \r\n", __func__, total_processed);
-    return retval;
+    return mflash_result;
 }
 
 void FoE_UpdateImage(void)

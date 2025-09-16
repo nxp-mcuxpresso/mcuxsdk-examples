@@ -406,6 +406,7 @@ void ecat_task(void *arg)
 void httpserv_task(void *arg)
 {
     while (1) {
+        vTaskDelay(pdMS_TO_TICKS(10));
         if (netif_is_up(&EoE_netif)) {
             http_server_enable_mdns(&EoE_netif, MDNS_HOSTNAME);
             LOCK_TCPIP_CORE();

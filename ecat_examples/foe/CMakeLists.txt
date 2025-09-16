@@ -52,6 +52,21 @@ mcux_add_include(
     INCLUDES examples/ecat_examples/foe/SSC/Src
 )
 
+mcux_remove_armgcc_configuration(
+    CC "-Werror"
+    CX "-Werror"
+)
+
+mcux_remove_iar_configuration(
+    CC "--warnings_are_errors"
+    CX "--warnings_are_errors"
+)
+
+mcux_remove_mdk_configuration(
+    CC "-Werror"
+    CX "-Werror"
+)
+
 include(${SdkRootDirPath}/${board_root}/${board}/ecat_examples/foe/${multicore_foldername}/reconfig.cmake OPTIONAL)
 
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

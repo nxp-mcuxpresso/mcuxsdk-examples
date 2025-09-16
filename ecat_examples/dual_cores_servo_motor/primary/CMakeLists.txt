@@ -74,4 +74,19 @@ mcux_add_linker_symbol(
             "
 )
 
+mcux_remove_armgcc_configuration(
+    CC "-Werror"
+    CX "-Werror"
+)
+
+mcux_remove_iar_configuration(
+    CC "--warnings_are_errors"
+    CX "--warnings_are_errors"
+)
+
+mcux_remove_mdk_configuration(
+    CC "-Werror"
+    CX "-Werror"
+)
+
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
