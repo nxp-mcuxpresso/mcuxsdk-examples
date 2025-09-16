@@ -18,7 +18,8 @@ product: Pins v17.0
 processor: RW612
 package_id: RW612ETA2I
 mcu_data: ksdk2_0
-processor_version: 25.03.10
+processor_version: 25.06.10
+board: RD-RW612-BGA
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -45,10 +46,10 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: F6, peripheral: FLEXCOMM3, signal: USART_TXD, pin_signal: GPIO_26}
   - {pin_num: E5, peripheral: FLEXCOMM3, signal: USART_RXD, pin_signal: GPIO_24}
-  - {pin_num: C13, peripheral: FLEXCOMM0, signal: USART_TXD, pin_signal: GPIO_3}
+  - {pin_num: F6, peripheral: FLEXCOMM3, signal: USART_TXD, pin_signal: GPIO_26}
   - {pin_num: F10, peripheral: FLEXCOMM0, signal: USART_RXD, pin_signal: GPIO_2}
+  - {pin_num: C13, peripheral: FLEXCOMM0, signal: USART_TXD, pin_signal: GPIO_3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -62,9 +63,9 @@ BOARD_InitPins:
 /* Function assigned for the Cortex-M33 */
 void BOARD_InitPins(void)
 {
-    /* Initialize FC0_USART_DATA functionality on pin GPIO_3, GPIO_2 (pin C13_F10) */
+	/* Initialize FC0_USART_DATA functionality on pin GPIO_2, GPIO_3 (pin F10_C13) */
     IO_MUX_SetPinMux(IO_MUX_FC0_USART_DATA);
-    /* Initialize FC3_USART_DATA functionality on pin GPIO_26, GPIO_24 (pin F6_E5) */
+    /* Initialize FC3_USART_DATA functionality on pin GPIO_24, GPIO_26 (pin E5_F6) */
     IO_MUX_SetPinMux(IO_MUX_FC3_USART_DATA);
 }
 
@@ -72,13 +73,13 @@ void BOARD_InitPins(void)
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitQuadSpiFlashPins:
-- options: {callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
+- options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D2, peripheral: FLEXSPI, signal: FLASH_DQS, pin_signal: GPIO_29}
   - {pin_num: E3, peripheral: FLEXSPI, signal: FLASH_CLK0, pin_signal: GPIO_34}
   - {pin_num: F4, peripheral: FLEXSPI, signal: FLASH_SSEL0, pin_signal: GPIO_28}
   - {pin_num: F2, peripheral: FLEXSPI, signal: FLASH_DATA2, pin_signal: GPIO_32}
   - {pin_num: G3, peripheral: FLEXSPI, signal: FLASH_DATA3, pin_signal: GPIO_33}
+  - {pin_num: D2, peripheral: FLEXSPI, signal: FLASH_DQS, pin_signal: GPIO_29}
   - {pin_num: D3, peripheral: FLEXSPI, signal: FLASH_DATA1, pin_signal: GPIO_31}
   - {pin_num: F3, peripheral: FLEXSPI, signal: FLASH_DATA0, pin_signal: GPIO_30}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -94,8 +95,8 @@ BOARD_InitQuadSpiFlashPins:
 /* Function assigned for the Cortex-M33 */
 void BOARD_InitQuadSpiFlashPins(void)
 {
-    /* Initialize QUAD_SPI_FLASH functionality on pin GPIO_29, GPIO_34, GPIO_28, GPIO_32, GPIO_33, GPIO_31, GPIO_30
-     * (pin D2_E3_F4_F2_G3_D3_F3) */
+    /* Initialize QUAD_SPI_FLASH functionality on pin GPIO_30, GPIO_34, GPIO_28, GPIO_32, GPIO_33, GPIO_29, GPIO_31
+     * (pin F3_E3_F4_F2_G3_D2_D3) */
     IO_MUX_SetPinMux(IO_MUX_QUAD_SPI_FLASH);
 }
 /***********************************************************************************************************************
