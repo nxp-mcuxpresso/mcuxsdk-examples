@@ -37,7 +37,6 @@ mcux_add_macro(
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DLPFLEXCOMM_INIT_NOT_USED_IN_DRIVER=1\
-      -DMBEDTLS_CONFIG_FILE=\\\"els_pkc_mbedtls_config.h\\\"\
       -DMFLASH_BASE_ADDRESS=0\
       -DSDIO_ENABLED=1"
 )

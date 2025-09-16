@@ -20,7 +20,7 @@
 #endif
 #include "fsl_component_timer_manager.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "ksdk_mbedtls.h"
+#include "psa/crypto.h"
 #endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
@@ -100,7 +100,7 @@ void BOARD_InitHardware(void)
     BOARD_SetFlexspiClock(FLEXSPI0, 2U, 4U);
 
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
     (void)memset(&timerConfig, 0, sizeof(timer_config_t));
     timerConfig.instance    = 0;

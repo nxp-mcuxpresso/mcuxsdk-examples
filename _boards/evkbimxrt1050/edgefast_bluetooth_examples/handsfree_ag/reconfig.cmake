@@ -36,7 +36,6 @@ mcux_add_macro(
       -DIOT_WIFI_ENABLE_SAVE_NETWORK=1\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
-      -DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
       -DMFLASH_PAGE_SIZE=256\
       -DSAI_XFER_QUEUE_SIZE=6\
       -DSDIO_ENABLED=1\

@@ -18,7 +18,7 @@
 #include "fsl_dmamux.h"
 #include "usb_phy.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "ksdk_mbedtls.h"
+#include "psa/crypto.h"
 #endif /* CONFIG_BT_SMP */
 #include "fsl_adapter_gpio.h"
 /*${header:end}*/
@@ -123,7 +123,7 @@ void BOARD_InitHardware(void)
     EDMA_Init(dmaBases[0], &config);
 #endif
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
 #if defined(WIFI_IW612_BOARD_RD_USD)
     GPIO_PinWrite(CONTROLLER_RESET_GPIO, CONTROLLER_RESET_PIN, 0U);

@@ -37,7 +37,6 @@ mcux_add_macro(
       -DHAL_UART_DMA_INIT_ENABLE=0\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
-      -DMBEDTLS_CONFIG_FILE=\\\"ele_s400_mbedtls_config.h\\\"\
       -DMBEDTLS_MCUX_ELE_S400_API\
       -DSDIO_ENABLED=1"
 )

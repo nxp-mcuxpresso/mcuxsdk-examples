@@ -20,7 +20,7 @@
 #endif
 #include "fsl_component_timer_manager.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "ksdk_mbedtls.h"
+#include "psa/crypto.h"
 #endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
@@ -62,7 +62,7 @@ void BOARD_InitHardware(void)
     CLOCK_AttachClk(BOARD_BT_UART_CLK_ATTACH);
 
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
 }
 #if defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \

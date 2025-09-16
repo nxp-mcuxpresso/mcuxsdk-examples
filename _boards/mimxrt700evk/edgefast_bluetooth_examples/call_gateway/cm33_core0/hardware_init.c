@@ -422,14 +422,6 @@ void  BOARD_InitHardware(void)
     BOARD_Init_BT_UART();
     BOARD_Init_I2C();
     BOARD_Init_EDMA();
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    GlikeyWriteEnable(GLIKEY3, 1U);                                    /* Enable SYSCON0_SEC_CLK_CTRL write */
-    SYSCON0->SEC_CLK_CTRL |= SYSCON0_SEC_CLK_CTRL_TRNG_REFCLK_EN_MASK; /* Enable TRNG REF CLOCK */
-
-    CLOCK_AttachClk(kFRO1_DIV2_to_TRNG);                               /* Max 96MHZ with 1.0V nomral supply. */
-    CLOCK_SetClkDiv(kCLOCK_DivTrngClk, 1U);
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 
 #if (defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2)  || \

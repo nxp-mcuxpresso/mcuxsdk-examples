@@ -16,7 +16,7 @@
 #include "usb_phy.h"
 #include "usb_host.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "ksdk_mbedtls.h"
+#include "psa/crypto.h"
 #endif /* CONFIG_BT_SMP */
 
 #if defined(APP_MEM_POWER_OPT) && (APP_MEM_POWER_OPT > 0)
@@ -113,7 +113,7 @@ void BOARD_InitHardware(void)
     BOARD_SetFlexspiClock(FLEXSPI0, 2U, 4U);
 
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
 }
 #if defined(WIFI_88W8987_BOARD_AW_CM358MA) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || \

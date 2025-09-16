@@ -38,7 +38,6 @@ mcux_add_macro(
       -DIOT_WIFI_ENABLE_SAVE_NETWORK=1\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
-      -DMBEDTLS_CONFIG_FILE=\\\"ele_s400_mbedtls_config.h\\\"\
       -DMBEDTLS_MCUX_ELE_S400_API\
       -DSAI_XFER_QUEUE_SIZE=6\
       -DSDIO_ENABLED=1"

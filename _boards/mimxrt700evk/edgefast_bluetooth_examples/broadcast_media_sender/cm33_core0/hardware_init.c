@@ -98,14 +98,6 @@ void BOARD_InitHardware(void)
     BOARD_SyncSignal_Init();
 
     BOARD_Init_BT_UART();
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    GlikeyWriteEnable(GLIKEY3, 1U);                                    /* Enable SYSCON0_SEC_CLK_CTRL write */
-    SYSCON0->SEC_CLK_CTRL |= SYSCON0_SEC_CLK_CTRL_TRNG_REFCLK_EN_MASK; /* Enable TRNG REF CLOCK */
-
-    CLOCK_AttachClk(kFRO1_DIV2_to_TRNG);                               /* Max 96MHZ with 1.0V nomral supply. */
-    CLOCK_SetClkDiv(kCLOCK_DivTrngClk, 1U);
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 
 void BOARD_Init_M2(void)

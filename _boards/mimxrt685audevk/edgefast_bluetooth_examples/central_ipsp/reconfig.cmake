@@ -35,7 +35,6 @@ mcux_add_macro(
       -DIOT_WIFI_ENABLE_SAVE_NETWORK=1\
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
-      -DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
       -DNVM_NO_COMPONNET=1\
       -DSDIO_ENABLED=1\
       -DSDK_COMPONENT_INTEGRATION=1\

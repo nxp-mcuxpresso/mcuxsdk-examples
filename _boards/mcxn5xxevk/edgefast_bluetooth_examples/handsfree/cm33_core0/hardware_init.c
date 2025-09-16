@@ -13,7 +13,7 @@
 
 #include "controller_hci_uart.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "els_mbedtls.h"
+#include "psa/crypto.h"
 #endif /* CONFIG_BT_SMP */
 
 #include "fsl_lpflexcomm.h"
@@ -346,7 +346,7 @@ void BOARD_InitHardware(void)
 
     // XCACHE_DisableCache(XCACHE_PS);
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
 }
 

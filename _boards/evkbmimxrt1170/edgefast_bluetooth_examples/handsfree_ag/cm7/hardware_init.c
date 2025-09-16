@@ -24,7 +24,7 @@
 #include "fsl_dmamux.h"
 #include "usb_phy.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "ksdk_mbedtls.h"
+#include "psa/crypto.h"
 #endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
@@ -338,7 +338,7 @@ void BOARD_InitHardware(void)
 #endif
 
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
 }
 

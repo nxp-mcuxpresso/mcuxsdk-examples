@@ -17,7 +17,7 @@
 #include "fsl_lpuart_edma.h"
 #include "fsl_dmamux.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "ksdk_mbedtls.h"
+#include "psa/crypto.h"
 #endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
@@ -69,7 +69,7 @@ void BOARD_InitHardware(void)
     CLOCK_SetDiv(kCLOCK_FlexspiDiv, 2);   /* flexspi clock 133M. */
 
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
     flexspi_clock_init();
 }

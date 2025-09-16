@@ -28,7 +28,8 @@ mcux_add_macro(
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DgMemManagerLight=0\
-      -DgPlatformDisableBleLowPower_d=1"
+      -DgPlatformDisableBleLowPower_d=1\
+      -DCONFIG_BT_SMP_SELFTEST=1"
 )
 
 mcux_add_macro(

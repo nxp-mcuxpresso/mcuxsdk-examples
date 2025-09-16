@@ -14,8 +14,8 @@
 #include "usb_host_config.h"
 #include "usb_host.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "els_pkc_mbedtls.h"
-#include "platform_hw_ip.h"
+#include "psa/crypto.h"
+#include "mcux_mbedtls_psa_crypto_config.h"
 #endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
@@ -34,7 +34,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
+    psa_crypto_init();
 #endif /* CONFIG_BT_SMP */
 }
 
