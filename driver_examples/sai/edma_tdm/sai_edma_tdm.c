@@ -55,7 +55,11 @@ AT_QUICKACCESS_SECTION_DATA(sai_edma_handle_t txHandle);
 #endif
 edma_handle_t dmaTxHandle = {0};
 extern codec_config_t boardCodecConfig;
-AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_buffer[BUFFER_NUM][BUFFER_SIZE], 4);
+#ifdef FSL_FEATURE_L1DCACHE_LINESIZE_BYTE
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_buffer[BUFFER_NUM][BUFFER_SIZE], FSL_FEATURE_L1DCACHE_LINESIZE_BYTE);
+#else
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_buffer[BUFFER_NUM][BUFFER_SIZE], 16);
+#endif
 volatile bool isFinished      = false;
 volatile uint32_t finishIndex = 0U;
 volatile uint32_t emptyBlock  = BUFFER_NUM;
