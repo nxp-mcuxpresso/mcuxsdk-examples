@@ -150,8 +150,9 @@ static hcitComm_t               mHcitData;
 static detectState_t            mPacketDetectStep;
 static detectState_t            mPacketDetectStep;
 static hcitPacket_t             mHcitPacketRaw;
+#if (!defined(gAppUseDtm2Wire) || (gAppUseDtm2Wire == 0))
 static uint16_t                 nb_pkt_in_uart_tx_queue = 0;
-
+#endif
 #ifdef ENABLE_HCI_CMD_HOOK
 // HCI command buffer
 static uint8_t                  maPendingHciCmd[1+2+1+255];
@@ -167,8 +168,9 @@ static uint8_t                  maPendingHciCmd[1+2+1+255];
 * Private functions prototypes
 *************************************************************************************
 ************************************************************************************/
+#if (!defined(gAppUseDtm2Wire) || (gAppUseDtm2Wire == 0))
 static void HCI_AppControllerRxCallback(uint8_t packetType, uint8_t *data, uint16_t len);
-
+#endif
 /************************************************************************************
 *************************************************************************************
 * Public functions prototypes
@@ -578,7 +580,7 @@ void main_task(uint32_t param)
         hybrid_gfsk_init();
 #endif
     }
-
+#if (!defined(gAppUseDtm2Wire) || (gAppUseDtm2Wire == 0))
 #ifdef ENABLE_HCI_CMD_HOOK
     if( maPendingHciCmd[0] == gHciCommandPacket_c )
     {
@@ -678,6 +680,7 @@ void main_task(uint32_t param)
         maPendingHciCmd[0] = 0;
     }
 #endif // ENABLE_HCI_CMD_HOOK
+#endif
 }
 
 /*! *********************************************************************************
