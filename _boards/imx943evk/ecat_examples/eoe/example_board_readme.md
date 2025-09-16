@@ -1,9 +1,9 @@
 Hardware requirements
 =====================
-- MIMXRT1180-EVK RevC
+- IMX943-EVK board
 - RJ45 Network cable
 - Mini/micro USB cable
-- Personal Computer on which the TwinCat3 has been installed(Windows 10 is recommended)
+- Personal Computer on which the TwinCat3 has been installed
 
 Board settings
 ==============
@@ -15,23 +15,23 @@ Prepare the Demo
 	- Download Slave Stack Code Tool(SSC Tool) from BECKHOFF official website and install it
 	- Open Slave Stack Code Tool
 	- Click 'File' -> 'New' -> 'Import' to import the Congfig file
-		Select eoe.xml under path '.\boards\evkmimxrt1180\ecat_examples\eoe\<core>\SSC'.
+		Select eoe.xml under path '.\boards\imx943evk\ecat_examples\eoe\<core>\SSC'.
 	- Click 'Tool' -> 'Application' -> 'Import' to import Application information
-		Select eoe_freertos.xlsx under path '.\boards\evkmimxrt1180\ecat_examples\eoe\<core>\SSC'.
+		Select eoe_freertos.xlsx under path '.\boards\imx943evk\ecat_examples\eoe\<core>\SSC'.
 	- Click 'Project' -> 'Create new Slave Files'
-		'Source Folder'(default): '.\boards\evkmimxrt1180\ecat_examples\eoe\<core>\SSC\Src'.
+		'Source Folder'(default): '.\boards\imx943evk\ecat_examples\eoe\<core>\SSC\Src'.
 		Click 'Start'.
 	- Remove eoe_freertos.c under Src folder
 	
 2. Connect EtherCAT Port0 with TwinCAT3
-	RJ45 interface labeled as J28 is the EtherCAT Port0 and RJ45 interface labeled as J32 is the EtherCAT Port1.
+	Connect EtherCAT0 labeled as J24B with TwinCAT3 using RJ45 Network cable.
 
 3. Connect a USB cable between the host PC and the OpenSDA USB port on the target board
 
 4. Open a serial terminal with the following settings
 	- 115200 baud rate
 	- 8 data bits
- 	- No parity
+	- No parity
 	- One stop bit
 	- No flow control
 
@@ -47,7 +47,7 @@ Prepare the Demo
 8. Scan and load this device.
 
 9. EoE configuration setting
-    - Set the address of the network card used to connect to the demo board on PC side
+	- Set the address of the network card used to connect to the demo board on PC side
 	   ip address:   192.168.1.102
 	   subnet mask:  255.255.255.0
 	   gateway:      192.168.1.0
@@ -58,10 +58,12 @@ Prepare the Demo
 	   gateway:      192.168.1.102
 		
 10. Activate configuration
-    - Click 'TwinCAT' -> 'Restart TwinCAT(Config Mode)' to activate configuration
+	- Click 'TwinCAT' -> 'Restart TwinCAT(Config Mode)' to activate configuration
 
 11. Test ping and http server
 	- Open cmd.exe and execute "ping 192.168.1.66"
 	- Make sure browser proxy disabled
 	- Open browser and access "http://192.168.1.66"
+
+
 

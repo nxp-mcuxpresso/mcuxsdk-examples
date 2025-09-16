@@ -25,6 +25,16 @@ EoE interface init success...
 
 NOTE: To modify the html of http server, please refer to lwip_examples/lwip_httpsrv example.
 
+## TwinCAT Setup
+
+To demonstrate this servo system, TwinCAT is used as the EtherCAT MainDevice.
+- [Generate SSC Code for EoE](../topics/generate_ssc_for_eoe.md)
+- [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md)
+- [TwinCAT EEPROM Update](../topics/twincat_eeprom_update_eoe.md)
+- [TwinCAT Project Setup](../topics/twincat_project_setup_eoe.md)
+- [Note](../topics/note_about_the_source_code_in_the_document.md)
+
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/ecat_examples/eoe/example_board_readme.md)
 - [FRDM-MIMXRT1186](../../_boards/frdmimxrt1186/ecat_examples/eoe/example_board_readme.md)
+- [i.MX943-EVK](../../_boards/imx943evk/ecat_examples/eoe/example_board_readme.md)

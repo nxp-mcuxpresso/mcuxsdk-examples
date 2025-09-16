@@ -104,14 +104,14 @@ void sys_mark_tcpip_thread(void);
  * a lot of data that needs to be copied, this should be set high.
  */
 #ifndef MEM_SIZE
-#define MEM_SIZE (22 * 1024)
+#define MEM_SIZE (15 * 1024)
 #endif
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
    should be set high. */
 #ifndef MEMP_NUM_PBUF
-#define MEMP_NUM_PBUF 15
+#define MEMP_NUM_PBUF 10
 #endif
 /* MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One
    per active UDP "connection". */
