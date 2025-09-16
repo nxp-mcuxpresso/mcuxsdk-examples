@@ -82,6 +82,10 @@
 #define CONFIG_DHCP_SERVER_DEBUG 0
 #define CONFIG_FWDNLD_IO_DEBUG 0
 #define CONFIG_WIFI_SG_DEBUG 0
+
+/* CPU loading debug */
+#define CONFIG_CPU_LOADING 0
+
 /*
  * Heap debug options
  */

@@ -86,17 +86,13 @@
 #define configUSE_DAEMON_TASK_STARTUP_HOOK 0
 
 /* Run time and task stats gathering related definitions. */
-#define configGENERATE_RUN_TIME_STATS        0
 #define configUSE_TRACE_FACILITY             1
 #define configUSE_STATS_FORMATTING_FUNCTIONS 1
 
-/*
- *Disable default, enable when you want to get cpu task info by adding marco CONFIG_CPU_TASK_STATUS
- *
- *#define configGENERATE_RUN_TIME_STATS        1
- *#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
- *#define portGET_RUN_TIME_COUNTER_VALUE()  xTaskGetTickCount()
- */
+/* CPU task info related definitions. */
+#define configGENERATE_RUN_TIME_STATS        1
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+#define portGET_RUN_TIME_COUNTER_VALUE()  xTaskGetTickCount()
 
 /* Task aware debugging. */
 #define configRECORD_STACK_HIGH_ADDRESS      1

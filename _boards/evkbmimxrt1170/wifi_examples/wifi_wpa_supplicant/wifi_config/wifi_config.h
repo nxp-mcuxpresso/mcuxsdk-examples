@@ -184,6 +184,9 @@
 #define CONFIG_WIFI_PS_DEBUG 0
 #endif
 
+/* CPU loading debug */
+#define CONFIG_CPU_LOADING 0
+
 /*
  * Heap debug options
  */
