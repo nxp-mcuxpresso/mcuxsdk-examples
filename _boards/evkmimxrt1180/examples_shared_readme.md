@@ -38,3 +38,12 @@ For convenience of development, we also provide an option to convert the RAW app
 image via IDE build. An macro `XIP_BOOT_HEADER_ENABLE` is used to achieve this. The demo apps `hello_world_demo_cm33` and
 `multicore_hello_world_cm33` are setting this by default. For other demos, the option need to be manually enabled.
 Please refer to the getting started document `RAW/POR image switch` on how to enable this feature in different toolchains.
+
+Note on ELE Ping
+=====================
+RT118x ELE requires ping every 24 hours, which is mandatory, otherwise soc may reset.
+Note:
+1.  This is generic rule for all RT118x demos.
+2.  Most of RT118x demos don't ping ELE every 24 hours, that is because those demos focus on the function demonstrate only.
+    It is still MUST to ping ELE every 24 hours if demo run duration > 24 hours.
+3.  Please refer to hello_world as an example.

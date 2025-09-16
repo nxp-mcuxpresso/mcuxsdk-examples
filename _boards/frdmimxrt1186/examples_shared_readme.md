@@ -20,3 +20,30 @@ Prepare the Demo
     - No flow control
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
+
+Note on POR Boot
+=====================
+RT1180 application image needs a container header for POR boot, it provides rich features like ELE FW integration,
+multiple image support, etc. NXP provide an versatile GUI tool - Secure Provisioning Tool to achieve these purposes.
+
+On the other hand, for most of the demos from SDK, when compiled with ARMGCC/IAR/Keil, the generated outputs
+are raw application images without container header. Such raw images are easy to be used with Secure Provisioning Tool. The
+limitation is, even you select a flash target, after downloading it to the board, it can only run with debugger, but
+can't support POR boot.
+
+To support POR boot via Secure Provisioning Tool, please refer to the getting started document `Bootable image generation`
+for detail guide.
+
+For convenience of development, we also provide an option to convert the RAW application image to bootable
+image via IDE build. An macro `XIP_BOOT_HEADER_ENABLE` is used to achieve this. The demo apps `hello_world_demo_cm33` and
+`multicore_hello_world_cm33` are setting this by default. For other demos, the option need to be manually enabled.
+Please refer to the getting started document `RAW/POR image switch` on how to enable this feature in different toolchains.
+
+Note on ELE Ping
+=====================
+RT118x ELE requires ping every 24 hours, which is mandatory, otherwise soc may reset.
+Note:
+1.  This is generic rule for all RT118x demos.
+2.  Most of RT118x demos don't ping ELE every 24 hours, that is because those demos focus on the function demonstrate only.
+    It is still MUST to ping ELE every 24 hours if demo run duration > 24 hours.
+3.  Please refer to hello_world as an example.
