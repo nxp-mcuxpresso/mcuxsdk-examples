@@ -39,12 +39,8 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     CLOCK_EnableClock(kCLOCK_Trdc);
 
-    /*
-     * Differernt communication memory type involves differernt XCACHE
-     *    SDRAM(SEMC):        system cache
-     *    Hyperram(FlexSPI2): code cache
-     * So disable code and system cache here for compatibility.
-     */
+    /* To prevent data inconsistency issues arising from cache when both cores 
+     * access the shared communication memory region, the cache is disabled.*/
     XCACHE_DisableCache(XCACHE_PS);
     XCACHE_DisableCache(XCACHE_PC);
 

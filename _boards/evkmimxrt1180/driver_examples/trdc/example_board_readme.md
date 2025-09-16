@@ -18,8 +18,10 @@ Prepare the Demo
     - One stop bit
     - No flow control
 3.  Compile the CM7 then the CM33 project to get the executable image.
-4.  Follow the instruction of Bootable image generation section in getting started guide,
-to build and write the image using SPT tool.
+4.  Follow the instruction of Bootable image generation section in getting started guide, to build and write the image using SPT tool. 
+    As HyperRAM is utilized as the communication memory between the two cores, it must be initialized before use. 
+    So when Build image in SPT tool, remember to set XMCD file which is HyperRAM initialization file. For the MIMXRT1180-EVK board, 
+    select boards/evkmimxrt1180/xmcd/hyperram_xmc_auto_detect.bin.
 
 Running the demo
 ================
