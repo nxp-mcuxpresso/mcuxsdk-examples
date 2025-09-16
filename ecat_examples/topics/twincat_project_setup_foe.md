@@ -5,37 +5,37 @@
 3.  Create a new project.
     1.  Select **File \> New \> Project**.
 
-        ![](../images/image23.png "Create new project")
+        ![](../images/foe/image23.png "Create new project")
 
         The **New Project** dialog box appears.
 
     2.  Select **TwinCAT Projects**.
     3.  Click **OK**.
 
-        ![](../images/image24.png "Select TwinCAT projects")
+        ![](../images/foe/image24.png "Select TwinCAT projects")
 
 4.  Scan for the subdevices.
     1.  In the **Solution Explorer** view, expand **I/O**.
     2.  Right-click on **Device** and select **Scan**.
 
-        ![](../images/image25.png "Scan for the devices")
+        ![](../images/foe/image25.png "Scan for the devices")
 
         The scanned devices appear in the**I/O devices found** dialog box.
 
-    3.  Select the network interface connected with the MIMXRT1180-EVK board.
+    3.  Select the network interface connected with the FRDM-IMXRT1186 board.
     4.  Click **OK**.
 
-        ![](../images/image26.png "Devices scanned")
+        ![](../images/foe/image26.png "Devices scanned")
 
-5.  Update the ESI file to E2PROM.
+5.  Update the ESI file to E2PROM (You can skip this step if you ran EEPROM Update chapter).
 
-    **Note:** The E2PROM must be updated if the FoE example is set up first time on the MIMXRT1180- EVK.
+    **Note:** The E2PROM must be updated if the FoE example is set up first time on the FRDM-IMXRT1186.
 
     1.  Under **Device**, double-click **Box1**. The TwinCAT Project dialog box appears.
     2.  Click the **EtherCAT** tab.
     3.  Click the **Advanced Settings** button.
 
-        ![](../images/image27.png "Configure advance settings")
+        ![](../images/foe/image27.png "Configure advance settings")
 
         The **Advanced Settings** dialog box appears.
 
@@ -43,25 +43,25 @@
 
     5.  Click the **Write E2PROM** button.
 
-        ![](../images/image28.png "Advanced settings")
+        ![](../images/foe/image28.png "Advanced settings")
 
     6.  From the available EEPROM list, select **NXP \> ECAT \> foe**.
     7.  Click **OK**.
 
-        ![](../images/image29.png "Select foe")
+        ![](../images/foe/image29.png "Select foe")
 
     8.  Remove the **device** and **rescan the** device.
 6.  Configure the subdevice.
 
     1.  Click the **DC** tab.
     2.  From the **Operation Mode** field, select the **SM-Synchron** or **DC-Synchron** option.
-    ![](../images/image30.jpeg "Select the operation mode")
+    ![](../images/foe/image30.jpeg "Select the operation mode")
 
 7.  Program the PLC code.
     1.  In the Solution Explorer view, right-click on **PLC**.
     2.  Select **Add New Item**.
 
-        ![](../images/image31.png "Create a new PLC code project")
+        ![](../images/foe/image31.png "Create a new PLC code project")
 
         The **Add New Item** dialog box appears.
 
@@ -69,7 +69,7 @@
     4.  Select **Standard PLC Project**.
     5.  Click **OK**.
 
-        ![](../images/image32.jpeg "Select a template")
+        ![](../images/foe/image32.jpeg "Select a template")
 
 8.  To open the PLC edit page, select MAIN \(PRG\) under PLC.
 9.  Copy the code below and paste it in the MAIN view.
@@ -91,52 +91,52 @@
     END_IF;
     ```
 
-    ![](../images/image33.png "Copy and paste the code")
+    ![](../images/foe/image33.png "Copy and paste the code")
 
 10. To build the PLC code, right-click on the PLC project and select **Build**.
 
-    ![](../images/image34.png "Build the PLC code")
+    ![](../images/foe/image34.png "Build the PLC code")
 
 11. Map the PLC variables to the subdevice IO channel.
     1.  Right-click on **MAIN.LedIn**, select **Change Link**.
 
-        ![](../images/image35.png "Map the PLC variables")
+        ![](../images/foe/image35.png "Map the PLC variables")
 
         The **Attach Variable MAIN.LedIn \(Input\)** dialog box appears.
 
     2.  Select **LED**.
     3.  Click **OK**.
 
-        ![](../images/image36.png "Attach variable MAIN.LedIn (Input)")
+        ![](../images/foe/image36.png "Attach variable MAIN.LedIn (Input)")
 
     4.  In the **Solution Explorer**, under PlcTask Outputs, right-click on **MAIN.LedOut** and select **Change Link**.
 
-        ![](../images/image37.png "Change link")
+        ![](../images/foe/image37.png "Change link")
 
         The **Attach Variable MAIN.LedOut \(Output\)** dialog box appears.
 
     5.  Select **LED**.
     6.  Click **OK**.
 
-        ![](../images/image38.png "Attach variable MAIN.LedOut (Output)")
+        ![](../images/foe/image38.png "Attach variable MAIN.LedOut (Output)")
 
 12. Activate Configuration
     1.  To activate the configuration, select **TwinCAT** \> **Restart TwinCAT \(Config Mode\)**.
 
-        ![](../images/image39.png "Restart TwinCAT (Config Mode)")
+        ![](../images/foe/image39.png "Restart TwinCAT (Config Mode)")
 
 13. FoE image upgrade.
     1.  Click **Device \> Box1 \> Online \> Bootstrap**.
 
-        ![](../images/image40.png "FoE image upgrade ")
+        ![](../images/foe/image40.png "FoE image upgrade ")
 
     2.  Click **Download \> ecat\_foe\_2-4-0\_SIGNED.bin \> Password' \> OK** to upgrade the image.
 
-        ![](../images/image41.png "Upgrade the image")
+        ![](../images/foe/image41.png "Upgrade the image")
 
         **Note:** FoE download Password: ‘**12369874’**.
 
-        ![](../images/image42.png "Edit FoE name")
+        ![](../images/foe/image42.png "Edit FoE name")
 
         The serial terminal prints the following output.
 
@@ -154,7 +154,7 @@
 
         The serial terminal prints the following output.
 
-        ![](../images/image43.png "")
+        ![](../images/foe/image43.png "")
 
         ```
         System reset...
@@ -178,11 +178,11 @@
 14. FoE image download.
     1.  Click **Upload** to choose the file to download.
 
-        ![](../images/image44.png "Choose the file to download")
+        ![](../images/foe/image44.png "Choose the file to download")
 
 15. To download the upgraded image, click **OK.**
 
-    ![](../images/image45.png "Download the upgraded image")
+    ![](../images/foe/image45.png "Download the upgraded image")
 
     **Note:** The download image name must be the same as the upgraded image name.
 

@@ -26,6 +26,15 @@ When FoE upgrade is successful, the serial port will output:
 		Image state: testing
 		Set image as confirmed: success
 
+## TwinCAT Setup
+
+To demonstrate this servo system, TwinCAT is used as the EtherCAT MainDevice.
+- [Generate SSC Code for FoE](../topics/generate_ssc_for_foe.md)
+- [TwinCAT Installation](../topics/download_and_install_the_twincat_software.md)
+- [TwinCAT EEPROM Update](../topics/twincat_eeprom_update_foe.md)
+- [TwinCAT Project Setup](../topics/twincat_project_setup_foe.md)
+- [Note](../topics/note_about_the_source_code_in_the_document.md)
+
 ## Supported Boards
 - [MIMXRT1180-EVK](../../_boards/evkmimxrt1180/ecat_examples/foe/example_board_readme.md)
 - [FRDM-MIMXRT1186](../../_boards/frdmimxrt1186/ecat_examples/foe/example_board_readme.md)
