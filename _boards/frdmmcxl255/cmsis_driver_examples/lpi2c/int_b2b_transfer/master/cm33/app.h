@@ -12,7 +12,6 @@
  ******************************************************************************/
 /*${macro:start}*/
 #define EXAMPLE_I2C_MASTER      Driver_I2C0
-
 #define LPI2C_CLOCK_FREQUENCY   CLOCK_GetLpi2cClkFreq(1U)
 /*${macro:end}*/
 
@@ -24,3 +23,7 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/
