@@ -23,6 +23,6 @@ board.hardware_data:
         name: NCACHE_REGION
         type: RAM
         access: RW
-        addr: 0x04600000
+        addr: 0x28600000
         size: 0x00200000
 
