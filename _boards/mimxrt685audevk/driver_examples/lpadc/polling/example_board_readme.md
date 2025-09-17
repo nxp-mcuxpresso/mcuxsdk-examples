@@ -7,7 +7,7 @@ Hardware requirements
 Board settings
 ============
 - Set VREF_L to GND, VREF_H to 1.8V (connect JP9, JP10).
-- Input voltage signal(0~1.8V) to J30-1(LPADC0 CH0).
+- Input voltage signal(0~1.8V) to LPADC0 CH0 (R405, P_5_ADC0_0 side)
 
 Prepare the Demo
 ===============
