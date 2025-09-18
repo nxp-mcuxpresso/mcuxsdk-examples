@@ -41,4 +41,5 @@ mcux_add_source(
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_label_image/reconfig.cmake OPTIONAL)
 
+mcux_add_mdk_configuration(LD "--library_type=standardlib")
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

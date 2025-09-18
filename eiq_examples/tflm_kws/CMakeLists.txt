@@ -44,4 +44,5 @@ mcux_add_source(
   examples/eiq_examples/common/timer.h
   )
 
+mcux_add_mdk_configuration(LD "--library_type=standardlib")
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)

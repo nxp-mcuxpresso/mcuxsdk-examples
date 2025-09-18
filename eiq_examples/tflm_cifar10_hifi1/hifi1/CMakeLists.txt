@@ -2,13 +2,15 @@ cmake_minimum_required(VERSION 3.22.0)
 
 include(${SdkRootDirPath}/cmake/extension/mcux.cmake)
 
-project(tflm_cifar10 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/tflm_cifar10)
+project(tflm_cifar10_hifi1 LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${board}/eiq_examples/tflm_cifar10_hifi1)
+include(${SdkRootDirPath}/CMakeLists.txt)
 
 mcux_add_include(
   INCLUDES .
-  ../common
-  ../common/image
-  ../common/tflm/model
+  ../../common
+  ../../common/image
+  ../../common/tflm/model
+  ../../tflm_cifar10/pcq/
   )
 
 mcux_add_source(
@@ -19,8 +21,11 @@ mcux_add_source(
   examples/eiq_examples/common/tflm/model/model.h
   examples/eiq_examples/common/tflm/demo_info.cpp
   examples/eiq_examples/common/demo_info.h
-  examples/eiq_examples/common/timer.c
+  examples/eiq_examples/common/timer_xtensa.c
+  examples/eiq_examples/common/timer_xtensa.h
   examples/eiq_examples/common/timer.h
+  examples/eiq_examples/tflm_cifar10/pcq/model_data.h
+  examples/eiq_examples/tflm_cifar10/pcq/model_cifarnet_ops_micro.cpp
 
   examples/eiq_examples/tflm_cifar10/main.cpp
 
@@ -38,7 +43,6 @@ mcux_add_source(
   examples/eiq_examples/common/tflm/model/output_postproc.cpp
   )
 
-include(${SdkRootDirPath}/CMakeLists.txt)
-include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10/reconfig.cmake OPTIONAL)
-mcux_add_mdk_configuration(LD "--library_type=standardlib")
-mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
+include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_cifar10_hifi1/${core_id}/reconfig.cmake OPTIONAL)
+
+include(${SdkRootDirPath}/examples/eiq_examples/${core_id}.cmake)
