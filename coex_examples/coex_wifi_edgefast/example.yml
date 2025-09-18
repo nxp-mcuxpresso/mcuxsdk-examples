@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
 coex_wifi_edgefast:
+  skip_build: true
   section-type: application
   contents:
     meta_path: examples/coex_examples/coex_wifi_edgefast
