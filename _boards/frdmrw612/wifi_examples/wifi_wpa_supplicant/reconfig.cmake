@@ -79,10 +79,8 @@ mcux_add_macro(
        -DPRINTF_ADVANCED_ENABLE=1\
        -DCONFIG_MONOLITHIC_WIFI=1\
        -DMCUX_ENABLE_TRNG_AS_ENTROPY_SEED\
-       -DMBEDTLS_MCUX_ELS_PKC_API\
-       -DMBEDTLS_MCUX_USE_PKC\
+       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
        -DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_els_pkc_mbedtls_config.h\\\"\
-       -DMBEDTLS_CONFIG_FILE=\\\"els_pkc_mbedtls_config.h\\\"\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\""
 )
 mcux_remove_mdk_configuration(
@@ -146,9 +144,9 @@ mcux_add_mdk_configuration(
         --predefine=\"-D__heap_size__=0x400\""
 )
 if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
-if(EXISTS "${SdkRootDirPath}/middleware/mbedtls/library/bignum.c")
+if(EXISTS "${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c")
 set_source_files_properties(
-    ${SdkRootDirPath}/middleware/mbedtls/library/bignum.c
+    ${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c
     PROPERTIES
     COMPILE_FLAGS "-O2"
 )

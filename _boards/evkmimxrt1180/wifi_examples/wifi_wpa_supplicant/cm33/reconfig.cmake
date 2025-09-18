@@ -43,7 +43,8 @@ mcux_add_armgcc_configuration(
 
 mcux_add_macro(
     CC "-DFSL_SDK_ENABLE_DRIVER_CACHE_CONTROL=1\
-       -DMBEDTLS_CONFIG_FILE=\\\"wpa_supp_ele_s400_mbedtls_config.h\\\"\
+       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_ele_s400_mbedtls_config.h\\\"\
        -DUSE_RTOS=1\
        -DPRINTF_ADVANCED_ENABLE=1"
 )

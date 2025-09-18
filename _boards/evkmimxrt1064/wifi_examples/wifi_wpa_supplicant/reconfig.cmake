@@ -46,7 +46,8 @@ mcux_add_macro(
 )
 mcux_add_macro(
     CC "-DUSE_RTOS=1\
-       -DMBEDTLS_CONFIG_FILE=\\\"wpa_supp_mbedtls_config.h\\\"\
+       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"wpa_supp_mbedtls_config.h\\\"\
        -DPRINTF_ADVANCED_ENABLE=1"
 )
 
