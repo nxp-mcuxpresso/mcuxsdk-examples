@@ -33,7 +33,7 @@ extern "C" {
 /* Erasable block size definition */
 #define LITTLEFS_BLOCK_SIZE 8192
 /* Block count definition */
-#define LITTLEFS_BLOCK_COUNT 64
+#define LITTLEFS_BLOCK_COUNT 58
 /* Block cycles definition */
 #define LITTLEFS_BLOCK_CYCLES 500
 /* Minimum block cache size definition */
@@ -41,7 +41,7 @@ extern "C" {
 /* Minimum lookahead buffer size definition */
 #define LITTLEFS_LOOKAHEAD_SIZE 16
 /* Block starting address definition */
-#define LITTLEFS_START_ADDR 0x3e000
+#define LITTLEFS_START_ADDR 0xc000
 
 /***********************************************************************************************************************
  * Global variables
