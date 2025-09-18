@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 NXP
+ * Copyright 2021-2022, 2025 NXP
  * All rights reserved.
  *
  *
@@ -26,6 +26,32 @@
 extern const clock_sys_pll_config_t g_sysPllConfig_BOARD_BootClockRUN;
 extern const clock_audio_pll_config_t g_audioPllConfig_BOARD_BootClockRUN;
 AT_QUICKACCESS_SECTION_CODE(void BOARD_SetFlexspiClock(uint32_t src, uint32_t divider));
+
+void BOARD_SetFlexspiPinHighZ(void)
+{
+    /* Flash and PSRAM are not used. */
+    IOPCTL->PIO[1][11] = 0U;
+    IOPCTL->PIO[1][12] = 0U;
+    IOPCTL->PIO[1][13] = 0U;
+    IOPCTL->PIO[1][14] = 0U;
+    IOPCTL->PIO[1][18] = 0U;
+    IOPCTL->PIO[1][19] = 0U;
+    IOPCTL->PIO[1][20] = 0U;
+    IOPCTL->PIO[1][21] = 0U;
+    IOPCTL->PIO[1][22] = 0U;
+    IOPCTL->PIO[1][23] = 0U;
+    IOPCTL->PIO[1][24] = 0U;
+    IOPCTL->PIO[1][25] = 0U;
+    IOPCTL->PIO[1][26] = 0U;
+    IOPCTL->PIO[1][27] = 0U;
+    IOPCTL->PIO[1][28] = 0U;
+    IOPCTL->PIO[1][29] = 0U;
+    IOPCTL->PIO[2][17] = 0U;
+    IOPCTL->PIO[2][18] = 0U;
+    IOPCTL->PIO[2][19] = 0U;
+    IOPCTL->PIO[2][22] = 0U;
+    IOPCTL->PIO[2][23] = 0U;
+}
 
 void BOARD_InitHardware(void)
 {
@@ -54,12 +80,52 @@ void BOARD_InitHardware(void)
     CLOCK_DisableClock(kCLOCK_Flexcomm2);
     CLOCK_AttachClk(kNONE_to_FLEXCOMM2);
     CLOCK_DisableClock(kCLOCK_Crc);
+    CLOCK_AttachClk(kNONE_to_32KHZWAKE_CLK);
+    CLOCK_AttachClk(kNONE_to_SYSTICK_CLK);
+    CLOCK_AttachClk(kNONE_to_WDT0_CLK);
+    CLOCK_AttachClk(kNONE_to_WDT1_CLK);
+
+    POWER_EnablePD(kPDRUNCFG_LP_VDD_COREREG);
+    POWER_EnablePD(kPDRUNCFG_LP_PMCREF);
+    POWER_EnablePD(kPDRUNCFG_PD_HVD1V8);
+    POWER_EnablePD(kPDRUNCFG_LP_LVDCORE);
+    POWER_EnablePD(kPDRUNCFG_LP_LVDCORE);
+    POWER_EnablePD(kPDRUNCFG_PD_HVDCORE);
+
+    POWER_EnablePD(kPDRUNCFG_PD_ROM);
+    POWER_EnablePD(kPDRUNCFG_LP_HSPAD_VDET);
+    POWER_EnablePD(kPDRUNCFG_PD_HSPAD_REF);
+
+    POWER_EnablePD(kPDRUNCFG_APD_USDHC0_SRAM);
+    POWER_EnablePD(kPDRUNCFG_PPD_USDHC0_SRAM);
+    POWER_EnablePD(kPDRUNCFG_APD_USDHC1_SRAM);
+    POWER_EnablePD(kPDRUNCFG_PPD_USDHC1_SRAM);
+    POWER_EnablePD(kPDRUNCFG_APD_CASPER_SRAM);
+    POWER_EnablePD(kPDRUNCFG_PPD_CASPER_SRAM);
+
+    POWER_ApplyPD();
+
+    if ((CLKCTL0->PSCCTL0 & CLKCTL0_PSCCTL0_USBHS_DEVICE_CLK_MASK) != 0U) /* If USB not disabled. */
+    {
+        CLOCK_DisableClock(kCLOCK_UsbhsPhy);
+        CLOCK_DisableClock(kCLOCK_UsbhsDevice);
+        CLOCK_DisableClock(kCLOCK_UsbhsSram);
+
+        POWER_EnablePD(kPDRUNCFG_APD_USBHS_SRAM);
+        POWER_EnablePD(kPDRUNCFG_PPD_USBHS_SRAM);
+        POWER_ApplyPD();
+    }
 
     if (!DEMO_IS_XIP_FLEXSPI()) /* If not run XIP from FlexSPI flash, close FlexSPI clock for power saving.*/
     {
         BOARD_DeinitXip(FLEXSPI);
         CLOCK_DisableClock(kCLOCK_Flexspi);
         CLOCK_AttachClk(kNONE_to_FLEXSPI_CLK);
+
+        POWER_EnablePD(kPDRUNCFG_APD_FLEXSPI_SRAM);
+        POWER_EnablePD(kPDRUNCFG_PPD_FLEXSPI_SRAM);
+        POWER_ApplyPD();
+        BOARD_SetFlexspiPinHighZ();
     }
 
     /* PMIC PCA9420 */
