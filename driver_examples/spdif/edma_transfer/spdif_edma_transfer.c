@@ -127,13 +127,13 @@ int main(void)
     sourceClock = CLOCK_GetPllFreq(kCLOCK_PllAudio);
     SPDIF_TxSetSampleRate(EXAMPLE_SPDIF, 48000, sourceClock);
 
+    SPDIF_TransferTxCreateHandleEDMA(EXAMPLE_SPDIF, &txHandle, txCallback, NULL, &dmaTxLeftHandle, &dmaTxRightHandle);
+    SPDIF_TransferRxCreateHandleEDMA(EXAMPLE_SPDIF, &rxHandle, rxCallback, NULL, &dmaRxLeftHandle, &dmaRxRightHandle);
+
     /* Enable SPDIF interrupt to handle error and other subcode */
     EnableIRQ(SPDIF_IRQ);
     SPDIF_EnableInterrupts(EXAMPLE_SPDIF, kSPDIF_UChannelReceiveRegisterFull | kSPDIF_QChannelReceiveRegisterFull |
                                               kSPDIF_RxControlChannelChange | kSPDIF_TxFIFOError);
-
-    SPDIF_TransferTxCreateHandleEDMA(EXAMPLE_SPDIF, &txHandle, txCallback, NULL, &dmaTxLeftHandle, &dmaTxRightHandle);
-    SPDIF_TransferRxCreateHandleEDMA(EXAMPLE_SPDIF, &rxHandle, rxCallback, NULL, &dmaRxLeftHandle, &dmaRxRightHandle);
 
     txXfer.dataSize = BUFFER_SIZE;
     rxXfer.dataSize = BUFFER_SIZE;
