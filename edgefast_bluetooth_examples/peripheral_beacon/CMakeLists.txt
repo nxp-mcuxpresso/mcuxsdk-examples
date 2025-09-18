@@ -8,7 +8,7 @@ project(peripheral_beacon LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_ro
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/peripheral_beacon
-	TARGET edgefast_bluetooth_app.h
+	TARGET_FILES edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}

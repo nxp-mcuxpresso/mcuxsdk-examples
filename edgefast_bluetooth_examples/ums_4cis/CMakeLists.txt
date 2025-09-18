@@ -8,7 +8,7 @@ project(ums_4cis LANGUAGES C CXX ASM PROJECT_BOARD_PORT_PATH ${board_root}/${boa
 mcux_add_include(
  	BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/_boards/${board}/edgefast_bluetooth_examples/ums_4cis
-	TARGET edgefast_bluetooth_app.h
+	TARGET_FILES edgefast_bluetooth_app.h
 )
 mcux_add_source(
 	BASE_PATH ${SdkRootDirPath}
