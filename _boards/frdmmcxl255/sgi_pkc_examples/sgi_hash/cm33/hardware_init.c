@@ -19,5 +19,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
     
     CLOCK_EnableClock(kCLOCK_GateSGI0);
+
+    SGI0->SGI_CTRL2 = SGI_SGI_CTRL2_FLUSH_MASK ;
 }
 /*${function:end}*/

@@ -26,6 +26,8 @@ void BOARD_InitHardware(void)
     RESET_ReleasePeripheralReset(kTRNG0_RST_SHIFT_RSTn);
     
     CLOCK_EnableClock(kCLOCK_GateSGI0);
+
+    SGI0->SGI_CTRL2 = SGI_SGI_CTRL2_FLUSH_MASK ;
     
     CLOCK_EnableClock(kCLOCK_GateTRNG0);
     

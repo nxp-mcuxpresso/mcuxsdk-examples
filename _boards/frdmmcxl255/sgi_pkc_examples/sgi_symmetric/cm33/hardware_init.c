@@ -20,6 +20,8 @@ void BOARD_InitHardware(void)
     
     CLOCK_EnableClock(kCLOCK_GateSGI0);
 
+    SGI0->SGI_CTRL2 = SGI_SGI_CTRL2_FLUSH_MASK ;
+
     CRC_Type *base = CRC0;
     crc_config_t config;
     CRC_GetDefaultConfig(&config);
