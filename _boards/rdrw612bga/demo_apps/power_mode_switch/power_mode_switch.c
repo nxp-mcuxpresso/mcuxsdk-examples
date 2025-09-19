@@ -1,6 +1,5 @@
 /*
- * Copyright 2020 NXP
- * All rights reserved.
+ * Copyright 2020-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -272,6 +271,16 @@ AT_QUICKACCESS_SECTION_CODE(static void APP_PostPowerSwitch(uint32_t mode, void 
     }
 }
 
+static void APP_BoD_Drop(void *param)
+{
+    PRINTF("Brown-out drop event happens!");
+}
+
+static void APP_BoD_Recover(void *param)
+{
+    PRINTF("Brown-out recover event happens!");
+}
+
 void RTC_IRQHandler()
 {
     if (RTC_GetStatusFlags(RTC) & kRTC_AlarmFlag)
@@ -318,9 +327,10 @@ int main(void)
     PRINTF("\r\nMCU wakeup source 0x%x...\r\n", resetSrc);
 
     POWER_ClearResetCause(resetSrc);
-    /* In case PM4 wakeup, the wakeup config and status need to be cleared */
+    /* In case PM4 wakeup, the wakeup/BoD config and status need to be cleared */
     LPM_DisableWakeupSource(RTC_IRQn);
     LPM_DisableWakeupSource(PIN1_INT_IRQn);
+    POWER_DisableBodMonitor();
 
     RTC_Init(RTC);
     /* Start RTC */
@@ -332,6 +342,8 @@ int main(void)
     POWER_InitPowerConfig(&initCfg);
     POWER_ConfigCauInSleep(APP_SLEEP_CAU_PD);
     POWER_SetPowerSwitchCallback(APP_PrePowerSwitch, NULL, APP_PostPowerSwitch, NULL);
+
+    POWER_EnableBodMonitor(APP_BoD_Drop, APP_BoD_Recover, NULL);
 
     for (;;)
     {
