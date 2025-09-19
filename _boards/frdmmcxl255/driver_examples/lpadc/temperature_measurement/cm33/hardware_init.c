@@ -43,19 +43,11 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
     lpadc_conv_result_t convResultStruct;
     uint16_t Vbe1            = 0U;
     uint16_t Vbe8            = 0U;
-    uint32_t convResultShift = 3U;
+    uint32_t convResultShift = 0U;
     float parameterSlope     = DEMO_LPADC_TEMP_PARAMETER_A;
     float parameterOffset    = DEMO_LPADC_TEMP_PARAMETER_B;
     float parameterAlpha     = DEMO_LPADC_TEMP_PARAMETER_ALPHA;
     float temperature        = -273.15f; /* Absolute zero degree as the incorrect return value. */
-
-#if defined(FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE) && (FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE == 4U)
-    /* For best temperature measure performance, the recommended LOOP Count should be 4, but the first two results is
-     * useless. */
-    /* Drop the useless result. */
-    (void)LPADC_GetConvResult(base, &convResultStruct);
-    (void)LPADC_GetConvResult(base, &convResultStruct);
-#endif /* FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE */
 
     /* Read the 2 temperature sensor result. */
     if (true == LPADC_GetConvResult(base, &convResultStruct))
