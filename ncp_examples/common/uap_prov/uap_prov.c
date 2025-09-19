@@ -229,6 +229,10 @@ static int CGI_HandleGet(HTTPSRV_CGI_REQ_STRUCT *param)
         {
             strcat(security, "WPA2 ");
         }
+        if (scan_result.wpa2_sha256)
+        {
+            strcat(security, "WPA2-SHA256 ");
+        }
         if (scan_result.wpa3_sae)
         {
             strcat(security, "WPA3_SAE ");
