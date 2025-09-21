@@ -27,7 +27,6 @@ static phy_handle_t s_phy_handle[EXAMPLE_PORT_NUM];
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    uint32_t st = SCMI_POWER_DOMAIN_STATE_OFF;
 
     /* clang-format off */
     /* busNetcMixClk 133MHz */
@@ -121,8 +120,7 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 
     POWER_SetState(&pwrst);
-    st = POWER_GetState(&pwrst);
-    assert(st == SCMI_POWER_DOMAIN_STATE_ON);
+    assert(POWER_GetState(&pwrst) == SCMI_POWER_DOMAIN_STATE_ON);
 
     CLOCK_SetParent(&hal_busmixClk);
     CLOCK_SetRate(&hal_busmixClk);
