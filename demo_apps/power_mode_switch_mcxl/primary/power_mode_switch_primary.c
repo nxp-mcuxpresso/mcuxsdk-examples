@@ -188,6 +188,10 @@ int main(void)
 {
     uint32_t powerTrans;
     power_low_power_mode_t targetLpMode;
+    power_drv_config_t drvConfig = {
+      .muChannelId = APP_MU_CHANNEL,
+      .noSyncCM0P = false,
+    };
 
     BOARD_InitHardware();
 #if APP_ENABLE_ADVC
@@ -204,7 +208,7 @@ int main(void)
     APP_CopyCore1Image();
     APP_BootCore1();
     PRINTF("Start to communication with secondary core...\r\n");
-    if (Power_CreateHandle(&powerHandle, APP_MU_CHANNEL) != kStatus_Success)
+    if (Power_CreateHandle(&powerHandle, &drvConfig) != kStatus_Success)
     {
         PRINTF("Fail to sync with secondary core!\r\n");
         return 0;
