@@ -38,7 +38,7 @@ m_data_size                  = DEFINED(MCXW235) ? 0x14000 : 0x1C000;
 m_data_end                   = m_data_start + m_data_size - 1;
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0800;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0A00;
 M_VECTOR_RAM_SIZE = 0x00000140;
 LAST_HEAP_ADDRESS = m_data_end; /* Needs to be known to calculate __HEAP_end__ below */
 

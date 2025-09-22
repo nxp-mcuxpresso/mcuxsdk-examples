@@ -27,7 +27,7 @@
 #if (defined(__stack_size__))
   #define Stack_Size                   __stack_size__
 #else
-  #define Stack_Size                   0x0800
+  #define Stack_Size                   0x0A00
 #endif
 
 #if (defined(__heap_size__))

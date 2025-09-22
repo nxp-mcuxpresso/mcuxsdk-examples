@@ -26,7 +26,7 @@
 if (isdefinedsymbol(__stack_size__)) {
   define symbol __size_cstack__        = __stack_size__;
 } else {
-  define symbol __size_cstack__        = 0x0800;
+  define symbol __size_cstack__        = 0x0A00;
 }
 
 if (isdefinedsymbol(__heap_size__)) {
