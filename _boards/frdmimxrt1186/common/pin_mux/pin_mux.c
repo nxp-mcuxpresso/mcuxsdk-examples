@@ -18,13 +18,13 @@ package_id: MIMXRT1186XVJ8C
 mcu_data: ksdk2_0
 processor_version: 0.0.0
 pin_labels:
-- {pin_num: B4, pin_signal: GPIO_AON_15, label: ETH0, identifier: ETH0;ETH0_RESET}
-- {pin_num: C8, pin_signal: GPIO_AON_20, label: ETH2, identifier: ETH2;ETH2_RESET}
-- {pin_num: H4, pin_signal: GPIO_EMC_B1_01, label: pin, identifier: pin;flexio_pin}
-- {pin_num: L13, pin_signal: GPIO_AD_29, label: FLEXIO_SPI, identifier: FLEXIO_SPI}
-- {pin_num: A9, pin_signal: GPIO_AON_03, label: ETH0, identifier: ETH0_INT_B}
-- {pin_num: B5, pin_signal: GPIO_AON_04, label: ETH2, identifier: ETH2_INT_B}
-- {pin_num: D2, pin_signal: GPIO_EMC_B1_11, label: LED, identifier: LED}
+- {pin_num: B8, pin_signal: GPIO_AON_15, label: ETH0, identifier: ETH0;ETH0_RESET}
+- {pin_num: A3, pin_signal: GPIO_AON_20, label: ETH2, identifier: ETH2;ETH2_RESET}
+- {pin_num: F5, pin_signal: GPIO_EMC_B1_01, label: pin, identifier: pin;flexio_pin}
+- {pin_num: M14, pin_signal: GPIO_AD_29, label: FLEXIO_SPI, identifier: FLEXIO_SPI}
+- {pin_num: D8, pin_signal: GPIO_AON_03, label: ETH0, identifier: ETH0_INT_B}
+- {pin_num: E7, pin_signal: GPIO_AON_04, label: ETH2, identifier: ETH2_INT_B}
+- {pin_num: D3, pin_signal: GPIO_EMC_B1_11, label: LED, identifier: LED}
 - {pin_num: E3, pin_signal: GPIO_EMC_B1_13, label: flexio_pin, identifier: flexio_pin}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -49,8 +49,8 @@ void BOARD_InitBootPins(void) {
 BOARD_InitDEBUG_UARTPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: B1, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Slow}
-  - {pin_num: A6, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Slow}
+  - {pin_num: A7, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Fast}
+  - {pin_num: B12, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -97,24 +97,24 @@ void BOARD_InitDEBUG_UARTPins(void) {
 void BOARD_InitDEBUG_UARTPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_08 (pin B1) */
-  rgpio_pin_config_t gpio1_pinB1_config = {
+  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_08 (pin A7) */
+  rgpio_pin_config_t gpio1_pinA7_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_08 (pin B1) */
-  RGPIO_PinInit(RGPIO1, 8U, &gpio1_pinB1_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_08 (pin B1) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_08 (pin A7) */
+  RGPIO_PinInit(RGPIO1, 8U, &gpio1_pinA7_config);
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_08 (pin A7) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 8U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
-  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_09 (pin A6) */
-  rgpio_pin_config_t gpio1_pinA6_config = {
+  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_09 (pin B12) */
+  rgpio_pin_config_t gpio1_pinB12_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_09 (pin A6) */
-  RGPIO_PinInit(RGPIO1, 9U, &gpio1_pinA6_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_09 (pin A6) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_09 (pin B12) */
+  RGPIO_PinInit(RGPIO1, 9U, &gpio1_pinB12_config);
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_09 (pin B12) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 9U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
   IOMUXC_SetPinMux(
@@ -145,8 +145,8 @@ void BOARD_InitDEBUG_UARTPins_deinit(void) {
 BOARD_InitCANPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: B7, peripheral: CAN1, signal: RX, pin_signal: GPIO_AON_07, software_input_on: Enable}
-  - {pin_num: B9, peripheral: CAN1, signal: TX, pin_signal: GPIO_AON_06, software_input_on: Enable}
+  - {pin_num: C6, peripheral: CAN1, signal: RX, pin_signal: GPIO_AON_07, software_input_on: Enable}
+  - {pin_num: C7, peripheral: CAN1, signal: TX, pin_signal: GPIO_AON_06, software_input_on: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -174,36 +174,36 @@ void BOARD_InitCANPins(void) {
 BOARD_InitNETPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: B4, peripheral: RGPIO1, signal: 'gpio_io, 15', pin_signal: GPIO_AON_15, identifier: ETH0_RESET, direction: OUTPUT, gpio_init_state: 'true'}
-  - {pin_num: C8, peripheral: RGPIO1, signal: 'gpio_io, 20', pin_signal: GPIO_AON_20, identifier: ETH2_RESET, direction: OUTPUT, gpio_init_state: 'true'}
-  - {pin_num: L14, peripheral: NETC, signal: netc_emdc, pin_signal: GPIO_AD_30, slew_rate: Slow}
-  - {pin_num: K14, peripheral: NETC, signal: netc_emdio, pin_signal: GPIO_AD_31, open_drain: Enable, slew_rate: Slow}
-  - {pin_num: L8, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 0', pin_signal: GPIO_EMC_B2_05}
-  - {pin_num: K5, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 1', pin_signal: GPIO_EMC_B2_06}
-  - {pin_num: J6, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 2', pin_signal: GPIO_EMC_B2_03}
-  - {pin_num: J8, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 3', pin_signal: GPIO_EMC_B2_04}
-  - {pin_num: K7, peripheral: NETC_SWT_ETH0, signal: TX_EN, pin_signal: GPIO_EMC_B2_07}
-  - {pin_num: L7, peripheral: NETC_SWT_ETH0, signal: TX_CLK, pin_signal: GPIO_EMC_B2_08, software_input_on: Disable}
-  - {pin_num: L5, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 0', pin_signal: GPIO_EMC_B2_09}
-  - {pin_num: K6, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 1', pin_signal: GPIO_EMC_B2_10}
-  - {pin_num: J9, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 2', pin_signal: GPIO_EMC_B2_01}
-  - {pin_num: L9, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 3', pin_signal: GPIO_EMC_B2_02}
-  - {pin_num: L6, peripheral: NETC_SWT_ETH0, signal: RX_EN, pin_signal: GPIO_EMC_B2_11}
-  - {pin_num: J7, peripheral: NETC_SWT_ETH0, signal: RX_CLK, pin_signal: GPIO_EMC_B2_00}
-  - {pin_num: H1, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 1', pin_signal: GPIO_EMC_B1_26}
-  - {pin_num: H3, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 0', pin_signal: GPIO_EMC_B1_27}
+  - {pin_num: B8, peripheral: RGPIO1, signal: 'gpio_io, 15', pin_signal: GPIO_AON_15, identifier: ETH0_RESET, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: A3, peripheral: RGPIO1, signal: 'gpio_io, 20', pin_signal: GPIO_AON_20, identifier: ETH2_RESET, direction: OUTPUT, gpio_init_state: 'true'}
+  - {pin_num: L14, peripheral: NETC, signal: netc_emdc, pin_signal: GPIO_AD_30, slew_rate: Fast}
+  - {pin_num: K14, peripheral: NETC, signal: netc_emdio, pin_signal: GPIO_AD_31, open_drain: Enable, slew_rate: Fast}
+  - {pin_num: N5, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 0', pin_signal: GPIO_EMC_B2_05}
+  - {pin_num: P6, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 1', pin_signal: GPIO_EMC_B2_06}
+  - {pin_num: M6, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 2', pin_signal: GPIO_EMC_B2_03}
+  - {pin_num: P5, peripheral: NETC_SWT_ETH0, signal: 'TX_DATA, 3', pin_signal: GPIO_EMC_B2_04}
+  - {pin_num: L8, peripheral: NETC_SWT_ETH0, signal: TX_EN, pin_signal: GPIO_EMC_B2_07}
+  - {pin_num: M5, peripheral: NETC_SWT_ETH0, signal: TX_CLK, pin_signal: GPIO_EMC_B2_08, software_input_on: Disable}
+  - {pin_num: N6, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 0', pin_signal: GPIO_EMC_B2_09}
+  - {pin_num: M7, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 1', pin_signal: GPIO_EMC_B2_10}
+  - {pin_num: L6, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 2', pin_signal: GPIO_EMC_B2_01}
+  - {pin_num: K6, peripheral: NETC_SWT_ETH0, signal: 'RX_DATA, 3', pin_signal: GPIO_EMC_B2_02}
+  - {pin_num: L7, peripheral: NETC_SWT_ETH0, signal: RX_EN, pin_signal: GPIO_EMC_B2_11}
+  - {pin_num: L5, peripheral: NETC_SWT_ETH0, signal: RX_CLK, pin_signal: GPIO_EMC_B2_00}
+  - {pin_num: J7, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 1', pin_signal: GPIO_EMC_B1_26}
+  - {pin_num: G5, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 0', pin_signal: GPIO_EMC_B1_27}
   - {pin_num: D5, peripheral: NETC_SWT_ETH2, signal: TX_EN, pin_signal: GPIO_EMC_B1_28}
-  - {pin_num: E4, peripheral: NETC_SWT_ETH2, signal: TX_CLK, pin_signal: GPIO_EMC_B1_29}
+  - {pin_num: C3, peripheral: NETC_SWT_ETH2, signal: TX_CLK, pin_signal: GPIO_EMC_B1_29}
   - {pin_num: F2, peripheral: NETC_SWT_ETH2, signal: 'RX_DATA, 0', pin_signal: GPIO_EMC_B1_30}
-  - {pin_num: G2, peripheral: NETC_SWT_ETH2, signal: 'RX_DATA, 1', pin_signal: GPIO_EMC_B1_31}
-  - {pin_num: J1, peripheral: NETC_SWT_ETH2, signal: RX_EN, pin_signal: GPIO_EMC_B1_32}
-  - {pin_num: L2, peripheral: NETC_SWT_ETH2, signal: 'RX_DATA, 2', pin_signal: GPIO_EMC_B1_34}
-  - {pin_num: L1, peripheral: NETC_SWT_ETH2, signal: 'RX_DATA, 3', pin_signal: GPIO_EMC_B1_35}
-  - {pin_num: F5, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 3', pin_signal: GPIO_EMC_B1_36}
-  - {pin_num: H2, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 2', pin_signal: GPIO_EMC_B1_37}
-  - {pin_num: J2, peripheral: NETC_SWT_ETH2, signal: RX_CLK, pin_signal: GPIO_EMC_B1_38}
-  - {pin_num: A9, peripheral: RGPIO1, signal: 'gpio_io, 03', pin_signal: GPIO_AON_03, direction: INPUT}
-  - {pin_num: B5, peripheral: RGPIO1, signal: 'gpio_io, 04', pin_signal: GPIO_AON_04, direction: INPUT}
+  - {pin_num: F1, peripheral: NETC_SWT_ETH2, signal: 'RX_DATA, 1', pin_signal: GPIO_EMC_B1_31}
+  - {pin_num: G1, peripheral: NETC_SWT_ETH2, signal: RX_EN, pin_signal: GPIO_EMC_B1_32}
+  - {pin_num: H3, peripheral: NETC_SWT_ETH2, signal: 'RX_DATA, 2', pin_signal: GPIO_EMC_B1_34}
+  - {pin_num: H2, peripheral: NETC_SWT_ETH2, signal: 'RX_DATA, 3', pin_signal: GPIO_EMC_B1_35}
+  - {pin_num: J2, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 3', pin_signal: GPIO_EMC_B1_36}
+  - {pin_num: J1, peripheral: NETC_SWT_ETH2, signal: 'TX_DATA, 2', pin_signal: GPIO_EMC_B1_37}
+  - {pin_num: K2, peripheral: NETC_SWT_ETH2, signal: RX_CLK, pin_signal: GPIO_EMC_B1_38}
+  - {pin_num: D8, peripheral: RGPIO1, signal: 'gpio_io, 03', pin_signal: GPIO_AON_03, direction: INPUT}
+  - {pin_num: E7, peripheral: RGPIO1, signal: 'gpio_io, 04', pin_signal: GPIO_AON_04, direction: INPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -217,40 +217,40 @@ void BOARD_InitNETPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration of ETH0_INT_B on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin A9) */
+  /* GPIO configuration of ETH0_INT_B on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin D8) */
   rgpio_pin_config_t ETH0_INT_B_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin A9) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin D8) */
   RGPIO_PinInit(RGPIO1, 3U, &ETH0_INT_B_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin A9) */
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_03 (pin D8) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 3U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
-  /* GPIO configuration of ETH2_INT_B on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin B5) */
+  /* GPIO configuration of ETH2_INT_B on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin E7) */
   rgpio_pin_config_t ETH2_INT_B_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin B5) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin E7) */
   RGPIO_PinInit(RGPIO1, 4U, &ETH2_INT_B_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin B5) */
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_04 (pin E7) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 4U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
-  /* GPIO configuration of ETH0_RESET on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_15 (pin B4) */
+  /* GPIO configuration of ETH0_RESET on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_15 (pin B8) */
   rgpio_pin_config_t ETH0_RESET_config = {
       .pinDirection = kRGPIO_DigitalOutput,
       .outputLogic = 1U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_15 (pin B4) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_15 (pin B8) */
   RGPIO_PinInit(RGPIO1, 15U, &ETH0_RESET_config);
 
-  /* GPIO configuration of ETH2_RESET on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_20 (pin C8) */
+  /* GPIO configuration of ETH2_RESET on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_20 (pin A3) */
   rgpio_pin_config_t ETH2_RESET_config = {
       .pinDirection = kRGPIO_DigitalOutput,
       .outputLogic = 1U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_20 (pin C8) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_20 (pin A3) */
   RGPIO_PinInit(RGPIO1, 20U, &ETH2_RESET_config);
 
   IOMUXC_SetPinMux(
@@ -367,10 +367,10 @@ void BOARD_InitNETPins(void) {
 BOARD_InitPWMPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D7, peripheral: PWM4, signal: 'A, 0', pin_signal: GPIO_EMC_B1_12}
+  - {pin_num: E5, peripheral: PWM4, signal: 'A, 0', pin_signal: GPIO_EMC_B1_12}
   - {pin_num: E3, peripheral: PWM4, signal: 'B, 0', pin_signal: GPIO_EMC_B1_13, identifier: ''}
-  - {pin_num: E5, peripheral: PWM4, signal: 'A, 1', pin_signal: GPIO_EMC_B1_14}
-  - {pin_num: C2, peripheral: PWM4, signal: 'A, 2', pin_signal: GPIO_EMC_B1_17}
+  - {pin_num: F4, peripheral: PWM4, signal: 'A, 1', pin_signal: GPIO_EMC_B1_14}
+  - {pin_num: B1, peripheral: PWM4, signal: 'A, 2', pin_signal: GPIO_EMC_B1_17}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -403,14 +403,14 @@ void BOARD_InitPWMPins(void) {
 BOARD_InitSPIPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: C6, peripheral: LPSPI2, signal: PCS0, pin_signal: GPIO_AON_16, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
-    slew_rate: Fast}
-  - {pin_num: A2, peripheral: LPSPI2, signal: SCK, pin_signal: GPIO_AON_19, pull_up_down_config: Pull_Down, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
-    slew_rate: Fast}
-  - {pin_num: C7, peripheral: LPSPI2, signal: SIN, pin_signal: GPIO_AON_17, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
-    slew_rate: Fast}
-  - {pin_num: B2, peripheral: LPSPI2, signal: SOUT, pin_signal: GPIO_AON_18, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
-    slew_rate: Fast}
+  - {pin_num: D6, peripheral: LPSPI2, signal: PCS0, pin_signal: GPIO_AON_16, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Slow}
+  - {pin_num: A4, peripheral: LPSPI2, signal: SCK, pin_signal: GPIO_AON_19, pull_up_down_config: Pull_Down, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Slow}
+  - {pin_num: C5, peripheral: LPSPI2, signal: SIN, pin_signal: GPIO_AON_17, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Slow}
+  - {pin_num: B5, peripheral: LPSPI2, signal: SOUT, pin_signal: GPIO_AON_18, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Disable, drive_strength: High,
+    slew_rate: Slow}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -477,44 +477,44 @@ void BOARD_InitSPIPins(void) {
 void BOARD_InitSPIPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_16 (pin C6) */
-  rgpio_pin_config_t gpio1_pinC6_config = {
+  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_16 (pin D6) */
+  rgpio_pin_config_t gpio1_pinD6_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_16 (pin C6) */
-  RGPIO_PinInit(RGPIO1, 16U, &gpio1_pinC6_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_16 (pin C6) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_16 (pin D6) */
+  RGPIO_PinInit(RGPIO1, 16U, &gpio1_pinD6_config);
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_16 (pin D6) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 16U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
-  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_17 (pin C7) */
-  rgpio_pin_config_t gpio1_pinC7_config = {
+  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_17 (pin C5) */
+  rgpio_pin_config_t gpio1_pinC5_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_17 (pin C7) */
-  RGPIO_PinInit(RGPIO1, 17U, &gpio1_pinC7_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_17 (pin C7) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_17 (pin C5) */
+  RGPIO_PinInit(RGPIO1, 17U, &gpio1_pinC5_config);
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_17 (pin C5) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 17U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
-  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_18 (pin B2) */
-  rgpio_pin_config_t gpio1_pinB2_config = {
+  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_18 (pin B5) */
+  rgpio_pin_config_t gpio1_pinB5_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_18 (pin B2) */
-  RGPIO_PinInit(RGPIO1, 18U, &gpio1_pinB2_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_18 (pin B2) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_18 (pin B5) */
+  RGPIO_PinInit(RGPIO1, 18U, &gpio1_pinB5_config);
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_18 (pin B5) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 18U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
-  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_19 (pin A2) */
-  rgpio_pin_config_t gpio1_pinA2_config = {
+  /* GPIO configuration on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_19 (pin A4) */
+  rgpio_pin_config_t gpio1_pinA4_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_19 (pin A2) */
-  RGPIO_PinInit(RGPIO1, 19U, &gpio1_pinA2_config);
-  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_19 (pin A2) */
+  /* Initialize GPIO functionality on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_19 (pin A4) */
+  RGPIO_PinInit(RGPIO1, 19U, &gpio1_pinA4_config);
+  /* Configures GPIO pin interrupt/DMA request on IOMUXC_AON_SW_MUX_CTL_PAD_GPIO_AON_19 (pin A4) */
   RGPIO_SetPinInterruptConfig(RGPIO1, 19U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
   IOMUXC_SetPinMux(
@@ -565,7 +565,7 @@ void BOARD_InitSPIPins_deinit(void) {
 BOARD_InitLEDsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D2, peripheral: RGPIO2, signal: 'gpio_io, 11', pin_signal: GPIO_EMC_B1_11, direction: OUTPUT}
+  - {pin_num: D3, peripheral: RGPIO2, signal: 'gpio_io, 11', pin_signal: GPIO_EMC_B1_11, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -578,12 +578,12 @@ BOARD_InitLEDsPins:
 void BOARD_InitLEDsPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration of LED on GPIO_EMC_B1_11 (pin D2) */
+  /* GPIO configuration of LED on GPIO_EMC_B1_11 (pin D3) */
   rgpio_pin_config_t LED_config = {
       .pinDirection = kRGPIO_DigitalOutput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_EMC_B1_11 (pin D2) */
+  /* Initialize GPIO functionality on GPIO_EMC_B1_11 (pin D3) */
   RGPIO_PinInit(RGPIO2, 11U, &LED_config);
 
   IOMUXC_SetPinMux(
@@ -597,7 +597,7 @@ void BOARD_InitLEDsPins(void) {
 BOARD_InitBUTTONsPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N14, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12, slew_rate: Slow}
+  - {pin_num: M13, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12, slew_rate: Fast}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -629,10 +629,10 @@ void BOARD_InitBUTTONsPins(void) {
 BOARD_InitKPPPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N11, peripheral: KPP, signal: 'kpp_row, 5', pin_signal: GPIO_AD_16, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable, slew_rate: Slow}
-  - {pin_num: M11, peripheral: KPP, signal: 'kpp_col, 5', pin_signal: GPIO_AD_17, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable}
-  - {pin_num: K13, peripheral: KPP, signal: 'kpp_row, 4', pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable}
-  - {pin_num: L12, peripheral: KPP, signal: 'kpp_col, 4', pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable}
+  - {pin_num: N14, peripheral: KPP, signal: 'kpp_row, 5', pin_signal: GPIO_AD_16, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable, slew_rate: Fast}
+  - {pin_num: L12, peripheral: KPP, signal: 'kpp_col, 5', pin_signal: GPIO_AD_17, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable}
+  - {pin_num: L13, peripheral: KPP, signal: 'kpp_row, 4', pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable}
+  - {pin_num: K13, peripheral: KPP, signal: 'kpp_col, 4', pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Up, open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -697,7 +697,7 @@ void BOARD_InitKPPPins(void) {
 BOARD_InitGPTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M12, peripheral: GPT1, signal: 'gpt_compare, 1', pin_signal: GPIO_AD_14}
+  - {pin_num: M11, peripheral: GPT1, signal: 'gpt_compare, 1', pin_signal: GPIO_AD_14}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -721,13 +721,13 @@ void BOARD_InitGPTPins(void) {
 BOARD_InitFLASHPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: C4, peripheral: FLEXSPI2, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_AON_22, software_input_on: Enable}
-  - {pin_num: B10, peripheral: FLEXSPI2, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_AON_23, software_input_on: Enable}
-  - {pin_num: E8, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_AON_24, software_input_on: Enable}
-  - {pin_num: D8, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_AON_25, software_input_on: Enable}
-  - {pin_num: C5, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_AON_26, software_input_on: Enable}
-  - {pin_num: E9, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_AON_27, software_input_on: Enable}
-  - {pin_num: C9, peripheral: FLEXSPI2, signal: FLEXSPI_A_DQS, pin_signal: GPIO_AON_21, software_input_on: Enable}
+  - {pin_num: B7, peripheral: FLEXSPI2, signal: FLEXSPI_A_SS0_B, pin_signal: GPIO_AON_22, software_input_on: Enable}
+  - {pin_num: B6, peripheral: FLEXSPI2, signal: FLEXSPI_A_SCLK, pin_signal: GPIO_AON_23, software_input_on: Enable}
+  - {pin_num: A6, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA0, pin_signal: GPIO_AON_24, software_input_on: Enable}
+  - {pin_num: A5, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA1, pin_signal: GPIO_AON_25, software_input_on: Enable}
+  - {pin_num: B4, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA2, pin_signal: GPIO_AON_26, software_input_on: Enable}
+  - {pin_num: B3, peripheral: FLEXSPI2, signal: FLEXSPI_A_DATA3, pin_signal: GPIO_AON_27, software_input_on: Enable}
+  - {pin_num: C4, peripheral: FLEXSPI2, signal: FLEXSPI_A_DQS, pin_signal: GPIO_AON_21, software_input_on: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -770,17 +770,17 @@ void BOARD_InitFLASHPins(void) {
 BOARD_InitHYPERRAMPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DQS, pin_signal: GPIO_SD_B2_05, software_input_on: Enable}
-  - {pin_num: E11, peripheral: FLEXSPI1, signal: FLEXSPI_B_SS0_B, pin_signal: GPIO_SD_B2_06, software_input_on: Enable}
-  - {pin_num: J11, peripheral: FLEXSPI1, signal: FLEXSPI_B_SCLK, pin_signal: GPIO_SD_B2_07, software_input_on: Enable}
-  - {pin_num: G11, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA0, pin_signal: GPIO_SD_B2_08, software_input_on: Enable}
-  - {pin_num: E12, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA1, pin_signal: GPIO_SD_B2_09, software_input_on: Enable}
-  - {pin_num: F12, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA2, pin_signal: GPIO_SD_B2_10, software_input_on: Enable}
-  - {pin_num: E13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA3, pin_signal: GPIO_SD_B2_11, software_input_on: Enable}
-  - {pin_num: G13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA4, pin_signal: GPIO_SD_B2_00, software_input_on: Enable}
-  - {pin_num: F14, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA5, pin_signal: GPIO_SD_B2_01, software_input_on: Enable}
-  - {pin_num: F13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA6, pin_signal: GPIO_SD_B2_02, software_input_on: Enable}
-  - {pin_num: H11, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA7, pin_signal: GPIO_SD_B2_03, software_input_on: Enable}
+  - {pin_num: F12, peripheral: FLEXSPI1, signal: FLEXSPI_B_DQS, pin_signal: GPIO_SD_B2_05, software_input_on: Enable}
+  - {pin_num: G13, peripheral: FLEXSPI1, signal: FLEXSPI_B_SS0_B, pin_signal: GPIO_SD_B2_06, software_input_on: Enable}
+  - {pin_num: F14, peripheral: FLEXSPI1, signal: FLEXSPI_B_SCLK, pin_signal: GPIO_SD_B2_07, software_input_on: Enable}
+  - {pin_num: E13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA0, pin_signal: GPIO_SD_B2_08, software_input_on: Enable}
+  - {pin_num: G14, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA1, pin_signal: GPIO_SD_B2_09, software_input_on: Enable}
+  - {pin_num: H13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA2, pin_signal: GPIO_SD_B2_10, software_input_on: Enable}
+  - {pin_num: F13, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA3, pin_signal: GPIO_SD_B2_11, software_input_on: Enable}
+  - {pin_num: J11, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA4, pin_signal: GPIO_SD_B2_00, software_input_on: Enable}
+  - {pin_num: H11, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA5, pin_signal: GPIO_SD_B2_01, software_input_on: Enable}
+  - {pin_num: H14, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA6, pin_signal: GPIO_SD_B2_02, software_input_on: Enable}
+  - {pin_num: F11, peripheral: FLEXSPI1, signal: FLEXSPI_B_DATA7, pin_signal: GPIO_SD_B2_03, software_input_on: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -834,9 +834,9 @@ void BOARD_InitHYPERRAMPins(void) {
 BOARD_InitEQDCPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: N14, peripheral: XBAR1, signal: 'IN, 18', pin_signal: GPIO_AD_12, software_input_on: Enable}
-  - {pin_num: L12, peripheral: XBAR1, signal: 'IN, 19', pin_signal: GPIO_AD_19, software_input_on: Enable}
-  - {pin_num: J14, peripheral: XBAR1, signal: 'IN, 23', pin_signal: GPIO_SD_B1_03, software_input_on: Enable}
+  - {pin_num: M13, peripheral: XBAR1, signal: 'IN, 18', pin_signal: GPIO_AD_12, software_input_on: Enable}
+  - {pin_num: K13, peripheral: XBAR1, signal: 'IN, 19', pin_signal: GPIO_AD_19, software_input_on: Enable}
+  - {pin_num: E10, peripheral: XBAR1, signal: 'IN, 23', pin_signal: GPIO_SD_B1_03, software_input_on: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -872,9 +872,9 @@ void BOARD_InitEQDCPins(void) {
 BOARD_InitI2CPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: K13, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Enable,
+  - {pin_num: L13, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_AD_18, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Enable,
     drive_strength: High}
-  - {pin_num: L12, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Enable,
+  - {pin_num: K13, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_AD_19, software_input_on: Enable, pull_up_down_config: Pull_Up, pull_keeper_select: Pull, open_drain: Enable,
     drive_strength: High}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -924,24 +924,24 @@ void BOARD_InitI2CPins(void) {
 void BOARD_InitI2CPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration on GPIO_AD_18 (pin K13) */
+  /* GPIO configuration on GPIO_AD_18 (pin L13) */
+  rgpio_pin_config_t gpio4_pinL13_config = {
+      .pinDirection = kRGPIO_DigitalInput,
+      .outputLogic = 0U,
+  };
+  /* Initialize GPIO functionality on GPIO_AD_18 (pin L13) */
+  RGPIO_PinInit(RGPIO4, 18U, &gpio4_pinL13_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_18 (pin L13) */
+  RGPIO_SetPinInterruptConfig(RGPIO4, 18U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+
+  /* GPIO configuration on GPIO_AD_19 (pin K13) */
   rgpio_pin_config_t gpio4_pinK13_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_AD_18 (pin K13) */
-  RGPIO_PinInit(RGPIO4, 18U, &gpio4_pinK13_config);
-  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_18 (pin K13) */
-  RGPIO_SetPinInterruptConfig(RGPIO4, 18U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
-
-  /* GPIO configuration on GPIO_AD_19 (pin L12) */
-  rgpio_pin_config_t gpio4_pinL12_config = {
-      .pinDirection = kRGPIO_DigitalInput,
-      .outputLogic = 0U,
-  };
-  /* Initialize GPIO functionality on GPIO_AD_19 (pin L12) */
-  RGPIO_PinInit(RGPIO4, 19U, &gpio4_pinL12_config);
-  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_19 (pin L12) */
+  /* Initialize GPIO functionality on GPIO_AD_19 (pin K13) */
+  RGPIO_PinInit(RGPIO4, 19U, &gpio4_pinK13_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_19 (pin K13) */
   RGPIO_SetPinInterruptConfig(RGPIO4, 19U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
   IOMUXC_SetPinMux(
@@ -974,8 +974,8 @@ void BOARD_InitI2CPins_deinit(void) {
 BOARD_InitADCPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M14, peripheral: ADC1, signal: 'B, 1_1', pin_signal: GPIO_AD_15, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, force_ibe_off: Enable}
-  - {pin_num: M12, peripheral: ADC1, signal: 'A, 1_1', pin_signal: GPIO_AD_14, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, force_ibe_off: Enable}
+  - {pin_num: L11, peripheral: ADC1, signal: 'B, 1_1', pin_signal: GPIO_AD_15, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, force_ibe_off: Enable}
+  - {pin_num: M11, peripheral: ADC1, signal: 'A, 1_1', pin_signal: GPIO_AD_14, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, force_ibe_off: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1018,7 +1018,7 @@ void BOARD_InitADCPins(void) {
 BOARD_InitVREFPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M12, peripheral: ADC1, signal: 'A, 1_1', pin_signal: GPIO_AD_14, pull_keeper_select: Keeper, force_ibe_off: Enable}
+  - {pin_num: M11, peripheral: ADC1, signal: 'A, 1_1', pin_signal: GPIO_AD_14, pull_keeper_select: Keeper, force_ibe_off: Enable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1050,7 +1050,7 @@ void BOARD_InitVREFPins(void) {
 BOARD_InitLPITPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: L12, peripheral: XBAR1, signal: 'OUT, 19', pin_signal: GPIO_AD_19}
+  - {pin_num: K13, peripheral: XBAR1, signal: 'OUT, 19', pin_signal: GPIO_AD_19}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1078,7 +1078,7 @@ void BOARD_InitLPITPins(void) {
 BOARD_InitQTMRPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: C1, peripheral: TMR1, signal: 'TIMER, 0', pin_signal: GPIO_EMC_B1_18}
+  - {pin_num: B2, peripheral: TMR1, signal: 'TIMER, 0', pin_signal: GPIO_EMC_B1_18}
   - {pin_num: E3, peripheral: TMR1, signal: 'TIMER, 1', pin_signal: GPIO_EMC_B1_13}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1111,7 +1111,7 @@ void BOARD_InitQTMRPins(void) {
 BOARD_InitFLEXIO_I2CPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
   - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', software_input_on: Enable, pull_down_pull_up_config: Pull_Up,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -1150,7 +1150,7 @@ void BOARD_InitFLEXIO_I2CPins(void) {
 BOARD_InitFLEXIO_PINOUTPUTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D2, peripheral: FLEXIO1, signal: 'IO, 11', pin_signal: GPIO_EMC_B1_11}
+  - {pin_num: D3, peripheral: FLEXIO1, signal: 'IO, 11', pin_signal: GPIO_EMC_B1_11}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1174,7 +1174,7 @@ void BOARD_InitFLEXIO_PINOUTPUTPins(void) {
 BOARD_InitFLEXIO_PININPUTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12}
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12}
   - {pin_num: E3, peripheral: RGPIO2, signal: 'gpio_io, 13', pin_signal: GPIO_EMC_B1_13, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1210,11 +1210,11 @@ void BOARD_InitFLEXIO_PININPUTPins(void) {
 BOARD_InitFLEXIO_SPIPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pull_down_pull_up_config: Pull_Down}
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pull_down_pull_up_config: Pull_Down}
   - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', pull_down_pull_up_config: Pull_Down}
-  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, pull_down_pull_up_config: Pull_Down}
-  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, pull_down_pull_up_config: No_Pull, pdrv_config: Normal_Driver, open_drain: Disable}
-  - {pin_num: L13, peripheral: RGPIO4, signal: 'gpio_io, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
+  - {pin_num: F4, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, pull_down_pull_up_config: Pull_Down}
+  - {pin_num: D1, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, pull_down_pull_up_config: No_Pull, pdrv_config: Normal_Driver, open_drain: Disable}
+  - {pin_num: M14, peripheral: RGPIO4, signal: 'gpio_io, 29', pin_signal: GPIO_AD_29, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1227,12 +1227,12 @@ BOARD_InitFLEXIO_SPIPins:
 void BOARD_InitFLEXIO_SPIPins(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration of FLEXIO_SPI on GPIO_AD_29 (pin L13) */
+  /* GPIO configuration of FLEXIO_SPI on GPIO_AD_29 (pin M14) */
   rgpio_pin_config_t FLEXIO_SPI_config = {
       .pinDirection = kRGPIO_DigitalOutput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_AD_29 (pin L13) */
+  /* Initialize GPIO functionality on GPIO_AD_29 (pin M14) */
   RGPIO_PinInit(RGPIO4, 29U, &FLEXIO_SPI_config);
 
   IOMUXC_SetPinMux(
@@ -1278,7 +1278,7 @@ void BOARD_InitFLEXIO_SPIPins(void) {
 BOARD_InitFLEXIO_UARTPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pdrv_config: High_Driver}
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pdrv_config: High_Driver}
   - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', pdrv_config: High_Driver}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -1316,7 +1316,7 @@ void BOARD_InitFLEXIO_UARTPins(void) {
 BOARD_InitFLEXIO_PWMPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver, open_drain: Disable}
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver, open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1345,17 +1345,17 @@ void BOARD_InitFLEXIO_PWMPins(void) {
 BOARD_InitFLEXSPI_FLRPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: J11, peripheral: FLEXSPI_SLV, signal: CLK, pin_signal: GPIO_SD_B2_07}
-  - {pin_num: E11, peripheral: FLEXSPI_SLV, signal: CS, pin_signal: GPIO_SD_B2_06}
-  - {pin_num: D13, peripheral: FLEXSPI_SLV, signal: DQS, pin_signal: GPIO_SD_B2_05}
-  - {pin_num: G11, peripheral: FLEXSPI_SLV, signal: 'DATA, 0', pin_signal: GPIO_SD_B2_08}
-  - {pin_num: E12, peripheral: FLEXSPI_SLV, signal: 'DATA, 1', pin_signal: GPIO_SD_B2_09}
-  - {pin_num: F12, peripheral: FLEXSPI_SLV, signal: 'DATA, 2', pin_signal: GPIO_SD_B2_10}
-  - {pin_num: E13, peripheral: FLEXSPI_SLV, signal: 'DATA, 3', pin_signal: GPIO_SD_B2_11}
-  - {pin_num: G13, peripheral: FLEXSPI_SLV, signal: 'DATA, 4', pin_signal: GPIO_SD_B2_00}
-  - {pin_num: F14, peripheral: FLEXSPI_SLV, signal: 'DATA, 5', pin_signal: GPIO_SD_B2_01}
-  - {pin_num: F13, peripheral: FLEXSPI_SLV, signal: 'DATA, 6', pin_signal: GPIO_SD_B2_02}
-  - {pin_num: H11, peripheral: FLEXSPI_SLV, signal: 'DATA, 7', pin_signal: GPIO_SD_B2_03}
+  - {pin_num: F14, peripheral: FLEXSPI_SLV, signal: CLK, pin_signal: GPIO_SD_B2_07}
+  - {pin_num: G13, peripheral: FLEXSPI_SLV, signal: CS, pin_signal: GPIO_SD_B2_06}
+  - {pin_num: F12, peripheral: FLEXSPI_SLV, signal: DQS, pin_signal: GPIO_SD_B2_05}
+  - {pin_num: E13, peripheral: FLEXSPI_SLV, signal: 'DATA, 0', pin_signal: GPIO_SD_B2_08}
+  - {pin_num: G14, peripheral: FLEXSPI_SLV, signal: 'DATA, 1', pin_signal: GPIO_SD_B2_09}
+  - {pin_num: H13, peripheral: FLEXSPI_SLV, signal: 'DATA, 2', pin_signal: GPIO_SD_B2_10}
+  - {pin_num: F13, peripheral: FLEXSPI_SLV, signal: 'DATA, 3', pin_signal: GPIO_SD_B2_11}
+  - {pin_num: J11, peripheral: FLEXSPI_SLV, signal: 'DATA, 4', pin_signal: GPIO_SD_B2_00}
+  - {pin_num: H11, peripheral: FLEXSPI_SLV, signal: 'DATA, 5', pin_signal: GPIO_SD_B2_01}
+  - {pin_num: H14, peripheral: FLEXSPI_SLV, signal: 'DATA, 6', pin_signal: GPIO_SD_B2_02}
+  - {pin_num: F11, peripheral: FLEXSPI_SLV, signal: 'DATA, 7', pin_signal: GPIO_SD_B2_03}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1409,12 +1409,12 @@ void BOARD_InitFLEXSPI_FLRPins(void) {
 BOARD_InitUSB_PDPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: C2, peripheral: RGPIO2, signal: 'gpio_io, 17', pin_signal: GPIO_EMC_B1_17, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
-  - {pin_num: G1, peripheral: RGPIO2, signal: 'gpio_io, 16', pin_signal: GPIO_EMC_B1_16, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
-  - {pin_num: N14, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12, software_input_on: Disable, pull_keeper_select: Pull, open_drain: Disable}
-  - {pin_num: E5, peripheral: RGPIO2, signal: 'gpio_io, 14', pin_signal: GPIO_EMC_B1_14, software_input_on: Disable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
-  - {pin_num: D7, peripheral: RGPIO2, signal: 'gpio_io, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
-  - {pin_num: E2, peripheral: RGPIO2, signal: 'gpio_io, 15', pin_signal: GPIO_EMC_B1_15, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
+  - {pin_num: B1, peripheral: RGPIO2, signal: 'gpio_io, 17', pin_signal: GPIO_EMC_B1_17, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
+  - {pin_num: E2, peripheral: RGPIO2, signal: 'gpio_io, 16', pin_signal: GPIO_EMC_B1_16, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
+  - {pin_num: M13, peripheral: RGPIO4, signal: 'gpio_io, 12', pin_signal: GPIO_AD_12, software_input_on: Disable, pull_keeper_select: Pull, open_drain: Disable}
+  - {pin_num: F4, peripheral: RGPIO2, signal: 'gpio_io, 14', pin_signal: GPIO_EMC_B1_14, software_input_on: Disable, pull_down_pull_up_config: Pull_Up, open_drain: Disable}
+  - {pin_num: E5, peripheral: RGPIO2, signal: 'gpio_io, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
+  - {pin_num: D1, peripheral: RGPIO2, signal: 'gpio_io, 15', pin_signal: GPIO_EMC_B1_15, software_input_on: Disable, pull_down_pull_up_config: No_Pull, open_drain: Disable}
   - {pin_num: E3, peripheral: RGPIO2, signal: 'gpio_io, 13', pin_signal: GPIO_EMC_B1_13, identifier: '', software_input_on: Disable, pull_down_pull_up_config: No_Pull,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
@@ -1496,7 +1496,7 @@ void BOARD_InitUSB_PDPins(void) {
 BOARD_InitUSB_PDI2CPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M9, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_EMC_B2_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
+  - {pin_num: N7, peripheral: LPI2C3, signal: SCL, pin_signal: GPIO_EMC_B2_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Enable}
   - {pin_num: M8, peripheral: LPI2C3, signal: SDA, pin_signal: GPIO_EMC_B2_20, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: Normal_Driver,
     open_drain: Enable}
@@ -1542,14 +1542,14 @@ void BOARD_InitUSB_PDI2CPins(void) {
 void BOARD_InitUSB_PDI2CPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration on GPIO_EMC_B2_19 (pin M9) */
-  rgpio_pin_config_t gpio3_pinM9_config = {
+  /* GPIO configuration on GPIO_EMC_B2_19 (pin N7) */
+  rgpio_pin_config_t gpio3_pinN7_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_EMC_B2_19 (pin M9) */
-  RGPIO_PinInit(RGPIO3, 29U, &gpio3_pinM9_config);
-  /* Configures GPIO pin interrupt/DMA request on GPIO_EMC_B2_19 (pin M9) */
+  /* Initialize GPIO functionality on GPIO_EMC_B2_19 (pin N7) */
+  RGPIO_PinInit(RGPIO3, 29U, &gpio3_pinN7_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_EMC_B2_19 (pin N7) */
   RGPIO_SetPinInterruptConfig(RGPIO3, 29U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
   /* GPIO configuration on GPIO_EMC_B2_20 (pin M8) */
@@ -1587,25 +1587,25 @@ BOARD_InitSRAMCPins:
 - options: {callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
   - {pin_num: G3, peripheral: SRAMC, signal: 'DATA, 0', pin_signal: GPIO_EMC_B1_00, pdrv_config: High_Driver}
-  - {pin_num: H4, peripheral: SRAMC, signal: 'DATA, 1', pin_signal: GPIO_EMC_B1_01, pdrv_config: High_Driver}
-  - {pin_num: K2, peripheral: SRAMC, signal: 'DATA, 2', pin_signal: GPIO_EMC_B1_02, pdrv_config: High_Driver}
-  - {pin_num: F3, peripheral: SRAMC, signal: 'DATA, 3', pin_signal: GPIO_EMC_B1_03, pdrv_config: High_Driver}
-  - {pin_num: J4, peripheral: SRAMC, signal: 'DATA, 4', pin_signal: GPIO_EMC_B1_04, pdrv_config: High_Driver}
-  - {pin_num: E7, peripheral: SRAMC, signal: 'DATA, 5', pin_signal: GPIO_EMC_B1_05, pdrv_config: High_Driver}
-  - {pin_num: K3, peripheral: SRAMC, signal: 'DATA, 6', pin_signal: GPIO_EMC_B1_06, pdrv_config: High_Driver}
-  - {pin_num: J3, peripheral: SRAMC, signal: 'DATA, 7', pin_signal: GPIO_EMC_B1_07, pdrv_config: High_Driver}
+  - {pin_num: F5, peripheral: SRAMC, signal: 'DATA, 1', pin_signal: GPIO_EMC_B1_01, pdrv_config: High_Driver}
+  - {pin_num: G2, peripheral: SRAMC, signal: 'DATA, 2', pin_signal: GPIO_EMC_B1_02, pdrv_config: High_Driver}
+  - {pin_num: E6, peripheral: SRAMC, signal: 'DATA, 3', pin_signal: GPIO_EMC_B1_03, pdrv_config: High_Driver}
+  - {pin_num: H5, peripheral: SRAMC, signal: 'DATA, 4', pin_signal: GPIO_EMC_B1_04, pdrv_config: High_Driver}
+  - {pin_num: E1, peripheral: SRAMC, signal: 'DATA, 5', pin_signal: GPIO_EMC_B1_05, pdrv_config: High_Driver}
+  - {pin_num: H4, peripheral: SRAMC, signal: 'DATA, 6', pin_signal: GPIO_EMC_B1_06, pdrv_config: High_Driver}
+  - {pin_num: J5, peripheral: SRAMC, signal: 'DATA, 7', pin_signal: GPIO_EMC_B1_07, pdrv_config: High_Driver}
   - {pin_num: F2, peripheral: SRAMC, signal: 'DATA, 8', pin_signal: GPIO_EMC_B1_30, pdrv_config: High_Driver}
-  - {pin_num: G2, peripheral: SRAMC, signal: 'DATA, 9', pin_signal: GPIO_EMC_B1_31, pdrv_config: High_Driver}
-  - {pin_num: J1, peripheral: SRAMC, signal: 'DATA, 10', pin_signal: GPIO_EMC_B1_32, pdrv_config: High_Driver}
-  - {pin_num: K1, peripheral: SRAMC, signal: 'DATA, 11', pin_signal: GPIO_EMC_B1_33, pdrv_config: High_Driver}
-  - {pin_num: L2, peripheral: SRAMC, signal: 'DATA, 12', pin_signal: GPIO_EMC_B1_34, pdrv_config: High_Driver}
-  - {pin_num: L1, peripheral: SRAMC, signal: 'DATA, 13', pin_signal: GPIO_EMC_B1_35, pdrv_config: High_Driver}
-  - {pin_num: F5, peripheral: SRAMC, signal: 'DATA, 14', pin_signal: GPIO_EMC_B1_36, pdrv_config: High_Driver}
-  - {pin_num: H2, peripheral: SRAMC, signal: 'DATA, 15', pin_signal: GPIO_EMC_B1_37, pdrv_config: High_Driver}
-  - {pin_num: H1, peripheral: SRAMC, signal: sramc_we, pin_signal: GPIO_EMC_B1_26, pdrv_config: High_Driver}
-  - {pin_num: H3, peripheral: SRAMC, signal: sramc_oeb, pin_signal: GPIO_EMC_B1_27, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver}
+  - {pin_num: F1, peripheral: SRAMC, signal: 'DATA, 9', pin_signal: GPIO_EMC_B1_31, pdrv_config: High_Driver}
+  - {pin_num: G1, peripheral: SRAMC, signal: 'DATA, 10', pin_signal: GPIO_EMC_B1_32, pdrv_config: High_Driver}
+  - {pin_num: H1, peripheral: SRAMC, signal: 'DATA, 11', pin_signal: GPIO_EMC_B1_33, pdrv_config: High_Driver}
+  - {pin_num: H3, peripheral: SRAMC, signal: 'DATA, 12', pin_signal: GPIO_EMC_B1_34, pdrv_config: High_Driver}
+  - {pin_num: H2, peripheral: SRAMC, signal: 'DATA, 13', pin_signal: GPIO_EMC_B1_35, pdrv_config: High_Driver}
+  - {pin_num: J2, peripheral: SRAMC, signal: 'DATA, 14', pin_signal: GPIO_EMC_B1_36, pdrv_config: High_Driver}
+  - {pin_num: J1, peripheral: SRAMC, signal: 'DATA, 15', pin_signal: GPIO_EMC_B1_37, pdrv_config: High_Driver}
+  - {pin_num: J7, peripheral: SRAMC, signal: sramc_we, pin_signal: GPIO_EMC_B1_26, pdrv_config: High_Driver}
+  - {pin_num: G5, peripheral: SRAMC, signal: sramc_oeb, pin_signal: GPIO_EMC_B1_27, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver}
   - {pin_num: D5, peripheral: SRAMC, signal: sramc_adv, pin_signal: GPIO_EMC_B1_28, pdrv_config: High_Driver}
-  - {pin_num: E4, peripheral: SRAMC, signal: 'CS, 0', pin_signal: GPIO_EMC_B1_29, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver}
+  - {pin_num: C3, peripheral: SRAMC, signal: 'CS, 0', pin_signal: GPIO_EMC_B1_29, pull_down_pull_up_config: Pull_Up, pdrv_config: High_Driver}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -1788,43 +1788,43 @@ BOARD_InitSRAMC_FLEXIOPins:
 - pin_list:
   - {pin_num: G3, peripheral: FLEXIO1, signal: 'IO, 00', pin_signal: GPIO_EMC_B1_00, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: H4, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: F5, peripheral: FLEXIO1, signal: 'IO, 01', pin_signal: GPIO_EMC_B1_01, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: K2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: G2, peripheral: FLEXIO1, signal: 'IO, 02', pin_signal: GPIO_EMC_B1_02, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E6, peripheral: FLEXIO1, signal: 'IO, 03', pin_signal: GPIO_EMC_B1_03, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: J4, peripheral: FLEXIO1, signal: 'IO, 04', pin_signal: GPIO_EMC_B1_04, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: H5, peripheral: FLEXIO1, signal: 'IO, 04', pin_signal: GPIO_EMC_B1_04, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E7, peripheral: FLEXIO1, signal: 'IO, 05', pin_signal: GPIO_EMC_B1_05, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E1, peripheral: FLEXIO1, signal: 'IO, 05', pin_signal: GPIO_EMC_B1_05, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: K3, peripheral: FLEXIO1, signal: 'IO, 06', pin_signal: GPIO_EMC_B1_06, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: H4, peripheral: FLEXIO1, signal: 'IO, 06', pin_signal: GPIO_EMC_B1_06, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: J3, peripheral: FLEXIO1, signal: 'IO, 07', pin_signal: GPIO_EMC_B1_07, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: J5, peripheral: FLEXIO1, signal: 'IO, 07', pin_signal: GPIO_EMC_B1_07, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D6, peripheral: FLEXIO1, signal: 'IO, 08', pin_signal: GPIO_EMC_B1_08, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: F3, peripheral: FLEXIO1, signal: 'IO, 08', pin_signal: GPIO_EMC_B1_08, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D1, peripheral: FLEXIO1, signal: 'IO, 09', pin_signal: GPIO_EMC_B1_09, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: A2, peripheral: FLEXIO1, signal: 'IO, 09', pin_signal: GPIO_EMC_B1_09, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D3, peripheral: FLEXIO1, signal: 'IO, 10', pin_signal: GPIO_EMC_B1_10, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: C2, peripheral: FLEXIO1, signal: 'IO, 10', pin_signal: GPIO_EMC_B1_10, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D2, peripheral: FLEXIO1, signal: 'IO, 11', pin_signal: GPIO_EMC_B1_11, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: D3, peripheral: FLEXIO1, signal: 'IO, 11', pin_signal: GPIO_EMC_B1_11, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: D7, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 12', pin_signal: GPIO_EMC_B1_12, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
   - {pin_num: E3, peripheral: FLEXIO1, signal: 'IO, 13', pin_signal: GPIO_EMC_B1_13, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E5, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: F4, peripheral: FLEXIO1, signal: 'IO, 14', pin_signal: GPIO_EMC_B1_14, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: D1, peripheral: FLEXIO1, signal: 'IO, 15', pin_signal: GPIO_EMC_B1_15, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: G1, peripheral: FLEXIO1, signal: 'IO, 16', pin_signal: GPIO_EMC_B1_16, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E2, peripheral: FLEXIO1, signal: 'IO, 16', pin_signal: GPIO_EMC_B1_16, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: C2, peripheral: FLEXIO1, signal: 'IO, 17', pin_signal: GPIO_EMC_B1_17, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: B1, peripheral: FLEXIO1, signal: 'IO, 17', pin_signal: GPIO_EMC_B1_17, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: C1, peripheral: FLEXIO1, signal: 'IO, 18', pin_signal: GPIO_EMC_B1_18, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: B2, peripheral: FLEXIO1, signal: 'IO, 18', pin_signal: GPIO_EMC_B1_18, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
-  - {pin_num: F4, peripheral: FLEXIO1, signal: 'IO, 19', pin_signal: GPIO_EMC_B1_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
+  - {pin_num: E4, peripheral: FLEXIO1, signal: 'IO, 19', pin_signal: GPIO_EMC_B1_19, software_input_on: Enable, pull_down_pull_up_config: Pull_Down, pdrv_config: High_Driver,
     open_drain: Disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
@@ -2006,8 +2006,8 @@ void BOARD_InitSRAMC_FLEXIOPins(void) {
 BOARD_InitALT_UARTPins:
 - options: {createDeInit: 'true', callFromInitBoot: 'false', coreID: cm33, enableClock: 'true'}
 - pin_list:
-  - {pin_num: M12, peripheral: LPUART3, signal: RXD, pin_signal: GPIO_AD_14, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High}
-  - {pin_num: M13, peripheral: LPUART3, signal: TXD, pin_signal: GPIO_AD_13, pull_keeper_select: Keeper, drive_strength: High}
+  - {pin_num: M11, peripheral: LPUART3, signal: RXD, pin_signal: GPIO_AD_14, pull_up_down_config: Pull_Down, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High}
+  - {pin_num: M12, peripheral: LPUART3, signal: TXD, pin_signal: GPIO_AD_13, pull_keeper_select: Keeper, drive_strength: High}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -2056,24 +2056,24 @@ void BOARD_InitALT_UARTPins(void) {
 void BOARD_InitALT_UARTPins_deinit(void) {
   CLOCK_EnableClock(kCLOCK_Iomuxc1);          /* Turn on LPCG: LPCG is ON. */
 
-  /* GPIO configuration on GPIO_AD_13 (pin M13) */
-  rgpio_pin_config_t gpio4_pinM13_config = {
-      .pinDirection = kRGPIO_DigitalInput,
-      .outputLogic = 0U,
-  };
-  /* Initialize GPIO functionality on GPIO_AD_13 (pin M13) */
-  RGPIO_PinInit(RGPIO4, 13U, &gpio4_pinM13_config);
-  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_13 (pin M13) */
-  RGPIO_SetPinInterruptConfig(RGPIO4, 13U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
-
-  /* GPIO configuration on GPIO_AD_14 (pin M12) */
+  /* GPIO configuration on GPIO_AD_13 (pin M12) */
   rgpio_pin_config_t gpio4_pinM12_config = {
       .pinDirection = kRGPIO_DigitalInput,
       .outputLogic = 0U,
   };
-  /* Initialize GPIO functionality on GPIO_AD_14 (pin M12) */
-  RGPIO_PinInit(RGPIO4, 14U, &gpio4_pinM12_config);
-  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_14 (pin M12) */
+  /* Initialize GPIO functionality on GPIO_AD_13 (pin M12) */
+  RGPIO_PinInit(RGPIO4, 13U, &gpio4_pinM12_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_13 (pin M12) */
+  RGPIO_SetPinInterruptConfig(RGPIO4, 13U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
+
+  /* GPIO configuration on GPIO_AD_14 (pin M11) */
+  rgpio_pin_config_t gpio4_pinM11_config = {
+      .pinDirection = kRGPIO_DigitalInput,
+      .outputLogic = 0U,
+  };
+  /* Initialize GPIO functionality on GPIO_AD_14 (pin M11) */
+  RGPIO_PinInit(RGPIO4, 14U, &gpio4_pinM11_config);
+  /* Configures GPIO pin interrupt/DMA request on GPIO_AD_14 (pin M11) */
   RGPIO_SetPinInterruptConfig(RGPIO4, 14U, kRGPIO_InterruptOutput0, kRGPIO_InterruptOrDMADisabled);
 
   IOMUXC_SetPinMux(

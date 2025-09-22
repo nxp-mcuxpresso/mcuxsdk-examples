@@ -51,7 +51,7 @@ void BOARD_InitDEBUG_UARTPins_deinit(void);   /* Function assigned for the Corte
  */
 void BOARD_InitCANPins(void);                 /* Function assigned for the Cortex-M33 */
 
-/* GPIO_AON_15 (coord B4), ETH0 */
+/* GPIO_AON_15 (coord B8), ETH0 */
 /* Routed pin properties */
 #define BOARD_INITNETPINS_ETH0_RESET_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
 #define BOARD_INITNETPINS_ETH0_RESET_SIGNAL                              gpio_io   /*!< Signal name */
@@ -63,7 +63,7 @@ void BOARD_InitCANPins(void);                 /* Function assigned for the Corte
 #define BOARD_INITNETPINS_ETH0_RESET_GPIO_PIN                                15U   /*!< GPIO pin number */
 #define BOARD_INITNETPINS_ETH0_RESET_GPIO_PIN_MASK                   (1U << 15U)   /*!< GPIO pin mask */
 
-/* GPIO_AON_20 (coord C8), ETH2 */
+/* GPIO_AON_20 (coord A3), ETH2 */
 /* Routed pin properties */
 #define BOARD_INITNETPINS_ETH2_RESET_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
 #define BOARD_INITNETPINS_ETH2_RESET_SIGNAL                              gpio_io   /*!< Signal name */
@@ -75,7 +75,7 @@ void BOARD_InitCANPins(void);                 /* Function assigned for the Corte
 #define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN                                20U   /*!< GPIO pin number */
 #define BOARD_INITNETPINS_ETH2_RESET_GPIO_PIN_MASK                   (1U << 20U)   /*!< GPIO pin mask */
 
-/* GPIO_AON_03 (coord A9), ETH0 */
+/* GPIO_AON_03 (coord D8), ETH0 */
 /* Routed pin properties */
 #define BOARD_INITNETPINS_ETH0_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
 #define BOARD_INITNETPINS_ETH0_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
@@ -86,7 +86,7 @@ void BOARD_InitCANPins(void);                 /* Function assigned for the Corte
 #define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN                                 3U   /*!< GPIO pin number */
 #define BOARD_INITNETPINS_ETH0_INT_B_GPIO_PIN_MASK                    (1U << 3U)   /*!< GPIO pin mask */
 
-/* GPIO_AON_04 (coord B5), ETH2 */
+/* GPIO_AON_04 (coord E7), ETH2 */
 /* Routed pin properties */
 #define BOARD_INITNETPINS_ETH2_INT_B_PERIPHERAL                           RGPIO1   /*!< Peripheral name */
 #define BOARD_INITNETPINS_ETH2_INT_B_SIGNAL                              gpio_io   /*!< Signal name */
@@ -123,7 +123,7 @@ void BOARD_InitSPIPins(void);                 /* Function assigned for the Corte
  */
 void BOARD_InitSPIPins_deinit(void);          /* Function assigned for the Cortex-M33 */
 
-/* GPIO_EMC_B1_11 (coord D2), LED */
+/* GPIO_EMC_B1_11 (coord D3), LED */
 /* Routed pin properties */
 #define BOARD_INITLEDSPINS_LED_PERIPHERAL                                 RGPIO2   /*!< Peripheral name */
 #define BOARD_INITLEDSPINS_LED_SIGNAL                                    gpio_io   /*!< Signal name */
@@ -236,7 +236,7 @@ void BOARD_InitQTMRPins(void);                /* Function assigned for the Corte
  */
 void BOARD_InitFLEXIO_I2CPins(void);          /* Function assigned for the Cortex-M33 */
 
-/* GPIO_EMC_B1_11 (coord D2), LED */
+/* GPIO_EMC_B1_11 (coord D3), LED */
 /* Routed pin properties */
 #define BOARD_INITFLEXIO_PINOUTPUTPINS_LED_PERIPHERAL                    FLEXIO1   /*!< Peripheral name */
 #define BOARD_INITFLEXIO_PINOUTPUTPINS_LED_SIGNAL                             IO   /*!< Signal name */
@@ -266,7 +266,7 @@ void BOARD_InitFLEXIO_PINOUTPUTPins(void);    /* Function assigned for the Corte
  */
 void BOARD_InitFLEXIO_PININPUTPins(void);     /* Function assigned for the Cortex-M33 */
 
-/* GPIO_AD_29 (coord L13), FLEXIO_SPI */
+/* GPIO_AD_29 (coord M14), FLEXIO_SPI */
 /* Routed pin properties */
 #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_PERIPHERAL                    RGPIO4   /*!< Peripheral name */
 #define BOARD_INITFLEXIO_SPIPINS_FLEXIO_SPI_SIGNAL                       gpio_io   /*!< Signal name */
@@ -328,7 +328,7 @@ void BOARD_InitUSB_PDI2CPins_deinit(void);    /* Function assigned for the Corte
  */
 void BOARD_InitSRAMCPins(void);               /* Function assigned for the Cortex-M33 */
 
-/* GPIO_EMC_B1_11 (coord D2), LED */
+/* GPIO_EMC_B1_11 (coord D3), LED */
 /* Routed pin properties */
 #define BOARD_INITSRAMC_FLEXIOPINS_LED_PERIPHERAL                        FLEXIO1   /*!< Peripheral name */
 #define BOARD_INITSRAMC_FLEXIOPINS_LED_SIGNAL                                 IO   /*!< Signal name */
