@@ -23,11 +23,27 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsole();
 }
 
+#if defined(__ICCARM__) /* IAR Workbench */
+  #pragma location = "rpmsg_sh_mem_section"
+  power_handle_t powerHandle;
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION) /* Keil MDK */
+power_handle_t powerHandle __attribute__((section("rpmsg_sh_mem_section")));
+#elif defined(__GNUC__)
+power_handle_t powerHandle __attribute__((section(".noinit.$rpmsg_sh_mem")));
+#else
+#error "RPMsg: Please provide your definition of rpmsg_lite_base[]!"
+#endif
+
 /* Enter deep sleep mode. */
 void EXAMPLE_EnterDeepSleep()
 {
     while (OSTIMER0->OSEVENT_CTRL & OSTIMER_OSEVENT_CTRL_MATCH_WR_RDY_MASK);
-
+    power_drv_config_t powerDrvConfig = {
+        .muChannelId = 0U,
+        .noSyncCM0P = true,
+    };
+    (void)Power_CreateHandle(&powerHandle, &powerDrvConfig);
+    
     power_ds_config_t dsConfig;
 
     Power_EnterDeepSleep(&dsConfig);
