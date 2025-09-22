@@ -167,7 +167,11 @@
    ------------------------------------
 */
 
+#if CONFIG_TX_RX_ZERO_COPY
+#define MEM_ALIGNMENT 32
+#else
 #define MEM_ALIGNMENT 4
+#endif
 
 /* Value of TCP_SND_BUF_COUNT denotes the number of buffers and is set by
  * CONFIG option available in the SDK
@@ -297,12 +301,6 @@
  */
 #if CONFIG_LWIP_LOW_MEM_FOOTPRINT
 #define PBUF_POOL_SIZE 20
-#elif FSL_USDHC_ENABLE_SCATTER_GATHER_TRANSFER
-#if defined(SD8978)
-#define PBUF_POOL_SIZE 40
-#else
-#define PBUF_POOL_SIZE 48
-#endif
 #else
 #define PBUF_POOL_SIZE 80
 #endif
@@ -318,13 +316,12 @@
  * designed to accomodate single full size TCP frame in one pbuf, including
  * TCP_MSS, IP header, and link header.
  */
-#if FSL_USDHC_ENABLE_SCATTER_GATHER_TRANSFER
+#if CONFIG_TX_RX_ZERO_COPY
 /**
- *  * PBUF_LINK_ENCAPSULATION_HLEN: interface header + sizeof(TxPD)
- *   */
-#define PBUF_LINK_ENCAPSULATION_HLEN 26
-
-#define PBUF_POOL_BUFSIZE 4096
+ * PBUF_LINK_ENCAPSULATION_HLEN: interface header + sizeof(TxPD) and 32 bytes align
+ */
+#define PBUF_LINK_ENCAPSULATION_HLEN 32
+#define PBUF_POOL_BUFSIZE 2048
 #else
 #define PBUF_POOL_BUFSIZE 1580
 #endif
@@ -551,12 +548,6 @@
 #include "lwip/arch.h"
 u32_t lwip_rand(void);
 #define LWIP_RAND() lwip_rand()
-#endif
-
-#define LWIP_NETIF_TX_SINGLE_PBUF 1
-
-#if (LWIP_NETIF_TX_SINGLE_PBUF)
-#define PBUF_LINK_ENCAPSULATION_HLEN 26
 #endif
 
 /* ---------- Core locking ---------- */

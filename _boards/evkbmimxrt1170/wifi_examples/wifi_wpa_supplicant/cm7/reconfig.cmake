@@ -52,7 +52,10 @@ mcux_add_macro(
        -DBOARD_NETWORK_USE_100M_ENET_PORT=1\
        -DUSE_RTOS=1\
        -DMBEDTLS_CONFIG_FILE=\\\"wpa_supp_mbedtls_config.h\\\"\
-       -DPRINTF_ADVANCED_ENABLE=1"
+       -DPRINTF_ADVANCED_ENABLE=1\
+       -DSDMMCHOST_ENABLE_CACHE_LINE_ALIGN_TRANSFER=1\
+       -DFSL_USDHC_ENABLE_SCATTER_GATHER_TRANSFER=1\
+       -DCONFIG_TX_RX_ZERO_COPY=1"
 )
 mcux_add_macro(
     TOOLCHAINS armgcc
