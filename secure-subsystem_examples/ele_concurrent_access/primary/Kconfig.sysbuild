@@ -1,0 +1,7 @@
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+# We'll use the default multicore_examples' sysbuild config
+rsource "../../../multicore_examples/Kconfig.sysbuild"

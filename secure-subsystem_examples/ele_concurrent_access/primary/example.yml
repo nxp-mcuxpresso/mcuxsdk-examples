@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+#
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+ele_concurrent_access_primary_core:
+  use_sysbuild: true
+  section-type: application
+  contents:
+    meta_path: examples/secure-subsystem_examples/ele_concurrent_access/primary
+    project-root-path: boards/${board}/secure-subsystem_examples/ele_concurrent_access/${multicore_foldername}
+    document:
+      name: ele_concurrent_access_primary_core
+      category: secure-subsystem_examples
+      brief: The S200 enclave supports receiving commands from multiple cores. For such
+             cases, the S3MU driver calls for sending command messages and receiving response
+             messages are wrapped in an S3MU-specific semaphore for command serialization
+             between cores. This serialization is transparent to the driver's user
+             and the user does not need to manage this semaphore themselves.
+      example_readme:
+      - examples/secure-subsystem_examples/ele_concurrent_access/readme.md
+      - ${board_root}/${board}/secure-subsystem_examples/ele_concurrent_access/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    kw47evk@cm33_core0: []
