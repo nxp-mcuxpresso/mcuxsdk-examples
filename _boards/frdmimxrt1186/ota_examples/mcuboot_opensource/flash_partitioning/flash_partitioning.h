@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  *
@@ -9,7 +9,7 @@
 #ifndef _FLASH_PARTITIONING_H_
 #define _FLASH_PARTITIONING_H_
 
-#define BOOT_FLASH_BASE     0x28000000
+#define BOOT_FLASH_BASE     0x04000000
 
 
 #if defined(CONFIG_BOOT_CUSTOM_DEVICE_SETUP)
@@ -27,8 +27,8 @@
  *   2 MB for application
  */
 
-#define BOOT_FLASH_ACT_APP  0x28040000
-#define BOOT_FLASH_CAND_APP 0x28240000
+#define BOOT_FLASH_ACT_APP  0x04040000
+#define BOOT_FLASH_CAND_APP 0x04240000
 
 #endif /* CONFIG_BOOT_CUSTOM_DEVICE_SETUP */
 

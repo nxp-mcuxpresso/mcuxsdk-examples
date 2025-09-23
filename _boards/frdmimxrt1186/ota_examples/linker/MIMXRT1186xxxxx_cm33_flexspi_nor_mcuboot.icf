@@ -89,9 +89,6 @@ if (isdefinedsymbol(__use_shmem__)) {
 
 /* Region definition */
 define memory mem with size = 4G;
-define region FCB_region       = mem:[from m_fcb_start to m_fcb_end];
-define region XMCD_region      = mem:[from m_xmcd_start to m_xmcd_end];
-define region CONTAINER_region = mem:[from m_container_start to m_container_end];
 define region TEXT_region      = mem:[from m_text_start to m_text_end];
 define region DATA_region      = mem:[from m_data_start to m_data_end-__size_cstack__];
 define region CSTACK_region    = mem:[from m_data_end-__size_cstack__+1 to m_data_end];
@@ -108,9 +105,6 @@ define exported symbol __VECTOR_RAM            = m_ram_vector_table_start;
 define exported symbol __RAM_VECTOR_TABLE_SIZE = m_ram_vector_table_size;
 define exported symbol __NCACHE_REGION_START   = m_ncache_start;
 define exported symbol __NCACHE_REGION_SIZE    = m_ncache_end - m_ncache_start + 1;
-define exported symbol __CONTAINER_IMG_OFFSET     = start(TEXT_region) - start(CONTAINER_region);
-define exported symbol __CONTAINER_IMG_LOAD_ADDR  = start(TEXT_region);
-define exported symbol __CONTAINER_IMG_ENTRY_ADDR = start(TEXT_region);
 if (isdefinedsymbol(__use_shmem__)) {
   define exported symbol rpmsg_sh_mem_start    = m_rpmsg_sh_mem_start;
   define exported symbol rpmsg_sh_mem_end      = m_rpmsg_sh_mem_end;
