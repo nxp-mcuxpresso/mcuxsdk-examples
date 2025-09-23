@@ -50,4 +50,28 @@ mcux_add_iar_linker_script(
     TARGETS debug release
     LINKER ${board_root}/${board}/iar/MIMX8ML8xxxxx_cm7_lpa_ram.icf
 )
+
+mcux_remove_configuration(
+    TARGETS debug
+    TOOLCHAINS iar
+    CC "-On"
+)
+
+mcux_add_iar_configuration(
+    TARGETS debug
+    CC "-Om"
+)
+
+mcux_remove_configuration(
+    TARGETS debug
+    TOOLCHAINS armgcc
+    CC "-O0"
+)
+
+mcux_add_configuration(
+    TARGETS debug
+    TOOLCHAINS armgcc
+    CC "-Os"
+)
+
 include(${SdkRootDirPath}/examples/_boards/${board}/project_common.cmake OPTIONAL)
