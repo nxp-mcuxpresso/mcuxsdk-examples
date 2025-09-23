@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 NXP
+ * Copyright 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -38,12 +38,8 @@ void BOARD_InitBootPins(void)
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm7}
 - pin_list:
-  - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, SION: DISABLED, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, SION: DISABLED, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
-  - {pin_num: G45, peripheral: CAN1, signal: can_rx, pin_signal: PDM_BIT_STREAM0, PD: ENABLED}
-  - {pin_num: F46, peripheral: CAN1, signal: can_tx, pin_signal: PDM_CLK, PD: ENABLED}
-  - {pin_num: K48, peripheral: LPI2C6, signal: lpi2c_sda, pin_signal: GPIO_IO02, SION: ENABLED, OD: ENABLED, PD: DISABLED}
-  - {pin_num: K52, peripheral: LPI2C6, signal: lpi2c_scl, pin_signal: GPIO_IO03, SION: ENABLED, OD: ENABLED, PD: DISABLED}
+  - {pin_num: P44, peripheral: LPUART3, signal: lpuart_rx, pin_signal: GPIO_IO15, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
+  - {pin_num: N51, peripheral: LPUART3, signal: lpuart_tx, pin_signal: GPIO_IO14, PD: ENABLED, FSEL1: SLIGHTLY_FAST_SLEW_RATE}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 
@@ -54,16 +50,6 @@ BOARD_InitPins:
  *
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void) {                                /*!< Function assigned for the core: Cortex-M7F[cm7] */
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO02__LPI2C6_SDA, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 1U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO03__LPI2C6_SCL, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_OD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO14__LPUART3_TX, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
@@ -71,16 +57,6 @@ void BOARD_InitPins(void) {                                /*!< Function assigne
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
     HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 0U);
     HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_GPIO_IO15__LPUART3_RX, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_BIT_STREAM0__CAN1_RX, 
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
-                        HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
-    HAL_PinctrlSetPinMux(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_CLK__CAN1_TX, 0U);
-    HAL_PinctrlSetPinCfg(HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PDM_CLK__CAN1_TX, 
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_DSE(15U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_FSEL1(2U) |
                         HAL_PINCTRL_PLATFORM_IOMUXC_PAD_PD_MASK);
