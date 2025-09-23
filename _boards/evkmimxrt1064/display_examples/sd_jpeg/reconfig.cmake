@@ -1,7 +1,7 @@
 
 # Add additional configuration
 mcux_add_mdk_configuration(
-    TARGETS flexspi_nor_debug flexspi_nor_release
+    TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     LD "--keep=*(.boot_hdr.dcd_data)"
 )
 mcux_add_macro(
@@ -9,64 +9,18 @@ mcux_add_macro(
 )
 mcux_add_macro(
     TOOLCHAINS iar mdk armgcc
-    TARGETS flexspi_nor_debug flexspi_nor_release
+    TARGETS flexspi_nor_sdram_debug flexspi_nor_sdram_release
     CC "-DSKIP_SYSCLK_INIT\
        -DXIP_BOOT_HEADER_DCD_ENABLE=1"
 )
 
-mcux_remove_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1064/MIMXRT1064/iar/MIMXRT1064xxxxx_flexspi_nor.icf
-)
-
-mcux_remove_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1064/MIMXRT1064/arm/MIMXRT1064xxxxx_flexspi_nor.scf
-)
-
-mcux_remove_armgcc_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1064/MIMXRT1064/gcc/MIMXRT1064xxxxx_flexspi_nor.ld
-)
-
-mcux_add_iar_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1064/MIMXRT1064/iar/MIMXRT1064xxxxx_flexspi_nor_sdram.icf
-)
-
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1064/MIMXRT1064/arm/MIMXRT1064xxxxx_flexspi_nor_sdram.scf
-)
-
-mcux_add_armgcc_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1064/MIMXRT1064/gcc/MIMXRT1064xxxxx_flexspi_nor_sdram.ld
-)
-
 mcux_add_iar_configuration(
-    TARGETS sdram_debug
+    TARGETS sdram_debug flexspi_nor_sdram_debug
     CC "-Om"
 )
 
 mcux_remove_iar_configuration(
-    TARGETS sdram_debug
-    CC "-On"
-)
-
-mcux_add_iar_configuration(
-    TARGETS flexspi_nor_debug
-    CC "-Om"
-)
-
-mcux_remove_iar_configuration(
-    TARGETS flexspi_nor_debug
+    TARGETS sdram_debug flexspi_nor_sdram_debug
     CC "-On"
 )
 
