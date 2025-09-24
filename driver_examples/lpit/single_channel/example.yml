@@ -129,3 +129,4 @@ lpit_single_channel:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    mimxrt2660evk: []
