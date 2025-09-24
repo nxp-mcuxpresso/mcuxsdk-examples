@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2020,2022-2024 NXP
+ * Copyright 2016-2020,2022-2025 NXP
  * All rights reserved.
  *
  *
@@ -40,8 +40,8 @@
 #endif /* EXAMPLE_NETIF_INIT_FN */
 
 #ifndef IPERF_UDP_CLIENT_RATE
-#define IPERF_UDP_CLIENT_RATE (100 * 1024 * 1024) /* 100 Mbit/s */
-#endif                                            /* IPERF_UDP_CLIENT_RATE */
+#define IPERF_UDP_CLIENT_RATE (50000000)
+#endif /* IPERF_UDP_CLIENT_RATE */
 
 #ifndef IPERF_CLIENT_AMOUNT
 #define IPERF_CLIENT_AMOUNT (-1000) /* 10 seconds */
