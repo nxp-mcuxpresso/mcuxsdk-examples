@@ -138,7 +138,7 @@ void BOARD_InitHardware(void)
         ;
 
     /* Isolate some external power domain to save power. */
-    SPC_SetExternalVoltageDomainsConfig(APP_SPC, 0x7U, 0x0U);
+    SPC_SetExternalVoltageDomainsConfig(APP_SPC, 0x5U, 0x0U);
 
     /* Enable CORE VDD Voltage scaling. */
     SPC_EnableLowPowerModeCoreVDDInternalVoltageScaling(APP_SPC, true);
