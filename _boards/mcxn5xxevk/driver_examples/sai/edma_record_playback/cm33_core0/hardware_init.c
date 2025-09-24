@@ -22,7 +22,7 @@ da7212_config_t da7212Config = {
     .dacSource    = kDA7212_DACSourceInputStream,
     .slaveAddress = DA7212_ADDRESS,
     .protocol     = kDA7212_BusI2S,
-    .format       = {.mclk_HZ = 12288000, .sampleRate = DEMO_AUDIO_SAMPLE_RATE, .bitWidth = DEMO_AUDIO_BIT_WIDTH},
+    .format       = {.mclk_HZ = 24576000U, .sampleRate = DEMO_AUDIO_SAMPLE_RATE, .bitWidth = DEMO_AUDIO_BIT_WIDTH},
     .sysClkSource = kDA7212_SysClkSourceMCLK,
     .isMaster     = false,
 };
@@ -65,8 +65,8 @@ void BOARD_InitHardware(void)
 
 void BOARD_MASTER_CLOCK_CONFIG(void)
 {
-    mclkConfig.mclkOutputEnable = true, mclkConfig.mclkHz = 12288000U;
-    mclkConfig.mclkSourceClkHz = 12288000U;
+    mclkConfig.mclkOutputEnable = true, mclkConfig.mclkHz = DEMO_SAI_CLK_FREQ;
+    mclkConfig.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;
     SAI_SetMasterClockConfig(DEMO_SAI, &mclkConfig);
 }
 
