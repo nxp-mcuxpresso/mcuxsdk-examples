@@ -82,6 +82,9 @@
 #define gDebugConsoleEnable_d 1
 #endif
 
+/* Enable capture of NBU failure */
+#define HCIBB_DBG_NBU_ENABLE    1
+
 /* define the max tx power setting, allowed value 0, 7 or 10 */
 #define gAppMaxTxPowerDbm_c                    10U
 

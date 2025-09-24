@@ -61,6 +61,9 @@
 #define DBG_SWO_FUNNEL_MUXING DBG_SWO_CORE_NBU_CORE
 #endif /* gDbg_SwoEnabled_d == 1 */
 
+/* Enable capture of NBU failure */
+#define HCIBB_DBG_NBU_ENABLE    1
+
 /*
  * TimerManager Configuration
  */

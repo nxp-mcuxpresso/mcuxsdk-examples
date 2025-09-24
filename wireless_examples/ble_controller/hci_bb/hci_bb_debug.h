@@ -126,39 +126,6 @@ static void Hcit_SerialFreePacket(void *pPacket,
                                   serial_manager_callback_message_t *message,
                                   serial_manager_status_t status);
 
-/* send data to host/UART */
-static void Test_SerialWrite(uint8_t *data, uint32_t len)
-{
-    uint8_t* pSerialPacket = NULL;
-    uint8_t* pPacketBuffer;
-    uint8_t* hciWriteHandle;
-
-    /* Increase by 1 the lenght to insert the packet type */
-    pPacketBuffer = MEM_BufferAlloc(SERIAL_MANAGER_WRITE_HANDLE_SIZE + len);
-    if (pPacketBuffer == NULL)
-    {
-        assert(0);
-        return;
-    }
-    hciWriteHandle   = pPacketBuffer;
-    pSerialPacket    = pPacketBuffer + SERIAL_MANAGER_WRITE_HANDLE_SIZE;
-
-    FLib_MemCpy(&pSerialPacket[0], (uint8_t*)data, len);
-    (void)SerialManager_OpenWriteHandle((serial_handle_t)gSerMgrIf, (serial_write_handle_t)hciWriteHandle);
-    (void)SerialManager_InstallTxCallback((serial_write_handle_t)hciWriteHandle, Hcit_SerialFreePacket, pPacketBuffer);
-    if ( kStatus_SerialManager_Success != SerialManager_WriteNonBlocking((serial_write_handle_t)hciWriteHandle, pSerialPacket, len) )
-    {
-        SerialManager_CloseWriteHandle((serial_write_handle_t)pPacketBuffer);
-        (void)MEM_BufferFree(pPacketBuffer);
-    }
-    else
-    {
-        uint32_t regPrimask = DisableGlobalIRQ();
-        nb_pkt_in_uart_tx_queue++;
-        EnableGlobalIRQ(regPrimask);
-    }
-}
-
 /* send event to host */
 static void Test_SendEventToHost(uint8_t eventCode, ...)
 {
@@ -177,6 +144,7 @@ static void Test_SendEventToHost(uint8_t eventCode, ...)
     pPacketBuffer[0] = 0x04;
     pPacketBuffer[1] = eventCode;
     pPacketBuffer[2] = 0;  // place holder for length
+    // pPacketBuffer[3] should contain subevent code
 
     len = 3;
     while(1)
@@ -208,7 +176,7 @@ static void Test_SendEventToHost(uint8_t eventCode, ...)
 
     pPacketBuffer[2] = len-3;
 
-    Test_SerialWrite(pPacketBuffer, len);
+    HCIBB_SerialWrite(pPacketBuffer, len);
     (void)MEM_BufferFree(pPacketBuffer);
 }
 
@@ -227,7 +195,7 @@ static void Test_SendAclPktToHost(uint8_t *pPacket, uint16_t packetSize)
     pPacketBuffer[0] = 0x02;
     memcpy(pPacketBuffer+1, pPacket, packetSize);
 
-    Test_SerialWrite(pPacketBuffer, 1+packetSize);
+    HCIBB_SerialWrite(pPacketBuffer, 1+packetSize);
     (void)MEM_BufferFree(pPacketBuffer);
 }
 
@@ -288,7 +256,7 @@ static void Test_SendReportToHost(int force, uint8_t status)
     trx.last_report_time   = time;
 
     Test_SendEventToHost(0xFF,
-        1, 0xF0, // subevent
+        1, HCI_VENDOR_SUBEVENT_TRAFFIC_REPORT, // subevent
         1, status,
         4, trx.nb_pkt_completed,
         4, trx.nb_rxed_ok_pkts_total,
