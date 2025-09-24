@@ -213,6 +213,7 @@
 #define BOARD_LCD_DC_GPIO_PIN  7U
 
 /* @Brief Board Bluetooth HCI UART configuration */
+#define BOARD_BT_UART_BASEADDR USART5
 #define BOARD_BT_UART_INSTANCE 5
 #define BOARD_BT_UART_BAUDRATE 3000000
 #define BOARD_BT_UART_CLK_FREQ CLOCK_GetFlexCommClkFreq(5U)
