@@ -18,3 +18,5 @@ ele_crypto_nvm:
   boards:
     evkmimxrt1180@cm33: []
     evkmimxrt1180@cm7: []
+    frdmimxrt1186@cm33: []
+    frdmimxrt1186@cm7: []

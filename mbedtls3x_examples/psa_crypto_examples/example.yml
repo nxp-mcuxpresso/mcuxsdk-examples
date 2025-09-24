@@ -26,6 +26,19 @@ psa_crypto_examples:
     - -mdk@hyperram_debug
     - -mdk@hyperram_release
     - -mdk@release
+    frdmimxrt1186@cm33:
+    - -armgcc@debug
+    - -armgcc@hyperram_debug
+    - -armgcc@hyperram_release
+    - -armgcc@release
+    - -iar@debug
+    - -iar@hyperram_debug
+    - -iar@hyperram_release
+    - -iar@release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@hyperram_release
+    - -mdk@release
     evkbimxrt1050:
     - -armgcc@debug
     - -armgcc@release
