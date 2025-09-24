@@ -98,7 +98,6 @@ void BOARD_USB_AUDIO_KEYBOARD_Init(void)
 {
     INPUTMUX_Init(INPUTMUX);
     INPUTMUX_AttachSignal(INPUTMUX, kPINT_PinInt0, DEMO_PINT_PIN_INT0_SRC);
-    INPUTMUX_Deinit(INPUTMUX);
 
     /* Initialize PINT */
     PINT_Init(PINT);
