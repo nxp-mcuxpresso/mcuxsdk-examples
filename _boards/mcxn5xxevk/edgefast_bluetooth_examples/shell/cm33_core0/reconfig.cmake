@@ -36,8 +36,7 @@ mcux_add_macro(
       -DLFS_NO_INTRINSICS=1\
       -DLPFLEXCOMM_INIT_NOT_USED_IN_DRIVER=1\
       -DMFLASH_BASE_ADDRESS=0\
-      -DSDIO_ENABLED=1\
-      -DCONFIG_BT_SMP_SELFTEST=1"
+      -DSDIO_ENABLED=1"
 )
 mcux_add_mdk_configuration(
     LD "--diag_suppress=6329\

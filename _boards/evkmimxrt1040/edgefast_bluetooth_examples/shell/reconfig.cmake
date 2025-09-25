@@ -39,8 +39,7 @@ mcux_add_macro(
       -DLFS_NO_INTRINSICS=1\
       -DSDIO_ENABLED=1\
       -DUSB_HOST_CONFIG_BUFFER_PROPERTY_CACHEABLE=1\
-      -DgMemManagerLight=0\
-      -DCONFIG_BT_SMP_SELFTEST=1"
+      -DgMemManagerLight=0"
 )
 
 mcux_add_macro(

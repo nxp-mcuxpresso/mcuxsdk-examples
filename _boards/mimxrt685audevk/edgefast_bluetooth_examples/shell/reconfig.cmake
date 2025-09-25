@@ -40,8 +40,7 @@ mcux_add_macro(
       -DSDK_COMPONENT_INTEGRATION=1\
       -DgMemManagerLight=0\
       -DgNvStorageIncluded_d=1\
-      -DgNvTableKeptInRam_d=1\
-      -DCONFIG_BT_SMP_SELFTEST=1"
+      -DgNvTableKeptInRam_d=1"
 )
 
 mcux_add_macro(

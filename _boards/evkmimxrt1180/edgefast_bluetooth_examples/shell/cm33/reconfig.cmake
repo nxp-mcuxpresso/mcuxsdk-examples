@@ -37,8 +37,7 @@ mcux_add_macro(
       -DLFS_NO_ERROR=1\
       -DLFS_NO_INTRINSICS=1\
       -DMBEDTLS_MCUX_ELE_S400_API\
-      -DSDIO_ENABLED=1\
-      -DCONFIG_BT_SMP_SELFTEST=1"
+      -DSDIO_ENABLED=1"
 )
 
 mcux_add_macro(
