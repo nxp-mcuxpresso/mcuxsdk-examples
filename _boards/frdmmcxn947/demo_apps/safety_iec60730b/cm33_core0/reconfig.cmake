@@ -27,9 +27,9 @@ mcux_add_configuration(
 )
 
 mcux_add_macro(
-    CC "-DSKIP_SYSCLK_INIT\
-       -DXIP_EXTERNAL_FLASH=1\
-       -DXIP_BOOT_HEADER_ENABLE=1"
+    CC "-DSKIP_SYSCLK_INIT"#\
+       #-DXIP_EXTERNAL_FLASH=1\
+       #-DXIP_BOOT_HEADER_ENABLE=1"
 )
 
 #----------------------------------------------

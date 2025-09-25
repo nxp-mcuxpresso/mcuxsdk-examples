@@ -103,13 +103,13 @@ safety_iec60730b:
     - -iar@release
     - -mdk@debug
     - -mdk@release
-    # frdmmcxn947@cm33_core0:
-    # - -armgcc@debug
-    # - -armgcc@release
-    # - -iar@debug
-    # - -iar@release
-    # - -mdk@debug
-    # - -mdk@release
+    frdmmcxn947@cm33_core0:
+    - +armgcc@debug
+    - -armgcc@release
+    - +iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     # evkbmimxrt1170@cm7:
     # - -armgcc@debug
     # - -armgcc@flexspi_nor_debug
