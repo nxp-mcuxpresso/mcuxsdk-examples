@@ -1475,6 +1475,11 @@ void map_mce_task(void *pvParameters)
 {
     int err = 0;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     PRINTF("Bluetooth MAP MCE demo start...\r\n");
 
     /* Initializate BT Host stack */

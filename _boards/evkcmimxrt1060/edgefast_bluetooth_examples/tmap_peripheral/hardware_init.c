@@ -38,6 +38,19 @@
 
 /*${function:start}*/
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     BOARD_ConfigMPU();
@@ -52,9 +65,6 @@ void BOARD_InitHardware(void)
     EDMA_GetDefaultConfig(&config);
     EDMA_Init(dmaBases[0], &config);
 #endif
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 
 #if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)

@@ -195,6 +195,19 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
     return DEMO_SAI_CLK_FREQ;
 }
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     DMAMUX_Type *dmaMuxBases[] = DMAMUX_BASE_PTRS;
@@ -218,9 +231,6 @@ void BOARD_InitHardware(void)
     EDMA_GetDefaultConfig(&config);
     EDMA_Init(dmaBases[EXAMPLE_DMA_INSTANCE], &config);
 
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 #if defined(WIFI_IW612_BOARD_RD_USD)
     GPIO_PinWrite(CONTROLLER_RESET_GPIO, CONTROLLER_RESET_PIN, 0U);
     SDK_DelayAtLeastUs(10U, SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);

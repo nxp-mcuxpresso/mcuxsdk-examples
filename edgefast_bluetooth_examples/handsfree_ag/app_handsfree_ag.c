@@ -258,7 +258,7 @@ void ata_response(struct bt_hfp_ag *hfp_ag)
 void chup_response(struct bt_hfp_ag *hfp_ag)
 {
     app_hfp_ag_t *app_hfp_ag = app_ag_get_instance(hfp_ag);
-    
+
     if (app_hfp_ag == NULL)
     {
         return;
@@ -558,6 +558,11 @@ void app_hfp_ag_select_conn(uint8_t index)
 void peripheral_hfp_ag_task(void *pvParameters)
 {
     int err = 0;
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
 
     PRINTF("Bluetooth Handsfree AG demo start...\n");
 

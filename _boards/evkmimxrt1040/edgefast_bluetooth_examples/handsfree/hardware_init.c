@@ -316,6 +316,19 @@ static void flexspi_clock_init(void)
 #endif
 }
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     DMAMUX_Type *dmaMuxBases[] = DMAMUX_BASE_PTRS;
@@ -335,9 +348,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetMux(kCLOCK_FlexspiMux, 0x2); /* Choose PLL2 PFD2 clock as flexspi source clock. 396M */
     CLOCK_SetDiv(kCLOCK_FlexspiDiv, 2);   /* flexspi clock 133M. */
 
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
     flexspi_clock_init();
 }
 

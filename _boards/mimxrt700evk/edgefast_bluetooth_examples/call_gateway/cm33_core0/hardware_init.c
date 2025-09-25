@@ -324,7 +324,7 @@ void BOARD_SyncTimer_Init(void (*sync_timer_callback)(uint32_t sync_index, uint6
     config.input = kCTIMER_Capture_0;
     config.prescale = 0;
     CTIMER_Init(SyncTimer_CTIMER, &config);
-    
+
     CTIMER_RegisterCallBack(SyncTimer_CTIMER, ctimer_callbacks, kCTIMER_SingleCallback);
 
     /* Input Capture 1 capture signal come from SAI FS signal, in order to capture offset between BCLK and FS. */
@@ -409,7 +409,14 @@ static void ctimer_callback(uint32_t flags)
 }
 #endif /* WIFI_IW612_BOARD_MURATA_2EL_M2 */
 
-void  BOARD_InitHardware(void)
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    /* Nothing needs to be done */
+}
+#endif /* CONFIG_BT_SMP */
+
+void BOARD_InitHardware(void)
 {
     BOARD_Init_M2();
 
@@ -425,7 +432,7 @@ void  BOARD_InitHardware(void)
 }
 
 #if (defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2)  || \
-      defined(WIFI_IW612_BOARD_MURATA_2EL_M2))      
+      defined(WIFI_IW612_BOARD_MURATA_2EL_M2))
 int controller_hci_uart_get_configuration(controller_hci_uart_config_t *config)
 {
     if (NULL == config)
@@ -452,10 +459,10 @@ void USB_HostClockInit(void)
     };
 
     /* Power on COM VDDN domain for USB or eUSB */
-    POWER_DisablePD(kPDRUNCFG_DSR_VDDN_COM);    
-        
+    POWER_DisablePD(kPDRUNCFG_DSR_VDDN_COM);
+
     if (CONTROLLER_ID == kUSB_ControllerEhci0)
-    { 
+    {
         /* Power on usb ram araay as need, powered USB0RAM array*/
         POWER_DisablePD(kPDRUNCFG_APD_USB0_SRAM);
         POWER_DisablePD(kPDRUNCFG_PPD_USB0_SRAM);

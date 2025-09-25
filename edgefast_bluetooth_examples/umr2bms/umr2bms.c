@@ -67,6 +67,11 @@ void umr_to_bms_task(void *param)
 {
 	int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 	k_sem_init(&sem, 0, 0xFF);
 
 	/* shell init. */

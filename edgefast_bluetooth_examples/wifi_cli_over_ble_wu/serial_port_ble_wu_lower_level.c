@@ -675,6 +675,11 @@ void wireless_uart_task(void *argument)
     uint32_t index;
     int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     for (index = 0;index < CONFIG_BT_MAX_CONN;index++)
     {
         g_WirelessUartState.peerCentral[index].wait4SendingBuffer = NULL;

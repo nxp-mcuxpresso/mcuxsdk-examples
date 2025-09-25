@@ -285,7 +285,7 @@ static void bt_ready(int err)
     {
         PRINTF("setting class of device failed\n");
     }
-    
+
     app_connect_init();
 
     err = bt_br_set_connectable(true);
@@ -311,6 +311,11 @@ void app_a2dp_sink_task(void *pvParameters)
 {
     int err = 0;
     (void)err;
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
 
     (void)OSA_SemaphoreCreate(a2dp_sink_init_done, 0);
 

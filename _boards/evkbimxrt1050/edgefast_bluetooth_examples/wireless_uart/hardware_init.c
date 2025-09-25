@@ -46,6 +46,19 @@
 /*${variable:end}*/
 
 /*${function:start}*/
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     timer_config_t timerConfig;
@@ -78,9 +91,6 @@ void BOARD_InitHardware(void)
     status                  = (osa_status_t)TM_Init(&timerConfig);
     assert(status == (osa_status_t)kStatus_TimerSuccess);
     (void)status;
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 
 #if (defined(WIFI_88W8987_BOARD_AW_CM358_USD) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_USD) || \

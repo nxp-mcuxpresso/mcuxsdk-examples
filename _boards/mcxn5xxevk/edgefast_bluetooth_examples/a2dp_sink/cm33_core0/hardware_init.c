@@ -139,10 +139,10 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
     {
         /* do nothing, 44100 is the default value */
     }
-  
+
     da7212Config.format.sampleRate = sampleRate;
     da7212Config.format.mclk_HZ    = DEMO_SAI_CLK_FREQ;
-    
+
     return DEMO_SAI_CLK_FREQ;
 }
 
@@ -153,6 +153,19 @@ void BOARD_MASTER_CLOCK_CONFIG(void)
     SAI_SetMasterClockConfig(CODEC_SAI, &mclkConfig);
 }
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
@@ -162,7 +175,7 @@ void BOARD_InitHardware(void)
     /* attach FRO 12M to FLEXCOMM2 (M.2) */
     CLOCK_SetClkDiv(kCLOCK_DivFlexcom2Clk, 1u);
     CLOCK_AttachClk(BOARD_BT_UART_CLK_ATTACH);
-    
+
     CLOCK_EnableClock(kCLOCK_Scg);
     CLOCK_SetupFROHFClocking(48000000U);
     /* < Set up PLL1 */
@@ -177,7 +190,7 @@ void BOARD_InitHardware(void)
     /* attach PLL1 to SAI1 */
     CLOCK_SetClkDiv(kCLOCK_DivSai1Clk, 1u);
     CLOCK_AttachClk(kPLL1_CLK0_to_SAI1);
-    
+
     /* attach FRO HF to USDHC */
     CLOCK_SetClkDiv(kCLOCK_DivUSdhcClk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_USDHC);
@@ -205,9 +218,6 @@ void BOARD_InitHardware(void)
 #endif
 
     // XCACHE_DisableCache(XCACHE_PS);
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 
 #if (defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2))

@@ -170,6 +170,11 @@ void peripheral_hps_task(void *pvParameters)
 
     int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     PRINTF("BLE Peripheral HPS demo start...\n");
 
     ret = OSA_MsgQCreate(app_queue, 10, sizeof(void *));

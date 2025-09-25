@@ -41,6 +41,19 @@
 /*${variable:end}*/
 
 /*${function:start}*/
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     timer_config_t timerConfig;
@@ -58,9 +71,6 @@ void BOARD_InitHardware(void)
     EDMA_GetDefaultConfig(&config);
     EDMA_Init(dmaBases[0], &config);
 #endif
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
     (void)memset(&timerConfig, 0, sizeof(timer_config_t));
     timerConfig.instance    = 0;
     timerConfig.srcClock_Hz = CLOCK_GetFreq(kCLOCK_PerClk);

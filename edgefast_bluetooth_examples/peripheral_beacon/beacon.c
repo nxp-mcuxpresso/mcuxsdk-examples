@@ -6,7 +6,7 @@
  */
 
 #if defined(BEACON_APP) && (BEACON_APP == 1)
-   
+
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
@@ -71,7 +71,7 @@ static void bt_ready(int err)
 		PRINTF("Advertising failed to start (err %d)\n", err);
 		return;
 	}
-    
+
     /* For connectable advertising you would use
 	 * bt_le_oob_get_local().  For non-connectable non-identity
 	 * advertising an non-resolvable private address is used;
@@ -87,9 +87,14 @@ static void bt_ready(int err)
 void beacon_task(void *pvParameters)
 {
     int err;
-    
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     PRINTF("BLE Beacon demo start...\n");
-    
+
     /* Initialize the Bluetooth Subsystem */
     err = bt_enable(bt_ready);
     if (err)

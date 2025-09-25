@@ -27,8 +27,6 @@
 #include "fsl_debug_console.h"
 #include "app_connect.h"
 
-
-
 #define A2DP_CLASS_OF_DEVICE (0x200404U)
 #define APP_A2DP_STREAMER_SYNC_TASK_PRIORITY (5U)
 /*If codec is cs42448, it doesn't support DAC CHANNAL, the macro A2DP_CODEC_DAC_VOLUME is meaningless.*/
@@ -232,7 +230,7 @@ void sbc_streamer_data(uint8_t *data, uint32_t length)
 
         xfer.dataSize       = length;
         xfer.data           = data;
-        
+
         if (kStatus_HAL_AudioSuccess != HAL_AudioTransferSendNonBlocking((hal_audio_handle_t)&audio_tx_handle[0], &xfer))
         {
             PRINTF("prime fail\r\n");
@@ -332,7 +330,7 @@ static void bt_ready(int err)
     {
         PRINTF("setting class of device failed\n");
     }
-    
+
     app_connect_init();
     bt_sdp_register_service(&a2dp_sink_rec);
     app_edgefast_a2dp_init();
@@ -343,6 +341,11 @@ void app_a2dp_sink_task(void *pvParameters)
 {
     int err = 0;
     (void)err;
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
 
     PRINTF("Bluetooth A2dp Sink demo start...\n");
 

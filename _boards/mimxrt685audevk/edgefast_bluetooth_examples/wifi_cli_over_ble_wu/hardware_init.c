@@ -39,14 +39,27 @@
 /*${variable:end}*/
 
 /*${function:start}*/
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     /* Define the init structure for the reset pin*/
     gpio_pin_config_t reset_config = {
         kGPIO_DigitalOutput,
         1,
-    };  
-        
+    };
+
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     DbgConsole_Init(0, 0, kSerialPort_BleWu, 0);
@@ -61,9 +74,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetFRGClock(BOARD_BT_UART_FRG_CLK);
     CLOCK_AttachClk(BOARD_BT_UART_CLK_ATTACH);
 
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 #if defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
     defined(WIFI_IW612_BOARD_MURATA_2EL_M2) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2)  || defined(WIFI_88W8987_BOARD_AW_CM358_USD)  || \

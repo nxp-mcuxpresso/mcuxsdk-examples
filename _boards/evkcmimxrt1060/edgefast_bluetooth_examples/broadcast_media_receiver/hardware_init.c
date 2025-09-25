@@ -224,11 +224,11 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
         CLOCK_SetMux(kCLOCK_Sai1Mux, DEMO_SAI1_CLOCK_SOURCE_SELECT);
         CLOCK_SetDiv(kCLOCK_Sai1PreDiv, DEMO_SAI1_CLOCK_SOURCE_PRE_DIVIDER);
         CLOCK_SetDiv(kCLOCK_Sai1Div, DEMO_SAI1_CLOCK_SOURCE_DIVIDER);
-        
+
         /* Enable MCLK output */
         BOARD_EnableSaiMclkOutput(true);
     }
-    
+
     wm8962Config.format.sampleRate             = sampleRate;
     wm8962Config.format.mclk_HZ                = DEMO_SAI_CLK_FREQ;
 
@@ -346,6 +346,19 @@ void GPT2_IRQHandler(void)
 }
 #endif /* WIFI_IW612_BOARD_MURATA_2EL_M2 */
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
 #if (defined(HAL_UART_DMA_ENABLE) && (HAL_UART_DMA_ENABLE > 0U))
@@ -364,9 +377,6 @@ void BOARD_InitHardware(void)
     EDMA_GetDefaultConfig(&config);
     EDMA_Init(dmaBases[EXAMPLE_DMA_INSTANCE], &config);
 #endif
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 
 #if defined(WIFI_IW612_BOARD_MURATA_2EL_M2)

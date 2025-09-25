@@ -659,6 +659,11 @@ void wireless_uart_task(void *argument)
     status_t status;
     extern serial_handle_t g_serialHandle; /*!< serial manager handle */
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     PRINTF("BLE Wireless Uart demo start...\n");
 
     assert(NULL != g_serialHandle);

@@ -211,6 +211,11 @@ void tmap_peripheral_task(void *param)
 	int err;
 	struct bt_le_ext_adv *adv;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 	(void)OSA_SemaphoreCreate(sem_connected, 0);
 	(void)OSA_SemaphoreCreate(sem_security_updated, 0);
 	(void)OSA_SemaphoreCreate(sem_disconnected, 0);

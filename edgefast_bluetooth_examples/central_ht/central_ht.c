@@ -403,6 +403,11 @@ void central_ht_task(void *pvParameters)
 {
     int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 #if defined(APP_MEM_POWER_OPT) && (APP_MEM_POWER_OPT > 0)
     MMC_Init(&g_mmc);
 #endif /* APP_MEM_POWER_OPT */

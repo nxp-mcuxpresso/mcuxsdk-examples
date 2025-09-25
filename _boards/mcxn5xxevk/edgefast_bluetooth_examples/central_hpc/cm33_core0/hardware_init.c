@@ -27,7 +27,7 @@
 /*${macro:start}*/
 #define LPUART_TX_DMA_CHANNEL       0U
 #define LPUART_RX_DMA_CHANNEL       1U
-#define DEMO_LPUART_TX_EDMA_CHANNEL kDma0RequestMuxLpFlexcomm2Tx 
+#define DEMO_LPUART_TX_EDMA_CHANNEL kDma0RequestMuxLpFlexcomm2Tx
 #define DEMO_LPUART_RX_EDMA_CHANNEL kDma0RequestMuxLpFlexcomm2Rx
 #define EXAMPLE_LPUART_DMA_INDEX    0U
 
@@ -46,6 +46,19 @@
 /*${variable:end}*/
 
 /*${function:start}*/
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     /* attach FRO 12M to FLEXCOMM4 (debug console) */
@@ -74,11 +87,8 @@ void BOARD_InitHardware(void)
 #if defined(LPFLEXCOMM_INIT_NOT_USED_IN_DRIVER) && LPFLEXCOMM_INIT_NOT_USED_IN_DRIVER
     LP_FLEXCOMM_Init(BOARD_BT_UART_INSTANCE, LP_FLEXCOMM_PERIPH_LPI2CAndLPUART);
 #endif /* LPFLEXCOMM_INIT_NOT_USED_IN_DRIVER */
-    
+
     // XCACHE_DisableCache(XCACHE_PS);
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 
 #if (defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_IW610_BOARD_MURATA_2LL_M2))

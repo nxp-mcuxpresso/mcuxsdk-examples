@@ -663,6 +663,11 @@ void broadcast_media_sender_task(void *param)
 	struct bt_le_ext_adv *adv;
 	int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 	OSA_SemaphoreCreate(sem_wav_opened, 0);
 	OSA_SemaphoreCreate(sem_lc3_preset, 0);
 	OSA_SemaphoreCreate(sem_started, 0);

@@ -600,6 +600,11 @@ void call_gateway_task(void *param)
     osa_status_t osa_ret;
     osa_event_flags_t flags;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     osa_ret = OSA_EventCreate((osa_event_handle_t)eventHandle, 1U);
     if (KOSA_StatusSuccess != osa_ret)
     {

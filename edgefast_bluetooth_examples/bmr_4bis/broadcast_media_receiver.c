@@ -891,6 +891,11 @@ void broadcast_media_receiver_task(void *param)
 	struct bt_bap_stream *streams_p[ARRAY_SIZE(streams)];
 	int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 	OSA_SemaphoreCreate(sem_broadcaster_found, 0);
 	OSA_SemaphoreCreate(sem_pa_synced, 0);
 	OSA_SemaphoreCreate(sem_base_received, 0);

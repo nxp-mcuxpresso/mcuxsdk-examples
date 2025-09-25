@@ -31,7 +31,7 @@
 /*${macro:start}*/
 #define LPUART_TX_DMA_CHANNEL       0U
 #define LPUART_RX_DMA_CHANNEL       1U
-#define DEMO_LPUART_TX_EDMA_CHANNEL kDma0RequestMuxLpFlexcomm2Tx 
+#define DEMO_LPUART_TX_EDMA_CHANNEL kDma0RequestMuxLpFlexcomm2Tx
 #define DEMO_LPUART_RX_EDMA_CHANNEL kDma0RequestMuxLpFlexcomm2Rx
 #define EXAMPLE_LPUART_DMA_INDEX    0U
 
@@ -50,6 +50,19 @@
 /*${variable:end}*/
 
 /*${function:start}*/
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     timer_config_t timerConfig;
@@ -83,9 +96,6 @@ void BOARD_InitHardware(void)
 #endif /* LPFLEXCOMM_INIT_NOT_USED_IN_DRIVER */
 
     // XCACHE_DisableCache(XCACHE_PS);
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 
     (void)memset(&timerConfig, 0, sizeof(timer_config_t));
     timerConfig.instance    = 0;

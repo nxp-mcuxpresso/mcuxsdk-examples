@@ -66,7 +66,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
             xTimerDelete(adv_timer, 0);
             adv_timer = NULL;
         }
-        
+
         uint8_t alert_level = NO_ALERT;
 
         default_conn = bt_conn_ref(conn);
@@ -248,13 +248,18 @@ static void bt_ready(int err)
 void peripheral_fmp_task(void *pvParameters)
 {
     int err;
-    
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     adv_timeout_sync = xSemaphoreCreateCounting(0xFFu, 0u);
     if (NULL == adv_timeout_sync)
     {
         PRINTF("faile to create adv_timeout_sync\n");
     }
-    
+
     err = bt_enable(bt_ready);
     if (err)
     {

@@ -58,6 +58,19 @@ void APP_InitAppDebugConsole(void)
 
     DbgConsole_Init(APP_DEBUG_UART_INSTANCE, APP_DEBUG_UART_BAUDRATE, APP_DEBUG_UART_TYPE, uartClkSrcFreq);
 }
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
 	RESET_ClearPeripheralReset(kHSGPIO0_RST_SHIFT_RSTn);
@@ -91,9 +104,6 @@ void BOARD_InitHardware(void)
     /* Set FlexSPI clock: source AUX0_PLL, divide by 4 */
     BOARD_SetFlexspiClock(FLEXSPI0, 2U, 4U);
 
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 #if defined(WIFI_88W8987_BOARD_AW_CM358MA) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || \
     defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || defined(WIFI_IW612_BOARD_MURATA_2EL_M2)

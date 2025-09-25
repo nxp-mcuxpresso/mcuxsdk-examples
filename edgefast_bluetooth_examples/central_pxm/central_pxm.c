@@ -538,6 +538,11 @@ void central_pxm_task(void *pvParameters)
 {
     int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     PRINTF("BLE Central PXM demo start...\n");
 
     err = bt_enable(bt_ready);

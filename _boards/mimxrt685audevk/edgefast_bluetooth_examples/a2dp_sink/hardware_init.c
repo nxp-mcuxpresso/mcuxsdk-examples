@@ -126,7 +126,7 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
       }
       else
       {
-        
+
         if (44100U == sampleRate)
         {
             CLOCK_InitAudioPll(&audioPllConfig);
@@ -145,12 +145,12 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
         CLOCK_EnableClock(kCLOCK_InputMux);
         /* I2C */
         CLOCK_AttachClk(kFFRO_to_FLEXCOMM2);
-        
+
         /* attach AUDIO PLL clock to FLEXCOMM1 (I2S1) */
         CLOCK_AttachClk(kAUDIO_PLL_to_FLEXCOMM1);
         /* attach AUDIO PLL clock to FLEXCOMM3 (I2S3) */
         CLOCK_AttachClk(kAUDIO_PLL_to_FLEXCOMM3);
-          
+
         /* attach AUDIO PLL clock to MCLK (AudioPll * (18 / 26) / 15 / 1 = 24.576MHz / 22.5792MHz) */
         CLOCK_AttachClk(kAUDIO_PLL_to_MCLK_CLK);
         CLOCK_SetClkDiv(kCLOCK_DivMclkClk, 1);
@@ -163,22 +163,35 @@ uint32_t BOARD_SwitchAudioFreq(uint32_t sampleRate)
     return CLOCK_GetMclkClkFreq();
 }
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
-{  
+{
     DMA_Type *dmaBases[] = DMA_BASE_PTRS;
-     
+
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    
+
     DMA_Init(dmaBases[EXAMPLE_DMA_INSTANCE]);
-    
+
     /* Define the init structure for the reset pin*/
     gpio_pin_config_t reset_config = {
         kGPIO_DigitalOutput,
         1,
-    };  
-    
+    };
+
     /* Init output reset pin. */
     GPIO_PortInit(GPIO, 2);
     GPIO_PinInit(GPIO, 2, 12, &reset_config);
@@ -189,9 +202,6 @@ void BOARD_InitHardware(void)
     CLOCK_SetFRGClock(BOARD_BT_UART_FRG_CLK);
     CLOCK_AttachClk(BOARD_BT_UART_CLK_ATTACH);
 
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 #if defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || defined(WIFI_88W8987_BOARD_MURATA_1ZM_M2) || \
     defined(WIFI_IW612_BOARD_MURATA_2EL_M2)  || defined(WIFI_88W8987_BOARD_AW_CM358_USD)  || \

@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2018 Henrik Brix Andersen <henrik@brixandersen.dk>
  * Copyright 2022 NXP
- * 
+ *
  * SPDX-License-Identifier: Apache-2.0
  */
 
 #if defined(IBEACON_APP) && (IBEACON_APP == 1)
-   
+
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
@@ -73,6 +73,11 @@ static void bt_ready(int err)
 void beacon_task(void *pvParameters)
 {
     int err;
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
 
     PRINTF("BLE iBeacon demo start...\n");
 

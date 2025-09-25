@@ -140,7 +140,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
         PRINTF("Connected to peer: %s\n", addr);
         default_conn = bt_conn_ref(conn);
         bConnected = true;
-        
+
         if (adv_timer != NULL)
         {
             /* Stop advertising timer */
@@ -148,7 +148,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
             xTimerDelete(adv_timer, 0);
             adv_timer = NULL;
         }
-        
+
         if (NULL != adv_timeout_sync)
 		{
 		   /* Free application task */
@@ -224,7 +224,7 @@ static void adv_timeout_handler(TimerHandle_t timer_id)
 static void timeout_process(void)
 {
     int err;
-    
+
     if (bConnected == false)
     {
     	if (adv_timer != NULL)
@@ -249,7 +249,7 @@ static void timeout_process(void)
 			PRINTF("Advertising failed to start (err %d)\n", err);
 		}
     }
-  
+
 	if (NULL != adv_timeout_sync)
 	{
 	   /* Free application task */
@@ -322,6 +322,11 @@ void peripheral_tip_task(void *pvParameters)
 {
 	int err;
 	uint32_t rx_data;
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
 
 	adv_timeout_sync = xSemaphoreCreateCounting(0xFFU, 0U);
 	if (NULL == adv_timeout_sync)

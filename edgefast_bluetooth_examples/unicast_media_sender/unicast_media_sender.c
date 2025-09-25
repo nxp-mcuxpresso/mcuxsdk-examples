@@ -1602,6 +1602,11 @@ void unicast_media_sender_task(void *param)
 {
 	int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 	/* shell init. */
 	le_audio_shell_init();
 

@@ -389,6 +389,11 @@ void call_terminal_task(void *param)
 {
     int ret;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     /* Init SHELL */
     s_shellHandle = &s_shellHandleBuffer[0];
     SHELL_Init(s_shellHandle, g_serialHandle, "call_terminal>> ");

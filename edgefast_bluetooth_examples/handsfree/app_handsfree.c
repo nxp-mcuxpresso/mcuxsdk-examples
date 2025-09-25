@@ -259,7 +259,7 @@ void app_list_current_calls(struct bt_conn *conn, bt_hfp_hf_current_calls_state_
     PRINTF("> current_calls : mprty %d\n", current_calls->mprty);
     PRINTF("> current_calls : number %s\n", current_calls->number);
     PRINTF("> current_calls : type %d\n", current_calls->type);
-    PRINTF("> current_calls : alpha %s\n", current_calls->alpha);  
+    PRINTF("> current_calls : alpha %s\n", current_calls->alpha);
 }
 
 static void app_hfp_hf_get_config( hfp_hf_get_config **config)
@@ -368,7 +368,7 @@ static void bt_ready(int err)
     handsfree_enable();
     app_shell_init();
     app_a2dp_hf_auto_connect();
-    
+
 }
 
 void hfp_AnswerCall(void)
@@ -454,6 +454,11 @@ void hfp_hf_query_list_current_calls(void)
 void peripheral_hfp_hf_task(void *pvParameters)
 {
     int err = 0;
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
 
     PRINTF("Bluetooth Handsfree demo start...\n");
 

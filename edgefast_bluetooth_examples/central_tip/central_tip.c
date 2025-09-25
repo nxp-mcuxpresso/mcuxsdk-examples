@@ -469,6 +469,10 @@ void central_tip_task(void *pvParameters)
 {
     int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
 
     scan_timer_sync = xSemaphoreCreateCounting(0xFFu, 0u);
     if (NULL == scan_timer_sync)

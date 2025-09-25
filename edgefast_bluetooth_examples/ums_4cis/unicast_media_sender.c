@@ -1651,6 +1651,11 @@ void unicast_media_sender_task(void *param)
 {
 	int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 	/* shell init. */
 	le_audio_shell_init();
 
@@ -1712,7 +1717,7 @@ void unicast_media_sender_task(void *param)
 	{
 		lc3_preset.qos.latency = 20;
 	}
-	
+
 	if((new_rtn >= 0) || (new_pd >= 0) || (new_phy > 0))
 	{
 		print_lc3_preset("new_preset", &lc3_preset);

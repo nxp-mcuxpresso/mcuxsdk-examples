@@ -274,6 +274,19 @@ void BOARD_I3C_ReleaseBus(void)
     GPIO_PinWrite(GPIO, 2, 30, 1U);
     i2c_release_bus_delay();
 }
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
+
 void BOARD_InitHardware(void)
 {
     DMA_Type *dmaBases[] = DMA_BASE_PTRS;
@@ -307,9 +320,6 @@ void BOARD_InitHardware(void)
 
     DMA_Init(dmaBases[EXAMPLE_DMA_INSTANCE]);
 
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    psa_crypto_init();
-#endif /* CONFIG_BT_SMP */
 }
 #include "fsl_debug_console.h"
 #if defined(WIFI_88W8987_BOARD_AW_CM358MA) || defined(WIFI_IW416_BOARD_MURATA_1XK_M2) || \

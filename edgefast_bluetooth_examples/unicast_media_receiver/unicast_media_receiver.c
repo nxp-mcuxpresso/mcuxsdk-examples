@@ -809,6 +809,11 @@ void unicast_media_receiver_task(void *param)
 	struct bt_le_ext_adv *adv;
 	int err;
 
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+	extern void bt_psa_crypto_init(void);
+	bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
 	(void)OSA_SemaphoreCreate(sem_stream_enabled, 0);
 	(void)OSA_SemaphoreCreate(sem_disconnected, 0);
 	(void)OSA_SemaphoreCreate(sem_mcs_server_discovered, 0);

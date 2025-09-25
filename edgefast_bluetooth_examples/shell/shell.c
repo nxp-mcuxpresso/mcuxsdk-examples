@@ -42,6 +42,11 @@ void edgefast_bt_pal_shell_task(void *pvParameters)
     uint8_t level = 0;
     PRINTF("Edgefast Bluetooth PAL shell demo start...\n");
 
+#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
+    extern void bt_psa_crypto_init(void);
+    bt_psa_crypto_init();
+#endif /* CONFIG_BT_SMP */
+
     shell_handle = (shell_handle_t)&shell_handle_buffer[0];
     if (kStatus_SHELL_Success != SHELL_Init(shell_handle, g_serialHandle, ""))
     {
