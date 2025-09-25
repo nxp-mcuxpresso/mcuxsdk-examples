@@ -30,7 +30,7 @@ static void APP_RTCAlaramCallback(rtc_callback_type_t type);
 static void APP_CopyCore1Image(void);
 static uint32_t APP_GetTargetPowerTransition(void);
 static power_low_power_mode_t APP_EnableWakeupSource(uint32_t powerTrans);
-static void APP_EnableExtInterruptlWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
+static void APP_EnableExtInterruptWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableRTCAlarm0Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
 static void APP_EnableRTCAlarm1Wakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode);
@@ -105,6 +105,7 @@ power_dpd2_config_t dpd2Config = {
     .disableBandgap        = true,
     .switchToX32K          = true,
     .disableFRO10M         = true,
+    .disableFRO2M          = false,
     .dpd2VddCoreAonVoltage = kPower_VddCoreAon_592mV,
 };
 
@@ -328,7 +329,7 @@ static power_low_power_mode_t APP_EnableWakeupSource(uint32_t powerTrans)
                 if (printExtIntWakeup)
                 {
                     wakeupSourceSupported = true;
-                    APP_EnableExtInterruptlWakeup(firstMode, secondMode, thirdMode);
+                    APP_EnableExtInterruptWakeup(firstMode, secondMode, thirdMode);
                 }
                 break;
             }
@@ -431,7 +432,7 @@ static uint32_t APP_GetTargetPowerTransition(void)
     return inputPowerTrans;
 }
 
-static void APP_EnableExtInterruptlWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
+static void APP_EnableExtInterruptWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t thirdMode)
 {
     PRINTF("Please Press %s Button to wakeup!\r\n", APP_EXT_INT_BUTTON);
     switch ((power_low_power_mode_t)firstMode)
@@ -508,6 +509,7 @@ static void APP_EnableLptmrWakeup(uint8_t firstMode, uint8_t secondMode, uint8_t
                 dpd2Config.aonWakeupSource      = kPower_WS_Aon_LptmrInt;
                 dpd2Config.mainWakeupSource     = kPower_WS_Main_ExternalINTRiseEdge;
                 dpd2Config.disableFRO10M        = true;
+                dpd2Config.disableFRO2M         = false;
                 dpd2Config.disableBandgap       = true;
                 dpd2Config.switchToX32K         = true;
             }

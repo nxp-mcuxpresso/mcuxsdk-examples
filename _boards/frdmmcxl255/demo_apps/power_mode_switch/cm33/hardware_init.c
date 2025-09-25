@@ -264,7 +264,7 @@ void BOARD_InitHardware(void)
     EnableIRQ(MU_A_RX_IRQn);
     MU_EnableInterrupts(APP_MU, (kMU_Rx0FullInterruptEnable));
 
-    APP_InitROSC();
+    CLOCK_InitRosc(true);
 }
 
 /*${function:end}*/

@@ -53,7 +53,6 @@ void MU_B_RX_IRQHandler(void)
     uint32_t msg = MU_ReceiveMsgNonBlocking(APP_MU, APP_MU_CHANNEL);
 
     MU_ClearStatusFlags(APP_MU, kMU_Rx0FullFlag);
-    PRINTF("MU B RX Hit with message:%x \r\n", msg);
     if (Power_GetMuMessageType(msg) == kPower_MsgTypeSync)
     {
         PRINTF("Syncing with CM33\r\n");
@@ -102,6 +101,16 @@ static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, vo
             PRINTF("Selected wakeup source do not supported!\r\n");
         }
         MU_DisableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
+    }
+    
+    if (targetPowerMode == kPower_DeepPowerDown2)
+    {
+        power_dpd2_config_t dpd2Config;
+        memcpy(&dpd2Config, ptrPowerConfig, sizeof(power_dpd2_config_t));
+        if (dpd2Config.wakeToDpd1 == true) 
+        {
+            PRINTF("Press %s wakeup to Active Mode!\r\n", APP_EXT_INT_BUTTON);
+        }
     }
 
     (void)ptrPowerConfig;
@@ -307,6 +316,7 @@ static void APP_DPD1ToDPD2BackToDPD1(void)
         .enableIVSMode         = false,
         .switchToX32K          = true,
         .disableFRO10M         = false,
+        .disableFRO2M          = false,
         .wakeToDpd1            = true,
         .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
         .mainWakeupSource      = kPower_WS_NONE,
@@ -353,6 +363,7 @@ static void APP_DPD1ToDPD2BackToActive(void)
         .disableBandgap        = true,
         .switchToX32K          = true,
         .disableFRO10M         = false,
+        .disableFRO2M          = false,
         .wakeToDpd1            = false,
         .mainWakeupSource      = kPower_WS_Main_LptmrInt,
         .aonWakeupSource       = kPower_WS_Aon_LptmrInt,
