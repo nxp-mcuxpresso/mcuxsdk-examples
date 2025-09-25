@@ -11,14 +11,14 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT SSC. 
 
         **Note:** To proceed with the download, you must provide your account credentials, if you are not already logged in.
 
-        ![](../images/image6.png "Search and select EtherCAT SSC")
+        ![](../images/digital_io/image6.png "Search and select EtherCAT SSC")
 
     4.  Install the downloaded SSC tool.
     5.  Launch the SSC tool.
 2.  Import the configuration file for the digital IO example.
     1.  Select **Tool \> Options**.
 
-        ![](../images/image7.png "Select tool options")
+        ![](../images/digital_io/image7.png "Select tool options")
 
         The **Subdevice Stack Code Tool \| Options** window appears.
 
@@ -31,35 +31,35 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT SSC. 
 
     6.  Click the **Open** button. See, [Figure 3](#selectxml).
 
-        ![](../images/image8.png "Select the digital_io.xml file")
+        ![](../images/digital_io/image8.png "Select the digital_io.xml file")
 
         The configuration is imported.
 
 3.  Create a new project with the imported configuration.
     1.  Select **File \> New**.
 
-        ![](../images/image9.png "Create new project")
+        ![](../images/digital_io/image9.png "Create new project")
 
         The **New Project** dialog box appears.
 
     2.  Select the **Custom** option.
     3.  Select *NXP ECAT Digital IO modular <NXP\>* from the drop-down list.
 
-        ![](../images/image10.png "Select the custom project")
+        ![](../images/digital_io/image10.png "Select the custom project")
 
 4.  Save this new project as ECAT-IO.esp to any folder.
     1.  Select **File \> Save**.
 
-        ![](../images/image11.png "Select File > Save")
+        ![](../images/digital_io/image11.png "Select File > Save")
 
     2.  Save the file with an appropriate name. For example, ECAT-IO.esp.
 
-        ![](../images/image12.png "Save the file with the name ECAT-IO.esp")
+        ![](../images/digital_io/image12.png "Save the file with the name ECAT-IO.esp")
 
 5.  Create the digital IO example application via importing the *digital\_io.xlsx* file.
     1.  Select **Tool \> Application \> Import**.
 
-        ![](../images/image13.png "Import file")
+        ![](../images/digital_io/image13.png "Import file")
 
         The **File selection** dialog box appears.
 
@@ -67,18 +67,18 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT SSC. 
     3.  Select the *digital\_io.xlsx* file.
     4.  Click the **Open** button.
 
-        ![](../images/image14.png "Select the digital_io.xlsx file")
+        ![](../images/digital_io/image14.png "Select the digital_io.xlsx file")
 
         The filename appears in the **Application name** field.
 
     5.  Click **OK**.
 
-        ![](../images/image15.png "Confirm the import ")
+        ![](../images/digital_io/image15.png "Confirm the import ")
 
 6.  Create the subdevice stack code for the digital IO example.
     1.  Click **Project \> Create new subdevice Files**.
 
-        ![](../images/image16.png "Create new files")
+        ![](../images/digital_io/image16.png "Create new files")
 
         The **Create new subdevice Files** dialog box appears.
 
@@ -86,7 +86,7 @@ Due to the license issue, the MCUXpresso SDK does not include the EtherCAT SSC. 
 
         By default, the code is located in the *Src* subfolder under the folder where the project is saved.
 
-        ![](../images/image17.png "Start to create the code")
+        ![](../images/digital_io/image17.png "Start to create the code")
 
 7.  Copy the *Src* subfolder to *boards\\evkmimxrt1180\\ecat\_examples\\digital\_io\\<core\>\\SSC\\Src* under the SDK source code.
 8.  Delete the*digital\_io.c* file under *Src* folder because this file is already provided in the root directory of *digital\_io* example.

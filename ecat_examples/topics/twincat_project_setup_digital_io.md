@@ -5,29 +5,29 @@
 3.  Create a new project.
     1.  Select **File \> New \> Project**.
 
-        ![](../images/image18.png "Create new project")
+        ![](../images/digital_io/image18.png "Create new project")
 
         The **New Project** dialog box appears.
 
     2.  Select **TwinCAT Projects**.
     3.  Click **OK**.
 
-        ![](../images/image19.png "Select TwinCAT projects")
+        ![](../images/digital_io/image19.png "Select TwinCAT projects")
 
 4.  Scan the for subdevices.
     1.  In the **Solution Explorer** view, expand **I/O**.
     2.  Right-click on **Device** and select **Scan**.
 
-        ![](../images/image21.png "Scan for the devices")
+        ![](../images/digital_io/image21.png "Scan for the devices")
 
         The scanned devices appear in the **I/O devices found** dialog box.
 
     3.  Select the network interface connected with the MIMXRT1180-EVK board.
     4.  Click **OK**.
 
-        ![](../images/image22.png "Devices scanned")
+        ![](../images/digital_io/image22.png "Devices scanned")
 
-5.  Update the ESI file to E2PROM.
+5.  Update the ESI file to E2PROM (You can skip this step if you ran EEPROM Update chapter).
 
     **Note:** The E2PROM must be updated if the digital IO example is set up first time on the MIMXRT1180-EVK.
 
@@ -35,30 +35,30 @@
     2.  Click the **EtherCAT** tab.
     3.  Click the **Advanced Settings** button.
 
-        ![](../images/image23.png "Configure advance settings")
+        ![](../images/digital_io/image23.png "Configure advance settings")
 
         The **Advanced Settings** dialog box appears.
 
     4.  From the left pane of the **Advanced Settings** dialog box, select **ESC Access \> Smart View**.
     5.  Click the **Write E2PROM** button.
 
-        ![](../images/image24.png "Advanced settings ")
+        ![](../images/digital_io/image24.png "Advanced settings ")
 
     6.  From the available EEPROM list, **select NXP \> ECAT \> digital\_io**.
     7.  Click **OK**, delete Device4, rescan, and add Device4 after the success of the write EEPROM operation.
 
-        ![](../images/image25.png "Select digital_io")
+        ![](../images/digital_io/image25.png "Select digital_io")
 
 6.  Configure the subdevice.
     1.  Click the **DC** tab.
     2.  From the **Operation Mode** field, select the **SM-Synchron** option.
 
-        ![](../images/image26.png "Select the operation mode")
+        ![](../images/digital_io/image26.png "Select the operation mode")
 
 7.  Program the PLC code.
     1.  In the **Solution Explorer** view, right-click on **PLC** and select **Add New Item**.
 
-        ![](../images/image27.png "Create a new PLC code project")
+        ![](../images/digital_io/image27.png "Create a new PLC code project")
 
         The **Add New Item** dialog box appears.
 
@@ -66,7 +66,7 @@
     3.  Select **Standard PLC Project**.
     4.  Click **OK**.
 
-        ![](../images/image28.png "Select template")
+        ![](../images/digital_io/image28.png "Select template")
 
 8.  To open the PLC edit page, select **MAIN \(PRG\)** under PLC. See, [Figure 11](#codeedit).
 9.  Copy the code below and paste it in the **MAIN** view. See, [Figure 11](#codeedit).
@@ -88,49 +88,49 @@
     END_IF; 
     ```
 
-    ![](../images/image29.png "Copy and paste the code")
+    ![](../images/digital_io/image29.png "Copy and paste the code")
 
 10. Build the PLC code.
     1.  Right-click on the PLC project and select **Build**.
 
-        ![](../images/image30.png "Build the PLC code")
+        ![](../images/digital_io/image30.png "Build the PLC code")
 
 11. Map the PLC variables to the subdevice IO channel.
     1.  Right-click on **MAIN.LedIn**, select **Change Link**. See, [Figure 13](#mapvar).
 
-        ![](../images/image31.png "Map the PLC variables")
+        ![](../images/digital_io/image31.png "Map the PLC variables")
 
         The **Attach Variable MAIN.LedIn \(Input\)** dialog box appears.
 
     2.  Select **LED**. See, [Figure 14](#attachvari).
     3.  Click **OK**. See, [Figure 14](#attachvari).
 
-        ![](../images/image32.png "Attach variable MAIN.LedIn (Input)")
+        ![](../images/digital_io/image32.png "Attach variable MAIN.LedIn (Input)")
 
     4.  In the **Solution Explorer**, under **PlcTask Outputs**, right-click on **MAIN.LedOut** and select **Change Link**.
 
-        ![](../images/image33.png "Change link")
+        ![](../images/digital_io/image33.png "Change link")
 
         The **Attach Variable MAIN.LedOut \(Output\)** dialog box appears.
 
     5.  Select **LED**. See, [Figure 16](#fig_g4x_3hj_nyb).
     6.  Click **OK**. See, [Figure 16](#fig_g4x_3hj_nyb).
 
-        ![](../images/image34.png "Attach variable MAIN.LedOut (Output)")
+        ![](../images/digital_io/image34.png "Attach variable MAIN.LedOut (Output)")
 
 12. Run the PLC code.
     1.  To activate the configuration, select **TwinCAT \> Activate Configuration**.
 
-        ![](../images/image35.png "Activate the configuration")
+        ![](../images/digital_io/image35.png "Activate the configuration")
 
     2.  Select **PLC** \> **Login**.
 
-        ![](../images/image36.png "Start activation")
+        ![](../images/digital_io/image36.png "Start activation")
 
     3.  To initiate the PLC code, **PLC \> Start**.
 
-        ![](../images/image37.png "PLC code initiates")
+        ![](../images/digital_io/image37.png "PLC code initiates")
 
-        When the PLC code initiates, the D7 LED on the MIMXRT1180-EVK board starts blinking with 0.5 Hz frequency.
+        When the PLC code initiates, the LED on the board starts blinking with 0.5 Hz frequency.
 
 

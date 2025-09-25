@@ -7,7 +7,7 @@ Hardware requirements
 
 Board settings
 ==============
-- No special settings are required.
+Connect J44-10(GPIO_IO31 pad, signal name M1_LED_TP1) and J43-14(GND) to oscilloscope
 
 Prepare the Demo
 ================
@@ -60,4 +60,6 @@ Prepare the Demo
 		END_IF;
 		
 9. Activate configuration and start PLC Main function
+
+10. Note: Since no LED connected to the RGPIO. Please use oscilloscope probe to the pin to check the output.
 
