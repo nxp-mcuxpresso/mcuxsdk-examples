@@ -163,7 +163,6 @@ int main(void)
     rtc_bcd_alarm_config_t alarm1Config = {0U};
     rtc_bcd_alarm_config_t alarm2Config = {0U};
     bool resetFromTamper                = false;
-    volatile uint32_t interruptFlag     = 0;
     volatile uint64_t latchedCounter    = 0;
     uint32_t storedKeyData[8]           = {0x12345678, 0x9ABCDEF0, 0x11223344, 0x55667788,
                                            0x99AABBCC, 0xDDFF2211, 0x22334455, 0x66778899};
