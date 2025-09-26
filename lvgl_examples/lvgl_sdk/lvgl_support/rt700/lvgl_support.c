@@ -424,11 +424,20 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
             fbInfo.width  = lv_area_get_width(&damaged);
             fbInfo.startX = damaged.x1;
 
+            uint32_t address = (uint32_t)fb + fbInfo.startY * fbInfo.strideBytes + fbInfo.startX * DEMO_BUFFER_BYTE_PER_PIXEL;
+            
+            /* Check whether the address is aligned according to peripheral requirement. */
+            if (0U != (address & (LVGL_FB_ALIGN - 1U)))
+            {
+                uint32_t offset = address % LVGL_FB_ALIGN;
+                fbInfo.startX -= offset / DEMO_BUFFER_BYTE_PER_PIXEL;
+                fbInfo.width += offset / DEMO_BUFFER_BYTE_PER_PIXEL;
+                address -= offset;
+            }
+
             g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo);
 
-            g_dc.ops->setFrameBuffer(
-                &g_dc, 0,
-                (void *)(fb + fbInfo.startY * fbInfo.strideBytes + fbInfo.startX * DEMO_BUFFER_BYTE_PER_PIXEL));
+            g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)(address));
         }
     }
     else
