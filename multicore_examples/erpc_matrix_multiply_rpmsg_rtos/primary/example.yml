@@ -126,7 +126,8 @@ erpc_matrix_multiply_rpmsg_rtos_primary_core:
     - -mdk@hyperram_release
     frdmk32l3a6@cm4: []
     frdmmcxn947@cm33_core0: []
-    lpcxpresso55s69@cm33_core0: []
+    lpcxpresso55s69@cm33_core0:
+    - -armgcc@debug
     mcxn5xxevk@cm33_core0: []
     mcxn9xxevk@cm33_core0: []
     kw47evk@cm33_core0: []
