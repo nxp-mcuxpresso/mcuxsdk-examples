@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ==============
-- CM33: Connect input signal to R881
+- CM7: Connect input signal to R881
 - note: square wave at fixed rate is recommended as the input signal for easily checking the result. 
 
 Prepare the Demo

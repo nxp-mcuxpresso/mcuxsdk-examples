@@ -27,17 +27,17 @@ Prepare the Demo
 
 Running the demo
 ===============
-After the boot process succeeds, the ARM Cortex-M33 terminal displays the following information:
+After the boot process succeeds, the ARM Cortex-M7 terminal displays the following information:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 RPMSG Ping-Pong FreeRTOS RTOS API Demo...
 RPMSG Share Base Addr is 0xb8000000
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-During boot the Kernel,the ARM Cortex-M33 terminal displays the following information:
+During boot the Kernel,the ARM Cortex-M7 terminal displays the following information:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Link is up!
 Nameservice announce sent.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-After the Linux RPMsg pingpong module was installed, the ARM Cortex-M33 terminal displays the following information:
+After the Linux RPMsg pingpong module was installed, the ARM Cortex-M7 terminal displays the following information:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Waiting for ping...
 Sending pong...

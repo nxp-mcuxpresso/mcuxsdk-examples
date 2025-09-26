@@ -9,7 +9,7 @@ Hardware requirements
 
 Board settings
 ==============
-CM33: Connect R881 and (GND) to Oscilloscope
+CM7: Connect R881 and (GND) to Oscilloscope
 
 Prepare the Demo
 ===============

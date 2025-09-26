@@ -30,13 +30,13 @@ Prepare the Demo
 
 Running the demo
 ================
-After the boot process succeeds, the ARM Cortex-M33 terminal displays the following information:
+After the boot process succeeds, the ARM Cortex-M7 terminal displays the following information:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 RPMSG String Echo FreeRTOS RTOS API Demo...
 
 Nameservice sent, ready for incoming messages...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-After the Linux RPMsg tty module was installed, the ARM Cortex-M33 terminal displays the following
+After the Linux RPMsg tty module was installed, the ARM Cortex-M7 terminal displays the following
 information:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Get Messgae From Master Side : "hello world!" [len : 12]
@@ -48,7 +48,7 @@ echo test > /dev/ttyRPMSG<num>
 <num> here is the allocated ttyRPMsg channel number. Please find out the number in the file system by "ls" command.
 Log below shows the output of the RPMsg-Lite str echo demo in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-On the M33 terminal, the received string content and its length is output, as shown in the log.
+On the M7 terminal, the received string content and its length is output, as shown in the log.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Get Message From Master Side : "test" [len : 4]
 Get New Line From Master Side

@@ -8,7 +8,7 @@ Hardware requirements
 
 Board settings
 ==============
-- CM33: Connect input signal to R881 and (GND).
+- CM7: Connect input signal to R881 and (GND).
 
 Prepare the Demo
 ===============

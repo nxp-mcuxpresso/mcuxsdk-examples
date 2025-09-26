@@ -9,8 +9,8 @@ Hardware requirements
 
 Board settings
 ==============
-- CM33: connect R881(TPM2_CHN2), (GND) to Oscilloscope
-- CM33: connect R882(TPM2_CHN3), (GND) to Oscilloscope
+- CM7: connect R881(TPM2_CHN2), (GND) to Oscilloscope
+- CM7: connect R882(TPM2_CHN3), (GND) to Oscilloscope
 
 Prepare the Demo
 ===============
