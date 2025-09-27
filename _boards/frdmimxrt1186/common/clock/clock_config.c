@@ -18,9 +18,9 @@
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v13.0
-processor: MIMXRT1189xxxxx
-package_id: MIMXRT1189CVM8B
+product: Clocks v18.0
+processor: MIMXRT1186xxxxx
+package_id: MIMXRT1186CVJ8C
 mcu_data: ksdk2_0
 processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
