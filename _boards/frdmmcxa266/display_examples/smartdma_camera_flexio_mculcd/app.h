@@ -8,7 +8,7 @@
 #define _APP_H_
 
 /*${header:start}*/
-#include "fsl_smartdma_mcxa.h"
+#include "fsl_smartdma.h"
 /*${header:end}*/
 
 /*******************************************************************************
