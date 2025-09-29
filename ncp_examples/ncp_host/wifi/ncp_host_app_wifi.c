@@ -18,15 +18,15 @@ void ncp_iperf_rx_task(void *param);
 
 #define PING_SOCK_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(ping_sock_thread);
-static OSA_TASK_DEFINE(ping_sock_task, PING_SOCK_TASK_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(ping_sock_task, PING_SOCK_TASK_PRIO, 1, 2048, 0);
 
 #define NCP_IPERF_TX_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(ncp_iperf_tx_thread);
-static OSA_TASK_DEFINE(ncp_iperf_tx_task, NCP_IPERF_TX_TASK_PRIO, 1, 4096, 0);
+static OSA_TASK_DEFINE(ncp_iperf_tx_task, NCP_IPERF_TX_TASK_PRIO, 1, 5120, 0);
 
 #define NCP_IPERF_RX_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(ncp_iperf_rx_thread);
-static OSA_TASK_DEFINE(ncp_iperf_rx_task, NCP_IPERF_RX_TASK_PRIO, 1, 4096, 0);
+static OSA_TASK_DEFINE(ncp_iperf_rx_task, NCP_IPERF_RX_TASK_PRIO, 1, 5120, 0);
 
 OSA_EVENT_HANDLE_DEFINE(ping_events);
 OSA_EVENT_HANDLE_DEFINE(iperf_tx_events);

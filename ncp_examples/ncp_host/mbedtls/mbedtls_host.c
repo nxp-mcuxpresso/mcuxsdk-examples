@@ -16,7 +16,6 @@
 #include "ncp_tlv_adapter.h"
 #include "ncp_host_command_wifi.h"
 #include "ncp_cmd_wifi.h"
-#include "ksdk_mbedtls.h"
 #include <string.h>
 
 
@@ -27,7 +26,7 @@
 static void ncp_encrypt_handshake_task(void *pvParameters);
 #define NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 2))
 static OSA_TASK_HANDLE_DEFINE(ncp_encrypt_handshake_thread);
-static OSA_TASK_DEFINE(ncp_encrypt_handshake_task, NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO, 1, 8192, 0);
+static OSA_TASK_DEFINE(ncp_encrypt_handshake_task, NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO, 1, 10240, 0);
 
 extern MCU_NCPCmd_DS_SYS_COMMAND *ncp_host_get_cmd_buffer_sys();
 
@@ -101,12 +100,6 @@ static void ncp_encrypt_handshake_task(void *pvParameters)
 
     ncp_d("**** encrypt init task called\r\n");
 
-    if (CRYPTO_InitHardware() != 0)
-    {
-        ncp_e("CRYPTO_InitHardware fail");
-        return;
-    }
-    
     ret = ncp_encrypt_setup(NCP_TLS_ROLE_CLIENT);
     if (ret != TLS_OK)
     {
@@ -119,7 +112,9 @@ static void ncp_encrypt_handshake_task(void *pvParameters)
     if (ret != 0)
     {
         ncp_e("mbedtls mbedtls_ssl_handshake fail %d", ret);
+#if defined(MBEDTLS_ERROR_C)
         ncp_e("%s", mbedtls_high_level_strerr(ret));
+#endif
         goto exit;
     }
     ncp_d("**** mbedtls_ssl_handshake succ\r\n");

@@ -20,7 +20,7 @@
 #include "clock_config.h"
 #include "mflash_common.h"
 #if CONFIG_WPA_SUPP
-#include "els_pkc_mbedtls.h"
+#include "mcux_psa_els_pkc_common_init.h"
 #endif
 
 #include "fwk_platform.h"

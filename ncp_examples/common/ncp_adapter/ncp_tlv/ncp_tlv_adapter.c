@@ -141,13 +141,13 @@ Fail:
 }
 
 #if CONFIG_NCP_USE_ENCRYPT
-
-int ncp_tlv_adapter_encrypt_init(const uint8_t *key_enc, const uint8_t *key_dec, 
+int ncp_tlv_adapter_encrypt_init(const uint8_t *key_enc, const uint8_t *key_dec,
                                  const uint8_t *iv_enc, const uint8_t *iv_dec,
                                  uint16_t key_len, uint16_t iv_len)
 {
     ncp_tlv_adapter_t *adapter = &ncp_tlv_adapter;
-    int ret = 0, ret2 = 0;
+    psa_status_t status;
+
     NCP_ASSERT(key_enc && key_dec && iv_enc && iv_dec);
 
     if ((adapter->crypt) || (key_len > NCP_ENDECRYPT_KEY_LEN) 
@@ -156,62 +156,41 @@ int ncp_tlv_adapter_encrypt_init(const uint8_t *key_enc, const uint8_t *key_dec,
         return NCP_STATUS_ERROR;
     }
 
-    adapter->crypt = (crypt_param_t*)OSA_MemoryAllocate(sizeof(crypt_param_t));
+    adapter->crypt = (crypt_param_t *)OSA_MemoryAllocate(sizeof(crypt_param_t));
     if (!adapter->crypt)
     {
         return NCP_STATUS_NOMEM;
     }
-    (void) memset(adapter->crypt, 0, sizeof(crypt_param_t));
+    memset(adapter->crypt, 0, sizeof(crypt_param_t));
 
-    adapter->crypt->gcm_ctx_enc = OSA_MemoryAllocate(sizeof(mbedtls_gcm_context));
-    if (!adapter->crypt->gcm_ctx_enc)
-    {
-        (void) OSA_MemoryFree(adapter->crypt);
-        adapter->crypt = NULL;
-        return NCP_STATUS_NOMEM;
-    }
+    /* Key attributes */
+    psa_key_attributes_t attr = PSA_KEY_ATTRIBUTES_INIT;
+    psa_set_key_usage_flags(&attr, PSA_KEY_USAGE_ENCRYPT | PSA_KEY_USAGE_DECRYPT);
+    psa_set_key_algorithm(&attr, PSA_ALG_GCM);
+    psa_set_key_type(&attr, PSA_KEY_TYPE_AES);
+    psa_set_key_bits(&attr, key_len * 8);
 
-    adapter->crypt->gcm_ctx_dec = OSA_MemoryAllocate(sizeof(mbedtls_gcm_context));
-    if (!adapter->crypt->gcm_ctx_dec)
-    {
-        (void) OSA_MemoryFree(adapter->crypt->gcm_ctx_enc);
-        (void) OSA_MemoryFree(adapter->crypt);
-        adapter->crypt = NULL;
-        return NCP_STATUS_NOMEM;
-    }
-    
-    (void) memcpy(adapter->crypt->key_enc, key_enc, NCP_ENDECRYPT_KEY_LEN);
-    (void) memcpy(adapter->crypt->key_dec, key_dec, NCP_ENDECRYPT_KEY_LEN);
-    (void) memcpy(adapter->crypt->iv_enc, iv_enc, NCP_ENDECRYPT_IV_LEN);
-    (void) memcpy(adapter->crypt->iv_dec, iv_dec, NCP_ENDECRYPT_IV_LEN);
-    
-    adapter->crypt->key_len = key_len;
-    adapter->crypt->iv_len = iv_len;
-    adapter->crypt->dec_buf = NULL;
-    adapter->crypt->dec_buf_len = 0;
-    
-    (void) mbedtls_gcm_init((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_enc);
-    (void) mbedtls_gcm_init((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_dec);
-    
-    ret = mbedtls_gcm_setkey((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_enc, 
-                             MBEDTLS_CIPHER_ID_AES,
-                             adapter->crypt->key_enc,
-                             adapter->crypt->key_len * 8);
-    ret2 = mbedtls_gcm_setkey((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_dec, 
-                             MBEDTLS_CIPHER_ID_AES,
-                             adapter->crypt->key_dec,
-                             adapter->crypt->key_len * 8);
-    if (ret != 0 || ret2 != 0)
-    {
-        (void) mbedtls_gcm_free((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_enc);
-        (void) mbedtls_gcm_free((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_dec);
-        (void) OSA_MemoryFree(adapter->crypt->gcm_ctx_enc);
-        (void) OSA_MemoryFree(adapter->crypt->gcm_ctx_dec);
-        (void) OSA_MemoryFree(adapter->crypt);
+    /* Import encrypt key */
+    status = psa_import_key(&attr, key_enc, key_len, &adapter->crypt->key_enc_id);
+    if (status != PSA_SUCCESS) {
+        OSA_MemoryFree(adapter->crypt);
         adapter->crypt = NULL;
         return NCP_STATUS_ERROR;
     }
-        
+
+    /* Import decrypt key */
+    status = psa_import_key(&attr, key_dec, key_len, &adapter->crypt->key_dec_id);
+    if (status != PSA_SUCCESS) {
+        psa_destroy_key(adapter->crypt->key_enc_id);
+        OSA_MemoryFree(adapter->crypt);
+        adapter->crypt = NULL;
+        return NCP_STATUS_ERROR;
+    }
+
+    memcpy(adapter->crypt->iv_enc, iv_enc, iv_len);
+    memcpy(adapter->crypt->iv_dec, iv_dec, iv_len);
+    adapter->crypt->iv_len = iv_len;
+
     return NCP_STATUS_SUCCESS;
 }
 
@@ -223,17 +202,7 @@ int ncp_tlv_adapter_encrypt_deinit(void)
     {
         return NCP_STATUS_ERROR;
     }
-    
-    (void) mbedtls_gcm_free((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_enc);
-    (void) memset(adapter->crypt->gcm_ctx_enc, 0, sizeof(mbedtls_gcm_context));
-    (void) OSA_MemoryFree(adapter->crypt->gcm_ctx_enc);
-    
-    (void) mbedtls_gcm_free((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_dec);
-    (void) memset(adapter->crypt->gcm_ctx_dec, 0, sizeof(mbedtls_gcm_context));
-    (void) OSA_MemoryFree(adapter->crypt->gcm_ctx_dec);
-    
-    (void) OSA_MemoryFree(adapter->crypt->dec_buf);
-    
+
     (void) memset(adapter->crypt, 0, sizeof(crypt_param_t));
     (void) OSA_MemoryFree(adapter->crypt);
     adapter->crypt = NULL;
@@ -272,22 +241,24 @@ int ncp_tlv_adapter_is_encrypt_mode(void)
 static ncp_status_t ncp_tlv_encrypt(unsigned char *input, unsigned char *output, size_t input_len)
 {
     ncp_tlv_adapter_t *adapter = &ncp_tlv_adapter;
-    int ret = 0;  
-    uint8_t tag_buf[16];
+    psa_status_t status;
+    size_t output_len = 0;
+    size_t aead_output_len = input_len + NCP_GCM_TAG_LEN;
+
     NCP_ASSERT(input && output);
 
-    if ((!adapter->crypt) || (!adapter->crypt->flag))
-    {
+    if (!adapter->crypt || !adapter->crypt->flag) {
         return NCP_STATUS_ERROR;
     }
 
-    ret = mbedtls_gcm_crypt_and_tag((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_enc, 
-                        MBEDTLS_GCM_ENCRYPT, input_len,
-                        adapter->crypt->iv_enc, adapter->crypt->iv_len,
-                        NULL, 0, input, output, sizeof(tag_buf), tag_buf);
-    if (ret != 0)
-    {
-        ncp_adap_e("mbedtls_gcm_crypt_and_tag err %d\r\n", ret);
+    status = psa_aead_encrypt(adapter->crypt->key_enc_id,
+                              PSA_ALG_GCM,
+                              adapter->crypt->iv_enc, adapter->crypt->iv_len,
+                              NULL, 0,
+                              input, input_len,
+                              output, aead_output_len, &output_len);
+    ncp_d("%s input_len:%u, aead_output_len:%u, output_len:%u", __FUNCTION__, input_len, aead_output_len, output_len);
+    if (status != PSA_SUCCESS || aead_output_len != output_len) {
         return NCP_STATUS_ERROR;
     }
 
@@ -297,50 +268,45 @@ static ncp_status_t ncp_tlv_encrypt(unsigned char *input, unsigned char *output,
 static ncp_status_t ncp_tlv_decrypt(unsigned char *input, size_t input_len)
 {
     ncp_tlv_adapter_t *adapter = &ncp_tlv_adapter;
-    int ret = 0;
-    uint8_t tag_buf[16];
+    psa_status_t status;
+    size_t output_len = 0;
 
-    if ((!adapter->crypt) || (!adapter->crypt->flag))
-    {
-        return NCP_STATUS_ERROR;
-    }
-    if (adapter->crypt->dec_buf_len < input_len)
-    {
-        if (adapter->crypt->dec_buf)
-        {
-            (void) OSA_MemoryFree(adapter->crypt->dec_buf);
-        }
-        
-        adapter->crypt->dec_buf = (uint8_t*)OSA_MemoryAllocate(input_len);
-        
-        if (!adapter->crypt->dec_buf)
-        {
-            adapter->crypt->dec_buf_len = 0;
-            return NCP_STATUS_NOMEM;
-        }
-        
-        adapter->crypt->dec_buf_len = input_len;
-    }
-    
-    /* MbedTLS gcm decryption requires input and output buffer be different,
-       so decrypt input to dec_buf and then copy output data to input */
-    ret = mbedtls_gcm_crypt_and_tag((mbedtls_gcm_context*)adapter->crypt->gcm_ctx_dec, 
-                        MBEDTLS_GCM_DECRYPT, input_len,
-                        adapter->crypt->iv_dec, adapter->crypt->iv_len,
-                        NULL, 0, input, adapter->crypt->dec_buf, 
-                        sizeof(tag_buf), tag_buf);
-    if (ret != 0)
-    {
+    if (!adapter->crypt || !adapter->crypt->flag) {
         return NCP_STATUS_ERROR;
     }
 
-    (void) memcpy(input, adapter->crypt->dec_buf, input_len);
+    /* AEAD input = ciphertext length + tag length */
+    size_t plaintext_len = input_len - NCP_GCM_TAG_LEN;
+
+    status = psa_aead_decrypt(adapter->crypt->key_dec_id,
+                              PSA_ALG_GCM,
+                              adapter->crypt->iv_dec, adapter->crypt->iv_len,
+                              NULL, 0,
+                              input, input_len,
+                              input, plaintext_len, &output_len);
+    ncp_d("%s input_len:%u, plaintext_len:%u, output_len:%u", __FUNCTION__, input_len, plaintext_len, output_len);
+    if (status != PSA_SUCCESS || output_len != plaintext_len) {
+        return NCP_STATUS_ERROR;
+    }
 
     return NCP_STATUS_SUCCESS;
 }
-
 #endif  /* CONFIG_NCP_USE_ENCRYPT */
 
+static bool ncp_crypt_is_needed(void *tlv_buf, size_t tlv_sz)
+{
+#if CONFIG_NCP_USE_ENCRYPT
+    if(ncp_tlv_adapter.crypt && ncp_tlv_adapter.crypt->flag && tlv_sz > TLV_CMD_HEADER_LEN)
+    {
+        struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv_buf;
+        if (ncp_cmd_is_data_cmd(cmd_hdr->cmd) == 0)
+        {
+            return true;
+        }
+    }
+#endif
+    return false;
+}
 
 /*
     qbuf_len = sizeof(ncp_tlv_qelem_t) + sdio_intf_head + tlv_sz + chksum_len
@@ -356,7 +322,11 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     uint8_t *qbuf_tlv = NULL, *chksum_buf = NULL;
     uint16_t qlen = 0, chksum_len = 4;
     uint32_t chksum = 0;
-    qlen = sizeof(ncp_tlv_qelem_t) + tlv_sz + chksum_len;
+    qlen = sizeof(ncp_tlv_qelem_t) + tlv_sz
+#if CONFIG_NCP_USE_ENCRYPT
+           + NCP_GCM_TAG_LEN
+#endif
+           + chksum_len;
     qbuf = (ncp_tlv_qelem_t *)OSA_MemoryAllocate(qlen);
     if (!qbuf)
     {
@@ -368,38 +338,32 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     qbuf->is_ref = 0;
     qbuf_tlv = (uint8_t *)qbuf + sizeof(ncp_tlv_qelem_t);
 
-#if !CONFIG_NCP_USE_ENCRYPT
-    (void) memcpy(qbuf_tlv, tlv_buf, tlv_sz);
-#else
-    if ((!ncp_tlv_adapter.crypt) || (!ncp_tlv_adapter.crypt->flag))
+    if (ncp_crypt_is_needed(tlv_buf, tlv_sz))
     {
-        (void) memcpy(qbuf_tlv, tlv_buf, tlv_sz);
+#if CONFIG_NCP_USE_ENCRYPT
+        (void)memcpy(qbuf_tlv, tlv_buf, TLV_CMD_HEADER_LEN);
+        NCP_HOST_COMMAND *header = (NCP_HOST_COMMAND *)qbuf_tlv;
+        status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
+                        (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
+                        tlv_sz - TLV_CMD_HEADER_LEN);
+        if (status != NCP_STATUS_SUCCESS)
+        {
+            NCP_TLV_STATS_INC(drop);
+            ncp_adap_e("ncp tlv encrypt err %d", (int)status);
+            OSA_MemoryFree(qbuf);
+            return NCP_STATUS_ERROR;
+        }
+        /* Appending tag after the encrypted data */
+        qbuf->tlv_sz += NCP_GCM_TAG_LEN;
+        tlv_sz += NCP_GCM_TAG_LEN;
+        header->size += NCP_GCM_TAG_LEN;
+        ncp_adap_d("%s tlv_sz:%u", __FUNCTION__, tlv_sz);
+#endif
     }
     else
     {
-        struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv_buf;
-        if (ncp_cmd_is_data_cmd(cmd_hdr->cmd))
-        {
-            (void) memcpy(qbuf_tlv, tlv_buf, tlv_sz);
-        }
-        else
-        {
-            (void) memcpy(qbuf_tlv, tlv_buf, TLV_CMD_HEADER_LEN);
-            if (tlv_sz > TLV_CMD_HEADER_LEN)
-            {
-                status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
-                                (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
-                                tlv_sz - TLV_CMD_HEADER_LEN);
-                if (status != NCP_STATUS_SUCCESS)
-                {
-                    NCP_TLV_STATS_INC(drop);
-                    ncp_adap_e("ncp tlv encrypt err %d", (int)status);
-                    return NCP_STATUS_ERROR;
-                }
-            }
-        }
+        (void)memcpy(qbuf_tlv, tlv_buf, tlv_sz);
     }
-#endif /* CONFIG_NCP_USE_ENCRYPT */
 
     qbuf->tlv_buf = qbuf_tlv;
     chksum = ncp_tlv_chksum(qbuf_tlv, (uint16_t)tlv_sz);
@@ -410,7 +374,7 @@ ncp_status_t ncp_tlv_send(void *tlv_buf, size_t tlv_sz)
     chksum_buf[3] = (chksum & 0xff000000) >> 24;
 #if CONFIG_WIFI_IO_DUMP
     ncp_adap_e("%s: qbuf %p %u (%u %p %ld)", __FUNCTION__, qbuf, qlen, qbuf->is_ref, qbuf->tlv_buf, qbuf->tlv_sz);
-    dump_hex(qbuf->tlv_buf, MIN(qbuf->tlv_sz, 128));
+    ncp_dump_hex(qbuf->tlv_buf, MIN(qbuf->tlv_sz, 128));
 #endif
 
     status = ncp_tlv_tx_enque(qbuf);
@@ -451,27 +415,27 @@ ncp_status_t ncp_tlv_ref_send(void *tlv_buf, size_t tlv_sz, uint32_t is_ref)
     qbuf->is_ref = 1;
     qbuf_tlv = (uint8_t *)tlv_buf;
 
-#if CONFIG_NCP_USE_ENCRYPT
-    if(ncp_tlv_adapter.crypt && ncp_tlv_adapter.crypt->flag)
+    if (ncp_crypt_is_needed(tlv_buf, tlv_sz))
     {
+#if CONFIG_NCP_USE_ENCRYPT
         struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv_buf;
-        if (ncp_cmd_is_data_cmd(cmd_hdr->cmd) == 0)
+        status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
+                        (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
+                        tlv_sz - TLV_CMD_HEADER_LEN);
+        if (status != NCP_STATUS_SUCCESS)
         {
-            if (tlv_sz > TLV_CMD_HEADER_LEN)
-            {
-                status = ncp_tlv_encrypt((unsigned char *)tlv_buf + TLV_CMD_HEADER_LEN,
-                                (unsigned char *)qbuf_tlv + TLV_CMD_HEADER_LEN,
-                                tlv_sz - TLV_CMD_HEADER_LEN);
-                if (status != NCP_STATUS_SUCCESS)
-                {
-                    NCP_TLV_STATS_INC(drop);
-                    ncp_adap_e("ncp tlv encrypt err %d", (int)status);
-                    return NCP_STATUS_ERROR;
-                }
-            }
+            NCP_TLV_STATS_INC(drop);
+            ncp_adap_e("ncp tlv encrypt err %d", (int)status);
+            OSA_MemoryFree(qbuf);
+            return NCP_STATUS_ERROR;
         }
-    }
+        /* Appending tag after the encrypted data */
+        qbuf->tlv_sz += NCP_GCM_TAG_LEN;
+        tlv_sz += NCP_GCM_TAG_LEN;
+        cmd_hdr->size += NCP_GCM_TAG_LEN;
+        ncp_adap_d("%s tlv_sz:%u", __FUNCTION__, tlv_sz);
 #endif /* CONFIG_NCP_USE_ENCRYPT */
+    }
 
     qbuf->tlv_buf = qbuf_tlv;
     chksum = ncp_tlv_chksum(qbuf_tlv, (uint16_t)tlv_sz);
@@ -628,22 +592,21 @@ void ncp_tlv_dispatch(void *tlv, size_t tlv_sz)
         return;
     }
 
-#if CONFIG_NCP_USE_ENCRYPT
-    if ((ncp_tlv_adapter.crypt) && (ncp_tlv_adapter.crypt->flag != 0)
-                              && (tlv_sz > TLV_CMD_HEADER_LEN))
+    if (ncp_crypt_is_needed(tlv, tlv_sz))
     {
+#if CONFIG_NCP_USE_ENCRYPT
         struct _NCP_CMD_HEADER *cmd_hdr = (struct _NCP_CMD_HEADER *)tlv;
-        if (!ncp_cmd_is_data_cmd(cmd_hdr->cmd))
+        status = ncp_tlv_decrypt((unsigned char *)tlv + TLV_CMD_HEADER_LEN, tlv_sz - TLV_CMD_HEADER_LEN);
+        if (status != NCP_STATUS_SUCCESS)
         {
-            status = ncp_tlv_decrypt((unsigned char *)tlv + TLV_CMD_HEADER_LEN, tlv_sz - TLV_CMD_HEADER_LEN);
-            if (status != NCP_STATUS_SUCCESS)
-            {
-                ncp_adap_e("ncp tlv decrypt err %d", (int)status);
-                return;
-            }
+            ncp_adap_e("ncp tlv decrypt err %d", (int)status);
+            return;
         }
-    }
+        /* Remove the tag length */
+        tlv_sz -= NCP_GCM_TAG_LEN;
+        cmd_hdr->size -= NCP_GCM_TAG_LEN;
 #endif /* CONFIG_NCP_USE_ENCRYPT */
+    }
 
     /* TLV command class */
     class = NCP_GET_CLASS(*((uint32_t *)tlv));

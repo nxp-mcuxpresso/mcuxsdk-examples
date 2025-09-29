@@ -20,6 +20,12 @@
 #include "ncp_host_app.h"
 #include "ncp_adapter.h"
 #include "ncp_cmd_node.h"
+#if defined(MBEDTLS_USER_CONFIG_FILE)
+#include MBEDTLS_USER_CONFIG_FILE
+#endif
+#if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
+#include "threading_alt.h"
+#endif
 
 /*******************************************************************************
  * Definitions
@@ -128,7 +134,9 @@ int main(void)
 
     BOARD_InitHardware();
     //    POWER_PowerOffBle();
-
+#if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
+    config_mbedtls_threading_alt();
+#endif
     printSeparator();
     PRINTF("NCP Host APP\r\n");
     printSeparator();

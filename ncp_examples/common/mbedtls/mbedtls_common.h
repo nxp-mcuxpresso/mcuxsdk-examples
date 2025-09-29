@@ -14,6 +14,7 @@
 #include "mbedtls/entropy.h"
 #include "mbedtls/ctr_drbg.h"
 #include "mbedtls/x509.h"
+#include "mbedtls/x509_crt.h"
 #include "mbedtls/ssl.h"
 #include "mbedtls/platform.h"
 #include "mbedtls/error.h"
@@ -40,11 +41,11 @@
 #define TLS_ERR_RINGBUF_FULL                    12
 #define TLS_ERR_HANDSHAKE                       13
 
-#ifdef RW610
 #if !defined(MBEDTLS_PLATFORM_C)
 #define MBEDTLS_PLATFORM_C
 #endif
 
+#ifdef RW610
 #if !defined(CONFIG_HAVE_TIME_DISABLE)
 #define MBEDTLS_HAVE_TIME
 #endif
@@ -93,6 +94,5 @@ int ncp_encrypt_setup(uint8_t is_server);
 int ncp_encrypt_teardown(void);
 int ncp_encrypt_process_handshake_data(uint8_t *data, uint16_t len);
 int ncp_cmd_is_data_cmd(uint32_t cmd);
-
 
 #endif /* __MBEDTLS_COMMON_H__ */

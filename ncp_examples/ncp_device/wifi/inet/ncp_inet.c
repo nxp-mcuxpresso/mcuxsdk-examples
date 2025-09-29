@@ -535,7 +535,11 @@ static void socket_recv_task(void *arg)
                 if (FD_ISSET(i, &readset))
                 {
                     buf_len = ALIGN_D(NCP_INET_SOCKET_RECV_SIZE + sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG)
-                      + sizeof(NCP_COMMAND) + chksum_len);
+                      + sizeof(NCP_COMMAND)
+#if CONFIG_NCP_USE_ENCRYPT
+                      + NCP_GCM_TAG_LEN
+#endif
+                      + chksum_len);
                     recv_buf = (uint8_t *)OSA_MemoryAllocate(buf_len);
                     if (!recv_buf)
                     {

@@ -27,6 +27,12 @@
 
 #include "ncp_adapter.h"
 #include "osa.h"
+#if defined(MBEDTLS_USER_CONFIG_FILE)
+#include MBEDTLS_USER_CONFIG_FILE
+#endif
+#if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
+#include "threading_alt.h"
+#endif
 
 /*******************************************************************************
  * Definitions
@@ -124,7 +130,6 @@ void task_main(void *param)
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-
 int main(void)
 {
     BaseType_t result = 0;
@@ -136,7 +141,9 @@ int main(void)
     printSeparator();
     PRINTF("NCP device demo\r\n");
     printSeparator();
-
+#if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
+    config_mbedtls_threading_alt();
+#endif
 #if (CONFIG_NCP_USB) && (CONFIG_WIFI_USB_FILE_ACCESS)
     usb_init();
 #endif

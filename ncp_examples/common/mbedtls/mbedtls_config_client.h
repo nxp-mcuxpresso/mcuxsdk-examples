@@ -11,8 +11,6 @@
 #if CONFIG_NCP_OT
 #include "rw612-mbedtls-config.h"
 #else
-/* SDK mbetdls config include */
-#include "els_pkc_mbedtls_config.h"
 #ifdef CONFIG_WPA_SUPP_MBEDTLS
 #include "wpa_supp_els_pkc_mbedtls_config.h"
 #endif /* CONFIG_WPA_SUPP_MBEDTLS */

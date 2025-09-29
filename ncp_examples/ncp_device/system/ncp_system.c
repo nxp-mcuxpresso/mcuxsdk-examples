@@ -33,8 +33,11 @@ extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 extern uint8_t sys_res_buf[NCP_SYS_INBUF_SIZE];
 
 #define SYSTEM_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
+#if CONFIG_NCP_USE_ENCRYPT
+#define SYSTEM_NCP_STACK_SIZE   4096
+#else
 #define SYSTEM_NCP_STACK_SIZE   2048
-
+#endif
 static OSA_TASK_HANDLE_DEFINE(system_ncp_handle);
 
 static void system_ncp_task(void *pvParameters);

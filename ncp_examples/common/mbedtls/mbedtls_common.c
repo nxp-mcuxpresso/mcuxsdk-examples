@@ -22,6 +22,7 @@
 #include "mbedtls/platform_time.h"
 #include "fsl_rtc.h"
 #endif
+#include "ncp_inet.h"
 
 /* TODO: remove this private definition and use the definition in header file */
 #define _NCP_CMD_WLAN                0x00000000
@@ -50,6 +51,7 @@ static int port_mbedtls_rng(void *p_rng, unsigned char *buf, size_t len)
     return 0;
 }
 
+#ifdef MBEDTLS_PLATFORM_MEMORY
 static void* port_mbedtls_calloc(size_t blk_num, size_t blk_size)
 {
     uint32_t byte_num = blk_num * blk_size;
@@ -70,7 +72,7 @@ static void port_mbedtls_free(void *p)
         (void) OSA_MemoryFree(p);
     }
 }
-
+#endif
 static int port_mbedtls_recv(void *ctx, unsigned char *buf, size_t len)
 {
     uint16_t recv_data_cnt = 0;
@@ -95,75 +97,70 @@ static int port_mbedtls_recv(void *ctx, unsigned char *buf, size_t len)
     return ret;
 }
 
-static int port_mbedtls_entropy_read(unsigned char *buf, unsigned int buf_len)
-{
-    NCP_ASSERT(_mbedtls);
-
-    if (buf_len > MBEDTLS_ENTROPY_BLOCK_SIZE)
-    {
-        ncp_d("**** error read size is too large %d", buf_len);
-        return 0;
-    }
-    
-    (void) memcpy(buf, _mbedtls->entropy_buf, buf_len);
-    
-    return buf_len;
-}
-
-static int port_mbedtls_entropy_write(unsigned char *buf, unsigned int buf_len)
-{
-    NCP_ASSERT(_mbedtls);
-
-    if (buf_len > MBEDTLS_ENTROPY_BLOCK_SIZE)
-    {
-        ncp_e("**** write size is too large %d\n", buf_len);
-        return 0;
-    }
-    
-    (void) memcpy(_mbedtls->entropy_buf, buf, buf_len);
-    
-    return buf_len;
-}
-
 static void port_mbedtls_dbgmsg_output(void *arg, int dbg_level, 
                         const char *file, int line, const char *str)
 {
     (void)PRINTF("%s", str);
 }
 
-static int port_mbedtls_export_keys(void *ctx, const unsigned char *master, 
-    const unsigned char *keyblk, size_t mac_key_len, size_t keylen, size_t iv_copy_len)
+#ifndef MBEDTLS_EXPKEY_RANDOM_LEN
+#define MBEDTLS_EXPKEY_RANDOM_LEN 32
+#endif
+
+static void port_mbedtls_export_keys(void *ctx,
+                                     mbedtls_ssl_key_export_type type,
+                                     const unsigned char *secret,
+                                     size_t secret_len,
+                                     const unsigned char client_random[MBEDTLS_EXPKEY_RANDOM_LEN],
+                                     const unsigned char server_random[MBEDTLS_EXPKEY_RANDOM_LEN],
+                                     mbedtls_tls_prf_types tls_prf_type)
 {
-    NCP_ASSERT(master && keyblk);
-    int ret = 0;
+    unsigned char key_block[2*(NCP_ENDECRYPT_KEY_LEN + NCP_ENDECRYPT_IV_LEN)];
+    const char *label = "NCP key";
+    unsigned char seed[2*MBEDTLS_EXPKEY_RANDOM_LEN];
+    uint8_t *key1, *key2, *iv1, *iv2;
     uint16_t i = 0;
-    const uint8_t *key1 = (uint8_t*)keyblk + mac_key_len * 2;
-    const uint8_t *key2 = key1 + keylen;
-    const uint8_t *iv1 = (uint8_t*)key2 + keylen;
-    const uint8_t *iv2 = iv1 + iv_copy_len;
+
+    memcpy(seed, client_random, MBEDTLS_EXPKEY_RANDOM_LEN);
+    memcpy(seed + MBEDTLS_EXPKEY_RANDOM_LEN, server_random, MBEDTLS_EXPKEY_RANDOM_LEN);
+
+    int ret = mbedtls_ssl_tls_prf(tls_prf_type,
+                                  secret, secret_len,
+                                  label,
+                                  seed, sizeof(seed),
+                                  key_block, sizeof(key_block));
+    if (ret != 0) {
+        mbedtls_printf("mbedtls_ssl_tls_prf failed: -0x%04X\n", -ret);
+        return;
+    }
+
+    key1 = (uint8_t*)key_block;
+    key2 = key1 + NCP_ENDECRYPT_KEY_LEN;
+    iv1 = key2 + NCP_ENDECRYPT_KEY_LEN;
+    iv2 = iv1 + NCP_ENDECRYPT_IV_LEN;
 
     _verify_num = 0;
-    for (i = 0; i < keylen * 2; i += 4)
+    for (i = 0; i < NCP_ENDECRYPT_KEY_LEN * 2; i += 4)
     {
         _verify_num += *(uint32_t*)&key1[i];
     }
-    for (i = 0; i < iv_copy_len * 2; i += 4)
+    for (i = 0; i < NCP_ENDECRYPT_IV_LEN * 2; i += 4)
     {
         _verify_num += *(uint32_t*)&iv1[i];
     }
 
-    // ncp_dump_hex(key1, keylen);
-    // ncp_dump_hex(key2, keylen);
-    // ncp_dump_hex(iv1, iv_copy_len);
-    // ncp_dump_hex(iv2, iv_copy_len);
+    //ncp_dump_hex(key1, NCP_ENDECRYPT_KEY_LEN);
+    //ncp_dump_hex(key2, NCP_ENDECRYPT_KEY_LEN);
+    //ncp_dump_hex(iv1, NCP_ENDECRYPT_IV_LEN);
+    //ncp_dump_hex(iv2, NCP_ENDECRYPT_IV_LEN);
 
     if (_mbedtls->is_server)
     {
-        ret = ncp_tlv_adapter_encrypt_init(key1, key2, iv1, iv2, keylen, iv_copy_len);
+        ret = ncp_tlv_adapter_encrypt_init(key1, key2, iv1, iv2, NCP_ENDECRYPT_KEY_LEN, NCP_ENDECRYPT_IV_LEN);
     }
     else
     {
-        ret = ncp_tlv_adapter_encrypt_init(key2, key1, iv2, iv1, keylen, iv_copy_len);
+        ret = ncp_tlv_adapter_encrypt_init(key2, key1, iv2, iv1, NCP_ENDECRYPT_KEY_LEN, NCP_ENDECRYPT_IV_LEN);
     }
     if (ret != NCP_STATUS_SUCCESS)
     {
@@ -171,111 +168,89 @@ static int port_mbedtls_export_keys(void *ctx, const unsigned char *master,
     }
 
     ncp_d("*** export key %d\r\n", ret);
-
-    return 0;
 }
 
-static int ncp_encrypt_init_mbedtls(void)
+int ncp_encrypt_init_mbedtls(void)
 {
-    NCP_ASSERT(_mbedtls);
     int ret = 0;
-    trng_config_t trngConfig;
-    uint32_t seed = 0;
 
-    (void) TRNG_GetDefaultConfig(&trngConfig);
-    (void) TRNG_Init(TRNG, &trngConfig);
-    (void) TRNG_GetRandomData(TRNG, &seed, sizeof(seed));
-    (void) srand(seed);
-    (void) port_mbedtls_rng(NULL, (unsigned char *)(_mbedtls->entropy_buf), sizeof(_mbedtls->entropy_buf));
+    NCP_ASSERT(_mbedtls);
+
+    /* Initialization of PSA Crypto */
+    if (psa_crypto_init() != PSA_SUCCESS) {
+        ncp_e("psa_crypto_init err\n");
+        return -TLS_ERR_PSA_INIT;
+    }
+
+    /* Initialization of TLS configurations */
     mbedtls_ssl_config_init(&_mbedtls->conf);
-    // mbedtls_platform_set_printf(&DbgConsole_Printf);
+    mbedtls_ssl_init(&_mbedtls->ssl);
 #ifdef MBEDTLS_DEBUG_C
-    mbedtls_debug_set_threshold(CONFIG_NCP_MBEDTLS_DBG_LEVEL);  
+    mbedtls_debug_set_threshold(CONFIG_NCP_MBEDTLS_DBG_LEVEL);
 #endif
     mbedtls_ssl_conf_dbg(&_mbedtls->conf, port_mbedtls_dbgmsg_output, NULL);
-    (void) mbedtls_platform_set_calloc_free(&port_mbedtls_calloc, &port_mbedtls_free);
-    mbedtls_ssl_init(&_mbedtls->ssl);
-    mbedtls_ssl_conf_rng(&_mbedtls->conf, port_mbedtls_rng, &_mbedtls->ctr_drbg);
-    mbedtls_x509_crt_init(&_mbedtls->ca_cert);
-    mbedtls_x509_crt_init(&_mbedtls->own_cert);
-    mbedtls_pk_init(&_mbedtls->pkey);
-    mbedtls_entropy_init(&_mbedtls->entropy);
-    mbedtls_ctr_drbg_init(&_mbedtls->ctr_drbg);
+#ifdef MBEDTLS_PLATFORM_MEMORY
+    mbedtls_platform_set_calloc_free(&port_mbedtls_calloc, &port_mbedtls_free);
+#endif
+    ret = mbedtls_ssl_config_defaults(&_mbedtls->conf,
+                                      _mbedtls->is_server ? MBEDTLS_SSL_IS_SERVER : MBEDTLS_SSL_IS_CLIENT,
+                                      MBEDTLS_SSL_TRANSPORT_STREAM,
+                                      MBEDTLS_SSL_PRESET_DEFAULT);
+    if (ret != 0) {
+        ncp_e("mbedtls_ssl_config_defaults err %d\n", ret);
+        return -TLS_ERR_SSL_INIT;
+    }
 #if !defined(MBEDTLS_SSL_CLI_ALLOW_WEAK_CERTIFICATE_VERIFICATION_WITHOUT_HOSTNAME)
     mbedtls_ssl_set_hostname(&_mbedtls->ssl, "localhost");
 #endif
-#if defined(MBEDTLS_ENTROPY_NV_SEED) && defined(MBEDTLS_PLATFORM_NV_SEED_ALT)
-    (void) mbedtls_platform_set_nv_seed(&port_mbedtls_entropy_read, &port_mbedtls_entropy_write);
-#endif
-    mbedtls_ssl_conf_export_keys_cb(&_mbedtls->conf, &port_mbedtls_export_keys, NULL);
-    if (psa_crypto_init() != PSA_SUCCESS)
-    {
-        ncp_e("psa_crypto_init err\n");
-        ret = -TLS_ERR_PSA_INIT;
-        goto exit;
-    }
+    mbedtls_ssl_set_export_keys_cb(&_mbedtls->ssl, &port_mbedtls_export_keys, NULL);
+    port_mbedtls_rng(NULL, (unsigned char *)(_mbedtls->entropy_buf), sizeof(_mbedtls->entropy_buf));
+    mbedtls_ssl_conf_rng(&_mbedtls->conf, port_mbedtls_rng, &_mbedtls->ctr_drbg);
 
-    ret = mbedtls_x509_crt_parse(&_mbedtls->ca_cert, (const unsigned char *)CA_CERT,
-                                    sizeof(CA_CERT));
-    if (ret != 0)
-    {
-        ncp_e("mbedtls_x509_crt_parse ca_cert err %d\n\n", ret);
-        ret = -TLS_ERR_PARSE_CERT;
-        goto exit;
-    }
+    /* Initialization of Cert and Key */
+    mbedtls_x509_crt_init(&_mbedtls->ca_cert);
+    mbedtls_x509_crt_init(&_mbedtls->own_cert);
+    mbedtls_pk_init(&_mbedtls->pkey);
 
-    ret = mbedtls_x509_crt_parse(&_mbedtls->own_cert, (const unsigned char *)OWN_CERT,
-                                    sizeof(OWN_CERT));
-    if (ret != 0)
-    {
-        ncp_e("mbedtls_x509_crt_parse own_cert err %d\n\n", ret);
-        ret = -TLS_ERR_PARSE_CERT;
-        goto exit;
+    /* Parsing Cert and Key */
+    ret = mbedtls_x509_crt_parse(&_mbedtls->ca_cert, (const unsigned char *)CA_CERT, sizeof(CA_CERT));
+    if (ret != 0) {
+        ncp_e("mbedtls_x509_crt_parse ca_cert err %d\n", ret);
+        return -TLS_ERR_PARSE_CERT;
     }
-
-    ret = mbedtls_pk_parse_key(&_mbedtls->pkey, (const unsigned char *)OWN_PVTKEY,
-                                sizeof(OWN_PVTKEY), TLS_KEY_PASSWORD, TLS_KEY_PASSWORD_LEN);
-    if (ret != 0)
-    {
-        ncp_e("mbedtls_pk_parse_key pkey err %d\n\n", ret);
-        ret = -TLS_ERR_PARSE_KEY;
-        goto exit;
+    ret = mbedtls_x509_crt_parse(&_mbedtls->own_cert, (const unsigned char *)OWN_CERT, sizeof(OWN_CERT));
+    if (ret != 0) {
+        ncp_e("mbedtls_x509_crt_parse own_cert err %d\n", ret);
+        return -TLS_ERR_PARSE_CERT;
     }
-
-    ret = mbedtls_ssl_config_defaults(&_mbedtls->conf,
-                    _mbedtls->is_server ? MBEDTLS_SSL_IS_SERVER : MBEDTLS_SSL_IS_CLIENT,
-                    MBEDTLS_SSL_TRANSPORT_STREAM,
-                    MBEDTLS_SSL_PRESET_DEFAULT);
-    if (ret != 0)
-    {
-        ncp_e("mbedtls_ssl_config_defaults err %d\n\n", ret);
-        ret = -TLS_ERR_SSL_INIT;
-        goto exit;
+    ret = mbedtls_pk_parse_key(&_mbedtls->pkey,
+                               (const unsigned char *)OWN_PVTKEY,
+                               sizeof(OWN_PVTKEY),
+                               TLS_KEY_PASSWORD,
+                               TLS_KEY_PASSWORD_LEN,
+                               NULL, NULL);
+    if (ret != 0) {
+        ncp_e("mbedtls_pk_parse_key pkey err %d\n", ret);
+        return -TLS_ERR_PARSE_KEY;
     }
-
     mbedtls_ssl_conf_ca_chain(&_mbedtls->conf, &_mbedtls->ca_cert, NULL);
     mbedtls_ssl_conf_authmode(&_mbedtls->conf, MBEDTLS_SSL_VERIFY_REQUIRED);
     ret = mbedtls_ssl_conf_own_cert(&_mbedtls->conf, &_mbedtls->own_cert, &_mbedtls->pkey);
-    if (ret != 0)
-    {
-        ncp_e("mbedtls_ssl_conf_own_cert err %d\n\n", ret);
-        ret = -TLS_ERR_CFG_CERT;
-        goto exit;
+    if (ret != 0) {
+        ncp_e("mbedtls_ssl_conf_own_cert err %d\n", ret);
+        return -TLS_ERR_CFG_CERT;
     }
+
+    /* Setup a TLS context */
     ret = mbedtls_ssl_setup(&_mbedtls->ssl, &_mbedtls->conf);
-    if (ret != 0)
-    {
-        ncp_e("mbedtls_ssl_setup err %d\n\n", ret);
-        ret = -TLS_ERR_SSL_SETUP;
-        goto exit;
+    if (ret != 0) {
+        ncp_e("mbedtls_ssl_setup err %d\n", ret);
+        return -TLS_ERR_SSL_SETUP;
     }
-    (void) mbedtls_ssl_session_reset(&_mbedtls->ssl);    
+    mbedtls_ssl_session_reset(&_mbedtls->ssl);
     mbedtls_ssl_set_bio(&_mbedtls->ssl, NULL, &port_mbedtls_send, &port_mbedtls_recv, NULL);
     mbedtls_ssl_conf_ciphersuites(&_mbedtls->conf, &_ciphersuite_list[0]);
-    
-    ret = TLS_OK;
-     
-exit:    
+
     ncp_d("*** mbedtls init exit with %d\n", ret);
     return ret;
 }
@@ -329,7 +304,6 @@ int ncp_encrypt_teardown(void)
         mbedtls_x509_crt_free(&_mbedtls->ca_cert);
         mbedtls_x509_crt_free(&_mbedtls->own_cert);
         mbedtls_pk_free(&_mbedtls->pkey);
-        mbedtls_psa_crypto_free();
 
         (void) OSA_MemoryFree(_mbedtls);
         _mbedtls = NULL;
@@ -391,8 +365,7 @@ int ncp_encrypt_process_handshake_data(uint8_t *data, uint16_t len)
     if (len)
     {
         (void) memcpy(_mbedtls->ringbuf.dat + _mbedtls->ringbuf.in, data, len);
-        _mbedtls->ringbuf.in += cp_len;
-        len -= cp_len;
+        _mbedtls->ringbuf.in += len;
     }
 
     (void) OSA_SemaphorePost(&evt_recv_sem);
@@ -401,8 +374,9 @@ int ncp_encrypt_process_handshake_data(uint8_t *data, uint16_t len)
 
 int ncp_cmd_is_data_cmd(uint32_t cmd)
 {
-    return (GET_CMD_CLASS(cmd) == _NCP_CMD_WLAN 
+    return (GET_CMD_CLASS(cmd) == _NCP_CMD_WLAN
                     && GET_CMD_SUBCLASS(cmd) == _NCP_CMD_WLAN_SOCKET)
+        || (cmd == NCP_CMD_WLAN_INET_SENDTO)
         || (cmd == NCP_CMD_BLE_L2CAP_SEND || cmd == NCP_EVENT_L2CAP_RECEIVE);
 }
 

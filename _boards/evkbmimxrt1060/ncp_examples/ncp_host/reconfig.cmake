@@ -31,6 +31,8 @@ mcux_add_macro(
     CC "-DSDK_DEBUGCONSOLE_UART\
        -DUSE_RTOS=1\
        -DOSA_USED\
+       -DMBEDTLS_PLATFORM_MEMORY\
+       -DMBEDTLS_CONFIG_FILE=\\\"mcux_mbedtls_config.h\\\"\
        -DUSB_HOST_CONFIG_LOW_POWER_MODE=1\
        -DPRINTF_ADVANCED_ENABLE=1"
 )

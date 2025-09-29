@@ -97,7 +97,7 @@ void ncp_host_input_task(void *param);
 #define NCP_HOST_INPUT_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 /* NCP host input handle task */
 static OSA_TASK_HANDLE_DEFINE(ncp_host_input_thread);
-static OSA_TASK_DEFINE(ncp_host_input_task, NCP_HOST_INPUT_TASK_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(ncp_host_input_task, NCP_HOST_INPUT_TASK_PRIO, 1, 2048, 0);
 
 extern int ncp_host_system_command_init();
 #if CONFIG_NCP_WIFI

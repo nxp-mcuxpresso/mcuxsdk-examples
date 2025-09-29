@@ -13,7 +13,11 @@
 #include "ncp_tlv_adapter.h"
 
 #define SYSTEM_NCP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
+#if CONFIG_NCP_USE_ENCRYPT
+#define SYSTEM_NCP_STACK_SIZE   4096
+#else
 #define SYSTEM_NCP_STACK_SIZE   1024
+#endif
 
 static OSA_TASK_HANDLE_DEFINE(system_ncp_task_handle);
 void system_ncp_task(void *pvParameters);

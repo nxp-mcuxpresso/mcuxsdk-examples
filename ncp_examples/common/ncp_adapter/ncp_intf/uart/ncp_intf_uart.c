@@ -55,8 +55,11 @@ extern uint32_t BOARD_DebugConsoleSrcFreq(void);
 #define NCP_UART_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
 #endif
 
+#if CONFIG_NCP_USE_ENCRYPT
+#define NCP_UART_TASK_STACK_SIZE  4096
+#else
 #define NCP_UART_TASK_STACK_SIZE  1024
-
+#endif
 /*******************************************************************************
  * Variables
  ******************************************************************************/

@@ -30,7 +30,7 @@
 static void ncp_encrypt_handshake_task(void *pvParameters);
 #define NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO   1
 static OSA_TASK_HANDLE_DEFINE(ncp_encrypt_handshake_thread);
-static OSA_TASK_DEFINE(ncp_encrypt_handshake_task, NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO, 1, 4096, 0);
+static OSA_TASK_DEFINE(ncp_encrypt_handshake_task, NCP_HOST_ENCRYPT_HANDSHAKE_TASK_PRIO, 1, 12288, 0);
 
 static int ncp_send_event(uint32_t evt, uint8_t *buf, size_t len)
 {
@@ -109,6 +109,7 @@ int ncp_sys_encrypt(void *tlv)
     cmd_res->params.encrypt.action = sys_encrypt->action;
     cmd_res->header.size += sizeof(NCP_CMD_ENCRYPT);
 
+    ncp_d("%s action %u", __FUNCTION__, sys_encrypt->action);
     switch (sys_encrypt->action)
     {
     case NCP_CMD_ENCRYPT_ACTION_INIT:

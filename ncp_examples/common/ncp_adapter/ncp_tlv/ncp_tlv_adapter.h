@@ -15,6 +15,7 @@
 #include "ncp_intf_pm.h"
 #include "ncp_adapter.h"
 #include "fsl_os_abstraction.h"
+#include "psa/crypto_types.h"
 
 
 /* define whether use encryption communication, temporarily locate it here */
@@ -42,20 +43,19 @@
 
 #define NCP_ENDECRYPT_KEY_LEN          16
 #define NCP_ENDECRYPT_IV_LEN           16
+#define NCP_GCM_TAG_LEN                16
 
 typedef struct _crypt_param_t {
     uint8_t  flag;
     uint8_t  rsv[3];
-    void    *gcm_ctx_enc;
-    void    *gcm_ctx_dec;
-    uint8_t *dec_buf;
-    uint32_t dec_buf_len;
     uint8_t  key_len;
     uint8_t  iv_len;
     uint8_t  key_enc[NCP_ENDECRYPT_KEY_LEN];
     uint8_t  key_dec[NCP_ENDECRYPT_KEY_LEN];
     uint8_t  iv_enc[NCP_ENDECRYPT_IV_LEN];
     uint8_t  iv_dec[NCP_ENDECRYPT_IV_LEN];
+    mbedtls_svc_key_id_t key_enc_id;
+    mbedtls_svc_key_id_t key_dec_id;
 } crypt_param_t;
 
 int ncp_tlv_adapter_encrypt_init(const uint8_t *key_enc, const uint8_t *key_dec, 
@@ -93,7 +93,7 @@ typedef struct _ncp_tlv_adapter
 /* NCP Debug options */
 #if CONFIG_NCP_DEBUG
 /* Interface related stats*/
-typedef struct _stats_intf
+typedef struct _stats_interface
 {
     uint32_t tx;
     uint32_t rx;
@@ -102,23 +102,23 @@ typedef struct _stats_intf
     uint32_t drop;
     uint32_t lenerr;
     uint32_t ringerr;
-} stats_inft_t;
+} stats_interface_t;
 
 /* NCP Interface stats container */
 typedef struct _ncp_stats
 {
-    stats_inft_t tlvq;
+    stats_interface_t tlvq;
 #if CONFIG_NCP_UART
-    stats_inft_t uart;
+    stats_interface_t uart;
 #endif
 #if CONFIG_NCP_SPI
-    stats_inft_t spi;
+    stats_interface_t spi;
 #endif
 #if CONFIG_NCP_USB
-    stats_inft_t usb;
+    stats_interface_t usb;
 #endif
 #if CONFIG_NCP_SDIO
-    stats_inft_t sdio;
+    stats_interface_t sdio;
 #endif
 } ncp_stats_t;
 

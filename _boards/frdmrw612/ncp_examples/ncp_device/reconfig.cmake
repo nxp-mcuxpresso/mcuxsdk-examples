@@ -36,7 +36,8 @@ mcux_add_armgcc_configuration(
 mcux_add_macro(
     CC "-DBT_PLATFORM\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
-       -DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
        -DEDGEFAST_BT_LITTLEFS_MFLASH\
        -DGATT_CLIENT\
        -DGATT_DB\
@@ -110,9 +111,9 @@ mcux_add_mdk_configuration(
         --predefine=\"-D__heap_size__=0x400\""
 )
 if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
-if(EXISTS "${SdkRootDirPath}/middleware/mbedtls/library/bignum.c")
+if(EXISTS "${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c")
 set_source_files_properties(
-    ${SdkRootDirPath}/middleware/mbedtls/library/bignum.c
+    ${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c
     PROPERTIES
     COMPILE_FLAGS "-O2"
 )
