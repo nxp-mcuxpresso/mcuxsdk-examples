@@ -698,7 +698,7 @@ BOARD_InitCameraPins:
 - options: {callFromInitBoot: 'false', coreID: cm33_core0, enableClock: 'true'}
 - pin_list:
   - {pin_num: H2, peripheral: GPIO2, signal: 'GPIO, 0', pin_signal: PIO2_0/USB0_OVERCURRENTN/EZH_PIO0/FLEXIO_D0/LCD_DBI_CSX_AB, direction: OUTPUT, input_buffer: disable}
-  - {pin_num: G2, peripheral: FLEXIO, signal: 'IO, 1', pin_signal: PIO2_1/USB0_PORTPWRN/EZH_PIO1/FLEXIO_D1/LCD_DBI_DCX_AB}
+  - {pin_num: G2, peripheral: FLEXIO, signal: 'IO, 1', pin_signal: PIO2_1/USB0_PORTPWRN/EZH_PIO1/FLEXIO_D1/LCD_DBI_DCX_AB, selects_transmitter_current_drive: O_33}
   - {pin_num: H3, peripheral: FLEXIO, signal: 'IO, 2', pin_signal: PIO2_2/LPSPI16_SOUT/EZH_PIO2/FLEXIO_D2/LCD_ENABLE/LCD_DBI_DATA_OEN, input_buffer: enable}
   - {pin_num: J6, peripheral: GPIO2, signal: 'GPIO, 5', pin_signal: PIO2_5/LPSPI16_PCS0/EZH_PIO5/FLEXIO_D5/LCD_VSYNC/LCD_DBI_E, direction: INPUT, input_buffer: enable}
   - {pin_num: H6, peripheral: FLEXIO, signal: 'IO, 6', pin_signal: PIO2_6/LPSPI16_PCS3/FLEXIO_D6/LCD_DATA0/LCD_DBI_DATA0, input_buffer: enable}
@@ -770,7 +770,9 @@ void BOARD_InitCameraPins(void)
                                         /* Pseudo Output Drain is disabled */
                                         IOPCTL_PIO_PSEDRAIN_DI |
                                         /* Input function is not inverted */
-                                        IOPCTL_PIO_INV_DI);
+                                        IOPCTL_PIO_INV_DI |
+                                        /* Selects transmitter current drive 33ohm */
+                                        IOPCTL_PIO_DRIVE_33OHM);
     /* PORT2 PIN1 (coords: G2) is configured as FLEXIO_D1 => XCLK, J53-8 */
     IOPCTL_PinMuxSet(2U, 1U, port2_pin1_config);
 

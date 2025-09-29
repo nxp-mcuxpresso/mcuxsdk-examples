@@ -40,3 +40,11 @@ Note:
 =====================
 Connect the OV7670 camera sensor to J53 connector
 short 2-3 for JP7 
+
+Note:
+=====================
+If the camera frame buffer is placed in SRAM P18~P29, and camera resolution
+is set to 640x480, the EZHV firmware doesn't work at 30Hz frame rate, 15Hz
+frame rate works.
+Root cause is accessing to these RAM_ARBITER1 partitions needs more clock cycles,
+so the EZHV can't write camera data to the buffers in time.

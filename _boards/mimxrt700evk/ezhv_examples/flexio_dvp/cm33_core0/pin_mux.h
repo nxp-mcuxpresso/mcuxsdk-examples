@@ -33,6 +33,7 @@ void BOARD_InitBootPins(void);
 
 #define IOPCTL_PIO_ANAMUX_DI 0x00u        /*!<@brief Analog mux is disabled */
 #define IOPCTL_PIO_DRIVE_100OHM 0x00u     /*!<@brief Selects transmitter current drive 100ohm */
+#define IOPCTL_PIO_DRIVE_33OHM 0x3000u    /*!<@brief Selects transmitter current drive 33ohm */
 #define IOPCTL_PIO_FULLDRIVE_DI 0x00u     /*!<@brief Normal drive */
 #define IOPCTL_PIO_FUNC0 0x00u            /*!<@brief Selects pin function 0 */
 #define IOPCTL_PIO_INBUF_EN 0x40u         /*!<@brief Enables input buffer function */
