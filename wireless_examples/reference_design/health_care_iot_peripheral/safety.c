@@ -727,8 +727,13 @@ void SAFETY_Init(void)
     status_t status = SAFETY_WatchdogStart(60800);
     assert_equal(status, kStatus_Success);
 #else
+#ifdef SDK_OS_FREE_RTOS
     /* Start the watchdog with a 2s timeout */
     SAFETY_WatchdogStart(2000);
+#else
+    /* Start the watchdog with a 3s timeout */
+    SAFETY_WatchdogStart(3000);
+#endif
 #endif /* NO_FAST_CONNECTION */
 
 #ifdef SDK_OS_FREE_RTOS
