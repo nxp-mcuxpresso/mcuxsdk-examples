@@ -168,25 +168,25 @@ void BOARD_BootClockRUN_InitClockModule(clock_module_t module)
             break;
         case kClockModule_FXOSC:
             /* Enable FXOSC. */
-            CLOCK_InitFxosc(&g_fxoscConfig_BOARD_BootClockRUN);
+            (void)CLOCK_InitFxosc(&g_fxoscConfig_BOARD_BootClockRUN);
             break;
         case kClockModule_PLL:
             /* Enable PLL. */
-            CLOCK_InitPll(&g_pllConfig_BOARD_BootClockRUN);
+            (void)CLOCK_InitPll(&g_pllConfig_BOARD_BootClockRUN);
             break;
         case kClockModule_MUX0_CSC_DC:
-            CLOCK_SelectSafeClock(kFIRC_CLK_to_MUX0);
+            (void)CLOCK_SelectSafeClock(kFIRC_CLK_to_MUX0);
             /* Configure MUX_0_CSC dividers */
             CLOCK_SetClkMux0DivTriggerType(KCLOCK_CommonTriggerUpdate);
-            CLOCK_SetClkDiv(kCLOCK_DivCoreClk, 1U);
-            CLOCK_SetClkDiv(kCLOCK_DivAipsPlatClk, 2U);
-            CLOCK_SetClkDiv(kCLOCK_DivAipsSlowClk, 4U);
-            CLOCK_SetClkDiv(kCLOCK_DivHseClk, 2U);
-            CLOCK_SetClkDiv(kCLOCK_DivDcmClk, 4U);
-            CLOCK_SetClkDiv(kCLOCK_DivLbistClk, 4U);
-            CLOCK_SetClkDiv(kCLOCK_DivQspiClk, 1U);
-            CLOCK_CommonTriggerClkMux0DivUpdate();
-            CLOCK_ProgressiveClockFrequencySwitch( kPLL_PHI0_CLK_to_MUX0, &g_pcfsConfig_BOARD_BootClockRUN);
+            (void)CLOCK_SetClkDiv(kCLOCK_DivCoreClk, 1U);
+            (void)CLOCK_SetClkDiv(kCLOCK_DivAipsPlatClk, 2U);
+            (void)CLOCK_SetClkDiv(kCLOCK_DivAipsSlowClk, 4U);
+            (void)CLOCK_SetClkDiv(kCLOCK_DivHseClk, 2U);
+            (void)CLOCK_SetClkDiv(kCLOCK_DivDcmClk, 4U);
+            (void)CLOCK_SetClkDiv(kCLOCK_DivLbistClk, 4U);
+            (void)CLOCK_SetClkDiv(kCLOCK_DivQspiClk, 1U);
+            (void)CLOCK_CommonTriggerClkMux0DivUpdate();
+            (void)CLOCK_ProgressiveClockFrequencySwitch( kPLL_PHI0_CLK_to_MUX0, &g_pcfsConfig_BOARD_BootClockRUN);
             break;
         default:
             assert(false);
