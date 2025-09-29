@@ -12,7 +12,6 @@ mcux_add_source(
     SOURCES examples/ecat_examples/eoe/ecat_hw.h
     SOURCES examples/ecat_examples/eoe/eoe_lwip_interface.c
     SOURCES examples/ecat_examples/eoe/eoe_lwip_interface.h
-    SOURCES examples/ecat_examples/eoe/FreeRTOSConfig.h
     SOURCES examples/ecat_examples/eoe/httpsrv_freertos.c
     SOURCES examples/ecat_examples/eoe/httpsrv_freertos.h
     SOURCES examples/ecat_examples/eoe/httpsrv_fs_data.c
@@ -53,7 +52,6 @@ mcux_add_source(
     SOURCES examples/ecat_examples/eoe/SSC/Src/objdef.h
     SOURCES examples/ecat_examples/eoe/SSC/Src/sdoserv.c
     SOURCES examples/ecat_examples/eoe/SSC/Src/sdoserv.h
-    SOURCES ${board_root}/${board}/FreeRTOSConfigBoard.h
 )
 
 mcux_add_include(

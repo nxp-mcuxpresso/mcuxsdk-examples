@@ -64,7 +64,7 @@ static struct netif EoE_netif;
 
 void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
                                    StackType_t **ppxIdleTaskStackBuffer,
-                                   uint32_t *pulIdleTaskStackSize)
+                                   configSTACK_DEPTH_TYPE *pulIdleTaskStackSize)
 {
     *ppxIdleTaskTCBBuffer   = &IdleTaskTCB;
     *ppxIdleTaskStackBuffer = &IdleTaskStack[0];
