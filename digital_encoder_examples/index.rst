@@ -11,5 +11,6 @@ digital_encoder_examples
    endat2p2/readme.md
    endat3/readme.md
    hiperface/readme.md
+   flexio_endat2p2/readme.md
    t-format/index.rst
    a-format/index.rst

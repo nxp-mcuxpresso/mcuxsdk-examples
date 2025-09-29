@@ -1,0 +1,40 @@
+flexio_endat2p2:
+  section-type: application
+  contents:
+    meta_path: examples/digital_encoder_examples/flexio_endat2p2
+    project-root-path: boards/${board}/digital_encoder_examples/flexio_endat2p2/${multicore_foldername}
+    document:
+      name: flexio_endat2p2${core_id_suffix_name}
+      category: digital_encoder_examples
+      brief: EnDat2.2 interface example
+      example_readme:
+      - examples/digital_encoder_examples/flexio_endat2p2/readme.md
+      - ${board_root}/${board}/digital_encoder_examples/flexio_endat2p2/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    frdmimxrt1186@cm33:
+    - +armgcc@debug
+    - +armgcc@hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@debug
+    - +iar@hyperram_debug
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@flexspi_nor_hyperram_debug
+    - -mdk@flexspi_nor_hyperram_release
+    frdmimxrt1186@cm7:
+    - +armgcc@debug
+    - +armgcc@hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@debug
+    - +iar@hyperram_debug
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - -mdk@debug
+    - -mdk@hyperram_debug
+    - -mdk@flexspi_nor_hyperram_debug
+    - -mdk@flexspi_nor_hyperram_release
