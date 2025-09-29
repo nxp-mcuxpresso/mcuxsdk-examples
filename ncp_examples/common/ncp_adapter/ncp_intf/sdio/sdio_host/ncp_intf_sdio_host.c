@@ -52,6 +52,9 @@
 #define SDIO_SLEEP_HS_DONE 1U
 #define SDIO_RESET_DONE 2U
 
+/** Max retry number of IO write */
+#define MAX_WRITE_IOMEM_RETRY       10
+
 /*! @brief SD power reset */
 #define BOARD_SDMMC_SD_POWER_RESET_GPIO_BASE GPIO1
 //#define BOARD_SDMMC_SD_POWER_RESET_GPIO_PORT 1
@@ -59,6 +62,20 @@
 
 /*!@ brief host interrupt priority*/
 #define BOARD_SDMMC_SDIO_HOST_IRQ_PRIORITY (5U)
+/** Card Control Registers : IO abort */
+#define IO_ABORT 0x06
+
+/* Host Control Registers */
+/** Host Control Registers : Host to Card Event */
+#define HOST_TO_CARD_EVENT_REG 0x00
+/** Host Control Registers : Host terminates Command 53 */
+#define HOST_TERM_CMD53 (0x1U << 2)
+/** Host Control Registers : Host without Command 53 finish host */
+#define HOST_WO_CMD53_FINISH_HOST (0x1U << 2)
+/** Host Control Registers : Host power up */
+#define HOST_POWER_UP (0x1U << 1)
+/** Host Control Registers : Host power down */
+#define HOST_POWER_DOWN (0x1U << 0)
 
 /** Card Control Registers : Card to host event */
 #define CARD_TO_HOST_EVENT_REG 0x5C
@@ -382,6 +399,8 @@ int sdio_drv_read(uint32_t addr, uint32_t fn, uint32_t bcnt, uint32_t bsize, uin
 {
     uint32_t flags = 0;
     uint32_t param;
+    uint32_t sd_retry = 0;
+    uint32_t status = 0;
 
     if (KOSA_StatusSuccess != OSA_MutexLock(&sdio_mutex, osaWaitForever_c))
     {
@@ -399,8 +418,20 @@ int sdio_drv_read(uint32_t addr, uint32_t fn, uint32_t bcnt, uint32_t bsize, uin
         param = bsize;
     }
 
+retry:
     if (SDIO_IO_Read_Extended(&g_sdio_card, (sdio_func_num_t)fn, addr, buf, param, flags) != kStatus_Success)
     {
+        /* issue abort cmd52 command through Fn0 */
+        (void)sdio_drv_creg_write(IO_ABORT, 0, 0x01, &status);
+        /* issue terminate CMD53 */
+        (void)sdio_drv_creg_write(HOST_TO_CARD_EVENT_REG, 1, HOST_TERM_CMD53, &status);
+
+        if (sd_retry < MAX_WRITE_IOMEM_RETRY)
+        {
+            sd_retry++;
+            goto retry;
+        }
+
         (void)OSA_MutexUnlock(&sdio_mutex);
         return false;
     }
@@ -446,6 +477,8 @@ bool sdio_drv_write(uint32_t addr, uint32_t fn, uint32_t bcnt, uint32_t bsize, u
 {
     uint32_t flags = 0;
     uint32_t param;
+    uint32_t sd_retry = 0;
+    uint32_t status = 0;
 
     if (KOSA_StatusSuccess != OSA_MutexLock(&sdio_mutex, osaWaitForever_c))
     {
@@ -470,8 +503,20 @@ bool sdio_drv_write(uint32_t addr, uint32_t fn, uint32_t bcnt, uint32_t bsize, u
             return false;
     }
 
+retry:
     if (SDIO_IO_Write_Extended(&g_sdio_card, (sdio_func_num_t)fn, addr, buf, param, flags) != kStatus_Success)
     {
+        /* issue abort cmd52 command through Fn0 */
+        (void)sdio_drv_creg_write(IO_ABORT, 0, 0x01, &status);
+        /* issue terminate CMD53 */
+        (void)sdio_drv_creg_write(HOST_TO_CARD_EVENT_REG, 1, HOST_TERM_CMD53, &status);
+
+        if (sd_retry < MAX_WRITE_IOMEM_RETRY)
+        {
+            sd_retry++;
+            goto retry;
+        }
+
         (void)OSA_MutexUnlock(&sdio_mutex);
         return false;
     }
