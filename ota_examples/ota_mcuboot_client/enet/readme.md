@@ -38,7 +38,7 @@ The client connects to a HTTPS server and requests an OTA binary for download an
 
 ## Running the HTTPS server example
 
-For better experience there is a simple HTTPS server Python3 implementation attached to this example.
+For better experience and simplicity there is a simple HTTPS server Python3 implementation attached to this example.
 It was tested with both Windows and Linux, however, it will run on anything supported by Python3.
 
 The directory https_server has the following content:
@@ -51,6 +51,12 @@ When run with no parameters it creates a server instance on port 4433:
 
 With the server code running it is now possible to create connections to this server and request files located in its directory.
 After the ota image is generated and signed, the last step is to copy it to the server directory.
+
+The connection to the server can be tested using a web browser:
+    
+    https://192.168.xx.xx:4433/
+
+This example for simplicity is using Partial Content HTTP extension which allows to download a file in chunks using a single connection. The example was also tested with alternative implementations such as Apache HTTP server or [HFS](https://github.com/rejetto/hfs). User evaluating the example is advised to stick to them, as other implementations may have some nuances or corner cases in connectivity that might not be covered in the example code.
 
 
 ## Running the demo
