@@ -13,12 +13,10 @@
 #include "fsl_common.h"
 #include "fsl_clock.h"
 #include "fsl_xbar.h"
-#include "fsl_biss.h"
 
 #include "board.h"
 
 #include "mcdrv_pwm3ph_pwma.h"
-#include "mcdrv_bissc.h"
 #include "mcdrv_endat2p2.h"
 #include "mcdrv_sinc.h"
 #include "m1_pmsm_appconfig.h"
@@ -44,7 +42,6 @@ typedef struct _clock_setup
     uint16_t ui16M2PwmModulo;
     uint16_t ui16M2PwmDeadTime;
 } clock_setup_t;
-
 
 
 /******************************************************************************
@@ -78,32 +75,10 @@ typedef struct _clock_setup
 /* DC bus voltage not measured using ADC. 0 - false, 1 - true */ 
 #define DCBUS_NO_MEASUREMENT (1)
 
-/* BiSS macros */
-#define BISS_BASE               BISS1
-
-/* Interrupt number and interrupt handler for the TPM instance used */
-#define BISS_EOT_IRQn           Reserved166_IRQn
-#define BISS_EOT_IRQHandler     Reserved166_IRQHandler
-
-#define BISS_SYS_CLK_ROOT       kCLOCK_Biss
-#define BISS_SYS_CLK_FREQ       20000000 /* 20MHz */
-#define BISS_MA_CLK_FREQ        10000000  /* 10MHz */
-#define BISS_AGS_CLK_FREQ       100000   /* 100KHz */
-
-#define BISS_DEVICE_WR_ER_LEN   2
-#define BISS_DEVICE_MT_LEN      12
-#define BISS_DEVICE_ST_LEN      16
-#define BISS_DEVICE_DATA_LEN    (BISS_DEVICE_MT_LEN + BISS_DEVICE_ST_LEN + BISS_DEVICE_WR_ER_LEN)
-#define BISS_DEVICE_CRC_LEN     6  
-
 #define DIG_ENCODER_MUX_HIPERFACE_DSL   0x0
 #define DIG_ENCODER_MUX_ENDAT2P2        0x1
 #define DIG_ENCODER_MUX_ENDAT3          0x2
 #define DIG_ENCODER_MUX_BISS            0x3
-   
-/* Interrupt number and interrupt handler for the TPM instance used */
-#define ENDAT2P2_IRQn           Reserved163_IRQn
-#define ENDAT2P2_IRQHandler     Reserved163_IRQHandler
 
 /******************************************************************************
  * Define common phase currents and DC bus measurement functions for motor 1
@@ -135,18 +110,22 @@ typedef struct _clock_setup
 
 
 /******************************************************************************
- * Define position and speed sensor for motor 1 - biss-c 
+ * Define position and speed sensor for motor 1 - EnDat2.2
  ******************************************************************************/
 
-/* Example specific position/speed sensor defines */
-#define M1_MCDRV_BISS_PERIPH_INIT() InitBiSS1()
-#define M1_MCDRV_BISS_GET(par) (MCDRV_BissCDataRead(par))
+/* Interrupt number and interrupt handler for the EnDat2.2 */
+#define M1_ENDAT2P2_IRQn           Reserved165_IRQn
+#define M1_ENDAT2P2_IRQHandler     Reserved165_IRQHandler
 
+/* Example specific position/speed sensor defines */
+#define M1_MCDRV_ENCODER_PERIPH_INIT() (M1_InitEndat2p2())
+#define M1_MCDRV_ENCODER_GET(par)      (MCDRV_Endat2p2DataRead(par))
+     
 /* Common position/speed sensor defines */
-#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_BissCGetPositionFoc(par))
-#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_BissCGetPositionFullAndSpeed(par))
-#define M1_MCDRV_ENC_CLEAR(par) (MCDRV_BissCClear(par))
-#define M1_MCDRV_ENC_SET_OFFSET(par) (MCDRV_BissCSetOffset(par)) 
+#define M1_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
+#define M1_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
+#define M1_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat2p2Clear(par))
+#define M1_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat2p2SetOffset(par)) 
 #define M1_MCDRV_ENC_SET_DIRECTION(par)
 #define M1_MCDRV_ENC_SET_PULSES(par)
 #define M1_MCDRV_ENC_GET_POSITION(par)
@@ -245,13 +224,17 @@ typedef struct _clock_setup
  * Define position and speed sensor for motor 2 - EnDat2.2
  ******************************************************************************/
 
+/* Interrupt number and interrupt handler for the EnDat2.2 */
+#define M2_ENDAT2P2_IRQn           Reserved163_IRQn
+#define M2_ENDAT2P2_IRQHandler     Reserved163_IRQHandler
+
 /* Example specific position/speed sensor defines */
-#define M2_MCDRV_ENDAT2P2_PERIPH_INIT() (InitEndat2p2())
-#define M2_MCDRV_ENDAT2P2_GET(par)      (MCDRV_Endat2p2DataRead(par))
+#define M2_MCDRV_ENCODER_PERIPH_INIT() (M2_InitEndat2p2())
+#define M2_MCDRV_ENCODER_GET(par)      (MCDRV_Endat2p2DataRead(par))
      
 /* Common position/speed sensor defines */
-#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDatGetPositionFoc(par))
-#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDatGetPositionFullAndSpeed(par))
+#define M2_MCDRV_ENC_GET_DATA_FAST(par) (MCDRV_EnDat2p2GetPositionFoc(par))
+#define M2_MCDRV_ENC_GET_DATA_SLOW(par) (MCDRV_EnDat2p2GetPositionFullAndSpeed(par))
 #define M2_MCDRV_ENC_CLEAR(par)         (MCDRV_Endat2p2Clear(par))
 #define M2_MCDRV_ENC_SET_OFFSET(par)    (MCDRV_Endat2p2SetOffset(par)) 
 #define M2_MCDRV_ENC_SET_DIRECTION(par)
@@ -268,7 +251,7 @@ extern clock_setup_t g_sClockSetup;
 extern mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 extern mcdrv_pwm3ph_pwma_t g_sM2Pwm3ph;
 
-extern BISSC_Type g_sM1Enc;
+extern mcdrv_endat2p2_t g_sM1Enc;
 extern mcdrv_endat2p2_t g_sM2Enc;
 
 extern mcdrv_sinc_t g_sM1Curr3phDcBus;
@@ -287,8 +270,8 @@ void InitClock(void);
 void InitTMR1(void);
 void M1_InitPWM(void);
 void M2_InitPWM(void);
-void InitBiSS1(void);
-void InitEndat2p2(void);
+void M1_InitEndat2p2(void);
+void M2_InitEndat2p2(void);
 void Sinc1_Init(void);
 void Sinc2_Init(void);
 

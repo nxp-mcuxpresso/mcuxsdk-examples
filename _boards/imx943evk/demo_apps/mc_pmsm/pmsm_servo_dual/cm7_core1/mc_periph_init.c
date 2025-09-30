@@ -21,12 +21,9 @@
 mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 mcdrv_pwm3ph_pwma_t g_sM2Pwm3ph;
 
-/* Structure for BISS-C driver */
-BISSC_Type g_sM1Enc = { .ui8DevDataLen = BISS_DEVICE_DATA_LEN, \
-                          .ui8DevSTLen = BISS_DEVICE_ST_LEN, \
-                          .ui8DevMTLen = BISS_DEVICE_MT_LEN};
 
-/* Structure for EnDat2.2 driver */
+/* Structures for EnDat2.2 driver */
+mcdrv_endat2p2_t g_sM1Enc;
 mcdrv_endat2p2_t g_sM2Enc;
 
 /* Structures for current and voltage measurement */
@@ -74,148 +71,133 @@ void MCDRV_Init(void)
     M2_MCDRV_PWM_PERIPH_INIT();
     
     /* Init SINC filters */
-    M1_MCDRV_SINC_INIT();
+//    M1_MCDRV_SINC_INIT();
     M2_MCDRV_SINC_INIT();
     
-    /* Init BiSS-C */
-    M1_MCDRV_BISS_PERIPH_INIT();
+    /* Init EnDat2.2 for motor connector 1 */
+//    M1_MCDRV_ENCODER_PERIPH_INIT();
     
-    /* Init EnDat2p2 */
-    M2_MCDRV_ENDAT2P2_PERIPH_INIT();
+    /* Init EnDat2p2 for motor connector 2 */
+    M2_MCDRV_ENCODER_PERIPH_INIT();
     
 }
 
 
-
-
-
-/*
-
-ksi = 1;
-f0 = 100;
-Ts = 0.0000625;
-DiscMethodFactor = 2; !!!
-
-M1_POSPE_TO_KP_GAIN = (4.0 * pi * ksi * f0) % (1256.64F)
-M1_POSPE_TO_KI_GAIN = ((2*pi*f0)^2 * Ts)  % (24.6740F)
-M1_POSPE_TO_THETA_GAIN = (Ts / pi / DiscMethodFactor)  % (0.0000198944 / 2)
-
-*/
-
-///* 16KHz */
-//#define M1_POSPE_TO_KP_GAIN (1256.64F)
-//#define M1_POSPE_TO_KI_GAIN (24.6740F)
-//#define M1_POSPE_TO_THETA_GAIN (0.0000099472F) // DiscMethodFactor is 2!
-
-/* 32KHz */
-//#define M1_POSPE_TO_KP_GAIN (1256.64F)
-//#define M1_POSPE_TO_KI_GAIN (12.3370F)
-//#define M1_POSPE_TO_THETA_GAIN (0.0000049736F) // DiscMethodFactor is 2!
-
-/* 64KHz */
-#define M1_POSPE_TO_KP_GAIN (1256.64F)
-#define M1_POSPE_TO_KI_GAIN (6.1685F)
-#define M1_POSPE_TO_THETA_GAIN (0.0000024868) // DiscMethodFactor is 2!
-
 /*!
- * @brief      Init BiSS master IP
+ * @brief      Init EnDat2.2 master IP for motor connector 1
  *
  * @param      void
  *
  * @return     none
  */
-void InitBiSS1(void)
+void M1_InitEndat2p2(void)
 {
-  /* BiSS 20MHz */
-  clk_t bissClk = {
-      .clkId = BISS_SYS_CLK_ROOT,
-      .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
-      .rate = BISS_SYS_CLK_FREQ,
-      .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-  };    
-
+  int data;
+  
+  /* EnDat2.2 100MHz */
+  clk_t endat2p2Clk = {
+    .clkId = kCLOCK_Endat21,
+    .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+    .rate = ENDAT2P2_CLK_48M,
+    .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };
+  
   BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
   
-    CLOCK_SetParent(&bissClk);
-    CLOCK_SetRate(&bissClk);
-    CLOCK_EnableClock(bissClk.clkId);
+  CLOCK_SetParent(&endat2p2Clk);
+  CLOCK_SetRate(&endat2p2Clk);
+  CLOCK_EnableClock(endat2p2Clk.clkId);
   
+  /* Motor connector 1 selected */
   blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
-    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_BISS);
+    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT2P2);
   
-  /* Select Motor controller 1 */
-  BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
-  SDK_DelayAtLeastUs(100U, SystemCoreClock);  
+  /* EXTENDED PWM to trigger EnDat StrN */
+  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
+  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);
   
-  /* BISSC M1 structure */    
-  g_sM1Enc.mt = 0U;
-  g_sM1Enc.st = 0U;
-  g_sM1Enc.mt_offset = 0U;
-  g_sM1Enc.st_offset = 0U;       
-  g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
-
-  /* BiSS driver initialization */
-  status_t status;
-  uint8_t slvID;
-  biss_slave_info_t *slv;
-  biss_master_t *master;
-
-  /* Disable BiSS_EOT interrupt */
-  DisableIRQ(BISS_EOT_IRQn);
-  blk_ctrl->BISS1_EOT_CTL = 0;
+  /* Trigger EnDat2.2 */
+  XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputEndat22StrN);
   
-  master = BISS_MasterInit(BISS_BASE, BISS_SYS_CLK_FREQ, BISS_MA_CLK_FREQ, BISS_AGS_CLK_FREQ);  
+  blk_ctrl->ENDAT_STRETCHER_CTRL =
+    BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
+      BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
   
-  if (master == NULL)
+  g_sM1Enc.dev = ENDAT2P2_InitMaster(ENDAT2P2_2, ENDAT2P2_CLK_48M);
+  
+  /* Init encoder - ENDAT2P2_InitEncoder(dev); */
+  
+  ENDAT2P2_EncoderRest(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+  
+  ENDAT2P2_ClearEncoderError(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+  
+  ENDAT2P2_ClearEncoderWarning(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+  
+  ENDAT2P2_GetEncoderInfo(g_sM1Enc.dev);
+  
+  ENDAT2P2_SetDataWordLength(g_sM1Enc.dev, g_sM1Enc.dev->pos_res);
+  
+  ENDAT2P2_SetFTCLOCK(g_sM1Enc.dev, ENDAT2P2_CLK_8M);
+  
+  /* Change tm to 3.75us */
+  data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+  data = (data & (~3)) | 0x1;
+  
+  ENDAT2P2_SetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3, data);
+  ENDAT2P2_EncoderRestWithPos(g_sM1Enc.dev);
+  
+  data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+  
+  ENDAT2P2_SetRecoveryTimer(g_sM1Enc.dev, 0);
+  
+  ENDAT2P2_GetEncoderError(g_sM1Enc.dev);
+  ENDAT2P2_GetEncoderWarning(g_sM1Enc.dev);
+  
+  if(g_sM1Enc.dev->cmd_set_2_2)
   {
-      return;
-  }
-  SDK_DelayAtLeastUs(100U, SystemCoreClock);
-  
-  BISS_InitBissSequence(master);
-  SDK_DelayAtLeastUs(400U, SystemCoreClock);
-  
-  /* Broadcast Active all slaves */
-  BISS_CMDProcess(master, BISS_CMD_IDS_BOARDCAST, BISS_CMD_BOARDCAST_CTRL_ACTIVATED);
-  SDK_DelayAtLeastUs(400U, SystemCoreClock);
-  
-  status = BISS_SLVScan(master);
-  if (status != kStatus_Success)
-  {
-      return;
+    ENDAT2P2_ClearEncoderErrorWithPos(g_sM1Enc.dev);
+    
+    ENDAT2P2_GetEncoderErrorWithPos(g_sM1Enc.dev);
+    ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
   }
   
-  for (slvID = 0; slvID < master->slvCnt; slvID++)
-  {
-      slv = BISS_SLVGet(master, slvID);
-     
-      if (slv->dataLen == 0)
-          slv->dataLen = g_sM1Enc.ui8DevDataLen;
-      if (slv->crcLen == 0)
-          slv->crcLen = BISS_DEVICE_CRC_LEN;
-  }
+  /* EnDat HW Strobe Loop */
   
-  /* Manually initialize the slaves */
-  BISS_SLVSetSCD(master, 0, g_sM1Enc.ui8DevDataLen, BISS_DEVICE_CRC_LEN);
+  endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
   
-  BISS_ChangeTriggerMode(master, BISS_PIN_TRIGGER);
+  /* reset additional info's if present */
+  ENDAT2P2_EncoderRest(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs(500U, SystemCoreClock);
   
-  /* Asign BiSS master module address */
-  g_sM1Enc.pMaster = (biss_master_t *)master;
-
-  /* Enable BiSS_EOT interrupt */
-  EnableIRQ(BISS_EOT_IRQn);
-  blk_ctrl->BISS1_EOT_CTL = 0x3;
+  ENDAT2P2_CMDBuild(g_sM1Enc.dev, cmd, 0, 0);
+  
+  ENDAT2P2_CleanStatus(g_sM1Enc.dev);
+  
+  ENDAT2P2_SetHWStrobe(g_sM1Enc.dev, true);
+  
+  ENDAT2P2_CleanStatus(g_sM1Enc.dev);
+  
+  g_sM1Enc.ui16Pp = M1_MOTOR_PP;
+  
+  /* Enable interrupt */
+  ENDAT2P2_SetInterruptMask(g_sM1Enc.dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
+  EnableIRQ(M1_ENDAT2P2_IRQn);
+  NVIC_SetPriority(M1_ENDAT2P2_IRQn, 0U);
 }
 
+
 /*!
- * @brief      Init EnDat2.2 master IP
+ * @brief      Init EnDat2.2 master IP for motor connector 2
  *
  * @param      void
  *
  * @return     none
  */
-void InitEndat2p2(void)
+void M2_InitEndat2p2(void)
 {
     int data;
   
@@ -233,12 +215,22 @@ void InitEndat2p2(void)
     CLOCK_SetRate(&endat2p2Clk);
     CLOCK_EnableClock(endat2p2Clk.clkId);
  
+    /* Motor connector 2 selected */
     blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
       BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc1_sel(DIG_ENCODER_MUX_ENDAT2P2);
 
     blk_ctrl->ENDAT_STRETCHER_CTRL =
     BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
     BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
+    
+    
+  /* EXTENDED PWM to trigger EnDat StrN */
+  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(2U);
+  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH1(7U);
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm1Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn1);
+  
+  /* Trigger EnDat2.2 */
+  XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut1, kXBAR1_OutputEndat21StrN);
     
     g_sM2Enc.dev = ENDAT2P2_InitMaster(ENDAT2P2_1, ENDAT2P2_CLK_48M);
       
@@ -302,17 +294,13 @@ void InitEndat2p2(void)
     ENDAT2P2_SetHWStrobe(g_sM2Enc.dev, true);
 
     ENDAT2P2_CleanStatus(g_sM2Enc.dev);
-    
-    
+       
     g_sM2Enc.ui16Pp        = M2_MOTOR_PP;
-    
-    
-//    ENDAT2P2_SetHWStrobe(dev, false);
        
     /* Enable interrupt */
     ENDAT2P2_SetInterruptMask(g_sM2Enc.dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
-    EnableIRQ(ENDAT2P2_IRQn);
-    NVIC_SetPriority(ENDAT2P2_IRQn, 0U);
+    EnableIRQ(M2_ENDAT2P2_IRQn);
+    NVIC_SetPriority(M2_ENDAT2P2_IRQn, 0U);
 
 }
 

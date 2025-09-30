@@ -57,8 +57,7 @@
         __DSB();      \
         __ISB();      \
     }
-        
-/* Init SDK HW */
+
 /* TMR1 reload ISR called with 1ms period */
 RAM_FUNC_LIB
 void TMR1_IRQHandler(void);
@@ -67,23 +66,11 @@ void TMR1_IRQHandler(void);
 RAM_FUNC_LIB
 void SINC1_CH0_IRQHandler(void);
 
-/* EnDat2.2 interrupt */
-RAM_FUNC_LIB
-void ENDAT2P2_IRQHandler(void);
-
-///* Demo Speed Stimulator */
-//RAM_FUNC_LIB
-//static void DemoSpeedStimulator(void);
-///* Demo Position Stimulator */
-//RAM_FUNC_LIB
-//static void DemoPositionStimulator(void);
-
 static void BOARD_InitSysTick(void);
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-
 
 /*******************************************************************************
  * Code
@@ -94,19 +81,8 @@ uint32_t g_ui32NumberOfCycles    = 0U;
 uint32_t g_ui32MaxNumberOfCycles = 0U;
 
 /* Demo mode enabled/disabled */
-bool_t bDemoMode    = FALSE;
 bool_t bDemoModeSpeed    = FALSE;
 bool_t bDemoModePosition = FALSE;
-
-///* Counters used for demo mode */
-//static uint32_t ui32SpeedStimulatorCnt    = 0U;
-//static uint32_t ui32PositionStimulatorCnt = 0U;
-//
-///* Counter for button pressing */
-//static uint32_t ui32ButtonFilter = 0U;
-
-GFLIB_RAMP_T_FLT sPositionDemoRampParams;       /* Position demo ramp parameters */
-float_t fltPositionDemoReqValue = 10.0F;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
@@ -135,66 +111,82 @@ static void init_freemaster_lpuart(void);
  */
 int main(void)
 {  
-    /*Accessing ID structure to prevent optimization*/
-    g_sAppIdFM.ui16FeatureSet = FEATURE_SET;
-
-    uint32_t ui32PrimaskReg;
-
-    /* Disable all interrupts before peripherals are initialized */
-    ui32PrimaskReg = DisableGlobalIRQ();
-
-    /* Disable demo mode after reset */
-    bDemoMode = FALSE;
-
-    SystemPlatformInit();
-    BOARD_ConfigMPU();
-    BOARD_InitDebugConsolePins();
-    BOARD_InitBootPins();
-    BOARD_BootClockRUN();
-    
-    /* FreeMASTER communication layer initialization */
-    init_freemaster_lpuart();
-    
-    FMSTR_Init();
-
-    /* SysTick initialization for CPU load measurement */
-    BOARD_InitSysTick();
-
-    /* Init peripheral motor control driver for motors M1 and M2 */
-    MCDRV_Init();
-
-    /* Turn off application */
-    M1_SetAppSwitch(FALSE);
-    
-    /* Position demo ramp */
-    sPositionDemoRampParams.fltRampUp   = 0.00375; // 1 [rev/s] / SlowLoopSampleTime = 1/4000 = 0.00025
-    sPositionDemoRampParams.fltRampDown = sPositionDemoRampParams.fltRampUp;
-    
-    /* Enable interrupts */
-    EnableGlobalIRQ(ui32PrimaskReg);
-    
-    /* Enable PWM clock */
-    g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);	/* Enable PWM for Motor 1 */
-        
-    /* Infinite loop */
-    while (1)
-    {      
-        /* FreeMASTER Polling function */
-        FMSTR_Poll();
-    }
+  /*Accessing ID structure to prevent optimization*/
+  g_sAppIdFM.ui16FeatureSet = FEATURE_SET;
+  
+  uint32_t ui32PrimaskReg;
+  
+  /* Disable all interrupts before peripherals are initialized */
+  ui32PrimaskReg = DisableGlobalIRQ();
+  
+  SystemPlatformInit();
+  BOARD_ConfigMPU();
+  BOARD_InitDebugConsolePins();
+  BOARD_InitBootPins();
+  BOARD_BootClockRUN();
+  
+  /* FreeMASTER communication layer initialization */
+  init_freemaster_lpuart();
+  
+  FMSTR_Init();
+  
+  /* SysTick initialization for CPU load measurement */
+  BOARD_InitSysTick();
+  
+  /* Init peripheral motor control driver for motors M1 and M2 */
+  MCDRV_Init();
+  
+  /* Turn off application */
+  M1_SetAppSwitch(FALSE);
+  
+  /* Enable interrupts */
+  EnableGlobalIRQ(ui32PrimaskReg);
+  
+  /* Enable PWM clock */
+  g_sM1Pwm3ph.pui32PwmBaseAddress->MCTRL |= PWM_MCTRL_RUN(0xF);	/* Enable PWM for Motor 1 */
+  
+  /* Infinite loop */
+  while (1)
+  {      
+    /* FreeMASTER Polling function */
+    FMSTR_Poll();
+  }
 }
 
 RAM_FUNC_LIB
-void ENDAT2P2_IRQHandler(void)
+void ENCODER_IRQHandler(void)
 {
-  /* get position from EnDat2.2 */
-  M1_MCDRV_ENDAT2P2_GET(&g_sM1Enc);
+  /* Start CPU tick number couting */
+  SYSTICK_START_COUNT();
+
+#if (USE_ENCODER == USE_ENCODER_BISS)
+  /* clear EOT interrupt */
+  BLK_CTRL_WAKEUPMIX->BISS1_EOT_CTL =
+    BLK_CTRL_WAKEUPMIX_BISS1_EOT_CTL_biss_eot_rise_clr_int_b(1) | 3; 
+#endif
+  
+  /* Get position data from EnDat2.2, EnDat3 or BiSS encoder. */
+  M1_MCDRV_ENCODER_GET(&g_sM1Enc);
   
   /* M1 State machine */
   SM_StateMachineFast(&g_sM1Ctrl);
-
+  
   /* Call FreeMASTER recorder */
   FMSTR_Recorder(0);
+
+#if (USE_ENCODER == USE_ENCODER_ENDAT3) 
+  /* Clear EnDat3 FG_IRQ0 flag */
+  ENDAT3_IRQ_Clear(ENDAT3, CLEAR_FG_IRQ0);
+#endif  /* EnDat3 encoder is used. */
+  
+#if (USE_ENCODER == USE_ENCODER_BISS)
+  BLK_CTRL_WAKEUPMIX->BISS1_EOT_CTL = 3;
+#endif
+  
+  /* Stop CPU tick number couting and store actual and maximum ticks */
+  SYSTICK_STOP_COUNT(g_ui32NumberOfCycles);
+  g_ui32MaxNumberOfCycles =
+    g_ui32NumberOfCycles > g_ui32MaxNumberOfCycles ? g_ui32NumberOfCycles : g_ui32MaxNumberOfCycles;
   
   SDK_ISR_EXIT_BARRIER;
 }
@@ -203,7 +195,7 @@ RAM_FUNC_LIB
 void SINC1_CH0_IRQHandler(void)
 {
   /* Read SINC results and process data */
-  M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);  
+  M1_MCDRV_SINC_GET(&g_sM1Curr3phDcBus);
 }
 
 /*!
@@ -217,124 +209,19 @@ void SINC1_CH0_IRQHandler(void)
 RAM_FUNC_LIB
 void TMR1_IRQHandler(void)
 {    
-    /* M1 Slow StateMachine call */
-    SM_StateMachineSlow(&g_sM1Ctrl);
-   
-    /* Clear the CSCTRL0[TCF1] flag */
-    TMR1->CHANNEL[0].CSCTRL |= TMR_CSCTRL_TCF1(0x00);
-    TMR1->CHANNEL[0].CSCTRL &= ~(TMR_CSCTRL_TCF1_MASK);
-
-    /* Clear the CSCTRL0[TCF] flag */
-    TMR1->CHANNEL[0].SCTRL &= ~(TMR_SCTRL_TCF_MASK);
-
-    /* Add empty instructions for correct interrupt flag clearing */
-    M1_END_OF_ISR;
+  /* M1 Slow StateMachine call */
+  SM_StateMachineSlow(&g_sM1Ctrl);
+  
+  /* Clear the CSCTRL0[TCF1] flag */
+  TMR1->CHANNEL[0].CSCTRL |= TMR_CSCTRL_TCF1(0x00);
+  TMR1->CHANNEL[0].CSCTRL &= ~(TMR_CSCTRL_TCF1_MASK);
+  
+  /* Clear the CSCTRL0[TCF] flag */
+  TMR1->CHANNEL[0].SCTRL &= ~(TMR_SCTRL_TCF_MASK);
+  
+  /* Add empty instructions for correct interrupt flag clearing */
+  M1_END_OF_ISR;
 }
-
-///*!
-// * @brief   DemoSpeedStimulator
-// *           - When demo mode is enabled it changes the required speed according
-// *             to predefined profile
-// *
-// * @param   void
-// *
-// * @return  none
-// */
-//RAM_FUNC_LIB
-//static void DemoSpeedStimulator(void)
-//{
-//    /* Increase push button pressing counter  */
-//    if (ui32ButtonFilter < 1000)
-//    {
-//    	ui32ButtonFilter++;
-//    }
-//
-//    ui32SpeedStimulatorCnt++;
-//    switch (ui32SpeedStimulatorCnt)
-//    {
-//        case 10:
-//            M1_SetAppSwitch(0);
-//            break;
-//        case 20:
-//            g_sM1Drive.eControl                  = kControlMode_SpeedFOC;
-////            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_SENSORLESS_CTRL; //NEED DISCUSSION
-//            M1_SetAppSwitch(1);
-//            break;
-//        case 1000:
-//            M1_SetSpeed(1000.0F);
-//            break;
-//        case 5000:
-//            M1_SetSpeed(2000.0F);
-//            break;
-//        case 10000:
-//            M1_SetSpeed(-1000.0F);
-//            break;
-//        case 15000:
-//            M1_SetSpeed(-2000.0F);
-//            break;
-//        case 19800:
-//            M1_SetSpeed(0.0F);
-//            break;
-//        case 20000:
-//            ui32SpeedStimulatorCnt = 0;
-//            M1_SetAppSwitch(0);
-//            break;
-//        default:
-//            ;
-//            break;
-//    }
-//}
-//
-///*!
-// * @brief   DemoPositionStimulator
-// *           - When demo mode is enabled it changes the required position according
-// *             to predefined profile
-// *
-// * @param   void
-// *
-// * @return  none
-// */
-//RAM_FUNC_LIB
-//static void DemoPositionStimulator(void)
-//{
-//    ui32PositionStimulatorCnt++;
-//    static float_t fltDemoPositionValue;
-//
-//    switch (ui32PositionStimulatorCnt)
-//    {
-//        case 1:
-//            M1_SetAppSwitch(0);
-//            fltDemoPositionValue = 0.0F;
-//            break;
-//        case 20:
-//            g_sM1Drive.eControl                  = kControlMode_PositionFOC;
-//            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_ENC_CTRL;
-//            M1_SetAppSwitch(1);
-//            break;
-//        case 4000:
-//            fltDemoPositionValue = fltPositionDemoReqValue;
-//            break;
-//        case 8000:
-//            fltDemoPositionValue = fltPositionDemoReqValue;
-//            break;
-//        case 12000:
-//            fltDemoPositionValue = 0.0F;
-//            break;
-//        case 16000:
-//            fltDemoPositionValue = 0.0F;
-//            break;
-//        case 20000:
-//            fltDemoPositionValue = 0.0F;
-//            ui32PositionStimulatorCnt = 3999U;
-//            break;
-//        default:
-//            ;
-//            break;
-//    }
-//    
-//    g_sM1Drive.sPosition.a32PositionCmd = MLIB_Conv_A32f(GFLIB_Ramp_FLT(fltDemoPositionValue, &sPositionDemoRampParams));
-//    
-//}
 
 /*!
  * @brief LPUART Module initialization (LPUART is a the standard block included e.g. in K66F)
@@ -374,32 +261,7 @@ static void init_freemaster_lpuart(void)
 
     /* Register communication module used by FreeMASTER driver. */
     FMSTR_SerialSetBaseAddress(FMSTR_LPUART_BASE_ADDR(BOARD_DEBUG_UART_INSTANCE));
-
-#if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
-    /* Enable UART interrupts. */
-    EnableIRQ(FMSTR_LPUART_IRQn(BOARD_DEBUG_UART_INSTANCE));
-    EnableGlobalIRQ(0);
-#endif
 }
-
-#if FMSTR_SHORT_INTR || FMSTR_LONG_INTR
-/*
- *   Application interrupt handler of communication peripheral used in interrupt modes
- *   of FreeMASTER communication.
- *
- *   NXP MCUXpresso SDK framework defines interrupt vector table as a part of "startup_XXXXXX.x"
- *   assembler/C file. The table points to weakly defined symbols, which may be overwritten by the
- *   application specific implementation. FreeMASTER overrides the original weak definition and
- *   redirects the call to its own handler.
- *
- */
-
-void FMSTR_LPUART_IRQ_HANDLER(BOARD_DEBUG_UART_INSTANCE)(void)
-{
-    /* Call FreeMASTER Interrupt routine handler */
-    FMSTR_SerialIsr();
-}
-#endif
 
 /*!
  *@brief      SysTick initialization for CPU cycle measurement

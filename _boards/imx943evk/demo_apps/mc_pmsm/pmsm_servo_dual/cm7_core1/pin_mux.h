@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -35,7 +35,7 @@ extern "C" {
 void BOARD_InitBootPins(void);
 
 void BOARD_Init_M1_PWM(void);
-void BOARD_Init_M1_BISS(void);
+void BOARD_Init_M1_ENDAT2P2(void);
 void BOARD_Init_M1_SINC(void);
 void BOARD_Init_M1_FAULTS(void);
 

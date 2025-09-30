@@ -5,7 +5,6 @@ Hardware requirements
 - Power supply 24V
 - USB Type-C cable
 - Low-voltage 3-phase permanent magnet motor with EnDat2.2 sensor
-- Low-voltage 3-phase permanent magnet motor with BiSS sensor
 - Personal Computer
 
 Overview

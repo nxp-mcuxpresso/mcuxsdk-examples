@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021, 2024-2025 NXP
+ * Copyright 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -19,8 +18,21 @@
 /* Structure for 3-phase PWM MC driver */
 mcdrv_pwm3ph_pwma_t g_sM1Pwm3ph;
 
-/* Structure for EnDat2.2 driver */
+/* Structure for EnDat2.2, EnDat3 or BiSS driver */
+#if (USE_ENCODER == USE_ENCODER_ENDAT3)
+mcdrv_endat3_t g_sM1Enc;
+#endif
+
+#if (USE_ENCODER == USE_ENCODER_ENDAT2P2)
 mcdrv_endat2p2_t g_sM1Enc;
+#endif
+
+#if (USE_ENCODER == USE_ENCODER_BISS)
+BISSC_Type g_sM1Enc = { .ui8DevDataLen = BISS_DEVICE_DATA_LEN, \
+                          .ui8DevSTLen = BISS_DEVICE_ST_LEN, \
+                          .ui8DevMTLen = BISS_DEVICE_MT_LEN};
+#endif
+
 
 /* Structure for current and voltage measurement */
 mcdrv_sinc_t g_sM1Curr3phDcBus = { .fltDCBvoltageScale = M1_U_DCB_MAX, \
@@ -31,6 +43,7 @@ mcdrv_sinc_t g_sM1Curr3phDcBus = { .fltDCBvoltageScale = M1_U_DCB_MAX, \
 
 /* Clock setup structure */
 clock_setup_t g_sClockSetup;
+
 
 /*******************************************************************************
  * Code
@@ -60,8 +73,8 @@ void MCDRV_Init(void)
     /* Init SINC filters */
     M1_MCDRV_SINC_INIT();
     
-    /* Init EnDat2p2 */
-    M1_MCDRV_ENDAT2P2_PERIPH_INIT();
+    /* Init encoder (EnDat2.2, EnDat3 or BiSS) */
+    M1_MCDRV_ENCODER_PERIPH_INIT();
     
 }
 
@@ -149,111 +162,111 @@ void InitTMR1(void)
  */
 void M1_InitPWM(void)
 {
-    /* PWM base pointer (affects the entire initialization) */
-    PWM_Type *PWMBase = (PWM_Type *)PWM2;
-
-    /* Full and Half cycle reload */
-    PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK | PWM_CTRL_HALF_MASK;
-    PWMBase->SM[1].CTRL |= PWM_CTRL_FULL_MASK | PWM_CTRL_HALF_MASK;
-    PWMBase->SM[2].CTRL |= PWM_CTRL_FULL_MASK | PWM_CTRL_HALF_MASK;
-    
-    /* Value register initial values, duty cycle 50% */
-    PWMBase->SM[0].INIT = PWM_INIT_INIT((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
-    PWMBase->SM[1].INIT = PWM_INIT_INIT((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
-    PWMBase->SM[2].INIT = PWM_INIT_INIT((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
-
-    PWMBase->SM[0].VAL1 = PWM_VAL1_VAL1((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1));
-    PWMBase->SM[1].VAL1 = PWM_VAL1_VAL1((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1));
-    PWMBase->SM[2].VAL1 = PWM_VAL1_VAL1((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1));
-
-    PWMBase->SM[0].VAL2 = PWM_VAL2_VAL2((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 4)));
-    PWMBase->SM[1].VAL2 = PWM_VAL2_VAL2((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 4)));
-    PWMBase->SM[2].VAL2 = PWM_VAL2_VAL2((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 4)));
-
-    PWMBase->SM[0].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
-    PWMBase->SM[1].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
-    PWMBase->SM[2].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
-
-    /* Trigger for SINC filter measurement (PWM2_SM0_VAL0) ... sampling window centered with PWM2 full cycle reload */      
-    PWMBase->SM[0].VAL0 = PWM_VAL0_VAL0((uint16_t)(((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1)) - (SINC1_PRETRIGGER_VAL*SINC1_PWM_CLK_RATION)));
-    PWMBase->SM[1].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
-    PWMBase->SM[2].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
-    
-    /* Trigger for SINC filter measurement (PWM2_SM0_VAL4) ... sampling window centered with PWM2 half cycle reload */ 
-    PWMBase->SM[0].VAL4 = PWM_VAL4_VAL4((uint16_t)(0U - (SINC1_PRETRIGGER_VAL*SINC1_PWM_CLK_RATION)));
-    PWMBase->SM[1].VAL4 = PWM_VAL4_VAL4((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
-    PWMBase->SM[2].VAL4 = PWM_VAL4_VAL4((uint16_t)(0));
-
-    PWMBase->SM[0].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
-    PWMBase->SM[1].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
-    PWMBase->SM[2].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
-
-    /* PWM sub-module 0 trigger0 on VAL0 and VAL4 enabled for trigger SINC. SINC is in continuous mode. */
-    PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 0) | PWM_TCTRL_OUT_TRIG_EN(1 << 4);
-    
-    /* PWM sub-module 1 trigger0 on VAL0 and VAL4 enabled for trigger EnDat2.2. */
-    PWMBase->SM[1].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 0) | PWM_TCTRL_OUT_TRIG_EN(1 << 4);
-    
-    /* Set dead-time register */
-    PWMBase->SM[0].DTCNT0 = PWM_DTCNT0_DTCNT0(g_sClockSetup.ui16M1PwmDeadTime);
-    PWMBase->SM[1].DTCNT0 = PWM_DTCNT0_DTCNT0(g_sClockSetup.ui16M1PwmDeadTime);
-    PWMBase->SM[2].DTCNT0 = PWM_DTCNT0_DTCNT0(g_sClockSetup.ui16M1PwmDeadTime);
-    PWMBase->SM[0].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M1PwmDeadTime);
-    PWMBase->SM[1].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M1PwmDeadTime);
-    PWMBase->SM[2].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M1PwmDeadTime);
-
-    /* Channels A and B disabled when faults 0 and 1 occur */
-    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
-    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
-    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
-    PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
-    PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
-    PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
-
-    /* Modules one and two gets clock from module zero */
-    PWMBase->SM[1].CTRL2 = (PWMBase->SM[1].CTRL2 & ~PWM_CTRL2_CLK_SEL_MASK) | PWM_CTRL2_CLK_SEL(0x2);
-    PWMBase->SM[2].CTRL2 = (PWMBase->SM[2].CTRL2 & ~PWM_CTRL2_CLK_SEL_MASK) | PWM_CTRL2_CLK_SEL(0x2);
-
-    /* Master reload active for modules one and two */
-    PWMBase->SM[1].CTRL2 |= PWM_CTRL2_RELOAD_SEL_MASK;
-    PWMBase->SM[2].CTRL2 |= PWM_CTRL2_RELOAD_SEL_MASK;
-
-    /* Master sync active for modules one and two*/
-    PWMBase->SM[1].CTRL2 = (PWMBase->SM[1].CTRL2 & ~PWM_CTRL2_INIT_SEL_MASK) | PWM_CTRL2_INIT_SEL(0x2);
-    PWMBase->SM[2].CTRL2 = (PWMBase->SM[2].CTRL2 & ~PWM_CTRL2_INIT_SEL_MASK) | PWM_CTRL2_INIT_SEL(0x2);
-
-    /* Fault 0 active in logic level 0, fault 1  active in level 1, automatic clearing */
-    PWMBase->FCTRL = (PWMBase->FCTRL & ~PWM_FCTRL_FLVL_MASK) | PWM_FCTRL_FLVL(0x0) | PWM_FCTRL_FLVL(0x2);
-    PWMBase->FCTRL = (PWMBase->FCTRL & ~PWM_FCTRL_FAUTO_MASK) | PWM_FCTRL_FAUTO(0x1) | PWM_FCTRL_FAUTO(0x2);
-
-    /* Clear fault flags */
-    PWMBase->FSTS = (PWMBase->FSTS & ~PWM_FSTS_FFLAG_MASK) | PWM_FSTS_FFLAG(0xF);
-
-    /* PWMs are re-enabled at PWM full cycle */
-    PWMBase->FSTS = (PWMBase->FSTS & ~PWM_FSTS_FFULL_MASK) | PWM_FSTS_FFULL(0x1) | PWM_FSTS_FFULL(0x2);
-
-    /* PWM fault filter - 5 Fast peripheral clocks sample rate, 5 agreeing
-       samples to activate */
-    PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_PER_MASK) | PWM_FFILT_FILT_PER(5);
-    PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_CNT_MASK) | PWM_FFILT_FILT_CNT(5);
-       
-    /* Start PWMs (set load OK flags and run) */
-    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0xF);
-    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0xF);
-    PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x0);
-    
-    /* Initialize MC driver */
-    g_sM1Pwm3ph.pui32PwmBaseAddress = (PWM_Type *)PWMBase;
-
-    g_sM1Pwm3ph.ui16PhASubNum = 0U; /* PWMA phase A sub-module number */
-    g_sM1Pwm3ph.ui16PhBSubNum = 1U; /* PWMA phase B sub-module number */
-    g_sM1Pwm3ph.ui16PhCSubNum = 2U; /* PWMA phase C sub-module number */
-
-    g_sM1Pwm3ph.ui16FaultFixNum = M1_FAULT_NUM; /* PWMA fixed-value over-current fault number */
-    g_sM1Pwm3ph.ui16FaultAdjNum = M1_FAULT_NUM; /* PWMA adjustable over-current fault number */
-    g_sM1Pwm3ph.ui16Fault2FixNum = M1_FAULT_OV_NUM; /* PWMA fixed-value over-voltage fault number */
-    
-    g_sM1Pwm3ph.ui16Modulo = PWMBase->SM[0].VAL1;
+  /* PWM base pointer (affects the entire initialization) */
+  PWM_Type *PWMBase = (PWM_Type *)PWM2;
+  
+  /* Full and Half cycle reload */
+  PWMBase->SM[0].CTRL |= PWM_CTRL_FULL_MASK | PWM_CTRL_HALF_MASK;
+  PWMBase->SM[1].CTRL |= PWM_CTRL_FULL_MASK | PWM_CTRL_HALF_MASK;
+  PWMBase->SM[2].CTRL |= PWM_CTRL_FULL_MASK | PWM_CTRL_HALF_MASK;
+  
+  /* Value register initial values, duty cycle 50% */
+  PWMBase->SM[0].INIT = PWM_INIT_INIT((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
+  PWMBase->SM[1].INIT = PWM_INIT_INIT((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
+  PWMBase->SM[2].INIT = PWM_INIT_INIT((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
+  
+  PWMBase->SM[0].VAL1 = PWM_VAL1_VAL1((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1));
+  PWMBase->SM[1].VAL1 = PWM_VAL1_VAL1((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1));
+  PWMBase->SM[2].VAL1 = PWM_VAL1_VAL1((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1));
+  
+  PWMBase->SM[0].VAL2 = PWM_VAL2_VAL2((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 4)));
+  PWMBase->SM[1].VAL2 = PWM_VAL2_VAL2((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 4)));
+  PWMBase->SM[2].VAL2 = PWM_VAL2_VAL2((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 4)));
+  
+  PWMBase->SM[0].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
+  PWMBase->SM[1].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
+  PWMBase->SM[2].VAL3 = PWM_VAL3_VAL3((uint16_t)(g_sClockSetup.ui16M1PwmModulo / 4));
+  
+  /* Trigger for SINC filter measurement (PWM2_SM0_VAL0) ... sampling window centered with PWM2 full cycle reload */      
+  PWMBase->SM[0].VAL0 = PWM_VAL0_VAL0((uint16_t)(((uint16_t)((g_sClockSetup.ui16M1PwmModulo / 2) - 1)) - (SINC1_PRETRIGGER_VAL*SINC1_PWM_CLK_RATION)));
+  PWMBase->SM[1].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
+  PWMBase->SM[2].VAL0 = PWM_VAL0_VAL0((uint16_t)(0));
+  
+  /* Trigger for SINC filter measurement (PWM2_SM0_VAL4) ... sampling window centered with PWM2 half cycle reload */ 
+  PWMBase->SM[0].VAL4 = PWM_VAL4_VAL4((uint16_t)(0U - (SINC1_PRETRIGGER_VAL*SINC1_PWM_CLK_RATION)));
+  PWMBase->SM[1].VAL4 = PWM_VAL4_VAL4((uint16_t)(-(g_sClockSetup.ui16M1PwmModulo / 2)));
+  PWMBase->SM[2].VAL4 = PWM_VAL4_VAL4((uint16_t)(0));
+  
+  PWMBase->SM[0].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
+  PWMBase->SM[1].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
+  PWMBase->SM[2].VAL5 = PWM_VAL5_VAL5((uint16_t)(0));
+  
+  /* PWM sub-module 0 trigger0 on VAL0 and VAL4 enabled for trigger SINC. SINC is in continuous mode. */
+  PWMBase->SM[0].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 0) | PWM_TCTRL_OUT_TRIG_EN(1 << 4);
+  
+  /* PWM sub-module 1 trigger0 on VAL0 and VAL4 enabled for trigger EnDat2.2/EnDat3/BiSS. */
+  PWMBase->SM[1].TCTRL |= PWM_TCTRL_OUT_TRIG_EN(1 << 4) | PWM_TCTRL_OUT_TRIG_EN(1 << 0);
+  
+  /* Set dead-time register */
+  PWMBase->SM[0].DTCNT0 = PWM_DTCNT0_DTCNT0(g_sClockSetup.ui16M1PwmDeadTime);
+  PWMBase->SM[1].DTCNT0 = PWM_DTCNT0_DTCNT0(g_sClockSetup.ui16M1PwmDeadTime);
+  PWMBase->SM[2].DTCNT0 = PWM_DTCNT0_DTCNT0(g_sClockSetup.ui16M1PwmDeadTime);
+  PWMBase->SM[0].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M1PwmDeadTime);
+  PWMBase->SM[1].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M1PwmDeadTime);
+  PWMBase->SM[2].DTCNT1 = PWM_DTCNT1_DTCNT1(g_sClockSetup.ui16M1PwmDeadTime);
+  
+  /* Channels A and B disabled when faults 0 and 1 occur */
+  PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+  PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+  PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0A_MASK) | PWM_DISMAP_DIS0A(0x3));
+  PWMBase->SM[0].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
+  PWMBase->SM[1].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
+  PWMBase->SM[2].DISMAP[0] = ((PWMBase->SM[0].DISMAP[0] & ~PWM_DISMAP_DIS0B_MASK) | PWM_DISMAP_DIS0B(0x3));
+  
+  /* Modules one and two gets clock from module zero */
+  PWMBase->SM[1].CTRL2 = (PWMBase->SM[1].CTRL2 & ~PWM_CTRL2_CLK_SEL_MASK) | PWM_CTRL2_CLK_SEL(0x2);
+  PWMBase->SM[2].CTRL2 = (PWMBase->SM[2].CTRL2 & ~PWM_CTRL2_CLK_SEL_MASK) | PWM_CTRL2_CLK_SEL(0x2);
+  
+  /* Master reload active for modules one and two */
+  PWMBase->SM[1].CTRL2 |= PWM_CTRL2_RELOAD_SEL_MASK;
+  PWMBase->SM[2].CTRL2 |= PWM_CTRL2_RELOAD_SEL_MASK;
+  
+  /* Master sync active for modules one and two*/
+  PWMBase->SM[1].CTRL2 = (PWMBase->SM[1].CTRL2 & ~PWM_CTRL2_INIT_SEL_MASK) | PWM_CTRL2_INIT_SEL(0x2);
+  PWMBase->SM[2].CTRL2 = (PWMBase->SM[2].CTRL2 & ~PWM_CTRL2_INIT_SEL_MASK) | PWM_CTRL2_INIT_SEL(0x2);
+  
+  /* Fault 0 active in logic level 0, fault 1  active in level 1, automatic clearing */
+  PWMBase->FCTRL = (PWMBase->FCTRL & ~PWM_FCTRL_FLVL_MASK) | PWM_FCTRL_FLVL(0x0) | PWM_FCTRL_FLVL(0x2);
+  PWMBase->FCTRL = (PWMBase->FCTRL & ~PWM_FCTRL_FAUTO_MASK) | PWM_FCTRL_FAUTO(0x1) | PWM_FCTRL_FAUTO(0x2);
+  
+  /* Clear fault flags */
+  PWMBase->FSTS = (PWMBase->FSTS & ~PWM_FSTS_FFLAG_MASK) | PWM_FSTS_FFLAG(0xF);
+  
+  /* PWMs are re-enabled at PWM full cycle */
+  PWMBase->FSTS = (PWMBase->FSTS & ~PWM_FSTS_FFULL_MASK) | PWM_FSTS_FFULL(0x1) | PWM_FSTS_FFULL(0x2);
+  
+  /* PWM fault filter - 5 Fast peripheral clocks sample rate, 5 agreeing
+  samples to activate */
+  PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_PER_MASK) | PWM_FFILT_FILT_PER(5);
+  PWMBase->FFILT = (PWMBase->FFILT & ~PWM_FFILT_FILT_CNT_MASK) | PWM_FFILT_FILT_CNT(5);
+  
+  /* Start PWMs (set load OK flags and run) */
+  PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_CLDOK_MASK) | PWM_MCTRL_CLDOK(0xF);
+  PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_LDOK_MASK) | PWM_MCTRL_LDOK(0xF);
+  PWMBase->MCTRL = (PWMBase->MCTRL & ~PWM_MCTRL_RUN_MASK) | PWM_MCTRL_RUN(0x0);
+  
+  /* Initialize MC driver */
+  g_sM1Pwm3ph.pui32PwmBaseAddress = (PWM_Type *)PWMBase;
+  
+  g_sM1Pwm3ph.ui16PhASubNum = 0U; /* PWMA phase A sub-module number */
+  g_sM1Pwm3ph.ui16PhBSubNum = 1U; /* PWMA phase B sub-module number */
+  g_sM1Pwm3ph.ui16PhCSubNum = 2U; /* PWMA phase C sub-module number */
+  
+  g_sM1Pwm3ph.ui16FaultFixNum = M1_FAULT_NUM; /* PWMA fixed-value over-current fault number */
+  g_sM1Pwm3ph.ui16FaultAdjNum = M1_FAULT_NUM; /* PWMA adjustable over-current fault number */
+  g_sM1Pwm3ph.ui16Fault2FixNum = M1_FAULT_OV_NUM; /* PWMA fixed-value over-voltage fault number */
+  
+  g_sM1Pwm3ph.ui16Modulo = PWMBase->SM[0].VAL1;
 }
 
 /*!
@@ -325,6 +338,118 @@ void Sinc1_Init(void)
     }
 }
 
+#if (USE_ENCODER == USE_ENCODER_ENDAT3)
+/*!
+ * @brief   void InitEndat3(void)
+ *           - Initialization of the EnDat3 peripheral for motor M1
+ *
+ * @param   void
+ *
+ * @return  none
+ */
+void InitEndat3(void)
+{
+  status_t retVal;
+
+  /* EnDat3.0 200MHz */
+  clk_t endat3Clk_rxtx = {
+    .clkId = kCLOCK_Endat31fast,
+    .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+    .rate = 200000000UL,
+    .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };
+  
+  clk_t endat3Clk_sys = {
+    .clkId = kCLOCK_Endat31slow,
+    .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+    .rate = 100000000UL,
+    .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };
+  
+  BLK_CTRL_WAKEUPMIX_Type *blk_base = BLK_CTRL_WAKEUPMIX; 
+  
+  CLOCK_SetParent(&endat3Clk_rxtx);
+  CLOCK_SetRate(&endat3Clk_rxtx);
+  CLOCK_EnableClock(endat3Clk_rxtx.clkId);
+  
+  CLOCK_SetParent(&endat3Clk_sys);
+  CLOCK_SetRate(&endat3Clk_sys);
+  CLOCK_EnableClock(endat3Clk_sys.clkId);
+  
+  /* Select top connector on the IMX94BB board */
+  blk_base->DIAG_ENCODER_MUX_SEL =
+    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT3);
+  
+  /* Connect FlexPWM2_SM1_trig0 -> EnDat3_HW_Strobe trigger*/
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputEndat3HwStrobe);
+
+  blk_base->ENDAT_STRETCHER_CTRL &= ~(BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_MASK << BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value_SHIFT);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_value(ENDAT3_STRETCHER_CTRL_HW_STROBE_COUNTER);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_hw_strobe_ctrl(1);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_async_en(1);
+  blk_base->ENDAT_STRETCHER_CTRL |= BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat3p0_pol_sel(1);
+
+  /* Set master clock to 12.5Mbps - the default data transfer rate of ECN1325 EnDat3 encoder */
+  ENDAT3_RxTxClkConfig(ENDAT3, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_12_5MBPS, 0);
+  
+  /*  Check the communication is working */
+  if (ENDAT3_FG_Hello(ENDAT3) == kStatus_Success)
+  {
+    /* Encoder data transfer rate is 12.5Mbps */    
+    /* Switch the encoder data transfer rate to 25Mbps */
+    retVal = ENDAT3_FG_Rate(ENDAT3, ENDAT3_RXTX_RATE_25MBPS);
+    if (retVal != kStatus_Success) 
+    {
+      /* Failed to switch to 25Mbps */
+      return;
+    }
+    
+    SDK_DelayAtLeastUs(20U, SystemCoreClock);
+    
+    /* Change master clock to 25Mbps */
+    ENDAT3_RxTxClkConfig(ENDAT3, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_25MBPS,  0);
+    
+    SDK_DelayAtLeastUs(20U, SystemCoreClock);    
+    
+    if (ENDAT3_FG_Hello(ENDAT3) != kStatus_Success)
+    {
+      /* Failed to switch to 25Mbps */
+      return;
+    }
+  } 
+  else 
+  {
+    /* Actual encoder data transfer rate is 25Mbps, change master clock to the same clock (25Mbps) */  
+    ENDAT3_RxTxClkConfig(ENDAT3, ENDAT3_SOURCE_CLOCK, ENDAT3_RXTX_RATE_25MBPS,  0);
+    
+    SDK_DelayAtLeastUs(20U, SystemCoreClock);
+    
+    if (ENDAT3_FG_Hello(ENDAT3) != kStatus_Success)
+    {
+      /* Communication was not established. */
+      return;
+    }
+  }
+
+  /* Set number of pole-pairs */
+  g_sM1Enc.ui16Pp = M1_MOTOR_PP;
+  
+  /* Set base pointer used in the EnDat3 MC driver */
+  g_sM1Enc.pui32EnDat3BaseAddress = (ENDAT3_Type *)ENDAT3;
+  
+  /* Enable the FG_IRQ0 when HPF received */
+  ENDAT3_FG_IRQ_Enable_With_FIxM_Frame_Count(ENDAT3, 0, 1);
+  
+  /* Enable EnDat3 HW trigger */
+  ENDAT3_HW_Strobe_Enable(ENDAT3);
+  
+  /* Enable interrupt for EnDat3 event */
+  NVIC_EnableIRQ(ENDAT3_FG_IRQn);
+  NVIC_SetPriority(ENDAT3_FG_IRQn, 0U);
+}
+#endif  /* EnDat3 encoder is used. */
+
+#if (USE_ENCODER == USE_ENCODER_ENDAT2P2)
 /*!
  * @brief      Init EnDat2.2 master IP
  *
@@ -334,98 +459,199 @@ void Sinc1_Init(void)
  */
 void InitEndat2p2(void)
 {
-    int data;
+  int data;
   
-    /* EnDat2.2 100MHz */
-    clk_t endat2p2Clk = {
-        .clkId = kCLOCK_Endat21,
-        .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
-        .rate = ENDAT2P2_CLK_48M,
-        .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
-    };
-
-    BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
-
-    CLOCK_SetParent(&endat2p2Clk);
-    CLOCK_SetRate(&endat2p2Clk);
-    CLOCK_EnableClock(endat2p2Clk.clkId);
- 
-    blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
-      BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT2P2);
-
-    blk_ctrl->ENDAT_STRETCHER_CTRL =
+  /* EnDat2.2 100MHz */
+  clk_t endat2p2Clk = {
+    .clkId = kCLOCK_Endat21,
+    .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+    .rate = ENDAT2P2_CLK_48M,
+    .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };
+  
+  BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
+  
+  CLOCK_SetParent(&endat2p2Clk);
+  CLOCK_SetRate(&endat2p2Clk);
+  CLOCK_EnableClock(endat2p2Clk.clkId);
+  
+  /* Motor connector 1 selected */
+  blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
+    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_ENDAT2P2);
+  
+  /* EXTENDED PWM to trigger EnDat StrN */
+  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
+  BLK_CTRL_WAKEUPMIX->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);
+  
+  /* Trigger EnDat2.2 */
+  XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputEndat22StrN);
+  
+  blk_ctrl->ENDAT_STRETCHER_CTRL =
     BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_value(3) |
-    BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
+      BLK_CTRL_WAKEUPMIX_ENDAT_STRETCHER_CTRL_endat2p2_nstr_ctrl(1);
+  
+  g_sM1Enc.dev = ENDAT2P2_InitMaster(ENDAT2P2_2, ENDAT2P2_CLK_48M);
+  
+  /* Init encoder - ENDAT2P2_InitEncoder(dev); */
+  
+  ENDAT2P2_EncoderRest(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+  
+  ENDAT2P2_ClearEncoderError(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+  
+  ENDAT2P2_ClearEncoderWarning(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
+  
+  ENDAT2P2_GetEncoderInfo(g_sM1Enc.dev);
+  
+  ENDAT2P2_SetDataWordLength(g_sM1Enc.dev, g_sM1Enc.dev->pos_res);
+  
+  ENDAT2P2_SetFTCLOCK(g_sM1Enc.dev, ENDAT2P2_CLK_8M);
+  
+  /* Change tm to 3.75us */
+  data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+  data = (data & (~3)) | 0x1;
+  
+  ENDAT2P2_SetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3, data);
+  ENDAT2P2_EncoderRestWithPos(g_sM1Enc.dev);
+  
+  data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
+  
+  ENDAT2P2_SetRecoveryTimer(g_sM1Enc.dev, 0);
+  
+  ENDAT2P2_GetEncoderError(g_sM1Enc.dev);
+  ENDAT2P2_GetEncoderWarning(g_sM1Enc.dev);
+  
+  if(g_sM1Enc.dev->cmd_set_2_2)
+  {
+    ENDAT2P2_ClearEncoderErrorWithPos(g_sM1Enc.dev);
     
-    g_sM1Enc.dev = ENDAT2P2_InitMaster(ENDAT2P2_2, ENDAT2P2_CLK_48M);
-      
-    ////////////////////////////////////////////////////////////
-    /* Init encoder - ENDAT2P2_InitEncoder(dev); */
-    
-    ENDAT2P2_EncoderRest(g_sM1Enc.dev);
-    SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-    
-    ENDAT2P2_ClearEncoderError(g_sM1Enc.dev);
-    SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-    ENDAT2P2_ClearEncoderWarning(g_sM1Enc.dev);
-    SDK_DelayAtLeastUs((50 * 1000), SDK_DEVICE_MAXIMUM_CPU_CLOCK_FREQUENCY);
-
-    ENDAT2P2_GetEncoderInfo(g_sM1Enc.dev);
-
-    ENDAT2P2_SetDataWordLength(g_sM1Enc.dev, g_sM1Enc.dev->pos_res);
-    
-    //////////////////////////////////////////////////////////
-    
-    //ENDAT2P2_EnableDelayCompensation(dev);
-
-    ENDAT2P2_SetFTCLOCK(g_sM1Enc.dev, ENDAT2P2_CLK_8M);
-
-    /* Change tm to 3.75us */
-    data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
-    data = (data & (~3)) | 0x1;
-
-    ENDAT2P2_SetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3, data);
-    ENDAT2P2_EncoderRestWithPos(g_sM1Enc.dev);
-
-    data = ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_OPERATING_STATUS, ENDAT2P2_MEM_WORD_3);
-
-    ENDAT2P2_SetRecoveryTimer(g_sM1Enc.dev, 0);
-         
-    ENDAT2P2_GetEncoderError(g_sM1Enc.dev);
-    ENDAT2P2_GetEncoderWarning(g_sM1Enc.dev);
-
-    if(g_sM1Enc.dev->cmd_set_2_2)
-    {
-        ENDAT2P2_ClearEncoderErrorWithPos(g_sM1Enc.dev);
-
-        ENDAT2P2_GetEncoderErrorWithPos(g_sM1Enc.dev);
-        ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    /* EnDat HW Strobe Loop */
-
-    endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
-
-    /* reset additional info's if present */
-    ENDAT2P2_EncoderRest(g_sM1Enc.dev);
-    SDK_DelayAtLeastUs(500U, SystemCoreClock);
-    
-    ENDAT2P2_CMDBuild(g_sM1Enc.dev, cmd, 0, 0);
-
-    ENDAT2P2_CleanStatus(g_sM1Enc.dev);
-    
-    ENDAT2P2_SetHWStrobe(g_sM1Enc.dev, true);
-
-    ENDAT2P2_CleanStatus(g_sM1Enc.dev);
-      
-    g_sM1Enc.ui16Pp = M1_MOTOR_PP;
-    
-//    ENDAT2P2_SetHWStrobe(dev, false);
-       
-    /* Enable interrupt */
-    ENDAT2P2_SetInterruptMask(g_sM1Enc.dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
-    EnableIRQ(ENDAT2P2_IRQn);
-    NVIC_SetPriority(ENDAT2P2_IRQn, 0U);
+    ENDAT2P2_GetEncoderErrorWithPos(g_sM1Enc.dev);
+    ENDAT2P2_GetParamWithPos(g_sM1Enc.dev, MRS_CODE_PARAM_ENCODER_MANUFACTURER_PAGE1, ENDAT2P2_MEM_WORD_1);
+  }
+  
+  /* EnDat HW Strobe Loop */
+  
+  endat2p2_mode_cmd_t cmd = ENDAT2P2_CMD_SEND_POSITION_VALUE;
+  
+  /* reset additional info's if present */
+  ENDAT2P2_EncoderRest(g_sM1Enc.dev);
+  SDK_DelayAtLeastUs(500U, SystemCoreClock);
+  
+  ENDAT2P2_CMDBuild(g_sM1Enc.dev, cmd, 0, 0);
+  
+  ENDAT2P2_CleanStatus(g_sM1Enc.dev);
+  
+  ENDAT2P2_SetHWStrobe(g_sM1Enc.dev, true);
+  
+  ENDAT2P2_CleanStatus(g_sM1Enc.dev);
+  
+  g_sM1Enc.ui16Pp = M1_MOTOR_PP;
+  
+  /* Enable interrupt */
+  ENDAT2P2_SetInterruptMask(g_sM1Enc.dev, ENDAT2P2_INTERRUPTMASKREGISTER_RECEIVE_REGISTER1_MASK_MASK);
+  EnableIRQ(ENDAT2P2_IRQn);
+  NVIC_SetPriority(ENDAT2P2_IRQn, 0U);
 }
+#endif  /* EnDat2.2 encoder is used. */
+
+#if (USE_ENCODER == USE_ENCODER_BISS)
+/*!
+ * @brief      Init BiSS master IP
+ *
+ * @param      void
+ *
+ * @return     none
+ */
+void InitBiSS1(void)
+{
+  /* BiSS 20MHz */
+  clk_t bissClk = {
+      .clkId = BISS_SYS_CLK_ROOT,
+      .pclkId = kCLOCK_Syspll1dfs1div2, /* 400 MHz */
+      .rate = BISS_SYS_CLK_FREQ,
+      .clkRoundOpt = SCMI_CLOCK_ROUND_AUTO,
+  };    
+
+  BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
+  
+    CLOCK_SetParent(&bissClk);
+    CLOCK_SetRate(&bissClk);
+    CLOCK_EnableClock(bissClk.clkId);
+  
+  blk_ctrl->DIAG_ENCODER_MUX_SEL = blk_ctrl->DIAG_ENCODER_MUX_SEL |
+    BLK_CTRL_WAKEUPMIX_DIAG_ENCODER_MUX_SEL_diag_enc2_sel(DIG_ENCODER_MUX_BISS);
+  
+  /* EXTENDED PWM to trigger biss getsens */
+  blk_ctrl->XBAR_TRIG_SYNC_CTRL2 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL2_SYNC_ENABLE(1U);
+  blk_ctrl->XBAR_TRIG_SYNC_CTRL3 |= BLK_CTRL_WAKEUPMIX_XBAR_TRIG_SYNC_CTRL3_PULSE_WIDTH0(7U);
+  XBAR_SetSignalsConnection(kXBAR1_InputFlexpwm2Mux0Trigger1, kXBAR1_OutputTriggerSyncAsyncIn0);
+  XBAR_SetSignalsConnection(kXBAR1_InputTriggerSyncSyncOut0, kXBAR1_OutputBissGetsens);
+  
+  /* Select Motor controller 1 */
+  BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, ETH2_SEL);
+  SDK_DelayAtLeastUs(100U, SystemCoreClock);  
+  
+  /* BISSC M1 structure */    
+  g_sM1Enc.mt = 0U;
+  g_sM1Enc.st = 0U;
+  g_sM1Enc.mt_offset = 0U;
+  g_sM1Enc.st_offset = 0U;       
+  g_sM1Enc.ui16Pp        = M1_MOTOR_PP;
+
+  /* BiSS driver initialization */
+  status_t status;
+  uint8_t slvID;
+  biss_slave_info_t *slv;
+  biss_master_t *master;
+
+  /* Disable BiSS_EOT interrupt */
+  DisableIRQ(BISS_EOT_IRQn);
+  blk_ctrl->BISS1_EOT_CTL = 0;
+  
+  master = BISS_MasterInit(BISS1, BISS_SYS_CLK_FREQ, BISS_MA_CLK_FREQ, BISS_AGS_CLK_FREQ);  
+  
+  if (master == NULL)
+  {
+      return;
+  }
+  SDK_DelayAtLeastUs(100U, SystemCoreClock);
+  
+  BISS_InitBissSequence(master);
+  SDK_DelayAtLeastUs(400U, SystemCoreClock);
+  
+  /* Broadcast Active all slaves */
+  BISS_CMDProcess(master, BISS_CMD_IDS_BOARDCAST, BISS_CMD_BOARDCAST_CTRL_ACTIVATED);
+  SDK_DelayAtLeastUs(400U, SystemCoreClock);
+  
+  status = BISS_SLVScan(master);
+  if (status != kStatus_Success)
+  {
+      return;
+  }
+  
+  for (slvID = 0; slvID < master->slvCnt; slvID++)
+  {
+      slv = BISS_SLVGet(master, slvID);
+     
+      if (slv->dataLen == 0)
+          slv->dataLen = g_sM1Enc.ui8DevDataLen;
+      if (slv->crcLen == 0)
+          slv->crcLen = BISS_DEVICE_CRC_LEN;
+  }
+  
+  /* Manually initialize the slaves */
+  BISS_SLVSetSCD(master, 0, g_sM1Enc.ui8DevDataLen, BISS_DEVICE_CRC_LEN);
+  
+  BISS_ChangeTriggerMode(master, BISS_PIN_TRIGGER);
+  
+  /* Asign BiSS master module address */
+  g_sM1Enc.pMaster = (biss_master_t *)master;
+
+  /* Enable BiSS_EOT interrupt */
+  EnableIRQ(BISS_EOT_IRQn);
+  blk_ctrl->BISS1_EOT_CTL = 0x3;
+}       /* BiSS encoder is used. */
+#endif

@@ -65,38 +65,25 @@
 /* TMR1 reload ISR called with 1ms period */
 RAM_FUNC_LIB
 void TMR1_IRQHandler(void);
-/* SW8 Button interrupt handler */
-RAM_FUNC_LIB
-void GPIO1_0_IRQHandler(void);
 /* SINC conversation interrupt handler */
 RAM_FUNC_LIB
 void SINC1_CH0_IRQHandler(void);
-
-/* EnDat2.2 interrupt */
-RAM_FUNC_LIB
-void ENDAT2P2_IRQHandler(void);
-
 RAM_FUNC_LIB
 void SINC2_CH0_IRQHandler(void);
-/* BiSS OET interrupt handler */
-RAM_FUNC_LIB
-void BISS_EOT_IRQHandler(void);
-///* Demo Speed Stimulator */
-//RAM_FUNC_LIB
-//static void DemoSpeedStimulator(void);
-///* Demo Position Stimulator */
-//RAM_FUNC_LIB
-//static void DemoPositionStimulator(void);
 
+/* EnDat2.2 interrupt for motor connector 1 */
+RAM_FUNC_LIB
+void M1_ENDAT2P2_IRQHandler(void);
+
+/* EnDat2.2 interrupt for motor connector 2 */
+RAM_FUNC_LIB
+void M2_ENDAT2P2_IRQHandler(void);
+
+/* Initialization SysTick */
 static void BOARD_InitSysTick(void);
 
 /*******************************************************************************
  * Variables
- ******************************************************************************/
-
-
-/*******************************************************************************
- * Code
  ******************************************************************************/
 
 /* CPU load measurement using Systick */
@@ -106,21 +93,10 @@ uint32_t g_ui32M2NumberOfCycles    = 0U;
 uint32_t g_ui32M2MaxNumberOfCycles = 0U;
 
 /* Demo mode enabled/disabled */
-bool_t bDemoMode    = FALSE;
 bool_t bDemoModeSpeed    = FALSE;
 bool_t bDemoModePosition = FALSE;
 bool_t bM2DemoModeSpeed    = FALSE;
 bool_t bM2DemoModePosition = FALSE;
-
-///* Counters used for demo mode */
-//static uint32_t ui32SpeedStimulatorCnt    = 0U;
-//static uint32_t ui32PositionStimulatorCnt = 0U;
-//
-///* Counter for button pressing */
-//static uint32_t ui32ButtonFilter = 0U;
-
-GFLIB_RAMP_T_FLT sPositionDemoRampParams;       /* Position demo ramp parameters */
-float_t fltPositionDemoReqValue = 10.0F;
 
 /* Structure used in FM to get required ID's */
 app_ver_t g_sAppIdFM = {
@@ -157,9 +133,6 @@ int main(void)
     /* Disable all interrupts before peripherals are initialized */
     ui32PrimaskReg = DisableGlobalIRQ();
 
-    /* Disable demo mode after reset */
-    bDemoMode = FALSE;
-
     SystemPlatformInit();
     BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
@@ -179,10 +152,6 @@ int main(void)
 
     /* Turn off application */
     M1_SetAppSwitch(FALSE);
-    
-    /* Position demo ramp */
-    sPositionDemoRampParams.fltRampUp   = 0.00375; // 1 [rev/s] / SlowLoopSampleTime = 1/4000 = 0.00025
-    sPositionDemoRampParams.fltRampDown = sPositionDemoRampParams.fltRampUp;
     
     /* Enable interrupts */
     EnableGlobalIRQ(ui32PrimaskReg);
@@ -215,46 +184,33 @@ void SINC2_CH0_IRQHandler(void)
   M2_MCDRV_SINC_GET(&g_sM2Curr3phDcBus);
 }
 
-/* BiSS OET interrupt routine */
+/* EnDat2.2 interrupt handler for motor connector 1 */
 RAM_FUNC_LIB
-void BISS_EOT_IRQHandler(void)
-{  
-    /* clear EOT interrupt */
-    BLK_CTRL_WAKEUPMIX->BISS1_EOT_CTL =
-        BLK_CTRL_WAKEUPMIX_BISS1_EOT_CTL_biss_eot_rise_clr_int_b(1) | 3;
-    
-    /* get position from BISS */
-    M1_MCDRV_BISS_GET(&g_sM1Enc);
-    
-    SM_StateMachineFast(&g_sM1Ctrl);
-    
-    BLK_CTRL_WAKEUPMIX->BISS1_EOT_CTL = 3;
- 
-    SDK_ISR_EXIT_BARRIER;
+void M1_ENDAT2P2_IRQHandler(void)
+{   
+  /* get position from EnDat2.2 */
+  M1_MCDRV_ENCODER_GET(&g_sM1Enc);
+  
+  /* M1 State machine */
+  SM_StateMachineFast(&g_sM1Ctrl);
+  
+  /* Call FreeMASTER recorder */
+  FMSTR_Recorder(0);
+  
+  SDK_ISR_EXIT_BARRIER;
 }
 
-/* EnDat2.2 interrupt handler */
+/* EnDat2.2 interrupt handler for motor connector 2 */
 RAM_FUNC_LIB
-void ENDAT2P2_IRQHandler(void)
-{
-//    /* Start CPU tick number couting */
-//    SYSTICK_START_COUNT();
-    
-    /* get position from EnDat2.2 */
-    M2_MCDRV_ENDAT2P2_GET(&g_sM2Enc);
-    
-    /* M2 State machine */
-    SM_StateMachineFast(&g_sM2Ctrl);
-    
-//    /* Stop CPU tick number couting and store actual and maximum ticks */
-//    SYSTICK_STOP_COUNT(g_ui32M2NumberOfCycles);
-//    g_ui32M2MaxNumberOfCycles =
-//        g_ui32M2NumberOfCycles > g_ui32M2MaxNumberOfCycles ? g_ui32M2NumberOfCycles : g_ui32M2MaxNumberOfCycles;
-
-    /* Call FreeMASTER recorder */
-    FMSTR_Recorder(0);
-    
-    SDK_ISR_EXIT_BARRIER;
+void M2_ENDAT2P2_IRQHandler(void)
+{   
+  /* get position from EnDat2.2 */
+  M2_MCDRV_ENCODER_GET(&g_sM2Enc);
+  
+  /* M2 State machine */
+  SM_StateMachineFast(&g_sM2Ctrl);
+  
+  SDK_ISR_EXIT_BARRIER;
 }
 
 /*!
@@ -285,110 +241,6 @@ void TMR1_IRQHandler(void)
     M1_END_OF_ISR;
 }
 
-///*!
-// * @brief   DemoSpeedStimulator
-// *           - When demo mode is enabled it changes the required speed according
-// *             to predefined profile
-// *
-// * @param   void
-// *
-// * @return  none
-// */
-//RAM_FUNC_LIB
-//static void DemoSpeedStimulator(void)
-//{
-//    /* Increase push button pressing counter  */
-//    if (ui32ButtonFilter < 1000)
-//    {
-//    	ui32ButtonFilter++;
-//    }
-//
-//    ui32SpeedStimulatorCnt++;
-//    switch (ui32SpeedStimulatorCnt)
-//    {
-//        case 10:
-//            M1_SetAppSwitch(0);
-//            break;
-//        case 20:
-//            g_sM1Drive.eControl                  = kControlMode_SpeedFOC;
-////            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_SENSORLESS_CTRL; //NEED DISCUSSION
-//            M1_SetAppSwitch(1);
-//            break;
-//        case 1000:
-//            M1_SetSpeed(1000.0F);
-//            break;
-//        case 5000:
-//            M1_SetSpeed(2000.0F);
-//            break;
-//        case 10000:
-//            M1_SetSpeed(-1000.0F);
-//            break;
-//        case 15000:
-//            M1_SetSpeed(-2000.0F);
-//            break;
-//        case 19800:
-//            M1_SetSpeed(0.0F);
-//            break;
-//        case 20000:
-//            ui32SpeedStimulatorCnt = 0;
-//            M1_SetAppSwitch(0);
-//            break;
-//        default:
-//            ;
-//            break;
-//    }
-//}
-//
-///*!
-// * @brief   DemoPositionStimulator
-// *           - When demo mode is enabled it changes the required position according
-// *             to predefined profile
-// *
-// * @param   void
-// *
-// * @return  none
-// */
-//RAM_FUNC_LIB
-//static void DemoPositionStimulator(void)
-//{
-//    ui32PositionStimulatorCnt++;
-//    static float_t fltDemoPositionValue;
-//
-//    switch (ui32PositionStimulatorCnt)
-//    {
-//        case 1:
-//            M1_SetAppSwitch(0);
-//            fltDemoPositionValue = 0.0F;
-//            break;
-//        case 20:
-//            g_sM1Drive.eControl                  = kControlMode_PositionFOC;
-//            g_sM1Drive.sMCATctrl.ui16PospeSensor = MCAT_ENC_CTRL;
-//            M1_SetAppSwitch(1);
-//            break;
-//        case 4000:
-//            fltDemoPositionValue = fltPositionDemoReqValue;
-//            break;
-//        case 8000:
-//            fltDemoPositionValue = fltPositionDemoReqValue;
-//            break;
-//        case 12000:
-//            fltDemoPositionValue = 0.0F;
-//            break;
-//        case 16000:
-//            fltDemoPositionValue = 0.0F;
-//            break;
-//        case 20000:
-//            fltDemoPositionValue = 0.0F;
-//            ui32PositionStimulatorCnt = 3999U;
-//            break;
-//        default:
-//            ;
-//            break;
-//    }
-//    
-//    g_sM1Drive.sPosition.a32PositionCmd = MLIB_Conv_A32f(GFLIB_Ramp_FLT(fltDemoPositionValue, &sPositionDemoRampParams));
-//    
-//}
 
 /*!
  * @brief LPUART Module initialization (LPUART is a the standard block included e.g. in K66F)

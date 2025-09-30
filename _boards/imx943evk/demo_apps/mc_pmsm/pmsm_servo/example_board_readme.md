@@ -4,7 +4,7 @@ Hardware requirements
 - FRDM-LVPMSM-FA board
 - Power supply 24V
 - USB Type-C cable
-- Low-voltage 3-phase permanent magnet motor with EnDat2.2 sensor
+- Low-voltage 3-phase permanent magnet motor with EnDat2.2, EnDat3 or BiSS encoder sensor
 - Personal Computer
 
 Overview
