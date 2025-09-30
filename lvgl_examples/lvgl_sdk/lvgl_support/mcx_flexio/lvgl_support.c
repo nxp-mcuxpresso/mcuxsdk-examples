@@ -58,6 +58,8 @@ static void DEMO_SetCSPin(bool set);
 
 static void DEMO_SetRSPin(bool set);
 
+static void DEMO_CheckChipRevision(void);
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -101,6 +103,46 @@ SDK_ALIGN(static uint8_t s_frameBuffer[CONFIG_LVGL_SUPPORT_VDB_COUNT][LCD_VIRTUA
 /*******************************************************************************
  * Code
  ******************************************************************************/
+static void DEMO_CheckChipRevision(void)
+{
+#if defined(MCXN526_cm33_core0_SERIES) ||  \
+    defined(MCXN526_cm33_core1_SERIES) ||  \
+    defined(MCXN527_cm33_core0_SERIES) ||  \
+    defined(MCXN527_cm33_core1_SERIES) ||  \
+    defined(MCXN536_cm33_core0_SERIES) ||  \
+    defined(MCXN536_cm33_core1_SERIES) ||  \
+    defined(MCXN537_cm33_core0_SERIES) ||  \
+    defined(MCXN537_cm33_core1_SERIES) ||  \
+    defined(MCXN546_cm33_core0_SERIES) ||  \
+    defined(MCXN546_cm33_core1_SERIES) ||  \
+    defined(MCXN547_cm33_core0_SERIES) ||  \
+    defined(MCXN547_cm33_core1_SERIES) ||  \
+    defined(MCXN556S_cm33_core0_SERIES) || \
+    defined(MCXN556S_cm33_core1_SERIES) || \
+    defined(MCXN946_cm33_core0_SERIES) ||  \
+    defined(MCXN946_cm33_core1_SERIES) ||  \
+    defined(MCXN947_cm33_core0_SERIES) ||  \
+    defined(MCXN947_cm33_core1_SERIES)
+
+    uint32_t rev = Chip_GetVersion();
+
+    /* For rev A0 chips, the smart dma can't work with flexio. */
+#if BOARD_USE_FLEXIO_SMARTDMA
+    if (rev == 0)
+    {
+        PRINTF("ERROR: SmartDMA can't work with A0 chip, change BOARD_USE_FLEXIO_SMARTDMA to 0\r\n");
+        while(1);
+    }
+#else
+    if (rev != 0)
+    {
+        PRINTF("SmartDMA can be enabled for better performance, change BOARD_USE_FLEXIO_SMARTDMA to 1\r\n");
+    }
+#endif
+
+#endif
+}
+
 static void DEMO_SetCSPin(bool set)
 {
 #if defined(LVGL_USE_SIUL2) && LVGL_USE_SIUL2
@@ -501,6 +543,8 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
 void lv_port_disp_init(void)
 {
     lv_display_t * disp_drv; /*Descriptor of a display driver*/
+
+    DEMO_CheckChipRevision();
 
     memset(s_frameBuffer, 0, sizeof(s_frameBuffer));
 

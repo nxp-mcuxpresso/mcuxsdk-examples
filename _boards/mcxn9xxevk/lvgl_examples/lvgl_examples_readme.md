@@ -19,3 +19,10 @@ Prepare the Demo
 Running the demo
 ================
 If this example runs correctly, the sample GUI is displayed.
+
+Note
+================
+**NOTE**: Revision A0 chip can't use SmartDMA for FlexIO display. Use the function
+`Chip_GetVersion` to check silicon revision. For A0 chip, `BOARD_USE_FLEXIO_SMARTDMA`
+must be set to 0, for A1 chip, `BOARD_USE_FLEXIO_SMARTDMA` can be set to 1
+for better performance.
