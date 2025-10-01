@@ -133,6 +133,15 @@
 /*  ble_ll_config.h file lists the parameters with their default values. User can override
  *    the parameter here by defining the parameter to a user defined value. */
 
+/* Define the max tx power setting in dBm. Allowed values 0, 2 or 6 */
+#if !defined(gAppMaxTxPowerDbm_c)
+#define gAppMaxTxPowerDbm_c 0
+#endif /* !defined(gAppMaxTxPowerDbm_c) */
+
+#if gAppMaxTxPowerDbm_c > 6
+#error "gAppMaxTxPowerDbm_c 6dBm is the maximum supported"
+#endif
+
 /*
  * Specific configuration of LL pools by block size and number of blocks for this application.
  * Optimized using the MEM_OPTIMIZE_BUFFER_POOL feature in MemManager,

@@ -136,6 +136,15 @@
  * will be applied.
  */
 
+ /* Define the max tx power setting in dBm. Allowed values 0, 2 or 6 */
+#if !defined(gAppMaxTxPowerDbm_c)
+#define gAppMaxTxPowerDbm_c 0
+#endif /* !defined(gAppMaxTxPowerDbm_c) */
+
+#if gAppMaxTxPowerDbm_c > 6
+#error "gAppMaxTxPowerDbm_c 6dBm is the maximum supported"
+#endif
+
 /* Include common configuration file and board configuration file */
 #include "app_preinclude_common.h"
 #endif /* _APP_PREINCLUDE_H_ */

@@ -158,17 +158,17 @@ static blemgr_event_cb_t s_eventCallback;
 static bleResult_t BleInitialize()
 {
     /* BLE Controller Init */
-    if (kBLEC_Success != BLEController_Init(NXPHoststackAdapter_hciControllerToHost, 0, NULL))
+    if (kBLEC_Success != BLEController_Init(NXPHoststackAdapter_hciControllerToHost, gAppMaxTxPowerDbm_c, NULL))
     {
         return gBleOsError_c;
     }
 
-    if (kBLEC_Success != BLEController_SetConnectionInitialTxPowerDbm(0))
+    if (kBLEC_Success != BLEController_SetConnectionInitialTxPowerDbm(gAppMaxTxPowerDbm_c))
     {
         return gBleOsError_c;
     }
 
-    if (kBLEC_Success != BLEController_SetTxPowerDbm(0))
+    if (kBLEC_Success != BLEController_SetTxPowerDbm(gAppMaxTxPowerDbm_c))
     {
         return gBleOsError_c;
     }
