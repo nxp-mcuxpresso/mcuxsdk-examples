@@ -1,0 +1,82 @@
+#! armcc -E
+/*
+** ###################################################################
+**     Processor:           KW47B42ZB7AFTA_cm33_core1
+**     Compiler:            Keil ARM C/C++ Compiler
+**     Reference manual:    Rev. 6, 05/22/2022
+**     Version:             rev. 1.0, 2023-05-20
+**     Build:               b240814
+**
+**     Abstract:
+**         Linker file for the Keil ARM C/C++ Compiler
+**
+**     Copyright 2016 Freescale Semiconductor, Inc.
+**     Copyright 2016-2025 NXP
+**     SPDX-License-Identifier: BSD-3-Clause
+**
+**     http:                 www.nxp.com
+**     mail:                 support@nxp.com
+**
+** ###################################################################
+*/
+
+
+/* Sizes */
+#if (defined(__stack_size__))
+  #define Stack_Size                   __stack_size__
+#else
+  #define Stack_Size                   0x0400
+#endif
+
+#if (defined(__heap_size__))
+  #define Heap_Size                    __heap_size__
+#else
+  #define Heap_Size                    0x0400
+#endif
+
+#define  m_interrupts_start            0x00000000
+#define  m_interrupts_size             0x00000400
+
+#define  m_text_start                  0x00000400
+#define  m_text_size                   0x0007FC00
+
+#define  m_data0_start                  0x00100000
+#define  m_data0_size                   0x00000800
+
+#define  m_data1_start                  0x00140000
+#define  m_data1_size                   0x00014000
+
+/* We also reserve an S200-accessible workarea, into which we may place our in/out buffers
+ * from the NBU core. We are careful not to overlap with the RPMSG section that is defined
+ * in the Main core's linker at 0x489C8800 (address 0xB0008800 from NBU-core's perspective
+ * due to shared memory address translation).
+ */
+#define m_nbu_s200_workarea_start      0xB0000000
+#define m_nbu_s200_workarea_size       0x00001000
+
+LR_m_text m_text_start m_text_size {   ; load region size_region
+  ER_m_text m_text_start FIXED m_text_size { ; load address = execution address
+    * (InRoot$$Sections)
+    .ANY (+RO)
+  }
+  RW_m_data0 m_data0_start m_data0_size { ; RW data
+    .ANY (+RW +ZI)
+  }
+  RW_m_data1 m_data1_start m_data1_size-Stack_Size-Heap_Size { ; RW data
+    .ANY (+RW +ZI)
+  }
+  ARM_LIB_HEAP +0 EMPTY Heap_Size {    ; Heap region growing up
+  }
+  ARM_LIB_STACK m_data1_start+m_data1_size EMPTY -Stack_Size { ; Stack region growing down
+  }
+
+  NBU_S200_WORKAREA m_nbu_s200_workarea_start UNINIT m_nbu_s200_workarea_size { ; The NBU's workarea for S200 buffers
+    * (nbu_s200_workarea_section)
+  }
+}
+
+LR_m_interrupts m_interrupts_start m_interrupts_size {
+  VECTOR_ROM m_interrupts_start m_interrupts_size { ; load address = execution address
+    * (RESET,+FIRST)
+  }
+}

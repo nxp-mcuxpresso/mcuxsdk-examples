@@ -11,17 +11,17 @@ mcux_add_mdk_configuration(
 mcux_remove_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/gcc/kw47b42zb_cm33_core0_flash.ld
+    LINKER ${device_root}/MCX/MCXW/MCXW727C/gcc/mcxw727_cm33_core0_flash.ld
 )
 mcux_remove_iar_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/iar/kw47b42zb_cm33_core0_flash.icf
+    LINKER ${device_root}/MCX/MCXW/MCXW727C/iar/mcxw727_cm33_core0_flash.icf
 )
 mcux_remove_mdk_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/arm/kw47b42zb_cm33_core0_flash.scf
+    LINKER ${device_root}/MCX/MCXW/MCXW727C/arm/mcxw727_cm33_core0_flash.scf
 )
 
 mcux_add_armgcc_linker_script(

@@ -3,39 +3,36 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-mcux_add_mdk_configuration(
-    LD "--keep=*(*core1_code)"
-)
 
 # Use our custom example-specific linkers, so remove the defaults and add ours
 mcux_remove_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/gcc/kw47b42zb_cm33_core0_flash.ld
+    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/gcc/kw47b42zb_cm33_core1_flash.ld
 )
 mcux_remove_iar_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/iar/kw47b42zb_cm33_core0_flash.icf
+    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/iar/kw47b42zb_cm33_core1_flash.icf
 )
 mcux_remove_mdk_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}
-    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/arm/kw47b42zb_cm33_core0_flash.scf
+    LINKER ${device_root}/Wireless/KW/KW47B42ZB7/arm/kw47b42zb_cm33_core1_flash.scf
 )
 
 mcux_add_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/secure-subsystem_examples/ele_concurrent_access
-    LINKER linker/gcc/concurrent_access_cm33_core0_flash.ld
+    LINKER linker/gcc/concurrent_access_cm33_core1_flash.ld
 )
 mcux_add_iar_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/secure-subsystem_examples/ele_concurrent_access
-    LINKER linker/iar/concurrent_access_cm33_core0_flash.icf
+    LINKER linker/iar/concurrent_access_cm33_core1_flash.icf
 )
 mcux_add_mdk_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}/${board_root}/${board}/secure-subsystem_examples/ele_concurrent_access
-    LINKER linker/arm/concurrent_access_cm33_core0_flash.scf
+    LINKER linker/arm/concurrent_access_cm33_core1_flash.scf
 )
