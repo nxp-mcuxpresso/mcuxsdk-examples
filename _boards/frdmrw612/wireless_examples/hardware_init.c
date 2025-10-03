@@ -13,7 +13,11 @@
 #include "clock_config.h"
 #include "board.h"
 #if !defined(gSecLibUsePsa_d) || (gSecLibUsePsa_d == 0)
+#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
+#include "psa/crypto.h"
+#else
 #include "els_pkc_mbedtls.h"
+#endif /* CONFIG_BT_SMP */
 #else
 #include "mcux_psa_els_pkc_common_init.h"
 #endif
@@ -32,6 +36,18 @@
 /* -------------------------------------------------------------------------- */
 /*                              Public functions                              */
 /* -------------------------------------------------------------------------- */
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
 
 void BOARD_InitHardware(void)
 {
@@ -42,7 +58,9 @@ void BOARD_InitHardware(void)
 #else
     BOARD_InitDebugConsole();
 #endif
+#if !(defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
     (void)CRYPTO_InitHardware();
+#endif /* not CONFIG_BT_SMP */
 #if defined(gBoardUseFro32k_d) && (gBoardUseFro32k_d > 0)
     CLOCK_AttachClk(kRC32K_to_CLK32K);
 #else
