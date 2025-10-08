@@ -38,14 +38,14 @@ Model executed successfully.
      Inference time: 11422 us
 ----------------------------------------
 1 outputs:
-Output[0][0]: 0.027344
-Output[0][1]: 0.019531
-Output[0][2]: 0.054688
-Output[0][3]: 0.355469
-Output[0][4]: 0.054688
-Output[0][5]: 0.242188
-Output[0][6]: 0.078125
-Output[0][7]: 0.054688
-Output[0][8]: 0.039063
-Output[0][9]: 0.078125
+Output[0][0]: 0
+Output[0][1]: 0
+Output[0][2]: 0
+Output[0][3]: 0.996094
+Output[0][4]: 0
+Output[0][5]: 0
+Output[0][6]: 0
+Output[0][7]: 0
+Output[0][8]: 0
+Output[0][9]: 0
 Program complete, exiting.
