@@ -248,11 +248,11 @@ void HCIBB_SerialWrite(uint8_t *data, uint32_t len)
 
 /* Allow this application to generate FatalError HCI event to UART
    Event is of the form:
-    - segment#
+    - buffer#
     - done (0 = more segments to come, 1 = last segment)
     - data
  */
-static void HCI_LocalSendVendorFatalErrorToHost(uint8_t segmentNb, uint8_t done, uint32_t lenght, uint8_t *payload)
+static void HCI_LocalSendVendorFatalErrorToHost(uint8_t bufferId, uint8_t done, uint32_t lenght, uint8_t *payload)
 {
     uint8_t *pPacketBuffer = MEM_BufferAlloc(1+1+255);
     if ((pPacketBuffer == NULL) || (lenght > 255-2))
@@ -265,7 +265,7 @@ static void HCI_LocalSendVendorFatalErrorToHost(uint8_t segmentNb, uint8_t done,
     pPacketBuffer[1] = 0xFF;
     pPacketBuffer[2] = lenght + 3;
     pPacketBuffer[3] = HCI_VENDOR_SUBEVENT_FATAL_ERROR;
-    pPacketBuffer[4] = segmentNb;
+    pPacketBuffer[4] = bufferId;
     pPacketBuffer[5] = done;
     if (lenght > 0)
     {
@@ -280,24 +280,37 @@ static void HCI_LocalSendVendorFatalErrorToHost(uint8_t segmentNb, uint8_t done,
    Once NBU error is reported, the system needs to be reset as error status
    cannot be cleared from APP core (read-only).
   */
+extern uint8_t dbg_ext_logging_start[]; /* defined by linker file */
+extern uint8_t dbg_ext_logging_end[]; /* defined by linker file */
 void HCIBB_nbu_dbg_system_err_cb(nbu_dbg_event_id_t event_id)
 {
     static uint32_t HCIBB_error_reported=0;
     if (HCIBB_error_reported == 0)
     {
-        uint8_t *ptr = (uint8_t *)(void *)debug_struct; /* Global variable storing NBU debug data */
-        uint32_t bytes_to_be_sent = sizeof(nbu_debug_struct_t);
-        uint8_t segment = 0;
+        HCIBB_error_reported = 1;
+
+        /* Dump global variable storing NBU debug data */
+        uint8_t *ptr = (uint8_t *)(void *)debug_struct;
+        int32_t bytes_to_be_sent = sizeof(nbu_debug_struct_t);
 
         while (bytes_to_be_sent > 0)
         {
             uint32_t len = MIN(255 - 4, bytes_to_be_sent);
-            HCI_LocalSendVendorFatalErrorToHost(segment, (len < 255 - 4), len, ptr);
-            segment++;
+            HCI_LocalSendVendorFatalErrorToHost(0, 0, len, ptr);
             bytes_to_be_sent -= len;
             ptr += len;
         }
-        HCIBB_error_reported = 1;
+
+        /* Dump RAMLOG buffer from shared memory */
+        ptr = dbg_ext_logging_start;
+        bytes_to_be_sent = (int32_t)(dbg_ext_logging_end - dbg_ext_logging_start);
+        while (bytes_to_be_sent > 0)
+        {
+            uint32_t len = MIN(255 - 4, bytes_to_be_sent);
+            HCI_LocalSendVendorFatalErrorToHost(1, (len < 255 - 4), len, ptr);
+            bytes_to_be_sent -= len;
+            ptr += len;
+        }
     }
 }
 #endif /* HCIBB_DBG_NBU_ENABLE */
