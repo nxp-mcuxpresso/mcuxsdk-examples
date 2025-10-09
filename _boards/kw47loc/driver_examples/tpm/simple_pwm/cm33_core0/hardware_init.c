@@ -17,8 +17,6 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
 
-    /* TPM 1 Clock Gate Control: Clock enabled */
-    CLOCK_EnableClock(kCLOCK_Tpm1);
     /* Set the source for the TPM 1 module */
     CLOCK_SetIpSrc(kCLOCK_Tpm1, kCLOCK_IpSrcFro192M);
     CLOCK_SetIpSrcDiv(kCLOCK_Tpm1, 3U);
