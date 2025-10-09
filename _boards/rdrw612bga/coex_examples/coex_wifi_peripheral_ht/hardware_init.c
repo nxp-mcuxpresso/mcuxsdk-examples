@@ -14,8 +14,8 @@
 #include "usb_host_config.h"
 #include "usb_host.h"
 #if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-#include "els_pkc_mbedtls.h"
-#include "platform_hw_ip.h"
+#include "psa/crypto.h"
+#include "mcux_mbedtls_psa_crypto_config.h"
 #endif /* CONFIG_BT_SMP */
 /*${header:end}*/
 
@@ -27,6 +27,19 @@
 #else
 #define USB_HOST_INTERRUPT_PRIORITY (3U)
 #endif
+
+#if (defined(CONFIG_BT_SMP) && (CONFIG_BT_SMP > 0))
+void bt_psa_crypto_init(void)
+{
+    psa_status_t status;
+
+    status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        PRINTF("Failed to initialize PSA crypto");
+    }
+    assert(status == PSA_SUCCESS);
+}
+#endif /* CONFIG_BT_SMP */
 
 void BOARD_InitHardware(void)
 {
@@ -40,9 +53,6 @@ void BOARD_InitHardware(void)
 #endif
     BOARD_InitDebugConsole();
     BOARD_InitSleepPinConfig();
-#if (((defined(CONFIG_BT_SMP)) && (CONFIG_BT_SMP)))
-    CRYPTO_InitHardware();
-#endif /* CONFIG_BT_SMP */
 }
 
 void USB_HostClockInit(void)

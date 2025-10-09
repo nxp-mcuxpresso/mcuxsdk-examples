@@ -41,10 +41,9 @@ mcux_add_macro(
       -DgMemManagerLight=0\
       -DDEBUG_CONSOLE_ENABLE_ECHO_FUNCTION\
       -DMCUX_ENABLE_TRNG_AS_ENTROPY_SEED\
-      -DMBEDTLS_MCUX_ELS_PKC_API\
-      -DMBEDTLS_MCUX_USE_PKC\
+      -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
       -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
-      -DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
       -DCONFIG_HOSTAPD=0"
 )
 
@@ -65,6 +64,10 @@ mcux_remove_macro(
     AS "-DNDEBUG"
     CC "-DNDEBUG"
     CX "-DNDEBUG"
+)
+
+mcux_remove_macro(
+    MBEDTLS_MCUX_ELS_PKC_API
 )
 
 # Add or remove Linker File Configurations
@@ -111,9 +114,9 @@ mcux_add_armgcc_configuration(
         -Xlinker --defsym=__heap_size__=0x400"
 )
 if(${CONFIG_TOOLCHAIN} STREQUAL "armgcc")
-if(EXISTS "${SdkRootDirPath}/middleware/mbedtls/library/bignum.c")
+if(EXISTS "${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c")
 set_source_files_properties(
-    ${SdkRootDirPath}/middleware/mbedtls/library/bignum.c
+    ${SdkRootDirPath}/middleware/mbedtls3x/library/bignum.c
     PROPERTIES
     COMPILE_FLAGS "-O2"
 )

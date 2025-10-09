@@ -75,6 +75,13 @@
 
 #endif /* RW612_SERIES */
 
+#if defined(MBEDTLS_USER_CONFIG_FILE)
+#include MBEDTLS_USER_CONFIG_FILE
+#endif
+#if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
+#include "threading_alt.h"
+#endif
+
 #if defined(APP_LOWPOWER_ENABLED) && (APP_LOWPOWER_ENABLED > 0)
 #include "PWR_Interface.h"
 #include "fwk_platform_lowpower.h"
@@ -200,6 +207,9 @@ int main(void)
 
     extern void BOARD_InitHardware(void);    /*fix build warning: function declared implicitly.*/
     BOARD_InitHardware();
+#if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_ALT)
+    config_mbedtls_threading_alt();
+#endif
 
 #ifdef RW612_SERIES
 #ifdef OOB_WAKEUP
