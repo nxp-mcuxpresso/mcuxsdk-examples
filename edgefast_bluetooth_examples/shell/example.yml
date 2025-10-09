@@ -99,9 +99,7 @@ edgefast_bluetooth_shell:
     - -mdk@debug
     - -mdk@release
     mcxn5xxevk@cm33_core0:
-    - -armgcc@debug
     mcxn9xxevk@cm33_core0:
-    - -armgcc@debug
     frdmmcxn947@cm33_core0: []
     mimxrt685audevk@cm33:
     - -armgcc@debug
