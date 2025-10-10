@@ -221,8 +221,6 @@ sai_edma_transfer:
     - -mdk@hyperram_release
     - -mdk@release
     frdmmcxn236: []
-    frdmmcxe247: []
-    frdmmcxe31b: []
     imx95lpd5evk19@cm7: []
     imx95lp4xevk15@cm7: []
     imx95verdinevk@cm7: []
