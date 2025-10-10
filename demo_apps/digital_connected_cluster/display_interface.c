@@ -167,6 +167,46 @@ void print_paired_devices(void)
     }
 }
 
+void app_update_last_connected_device(const uint8_t addr[6] , uint8_t device_type)
+{
+
+	//Reverse the address bytes (Little Endian → Big Endian)
+	uint8_t device_addr[6];
+	uint8_t updateInfo =0;
+
+	for (int i = 0; i < 6; i++) {
+		device_addr[i] = addr[5 - i];
+	}
+
+	for (int i = 0; i < g_pairedDeviceCount; i++)
+	{
+		if((device_type & 0x0F) == (paired_devices[i].device_type & 0x0F) )
+		{
+
+			if (memcmp(paired_devices[i].addr, device_addr, 6) == 0)
+			{
+
+				if (!(paired_devices[i].device_type & LAST_CONNECTED_MASK))
+						updateInfo =1;
+
+				paired_devices[i].device_type |= LAST_CONNECTED_MASK;
+
+			}else if (paired_devices[i].device_type & LAST_CONNECTED_MASK)
+			{
+				paired_devices[i].device_type &= ~LAST_CONNECTED_MASK;
+				updateInfo =1;
+			}
+		}
+	}
+
+	if(updateInfo)
+	{
+		PRINTF(" Saving last connected information !\n");
+		app_save_paired_devices();
+	}
+
+}
+
 void save_new_paired_device(struct bt_conn *conn, uint8_t isRiderHeadset)
 {
 	struct bt_conn_info conn_info;
@@ -375,17 +415,17 @@ void connect_paired_device(uint8_t device_index)
 	for (int i = 0; i < 6; i++) {
 		device_addr[i] = addr[5 - i];
 	}
-
+	uint8_t dev_type = paired_devices[device_index - 1].device_type;
 	//Call the correct connection function based on device type
-	if (paired_devices[device_index - 1].device_type == RIDER_PHONE)
+	if ( (dev_type & 0x0F) == RIDER_PHONE)
 	{
 		app_connect(RIDER_PHONE, device_addr);
 	}
-	else if (paired_devices[device_index - 1].device_type == RIDER_HEADSET)
+	else if ( (dev_type & 0x0F) == RIDER_HEADSET)
 	{
 		app_connect(RIDER_HEADSET, device_addr);
 
-	}else if (paired_devices[device_index - 1].device_type == PASSENGER_HEADSET)
+	}else if ( (dev_type & 0x0F) == PASSENGER_HEADSET)
 	{
 		app_connect(PASSENGER_HEADSET, device_addr);
 
@@ -393,6 +433,52 @@ void connect_paired_device(uint8_t device_index)
 	{
 		PRINTF("Failed, Invalid device type !\n");
 	}
+}
+
+void app_auto_connect_device(int device_type)
+{
+
+	int device_index=0;
+	uint8_t device_addr[6] = {0};
+	uint8_t *addr = NULL;
+
+    if (g_pairedDeviceCount == 0)
+    {
+        PRINTF("No paired devices found.\n");
+        return;
+    }
+
+    for (int i = 0; i < g_pairedDeviceCount; i++)
+    {
+		uint8_t dev_type = paired_devices[i].device_type;
+    	if (( dev_type & 0x0F) == device_type  && (dev_type & LAST_CONNECTED_MASK) )
+    	{
+    		device_index=i+1;
+    		addr = paired_devices[i].addr;
+    		break;
+    	}
+
+    }
+
+    if (!device_index)
+    {
+    	app_auto_connect_paired_devices();
+    	return;
+    }
+
+	PRINTF("Connecting to [%d] Address: %02X:%02X:%02X:%02X:%02X:%02X, Name: %s, Type: %d\n",
+			device_index,
+			addr[0], addr[1], addr[2], addr[3], addr[4], addr[5],
+			paired_devices[device_index - 1].name, paired_devices[device_index - 1].device_type);
+
+	//Reverse the address bytes (Little Endian → Big Endian)
+	for (int i = 0; i < 6; i++)
+	{
+		device_addr[i] = addr[5 - i];
+	}
+
+	app_connect(device_type, device_addr);
+
 }
 
 bool is_valid_device(uint8_t *addr)

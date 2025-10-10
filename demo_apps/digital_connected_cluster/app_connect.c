@@ -52,7 +52,6 @@ NET_BUF_POOL_FIXED_DEFINE(sdp_client_pool, CONFIG_BT_MAX_CONN, SDP_CLIENT_USER_B
 
 bt_addr_t g_riderHsAddr, g_riderPhoneAddr, g_passengerHsAddr;
 
-//static uint8_t g_defaultConnectInitialized;
 uint8_t g_connectInitRiderHs = 0, g_connectInitRiderPhone = 0 , g_connectInitPassengerHs = 0;
 uint8_t g_profileConnectedPhone = 0, g_profileConnectedRiderHs = 0, g_profileConnectedPassengerHs = 0;
 uint8_t g_isRiderHeadset=1;
@@ -67,10 +66,10 @@ static struct bt_conn_cb conn_callbacks = {
 paired_device_t paired_devices[MAX_PAIRED_DEVICES] = {0};
 int g_pairedDeviceCount = 0;
 
-static uint8_t g_defaultConnectInitialized;
-
-static uint8_t g_connectableSet;
-static bt_addr_t g_autoConnectDevice;
+uint8_t connection_status = 0;
+int con_retries = 2;
+int con_attempts = 0;
+uint8_t g_auto_connection_status = 0;
 
 #if !((defined AUTO_CONNECT_USE_BOND_INFO) && (AUTO_CONNECT_USE_BOND_INFO))
 static lfs_t * lfs;
@@ -79,7 +78,8 @@ static lfs_file_t g_lfsFile;
 #endif
 
 #define LFS_PAIRED_DEVICES_FILE  "paired_devices"
-
+#define SETUP_CONNECTION_DELAY K_MSEC(2000)
+struct k_work_delayable setup_auto_connection_work;
 
 void hfp_ag_discover(struct bt_conn_info *info)
 {
@@ -158,6 +158,13 @@ void app_clear_pbap_data(void)
 
 }
 
+static void setup_auto_connection(struct k_work *work)
+{
+	//PRINTF("app_auto_connect_paired_devices work.\n");
+	app_auto_connect_paired_devices();
+
+}
+
 static void connected(struct bt_conn *conn, uint8_t err)
 {
 	struct bt_conn_info info;
@@ -180,6 +187,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
 			{
 				conn_rider_phone = NULL;
 			}
+			app_dual_a2dp_src_resume();
 		}
 		if (g_connectInitRiderHs)
 		{
@@ -204,7 +212,13 @@ static void connected(struct bt_conn *conn, uint8_t err)
 			PRINTF("DUT as HFP-AG to remote as HFP-HF Connection failed (err %d)\n", err);
 #endif
 		}
-
+		// Auto connect if failed
+		if(g_auto_connection_status)
+		{
+			vTaskDelay(pdMS_TO_TICKS(5000));
+			k_work_init_delayable(&setup_auto_connection_work, setup_auto_connection);
+			k_work_schedule(&setup_auto_connection_work, SETUP_CONNECTION_DELAY);
+		}
 		return;
 	}
 
@@ -239,7 +253,7 @@ static void connected(struct bt_conn *conn, uint8_t err)
 
 		//A2DP profile connection
 		sdp_discover_for_a2dp_sink(1);
-
+		connection_status |= (1 << RIDER_HEADSET);
     }
 	else if (g_connectInitRiderPhone)
 	{
@@ -259,8 +273,12 @@ static void connected(struct bt_conn *conn, uint8_t err)
 #if defined(PBAP_PROFILE_ENABLE) && (PBAP_PROFILE_ENABLE == 1)
 		PRINTF( "\n\nPBAP connection\n");
 		sdp_discover_for_pbap_client(conn_rider_phone);
+		connection_status |= (1 << RIDER_PHONE);
+		app_update_last_connected_device(info.br.dst->val,RIDER_PHONE);
+		app_dual_a2dp_src_resume();
 #endif
-	} else if (g_connectInitPassengerHs){
+	} else if (g_connectInitPassengerHs)
+	{
 		PRINTF("ACL Connection Successful with Passenger Headset,Role: %d\n",info.role);
 		g_connectInitPassengerHs=0U;
 		g_profileConnectedPassengerHs = 1;
@@ -284,6 +302,12 @@ static void connected(struct bt_conn *conn, uint8_t err)
 
 		//A2DP profile connection
 		sdp_discover_for_a2dp_sink(0);
+		connection_status |= (1 << PASSENGER_HEADSET);
+	}
+	if(g_auto_connection_status)
+	{
+		k_work_init_delayable(&setup_auto_connection_work, setup_auto_connection);
+		k_work_schedule(&setup_auto_connection_work, SETUP_CONNECTION_DELAY);
 	}
 }
 
@@ -356,12 +380,7 @@ static void security_changed(struct bt_conn *conn, bt_security_t level,
     if (!err)
     {
         PRINTF("Security changed: %s level %u\n", addr, level);
-
-        if(g_isRiderHeadset){
-            save_new_paired_device(conn,1);
-        }else {
-            save_new_paired_device(conn,0);
-        }
+        save_new_paired_device(conn,g_isRiderHeadset);
     }
     else
     {
@@ -408,6 +427,7 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 	{
 		if(conn_rider_phone == NULL )
 		{
+			app_dual_a2dp_src_pause();
 			g_connectInitRiderPhone = 1U;
 			memcpy(&g_riderPhoneAddr, addr, 6U);
 
@@ -422,6 +442,7 @@ void app_connect(uint8_t device_type,uint8_t *addr)
 				{
 					g_appInstance.acl_conn = NULL;
 				}
+				app_dual_a2dp_src_resume();
 			}
 			else
 			{
@@ -524,14 +545,70 @@ void app_disconnect(uint8_t device_type)
 	}
 }
 
+void app_schedule_auto_connect()
+{
+	g_auto_connection_status =1;
+	PRINTF("Connecting to devices .. !!\n");
+	vTaskDelay(pdMS_TO_TICKS(4000));
+	k_work_init_delayable(&setup_auto_connection_work, setup_auto_connection);
+	k_work_schedule(&setup_auto_connection_work, SETUP_CONNECTION_DELAY);
+}
+
 void app_auto_connect_paired_devices()
 {
-   if(g_auto_connect_device_index > 0 && g_pairedDeviceCount >= g_auto_connect_device_index)
-   {
-	   g_auto_connect_paired_devices =1;
-	   connect_paired_device(g_auto_connect_device_index);
-   }
+   if (con_attempts > (con_retries * 3 +1))
+	{
+		g_auto_connection_status =0;
+		if(connection_status & RIDER_PHONE_BIT)
+			PRINTF("The Rider Phone connected !!\n");
 
+		if(connection_status & RIDER_HEADSET_BIT)
+			PRINTF("The Rider Headset connected !!\n");
+
+		if(connection_status & PASSENGER_HEADSET_BIT)
+			PRINTF("The Passenger Headset connected !!\n");
+		return;
+	}
+
+	if(con_attempts == 0)
+		g_auto_connection_status =1;
+
+	con_attempts++;
+
+	if((connection_status & RIDER_PHONE_BIT)
+		&& (connection_status & RIDER_HEADSET_BIT)
+		&& (connection_status & PASSENGER_HEADSET_BIT))
+	{
+		g_auto_connection_status =0;
+		PRINTF("The Rider Phone, Headset and Passenger Headset connected !!\n");
+		return;
+	}
+
+	switch (con_attempts % 3)
+	{
+	    case 1:
+	    	if (!(connection_status & RIDER_PHONE_BIT))
+	    	{
+	    		app_auto_connect_device(RIDER_PHONE);
+	    		return;
+	    	}
+	        break;
+	    case 2:
+	    	if (!(connection_status & RIDER_HEADSET_BIT))
+	    	{
+	    		app_auto_connect_device(RIDER_HEADSET);
+	    		return;
+	    	}
+	        break;
+	    case 0:
+	    	if (!(connection_status & PASSENGER_HEADSET_BIT))
+	    	{
+	    		app_auto_connect_device(PASSENGER_HEADSET);
+	    		return;
+	    	}
+	        break;
+	}
+	app_auto_connect_paired_devices();
 }
 
 void app_connect_init(void)

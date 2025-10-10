@@ -588,6 +588,7 @@ static void map_mce_mns_disconnected(struct bt_map_mce_mns *mce_mns, uint8_t res
 {
     g_appInstance.mce_mns = NULL;
     PRINTF("MCE MNS disconnection - 0x%02X\r\n", result);
+	glb_manual_get_list--;
     app_state_machine();
 }
 

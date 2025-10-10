@@ -270,8 +270,11 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 		uint8_t device_index = 0;
 		char *ch = argv[2];
 		device_index = ch[0] - '0';
-
-		connect_paired_device(device_index);
+		
+		if(!g_auto_connection_status)
+			connect_paired_device(device_index);
+		else
+			PRINTF("Please wait auto-connection in progress !\r\n");
     }
     else if(strcmp(argv[1], "set_hstype") == 0)
     {
@@ -291,8 +294,9 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 			return kStatus_SHELL_Error;
 		}
 
-    	if (!((paired_devices[device_index - 1].device_type == RIDER_HEADSET)
-    		|| (paired_devices[device_index - 1].device_type == PASSENGER_HEADSET)))
+    	uint8_t dev_type = paired_devices[device_index - 1].device_type;
+
+    	if (!(((dev_type & 0x0F) == RIDER_HEADSET) || ( (dev_type & 0x0F) == PASSENGER_HEADSET)))
     	{
     		PRINTF("Failed, not a headset device !\n");
     		return kStatus_SHELL_Error;
@@ -305,7 +309,7 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 
     	}
     	else if(((strcmp(argv[3], "PH") == 0) || (strcmp(argv[3], "ph") == 0))
-    			&& (paired_devices[device_index - 1].device_type != PASSENGER_HEADSET))
+    			&& ( (dev_type & 0x0F) != PASSENGER_HEADSET))
     	{
     		paired_devices[device_index - 1].device_type = PASSENGER_HEADSET;
     	}
@@ -579,7 +583,8 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
         		return kStatus_SHELL_Error;
         	}
         	//select_op = ch[0] - '0';
-        	avrcp_get_playsong_detail();
+        	//avrcp_get_playsong_detail();
+			avrcp_ct_get_element_attributes();
         }		
 //**************AVRCP commands end***************
 
@@ -773,22 +778,28 @@ static shell_status_t shellBt(shell_handle_t shellHandle, int32_t argc, char **a
 		char *ch = argv[2];
 		device_index = ch[0] - '0';
 
-		if ((paired_devices[device_index - 1].device_type == RIDER_PHONE) &&
-				(conn_rider_phone != NULL))
+		if(device_index < 1 || device_index > g_pairedDeviceCount)
+		{
+			PRINTF("Failed, Invalid device index !\n");
+			return kStatus_SHELL_Error;
+		}
+
+		uint8_t dev_type = paired_devices[device_index - 1].device_type;
+
+
+		if (( (dev_type & 0x0F) == RIDER_PHONE) && 	(conn_rider_phone != NULL))
 		{
 			app_disconnect(RIDER_PHONE);
 			PRINTF("Disconnecting device...\n");
 			while(conn_rider_phone != NULL);
 		}
-		else if ((paired_devices[device_index - 1].device_type == RIDER_HEADSET) &&
-				(conn_rider_hs != NULL))
+		else if (( (dev_type & 0x0F) == RIDER_HEADSET) && (conn_rider_hs != NULL))
 		{
 			app_disconnect(RIDER_HEADSET);
 			PRINTF("Disconnecting device...\n");
 			while(conn_rider_hs != NULL);
 		}
-		else if ((paired_devices[device_index - 1].device_type == PASSENGER_HEADSET) &&
-		    		(conn_passenger_hs != NULL))
+		else if (( (dev_type & 0x0F) == PASSENGER_HEADSET) && (conn_passenger_hs != NULL))
 		{
 			app_disconnect(PASSENGER_HEADSET);
 			PRINTF("Disconnecting device...\n");

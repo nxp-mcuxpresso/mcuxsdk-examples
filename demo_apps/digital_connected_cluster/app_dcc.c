@@ -133,7 +133,7 @@ static void bt_ready(int err)
 #if defined(MAP_PROFILE_ENABLE) && (MAP_PROFILE_ENABLE == 1)
     map_register_service();
 #endif
-    
+    app_schedule_auto_connect();
 //    cmd_init_ct();
 //    avrcp_ct_tg_init();
 }
