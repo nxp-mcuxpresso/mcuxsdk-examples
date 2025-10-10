@@ -11,7 +11,7 @@ config MCUX_DEMO_PANEL_RK043FN66HS_SUPPORT
 if MCUX_PRJSEG_module.board.display_support
 
     choice DISPLAY_SUPPORT_PANEL
-        default DEMO_PANEL_RK043FN66HS
+        default RK043FN66HS
 
     endchoice
 

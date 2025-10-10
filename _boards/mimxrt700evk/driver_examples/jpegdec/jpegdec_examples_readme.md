@@ -22,7 +22,7 @@ Prepare the Demo
     - No flow control
 3.  Build the project, this project uses RK055MHD091 panel by default, to use use other panel,
 	change the macro DEMO_PANEL in mcux_config.h. Which number represents which panel
-	can be found in display_support.h.
+	can be found in display_support.h and mcux_config.h.
 4.  Download the program to the target board.
 5.  Launch the debugger in your IDE to begin running the demo.
 

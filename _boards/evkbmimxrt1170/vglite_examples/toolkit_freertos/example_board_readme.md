@@ -28,7 +28,7 @@ Prepare the Demo
     #define DEMO_PANEL 1
     or
     #define USE_MIPI_PANEL 3 in mcux_config.h
-    Which number represent which panel can be found in display_support.h.
+    Which number represent which panel can be found in display_support.h and mcux_config.h.
 4.  Download the program to the target board.
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 

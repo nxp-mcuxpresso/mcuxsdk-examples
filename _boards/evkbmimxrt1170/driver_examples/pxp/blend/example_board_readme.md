@@ -23,7 +23,7 @@ Prepare the Demo
 set the coresponding panel DEMO_PANEL_xxx(without '_SUPPORT') to y in prj.conf under board example folder before project generation.
 The supported panels can be found in examples\_boards\<board>\project_segments\display_support\Kconfig.prjseg.
 Or change the macro DEMO_PANEL in mcux_config.h of the project,
-which number represents which panel can be found in display_support.h
+which number represents which panel can be found in display_support.h and mcux_config.h
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 

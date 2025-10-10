@@ -47,7 +47,7 @@ config MCUX_DEMO_PANEL_ZC143AC72MIPI_SUPPORT
 if MCUX_PRJSEG_module.board.display_support
 
     choice DISPLAY_SUPPORT_PANEL
-        default DEMO_PANEL_RK055MHD091A0
+        default RK055MHD091A0
     endchoice
 
     config SSD1963_DRIVEN_BY

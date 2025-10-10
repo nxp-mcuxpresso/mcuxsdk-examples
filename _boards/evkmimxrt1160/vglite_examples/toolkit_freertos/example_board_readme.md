@@ -23,7 +23,7 @@ Prepare the Demo
     change
     #define DEMO_PANEL 2
     to other panel in mcux_config.h.
-    Which number represents which panel can be found in display_support.h.
+    Which number represents which panel can be found in display_support.h and mcux_config.h.
 3.  Download the program to the target board.
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 

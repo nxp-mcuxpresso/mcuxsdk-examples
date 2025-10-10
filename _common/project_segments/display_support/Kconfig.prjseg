@@ -3,6 +3,104 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
+if MCUX_DEMO_PANEL_RK055AHD091_SUPPORT
+    config DEMO_PANEL_RK055AHD091
+        int
+        default 0
+        help
+            Driver selection for panel RK055AHD091
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_RK055IQH091_SUPPORT
+    config DEMO_PANEL_RK055IQH091
+        int
+        default 1
+        help
+            Driver selection for panel RK055IQH091
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_RK055MHD091A0_SUPPORT
+    config DEMO_PANEL_RK055MHD091A0
+        int
+        default 2
+        help
+            Driver selection for panel RK055MHD091A0
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_G1120B0MIPI_SUPPORT
+    config DEMO_PANEL_G1120B0MIPI
+        int
+        default 3
+        help
+            Driver selection for panel G1120B0MIPI
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_TFT_PROTO_5_SUPPORT
+    config DEMO_PANEL_TFT_PROTO_5
+        int
+        default 4
+        help
+            Driver selection for panel TFT_PROTO_5
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_RASPI_7INCH_SUPPORT
+    config DEMO_PANEL_RASPI_7INCH
+        int
+        default 5
+        help
+            Driver selection for panel RASPI_7INCH
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_ZC143AC72MIPI_SUPPORT
+    config DEMO_PANEL_ZC143AC72MIPI
+        int
+        default 6
+        help
+            Driver selection for panel ZC143AC72MIPI
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_ADAFRUIT_2_8_SUPPORT
+    config DEMO_PANEL_ADAFRUIT_2_8
+        int
+        default 7
+        help
+            Driver selection for panel ADAFRUIT_2_8
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_LCD_PAR_S035_SUPPORT
+    config DEMO_PANEL_LCD_PAR_S035
+        int
+        default 8
+        help
+            Driver selection for panel LCD_PAR_S035
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_RK043FN02H_SUPPORT
+    config DEMO_PANEL_RK043FN02H
+        int
+        default 9
+        help
+            Driver selection for panel RK043FN02H
+            No prefix in generated macro
+endif
+
+if MCUX_DEMO_PANEL_RK043FN66HS_SUPPORT
+    config DEMO_PANEL_RK043FN66HS
+        default 10
+        help
+            Driver selection for panel RK043FN66HS
+            No prefix in generated macro
+endif
+
 config MCUX_PRJSEG_module.board.display_support
     bool "Enable Display Support"
 
@@ -43,17 +141,17 @@ if MCUX_PRJSEG_module.board.display_support
 
 config DEMO_PANEL
     int
-    default 0 if DEMO_PANEL_RK055AHD091
-    default 1 if DEMO_PANEL_RK055IQH091
-    default 2 if DEMO_PANEL_RK055MHD091A0
-    default 3 if DEMO_PANEL_G1120B0MIPI
-    default 4 if DEMO_PANEL_TFT_PROTO_5
-    default 5 if DEMO_PANEL_RASPI_7INCH
-    default 6 if DEMO_PANEL_ZC143AC72MIPI
-    default 7 if DEMO_PANEL_ADAFRUIT_2_8
-    default 8 if DEMO_PANEL_LCD_PAR_S035
-    default 9 if DEMO_PANEL_RK043FN02H
-    default 10 if DEMO_PANEL_RK043FN66HS
+    default 0 if RK055AHD091
+    default 1 if RK055IQH091
+    default 2 if RK055MHD091A0
+    default 3 if G1120B0MIPI
+    default 4 if TFT_PROTO_5
+    default 5 if RASPI_7INCH
+    default 6 if ZC143AC72MIPI
+    default 7 if ADAFRUIT_2_8
+    default 8 if LCD_PAR_S035
+    default 9 if RK043FN02H
+    default 10 if RK043FN66HS
     help
         Panel selection for display support
         No prefix in generated macro
@@ -61,37 +159,37 @@ config DEMO_PANEL
 choice DISPLAY_SUPPORT_PANEL
     prompt "Panel Selection"
 
-    config DEMO_PANEL_RK055AHD091
+    config RK055AHD091
         bool "RK055AHD091-CTG" if MCUX_DEMO_PANEL_RK055AHD091_SUPPORT
 
-    config DEMO_PANEL_RK055IQH091
+    config RK055IQH091
         bool "RK055IQH091-CTG" if MCUX_DEMO_PANEL_RK055IQH091_SUPPORT
 
-    config DEMO_PANEL_RK055MHD091A0
+    config RK055MHD091A0
         bool "RK055MHD091A0-CTG" if MCUX_DEMO_PANEL_RK055MHD091A0_SUPPORT
 
-    config DEMO_PANEL_G1120B0MIPI
+    config G1120B0MIPI
         bool "MIPI Circular Display G1120B0MIPI" if MCUX_DEMO_PANEL_G1120B0MIPI_SUPPORT
 
-    config DEMO_PANEL_TFT_PROTO_5
+    config TFT_PROTO_5
         bool "MikroE TFT Proto 5 inch CAPACITIVE" if MCUX_DEMO_PANEL_TFT_PROTO_5_SUPPORT
 
-    config DEMO_PANEL_RASPI_7INCH
+    config RASPI_7INCH
         bool "Raspberry Pi 7 inch" if MCUX_DEMO_PANEL_RASPI_7INCH_SUPPORT
 
-    config DEMO_PANEL_ZC143AC72MIPI
+    config ZC143AC72MIPI
         bool "MIPI Circular Display ZC143AC72MIPI" if MCUX_DEMO_PANEL_ZC143AC72MIPI_SUPPORT
 
-    config DEMO_PANEL_ADAFRUIT_2_8
+    config ADAFRUIT_2_8
         bool "Adafruit 2.8 inch captative panel" if MCUX_DEMO_PANEL_ADAFRUIT_2_8_SUPPORT
 
-    config DEMO_PANEL_LCD_PAR_S035
+    config LCD_PAR_S035
         bool "LCD_PAR_S035 panel" if MCUX_DEMO_PANEL_LCD_PAR_S035_SUPPORT
 
-    config DEMO_PANEL_RK043FN02H
+    config RK043FN02H
         bool "RK043FN02H-CT" if MCUX_DEMO_PANEL_RK043FN02H_SUPPORT
 
-    config DEMO_PANEL_RK043FN66HS
+    config RK043FN66HS
         bool "RK043FN66HS-CTG" if MCUX_DEMO_PANEL_RK043FN66HS_SUPPORT
 
 endchoice

@@ -27,7 +27,7 @@ config MCUX_DEMO_PANEL_LCD_PAR_S035_SUPPORT
 if MCUX_PRJSEG_module.board.display_support
 
     choice DISPLAY_SUPPORT_PANEL
-        default DEMO_PANEL_LCD_PAR_S035
+        default LCD_PAR_S035
 
     endchoice
 
