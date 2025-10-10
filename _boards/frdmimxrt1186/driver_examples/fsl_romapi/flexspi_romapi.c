@@ -25,12 +25,7 @@ status_t FLEXSPI_NorFlash_GetVendorID(uint32_t instance, uint32_t *vendorID);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-/*! @brief config serial NOR option  */
-static serial_nor_config_option_t option = {
-    .option0.U = 0xc0000000U,
-    .option1.U = 0U,
-};
-
+#define FLASH_DUMMY_CYCLES 0x06
 /*! @brief FLEXSPI NOR flash driver Structure */
 static flexspi_nor_config_t norConfig;
 /*! @brief Buffer for program */
@@ -96,6 +91,45 @@ status_t FLEXSPI_NorFlash_GetVendorID(uint32_t instance, uint32_t *vendorID)
     return status;
 }
 
+
+#define FLEXSPI_LUT_SEQ(cmd0, pad0, op0, cmd1, pad1, op1)                                                              \
+    (FLEXSPI_LUT_OPERAND0(op0) | FLEXSPI_LUT_NUM_PADS0(pad0) | FLEXSPI_LUT_OPCODE0(cmd0) | FLEXSPI_LUT_OPERAND1(op1) | \
+     FLEXSPI_LUT_NUM_PADS1(pad1) | FLEXSPI_LUT_OPCODE1(cmd1))
+
+status_t FLEXSPI_NorFlash_GetConfig(uint32_t instance,
+                                           flexspi_nor_config_t *config)
+{  
+    config->memConfig.tag = 0x42464346UL;
+    config->memConfig.version = 0x56010400UL;
+    config->memConfig.readSampleClkSrc = kFLEXSPIReadSampleClk_LoopbackFromDqsPad;
+    config->memConfig.csHoldTime = 3;
+    config->memConfig.csSetupTime = 3;
+    config->memConfig.controllerMiscOption = 0x10;
+    config->memConfig.deviceType = kFLEXSPIDeviceType_SerialNOR;
+    config->memConfig.sflashPadType = kSerialFlash_4Pads;
+    config->memConfig.serialClkFreq = kFLEXSPISerialClk_100MHz;
+    config->memConfig.sflashA1Size = 16u * 1024u * 1024u,
+    config->memConfig.configModeType[0] = kDeviceConfigCmdType_Generic,
+ 
+    config->memConfig.lookupTable[0] = FLEXSPI_LUT_SEQ(CMD_SDR, FLEXSPI_1PAD, 0xEB, RADDR_SDR, FLEXSPI_4PAD, 0x18);
+    config->memConfig.lookupTable[1] = FLEXSPI_LUT_SEQ(DUMMY_SDR, FLEXSPI_4PAD, FLASH_DUMMY_CYCLES, READ_SDR, FLEXSPI_4PAD, 0x04);
+    config->memConfig.lookupTable[4 * 1 + 0] = FLEXSPI_LUT_SEQ(CMD_SDR, FLEXSPI_1PAD, 0x05, READ_SDR, FLEXSPI_1PAD, 0x04);
+    config->memConfig.lookupTable[4 * 3 + 0] = FLEXSPI_LUT_SEQ(CMD_SDR, FLEXSPI_1PAD, 0x06, STOP, FLEXSPI_1PAD, 0x0);    
+    config->memConfig.lookupTable[4 * 5 + 0] = FLEXSPI_LUT_SEQ(CMD_SDR, FLEXSPI_1PAD, 0x20, RADDR_SDR, FLEXSPI_1PAD, 0x18);    
+    config->memConfig.lookupTable[4 * 8 + 0] = FLEXSPI_LUT_SEQ(CMD_SDR, FLEXSPI_1PAD, 0xD8, RADDR_SDR, FLEXSPI_1PAD, 0x18);
+    config->memConfig.lookupTable[4 * 9 + 0] = FLEXSPI_LUT_SEQ(CMD_SDR, FLEXSPI_1PAD, 0x02, RADDR_SDR, FLEXSPI_1PAD, 0x18);
+    config->memConfig.lookupTable[4 * 9 + 1] = FLEXSPI_LUT_SEQ(WRITE_SDR, FLEXSPI_1PAD, 0x04, STOP, FLEXSPI_1PAD, 0x0);    
+    config->memConfig.lookupTable[4 * 11 + 0] = FLEXSPI_LUT_SEQ(CMD_SDR, FLEXSPI_1PAD, 0x60, STOP, FLEXSPI_1PAD, 0x0);       
+
+    config->pageSize = 256u;
+    config->sectorSize = 4u * 1024u;
+    config->blockSize = 64u * 1024u;
+    config->ipcmdSerialClkFreq = 0x1;
+    config->isUniformBlockSize = false;
+ 
+    return kStatus_Success;
+}
+
 int main(void)
 {
     status_t status;
@@ -122,7 +156,7 @@ int main(void)
 #endif
 
     /* Setup FLEXSPI NOR Configuration Block */
-    status = ROM_FLEXSPI_NorFlash_GetConfig(FlexSpiInstance, &norConfig, &option);
+    status = FLEXSPI_NorFlash_GetConfig(FlexSpiInstance, &norConfig);
     if (status == kStatus_Success)
     {
         PRINTF("\r\n Successfully get FLEXSPI NOR configuration block\r\n ");
