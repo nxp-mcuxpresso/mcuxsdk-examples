@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+dcif_clut_4bpp:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/dcif/clut_4bpp
+    project-root-path: boards/${board}/driver_examples/dcif/clut_4bpp/${multicore_foldername}
+    document:
+      name: dcif_clut_4bpp${core_id_suffix_name}
+      category: driver_examples/dcif
+      brief: The clut_4bpp project is designed to demonstrate the Color Look-Up Table (CLUT) feature 
+             using the 4BPP format on the background layer. If the program runs successfully, a 400×400 
+             square will sequentially display 16 different colors. 
+      example_readme:
+      - examples/driver_examples/dcif/clut_4bpp/readme.md
+      - ${board_root}/${board}/driver_examples/dcif/dcif_examples_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
+    imx943evk@cm7_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm7_core0:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - +iar@release
+    - +iar@debug
