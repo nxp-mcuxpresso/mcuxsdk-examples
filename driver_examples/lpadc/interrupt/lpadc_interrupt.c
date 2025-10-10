@@ -75,9 +75,6 @@ int main(void)
 #if defined(DEMO_LPADC_VREF_SOURCE)
     mLpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
 #endif /* DEMO_LPADC_VREF_SOURCE */
-#if defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS
-    mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage128;
-#endif /* FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS */
     LPADC_Init(DEMO_LPADC_BASE, &mLpadcConfigStruct);
 
     /* Request LPADC calibration. */

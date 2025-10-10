@@ -57,7 +57,6 @@ int main(void)
 #if defined(DEMO_LPADC_VREF_SOURCE)
     mLpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
 #endif /* DEMO_LPADC_VREF_SOURCE */
-    mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage128;
     LPADC_Init(DEMO_LPADC_BASE, &mLpadcConfigStruct);
 
     /* Request LPADC calibration. */

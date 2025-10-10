@@ -121,7 +121,6 @@ void DEMO_InitLPADC(void)
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     mLpadcConfigStruct.enableAnalogPreliminary = true;
     mLpadcConfigStruct.referenceVoltageSource  = DEMO_LPADC_VREF_SOURCE;
-    mLpadcConfigStruct.conversionAverageMode   = kLPADC_ConversionAverage128;
     LPADC_Init(DEMO_LPADC_BASE, &mLpadcConfigStruct);
 
     /* Set conversion CMD configuration. */

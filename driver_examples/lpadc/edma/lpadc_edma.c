@@ -180,9 +180,6 @@ static void ADC_Configuration(void)
 #if defined(DEMO_LPADC_VREF_SOURCE)
     lpadcConfigStruct.referenceVoltageSource = DEMO_LPADC_VREF_SOURCE;
 #endif /* DEMO_LPADC_VREF_SOURCE */
-#if defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS
-    lpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage128;
-#endif /* FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS */
     lpadcConfigStruct.enableInDozeMode = true;
     LPADC_Init(DEMO_LPADC_BASE, &lpadcConfigStruct);
 

@@ -71,9 +71,6 @@ static void DEMO_LPADCInit(void)
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     mLpadcConfigStruct.enableAnalogPreliminary = true;
     mLpadcConfigStruct.referenceVoltageSource  = DEMO_LPADC_VREF_SOURCE;
-#if defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS
-    mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage128;
-#endif /* FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS */
     LPADC_Init(DEMO_LPADC_BASE, &mLpadcConfigStruct);
 
     /* Request LPADC calibration. */

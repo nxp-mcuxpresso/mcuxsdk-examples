@@ -102,9 +102,6 @@ int main(void)
     adcConfig.powerLevelMode = kLPADC_PowerLevelAlt4;
 #endif /* FSL_FEATURE_LPADC_HAS_CFG_PWRSEL */
     adcConfig.enableInDozeMode = false;
-#if defined(FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS) && FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS
-    adcConfig.conversionAverageMode = kLPADC_ConversionAverage128;
-#endif /* FSL_FEATURE_LPADC_HAS_CTRL_CAL_AVGS */
     adcConfig.enableAnalogPreliminary = true;
     adcConfig.powerUpDelay            = 0x80U;
     adcConfig.referenceVoltageSource  = DEMO_LPADC_VREF_SOURCE;
