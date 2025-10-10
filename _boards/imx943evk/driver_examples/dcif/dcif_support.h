@@ -42,9 +42,9 @@
 /* Frame buffer must be 128 byte aligned. */
 #define DEMO_FB_ALIGN 128
 
-#define DEMO_FB0_ADDR 0x80000000
-#define DEMO_FB1_ADDR 0x803E8000
-
+#define DEMO_FB0_ADDR      0x80000000
+#define DEMO_FB1_ADDR      0x803E8000
+#define DEMO_OCRAM_ADDR    0x20480000
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
