@@ -39,6 +39,7 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/umr_4cis/modules/lc3_codec.h
     examples/edgefast_bluetooth_examples/umr_4cis/unicast_media_receiver.c
     examples/edgefast_bluetooth_examples/umr_4cis/unicast_media_receiver.h
+    examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
@@ -46,6 +47,7 @@ mcux_add_include(
   INCLUDES
     examples/edgefast_bluetooth_examples/umr_4cis
     examples/edgefast_bluetooth_examples/umr_4cis/modules
+    examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -58,6 +60,7 @@ mcux_add_macro(
       -DSHELL_TASK_PRIORITY=configMAX_PRIORITIES-2\
       -DSHELL_TASK_STACK_SIZE=2048\
       -DSHELL_USE_COMMON_TASK=0\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
       -DUSE_RTOS=1"
 )
 

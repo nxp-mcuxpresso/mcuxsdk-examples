@@ -33,11 +33,13 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/spp/edgefast_spp.c
     examples/edgefast_bluetooth_examples/spp/edgefast_spp.h
     examples/edgefast_bluetooth_examples/spp/main.c
+    examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES examples/edgefast_bluetooth_examples/spp
+           examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -47,6 +49,7 @@ mcux_add_macro(
       -DSDK_OS_FREE_RTOS\
       -DSHELL_TASK_STACK_SIZE=4096\
       -DSHELL_USE_COMMON_TASK=0\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
       -DUSE_RTOS=1"
 )
 

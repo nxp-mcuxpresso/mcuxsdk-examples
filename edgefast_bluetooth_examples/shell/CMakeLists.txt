@@ -26,6 +26,7 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/shell/shell.c
     examples/edgefast_bluetooth_examples/shell/shell.h
     middleware/edgefast_bluetooth/source/shell/shell_common.c
+    examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
@@ -33,6 +34,7 @@ mcux_add_include(
   INCLUDES
     examples/edgefast_bluetooth_examples/shell
     middleware/edgefast_bluetooth/source/shell
+    examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -41,6 +43,7 @@ mcux_add_macro(
       -DSDK_DEBUGCONSOLE_UART=1\
       -DSDK_OS_FREE_RTOS\
       -DSHELL_TASK_STACK_SIZE=2900\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
       -DUSE_RTOS=1"
 )
 

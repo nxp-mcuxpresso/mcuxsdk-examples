@@ -30,11 +30,13 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/tmap_peripheral/tmap_peripheral.c
     examples/edgefast_bluetooth_examples/tmap_peripheral/tmap_peripheral.h
     examples/edgefast_bluetooth_examples/tmap_peripheral/vcp_vol_renderer.c
+    examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES examples/edgefast_bluetooth_examples/tmap_peripheral
+           examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -43,6 +45,7 @@ mcux_add_macro(
       -DPRINTF_ADVANCED_ENABLE=1\
       -DSDK_DEBUGCONSOLE_UART=1\
       -DSDK_OS_FREE_RTOS\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
       -DUSE_RTOS=1"
 )
 

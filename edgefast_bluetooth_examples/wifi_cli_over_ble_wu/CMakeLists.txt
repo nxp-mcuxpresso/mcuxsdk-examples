@@ -31,6 +31,7 @@ mcux_add_source(
     middleware/wifi_nxp/example/wifi_cli/lwip_config/lwippools.h
     middleware/wifi_nxp/example/wifi_cli/main.c
     middleware/wifi_nxp/example/wifi_cli/wifi_config/wifi_config.h
+    examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
@@ -41,6 +42,7 @@ mcux_add_include(
     middleware/wifi_nxp/example/wifi_cli
     middleware/wifi_nxp/example/wifi_cli/wifi_config
     middleware/wifi_nxp/example/wifi_cli/lwip_config
+    examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -49,6 +51,7 @@ mcux_add_macro(
       -DPRINTF_ADVANCED_ENABLE=1\
       -DSDK_DEBUGCONSOLE_UART=1\
       -DSDK_OS_FREE_RTOS\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
       -DUSE_RTOS=1"
 )
 

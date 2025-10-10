@@ -28,11 +28,13 @@ mcux_add_source(
             examples/edgefast_bluetooth_examples/map_mce/app_connect.h
             examples/edgefast_bluetooth_examples/map_mce/app_discover.c
             examples/edgefast_bluetooth_examples/map_mce/app_discover.h
+            examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}
     INCLUDES examples/edgefast_bluetooth_examples/map_mce
+             examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -43,6 +45,7 @@ mcux_add_macro(
        -DSHELL_USE_COMMON_TASK=0\
        -DSHELL_TASK_STACK_SIZE=2048\
        -DSHELL_TASK_PRIORITY=configMAX_PRIORITIES-2\
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
        -DLPUART_RING_BUFFER_SIZE=1024U"
 )
 

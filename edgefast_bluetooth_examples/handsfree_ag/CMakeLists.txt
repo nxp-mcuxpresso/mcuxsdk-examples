@@ -33,11 +33,13 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/handsfree_ag/main.c
     examples/edgefast_bluetooth_examples/handsfree_ag/ringtone.h
     examples/edgefast_bluetooth_examples/handsfree_ag/sco_audio_pl_ext.c
+    examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES examples/edgefast_bluetooth_examples/handsfree_ag
+           examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -48,6 +50,7 @@ mcux_add_macro(
       -DSHELL_TASK_PRIORITY=configMAX_PRIORITIES-2\
       -DSHELL_TASK_STACK_SIZE=2048\
       -DSHELL_USE_COMMON_TASK=0\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
       -DUSE_RTOS=1"
 )
 

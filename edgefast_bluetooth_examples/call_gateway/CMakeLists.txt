@@ -34,12 +34,14 @@ mcux_add_source(
     examples/edgefast_bluetooth_examples/call_gateway/set_coordinator.h
     examples/edgefast_bluetooth_examples/call_gateway/unicast_audio_client.c
     examples/edgefast_bluetooth_examples/call_gateway/unicast_audio_client.h
+    examples/edgefast_bluetooth_examples/config/mbedtls_user_config.h
 )
 
 mcux_add_include(
   BASE_PATH ${SdkRootDirPath}
   INCLUDES examples/edgefast_bluetooth_examples/call_gateway
            examples/edgefast_bluetooth_examples/call_gateway/modules
+           examples/edgefast_bluetooth_examples/config
 )
 
 mcux_add_macro(
@@ -51,6 +53,7 @@ mcux_add_macro(
       -DSHELL_TASK_PRIORITY=configMAX_PRIORITIES-2\
       -DSHELL_TASK_STACK_SIZE=2048\
       -DSHELL_USE_COMMON_TASK=0\
+      -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
       -DUSE_RTOS=1"
 )
 
