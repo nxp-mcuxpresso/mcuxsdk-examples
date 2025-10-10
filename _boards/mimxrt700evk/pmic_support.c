@@ -100,8 +100,8 @@ void BOARD_InitPmic(void)
     pca9422RegConfig.buck[1].dvsCtrl = (uint8_t)kPCA9422_PinInActiveAndBxOUTSLEEPInSleep;
     pca9422RegConfig.buck[2].dvsCtrl = (uint8_t)kPCA9422_PinInActiveAndBxOUTSLEEPInSleep;
 
-    PCA9422_InitRegulator(&pca9422Handle, &pca9422RegConfig);
     BOARD_InitPmicDVSPin();
+    PCA9422_InitRegulator(&pca9422Handle, &pca9422RegConfig);
 #else
     CLOCK_EnableClock(kCLOCK_LPI2c15);
     PCA9422_GetRegulatorDefaultConfig(&pca9422RegConfig);
