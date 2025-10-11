@@ -1,0 +1,17 @@
+# Copyright 2025 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+config MCUX_HW_BOARD_imx943_orangebox_cm7_core1
+    bool
+    default y
+    select MCUX_COMPONENT_driver.app_srtm.cm7_core1 if MCUX_COMPONENT_driver.srtm
+
+config MCUX_COMPONENT_driver.app_srtm.cm7_core1
+    bool
+    default n
+
+config RL_BUFFER_COUNT_VALUE
+    int
+    default 4
+    default 256 if MCUX_COMPONENT_driver.app_srtm.cm7_core1
