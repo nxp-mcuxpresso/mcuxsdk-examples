@@ -15,7 +15,7 @@ mcux_add_source(
 )
 
 mcux_add_include(
-    BASE_PATH ${APPLICATION_BINARY_DIR}/../ehzv_bitfield_operate_ezhv/${SB_CONFIG_ezhv_toolchain}
+    BASE_PATH ${APPLICATION_BINARY_DIR}/../ehzv_blc_detect_ezhv/${SB_CONFIG_ezhv_toolchain}
     INCLUDES ./
     TOOLCHAINS mdk armgcc
 )
@@ -25,7 +25,7 @@ include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/blc_detect/${core
 mcux_convert_binary(BINARY ${APPLICATION_BINARY_DIR}/${MCUX_SDK_PROJECT_NAME}.bin)
 
 mcux_add_iar_configuration(
-    LD "--image_input=${APPLICATION_BINARY_DIR}/../ehzv_bitfield_operate_ezhv/${SB_CONFIG_ezhv_toolchain}/ezhv_image.bin,_ezhv_image,__ezhv_image,4 \
+    LD "--image_input=${APPLICATION_BINARY_DIR}/../ehzv_blc_detect_ezhv/${SB_CONFIG_ezhv_toolchain}/ezhv_image.bin,_ezhv_image,__ezhv_image,4 \
         --keep _ezhv_image"
 )
 
