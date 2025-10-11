@@ -9,8 +9,8 @@ Board settings
 ============
 The flexio_uart_polling example is requires connecting the FLEXIO pins with the USB2COM pins
 The connection should be set as following:
-- J8-18(P3_1), RX of USB2COM connected
-- J8-17(P3_0), TX of USB2COM connected
+- J8-18(P3_1), TX of USB2COM connected
+- J8-17(P3_0), RX of USB2COM connected
 - J8-2, Ground of USB2COM connected
 
 Prepare the Demo
