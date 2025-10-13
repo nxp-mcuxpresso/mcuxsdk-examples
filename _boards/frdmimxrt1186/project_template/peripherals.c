@@ -13,8 +13,8 @@
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
 product: Peripherals v14.0
-processor: MIMXRT1189xxxxx
-package_id: MIMXRT1189CVM8B
+processor: MIMXRT1186xxxxx
+package_id: MIMXRT1186CVJ8C
 mcu_data: ksdk2_0
 processor_version: 0.15.9
 functionalGroups:

@@ -1,9 +1,8 @@
 #!armclang --target=arm-arm-none-eabi -mcpu=cortex-m33 -E -x c
 /*
 ** ###################################################################
-**     Processors:          MIMXRT1189AVM8A_cm33
-**                          MIMXRT1189CVM8A_cm33
-**                          MIMXRT1189CVM8A_cm33
+**     Processors:          MIMXRT1186CVJ8C_cm33
+**                          MIMXRT1186XVJ8C_cm33
 **
 **     Compiler:            Keil ARM C/C++ Compiler
 **     Reference manual:    IMXRT1180RM, Rev E, 12/2019

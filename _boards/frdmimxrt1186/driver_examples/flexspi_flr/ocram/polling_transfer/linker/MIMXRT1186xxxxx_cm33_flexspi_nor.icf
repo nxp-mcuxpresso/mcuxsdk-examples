@@ -1,6 +1,8 @@
 /*
 ** ###################################################################
-**     Processor:           MIMXRT1189CVM8A_cm33
+**     Processors:          MIMXRT1186CVJ8C_cm33
+**                          MIMXRT1186XVJ8C_cm33
+**
 **     Compiler:            IAR ANSI C/C++ Compiler for ARM
 **     Reference manual:    IMXRT1180RM, Rev 0, 03/2021
 **     Version:             rev. 0.1, 2021-03-09

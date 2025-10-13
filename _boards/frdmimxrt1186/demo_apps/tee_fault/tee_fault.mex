@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding= "UTF-8" ?>
-<configuration name="MIMXRT1189xxxxx" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_14 http://mcuxpresso.nxp.com/XSD/mex_configuration_14.xsd" uuid="4df2e608-a454-4328-bc81-18baa0bee014" version="14" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<configuration name="MIMXRT1186xxxxx" xsi:schemaLocation="http://mcuxpresso.nxp.com/XSD/mex_configuration_14 http://mcuxpresso.nxp.com/XSD/mex_configuration_14.xsd" uuid="4df2e608-a454-4328-bc81-18baa0bee014" version="14" xmlns="http://mcuxpresso.nxp.com/XSD/mex_configuration_14" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
    <common>
-      <processor>MIMXRT1189xxxxx</processor>
-      <package>MIMXRT1189CVM8B</package>
+      <processor>MIMXRT1186xxxxx</processor>
+      <package>MIMXRT1186CVJ8C</package>
       <board>FRDM-IMXRT1186</board>
       <mcu_data>ksdk2_0</mcu_data>
       <cores selected="cm33">

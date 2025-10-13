@@ -48,7 +48,7 @@ Prepare the Demo
 		'imgtool sign --key sign-rsa2048-priv.pem --align 4 --header-size 0x400 --pad-header --slot-size 0x200000 --pad --confirm --max-sectors 800 --version "2.3.0" ecat_examples_foe_cm33.bin ecat_foe_2-3-0_SIGNED.bin'
 	- Download the image into target board
 		Open Jlink Command Line:
-			'JLink.exe -device MIMXRT1189xxx8_M33 -if SWD -speed 15000'
+			'JLink.exe -device MIMXRT1186xxx8_M33 -if SWD -speed 15000'
 			'r'
 			'h'
 			'loadbin ecat_foe_2-3-0_SIGNED.bin 0x28040000'
