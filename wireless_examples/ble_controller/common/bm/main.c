@@ -34,6 +34,10 @@
 #include "fwk_debug_swo.h"
 #endif
 
+#if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
+#include "sensors.h"
+#endif
+
 #define USE_OSA_API_IN_MAIN     1
 
 /************************************************************************************
@@ -122,6 +126,11 @@ int main(void)
 #endif
 
     APP_InitServices();
+
+#if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
+    /* for periodic temperature measurement */
+    SENSORS_TriggerPeriodicTemperatureMeasurement(1000U);
+#endif
 
 #if (defined(DBG_SWO_INIT_VIA_SW) && (DBG_SWO_INIT_VIA_SW == 1))
     /* Configure and initialize SWO on MAIN core*/
