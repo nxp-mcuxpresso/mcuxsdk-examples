@@ -13,8 +13,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "fsl_os_abstraction.h"
 #include "fsl_component_log_config.h"
-
-#include "els_pkc_mbedtls.h"
+#include "psa/crypto.h"
 
 #include "ncp_glue_ble.h"
 #include "ncp_ble.h"
@@ -31,8 +30,9 @@
 typedef struct ncp_cmd_t ble_ncp_command_t;
 
 extern int ble_ncp_L2capInit(void);
-
+#if CONFIG_NCP_USE_ENCRYPT
 extern void ncp_set_mbedtls_set_time();
+#endif
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -239,10 +239,10 @@ int ble_ncp_init(void)
          return ret;
     }
 
-    CRYPTO_InitHardware();
-
+    psa_crypto_init();
+#if CONFIG_NCP_USE_ENCRYPT
     ncp_set_mbedtls_set_time();
-
+#endif
     //printSeparator();
     PRINTF("BLE initialized\r\n");
 

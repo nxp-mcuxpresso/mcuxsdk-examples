@@ -45,7 +45,7 @@
 #define MBEDTLS_PLATFORM_C
 #endif
 
-#ifdef RW610
+#if 0
 #if !defined(CONFIG_HAVE_TIME_DISABLE)
 #define MBEDTLS_HAVE_TIME
 #endif
