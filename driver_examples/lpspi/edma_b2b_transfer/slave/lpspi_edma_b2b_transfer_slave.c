@@ -117,10 +117,14 @@ int main(void)
     EDMA_CreateHandle(&(lpspiEdmaSlaveTxDataToTxRegHandle), EXAMPLE_LPSPI_SLAVE_DMA_BASE,
                       EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL);
 #if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL)
     EDMA_SetChannelMux(EXAMPLE_LPSPI_SLAVE_DMA_BASE, EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL,
                        DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL);
+#endif
+#if defined(DEMO_LPSPI_RECEIVE_EDMA_CHANNEL)
     EDMA_SetChannelMux(EXAMPLE_LPSPI_SLAVE_DMA_BASE, EXAMPLE_LPSPI_SLAVE_DMA_RX_CHANNEL,
                        DEMO_LPSPI_RECEIVE_EDMA_CHANNEL);
+#endif
 #endif
     LPSPI_SlaveTransferCreateHandleEDMA(EXAMPLE_LPSPI_SLAVE_BASEADDR, &g_s_edma_handle, LPSPI_SlaveUserCallback, NULL,
                                         &lpspiEdmaSlaveRxRegToRxDataHandle, &lpspiEdmaSlaveTxDataToTxRegHandle);

@@ -114,7 +114,7 @@ int main(void)
     EDMA_CreateHandle(&g_dmaHandle, DEMO_DMA, DEMO_EDMA_CHANNEL);
     EDMA_SetCallback(&g_dmaHandle, EDMA_TX_Callback, NULL);
     EDMA_ResetChannel(DEMO_DMA, g_dmaHandle.channel);
-#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX && defined(DEMO_SAI_EDMA_CHANNEL)
     EDMA_SetChannelMux(DEMO_DMA, DEMO_EDMA_CHANNEL, DEMO_SAI_EDMA_CHANNEL);
 #endif
 

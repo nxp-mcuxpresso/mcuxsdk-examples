@@ -142,10 +142,14 @@ int main(void)
     EDMA_CreateHandle(&(lpspiEdmaMasterTxDataToTxRegHandle), EXAMPLE_LPSPI_MASTER_DMA_BASE,
                       EXAMPLE_LPSPI_MASTER_DMA_TX_CHANNEL);
 #if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL)
     EDMA_SetChannelMux(EXAMPLE_LPSPI_MASTER_DMA_BASE, EXAMPLE_LPSPI_MASTER_DMA_TX_CHANNEL,
                        DEMO_LPSPI_TRANSMIT_EDMA_CHANNEL);
+#endif
+#if defined(DEMO_LPSPI_RECEIVE_EDMA_CHANNEL)
     EDMA_SetChannelMux(EXAMPLE_LPSPI_MASTER_DMA_BASE, EXAMPLE_LPSPI_MASTER_DMA_RX_CHANNEL,
                        DEMO_LPSPI_RECEIVE_EDMA_CHANNEL);
+#endif
 #endif
     LPSPI_MasterTransferCreateHandleEDMA(EXAMPLE_LPSPI_MASTER_BASEADDR, &g_m_edma_handle, LPSPI_MasterUserCallback,
                                          NULL, &lpspiEdmaMasterRxRegToRxDataHandle,

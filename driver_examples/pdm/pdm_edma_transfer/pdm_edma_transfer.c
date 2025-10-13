@@ -135,7 +135,7 @@ int main(void)
     EDMA_GetDefaultConfig(&dmaConfig);
     EDMA_Init(DEMO_EDMA, &dmaConfig);
     EDMA_CreateHandle(&dmaHandle, DEMO_EDMA, DEMO_EDMA_CHANNEL);
-#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX && defined(DEMO_PDM_EDMA_CHANNEL)
     EDMA_SetChannelMux(DEMO_EDMA, DEMO_EDMA_CHANNEL, DEMO_PDM_EDMA_CHANNEL);
 #endif
     /* Set up pdm */

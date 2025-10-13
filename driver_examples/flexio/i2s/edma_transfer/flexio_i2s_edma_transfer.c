@@ -208,8 +208,12 @@ int main(void)
 #endif
 
 #if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(EXAMPLE_TX_DMA_SOURCE)
     EDMA_SetChannelMux(EXAMPLE_DMA, EXAMPLE_TX_CHANNEL, EXAMPLE_TX_DMA_SOURCE);
+#endif
+#if defined(EXAMPLE_RX_DMA_SOURCE)
     EDMA_SetChannelMux(EXAMPLE_DMA, EXAMPLE_RX_CHANNEL, EXAMPLE_RX_DMA_SOURCE);
+#endif
 #endif
 
     /* Init SAI module */

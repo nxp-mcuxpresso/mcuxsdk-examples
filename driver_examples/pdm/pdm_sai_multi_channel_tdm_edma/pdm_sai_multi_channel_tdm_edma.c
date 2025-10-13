@@ -171,8 +171,12 @@ int main(void)
     EDMA_CreateHandle(&s_saiDmaHandle, DEMO_EDMA, DEMO_SAI_EDMA_CHANNEL);
 
 #if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(DEMO_PDM_EDMA_SOURCE)
     EDMA_SetChannelMux(DEMO_EDMA, DEMO_PDM_EDMA_CHANNEL_0, DEMO_PDM_EDMA_SOURCE);
+#endif
+#if defined(DEMO_SAI_EDMA_SOURCE)
     EDMA_SetChannelMux(DEMO_EDMA, DEMO_SAI_EDMA_CHANNEL, DEMO_SAI_EDMA_SOURCE);
+#endif
 #endif
 
     /* SAI init */

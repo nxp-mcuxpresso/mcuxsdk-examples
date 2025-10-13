@@ -73,7 +73,7 @@ void streamer_pcm_init(void)
     EDMA_Init(DEMO_DMA, &dmaConfig);
     /* Create DMA handle. */
     EDMA_CreateHandle(&(pcmHandle.dmaTxHandle), DEMO_DMA, DEMO_DMA_TX_CHANNEL);
-#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX && defined(DEMO_SAI_TX_SOURCE)
     EDMA_SetChannelMux(DEMO_DMA, DEMO_DMA_TX_CHANNEL, DEMO_SAI_TX_SOURCE);
 #endif
     /* SAI init */
@@ -95,7 +95,7 @@ void streamer_pcm_tx_close(void)
 {
     /* Stop playback.  This will flush the SAI transmit buffers. */
     SAI_TransferTerminateSendEDMA(DEMO_SAI, &(pcmHandle.saiTxHandle));
-#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX
+#if defined(FSL_FEATURE_EDMA_HAS_CHANNEL_MUX) && FSL_FEATURE_EDMA_HAS_CHANNEL_MUX && defined(DEMO_SAI_TX_SOURCE)
     /* Release the DMA channel mux */
     EDMA_SetChannelMux(DEMO_DMA, DEMO_DMA_TX_CHANNEL, DEMO_SAI_TX_SOURCE);
 #endif
