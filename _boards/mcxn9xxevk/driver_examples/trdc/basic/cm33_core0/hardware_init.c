@@ -76,7 +76,7 @@ void APP_SetMbcUnaccessible(void)
 void APP_TouchMbcMemory(void)
 {
     /* Touch the memory. */
-    (*(volatile uint32_t *)0x1000000);
+    (*(volatile uint32_t *)0x1100000);
 }
 
 void APP_ResolveMbcAccessError(void)
