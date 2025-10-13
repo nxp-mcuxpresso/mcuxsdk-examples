@@ -40,7 +40,7 @@
 /*NCP Host debug options*/
 #define CONFIG_NCP_DEBUG             0
 #define CONFIG_NCP_HOST_IO_DUMP      0
-#define CONFIG_CRC32_HW_ACCELERATE   0
+#define CONFIG_CRC32_HW_ACCELERATE   1
 #define CONFIG_NCP_RF_TEST_MODE      1
 #define CONFIG_NCP_MEM_MONITOR_DEBUG 1
 
