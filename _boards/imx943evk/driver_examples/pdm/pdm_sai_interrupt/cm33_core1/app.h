@@ -52,10 +52,6 @@
 #define DEMO_I2C_CLK_FREQ       CLOCK_GetRate(LPI2C_MASTER_CLOCK_ROOT)
 #define BOARD_MasterClockConfig()
 #define BOARD_SAI_RXCONFIG(config, mode)
-
-/* IGF instance and pdm data channel on IGF */
-#define DEMO_IGF    IGF
-#define IGF_CHANNEL 9
 /*${macro:end}*/
 
 /*******************************************************************************

@@ -9,7 +9,6 @@
 #include "app.h"
 #include "fsl_codec_common.h"
 #include "fsl_wm8962.h"
-#include "fsl_igf.h"
 #include "fsl_codec_adapter.h"
 #include "fsl_sai.h"
 /*${header:end}*/
@@ -48,7 +47,6 @@ codec_config_t boardCodecConfig = {.codecDevType = kCODEC_WM8962, .codecDevConfi
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    igf_config_t config;
     /* clang-format off */
     clk_t audiopll1vcoCLKCfg = {
         .clkId = kCLOCK_Audiopll1ctl,
@@ -138,13 +136,6 @@ void BOARD_InitHardware(void)
     saiMasterCfg.mclkSourceClkHz = DEMO_SAI_CLK_FREQ;            /* setup source clock for MCLK */
     saiMasterCfg.mclkHz          = saiMasterCfg.mclkSourceClkHz; /* setup target clock of MCLK */
     SAI_SetMasterClockConfig(DEMO_SAI, &saiMasterCfg);
-
-    /*Enable IGF with pdm data pin  */
-    IGF_Init(DEMO_IGF);
-
-    IGF_GetDefaultConfig(&config);
-
-    IGF_SetIgfConfig(DEMO_IGF, IGF_CHANNEL, &config);
 
     wm8962Config.i2cConfig.codecI2CSourceClock = DEMO_I2C_CLK_FREQ;
     wm8962Config.format.mclk_HZ                = DEMO_SAI_CLK_FREQ;
