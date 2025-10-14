@@ -141,5 +141,4 @@ m_free_data_end                   = m_shared_ram_end;
 
 /******************************************LCE MEMORY********************************************/
     __CE_MEM_HEAP_end__           = DEFINED(__top_ce_heap) ? (__top_ce_heap - 1): 0x2002ffff;
-    __SMU2_MEM_HEAP_start__       = m_free_data_start;
-    __SMU2_MEM_HEAP_end__         = m_free_data_end;
+

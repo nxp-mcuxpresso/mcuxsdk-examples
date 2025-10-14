@@ -59,8 +59,7 @@ static uint32_t ce_memHeap[MinimalCeHeapSize_c / sizeof(uint32_t)] __attribute__
 #error "Compiler unknown!"
 #endif
 extern uint32_t __CE_MEM_HEAP_end__[];
-extern uint32_t __SMU2_MEM_HEAP_start__[];
-extern uint32_t __SMU2_MEM_HEAP_end__[];
+
 /* Name must differ from section "ceHeap", otherwise gcc will complain */
 static memAreaCfg_t mCeHeap = {
     .next          = NULL,
@@ -69,10 +68,15 @@ static memAreaCfg_t mCeHeap = {
     .flags         = AREA_FLAGS_POOL_NOT_SHARED,
 };
 
-static memAreaCfg_t mSmuHeap = {
+#ifndef gExtendedHeapSize_c
+#define gExtendedHeapSize_c (24U*1024U)
+#endif
+static uint32_t maExtHeap[gExtendedHeapSize_c / sizeof(uint32_t)];
+
+static memAreaCfg_t mExtHeapCfg = {
     .next          = NULL,
-    .start_address = __SMU2_MEM_HEAP_start__,
-    .end_address   = __SMU2_MEM_HEAP_end__,
+    .start_address = maExtHeap,
+    .end_address   = &((uint8_t*)maExtHeap)[gExtendedHeapSize_c - 1],
     .flags         = 0U,
 };
 
@@ -87,7 +91,7 @@ static mem_status_t CE_MEM_Init(void)
     }
     if (st == kStatus_MemSuccess)
     {
-        st = MEM_RegisterExtendedArea(&mSmuHeap, &memHeap_id, 0);
+        st = MEM_RegisterExtendedArea(&mExtHeapCfg, &memHeap_id, 0);
     }
     return st;
 }

@@ -13,7 +13,7 @@
     __FIRMWARE_END_ADDRESS = DEFINED(gFirmwareTopAddr_c) ? gFirmwareTopAddr_c : __top_RAM;
     heap_end = DEFINED(gUseStackEnd_d) ? _vStackBase -1 : __FIRMWARE_END_ADDRESS;
     __HEAP_end__ = DEFINED(__top_sys_heap) ? __top_sys_heap -1 : heap_end;
-	__CSTACK_end__ = DEFINED(gUseStackEnd_d) ? __FIRMWARE_END_ADDRESS : __VECTOR_RAM - 1;
+    __CSTACK_end__ = DEFINED(gUseStackEnd_d) ? __FIRMWARE_END_ADDRESS : __VECTOR_RAM - 1;
     INT_STORAGE_SECTOR_SIZE = 0x2000;
     INT_STORAGE_START = DEFINED(__base_INT_STORAGE) ? __base_INT_STORAGE : 0;
     INT_STORAGE_END =  DEFINED(__top_INT_STORAGE) ? __top_INT_STORAGE : 0;
@@ -140,10 +140,5 @@ m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 m_free_data_end                   = m_shared_ram_end;
 
 /******************************************LCE MEMORY********************************************/
-m_smu2_heap_start                   = m_free_data_start;
-m_smu2_heap_size                    = DEFINED(gNBU_loc_d) ? (m_free_data_size / 2) : m_free_data_size;
-m_smu2_heap_end                     = m_smu2_heap_start + m_smu2_heap_size - 1;
 
 __CE_MEM_HEAP_end__                 = DEFINED(__top_ce_heap) ? (__top_ce_heap - 1): 0x2002ffff;
-__SMU2_MEM_HEAP_start__             = m_smu2_heap_start;
-__SMU2_MEM_HEAP_end__               = m_smu2_heap_end;

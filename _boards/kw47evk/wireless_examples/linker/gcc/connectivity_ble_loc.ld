@@ -227,13 +227,8 @@ m_upper_data1_end                   = m_ram1_end;
 m_heap_start                       = m_upper_data1_start;
 m_heap_size                        = m_upper_data1_size;
 
-m_smu2_heap_start                   = m_free_data_start;
-m_smu2_heap_size                    = m_free_data_end - m_smu2_heap_start + 1;
-m_smu2_heap_end                     = m_free_data_end;
 
 __CE_MEM_HEAP_end__                = m_ce_heap_end;
-__SMU2_MEM_HEAP_start__            = m_smu2_heap_start;
-__SMU2_MEM_HEAP_end__              = m_smu2_heap_end;
 
 /* Specify the memory areas */
 MEMORY
@@ -254,7 +249,6 @@ MEMORY
   m_heap                (RW)  : ORIGIN = m_heap_start, LENGTH = m_heap_size
   rpmsg_sh_mem          (RW)  : ORIGIN = rpmsg_sh_mem_start, LENGTH = rpmsg_sh_mem_size
   m_lowpower_flag       (RW)  : ORIGIN = m_lowpower_flag_start, LENGTH = m_lowpower_flag_size
-  m_smu2_heap           (RW)  : ORIGIN = m_smu2_heap_start, LENGTH = m_smu2_heap_size
 }
 
 /* Define output sections */

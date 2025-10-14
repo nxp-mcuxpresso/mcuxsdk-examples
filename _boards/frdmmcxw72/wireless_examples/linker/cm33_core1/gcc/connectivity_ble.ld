@@ -175,8 +175,8 @@ m_free_data_start                 = m_sqram_rldat_end + 1;
 m_free_data_size                  = m_shared_ram_end - m_sqram_rldat_end;
 m_free_data_end                   = m_shared_ram_end;
 
-m_heap_start = DEFINED(gNBU_loc_d) ? (m_free_data_start + m_free_data_size / 2) : m_free_data_start;
-m_heap_size  = DEFINED(gNBU_loc_d) ? (m_free_data_size / 2) : m_free_data_size;
+m_heap_start = m_free_data_start;
+m_heap_size  = m_free_data_size;
 m_heap_end   = m_free_data_end;
 
 /* The heap (if used) is using all the free_data section */
