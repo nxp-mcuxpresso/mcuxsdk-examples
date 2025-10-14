@@ -521,7 +521,15 @@ static void wu_central_scan_callback(const bt_addr_le_t *addr, int8_t rssi, uint
 }
 
 #if (defined(BUTTON_COUNT) && (BUTTON_COUNT > 0U))
-button_status_t wireless_uart_button_callback(void *buttonHandle, button_callback_message_t *message, void *callbackParam)
+struct button_event_work {
+    struct k_work worker;
+    struct k_sem sem;
+    button_callback_message_t *message;
+    void *callbackParam;
+    button_status_t status;
+};
+
+button_status_t button_event_precess(button_callback_message_t *message, void *callbackParam)
 {
     button_status_t status = kStatus_BUTTON_Success;
 #if (BUTTON_COUNT > 1U)
@@ -616,6 +624,38 @@ button_status_t wireless_uart_button_callback(void *buttonHandle, button_callbac
     }
 #endif
     return status;
+}
+
+static void button_event_worker(struct k_work *work)
+{
+    struct button_event_work *event_work = CONTAINER_OF(work, struct button_event_work, worker);
+
+    event_work->status = button_event_precess(event_work->message, event_work->callbackParam);
+
+    k_sem_give(&event_work->sem);
+}
+
+static struct button_event_work button_worker = {
+    .worker = Z_WORK_INITIALIZER(button_event_worker),
+    .sem = Z_SEM_INITIALIZER(worker.sem, 0, 1),
+    .message = NULL,
+    .callbackParam = NULL,
+    .status = kStatus_BUTTON_Success,
+};
+
+static button_status_t wireless_uart_button_callback(void *buttonHandle, button_callback_message_t *message, void *callbackParam)
+{
+    k_sem_reset(&button_worker.sem);
+
+    button_worker.status = kStatus_BUTTON_Success;
+    button_worker.message = message;
+    button_worker.callbackParam = callbackParam;
+
+    k_work_submit(&button_worker.worker);
+
+    k_sem_take(&button_worker.sem, K_FOREVER);
+
+    return button_worker.status;
 }
 #endif
 
