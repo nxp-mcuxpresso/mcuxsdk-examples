@@ -38,7 +38,8 @@ mcux_add_source(
 # wifi
 mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
-       -DMBEDTLS_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
+       -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
+       -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
        -DCONFIG_HOSTAPD=0"
 )
 
