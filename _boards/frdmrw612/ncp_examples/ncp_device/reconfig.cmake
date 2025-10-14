@@ -57,6 +57,10 @@ mcux_remove_mdk_configuration(
 )
 
 mcux_remove_macro(
+    MBEDTLS_MCUX_ELS_PKC_API
+)
+
+mcux_remove_macro(
     TOOLCHAINS armgcc iar mdk
     TARGETS flash_release
     AS "-DNDEBUG"

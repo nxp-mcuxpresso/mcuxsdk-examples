@@ -76,7 +76,9 @@ static void ncp_encrypt_handshake_task(void *pvParameters)
     if (ret != 0)
     {
         ncp_e("mbedtls mbedtls_ssl_handshake fail %d", ret);
+#if defined(MBEDTLS_ERROR_C)
         ncp_e("%s", mbedtls_high_level_strerr(ret));
+#endif
     }
     else 
     {

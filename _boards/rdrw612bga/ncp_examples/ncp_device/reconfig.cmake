@@ -42,6 +42,7 @@ mcux_add_macro(
     CC "-DBT_PLATFORM\
        -DLWIP_HOOK_FILENAME=\\\"lwip_default_hooks.h\\\"\
        -DCONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA\
+       -DMBEDTLS_PLATFORM_MEMORY\
        -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_config_client.h\\\"\
        -DEDGEFAST_BT_LITTLEFS_MFLASH\
        -DGATT_CLIENT\
@@ -59,6 +60,10 @@ mcux_remove_mdk_configuration(
     TARGETS flash_debug
     CC "-O1"
     CX "-O1"
+)
+
+mcux_remove_macro(
+    MBEDTLS_MCUX_ELS_PKC_API
 )
 
 mcux_remove_macro(
