@@ -216,6 +216,30 @@ status_t BOARD_LPI2C_Receive(LPI2C_Type *base,
     return LPI2C_MasterTransferBlocking(base, &xfer);
 }
 
+status_t BOARD_I2C_DeviceSend( void *base,
+                                 uint8_t deviceAddress,
+                                 uint32_t subAddress,
+                                 uint8_t subAddressSize,
+                                 const uint8_t *txBuff,
+                                 uint8_t txBuffSize,
+                                 uint32_t flags)
+{
+    return BOARD_LPI2C_Send(base, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
+                            txBuffSize, flags);
+}
+
+status_t BOARD_I2C_DeviceReceive( void *base,
+                                    uint8_t deviceAddress,
+                                    uint32_t subAddress,
+                                    uint8_t subAddressSize,
+                                    uint8_t *rxBuff,
+                                    uint8_t rxBuffSize,
+                                    uint32_t flags)
+{
+    return BOARD_LPI2C_Receive(base, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize,
+                               flags);
+}
+
 #if defined(BOARD_USE_PCAL6524) && BOARD_USE_PCAL6524
 void BOARD_PCAL6524_I2C_Init(void)
 {
@@ -249,9 +273,10 @@ void BOARD_InitPCAL6524(pcal6524_handle_t *handle)
     BOARD_PCAL6524_I2C_Init();
 
     static const pcal6524_config_t config = {
+        .i2cBase         = BOARD_PCAL6524_I2C,
         .i2cAddr         = BOARD_PCAL6524_I2C_ADDR,
-        .I2C_SendFunc    = BOARD_PCAL6524_I2C_Send,
-        .I2C_ReceiveFunc = BOARD_PCAL6524_I2C_Receive,
+        .I2C_SendFunc    = BOARD_I2C_DeviceSend,
+        .I2C_ReceiveFunc = BOARD_I2C_DeviceReceive,
     };
 
     PCAL6524_Init(handle, &config);
