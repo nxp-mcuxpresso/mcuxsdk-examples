@@ -30,7 +30,50 @@ processor_version: 0.12.3
  * END ****************************************************************************************************************/
 void BOARD_InitBootPins(void)
 {
+  BOARD_InitDEBUG_UARTPins();
 }
+
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitDEBUG_UARTPins:
+- options: {createDeInit: 'true', callFromInitBoot: 'true', coreID: cm33, enableClock: 'true'}
+- pin_list:
+  - {pin_num: A7, peripheral: LPUART1, signal: TXD, pin_signal: GPIO_AON_08, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Fast}
+  - {pin_num: B12, peripheral: LPUART1, signal: RXD, pin_signal: GPIO_AON_09, pull_keeper_select: Keeper, open_drain: Disable, drive_strength: High, slew_rate: Fast}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitDEBUG_UARTPins, assigned for the Cortex-M33 core.
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+void BOARD_InitDEBUG_UARTPins(void) {
+  CLOCK_EnableClock(kCLOCK_Iomuxc2);          /* Turn on LPCG: LPCG is ON. */
+
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 is configured as LPUART1_TX */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinMux(
+      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 is configured as LPUART1_RX */
+      0U);                                    /* Software Input On Field: Input Path is determined by functionality */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AON_08_LPUART1_TX,          /* GPIO_AON_08 PAD functional properties : */
+      0x02U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled */
+  IOMUXC_SetPinConfig(
+      IOMUXC_GPIO_AON_09_LPUART1_RX,          /* GPIO_AON_09 PAD functional properties : */
+      0x02U);                                 /* Slew Rate Field: Fast Slew Rate
+                                                 Drive Strength Field: high driver
+                                                 Pull / Keep Select Field: Pull Disable, Highz
+                                                 Pull Up / Down Config. Field: Weak pull down
+                                                 Open Drain Field: Disabled */
+}
+
 
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************

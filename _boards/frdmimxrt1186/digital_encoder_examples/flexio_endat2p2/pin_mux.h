@@ -29,6 +29,12 @@ extern "C" {
 #endif
 
 /*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitDEBUG_UARTPins(void);
+
+/*!
  * @brief Calls initialization functions.
  *
  */
