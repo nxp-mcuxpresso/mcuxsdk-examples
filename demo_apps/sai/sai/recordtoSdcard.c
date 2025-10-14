@@ -12,6 +12,12 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define WAV_HEADER_SIZE     44U
+#define WAV_FMT_CHUNK_SIZE  16U
+#define WAV_PCM_FORMAT      1U
+#define WAV_BITS_PER_SAMPLE 16U
+#define WAV_CHANNELS        2U
+#define BYTES_PER_SAMPLE    2U
 
 /*******************************************************************************
  * Prototypes
@@ -35,82 +41,147 @@ extern FIL g_fileObject;
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
+static void write_uint32_le(uint8_t *buffer, size_t offset, uint32_t value)
+{
+    if ((buffer == NULL) || (offset > (WAV_HEADER_SIZE - 4U)))
+    {
+        return;
+    }
+    buffer[offset]      = (uint8_t)(value & 0xFFU);
+    buffer[offset + 1U] = (uint8_t)((value >> 8U) & 0xFFU);
+    buffer[offset + 2U] = (uint8_t)((value >> 16U) & 0xFFU);
+    buffer[offset + 3U] = (uint8_t)((value >> 24U) & 0xFFU);
+}
+
+static void write_uint16_le(uint8_t *buffer, size_t offset, uint16_t value)
+{
+    if ((buffer == NULL) || (offset > (WAV_HEADER_SIZE - 2U)))
+    {
+        return;
+    }
+    buffer[offset]      = (uint8_t)(value & 0xFFU);
+    buffer[offset + 1U] = (uint8_t)((value >> 8U) & 0xFFU);
+}
+
 void wav_header(uint8_t *header, uint32_t sampleRate, uint32_t bitsPerFrame, uint8_t channels, uint32_t fileSize)
 {
+    if (header == NULL)
+    {
+        return;
+    }
+
+    /* Check for potential overflow */
+    if (fileSize < WAV_HEADER_SIZE)
+    {
+        return;
+    }
+
     uint32_t totalDataLen = fileSize - 8U;
-    uint32_t audioDataLen = fileSize - 44U;
-    uint32_t byteRate     = sampleRate * (bitsPerFrame / 8U) * channels;
-    header[0]             = 'R';
-    header[1]             = 'I';
-    header[2]             = 'F';
-    header[3]             = 'F';
-    header[4]             = (totalDataLen & 0xff); /* file-size (equals file-size - 8) */
-    header[5]             = ((totalDataLen >> 8U) & 0xff);
-    header[6]             = ((totalDataLen >> 16U) & 0xff);
-    header[7]             = ((totalDataLen >> 24U) & 0xff);
-    header[8]             = 'W'; /* Mark it as type "WAVE" */
-    header[9]             = 'A';
-    header[10]            = 'V';
-    header[11]            = 'E';
-    header[12]            = 'f'; /* Mark the format section 'fmt ' chunk */
-    header[13]            = 'm';
-    header[14]            = 't';
-    header[15]            = ' ';
-    header[16]            = 16; /* 4 bytes: size of 'fmt ' chunk, Length of format data.  Always 16 */
-    header[17]            = 0;
-    header[18]            = 0;
-    header[19]            = 0;
-    header[20]            = 1; /* format = 1 ,Wave type PCM */
-    header[21]            = 0;
-    header[22]            = channels; /* channels */
-    header[23]            = 0;
-    header[24]            = (sampleRate & 0xff);
-    header[25]            = ((sampleRate >> 8U) & 0xff);
-    header[26]            = ((sampleRate >> 16U) & 0xff);
-    header[27]            = ((sampleRate >> 24U) & 0xff);
-    header[28]            = (byteRate & 0xff);
-    header[29]            = ((byteRate >> 8U) & 0xff);
-    header[30]            = ((byteRate >> 16U) & 0xff);
-    header[31]            = ((byteRate >> 24U) & 0xff);
-    header[32]            = (channels * bitsPerFrame / 8); /* block align */
-    header[33]            = 0;
-    header[34]            = bitsPerFrame; /* bits per sample */
-    header[35]            = 0;
-    header[36]            = 'd'; /*"data" marker */
-    header[37]            = 'a';
-    header[38]            = 't';
-    header[39]            = 'a';
-    header[40]            = (audioDataLen & 0xff); /* data-size (equals file-size - 44).*/
-    header[41]            = ((audioDataLen >> 8) & 0xff);
-    header[42]            = ((audioDataLen >> 16) & 0xff);
-    header[43]            = ((audioDataLen >> 24) & 0xff);
+    uint32_t audioDataLen = fileSize - WAV_HEADER_SIZE;
+
+    /* Check for overflow in byteRate calculation */
+    if ((sampleRate > 0U) && (bitsPerFrame > 0U) && (channels > 0U))
+    {
+        uint32_t bytesPerSample = bitsPerFrame / 8U;
+        if (bytesPerSample == 0U)
+        {
+            return;
+        }
+
+        /* Check for multiplication overflow */
+        if ((sampleRate > (UINT32_MAX / bytesPerSample)) || ((sampleRate * bytesPerSample) > (UINT32_MAX / channels)))
+        {
+            return;
+        }
+
+        uint32_t byteRate   = sampleRate * bytesPerSample * channels;
+        uint16_t blockAlign = (uint16_t)(channels * bytesPerSample);
+
+        /* RIFF header */
+        header[0] = 'R';
+        header[1] = 'I';
+        header[2] = 'F';
+        header[3] = 'F';
+        write_uint32_le(header, 4U, totalDataLen);
+
+        /* WAVE header */
+        header[8]  = 'W';
+        header[9]  = 'A';
+        header[10] = 'V';
+        header[11] = 'E';
+
+        /* fmt chunk */
+        header[12] = 'f';
+        header[13] = 'm';
+        header[14] = 't';
+        header[15] = ' ';
+        write_uint32_le(header, 16U, WAV_FMT_CHUNK_SIZE);
+        write_uint16_le(header, 20U, WAV_PCM_FORMAT);
+        write_uint16_le(header, 22U, channels);
+        write_uint32_le(header, 24U, sampleRate);
+        write_uint32_le(header, 28U, byteRate);
+        write_uint16_le(header, 32U, blockAlign);
+        write_uint16_le(header, 34U, (uint16_t)bitsPerFrame);
+
+        /* data chunk */
+        header[36] = 'd';
+        header[37] = 'a';
+        header[38] = 't';
+        header[39] = 'a';
+        write_uint32_le(header, 40U, audioDataLen);
+    }
 }
 
 void RecordSDCard(I2S_Type *base, uint32_t time_s)
 {
-    uint32_t i            = 0;
-    uint32_t bytesWritten = 0;
-    uint32_t bytesRead    = 0;
-    uint32_t txindex      = 0;
-    uint32_t rxindex      = 0;
-    uint32_t sdReadCount  = 0;
-    uint8_t header[44]    = {0};
-    uint32_t fileSize     = time_s * DEMO_AUDIO_SAMPLE_RATE * 2U * 2U + 44U;
+    if (base == NULL)
+    {
+        PRINTF("Invalid base pointer\r\n");
+        return;
+    }
+
+    /* Check for potential overflow in file size calculation */
+    if (time_s > (UINT32_MAX / DEMO_AUDIO_SAMPLE_RATE / BYTES_PER_SAMPLE / WAV_CHANNELS))
+    {
+        PRINTF("Recording time too large\r\n");
+        return;
+    }
+
+    uint32_t i                      = 0U;
+    uint32_t bytesWritten           = 0U;
+    uint32_t bytesRead              = 0U;
+    uint32_t txindex                = 0U;
+    uint32_t rxindex                = 0U;
+    uint32_t sdReadCount            = 0U;
+    uint8_t header[WAV_HEADER_SIZE] = {0};
+
+    /* Safe calculation with overflow check */
+    uint32_t audioDataSize = time_s * DEMO_AUDIO_SAMPLE_RATE * BYTES_PER_SAMPLE * WAV_CHANNELS;
+    uint32_t fileSize      = audioDataSize + WAV_HEADER_SIZE;
+
+    /* Check for overflow */
+    if (fileSize < audioDataSize)
+    {
+        PRINTF("File size calculation overflow\r\n");
+        return;
+    }
+
     FRESULT error;
     sai_transfer_t xfer                = {0};
     static const TCHAR wavpathBuffer[] = DEMO_RECORD_WAV_PATH;
 
     /* Clear the status */
     isrxFinished = false;
-    receiveCount = 0;
+    receiveCount = 0U;
     istxFinished = false;
-    sendCount    = 0;
+    sendCount    = 0U;
     sdcard       = true;
 
     PRINTF("\r\nBegin to record......\r\n");
     PRINTF("\r\nFile path is record/music1.wav\r\n");
     error = f_open(&g_fileObject, (char const *)wavpathBuffer, (FA_WRITE | FA_READ | FA_CREATE_ALWAYS));
-    if (error)
+    if (error != FR_OK)
     {
         if (error == FR_EXIST)
         {
@@ -124,13 +195,15 @@ void RecordSDCard(I2S_Type *base, uint32_t time_s)
     }
 
     /* Write the data into the sdcard */
-    wav_header(header, DEMO_AUDIO_SAMPLE_RATE, 16, 2, fileSize);
+    wav_header(header, DEMO_AUDIO_SAMPLE_RATE, WAV_BITS_PER_SAMPLE, WAV_CHANNELS, fileSize);
 
     /* Write the wav header */
-    error = f_write(&g_fileObject, (void *)header, 44U, (UINT *)&bytesWritten);
-    if ((error) || (bytesWritten != 44))
+    error = f_write(&g_fileObject, (void *)header, WAV_HEADER_SIZE, (UINT *)&bytesWritten);
+    if ((error != FR_OK) || (bytesWritten != WAV_HEADER_SIZE))
     {
         PRINTF("Write file failed. \r\n");
+        (void)f_close(&g_fileObject);
+        return;
     }
 
     /* Reset SAI internal logic */
@@ -138,26 +211,41 @@ void RecordSDCard(I2S_Type *base, uint32_t time_s)
     SAI_RxSoftwareReset(base, kSAI_ResetTypeSoftware);
 
     /* Start to record */
-    beginCount = time_s * DEMO_AUDIO_SAMPLE_RATE * 2U * 2U / BUFFER_SIZE;
-
-    /* Start record first */
-    memset(audioBuff, 0, BUFFER_SIZE * BUFFER_NUM);
-    xfer.dataSize = BUFFER_SIZE;
-    for (i = 0; i < BUFFER_NUM; i++)
+    if (BUFFER_SIZE > 0U)
     {
-        xfer.data = audioBuff + i * BUFFER_SIZE;
-        SAI_TransferReceiveEDMA(base, &rxHandle, &xfer);
+        beginCount = audioDataSize / BUFFER_SIZE;
+    }
+    else
+    {
+        PRINTF("Invalid buffer size\r\n");
+        (void)f_close(&g_fileObject);
+        return;
     }
 
-    emptyBlock = 0;
-    while ((isrxFinished != true) || (fullBlock != 0))
+    /* Start record first */
+    (void)memset(audioBuff, 0, BUFFER_SIZE * BUFFER_NUM);
+    xfer.dataSize = BUFFER_SIZE;
+    for (i = 0U; i < BUFFER_NUM; i++)
     {
-        if (fullBlock > 0)
+        xfer.data = &audioBuff[i * BUFFER_SIZE];
+        if (SAI_TransferReceiveEDMA(base, &rxHandle, &xfer) != kStatus_Success)
         {
-            error = f_write(&g_fileObject, audioBuff + txindex * BUFFER_SIZE, BUFFER_SIZE, (UINT *)&bytesWritten);
-            if ((error) || (bytesWritten != BUFFER_SIZE))
+            PRINTF("Failed to start audio receive\r\n");
+            (void)f_close(&g_fileObject);
+            return;
+        }
+    }
+
+    emptyBlock = 0U;
+    while ((isrxFinished != true) || (fullBlock != 0U))
+    {
+        if (fullBlock > 0U)
+        {
+            error = f_write(&g_fileObject, &audioBuff[txindex * BUFFER_SIZE], BUFFER_SIZE, (UINT *)&bytesWritten);
+            if ((error != FR_OK) || (bytesWritten != BUFFER_SIZE))
             {
                 PRINTF("Write file failed. \r\n");
+                (void)f_close(&g_fileObject);
                 return;
             }
 
@@ -166,37 +254,66 @@ void RecordSDCard(I2S_Type *base, uint32_t time_s)
             emptyBlock++;
         }
 
-        if ((emptyBlock > 0) && (isrxFinished == false))
+        if ((emptyBlock > 0U) && (isrxFinished == false))
         {
-            xfer.data = audioBuff + rxindex * BUFFER_SIZE;
+            xfer.data = &audioBuff[rxindex * BUFFER_SIZE];
             rxindex   = (rxindex + 1U) % BUFFER_NUM;
-            SAI_TransferReceiveEDMA(base, &rxHandle, &xfer);
+            if (SAI_TransferReceiveEDMA(base, &rxHandle, &xfer) != kStatus_Success)
+            {
+                PRINTF("Failed to continue audio receive\r\n");
+                (void)f_close(&g_fileObject);
+                return;
+            }
             emptyBlock--;
         }
     }
-    f_close(&g_fileObject);
+
+    error = f_close(&g_fileObject);
+    if (error != FR_OK)
+    {
+        PRINTF("Failed to close file after recording\r\n");
+        return;
+    }
+
     PRINTF("\r\nRecord is finished!\r\n");
 
     /* Playback the record file */
     PRINTF("\r\nPlayback the recorded file...");
-    txindex    = 0;
-    rxindex    = 0;
-    emptyBlock = 0;
-    fullBlock  = 0;
-    memset(audioBuff, 0, BUFFER_SIZE * BUFFER_NUM);
-    f_open(&g_fileObject, (char const *)wavpathBuffer, (FA_READ));
-    if (f_lseek(&g_fileObject, 44U))
+    txindex    = 0U;
+    rxindex    = 0U;
+    emptyBlock = 0U;
+    fullBlock  = 0U;
+    (void)memset(audioBuff, 0, BUFFER_SIZE * BUFFER_NUM);
+
+    error = f_open(&g_fileObject, (char const *)wavpathBuffer, FA_READ);
+    if (error != FR_OK)
     {
-        PRINTF("Set file pointer position failed. \r\n");
+        PRINTF("Failed to open file for playback\r\n");
+        return;
     }
 
-    for (i = 0; i < BUFFER_NUM; i++)
+    error = f_lseek(&g_fileObject, WAV_HEADER_SIZE);
+    if (error != FR_OK)
     {
-        error = f_read(&g_fileObject, (void *)(audioBuff + i * BUFFER_SIZE), BUFFER_SIZE, (UINT *)&bytesRead);
-        if ((error) || (bytesRead != BUFFER_SIZE))
+        PRINTF("Set file pointer position failed. \r\n");
+        (void)f_close(&g_fileObject);
+        return;
+    }
+
+    for (i = 0U; i < BUFFER_NUM; i++)
+    {
+        error = f_read(&g_fileObject, (void *)(&audioBuff[i * BUFFER_SIZE]), BUFFER_SIZE, (UINT *)&bytesRead);
+        if (error != FR_OK)
         {
             PRINTF("Read file failed. \r\n");
+            (void)f_close(&g_fileObject);
             return;
+        }
+
+        if (bytesRead != BUFFER_SIZE)
+        {
+            /* End of file reached */
+            break;
         }
 
         sdReadCount++;
@@ -206,13 +323,20 @@ void RecordSDCard(I2S_Type *base, uint32_t time_s)
     /* Wait for playback finished */
     while (istxFinished != true)
     {
-        if ((emptyBlock > 0) && (sdReadCount < beginCount))
+        if ((emptyBlock > 0U) && (sdReadCount < beginCount))
         {
-            error = f_read(&g_fileObject, (void *)(audioBuff + rxindex * BUFFER_SIZE), BUFFER_SIZE, (UINT *)&bytesRead);
-            if ((error) || (bytesRead != BUFFER_SIZE))
+            error = f_read(&g_fileObject, (void *)(&audioBuff[rxindex * BUFFER_SIZE]), BUFFER_SIZE, (UINT *)&bytesRead);
+            if (error != FR_OK)
             {
                 PRINTF("Read file failed. \r\n");
+                (void)f_close(&g_fileObject);
                 return;
+            }
+
+            if (bytesRead != BUFFER_SIZE)
+            {
+                /* End of file reached */
+                break;
             }
 
             rxindex = (rxindex + 1U) % BUFFER_NUM;
@@ -221,14 +345,25 @@ void RecordSDCard(I2S_Type *base, uint32_t time_s)
             sdReadCount++;
         }
 
-        if (fullBlock > 0)
+        if (fullBlock > 0U)
         {
-            xfer.data = audioBuff + txindex * BUFFER_SIZE;
+            xfer.data = &audioBuff[txindex * BUFFER_SIZE];
             txindex   = (txindex + 1U) % BUFFER_NUM;
-            SAI_TransferSendEDMA(base, &txHandle, &xfer);
+            if (SAI_TransferSendEDMA(base, &txHandle, &xfer) != kStatus_Success)
+            {
+                PRINTF("Failed to send audio data\r\n");
+                (void)f_close(&g_fileObject);
+                return;
+            }
             fullBlock--;
         }
     }
-    f_close(&g_fileObject);
+
+    error = f_close(&g_fileObject);
+    if (error != FR_OK)
+    {
+        PRINTF("Failed to close file after playback\r\n");
+    }
+
     PRINTF("\r\nPlayback is finished!\r\n");
 }

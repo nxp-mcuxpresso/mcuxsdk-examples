@@ -69,27 +69,51 @@ codec_handle_t codecHandle;
  ******************************************************************************/
 static void txCallback(I2S_Type *base, sai_edma_handle_t *handle, status_t status, void *userData)
 {
-    sendCount++;
-    emptyBlock++;
+    (void)base;
+    (void)handle;
+    (void)status;
+    (void)userData;
+
+    if (sendCount < UINT32_MAX)
+    {
+        sendCount++;
+    }
+
+    if (emptyBlock < UINT32_MAX)
+    {
+        emptyBlock++;
+    }
 
     if (sendCount == beginCount)
     {
         istxFinished = true;
         SAI_TransferTerminateSendEDMA(base, handle);
-        sendCount = 0;
+        sendCount = 0U;
     }
 }
 
 static void rxCallback(I2S_Type *base, sai_edma_handle_t *handle, status_t status, void *userData)
 {
-    receiveCount++;
-    fullBlock++;
+    (void)base;
+    (void)handle;
+    (void)status;
+    (void)userData;
+
+    if (receiveCount < UINT32_MAX)
+    {
+        receiveCount++;
+    }
+
+    if (fullBlock < UINT32_MAX)
+    {
+        fullBlock++;
+    }
 
     if (receiveCount == beginCount)
     {
         isrxFinished = true;
         SAI_TransferTerminateReceiveEDMA(base, handle);
-        receiveCount = 0;
+        receiveCount = 0U;
     }
 }
 
@@ -123,12 +147,12 @@ static status_t sdcardWaitCardInsert(void)
     return kStatus_Success;
 }
 
-int SD_FatFsInit()
+static int SD_FatFsInit(void)
 {
     /* If there is SDCard, Initialize SDcard and Fatfs */
     FRESULT error;
 
-    static const TCHAR driverNumberBuffer[3U] = {SDDISK + '0', ':', '/'};
+    static const TCHAR driverNumberBuffer[3U] = {(TCHAR)(SDDISK + '0'), ':', '/'};
     static const TCHAR recordpathBuffer[]     = DEMO_RECORD_PATH;
 
     PRINTF("\r\nPlease insert a card into board.\r\n");
@@ -164,7 +188,7 @@ int SD_FatFsInit()
 
 #if (FF_FS_RPATH >= 2U)
     error = f_chdrive((char const *)&driverNumberBuffer[0U]);
-    if (error)
+    if (error != FR_OK)
     {
         PRINTF("Change drive failed.\r\n");
         return -1;
@@ -173,7 +197,7 @@ int SD_FatFsInit()
 
     PRINTF("\r\nCreate directory......\r\n");
     error = f_mkdir((char const *)&recordpathBuffer[0U]);
-    if (error)
+    if (error != FR_OK)
     {
         if (error == FR_EXIST)
         {
@@ -249,12 +273,14 @@ int main(void)
     /* Use default setting to init codec */
     if (CODEC_Init(&codecHandle, &boardCodecConfig) != kStatus_Success)
     {
-        assert(false);
+        PRINTF("CODEC_Init failed\r\n");
+        return -1;
     }
     if (CODEC_SetVolume(&codecHandle, kCODEC_PlayChannelHeadphoneLeft | kCODEC_PlayChannelHeadphoneRight,
                         DEMO_CODEC_VOLUME) != kStatus_Success)
     {
-        assert(false);
+        PRINTF("CODEC_SetVolume failed\r\n");
+        return -1;
     }
 
     /* Enable interrupt to handle FIFO error */
@@ -274,21 +300,21 @@ int main(void)
     PRINTF("\n\rPlease choose the option :\r\n");
     while (1)
     {
-        PRINTF("\r%d. Record and playback at same time\r\n", userItem++);
-        PRINTF("\r%d. Playback sine wave\r\n", userItem++);
+        PRINTF("\r%d. Record and playback at same time\r\n", (int)userItem++);
+        PRINTF("\r%d. Playback sine wave\r\n", (int)userItem++);
 #if defined DEMO_SDCARD
-        PRINTF("\r%d. Record to SDcard, after record playback it\r\n", userItem++);
+        PRINTF("\r%d. Record to SDcard, after record playback it\r\n", (int)userItem++);
 #endif /* DEMO_SDCARD */
 #if defined DIG_MIC
-        PRINTF("\r%d. Record using digital mic and playback at the same time\r\n", userItem++);
+        PRINTF("\r%d. Record using digital mic and playback at the same time\r\n", (int)userItem++);
 #endif
-        PRINTF("\r%d. Quit\r\n", userItem);
+        PRINTF("\r%d. Quit\r\n", (int)userItem);
 
         input = GETCHAR();
         PUTCHAR(input);
         PRINTF("\r\n");
 
-        if (input == (userItem + 48U))
+        if (input == (char)(userItem + 48U))
         {
             break;
         }
@@ -304,7 +330,8 @@ int main(void)
                 BOARD_CONFIGCODEC_FOR_RECORD_PLAYBACK();
                 if (CODEC_Init(&codecHandle, &boardCodecConfig) != kStatus_Success)
                 {
-                    assert(false);
+                    PRINTF("CODEC_Init failed\r\n");
+                    return -1;
                 }
 #endif
                 RecordPlayback(DEMO_SAI, 30);
@@ -314,7 +341,8 @@ int main(void)
                 BOARD_CONFIGCODEC_FOR_PLAYBACK();
                 if (CODEC_Init(&codecHandle, &boardCodecConfig) != kStatus_Success)
                 {
-                    assert(false);
+                    PRINTF("CODEC_Init failed\r\n");
+                    return -1;
                 }
 #endif
                 PlaybackSine(DEMO_SAI, 250, 5);
@@ -325,14 +353,14 @@ int main(void)
                 break;
 #endif
 #if defined DIG_MIC
-            case userItem - 1U + 48U:
+            case (char)(userItem - 1U + 48U):
                 /* Set the audio input source to DMIC */
                 DA7212_ChangeInput((da7212_handle_t *)((uint32_t)(codecHandle.codecDevHandle)), kDA7212_Input_MIC1_Dig);
                 RecordPlayback(DEMO_SAI, 30);
                 break;
 #endif
             default:
-                PRINTF("\rInvallid Input Parameter, please re-enter\r\n");
+                PRINTF("\rInvalid Input Parameter, please re-enter\r\n");
                 break;
         }
         userItem = 1U;
@@ -340,7 +368,8 @@ int main(void)
 
     if (CODEC_Deinit(&codecHandle) != kStatus_Success)
     {
-        assert(false);
+        PRINTF("CODEC_Deinit failed\r\n");
+        return -1;
     }
     PRINTF("\n\r SAI demo finished!\n\r ");
     while (1)
@@ -365,12 +394,12 @@ void SAI_UserRxIRQHandler(void)
 
 void SAI_UserIRQHandler(void)
 {
-    if (SAI_TxGetStatusFlag(DEMO_SAI) & kSAI_FIFOErrorFlag)
+    if ((SAI_TxGetStatusFlag(DEMO_SAI) & kSAI_FIFOErrorFlag) != 0U)
     {
         SAI_UserTxIRQHandler();
     }
 
-    if (SAI_RxGetStatusFlag(DEMO_SAI) & kSAI_FIFOErrorFlag)
+    if ((SAI_RxGetStatusFlag(DEMO_SAI) & kSAI_FIFOErrorFlag) != 0U)
     {
         SAI_UserRxIRQHandler();
     }
