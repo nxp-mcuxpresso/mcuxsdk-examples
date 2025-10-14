@@ -20,7 +20,7 @@
 #define ENET_QOS_RXBD_NUM                     (4)
 #define ENET_QOS_TXBD_NUM                     (4)
 #ifdef ENET_QOS_EMAC_USED_AS_ENET_QOS
-#define ENET_QOS_RXQUEUE_USE                  (1)
+#define ENET_QOS_RXQUEUE_USE                  (2)
 #define ENET_QOS_TXQUEUE_USE                  (2)
 #else
 #define ENET_QOS_RXQUEUE_USE                  (3)
@@ -515,7 +515,6 @@ int main(void)
 
     ENET_QOS_Init(EXAMPLE_ENET_QOS_BASE, &config, &g_macAddr[0], 1, ENET_PTP_REF_CLK);
 
-#ifndef ENET_QOS_EMAC_USED_AS_ENET_QOS
     enet_qos_rxp_config_t rxpConfig[ENET_QOS_TXQUEUE_USE] = {
 #if ENET_QOS_TXQUEUE_USE > 2
         {
@@ -563,7 +562,6 @@ int main(void)
 
     /* Configure rx parser. */
     ENET_QOS_ConfigureRxParser(EXAMPLE_ENET_QOS_BASE, &rxpConfig[0], ENET_QOS_TXQUEUE_USE);
-#endif
 
     /* Enable the rx interrupt. */
     ENET_QOS_EnableInterrupts(EXAMPLE_ENET_QOS_BASE, kENET_QOS_DmaRx);

@@ -45,8 +45,8 @@ When the demo runs, the log would be seen on the terminal like:
     ENET multi-ring txrx example start.
     Wait for PHY init...
     Wait for PHY link up...
-
-    20 frames will be sent in 2 queue(s), and frames will be received in 1 queue(s).
+    
+    20 frames will be sent in 2 queue(s), and frames will be received in 2 queue(s).
     The number of frames transmitted from the ring 0, 1 is 10, 10!
     20 frames transmitted successfully!
-    The number of frames successfully received from the ring 0 is 20!
+    The number of frames successfully received from the ring 0, 1 is 10, 10!
