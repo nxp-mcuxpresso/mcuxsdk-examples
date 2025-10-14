@@ -1,6 +1,5 @@
 # yaml-language-server: $schema=../../../../scripts/data_schema/example_description_schema.json
 ncp_host:
-  skip_build: true
   section-type: application
   contents:
     meta_path: examples/ncp_examples/ncp_host
