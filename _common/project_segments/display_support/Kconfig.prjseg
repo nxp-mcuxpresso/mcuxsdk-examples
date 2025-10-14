@@ -95,6 +95,7 @@ endif
 
 if MCUX_DEMO_PANEL_RK043FN66HS_SUPPORT
     config DEMO_PANEL_RK043FN66HS
+        int
         default 10
         help
             Driver selection for panel RK043FN66HS
