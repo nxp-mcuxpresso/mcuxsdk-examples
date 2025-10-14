@@ -45,12 +45,9 @@ extern usb_hid_mouse_struct_t g_UsbDeviceHidMouse;
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    gpio_pin_config_t pinConfig = {kGPIO_DigitalInput, 1U};
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitDebugConsole();
-    /* Set the LLWU pin */
-    GPIO_PinInit(BOARD_SW2_GPIO, BOARD_SW2_GPIO_PIN, &pinConfig);
 
     PORT_SetPinInterruptConfig(BOARD_SW2_PORT, BOARD_SW2_GPIO_PIN, kPORT_InterruptFallingEdge);
 }
@@ -129,7 +126,6 @@ void USB_LowpowerModeInit(void)
     SMC_SetPowerModeProtection(SMC0, kSMC_AllowPowerModeVlp);
     CLOCK_SetIpSrc(kCLOCK_Lpit0, kCLOCK_IpSrcFircAsync);
     CLOCK_EnableClock(kCLOCK_Lpit0);
-    CLOCK_EnableClock(kCLOCK_PortA);
 #if (defined(FSL_FEATURE_SIM_OPT_HAS_USB_PHY) && (FSL_FEATURE_SIM_OPT_HAS_USB_PHY > 0))
     SIM->SOPT2 |= SIM_SOPT2_USBSLSRC_MASK;
 #endif

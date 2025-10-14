@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 ,2021 NXP
+ * Copyright 2019, 2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -14,17 +14,20 @@
 /*
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Pins v9.0
+product: Pins v17.0
 processor: K32L3A60xxx
 package_id: K32L3A60VPJ1A
 mcu_data: ksdk2_0
-processor_version: 9.0.0
+processor_version: 25.09.10
+board: FRDM-K32L3A6
+global_options: {generateExtendedInformation: 'true'}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
 
 #include "fsl_common.h"
 #include "fsl_port.h"
+#include "fsl_gpio.h"
 #include "pin_mux.h"
 
 /* FUNCTION ************************************************************************************************************
@@ -36,6 +39,8 @@ processor_version: 9.0.0
 void BOARD_InitBootPins(void)
 {
     BOARD_InitPins();
+    BOARD_InitButtonsPins();
+    BOARD_InitDEBUG_UARTPins();
 }
 
 /* clang-format off */
@@ -43,9 +48,7 @@ void BOARD_InitBootPins(void)
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', coreID: cm4, enableClock: 'true'}
-- pin_list:
-  - {pin_num: N2, peripheral: LPUART0, signal: RX, pin_signal: LPCMP0_IN0/PTC7/LLWU_P15/LPSPI0_PCS3/LPUART0_RX/LPI2C1_HREQ/TPM0_CH0/LPTMR1_ALT1}
-  - {pin_num: P3, peripheral: LPUART0, signal: TX, pin_signal: LPCMP0_IN1/PTC8/LPSPI0_SCK/LPUART0_TX/LPI2C0_HREQ/TPM0_CH1}
+- pin_list: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -59,14 +62,126 @@ BOARD_InitPins:
 /* Function assigned for the Cortex-M4F */
 void BOARD_InitPins(void)
 {
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitButtonsPins:
+- options: {callFromInitBoot: 'true', coreID: cm4, enableClock: 'true'}
+- pin_list:
+  - {pin_num: B10, peripheral: GPIOA, signal: 'GPIO, 0', pin_signal: PTA0, direction: INPUT, slew_rate: fast, open_drain: disable, pull_select: up, pull_enable: enable,
+    passive_filter: disable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitButtonsPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M4F */
+void BOARD_InitButtonsPins(void)
+{
+    /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked. */
+    CLOCK_EnableClock(kCLOCK_PortA);
+
+    gpio_pin_config_t SW2_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTA0 (pin B10)  */
+    GPIO_PinInit(BOARD_INITBUTTONSPINS_SW2_GPIO, BOARD_INITBUTTONSPINS_SW2_PIN, &SW2_config);
+
+    const port_pin_config_t SW2 = {/* Internal pull-up resistor is enabled */
+                                   kPORT_PullUp,
+                                   /* Fast slew rate is configured */
+                                   kPORT_FastSlewRate,
+                                   /* Passive filter is disabled */
+                                   kPORT_PassiveFilterDisable,
+                                   /* Open drain is disabled */
+                                   kPORT_OpenDrainDisable,
+                                   /* Low drive strength is configured */
+                                   kPORT_LowDriveStrength,
+                                   /* Pin is configured as PTA0 */
+                                   kPORT_MuxAsGpio,
+                                   /* Pin Control Register fields [15:0] are not locked */
+                                   kPORT_UnlockRegister};
+    /* PORTA0 (pin B10) is configured as PTA0 */
+    PORT_SetPinConfig(BOARD_INITBUTTONSPINS_SW2_PORT, BOARD_INITBUTTONSPINS_SW2_PIN, &SW2);
+}
+
+/* clang-format off */
+/*
+ * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+BOARD_InitDEBUG_UARTPins:
+- options: {callFromInitBoot: 'true', coreID: cm4, enableClock: 'true'}
+- pin_list:
+  - {pin_num: N2, peripheral: LPUART0, signal: RX, pin_signal: LPCMP0_IN0/PTC7/LLWU_P15/LPSPI0_PCS3/LPUART0_RX/LPI2C1_HREQ/TPM0_CH0/LPTMR1_ALT1, slew_rate: fast,
+    open_drain: disable, pull_select: down, pull_enable: disable}
+  - {pin_num: P3, peripheral: LPUART0, signal: TX, pin_signal: LPCMP0_IN1/PTC8/LPSPI0_SCK/LPUART0_TX/LPI2C0_HREQ/TPM0_CH1, slew_rate: fast, open_drain: disable, pull_select: down,
+    pull_enable: disable}
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
+ */
+/* clang-format on */
+
+/* FUNCTION ************************************************************************************************************
+ *
+ * Function Name : BOARD_InitDEBUG_UARTPins
+ * Description   : Configures pin routing and optionally pin electrical features.
+ *
+ * END ****************************************************************************************************************/
+/* Function assigned for the Cortex-M4F */
+void BOARD_InitDEBUG_UARTPins(void)
+{
     /* Clock Gate Control: Clock enabled. The current clock selection and divider options are locked. */
     CLOCK_EnableClock(kCLOCK_PortC);
 
     /* PORTC7 (pin N2) is configured as LPUART0_RX */
-    PORT_SetPinMux(PORTC, 7U, kPORT_MuxAlt3);
+    PORT_SetPinMux(BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_PORT, BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_PIN, kPORT_MuxAlt3);
+
+    PORTC->PCR[7] =
+        ((PORTC->PCR[7] &
+          /* Mask bits to zero which are setting */
+          (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_SRE_MASK | PORT_PCR_ODE_MASK | PORT_PCR_ISF_MASK)))
+
+         /* Pull Select: Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE
+          * field is set. */
+         | PORT_PCR_PS(kPORT_PullDown)
+
+         /* Pull Enable: Internal pull resistor is not enabled on the corresponding pin. */
+         | PORT_PCR_PE(kPORT_PullDisable)
+
+         /* Slew Rate Enable: Fast slew rate is configured on the corresponding pin, if the pin is configured as
+          * a digital output. */
+         | PORT_PCR_SRE(kPORT_FastSlewRate)
+
+         /* Open Drain Enable: Open drain output is disabled on the corresponding pin. */
+         | PORT_PCR_ODE(kPORT_OpenDrainDisable));
 
     /* PORTC8 (pin P3) is configured as LPUART0_TX */
-    PORT_SetPinMux(PORTC, 8U, kPORT_MuxAlt3);
+    PORT_SetPinMux(BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_PORT, BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_PIN, kPORT_MuxAlt3);
+
+    PORTC->PCR[8] =
+        ((PORTC->PCR[8] &
+          /* Mask bits to zero which are setting */
+          (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_SRE_MASK | PORT_PCR_ODE_MASK | PORT_PCR_ISF_MASK)))
+
+         /* Pull Select: Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE
+          * field is set. */
+         | PORT_PCR_PS(kPORT_PullDown)
+
+         /* Pull Enable: Internal pull resistor is not enabled on the corresponding pin. */
+         | PORT_PCR_PE(kPORT_PullDisable)
+
+         /* Slew Rate Enable: Fast slew rate is configured on the corresponding pin, if the pin is configured as
+          * a digital output. */
+         | PORT_PCR_SRE(kPORT_FastSlewRate)
+
+         /* Open Drain Enable: Open drain output is disabled on the corresponding pin. */
+         | PORT_PCR_ODE(kPORT_OpenDrainDisable));
 }
 /***********************************************************************************************************************
  * EOF

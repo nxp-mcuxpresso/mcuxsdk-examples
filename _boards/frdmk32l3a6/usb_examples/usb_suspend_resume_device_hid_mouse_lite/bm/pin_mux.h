@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 ,2021 NXP
+ * Copyright 2019, 2021, 2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -12,6 +12,18 @@
 
 #ifndef _PIN_MUX_H_
 #define _PIN_MUX_H_
+
+/***********************************************************************************************************************
+ * Definitions
+ **********************************************************************************************************************/
+
+/*! @brief Direction type  */
+typedef enum _pin_mux_direction
+{
+    kPIN_MUX_DirectionInput = 0U,        /* Input direction */
+    kPIN_MUX_DirectionOutput = 1U,       /* Output direction */
+    kPIN_MUX_DirectionInputOrOutput = 2U /* Input or output direction */
+} pin_mux_direction_t;
 
 /*!
  * @addtogroup pin_mux
@@ -37,6 +49,70 @@ void BOARD_InitBootPins(void);
  *
  */
 void BOARD_InitPins(void); /* Function assigned for the Cortex-M4F */
+
+/*! @name PORTA0 (coord B10), BUTTON_NMI
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITBUTTONSPINS_SW2_PERIPHERAL GPIOA                  /*!<@brief Peripheral name */
+#define BOARD_INITBUTTONSPINS_SW2_SIGNAL GPIO                       /*!<@brief Signal name */
+#define BOARD_INITBUTTONSPINS_SW2_CHANNEL 0                         /*!<@brief Signal channel */
+#define BOARD_INITBUTTONSPINS_SW2_PIN_NAME PTA0                     /*!<@brief Routed pin name */
+#define BOARD_INITBUTTONSPINS_SW2_LABEL "BUTTON_NMI"                /*!<@brief Label */
+#define BOARD_INITBUTTONSPINS_SW2_NAME "SW2"                        /*!<@brief Identifier */
+#define BOARD_INITBUTTONSPINS_SW2_DIRECTION kPIN_MUX_DirectionInput /*!<@brief Direction */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITBUTTONSPINS_SW2_GPIO GPIOA                        /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SW2_GPIO_PIN 0U                       /*!<@brief GPIO pin number */
+#define BOARD_INITBUTTONSPINS_SW2_GPIO_PIN_MASK (1U << 0U)          /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITBUTTONSPINS_SW2_PORT PORTA                        /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITBUTTONSPINS_SW2_PIN 0U                            /*!<@brief PORT pin number */
+#define BOARD_INITBUTTONSPINS_SW2_PIN_MASK (1U << 0U)               /*!<@brief PORT pin mask */
+                                                                    /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitButtonsPins(void); /* Function assigned for the Cortex-M4F */
+
+/*! @name PORTC7 (coord N2), U40[1]/K32L_UART0_RX
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_PERIPHERAL LPUART0           /*!<@brief Peripheral name */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_SIGNAL RX                    /*!<@brief Signal name */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_PIN_NAME LPUART0_RX          /*!<@brief Routed pin name */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_LABEL "U40[1]/K32L_UART0_RX" /*!<@brief Label */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_NAME "DEBUG_UART0_RX"        /*!<@brief Identifier */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_PORT PORTC                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_PIN 7U                       /*!<@brief PORT pin number */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_RX_PIN_MASK (1U << 7U)          /*!<@brief PORT pin mask */
+                                                                             /* @} */
+
+/*! @name PORTC8 (coord P3), U11[1]/K32L_UART0_TX
+  @{ */
+/* Routed pin properties */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_PERIPHERAL LPUART0           /*!<@brief Peripheral name */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_SIGNAL TX                    /*!<@brief Signal name */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_PIN_NAME LPUART0_TX          /*!<@brief Routed pin name */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_LABEL "U11[1]/K32L_UART0_TX" /*!<@brief Label */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_NAME "DEBUG_UART0_TX"        /*!<@brief Identifier */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_PORT PORTC                   /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_PIN 8U                       /*!<@brief PORT pin number */
+#define BOARD_INITDEBUG_UARTPINS_DEBUG_UART0_TX_PIN_MASK (1U << 8U)          /*!<@brief PORT pin mask */
+                                                                             /* @} */
+
+/*!
+ * @brief Configures pin routing and optionally pin electrical features.
+ *
+ */
+void BOARD_InitDEBUG_UARTPins(void); /* Function assigned for the Cortex-M4F */
 
 #if defined(__cplusplus)
 }
