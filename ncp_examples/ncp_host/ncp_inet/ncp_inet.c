@@ -40,6 +40,8 @@ int ncp_socket(int family, int style, int protocol)
         socket_type = IPPROTO_TCP;
     else if (style & SOCK_DGRAM)
         socket_type = IPPROTO_UDP;
+    else if (style & SOCK_RAW)
+        socket_type = IPPROTO_RAW;
 
     NCP_CMD_INET_RESP_SOCKET_CFG *cmd_resp_buf =  OSA_MemoryAllocate(sizeof(NCP_CMD_INET_RESP_SOCKET_CFG));
     if(cmd_resp_buf == NULL)
@@ -931,7 +933,7 @@ int inet_sock_recv_event(uint8_t *res)
     /* send to ncp socket enhance receive queue */
     if (handle->socket_type == IPPROTO_TCP)
         inet_sock_recv_send_queue_data(handle->socket, inet_sock_recv_tlv->recv_data, inet_sock_recv_tlv->recv_size);
-    else if (handle->socket_type == IPPROTO_UDP)
+    else if (handle->socket_type == IPPROTO_UDP || handle->socket_type == IPPROTO_RAW)
         inet_sock_recv_send_queue_data(handle->socket, (char *)inet_sock_recv_tlv, sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG) - 1 + inet_sock_recv_tlv->recv_size);
 
     return WM_SUCCESS;
@@ -981,14 +983,37 @@ static int ncp_common_recv(int socket, void *buffer, size_t size, int flags, str
         /* recv_data need one byte. */
         ret = xStreamBufferReceive(read_fd, buf, sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG) - 1, portMAX_DELAY);
         if(ret == -1)
-            perror("read: ");
+            perror("read recvfrom header: ");
         else
         {
             NCP_CMD_INET_RESP_RECVFROM_CFG *inet_sock_recv_tlv = (NCP_CMD_INET_RESP_RECVFROM_CFG *)buf;
             ret = xStreamBufferReceive(read_fd, buffer, inet_sock_recv_tlv->recv_size, portMAX_DELAY);
             if(ret == -1)
             {
-                perror("read: ");
+                perror("read recvfrom buffer: ");
+            }
+            /* for udp, every packet addr isn't fixed */
+            else if (length)
+            {
+                memcpy(addr, inet_sock_recv_tlv->sockaddr, inet_sock_recv_tlv->socklen);
+                *length = inet_sock_recv_tlv->socklen;
+            }
+        }
+    }
+    else if (handle->socket_type == IPPROTO_RAW)
+    {
+        char buf[256];
+        /* recv_data need one byte. */
+        ret = xStreamBufferReceive(read_fd, buf, sizeof(NCP_CMD_INET_RESP_RECVFROM_CFG) - 1, portMAX_DELAY);
+        if(ret == -1)
+            perror("read recvfrom header: ");
+        else
+        {
+            NCP_CMD_INET_RESP_RECVFROM_CFG *inet_sock_recv_tlv = (NCP_CMD_INET_RESP_RECVFROM_CFG *)buf;
+            ret = xStreamBufferReceive(read_fd, buffer, inet_sock_recv_tlv->recv_size, portMAX_DELAY);
+            if(ret == -1)
+            {
+                perror("read recvfrom buffer: ");
             }
             /* for udp, every packet addr isn't fixed */
             else if (length)
@@ -1002,7 +1027,8 @@ static int ncp_common_recv(int socket, void *buffer, size_t size, int flags, str
     {
         ncp_adap_e("don't support this socket type %d", handle->socket_type);
     }
-
+    if (errno)
+       return -WM_FAIL;
 exit:
     return ret;
 }

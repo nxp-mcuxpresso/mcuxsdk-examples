@@ -107,6 +107,71 @@ static void display_ping_stats(int status, uint32_t size, const char *ip_str, ui
  * NCP_CMD_WLAN_SOCKET_RECVFROM command. Print ping statistics in NCP_CMD_WLAN_SOCKET_RECVFROM
  * command response, and print ping result in ping_sock_task.
  */
+#if CONFIG_INET_SOCKET
+void ping_sock_task(void *pvParameters)
+{
+    struct icmp_echo_hdr *iecho;
+    struct sockaddr_in server_addr = {0};
+    struct in_addr dest_addr;
+
+    while (1)
+    {
+        ping_res.recvd  = 0;
+        ping_res.seq_no = -1;
+
+        /* demo ping task wait for user input ping command from console */
+        (void)ping_wait_event(PING_EVENTS_START);
+        inet_pton(AF_INET, ping_msg.ip_addr, &dest_addr);
+        server_addr.sin_family		= PF_INET;
+        server_addr.sin_addr.s_addr     = dest_addr.s_addr;
+
+        (void)PRINTF("PING %s (%s) %u(%u) bytes of data\r\n", ping_msg.ip_addr, ping_msg.ip_addr, ping_msg.size,
+                     ping_msg.size + sizeof(struct ip_hdr) + sizeof(struct icmp_echo_hdr));
+
+        int i = 1;
+        /* Ping size is: size of ICMP header + size of payload */
+        uint16_t ping_size = sizeof(struct icmp_echo_hdr) + ping_msg.size;
+
+        iecho = (struct icmp_echo_hdr *)OSA_MemoryAllocate(ping_size);
+        if (!iecho)
+        {
+            ncp_e("failed to allocate memory for ping packet!");
+            continue;
+        }
+        int sockfd = ncp_socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+        while (i <= ping_msg.count)
+        {
+            /* Prepare ping command */
+            ping_prepare_echo(iecho, (uint16_t)ping_size, i);
+            ping_res.time = OSA_TimeGetMsec();
+            ncp_sendto(sockfd, iecho, ping_size, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
+            /* sequence number */
+            ping_res.seq_no = i;
+            socklen_t len = sizeof(server_addr);
+            int ret = ncp_recvfrom(sockfd, iecho, ping_size, 0, (struct sockaddr *)&server_addr, &len);
+            if (ret > 0)
+            {
+                ping_res.recvd++;
+                ping_res.size = ret;
+            }
+            else
+                ping_res.echo_resp = ret;
+            /* Calculate the round trip time */
+            ping_res.time = OSA_TimeGetMsec() - ping_res.time;
+            inet_ntop(AF_INET, &(server_addr.sin_addr), ping_res.ip_addr, IP_ADDR_LEN);
+            display_ping_stats(ping_res.echo_resp, ping_res.size, ping_res.ip_addr, ping_res.seq_no, ping_res.ttl,
+                               ping_res.time);
+
+            OSA_TimeDelay(1000);
+            i++;
+
+        }
+        OSA_MemoryFree((void *)iecho);
+        display_ping_result((int)ping_msg.count, ping_res.recvd);
+        ncp_close(sockfd);
+    }
+}
+#else
 void ping_sock_task(void *pvParameters)
 {
     struct icmp_echo_hdr *iecho;
@@ -254,6 +319,7 @@ void ping_sock_task(void *pvParameters)
         ping_sock_handle = -1;
     }
 }
+#endif
 
 /*iperf command tx and rx */
 extern iperf_msg_t iperf_msg;
