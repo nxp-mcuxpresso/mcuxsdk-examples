@@ -2,17 +2,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/kw45b41zevk/trustzone_examples/hello_world/hello_world_ns/hardware_init.c
-            ${board_root}/kw45b41zevk/trustzone_examples/hello_world/hello_world_ns/app.h
-)
-
-mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/kw45b41zevk/trustzone_examples/hello_world/hello_world_ns
-)
-
 mcux_add_armgcc_linker_script(
     TARGETS debug release
     BASE_PATH ${SdkRootDirPath}

@@ -3,16 +3,12 @@
 
 
 mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/tzm_config.c
-            ${board_root}/${board}/trustzone_examples/hello_world/hello_world_s/tzm_config.h
-            ${board_root}/kw45b41zevk/trustzone_examples/hello_world/hello_world_s/hardware_init.c
-            ${board_root}/kw45b41zevk/trustzone_examples/hello_world/hello_world_s/app.h
+    SOURCES tzm_config.c
+            tzm_config.h
 )
 
 mcux_add_include(
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES ${board_root}/kw45b41zevk/trustzone_examples/hello_world/hello_world_s
+    INCLUDES .
 )
 
 mcux_add_armgcc_linker_script(
