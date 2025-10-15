@@ -167,7 +167,7 @@ status_t APP_UartControlCallback(pm_event_type_t eventType, uint8_t powerState, 
 {
     if (eventType == kPM_EventEnteringSleep)
     {
-        if (powerState >= PM_LP_STATE_POWER_DOWN)
+        if (powerState > PM_LP_STATE_POWER_DOWN)
         {
             PRINTF("Note: Wakeup cause a reset!\r\n");
         }
