@@ -15,6 +15,7 @@
 #include "wpa_supp_els_pkc_mbedtls_config.h"
 #else
 /* Fix build error for wmcrypto */
+#define MBEDTLS_PLATFORM_MEMORY
 #define MBEDTLS_SSL_TLS_C
 #define MBEDTLS_SSL_PROTO_TLS1_2
 #define MBEDTLS_SSL_CLI_C
