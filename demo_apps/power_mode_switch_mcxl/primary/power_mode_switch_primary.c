@@ -393,7 +393,7 @@ static power_low_power_mode_t APP_EnableWakeupSource(uint32_t powerTrans)
 
 static uint32_t APP_GetTargetPowerTransition(void)
 {
-    uint8_t ch;
+    char ch;
 
     uint32_t inputPowerTrans;
     uint8_t index = 0U;
