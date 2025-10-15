@@ -546,7 +546,9 @@ void APP_PowerPostSwitchHook(lpm_power_mode_t targetMode, bool result)
             PRINTF("SCMI_CpuSleepModeSet into RUN STATE FAIL\r\n");
         }
     }
-    if (SystemPlatformGetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND || SystemPlatformGetSystemState() == SCMI_SYS_STATE_SUSPEND)
+    if (SystemPlatformGetSystemState() == SCMI_SYS_STATE_FULL_SUSPEND ||
+		    SystemPlatformGetSystemState() == SCMI_SYS_STATE_SUSPEND ||
+		    s_wakeupSource == kAPP_WakeupSourceSM)
     {
         APP_ResumePeriperal();
     }
