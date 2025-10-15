@@ -214,6 +214,8 @@ lpuart_polling_seven_bits:
     frdmmcxa156: []
     frdmmcxa346: []
     frdmmcxe247: []
+    frdmmcxl255@cm33: []
+    frdmmcxl255@cm0plus: []
     frdmmcxn236: []
     frdmmcxn947@cm33_core0: []
     frdmmcxw71: []
