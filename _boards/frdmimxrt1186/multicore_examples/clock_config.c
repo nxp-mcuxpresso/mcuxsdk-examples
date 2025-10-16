@@ -407,8 +407,8 @@ void BOARD_BootClockRUN(void)
     rootCfg.div = 2;
     CLOCK_SetRootClock(kCLOCK_Root_M33, &rootCfg);
 
-    DCDC_SetVoltage(kDCDC_CORE0, kDCDC_1P0Target1P1V);
-    DCDC_SetVoltage(kDCDC_CORE1, kDCDC_1P0Target1P1V);
+    DCDC_SetVoltage(kDCDC_CORE0, kDCDC_1P0Target1P125V);
+    DCDC_SetVoltage(kDCDC_CORE1, kDCDC_1P0Target1P125V);
     /* FBB need to be enabled in OverDrive(OD) mode */
     PMU_EnableFBB(ANADIG_PMU, true);
 
