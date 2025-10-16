@@ -13,3 +13,8 @@ netc_switch_standalone:
       - ${board_root}/${board}/demo_apps/netc_switch_standalone/example_board_readme.md
       - ${board_root}/${board}/examples_shared_readme.md
   boards:
+    imx943evk@cm33_core1:
+    - +armgcc@debug
+    - +armgcc@release
+    - -iar@release
+    - -iar@debug
