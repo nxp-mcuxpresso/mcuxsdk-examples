@@ -207,16 +207,8 @@ int main(void)
 
     PRINTF("\r\nNETC Switch standalone demo.\r\n");
 
-    while (1)
-    {
-        char ch;
+    PRINTF("Please suspend others cores for lowest power...\r\n");
+    PRINTF("NETC switch will keep L2 switching working.\r\n");
 
-        PRINTF("\r\nPress S to suspend M core... NETC switch will still work standalone.\r\n");
-        ch = GETCHAR();
-        if (ch == 'S' || ch == 's')
-        {
-            PRINTF("\r\nSuspend M core.\r\n");
-            APP_SUSPEND();
-        }
-    }
+    APP_LOW_POWER_MODE();
 }
