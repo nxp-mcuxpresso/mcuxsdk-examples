@@ -101,7 +101,7 @@
 void BOARD_InitHardware(void);
 status_t APP_MDIO_Init(void);
 status_t APP_PHY_Init(void);
-void APP_SUSPEND(void);
+void APP_LOW_POWER_MODE(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */

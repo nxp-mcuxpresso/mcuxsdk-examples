@@ -413,11 +413,19 @@ status_t APP_PHY_Init(void)
     return result;
 }
 
-void APP_SUSPEND(void)
+#define BOARD_NUM_GPC_WAKE_REG 15U
+#define SCMI_CPU_FLAGS_LP_COMPUTE(x) (((x) & 0x1U) << 2U)
+
+void APP_LOW_POWER_MODE(void)
 {
+    static uint32_t wakeMask[BOARD_NUM_GPC_WAKE_REG] =
+    {
+        [0 ... (BOARD_NUM_GPC_WAKE_REG - 1)]  = 0xFFFFFFFFU
+    };
     scmi_pd_lpm_config_t lpmConfig[2];
     int32_t ret;
 
+    /* Keep NETCMIX always on */
     lpmConfig[0].domainId = SYSTEM_POWER_PLATFORM_MIX_SLICE_IDX_NETC;
     lpmConfig[0].lpmSetting = SCMI_CPU_LPM_SETTING_ON_ALWAYS;
     lpmConfig[0].retMask = 1U << SYSTEM_POWER_PLATFORM_MEM_SLICE_IDX_NETC;
@@ -428,15 +436,43 @@ void APP_SUSPEND(void)
         PRINTF("SCMI_CpuPdLpmConfigSet SET FAIL\r\n");
     }
 
-    ret = SCMI_CpuSleepModeSet(SCMI_A2P, SYSTEM_PLATFORM_M33S_ID, SCMI_CPU_FLAGS_IRQ_MUX(0), SCMI_CPU_SLEEP_SUSPEND);
+    /* Keep NETCMIX at underdrive sleep performance level during system sleep */
+    ret = SCMI_SystemPowerStateSet(SCMI_A2P, SCMI_SYS_FLAGS_GRACEFUL(1U),
+        SCMI_SYS_STATE_MODE | SCMI_SYS_SLEEP_MODE(0x10) | SCMI_SYS_SLEEP_FLAGS(0));
+    if (ret != 0)
+    {
+        PRINTF("SCMI_SystemPowerStateSet SET FAIL\r\n");
+    }
+
+    /* NOCMIX/WAKEUPMIX allow OFF in LP compute (system sleep) */
+    lpmConfig[0].domainId = POWER_MIX_SLICE_IDX_NOC;
+    lpmConfig[0].lpmSetting = SCMI_CPU_LPM_SETTING_ON_RUN_WAIT_STOP;
+    lpmConfig[0].retMask = 0U;
+    lpmConfig[1].domainId = POWER_MIX_SLICE_IDX_WAKEUP;
+    lpmConfig[1].lpmSetting = SCMI_CPU_LPM_SETTING_ON_RUN_WAIT_STOP;
+    lpmConfig[1].retMask = 0U;
+
+    ret = SCMI_CpuPdLpmConfigSet(SCMI_A2P, SYSTEM_PLATFORM_M33S_ID, 2U, lpmConfig);
+    if (ret != 0)
+    {
+        PRINTF("SCMI_CpuPdLpmConfigSet SET FAIL\r\n");
+    }
+
+    /* Clear all GPC wake sources */
+    ret = SCMI_CpuIrqWakeSet(SCMI_A2P, SYSTEM_PLATFORM_M33S_ID, 0U, BOARD_NUM_GPC_WAKE_REG, wakeMask);
+    if (ret != 0)
+    {
+        PRINTF("SCMI_CpuIrqWakeSet SET FAIL\r\n");
+    }
+
+    /* Request LP COMPUTE entry */
+    ret = SCMI_CpuSleepModeSet(SCMI_A2P, SYSTEM_PLATFORM_M33S_ID, SCMI_CPU_FLAGS_LP_COMPUTE(1U), SCMI_CPU_SLEEP_RUN);
     if (ret != 0)
     {
         PRINTF("SCMI_CpuSleepModeSet SET FAIL\r\n");
     }
 
-    __DSB();
-    __WFI();
-    __ISB();
+    while (true);
 }
 
 /*${function:end}*/
