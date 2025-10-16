@@ -1,7 +1,7 @@
 iar:
   project-templates:
-    - scripts/guigenerator/templates/iar/app_jlinkswd/generic.ewp
-    - scripts/guigenerator/templates/iar/app_jlinkswd/generic.ewd
+    - scripts/guigenerator/templates/iar/app_cmsisdap_m33_jlink_swd/generic.ewp
+    - scripts/guigenerator/templates/iar/app_cmsisdap_m33_jlink_swd/generic.ewd
     - scripts/guigenerator/templates/iar/general.eww
   config:
     __common__:
