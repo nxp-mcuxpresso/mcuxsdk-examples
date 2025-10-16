@@ -18,11 +18,11 @@ mcux_remove_armgcc_linker_script(
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/linker/mcxw727_cm33_core0_flash.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/mcxw727_cm33_core0_flash.icf
 )
 
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/linker/mcxw727_cm33_core0_flash.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/mcxw727_cm33_core0_flash.ld
 )

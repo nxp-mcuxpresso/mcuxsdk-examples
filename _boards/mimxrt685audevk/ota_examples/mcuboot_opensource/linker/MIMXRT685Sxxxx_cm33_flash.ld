@@ -39,10 +39,10 @@ M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000130 : 0;
 /* The SRAM region [0x20000-0x7FFFF] is reserved for Non-cached shared memory between M33 and DSP. */
 MEMORY
 {
-  m_flash_config        (RX)  : ORIGIN = 0x08000400, LENGTH = 0x00000200
-  m_interrupts          (RX)  : ORIGIN = 0x08001000, LENGTH = 0x00000130
-  m_text                (RX)  : ORIGIN = 0x08001130, LENGTH = 0x001FEED0
-  m_data                (RW)  : ORIGIN = 0x20080000, LENGTH = 0x00180000
+  m_flash_config        (RX)  : ORIGIN = 0x18000400, LENGTH = 0x00000200
+  m_interrupts          (RX)  : ORIGIN = 0x18001000, LENGTH = 0x00000130
+  m_text                (RX)  : ORIGIN = 0x18001130, LENGTH = 0x001FEED0
+  m_data                (RW)  : ORIGIN = 0x30080000, LENGTH = 0x00180000
   m_usb_sram            (RW)  : ORIGIN = 0x40140000, LENGTH = 0x00004000
 }
 

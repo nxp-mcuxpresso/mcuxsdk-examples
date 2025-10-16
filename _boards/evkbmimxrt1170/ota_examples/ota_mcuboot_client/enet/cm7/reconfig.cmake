@@ -32,24 +32,13 @@ mcux_remove_armgcc_linker_script(
         LINKER ${device_root}/RT/RT1170/MIMXRT1176/gcc/MIMXRT1176xxxxx_cm7_flexspi_nor.ld
 )
 
-mcux_remove_mdk_linker_script(
-        BASE_PATH ${SdkRootDirPath}
-        TARGETS flexspi_nor_debug flexspi_nor_release
-        LINKER ${device_root}/RT/RT1170/MIMXRT1176/arm/MIMXRT1176xxxxx_cm7_flexspi_nor.scf
-)
-
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_mcuboot.icf
-)
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_mcuboot.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1176xxxxx_cm7_flexspi_nor_mcuboot.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1176xxxxx_cm7_flexspi_nor_mcuboot.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1176xxxxx_cm7_flexspi_nor_mcuboot.ld
 )

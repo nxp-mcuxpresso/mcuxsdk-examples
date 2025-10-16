@@ -31,10 +31,10 @@ RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x1800 : 0;
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x00000400, LENGTH = 0x0003FC00
-  m_data0               (RW)  : ORIGIN = 0x04000000, LENGTH = 0x00008000
-  m_data1               (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00038000
+  m_interrupts          (RX)  : ORIGIN = 0x10000000, LENGTH = 0x00000400
+  m_text                (RX)  : ORIGIN = 0x10000400, LENGTH = 0x0003FC00
+  m_data0               (RW)  : ORIGIN = 0x14000000, LENGTH = 0x00008000
+  m_data1               (RW)  : ORIGIN = 0x30000000, LENGTH = 0x00038000
   rpmsg_sh_mem          (RW)  : ORIGIN = 0x489C8800, LENGTH = RPMSG_SHMEM_SIZE
   m_core1_image         (RX)  : ORIGIN = 0x48800000, LENGTH = 0x00040000
 }

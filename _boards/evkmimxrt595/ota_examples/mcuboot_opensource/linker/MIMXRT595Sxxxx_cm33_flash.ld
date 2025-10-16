@@ -39,10 +39,10 @@ M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000180 : 0;
 /* The SRAM region [0x80000-0x27FFFF] is reserved for DSP code and data. */
 MEMORY
 {
-  m_flash_config        (RX)  : ORIGIN = 0x08000400, LENGTH = 0x00000200
-  m_interrupts          (RX)  : ORIGIN = 0x08001000, LENGTH = 0x00000180
-  m_text                (RX)  : ORIGIN = 0x08001180, LENGTH = 0x001FEE80
-  m_data                (RW)  : ORIGIN = 0x20280000, LENGTH = 0x00280000
+  m_flash_config        (RX)  : ORIGIN = 0x18000400, LENGTH = 0x00000200
+  m_interrupts          (RX)  : ORIGIN = 0x18001000, LENGTH = 0x00000180
+  m_text                (RX)  : ORIGIN = 0x18001180, LENGTH = 0x001FEE80
+  m_data                (RW)  : ORIGIN = 0x30280000, LENGTH = 0x00280000
   m_usb_sram            (RW)  : ORIGIN = 0x40140000, LENGTH = 0x00004000
 }
 

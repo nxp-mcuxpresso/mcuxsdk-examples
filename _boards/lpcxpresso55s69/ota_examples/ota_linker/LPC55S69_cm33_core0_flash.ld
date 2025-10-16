@@ -1,19 +1,19 @@
 /*
 ** ###################################################################
-**     Processors:          MIMXRT685SFAWBR_cm33
-**                          MIMXRT685SFFOB_cm33
-**                          MIMXRT685SFVKB_cm33
+**     Processors:          LPC55S69JBD100_cm33_core0
+**                          LPC55S69JBD64_cm33_core0
+**                          LPC55S69JEV98_cm33_core0
 **
 **     Compiler:            GNU C Compiler
-**     Reference manual:    MIMXRT685 User manual Rev. 0.95 11 November 2019
-**     Version:             rev. 1.0, 2018-06-19
-**     Build:               b210303
+**     Reference manual:    LPC55S6x/LPC55S2x/LPC552x User manual(UM11126) Rev.1.3  16 May 2019
+**     Version:             rev. 1.1, 2019-05-16
+**     Build:               b200722
 **
 **     Abstract:
 **         Linker file for the GNU C Compiler
 **
 **     Copyright 2016 Freescale Semiconductor, Inc.
-**     Copyright 2016-2021 NXP
+**     Copyright 2016-2020 NXP
 **     All rights reserved.
 **
 **     SPDX-License-Identifier: BSD-3-Clause
@@ -30,57 +30,55 @@
 ENTRY(Reset_Handler)
 
 HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
-STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
-M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000130 : 0;
+STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0800;
+RPMSG_SHMEM_SIZE = DEFINED(__use_shmem__) ? 0x1800 : 0;
 
 /* Specify the memory areas */
-/* The SRAM region [0x10000-0x1BFFF] is reserved for ROM code. */
-/* The SRAM region [0x0-0xFFFF], [0x1C000-0x1FFFF] is reserved for app-specific use cases. */
-/* The SRAM region [0x20000-0x7FFFF] is reserved for Non-cached shared memory between M33 and DSP. */
 MEMORY
 {
-  m_flash_config        (RX)  : ORIGIN = 0x18000400, LENGTH = 0x00000200
-  m_interrupts          (RX)  : ORIGIN = 0x18001000, LENGTH = 0x00000130
-  m_text                (RX)  : ORIGIN = 0x18001130, LENGTH = 0x001FEED0
-  m_data                (RW)  : ORIGIN = 0x30080000, LENGTH = 0x00180000
-  m_usb_sram            (RW)  : ORIGIN = 0x40140000, LENGTH = 0x00004000
+  m_interrupts          (RX)  : ORIGIN = 0x10020400, LENGTH = 0x00000200
+  m_text                (RX)  : ORIGIN = 0x10020600, LENGTH = 0x0002FA00
+  m_core1_image         (RX)  : ORIGIN = 0x10072000, LENGTH = 0x00026000
+  m_data                (RW)  : ORIGIN = 0x30000000, LENGTH = 0x00033000 - RPMSG_SHMEM_SIZE
+  rpmsg_sh_mem          (RW)  : ORIGIN = 0x30033000 - RPMSG_SHMEM_SIZE, LENGTH = RPMSG_SHMEM_SIZE
+  m_usb_sram            (RW)  : ORIGIN = 0x40100000, LENGTH = 0x00004000
 }
 
 /* Define output sections */
 SECTIONS
 {
-  .flash_config :
+  /* section for storing the secondary core image */
+  .core1_code :
   {
-    . = ALIGN(4);
-    __FLASH_BASE = .;
-    KEEP(* (.flash_conf))     /* flash config section */
-    . = ALIGN(4);
-  } > m_flash_config
+     . = ALIGN(4) ;
+    KEEP (*(.core1_code))
+     *(.core1_code*)
+     . = ALIGN(4) ;
+  } > m_core1_image
 
-  /* The startup code goes first into internal ram */
+  /* NOINIT section for rpmsg_sh_mem */
+  .noinit_rpmsg_sh_mem (NOLOAD) : ALIGN(4)
+  {
+     __RPMSG_SH_MEM_START__ = .;
+     *(.noinit.$rpmsg_sh_mem*)
+     . = ALIGN(4) ;
+     __RPMSG_SH_MEM_END__ = .;
+  } > rpmsg_sh_mem
+
+  /* The startup code goes first into internal flash */
   .interrupts :
   {
     . = ALIGN(4);
-    __VECTOR_TABLE = .;
-    __Vectors = .;
     KEEP(*(.isr_vector))     /* Startup code */
     . = ALIGN(4);
   } > m_interrupts
 
-  /* The program code and other data goes into internal ram */
+  /* The program code and other data goes into internal flash */
   .text :
   {
     . = ALIGN(4);
-    *(EXCLUDE_FILE(
-        /* Exclude flash and frequently executed functions from XIP */
-        */mflash_drv.c.obj
-        */fsl_flexspi.c.obj
-    ) .text)                 /* .text sections (code) */
-    *(EXCLUDE_FILE(
-        /* Exclude flash and frequently executed functions from XIP */
-        */mflash_drv.c.obj
-        */fsl_flexspi.c.obj
-    ) .text*)                /* .text* sections (code) */
+    *(.text)                 /* .text sections (code) */
+    *(.text*)                /* .text* sections (code) */
     *(.rodata)               /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)              /* .rodata* sections (constants, strings, etc.) */
     *(.glue_7)               /* glue arm to thumb code */
@@ -164,30 +162,12 @@ SECTIONS
   __etext = .;    /* define a global symbol at end of code */
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
-  .interrupts_ram :
-  {
-    . = ALIGN(4);
-    __VECTOR_RAM__ = .;
-    __interrupts_ram_start__ = .; /* Create a global symbol at data start */
-    *(.m_interrupts_ram)     /* This is a user defined section */
-    . += M_VECTOR_RAM_SIZE;
-    . = ALIGN(4);
-    __interrupts_ram_end__ = .; /* Define a global symbol at data end */
-  } > m_data
-
-  __VECTOR_RAM = DEFINED(__ram_vector_table__) ? __VECTOR_RAM__ : ORIGIN(m_interrupts);
-  __RAM_VECTOR_TABLE_SIZE_BYTES = DEFINED(__ram_vector_table__) ? (__interrupts_ram_end__ - __interrupts_ram_start__) : 0x0;
-
   .data : AT(__DATA_ROM)
   {
     . = ALIGN(4);
     __DATA_RAM = .;
     __data_start__ = .;      /* create a global symbol at data start */
-    *(CodeQuickAccess)       /* CodeQuickAccess sections */
-    *(DataQuickAccess)       /* DataQuickAccess sections */
-    /* Explicit placement of flash and frequently executed functions in RAM */
-    */mflash_drv.c.obj(.text .text* .rodata .rodata*)
-    */fsl_flexspi.c.obj(.text .text* .rodata .rodata*)
+    *(.ramfunc*)             /* for functions in ram */
     *(.data)                 /* .data sections */
     *(.data*)                /* .data* sections */
     KEEP(*(.jcr*))
@@ -198,7 +178,6 @@ SECTIONS
   __DATA_END = __DATA_ROM + (__data_end__ - __data_start__);
   text_end = ORIGIN(m_text) + LENGTH(m_text);
   ASSERT(__DATA_END <= text_end, "region m_text overflowed with text and data")
-  _image_size = __DATA_END - __VECTOR_TABLE;
 
   /* Uninitialized data section */
   .bss :

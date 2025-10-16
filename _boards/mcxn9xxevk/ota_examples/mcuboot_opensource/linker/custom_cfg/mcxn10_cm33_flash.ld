@@ -33,9 +33,9 @@ M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000180 : 0;
 /* Specify the memory areas */
 MEMORY
 {
-  m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00000400
-  m_text                (RX)  : ORIGIN = 0x00000400, LENGTH = 0x0003FC00
-  m_data                (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00050000
+  m_interrupts          (RX)  : ORIGIN = 0x10000000, LENGTH = 0x00000400
+  m_text                (RX)  : ORIGIN = 0x10000400, LENGTH = 0x0003FC00
+  m_data                (RW)  : ORIGIN = 0x30000000, LENGTH = 0x00050000
 /*  m_usb_sram            (RW)  : ORIGIN = 0x40140000, LENGTH = 0x00004000 */
 }
 

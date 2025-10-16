@@ -2,9 +2,6 @@
 mcux_add_iar_configuration(
     CX "--diag_suppress=Pe257,Pa039"
 )
-mcux_add_mdk_configuration(
-    LD "--diag_suppress=L6329W"
-)
 
 mcux_add_macro(
     CC "-DBYPASS_ECC_ITCM_INIT=1\
@@ -26,24 +23,13 @@ mcux_remove_armgcc_linker_script(
     LINKER ${device_root}/MCX/MCXE/MCXE31B/gcc/MCXE31B_flash.ld
 )
 
-mcux_remove_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER ${device_root}/MCX/MCXE/MCXE31B/arm/MCXE31B_flash.scf
-)
-
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/linker/MCXE31B_flash.icf
-)
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/linker/MCXE31B_flash.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MCXE31B_flash.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS debug release
-    LINKER ${board_root}/${board}/ota_examples/linker/MCXE31B_flash.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MCXE31B_flash.ld
 )

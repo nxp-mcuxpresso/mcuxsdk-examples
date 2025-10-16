@@ -38,19 +38,19 @@ if (isdefinedsymbol(__heap_size__)) {
 define symbol __ram_vector_table_size__        =  isdefinedsymbol(__ram_vector_table__) ? 0x00000280 : 0;
 define symbol __ram_vector_table_offset__      =  isdefinedsymbol(__ram_vector_table__) ? 0x0000027F : 0;
 
-define symbol m_interrupts_start               = 0x08001000;
-define symbol m_interrupts_end                 = 0x0800127F;
+define symbol m_interrupts_start               = 0x18001000;
+define symbol m_interrupts_end                 = 0x1800127F;
 
-define symbol m_text_start                     = 0x08001280;
-define symbol m_text_end                       = 0x0803FFFF;
+define symbol m_text_start                     = 0x18001280;
+define symbol m_text_end                       = 0x1803FFFF;
 
-define symbol m_interrupts_ram_start           = 0x20000000;
-define symbol m_interrupts_ram_end             = 0x20000000 + __ram_vector_table_offset__;
+define symbol m_interrupts_ram_start           = 0x30000000;
+define symbol m_interrupts_ram_end             = 0x30000000 + __ram_vector_table_offset__;
 
 define symbol m_data_start                     = m_interrupts_ram_start + __ram_vector_table_size__;
-define symbol m_data_end                       = 0x2012FFFF;
+define symbol m_data_end                       = 0x3012FFFF;
 
-define symbol m_boot_flash_start               = 0x08000000;
+define symbol m_boot_flash_start               = 0x18000000;
 
 define exported symbol __VECTOR_TABLE          = m_interrupts_start;
 define exported symbol __VECTOR_RAM            = isdefinedsymbol(__ram_vector_table__) ? m_interrupts_ram_start : m_interrupts_start;

@@ -45,24 +45,13 @@ mcux_remove_armgcc_linker_script(
         LINKER ${device_root}/RT/RT700/MIMXRT798S/gcc/MIMXRT798Sxxxx_cm33_core0_flash.ld
 )
 
-mcux_remove_mdk_linker_script(
-        BASE_PATH ${SdkRootDirPath}
-        TARGETS flash_debug flash_release
-        LINKER ${device_root}/RT/RT700/MIMXRT798S/arm/MIMXRT798Sxxxx_cm33_core0_flash.scf
-)
-
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ota_examples/linker/MIMXRT798Sxxxx_cm33_core0_flash.icf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT798Sxxxx_cm33_core0_flash.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ota_examples/linker/MIMXRT798Sxxxx_cm33_core0_flash.ld
-)
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flash_debug flash_release
-    LINKER ${board_root}/${board}/ota_examples/linker/MIMXRT798Sxxxx_cm33_core0_flash.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT798Sxxxx_cm33_core0_flash.ld
 )

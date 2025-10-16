@@ -28,4 +28,4 @@ mcux_remove_armgcc_configuration(
 )
 
 # Linker file reconfiguration
-include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/linker_common/linker_reconfig.cmake OPTIONAL)
+include(${SdkRootDirPath}/${board_root}/${board}/ota_examples/ota_linker/linker_reconfig.cmake OPTIONAL)

@@ -1,8 +1,3 @@
-
-mcux_add_mdk_configuration(
-    LD "--diag_suppress=L6329W"
-)
-
 mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
        -DLWIP_ENET_FLEXIBLE_CONFIGURATION\
@@ -11,10 +6,6 @@ mcux_add_macro(
        -DDATA_SECTION_IS_CACHEABLE=1"
 )
 
-mcux_remove_mdk_configuration(
-    TARGETS flexspi_nor_release
-    CC "-Oz"
-)
 mcux_remove_armgcc_configuration(
     TARGETS debug
     CC "-g"
@@ -32,24 +23,14 @@ mcux_remove_armgcc_linker_script(
     TARGETS flexspi_nor_debug flexspi_nor_release
     LINKER ${device_root}/RT/RT1160/MIMXRT1166/gcc/MIMXRT1166xxxxx_cm7_flexspi_nor.ld
 )
-mcux_remove_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1160/MIMXRT1166/arm/MIMXRT1166xxxxx_cm7_flexspi_nor.scf
-)
 
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_mcuboot.icf
-)
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_mcuboot.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1166xxxxx_cm7_flexspi_nor_mcuboot.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1166xxxxx_cm7_flexspi_nor_mcuboot.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1166xxxxx_cm7_flexspi_nor_mcuboot.ld
 )

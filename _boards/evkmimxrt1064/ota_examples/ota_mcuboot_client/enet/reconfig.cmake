@@ -8,10 +8,6 @@ mcux_add_include(
     INCLUDES examples/_boards/${board}/ota_examples/ota_mcuboot_client
 )
 
-mcux_add_mdk_configuration(
-    LD "--diag_suppress=L6329W"
-)
-
 mcux_add_macro(
     CC "-DFSL_FEATURE_PHYKSZ8081_USE_RMII50M_MODE\
         -DMBEDTLS_USER_CONFIG_FILE=\\\"mbedtls_user_config.h\\\"\
@@ -22,10 +18,6 @@ mcux_add_macro(
     CC "-DFSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0"
 )
 
-mcux_remove_mdk_configuration(
-    TARGETS flexspi_nor_release
-    CC "-Oz"
-)
 mcux_remove_armgcc_configuration(
     TARGETS debug
     CC "-g"
@@ -45,24 +37,13 @@ mcux_remove_armgcc_linker_script(
     LINKER ${device_root}/RT/RT1064/MIMXRT1064/gcc/MIMXRT1064xxxxx_flexspi_nor.ld
 )
 
-mcux_remove_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${device_root}/RT/RT1064/MIMXRT1064/arm/MIMXRT1064xxxxx_flexspi_nor.scf
-)
-
 mcux_add_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1064xxxxx_flexspi_nor.icf
-)
-mcux_add_mdk_linker_script(
-    BASE_PATH ${SdkRootDirPath}
-    TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1064xxxxx_flexspi_nor.scf
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1064xxxxx_flexspi_nor.icf
 )
 mcux_add_armgcc_linker_script(
     BASE_PATH ${SdkRootDirPath}
     TARGETS flexspi_nor_debug flexspi_nor_release
-    LINKER ${board_root}/${board}/ota_examples/ota_mcuboot_client/linker/MIMXRT1064xxxxx_flexspi_nor.ld
+    LINKER ${board_root}/${board}/ota_examples/ota_linker/MIMXRT1064xxxxx_flexspi_nor.ld
 )

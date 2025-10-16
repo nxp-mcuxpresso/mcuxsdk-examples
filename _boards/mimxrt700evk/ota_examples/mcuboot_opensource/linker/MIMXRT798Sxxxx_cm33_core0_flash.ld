@@ -30,7 +30,7 @@ HEAP_SIZE  = DEFINED(__heap_size__)  ? __heap_size__  : 0x0400;
 STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 0x0400;
 M_VECTOR_RAM_SIZE = DEFINED(__ram_vector_table__) ? 0x00000300 : 0;
 
-DATA_START   = 0x20080000;
+DATA_START   = 0x30080000;
 DATA_SIZE    = 0x00180000;
 DATA_END     = DATA_START + DATA_SIZE - 1 - (DEFINED(__heap_noncacheable__) ? 0 : HEAP_SIZE);
 
@@ -47,9 +47,9 @@ HEAP_START   = DEFINED(__heap_noncacheable__) ? NCACHE_END + 1 : DATA_END + 1;
 /* The SRAM region [0x400000-0x57FFFF] is reserved for HiFi4 application. */
 MEMORY
 {
-  m_flash_config        (RX)  : ORIGIN = 0x28000000, LENGTH = 0x00004000
-  m_interrupts          (RX)  : ORIGIN = 0x28004000, LENGTH = 0x00000300
-  m_text                (RX)  : ORIGIN = 0x28004300, LENGTH = 0x0003B000
+  m_flash_config        (RX)  : ORIGIN = 0x38000000, LENGTH = 0x00004000
+  m_interrupts          (RX)  : ORIGIN = 0x38004000, LENGTH = 0x00000300
+  m_text                (RX)  : ORIGIN = 0x38004300, LENGTH = 0x0003B000
   m_data                (RW)  : ORIGIN = DATA_START, LENGTH = DATA_END - DATA_START + 1
   m_ncache              (RW)  : ORIGIN = NCACHE_START, LENGTH = NCACHE_END - NCACHE_START + 1
   m_heap                (RW)  : ORIGIN = HEAP_START, LENGTH = HEAP_SIZE

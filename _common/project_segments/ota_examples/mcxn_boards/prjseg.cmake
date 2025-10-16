@@ -31,12 +31,12 @@ if (CONFIG_MCUX_PRJSEG_module.board.ota_examples.mcxn.default_linker_application
     mcux_add_iar_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER ${board_root}/${board}/ota_examples/linker_common/mcxn10_cm33_flash.icf
+        LINKER ${board_root}/${board}/ota_examples/ota_linker/mcxn10_cm33_flash.icf
     )
     mcux_add_armgcc_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER ${board_root}/${board}/ota_examples/linker_common/mcxn10_cm33_flash.ld
+        LINKER ${board_root}/${board}/ota_examples/ota_linker/mcxn10_cm33_flash.ld
     )
 endif()
 
@@ -45,11 +45,11 @@ if (CONFIG_MCUX_PRJSEG_module.board.ota_examples.mcxn.custom_linker_application)
     mcux_add_iar_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER ${board_root}/${board}/ota_examples/linker_common/custom_cfg/mcxn10_cm33_flash.icf
+        LINKER ${board_root}/${board}/ota_examples/ota_linker/custom_cfg/mcxn10_cm33_flash.icf
     )
     mcux_add_armgcc_linker_script(
         BASE_PATH ${SdkRootDirPath}
         TARGETS debug release
-        LINKER ${board_root}/${board}/ota_examples/linker_common/custom_cfg/mcxn10_cm33_flash.ld
+        LINKER ${board_root}/${board}/ota_examples/ota_linker/custom_cfg/mcxn10_cm33_flash.ld
     )
 endif()
