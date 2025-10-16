@@ -44,17 +44,6 @@
 #define EXAMPLE_TX_DMA_SOURCE kDma4RequestMuxFlexIO2Request0
 #define EXAMPLE_RX_DMA_SOURCE kDma4RequestMuxFlexIO2Request2
 
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication                 = true;                 \
-        config.channelConfig[EXAMPLE_TX_CHANNEL] = &channelConfig;       \
-        config.channelConfig[EXAMPLE_RX_CHANNEL] = &channelConfig;       \
-    }
 /*${macro:end}*/
 /*******************************************************************************
  * Prototypes

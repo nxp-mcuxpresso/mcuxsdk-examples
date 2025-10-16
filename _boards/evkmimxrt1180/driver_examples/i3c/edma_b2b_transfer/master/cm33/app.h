@@ -20,17 +20,6 @@
 #define EXAMPLE_I3C_TX_DMA_CHANNEL_MUX (kDma4RequestMuxI3C2ToBusRequest)
 #define EXAMPLE_I3C_RX_DMA_CHANNEL_MUX (kDma4RequestMuxI3C2FromBusRequest)
 
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication = true;                                 \
-        config.channelConfig[0]          = &channelConfig;                       \
-        config.channelConfig[1]          = &channelConfig;                       \
-    }
 /*${macro:end}*/
 
 /*******************************************************************************

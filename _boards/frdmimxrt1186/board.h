@@ -212,6 +212,7 @@ void DCDC_SetVoltage(uint8_t core, uint8_t targetVoltage);
 
 void BOARD_NETC_Init(void);
 void BOARD_RequestTRDC(bool bRequestAON, bool bRequestWakeup, bool bReqeustMega);
+void BOARD_CommonSetting(void);
 #if defined(__cplusplus)
 }
 #endif /* __cplusplus */

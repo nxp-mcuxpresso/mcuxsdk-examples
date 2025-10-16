@@ -23,17 +23,6 @@
 #define DEMO_DMA_CHANNEL       0U
 #define ADC_DMA_REQUEST_SOURCE kDma4RequestMuxADC1Request0
 
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication = true;                                 \
-        config.channelConfig[0]          = &channelConfig;                       \
-        config.channelConfig[1]          = &channelConfig;                       \
-    }
 #define DEMO_LPADC_DO_OFFSET_CALIBRATION   true
 #define DEMO_LPADC_OFFSET_CALIBRATION_MODE kLPADC_OffsetCalibration12bitMode
 /*${macro:end}*/

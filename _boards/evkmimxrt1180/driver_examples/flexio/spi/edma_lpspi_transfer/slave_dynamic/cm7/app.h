@@ -41,18 +41,7 @@
 #define EXAMPLE_RX_DMA_SOURCE                 kDma4RequestMuxFlexIO2Request2
 #define EXAMPLE_FLEXIO_IRQHandler             FLEXIO2_IRQHandler
 #define EXAMPLE_FLEXIO_IRQ                    FLEXIO2_IRQn
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication                 = true;                 \
-        config.channelConfig[FLEXIO_SPI_TX_DMA_LPSPI_CHANNEL] = &channelConfig;       \
-        config.channelConfig[FLEXIO_SPI_RX_DMA_LPSPI_CHANNEL] = &channelConfig;       \
-    }
-    
+
 /*${macro:end}*/
 
 /*******************************************************************************

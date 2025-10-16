@@ -52,17 +52,6 @@
 #define BOARD_MasterClockConfig()
 #define BOARD_MASTER_CLOCK_CONFIG()
 
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication = true;                                 \
-        config.channelConfig[0]          = &channelConfig;                       \
-        config.channelConfig[1]          = &channelConfig;                       \
-    }
 /*${macro:end}*/
 
 /*******************************************************************************

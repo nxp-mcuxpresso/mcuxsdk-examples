@@ -31,18 +31,6 @@
 
 #define QTMR_EDMA_REQUEST_CAPT_SOURCE  kDma4RequestMuxQTIMER1CaptTimer0
 #define QTMR_EDMA_REQUEST_CMPLD_SOURCE kDma4RequestMuxQTIMER1Cmpld1Timer0Cmpld2Timer1
-
-#define BOARD_SetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication = true;                                 \
-        config.channelConfig[0]          = &channelConfig;                       \
-    }
-
 /*${macro:end}*/
 
 /*******************************************************************************

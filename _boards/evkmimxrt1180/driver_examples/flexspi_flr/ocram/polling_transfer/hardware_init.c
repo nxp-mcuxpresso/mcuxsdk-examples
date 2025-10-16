@@ -243,6 +243,7 @@ void FLEXSPI_SLV_ClkRootFrq(flexspi_slv_clock_freq_t clock_freq)
 
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();

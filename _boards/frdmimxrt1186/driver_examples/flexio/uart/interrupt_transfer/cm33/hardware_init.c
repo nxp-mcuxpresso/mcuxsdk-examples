@@ -15,6 +15,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitFLEXIO_UARTPins();
     BOARD_BootClockRUN();

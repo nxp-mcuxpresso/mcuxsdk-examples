@@ -13,11 +13,6 @@
 #include "fsl_trdc.h"
 /*${header:end}*/
 
-/*${macro:start}*/
-/* When CM33 set TRDC, CM7 must NOT require TRDC ownership from ELE */
-#define CM33_SET_TRDC 0U
-/*${macro:end}*/
-
 /*${variable:start}*/
 /*
  * AUDIO PLL setting: Frequency = Fref * (DIV_SELECT + NUM / DENOM) / (2^POST)
@@ -33,99 +28,9 @@ const clock_audio_pll_config_t audioPllConfig = {
 /*${variable:end}*/
 
 /*${function:start}*/
-
-#if !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U))
-static void TRDC_EDMA4_ResetPermissions(void)
-{
-#define EDMA_DID 0x7U
-    uint8_t i, j;
-
-    /* Set the master domain access configuration for eDMA4 */
-    trdc_non_processor_domain_assignment_t edma4Assignment;
-
-    (void)memset(&edma4Assignment, 0, sizeof(edma4Assignment));
-    edma4Assignment.domainId       = EDMA_DID;
-    edma4Assignment.privilegeAttr  = kTRDC_MasterPrivilege;
-    edma4Assignment.secureAttr     = kTRDC_ForceSecure;
-    edma4Assignment.bypassDomainId = true;
-    edma4Assignment.lock           = false;
-    TRDC_SetNonProcessorDomainAssignment(TRDC2, kTRDC2_MasterDMA4, &edma4Assignment);
-
-    /* Enable all access modes for MBC and MRC of TRDCA and TRDCW */
-    trdc_hardware_config_t hwConfig;
-    trdc_memory_access_control_config_t memAccessConfig;
-
-    (void)memset(&memAccessConfig, 0, sizeof(memAccessConfig));
-    memAccessConfig.nonsecureUsrX  = 1U;
-    memAccessConfig.nonsecureUsrW  = 1U;
-    memAccessConfig.nonsecureUsrR  = 1U;
-    memAccessConfig.nonsecurePrivX = 1U;
-    memAccessConfig.nonsecurePrivW = 1U;
-    memAccessConfig.nonsecurePrivR = 1U;
-    memAccessConfig.secureUsrX     = 1U;
-    memAccessConfig.secureUsrW     = 1U;
-    memAccessConfig.secureUsrR     = 1U;
-    memAccessConfig.securePrivX    = 1U;
-    memAccessConfig.securePrivW    = 1U;
-    memAccessConfig.securePrivR    = 1U;
-
-    TRDC_GetHardwareConfig(TRDC1, &hwConfig);
-    for (i = 0U; i < hwConfig.mrcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MrcSetMemoryAccessConfig(TRDC1, &memAccessConfig, i, j);
-        }
-    }
-
-    for (i = 0U; i < hwConfig.mbcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MbcSetMemoryAccessConfig(TRDC1, &memAccessConfig, i, j);
-        }
-    }
-    /* Set TRDC1(A) secure access for eDMA domain, MBC 1, MEM1 (CM33 System TCM) */
-    TRDC_MbcNseClearAll(TRDC1, 1U, 1UL << EDMA_DID, 0x1 << 1);
-
-    /* Set TRDC1(A) secure access for eDMA domain, MRC 1, all region FlexSPI2 */
-    TRDC_MrcDomainNseClear(TRDC1, 1, 1UL << EDMA_DID);
-
-    TRDC_GetHardwareConfig(TRDC2, &hwConfig);
-    for (i = 0U; i < hwConfig.mrcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MrcSetMemoryAccessConfig(TRDC2, &memAccessConfig, i, j);
-        }
-    }
-
-    for (i = 0U; i < hwConfig.mbcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MbcSetMemoryAccessConfig(TRDC2, &memAccessConfig, i, j);
-        }
-    }
-
-    /* Set TRDC2(W) secure access for eDMA domain, MBC 1, MEM0(AIPS3->AIPS3_MEGA->PDM) */
-    TRDC_MbcNseClearAll(TRDC2, 1U, 1UL << EDMA_DID, 0x1 << 0);
-
-    /* Set TRDC2(W) secure access for eDMA domain, MRC 3, all region(OCRAM1) */
-    TRDC_MrcDomainNseClear(TRDC2, 3, 1UL << EDMA_DID);
-
-    /* Set TRDC2(W) secure access for eDMA domain, MRC 5, all region(SEMC->SDRAM) */
-    TRDC_MrcEnableDomainNseUpdate(TRDC2, 5U, 1UL << EDMA_DID, true);
-    TRDC_MrcRegionNseClear(TRDC2, 5U, 0xFFFFU);
-
-    /* Set TRDC2(W) secure access for eDMA domain, MRC 2, all region(CM7 I/D TCM) */
-    TRDC_MrcEnableDomainNseUpdate(TRDC2, 2U, 1UL << EDMA_DID, true);
-    TRDC_MrcRegionNseClear(TRDC2, 2U, 0xFFFFU);
-}
-#endif /* !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
-
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitPins();
     BOARD_BootClockRUN();
@@ -136,13 +41,6 @@ void BOARD_InitHardware(void)
     /* mic root clock = 24.576M */
     CLOCK_SetRootClockMux(kCLOCK_Root_Mic, kCLOCK_MIC_ClockRoot_MuxAudioPllOut);
     CLOCK_SetRootClockDiv(kCLOCK_Root_Mic, 16);
-
-#if !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U))
-
-    BOARD_RequestTRDC(true, true, false);
-
-    TRDC_EDMA4_ResetPermissions();
-#endif /* !(defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
 }
 
 /*${function:end}*/

@@ -20,6 +20,7 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitPins();
     BOARD_BootClockRUN();

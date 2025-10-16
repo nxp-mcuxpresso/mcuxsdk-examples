@@ -22,5 +22,6 @@ config MCUX_HW_BOARD_evkmimxrt1180
     imply MCUX_COMPONENT_driver.anadig_pmu_1
     imply MCUX_COMPONENT_driver.src_3
     imply MCUX_COMPONENT_driver.misc
+    imply MCUX_COMPONENT_driver.trdc
     select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_component.serial_manager_uart
     select MCUX_COMPONENT_component.lpuart_adapter  if MCUX_COMPONENT_utility.debug_console_lite

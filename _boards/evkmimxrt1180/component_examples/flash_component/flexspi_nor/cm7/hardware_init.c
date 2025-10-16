@@ -57,6 +57,7 @@ nor_config_t norConfig = {
 
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();

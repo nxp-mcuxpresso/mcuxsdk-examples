@@ -62,6 +62,7 @@ void BOARD_EnableSaiMclkOutput(bool enable)
 
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
 

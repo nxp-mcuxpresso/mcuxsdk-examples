@@ -54,7 +54,6 @@
 // #define EXAMPLE_CHANNEL (0U)
 
 #define DEMO_CODEC_VOLUME            (80U)
-#define DEMO_EDMA_HAS_CHANNEL_CONFIG 1
 #define DEMO_ASRC_IN_EDMA_CHANNEL    kDma4RequestMuxASRCRequest1
 #define DEMO_ASRC_OUT_EDMA_CHANNEL   kDma4RequestMuxASRCRequest4
 

@@ -22,18 +22,6 @@
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define EXAMPLE_LPSPI_MASTER_PCS_FOR_TRANSFER (kLPSPI_MasterPcs0)
 
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication = true;                                 \
-        config.channelConfig[0]          = &channelConfig;                       \
-        config.channelConfig[1]          = &channelConfig;                       \
-    }
-
 #define LPSPI_MASTER_CLK_FREQ CLOCK_GetRootClockFreq(kCLOCK_Root_Lpspi0304)
 
 #define EXAMPLE_LPSPI_DEALY_COUNT 0xFFFFFU

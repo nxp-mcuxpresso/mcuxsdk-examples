@@ -16,9 +16,6 @@
 
 /*${macro:start}*/
 
-/* When CM33 set TRDC, CM7 must NOT require TRDC ownership from ELE */
-#define CM33_SET_TRDC 0U
-
 /*
  * This workaround is used for kick-off CM7 when CM7 image vector table is not
  * at 0x0 and CM7 TCM ECC fuse is set(1).
@@ -39,10 +36,6 @@
 #define CM7_ITCM_START_ADDR              0x0UL      /* from pespective of CM7 */
 #define CM7_ITCM_END_ADDR                0x80000UL  /* from pespective of CM7 */
 #define CM7_ITCM_ADDR_MAP_AT_CM33_DOMAIN 0x303C0000 /* from pespective of CM33 */
-#define FLEXSPI_START_ADDR_NS            0x04000000UL
-#define FLEXSPI_END_ADDR_NS              0x06000000UL
-#define FLEXSPI_START_ADDR_S             0x14000000UL
-#define FLEXSPI_END_ADDR_S               0x16000000UL
 
 /*${macro:end}*/
 
@@ -51,6 +44,7 @@ void BOARD_InitHardware(void)
 {
     MCMGR_EarlyInit();
 
+    BOARD_CommonSetting(); 
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
@@ -190,100 +184,6 @@ status_t BOARD_GetCore1ImageAddrSize(uint32_t *pImageSrcAddr,
     return ret;
 }
 
-#if (defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U))
-static void TRDC_SetAllPermissions(void)
-{
-#define EDMA_DID 0x7U
-
-    uint8_t i, j;
-
-    /* Set the master domain access configuration for eDMA3 and eDMA4 */
-    trdc_non_processor_domain_assignment_t edmaAssignment;
-
-    (void)memset(&edmaAssignment, 0, sizeof(edmaAssignment));
-    edmaAssignment.domainId       = EDMA_DID;
-    edmaAssignment.privilegeAttr  = kTRDC_MasterPrivilege;
-    edmaAssignment.secureAttr     = kTRDC_ForceSecure;
-    edmaAssignment.bypassDomainId = true;
-    edmaAssignment.lock           = false;
-
-    TRDC_SetNonProcessorDomainAssignment(TRDC1, kTRDC1_MasterDMA3, &edmaAssignment);
-    TRDC_SetNonProcessorDomainAssignment(TRDC2, kTRDC2_MasterDMA4, &edmaAssignment);
-
-    /* Enable all access modes for MBC and MRC of TRDCA and TRDCW */
-    trdc_hardware_config_t hwConfig;
-    trdc_memory_access_control_config_t memAccessConfig;
-
-    (void)memset(&memAccessConfig, 0, sizeof(memAccessConfig));
-    memAccessConfig.nonsecureUsrX  = 1U;
-    memAccessConfig.nonsecureUsrW  = 1U;
-    memAccessConfig.nonsecureUsrR  = 1U;
-    memAccessConfig.nonsecurePrivX = 1U;
-    memAccessConfig.nonsecurePrivW = 1U;
-    memAccessConfig.nonsecurePrivR = 1U;
-    memAccessConfig.secureUsrX     = 1U;
-    memAccessConfig.secureUsrW     = 1U;
-    memAccessConfig.secureUsrR     = 1U;
-    memAccessConfig.securePrivX    = 1U;
-    memAccessConfig.securePrivW    = 1U;
-    memAccessConfig.securePrivR    = 1U;
-
-    TRDC_GetHardwareConfig(TRDC1, &hwConfig);
-    for (i = 0U; i < hwConfig.mrcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MrcSetMemoryAccessConfig(TRDC1, &memAccessConfig, i, j);
-        }
-    }
-
-    for (j = 0U; j < hwConfig.mrcNumber; j++)
-    {
-        TRDC_MrcDomainNseClear(TRDC1, j, 1UL << EDMA_DID);
-    }
-
-    for (i = 0U; i < hwConfig.mbcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MbcSetMemoryAccessConfig(TRDC1, &memAccessConfig, i, j);
-        }
-    }
-
-    for (j = 0U; j < hwConfig.mbcNumber; j++)
-    {
-        TRDC_MbcNseClearAll(TRDC1, j, 1UL << EDMA_DID, 0xFU);
-    }
-
-    TRDC_GetHardwareConfig(TRDC2, &hwConfig);
-    for (i = 0U; i < hwConfig.mrcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MrcSetMemoryAccessConfig(TRDC2, &memAccessConfig, i, j);
-        }
-    }
-
-    for (j = 0U; j < hwConfig.mrcNumber; j++)
-    {
-        TRDC_MrcDomainNseClear(TRDC2, j, 1UL << EDMA_DID);
-    }
-
-    for (i = 0U; i < hwConfig.mbcNumber; i++)
-    {
-        for (j = 0U; j < 8; j++)
-        {
-            TRDC_MbcSetMemoryAccessConfig(TRDC2, &memAccessConfig, i, j);
-        }
-    }
-
-    for (j = 0U; j < hwConfig.mbcNumber; j++)
-    {
-        TRDC_MbcNseClearAll(TRDC2, j, 1UL << EDMA_DID, 0xFU);
-    }
-}
-#endif /* (defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
-
 /*
  * image_src_addr image_dest_addr is address from perspective of core0(CM33)
  * boot_addr is address from perspective of core1(CM7)
@@ -316,12 +216,7 @@ void BOARD_PrepareCore1(uint32_t image_src_addr, uint32_t image_dest_addr, uint3
         pRamVect[0]         = pBootVect[0];
         pRamVect[1]         = pBootVect[1];
 #endif /* (defined(ENABLE_WORKAROUND_CM7_KICK_OFF) && (ENABLE_WORKAROUND_CM7_KICK_OFF > 0U)) */
-    }
-
-#if (defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U))
-    BOARD_RequestTRDC(true, true, false);
-    TRDC_SetAllPermissions();
-#endif /* (defined(CM33_SET_TRDC) && (CM33_SET_TRDC > 0U)) */
+    }    
 }
 
 /*${function:end}*/

@@ -24,6 +24,7 @@ void BOARD_InitHardware(void)
     {
         NVIC_DisableIRQ(GPIO1_0_IRQn);
     }
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitADCPins();

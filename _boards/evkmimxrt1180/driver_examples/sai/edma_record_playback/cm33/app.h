@@ -43,7 +43,6 @@
 #define DEMO_SAI_RX_EDMA_CHANNEL kDma3RequestMuxSai1Rx
 
 #define BOARD_MASTER_CLOCK_CONFIG()
-#define DEMO_EDMA_HAS_CHANNEL_CONFIG 1
 /*${macro:end}*/
 
 /*******************************************************************************

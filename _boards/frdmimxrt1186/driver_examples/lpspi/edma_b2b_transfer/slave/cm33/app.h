@@ -19,18 +19,6 @@
 #define EXAMPLE_LPSPI_SLAVE_DMA_RX_CHANNEL 0U
 #define EXAMPLE_LPSPI_SLAVE_DMA_TX_CHANNEL 1U
 
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication = true;                                 \
-        config.channelConfig[0]          = &channelConfig;                       \
-        config.channelConfig[1]          = &channelConfig;                       \
-    }
-
 #define EXAMPLE_LPSPI_SLAVE_PCS_FOR_INIT     (kLPSPI_Pcs0)
 #define EXAMPLE_LPSPI_SLAVE_PCS_FOR_TRANSFER (kLPSPI_SlavePcs0)
 /*${macro:end}*/

@@ -55,17 +55,6 @@
 
 #define CACHE_MAINTAIN 1
 
-#define BOARD_GetEDMAConfig(config)                                              \
-    {                                                                            \
-        static edma_channel_config_t channelConfig = {                           \
-            .enableMasterIDReplication = true,                                   \
-            .securityLevel             = kEDMA_ChannelSecurityLevelSecure,       \
-            .protectionLevel           = kEDMA_ChannelProtectionLevelPrivileged, \
-        };                                                                       \
-        config.enableMasterIdReplication             = true;                     \
-        config.channelConfig[FLEXSPI_TX_DMA_CHANNEL] = &channelConfig;           \
-        config.channelConfig[FLEXSPI_RX_DMA_CHANNEL] = &channelConfig;           \
-    }
 /*${macro:end}*/
 
 /*******************************************************************************

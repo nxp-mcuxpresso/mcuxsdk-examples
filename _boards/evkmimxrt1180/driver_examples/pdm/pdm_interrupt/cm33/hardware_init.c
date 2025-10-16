@@ -30,6 +30,7 @@ const clock_audio_pll_config_t audioPllConfig = {
 
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitPins();
     BOARD_BootClockRUN();

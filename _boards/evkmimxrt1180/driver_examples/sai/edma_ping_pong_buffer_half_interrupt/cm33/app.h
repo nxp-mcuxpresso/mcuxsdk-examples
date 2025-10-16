@@ -32,7 +32,6 @@
 #define DEMO_DMA                     DMA3
 #define DEMO_EDMA_CHANNEL            (0U)
 #define DEMO_SAI_EDMA_CHANNEL        kDma3RequestMuxSai1Tx
-#define DEMO_EDMA_HAS_CHANNEL_CONFIG 1
 
 /* demo audio master clock */
 #define DEMO_AUDIO_MASTER_CLOCK DEMO_SAI_CLK_FREQ

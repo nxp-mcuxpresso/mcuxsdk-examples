@@ -56,7 +56,6 @@
 #define DEMO_SAI_CHANNEL      (0U)
 
 #define DEMO_CODEC_VOLUME              (78U)
-#define DEMO_EDMA_HAS_CHANNEL_CONFIG   1
 #define BOARD_SAI_EDMA_CONFIG(config)  Board_SaiEdmaConfig(config)
 #define BOARD_ASRC_EDMA_CONFIG(config) Board_AsrcEdmaConfig(config)
 /*${macro:end}*/

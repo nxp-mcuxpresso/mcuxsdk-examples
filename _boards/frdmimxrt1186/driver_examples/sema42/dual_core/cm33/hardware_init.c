@@ -79,6 +79,7 @@ uint32_t get_core1_image_size(void)
 
 void BOARD_InitHardware(void)
 {
+    BOARD_CommonSetting();
     BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_InitLEDsPins();
