@@ -37,8 +37,8 @@ int write_chunk(int sock, const char* data, size_t len) {
 }
 
 int base64_encode_chunks(int sock, uint8_t *data, size_t data_len){
-    char encoded[25];
-    const size_t chunk_size = 16;
+    char encoded[30];
+    const size_t chunk_size = 18;
     size_t offset = 0;
 
     while (offset < data_len) {

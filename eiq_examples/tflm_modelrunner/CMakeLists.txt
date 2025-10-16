@@ -49,6 +49,10 @@ mcux_remove_armgcc_configuration(
   CX "--specs=nano.specs"
 )
 
+mcux_remove_armgcc_configuration(
+  CC "--specs=nano.specs"
+)
+
 include(${SdkRootDirPath}/CMakeLists.txt)
 include(${SdkRootDirPath}/${board_root}/${board}/eiq_examples/tflm_modelrunner/reconfig.cmake OPTIONAL)
 
