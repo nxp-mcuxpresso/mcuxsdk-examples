@@ -289,8 +289,8 @@ void BOARD_InitPCAL6524_B(pcal6524_handle_t *handle)
     static const pcal6524_config_t config = {
         .i2cBase         = BOARD_PCAL6524_I2C,
         .i2cAddr         = BOARD_PCAL6524_B_I2C_ADDR,
-        .I2C_SendFunc    = BOARD_LPI2C_Send,
-        .I2C_ReceiveFunc = BOARD_LPI2C_Receive,
+        .I2C_SendFunc    = BOARD_I2C_DeviceSend,
+        .I2C_ReceiveFunc = BOARD_I2C_DeviceReceive,
     };
 
     PCAL6524_Init(handle, &config);
