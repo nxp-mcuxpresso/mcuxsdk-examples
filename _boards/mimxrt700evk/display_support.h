@@ -1,5 +1,5 @@
 /*
- * Copyright 2023,2024 NXP
+ * Copyright 2023-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -53,11 +53,11 @@
 #if (DEMO_SSD1963_BUFFER_FORMAT == DEMO_SSD1963_BUFFER_RGB565)
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
 #define DEMO_BUFFER_BYTE_PER_PIXEL 2
-#define LVGL_FB_ALIGN              64U
+#define FRAME_BUFFER_ALIGN         64U  /* LCDIF and VGLite are considered. */
 #else
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB888
 #define DEMO_BUFFER_BYTE_PER_PIXEL 3
-#define LVGL_FB_ALIGN              192U
+#define FRAME_BUFFER_ALIGN         192U /* LCDIF and VGLite are considered. */
 #endif
 
 /*
@@ -70,8 +70,8 @@
 #define DEMO_BUFFER_FIXED_ADDRESS 1
 
 /* Put frame buffer in PSRAM */
-#define DEMO_BUFFER0_ADDR 0x60000000U
-#define DEMO_BUFFER1_ADDR 0x60200000U
+#define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR DEMO_ALIGN_ADDR(0x60200000U, FRAME_BUFFER_ALIGN)
 
 /* Definitions for the frame buffer. */
 #define DEMO_BUFFER_COUNT  1 /* 1 is enough for DBI interface display. */
@@ -113,37 +113,39 @@
 
 /* Definitions for the frame buffer. */
 #define DEMO_BUFFER_COUNT         2   /* 2 is enough for DPI interface display. */
-#define FRAME_BUFFER_ALIGN        128 /* LCDIF buffer should be 128 byte aligned. */
+#define FRAME_BUFFER_ALIGN        64  /* For RGB565 or XRGB8888, LCDIF and VGLite alignment requirement */
 
 #if ((DEMO_PANEL_RK055AHD091 == DEMO_PANEL) || (DEMO_PANEL_RK055MHD091 == DEMO_PANEL))
 
+/* NOTE: Don't modify here, modify in mcux_config.h. */
 #ifndef DEMO_RK055AHD091_USE_XRGB8888
 #define DEMO_RK055AHD091_USE_XRGB8888 0
 #endif
 
+/* NOTE: Don't modify here, modify in mcux_config.h. */
 #ifndef DEMO_RK055MHD091_USE_XRGB8888
 #define DEMO_RK055MHD091_USE_XRGB8888 0
 #endif
 
 #if (DEMO_RK055AHD091_USE_XRGB8888 || DEMO_RK055MHD091_USE_XRGB8888)
 
+#define FRAME_BUFFER_ALIGN         64U  /* LCDIF and VGLite are considered. */
+
 /* Frame buffer #0 is 720 x 1280 x 4 = 0x384000 bytes long */
-#define DEMO_BUFFER0_ADDR 0x60000000U
-#define DEMO_BUFFER1_ADDR 0x60400000U
+#define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR DEMO_ALIGN_ADDR(0x60400000U, FRAME_BUFFER_ALIGN)
 
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatXRGB8888
 #define DEMO_BUFFER_BYTE_PER_PIXEL 4
-#define LVGL_FB_ALIGN              64U
 
 #else
 
 /* Frame buffer #0 is 720 x 1280 x 2 = 0x1C2000 bytes long */
-#define DEMO_BUFFER0_ADDR 0x60000000U
-#define DEMO_BUFFER1_ADDR 0x60200000U
+#define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR DEMO_ALIGN_ADDR(0x60200000U, FRAME_BUFFER_ALIGN)
 
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
 #define DEMO_BUFFER_BYTE_PER_PIXEL 2
-#define LVGL_FB_ALIGN              64U
 
 #endif
 
@@ -152,24 +154,22 @@
 
 #elif (DEMO_PANEL_RK055IQH091 == DEMO_PANEL)
 
-#define DEMO_BUFFER0_ADDR 0x60000000U
-#define DEMO_BUFFER1_ADDR 0x60200000U
+#define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR DEMO_ALIGN_ADDR(0x60200000U, FRAME_BUFFER_ALIGN)
 
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
 #define DEMO_BUFFER_BYTE_PER_PIXEL 2
-#define LVGL_FB_ALIGN              64U
 
 #define DEMO_PANEL_WIDTH  (540)
 #define DEMO_PANEL_HEIGHT (960)
 
 #elif (DEMO_PANEL_RASPI_7INCH == DEMO_PANEL)
 
-#define DEMO_BUFFER0_ADDR 0x60000000U
-#define DEMO_BUFFER1_ADDR 0x60200000U
+#define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR DEMO_ALIGN_ADDR(0x60200000U, FRAME_BUFFER_ALIGN)
 
 #define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
 #define DEMO_BUFFER_BYTE_PER_PIXEL 2
-#define LVGL_FB_ALIGN              64U
 
 #define DEMO_PANEL_WIDTH  (800)
 #define DEMO_PANEL_HEIGHT (480)
@@ -200,33 +200,32 @@
 #define DEMO_RM67162_BUFFER_FORMAT DEMO_RM67162_BUFFER_RGB565
 #endif
 
+#if (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB565)
+
+#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
+#define DEMO_BUFFER_BYTE_PER_PIXEL 2
+#define FRAME_BUFFER_ALIGN         64U   /* LCDIF and VGLite are considered. */
+
+#elif (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB888)
+
+#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB888
+#define DEMO_BUFFER_BYTE_PER_PIXEL 3
+#define FRAME_BUFFER_ALIGN         192U  /* LCDIF and VGLite are considered. */
+
+#endif /* DEMO_RM67162_BUFFER_FORMAT */
+
 /* Use fixed address to place buffer on PSRAM. */
 #define DEMO_BUFFER_FIXED_ADDRESS 1
 
 /*
  * Place frame buffer in on-board PSRAM.
  */
-#define DEMO_BUFFER0_ADDR 0x60000000U
-#define DEMO_BUFFER1_ADDR 0x60200000U
+#define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR DEMO_ALIGN_ADDR(0x60200000U, FRAME_BUFFER_ALIGN)
 
 /* Definitions for the frame buffer. */
 /* 1 is enough, use 2 could render background buffer while display the foreground buffer. */
 #define DEMO_BUFFER_COUNT  2
-#define FRAME_BUFFER_ALIGN 128 /* LCDIF buffer should be 128 byte aligned. */
-
-#if (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB565)
-
-#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
-#define DEMO_BUFFER_BYTE_PER_PIXEL 2
-#define LVGL_FB_ALIGN              64U
-
-#elif (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB888)
-
-#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB888
-#define DEMO_BUFFER_BYTE_PER_PIXEL 3
-#define LVGL_FB_ALIGN              192U
-
-#endif /* DEMO_RM67162_BUFFER_FORMAT */
 
 #define DEMO_PANEL_WIDTH  (400U)
 #define DEMO_PANEL_HEIGHT (392U)
@@ -262,33 +261,32 @@
 #define DEMO_CO5300_BUFFER_FORMAT DEMO_CO5300_BUFFER_RGB565
 #endif
 
+#if (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB565)
+
+#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
+#define DEMO_BUFFER_BYTE_PER_PIXEL 2
+#define FRAME_BUFFER_ALIGN         64U   /* LCDIF and VGLite are considered. */
+
+#elif (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB888)
+
+#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB888
+#define DEMO_BUFFER_BYTE_PER_PIXEL 3
+#define FRAME_BUFFER_ALIGN         192U   /* LCDIF and VGLite are considered. */
+
+#endif /* DEMO_CO5300_BUFFER_FORMAT */
+
 /* Use fixed address to place buffer on PSRAM. */
 #define DEMO_BUFFER_FIXED_ADDRESS 1
 
 /*
  * Place frame buffer in on-board PSRAM.
  */
-#define DEMO_BUFFER0_ADDR 0x60000000U
-#define DEMO_BUFFER1_ADDR 0x60200000U
+#define DEMO_BUFFER0_ADDR DEMO_ALIGN_ADDR(0x60000000U, FRAME_BUFFER_ALIGN)
+#define DEMO_BUFFER1_ADDR DEMO_ALIGN_ADDR(0x60200000U, FRAME_BUFFER_ALIGN)
 
 /* Definitions for the frame buffer. */
 /* 1 is enough, use 2 could render background buffer while display the foreground buffer. */
 #define DEMO_BUFFER_COUNT  2
-#define FRAME_BUFFER_ALIGN 128 /* LCDIF buffer should be 128 byte aligned. */
-
-#if (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB565)
-
-#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB565
-#define DEMO_BUFFER_BYTE_PER_PIXEL 2
-#define LVGL_FB_ALIGN              64U
-
-#elif (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB888)
-
-#define DEMO_BUFFER_PIXEL_FORMAT   kVIDEO_PixelFormatRGB888
-#define DEMO_BUFFER_BYTE_PER_PIXEL 3
-#define LVGL_FB_ALIGN              192U
-
-#endif /* DEMO_CO5300_BUFFER_FORMAT */
 
 #define DEMO_PANEL_WIDTH  (480U)
 #define DEMO_PANEL_HEIGHT (466U)

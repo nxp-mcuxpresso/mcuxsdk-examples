@@ -69,10 +69,6 @@
 #define ROTATED_FB_HEIGHT DEMO_FB_HEIGHT
 #endif
 
-#if DEMO_USE_ROTATE
-#define LVGL_BUFFER_ADDR 0x28800000U
-#endif
-
 #define DEMO_FB_SIZE (DEMO_BUFFER_STRIDE_BYTE * DEMO_FB_HEIGHT)
 /*******************************************************************************
  * Prototypes
@@ -410,7 +406,7 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
              * sending non-continuous memory.
              */
             fbInfo.height = lv_area_get_height(&damaged);
-            fbInfo.startY = damaged.y1;
+            fbInfo.startY = DEMO_BUFFER_START_Y + damaged.y1;
 
             g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo);
 
@@ -420,19 +416,33 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
         {
             /* Change refresh region size. Only updated part of each line is sent to the panel. */
             fbInfo.height = lv_area_get_height(&damaged);
-            fbInfo.startY = damaged.y1;
+            fbInfo.startY = DEMO_BUFFER_START_Y + damaged.y1;
             fbInfo.width  = lv_area_get_width(&damaged);
-            fbInfo.startX = damaged.x1;
+            fbInfo.startX = DEMO_BUFFER_START_X + damaged.x1;
 
-            uint32_t address = (uint32_t)fb + fbInfo.startY * fbInfo.strideBytes + fbInfo.startX * DEMO_BUFFER_BYTE_PER_PIXEL;
-            
-            /* Check whether the address is aligned according to peripheral requirement. */
-            if (0U != (address & (LVGL_FB_ALIGN - 1U)))
+            uint32_t address = (uint32_t)fb + damaged.y1 * fbInfo.strideBytes + damaged.x1 * DEMO_BUFFER_BYTE_PER_PIXEL;
+
+            /*
+             * Check whether the address is aligned according to peripheral requirement.
+             * Must use `0U != (address % FRAME_BUFFER_ALIGN)` but not `(0U != (address & (FRAME_BUFFER_ALIGN - 1U)))`
+             * because the alignment might be 192 which is not power of 2.
+             */
+            if (0U != (address % (FRAME_BUFFER_ALIGN)))
             {
-                uint32_t offset = address % LVGL_FB_ALIGN;
+                uint32_t offset = address % FRAME_BUFFER_ALIGN;
                 fbInfo.startX -= offset / DEMO_BUFFER_BYTE_PER_PIXEL;
                 fbInfo.width += offset / DEMO_BUFFER_BYTE_PER_PIXEL;
                 address -= offset;
+
+#if ((DEMO_BUFFER_BYTE_PER_PIXEL % 2) != 0)
+                /*
+                 * The bytes in each line must be an even number.
+                 */
+                if ((fbInfo.width % 2) != 0)
+                {
+                    fbInfo.width += 1;
+                }
+#endif
             }
 
             g_dc.ops->setLayerConfig(&g_dc, 0, &fbInfo);

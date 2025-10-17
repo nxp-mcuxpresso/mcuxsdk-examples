@@ -23,10 +23,14 @@ To use Raspberry panel:
 Connect the panel to J8. Then connect the panel's 5V pin to JP43-1, GND pin to JP43-2.
 Make sure the R75, R76, R79, R80 are connected.
 
+Project Configuration
+=====================
+Refer the section [Display Settings](../../examples_shared_readme.md#display-settings) in file examples_share_readme.md.
+
 Prepare the Demo
 ===============
 The demo use MIPI RK055MHD091 panel by default, to use other panel,
-set the coresponding panel DEMO_PANEL_xxx(without '_SUPPORT') to y in prj.conf under board example folder before project generation.
+set the corresponding panel DEMO_PANEL_xxx(without '_SUPPORT') to y in prj.conf under board example folder before project generation.
 The supported panels can be found in examples\_boards\<board>\project_segments\display_support\Kconfig.prjseg.
 Or change the macro DEMO_PANEL in mcux_config.h of the project,
 which number represents which panel can be found in display_support.h and mcux_config.h
