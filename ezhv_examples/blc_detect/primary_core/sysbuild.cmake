@@ -5,7 +5,7 @@
 include(${SdkRootDirPath}/${board_root}/${board}/ezhv_examples/blc_detect/${core_id}/sysbuild.cmake OPTIONAL)
 
 ExternalZephyrProject_Add(
-        APPLICATION ehzv_blc_detect_ezhv
+        APPLICATION ezhv_blc_detect_ezhv
         SOURCE_DIR  ${APP_DIR}/../ezhv
         board ${SB_CONFIG_ezhv_board}
         core_id ${SB_CONFIG_ezhv_core_id}
@@ -14,4 +14,4 @@ ExternalZephyrProject_Add(
 )
 
 # Build the ezhv project first
-add_dependencies(${DEFAULT_IMAGE} ehzv_blc_detect_ezhv)
+add_dependencies(${DEFAULT_IMAGE} ezhv_blc_detect_ezhv)

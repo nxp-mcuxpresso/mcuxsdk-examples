@@ -5,7 +5,7 @@
 include(${SdkRootDirPath}/examples/_boards/${board}/ezhv_examples/bitfield_operate/${core_id}/sysbuild.cmake OPTIONAL)
 
 ExternalZephyrProject_Add(
-        APPLICATION ehzv_bitfield_operate_ezhv
+        APPLICATION ezhv_bitfield_operate_ezhv
         SOURCE_DIR  ${APP_DIR}/../ezhv
         board ${SB_CONFIG_ezhv_board}
         core_id ${SB_CONFIG_ezhv_core_id}
@@ -14,4 +14,4 @@ ExternalZephyrProject_Add(
 )
 
 # Build the ezhv project first
-add_dependencies(${DEFAULT_IMAGE} ehzv_bitfield_operate_ezhv)
+add_dependencies(${DEFAULT_IMAGE} ezhv_bitfield_operate_ezhv)
