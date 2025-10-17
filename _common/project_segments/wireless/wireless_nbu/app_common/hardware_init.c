@@ -9,6 +9,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                  Includes                                  */
 /* -------------------------------------------------------------------------- */
+#include "fsl_common.h"
 #include "app.h"
 #include "fwk_platform.h"
 
@@ -18,7 +19,12 @@
 void BOARD_InitHardware(void)
 {
     /* Configure FRO192M clock */
-#if !defined(FPGA_TARGET) || (FPGA_TARGET == 0)
     PLATFORM_InitFro192M();
-#endif
+
+    /* Wait for the XTAL to be ready before running anything else
+     * The XTAL is started by the main core, so we need to wait for its readiness */
+    RF_CMC1->IRQ_CTRL |= RF_CMC1_IRQ_CTRL_RDY_IE_MASK;
+    while ((RF_CMC1->IRQ_CTRL & RF_CMC1_IRQ_CTRL_XTAL_RDY_MASK) == 0U)
+    {
+    }
 }
