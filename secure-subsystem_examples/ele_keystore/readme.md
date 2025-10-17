@@ -1,4 +1,4 @@
-# ele_symmetric
+# ele_keystore
 
 ## Overview
 The ELE keystore application provides example how to use SSSAPI to export key into blob and later import it back.
