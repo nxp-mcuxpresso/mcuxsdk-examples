@@ -407,7 +407,8 @@ void BOARD_PowerConfigAfterCPU1Booted(void)
     POWER_EnableRunNBB(kPower_BodyBiasVdd2Sram);
     POWER_EnableRunRBB(kPower_BodyBiasVdd1 | kPower_BodyBiasVdd1Sram);
 #if (DEMO_POWER_HIFI4_USED != 0U)
-    POWER_EnableSleepNBB(kPower_BodyBiasVdd2Sram | kPower_BodyBiasVdd2);
+    POWER_EnableSleepNBB(kPower_BodyBiasVdd2Sram);
+    POWER_EnableSleepAFBB(kPower_BodyBiasVdd2);
     POWER_EnableSleepRBB(kPower_BodyBiasVddn | kPower_BodyBiasVdd1 | kPower_BodyBiasVdd1Sram);
 #else
     POWER_EnableSleepRBB(kPower_BodyBiasVddn | kPower_BodyBiasVdd2Sram | kPower_BodyBiasVdd2 | kPower_BodyBiasVdd1 |
@@ -819,7 +820,12 @@ static inline uint32_t BOARD_PrepareForDS(void)
     CLOCK_DisableClock(kCLOCK_Sema420);
 #endif
     CLOCK_DisableClock(kCLOCK_LPI2c15);
-
+#if (DEMO_POWER_HIFI4_USED == 0U) || (DEMO_POWER_HIFI_PRINT_ENABLE == 0U)
+    DEMO_DeinitDebugConsole();
+    CLOCK_AttachClk(kNONE_to_FCCLK0);
+#endif
+    BOARD_DisableClocks();
+    CLOCK_EnableFroClkOutput(FRO0, kCLOCK_FroDiv1OutEn | kCLOCK_FroDiv6OutEn);
     return mainDiv;
 }
 
@@ -849,6 +855,10 @@ static inline void BOARD_RestoreAfterDS(uint32_t mainDiv)
 #if DEMO_POWER_USE_PLL
     /* Restore Pll before enter deep sleep mode */
     BOARD_RestorePll();
+#endif
+    BOARD_RestoreClocks();
+#if (DEMO_POWER_HIFI4_USED == 0U) || (DEMO_POWER_HIFI_PRINT_ENABLE == 0U)
+    DEMO_InitDebugConsole();
 #endif
 }
 
