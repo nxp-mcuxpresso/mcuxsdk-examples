@@ -35,6 +35,8 @@ int main(void)
     /* Init board hardware.*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\n");
     PRINTF("**************************************************************\r\n");
     PRINTF("* Please make sure the uboot is started now.                 *\r\n");

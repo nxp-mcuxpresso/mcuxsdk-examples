@@ -50,6 +50,8 @@ int main(void)
 
     /* Init the boards */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("IR Blaster example\r\n");
     PRINTF("Sending 10 RC-5 packets...\r\n");
 

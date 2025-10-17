@@ -391,6 +391,8 @@ void DPU_IRQHandler(void)
 int main(void)
 {
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("DPU Signature Example:\r\n");
 
     APP_InitFrameBuffer((uint32_t)s_sigWin0FrameBuffer, APP_SIG_WIN0_HEIGHT, APP_SIG_WIN0_WIDTH, APP_SIG_WIN0_COLOR);

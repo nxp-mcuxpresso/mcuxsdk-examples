@@ -127,6 +127,8 @@ int main(void)
     uint8_t index = 0U;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     EnableIRQ(DEMO_PDB_IRQ_ID);
     EnableIRQ(DEMO_DAC32_IRQ_ID);
 

@@ -110,6 +110,8 @@ int main(void)
     /* Hardware initialize. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* memset the RAM */
     memset(codeDestAddr, 0, (EXAMPLE_DDR_CODE_RAM_END_ADDRESS - EXAMPLE_DDR_CODE_RAM_ADDRESS));
 

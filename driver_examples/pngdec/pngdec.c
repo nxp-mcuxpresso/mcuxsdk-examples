@@ -184,6 +184,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("PNG decoder demo start:\r\n");
 
     APP_InitDisplay();

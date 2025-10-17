@@ -50,6 +50,8 @@ int main(void)
     adc_channel_config_t adcChannelConfigStruct;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     EnableIRQ(DEMO_ADC_IRQn);
 
     PRINTF("\r\nADC interrupt Example.\r\n");

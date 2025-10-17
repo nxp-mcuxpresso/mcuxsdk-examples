@@ -55,6 +55,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("EDMA ping pong transfer example begin.\r\n\r\n");
     PRINTF("Destination Buffer:\r\n");
     for (i = 0; i < BUFFER_LENGTH; i++)

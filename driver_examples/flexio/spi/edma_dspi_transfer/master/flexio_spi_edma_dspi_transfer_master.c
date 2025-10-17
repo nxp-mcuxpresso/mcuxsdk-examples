@@ -82,6 +82,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("FLEXIO Master edma - DSPI Slave interrupt example start.\r\n");
     PRINTF("This example use one flexio spi as master and one dspi instance as slave on one board.\r\n");
     PRINTF("Master uses edma and slave uses interrupt way.\r\n");

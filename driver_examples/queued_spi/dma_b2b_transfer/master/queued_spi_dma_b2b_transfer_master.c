@@ -70,6 +70,8 @@ int main(void)
     dma_config_t dma_config;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nQUEUEDSPI board to board dma example -- Master transfer.\r\n");
 
     QSPI_MasterGetDefaultConfig(&sMasterConfig, EXAMPLE_QSPI_CLK_FREQ);

@@ -96,6 +96,8 @@ int main(void)
 
     /* Hardware Initialization */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Data/address bus check. */
     if (SDRAM_DataBusCheck(sdram) != kStatus_Success)
     {

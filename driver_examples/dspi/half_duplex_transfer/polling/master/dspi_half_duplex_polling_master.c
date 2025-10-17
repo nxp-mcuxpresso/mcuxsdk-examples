@@ -40,6 +40,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("This is DSPI half-duplex polling transfer example!\r\n");
     PRINTF("SPI master board will transmit data to slave board first, then receive data from slave board.\r\n");
     PRINTF("To make sure the transfer work successfully, please start the slave board first!\r\n");

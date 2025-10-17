@@ -108,6 +108,8 @@ int main(void)
     pdb_adc_pretrigger_config_t pdbAdcPreTriggerConfigStruct;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     EnableIRQ(DEMO_PDB_IRQ_ID);
     EnableIRQ(DEMO_ADC_IRQ_ID);
 

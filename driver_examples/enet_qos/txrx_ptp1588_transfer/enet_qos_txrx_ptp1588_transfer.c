@@ -163,6 +163,8 @@ int main(void)
     /* Hardware Initialization. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     for (index = 0; index < ENET_QOS_RXBD_NUM; index++)
     {
         /* This is for rx buffers, static alloc and dynamic alloc both ok. use as your wish.rx buffer

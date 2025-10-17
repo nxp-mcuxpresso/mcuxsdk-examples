@@ -48,6 +48,8 @@ int main(void)
     dspi_slave_config_t slaveConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nThis is slave example for DSPI half-duplex interrupt transfer.\r\n");
     PRINTF("Slave is working....\r\n");
 

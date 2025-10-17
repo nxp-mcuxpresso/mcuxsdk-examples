@@ -44,6 +44,8 @@ int main(void)
     uint32_t srcFreq = 0;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\n\rMaster Start...\n\r");
     /*
      * userConfig.enableLoopback = false;

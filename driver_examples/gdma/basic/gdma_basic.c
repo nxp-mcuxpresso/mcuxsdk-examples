@@ -50,6 +50,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("GDMA basic example start\r\n");
 
     GDMA_Init(APP_GDMA);

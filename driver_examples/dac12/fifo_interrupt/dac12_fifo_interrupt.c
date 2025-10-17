@@ -43,6 +43,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     EnableIRQ(DEMO_DAC12_IRQ_ID); /* Enable interrupt in NVIC. */
 
     /* Configure the DAC. */

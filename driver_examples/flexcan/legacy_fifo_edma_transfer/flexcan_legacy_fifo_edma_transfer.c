@@ -103,6 +103,8 @@ int main(void)
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     LOG_INFO("FlexCAN Legacy Rx FIFO edma example.\r\n");
 #if (defined(ENABLE_LOOPBACK) && ENABLE_LOOPBACK)
     LOG_INFO("Loopback mode, Message buffer %d used for Tx, Legacy Rx FIFO used for Rx.\r\n", TX_MESSAGE_BUFFER_NUM);

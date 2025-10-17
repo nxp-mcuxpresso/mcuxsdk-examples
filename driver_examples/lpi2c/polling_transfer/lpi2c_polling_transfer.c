@@ -77,6 +77,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nLPI2C example -- MasterPolling_SlaveInterrupt.\r\n");
 
     /* Set up i2c slave first*/

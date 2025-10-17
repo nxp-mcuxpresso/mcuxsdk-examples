@@ -59,6 +59,8 @@ int main(void)
     edma_config_t userConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print source buffer */
     PRINTF("\r\nEDMA scatter gather transfer example begin.\r\n\r\n");
     PRINTF("\r\nDestination Buffer:\r\n");

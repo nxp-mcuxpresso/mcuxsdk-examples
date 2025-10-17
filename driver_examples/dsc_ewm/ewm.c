@@ -84,6 +84,8 @@ int main(void)
 
     /* Init hardware*/
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     gpio_configure();
 
     /* EWM peripheral driver test */

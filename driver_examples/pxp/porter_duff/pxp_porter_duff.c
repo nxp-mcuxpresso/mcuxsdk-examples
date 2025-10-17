@@ -82,6 +82,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nPXP Porter Duff example start...\r\n");
 
     APP_InitInputBuffer();

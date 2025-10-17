@@ -37,6 +37,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\n***ECSPI Loopback Demo***\r\n");
     PRINTF("\r\nThis demo is a loopback transfer test for ECSPI.\r\n");
     PRINTF("The ECSPI will connect the transmitter and receiver sections internally.\r\n");

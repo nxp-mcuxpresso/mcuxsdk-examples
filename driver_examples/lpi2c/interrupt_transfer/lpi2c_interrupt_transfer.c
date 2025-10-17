@@ -80,6 +80,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nLPI2C example -- MasterInterrupt_SlaveInterrupt.\r\n");
 
 /*  Set i2c slave interrupt priority higher. */

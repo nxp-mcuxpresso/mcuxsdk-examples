@@ -84,6 +84,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("VIRT_WRAPPER SIUL2 example started\r\n");
 
     APP_InitVirtWrapper(true);

@@ -48,6 +48,8 @@ int main()
     uint32_t FfrPageSize      = 0;
     /* Init board hardware. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Disable systick handler */
     SCB->SHCSR |= SCB_SHCSR_SYSTICKACT_Msk;
     /* Print basic information for FFR Driver API.*/

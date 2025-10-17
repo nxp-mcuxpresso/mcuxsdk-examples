@@ -82,6 +82,8 @@ int main(void)
     frac32_t result;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nMMAU example : start\n");
 
     result = sine((frac32_t)0x7FFFFFFF);

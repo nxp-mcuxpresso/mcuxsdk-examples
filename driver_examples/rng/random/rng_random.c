@@ -47,6 +47,8 @@ int main(void)
     /* Init hardware*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("RNG Peripheral Driver Example\r\n\r\n");
 
     while (1)

@@ -116,6 +116,8 @@ int main(void)
 
     /* Init the boards */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("SPIFI flash dma example started \r\n");
 
     DMA_Init(EXAMPLE_DMA);

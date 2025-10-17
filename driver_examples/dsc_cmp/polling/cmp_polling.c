@@ -36,6 +36,8 @@ int main(void)
     /* Initialize hardware */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nCMP polling Example.\r\n");
     PRINTF("\r\nPlease connect CMPA_IN0 to VDD firstly and then GND\r\n");
 

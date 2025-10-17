@@ -47,6 +47,8 @@ int main(void)
     float voltage     = 0.0f;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     DAC_Configuration();
     ADC_Configuration();
     OPAMP_Configuration();

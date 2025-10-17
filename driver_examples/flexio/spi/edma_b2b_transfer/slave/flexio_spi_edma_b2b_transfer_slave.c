@@ -58,6 +58,8 @@ int main(void)
     edma_config_t config;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nFlexIO SPI edma example\r\n");
     PRINTF("Slave is working...\r\n");
 

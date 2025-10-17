@@ -60,6 +60,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /*Init DMA for example*/
     memset(&dmaConfig, 0U, sizeof(dmaConfig));
     DMA_Init(EXAMPLE_I2C_DMA_BASEADDR, &dmaConfig);

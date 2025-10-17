@@ -228,6 +228,8 @@ void EDMA_Minor_Loop_Link(void)
 int main(void)
 {
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print source buffer */
     PRINTF("EDMA channel link example.\r\n\r\n");
 

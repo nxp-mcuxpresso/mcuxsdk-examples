@@ -480,6 +480,8 @@ int main(void)
     hostif_config_t hifSpiConfig = {0};
     /* Init hardware. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("HIF SPI Slave Started!\r\n");
 
     /* Initialize the SPI HAL */

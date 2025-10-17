@@ -117,6 +117,8 @@ int main(void)
     uint8_t txIndex = 0, rxIndex = 0;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("FLEXIO_I2S interrupt example started!\n\r");
 
     /* Set flexio i2s pin, shifter and timer */

@@ -38,6 +38,8 @@ int main(void)
     uint32_t dacValue;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     POWER_DisablePD(kPDRUNCFG_PD_DAC);
 
     PRINTF("\r\nDAC basic example.\r\n");

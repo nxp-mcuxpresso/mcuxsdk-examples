@@ -482,6 +482,8 @@ int main(void)
     hostif_config_t hifI2cConfig = {0};
     /* Init hardware. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("HIF I2C Slave Started!\r\n");
 
     /* Initialize the I2C HAL */

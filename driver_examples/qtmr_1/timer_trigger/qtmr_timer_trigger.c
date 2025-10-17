@@ -77,6 +77,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\n*********QUADTIMER EXAMPLE START*********");
 
     XBAR_Init(kXBAR_DSC1);

@@ -83,6 +83,8 @@ int main()
     /* Init hardware */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Clean up API context structure*/
     memset(&apiCoreCtx, 0, sizeof(apiCoreCtx));
 

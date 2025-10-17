@@ -53,6 +53,8 @@ int main(void)
     spi_slave_config_t slaveConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\n\rThis is slave example for SPI half-duplex DMA transfer.");
     PRINTF("\n\rSlave is working....\r\n");
 

@@ -163,6 +163,8 @@ int main(void)
     /* Hardware initialize. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     if (EXAMPLE_MMDC->MDCTL & MMDC_MDCTL_SDE_0_MASK)
     {
         PRINTF("\r\n MMDC already initialized. \r\n");

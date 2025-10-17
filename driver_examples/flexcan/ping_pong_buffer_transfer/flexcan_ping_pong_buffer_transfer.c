@@ -277,6 +277,8 @@ int main(void)
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     assert((RX_QUEUE_BUFFER_END_1 < 64U) && (RX_QUEUE_BUFFER_END_2 < 64U));
 
     LOG_INFO("********* FLEXCAN PingPong Buffer Example *********\r\n");

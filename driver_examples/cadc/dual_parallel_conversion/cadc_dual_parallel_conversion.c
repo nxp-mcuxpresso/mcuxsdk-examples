@@ -38,6 +38,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("CADC dual parallel conversion example.\r\n");
 
     /* Initialize the CADC common digital control.

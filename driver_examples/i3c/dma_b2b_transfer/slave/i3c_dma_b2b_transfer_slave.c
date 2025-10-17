@@ -67,6 +67,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nI3C board2board DMA example -- Slave transfer.\r\n");
 
     I3C_SlaveGetDefaultConfig(&slaveConfig);

@@ -73,6 +73,8 @@ int main(void)
     /* Initialize the boards */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("This is SPI interrupt functional master example.\n\r");
     PRINTF("\n\rMaster start to send data to slave, please make sure the slave has been started!\n\r");
 

@@ -46,6 +46,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("TSC DebugMode Example Start!\r\n");
 
     TSC_GetDefaultConfig(&k_tscConfig);
@@ -134,7 +136,7 @@ int main(void)
         {
             __ASM("NOP");
         }
-        /* If no touch has been detected, then previous measured coordinates¡¯ value is invalid. */
+        /* If no touch has been detected, then previous measured coordinates value is invalid. */
         if (kTSC_DetectFourWireFlag == (kTSC_DetectFourWireFlag & TSC_GetStatusFlags(DEMO_TSC_BASE)))
         {
             TSC_DebugEnableDetection(DEMO_TSC_BASE, kTSC_Detection4WireMode, false);

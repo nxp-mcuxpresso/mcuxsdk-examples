@@ -116,6 +116,8 @@ int main()
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     FMC_GetDefaultConfig(&config);
     config.waitStates = 0x0a;
     FMC_Init(FMC, &config);

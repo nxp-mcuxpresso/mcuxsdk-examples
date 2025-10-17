@@ -34,6 +34,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("TMU temperature polling example.\r\n");
 
     /* Get default configuration. */

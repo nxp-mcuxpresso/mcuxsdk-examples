@@ -44,6 +44,8 @@ int main(void)
     uint32_t data_size = sizeof(s_nor_program_buffer);
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     xspi_nor_flash_init(EXAMPLE_XSPI);
 
     PRINTF("\r\nXSPI example started!\r\n");

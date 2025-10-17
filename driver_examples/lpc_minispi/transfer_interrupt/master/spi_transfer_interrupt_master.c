@@ -44,6 +44,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("This is SPI interrupt transfer master example.\n\r");
     PRINTF("\n\rMaster start to send data to slave, please make sure the slave has been started!\n\r");
 

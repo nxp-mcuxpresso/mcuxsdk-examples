@@ -280,6 +280,8 @@ int main(void)
     /* Hardware Initialization. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     for (uint8_t ringId = 0; ringId < ENET_QOS_RXQUEUE_USE; ringId++)
     {
         for (uint8_t index = 0; index < ENET_QOS_RXBD_NUM; index++)

@@ -321,6 +321,8 @@ int main(void)
     /* Init hardware */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Ungate clock to AES engine and reset it */
     CLOCK_EnableClock(kCLOCK_Aes);
     RESET_PeripheralReset(kAES_RST_SHIFT_RSTn);

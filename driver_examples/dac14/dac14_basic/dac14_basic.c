@@ -34,6 +34,8 @@ int main(void)
     dac14_config_t dac14ConfigStruct;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nDAC14 Basic Example.\r\n");
 
     /* Configure the DAC14. */

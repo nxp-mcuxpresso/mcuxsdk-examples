@@ -49,6 +49,8 @@ int main(void)
     adc16_channel_config_t adc16ChannelConfigStruct;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     EnableIRQ(DEMO_ADC16_IRQn);
 
     PRINTF("\r\nADC16 interrupt Example.\r\n");

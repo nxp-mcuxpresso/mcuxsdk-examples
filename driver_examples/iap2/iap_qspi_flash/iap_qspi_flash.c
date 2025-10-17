@@ -56,6 +56,8 @@ int main()
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Initialize data buffer */
     for (i = 0; i < BUFFER_LEN; i++)
     {

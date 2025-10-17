@@ -85,6 +85,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("SDIO card simple example.\r\n");
 
     card->host.base           = SD_HOST_BASEADDR;

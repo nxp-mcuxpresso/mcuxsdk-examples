@@ -43,6 +43,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("ECSPI board to board polling example.\r\n");
     PRINTF("This example use one board as master and another as slave.\r\n");
     PRINTF("Master uses polling way and slave uses interrupt way. \r\n");

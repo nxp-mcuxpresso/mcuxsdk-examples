@@ -85,6 +85,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nI2C board2board EDMA example -- Slave transfer.\r\n\r\n");
 
     /*1.Set up i2c slave first*/

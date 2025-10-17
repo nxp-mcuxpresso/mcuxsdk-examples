@@ -757,6 +757,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
 #if defined(TJA_WAKEUP) && TJA_WAKEUP
     /* Wakeup TJA transceiver */
     GPIO_PinInit(DEMO_SLPN_GPIO, DEMO_SLPN_PIN, &slpn_config);

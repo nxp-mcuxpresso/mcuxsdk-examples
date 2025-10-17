@@ -97,6 +97,8 @@ int main(void)
     /* Init the boards */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("RNG Examples \n\r");
 
     /* Update once example */

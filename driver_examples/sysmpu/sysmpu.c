@@ -163,6 +163,8 @@ int main(void)
     /* Hardware Initialization. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
 #if defined(KV58F24_SERIES) || defined(KV56F24_SERIES)
     SCB_DisableDCache();
 #else

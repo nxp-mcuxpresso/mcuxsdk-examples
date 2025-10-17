@@ -82,6 +82,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Initialize the USART. */
     /*
      * config.baudRate_Bps = 115200U;

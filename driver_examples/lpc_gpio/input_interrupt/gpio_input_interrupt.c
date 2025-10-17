@@ -57,6 +57,8 @@ int main(void)
 
     /* hardware initialiize, include IOMUX, Uart debug initialize */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("GPIO Driver example.\r\n");
 
     /* Init input switch GPIO. */

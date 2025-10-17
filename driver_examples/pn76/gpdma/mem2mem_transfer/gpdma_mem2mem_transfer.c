@@ -68,6 +68,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Initializes data. */
     memset(s_destBuf, 0, sizeof(s_destBuf));
     for (i = 0U; i < BUFFER_LENGTH; i++)

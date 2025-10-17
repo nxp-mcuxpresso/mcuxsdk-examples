@@ -68,6 +68,8 @@ int main(void)
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("CADC continuous edma conversion.\r\n");
 
     EDMA_Configuration();   /* Initialize EDMA. */

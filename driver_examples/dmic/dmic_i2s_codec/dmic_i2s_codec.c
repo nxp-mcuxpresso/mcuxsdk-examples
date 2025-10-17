@@ -57,6 +57,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("Configure WM8904 codec\r\n");
 
     if (CODEC_Init(&codecHandle, &boardCodecConfig) != kStatus_Success)

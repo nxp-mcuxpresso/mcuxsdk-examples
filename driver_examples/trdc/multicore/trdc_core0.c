@@ -73,6 +73,8 @@ int main(void)
     /* Init board hardware.*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print the initial banner. */
     PRINTF("\r\nTRDC example starts on primary core\r\n");
     PRINTF("In primary core example we use 1 domain for secure access only.\r\n");

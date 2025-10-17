@@ -190,6 +190,8 @@ int main(void)
     /* Board pin, clock */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Init plu module */
     PLU_Init(DEMO_PLU_BASE);
 

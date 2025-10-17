@@ -187,6 +187,8 @@ void AppInit(void)
 #endif
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Configure the optimized active voltages, set up the BODs */
     // POWER_Init();
 

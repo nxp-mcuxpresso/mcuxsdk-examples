@@ -57,6 +57,8 @@ int main(void)
     dac_config_t config;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     POWER_DisablePD(kPDRUNCFG_PD_DAC);
     EnableIRQ(DAC_IRQn); /* Enable interrupt in NVIC. */
 

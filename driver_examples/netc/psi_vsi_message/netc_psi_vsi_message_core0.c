@@ -136,6 +136,8 @@ int main(void)
     /* Init board hardware.*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print the initial banner from Primary core */
     (void)PRINTF("\r\nNETC PSI VSI transfer from the Primary Core!\r\n\n");
 

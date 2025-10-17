@@ -104,6 +104,8 @@ int main(void)
     {
         /* HW init */
         BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
         PRINTF("ELEMU Peripheral Driver Example\r\n");
         /* Lock MU ownership to current thread */
         if (ELEMU_mu_get_ownership(ELEMUA) != kStatus_Success)

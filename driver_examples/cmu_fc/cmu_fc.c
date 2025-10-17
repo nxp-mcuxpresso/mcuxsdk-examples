@@ -37,6 +37,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
 #ifdef IS_DESTRUCTIVE_RESET
     destructiveResetEnable = true;
 

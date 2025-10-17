@@ -58,6 +58,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LPSPI interrupt board to board (b2b) transfer slave example.\r\n");
 
     uint32_t i;

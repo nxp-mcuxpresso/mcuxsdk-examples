@@ -204,6 +204,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("DCIF ARGB8888 example start...\r\n");
 
     DEMO_DCIF_Init();

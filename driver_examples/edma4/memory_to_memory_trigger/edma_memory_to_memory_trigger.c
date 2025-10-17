@@ -79,6 +79,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     XBAR_Init(kXBAR_DSC1);
     XBAR_SetSignalsConnection(kXBAR1_InputTpm6LptpmChTrigger0, kXBAR1_OutputEdma4IpdReq76);
     xbarConfig.activeEdge   = kXBAR_EdgeRising;

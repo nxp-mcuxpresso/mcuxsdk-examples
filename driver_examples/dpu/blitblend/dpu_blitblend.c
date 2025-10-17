@@ -686,6 +686,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("DPU BlitBlend Example:\r\n");
 
     APP_InitFrameBuffer((uint32_t)s_redWinFrameBuffer, APP_WIN_HEIGHT, APP_WIN_WIDTH, sizeof(s_redWinFrameBuffer[0]),

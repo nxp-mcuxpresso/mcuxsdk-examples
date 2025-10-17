@@ -59,6 +59,8 @@ int main(void)
     /* Initialize board setting. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print project information. */
     PRINTF("This is SPI DMA transfer master example.\r\n");
     PRINTF("This example will communicate with another slave SPI on the other board.\r\n");

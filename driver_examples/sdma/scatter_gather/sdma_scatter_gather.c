@@ -57,6 +57,8 @@ int main(void)
     sdma_config_t userConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print source buffer */
     PRINTF("\r\nsdma scatter gather transfer example begin.\r\n\r\n");
     PRINTF("Destination Buffer:\r\n");

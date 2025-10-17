@@ -162,6 +162,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LCDIF RGB example start...\r\n");
 
     APP_ELCDIF_Init();

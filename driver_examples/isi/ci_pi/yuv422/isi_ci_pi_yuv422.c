@@ -84,6 +84,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     SOC_SetIsiPermission((uint32_t)s_frameBuffer, (((uint32_t)(s_frameBuffer)) + sizeof(s_frameBuffer) - 1U));
 
     /* The camera input pixel format is YUV422, the ISI could convert to RGB565. */

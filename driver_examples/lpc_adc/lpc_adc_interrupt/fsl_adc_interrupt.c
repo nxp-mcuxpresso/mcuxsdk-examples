@@ -36,6 +36,8 @@ int main(void)
 {
     /* Initialize board hardware. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("ADC interrupt example.\r\n");
 
     /* Configure the ADC as basic polling mode. */

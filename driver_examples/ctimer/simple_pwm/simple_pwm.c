@@ -57,6 +57,8 @@ int main(void)
     /* Init hardware*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* CTimer0 counter uses the AHB clock, some CTimer1 modules use the Aysnc clock */
     srcClock_Hz = CTIMER_CLK_FREQ;
 

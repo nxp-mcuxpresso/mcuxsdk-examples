@@ -123,6 +123,8 @@ int main(void)
     float actualVoltage = 0.0F;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\n vref lpadc example\r\n");
 
     /* Configure LPADC */

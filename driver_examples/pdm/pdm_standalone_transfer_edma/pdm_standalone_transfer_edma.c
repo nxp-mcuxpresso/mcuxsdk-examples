@@ -142,6 +142,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("PDM edma multi channel standalone transfer example started!\n\r");
 
     memset(s_buffer, 0, sizeof(s_buffer));

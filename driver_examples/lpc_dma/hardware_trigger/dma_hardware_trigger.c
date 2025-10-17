@@ -51,6 +51,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("DMA hardware trigger example begin.\r\n\r\n");
     PRINTF("Destination Buffer:\r\n");
     for (i = 0; i < BUFF_LENGTH; i++)

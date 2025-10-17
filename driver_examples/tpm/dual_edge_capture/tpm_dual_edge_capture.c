@@ -86,6 +86,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal */
     PRINTF("\r\nTPM dual-edge capture example\r\n");
     PRINTF("\r\nOnce the input signal is received the input capture values are printed");

@@ -56,6 +56,8 @@ int main(void)
     /* Init the boards */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("SPI one board 3-wire interrupt transfer example started!\r\n");
     PRINTF("This example will use 3 wires for transmission.\r\n");
     PRINTF("For SPI master: MOSI pin is an I/O pin for master to transmit data or receive data.\r\n");

@@ -102,6 +102,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("SAI EDMA ping pong buffer example started!\n\r");
 
     memset(s_buffer, 0, BUFFER_NUM * BUFFER_SIZE);

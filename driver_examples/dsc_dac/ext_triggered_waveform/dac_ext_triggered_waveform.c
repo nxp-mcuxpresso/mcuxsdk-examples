@@ -31,6 +31,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* In this demo, an external clock signal with 1kHz is necessary, which can refresh the DAC buffer register
      * every step. In this sawtooth waveform, the MaxValue is 4000, MinValue is 0, and StepSize is 40, that means
      * every cycle of the waveform should refresh 100 times, thus we can measure a 10 Hz sawtooth waveform on DAC

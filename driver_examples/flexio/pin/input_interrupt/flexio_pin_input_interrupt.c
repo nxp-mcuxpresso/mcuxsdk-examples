@@ -57,6 +57,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal. */
     PRINTF("\r\n FLEXIO PIN Driver example\r\n");
     PRINTF("\r\n The output pin is taking turns to occurr rising and falling edge.\r\n");

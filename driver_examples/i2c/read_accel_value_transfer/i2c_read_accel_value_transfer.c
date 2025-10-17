@@ -279,6 +279,8 @@ int main(void)
     bool isThereAccel = false;
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nI2C example -- Read Accelerometer Value\r\n");
 
     I2C_MasterTransferCreateHandle(BOARD_ACCEL_I2C_BASEADDR, &g_m_handle, i2c_master_callback, NULL);

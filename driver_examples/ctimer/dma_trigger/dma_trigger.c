@@ -134,6 +134,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print destination buffer */
     PRINTF("\r\nCTimer trigger DMA memory to memory transfer example begin.\r\n");
     PRINTF("Destination Buffer:\r\n");

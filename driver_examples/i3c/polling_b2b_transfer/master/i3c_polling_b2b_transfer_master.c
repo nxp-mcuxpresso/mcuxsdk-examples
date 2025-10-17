@@ -49,6 +49,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nI3C board2board polling example -- Master transfer.\r\n");
 
     /* I3C mode: Set up i3c master to work in I3C mode, send data to slave*/

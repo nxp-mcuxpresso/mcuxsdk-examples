@@ -61,6 +61,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\n KPP Driver Example Start.\r\n");
 
     kppConfig.activeColumn = kppConfig.activeRow = EXAMPLE_KPP_ACTIVE_COLUMROWS;

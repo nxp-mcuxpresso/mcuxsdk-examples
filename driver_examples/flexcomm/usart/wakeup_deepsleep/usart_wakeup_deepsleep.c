@@ -88,6 +88,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Ungate the RTC clock and enables the RTC oscillator */
     RTC_Init(RTC);
 

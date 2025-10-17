@@ -92,6 +92,8 @@ int main(void)
     /* Initialize hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     XBAR_Init(kXBAR_DSC1);
     XBAR_SetSignalsConnection(kXBAR1_InputTpm6LptpmChTrigger0, kXBAR1_OutputAnamixGlueTrgmuxStartTrg);
     PRINTF("\r\nIPSYNC trigger signal connected! \r\n");

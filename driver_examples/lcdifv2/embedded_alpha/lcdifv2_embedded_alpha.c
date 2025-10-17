@@ -273,6 +273,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LCDIF v2 embedded_alpha example start...\r\n");
 
     /* With this function, the screen shows static color blocks. */

@@ -69,6 +69,8 @@ int main(void)
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     LOG_INFO("******* FLEXCAN Remote Request EXAMPLE *******\r\n");
     LOG_INFO("    Message format: Standard (11 bit id)\r\n");
     LOG_INFO("    Message buffer %d used for Request.\r\n", REQUEST_MB_NUM);

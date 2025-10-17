@@ -173,6 +173,8 @@ void edma_minor_loop_interleave(void)
 int main(void)
 {
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print source buffer */
     PRINTF("EDMA interleave transfer example.\r\n");
 

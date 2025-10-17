@@ -36,6 +36,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\n\rSFA example -- Measure the frequency of clock under test in polling mode\r\n");
     SFA_Init(DEMO_SFA_BASEADDR);
 

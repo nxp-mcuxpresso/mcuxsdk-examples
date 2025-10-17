@@ -104,6 +104,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("PDM sdma example started!\n\r");
 
     memset(rxBuff, 0, sizeof(rxBuff));

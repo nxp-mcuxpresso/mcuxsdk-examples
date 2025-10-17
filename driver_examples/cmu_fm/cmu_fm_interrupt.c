@@ -52,6 +52,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("CMU_FM interrupt example.\r\n");
     PRINTF("Clock frequency to be measured: %d Hz.\r\n", CMU_FM_MONITORED_CLK_FREQ);
     /*

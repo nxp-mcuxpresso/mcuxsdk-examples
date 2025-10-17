@@ -46,6 +46,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal */
     PRINTF("\r\nTPM example for output compare\r\n");
     PRINTF("\r\nYou will see the output signal toggle");

@@ -96,6 +96,8 @@ int main()
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("Enter boot image...\n");
     user_app_boot_invoke_option_t arg = {.option = {.B = {
                                                         .tag            = BOOT_ARG_TAG,

@@ -56,6 +56,8 @@ int main(void)
 {
     uint32_t i;
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF(
         "LPUART 9-bit mode example begins\r\nLPUART is configured with 9bit\r\n");
 

@@ -43,6 +43,8 @@ int main(void)
     bod_config_t config;
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nBOD example.\r\n");
 
     /* Check Reset source(Brown-Down reset source will be set when voltage is less than the user-defined) */

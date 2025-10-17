@@ -48,6 +48,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     EnableIRQ(DEMO_PDB_IRQ_ID);
     PRINTF("\r\nPDB Delay Interrupt Example.\r\n");
 

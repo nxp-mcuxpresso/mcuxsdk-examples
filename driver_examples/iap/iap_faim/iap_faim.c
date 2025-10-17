@@ -42,6 +42,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nIAP FAIM example\r\n");
 
     memset(s_ReadBuf, 0, FAIM_PAGE_SIZE);

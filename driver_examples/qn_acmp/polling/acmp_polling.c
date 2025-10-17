@@ -37,6 +37,8 @@ int main(void)
     uint8_t status = 0;
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /*LED init*/
     CLOCK_EnableClock(kCLOCK_Gpio);
     LED_RED_INIT(LOGIC_LED_OFF);

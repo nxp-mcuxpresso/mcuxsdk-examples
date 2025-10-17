@@ -108,6 +108,8 @@ int main(void)
 
     /* Init the boards */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("SPIFI flash polling example started \r\n");
     /* Set SPIFI clock source */
     CLOCK_AttachClk(kFRO_HF_to_SPIFI_CLK);

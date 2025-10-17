@@ -520,6 +520,8 @@ int main(void)
     hostif_config_t hifI3cConfig = {0};
     /* Init hardware. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("HIF I3C Slave Started!\r\n");
 
     /* Initialize the I3C HAL */

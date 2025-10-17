@@ -51,6 +51,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print information to the terminal. */
     PRINTF("USART synchronous transfer example.\r\n");
     PRINTF("Slave is working...\r\n");

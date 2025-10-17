@@ -83,6 +83,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /*Init EDMA for example*/
     DMAMUX_Init(EXAMPLE_I2C_DMAMUX_BASEADDR);
     EDMA_GetDefaultConfig(&config);

@@ -46,6 +46,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal. */
     PRINTF("\r\n GPIO Driver example\r\n");
     PRINTF("\r\n The LED is taking turns to shine.\r\n");

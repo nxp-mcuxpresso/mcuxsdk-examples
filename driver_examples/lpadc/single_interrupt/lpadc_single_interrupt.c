@@ -54,6 +54,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LPADC Single Interrupt Example\r\n");
 
     LPADC_GetDefaultConfig(&mLpadcConfigStruct);

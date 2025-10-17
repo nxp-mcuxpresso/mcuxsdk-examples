@@ -90,6 +90,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     APP_CopyCore1Image();
 
     PRINTF("SEMA4 dual core example start\r\n");

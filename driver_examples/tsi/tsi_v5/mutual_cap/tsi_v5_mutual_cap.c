@@ -62,6 +62,8 @@ int main(void)
 
     /* Initialize standard SDK demo application pins */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Init tsi Leds in Demo app */
     LED1_INIT();
     LED2_INIT();

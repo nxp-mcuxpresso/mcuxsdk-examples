@@ -64,6 +64,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     XBAR_Init(kXBAR_DSC1);
     BLK_CTRL_WAKEUPMIX->LPIT_TRIG_SEL |= BLK_CTRL_WAKEUPMIX_LPIT_TRIG_SEL_LPIT1_TRIG0_INPUT_SEL(1);
     XBAR_SetSignalsConnection(kXBAR1_InputLpit1LpitTrigOut0, kXBAR1_OutputLpuart8LpuartTrgInput);

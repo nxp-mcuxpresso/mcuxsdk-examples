@@ -71,6 +71,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("SPI dma example start.\r\n");
     PRINTF("This example use one spi instance as master and another as slave on one board.\r\n");
     PRINTF("Please make sure you make the correct line connection. Basically, the connection is: \r\n");

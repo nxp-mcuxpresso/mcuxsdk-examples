@@ -135,6 +135,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LCDIF LUT example start...\r\n");
 
     /* Clear the frame buffer. */

@@ -120,6 +120,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("FLEXSPI HyperRAM example started!\r\n");
 
     /* Copy LUT information from flash region into RAM region, because LUT update maybe corrupt read sequence(LUT[0])

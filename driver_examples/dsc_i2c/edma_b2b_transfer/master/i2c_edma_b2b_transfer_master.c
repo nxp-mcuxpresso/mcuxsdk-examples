@@ -63,6 +63,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Set channel for QSCI */
     DMAMUX_ConnectChannelToTriggerSource(EXAMPLE_I2C_DMAMUX_BASEADDR, EXAMPLE_I2C_DMAMUX_CHANNEL,
                                          EXAMPLE_DMA_REQUEST_SRC);

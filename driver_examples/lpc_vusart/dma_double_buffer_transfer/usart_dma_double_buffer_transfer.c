@@ -83,6 +83,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* DeInit USART, because debug console may has initialized the DEMO_USART. */
     USART_Deinit(DEMO_USART);
 

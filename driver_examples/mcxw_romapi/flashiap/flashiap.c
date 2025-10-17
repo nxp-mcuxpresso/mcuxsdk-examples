@@ -438,6 +438,8 @@ int main()
 
     /* Init board hardware. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print basic information for Flash Driver API Demo.*/
     PRINTF(" \t----- Flash driver IAP Demo Application -----\r\n");
     /* 1.Initialize flash driver */

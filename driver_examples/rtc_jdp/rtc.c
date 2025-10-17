@@ -67,6 +67,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("RTC example starts.\r\n");
     PRINTF("It prints callback function running for the RTC or API interrupt.\r\n");
 

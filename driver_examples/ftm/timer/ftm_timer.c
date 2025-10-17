@@ -42,6 +42,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal */
     PRINTF("\r\nFTM example to simulate a timer\r\n");
     PRINTF("\r\nYou will see a \"-\" or \"|\" in terminal every 1 second:\r\n");

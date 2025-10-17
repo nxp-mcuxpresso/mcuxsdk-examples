@@ -111,6 +111,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nDCIC example start...\r\n");
 
     APP_MakeCRC32Table(s_crc32Table, DCIC_CRC32_POLYNOMIAL);

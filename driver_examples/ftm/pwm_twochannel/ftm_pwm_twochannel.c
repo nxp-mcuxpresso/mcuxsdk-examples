@@ -57,6 +57,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal */
     PRINTF("\r\nFTM example to output PWM on 2 channels\r\n");
     PRINTF("\r\nYou will see a change in LED brightness if an LED is connected to the FTM pin");

@@ -57,6 +57,8 @@ int main(void)
     wdt_config_t config;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     CLOCK_AttachClk(k32K_to_WDT_CLK);
     PRINTF("\r\nWatchdog example.\r\n");
 

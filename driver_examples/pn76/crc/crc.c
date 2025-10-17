@@ -96,6 +96,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nTest same string base on different CRC protocols.\r\n");
     PRINTF(" test string: %s\r\n", testData);
 

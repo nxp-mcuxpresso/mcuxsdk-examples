@@ -64,6 +64,8 @@ int main(void)
     uint32_t mask;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     EnableIRQ(DEMO_DAC32_IRQ_ID);
 
     PRINTF("\r\nDAC32 buffer interrupt Example.\r\n");

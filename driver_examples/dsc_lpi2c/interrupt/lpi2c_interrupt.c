@@ -157,6 +157,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nLPI2C example -- MasterFunctionalInterrupt_SlaveFunctionalInterrupt.\r\n");
 
     /* 1.Set up lpi2c slave first */

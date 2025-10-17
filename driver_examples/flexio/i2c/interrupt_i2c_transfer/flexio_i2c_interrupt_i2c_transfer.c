@@ -77,6 +77,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nFlexIO I2C interrupt - I2C interrupt\r\n");
 
     /* Set i2c slave interrupt priority higher. */

@@ -123,6 +123,8 @@ int main(void)
     /* Hardware Initialization. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nENET example start.\r\n");
 
     for (index = 0; index < ENET_RXBD_NUM; index++)

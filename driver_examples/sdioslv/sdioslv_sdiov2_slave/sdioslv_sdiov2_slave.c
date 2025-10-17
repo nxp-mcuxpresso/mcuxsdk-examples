@@ -60,6 +60,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("SDIOSLV enumerate sdio card example.\r\n");
 
     /* sdio 2.0 slave initialization */

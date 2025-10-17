@@ -39,6 +39,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("DryIce Digital Example:\r\n");
     PRINTF("Disconnect jumper to generate tamper event.\r\n");
 

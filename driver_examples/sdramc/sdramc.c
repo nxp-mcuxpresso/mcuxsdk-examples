@@ -47,6 +47,8 @@ int main(void)
 
     /* Hardware initialize. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* SDRAM initialize. */
     clockSrc = BUS_CLK_FREQ;
     PRINTF("\r\n SDRAM Example Start!\r\n");

@@ -139,6 +139,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("dspi_functional_interrupt start.\r\n");
     PRINTF("This example use one dspi instance as master and another as slave on one board.\r\n");
     PRINTF("Master and slave are both use interrupt way.\r\n");

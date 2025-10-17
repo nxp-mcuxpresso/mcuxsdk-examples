@@ -214,6 +214,8 @@ int main(void)
     /* Init board hardware */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     XBAR_Init(kXBAR_DSC1);
     BLK_CTRL_WAKEUPMIX->XBAR_DIR_CTRL1 |= BLK_CTRL_WAKEUPMIX_XBAR_DIR_CTRL1_IOMUXC_XBAR_DIR_SEL_8(1);
     XBAR_SetSignalsConnection(kXBAR1_InputFlexio1FlexioTriggerOut0, kXBAR1_OutputIomuxXbarOut08);

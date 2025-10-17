@@ -54,6 +54,8 @@ int main(void)
     wdog_config_t config;
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\n******** System Start ********\r\n");
     PRINTF("System reset by:");
 

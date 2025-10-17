@@ -81,6 +81,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\n FLEXSPI NOR example started!\r\n");
     /* Clean up FLEXSPI NOR flash driver Structure */
     memset(&norConfig, 0U, sizeof(flexspi_nor_config_t));

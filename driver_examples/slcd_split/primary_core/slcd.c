@@ -192,6 +192,8 @@ int main(void)
     /* Hardware initialize. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nSLCD Example Starts from primary core.\r\n");
 
     /* SLCD get default configure. */

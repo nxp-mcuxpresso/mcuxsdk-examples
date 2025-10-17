@@ -107,6 +107,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("POWERQUAD CMSIS DSP example started\r\n");
 
     PQ_Init(DEMO_POWERQUAD);

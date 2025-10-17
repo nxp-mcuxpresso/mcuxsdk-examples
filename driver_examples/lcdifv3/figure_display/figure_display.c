@@ -115,6 +115,8 @@ int main(void)
     uint32_t frameBufferIndex = 0;
     uint8_t i                 = 0;
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("LCDIFV3 FIGURE DISPLAY example start...\r\n");
 
     for (i = 0; i < ARRAY_SIZE(s_pictureBitmapAddr); i++)

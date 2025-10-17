@@ -37,6 +37,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("INTMUX example started.\r\n");
 
     /* 1. Init INTMUX, configure the IRQ source routed to system. */

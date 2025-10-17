@@ -57,6 +57,8 @@ int main(void)
 {
     uint32_t i;
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF(
         "UART 9-bit mode example begins\r\nUART is configured with address, only data sent to itself after matched "
         "address can be received\r\n");

@@ -42,6 +42,8 @@ int main(void)
     /* Init hardware*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
 #if defined(BOARD_HAS_NO_CTIMER_OUTPUT_PIN_CONNECTED_TO_LED)
     LED_RED1_INIT(LOGIC_LED_OFF);
 #endif

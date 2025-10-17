@@ -55,6 +55,8 @@ int main(void)
 
     /* Initialize hardware */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     EnableIRQWithPriority(DEMO_CMP_IRQ_ID, DMEO_CMP_IRQ_PRIORITY);
 
     PRINTF("\r\nCMP interrupt Example.\r\n");

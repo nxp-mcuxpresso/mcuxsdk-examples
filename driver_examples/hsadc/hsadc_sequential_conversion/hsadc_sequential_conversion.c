@@ -38,6 +38,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("HSADC sequential conversion example.\r\n");
 
     /* Initialize the HSADC common digital control.

@@ -113,6 +113,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nCMSIS DSP benchmark matrix test start.\r\n");
 
     PQ_Init(POWERQUAD);

@@ -71,6 +71,8 @@ int main(void)
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("ADC16 CONTINUOUS DMA DEMO\r\n");
 
     DMA_Configuration();    /* Initialize DMA. */

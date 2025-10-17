@@ -448,6 +448,8 @@ int main(void)
     /* Init hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     CLOCK_SetLpuartClk(0, kCLOCK_LpuartSrcHfo);
 
     config.dW         = 0x000F0000UL;

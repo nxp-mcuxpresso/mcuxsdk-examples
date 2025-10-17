@@ -34,6 +34,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nDAC Basic Example.\r\n");
 
     /* Configure the DAC. */

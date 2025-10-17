@@ -58,6 +58,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     opamp_config_t sConfig;
 
     PRINTF("OPAMP example started:\r\n");

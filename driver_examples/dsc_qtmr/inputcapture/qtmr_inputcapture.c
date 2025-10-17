@@ -74,6 +74,8 @@ int main(void)
 
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 #if defined(FSL_FEATURE_SOC_EDMA_COUNT) && FSL_FEATURE_SOC_EDMA_COUNT
     edma_config_t sEdmaConfig;
     edma_channel_transfer_config_t sTransferConfig;

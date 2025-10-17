@@ -55,6 +55,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* source buffer initialization */
     g_u32SrcAddr[0] = 1U;
     g_u32SrcAddr[1] = 2U;

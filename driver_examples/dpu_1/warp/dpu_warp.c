@@ -428,6 +428,8 @@ void DPU_IRQHandler(void)
 int main(void)
 {
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     DPU_Init(APP_DPU);
 
     DPU_PreparePathConfig(APP_DPU);

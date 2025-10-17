@@ -75,6 +75,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("SAI example started!\n\r");
 
     /* Init DMA and create handle for DMA */

@@ -61,6 +61,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal. */
     PRINTF("\r\nSIUL2 input trigger EDMA example\r\n");
     PRINTF("\r\nPress %s to trigger a EDMA transfer\r\n", BOARD_SW_NAME);

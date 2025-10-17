@@ -57,6 +57,8 @@ int main(void)
     dma_request_source_t dma_request_source_rx;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nFlexIO SPI dma example\r\n");
     PRINTF("Master Start...\r\n");
 

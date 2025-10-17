@@ -53,6 +53,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LPSPI 3-wire board to board interrupt example.\r\n");
     PRINTF("This example use one board as master and another as slave.\r\n");
     PRINTF("Master and slave uses interrupt way. Slave should start first. \r\n");

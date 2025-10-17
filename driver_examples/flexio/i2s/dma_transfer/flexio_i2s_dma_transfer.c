@@ -111,6 +111,8 @@ int main(void)
     sai_transceiver_t saiConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     BOARD_Codec_I2C_Init();
 
     PRINTF("FLEXIO I2S DMA example started!\n\r");

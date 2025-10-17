@@ -340,6 +340,8 @@ int main(void)
     /* Init hardware*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Note: When DCACHE is enabled input and output buffers should be in non-cached memory
      * or handled properly (DCACHE Clean and Invalidate).
      * Disable DCHACHE by calling SCB_DisableDCache();

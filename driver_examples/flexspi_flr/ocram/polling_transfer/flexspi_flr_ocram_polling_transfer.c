@@ -78,6 +78,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
 #ifndef EXAMPLE_RUN_FLEXSPI_LEADER
     flexspi_slv_config_t config;
     flexspi_slv_handle_t handle;

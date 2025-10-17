@@ -51,6 +51,8 @@ int main(void)
     sinc_channel_protection_option_t sincChannel3ProtectionOption;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nSINC ADC Example.\r\n");
 
     sincChannel3InputOption.inputBitFormat = kSINC_InputBit_FormatExternalBitstream;

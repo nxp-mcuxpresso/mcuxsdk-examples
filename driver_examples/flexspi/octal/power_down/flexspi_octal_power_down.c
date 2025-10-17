@@ -46,6 +46,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     excludeFromPD[0] = kPDRUNCFG_PD_LDOMEM | kPDRUNCFG_PD_FRO32K;
     wakeupFromPD[0]  = WAKEUP_RTC_ALARM_WAKEUP;
     wakeupFromPD[1]  = 0;

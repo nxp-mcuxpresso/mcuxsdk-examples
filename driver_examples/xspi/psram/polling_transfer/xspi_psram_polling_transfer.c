@@ -42,6 +42,8 @@ int main(void)
     status_t st = kStatus_Success;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* XSPI init */
     xspi_hyper_ram_init(EXAMPLE_XSPI);
 

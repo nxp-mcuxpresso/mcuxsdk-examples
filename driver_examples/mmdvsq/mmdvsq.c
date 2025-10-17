@@ -39,6 +39,8 @@ int main(void)
 
     /* Initialize standard SDK demo application pins */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print the initial banner */
     PRINTF("\r\nStart MMDVSQ Example\r\n");
     PRINTF("\r\nCalculation square root, please enter radicand\r\n");

@@ -49,6 +49,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("This is USART synchronous transfer slave example.\r\n");
     PRINTF("Slave will receive data from master firstly, and then send back the received characters.\r\n");
     PRINTF("Please connect the pins as below shows:\r\n");

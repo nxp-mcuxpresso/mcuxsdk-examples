@@ -47,6 +47,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     (void)PRINTF("SEMA4 basic example start\r\n");
     (void)PRINTF("Proc number is %d\r\n", DEMO_PROC_NUM);
 

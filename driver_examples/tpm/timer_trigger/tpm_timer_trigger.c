@@ -54,6 +54,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     XBAR_Init(kXBAR_DSC1);
     XBAR_SetSignalsConnection(kXBAR1_InputLpit1LpitTrigOut0, kXBAR1_OutputTpm4LptpmTriggerIn0);
     PRINTF("\r\nIPSYNC trigger signal connected! \r\n");

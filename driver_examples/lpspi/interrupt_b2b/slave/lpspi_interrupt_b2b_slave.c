@@ -100,6 +100,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LPSPI interrupt board to board (b2b) slave example.\r\n");
     PRINTF("  Slave start to receive data...\r\n");
 

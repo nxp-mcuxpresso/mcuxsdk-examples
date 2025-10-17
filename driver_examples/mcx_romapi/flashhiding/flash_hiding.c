@@ -41,6 +41,8 @@ int main()
     /* Init board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     TRDC_Type *baseAddr = (TRDC_Type *)TRDC_BASE;
 
     PRINTF("\r\nFlash Hiding example...\r\n");

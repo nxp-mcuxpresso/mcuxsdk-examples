@@ -65,6 +65,8 @@ int main(void)
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("********* MSCAN Interrupt EXAMPLE *********\r\n");
     PRINTF("    Message format: Standard (11 bit id)\r\n");
     PRINTF("    Interrupt Mode: Enabled\r\n");

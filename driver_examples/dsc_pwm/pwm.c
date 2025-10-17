@@ -55,6 +55,8 @@ int main(void)
     /* Board pin, clock, debug console initial */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("FlexPWM driver example\r\n");
 
     /*

@@ -38,6 +38,8 @@ int main(void)
     /* Initizlize the hardware(clock/pins configuration/debug console). */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("This is SPI polling transfer master example.\n\r");
     PRINTF("\n\rMaster start to send data to slave, please make sure the slave has been started!\n\r");
 

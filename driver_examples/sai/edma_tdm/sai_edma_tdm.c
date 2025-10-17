@@ -120,6 +120,8 @@ int main(void)
     uint32_t leftWAVData = 0U;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     BOARD_SD_Config(&g_sd, NULL, BOARD_SDMMC_SD_HOST_IRQ, NULL);
 
     PRINTF("\r\nSAI edma TDM example started.\n\r");

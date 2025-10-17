@@ -175,6 +175,8 @@ int main(void)
     /* Hardware initialize. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Initialize MCMGR, install generic event handlers */
     (void)MCMGR_Init();
 

@@ -256,6 +256,8 @@ int main(void)
     /* Hardware Initialization. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     memset(&avbConfig, 0, sizeof(enet_avb_config_t));
 
     /* Prepare the buffer configuration. */

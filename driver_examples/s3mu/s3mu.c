@@ -53,6 +53,8 @@ int main(void)
     {
         /* HW init */
         BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
         PRINTF("S3MU Driver Example:\r\n\r\n");
 
         /****************** Ping EdgeLock **************************************/

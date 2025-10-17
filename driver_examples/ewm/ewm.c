@@ -53,6 +53,8 @@ int main(void)
     /* Init hardware*/
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nPress anykey to start the example...\r\n");
     GETCHAR();
 

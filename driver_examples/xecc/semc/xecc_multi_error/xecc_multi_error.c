@@ -72,6 +72,8 @@ int main(void)
     /* Hardware initialize. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     XECC_Deinit(EXAMPLE_XECC);
 
     PRINTF("XECC Multiple Errors Example Start!\r\n");

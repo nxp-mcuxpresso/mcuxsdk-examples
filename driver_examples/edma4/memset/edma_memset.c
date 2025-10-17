@@ -49,6 +49,8 @@ int main(void)
     edma_config_t userConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print destination buffer */
     PRINTF("EDMA memset begin.\r\n\r\n");
     PRINTF("Source Buffer:\r\n");

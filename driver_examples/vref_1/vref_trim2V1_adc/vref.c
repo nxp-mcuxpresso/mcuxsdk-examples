@@ -90,6 +90,8 @@ int main(void)
     float voltage     = 0.0f;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("\r\nVREF example\r\n");
 
     VREF_GetDefaultConfig(&vrefConfig);

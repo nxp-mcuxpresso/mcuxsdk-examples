@@ -108,6 +108,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("ASRC m2m edma example\n\r");
 
     EDMA_GetDefaultConfig(&dmaConfig);

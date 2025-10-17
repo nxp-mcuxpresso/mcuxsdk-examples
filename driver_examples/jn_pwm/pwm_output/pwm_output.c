@@ -41,6 +41,8 @@ int main(void)
     /* Board pin, clock, debug console initialization */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("PWM driver example. Connect scope to Port 0 Pin 3 to see output\r\n");
     PRINTF("or look at LED DS3/D3 on carrier/sensor boards.\r\n");
 

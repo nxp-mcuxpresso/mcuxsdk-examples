@@ -57,6 +57,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print source buffer */
     PRINTF("DMA linked transfer example begin.\r\n");
     PRINTF("Destination Buffer:\r\n");

@@ -53,6 +53,8 @@ int main(void)
     /* Init hardware */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("GDET Peripheral Driver Example\r\n\r\n");
 
     PRINTF("GDET Init\r\n");

@@ -48,6 +48,8 @@ int main(void)
 
     /* Init board hardware. */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Init vref. */
     APP_VREF_Config();
     /* Get AFE config default */

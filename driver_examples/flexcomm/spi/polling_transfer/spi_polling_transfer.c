@@ -48,6 +48,8 @@ int main(void)
     /* Init the boards */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nSPI one board polling example started!\r\n");
 
     /* Init SPI master */

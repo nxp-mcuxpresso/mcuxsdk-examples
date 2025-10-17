@@ -167,6 +167,8 @@ int main(void)
     /* Hardware initialize. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* memset the OCRAM */
     memset(codeDestAddr, 0, EXAMPLE_DDR_PARAMETER_END - EXAMPLE_DDR_CODE_OCRAM_ADDRESS);
 

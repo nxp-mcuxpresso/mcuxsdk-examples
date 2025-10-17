@@ -39,6 +39,8 @@ int main(void)
     /* Hardware initialize. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nSRAMC Example Start!\r\n");
 
     result = SRAMC_ReadWrite8Bit();

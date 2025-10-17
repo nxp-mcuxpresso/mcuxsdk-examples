@@ -89,6 +89,8 @@ int main(void)
     adc12_channel_config_t adc12ChannelConfigStruct;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     BOARD_ConfigTriggerSource();
 
     /* Configure the lpit to trigger ADC periodically */

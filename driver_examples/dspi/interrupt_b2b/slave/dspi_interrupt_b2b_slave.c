@@ -80,6 +80,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("DSPI board to board functional interrupt example.\r\n");
 
     uint32_t i;

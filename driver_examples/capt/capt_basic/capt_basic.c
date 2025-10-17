@@ -56,6 +56,8 @@ int main(void)
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("CAPT basic example.\r\n");
 
     /* Initialize CAPT module. */

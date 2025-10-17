@@ -43,6 +43,8 @@ int main(void)
     uint32_t i = 0;
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print information to the terminal. */
     PRINTF("USART synchronous transfer example.\r\n");
     PRINTF("Master USART will send data to slave on another board.\r\n");

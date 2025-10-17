@@ -69,6 +69,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Initialize SYSCTR module */
     SYSCTR_Init(EXAMPLE_SYSCTR_CONTROL, EXAMPLE_SYSCTR_COMPARE, &sysctrConfig);
 

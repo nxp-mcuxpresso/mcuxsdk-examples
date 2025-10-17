@@ -372,6 +372,8 @@ void DPU_IRQHandler(void)
 int main(void)
 {
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("DPU Warp Example:\r\n");
 
     APP_InitFrameBuffer();

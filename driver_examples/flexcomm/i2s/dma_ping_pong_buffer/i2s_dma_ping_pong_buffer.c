@@ -72,6 +72,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("I2S DMA ping pong buffer demo start\r\n");
 
     /* protocol: i2s

@@ -75,6 +75,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("LPSPI interrupt transfer example.\r\n");
     PRINTF("This example use one lpspi instance as master and another as slave on one board.\r\n");
     PRINTF("Master uses interrupt way and slave uses interrupt way.\r\n");

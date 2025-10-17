@@ -68,6 +68,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("DSPI board to board DMA example.\r\n");
     PRINTF("This example use one board as master and another as slave.\r\n");
     PRINTF("Master and slave uses DMA way. Slave should start first. \r\n");

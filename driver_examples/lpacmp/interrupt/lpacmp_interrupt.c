@@ -42,6 +42,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     chnlConfig.enableWakeupToSmm = false;
     chnlConfig.enableTriggerOutput = false;
     chnlConfig.enableInterrupt = false;

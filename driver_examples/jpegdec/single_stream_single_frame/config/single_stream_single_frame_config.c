@@ -207,6 +207,8 @@ int main(void)
 {
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("JPEG decoder demo start:\r\n");
     PRINTF("One frame of JPEG picture will be decoded by slot 0\r\n");
     PRINTF("First we configure the decoder then start the decode process\r\n");

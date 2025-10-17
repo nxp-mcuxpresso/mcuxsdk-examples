@@ -104,6 +104,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     DMA_Init(EXAMPLE_DMA);
     DMA_EnableChannel(EXAMPLE_DMA, EXAMPLE_I2C_MASTER_CHANNEL);
     DMA_CreateHandle(&g_dmaHandle, EXAMPLE_DMA, EXAMPLE_I2C_MASTER_CHANNEL);

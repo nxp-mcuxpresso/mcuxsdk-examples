@@ -33,6 +33,8 @@ int main(void)
     ssarc_group_config_t groupConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("SSARC Software Trigger Example Start.\r\n");
 
     PRINTF("Open the LED.\r\n");

@@ -35,6 +35,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("\r\nDAC Normal Driver Example!\r\n");
     PRINTF("\r\nOutput = 0.18V + (1.42V * input_code / 1023)\r\n");
 

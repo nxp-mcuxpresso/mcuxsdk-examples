@@ -59,6 +59,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     ERM_Init(APP_ERM);
 
     /* Initialize the memory to a known value so that the correct corresponding ECC codeword is stored. */

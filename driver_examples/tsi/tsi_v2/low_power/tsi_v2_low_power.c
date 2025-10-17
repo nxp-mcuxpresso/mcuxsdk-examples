@@ -119,6 +119,8 @@ int main(void)
 
     /* Initialize standard SDK demo application pins */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
 #if (defined(FSL_FEATURE_MCG_HAS_PLL) && FSL_FEATURE_MCG_HAS_PLL)
     if (kMCG_ModePEE == CLOCK_GetMode())
     {

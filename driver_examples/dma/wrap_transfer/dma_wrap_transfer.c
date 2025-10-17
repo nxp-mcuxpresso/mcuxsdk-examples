@@ -46,6 +46,8 @@ int main(void)
     dma_transfer_config_t transferConfig;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     /* Print source buffer */
     PRINTF("DMA wrap transfer example begin.\r\n\r\n");
     PRINTF("Destination Buffer:\r\n");

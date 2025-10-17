@@ -71,6 +71,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print a note to terminal. */
     PRINTF("\r\n GPIO Driver example\r\n");
     PRINTF("\r\n Press %s to turn on/off a LED \r\n", BOARD_SW_NAME);

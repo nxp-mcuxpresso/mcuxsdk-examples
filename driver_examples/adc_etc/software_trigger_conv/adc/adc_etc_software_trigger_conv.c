@@ -49,6 +49,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("ADC_ETC_Software_Trigger_Conv Example Start!\r\n");
 
     ADC_Configuration();

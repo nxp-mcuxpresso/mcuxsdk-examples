@@ -52,6 +52,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Print source buffer */
     PRINTF("EDMA scatter gather example begin.\r\n\r\n");
     PRINTF("Destination Buffer:\r\n");

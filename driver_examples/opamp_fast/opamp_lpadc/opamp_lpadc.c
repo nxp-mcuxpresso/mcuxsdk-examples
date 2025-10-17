@@ -48,6 +48,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     DEMO_DoOpampConfig();
     DEMO_DoLpadcConfig(DEMO_LPADC_INSTANCE0);
     DEMO_DoLpadcConfig(DEMO_LPADC_INSTANCE1);

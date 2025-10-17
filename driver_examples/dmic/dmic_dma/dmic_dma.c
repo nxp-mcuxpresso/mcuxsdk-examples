@@ -78,6 +78,8 @@ int main(void)
     /* Board pin, clock, debug console init */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     dmic_channel_cfg.divhfclk            = kDMIC_PdmDiv1;
     dmic_channel_cfg.osr                 = 25U;
     dmic_channel_cfg.gainshft            = 2U;

@@ -283,6 +283,8 @@ int main(void)
     /* Initialize board hardware. */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     LOG_INFO("********* FLEXCAN Interrupt EXAMPLE *********\r\n");
     LOG_INFO("    Message format: Standard (11 bit id)\r\n");
     LOG_INFO("    Message buffer %d used for Rx.\r\n", RX_MESSAGE_BUFFER_NUM);

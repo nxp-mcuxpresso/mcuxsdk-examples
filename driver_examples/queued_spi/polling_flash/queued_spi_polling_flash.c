@@ -195,6 +195,8 @@ int main(void)
 {
     /* Init the boards */
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("*****app*start***** \r\n");
 
     if (0 == app())

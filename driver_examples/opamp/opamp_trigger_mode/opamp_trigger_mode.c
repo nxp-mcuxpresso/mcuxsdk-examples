@@ -34,6 +34,8 @@ void SCTIMER_Configuration(void);
 int main(void)
 {
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     OPAMP_Configuration();
     Inputmux_Configuration();
     SCTIMER_Configuration();

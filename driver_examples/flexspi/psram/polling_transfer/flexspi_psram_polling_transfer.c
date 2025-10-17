@@ -84,6 +84,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("FLEXSPI example started!\r\n");
 
     for (i = 0; i < sizeof(s_hyper_ram_write_buffer); i++)

@@ -68,6 +68,8 @@ int main(void)
     /* Init hardware */
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     /* Initialize random number generator used to generate key mask for HW key */
     /* In real application, the seed shall be obtained from a hardware random number generator. */
     srand(0xbabadeda);

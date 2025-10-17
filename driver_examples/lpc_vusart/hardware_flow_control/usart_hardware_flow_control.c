@@ -52,6 +52,8 @@ int main(void)
     usart_transfer_t sendXfer;
 
     BOARD_InitHardware();
+
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
     PRINTF("This is USART hardware flow control example on one board.\r\n");
     PRINTF("This example will send data to itself and will use hardware flow control to avoid the overflow.\r\n");
     PRINTF("Please make sure you make the correct line connection. Basically, the connection is: \r\n");

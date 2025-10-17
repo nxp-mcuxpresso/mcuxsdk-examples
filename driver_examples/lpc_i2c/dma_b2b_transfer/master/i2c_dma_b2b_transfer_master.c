@@ -59,6 +59,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     DMA_Init(EXAMPLE_DMA);
 
     PRINTF("\r\nI2C board2board DMA example -- Master transfer.\r\n");

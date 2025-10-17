@@ -49,6 +49,8 @@ int main(void)
 
     BOARD_InitHardware();
 
+    PRINTF("MCUX SDK version: %s\r\n", MCUXSDK_VERSION_FULL_STR);
+
     PRINTF("EDMA LPAV memory to memory transfer example begin.\r\n\r\n");
     uint32_t *srcAddr  = EXAMPLE_DATA_SRCADDR;
     uint32_t *destAddr = EXAMPLE_DATA_DSTADDR;
