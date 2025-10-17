@@ -102,12 +102,12 @@ static bool APP_SecondaryCoreCallback(power_low_power_mode_t targetPowerMode, vo
         }
         MU_DisableInterrupts(APP_MU, kMU_Rx0FullInterruptEnable);
     }
-    
+
     if (targetPowerMode == kPower_DeepPowerDown2)
     {
         power_dpd2_config_t dpd2Config;
         memcpy(&dpd2Config, ptrPowerConfig, sizeof(power_dpd2_config_t));
-        if (dpd2Config.wakeToDpd1 == true) 
+        if (dpd2Config.wakeToDpd1 == true)
         {
             PRINTF("Press %s wakeup to Active Mode!\r\n", APP_EXT_INT_BUTTON);
         }
@@ -128,11 +128,14 @@ void LPTMR_AON_IRQHandler(void)
 {
     Power_ClearLpPowerSettings();
     DisableIRQ(LPTMR_AON_IRQn);
-    LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
-    LPTMR_StopTimer(APP_LPTMR_BASE);
-    LPTMR_DisableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
-    CLOCK_DisableClock(kCLOCK_GateAonLPTMR);
-    RESET_SetPeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        LPTMR_ClearStatusFlags(APP_LPTMR_BASE, kLPTMR_TimerCompareFlag);
+        LPTMR_StopTimer(APP_LPTMR_BASE);
+        LPTMR_DisableInterrupts(APP_LPTMR_BASE, kLPTMR_TimerInterruptEnable);
+        CLOCK_DisableClock(kCLOCK_GateAonLPTMR);
+        RESET_SetPeripheralReset(kAonLPTMR_RST_SHIFT_RSTn);
+    }
     __DSB();
     __ISB();
 }
@@ -141,10 +144,13 @@ void RTC_ALARM0_IRQHandler(void)
 {
     Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM0_IRQn);
-    RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
-    RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_0);
-    RTC_StopTimer(APP_RTC_BASE);
-    RTC_Deinit(APP_RTC_BASE);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm0InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_0);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
     __DSB();
     __ISB();
 }
@@ -153,10 +159,13 @@ void RTC_ALARM1_IRQHandler(void)
 {
     Power_ClearLpPowerSettings();
     DisableIRQ(RTC_ALARM1_IRQn);
-    RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
-    RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_1);
-    RTC_StopTimer(APP_RTC_BASE);
-    RTC_Deinit(APP_RTC_BASE);
+    if (Power_GetPreviousPowerMode() != kPower_PowerDown2)
+    {
+        RTC_DisableInterrupts(APP_RTC_BASE, kRTC_Alarm1InterruptEnable);
+        RTC_DisableAlarm(APP_RTC_BASE, kRTC_Alarm_1);
+        RTC_StopTimer(APP_RTC_BASE);
+        RTC_Deinit(APP_RTC_BASE);
+    }
     __DSB();
     __ISB();
 }
