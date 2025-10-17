@@ -23,6 +23,5 @@ mcux_add_armgcc_linker_script(
 )
 
 mcux_add_macro(
-    CC "-DDEMO_PD_MODE_NOT_OK=1"
     AS "-DECC_RAM_STCM8_INIT"
 )
