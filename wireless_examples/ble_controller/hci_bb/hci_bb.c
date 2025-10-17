@@ -282,10 +282,10 @@ static void HCI_LocalSendVendorFatalErrorToHost(uint8_t bufferId, uint8_t done, 
   */
 extern uint8_t dbg_ext_logging_start[]; /* defined by linker file */
 extern uint8_t dbg_ext_logging_end[]; /* defined by linker file */
-void HCIBB_nbu_dbg_system_err_cb(nbu_dbg_event_id_t event_id)
+void HCIBB_nbu_dbg_system_cb(const nbu_dbg_context_t *nbu_event)
 {
     static uint32_t HCIBB_error_reported=0;
-    if (HCIBB_error_reported == 0)
+    if ((HCIBB_error_reported == 0) && (nbu_event->nbu_error_count > 0))
     {
         HCIBB_error_reported = 1;
 
@@ -663,7 +663,7 @@ void main_task(uint32_t param)
 
 #if defined(HCIBB_DBG_NBU_ENABLE) && (HCIBB_DBG_NBU_ENABLE != 0)
         /* Register callback to handle NBU fatal errors */
-        NBUDBG_RegisterSystemErrorCb(HCIBB_nbu_dbg_system_err_cb);
+        NBUDBG_RegisterNbuDebugNotificationCb(HCIBB_nbu_dbg_system_cb);
 #endif
         /*open application uart write/read handle, install rx callback*/
         if ( kStatus_SerialManager_Success != SerialManager_OpenWriteHandle((serial_handle_t)gSerMgrIf, (serial_write_handle_t)g_appUartWriteHandle))

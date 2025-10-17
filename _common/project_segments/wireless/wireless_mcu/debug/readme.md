@@ -2,7 +2,7 @@
 
 ## Overview
 
-The NBU Debug module is a comprehensive debugging service designed for monitoring, fault detection, and post-mortem analysis of the **NBU (Narrow Band Unit)** from the host MCU in multi-core wireless systems. This module provides real-time crash detection, detailed fault analysis, and debug information extraction capabilities across different cores.
+The NBU Debug module is a comprehensive debugging service designed for monitoring, fault detection, and post-mortem analysis of the **NBU (Narrow Band Unit)** from the host MCU in multi-core wireless systems. This module provides real-time crash and warning detection, detailed fault analysis, and debug information extraction capabilities across different cores.
 
 ## Supported platforms
 - mcxw72evk
@@ -18,7 +18,7 @@ The NBU Debug Framework consists of two main layers:
 The foundational layer providing cross-core communication and debug data structures.
 
 ### 2. Board Debug Layer (`examples/_common/project_segments/wireless/wireless_mcu/debug`)
-The application layer providing ready-to-use initialization and processing functions with detailed fault analysis.
+The application layer providing ready-to-use initialization and processing functions with detailed fault/warning analysis.
 
 Board Debug Layer is provided as **example code** to demonstrate how to use the core NBU Debug Framework and extract debug information from the NBU.
 The current implementation outputs debug information to a UART serial interface, but this is just one possible implementation. The extraction procedures and fault analysis logic can be easily adapted to work with other interfaces.
@@ -26,7 +26,7 @@ This layer serves as a reference implementation to show the complete debug infor
 
 ```
 Application Layer (Board Debug Layer)
-├── board_debug_nbu.h/.c     # High-level API with fault analysis
+├── board_debug_nbu.h/.c     # High-level API with fault and warning analysis
 │
 Core NBU Debug Module Layer
 ├── framework/services/DBG/nbu_dbg/
@@ -65,7 +65,7 @@ Core NBU Debug Module Layer
 ### 1. **Core Module Responsibilities**
 
 - **Cross-Core Communication**: Establishes shared memory regions and communication between MCU and NBU
-- **Fault Detection**: Ability to monitor NBU health status.
+- **Fault/Warning Detection**: Ability to monitor NBU health status and detect both errors and warnings.
 - **Memory Management**: Handles NBU power domain control and shared memory access coordination from the host.
 
 ### 2. **Board Debug Layer Responsibilities**
@@ -87,7 +87,7 @@ int main(void) {
     hardware_init();
     
     // Initialize NBU debug framework
-    BOARD_DbgNbuInit();  // Registers fault analysis callback
+    BOARD_DbgNbuInit();  // Initialize NBU debug framework and register callback
     
     // Continue with application initialization
     app_init();
@@ -101,7 +101,7 @@ int main(void) {
 ```c
 // Option 1 (*recommended*): In Idle Hook, FreeRTOS example:
 void vApplicationIdleHook(void) {
-    BOARD_DbgNbuProcess();  // Check NBU health during idle time
+    BOARD_DbgNbuProcess();  // Check NBU health and process fault/warning detection
 }
 
 // Option 2: In Main Loop
@@ -120,6 +120,26 @@ void system_timer_callback(void) {
 ```
 
 **Why Option 1 is Recommended:** Option 1 (Idle Hook) is preferred due to low power constraints - it executes naturally when the system has no other tasks to run without interfering with low power state transitions, avoids forced wake-ups from the host MCU solely for NBU health checks (unlike timer-based approaches) and preserves power efficiency.
+
+## Comprehensive Warning Analysis Features
+
+### 1. **Warning Detection and Notification**
+```
+New NBU Warnings detected: 2 warnings
+```
+
+### 2. **Warning vs Error Handling**
+The system differentiates between warnings and fatal errors:
+
+- **Warnings (`nbu_warning_count > 0`)**:
+  - Non-fatal issues detected on NBU
+  - Simple count notification displayed
+
+- **Fatal Errors (`nbu_error_count > 0`)**:
+  - Critical faults requiring full analysis
+  - Complete processor state dump
+  - Detailed fault status analysis
+  - Full debug information extraction
 
 ## Comprehensive Fault Analysis Features
 
@@ -197,7 +217,7 @@ DBG_15_4_END
 - **Field Deployment Ready**: Provides valuable diagnostic capabilities for deployed products
 
 #### **Rapid Debugging**
-- **Rapid Fault Detection**: No need to poll or wait for symptoms
+- **Rapid Fault/Warning Detection**: No need to poll or wait for symptoms
 - **Complete Context**: Full CPU state and execution context at fault time
 - **Root Cause Analysis**: Detailed fault explanations with probable causes
 

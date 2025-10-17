@@ -29,10 +29,10 @@ int BOARD_DbgNbuInit(void);
  * @brief Process NBU debug state and handle fault detection
  *
  * This function should be called periodically (typically from the idle hook)
- * to check the NBU state and detect any fault conditions. When a fault is detected,
- * the previously registered system error callback will be invoked.
+ * to check the NBU state and detect any fault/warning conditions.
+ * When a fault/warning is detected, the previously registered system error callback will be invoked.
  *
- * @note If a fault is detected, the registered callback will be executed during this call
+ * @note If a fault/warning is detected, the registered callback will be executed during this call
  */
 void BOARD_DbgNbuProcess(void);
 
