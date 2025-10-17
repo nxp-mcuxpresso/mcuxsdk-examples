@@ -1,1 +1,0 @@
-The [readme file](../../../../../middleware/audio_voice/maestro/doxygen/maestro_sync.md) is located in the Maestro audio framework repository itself.
