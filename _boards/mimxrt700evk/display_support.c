@@ -1336,6 +1336,8 @@ static status_t BOARD_DsiMemWriteSendChunck(void)
      * the MIPI DSC spec, the high byte should be send first, so swap the pixel byte
      * first.
      */
+#if (((DEMO_PANEL_RM67162 == DEMO_PANEL) && (DEMO_RM67162_BUFFER_FORMAT == DEMO_RM67162_BUFFER_RGB565)) || \
+    ((DEMO_PANEL_CO5300 == DEMO_PANEL) && (DEMO_CO5300_BUFFER_FORMAT == DEMO_CO5300_BUFFER_RGB565)))
     for (i = 0; i < curSendLen; i += 2)
     {
         s_dsiMemWriteTmpArray[i]     = *(s_dsiMemWriteCtx.txData + 1);
@@ -1343,6 +1345,16 @@ static status_t BOARD_DsiMemWriteSendChunck(void)
 
         s_dsiMemWriteCtx.txData += 2;
     }
+#else
+    for (i = 0; i < curSendLen; i += 3)
+    {
+        s_dsiMemWriteTmpArray[i]     = *(s_dsiMemWriteCtx.txData + 2);
+        s_dsiMemWriteTmpArray[i + 1] = *(s_dsiMemWriteCtx.txData + 1);
+        s_dsiMemWriteTmpArray[i + 2] = *(s_dsiMemWriteCtx.txData);
+
+        s_dsiMemWriteCtx.txData += 3;
+    }
+#endif
 
     s_dsiMemWriteCtx.leftByteLen -= curSendLen;
     s_dsiMemWriteCtx.dcsCmd = kMIPI_DCS_WriteMemoryContinue;
