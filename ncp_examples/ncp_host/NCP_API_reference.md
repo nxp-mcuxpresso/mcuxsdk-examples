@@ -5102,6 +5102,8 @@ passive scan.
 
 ### Data Fields
 
+  - uint8\_t conn\_id
+
   - uint8\_t address\_type
 
   - uint8\_t address \[NCP\_BLE\_ADDR\_LENGTH\]
@@ -5118,6 +5120,10 @@ This structure contains the value of the Bluetooth LE connection
 complete event which indicates a new connection has been created.
 
 ### Field Documentation
+
+#### uint8\_t \_NCP\_DEVICE\_CONNECTED\_EV::conn\_id
+
+> connection id
 
 #### uint8\_t \_NCP\_DEVICE\_CONNECTED\_EV::address\_type
 
@@ -5158,9 +5164,13 @@ complete event which indicates a new connection has been created.
 
 ### Data Fields
 
+  - uint8\_t conn\_id
+
   - uint8\_t address\_type
 
   - uint8\_t address \[NCP\_BLE\_ADDR\_LENGTH\]
+
+  - uint8\_t reason
 
 ### Detailed Description
 
@@ -5168,6 +5178,10 @@ This structure contains the value of the Bluetooth LE disconnection
 complete event which indicates a connection is terminated.
 
 ### Field Documentation
+
+#### uint8\_t \_NCP\_DEVICE\_DISCONNECTED\_EV::conn\_id
+
+> connection id
 
 #### uint8\_t \_NCP\_DEVICE\_DISCONNECTED\_EV::address\_type
 
@@ -5180,6 +5194,10 @@ complete event which indicates a connection is terminated.
 #### uint8\_t \_NCP\_DEVICE\_DISCONNECTED\_EV::address\[NCP\_BLE\_ADDR\_LENGTH\]
 
 > Bluetooth LE address
+
+#### uint8\_t \_NCP\_DEVICE\_DISCONNECTED\_EV::reason
+
+> disconnect reason
 
 #### The documentation for this struct was generated from the following file:
 
@@ -12820,6 +12838,8 @@ This structure is used for iperf message configuration.
 
   - uint32\_t iperf\_udp\_time
 
+  - uint32\_t iperf\_per\_size
+
 ### Detailed Description
 
 This structure is used for iperf configuration.
@@ -12849,6 +12869,10 @@ This structure is used for iperf configuration.
 #### uint32\_t iperf\_set\_t::iperf\_udp\_time
 
 > UDP time.
+
+#### uint32\_t iperf\_set\_t::iperf\_per\_size
+
+> Iperf per size.
 
 #### The documentation for this struct was generated from the following file:
 
@@ -13485,19 +13509,13 @@ This structure is used for store the netif flags.
 
   - uint32\_t tx\_frame
 
+  - uint32\_t reserved
+
   - uint32\_t wep\_icv\_error \[4\]
 
   - uint32\_t bcn\_rcv\_cnt
 
   - uint32\_t bcn\_miss\_cnt
-
-  - uint32\_t amsdu\_rx\_cnt
-
-  - uint32\_t msdu\_in\_rx\_amsdu\_cnt
-
-  - uint32\_t amsdu\_tx\_cnt
-
-  - uint32\_t msdu\_in\_tx\_amsdu\_cnt
 
   - uint32\_t tx\_frag\_cnt
 
@@ -13615,12 +13633,6 @@ This structure is used for store the netif flags.
 
   - uint32\_t bigtk\_mmeNotFoundCnt
 
-  - uint32\_t rx\_unicast\_cnt
-
-  - uint32\_t tx\_overrun\_cnt
-
-  - uint32\_t rx\_overrun\_cnt
-
 ### Detailed Description
 
 This structure is used for store the information about the pkt stats.
@@ -13675,6 +13687,10 @@ This structure is used for store the information about the pkt stats.
 
 > Tx frame count
 
+#### uint32\_t NCP\_CMD\_PKT\_STATS::reserved
+
+> Reserved field
+
 #### uint32\_t NCP\_CMD\_PKT\_STATS::wep\_icv\_error\[4\]
 
 > WEP ICV error count
@@ -13686,22 +13702,6 @@ This structure is used for store the information about the pkt stats.
 #### uint32\_t NCP\_CMD\_PKT\_STATS::bcn\_miss\_cnt
 
 > beacon miss count
-
-#### uint32\_t NCP\_CMD\_PKT\_STATS::amsdu\_rx\_cnt
-
-> received amsdu count
-
-#### uint32\_t NCP\_CMD\_PKT\_STATS::msdu\_in\_rx\_amsdu\_cnt
-
-> received msdu count in amsdu
-
-#### uint32\_t NCP\_CMD\_PKT\_STATS::amsdu\_tx\_cnt
-
-> tx amsdu count
-
-#### uint32\_t NCP\_CMD\_PKT\_STATS::msdu\_in\_tx\_amsdu\_cnt
-
-> tx msdu count in amsdu
 
 #### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_frag\_cnt
 
@@ -13934,18 +13934,6 @@ This structure is used for store the information about the pkt stats.
 #### uint32\_t NCP\_CMD\_PKT\_STATS::bigtk\_mmeNotFoundCnt
 
 > BIGTK MME not included count
-
-#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_unicast\_cnt
-
-> RX unicast count
-
-#### uint32\_t NCP\_CMD\_PKT\_STATS::tx\_overrun\_cnt
-
-> TX Buffer Overrun Dropped Count
-
-#### uint32\_t NCP\_CMD\_PKT\_STATS::rx\_overrun\_cnt
-
-> RX Buffer Overrun Dropped Count
 
 #### The documentation for this struct was generated from the following file:
 
@@ -16595,6 +16583,14 @@ NCP Wi-Fi command/response definitions.
 #### \#define NCP\_EVENT\_WLAN\_STOP\_NETWORK  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_ASYNC\_EVENT | NCP\_MSG\_TYPE\_EVENT | 0x00000008) /\* wlan stop network \*/
 
 > Wi-Fi UAP stop network event ID
+
+#### \#define NCP\_EVENT\_INET\_DAD\_DONE  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_ASYNC\_EVENT | NCP\_MSG\_TYPE\_EVENT | 0x0000000b) /\* ipv6 dad done \*/
+
+> Wi-Fi Inet DAD complete
+
+#### \#define NCP\_EVENT\_WLAN\_NCP\_INET\_RECV  (NCP\_CMD\_WLAN | NCP\_CMD\_WLAN\_ASYNC\_EVENT | NCP\_MSG\_TYPE\_EVENT | 0x00000009) /\* INET RECV event \*/
+
+> Wi-Fi Inet RECV complete
 
 #### \#define NCP\_CMD\_NETWORK\_SSID\_TLV  0x0001
 
@@ -23949,7 +23945,7 @@ Bluetooth service definitions.
 
 ### Macro Documentation
 
-#### \#define NCP\_BLE\_SERVICE\_PRIO  0
+#### \#define NCP\_BLE\_SERVICE\_PRIO  PRIORITY\_RTOS\_TO\_OSA((configMAX\_PRIORITIES - 1))
 
 > NCP Bluetooth LE priority
 
