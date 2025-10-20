@@ -477,11 +477,10 @@ define exported symbol sh_mem_coverage_start    = rpmsg_sh_mem_end + 1;
 define exported symbol sh_mem_coverage_end      = sh_mem_coverage_start + sh_mem_coverage_size -1;
 }
 
+define exported symbol dbg_ext_logging_size     = 0x700; /* dbg_ext_logging_size was previously 0x000 under gEnableCoverage_d flag */
 if (gEnableCoverage_d) {
-define exported symbol dbg_ext_logging_size     = 0x000;
 define exported symbol dbg_ext_logging_start    = sh_mem_coverage_end + 1;
 } else {
-define exported symbol dbg_ext_logging_size     = 0x700;
 define exported symbol dbg_ext_logging_start    = rpmsg_sh_mem_end + 1;
 }
 define exported symbol dbg_ext_logging_end      = dbg_ext_logging_start + dbg_ext_logging_size - 1;
@@ -499,11 +498,8 @@ define symbol m_sqram_rldat_ae_size             = 0x00258;
 define symbol m_sqram_rldat_ae_end              = m_sqram_rldat_ae_start + m_sqram_rldat_ae_size -1;
 
 define symbol m_sqram_rldat_start               = m_sqram_rldat_ae_end + 1;
-if (gEnableCoverage_d) {
-define symbol m_sqram_rldat_size                = 0x00100;
-} else {
+/* m_sqram_rldat_size was previously 0x00100 under gEnableCoverage_d flag */
 define symbol m_sqram_rldat_size                = 0x005dc;  /*to hold 24 connection contexts*/
-}
 define symbol m_sqram_rldat_end                 = m_sqram_rldat_start + m_sqram_rldat_size -1;
 
 define symbol m_free_data_start                 = m_sqram_rldat_end + 1;
