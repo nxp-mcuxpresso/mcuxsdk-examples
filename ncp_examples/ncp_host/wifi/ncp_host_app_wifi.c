@@ -677,13 +677,13 @@ void ncp_iperf_tx_task(void *pvParameters)
             {
                 ret = ncp_send(client_sockfd, lwiperf_txbuf_const, iperf_msg.per_size, 0);
                 if (ret < 0)
-                    ncp_adap_e("[send iperf data fail");
+                    ncp_adap_e("send iperf data fail");
             }
             else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
             {
                 ret = ncp_sendto(client_sockfd, lwiperf_txbuf_const, iperf_msg.per_size, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
                 if (ret < 0)
-                    ncp_adap_e("[send iperf data fail");
+                    ncp_adap_e("sendto iperf data fail");
             }
 
             if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
@@ -713,12 +713,13 @@ void ncp_iperf_tx_task(void *pvParameters)
         {
             ret = ncp_send(client_sockfd, lwiperf_end_token, NCP_IPERF_END_TOKEN_SIZE, 0);
             if (ret < 0)
-                ncp_adap_e("[send iperf finish fail");
+                ncp_adap_e("send iperf finish fail");
         }
         else if (iperf_msg.iperf_set.iperf_type == NCP_IPERF_UDP_TX)
         {
             ret = ncp_sendto(client_sockfd, lwiperf_end_token, NCP_IPERF_END_TOKEN_SIZE, 0, (struct sockaddr *)&server_addr, sizeof(server_addr));
-            ncp_adap_e("[send iperf finish fail");
+            if (ret < 0)
+                ncp_adap_e("sendto iperf finish fail");
         }
 
         ncp_iperf_report(send_total_size);
