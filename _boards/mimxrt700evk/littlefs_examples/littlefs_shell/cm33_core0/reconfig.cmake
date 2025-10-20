@@ -1,10 +1,3 @@
-mcux_add_source(
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES
-      ${board_root}/${board}/littlefs_examples/littlefs_shell/${core_id}/peripherals.c
-      ${board_root}/${board}/littlefs_examples/littlefs_shell/${core_id}/peripherals.h
-)
-
 # Add or remove Linker File Configurations
 mcux_remove_iar_linker_script(
     BASE_PATH ${SdkRootDirPath}
