@@ -12,6 +12,7 @@
 
 
 #include "fsl_trng.h"
+#include "fsl_crc.h"
 /*${header:end}*/
 
 /*${function:start}*/
@@ -41,5 +42,9 @@ void BOARD_InitHardware(void)
     
     TRNG_Init(TRNG0,&trngcon);
     
+    CRC_Type *base = CRC0;
+    crc_config_t config;
+    CRC_GetDefaultConfig(&config);
+    CRC_Init(base, &config);
 }
 /*${function:end}*/
