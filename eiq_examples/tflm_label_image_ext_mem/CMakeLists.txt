@@ -36,8 +36,6 @@ mcux_add_source(
   examples/eiq_examples/tflm_label_image_ext_mem/grace_hopper.bmp
   examples/eiq_examples/common/tflm/model/output_postproc.h
   examples/eiq_examples/common/tflm/model/output_postproc.cpp
-
-  examples/driver_examples/xspi/octal/edma_transfer/xspi_octal_flash_edma_ops.c
   )
 
 include(${SdkRootDirPath}/CMakeLists.txt)

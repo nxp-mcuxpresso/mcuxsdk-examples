@@ -7,6 +7,7 @@ mcux_add_source(
   SOURCES ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/model_mobilenet_ops_npu.cpp
   ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/model_data.h
   ${board_root}/${board}/eiq_examples/tflm_label_image_ext_mem/pcq_npu/mobilenet_v1_1.0_224_int8_npu.tflite
+  examples/driver_examples/xspi/octal/edma_transfer/xspi_octal_flash_edma_ops.c
   )
 
 mcux_remove_iar_linker_script(

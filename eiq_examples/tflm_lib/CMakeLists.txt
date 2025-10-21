@@ -18,6 +18,21 @@ mcux_add_armgcc_configuration(
   CC "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -DNDEBUG  -O2"
   CX "-Wall -fno-common -ffunction-sections -fdata-sections -mthumb -mapcs -fno-rtti -fno-exceptions -DNDEBUG -O2"
 )
+
+if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm85" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm85f")
+  mcux_add_iar_configuration(
+    CC "--cpu=cortex-m85.no_se --fpu=VFPv5_sp"
+    CX "--cpu=cortex-m85.no_se --fpu=VFPv5_sp"
+  )
+  mcux_add_mdk_configuration(
+    CC "-mcpu=cortex-m85 -mfpu=fpv5-sp-d16"
+    CX "-mcpu=cortex-m85 -mfpu=fpv5-sp-d16"
+  )
+  mcux_add_armgcc_configuration(
+    CC "-mcpu=cortex-m85 -mfloat-abi=hard -mfpu=fpv5-sp-d16"
+    CX "-mcpu=cortex-m85 -mfloat-abi=hard -mfpu=fpv5-sp-d16"
+  )
+endif()
 if(${CONFIG_MCUX_HW_CORE} STREQUAL "cm33" OR ${CONFIG_MCUX_HW_CORE} STREQUAL "cm33f")
   mcux_add_iar_configuration(
     CC "--cpu=cortex-m33.no_se --fpu=VFPv5_sp"

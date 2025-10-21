@@ -35,6 +35,8 @@ extern tflite::MicroOpResolver &MODEL_GetOpsResolver();
 // (Can be adjusted based on the model needs.)
 #ifdef TENSORARENA_NONCACHE
 static uint8_t s_tensorArena[kTensorArenaSize] __ALIGNED(16) __attribute__((section("NonCacheable")));
+#elif defined(TENSORARENA_DATA)
+static uint8_t s_tensorArena[kTensorArenaSize] __ALIGNED(16) __attribute__((section(".tensordata")));
 #else
 static uint8_t s_tensorArena[kTensorArenaSize] __ALIGNED(16);
 #endif
