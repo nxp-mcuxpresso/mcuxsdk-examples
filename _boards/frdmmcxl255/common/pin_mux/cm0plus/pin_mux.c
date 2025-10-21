@@ -10,6 +10,11 @@
 #include "pin_mux.h"
 #include "fsl_reset.h"
 
+void BOARD_InitBootPins(void)
+{
+    BOARD_InitDEBUG_UARTPins();
+}
+
 void BOARD_InitDEBUG_UARTPins(void)
 {
 

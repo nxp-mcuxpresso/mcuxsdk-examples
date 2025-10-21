@@ -12,6 +12,11 @@
 #include "fsl_reset.h"
 #include "board.h"
 
+void BOARD_InitBootPins(void)
+{
+    BOARD_InitDEBUG_UARTPins();
+}
+
 void BOARD_InitDEBUG_UARTPins(void)
 {
     /* Write to PORT1: Peripheral clock is enabled */

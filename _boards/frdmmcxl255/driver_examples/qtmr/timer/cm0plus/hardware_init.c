@@ -1,10 +1,9 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
- *
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -15,9 +14,10 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
+
+    /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kAonQTMR0_RST_SHIFT_RSTn);
 }
 /*${function:end}*/
