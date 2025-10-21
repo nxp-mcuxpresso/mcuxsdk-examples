@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 NXP
+ * Copyright 2024-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -9,6 +9,7 @@
  
  /*${header:start}*/
  #include "board.h"
+ #include "fsl_gpt.h"
  #include "fsl_netc_endpoint.h"
  #include "fsl_netc_switch.h"
  #include "fsl_netc_mdio.h"
@@ -16,14 +17,30 @@
  #include "fsl_phyrtl8201.h"
  #include "fsl_msgintr.h"
  #include "fsl_rgpio.h"
+
  #include "netc_ep/soem_netc_ep.h"
+ #include "netc_ep/netc_ep.h"
+ #include "soem_port.h"
+
+ #include "ethercattype.h"
+ #include "nicdrv.h"
+ #include "ethercatbase.h"
+ #include "ethercatmain.h"
+ #include "ethercatdc.h"
+ #include "ethercatcoe.h"
+ #include "ethercatfoe.h"
+ #include "ethercatconfig.h"
+ #include "ethercatprint.h"
  /*${header:end}*/
  
+ #define CYCLE_SHIFT_NS  440000  // 440us
+ #define DC_FILTER_CNT   64
+
  #define MASTER_SLAVE_SYNC 1U
  #define EXAMPLE_EP_NUM    1U
  #define EXAMPLE_NETC_HAS_NO_SWITCH 1U
  #define SOEM_PORT_NAME "ENET4"
- 
+
  #define CLOCK_GRANULARITY_NS 5UL
  #define CLOCK_GRANULARITY_FRE (1000000000UL/CLOCK_GRANULARITY_NS)
  #define CLOCK_INCREASE_PER_SEC 1000000000UL 
@@ -68,6 +85,12 @@
   * Prototypes
   ******************************************************************************/
  /*${prototype:start}*/
+ void osal_timer_init(uint32_t priority);
+ uint64_t system_time64_ns(void);
+ void nsleep_to (uint64_t nsec_target);
+ void osal_gettime(struct timeval *current_time);
+ int if_port_init(void);
+ void update_master_clock(void);
  status_t BOARD_InitHardware(void);
  status_t NETC_EP_MDIO_Init(void);
  status_t NETC_EP_PHY_Init(void);

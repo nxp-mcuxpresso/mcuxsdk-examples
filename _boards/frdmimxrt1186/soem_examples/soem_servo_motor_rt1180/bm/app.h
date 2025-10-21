@@ -7,13 +7,30 @@
 #define _APP_H_
 
 /*${header:start}*/
+#include "fsl_gpt.h"
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
 #include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
+
 #include "netc_swt/soem_netc_swt.h"
+#include "netc_swt/netc_swt.h"
+#include "soem_port.h"
+
+#include "ethercattype.h"
+#include "nicdrv.h"
+#include "ethercatbase.h"
+#include "ethercatmain.h"
+#include "ethercatdc.h"
+#include "ethercatcoe.h"
+#include "ethercatfoe.h"
+#include "ethercatconfig.h"
+#include "ethercatprint.h"
 /*${header:end}*/
+
+#define CYCLE_SHIFT_NS  440000  // 440us
+#define DC_FILTER_CNT   64
 
 #define MASTER_SLAVE_SYNC 1U
 #define SOEM_PORT_NAME "ENET0"
@@ -30,7 +47,9 @@
  #define BOARD_LED_RGPIO     BOARD_USER_LED_GPIO
  #define BOARD_LED_RGPIO_PIN BOARD_USER_LED_GPIO_PIN
 
-#define KNETC_EP_CONFIG_SI    kNETC_ENETC1PSI0
+#define EXAMPLE_SWT_SI       kNETC_ENETC1PSI0
+
+#define EXAMPLE_SWT_PSEUDO_PORT 0x4U
 
 #define NETC_FREQ             CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
 
@@ -68,10 +87,16 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+void nsleep_to (uint64_t nsec_target);
+void osal_gettime(struct timeval *current_time);
+void osal_timer_init(uint32_t priority);
+status_t APP_SWT_AddTableEntry(void);
+int if_port_swt_init(void);
+uint64_t system_time64_ns(void);
+void update_master_clock(void);
 status_t BOARD_InitHardware(void);
 status_t NETC_MDIO_Init(void);
 status_t NETC_PHY_Init(void);
-uint64_t system_time64_ns(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
