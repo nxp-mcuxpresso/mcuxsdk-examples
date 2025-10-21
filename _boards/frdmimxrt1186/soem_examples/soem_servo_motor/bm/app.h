@@ -7,13 +7,31 @@
 #define _APP_H_
 
 /*${header:start}*/
+#include "fsl_gpt.h"
 #include "fsl_netc_endpoint.h"
 #include "fsl_netc_switch.h"
 #include "fsl_netc_mdio.h"
 #include "fsl_phyyt8521.h"
 #include "fsl_msgintr.h"
+
+#include "soem_port.h"
 #include "netc_swt/soem_netc_swt.h"
+#include "netc_swt/netc_swt.h"
+
+#include "ethercattype.h"
+#include "nicdrv.h"
+#include "ethercatbase.h"
+#include "ethercatmain.h"
+#include "ethercatdc.h"
+#include "ethercatcoe.h"
+#include "ethercatfoe.h"
+#include "ethercatconfig.h"
+#include "ethercatprint.h"
 /*${header:end}*/
+
+#ifndef PHY_STABILITY_DELAY_US
+#define PHY_STABILITY_DELAY_US (500000U)
+#endif
 
 #define SOEM_PORT_NAME "ENET0"
 #define EXAMPLE_NETC_HAS_NO_SWITCH 0U
@@ -29,7 +47,13 @@
  #define BOARD_LED_RGPIO     BOARD_USER_LED_GPIO
  #define BOARD_LED_RGPIO_PIN BOARD_USER_LED_GPIO_PIN
 
-#define KNETC_EP_CONFIG_SI    kNETC_ENETC1PSI0
+#ifndef EXAMPLE_SWT_SI
+#define EXAMPLE_SWT_SI kNETC_ENETC1PSI0
+#endif
+/* Switch pseudo port */
+#ifndef EXAMPLE_SWT_PSEUDO_PORT
+#define EXAMPLE_SWT_PSEUDO_PORT 0x4U
+#endif
 
 #define NETC_FREQ             CLOCK_GetRootClockFreq(kCLOCK_Root_Netc)
 
@@ -67,6 +91,12 @@
  * Prototypes
  ******************************************************************************/
 /*${prototype:start}*/
+uint64_t gettime(void);
+void nsleep_to (uint64_t nsec_target);
+void osal_gettime(struct timeval *current_time);
+void osal_timer_init(uint32_t priority);
+status_t APP_SWT_AddTableEntry(void);
+int if_port_swt_init(void);
 status_t BOARD_InitHardware(void);
 status_t NETC_MDIO_Init(void);
 status_t NETC_PHY_Init(void);
