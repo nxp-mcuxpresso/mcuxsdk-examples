@@ -333,9 +333,7 @@ void USB_DeviceClockInit(void)
         POWER_DisablePD(kPDRUNCFG_PPD_USB0_SRAM);
         /* Apply the config */
         POWER_ApplyPD();
-        /* disable the read and write gate */
-        SYSCON4->USB0_MEM_CTRL |= (SYSCON4_USB0_MEM_CTRL_MEM_WIG_MASK | SYSCON4_USB0_MEM_CTRL_MEM_RIG_MASK |
-                                     SYSCON4_USB0_MEM_CTRL_MEM_STDBY_MASK);
+
         /* Enable the USBPHY0 CLOCK */
         SYSCON4->USBPHY0_CLK_ACTIVE |= SYSCON4_USBPHY0_CLK_ACTIVE_IPG_CLK_ACTIVE_MASK;
         CLOCK_AttachClk(kUSB_24MHZ_to_USB);
@@ -357,9 +355,7 @@ void USB_DeviceClockInit(void)
         POWER_DisablePD(kPDRUNCFG_PPD_USB1_SRAM);
         /* Apply the config */
         POWER_ApplyPD();
-        /* disable the read and write gate */
-        SYSCON4->USB1_MEM_CTRL |= (SYSCON4_USB1_MEM_CTRL_MEM_WIG_MASK | SYSCON4_USB1_MEM_CTRL_MEM_RIG_MASK |
-                                     SYSCON4_USB1_MEM_CTRL_MEM_STDBY_MASK);
+
         CLOCK_EnableClock(kCLOCK_Usb1);
         CLOCK_EnableClock(kCLOCK_UsbphyRef);
         CLOCK_AttachClk(kEUSB_24MHZ_to_EUSB);
