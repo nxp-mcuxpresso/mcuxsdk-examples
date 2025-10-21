@@ -81,6 +81,8 @@ status_t MODEL_Init(void)
 #elif (defined(CPU_MIMXRT685SFAWBR_dsp) || defined(CPU_MIMXRT685SFFOB_dsp) || defined(CPU_MIMXRT685SFVKB_dsp) || defined(CPU_MIMXRT685SVFVKB_dsp) ||(defined(CPU_MIMXRT595SFAWC_dsp) || defined(CPU_MIMXRT595SFFOC_dsp)))
 
     PRINTF("DSP Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_DspCpuClk)/1000000);
+#elif (defined(CPU_MIMXRT2662AVJ7A) || defined(CPU_MIMXRT2662AVM7A) || defined(CPU_MIMXRT2662CVJ8A) || defined(CPU_MIMXRT2662CVL8A) || defined(CPU_MIMXRT2662CVM8A) || defined(CPU_MIMXRT2662DVJAA) || defined(CPU_MIMXRT2662DVLAA) || defined(CPU_MIMXRT2662DVMAA) || defined(CPU_MIMXRT2662XVJ78A) || defined(CPU_MIMXRT2662XVL8A) || defined(CPU_MIMXRT2662XVM8A))
+    PRINTF("Core/NPU Frequency: %d MHz\r\n", 12000000/1000000);
 #else 
     PRINTF("Core/NPU Frequency: %d MHz\r\n", CLOCK_GetFreq(kCLOCK_CoreSysClk)/1000000);
 #endif
