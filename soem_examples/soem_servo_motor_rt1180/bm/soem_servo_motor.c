@@ -373,7 +373,7 @@ int main(void)
 	
 	osal_timer_init(0);
 
-#if defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM
+#if ((defined(EXAMPLE_EP_NUM) && EXAMPLE_EP_NUM) || (defined(EXAMPLE_ENET_NUM) && EXAMPLE_ENET_NUM))
 	if_port_init();
 #endif
 #if !(defined(EXAMPLE_NETC_HAS_NO_SWITCH) && EXAMPLE_NETC_HAS_NO_SWITCH)

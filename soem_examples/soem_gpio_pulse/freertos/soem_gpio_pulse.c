@@ -218,9 +218,13 @@ static int if_port_init(void)
     struct soem_if_port soem_port;
     memset(&if_port, 0, sizeof(if_port));
     if_port.bufferConfig = buffConfig;
-    if_port.base         = ENET;
+    if_port.base         = EXAMPLE_ENET;
     /* The miiMode should be set according to the different PHY interfaces. */
+#ifdef EXAMPLE_PHY_INTERFACE_RGMII
+    if_port.mii_mode                   = kENET_RgmiiMode;
+#else
     if_port.mii_mode                   = kENET_RmiiMode;
+#endif
     if_port.phy_config.autoNeg         = true;
     if_port.phy_config.phyAddr         = EXAMPLE_PHY_ADDRESS;
     if_port.phy_config.resource        = EXAMPLE_PHY_RESOURCE;

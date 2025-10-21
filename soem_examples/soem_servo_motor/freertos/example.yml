@@ -1,0 +1,14 @@
+soem_servo_motor_freertos:
+  section-type: application
+  contents:
+    meta_path: examples/soem_examples/soem_servo_motor/freertos
+    project-root-path: boards/${board}/soem_examples/soem_servo_motor/freertos/${multicore_foldername}
+    document:
+      name: soem_servo_motor${core_id_suffix_name}
+      category: soem_examples
+      brief: SOEM servo motor example
+      example_readme:
+      - examples/soem_examples/soem_servo_motor/freertos/readme.md
+      - ${board_root}/${board}/soem_examples/soem_servo_motor/freertos/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
