@@ -311,8 +311,8 @@ uint8_t g_UsbDeviceConfigurationDescriptor[] = {
     0x10U, /* ID of the Clock Entity to which this Input Terminal is connected.  */
 #if defined(USB_AUDIO_CHANNEL7_1) && (USB_AUDIO_CHANNEL7_1 > 0U)
     0x08U, /* This Terminal's output audio channel cluster has 8 logical output channels   */
-    0xFFU,
-    0x00U,
+    0x3FU,
+    0x06U,
     0x00U,
     0x00U, /* Describes the spatial location of the logical channels:: Mono, no spatial location */
 #elif defined(USB_AUDIO_CHANNEL5_1) && (USB_AUDIO_CHANNEL5_1 > 0U)
@@ -492,8 +492,8 @@ uint8_t g_UsbDeviceConfigurationDescriptor[] = {
     0x00U, /* The Audio Data Format that can be Used to communicate with this interface, D0:PCM */
 #if defined(USB_AUDIO_CHANNEL7_1) && (USB_AUDIO_CHANNEL7_1 > 0U)
     0x08U, /* Number of physical channels in the AS Interface audio channel cluster */
-    0xFFU,
-    0x00U,
+    0x3FU,
+    0x06U,
     0x00U,
     0x00U, /* Describes the spatial location of the logical channels: */
 #elif defined(USB_AUDIO_CHANNEL5_1) && (USB_AUDIO_CHANNEL5_1 > 0U)
