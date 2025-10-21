@@ -47,6 +47,7 @@ void EDMA_Callback(edma_handle_t *handle, void *param, bool transferDone, uint32
     if (g_TransferCounter > DEMO_DMA_PING_PONG_COUNTER)
     {
         g_transferDone = true;
+        g_TransferCounter = 0U;
         EDMA_AbortTransfer(&g_EDMA_Handle);
     }
 }
