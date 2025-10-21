@@ -15,3 +15,4 @@ secure-subsystem_examples
    ele_symmetric/readme.md
    ele_keystore/readme.md
    ele_elgamal/readme.md
+   ele_concurrent_access/readme.md
