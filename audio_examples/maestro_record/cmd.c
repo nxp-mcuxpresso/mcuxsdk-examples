@@ -58,9 +58,6 @@ SHELL_COMMAND_DEFINE(version, "\r\n\"version\": Display component versions\r\n",
 
 SHELL_COMMAND_DEFINE(record_mic,
                      "\r\n\"record_mic\": Record MIC audio and perform one (or more) of following actions:\r\n"
-#ifdef VOICE_SEEKER_PROC
-                     " - perform VoiceSeeker processing\r\n"
-#endif
 #ifdef VIT_PROC
                      " - perform voice recognition (VIT)\r\n"
 #endif

@@ -35,19 +35,6 @@ mcux_add_include(
 )
 
 mcux_add_source(
-    TOOLCHAINS armgcc mcux
-    BASE_PATH ${SdkRootDirPath}
-    SOURCES examples/audio_examples/maestro_record/voice_seeker/voice_seeker.c
-            examples/audio_examples/maestro_record/voice_seeker/voice_seeker.h
-)
-
-mcux_add_include(
-    TOOLCHAINS armgcc mcux
-    BASE_PATH ${SdkRootDirPath}
-    INCLUDES examples/audio_examples/maestro_record/voice_seeker
-)
-
-mcux_add_source(
     BASE_PATH ${SdkRootDirPath}
     SOURCES examples/audio_examples/maestro_record/opus_enc/opusmem2mem_file.h
 )

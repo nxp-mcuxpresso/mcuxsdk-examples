@@ -14,13 +14,7 @@
 #ifdef VIT_PROC
 #include "vit_proc.h"
 #endif
-#ifdef VOICE_SEEKER_PROC
-#include "voice_seeker.h"
-#endif
 #include "app_definitions.h"
-#if (((defined(VIT_PROC) && !defined(VOICE_SEEKER_PROC))) && DEMO_CODEC_CS42448 == 1)
-#error "Please define VOICE_SEEKER_PROC in order to use VIT with DEMO_CODEC_CS42448"
-#endif
 
 #define APP_STREAMER_MSG_QUEUE     "app_queue"
 #define STREAMER_TASK_NAME         "Streamer"
@@ -142,9 +136,7 @@ status_t STREAMER_mic_Create(streamer_handle_t *handle, ElementIndex out_sink, c
     ElementIndex element_ids[3];
 
     /* There are several possibilities how the pipeline will be constructed:
-     * 1) out_sink is VIT
-     * 	  a) VoiceSeeker is used => Microphone -> VoiceSeeker -> VIT
-     * 	  b) No VoiceSeeker => Microphone -> VIT
+     * 1) out_sink is VIT => Microphone -> VIT
      * 2) out sink is a speaker or a file
      *    a) VIT can be used just with 1 channel input
      *    b) VIT processing is not part of the pipeline
@@ -153,13 +145,8 @@ status_t STREAMER_mic_Create(streamer_handle_t *handle, ElementIndex out_sink, c
 #ifdef VIT_PROC
     if (out_sink == ELEMENT_VIT_INDEX)
     {
-#ifdef VOICE_SEEKER_PROC
-        element_ids[1] = ELEMENT_VOICESEEKER_INDEX;
-        element_ids[2] = out_sink;
-#else
         element_ids[1] = out_sink;
         num_elements   = 2;
-#endif // VOICE_SEEKER_PROC
     }
     else
 #endif // VIT_PROC
@@ -193,16 +180,6 @@ status_t STREAMER_mic_Create(streamer_handle_t *handle, ElementIndex out_sink, c
         return kStatus_Fail;
     }
 
-#ifdef VOICE_SEEKER_PROC
-    if (is_element_in_pipeline(pipelineElements, ELEMENT_VOICESEEKER_INDEX))
-    {
-        EXT_PROCESS_DESC_T voice_seeker_proc = {VoiceSeeker_Initialize_func, VoiceSeeker_Execute_func,
-                                                VoiceSeeker_Deinit_func, NULL};
-        prop.prop                            = PROP_VOICESEEKER_FUNCPTR;
-        prop.val                             = (uintptr_t)&voice_seeker_proc;
-        streamer_set_property(handle->streamer, 0, prop, true);
-    }
-#endif // VOICE_SEEKER_PROC
 #ifdef VIT_PROC
     if (is_element_in_pipeline(pipelineElements, ELEMENT_VIT_INDEX) ||
         is_element_in_pipeline(pipelineElements, ELEMENT_VIT_PROC_INDEX))
@@ -218,12 +195,11 @@ status_t STREAMER_mic_Create(streamer_handle_t *handle, ElementIndex out_sink, c
     }
 #endif // VIT_PROC
 
-#if ((DEMO_CHANNEL_NUM > 2) && !defined(VOICE_SEEKER_PROC))
+#if ((DEMO_CHANNEL_NUM > 2))
     if (out_sink == ELEMENT_VIT_INDEX)
     {
         PRINTF(
-            "[STREAMER] Please enable VoiceSeeker, it must be used if more than one channel is used and VIT is "
-            "enabled.\r\n");
+            "[STREAMER]  VIT supports just one channel. \r\n");
         return kStatus_Fail;
     }
 #endif
@@ -385,7 +361,7 @@ void STREAMER_Destroy(streamer_handle_t *handle)
 {
     streamer_destroy(handle->streamer);
     handle->streamer = NULL;
-    
+
     deinit_logging();
 }
 

@@ -49,10 +49,6 @@
 #include "VIT_Model_tr.h"
 #endif
 
-#ifdef VOICE_SEEKER_PROC
-#include "libVoiceSeekerLight.h"
-#endif
-
 #define BYTE_DEPTH         2
 #define NUMBER_OF_CHANNELS 1
 #define VIT_CMD_TIME_SPAN  3.0
@@ -81,10 +77,6 @@
 #else
 #error "No platform selected"
 
-#endif
-
-#ifdef VOICE_SEEKER_PROC
-extern RETUNE_VOICESEEKERLIGHT_plugin_t vsl;
 #endif
 
 #define SAMPLES_PER_FRAME VIT_SAMPLES_PER_30MS_FRAME
@@ -440,9 +432,6 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
             {
                 PRINTF(" %s\r\n", WakeWord.pName);
             }
-#ifdef VOICE_SEEKER_PROC
-            VoiceSeekerLight_TriggerFound(&vsl, WakeWord.StartOffset);
-#endif
         }
     }
     else if (VIT_DetectionResults == VIT_VC_DETECTED)
