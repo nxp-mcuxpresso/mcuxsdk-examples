@@ -5,7 +5,7 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 IO0     = EXT_TRIG_IN1 P1_18 J2
 IO1     = EXT_TRIG_IN2 P1_19 J2
 AOI_OUT = EXT_TRIG_OUT0 P3_8 J1
@@ -13,8 +13,8 @@ AOI_OUT = EXT_TRIG_OUT0 P3_8 J1
 AOI_OUT = IO0 & IO1
 
 Prepare the Demo
-===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -26,11 +26,10 @@ Prepare the Demo
 
 Running the demo
 ================
+When IO0 and IO1 are both high level, the AOI_OUT is high level.
+When any of IO is low level, the AOI_OUT is low level.
 
-The log below shows the output of the aoi demo in the terminal window:
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 aoi_io_and project.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-When IO0 and IO1 are both high level, the AOI_OUT is high level.
-When any of IO is low level, the AOI_OUT is low level.

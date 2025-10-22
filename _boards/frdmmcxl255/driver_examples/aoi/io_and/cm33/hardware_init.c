@@ -15,7 +15,6 @@
 /*${header:end}*/
 
 /*${function:start}*/
-
 void IO_Configuration(void)
 {
     /* Attach trigger inputs to AOI0 MUX0 and MUX1 */
@@ -25,20 +24,20 @@ void IO_Configuration(void)
 
 void BOARD_InitHardware(void)
 {
+    BOARD_InitBootClocks();
+    BOARD_InitBootPins();
+    BOARD_InitDebugConsole();
+
     /* Release peripheral reset */
     RESET_ReleasePeripheralReset(kAOI0_RST_SHIFT_RSTn);
     
     CLOCK_EnableClock(kCLOCK_GateAOI0);
 
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitAOIPins();
-    BOARD_InitBootClocks();
-    BOARD_InitDebugConsole();
-
     INPUTMUX_Init(INPUTMUX0);
     
     /* Route AOI0 output 0 to external trigger */
     INPUTMUX_AttachSignal(INPUTMUX0, kINPUTMUX_INDEX_EXT_TRIG0, kINPUTMUX_Aoi0Out0ToExtTrign);
-}
 
+    BOARD_InitAOIPins();
+}
 /*${function:end}*/
