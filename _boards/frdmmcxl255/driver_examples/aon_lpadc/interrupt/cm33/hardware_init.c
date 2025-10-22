@@ -13,10 +13,10 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
-    
+
     CLOCK_EnableClock(kCLOCK_GateAonAPB);
     CLOCK_EnableClock(kCLOCK_GateAonLPADC);
     CLOCK_EnableClock(kCLOCK_GateAonPORT);

@@ -5,14 +5,13 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 Connect a external voltage source to the J2-7.
 
 Prepare the Demo
-===============
-Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
-2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
+2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
     - No parity
@@ -23,8 +22,8 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
-The log below shows the output of the hello world demo in the terminal window:
 
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Lpadc interrupt example
 Press any key to get the ADC conversion result
