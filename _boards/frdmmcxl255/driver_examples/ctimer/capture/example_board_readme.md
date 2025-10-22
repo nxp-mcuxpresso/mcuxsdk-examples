@@ -15,7 +15,7 @@ Connect following two pins on Arduino header together:
 
 Prepare the Demo
 ===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -27,8 +27,14 @@ Prepare the Demo
 
 Running the demo
 ================
-The example periodically toggles GPIO pin, CTIMER then captures its 
-value (time) and prints it into the console like this:
+The example periodically toggles GPIO pin, CTIMER then captures its value (time).
 
-`Timer value is 3469959027 when rising edge captured`
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CTimer capture example
+Rising edge triggered and CTimer capture the edge periodically
 
+Timer value is 2005593637 when rising edge captured
+Timer value is 938662930 when rising edge captured
+Timer value is 1975236405 when rising edge captured
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

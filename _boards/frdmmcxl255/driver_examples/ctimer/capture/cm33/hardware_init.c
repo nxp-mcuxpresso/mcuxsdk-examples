@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -18,14 +19,16 @@
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitCtimerCapPins();
     BOARD_InitDebugConsole();
 
-    /* CTIMER2 used by this example won't work without CTIMER1
-       released from reset and clocked */
+    /* CTIMER2 used by this example won't work without CTIMER1 released from reset and clocked */
+
+    /* Enable clock */
     CLOCK_EnableClock(kCLOCK_GateCTIMER1);
+
+    /* Release peripheral reset */
     RESET_ClearPeripheralReset(kCTIMER1_RST_SHIFT_RSTn);
 }
 

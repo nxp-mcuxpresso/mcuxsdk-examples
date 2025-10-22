@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #ifndef _APP_H_
 #define _APP_H_
 
@@ -26,3 +27,6 @@ void DEMO_PullGpioPin(uint8_t level);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/
