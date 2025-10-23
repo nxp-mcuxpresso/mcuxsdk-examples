@@ -238,18 +238,26 @@ static void wifi_ncp_task(void *pvParameters)
     }
 }
 
+#define WIFI_NCP_TX_ALLOC_TRY_NUM  20
 static void wifi_ncp_callback(void *tlv, size_t tlv_sz, int status)
 {
     int ret = 0;
     wifi_ncp_command_t cmd_item;
-
+    int mem_alloc_try_num = WIFI_NCP_TX_ALLOC_TRY_NUM;
     cmd_item.block_type = 0;
     cmd_item.command_sz = tlv_sz;
+realloc_mem:
     cmd_item.cmd_buff = (ncp_tlv_qelem_t *)OSA_MemoryAllocate(tlv_sz);
     if (!cmd_item.cmd_buff)
     {
-        NCP_TLV_STATS_INC(drop);
-        ncp_adap_d("%s: failed to allocate memory for tlv queue element", __FUNCTION__);
+        if (!mem_alloc_try_num)
+        {
+            mem_alloc_try_num--;
+            OSA_TimeDelay(OSA_MsgQAvailableMsgs(wifi_ncp_command_queue)/10+1);
+            goto realloc_mem;
+        }
+        ncp_adap_e("%s: failed to allocate memory for tlv queue element, num = %d",
+                   __FUNCTION__, OSA_MsgQAvailableMsgs(wifi_ncp_command_queue));
         return ;
     }
     memcpy(cmd_item.cmd_buff, tlv, tlv_sz);

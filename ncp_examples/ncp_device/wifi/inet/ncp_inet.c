@@ -503,6 +503,7 @@ fd_set traverse_bitmap_and_setfd(uint64_t bitmap)
     return readset;
 }
 
+#define WIFI_NCP_RX_ALLOC_TRY_NUM  20
 static void socket_recv_task(void *arg)
 {
 #define NCP_SOCKET_RECEIVE_TIMEOUT_INTVAL  1000
@@ -540,12 +541,18 @@ static void socket_recv_task(void *arg)
                       + NCP_GCM_TAG_LEN
 #endif
                       + chksum_len);
+                    int mem_alloc_try_num = WIFI_NCP_RX_ALLOC_TRY_NUM;
+realloc_mem:
                     recv_buf = (uint8_t *)OSA_MemoryAllocate(buf_len);
                     if (!recv_buf)
                     {
+                        if (!mem_alloc_try_num)
+                        {
+                            mem_alloc_try_num--;
+                            OSA_TaskYield();
+                            goto realloc_mem;
+                        }
                         ncp_e("ncp socket receive buffer alloc fail\r\n");
-                        OSA_TaskYield();
-                        continue;
                     }
                     union ncp_sockaddr_aligned client_addr;
                     socklen_t socklen = sizeof(client_addr);
