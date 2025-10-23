@@ -11,15 +11,11 @@
 #include "pin_mux.h"
 /*${header:end}*/
 
-/*${variable:start}*/
-
-/*${variable:end}*/
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/
