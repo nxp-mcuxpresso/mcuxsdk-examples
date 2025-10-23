@@ -20,8 +20,8 @@ void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
     BOARD_InitBootPins();
-    BOARD_InitCtimerCapPins();
     BOARD_InitDebugConsole();
+    BOARD_InitCtimerCapPins();
 
     /* CTIMER2 used by this example won't work without CTIMER1 released from reset and clocked */
 

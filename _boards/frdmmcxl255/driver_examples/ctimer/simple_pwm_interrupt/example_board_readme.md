@@ -5,11 +5,12 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
+No special settings are required.
 
 Prepare the Demo
-===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -21,9 +22,10 @@ Prepare the Demo
 
 Running the demo
 ================
+You can measure 2kHz signal with changing duty cycle on the pin P2_14 (Arduino J1-12).
+
 The log below shows example output of the CTimer simple PWM demo using interrupts in the terminal window:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CTimer example to generate a PWM signal
 This example uses interrupts to update the PWM duty cycle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You can measure 2kHz signal with changing duty cycle on the pin P2_14 (Arduino J1-12).

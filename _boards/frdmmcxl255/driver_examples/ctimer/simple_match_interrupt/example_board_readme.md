@@ -5,11 +5,12 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
+No special settings are required.
 
 Prepare the Demo
-===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -21,10 +22,10 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows example output of the CTimer simple match demo using interrupts in the terminal window:
+You can see the red led and blue led will blinking alternating frequently and then return to the original status.
+
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CTimer match example to toggle the output. 
 This example uses interrupt to change the match period.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can see the red led and blue led will blinking alternating frequently and then return to the original status.
