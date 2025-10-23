@@ -5,15 +5,15 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 To measure the frequency or pulse width of external input clock, please connect input clock signal to:
 FREQME_CLK_IN0 - P2_0 (J2)
 FREQME_CLK_IN1 - P2_1 (J2)
 
 Prepare the Demo
-===============
-1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port on the target board.
-2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
+2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
     - No parity
@@ -24,7 +24,8 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows the output of the freqme_interrupt demo in the terminal window:
+
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 FREQME Interrupt Example!
 Please select operate mode...
