@@ -377,9 +377,18 @@ send_rsp:
         response.content_length = response.data_length;
         HTTPSRV_cgi_write(&response);
 
+        ret = send_msg_to_uap_prov(MSG_TYPE_CMD, CMD_REASON_UAP_PROV_UAP_STOP, 0);
+        if (ret != WM_SUCCESS)
+        {
+            uap_prov_e("CGI_HandlePost: Failed to send msg(CMD_REASON_UAP_PROV_UAP_STOP): %d", ret);
+            goto done;
+        }
+
         /* Since the Joining was successful, we can save the credentials to the Flash */
         config_set_sta_network();
     }
+
+done:
 
     return (response.content_length);
 }
@@ -713,11 +722,7 @@ static int uap_prov_sm(struct q_message *msg)
                     else
                     {
                         uap_prov_set_sm_state(WIFI_STATE_UAP_STA_CONNECTED);
-                        ret = do_uap_stop();
-                        if (ret == WM_SUCCESS)
-                        {
-                            uap_prov_set_sm_state(WIFI_STATE_UAP_STA_UAP_STOPPING);
-                        }
+
                         send_msg_to_httpsrv_ses(MSG_TYPE_EVT, WLAN_REASON_SUCCESS, 0);
                     }
                 }
@@ -881,6 +886,25 @@ static int uap_prov_sm(struct q_message *msg)
                 else if (msg->reason == WLAN_REASON_UAP_STOP_FAILED)
                 {
                     msg_handled = 1;
+                }
+            }
+            break;
+        case WIFI_STATE_UAP_STA_CONNECTED:
+            if ((msg->type == MSG_TYPE_CMD) && (msg->reason == CMD_REASON_UAP_PROV_UAP_STOP))
+            {
+                msg_handled = 1;
+
+                /*Delay to wait HTTP message is sent before stopping uAP*/
+                OSA_TimeDelay(1000);
+
+                ret = do_uap_stop();
+                if (ret == WM_SUCCESS)
+                {
+                    uap_prov_set_sm_state(WIFI_STATE_UAP_STA_UAP_STOPPING);
+                }
+                else
+                {
+                    uap_prov_e("uap_prov_sm: failed to stop uap");
                 }
             }
             break;

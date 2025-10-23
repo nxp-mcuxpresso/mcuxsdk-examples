@@ -111,6 +111,7 @@ typedef struct _uap_prov_queues
 #define CMD_REASON_UAP_PROV_RESET    1
 #define CMD_REASON_UAP_PROV_STA_SCAN 2
 #define CMD_REASON_UAP_PROV_STA_CONN 3
+#define CMD_REASON_UAP_PROV_UAP_STOP 4
 
 typedef struct _post_ap_info
 {
