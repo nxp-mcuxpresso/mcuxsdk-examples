@@ -1,9 +1,9 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "fsl_clock.h"
@@ -16,9 +16,8 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_InitSWD_DEBUGPins();
-    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/

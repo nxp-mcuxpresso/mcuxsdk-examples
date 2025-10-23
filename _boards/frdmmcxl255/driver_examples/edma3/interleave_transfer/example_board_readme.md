@@ -5,14 +5,13 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
 
 Prepare the Demo
-===============
-Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -24,8 +23,9 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
-When the example runs successfully, you can see the similar information from the terminal as below.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 EDMA interleave transfer example begin.
 
 Destination Buffer:
@@ -37,4 +37,4 @@ EDMA interleave transfer example finish.
 Destination Buffer:
 
 1   0   2   0   3   0   4   0   5   0   6   0   7   0   8   0   
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
