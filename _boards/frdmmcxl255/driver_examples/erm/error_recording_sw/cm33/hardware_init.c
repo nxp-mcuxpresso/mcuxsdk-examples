@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "fsl_clock.h"
@@ -15,10 +16,11 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+  /* Release peripheral reset */
     RESET_PeripheralReset(kERM0_RST_SHIFT_RSTn);
 
-    BOARD_InitDEBUG_UARTPins();
     BOARD_InitBootClocks();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
 }
 
@@ -45,5 +47,4 @@ void APP_ecc_disable(void)
 {
   SYSCON->RAM_CTRL &= ~(SYSCON_RAM_CTRL_RAMA_ECC_ENABLE_MASK);
 }
-
 /*${function:end}*/
