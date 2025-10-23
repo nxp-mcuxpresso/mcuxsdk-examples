@@ -23,9 +23,11 @@
 #include "fsl_gt911.h"
 #endif
 
-#if LV_USE_DRAW_VGLITE
+#if LV_USE_DRAW_VG_LITE
 #include "vg_lite.h"
 #include "vglite_support.h"
+#include "src/stdlib/builtin/lv_tlsf.h"
+#include "src/draw/lv_draw_buf_private.h"
 #endif
 
 #if LV_USE_PXP
@@ -85,6 +87,10 @@
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
+#if LV_USE_DRAW_VG_LITE
+static void lv_port_draw_buf_init(void);
+#endif
+
 static void disp_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *color_p);
 
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p);
@@ -113,9 +119,9 @@ static void DEMO_SetLcdColorPalette(void);
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-SDK_ALIGN(static uint8_t s_frameBuffer[2][DEMO_FB_SIZE], DEMO_FB_ALIGN);
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_frameBuffer[2][DEMO_FB_SIZE], DEMO_FB_ALIGN);
 #if DEMO_USE_ROTATE
-SDK_ALIGN(static uint8_t s_lvglBuffer[1][DEMO_FB_SIZE], DEMO_FB_ALIGN);
+AT_NONCACHEABLE_SECTION_ALIGN(static uint8_t s_lvglBuffer[1][DEMO_FB_SIZE], DEMO_FB_ALIGN);
 #endif
 
 #if defined(SDK_OS_FREE_RTOS)
@@ -152,6 +158,10 @@ static int s_touchResolutionX;
 static int s_touchResolutionY;
 #endif
 
+#if LV_USE_DRAW_VG_LITE
+static lv_tlsf_t image_tlsf;
+#endif
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -182,11 +192,6 @@ void lv_port_disp_init(void)
 
     status_t status;
     dc_fb_info_t fbInfo;
-
-#if LV_USE_DRAW_VGLITE
-    /* Initialize GPU. */
-    BOARD_PrepareVGLiteController();
-#endif
 
     /*-------------------------
      * Initialize your display
@@ -225,6 +230,10 @@ void lv_port_disp_init(void)
     s_transferDone = false;
 #endif
 
+#if LV_USE_DRAW_VG_LITE
+    lv_port_draw_buf_init();
+#endif
+
 #if DEMO_USE_ROTATE
     /* s_frameBuffer[1] is first shown in the panel, s_frameBuffer[0] is inactive. */
     s_inactiveFrameBuffer = (void *)s_frameBuffer[0];
@@ -252,8 +261,14 @@ void lv_port_disp_init(void)
 #endif
 
     lv_display_set_flush_cb(disp_drv, disp_flush_cb);
+}
 
-#if LV_USE_DRAW_VGLITE
+void gpu_init(void)
+{
+#if LV_USE_DRAW_VG_LITE
+    /* Initialize GPU. */
+    BOARD_PrepareVGLiteController();
+
     if (vg_lite_init(DEFAULT_VG_LITE_TW_WIDTH, DEFAULT_VG_LITE_TW_HEIGHT) != VG_LITE_SUCCESS)
     {
         PRINTF("VGLite init error. STOP.");
@@ -398,6 +413,7 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
     g_dc.ops->setFrameBuffer(&g_dc, 0, (void *)color_p);
 
     DEMO_WaitBufferSwitchOff();
+
 #endif /* DEMO_USE_ROTATE */
 }
 
@@ -542,3 +558,31 @@ static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data)
 #endif
 #endif
 }
+
+#if LV_USE_DRAW_VG_LITE
+static void *buf_malloc_cb(size_t size, lv_color_format_t color_format)
+{
+    return lv_tlsf_malloc(image_tlsf, size + LV_DRAW_BUF_ALIGN - 1);
+}
+
+static void buf_free_cb(void *draw_buf)
+{
+    lv_tlsf_free(image_tlsf, draw_buf);
+}
+
+static void init_handlers(lv_draw_buf_handlers_t *handlers)
+{
+    handlers->buf_malloc_cb = buf_malloc_cb;
+    handlers->buf_free_cb = buf_free_cb;
+}
+
+static void lv_port_draw_buf_init(void)
+{
+    AT_NONCACHEABLE_SECTION(static uint32_t buf[2 * 1024 * 1024 / sizeof(uint32_t)]);
+    image_tlsf = lv_tlsf_create_with_pool(buf, sizeof(buf));
+
+    init_handlers(lv_draw_buf_get_handlers());
+    init_handlers(lv_draw_buf_get_font_handlers());
+    init_handlers(lv_draw_buf_get_image_handlers());
+}
+#endif

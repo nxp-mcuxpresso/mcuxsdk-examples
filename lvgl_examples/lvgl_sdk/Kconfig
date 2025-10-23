@@ -48,20 +48,20 @@ if MCUX_COMPONENT_middleware.lvgl
         default "\"Su\""
 
     # Kconfig default settings
-    config LV_USE_DRAW_SW
-        default n if LV_USE_DRAW_VGLITE
-
-    config LV_USE_DRAW_VGLITE
+    config LV_USE_DRAW_VG_LITE
         default y if MCUX_COMPONENT_middleware.vglite
 
     config LV_USE_PXP
         default y if MCUX_COMPONENT_driver.pxp
 
     config LV_USE_DRAW_PXP
-        default n if LV_USE_DRAW_VGLITE
+        default n if LV_USE_DRAW_VG_LITE
 
     config LV_DEMO_BENCHMARK_ALIGNED_FONTS
-        default y if LV_USE_DRAW_VGLITE
+        default y if LV_USE_DRAW_VG_LITE
+
+    config LV_DRAW_BUF_ALIGN
+        default 32 if LV_USE_PXP
 
     osource "${SdkRootDirPath}/middleware/lvgl/Kconfig"
 
@@ -79,6 +79,13 @@ if MCUX_COMPONENT_middleware.lvgl
         help
             Attribute to mark large constant arrays for example font's bitmaps.
             E.g. __attribute__((section("DataQuickAccess")))
+
+    config LV_ATTRIBUTE_LARGE_RAM_ARRAY
+        string "LV_ATTRIBUTE_LARGE_RAM_ARRAY"
+        default ""
+        help
+            Attribute to mark large ram arrays for example font's bitmaps.
+            E.g. __attribute__((section(\"NonCacheable.init\")))
 
     config LV_SYSMON_GET_IDLE
         string "LV_SYSMON_GET_IDLE"

@@ -23,3 +23,37 @@ mcux_add_mdk_configuration(
 mcux_add_armgcc_configuration(
     LD "-Xlinker --defsym=__stack_size__=0x1800"
 )
+
+# Add or remove Linker File Configurations
+mcux_remove_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_sdram
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/iar/MIMXRT1166xxxxx_${core_id}_flexspi_nor_sdram.icf
+)
+mcux_remove_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_sdram
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/arm/MIMXRT1166xxxxx_${core_id}_flexspi_nor_sdram.scf
+)
+mcux_remove_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_sdram
+    LINKER ${device_root}/RT/RT1160/MIMXRT1166/gcc/MIMXRT1166xxxxx_${core_id}_flexspi_nor_sdram.ld
+)
+
+# Add or remove Linker File Configurations
+mcux_add_iar_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_sdram
+    LINKER ${board_root}/${board}/lvgl_examples/linker/MIMXRT1166xxxxx_${core_id}_flexspi_nor_sdram.icf
+)
+mcux_add_mdk_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_sdram
+    LINKER ${board_root}/${board}/lvgl_examples/linker/MIMXRT1166xxxxx_${core_id}_flexspi_nor_sdram.scf
+)
+mcux_add_armgcc_linker_script(
+    BASE_PATH ${SdkRootDirPath}
+    TARGETS flexspi_nor_sdram
+    LINKER ${board_root}/${board}/lvgl_examples/linker/MIMXRT1166xxxxx_${core_id}_flexspi_nor_sdram.ld
+)

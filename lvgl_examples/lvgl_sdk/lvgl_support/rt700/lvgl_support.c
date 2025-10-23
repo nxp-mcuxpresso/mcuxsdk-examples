@@ -29,10 +29,10 @@
 #include "fsl_gt911.h"
 #endif
 
-#if LV_USE_DRAW_VGLITE
+#if LV_USE_DRAW_VG_LITE
 #include "vg_lite.h"
 #include "vglite_support.h"
-#include "lv_vglite_utils.h"
+#include "src/draw/vg_lite/lv_vg_lite_utils.h"
 #endif
 
 #include "fsl_cache.h"
@@ -182,11 +182,6 @@ void lv_port_disp_init(void)
 
     status_t status;
 
-#if LV_USE_DRAW_VGLITE
-    /* Initialize GPU. */
-    BOARD_PrepareVGLiteController();
-#endif
-
     /*-------------------------
      * Initialize your display
      * -----------------------*/
@@ -275,8 +270,14 @@ void lv_port_disp_init(void)
 #endif /* DEMO_USE_ROTATE */
 
 #endif /* DEMO_DISPLAY_USE_PARTIAL_REFRESH */
+}
 
-#if LV_USE_DRAW_VGLITE
+void gpu_init(void)
+{
+#if LV_USE_DRAW_VG_LITE
+    /* Initialize GPU. */
+    BOARD_PrepareVGLiteController();
+
     if (vg_lite_init(DEFAULT_VG_LITE_TW_WIDTH, DEFAULT_VG_LITE_TW_HEIGHT) != VG_LITE_SUCCESS)
     {
         PRINTF("VGLite init error. STOP.");
@@ -336,7 +337,7 @@ static void DEMO_WaitBufferSwitchOff(void)
 }
 
 #if DEMO_DISPLAY_USE_PARTIAL_REFRESH
-#if LV_USE_DRAW_VGLITE
+#if LV_USE_DRAW_VG_LITE
 static void copy_area(const lv_area_t *area, uint8_t *color_p, uint8_t *fb, uint32_t fbStrideBytes, uint8_t align_bytes)
 {
     uint32_t y;
@@ -380,8 +381,8 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
     uint8_t *fb = (uint8_t *)DEMO_BUFFER1_ADDR;
     uint8_t cf = lv_display_get_color_format(disp_drv);
 
-#if LV_USE_DRAW_VGLITE
-    uint8_t align_bytes = vglite_get_stride_alignment(cf);
+#if LV_USE_DRAW_VG_LITE
+    uint8_t align_bytes = lv_vg_lite_get_stride_alignment(cf);
     copy_area(area, color_p, fb, DEMO_BUFFER_STRIDE_BYTE, align_bytes);
 #else
     copy_area(area, color_p, fb, DEMO_BUFFER_STRIDE_BYTE);
