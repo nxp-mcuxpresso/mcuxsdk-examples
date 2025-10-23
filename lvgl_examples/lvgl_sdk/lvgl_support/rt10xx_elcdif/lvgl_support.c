@@ -144,6 +144,8 @@ static void DEMO_InitLcdBackLight(void);
 
 static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uint8_t *color_p);
 
+static void disp_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *color_p);
+
 static bool DEMO_InitTouch(void);
 
 static void DEMO_ReadTouch(lv_indev_t *drv, lv_indev_data_t *data);
@@ -216,14 +218,14 @@ void lv_port_disp_init(void)
     memset(s_lvglBuffer, 0, sizeof(s_lvglBuffer));
     lv_display_set_buffers_with_stride(disp_drv, (void *)s_lvglBuffer[0], NULL, DEMO_FB_SIZE, DEMO_FB_STRIDE(ROTATED_FB_WIDTH), LV_DISPLAY_RENDER_MODE_FULL);
 #else
-    lv_display_set_buffers_with_stride(disp_drv, (void *)s_frameBuffer[0], (void *)s_frameBuffer[1], DEMO_FB_SIZE, DEMO_FB_STRIDE(ROTATED_FB_WIDTH), LV_DISPLAY_RENDER_MODE_FULL);
+    lv_display_set_buffers_with_stride(disp_drv, (void *)s_frameBuffer[0], (void *)s_frameBuffer[1], DEMO_FB_SIZE, DEMO_FB_STRIDE(ROTATED_FB_WIDTH), LV_DISPLAY_RENDER_MODE_DIRECT);
 #endif
 
 #if DEMO_USE_ROTATE
     /* s_frameBuffer[1] is first shown in the panel, s_frameBuffer[0] is inactive. */
     s_inactiveFrameBuffer = (void *)s_frameBuffer[0];
 #endif
-    lv_display_set_flush_cb(disp_drv, DEMO_FlushDisplay);
+    lv_display_set_flush_cb(disp_drv, disp_flush_cb);
 }
 
 void LCDIF_IRQHandler(void)
@@ -439,12 +441,19 @@ static void DEMO_FlushDisplay(lv_display_t *disp_drv, const lv_area_t *area, uin
     while (s_framePending)
     {
     }
-
-    /* IMPORTANT!!!
-     * Inform the graphics library that you are ready with the flushing*/
-    lv_disp_flush_ready(disp_drv);
 #endif
 
+}
+
+static void disp_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *color_p)
+{
+#ifndef DISABLE_DISPLAY
+    /* Skip the non-last flush */
+    if (lv_display_flush_is_last(disp)) {
+        DEMO_FlushDisplay(disp, area, color_p);
+    }
+#endif
+    lv_display_flush_ready(disp);
 }
 
 void lv_port_indev_init(void)
