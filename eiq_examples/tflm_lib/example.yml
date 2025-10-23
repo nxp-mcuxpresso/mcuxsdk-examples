@@ -39,18 +39,24 @@ tflm_lib:
     - -mdk@flash_debug
     - -mdk@flash_release
     mimxrt2660evk@cm85_core0:
-    - +armgcc@debug
-    - +armgcc@release
-    - +iar@debug
-    - +iar@release
-    - +mdk@debug
-    - +mdk@release
-    - -armgcc@flash_debug
-    - -armgcc@flash_release
-    - -iar@flash_debug
-    - -iar@flash_release
-    - -mdk@flash_debug
-    - -mdk@flash_release
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
+    - -armgcc@psram_debug
+    - -armgcc@psram_release
+    - -iar@psram_debug
+    - -iar@psram_release
+    - -mdk@psram_debug
+    - -mdk@psram_release
+    - -armgcc@psram_txt_debug
+    - -armgcc@psram_txt_release
+    - -iar@psram_txt_debug
+    - -iar@psram_txt_release
+    - -mdk@psram_txt_debug
+    - -mdk@psram_txt_release
     frdmmcxn947@cm33_core0:
     - +armgcc@debug
     - +armgcc@release
