@@ -1,9 +1,9 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "fsl_clock.h"
@@ -24,7 +24,7 @@ const volatile uint8_t * g_mbc_mem = (uint8_t*)EXAMPLE_TRDC_MBC_BLK_ADDR;
 void APP_SetTrdcAccessible(void)
 {
     /* Use Glikey to enable modifications of MBC registers: */
-  
+
     status_t status = GLIKEY_IsLocked(GLIKEY0);
     assert(kStatus_GLIKEY_NotLocked == status); 
 
@@ -52,41 +52,39 @@ void APP_SetTrdcAccessible(void)
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
     
-    /* Make sure alignment of g_mbc_mem equals to MBC0_MEM0_GLBCFG_SIZE_LOG2 so
-       buffers maps exctly to one MBC block */
+    /* Make sure alignment of g_mbc_mem equals to MBC0_MEM0_GLBCFG_SIZE_LOG2 so buffers maps exctly to one MBC block */
     assert (((MBC0->MBC_INDEX[0].MBC_MEM_GLBCFG[0] & 
-              TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_MASK) >>
-             TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_SHIFT) \
-                 == \
-             EXAMPLE_TRDC_MBC0_MEM0_GLBCFG_SIZE_LOG2);
+                TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_MASK) >>
+                TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_SHIFT) \
+                == \
+                EXAMPLE_TRDC_MBC0_MEM0_GLBCFG_SIZE_LOG2);
 
     APP_SetTrdcAccessible();
 }
 
 uint32_t APP_GetMbc0Mem0BlockIdx(const void* mem_ptr)
 {
-  uint32_t idx = (uint32_t)mem_ptr;
-  const uint32_t shift = (MBC0->MBC_INDEX[0].MBC_MEM_GLBCFG[0] & 
-                          TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_MASK ) >>
-                          TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_SHIFT;
-  const uint32_t nblks = (MBC0->MBC_INDEX[0].MBC_MEM_GLBCFG[0] & 
-                          TRDC_MBC_MEM_GLBCFG_NBLKS_MASK ) >>
-                          TRDC_MBC_MEM_GLBCFG_NBLKS_SHIFT;
-  
-  /* Zero secure bit from address */
-  idx &= ~0x10000000U;
-  
-  /* Shift by GLBCFG_NBLKS_LOG2*/
-  idx >>= shift;
-  
-  /* Check if mem_ptr fits to MBC0_MEM0 */
-  assert(idx < nblks);
-  
-  return idx;  
+    uint32_t idx = (uint32_t)mem_ptr;
+    const uint32_t shift = (MBC0->MBC_INDEX[0].MBC_MEM_GLBCFG[0] & 
+                            TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_MASK ) >>
+                            TRDC_MBC_MEM_GLBCFG_SIZE_LOG2_SHIFT;
+    const uint32_t nblks = (MBC0->MBC_INDEX[0].MBC_MEM_GLBCFG[0] & 
+                            TRDC_MBC_MEM_GLBCFG_NBLKS_MASK ) >>
+                            TRDC_MBC_MEM_GLBCFG_NBLKS_SHIFT;
+
+    /* Zero secure bit from address */
+    idx &= ~0x10000000U;
+
+    /* Shift by GLBCFG_NBLKS_LOG2*/
+    idx >>= shift;
+
+    /* Check if mem_ptr fits to MBC0_MEM0 */
+    assert(idx < nblks);
+
+    return idx;  
 }
 
 void APP_SetTrdcGlobalConfig(void)
@@ -171,3 +169,4 @@ void APP_ResolveMbcAccessError(void)
     mbcBlockConfig.memoryAccessControlSelect = EXAMPLE_TRDC_MBC_ACCESS_CONTROL_POLICY_INDEX;
     TRDC_MbcSetMemoryBlockConfig(EXAMPLE_TRDC_INSTANCE, &mbcBlockConfig);
 }
+/*${function:end}*/

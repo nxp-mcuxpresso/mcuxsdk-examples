@@ -5,11 +5,12 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
+No special settings are required.
 
 Prepare the Demo
-===============
-1.  Connect a USB cable between the host PC and the EVK board J21.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -21,13 +22,12 @@ Prepare the Demo
 
 Running the demo
 ================
-When the demo runs successfully, will get the similar messages on the terminal.
 
-~~~~~~~~~~~~~~~~~~~~~~
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TRDC example start
 Set the MBC selected memory block not accessible
 Resolve access error
 The MBC selected block is accessible now
 TRDC example Success
-~~~~~~~~~~~~~~~~~~~~~~
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
