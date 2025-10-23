@@ -43,6 +43,10 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+#define GPIO_PIN_MASK(pin)          (1UL << (pin))
+#define GPIO_IS_OUTPUT_PIN(base, pin)   ((base)->PDDR & GPIO_PIN_MASK(pin))
+#define GPIO_IS_INPUT_PIN(base, pin)    (!((base)->PDDR & GPIO_PIN_MASK(pin)))
+
 void APP_SRTM_WakeupCA35(void);
 
 typedef struct
@@ -1005,7 +1009,6 @@ static void APP_IO_SetPinConfig(uint16_t ioId, bool asInput)
                         pinFuncId[index][4], asInput ? (inputMask[index]) : (outputMask[index]));
 }
 
-#if APP_SRTM_USE_PIN_AS_OUTPUT
 static srtm_status_t APP_IO_ConfOutput(uint16_t ioId, srtm_io_value_t ioValue)
 {
     uint8_t gpioIdx = APP_GPIO_IDX(ioId);
@@ -1021,7 +1024,8 @@ static srtm_status_t APP_IO_ConfOutput(uint16_t ioId, srtm_io_value_t ioValue)
 
     /* Set gpio direction as output */
     base = gpios[gpioIdx];
-    base->PDDR |= (1UL << pinIdx);
+    if (GPIO_IS_INPUT_PIN(base, pinIdx))
+        base->PDDR |= GPIO_PIN_MASK(pinIdx);
 
     return SRTM_Status_Success;
 }
@@ -1039,7 +1043,6 @@ static srtm_status_t APP_IO_SetOutput(srtm_service_t service,
 
     return APP_IO_ConfOutput(ioId, ioValue);
 }
-#endif
 
 static srtm_status_t APP_IO_GetInput(srtm_service_t service,
                                      srtm_peercore_t core,
@@ -1073,7 +1076,7 @@ static srtm_status_t APP_IO_GetDirection(srtm_service_t service,
 
     base = gpios[gpioIdx];
 
-    *pIoDir = (base->PDDR & (1UL << pinIdx)) ? SRTM_IoDirectionOutput : SRTM_IoDirectionInput;
+    *pIoDir = (base->PDDR & GPIO_PIN_MASK(pinIdx)) ? SRTM_IoDirectionOutput : SRTM_IoDirectionInput;
 
     return SRTM_Status_Success;
 }
@@ -1097,7 +1100,8 @@ static srtm_status_t APP_IO_ConfInput(uint8_t inputIdx, srtm_io_event_t event, b
     APP_IO_SetPinConfig(ioId, true);
     /* Set gpio direction as input */
     base = gpios[gpioIdx];
-    base->PDDR &= ~(1UL << pinIdx);
+    if (GPIO_IS_OUTPUT_PIN(base, pinIdx))
+        base->PDDR &= ~GPIO_PIN_MASK(pinIdx);
 
     switch (event)
     {
@@ -2094,8 +2098,8 @@ static void APP_SRTM_InitIoKeyService(void)
     EnableIRQ(GPIOB_INT1_IRQn);
 
     ioService = SRTM_IoService_Create();
-    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTA19, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
-    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB5, NULL, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTA19, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
+    SRTM_IoService_RegisterPin(ioService, APP_PIN_PTB5, APP_IO_SetOutput, APP_IO_GetInput, APP_IO_ConfIEvent, APP_IO_GetDirection, NULL);
     SRTM_Dispatcher_RegisterService(disp, ioService);
 
     keypadService = SRTM_KeypadService_Create();
