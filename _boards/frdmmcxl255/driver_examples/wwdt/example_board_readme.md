@@ -5,12 +5,12 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 No special settings are required.
 
 Prepare the Demo
-===============
-1.  Connect a type-c USB cable between the host PC and the MCU-Link USB port (J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -23,8 +23,9 @@ Prepare the Demo
 Running the demo
 ================
 If the demo runs successfully, you will see the red LED blink every two seconds.
-The log below shows example output of the WWDT driver demo in the terminal window:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 --- Time out reset test start ---
 Watchdog reset occurred
 
@@ -43,4 +44,4 @@ WDOG has be refreshed!
 WDOG has be refreshed!
 WDOG has be refreshed!
 WDOG has be refreshed!
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
