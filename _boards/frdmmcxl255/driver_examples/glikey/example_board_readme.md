@@ -5,12 +5,12 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 No special settings are required.
 
 Prepare the Demo
-===============
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link USB port (J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -21,8 +21,9 @@ Prepare the Demo
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
-===============
-The log below shows the output of the GLIKEY driver demo in the terminal window:
+================
+
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 GLIKEY Peripheral Driver Example
 
