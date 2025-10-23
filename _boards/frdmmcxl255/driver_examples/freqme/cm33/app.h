@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #ifndef _APP_H_
 #define _APP_H_
 
@@ -38,7 +39,6 @@
 
 #define DEMO_MAXEXPECTVALUE    (0x6FFFFFFFUL)
 #define DEMO_MINEXPECTVALUE    (0xFUL)
-
 /*${macro:end}*/
 
 /*******************************************************************************
@@ -49,3 +49,6 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/
