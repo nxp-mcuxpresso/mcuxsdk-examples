@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=../../../../../scripts/data_schema/example_description_schema.json
+iuart_9bit_polling:
+  section-type: application
+  contents:
+    meta_path: examples/driver_examples/iuart/9bit_polling
+    project-root-path: boards/${board}/driver_examples/uart/9bit_polling/${multicore_foldername}
+    document:
+      name: iuart_9bit_polling${core_id_suffix_name}
+      category: driver_examples/uart
+      brief: The uart_9bit_polling example shows how to use uart driver in 9bit_polling way:In
+        this example, one uart instance connect to PC through uart, the board will send back 
+        all characters that PC send to the board.
+      example_readme:
+      - examples/driver_examples/iuart/9bit_polling/readme.md
+      - ${board_root}/${board}/driver_examples/uart/9bit_polling/example_board_readme.md
+      - ${board_root}/${board}/examples_shared_readme.md
+  boards:
