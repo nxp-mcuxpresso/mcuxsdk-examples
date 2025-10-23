@@ -61,15 +61,10 @@ static void DBG_PrintRawData(const char* label, const char* start_marker, const 
 static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
 {
     nbu_debug_struct_t debug_info;
-    regs_status_t *regs;
-    int status;
+    nbu_dbg_info_t *nbu_dbg_info;
+    reg_info_t *regs;
 
-    status = NBUDBG_StructDump(&debug_info);
-    if (status != 0)
-    {
-        PRINTF("ERROR: Failed to retrieve NBU debug information\n");
-        return;
-    }
+    int status;
 
     if (nbu_event->nbu_warning_count > 0U)
     {
@@ -78,92 +73,111 @@ static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
 
     if (nbu_event->nbu_error_count > 0U)
     {
-        /* Fault/ Fatal assert on NBU side */
-        regs = &debug_info.reg_dump;
-
-        PRINTF("\n=== NBU Fault Analysis ===\n");
-        PRINTF("Exception Information:\n");
-        PRINTF("  Exception ID: 0x%08X\n", regs->exception_id);
-        PRINTF("  NBU SHA1    : 0x%08X\n", regs->nbu_sha1);
-
-        PRINTF("\nProcessor State:\n");
-        PRINTF("  PC  (Program Counter): 0x%08X\n", regs->pc);
-        PRINTF("  LR  (Link Register)  : 0x%08X\n", regs->lr);
-        PRINTF("  SP  (Stack Pointer)  : 0x%08X\n", regs->sp);
-        PRINTF("  PSR (Program Status) : 0x%08X\n", regs->psr);
-
-        PRINTF("\nGeneral Purpose Registers:\n");
-        PRINTF("  R0:  0x%08X  R1:  0x%08X  R2:  0x%08X  R3:  0x%08X\n",
-               regs->r0, regs->r1, regs->r2, regs->r3);
-        PRINTF("  R4:  0x%08X  R5:  0x%08X  R6:  0x%08X  R7:  0x%08X\n",
-               regs->r4, regs->r5, regs->r6, regs->r7);
-        PRINTF("  R8:  0x%08X  R9:  0x%08X  R10: 0x%08X  R11: 0x%08X\n",
-               regs->r8, regs->r9, regs->r10, regs->r11);
-        PRINTF("  R12: 0x%08X\n", regs->r12);
-
-        PRINTF("\nFault Status Analysis:\n");
-        PRINTF("  CFSR (Configurable Fault Status): 0x%08X\n", regs->cfsr);
-
-        if (regs->cfsr != 0)
+        status = NBUDBG_StructDump(&debug_info);
+        if (status != 0)
         {
-            /* Check Memory Management Faults */
-            if (regs->cfsr & 0xFF)
-            {
-                PRINTF("\n  Memory Management Faults Detected:\n");
-                DBG_PrintMemoryManagementFaults(regs->cfsr);
-
-                if (regs->cfsr & SCB_CFSR_MMARVALID_Msk)
-                {
-                    PRINTF("    Faulting Address (MMFAR): 0x%08X\n", regs->xfar.mmfar);
-                }
-            }
-
-            /* Check Bus Faults */
-            if (regs->cfsr & 0xFF00)
-            {
-                PRINTF("\n  Bus Faults Detected:\n");
-                DBG_PrintBusFaults(regs->cfsr);
-
-                if (regs->cfsr & SCB_CFSR_BFARVALID_Msk)
-                {
-                    PRINTF("    Faulting Address (BFAR): 0x%08X\n", regs->xfar.bfar);
-                }
-            }
-
-            /* Check Usage Faults */
-            if (regs->cfsr & 0xFFFF0000)
-            {
-                PRINTF("\n  Usage Faults Detected:\n");
-                DBG_PrintUsageFaults(regs->cfsr);
-            }
+            PRINTF("ERROR: Failed to retrieve NBU debug information\n");
         }
         else
         {
-            PRINTF("  No fault status flags set in CFSR\n");
-        }
+            nbu_dbg_info = &debug_info.nbu_dbg_info;
+            regs = &debug_info.nbu_dbg_info.reg_info;
+            PRINTF("\n=== NBU Fault/Assert Analysis ===\n\n");
+            if (nbu_dbg_info->exception_id == NBUDBG_EXCEPTION_ID_FOR_ASSERT_MAGIC)
+            {
+                /* Assert on NBU side */
+                PRINTF("NBU Assert Detected\n");
+                PRINTF("  Line: %u\n", nbu_dbg_info->assert_info.line);
+                PRINTF("  File name: %s\n", nbu_dbg_info->assert_info.file_name);
+            }
+            else
+            {
+                /* Fault on NBU side */
+                PRINTF("NBU Fault Detected\n");
+                PRINTF("Exception Information:\n");
+                PRINTF("  Exception ID: 0x%08X\n", nbu_dbg_info->exception_id);
+                PRINTF("  NBU SHA1    : 0x%08X\n", nbu_dbg_info->nbu_sha1);
 
-        PRINTF("\nExecution Context:\n");
-        if (NBUDBG_IS_HANDLER_MODE(regs->execution_context.handler_irq))
-        {
-            uint32_t irq_number = NBUDBG_GET_IRQ_NUMBER(regs->execution_context.handler_irq);
-            PRINTF("  Mode: Handler Mode (Interrupt Context)\n");
-            PRINTF("  IRQ Number: %u\n", irq_number);
-        }
-        else
-        {
-            PRINTF("  Mode: Thread Mode\n");
-            PRINTF("  Thread Address: 0x%08X\n", regs->execution_context.thread_info.thread_addr);
-            PRINTF("  Thread Name: %.8s\n", regs->execution_context.thread_info.thread_name);
-        }
-        /* Raw dump of BLE debug data */
-        DBG_PrintRawData("BLE Debug Data", "DBG_BLE_START", "DBG_BLE_END",
-                         debug_info.dbg_ble, NBUDBG_BLE_STRUCT_SIZE);
+                PRINTF("\nProcessor State:\n");
+                PRINTF("  PC  (Program Counter): 0x%08X\n", regs->pc);
+                PRINTF("  LR  (Link Register)  : 0x%08X\n", regs->lr);
+                PRINTF("  SP  (Stack Pointer)  : 0x%08X\n", regs->sp);
+                PRINTF("  PSR (Program Status) : 0x%08X\n", regs->psr);
 
-        /* Raw dump of 15.4 debug data */
-        DBG_PrintRawData("15.4 Debug Data", "DBG_15_4_START", "DBG_15_4_END",
-                         debug_info.dbg_15_4, NBUDBG_15_4_STRUCT_SIZE);
+                PRINTF("\nGeneral Purpose Registers:\n");
+                PRINTF("  R0:  0x%08X  R1:  0x%08X  R2:  0x%08X  R3:  0x%08X\n",
+                       regs->r0, regs->r1, regs->r2, regs->r3);
+                PRINTF("  R4:  0x%08X  R5:  0x%08X  R6:  0x%08X  R7:  0x%08X\n",
+                       regs->r4, regs->r5, regs->r6, regs->r7);
+                PRINTF("  R8:  0x%08X  R9:  0x%08X  R10: 0x%08X  R11: 0x%08X\n",
+                       regs->r8, regs->r9, regs->r10, regs->r11);
+                PRINTF("  R12: 0x%08X\n", regs->r12);
 
-        PRINTF("\n=== End of NBU Fault Analysis ===\n\n");
+                PRINTF("\nFault Status Analysis:\n");
+                PRINTF("  CFSR (Configurable Fault Status): 0x%08X\n", regs->cfsr);
+
+                if (regs->cfsr != 0)
+                {
+                    /* Check Memory Management Faults */
+                    if (regs->cfsr & 0xFF)
+                    {
+                        PRINTF("\n  Memory Management Faults Detected:\n");
+                        DBG_PrintMemoryManagementFaults(regs->cfsr);
+
+                        if (regs->cfsr & SCB_CFSR_MMARVALID_Msk)
+                        {
+                            PRINTF("    Faulting Address (MMFAR): 0x%08X\n", regs->xfar.mmfar);
+                        }
+                    }
+
+                    /* Check Bus Faults */
+                    if (regs->cfsr & 0xFF00)
+                    {
+                        PRINTF("\n  Bus Faults Detected:\n");
+                        DBG_PrintBusFaults(regs->cfsr);
+
+                        if (regs->cfsr & SCB_CFSR_BFARVALID_Msk)
+                        {
+                            PRINTF("    Faulting Address (BFAR): 0x%08X\n", regs->xfar.bfar);
+                        }
+                    }
+
+                    /* Check Usage Faults */
+                    if (regs->cfsr & 0xFFFF0000)
+                    {
+                        PRINTF("\n  Usage Faults Detected:\n");
+                        DBG_PrintUsageFaults(regs->cfsr);
+                    }
+                }
+                else
+                {
+                    PRINTF("  No fault status flags set in CFSR\n");
+                }
+            }
+
+            PRINTF("\nExecution Context:\n");
+            if (NBUDBG_IS_HANDLER_MODE(nbu_dbg_info->execution_context.handler_irq))
+            {
+                uint32_t irq_number = NBUDBG_GET_IRQ_NUMBER(nbu_dbg_info->execution_context.handler_irq);
+                PRINTF("  Mode: Handler Mode (Interrupt Context)\n");
+                PRINTF("  IRQ Number: %u\n", irq_number);
+            }
+            else
+            {
+                PRINTF("  Mode: Thread Mode\n");
+                PRINTF("  Thread Address: 0x%08X\n", nbu_dbg_info->execution_context.thread_info.thread_addr);
+                PRINTF("  Thread Name: %.8s\n", nbu_dbg_info->execution_context.thread_info.thread_name);
+            }
+            /* Raw dump of BLE debug data */
+            DBG_PrintRawData("BLE Debug Data", "DBG_BLE_START", "DBG_BLE_END",
+                             debug_info.dbg_ble, NBUDBG_BLE_STRUCT_SIZE);
+
+            /* Raw dump of 15.4 debug data */
+            DBG_PrintRawData("15.4 Debug Data", "DBG_15_4_START", "DBG_15_4_END",
+                             debug_info.dbg_15_4, NBUDBG_15_4_STRUCT_SIZE);
+
+            PRINTF("\n=== End of NBU Fault/Assert Analysis ===\n\n");
+        }
     }
 }
 
