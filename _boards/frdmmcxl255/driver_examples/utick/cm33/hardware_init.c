@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "fsl_clock.h"
@@ -18,7 +19,7 @@ void BOARD_InitHardware(void)
     RESET_ReleasePeripheralReset(kUTICK0_RST_SHIFT_RSTn);
 
     BOARD_InitBootClocks();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/

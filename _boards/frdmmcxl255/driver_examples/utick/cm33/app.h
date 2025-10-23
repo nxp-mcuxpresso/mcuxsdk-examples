@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #ifndef _APP_H_
 #define _APP_H_
 
@@ -21,3 +22,6 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/
