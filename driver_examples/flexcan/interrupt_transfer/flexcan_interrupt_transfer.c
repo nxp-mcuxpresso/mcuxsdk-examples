@@ -304,8 +304,8 @@ int main(void)
     /* Create FlexCAN handle structure and set call back function. */
     FLEXCAN_TransferCreateHandle(EXAMPLE_CAN, &flexcanHandle, flexcan_callback, NULL);
 
-    /* Set Rx Masking mechanism. */
-    FLEXCAN_SetRxMbGlobalMask(EXAMPLE_CAN, FLEXCAN_RX_MB_STD_MASK(rxIdentifier, 0, 0));
+    /* Set Rx Masking mechanism. Only accept data frame with desired ID. */
+    FLEXCAN_SetRxMbGlobalMask(EXAMPLE_CAN, FLEXCAN_RX_MB_STD_MASK(0x7FFU, 0, 0));
 
     /* Setup Rx Message Buffer. */
     mbConfig.format = kFLEXCAN_FrameFormatStandard;
