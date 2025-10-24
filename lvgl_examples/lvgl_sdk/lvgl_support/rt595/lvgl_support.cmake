@@ -15,4 +15,8 @@ if (CONFIG_MCUX_PRJSEG_module.board.lvgl)
            -DFLEXIO_MCULCD_DATA_BUS_WIDTH=8\
            -DSDK_I2C_BASED_COMPONENT_USED=1"
     )
+
+    mcux_add_armgcc_configuration(
+        CC  "-Wno-implicit-function-declaration"
+    )
 endif()
