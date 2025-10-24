@@ -161,6 +161,7 @@ static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
                 uint32_t irq_number = NBUDBG_GET_IRQ_NUMBER(nbu_dbg_info->execution_context.handler_irq);
                 PRINTF("  Mode: Handler Mode (Interrupt Context)\n");
                 PRINTF("  IRQ Number: %u\n", irq_number);
+                (void) irq_number; /* Supress warning when debug console (PRINTF) is disabled */
             }
             else
             {
