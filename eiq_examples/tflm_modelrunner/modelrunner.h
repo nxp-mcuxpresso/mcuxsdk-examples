@@ -72,6 +72,7 @@ struct nn_server {
     FlashConfig* flash_config;
     char* m_tensor_arena;
     int m_tensor_arena_size;
+    void* interpreter;
     int64_t run_ns;
 };
 

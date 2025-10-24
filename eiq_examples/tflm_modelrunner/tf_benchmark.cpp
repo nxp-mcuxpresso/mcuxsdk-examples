@@ -172,6 +172,10 @@ int Model_Setup(NNServer* server) {
 
     kTensorArenaSize = 4;
     server->inference_count = 1;
+    if (server->interpreter){
+        free(server->interpreter);
+	server->interpreter = nullptr;
+    }
     int ret = Model_RunInference (server);
     return ret;
 }
@@ -331,21 +335,21 @@ int Model_RunInference(NNServer* server) {
 	server->m_tensor_arena_size = kTensorArenaSize;
     }
 
-    // Build an interpreter to run the model with.
-    tflite::MicroInterpreter d_interpreter(
-					model, resolver, (uint8_t*)server->m_tensor_arena, server->m_tensor_arena_size, nullptr, &profiler);
-    interpreter = &d_interpreter;
-
-    // Allocate memory from the tensor_arena for the model's tensors.
-    
-    TfLiteStatus allocate_status = interpreter->AllocateTensors();
-    if (allocate_status != kTfLiteOk) {
-        free(server->m_tensor_arena);
-	server->m_tensor_arena = nullptr;
-        return kStatus_Fail;
+    if (not server->interpreter){
+        interpreter = new tflite::MicroInterpreter(model, resolver, (uint8_t*)server->m_tensor_arena, server->m_tensor_arena_size, nullptr, &profiler);
+        TfLiteStatus allocate_status = interpreter->AllocateTensors();
+        if (allocate_status != kTfLiteOk) {
+            free(server->m_tensor_arena);
+            server->m_tensor_arena = nullptr;
+            delete(interpreter);
+            interpreter = nullptr;
+            return kStatus_Fail;
+        }
+        server->kTensorArenaSize = interpreter->arena_used_bytes();
+	server->interpreter = interpreter;
+    } else {
+        interpreter = (tflite::MicroInterpreter*)server->interpreter;
     }
-
-    server->kTensorArenaSize = interpreter->arena_used_bytes();
 
     for (size_t i = 0; i<interpreter->inputs_size(); i++){
         server->input.scale [i] = interpreter->input(i)->params.scale;
