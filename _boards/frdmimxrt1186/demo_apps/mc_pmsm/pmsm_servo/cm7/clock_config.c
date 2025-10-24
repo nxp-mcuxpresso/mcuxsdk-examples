@@ -18,11 +18,11 @@
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v13.0
-processor: MIMXRT1189xxxxx
-package_id: MIMXRT1189CVM8B
+product: Clocks v18.0
+processor: MIMXRT1186xxxxx
+package_id: MIMXRT1186CVJ8C
 mcu_data: ksdk2_0
-processor_version: 0.0.0
+processor_version: 25.09.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 #include "clock_config.h"
@@ -89,7 +89,6 @@ __attribute__((weak)) void DCDC_SetVoltage(uint8_t core, uint8_t targetVoltage)
 {
 }
 
-
 /*******************************************************************************
  ************************ BOARD_InitBootClocks function ************************
  ******************************************************************************/
@@ -125,7 +124,7 @@ outputs:
 - {id: EDGELOCK_CLK_ROOT.outFreq, value: 200 MHz}
 - {id: ENET_REFCLK_ROOT.outFreq, value: 125 MHz}
 - {id: FLEXIO1_CLK_ROOT.outFreq, value: 120 MHz}
-- {id: FLEXIO2_CLK_ROOT.outFreq, value: 48 MHz}
+- {id: FLEXIO2_CLK_ROOT.outFreq, value: 120 MHz}
 - {id: FLEXSPI1_CLK_ROOT.outFreq, value: 1440/11 MHz}
 - {id: FLEXSPI2_CLK_ROOT.outFreq, value: 2160/11 MHz}
 - {id: FLEXSPI_SLV_CLK_ROOT.outFreq, value: 132 MHz}
@@ -225,7 +224,7 @@ settings:
 - {id: CCM.CLOCK_ROOT0.MUX.sel, value: ANADIG_PLL.ARM_PLL_CLK}
 - {id: CCM.CLOCK_ROOT1.DIV.scale, value: '2', locked: true}
 - {id: CCM.CLOCK_ROOT1.MUX.sel, value: ANADIG_PLL.SYS_PLL3_CLK}
-- {id: CCM.CLOCK_ROOT10.DIV.scale, value: '5', locked: true}
+- {id: CCM.CLOCK_ROOT10.DIV.scale, value: '2', locked: true}
 - {id: CCM.CLOCK_ROOT10.MUX.sel, value: ANADIG_PLL.SYS_PLL3_DIV2_CLK}
 - {id: CCM.CLOCK_ROOT11.DIV.scale, value: '3', locked: true}
 - {id: CCM.CLOCK_ROOT11.MUX.sel, value: ANADIG_PLL.SYS_PLL3_DIV2_CLK}
@@ -534,7 +533,7 @@ void BOARD_BootClockRUN(void)
 
     /* Configure FLEXIO2 using SYS_PLL3_DIV2_CLK */
     rootCfg.mux = kCLOCK_FLEXIO2_ClockRoot_MuxSysPll3Div2;
-    rootCfg.div = 5;
+    rootCfg.div = 2;
     CLOCK_SetRootClock(kCLOCK_Root_Flexio2, &rootCfg);
 
     /* Configure LPIT3 using SYS_PLL3_DIV2_CLK */

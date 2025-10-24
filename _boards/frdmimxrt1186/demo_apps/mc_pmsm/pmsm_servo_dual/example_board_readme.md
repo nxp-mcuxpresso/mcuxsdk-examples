@@ -1,10 +1,11 @@
 Hardware requirements
 =====================
 - FRDM-IMXRT1186 board
-- FRDM-MC-LVPMSM board
+- FRDM-LVPMSM-FA boards
+- FRDM-EXT-PMSM board
 - Power supply 24V
 - USB Type-C cable
-- Low-voltage 3-phase permanent magnet motor
+- Low-voltage 3-phase permanent magnet motors with EnDat2.2 sensor
 - Personal Computer
 
 Overview
@@ -21,8 +22,22 @@ Board settings
 ==============
 Follow chapter "Hardware setup" in Application User's guide.
 
-Add zero resistors: R15, R17, R40, R21 , R243, R448
-Set jumpers: J30 2-3, J33 2-3, J29 2-3, J27 2-3 
+FRDM-RT1186 configuration:
+
+	Add zero resistors:
+	Set jumpers:
+	Switch settings:
+
+FRDM-LVPMSM-FA configuration:
+
+	Add zero resistors:
+	Set jumpers:
+	Switch settings:
+
+FRDM-EXT-PMSM configuration:
+
+	Add zero resistors:
+	Set jumpers:
 
 Running the demo
 ================

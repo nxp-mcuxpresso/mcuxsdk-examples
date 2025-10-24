@@ -18,3 +18,10 @@ mc_pmsm_servo_dual:
     - +armgcc@debug
     - +iar@release
     - +armgcc@release
+    frdmimxrt1186@cm7:
+    - +armgcc@flexspi_nor_hyperram_debug
+    - +armgcc@flexspi_nor_hyperram_release
+    - +iar@flexspi_nor_hyperram_debug
+    - +iar@flexspi_nor_hyperram_release
+    - +mdk@flexspi_nor_hyperram_debug
+    - +mdk@flexspi_nor_hyperram_release
