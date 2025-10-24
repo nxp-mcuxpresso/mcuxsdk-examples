@@ -570,6 +570,11 @@ u32_t lwip_rand(void);
 #define LWIP_NETCONN_FULLDUPLEX     0
 
 /**
+ * Support set_errno
+ */
+#define set_errno(err) do { errno = (err); } while(0)
+
+/**
  * Support ip fragment max size 10000 in arp queue
  */
 #define ARP_QUEUEING 1
