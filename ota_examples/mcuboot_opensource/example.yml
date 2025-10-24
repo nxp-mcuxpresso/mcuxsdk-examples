@@ -250,6 +250,9 @@ mcuboot_opensource:
     frdmmcxa366:
     - -mdk@release
     - -mdk@debug
+    frdmmcxl255@cm33:
+    - -mdk@release
+    - -mdk@debug
     kw47evk:
     - -mdk@release
     - -mdk@debug
