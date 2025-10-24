@@ -132,28 +132,17 @@ status_t STREAMER_mic_Create(streamer_handle_t *handle, ElementIndex out_sink, c
     STREAMER_CREATE_PARAM params;
     osa_task_def_t thread_attr;
     ELEMENT_PROPERTY_T prop;
-    int ret, num_elements = 3;
-    ElementIndex element_ids[3];
+    int ret, num_elements = 2;
+    ElementIndex element_ids[2];
 
     /* There are several possibilities how the pipeline will be constructed:
-     * 1) out_sink is VIT => Microphone -> VIT
-     * 2) out sink is a speaker or a file
-     *    a) VIT can be used just with 1 channel input
-     *    b) VIT processing is not part of the pipeline
+     * 1) Microphone -> VIT
+     * 2) Microphone -> Speaker
+     * 3) Microphone -> File
      */
     element_ids[0] = ELEMENT_MICROPHONE_INDEX;
-#ifdef VIT_PROC
-    if (out_sink == ELEMENT_VIT_INDEX)
-    {
-        element_ids[1] = out_sink;
-        num_elements   = 2;
-    }
-    else
-#endif // VIT_PROC
-    {
-        element_ids[1] = out_sink;
-        num_elements   = 2;
-    }
+    element_ids[1] = out_sink;
+
     PipelineElements pipelineElements = {element_ids, num_elements};
 
     /* Create streamer */
@@ -194,15 +183,6 @@ status_t STREAMER_mic_Create(streamer_handle_t *handle, ElementIndex out_sink, c
         streamer_set_property(handle->streamer, 0, prop, true);
     }
 #endif // VIT_PROC
-
-#if ((DEMO_CHANNEL_NUM > 2))
-    if (out_sink == ELEMENT_VIT_INDEX)
-    {
-        PRINTF(
-            "[STREAMER]  VIT supports just one channel. \r\n");
-        return kStatus_Fail;
-    }
-#endif
 
     prop.prop = PROP_MICROPHONE_SET_NUM_CHANNELS;
     prop.val  = DEMO_MIC_CHANNEL_NUM;

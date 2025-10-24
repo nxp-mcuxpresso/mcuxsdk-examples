@@ -57,10 +57,14 @@
 #if defined(PLATFORM_RT1060)
 #define DEVICE_ID      VIT_IMXRT1060
 #define MODEL_LOCATION VIT_MODEL_IN_SLOW_MEM
+#if DEMO_CODEC_CS42448
+#define MIC_NUM        8
+#endif
 
 #elif defined(PLATFORM_RT1170_EVKB)
 #define DEVICE_ID      VIT_IMXRT1170
 #define MODEL_LOCATION VIT_MODEL_IN_SLOW_MEM
+#define MIC_NUM        2
 
 #elif defined(PLATFORM_LPC55S69)
 #define DEVICE_ID      VIT_LPC55S69
@@ -69,10 +73,12 @@
 #elif defined(PLATFORM_MCXN947)
 #define DEVICE_ID      VIT_MCXN94X
 #define MODEL_LOCATION VIT_MODEL_IN_FAST_MEM
+#define MIC_NUM        1
 
 #elif defined(PLATFORM_RW61X)
 #define DEVICE_ID VIT_RW610
 #define MODEL_LOCATION VIT_MODEL_IN_SLOW_MEM
+#define MIC_NUM        2
 
 #else
 #error "No platform selected"
@@ -377,8 +383,8 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
     VIT_WakeWord_st WakeWord;                                       // Wakeword info
     VIT_DetectionStatus_en VIT_DetectionResults = VIT_NO_DETECTION; // VIT detection result
 
-#if defined(PLATFORM_MCXN947)
-    int16_t output_buffer[VIT_SAMPLES_PER_30MS_FRAME];
+#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X)) || DEMO_CODEC_CS42448
+    int16_t output_buffer[VIT_SAMPLES_PER_30MS_FRAME * MIC_NUM];
 #endif
 
     if ((buf == NULL) || (pkt_hdr_size == NULL))
@@ -389,8 +395,8 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
     /* Initialization of the variables */
     buffer = (void *)(buf->buffer + *pkt_hdr_size);
 
-#if defined(PLATFORM_MCXN947)
-    DeInterleave32(buffer, output_buffer, VIT_SAMPLES_PER_30MS_FRAME, 1);
+#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X)) || DEMO_CODEC_CS42448
+    DeInterleave32(buffer, output_buffer, VIT_SAMPLES_PER_30MS_FRAME, MIC_NUM);
 #else
     if (size != SAMPLES_PER_FRAME * NUMBER_OF_CHANNELS * BYTE_DEPTH)
     {
@@ -399,8 +405,10 @@ int VIT_Execute(void *arg, void *inputBuffer, int size)
     }
 #endif
     VIT_Status = VIT_Process(VITHandle,
-#if defined(PLATFORM_MCXN947)
+#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X))
                              (void*)output_buffer,
+#elif DEMO_CODEC_CS42448
+                             (void*)(&output_buffer[4 * VIT_SAMPLES_PER_30MS_FRAME]),
 #else
                              buffer, // temporal audio input data
 #endif
@@ -487,7 +495,7 @@ int VIT_Deinit(void)
     return VIT_Status;
 }
 
-#ifdef PLATFORM_MCXN947
+#if (defined(PLATFORM_MCXN947) || defined(PLATFORM_RT1170_EVKB) || defined(PLATFORM_RW61X) ||  DEMO_CODEC_CS42448)
 void DeInterleave32(const int16_t *pDataInput, int16_t *pDataOutput, uint16_t FrameSize, uint16_t ChannelNumber)
 {
     for (uint16_t ichan = 0; ichan < ChannelNumber; ichan++)
