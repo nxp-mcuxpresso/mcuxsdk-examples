@@ -24,4 +24,5 @@ mcux_add_armgcc_linker_script(
 
 mcux_add_macro(
     AS "-DECC_RAM_STCM8_INIT"
+    CC "-DECC_RAM_STCM8_INIT"
 )
