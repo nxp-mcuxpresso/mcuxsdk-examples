@@ -36,6 +36,7 @@ volatile bool pitIsrFlag = false;
  * The IRQ handler could/should be defined as normal function, and its called function is normal function.
  */
 #pragma interrupt alignsp saveall
+void PIT_LED_HANDLER(void);
 void PIT_LED_HANDLER(void)
 {
     /* Clear interrupt flag.*/
