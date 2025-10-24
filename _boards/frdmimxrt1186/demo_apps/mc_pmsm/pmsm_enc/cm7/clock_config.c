@@ -18,9 +18,9 @@
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v13.0
-processor: MIMXRT1189xxxxx
-package_id: MIMXRT1189CVM8B
+product: Clocks v18.0
+processor: MIMXRT1186xxxxx
+package_id: MIMXRT1186CVJ8C
 mcu_data: ksdk2_0
 processor_version: 0.0.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
@@ -412,8 +412,8 @@ void BOARD_BootClockRUN(void)
 #endif
 
 #if (__CORTEX_M == 7)
-    DCDC_SetVoltage(kDCDC_CORE0, kDCDC_1P0Target1P1V);
-    DCDC_SetVoltage(kDCDC_CORE1, kDCDC_1P0Target1P1V);
+    DCDC_SetVoltage(kDCDC_CORE0, kDCDC_1P0Target1P125V);
+    DCDC_SetVoltage(kDCDC_CORE1, kDCDC_1P0Target1P125V);
     /* FBB need to be enabled in OverDrive(OD) mode */
     PMU_EnableFBB(ANADIG_PMU, true);
 #endif
