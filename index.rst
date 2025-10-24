@@ -35,6 +35,7 @@ If a supported board includes a link, click it to access the board-specific docu
    dsp_examples/index.rst
    ecat_examples/index.rst
    edgefast_bluetooth_examples/index.rst
+   edgefast_open_examples/index.rst
    eiq_examples/index.rst
    el2go_examples/index.rst
    ele_crypto/index.rst
