@@ -238,7 +238,13 @@ lvgl_demo_benchmark_bm:
     - -mdk@release
     - -mdk@sdram_debug
     - -mdk@sdram_release
-    evkmimxrt595@cm33: []
+    evkmimxrt595@cm33:
+    - -armgcc@debug
+    - -armgcc@release
+    - -iar@debug
+    - -iar@release
+    - -mdk@debug
+    - -mdk@release
     evkmimxrt685@cm33: []
     mimxrt700evk@cm33_core0: []
     frdmrw612:
