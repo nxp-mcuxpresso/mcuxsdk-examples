@@ -237,6 +237,12 @@
 
 #define SDIO_GET_MSG_TYPE(cmd)        ((cmd) & 0x000f0000)
 
+#if (CONFIG_NCP_DEBUG) && (CONFIG_NCP_SDIO)
+#define NCP_SDIO_STATS_INC(x) NCP_STATS_INC(intf.x)
+#else
+#define NCP_SDIO_STATS_INC(x)
+#endif
+
 #ifdef __GNUC__
 /** Structure packing begins */
 #define MLAN_PACK_START
@@ -441,7 +447,6 @@ retry:
     return true;
 }
 
-extern uint8_t ncp_device_status;
 bool sdio_drv_wakeup_card(sdio_func_num_t fn)
 {
     uint8_t data = 0x02;
@@ -494,13 +499,6 @@ bool sdio_drv_write(uint32_t addr, uint32_t fn, uint32_t bcnt, uint32_t bsize, u
     else
     {
         param = bsize;
-    }
-
-    /* MCU device is in sleep mode, wakeup card with CMD52 */
-    if(ncp_device_status == NCP_SDIO_DEVICE_STATUS_SLEEP)
-    {
-        if(!sdio_drv_wakeup_card((sdio_func_num_t)fn))
-            return false;
     }
 
 retry:
@@ -650,6 +648,7 @@ void sdhost_interrupt(void)
 
     if (!ret)
     {
+        ncp_adap_e("%s: sdio_drv_read fail");
         return;
     }
 
@@ -1312,6 +1311,14 @@ static void sdio_notify_int_callback(void *param)
     (void)sdhost_rescan_set_event(SDHOST_RESCAN_START);
 }
 
+/**
+ *  @brief This function is host respond to the device GPIO poll.
+ *         when device SDIO PM2/PM3 exit poll GPIO27
+ *         then host will trigger rescan task
+ *         host check if device is exit from PM3 will reinit SDIO.
+ *  @param void
+ *  @return void
+ */
 void ncp_host_sdio_notify_gpio_init(void)
 {
     IOMUXC_SetPinMux(IOMUXC_GPIO_AD_B1_05_GPIO1_IO21, 0U);
@@ -1511,6 +1518,11 @@ ncp_status_t ncp_sdhost_send_cmd(uint8_t *buf, uint32_t length)
         return NCP_STATUS_ERROR;
     }
 
+    while (cmd_sent)
+    {
+        OSA_TimeDelay(1);
+    }
+
     if (KOSA_StatusSuccess != OSA_MutexLock(&txrx_mutex, osaWaitForever_c))
     {
         ncp_adap_e("failed to get txrx_mutex");
@@ -1560,8 +1572,7 @@ int ncp_sdhost_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
             }
             break;
         default:
-            ncp_adap_e("%s: invalid msg_type %d", __FUNCTION__, msg_type);
-            ret = kStatus_Fail;
+            ret = ncp_sdhost_send_cmd((uint8_t *)tlv_buf, tlv_sz);
             break;
     }
 
@@ -1580,12 +1591,28 @@ int ncp_sdhost_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
     return NCP_STATUS_SUCCESS;
 }
 
-static int ncp_sdhost_pm_enter(int32_t pm_state)
+static int ncp_sdhost_pm_init(void)
 {
+    return (int)NCP_STATUS_SUCCESS;
+}
+
+static int ncp_sdhost_pm_prep(uint8_t pm_state, uint8_t event_type, void *data)
+{
+    ARG_UNUSED(pm_state);
+    ARG_UNUSED(event_type);
+    ARG_UNUSED(data);
+
+    return (int)NCP_STATUS_SUCCESS;
+}
+
+static int ncp_sdhost_pm_enter(uint8_t pm_state)
+{
+#if 0
     bool ret = false;
     uint32_t resp = 0;
 
     ncp_adap_d("%s: pm_state=%d cmd_sent=%u data_sent=%u", __FUNCTION__, pm_state, cmd_sent, data_sent);
+
     if (pm_state != NCP_PM_STATE_PM3)
         return NCP_STATUS_SUCCESS;
 
@@ -1604,23 +1631,31 @@ static int ncp_sdhost_pm_enter(int32_t pm_state)
         ncp_adap_e("%s: SDIO Write 0xFD to %u ERR", __FUNCTION__, SDIO_SLEEP_HS_DONE);
         return NCP_STATUS_ERROR;
     }
+#endif
 
     return NCP_STATUS_SUCCESS;
 }
 
-static int ncp_sdhost_pm_exit(int32_t pm_state)
+static int ncp_sdhost_pm_exit(uint8_t pm_state)
 {
-    /* TODO: NCP sdhost pm */
+    if (pm_state == NCP_PM_STATE_PM2)
+    {
+        if (!sdio_drv_wakeup_card(kSDIO_FunctionNum1))
+            return NCP_STATUS_ERROR;
+    }
+
     return NCP_STATUS_SUCCESS;
 }
 
 static ncp_intf_pm_ops_t ncp_sdhost_pm_ops =
 {
+    .init = ncp_sdhost_pm_init,
+    .prep = ncp_sdhost_pm_prep,
     .enter = ncp_sdhost_pm_enter,
     .exit  = ncp_sdhost_pm_exit,
 };
 
-ncp_intf_ops_t ncp_sdio_ops =
+static ncp_intf_ops_t ncp_intf_ops =
 {
     .init   = ncp_sdhost_init,
     .deinit = ncp_sdhost_deinit,
@@ -1628,4 +1663,9 @@ ncp_intf_ops_t ncp_sdio_ops =
     .recv   = NULL,
     .pm_ops = &ncp_sdhost_pm_ops,
 };
+
+const ncp_intf_ops_t *ncp_intf_get_ops(void)
+{
+    return &ncp_intf_ops;
+}
 #endif /* CONFIG_NCP_SDIO */

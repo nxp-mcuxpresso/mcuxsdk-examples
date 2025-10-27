@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
-
+#if CONFIG_NCP_SDIO
 #include "fsl_os_abstraction.h"
 #include "fsl_os_abstraction_free_rtos.h"
 
 #include "fsl_adapter_sdu.h"
+#include "fsl_io_mux.h"
+#include "fsl_gpio.h"
 #include "fsl_power.h"
 #include "ncp_adapter.h"
 #include "ncp_intf_sdio.h"
-#ifdef CONFIG_HOST_SLEEP
-#include "host_sleep.h"
-#endif
+#include "ncp_pm.h"
 
 /*******************************************************************************
  * Defines
@@ -40,6 +40,12 @@
 #define NCP_EVENT_WLAN_NCP_INET_RECV  (NCP_CMD_WLAN | NCP_CMD_WLAN_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000009)
 
 #define SDIO_GET_MSG_TYPE(cmd)        ((cmd) & 0x000f0000)
+
+#if (CONFIG_NCP_DEBUG) && (CONFIG_NCP_SDIO)
+#define NCP_SDIO_STATS_INC(x) NCP_STATS_INC(intf.x)
+#else
+#define NCP_SDIO_STATS_INC(x)
+#endif
 
 #ifdef __GNUC__
 /** Structure packing begins */
@@ -78,9 +84,14 @@ typedef MLAN_PACK_START struct ncp_command_header
 //#define NCP_SDIO_TASK_PRIORITY    3
 //#define NCP_SDIO_TASK_STACK_SIZE  1024
 
+#define NCP_NOTIFY_HOST_GPIO        27
+#define NCP_NOTIFY_HOST_GPIO_MASK   0x8000000
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+static const ncp_pm_ops_t *s_pm_ops = NULL;
+static uint32_t ncp_intf_sdio_entered = 0;
 
 //static void ncp_sdio_intf_task(void *argv);
 
@@ -116,7 +127,7 @@ static void ncp_sdio_intf_task(void *argv)
 }
 #endif
 
-int ncp_sdio_init(void *argv)
+static int ncp_sdio_init(void *argv)
 {
     status_t ret = 0;
 
@@ -137,7 +148,7 @@ int ncp_sdio_init(void *argv)
     return (int)NCP_STATUS_SUCCESS;
 }
 
-int ncp_sdio_deinit(void *argv)
+static int ncp_sdio_deinit(void *argv)
 {
     ARG_UNUSED(argv);
 
@@ -161,7 +172,7 @@ int ncp_sdio_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 }
 #endif
 
-int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
+static int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
 {
     NCP_COMMAND *res = NULL;
     status_t ret = kStatus_Success;
@@ -172,15 +183,15 @@ int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
     NCP_ASSERT(NULL != tlv_buf);
     NCP_ASSERT(0 != tlv_sz);
 
-    while (!NCP_INTF_STATUS_CHECK(ready))
+    if (s_pm_ops && s_pm_ops->enter_critical)
     {
-      OSA_TimeDelay(1);
+        s_pm_ops->enter_critical();
     }
 
     res = (NCP_COMMAND *)(tlv_buf);
 
     msg_type = SDIO_GET_MSG_TYPE(res->cmd);
-    ncp_adap_d("%s: SDU_Send 0x%x start (%p %ld)", __FUNCTION__, msg_type, tlv_buf, tlv_sz);
+    ncp_adap_d("%s: SDU_Send 0x%x (%x %x %x) start (%p %ld)", __FUNCTION__, msg_type, res->cmd, res->size, res->seqnum, tlv_buf, tlv_sz);
     switch (msg_type)
     {
         case NCP_MSG_TYPE_RSP:
@@ -205,9 +216,13 @@ int ncp_sdio_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
             }
             break;
         default:
-            ncp_adap_e("%s: invalid msg_type %d", __FUNCTION__, msg_type);
-            ret = kStatus_Fail;
+            ret = SDU_Send(SDU_TYPE_FOR_READ_EVENT, (uint8_t *)res, tlv_sz);
             break;
+    }
+
+    if (s_pm_ops && s_pm_ops->exit_critical)
+    {
+        s_pm_ops->exit_critical();
     }
 
     if (ret != kStatus_Success)
@@ -232,16 +247,43 @@ static void ncp_wait_host_status(uint8_t status)
         uint8_t host_status = 0;
         ret = SDU_CheckHostStatus(&host_status);
         if ((ret == kStatus_Success) && (host_status == status))
+        {
             break;
-        ncp_hs_delay_us(g_check_host_loop_delay_time);
+        }
+        if (g_check_host_loop_delay_time)
+            ncp_pm_delay_us(g_check_host_loop_delay_time);
     }
 }
 
-static int ncp_sdio_pm_enter(int32_t pm_state)
+static int ncp_sdio_pm_init(void)
+{
+    return (int)NCP_STATUS_SUCCESS;
+}
+
+static int ncp_sdio_pm_prep(uint8_t pm_state, uint8_t event_type, void *data)
+{
+    ARG_UNUSED(pm_state);
+    ARG_UNUSED(event_type);
+    ARG_UNUSED(data);
+
+    return (int)NCP_STATUS_SUCCESS;
+}
+
+static int ncp_sdio_pm_enter(uint8_t pm_state)
 {
     int ret = (int)NCP_PM_STATUS_SUCCESS;
+    uint32_t ret_val = 0;
 
-    if(pm_state == NCP_PM_STATE_PM2)
+    if ((pm_state == NCP_PM_STATE_PM2) || (pm_state == NCP_PM_STATE_PM3))
+    {
+        ret_val = SDU_CheckUpldOvrDone();
+        if (ret_val != 0)
+        {
+            return (int)NCP_PM_STATUS_NOT_READY;
+        }
+    }
+
+    if (pm_state == NCP_PM_STATE_PM2)
     {
         //SDU_FN_CARD->FN_CARD_INTMASK = 0x1;
         /* Enable host power up interrupt */
@@ -251,24 +293,54 @@ static int ncp_sdio_pm_enter(int32_t pm_state)
         POWER_ClearWakeupStatus(SDU_IRQn);
         NVIC_ClearPendingIRQ(SDU_IRQn);
         POWER_EnableWakeup(SDU_IRQn);
-        NCP_INTF_STATUS_CLEAR(ready);
     }
     else if(pm_state == NCP_PM_STATE_PM3)
     {
-        ncp_wait_host_status(SDIO_SLEEP_HS_DONE);
+        //Temperally comment this code
+        //ncp_wait_host_status(SDIO_SLEEP_HS_DONE);
         ret = SDU_EnterPowerDown();
         if (ret != kStatus_Success)
         {
             ncp_adap_e("Failed to deinit SDIO interface");
             return (int)NCP_PM_STATUS_ERROR;
         }
-        NCP_INTF_STATUS_CLEAR(ready);
     }
+
+    ncp_intf_sdio_entered = 1;
 
     return (int)ret;
 }
 
 #ifdef CONFIG_HOST_SLEEP
+void ncp_notify_host_gpio_init(void)
+{
+    /* Define the init structure for the output switch pin */
+    gpio_pin_config_t notify_output_pin = {
+        kGPIO_DigitalOutput,
+        1
+    };
+
+    IO_MUX_SetPinMux(IO_MUX_GPIO27);
+    GPIO_PortInit(GPIO, 0);
+    /* Init output GPIO. Default level is high */
+    /* After wakeup from PM3, usb device use GPIO 27 to notify usb host */
+    GPIO_PinInit(GPIO, 0, NCP_NOTIFY_HOST_GPIO, &notify_output_pin);
+}
+
+void ncp_notify_host_gpio_output(void)
+{
+    /* Toggle GPIO to notify usb host that device is ready for re-enumeration */
+    GPIO_PortToggle(GPIO, 0, NCP_NOTIFY_HOST_GPIO_MASK);
+}
+
+/**
+ *  @brief This function is device poll GPIO27
+ *         when device SDIO PM2/PM3 exit poll GPIO27
+ *         then host will trigger rescan task
+ *         host check if device is exit from PM3 will reinit SDIO.
+ *  @param pm_state
+ *  @return if success or fail
+ */
 uint32_t g_gpio_delay_output_1_pm2 = 0;
 uint32_t g_gpio_delay_output_1_pm3 = 100000;
 uint32_t g_gpio_delay_output_2 = 0;
@@ -284,9 +356,9 @@ static int ncp_notify_host_gpio(int32_t pm_state)
             g_gpio_delay_output_1_pm2, g_gpio_delay_output_1_pm3,
             g_gpio_delay_output_2, pm_state);
         if ((pm_state == NCP_PM_STATE_PM2) && g_gpio_delay_output_1_pm2)
-            ncp_hs_delay_us(g_gpio_delay_output_1_pm2);
+            ncp_pm_delay_us(g_gpio_delay_output_1_pm2);
         else if ((pm_state == NCP_PM_STATE_PM3) && g_gpio_delay_output_1_pm3)
-            ncp_hs_delay_us(g_gpio_delay_output_1_pm3);
+            ncp_pm_delay_us(g_gpio_delay_output_1_pm3);
         ncp_adap_d("g_gpio_delay_output_1 after %u %u",
             g_gpio_delay_output_1_pm2, g_gpio_delay_output_1_pm3);
         /* After device wakeup from PM2/PM3, sdio device notify sdio host by gpio.
@@ -296,7 +368,7 @@ static int ncp_notify_host_gpio(int32_t pm_state)
         ncp_notify_host_gpio_output();
         ncp_adap_d("ncp_notify_host_gpio_output done");
         if (g_gpio_delay_output_2)
-            ncp_hs_delay_us(g_gpio_delay_output_2);
+            ncp_pm_delay_us(g_gpio_delay_output_2);
         ncp_adap_d("g_gpio_delay_output_2 after %u", g_gpio_delay_output_2);
     }
 
@@ -304,11 +376,16 @@ static int ncp_notify_host_gpio(int32_t pm_state)
 }
 #endif
 
-static int ncp_sdio_pm_exit(int32_t pm_state)
+static int ncp_sdio_pm_exit(uint8_t pm_state)
 {
     int ret = (int)NCP_PM_STATUS_SUCCESS;
 
-    if(pm_state == NCP_PM_STATE_PM2)
+    if (ncp_intf_sdio_entered == 0)
+    {
+        return (int)NCP_PM_STATUS_SUCCESS;
+    }
+
+    if (pm_state == NCP_PM_STATE_PM2)
     {
         POWER_DisableWakeup(SDU_IRQn);
         SDU_FN0_CARD->CARD_CTRL5 &= (~SDU_FN0_CARD_CARD_CTRL5_CMD52_RES_VALID_MODE_MASK);
@@ -317,7 +394,7 @@ static int ncp_sdio_pm_exit(int32_t pm_state)
     else if(pm_state == NCP_PM_STATE_PM3)
     {
         ret = SDU_ExitPowerDown();
-        if(ret != kStatus_Success)
+        if (ret != kStatus_Success)
         {
             ncp_adap_e("%s: SDU_ExitPowerDown failed.", __FUNCTION__);
             return (int)NCP_PM_STATUS_ERROR;
@@ -341,16 +418,20 @@ static int ncp_sdio_pm_exit(int32_t pm_state)
         }
     }
 
+    ncp_intf_sdio_entered = 0;
+
     return ret;
 }
 
 static ncp_intf_pm_ops_t ncp_sdio_pm_ops =
 {
+    .init = ncp_sdio_pm_init,
+    .prep = ncp_sdio_pm_prep,
     .enter = ncp_sdio_pm_enter,
     .exit  = ncp_sdio_pm_exit,
 };
 
-ncp_intf_ops_t ncp_sdio_ops =
+static ncp_intf_ops_t ncp_intf_ops =
 {
     .init   = ncp_sdio_init,
     .deinit = ncp_sdio_deinit,
@@ -358,3 +439,9 @@ ncp_intf_ops_t ncp_sdio_ops =
     .recv   = NULL,
     .pm_ops = &ncp_sdio_pm_ops,
 };
+
+const ncp_intf_ops_t *ncp_intf_get_ops(void)
+{
+    return &ncp_intf_ops;
+}
+#endif /* CONFIG_NCP_SDIO */

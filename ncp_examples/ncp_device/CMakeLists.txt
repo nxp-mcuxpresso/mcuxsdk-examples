@@ -101,8 +101,8 @@ mcux_add_source(
             #common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_config.h
             common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.c
             common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.h
-            # common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.c
-            # common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.h
+            common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.c
+            common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.h
             common/ncp_config/littlefs_config.c
             common/ncp_config/littlefs_config.h
             common/ncp_config/littlefs_adapter.c
