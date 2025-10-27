@@ -66,45 +66,6 @@ int ncp_get_command(int argc, char **argv);
 int ncp_process_get_cfg_response(uint8_t *res);
 
 /**
- * This API is used to configure how NCP host wakes up NCP device.
- * Also, user can configure to subscribe/unsubscribe sleep status event of NCP device.
- *
- * \note If this command is never specified by user, the default wake mode is GPIO with subscribe event.
- *
- * \param[in] argc    Argument count, the number of strings pointed to by argv,
- *                    argc should be 4.
- * \param[in] argv    Argument vector.\n
- *                    argv[0]: ncp-wake-cfg\n
- *                    argv[1]: String of wake mode (Required)\n
- *                             INTF -- host wakes up NCP device with interface interrupt\n
- *                             GPIO -- host wakes up NCP device with GPIO interrupt\n
- *                             WIFI-NB -- For FRDMRW612 v2 board as NCP device only\n
- *                                        Host can't wake up NCP device with this mode\n
- *                                        NCP device can wake up by itself with WIFI or NB\n
- *                    argv[2]: String value of subscribe events (Required)\n
- *                             0 -- Unsubscribe NCP device sleep status event\n
- *                             1 -- ubscribe NCP device sleep status event\n
- *                    argv[3]: String value of wake duration (Required)\n
- *                             Unit is second. Default value is 5.
- *
- * \note NCP device will keep full power within argv[3] duration after waking
- * up, before entering low power for next round.
- *
- * \return NCP_SUCCESS if the call was successful.
- * \return -NCP_FAIL if failed.
- */
-int ncp_wake_cfg_command(int argc, char **argv);
-
-/**
- * This API can be used to process wake cfg response.
- *
- * \param[in] res    A pointer to \ref MCU_NCPCmd_DS_COMMAND response.
- *
- * \return NCP_SUCCESS.
- */
-int ncp_process_wake_cfg_response(uint8_t *res);
-
-/**
  * This API is used to enable/disable low power of NCP device and
  * configure method to enter low power mode.
  *
@@ -124,7 +85,7 @@ int ncp_process_wake_cfg_response(uint8_t *res);
  * \note If no other wakeup source wakes up NCP device, the RTC timer will wakeup device when times out.
  * \note If argv[2] is manual, should use API \ref wlan_suspend_command() to request NCP device enter low power.
  * \note If argv[2] is pm, the low power mode of NCP device is depends on
- * value of argv[1] of API \ref ncp_wake_cfg_command():\n
+ * value of argv[1] of API
  * INTF -- PM2, GPIO -- PM3(RDRW612) or PM2(FRDMRW612), WIFI-NB -- PM3(FRDMRW612).
  *
  * \return NCP_SUCCESS if the call was successful.
@@ -178,21 +139,4 @@ int ncp_process_wakeup_host_response(uint8_t *res);
  * \return NCP_SUCCESS.
  */
 int ncp_get_mcu_sleep_conf_command(int argc, char **argv);
-
-/**
- * This API is used to configure NCP device enter or exit PM2 by USB remote wakeup.
- *
- * \note This API should be used with USB interface only.
- *
- * \param[in] argc    Argument count, the number of strings pointed to by argv,
- *                    argc should be 2
- * \param[in] argv    Argument vector.\n
- *                    argv[0]: ncp-usb-pm-cfg\n
- *                    argv[1]: String value of enter/exit PM2\n
- *                             1 -- Enter PM2\n
- *                             2 -- Exit PM2\n
- *
- * \return NCP_SUCCESS.
- */
-int usb_pm_cfg(int argc, char **argv);
 #endif /*__NCP_HOST_COMMAND_SYSTEM_H_*/

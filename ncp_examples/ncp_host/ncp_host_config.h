@@ -10,7 +10,7 @@
 
 #define PRINTF_FLOAT_ENABLE 1
 
-#define CONFIG_INET_SOCKET 0
+#define CONFIG_INET_SOCKET 1
 
 #define CONFIG_MAX_AP_ENTRIES   30
 #define CONFIG_NCP_5GHz_SUPPORT 1
@@ -60,7 +60,7 @@
 
 /* protocol options */
 #define CONFIG_NCP_WIFI                   1
-#define CONFIG_NCP_BLE                    0
+#define CONFIG_NCP_BLE                    1
 #define CONFIG_NCP_OT                     0
 
 /* NCP BLE mode options */

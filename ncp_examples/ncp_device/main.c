@@ -21,9 +21,6 @@
 
 #include "fsl_rtc.h"
 #include "fsl_power.h"
-#if CONFIG_HOST_SLEEP
-#include "host_sleep.h"
-#endif
 
 #include "ncp_adapter.h"
 #include "osa.h"
@@ -91,7 +88,7 @@ void task_main(void *param)
     int32_t result = 0;
 
     printSeparator();
-    result = ncp_adapter_init();
+    result = ncp_adapter_init(0);
     assert(NCP_SUCCESS == result);
 
     printSeparator();
@@ -120,9 +117,6 @@ void task_main(void *param)
     assert(NCP_SUCCESS == result);
 
     printSeparator();
-#if CONFIG_HOST_SLEEP
-    hostsleep_init();
-#endif
 
     /* Initialization completed, destroy task */
     OSA_TaskDestroy((osa_task_handle_t)main_task_handle);

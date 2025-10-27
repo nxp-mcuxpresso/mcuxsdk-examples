@@ -23,7 +23,6 @@
 #include "fsl_power.h"
 #include "fsl_pm_core.h"
 #include "fsl_pm_device.h"
-#include "host_sleep.h"
 
 #include <lwip/sockets.h>
 #include <stddef.h>

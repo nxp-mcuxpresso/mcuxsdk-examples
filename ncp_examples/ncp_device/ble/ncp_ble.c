@@ -47,7 +47,7 @@ atomic_t ncp_ble_state[1];
 
 //os_thread_t ble_ncp_thread;                         /* ncp task */
 //static os_thread_stack_define(ble_ncp_stack, 4096); /* ncp task stack*/
-#define BLE_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-8)))
+#define BLE_TASK_PRIO        (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
 #define BLE_NCP_STACK_SIZE   4096
 
 static OSA_TASK_HANDLE_DEFINE(ble_ncp_handle);
@@ -171,7 +171,7 @@ static void ble_ncp_callback(void *tlv, size_t tlv_sz, int status)
     ble_ncp_command_t cmd_item;
     cmd_item.block_type = 0;
     cmd_item.command_sz = tlv_sz;
-    cmd_item.cmd_buff = (ncp_tlv_qelem_t *)OSA_MemoryAllocate(tlv_sz);
+    cmd_item.cmd_buff = (ncp_tlv_data_qelem_t *)OSA_MemoryAllocate(tlv_sz);
     if (!cmd_item.cmd_buff)
     {
         ncp_adap_e("failed to allocate memory for tlv queue element");

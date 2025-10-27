@@ -353,10 +353,6 @@
 #define NCP_CMD_WLAN_POWERMGMT_WOWLAN_CFG    (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000008) /* wlan-wowlan-cfg */
 /** Wi-Fi set wakeup conditions command response ID */
 #define NCP_RSP_WLAN_POWERMGMT_WOWLAN_CFG    (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_RESP | 0x00000008)
-/** Wi-Fi device enter power save mode command ID */
-#define NCP_CMD_WLAN_POWERMGMT_SUSPEND       (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_CMD | 0x0000000a) /* wlan-suspend */
-/** Wi-Fi device enter power save mode command response ID */
-#define NCP_RSP_WLAN_POWERMGMT_SUSPEND       (NCP_CMD_WLAN | NCP_CMD_WLAN_POWERMGMT | NCP_MSG_TYPE_RESP | 0x0000000a)
 
 /** WLAN UAP command*/
 /** Wi-Fi set maximum client count command ID */
@@ -1877,17 +1873,6 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_WOWLAN_CFG
     uint8_t wake_up_conds;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_WOWLAN_CFG;
 
-/** This structure is used for suspend mode of power management. */
-typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_SUSPEND
-{   
-    /** Suspend mode, \n
-     *  1: PM1, \n
-     *  2: PM2, \n 
-     *  3: PM3.  
-     */
-    int mode;
-} NCP_TLV_PACK_END NCP_CMD_POWERMGMT_SUSPEND;
-
 /** This structure is used for HE (802.11ax high efficient) capability configuration. */
 typedef NCP_TLV_PACK_START struct _HE_CAP_ParamSet_t
 {
@@ -2717,8 +2702,6 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_COMMAND
         NCP_CMD_POWERMGMT_SLEEP_PERIOD sleep_period_cfg;
 		/** Wakeup configuration. */
         NCP_CMD_POWERMGMT_WOWLAN_CFG wowlan_config;
-        /** Enter suspend configuration. */
-        NCP_CMD_POWERMGMT_SUSPEND suspend_config;
         /** Wi-Fi reset config. **/
         WLAN_RESET_data reset_config;
         /** TWT report. */

@@ -40,11 +40,7 @@
  *----------------------------------------------------------*/
 
 #define configUSE_PREEMPTION                    1
-
-#ifndef configUSE_TICKLESS_IDLE
-#define configUSE_TICKLESS_IDLE                 0
-#endif
-
+#define configUSE_TICKLESS_IDLE                 1
 #define configCPU_CLOCK_HZ                      (SystemCoreClock)
 #define configTICK_RATE_HZ                      ((TickType_t)1000)
 #define configMAX_PRIORITIES                    10

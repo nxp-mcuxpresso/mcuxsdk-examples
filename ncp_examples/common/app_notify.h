@@ -39,12 +39,6 @@ typedef enum
     APP_EVT_WPS_DONE,
     /** Event for MCU sleep config */
     APP_EVT_HS_CONFIG,
-    /** Event for suspend sleep status */
-    APP_EVT_SUSPEND,
-    /** Event for MCU enter sleep */
-    APP_EVT_MCU_SLEEP_ENTER,
-    /** Event for MCU exit sleep */
-    APP_EVT_MCU_SLEEP_EXIT,
 #if CONFIG_NCP_MDNS_ENABLE
     /** Event for mDNS answers */
     APP_EVT_MDNS_SEARCH_RESULT,

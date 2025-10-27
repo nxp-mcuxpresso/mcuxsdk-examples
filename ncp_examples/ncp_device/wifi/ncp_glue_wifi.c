@@ -7,8 +7,7 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "fsl_common.h"
 #include "board.h"
 #include "fsl_debug_console.h"
 #include "dhcp-server.h"
@@ -25,11 +24,10 @@
 #include "fsl_power.h"
 #include "fsl_pm_core.h"
 #include "fsl_pm_device.h"
-#include "host_sleep.h"
 #include "ncp_adapter.h"
 #include "ncp_wifi.h"
 #include "serial_network.h"
-
+#include "ncp_pm.h"
 
 /*******************************************************************************
  * Definitions
@@ -55,8 +53,6 @@ extern int wifi_ncp_send_response(uint8_t *pbuf);
 
 uint8_t wifi_res_buf[NCP_INBUF_SIZE];
 static uint32_t reg_access_cnt = 0;
-extern power_cfg_t global_power_config;
-extern int suspend_mode;
 extern nw_conn_t nw_handles[MAX_HANDLES];
 
 /*******************************************************************************
@@ -2586,6 +2582,7 @@ static int wlan_ncp_uapsd_sleep_period(void *tlv)
 static int wlan_ncp_wakeup_condition(void *tlv)
 {
     NCP_CMD_POWERMGMT_WOWLAN_CFG *wowlan_config = (NCP_CMD_POWERMGMT_WOWLAN_CFG *)tlv;
+    ncp_pm_cfg_t *power_cfg                     = ncp_pm_get_config();
     uint8_t is_mef                              = 0;
     uint32_t wake_up_conds                      = 0;
     int ret                                     = 0;
@@ -2595,8 +2592,8 @@ static int wlan_ncp_wakeup_condition(void *tlv)
     ret           = wlan_wowlan_config(is_mef, wake_up_conds);
     if (!ret)
     {
-        global_power_config.is_mef        = is_mef;
-        global_power_config.wake_up_conds = wake_up_conds;
+        power_cfg->is_mef        = is_mef;
+        power_cfg->wake_up_conds = wake_up_conds;
     }
 
     if (ret != 0)
@@ -2605,50 +2602,6 @@ static int wlan_ncp_wakeup_condition(void *tlv)
         wlan_ncp_prepare_status(NCP_RSP_WLAN_POWERMGMT_WOWLAN_CFG, NCP_CMD_RESULT_OK);
 
     return WM_SUCCESS;
-}
-
-extern OSA_SEMAPHORE_HANDLE_DEFINE(ncp_suspend_event);
-static int wlan_ncp_suspend(void *tlv)
-{
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-    NCP_CMD_POWERMGMT_SUSPEND *suspend_cfg = (NCP_CMD_POWERMGMT_SUSPEND *)tlv;
-    int ret                                = 0;
-
-    if ((global_power_config.wake_mode == WAKE_MODE_INTF && suspend_cfg->mode > 2) ||
-        (global_power_config.wake_mode == WAKE_MODE_GPIO && suspend_cfg->mode > 3) ||
-        (global_power_config.wake_mode == WAKE_MODE_GPIO && !strcmp(BOARD_NAME, "FRDM-RW612") &&
-          suspend_cfg->mode > 2) ||
-        (global_power_config.wake_mode == WAKE_MODE_WIFI_NB && !strcmp(BOARD_NAME, "FRDM-RW612") &&
-          suspend_cfg->mode > 3))
-    {
-        ncp_e("NCP: Invalid power mode %d!\r\n", suspend_cfg->mode);
-        ncp_e("NCP: Only PM1/2 allowed with INTF mode\r\n");
-        ncp_e("NCP: Only PM1/2/3 allowed with GPIO mode for RDRW612\r\n");
-        ncp_e("NCP: Only PM1/2 allowed with GPIO mode for FRDMRW612\r\n");
-        ncp_e("NCP: Only PM1/2/3 allowed with WIFI-NB mode for FRDMRW612\r\n");
-        ret = -WM_FAIL;
-        goto out;
-    }
-    if (!global_power_config.is_manual)
-    {
-        PRINTF("Error: Maunal mode is not selected!\r\n");
-        ret = -WM_FAIL;
-               goto out;
-    }
-    suspend_mode = suspend_cfg->mode;
-
-    (void)OSA_EventSet((osa_event_handle_t)ncp_suspend_event, SUSPEND_EVENT_TRIGGERS);
-
-out:
-    if (ret)
-        wlan_ncp_prepare_status(NCP_RSP_WLAN_POWERMGMT_SUSPEND, NCP_CMD_RESULT_ERROR);
-    else
-        wlan_ncp_prepare_status(NCP_RSP_WLAN_POWERMGMT_SUSPEND, NCP_CMD_RESULT_OK);
-    return WM_SUCCESS;
-#else
-    wlan_ncp_prepare_status(NCP_RSP_WLAN_POWERMGMT_SUSPEND, NCP_CMD_RESULT_ERROR);
-    return WM_SUCCESS;
-#endif
 }
 
 static int wlan_ncp_11ax_cfg(void *data)
@@ -4608,7 +4561,6 @@ struct cmd_t wlan_cmd_powermgmt[] = {
     {NCP_CMD_WLAN_POWERMGMT_QOSINFO, "wlan-uapsd-qosinfo", wlan_ncp_uapsd_qosinfo, CMD_SYNC},
     {NCP_CMD_WLAN_POWERMGMT_SLEEP_PERIOD, "wlan-uapsd-sleep-period", wlan_ncp_uapsd_sleep_period, CMD_SYNC},
     {NCP_CMD_WLAN_POWERMGMT_WOWLAN_CFG, "wlan-wakeup-condition", wlan_ncp_wakeup_condition, CMD_SYNC},
-    {NCP_CMD_WLAN_POWERMGMT_SUSPEND, "wlan-suspend", wlan_ncp_suspend, CMD_SYNC},
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 

@@ -156,8 +156,7 @@ static void system_ncp_task(void *pvParameters)
         else
         {
             cmd_buf = cmd_item.cmd_buff;
-            if(((NCP_COMMAND *)cmd_buf)->cmd != NCP_CMD_SYSTEM_POWERMGMT_MCU_SLEEP_CFM)
-                OSA_SemaphoreWait(system_ncp_lock, osaWaitForever_c);
+            OSA_SemaphoreWait(system_ncp_lock, osaWaitForever_c);
             system_ncp_command_handle_input(cmd_buf);
             OSA_MemoryFree(cmd_buf);
             cmd_buf = NULL;
@@ -172,10 +171,9 @@ static void system_ncp_callback(void *tlv, size_t tlv_sz, int status)
 
     cmd_item.block_type = 0;
     cmd_item.command_sz = tlv_sz;
-    cmd_item.cmd_buff = (ncp_tlv_qelem_t *)OSA_MemoryAllocate(tlv_sz);
+    cmd_item.cmd_buff = (ncp_tlv_data_qelem_t *)OSA_MemoryAllocate(tlv_sz);
     if (!cmd_item.cmd_buff)
     {
-        NCP_TLV_STATS_INC(drop);
         ncp_adap_d("%s: failed to allocate memory for tlv queue element", __FUNCTION__);
         return ;
     }

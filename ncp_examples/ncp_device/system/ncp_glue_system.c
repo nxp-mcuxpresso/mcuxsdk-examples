@@ -10,8 +10,7 @@
 #include "ncp_config.h"
 #include "ncp_cmd_system.h"
 #include "ncp_glue_system.h"
-#include "ncp_lpm.h"
-#include "host_sleep.h"
+#include "ncp_pm.h"
 #include "fsl_pm_device.h"
 #include "fsl_pm_core.h"
 #include "app_notify.h"
@@ -25,17 +24,11 @@
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-extern power_cfg_t global_power_config;
 #if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
 extern OSA_TIMER_HANDLE_DEFINE(wake_timer);
 #endif
 int current_PM_mode;
-extern uint64_t rtc_timeout;
-extern uint8_t suspend_notify_flag;
-#if CONFIG_NCP_WIFI
-extern int is_hs_handshake_done;
-#endif
-extern OSA_SEMAPHORE_HANDLE_DEFINE(hs_cfm);
+
 extern uint16_t g_cmd_seqno;
 extern uint8_t cmd_buf[NCP_INBUF_SIZE];
 uint8_t sys_res_buf[NCP_SYS_INBUF_SIZE];
@@ -157,159 +150,47 @@ static int ncp_sys_get_config(void *tlv)
     return ret;
 }
 
-static int ncp_sys_wake_cfg(void *tlv)
-{
-    osa_status_t status;
-    int timer_is_running = 0;
-    int ret = 0;
-    NCP_CMD_POWERMGMT_WAKE_CFG *wake_config = (NCP_CMD_POWERMGMT_WAKE_CFG *)tlv;
-
-    if (strcmp(BOARD_NAME, "RD-RW612-BGA") == 0 && wake_config->wake_mode == WAKE_MODE_WIFI_NB)
-    {
-        ncp_e("Invalid wake mode. The WIFI-NB mode is for FRDMRW612 only.");
-        ret = -WM_E_INVAL;
-        goto out;
-    }
-
-#if CONFIG_NCP_USB
-    if (strcmp(BOARD_NAME, "FRDM-RW612") == 0 && wake_config->wake_mode == WAKE_MODE_GPIO)
-    {
-        ncp_e("GPIO wake mode is not supported with FRDMRW612 board using USB interface");
-        ncp_e("USB device enter/exit PM2 depends on signal from USB host, and no aviable AON GPIO on FRDM board for PM3");
-        ncp_e("So remove GPIO as wakeup srouce for NCP device USB interface");
-        ret = -WM_E_INVAL;
-        goto out;
-    }
-#endif
-
-    global_power_config.wake_mode     = wake_config->wake_mode;
-    global_power_config.subscribe_evt = wake_config->subscribe_evt;
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-    global_power_config.wake_duration = wake_config->wake_duration;
-    if (global_power_config.wake_duration > 0)
-    {
-        timer_is_running = OSA_TimerIsRunning((osa_timer_handle_t)wake_timer);
-        status = OSA_TimerChange((osa_timer_handle_t)wake_timer, global_power_config.wake_duration * 1000, 0);
-        if (status != KOSA_StatusSuccess)
-        {
-            ret = -WM_FAIL;
-            goto out;
-        }
-        if (!timer_is_running)
-        {
-            OSA_TimerDeactivate((osa_timer_handle_t)wake_timer);
-        }
-    }
-#endif
-out:
-    if (ret)
-        ncp_sys_prepare_status(NCP_RSP_SYSTEM_POWERMGMT_WAKE_CFG, NCP_CMD_RESULT_ERROR);
-    else
-        ncp_sys_prepare_status(NCP_RSP_SYSTEM_POWERMGMT_WAKE_CFG, NCP_CMD_RESULT_OK);
-
-    return WM_SUCCESS;
-}
-
 static int ncp_sys_mcu_sleep(void *tlv)
 {
     NCP_CMD_POWERMGMT_MCU_SLEEP *mcu_sleep_config = (NCP_CMD_POWERMGMT_MCU_SLEEP *)tlv;
+    ncp_pm_cfg_t *power_cfg = ncp_pm_get_config();
     int ret = 0;
 
-    global_power_config.enable = mcu_sleep_config->enable;
+    power_cfg->enable = mcu_sleep_config->enable;
     /* MCU sleep is disabled */
-    if (global_power_config.enable == 0)
+    if (power_cfg->enable == 0)
     {
-        memset(&global_power_config, 0x0, sizeof(global_power_config));
+        memset(power_cfg, 0x0, sizeof(ncp_pm_cfg_t));
 #if CONFIG_NCP_WIFI
         wlan_cancel_host_sleep();
         wlan_clear_host_sleep_config();
 #endif
-
-#if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
-        /* Release current constrations of Power Manager */
-        LPM_ConfigureNextLowPowerMode(0, 0);
-#else
-        if (current_PM_mode == PM_LP_STATE_PM2)
-        {
-            PM_ReleaseConstraints(PM_LP_STATE_PM2, APP_PM2_CONSTRAINTS);
-        }
-        else if (current_PM_mode == PM_LP_STATE_PM3)
-        {
-            PM_ReleaseConstraints(PM_LP_STATE_PM3, APP_PM3_CONSTRAINTS);
-        }
-        current_PM_mode = PM_LP_STATE_PM0;
-#endif
+        /* Release current constraint of Power Manager */
+        ncp_pm_configure_next_lowpower_mode(0, 0);
         goto out;
     }
     else
     {
-#if CONFIG_NCP_WIFI
-        global_power_config.is_manual = mcu_sleep_config->is_manual;
-#endif
-        /* No wake_mode configuration. Use default GPIO mode */
-        if (global_power_config.wake_mode == 0)
-        {
-            global_power_config.wake_mode     = WAKE_MODE_GPIO;
-            global_power_config.subscribe_evt = 1;
-            global_power_config.wake_duration = HOST_SLEEP_DEF_WAKE_TIME;
-        }
-#if CONFIG_NCP_WIFI
+        power_cfg->pm_mode = mcu_sleep_config->pm_mode;
 #if CONFIG_NCP_USB
         if (strcmp(BOARD_NAME, "FRDM-RW612") == 0)
         {
-            if (global_power_config.wake_mode == WAKE_MODE_GPIO)
+            if (power_cfg->pm_mode == 2)
             {
-                ncp_e("GPIO wake mode is not supported with FRDMRW612 board using USB interface");
+                ncp_e("PM2 mode is not supported with FRDMRW612 board using USB interface");
                 ncp_e("USB device enter/exit PM2 depends on signal from USB host, and no aviable AON GPIO on FRDM board for PM3");
-                ncp_e("So remove GPIO as wakeup srouce for NCP device USB interface");
-                ncp_e("Please choose another wake mode");
+                ncp_e("So remove PM2 mode for NCP device USB interface");
+                ncp_e("Please choose another power mode");
                 ret = -WM_FAIL;
                 goto out;
             }
         }
 #endif
-        if (global_power_config.is_manual)
-            global_power_config.is_periodic = 0;
-        else
-        {
-#endif
-            if (global_power_config.wake_mode == WAKE_MODE_INTF ||
-                (!strcmp(BOARD_NAME, "FRDM-RW612") && global_power_config.wake_mode == WAKE_MODE_GPIO))
-            {
-#if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
-                /* Set current PM constraints to PM2 */
-#if !(CONFIG_NCP_USB)
-                LPM_ConfigureNextLowPowerMode(2, mcu_sleep_config->rtc_timeout);
-#endif
-#else
-                if (current_PM_mode == PM_LP_STATE_PM3)
-                    PM_ReleaseConstraints(PM_LP_STATE_PM3, APP_PM3_CONSTRAINTS);
-                PM_SetConstraints(PM_LP_STATE_PM2, APP_PM2_CONSTRAINTS);
-                current_PM_mode = PM_LP_STATE_PM2;
-#endif
-            }
-            else
-            {
-                global_power_config.subscribe_evt = 1;
-#if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
-                /* Set current PM constraints to PM3 */
-                LPM_ConfigureNextLowPowerMode(3, mcu_sleep_config->rtc_timeout);
-#else
-                if (current_PM_mode == PM_LP_STATE_PM2)
-                    PM_ReleaseConstraints(PM_LP_STATE_PM2, APP_PM2_CONSTRAINTS);
-                PM_SetConstraints(PM_LP_STATE_PM3, APP_PM3_CONSTRAINTS);
-                current_PM_mode = PM_LP_STATE_PM3;
-#endif
-            }
-            global_power_config.rtc_timeout = mcu_sleep_config->rtc_timeout;
-            rtc_timeout                     = global_power_config.rtc_timeout * 1000000;
-            global_power_config.is_periodic = 1;
-#if CONFIG_NCP_WIFI
-        }
-#endif
+        ncp_pm_configure_next_lowpower_mode(power_cfg->pm_mode, mcu_sleep_config->timeout);
+        power_cfg->timeout = mcu_sleep_config->timeout;
     }
 #if CONFIG_NCP_WIFI
-    wlan_config_host_sleep(global_power_config.is_manual, global_power_config.is_periodic);
+    wlan_config_host_sleep(0, 1);
 #endif
 out:
     if (ret)
@@ -323,37 +204,14 @@ out:
 static int ncp_sys_wakeup_host(void *tlv)
 {
     NCP_CMD_POWERMGMT_WAKEUP_HOST *wake_host_ctrl = (NCP_CMD_POWERMGMT_WAKEUP_HOST *)tlv;
+    ncp_pm_cfg_t *power_cfg                       = ncp_pm_get_config();
 
-    global_power_config.wakeup_host = wake_host_ctrl->enable;
+    power_cfg->wakeup_host = wake_host_ctrl->enable;
     ncp_sys_prepare_status(NCP_RSP_SYSTEM_POWERMGMT_WAKEUP_HOST, NCP_CMD_RESULT_OK);
 
     return WM_SUCCESS;
 }
 
-static int ncp_sys_mcu_sleep_cfm(void *tlv)
-{
-    suspend_notify_flag &= (~APP_NOTIFY_SUSPEND_EVT);
-    suspend_notify_flag |= APP_NOTIFY_SUSPEND_CFM;
-    if(global_power_config.is_manual == false)
-    {
-#if CONFIG_NCP_WIFI
-        is_hs_handshake_done = WLAN_HOSTSLEEP_SUCCESS;
-#endif
-        /* If LPM timer expires before NCP device receives SLEEP_CFM,
-         * that is, the LPM handshake state is NCP_LMP_HANDSHAKE_TIME_WAIT,
-         * keep original LPM handshake state and PM constrain.
-         * Otherwise, set LPM handshake state to NCP_LMP_HANDSHAKE_FINISH.
-         */
-        if (lpm_getHandshakeState() != NCP_LMP_HANDSHAKE_TIME_WAIT)
-        {
-            lpm_setHandshakeState(NCP_LMP_HANDSHAKE_FINISH);
-        }
-
-        OSA_SemaphorePost((osa_semaphore_handle_t)hs_cfm);
-    }
-
-    return WM_SUCCESS;
-}
 
 struct cmd_t system_cmd_config[] = {
     {NCP_CMD_SYSTEM_CONFIG_SET, "ncp-set", ncp_sys_set_config, CMD_SYNC},
@@ -365,10 +223,8 @@ struct cmd_t system_cmd_config[] = {
 };
 
 struct cmd_t system_cmd_powermgmt[] = {
-    {NCP_CMD_SYSTEM_POWERMGMT_WAKE_CFG, "ncp-wake-cfg", ncp_sys_wake_cfg, CMD_SYNC},
     {NCP_CMD_SYSTEM_POWERMGMT_MCU_SLEEP, "ncp-mcu-sleep", ncp_sys_mcu_sleep, CMD_SYNC},
     {NCP_CMD_SYSTEM_POWERMGMT_WAKEUP_HOST, "ncp-wakeup-host", ncp_sys_wakeup_host, CMD_SYNC},
-    {NCP_CMD_SYSTEM_POWERMGMT_MCU_SLEEP_CFM, NULL, ncp_sys_mcu_sleep_cfm, CMD_ASYNC},
     {NCP_CMD_INVALID, NULL, NULL, NULL},
 };
 

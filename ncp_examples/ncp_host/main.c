@@ -91,7 +91,7 @@ void task_main(void *param)
 
     result = ncp_host_app_init();
     assert(NCP_SUCCESS == result);
-    result = ncp_adapter_init();
+    result = ncp_adapter_init(1);
     assert(NCP_SUCCESS == result);
 
     result = ncp_system_app_init();

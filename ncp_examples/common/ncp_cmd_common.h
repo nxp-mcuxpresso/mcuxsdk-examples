@@ -149,43 +149,6 @@ struct ncp_cmd_t
     void     *cmd_buff;
 };
 
-/** power save configuration */
-typedef NCP_TLV_PACK_START struct _power_cfg_t
-{   
-    /** enable flag, 1: enable, 0: disable */
-    uint8_t enable;
-	/** wakeup mode, 0x1: INTF, 0x2: GPIO */
-    uint8_t wake_mode;
-	/** 
-	0 – unsubscribe(default)
-	1 – subscribe(mandatory if wake_mode == 0x2)
-	*/
-    uint8_t subscribe_evt;
-	/** wakeup duration, Minimum is 0(s), Default is 5(s) */
-    uint32_t wake_duration;
-	/** true: MEF, false: not MEF */
-    uint8_t is_mef;
-	/** value for default wowlan conditions */
-    uint32_t wake_up_conds;
-	/** wakeup by manual flag */
-    uint8_t is_manual;
-	/** is used to configure timeout for RTC timer and it is used with Power Manager only.
-	If no other wakeup source wakes up NCP device, the RTC timer will wakeup device when it times out.
-	*/
-    uint32_t rtc_timeout;
-	/** 1: periodic, 0: not periodic */
-    uint8_t is_periodic;
-	/** 0: MCU device won’t wakeup external host, 1: wakeup extern host */
-    uint8_t wakeup_host;
-} NCP_TLV_PACK_END power_cfg_t;
-
-/** NCP host wakes up NCP device via interface */
-#define WAKE_MODE_INTF 0x1
-/** NCP host wakes up NCP device via GPIO */
-#define WAKE_MODE_GPIO 0x2
-/** For FRDMRW612 board only. NCP device will be wokenup by WIFI or NB */
-#define WAKE_MODE_WIFI_NB 0x3
-
 /**
 * Initialize NCP commands.
 *   

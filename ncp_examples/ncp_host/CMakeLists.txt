@@ -52,17 +52,17 @@ mcux_add_source(
 mcux_add_source(
     BASE_PATH ${SdkRootDirPath}/examples/ncp_examples/
     SOURCES common/ncp_cmd_common.h
-            common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_intf_usb_host_cdc.c
-            common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_intf_usb_host_cdc.h
-            common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_usb_host_cdc.c
-            common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_usb_host_cdc.h
-            common/ncp_adapter/ncp_intf/usb/usb_host_cdc/usb_host_cdc_app.c
-            common/ncp_adapter/ncp_intf/usb/usb_host_cdc/usb_host_cdc_app.h
-            common/ncp_adapter/ncp_intf/usb/usb_host_cdc/usb_host_config.h
-            common/ncp_adapter/ncp_intf/sdio/sdio_host/ncp_intf_sdio_host.c
-            common/ncp_adapter/ncp_intf/sdio/sdio_host/ncp_intf_sdio_host.h
-            common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.c
-            common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
+            # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_intf_usb_host_cdc.c
+            # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_intf_usb_host_cdc.h
+            # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_usb_host_cdc.c
+            # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/ncp_usb_host_cdc.h
+            # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/usb_host_cdc_app.c
+            # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/usb_host_cdc_app.h
+            # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/usb_host_config.h
+            # common/ncp_adapter/ncp_intf/sdio/sdio_host/ncp_intf_sdio_host.c
+            # common/ncp_adapter/ncp_intf/sdio/sdio_host/ncp_intf_sdio_host.h
+            # common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.c
+            # common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
             common/crc/ncp_crc_dcp.c
             common/crc/ncp_crc_sw.c
             common/ncp_utils.c
@@ -73,8 +73,19 @@ mcux_add_source(
             common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.c
             common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.h
             common/ncp_adapter/ncp_adapter.h
-            common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
+            common/ncp_adapter/ncp_pm/ncp_pm.c
+            common/ncp_adapter/ncp_pm/ncp_pm.h
+            common/ncp_adapter/ncp_pm/ncp_pm_sm.c
+            common/ncp_adapter/ncp_pm/ncp_pm_sm.h
+            common/ncp_adapter/ncp_pm/ncp_pm_action.c
+            common/ncp_adapter/ncp_pm/ncp_pm_action.h
+            common/ncp_adapter/ncp_pm/ncp_pm_defs.h
+            common/ncp_adapter/ncp_pm/os/ncp_pm_freertos_host.c
+            common/ncp_adapter/ncp_pm/os/ncp_pm_os.h
+            # common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
             common/ncp_debug/ncp_debug.h
+            common/ncp_log/ncp_log.h
+            common/ncp_log/ncp_log.c
             common/ncp_cmd_system.h
             common/ncp_cmd_wifi.h
             common/ncp_cmd_ble.h
@@ -105,8 +116,11 @@ mcux_add_include(
              common/ncp_adapter/ncp_intf/spi/spi_master
              common/crc
              common/ncp_adapter/ncp_tlv
+             common/ncp_adapter/ncp_pm
+             common/ncp_adapter/ncp_pm/os
              common/ncp_adapter
              common/ncp_debug
+             common/ncp_log
              common
              common/ncp_adapter/ncp_intf
              common/ncp_adapter/ncp_intf/uart

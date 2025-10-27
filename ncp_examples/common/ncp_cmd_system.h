@@ -46,15 +46,7 @@
 #define NCP_CMD_SYSTEM_POWERMGMT_WAKEUP_HOST (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000003) /* ncp-wakeup-host */
 /** Wi-Fi system power manager wakeup host command response ID */
 #define NCP_RSP_SYSTEM_POWERMGMT_WAKEUP_HOST (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_POWERMGMT | NCP_MSG_TYPE_RESP | 0x00000003)
-/** Wi-Fi system power manager MCU sleep command ID */
-#define NCP_CMD_SYSTEM_POWERMGMT_MCU_SLEEP_CFM (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_POWERMGMT | NCP_MSG_TYPE_CMD | 0x00000004)
-/** Wi-Fi system power manager MCU sleep command response ID */
-#define NCP_RSP_SYSTEM_POWERMGMT_MCU_SLEEP_CFM (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_POWERMGMT | NCP_MSG_TYPE_RESP | 0x00000004)
 
-/** Wi-Fi enter MCU sleep mode event ID */
-#define NCP_EVENT_MCU_SLEEP_ENTER (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000001)
-/** Wi-Fi exit MCU sleep mode event ID */
-#define NCP_EVENT_MCU_SLEEP_EXIT  (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x00000002)
 /* NCP system CRC check error event ID */
 #define NCP_EVENT_CRC_CHECK_ERROR  (NCP_CMD_SYSTEM | NCP_CMD_SYSTEM_ASYNC_EVENT | NCP_MSG_TYPE_EVENT | 0x0000000f)
 /** NCP host device encrypted communication event ID */
@@ -91,39 +83,22 @@ typedef NCP_TLV_PACK_START struct _NCP_CMD_SYSTEM_CFG
     char value[CONFIG_VALUE_MAX_LEN];
 } NCP_TLV_PACK_END NCP_CMD_SYSTEM_CFG;
 
-/** NCP power manager wakeup configuration */
-typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_WAKE_CFG
-{
-    /**
-    host wake up mode,
-    0x1: INTF
-    0x2: wakes up through GPIO
-    */
-    uint8_t wake_mode;
-    /**
-    0 – unsubscribe(default)
-    1 – subscribe(mandatory if wake_mode == 0x2)
-    */
-    uint8_t subscribe_evt;
-    /** wake up duration, minimum is 0 */
-    uint32_t wake_duration;
-} NCP_TLV_PACK_END NCP_CMD_POWERMGMT_WAKE_CFG;
-
 /** NCP device sleep configuration */
 typedef NCP_TLV_PACK_START struct _NCP_CMD_POWERMGMT_MCU_SLEEP
 {
-    /**
-    0x0: disable,
-    0x1: enable
-    */
-	uint8_t enable;
-    /**
-    0x0: power manager,
-    0x1: manual
-    */
-    uint8_t is_manual;
-    /** used to configure timeout for RTC timer and it is used with power manager only */
-    int rtc_timeout;
+    /** Enable flag:
+     * 0 = Disabled
+     * 1 = Enabled
+     */
+    uint8_t enable;
+    /** Host power management mode:
+     * 1 = PM1
+     * 2 = PM2
+     * 3 = PM3
+     */
+    uint8_t pm_mode;
+    /** Duration to stay in the selected power management mode (in milliseconds) */
+    uint32_t timeout;
 } NCP_TLV_PACK_END NCP_CMD_POWERMGMT_MCU_SLEEP;
 
 /** NCP device wakeup NCP host configuration. */
@@ -161,8 +136,6 @@ typedef NCP_TLV_PACK_START struct _NCPCmd_DS_SYS_COMMAND
     {
         /** System configuration */
         NCP_CMD_SYSTEM_CFG system_cfg;
-        /** NCP power manager wakeup configuration */
-        NCP_CMD_POWERMGMT_WAKE_CFG wake_config;
         /** NCP device sleep configuration. */
         NCP_CMD_POWERMGMT_MCU_SLEEP mcu_sleep_config;
         /** Control for NCP device wakeup NCP host. */

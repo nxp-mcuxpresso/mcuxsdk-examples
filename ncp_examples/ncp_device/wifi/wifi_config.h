@@ -108,7 +108,6 @@
 #define CONFIG_NCP_11R                1
 #define CONFIG_NCP_OWE                1
 #define CONFIG_NCP_RF_TEST_MODE       1
-#define CONFIG_NCP_DEBUG              0
 #define CONFIG_NCP_11AC               1
 #define CONFIG_NCP_11AX               1
 

@@ -1,10 +1,10 @@
 /*
- * Copyright 2022-2024 NXP
+ * Copyright 2022-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
-
+#if CONFIG_NCP_UART
 #include "fsl_os_abstraction.h"
 #include "fsl_os_abstraction_free_rtos.h"
 
@@ -12,14 +12,21 @@
 #include "fsl_flexcomm.h"
 #include "fsl_usart.h"
 #include "fsl_usart_freertos.h"
+#include "fsl_pm_core.h"
 #elif defined(MIMXRT1062_SERIES)
 #include "fsl_lpuart.h"
 #include "fsl_lpuart_freertos.h"
 #endif
 
-#include "ncp_adapter.h"
 #include "ncp_intf_uart.h"
+#include "pin_mux.h"
+#include "ncp_adapter.h"
+#include "ncp_tlv_adapter.h"
 #include "ncp_intf_pm.h"
+#include "ncp_pm.h"
+#include "ncp_log.h"
+
+NCP_LOG_MODULE_REGISTER(ncp_uart, CONFIG_LOG_NCP_INTF_LEVEL);
 
 /*******************************************************************************
  * Defines
@@ -47,27 +54,30 @@ extern uint32_t BOARD_DebugConsoleSrcFreq(void);
 #define PROTOCOL_UART_BAUDRATE  115200
 #define BACKGROUND_BUFFER_SIZE  256
 
-#if CONFIG_NCP_WIFI
 #define NCP_UART_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
-#elif (CONFIG_NCP_BLE)
-#define NCP_UART_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-7)))
-#elif defined(CONFIG_NCP_OT)
-#define NCP_UART_TASK_PRIORITY    (PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)))
-#endif
-
 #if CONFIG_NCP_USE_ENCRYPT
 #define NCP_UART_TASK_STACK_SIZE  4096
 #else
 #define NCP_UART_TASK_STACK_SIZE  1024
 #endif
+
+#if (CONFIG_NCP_DEBUG) && (CONFIG_NCP_UART)
+#define NCP_UART_STATS_INC(x) NCP_STATS_INC(intf.x)
+#else
+#define NCP_UART_STATS_INC(x)
+#endif
+
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+static const ncp_pm_ops_t *s_pm_ops = NULL;
 
 /* UART ringbuffer */
 static uint8_t ncp_uart_bgbuf[BACKGROUND_BUFFER_SIZE];
 
 #if defined(RW610)
+static pm_wakeup_source_t uartWakeupSource;
+
 usart_rtos_handle_t ncp_rtos_handle;
 usart_handle_t      ncp_t_handle;
 
@@ -80,11 +90,6 @@ struct rtos_usart_config ncp_uart_config = {
     .buffer_size = sizeof(ncp_uart_bgbuf),
     .enableHardwareFlowControl = true,
 };
-
-#define UART_STATE_ACTIVE   (1U)
-#define UART_STATE_SLEEP    (2U)
-/* Record uart low power state */
-static uint8_t uart_state = UART_STATE_ACTIVE;
 
 #define UART_WAKEUP_MAGIC_PATTERN  (0xABCDEF8987FEDCBAU)
 #elif defined(MIMXRT1062_SERIES)
@@ -132,28 +137,7 @@ static bool is_wakeup_magic_pattern(uint8_t *tlv_buf, size_t length)
 }
 #endif
 
-static void ncp_uart_intf_task(void *argv)
-{
-    int ret;
-    size_t tlv_size = 0;
-
-    ARG_UNUSED(argv);
-
-    while (1)
-    {
-        ret = ncp_uart_recv(ncp_uart_tlvbuf, &tlv_size);
-        if (NCP_STATUS_SUCCESS == ret)
-        {
-            ncp_tlv_dispatch(ncp_uart_tlvbuf, tlv_size);
-        }
-        else
-        {
-            ncp_adap_e("Failed to receive TLV command!");
-        }
-    }
-}
-
-int ncp_uart_init(void *argv)
+static int ncp_uart_init(void *argv)
 {
     int ret;
 
@@ -175,7 +159,7 @@ int ncp_uart_init(void *argv)
 #endif
     if (kStatus_Success != ret)
     {
-        ncp_adap_e("NCP UART interface failed to initialize!");
+        NCP_LOG_ERR("NCP UART interface failed to initialize!");
         return (int)NCP_STATUS_ERROR;
     }
 
@@ -184,7 +168,7 @@ int ncp_uart_init(void *argv)
     return (int)NCP_STATUS_SUCCESS;
 }
 
-int ncp_uart_deinit(void *argv)
+static int ncp_uart_deinit(void *argv)
 {
     int ret;
 
@@ -204,7 +188,7 @@ int ncp_uart_deinit(void *argv)
     return (int)NCP_STATUS_SUCCESS;
 }
 
-int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
+static int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 {
     int ret;
     size_t rx_len = 0, cmd_len = 0;
@@ -260,7 +244,7 @@ int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
 #endif
         total = 0;
 
-        ncp_adap_e("Failed to receive TLV Header!");
+        NCP_LOG_ERR("Failed to receive TLV Header!");
         NCP_ASSERT(0);
 
         return (int)NCP_STATUS_ERROR;
@@ -291,7 +275,7 @@ int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
             (void)memset(tlv_buf, 0, TLV_CMD_BUF_SIZE);
             total = 0;
 
-            ncp_adap_e("NCP UART interface ring buffer overflow!");
+            NCP_LOG_ERR("NCP UART interface ring buffer overflow!");
 #if defined(RW610)
             NCP_ASSERT(0);
 #endif
@@ -306,7 +290,28 @@ int ncp_uart_recv(uint8_t *tlv_buf, size_t *tlv_sz)
     return (int)NCP_STATUS_SUCCESS;
 }
 
-int ncp_uart_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
+static void ncp_uart_intf_task(void *argv)
+{
+    int ret;
+    size_t tlv_size = 0;
+
+    ARG_UNUSED(argv);
+
+    while (1)
+    {
+        ret = ncp_uart_recv(ncp_uart_tlvbuf, &tlv_size);
+        if (NCP_STATUS_SUCCESS == ret)
+        {
+            ncp_tlv_dispatch(ncp_uart_tlvbuf, tlv_size);
+        }
+        else
+        {
+            NCP_LOG_ERR("Failed to receive TLV command!");
+        }
+    }
+}
+
+static int ncp_uart_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
 {
     int ret;
 
@@ -314,11 +319,22 @@ int ncp_uart_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
 
     NCP_ASSERT(NULL != tlv_buf);
 
+    if (s_pm_ops && s_pm_ops->enter_critical)
+    {
+        s_pm_ops->enter_critical();
+    }
+
 #if defined(RW610)
     ret = USART_RTOS_Send(&ncp_rtos_handle, tlv_buf, tlv_sz);
 #elif defined(MIMXRT1062_SERIES)
     ret = LPUART_RTOS_Send(&ncp_rtos_handle, tlv_buf, tlv_sz);
 #endif
+
+    if (s_pm_ops && s_pm_ops->exit_critical)
+    {
+        s_pm_ops->exit_critical();
+    }
+
     if (NCP_STATUS_SUCCESS != ret)
     {
         return (int)NCP_STATUS_ERROR;
@@ -357,62 +373,81 @@ static int ncp_uart_exit_power_down(void)
 }
 #endif
 
-static int ncp_uart_pm_enter(int32_t pm_state)
+static int ncp_uart_pm_init(void)
 {
-    int ret = (int)NCP_PM_STATUS_SUCCESS;
-
 #if defined(RW610)
-    if(pm_state == NCP_PM_STATE_PM3 || pm_state == NCP_PM_STATE_PM2)
-    {
-        uart_state = UART_STATE_ACTIVE;
-        /* Check if the uart is transmitting */
-        if ((kUSART_TxIdleFlag & USART_GetStatusFlags(PROTOCOL_UART)) == 0U)
-        {
-            return NCP_PM_STATUS_NOT_READY;
-        }
+    s_pm_ops = ncp_pm_get_ops();
 
-        if (((kUSART_RxFifoNotEmptyFlag | kUSART_RxError) & USART_GetStatusFlags(PROTOCOL_UART))
-            || ((kUSART_RxIdleFlag & USART_GetStatusFlags(PROTOCOL_UART)) == 0U))
-        {
-            return NCP_PM_STATUS_NOT_READY;
-        }
-        uart_state = UART_STATE_SLEEP;
+    if (s_pm_ops && s_pm_ops->init_wakeup_src)
+    {
+        s_pm_ops->init_wakeup_src(&uartWakeupSource, (uint32_t)FLEXCOMM0_IRQn, true);
     }
 #endif
-
-    return ret;
+    return (int)NCP_PM_STATUS_SUCCESS;
 }
 
-static int ncp_uart_pm_exit(int32_t pm_state)
+static int ncp_uart_pm_prep(uint8_t pm_state, uint8_t event_type, void *data)
 {
-    int ret = (int)NCP_PM_STATUS_SUCCESS;
+    ARG_UNUSED(pm_state);
+    ARG_UNUSED(event_type);
+    ARG_UNUSED(data);
 
+    return 0;
+}
+
+static int ncp_uart_pm_enter(uint8_t pm_state)
+{
 #if defined(RW610)
-    if (pm_state == NCP_PM_STATE_PM3)
+    if (pm_state == NCP_PM_STATE_PM2)
     {
-        if (uart_state == UART_STATE_SLEEP)
+        /* Enable RX interrupt. */
+        USART_EnableInterrupts(PROTOCOL_UART, kUSART_RxLevelInterruptEnable | kUSART_RxErrorInterruptEnable);
+        if (s_pm_ops && s_pm_ops->enable_wakeup_src)
         {
-            uart_state = UART_STATE_ACTIVE;
-            ret = ncp_uart_exit_power_down();
-            if (ret != NCP_PM_STATUS_SUCCESS)
-            {
-                ncp_adap_e("Failed to init UART interface");
-                ret = (int)NCP_PM_STATUS_ERROR;
-            }
+            s_pm_ops->enable_wakeup_src(&uartWakeupSource);
         }
     }
 #endif
+    return NCP_PM_STATUS_SUCCESS;
+}
 
-    return ret;
+static int ncp_uart_pm_exit(uint8_t pm_state)
+{
+#if defined(RW610)
+    if (s_pm_ops && s_pm_ops->get_wakeup_src)
+    {
+        s_pm_ops->get_wakeup_src(&uartWakeupSource);
+    }
+
+    switch (pm_state)
+    {
+        case NCP_PM_STATE_PM2:
+            if (s_pm_ops && s_pm_ops->disable_wakeup_src)
+            {
+                s_pm_ops->disable_wakeup_src(&uartWakeupSource);
+                (void)EnableIRQ(FLEXCOMM0_IRQn);
+            }
+            break;
+        case NCP_PM_STATE_PM3:
+            BOARD_InitPins_NCP_UART();
+            ncp_uart_exit_power_down();
+            break;
+        default:
+            break;
+    }
+#endif
+    return NCP_PM_STATUS_SUCCESS;
 }
 
 static ncp_intf_pm_ops_t ncp_uart_pm_ops =
 {
+    .init  = ncp_uart_pm_init,
+    .prep  = ncp_uart_pm_prep,
     .enter = ncp_uart_pm_enter,
     .exit  = ncp_uart_pm_exit,
 };
 
-ncp_intf_ops_t ncp_uart_ops =
+static ncp_intf_ops_t ncp_intf_ops =
 {
     .init   = ncp_uart_init,
     .deinit = ncp_uart_deinit,
@@ -420,3 +455,9 @@ ncp_intf_ops_t ncp_uart_ops =
     .recv   = ncp_uart_recv,
     .pm_ops = &ncp_uart_pm_ops,
 };
+
+const ncp_intf_ops_t *ncp_intf_get_ops(void)
+{
+    return &ncp_intf_ops;
+}
+#endif /* CONFIG_NCP_UART */

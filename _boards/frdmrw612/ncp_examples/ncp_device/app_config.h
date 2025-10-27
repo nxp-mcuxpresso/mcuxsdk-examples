@@ -17,9 +17,15 @@
 
 /*NCP config*/
 #define CONFIG_NCP    1
-#define CONFIG_NCP_DEBUG  0
+#define CONFIG_NCP_DEBUG            0
 #define CONFIG_CRC32_HW_ACCELERATE  1
 #define CONFIG_NCP_MDNS_ENABLE      1
+
+/* On FRDM-RW612 boards, the Xtal32k is present but not connected by default
+ * An hardware rework is needed to connect the Xtal32k, so disable this flag with caution */
+#ifndef gBoardUseFro32k_d
+#define gBoardUseFro32k_d 1
+#endif
 
 /* CONFIG_COEX_APP will decide whether WIFI uses its own application
  * idle hook in freertos, to avoid duplication defined by the app.
@@ -59,9 +65,6 @@
 #define CONFIG_HOST_SLEEP           1
 #define CONFIG_POWER_MANAGER        1
 
-#if (CONFIG_NCP_BLE) || (CONFIG_NCP_OT)
-#define configUSE_TICKLESS_IDLE 1
-#endif
 //#if (CONFIG_NCP_WIFI)
 #define CONFIG_APP_NOTIFY_DEBUG   1
 #include "wifi_config.h"

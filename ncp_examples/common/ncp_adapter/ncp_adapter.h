@@ -9,7 +9,6 @@
 #define __NCP_ADAPTER_H__
 
 #include "ncp_debug.h"
-#include "ncp_intf_pm.h"
 
 #if defined(__GNUC__) /* for armgcc compiler */
 /** Structure packing begins */
@@ -46,23 +45,7 @@ typedef enum _ncp_status
     NCP_STATUS_SUCCESS    = 0,
 } ncp_status_t;
 
-typedef struct _stats_intf
-{
-    /* set to 1 when start send something, set to 0 when finish send become to idle status  */
-    uint8_t tx;
-    /* set to 1 when start receive something, set to 0 when finish receive become to idle status */
-    uint8_t rx;
-    /* set to 1 interface init(or re-init) finish, set to 0, when interface de-init */
-    uint8_t ready;
-} stats_inft_t;
-
-extern stats_inft_t ncp_intf;
-
-#define NCP_INTF_STATUS_SET(x) (ncp_intf.x = 1)
-#define NCP_INTF_STATUS_CLEAR(x) (ncp_intf.x = 0)
-#define NCP_INTF_STATUS_CHECK(x) ((ncp_intf.x == 1) ? true : false)
-
-ncp_status_t ncp_adapter_init(void);
+ncp_status_t ncp_adapter_init(int role);
 ncp_status_t ncp_adapter_deinit(void);
 void ncp_tlv_install_handler(uint8_t class, void *func_cb);
 void ncp_tlv_uninstall_handler(uint8_t class);

@@ -77,23 +77,32 @@ mcux_add_source(
             common/app_notify.h
             common/app_notify.c
             common/ncp_adapter/ncp_adapter.h
+            common/ncp_adapter/ncp_pm/ncp_pm.c
+            common/ncp_adapter/ncp_pm/ncp_pm.h
+            common/ncp_adapter/ncp_pm/ncp_pm_sm.c
+            common/ncp_adapter/ncp_pm/ncp_pm_sm.h
+            common/ncp_adapter/ncp_pm/ncp_pm_action.c
+            common/ncp_adapter/ncp_pm/ncp_pm_action.h
+            common/ncp_adapter/ncp_pm/ncp_pm_defs.h
+            common/ncp_adapter/ncp_pm/os/ncp_pm_freertos_device.c
+            common/ncp_adapter/ncp_pm/os/ncp_pm_os.h
             common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.c
             common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.h
             common/ncp_adapter/ncp_intf/ncp_intf_pm.c
             common/ncp_adapter/ncp_intf/ncp_intf_pm.h
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.c
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.h
-            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.c
-            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.h
-            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.c
-            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.h
-            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.c
-            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.h
+            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.c
+            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.h
+            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.c
+            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.h
+            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.c
+            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.h
             #common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_config.h
-            common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.c
-            common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.h
-            common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.c
-            common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.h
+            # common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.c
+            # common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.h
+            # common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.c
+            # common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.h
             common/ncp_config/littlefs_config.c
             common/ncp_config/littlefs_config.h
             common/ncp_config/littlefs_adapter.c
@@ -102,12 +111,6 @@ mcux_add_source(
             common/ncp_config/ncp_config.h
             common/mdns/mdns_service.c
             common/mdns/mdns_service.h
-            common/lpm/ncp_lpm.c
-            common/lpm/ncp_lpm.h
-            common/lpm/host_sleep.c
-            common/lpm/host_sleep.h
-            common/lpm/host_sleep_wifi.c
-            common/lpm/host_sleep_wifi.h
             common/crc/ncp_crc_sw.c
             common/crc/ncp_crc_hw.c
             common/crc/ncp_crc.h
@@ -115,6 +118,8 @@ mcux_add_source(
             common/mbedtls/mbedtls_common.h
             common/mbedtls/mbedtls_config_client.h
             common/ncp_debug/ncp_debug.h
+            common/ncp_log/ncp_log.h
+            common/ncp_log/ncp_log.c
             common/httpc/inc/json_parser/jsmn.h
             common/httpc/inc/json_parser/json_generator.h
             common/httpc/inc/json_parser/json_parser.h
@@ -172,16 +177,18 @@ mcux_add_include(
         common/ncp_adapter
         common/ncp_adapter/ncp_intf
         common/ncp_adapter/ncp_tlv
+        common/ncp_adapter/ncp_pm
+        common/ncp_adapter/ncp_pm/os
         common/ncp_adapter/ncp_intf/uart
         common/ncp_adapter/ncp_intf/usb/usb_device_cdc
         common/ncp_adapter/ncp_intf/spi/spi_slave
         common/ncp_adapter/ncp_intf/sdio/sdio_device
         common/ncp_config
         common/mdns
-        common/lpm
         common/crc
         common/mbedtls
         common/ncp_debug
+        common/ncp_log
         common/httpc/inc
         common/httpc/inc/json_parser
         common/httpc/src/websocket

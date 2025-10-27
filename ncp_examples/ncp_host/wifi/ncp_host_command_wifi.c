@@ -11,6 +11,7 @@
 #include "ncp_host_command_wifi.h"
 #include "ncp_cmd_node.h"
 #include "ncp_inet.h"
+#include "ncp_pm.h"
 
 static uint8_t broadcast_mac[NCP_WLAN_MAC_ADDR_LENGTH] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
@@ -23,7 +24,6 @@ static int mdns_result_num;
 
 static bool socket_receive_res  = false;
 static bool socket_recvfrom_res = false;
-extern power_cfg_t global_power_config;
 
 #if CONFIG_NCP_SPI
 extern AT_NONCACHEABLE_SECTION_INIT(uint8_t mcu_tlv_command_buff[NCP_HOST_COMMAND_LEN]);
@@ -597,6 +597,8 @@ int wlan_stat_command(int argc, char **argv)
 int wlan_reset_command(int argc, char **argv)
 {
     int option;
+    ncp_pm_cfg_t *power_cfg = ncp_pm_get_config();
+
     option = atoi(argv[1]);
     if (argc != 2 || (option != 0 && option != 1 && option != 2))
     {
@@ -611,7 +613,7 @@ int wlan_reset_command(int argc, char **argv)
     {
         (void)memset((void*)&g_csi_params, 0, sizeof(g_csi_params));
         (void)memset((void*)&g_net_monitor_param, 0, sizeof(g_net_monitor_param));
-        (void)memset((void*)&global_power_config, 0, sizeof(global_power_config));
+        (void)memset((void*)&power_cfg, 0, sizeof(ncp_pm_cfg_t));
     }
     MCU_NCPCmd_DS_COMMAND *conn_reset_command = ncp_host_get_cmd_buffer_wifi();
     (void)memset((uint8_t *)conn_reset_command, 0, NCP_HOST_COMMAND_LEN);
@@ -907,6 +909,7 @@ int wlan_wakeup_condition_command(int argc, char **argv)
     MCU_NCPCmd_DS_COMMAND *wowlan_cfg_cmd = ncp_host_get_cmd_buffer_wifi();
     uint8_t is_mef                        = false;
     uint32_t wake_up_conds                = 0;
+    ncp_pm_cfg_t *power_cfg               = ncp_pm_get_config();
 
     if (argc < 2 || argc > 3)
     {
@@ -953,72 +956,10 @@ int wlan_wakeup_condition_command(int argc, char **argv)
     wowlan_config->wake_up_conds                = wake_up_conds;
     wowlan_cfg_cmd->header.size += sizeof(NCP_CMD_POWERMGMT_WOWLAN_CFG);
 
-    global_power_config.is_mef        = is_mef;
-    global_power_config.wake_up_conds = wake_up_conds;
+    power_cfg->is_mef        = is_mef;
+    power_cfg->wake_up_conds = wake_up_conds;
     return WM_SUCCESS;
 }
-
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-int wlan_suspend_command(int argc, char **argv)
-{
-    MCU_NCPCmd_DS_COMMAND *suspend_command = ncp_host_get_cmd_buffer_wifi();
-    int mode                               = 0;
-
-    if (!global_power_config.is_manual)
-    {
-        (void)PRINTF("Suspend command is not allowed because manual method is not selected\r\n");
-        return -WM_FAIL;
-    }
-    if (argc != 2)
-    {
-        (void)PRINTF("Error: invalid number of arguments\r\n");
-        (void)PRINTF("Usage:\r\n");
-        (void)PRINTF("    wlan-suspend <power mode>\r\n");
-        (void)PRINTF("    1:PM1 2:PM2 3:PM3 4:PM4\r\n");
-        (void)PRINTF("Example:\r\n");
-        (void)PRINTF("    wlan-suspend 3\r\n");
-        return -WM_FAIL;
-    }
-    mode = atoi(argv[1]);
-    if (mode < 1 || mode > 4)
-    {
-        (void)PRINTF("Invalid low power mode\r\n");
-        (void)PRINTF("Only PM1/PM2/PM3/PM4 supported here\r\n");
-        return -WM_FAIL;
-    }
-
-#if CONFIG_NCP_USB
-    if (mode == 2)
-    {
-        (void)PRINTF("PM2 is not allowed with suspend command when using USB interface\r\n");
-        ncp_e("USB device enter/exit PM2 depends on signal from USB host");
-        (void)PRINTF("Please use ncp-usb-pm-cfg command instead\r\n");
-        return -WM_FAIL;
-    }
-#endif
-
-    if (((global_power_config.wake_mode == WAKE_MODE_INTF) && (mode > 2)) ||
-        ((global_power_config.wake_mode == WAKE_MODE_GPIO) && (mode > 3)) ||
-        ((global_power_config.wake_mode == WAKE_MODE_WIFI_NB) && (mode > 3)))
-    {
-        (void)PRINTF("Invalid power mode %d!\r\n", mode);
-        (void)PRINTF("Only PM1/2 is allowed with wake mode INTF\r\n");
-        (void)PRINTF("Only PM1/2/3 is allowed with wake mode GPIO\r\n");
-        (void)PRINTF("Only PM1/2/3 is allowed with wake mode WIFI-NB\r\n");
-        return -WM_FAIL;
-    }
-
-    suspend_command->header.cmd      = NCP_CMD_WLAN_POWERMGMT_SUSPEND;
-    suspend_command->header.size     = NCP_CMD_HEADER_LEN;
-    suspend_command->header.result   = NCP_CMD_RESULT_OK;
-
-    NCP_CMD_POWERMGMT_SUSPEND *suspend_config = (NCP_CMD_POWERMGMT_SUSPEND *)&suspend_command->params.suspend_config;
-    suspend_config->mode                      = mode;
-    suspend_command->header.size += sizeof(NCP_CMD_POWERMGMT_SUSPEND);
-
-    return WM_SUCCESS;
-}
-#endif
 
 int wlan_deep_sleep_ps_command(int argc, char **argv)
 {
@@ -1198,6 +1139,7 @@ int wlan_process_wakeup_condition_response(uint8_t *res)
 {
     MCU_NCPCmd_DS_COMMAND *cmd_res = (MCU_NCPCmd_DS_COMMAND *)res;
     uint16_t result                = cmd_res->header.result;
+    ncp_pm_cfg_t *power_cfg        = ncp_pm_get_config();
 
     if (result == NCP_CMD_RESULT_OK)
         (void)PRINTF("Wakeup condition set is successful!\r\n");
@@ -1205,8 +1147,8 @@ int wlan_process_wakeup_condition_response(uint8_t *res)
     {
         (void)PRINTF("Wakeup condition set is failed!\r\n");
         /* Clear corresponding setting if failed */
-        global_power_config.is_mef        = 0;
-        global_power_config.wake_up_conds = 0;
+        power_cfg->is_mef        = 0;
+        power_cfg->wake_up_conds = 0;
     }
 
     return WM_SUCCESS;
@@ -9637,9 +9579,6 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-uapsd-qosinfo", NULL, wlan_wmm_uapsd_qosinfo_command},
     {"wlan-uapsd-sleep-period", NULL, wlan_uapsd_sleep_period_command},
     {"wlan-wakeup-condition", NULL, wlan_wakeup_condition_command},
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-    {"wlan-suspend", NULL, wlan_suspend_command},
-#endif
     {"wlan-set-11axcfg", NULL, wlan_set_11axcfg_command},
     {"wlan-uap-prov-start", NULL, wlan_uap_prov_start_command},
     {"wlan-uap-prov-reset", NULL, wlan_uap_prov_reset_command},

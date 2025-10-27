@@ -16,9 +16,6 @@
 #include "ncp_config.h"
 #include "mdns_service.h"
 #include "fsl_os_abstraction.h"
-#if CONFIG_NCP_USB
-#include "ncp_intf_usb_device_cdc.h"
-#endif
 #include "ncp_system.h"
 #include "ncp_inet.h"
 
@@ -37,19 +34,10 @@
  ******************************************************************************/
 
 extern int wifi_ncp_send_response(uint8_t *pbuf);
-uint8_t suspend_notify_flag = 0;
 extern uint8_t wifi_res_buf[NCP_INBUF_SIZE];
 
 #if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
 extern void APP_SetTicklessIdle(bool enable);
-#endif
-
-#if CONFIG_NCP_SPI
-extern int ncp_spi_txrx_is_finish(void);
-#endif
-
-#if CONFIG_NCP_OT
-extern volatile uint8_t OtNcpDataHandle;
 #endif
 
 /*******************************************************************************
@@ -63,10 +51,6 @@ static OSA_TASK_HANDLE_DEFINE(app_notify_event_thread);                         
 static OSA_TASK_DEFINE(app_notify_event_handler, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-3)), 1, 3072, 0); /* app notify event processing task stack*/
 extern uint32_t current_cmd;
 extern OSA_SEMAPHORE_HANDLE_DEFINE(wifi_ncp_lock);
-
-#if CONFIG_NCP_USB
-extern usb_cdc_vcom_struct_t s_cdcVcom;
-#endif
 
 /*******************************************************************************
  * Code
@@ -108,15 +92,6 @@ static void app_notify_event_handler(void *argv)
     osa_status_t status;
     app_notify_msg_t msg;
     uint8_t *event_buf = NULL;
-#if CONFIG_NCP_USB
-    int lpm_usb_retry_cnt = 20;
-#endif
-#if CONFIG_NCP_SPI
-    uint8_t spi_chk_finish_cnt = 10;
-#endif
-#if CONFIG_NCP_OT
-    uint8_t ot_chk_rsp_cnt = 10;
-#endif
 
     while (1)
     {
@@ -232,90 +207,6 @@ static void app_notify_event_handler(void *argv)
                 app_d("got MCU sleep config result");
                 wlan_ncp_prepare_status(NCP_RSP_SYSTEM_POWERMGMT_MCU_SLEEP, msg.reason);
                 break;
-            case APP_EVT_SUSPEND:
-                app_d("got suspend command result");
-                wlan_ncp_prepare_status(NCP_RSP_WLAN_POWERMGMT_SUSPEND, msg.reason);
-                break;
-            case APP_EVT_MCU_SLEEP_ENTER:
-#if CONFIG_NCP_SPI
-                /* For ot and ble PM3 mode, the point at which spi starts receiving data may be earlier
-                 * than the point at which spi finish is checked in enter sleep notify in tickless, resulting
-                 * in spi just starting to receive data when sleep handshake starts, repeat check here
-                 * for avoid that
-                 * */
-                spi_chk_finish_cnt = 10;
-                while((spi_chk_finish_cnt > 0) && (ncp_spi_txrx_is_finish() == 0))
-                {
-                    OSA_TimeDelay(50);
-                    spi_chk_finish_cnt--;
-                }
-
-                if (spi_chk_finish_cnt == 0)
-                {
-                    app_e("spi txrx was not finish yet");
-                }
-#endif
-#if CONFIG_NCP_OT
-                /* it should be ensured that the OT data has been sent first and then
-                 * start sleep handshake.
-                 * */
-                ot_chk_rsp_cnt = 10;
-                while((ot_chk_rsp_cnt > 0) && (OtNcpDataHandle == OT_NCP_CMD_HANDLING))
-                {
-                    OSA_TimeDelay(50);
-                    ot_chk_rsp_cnt--;
-                }
-
-                if (ot_chk_rsp_cnt == 0)
-                {
-                    app_e("ot has not been transmitted yet");
-                }
-#endif
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-                app_d("got MCU sleep enter report");
-#endif
-                event_buf = ncp_sys_evt_status(NCP_EVENT_MCU_SLEEP_ENTER, &msg);
-                if (!event_buf)
-                    ret = -WM_FAIL;
-                break;
-            case APP_EVT_MCU_SLEEP_EXIT:
-#if CONFIG_NCP_USB
-#if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
-                APP_SetTicklessIdle(false);
-#endif
-                /* Wait for USB re-init done */
-                lpm_usb_retry_cnt = 20;
-                while(lpm_usb_retry_cnt > 0 && 1 != s_cdcVcom.attach)
-                {
-                    OSA_TimeDelay(50);
-                    lpm_usb_retry_cnt--;
-                }
-
-                if(0 == lpm_usb_retry_cnt)
-                {
-                    app_e("usb enum failed from LPM");
-                }
-#if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
-                APP_SetTicklessIdle(true);
-#endif
-#endif
-#if CONFIG_NCP_SDIO
-#if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
-                APP_SetTicklessIdle(false);
-#endif
-                /* Wait for SDIO re-init done */
-                OSA_TimeDelay(800);
-#if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE == 1)
-                APP_SetTicklessIdle(true);
-#endif
-#endif
-#if (CONFIG_NCP_WIFI && !CONFIG_NCP_BLE && !CONFIG_NCP_OT)
-                app_d("got MCU sleep exit report");
-#endif
-                event_buf = ncp_sys_evt_status(NCP_EVENT_MCU_SLEEP_EXIT, &msg);
-                if (!event_buf)
-                    ret = -WM_FAIL;
-                break;
 #if CONFIG_NCP_MDNS_ENABLE
             case APP_EVT_MDNS_SEARCH_RESULT:
                 app_d("got mdns search result");
@@ -380,21 +271,7 @@ static void app_notify_event_handler(void *argv)
         {
             if (event_buf)
             {
-                if(msg.event == APP_EVT_MCU_SLEEP_ENTER || msg.event == APP_EVT_MCU_SLEEP_EXIT)
-                {
-                    system_ncp_send_response(event_buf);
-                    /* This is a workaround
-                     * When wake up by controller, message from controller is sent to host before
-                     * APP_EVT_MCU_SLEEP_EXIT event, so set flag to make the message send to host
-                     * after APP_EVT_MCU_SLEEP_EXIT event, make sure the interface re-init is done.
-                     */
-                    if (msg.event == APP_EVT_MCU_SLEEP_EXIT)
-                    {
-                        NCP_INTF_STATUS_SET(ready);
-                    }
-                }
-                else
-                    wifi_ncp_send_response(event_buf);
+                wifi_ncp_send_response(event_buf);
             }
             else
                 wifi_ncp_send_response((uint8_t *)wifi_res_buf);

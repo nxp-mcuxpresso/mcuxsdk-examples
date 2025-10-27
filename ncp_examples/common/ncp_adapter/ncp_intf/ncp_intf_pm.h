@@ -1,5 +1,5 @@
 /*
- * Copyright 2022-2024 NXP
+ * Copyright 2022-2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
@@ -7,30 +7,47 @@
 
 #ifndef __NCP_INTF_PM_H__
 #define __NCP_INTF_PM_H__
+
 #include "fsl_common.h"
 
-/* Power Mode Index */
-#define NCP_PM_STATE_PM0           (0U)
-#define NCP_PM_STATE_PM1           (1U)
-#define NCP_PM_STATE_PM2           (2U)
-#define NCP_PM_STATE_PM3           (3U)
-#define NCP_PM_STATE_PM4           (4U)
-
-/* NCP PM status */
-typedef enum _ncp_pm_status
-{
-    NCP_PM_STATUS_ERROR      = -1,
-    NCP_PM_STATUS_NOT_READY  = -2,
-    NCP_PM_STATUS_SUCCESS    = 0,
-} ncp_pm_status_t;
-
+/**
+ * @brief Power management operations interface.
+ */
 typedef struct _ncp_intf_pm_ops
 {
-    int (*enter)(int32_t pm_state);
-    int (*exit)(int32_t pm_state);
+    int (*init)(void);
+    int (*prep)(uint8_t pm_state, uint8_t event_type, void *data);
+    int (*enter)(uint8_t pm_state);
+    int (*exit)(uint8_t pm_state);
 } ncp_intf_pm_ops_t;
 
-int ncp_intf_pm_enter(int32_t pm_state);
-int ncp_intf_pm_exit(int32_t pm_state);
+/**
+ * @brief Initializes the PM module for the NCP interface.
+ * @return 0 on success, negative on error.
+ */
+int ncp_intf_pm_init(void);
+
+/**
+ * @brief Prepare for power state change.
+ * @param pm_state   Power management state.
+ * @param event_type Event type.
+ * @param data       User data.
+ * @return 0 on success, negative on error.
+ */
+int ncp_intf_pm_prep(uint8_t pm_state, uint8_t event_type, void *data);
+
+/**
+ * @brief Enter power state.
+ * @param pm_state Power management state.
+ * @return 0 on success, negative on error.
+ */
+int ncp_intf_pm_enter(uint8_t pm_state);
+
+/**
+ * @brief Exit power state.
+ * @param pm_state Power management state.
+ * @return 0 on success, negative on error.
+ */
+int ncp_intf_pm_exit(uint8_t pm_state);
 
 #endif /* __NCP_INTF_PM_H__ */

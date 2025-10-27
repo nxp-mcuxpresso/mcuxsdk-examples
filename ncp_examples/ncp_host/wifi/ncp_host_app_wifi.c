@@ -1043,7 +1043,7 @@ static void wifi_ncp_callback(void *tlv, size_t tlv_sz, int status)
 
     cmd_item.block_type = 0;
     cmd_item.command_sz = tlv_sz;
-    cmd_item.cmd_buff = (ncp_tlv_qelem_t *)OSA_MemoryAllocate(tlv_sz);
+    cmd_item.cmd_buff = (ncp_tlv_data_qelem_t *)OSA_MemoryAllocate(tlv_sz);
     if (!cmd_item.cmd_buff)
     {
         ncp_e("failed to allocate memory for tlv queue element");
