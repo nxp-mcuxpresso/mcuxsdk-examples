@@ -17,7 +17,7 @@
 
 #include "ncp_glue_ble.h"
 #include "ncp_ble.h"
-
+#include "ncp_pm.h"
 
 /*******************************************************************************
  * Definitions
@@ -61,6 +61,8 @@ OSA_SEMAPHORE_HANDLE_DEFINE(ncp_ble_resp_buf_lock);
 /*BLE NCP COMMAND QUEUE*/
 static osa_msgq_handle_t ble_ncp_command_queue; /* ncp adapter TX msgq */
 OSA_MSGQ_HANDLE_DEFINE(ble_ncp_command_queue_buff, BLE_NCP_COMMAND_QUEUE_NUM,  sizeof(ble_ncp_command_t));
+
+static const ncp_pm_ops_t *s_pm_ops = NULL;
 
 /*******************************************************************************
  * Code
@@ -263,11 +265,29 @@ void ncp_put_ble_resp_buf_lock()
 void ncp_ble_state_set(int state)
 {
     atomic_set_bit(ncp_ble_state, state);
+
+    s_pm_ops = ncp_pm_get_ops();
+    if (state == NCP_BLE_SCANNING)
+    {
+        if (s_pm_ops && s_pm_ops->enter_critical)
+        {
+            s_pm_ops->enter_critical();
+        }
+    }
 }
 
 void ncp_ble_state_clear(int state)
 {
     atomic_clear_bit(ncp_ble_state, state);
+
+    s_pm_ops = ncp_pm_get_ops();
+    if (state == NCP_BLE_SCANNING)
+    {
+        if (s_pm_ops && s_pm_ops->exit_critical)
+        {
+            s_pm_ops->exit_critical();
+        }
+    }
 }
 
 bool ncp_ble_state_check(int state)
