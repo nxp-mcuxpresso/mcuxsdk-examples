@@ -3,6 +3,13 @@ mcux_add_source(
     SOURCES app_preinclude.h
 	PREINCLUDE TRUE
 )
+
+# Enable Assert hooks in release mode.
+mcux_remove_macro(
+    TARGETS release
+    CC "-DNDEBUG"
+)
+
 mcux_add_source(
     SOURCES ../readme.txt
 )
