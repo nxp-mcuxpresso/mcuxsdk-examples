@@ -43,6 +43,7 @@ void DMA_Callback(dma_handle_t *handle, void *param, bool transferDone, uint32_t
         if (++s_transferCount > DMA_LINK_TRANSFER_COUNT)
         {
             s_Transfer_Done = true;
+            s_transferCount = 0;
             DMA_DisableChannel(DMA0, 0);
         }
     }
