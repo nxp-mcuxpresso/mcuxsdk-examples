@@ -24,19 +24,19 @@ uint32_t ncp_tlv_chksum(uint8_t *buf, uint16_t len)
 {
     uint32_t crc;
     uint8_t pad_cnt = 0;
-    uint16_t total_len = len;
 
     CRC_WriteSeed(CRC, 0xffffffffU);
 
+    CRC_WriteData(CRC, buf, len);
+
     /*In order to adapt the DCP calculation process of the MCU host RT1060
-     in hardware acceleration mode, padding 0 at the end of input*/
-    while ((total_len % 4) != 0 && pad_cnt < 4) {
-        buf[total_len] = 0;
-        total_len++;
-        pad_cnt++;
+        in hardware acceleration mode, padding 0 at the end of input*/
+    pad_cnt = (4 - (len % 4)) % 4;
+    if (pad_cnt > 0) {
+        uint8_t zeros[3] = {0};
+        CRC_WriteData(CRC, zeros, pad_cnt);
     }
 
-    CRC_WriteData(CRC, buf, total_len);
     crc = CRC_Get32bitResult(CRC);
 
     return crc;
