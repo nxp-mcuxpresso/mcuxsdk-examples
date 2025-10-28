@@ -126,7 +126,7 @@ static void BOARD_SetSWDPinsLowPower(bool_t isLowPower)
  */
 static void BOARD_EnterLowPowerCb(void)
 {
-    int bank_mask;
+    uint32_t bank_mask;
 
 #if defined(gAppUseSensors_d) && (gAppUseSensors_d > 0)
     /* Deinit ADC in order to disable the functional clock. This saves 15uA during low-power mode */
