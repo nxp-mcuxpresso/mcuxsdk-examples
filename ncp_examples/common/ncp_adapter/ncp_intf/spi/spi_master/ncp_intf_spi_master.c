@@ -451,13 +451,13 @@ static int ncp_spi_recv(uint8_t *tlv_buf, size_t *tlv_sz)
     return ret;
 }
 
-static int ncp_spi_pm_enter(int32_t pm_state)
+static int ncp_spi_pm_enter(unsigned char pm_state)
 {
     /* TODO: NCP uart pm */
     return 0;
 }
 
-static int ncp_spi_pm_exit(int32_t pm_state)
+static int ncp_spi_pm_exit(unsigned char pm_state)
 {
     /* TODO: NCP uart pm */
     return 0;
@@ -492,7 +492,7 @@ static void ncp_spi_intf_task(void *argv)
 }
 
 
-ncp_intf_ops_t ncp_spi_ops =
+ncp_intf_ops_t ncp_intf_ops =
 {
     .init   = ncp_spi_init,
     .deinit = ncp_spi_deinit,
@@ -500,4 +500,10 @@ ncp_intf_ops_t ncp_spi_ops =
     .recv   = ncp_spi_recv,
     .pm_ops = &ncp_spi_pm_ops,
 };
+
+const ncp_intf_ops_t *ncp_intf_get_ops(void)
+{
+    return &ncp_intf_ops;
+}
+
 #endif

@@ -2,12 +2,13 @@
  *
  *  @brief main file
  *
- *  Copyright 2023 NXP
+ *  Copyright 2025 NXP
  *
  *  SPDX-License-Identifier: BSD-3-Clause
  *  The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
 
+#if CONFIG_NCP_SPI
 #include "ncp_intf_spi_slave.h"
 #include "fsl_spi.h"
 #include "fsl_spi_dma.h"
@@ -18,6 +19,9 @@
 #include "ncp_tlv_adapter.h"
 #include "pin_mux.h"
 #include "fsl_io_mux.h"
+#include "ncp_intf_pm.h"
+#include "ncp_pm.h"
+#include "fsl_pm_core.h"
 
 /*******************************************************************************
  * Variables
@@ -56,8 +60,19 @@ static void ncp_spi_hs_intf_task(void *argv);
 static OSA_TASK_HANDLE_DEFINE(ncp_spihsTaskHandle);
 static OSA_TASK_DEFINE(ncp_spi_hs_intf_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES-2)), 1, NCP_SPI_HS_TASK_STACK_SIZE, 0);
 
+#if (CONFIG_NCP_DEBUG) && (CONFIG_NCP_SPI)
+#define NCP_SPI_STATS_INC(x) NCP_STATS_INC(intf.x)
+#else
+#define NCP_SPI_STATS_INC(x)
+#endif
+
 static int ncp_spi_pm_flag   = 0;
 static uint8_t hs_p[4] = {'\0'};
+/*
+low power
+*/
+static const ncp_pm_ops_t *s_pm_ops = NULL;
+static pm_wakeup_source_t spiWakeupSource;
 
 /*******************************************************************************
  * Code
@@ -307,7 +322,7 @@ int ncp_spi_enter_power_down(void)
 int ncp_spi_exit_power_down(void)
 {
     spi_transfer_t slaveXfer;
-
+    BOARD_InitPins_NCP_SPI();
     ncp_spi_output_gpio_init();
     CLOCK_SetFRGClock(BOARD_NORMAL_FLEXCOMM0_FRG_CLK);
     CLOCK_AttachClk(kFRG_to_FLEXCOMM0);
@@ -373,7 +388,7 @@ static int ncp_spi_init(void *argv)
     {
         ncp_adap_e("Failed to create task", ret);
     }
-
+     ncp_adap_e("spi init finish");
     return ret;
 }
 
@@ -396,7 +411,15 @@ static int ncp_spi_deinit(void *argv)
 static int ncp_spi_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
 {
     int ret = 0;
+    if (s_pm_ops && s_pm_ops->enter_critical)
+    {
+        s_pm_ops->enter_critical();
+    }
     ret = ncp_spi_slave_tx(tlv_buf, tlv_sz);
+    if (s_pm_ops && s_pm_ops->exit_critical)
+    {
+        s_pm_ops->exit_critical();
+    }
     if (ret < 0)
     {
         ncp_adap_e("SPI fail to send data %d", ret);
@@ -405,7 +428,8 @@ static int ncp_spi_send(uint8_t *tlv_buf, size_t tlv_sz, tlv_send_callback_t cb)
     else
         NCP_SPI_STATS_INC(tx);
     /*post ncp cmd resp send completed*/
-    cb(NULL);
+    if (cb)
+        cb(NULL);
 
     return ret;
 }
@@ -424,56 +448,98 @@ static int ncp_spi_recv(uint8_t *tlv_buf, size_t *tlv_sz)
     return ret;
 }
 
-int ncp_spi_txrx_is_finish(void)
+static int ncp_spi_pm_init(void)
 {
-    return ncp_spi_pm_flag;
+    s_pm_ops = ncp_pm_get_ops();
+
+    if (s_pm_ops && s_pm_ops->init_wakeup_src)
+    {
+        SYSCTL0->HWWAKE = 0x10;
+        NVIC_ClearPendingIRQ(WKDEEPSLEEP_IRQn);
+        s_pm_ops->init_wakeup_src(&spiWakeupSource, (uint32_t)WKDEEPSLEEP_IRQn, false);
+    }
+
+    return (int)NCP_PM_STATUS_SUCCESS;
 }
 
-static int ncp_spi_pm_enter(int32_t pm_state)
+static int ncp_spi_pm_prep(uint8_t pm_state, uint8_t event_type, void *data)
+{
+    ARG_UNUSED(pm_state);
+    ARG_UNUSED(event_type);
+    ARG_UNUSED(data);
+
+    return 0;
+}
+
+static int ncp_spi_pm_enter(unsigned char pm_state)
 {
     int ret = (int)NCP_PM_STATUS_SUCCESS;
-
-    if(pm_state == NCP_PM_STATE_PM3)
+    if (!ncp_spi_pm_flag)
     {
-        if(!ncp_spi_pm_flag)
-	    {
-            /* Tx or Rx is not finished */
-            ret = NCP_PM_STATUS_NOT_READY;
-            return ret;
+        /* Tx or Rx is not finished */
+        ret = NCP_PM_STATUS_NOT_READY;
+        return ret;
+    }
+
+    if (pm_state == NCP_PM_STATE_PM2)
+    {
+        SYSCTL0->HWWAKE = 0x10;
+        if (s_pm_ops && s_pm_ops->enable_wakeup_src)
+        {
+            s_pm_ops->enable_wakeup_src(&spiWakeupSource);
+             (void)DisableIRQ(WKDEEPSLEEP_IRQn);
         }
+    }
+    else if (pm_state == NCP_PM_STATE_PM3)
+    {
         ret = ncp_spi_enter_power_down();
         if(ret != 0)
         {
             ncp_adap_e("Failed to enter SPI power down");
             ret = (int)NCP_PM_STATUS_ERROR;
-	}
+        }
     }
+
     return ret;
 }
 
-static int ncp_spi_pm_exit(int32_t pm_state)
+static int ncp_spi_pm_exit(unsigned char pm_state)
 {
     int ret = (int)NCP_PM_STATUS_SUCCESS;
-
-    if(pm_state == NCP_PM_STATE_PM3)
+    if (s_pm_ops && s_pm_ops->get_wakeup_src)
+    {
+        s_pm_ops->get_wakeup_src(&spiWakeupSource);
+    }
+    if (pm_state == NCP_PM_STATE_PM2)
+    {
+        SYSCTL0->HWWAKE = 0x0;
+        if (s_pm_ops && s_pm_ops->disable_wakeup_src)
+        {
+            s_pm_ops->disable_wakeup_src(&spiWakeupSource);
+        }
+    }
+    else if (pm_state == NCP_PM_STATE_PM3)
     {
         ret = ncp_spi_exit_power_down();
         if(ret != 0)
         {
             ncp_adap_e("Failed to exit SPI power down");
             ret = (int)NCP_PM_STATUS_ERROR;
-	    }
+        }
     }
+
     return ret;
 }
 
 static ncp_intf_pm_ops_t ncp_spi_pm_ops =
 {
+    .init  = ncp_spi_pm_init,
+    .prep  = ncp_spi_pm_prep,
     .enter = ncp_spi_pm_enter,
     .exit  = ncp_spi_pm_exit,
 };
 
-ncp_intf_ops_t ncp_spi_ops =
+ncp_intf_ops_t ncp_intf_ops =
 {
     .init   = ncp_spi_init,
     .deinit = ncp_spi_deinit,
@@ -481,6 +547,13 @@ ncp_intf_ops_t ncp_spi_ops =
     .recv   = ncp_spi_recv,
     .pm_ops = &ncp_spi_pm_ops,
 };
+
+#ifdef CONFIG_NCP_SPI
+const ncp_intf_ops_t *ncp_intf_get_ops(void)
+{
+    return &ncp_intf_ops;
+}
+#endif
 
 static uint8_t ncp_spi_tlvbuf[TLV_CMD_BUF_SIZE];
 static void ncp_spi_intf_task(void *argv)
@@ -554,3 +627,4 @@ static void ncp_spi_hs_intf_task(void *argv)
         }
     }
 }
+#endif /* CONFIG_NCP_SPI */

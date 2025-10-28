@@ -61,8 +61,8 @@ mcux_add_source(
             # common/ncp_adapter/ncp_intf/usb/usb_host_cdc/usb_host_config.h
             # common/ncp_adapter/ncp_intf/sdio/sdio_host/ncp_intf_sdio_host.c
             # common/ncp_adapter/ncp_intf/sdio/sdio_host/ncp_intf_sdio_host.h
-            # common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.c
-            # common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
+            common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.c
+            common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
             common/crc/ncp_crc_dcp.c
             common/crc/ncp_crc_sw.c
             common/ncp_utils.c
@@ -82,7 +82,6 @@ mcux_add_source(
             common/ncp_adapter/ncp_pm/ncp_pm_defs.h
             common/ncp_adapter/ncp_pm/os/ncp_pm_freertos_host.c
             common/ncp_adapter/ncp_pm/os/ncp_pm_os.h
-            # common/ncp_adapter/ncp_intf/spi/spi_master/ncp_intf_spi_master.h
             common/ncp_debug/ncp_debug.h
             common/ncp_log/ncp_log.h
             common/ncp_log/ncp_log.c
