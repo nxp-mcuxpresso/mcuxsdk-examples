@@ -27,6 +27,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* Power on the Displaymix */
     HAL_PowerSetState(&pwrst);

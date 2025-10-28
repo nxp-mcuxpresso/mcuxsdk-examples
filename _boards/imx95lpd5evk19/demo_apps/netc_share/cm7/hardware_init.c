@@ -274,6 +274,7 @@ void BOARD_InitHardware(void)
 
     /* Console init */
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* Enable 156.25MHz clock to 10G ETH_CLKIN_P/ETH_CLKIN_N */
     BOARD_InitPCAL6524(&handle1);

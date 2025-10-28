@@ -30,6 +30,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     HAL_ClockSetRootClk(&hal_lpspiclk);
 

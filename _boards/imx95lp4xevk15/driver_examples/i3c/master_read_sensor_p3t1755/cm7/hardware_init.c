@@ -25,6 +25,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     HAL_ClockSetRate(&hal_i3cClkCfg);
     HAL_ClockEnable(&hal_i3cClkCfg);

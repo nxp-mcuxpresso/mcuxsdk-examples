@@ -23,6 +23,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* Set PCNS register value to 0x0 to prepare the RGPIO initialization */
     BOARD_LED_RGPIO->PCNS = 0x0;

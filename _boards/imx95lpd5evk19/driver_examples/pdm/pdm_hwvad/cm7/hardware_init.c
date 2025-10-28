@@ -42,6 +42,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     HAL_ClockSetPllClk(&hal_audiopll1vcoCLKCfg);
     HAL_ClockSetPllClk(&hal_audiopll1CLKCfg);

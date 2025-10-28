@@ -140,6 +140,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitBootPins();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
     APP_PrepareCamera();
     BOARD_PrepareDisplay();
 }

@@ -84,6 +84,7 @@ void BOARD_InitHardware(void)
 
     /* Console init */
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* Protocol configure */
     BLK_CTRL_NETCMIX->CFG_LINK_MII_PROT = 0x00000522;
