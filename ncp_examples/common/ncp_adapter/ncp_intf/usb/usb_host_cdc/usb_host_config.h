@@ -100,9 +100,9 @@
 
 #ifdef USB_HOST_CONFIG_LOW_POWER_MODE
 #undef USB_HOST_CONFIG_LOW_POWER_MODE
-#define USB_HOST_CONFIG_LOW_POWER_MODE (1U)
+#define USB_HOST_CONFIG_LOW_POWER_MODE (0U)
 #else
-#define USB_HOST_CONFIG_LOW_POWER_MODE (1U)
+#define USB_HOST_CONFIG_LOW_POWER_MODE (0U)
 #endif
 /*!
  * @brief the max NAK count for one transaction.

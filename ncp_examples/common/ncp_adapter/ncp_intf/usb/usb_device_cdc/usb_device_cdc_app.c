@@ -25,7 +25,7 @@
 #include "usb_device_cdc_app.h"
 #include "fsl_adapter_timer.h"
 #include "pin_mux.h"
-#include "host_sleep.h"
+
 #if (defined(FSL_FEATURE_SOC_SYSMPU_COUNT) && (FSL_FEATURE_SOC_SYSMPU_COUNT > 0U))
 #include "fsl_sysmpu.h"
 #endif /* FSL_FEATURE_SOC_SYSMPU_COUNT */
@@ -145,7 +145,7 @@ uint32_t g_halTimerHandle[(HAL_TIMER_HANDLE_SIZE + 3) / 4];
 /*******************************************************************************
  * Code
  ******************************************************************************/
-
+#if ((defined(USB_DEVICE_CONFIG_LOW_POWER_MODE)) && (USB_DEVICE_CONFIG_LOW_POWER_MODE > 0U))
 void HW_TimerCallback(void *param)
 {
     s_cdcVcom.hwTick += 10;
@@ -187,7 +187,7 @@ void USB_ControllerSuspended(void)
         __ASM("nop");
     }
 }
-
+#endif
 /*!
  * @brief CDC class specific callback function.
  *
@@ -230,6 +230,7 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
             {
 #if CONFIG_NCP_USB
                 ncp_usb_put_tx_sem();
+                taskYIELD();
 #endif
             }
         }
@@ -437,6 +438,7 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
     return error;
 }
 
+#if ((defined(USB_DEVICE_CONFIG_LOW_POWER_MODE)) && (USB_DEVICE_CONFIG_LOW_POWER_MODE > 0U))
 static void USB_DevicePmEventPut(usb_cdc_status_t event)
 {
     usb_cdc_status_t msg = event;
@@ -455,6 +457,7 @@ void USB_DevicePmStartResume(void)
         USB_DevicePmEventPut(kStatus_Idle);
     }
 }
+#endif
 
 /*!
  * @brief USB device callback function.
@@ -518,7 +521,7 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
             usb_echo("USB device detach\r\n");
             break;
 #endif
-
+#if ((defined(USB_DEVICE_CONFIG_LOW_POWER_MODE)) && (USB_DEVICE_CONFIG_LOW_POWER_MODE > 0U))
         case kUSB_DeviceEventSuspend:
         {
             /* USB device bus suspend signal detected */
@@ -551,7 +554,7 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
             }
         }
         break;
-
+#endif
         case kUSB_DeviceEventSetRemoteWakeup:
             if (param)
             {

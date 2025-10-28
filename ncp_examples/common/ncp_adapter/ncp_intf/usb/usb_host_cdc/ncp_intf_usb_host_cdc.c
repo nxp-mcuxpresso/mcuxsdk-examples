@@ -20,6 +20,12 @@ extern cdc_instance_struct_t g_cdc;
 OSA_SEMAPHORE_HANDLE_DEFINE(usb_host_tx_sem);
 OSA_SEMAPHORE_HANDLE_DEFINE(usb_host_rx_sem);
 
+#if (CONFIG_NCP_DEBUG)
+#define NCP_USB_STATS_INC(x) NCP_STATS_INC(intf.x)
+#else
+#define NCP_USB_STATS_INC(x)
+#endif
+
 OSA_SEMAPHORE_HANDLE_DEFINE(usb_wakelock);
 uint8_t usb_interface_pm_state = kStatus_DEV_Attached;
 
@@ -66,7 +72,7 @@ int ncp_usb_host_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
 
     ncp_adap_d("transfer_size :%d!", data_len);
     ncp_usb_check_bus();
-    
+
     while (remaining_data_len > 0)
     {
         packet_size = (remaining_data_len > TLV_CMD_BUF_SIZE) ? TLV_CMD_BUF_SIZE : remaining_data_len;
@@ -212,7 +218,7 @@ static ncp_intf_pm_ops_t ncp_usb_host_pm_ops =
     .exit  = ncp_usb_host_pm_exit,
 };
 
-ncp_intf_ops_t ncp_usb_ops =
+static ncp_intf_ops_t ncp_intf_ops =
 {
     .init   = ncp_usb_host_init,
     .deinit = ncp_usb_host_deinit,
@@ -221,4 +227,8 @@ ncp_intf_ops_t ncp_usb_ops =
     .pm_ops = &ncp_usb_host_pm_ops,
 };
 
+const ncp_intf_ops_t *ncp_intf_get_ops(void)
+{
+    return &ncp_intf_ops;
+}
 #endif

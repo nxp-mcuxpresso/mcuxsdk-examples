@@ -151,9 +151,9 @@
 
 #if CONFIG_HOST_SLEEP
 /*! @brief Whether the low power mode is enabled or not. */
-#define USB_DEVICE_CONFIG_LOW_POWER_MODE (1U)
+#define USB_DEVICE_CONFIG_LOW_POWER_MODE (0U)
 #endif
-
+#ifndef USB_DEVICE_CONFIG_REMOTE_WAKEUP
 #if ((defined(USB_DEVICE_CONFIG_LOW_POWER_MODE)) && (USB_DEVICE_CONFIG_LOW_POWER_MODE > 0U))
 /*! @brief Whether device remote wakeup supported. 1U supported, 0U not supported */
 #define USB_DEVICE_CONFIG_REMOTE_WAKEUP (1U)
@@ -163,6 +163,7 @@
 #else
 /*! @brief The device remote wakeup is unsupported. */
 #define USB_DEVICE_CONFIG_REMOTE_WAKEUP (0U)
+#endif
 #endif
 
 /*! @brief Whether the device detached feature is enabled or not. */

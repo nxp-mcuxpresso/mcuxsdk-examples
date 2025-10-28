@@ -29,7 +29,5 @@
  * API
  ******************************************************************************/
 int ncp_usb_device_recv(uint8_t *recv_data, uint32_t packet_len);
-int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb);
-int ncp_usb_device_init();
 void ncp_usb_put_tx_sem(void);
 #endif

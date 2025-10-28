@@ -92,13 +92,13 @@ mcux_add_source(
             common/ncp_adapter/ncp_intf/ncp_intf_pm.h
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.c
             common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.h
-            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.c
-            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.h
-            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.c
-            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.h
-            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.c
-            # common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.h
-            #common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_config.h
+            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.c
+            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_cdc_app.h
+            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.c
+            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/ncp_intf_usb_device_cdc.h
+            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.c
+            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_descriptor.h
+            common/ncp_adapter/ncp_intf/usb/usb_device_cdc/usb_device_config.h
             common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.c
             common/ncp_adapter/ncp_intf/spi/spi_slave/ncp_intf_spi_slave.h
             common/ncp_adapter/ncp_intf/sdio/sdio_device/ncp_intf_sdio.c

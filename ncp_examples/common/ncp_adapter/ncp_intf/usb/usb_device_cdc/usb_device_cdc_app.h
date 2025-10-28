@@ -119,8 +119,6 @@ typedef struct _usb_cdc_acm_info
 int usb_device_init(void);
 int usb_device_deinit(void);
 int usb_device_reinit(void);
-#if ((defined(USB_DEVICE_CONFIG_LOW_POWER_MODE)) && (USB_DEVICE_CONFIG_LOW_POWER_MODE > 0U))
 int USB_DeviceEnterPowerDown(void);
 int USB_DeviceExitPowerDown(void);
-#endif
 #endif /* _USB_CDC_VCOM_H_ */

@@ -62,7 +62,7 @@ void app_task(void *param);
 /* NCP usb host task */
 #define USB_HOST_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(usb_host_thread);
-static OSA_TASK_DEFINE(usb_host_task, USB_HOST_TASK_PRIO, 1, 1024, 0);
+static OSA_TASK_DEFINE(usb_host_task, USB_HOST_TASK_PRIO, 1, 2048, 0);
 
 #define APP_TASK_PRIO   PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3))
 static OSA_TASK_HANDLE_DEFINE(app_task_thread);
@@ -74,16 +74,20 @@ extern void usb_recv_task(void *param);
 static OSA_TASK_HANDLE_DEFINE(usb_recv_thread);
 static OSA_TASK_DEFINE(usb_recv_task, USB_RECV_TASK_PRIO, 1, 1024, 0);
 
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
 void usb_pm_task(void *param);
 /* NCP usb host pm task */
 static OSA_TASK_HANDLE_DEFINE(usb_pm_task_thread);
 static OSA_TASK_DEFINE(usb_pm_task, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)), 1, 1024, 0);
 #endif
+#endif
 
 OSA_EVENT_HANDLE_DEFINE(usb_host_events);
 
 uint32_t g_halTimerHandle[(HAL_TIMER_HANDLE_SIZE + 3) / 4];
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
 static uint32_t systemTickControl;
+#endif
 
 uint8_t usb_enter_pm2 = 0;
 #if CONFIG_NCP_USB
@@ -146,7 +150,7 @@ usb_status_t USB_HostEvent(usb_device_handle deviceHandle,
         case kUSB_HostEventEnumerationFail:
             usb_echo("enumeration failed\r\n");
             break;
-
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
         case kUSB_HostEventNotSuspended:
             if (kStatus_Idle != g_cdc.suspendResumeState)
             {
@@ -199,7 +203,7 @@ usb_status_t USB_HostEvent(usb_device_handle deviceHandle,
             }
             g_cdc.suspendResumeState = kStatus_Idle;
             break;
-
+#endif
         default:
             break;
     }
@@ -208,6 +212,7 @@ usb_status_t USB_HostEvent(usb_device_handle deviceHandle,
     return status;
 }
 
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
 void HW_TimerCallback(void *param)
 {
     g_cdc.hwTick++;
@@ -271,7 +276,7 @@ void USB_PowerPostSwitchHook(void)
     USB_PostLowpowerMode();
     HW_TimerControl(1U);
 }
-
+#endif
 void usb_remote_wakeup_device(void)
 {
     usb_enter_pm2 = USB_PM2_ACTION_EXIT;
@@ -327,6 +332,7 @@ usb_status_t USB_HostControlRemoteWakeup(usb_host_handle hostHandle,
     return kStatus_USB_Success;
 }
 
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
 static void USB_HostRemoteWarkupCallback(void *param, usb_host_transfer_t *transfer, usb_status_t status)
 {
     if (NULL == param)
@@ -466,7 +472,7 @@ void usb_host_pm_task(void)
     usb_enter_pm2 = USB_PM2_ACTION_NONE;
 }
 #endif
-
+#endif
 void USB_OTG1_IRQHandler(void)
 {
     USB_HostEhciIsrFunction(g_hostHandle);
@@ -520,6 +526,7 @@ void USB_HostTaskFn(void *param)
     USB_HostEhciTaskFunction(param);
 }
 #if CONFIG_NCP_USB
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
 void usb_pm_task(void *param)
 {
     while (1)
@@ -528,6 +535,7 @@ void usb_pm_task(void *param)
         vTaskDelay(1);
     }
 }
+#endif
 #endif
 /*!
  * @brief app initialization.
@@ -594,7 +602,9 @@ int usb_host_init(void)
 
 #if CONFIG_NCP_USB
     (void)OSA_TaskCreate((osa_task_handle_t)usb_recv_thread, OSA_TASK(usb_recv_task), (osa_task_param_t)NULL);
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
     (void)OSA_TaskCreate((osa_task_handle_t)usb_pm_task_thread, OSA_TASK(usb_pm_task), (osa_task_param_t)NULL);
+#endif
 #endif
 
     return 0;
@@ -607,7 +617,9 @@ int usb_host_deinit(void)
 
 #if CONFIG_NCP_USB
     (void)OSA_TaskDestroy(usb_recv_thread);
+#if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
     (void)OSA_TaskDestroy(usb_pm_task_thread);
+#endif
 #endif
 
     return 0;

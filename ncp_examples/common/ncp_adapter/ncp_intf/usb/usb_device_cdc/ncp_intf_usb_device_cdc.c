@@ -7,16 +7,27 @@
  *  SPDX-License-Identifier: BSD-3-Clause
  *  The BSD-3-Clause license can be found at https://spdx.org/licenses/BSD-3-Clause.html
  */
+#include "fsl_pm_core.h"
 #include "usb_misc.h"
 #include "ncp_intf_usb_device_cdc.h"
 #include "ncp_debug.h"
 #include "ncp_tlv_adapter.h"
 #include "ncp_adapter.h"
+#include "ncp_pm.h"
 
 #if CONFIG_NCP_USB
 extern usb_cdc_vcom_struct_t s_cdcVcom;
 extern USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) uint8_t s_currRecvBuf[DATA_BUFF_SIZE];
 OSA_SEMAPHORE_HANDLE_DEFINE(usb_device_tx_sem);
+
+#if (CONFIG_NCP_DEBUG)
+#define NCP_USB_STATS_INC(x) NCP_STATS_INC(intf.x)
+#else
+#define NCP_USB_STATS_INC(x)
+#endif
+
+static const ncp_pm_ops_t *s_pm_ops = NULL;
+static pm_wakeup_source_t usbWakeupSource;
 
 void ncp_usb_put_tx_sem(void)
 {
@@ -70,17 +81,36 @@ int ncp_usb_device_recv(uint8_t *recv_data, uint32_t packet_len)
     return usb_rx_len;
 }
 
-int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
+static int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
 {
     uint16_t packet_size        = 0;
     uint16_t remaining_data_len = data_len;
+    int lpm_usb_retry_cnt = 20;
     ARG_UNUSED(cb);
 
     ncp_adap_d("usb transfer_size :%d!\r\n", data_len);
 
-    while ((s_cdcVcom.suspend != kStatus_Idle) || (!NCP_INTF_STATUS_CHECK(ready)))
+    while (s_cdcVcom.suspend != kStatus_Idle)
     {
       OSA_TimeDelay(1);
+    }
+
+    if (s_pm_ops && s_pm_ops->enter_critical)
+    {
+        s_pm_ops->enter_critical();
+    }
+
+    /* Wait for USB re-init done */
+    lpm_usb_retry_cnt = 200;
+    while(lpm_usb_retry_cnt > 0 && 1 != s_cdcVcom.attach)
+    {
+        OSA_TimeDelay(50);
+        lpm_usb_retry_cnt--;
+    }
+
+    if(0 == lpm_usb_retry_cnt)
+    {
+        ncp_adap_e("usb enum failed from LPM");
     }
 
     while (remaining_data_len > 0)
@@ -97,12 +127,17 @@ int ncp_usb_device_send(uint8_t *data, size_t data_len, tlv_send_callback_t cb)
         remaining_data_len -= packet_size;
     }
 
+    if (s_pm_ops && s_pm_ops->exit_critical)
+    {
+        s_pm_ops->exit_critical();
+    }
+
     NCP_USB_STATS_INC(tx);
 
     return 0;
 }
 
-int ncp_usb_device_init(void* argv)
+static int ncp_usb_device_init(void* argv)
 {
     int ret = NCP_STATUS_SUCCESS;
     ARG_UNUSED(argv);
@@ -119,7 +154,7 @@ int ncp_usb_device_init(void* argv)
     return ret;
 }
 
-int ncp_usb_device_deinit(void* argv)
+static int ncp_usb_device_deinit(void* argv)
 {
     ARG_UNUSED(argv);
     int ret = NCP_STATUS_SUCCESS;
@@ -134,7 +169,32 @@ int ncp_usb_device_deinit(void* argv)
     return usb_device_deinit();
 }
 
-static int ncp_usb_device_pm_enter(int32_t pm_state)
+static int ncp_usb_device_pm_init(void)
+{
+    s_pm_ops = ncp_pm_get_ops();
+
+    if (s_pm_ops && s_pm_ops->init_wakeup_src)
+    {
+        s_pm_ops->init_wakeup_src(&usbWakeupSource, (uint32_t)USB_IRQn, true);
+    }
+
+    return (int)NCP_PM_STATUS_SUCCESS;
+}
+
+static int ncp_usb_device_pm_prep(uint8_t pm_state, uint8_t event_type, void *data)
+{
+    ARG_UNUSED(event_type);
+    ARG_UNUSED(data);
+
+    if(pm_state == NCP_PM_STATE_PM2)
+    {
+        return NCP_STATUS_ERROR;
+    }
+
+    return 0;
+}
+
+static int ncp_usb_device_pm_enter(uint8_t pm_state)
 {
     int ret = 0;
 
@@ -146,14 +206,19 @@ static int ncp_usb_device_pm_enter(int32_t pm_state)
             ncp_adap_e("Failed to deinit USB interface");
             return NCP_STATUS_ERROR;
         }
-        NCP_INTF_STATUS_CLEAR(ready);
     }
+
     return NCP_STATUS_SUCCESS;
 }
 
-static int ncp_usb_device_pm_exit(int32_t pm_state)
+static int ncp_usb_device_pm_exit(uint8_t pm_state)
 {
     int ret = 0;
+
+    if (s_pm_ops && s_pm_ops->get_wakeup_src)
+    {
+        s_pm_ops->get_wakeup_src(&usbWakeupSource);
+    }
 
     if(pm_state == NCP_PM_STATE_PM3)
     {
@@ -164,17 +229,20 @@ static int ncp_usb_device_pm_exit(int32_t pm_state)
             return NCP_STATUS_ERROR;
         }
     }
+
     return NCP_STATUS_SUCCESS;
 }
 
 static ncp_intf_pm_ops_t ncp_usb_device_pm_ops =
 {
+    .init  = ncp_usb_device_pm_init,
+    .prep  = ncp_usb_device_pm_prep,
     .enter = ncp_usb_device_pm_enter,
     .exit  = ncp_usb_device_pm_exit,
 };
 
 
-ncp_intf_ops_t ncp_usb_ops =
+static ncp_intf_ops_t ncp_intf_ops =
 {
     .init   = ncp_usb_device_init,
     .deinit = ncp_usb_device_deinit,
@@ -183,4 +251,8 @@ ncp_intf_ops_t ncp_usb_ops =
     .pm_ops = &ncp_usb_device_pm_ops,
 };
 
+const ncp_intf_ops_t *ncp_intf_get_ops(void)
+{
+    return &ncp_intf_ops;
+}
 #endif
