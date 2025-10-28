@@ -21,12 +21,6 @@
 #include "ncp_host_command.h"
 #include "ncp_host_app.h"
 
-#if CONFIG_NCP_UART
-extern lpuart_rtos_handle_t ncp_host_tlv_uart_handle;
-#define UART_WAKEUP_MAGIC_PATTERN (0xABCDEF8987FEDCBAU)
-uint64_t magic_pattern = UART_WAKEUP_MAGIC_PATTERN;
-#endif
-
 #define MAX_CUSTOM_HOOKS 4
 #define CONFIG_TLV_STACK_SIZE 4096
 

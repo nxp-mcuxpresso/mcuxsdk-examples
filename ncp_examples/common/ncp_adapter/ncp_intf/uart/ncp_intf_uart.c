@@ -411,6 +411,7 @@ static int ncp_uart_pm_enter(uint8_t pm_state)
     return NCP_PM_STATUS_SUCCESS;
 }
 
+uint8_t magic_pattern[12] = {0xBA, 0xDC, 0xFE, 0x87, 0x89, 0xEF, 0xCD, 0xAB, 0xB9, 0x3E, 0x7A, 0x67};
 static int ncp_uart_pm_exit(uint8_t pm_state)
 {
 #if defined(RW610)
@@ -435,6 +436,8 @@ static int ncp_uart_pm_exit(uint8_t pm_state)
         default:
             break;
     }
+#elif defined(MIMXRT1062_SERIES)
+    ncp_uart_send(magic_pattern, sizeof(magic_pattern), NULL);
 #endif
     return NCP_PM_STATUS_SUCCESS;
 }
