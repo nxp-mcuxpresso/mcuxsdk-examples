@@ -102,6 +102,9 @@ int Model_Setup(NNServer* server) {
             case kTfLiteFloat32:
                 strcpy(server->output.data_type [server->output.num_outputs], "FLOAT32");
                 break;
+            case kTfLiteInt32:
+                strcpy(server->output.data_type [server->output.num_outputs], "INT32");
+                break;
             case kTfLiteUInt8:
                 strcpy(server->output.data_type [server->output.num_outputs], "UINT8");
                 break;
@@ -147,6 +150,10 @@ int Model_Setup(NNServer* server) {
         switch (tensor->type()){
         case tflite::TensorType_FLOAT32:
             strcpy(server->input.data_type [i], "FLOAT32");
+            server->input.bytes[i] = 4;
+            break;
+        case tflite::TensorType_INT32:
+            strcpy(server->input.data_type [i], "INT32");
             server->input.bytes[i] = 4;
             break;
         case tflite::TensorType_UINT8:
