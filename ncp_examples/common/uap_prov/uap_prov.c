@@ -960,7 +960,6 @@ int uap_prov_init(void)
     osa_status_t status;
 
     wlan_register_uap_prov_deinit_cb(uap_prov_deinit);
-    wlan_register_uap_prov_cleanup_cb(uap_prov_cleanup);
 
     if (uap_prov.status != STATUS_IDLE)
     {
@@ -1037,9 +1036,11 @@ int uap_prov_deinit(void)
 
     http_srv_deinit();
 
-    uap_prov_set_status(STATUS_IDLE);
-
     uap_prov_drain_queue();
+
+    (void)uap_prov_cleanup();
+
+    uap_prov_set_status(STATUS_IDLE);
 
     return ret;
 }
