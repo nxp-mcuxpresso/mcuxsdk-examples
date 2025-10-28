@@ -70,6 +70,12 @@
 #endif
 
 #define DEMO_FB_SIZE (DEMO_BUFFER_STRIDE_BYTE * DEMO_FB_HEIGHT)
+
+#if DEMO_DISPLAY_USE_PARTIAL_REFRESH
+/* For _lv_area_join */
+#include "src/misc/lv_area_private.h"
+#endif
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
