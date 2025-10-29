@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -53,8 +54,7 @@ void BOARD_SetSlcdBackPlanePhase(void)
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
-    BOARD_InitSWD_DEBUGPins();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
     BOARD_InitLCDPins();
 
@@ -85,10 +85,9 @@ uint32_t get_core1_image_size(void)
 void SystemInitHook(void)
 {
     /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
+    function as close to the reset entry as possible to allow CoreUp event
+    triggering. The SystemInitHook() weak function overloading is used in this
+    application. */
     (void)MCMGR_EarlyInit();
 }
-
 /*${function:end}*/

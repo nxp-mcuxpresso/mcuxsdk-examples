@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -64,9 +65,9 @@ void BOARD_InitHardware(void)
 void SystemInitHook(void)
 {
     /* Initialize MCMGR - low level multicore management library. Call this
-       function as close to the reset entry as possible to allow CoreUp event
-       triggering. The SystemInitHook() weak function overloading is used in this
-       application. */
+    function as close to the reset entry as possible to allow CoreUp event
+    triggering. The SystemInitHook() weak function overloading is used in this
+    application. */
     (void)MCMGR_EarlyInit();
 }
 /*${function:end}*/
