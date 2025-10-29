@@ -77,6 +77,10 @@ $lp_test_fro32k
 $lp_test_powerdown_connected
 #define gAppLowPowerConstraintInConnected_c            3
 
+// No change in app behavior, the application will not be able to use hardware parameter service
+$lp_test_without_hwparam
+#define gPlatformUseHwParameter_d                      0
+
 // No change in app behavior, HWParameter will be stored in PROD_DATA 
 $lp_test_hwparam_to_prod_data
 #define gHwParamsProdDataPlacement_c                   0
