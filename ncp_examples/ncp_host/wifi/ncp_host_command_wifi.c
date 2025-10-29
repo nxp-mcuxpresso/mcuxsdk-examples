@@ -9160,7 +9160,7 @@ int wlan_process_response(uint8_t *res)
     return ret;
 }
 
-#if CONFIG_INET_SOCKET
+#if 0
 typedef enum inet_test_type
 {
     TCP_SERVER = 0,
@@ -9562,7 +9562,7 @@ static struct ncp_host_cli_command ncp_host_app_cli_commands[] = {
     {"wlan-socket-sendto", NULL, wlan_socket_sendto_command},
     {"wlan-socket-receive", NULL, wlan_socket_receive_command},
     {"wlan-socket-recvfrom", NULL, wlan_socket_recvfrom_command},
-#if CONFIG_INET_SOCKET
+#if 0
     {"wlan-ncp-inet-test", NULL, ncp_inet_test_command},
 #endif
     {"wlan-http-connect", NULL, wlan_http_connect_command},
