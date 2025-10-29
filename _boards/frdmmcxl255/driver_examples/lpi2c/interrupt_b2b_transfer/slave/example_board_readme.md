@@ -7,31 +7,33 @@ Hardware requirements
 Board settings
 ==============
 
+LPI2C:
+
+CM33
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER_BOARD        CONNECTS TO         SLAVE_BOARD
-Pin Name     Board Location     Pin Name     Board Location
-LPI2C0_SCL   J5-5               LPI2C0_SCL   J5-5
-LPI2C0_SDA   J5-6               LPI2C0_SDA   J5-6
-GND          J5-8               GND          J5-8
+            MASTEE(I2C0)    connect to  SLAVE(I2C0)
+Pin Name    Board Location  Pin Name    Board Location
+LPI2C0_SCL  J5-5            LPI2C0_SCL  J5-5
+LPI2C0_SDA  J5-6            LPI2C0_SDA  J5-6
+GND         J5-8            GND         J5-8
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AON:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MASTER_BOARD        CONNECTS TO         SLAVE_BOARD
-Pin Name     Board Location     Pin Name     Board Location
-AON__I2C0_SCL   J2-9            AON__I2C0_SCL    J2-9
-AON__I2C0_SDA   J2-7            AON__I2C0_SDA    J2-7
-GND             J2-14           GND              J2-14
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CM0PLUS:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+MASTER(AON__I2C0)   connect to      SLAVE(AON__I2C0)
+Pin Name            Board Location  Pin Name            Board Location
+AON__I2C0_SCL       J2-9            AON__I2C0_SCL       J2-9
+AON__I2C0_SDA       J2-7            AON__I2C0_SDA       J2-7
+GND                 J2-14           GND                 J2-14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
 - 2-3 for AON core (cm0+)
 
 Prepare the Demo
-===============
-Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -43,9 +45,9 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
-The following message shows in the terminal if the example runs successfully.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPI2C board2board interrupt example -- Slave transfer.
 
 Slave received data :
@@ -56,4 +58,4 @@ Slave received data :
 
 
 End of LPI2C example .
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

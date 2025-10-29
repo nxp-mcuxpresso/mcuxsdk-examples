@@ -1,6 +1,5 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -12,7 +11,6 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-
 #define EXAMPLE_I2C_MASTER_INSTANCE      (0U)
 #define EXAMPLE_I2C_MASTER_BASE          (LPI2C0)
 #define LPI2C_MASTER_CLOCK_FREQUENCY     CLOCK_GetLpi2cClkFreq(EXAMPLE_I2C_MASTER_INSTANCE)
@@ -31,3 +29,6 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/

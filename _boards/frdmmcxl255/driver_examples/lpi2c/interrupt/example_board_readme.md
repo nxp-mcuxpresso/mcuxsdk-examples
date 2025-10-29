@@ -5,18 +5,19 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+=============
+
 To make lpi2c example work, connections needed to be as follows:
 
-        LPI2C0 SCL(J5-5) -->   LPI2C1 SCL(J4-12)
-        LPI2C0 SDA(J5-6) -->   LPI2C1 SDA(J4-10)
+LPI2C0 SCL(J5-5) -->   LPI2C1 SCL(J4-12)
+LPI2C0 SDA(J5-6) -->   LPI2C1 SDA(J4-10)
 
 Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-1 for the main core (cm33)
 
 Prepare the Demo
-===============
-1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board. 
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -28,9 +29,9 @@ Prepare the Demo
 
 Running the demo
 ================
-The following message shows in the terminal if the example runs successfully.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPI2C example -- MasterFunctionalInterrupt_SlaveFunctionalInterrupt.
 Master will send data :
 0x 0  0x 1  0x 2  0x 3  0x 4  0x 5  0x 6  0x 7
@@ -57,5 +58,4 @@ Master received data :
 0xe7  0xe6  0xe5  0xe4  0xe3  0xe2  0xe1  0xe0
 
 End of I2C example .
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
