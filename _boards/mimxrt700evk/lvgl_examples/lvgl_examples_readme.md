@@ -102,6 +102,8 @@ Please read section [Project Configuration](#project-configuration) to know the 
     #define SSD1963_DRIVEN_BY 0
     ```
 
+**Note**: When driving panel with FlexIO, only RGB888 pixel format is supported.
+
 ### RK055HDMIPI4M MIPI Rectangular Panel (RK055AHD091)
 
 #### Pixel format
