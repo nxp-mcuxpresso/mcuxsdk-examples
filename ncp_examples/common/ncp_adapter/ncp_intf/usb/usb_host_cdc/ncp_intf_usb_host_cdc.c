@@ -200,13 +200,13 @@ int ncp_usb_host_deinit(void* argv)
     return ret;
 }
 
-static int ncp_usb_host_pm_enter(int32_t pm_state)
+static int ncp_usb_host_pm_enter(uint8_t pm_state)
 {
     /* TODO: NCP usb pm */
     return NCP_STATUS_SUCCESS;
 }
 
-static int ncp_usb_host_pm_exit(int32_t pm_state)
+static int ncp_usb_host_pm_exit(uint8_t pm_state)
 {
     /* TODO: NCP usb pm */
     return NCP_STATUS_SUCCESS;
