@@ -28,6 +28,7 @@ mcux_add_source(
             # middleware/wireless/coex/third_party/third_party.cmake
             examples/coex_examples/coex_wifi_edgefast/app_config.cmake
             # examples/_boards/${board}/coex_examples/coex_wifi_edgefast/FreeRTOSConfig.h
+            middleware/wireless/coex/src/configs/mimxrt1062/edgefast/app_bluetooth_config.h
 )
 
 # mcux_add_source(
@@ -46,18 +47,6 @@ mcux_add_source(
     PREINCLUDE TRUE
     SOURCES ${board_root}/${board}/coex_examples/coex_wifi_edgefast/app_config.h
 )
-
-# mcux_add_include(
-#   BASE_PATH ${SdkRootDirPath}
-#     INCLUDES middleware/wireless/coex/src/configs/mimxrt1062/edgefast
-#   TARGET app_bluetooth_config.h
-# )
-# mcux_add_source(
-#     BASE_PATH ${SdkRootDirPath}
-#     SOURCES middleware/wireless/coex/src/configs/mimxrt1062/edgefast/app_bluetooth_config.h
-#     CONFIG True
-#     PREINCLUDE TRUE
-# )
 
 mcux_add_include(
     BASE_PATH ${SdkRootDirPath}

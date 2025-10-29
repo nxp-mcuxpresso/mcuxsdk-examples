@@ -26,6 +26,7 @@ mcux_add_source(
     middleware/wireless/coex/src/edgefast/coex_shell.h
     examples/coex_examples/coex_wifi_edgefast/app_config.cmake
     #middleware/wireless/coex/build/${board}/common/app.h
+    middleware/wireless/coex/src/configs/mimxrt1176/edgefast/app_bluetooth_config.h
 )
 
 mcux_add_source(
