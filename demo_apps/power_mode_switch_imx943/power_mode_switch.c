@@ -375,7 +375,11 @@ void PowerModeSwitchTask(void *pvParameters)
 
         int modeIndex = ch - 'A';
 
+#if defined(CPU_MIMX94398AVKM_cm7_core0) || defined(CPU_MIMX94398AVKM_cm7_core1)
+        if ((ch != 'P') && (ch != 'W') && ((modeIndex < 0) || (modeIndex >= LPM_PowerModeCount)))
+#else
         if (modeIndex < 0 || modeIndex >= LPM_PowerModeCount)
+#endif
         {
             PRINTF("Invalid power mode input: %c\r\n", ch);
             continue;

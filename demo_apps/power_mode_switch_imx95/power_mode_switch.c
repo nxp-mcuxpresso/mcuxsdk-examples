@@ -333,7 +333,7 @@ void PowerModeSwitchTask(void *pvParameters)
 
         int modeIndex = ch - 'A';
 
-        if (modeIndex < 0 || modeIndex >= LPM_PowerModeCount)
+        if ((ch != 'P') && (ch != 'W') && ((modeIndex < 0) || (modeIndex >= LPM_PowerModeCount)))
         {
             PRINTF("Invalid power mode input: %c\r\n", ch);
             continue;
