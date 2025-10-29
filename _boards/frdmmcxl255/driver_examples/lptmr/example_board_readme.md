@@ -11,9 +11,8 @@ Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-3 for AON core (cm0+)
 
 Prepare the Demo
-===============
-Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -25,8 +24,9 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
+
 The following lines are printed to the serial terminal when the demo program is executed.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Low Power Timer Example
 LPTMR interrupt No.1
 LPTMR interrupt No.2
@@ -34,5 +34,4 @@ LPTMR interrupt No.3
 LPTMR interrupt No.4
 LPTMR interrupt No.5
 LPTMR interrupt No.6
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
