@@ -5,7 +5,7 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 Connect the USB to TTL converter to FRDM-MCXL255 board.
 - CM33:
   - TX of USB2COM to SJ1-1(P2_10)
@@ -19,12 +19,11 @@ Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-3 for AON core (cm0+)
 
 Prepare the Demo
-===============
-Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
-    - 7 data bits
+    - 8 data bits
     - No parity
     - One stop bit
     - No flow control
@@ -33,8 +32,9 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
-When the demo runs successfully, the log would be seen on the MCU-Link terminal like:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Lpuart polling example with seven data bits
 Board will send back received characters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
