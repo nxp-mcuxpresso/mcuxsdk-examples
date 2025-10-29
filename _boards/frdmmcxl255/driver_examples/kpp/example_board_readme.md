@@ -5,7 +5,7 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 Matrix and Jumper settings for KPP:
 
 row1  <----->   J8_5  (P0_13)
@@ -18,7 +18,7 @@ Make sure you have solder bridges SJ1 and SJ2 set to
 - 2-3 for AON core (cm0+)
 
 Prepare the Demo
-===============
+================
 1.  Connect a USB cable between the host PC and the OpenSDA USB port on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
@@ -31,13 +31,13 @@ Prepare the Demo
 5.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
-===============
+================
 
-When you press any key on matrix,  the log will show the right key you have pressed.
+When you press any key on matrix, the log will show the right key you have pressed.
 If the press is long, it will add the long press mention.
-The log would be seen on the OpenSDA terminal like:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following lines are printed to the serial terminal when the demo program is executed.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  KPP Driver Example Start.
   
  Key SW1 was pressed.
@@ -54,4 +54,4 @@ The log would be seen on the OpenSDA terminal like:
 
    ......
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

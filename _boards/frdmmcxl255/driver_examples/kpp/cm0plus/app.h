@@ -1,10 +1,10 @@
 /*
  * Copyright 2018, 2025 NXP
- * All rights reserved.
  *
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #ifndef _APP_H_
 #define _APP_H_
 
@@ -43,3 +43,6 @@ char *keyMap[EXAMPLE_KPP_MATRX_NUM][EXAMPLE_KPP_MATRX_NUM] = {
 /*${variable:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/
