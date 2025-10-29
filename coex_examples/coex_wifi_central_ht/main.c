@@ -51,6 +51,7 @@
 #include "app_config.h"
 
 #ifdef RW612_SERIES
+#ifndef CONFIG_WPA_SUPP_CRYPTO_MBEDTLS_PSA
 #if defined(MBEDTLS_NXP_SSSAPI)
 #include "sssapi_mbedtls.h"
 #elif defined(MBEDTLS_MCUX_CSS_API)
@@ -72,7 +73,7 @@
 #include "ksdk_mbedtls.h"
 #endif
 #endif
-
+#endif
 #endif /* RW612_SERIES */
 
 #if defined(MBEDTLS_USER_CONFIG_FILE)
