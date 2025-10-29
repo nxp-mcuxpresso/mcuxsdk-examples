@@ -1,13 +1,15 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #ifndef _APP_H_
 #define _APP_H_
 
+/*${header:start}*/
 #include "board.h"
+/*${header:end}*/
 
 /*******************************************************************************
  * Definitions
@@ -32,3 +34,6 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/
