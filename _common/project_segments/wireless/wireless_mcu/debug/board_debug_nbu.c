@@ -63,22 +63,28 @@ static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
     nbu_debug_struct_t debug_info;
     nbu_dbg_info_t *nbu_dbg_info;
     reg_info_t *regs;
-
     int status;
 
-    if (nbu_event->nbu_warning_count > 0U)
+    do
     {
-        PRINTF("New NBU Warnings detected: %u warnings\n", nbu_event->nbu_warning_count);
-    }
+        if (nbu_event->nbu_warning_count > 0U)
+        {
+            PRINTF("WARNING: %u New NBU Warnings detected\n", nbu_event->nbu_warning_count);
+        }
 
-    if (nbu_event->nbu_error_count > 0U)
-    {
+        if (nbu_event->nbu_is_halted)
+        {
+            PRINTF("ERROR: NBU is stuck - possible stall or deadlock detected\n");
+        }
+
         status = NBUDBG_StructDump(&debug_info);
         if (status != 0)
         {
             PRINTF("ERROR: Failed to retrieve NBU debug information\n");
+            break;
         }
-        else
+
+        if ((nbu_event->nbu_error_count > 0U))
         {
             nbu_dbg_info = &debug_info.nbu_dbg_info;
             regs = &debug_info.nbu_dbg_info.reg_info;
@@ -169,17 +175,18 @@ static void BOARD_NbuDebugNotifyCb(const nbu_dbg_context_t *nbu_event)
                 PRINTF("  Thread Address: 0x%08X\n", nbu_dbg_info->execution_context.thread_info.thread_addr);
                 PRINTF("  Thread Name: %.8s\n", nbu_dbg_info->execution_context.thread_info.thread_name);
             }
-            /* Raw dump of BLE debug data */
-            DBG_PrintRawData("BLE Debug Data", "DBG_BLE_START", "DBG_BLE_END",
-                             debug_info.dbg_ble, NBUDBG_BLE_STRUCT_SIZE);
-
-            /* Raw dump of 15.4 debug data */
-            DBG_PrintRawData("15.4 Debug Data", "DBG_15_4_START", "DBG_15_4_END",
-                             debug_info.dbg_15_4, NBUDBG_15_4_STRUCT_SIZE);
 
             PRINTF("\n=== End of NBU Fault/Assert Analysis ===\n\n");
         }
-    }
+        /* Raw dump of BLE debug data */
+        DBG_PrintRawData("BLE Debug Data", "DBG_BLE_START", "DBG_BLE_END",
+                         debug_info.dbg_ble, NBUDBG_BLE_STRUCT_SIZE);
+
+        /* Raw dump of 15.4 debug data */
+        DBG_PrintRawData("15.4 Debug Data", "DBG_15_4_START", "DBG_15_4_END",
+                         debug_info.dbg_15_4, NBUDBG_15_4_STRUCT_SIZE);
+
+    } while (false);
 }
 
 static void DBG_PrintMemoryManagementFaults(uint32_t cfsr)
