@@ -1,9 +1,9 @@
 /*
  * Copyright 2025 NXP
- * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*${header:start}*/
 #include "pin_mux.h"
 #include "clock_config.h"
@@ -12,13 +12,8 @@
 #include "board.h"
 #include "app.h"
 #include <stdbool.h>
-
 #include "fsl_lpadc.h"
 /*${header:end}*/
-
-/*${variable:start}*/
-
-/*${variable:end}*/
 
 /*
  * Porting Guild.
@@ -43,11 +38,19 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
     lpadc_conv_result_t convResultStruct;
     uint16_t Vbe1            = 0U;
     uint16_t Vbe8            = 0U;
-    uint32_t convResultShift = 0U;
+    uint32_t convResultShift = 3U;
     float parameterSlope     = DEMO_LPADC_TEMP_PARAMETER_A;
     float parameterOffset    = DEMO_LPADC_TEMP_PARAMETER_B;
     float parameterAlpha     = DEMO_LPADC_TEMP_PARAMETER_ALPHA;
     float temperature        = -273.15f; /* Absolute zero degree as the incorrect return value. */
+
+#if defined(FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE) && (FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE == 4U)
+    /* For best temperature measure performance, the recommended LOOP Count should be 4, but the first two results is
+     * useless. */
+    /* Drop the useless result. */
+    (void)LPADC_GetConvResult(base, &convResultStruct);
+    (void)LPADC_GetConvResult(base, &convResultStruct);
+#endif /* FSL_FEATURE_LPADC_TEMP_SENS_BUFFER_SIZE */
 
     /* Read the 2 temperature sensor result. */
     if (true == LPADC_GetConvResult(base, &convResultStruct))
@@ -58,8 +61,8 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
             Vbe8 = convResultStruct.convValue >> convResultShift;
             /* Final temperature = A*[alpha*(Vbe8-Vbe1)/(Vbe8 + alpha*(Vbe8-Vbe1))] - B. */
             temperature = parameterSlope * (parameterAlpha * ((float)Vbe8 - (float)Vbe1) /
-                                            ((float)Vbe8 + parameterAlpha * ((float)Vbe8 - (float)Vbe1))) -
-                          parameterOffset;
+                            ((float)Vbe8 + parameterAlpha * ((float)Vbe8 - (float)Vbe1))) -
+                            parameterOffset;
         }
     }
 
@@ -68,12 +71,8 @@ float DEMO_MeasureTemperature(ADC_Type *base, uint32_t commandId, uint32_t index
 
 void BOARD_InitHardware(void)
 {
-    /* Release peripheral RESET */
-    RESET_PeripheralReset(kPORT1_RST_SHIFT_RSTn);
-    RESET_PeripheralReset(kADC0_RST_SHIFT_RSTn);
-
     BOARD_InitBootClocks();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/

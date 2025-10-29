@@ -12,14 +12,11 @@
 #include "board.h"
 /*${header:end}*/
 
-/*${variable:start}*/
-
-/*${variable:end}*/
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
     BOARD_InitBootClocks();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
 }
 /*${function:end}*/

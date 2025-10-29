@@ -5,12 +5,12 @@
 - Personal Computer
 
 Board settings
-============
+==============
 - Provide 0-3.3V voltage to J6-1 "AN" pin (ADC ch0 P3_9).
 
 Prepare the Demo
-===============
-1.  Connect a USB Type-C cable between the host PC and the LPC-Link USB port (J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -23,7 +23,7 @@ Prepare the Demo
 Running the demo
 ================
 
-The log below shows example output of the LPADC INTERRUPT driver demo in the terminal window:
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPADC Interrupt Example
 ADC Full Range: 65536

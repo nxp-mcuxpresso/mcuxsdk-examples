@@ -6,10 +6,11 @@ Hardware requirements
 
 Board settings
 ============
+No special settings are required.
 
 Prepare the Demo
-===============
-1.  Connect a USB Type-C cable between the host PC and the LPC-Link USB port (J16) on the target board.
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -21,7 +22,8 @@ Prepare the Demo
 
 Running the demo
 ================
-The log below shows the output of the temperature measurement example in the terminal window:
+
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 LPADC Temperature Measurement Example
 ADC Full Range: 65536
