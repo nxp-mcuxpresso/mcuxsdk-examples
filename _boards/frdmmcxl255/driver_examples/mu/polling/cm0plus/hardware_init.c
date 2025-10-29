@@ -13,6 +13,6 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    //BOARD_InitBootPins();
+    BOARD_InitBootPins();
 }
 /*${function:end}*/

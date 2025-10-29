@@ -13,7 +13,8 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    //BOARD_InitBootPins();
+    BOARD_InitBootPins();
+
     NVIC_EnableIRQ(MU_B_TX_IRQn);
     NVIC_EnableIRQ(MU_B_RX_IRQn);
     NVIC_EnableIRQ(MU_B_INT_IRQn);

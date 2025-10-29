@@ -13,9 +13,12 @@
 /*${macro:start}*/
 #define APP_MU              MUA
 
-#define BOOT_CORE1_BY_MU 0
+#define BOOT_CORE1_BY_MU    0
 
-#define CORE1_BOOT_ADDRESS 0xA1000000
+#define CORE1_BOOT_ADDRESS  0xA1000000
+
+#define LED_INIT()          //not possible to use on-board LED from the secondary core
+#define LED_TOGGLE()        //not possible to use on-board LED from the secondary core
 
 #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
 extern uint32_t Image$$CORE1_REGION$$Base;
@@ -32,6 +35,7 @@ extern uint32_t core1_image_size;
 #define CORE1_IMAGE_SIZE  ((void *)core1_image_size)
 #endif
 /*${macro:end}*/
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -44,3 +48,6 @@ uint32_t get_core1_image_size(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/

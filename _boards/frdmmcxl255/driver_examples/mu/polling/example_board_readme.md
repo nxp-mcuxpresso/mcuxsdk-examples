@@ -5,12 +5,12 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 No special settings are required.
 
 Prepare the Demo
-===============
-1.  Connect a USB cable between the host PC and the MCU-Link USB port on the target board. 
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
 2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
@@ -21,10 +21,11 @@ Prepare the Demo
 4.  Either press the reset button on your board or launch the debugger in your IDE to begin running the demo.
 
 Running the demo
-===============
-When the demo runs successfully, the log would be seen on the terminal like as below and LED will blink:
+================
+As it is not possible to use any on-board LED from the cm0plus core the secondary core is running LED indication is not working in this example.
 
-~~~~~~~~~~~~~~~~~~~~~
+The following lines are printed to the serial terminal when the demo program is executed and LED will blink.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MU example polling!
 Send: 0. Receive 0
 Send: 1. Receive 1
@@ -59,6 +60,4 @@ Send: 29. Receive 29
 Send: 30. Receive 30
 Send: 31. Receive 31
 MU example run succeed!
-~~~~~~~~~~~~~~~~~~~~~
-Note:
-As it is not possible to use any on-board LED from the cm0plus core the secondary core is running LED indication is not working in this example.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
