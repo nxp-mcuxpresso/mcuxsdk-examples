@@ -11,14 +11,12 @@
  * Definitions
  ******************************************************************************/
 /*${macro:start}*/
-#define RTC AON__RTC_AON
-
-/* Initial counter value */
-#define INITIAL_COUNTER_VALUE 0x0ULL
-/* Alarm 0: Trigger at counter value 0xc8, every 2 seconds */
-#define ALARM0_COUNTER_VALUE 0xc8ULL
-/* Alarm 1: Trigger at counter value 0x1f4, 5th second */
-#define ALARM1_COUNTER_VALUE 0x1f4ULL
+#define RTC                             AON__RTC_AON
+#define CGU                             AON__CGU
+#define SECURITY_RESET                  kAonSecurity_RST_SHIFT_RSTn
+#define WATCHDOG_COUNTER_VALUE          200U /* Watchdog shall be feed within 2s */
+#define RTC_DELAY_TIME_US               20000U /* RTC delay time us */
+#define TAMPER_INTERRUPT_DELAY_TIME_US  100000U /* Delay time to skip tamper button long press */
 /*${macro:end}*/
 
 /*******************************************************************************
@@ -30,3 +28,6 @@ void BOARD_InitHardware(void);
 /*${prototype:end}*/
 
 #endif /* _APP_H_ */
+/*******************************************************************************
+ * EOF
+ ******************************************************************************/

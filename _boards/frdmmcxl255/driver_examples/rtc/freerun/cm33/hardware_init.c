@@ -64,7 +64,7 @@ void APP_InitTamperPins()
 
     /* Tamper0 */
     const port_pin_config_t port0_4_config = {/* Internal pull-up/down resistor is pullup */
-                                              kPORT_PullDown,
+                                              kPORT_PullUp,
                                               /* Low internal pull resistor value is selected. */
                                               kPORT_LowPullResistor,
                                               /* Fast slew rate is configured */
@@ -91,8 +91,7 @@ void APP_InitTamperPins()
 
 void BOARD_InitHardware(void)
 {
-    BOARD_InitSWD_DEBUGPins();
-    BOARD_InitDEBUG_UARTPins();
+    BOARD_InitBootPins();
     BOARD_Init96MClocksBoot();
     BOARD_InitDebugConsole();
     APP_InitTamperPins();
