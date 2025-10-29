@@ -149,7 +149,7 @@ SECTIONS
   __DATA_ROM = .; /* Symbol is used by startup for data initialization */
 
 
-  .noinit (NOLOAD): { KEEP(*(*.noinit.mflt*)) } > m_data
+  .noinit (NOLOAD): { KEEP(*(*.noinit.mflt*)) } > m_data0
 
   .data : AT(__DATA_ROM)
   {
