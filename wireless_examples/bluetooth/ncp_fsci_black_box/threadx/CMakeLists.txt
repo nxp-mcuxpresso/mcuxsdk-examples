@@ -25,6 +25,11 @@ mcux_add_iar_configuration(
     LD "     --semihosting "
 )
 
+mcux_add_armgcc_configuration(
+    TARGETS  release
+    CC "     -Os "
+)
+
 mcux_add_linker_symbol(
     SYMBOLS "__use_shmem__=1"
 )
