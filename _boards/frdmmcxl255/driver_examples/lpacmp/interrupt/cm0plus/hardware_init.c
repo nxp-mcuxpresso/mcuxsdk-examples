@@ -13,15 +13,16 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
+    /* Enable clock */
     CLOCK_EnableClock(kCLOCK_GateAonAPB);
     CLOCK_EnableClock(kCLOCK_GateAonPORT);
     CLOCK_EnableClock(kCLOCK_GateAonGPIO);
 
-    BOARD_InitDEBUG_UARTPins();
-    BOARD_InitLPACMPPins();
     BOARD_InitBootClocks();
+    BOARD_InitBootPins();
     BOARD_InitDebugConsole();
-
+    BOARD_InitLPACMPPins();
+    
     /* 10M to AON CMP0 */
     CLOCK_AttachClk(kFROdiv1_to_AON_CMP0);
 }

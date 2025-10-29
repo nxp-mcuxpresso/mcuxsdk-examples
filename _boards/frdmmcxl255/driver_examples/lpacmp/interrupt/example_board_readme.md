@@ -5,16 +5,14 @@ Hardware requirements
 - Personal Computer
 
 Board settings
-============
+==============
 1. Connect a external voltage source to the J3-3.
-2. Connect J8-9(RX) and J8-11(TX) to a USB-TTL module, and then
-   connect the module to the PC to observe the AON domain UART output.
+2. Connect J8-9(RX) and J8-11(TX) to a USB-TTL module, and then connect the module to the PC to observe the AON domain UART output.
 
 Prepare the Demo
-===============
-Note: MCUXpresso IDE project default debug console is semihost
-1.  Connect a Type-C USB cable between the host PC and the MCU-Link port(J16) on the target board.
-2.  Open a serial terminal with the following settings (See Appendix A in Getting started guide for description how to determine serial port number):
+================
+1.  Connect a USB Type-C cable between the host PC and the MCU-Link USB port (J16) on the target board.
+2.  Open a serial terminal with the following settings:
     - 115200 baud rate
     - 8 data bits
     - No parity
@@ -25,8 +23,8 @@ Note: MCUXpresso IDE project default debug console is semihost
 
 Running the demo
 ================
-The log below shows the output of the lpacmp demo in the terminal window:
 
+The following lines are printed to the serial terminal when the demo program is executed.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Lpacmp interrupt example
 Press any key to start the comparsion
