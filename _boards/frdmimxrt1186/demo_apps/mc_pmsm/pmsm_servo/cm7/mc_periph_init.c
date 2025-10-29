@@ -366,18 +366,6 @@ void M1_InitFlexIOEndat2p2(void)
         config.baudRate_Bps = baudRate;
     }
 
-    FLEXIO_ENDAT2_Init(&g_sM1Enc.endat2Master, &config, srcClock_Hz);
-
-    int number = 0x10;
-    
-    while (number--) {
-        if (FLEXIO_ENDAT2_ReadBlocking(&g_sM1Enc.endat2Master) != kStatus_Success) 
-        { 
-        }
-
-    }
-        
-    FLEXIO_ENDAT2_Deinit(&g_sM1Enc.endat2Master);
     g_sM1Enc.endat2Master.txTrigger = kFlexioEndat2_txTriggerHw;
     FLEXIO_ENDAT2_Init(&g_sM1Enc.endat2Master, &config, CLOCK_GetRootClockFreq(M1_FLEXIO_CLOCK_ROOT));
     FLEXIO_ENDAT2_WriteCmd(&g_sM1Enc.endat2Master, kFlexIO_ENDAT2_CmdIdxEncSendPosVal);

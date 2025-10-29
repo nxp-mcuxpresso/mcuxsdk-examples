@@ -7,6 +7,7 @@ This example demonstrates the control of the PMSM.
 ## Supported Boards
 - [MIMXRT1170-EVKB](../../../_boards/evkbmimxrt1170/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [MIMXRT1180-EVK](../../../_boards/evkmimxrt1180/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
+- [MIMXRT1186-EVK](../../../_boards/frdmimxrt1186/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA153](../../../_boards/frdmmcxa153/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA156](../../../_boards/frdmmcxa156/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
 - [FRDM-MCXA346](../../../_boards/frdmmcxa346/demo_apps/mc_pmsm/pmsm_enc/example_board_readme.md)
