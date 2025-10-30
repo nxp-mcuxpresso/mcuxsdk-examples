@@ -99,10 +99,6 @@
 /*! Set to 1 to unmirror feature set */
 #define gUnmirroredFeatureSet_d (1)
 #endif /* gNvUseFlexNVM_d */
-#if gNvFragmentation_Enabled_d
-/*! Buffer size large enough to accommodate the maximum number of CCCDs for every device. */
-#define gNvRecordsCopiedBufferSize_c (gMaxBondedDevices_c * 16)
-#endif /* gNvFragmentation_Enabled_d */
 #endif /* gAppUseNvm_d */
 
 /*! *********************************************************************************
