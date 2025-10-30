@@ -12,9 +12,9 @@
 void BOARD_InitHardware(void)
 {
     SystemPlatformInit();
-    BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 }
 /*${function:end}*/

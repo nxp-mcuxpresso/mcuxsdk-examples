@@ -29,6 +29,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 }
 
 int32_t APP_GRP_RESET()

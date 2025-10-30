@@ -167,6 +167,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     POWER_SetState(&pwrst);
     st = POWER_GetState(&pwrst);

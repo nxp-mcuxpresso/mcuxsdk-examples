@@ -15,10 +15,10 @@ void BOARD_InitHardware(void)
 {
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
-    BOARD_ConfigMPU();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     /* Select Motor controller 1 */
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, ETH3_SEL);

@@ -42,6 +42,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
     CLOCK_SetParent(&clk);
     CLOCK_SetRate(&clk);
     CLOCK_EnableClock(clk.clkId);

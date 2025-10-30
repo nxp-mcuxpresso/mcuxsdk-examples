@@ -28,6 +28,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetRate(&dmaClkCfg);
     CLOCK_EnableClock(dmaClkCfg.clkId);

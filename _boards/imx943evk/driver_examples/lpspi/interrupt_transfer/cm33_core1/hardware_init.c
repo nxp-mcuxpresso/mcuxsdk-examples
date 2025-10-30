@@ -29,12 +29,12 @@ void BOARD_InitHardware(void)
     };
     /* clang-format on */
 
-    BOARD_ConfigMPU();
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetRate(&lpspiMstClkCfg);
     CLOCK_EnableClock(lpspiMstClkCfg.clkId);

@@ -15,5 +15,6 @@ void BOARD_InitHardware(void)
     BOARD_InitDebugConsolePins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 }
 /*${function:end}*/

@@ -28,6 +28,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetParent(&flexioClkCfg);
     CLOCK_SetRate(&flexioClkCfg);

@@ -32,6 +32,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetRate(&flexcanClkCfg);
     CLOCK_EnableClock(flexcanClkCfg.clkId);

@@ -66,11 +66,11 @@ void BOARD_InitHardware(void)
     BLK_CTRL_WAKEUPMIX_Type *blk_ctrl = BLK_CTRL_WAKEUPMIX;
 
     SystemPlatformInit();
-    BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetParent(&endat2p2Clk);
     CLOCK_SetRate(&endat2p2Clk);

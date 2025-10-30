@@ -13,12 +13,12 @@
 /*${function:start}*/
 void BOARD_InitHardware(void)
 {
-    BOARD_ConfigMPU();
     SystemPlatformInit();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 }
 
 void BOARD_ConfigTriggerSource()

@@ -32,6 +32,7 @@ void BOARD_InitHardware(void)
     BOARD_BootClockRUN();
     BOARD_InitBootPins();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetRate(&hal_flexioClkCfg);
     CLOCK_EnableClock(hal_flexioClkCfg.clkId);

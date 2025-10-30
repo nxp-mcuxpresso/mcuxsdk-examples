@@ -40,6 +40,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetRate(&hal_lpi2cMstclk);
     CLOCK_EnableClock(hal_lpi2cMstclk.clkId);

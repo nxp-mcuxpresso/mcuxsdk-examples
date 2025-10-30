@@ -21,6 +21,7 @@ void BOARD_InitHardware(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
     BOARD_EXPANDER_SetPinAsOutput(BOARD_PCA6416_I2C6_S3_ID, SD2_SEL);
     BOARD_EXPANDER_SetPinToLow(BOARD_PCA6416_I2C6_S3_ID, SD2_SEL);
 }

@@ -52,11 +52,11 @@ void BOARD_InitHardware(void)
 
     /* clang-format on */
     SystemPlatformInit();
-    BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     POWER_SetState(&pwrst);
     st = POWER_GetState(&pwrst);

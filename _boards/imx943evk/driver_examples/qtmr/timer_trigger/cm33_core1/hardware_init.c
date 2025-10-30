@@ -20,11 +20,11 @@ void BOARD_InitHardware(void)
     };
 
     SystemPlatformInit();
-    BOARD_ConfigMPU();
     BOARD_InitDebugConsolePins();
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     CLOCK_SetRate(&hal_lpit_clk);
     CLOCK_EnableClock(hal_lpit_clk.clkId);

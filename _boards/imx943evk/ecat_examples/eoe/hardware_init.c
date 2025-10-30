@@ -99,6 +99,7 @@ UINT16 HW_Init(void)
     BOARD_InitBootPins();
     BOARD_BootClockRUN();
     BOARD_InitDebugConsole();
+    BOARD_ConfigMPU();
 
     PRINTF("Start the SSC EoE example...\r\n");
 
