@@ -440,7 +440,7 @@ static void APP_SRTM_InitAudioService(void)
     /* Create SAI EDMA adapter */
     SAI_GetClassicI2SConfig(&saiTxConfig.config, kSAI_WordWidth16bits, kSAI_Stereo, kSAI_Channel0Mask);
     saiTxConfig.config.syncMode           = kSAI_ModeAsync; /* Tx in Async mode */
-    saiTxConfig.config.fifo.fifoWatermark = FSL_FEATURE_SAI_FIFO_COUNTn(APP_SRTM_SAI) - 1;
+    saiTxConfig.config.fifo.fifoWatermark = FSL_FEATURE_SAI_FIFO_COUNTn(APP_SRTM_SAI) - 8;
     saiTxConfig.mclk                      = APP_SAI_CLK_FREQ;
 
 #if defined(DEMO_SAI_TX_CONFIG_StopOnSuspend)
@@ -448,9 +448,9 @@ static void APP_SRTM_InitAudioService(void)
 #else
     saiTxConfig.stopOnSuspend = false; /* Keep playing audio on APD suspend. */
 #endif
-    saiTxConfig.threshold = 2U; /* Every period transmitted triggers periodDone message to A core. */
+    saiTxConfig.threshold = 1U; /* Every period transmitted triggers periodDone message to A core. */
     saiTxConfig.guardTime =
-        1500; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
+        4000; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
     saiTxConfig.dmaChannel = APP_SAI_TX_DMA_CHANNEL;
     saiTxConfig.extendConfig.audioDevConf = APP_SRTM_ConfAudioDevice;
 

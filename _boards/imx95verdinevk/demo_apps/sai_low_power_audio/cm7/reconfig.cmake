@@ -2,7 +2,6 @@
 mcux_add_configuration(
         CC "-DSDK_I2C_BASED_COMPONENT_USED=1\
             -DMCUX_SDK_EDMA_USE_DMA5=1\
-            -DSRTM_SAI_EDMA_LOCAL_BUF_ENABLE=1\
             -DSRTM_SAI_EDMA_CLOCK_SWITCH_ENABLE=1\
             -DSRTM_AUDIO_SERVICE_USED=1\
             -DBOARD_USE_PCAL6408=1\

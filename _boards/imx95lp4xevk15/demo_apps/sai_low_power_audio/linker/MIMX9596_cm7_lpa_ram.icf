@@ -40,8 +40,8 @@ define symbol m_m33_suspend_ram_end    = 0x20001FFF;
 define symbol m_a55_suspend_ram_start  = 0x20002000;
 define symbol m_a55_suspend_ram_end    = 0x20003FFF;
 
-define symbol m_data_start             = 0x20004000;
-define symbol m_data_end               = 0x2001DFFF;
+define symbol m_data_start             = 0x80000000;
+define symbol m_data_end               = 0x87FFFFFF;
 
 define symbol m_data2_start            = 0x2001E000;
 define symbol m_data2_end              = 0x2003BFFF;

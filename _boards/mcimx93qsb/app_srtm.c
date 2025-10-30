@@ -40,7 +40,7 @@ static app_rpmsg_monitor_t rpmsgMonitor;
 static void *rpmsgMonitorParam;
 static TimerHandle_t linkupTimer;
 #if SRTM_SAI_EDMA_LOCAL_BUF_ENABLE
-#define BUFFER_LEN (64 * 1024)
+#define BUFFER_LEN (256 * 1024)
 #if (defined(__ICCARM__))
 static uint8_t g_buffer[BUFFER_LEN] @"AudioBuf";
 #else
@@ -50,7 +50,7 @@ static srtm_sai_edma_local_buf_t g_local_buf = {
     .buf       = (uint8_t *)&g_buffer,
     .bufSize   = BUFFER_LEN,
     .periods   = SRTM_SAI_EDMA_MAX_LOCAL_BUF_PERIODS,
-    .threshold = 2,
+    .threshold = 1,
 
 };
 #endif
@@ -439,7 +439,7 @@ static void APP_SRTM_InitAudioService(void)
 #else
     saiTxConfig.stopOnSuspend = false; /* Keep playing audio on APD suspend. */
 #endif
-    saiTxConfig.threshold = 2U; /* Every period transmitted triggers periodDone message to A core. */
+    saiTxConfig.threshold = 1U; /* Every period transmitted triggers periodDone message to A core. */
     saiTxConfig.guardTime =
         1000; /* Unit:ms. This is a lower limit that M core should reserve such time data to wakeup A core. */
     saiTxConfig.dmaChannel = APP_SAI_TX_DMA_CHANNEL;

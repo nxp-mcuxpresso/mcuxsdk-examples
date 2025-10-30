@@ -37,7 +37,7 @@ MEMORY
 {
   m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00000800
   m_text                (RX)  : ORIGIN = 0x00000800, LENGTH = 0x0003F800
-  m_data                (RW)  : ORIGIN = 0x20004000, LENGTH = 0x0001a000
+  m_data                (RW)  : ORIGIN = 0x80000000, LENGTH = 0x07ffffff
   m_data2               (RW)  : ORIGIN = 0x2001E000, LENGTH = 0x0001dfff
   m_ncache              (RW)  : ORIGIN = 0x2003BFFF, LENGTH = 0x00002000
   m_rsc_tbl             (RW)  : ORIGIN = 0x2003E000, LENGTH = 0x00002000

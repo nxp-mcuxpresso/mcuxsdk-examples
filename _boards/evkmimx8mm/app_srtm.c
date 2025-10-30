@@ -49,7 +49,7 @@
 #endif
 
 #if DEMO_SAI_TX_CONFIG_UseLocalBuf
-#define BUFFER_LEN (64 * 1024)
+#define BUFFER_LEN (256 * 1024)
 uint8_t g_buffer[BUFFER_LEN];
 srtm_sai_sdma_local_buf_t g_local_buf = {
     .buf       = (uint8_t *)&g_buffer,

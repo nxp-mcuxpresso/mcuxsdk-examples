@@ -39,8 +39,8 @@ define symbol m_interrupts_ram_end     = 0x20003000 + __ram_vector_table_offset_
 define symbol m_data_start             = m_interrupts_ram_start + __ram_vector_table_size__;
 define symbol m_data_end               = 0x2000DFFF;
 
-define symbol m_data2_start             = 0x2000E000;
-define symbol m_data2_end               = 0x2001DFFF;
+define symbol m_data2_start             = 0x20480000;
+define symbol m_data2_end               = 0x204DFFFF;
 
 define symbol m_rsc_tbl_start          = 0x2001E000;
 define symbol m_rsc_tbl_end            = 0x2001EFFF;
