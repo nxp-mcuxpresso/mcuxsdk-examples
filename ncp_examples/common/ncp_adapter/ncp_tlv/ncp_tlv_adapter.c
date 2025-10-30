@@ -23,6 +23,15 @@ NCP_LOG_MODULE_REGISTER(ncp_adapter, CONFIG_LOG_NCP_ADAPTER_LEVEL);
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
+ 
+/* Weak function. */
+#if defined(__GNUC__)
+#define __WEAK_FUNC __attribute__((weak))
+#elif defined(__ICCARM__)
+#define __WEAK_FUNC __weak
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
+#define __WEAK_FUNC __attribute__((weak))
+#endif
 
 #define NCP_TLV_STATS_INC(x) NCP_STATS_INC(tlvq.x)
 
@@ -66,6 +75,17 @@ static const ncp_pm_tx_if_t s_ncp_pm_tx_if = {
 /*******************************************************************************
  * Code
  ******************************************************************************/
+
+/* Define weak default implementations */
+__WEAK_FUNC void ncp_tx_ctrl_enter_hook(void)
+{
+    /* Default: do nothing */
+}
+
+__WEAK_FUNC void ncp_tx_ctrl_exit_hook(void)
+{
+    /* Default: do nothing */
+}
 
 #if CONFIG_NCP_USE_ENCRYPT
 int ncp_tlv_adapter_encrypt_init(const uint8_t *key_enc, const uint8_t *key_dec,
@@ -374,6 +394,8 @@ static void ncp_tlv_tx_data_dequeue(void)
 static void ncp_tlv_tx_ctrl_dequeue(void)
 {
     ncp_tlv_ctrl_qelem_t *msg = NULL;
+    
+    ncp_tx_ctrl_enter_hook();
 
     while (OSA_MsgQGet(ncp_tlv_ctrl_msgq_handle, &msg, osaWaitNone_c) == KOSA_StatusSuccess)
     {
@@ -385,6 +407,8 @@ static void ncp_tlv_tx_ctrl_dequeue(void)
     }
 
     ncp_tlv_adapter.pm_ops->tx_ctrl_action();
+    
+    ncp_tx_ctrl_exit_hook();
 }
 
 /**

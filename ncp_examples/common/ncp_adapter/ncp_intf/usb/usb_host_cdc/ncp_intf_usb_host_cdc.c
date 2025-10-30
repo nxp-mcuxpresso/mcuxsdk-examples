@@ -212,6 +212,18 @@ static int ncp_usb_host_pm_exit(uint8_t pm_state)
     return NCP_STATUS_SUCCESS;
 }
 
+void ncp_tx_ctrl_enter_hook(void)
+{
+    osa_task_handle_t taskHandle = OSA_TaskGetCurrentHandle();
+    OSA_TaskSetPriority(taskHandle, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 1)));
+}
+
+void ncp_tx_ctrl_exit_hook(void)
+{
+    osa_task_handle_t taskHandle = OSA_TaskGetCurrentHandle();
+    OSA_TaskSetPriority(taskHandle, PRIORITY_RTOS_TO_OSA((configMAX_PRIORITIES - 3)));
+}
+
 static ncp_intf_pm_ops_t ncp_usb_host_pm_ops =
 {
     .enter = ncp_usb_host_pm_enter,
