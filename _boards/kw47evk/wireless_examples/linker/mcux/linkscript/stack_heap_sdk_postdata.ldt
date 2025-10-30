@@ -9,6 +9,7 @@
         . += _HeapSize;
         . = ALIGN(${bss_align});
         _pvHeapLimit = .;
+        *(.heap);
     } > sys_heap
     </#if>
     <#if STACK_LOCATION == "Post Data">
